@@ -1,0 +1,174 @@
+LinearRegressionModel = {}
+
+LinearRegressionModel.__index = LinearRegressionModel
+
+local AqwamMatrixLibrary = require(script.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+
+local defaultMaxNumberOfIterations = 500
+
+local defaultLearningRate = 0.3
+
+local defaultLossFunction = "L2"
+
+local defaultTargetCost = 0
+
+local defaultLambda = 0
+
+local lossFunctionList = {
+
+	["L1"] = function (y, h) return math.abs(y - h) end,
+	
+	["L2"] = function (y, h) return (y - h)^2 end,
+
+}
+
+local regularisationFunctionList = {
+	
+	["L1"] = function (w) return math.abs(w) end,
+
+	["L2"] = function (w) return (w)^2 end,
+	
+}
+
+local function calculateHypothesisVector(featureMatrix, modelParameters)
+	
+	return AqwamMatrixLibrary:dotProduct(featureMatrix, modelParameters)
+	
+end
+
+local function calculateCost(modelParameters, featureMatrix, labelVector, lossFunction, lambda)
+	
+	local numberOfData = #featureMatrix
+	
+	local hypothesisVector = calculateHypothesisVector(featureMatrix, modelParameters)
+	
+	local costVector = AqwamMatrixLibrary:applyFunction(lossFunctionList[lossFunction], hypothesisVector, labelVector)
+	
+	local regularisationVector = AqwamMatrixLibrary:applyFunction(regularisationFunctionList[lossFunction], AqwamMatrixLibrary:horizontalSum(modelParameters))
+	
+	regularisationVector = AqwamMatrixLibrary:multiply(lambda, regularisationVector)
+	
+	local totalCostVector = AqwamMatrixLibrary:add(costVector, regularisationVector)
+	
+	local totalCost = AqwamMatrixLibrary:sum(totalCostVector)
+	
+	local averageCost = totalCost / (2 * numberOfData)
+	
+	return averageCost
+	
+end
+
+local function gradientDescent(modelParameters, featureMatrix, labelVector, lossFunction, learningRate, lambda)
+	
+	local numberOfData = #featureMatrix
+	
+	local hypothesisVector = calculateHypothesisVector(featureMatrix, modelParameters)
+	
+	local calculatedError = AqwamMatrixLibrary:subtract(hypothesisVector, labelVector)
+
+	local calculatedErrorWithFeatureMatrix = AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(featureMatrix), calculatedError)
+
+	local costFunctionDerivative = AqwamMatrixLibrary:multiply(learningRate, (1/numberOfData),  calculatedErrorWithFeatureMatrix)
+
+	modelParameters = AqwamMatrixLibrary:add(modelParameters, costFunctionDerivative)
+	
+	if (lambda ~= 0) then
+		
+		local regularizationParameters = AqwamMatrixLibrary:multiply((lambda/numberOfData), modelParameters)
+		
+		modelParameters = AqwamMatrixLibrary:add(modelParameters, regularizationParameters)
+		
+	end
+	
+	return modelParameters
+	
+end
+
+function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lambda, lossFunction, targetCost)
+	
+	local NewLinearRegressionModel = {}
+	
+	setmetatable(NewLinearRegressionModel, LinearRegressionModel)
+	
+	NewLinearRegressionModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	
+	NewLinearRegressionModel.learningRate = learningRate or defaultLearningRate
+	
+	NewLinearRegressionModel.lossFunction = lossFunction or defaultLossFunction
+	
+	NewLinearRegressionModel.targetCost = targetCost or defaultTargetCost
+	
+	NewLinearRegressionModel.lambda = lambda or defaultLambda
+	
+	NewLinearRegressionModel.ModelParameters = nil
+	
+	NewLinearRegressionModel.validationFeatureMatrix = nil
+	
+	NewLinearRegressionModel.validationLabelVector = nil
+	
+	return NewLinearRegressionModel
+	
+end
+
+function LinearRegressionModel:setParameters(maxNumberOfIterations, learningRate, lambda, lossFunction, targetCost)
+
+	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+
+	self.learningRate = learningRate or self.learningRate
+
+	self.lossFunction = lossFunction or self.lossFunction
+
+	self.targetCost = targetCost or self.targetCost
+	
+	self.lambda = lambda or self.lambda
+	
+end
+
+
+function LinearRegressionModel:train(featureMatrix, labelVector, suppressOutput)
+
+	local cost
+
+	local costArray = {}
+	
+	local numberOfIterations = 0
+	
+	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
+	
+	if (self.ModelParameters) then
+		
+		if (#featureMatrix[1] ~= #self.ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
+		
+	else
+		
+		self.ModelParameters = AqwamMatrixLibrary:createRandomMatrix(#featureMatrix[1], 1)
+		
+	end
+	
+	repeat
+		
+		numberOfIterations += 1
+		
+		self.ModelParameters = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.lossFunction, self.learningRate, self.lambda)
+		
+		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.lossFunction, self.lambda)
+		
+		table.insert(costArray, cost)
+		
+		if (not suppressOutput) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. cost) end
+		
+	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
+	
+	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values") end
+	
+	return costArray
+	
+end
+
+function LinearRegressionModel:predict(featureMatrix)
+	
+	return AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+
+end
+
+return LinearRegressionModel

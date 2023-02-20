@@ -24,21 +24,41 @@ local function breakFeatureMatrixToBatches(featureMatrix, batchSize)
 	
 	local numberOfWholeBatches = math.floor( (#featureMatrix) / batchSize )
 	
-	local numberOfPartialBatches = (#featureMatrix) % batchSize
-	
-	local featureMatrixPositionArray = {}
+	local featureMatrixPositionArray = {1}
 	
 	local featureMatrixBatchesTable = {}
+	
+	local currentBatchNumber = 0
+	
+	local newFeatureMatrix
 	
 	for i = 1, numberOfWholeBatches, 1 do table.insert(featureMatrixPositionArray, (i * batchSize)) end
 	
 	table.insert(featureMatrixPositionArray, #featureMatrix)
 	
-	for j = 1, numberOfWholeBatches, 1 do 
+	repeat
 		
-		table.insert(featureMatrixBatchesTable, (i * batchSize)) 
+		newFeatureMatrix = {}
 		
+		for j = (currentBatchNumber * batchSize) + 1, batchSize, 1 do table.insert(newFeatureMatrix, featureMatrix[j]) end
+		
+		table.insert(featureMatrixBatchesTable, newFeatureMatrix)
+		
+		currentBatchNumber += 1
+		
+	until (currentBatchNumber == numberOfWholeBatches)
+	
+	newFeatureMatrix = {}
+	
+	local totalBatches = (numberOfWholeBatches * batchSize)
+	
+	for j = (totalBatches + 1), (#featureMatrix - totalBatches), 1 do 
+
+		table.insert(newFeatureMatrix, featureMatrix[j])
+
 	end
+
+	table.insert(featureMatrixBatchesTable, newFeatureMatrix)
 	
 	return featureMatrixBatchesTable
 	
@@ -69,3 +89,4 @@ function GradientDescentModes:startStochasticGradientDescent(MachineLearningMode
 end
 
 return GradientDescentModes
+

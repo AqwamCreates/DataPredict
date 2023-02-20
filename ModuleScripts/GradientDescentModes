@@ -106,21 +106,17 @@ function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel
 	
 	local newArgumentsArray
 	
-	local currentBatchNumber = 0
-	
-	repeat
-		
-		currentBatchNumber += 1
-		
+	for currentBatchNumber = 1, numberOfBatches, 1 do
+
 		batchFeatureMatrix = featureMatrixBatchesTable[currentBatchNumber]
-		
+
 		batchLabelVector = labelVectorBatchesTable[currentBatchNumber]
-		
+
 		newArgumentsArray = {batchFeatureMatrix, batchLabelVector}
-		
+
 		runMachineLearningModel(MachineLearningModel, suppressOutput, newArgumentsArray)
 		
-	until (currentBatchNumber == numberOfBatches)
+	end
 
 end
 
@@ -133,3 +129,4 @@ function GradientDescentModes:startStochasticGradientDescent(MachineLearningMode
 end
 
 return GradientDescentModes
+

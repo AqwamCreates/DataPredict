@@ -1,0 +1,227 @@
+local AqwamMatrixLibrary = require(script.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+
+NaiveBayesModel = {}
+
+NaiveBayesModel.__index = NaiveBayesModel
+
+local function getClassesList(labelVector)
+	
+	local classesList = {}
+	
+	local value
+	
+	for i = 1, #labelVector, 1 do
+		
+		value = labelVector[i][1]
+		
+		if not table.find(classesList, value) then
+			
+			table.insert(classesList, value)
+			
+		end
+		
+	end
+	
+	return classesList
+	
+end
+
+local function extractFeatureMatrixFromPosition(featureMatrix, positionList)
+	
+	local extractedFeatureMatrix = {}
+	
+	for i = 1, #featureMatrix, 1 do
+		
+		if table.find(positionList, i) then
+			
+			table.insert(extractedFeatureMatrix, featureMatrix[i])
+			
+		end	
+		
+	end
+	
+	return extractedFeatureMatrix
+	
+end
+
+local function separateFeatureMatrixByClass(featureMatrix, labelVector)
+	
+	local classesList = getClassesList(labelVector)
+	
+	local classesPositionTable = {}
+	
+	for classIndex, class in ipairs(classesList) do
+		
+		classesPositionTable[classIndex] = {}
+		
+		for i = 1, #labelVector, 1 do
+			
+			if (labelVector[i][1] == class) then
+				
+				table.insert(classesPositionTable[classIndex], i)
+				
+			end
+			
+		end
+		
+	end
+	
+	local extractedFeatureMatricesTable = {}
+	
+	local extractedFeatureMatrix
+	
+	for classIndex, class in ipairs(classesList) do
+		
+		extractedFeatureMatrix = extractFeatureMatrixFromPosition(featureMatrix, classesPositionTable[classIndex])
+		
+		table.insert(extractedFeatureMatricesTable, extractedFeatureMatrix)
+		
+	end
+	
+	return extractedFeatureMatricesTable, classesList
+	
+end
+
+local function calculateGaussianDensity(featureMatrix, meanMatrix, standardDeviationMatrix)
+	
+	local exponentStep1 = AqwamMatrixLibrary:subtract(featureMatrix, meanMatrix)
+	
+	local exponentStep2 = AqwamMatrixLibrary:divide(exponentStep1, standardDeviationMatrix)
+	
+	local exponentStep3 = AqwamMatrixLibrary:multiply(exponentStep2, exponentStep2)
+	
+	local exponentStep4 = AqwamMatrixLibrary:multiply((-1/2), exponentStep3)
+	
+	local exponentWithTerms = AqwamMatrixLibrary:applyFunction(math.exp, exponentStep4)
+	
+	local fractionStep1 = AqwamMatrixLibrary:multiply(standardDeviationMatrix, math.sqrt(2 * math.pi))
+	
+	local fractionStep2 = AqwamMatrixLibrary:divide(1, fractionStep1)
+	
+	local gaussianDensity = AqwamMatrixLibrary:multiply(fractionStep2, exponentWithTerms)
+	
+	return gaussianDensity	
+	
+end
+
+function NaiveBayesModel.new()
+	
+	local NewNaiveBayesModel = {}
+	
+	setmetatable(NewNaiveBayesModel, NaiveBayesModel)
+	
+	NewNaiveBayesModel.meanMatrix = nil
+	
+	NewNaiveBayesModel.standardDeviationMatrix = nil
+	
+	NewNaiveBayesModel.probabilitiesMatrix = nil
+	
+	NewNaiveBayesModel.classesList = nil
+	
+	NewNaiveBayesModel.gaussianDensityMatrix = nil
+	
+	return NewNaiveBayesModel
+	
+end
+
+function NaiveBayesModel:train(featureMatrix, labelVector)
+	
+	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
+	
+	local extractedFeatureMatricesTable
+	
+	local gaussianDensityVector
+
+	local extractedFeatureMatrix
+
+	local featureVector
+
+	local meanVector
+
+	local standardDeviationVector
+
+	local probabilitiesVector
+	
+	if not (self.meanMatrix and self.standardDeviationMatrix and (self.probabilitiesMatrix)) then
+		
+		extractedFeatureMatricesTable, self.classesList = separateFeatureMatrixByClass(featureMatrix, labelVector)
+		
+		self.meanMatrix = AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1])
+
+		self.standardDeviationMatrix = AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1])
+		
+		self.probabilitiesMatrix = AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1], 1)
+		
+		self.gaussianDensityMatrix = AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1], 0)
+		
+	end
+	
+	for classIndex, classValue in ipairs(self.classesList) do
+		
+		extractedFeatureMatrix = extractedFeatureMatricesTable[classIndex]
+		
+		meanVector = AqwamMatrixLibrary:verticalMean(extractedFeatureMatrix)
+		
+		standardDeviationVector = AqwamMatrixLibrary:verticalStandardDeviation(extractedFeatureMatrix)
+		
+		self.meanMatrix[classIndex] = meanVector[1]
+		
+		self.standardDeviationMatrix[classIndex] = standardDeviationVector[1]
+		
+		probabilitiesVector = AqwamMatrixLibrary:createMatrix(1, #featureMatrix[1], 1)
+		
+		for data = 1, #featureMatrix, 1 do
+			
+			featureVector = {featureMatrix[data]}
+			
+			gaussianDensityVector = calculateGaussianDensity(featureVector, meanVector, standardDeviationVector)
+			
+			probabilitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, gaussianDensityVector)
+			
+		end
+		
+		self.probabilitiesMatrix[classIndex] = probabilitiesVector[1]
+		
+	end
+	
+end
+
+function NaiveBayesModel:predict(featureMatrix)
+	
+	local priorProbabilitiesMatrix = calculateGaussianDensity(featureMatrix, self.meanMatrix, self.standardDeviationMatrix)
+	
+	local multipliedProbalitiesMatrices = AqwamMatrixLibrary:multiply(self.probabilitiesMatrix, priorProbabilitiesMatrix)
+	
+	local highestProbability = -math.huge
+	
+	local predictedClass
+	
+	local highestProbabilityVector
+	
+	local probabilityVector
+	
+	local probability
+	
+	for classIndex, classValue in ipairs(self.classesList) do
+		
+		probabilityVector = {multipliedProbalitiesMatrices[classIndex]}
+		
+		probability = AqwamMatrixLibrary:sum(probabilityVector) 
+		
+		if (probability > highestProbability) then
+			
+			predictedClass = classValue
+
+			highestProbability = probability
+
+			highestProbabilityVector = probabilityVector
+
+		end
+		
+	end
+	
+	return predictedClass, highestProbabilityVector
+	
+end
+
+return NaiveBayesModel

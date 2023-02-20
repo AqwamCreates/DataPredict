@@ -20,29 +20,42 @@ local function runMachineLearningModel(MachineLearningModel, suppressOutput, arg
 	
 end
 
-local function breakFeatureMatrixToBatches(featureMatrix, labelVector, batchSize)
+local function breakFeatureMatrixToBatches(batchSize, featureMatrix, labelVector)
 	
 	local numberOfWholeBatches = math.floor( (#featureMatrix) / batchSize )
 	
-	local featureMatrixPositionArray = {1}
+	local dataPositionArray = {1}
 	
 	local featureMatrixBatchesTable = {}
+	
+	local labelVectorBatchesTable = {}
 	
 	local currentBatchNumber = 0
 	
 	local newFeatureMatrix
 	
-	for i = 1, numberOfWholeBatches, 1 do table.insert(featureMatrixPositionArray, (i * batchSize)) end
+	local newLabelVector 
 	
-	table.insert(featureMatrixPositionArray, #featureMatrix)
+	for i = 1, numberOfWholeBatches, 1 do table.insert(dataPositionArray, (i * batchSize)) end
+	
+	table.insert(dataPositionArray, #featureMatrix)
 	
 	repeat
 		
 		newFeatureMatrix = {}
 		
-		for j = (currentBatchNumber * batchSize) + 1, batchSize, 1 do table.insert(newFeatureMatrix, featureMatrix[j]) end
+		newLabelVector = {}
+		
+		for j = (currentBatchNumber * batchSize) + 1, batchSize, 1 do 
+			
+			table.insert(newFeatureMatrix, featureMatrix[j]) 
+			
+			if (labelVector) then table.insert(newLabelVector, labelVector[j]) end
+			
+		end
 		
 		table.insert(featureMatrixBatchesTable, newFeatureMatrix)
+		table.insert(labelVectorBatchesTable, newLabelVector)
 		
 		currentBatchNumber += 1
 		
@@ -55,12 +68,15 @@ local function breakFeatureMatrixToBatches(featureMatrix, labelVector, batchSize
 	for j = (totalBatches + 1), (#featureMatrix - totalBatches), 1 do 
 
 		table.insert(newFeatureMatrix, featureMatrix[j])
+		
+		if (labelVector) then table.insert(newLabelVector, labelVector[j]) end
 
 	end
 
 	table.insert(featureMatrixBatchesTable, newFeatureMatrix)
+	table.insert(labelVectorBatchesTable, newLabelVector)
 	
-	return featureMatrixBatchesTable
+	return featureMatrixBatchesTable, labelVectorBatchesTable
 	
 end
 
@@ -78,11 +94,15 @@ function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel
 	
 	local featureMatrix = argumentsArray[1]
 	
-	local featureMatrixBatchesTable = breakFeatureMatrixToBatches(featureMatrix, batchSize)
+	local labelVector = argumentsArray[2]
+	
+	local featureMatrixBatchesTable, labelVectorBatchesTable = breakFeatureMatrixToBatches(batchSize, featureMatrix, labelVector)
 	
 	local numberOfBatches = math.floor( ( #featureMatrix) / batchSize ) + 1
 	
 	local batchFeatureMatrix
+	
+	local batchLabelVector
 	
 	local newArgumentsArray
 	
@@ -94,7 +114,9 @@ function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel
 		
 		batchFeatureMatrix = featureMatrixBatchesTable[currentBatchNumber]
 		
-		newArgumentsArray = {batchFeatureMatrix,  argumentsArray[2]}
+		batchLabelVector = labelVectorBatchesTable[currentBatchNumber]
+		
+		newArgumentsArray = {batchFeatureMatrix, batchLabelVector}
 		
 		runMachineLearningModel(MachineLearningModel, suppressOutput, newArgumentsArray)
 		
@@ -111,4 +133,3 @@ function GradientDescentModes:startStochasticGradientDescent(MachineLearningMode
 end
 
 return GradientDescentModes
-

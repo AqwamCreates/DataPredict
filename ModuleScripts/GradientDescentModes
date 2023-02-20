@@ -20,7 +20,7 @@ local function runMachineLearningModel(MachineLearningModel, suppressOutput, arg
 	
 end
 
-local function breakFeatureMatrixToBatches(featureMatrix, batchSize)
+local function breakFeatureMatrixToBatches(featureMatrix, labelVector, batchSize)
 	
 	local numberOfWholeBatches = math.floor( (#featureMatrix) / batchSize )
 	
@@ -75,8 +75,30 @@ end
 function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel, suppressOutput, batchSize, ...)
 	
 	local argumentsArray = {...}
-
-	runMachineLearningModel(MachineLearningModel, suppressOutput, argumentsArray)
+	
+	local featureMatrix = argumentsArray[1]
+	
+	local featureMatrixBatchesTable = breakFeatureMatrixToBatches(featureMatrix, batchSize)
+	
+	local numberOfBatches = math.floor( ( #featureMatrix) / batchSize ) + 1
+	
+	local batchFeatureMatrix
+	
+	local newArgumentsArray
+	
+	local currentBatchNumber = 0
+	
+	repeat
+		
+		currentBatchNumber += 1
+		
+		batchFeatureMatrix = featureMatrixBatchesTable[currentBatchNumber]
+		
+		newArgumentsArray = {batchFeatureMatrix,  argumentsArray[2]}
+		
+		runMachineLearningModel(MachineLearningModel, suppressOutput, newArgumentsArray)
+		
+	until (currentBatchNumber == numberOfBatches)
 
 end
 

@@ -1,0 +1,90 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Version 1.5
+
+	Aqwam's Roblox Machine Learning Library (AR-MachineLL-O)
+
+	Author: Aqwam Harish Aiman
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+	
+	DO NOT SELL, RENT, DISTRIBUTE THIS LIBRARY
+	
+	DO NOT SELL, RENT, DISTRIBUTE MODIFIED VERSION OF THIS LIBRARY
+	
+	DO NOT CLAIM OWNERSHIP OF THIS LIBRARY
+	
+	GIVE CREDIT AND SOURCE WHEN USING THIS LIBRARY IF YOUR USAGE FALLS UNDER ONE OF THESE CATEGORIES:
+	
+		- USED AS A VIDEO OR ARTICLE CONTENT
+		- USED AS COMMERCIAL USE OR PUBLIC USE
+	
+	--------------------------------------------------------------------
+
+--]]
+
+local requiredMatrixLibraryVersion = 1.5
+
+local AqwamMatrixLibrary = require(script.AqwamRobloxMatrixLibraryLinker.Value)
+
+local LinearRegression = require(script.LinearRegression)
+local LogisticRegression = require(script.LogisticRegression)
+local KMeans = require(script.KMeans)
+local SupportVectorMachine = require(script.SupportVectorMachine)
+local ExpectationMaximization = require(script.ExpectationMaximization)
+local NaiveBayes = require(script.NaiveBayes)
+
+local ModelChecking = require(script.ModelChecking) -- for testing and validating datasets
+
+local GradientDescendModes = require(script.GradientDescentModes)
+
+local ModelCheckingDictionary = {
+
+	testRegressionModel = ModelChecking.testRegressionModel,
+	testLogisticModel = ModelChecking.testClassificationModel
+
+}
+
+local AqwamRobloxMachineLearningLibrary = {}
+
+AqwamRobloxMachineLearningLibrary.LinearRegression = LinearRegression
+
+AqwamRobloxMachineLearningLibrary.LogisticRegression = LogisticRegression
+
+AqwamRobloxMachineLearningLibrary.KMeans = KMeans
+
+AqwamRobloxMachineLearningLibrary.SupportVectorMachine = SupportVectorMachine
+
+AqwamRobloxMachineLearningLibrary.ExpectationMaximization = ExpectationMaximization
+
+AqwamRobloxMachineLearningLibrary.NaiveBayes = NaiveBayes
+
+AqwamRobloxMachineLearningLibrary.ModelChecking = ModelCheckingDictionary
+
+AqwamRobloxMachineLearningLibrary.GradientDescentModes = GradientDescendModes
+
+local function checkVersion()
+	
+	local matrixLibraryVersion
+	
+	local success = pcall(function()
+		
+		matrixLibraryVersion = AqwamMatrixLibrary:getVersion()
+		
+	end)
+	
+	if not success then matrixLibraryVersion = -1 end
+	
+	if (matrixLibraryVersion < requiredMatrixLibraryVersion) then warn("The matrix library is out-of-date. You may encounter some problems.") end
+	
+end
+
+checkVersion()
+
+return AqwamRobloxMachineLearningLibrary

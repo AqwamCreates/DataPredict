@@ -1,0 +1,108 @@
+local AqwamMachineLearningModels = script.Parent:GetChildren()
+local AqwamMatrixLibrary = require(script.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+
+local module = {}
+
+local function checkIfModelIsAClassificationModel(machineLearningModelName)
+	
+	local classificationModels = {"LogisticRegression", "SupportVectorMachine", "NaiveBayes"}
+	
+	if not table.find(classificationModels, machineLearningModelName) then
+		
+		error("Not A Classification Model!")
+		
+	end
+	
+end
+
+local function checkIfModelIsARegressionModel(machineLearningModelName)
+
+	local classificationModels = {"LinearRegression"}
+
+	if not table.find(classificationModels, machineLearningModelName) then
+
+		error("Not A Regression Model!")
+
+	end
+
+end
+
+function module:testClassificationModel(MachineLearningModel, featureMatrix, labelVector) -- only works with supervised learning
+	
+	local modelOutputVector = AqwamMatrixLibrary:createMatrix(#labelVector, 1)
+	
+	local modelOutput
+	
+	local featureVector
+	
+	local accuracy
+	
+	local correctAtData = {}
+	
+	local wrongAtData = {}
+	
+	local numberOfData = #featureMatrix
+	
+	for data = 1, numberOfData, 1 do
+		
+		featureVector = {featureMatrix[1]}
+		
+		modelOutput = MachineLearningModel:predict(featureVector)
+		
+		modelOutputVector[data][1] = modelOutput
+		
+		if (modelOutput == labelVector[data][1]) then
+			
+			table.insert(correctAtData, data)
+			
+		else
+			
+			table.insert(wrongAtData, data)
+			
+		end
+		
+	end
+	
+	accuracy = #correctAtData / numberOfData
+	
+	return accuracy, correctAtData, wrongAtData, modelOutputVector
+	
+end
+
+function module:testRegressionModel(MachineLearningModel, featureMatrix, labelVector)
+
+	local modelOutputVector = AqwamMatrixLibrary:createMatrix(#labelVector, 1)
+
+	local modelOutput
+
+	local featureVector
+	
+	local errorVector
+	
+	local totalError
+	
+	local averageError
+
+	local numberOfData = #featureMatrix
+	
+	for data = 1, numberOfData, 1 do
+
+		featureVector = {featureMatrix[1]}
+
+		modelOutput = MachineLearningModel:predict(featureVector)
+
+		modelOutputVector[data][1] = modelOutput
+
+	end
+	
+	errorVector = AqwamMatrixLibrary:subtract(modelOutputVector, labelVector)
+	
+	totalError = AqwamMatrixLibrary:verticalSum(errorVector)
+	
+	averageError = totalError/numberOfData
+	
+	return averageError, errorVector, modelOutputVector
+	
+end
+
+return module

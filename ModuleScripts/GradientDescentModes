@@ -1,0 +1,71 @@
+local GradientDescentModes = {}
+
+local function runMachineLearningModel(MachineLearningModel, suppressOutput, argumentsArray)
+	
+	local numberOfArguments = #argumentsArray
+	
+	local featureMatrix = argumentsArray[1]
+	
+	if (numberOfArguments == 2) then
+		
+		local labelVector = argumentsArray[2]
+		
+		MachineLearningModel:train(featureMatrix, labelVector, suppressOutput)
+		
+	else
+		
+		MachineLearningModel:train(featureMatrix, suppressOutput)
+		
+	end
+	
+end
+
+local function breakFeatureMatrixToBatches(featureMatrix, batchSize)
+	
+	local numberOfWholeBatches = math.floor( (#featureMatrix) / batchSize )
+	
+	local numberOfPartialBatches = (#featureMatrix) % batchSize
+	
+	local featureMatrixPositionArray = {}
+	
+	local featureMatrixBatchesTable = {}
+	
+	for i = 1, numberOfWholeBatches, 1 do table.insert(featureMatrixPositionArray, (i * batchSize)) end
+	
+	table.insert(featureMatrixPositionArray, #featureMatrix)
+	
+	for j = 1, numberOfWholeBatches, 1 do 
+		
+		table.insert(featureMatrixBatchesTable, (i * batchSize)) 
+		
+	end
+	
+	return featureMatrixBatchesTable
+	
+end
+
+function GradientDescentModes:startBatchGradientDescent(MachineLearningModel, suppressOutput, ...)
+	
+	local argumentsArray = {...}
+	
+	runMachineLearningModel(MachineLearningModel, suppressOutput, argumentsArray)
+	
+end
+
+function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel, suppressOutput, batchSize, ...)
+	
+	local argumentsArray = {...}
+
+	runMachineLearningModel(MachineLearningModel, suppressOutput, argumentsArray)
+
+end
+
+function GradientDescentModes:startStochasticGradientDescent(MachineLearningModel, suppressOutput, ...)
+	
+	local argumentsArray = {...}
+
+	runMachineLearningModel(MachineLearningModel, suppressOutput, argumentsArray)
+
+end
+
+return GradientDescentModes

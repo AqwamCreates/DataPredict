@@ -98,7 +98,7 @@ function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel
 	
 	local featureMatrixBatchesTable, labelVectorBatchesTable = breakFeatureMatrixToBatches(batchSize, featureMatrix, labelVector)
 	
-	local numberOfBatches = math.floor( ( #featureMatrix) / batchSize ) + 1
+	local numberOfBatches = math.floor( (#featureMatrix) / batchSize ) + 1
 	
 	local batchFeatureMatrix
 	

@@ -1,14 +1,14 @@
 local GradientDescentModes = {}
 
-local function runMachineLearningModel(MachineLearningModel, suppressOutput, argumentsArray)
+local function runMachineLearningModel(MachineLearningModel, suppressOutput, dataArray)
 	
-	local numberOfArguments = #argumentsArray
+	local numberOfArguments = #dataArray
 	
-	local featureMatrix = argumentsArray[1]
+	local featureMatrix = dataArray[1]
 	
 	if (numberOfArguments == 2) then
 		
-		local labelVector = argumentsArray[2]
+		local labelVector = dataArray[2]
 		
 		MachineLearningModel:train(featureMatrix, labelVector, suppressOutput)
 		
@@ -82,19 +82,19 @@ end
 
 function GradientDescentModes:startBatchGradientDescent(MachineLearningModel, suppressOutput, ...)
 	
-	local argumentsArray = {...}
+	local dataArray = {...}
 	
-	runMachineLearningModel(MachineLearningModel, suppressOutput, argumentsArray)
+	runMachineLearningModel(MachineLearningModel, suppressOutput, dataArray)
 	
 end
 
 function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel, suppressOutput, batchSize, ...)
 	
-	local argumentsArray = {...}
+	local dataArray = {...}
 	
-	local featureMatrix = argumentsArray[1]
+	local featureMatrix = dataArray[1]
 	
-	local labelVector = argumentsArray[2]
+	local labelVector = dataArray[2]
 	
 	local featureMatrixBatchesTable, labelVectorBatchesTable = breakFeatureMatrixToBatches(batchSize, featureMatrix, labelVector)
 	
@@ -104,7 +104,7 @@ function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel
 	
 	local batchLabelVector
 	
-	local newArgumentsArray
+	local dataArray
 	
 	for currentBatchNumber = 1, numberOfBatches, 1 do
 
@@ -112,9 +112,9 @@ function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel
 
 		batchLabelVector = labelVectorBatchesTable[currentBatchNumber]
 
-		newArgumentsArray = {batchFeatureMatrix, batchLabelVector}
+		dataArray = {batchFeatureMatrix, batchLabelVector}
 
-		runMachineLearningModel(MachineLearningModel, suppressOutput, newArgumentsArray)
+		runMachineLearningModel(MachineLearningModel, suppressOutput, dataArray)
 		
 	end
 
@@ -122,11 +122,10 @@ end
 
 function GradientDescentModes:startStochasticGradientDescent(MachineLearningModel, suppressOutput, ...)
 	
-	local argumentsArray = {...}
+	local dataArray = {...}
 
-	runMachineLearningModel(MachineLearningModel, suppressOutput, argumentsArray)
+	runMachineLearningModel(MachineLearningModel, suppressOutput, dataArray)
 
 end
 
 return GradientDescentModes
-

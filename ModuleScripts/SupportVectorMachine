@@ -178,7 +178,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 		
 		table.insert(costArray, cost)
 		
-		MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIterations)
+		MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIterations, self.IsOutputPrinted)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 

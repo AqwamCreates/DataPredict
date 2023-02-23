@@ -24,7 +24,7 @@ function AdaptiveGradientOptimizer:calculate(ModelParametersDerivatives)
 		
 	end
 	
-	local GradientSquaredMatrix = AqwamMatrixLibrary:Power(ModelParametersDerivatives, 2)
+	local GradientSquaredMatrix = AqwamMatrixLibrary:power(ModelParametersDerivatives, 2)
 	
 	local CurrentSumOfGradientSquaredMatrix = AqwamMatrixLibrary(self.PreviousSumOfGradientSquaredMatrix, GradientSquaredMatrix)
 	
@@ -39,3 +39,4 @@ function AdaptiveGradientOptimizer:calculate(ModelParametersDerivatives)
 end
 
 return AdaptiveGradientOptimizer
+

@@ -1,6 +1,10 @@
+MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
+
 LinearRegressionModel = {}
 
 LinearRegressionModel.__index = LinearRegressionModel
+
+setmetatable(LinearRegressionModel, MachineLearningBaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
@@ -86,7 +90,7 @@ end
 
 function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lambda, lossFunction, targetCost)
 	
-	local NewLinearRegressionModel = {}
+	local NewLinearRegressionModel = MachineLearningBaseModel.new()
 	
 	setmetatable(NewLinearRegressionModel, LinearRegressionModel)
 	
@@ -99,8 +103,6 @@ function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lambda, 
 	NewLinearRegressionModel.targetCost = targetCost or defaultTargetCost
 	
 	NewLinearRegressionModel.lambda = lambda or defaultLambda
-	
-	NewLinearRegressionModel.ModelParameters = nil
 	
 	NewLinearRegressionModel.validationFeatureMatrix = nil
 	

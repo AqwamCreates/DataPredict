@@ -1,3 +1,4 @@
+
 MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
 
 LogisticRegressionModel = {}
@@ -176,7 +177,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector, suppressOutpu
 		
 		table.insert(costArray, cost)
 		
-		if (not suppressOutput) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. cost) end
+		MachineLearningBaseModel:printOutputCostAndNumberOfIterations(cost, numberOfIterations)
 		
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 	

@@ -134,6 +134,12 @@ function SupportVectorMachineModel.new(maxNumberOfIterations, learningRate, cVal
 
 end
 
+function SupportVectorMachineModel:setOptimizer(Optimizer)
+
+	self.Optimizer = Optimizer
+
+end
+
 function SupportVectorMachineModel:setParameters(maxNumberOfIterations, learningRate, cValue, distanceFunction, targetCost)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations

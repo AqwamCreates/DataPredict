@@ -1,8 +1,12 @@
-local AqwamMatrixLibrary = require(script.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
 
 NaiveBayesModel = {}
 
 NaiveBayesModel.__index = NaiveBayesModel
+
+setmetatable(NaiveBayesModel, MachineLearningBaseModel)
+
+local AqwamMatrixLibrary = require(script.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
 local function getClassesList(labelVector)
 	
@@ -106,7 +110,7 @@ end
 
 function NaiveBayesModel.new()
 	
-	local NewNaiveBayesModel = {}
+	local NewNaiveBayesModel = MachineLearningBaseModel.new()
 	
 	setmetatable(NewNaiveBayesModel, NaiveBayesModel)
 	
@@ -183,6 +187,8 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 		self.probabilitiesMatrix[classIndex] = probabilitiesVector[1]
 		
 	end
+	
+	self.ModelParameters = {self.meanMatrix, self.standardDeviationMatrix, self.probabilitiesMatrix}
 	
 end
 

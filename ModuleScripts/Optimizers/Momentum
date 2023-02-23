@@ -1,1 +1,45 @@
+MomentumOptimizer = {}
 
+MomentumOptimizer.__index = MomentumOptimizer
+
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+
+function MomentumOptimizer.new(DecayRate)
+	
+	local NewMomentumOptimizer = {}
+	
+	setmetatable(NewMomentumOptimizer, MomentumOptimizer)
+	
+	NewMomentumOptimizer.DecayRate = DecayRate
+	
+	NewMomentumOptimizer.PreviousDeltaMatrix = nil
+	
+	return NewMomentumOptimizer
+	
+end
+
+function MomentumOptimizer:setDecayRate(DecayRate)
+	
+	self.DecayRate = DecayRate
+	
+end
+
+function MomentumOptimizer:calculate(ModelParameters, ModelParametersDerivatives, learningRate)
+	
+	if (self.PreviousDeltaMatrix == nil) then
+		
+		self.PreviousDeltaMatrix = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
+		
+	end
+	
+	local MomentumMatrixPart1 = AqwamMatrixLibrary:multiply(learningRate, ModelParameters)
+	
+	local MomentumMatrixPart2 = AqwamMatrixLibrary:multiply(self.DecayRate, self.PreviousDeltaMatrix)
+	
+	local DeltaMatrix = AqwamMatrixLibrary:add(MomentumMatrixPart1, MomentumMatrixPart2)
+	
+	return DeltaMatrix
+	
+end
+
+return MomentumOptimizer

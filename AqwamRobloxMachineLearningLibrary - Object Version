@@ -76,7 +76,8 @@ local OptimizersDictionary = {
 	
 	RootMeanSquarePropagation = RootMeanSquarePropagation,
 	Momentum = Momentum,
-	AdaptiveGradient = AdaptiveGradient
+	AdaptiveGradient = AdaptiveGradient,
+	AdaptiveMomentEstimation = AdaptiveMomentEstimation
 	
 }
 

@@ -157,7 +157,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		table.insert(costArray, cost)
 		
-		MachineLearningBaseModel:printOutputCostAndNumberOfIterations(cost, numberOfIterations)
+		MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 	

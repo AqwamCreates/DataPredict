@@ -417,7 +417,7 @@ local function initializeCentroids(featureMatrix, numberOfClusters, distanceFunc
 	
 end
 
-function KMeansModel:train(featureMatrix, suppressOutput)
+function KMeansModel:train(featureMatrix)
 	
 	local PreviousModelParameters
 	

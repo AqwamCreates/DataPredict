@@ -122,7 +122,7 @@ function GradientDescentModes:startGradientDescent(MachineLearningModel, gradien
 		
 		startMiniBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector, batchSize)
 		
-	elseif (gradientDescentAlgorithmType == "") then
+	elseif (gradientDescentAlgorithmType == "Stochastic") then
 		
 		startStochasticGradientDescent(MachineLearningModel, featureMatrix, labelVector)
 		
@@ -135,4 +135,3 @@ function GradientDescentModes:startGradientDescent(MachineLearningModel, gradien
 end
 
 return GradientDescentModes
-

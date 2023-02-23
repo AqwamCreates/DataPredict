@@ -4,7 +4,7 @@
 
 	Version 1.0
 
-	Aqwam's Roblox Machine Learning Library (AR-MachineLL-O)
+	Aqwam's Roblox Deep Learning Library (AR-DeepLL)
 
 	Author: Aqwam Harish Aiman
 	
@@ -33,16 +33,23 @@ local requiredMatrixLibraryVersion = 1.5
 
 local AqwamMatrixLibrary = require(script.AqwamRobloxMatrixLibraryLinker.Value)
 
-local LinearRegression = require(script.LinearRegression)
-local LogisticRegression = require(script.LogisticRegression)
-local KMeans = require(script.KMeans)
-local SupportVectorMachine = require(script.SupportVectorMachine)
-local ExpectationMaximization = require(script.ExpectationMaximization)
-local NaiveBayes = require(script.NaiveBayes)
+local Models = script.Models
 
-local ModelChecking = require(script.ModelChecking) -- for testing and validating datasets
+local LinearRegression = require(Models.LinearRegression)
+local LogisticRegression = require(Models.LogisticRegression)
+local KMeans = require(Models.KMeans)
+local SupportVectorMachine = require(Models.SupportVectorMachine)
+local ExpectationMaximization = require(Models.ExpectationMaximization)
+local NaiveBayes = require(Models.NaiveBayes)
 
-local GradientDescendModes = require(script.GradientDescentModes)
+local Others = script.Others
+
+local ModelChecking = require(Others.ModelChecking) -- for testing and validating datasets
+local GradientDescendModes = require(Others.GradientDescentModes)
+
+local Optimizers = script.Optimizers
+
+local RootMeanSquarePropagation = require(Optimizers.RootMeanSquarePropagation)
 
 local ModelCheckingDictionary = {
 
@@ -51,23 +58,37 @@ local ModelCheckingDictionary = {
 
 }
 
+local ModelsDictionary = {
+	
+	LinearRegression = LinearRegression,
+	LogisticRegression = LogisticRegression,
+	KMeans = KMeans,
+	SupportVectorMachine = SupportVectorMachine,
+	NaiveBayes = NaiveBayes,
+	ExpectationMaximization,
+	
+}
+
+local OptimizersDictionary = {
+	
+	RootMeanSquarePropagation = RootMeanSquarePropagation
+	
+}
+
+local OthersDictionary = {
+	
+	GradientDescendModes = GradientDescendModes,
+	ModelChecking = ModelChecking
+	
+}
+
 local AqwamRobloxMachineLearningLibrary = {}
 
-AqwamRobloxMachineLearningLibrary.LinearRegression = LinearRegression
+AqwamRobloxMachineLearningLibrary.Models =  ModelsDictionary
 
-AqwamRobloxMachineLearningLibrary.LogisticRegression = LogisticRegression
+AqwamRobloxMachineLearningLibrary.Optimizers = OptimizersDictionary
 
-AqwamRobloxMachineLearningLibrary.KMeans = KMeans
-
-AqwamRobloxMachineLearningLibrary.SupportVectorMachine = SupportVectorMachine
-
-AqwamRobloxMachineLearningLibrary.ExpectationMaximization = ExpectationMaximization
-
-AqwamRobloxMachineLearningLibrary.NaiveBayes = NaiveBayes
-
-AqwamRobloxMachineLearningLibrary.ModelChecking = ModelCheckingDictionary
-
-AqwamRobloxMachineLearningLibrary.GradientDescentModes = GradientDescendModes
+AqwamRobloxMachineLearningLibrary.Others = Others
 
 local function checkVersion()
 	

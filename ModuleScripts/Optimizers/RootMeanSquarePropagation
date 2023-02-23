@@ -60,11 +60,10 @@ function RootMeanSquarePropagationOptimizer:calculate(ModelParameters, ModelPara
 	
 	local RMSPropMatrix = AqwamMatrixLibrary:divide(ModelParameters, DivisorMatrix)
 	
-	local ResultMatrix = AqwamMatrixLibrary:multiply(learningRate, RMSPropMatrix)
+	local DeltaMatrix = AqwamMatrixLibrary:multiply(learningRate, RMSPropMatrix)
 	
-	return ResultMatrix
+	return DeltaMatrix
 	
 end
 
 return RootMeanSquarePropagationOptimizer
-

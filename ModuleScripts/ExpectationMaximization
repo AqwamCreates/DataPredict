@@ -1,6 +1,10 @@
+MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
+
 ExpectationMaximizationModel = {}
 
 ExpectationMaximizationModel.__index = ExpectationMaximizationModel
+
+setmetatable(ExpectationMaximizationModel, MachineLearningBaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
@@ -226,7 +230,7 @@ end
 
 function ExpectationMaximizationModel.new(numberOfClusters, maxNumberOfIterations, epsilon)
 	
-	local NewExpectationMaximizationModel = {}
+	local NewExpectationMaximizationModel = MachineLearningBaseModel.new()
 	
 	setmetatable(NewExpectationMaximizationModel, ExpectationMaximizationModel)
 	
@@ -316,6 +320,8 @@ function ExpectationMaximizationModel:train(featureMatrix, suppressOutput)
 		if (not suppressOutput) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. cost) end
 		
 	until (numberOfIterations == self.maxNumberOfIterations) or (cost <= self.epsilon)
+	
+	self.ModelParameters = {self.meanMatrix, self.probabilitiesMatrix}
 	
 	return costArray
 	

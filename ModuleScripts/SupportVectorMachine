@@ -178,7 +178,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector, suppressOut
 		
 		table.insert(costArray, cost)
 		
-		if (not suppressOutput) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. cost) end
+		MachineLearningBaseModel:printOutputCostAndNumberOfIterations(cost, numberOfIterations)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 
@@ -205,4 +205,3 @@ function SupportVectorMachineModel:predict(featureMatrix)
 end
 
 return SupportVectorMachineModel
-

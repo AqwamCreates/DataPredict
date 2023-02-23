@@ -148,7 +148,7 @@ function SupportVectorMachineModel:setParameters(maxNumberOfIterations, learning
 
 end
 
-function SupportVectorMachineModel:train(featureMatrix, labelVector, suppressOutput)
+function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	
 	local cost
 

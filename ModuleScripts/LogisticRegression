@@ -147,7 +147,7 @@ function LogisticRegressionModel:setParameters(maxNumberOfIterations, learningRa
 
 end
 
-function LogisticRegressionModel:train(featureMatrix, labelVector, suppressOutput)
+function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 	local cost
 	

@@ -36,15 +36,15 @@ function RootMeanSquarePropagationOptimizer:setEpsilon(Epsilon)
 
 end
 
-function RootMeanSquarePropagationOptimizer:calculate(ModelParameters, ModelParametersDerivatives, learningRate)
+function RootMeanSquarePropagationOptimizer:calculate(learningRate, ModelParametersDerivatives)
 	
 	if (self.PreviousVelocityMatrix == nil) then 
 		
-		self.PreviousVelocityMatrix = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
+		self.PreviousVelocityMatrix = AqwamMatrixLibrary:createMatrix(#ModelParametersDerivatives, #ModelParametersDerivatives[1])
 		
 	end
 	
-	local SquaredModelParameters = AqwamMatrixLibrary:power(ModelParameters, 2)
+	local SquaredModelParameters = AqwamMatrixLibrary:power(ModelParametersDerivatives, 2)
 	
 	local VMatrixPart1 = AqwamMatrixLibrary:multiply(self.Beta, self.PreviousVelocityMatrix)
 	
@@ -58,7 +58,7 @@ function RootMeanSquarePropagationOptimizer:calculate(ModelParameters, ModelPara
 	
 	local DivisorMatrix = AqwamMatrixLibrary:add(SquaredRootVelocityMatrix, self.Epsilon)
 	
-	local RMSPropMatrix = AqwamMatrixLibrary:divide(ModelParameters, DivisorMatrix)
+	local RMSPropMatrix = AqwamMatrixLibrary:divide(ModelParametersDerivatives, DivisorMatrix)
 	
 	local DeltaMatrix = AqwamMatrixLibrary:multiply(learningRate, RMSPropMatrix)
 	
@@ -67,4 +67,5 @@ function RootMeanSquarePropagationOptimizer:calculate(ModelParameters, ModelPara
 end
 
 return RootMeanSquarePropagationOptimizer
+
 

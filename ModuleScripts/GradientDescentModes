@@ -1,25 +1,5 @@
 local GradientDescentModes = {}
 
-local function runMachineLearningModel(MachineLearningModel, suppressOutput, dataArray)
-	
-	local numberOfArguments = #dataArray
-	
-	local featureMatrix = dataArray[1]
-	
-	if (numberOfArguments == 2) then
-		
-		local labelVector = dataArray[2]
-		
-		MachineLearningModel:train(featureMatrix, labelVector, suppressOutput)
-		
-	else
-		
-		MachineLearningModel:train(featureMatrix, suppressOutput)
-		
-	end
-	
-end
-
 local function breakFeatureMatrixToBatches(batchSize, featureMatrix, labelVector)
 	
 	local numberOfWholeBatches = math.floor( (#featureMatrix) / batchSize )
@@ -80,21 +60,13 @@ local function breakFeatureMatrixToBatches(batchSize, featureMatrix, labelVector
 	
 end
 
-function GradientDescentModes:startBatchGradientDescent(MachineLearningModel, suppressOutput, ...)
+function GradientDescentModes:startBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector)
 	
-	local dataArray = {...}
-	
-	runMachineLearningModel(MachineLearningModel, suppressOutput, dataArray)
+	MachineLearningModel:train(featureMatrix, labelVector)
 	
 end
 
-function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel, suppressOutput, batchSize, ...)
-	
-	local dataArray = {...}
-	
-	local featureMatrix = dataArray[1]
-	
-	local labelVector = dataArray[2]
+function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector, batchSize)
 	
 	local featureMatrixBatchesTable, labelVectorBatchesTable = breakFeatureMatrixToBatches(batchSize, featureMatrix, labelVector)
 	
@@ -114,17 +86,15 @@ function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel
 
 		dataArray = {batchFeatureMatrix, batchLabelVector}
 
-		runMachineLearningModel(MachineLearningModel, suppressOutput, dataArray)
+		MachineLearningModel:train(featureMatrix, labelVector)
 		
 	end
 
 end
 
-function GradientDescentModes:startStochasticGradientDescent(MachineLearningModel, suppressOutput, ...)
-	
-	local dataArray = {...}
+function GradientDescentModes:startStochasticGradientDescent(MachineLearningModel, featureMatrix, labelVector)
 
-	runMachineLearningModel(MachineLearningModel, suppressOutput, dataArray)
+	MachineLearningModel:train(featureMatrix, labelVector)
 
 end
 

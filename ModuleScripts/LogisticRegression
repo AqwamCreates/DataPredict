@@ -1,5 +1,4 @@
-
-MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
+local MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
 
 LogisticRegressionModel = {}
 

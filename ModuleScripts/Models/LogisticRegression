@@ -82,7 +82,7 @@ local function calculateCost(modelParameters, featureMatrix, labelVector, sigmoi
 	
 end
 
-local function gradientDescent(modelParameters, featureMatrix, labelVector, sigmoidFunction, lambda)
+local function gradientDescent(modelParameters, featureMatrix, labelVector, sigmoidFunction)
 	
 	local numberOfData = #featureMatrix
 
@@ -176,9 +176,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		
 		numberOfIterations += 1
 		
-		self.ModelParameters = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction, self.learningRate, self.lambda)
-		
-		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.lossFunction, self.learningRate, self.lambda)
+		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
 
 		if (self.Optimizer) then 
 

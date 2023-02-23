@@ -1,0 +1,69 @@
+MachineLearningBaseModel = {}
+
+MachineLearningBaseModel.__index = MachineLearningBaseModel
+
+function MachineLearningBaseModel.new()
+	
+	local newMachineLearningBaseModel = {}
+	
+	setmetatable(newMachineLearningBaseModel, MachineLearningBaseModel)
+
+	newMachineLearningBaseModel.ModelParameters = nil
+	
+	newMachineLearningBaseModel.LastPredictedOutput = nil
+	
+	newMachineLearningBaseModel.LastCalculations = nil
+
+	return newMachineLearningBaseModel
+	
+end
+
+function MachineLearningBaseModel:getModelParameters()
+	
+	return self.ModelParameters
+	
+end
+
+function MachineLearningBaseModel:setModelParameters(ModelParameters)
+	
+	self.ModelParameters = ModelParameters
+	
+end
+
+function MachineLearningBaseModel:clearModelParameters()
+	
+	self.ModelParameters = nil
+	
+end
+
+function MachineLearningBaseModel:clearLastPredictedOutput()
+	
+	self.LastPredictedOutput = nil
+	
+end
+
+function MachineLearningBaseModel:clearLastCalculations()
+	
+	self.LastCalculations = nil
+	
+end
+
+function MachineLearningBaseModel:clearLastPredictedOutputAndCalculations()
+	
+	MachineLearningBaseModel:clearLastCalculations()
+	
+	MachineLearningBaseModel:clearLastPredictedOutput()
+	
+end
+
+function MachineLearningBaseModel:Destroy()
+	
+	setmetatable(self, nil)
+	
+	table.clear(self)
+	
+	table.freeze(self)
+	
+end
+
+return MachineLearningBaseModel

@@ -1,0 +1,43 @@
+AdaptiveGradientOptimizer = {}
+
+AdaptiveGradientOptimizer.__index = AdaptiveGradientOptimizer
+
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+
+function AdaptiveGradientOptimizer.new()
+	
+	local NewAdaptiveGradientOptimizer = {}
+	
+	setmetatable(NewAdaptiveGradientOptimizer, AdaptiveGradientOptimizer)
+	
+	NewAdaptiveGradientOptimizer.PreviousSumOfGradientSquaredMatrix = nil
+	
+	return NewAdaptiveGradientOptimizer
+	
+end
+
+function AdaptiveGradientOptimizer:calculate(learningRate, ModelParametersDerivatives)
+	
+	if (self.PreviousSumOfGradientSquaredMatrix == nil) then
+		
+		self.PreviousSumOfGradientSquaredMatrix = AqwamMatrixLibrary:createMatrix(#ModelParametersDerivatives, #ModelParametersDerivatives[1])
+		
+	end
+	
+	local GradientSquaredMatrix = AqwamMatrixLibrary:Power(ModelParametersDerivatives, 2)
+	
+	local CurrentSumOfGradientSquaredMatrix = AqwamMatrixLibrary(self.PreviousSumOfGradientSquaredMatrix, GradientSquaredMatrix)
+	
+	self.PreviousSumOfGradientSquaredMatrix = AqwamMatrixLibrary:sum(GradientSquaredMatrix)
+	
+	local SquareRootSumOfGradientSquared = AqwamMatrixLibrary:power(CurrentSumOfGradientSquaredMatrix, 0.5)
+	
+	local DeltaMatrixPart1 = AqwamMatrixLibrary:divide(ModelParametersDerivatives)
+	
+	local DeltaMatrix = AqwamMatrixLibrary:multiply(learningRate, DeltaMatrixPart1)
+	
+	return DeltaMatrix
+	
+end
+
+return AdaptiveGradientOptimizer

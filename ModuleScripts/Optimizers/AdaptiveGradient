@@ -16,7 +16,7 @@ function AdaptiveGradientOptimizer.new()
 	
 end
 
-function AdaptiveGradientOptimizer:calculate(learningRate, ModelParametersDerivatives)
+function AdaptiveGradientOptimizer:calculate(ModelParametersDerivatives)
 	
 	if (self.PreviousSumOfGradientSquaredMatrix == nil) then
 		
@@ -32,11 +32,9 @@ function AdaptiveGradientOptimizer:calculate(learningRate, ModelParametersDeriva
 	
 	local SquareRootSumOfGradientSquared = AqwamMatrixLibrary:power(CurrentSumOfGradientSquaredMatrix, 0.5)
 	
-	local DeltaMatrixPart1 = AqwamMatrixLibrary:divide(ModelParametersDerivatives)
+	local AdaGradMatrix = AqwamMatrixLibrary:divide(ModelParametersDerivatives, SquareRootSumOfGradientSquared)
 	
-	local DeltaMatrix = AqwamMatrixLibrary:multiply(learningRate, DeltaMatrixPart1)
-	
-	return DeltaMatrix
+	return AdaGradMatrix
 	
 end
 

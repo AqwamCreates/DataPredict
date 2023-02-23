@@ -163,6 +163,8 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	local numberOfIterations = 0
 	
 	local costFunctionDerivatives
+	
+	local delta
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 
@@ -182,17 +184,15 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 		
 		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.distanceFunction, self.learningRate, self.cValue)
 
-		if (self.Optimizer) then
+		if (self.Optimizer) then 
 
-			costFunctionDerivatives = self.Optimizer:calculate(self.learningRate, costFunctionDerivatives)
-
-		else
-
-			costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
+			costFunctionDerivatives = self.Optimizer:calculate(costFunctionDerivatives) 
 
 		end
 
-		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, costFunctionDerivatives)
+		delta = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
+
+		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, delta)
 
 		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.distanceFunction, self.learningRate, self.cValue)
 		

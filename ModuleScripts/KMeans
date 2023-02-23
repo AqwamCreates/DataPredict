@@ -327,29 +327,11 @@ function KMeansModel.new(numberOfClusters, maxNumberOfIterations, learningRate, 
 
 	NewKMeansModel.learningRate = learningRate or defaultLearningRate
 	
-	NewKMeansModel.stopWhenModelParametersDoesNotChange = stopWhenModelParametersDoesNotChange or defaultStopWhenModelParametersDoesNotChange
+	NewKMeansModel.stopWhenModelParametersDoesNotChange =  MachineLearningBaseModel:GetBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, defaultStopWhenModelParametersDoesNotChange)
+
+	NewKMeansModel.setInitialClustersOnDataPoints =  MachineLearningBaseModel:GetBooleanOrDefaultOption(setInitialClustersOnDataPoints, defaultSetInitialClustersOnDataPoints)
 	
-	NewKMeansModel.setInitialClustersOnDataPoints = setInitialClustersOnDataPoints or defaultSetInitialClustersOnDataPoints
-	
-	NewKMeansModel.setTheCentroidsDistanceFarthest = setTheCentroidsDistanceFarthest or defaultSetTheCentroidsDistanceFarthest
-	
-	if (type(stopWhenModelParametersDoesNotChange) ~= "boolean") then
-
-		NewKMeansModel.stopWhenModelParametersDoesNotChange = defaultStopWhenModelParametersDoesNotChange
-		
-	end
-
-	if (type(setInitialClustersOnDataPoints) ~= "boolean") then
-
-		NewKMeansModel.setInitialClustersOnDataPoints = defaultSetInitialClustersOnDataPoints
-
-	end
-
-	if (type(setTheCentroidsDistanceFarthest) ~= "boolean") then
-
-		NewKMeansModel.setTheCentroidsDistanceFarthest = defaultSetTheCentroidsDistanceFarthest
-
-	end
+	NewKMeansModel.setTheCentroidsDistanceFarthest = MachineLearningBaseModel:GetBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
 	
 	return NewKMeansModel
 	
@@ -451,7 +433,7 @@ function KMeansModel:train(featureMatrix)
 		
 		table.insert(costArray, cost)
 		
-		MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIterations)
+		MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIterations, self.IsOutputPrinted)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 	

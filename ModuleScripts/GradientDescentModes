@@ -99,3 +99,4 @@ function GradientDescentModes:startStochasticGradientDescent(MachineLearningMode
 end
 
 return GradientDescentModes
+

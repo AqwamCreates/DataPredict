@@ -1,6 +1,10 @@
+MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
+
 KMeansModel = {}
 
 KMeansModel.__index = KMeansModel
+
+setmetatable(KMeansModel, MachineLearningBaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
@@ -309,7 +313,7 @@ end
 
 function KMeansModel.new(numberOfClusters, maxNumberOfIterations, learningRate, distanceFunction, targetCost, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest, stopWhenModelParametersDoesNotChange)
 	
-	local NewKMeansModel = {}
+	local NewKMeansModel = MachineLearningBaseModel.new()
 	
 	setmetatable(NewKMeansModel, KMeansModel)
 	
@@ -328,8 +332,6 @@ function KMeansModel.new(numberOfClusters, maxNumberOfIterations, learningRate, 
 	NewKMeansModel.setInitialClustersOnDataPoints = setInitialClustersOnDataPoints or defaultSetInitialClustersOnDataPoints
 	
 	NewKMeansModel.setTheCentroidsDistanceFarthest = setTheCentroidsDistanceFarthest or defaultSetTheCentroidsDistanceFarthest
-	
-	NewKMeansModel.ModelParameters = nil
 	
 	NewKMeansModel.featureMatrix = nil
 	

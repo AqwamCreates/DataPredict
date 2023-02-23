@@ -259,7 +259,7 @@ function ExpectationMaximizationModel:setParameters(numberOfClusters, maxNumberO
 end
 
 
-function ExpectationMaximizationModel:train(featureMatrix, suppressOutput)
+function ExpectationMaximizationModel:train(featureMatrix)
 	
 	local incompletes = {}
 	
@@ -317,7 +317,7 @@ function ExpectationMaximizationModel:train(featureMatrix, suppressOutput)
 		
 		table.insert(costArray, cost)
 		
-		if (not suppressOutput) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. cost) end
+		MachineLearningBaseModel:printOutputCostAndNumberOfIterations(cost, numberOfIterations)
 		
 	until (numberOfIterations == self.maxNumberOfIterations) or (cost <= self.epsilon)
 	

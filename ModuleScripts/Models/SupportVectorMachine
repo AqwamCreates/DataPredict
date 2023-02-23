@@ -6,7 +6,7 @@ SupportVectorMachineModel.__index = SupportVectorMachineModel
 
 setmetatable(SupportVectorMachineModel, MachineLearningBaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
 local defaultMaxNumberOfIterations = 500
 
@@ -90,7 +90,7 @@ local function calculateCost(modelParameters, featureMatrix, labelVector, distan
 
 end
 
-local function gradientDescent(modelParameters, featureMatrix, labelVector, distanceFunction, learningRate, cValue)
+local function gradientDescent(modelParameters, featureMatrix, labelVector, distanceFunction, cValue)
 
 	local numberOfData = #featureMatrix
 
@@ -102,11 +102,9 @@ local function gradientDescent(modelParameters, featureMatrix, labelVector, dist
 
 	local calculatedSumError =  AqwamMatrixLibrary:verticalSum(calculatedError)
 
-	local costFunctionDerivative = AqwamMatrixLibrary:multiply(learningRate, (1/numberOfData), calculatedSumError)
-	
-	modelParameters = AqwamMatrixLibrary:add(modelParameters, costFunctionDerivative)
+	local costFunctionDerivatives = AqwamMatrixLibrary:multiply((1/numberOfData), calculatedSumError)
 
-	return modelParameters
+	return costFunctionDerivatives
 
 end
 
@@ -129,6 +127,8 @@ function SupportVectorMachineModel.new(maxNumberOfIterations, learningRate, cVal
 	NewSupportVectorMachine.validationFeatureMatrix = nil
 
 	NewSupportVectorMachine.validationLabelVector = nil
+	
+	NewSupportVectorMachine.Optimizer = nil
 	
 	return NewSupportVectorMachine
 
@@ -155,6 +155,8 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	local costArray = {}
 
 	local numberOfIterations = 0
+	
+	local costFunctionDerivatives
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 
@@ -172,7 +174,19 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 		numberOfIterations += 1
 		
-		self.ModelParameters = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.distanceFunction, self.learningRate, self.cValue)
+		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.distanceFunction, self.learningRate, self.cValue)
+
+		if (self.Optimizer) then
+
+			costFunctionDerivatives = self.Optimizer:calculate(self.ModelParameters, costFunctionDerivatives, self.learningRate)
+
+		else
+
+			costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
+
+		end
+
+		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, costFunctionDerivatives)
 
 		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.distanceFunction, self.learningRate, self.cValue)
 		
@@ -205,3 +219,4 @@ function SupportVectorMachineModel:predict(featureMatrix)
 end
 
 return SupportVectorMachineModel
+

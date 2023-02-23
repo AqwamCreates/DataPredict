@@ -7,14 +7,14 @@ function MachineLearningBaseModel.new()
 	local NewMachineLearningBaseModel = {}
 	
 	setmetatable(NewMachineLearningBaseModel, MachineLearningBaseModel)
+	
+	NewMachineLearningBaseModel.PrintOutput = true
 
 	NewMachineLearningBaseModel.ModelParameters = nil
 	
 	NewMachineLearningBaseModel.LastPredictedOutput = nil
 	
 	NewMachineLearningBaseModel.LastCalculations = nil
-	
-	NewMachineLearningBaseModel.PrintOutput = true
 
 	return NewMachineLearningBaseModel
 	
@@ -58,17 +58,21 @@ function MachineLearningBaseModel:clearLastPredictedOutputAndCalculations()
 	
 end
 
+function MachineLearningBaseModel:printOutputCostAndNumberOfIterations(cost, numberOfIteration)
+	
+	print(self.PrintOutput)
+
+	if (self.PrintOutput) then print("Iteration: " .. numberOfIteration .. "\t\tCost: " .. cost) end
+
+end
+
+
 function MachineLearningBaseModel:setPrintOutput(option)
 	
-	self.PrintOutput = option or self.ModelParameters
+	self.PrintOutput = option or self.PrintOutput
 	
 end
 
-function MachineLearningBaseModel:printOutputCostAndNumberOfIterations(cost, numberOfIteration)
-	
-	if (self.PrintOutput) then print("Iteration: " .. numberOfIteration .. "\t\tCost: " .. cost) end
-	
-end
 
 function MachineLearningBaseModel:Destroy()
 	

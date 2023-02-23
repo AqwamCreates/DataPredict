@@ -13,6 +13,8 @@ function MachineLearningBaseModel.new()
 	NewMachineLearningBaseModel.LastPredictedOutput = nil
 	
 	NewMachineLearningBaseModel.LastCalculations = nil
+	
+	NewMachineLearningBaseModel.PrintOutput = true
 
 	return NewMachineLearningBaseModel
 	
@@ -53,6 +55,18 @@ function MachineLearningBaseModel:clearLastPredictedOutputAndCalculations()
 	MachineLearningBaseModel:clearLastCalculations()
 	
 	MachineLearningBaseModel:clearLastPredictedOutput()
+	
+end
+
+function MachineLearningBaseModel:setPrintOutput(option)
+	
+	self.PrintOutput = option
+	
+end
+
+function MachineLearningBaseModel:printOutputCostAndNumberOfIterations(cost, numberOfIteration)
+	
+	if (self.PrintOutput) then print("Iteration: " .. numberOfIteration .. "\t\tCost: " .. cost) end
 	
 end
 

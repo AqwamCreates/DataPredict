@@ -127,7 +127,7 @@ function LinearRegressionModel:setParameters(maxNumberOfIterations, learningRate
 end
 
 
-function LinearRegressionModel:train(featureMatrix, labelVector, suppressOutput)
+function LinearRegressionModel:train(featureMatrix, labelVector)
 
 	local cost
 

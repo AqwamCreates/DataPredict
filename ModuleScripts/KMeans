@@ -349,29 +349,11 @@ function KMeansModel:setParameters(numberOfClusters, maxNumberOfIterations, lear
 
 	self.learningRate = learningRate or self.learningRate
 
-	self.stopWhenModelParametersDoesNotChange = stopWhenModelParametersDoesNotChange or self.stopWhenModelParametersDoesNotChange
+	self.stopWhenModelParametersDoesNotChange =  MachineLearningBaseModel:GetBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
 
-	self.setInitialClustersOnDataPoints = setInitialClustersOnDataPoints or self.setInitialClustersOnDataPoints
+	self.setInitialClustersOnDataPoints =  MachineLearningBaseModel:GetBooleanOrDefaultOption(setInitialClustersOnDataPoints, self.setInitialClustersOnDataPoints)
 
-	self.setTheCentroidsDistanceFarthest = setTheCentroidsDistanceFarthest or self.setTheCentroidsDistanceFarthest
-
-	if (type(stopWhenModelParametersDoesNotChange) ~= "boolean") then
-
-		self.stopWhenModelParametersDoesNotChange = defaultStopWhenModelParametersDoesNotChange
-
-	end
-
-	if (type(setInitialClustersOnDataPoints) ~= "boolean") then
-
-		self.setInitialClustersOnDataPoints = defaultSetInitialClustersOnDataPoints
-
-	end
-
-	if (type(setTheCentroidsDistanceFarthest) ~= "boolean") then
-
-		self.setTheCentroidsDistanceFarthest = defaultSetTheCentroidsDistanceFarthest
-
-	end
+	self.setTheCentroidsDistanceFarthest =  MachineLearningBaseModel:GetBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
 	
 end
 

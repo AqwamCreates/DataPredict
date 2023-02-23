@@ -228,7 +228,7 @@ local function calculateIncompleteLogLikelihood(featureMatrix, meanMatrix, proba
 	
 end
 
-function ExpectationMaximizationModel.new(numberOfClusters, maxNumberOfIterations, epsilon)
+function ExpectationMaximizationModel.new(maxNumberOfIterations, epsilon, numberOfClusters)
 	
 	local NewExpectationMaximizationModel = MachineLearningBaseModel.new()
 	
@@ -248,7 +248,7 @@ function ExpectationMaximizationModel.new(numberOfClusters, maxNumberOfIteration
 	
 end
 
-function ExpectationMaximizationModel:setParameters(numberOfClusters, maxNumberOfIterations, epsilon)
+function ExpectationMaximizationModel:setParameters(maxNumberOfIterations, epsilon, numberOfClusters)
 
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 

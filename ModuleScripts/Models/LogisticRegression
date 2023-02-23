@@ -6,7 +6,7 @@ LogisticRegressionModel.__index = LogisticRegressionModel
 
 setmetatable(LogisticRegressionModel, MachineLearningBaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
 local defaultMaxNumberOfIterations = 500
 
@@ -82,7 +82,7 @@ local function calculateCost(modelParameters, featureMatrix, labelVector, sigmoi
 	
 end
 
-local function gradientDescent(modelParameters, featureMatrix, labelVector, sigmoidFunction, learningRate, lambda)
+local function gradientDescent(modelParameters, featureMatrix, labelVector, sigmoidFunction, lambda)
 	
 	local numberOfData = #featureMatrix
 
@@ -92,19 +92,9 @@ local function gradientDescent(modelParameters, featureMatrix, labelVector, sigm
 	
 	local calculatedErrorWithFeatureMatrix = AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(featureMatrix), calculatedError)
 
-	local costFunctionDerivative = AqwamMatrixLibrary:multiply(learningRate, (1/numberOfData) ,  calculatedErrorWithFeatureMatrix)
+	local costFunctionDerivatives = AqwamMatrixLibrary:multiply((1/numberOfData),  calculatedErrorWithFeatureMatrix)
 	
-	modelParameters = AqwamMatrixLibrary:add(modelParameters, costFunctionDerivative)
-	
-	if (lambda ~= 0) then
-
-		local regularizationParameters = AqwamMatrixLibrary:multiply((lambda/numberOfData), modelParameters)
-
-		modelParameters = AqwamMatrixLibrary:add(modelParameters, regularizationParameters)
-
-	end
-	
-	return modelParameters
+	return costFunctionDerivatives
 	
 end
 
@@ -128,6 +118,8 @@ function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, lambda
 
 	NewLogisticRegressionModel.validationLabelVector = nil
 	
+	NewLogisticRegressionModel.Optimizer = nil
+	
 	return NewLogisticRegressionModel
 	
 end
@@ -146,6 +138,12 @@ function LogisticRegressionModel:setParameters(maxNumberOfIterations, learningRa
 
 end
 
+function LogisticRegressionModel:setOptimizer(Optimizer)
+
+	self.Optimizer = Optimizer
+
+end
+
 function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 	local cost
@@ -153,6 +151,12 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 	local costArray = {}
 	
 	local numberOfIterations = 0
+	
+	local costFunctionDerivatives
+	
+	local regularizationParameters
+	
+	local numberOfData = #featureMatrix[1]
 	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 
@@ -171,6 +175,22 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		numberOfIterations += 1
 		
 		self.ModelParameters = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction, self.learningRate, self.lambda)
+		
+		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.lossFunction, self.learningRate, self.lambda)
+
+		if (self.Optimizer) then
+
+			costFunctionDerivatives = self.Optimizer:calculate(self.ModelParameters, costFunctionDerivatives, self.learningRate)
+
+		else
+
+			costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
+
+		end
+		
+		regularizationParameters = AqwamMatrixLibrary:multiply((self.lambda/numberOfData), self.ModelParameters)
+		
+		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, costFunctionDerivatives, regularizationParameters)
 		
 		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction, self.lambda)
 		

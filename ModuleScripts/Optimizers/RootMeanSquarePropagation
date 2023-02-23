@@ -40,7 +40,7 @@ function RootMeanSquarePropagationOptimizer:calculate(ModelParameters, ModelPara
 	
 	if (self.PreviousVelocityMatrix == nil) then 
 		
-		self.PreviousVelocityMatrix = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1], 1)
+		self.PreviousVelocityMatrix = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
 		
 	end
 	
@@ -67,3 +67,4 @@ function RootMeanSquarePropagationOptimizer:calculate(ModelParameters, ModelPara
 end
 
 return RootMeanSquarePropagationOptimizer
+

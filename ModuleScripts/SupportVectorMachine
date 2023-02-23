@@ -1,6 +1,10 @@
+MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
+
 SupportVectorMachineModel = {}
 
 SupportVectorMachineModel.__index = SupportVectorMachineModel
+
+setmetatable(SupportVectorMachineModel, MachineLearningBaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
@@ -108,7 +112,7 @@ end
 
 function SupportVectorMachineModel.new(maxNumberOfIterations, learningRate, cValue, distanceFunction, targetCost)
 	
-	local NewSupportVectorMachine = {}
+	local NewSupportVectorMachine = MachineLearningBaseModel.new()
 	
 	setmetatable(NewSupportVectorMachine, SupportVectorMachineModel)
 	
@@ -121,8 +125,6 @@ function SupportVectorMachineModel.new(maxNumberOfIterations, learningRate, cVal
 	NewSupportVectorMachine.distanceFunction = distanceFunction or defaultDistanceFunction
 
 	NewSupportVectorMachine.targetCost = targetCost or defaultTargetCost
-
-	NewSupportVectorMachine.ModelParameters = nil
 
 	NewSupportVectorMachine.validationFeatureMatrix = nil
 
@@ -203,3 +205,4 @@ function SupportVectorMachineModel:predict(featureMatrix)
 end
 
 return SupportVectorMachineModel
+

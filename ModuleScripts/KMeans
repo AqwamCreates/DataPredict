@@ -451,7 +451,7 @@ function KMeansModel:train(featureMatrix)
 		
 		table.insert(costArray, cost)
 		
-		--MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIterations)
+		MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIterations)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 	

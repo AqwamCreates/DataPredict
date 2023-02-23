@@ -28,7 +28,7 @@ end
 
 function MachineLearningBaseModel:setModelParameters(ModelParameters)
 	
-	self.ModelParameters = ModelParameters
+	self.ModelParameters = ModelParameters or self.ModelParameters
 	
 end
 
@@ -60,7 +60,7 @@ end
 
 function MachineLearningBaseModel:setPrintOutput(option)
 	
-	self.PrintOutput = option
+	self.PrintOutput = option or self.ModelParameters
 	
 end
 

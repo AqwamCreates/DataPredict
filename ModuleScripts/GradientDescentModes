@@ -60,13 +60,13 @@ local function breakFeatureMatrixToBatches(batchSize, featureMatrix, labelVector
 	
 end
 
-function GradientDescentModes:startBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector)
+local function startBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector)
 	
 	MachineLearningModel:train(featureMatrix, labelVector)
 	
 end
 
-function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector, batchSize)
+local function startMiniBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector, batchSize)
 	
 	local featureMatrixBatchesTable, labelVectorBatchesTable = breakFeatureMatrixToBatches(batchSize, featureMatrix, labelVector)
 	
@@ -92,10 +92,46 @@ function GradientDescentModes:startMiniBatchGradientDescent(MachineLearningModel
 
 end
 
-function GradientDescentModes:startStochasticGradientDescent(MachineLearningModel, featureMatrix, labelVector)
+local function startStochasticGradientDescent(MachineLearningModel, featureMatrix, labelVector)
+	
+	local featureVector
+	
+	local label
+	
+	for row = 1, #featureMatrix, 1 do
+		
+		local featureVector = {featureMatrix[row]}
+		
+		local label = {labelVector[row]}
+		
+		MachineLearningModel:train(featureVector, label)
+		
+	end
 
-	MachineLearningModel:train(featureMatrix, labelVector)
+end
 
+function GradientDescentModes:startGradientDescent(MachineLearningModel, gradientDescentAlgorithmType, featureMatrix, labelVector, batchSize)
+	
+	if (gradientDescentAlgorithmType == "Batch") then
+		
+		startBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector)
+		
+	elseif (GradientDescentModes == "Minibatch") then
+		
+		batchSize = batchSize or 2
+		
+		startMiniBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector, batchSize)
+		
+	elseif (gradientDescentAlgorithmType == "") then
+		
+		startStochasticGradientDescent(MachineLearningModel, featureMatrix, labelVector)
+		
+	else
+		
+		error("The Selected Gradient Descent Algorithm Type Cannot Be Found!")
+		
+	end
+	
 end
 
 return GradientDescentModes

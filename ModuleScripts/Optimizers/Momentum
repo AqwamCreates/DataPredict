@@ -4,13 +4,15 @@ MomentumOptimizer.__index = MomentumOptimizer
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
+local defaultDecayRate = 0.1
+
 function MomentumOptimizer.new(DecayRate)
 	
 	local NewMomentumOptimizer = {}
 	
 	setmetatable(NewMomentumOptimizer, MomentumOptimizer)
 	
-	NewMomentumOptimizer.DecayRate = DecayRate
+	NewMomentumOptimizer.DecayRate = DecayRate or defaultDecayRate
 	
 	NewMomentumOptimizer.PreviousDeltaMatrix = nil
 	
@@ -43,3 +45,4 @@ function MomentumOptimizer:calculate(learningRate, ModelParametersDerivatives)
 end
 
 return MomentumOptimizer
+

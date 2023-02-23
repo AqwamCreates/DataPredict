@@ -4,17 +4,17 @@ MachineLearningBaseModel.__index = MachineLearningBaseModel
 
 function MachineLearningBaseModel.new()
 	
-	local newMachineLearningBaseModel = {}
+	local NewMachineLearningBaseModel = {}
 	
-	setmetatable(newMachineLearningBaseModel, MachineLearningBaseModel)
+	setmetatable(NewMachineLearningBaseModel, MachineLearningBaseModel)
 
-	newMachineLearningBaseModel.ModelParameters = nil
+	NewMachineLearningBaseModel.ModelParameters = nil
 	
-	newMachineLearningBaseModel.LastPredictedOutput = nil
+	NewMachineLearningBaseModel.LastPredictedOutput = nil
 	
-	newMachineLearningBaseModel.LastCalculations = nil
+	NewMachineLearningBaseModel.LastCalculations = nil
 
-	return newMachineLearningBaseModel
+	return NewMachineLearningBaseModel
 	
 end
 

@@ -50,6 +50,9 @@ local GradientDescendModes = require(Others.GradientDescentModes)
 local Optimizers = script.Optimizers
 
 local RootMeanSquarePropagation = require(Optimizers.RootMeanSquarePropagation)
+local Momentum = require(Optimizers.Momentum)
+local AdaptiveGradient = require(Optimizers.AdaptiveGradient)
+local AdaptiveMomentEstimation = require(Optimizers.AdaptiveMomentEstimation)
 
 local ModelCheckingDictionary = {
 
@@ -71,7 +74,9 @@ local ModelsDictionary = {
 
 local OptimizersDictionary = {
 	
-	RootMeanSquarePropagation = RootMeanSquarePropagation
+	RootMeanSquarePropagation = RootMeanSquarePropagation,
+	Momentum = Momentum,
+	AdaptiveGradient = AdaptiveGradient
 	
 }
 

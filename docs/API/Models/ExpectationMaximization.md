@@ -81,6 +81,6 @@ NaiveBayes:predict(featureMatrix: Matrix): integer, number
 
 * [MachineLearningBaseModel](MachineLearningBaseModel.md)
 
-## Notes:
+## Notes
 
 * Untested. May give wrong model. Use at your own risk. (I am new at understanding this model)

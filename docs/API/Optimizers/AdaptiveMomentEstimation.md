@@ -1,4 +1,4 @@
-# API Reference - Optimizers - AdaptiveGradient (Adagrad)
+# API Reference - Optimizers - AdaptiveMomentEstimation (Adam)
 
 ## Constructors
 
@@ -7,7 +7,7 @@
 Creates a new optimizer object.
 
 ```
-AdaptiveGradient.new(Beta1: number, Beta2: number)
+AdaptiveMomentEstimation.new(Beta1: number, Beta2: number)
 ```
 
 ## Functions
@@ -15,12 +15,12 @@ AdaptiveGradient.new(Beta1: number, Beta2: number)
 ### setBeta1()
 
 ```
-AdaptiveGradient:setBeta1(Beta1: number)
+AdaptiveMomentEstimation:setBeta1(Beta1: number)
 ```
 ### setBeta2()
 
 ```
-AdaptiveGradient:setBeta2(Beta2: number)
+AdaptiveMomentEstimation:setBeta2(Beta2: number)
 ```
 
 ### reset()
@@ -28,7 +28,7 @@ AdaptiveGradient:setBeta2(Beta2: number)
 Reset optimizer's stored values (excluding the parameters)
 
 ```
-AdaptiveGradient:reset()
+AdaptiveMomentEstimation:reset()
 ```
 
 

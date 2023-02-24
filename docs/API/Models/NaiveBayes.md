@@ -1,5 +1,7 @@
 # API Reference - Model - NaiveBayes
 
+NaiveBayes is an supervised machine learning model that predicts which classes that the input belongs to using probability.
+
 ## Constructors
 
 ### new()

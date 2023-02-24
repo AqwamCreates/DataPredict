@@ -1,4 +1,4 @@
-# API Reference - Model - KMeans
+# API Reference - Models - KMeans
 
 ## Constructors
 

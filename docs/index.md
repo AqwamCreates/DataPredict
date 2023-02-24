@@ -8,7 +8,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 To know what this library is all about from scratch, let's have a look at the quick introduction [here](QuickIntroduction.md).
 
-## Overview
+## Tutorials
 
 [Introduction](Overview/Introduction.md)
 

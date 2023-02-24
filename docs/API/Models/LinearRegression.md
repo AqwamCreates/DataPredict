@@ -14,7 +14,7 @@ LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lambd
 
 maxNumberOfIterations = How many times should the model needed to be trained.
 
-learningRate = The speed at which the model learns. Recommended that the value is set between (0 - 1).
+learningRate = The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 lambda = Reqularisation factor
 
@@ -34,7 +34,7 @@ LinearRegression:setParameters(maxNumberOfIterations: integer, learningRate: num
 
 maxNumberOfIterations = How many times should the model needed to be trained.
 
-learningRate = The speed at which the model learns. Recommended that the value is set between (0 - 1).
+learningRate = The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 lambda = Reqularisation factor
 
@@ -52,6 +52,8 @@ Set optimizer for the model by inputting the optimizer object.
 LinearRegression:setOptimizer(Optimizer: OptimizerObject)
 ```
 
+Optimer: The optimizer to be used.
+
 ### train()
 
 Train the model.
@@ -62,9 +64,9 @@ LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 
 #### Parameters:
 
-featureMatrix: Matrix containing all data
+featureMatrix: Matrix containing all data.
 
-labelVector: A (n x 1) matrix containing values related to featureMatrix
+labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
 ### predict()
 

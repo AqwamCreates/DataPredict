@@ -60,7 +60,6 @@ Train the model.
 
 ```
 LogisticRegression:train(featureMatrix: Matrix, labelVector: Matrix)
-
 ```
 #### Parameters:
 

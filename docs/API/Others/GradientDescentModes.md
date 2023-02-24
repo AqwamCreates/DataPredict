@@ -7,7 +7,7 @@
 Runs the machine/deep learning model specific gradient descent mode.
 
 ```
-GradientDescentMode:startGradientDescent(Model: MachineOrDeepLearningModel, Mode: string, featureMatrix: Matrix, labelVector: Matrix, batchSize: integer)
+GradientDescentMode:startGradientDescent(Model: ModelObject, Mode: string, featureMatrix: Matrix, labelVector: Matrix, batchSize: integer)
 ```
 
 #### Parameters:

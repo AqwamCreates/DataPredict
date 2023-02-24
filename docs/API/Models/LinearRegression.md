@@ -61,7 +61,7 @@ Optimer: The optimizer to be used.
 Train the model.
 
 ```
-costArray = LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
+LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 
 #### Parameters:
@@ -72,7 +72,7 @@ labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
 #### Returns:
 
-costArray = An array containing cost values
+costArray: An array containing cost values.
 
 ### predict()
 

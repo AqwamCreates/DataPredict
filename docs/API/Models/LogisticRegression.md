@@ -12,15 +12,15 @@ LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, lam
 
 #### Parameters:
 
-maxNumberOfIterations = How many times should the model needed to be trained.
+maxNumberOfIterations: How many times should the model needed to be trained.
 
-learningRate = The speed at which the model learns. Recommended that the value is set between (0 to 1).
+learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-lambda = Reqularisation factor
+lambda: Reqularisation factor
 
-sigmoidFunction = The function to calculate the cost and cost derivaties of each training. Available options are "L1" and "L2".
+sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "L1" and "L2".
 
-targetCost = The cost at which the model stops training.
+targetCost: The cost at which the model stops training.
 
 #### Returns:
 

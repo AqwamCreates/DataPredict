@@ -44,7 +44,7 @@ LogisticRegression:setParameters(maxNumberOfIterations: integer, learningRate: n
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* lambda: Reqularisation factor
+* lambda: Regularisation factor
 
 * sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "L1" and "L2".
 

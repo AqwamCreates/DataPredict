@@ -12,23 +12,25 @@ LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lambd
 
 #### Parameters:
 
-maxNumberOfIterations: How many times should the model needed to be trained.
+* maxNumberOfIterations: How many times should the model needed to be trained.
 
-learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-lambda: Reqularisation factor
+* lambda: Reqularisation factor
 
-lossFunction: The function to calculate the cost of each training. Available options are "L1" and "L2".
+* lossFunction: The function to calculate the cost of each training. Available options are "L1" and "L2".
 
-targetCost: The cost at which the model stops training.
+* targetCost: The cost at which the model stops training.
 
 #### Returns:
 
-ModelObject: The generated model object.
+* ModelObject: The generated model object.
 
 ## Functions
 
 ### setParameters()
+
+Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
 
 ```
 LinearRegression:setParameters(maxNumberOfIterations: integer, learningRate: number, lambda: number, lossFunction: string, targetCost: number)
@@ -36,17 +38,15 @@ LinearRegression:setParameters(maxNumberOfIterations: integer, learningRate: num
 
 #### Parameters:
 
-maxNumberOfIterations = How many times should the model needed to be trained.
+* maxNumberOfIterations: How many times should the model needed to be trained.
 
-learningRate = The speed at which the model learns. Recommended that the value is set between (0 to 1).
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-lambda = Reqularisation factor
+* lambda: Reqularisation factor
 
-lossFunction = The function to calculate the cost of each training. Available options are "L1" and "L2".
+* lossFunction: The function to calculate the cost of each training. Available options are "L1" and "L2".
 
-targetCost = The cost at which the model stops training.
-
-Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
+* targetCost: The cost at which the model stops training.
 
 ### setOptimizer()
 
@@ -58,7 +58,7 @@ LinearRegression:setOptimizer(Optimizer: OptimizerObject)
 
 #### Parameters:
 
-Optimizer: The optimizer to be used.
+* Optimizer: The optimizer to be used.
 
 ### train()
 
@@ -70,13 +70,13 @@ LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 
 #### Parameters:
 
-featureMatrix: Matrix containing all data.
+* featureMatrix: Matrix containing all data.
 
-labelVector: A (n x 1) matrix containing values related to featureMatrix.
+* labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
 #### Returns:
 
-costArray: An array containing cost values.
+* costArray: An array containing cost values.
 
 ### predict()
 
@@ -88,8 +88,8 @@ LinearRegression:predict(featureMatrix: Matrix): number
 
 #### Parameters:
 
-featureMatrix: Matrix containing all data.
+* featureMatrix: Matrix containing data.
 
 #### Returns:
 
-predictedValue: A value that is predicted by the model.
+* predictedValue: A value that is predicted by the model.

@@ -28,7 +28,7 @@ AdaptiveMomentEstimation:setBeta2(Beta2: number)
 
 ### reset()
 
-Reset optimizer's stored values (excluding the parameters)
+Reset optimizer's stored values (excluding the parameters).
 
 ```
 AdaptiveMomentEstimation:reset()

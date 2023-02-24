@@ -93,6 +93,8 @@ Sometimes, our models can run into trouble due to a number of reasons. It may be
 
 It means that during training, the calculations may have resulted in either arithmetic underflow or overflow. To fix this, limit the max number of iterations or set a target cost. This is a hardware limitation issue.
 
+This case can also happen if any of the internal model components are calculating numbers with not a number. This issue can propagate to final output without raising any suspicion. If the "nan" value shows up after the first of second iterations, then you need to contact me regarding this issue.
+
 ## Case 2 - Cost Printing Out "inf"
 
 It means that during training, the model is no longer "learning" but does the complete opposite. When attempting to predict using this model, it is highly likely that you will get wrong prediction. To fix this, use an optimizer or adjust the parameters. This is a parameter issue.

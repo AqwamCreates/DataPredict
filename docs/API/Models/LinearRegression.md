@@ -50,7 +50,7 @@ LinearRegression:setParameters(maxNumberOfIterations: integer, learningRate: num
 
 ### setOptimizer()
 
-Set optimizer for the model by inputting the optimizer object
+Set optimizer for the model by inputting the optimizer object.
 
 ```
 LinearRegression:setOptimizer(Optimizer: OptimizerObject)

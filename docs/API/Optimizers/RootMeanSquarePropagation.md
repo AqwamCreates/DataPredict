@@ -30,7 +30,7 @@ RootMeanSquarePropagation:setEpsilon(Epsilon: Number)
 
 ### reset()
 
-Reset optimizer's stored values (excluding the parameters)
+Reset optimizer's stored values (excluding the parameters).
 
 ```
 RootMeanSquarePropagation:reset()

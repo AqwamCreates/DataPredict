@@ -1,6 +1,6 @@
-## Quick Introduction
+# Quick Introduction
 
-### What is machine learning?
+## What is machine learning?
 
 Machine learning is a way for computers to predict information based on the data we given to them. Machine learning can do three main tasks: Regression, Classification and Clustering.
 
@@ -12,11 +12,11 @@ Machine learning is a way for computers to predict information based on the data
 
 * Clustering: Generates centroids (center of data) based on the given data and predict which centroids that a data belongs to.
 
-### What is deep learning?
+## What is deep learning?
 
 It is a more advanced version of machine learning. The training techniques are significantly improved and models are more complex compared to machine learning.
 
-### Use Cases:
+## Use Cases:
 
 LinearRegression:
 

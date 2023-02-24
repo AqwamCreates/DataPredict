@@ -6,7 +6,7 @@ The base model for all machine and deep learning models.
 
 ### new()
 
-Creates a new machine learning base model
+Creates a new machine learning base model.
 
 ```
 MachineLearningBaseModel.new(): BaseModelObject
@@ -79,6 +79,6 @@ MachineLearningBaseModel:setPrintOutput(option: boolean)
 
 #### Parameters:
 
-* option: A boolean value that specifies if the output is printed
+* option: A boolean value that specifies if the output is printed.
 
 

@@ -1,5 +1,7 @@
 # API Reference - Models - KMeans
 
+KMeans is an unsupervised machine learning model that predicts which cluster that the input belongs to using distance.
+
 ## Constructors
 
 ### new()

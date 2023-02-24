@@ -1,4 +1,4 @@
-# API Reference - Model - KMeans
+# API Reference - Model - ExpectationMaximization
 
 ## Constructors
 
@@ -17,7 +17,7 @@ Set model's parameters. When any of the arguments are not given, previous argume
 Set optimizer for the model by inputting the optimizer object.
 
 ```
-KMeans:setOptimizer(Optimizer: OptimizerObject)
+ExpectationMaximization:setOptimizer(Optimizer: OptimizerObject)
 ```
 
 ### train()
@@ -25,7 +25,7 @@ KMeans:setOptimizer(Optimizer: OptimizerObject)
 Train the model.
 
 ```
-KMeans:train(featureMatrix: Matrix, labelVector: Matrix)
+ExpectationMaximization:train(featureMatrix: Matrix, labelVector: Matrix)
 ```
 
 ### predict()
@@ -33,5 +33,5 @@ KMeans:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-KMeans:predict(featureMatrix: Matrix): number
+ExpectationMaximization:predict(featureMatrix: Matrix): number
 ```

@@ -7,8 +7,12 @@
 Creates a new optimizer object.
 
 ```
-Momentum.new(DecayRate: Number)
+Momentum.new(DecayRate: Number): OptimizerObject
 ```
+
+#### Returns:
+
+OptimizerObject: The generated optimier object
 
 ## Functions
 

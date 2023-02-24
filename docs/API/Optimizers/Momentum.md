@@ -24,7 +24,7 @@ Momentum:setDecayRate(DecayRate: Number)
 
 ### reset()
 
-Reset optimizer's stored values (excluding the parameters)
+Reset optimizer's stored values (excluding the parameters).
 
 ```
 Momentum:reset()

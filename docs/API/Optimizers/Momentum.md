@@ -4,11 +4,11 @@
 
 ### new()
 
+Creates a new optimizer object.
+
 ```
 Momentum.new(DecayRate: Number)
 ```
-
-Creates a new optimizer object.
 
 ## Functions
 

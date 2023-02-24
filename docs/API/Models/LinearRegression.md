@@ -16,10 +16,24 @@ Set model's parameters. When any of the arguments are not given, previous argume
 
 Set optimizer for the model by inputting the optimizer object.
 
+```
+LinearRegression:setOptimizer(Optimizer: OptimizerObject)
+```
+
 ### train()
 
 Train the model.
 
+```
+LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
+```
+
 ### predict()
 
 Predict the value for a given data.
+
+```
+LinearRegression:predict(featureMatrix: Matrix): number
+```
+
+

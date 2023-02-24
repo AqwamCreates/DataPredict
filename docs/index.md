@@ -23,3 +23,9 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 [Optimizers](API/Optimizers.md)
 
 [Others](API/Others.md)
+
+## Links
+
+[Repository](https://github.com/AqwamCreates/Aqwam-Roblox-Machine-And-Deep-Learning-Library)
+
+[Roblox ModuleScript](https://create.roblox.com/marketplace/asset/12591886004/Aqwams-Roblox-Machine-And-Deep-Learning-Library)

@@ -110,8 +110,8 @@ local testData = {
 
 Since you read the whole introduction, I recommend you to have a look at these to further your knowledge.
 
-* [Using Model Checker](../Introduction/UsingModelChecker.md)
+* [Using Model Checker](UsingModelChecker.md)
 
-* [Using Optimizers](../Introduction/UsingOptimizers.md)
+* [Using Optimizers](UsingOptimizers.md)
 
-* [Using Gradient Descent Modes](../Introduction/UsingGradientDescentModes.md)
+* [Using Gradient Descent Modes](UsingGradientDescentModes.md)

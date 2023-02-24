@@ -12,19 +12,19 @@ LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, lam
 
 #### Parameters:
 
-maxNumberOfIterations: How many times should the model needed to be trained.
+* maxNumberOfIterations: How many times should the model needed to be trained.
 
-learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-lambda: Reqularisation factor
+* lambda: Reqularisation factor
 
-sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "L1" and "L2".
+* sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "L1" and "L2".
 
-targetCost: The cost at which the model stops training.
+* targetCost: The cost at which the model stops training.
 
 #### Returns:
 
-ModelObject: The generated model object.
+* ModelObject: The generated model object.
 
 ## Functions
 
@@ -38,15 +38,15 @@ LogisticRegression:setParameters(maxNumberOfIterations: integer, learningRate: n
 
 #### Parameters:
 
-maxNumberOfIterations = How many times should the model needed to be trained.
+* maxNumberOfIterations: How many times should the model needed to be trained.
 
-learningRate = The speed at which the model learns. Recommended that the value is set between (0 to 1).
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-lambda = Reqularisation factor
+* lambda: Reqularisation factor
 
-sigmoidFunction = The function to calculate the cost and cost derivaties of each training. Available options are "L1" and "L2".
+* sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "L1" and "L2".
 
-targetCost = The cost at which the model stops training.
+* targetCost: The cost at which the model stops training.
 
 ### setOptimizer()
 
@@ -56,7 +56,9 @@ Set optimizer for the model by inputting the optimizer object.
 LogisticRegression:setOptimizer(Optimizer: OptimizerObject)
 ```
 
-Optimizer: The optimizer to be used.
+#### Parameters:
+
+* Optimizer: The optimizer to be used.
 
 ### train()
 
@@ -67,17 +69,17 @@ LogisticRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 #### Parameters:
 
-featureMatrix: Matrix containing all data.
+* featureMatrix: Matrix containing all data.
 
-labelVector: A (n x 1) matrix containing values related to featureMatrix.
+* labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
 #### Returns:
 
-costArray: An array containing cost values.
+* costArray: An array containing cost values.
 
 ### predict()
 
-Predict the value for a given data.
+* Predict the value for a given data.
 
 ```
 LogisticRegression:predict(featureMatrix: Matrix): number
@@ -85,8 +87,8 @@ LogisticRegression:predict(featureMatrix: Matrix): number
 
 #### Parameters:
 
-featureMatrix: Matrix containing all data.
+* featureMatrix: Matrix containing all data.
 
 #### Returns:
 
-predictedValue: A value that is predicted by the model
+* predictedValue: A value that is predicted by the model

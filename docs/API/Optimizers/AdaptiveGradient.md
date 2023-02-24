@@ -11,7 +11,7 @@ AdaptiveGradient.new(): OptimizerObject
 ```
 #### Returns:
 
-OptimizerObject: The generated optimizer object.
+* OptimizerObject: The generated optimizer object.
 
 ## Functions
 

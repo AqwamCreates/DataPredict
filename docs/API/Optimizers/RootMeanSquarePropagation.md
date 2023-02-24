@@ -12,7 +12,7 @@ RootMeanSquarePropagation.new(Beta: Number, Epsilon: Number): OptimizerObject
 
 #### Returns:
 
-OptimizerObject: The generated optimizer object.
+* OptimizerObject: The generated optimizer object.
 
 ## Functions
 

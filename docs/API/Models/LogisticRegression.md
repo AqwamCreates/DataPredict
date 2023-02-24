@@ -93,7 +93,7 @@ LogisticRegression:predict(featureMatrix: Matrix): number
 
 #### Returns:
 
-* predictedValue: A value that is predicted by the model
+* predictedValue: A value that is predicted by the model.
 
 ## Inherited From
 

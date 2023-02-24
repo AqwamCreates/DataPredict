@@ -12,7 +12,7 @@ Create new model object. If any of the arguments are not given, default argument
 NaiveBayes.new(): ModelObject
 ```
 
-Returns:
+#### Returns:
 
 * Model:  The generated model object.
 

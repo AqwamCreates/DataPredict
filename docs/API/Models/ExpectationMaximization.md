@@ -9,7 +9,7 @@ ExpectationMaximization is an unsupervised machine learning model that predicts 
 Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-NaiveBayes.new(maxNumberOfIterations: integer, epsilon: number, numberOfClusters: integer): ModelObject
+ExpectationMaximization.new(maxNumberOfIterations: integer, epsilon: number, numberOfClusters: integer): ModelObject
 ```
 #### Parameters
 
@@ -30,7 +30,7 @@ NaiveBayes.new(maxNumberOfIterations: integer, epsilon: number, numberOfClusters
 Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
 
 ```
-NaiveBayes:setParameters(maxNumberOfIterations: integer, epsilon: number, numberOfClusters: integer)
+ExpectationMaximization:setParameters(maxNumberOfIterations: integer, epsilon: number, numberOfClusters: integer)
 ```
 
 #### Parameters
@@ -46,7 +46,7 @@ NaiveBayes:setParameters(maxNumberOfIterations: integer, epsilon: number, number
 Train the model.
 
 ```
-NaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
+ExpectationMaximization:train(featureMatrix: Matrix, labelVector: Matrix)
 ```
 
 #### Parameters:
@@ -64,7 +64,7 @@ NaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-NaiveBayes:predict(featureMatrix: Matrix): integer, number
+ExpectationMaximization:predict(featureMatrix: Matrix): integer, number
 ```
 
 #### Parameters:

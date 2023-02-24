@@ -29,3 +29,5 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 [Repository](https://github.com/AqwamCreates/Aqwam-Roblox-Machine-And-Deep-Learning-Library)
 
 [Roblox ModuleScript](https://create.roblox.com/marketplace/asset/12591886004/Aqwams-Roblox-Machine-And-Deep-Learning-Library)
+
+[Aqwam's Roblox Matrix Library](https://www.roblox.com/library/12256162800/Aqwams-Roblox-Matrix-Library)

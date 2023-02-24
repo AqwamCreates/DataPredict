@@ -11,7 +11,7 @@ AdaptiveMomentEstimation.new(Beta1: number, Beta2: number): OptimizerObject
 ```
 #### Returns:
 
-OptimizerObject: The generated optimizer object.
+* OptimizerObject: The generated optimizer object.
 
 ## Functions
 

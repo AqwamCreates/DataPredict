@@ -38,4 +38,10 @@ function AdaptiveGradientOptimizer:calculate(ModelParametersDerivatives)
 	
 end
 
+function AdaptiveGradientOptimizer:reset()
+	
+	self.PreviousSumOfGradientSquaredMatrix = nil
+	
+end
+
 return AdaptiveGradientOptimizer

@@ -26,7 +26,7 @@ Although the new() can take in a number of arguments, we will use the default va
 
 To train our model, we need to supply two things: featureMatrix and labelVector. For the feature matrix, the rows are the individual data and the columns are the features for that particular data. For the labelVector, the rows are the values that have certain relationship to that individual data.
 
-I will give you the codes for the featureMatrix and the labelVector for you to practice.
+I will give you the codes for the featureMatrix and the labelVector for you to practice. You can see that if the data contains 0 or greater, it will result to 1. Otherise, the value is 0.
 
 ```
 local featureMatrix = {
@@ -86,4 +86,30 @@ It means that during training, the calculations may have resulted in either arit
 
 ## Case 2 - Cost Printing Out "inf"
 
-It means that during training, the model is no longer "learning" but does the complete opposite. When attempting to predict using this model, it is highly likely that you will get wrong prediction. To fix this, use an optimizer or adjust the parameters. This is a parameter issue. 
+It means that during training, the model is no longer "learning" but does the complete opposite. When attempting to predict using this model, it is highly likely that you will get wrong prediction. To fix this, use an optimizer or adjust the parameters. This is a parameter issue.
+
+# Predicting Using Our Models
+
+To predict, we will use predict() function for our model. We will then supply data to the model so that it can predict the value.
+
+```
+local predictedValue = LogisticRegressionModel:predict(testData)
+```
+
+I will give you a test data for you to use. The value of prediction should be 1.
+
+```
+local testData = {
+
+	{90, 90}
+	
+}
+```
+
+# And Finally...
+
+Since you read the whole introduction, I recommend you to have a look at these to further your knowledge.
+
+* [Using Model Checker](../Introduction/UsingModelChecker.md)
+* [Using Optimizers](../Introduction/UsingOptimizers.md)
+* [Using Gradient Descent Modes](../Introduction/UsingGradient Descent Modes.md)

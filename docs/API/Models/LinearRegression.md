@@ -4,13 +4,13 @@
 
 ### new()
 
-Create new model object. If any of the arguments are not given, default argument values will be used.
+Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ## Functions
 
 ### setParameters()
 
-Set model's parameters. When any of the arguments are not given, previous argument values will be used.
+Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
 
 ### setOptimizer()
 

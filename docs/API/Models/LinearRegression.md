@@ -16,7 +16,7 @@ LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lambd
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* lambda: Reqularisation factor
+* lambda: Regularisation factor
 
 * lossFunction: The function to calculate the cost of each training. Available options are "L1" and "L2".
 

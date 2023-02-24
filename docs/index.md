@@ -8,17 +8,17 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 ## Background
 
-# What is machine learning?
+### What is machine learning?
 
 Machine learning is a way for computers to predict information based on the data we given to them. Machine learning can do three main tasks: Regression, Classification and Clustering.
 
-# Tasks:
+### Tasks:
 
 Regression: Generates a continuous value (e.g. -1.1, 2.09, 20) from given data.
 Classification: Generates a discrete value (1, 2, 3), mainly for grouping things together.
 Clustering: Generates centroids (center of data) based on the given data and predict which centroids that a data belongs to.
 
-# What is deep learning?
+### What is deep learning?
 
 It is a more advanced version of machine learning. The training techniques are significantly improved and models are more complex compared to machine learning.
 

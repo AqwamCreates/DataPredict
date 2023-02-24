@@ -1,4 +1,4 @@
-# API Reference - Model - LinearRegression
+# API Reference - Models - LinearRegression
 
 ## Constructors
 

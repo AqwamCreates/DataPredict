@@ -1,5 +1,7 @@
 # API Reference - Model - LogisticRegression
 
+LogisticRegression is a supervised machine learning model that predicts values of 0 and 1 only.
+
 ## Constructors
 
 ### new()

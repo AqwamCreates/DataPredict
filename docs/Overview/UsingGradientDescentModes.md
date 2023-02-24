@@ -1,4 +1,4 @@
-# What is gradient descent?
+# What Is Gradient Descent?
 
 Gradient descent is one of the way on how our machine/deep learning model "learn" things. The model attempts to find the best possible solution through this technique.
 

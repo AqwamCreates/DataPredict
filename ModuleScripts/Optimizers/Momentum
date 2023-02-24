@@ -40,7 +40,8 @@ function MomentumOptimizer:calculate(ModelParametersDerivatives, PreviousDeltaMa
 	
 end
 
+function MomentumOptimizer:reset()
+	
+end
+
 return MomentumOptimizer
-
-
-

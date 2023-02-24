@@ -7,8 +7,11 @@
 Creates a new optimizer object.
 
 ```
-AdaptiveMomentEstimation.new(Beta1: number, Beta2: number)
+AdaptiveMomentEstimation.new(Beta1: number, Beta2: number): OptimizerObject
 ```
+#### Returns:
+
+OptimizerObject: The generated optimier object
 
 ## Functions
 

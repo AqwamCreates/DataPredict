@@ -85,3 +85,7 @@ LinearRegression:predict(featureMatrix: Matrix): number
 #### Parameters:
 
 featureMatrix: Matrix containing all data.
+
+#### Returns:
+
+predictedValue: A value that is predicted by the model.

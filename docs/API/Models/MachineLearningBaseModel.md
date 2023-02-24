@@ -19,7 +19,7 @@ MachineLearningBaseModel.new(): BaseModelObject
 Gets the model parameters from the base model.
 
 ```
-MachineLearningBaseModel:getModelParameters(): ModelParameters
+MachineLearningBaseModel:getModelParameters(): ModelParametersMatrix
 ```
 
 #### Returns

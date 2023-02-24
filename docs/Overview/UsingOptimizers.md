@@ -1,6 +1,6 @@
 # What are optimizers?
 
-Optimizers are deep learning techinque that adjusts our machine/deep learning model learning rates. They make our models train faster and hence require less number of iterations.
+Optimizers are deep learning techinques that adjusts our machine/deep learning model learning rates. They make our models train faster and hence require less number of iterations.
 
 # Getting Started
 

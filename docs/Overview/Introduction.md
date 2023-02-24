@@ -20,7 +20,7 @@ local LogisticRegression = MDLL.Models.LogisticRegression
 local LogisticRegressionModel = LogisticRegression.new()
 ```
 
-Although the new() can take in a number of arguments, we will use the default values provided by the library to simplify our introduction. You can see what different models takes as their arguments in the API Reference.
+Although the new() can take in a number of arguments, we will use the default values provided by the library to simplify our introduction. You can see what different models takes as their arguments in the API Reference. You can also change them at anytime you want using setParameters() function.
 
 # Training Our Model
 
@@ -64,7 +64,24 @@ With our featureMatrix and labelVector in place, we will supply them to our mode
 LogisticRegressionModel:train(featureMatrix, labelVectorLogistic)
 ```
 
-Once you run the function, the model will generate its model parameters. However, during your training, your model might go to unusual cases and may need to adjust certain parameters for our model.
+Once you run the function, the model will generate its model parameters. However, during your training, your model might go to unusual cases and may need to adjust certain parameters for our model. We will cover this in the next section.
 
 In addition, not all models require labelVector. This is mainly true for our clustering machine/deep learning models such as "KMeans". So take note of that.
 
+# Training Cases
+
+When training the data, the cost of the training is printed out by default. Under the normal case, the cost would follow these pattern in order:
+
+1. Steadily increasing and decreasing (optional)
+2. Steadily decreasing
+3. Stabilizes Or very small increase and decrease
+
+Sometimes, our models can run into trouble due to a number of reasons. It may be because of the parameters we given or it is the hardware limitations.
+
+## Case 1 - Cost Printing out "nan"
+
+It means that during training, the calculations may have resulted in either arithmetic underflow or overflow. To fix this, limit the number of max iterations or set a target cost. This is a hardware limitation issue.
+
+## Case 1 - Cost Printing out "inf"
+
+It means that during training, the model is no longer "learning" but does the complete opposite. When attempting to predict using this model, it is highly likely that you will get wrong prediction. To fix this, use an optimizer or adjust the parameters. This is a parameter issue. 

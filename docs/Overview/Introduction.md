@@ -84,6 +84,6 @@ Sometimes, our models can run into trouble due to a number of reasons. It may be
 
 It means that during training, the calculations may have resulted in either arithmetic underflow or overflow. To fix this, limit the number of max iterations or set a target cost. This is a hardware limitation issue.
 
-## Case 1 - Cost Printing out "inf"
+## Case 2 - Cost Printing out "inf"
 
 It means that during training, the model is no longer "learning" but does the complete opposite. When attempting to predict using this model, it is highly likely that you will get wrong prediction. To fix this, use an optimizer or adjust the parameters. This is a parameter issue. 

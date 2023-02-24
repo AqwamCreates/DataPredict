@@ -66,18 +66,6 @@ KMeans:setParameters(maxNumberOfIterations: integer, learningRate: number, numbe
 
 * suppressOutput: An option whether or not to display the number of iterations and the cost.
 
-### setOptimizer()
-
-Set optimizer for the model by inputting the optimizer object.
-
-```
-KMeans:setOptimizer(Optimizer: OptimizerObject)
-```
-
-#### Parameters:
-
-* Optimizer: The optimizer to be used.
-
 ### train()
 
 Train the model.

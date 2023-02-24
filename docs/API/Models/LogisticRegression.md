@@ -59,13 +59,17 @@ Optimizer: The optimizer to be used.
 Train the model.
 
 ```
-LogisticRegression:train(featureMatrix: Matrix, labelVector: Matrix)
+LogisticRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 #### Parameters:
 
 featureMatrix: Matrix containing all data.
 
 labelVector: A (n x 1) matrix containing values related to featureMatrix.
+
+#### Returns:
+
+costArray: An array containing cost values.
 
 ### predict()
 

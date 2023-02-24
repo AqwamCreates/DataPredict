@@ -19,3 +19,5 @@ GradientDescentMode:startGradientDescent(Model: ModelObject, mode: string, featu
 * featureMatrix: Matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
+
+* batchSize: Number of batches for the model. (Only applicable for "Minibatch" mode) 

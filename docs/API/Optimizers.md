@@ -1,0 +1,9 @@
+# API Reference - Optimizers
+
+[AdaptiveGradient](Optimizers/AdaptiveGradient.md) - a.k.a Adagrad
+
+[AdaptiveMomentEstimation](Optimizers/AdaptiveMomentEstimation.md) - a.k.a Adam
+
+[RootMeanSquarePropagation](Optimizers/AdaptiveGradient.md) - a.k.a. RMSProp
+
+[Momentum](Optimizers/Momentum.md)

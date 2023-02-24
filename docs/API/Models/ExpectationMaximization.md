@@ -1,5 +1,7 @@
 # API Reference - Model - ExpectationMaximization
 
+ExpectationMaximization is an unsupervised machine learning model that predicts which cluster that the input belongs to using probability.
+
 ## Constructors
 
 ### new()

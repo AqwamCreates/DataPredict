@@ -1,5 +1,7 @@
 # API Reference - Models - LinearRegression
 
+LinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ).
+
 ## Constructors
 
 ### new()

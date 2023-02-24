@@ -2,7 +2,7 @@
 
 # Regression
 
-[LinearRegression](./API/LinearRegression.md)
+[LinearRegression](/API/LinearRegression.md)
 
 # Classification
 

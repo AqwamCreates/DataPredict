@@ -76,4 +76,4 @@ LinearRegression:predict(featureMatrix: Matrix): number
 
 #### Parameters:
 
-featureMatrix: Matrix containing all data
+featureMatrix: Matrix containing all data.

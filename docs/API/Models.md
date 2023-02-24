@@ -2,19 +2,19 @@
 
 # Regression
 
-[LinearRegression](../API/LinearRegression.md)
+[LinearRegression](./API/LinearRegression.md)
 
 # Classification
 
-[LogisticRegression](../API/LogisticRegression.md)
+[LogisticRegression](./API/LogisticRegression.md)
 
-[SupportVectorMachine](../API/SupportVectorMachine.md)
+[SupportVectorMachine](./API/SupportVectorMachine.md)
 
 # Clustering
 
-[KMeans](../API/KMeans.md)
+[KMeans](./API/KMeans.md)
 
-[NaiveBayes](../API/NaiveBayes.md)
+[NaiveBayes](./API/NaiveBayes.md)
 
-[ExpectationMaximization](../API/ExpectationMaximization.md)
+[ExpectationMaximization](./API/ExpectationMaximization.md)
 

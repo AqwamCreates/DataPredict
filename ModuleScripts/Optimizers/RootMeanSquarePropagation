@@ -64,4 +64,11 @@ function RootMeanSquarePropagationOptimizer:calculate(ModelParametersDerivatives
 	
 end
 
+function RootMeanSquarePropagationOptimizer:reset()
+	
+	self.PreviousVelocityMatrix = nil
+	
+end
+
 return RootMeanSquarePropagationOptimizer
+

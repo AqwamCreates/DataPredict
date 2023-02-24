@@ -7,8 +7,11 @@
 Creates a new optimizer object.
 
 ```
-AdaptiveGradient.new()
+AdaptiveGradient.new(): OptimizerObject
 ```
+#### Returns:
+
+OptimizerObject: The generated optimier object
 
 ## Functions
 

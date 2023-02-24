@@ -1,4 +1,4 @@
-# API Reference - Models - LogisticRegression
+# API Reference - Model - LogisticRegression
 
 ## Constructors
 

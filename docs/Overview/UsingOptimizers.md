@@ -16,7 +16,7 @@ local AdagradOptimizer = Adagrad.new()
 
 For this optimizer, there are no parameters for us to set. So, we will leave it empty. However, for others, they may use default parameter values.
 
-# Combining our optimizer with our model
+# Combining Our Optimizer With Our Model
 
 To combine, you must put the optimizer object into the model's setOptimizer() function.
 

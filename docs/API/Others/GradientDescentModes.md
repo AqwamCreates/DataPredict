@@ -7,15 +7,15 @@
 Runs the machine/deep learning model specific gradient descent mode.
 
 ```
-GradientDescentMode:startGradientDescent(Model: ModelObject, Mode: string, featureMatrix: Matrix, labelVector: Matrix, batchSize: integer)
+GradientDescentMode:startGradientDescent(Model: ModelObject, mode: string, featureMatrix: Matrix, labelVector: Matrix, batchSize: integer)
 ```
 
 #### Parameters:
 
-Model: The model that you want to train
+* Model: The model that you want to train
 
-Mode: The mode of gradient descent. Available modes are "Batch", "Minibatch" and "Stochastic".
+* mode: The mode of gradient descent. Available modes are "Batch", "Minibatch" and "Stochastic".
 
-featureMatrix: Matrix containing all data.
+* featureMatrix: Matrix containing all data.
 
-labelVector: A (n x 1) matrix containing values related to featureMatrix.
+* labelVector: A (n x 1) matrix containing values related to featureMatrix.

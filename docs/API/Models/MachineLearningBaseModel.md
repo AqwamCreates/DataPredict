@@ -1,5 +1,7 @@
 # API Reference - Models - MachineLearningBaseModel
 
+The base model for all machine and deep learning models.
+
 ## Constructors
 
 ### new()

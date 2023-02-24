@@ -24,4 +24,6 @@ To combine, you must put the optimizer object into the model's setOptimizer() fu
 LogisticRegressionModel:setOptimizer(AdagradOptimizer)
 ```
 
-Then, we can now train with our optimizer included.
+Then, we can now train with our optimizer included. Do note that not all models uses optimizers, so please check the API reference if this option is available or not.
+
+That's all for now!

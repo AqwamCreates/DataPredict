@@ -4,6 +4,6 @@
 
 [AdaptiveMomentEstimation](Optimizers/AdaptiveMomentEstimation.md) - a.k.a Adam
 
-[RootMeanSquarePropagation](Optimizers/AdaptiveGradient.md) - a.k.a. RMSProp
+[RootMeanSquarePropagation](Optimizers/RootMeanSquarePropagation.md) - a.k.a. RMSProp
 
 [Momentum](Optimizers/Momentum.md)

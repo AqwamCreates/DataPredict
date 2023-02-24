@@ -24,7 +24,7 @@ MachineLearningBaseModel:getModelParameters(): ModelParametersMatrix
 
 #### Returns
 
-* ModelParameters: The model parameters fetched from the base model
+* ModelParameters: A matrix containing model parameters fetched from the base model.
 
 ### setModelParameters()
 

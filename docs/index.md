@@ -66,8 +66,16 @@ SupportVectorMachine
 
 ## Links
 
-[Repository](https://github.com/AqwamCreates/Aqwam-Roblox-Machine-And-Deep-Learning-Library)
+###Repository
 
-[Roblox ModuleScript](https://create.roblox.com/marketplace/asset/12591886004/Aqwams-Roblox-Machine-And-Deep-Learning-Library)
+[Aqwam's Roblox Machine And Deep Learning Library](https://github.com/AqwamCreates/Aqwam-Roblox-Machine-And-Deep-Learning-Library)
+
+### ModuleScripts
+
+[Aqwam's Roblox Machine And Deep Learning Library](https://create.roblox.com/marketplace/asset/12591886004/Aqwams-Roblox-Machine-And-Deep-Learning-Library)
 
 [Aqwam's Roblox Matrix Library](https://www.roblox.com/library/12256162800/Aqwams-Roblox-Matrix-Library)
+
+### Other Documentations
+
+[Aqwam's Roblox Matrix Library](https://robloxmatrixl.substack.com/p/directory)

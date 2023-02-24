@@ -4,11 +4,11 @@
 
 ### new()
 
+Creates a new optimizer object.
+
 ```
 RootMeanSquarePropagation.new(Beta: Number, Epsilon: Number)
 ```
-
-Creates a new optimizer object.
 
 ## Functions
 

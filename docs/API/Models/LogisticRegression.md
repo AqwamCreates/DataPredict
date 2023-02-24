@@ -60,7 +60,11 @@ Train the model.
 
 ```
 LogisticRegression:train(featureMatrix: Matrix, labelVector: Matrix)
+
 ```
+featureMatrix: Matrix containing all data.
+
+labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
 ### predict()
 
@@ -69,3 +73,5 @@ Predict the value for a given data.
 ```
 LogisticRegression:predict(featureMatrix: Matrix): number
 ```
+
+featureMatrix: Matrix containing all data.

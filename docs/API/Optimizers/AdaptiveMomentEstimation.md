@@ -4,11 +4,11 @@
 
 ### new()
 
+Creates a new optimizer object.
+
 ```
 AdaptiveGradient.new(Beta1: number, Beta2: number)
 ```
-
-Creates a new optimizer object.
 
 ## Functions
 

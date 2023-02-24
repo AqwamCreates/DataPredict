@@ -37,11 +37,46 @@ MachineLearningBaseModel:setModelParameters(ModelParameters: ModelParametersObje
 
 ### clearModelParameters()
 
-Clears the model parameters contained inside base model
+Clears the model parameters contained inside base model.
 
 ```
 MachineLearningBaseModel:clearModelParameters()
 ```
 
+### clearLastPredictedOutput()
+
+Clears the last predicted outputs made by the base model.
+
+```
+MachineLearningBaseModel:clearLastPredictedOutput()
+```
+
+### clearLastCalculations()
+
+Clears last calculation made by the base model.
+
+```
+MachineLearningBaseModel:clearLastCalculations()
+```
+
+### clearLastPredictedOutputAndCalculations()
+
+Clears the last predicted outputs and calculation made by the base model.
+
+```
+MachineLearningBaseModel:clearLastPredictedOutputAndCalculations()
+```
+
+### setPrintOutput()
+
+Set if the model prints output.
+
+```
+MachineLearningBaseModel:setPrintOutput(option: boolean)
+```
+
+#### Parameters:
+
+* option: A boolean value that specifies if the output is printed
 
 

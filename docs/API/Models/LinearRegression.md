@@ -54,7 +54,7 @@ LinearRegression:setOptimizer(Optimizer: OptimizerObject)
 
 #### Parameters:
 
-Optimer: The optimizer to be used.
+Optimizer: The optimizer to be used.
 
 ### train()
 

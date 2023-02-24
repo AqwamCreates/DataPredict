@@ -18,8 +18,10 @@ local accuracy = ModelChecking:testClassificationModel(MachineLearningModel, fea
 
 The above function will generate the accuracy of the model by comparing the predicted output made by the model and the actual value.
 
-Then use print() to see the accuracy
+Then use print() to see the accuracy.
 
 ```
 print(accuracy)
 ```
+
+That's all for today!

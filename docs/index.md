@@ -66,7 +66,7 @@ SupportVectorMachine
 
 ## Links
 
-###Repository
+### Repository
 
 [Aqwam's Roblox Machine And Deep Learning Library](https://github.com/AqwamCreates/Aqwam-Roblox-Machine-And-Deep-Learning-Library)
 

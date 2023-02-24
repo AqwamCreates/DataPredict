@@ -65,4 +65,11 @@ function AdaptiveMomentEstimationOptimizer:calculate(ModelParametersDerivatives)
 
 end
 
+function AdaptiveMomentEstimationOptimizer:reset()
+
+	self.PreviousSumOfGradientSquaredMatrix = nil
+
+end
+
 return AdaptiveMomentEstimationOptimizer
+

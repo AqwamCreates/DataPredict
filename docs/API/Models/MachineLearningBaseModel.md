@@ -31,11 +31,11 @@ MachineLearningBaseModel:getModelParameters(): ModelParameters
 Set the model parameters to the base model.
 
 ```
-MachineLearningBaseModel:setModelParameters(ModelParameters: ModelParametersObject)
+MachineLearningBaseModel:setModelParameters(ModelParameters: ModelParametersMatrix)
 ```
 
 #### Parameters
-* ModelParameters: Model parameters to be given to the base model.
+* ModelParameters: A matrix containing model parameters to be given to the base model.
 
 ### clearModelParameters()
 

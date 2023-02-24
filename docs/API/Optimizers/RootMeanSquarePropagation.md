@@ -22,7 +22,7 @@ OptimizerObject: The generated optimizer object.
 RootMeanSquarePropagation:setBeta(Beta: Number)
 ```
 
-### setBeta()
+### setEpsilon()
 
 ```
 RootMeanSquarePropagation:setEpsilon(Epsilon: Number)

@@ -6,6 +6,10 @@
 
 Creates a new optimizer object.
 
+```
+AdaptiveGradient.new()
+```
+
 ## Functions
 
 ### reset()

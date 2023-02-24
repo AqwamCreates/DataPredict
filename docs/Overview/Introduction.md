@@ -110,7 +110,7 @@ local testData = {
 
 Since you read the whole introduction, I recommend you to have a look at these to further your knowledge.
 
-* [Using Model Checker](UsingModelChecker.md)
+* [Using Model Checking](UsingModelChecking.md)
 
 * [Using Optimizers](UsingOptimizers.md)
 

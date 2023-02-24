@@ -89,7 +89,7 @@ KMeans:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-KMeans:predict(featureMatrix: Matrix): number, number
+KMeans:predict(featureMatrix: Matrix): integer, number
 ```
 
 #### Parameters:

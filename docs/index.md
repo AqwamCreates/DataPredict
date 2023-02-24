@@ -2,13 +2,9 @@
 
 This project is to address the lack of machine and deep learning libraries as well as the inflexibility of the available ones. It is also a way for me to apply my machine and deep learning knowledge into its physical form.
 
-If there are any suggestions or issues for this library, don't be afraid to reach out to me at my LinkedIn.
+If there are any suggestions or issues for this library, don't be afraid to reach out to me at my [LinkedIn](https://www.linkedin.com/in/aqwam-harish-aiman/).
 
-My LinkedIn profile: https://www.linkedin.com/in/aqwam-harish-aiman/
-
-In addition, if you are interested in Roblox tutorials and future projects by me, then you can subscribe to me in YouTube.
-
-My Youtube channel: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+In addition, if you are interested in Roblox tutorials and future projects by me, then you can subscribe to me in [Youtube](https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw).
 
 ## Overview
 

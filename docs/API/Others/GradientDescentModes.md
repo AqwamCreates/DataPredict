@@ -20,4 +20,10 @@ GradientDescentMode:startGradientDescent(Model: ModelObject, mode: string, featu
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
-* batchSize: Number of batches for the model. (Only applicable for "Minibatch" mode) 
+* batchSize: Number of batches for the model.
+
+#### Note:
+
+* When using "Stochastic" mode, make sure you set the model's max number of iterations to 1.
+
+* batchSize is only applicable for "Minibatch" mode.

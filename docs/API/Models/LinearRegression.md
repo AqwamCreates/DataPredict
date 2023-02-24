@@ -10,21 +10,21 @@ Create new model object. If any of the arguments are not given, default argument
 LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lambda: number, lossFunction: string, targetCost: number): ModelObject
 ```
 
+#### Parameters:
+
+maxNumberOfIterations: How many times should the model needed to be trained.
+
+learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+
+lambda: Reqularisation factor
+
+lossFunction: The function to calculate the cost of each training. Available options are "L1" and "L2".
+
+targetCost: The cost at which the model stops training.
+
 #### Returns:
 
 ModelObject: The generated model object.
-
-#### Parameters:
-
-maxNumberOfIterations = How many times should the model needed to be trained.
-
-learningRate = The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-lambda = Reqularisation factor
-
-lossFunction = The function to calculate the cost of each training. Available options are "L1" and "L2".
-
-targetCost = The cost at which the model stops training.
 
 ## Functions
 

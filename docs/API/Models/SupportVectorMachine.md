@@ -30,9 +30,13 @@ SupportVectorMachine.new(maxNumberOfIterations: integer, learningRate: number, c
 
 ## Functions
 
-### setParameters(maxNumberOfIterations: integer, learningRate: number, cValue: number, distanceFunction: string, targetCost: number)
+### setParameters()
 
 Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
+
+```
+SupportVectorMachine:setParameters(maxNumberOfIterations: integer, learningRate: number, cValue: number, distanceFunction: string, targetCost: number)
+```
 
 #### Parameters:
 

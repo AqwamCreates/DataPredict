@@ -7,8 +7,12 @@
 Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lambda: number, lossFunction: string, targetCost: number)
+LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lambda: number, lossFunction: string, targetCost: number): ModelObject
 ```
+
+#### Returns:
+
+ModelObject: The generated model object.
 
 #### Parameters:
 

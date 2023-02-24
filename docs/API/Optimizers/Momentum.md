@@ -12,7 +12,7 @@ Momentum.new(DecayRate: Number): OptimizerObject
 
 #### Returns:
 
-OptimizerObject: The generated optimier object
+OptimizerObject: The generated optimizer object
 
 ## Functions
 

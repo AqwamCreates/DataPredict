@@ -42,7 +42,7 @@ ModelChecking:testRegressionModel(Model: ModelObject, featureMatrix: Matrix, lab
 
 * averageError: The average error made by the model.
 
-correctAtDataArray: An array containing all the positions that are correctly predicted by the model.
+* correctAtDataArray: An array containing all the positions that are correctly predicted by the model.
 
 * wrongAtDataArray: An array containing all the positions that are incorrectly predicted by the model.
 

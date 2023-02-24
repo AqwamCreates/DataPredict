@@ -85,7 +85,7 @@ When training the data, the cost of the training is printed out by default. Unde
 
 2. Steadily decreasing
 
-3. Stabilizes Or very small increase and decrease
+3. Stabilizes or very small increase and decrease
 
 Sometimes, our models can run into trouble due to a number of reasons. It may be because of the parameters we given or it is the hardware limitations.
 

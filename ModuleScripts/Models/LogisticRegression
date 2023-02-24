@@ -202,6 +202,8 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	
+	self.Optimizer:reset()
+	
 	return costArray
 	
 end

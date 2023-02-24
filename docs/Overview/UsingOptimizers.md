@@ -9,7 +9,7 @@ In order for us to use the optimizers, we need to create an optimizer object. In
 So first, lets initialize a new Adagrad optimizer object.
 
 ```
-local Adagrad = MDLL.Optimizers.Adagrad
+local Adagrad = MDLL.Optimizers.AdaptiveGradient
 
 local AdagradOptimizer = Adagrad.new()
 ```

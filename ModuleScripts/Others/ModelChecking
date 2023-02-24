@@ -13,9 +13,9 @@ function ModelChecking:testClassificationModel(MachineLearningModel, featureMatr
 	
 	local accuracy
 	
-	local correctAtData = {}
+	local correctAtDataArray = {}
 	
-	local wrongAtData = {}
+	local wrongAtDataArray = {}
 	
 	local numberOfData = #featureMatrix
 	
@@ -29,19 +29,19 @@ function ModelChecking:testClassificationModel(MachineLearningModel, featureMatr
 		
 		if (modelOutput == labelVector[data][1]) then
 			
-			table.insert(correctAtData, data)
+			table.insert(correctAtDataArray, data)
 			
 		else
 			
-			table.insert(wrongAtData, data)
+			table.insert(wrongAtDataArray, data)
 			
 		end
 		
 	end
 	
-	accuracy = #correctAtData / numberOfData
+	accuracy = #correctAtDataArray / numberOfData
 	
-	return accuracy, correctAtData, wrongAtData, modelOutputVector
+	return accuracy, correctAtDataArray, wrongAtDataArray, modelOutputVector
 	
 end
 

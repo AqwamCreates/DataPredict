@@ -1,16 +1,16 @@
-## API Reference - Models
+# API Reference - Models
 
-# Regression
+## Regression
 
-[LinearRegression](/API/LinearRegression.md)
+[LinearRegression](API/LinearRegression.md)
 
-# Classification
+## Classification
 
 [LogisticRegression](./API/LogisticRegression.md)
 
 [SupportVectorMachine](./API/SupportVectorMachine.md)
 
-# Clustering
+## Clustering
 
 [KMeans](./API/KMeans.md)
 

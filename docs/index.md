@@ -24,6 +24,28 @@ Machine learning is a way for computers to predict information based on the data
 
 It is a more advanced version of machine learning. The training techniques are significantly improved and models are more complex compared to machine learning.
 
+### Use Cases:
+
+LinearRegression:
+
+* Make prediction on how long will a player reach certain level
+
+* Spawn an enemy where the difficulty is based on input
+
+LogisticRegression:
+
+* Make an enemy that makes decision between 2 choices (e.g. fighting and running)
+
+* Detect hacking players
+
+KMeans:
+
+* Group players in terms of experience level
+
+SupportVectorMachine
+
+* Detect hacking players
+
 ## Overview
 
 [Introduction](Overview/Introduction.md)

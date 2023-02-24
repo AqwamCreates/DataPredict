@@ -7,8 +7,12 @@
 Creates a new optimizer object.
 
 ```
-RootMeanSquarePropagation.new(Beta: Number, Epsilon: Number)
+RootMeanSquarePropagation.new(Beta: Number, Epsilon: Number): OptimizerObject
 ```
+
+#### Returns:
+
+OptimizerObject: The generated optimizer object.
 
 ## Functions
 

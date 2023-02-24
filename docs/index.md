@@ -14,9 +14,11 @@ Machine learning is a way for computers to predict information based on the data
 
 ### Tasks:
 
-Regression: Generates a continuous value (e.g. -1.1, 2.09, 20) from given data.
-Classification: Generates a discrete value (1, 2, 3), mainly for grouping things together.
-Clustering: Generates centroids (center of data) based on the given data and predict which centroids that a data belongs to.
+* Regression: Generates a continuous value (e.g. -1.1, 2.09, 20) from given data.
+
+* Classification: Generates a discrete value (1, 2, 3), mainly for grouping things together.
+
+* Clustering: Generates centroids (center of data) based on the given data and predict which centroids that a data belongs to.
 
 ### What is deep learning?
 

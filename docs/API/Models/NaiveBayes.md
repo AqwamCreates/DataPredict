@@ -57,3 +57,7 @@ NaiveBayes:predict(featureMatrix: Matrix): integer, number
 ## Inherited From
 
 * [MachineLearningBaseModel](MachineLearningBaseModel.md)
+
+## Notes:
+
+* Untested. May give wrong model. Use at your own risk. (I am new at understanding this model)

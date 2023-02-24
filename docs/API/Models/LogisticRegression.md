@@ -7,7 +7,7 @@
 Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, lambda: number, sigmoidFunction: string, targetCost: number): Model
+LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, lambda: number, sigmoidFunction: string, targetCost: number): ModelObject
 ```
 
 #### Parameters:
@@ -21,6 +21,10 @@ lambda = Reqularisation factor
 sigmoidFunction = The function to calculate the cost and cost derivaties of each training. Available options are "L1" and "L2".
 
 targetCost = The cost at which the model stops training.
+
+#### Returns:
+
+ModelObject: The generated model object.
 
 ## Functions
 

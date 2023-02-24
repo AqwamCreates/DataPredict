@@ -7,9 +7,7 @@ To start, we must first link our machine/deep learning library with our matrix l
 Next, we will use require() function to our machine/deep learning library
 
 ```
-
 local MDLL = require(AqwamRobloxMachineAndDeepLearningLibrary) 
-
 
 ```
 
@@ -21,7 +19,6 @@ For our first model, we will use "LogisticRegression". We will create a new "Lin
 local LogisticRegression = MDLL.Models.LogisticRegression
 
 local LogisticRegressionModel = LogisticRegression.new()
-
 ```
 
 Although the new() can take in a number of arguments, we will use the default values provided by the library to simplify our introduction. You can see what different models takes as their arguments in the API Reference.

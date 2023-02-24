@@ -4,8 +4,6 @@
 
 Machine learning is a way for computers to predict information based on the data we given to them. Machine learning can do three main tasks: Regression, Classification and Clustering.
 
-### Tasks:
-
 * Regression: Generates a continuous value (e.g. -1.1, 2.09, 20) from given data.
 
 * Classification: Generates a discrete value (e.g. 1, 2, 3), mainly for classifying given data.

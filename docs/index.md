@@ -14,8 +14,8 @@ My Youtube channel: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 
 [Introduction](Overview/Introduction.md)
 
-[Using Optimizers](Overview/Using Optimizers.md)
+[Using Optimizers](Overview/UsingOptimizers.md)
 
-[Using Gradient Descent Modes.md](Overview/Using Gradient Descent Modes.md)
+[Using Gradient Descent Modes.md](Overview/UsingGradientDescentModes.md)
 
-[Using Model Checking](Overview/Using Model Checking.md)
+[Using Model Checking](Overview/UsingModelChecking.md)

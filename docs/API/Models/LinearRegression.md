@@ -10,7 +10,7 @@ Create new model object. If any of the arguments are not given, default argument
 LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lambda: number, lossFunction: string, targetCost: number)
 ```
 
-**Parameters:**
+#### Parameters:
 
 maxNumberOfIterations = How many times should the model needed to be trained.
 
@@ -30,7 +30,7 @@ targetCost = The cost at which the model stops training.
 LinearRegression:setParameters(maxNumberOfIterations: integer, learningRate: number, lambda: number, lossFunction: string, targetCost: number)
 ```
 
-**Parameters:**
+#### Parameters:
 
 maxNumberOfIterations = How many times should the model needed to be trained.
 
@@ -52,7 +52,7 @@ Set optimizer for the model by inputting the optimizer object.
 LinearRegression:setOptimizer(Optimizer: OptimizerObject)
 ```
 
-**Parameters:**
+#### Parameters:
 
 Optimer: The optimizer to be used.
 
@@ -64,7 +64,7 @@ Train the model.
 LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 ```
 
-**Parameters:**
+#### Parameters:
 
 featureMatrix: Matrix containing all data.
 
@@ -78,6 +78,6 @@ Predict the value for a given data.
 LinearRegression:predict(featureMatrix: Matrix): number
 ```
 
-**Parameters:**
+#### Parameters:
 
 featureMatrix: Matrix containing all data.

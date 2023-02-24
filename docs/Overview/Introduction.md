@@ -82,7 +82,7 @@ Sometimes, our models can run into trouble due to a number of reasons. It may be
 
 ## Case 1 - Cost Printing Out "nan"
 
-It means that during training, the calculations may have resulted in either arithmetic underflow or overflow. To fix this, limit the number of max iterations or set a target cost. This is a hardware limitation issue.
+It means that during training, the calculations may have resulted in either arithmetic underflow or overflow. To fix this, limit the max number of iterations or set a target cost. This is a hardware limitation issue.
 
 ## Case 2 - Cost Printing Out "inf"
 

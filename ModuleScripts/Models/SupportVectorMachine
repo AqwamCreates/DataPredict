@@ -203,6 +203,8 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	
+	self.Optimizer:reset()
 
 	return costArray
 
@@ -225,4 +227,3 @@ function SupportVectorMachineModel:predict(featureMatrix)
 end
 
 return SupportVectorMachineModel
-

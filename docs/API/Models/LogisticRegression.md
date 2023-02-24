@@ -6,6 +6,10 @@
 
 Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
 
+```
+LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, lambda: number, sigmoidFunction: string, targetCost: number): Model
+```
+
 #### Parameters:
 
 maxNumberOfIterations = How many times should the model needed to be trained.
@@ -23,6 +27,10 @@ targetCost = The cost at which the model stops training.
 ### setParameters()
 
 Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
+
+```
+LogisticRegression:setParameters(maxNumberOfIterations: integer, learningRate: number, lambda: number, sigmoidFunction: string, targetCost: number)
+```
 
 #### Parameters:
 

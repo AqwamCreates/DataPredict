@@ -4,7 +4,7 @@ Optimizers are deep learning techinque that adjusts our machine/deep learning mo
 
 # Getting Started
 
-In order for us to use the optimizers, we need to create an optimizer object. In this tutorial, we will use "Adaptive Gradient" (a.k.a Adagrad).
+In order for us to use the optimizers, we need to create an optimizer object. In this tutorial, we will use "Adaptive Gradient" (a.k.a. Adagrad).
 
 So first, lets initialize a new Adagrad optimizer object.
 

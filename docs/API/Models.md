@@ -18,3 +18,7 @@
 
 [ExpectationMaximization](Models/ExpectationMaximization.md)
 
+## BaseModels
+
+[MachineLearningBaseModel](Models/MachineLearningBaseModel.md)
+

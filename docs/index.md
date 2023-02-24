@@ -1,6 +1,6 @@
 # Welcome to Aqwam's Roblox Machine And Deep Learning Library!
 
-This project is to address the lack of machine and deep learning libraries as well as the inflexibility of the available ones. It is also a way for me to apply my machine and deep learning knowledge into its physical form.
+This project is created to address the lack of machine and deep learning libraries as well as the inflexibility of the available ones. It is also a way for me to apply my machine and deep learning knowledge into its physical form.
 
 If there are any suggestions or issues for this library, don't be afraid to reach out to me at my [LinkedIn](https://www.linkedin.com/in/aqwam-harish-aiman/) or in this [DevForum](https://devforum.roblox.com/t/beta-mdll-machine-and-deep-learning-library-includes-optimizers-retrainable-models-and-more/2196446?u=myoriginsworkshop) thread.
 

@@ -333,6 +333,10 @@ end
 
 function ExpectationMaximizationModel:predict(featureVector)
 	
+	local meanMatrix = self.ModelParameters[1]
+	
+	local probabilitiesMatrix = self.ModelParameters[2]
+	
 	local selectedCluster
 	
 	local probability
@@ -341,7 +345,7 @@ function ExpectationMaximizationModel:predict(featureVector)
 	
 	local probabilityVector
 	
-	local posteriorMatrix = calculatePosteriorProbability(featureVector, self.meanMatrix, self.probabilitiesMatrix)
+	local posteriorMatrix = calculatePosteriorProbability(featureVector, meanMatrix, probabilitiesMatrix)
 	
 	local posteriorMatrixSum = AqwamMatrixLibrary:horizontalSum(posteriorMatrix)
 	

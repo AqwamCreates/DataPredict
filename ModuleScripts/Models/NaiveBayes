@@ -114,12 +114,6 @@ function NaiveBayesModel.new()
 	
 	setmetatable(NewNaiveBayesModel, NaiveBayesModel)
 	
-	NewNaiveBayesModel.meanMatrix = nil
-	
-	NewNaiveBayesModel.standardDeviationMatrix = nil
-	
-	NewNaiveBayesModel.probabilitiesMatrix = nil
-	
 	NewNaiveBayesModel.classesList = nil
 	
 	NewNaiveBayesModel.gaussianDensityMatrix = nil
@@ -146,19 +140,17 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 
 	local probabilitiesVector
 	
-	if not (self.meanMatrix and self.standardDeviationMatrix and (self.probabilitiesMatrix)) then
-		
-		extractedFeatureMatricesTable, self.classesList = separateFeatureMatrixByClass(featureMatrix, labelVector)
-		
-		self.meanMatrix = AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1])
-
-		self.standardDeviationMatrix = AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1])
-		
-		self.probabilitiesMatrix = AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1], 1)
-		
-		self.gaussianDensityMatrix = AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1], 0)
-		
-	end
+	extractedFeatureMatricesTable, self.classesList = separateFeatureMatrixByClass(featureMatrix, labelVector)
+	
+	local meanMatrix = self.ModelParameters[1] or AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1])
+	
+	local standardDeviationMatrix = self.ModelParameters[2] or AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1])
+	
+	local probabilitiesMatrix = self.ModelParameters[3] or AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1], 1)
+	
+	local gaussianDensityMatrix = self.ModelParameters[4] or AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1], 0)
+	
+	if (#featureMatrix[1] ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
 	
 	for classIndex, classValue in ipairs(self.classesList) do
 		
@@ -168,9 +160,9 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 		
 		standardDeviationVector = AqwamMatrixLibrary:verticalStandardDeviation(extractedFeatureMatrix)
 		
-		self.meanMatrix[classIndex] = meanVector[1]
+		meanMatrix[classIndex] = meanVector[1]
 		
-		self.standardDeviationMatrix[classIndex] = standardDeviationVector[1]
+		standardDeviationMatrix[classIndex] = standardDeviationVector[1]
 		
 		probabilitiesVector = AqwamMatrixLibrary:createMatrix(1, #featureMatrix[1], 1)
 		
@@ -184,11 +176,11 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 			
 		end
 		
-		self.probabilitiesMatrix[classIndex] = probabilitiesVector[1]
+		probabilitiesMatrix[classIndex] = probabilitiesVector[1]
 		
 	end
 	
-	self.ModelParameters = {self.meanMatrix, self.standardDeviationMatrix, self.probabilitiesMatrix}
+	self.ModelParameters = {meanMatrix, standardDeviationMatrix, probabilitiesMatrix, gaussianDensityMatrix}
 	
 end
 

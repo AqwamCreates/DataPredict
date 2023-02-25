@@ -9,7 +9,7 @@ LinearRegression is a supervised machine learning model that predicts continuous
 Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lambda: number, lossFunction: string, targetCost: number): ModelObject
+LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lossFunction: string, targetCost: number): ModelObject
 ```
 
 #### Parameters:
@@ -17,8 +17,6 @@ LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lambd
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* lambda: Regularisation factor
 
 * lossFunction: The function to calculate the cost of each training. Available options are "L1" and "L2".
 
@@ -35,7 +33,7 @@ LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lambd
 Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
 
 ```
-LinearRegression:setParameters(maxNumberOfIterations: integer, learningRate: number, lambda: number, lossFunction: string, targetCost: number)
+LinearRegression:setParameters(maxNumberOfIterations: integer, learningRate: number, lossFunction: string, targetCost: number)
 ```
 
 #### Parameters:
@@ -43,8 +41,6 @@ LinearRegression:setParameters(maxNumberOfIterations: integer, learningRate: num
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* lambda: Regularisation factor
 
 * lossFunction: The function to calculate the cost of each training. Available options are "L1" and "L2".
 
@@ -61,6 +57,18 @@ LinearRegression:setOptimizer(Optimizer: OptimizerObject)
 #### Parameters:
 
 * Optimizer: The optimizer to be used.
+
+### setRegularization()
+
+Set a regularization for the model by inputting the optimizer object.
+
+```
+LinearRegression:setRegularization(Regularization: RegularizationObject)
+```
+
+#### Parameters:
+
+* Regularization: The regularization to be used.
 
 ### train()
 

@@ -44,17 +44,11 @@ local function calculateHypothesisVector(featureMatrix, modelParameters, sigmoid
 	
 	local numberOfData = #featureMatrix
 	
-	local result = {}
+	local zVector = AqwamMatrixLibrary:dotProduct(featureMatrix, modelParameters)
 	
-	local zVector = AqwamMatrixLibrary:dotProduct(featureMatrix, modelParameters) 
-	
-	for index = 1, numberOfData, 1 do
+	if (type(zVector) == "number") then zVector = {{zVector}} end
 		
-		result[index] = {}
-		
-		result[index][1] = sigmoidFunctionList[sigmoidFunction] (zVector[index][1])
-		
-	end
+	local result = AqwamMatrixLibrary:applyFunction(sigmoidFunctionList[sigmoidFunction], zVector)
 	
 	return result
 	

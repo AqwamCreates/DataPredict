@@ -96,7 +96,7 @@ AqwamRobloxMachineLearningLibrary.Models =  ModelsDictionary
 
 AqwamRobloxMachineLearningLibrary.Optimizers = OptimizersDictionary
 
-AqwamRobloxMachineLearningLibrary.Others = Others
+AqwamRobloxMachineLearningLibrary.Others = OthersDictionary
 
 local function checkVersion()
 	

@@ -14,7 +14,7 @@ Regularization.new(lambda: number, regularisationMode: string): RegularizationOb
 
 * lambda: regularization factor
 
-* regularisationMode: the mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2
+* regularisationMode: the mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2" (or "Ridge") and "L1+L2" (or "ElasticNet")
 
 #### Returns:
 
@@ -32,4 +32,4 @@ Regularization:setParameters(lambda: number, regularisationMode: string): Regula
 
 * lambda: regularization factor
 
-* regularisationMode: the mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2
+* regularisationMode: the mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2" (or "Ridge") and "L1+L2" (or "ElasticNet")

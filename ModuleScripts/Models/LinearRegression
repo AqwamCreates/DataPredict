@@ -92,19 +92,19 @@ function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lambda, 
 	
 	NewLinearRegressionModel.targetCost = targetCost or defaultTargetCost
 	
-	NewLinearRegressionModel.lambda = lambda or defaultLambda
-	
 	NewLinearRegressionModel.validationFeatureMatrix = nil
 	
 	NewLinearRegressionModel.validationLabelVector = nil
 	
 	NewLinearRegressionModel.Optimizer = nil
 	
+	NewLinearRegressionModel.Regularization = nil
+	
 	return NewLinearRegressionModel
 	
 end
 
-function LinearRegressionModel:setParameters(maxNumberOfIterations, learningRate, lambda, lossFunction, targetCost)
+function LinearRegressionModel:setParameters(maxNumberOfIterations, learningRate, lossFunction, targetCost)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -114,13 +114,17 @@ function LinearRegressionModel:setParameters(maxNumberOfIterations, learningRate
 
 	self.targetCost = targetCost or self.targetCost
 	
-	self.lambda = lambda or self.lambda
-	
 end
 
 function LinearRegressionModel:setOptimizer(Optimizer)
 	
 	self.Optimizer = Optimizer
+	
+end
+
+function LinearRegressionModel:setRegularization(Regularization)
+	
+	self.Regularization = Regularization
 	
 end
 
@@ -134,11 +138,13 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	local costFunctionDerivatives
 	
-	local regularizationParameters
-	
 	local numberOfData = #featureMatrix[1]
 	
 	local delta
+	
+	local lambda
+	
+	local regularizationCost
 	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 	
@@ -158,21 +164,33 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.lossFunction)
 		
+		if (self.Regularization) then
+			
+			lambda = self.Regularization:getLamda()
+			
+			costFunctionDerivatives = AqwamMatrixLibrary:add((lambda/numberOfData), self.ModelParameters)
+
+		end
+
 		if (self.Optimizer) then 
 
 			costFunctionDerivatives = self.Optimizer:calculate(costFunctionDerivatives, delta) 
 
 		end
-
+		
 		delta = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
 
 		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, delta)
 		
-		regularizationParameters = AqwamMatrixLibrary:multiply((self.lambda/numberOfData), self.ModelParameters)
-
-		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, costFunctionDerivatives, regularizationParameters)
-		
 		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.lossFunction, self.lambda)
+		
+		if (self.Regularization) then 
+
+			regularizationCost = self.Regularization:calculateLossFunctionRegularization(self.ModelParameters)
+			
+			cost = AqwamMatrixLibrary:add(cost, regularizationCost)
+
+		end
 		
 		table.insert(costArray, cost)
 		

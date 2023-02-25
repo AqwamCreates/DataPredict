@@ -180,7 +180,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 			lambda = self.Regularization:getLambda()
 
-			costFunctionDerivatives = AqwamMatrixLibrary:add((lambda/numberOfData), self.ModelParameters)
+			costFunctionDerivatives = AqwamMatrixLibrary:multiply((lambda/numberOfData), self.ModelParameters)
 
 		end
 
@@ -200,7 +200,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 			regularizationCost = self.Regularization:calculateLossFunctionRegularization(self.ModelParameters)
 
-			cost = AqwamMatrixLibrary:add(cost, regularizationCost)
+			cost += regularizationCost
 
 		end
 		

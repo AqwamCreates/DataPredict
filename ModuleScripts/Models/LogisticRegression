@@ -60,21 +60,15 @@ local function calculateHypothesisVector(featureMatrix, modelParameters, sigmoid
 	
 end
 
-local function calculateCost(modelParameters, featureMatrix, labelVector, sigmoidFunction, lambda)
+local function calculateCost(modelParameters, featureMatrix, labelVector, sigmoidFunction)
 	
 	local numberOfData = #featureMatrix
 	
 	local hypothesisVector = calculateHypothesisVector(featureMatrix, modelParameters, sigmoidFunction)
 	
 	local costVector = AqwamMatrixLibrary:applyFunction(lossFunctionList[sigmoidFunction], labelVector, hypothesisVector)
-	
-	local regularisationVector = AqwamMatrixLibrary:applyFunction(regularisationFunctionList["L2"], AqwamMatrixLibrary:horizontalSum(modelParameters))
-	
-	regularisationVector = AqwamMatrixLibrary:multiply(lambda, regularisationVector)
-	
-	local totalCostVector = AqwamMatrixLibrary:add(costVector, regularisationVector)
 
-	local totalCost = AqwamMatrixLibrary:sum(totalCostVector)
+	local totalCost = AqwamMatrixLibrary:sum(costVector)
 	
 	local averageCost = totalCost / numberOfData
 	
@@ -200,7 +194,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, delta)
 		
-		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction, self.lambda)
+		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
 		
 		if (self.Regularization) then 
 

@@ -18,6 +18,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Using Model Checking](Overview/UsingModelChecking.md)
 
+[Using Regularization](Overview/UsingRegularization.md)
+
 ## API Reference
 
 [Models](API/Models.md)

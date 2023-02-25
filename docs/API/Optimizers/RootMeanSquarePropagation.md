@@ -35,3 +35,11 @@ Reset optimizer's stored values (excluding the parameters).
 ```
 RootMeanSquarePropagation:reset()
 ```
+
+## Notes:
+
+* Epsilon is used to prevent a numerator from dividing zero. Otherwise, the resulting calculation would be infinity.
+
+* Generally, the epsilon values are usually set to very small positive decimal numbers.
+
+* If you are unsure how epsilon works, then I recommend to leave the setting to default.

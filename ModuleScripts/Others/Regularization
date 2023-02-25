@@ -77,11 +77,11 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters)
 		
 		SumAbsoluteModelParameters = AqwamMatrixLibrary:sum(AbsoluteModelParameters)
 		
-		local RegularizationParametersPart1 = self.lambda * SumSquaredModelParameters
+		local regularizationValuePart1 = self.lambda * SumSquaredModelParameters
 		
-		local RegularizationParametersPart2 = self.lambda * SumAbsoluteModelParameters
+		local regularizationValuePart2 = self.lambda * SumAbsoluteModelParameters
 		
-		regularizationValue = AqwamMatrixLibrary:add(RegularizationParametersPart1, RegularizationParametersPart2)
+		regularizationValue = regularizationValuePart1 + regularizationValuePart2
 		
 	else
 		

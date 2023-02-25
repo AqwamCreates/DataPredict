@@ -178,7 +178,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		
 		if (self.Regularization) then
 
-			lambda = self.Regularization:getLamda()
+			lambda = self.Regularization:getLambda()
 
 			costFunctionDerivatives = AqwamMatrixLibrary:add((lambda/numberOfData), self.ModelParameters)
 

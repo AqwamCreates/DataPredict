@@ -20,7 +20,7 @@ LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, lam
 
 * lambda: Regularisation factor
 
-* sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "L1" and "L2".
+* sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid".
 
 * targetCost: The cost at which the model stops training.
 

@@ -48,13 +48,7 @@ local function calculateCost(modelParameters, featureMatrix, labelVector, lossFu
 	
 	local costVector = AqwamMatrixLibrary:applyFunction(lossFunctionList[lossFunction], hypothesisVector, labelVector)
 	
-	local regularisationVector = AqwamMatrixLibrary:applyFunction(regularisationFunctionList[lossFunction], AqwamMatrixLibrary:horizontalSum(modelParameters))
-	
-	regularisationVector = AqwamMatrixLibrary:multiply(lambda, regularisationVector)
-	
-	local totalCostVector = AqwamMatrixLibrary:add(costVector, regularisationVector)
-	
-	local totalCost = AqwamMatrixLibrary:sum(totalCostVector)
+	local totalCost = AqwamMatrixLibrary:sum(costVector)
 	
 	local averageCost = totalCost / (2 * numberOfData)
 	

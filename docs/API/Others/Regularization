@@ -12,9 +12,9 @@ Regularization.new(lambda: number, regularisationMode: string): RegularizationOb
 
 #### Parameters:
 
-* lambda: regularization factor
+* lambda: Regularization factor. Recommended values are beteween o to 1.
 
-* regularisationMode: the mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2" (or "Ridge") and "L1+L2" (or "ElasticNet")
+* regularisationMode: The mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2" (or "Ridge") and "L1+L2" (or "ElasticNet")
 
 #### Returns:
 
@@ -30,6 +30,6 @@ Regularization:setParameters(lambda: number, regularisationMode: string): Regula
 
 #### Parameters:
 
-* lambda: regularization factor
+* lambda: Regularization factor. Recommended values are beteween o to 1.
 
-* regularisationMode: the mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2" (or "Ridge") and "L1+L2" (or "ElasticNet")
+* regularisationMode: The mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2" (or "Ridge") and "L1+L2" (or "ElasticNet")

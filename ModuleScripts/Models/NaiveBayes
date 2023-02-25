@@ -204,9 +204,15 @@ end
 
 function NaiveBayesModel:predict(featureMatrix)
 	
-	local priorProbabilitiesMatrix = calculateGaussianDensity(featureMatrix, self.meanMatrix, self.standardDeviationMatrix)
+	local meanMatrix = self.ModelParameters[1]
 	
-	local multipliedProbalitiesMatrices = AqwamMatrixLibrary:multiply(self.probabilitiesMatrix, priorProbabilitiesMatrix)
+	local standardDeviationMatrix = self.ModelParameters[2]
+	
+	local probabilitiesMatrix = self.ModelParameters[3]
+	
+	local priorProbabilitiesMatrix = calculateGaussianDensity(featureMatrix, meanMatrix, standardDeviationMatrix)
+	
+	local multipliedProbalitiesMatrices = AqwamMatrixLibrary:multiply(probabilitiesMatrix, priorProbabilitiesMatrix)
 	
 	local highestProbability = -math.huge
 	

@@ -46,6 +46,8 @@ local function calculateCost(modelParameters, featureMatrix, labelVector, lossFu
 	
 	local hypothesisVector = calculateHypothesisVector(featureMatrix, modelParameters)
 	
+	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
+	
 	local costVector = AqwamMatrixLibrary:applyFunction(lossFunctionList[lossFunction], hypothesisVector, labelVector)
 	
 	local totalCost = AqwamMatrixLibrary:sum(costVector)

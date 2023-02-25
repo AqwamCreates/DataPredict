@@ -1,10 +1,10 @@
-# API Reference - Optimizers - Adaptive Gradient (Adagrad)
+# API Reference - Others - Regularization
 
 ## Constructors
 
 ### new()
 
-Creates a new regularization object.
+Creates a new regularization object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
 Regularization.new(lambda: number, regularisationMode: string): RegularizationObject

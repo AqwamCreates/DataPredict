@@ -4,7 +4,7 @@
 
 ### new()
 
-Creates a new optimizer object.
+Creates a new optimizer object. If there are no parameters given for that particular argument, then that argument will use default value.
 
 ```
 AdaptiveMomentEstimation.new(Beta1: number, Beta2: number): OptimizerObject

@@ -4,7 +4,7 @@
 
 	Version 1.0
 
-	Aqwam's Roblox Deep Learning Library (AR-DeepLL)
+	Aqwam's Roblox Deep Learning Library (AR-MDLL)
 
 	Author: Aqwam Harish Aiman
 	
@@ -46,6 +46,7 @@ local Others = script.Others
 
 local ModelChecking = require(Others.ModelChecking) -- for testing and validating datasets
 local GradientDescendModes = require(Others.GradientDescentModes)
+local Regularization = require(Others.Regularization)
 
 local Optimizers = script.Optimizers
 
@@ -84,7 +85,8 @@ local OptimizersDictionary = {
 local OthersDictionary = {
 	
 	GradientDescendModes = GradientDescendModes,
-	ModelChecking = ModelChecking
+	ModelChecking = ModelChecking,
+	Regularization = Regularization
 	
 }
 

@@ -1,62 +1,56 @@
 local GradientDescentModes = {}
 
-local function breakFeatureMatrixToBatches(batchSize, featureMatrix, labelVector)
+local function breakFeatureMatrixToBatches(numberOfBatches, featureMatrix, labelVector)
 	
-	local numberOfWholeBatches = math.floor( (#featureMatrix) / batchSize )
+	local batchSize = math.floor(#featureMatrix/numberOfBatches)
 	
-	local dataPositionArray = {1}
+	local remainderBatchSize = #featureMatrix % numberOfBatches
 	
 	local featureMatrixBatchesTable = {}
 	
 	local labelVectorBatchesTable = {}
 	
-	local currentBatchNumber = 0
+	local batchPositions = {}
 	
 	local newFeatureMatrix
 	
-	local newLabelVector 
+	local newLabelVector
 	
-	for i = 1, numberOfWholeBatches, 1 do table.insert(dataPositionArray, (i * batchSize)) end
+	for currentBatchNumber = 0, numberOfBatches, 1 do
+		
+		if (numberOfBatches == currentBatchNumber) then
+			
+			table.insert(batchPositions, numberOfBatches * (batchSize - 1))
+			
+		else
+			
+			table.insert(batchPositions, (currentBatchNumber * batchSize) + 1)
+			
+		end
+		
+	end
 	
-	table.insert(dataPositionArray, #featureMatrix)
+	table.insert(batchPositions, #featureMatrix)
 	
-	repeat
+	for currentBatchNumber = 1, numberOfBatches, 1 do
 		
 		newFeatureMatrix = {}
 		
 		newLabelVector = {}
 		
-		for j = (currentBatchNumber * batchSize) + 1, batchSize, 1 do 
+		for row = batchPositions[currentBatchNumber], batchPositions[currentBatchNumber + 1], 1 do
 			
-			table.insert(newFeatureMatrix, featureMatrix[j]) 
+			table.insert(newFeatureMatrix, featureMatrix[row])
 			
-			if (labelVector) then table.insert(newLabelVector, labelVector[j]) end
+			if (labelVector) then table.insert(newLabelVector, labelVector[row]) end
 			
 		end
-		
+			
 		table.insert(featureMatrixBatchesTable, newFeatureMatrix)
-		table.insert(labelVectorBatchesTable, newLabelVector)
-		
-		currentBatchNumber += 1
-		
-	until (currentBatchNumber == numberOfWholeBatches)
-	
-	newFeatureMatrix = {}
-	
-	newLabelVector = {}
-	
-	local totalBatches = (numberOfWholeBatches * batchSize)
-	
-	for j = (totalBatches + 1), (#featureMatrix - totalBatches), 1 do 
 
-		table.insert(newFeatureMatrix, featureMatrix[j])
+		if (labelVector) then table.insert(labelVectorBatchesTable, newLabelVector) end
 		
-		if (labelVector) then table.insert(newLabelVector, labelVector[j]) end
-
 	end
-
-	table.insert(featureMatrixBatchesTable, newFeatureMatrix)
-	table.insert(labelVectorBatchesTable, newLabelVector)
 	
 	return featureMatrixBatchesTable, labelVectorBatchesTable
 	
@@ -68,11 +62,13 @@ local function startBatchGradientDescent(MachineLearningModel, featureMatrix, la
 	
 end
 
-local function startMiniBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector, batchSize)
+local function startMiniBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector, numberOfBatches)
 	
-	local featureMatrixBatchesTable, labelVectorBatchesTable = breakFeatureMatrixToBatches(batchSize, featureMatrix, labelVector)
+	if (numberOfBatches < 0) then error("Number of batches does not accept negative values!") end
 	
-	local numberOfBatches = math.floor( (#featureMatrix) / batchSize ) + 1
+	if (numberOfBatches > #featureMatrix) then error("Number of batches is greater than the number of data!") end
+	
+	local featureMatrixBatchesTable, labelVectorBatchesTable = breakFeatureMatrixToBatches(numberOfBatches, featureMatrix, labelVector)
 	
 	local batchFeatureMatrix
 	
@@ -89,6 +85,8 @@ local function startMiniBatchGradientDescent(MachineLearningModel, featureMatrix
 		dataArray = {batchFeatureMatrix, batchLabelVector}
 
 		MachineLearningModel:train(featureMatrix, labelVector)
+		
+		print("Batch: " .. currentBatchNumber)
 		
 	end
 
@@ -137,4 +135,5 @@ function GradientDescentModes:startGradientDescent(MachineLearningModel, gradien
 end
 
 return GradientDescentModes
+
 

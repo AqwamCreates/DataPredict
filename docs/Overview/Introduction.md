@@ -33,7 +33,11 @@ Although the new() can take in a number of arguments, we will use the default va
 
 # Training Our Model
 
-To train our model, we need to supply two things: featureMatrix and labelVector. For the feature matrix, the rows are the individual data and the columns are the features for that particular data. For the labelVector, the rows are the values that have certain relationship to that individual data.
+To train our model, we need to supply two things: featureMatrix and labelVector. 
+
+* For the feature matrix, the rows are the individual data and the columns are the features for that particular data. 
+
+* For the labelVector, the rows are the number of values and the columns are the values that have certain relationship to that individual data.
 
 I will give you the codes for the featureMatrix and the labelVector for you to practice. You can see that if the data contains 0 or greater, it will result to 1. Otherise, the value is 0.
 

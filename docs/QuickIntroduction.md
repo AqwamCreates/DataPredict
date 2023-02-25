@@ -32,6 +32,9 @@ KMeans:
 
 * Group players in terms of experience level
 
+## So how do we use this library?
+
+In machine/deep learning, we mainly need to do training before we can predict things. To train, we need a lot of data and choose the correct models so that we can achieve very good results. Once training is done, you can use the model to predict values based on the data that was never seen before by the model.
 SupportVectorMachine
 
 * Detect hacking players

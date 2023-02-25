@@ -42,4 +42,4 @@ RootMeanSquarePropagation:reset()
 
 * Generally, the epsilon values are usually set to very small positive decimal numbers.
 
-* If you are unsure how epsilon works, then I recommend to leave the setting to default.
+* If you are unsure how epsilon works, then leave the setting to default.

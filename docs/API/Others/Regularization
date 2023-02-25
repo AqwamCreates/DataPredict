@@ -1,1 +1,35 @@
+# API Reference - Optimizers - Adaptive Gradient (Adagrad)
 
+## Constructors
+
+### new()
+
+Creates a new regularization object.
+
+```
+Regularization.new(lambda: number, regularisationMode: string): RegularizationObject
+```
+
+#### Parameters:
+
+* lambda: regularization factor
+
+* regularisationMode: the mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2
+
+#### Returns:
+
+* RegularizationObject: The generated regularization object.
+
+## Functions
+
+Set regularization’s parameters. When any of the arguments are not given, previous argument values for that argument will be used.
+
+```
+Regularization:setParameters(lambda: number, regularisationMode: string): RegularizationObject
+```
+
+#### Parameters:
+
+* lambda: regularization factor
+
+* regularisationMode: the mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2

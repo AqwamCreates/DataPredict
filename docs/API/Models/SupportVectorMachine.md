@@ -20,7 +20,7 @@ SupportVectorMachine.new(maxNumberOfIterations: integer, learningRate: number, c
 
 * cValue: How strict should the model can classify the data correctly. Higher the cValue, less stricter the model can classify the data correctly.
 
-* distanceFunction: The function to calculate the cost and cost derivaties of each training. Available options are "manhattan" and "euclidean".
+* distanceFunction: The function to calculate the cost and cost derivatives of each training. Available options are "manhattan" and "euclidean".
 
 * targetCost: The cost at which the model stops training.
 

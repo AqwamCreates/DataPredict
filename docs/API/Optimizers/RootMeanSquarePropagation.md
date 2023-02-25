@@ -38,7 +38,7 @@ RootMeanSquarePropagation:reset()
 
 ## Notes:
 
-* Epsilon is used to prevent a numerator from dividing zero. Otherwise, the resulting calculation would be infinity.
+* Epsilon is used to prevent a numerator from dividing by zero. Otherwise, the resulting calculation would be infinity.
 
 * Generally, the epsilon values are usually set to very small positive decimal numbers.
 

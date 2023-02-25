@@ -50,20 +50,21 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters)
 	
 	local regularizationValue
 	
+	print(self.regularizationMode)
+	
 	if (self.regularizationMode == "L1") or (self.regularizationMode == "Lasso") then
+		
+		AbsoluteModelParameters = AqwamMatrixLibrary:applyFunction(math.abs, ModelParameters)
+		
+		SumAbsoluteModelParameters = AqwamMatrixLibrary:sum(AbsoluteModelParameters)
+		
+		regularizationValue = self.lambda * SumAbsoluteModelParameters
+		
+	elseif (self.regularizationMode == "L2") or (self.regularizationMode == "Ridge") then
 		
 		SquaredModelParameters = AqwamMatrixLibrary:power(ModelParameters, 2)
 		
 		SumSquaredModelParameters = AqwamMatrixLibrary:sum(SquaredModelParameters)
-		
-		regularizationValue = self.lambda * SumSquaredModelParameters
-		
-		
-	elseif (self.regularizationMode == "L2") or (self.regularizationMode == "Ridge") then
-		
-		AbsoluteModelParameters = AqwamMatrixLibrary:applyFunction(ModelParameters, math.abs)
-		
-		SumAbsoluteModelParameters = AqwamMatrixLibrary:sum(AbsoluteModelParameters)
 		
 		regularizationValue = self.lambda * SumSquaredModelParameters
 		
@@ -73,7 +74,7 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters)
 		
 		SumSquaredModelParameters = AqwamMatrixLibrary:sum(SquaredModelParameters)
 		
-		AbsoluteModelParameters = AqwamMatrixLibrary:applyFunction(ModelParameters, math.abs)
+		AbsoluteModelParameters = AqwamMatrixLibrary:applyFunction(math.abs, ModelParameters)
 		
 		SumAbsoluteModelParameters = AqwamMatrixLibrary:sum(AbsoluteModelParameters)
 		
@@ -94,4 +95,5 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters)
 end
 
 return Regularization
+
 

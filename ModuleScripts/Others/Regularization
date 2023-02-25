@@ -4,11 +4,11 @@ Regularization = {}
 
 Regularization.__index = Regularization
 
-local defaultRegularisationMode = "L2"
+local defaultRegularizationMode = "L2"
 
 local defaultLambda = 0.5
 
-function Regularization.new(lambda, regularisationMode)
+function Regularization.new(lambda, regularizationMode)
 	
 	local NewRegularization = {}
 	
@@ -16,7 +16,7 @@ function Regularization.new(lambda, regularisationMode)
 	
 	NewRegularization.lambda = lambda or defaultLambda
 	
-	NewRegularization.regularisationMode = regularisationMode or defaultRegularisationMode
+	NewRegularization.regularizationMode = regularizationMode or defaultRegularizationMode
 	
 	return NewRegularization
 	
@@ -92,7 +92,6 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters)
 	return regularizationValue
 	
 end
-
 
 return Regularization
 

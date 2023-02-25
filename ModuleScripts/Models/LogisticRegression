@@ -98,7 +98,7 @@ local function gradientDescent(modelParameters, featureMatrix, labelVector, sigm
 	
 end
 
-function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, lambda, sigmoidFunction, targetCost)
+function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
 	
 	local NewLogisticRegressionModel = MachineLearningBaseModel.new()
 
@@ -111,8 +111,6 @@ function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, lambda
 	NewLogisticRegressionModel.sigmoidFunction = sigmoidFunction or defaultSigmoidFunction
 
 	NewLogisticRegressionModel.targetCost = targetCost or defaultTargetCost
-	
-	NewLogisticRegressionModel.lambda = lambda or defaultLambda
 
 	NewLogisticRegressionModel.validationFeatureMatrix = nil
 
@@ -124,7 +122,7 @@ function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, lambda
 	
 end
 
-function LogisticRegressionModel:setParameters(maxNumberOfIterations, learningRate, lambda, sigmoidFunction, targetCost)
+function LogisticRegressionModel:setParameters(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -133,14 +131,18 @@ function LogisticRegressionModel:setParameters(maxNumberOfIterations, learningRa
 	self.sigmoidFunction = sigmoidFunction or self.sigmoidFunction
 
 	self.targetCost = targetCost or self.targetCost
-	
-	self.lambda = lambda or self.lambda
 
 end
 
 function LogisticRegressionModel:setOptimizer(Optimizer)
 
 	self.Optimizer = Optimizer
+
+end
+
+function LogisticRegressionModel:setRegularization(Regularization)
+
+	self.Regularization = Regularization
 
 end
 
@@ -154,11 +156,13 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 	
 	local costFunctionDerivatives
 	
-	local regularizationParameters
-	
 	local numberOfData = #featureMatrix[1]
 	
 	local delta
+	
+	local lambda
+	
+	local regularizationCost
 	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 
@@ -177,6 +181,14 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		numberOfIterations += 1
 		
 		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
+		
+		if (self.Regularization) then
+
+			lambda = self.Regularization:getLamda()
+
+			costFunctionDerivatives = AqwamMatrixLibrary:add((lambda/numberOfData), self.ModelParameters)
+
+		end
 
 		if (self.Optimizer) then 
 
@@ -187,12 +199,16 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		delta = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
 
 		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, delta)
-
-		regularizationParameters = AqwamMatrixLibrary:multiply((self.lambda/numberOfData), self.ModelParameters)
-		
-		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, costFunctionDerivatives, regularizationParameters)
 		
 		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction, self.lambda)
+		
+		if (self.Regularization) then 
+
+			regularizationCost = self.Regularization:calculateLossFunctionRegularization(self.ModelParameters)
+
+			cost = AqwamMatrixLibrary:add(cost, regularizationCost)
+
+		end
 		
 		table.insert(costArray, cost)
 		

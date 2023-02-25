@@ -43,13 +43,15 @@ local function breakFeatureMatrixToBatches(batchSize, featureMatrix, labelVector
 	
 	newFeatureMatrix = {}
 	
+	newLabelVector = {}
+	
 	local totalBatches = (numberOfWholeBatches * batchSize)
 	
 	for j = (totalBatches + 1), (#featureMatrix - totalBatches), 1 do 
 
 		table.insert(newFeatureMatrix, featureMatrix[j])
 		
-		if (labelVector) then table.insert(newFeatureMatrix, labelVector[j]) end
+		if (labelVector) then table.insert(newLabelVector, labelVector[j]) end
 
 	end
 
@@ -135,3 +137,4 @@ function GradientDescentModes:startGradientDescent(MachineLearningModel, gradien
 end
 
 return GradientDescentModes
+

@@ -106,8 +106,6 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters, num
 		
 		SquaredModelParameters = AqwamMatrixLibrary:power(ModelParameters, 2)
 		
-		AqwamMatrixLibrary:printMatrix(SquaredModelParameters)
-		
 		SumSquaredModelParameters = AqwamMatrixLibrary:sum(SquaredModelParameters)
 		
 		regularizationValue = self.lambda * SumSquaredModelParameters

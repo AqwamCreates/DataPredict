@@ -26,14 +26,6 @@ local lossFunctionList = {
 
 }
 
-local regularisationFunctionList = {
-	
-	["L1"] = function (w) return math.abs(w) end,
-
-	["L2"] = function (w) return (w)^2 end,
-	
-}
-
 local function calculateHypothesisVector(featureMatrix, modelParameters)
 	
 	return AqwamMatrixLibrary:dotProduct(featureMatrix, modelParameters)

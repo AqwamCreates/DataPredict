@@ -138,7 +138,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	local delta
 	
-	local lambda
+	local RegularizationDerivatives
 	
 	local regularizationCost
 	
@@ -162,9 +162,9 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		if (self.Regularization) then
 			
-			lambda = self.Regularization:getLambda()
+			RegularizationDerivatives = self.Regularization:calculateLossFunctionDerivativeRegularizaion(self.ModelParameters, costFunctionDerivatives)
 			
-			costFunctionDerivatives = AqwamMatrixLibrary:multiply((lambda/numberOfData), self.ModelParameters)
+			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, RegularizationDerivatives)
 
 		end
 

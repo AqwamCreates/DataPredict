@@ -6,7 +6,7 @@ Regularization.__index = Regularization
 
 local defaultRegularizationMode = "L2"
 
-local defaultLambda = 0.5
+local defaultLambda = 0.01
 
 function Regularization.new(lambda, regularizationMode)
 	
@@ -38,6 +38,50 @@ function Regularization:getLambda()
 	
 end
 
+function Regularization:calculateLossFunctionDerivativeRegularizaion(ModelParameters, CostDerivatives)
+	
+	local CostDerivativesSign
+	
+	local RegularizationDerivative
+	
+	local numberOfData = #ModelParameters
+	
+	if (self.regularizationMode == "L1") or (self.regularizationMode == "Lasso") then
+		
+		RegularizationDerivative = AqwamMatrixLibrary:multiply(self.lambda, CostDerivatives)
+		
+		RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
+	
+	elseif (self.regularizationMode == "L2") or (self.regularizationMode == "Ridge") then
+		
+		CostDerivativesSign = AqwamMatrixLibrary:applyFunction(math.sign, CostDerivatives)
+		
+		RegularizationDerivative = AqwamMatrixLibrary:multiply(self.lambda, CostDerivatives)
+		
+		RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
+		
+	elseif (self.regularizationMode == "L1+L2") or (self.regularizationMode == "ElasticNet") then
+		
+		CostDerivativesSign = AqwamMatrixLibrary:applyFunction(math.sign, CostDerivatives)
+		
+		local RegularizationDerivativePart1 = AqwamMatrixLibrary:multiply(self.lambda, CostDerivativesSign)
+		
+		local RegularizationDerivativePart2 = AqwamMatrixLibrary:multiply(self.lambda, CostDerivatives)
+		
+		RegularizationDerivative = AqwamMatrixLibrary:add(RegularizationDerivativePart1, RegularizationDerivativePart2)
+		
+		RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
+
+	else
+
+		error("Regularization Mode Does Not Exist!")
+
+	end
+	
+	return RegularizationDerivative
+	
+end
+
 function Regularization:calculateLossFunctionRegularization(ModelParameters)
 	
 	local SquaredModelParameters 
@@ -50,7 +94,7 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters)
 	
 	local regularizationValue
 	
-	print(self.regularizationMode)
+	local numberOfData = #ModelParameters
 	
 	if (self.regularizationMode == "L1") or (self.regularizationMode == "Lasso") then
 		
@@ -60,6 +104,8 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters)
 		
 		regularizationValue = self.lambda * SumAbsoluteModelParameters
 		
+		regularizationValue = AqwamMatrixLibrary:divide(regularizationValue, numberOfData)
+		
 	elseif (self.regularizationMode == "L2") or (self.regularizationMode == "Ridge") then
 		
 		SquaredModelParameters = AqwamMatrixLibrary:power(ModelParameters, 2)
@@ -67,6 +113,8 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters)
 		SumSquaredModelParameters = AqwamMatrixLibrary:sum(SquaredModelParameters)
 		
 		regularizationValue = self.lambda * SumSquaredModelParameters
+		
+		regularizationValue = AqwamMatrixLibrary:divide(regularizationValue, numberOfData)
 		
 	elseif (self.regularizationMode == "L1+L2") or (self.regularizationMode == "ElasticNet") then
 		
@@ -84,6 +132,8 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters)
 		
 		regularizationValue = regularizationValuePart1 + regularizationValuePart2
 		
+		regularizationValue = AqwamMatrixLibrary:divide(regularizationValue, numberOfData)
+		
 	else
 		
 		error("Regularization Mode Does Not Exist!")
@@ -95,5 +145,3 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters)
 end
 
 return Regularization
-
-

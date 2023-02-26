@@ -83,7 +83,7 @@ In addition, not all models require labelVector. This is mainly true for our clu
 
 # Training Cases
 
-When training the data, the cost of the training is printed out by default. Under the normal case, the cost would follow these pattern in order:
+When training the model, the cost of the training is printed out by default. Under the normal case, the cost would follow these pattern in order:
 
 1. Steadily increasing and decreasing (optional)
 

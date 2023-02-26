@@ -38,13 +38,11 @@ function Regularization:getLambda()
 	
 end
 
-function Regularization:calculateLossFunctionDerivativeRegularizaion(ModelParameters, CostDerivatives)
+function Regularization:calculateLossFunctionDerivativeRegularizaion(CostDerivatives, numberOfData)
 	
 	local CostDerivativesSign
 	
 	local RegularizationDerivative
-	
-	local numberOfData = #ModelParameters
 	
 	if (self.regularizationMode == "L1") or (self.regularizationMode == "Lasso") then
 		
@@ -82,7 +80,7 @@ function Regularization:calculateLossFunctionDerivativeRegularizaion(ModelParame
 	
 end
 
-function Regularization:calculateLossFunctionRegularization(ModelParameters)
+function Regularization:calculateLossFunctionRegularization(ModelParameters, numberOfData)
 	
 	local SquaredModelParameters 
 	
@@ -93,8 +91,6 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters)
 	local SumAbsoluteModelParameters
 	
 	local regularizationValue
-	
-	local numberOfData = #ModelParameters
 	
 	if (self.regularizationMode == "L1") or (self.regularizationMode == "Lasso") then
 		
@@ -145,3 +141,4 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters)
 end
 
 return Regularization
+

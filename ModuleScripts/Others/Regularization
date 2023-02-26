@@ -38,7 +38,7 @@ function Regularization:getLambda()
 	
 end
 
-function Regularization:calculateLossFunctionDerivativeRegularizaion(CostDerivatives, numberOfData)
+function Regularization:calculateLossFunctionDerivativeRegularizaion(ModelParameters, numberOfData)
 	
 	local CostDerivativesSign
 	
@@ -46,25 +46,25 @@ function Regularization:calculateLossFunctionDerivativeRegularizaion(CostDerivat
 	
 	if (self.regularizationMode == "L1") or (self.regularizationMode == "Lasso") then
 		
-		CostDerivativesSign = AqwamMatrixLibrary:applyFunction(math.sign, CostDerivatives)
+		CostDerivativesSign = AqwamMatrixLibrary:applyFunction(math.sign, ModelParameters)
 
-		RegularizationDerivative = AqwamMatrixLibrary:multiply(self.lambda, CostDerivatives)
+		RegularizationDerivative = AqwamMatrixLibrary:multiply(self.lambda, ModelParameters)
 		
 		RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
 	
 	elseif (self.regularizationMode == "L2") or (self.regularizationMode == "Ridge") then
 		
-		RegularizationDerivative = AqwamMatrixLibrary:multiply(self.lambda, CostDerivatives)
+		RegularizationDerivative = AqwamMatrixLibrary:multiply(self.lambda, ModelParameters)
 		
 		RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
 		
 	elseif (self.regularizationMode == "L1+L2") or (self.regularizationMode == "ElasticNet") then
 		
-		CostDerivativesSign = AqwamMatrixLibrary:applyFunction(math.sign, CostDerivatives)
+		CostDerivativesSign = AqwamMatrixLibrary:applyFunction(math.sign, ModelParameters)
 		
 		local RegularizationDerivativePart1 = AqwamMatrixLibrary:multiply(self.lambda, CostDerivativesSign)
 		
-		local RegularizationDerivativePart2 = AqwamMatrixLibrary:multiply(self.lambda, CostDerivatives)
+		local RegularizationDerivativePart2 = AqwamMatrixLibrary:multiply(self.lambda, ModelParameters)
 		
 		RegularizationDerivative = AqwamMatrixLibrary:add(RegularizationDerivativePart1, RegularizationDerivativePart2)
 		

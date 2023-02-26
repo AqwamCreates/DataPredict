@@ -97,6 +97,8 @@ Sometimes, our models can run into trouble due to a number of reasons. It may be
 
 It means that during training, the calculations may have resulted in either arithmetic underflow or overflow. To fix this, limit the max number of iterations or set a target cost. This is a hardware limitation issue.
 
+Another reason is that the calculated model parameters contain infinity values. This can be solved by feature scaling. This is issue is due to the some of the dataset values are too large.
+
 This case can also happen if any of the internal model components are calculating numbers with not a number. This issue can propagate to final output without raising any suspicion. If the "nan" value shows up after the first or second iterations, then you need to contact me regarding this issue.
 
 ## Case 2 - Cost Printing Out "inf"

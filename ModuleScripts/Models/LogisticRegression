@@ -31,15 +31,6 @@ local lossFunctionList = {
 	
 }
 
-local regularisationFunctionList = {
-
-	["L1"] = function (w) return math.abs(w) end,
-
-	["L2"] = function (w) return (w)^2 end,
-
-}
-
-
 local function calculateHypothesisVector(featureMatrix, modelParameters, sigmoidFunction)
 	
 	local numberOfData = #featureMatrix

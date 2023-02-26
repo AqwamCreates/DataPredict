@@ -36,7 +36,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Aqwam's Roblox Matrix Library](https://www.roblox.com/library/12256162800/Aqwams-Roblox-Matrix-Library)
 
-[Aqwam's Roblox Data Mining Library](Aqwam's Roblox Data Mining Library - Roblox 4)
+[Aqwam's Roblox Data Mining Library](https://www.roblox.com/library/12285117535/Aqwams-Roblox-Data-Mining-Library)
 
 ### Repository
 

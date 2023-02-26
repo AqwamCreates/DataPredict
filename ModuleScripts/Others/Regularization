@@ -46,13 +46,13 @@ function Regularization:calculateLossFunctionDerivativeRegularizaion(CostDerivat
 	
 	if (self.regularizationMode == "L1") or (self.regularizationMode == "Lasso") then
 		
+		CostDerivativesSign = AqwamMatrixLibrary:applyFunction(math.sign, CostDerivatives)
+
 		RegularizationDerivative = AqwamMatrixLibrary:multiply(self.lambda, CostDerivatives)
 		
 		RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
 	
 	elseif (self.regularizationMode == "L2") or (self.regularizationMode == "Ridge") then
-		
-		CostDerivativesSign = AqwamMatrixLibrary:applyFunction(math.sign, CostDerivatives)
 		
 		RegularizationDerivative = AqwamMatrixLibrary:multiply(self.lambda, CostDerivatives)
 		
@@ -141,3 +141,4 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters, num
 end
 
 return Regularization
+

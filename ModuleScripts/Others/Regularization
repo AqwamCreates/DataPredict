@@ -100,17 +100,19 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters, num
 		
 		regularizationValue = self.lambda * SumAbsoluteModelParameters
 		
-		regularizationValue = AqwamMatrixLibrary:divide(regularizationValue, numberOfData)
+		regularizationValue = regularizationValue / numberOfData
 		
 	elseif (self.regularizationMode == "L2") or (self.regularizationMode == "Ridge") then
 		
 		SquaredModelParameters = AqwamMatrixLibrary:power(ModelParameters, 2)
 		
+		AqwamMatrixLibrary:printMatrix(SquaredModelParameters)
+		
 		SumSquaredModelParameters = AqwamMatrixLibrary:sum(SquaredModelParameters)
 		
 		regularizationValue = self.lambda * SumSquaredModelParameters
 		
-		regularizationValue = AqwamMatrixLibrary:divide(regularizationValue, numberOfData)
+		regularizationValue = regularizationValue / numberOfData
 		
 	elseif (self.regularizationMode == "L1+L2") or (self.regularizationMode == "ElasticNet") then
 		
@@ -128,7 +130,7 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters, num
 		
 		regularizationValue = regularizationValuePart1 + regularizationValuePart2
 		
-		regularizationValue = AqwamMatrixLibrary:divide(regularizationValue, numberOfData)
+		regularizationValue = regularizationValue / numberOfData
 		
 	else
 		
@@ -136,9 +138,8 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters, num
 		
 	end
 	
-	return regularizationValue[1][1]
+	return regularizationValue
 	
 end
 
 return Regularization
-

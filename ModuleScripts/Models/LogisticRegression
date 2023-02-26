@@ -152,6 +152,8 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 	
 	local regularizationCost
 	
+	local RegularizationDerivatives
+	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 
 	if (self.ModelParameters) then
@@ -172,9 +174,9 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		
 		if (self.Regularization) then
 
-			lambda = self.Regularization:getLambda()
+			RegularizationDerivatives = self.Regularization:calculateLossFunctionDerivativeRegularizaion(self.ModelParameters, costFunctionDerivatives)
 
-			costFunctionDerivatives = AqwamMatrixLibrary:multiply((lambda/numberOfData), self.ModelParameters)
+			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, RegularizationDerivatives)
 
 		end
 

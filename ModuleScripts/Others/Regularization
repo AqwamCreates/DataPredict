@@ -143,4 +143,3 @@ function Regularization:calculateLossFunctionRegularization(ModelParameters, num
 end
 
 return Regularization
-

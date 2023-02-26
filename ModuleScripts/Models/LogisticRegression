@@ -165,7 +165,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		
 		if (self.Regularization) then
 
-			RegularizationDerivatives = self.Regularization:calculateLossFunctionDerivativeRegularizaion(costFunctionDerivatives, numberOfData)
+			RegularizationDerivatives = self.Regularization:calculateLossFunctionDerivativeRegularizaion(self.ModelParameters, numberOfData)
 
 			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, RegularizationDerivatives)
 

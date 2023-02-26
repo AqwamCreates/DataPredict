@@ -48,7 +48,7 @@ function Regularization:calculateLossFunctionDerivativeRegularizaion(ModelParame
 		
 		CostDerivativesSign = AqwamMatrixLibrary:applyFunction(math.sign, ModelParameters)
 
-		RegularizationDerivative = AqwamMatrixLibrary:multiply(self.lambda, ModelParameters)
+		RegularizationDerivative = AqwamMatrixLibrary:multiply(2, self.lambda, ModelParameters)
 		
 		RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
 	

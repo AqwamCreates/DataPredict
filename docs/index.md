@@ -36,15 +36,11 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Aqwam's Roblox Matrix Library](https://www.roblox.com/library/12256162800/Aqwams-Roblox-Matrix-Library)
 
-[//]: # ([Aqwam's Roblox Data Mining Library](https://www.roblox.com/library/12285117535/Aqwams-Roblox-Data-Mining-Library))
-
 ### Repository
 
 [Aqwam's Roblox Machine And Deep Learning Library](https://github.com/AqwamCreates/Aqwam-Roblox-Machine-And-Deep-Learning-Library)
 
 [Aqwam's Roblox Matrix Library](https://github.com/AqwamCreates/Aqwam-Roblox-Matrix-Library)
-
-[//]: # ([Aqwam's Roblox Data Mining Library](https://github.com/AqwamCreates/Aqwam-Roblox-Data-Mining-Library))
 
 ### Other Documentations
 

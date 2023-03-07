@@ -382,7 +382,7 @@ function NeuralNetworkModel:selfReinforce(featureVector, label, rewardValue, pun
 	
 	local allOutputsMatrix = forwardPropagateTable[#self.ModelParameters]
 	
-	local logisticMatrix = convertLabelVectorToLogisticMatrix(allOutputsMatrix)
+	local logisticMatrix = convertLabelVectorToLogisticMatrix(self.ModelParameters, allOutputsMatrix)
 	
 	local backwardPropagateTable = backPropagate(self.ModelParameters, logisticMatrix, forwardPropagateTable)
 	
@@ -401,3 +401,4 @@ function NeuralNetworkModel:selfReinforce(featureVector, label, rewardValue, pun
 end
 
 return NeuralNetworkModel
+

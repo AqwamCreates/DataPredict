@@ -95,7 +95,7 @@ local function backPropagate(modelParameters, logisticMatrix, forwardPropagateTa
 
 	local numberOfLayers = #modelParameters
 
-	local layerCostMatrix = AqwamMatrixLibrary:add(logisticMatrix, forwardPropagateTable[numberOfLayers])
+	local layerCostMatrix = AqwamMatrixLibrary:subtract(forwardPropagateTable[numberOfLayers], logisticMatrix)
 
 	table.insert(backpropagateTable, layerCostMatrix)
 
@@ -139,7 +139,7 @@ local function gradientDescent(learningRate, modelParameters, backpropagateTable
 
 		costFunctionDerivative = AqwamMatrixLibrary:multiply((1/numberOfData), learningRate, backpropagateTable[layer])
 
-		modelParameters[layer] = AqwamMatrixLibrary:subtract(modelParameters[layer], costFunctionDerivative)
+		modelParameters[layer] = AqwamMatrixLibrary:add(modelParameters[layer], costFunctionDerivative)
 
 	end
 
@@ -155,7 +155,7 @@ local function punish(punishValue, modelParameters, backpropagateTable)
 
 		costFunctionDerivative = AqwamMatrixLibrary:multiply(punishValue, backpropagateTable[layer])
 
-		modelParameters[layer] = AqwamMatrixLibrary:add(modelParameters[layer], costFunctionDerivative)
+		modelParameters[layer] = AqwamMatrixLibrary:subtract(modelParameters[layer], costFunctionDerivative)
 
 	end
 

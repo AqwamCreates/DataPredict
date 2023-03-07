@@ -115,12 +115,12 @@ NeuralNetwork:predict(featureMatrix: Matrix): integer
 
 * predictedValue: A value that is predicted by the model.
 
-### selfReinforce()
+### reinforce()
 
 * Reward or punish model based on the predicted output.
 
 ```
-NeuralNetwork:selfReinforce(featureVector: Matrix, label: Matrix, rewardValue: number, punishValue: number)
+NeuralNetwork:reinforce(featureVector: Matrix, label: Matrix, rewardValue: number, punishValue: number)
 ```
 
 #### Parameters:

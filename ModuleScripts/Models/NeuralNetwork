@@ -376,7 +376,7 @@ function NeuralNetworkModel:predict(featureMatrix)
 
 end
 
-function NeuralNetworkModel:selfReinforce(featureVector, label, rewardValue, punishValue)
+function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishValue)
 	
 	local forwardPropagateTable = forwardPropagate(featureVector, self.ModelParameters, self.sigmoidFunction)
 	
@@ -401,4 +401,3 @@ function NeuralNetworkModel:selfReinforce(featureVector, label, rewardValue, pun
 end
 
 return NeuralNetworkModel
-

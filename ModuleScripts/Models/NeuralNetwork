@@ -390,7 +390,7 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 	
 	if (predictedLabel == label) then
 		
-		self.ModelParameters = gradientDescent(rewardValue, self.ModelParameters, backwardPropagateTable)
+		self.ModelParameters = gradientDescent(rewardValue, self.ModelParameters, backwardPropagateTable, 1)
 		
 	else
 		
@@ -401,3 +401,4 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 end
 
 return NeuralNetworkModel
+

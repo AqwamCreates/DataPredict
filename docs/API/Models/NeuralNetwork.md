@@ -1,6 +1,6 @@
 # API Reference - Model - NeuralNetwork
 
-LogisticRegression is a supervised machine learning model that predicts values of 0 and 1 only.
+NeuralNetwork is a supervised machine learning model that predicts any number of discrete values.
 
 ## Constructors
 

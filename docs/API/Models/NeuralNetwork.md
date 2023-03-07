@@ -72,7 +72,9 @@ NeuralNetwork:setRegularization(Regularization: RegularizationObject)
 
 ### setLayers()
 
-* Set the number of layers and the neurons in each of thos layers. Number of arguments determines the layer, while the number value determines the number of neurons.
+Set the number of layers and the neurons in each of thos layers. Number of arguments determines the layer, while the number value determines the number of neurons.
+
+For example, setLayers(3,7,6) means 3 neurons at layer 1, 7 neurons at layer 2 and 6 neurons at layer 3.
 
 ```
 NeuralNetwork:setLayers(...: integer)
@@ -117,7 +119,7 @@ NeuralNetwork:predict(featureMatrix: Matrix): integer
 
 ### reinforce()
 
-* Reward or punish model based on the predicted output.
+Reward or punish model based on the predicted output.
 
 ```
 NeuralNetwork:reinforce(featureVector: Matrix, label: integer, rewardValue: number, punishValue: number)

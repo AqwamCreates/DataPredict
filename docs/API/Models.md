@@ -10,6 +10,8 @@
 
 [SupportVectorMachine](Models/SupportVectorMachine.md)
 
+[NeuralNetwork](Models/NeuralNetwork.md)
+
 ## Clustering
 
 [KMeans](Models/KMeans.md)

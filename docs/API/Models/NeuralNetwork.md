@@ -74,7 +74,7 @@ NeuralNetwork:setRegularization(Regularization: RegularizationObject)
 
 Set the number of layers and the neurons in each of thos layers. Number of arguments determines the layer, while the number value determines the number of neurons.
 
-For example, setLayers(3,7,6) means 3 neurons at layer 1, 7 neurons at layer 2 and 6 neurons at layer 3.
+For example, setLayers(3,7,6) means 3 neurons at layer 1, 7 neurons at layer 2, and 6 neurons at layer 3.
 
 ```
 NeuralNetwork:setLayers(...: integer)

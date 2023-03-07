@@ -44,7 +44,7 @@ LogisticRegression:setParameters(maxNumberOfIterations: integer, learningRate: n
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "L1" and "L2".
+* sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid".
 
 * targetCost: The cost at which the model stops training.
 

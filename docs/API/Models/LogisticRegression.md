@@ -65,7 +65,7 @@ LogisticRegression:setOptimizer(Optimizer: OptimizerObject)
 Set a regularization for the model by inputting the optimizer object.
 
 ```
-LinearRegression:setRegularization(Regularization: RegularizationObject)
+LogisticRegression:setRegularization(Regularization: RegularizationObject)
 ```
 
 #### Parameters:

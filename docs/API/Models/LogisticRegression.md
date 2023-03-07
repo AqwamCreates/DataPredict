@@ -9,7 +9,7 @@ LogisticRegression is a supervised machine learning model that predicts values o
 Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, lambda: number, sigmoidFunction: string, targetCost: number): ModelObject
+LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, sigmoidFunction: string, targetCost: number): ModelObject
 ```
 
 #### Parameters:
@@ -17,8 +17,6 @@ LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, lam
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* lambda: Regularisation factor
 
 * sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid".
 

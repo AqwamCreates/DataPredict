@@ -127,7 +127,7 @@ NeuralNetwork:reinforce(featureVector: Matrix, label: Matrix, rewardValue: numbe
 
 * featureVector: Matrix containing data.
 
-* label: Matrix containing the actual label.
+* label: Actual label.
 
 * rewardValue: How much do we reward the model if it gets the prediction correct (value between 0 and 1).
 

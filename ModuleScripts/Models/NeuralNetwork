@@ -57,7 +57,9 @@ local function convertLabelVectorToLogisticMatrix(modelParameters, labelVector)
 end
 
 local function forwardPropagate(featureMatrix, modelParameters, sigmoidFunction)
-
+	
+	local biasMatrix
+	
 	local layerZ
 
 	local layerOutput
@@ -65,17 +67,31 @@ local function forwardPropagate(featureMatrix, modelParameters, sigmoidFunction)
 	local layerMatrix
 
 	local nextLayerMatrix
+	
+	local nextLayerMatrixTransposed
 
 	local forwardPropagateTable = {}
-
-	local biasMatrix = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1, 1)
-
-	layerMatrix = AqwamMatrixLibrary:horizontalConcatenate(biasMatrix, featureMatrix)
-
-	for layer = 1, (#modelParameters), 1 do
+	
+	local inputMatrix = {}
+	
+	table.insert(inputMatrix, featureMatrix)
+	
+	for layer = 1, #modelParameters, 1 do
 		
-		nextLayerMatrix = (modelParameters[layer])
+		table.insert(inputMatrix, modelParameters[layer])
+		
+	end
+	
+	layerMatrix = inputMatrix[1]
 
+	for input = 1, (#inputMatrix - 1), 1 do
+		
+		biasMatrix = AqwamMatrixLibrary:createMatrix(#layerMatrix, 1, 1)
+
+		layerMatrix = AqwamMatrixLibrary:horizontalConcatenate(biasMatrix, layerMatrix)
+
+		nextLayerMatrix = inputMatrix[input + 1]
+		
 		layerZ = AqwamMatrixLibrary:dotProduct(layerMatrix, nextLayerMatrix)
 
 		layerMatrix = AqwamMatrixLibrary:applyFunction(sigmoidFunctionList[sigmoidFunction], layerZ)
@@ -88,7 +104,7 @@ local function forwardPropagate(featureMatrix, modelParameters, sigmoidFunction)
 
 end
 
-local function backPropagate(modelParameters, logisticMatrix, forwardPropagateTable)
+local function backPropagate(featureMatrix, modelParameters, logisticMatrix, forwardPropagateTable)
 
 	local backpropagateTable = {}
 
@@ -99,6 +115,8 @@ local function backPropagate(modelParameters, logisticMatrix, forwardPropagateTa
 	table.insert(backpropagateTable, layerCostMatrix)
 
 	local layerMatrix
+	
+	local biasMatrix
 
 	local layerMatrixTransposed
 
@@ -107,22 +125,24 @@ local function backPropagate(modelParameters, logisticMatrix, forwardPropagateTa
 	local part2
 
 	local part3
+	
+	layerMatrix = modelParameters[numberOfLayers]
+	
+	layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 
-	for layer = (numberOfLayers), 2, -1 do
+	for output = numberOfLayers, 2, -1 do
 
-		layerMatrix = modelParameters[layer]
+		part1 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
-		layerMatrixTransposed = AqwamMatrixLibrary:transpose(layerMatrix)
+		part2 = AqwamMatrixLibrary:subtract(1, forwardPropagateTable[output - 1])
 
-		part1 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrixTransposed)
-
-		part2 = AqwamMatrixLibrary:subtract(1, forwardPropagateTable[layer - 1])
-
-		part3 = AqwamMatrixLibrary:multiply(forwardPropagateTable[layer], part2)
+		part3 = AqwamMatrixLibrary:multiply(forwardPropagateTable[output], part2)
 
 		layerCostMatrix = AqwamMatrixLibrary:multiply(part1, part3)
 
 		table.insert(backpropagateTable, 1, layerCostMatrix)
+		
+		layerMatrix = modelParameters[output - 1]
 
 	end
 
@@ -249,11 +269,11 @@ function NeuralNetworkModel:setLayers(...)
 	
 	local biasMatrix
 	
-	for layer = 1, (numberOfLayers - 2), 1 do
+	for layer = 1, (numberOfLayers - 1), 1 do
 		
-		biasMatrix = AqwamMatrixLibrary:createMatrix(1, layersArray[layer + 1] + 1)
+		biasMatrix = AqwamMatrixLibrary:createMatrix(1, layersArray[layer + 1])
 		
-		matrix = AqwamMatrixLibrary:createRandomNormalMatrix(layersArray[layer], layersArray[layer + 1] + 1) -- bias layer is added
+		matrix = AqwamMatrixLibrary:createRandomNormalMatrix(layersArray[layer], layersArray[layer + 1]) -- bias layer is added
 		
 		matrix = AqwamMatrixLibrary:verticalConcatenate(biasMatrix, matrix)
 		
@@ -261,15 +281,7 @@ function NeuralNetworkModel:setLayers(...)
 		
 	end
 	
-	if (numberOfLayers > 1) then
-		
-		matrix = AqwamMatrixLibrary:createRandomNormalMatrix(layersArray[numberOfLayers - 1] + 1, layersArray[numberOfLayers])
-		
-	else
-		
-		matrix = AqwamMatrixLibrary:createRandomNormalMatrix(layersArray[numberOfLayers] + 1, layersArray[numberOfLayers])
-		
-	end
+	matrix = AqwamMatrixLibrary:createRandomNormalMatrix(layersArray[numberOfLayers - 1] + 1, layersArray[numberOfLayers])
 	
 	table.insert(self.ModelParameters, matrix)
 	
@@ -323,7 +335,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 		allOutputsMatrix = forwardPropagateTable[numberOfLayers]
 		
-		backwardPropagateTable = backPropagate(self.ModelParameters, logisticMatrix, forwardPropagateTable)
+		backwardPropagateTable = backPropagate(featureMatrix, self.ModelParameters, logisticMatrix, forwardPropagateTable)
 		
 		if (self.Regularization) then
 				

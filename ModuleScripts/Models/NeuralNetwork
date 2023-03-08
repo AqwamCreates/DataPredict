@@ -26,7 +26,7 @@ local sigmoidFunctionList = {
 	
 	["ReLU"] = function (z) return math.max(0, z) end,
 	
-	["LeakyReLU"] = function (z) return math.max((0.1 * z), z) end,
+	["LeakyReLU"] = function (z) return math.max((0.01 * z), z) end,
 	
 	["ELU"] = function (z) return if (z > 0) then z else (0.01 * (math.exp(z) - 1)) end
 
@@ -406,4 +406,3 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 end
 
 return NeuralNetworkModel
-

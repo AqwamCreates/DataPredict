@@ -248,9 +248,15 @@ function NeuralNetworkModel:setLayers(...)
 	
 	local matrix
 	
+	local biasMatrix
+	
 	for layer = 1, (numberOfLayers - 2), 1 do
 		
-		matrix = AqwamMatrixLibrary:createRandomNormalMatrix(layersArray[layer] + 1, layersArray[layer + 1] + 1) -- bias layer is added
+		biasMatrix = AqwamMatrixLibrary:createMatrix(1, layersArray[layer + 1] + 1)
+		
+		matrix = AqwamMatrixLibrary:createRandomNormalMatrix(layersArray[layer], layersArray[layer + 1] + 1) -- bias layer is added
+		
+		matrix = AqwamMatrixLibrary:verticalConcatenate(biasMatrix, matrix)
 		
 		table.insert(self.ModelParameters, matrix)
 		
@@ -274,7 +280,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	
 	if (self.ModelParameters == nil) then error("Layers are not set!")
 		
-	elseif (#self.ModelParameters[1] ~= (#featureMatrix[1] + 1)) then error("Input layer has " .. (#self.ModelParameters[1] - 1) .. " neuron(s) without the bias, but feature matrix has " .. #featureMatrix[1] .. "features!")
+	elseif (#self.ModelParameters[1] ~= (#featureMatrix[1] + 1)) then error("Input layer has " .. (#self.ModelParameters[1] - 1) .. " neuron(s) without the bias, but feature matrix has " .. #featureMatrix[1] .. " features!")
 		
 	end
 	

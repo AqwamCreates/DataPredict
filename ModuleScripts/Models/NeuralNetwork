@@ -180,7 +180,7 @@ end
 local function getLabelFromOutputVector(outputVector)
 
 	local labelsArray = outputVector[1]
-
+	
 	local highestValue = math.max(unpack(labelsArray))
 
 	local label = table.find(labelsArray, highestValue)
@@ -374,7 +374,7 @@ function NeuralNetworkModel:predict(featureMatrix)
 
 	local forwardPropagateTable = forwardPropagate(featureMatrix, self.ModelParameters, self.sigmoidFunction)
 	
-	local allOutputsMatrix = forwardPropagateTable[#self.ModelParameters]
+	local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
 	
 	local label = getLabelFromOutputVector(allOutputsMatrix)
 	
@@ -407,5 +407,4 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 end
 
 return NeuralNetworkModel
-
 

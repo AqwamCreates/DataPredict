@@ -19,23 +19,23 @@ MachineLearningBaseModel.new(): BaseModelObject
 Gets the model parameters from the base model.
 
 ```
-MachineLearningBaseModel:getModelParameters(): ModelParametersMatrix
+MachineLearningBaseModel:getModelParameters(): ModelParameters
 ```
 
 #### Returns
 
-* ModelParameters: A matrix containing model parameters fetched from the base model.
+* ModelParameters: A matrix/table containing model parameters fetched from the base model.
 
 ### setModelParameters()
 
 Set the model parameters to the base model.
 
 ```
-MachineLearningBaseModel:setModelParameters(ModelParameters: ModelParametersMatrix)
+MachineLearningBaseModel:setModelParameters(ModelParameters: ModelParameters)
 ```
 
 #### Parameters
-* ModelParameters: A matrix containing model parameters to be given to the base model.
+* ModelParameters: A matrix/table containing model parameters to be given to the base model.
 
 ### clearModelParameters()
 

@@ -24,7 +24,7 @@ Licensor may terminate this Agreement at any time if User breaches any provision
 ## Governing Law
 This Agreement shall be governed by and construed in accordance with the laws of Malaysia, without giving effect to any principles of conflicts of law.
 
-## Changes to Terms and Conditions:
+## Changes to Terms and Conditions
 Licensor reserve the right to change these terms and conditions at any time, without prior notice. User continued use of the software library after such changes will constitute your acceptance of the new terms and conditions.
 
 ## Entire Agreement

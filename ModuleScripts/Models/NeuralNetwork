@@ -408,3 +408,4 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 end
 
 return NeuralNetworkModel
+

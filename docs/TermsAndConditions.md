@@ -5,7 +5,7 @@ These terms and conditions ("Agreement") are a legal agreement between you ("Use
 ## License
 Licensor grants to User a non-exclusive, non-transferable, and revocable license to use the Library for personal and commercial use. The license is limited to the use of the Library and does not grant User any ownership rights or intellectual property rights in the Library.
 
-Prohibited Actions
+## Prohibited Actions
 User shall not:
 a) Sell, resell, distribute, sublicense, or otherwise transfer the Library, in whole or in part, to any third party, whether for profit or not;
 b) Modify, adapt, translate, reverse engineer, decompile, disassemble, or create derivative works of the Library;

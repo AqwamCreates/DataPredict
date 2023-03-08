@@ -25,7 +25,7 @@ Licensor may terminate this Agreement at any time if User breaches any provision
 This Agreement shall be governed by and construed in accordance with the laws of Malaysia, without giving effect to any principles of conflicts of law.
 
 ## Changes to Terms and Conditions
-Licensor reserve the right to change these terms and conditions at any time, without prior notice. User continued use of the software library after such changes will constitute your acceptance of the new terms and conditions.
+Licensor reserve the right to change these terms and conditions at any time, without prior notice. User continued use of the software library after such changes will constitute User's acceptance of the new terms and conditions.
 
 ## Entire Agreement
 This Agreement constitutes the entire agreement between User and Licensor with respect to the subject matter hereof and supersedes all prior or contemporaneous communications and proposals, whether oral or written, between User and Licensor.

@@ -12,7 +12,7 @@ local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
 
-local defaultSigmoidFunction = "sigmoid"
+local defaultSigmoidFunction = "ReLU"
 
 local defaultTargetCost = 0
 
@@ -406,3 +406,4 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 end
 
 return NeuralNetworkModel
+

@@ -137,7 +137,7 @@ NeuralNetwork:reinforce(featureVector: Matrix, label: integer, rewardValue: numb
 
 #### Returns:
 
-* predictedLabel: The predicted output from the model.
+* predictedValue: The predicted output from the model.
 
 ## Inherited From
 

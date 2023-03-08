@@ -32,6 +32,30 @@ local sigmoidFunctionList = {
 
 }
 
+local function convertLabelVectorToLogisticMatrix(modelParameters, labelVector)
+
+	local lastLayerNumber = #modelParameters
+
+	local layerMatrix = modelParameters[lastLayerNumber]
+
+	local numberOfNeurons = #layerMatrix[1]
+
+	local logisticMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, numberOfNeurons)
+
+	local label
+
+	for row = 1, #labelVector, 1 do
+
+		label = labelVector[row][1]
+
+		logisticMatrix[row][label] = 1
+
+	end
+
+	return logisticMatrix
+
+end
+
 local function forwardPropagate(featureMatrix, modelParameters, sigmoidFunction)
 
 	local layerZ
@@ -61,31 +85,6 @@ local function forwardPropagate(featureMatrix, modelParameters, sigmoidFunction)
 	end
 
 	return forwardPropagateTable
-
-end
-
-
-local function convertLabelVectorToLogisticMatrix(modelParameters, labelVector)
-
-	local lastLayerNumber = #modelParameters
-
-	local layerMatrix = modelParameters[lastLayerNumber]
-
-	local numberOfNeurons = #layerMatrix[1]
-
-	local logisticMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, numberOfNeurons)
-	
-	local label
-
-	for row = 1, #labelVector, 1 do
-		
-		label = labelVector[row][1]
-
-		logisticMatrix[row][label] = 1
-
-	end
-
-	return logisticMatrix
 
 end
 
@@ -407,4 +406,3 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 end
 
 return NeuralNetworkModel
-

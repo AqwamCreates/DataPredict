@@ -403,6 +403,8 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 		
 	end
 	
+	return predictedLabel
+	
 end
 
 return NeuralNetworkModel

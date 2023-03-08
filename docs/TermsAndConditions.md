@@ -7,10 +7,10 @@ Licensor grants to User a non-exclusive, non-transferable, and revocable license
 
 ## Prohibited Actions
 User shall not:
-a) Sell, resell, distribute, sublicense, or otherwise transfer the Library, in whole or in part, to any third party, whether for profit or not;
-b) Modify, adapt, translate, reverse engineer, decompile, disassemble, or create derivative works of the Library;
-c) Remove or alter any copyright, trademark, or other proprietary notices or labels contained in the Library;
-d) Use the Library in any manner that violates any applicable laws or regulations.
+* Sell, resell, distribute, sublicense, or otherwise transfer the Library, in whole or in part, to any third party, whether for profit or not;
+* Modify, adapt, translate, reverse engineer, decompile, disassemble, or create derivative works of the Library;
+* Remove or alter any copyright, trademark, or other proprietary notices or labels contained in the Library;
+* Use the Library in any manner that violates any applicable laws or regulations.
 
 ## Liability
 The Library is provided "AS IS" and without warranty of any kind. Licensor shall not be liable for any damages or losses, including but not limited to direct, indirect, incidental, consequential, or punitive damages arising out of the use or inability to use the Library.
@@ -27,4 +27,4 @@ This Agreement shall be governed by and construed in accordance with the laws of
 ## Entire Agreement
 This Agreement constitutes the entire agreement between User and Licensor with respect to the subject matter hereof and supersedes all prior or contemporaneous communications and proposals, whether oral or written, between User and Licensor.
 
-By using the Library, User agrees to be bound by the terms of this Agreement. If User does not agree to the terms of this Agreement, User shall not use the Library
+By using the Library, User agrees to be bound by the terms of this Agreement. If User does not agree to the terms of this Agreement, User shall not use the Library.

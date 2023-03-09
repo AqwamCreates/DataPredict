@@ -17,7 +17,6 @@ The Library is provided "AS IS" and without warranty of any kind. Licensor shall
 
 ## Ownership and Credit
 * User acknowledges that Licensor owns all rights, title, and interest in and to the Library, and User shall not claim ownership of the Library or any part thereof. User shall credit Licensor in any publication or presentation that uses the Library.
-* The User must display the credit or source information to the public if the Library is used in commercial purposes.
 * If the User remove the credits or source information without the Licensor's permission, the User must pay a fine based on losses as a result from not displaying the credit or source information.
 
 ## Termination

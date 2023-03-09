@@ -56,6 +56,10 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Aqwam's Roblox Matrix Library](https://robloxmatrixl.substack.com/p/directory)
 
+## Version History
+
+Have a look at this library's update progress [here](VersionHistory/VersionHistory.md)
+
 ## Terms And Conditions
 
 By using this library, you agree to comply with our [Terms and Conditions](TermsAndConditions.md).

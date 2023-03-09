@@ -34,6 +34,10 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Links
 
+## Packages - Recommended For Constant Updates
+
+[DataPredict Library](https://www.roblox.com/library/12727977273/DataPredict-Library)
+
 ### ModuleScripts
 
 [Aqwam's Roblox Machine And Deep Learning Library](https://create.roblox.com/marketplace/asset/12591886004/Aqwams-Roblox-Machine-And-Deep-Learning-Library)

@@ -19,8 +19,9 @@ The Library is provided "AS IS" and without warranty of any kind. Licensor shall
 * User acknowledges that Licensor owns all rights, title, and interest in and to the Library, and User shall not claim ownership of the Library or any part thereof. User shall credit Licensor in any publication or presentation that uses the Library.
 * If the User remove the credits or source information without the Licensor's permission, the User must pay a fine based on losses as a result from not displaying the credit or source information.
 
-## Termination
-Licensor may terminate this Agreement at any time if User breaches any provision of this Agreement. Upon termination, User shall immediately cease all use of the Library and destroy all copies of the Library in its possession.
+## Removal of Credit
+* If the User wish to remove the credits or source information from the User's publication or presentation that uses the Library, the User must seek the Licensor's confirmation that the library has been removed.
+* Once the Licensor have confirmed that the library has been removed, the User may remove the credits or source information in any publication or presentation that uses the Library.
 
 ## Governing Law
 This Agreement shall be governed by and construed in accordance with the laws of Malaysia, without giving effect to any principles of conflicts of law.
@@ -28,9 +29,8 @@ This Agreement shall be governed by and construed in accordance with the laws of
 ## Changes to Terms and Conditions
 Licensor reserve the right to change these terms and conditions at any time, without prior notice. User continued use of the software library after such changes will constitute User's acceptance of the new terms and conditions.
 
-## Removal of Credit
-* If the User wish to remove the credits or source information from the User's publication or presentation that uses the Library, the User must seek the Licensor's confirmation that the library has been removed.
-* Once the Licensor have confirmed that the library has been removed, the User may remove the credits or source information in any publication or presentation that uses the Library.
+## Termination
+Licensor may terminate this Agreement at any time if User breaches any provision of this Agreement. Upon termination, User shall immediately cease all use of the Library and destroy all copies of the Library in its possession.
 
 ## Entire Agreement
 This Agreement constitutes the entire agreement between User and Licensor with respect to the subject matter hereof and supersedes all prior or contemporaneous communications and proposals, whether oral or written, between User and Licensor.

@@ -40,7 +40,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [DataPredict Library](https://www.roblox.com/library/12727977273/DataPredict-Library)
 
-[MatrixL (Matrix Library)](https://create.roblox.com/marketplace/asset/12728472338/MatrixL-Aqwams-Matrix-Library)
+[MatrixL (Matrix Library)](https://www.roblox.com/library/12728472338/MatrixL-Aqwams-Roblox-Matrix-Library)
 
 ### ModuleScripts
 

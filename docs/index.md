@@ -46,7 +46,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### Repository
 
-[Aqwam's Roblox Machine And Deep Learning Library](https://github.com/AqwamCreates/Aqwam-Roblox-Machine-And-Deep-Learning-Library)
+[DataPredict Library](https://github.com/AqwamCreates/Aqwam-Roblox-Machine-And-Deep-Learning-Library)
 
 [Aqwam's Roblox Matrix Library](https://github.com/AqwamCreates/Aqwam-Roblox-Matrix-Library)
 

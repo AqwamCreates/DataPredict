@@ -58,7 +58,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Version History
 
-Have a look at this library's update progress [here](VersionHistory/VersionHistory.md)
+Have a look at this library's update progress [here](VersionHistory/VersionHistory.md)!
 
 ## Terms And Conditions
 

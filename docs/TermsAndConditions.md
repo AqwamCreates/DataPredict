@@ -28,7 +28,7 @@ This Agreement shall be governed by and construed in accordance with the laws of
 ## Changes to Terms and Conditions
 Licensor reserve the right to change these terms and conditions at any time, without prior notice. User continued use of the software library after such changes will constitute User's acceptance of the new terms and conditions.
 
-## Removal of Library
+## Removal of Credit
 * If the User wish to remove the credits or source information from the User's publication or presentation that uses the Library, the User must seek the Licensor's confirmation that the library has been removed.
 * Once the Licensor have confirmed that the library has been removed, the User may remove the credits or source information in any publication or presentation that uses the Library.
 

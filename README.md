@@ -28,6 +28,6 @@ GIVE CREDIT AND SOURCE WHEN USING THIS LIBRARY IF YOUR USAGE FALLS UNDER ONE OF 
 	
 --------------------------------------------------------------------
 
-View the documentation here: https://aqwamcreates.github.io/Aqwam-Roblox-Machine-And-Deep-Learning-Library/
+View the documentation here: https://aqwamcreates.github.io/DataPredict/
 
 By using this library, you agree to comply with our [Terms and Conditions](docs/TermsAndConditions.md).

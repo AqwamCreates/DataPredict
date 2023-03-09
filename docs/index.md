@@ -4,6 +4,8 @@
 
 Current Version: 1.3.1
 
+DataPredictLibrary is a machine and deep learning library for Roblox.
+
 This project is created to address the lack of machine and deep learning libraries as well as the inflexibility of the available ones on Roblox. It is also a way for me to apply my machine and deep learning knowledge into its physical form.
 
 If there are any suggestions or issues for this library, don't be afraid to reach out to me at my [LinkedIn](https://www.linkedin.com/in/aqwam-harish-aiman/) or in this [DevForum](https://devforum.roblox.com/t/beta-mdll-machine-and-deep-learning-library-includes-optimizers-retrainable-models-and-more/2196446?u=myoriginsworkshop) thread.

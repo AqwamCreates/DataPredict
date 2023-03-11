@@ -64,4 +64,4 @@ Have a look at this library's update progress [here](VersionHistory/VersionHisto
 
 ## Terms And Conditions
 
-By using this library, you agree to our [Terms and Conditions](TermsAndConditions.md).
+By using or storing this library, you agree to our [Terms and Conditions](TermsAndConditions.md).

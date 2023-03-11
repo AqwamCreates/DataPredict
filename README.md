@@ -30,4 +30,4 @@ GIVE CREDIT AND SOURCE WHEN USING THIS LIBRARY IF YOUR USAGE FALLS UNDER ONE OF 
 
 View the documentation here: https://aqwamcreates.github.io/DataPredict/
 
-By using or possesing copies of this library, you agree to our [Terms and Conditions](docs/TermsAndConditions.md).
+By using or possesing any copies of this library, you agree to our [Terms and Conditions](docs/TermsAndConditions.md).

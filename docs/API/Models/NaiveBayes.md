@@ -1,4 +1,4 @@
-# API Reference - Model - NaiveBayes
+# [API Reference](../../API.md) - [Models](../Models.md) - NaiveBayes
 
 NaiveBayes is an supervised machine learning model that predicts which classes that the input belongs to using probability.
 

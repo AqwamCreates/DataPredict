@@ -1,4 +1,4 @@
-# API Reference - Models - LinearRegression
+# [API Reference](../../API.md) - [Models](../Models.md) - LinearRegression
 
 LinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ).
 

@@ -1,4 +1,4 @@
-# API Reference - Model - LogisticRegression
+# [API Reference](../../API.md) - [Models](../Models.md) - LogisticRegression
 
 LogisticRegression is a supervised machine learning model that predicts values of 0 and 1 only.
 

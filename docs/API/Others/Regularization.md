@@ -1,4 +1,4 @@
-# API Reference - Others - Regularization
+# [API Reference](../../API.md) - [Others](../Others.md) - Regularization
 
 ## Constructors
 

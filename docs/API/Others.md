@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Others](../Others.md)
+# [API Reference](../../API.md) - Others
 
 [ModelChecking](Others/ModelChecking.md)
 

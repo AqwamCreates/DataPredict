@@ -28,11 +28,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## API Reference
 
-[Models](API/Models.md)
-
-[Optimizers](API/Optimizers.md)
-
-[Others](API/Others.md)
+[API Reference](API.md)
 
 ## Links
 

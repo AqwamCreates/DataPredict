@@ -1,4 +1,4 @@
-# API Reference - Model - SupportVectorMachine
+# [API Reference](../../API.md) - [Models](../Models.md) - SupportVectorMachine
 
 SupportVectorMachine is a supervised machine learning model that predicts values of -1 and 1 only. It assumes that the data is linearly seperable.
 

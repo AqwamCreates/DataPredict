@@ -1,4 +1,4 @@
-# API Reference - Optimizers
+# [API Reference](../../API.md) - Optimizers
 
 [AdaptiveGradient](Optimizers/AdaptiveGradient.md) - a.k.a Adagrad
 

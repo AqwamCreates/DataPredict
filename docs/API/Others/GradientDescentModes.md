@@ -1,4 +1,4 @@
-# API Reference - Others - Gradient Descent Modes
+# [API Reference](../../API.md) - [Others](../Others.md) - Gradient Descent Modes
 
 ## Functions
 

@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - Models
+# [API Reference](../API.md) - Models
 
 ## Regression
 

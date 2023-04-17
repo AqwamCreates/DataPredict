@@ -18,11 +18,7 @@ local defaultDistanceFunction = "manhattan"
 
 local defaultStopWhenModelParametersDoesNotChange = false
 
-local defaultSetInitialClustersOnDataPoints = true
-
 local defaultSetTheCentroidsDistanceFarthest = false
-
-local defaultLearningRate = 0.3
 
 local distanceFunctionList = {
 
@@ -354,7 +350,11 @@ function KMedoidsModel:train(featureMatrix)
 	
 	local numberOfIterations = 0
 	
-	local featureRow
+	local featureRowVector
+	
+	local medoidRowVector
+	
+	local areSameVectors
 	
 	if (self.ModelParameters) then
 		
@@ -368,17 +368,21 @@ function KMedoidsModel:train(featureMatrix)
 	
 	for medoid = 1, self.numberOfClusters, 1 do
 		
+		medoidRowVector = {self.ModelParameters[medoid]}
+		
 		for row = 1, #featureMatrix, 1 do
 			
-			numberOfIterations += 1
+			featureRowVector = {featureMatrix[row]}
 			
-			featureRow = {featureMatrix[row]}
+			areSameVectors = AqwamMatrixLibrary:areMatricesEqual(medoidRowVector, featureRowVector)
+			
+			if (areSameVectors) then continue end
 			
 			PreviousModelParameters = self.ModelParameters
 
 			previousCost = cost
 			
-			self.ModelParameters[medoid] = featureRow[1]
+			self.ModelParameters[medoid] = featureRowVector[1]
 
 			cost = calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
 
@@ -391,6 +395,8 @@ function KMedoidsModel:train(featureMatrix)
 			end
 
 			table.insert(costArray, cost)
+			
+			numberOfIterations += 1
 
 			BaseModel:printCostAndNumberOfIterations(cost, numberOfIterations, self.IsOutputPrinted)
 			

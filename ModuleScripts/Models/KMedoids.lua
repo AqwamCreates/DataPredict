@@ -302,21 +302,21 @@ end
 
 function KMedoidsModel.new(maxNumberOfIterations, numberOfClusters, distanceFunction, targetCost, setTheCentroidsDistanceFarthest)
 	
-	local NewKMeansModel = BaseModel.new()
+	local NewKMedoidsModel = BaseModel.new()
 	
-	setmetatable(NewKMeansModel, KMedoidsModel)
+	setmetatable(NewKMedoidsModel, KMedoidsModel)
 	
-	NewKMeansModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewKMedoidsModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
-	NewKMeansModel.targetCost = targetCost or defaultTargetCost
+	NewKMedoidsModel.targetCost = targetCost or defaultTargetCost
 
-	NewKMeansModel.distanceFunction = distanceFunction or defaultDistanceFunction
+	NewKMedoidsModel.distanceFunction = distanceFunction or defaultDistanceFunction
 
-	NewKMeansModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
+	NewKMedoidsModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
 	
-	NewKMeansModel.setTheCentroidsDistanceFarthest = BaseModel:GetBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
+	NewKMedoidsModel.setTheCentroidsDistanceFarthest = BaseModel:GetBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
 	
-	return NewKMeansModel
+	return NewKMedoidsModel
 	
 end
 

@@ -366,46 +366,52 @@ function KMedoidsModel:train(featureMatrix)
 		
 	end
 	
-	for medoid = 1, self.numberOfClusters, 1 do
-		
-		medoidRowVector = {self.ModelParameters[medoid]}
-		
+	for iteration = 1, self.numberOfClusters, 1 do
+
 		for row = 1, #featureMatrix, 1 do
-			
+
 			featureRowVector = {featureMatrix[row]}
-			
-			areSameVectors = AqwamMatrixLibrary:areMatricesEqual(medoidRowVector, featureRowVector)
-			
-			if (areSameVectors) then continue end
-			
-			PreviousModelParameters = self.ModelParameters
 
-			previousCost = cost
-			
-			self.ModelParameters[medoid] = featureRowVector[1]
+			for medoid = 1, self.numberOfClusters, 1 do
 
-			cost = calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
+				medoidRowVector = {self.ModelParameters[medoid]}
 
-			if (cost > previousCost) then
+				areSameVectors = AqwamMatrixLibrary:areMatricesEqual(medoidRowVector, featureRowVector)
 
-				self.ModelParameters = PreviousModelParameters
+				if (areSameVectors) then continue end
 
-				cost = previousCost
+				PreviousModelParameters = self.ModelParameters
+
+				previousCost = cost
+
+				self.ModelParameters[medoid] = featureRowVector[1]
+
+				cost = calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
+
+				if (cost > previousCost) then
+
+					self.ModelParameters = PreviousModelParameters
+
+					cost = previousCost
+
+				end
+
+				table.insert(costArray, cost)
+
+				numberOfIterations += 1
+
+				BaseModel:printCostAndNumberOfIterations(cost, numberOfIterations, self.IsOutputPrinted)
+
+				if (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) then break end
 
 			end
 
-			table.insert(costArray, cost)
-			
-			numberOfIterations += 1
-
-			BaseModel:printCostAndNumberOfIterations(cost, numberOfIterations, self.IsOutputPrinted)
-			
 			if (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) then break end
-			
+
 		end
-		
+
 		if (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) then break end
-		
+
 	end
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end

@@ -22,5 +22,5 @@
 
 ## BaseModels
 
-[MachineLearningBaseModel](Models/MachineLearningBaseModel.md)
+[BaseModel](Models/BaseModel.md)
 

@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - MachineLearningBaseModel
+# [API Reference](../../API.md) - [Models](../Models.md) - BaseModel
 
 The base model for all machine and deep learning models.
 

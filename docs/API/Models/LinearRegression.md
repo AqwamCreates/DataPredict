@@ -106,4 +106,4 @@ LinearRegression:predict(featureMatrix: Matrix): number
 
 ## Inherited From
 
-* [MachineLearningBaseModel](MachineLearningBaseModel.md)
+* [BaseModel](BaseModel.md)

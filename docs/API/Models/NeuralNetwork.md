@@ -141,4 +141,4 @@ NeuralNetwork:reinforce(featureVector: Matrix, label: integer, rewardValue: numb
 
 ## Inherited From
 
-* [MachineLearningBaseModel](MachineLearningBaseModel.md)
+* [BaseModel](BaseModel.md)

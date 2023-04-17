@@ -104,4 +104,4 @@ KMeans:predict(featureMatrix: Matrix): integer, number
 
 ## Inherited From
 
-* [MachineLearningBaseModel](MachineLearningBaseModel.md)
+* [BaseModel](BaseModel.md)

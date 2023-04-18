@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - LogisticRegressionOneVsAll
 
-LogisticRegression is a supervised machine learning model that predicts values of 0 and 1 only.
+LogisticRegressionOneVsAll is a supervised machine learning model that predicts values of positive integers. It uses multiple logistic regression models to produce multi-class prediction capabilities for this model.
 
 ## Constructors
 

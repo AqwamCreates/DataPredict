@@ -8,6 +8,8 @@
 
 [LogisticRegression](Models/LogisticRegression.md)
 
+[LogisticRegressionOneVsAll](Models/LogisticRegressionOneVsAll.md)
+
 [SupportVectorMachine](Models/SupportVectorMachine.md)
 
 [NeuralNetwork](Models/NeuralNetwork.md)

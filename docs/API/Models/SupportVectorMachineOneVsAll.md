@@ -50,6 +50,18 @@ SupportVectorMachineOneVsAll:setParameters(maxNumberOfIterations: integer, learn
 
 * targetCost: The cost at which the model stops training.
 
+### setCValue()
+
+Set how hard the margin should be.
+
+```
+SupportVectorMachine:setCValue(cValue: number)
+```
+
+#### Parameters:
+
+* cValue: The value of c to be used.
+
 ### setOptimizer()
 
 Set optimizer for the model by inputting the optimizer object.

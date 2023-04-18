@@ -327,11 +327,11 @@ function KMeansModel.new(maxNumberOfIterations, learningRate, numberOfClusters, 
 
 	NewKMeansModel.learningRate = learningRate or defaultLearningRate
 	
-	NewKMeansModel.stopWhenModelParametersDoesNotChange =  MachineLearningBaseModel:GetBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, defaultStopWhenModelParametersDoesNotChange)
+	NewKMeansModel.stopWhenModelParametersDoesNotChange =  MachineLearningBaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, defaultStopWhenModelParametersDoesNotChange)
 
-	NewKMeansModel.setInitialClustersOnDataPoints =  MachineLearningBaseModel:GetBooleanOrDefaultOption(setInitialClustersOnDataPoints, defaultSetInitialClustersOnDataPoints)
+	NewKMeansModel.setInitialClustersOnDataPoints =  MachineLearningBaseModel:getBooleanOrDefaultOption(setInitialClustersOnDataPoints, defaultSetInitialClustersOnDataPoints)
 	
-	NewKMeansModel.setTheCentroidsDistanceFarthest = MachineLearningBaseModel:GetBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
+	NewKMeansModel.setTheCentroidsDistanceFarthest = MachineLearningBaseModel:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
 	
 	return NewKMeansModel
 	
@@ -349,11 +349,11 @@ function KMeansModel:setParameters(maxNumberOfIterations, learningRate, numberOf
 
 	self.learningRate = learningRate or self.learningRate
 
-	self.stopWhenModelParametersDoesNotChange =  MachineLearningBaseModel:GetBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
+	self.stopWhenModelParametersDoesNotChange =  MachineLearningBaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
 
-	self.setInitialClustersOnDataPoints =  MachineLearningBaseModel:GetBooleanOrDefaultOption(setInitialClustersOnDataPoints, self.setInitialClustersOnDataPoints)
+	self.setInitialClustersOnDataPoints =  MachineLearningBaseModel:getBooleanOrDefaultOption(setInitialClustersOnDataPoints, self.setInitialClustersOnDataPoints)
 
-	self.setTheCentroidsDistanceFarthest =  MachineLearningBaseModel:GetBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
+	self.setTheCentroidsDistanceFarthest =  MachineLearningBaseModel:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
 	
 end
 

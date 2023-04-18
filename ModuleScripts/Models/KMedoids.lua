@@ -314,7 +314,7 @@ function KMedoidsModel.new(maxNumberOfIterations, numberOfClusters, distanceFunc
 
 	NewKMedoidsModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
 	
-	NewKMedoidsModel.setTheCentroidsDistanceFarthest = BaseModel:GetBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
+	NewKMedoidsModel.setTheCentroidsDistanceFarthest = BaseModel:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
 	
 	return NewKMedoidsModel
 	
@@ -330,7 +330,7 @@ function KMedoidsModel:setParameters(maxNumberOfIterations, numberOfClusters, di
 
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 
-	self.setTheCentroidsDistanceFarthest =  BaseModel:GetBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
+	self.setTheCentroidsDistanceFarthest =  BaseModel:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
 	
 end
 

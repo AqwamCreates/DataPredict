@@ -79,7 +79,7 @@ function MachineLearningBaseModel:setPrintOutput(option)
 	
 end
 
-function MachineLearningBaseModel:GetBooleanOrDefaultOption(boolean, defaultBoolean)
+function MachineLearningBaseModel:getBooleanOrDefaultOption(boolean, defaultBoolean)
 	
 	if (boolean == true) then
 		
@@ -98,7 +98,7 @@ function MachineLearningBaseModel:GetBooleanOrDefaultOption(boolean, defaultBool
 end
 
 
-function MachineLearningBaseModel:Destroy()
+function MachineLearningBaseModel:destroy()
 	
 	setmetatable(self, nil)
 	
@@ -109,5 +109,6 @@ function MachineLearningBaseModel:Destroy()
 end
 
 return MachineLearningBaseModel
+
 
 

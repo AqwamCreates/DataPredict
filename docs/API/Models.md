@@ -12,6 +12,8 @@
 
 [SupportVectorMachine](Models/SupportVectorMachine.md)
 
+[SupportVectorMachineOneVsAll](Models/SupportVectorMachineOneVsAll.md)
+
 [NeuralNetwork](Models/NeuralNetwork.md)
 
 ## Clustering

@@ -55,7 +55,7 @@ SupportVectorMachine:setParameters(maxNumberOfIterations: integer, learningRate:
 Set how hard the margin should be.
 
 ```
-SupportVectorMachine:setOptimizer(cValue: number)
+SupportVectorMachine:setCValue(cValue: number)
 ```
 
 #### Parameters:

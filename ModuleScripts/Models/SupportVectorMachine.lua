@@ -96,7 +96,7 @@ local function gradientDescent(modelParameters, featureMatrix, labelVector, dist
 
 	local hypothesisVector = AqwamMatrixLibrary:dotProduct(featureMatrix, modelParameters)
 
-	local calculatedError = AqwamMatrixLibrary:subtract(hypothesisVector, labelVector)
+	local calculatedError = AqwamMatrixLibrary:add(hypothesisVector, labelVector)
 	
 	local calculatedErrorWithFeatureMatrix = AqwamMatrixLibrary:multiply(calculatedError, featureMatrix)
 
@@ -233,3 +233,4 @@ function SupportVectorMachineModel:predict(featureMatrix)
 end
 
 return SupportVectorMachineModel
+

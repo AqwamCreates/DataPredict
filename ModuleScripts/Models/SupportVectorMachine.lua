@@ -1,10 +1,10 @@
-local MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
+local BaseModel = require(script.Parent.BaseModel)
 
 SupportVectorMachineModel = {}
 
 SupportVectorMachineModel.__index = SupportVectorMachineModel
 
-setmetatable(SupportVectorMachineModel, MachineLearningBaseModel)
+setmetatable(SupportVectorMachineModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
@@ -110,7 +110,7 @@ end
 
 function SupportVectorMachineModel.new(maxNumberOfIterations, learningRate, cValue, distanceFunction, targetCost)
 	
-	local NewSupportVectorMachine = MachineLearningBaseModel.new()
+	local NewSupportVectorMachine = BaseModel.new()
 	
 	setmetatable(NewSupportVectorMachine, SupportVectorMachineModel)
 	
@@ -151,6 +151,12 @@ function SupportVectorMachineModel:setParameters(maxNumberOfIterations, learning
 	self.distanceFunction = distanceFunction or self.distanceFunction
 
 	self.targetCost = targetCost or self.targetCost
+
+end
+
+function SupportVectorMachineModel:setCValue(cValue)
+
+	self.cValue = cValue or self.cValue
 
 end
 
@@ -198,7 +204,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 		
 		table.insert(costArray, cost)
 		
-		MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIterations, self.IsOutputPrinted)
+		BaseModel:printCostAndNumberOfIterations(cost, numberOfIterations, self.IsOutputPrinted)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 
@@ -227,4 +233,3 @@ function SupportVectorMachineModel:predict(featureMatrix)
 end
 
 return SupportVectorMachineModel
-

@@ -55,14 +55,12 @@ KMedoids:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer
 Train the model.
 
 ```
-KMedoids:train(featureMatrix: Matrix, labelVector: Matrix)
+KMedoids:train(featureMatrix: Matrix)
 ```
 
 #### Parameters:
 
 * featureMatrix: Matrix containing all data.
-
-* labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
 #### Returns:
 

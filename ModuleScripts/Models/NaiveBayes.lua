@@ -1,10 +1,10 @@
-local MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
+local BaseModel = require(script.Parent.BaseModel)
 
 NaiveBayesModel = {}
 
 NaiveBayesModel.__index = NaiveBayesModel
 
-setmetatable(NaiveBayesModel, MachineLearningBaseModel)
+setmetatable(NaiveBayesModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
@@ -110,7 +110,7 @@ end
 
 function NaiveBayesModel.new()
 	
-	local NewNaiveBayesModel = MachineLearningBaseModel.new()
+	local NewNaiveBayesModel = BaseModel.new()
 	
 	setmetatable(NewNaiveBayesModel, NaiveBayesModel)
 	

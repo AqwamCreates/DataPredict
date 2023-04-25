@@ -1,7 +1,9 @@
 local BaseModel = require(script.Parent.BaseModel)
 
 local ExpectationMaximizationModel = {}
+
 ExpectationMaximizationModel.__index = ExpectationMaximizationModel
+
 setmetatable(ExpectationMaximizationModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
@@ -205,7 +207,7 @@ local function fetchBestNumberOfClusters(featureMatrix, epsilon, targetCost)
 	
 	local numberOfClusters = 2 -- Start with two clusters
 	
-	local bestBIC = -math.huge
+	local bestBayesianInformationCriterion = -math.huge
 	
 	local bestNumberOfClusters = numberOfClusters
 
@@ -213,9 +215,9 @@ local function fetchBestNumberOfClusters(featureMatrix, epsilon, targetCost)
 		
 		local bayesianInformationCriterion = getBayesianInformationCriterion(featureMatrix, epsilon, numberOfClusters)
 
-		if (bayesianInformationCriterion > bestBIC) then
+		if (bayesianInformationCriterion > bestBayesianInformationCriterion) then
 			
-			bestBIC = bayesianInformationCriterion
+			bestBayesianInformationCriterion = bayesianInformationCriterion
 			
 			bestNumberOfClusters = numberOfClusters
 			

@@ -118,12 +118,6 @@ function SupportVectorMachineOneVsAllModel:setOptimizer(Optimizer)
 
 end
 
-function SupportVectorMachineOneVsAllModel:setRegularization(Regularization)
-
-	self.Regularization = Regularization
-
-end
-
 function SupportVectorMachineOneVsAllModel:train(featureMatrix, labelVector)
 	
 	local classesList = getClassesList(labelVector)
@@ -188,11 +182,13 @@ function SupportVectorMachineOneVsAllModel:train(featureMatrix, labelVector)
 
 			cost = SupportVectorMachineModel:train(featureMatrix, binaryLabelVector)
 			
-			totalCost += cost[1]
+			cost = cost[1]
+			
+			totalCost += cost
 			
 		end
 		
-		if self.IsOutputPrinted then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost) end
+		if self.IsOutputPrinted then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. cost) end
 		
 		table.insert(costArray, totalCost)
 

@@ -204,7 +204,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 		
 		table.insert(costArray, cost)
 		
-		BaseModel:printCostAndNumberOfIterations(cost, numberOfIterations, self.IsOutputPrinted)
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 
@@ -233,4 +233,3 @@ function SupportVectorMachineModel:predict(featureMatrix)
 end
 
 return SupportVectorMachineModel
-

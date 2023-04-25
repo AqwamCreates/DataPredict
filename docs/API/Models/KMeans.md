@@ -71,14 +71,12 @@ KMeans:setParameters(maxNumberOfIterations: integer, learningRate: number, numbe
 Train the model.
 
 ```
-KMeans:train(featureMatrix: Matrix, labelVector: Matrix)
+KMeans:train(featureMatrix: Matrix)
 ```
 
 #### Parameters:
 
 * featureMatrix: Matrix containing all data.
-
-* labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
 #### Returns:
 

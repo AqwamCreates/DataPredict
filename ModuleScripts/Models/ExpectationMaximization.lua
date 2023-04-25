@@ -268,21 +268,16 @@ end
 
 function ExpectationMaximizationModel:train(featureMatrix)
 
-	local incompletes = {}
 	local costArray = {}
 	local cost = math.huge
 	local numberOfIterations = 0
-	local meanMatrixMatrix
-	local probabilitiesMatrix
-
-	self.epsilon = self.epsilon or defaultEpsilon
+	local meanMatrix
 
 	if (self.ModelParameters) then
 
-		meanMatrixMatrix = self.ModelParameters[1]
-		probabilitiesMatrix = self.ModelParameters[2]
+		meanMatrix = self.ModelParameters[1]
 
-		if (#featureMatrix[1] ~= #meanMatrixMatrix[1]) then
+		if (#featureMatrix[1] ~= #meanMatrix[1]) then
 			error("The number of features are not the same as the model parameters!")
 		end
 

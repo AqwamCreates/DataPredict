@@ -1,10 +1,10 @@
-local MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
+local BaseModel = require(script.Parent.BaseModel)
 
 KMeansModel = {}
 
 KMeansModel.__index = KMeansModel
 
-setmetatable(KMeansModel, MachineLearningBaseModel)
+setmetatable(KMeansModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
@@ -313,7 +313,7 @@ end
 
 function KMeansModel.new(maxNumberOfIterations, learningRate, numberOfClusters, distanceFunction, targetCost, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest, stopWhenModelParametersDoesNotChange)
 	
-	local NewKMeansModel = MachineLearningBaseModel.new()
+	local NewKMeansModel = BaseModel.new()
 	
 	setmetatable(NewKMeansModel, KMeansModel)
 	
@@ -327,11 +327,11 @@ function KMeansModel.new(maxNumberOfIterations, learningRate, numberOfClusters, 
 
 	NewKMeansModel.learningRate = learningRate or defaultLearningRate
 	
-	NewKMeansModel.stopWhenModelParametersDoesNotChange =  MachineLearningBaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, defaultStopWhenModelParametersDoesNotChange)
+	NewKMeansModel.stopWhenModelParametersDoesNotChange =  BaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, defaultStopWhenModelParametersDoesNotChange)
 
-	NewKMeansModel.setInitialClustersOnDataPoints =  MachineLearningBaseModel:getBooleanOrDefaultOption(setInitialClustersOnDataPoints, defaultSetInitialClustersOnDataPoints)
+	NewKMeansModel.setInitialClustersOnDataPoints =  BaseModel:getBooleanOrDefaultOption(setInitialClustersOnDataPoints, defaultSetInitialClustersOnDataPoints)
 	
-	NewKMeansModel.setTheCentroidsDistanceFarthest = MachineLearningBaseModel:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
+	NewKMeansModel.setTheCentroidsDistanceFarthest = BaseModel:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
 	
 	return NewKMeansModel
 	
@@ -349,11 +349,11 @@ function KMeansModel:setParameters(maxNumberOfIterations, learningRate, numberOf
 
 	self.learningRate = learningRate or self.learningRate
 
-	self.stopWhenModelParametersDoesNotChange =  MachineLearningBaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
+	self.stopWhenModelParametersDoesNotChange =  BaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
 
-	self.setInitialClustersOnDataPoints =  MachineLearningBaseModel:getBooleanOrDefaultOption(setInitialClustersOnDataPoints, self.setInitialClustersOnDataPoints)
+	self.setInitialClustersOnDataPoints =  BaseModel:getBooleanOrDefaultOption(setInitialClustersOnDataPoints, self.setInitialClustersOnDataPoints)
 
-	self.setTheCentroidsDistanceFarthest =  MachineLearningBaseModel:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
+	self.setTheCentroidsDistanceFarthest =  BaseModel:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
 	
 end
 
@@ -415,7 +415,7 @@ function KMeansModel:train(featureMatrix)
 		
 		table.insert(costArray, cost)
 		
-		MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIterations, self.IsOutputPrinted)
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 	

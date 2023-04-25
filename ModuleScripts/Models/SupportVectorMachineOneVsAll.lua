@@ -198,7 +198,7 @@ function SupportVectorMachineOneVsAllModel:train(featureMatrix, labelVector)
 	
 	for i, class in ipairs(classesList) do
 		
-		SupportVectorMachineOneVsAllModel = SupportVectorMachineModelsArray[i]
+		SupportVectorMachineModel = SupportVectorMachineModelsArray[i]
 		
 		ModelParametersVectorColumn = SupportVectorMachineModel:getModelParameters()
 
@@ -281,4 +281,5 @@ function SupportVectorMachineOneVsAllModel:setPrintOutput(option)
 end
 
 return SupportVectorMachineOneVsAllModel
+
 

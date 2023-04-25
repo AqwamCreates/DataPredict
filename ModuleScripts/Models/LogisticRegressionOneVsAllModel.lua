@@ -188,11 +188,13 @@ function LogisticRegressionOneVsAllModel:train(featureMatrix, labelVector)
 
 			cost = LogisticRegressionModel:train(featureMatrix, binaryLabelVector)
 			
-			totalCost += cost[1]
+			cost = cost[1]
+			
+			totalCost += cost
 			
 		end
 		
-		if self.IsOutputPrinted then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost) end
+		if self.IsOutputPrinted then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. cost) end
 		
 		table.insert(costArray, totalCost)
 

@@ -1,10 +1,10 @@
-local MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
+local BaseModel = require(script.Parent.BaseModel)
 
 LinearRegressionModel = {}
 
 LinearRegressionModel.__index = LinearRegressionModel
 
-setmetatable(LinearRegressionModel, MachineLearningBaseModel)
+setmetatable(LinearRegressionModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
@@ -68,7 +68,7 @@ end
 
 function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lambda, lossFunction, targetCost)
 	
-	local NewLinearRegressionModel = MachineLearningBaseModel.new()
+	local NewLinearRegressionModel = BaseModel.new()
 	
 	setmetatable(NewLinearRegressionModel, LinearRegressionModel)
 	
@@ -182,7 +182,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		table.insert(costArray, cost)
 		
-		MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIterations, self.IsOutputPrinted)
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 	

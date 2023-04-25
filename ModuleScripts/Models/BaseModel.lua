@@ -1,71 +1,71 @@
-MachineLearningBaseModel = {}
+BaseModel = {}
 
-MachineLearningBaseModel.__index = MachineLearningBaseModel
+BaseModel.__index = BaseModel
 
-function MachineLearningBaseModel.new()
+function BaseModel.new()
 	
-	local NewMachineLearningBaseModel = {}
+	local NewBaseModel = {}
 	
-	setmetatable(NewMachineLearningBaseModel, MachineLearningBaseModel)
+	setmetatable(NewBaseModel, BaseModel)
 	
-	NewMachineLearningBaseModel.IsOutputPrinted = true
+	NewBaseModel.IsOutputPrinted = true
 
-	NewMachineLearningBaseModel.ModelParameters = nil
+	NewBaseModel.ModelParameters = nil
 	
-	NewMachineLearningBaseModel.LastPredictedOutput = nil
+	NewBaseModel.LastPredictedOutput = nil
 	
-	NewMachineLearningBaseModel.LastCalculations = nil
+	NewBaseModel.LastCalculations = nil
 
-	return NewMachineLearningBaseModel
+	return NewBaseModel
 	
 end
 
-function MachineLearningBaseModel:getModelParameters()
+function BaseModel:getModelParameters()
 	
 	return self.ModelParameters
 	
 end
 
-function MachineLearningBaseModel:setModelParameters(ModelParameters)
+function BaseModel:setModelParameters(ModelParameters)
 	
 	self.ModelParameters = ModelParameters or self.ModelParameters
 	
 end
 
-function MachineLearningBaseModel:clearModelParameters()
+function BaseModel:clearModelParameters()
 	
 	self.ModelParameters = nil
 	
 end
 
-function MachineLearningBaseModel:clearLastPredictedOutput()
+function BaseModel:clearLastPredictedOutput()
 	
 	self.LastPredictedOutput = nil
 	
 end
 
-function MachineLearningBaseModel:clearLastCalculations()
+function BaseModel:clearLastCalculations()
 	
 	self.LastCalculations = nil
 	
 end
 
-function MachineLearningBaseModel:clearLastPredictedOutputAndCalculations()
+function BaseModel:clearLastPredictedOutputAndCalculations()
 	
-	MachineLearningBaseModel:clearLastCalculations()
+	BaseModel:clearLastCalculations()
 	
-	MachineLearningBaseModel:clearLastPredictedOutput()
+	BaseModel:clearLastPredictedOutput()
 	
 end
 
-function MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIteration) -- apparently it cannot see the self.isOutputPrinted when inherited function is used, so extra variable needed here
+function BaseModel:printCostAndNumberOfIterations(cost, numberOfIteration) -- apparently it cannot see the self.isOutputPrinted when inherited function is used, so extra variable needed here
 	
-	 if self.IsOutputPrinted then print("Iteration: " .. numberOfIteration .. "\t\tCost: " .. cost) end
+	if self.IsOutputPrinted then print("Iteration: " .. numberOfIteration .. "\t\tCost: " .. cost) end
 
 end
 
 
-function MachineLearningBaseModel:setPrintOutput(option) 
+function BaseModel:setPrintOutput(option) 
 	
 	if (option == false) then
 		
@@ -79,7 +79,7 @@ function MachineLearningBaseModel:setPrintOutput(option)
 	
 end
 
-function MachineLearningBaseModel:getBooleanOrDefaultOption(boolean, defaultBoolean)
+function BaseModel:getBooleanOrDefaultOption(boolean, defaultBoolean)
 	
 	if (boolean == true) then
 		
@@ -98,7 +98,7 @@ function MachineLearningBaseModel:getBooleanOrDefaultOption(boolean, defaultBool
 end
 
 
-function MachineLearningBaseModel:destroy()
+function BaseModel:destroy()
 	
 	setmetatable(self, nil)
 	
@@ -108,7 +108,5 @@ function MachineLearningBaseModel:destroy()
 	
 end
 
-return MachineLearningBaseModel
-
-
+return BaseModel
 

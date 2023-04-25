@@ -16,7 +16,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Tutorials
 
-[Introduction](Overview/Introduction.md)
+[Installation & Usage](Overview/Introduction.md)
 
 [Using Optimizers](Overview/UsingOptimizers.md)
 

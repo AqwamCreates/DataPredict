@@ -204,6 +204,8 @@ function LogisticRegressionOneVsAllModel:train(featureMatrix, labelVector)
 	
 	for i, class in ipairs(classesList) do
 		
+		LogisticRegressionModel = LogisticRegressionModelsArray[i]
+		
 		ModelParametersVectorColumn = LogisticRegressionModel:getModelParameters()
 
 		ModelParametersVectorRow = AqwamMatrixLibrary:transpose(ModelParametersVectorColumn)
@@ -289,3 +291,4 @@ function LogisticRegressionOneVsAllModel:setPrintOutput(option)
 end
 
 return LogisticRegressionOneVsAllModel
+

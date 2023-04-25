@@ -367,7 +367,7 @@ function KMedoidsModel:train(featureMatrix)
 	end
 	
 	for iteration = 1, self.numberOfClusters, 1 do
-
+		
 		for row = 1, #featureMatrix, 1 do
 
 			featureRowVector = {featureMatrix[row]}
@@ -400,7 +400,7 @@ function KMedoidsModel:train(featureMatrix)
 
 				numberOfIterations += 1
 
-				BaseModel:printCostAndNumberOfIterations(cost, numberOfIterations, self.IsOutputPrinted)
+				self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
 				if (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) then break end
 
@@ -409,9 +409,9 @@ function KMedoidsModel:train(featureMatrix)
 			if (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) then break end
 
 		end
-
+		
 		if (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) then break end
-
+		
 	end
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end

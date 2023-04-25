@@ -57,8 +57,6 @@ ExpectationMaximization:train(featureMatrix: Matrix)
 
 * featureMatrix: Matrix containing all data.
 
-* labelVector: A (n x 1) matrix containing values related to featureMatrix.
-
 #### Returns:
 
 * costArray: An array containing cost values.

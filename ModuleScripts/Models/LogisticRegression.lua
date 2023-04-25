@@ -1,10 +1,10 @@
-local MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
+local BaseModel = require(script.Parent.BaseModel)
 
 LogisticRegressionModel = {}
 
 LogisticRegressionModel.__index = LogisticRegressionModel
 
-setmetatable(LogisticRegressionModel, MachineLearningBaseModel)
+setmetatable(LogisticRegressionModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
@@ -79,7 +79,7 @@ end
 
 function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
 	
-	local NewLogisticRegressionModel = MachineLearningBaseModel.new()
+	local NewLogisticRegressionModel = BaseModel.new()
 
 	setmetatable(NewLogisticRegressionModel, LogisticRegressionModel)
 
@@ -96,6 +96,8 @@ function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, sigmoi
 	NewLogisticRegressionModel.validationLabelVector = nil
 	
 	NewLogisticRegressionModel.Optimizer = nil
+	
+	NewLogisticRegressionModel.Regularization = nil
 	
 	return NewLogisticRegressionModel
 	
@@ -193,7 +195,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		
 		table.insert(costArray, cost)
 		
-		MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIterations, self.IsOutputPrinted)
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 	

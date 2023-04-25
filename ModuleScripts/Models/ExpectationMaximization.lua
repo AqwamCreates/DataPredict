@@ -325,8 +325,6 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 			end
 
-
-
 			likelihood = likelihood + math.log(featureMatrixLikelihood)
 
 		end

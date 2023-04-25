@@ -198,6 +198,8 @@ function SupportVectorMachineOneVsAllModel:train(featureMatrix, labelVector)
 	
 	for i, class in ipairs(classesList) do
 		
+		SupportVectorMachineOneVsAllModel = SupportVectorMachineModelsArray[i]
+		
 		ModelParametersVectorColumn = SupportVectorMachineModel:getModelParameters()
 
 		ModelParametersVectorRow = AqwamMatrixLibrary:transpose(ModelParametersVectorColumn)
@@ -279,3 +281,4 @@ function SupportVectorMachineOneVsAllModel:setPrintOutput(option)
 end
 
 return SupportVectorMachineOneVsAllModel
+

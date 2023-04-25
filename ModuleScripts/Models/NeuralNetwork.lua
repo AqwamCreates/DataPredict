@@ -1,10 +1,10 @@
-local MachineLearningBaseModel = require(script.Parent.MachineLearningBaseModel)
+local BaseModel = require(script.Parent.BaseModel)
 
 NeuralNetworkModel = {}
 
 NeuralNetworkModel.__index = NeuralNetworkModel
 
-setmetatable(NeuralNetworkModel, MachineLearningBaseModel)
+setmetatable(NeuralNetworkModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
@@ -211,7 +211,7 @@ end
 
 function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
 
-	local NewNeuralNetworkModel = MachineLearningBaseModel.new()
+	local NewNeuralNetworkModel = BaseModel.new()
 
 	setmetatable(NewNeuralNetworkModel, NeuralNetworkModel)
 
@@ -228,6 +228,8 @@ function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, sigmoidFunc
 	NewNeuralNetworkModel.validationLabelVector = nil
 
 	NewNeuralNetworkModel.Optimizer = nil
+	
+	NewNeuralNetworkModel.Regularization = nil
 
 	return NewNeuralNetworkModel
 
@@ -369,7 +371,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 		table.insert(costArray, cost)
 		
-		MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIterations, self.IsOutputPrinted)
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 	
@@ -420,4 +422,5 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 end
 
 return NeuralNetworkModel
+
 

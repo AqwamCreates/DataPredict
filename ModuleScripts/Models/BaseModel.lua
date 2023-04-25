@@ -58,9 +58,9 @@ function MachineLearningBaseModel:clearLastPredictedOutputAndCalculations()
 	
 end
 
-function MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIteration, isOutputPrinted) -- apparently it cannot see the self.isOutputPrinted when inherited function is used, so extra variable needed here
+function MachineLearningBaseModel:printCostAndNumberOfIterations(cost, numberOfIteration) -- apparently it cannot see the self.isOutputPrinted when inherited function is used, so extra variable needed here
 	
-	 if isOutputPrinted then print("Iteration: " .. numberOfIteration .. "\t\tCost: " .. cost) end
+	 if self.IsOutputPrinted then print("Iteration: " .. numberOfIteration .. "\t\tCost: " .. cost) end
 
 end
 

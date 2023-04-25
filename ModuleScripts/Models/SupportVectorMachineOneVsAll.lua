@@ -1,28 +1,26 @@
-local SupportVectorMachine = require(script.Parent.SupportVectorMachine)
+local LogisticRegression = require(script.Parent.LogisticRegression)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
 local defaultMaxNumberOfIterations = 500
 
-local defaultLearningRate = 0.3
+local defaultLearningRate = 0.1
 
-local defaultCvalue = 0.3
-
-local defaultDistanceFunction = "euclidean"
+local defaultSigmoidFunction = "sigmoid"
 
 local defaultTargetCost = 0
 
-local distanceFunctionList = {
+local defaultLambda = 0
 
-	["manhattan"] = function (y, h) return math.abs(y - h) end,
+local sigmoidFunctionList = {
 
-	["euclidean"] = function (y, h) return (y - h)^2 end,
+	["sigmoid"] = function (z) return 1/(1+math.exp(-1 * z)) end,
 
 }
 
-local SupportVectorMachineOneVsAllModel = {}
+local LogisticRegressionOneVsAllModel = {}
 
-SupportVectorMachineOneVsAllModel.__index = SupportVectorMachineOneVsAllModel
+LogisticRegressionOneVsAllModel.__index = LogisticRegressionOneVsAllModel
 
 local function getClassesList(labelVector)
 
@@ -60,7 +58,7 @@ local function convertToBinaryLabelVector(labelVector, selectedClass)
 			
 		else
 			
-			newLabelVector[row][1] = -1
+			newLabelVector[row][1] = 0
 			
 		end
 		
@@ -70,55 +68,63 @@ local function convertToBinaryLabelVector(labelVector, selectedClass)
 	
 end
 
-function SupportVectorMachineOneVsAllModel.new(maxNumberOfIterations, learningRate, cValue, distanceFunction, targetCost)
+function LogisticRegressionOneVsAllModel.new(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
 
-	local NewSupportVectorMachineOneVsAll = {}
+	local NewLogisticRegressionOneVsAllModel = {}
+
+	setmetatable(NewLogisticRegressionOneVsAllModel, LogisticRegressionOneVsAllModel)
+
+	NewLogisticRegressionOneVsAllModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+
+	NewLogisticRegressionOneVsAllModel.learningRate = learningRate or defaultLearningRate
+
+	NewLogisticRegressionOneVsAllModel.sigmoidFunction = sigmoidFunction or defaultSigmoidFunction
+
+	NewLogisticRegressionOneVsAllModel.targetCost = targetCost or defaultTargetCost
+
+	NewLogisticRegressionOneVsAllModel.validationFeatureMatrix = nil
+
+	NewLogisticRegressionOneVsAllModel.validationLabelVector = nil
+
+	NewLogisticRegressionOneVsAllModel.Optimizer = nil
+
+	NewLogisticRegressionOneVsAllModel.Regularization = nil
 	
-	setmetatable(NewSupportVectorMachineOneVsAll, SupportVectorMachineOneVsAllModel)
-
-	NewSupportVectorMachineOneVsAll.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
-
-	NewSupportVectorMachineOneVsAll.learningRate = learningRate or defaultLearningRate
-
-	NewSupportVectorMachineOneVsAll.cValue = cValue or defaultCvalue
-
-	NewSupportVectorMachineOneVsAll.distanceFunction = distanceFunction or defaultDistanceFunction
-
-	NewSupportVectorMachineOneVsAll.targetCost = targetCost or defaultTargetCost
-
-	NewSupportVectorMachineOneVsAll.validationFeatureMatrix = nil
-
-	NewSupportVectorMachineOneVsAll.validationLabelVector = nil
-
-	NewSupportVectorMachineOneVsAll.Optimizer = nil
+	NewLogisticRegressionOneVsAllModel.ModelParameters = nil
 	
-	NewSupportVectorMachineOneVsAll.IsOutputPrinted = true
+	NewLogisticRegressionOneVsAllModel.ClassesList = {}
+	
+	NewLogisticRegressionOneVsAllModel.IsOutputPrinted = true
 
-	return NewSupportVectorMachineOneVsAll
+	return NewLogisticRegressionOneVsAllModel
 
 end
 
-function SupportVectorMachineOneVsAllModel:setParameters(maxNumberOfIterations, learningRate, cValue, distanceFunction, targetCost)
+function LogisticRegressionOneVsAllModel:setParameters(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
-	self.cValue = cValue or self.cValue
-
-	self.distanceFunction = distanceFunction or self.distanceFunction
+	self.sigmoidFunction = sigmoidFunction or self.sigmoidFunction
 
 	self.targetCost = targetCost or self.targetCost
 
 end
 
-function SupportVectorMachineOneVsAllModel:setOptimizer(Optimizer)
+function LogisticRegressionOneVsAllModel:setOptimizer(Optimizer)
 
 	self.Optimizer = Optimizer
 
 end
 
-function SupportVectorMachineOneVsAllModel:train(featureMatrix, labelVector)
+function LogisticRegressionOneVsAllModel:setRegularization(Regularization)
+
+	self.Regularization = Regularization
+
+end
+
+function LogisticRegressionOneVsAllModel:train(featureMatrix, labelVector)
 	
 	local classesList = getClassesList(labelVector)
 	
@@ -134,9 +140,9 @@ function SupportVectorMachineOneVsAllModel:train(featureMatrix, labelVector)
 	
 	local ModelParameters = {}
 	
-	local SupportVectorMachineModel
+	local LogisticRegressionModel
 	
-	local SupportVectorMachineModelsArray = {}
+	local LogisticRegressionModelsArray = {}
 	
 	local binaryLabelVector
 	
@@ -152,17 +158,17 @@ function SupportVectorMachineOneVsAllModel:train(featureMatrix, labelVector)
 	
 	for i, class in ipairs(classesList) do
 		
-		SupportVectorMachineModel = SupportVectorMachine.new(1, self.learningRate, self.cValue, self.distanceFunction, self.targetCost)
+		LogisticRegressionModel = LogisticRegression.new(1, self.learningRate, self.sigmoidFunction, self.targetCost)
 		
-		SupportVectorMachineModel:setOptimizer(self.Optimizer)
+		LogisticRegressionModel:setOptimizer(self.Optimizer)
 		
-		SupportVectorMachineModel:setCValue(self.Regularization)
+		LogisticRegressionModel:setRegularization(self.Regularization)
 		
-		SupportVectorMachineModel:setPrintOutput(false) 
+		LogisticRegressionModel:setPrintOutput(false) 
 		
 		binaryLabelVector = convertToBinaryLabelVector(labelVector, class)
 		
-		table.insert(SupportVectorMachineModelsArray, SupportVectorMachineModel)
+		table.insert(LogisticRegressionModelsArray, LogisticRegressionModel)
 		
 		table.insert(binaryLabelVectorTable, binaryLabelVector)
 		
@@ -178,9 +184,9 @@ function SupportVectorMachineOneVsAllModel:train(featureMatrix, labelVector)
 			
 			binaryLabelVector = binaryLabelVectorTable[i]
 			
-			SupportVectorMachineModel = SupportVectorMachineModelsArray[i]
+			LogisticRegressionModel = LogisticRegressionModelsArray[i]
 
-			cost = SupportVectorMachineModel:train(featureMatrix, binaryLabelVector)
+			cost = LogisticRegressionModel:train(featureMatrix, binaryLabelVector)
 			
 			cost = cost[1]
 			
@@ -198,9 +204,9 @@ function SupportVectorMachineOneVsAllModel:train(featureMatrix, labelVector)
 	
 	for i, class in ipairs(classesList) do
 		
-		SupportVectorMachineModel = SupportVectorMachineModelsArray[i]
+		LogisticRegressionModel = LogisticRegressionModelsArray[i]
 		
-		ModelParametersVectorColumn = SupportVectorMachineModel:getModelParameters()
+		ModelParametersVectorColumn = LogisticRegressionModel:getModelParameters()
 
 		ModelParametersVectorRow = AqwamMatrixLibrary:transpose(ModelParametersVectorColumn)
 
@@ -214,59 +220,75 @@ function SupportVectorMachineOneVsAllModel:train(featureMatrix, labelVector)
 	
 end
 
-function SupportVectorMachineOneVsAllModel:predict(featureMatrix)
-	
-	local hypothesis
+function LogisticRegressionOneVsAllModel:predict(featureMatrix)
 	
 	local highestClass
 	
-	local longestDistance = -math.huge
+	local softmax
+
+	local highestSoftmax = -math.huge
 	
-	local hypothesisVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	local zVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
 	
-	for column = 1, #hypothesisVector[1], 1 do
+	local softmaxVector = AqwamMatrixLibrary:applyFunction(math.exp, zVector)
+	
+	local softmaxSumVector = AqwamMatrixLibrary:sum(softmaxVector)
+	
+	AqwamMatrixLibrary:printMatrix(softmaxVector)
+	
+	for column = 1, #softmaxVector[1], 1 do
 		
-		hypothesis = hypothesisVector[1][column]
+		softmax = softmaxVector[1][column]
 		
-		if (hypothesis > 0) and (hypothesis > longestDistance) then
+		if (softmax > highestSoftmax) then
 			
 			highestClass = self.ClassesList[column]
 			
-			longestDistance = hypothesis
+			highestSoftmax = softmax
 			
 		end
 		
 	end
 	
-	return highestClass, longestDistance
+	if (softmaxSumVector ~= math.huge) then
+		
+		highestSoftmax = highestSoftmax / softmaxSumVector
+		
+	else
+		
+		highestSoftmax = 1.0
+		
+	end
+	
+	return highestClass, highestSoftmax
 	
 end
 
-function SupportVectorMachineOneVsAllModel:getModelParameters()
+function LogisticRegressionOneVsAllModel:getModelParameters()
 	
 	return self.ModelParameters
 	
 end
 
-function SupportVectorMachineOneVsAllModel:getClassesList()
+function LogisticRegressionOneVsAllModel:getClassesList()
 	
 	return self.ClassesList
 	
 end
 
-function SupportVectorMachineOneVsAllModel:setModelParameters(ModelParameters)
+function LogisticRegressionOneVsAllModel:setModelParameters(ModelParameters)
 
 	self.ModelParameters = ModelParameters
 
 end
 
-function SupportVectorMachineOneVsAllModel:setClassesList(ClassesList)
+function LogisticRegressionOneVsAllModel:setClassesList(ClassesList)
 
 	self.ClassesList = ClassesList
 
 end
 
-function SupportVectorMachineOneVsAllModel:setPrintOutput(option) 
+function LogisticRegressionOneVsAllModel:setPrintOutput(option) 
 
 	if (option == false) then
 
@@ -280,6 +302,6 @@ function SupportVectorMachineOneVsAllModel:setPrintOutput(option)
 
 end
 
-return SupportVectorMachineOneVsAllModel
+return LogisticRegressionOneVsAllModel
 
 

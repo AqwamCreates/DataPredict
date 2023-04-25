@@ -9,15 +9,17 @@ ExpectationMaximization is an unsupervised machine learning model that predicts 
 Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-ExpectationMaximization.new(maxNumberOfIterations: integer, epsilon: number, numberOfClusters: integer): ModelObject
+ExpectationMaximization.new(maxNumberOfIterations: integer, numberOfClusters: integer, epsilon: number, targetCost: number): ModelObject
 ```
 #### Parameters
 
 * maxNumberOfIterations: The maximum number of iterations.
 
-* epsilon: The target value for the model to stop training.
-
 * numberOfClusters: Number of clusters for model to train and predict on.
+
+* epsilon: The value to ensure that gaussian calculation doesn't reach infinity.
+
+* targetCost: The cost at which the model stops training.
 
 #### Returns:
 
@@ -30,23 +32,25 @@ ExpectationMaximization.new(maxNumberOfIterations: integer, epsilon: number, num
 Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
 
 ```
-ExpectationMaximization:setParameters(maxNumberOfIterations: integer, epsilon: number, numberOfClusters: integer)
+ExpectationMaximization:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, epsilon: number, targetCost: number)
 ```
 
 #### Parameters
 
 * maxNumberOfIterations: The maximum number of iterations.
 
-* epsilon: The target value for the model to stop training.
-
 * numberOfClusters: Number of clusters for model to train and predict on.
+
+* epsilon: The value to ensure that gaussian calculation doesn't reach infinity.
+
+* targetCost: The cost at which the model stops training.
 
 ### train()
 
 Train the model.
 
 ```
-ExpectationMaximization:train(featureMatrix: Matrix, labelVector: Matrix)
+ExpectationMaximization:train(featureMatrix: Matrix)
 ```
 
 #### Parameters:

@@ -1,250 +1,259 @@
 local BaseModel = require(script.Parent.BaseModel)
 
-ExpectationMaximizationModel = {}
-
+local ExpectationMaximizationModel = {}
 ExpectationMaximizationModel.__index = ExpectationMaximizationModel
-
 setmetatable(ExpectationMaximizationModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
-local defaultEpsilon = 1 * math.exp(-5)
+local defaultEpsilon = 1 * math.exp(-10)
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaxNumberOfIterations = 10
 
-local defaultNumberOfClusters = 2
+local defaultNumberOfClusters = nil
 
-local function calculateFactorial(x) -- this factorial function can only work with positive integers! This means that the data must be in integers only!
-	
-	if (x == 0) then return 1 end
-	
-	if (x == 1) then return 1 end
-	
-	if (x > 1) then return x * calculateFactorial(x-1) end
+local defaultTargetCost = 0
+
+local function gaussian(x, mean, variance, epsilon)
+
+	local z = -(x - mean)^2 / (2 * (variance + epsilon))
+
+	local exponentPart = math.exp(z)
+
+	local coefficient = 1 / math.sqrt(2 * math.pi * (variance + epsilon))
+
+	local result = coefficient * exponentPart
+
+	return result
 
 end
 
-local function calculatePoisson(meanVector, featureVector)
-	
-	local negativeMeanVector = AqwamMatrixLibrary:multiply(-1, meanVector)
-	
-	local expNegativeMeanVector = AqwamMatrixLibrary:applyFunction(math.exp, negativeMeanVector)
-	
-	local factorialFeatureVector = AqwamMatrixLibrary:applyFunction(calculateFactorial, featureVector)
-	
-	local inverseFactorialFeatureVector = AqwamMatrixLibrary:divide(1, factorialFeatureVector)
-	
-	local meanVectorPoweredByNumberOfData = AqwamMatrixLibrary:power(meanVector, featureVector)
-	
-	local calculatedPoisson = AqwamMatrixLibrary:multiply(meanVectorPoweredByNumberOfData, expNegativeMeanVector, inverseFactorialFeatureVector)
-	
-	return calculatedPoisson
-	
+-- This function initializes the model parameters randomly
+local function initializeParameters(featureMatrix, numberOfClusters)
+
+	local numberOfFeatures = #featureMatrix[1]
+
+	local piTable = {}
+
+	local meanMatrix = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfFeatures, numberOfClusters)
+
+	local varianceMatrix = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfFeatures, numberOfClusters)
+
+	varianceMatrix = AqwamMatrixLibrary:applyFunction(math.abs, varianceMatrix)
+
+	-- Randomly initialize mixing coefficients
+	for i = 1, numberOfClusters do
+
+		piTable[i] = Random.new():NextNumber()
+
+	end
+
+	return piTable, meanMatrix, varianceMatrix
 end
 
-local function calculatePosteriorProbability(featureMatrix, meanMatrix, probabilities)
+-- This function computes the responsibility matrix for each featureMatrix point
+local function eStep(featureMatrix, numberOfClusters, piTable, meanMatrix, varianceMatrix, epsilon)
+
+	local numberOfData = #featureMatrix
+	local responsibilities = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfClusters)
+
+	-- Compute the responsibility matrix for each featureMatrix point
+	for k = 1, numberOfData do
+
+		local totalWeight = 0
+
+		for i = 1, numberOfClusters, 1 do
+
+			local weight = piTable[i]
+
+			for j = 1, #featureMatrix[k] do
+
+				weight = weight * gaussian(featureMatrix[k][j], meanMatrix[j][i], varianceMatrix[j][i], epsilon)
+
+			end
+
+			responsibilities[k][i] = weight
+
+			totalWeight = totalWeight + weight
+
+		end
+
+		-- Normalize the responsibilities so that they sum up to 1
+		for i = 1, numberOfClusters do
+
+			responsibilities[k][i] = responsibilities[k][i] / totalWeight
+
+		end
+
+	end
+
+	return responsibilities
+end
+
+-- This function updates the model parameters based on the responsibility matrix
+local function mStep(featureMatrix, responsibilities, numberOfClusters)
+
+	local numberOfData = #featureMatrix
+
+	local numberOfFeatures = #featureMatrix[1]
+
+	local piTable = {}
+
+	local meanMatrix = {}
+
+	local varianceMatrix = {}
+
+	-- Update mixing coefficients
+	for i = 1, numberOfClusters do
+
+		piTable[i] = 0
+
+		for k = 1, numberOfData do
+
+			piTable[i] = piTable[i] + responsibilities[k][i]
+
+		end
+
+		piTable[i] = piTable[i] / numberOfData
+
+	end
+
+	-- Update meanMatrix vectors and varianceMatrixs
+	for j = 1, numberOfFeatures do
+
+		meanMatrix[j] = {}
+
+		varianceMatrix[j] = {}
+
+		for i = 1, numberOfClusters do
+
+			local sumWeight = 0
+
+			local sumWeightX = 0
+
+			for k = 1, numberOfData do
+
+				sumWeight += responsibilities[k][i]
+
+				sumWeightX +=  responsibilities[k][i] * featureMatrix[k][j]
+
+			end
+
+			meanMatrix[j][i] = sumWeightX / sumWeight
+
+			varianceMatrix[j][i] = 0
+
+			for k = 1, numberOfData do
+
+				varianceMatrix[j][i] += responsibilities[k][i] * (featureMatrix[k][j] - meanMatrix[j][i])^2
+
+			end
+
+			varianceMatrix[j][i] = varianceMatrix[j][i] / sumWeight
+
+		end
+
+	end
+
+	return piTable, meanMatrix, varianceMatrix
+
+end
+
+local function getBayesianInformationCriterion(featureMatrix, epsilon, numberOfClusters)
 	
-	local posteriorMatrix = AqwamMatrixLibrary:createMatrix(#meanMatrix, #meanMatrix[1], 0)
+	local piTable, meanMatrix, varianceMatrix = initializeParameters(featureMatrix, numberOfClusters)
+	
+	local responsibilities = eStep(featureMatrix, numberOfClusters, piTable, meanMatrix, varianceMatrix, epsilon)
+	
+	local piTable, meanMatrix, varianceMatrix = mStep(featureMatrix, responsibilities, numberOfClusters)
+
+	local likelihood = 0
+	
+	for k = 1, #featureMatrix do
+		
+		local data_likelihood = 0
+		
+		for i = 1, numberOfClusters do
+			
+			local weight = piTable[i]
+			
+			for j = 1, #featureMatrix[k] do
+				
+				weight = weight * gaussian(featureMatrix[k][j], meanMatrix[j][i], varianceMatrix[j][i], epsilon)
+				
+			end
+			
+			data_likelihood = data_likelihood + weight
+			
+		end
+		
+		likelihood = likelihood + math.log(data_likelihood)
+		
+	end
+
+	local freeParameters = numberOfClusters * (#featureMatrix[1] + 1) * 2 -- number of mean, variance and mixture weights for each cluster
 	
 	local numberOfData = #featureMatrix
 	
-	local featureVector
+	local bayesianInformationCriterion = likelihood - (0.5 * freeParameters * math.log(numberOfData))
 	
-	local meanVector
+	return bayesianInformationCriterion
 	
-	local eachClass
+end
+
+local function fetchBestNumberOfClusters(featureMatrix, epsilon, targetCost)
 	
-	local eachClassSum
+	local numberOfClusters = 2 -- Start with two clusters
 	
-	local probability
+	local bestBIC = -math.huge
 	
-	local poisson
-	
-	local eachClassDividedByEachClassSum
-	
-	local inverseEachClassSum
-	
-	for i = 1, #featureMatrix, 1 do
+	local bestNumberOfClusters = numberOfClusters
+
+	while true do
 		
-		featureVector = {featureMatrix[i]}
-		
-		eachClass = AqwamMatrixLibrary:createMatrix(#meanMatrix, #meanMatrix[1])
-		
-		for j = 1, #meanMatrix, 1 do
+		local bayesianInformationCriterion = getBayesianInformationCriterion(featureMatrix, epsilon, numberOfClusters)
+
+		if (bayesianInformationCriterion > bestBIC) then
 			
-			meanVector = {meanMatrix[j]}
+			bestBIC = bayesianInformationCriterion
 			
-			probability = {probabilities[j]}
+			bestNumberOfClusters = numberOfClusters
 			
-			poisson = calculatePoisson(meanMatrix, featureVector)
+		else
 			
-			eachClass[j] = AqwamMatrixLibrary:multiply(poisson, probability)[1]
+			break
 			
 		end
-		
-		eachClassSum = AqwamMatrixLibrary:verticalSum(eachClass)
-		
-		inverseEachClassSum =  AqwamMatrixLibrary:divide(1, eachClassSum)
-		
-		eachClassDividedByEachClassSum = AqwamMatrixLibrary:multiply(eachClass, inverseEachClassSum) -- Sometimes generate nan values. When added to non-nan values, the matrix will contain nan
-		
-		--if not AqwamMatrixLibrary:areMatricesEqual(eachClassDividedByEachClassSum, eachClassDividedByEachClassSum) then continue end -- A quick fix to nan issue
-		
-		posteriorMatrix = AqwamMatrixLibrary:add(posteriorMatrix, eachClassDividedByEachClassSum)
+
+		numberOfClusters = numberOfClusters + 1
 		
 	end
 
-	return posteriorMatrix
+	return bestNumberOfClusters
 	
 end
 
-local function calculateOptimalProbability(posteriorMatrix)
-	
-	local numberOfProbabilities = #posteriorMatrix
-	
-	local posteriorMatrixSum = AqwamMatrixLibrary:verticalSum(posteriorMatrix)
-	
-	local probabilitiesMatrix = {}
-	
-	local probability
-	
-	local posteriorVector
-	
-	for i = 1, numberOfProbabilities, 1 do
-		
-		posteriorVector = {posteriorMatrix[i]}
-		
-		probability = AqwamMatrixLibrary:divide(posteriorVector, posteriorMatrixSum)
-		
-		probabilitiesMatrix[i] = probability[1]
-		
-	end
-	
-	return probabilitiesMatrix
-	
-end
+-- This function trains the EM model
 
-local function calculateOptimalMean(featureMatrix, posteriorMatrix)
-	
-	local featureVector
-	
-	local posteriorVector
-	
-	local transposedPosteriorVector
-	
-	local Numerator
-	
-	local NumeratorSum
-	
-	local newMeanVector
-	
-	local posteriorVectorSum
-	
-	local newMeanMatrix = {}
-	
-	local featureVector 
 
-	for i = 1, #posteriorMatrix, 1 do
+function ExpectationMaximizationModel.new(maxNumberOfIterations, numberOfClusters, epsilon, targetCost)
 
-		posteriorVector = {posteriorMatrix[i]}
-		
-		Numerator = {}
-		
-		for j = 1, #featureMatrix, 1 do
-			
-			featureVector = {featureMatrix[j]}
-			
-			Numerator[j] = AqwamMatrixLibrary:multiply(featureVector, posteriorVector)[1] -- [1] is added so that we remove 1 dimension to merge with the Numerator
-			
-		end
-		
-		NumeratorSum = AqwamMatrixLibrary:verticalSum(Numerator)
-		
-		newMeanVector = AqwamMatrixLibrary:divide(NumeratorSum, posteriorVector)
-		
-		newMeanMatrix[i] = newMeanVector[1] -- [1] is added so that we remove 1 dimension to merge with the newMeanMatrix
- 		
-	end
-	
-	return newMeanMatrix
-	
-end
-
-local function calculateIncompleteLogLikelihood(featureMatrix, meanMatrix, probabilitiesMatrix)
-	
-	local numberOfData = #featureMatrix
-	
-	local logLikesVector = {}
-	
-	local logLike
-	
-	local likelihood
-	
-	local likelihoodVector = {}
-	
-	local likelihoodVectorSum
-	
-	local featureVector
-	
-	local meanVector
-	
-	local probability
-	
-	local poisson
-	
-	local incomplete
-	
-	local probabilityTransposed
-	
-	for i = 1, #featureMatrix, 1 do
-		
-		featureVector = {featureMatrix[i]}
-		
-		for j = 1, #meanMatrix, 1 do
-			
-			probability = {probabilitiesMatrix[j]}
-			
-			meanVector = {meanMatrix[j]}
-			
-			poisson = calculatePoisson(meanVector, featureVector)
-			
-			probabilityTransposed = AqwamMatrixLibrary:transpose(probability)
-			
-			likelihood = AqwamMatrixLibrary:dotProduct(poisson, probabilityTransposed)
-			
-			table.insert(likelihoodVector, {likelihood})
-			
-		end
-		
-		logLike = AqwamMatrixLibrary:applyFunction(math.log10, likelihoodVector)
-			
-		table.insert(logLikesVector, logLike[1])
-		
-	end
-	
-	incomplete = AqwamMatrixLibrary:sum(logLikesVector)
-	
-	return incomplete
-	
-end
-
-function ExpectationMaximizationModel.new(maxNumberOfIterations, epsilon, numberOfClusters)
-	
 	local NewExpectationMaximizationModel = BaseModel.new()
-	
+
 	setmetatable(NewExpectationMaximizationModel, ExpectationMaximizationModel)
-	
+
 	NewExpectationMaximizationModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
-	
+
 	NewExpectationMaximizationModel.epsilon = nil or defaultEpsilon
-	
+
 	NewExpectationMaximizationModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
-	
+
+	NewExpectationMaximizationModel.targetCost = maxNumberOfIterations or defaultTargetCost
+
 	return NewExpectationMaximizationModel
-	
 end
 
-function ExpectationMaximizationModel:setParameters(maxNumberOfIterations, epsilon, numberOfClusters)
+function ExpectationMaximizationModel:setParameters(maxNumberOfIterations, numberOfClusters, epsilon, targetCost)
 
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 
@@ -252,121 +261,133 @@ function ExpectationMaximizationModel:setParameters(maxNumberOfIterations, epsil
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
+	self.targetCost = targetCost
+
 end
 
 
 function ExpectationMaximizationModel:train(featureMatrix)
-	
+
 	local incompletes = {}
-	
 	local costArray = {}
-	
 	local cost = math.huge
-
 	local numberOfIterations = 0
-	
-	local posteriorMatrix
-
-	local incompleteLogLikelihood
-
-	local current
-
-	local previous
-	
-	local meanMatrix
-	
+	local meanMatrixMatrix
 	local probabilitiesMatrix
-		
-	self.epsilon = self.epsilon or (defaultEpsilon * #featureMatrix) 
-	
+
+	self.epsilon = self.epsilon or defaultEpsilon
+
 	if (self.ModelParameters) then
-		
-		 meanMatrix = self.ModelParameters[1]
-		
+
+		meanMatrixMatrix = self.ModelParameters[1]
 		probabilitiesMatrix = self.ModelParameters[2]
-		
-	else
-		
-		meanMatrix = AqwamMatrixLibrary:createRandomNormalMatrix(self.numberOfClusters, #featureMatrix[1])
-		
-		probabilitiesMatrix = AqwamMatrixLibrary:createRandomNormalMatrix(self.numberOfClusters, #featureMatrix[1])
-		
-	end
-	
-	if (#featureMatrix[1] ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
-	
-	repeat
-		
-		numberOfIterations += 1
-		
-		posteriorMatrix = calculatePosteriorProbability(featureMatrix, meanMatrix, probabilitiesMatrix)
-		
-		self.probabilitiesMatrix = calculateOptimalProbability(posteriorMatrix)
-		
-		self.meanMatrix = calculateOptimalMean(featureMatrix, posteriorMatrix)
-		
-		incompleteLogLikelihood = calculateIncompleteLogLikelihood(featureMatrix, meanMatrix, probabilitiesMatrix)
-		
-		table.insert(incompletes, incompleteLogLikelihood)
-		
-		if (#incompletes > 1) then
-			
-			current = incompletes[#incompletes]
-			
-			previous = incompletes[#incompletes - 1]
-			
-			cost = current - previous
-			
+
+		if (#featureMatrix[1] ~= #meanMatrixMatrix[1]) then
+			error("The number of features are not the same as the model parameters!")
 		end
-		
+
+	end
+
+	if self.numberOfClusters == nil then
+
+		self.numberOfClusters = fetchBestNumberOfClusters(featureMatrix, self.epsilon, self.targetCost)
+
+	end
+
+	local piTable, meanMatrix, varianceMatrix = initializeParameters(featureMatrix, self.numberOfClusters)
+
+	local previousLikelihood = -math.huge
+
+	local likelihood = 0
+
+	repeat
+
+		numberOfIterations += 1
+
+		previousLikelihood = likelihood
+
+		local responsibilities = eStep(featureMatrix, self.numberOfClusters, piTable, meanMatrix, varianceMatrix, self.epsilon)
+
+		piTable, meanMatrix, varianceMatrix = mStep(featureMatrix, responsibilities, self.numberOfClusters)
+
+		likelihood = 0
+
+		for k = 1, #featureMatrix, 1 do
+
+			local featureMatrixLikelihood = 0
+
+			for i = 1, self.numberOfClusters, 1 do
+
+				local weight = piTable[i]
+
+				for j = 1, #featureMatrix[k], 1 do
+
+					weight *= gaussian(featureMatrix[k][j], meanMatrix[j][i], varianceMatrix[j][i], self.epsilon)
+
+				end
+
+				featureMatrixLikelihood = featureMatrixLikelihood + weight
+
+			end
+
+
+
+			likelihood = likelihood + math.log(featureMatrixLikelihood)
+
+		end
+
+		cost = math.abs(likelihood - previousLikelihood)
+
 		table.insert(costArray, cost)
-		
+
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-		
-	until (numberOfIterations == self.maxNumberOfIterations) or (cost <= self.epsilon)
-	
-	self.ModelParameters = {self.meanMatrix, self.probabilitiesMatrix}
-	
+
+	until (numberOfIterations == self.maxNumberOfIterations) or (cost <= self.targetCost)
+
+	self.ModelParameters = {piTable, meanMatrix, varianceMatrix}
+
 	return costArray
-	
+
 end
 
 function ExpectationMaximizationModel:predict(featureVector)
-	
-	local meanMatrix = self.ModelParameters[1]
-	
-	local probabilitiesMatrix = self.ModelParameters[2]
-	
-	local selectedCluster
-	
-	local probability
-	
-	local highestProbability = -math.huge
-	
+
+	local piTable, meanMatrix, varianceMatrix = unpack(self.ModelParameters)
+
+	local numberOfClusters = self.numberOfClusters
+
 	local probabilityVector
-	
-	local posteriorMatrix = calculatePosteriorProbability(featureVector, meanMatrix, probabilitiesMatrix)
-	
-	local posteriorMatrixSum = AqwamMatrixLibrary:horizontalSum(posteriorMatrix)
-	
-	for cluster = 1, #posteriorMatrix, 1 do
-		
-		probability = posteriorMatrixSum[cluster][1]
-		
-		if (probability > highestProbability) then
-			
-			selectedCluster = cluster
-			
-			probabilityVector = {posteriorMatrix[cluster]}
-			
-			highestProbability = probability
-			
+	local selectedCluster
+
+	for k = 1, #featureVector, 1 do
+
+		local max_weight = -math.huge
+
+		local max_cluster = 0
+
+		for i = 1, numberOfClusters, 1 do
+
+			local weight = piTable[i]
+
+			for j = 1, #featureVector[k] do
+
+				weight = weight * gaussian(featureVector[k][j], meanMatrix[j][i], varianceMatrix[j][i], self.epsilon)
+
+			end
+
+			if weight > max_weight then
+
+				probabilityVector = weight
+
+				selectedCluster = i
+
+			end
+
 		end
-		 
+
 	end
-	
+
 	return selectedCluster, probabilityVector
-	
 end
 
 return ExpectationMaximizationModel

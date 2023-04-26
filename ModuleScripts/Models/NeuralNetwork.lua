@@ -12,30 +12,13 @@ local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
 
-local defaultSigmoidFunction = "ReLU"
-
-local defaultTargetCost = 0
-local BaseModel = require(script.Parent.BaseModel)
-
-NeuralNetworkModel = {}
-
-NeuralNetworkModel.__index = NeuralNetworkModel
-
-setmetatable(NeuralNetworkModel, BaseModel)
-
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
-
-local defaultMaxNumberOfIterations = 500
-
-local defaultLearningRate = 0.1
-
-local defaultSigmoidFunction = "ReLU"
+local defaultActivationFunction = "ReLU"
 
 local defaultTargetCost = 0
 
 local defaultLambda = 0
 
-local sigmoidFunctionList = {
+local activationFunctionList = {
 
 	["sigmoid"] = function (z) return 1/(1+math.exp(-1 * z)) end,
 	
@@ -73,7 +56,7 @@ local function convertLabelVectorToLogisticMatrix(modelParameters, labelVector)
 
 end
 
-local function forwardPropagate(featureMatrix, ModelParameters, sigmoidFunction)
+local function forwardPropagate(featureMatrix, ModelParameters, activationFunction)
 	
 	local layerZ
 
@@ -89,7 +72,7 @@ local function forwardPropagate(featureMatrix, ModelParameters, sigmoidFunction)
 		
 		layerZ = AqwamMatrixLibrary:dotProduct(inputMatrix, weightMatrix)
 		
-		inputMatrix = AqwamMatrixLibrary:applyFunction(sigmoidFunctionList[sigmoidFunction], layerZ)
+		inputMatrix = AqwamMatrixLibrary:applyFunction(activationFunctionList[activationFunction], layerZ)
 		
 		table.insert(forwardPropagateTable, inputMatrix)
 		
@@ -212,7 +195,7 @@ local function getLabelFromOutputVector(outputVector)
 end
 
 
-function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
+function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, activationFunction, targetCost)
 
 	local NewNeuralNetworkModel = BaseModel.new()
 
@@ -222,7 +205,7 @@ function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, sigmoidFunc
 
 	NewNeuralNetworkModel.learningRate = learningRate or defaultLearningRate
 
-	NewNeuralNetworkModel.sigmoidFunction = sigmoidFunction or defaultSigmoidFunction
+	NewNeuralNetworkModel.activationFunction = activationFunction or defaultActivationFunction
 
 	NewNeuralNetworkModel.targetCost = targetCost or defaultTargetCost
 
@@ -238,13 +221,13 @@ function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, sigmoidFunc
 
 end
 
-function NeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
+function NeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, activationFunction, targetCost)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
-	self.sigmoidFunction = sigmoidFunction or self.sigmoidFunction
+	self.activationFunction = activationFunction or self.activationFunction
 
 	self.targetCost = targetCost or self.targetCost
 
@@ -451,412 +434,4 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 end
 
 return NeuralNetworkModel
-
-local defaultLambda = 0
-
-local sigmoidFunctionList = {
-
-	["sigmoid"] = function (z) return 1/(1+math.exp(-1 * z)) end,
-	
-	["tanh"] = function (z) return math.tanh(z) end,
-	
-	["ReLU"] = function (z) return math.max(0, z) end,
-	
-	["LeakyReLU"] = function (z) return math.max((0.01 * z), z) end,
-	
-	["ELU"] = function (z) return if (z > 0) then z else (0.01 * (math.exp(z) - 1)) end
-
-}
-
-local function convertLabelVectorToLogisticMatrix(modelParameters, labelVector)
-
-	local lastLayerNumber = #modelParameters
-
-	local layerMatrix = modelParameters[lastLayerNumber]
-
-	local numberOfNeurons = #layerMatrix[1]
-
-	local logisticMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, numberOfNeurons)
-
-	local label
-
-	for row = 1, #labelVector, 1 do
-
-		label = labelVector[row][1]
-
-		logisticMatrix[row][label] = 1
-
-	end
-
-	return logisticMatrix
-
-end
-
-local function forwardPropagate(featureMatrix, modelParameters, sigmoidFunction)
-	
-	local biasMatrix
-	
-	local layerZ
-
-	local layerOutput
-
-	local layerMatrix
-
-	local nextLayerMatrix
-	
-	local nextLayerMatrixTransposed
-
-	local forwardPropagateTable = {}
-	
-	local inputMatrix = {}
-	
-	table.insert(inputMatrix, featureMatrix)
-	
-	for layer = 1, #modelParameters, 1 do
-		
-		table.insert(inputMatrix, modelParameters[layer])
-		
-	end
-	
-	layerMatrix = inputMatrix[1]
-
-	for input = 1, (#inputMatrix - 1), 1 do
-		
-		biasMatrix = AqwamMatrixLibrary:createMatrix(#layerMatrix, 1, 1)
-
-		layerMatrix = AqwamMatrixLibrary:horizontalConcatenate(biasMatrix, layerMatrix)
-
-		nextLayerMatrix = inputMatrix[input + 1]
-		
-		layerZ = AqwamMatrixLibrary:dotProduct(layerMatrix, nextLayerMatrix)
-
-		layerMatrix = AqwamMatrixLibrary:applyFunction(sigmoidFunctionList[sigmoidFunction], layerZ)
-
-		table.insert(forwardPropagateTable, layerMatrix)
-
-	end
-
-	return forwardPropagateTable
-
-end
-
-local function backPropagate(featureMatrix, modelParameters, logisticMatrix, forwardPropagateTable)
-
-	local backpropagateTable = {}
-
-	local numberOfLayers = #modelParameters
-
-	local layerCostMatrix = AqwamMatrixLibrary:subtract(forwardPropagateTable[numberOfLayers], logisticMatrix)
-
-	table.insert(backpropagateTable, layerCostMatrix)
-
-	local layerMatrix
-	
-	local biasMatrix
-
-	local layerMatrixTransposed
-
-	local part1
-
-	local part2
-
-	local part3
-	
-	layerMatrix = modelParameters[numberOfLayers]
-	
-	layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
-
-	for output = numberOfLayers, 2, -1 do
-
-		part1 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
-
-		part2 = AqwamMatrixLibrary:subtract(1, forwardPropagateTable[output - 1])
-
-		part3 = AqwamMatrixLibrary:multiply(forwardPropagateTable[output], part2)
-
-		layerCostMatrix = AqwamMatrixLibrary:multiply(part1, part3)
-
-		table.insert(backpropagateTable, 1, layerCostMatrix)
-		
-		layerMatrix = modelParameters[output - 1]
-
-	end
-
-	return backpropagateTable
-
-end
-
-local function gradientDescent(learningRate, modelParameters, backpropagateTable, numberOfData)
-
-	local costFunctionDerivative
-
-	for layer = 1, #modelParameters, 1 do
-
-		costFunctionDerivative = AqwamMatrixLibrary:multiply((1/numberOfData), learningRate, backpropagateTable[layer])
-
-		modelParameters[layer] = AqwamMatrixLibrary:add(modelParameters[layer], costFunctionDerivative)
-
-	end
-
-	return modelParameters
-
-end
-
-local function punish(punishValue, modelParameters, backpropagateTable)
-
-	local costFunctionDerivative
-
-	for layer = 1, #modelParameters, 1 do
-
-		costFunctionDerivative = AqwamMatrixLibrary:multiply(punishValue, backpropagateTable[layer])
-
-		modelParameters[layer] = AqwamMatrixLibrary:subtract(modelParameters[layer], costFunctionDerivative)
-
-	end
-
-	return modelParameters
-
-end
-
-local function calculateErrorVector(allOutputsMatrix, logisticMatrix)
-
-	local subtractedMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
-
-	local squaredSubtractedMatrix = AqwamMatrixLibrary:power(subtractedMatrix, 2)
-
-	local sumSquaredSubtractedMatrix = AqwamMatrixLibrary:verticalSum(squaredSubtractedMatrix)
-
-	local calculateErrorVector = AqwamMatrixLibrary:multiply((1/2), sumSquaredSubtractedMatrix)
-
-	return calculateErrorVector
-
-end
-
-local function getLabelFromOutputVector(outputVector)
-
-	local labelsArray = outputVector[1]
-	
-	local highestValue = math.max(unpack(labelsArray))
-
-	local label = table.find(labelsArray, highestValue)
-
-	return label
-
-end
-
-
-function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
-
-	local NewNeuralNetworkModel = BaseModel.new()
-
-	setmetatable(NewNeuralNetworkModel, NeuralNetworkModel)
-
-	NewNeuralNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
-
-	NewNeuralNetworkModel.learningRate = learningRate or defaultLearningRate
-
-	NewNeuralNetworkModel.sigmoidFunction = sigmoidFunction or defaultSigmoidFunction
-
-	NewNeuralNetworkModel.targetCost = targetCost or defaultTargetCost
-
-	NewNeuralNetworkModel.validationFeatureMatrix = nil
-
-	NewNeuralNetworkModel.validationLabelVector = nil
-
-	NewNeuralNetworkModel.Optimizer = nil
-	
-	NewNeuralNetworkModel.Regularization = nil
-
-	return NewNeuralNetworkModel
-
-end
-
-function NeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
-
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.learningRate = learningRate or self.learningRate
-
-	self.sigmoidFunction = sigmoidFunction or self.sigmoidFunction
-
-	self.targetCost = targetCost or self.targetCost
-
-end
-
-function NeuralNetworkModel:setOptimizer(Optimizer)
-
-	self.Optimizer = Optimizer
-
-end
-
-function NeuralNetworkModel:setRegularization(Regularization)
-
-	self.Regularization = Regularization
-
-end
-
-function NeuralNetworkModel:setLayers(...)
-	
-	local layersArray = {...}
-	
-	local numberOfLayers = #layersArray
-	
-	self.ModelParameters = {}
-	
-	local matrix
-	
-	local biasMatrix
-	
-	for layer = 1, (numberOfLayers - 1), 1 do
-		
-		biasMatrix = AqwamMatrixLibrary:createMatrix(1, layersArray[layer + 1])
-		
-		matrix = AqwamMatrixLibrary:createRandomNormalMatrix(layersArray[layer], layersArray[layer + 1]) -- bias layer is added
-		
-		matrix = AqwamMatrixLibrary:verticalConcatenate(biasMatrix, matrix)
-		
-		table.insert(self.ModelParameters, matrix)
-		
-	end
-	
-	matrix = AqwamMatrixLibrary:createRandomNormalMatrix(layersArray[numberOfLayers - 1] + 1, layersArray[numberOfLayers])
-	
-	table.insert(self.ModelParameters, matrix)
-	
-end
-
-function NeuralNetworkModel:train(featureMatrix, labelVector)
-	
-	if (self.ModelParameters == nil) then error("Layers are not set!")
-		
-	elseif (#self.ModelParameters[1] ~= (#featureMatrix[1] + 1)) then error("Input layer has " .. (#self.ModelParameters[1] - 1) .. " neuron(s) without the bias, but feature matrix has " .. #featureMatrix[1] .. " features!")
-		
-	end
-	
-	local allOutputsMatrix
-	
-	local costMatrix
-	
-	local costVector
-	
-	local cost
-	
-	local costArray = {}
-	
-	local numberOfIterations = 0
-	
-	local logisticMatrix = convertLabelVectorToLogisticMatrix(self.ModelParameters, labelVector)
-	
-	local allOutputsMatrix
-	
-	local regularizationCost 
-	
-	local numberOfData = #featureMatrix
-	
-	local numberOfLayers = #self.ModelParameters
-	
-	local transposedLayerMatrix
-	
-	local delta = {}
-	
-	local RegularizationDerivatives
-	
-	local forwardPropagateTable
-	
-	local backwardPropagateTable
-	
-	repeat
-		
-		numberOfIterations += 1
-		
-		forwardPropagateTable = forwardPropagate(featureMatrix, self.ModelParameters, self.sigmoidFunction)
-		
-		allOutputsMatrix = forwardPropagateTable[numberOfLayers]
-		
-		backwardPropagateTable = backPropagate(featureMatrix, self.ModelParameters, logisticMatrix, forwardPropagateTable)
-		
-		if (self.Regularization) then
-				
-			RegularizationDerivatives = self.Regularization:calculateLossFunctionDerivativeRegularizaion(self.ModelParameters[numberOfLayers], numberOfData)
-
-			backwardPropagateTable[numberOfLayers]  = AqwamMatrixLibrary:add(backwardPropagateTable[numberOfLayers], RegularizationDerivatives)
-
-		end
-
-		if (self.Optimizer) then 
-				
-			backwardPropagateTable[numberOfLayers] = self.Optimizer:calculate(backwardPropagateTable[numberOfLayers], delta) 
-
-		end
-		
-		self.ModelParameters = gradientDescent(self.learningRate, self.ModelParameters, backwardPropagateTable, numberOfData)
-			
-		delta = AqwamMatrixLibrary:multiply(self.learningRate, backwardPropagateTable[numberOfLayers])
-		
-		costVector = calculateErrorVector(allOutputsMatrix, logisticMatrix)
-		
-		cost = AqwamMatrixLibrary:sum(costVector)
-		
-		if (self.Regularization) then
-				
-			regularizationCost = self.Regularization:calculateLossFunctionRegularization(backwardPropagateTable[numberOfLayers], numberOfData)
-
-			cost += regularizationCost
-
-		end
-		
-		table.insert(costArray, cost)
-		
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-
-	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
-	
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
-
-	if self.Optimizer then self.Optimizer:reset() end
-
-	return costArray
-	
-end
-
-function NeuralNetworkModel:predict(featureMatrix)
-
-	local forwardPropagateTable = forwardPropagate(featureMatrix, self.ModelParameters, self.sigmoidFunction)
-	
-	local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
-	
-	local label = getLabelFromOutputVector(allOutputsMatrix)
-	
-	return label
-
-end
-
-function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishValue)
-	
-	local forwardPropagateTable = forwardPropagate(featureVector, self.ModelParameters, self.sigmoidFunction)
-	
-	local allOutputsMatrix = forwardPropagateTable[#self.ModelParameters]
-	
-	local logisticMatrix = convertLabelVectorToLogisticMatrix(self.ModelParameters, allOutputsMatrix)
-	
-	local backwardPropagateTable = backPropagate(self.ModelParameters, logisticMatrix, forwardPropagateTable)
-	
-	local predictedLabel = getLabelFromOutputVector(allOutputsMatrix)
-	
-	if (predictedLabel == label) then
-		
-		self.ModelParameters = gradientDescent(rewardValue, self.ModelParameters, backwardPropagateTable, 1)
-		
-	else
-		
-		self.ModelParameters = punish(punishValue, self.ModelParameters, backwardPropagateTable)
-		
-	end
-	
-	return predictedLabel
-	
-end
-
-return NeuralNetworkModel
-
 

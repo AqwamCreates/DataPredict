@@ -9,7 +9,7 @@ NeuralNetwork is a supervised machine learning model that predicts any number of
 Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-NeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, sigmoidFunction: string, targetCost: number): ModelObject
+NeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, activationFunction: string, targetCost: number): ModelObject
 ```
 
 #### Parameters:
@@ -18,7 +18,7 @@ NeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, sigmoidF
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "ReLU", "LeakyReLU" and "ELU".
+* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "ReLU", "LeakyReLU" and "ELU".
 
 * targetCost: The cost at which the model stops training.
 
@@ -33,7 +33,7 @@ NeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, sigmoidF
 Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
 
 ```
-NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, sigmoidFunction: string, targetCost: number)
+NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, activationFunction: string, targetCost: number)
 ```
 
 #### Parameters:
@@ -42,7 +42,7 @@ NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "ReLU", "LeakyReLU" and "ELU".
+* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "ReLU", "LeakyReLU" and "ELU".
 
 * targetCost: The cost at which the model stops training.
 

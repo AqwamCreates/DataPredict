@@ -68,11 +68,19 @@ local function forwardPropagate(featureMatrix, ModelParameters, activationFuncti
 	
 	local inputMatrix = featureMatrixWithBias
 	
+	local numberOfLayers = #ModelParameters
+	
 	for layerNumber, weightMatrix in ipairs(ModelParameters) do
 		
 		layerZ = AqwamMatrixLibrary:dotProduct(inputMatrix, weightMatrix)
 		
 		inputMatrix = AqwamMatrixLibrary:applyFunction(activationFunctionList[activationFunction], layerZ)
+		
+		if (layerNumber < numberOfLayers) then
+			
+			for data = 1, #featureMatrix, 1 do inputMatrix[data][1] = 1 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron
+			
+		end
 		
 		table.insert(forwardPropagateTable, inputMatrix)
 		
@@ -434,4 +442,3 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 end
 
 return NeuralNetworkModel
-

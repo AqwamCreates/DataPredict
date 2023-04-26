@@ -18,13 +18,13 @@
 
 ## Clustering
 
+[ExpectationMaximization](Models/ExpectationMaximization.md)
+
 [KMeans](Models/KMeans.md)
 
 [KMedoids](Models/KMedoids.md)
 
 [NaiveBayes](Models/NaiveBayes.md)
-
-[ExpectationMaximization](Models/ExpectationMaximization.md)
 
 ## BaseModels
 

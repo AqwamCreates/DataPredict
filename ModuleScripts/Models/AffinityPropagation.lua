@@ -12,7 +12,7 @@ local defaultMaxNumberOfIterations = 500
 
 local defaultTargetCost = 0
 
-local defaultDamping = 0.5a
+local defaultDamping = 0.5
 
 local function initializePreferences(featureMatrix, numberOfData, numberOfFeatures)
 	

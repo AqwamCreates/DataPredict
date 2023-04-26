@@ -209,6 +209,8 @@ function AffinityPropagationModel.new(maxNumberOfIterations, damping, targetCost
 	NewAffinityPropagationModel.damping = damping or defaultDamping
 	
 	NewAffinityPropagationModel.targetCost = targetCost or defaultTargetCost
+	
+	NewAffinityPropagationModel.previousFeatureMatrix = nil
 
 	return NewAffinityPropagationModel
 
@@ -225,6 +227,12 @@ function AffinityPropagationModel:setParameters(maxNumberOfIterations, damping, 
 end
 
 function AffinityPropagationModel:train(featureMatrix)
+	
+	if (self.previousFeatureMatrix) then
+		
+		featureMatrix = AqwamMatrixLibrary:verticalConcatenate(featureMatrix, self.previousFeatureMatrix)
+		
+	end
 	
 	local numberOfData = #featureMatrix
 	
@@ -268,9 +276,13 @@ function AffinityPropagationModel:train(featureMatrix)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	
+	self.previousFeatureMatrix = featureMatrix
+	
 end
 
-function AffinityPropagationModel:predict(featureMatrix, newData)
+function AffinityPropagationModel:predict(featureMatrix)
+	
+	if (self.previousFeatureMatrix == nil) then error("There are no feature matrix stored in this model. Please retrain the model.") end
 	
 	local similarity
 	
@@ -280,13 +292,13 @@ function AffinityPropagationModel:predict(featureMatrix, newData)
 	
 	local maxSimilarity = -math.huge
 
-	for i = 1, #featureMatrix do
+	for i = 1, #self.previousFeatureMatrix do
 		
 		similarity = 0
 		
-		for j = 1, #newData do
+		for j = 1, #featureMatrix do
 			
-			similarity = similarity - (featureMatrix[i][j] - newData[1][j])^2
+			similarity = similarity - (self.previousFeatureMatrix[i][j] - featureMatrix[1][j])^2
 			
 		end
 		
@@ -294,7 +306,7 @@ function AffinityPropagationModel:predict(featureMatrix, newData)
 		
 	end
 	
-	for i = 1, #featureMatrix do
+	for i = 1, #self.previousFeatureMatrix do
 		
 		if (similarities[i] > maxSimilarity) then
 			
@@ -307,6 +319,12 @@ function AffinityPropagationModel:predict(featureMatrix, newData)
 	end
 
 	return predictedCluster, maxSimilarity
+	
+end
+
+function AffinityPropagationModel:clearPreviousFeatureMatrix()
+	
+	self.previousFeatureMatrix = nil
 	
 end
 

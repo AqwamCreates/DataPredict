@@ -331,7 +331,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 		numberOfIterations += 1
 		
-		forwardPropagateTable = forwardPropagate(featureMatrix, self.ModelParameters, self.sigmoidFunction)
+		forwardPropagateTable = forwardPropagate(featureMatrix, self.ModelParameters, self.activationFunction)
 		
 		allOutputsMatrix = forwardPropagateTable[numberOfLayers]
 		
@@ -389,7 +389,7 @@ end
 
 function NeuralNetworkModel:predict(featureMatrix)
 
-	local forwardPropagateTable = forwardPropagate(featureMatrix, self.ModelParameters, self.sigmoidFunction)
+	local forwardPropagateTable = forwardPropagate(featureMatrix, self.ModelParameters, self.activationFunction)
 	
 	local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
 	
@@ -403,7 +403,7 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 	
 	local costDerivativeTable
 	
-	local forwardPropagateTable = forwardPropagate(featureVector, self.ModelParameters, self.sigmoidFunction)
+	local forwardPropagateTable = forwardPropagate(featureVector, self.ModelParameters, self.activationFunction)
 	
 	local allOutputsMatrix = forwardPropagateTable[#self.ModelParameters]
 	

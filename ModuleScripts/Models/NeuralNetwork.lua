@@ -32,23 +32,59 @@ local activationFunctionList = {
 
 }
 
-local function convertLabelVectorToLogisticMatrix(modelParameters, labelVector)
+local function getClassesList(labelVector)
+
+	local classesList = {}
+
+	local value
+
+	for i = 1, #labelVector, 1 do
+
+		value = labelVector[i][1]
+
+		if not table.find(classesList, value) then
+
+			table.insert(classesList, value)
+
+		end
+
+	end
+
+	return classesList
+
+end
+
+local function convertLabelVectorToLogisticMatrix(modelParameters, labelVector, classesList)
+	
+	local logisticMatrix
 
 	local lastLayerNumber = #modelParameters
 
 	local layerMatrix = modelParameters[lastLayerNumber]
 
 	local numberOfNeurons = #layerMatrix[1]
+	
+	if (numberOfNeurons ~= #classesList) then error("The number of classes are not equal to number of neurons. Please adjust your last layer using setLayers() function.") end
+	
+	if (typeof(labelVector) == "number") then
+		
+		labelVector = {{labelVector}}
+		
+	end
 
 	local logisticMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, numberOfNeurons)
 
 	local label
+	
+	local labelPosition
 
 	for row = 1, #labelVector, 1 do
 
 		label = labelVector[row][1]
+		
+		labelPosition = table.find(classesList, label)
 
-		logisticMatrix[row][label] = 1
+		logisticMatrix[row][labelPosition] = 1
 
 	end
 
@@ -190,13 +226,13 @@ local function calculateErrorVector(allOutputsMatrix, logisticMatrix)
 
 end
 
-local function getLabelFromOutputVector(outputVector)
-
-	local labelsArray = outputVector[1]
+local function getLabelFromOutputVector(outputVector, classesList)
 	
-	local highestValue = math.max(unpack(labelsArray))
+	local highestValue = math.max(unpack(outputVector[1]))
 
-	local label = table.find(labelsArray, highestValue)
+	local labelPosition = table.find(outputVector[1], highestValue)
+	
+	local label = classesList[labelPosition]
 
 	return label
 
@@ -224,6 +260,8 @@ function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, activationF
 	NewNeuralNetworkModel.Optimizer = nil
 	
 	NewNeuralNetworkModel.Regularization = nil
+	
+	NewNeuralNetworkModel.ClassesList = {}
 
 	return NewNeuralNetworkModel
 
@@ -313,8 +351,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	
 	local numberOfIterations = 0
 	
-	local logisticMatrix = convertLabelVectorToLogisticMatrix(self.ModelParameters, labelVector)
-	
 	local allOutputsMatrix
 	
 	local regularizationCost 
@@ -334,6 +370,14 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	local backwardPropagateTable
 	
 	local costDerivativeTable
+	
+	local classesList = getClassesList(labelVector)
+
+	table.sort(classesList, function(a,b) return a < b end)
+	
+	self.ClassesList = classesList
+	
+	local logisticMatrix = convertLabelVectorToLogisticMatrix(self.ModelParameters, labelVector, classesList)
 	
 	repeat
 		
@@ -401,7 +445,7 @@ function NeuralNetworkModel:predict(featureMatrix)
 	
 	local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
 	
-	local label = getLabelFromOutputVector(allOutputsMatrix)
+	local label = getLabelFromOutputVector(allOutputsMatrix, self.ClassesList)
 	
 	return label
 
@@ -415,11 +459,11 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 	
 	local allOutputsMatrix = forwardPropagateTable[#self.ModelParameters]
 	
-	local logisticMatrix = convertLabelVectorToLogisticMatrix(self.ModelParameters, allOutputsMatrix)
+	local logisticMatrix = convertLabelVectorToLogisticMatrix(self.ModelParameters, label, self.ClassesList)
 	
 	local backwardPropagateTable = backPropagate(featureVector, self.ModelParameters, logisticMatrix, forwardPropagateTable)
 	
-	local predictedLabel = getLabelFromOutputVector(allOutputsMatrix)
+	local predictedLabel = getLabelFromOutputVector(allOutputsMatrix, self.ClassesList)
 	
 	if (predictedLabel == label) then
 		
@@ -442,3 +486,4 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 end
 
 return NeuralNetworkModel
+

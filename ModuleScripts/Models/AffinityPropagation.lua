@@ -266,6 +266,8 @@ function AffinityPropagationModel:train(featureMatrix)
 		
 	until (self.maxNumberOfIterations) or (cost <= self.targetCost) or (isConverged)
 	
+	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	
 end
 
 function AffinityPropagationModel:predict(featureMatrix, newData)

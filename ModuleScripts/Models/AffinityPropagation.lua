@@ -238,6 +238,8 @@ function AffinityPropagationModel:train(featureMatrix)
 	
 	if (self.previousFeatureMatrix) and (self.appendPreviousFeatureMatrix) then
 		
+		if (#self.previousFeatureMatrix[1] ~= #featureMatrix[1]) then error("The previous and current feature matrices do not have the same number of features.") end 
+		
 		featureMatrix = AqwamMatrixLibrary:verticalConcatenate(featureMatrix, self.previousFeatureMatrix)
 		
 	end

@@ -9,7 +9,7 @@ The base model for all machine and deep learning models.
 Creates a new machine learning base model.
 
 ```
-MachineLearningBaseModel.new(): BaseModelObject
+BaseModel.new(): BaseModelObject
 ```
 
 ## Functions
@@ -19,7 +19,7 @@ MachineLearningBaseModel.new(): BaseModelObject
 Gets the model parameters from the base model.
 
 ```
-MachineLearningBaseModel:getModelParameters(): ModelParameters
+BaseModel:getModelParameters(): ModelParameters
 ```
 
 #### Returns
@@ -31,7 +31,7 @@ MachineLearningBaseModel:getModelParameters(): ModelParameters
 Set the model parameters to the base model.
 
 ```
-MachineLearningBaseModel:setModelParameters(ModelParameters: ModelParameters)
+BaseModel:setModelParameters(ModelParameters: ModelParameters)
 ```
 
 #### Parameters
@@ -42,7 +42,7 @@ MachineLearningBaseModel:setModelParameters(ModelParameters: ModelParameters)
 Clears the model parameters contained inside base model.
 
 ```
-MachineLearningBaseModel:clearModelParameters()
+BaseModel:clearModelParameters()
 ```
 
 ### clearLastPredictedOutput()
@@ -50,7 +50,7 @@ MachineLearningBaseModel:clearModelParameters()
 Clears the last predicted outputs made by the base model.
 
 ```
-MachineLearningBaseModel:clearLastPredictedOutput()
+BaseModel:clearLastPredictedOutput()
 ```
 
 ### clearLastCalculations()
@@ -58,7 +58,7 @@ MachineLearningBaseModel:clearLastPredictedOutput()
 Clears last calculation made by the base model.
 
 ```
-MachineLearningBaseModel:clearLastCalculations()
+BaseModel:clearLastCalculations()
 ```
 
 ### clearLastPredictedOutputAndCalculations()
@@ -66,7 +66,7 @@ MachineLearningBaseModel:clearLastCalculations()
 Clears the last predicted outputs and calculation made by the base model.
 
 ```
-MachineLearningBaseModel:clearLastPredictedOutputAndCalculations()
+BaseModel:clearLastPredictedOutputAndCalculations()
 ```
 
 ### setPrintOutput()
@@ -74,7 +74,7 @@ MachineLearningBaseModel:clearLastPredictedOutputAndCalculations()
 Set if the model prints output.
 
 ```
-MachineLearningBaseModel:setPrintOutput(option: boolean)
+BaseModel:setPrintOutput(option: boolean)
 ```
 
 #### Parameters:

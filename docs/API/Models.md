@@ -6,6 +6,8 @@
 
 ## Classification
 
+[NeuralNetwork](Models/NeuralNetwork.md)
+
 [LogisticRegression](Models/LogisticRegression.md)
 
 [LogisticRegressionOneVsAll](Models/LogisticRegressionOneVsAll.md)
@@ -13,8 +15,6 @@
 [SupportVectorMachine](Models/SupportVectorMachine.md)
 
 [SupportVectorMachineOneVsAll](Models/SupportVectorMachineOneVsAll.md)
-
-[NeuralNetwork](Models/NeuralNetwork.md)
 
 ## Clustering
 

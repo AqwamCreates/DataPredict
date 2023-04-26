@@ -162,7 +162,7 @@ local function calculateCost(ModelParameters, responsibilities)
 	
 	for i = 1, #ModelParameters do
 		
-		totalCost -= responsibilities[i][ModelParameters[i]]
+		totalCost += responsibilities[i][ModelParameters[i]]
 		
 	end
 	
@@ -262,8 +262,6 @@ function AffinityPropagationModel:train(featureMatrix)
 		
 		cost = calculateCost(self.ModelParameters, responsibilities)
 		
-		cost = math.abs(cost)
-		
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
 	until (self.maxNumberOfIterations) or (cost <= self.targetCost) or (isConverged)
@@ -272,11 +270,17 @@ end
 
 function AffinityPropagationModel:predict(featureMatrix, newData)
 	
+	local similarity
+	
 	local similarities = {}
 	
+	local predictedCluster = 0
+	
+	local maxSimilarity = -math.huge
+
 	for i = 1, #featureMatrix do
 		
-		local similarity = 0
+		similarity = 0
 		
 		for j = 1, #newData do
 			
@@ -287,10 +291,6 @@ function AffinityPropagationModel:predict(featureMatrix, newData)
 		table.insert(similarities, similarity)
 		
 	end
-
-	local maxSimilarity = -math.huge
-	
-	local predictedCluster = 0
 	
 	for i = 1, #featureMatrix do
 		

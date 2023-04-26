@@ -72,9 +72,9 @@ NeuralNetwork:setRegularization(Regularization: RegularizationObject)
 
 ### setLayers()
 
-Set the number of layers and the neurons in each of thos layers. Number of arguments determines the layer, while the number value determines the number of neurons.
+Set the number of layers and the neurons (without bias neuron) in each of those layers. Number of arguments determines the layer, while the number value determines the number of neurons. Bias will be added automatically after setting the 
 
-For example, setLayers(3,7,6) means 3 neurons at layer 1, 7 neurons at layer 2, and 6 neurons at layer 3.
+For example, setLayers(3,7,6) means 3 neurons at layer 1, 7 neurons at layer 2, and 6 neurons at layer 3. It assumes that the bias neurons are not counted. 
 
 ```
 NeuralNetwork:setLayers(...: integer)

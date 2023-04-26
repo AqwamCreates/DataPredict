@@ -6,6 +6,8 @@
 
 ## Classification
 
+[NaiveBayes](Models/NaiveBayes.md) (Currently Broken)
+
 [NeuralNetwork](Models/NeuralNetwork.md)
 
 [LogisticRegression](Models/LogisticRegression.md)
@@ -23,8 +25,6 @@
 [KMeans](Models/KMeans.md)
 
 [KMedoids](Models/KMedoids.md)
-
-[NaiveBayes](Models/NaiveBayes.md)
 
 ## BaseModels
 

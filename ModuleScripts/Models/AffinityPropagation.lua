@@ -336,4 +336,10 @@ function AffinityPropagationModel:clearPreviousFeatureMatrix()
 	
 end
 
+function AffinityPropagationModel:getPreviousFeatureMatrix()
+
+	return self.previousFeatureMatrix
+
+end
+
 return AffinityPropagationModel

@@ -12,7 +12,7 @@ local defaultMaxNumberOfIterations = 500
 
 local defaultHighestCost = math.huge
 
-local defaultLowestCost = 0
+local defaultLowestCost = -math.huge
 
 local defaultNumberOfClusters = 2
 

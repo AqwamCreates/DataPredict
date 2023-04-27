@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - AffinityPropagation
 
-KMeans is an unsupervised machine learning model that predicts which cluster that the input belongs to using distance.
+AffinityPropagation is an unsupervised machine learning model that predicts which cluster that the input belongs to using a similarity matrix that measures the similarity between each data point.
 
 ## Constructors
 

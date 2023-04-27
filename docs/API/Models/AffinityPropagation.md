@@ -16,7 +16,7 @@ AffinityPropagation.new(maxNumberOfIterations: integer, damping: number, targetC
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
-* damping: A high value leads to fewer changes, while a low value leads to more exploration. The value is set between 0 and 1.
+* damping: A high value leads to fewer changes, while a low value leads to more exploration. The value can be set between 0 and 1.
 
 * targetCost: The cost at which the model stops training.
 

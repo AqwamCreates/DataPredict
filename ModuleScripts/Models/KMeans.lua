@@ -35,7 +35,9 @@ local distanceFunctionList = {
 		
 		local distance = math.abs(part2)
 		
-		return distance end,
+		return distance 
+		
+	end,
 
 	["euclidean"] = function (x1, x2)
 		
@@ -47,7 +49,9 @@ local distanceFunctionList = {
 		
 		local distance = math.sqrt(part3)
 		
-		return distance end,
+		return distance 
+		
+	end,
 
 }
 

@@ -20,6 +20,12 @@
 
 ## Clustering
 
+[AffinityPropagation](Models/AffinityPropagation.md)
+
+[AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)
+
+[DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) (a.k.a. DBSCAN)
+
 [ExpectationMaximization](Models/ExpectationMaximization.md)
 
 [KMeans](Models/KMeans.md)

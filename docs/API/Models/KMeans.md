@@ -16,7 +16,7 @@ KMeans.new(maxNumberOfIterations: integer, learningRate: number, numberOfCluster
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+* learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 

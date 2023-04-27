@@ -269,6 +269,12 @@ end
 
 
 function ExpectationMaximizationModel:train(featureMatrix)
+	
+	local piTable
+	
+	local meanMatrix
+	
+	local varianceMatrix
 
 	local costArray = {}
 	local cost = math.huge
@@ -277,21 +283,21 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 	if (self.ModelParameters) then
 
-		meanMatrix = self.ModelParameters[1]
+		piTable, meanMatrix, varianceMatrix = unpack(self.ModelParameters)
 
-		if (#featureMatrix[1] ~= #meanMatrix[1]) then
-			error("The number of features are not the same as the model parameters!")
+		if (#featureMatrix[1] ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
+		
+	else
+		
+		piTable, meanMatrix, varianceMatrix = initializeParameters(featureMatrix, self.numberOfClusters)
+		
+		if (self.numberOfClusters == nil) then
+
+			self.numberOfClusters = fetchBestNumberOfClusters(featureMatrix, self.epsilon, self.targetCost)
+
 		end
 
 	end
-
-	if self.numberOfClusters == nil then
-
-		self.numberOfClusters = fetchBestNumberOfClusters(featureMatrix, self.epsilon, self.targetCost)
-
-	end
-
-	local piTable, meanMatrix, varianceMatrix = initializeParameters(featureMatrix, self.numberOfClusters)
 
 	local previousLikelihood = -math.huge
 

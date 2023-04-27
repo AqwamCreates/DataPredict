@@ -295,7 +295,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 	end
 
-	local previousLikelihood = -math.huge
+	local previousLikelihood
 
 	local likelihood = 0
 
@@ -320,6 +320,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 				local weight = piTable[i]
 
 				for j = 1, #featureMatrix[k], 1 do
+					
 
 					weight *= gaussian(featureMatrix[k][j], meanMatrix[j][i], varianceMatrix[j][i], self.epsilon)
 
@@ -330,7 +331,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 			end
 
 			likelihood = likelihood + math.log(featureMatrixLikelihood)
-
+			
 		end
 
 		cost = math.abs(likelihood - previousLikelihood)
@@ -368,7 +369,7 @@ function ExpectationMaximizationModel:predict(featureVector)
 
 			for j = 1, #featureVector[k] do
 
-				weight = weight * gaussian(featureVector[k][j], meanMatrix[j][i], varianceMatrix[j][i], self.epsilon)
+				weight *= gaussian(featureVector[k][j], meanMatrix[j][i], varianceMatrix[j][i], self.epsilon)
 
 			end
 

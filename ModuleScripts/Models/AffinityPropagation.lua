@@ -262,6 +262,8 @@ function AffinityPropagationModel:train(featureMatrix)
 	
 	local isConverged
 	
+	local costArray = {}
+	
 	local cost
 	
 	repeat
@@ -280,6 +282,8 @@ function AffinityPropagationModel:train(featureMatrix)
 		
 		cost = calculateCost(self.ModelParameters, responsibilities)
 		
+		table.insert(costArray, cost)
+		
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
 	until (self.maxNumberOfIterations) or (cost <= self.targetCost) or (isConverged)
@@ -287,6 +291,8 @@ function AffinityPropagationModel:train(featureMatrix)
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	
 	self.previousFeatureMatrix = featureMatrix
+	
+	return costArray
 	
 end
 

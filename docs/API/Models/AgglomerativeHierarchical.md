@@ -9,7 +9,7 @@ AgglomerativeHierarchical is an unsupervised machine learning model that predict
 Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-KMeans.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, highestCost: number, lowestCost:number, stopWhenModelParametersDoesNotChange: boolean): ModelObject
+AgglomerativeHierarchical.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, highestCost: number, lowestCost:number, stopWhenModelParametersDoesNotChange: boolean): ModelObject
 ```
 
 #### Parameters:
@@ -39,7 +39,7 @@ KMeans.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFu
 Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
 
 ```
-KMeans:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, highestCost: number, lowestCost:number, stopWhenModelParametersDoesNotChange: boolean): ModelObject
+AgglomerativeHierarchical:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, highestCost: number, lowestCost:number, stopWhenModelParametersDoesNotChange: boolean): ModelObject
 ```
 
 #### Parameters:
@@ -61,7 +61,7 @@ KMeans:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, 
 Train the model.
 
 ```
-KMeans:train(featureMatrix: Matrix)
+AgglomerativeHierarchical:train(featureMatrix: Matrix)
 ```
 
 #### Parameters:
@@ -77,7 +77,7 @@ KMeans:train(featureMatrix: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-KMeans:predict(featureMatrix: Matrix): integer, number
+AgglomerativeHierarchical:predict(featureMatrix: Matrix): integer, number
 ```
 
 #### Parameters:

@@ -30,8 +30,6 @@ KMeans.new(maxNumberOfIterations: integer, learningRate: number, numberOfCluster
 
 * stopWhenModelParametersDoesNotChange: Stop the training if the model parameters does not change from the previous iteration.
 
-* suppressOutput: An option whether or not to display the number of iterations and the cost.
-
 #### Returns:
 
 * ModelObject: The generated model object.
@@ -63,8 +61,6 @@ KMeans:setParameters(maxNumberOfIterations: integer, learningRate: number, numbe
 * setTheCentroidsDistanceFarthest: Set whether or not the model to create centroids that are furthest from each other.
 
 * stopWhenModelParametersDoesNotChange: Stop the training if the model parameters does not change from the previous iteration.
-
-* suppressOutput: An option whether or not to display the number of iterations and the cost.
 
 ### train()
 

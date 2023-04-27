@@ -333,13 +333,13 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 			end
 
-			likelihood = likelihood + math.log(featureMatrixLikelihood)
+			likelihood += math.log(featureMatrixLikelihood)
 			
 		end
 
-		cost = math.abs(likelihood - previousLikelihood)
+		cost = likelihood
 
-		table.insert(costArray, cost)
+		table.insert(costArray, likelihood)
 		
 		if (cost ~= cost) then error("Too much variance in the data! Please change the argument values.") end
 

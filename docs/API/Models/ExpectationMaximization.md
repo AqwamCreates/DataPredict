@@ -82,7 +82,3 @@ ExpectationMaximization:predict(featureMatrix: Matrix): integer, number
 ## Inherited From
 
 * [BaseModel](BaseModel.md)
-
-## Notes
-
-* Untested. May give wrong model. Use at your own risk. (I am new at understanding this model)

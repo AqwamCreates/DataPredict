@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - DensityBasedSpatialClusteringOfApplicationsWithNoise
 
-DensityBasedSpatialClusteringOfApplicationsWithNoise is an unsupervised machine learning model that predicts which cluster that the input belongs to using a similarity matrix that measures the similarity between each data point.
+DBSCAN is an unsupervised machine learning model that clusters data points based on their spatial density and proximity to each other, using epsilon distance and minimum number of points required to form a cluster.
 
 ## Constructors
 

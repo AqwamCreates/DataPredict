@@ -46,18 +46,6 @@ LogisticRegressionOneVsAll:setParameters(maxNumberOfIterations: integer, learnin
 
 * targetCost: The cost at which the model stops training.
 
-### setOptimizer()
-
-Set optimizer for the model by inputting the optimizer object.
-
-```
-LogisticRegressionOneVsAll:setOptimizer(Optimizer: OptimizerObject)
-```
-
-#### Parameters:
-
-* Optimizer: The optimizer to be used.
-
 ### setRegularization()
 
 Set a regularization for the model by inputting the optimizer object.

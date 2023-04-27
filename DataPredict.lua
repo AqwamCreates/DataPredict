@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Version 1.3.3
+	Version 1.3.7
 
 	Aqwam's Roblox Deep Learning Library (AR-MDLL)
 
@@ -35,71 +35,68 @@
 
 --]]
 
-local requiredMatrixLibraryVersion = 1.5
+local requiredMatrixLibraryVersion = 1.8
 
 local AqwamMatrixLibrary = require(script.AqwamRobloxMatrixLibraryLinker.Value)
 
 local Models = script.Models
 
-local LinearRegression = require(Models.LinearRegression)
-local LogisticRegression = require(Models.LogisticRegression)
-local KMeans = require(Models.KMeans)
-local SupportVectorMachine = require(Models.SupportVectorMachine)
-local ExpectationMaximization = require(Models.ExpectationMaximization)
-local NaiveBayes = require(Models.NaiveBayes)
-local NeuralNetwork = require(Models.NeuralNetwork)
-local KMedoids = require(Models.KMedoids)
-
 local Others = script.Others
-
-local ModelChecking = require(Others.ModelChecking) -- for testing and validating datasets
-local GradientDescendModes = require(Others.GradientDescentModes)
-local Regularization = require(Others.Regularization)
-local StringSplitter = require(Others.StringSplitter)
 
 local Optimizers = script.Optimizers
 
-local RootMeanSquarePropagation = require(Optimizers.RootMeanSquarePropagation)
-local Momentum = require(Optimizers.Momentum)
-local AdaptiveGradient = require(Optimizers.AdaptiveGradient)
-local AdaptiveMomentEstimation = require(Optimizers.AdaptiveMomentEstimation)
-
-local ModelCheckingDictionary = {
-
-	testRegressionModel = ModelChecking.testRegressionModel,
-	testLogisticModel = ModelChecking.testClassificationModel
-
-}
-
 local ModelsDictionary = {
-
-	LinearRegression = LinearRegression,
-	LogisticRegression = LogisticRegression,
-	KMeans = KMeans,
-	SupportVectorMachine = SupportVectorMachine,
-	NaiveBayes = NaiveBayes,
-	ExpectationMaximization = ExpectationMaximization,
-	NeuralNetwork = NeuralNetwork,
-	KMedoids = KMedoids
-
+	
+	LinearRegression = require(Models.LinearRegression),
+	
+	LogisticRegression = require(Models.LogisticRegression),
+	
+	KMeans = require(Models.KMeans),
+	
+	SupportVectorMachine = require(Models.SupportVectorMachine),
+	
+	NaiveBayes = require(Models.NaiveBayes),
+	
+	ExpectationMaximization = require(Models.ExpectationMaximization),
+	
+	NeuralNetwork = require(Models.NeuralNetwork),
+	
+	KMedoids = require(Models.KMedoids),
+	
+	LogisticRegressionOneVsAll = require(Models.LogisticRegressionOneVsAll),
+	
+	SupportVectorMachineOneVsAll = require(Models.SupportVectorMachineOneVsAll),
+	
+	AffinityPropagation = require(Models.AffinityPropagation),
+	
+	AgglomerativeHierarchical = require(Models.AgglomerativeHierarchical),
+	
+	DensityBasedSpatialClusteringOfApplicationsWithNoise = require(Models.DensityBasedSpatialClusteringOfApplicationsWithNoise),
+	
 }
 
 local OptimizersDictionary = {
-
-	RootMeanSquarePropagation = RootMeanSquarePropagation,
-	Momentum = Momentum,
-	AdaptiveGradient = AdaptiveGradient,
-	AdaptiveMomentEstimation = AdaptiveMomentEstimation
-
+	
+	RootMeanSquarePropagation = require(Optimizers.RootMeanSquarePropagation),
+	
+	Momentum = require(Optimizers.Momentum),
+	
+	AdaptiveGradient = require(Optimizers.AdaptiveGradient),
+	
+	AdaptiveMomentEstimation = require(Optimizers.AdaptiveMomentEstimation)
+	
 }
 
 local OthersDictionary = {
-
-	GradientDescendModes = GradientDescendModes,
-	ModelChecking = ModelChecking,
-	Regularization = Regularization,
-	StringSplitter = StringSplitter
-
+	
+	ModelChecking = require(Others.ModelChecking),
+	
+	GradientDescentModes =  require(Others.GradientDescentModes),
+	
+	Regularization = require(Others.Regularization),
+	
+	StringSplitter = require(Others.StringSplitter)
+	
 }
 
 local AqwamRobloxMachineLearningLibrary = {}
@@ -111,19 +108,21 @@ AqwamRobloxMachineLearningLibrary.Optimizers = OptimizersDictionary
 AqwamRobloxMachineLearningLibrary.Others = OthersDictionary
 
 local function checkVersion()
-
+	
 	local matrixLibraryVersion
-
+	
+	if (AqwamMatrixLibrary == nil) then error("\n\nMatrixL (or Aqwam's Matrix Library) is not linked to this library. \nPlease read the \"Installation & Usage \" in DataPredict's documentation for installation details. ") end
+	
 	local success = pcall(function()
-
+		
 		matrixLibraryVersion = AqwamMatrixLibrary:getVersion()
-
+		
 	end)
-
+	
 	if not success then matrixLibraryVersion = -1 end
-
+	
 	if (matrixLibraryVersion < requiredMatrixLibraryVersion) then warn("The matrix library is out-of-date. You may encounter some problems.") end
-
+	
 end
 
 checkVersion()

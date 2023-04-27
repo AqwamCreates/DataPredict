@@ -182,7 +182,13 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 	
 	local areModelParametersEqual = false
 	
-	local clusters = self.ModelParameters or AqwamMatrixLibrary:copy(featureMatrix)
+	local clusters = AqwamMatrixLibrary:copy(featureMatrix)
+	
+	if self.ModelParameters then
+		
+		clusters = AqwamMatrixLibrary:verticalConcatenate(self.ModelParameters, clusters)
+		
+	end
 	
 	local isOutsideCostBounds
 	
@@ -210,6 +216,8 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		
 	until (numberOfIterations == self.maxNumberOfIterations) or isOutsideCostBounds  or (#clusters == self.numberOfClusters) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 	
+	self.ModelParameters = clusters
+	
 	return costArray
 	
 end
@@ -228,7 +236,7 @@ function AgglomerativeHierarchicalModel:predict(featureMatrix)
 		
 		clusterVector = {cluster}
 		
-		distance = calculateDistance(featureMatrix, self.distanceFunction)
+		distance = calculateDistance(featureMatrix, clusterVector, self.distanceFunction)
 		
 		if (distance < minimumDistance) then
 			

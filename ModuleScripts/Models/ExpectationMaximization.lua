@@ -246,7 +246,7 @@ function ExpectationMaximizationModel.new(maxNumberOfIterations, numberOfCluster
 
 	NewExpectationMaximizationModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
 
-	NewExpectationMaximizationModel.epsilon = nil or defaultEpsilon
+	NewExpectationMaximizationModel.epsilon = epsilon or defaultEpsilon
 
 	NewExpectationMaximizationModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
@@ -259,7 +259,7 @@ function ExpectationMaximizationModel:setParameters(maxNumberOfIterations, numbe
 
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 
-	self.epsilon = self.epsilon
+	self.epsilon = epsilon or self.epsilon
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -289,13 +289,9 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 	else
 		
-		piTable, meanMatrix, varianceMatrix = initializeParameters(featureMatrix, self.numberOfClusters)
+		self.numberOfClusters = self.numberOfClusters or fetchBestNumberOfClusters(featureMatrix, self.epsilon, self.targetCost)
 		
-		if (self.numberOfClusters == nil) then
-
-			self.numberOfClusters = fetchBestNumberOfClusters(featureMatrix, self.epsilon, self.targetCost)
-
-		end
+		piTable, meanMatrix, varianceMatrix = initializeParameters(featureMatrix, self.numberOfClusters)
 
 	end
 

@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - KMedoids
 
-KMedoids is an unsupervised machine learning model that uses data points to set the center of clusters. It predicts which clusters it belongs to for given data based on distance.
+KMedoids is an unsupervised machine learning model that assigns data points to clusters by selecting representative points, called medoids, as cluster centers. It then predicts the cluster membership of new data points based on their distances to the medoids.
 
 ## Constructors
 

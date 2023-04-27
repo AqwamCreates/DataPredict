@@ -12,7 +12,7 @@ local defaultEpsilon = 1 * math.exp(-10)
 
 local defaultMaxNumberOfIterations = 10
 
-local defaultNumberOfClusters = nil
+local defaultNumberOfClusters = math.huge
 
 local defaultTargetCost = 0
 
@@ -289,7 +289,11 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 	else
 		
-		self.numberOfClusters = self.numberOfClusters or fetchBestNumberOfClusters(featureMatrix, self.epsilon, self.targetCost)
+		if (self.numberOfClusters == math.huge) then
+			
+			self.numberOfClusters = fetchBestNumberOfClusters(featureMatrix, self.epsilon, self.targetCost)
+			
+		end
 		
 		piTable, meanMatrix, varianceMatrix = initializeParameters(featureMatrix, self.numberOfClusters)
 
@@ -337,7 +341,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 		table.insert(costArray, cost)
 		
-		if (cost ~= cost) then error("Too much variance in the data!") end
+		if (cost ~= cost) then error("Too much variance in the data! Please change the argument values.") end
 
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 

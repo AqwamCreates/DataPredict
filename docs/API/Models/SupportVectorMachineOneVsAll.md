@@ -62,18 +62,6 @@ SupportVectorMachine:setCValue(cValue: number)
 
 * cValue: The value of c to be used.
 
-### setOptimizer()
-
-Set optimizer for the model by inputting the optimizer object.
-
-```
-SupportVectorMachineOneVsAll:setOptimizer(Optimizer: OptimizerObject)
-```
-
-#### Parameters:
-
-* Optimizer: The optimizer to be used.
-
 ### train()
 
 Train the model.

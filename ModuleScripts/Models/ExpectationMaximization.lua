@@ -320,7 +320,6 @@ function ExpectationMaximizationModel:train(featureMatrix)
 				local weight = piTable[i]
 
 				for j = 1, #featureMatrix[k], 1 do
-					
 
 					weight *= gaussian(featureMatrix[k][j], meanMatrix[j][i], varianceMatrix[j][i], self.epsilon)
 
@@ -337,6 +336,8 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		cost = math.abs(likelihood - previousLikelihood)
 
 		table.insert(costArray, cost)
+		
+		if (cost ~= cost) then error("Too much variance in the data!") end
 
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 

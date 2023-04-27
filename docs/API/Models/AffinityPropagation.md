@@ -42,7 +42,7 @@ AffinityPropagation:setParameters(maxNumberOfIterations: integer, damping: numbe
 
 * targetCost: The cost at which the model stops training.
 
-### canAppendPreviousFeatureMatrix(option)
+### canAppendPreviousFeatureMatrix()
 
 Set the option if the previous feature matrix should append with the new feature matrix during training.
 

@@ -182,7 +182,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 	
 	local areModelParametersEqual = false
 	
-	local clusters = AqwamMatrixLibrary:copy(featureMatrix)
+	local clusters = self.ModelParameters or AqwamMatrixLibrary:copy(featureMatrix)
 	
 	local isOutsideCostBounds
 	

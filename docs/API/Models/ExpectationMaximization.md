@@ -29,7 +29,7 @@ ExpectationMaximization.new(maxNumberOfIterations: integer, numberOfClusters: in
 
 ### setParameters()
 
-Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
+Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used. 
 
 ```
 ExpectationMaximization:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, epsilon: number, targetCost: number)
@@ -37,9 +37,9 @@ ExpectationMaximization:setParameters(maxNumberOfIterations: integer, numberOfCl
 
 #### Parameters
 
-* maxNumberOfIterations: The maximum number of iterations.
+* maxNumberOfIterations: The maximum number of iterations. 
 
-* numberOfClusters: Number of clusters for model to train and predict on.
+* numberOfClusters: Number of clusters for model to train and predict on. By default or set to math.huge(), it will find the best number of clusters using bayesian information criterion.
 
 * epsilon: The value to ensure that gaussian calculation doesn't reach infinity.
 

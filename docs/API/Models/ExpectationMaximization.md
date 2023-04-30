@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - ExpectationMaximization
 
-Expectation Maximization is an unsupervised machine learning model that estimates the probability distribution of a dataset and assigns each data point to a cluster based on its most likely probability.
+ExpectationMaximization is an unsupervised machine learning model that estimates the probability distribution of a dataset and assigns each data point to a cluster based on its most likely probability.
 
 ## Constructors
 

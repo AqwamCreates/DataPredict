@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - AgglomerativeHierarchical
 
-AgglomerativeHierarchical is an unsupervised machine learning model that predicts which cluster that the input belongs to using distance.
+AgglomerativeHierarchical clustering groups similar data points into clusters based on distance, in a bottom-up approach.
 
 ## Constructors
 

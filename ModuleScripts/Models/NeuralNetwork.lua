@@ -150,11 +150,11 @@ local function backPropagate(featureMatrix, ModelParameters, logisticMatrix, for
 	
 	layerMatrix = ModelParameters[numberOfLayers]
 	
-	layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
+	layerCostMatrix = AqwamMatrixLibrary:transpose(layerCostMatrix)
 
 	for output = numberOfLayers, 2, -1 do
 
-		errorPart1 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
+		errorPart1 = AqwamMatrixLibrary:dotProduct(layerMatrix, layerCostMatrix)
 
 		errorPart2 = AqwamMatrixLibrary:subtract(1, forwardPropagateTable[output - 1])
 
@@ -165,8 +165,6 @@ local function backPropagate(featureMatrix, ModelParameters, logisticMatrix, for
 		table.insert(backpropagateTable, 1, layerCostMatrix)
 		
 		layerMatrix = ModelParameters[output - 1]
-		
-		layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 
 	end
 
@@ -486,4 +484,3 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 end
 
 return NeuralNetworkModel
-

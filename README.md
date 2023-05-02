@@ -3,7 +3,7 @@
 
 --------------------------------------------------------------------
 
-Version 1.3.7
+Version 1.3.8
 
 Aqwam's Roblox Machine And Deep Learning Library (AR-MDLL)
 

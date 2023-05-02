@@ -132,9 +132,7 @@ local function backPropagate(featureMatrix, ModelParameters, logisticMatrix, for
 
 	local numberOfLayers = #ModelParameters
 
-	local layerCostMatrix = AqwamMatrixLibrary:subtract(forwardPropagateTable[numberOfLayers], logisticMatrix)
-
-	table.insert(backpropagateTable, layerCostMatrix)
+	local layerCostMatrix
 
 	local layerMatrix
 	
@@ -148,13 +146,17 @@ local function backPropagate(featureMatrix, ModelParameters, logisticMatrix, for
 
 	local errorPart3
 	
-	layerMatrix = ModelParameters[numberOfLayers]
+	layerCostMatrix = AqwamMatrixLibrary:subtract(logisticMatrix, forwardPropagateTable[numberOfLayers])
 	
-	layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
+	layerCostMatrix = AqwamMatrixLibrary:transpose(layerCostMatrix)
+
+	table.insert(backpropagateTable, layerCostMatrix)
+	
+	layerMatrix = ModelParameters[numberOfLayers]
 
 	for output = numberOfLayers, 2, -1 do
 
-		errorPart1 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
+		errorPart1 = AqwamMatrixLibrary:dotProduct(layerMatrix, layerCostMatrix)
 
 		errorPart2 = AqwamMatrixLibrary:subtract(1, forwardPropagateTable[output - 1])
 
@@ -165,8 +167,6 @@ local function backPropagate(featureMatrix, ModelParameters, logisticMatrix, for
 		table.insert(backpropagateTable, 1, layerCostMatrix)
 		
 		layerMatrix = ModelParameters[output - 1]
-		
-		layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 
 	end
 
@@ -176,7 +176,7 @@ end
 
 local function gradientDescent(learningRate, ModelParameters, backpropagateTable, numberOfData)
 	
-	local costFunctionDerivativeTable = {}
+	local NewModelParameters = {}
 	
 	local calculatedLearningRate = learningRate / numberOfData
 	
@@ -184,13 +184,13 @@ local function gradientDescent(learningRate, ModelParameters, backpropagateTable
 		
 		local costFunctionDerivative = AqwamMatrixLibrary:multiply(calculatedLearningRate, backpropagateTable[layerNumber])
 		
-		local newWeightMatrix = AqwamMatrixLibrary:add(weightMatrix, costFunctionDerivative)
-		
-		table.insert(costFunctionDerivativeTable, newWeightMatrix)
+		weightMatrix = AqwamMatrixLibrary:add(weightMatrix, costFunctionDerivative)
+
+		table.insert(NewModelParameters, weightMatrix)
 		
 	end
 	
-	return costFunctionDerivativeTable
+	return NewModelParameters
 
 end
 
@@ -403,13 +403,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		end
 		
-		costDerivativeTable = gradientDescent(self.learningRate, self.ModelParameters, backwardPropagateTable, numberOfData) -- do not refactor the code where the output is self.ModelParameters. Otherwise it cannot update to new model parameters values!
-		
-		for layerNumber, weightMatrix in ipairs(self.ModelParameters) do
-			
-			self.ModelParameters[layerNumber] = AqwamMatrixLibrary:add(self.ModelParameters[layerNumber], costDerivativeTable[layerNumber])
-			
-		end
+		self.ModelParameters = gradientDescent(self.learningRate, self.ModelParameters, backwardPropagateTable, numberOfData) -- do not refactor the code where the output is self.ModelParameters. Otherwise it cannot update to new model parameters values!
 		
 		delta = AqwamMatrixLibrary:multiply(self.learningRate, backwardPropagateTable[numberOfLayers])
 		

@@ -6,7 +6,7 @@ ExpectationMaximization is an unsupervised machine learning model that estimates
 
 ### new()
 
-Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
+Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
 ExpectationMaximization.new(maxNumberOfIterations: integer, numberOfClusters: integer, epsilon: number, targetCost: number): ModelObject
@@ -29,7 +29,7 @@ ExpectationMaximization.new(maxNumberOfIterations: integer, numberOfClusters: in
 
 ### setParameters()
 
-Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used. 
+Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used. 
 
 ```
 ExpectationMaximization:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, epsilon: number, targetCost: number)

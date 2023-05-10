@@ -6,7 +6,7 @@ LinearRegression is a supervised machine learning model that predicts continuous
 
 ### new()
 
-Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
+Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
 LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lossFunction: string, targetCost: number): ModelObject
@@ -30,7 +30,7 @@ LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lossF
 
 ### setParameters()
 
-Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
+Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
 LinearRegression:setParameters(maxNumberOfIterations: integer, learningRate: number, lossFunction: string, targetCost: number)

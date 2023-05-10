@@ -6,7 +6,7 @@ NeuralNetwork is a supervised machine learning model that predicts any positive 
 
 ### new()
 
-Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
+Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
 NeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, activationFunction: string, targetCost: number): ModelObject
@@ -30,7 +30,7 @@ NeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, activati
 
 ### setParameters()
 
-Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
+Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
 NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, activationFunction: string, targetCost: number)

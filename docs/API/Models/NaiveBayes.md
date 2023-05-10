@@ -6,7 +6,7 @@ NaiveBayes is an supervised machine learning model that predicts which classes t
 
 ### new()
 
-Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
+Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
 NaiveBayes.new(): ModelObject

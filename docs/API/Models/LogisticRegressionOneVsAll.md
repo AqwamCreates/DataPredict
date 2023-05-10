@@ -6,7 +6,7 @@ LogisticRegressionOneVsAll is a supervised machine learning model that predicts 
 
 ### new()
 
-Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
+Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
 LogisticRegressionOneVsAll.new(maxNumberOfIterations: integer, learningRate: number, sigmoidFunction: string, targetCost: number): ModelObject
@@ -30,7 +30,7 @@ LogisticRegressionOneVsAll.new(maxNumberOfIterations: integer, learningRate: num
 
 ### setParameters()
 
-Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
+Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
 LogisticRegressionOneVsAll:setParameters(maxNumberOfIterations: integer, learningRate: number, sigmoidFunction: string, targetCost: number)

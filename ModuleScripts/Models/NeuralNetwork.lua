@@ -558,3 +558,4 @@ function NeuralNetworkModel:setClassesList(classesList)
 end
 
 return NeuralNetworkModel
+

@@ -6,7 +6,7 @@ AgglomerativeHierarchical clustering groups similar data points into clusters ba
 
 ### new()
 
-Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
+Create new model object. If any of the arguments are nil default argument values for that argument will be used.
 
 ```
 AgglomerativeHierarchical.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, highestCost: number, lowestCost:number, stopWhenModelParametersDoesNotChange: boolean): ModelObject
@@ -36,10 +36,10 @@ AgglomerativeHierarchical.new(maxNumberOfIterations: integer, numberOfClusters: 
 
 ### setParameters()
 
-Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
+Set model's parameters. When any of the arguments are nil previous argument values for that argument will be used.
 
 ```
-AgglomerativeHierarchical:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, highestCost: number, lowestCost:number, stopWhenModelParametersDoesNotChange: boolean): ModelObject
+AgglomerativeHierarchical:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, highestCost: number, lowestCost:number, stopWhenModelParametersDoesNotChange: boolean)
 ```
 
 #### Parameters:

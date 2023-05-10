@@ -232,7 +232,9 @@ end
 
 local function punish(punishValue, ModelParameters, deltaTable)
 
-	local costFunctionDerivativeTable = {}
+	local costFunctionDerivative
+
+	local NewModelParameters = {}
 
 	for layerNumber, weightMatrix in ipairs(ModelParameters) do
 
@@ -240,11 +242,11 @@ local function punish(punishValue, ModelParameters, deltaTable)
 
 		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivative)
 
-		table.insert(costFunctionDerivativeTable, newWeightMatrix)
+		table.insert(NewModelParameters, newWeightMatrix)
 
 	end
 
-	return costFunctionDerivativeTable
+	return NewModelParameters
 
 end
 
@@ -531,11 +533,11 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 	
 	if (predictedLabel == label) then
 		
-		costDerivativeTable = gradientDescent(rewardValue, self.ModelParameters, deltaTable, 1)
+		self.ModelParameters = gradientDescent(rewardValue, self.ModelParameters, deltaTable, 1)
 		
 	else
 		
-		costDerivativeTable = punish(punishValue, self.ModelParameters, deltaTable)
+		self.ModelParameters = punish(punishValue, self.ModelParameters, deltaTable)
 		
 	end
 	

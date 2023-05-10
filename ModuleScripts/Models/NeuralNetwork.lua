@@ -106,6 +106,8 @@ local function forwardPropagate(featureMatrix, ModelParameters, activationFuncti
 	
 	local numberOfLayers = #ModelParameters
 	
+	table.insert(forwardPropagateTable, inputMatrix) -- don't remove this! otherwise the code won't work!
+	
 	for layerNumber, weightMatrix in ipairs(ModelParameters) do
 		
 		layerZ = AqwamMatrixLibrary:dotProduct(inputMatrix, weightMatrix)
@@ -146,27 +148,31 @@ local function backPropagate(featureMatrix, ModelParameters, logisticMatrix, for
 
 	local errorPart3
 	
-	layerCostMatrix = AqwamMatrixLibrary:subtract(logisticMatrix, forwardPropagateTable[numberOfLayers])
+	local activatedLayerMatrix
 	
-	layerCostMatrix = AqwamMatrixLibrary:transpose(layerCostMatrix)
+	layerCostMatrix = AqwamMatrixLibrary:subtract(forwardPropagateTable[numberOfLayers + 1], logisticMatrix)
 
 	table.insert(backpropagateTable, layerCostMatrix)
-	
-	layerMatrix = ModelParameters[numberOfLayers]
 
 	for output = numberOfLayers, 2, -1 do
+		
+		layerMatrix = ModelParameters[output]
+		
+		layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
+		
+		activatedLayerMatrix = forwardPropagateTable[output - 1]
+		
+		errorPart1 = AqwamMatrixLibrary:subtract(1, activatedLayerMatrix)
 
-		errorPart1 = AqwamMatrixLibrary:dotProduct(layerMatrix, layerCostMatrix)
+		errorPart2 = AqwamMatrixLibrary:multiply(activatedLayerMatrix, errorPart1)
 
-		errorPart2 = AqwamMatrixLibrary:subtract(1, forwardPropagateTable[output - 1])
+		errorPart3 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
+		
+		errorPart2 = AqwamMatrixLibrary:transpose(errorPart2)
 
-		errorPart3 = AqwamMatrixLibrary:multiply(forwardPropagateTable[output], errorPart2)
-
-		layerCostMatrix = AqwamMatrixLibrary:multiply(errorPart1, errorPart3)
+		layerCostMatrix = AqwamMatrixLibrary:multiply(errorPart3, errorPart2)
 
 		table.insert(backpropagateTable, 1, layerCostMatrix)
-		
-		layerMatrix = ModelParameters[output - 1]
 
 	end
 
@@ -174,7 +180,37 @@ local function backPropagate(featureMatrix, ModelParameters, logisticMatrix, for
 
 end
 
-local function gradientDescent(learningRate, ModelParameters, backpropagateTable, numberOfData)
+local function calculateDelta(forwardPropagateTable, backpropagateTable)
+	
+	local deltaMatrix
+	
+	local partialDerivativeMatrix
+	
+	local activationLayerMatrix
+	
+	local deltaTable = {}
+	
+	for layer = #backpropagateTable, 1, -1 do
+
+		activationLayerMatrix = forwardPropagateTable[layer]
+
+		partialDerivativeMatrix = AqwamMatrixLibrary:transpose(backpropagateTable[layer])
+
+		deltaMatrix = AqwamMatrixLibrary:dotProduct(partialDerivativeMatrix, activationLayerMatrix)
+		
+		deltaMatrix = AqwamMatrixLibrary:transpose(deltaMatrix)
+
+		table.insert(deltaTable, 1, deltaMatrix)
+		
+	end
+	
+	return deltaTable
+	
+end
+
+local function gradientDescent(learningRate, ModelParameters, deltaTable, numberOfData)
+	
+	local costFunctionDerivative
 	
 	local NewModelParameters = {}
 	
@@ -182,7 +218,7 @@ local function gradientDescent(learningRate, ModelParameters, backpropagateTable
 	
 	for layerNumber, weightMatrix in ipairs(ModelParameters) do
 		
-		local costFunctionDerivative = AqwamMatrixLibrary:multiply(calculatedLearningRate, backpropagateTable[layerNumber])
+		costFunctionDerivative = AqwamMatrixLibrary:multiply(calculatedLearningRate, deltaTable[layerNumber])
 		
 		weightMatrix = AqwamMatrixLibrary:add(weightMatrix, costFunctionDerivative)
 
@@ -194,13 +230,13 @@ local function gradientDescent(learningRate, ModelParameters, backpropagateTable
 
 end
 
-local function punish(punishValue, ModelParameters, backpropagateTable)
+local function punish(punishValue, ModelParameters, deltaTable)
 
 	local costFunctionDerivativeTable = {}
 
 	for layerNumber, weightMatrix in ipairs(ModelParameters) do
 
-		local costFunctionDerivative = AqwamMatrixLibrary:multiply(punishValue, backpropagateTable[layerNumber])
+		local costFunctionDerivative = AqwamMatrixLibrary:multiply(punishValue, deltaTable[layerNumber])
 
 		local newWeightMatrix = AqwamMatrixLibrary:add(weightMatrix, costFunctionDerivative)
 
@@ -236,6 +272,22 @@ local function getLabelFromOutputVector(outputVector, classesList)
 
 	return label
 
+end
+
+local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
+	
+	local labelVectorColumn = AqwamMatrixLibrary:transpose(labelVector)
+	
+	for i, value in ipairs(labelVectorColumn[1]) do
+		
+		if table.find(classesList, value) then continue end
+		
+		return true
+		
+	end
+	
+	return false
+	
 end
 
 
@@ -337,7 +389,9 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	
 	if (self.ModelParameters == nil) then error("Layers are not set!")
 		
-	elseif (#self.ModelParameters[1] ~= (#featureMatrix[1] + 1)) then error("Input layer has " .. (#self.ModelParameters[1] - 1) .. " neuron(s) without the bias, but feature matrix has " .. #featureMatrix[1] .. " features!") end
+	elseif (#self.ModelParameters[1] ~= (#featureMatrix[1] + 1)) then error("Input layer has " .. (#self.ModelParameters[1] - 1) .. " neuron(s) without the bias, but feature matrix has " .. #featureMatrix[1] .. " features!")
+	
+	elseif (#featureMatrix ~= #labelVector) then error("Number of rows of feature matrix and the label vector is not the same!") end
 	
 	local allOutputsMatrix
 	
@@ -361,7 +415,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	
 	local transposedLayerMatrix
 	
-	local delta = {}
+	local deltaTable
 	
 	local RegularizationDerivatives
 	
@@ -371,11 +425,23 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	
 	local costDerivativeTable
 	
-	local classesList = getClassesList(labelVector)
-
-	table.sort(classesList, function(a,b) return a < b end)
+	local classesList
 	
-	self.ClassesList = classesList
+	local previousDeltaTable
+	
+	if (#self.ClassesList == 0) then
+		
+		classesList = getClassesList(labelVector)
+		
+		table.sort(classesList, function(a,b) return a < b end)
+		
+		self.ClassesList = classesList
+		
+	else
+		
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector") end
+		
+	end
 	
 	local logisticMatrix = convertLabelVectorToLogisticMatrix(self.ModelParameters, labelVector, classesList)
 	
@@ -389,23 +455,23 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 		backwardPropagateTable = backPropagate(featureMatrix, self.ModelParameters, logisticMatrix, forwardPropagateTable)
 		
+		deltaTable = calculateDelta(forwardPropagateTable, backwardPropagateTable)
+		
 		if (self.Regularization) then
 				
 			RegularizationDerivatives = self.Regularization:calculateLossFunctionDerivativeRegularizaion(self.ModelParameters[numberOfLayers], numberOfData)
 
-			backwardPropagateTable[numberOfLayers]  = AqwamMatrixLibrary:add(backwardPropagateTable[numberOfLayers], RegularizationDerivatives)
+			deltaTable[numberOfLayers]  = AqwamMatrixLibrary:add(deltaTable[numberOfLayers], RegularizationDerivatives)
 
 		end
 
 		if (self.Optimizer) then 
 				
-			backwardPropagateTable[numberOfLayers] = self.Optimizer:calculate(backwardPropagateTable[numberOfLayers], delta) 
+			deltaTable[numberOfLayers] = self.Optimizer:calculate(deltaTable[numberOfLayers], previousDeltaTable[numberOfLayers]) 
 
 		end
 		
-		self.ModelParameters = gradientDescent(self.learningRate, self.ModelParameters, backwardPropagateTable, numberOfData) -- do not refactor the code where the output is self.ModelParameters. Otherwise it cannot update to new model parameters values!
-		
-		delta = AqwamMatrixLibrary:multiply(self.learningRate, backwardPropagateTable[numberOfLayers])
+		self.ModelParameters = gradientDescent(self.learningRate, self.ModelParameters, deltaTable, numberOfData) -- do not refactor the code where the output is self.ModelParameters. Otherwise it cannot update to new model parameters values!
 		
 		costVector = calculateErrorVector(allOutputsMatrix, logisticMatrix)
 		
@@ -422,6 +488,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		table.insert(costArray, cost)
 		
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
+		
+		previousDeltaTable = deltaTable
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 	
@@ -457,15 +525,17 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 	
 	local backwardPropagateTable = backPropagate(featureVector, self.ModelParameters, logisticMatrix, forwardPropagateTable)
 	
+	local deltaTable = calculateDelta(forwardPropagateTable, backwardPropagateTable)
+	
 	local predictedLabel = getLabelFromOutputVector(allOutputsMatrix, self.ClassesList)
 	
 	if (predictedLabel == label) then
 		
-		costDerivativeTable = gradientDescent(rewardValue, self.ModelParameters, backwardPropagateTable, 1)
+		costDerivativeTable = gradientDescent(rewardValue, self.ModelParameters, deltaTable, 1)
 		
 	else
 		
-		costDerivativeTable = punish(punishValue, self.ModelParameters, backwardPropagateTable)
+		costDerivativeTable = punish(punishValue, self.ModelParameters, deltaTable)
 		
 	end
 	
@@ -479,6 +549,19 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 	
 end
 
+function NeuralNetworkModel:getClassesList()
+	
+	return self.ClassesList
+	
+end
+
+function NeuralNetworkModel:setClassesList(classesList)
+
+	self.ClassesList = classesList
+
+end
+
 return NeuralNetworkModel
+
 
 

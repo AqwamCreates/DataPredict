@@ -6,7 +6,7 @@ LogisticRegression is a supervised machine learning model that predicts values o
 
 ### new()
 
-Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
+Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
 LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, sigmoidFunction: string, targetCost: number): ModelObject
@@ -30,7 +30,7 @@ LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, sig
 
 ### setParameters()
 
-Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
+Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
 LogisticRegression:setParameters(maxNumberOfIterations: integer, learningRate: number, sigmoidFunction: string, targetCost: number)

@@ -539,12 +539,6 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 		
 	end
 	
-	for layerNumber, weightMatrix in ipairs(self.ModelParameters) do
-
-		self.ModelParameters[layerNumber] = AqwamMatrixLibrary:add(self.ModelParameters[layerNumber], costDerivativeTable[layerNumber])
-
-	end
-	
 	return predictedLabel
 	
 end
@@ -562,7 +556,3 @@ function NeuralNetworkModel:setClassesList(classesList)
 end
 
 return NeuralNetworkModel
-
-
-
-

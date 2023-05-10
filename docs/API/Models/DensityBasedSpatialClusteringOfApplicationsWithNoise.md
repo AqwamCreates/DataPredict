@@ -6,7 +6,7 @@ DBSCAN is an unsupervised machine learning model that clusters data points based
 
 ### new()
 
-Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
+Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
 DensityBasedSpatialClusteringOfApplicationsWithNoise.new(epsilon: number, minimumNumberOfPoints: integer, distanceFunction: string, targetCost: number): ModelObject
@@ -30,10 +30,10 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise.new(epsilon: number, minimu
 
 ### setParameters()
 
-Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
+Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DensityBasedSpatialClusteringOfApplicationsWithNoise:setParameters(epsilon: number, minimumNumberOfPoints: integer, distanceFunction: string, targetCost: number): ModelObject
+DensityBasedSpatialClusteringOfApplicationsWithNoise:setParameters(epsilon: number, minimumNumberOfPoints: integer, distanceFunction: string, targetCost: number)
 ```
 
 #### Parameters:

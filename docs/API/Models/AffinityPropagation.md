@@ -6,7 +6,7 @@ AffinityPropagation is an unsupervised machine learning model that predicts whic
 
 ### new()
 
-Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
+Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
 AffinityPropagation.new(maxNumberOfIterations: integer, damping: number, targetCost: integer): ModelObject
@@ -28,10 +28,10 @@ AffinityPropagation.new(maxNumberOfIterations: integer, damping: number, targetC
 
 ### setParameters()
 
-Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
+Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-AffinityPropagation:setParameters(maxNumberOfIterations: integer, damping: number, targetCost: integer): ModelObject
+AffinityPropagation:setParameters(maxNumberOfIterations: integer, damping: number, targetCost: integer)
 ```
 
 #### Parameters:

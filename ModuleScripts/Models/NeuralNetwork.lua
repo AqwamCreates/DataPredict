@@ -238,7 +238,7 @@ local function punish(punishValue, ModelParameters, deltaTable)
 
 		local costFunctionDerivative = AqwamMatrixLibrary:multiply(punishValue, deltaTable[layerNumber])
 
-		local newWeightMatrix = AqwamMatrixLibrary:add(weightMatrix, costFunctionDerivative)
+		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivative)
 
 		table.insert(costFunctionDerivativeTable, newWeightMatrix)
 
@@ -562,6 +562,7 @@ function NeuralNetworkModel:setClassesList(classesList)
 end
 
 return NeuralNetworkModel
+
 
 
 

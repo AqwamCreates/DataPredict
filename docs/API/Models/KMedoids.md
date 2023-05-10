@@ -6,7 +6,7 @@ KMedoids is an unsupervised machine learning model that assigns data points to c
 
 ### new()
 
-Create new model object. If any of the arguments are not given, default argument values for that argument will be used.
+Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
 KMedoids.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, targetCost: number, setTheCentroidsDistanceFarthest: boolean): ModelObject
@@ -32,10 +32,10 @@ KMedoids.new(maxNumberOfIterations: integer, numberOfClusters: integer, distance
 
 ### setParameters()
 
-Set model's parameters. When any of the arguments are not given, previous argument values for that argument will be used.
+Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-KMedoids:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, targetCost: number, setTheCentroidsDistanceFarthest: boolean): ModelObject
+KMedoids:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, targetCost: number, setTheCentroidsDistanceFarthest: boolean)
 ```
 
 #### Parameters:

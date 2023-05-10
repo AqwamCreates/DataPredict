@@ -160,15 +160,13 @@ local function backPropagate(featureMatrix, ModelParameters, logisticMatrix, for
 		
 		layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 		
-		activatedLayerMatrix = forwardPropagateTable[output - 1]
+		activatedLayerMatrix = forwardPropagateTable[output]
 		
 		errorPart1 = AqwamMatrixLibrary:subtract(1, activatedLayerMatrix)
 
 		errorPart2 = AqwamMatrixLibrary:multiply(activatedLayerMatrix, errorPart1)
 
 		errorPart3 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
-		
-		errorPart2 = AqwamMatrixLibrary:transpose(errorPart2)
 
 		layerCostMatrix = AqwamMatrixLibrary:multiply(errorPart3, errorPart2)
 
@@ -558,4 +556,3 @@ function NeuralNetworkModel:setClassesList(classesList)
 end
 
 return NeuralNetworkModel
-

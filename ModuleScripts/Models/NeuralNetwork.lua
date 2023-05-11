@@ -252,7 +252,7 @@ local function punish(punishValue, ModelParameters, deltaTable)
 
 end
 
-local function calculateErrorVector(allOutputsMatrix, logisticMatrix)
+local function calculateErrorVector(allOutputsMatrix, logisticMatrix, numberOfData)
 
 	local subtractedMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
 
@@ -260,7 +260,7 @@ local function calculateErrorVector(allOutputsMatrix, logisticMatrix)
 
 	local sumSquaredSubtractedMatrix = AqwamMatrixLibrary:verticalSum(squaredSubtractedMatrix)
 
-	local errorVector = AqwamMatrixLibrary:multiply((1/2), sumSquaredSubtractedMatrix)
+	local errorVector = AqwamMatrixLibrary:multiply((1/numberOfData), sumSquaredSubtractedMatrix)
 
 	return errorVector
 
@@ -477,7 +477,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 		self.ModelParameters = gradientDescent(self.learningRate, self.ModelParameters, deltaTable, numberOfData) -- do not refactor the code where the output is self.ModelParameters. Otherwise it cannot update to new model parameters values!
 		
-		costVector = calculateErrorVector(allOutputsMatrix, logisticMatrix)
+		costVector = calculateErrorVector(allOutputsMatrix, logisticMatrix, numberOfData)
 		
 		cost = AqwamMatrixLibrary:sum(costVector)
 		
@@ -568,4 +568,5 @@ function NeuralNetworkModel:setClassesList(classesList)
 end
 
 return NeuralNetworkModel
+
 

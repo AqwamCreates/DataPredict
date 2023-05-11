@@ -150,7 +150,7 @@ local function backPropagate(featureMatrix, ModelParameters, logisticMatrix, for
 	
 	local activatedLayerMatrix
 	
-	layerCostMatrix = AqwamMatrixLibrary:subtract(logisticMatrix, forwardPropagateTable[#forwardPropagateTable])
+	layerCostMatrix = AqwamMatrixLibrary:subtract(forwardPropagateTable[#forwardPropagateTable], logisticMatrix)
 
 	table.insert(backpropagateTable, layerCostMatrix)
 

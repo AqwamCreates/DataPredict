@@ -220,6 +220,8 @@ local function gradientDescent(learningRate, ModelParameters, deltaTable, number
 		
 		costFunctionDerivative = AqwamMatrixLibrary:multiply(calculatedLearningRate, deltaTable[layerNumber])
 		
+		for row = 1, #weightMatrix, 1 do weightMatrix[row][1] = 0 end
+		
 		newWeightMatrix = AqwamMatrixLibrary:add(weightMatrix, costFunctionDerivative)
 
 		table.insert(NewModelParameters, newWeightMatrix)
@@ -568,5 +570,3 @@ function NeuralNetworkModel:setClassesList(classesList)
 end
 
 return NeuralNetworkModel
-
-

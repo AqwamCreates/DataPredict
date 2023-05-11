@@ -523,6 +523,10 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 	
 	if (rewardValue == nil) then error("Punish value is nil!") end
 	
+	if (rewardValue < 0) then error("Reward value must be a positive integer!") end
+
+	if (rewardValue < 0) then error("Punish value must be a positive integer!") end
+	
 	local costDerivativeTable
 	
 	local forwardPropagateTable = forwardPropagate(featureVector, self.ModelParameters, self.activationFunction)

@@ -150,7 +150,7 @@ local function backPropagate(featureMatrix, ModelParameters, logisticMatrix, for
 	
 	local activatedLayerMatrix
 	
-	layerCostMatrix = AqwamMatrixLibrary:subtract(forwardPropagateTable[numberOfLayers + 1], logisticMatrix)
+	layerCostMatrix = AqwamMatrixLibrary:subtract(logisticMatrix, forwardPropagateTable[#forwardPropagateTable])
 
 	table.insert(backpropagateTable, layerCostMatrix)
 
@@ -455,7 +455,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 		forwardPropagateTable = forwardPropagate(featureMatrix, self.ModelParameters, self.activationFunction)
 		
-		allOutputsMatrix = forwardPropagateTable[numberOfLayers]
+		allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
 		
 		backwardPropagateTable = backPropagate(featureMatrix, self.ModelParameters, logisticMatrix, forwardPropagateTable)
 		

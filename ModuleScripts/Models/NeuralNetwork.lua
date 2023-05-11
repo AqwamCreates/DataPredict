@@ -210,6 +210,8 @@ local function gradientDescent(learningRate, ModelParameters, deltaTable, number
 	
 	local costFunctionDerivative
 	
+	local newWeightMatrix
+	
 	local NewModelParameters = {}
 	
 	local calculatedLearningRate = learningRate / numberOfData
@@ -218,9 +220,9 @@ local function gradientDescent(learningRate, ModelParameters, deltaTable, number
 		
 		costFunctionDerivative = AqwamMatrixLibrary:multiply(calculatedLearningRate, deltaTable[layerNumber])
 		
-		weightMatrix = AqwamMatrixLibrary:add(weightMatrix, costFunctionDerivative)
+		newWeightMatrix = AqwamMatrixLibrary:add(weightMatrix, costFunctionDerivative)
 
-		table.insert(NewModelParameters, weightMatrix)
+		table.insert(NewModelParameters, newWeightMatrix)
 		
 	end
 	
@@ -231,14 +233,16 @@ end
 local function punish(punishValue, ModelParameters, deltaTable)
 
 	local costFunctionDerivative
+	
+	local newWeightMatrix
 
 	local NewModelParameters = {}
 
 	for layerNumber, weightMatrix in ipairs(ModelParameters) do
 
-		local costFunctionDerivative = AqwamMatrixLibrary:multiply(punishValue, deltaTable[layerNumber])
+		costFunctionDerivative = AqwamMatrixLibrary:multiply(punishValue, deltaTable[layerNumber])
 
-		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivative)
+		newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivative)
 
 		table.insert(NewModelParameters, newWeightMatrix)
 
@@ -556,4 +560,3 @@ function NeuralNetworkModel:setClassesList(classesList)
 end
 
 return NeuralNetworkModel
-

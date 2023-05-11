@@ -519,6 +519,10 @@ end
 
 function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishValue)
 	
+	if (rewardValue == nil) then error("Reward value is nil!") end
+	
+	if (rewardValue == nil) then error("Punish value is nil!") end
+	
 	local costDerivativeTable
 	
 	local forwardPropagateTable = forwardPropagate(featureVector, self.ModelParameters, self.activationFunction)

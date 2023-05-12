@@ -32,6 +32,51 @@ local activationFunctionList = {
 
 }
 
+local derivativeList = {
+	
+	["sigmoid"] = function (z) 
+		
+		local a = activationFunctionList["sigmoid"](z)
+		
+		return (a * (1-a))
+		
+	end,
+	
+	["tanh"] = function (z)
+		
+		local a = activationFunctionList["tanh"](z)
+		
+		return (1 - math.pow(a, 2))
+		
+	end,
+	
+	["ReLU"] = function (z)
+		
+		if (z > 0) then return 1
+			
+		else return 0 end
+		
+	end,
+	
+	["LeakyReLU"] = function (z)
+
+		if (z > 0) then return 1
+
+		else return 0.01 end
+
+	end,
+	
+	["ELU"] = function (z)
+
+		if (z > 0) then return 1
+
+		else return 0.01 * math.exp(z) end
+
+	end,
+
+	
+}
+
 local function getClassesList(labelVector)
 
 	local classesList = {}
@@ -98,11 +143,15 @@ local function forwardPropagate(featureMatrix, ModelParameters, activationFuncti
 
 	local forwardPropagateTable = {}
 	
+	local zTable = {}
+	
 	local biasMatrix = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1, 1)
 	
 	local featureMatrixWithBias = AqwamMatrixLibrary:horizontalConcatenate(biasMatrix, featureMatrix)
 	
 	local inputMatrix = featureMatrixWithBias
+	
+	table.insert(zTable, inputMatrix)
 	
 	local numberOfLayers = #ModelParameters
 	
@@ -111,6 +160,8 @@ local function forwardPropagate(featureMatrix, ModelParameters, activationFuncti
 	for layerNumber, weightMatrix in ipairs(ModelParameters) do
 		
 		layerZ = AqwamMatrixLibrary:dotProduct(inputMatrix, weightMatrix)
+		
+		table.insert(zTable, layerZ)
 		
 		inputMatrix = AqwamMatrixLibrary:applyFunction(activationFunctionList[activationFunction], layerZ)
 		
@@ -124,11 +175,11 @@ local function forwardPropagate(featureMatrix, ModelParameters, activationFuncti
 		
 	end
 	
-	return forwardPropagateTable
+	return forwardPropagateTable, zTable
 
 end
 
-local function backPropagate(featureMatrix, ModelParameters, logisticMatrix, forwardPropagateTable)
+local function backPropagate(featureMatrix, ModelParameters, lossMatrix, zTable, activationFunction)
 
 	local backpropagateTable = {}
 
@@ -148,9 +199,11 @@ local function backPropagate(featureMatrix, ModelParameters, logisticMatrix, for
 
 	local errorPart3
 	
-	local activatedLayerMatrix
+	local zLayerMatrix
 	
-	layerCostMatrix = AqwamMatrixLibrary:subtract(forwardPropagateTable[#forwardPropagateTable], logisticMatrix)
+	local derivativeFunction = derivativeList[activationFunction]
+	
+	layerCostMatrix = lossMatrix
 
 	table.insert(backpropagateTable, layerCostMatrix)
 
@@ -160,15 +213,13 @@ local function backPropagate(featureMatrix, ModelParameters, logisticMatrix, for
 		
 		layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 		
-		activatedLayerMatrix = forwardPropagateTable[output]
+		zLayerMatrix = zTable[output]
 		
-		errorPart1 = AqwamMatrixLibrary:subtract(1, activatedLayerMatrix)
+		errorPart1 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
+		
+		errorPart2 = AqwamMatrixLibrary:applyFunction(derivativeFunction, zLayerMatrix)
 
-		errorPart2 = AqwamMatrixLibrary:multiply(activatedLayerMatrix, errorPart1)
-
-		errorPart3 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
-
-		layerCostMatrix = AqwamMatrixLibrary:multiply(errorPart3, errorPart2)
+		layerCostMatrix = AqwamMatrixLibrary:multiply(errorPart1, errorPart2)
 
 		table.insert(backpropagateTable, 1, layerCostMatrix)
 
@@ -371,7 +422,7 @@ function NeuralNetworkModel:setLayers(...)
 		
 		numberOfNextLayerNeurons = layersArray[layer + 1] + 1 -- 1 is added for bias
 		
-		biasMatrix = AqwamMatrixLibrary:createMatrix(1, numberOfNextLayerNeurons)
+		biasMatrix = AqwamMatrixLibrary:createMatrix(1, numberOfNextLayerNeurons, 1)
 		
 		weightMatrix = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
 		
@@ -425,6 +476,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	
 	local forwardPropagateTable
 	
+	local zTable
+	
 	local backwardPropagateTable
 	
 	local costDerivativeTable
@@ -432,6 +485,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	local classesList
 	
 	local previousDeltaTable
+	
+	local lossMatrix
 	
 	if (#self.ClassesList == 0) then
 		
@@ -453,11 +508,13 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 		numberOfIterations += 1
 		
-		forwardPropagateTable = forwardPropagate(featureMatrix, self.ModelParameters, self.activationFunction)
+		forwardPropagateTable, zTable = forwardPropagate(featureMatrix, self.ModelParameters, self.activationFunction)
 		
 		allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
 		
-		backwardPropagateTable = backPropagate(featureMatrix, self.ModelParameters, logisticMatrix, forwardPropagateTable)
+		lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix) 
+		
+		backwardPropagateTable = backPropagate(featureMatrix, self.ModelParameters, lossMatrix, zTable, self.activationFunction)
 		
 		deltaTable = calculateDelta(forwardPropagateTable, backwardPropagateTable)
 		
@@ -521,21 +578,21 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 	
 	if (rewardValue == nil) then error("Reward value is nil!") end
 	
-	if (rewardValue == nil) then error("Punish value is nil!") end
+	if (punishValue == nil) then error("Punish value is nil!") end
 	
 	if (rewardValue < 0) then error("Reward value must be a positive integer!") end
 
-	if (rewardValue < 0) then error("Punish value must be a positive integer!") end
-	
-	local costDerivativeTable
-	
-	local forwardPropagateTable = forwardPropagate(featureVector, self.ModelParameters, self.activationFunction)
-	
-	local allOutputsMatrix = forwardPropagateTable[#self.ModelParameters]
+	if (punishValue < 0) then error("Punish value must be a positive integer!") end
 	
 	local logisticMatrix = convertLabelVectorToLogisticMatrix(self.ModelParameters, label, self.ClassesList)
 	
-	local backwardPropagateTable = backPropagate(featureVector, self.ModelParameters, logisticMatrix, forwardPropagateTable)
+	local forwardPropagateTable, zTable = forwardPropagate(featureVector, self.ModelParameters, self.activationFunction)
+	
+	local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
+	
+	local lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
+	
+	local backwardPropagateTable = backPropagate(featureVector, self.ModelParameters, lossMatrix, zTable, self.activationFunction)
 	
 	local deltaTable = calculateDelta(forwardPropagateTable, backwardPropagateTable)
 	

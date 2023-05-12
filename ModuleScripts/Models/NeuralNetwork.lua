@@ -643,7 +643,7 @@ function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, s
 	
 	local predictedLabel
 	
-	local queuedReinforcementCoroutine = coroutine.resume(coroutine.create(function()
+	local queuedReinforcementCoroutine = coroutine.create(function()
 		
 		repeat
 			
@@ -697,7 +697,9 @@ function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, s
 		
 		predictedLabel = nil
 		
-	end))
+	end)
+	
+	coroutine.resume(queuedReinforcementCoroutine)
 	
 	return queuedReinforcementCoroutine
 	

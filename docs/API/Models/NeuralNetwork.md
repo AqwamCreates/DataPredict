@@ -171,6 +171,8 @@ NeuralNetwork:stopQueuedReinforcement()
 
 ### addFeatureVectorToReinforcementQueue()
 
+Adds feature vector to queue.
+
 ```
 NeuralNetwork:addFeatureVectorToReinforcementQueue(featureVector)
 ```
@@ -180,6 +182,8 @@ NeuralNetwork:addFeatureVectorToReinforcementQueue(featureVector)
 * featureVector: A (1 x n) matrix containing all the features to be added to the reinforcement queue.
 
 ### addLabelToReinforcementQueue()
+
+Adds label to queue.
 
 ```
 NeuralNetwork:addLabelToReinforcementQueue(label)

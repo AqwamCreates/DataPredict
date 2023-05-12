@@ -195,13 +195,13 @@ NeuralNetwork:addLabelToReinforcementQueue(label)
 
 ### returnPredictedLabelFromReinforcementQueue()
 
-Adds label to queue.
+Returns predicted label from the queue.
 
 ```
 NeuralNetwork:returnPredictedLabelFromReinforcementQueue(): integer
 ```
 
-#### Parameters:
+#### Returns:
 
 * label: The actual label related to the previous feature vector.  
 

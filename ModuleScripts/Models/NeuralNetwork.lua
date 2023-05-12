@@ -684,11 +684,11 @@ function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, s
 			
 		until (self.IsQueuedReinforcementRunning == false)
 		
-		self.FeatureMatrixQueue = nil
+		self.FeatureVectorQueue = nil
 
 		self.LabelQueue = nil
 
-		self.IsParallelReinforceRunning = nil
+		self.IsQueuedReinforcementRunning = nil
 		
 		self.WaitDuration = nil
 		
@@ -712,7 +712,7 @@ function NeuralNetworkModel:stopQueuedReinforcement()
 	
 end
 
-function NeuralNetworkModel:addFeatureVectorToReinforceQueue(featureVector)
+function NeuralNetworkModel:addFeatureVectorToReinforcementQueue(featureVector)
 	
 	if (self.IsQueuedReinforcementRunning == nil) then error("Queued reinforcement is not active!") end
 	
@@ -720,7 +720,7 @@ function NeuralNetworkModel:addFeatureVectorToReinforceQueue(featureVector)
 	
 end
 
-function NeuralNetworkModel:addLabelToReinforceQueue(label)
+function NeuralNetworkModel:addLabelToReinforcementQueue(label)
 	
 	if (self.IsQueuedReinforcementRunning == nil) then error("Queued reinforcement is not active!") end
 	

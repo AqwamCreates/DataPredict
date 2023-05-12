@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - QueuedReinforcementNeuralNetwork
+# [API Reference](../../API.md) - [Models](../Models.md) - NeuralNetowrk - QueuedReinforcementNeuralNetwork
 
-NeuralNetwork is a supervised machine learning model that predicts any positive numbers of discrete values.
+A Queued Reinforcement Neural Network is a neural network has the capability of reinforcing and back propogate through time. This model can be considered as a cousine of Recurrent Neural Networks.
 
 ```
 NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning): coroutine, coroutine, coroutine

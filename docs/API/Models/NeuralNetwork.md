@@ -144,7 +144,7 @@ NeuralNetwork:reinforce(featureVector: Matrix, label: integer, rewardValue: numb
 Starts a new thread for real-time reinforcement. It waits for the functions below to provide both the feature vector and label, and only proceeds with reinforcement when both queues are filled.
 
 ```
-NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning): coroutine
+NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning): coroutine, coroutine, coroutine
 ```
 
 #### Parameters:
@@ -161,7 +161,11 @@ NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLa
 
 #### Returns:
 
-* queuedReinforcementCoroutine: A coroutine object.
+* predictCoroutine: A coroutine that produces prediction from the model.
+
+* reinforcementCoroutine: A coroutine that controls the reinforcement behaviour.
+
+* resetCoroutine: A coroutine where it resets the internal data.
 
 ### stopQueuedReinforcement()
 

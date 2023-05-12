@@ -345,6 +345,18 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
 	
 end
 
+local function checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
+	
+	if (rewardValue == nil) then error("Reward value is nil!") end
+
+	if (punishValue == nil) then error("Punish value is nil!") end
+
+	if (rewardValue < 0) then error("Reward value must be a positive integer!") end
+
+	if (punishValue < 0) then error("Punish value must be a positive integer!") end
+	
+end
+
 
 function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, activationFunction, targetCost)
 
@@ -568,13 +580,7 @@ end
 
 function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishValue)
 	
-	if (rewardValue == nil) then error("Reward value is nil!") end
-	
-	if (punishValue == nil) then error("Punish value is nil!") end
-	
-	if (rewardValue < 0) then error("Reward value must be a positive integer!") end
-
-	if (punishValue < 0) then error("Punish value must be a positive integer!") end
+	checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
 	
 	local logisticMatrix = convertLabelVectorToLogisticMatrix(self.ModelParameters, label, self.ClassesList)
 	
@@ -613,6 +619,112 @@ end
 function NeuralNetworkModel:setClassesList(classesList)
 
 	self.ClassesList = classesList
+
+end
+
+function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning)
+	
+	if (self.IsQueuedReinforcementRunning == true) then error("Queued reinforcement is already active!") end
+	
+	checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
+	
+	self.FeatureVectorQueue = {}
+	
+	self.LabelQueue = {}
+	
+	self.IsQueuedReinforcementRunning = true
+	
+	self.WaitDuration = 0
+	
+	self.WarningIssued = false
+	
+	if (showIdleWarning == nil) then showIdleWarning = true else showIdleWarning = showIdleWarning end
+	
+	if (showPredictedLabel == nil) then showPredictedLabel = false else showPredictedLabel = showPredictedLabel end
+	
+	local predictedLabel
+	
+	local queuedReinforceCoroutine = coroutine.resume(coroutine.create(function()
+		
+		repeat
+			
+			if (#self.FeatureVectorQueue == 0) or (#self.LabelQueue == 0) then 
+				
+				task.wait(0.1)
+				
+				self.WaitDuration += 0.1
+				
+			elseif (self.IsQueuedReinforcementRunning == false) then 
+				
+				break
+				
+			else
+				
+				predictedLabel = self:reinforce(self.FeatureVectorQueue[1], self.LabelQueue[1], rewardValue, punishValue)
+				
+				if (showPredictedLabel == true) then print("Predicted Label: " .. predictedLabel .. "\t\t\tActual Label: " .. self.LabelQueue[1]) end
+
+				table.remove(self.FeatureVectorQueue, 1)
+
+				table.remove(self.LabelQueue, 1)
+				
+				self.WaitDuration = 0
+				
+				self.WarningIssued = false
+				
+			end
+			
+			if (self.WaitDuration >= 30) and (self.WarningIssued == false) and (showIdleWarning == true) then 
+				
+				warn("The neural network has been idle for more than 30 seconds. Leaving it idle may use unnecessary resource.") 
+				
+				self.WarningIssued = true	
+				
+			end
+			
+		until (self.IsQueuedReinforcementRunning == false)
+		
+		self.FeatureMatrixQueue = nil
+
+		self.LabelQueue = nil
+
+		self.IsParallelReinforceRunning = nil
+		
+		self.WaitDuration = nil
+		
+		self.WarningIssued = nil	
+		
+		showPredictedLabel = nil
+		
+		showIdleWarning = nil
+		
+		predictedLabel = nil
+		
+	end))
+	
+	return queuedReinforceCoroutine
+	
+end
+
+function NeuralNetworkModel:stopQueuedReinforcement()
+	
+	self.IsQueuedReinforcementRunning = false
+	
+end
+
+function NeuralNetworkModel:addFeatureVectorToReinforceQueue(featureVector)
+	
+	if (self.IsQueuedReinforcementRunning == nil) then error("Queued reinforcement is not active!") end
+	
+	table.insert(self.FeatureVectorQueue, featureVector)
+	
+end
+
+function NeuralNetworkModel:addLabelToReinforceQueue(label)
+	
+	if (self.IsQueuedReinforcementRunning == nil) then error("Queued reinforcement is not active!") end
+	
+	table.insert(self.LabelQueue, label)
 
 end
 

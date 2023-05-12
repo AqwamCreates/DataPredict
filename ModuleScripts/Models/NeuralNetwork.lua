@@ -408,33 +408,25 @@ function NeuralNetworkModel:setLayers(...)
 	
 	local weightMatrix
 	
-	local biasMatrix
-	
-	local weightAndBiasMatrix
-	
 	local numberOfCurrentLayerNeurons
 	
 	local numberOfNextLayerNeurons
 	
 	for layer = 1, (numberOfLayers - 2), 1 do
 		
-		numberOfCurrentLayerNeurons = layersArray[layer]
+		numberOfCurrentLayerNeurons = layersArray[layer] + 1
 		
 		numberOfNextLayerNeurons = layersArray[layer + 1] + 1 -- 1 is added for bias
 		
-		biasMatrix = AqwamMatrixLibrary:createMatrix(1, numberOfNextLayerNeurons, 1)
-		
 		weightMatrix = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
 		
-		weightAndBiasMatrix = AqwamMatrixLibrary:verticalConcatenate(biasMatrix, weightMatrix)  -- bias layer is added
-		
-		table.insert(ModelParameters, weightAndBiasMatrix)
+		table.insert(ModelParameters, weightMatrix)
 		
 	end
 	
-	weightAndBiasMatrix = AqwamMatrixLibrary:createRandomNormalMatrix(layersArray[numberOfLayers - 1] + 1, layersArray[numberOfLayers]) -- final layer, no bias needed.
+	weightMatrix = AqwamMatrixLibrary:createRandomNormalMatrix(layersArray[numberOfLayers - 1] + 1, layersArray[numberOfLayers]) -- final layer, no bias needed.
 	
-	table.insert(ModelParameters, weightAndBiasMatrix)
+	table.insert(ModelParameters, weightMatrix)
 	
 	self.ModelParameters = ModelParameters
 	

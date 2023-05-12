@@ -81,4 +81,8 @@ NeuralNetwork:returnPredictedLabelFromReinforcementQueue(): integer
 
 #### Returns:
 
-* label: The predicted label related to the previous feature vector.  
+* label: The predicted label related to the previous feature vector.
+
+## Inherited From:
+
+[NeuralNetwork](../Models/NeuralNetwork.md)

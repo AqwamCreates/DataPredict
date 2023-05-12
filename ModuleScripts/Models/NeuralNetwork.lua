@@ -758,23 +758,27 @@ function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, s
 		
 		repeat task.wait(waitInterval) until (self.IsQueuedReinforcementRunning == false)
 		
+		self.IsQueuedReinforcementRunning = nil
+		
 		self.FeatureVectorQueue = nil
 
 		self.LabelQueue = nil
 
-		self.IsQueuedReinforcementRunning = nil
+		self.PredictedLabelQueue = nil
 
-		self.WaitDuration = nil
+		self.ForwardPropagationTableQueue = nil
 
-		self.WarningIssued = nil	
+		self.ZTableQueue = nil
 
-		self.PredictedLabelFromReinforcementQueue = nil
+		local waitInterval = nil
 
-		showPredictedLabel = nil
+		local idleDuration = nil
 
-		showIdleWarning = nil
+		local waitDuration = nil
 
-		waitInterval = nil
+		local idleWarningIssued = nil
+
+		local labelWarningIssued = nil
 		
 	end)
 	
@@ -796,7 +800,7 @@ end
 
 function NeuralNetworkModel:addFeatureVectorToReinforcementQueue(featureVector)
 	
-	if (self.IsQueuedReinforcementRunning == nil) then error("Queued reinforcement is not active!") end
+	if (self.IsQueuedReinforcementRunning == nil) or (self.IsQueuedReinforcementRunning == false) then error("Queued reinforcement is not active!") end
 	
 	table.insert(self.FeatureVectorQueue, featureVector)
 	
@@ -804,7 +808,7 @@ end
 
 function NeuralNetworkModel:addLabelToReinforcementQueue(label)
 	
-	if (self.IsQueuedReinforcementRunning == nil) then error("Queued reinforcement is not active!") end
+	if (self.IsQueuedReinforcementRunning == nil) or (self.IsQueuedReinforcementRunning == false) then error("Queued reinforcement is not active!") end
 	
 	table.insert(self.LabelQueue, label)
 
@@ -812,7 +816,7 @@ end
 
 function NeuralNetworkModel:returnPredictedLabelFromReinforcementQueue()
 	
-	if (self.IsQueuedReinforcementRunning == nil) then error("Queued reinforcement is not active!") end
+	if (self.IsQueuedReinforcementRunning == nil) or (self.IsQueuedReinforcementRunning == false) then error("Queued reinforcement is not active!") end
 	
 	return self.PredictedLabelQueue[1]
 	

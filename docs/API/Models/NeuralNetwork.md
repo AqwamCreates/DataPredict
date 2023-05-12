@@ -161,7 +161,7 @@ NeuralNetwork:setClassesList(classesList)
 
 ### startQueuedReinforcement()
 
-Starts a new thread for real-time reinforcement 
+Starts a new thread for real-time reinforcement. "It waits for the functions below to provide both the feature vector and label, and only proceeds with reinforcement when both queues are filled.
 
 ```
 NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning)

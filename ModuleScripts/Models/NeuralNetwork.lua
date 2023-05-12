@@ -178,7 +178,7 @@ local function forwardPropagate(featureMatrix, ModelParameters, activationFuncti
 
 end
 
-local function backPropagate(featureMatrix, ModelParameters, lossMatrix, zTable, activationFunction)
+local function backPropagate(ModelParameters, lossMatrix, zTable, activationFunction)
 
 	local backpropagateTable = {}
 
@@ -517,7 +517,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 		lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix) 
 		
-		backwardPropagateTable = backPropagate(featureMatrix, self.ModelParameters, lossMatrix, zTable, self.activationFunction)
+		backwardPropagateTable = backPropagate(self.ModelParameters, lossMatrix, zTable, self.activationFunction)
 		
 		deltaTable = calculateDelta(forwardPropagateTable, backwardPropagateTable)
 		
@@ -589,7 +589,7 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 	
 	local lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
 	
-	local backwardPropagateTable = backPropagate(featureVector, self.ModelParameters, lossMatrix, zTable, self.activationFunction)
+	local backwardPropagateTable = backPropagate(self.ModelParameters, lossMatrix, zTable, self.activationFunction)
 	
 	local deltaTable = calculateDelta(forwardPropagateTable, backwardPropagateTable)
 	
@@ -631,6 +631,8 @@ function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, s
 	
 	self.LabelQueue = {}
 	
+	self.PredictedLabelQueue = {}
+	
 	self.IsQueuedReinforcementRunning = true
 	
 	self.WaitDuration = 0
@@ -643,6 +645,8 @@ function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, s
 	
 	local predictedLabel
 	
+	local waitInterval = 0.1
+	
 	local queuedReinforcementCoroutine = coroutine.create(function()
 		
 		repeat
@@ -653,23 +657,49 @@ function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, s
 
 				self.WarningIssued = true	
 			
-			elseif (#self.FeatureVectorQueue == 0) or (#self.LabelQueue == 0) then 
+			elseif (#self.FeatureVectorQueue == 0) then 
 				
-				task.wait(0.1)
+				task.wait(waitInterval)
 				
-				self.WaitDuration += 0.1
+				self.WaitDuration += waitInterval
 				
 			elseif (self.IsQueuedReinforcementRunning == false) then 
 				
 				break
 				
 			else
+
+				local forwardPropagateTable, zTable = forwardPropagate(self.FeatureVectorQueue[1], self.ModelParameters, self.activationFunction)
 				
-				predictedLabel = self:reinforce(self.FeatureVectorQueue[1], self.LabelQueue[1], rewardValue, punishValue)
+				table.remove(self.FeatureVectorQueue, 1)
+
+				local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
+				
+				local predictedLabel = getLabelFromOutputVector(allOutputsMatrix, self.ClassesList)
+				
+				self.PredictedLabelFromReinforcementQueue = predictedLabel
+				
+				if (#self.LabelQueue == 0) then task.wait(waitInterval) end
 				
 				if (showPredictedLabel == true) then print("Predicted Label: " .. predictedLabel .. "\t\t\tActual Label: " .. self.LabelQueue[1]) end
+				
+				local logisticMatrix = convertLabelVectorToLogisticMatrix(self.ModelParameters, self.LabelQueue[1], self.ClassesList)
+				
+				local lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
+				
+				local backwardPropagateTable = backPropagate(self.ModelParameters, lossMatrix, zTable, self.activationFunction)
 
-				table.remove(self.FeatureVectorQueue, 1)
+				local deltaTable = calculateDelta(forwardPropagateTable, backwardPropagateTable)
+				
+				if (predictedLabel == self.LabelQueue[1]) then
+
+					self.ModelParameters = gradientDescent(rewardValue, self.ModelParameters, deltaTable, 1)
+
+				else
+
+					self.ModelParameters = punish(punishValue, self.ModelParameters, deltaTable)
+
+				end
 
 				table.remove(self.LabelQueue, 1)
 				
@@ -691,11 +721,15 @@ function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, s
 		
 		self.WarningIssued = nil	
 		
+		self.PredictedLabelFromReinforcementQueue = nil
+		
 		showPredictedLabel = nil
 		
 		showIdleWarning = nil
 		
 		predictedLabel = nil
+		
+		waitInterval = nil
 		
 	end)
 	
@@ -725,6 +759,14 @@ function NeuralNetworkModel:addLabelToReinforcementQueue(label)
 	
 	table.insert(self.LabelQueue, label)
 
+end
+
+function NeuralNetworkModel:returnPredictedLabelFromReinforcementQueue()
+	
+	if (self.IsQueuedReinforcementRunning == nil) then error("Queued reinforcement is not active!") end
+	
+	return self.PredictedLabelFromReinforcementQueue
+	
 end
 
 return NeuralNetworkModel

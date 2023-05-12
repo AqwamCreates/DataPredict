@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Version 1.3.9
+	Version 1.4.0
 
 	Aqwam's Roblox Deep Learning Library (AR-MDLL)
 
@@ -41,6 +41,8 @@ local AqwamMatrixLibrary = require(script.AqwamRobloxMatrixLibraryLinker.Value)
 
 local Models = script.Models
 
+local AqwamCustomModels = script.AqwamCustomModels
+
 local Others = script.Others
 
 local Optimizers = script.Optimizers
@@ -75,6 +77,12 @@ local ModelsDictionary = {
 	
 }
 
+local AqwamCustomModelsDictionary = {
+	
+	QueuedReinforcementNeuralNetwork = require(AqwamCustomModels.QueuedReinforcementNeuralNetwork),
+	
+}
+
 local OptimizersDictionary = {
 	
 	RootMeanSquarePropagation = require(Optimizers.RootMeanSquarePropagation),
@@ -102,6 +110,8 @@ local OthersDictionary = {
 local AqwamRobloxMachineLearningLibrary = {}
 
 AqwamRobloxMachineLearningLibrary.Models =  ModelsDictionary
+
+AqwamRobloxMachineLearningLibrary.AqwamCustomModels = AqwamCustomModelsDictionary
 
 AqwamRobloxMachineLearningLibrary.Optimizers = OptimizersDictionary
 

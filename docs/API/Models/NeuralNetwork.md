@@ -193,6 +193,18 @@ NeuralNetwork:addLabelToReinforcementQueue(label)
 
 * label: The actual label related to the previous feature vector.  
 
+### returnPredictedLabelFromReinforcementQueue()
+
+Adds label to queue.
+
+```
+NeuralNetwork:returnPredictedLabelFromReinforcementQueue(): integer
+```
+
+#### Parameters:
+
+* label: The actual label related to the previous feature vector.  
+
 ### getClassesList()
 
 ```

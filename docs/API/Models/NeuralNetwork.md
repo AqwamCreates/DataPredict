@@ -155,7 +155,7 @@ NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLa
 
 * showPredictedLabel: Set whether or not to show the predicted label and the actual label.
 
-* showIdleWarning: Set whether or not to show idle warning if it has been idle for more than 30 seconds.
+* showIdleWarning: Set whether or not to show idle warning if he thread has been idle for more than 30 seconds.
 
 #### Returns:
 

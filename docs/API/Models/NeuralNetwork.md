@@ -18,7 +18,7 @@ NeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, activati
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "ReLU", "LeakyReLU" and "ELU".
+* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
 
 * targetCost: The cost at which the model stops training.
 
@@ -42,7 +42,7 @@ NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "ReLU", "LeakyReLU" and "ELU".
+* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
 
 * targetCost: The cost at which the model stops training.
 

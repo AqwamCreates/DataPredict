@@ -15,6 +15,8 @@ It was first discovered by Aqwam and does not exists in any research literature.
 
 ### startQueuedReinforcement()
 
+Creates new threads for real-time reinforcement.
+
 ```
 NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning): coroutine, coroutine, coroutine
 ```

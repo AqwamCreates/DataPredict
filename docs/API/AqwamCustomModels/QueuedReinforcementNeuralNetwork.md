@@ -11,54 +11,6 @@ It has the ability to adapt real-time. It is alsp efficiemt amd flexible in many
 
 It was first discovered by Aqwam and does not exists in any research literature.
 
-## Constructors
-
-### new()
-
-Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
-
-```
-NeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, activationFunction: string, targetCost: number): ModelObject
-```
-
-#### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
-
-* targetCost: The cost at which the model stops training.
-
-#### Returns:
-
-* ModelObject: The generated model object.
-
-## Functions
-
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, activationFunction: string, targetCost: number)
-```
-
-#### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
-
-* targetCost: The cost at which the model stops training.
-
-### setOptimizer()
-
-Set optimizer for the model by inputting the optimizer object.
-
 ## Functions
 
 ### startQueuedReinforcement()

@@ -2,6 +2,11 @@
 
 A Queued Reinforcement Neural Network is a neural network has the capability of reinforcing and back propogate through time. This model can be considered as a cousin of Recurrent Neural Networks.
 
+It works by having a queue system for storing a number of variables.
+
+First, we can add a feature vector to produce a prediction. The prediction is then added to queue as well as a number of other variables. 
+Then once the actual value is given in the future, it will use the queued prediction with the actual prediction to "learn".
+
 It was first discovered by Aqwam and does not exists in any literature.
 
 ```

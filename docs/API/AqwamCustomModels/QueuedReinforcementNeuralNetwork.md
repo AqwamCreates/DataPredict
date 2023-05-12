@@ -9,9 +9,7 @@ Then once the actual value is given in the future, it will use the queued predic
 
 It has the ability to adapt real-time.
 
-It was first discovered by Aqwam and does not exists in any literature.
-
-
+It was first discovered by Aqwam and does not exists in any research literature.
 
 ```
 NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning): coroutine, coroutine, coroutine

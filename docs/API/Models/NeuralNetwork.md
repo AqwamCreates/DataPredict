@@ -159,6 +159,52 @@ NeuralNetwork:setClassesList(classesList)
 
 * classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron. 
 
+### startQueuedReinforcement()
+
+Starts a new thread for real-time reinforcement 
+
+```
+NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning)
+```
+
+#### Parameters:
+
+* rewardValue: How much do we reward the model if it gets the prediction correct (value between 0 and 1).
+
+* punishValue: How much do we punish the model if it gets the prediction incorrect (value between 0 and 1).
+
+* showPredictedLabel: Set whether or not to show the predicted label and the actual label.
+
+* showIdleWarning: Set whether or not to show idle warning if it has been idle for more than 30 seconds.
+
+### stopQueuedReinforcement()
+
+Stops the thread for real-time reinforcement.
+
+```
+NeuralNetwork:stopQueuedReinforcement()
+```
+
+### addFeatureVectorToReinforceQueue()
+
+```
+NeuralNetwork:addFeatureVectorToReinforceQueue(featureVector)
+```
+
+#### Parameters:
+
+* featureVector: A (1 x n) matrix containing all the features to be added to the reinforcement queue.
+
+### addLabelToReinforceQueue()
+
+```
+NeuralNetwork:addFeatureVectorToReinforceQueue(label)
+```
+
+#### Parameters:
+
+* label: The actual label related to the previous feature vector.  
+
 ## Inherited From
 
 * [BaseModel](BaseModel.md)

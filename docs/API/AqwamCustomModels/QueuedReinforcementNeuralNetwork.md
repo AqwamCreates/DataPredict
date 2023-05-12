@@ -13,6 +13,8 @@ It was first discovered by Aqwam and does not exists in any research literature.
 
 ## Functions
 
+### startQueuedReinforcement()
+
 ```
 NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning): coroutine, coroutine, coroutine
 ```

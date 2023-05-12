@@ -1,4 +1,6 @@
+# [API Reference](../../API.md) - [Models](../Models.md) - QueuedReinforcementNeuralNetwork
 
+NeuralNetwork is a supervised machine learning model that predicts any positive numbers of discrete values.
 
 ```
 NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning): coroutine, coroutine, coroutine

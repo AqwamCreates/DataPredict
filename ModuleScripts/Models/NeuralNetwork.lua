@@ -73,7 +73,6 @@ local derivativeList = {
 		else return 0.01 * math.exp(z) end
 
 	end,
-
 	
 }
 

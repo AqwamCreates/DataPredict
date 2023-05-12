@@ -185,20 +185,20 @@ Stops the thread for real-time reinforcement.
 NeuralNetwork:stopQueuedReinforcement()
 ```
 
-### addFeatureVectorToReinforceQueue()
+### addFeatureVectorToReinforcementQueue()
 
 ```
-NeuralNetwork:addFeatureVectorToReinforceQueue(featureVector)
+NeuralNetwork:addFeatureVectorToReinforcementQueue(featureVector)
 ```
 
 #### Parameters:
 
 * featureVector: A (1 x n) matrix containing all the features to be added to the reinforcement queue.
 
-### addLabelToReinforceQueue()
+### addLabelToReinforcementQueue()
 
 ```
-NeuralNetwork:addFeatureVectorToReinforceQueue(label)
+NeuralNetwork:addLabelToReinforcementQueue(label)
 ```
 
 #### Parameters:

@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - [NeuralNetwork](../Models/NeuralNetwork.md) - QueuedReinforcementNeuralNetwork
 
-A Queued Reinforcement Neural Network is a neural network that has the capability of reinforcing and back propagate through time. This model can be considered as a cousin of Recurrent Neural Networks.
+A Queued Reinforcement Neural Network (QR-NN) is a neural network that has the capability of reinforcing and back propagate through time. This model can be considered as a cousin of Recurrent Neural Networks.
 
 It works by having a queue system for storing a number of variables.
 

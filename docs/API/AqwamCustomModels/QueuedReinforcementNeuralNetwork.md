@@ -41,7 +41,7 @@ NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLa
 
 ### stopQueuedReinforcement()
 
-Stops the thread for real-time reinforcement.
+Stops the threads for real-time reinforcement.
 
 ```
 NeuralNetwork:stopQueuedReinforcement()

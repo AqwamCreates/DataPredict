@@ -643,11 +643,17 @@ function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, s
 	
 	local predictedLabel
 	
-	local queuedReinforceCoroutine = coroutine.resume(coroutine.create(function()
+	local queuedReinforcementCoroutine = coroutine.resume(coroutine.create(function()
 		
 		repeat
 			
-			if (#self.FeatureVectorQueue == 0) or (#self.LabelQueue == 0) then 
+			if (self.WaitDuration >= 30) and (self.WarningIssued == false) and (showIdleWarning == true) then 
+
+				warn("The neural network has been idle for more than 30 seconds. Leaving it idle may use unnecessary resource.") 
+
+				self.WarningIssued = true	
+			
+			elseif (#self.FeatureVectorQueue == 0) or (#self.LabelQueue == 0) then 
 				
 				task.wait(0.1)
 				
@@ -673,14 +679,6 @@ function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, s
 				
 			end
 			
-			if (self.WaitDuration >= 30) and (self.WarningIssued == false) and (showIdleWarning == true) then 
-				
-				warn("The neural network has been idle for more than 30 seconds. Leaving it idle may use unnecessary resource.") 
-				
-				self.WarningIssued = true	
-				
-			end
-			
 		until (self.IsQueuedReinforcementRunning == false)
 		
 		self.FeatureVectorQueue = nil
@@ -701,7 +699,7 @@ function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, s
 		
 	end))
 	
-	return queuedReinforceCoroutine
+	return queuedReinforcementCoroutine
 	
 end
 

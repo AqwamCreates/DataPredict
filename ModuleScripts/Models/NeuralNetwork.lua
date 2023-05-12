@@ -621,7 +621,7 @@ function NeuralNetworkModel:setClassesList(classesList)
 
 end
 
-function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning)
+function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning)
 	
 	if (self.IsQueuedReinforcementRunning == true) then error("Queued reinforcement is already active!") end
 	
@@ -633,109 +633,158 @@ function NeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, s
 	
 	self.PredictedLabelQueue = {}
 	
+	self.ForwardPropagationTableQueue = {}
+	
+	self.ZTableQueue = {}
+	
 	self.IsQueuedReinforcementRunning = true
-	
-	self.WaitDuration = 0
-	
-	self.WarningIssued = false
-	
-	if (showIdleWarning == nil) then showIdleWarning = true else showIdleWarning = showIdleWarning end
 	
 	if (showPredictedLabel == nil) then showPredictedLabel = false else showPredictedLabel = showPredictedLabel end
 	
-	local predictedLabel
+	if (showIdleWarning == nil) then showIdleWarning = true else showIdleWarning = showIdleWarning end
+	
+	if (showWaitingForLabelWarning == nil) then showWaitingForLabelWarning = false else showWaitingForLabelWarning = showWaitingForLabelWarning end
 	
 	local waitInterval = 0.1
 	
-	local queuedReinforcementCoroutine = coroutine.create(function()
+	local idleDuration = 0
+	
+	local waitDuration = 0
+	
+	local idleWarningIssued = false
+	
+	local labelWarningIssued = false
+	
+	local predictCoroutine = coroutine.create(function()
 		
 		repeat
 			
-			if (self.WaitDuration >= 30) and (self.WarningIssued == false) and (showIdleWarning == true) then 
+			task.wait(waitInterval)
 
-				warn("The neural network has been idle for more than 30 seconds. Leaving it idle may use unnecessary resource.") 
-
-				self.WarningIssued = true	
+			idleDuration += waitInterval
 			
-			elseif (#self.FeatureVectorQueue == 0) then 
-				
-				task.wait(waitInterval)
-				
-				self.WaitDuration += waitInterval
-				
-			elseif (self.IsQueuedReinforcementRunning == false) then 
-				
-				break
-				
-			else
+			if (idleDuration >= 30) and (idleWarningIssued == false) and (showIdleWarning == true) then 
 
-				local forwardPropagateTable, zTable = forwardPropagate(self.FeatureVectorQueue[1], self.ModelParameters, self.activationFunction)
-				
-				table.remove(self.FeatureVectorQueue, 1)
+				warn("The neural network has been idle for more than 30 seconds. Leaving the thread running may use unnecessary resource.") 
 
-				local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
+				idleWarningIssued = true	
+			
+			elseif (#self.FeatureVectorQueue == 0) then continue
 				
-				local predictedLabel = getLabelFromOutputVector(allOutputsMatrix, self.ClassesList)
+			elseif (self.IsQueuedReinforcementRunning == false) then break end
 				
-				self.PredictedLabelFromReinforcementQueue = predictedLabel
+			local forwardPropagateTable, zTable = forwardPropagate(self.FeatureVectorQueue[1], self.ModelParameters, self.activationFunction)
 				
-				if (#self.LabelQueue == 0) then task.wait(waitInterval) end
+			table.insert(self.ForwardPropagationTableQueue, forwardPropagateTable)
 				
-				if (showPredictedLabel == true) then print("Predicted Label: " .. predictedLabel .. "\t\t\tActual Label: " .. self.LabelQueue[1]) end
+			table.insert(self.ZTableQueue, zTable)
 				
-				local logisticMatrix = convertLabelVectorToLogisticMatrix(self.ModelParameters, self.LabelQueue[1], self.ClassesList)
+			local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
 				
-				local lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
+			local predictedLabel = getLabelFromOutputVector(allOutputsMatrix, self.ClassesList)
 				
-				local backwardPropagateTable = backPropagate(self.ModelParameters, lossMatrix, zTable, self.activationFunction)
-
-				local deltaTable = calculateDelta(forwardPropagateTable, backwardPropagateTable)
+			table.insert(self.PredictedLabelQueue, predictedLabel)
 				
-				if (predictedLabel == self.LabelQueue[1]) then
-
-					self.ModelParameters = gradientDescent(rewardValue, self.ModelParameters, deltaTable, 1)
-
-				else
-
-					self.ModelParameters = punish(punishValue, self.ModelParameters, deltaTable)
-
-				end
-
-				table.remove(self.LabelQueue, 1)
+			table.remove(self.FeatureVectorQueue, 1)
 				
-				self.WaitDuration = 0
+			idleDuration = 0
 				
-				self.WarningIssued = false
-				
-			end
+			idleWarningIssued = false
 			
 		until (self.IsQueuedReinforcementRunning == false)
+		
+	end)
+	
+	
+	local reinforcementCoroutine = coroutine.create(function()
+		
+		repeat
+			
+			task.wait(waitInterval)
+			
+			waitDuration += waitInterval
+			
+			if (waitDuration >= 30) and (labelWarningIssued == false) and (showWaitingForLabelWarning == true) then
+				
+				warn("The neural network has been waiting for a label for more than 30 seconds. Leaving the thread running may use unnecessary resource.") 
+
+				labelWarningIssued = true	
+			
+			elseif (#self.LabelQueue == 0) or (#self.PredictedLabelQueue == 0) or (#self.ForwardPropagationTableQueue == 0) or (#self.ZTableQueue == 0) then continue
+				
+			elseif (self.IsQueuedReinforcementRunning == false) then break end
+			
+			if (showPredictedLabel == true) then print("Predicted Label: " .. self.PredictedLabelQueue[1] .. "\t\t\tActual Label: " .. self.LabelQueue[1]) end
+
+			local logisticMatrix = convertLabelVectorToLogisticMatrix(self.ModelParameters, self.LabelQueue[1], self.ClassesList)
+			
+			local forwardPropagationTable = self.ForwardPropagationTableQueue[1]
+			
+			local allOutputsMatrix = forwardPropagationTable[#forwardPropagationTable]
+
+			local lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
+
+			local backwardPropagateTable = backPropagate(self.ModelParameters, lossMatrix, self.ZTableQueue[1], self.activationFunction)
+
+			local deltaTable = calculateDelta(self.ForwardPropagationTableQueue[1], backwardPropagateTable)
+
+			if (self.PredictedLabelQueue[1] == self.LabelQueue[1]) then
+
+				self.ModelParameters = gradientDescent(rewardValue, self.ModelParameters, deltaTable, 1)
+
+			else
+
+				self.ModelParameters = punish(punishValue, self.ModelParameters, deltaTable)
+
+			end
+			
+			table.remove(self.LabelQueue, 1)
+			
+			table.remove(self.PredictedLabelQueue, 1)
+			
+			table.remove(self.ZTableQueue, 1)
+
+			table.remove(self.ForwardPropagationTableQueue, 1)
+			
+			waitDuration = 0
+			
+			labelWarningIssued = false
+			
+		until (self.IsQueuedReinforcementRunning == false)	
+		
+	end)
+	
+	local resetCoroutine = coroutine.create(function()
+		
+		repeat task.wait(waitInterval) until (self.IsQueuedReinforcementRunning == false)
 		
 		self.FeatureVectorQueue = nil
 
 		self.LabelQueue = nil
 
 		self.IsQueuedReinforcementRunning = nil
-		
+
 		self.WaitDuration = nil
-		
+
 		self.WarningIssued = nil	
-		
+
 		self.PredictedLabelFromReinforcementQueue = nil
-		
+
 		showPredictedLabel = nil
-		
+
 		showIdleWarning = nil
-		
-		predictedLabel = nil
-		
+
 		waitInterval = nil
 		
 	end)
 	
-	coroutine.resume(queuedReinforcementCoroutine)
+	coroutine.resume(predictCoroutine)
 	
-	return queuedReinforcementCoroutine
+	coroutine.resume(reinforcementCoroutine)
+	
+	coroutine.resume(resetCoroutine)
+	
+	return predictCoroutine, reinforcementCoroutine, resetCoroutine
 	
 end
 
@@ -765,7 +814,7 @@ function NeuralNetworkModel:returnPredictedLabelFromReinforcementQueue()
 	
 	if (self.IsQueuedReinforcementRunning == nil) then error("Queued reinforcement is not active!") end
 	
-	return self.PredictedLabelFromReinforcementQueue
+	return self.PredictedLabelQueue[1]
 	
 end
 

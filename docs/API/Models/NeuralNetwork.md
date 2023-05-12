@@ -165,7 +165,7 @@ NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLa
 
 * reinforcementCoroutine: A coroutine that controls the reinforcement behaviour.
 
-* resetCoroutine: A coroutine where it resets the internal data.
+* resetCoroutine: A coroutine where it resets the internal data. This is mainly to avoid memory leaks.
 
 ### stopQueuedReinforcement()
 

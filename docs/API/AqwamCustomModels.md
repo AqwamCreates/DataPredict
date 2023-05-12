@@ -1,4 +1,4 @@
-# [API Reference](../API.md) - AqwamCustomModels
+# [API Reference](../API.md) - AqwamCustomModel
 
 ## Classification
 

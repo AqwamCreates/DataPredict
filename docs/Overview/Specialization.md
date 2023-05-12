@@ -1,6 +1,7 @@
 # What are Specialization?
 
 Specialization is where the model have been "evolved" to have additional features without changing much of its functionality.
+You don't need to create new models to use them. Instead use some functions provided under specialization section of a model (if it exists).
 
 Although it may sound something it had been researched, it it mainly my (Aqwam) new discovery that is not found in any research literature.
 You can consider them as "experimental" models, but I have confirmed it to be working.

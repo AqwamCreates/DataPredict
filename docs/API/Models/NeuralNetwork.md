@@ -203,7 +203,7 @@ NeuralNetwork:returnPredictedLabelFromReinforcementQueue(): integer
 
 #### Returns:
 
-* label: The actual label related to the previous feature vector.  
+* label: The predicted label related to the previous feature vector.  
 
 ### getClassesList()
 

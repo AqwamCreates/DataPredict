@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - NeuralNetowrk - QueuedReinforcementNeuralNetwork
+# [API Reference](../../API.md) - [Models](../Models.md) - [NeuralNetwork](../Models/NeuralNetwork.md) - QueuedReinforcementNeuralNetwork
 
 A Queued Reinforcement Neural Network is a neural network has the capability of reinforcing and back propogate through time. This model can be considered as a cousine of Recurrent Neural Networks.
 

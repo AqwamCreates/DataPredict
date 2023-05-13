@@ -280,28 +280,6 @@ function NeuralNetworkModel:gradientDescent(learningRate, ModelParameters, delta
 
 end
 
-function NeuralNetworkModel:punish(punishValue, ModelParameters, deltaTable)
-
-	local costFunctionDerivative
-	
-	local newWeightMatrix
-
-	local NewModelParameters = {}
-
-	for layerNumber, weightMatrix in ipairs(ModelParameters) do
-
-		costFunctionDerivative = AqwamMatrixLibrary:multiply(punishValue, deltaTable[layerNumber])
-
-		newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivative)
-
-		table.insert(NewModelParameters, newWeightMatrix)
-
-	end
-
-	return NewModelParameters
-
-end
-
 function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix, numberOfData)
 
 	local subtractedMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
@@ -595,7 +573,7 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 		
 	else
 		
-		self.ModelParameters = self:punish(punishValue, self.ModelParameters, deltaTable)
+		self.ModelParameters = self:gradientDescent(-punishValue, self.ModelParameters, deltaTable, 1)
 		
 	end
 	

@@ -55,6 +55,10 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 	local labelWarningIssued = false
 	
 	local isCurrentlyBackpropagating = false
+	
+	local infinityCostWarningIssued = false
+	
+	local PreviousModelParameters
 
 	local predictCoroutine = coroutine.create(function()
 
@@ -124,6 +128,22 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 			local forwardPropagationTable = self.ForwardPropagationTableQueue[1]
 
 			local allOutputsMatrix = forwardPropagationTable[#forwardPropagationTable]
+			
+			local cost = self:calculateCost(allOutputsMatrix, logisticMatrix, 1)
+			
+			if (cost == math.huge) and (infinityCostWarningIssued == false) then 
+				
+				warn("The model diverged! Reverting to previous model parameters! Please repeat the experiment again or change the argument values if this warning occurs often.") 
+				
+				infinityCostWarningIssued = true
+				
+				self.ModelParameters = PreviousModelParameters
+				
+			end
+			
+			table.insert(self.CostArrayQueue, cost)
+			
+			PreviousModelParameters = self.ModelParameters
 
 			local lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
 
@@ -131,10 +151,6 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 			local deltaTable = self:calculateDelta(self.ForwardPropagationTableQueue[1], backwardPropagateTable)
 			
-			local cost = self:calculateCost(allOutputsMatrix, logisticMatrix, 1)
-			
-			table.insert(self.CostArrayQueue, 1)
-
 			if (self.PredictedLabelQueue[1] == self.LabelQueue[1]) then
 
 				self.ModelParameters = self:gradientDescent(rewardValue, self.ModelParameters, deltaTable, 1)
@@ -155,11 +171,19 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 			table.remove(self.ForwardPropagationTableQueue, 1)
 			
-			table.remove(self.CostArrayQueue, 1)
-
+			task.spawn(function()
+				
+				for frame = 1, 70 do task.wait() end -- to allow cost to be fetched. Otherwise it will remove it before it can be fetched!
+				
+				table.remove(self.CostArrayQueue, 1)
+				
+			end)
+			
 			waitDuration = 0
 
 			labelWarningIssued = false
+			
+			infinityCostWarningIssued = false
 
 		until (self.IsQueuedReinforcementRunning == false)	
 
@@ -192,6 +216,10 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 		labelWarningIssued = nil
 		
 		isCurrentlyBackpropagating = nil
+		
+		infinityCostWarningIssued = nil
+		
+		PreviousModelParameters = nil
 
 	end)
 
@@ -239,7 +267,7 @@ function QueuedReinforcementNeuralNetworkModel:returnCostFromReinforcementQueue(
 
 	if (self.IsQueuedReinforcementRunning == nil) or (self.IsQueuedReinforcementRunning == false) then error("Queued reinforcement is not active!") end
 
-	return self.PredictedLabelQueue[1]
+	return self.CostArrayQueue[1]
 
 end
 

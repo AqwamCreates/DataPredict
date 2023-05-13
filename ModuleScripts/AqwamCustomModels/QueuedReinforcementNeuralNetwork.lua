@@ -157,7 +157,7 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 			else
 
-				self.ModelParameters = self:gradientDescent(-punishValue, self.ModelParameters, deltaTable)
+				self.ModelParameters = self:gradientDescent(-punishValue, self.ModelParameters, deltaTable, 1)
 
 			end
 			

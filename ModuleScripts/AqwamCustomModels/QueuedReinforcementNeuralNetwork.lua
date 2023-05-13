@@ -1,4 +1,4 @@
-local NeuralNetworkModel = require(script.Parent.NeuralNetwork)
+local NeuralNetworkModel = require(script.Parent.Parent.Models.NeuralNetwork)
 
 QueuedReinforcementNeuralNetworkModel = {}
 
@@ -51,6 +51,8 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 	local idleWarningIssued = false
 
 	local labelWarningIssued = false
+	
+	local isCurrentlyBackpropagating = false
 
 	local predictCoroutine = coroutine.create(function()
 
@@ -110,6 +112,8 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 			elseif (#self.LabelQueue == 0) or (#self.PredictedLabelQueue == 0) or (#self.ForwardPropagationTableQueue == 0) or (#self.ZTableQueue == 0) then continue
 
 			elseif (self.IsQueuedReinforcementRunning == false) then break end
+			
+			isCurrentlyBackpropagating = true
 
 			if (showPredictedLabel == true) then print("Predicted Label: " .. self.PredictedLabelQueue[1] .. "\t\t\tActual Label: " .. self.LabelQueue[1]) end
 
@@ -134,6 +138,8 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 				self.ModelParameters = self:punish(punishValue, self.ModelParameters, deltaTable)
 
 			end
+			
+			isCurrentlyBackpropagating = false
 
 			table.remove(self.LabelQueue, 1)
 
@@ -167,15 +173,17 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 		self.ZTableQueue = nil
 
-		local waitInterval = nil
+		waitInterval = nil
 
-		local idleDuration = nil
+		idleDuration = nil
 
-		local waitDuration = nil
+		waitDuration = nil
 
-		local idleWarningIssued = nil
+		idleWarningIssued = nil
 
-		local labelWarningIssued = nil
+		labelWarningIssued = nil
+		
+		isCurrentlyBackpropagating = nil
 
 	end)
 

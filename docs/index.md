@@ -26,7 +26,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Using Regularization](Overview/UsingRegularization.md)
 
-[Mods](Overview/Mods.md)
+[Moded Models](Overview/ModdedModels.md)
 
 ## API Reference
 

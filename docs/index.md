@@ -26,7 +26,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Using Regularization](Overview/UsingRegularization.md)
 
-[Specialization](Overview/Specialization.md)
+[Mods](Overview/Mods.md)
 
 ## API Reference
 

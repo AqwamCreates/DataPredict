@@ -1,13 +1,13 @@
 # [API Reference](../../API.md) - [AqwamCustomModels](../AqwamCustomModels.md) - QueuedReinforcementNeuralNetwork
 
-A QueuedReinforcementNeuralNetwork (QR-NN) is a neural network that has the capability of reinforcing and back propagate through time. This model can be considered as a cousin of Recurrent Neural Network (RNN).
+A QueuedReinforcementNeuralNetwork (QR-NN) is a neural network that has the abality to reinforce and back propagate through time. This model can be considered as a cousin of Recurrent Neural Network (RNN).
 
 It works by having a queue system for storing a number of variables.
 
 First, we can add a feature vector to produce a prediction. The prediction is then added to queue as well as a number of other variables. 
 Then once the actual value is given in the future, it will use the queued prediction with the actual prediction to "learn".
 
-It has the ability to adapt real-time. It is alsp efficient amd flexible in many scenarios, especially for game development.
+It has the ability to adapt real-time. It is also efficient amd flexible in many scenarios, especially for game development.
 
 It was first discovered by Aqwam and does not exists in any research literature.
 

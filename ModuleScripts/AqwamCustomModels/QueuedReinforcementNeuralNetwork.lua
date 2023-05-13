@@ -33,6 +33,8 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 	self.ForwardPropagationTableQueue = {}
 
 	self.ZTableQueue = {}
+	
+	self.CostArrayQueue = {}
 
 	self.IsQueuedReinforcementRunning = true
 
@@ -128,6 +130,10 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 			local backwardPropagateTable = self:backPropagate(self.ModelParameters, lossMatrix, self.ZTableQueue[1], self.activationFunction)
 
 			local deltaTable = self:calculateDelta(self.ForwardPropagationTableQueue[1], backwardPropagateTable)
+			
+			local cost = self:calculateCost(allOutputsMatrix, logisticMatrix, 1)
+			
+			table.insert(self.CostArrayQueue, 1)
 
 			if (self.PredictedLabelQueue[1] == self.LabelQueue[1]) then
 
@@ -148,6 +154,8 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 			table.remove(self.ZTableQueue, 1)
 
 			table.remove(self.ForwardPropagationTableQueue, 1)
+			
+			table.remove(self.CostArrayQueue, 1)
 
 			waitDuration = 0
 
@@ -220,6 +228,14 @@ function QueuedReinforcementNeuralNetworkModel:addLabelToReinforcementQueue(labe
 end
 
 function QueuedReinforcementNeuralNetworkModel:returnPredictedLabelFromReinforcementQueue()
+
+	if (self.IsQueuedReinforcementRunning == nil) or (self.IsQueuedReinforcementRunning == false) then error("Queued reinforcement is not active!") end
+
+	return self.PredictedLabelQueue[1]
+
+end
+
+function QueuedReinforcementNeuralNetworkModel:returnCostFromReinforcementQueue()
 
 	if (self.IsQueuedReinforcementRunning == nil) or (self.IsQueuedReinforcementRunning == false) then error("Queued reinforcement is not active!") end
 

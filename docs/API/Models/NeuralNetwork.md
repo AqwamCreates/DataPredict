@@ -2,7 +2,7 @@
 
 NeuralNetwork is a supervised machine learning model that predicts any positive numbers of discrete values.
 
-## Mods
+## Modded Models
 
 * [QueuedReinforcementNeuralNetwork](../AqwamCustomModels/QueuedReinforcementNeuralNetwork.md)
 

@@ -85,6 +85,18 @@ NeuralNetwork:returnPredictedLabelFromReinforcementQueue(): integer
 
 * label: The predicted label related to the previous feature vector.
 
+### returnCostFromReinforcementQueue()
+
+Returns predicted label from the queue.
+
+```
+NeuralNetwork:returnCostFromReinforcementQueue(): number
+```
+
+#### Returns:
+
+* cost: The predicted label related to the previous feature vector.
+
 ## Inherited From:
 
 [NeuralNetwork](../Models/NeuralNetwork.md)

@@ -115,7 +115,7 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 				labelWarningIssued = true	
 
-			elseif (#self.LabelQueue == 0) or (#self.PredictedLabelQueue == 0) or (#self.ForwardPropagationTableQueue == 0) or (#self.ZTableQueue == 0) then continue
+			elseif (#self.LabelQueue == 0) or (#self.PredictedLabelQueue == 0) or (#self.ForwardPropagationTableQueue == 0) or (#self.ZTableQueue == 0) or (isCurrentlyBackpropagating == true) then continue
 
 			elseif (self.IsQueuedReinforcementRunning == false) then break end
 			
@@ -162,6 +162,12 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 			end
 			
 			isCurrentlyBackpropagating = false
+			
+			waitDuration = 0
+
+			labelWarningIssued = false
+
+			infinityCostWarningIssued = false
 
 			table.remove(self.LabelQueue, 1)
 
@@ -178,12 +184,6 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 				table.remove(self.CostArrayQueue, 1)
 				
 			end)
-			
-			waitDuration = 0
-
-			labelWarningIssued = false
-			
-			infinityCostWarningIssued = false
 
 		until (self.IsQueuedReinforcementRunning == false)	
 

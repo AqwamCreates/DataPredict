@@ -34,7 +34,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Links
 
-### Packages (Recommended For Up-To-Date Libraries)
+### ModuleScripts Packages (Recommended For Up-To-Date Libraries)
 
 [DataPredict Library](https://www.roblox.com/library/12727977273/DataPredict-Library)
 

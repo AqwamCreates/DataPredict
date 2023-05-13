@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Version 1.4.0
+	Version 1.4.1
 
 	Aqwam's Roblox Deep Learning Library (AR-MDLL)
 
@@ -103,7 +103,9 @@ local OthersDictionary = {
 	
 	Regularization = require(Others.Regularization),
 	
-	StringSplitter = require(Others.StringSplitter)
+	StringSplitter = require(Others.StringSplitter),
+	
+	OnlineLearning = require(Others.OnlineLearning)
 	
 }
 

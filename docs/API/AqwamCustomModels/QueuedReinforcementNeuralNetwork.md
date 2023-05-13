@@ -95,7 +95,7 @@ NeuralNetwork:returnCostFromReinforcementQueue(): number
 
 #### Returns:
 
-* cost: The predicted label related to the previous feature vector.
+* cost: The cost related to actual value and the predicted value.
 
 ## Inherited From:
 

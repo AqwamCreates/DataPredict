@@ -68,7 +68,7 @@ OnlineLearning:addLabelToOnlineLearningQueue(label)
 Returns cost array from the queue.
 
 ```
-OnlineLearning:returnCostArrayFromOnlineLearningQueue(): number
+OnlineLearning:returnCostArrayFromOnlineLearningQueue(): number[]
 ```
 
 #### Returns:

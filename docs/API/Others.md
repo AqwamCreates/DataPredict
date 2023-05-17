@@ -5,3 +5,5 @@
 [GradientDescentModes](Others/GradientDescentModes.md)
 
 [Regularization](Others/Regularization.md)
+
+[OnlineLearning](Others/OnlineLearning.md)

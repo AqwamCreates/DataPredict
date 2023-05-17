@@ -5,31 +5,31 @@ OnlineLearning.__index = OnlineLearning
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
 function OnlineLearning.new(Model, isLabelRequired, batchSize)
-	
+
 	if (Model == nil) then error("Please set a model") end
-	
+
 	if (isLabelRequired == nil) then error("Please set whether or not the model requires a label") end
-	
+
 	local NewOnlineLearning = {}
-	
+
 	setmetatable(NewOnlineLearning, OnlineLearning)
-	
+
 	NewOnlineLearning.Model = Model
-	
+
 	NewOnlineLearning.FeatureVectorQueue = {}
-	
+
 	NewOnlineLearning.LabelQueue = {}
-	
+
 	NewOnlineLearning.CostArrayQueue = {}
-	
+
 	NewOnlineLearning.IsLabelRequired = isLabelRequired
-	
+
 	NewOnlineLearning.IsOnlineLearningRunning = false
-	
+
 	NewOnlineLearning.BatchSize = batchSize or 1
-	
+
 	return NewOnlineLearning
-	
+
 end
 
 function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
@@ -37,7 +37,7 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 	if (self.IsOnlineLearningRunning == true) then error("Online Learning is already active!") end
 
 	self.IsOnlineLearningRunning = true
-	
+
 	if (showFinalCost == nil) then showFinalCost = false else showFinalCost = showFinalCost end
 
 	if (showWaitWarning == nil) then showWaitWarning = true else showWaitWarning = showWaitWarning end
@@ -51,15 +51,15 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 	local infinityCostWarningIssued = false
 
 	local PreviousModelParameters
-	
+
 	local areBatchesFilled
-	
+
 	local featureMatrix
-	
+
 	local labelVector
-	
+
 	local costArray
-	
+
 	local cost
 
 	local trainCoroutine = coroutine.create(function()
@@ -69,7 +69,7 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 			task.wait(waitInterval)
 
 			waitDuration += waitInterval
-			
+
 			areBatchesFilled = (#self.FeatureVectorQueue >= self.BatchSize) and (not self.IsLabelRequired or (#self.LabelQueue >= self.BatchSize))
 
 			if (waitDuration >= 30) and (waitWarningIssued == false) and (waitWarningIssued == true) then 
@@ -81,45 +81,45 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 			elseif (areBatchesFilled == false) then continue
 
 			elseif (self.IsOnlineLearningRunning == false) then break end
-			
+
 			PreviousModelParameters = self.Model:getModelParameters()
-			
+
 			featureMatrix = {}
-			
+
 			labelVector = {}
-			
+
 			for data = 1, self.BatchSize, 1 do
-				
+
 				table.insert(featureMatrix, self.FeatureVectorQueue[1][1])
-				
+
 				table.remove(self.FeatureVectorQueue, 1)
-				
+
 				if (self.IsLabelRequired == true) then
-					
+
 					table.insert(labelVector, {self.LabelQueue[1]}) 
-					
+
 					table.remove(self.LabelQueue, 1)
-					
+
 				end
-				
+
 			end
-			
+
 			costArray = self.Model:train(featureMatrix, labelVector)
-			
+
 			cost = costArray[#costArray]
-			
+
 			if (cost == math.huge) then
-				
+
 				self.Model:setModelParameters(PreviousModelParameters)
-				
+
 				warn("The model diverged! Reverting to previous model parameters! Please repeat the experiment again or change the argument values if this warning occurs often.") 
-				
+
 			end
-			
+
 			table.insert(self.CostArrayQueue, costArray)
-			
+
 			if (showFinalCost == true) then print("Final Cost: " .. cost) end
-			
+
 			task.spawn(function()
 
 				for frame = 1, 70 do task.wait() end -- to allow cost to be fetched. Otherwise it will remove it before it can be fetched!
@@ -129,7 +129,7 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 			end)
 
 		until (self.IsQueuedReinforcementRunning == false)
-		
+
 		self.FeatureVectorQueue = {}
 
 		self.LabelQueue = {}
@@ -145,7 +145,7 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 		PreviousModelParameters = nil
 
 	end)
-	
+
 	coroutine.resume(trainCoroutine)
 
 	return trainCoroutine
@@ -169,7 +169,7 @@ end
 function OnlineLearning:addLabelToOnlineLearningQueue(label)
 
 	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error("Online Learning is not active!") end
-	
+
 	if (typeof(label) ~= "number") then error("Label must be a number!") end
 
 	table.insert(self.LabelQueue, label)
@@ -177,7 +177,7 @@ function OnlineLearning:addLabelToOnlineLearningQueue(label)
 end
 
 
-function OnlineLearning:returnCostFromOnlineLearningQueue()
+function OnlineLearning:returnCostArrayFromOnlineLearningQueue()
 
 	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error("Online Learning is not active!") end
 

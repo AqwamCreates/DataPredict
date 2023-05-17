@@ -70,7 +70,7 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 
 			waitDuration += waitInterval
 			
-			areBatchesFilled = (#self.FeatureVectorQueue >= self.BatchSize) and (not self.IsLabelRequired or #self.LabelQueue >= self.BatchSize)
+			areBatchesFilled = (#self.FeatureVectorQueue >= self.BatchSize) and (not self.IsLabelRequired or (#self.LabelQueue >= self.BatchSize))
 
 			if (waitDuration >= 30) and (waitWarningIssued == false) and (waitWarningIssued == true) then 
 
@@ -94,7 +94,7 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 				
 				table.remove(self.FeatureVectorQueue, 1)
 				
-				if self.IsLabelRequired then
+				if (self.IsLabelRequired == true) then
 					
 					table.insert(labelVector, {self.LabelQueue[1]}) 
 					

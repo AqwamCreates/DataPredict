@@ -84,3 +84,7 @@ OnlineLearning:returnCostArrayFromOnlineLearningQueue(): number[]
 #### Returns:
 
 * costArray: The cost array related to actual value and the predicted value.
+
+## Notes:
+
+* Be aware that the model may suffer [concept drift](https://machinelearningmastery.com/gentle-introduction-concept-drift-machine-learning/) from training over long periods of time.

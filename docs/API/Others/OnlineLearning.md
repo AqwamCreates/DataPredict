@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [AqwamCustomModels](../AqwamCustomModels.md) - QueuedReinforcementNeuralNetwork
+# [API Reference](../../API.md) - [Others](../Others.md) - OnlineLearning
 
 A QueuedReinforcementNeuralNetwork (QR-NN) is a neural network that has the ability to learn through reinforcement and online learning. This model can be considered as a the sibling of Neural Network (NN).
 

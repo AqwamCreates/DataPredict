@@ -74,13 +74,3 @@ OnlineLearning:returnCostArrayFromOnlineLearningQueue(): number[]
 #### Returns:
 
 * costArray: The cost array related to actual value and the predicted value.
-
-## Notes:
-
-* It is recommended to train using some data before starting to use reinforcement on real-time data. This is because it will take too long for this model to learn by reinforcement. Training on some data allows the model to have some head-start.
-
-* This model has the capability of reverting to previous model parameters if it starts to "unlearn". While it is a nice mechanism to avoid potential troubles on live games, I do recommend that you use appropriate reward and punish values.
-
-## Inherited From:
-
-[NeuralNetwork](../Models/NeuralNetwork.md)

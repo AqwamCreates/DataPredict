@@ -1,15 +1,23 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - OnlineLearning
 
-A QueuedReinforcementNeuralNetwork (QR-NN) is a neural network that has the ability to learn through reinforcement and online learning. This model can be considered as a the sibling of Neural Network (NN).
+## Constructors()
 
-It works by having a queue system for storing a number of variables.
+### new()
 
-First, we can add a feature vector to produce a prediction. The prediction is then added to queue as well as a number of other variables. 
-Then once the actual value is given in the future, it will use the queued prediction with the actual prediction to "learn".
+Creates a new online learning object
 
-It has the ability to adapt real-time. It is also efficient amd flexible in many scenarios, especially for game development.
+```
+ OnlineLearning.new(Model: ModelObject, isLabelRequired: boolean, batchSize: integer): OnlineLearningObject
+ 
+```
 
-It was first discovered by Aqwam and does not exists in any research literature.
+### Parameters:
+
+* Model: The model to be trained.
+
+* isLabelRequired: Set whether or not the model requires labels
+
+* batchSize: The size of data needed before training the model.
 
 ## Functions
 
@@ -18,7 +26,7 @@ It was first discovered by Aqwam and does not exists in any research literature.
 Creates new threads for real-time training.
 
 ```
-OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning): coroutine
+OnlineLearning:startOnlineLearning(showFinalCost: boolean, showWaitWarning: boolean): coroutine
 ```
 
 #### Parameters:
@@ -44,7 +52,7 @@ OnlineLearning:stopOnlineLearning()
 Adds feature vector to queue.
 
 ```
-OnlineLearning:addFeatureVectorToOnlineLearningQueue(featureVector)
+OnlineLearning:addFeatureVectorToOnlineLearningQueue(featureVector: matrix)
 ```
 
 #### Parameters:
@@ -56,7 +64,7 @@ OnlineLearning:addFeatureVectorToOnlineLearningQueue(featureVector)
 Adds label to queue.
 
 ```
-OnlineLearning:addLabelToOnlineLearningQueue(label)
+OnlineLearning:addLabelToOnlineLearningQueue(label: integer)
 ```
 
 #### Parameters:

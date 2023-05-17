@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - OnlineLearning
 
-## Constructors()
+## Constructors
 
 ### new()
 

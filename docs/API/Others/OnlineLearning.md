@@ -33,9 +33,9 @@ OnlineLearning:startOnlineLearning(showFinalCost: boolean, showWaitWarning: bool
 
 #### Parameters:
 
-* showFinalCost: Set whether or not the final cost 
+* showFinalCost: Set whether or not the final cost is displayed when training is complete.
 
-* showWaitWarning: How much do we punish the model if it gets the prediction incorrect (value between 0 and 1).
+* showWaitWarning: Set whether or not to show that the model have been waiting for data for more than 30 seconds.
 
 #### Returns:
 

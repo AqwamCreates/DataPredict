@@ -467,19 +467,17 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	
 	if (#self.ClassesList == 0) then
 		
-		classesList = createClassesList(labelVector)
+		self.ClassesList = createClassesList(labelVector)
 		
-		table.sort(classesList, function(a,b) return a < b end)
-		
-		self.ClassesList = classesList
+		table.sort(self.ClassesList, function(a,b) return a < b end)
 		
 	else
 		
-		if checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector") end
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector") end
 		
 	end
 	
-	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(self.ModelParameters, labelVector, classesList)
+	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(self.ModelParameters, labelVector, self.ClassesList)
 	
 	repeat
 		

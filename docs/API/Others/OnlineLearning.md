@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - OnlineLearning
 
-Online machine learning continuously updates the model as it receives new data, making it capable of real-time training.
+Online (machine) learning continuously updates the model as it receives new data, making it capable of real-time training.
 
 ## Constructors
 

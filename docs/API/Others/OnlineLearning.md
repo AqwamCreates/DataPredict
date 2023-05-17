@@ -30,7 +30,8 @@ OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning): coroutine
 #### Returns:
 
 * trainCoroutine: A coroutine that trains the model.
-### stopQueuedReinforcement()
+* 
+### stopOnlineLearning()
 
 Stops the threads for real-time training.
 

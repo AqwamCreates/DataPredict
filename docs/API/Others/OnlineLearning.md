@@ -23,7 +23,7 @@ OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning): coroutine
 
 #### Parameters:
 
-* showFinalCost: How much do we reward the model if it gets the prediction correct (value between 0 and 1).
+* showFinalCost: Set whether or not the final cost 
 
 * showWaitWarning: How much do we punish the model if it gets the prediction incorrect (value between 0 and 1).
 
@@ -62,17 +62,17 @@ OnlineLearning:addLabelToOnlineLearningQueue(label)
 
 * label: The actual label related to the previous feature vector.  
 
-### returnCostFromOnlineLearningQueue()
+### returnCostArrayFromOnlineLearningQueue()
 
-Returns predicted label from the queue.
+Returns cost array from the queue.
 
 ```
-OnlineLearning:returnCostFromOnlineLearningQueue(): number
+OnlineLearning:returnCostArrayFromOnlineLearningQueue(): number
 ```
 
 #### Returns:
 
-* cost: The cost related to actual value and the predicted value.
+* costArray: The cost array related to actual value and the predicted value.
 
 ## Notes:
 

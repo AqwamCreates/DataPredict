@@ -192,7 +192,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 		if (self.Optimizer) then 
 
-			costFunctionDerivatives = self.Optimizer:calculate(costFunctionDerivatives, delta) 
+			costFunctionDerivatives = self.Optimizer:calculate(self.learningRate, costFunctionDerivatives, delta) 
 
 		end
 
@@ -233,3 +233,4 @@ function SupportVectorMachineModel:predict(featureMatrix)
 end
 
 return SupportVectorMachineModel
+

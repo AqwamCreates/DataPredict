@@ -142,7 +142,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 	else
 		
-		self.ModelParameters = AqwamMatrixLibrary:createRandomMatrix(#featureMatrix[1], 1)
+		self.ModelParameters = AqwamMatrixLibrary:createRandomNormalMatrix(#featureMatrix[1], 1)
 		
 	end
 	

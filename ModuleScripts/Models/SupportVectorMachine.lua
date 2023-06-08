@@ -180,7 +180,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 	else
 
-		self.ModelParameters = AqwamMatrixLibrary:createRandomMatrix(#featureMatrix[1], 1)
+		self.ModelParameters = self:initializeMatrixBasedOnMode(#featureMatrix[1], 1)
 
 	end	
 

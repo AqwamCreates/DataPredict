@@ -1,3 +1,5 @@
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+
 BaseModel = {}
 
 BaseModel.__index = BaseModel
@@ -15,6 +17,8 @@ function BaseModel.new()
 	NewBaseModel.LastPredictedOutput = nil
 	
 	NewBaseModel.LastCalculations = nil
+	
+	NewBaseModel.ModelParametersInitializationMode = "RandomNormal"
 
 	return NewBaseModel
 	
@@ -58,7 +62,7 @@ function BaseModel:clearLastPredictedOutputAndCalculations()
 	
 end
 
-function BaseModel:printCostAndNumberOfIterations(cost, numberOfIteration) -- apparently it cannot see the self.isOutputPrinted when inherited function is used, so extra variable needed here
+function BaseModel:printCostAndNumberOfIterations(cost, numberOfIteration)
 	
 	if self.IsOutputPrinted then print("Iteration: " .. numberOfIteration .. "\t\tCost: " .. cost) end
 
@@ -81,18 +85,52 @@ end
 
 function BaseModel:getBooleanOrDefaultOption(boolean, defaultBoolean)
 	
-	if (boolean == true) then
+	if (type(boolean) == "nil") then return defaultBoolean end
 		
-		return true
+	return boolean
+	
+end
+
+function BaseModel:setModelParametersInitializationMode(initializationMode)
+	
+	self.ModelParametersInitializationMode = initializationMode
+	
+end
+
+function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
+	
+	local initializationMode = self.ModelParametersInitializationMode
+	
+	if (initializationMode == "Zero") then
 		
-	elseif (boolean == false) then
+		return AqwamMatrixLibrary:createMatrix(numberOfRows, numberOfColumns, 0)
+	
+	elseif (initializationMode == "Random") then
 		
-		return false
+		return AqwamMatrixLibrary:createRandomMatrix(numberOfRows, numberOfColumns)
 		
-	else
+	elseif (initializationMode == "RandomNormal") then
 		
-		return defaultBoolean
+		return AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 		
+	elseif (initializationMode == "He") then
+
+		local variance = 2 / numberOfColumns
+		
+		return AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns) * math.sqrt(variance)
+
+	elseif (initializationMode == "Xavier") then
+
+		local variance = 1 / numberOfColumns
+		
+		return AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns) * math.sqrt(variance)
+		
+	elseif (initializationMode == "Uniform") then
+		
+		local range = math.sqrt(3 / numberOfColumns)  -- Uniform initialization range
+		
+		return AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns, -range, range)
+
 	end
 	
 end
@@ -109,4 +147,3 @@ function BaseModel:destroy()
 end
 
 return BaseModel
-

@@ -16,25 +16,23 @@ function AdaptiveGradientOptimizer.new()
 	
 end
 
-function AdaptiveGradientOptimizer:calculate(ModelParametersDerivatives)
+function AdaptiveGradientOptimizer:calculate(costFunctionDerivatives)
 	
-	if (self.PreviousSumOfGradientSquaredMatrix == nil) then
-		
-		self.PreviousSumOfGradientSquaredMatrix = AqwamMatrixLibrary:createMatrix(#ModelParametersDerivatives, #ModelParametersDerivatives[1])
-		
-	end
-	
-	local GradientSquaredMatrix = AqwamMatrixLibrary:power(ModelParametersDerivatives, 2)
-	
+	self.PreviousSumOfGradientSquaredMatrix  = self.PreviousSumOfGradientSquaredMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+
+	local GradientSquaredMatrix = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
+
 	local CurrentSumOfGradientSquaredMatrix = AqwamMatrixLibrary:add(self.PreviousSumOfGradientSquaredMatrix, GradientSquaredMatrix)
-	
-	self.PreviousSumOfGradientSquaredMatrix = AqwamMatrixLibrary:sum(GradientSquaredMatrix)
-	
+
 	local SquareRootSumOfGradientSquared = AqwamMatrixLibrary:power(CurrentSumOfGradientSquaredMatrix, 0.5)
+
+	local costFunctionDerivatives = AqwamMatrixLibrary:divide(costFunctionDerivatives, SquareRootSumOfGradientSquared)
 	
-	local AdaGradMatrix = AqwamMatrixLibrary:divide(ModelParametersDerivatives, SquareRootSumOfGradientSquared)
+	costFunctionDerivatives = AqwamMatrixLibrary:multiply(-1, SquareRootSumOfGradientSquared)
 	
-	return AdaGradMatrix
+	self.PreviousSumOfGradientSquaredMatrix = CurrentSumOfGradientSquaredMatrix
+
+	return costFunctionDerivatives
 	
 end
 

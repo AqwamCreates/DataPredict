@@ -34,9 +34,9 @@ function MomentumOptimizer:calculate(ModelParametersDerivatives, PreviousDeltaMa
 	
 	local MomentumMatrixPart1 = AqwamMatrixLibrary:multiply(self.DecayRate, PreviousDeltaMatrix)
 	
-	local MomentumMatrix = AqwamMatrixLibrary:add(ModelParametersDerivatives, MomentumMatrixPart1)
+	local costFunctionDerivatives = AqwamMatrixLibrary:add(ModelParametersDerivatives, MomentumMatrixPart1)
 	
-	return MomentumMatrix
+	return costFunctionDerivatives
 	
 end
 

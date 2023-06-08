@@ -36,15 +36,11 @@ function RootMeanSquarePropagationOptimizer:setEpsilon(Epsilon)
 
 end
 
-function RootMeanSquarePropagationOptimizer:calculate(ModelParametersDerivatives)
+function RootMeanSquarePropagationOptimizer:calculate(costFunctionDerivatives)
 	
-	if (self.PreviousVelocityMatrix == nil) then 
-		
-		self.PreviousVelocityMatrix = AqwamMatrixLibrary:createMatrix(#ModelParametersDerivatives, #ModelParametersDerivatives[1])
-		
-	end
+	self.PreviousVelocityMatrix = self.PreviousVelocityMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 	
-	local SquaredModelParameters = AqwamMatrixLibrary:power(ModelParametersDerivatives, 2)
+	local SquaredModelParameters = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
 	
 	local VMatrixPart1 = AqwamMatrixLibrary:multiply(self.Beta, self.PreviousVelocityMatrix)
 	
@@ -52,13 +48,13 @@ function RootMeanSquarePropagationOptimizer:calculate(ModelParametersDerivatives
 	
 	local CurrentVelocityMatrix = AqwamMatrixLibrary:add(VMatrixPart1, VMatrixPart2)
 	
-	self.PreviousVelocityMatrix = CurrentVelocityMatrix
-	
 	local NonZeroDivisorMatrix = AqwamMatrixLibrary:add(CurrentVelocityMatrix, self.Epsilon)
 	
 	local SquaredRootVelocityMatrix = AqwamMatrixLibrary:power(NonZeroDivisorMatrix, 0.5)
 	
-	local costFunctionDerivatives = AqwamMatrixLibrary:multiply(ModelParametersDerivatives, SquaredRootVelocityMatrix)
+	local costFunctionDerivatives = AqwamMatrixLibrary:multiply(costFunctionDerivatives, SquaredRootVelocityMatrix)
+	
+	self.PreviousVelocityMatrix = CurrentVelocityMatrix
 	
 	return costFunctionDerivatives
 	

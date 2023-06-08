@@ -407,7 +407,7 @@ function NeuralNetworkModel:setLayers(...)
 		
 		numberOfNextLayerNeurons = layersArray[layer + 1] + 1 -- 1 is added for bias
 		
-		weightMatrix = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
+		weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
 		
 		table.insert(ModelParameters, weightMatrix)
 		

@@ -28,8 +28,6 @@ function Regularization:setParameters(lambda, regularizationMode)
 	
 	self.regularizationMode = regularizationMode or self.regularizationMode
 	
-	return regularizationMode
-	
 end
 
 function Regularization:getLambda()

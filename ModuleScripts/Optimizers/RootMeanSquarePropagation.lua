@@ -4,9 +4,9 @@ RootMeanSquarePropagationOptimizer.__index = RootMeanSquarePropagationOptimizer
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
-local defaultBetaValue = 0.01
+local defaultBetaValue = 0.1
 
-local defaultEpsilonValue = 0.01
+local defaultEpsilonValue = 0.001
 
 function RootMeanSquarePropagationOptimizer.new(Beta, Epsilon)
 	
@@ -54,13 +54,13 @@ function RootMeanSquarePropagationOptimizer:calculate(ModelParametersDerivatives
 	
 	self.PreviousVelocityMatrix = CurrentVelocityMatrix
 	
-	local SquaredRootVelocityMatrix = AqwamMatrixLibrary:power(CurrentVelocityMatrix, 0.5)
+	local NonZeroDivisorMatrix = AqwamMatrixLibrary:add(CurrentVelocityMatrix, self.Epsilon)
 	
-	local DivisorMatrix = AqwamMatrixLibrary:add(SquaredRootVelocityMatrix, self.Epsilon)
+	local SquaredRootVelocityMatrix = AqwamMatrixLibrary:power(NonZeroDivisorMatrix, 0.5)
 	
-	local RMSPropMatrix = AqwamMatrixLibrary:divide(ModelParametersDerivatives, DivisorMatrix)
+	local costFunctionDerivatives = AqwamMatrixLibrary:multiply(ModelParametersDerivatives, SquaredRootVelocityMatrix)
 	
-	return RMSPropMatrix
+	return costFunctionDerivatives
 	
 end
 
@@ -71,4 +71,3 @@ function RootMeanSquarePropagationOptimizer:reset()
 end
 
 return RootMeanSquarePropagationOptimizer
-

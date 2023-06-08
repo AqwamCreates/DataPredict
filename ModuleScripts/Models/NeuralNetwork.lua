@@ -288,9 +288,9 @@ function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix, numb
 
 	local sumSquaredSubtractedMatrix = AqwamMatrixLibrary:sum(squaredSubtractedMatrix)
 
-	local cost = AqwamMatrixLibrary:multiply((1/numberOfData), sumSquaredSubtractedMatrix)
+	local cost = sumSquaredSubtractedMatrix / numberOfData
 
-	return cost[1][1]
+	return cost
 
 end
 

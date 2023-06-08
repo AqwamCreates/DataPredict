@@ -14,6 +14,18 @@ BaseModel.new(): BaseModelObject
 
 ## Functions
 
+### setModelParametersInitializationMode()
+
+Sets how the initial model parameters values are generated.
+
+```
+BaseModel:setModelParametersInitializationMode(initializationMode: string)
+```
+
+#### Parameters:
+
+* initializationMode: The mode for the matrices to be initialized. Available options are "Random", "RandomNormal", "He" and "Xavier".
+
 ### getModelParameters()
 
 Gets the model parameters from the base model.

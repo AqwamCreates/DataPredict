@@ -407,6 +407,52 @@ function CustomNeuralNetworkModel:setParameters(maxNumberOfIterations, learningR
 
 end
 
+function CustomNeuralNetworkModel:generateLayers()
+
+	local layersArray = self.numberOfNeuronsTable
+
+	local numberOfLayers = #layersArray
+
+	local ModelParameters = {}
+
+	local weightMatrix
+
+	local numberOfCurrentLayerNeurons
+
+	local numberOfNextLayerNeurons
+
+	for layer = 1, (numberOfLayers - 2), 1 do
+
+		numberOfCurrentLayerNeurons = layersArray[layer]
+
+		if self.addBiasNeuronTable[layer] then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
+
+		numberOfNextLayerNeurons = layersArray[layer + 1]
+
+		if self.addBiasNeuronTable[layer + 1] then numberOfNextLayerNeurons += 1 end
+
+		weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
+
+		table.insert(ModelParameters, weightMatrix)
+
+	end
+
+	numberOfCurrentLayerNeurons = layersArray[#layersArray - 1]
+
+	if self.addBiasNeuronTable[#layersArray - 1] then numberOfCurrentLayerNeurons += 1 end
+
+	numberOfNextLayerNeurons = layersArray[#layersArray]
+
+	if self.addBiasNeuronTable[#layersArray] then numberOfNextLayerNeurons += 1 end
+
+	weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
+
+	table.insert(ModelParameters, weightMatrix)
+
+	self.ModelParameters = ModelParameters
+
+end
+
 function CustomNeuralNetworkModel:addLayer(numberOfNeuron, addBiasNeuron, activationFunction, Optimizer, Regularization)
 	
 	if (typeof(numberOfNeuron) ~= "number") then error("Invalid input for number of neurons!") end
@@ -425,51 +471,7 @@ function CustomNeuralNetworkModel:addLayer(numberOfNeuron, addBiasNeuron, activa
 	
 	table.insert(self.RegularizationTable, Regularization)
 	
-end
-
-function CustomNeuralNetworkModel:generateLayers()
-	
-	local layersArray = self.numberOfNeuronsTable
-
-	local numberOfLayers = #layersArray
-
-	local ModelParameters = {}
-
-	local weightMatrix
-
-	local numberOfCurrentLayerNeurons
-
-	local numberOfNextLayerNeurons
-
-	for layer = 1, (numberOfLayers - 2), 1 do
-
-		numberOfCurrentLayerNeurons = layersArray[layer]
-		
-		if self.addBiasNeuronTable[layer] then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
-
-		numberOfNextLayerNeurons = layersArray[layer + 1]
-		
-		if self.addBiasNeuronTable[layer + 1] then numberOfNextLayerNeurons += 1 end
-
-		weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
-
-		table.insert(ModelParameters, weightMatrix)
-
-	end
-	
-	numberOfCurrentLayerNeurons = layersArray[#layersArray - 1]
-
-	if self.addBiasNeuronTable[#layersArray - 1] then numberOfCurrentLayerNeurons += 1 end
-	
-	numberOfNextLayerNeurons = layersArray[#layersArray]
-
-	if self.addBiasNeuronTable[#layersArray] then numberOfNextLayerNeurons += 1 end
-
-	weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
-
-	table.insert(ModelParameters, weightMatrix)
-
-	self.ModelParameters = ModelParameters
+	if (#self.numberOfNeuronsTable > 1) then self:generateLayers() end
 	
 end
 

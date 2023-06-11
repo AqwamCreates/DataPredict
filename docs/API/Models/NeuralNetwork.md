@@ -22,8 +22,6 @@ NeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, activati
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
-
 * targetCost: The cost at which the model stops training.
 
 #### Returns:
@@ -46,47 +44,45 @@ NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
-
 * targetCost: The cost at which the model stops training.
-
-### setOptimizer()
-
-Set optimizer for the model by inputting the optimizer object.
-
-```
-NeuralNetwork:setOptimizer(Optimizer: OptimizerObject)
-```
-
-#### Parameters:
-
-* Optimizer: The optimizer to be used.
-
-### setRegularization()
-
-Set a regularization for the model by inputting the optimizer object.
-
-```
-NeuralNetwork:setRegularization(Regularization: RegularizationObject)
-```
-
-#### Parameters:
-
-* Regularization: The regularization to be used.
 
 ### setLayers()
 
-Set the number of layers and the neurons (without bias neuron) in each of those layers. Number of arguments determines the layer, while the number value determines the number of neurons. Bias neurons will be added automatically after setting the number of neurons in each layer except for the output layer.
-
-For example, setLayers(3,7,6) means 3 neurons at layer 1, 7 neurons at layer 2, and 6 neurons at layer 3. It assumes that the bias neurons are not counted. 
+Set the number of layers and the neurons (without bias neuron) in each of those layers. It also set all the activation function of all neuron to the activation function given in the function's parameters. Resets the current model parameters stored in the neural network.
 
 ```
-NeuralNetwork:setLayers(...: integer)
+NeuralNetwork:setLayers(numberOfNeuronsArray: [], activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
 ```
 
 #### Parameters:
 
-* ...: layers and number of neurons.
+* numberOfNeuronsArray: The array containing all the number of neurons for each layer (without bias neuron). The index determines the layer, while the value determines the number of neurons. Bias neurons will be added automatically after setting the number of neurons in each layer except for the output layer. For example, {3,7,6} means 3 neurons at layer 1, 7 neurons at layer 2, and 6 neurons at layer 3 wthout the bias neurons.
+
+* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
+
+* Optimizer: The optimizer object to be added at the last layer.
+
+* Regularization: The regularization object to be added at the last layer.
+
+### addLayer()
+
+Add another layer to the neural network.
+
+```
+NeuralNetwork:addLayer(numberOfNeuronsArray: [], addBiasNeuron: boolean, activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
+```
+
+#### Parameters:
+
+* numberOfNeuronsArray: Set the number of neurons to be added to the next layer (excluding bias neuron).
+
+* addBiasNeuron: Set whether or not the bias neuron will be added to next layer.
+
+* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
+
+* Optimizer: The optimizer object to be added at the last layer.
+
+* Regularization: The regularization object to be added at the last layer.
 
 ### train()
 
@@ -162,6 +158,14 @@ NeuralNetwork:setClassesList(classesList)
 #### Parameters:
 
 * classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
+
+### showDetails()
+
+Shows the details of all layers. The datails includes the number of neurons, is bias added and so on.
+
+```
+NeuralNetwork:showDetails()
+```
 
 ## Inherited From
 

@@ -453,7 +453,7 @@ function NeuralNetwork:generateLayers()
 
 end
 
-function NeuralNetwork:setLayers(numberOfNeuronsArray, activationFunction, Regularization, Optimizer)
+function NeuralNetwork:setLayers(numberOfNeuronsArray, activationFunction, Optimizer, Regularization)
 	
 	if (typeof(numberOfNeuronsArray) ~= "table") then error("Invalid input for number of neurons!") end
 
@@ -614,7 +614,7 @@ function NeuralNetwork:train(featureMatrix, labelVector)
 		if Optimizer then Optimizer:reset() end
 
 	end
-
+	
 	return costArray
 
 end

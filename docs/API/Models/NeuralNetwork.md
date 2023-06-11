@@ -161,7 +161,7 @@ NeuralNetwork:setClassesList(classesList)
 
 ### showDetails()
 
-Shows the details of all layers. The datails includes the number of neurons, is bias added and so on.
+Shows the details of all layers. The details includes the number of neurons, is bias added and so on.
 
 ```
 NeuralNetwork:showDetails()

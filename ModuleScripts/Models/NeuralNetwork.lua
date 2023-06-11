@@ -32,7 +32,7 @@ local activationFunctionList = {
 
 }
 
-local derivativeList = {
+local derivativeFunctionList = {
 	
 	["sigmoid"] = function (z) 
 		
@@ -200,7 +200,7 @@ function NeuralNetworkModel:backPropagate(ModelParameters, lossMatrix, zTable, a
 	
 	local zLayerMatrix
 	
-	local derivativeFunction = derivativeList[activationFunction]
+	local derivativeFunction = derivativeFunctionList[activationFunction]
 	
 	layerCostMatrix = lossMatrix
 
@@ -413,7 +413,7 @@ function NeuralNetworkModel:setLayers(...)
 		
 	end
 	
-	weightMatrix = AqwamMatrixLibrary:createRandomNormalMatrix(layersArray[numberOfLayers - 1] + 1, layersArray[numberOfLayers]) -- final layer, no bias needed.
+	weightMatrix = self:initializeMatrixBasedOnMode(layersArray[numberOfLayers - 1] + 1, layersArray[numberOfLayers]) -- final layer, no bias needed.
 	
 	table.insert(ModelParameters, weightMatrix)
 	
@@ -445,8 +445,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	
 	local numberOfLayers = #self.ModelParameters
 	
-	local transposedLayerMatrix
-	
 	local deltaTable
 	
 	local RegularizationDerivatives
@@ -456,8 +454,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	local zTable
 	
 	local backwardPropagateTable
-	
-	local costDerivativeTable
 	
 	local classesList
 	

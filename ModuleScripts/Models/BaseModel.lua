@@ -4,6 +4,46 @@ BaseModel = {}
 
 BaseModel.__index = BaseModel
 
+local function deepCopyTable(original, copies)
+	
+	copies = copies or {}
+	
+	local originalType = type(original)
+	
+	local copy
+	
+	if (originalType == 'table') then
+		
+		if copies[original] then
+			
+			copy = copies[original]
+			
+		else
+			
+			copy = {}
+			
+			copies[original] = copy
+			
+			for originalKey, originalValue in next, original, nil do
+				
+				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
+				
+			end
+			
+			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
+			
+		end
+		
+	else -- number, string, boolean, etc
+		
+		copy = original
+		
+	end
+	
+	return copy
+	
+end
+
 function BaseModel.new()
 	
 	local NewBaseModel = {}
@@ -26,7 +66,7 @@ end
 
 function BaseModel:getModelParameters()
 	
-	return self.ModelParameters
+	return deepCopyTable(self.ModelParameters)
 	
 end
 

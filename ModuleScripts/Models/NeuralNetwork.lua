@@ -455,6 +455,8 @@ end
 
 function NeuralNetwork:setLayers(numberOfNeuronsArray, activationFunction, Optimizer, Regularization)
 	
+	activationFunction = activationFunction or defaultActivationFunction
+	
 	if (typeof(numberOfNeuronsArray) ~= "table") then error("Invalid input for number of neurons!") end
 
 	if (typeof(activationFunction) ~= "string") then error("Invalid input for activation function!") end
@@ -759,3 +761,4 @@ function NeuralNetwork:showDetails()
 end
 
 return NeuralNetwork
+

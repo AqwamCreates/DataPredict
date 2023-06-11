@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Optimizers](../Optimizers.md) - Adaptive Gradient (Adagrad)
+# [API Reference](../../API.md) - [Optimizers](../Optimizers.md) - AdaptiveGradient (Adagrad)
 
 ## Constructors
 

@@ -2,7 +2,7 @@
 
 ![DataPredictIconSmall](https://user-images.githubusercontent.com/67371914/223632639-dea075fe-9dce-430c-af82-2fb0fbeb43d3.png)
 
-Current Version: 1.4.1
+Current Version: 1.4.2
 
 DataPredict is a machine and deep learning library for Roblox.
 
@@ -13,6 +13,8 @@ If there are any suggestions or issues for this library, don't be afraid to reac
 In addition, if you are interested in Roblox tutorials and future projects by me, then you can subscribe to me in [Youtube](https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw).
 
 To know what this library is all about from scratch, let's have a look at the quick introduction [here](QuickIntroduction.md).
+
+By using or possesing any copies of this library, you agree to our [Terms and Conditions](TermsAndConditions.md).
 
 ## Tutorials
 
@@ -59,7 +61,3 @@ To know what this library is all about from scratch, let's have a look at the qu
 ## Version History
 
 Have a look at this library's update progress [here](VersionHistory/VersionHistory.md)!
-
-## Terms And Conditions
-
-By using or possesing any copies of this library, you agree to our [Terms and Conditions](TermsAndConditions.md).

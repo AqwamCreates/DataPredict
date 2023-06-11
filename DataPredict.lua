@@ -1,8 +1,8 @@
---[[
+---[[
 
 	--------------------------------------------------------------------
 
-	Version 1.4.3
+	Version 1.5.0
 
 	Aqwam's Roblox Deep Learning Library (AR-MDLL)
 
@@ -62,8 +62,6 @@ local ModelsDictionary = {
 	ExpectationMaximization = require(Models.ExpectationMaximization),
 	
 	NeuralNetwork = require(Models.NeuralNetwork),
-	
-	CustomNeuralNetwork = require(Models.CustomNeuralNetwork),
 	
 	KMedoids = require(Models.KMedoids),
 	

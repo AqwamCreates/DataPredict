@@ -48,7 +48,7 @@ NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number
 
 ### setLayers()
 
-Set the number of layers and the neurons (without bias neuron) in each of those layers. It also set all the activation function of all neuron to the activation function given in the function's parameters. Resets the current model parameters stored in the neural network.
+Set the number of layers and the neurons (with bias neuron) in each of those layers. It also set all the activation function of all neuron to the activation function given in the function's parameters. Resets the current model parameters stored in the neural network.
 
 ```
 NeuralNetwork:setLayers(numberOfNeuronsArray: [], activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)

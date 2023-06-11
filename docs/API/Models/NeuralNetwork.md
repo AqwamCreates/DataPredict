@@ -69,12 +69,12 @@ NeuralNetwork:setLayers(numberOfNeuronsArray: [], activationFunction: string, Op
 Add another layer to the neural network.
 
 ```
-NeuralNetwork:addLayer(numberOfNeuronsArray: [], addBiasNeuron: boolean, activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
+NeuralNetwork:addLayer(numberOfNeurons: [], addBiasNeuron: boolean, activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
 ```
 
 #### Parameters:
 
-* numberOfNeuronsArray: Set the number of neurons to be added to the next layer (excluding bias neuron).
+* numberOfNeurons: Set the number of neurons to be added to the next layer (excluding bias neuron).
 
 * addBiasNeuron: Set whether or not the bias neuron will be added to next layer.
 

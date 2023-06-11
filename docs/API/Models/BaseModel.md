@@ -24,7 +24,7 @@ BaseModel:setModelParametersInitializationMode(initializationMode: string)
 
 #### Parameters:
 
-* initializationMode: The mode for the matrices to be initialized. Available options are "Random", "RandomNormal", "He" and "Xavier".
+* initializationMode: The mode for the matrices to be initialized. Available options are "Zero", "Random", "RandomNormal", "He" and "Xavier".
 
 ### getModelParameters()
 

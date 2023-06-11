@@ -475,11 +475,15 @@ end
 
 function CustomNeuralNetworkModel:train(featureMatrix, labelVector)
 	
-	if (self.ModelParameters == nil) then error("Layers are not generated!")
-		
-	elseif (#self.ModelParameters[1] ~= (#featureMatrix[1] + 1)) then error("Input layer has " .. (#self.ModelParameters[1] - 1) .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features!")
+	if (self.ModelParameters == nil) then error("Layers are not generated!") end
 	
-	elseif (#featureMatrix ~= #labelVector) then error("Number of rows of feature matrix and the label vector is not the same!") end
+	local numberOfNeuronsRequired = #featureMatrix[1]
+	
+	if (self.addBiasNeuronTable[1]) then numberOfNeuronsRequired -= 1 end
+		
+	if (#self.ModelParameters[1] ~= numberOfNeuronsRequired) then error("Input layer has " .. (#self.ModelParameters[1] - 1) .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features!") end
+	
+	if (#featureMatrix ~= #labelVector) then error("Number of rows of feature matrix and the label vector is not the same!") end
 	
 	local allOutputsMatrix
 	

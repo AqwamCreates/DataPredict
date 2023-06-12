@@ -22,60 +22,38 @@ local defaultSetTheCentroidsDistanceFarthest = false
 
 local distanceFunctionList = {
 
-	["manhattan"] = function (y, h) return math.abs(y - h) end,
+	["manhattan"] = function (x1, x2)
 
-	["euclidean"] = function (y, h) return (y - h)^2 end,
+		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+
+		part1 = AqwamMatrixLibrary:applyFunction(math.abs, part1)
+
+		local distance = AqwamMatrixLibrary:sum(part1)
+
+		return distance 
+
+	end,
+
+	["euclidean"] = function (x1, x2)
+
+		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+
+		local part2 = AqwamMatrixLibrary:power(part1, 2)
+
+		local part3 = AqwamMatrixLibrary:sum(part2)
+
+		local distance = AqwamMatrixLibrary:applyFunction(math.sqrt, part3)
+
+		return distance 
+
+	end,
 
 }
 
-local function calculateManhattanDistance(vector1, vector2)
-
-	local distance = 0
-
-	for row = 1, #vector1, 1 do
-
-		distance += distanceFunctionList["manhattan"](vector1[row][1], vector2[row][1])
-
-	end
-
-	return distance
-
-end
-
-local function calculateEuclideanDistance(vector1, vector2)
-	
-	local squaredDistance = 0
-	
-	for row = 1, #vector1, 1 do
-
-		squaredDistance += distanceFunctionList["euclidean"](vector1[row][1], vector2[row][1])
-
-	end
-	
-	local distance = math.sqrt(squaredDistance)
-	
-	return distance
-	
-end
 
 local function calculateDistance(vector1, vector2, distanceFunction)
 	
-	local distance
-	
-	vector1 = AqwamMatrixLibrary:transpose(vector1)
-	vector2 = AqwamMatrixLibrary:transpose(vector2)
-
-	if (distanceFunction == "euclidean") then
-		
-		distance = calculateEuclideanDistance(vector1, vector2)
-		
-	elseif (distanceFunction == "manhattan") then
-		
-		distance = calculateManhattanDistance(vector1, vector2)
-		
-	end
-	
-	return distance 
+	return distanceFunctionList[distanceFunction](vector1, vector2) 
 	
 end
 

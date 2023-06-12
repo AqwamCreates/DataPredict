@@ -421,7 +421,7 @@ function NeuralNetwork:generateLayers()
 
 	local numberOfNextLayerNeurons
 
-	for layer = 1, (numberOfLayers - 2), 1 do
+	for layer = 1, (numberOfLayers - 1), 1 do
 
 		numberOfCurrentLayerNeurons = layersArray[layer]
 
@@ -436,18 +436,6 @@ function NeuralNetwork:generateLayers()
 		table.insert(ModelParameters, weightMatrix)
 
 	end
-
-	numberOfCurrentLayerNeurons = layersArray[#layersArray - 1]
-
-	if self.addBiasNeuronTable[#layersArray - 1] then numberOfCurrentLayerNeurons += 1 end
-
-	numberOfNextLayerNeurons = layersArray[#layersArray]
-
-	if self.addBiasNeuronTable[#layersArray] then numberOfNextLayerNeurons += 1 end
-
-	weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
-
-	table.insert(ModelParameters, weightMatrix)
 
 	self.ModelParameters = ModelParameters
 

@@ -42,7 +42,7 @@ local distanceFunctionList = {
 
 		local part3 = AqwamMatrixLibrary:sum(part2)
 
-		local distance = AqwamMatrixLibrary:applyFunction(math.sqrt, part3)
+		local distance = math.sqrt(part3)
 
 		return distance 
 

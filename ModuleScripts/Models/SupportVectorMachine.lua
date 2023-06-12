@@ -48,36 +48,6 @@ local distanceFunctionList = {
 
 }
 
-local function calculateManhattanDistance(vector1, vector2)
-
-	local distance = 0
-
-	for row = 1, #vector1, 1 do
-
-		distance += distanceFunctionList["manhattan"](vector1[row][1], vector2[row][1])
-
-	end
-
-	return distance
-
-end
-
-local function calculateEuclideanDistance(vector1, vector2)
-
-	local squaredDistance = 0
-
-	for row = 1, #vector1, 1 do
-
-		squaredDistance += distanceFunctionList["euclidean"](vector1[row][1], vector2[row][1])
-
-	end
-
-	local distance = math.sqrt(squaredDistance)
-
-	return distance
-
-end
-
 local function calculateDistance(vector1, vector2, distanceFunction)
 
 	return distanceFunctionList[distanceFunction](vector1, vector2) 
@@ -243,4 +213,3 @@ function SupportVectorMachineModel:predict(featureMatrix)
 end
 
 return SupportVectorMachineModel
-

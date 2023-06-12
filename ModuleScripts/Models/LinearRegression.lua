@@ -20,12 +20,33 @@ local defaultLambda = 0
 
 local lossFunctionList = {
 
-	["L1"] = function (y, h) return math.abs(y - h) end,
-	
-	["L2"] = function (y, h) return (y - h)^2 end,
+	["L1"] = function (x1, x2)
+
+		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		
+		part1 = AqwamMatrixLibrary:applyFunction(math.abs, part1)
+
+		local distance = AqwamMatrixLibrary:sum(part1)
+
+		return distance 
+
+	end,
+
+	["L2"] = function (x1, x2)
+
+		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+
+		local part2 = AqwamMatrixLibrary:power(part1, 2)
+		
+		local part3 = AqwamMatrixLibrary:applyFunction(math.sqrt, part2)
+
+		local distance = AqwamMatrixLibrary:sum(part3)
+
+		return distance 
+
+	end,
 
 }
-
 local function calculateHypothesisVector(featureMatrix, modelParameters)
 	
 	return AqwamMatrixLibrary:dotProduct(featureMatrix, modelParameters)
@@ -40,11 +61,9 @@ local function calculateCost(modelParameters, featureMatrix, labelVector, lossFu
 	
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
-	local costVector = AqwamMatrixLibrary:applyFunction(lossFunctionList[lossFunction], hypothesisVector, labelVector)
+	local costVector = lossFunctionList[lossFunction](hypothesisVector, labelVector) 
 	
-	local totalCost = AqwamMatrixLibrary:sum(costVector)
-	
-	local averageCost = totalCost / (2 * numberOfData)
+	local averageCost = costVector / (2 * numberOfData)
 	
 	return averageCost
 	

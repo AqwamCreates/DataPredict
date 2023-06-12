@@ -259,15 +259,15 @@ function NeuralNetwork:calculateDelta(forwardPropagateTable, backpropagateTable,
 
 		deltaMatrix = AqwamMatrixLibrary:dotProduct(partialDerivativeMatrix, activationLayerMatrix)
 
-		if self.OptimizerTable[layer + 1] then
+		if self.OptimizerTable[layer] then
 
-			deltaMatrix = self.OptimizerTable[layer + 1]:calculate(deltaMatrix, self.previousDeltaMatricesTable[layer])
+			deltaMatrix = self.OptimizerTable[layer]:calculate(deltaMatrix, self.previousDeltaMatricesTable[layer])
 
 		end
 
-		if self.RegularizationTable[layer + 1] then
+		if self.RegularizationTable[layer] then
 
-			regularizationDerivatives = self.Regularization[layer + 1]:calculateLossFunctionDerivativeRegularizaion(self.ModelParameters[layer], numberOfData)
+			regularizationDerivatives = self.Regularization[layer]:calculateLossFunctionDerivativeRegularizaion(self.ModelParameters[layer], numberOfData)
 
 			deltaMatrix = AqwamMatrixLibrary:add(deltaMatrix, regularizationDerivatives)
 

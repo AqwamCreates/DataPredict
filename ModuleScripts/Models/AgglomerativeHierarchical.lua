@@ -26,12 +26,12 @@ local distanceFunctionList = {
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
-		local part2 = AqwamMatrixLibrary:sum(part1)
+		part1 = AqwamMatrixLibrary:applyFunction(math.abs, part1)
 
-		local distance = math.abs(part2)
+		local distance = AqwamMatrixLibrary:sum(part1)
 
 		return distance 
-		
+
 	end,
 
 	["euclidean"] = function (x1, x2)
@@ -42,10 +42,10 @@ local distanceFunctionList = {
 
 		local part3 = AqwamMatrixLibrary:sum(part2)
 
-		local distance = math.sqrt(part3)
+		local distance = AqwamMatrixLibrary:applyFunction(math.sqrt, part3)
 
 		return distance 
-		
+
 	end,
 
 }

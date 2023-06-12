@@ -20,9 +20,31 @@ local defaultTargetCost = 0
 
 local distanceFunctionList = {
 
-	["manhattan"] = function (y, h) return math.abs(y - h) end,
+	["manhattan"] = function (x1, x2)
 
-	["euclidean"] = function (y, h) return (y - h)^2 end,
+		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+
+		part1 = AqwamMatrixLibrary:applyFunction(math.abs, part1)
+
+		local distance = AqwamMatrixLibrary:sum(part1)
+
+		return distance 
+
+	end,
+
+	["euclidean"] = function (x1, x2)
+
+		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+
+		local part2 = AqwamMatrixLibrary:power(part1, 2)
+
+		local part3 = AqwamMatrixLibrary:applyFunction(math.sqrt, part2)
+
+		local distance = AqwamMatrixLibrary:sum(part3)
+
+		return distance 
+		
+	end,
 
 }
 
@@ -58,19 +80,7 @@ end
 
 local function calculateDistance(vector1, vector2, distanceFunction)
 
-	local distance
-
-	if (distanceFunction == "euclidean") then
-
-		distance = calculateEuclideanDistance(vector1, vector2)
-
-	elseif (distanceFunction == "manhattan") then
-
-		distance = calculateManhattanDistance(vector1, vector2)
-
-	end
-
-	return distance 
+	return distanceFunctionList[distanceFunction](vector1, vector2) 
 
 end
 
@@ -233,5 +243,4 @@ function SupportVectorMachineModel:predict(featureMatrix)
 end
 
 return SupportVectorMachineModel
-
 

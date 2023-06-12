@@ -38,9 +38,9 @@ local distanceFunctionList = {
 
 		local part2 = AqwamMatrixLibrary:power(part1, 2)
 
-		local part3 = AqwamMatrixLibrary:applyFunction(math.sqrt, part2)
-
-		local distance = AqwamMatrixLibrary:sum(part3)
+		local part3 = AqwamMatrixLibrary:sum(part2)
+		
+		local distance = AqwamMatrixLibrary:applyFunction(math.sqrt, part3)
 
 		return distance 
 		

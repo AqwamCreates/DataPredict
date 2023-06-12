@@ -37,10 +37,8 @@ local lossFunctionList = {
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
 		local part2 = AqwamMatrixLibrary:power(part1, 2)
-		
-		local part3 = AqwamMatrixLibrary:applyFunction(math.sqrt, part2)
 
-		local distance = AqwamMatrixLibrary:sum(part3)
+		local distance = AqwamMatrixLibrary:sum(part2)
 
 		return distance 
 

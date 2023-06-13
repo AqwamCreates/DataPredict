@@ -66,12 +66,12 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, addBiasNeuron: boolean, activat
 
 * Regularization: The regularization object to be added at the last layer.
 
-### setLayers()
+### createLayers()
 
-Set the number of layers and the neurons (with bias neuron) in each of those layers. It also set all the activation function of all neuron to the activation function given in the function's parameters. Resets the current model parameters stored in the neural network.
+Create all the neurons (with bias neuron) in each of those layers. It also set all the activation function of all neuron to the activation function given in the function's parameters. Resets the current model parameters stored in the neural network.
 
 ```
-NeuralNetwork:setLayers(numberOfNeuronsArray: integer[], activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
+NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
 ```
 
 #### Parameters:

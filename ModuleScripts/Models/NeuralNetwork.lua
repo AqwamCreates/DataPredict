@@ -441,7 +441,7 @@ function NeuralNetwork:generateLayers()
 
 end
 
-function NeuralNetwork:setLayers(numberOfNeuronsArray, activationFunction, Optimizer, Regularization)
+function NeuralNetwork:createLayers(numberOfNeuronsArray, activationFunction, Optimizer, Regularization)
 	
 	activationFunction = activationFunction or defaultActivationFunction
 	

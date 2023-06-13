@@ -46,6 +46,26 @@ NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number
 
 * targetCost: The cost at which the model stops training.
 
+### addLayer()
+
+Add a layer to the neural network.
+
+```
+NeuralNetwork:addLayer(numberOfNeurons: integer, addBiasNeuron: boolean, activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
+```
+
+#### Parameters:
+
+* numberOfNeurons: Set the number of neurons to be added to the next layer (excluding bias neuron).
+
+* addBiasNeuron: Set whether or not the bias neuron will be added to next layer.
+
+* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
+
+* Optimizer: The optimizer object to be added at the last layer.
+
+* Regularization: The regularization object to be added at the last layer.
+
 ### setLayers()
 
 Set the number of layers and the neurons (with bias neuron) in each of those layers. It also set all the activation function of all neuron to the activation function given in the function's parameters. Resets the current model parameters stored in the neural network.
@@ -57,26 +77,6 @@ NeuralNetwork:setLayers(numberOfNeuronsArray: integer[], activationFunction: str
 #### Parameters:
 
 * numberOfNeuronsArray: The array containing all the number of neurons for each layer (without bias neuron). The index determines the layer, while the value determines the number of neurons. Bias neurons will be added automatically after setting the number of neurons in each layer except for the output layer. For example, {3,7,6} means 3 neurons at layer 1, 7 neurons at layer 2, and 6 neurons at layer 3 wthout the bias neurons.
-
-* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
-
-* Optimizer: The optimizer object to be added at the last layer.
-
-* Regularization: The regularization object to be added at the last layer.
-
-### addLayer()
-
-Add another layer to the neural network.
-
-```
-NeuralNetwork:addLayer(numberOfNeurons: integer, addBiasNeuron: boolean, activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
-```
-
-#### Parameters:
-
-* numberOfNeurons: Set the number of neurons to be added to the next layer (excluding bias neuron).
-
-* addBiasNeuron: Set whether or not the bias neuron will be added to next layer.
 
 * activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
 

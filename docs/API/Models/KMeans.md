@@ -2,6 +2,12 @@
 
 KMeans is an unsupervised machine learning model that predicts which cluster that the input belongs to using distance.
 
+## Stored Model Parameters
+
+* Contains a matrix.  
+
+* ModelParameters[I][J]: Value of matrix at row I and column J. The rows represent the clusters.
+
 ## Constructors
 
 ### new()

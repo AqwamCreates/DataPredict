@@ -2,6 +2,12 @@
 
 LinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ).
 
+## Stored Model Parameters
+
+* Contains a matrix.  
+
+* ModelParameters[I][J]: Value of matrix at row I and column J.
+
 ## Constructors
 
 ### new()

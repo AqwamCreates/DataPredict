@@ -39,7 +39,7 @@ OnlineLearning:startOnlineLearning(showFinalCost: boolean, showWaitWarning: bool
 #### Returns:
 
 * trainCoroutine: A coroutine that trains the model.
-* 
+
 ### stopOnlineLearning()
 
 Stops the threads for real-time training.

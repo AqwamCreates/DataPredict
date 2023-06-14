@@ -2,6 +2,12 @@
 
 NeuralNetwork is a supervised machine learning model that predicts any positive numbers of discrete values.
 
+## Stored Model Parameters
+
+* Contains a table of matrices.  
+
+* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
+
 ## Modded Models
 
 * [QueuedReinforcementNeuralNetwork](../AqwamCustomModels/QueuedReinforcementNeuralNetwork.md)

@@ -10,7 +10,6 @@ Creates a new online learning object
 
 ```
  OnlineLearning.new(Model: ModelObject, isLabelRequired: boolean, batchSize: integer): OnlineLearningObject
- 
 ```
 
 ### Parameters:

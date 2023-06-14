@@ -2,6 +2,12 @@
 
 LogisticRegression is a supervised machine learning model that predicts values of 0 and 1 only.
 
+## Stored Model Parameters
+
+* Contains a matrix.  
+
+* ModelParameters[I][J]: Value of matrix at row I and column J.
+
 ## Constructors
 
 ### new()

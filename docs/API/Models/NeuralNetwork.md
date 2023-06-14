@@ -2,7 +2,7 @@
 
 NeuralNetwork is a supervised machine learning model that predicts any positive numbers of discrete values.
 
-## Stored Model Parameters
+## Model Parameters
 
 * Contains a table of matrices.  
 

@@ -80,7 +80,7 @@ RecurrentNeuralNetwork:setOptimizers(InputLayerOptimizer: OptimizerObject, Hidde
 
 * OutputLayerOptimizer: Optimizer for output layer calculations.
 
-* BiasHiddenLayerOptimizer: Optimizer for bias hidden layer calculations.
+* BiasHiddenLayerOptimizer: Optimizer for hidden bias layer calculations.
 
 * BiasOutputLayerOptimizer: Optimizer for output bias layer calculations.
 

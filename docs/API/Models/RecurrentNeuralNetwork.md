@@ -4,7 +4,7 @@ NeuralNetwork is a supervised machine learning model that predicts a sequence of
 
 ## Stored Model Parameters
 
-* Contains a table of matrices.  
+Contains a table of matrices.  
 
 * ModelParameters[1]: Input weight matrix.
 

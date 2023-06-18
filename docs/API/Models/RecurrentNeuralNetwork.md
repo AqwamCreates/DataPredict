@@ -106,7 +106,7 @@ RecurrentNeuralNetwork:train(tokenInputSequenceArray: integer[], tokenOutputSequ
 * Predict a sequence of output tokens for a given sequence of input tokens.
 
 ```
-NeuralNetwork:predict(tokenInputSequenceArray: integer[]): integer[]
+RecurrentNeuralNetwork:predict(tokenInputSequenceArray: integer[]): integer[]
 ```
 
 #### Parameters:

@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Version 1.5.0
+	Version 1.6.0
 
 	Aqwam's Roblox Deep Learning Library (AR-MDLL)
 
@@ -63,6 +63,8 @@ local ModelsDictionary = {
 	
 	NeuralNetwork = require(Models.NeuralNetwork),
 	
+	RecurrentNeuralNetwork = require(Models.RecurrentNeuralNetwork),
+	
 	KMedoids = require(Models.KMedoids),
 	
 	LogisticRegressionOneVsAll = require(Models.LogisticRegressionOneVsAll),
@@ -105,7 +107,9 @@ local OthersDictionary = {
 	
 	StringSplitter = require(Others.StringSplitter),
 	
-	OnlineLearning = require(Others.OnlineLearning)
+	OnlineLearning = require(Others.OnlineLearning),
+	
+	Tokenizer = require(Others.Tokenizer)
 	
 }
 

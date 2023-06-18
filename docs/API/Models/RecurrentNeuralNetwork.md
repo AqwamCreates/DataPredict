@@ -26,7 +26,7 @@ RecurrentNeuralNetwork.new(tokenSize: integer, maxNumberOfIterations: integer, l
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* activationFunction: The activation function to be used in hidden layer. Available functions are "sigmoid", "anh", "ReLU", "LeakyReLU" and "ELU".
+* activationFunction: The activation function to be used in hidden layer. Available functions are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
 
 * targetCost: The cost at which the model stops training.
 
@@ -52,7 +52,7 @@ RecurrentNeuralNetwork:setParameters(numberOfTokens: integer, maxNumberOfIterati
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* activationFunction: The activation function to be used in hidden layer. Available functions are "sigmoid", "anh", "ReLU", "LeakyReLU" and "ELU".
+* activationFunction: The activation function to be used in hidden layer. Available functions are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
 
 * targetCost: The cost at which the model stops training.
 

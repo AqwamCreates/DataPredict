@@ -449,6 +449,8 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 	if (typeof(activationFunction) ~= "string") then error("Invalid input for activation function!") end
 	
+	self.ModelParameters = nil
+	
 	self.numberOfNeuronsTable = numberOfNeuronsArray
 	
 	self.addBiasNeuronTable = {}
@@ -485,8 +487,6 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		
 	end
 	
-	if (#self.numberOfNeuronsTable > 1) then self:generateLayers() end
-	
 end
 
 function NeuralNetworkModel:addLayer(numberOfNeurons, addBiasNeuron, activationFunction, Optimizer, Regularization)
@@ -507,13 +507,23 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, addBiasNeuron, activationF
 
 	table.insert(self.RegularizationTable, Regularization)
 
-	if (#self.numberOfNeuronsTable > 1) then self:generateLayers() end
-
 end
 
 function NeuralNetworkModel:train(featureMatrix, labelVector)
 
-	if (self.ModelParameters == nil) then error("Layers are not set!") end
+	if (self.ModelParameters == nil) then 
+		
+		if (#self.numberOfNeuronsTable > 1) then 
+			
+			self:generateLayers() 
+			
+		else
+			
+			error("There is only one layer!")
+			
+		end
+		
+	end
 
 	local numberOfFeatures = #featureMatrix[1]
 

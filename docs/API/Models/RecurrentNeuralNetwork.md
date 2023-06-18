@@ -6,7 +6,15 @@ NeuralNetwork is a supervised machine learning model that predicts a sequence of
 
 * Contains a table of matrices.  
 
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
+* ModelParameters[1]: Input weight matrix.
+
+* ModelParameters[2]: Hidden weight matrix.
+
+* ModelParameters[3]: Output weight matrix.
+
+* ModelParameters[4]: Hidden bias matrix.
+
+* ModelParameters[5]: Output bias matrix.
 
 ## Constructors
 

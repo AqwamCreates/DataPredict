@@ -1,10 +1,10 @@
 local BaseModel = require(script.Parent.BaseModel)
 
-NeuralNetwork = {}
+NeuralNetworkModel = {}
 
-NeuralNetwork.__index = NeuralNetwork
+NeuralNetworkModel.__index = NeuralNetworkModel
 
-setmetatable(NeuralNetwork, BaseModel)
+setmetatable(NeuralNetworkModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
@@ -98,7 +98,7 @@ local function createClassesList(labelVector)
 
 end
 
-function NeuralNetwork:convertLabelVectorToLogisticMatrix(modelParameters, labelVector, classesList)
+function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(modelParameters, labelVector, classesList)
 
 	local logisticMatrix
 
@@ -136,7 +136,7 @@ function NeuralNetwork:convertLabelVectorToLogisticMatrix(modelParameters, label
 
 end
 
-function NeuralNetwork:forwardPropagate(featureMatrix)
+function NeuralNetworkModel:forwardPropagate(featureMatrix)
 
 	local layerZ
 
@@ -187,7 +187,7 @@ function NeuralNetwork:forwardPropagate(featureMatrix)
 
 end
 
-function NeuralNetwork:backPropagate(lossMatrix, zTable)
+function NeuralNetworkModel:backPropagate(lossMatrix, zTable)
 
 	local backpropagateTable = {}
 
@@ -239,7 +239,7 @@ function NeuralNetwork:backPropagate(lossMatrix, zTable)
 
 end
 
-function NeuralNetwork:calculateDelta(forwardPropagateTable, backpropagateTable, numberOfData)
+function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateTable, numberOfData)
 
 	local deltaMatrix
 
@@ -285,7 +285,7 @@ function NeuralNetwork:calculateDelta(forwardPropagateTable, backpropagateTable,
 
 end
 
-function NeuralNetwork:gradientDescent(deltaTable, numberOfData)
+function NeuralNetworkModel:gradientDescent(deltaTable, numberOfData)
 
 	local costFunctionDerivative
 
@@ -309,7 +309,7 @@ function NeuralNetwork:gradientDescent(deltaTable, numberOfData)
 
 end
 
-function NeuralNetwork:calculateCost(allOutputsMatrix, logisticMatrix, numberOfData)
+function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix, numberOfData)
 
 	local subtractedMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
 
@@ -323,7 +323,7 @@ function NeuralNetwork:calculateCost(allOutputsMatrix, logisticMatrix, numberOfD
 
 end
 
-function NeuralNetwork:getLabelFromOutputVector(outputVector, classesList)
+function NeuralNetworkModel:getLabelFromOutputVector(outputVector, classesList)
 
 	local highestValue = math.max(unpack(outputVector[1]))
 
@@ -351,7 +351,7 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
 
 end
 
-function NeuralNetwork:checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
+function NeuralNetworkModel:checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
 
 	if (rewardValue == nil) then error("Reward value is nil!") end
 
@@ -363,11 +363,11 @@ function NeuralNetwork:checkIfRewardAndPunishValueAreGiven(rewardValue, punishVa
 
 end
 
-function NeuralNetwork.new(maxNumberOfIterations, learningRate, targetCost)
+function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 
 	local NewNeuralNetworkModel = BaseModel.new()
 
-	setmetatable(NewNeuralNetworkModel, NeuralNetwork)
+	setmetatable(NewNeuralNetworkModel, NeuralNetworkModel)
 
 	NewNeuralNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
@@ -397,7 +397,7 @@ function NeuralNetwork.new(maxNumberOfIterations, learningRate, targetCost)
 
 end
 
-function NeuralNetwork:setParameters(maxNumberOfIterations, learningRate, targetCost)
+function NeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -407,7 +407,7 @@ function NeuralNetwork:setParameters(maxNumberOfIterations, learningRate, target
 
 end
 
-function NeuralNetwork:generateLayers()
+function NeuralNetworkModel:generateLayers()
 
 	local layersArray = self.numberOfNeuronsTable
 
@@ -441,7 +441,7 @@ function NeuralNetwork:generateLayers()
 
 end
 
-function NeuralNetwork:createLayers(numberOfNeuronsArray, activationFunction, Optimizer, Regularization)
+function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunction, Optimizer, Regularization)
 	
 	activationFunction = activationFunction or defaultActivationFunction
 	
@@ -489,7 +489,7 @@ function NeuralNetwork:createLayers(numberOfNeuronsArray, activationFunction, Op
 	
 end
 
-function NeuralNetwork:addLayer(numberOfNeurons, addBiasNeuron, activationFunction, Optimizer, Regularization)
+function NeuralNetworkModel:addLayer(numberOfNeurons, addBiasNeuron, activationFunction, Optimizer, Regularization)
 
 	if (typeof(numberOfNeurons) ~= "number") then error("Invalid input for number of neurons!") end
 
@@ -511,7 +511,7 @@ function NeuralNetwork:addLayer(numberOfNeurons, addBiasNeuron, activationFuncti
 
 end
 
-function NeuralNetwork:train(featureMatrix, labelVector)
+function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	if (self.ModelParameters == nil) then error("Layers are not set!") end
 
@@ -609,7 +609,7 @@ function NeuralNetwork:train(featureMatrix, labelVector)
 
 end
 
-function NeuralNetwork:predict(featureMatrix)
+function NeuralNetworkModel:predict(featureMatrix)
 
 	local forwardPropagateTable = self:forwardPropagate(featureMatrix, self.ModelParameters, self.activationFunction)
 
@@ -621,7 +621,7 @@ function NeuralNetwork:predict(featureMatrix)
 
 end
 
-function NeuralNetwork:reinforce(featureVector, label, rewardValue, punishValue)
+function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishValue)
 
 	self:checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
 
@@ -659,19 +659,19 @@ function NeuralNetwork:reinforce(featureVector, label, rewardValue, punishValue)
 
 end
 
-function NeuralNetwork:getClassesList()
+function NeuralNetworkModel:getClassesList()
 
 	return self.ClassesList
 
 end
 
-function NeuralNetwork:setClassesList(classesList)
+function NeuralNetworkModel:setClassesList(classesList)
 
 	self.ClassesList = classesList
 
 end
 
-function NeuralNetwork:showDetails()
+function NeuralNetworkModel:showDetails()
 	-- Calculate the maximum length for each column
 	local maxLayerLength = string.len("Layer")
 	local maxNeuronsLength = string.len("Number Of Neurons")
@@ -748,4 +748,4 @@ function NeuralNetwork:showDetails()
 
 end
 
-return NeuralNetwork
+return NeuralNetworkModel

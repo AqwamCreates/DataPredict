@@ -10,6 +10,8 @@
 
 [NeuralNetwork](Models/NeuralNetwork.md)
 
+[RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md)
+
 [LogisticRegression](Models/LogisticRegression.md)
 
 [LogisticRegressionOneVsAll](Models/LogisticRegressionOneVsAll.md)

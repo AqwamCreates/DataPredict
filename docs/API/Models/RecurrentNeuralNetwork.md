@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - RecurrentNeuralNetwork
 
-NeuralNetwork is a supervised machine learning model that predicts any positive numbers of discrete values.
+NeuralNetwork is a supervised machine learning model that predicts a sequence of positive numbers of discrete values.
 
 ## Stored Model Parameters
 

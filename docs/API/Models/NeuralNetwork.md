@@ -4,7 +4,7 @@ NeuralNetwork is a supervised machine learning model that predicts any positive 
 
 ## Stored Model Parameters
 
-* Contains a table of matrices.  
+Contains a table of matrices.  
 
 * ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
 

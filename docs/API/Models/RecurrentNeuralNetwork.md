@@ -95,7 +95,7 @@ RecurrentNeuralNetwork:train(tokenInputSequenceArray: integer[], tokenOutputSequ
 
 * tokenInputSequenceArray: An array containing a sequence of tokens.
 
-* tokenOutputSequenceArray: An array containing a sequence of tokens.
+* tokenOutputSequenceArray: An array containing a sequence of tokens. Leave this empty if you want to use tokenInputSequenceArray only.
 
 #### Returns:
 

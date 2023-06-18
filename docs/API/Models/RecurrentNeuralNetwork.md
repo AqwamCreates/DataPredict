@@ -15,7 +15,7 @@ NeuralNetwork is a supervised machine learning model that predicts any positive 
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-RecurrentNeuralNetwork.new(tokenSize: integer, maxNumberOfIterations: integer, learningRate: number, targetCost: number): ModelObject
+RecurrentNeuralNetwork.new(tokenSize: integer, maxNumberOfIterations: integer, learningRate: number, activationFunction: string, targetCost: number): ModelObject
 ```
 
 #### Parameters:
@@ -25,6 +25,8 @@ RecurrentNeuralNetwork.new(tokenSize: integer, maxNumberOfIterations: integer, l
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+
+* activationFunction: The activation function to be used in hidden layer. Available functions are "sigmoid", "anh", "ReLU", "LeakyReLU" and "ELU".
 
 * targetCost: The cost at which the model stops training.
 
@@ -39,7 +41,7 @@ RecurrentNeuralNetwork.new(tokenSize: integer, maxNumberOfIterations: integer, l
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-RecurrentNeuralNetwork:setParameters(numberOfTokens: integer, maxNumberOfIterations: integer, learningRate: number, targetCost: number)
+RecurrentNeuralNetwork:setParameters(numberOfTokens: integer, maxNumberOfIterations: integer, learningRate: number, activationFunction: string, targetCost: number)
 ```
 
 #### Parameters:
@@ -50,11 +52,13 @@ RecurrentNeuralNetwork:setParameters(numberOfTokens: integer, maxNumberOfIterati
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
+* activationFunction: The activation function to be used in hidden layer. Available functions are "sigmoid", "anh", "ReLU", "LeakyReLU" and "ELU".
+
 * targetCost: The cost at which the model stops training.
 
 ### setOptimizers()
 
-Add a layer to the neural network.
+Add optimizers to different matrices.
 
 ```
 RecurrentNeuralNetwork:setOptimizers(InputLayerOptimizer: OptimizerObject, HiddenLayerOptimizer: OptimizerObject, OutputLayerOptimizer: OptimizerObject, BiasHiddenLayerOptimizer: OptimizerObject, BiasOutputLayerOptimizer: OptimizerObject)
@@ -62,7 +66,15 @@ RecurrentNeuralNetwork:setOptimizers(InputLayerOptimizer: OptimizerObject, Hidde
 
 #### Parameters:
 
-* 
+* InputLayerOptimizer: Optimizer for input layer calculations.
+
+* HiddenLayerOptimizer: Optimizer for hidden layer calculations.
+
+* OutputLayerOptimizer: Optimizer for output layer calculations.
+
+* BiasHiddenLayerOptimizer: Optimizer for bias hidden layer calculations.
+
+* BiasOutputLayerOptimizer: Optimizer for output bias layer calculations.
 
 ### train()
 

@@ -144,20 +144,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix)
 
 	local zTable = {}
 
-	local inputMatrix
-
-	if self.addBiasNeuronTable[1] then
-
-		local biasMatrix = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1, 1)
-
-		inputMatrix = AqwamMatrixLibrary:horizontalConcatenate(biasMatrix, featureMatrix)
-
-
-	else
-
-		inputMatrix = featureMatrix
-
-	end
+	local inputMatrix = featureMatrix
 
 	table.insert(zTable, inputMatrix)
 
@@ -525,9 +512,15 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 	end
 
-	local numberOfFeatures = #featureMatrix[1]
+	if (self.addBiasNeuronTable[1]) then 
+		
+		local biasMatrix = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1, 1)
 
-	if (self.addBiasNeuronTable[1]) then numberOfFeatures += 1 end
+		featureMatrix = AqwamMatrixLibrary:horizontalConcatenate(biasMatrix, featureMatrix)
+		
+	end
+	
+	local numberOfFeatures = #featureMatrix[1]
 
 	if (#self.ModelParameters[1] ~= numberOfFeatures) then error("Input layer has " .. (#self.ModelParameters[1] - 1) .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features!") end
 
@@ -620,6 +613,14 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 end
 
 function NeuralNetworkModel:predict(featureMatrix)
+	
+	if (self.addBiasNeuronTable[1]) then 
+
+		local biasMatrix = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1, 1)
+
+		featureMatrix = AqwamMatrixLibrary:horizontalConcatenate(biasMatrix, featureMatrix)
+
+	end
 
 	local forwardPropagateTable = self:forwardPropagate(featureMatrix, self.ModelParameters, self.activationFunction)
 

@@ -268,7 +268,7 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 		
 	else
 		
-		error("Layers not set!")
+		error("Layers not created!")
 
 	end
 

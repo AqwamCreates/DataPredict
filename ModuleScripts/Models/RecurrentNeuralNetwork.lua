@@ -100,15 +100,11 @@ local function softMax(matrix)
 
 end
 
-function RecurrentNeuralNetworkModel.new(tokenSize, hiddenSize, maxNumberOfIterations, learningRate, activationFunction, targetCost)
+function RecurrentNeuralNetworkModel.new(maxNumberOfIterations, learningRate, activationFunction, targetCost)
 
 	local NewRecurrentNeuralNetworkModel = BaseModel.new()
 
 	setmetatable(NewRecurrentNeuralNetworkModel, RecurrentNeuralNetworkModel)
-
-	NewRecurrentNeuralNetworkModel.tokenSize = tokenSize
-	
-	NewRecurrentNeuralNetworkModel.hiddenSize = hiddenSize
 
 	NewRecurrentNeuralNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 

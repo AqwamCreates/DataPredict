@@ -16,8 +16,6 @@ local defaultActivationFunction = "tanh"
 
 local defaultTargetCost = 0
 
-local defaultLambda = 0
-
 local activationFunctionList = {
 
 	["sigmoid"] = function (z) return 1/(1+math.exp(-1 * z)) end,

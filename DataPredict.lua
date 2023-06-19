@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Version 1.6.1
+	Version 1.7.0
 
 	Aqwam's Roblox Deep Learning Library (AR-MDLL)
 
@@ -68,6 +68,8 @@ local ModelsDictionary = {
 	KMedoids = require(Models.KMedoids),
 	
 	LogisticRegressionOneVsAll = require(Models.LogisticRegressionOneVsAll),
+	
+	LongShortTermMemory = require(Models.LongShortTermMemory),
 	
 	SupportVectorMachineOneVsAll = require(Models.SupportVectorMachineOneVsAll),
 	

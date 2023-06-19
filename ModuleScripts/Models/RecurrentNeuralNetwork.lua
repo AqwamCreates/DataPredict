@@ -353,7 +353,7 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 		local aPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
 
-		local aPreviousFirst = aPrevious
+		local aFirst = aPrevious
 
 		local aNext
 
@@ -403,7 +403,7 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 			else
 
-				aPrevious = aPreviousFirst
+				aPrevious = aFirst
 
 			end
 

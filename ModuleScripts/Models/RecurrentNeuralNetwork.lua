@@ -132,7 +132,7 @@ end
 
 function RecurrentNeuralNetworkModel:createLayers(inputSize, hiddenSize, outputSize)
 	
-	self.inputSize = inputSize or self.tokenSize
+	self.inputSize = inputSize or self.inputSize
 
 	self.hiddenSize = hiddenSize or self.hiddenSize
 	

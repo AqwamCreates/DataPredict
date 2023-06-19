@@ -183,10 +183,10 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 		end
 		
+		previousCostFunctionDerivatives = costFunctionDerivatives
+		
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
 		
-		previousCostFunctionDerivatives = costFunctionDerivatives
-
 		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, costFunctionDerivatives)
 		
 		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.lossFunction, self.lambda)

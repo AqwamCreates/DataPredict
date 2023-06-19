@@ -26,7 +26,7 @@ end
 
 function MomentumOptimizer:calculate(costFunctionDerivatives, previousCostFunctionDerivatives)
 	
-	previousCostFunctionDerivatives = previousCostFunctionDerivatives or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+	if (previousCostFunctionDerivatives == nil) then return costFunctionDerivatives end
 	
 	local MomentumMatrixPart1 = AqwamMatrixLibrary:multiply(self.DecayRate, previousCostFunctionDerivatives)
 	

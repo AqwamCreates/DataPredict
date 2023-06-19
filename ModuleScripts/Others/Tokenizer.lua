@@ -48,18 +48,16 @@ function Tokenizer:convertItemToToken(item)
 
 end
 
-function Tokenizer:getTokenDictionary()
+function Tokenizer:getTokenizedItemArray()
 	
-	local tokenDictionary = {
-		
-		tokenArray = self.tokenArray,
-		
-		itemArray = self.itemArray,
-		
-	}
+	return self.tokenizedItemArray
 	
-	return tokenDictionary
-	
+end
+
+function Tokenizer:setTokenizedItemArray(tokenizedItemArray)
+
+	self.tokenizedItemArray = tokenizedItemArray
+
 end
 
 return Tokenizer

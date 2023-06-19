@@ -39,31 +39,31 @@ local distanceFunctionList = {
 		local part2 = AqwamMatrixLibrary:power(part1, 2)
 
 		local part3 = AqwamMatrixLibrary:sum(part2)
-		
+
 		local distance = math.sqrt(part3)
 
 		return distance 
-		
+
 	end,
 
 }
 
 local function calculateDistance(vector1, vector2, distanceFunction)
 
-	return distanceFunctionList[distanceFunction](vector1, vector2) 
+	return distanceFunctionList[distanceFunction](vector1, vector2)  
 
 end
 
 local function calculateCost(modelParameters, featureMatrix, labelVector, distanceFunction, cValue)
-	
+
 	local hypothesisVector = AqwamMatrixLibrary:dotProduct(featureMatrix, modelParameters)
-	
+
 	local distanceVector = calculateDistance(hypothesisVector, labelVector, distanceFunction)
-	
+
 	local squaredDistanceVector = AqwamMatrixLibrary:multiply(distanceVector, distanceVector)
-	
+
 	local sum = AqwamMatrixLibrary:sum(squaredDistanceVector)
-	
+
 	local cost = (1/2 * sum)
 
 	return cost
@@ -77,7 +77,7 @@ local function gradientDescent(modelParameters, featureMatrix, labelVector, dist
 	local hypothesisVector = AqwamMatrixLibrary:dotProduct(featureMatrix, modelParameters)
 
 	local calculatedError = AqwamMatrixLibrary:add(hypothesisVector, labelVector)
-	
+
 	local calculatedErrorWithFeatureMatrix = AqwamMatrixLibrary:multiply(calculatedError, featureMatrix)
 
 	local calculatedSumError =  AqwamMatrixLibrary:verticalSum(calculatedError)
@@ -89,15 +89,15 @@ local function gradientDescent(modelParameters, featureMatrix, labelVector, dist
 end
 
 function SupportVectorMachineModel.new(maxNumberOfIterations, learningRate, cValue, distanceFunction, targetCost)
-	
+
 	local NewSupportVectorMachine = BaseModel.new()
-	
+
 	setmetatable(NewSupportVectorMachine, SupportVectorMachineModel)
-	
+
 	NewSupportVectorMachine.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
 	NewSupportVectorMachine.learningRate = learningRate or defaultLearningRate
-	
+
 	NewSupportVectorMachine.cValue = cValue or defaultCvalue
 
 	NewSupportVectorMachine.distanceFunction = distanceFunction or defaultDistanceFunction
@@ -107,9 +107,9 @@ function SupportVectorMachineModel.new(maxNumberOfIterations, learningRate, cVal
 	NewSupportVectorMachine.validationFeatureMatrix = nil
 
 	NewSupportVectorMachine.validationLabelVector = nil
-	
+
 	NewSupportVectorMachine.Optimizer = nil
-	
+
 	return NewSupportVectorMachine
 
 end
@@ -125,7 +125,7 @@ function SupportVectorMachineModel:setParameters(maxNumberOfIterations, learning
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
-	
+
 	self.cValue = cValue or self.cValue
 
 	self.distanceFunction = distanceFunction or self.distanceFunction
@@ -141,16 +141,16 @@ function SupportVectorMachineModel:setCValue(cValue)
 end
 
 function SupportVectorMachineModel:train(featureMatrix, labelVector)
-	
+
 	local cost
 
 	local costArray = {}
 
 	local numberOfIterations = 0
-	
+
 	local costFunctionDerivatives
-	
-	local delta
+
+	local previousCostFunctionDerivatives
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 
@@ -167,29 +167,31 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	repeat
 
 		numberOfIterations += 1
-		
+
 		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.distanceFunction, self.learningRate, self.cValue)
+		
+		costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
 
 		if (self.Optimizer) then 
 
-			costFunctionDerivatives = self.Optimizer:calculate(costFunctionDerivatives, delta) 
+			costFunctionDerivatives = self.Optimizer:calculate(costFunctionDerivatives, previousCostFunctionDerivatives) 
 
 		end
+		
+		previousCostFunctionDerivatives = costFunctionDerivatives
 
-		delta = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
-
-		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, delta)
+		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, costFunctionDerivatives)
 
 		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.distanceFunction, self.learningRate, self.cValue)
-		
+
 		table.insert(costArray, cost)
-		
+
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
-	
+
 	if self.Optimizer then self.Optimizer:reset() end
 
 	return costArray
@@ -197,17 +199,17 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 end
 
 function SupportVectorMachineModel:predict(featureMatrix)
-	
+
 	local hypothesis = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
-	
+
 	if (hypothesis > 0) then
-		
+
 		return 1
-		
+
 	elseif (hypothesis < 0) then
-		
+
 		return -1
-		
+
 	end 
 
 end

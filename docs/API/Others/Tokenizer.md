@@ -36,7 +36,7 @@ Tokenizer:addItem(item: any)
 
 ### addAllItems()
 
-Adds tokenize all items in the item array. If an item already exists, then it will ignore that item.
+Tokenize all items in the item array. If an item already exists, then it will ignore that item.
 
 ```
 Tokenizer:addAllItems(itemArray: [])

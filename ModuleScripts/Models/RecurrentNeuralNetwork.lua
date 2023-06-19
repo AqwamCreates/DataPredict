@@ -122,17 +122,7 @@ function RecurrentNeuralNetworkModel.new(tokenSize, hiddenSize, maxNumberOfItera
 
 end
 
-function RecurrentNeuralNetworkModel:setParameters(tokenSize, hiddenSize, maxNumberOfIterations, learningRate, activationFunction, targetCost)
-
-	self.tokenSize = tokenSize or self.tokenSize
-	
-	self.hiddenSize = hiddenSize or self.hiddenSize
-
-	if (tokenSize) or (hiddenSize) then
-
-		self.ModelParameters = nil
-
-	end
+function RecurrentNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, activationFunction, targetCost)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -142,6 +132,30 @@ function RecurrentNeuralNetworkModel:setParameters(tokenSize, hiddenSize, maxNum
 
 	self.targetCost = targetCost or self.targetCost
 
+end
+
+function RecurrentNeuralNetworkModel:createLayers(inputSize, hiddenSize, outputSize)
+	
+	self.inputSize = inputSize or self.tokenSize
+
+	self.hiddenSize = hiddenSize or self.hiddenSize
+	
+	self.outputSize = outputSize or self.outputSize
+	
+	if (inputSize == nil) and (hiddenSize == nil) and (outputSize == nil) then return nil end
+
+	self.Wax = self:initializeMatrixBasedOnMode(self.hiddenSize, self.inputSize)
+
+	self.Waa = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize)
+
+	self.Wya = self:initializeMatrixBasedOnMode(self.outputSize, self.hiddenSize)
+
+	self.ba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+
+	self.by = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
+	
+	self.ModelParameters = {self.Wax, self.Waa, self.Wya, self.ba, self.by}
+	
 end
 
 function RecurrentNeuralNetworkModel:convertTokenToLogisticVector(token)
@@ -251,18 +265,10 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 	if (self.ModelParameters) then
 
 		self:loadModelParameters()
-
+		
 	else
-
-		self.Wax = self:initializeMatrixBasedOnMode(self.hiddenSize, self.tokenSize)
-
-		self.Waa = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize)
-
-		self.Wya = self:initializeMatrixBasedOnMode(self.tokenSize, self.hiddenSize)
-
-		self.ba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
-
-		self.by = AqwamMatrixLibrary:createMatrix(self.tokenSize, 1)
+		
+		error("Layers not set!")
 
 	end
 
@@ -329,15 +335,15 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 		local cost = 0
 
-		local dWax = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.tokenSize)
+		local dWax = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.inputSize)
 
 		local dWaa = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.hiddenSize)
 
-		local dWya = AqwamMatrixLibrary:createMatrix(self.tokenSize, self.hiddenSize)
+		local dWya = AqwamMatrixLibrary:createMatrix(self.outputSize, self.hiddenSize)
 
 		local dba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
-		local dby = AqwamMatrixLibrary:createMatrix(self.tokenSize, 1)
+		local dby = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
 
 		local dx = {}
 

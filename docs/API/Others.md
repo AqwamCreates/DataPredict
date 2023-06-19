@@ -7,3 +7,5 @@
 [Regularization](Others/Regularization.md)
 
 [OnlineLearning](Others/OnlineLearning.md)
+
+[Tokenizer](Others/Tokenizer.md)

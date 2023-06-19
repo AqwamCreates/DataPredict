@@ -139,7 +139,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 	
 	local numberOfData = #featureMatrix[1]
 	
-	local delta
+	local previousCostFunctionDerivatives
 	
 	local lambda
 	
@@ -175,13 +175,15 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 		if (self.Optimizer) then 
 
-			costFunctionDerivatives = self.Optimizer:calculate(costFunctionDerivatives, delta) 
+			costFunctionDerivatives = self.Optimizer:calculate(costFunctionDerivatives, previousCostFunctionDerivatives) 
 
 		end
+		
+		previousCostFunctionDerivatives = costFunctionDerivatives
 
-		delta = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
+		costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
 
-		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, delta)
+		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, costFunctionDerivatives)
 		
 		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
 		

@@ -1,5 +1,7 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - Tokenizer
 
+Tokenizer is used to tokenize items such as text, number and so on. It also includes a number of useful functions for converting between tokens and items.
+
 ## Constructors
 
 ### new()
@@ -13,6 +15,10 @@ Tokenizer.new(tokenizedItemArray: []): TokenizerObject
 #### Parameters:
 
 * tokenizedItemArray: An array containing all the items. The position of the items in the array indicates the token number.
+
+#### Returns:
+
+* TokenizerObject: An object that allows the conversion of tokens and items.
 
 ## Functions
 

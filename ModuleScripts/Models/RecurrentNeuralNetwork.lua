@@ -130,7 +130,7 @@ function RecurrentNeuralNetworkModel:setParameters(tokenSize, hiddenSize, maxNum
 	
 	self.hiddenSize = hiddenSize or self.hiddenSize
 
-	if (tokenSize) then
+	if (tokenSize) or (hiddenSize) then
 
 		self.ModelParameters = nil
 

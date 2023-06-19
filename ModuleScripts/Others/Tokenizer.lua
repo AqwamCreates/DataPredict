@@ -16,11 +16,9 @@ end
 
 function Tokenizer:addItem(item)
 	
-	if (table.find(self.tokenizedItemArray, item) == nil) then
+	if table.find(self.tokenizedItemArray, item) then return nil end
 
-		table.insert(self.tokenizedItemArray, item)
-
-	end
+	table.insert(self.tokenizedItemArray, item)
 	
 end
 

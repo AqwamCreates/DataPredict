@@ -14,7 +14,7 @@ Tokenizer.new(tokenizedItemArray: []): TokenizerObject
 
 #### Parameters:
 
-* tokenizedItemArray: An array containing all the items. The position of the items in the array indicates the token number.
+* tokenizedItemArray: An array containing all the items. The position of the items in the array indicates the token number. The input for this argument is optional.
 
 #### Returns:
 

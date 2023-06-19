@@ -551,7 +551,7 @@ function RecurrentNeuralNetworkModel:predict(tokenInputSequenceArray)
 
 	self:loadModelParameters()
 
-	local aPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.tokenSize, 1)
+	local aPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
 
 	local predictionArray = {}
 

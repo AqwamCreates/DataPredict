@@ -16,8 +16,6 @@ local defaultLossFunction = "L2"
 
 local defaultTargetCost = 0
 
-local defaultLambda = 0
-
 local lossFunctionList = {
 
 	["L1"] = function (x1, x2)

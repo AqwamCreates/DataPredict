@@ -351,9 +351,9 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 		local xt
 
-		local aPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
+		local aFirst = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
 
-		local aFirst = aPrevious
+		local aPrevious = aFirst
 
 		local aNext
 

@@ -10,7 +10,7 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibrary
 
 local defaultMaxNumberOfIterations = 500
 
-local defaultLearningRate = 0.1
+local defaultLearningRate = 0.001
 
 local defaultActivationFunction = "tanh"
 
@@ -102,13 +102,15 @@ local function softMax(matrix)
 
 end
 
-function RecurrentNeuralNetworkModel.new(tokenSize, maxNumberOfIterations, learningRate, activationFunction, targetCost)
+function RecurrentNeuralNetworkModel.new(tokenSize, hiddenSize, maxNumberOfIterations, learningRate, activationFunction, targetCost)
 
 	local NewRecurrentNeuralNetworkModel = BaseModel.new()
 
 	setmetatable(NewRecurrentNeuralNetworkModel, RecurrentNeuralNetworkModel)
 
 	NewRecurrentNeuralNetworkModel.tokenSize = tokenSize
+	
+	NewRecurrentNeuralNetworkModel.hiddenSize = hiddenSize
 
 	NewRecurrentNeuralNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
@@ -122,9 +124,11 @@ function RecurrentNeuralNetworkModel.new(tokenSize, maxNumberOfIterations, learn
 
 end
 
-function RecurrentNeuralNetworkModel:setParameters(tokenSize, maxNumberOfIterations, learningRate, activationFunction, targetCost)
+function RecurrentNeuralNetworkModel:setParameters(tokenSize, hiddenSize, maxNumberOfIterations, learningRate, activationFunction, targetCost)
 
 	self.tokenSize = tokenSize or self.tokenSize
+	
+	self.hiddenSize = hiddenSize or self.hiddenSize
 
 	if (tokenSize) then
 
@@ -252,13 +256,13 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 	else
 
-		self.Wax = self:initializeMatrixBasedOnMode(self.tokenSize, self.tokenSize)
+		self.Wax = self:initializeMatrixBasedOnMode(self.hiddenSize, self.tokenSize)
 
-		self.Waa = self:initializeMatrixBasedOnMode(self.tokenSize, self.tokenSize)
+		self.Waa = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize)
 
-		self.Wya = self:initializeMatrixBasedOnMode(self.tokenSize, self.tokenSize)
+		self.Wya = self:initializeMatrixBasedOnMode(self.tokenSize, self.hiddenSize)
 
-		self.ba = AqwamMatrixLibrary:createMatrix(self.tokenSize, 1)
+		self.ba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
 		self.by = AqwamMatrixLibrary:createMatrix(self.tokenSize, 1)
 
@@ -327,13 +331,13 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 		local cost = 0
 
-		local dWax = AqwamMatrixLibrary:createMatrix(self.tokenSize, self.tokenSize)
+		local dWax = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.tokenSize)
 
-		local dWaa = AqwamMatrixLibrary:createMatrix(self.tokenSize, self.tokenSize)
+		local dWaa = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.hiddenSize)
 
-		local dWya = AqwamMatrixLibrary:createMatrix(self.tokenSize, self.tokenSize)
+		local dWya = AqwamMatrixLibrary:createMatrix(self.tokenSize, self.hiddenSize)
 
-		local dba = AqwamMatrixLibrary:createMatrix(self.tokenSize, 1)
+		local dba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
 		local dby = AqwamMatrixLibrary:createMatrix(self.tokenSize, 1)
 
@@ -349,7 +353,7 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 		local xt
 
-		local aPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.tokenSize, 1)
+		local aPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
 
 		local aPreviousFirst = aPrevious
 
@@ -381,7 +385,7 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 			ytPrediction = self:calculatePrediction(aNext)
 
-			dat = AqwamMatrixLibrary:createMatrix(self.tokenSize, 1)
+			dat = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
 			aPrevious = aNext
 

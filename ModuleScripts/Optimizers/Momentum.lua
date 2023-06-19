@@ -24,11 +24,11 @@ function MomentumOptimizer:setDecayRate(DecayRate)
 	
 end
 
-function MomentumOptimizer:calculate(costFunctionDerivatives, PreviousDeltaMatrix)
+function MomentumOptimizer:calculate(costFunctionDerivatives, previousCostFunctionDerivatives)
 	
-	PreviousDeltaMatrix = PreviousDeltaMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+	previousCostFunctionDerivatives = previousCostFunctionDerivatives or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 	
-	local MomentumMatrixPart1 = AqwamMatrixLibrary:multiply(self.DecayRate, PreviousDeltaMatrix)
+	local MomentumMatrixPart1 = AqwamMatrixLibrary:multiply(self.DecayRate, previousCostFunctionDerivatives)
 	
 	local costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, MomentumMatrixPart1)
 	

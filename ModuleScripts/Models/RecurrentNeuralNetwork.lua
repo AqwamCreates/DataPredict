@@ -417,7 +417,7 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 			dxt, daPreviousT, dWaxt, dWaat, dbat = self:backwardPropagateCell(daNext, aNext, aPrevious, xt) -- daNext for some reason is always is zero Matrix
 
-			daTable[t-1] = AqwamMatrixLibrary:add(daNext, daPreviousT)
+			if (t > 1) then daTable[t-1] = AqwamMatrixLibrary:add(daNext, daPreviousT) end
 
 			dWax = AqwamMatrixLibrary:add(dWax, dWaxt)
 

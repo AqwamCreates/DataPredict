@@ -139,18 +139,8 @@ function RecurrentNeuralNetworkModel:createLayers(inputSize, hiddenSize, outputS
 	self.outputSize = outputSize or self.outputSize
 	
 	if (inputSize == nil) and (hiddenSize == nil) and (outputSize == nil) then return nil end
-
-	self.Wax = self:initializeMatrixBasedOnMode(self.hiddenSize, self.inputSize)
-
-	self.Waa = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize)
-
-	self.Wya = self:initializeMatrixBasedOnMode(self.outputSize, self.hiddenSize)
-
-	self.ba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
-
-	self.by = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
 	
-	self.ModelParameters = {self.Wax, self.Waa, self.Wya, self.ba, self.by}
+	self.ModelParameters = nil
 	
 end
 
@@ -264,7 +254,15 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 		
 	else
 		
-		error("Layers not created!")
+		self.Wax = self:initializeMatrixBasedOnMode(self.hiddenSize, self.inputSize)
+
+		self.Waa = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize)
+
+		self.Wya = self:initializeMatrixBasedOnMode(self.outputSize, self.hiddenSize)
+
+		self.ba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+
+		self.by = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
 
 	end
 

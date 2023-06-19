@@ -32,7 +32,7 @@ function Tokenizer:addAllItems(itemArray)
 
 		table.remove(itemArray, 1)
 
-	until (#itemArray == 0)
+	until (#itemArray <= 0)
 	
 end
 

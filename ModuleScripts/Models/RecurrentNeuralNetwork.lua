@@ -442,6 +442,16 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 			cost = cost + AqwamMatrixLibrary:sum(dWya)
 
 		end
+		
+		dWax = AqwamMatrixLibrary:multiply(self.learningRate, dWax)
+
+		dWaa = AqwamMatrixLibrary:multiply(self.learningRate, dWaa)
+
+		dWya = AqwamMatrixLibrary:multiply(self.learningRate, dWya)
+
+		dba = AqwamMatrixLibrary:multiply(self.learningRate, dba)
+
+		dxt = AqwamMatrixLibrary:multiply(self.learningRate, dxt)
 
 		if (self.InputLayerOptimizer) then
 
@@ -483,15 +493,15 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 		previousdby = dby
 
-		self.Wax = AqwamMatrixLibrary:add(self.Wax, AqwamMatrixLibrary:multiply(dWax, self.learningRate))
+		self.Wax = AqwamMatrixLibrary:add(self.Wax, dWax)
 
-		self.Waa = AqwamMatrixLibrary:add(self.Waa, AqwamMatrixLibrary:multiply(dWaa, self.learningRate))
+		self.Waa = AqwamMatrixLibrary:add(self.Waa, dWaa)
 
-		self.Wya = AqwamMatrixLibrary:add(self.Wya, AqwamMatrixLibrary:multiply(dWya, self.learningRate))
+		self.Wya = AqwamMatrixLibrary:add(self.Wya, dWya)
 
-		self.ba = AqwamMatrixLibrary:add(self.ba, AqwamMatrixLibrary:multiply(dba, self.learningRate))
+		self.ba = AqwamMatrixLibrary:add(self.ba, dba)
 
-		self.by = AqwamMatrixLibrary:add(self.by, AqwamMatrixLibrary:multiply(dxt, self.learningRate))
+		self.by = AqwamMatrixLibrary:add(self.by, dxt)
 
 		self.ModelParameters = {self.Wax, self.Waa, self.Wya, self.ba, self.by}
 

@@ -281,6 +281,8 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 	if (tokenOutputSequenceArray) then
 
 		tokenOutputSequenceLength = #tokenOutputSequenceArray
+		
+		if (tokenInputSequenceLength ~= tokenOutputSequenceLength) then error("The length of token input and output sequence arrays are not equal!") end
 
 	else
 

@@ -258,9 +258,9 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 		self.Wya = self:initializeMatrixBasedOnMode(self.outputSize, self.hiddenSize)
 
-		self.ba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+		self.ba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1, 1)
 
-		self.by = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
+		self.by = AqwamMatrixLibrary:createMatrix(self.outputSize, 1, 1)
 
 	end
 
@@ -336,8 +336,6 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 		local dba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
 		local dby = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
-
-		local dx = {}
 
 		local aTable = {}
 
@@ -451,8 +449,6 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 		dba = AqwamMatrixLibrary:multiply(self.learningRate, dba)
 
-		dxt = AqwamMatrixLibrary:multiply(self.learningRate, dxt)
-
 		if (self.InputLayerOptimizer) then
 
 			dWax = self.InputLayerOptimizer:calculate(dWax, previousdWax)
@@ -501,7 +497,7 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 		self.ba = AqwamMatrixLibrary:add(self.ba, dba)
 
-		self.by = AqwamMatrixLibrary:add(self.by, dxt)
+		self.by = AqwamMatrixLibrary:add(self.by, dby)
 
 		self.ModelParameters = {self.Wax, self.Waa, self.Wya, self.ba, self.by}
 

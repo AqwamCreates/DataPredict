@@ -361,7 +361,7 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 		local dxt
 
-		local daPreviousT
+		local daPrevious
 
 		local dWaxt
 
@@ -413,9 +413,9 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 			daNext = daTable[t]
 
-			dxt, daPreviousT, dWaxt, dWaat, dbat = self:backwardPropagateCell(daNext, aNext, aPrevious, xt)
+			dxt, daPrevious, dWaxt, dWaat, dbat = self:backwardPropagateCell(daNext, aNext, aPrevious, xt)
 
-			if (t > 1) then daTable[t-1] = AqwamMatrixLibrary:add(daNext, daPreviousT) end
+			if (t > 1) then daTable[t-1] = AqwamMatrixLibrary:add(daNext, daPrevious) end
 
 			dWax = AqwamMatrixLibrary:add(dWax, dWaxt)
 

@@ -148,7 +148,7 @@ function RecurrentNeuralNetworkModel:convertTokenToLogisticVector(token)
 
 	local logisticMatrix = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
 
-	if (token ~= nil) and (type(token) == "number") then
+	if (type(token) == "number") then
 
 		logisticMatrix[token][1] = 1
 

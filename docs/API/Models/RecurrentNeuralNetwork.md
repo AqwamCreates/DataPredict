@@ -64,7 +64,7 @@ RecurrentNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRat
 
 ### createLayers()
 
-Create layers of the 
+Create layers of the recurrent neural network.
 
 ```
 RecurrentNeuralNetwork:createLayers(inputSize: integer, hiddenSize: integer, outputSize: integer)

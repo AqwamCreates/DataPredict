@@ -250,6 +250,10 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 		self:loadModelParameters()
 		
+	elseif (self.inputSize == nil) or (self.hiddenSize == nil) or (self.outputSize == nil) then
+		
+		error("Layers are not set!")
+		
 	else
 		
 		self.Wax = self:initializeMatrixBasedOnMode(self.hiddenSize, self.inputSize)

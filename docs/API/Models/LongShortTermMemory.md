@@ -6,15 +6,25 @@ LongShortTermMemory is a supervised machine learning model that predicts a seque
 
 Contains a table of matrices.  
 
-* ModelParameters[1]: Input weight matrix.
+* ModelParameters[1] = Forget gate weight matrix
 
-* ModelParameters[2]: Hidden weight matrix.
+* ModelParameters[2] = Forget gate bias matrix
 
-* ModelParameters[3]: Output weight matrix.
+* ModelParameters[3] = Save gate weight matrix
 
-* ModelParameters[4]: Hidden bias matrix.
+* ModelParameters[4] = Save gate bias matrix
 
-* ModelParameters[5]: Output bias matrix.
+* ModelParameters[5] = tanh weight matrix
+	
+* ModelParameters[6] = tanh bias matrix
+	
+* ModelParameters[7] = Focus gate weight matrix
+	
+* ModelParameters[8] = Focus gate bias matrix
+	
+* ModelParameters[9] = Output weight matrix
+	
+*	ModelParameters[10] = Output bias matrix
 
 ## Constructors
 

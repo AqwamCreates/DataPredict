@@ -332,6 +332,8 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 		numberOfIterations += 1
 
 		local cost = 0
+		
+		local partialCost = 0
 
 		local dWax = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.inputSize)
 
@@ -440,8 +442,10 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 			end
 
 			dWya = AqwamMatrixLibrary:add(dWya, dWyat)
+			
+			partialCost = AqwamMatrixLibrary:sum(dWya) / self.outputSize
 
-			cost = cost + AqwamMatrixLibrary:sum(dWya)
+			cost = cost + partialCost
 			
 			cost = cost / tokenInputSequenceLength
 

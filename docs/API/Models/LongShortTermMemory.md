@@ -24,7 +24,7 @@ Contains a table of matrices.
 	
 * ModelParameters[9] = Output weight matrix
 	
-*	ModelParameters[10] = Output bias matrix
+* ModelParameters[10] = Output bias matrix
 
 ## Constructors
 
@@ -92,25 +92,25 @@ LongShortTermMemory:setOptimizers(ForgetGateWeightOptimizer: OptimizerObject, Sa
 
 #### Parameters:
 
-*ForgetGateWeightOptimizer
+* ForgetGateWeightOptimizer
 
 * SaveGateWeightOptimizer
   
-*  TanhWeightOptimizer
+* TanhWeightOptimizer
 
-*   FocusGateOptimize
+* FocusGateOptimize
   
-*   OutputWeightOptimizer
+* OutputWeightOptimizer
 
-*   ForgetGateBiasOptimizer
+* ForgetGateBiasOptimizer
 
-*   SaveGateBiasOptimizer
+* SaveGateBiasOptimizer
 
-*   TanhBiasOptimizer
+* TanhBiasOptimizer
 
-*   FocusBiasOptimizer
+* FocusBiasOptimizer
 
-*   OutputBiasOptimizer
+* OutputBiasOptimizer
 
 ### train()
 

@@ -14,9 +14,9 @@ Contains a table of matrices.
 
 * ModelParameters[4] = Save gate bias matrix
 
-* ModelParameters[5] = tanh weight matrix
+* ModelParameters[5] = Tanh weight matrix
 	
-* ModelParameters[6] = tanh bias matrix
+* ModelParameters[6] = Tanh bias matrix
 	
 * ModelParameters[7] = Focus gate weight matrix
 	

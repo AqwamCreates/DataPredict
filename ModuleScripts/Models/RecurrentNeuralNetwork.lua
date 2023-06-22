@@ -83,17 +83,17 @@ local function softMax(matrix)
 	local p = AqwamMatrixLibrary:applyFunction(math.exp, subtractedValues)
 
 	local sumValues = AqwamMatrixLibrary:sum(p)
-	
+
 	local result
-	
+
 	if (sumValues ~= 0) then
-		
+
 		result = AqwamMatrixLibrary:divide(p, sumValues)
-		
+
 	else
-		
+
 		result = matrix
-		
+
 	end
 
 	return result
@@ -131,17 +131,17 @@ function RecurrentNeuralNetworkModel:setParameters(maxNumberOfIterations, learni
 end
 
 function RecurrentNeuralNetworkModel:createLayers(inputSize, hiddenSize, outputSize)
-	
+
 	self.inputSize = inputSize or self.inputSize
 
 	self.hiddenSize = hiddenSize or self.hiddenSize
-	
+
 	self.outputSize = outputSize or self.outputSize
-	
+
 	if (inputSize == nil) and (hiddenSize == nil) and (outputSize == nil) then return nil end
-	
+
 	self.ModelParameters = nil
-	
+
 end
 
 function RecurrentNeuralNetworkModel:convertTokenToLogisticVector(token)
@@ -249,22 +249,22 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 	if (self.ModelParameters) then
 
 		self:loadModelParameters()
-		
+
 	elseif (self.inputSize == nil) or (self.hiddenSize == nil) or (self.outputSize == nil) then
-		
+
 		error("Layers are not set!")
-		
+
 	else
-		
+
 		self.Wax = self:initializeMatrixBasedOnMode(self.hiddenSize, self.inputSize)
 
 		self.Waa = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize)
 
 		self.Wya = self:initializeMatrixBasedOnMode(self.outputSize, self.hiddenSize)
 
-		self.ba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1, 1)
+		self.ba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
-		self.by = AqwamMatrixLibrary:createMatrix(self.outputSize, 1, 1)
+		self.by = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
 
 	end
 
@@ -285,7 +285,7 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 	if (tokenOutputSequenceArray) then
 
 		tokenOutputSequenceLength = #tokenOutputSequenceArray
-		
+
 		if (tokenInputSequenceLength ~= tokenOutputSequenceLength) then error("The length of token input and output sequence arrays are not equal!") end
 
 	else
@@ -332,7 +332,7 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 		numberOfIterations += 1
 
 		local cost = 0
-		
+
 		local partialCost = 0
 
 		local dWax = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.inputSize)
@@ -442,15 +442,15 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 			end
 
 			dWya = AqwamMatrixLibrary:add(dWya, dWyat)
-			
+
 			partialCost = AqwamMatrixLibrary:sum(dWya) / self.outputSize
 
 			cost = cost + partialCost
 
 		end
-		
+
 		cost = cost / tokenInputSequenceLength
-		
+
 		dWax = AqwamMatrixLibrary:multiply(self.learningRate, dWax)
 
 		dWaa = AqwamMatrixLibrary:multiply(self.learningRate, dWaa)

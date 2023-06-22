@@ -446,10 +446,10 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 			partialCost = AqwamMatrixLibrary:sum(dWya) / self.outputSize
 
 			cost = cost + partialCost
-			
-			cost = cost / tokenInputSequenceLength
 
 		end
+		
+		cost = cost / tokenInputSequenceLength
 		
 		dWax = AqwamMatrixLibrary:multiply(self.learningRate, dWax)
 

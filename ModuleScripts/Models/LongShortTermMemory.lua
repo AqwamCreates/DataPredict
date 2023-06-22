@@ -10,7 +10,7 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibrary
 
 local defaultMaxNumberOfIterations = 500
 
-local defaultLearningRate = 0.001
+local defaultLearningRate = 0.0001
 
 local defaultTargetCost = 0
 
@@ -755,7 +755,7 @@ function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
 	
 	self:loadModelParameters()
 	
-	local aPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.tokenSize, 1)
+	local aPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.outputSize, 1)
 	
 	local predictionArray = {}
 	

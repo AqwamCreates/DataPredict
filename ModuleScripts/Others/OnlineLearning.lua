@@ -78,9 +78,9 @@ end
 
 function OnlineLearning:startSequentialTraining()
 
-	local inputSequenceTokenArray
+	local tokenInputSequenceArray
 
-	local outputSequenceTokenArray
+	local tokenOutputSequenceArray
 
 	local costArray
 	
@@ -88,19 +88,19 @@ function OnlineLearning:startSequentialTraining()
 
 	for data = 1, minimumBatchSize, 1 do
 		
-		inputSequenceTokenArray = self.InputQueue[1]
+		tokenInputSequenceArray = self.InputQueue[1]
 
 		table.remove(self.InputQueue, 1)
 
 		if (self.IsOutputRequired == true) then 
 			
-			outputSequenceTokenArray = self.OutputQueue[1]
+			tokenOutputSequenceArray = self.OutputQueue[1]
 			
 			table.remove(self.OutputQueue, 1)
 			
 		end
 		
-		costArray = self.Model:train(inputSequenceTokenArray, outputSequenceTokenArray)
+		costArray = self.Model:train(tokenInputSequenceArray, tokenOutputSequenceArray)
 		
 		if (costArray[1] == math.huge) then
 

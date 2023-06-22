@@ -10,7 +10,9 @@
 
 [NeuralNetwork](Models/NeuralNetwork.md)
 
-[RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md)
+[RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md) (a.k.a. RNN)
+
+[LongShortTermMemory](Models/LongShortTermMemory.md)
 
 [LogisticRegression](Models/LogisticRegression.md)
 

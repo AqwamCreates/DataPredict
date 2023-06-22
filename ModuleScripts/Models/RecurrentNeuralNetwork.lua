@@ -262,7 +262,7 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 		self.Wya = self:initializeMatrixBasedOnMode(self.outputSize, self.hiddenSize)
 
-		self.ba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+		self.ba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1, 1)
 
 		self.by = AqwamMatrixLibrary:createMatrix(self.outputSize, 1, 1)
 

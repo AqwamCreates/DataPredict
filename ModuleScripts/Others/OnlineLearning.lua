@@ -43,8 +43,10 @@ function OnlineLearning:startNonSequentialTraining()
 	local labelVector = {}
 
 	local costArray
+	
+	local minimumBatchSize = math.min(self.BatchSize, #self.InputQueue)
 
-	for data = 1, self.BatchSize, 1 do
+	for data = 1, minimumBatchSize, 1 do
 
 		table.insert(featureMatrix, self.InputQueue[1][1])
 
@@ -81,8 +83,10 @@ function OnlineLearning:startSequentialTraining()
 	local outputSequenceTokenArray
 
 	local costArray
+	
+	local minimumBatchSize = math.min(self.BatchSize, #self.InputQueue)
 
-	for data = 1, self.BatchSize, 1 do
+	for data = 1, minimumBatchSize, 1 do
 		
 		inputSequenceTokenArray = self.InputQueue[1]
 

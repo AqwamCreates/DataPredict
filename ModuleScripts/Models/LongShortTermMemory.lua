@@ -871,6 +871,66 @@ function LongShortTermMemoryModel:train(tokenInputSequenceArray, tokenOutputSequ
 		
 	until (numberOfIterations == self.maxNumberOfIterations) or (cost <= self.targetCost)
 	
+	if (self.ForgetGateWeightOptimizer) then
+
+		self.ForgetGateWeightOptimizer:reset()
+
+	end
+
+	if (self.SaveGateWeightOptimizer) then
+
+		self.SaveGateWeightOptimizer:reset()
+
+	end
+
+	if (self.TanhWeightOptimizer) then
+
+		self.TanhWeightOptimizer:reset()
+
+	end
+
+	if (self.FocusGateOptimizer) then
+
+		self.FocusGateOptimizer:reset()
+
+	end
+
+	if (self.OutputWeightOptimizer) then
+
+		self.OutputWeightOptimizer:reset()
+
+	end
+
+	if (self.ForgetGateBiasOptimizer) then
+
+		self.ForgetGateBiasOptimizer:reset()
+
+	end
+
+	if (self.SaveGateBiasOptimizer) then
+
+		self.SaveGateBiasOptimizer:reset()
+
+	end
+
+	if (self.TanhBiasOptimizer) then
+
+		self.TanhBiasOptimizer:reset()
+
+	end
+
+	if (self.FocusGateOptimizer) then
+
+		self.FocusGateOptimizer:reset()
+
+	end
+
+	if (self.OutputBiasOptimizer) then
+
+		self.OutputBiasOptimizer:reset()
+
+	end
+	
 	return costArray
 	
 end

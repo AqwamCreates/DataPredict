@@ -9,7 +9,7 @@ Online (machine) learning continuously updates the model as it receives new data
 Creates a new online learning object
 
 ```
- OnlineLearning.new(Model: ModelObject, isLabelRequired: boolean, batchSize: integer): OnlineLearningObject
+ OnlineLearning.new(Model: ModelObject, isLabelRequired: boolean, batchSize: integer, isSequentialModel: boolean): OnlineLearningObject
 ```
 
 ### Parameters:
@@ -19,6 +19,8 @@ Creates a new online learning object
 * isLabelRequired: Set whether or not the model requires labels
 
 * batchSize: The size of data needed before training the model.
+
+* isSequentialModel: Set whether or not it will train a sequential model (such as RecurrentNeuralNetwork and LongShortTermMemory).
 
 ## Functions
 
@@ -48,29 +50,29 @@ Stops the threads for real-time training.
 OnlineLearning:stopOnlineLearning()
 ```
 
-### addFeatureVectorToOnlineLearningQueue()
+### addInputToOnlineLearningQueue()
 
-Adds feature vector to queue.
-
-```
-OnlineLearning:addFeatureVectorToOnlineLearningQueue(featureVector: matrix)
-```
-
-#### Parameters:
-
-* featureVector: A (1 x n) matrix containing all the features to be added to the reinforcement queue.
-
-### addLabelToOnlineLearningQueue()
-
-Adds label to queue.
+Adds feature vector / token input sequence array to to queue.
 
 ```
-OnlineLearning:addLabelToOnlineLearningQueue(label: integer)
+OnlineLearning:addFeatureVectorToOnlineLearningQueue(input: matrix / integer[])
 ```
 
 #### Parameters:
 
-* label: The actual label related to the previous feature vector.  
+* input: A (1 x n) matrix / a token input sequence array to be added to the reinforcement queue.
+
+### addOutputToOnlineLearningQueue()
+
+Adds label / token output sequence array  to queue.
+
+```
+OnlineLearning:addLabelToOnlineLearningQueue(output: integer / integer[])
+```
+
+#### Parameters:
+
+* label: The actual label related to the previous feature vector / a token output sequence array.  
 
 ### returnCostArrayFromOnlineLearningQueue()
 

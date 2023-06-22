@@ -160,11 +160,11 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 
 			if self.IsSequentialModel then
 
-				costArray = self:startNonSequentialTraining()
+				costArray = self:startSequentialTraining()
 
 			else
-
-				costArray = self:startSequentialTraining()
+				
+				costArray = self:startNonSequentialTraining()
 
 			end
 

@@ -501,23 +501,23 @@ function LongShortTermMemoryModel:train(tokenInputSequenceArray, tokenOutputSequ
 		
 		local dWf = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.hiddenSize + self.inputSize)
 
-		local dbf = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1, 1)
+		local dbf = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
 		local dWi = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.hiddenSize + self.inputSize)
 
-		local dbi = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1, 1)
+		local dbi = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
 		local dWc = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.hiddenSize + self.inputSize)
 
-		local dbc = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1, 1)
+		local dbc = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
 		local dWo = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.hiddenSize + self.inputSize)
 
-		local dbo = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1, 1)
+		local dbo = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
 		local dWy = AqwamMatrixLibrary:createMatrix(self.outputSize, self.hiddenSize + self.inputSize)
 
-		local dby = AqwamMatrixLibrary:createMatrix(self.outputSize, 1, 1)
+		local dby = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
 		
 		local previousdWf
 

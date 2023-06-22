@@ -364,6 +364,30 @@ function LongShortTermMemoryModel:createLayers(inputSize, hiddenSize, outputSize
 	
 end
 
+function LongShortTermMemoryModel:setOptimizers(ForgetGateWeightOptimizer, SaveGateWeightOptimizer, TanhWeightOptimizer, FocusGateOptimizer, OutputWeightOptimizer, ForgetGateBiasOptimizer, SaveGateBiasOptimizer, TanhBiasOptimizer, FocusBiasOptimizer, OutputBiasOptimizer)
+
+	self.ForgetGateWeightOptimizer = ForgetGateWeightOptimizer
+
+	self.SaveGateWeightOptimizer = SaveGateWeightOptimizer
+
+	self.TanhWeightOptimizer = TanhWeightOptimizer
+	
+	self.FocusGateOptimizer = FocusGateOptimizer
+	
+	self.OutputWeightOptimizer = OutputWeightOptimizer
+	
+	self.ForgetGateBiasOptimizer = ForgetGateBiasOptimizer
+
+	self.SaveGateBiasOptimizer = SaveGateBiasOptimizer
+
+	self.TanhBiasOptimizer = TanhBiasOptimizer
+
+	self.FocusGateOptimizer = FocusGateOptimizer
+
+	self.OutputBiasOptimizer = OutputBiasOptimizer
+
+end
+
 function LongShortTermMemoryModel:loadModelParameters()
 	
 	self.Wf = self.ModelParameters[1]
@@ -788,3 +812,4 @@ function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
 end
 
 return LongShortTermMemoryModel
+

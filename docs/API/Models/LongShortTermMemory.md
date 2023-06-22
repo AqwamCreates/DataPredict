@@ -92,11 +92,11 @@ LongShortTermMemory:setOptimizers(ForgetGateWeightOptimizer: OptimizerObject, Sa
 
 #### Parameters:
 
-* ForgetGateWeightOptimizer
+* ForgetGateWeightOptimizer:  Optimizer for forget gate weight calculations.
 
-* SaveGateWeightOptimizer
+* SaveGateWeightOptimizer:  Optimizer for save gate weight calculations.
   
-* TanhWeightOptimizer
+* TanhWeightOptimizer:  Optimizer for tanh weight calculations.
 
 * FocusGateOptimize
   

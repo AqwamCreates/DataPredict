@@ -755,7 +755,9 @@ function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
 	
 	self:loadModelParameters()
 	
-	local aPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.outputSize, 1)
+	local cPreviousFirst = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
+	
+	local aPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
 	
 	local predictionArray = {}
 	

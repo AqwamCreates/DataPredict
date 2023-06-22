@@ -519,6 +519,26 @@ function LongShortTermMemoryModel:train(tokenInputSequenceArray, tokenOutputSequ
 
 		local dby = AqwamMatrixLibrary:createMatrix(self.outputSize, 1, 1)
 		
+		local previousdWf
+
+		local previousdbf
+
+		local previousdWi
+
+		local previousdbi
+
+		local previousdWc
+
+		local previousdbc
+
+		local previousdWo
+
+		local previousdbo
+
+		local previousdWy
+
+		local previousdby
+		
 		local dx = {}
 		
 		local aTable = {}
@@ -738,6 +758,88 @@ function LongShortTermMemoryModel:train(tokenInputSequenceArray, tokenOutputSequ
 		dWy = AqwamMatrixLibrary:extractColumns(dWy, 0, self.hiddenSize)
 		
 		dby = AqwamMatrixLibrary:multiply(self.learningRate, dby)
+		
+		if (self.ForgetGateWeightOptimizer) then
+			
+			dWf = self.ForgetGateWeightOptimizer:calculate(dWf, previousdWf)
+			
+		end
+		
+		if (self.SaveGateWeightOptimizer) then
+
+			dWi = self.SaveGateWeightOptimizer:calculate(dWi, previousdWi)
+
+		end
+		
+		if (self.TanhWeightOptimizer) then
+
+			dWc = self.TanhWeightOptimizer:calculate(dWc, previousdWc)
+
+		end
+		
+		if (self.FocusGateOptimizer) then
+
+			dWo = self.FocusGateOptimizer:calculate(dWo, previousdWo)
+
+		end
+		
+		if (self.OutputWeightOptimizer) then
+
+			dWy = self.OutputWeightOptimizer:calculate(dWy, previousdWy)
+
+		end
+		
+		if (self.ForgetGateBiasOptimizer) then
+
+			dbf = self.ForgetGateBiasOptimizer:calculate(dbf, previousdbf)
+
+		end
+		
+		if (self.SaveGateBiasOptimizer) then
+
+			dbi = self.SaveGateBiasOptimizer:calculate(dbi, previousdbi)
+
+		end
+		
+		if (self.TanhBiasOptimizer) then
+
+			dbc = self.TanhBiasOptimizer:calculate(dbc, previousdbc)
+
+		end
+		
+		if (self.FocusGateOptimizer) then
+
+			dbo = self.FocusGateOptimizer:calculate(dbo, previousdbo)
+
+		end
+		
+		if (self.OutputBiasOptimizer) then
+
+			dby = self.OutputBiasOptimizer:calculate(dby, previousdby)
+
+		end
+		
+		previousdWf = dWf
+
+		previousdbf = dbf
+
+		previousdWi = dWi
+
+		previousdbi = dbi
+
+		previousdWc = dWc
+
+		previousdbc = dbc
+
+		previousdWo = dWo
+
+		previousdbo = dbo
+
+		previousdWy = dWy
+
+		previousdWy = dWy
+
+		previousdby = dby
 
 		self.Wf = AqwamMatrixLibrary:add(self.Wf, dWf)
 		
@@ -812,4 +914,3 @@ function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
 end
 
 return LongShortTermMemoryModel
-

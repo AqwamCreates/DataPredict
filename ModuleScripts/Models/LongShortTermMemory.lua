@@ -755,7 +755,7 @@ function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
 	
 	self:loadModelParameters()
 	
-	local cPreviousFirst = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
+	local cPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
 	
 	local aPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
 	
@@ -767,7 +767,7 @@ function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
 		
 		local xt = self:convertTokenToLogisticVector(tokenInput)
 		
-		local aNext = self:forwardPropagateCell(xt, aPrevious)
+		local aNext, cNext = self:forwardPropagateCell(xt, aPrevious, cPrevious)
 		
 		local ytPrediction = self:calculatePrediction(aNext)
 		
@@ -778,6 +778,8 @@ function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
 		table.insert(predictionArray, predictedToken)
 		
 		aPrevious = aNext
+		
+		cPrevious = cNext
 		
 	end
 	

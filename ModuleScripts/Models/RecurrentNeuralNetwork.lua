@@ -264,7 +264,7 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 		self.ba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
-		self.by = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
+		self.by = AqwamMatrixLibrary:createMatrix(self.outputSize, 1, 1)
 
 	end
 

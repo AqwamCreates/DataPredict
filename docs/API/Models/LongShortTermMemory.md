@@ -92,25 +92,25 @@ LongShortTermMemory:setOptimizers(ForgetGateWeightOptimizer: OptimizerObject, Sa
 
 #### Parameters:
 
-* ForgetGateWeightOptimizer:  Optimizer for forget gate weight calculations.
+* ForgetGateWeightOptimizer: Optimizer for forget gate calculations.
 
-* SaveGateWeightOptimizer:  Optimizer for save gate weight calculations.
+* SaveGateWeightOptimizer: Optimizer for save gate calculations.
   
-* TanhWeightOptimizer:  Optimizer for tanh weight calculations.
+* TanhWeightOptimizer: Optimizer for tanh calculations.
 
-* FocusGateOptimize
+* FocusGateOptimize: Optimizer for focus gate calculations.
   
-* OutputWeightOptimizer
+* OutputWeightOptimizer: Optimizer for output layer calculations.
 
-* ForgetGateBiasOptimizer
+* ForgetGateBiasOptimizer: Optimizer for forget gate bias calculations.
 
-* SaveGateBiasOptimizer
+* SaveGateBiasOptimizer: Optimizer for save gate bias calculations.
 
-* TanhBiasOptimizer
+* TanhBiasOptimizer: Optimizer for tanh bias calculations.
 
-* FocusBiasOptimizer
+* FocusBiasOptimizer: Optimizer for focus gate bias calculations.
 
-* OutputBiasOptimizer
+* OutputBiasOptimizer: Optimizer for output bias layer calculations.
 
 ### train()
 

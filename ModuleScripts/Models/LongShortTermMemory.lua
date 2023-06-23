@@ -260,7 +260,7 @@ function LongShortTermMemoryModel:backwardPropagateCell(daNext, dcNext, aNext, c
 	
 	local dftPart4 = AqwamMatrixLibrary:add(dftPart3, dftPart2)
 	
-	local dft = AqwamMatrixLibrary:multiply(dftPart4, ft, dftPart1) -- (h, 1)
+	local dft = AqwamMatrixLibrary:multiply(dftPart4, ft, dftPart1)
 	
 	------------------------------------------------------------------------------------------------------------------------
 
@@ -270,7 +270,7 @@ function LongShortTermMemoryModel:backwardPropagateCell(daNext, dcNext, aNext, c
 	
 	------------------------------------------------------------------------------------------------------------------------
 
-	local dWf = AqwamMatrixLibrary:dotProduct(dft, concat) -- (h, h + i)
+	local dWf = AqwamMatrixLibrary:dotProduct(dft, concat)
 	
 	local dWi = AqwamMatrixLibrary:dotProduct(dit, concat)
 	
@@ -288,7 +288,7 @@ function LongShortTermMemoryModel:backwardPropagateCell(daNext, dcNext, aNext, c
 	
 	------------------------------------------------------------------------------------------------------------------------
 	
-	local WfTransposed = AqwamMatrixLibrary:transpose(self.Wf) -- (h + i, h)
+	local WfTransposed = AqwamMatrixLibrary:transpose(self.Wf)
 	
 	local WiTransposed = AqwamMatrixLibrary:transpose(self.Wi)
 	
@@ -306,7 +306,7 @@ function LongShortTermMemoryModel:backwardPropagateCell(daNext, dcNext, aNext, c
 	
 	local WoTransposedExtracted1 = AqwamMatrixLibrary:extractRows(WoTransposed, 0, self.hiddenSize)
 	
-	local daPreviousPart1 = AqwamMatrixLibrary:dotProduct(WfTransposedExtracted1, dft) -- (h + i, 1)
+	local daPreviousPart1 = AqwamMatrixLibrary:dotProduct(WfTransposedExtracted1, dft)
 	
 	local daPreviousPart2 = AqwamMatrixLibrary:dotProduct(WiTransposedExtracted1, dit)
 	
@@ -675,7 +675,7 @@ function LongShortTermMemoryModel:train(tokenInputSequenceArray, tokenOutputSequ
 
 			aNext = aTable[t]
 			
-			daNext = daTable[t] -- 15 x 1
+			daNext = daTable[t]
 			
 			dcNext = dcTable[t] 
 			

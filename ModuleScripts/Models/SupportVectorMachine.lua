@@ -87,8 +87,10 @@ local kernelFunctionList = {
 		local magnitudeMatrix = AqwamMatrixLibrary:applyFunction(math.sqrt, AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x1)))
 		
 		local multiplyMatrix = AqwamMatrixLibrary:multiply(magnitudeMatrix, magnitudeMatrix)
+		
+		local sumMultiplyMatrix = AqwamMatrixLibrary:sum(multiplyMatrix)
 
-		return AqwamMatrixLibrary:divide(dotProductMatrix, multiplyMatrix)
+		return AqwamMatrixLibrary:divide(sumMultiplyMatrix, dotProductMatrix)
 
 	end,
 
@@ -372,7 +374,7 @@ function SupportVectorMachineModel:predict(featureMatrix)
 		
 		local multiplyMatrix = magnitude1 * magnitude2
 		
-		calculatedKernel = dotProductMatrix / multiplyMatrix
+		calculatedKernel = multiplyMatrix / dotProductMatrix
 		
 	else
 		

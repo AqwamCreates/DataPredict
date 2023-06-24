@@ -19,7 +19,7 @@ BaseModel.new(): BaseModelObject
 Sets how the initial model parameters values are generated. The model parameters will be generated when train() function is run.
 
 ```
-BaseModel:setModelParametersInitializationMode(initializationMode: string, minimumModelParametersInitializationValue, maximumModelParametersInitializationValue)
+BaseModel:setModelParametersInitializationMode(initializationMode: string, minimumModelParametersInitializationValue: number, maximumModelParametersInitializationValue: number)
 ```
 
 #### Parameters:

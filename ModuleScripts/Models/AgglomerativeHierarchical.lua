@@ -169,6 +169,8 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 	
 	local minimumDistance
 	
+	local isOutsideCostBounds
+	
 	local numberOfIterations = 0
 	
 	local cost = 0
@@ -186,8 +188,6 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		clusters = AqwamMatrixLibrary:verticalConcatenate(self.ModelParameters, clusters)
 		
 	end
-	
-	local isOutsideCostBounds
 	
 	repeat
 		

@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - DataTypes
+# [API Reference](../API.md) - DataTypes
 
 ## FeatureMatrix
 

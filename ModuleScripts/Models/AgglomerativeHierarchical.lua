@@ -147,9 +147,7 @@ function AgglomerativeHierarchicalModel.new(maxNumberOfIterations, numberOfClust
 	
 end
 
-function AgglomerativeHierarchicalModel:setParameters(maxNumberOfIterations, numberOfClusters, distanceFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
-	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+function AgglomerativeHierarchicalModel:setParameters(numberOfClusters, distanceFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
 
 	self.highestCost = highestCost or self.highestCost
 	
@@ -162,7 +160,6 @@ function AgglomerativeHierarchicalModel:setParameters(maxNumberOfIterations, num
 	self.stopWhenModelParametersDoesNotChange =  BaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
 
 end
-
 
 function AgglomerativeHierarchicalModel:train(featureMatrix)
 	
@@ -194,6 +191,8 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 	
 	repeat
 		
+		self:iterationWait()
+		
 		numberOfIterations += 1
 		
 		clusterIndex1, clusterIndex2, minimumDistance = findClosestClusters(clusters, self.distanceFunction)
@@ -214,7 +213,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		
 		isOutsideCostBounds = (cost <= self.lowestCost) or (cost >= self.highestCost)
 		
-	until (numberOfIterations == self.maxNumberOfIterations) or isOutsideCostBounds  or (#clusters == self.numberOfClusters) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
+	until isOutsideCostBounds  or (#clusters == self.numberOfClusters) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 	
 	self.ModelParameters = clusters
 	

@@ -18,6 +18,10 @@ local defaultTargetCost = 0
 
 local defaultKernelFunction = "linear"
 
+local defaultDegree = 3
+
+local defaultGamma = 1
+
 local kernelFunctionList = {
 
 	["linear"] = function(x1)
@@ -102,13 +106,13 @@ local function calculateKernel(x, kernelFunction, kernelParameters)
 
 	elseif (kernelFunction == "polynomial") then
 
-		local degree = kernelParameters.degree or 2
+		local degree = kernelParameters.degree or defaultDegree
 
 		return kernelFunctionList[kernelFunction](x, degree)
 
 	elseif (kernelFunction == "rbf") then
 
-		local gamma = kernelParameters.gamma or 1.0
+		local gamma = kernelParameters.gamma or defaultGamma
 
 		return kernelFunctionList[kernelFunction](x, gamma)
 
@@ -135,8 +139,26 @@ local function calculateCost(modelParameters, featureMatrix, labelVector, cValue
 	local divisionConstant = (1 / (2 * numberOfData))
 	
 	local regularizationTerm = cValue * divisionConstant * sumSquaredModelParameters
-
-	local cost = divisionConstant * sumSquaredDistance
+	
+	local cost 
+	
+	if (kernelFunction == "linear") or (kernelFunction == "cosineSimilarity") then
+		
+		cost = divisionConstant * sumSquaredDistance
+		
+	elseif (kernelFunction == "polynomial") then
+		
+		local degree = kernelParameters.degree or defaultDegree
+		
+		cost = divisionConstant * AqwamMatrixLibrary:sum(AqwamMatrixLibrary:power(subtractedVector, degree))
+		
+	elseif (kernelFunction == "rbf") then
+		
+		local gamma = kernelParameters.gamma or defaultGamma
+		
+		cost = divisionConstant * AqwamMatrixLibrary:sum(AqwamMatrixLibrary:multiply(subtractedVector, subtractedVector)) / gamma
+		
+	end
 	
 	cost += regularizationTerm
 
@@ -316,21 +338,65 @@ end
 
 function SupportVectorMachineModel:predict(featureMatrix)
 
-	local result = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	local calculatedKernel
 
-	if (result > 0) then
-
-		return 1
-
-	elseif (result < 0) then
-
-		return -1
-
+	if (self.kernelFunction == "linear") then
+		
+		calculatedKernel = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+		
+	elseif (self.kernelFunction == "polynomial") then
+		
+		local result = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+		
+		local degree = self.kernelParameters.degree or defaultDegree
+		
+		calculatedKernel = math.pow(result, degree)
+		
+	elseif (self.kernelFunction == "rbf") then
+		
+		local gamma = self.kernelParameters.gamma or defaultGamma
+		
+		local transposedModelParameters = AqwamMatrixLibrary:transpose(self.ModelParameters)
+		
+		local part1 = AqwamMatrixLibrary:subtract(featureMatrix, transposedModelParameters)
+		
+		local part2 = AqwamMatrixLibrary:power(part1, 2)
+		
+		local sum = AqwamMatrixLibrary:sum(part2)
+		
+		calculatedKernel = math.exp(-gamma * sum)
+		
+	elseif (self.kernelFunction == "cosineSimilarity") then
+		
+		local dotProductMatrix = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+		
+		local magnitudeMatrix1 = AqwamMatrixLibrary:applyFunction(math.sqrt, AqwamMatrixLibrary:dotProduct(featureMatrix, AqwamMatrixLibrary:transpose(featureMatrix)))
+		
+		local magnitudeMatrix2 = AqwamMatrixLibrary:applyFunction(math.sqrt, AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(self.ModelParameters), self.ModelParameters))
+		
+		local multiplyMatrix = AqwamMatrixLibrary:multiply(magnitudeMatrix1, magnitudeMatrix2)
+		
+		calculatedKernel = AqwamMatrixLibrary:dotProduct(dotProductMatrix, multiplyMatrix)
+		
 	else
-
+		
+		error("Invalid kernel function!")
+		
+	end
+	
+	if (calculatedKernel > 0) then
+		
+		return 1
+		
+	elseif (calculatedKernel < 0) then
+		
+		return -1
+		
+	else
+		
 		return 0
-
-	end 
+		
+	end
 
 end
 

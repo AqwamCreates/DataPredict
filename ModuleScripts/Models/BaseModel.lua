@@ -74,7 +74,7 @@ function BaseModel.new()
 	
 end
 
-function BaseModel:setWaitDuration(iterationWaitDuration, dataWaitDuration, sequenceWaitDuration)
+function BaseModel:setWaitDurations(iterationWaitDuration, dataWaitDuration, sequenceWaitDuration)
 	
 	self.IterationWaitDuration = iterationWaitDuration
 

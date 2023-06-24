@@ -101,13 +101,13 @@ RecurrentNeuralNetwork:setOptimizers(InputLayerOptimizer: OptimizerObject, Hidde
 Train the model. 
 
 ```
-RecurrentNeuralNetwork:train(tokenInputSequenceArray: integer[], tokenOutputSequenceArray: integer[]): number[]
+RecurrentNeuralNetwork:train(LongShortTermMemory:train(tableOfTokenInputSequenceArray: tableOfTokenInputSequenceArray[], tableOfTokenOutputSequenceArray: tokenOutputSequenceArray[]): number[]
 ```
 #### Parameters:
 
-* tokenInputSequenceArray: An array containing a sequence of tokens.
+* tableOfTokenInputSequenceArray: An array containing sequences of tokens.
 
-* tokenOutputSequenceArray: An array containing a sequence of tokens. Leave this empty if you want to use tokenInputSequenceArray only.
+* tableOfTokenOutputSequenceArray: An array containing sequences of tokens. Leave this empty if you want to use tokenInputSequenceArray only.
 
 #### Returns:
 

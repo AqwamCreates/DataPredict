@@ -85,7 +85,7 @@ tokenOutputSequenceArray1 = {1, 2, nil, 1}
 
 ## TableOfTokenInputSequenceArray / TableOfTokenOutputSequenceArray
 
-Contains of TokenInputSequenceArrays / TokenOutputSequenceArrays in a table. It can have any length.
+Contains TokenInputSequenceArrays / TokenOutputSequenceArrays in a table. It can have any length.
 
 ### Examples
 

@@ -32,6 +32,7 @@ featureMatrix2 = {
 }
 ```
 
+
 ## LabelVector
 
 Typically contains numbers stored in a (m x 1) matrix.
@@ -64,6 +65,7 @@ labelVector3 = {
 }
 ```
 
+
 ## TokenInputSequenceArray / TokenOutputSequenceArray
 
 Contains a sequence of positive integers or nils (a.k.a tokens) in a table. It can have any length.
@@ -79,6 +81,7 @@ tokenOutputSequenceArray1 = {10, 2, 0}
 
 tokenOutputSequenceArray1 = {1, 2, nil, 1}
 ```
+
 
 ## TableOfTokenInputSequenceArray / TableOfTokenOutputSequenceArray
 

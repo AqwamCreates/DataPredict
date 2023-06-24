@@ -60,9 +60,9 @@ function BaseModel.new()
 	
 	NewBaseModel.ModelParametersInitializationMode = "RandomNormalPositive"
 	
-	self.MinimumModelParametersInitializationValue = nil
+	NewBaseModel.MinimumModelParametersInitializationValue = nil
 
-	self.MaximumModelParametersInitializationValue = nil
+	NewBaseModel.MaximumModelParametersInitializationValue = nil
 
 	return NewBaseModel
 	

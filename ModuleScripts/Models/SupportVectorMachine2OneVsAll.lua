@@ -6,7 +6,7 @@ local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.3
 
-local defaultCvalue = 0.3
+local defaultCvalue = 0.0
 
 local defaultTargetCost = 0
 

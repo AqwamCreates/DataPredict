@@ -68,7 +68,7 @@ labelVector3 = {
 
 ## TokenSequenceArray / TokenInputSequenceArray / TokenOutputSequenceArray
 
-Contains a sequence of positive integers or nils (a.k.a tokens) in a table. It can have any length.
+Contains a sequence of positive integers or zeros (a.k.a tokens) in a table. It can have any length.
 
 ### Examples
 

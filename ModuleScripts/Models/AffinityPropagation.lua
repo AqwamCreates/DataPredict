@@ -268,6 +268,8 @@ function AffinityPropagationModel:train(featureMatrix)
 	
 	repeat
 		
+		self:iterationWait()
+		
 		numberOfIterations += 1
 		
 		computeSimilarities(similarities, featureMatrix, preferences, numberOfData, numberOfFeatures)

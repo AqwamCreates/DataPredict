@@ -292,6 +292,8 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	end
 
 	repeat
+		
+		self:iterationWait()
 
 		numberOfIterations += 1
 

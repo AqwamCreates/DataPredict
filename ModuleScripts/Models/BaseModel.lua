@@ -86,7 +86,7 @@ end
 
 function BaseModel:baseModelWait(waitDuration)
 	
-	if (waitDuration == nil) or (waitDuration == false) then return nil end
+	if (type(waitDuration) == "nil") or (waitDuration == false) then return nil end
 	
 	if (type(waitDuration) == "number") then
 		

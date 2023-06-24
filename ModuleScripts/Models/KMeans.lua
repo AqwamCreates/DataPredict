@@ -380,6 +380,8 @@ function KMeansModel:train(featureMatrix)
 	end
 	
 	repeat
+		
+		self:iterationWait()
 
 		numberOfIterations += 1
 		

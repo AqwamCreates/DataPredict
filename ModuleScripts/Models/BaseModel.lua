@@ -112,7 +112,7 @@ function BaseModel:dataWait()
 
 end
 
-function BaseModel:sequenceWaitDuration()
+function BaseModel:sequenceWait()
 
 	self:baseModelWait(self.SequenceWaitDuration)
 

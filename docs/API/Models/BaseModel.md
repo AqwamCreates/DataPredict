@@ -51,6 +51,7 @@ BaseModel:setModelParameters(ModelParameters: ModelParameters)
 ```
 
 #### Parameters
+
 * ModelParameters: A matrix/table containing model parameters to be given to the base model.
 
 ### clearModelParameters()
@@ -96,5 +97,21 @@ BaseModel:setPrintOutput(option: boolean)
 #### Parameters:
 
 * option: A boolean value that specifies if the output is printed.
+
+### setWaitDurations()
+
+Set wait durations inside the models to avoid exhausting script running time.
+
+```
+BaseModel:setWaitDurations(iterationWaitDuration: number, dataWaitDuration: number, sequenceWaitDuration: number)
+```
+
+#### Parameters:
+
+* iterationWaitDuration: The wait duration between the iterations.
+
+* dataWaitDuration: The wait duration between the data calculations.
+
+* sequenceWaitDuration: The wait duration between the token sequence.
 
 

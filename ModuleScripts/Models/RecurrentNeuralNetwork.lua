@@ -289,8 +289,8 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 	local previousdby
 
 	local previousdba
-
-	local token
+	
+	local totalNumberOfTokens = 0
 
 	local numberOfIterations = 0
 
@@ -311,6 +311,8 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 			local xt = self:convertTokenToLogisticVector(self.inputSize, tokenInput)
 
 			table.insert(tokenInputSequenceLogisticMatrices, xt)
+			
+			totalNumberOfTokens += 1
 
 		end
 		
@@ -351,8 +353,6 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 		local cost = 0
 
 		local partialCost = 0
-		
-		local totalNumberOfTokens = 0
 
 		local dWax = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.inputSize)
 
@@ -425,8 +425,6 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 				table.insert(ytPredictionTable, ytPrediction)
 
 				table.insert(daTable, dat)
-
-				totalNumberOfTokens += 1
 
 			end
 

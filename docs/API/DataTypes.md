@@ -2,7 +2,7 @@
 
 ## FeatureMatrix
 
-Typically contains numbers stored in a (m x n) matrix.
+Typically contains numbers stored in a (m x n) matrix, where m is the number of data and n is the number of features.
 
 ### Examples
 
@@ -35,7 +35,7 @@ featureMatrix2 = {
 
 ## LabelVector
 
-Typically contains numbers stored in a (m x 1) matrix.
+Typically contains numbers stored in a (m x 1) matrix, where m is the number of data
 
 ### Examples
 

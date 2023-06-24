@@ -96,7 +96,7 @@ tableOfTokenInputSequenceArray1 = {
 
 tableOfTokenInputSequenceArray2 = {
 
-  {1, nil, 30, 20, 10, nil, 20}.
+  {1, nil, 30, 20, 10, nil, 20}
 
 }
 
@@ -111,7 +111,7 @@ tableOfTokenOutputSequenceArray2 = {
 
   {10},
   {1, nil, nil, 1},
-  {1, 2, nil, 1}
+  {1, 60, 1}
 
 }
 

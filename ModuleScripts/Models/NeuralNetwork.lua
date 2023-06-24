@@ -509,14 +509,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		end
 		
 	end
-
-	if (self.addBiasNeuronTable[1]) then 
-		
-		local biasMatrix = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1, 1)
-
-		featureMatrix = AqwamMatrixLibrary:horizontalConcatenate(biasMatrix, featureMatrix)
-		
-	end
 	
 	local numberOfFeatures = #featureMatrix[1]
 

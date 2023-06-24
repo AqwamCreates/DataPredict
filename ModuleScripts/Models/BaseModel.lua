@@ -58,7 +58,11 @@ function BaseModel.new()
 	
 	NewBaseModel.LastCalculations = nil
 	
-	NewBaseModel.ModelParametersInitializationMode = "RandomNormal"
+	NewBaseModel.ModelParametersInitializationMode = "RandomNormalPositive"
+	
+	self.MinimumModelParametersInitializationValue = nil
+
+	self.MaximumModelParametersInitializationValue = nil
 
 	return NewBaseModel
 	
@@ -131,9 +135,13 @@ function BaseModel:getBooleanOrDefaultOption(boolean, defaultBoolean)
 	
 end
 
-function BaseModel:setModelParametersInitializationMode(initializationMode)
+function BaseModel:setModelParametersInitializationMode(initializationMode, minimumModelParametersInitializationValue, maximumModelParametersInitializationValue)
 	
 	self.ModelParametersInitializationMode = initializationMode
+	
+	self.MinimumModelParametersInitializationValue = minimumModelParametersInitializationValue
+	
+	self.MaximumModelParametersInitializationValue = maximumModelParametersInitializationValue
 	
 end
 
@@ -147,11 +155,25 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 	
 	elseif (initializationMode == "Random") then
 		
-		return AqwamMatrixLibrary:createRandomMatrix(numberOfRows, numberOfColumns)
+		return AqwamMatrixLibrary:createRandomMatrix(numberOfRows, numberOfColumns, self.MinimumModelParametersInitializationValue, self.MaximumModelParametersInitializationValue)
 		
-	elseif (initializationMode == "RandomNormal") then
+	elseif (initializationMode == "RandomNormalPositive") then
 		
 		return AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		
+	elseif (initializationMode == "RandomNormalNegative") then
+		
+		local RandomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+
+		return AqwamMatrixLibrary:multiply(RandomNormal, -1)
+		
+	elseif (initializationMode == "RandomNormalNegativeAndPositive") then
+		
+		local RandomNormal1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		
+		local RandomNormal2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+
+		return AqwamMatrixLibrary:subtract(RandomNormal1, RandomNormal2)
 		
 	elseif (initializationMode == "He") then
 
@@ -187,3 +209,4 @@ function BaseModel:destroy()
 end
 
 return BaseModel
+

@@ -163,6 +163,8 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	repeat
 		
+		self:iterationWait()
+		
 		numberOfIterations += 1
 		
 		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.lossFunction)

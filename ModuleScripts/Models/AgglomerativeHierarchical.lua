@@ -125,13 +125,11 @@ local function areModelParametersMatricesEqualInSizeAndValues(ModelParameters, P
 	
 end
 
-function AgglomerativeHierarchicalModel.new(maxNumberOfIterations, numberOfClusters, distanceFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
+function AgglomerativeHierarchicalModel.new(numberOfClusters, distanceFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
 	
 	local NewAgglomerativeHierarchicalModel = BaseModel.new()
 	
 	setmetatable(NewAgglomerativeHierarchicalModel, AgglomerativeHierarchicalModel)
-	
-	NewAgglomerativeHierarchicalModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
 	NewAgglomerativeHierarchicalModel.highestCost = highestCost or defaultHighestCost
 	
@@ -213,7 +211,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		
 		isOutsideCostBounds = (cost <= self.lowestCost) or (cost >= self.highestCost)
 		
-	until isOutsideCostBounds  or (#clusters == self.numberOfClusters) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
+	until isOutsideCostBounds or (#clusters == self.numberOfClusters) or (#clusters == 1) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 	
 	self.ModelParameters = clusters
 	

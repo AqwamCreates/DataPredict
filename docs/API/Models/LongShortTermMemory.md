@@ -117,13 +117,13 @@ LongShortTermMemory:setOptimizers(ForgetGateWeightOptimizer: OptimizerObject, Sa
 Train the model. 
 
 ```
-LongShortTermMemory:train(tokenInputSequenceArray: integer[], tokenOutputSequenceArray: integer[]): number[]
+LongShortTermMemory:train(tableOfTokenInputSequenceArray: tableOfTokenInputSequenceArray[], tableOfTokenOutputSequenceArray: tokenOutputSequenceArray[]): number[]
 ```
 #### Parameters:
 
-* tokenInputSequenceArray: An array containing a sequence of tokens.
+* tableOfTokenInputSequenceArray: An array containing sequences of tokens.
 
-* tokenOutputSequenceArray: An array containing a sequence of tokens. Leave this empty if you want to use tokenInputSequenceArray only.
+* tokenOutputSequenceArray: An array containing sequences of tokens. Leave this empty if you want to use tokenInputSequenceArray only.
 
 #### Returns:
 

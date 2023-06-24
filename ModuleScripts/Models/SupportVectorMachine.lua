@@ -168,7 +168,7 @@ local function gradientDescent(modelParameters, featureMatrix, labelVector, cVal
 
 	local dotProductMatrix = AqwamMatrixLibrary:dotProduct(multipliedMatrix, expandedTransposedModelMatrix)
 
-	local gradientMatrix = AqwamMatrixLibrary:subtract(dotProductMatrix, 1)
+	local gradientMatrix = AqwamMatrixLibrary:subtract(dotProductMatrix, labelVector)
 
 	local multipliedFeatureAndGradientMatrix = AqwamMatrixLibrary:multiply(gradientMatrix, featureMatrix)
 

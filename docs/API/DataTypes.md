@@ -63,3 +63,56 @@ labelVector3 = {
 
 }
 ```
+
+## TokenInputSequenceArray / TokenOutputSequenceArray
+
+Contains a sequence of positive integers or nils (a.k.a tokens) in a table. It can have any length.
+
+### Examples
+
+```
+tokenInputSequenceArray1 = {1, nil, 30, 2}
+
+2okenInputSequenceArray2 = {3, 4}
+
+tokenOutputSequenceArray1 = {10, 2, 0}
+
+tokenOutputSequenceArray1 = {1, 2, nil, 1}
+```
+
+## TableOfTokenInputSequenceArray / TableOfTokenOutputSequenceArray
+
+Contains of TokenInputSequenceArrays / TokenOutputSequenceArrays in a table. It can have any length.
+
+### Examples
+
+```
+tableOfTokenInputSequenceArray1 = {
+
+  {1, nil, 30, 2}.
+  {3, 4}
+
+}
+
+tableOfTokenInputSequenceArray2 = {
+
+  {1, nil, 30, 20, 10, nil, 20}.
+
+}
+
+tableOfTokenOutputSequenceArray1 = {
+
+  {10,2, 0, 1},
+  {1,2, nil, 1}
+
+}
+
+tableOfTokenOutputSequenceArray2 = {
+
+  {10},
+  {1, nil, nil, 1},
+  {1, 2, nil, 1}
+
+}
+
+```

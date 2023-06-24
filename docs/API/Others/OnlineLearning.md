@@ -9,7 +9,7 @@ Online (machine) learning continuously updates the model as it receives new data
 Creates a new online learning object
 
 ```
- OnlineLearning.new(Model: ModelObject, isOutputRequired: boolean, batchSize: integer, isSequentialModel: boolean): OnlineLearningObject
+ OnlineLearning.new(Model: ModelObject, isOutputRequired: boolean, batchSize: integer): OnlineLearningObject
 ```
 
 ### Parameters:
@@ -19,8 +19,6 @@ Creates a new online learning object
 * isOutputRequired: Set whether or not the model requires labels / token output sequence arrays.
 
 * batchSize: The size of data needed before training the model.
-
-* isSequentialModel: Set whether or not it will train a sequential model (such as RecurrentNeuralNetwork and LongShortTermMemory).
 
 ## Functions
 

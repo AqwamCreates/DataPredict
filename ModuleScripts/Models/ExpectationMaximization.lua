@@ -277,9 +277,16 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	local varianceMatrix
 
 	local costArray = {}
+	
 	local cost = math.huge
+	
 	local numberOfIterations = 0
+	
 	local meanMatrix
+	
+	local previousLikelihood
+
+	local likelihood = 0
 
 	if (self.ModelParameters) then
 
@@ -299,11 +306,11 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 	end
 
-	local previousLikelihood
 
-	local likelihood = 0
 
 	repeat
+		
+		self:iterationWait()
 
 		numberOfIterations += 1
 

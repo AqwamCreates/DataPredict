@@ -1011,4 +1011,3 @@ function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
 end
 
 return LongShortTermMemoryModel
-

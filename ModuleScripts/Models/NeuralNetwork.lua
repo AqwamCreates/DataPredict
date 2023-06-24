@@ -565,6 +565,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(self.ModelParameters, labelVector, self.ClassesList)
 
 	repeat
+		
+		self:iterationWait()
 
 		numberOfIterations += 1
 

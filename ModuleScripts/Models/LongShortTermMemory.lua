@@ -124,16 +124,16 @@ function LongShortTermMemoryModel:setParameters(maxNumberOfIterations, learningR
 	
 end
 
-function LongShortTermMemoryModel:convertTokenToLogisticVector(token)
+function LongShortTermMemoryModel:convertTokenToLogisticVector(size, token)
 
-	local logisticMatrix = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
-	
+	local logisticMatrix = AqwamMatrixLibrary:createMatrix(size, 1)
+
 	if (token ~= nil) then
-		
+
 		logisticMatrix[token][1] = 1
-		
+
 	end
-	
+
 	return logisticMatrix
 
 end
@@ -412,7 +412,19 @@ function LongShortTermMemoryModel:loadModelParameters()
 	
 end
 
-function LongShortTermMemoryModel:train(tokenInputSequenceArray, tokenOutputSequenceArray)
+local function throwErrorIfSequenceLengthAreNotEqual(tokenInputSequenceArray, tokenOutputSequenceArray)
+
+	if (tokenOutputSequenceArray == nil) then return nil end
+
+	local tokenInputSequenceLength = #tokenInputSequenceArray
+
+	local tokenOutputSequenceLength = #tokenOutputSequenceArray
+
+	if (tokenInputSequenceLength ~= tokenOutputSequenceLength) then error("The length of token input and output sequence arrays are not equal!") end
+
+end
+
+function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfTokenOutputSequenceArray)
 
 	if (self.ModelParameters) then
 		
@@ -442,53 +454,78 @@ function LongShortTermMemoryModel:train(tokenInputSequenceArray, tokenOutputSequ
 
 	end
 	
-	local tokenInputSequenceLength = #tokenInputSequenceArray
-	
-	local tokenOutputSequenceLength
-	
-	if (tokenOutputSequenceArray) then
-		
-		tokenOutputSequenceLength = #tokenOutputSequenceArray
-		
-		if (tokenInputSequenceLength ~= tokenOutputSequenceLength) then error("The length of token input and output sequence arrays are not equal!") end
-		
-	else
-		
-		tokenOutputSequenceLength = 0
-		
-	end
+	local tokenInputSequenceLength = 0
 	
 	local numberOfIterations = 0
 	
 	local costArray = {}
 	
-	local xTable = {}
-	
-	local yTable = {}
-	
-	for t = 1, tokenInputSequenceLength, 1 do
-		
-		local tokenInput = tokenInputSequenceArray[t]
-		
-		local xt = self:convertTokenToLogisticVector(tokenInput)
-		
-		table.insert(xTable, xt)
-		
-	end
-	
-	if (tokenOutputSequenceArray) then
-		
-		for t = 1, tokenOutputSequenceLength, 1 do
+	local tableOfTokenInputSequenceLogisticMatrices = {}
 
-			local tokenOutput = tokenOutputSequenceArray[t]
+	local tableOfTokenOutputSequenceLogisticMatrices = {}
+	
+	local previousdWf
 
-			local yt = self:convertTokenToLogisticVector(tokenOutput)
+	local previousdbf
 
-			table.insert(yTable, yt)
+	local previousdWi
+
+	local previousdbi
+
+	local previousdWc
+
+	local previousdbc
+
+	local previousdWo
+
+	local previousdbo
+
+	local previousdWy
+
+	local previousdby
+
+	for i, tokenInputSequenceArray in ipairs(tableOfTokenInputSequenceArray) do
+
+		local tokenInputSequenceLogisticMatrices = {}
+
+		for t = 1, #tokenInputSequenceArray, 1 do
+
+			local tokenInput = tokenInputSequenceArray[t]
+
+			local xt = self:convertTokenToLogisticVector(self.inputSize, tokenInput)
+
+			table.insert(tokenInputSequenceLogisticMatrices, xt)
+			
+			tokenInputSequenceLength += 1
 
 		end
-		
-		
+
+		table.insert(tableOfTokenInputSequenceLogisticMatrices, tokenInputSequenceLogisticMatrices)
+
+	end
+
+	if (tableOfTokenOutputSequenceArray) then
+
+		for j, tokenOutputSequenceArray in ipairs(tableOfTokenOutputSequenceArray) do
+
+			throwErrorIfSequenceLengthAreNotEqual(tableOfTokenInputSequenceArray[j], tokenOutputSequenceArray)
+
+			local tokenOutputSequenceLogisticMatrices = {}
+
+			for t = 1, #tokenOutputSequenceArray, 1 do
+
+				local tokenInput = tokenOutputSequenceArray[t]
+
+				local yt = self:convertTokenToLogisticVector(self.outputSize, tokenInput)
+
+				table.insert(tokenOutputSequenceLogisticMatrices, yt)
+
+			end
+
+			table.insert(tableOfTokenOutputSequenceLogisticMatrices, tokenOutputSequenceLogisticMatrices)
+
+		end
+
 	end
 	
 	repeat
@@ -519,221 +556,219 @@ function LongShortTermMemoryModel:train(tokenInputSequenceArray, tokenOutputSequ
 
 		local dby = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
 		
-		local previousdWf
-
-		local previousdbf
-
-		local previousdWi
-
-		local previousdbi
-
-		local previousdWc
-
-		local previousdbc
-
-		local previousdWo
-
-		local previousdbo
-
-		local previousdWy
-
-		local previousdby
+		----
 		
-		local dx = {}
-		
-		local aTable = {}
-		
-		local cTable = {}
-
-		local ytPredictionTable = {}
-
-		local daTable = {}
-		
-		local dcTable = {}
-		
-		local fTable = {}
-		
-		local iTable = {}
-		
-		local ccTable = {}
-		
-		local oTable = {}
-
-		local tokenInput
-
-		local xt
-
-		local aFirst = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
-		
-		local cFirst = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
-
-		local aPrevious = aFirst
-		
-		local cPrevious = cFirst
-		
-		local cNext
-		
-		local ft
-		
-		local it
-		
-		local cct
-		
-		local ot
-
-		local aNext
-
-		local ytPrediction
-
-		local daNext
-		
-		local dcNext
-
-		local dxt
-
-		local daPrevious
-		
-		local dcPrevious
-
-		local dWft
-		
-		local dbft
-		
-		local dWit
-		
-		local dbit
-		
-		local dWct
-		
-		local dbct
-		
-		local dWot
-		
-		local dbot
-
-		local dat
-		
-		local dct
-		
-		local dWyt
-		
-		local Wyt
-		
-		for t = 1, tokenInputSequenceLength, 1 do
-
-			xt = xTable[t]
-
-			aNext, cNext, ft, it, cct, ot = self:forwardPropagateCell(xt, aPrevious, cPrevious)
-
-			ytPrediction = self:calculatePrediction(aNext)
-
-			dat = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+		for s = 1, #tableOfTokenInputSequenceArray, 1 do
 			
-			dct = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+			self:dataWait()
 
-			aPrevious = aNext
+			local xTable = tableOfTokenInputSequenceLogisticMatrices[s]
 
-			table.insert(aTable, aNext)
+			local yTable = tableOfTokenOutputSequenceLogisticMatrices[s]
+			
+			local dx = {}
 
-			table.insert(ytPredictionTable, ytPrediction)
-			
-			table.insert(cTable, cNext)
-			
-			table.insert(fTable, ft)
-			
-			table.insert(iTable, it)
-			
-			table.insert(ccTable, cct)
-			
-			table.insert(oTable, ot)
+			local aTable = {}
 
-			table.insert(daTable, dat)
-			
-			table.insert(dcTable, dct)
+			local cTable = {}
 
+			local ytPredictionTable = {}
+
+			local daTable = {}
+
+			local dcTable = {}
+
+			local fTable = {}
+
+			local iTable = {}
+
+			local ccTable = {}
+
+			local oTable = {}
+
+			local tokenInput
+
+			local xt
+
+			local aFirst = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
+
+			local cFirst = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
+
+			local aPrevious = aFirst
+
+			local cPrevious = cFirst
+
+			local cNext
+
+			local ft
+
+			local it
+
+			local cct
+
+			local ot
+
+			local aNext
+
+			local ytPrediction
+
+			local daNext
+
+			local dcNext
+
+			local dxt
+
+			local daPrevious
+
+			local dcPrevious
+
+			local dWft
+
+			local dbft
+
+			local dWit
+
+			local dbit
+
+			local dWct
+
+			local dbct
+
+			local dWot
+
+			local dbot
+
+			local dat
+
+			local dct
+
+			local dWyt
+
+			local Wyt
+
+			for t = 1, #xTable, 1 do
+				
+				self:sequenceWait()
+
+				xt = xTable[t]
+
+				aNext, cNext, ft, it, cct, ot = self:forwardPropagateCell(xt, aPrevious, cPrevious)
+
+				ytPrediction = self:calculatePrediction(aNext)
+
+				dat = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+
+				dct = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+
+				aPrevious = aNext
+
+				table.insert(aTable, aNext)
+
+				table.insert(ytPredictionTable, ytPrediction)
+
+				table.insert(cTable, cNext)
+
+				table.insert(fTable, ft)
+
+				table.insert(iTable, it)
+
+				table.insert(ccTable, cct)
+
+				table.insert(oTable, ot)
+
+				table.insert(daTable, dat)
+
+				table.insert(dcTable, dct)
+
+			end
+
+			for t = #xTable, 1, -1 do
+				
+				self:sequenceWait()
+
+				if (t > 1) then
+
+					aPrevious = aTable[t-1]
+
+					cPrevious = cTable[t-1]
+
+				else
+
+					aPrevious = aFirst
+
+					cPrevious = cFirst
+
+				end
+
+				ytPrediction = ytPredictionTable[t]
+
+				xt = xTable[t]
+
+				aNext = aTable[t]
+
+				daNext = daTable[t]
+
+				dcNext = dcTable[t] 
+
+				cNext = cTable[t]
+
+				ft = fTable[t]
+
+				it = iTable[t]
+
+				cct = ccTable[t]
+
+				ot = oTable[t]
+
+				dxt, daPrevious, dcPrevious, dWft, dbft, dWit, dbit, dWct, dbct, dWot, dbot = self:backwardPropagateCell(daNext, dcNext, aNext, cNext, aPrevious, cPrevious, ft, it, cct, ot, xt)
+
+				if (t > 1) then 
+
+					daTable[t-1] = AqwamMatrixLibrary:add(daNext, daPrevious) 
+
+					dcTable[t-1] = AqwamMatrixLibrary:add(dcNext, dcPrevious)
+
+				end
+
+				dWf = AqwamMatrixLibrary:add(dWf, dWft)
+
+				dbf = AqwamMatrixLibrary:add(dbf, dbft)
+
+				dWi = AqwamMatrixLibrary:add(dWi, dWit)
+
+				dbi = AqwamMatrixLibrary:add(dbi, dbit)
+
+				dWc = AqwamMatrixLibrary:add(dWc, dWct)
+
+				dbc = AqwamMatrixLibrary:add(dbc, dbct)
+
+				dWo = AqwamMatrixLibrary:add(dWo, dWot)
+
+				dbo = AqwamMatrixLibrary:add(dbo, dbot)
+
+				if (yTable) then
+
+					local yt = yTable[t]
+
+					dWyt = AqwamMatrixLibrary:subtract(ytPrediction, yt)
+
+				else
+
+					dWyt = AqwamMatrixLibrary:subtract(ytPrediction, xt)
+
+				end
+
+				dWy = AqwamMatrixLibrary:add(dWy, dWyt)
+
+				partialCost = AqwamMatrixLibrary:sum(dWy) / self.outputSize
+
+				cost = cost + partialCost
+				
+			end
+			
 		end
-
-		for t = tokenInputSequenceLength, 1, -1 do
-
-			if (t > 1) then
-
-				aPrevious = aTable[t-1]
-				
-				cPrevious = cTable[t-1]
-
-			else
-
-				aPrevious = aFirst
-				
-				cPrevious = cFirst
-
-			end
-
-			ytPrediction = ytPredictionTable[t]
-
-			xt = xTable[t]
-
-			aNext = aTable[t]
-			
-			daNext = daTable[t]
-			
-			dcNext = dcTable[t] 
-			
-			cNext = cTable[t]
-			
-			ft = fTable[t]
-			
-			it = iTable[t]
-			
-			cct = ccTable[t]
-			
-			ot = oTable[t]
-
-			dxt, daPrevious, dcPrevious, dWft, dbft, dWit, dbit, dWct, dbct, dWot, dbot = self:backwardPropagateCell(daNext, dcNext, aNext, cNext, aPrevious, cPrevious, ft, it, cct, ot, xt)
-			
-			if (t > 1) then 
-				
-				daTable[t-1] = AqwamMatrixLibrary:add(daNext, daPrevious) 
-				
-				dcTable[t-1] = AqwamMatrixLibrary:add(dcNext, dcPrevious)
-				
-			end
-
-			dWf = AqwamMatrixLibrary:add(dWf, dWft)
-
-			dbf = AqwamMatrixLibrary:add(dbf, dbft)
-
-			dWi = AqwamMatrixLibrary:add(dWi, dWit)
-
-			dbi = AqwamMatrixLibrary:add(dbi, dbit)
-
-			dWc = AqwamMatrixLibrary:add(dWc, dWct)
-
-			dbc = AqwamMatrixLibrary:add(dbc, dbct)
-
-			dWo = AqwamMatrixLibrary:add(dWo, dWot)
-
-			dbo = AqwamMatrixLibrary:add(dbo, dbot)
-			
-			if (tokenOutputSequenceLength > 0) then
-				
-				local yt = yTable[t]
-				
-				dWyt = AqwamMatrixLibrary:subtract(ytPrediction, yt)
-				
-			else
-				
-				dWyt = AqwamMatrixLibrary:subtract(ytPrediction, xt)
-				
-			end
-
-			dWy = AqwamMatrixLibrary:add(dWy, dWyt)
-
-			partialCost = AqwamMatrixLibrary:sum(dWy) / self.outputSize
-
-			cost = cost + partialCost
-
-		end
+		
+		-----
 		
 		cost = cost / tokenInputSequenceLength
 		
@@ -951,7 +986,7 @@ function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
 		
 		local tokenInput = tokenInputSequenceArray[i]
 		
-		local xt = self:convertTokenToLogisticVector(tokenInput)
+		local xt = self:convertTokenToLogisticVector(self.inputSize, tokenInput)
 		
 		local aNext, cNext = self:forwardPropagateCell(xt, aPrevious, cPrevious)
 		
@@ -959,8 +994,10 @@ function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
 		
 		local _, predictedTokenIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(ytPrediction)
 		
-		local predictedToken = predictedTokenIndex[1]
-			
+		local predictedToken = nil
+
+		if predictedTokenIndex then predictedToken = predictedTokenIndex[1] end
+
 		table.insert(predictionArray, predictedToken)
 		
 		aPrevious = aNext
@@ -974,3 +1011,4 @@ function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
 end
 
 return LongShortTermMemoryModel
+

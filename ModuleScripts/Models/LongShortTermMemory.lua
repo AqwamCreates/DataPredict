@@ -530,6 +530,8 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 	
 	repeat
 		
+		self:iterationWait()
+		
 		numberOfIterations += 1
 		
 		local cost = 0
@@ -555,8 +557,6 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		local dWy = AqwamMatrixLibrary:createMatrix(self.outputSize, self.hiddenSize + self.inputSize)
 
 		local dby = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
-		
-		----
 		
 		for s = 1, #tableOfTokenInputSequenceArray, 1 do
 			
@@ -767,8 +767,6 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 			end
 			
 		end
-		
-		-----
 		
 		cost = cost / tokenInputSequenceLength
 		

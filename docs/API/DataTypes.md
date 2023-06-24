@@ -73,13 +73,13 @@ Contains a sequence of positive integers or nils (a.k.a tokens) in a table. It c
 ### Examples
 
 ```
-tokenInputSequenceArray1 = {1, nil, 30, 2}
+tokenInputSequenceArray1 = {1, 0, 30, 2}
 
 2okenInputSequenceArray2 = {3, 4}
 
 tokenOutputSequenceArray1 = {10, 2, 0}
 
-tokenOutputSequenceArray1 = {1, 2, nil, 1}
+tokenOutputSequenceArray1 = {1, 2, 0, 1}
 ```
 
 
@@ -92,28 +92,28 @@ Contains TokenInputSequenceArrays / TokenOutputSequenceArrays in a table. It can
 ```
 tableOfTokenInputSequenceArray1 = {
 
-  {1, nil, 30, 2}.
+  {1, 0, 30, 2}.
   {3, 4}
 
 }
 
 tableOfTokenInputSequenceArray2 = {
 
-  {1, nil, 30, 20, 10, nil, 20}
+  {1, 0, 30, 20, 10, 0, 20}
 
 }
 
 tableOfTokenOutputSequenceArray1 = {
 
   {10,2, 0, 1},
-  {1,2, nil, 1}
+  {1,2, 0, 1}
 
 }
 
 tableOfTokenOutputSequenceArray2 = {
 
   {10},
-  {1, nil, nil, 1},
+  {1, 0, 0, 1},
   {1, 60, 1}
 
 }

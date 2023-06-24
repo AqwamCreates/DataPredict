@@ -233,6 +233,8 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 
 	for currentCorePointNumber = 1, numberOfData, 1 do
 		
+		self:iterationWait()
+		
 		if not visited[currentCorePointNumber] then
 			
 			visited[currentCorePointNumber] = true

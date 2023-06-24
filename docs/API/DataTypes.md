@@ -79,7 +79,7 @@ tokenInputSequenceArray2 = {3, 4}
 
 tokenOutputSequenceArray1 = {10, 2, 0}
 
-tokenOutputSequenceArray1 = {1, 2, 0, 1}
+tokenOutputSequenceArray2 = {1, 2, 0, 1}
 ```
 
 

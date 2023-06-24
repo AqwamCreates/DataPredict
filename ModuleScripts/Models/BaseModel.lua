@@ -63,9 +63,59 @@ function BaseModel.new()
 	NewBaseModel.MinimumModelParametersInitializationValue = nil
 
 	NewBaseModel.MaximumModelParametersInitializationValue = nil
+	
+	NewBaseModel.IterationWaitDuration = nil
+	
+	NewBaseModel.DataWaitDuration = nil
+	
+	NewBaseModel.SequenceWaitDuration = nil
 
 	return NewBaseModel
 	
+end
+
+function BaseModel:setWaitDuration(iterationWaitDuration, dataWaitDuration, sequenceWaitDuration)
+	
+	self.IterationWaitDuration = iterationWaitDuration
+
+	self.DataWaitDuration = dataWaitDuration
+
+	self.SequenceWaitDuration = sequenceWaitDuration
+	
+end
+
+function BaseModel:baseModelWait(waitDuration)
+	
+	if (waitDuration == nil) or (waitDuration == false) then return nil end
+	
+	if (type(waitDuration) == "number") then
+		
+		task.wait(waitDuration)
+		
+	else
+		
+		task.wait()
+		
+	end
+	
+end
+
+function BaseModel:iterationWait()
+	
+	self:baseModelWait(self.IterationWaitDuration)
+	
+end
+
+function BaseModel:dataWait()
+
+	self:baseModelWait(self.DataWaitDuration)
+
+end
+
+function BaseModel:sequenceWaitDuration()
+
+	self:baseModelWait(self.SequenceWaitDuration)
+
 end
 
 function BaseModel:getModelParameters()
@@ -209,4 +259,3 @@ function BaseModel:destroy()
 end
 
 return BaseModel
-

@@ -75,7 +75,7 @@ Contains a sequence of positive integers or nils (a.k.a tokens) in a table. It c
 ```
 tokenInputSequenceArray1 = {1, 0, 30, 2}
 
-2okenInputSequenceArray2 = {3, 4}
+tokenInputSequenceArray2 = {3, 4}
 
 tokenOutputSequenceArray1 = {10, 2, 0}
 

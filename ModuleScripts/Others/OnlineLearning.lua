@@ -169,8 +169,8 @@ end
 function OnlineLearning:addOutputToOnlineLearningQueue(output)
 
 	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error("Online Learning is not active!") end
-
-	if (typeof(output) ~= "number") and (self.IsSequentialModel == true) then error("Output must be a number!") end
+	
+	if (type(output) == "number") then output = {{output}} end
 
 	table.insert(self.OutputQueue, output)
 

@@ -144,9 +144,9 @@ function RecurrentNeuralNetworkModel:createLayers(inputSize, hiddenSize, outputS
 
 end
 
-function RecurrentNeuralNetworkModel:convertTokenToLogisticVector(token)
+function RecurrentNeuralNetworkModel:convertTokenToLogisticVector(size, token)
 
-	local logisticMatrix = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
+	local logisticMatrix = AqwamMatrixLibrary:createMatrix(size, 1)
 
 	if (token ~= nil) then
 
@@ -244,7 +244,19 @@ function RecurrentNeuralNetworkModel:setOptimizers(InputLayerOptimizer, HiddenLa
 
 end
 
-function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputSequenceArray)
+local function throwErrorIfSequenceLengthAreNotEqual(tokenInputSequenceArray, tokenOutputSequenceArray)
+	
+	if (tokenOutputSequenceArray == nil) then return nil end
+		
+	local tokenInputSequenceLength = #tokenInputSequenceArray
+		
+	local tokenOutputSequenceLength = #tokenOutputSequenceArray
+
+	if (tokenInputSequenceLength ~= tokenOutputSequenceLength) then error("The length of token input and output sequence arrays are not equal!") end
+	
+end
+
+function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, tableOfTokenOutputSequenceArray)
 
 	if (self.ModelParameters) then
 
@@ -278,62 +290,69 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 
 	local previousdba
 
-	local tokenInputSequenceLength = #tokenInputSequenceArray
-
-	local tokenOutputSequenceLength
-
-	if (tokenOutputSequenceArray) then
-
-		tokenOutputSequenceLength = #tokenOutputSequenceArray
-
-		if (tokenInputSequenceLength ~= tokenOutputSequenceLength) then error("The length of token input and output sequence arrays are not equal!") end
-
-	else
-
-		tokenOutputSequenceLength = 0
-
-	end
+	local token
 
 	local numberOfIterations = 0
 
 	local costArray = {}
+	
+	local tableOfTokenInputSequenceLogisticMatrices = {}
+	
+	local tableOfTokenOutputSequenceLogisticMatrices = {}
+	
+	for i, tokenInputSequenceArray in ipairs(tableOfTokenInputSequenceArray) do
+		
+		local tokenInputSequenceLogisticMatrices = {}
+		
+		for t = 1, #tokenInputSequenceArray, 1 do
 
-	local xTable = {}
+			local tokenInput = tokenInputSequenceArray[t]
 
-	local yTable = {}
+			local xt = self:convertTokenToLogisticVector(self.inputSize, tokenInput)
 
-	for t = 1, tokenInputSequenceLength, 1 do
-
-		local tokenInput = tokenInputSequenceArray[t]
-
-		local xt = self:convertTokenToLogisticVector(tokenInput)
-
-		table.insert(xTable, xt)
-
-	end
-
-	if (tokenOutputSequenceArray) then
-
-		for t = 1, tokenOutputSequenceLength, 1 do
-
-			local tokenOutput = tokenOutputSequenceArray[t]
-
-			local yt = self:convertTokenToLogisticVector(tokenOutput)
-
-			table.insert(yTable, yt)
+			table.insert(tokenInputSequenceLogisticMatrices, xt)
 
 		end
+		
+		table.insert(tableOfTokenInputSequenceLogisticMatrices, tokenInputSequenceLogisticMatrices)
+		
+	end
 
+	if (tableOfTokenOutputSequenceArray) then
+
+		for j, tokenOutputSequenceArray in ipairs(tableOfTokenOutputSequenceArray) do
+			
+			throwErrorIfSequenceLengthAreNotEqual(tableOfTokenInputSequenceArray[j], tokenOutputSequenceArray)
+
+			local tokenOutputSequenceLogisticMatrices = {}
+
+			for t = 1, #tokenOutputSequenceArray, 1 do
+
+				local tokenInput = tokenOutputSequenceArray[t]
+
+				local yt = self:convertTokenToLogisticVector(self.outputSize, tokenInput)
+
+				table.insert(tokenOutputSequenceLogisticMatrices, yt)
+
+			end
+
+			table.insert(tableOfTokenOutputSequenceLogisticMatrices, tokenOutputSequenceLogisticMatrices)
+
+		end
 
 	end
 
 	repeat
+		
+		self:iterationWait()
 
 		numberOfIterations += 1
 
 		local cost = 0
 
 		local partialCost = 0
+		
+		local totalNumberOfTokens = 0
 
 		local dWax = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.inputSize)
 
@@ -344,112 +363,128 @@ function RecurrentNeuralNetworkModel:train(tokenInputSequenceArray, tokenOutputS
 		local dba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
 		local dby = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
+		
+		for s = 1, #tableOfTokenInputSequenceArray, 1 do
+			
+			self:dataWait()
+			
+			local xTable = tableOfTokenInputSequenceLogisticMatrices[s]
+			
+			local yTable = tableOfTokenOutputSequenceLogisticMatrices[s]
+			
+			local aTable = {}
 
-		local aTable = {}
+			local ytPredictionTable = {}
 
-		local ytPredictionTable = {}
+			local daTable = {}
 
-		local daTable = {}
+			local tokenInput
 
-		local tokenInput
+			local xt
 
-		local xt
+			local aFirst = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
 
-		local aFirst = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
+			local aPrevious = aFirst
 
-		local aPrevious = aFirst
+			local aNext
 
-		local aNext
+			local ytPrediction
 
-		local ytPrediction
+			local daNext
 
-		local daNext
+			local dxt
 
-		local dxt
+			local daPrevious
 
-		local daPrevious
+			local dWaxt
 
-		local dWaxt
+			local dWaat
 
-		local dWaat
+			local dWyat
 
-		local dWyat
+			local dbat
 
-		local dbat
+			local dat
 
-		local dat
+			for t = 1, #xTable, 1 do
+				
+				self:sequenceWait()
 
-		for t = 1, tokenInputSequenceLength, 1 do
+				xt = xTable[t]
 
-			xt = xTable[t]
+				aNext = self:forwardPropagateCell(xt, aPrevious)
 
-			aNext = self:forwardPropagateCell(xt, aPrevious)
+				ytPrediction = self:calculatePrediction(aNext)
 
-			ytPrediction = self:calculatePrediction(aNext)
+				dat = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
-			dat = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+				aPrevious = aNext
 
-			aPrevious = aNext
+				table.insert(aTable, aNext)
 
-			table.insert(aTable, aNext)
+				table.insert(ytPredictionTable, ytPrediction)
 
-			table.insert(ytPredictionTable, ytPrediction)
+				table.insert(daTable, dat)
 
-			table.insert(daTable, dat)
-
-		end
-
-		for t = tokenInputSequenceLength, 1, -1 do
-
-			if (t > 1) then
-
-				aPrevious = aTable[t-1]
-
-			else
-
-				aPrevious = aFirst
-
-			end
-
-			ytPrediction = ytPredictionTable[t]
-
-			xt = xTable[t]
-
-			aNext = aTable[t]
-
-			daNext = daTable[t]
-
-			dxt, daPrevious, dWaxt, dWaat, dbat = self:backwardPropagateCell(daNext, aNext, aPrevious, xt)
-
-			if (t > 1) then daTable[t-1] = AqwamMatrixLibrary:add(daNext, daPrevious) end
-
-			dWax = AqwamMatrixLibrary:add(dWax, dWaxt)
-
-			dWaa = AqwamMatrixLibrary:add(dWaa, dWaat)
-
-			dba = AqwamMatrixLibrary:add(dba, dbat)
-
-			if (tokenOutputSequenceLength > 0) then
-
-				local yt = yTable[t]
-
-				dWyat = AqwamMatrixLibrary:subtract(ytPrediction, yt)
-
-			else
-
-				dWyat = AqwamMatrixLibrary:subtract(ytPrediction, xt)
+				totalNumberOfTokens += 1
 
 			end
 
-			dWya = AqwamMatrixLibrary:add(dWya, dWyat)
+			for t = #xTable, 1, -1 do
+				
+				self:sequenceWait()
 
-			partialCost = AqwamMatrixLibrary:sum(dWya) / self.outputSize
+				if (t > 1) then
 
-			cost = cost + partialCost
+					aPrevious = aTable[t-1]
 
+				else
+
+					aPrevious = aFirst
+
+				end
+
+				ytPrediction = ytPredictionTable[t]
+
+				xt = xTable[t]
+
+				aNext = aTable[t]
+
+				daNext = daTable[t]
+
+				dxt, daPrevious, dWaxt, dWaat, dbat = self:backwardPropagateCell(daNext, aNext, aPrevious, xt)
+
+				if (t > 1) then daTable[t-1] = AqwamMatrixLibrary:add(daNext, daPrevious) end
+
+				dWax = AqwamMatrixLibrary:add(dWax, dWaxt)
+
+				dWaa = AqwamMatrixLibrary:add(dWaa, dWaat)
+
+				dba = AqwamMatrixLibrary:add(dba, dbat)
+
+				if (yTable) then
+
+					local yt = yTable[t]
+
+					dWyat = AqwamMatrixLibrary:subtract(ytPrediction, yt)
+
+				else
+
+					dWyat = AqwamMatrixLibrary:subtract(ytPrediction, xt)
+
+				end
+
+				dWya = AqwamMatrixLibrary:add(dWya, dWyat)
+
+				partialCost = AqwamMatrixLibrary:sum(dWya) / self.outputSize
+
+				cost = cost + partialCost
+
+			end
+			
 		end
 
-		cost = cost / tokenInputSequenceLength
+		cost = cost / totalNumberOfTokens
 
 		dWax = AqwamMatrixLibrary:multiply(self.learningRate, dWax)
 
@@ -567,7 +602,7 @@ function RecurrentNeuralNetworkModel:predict(tokenInputSequenceArray)
 
 		local tokenInput = tokenInputSequenceArray[i]
 
-		local xt = self:convertTokenToLogisticVector(tokenInput)
+		local xt = self:convertTokenToLogisticVector(self.inputSize, tokenInput)
 
 		local aNext = self:forwardPropagateCell(xt, aPrevious)
 
@@ -575,7 +610,9 @@ function RecurrentNeuralNetworkModel:predict(tokenInputSequenceArray)
 
 		local _, predictedTokenIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(ytPrediction)
 
-		local predictedToken = predictedTokenIndex[1]
+		local predictedToken = nil
+		
+		if predictedTokenIndex then predictedToken = predictedTokenIndex[1] end
 
 		table.insert(predictionArray, predictedToken)
 

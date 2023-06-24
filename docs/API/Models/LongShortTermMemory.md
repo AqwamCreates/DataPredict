@@ -149,7 +149,7 @@ LongShortTermMemory:predict(tokenInputSequenceArray: integer[]): integer[]
 
 * Ensure that the length of input tokens is equal to ouput tokens if output tokens are used.
 
-* For an uneven lengths of tokens, I recommend that you "pad" the token arrays with nil values. For example, if we have input tokens {1, 3, 4} and output tokens {6, 2, 3, 4}, then use {1, 3, 4, nil, nil, nil, nil} and {nil, nil, nil, 6, 2, 3, 4}.
+* For an uneven lengths of tokens, I recommend that you "pad" the token arrays with 0. For example, if we have input tokens {1, 3, 4} and output tokens {6, 2, 3, 4}, then use {1, 3, 4, 0, 0, 0, 0} and {0, 0, 0, 6, 2, 3, 4}.
 
 ## Inherited From
 

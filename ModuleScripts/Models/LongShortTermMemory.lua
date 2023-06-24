@@ -126,9 +126,11 @@ end
 
 function LongShortTermMemoryModel:convertTokenToLogisticVector(size, token)
 
+	if (type(token) == nil) then error("A token is not an integer!") end
+
 	local logisticMatrix = AqwamMatrixLibrary:createMatrix(size, 1)
 
-	if (token ~= nil) then
+	if (token ~= 0) then
 
 		logisticMatrix[token][1] = 1
 

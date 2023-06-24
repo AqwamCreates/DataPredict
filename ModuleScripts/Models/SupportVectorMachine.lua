@@ -81,18 +81,14 @@ local kernelFunctionList = {
 	end,
 
 	["cosineSimilarity"] = function(x1)
+
+		local dotProductMatrix = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x1))
+
+		local magnitudeMatrix = AqwamMatrixLibrary:applyFunction(math.sqrt, AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x1)))
 		
-		local x2 = x1
+		local multiplyMatrix = AqwamMatrixLibrary:multiply(magnitudeMatrix, magnitudeMatrix)
 
-		local dotProductMatrix = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
-
-		local magnitudeMatrix1 = AqwamMatrixLibrary:applyFunction(math.sqrt, AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x1)))
-
-		local magnitudeMatrix2 = AqwamMatrixLibrary:applyFunction(math.sqrt, AqwamMatrixLibrary:dotProduct(x2, AqwamMatrixLibrary:transpose(x2)))
-		
-		local multiplyMatrix = AqwamMatrixLibrary:multiply(magnitudeMatrix1, magnitudeMatrix2)
-
-		return AqwamMatrixLibrary:dotProduct(dotProductMatrix, multiplyMatrix)
+		return AqwamMatrixLibrary:divide(dotProductMatrix, multiplyMatrix)
 
 	end,
 
@@ -370,13 +366,13 @@ function SupportVectorMachineModel:predict(featureMatrix)
 		
 		local dotProductMatrix = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
 		
-		local magnitudeMatrix1 = AqwamMatrixLibrary:applyFunction(math.sqrt, AqwamMatrixLibrary:dotProduct(featureMatrix, AqwamMatrixLibrary:transpose(featureMatrix)))
+		local magnitude1 = math.sqrt(AqwamMatrixLibrary:dotProduct(featureMatrix, AqwamMatrixLibrary:transpose(featureMatrix)))
 		
-		local magnitudeMatrix2 = AqwamMatrixLibrary:applyFunction(math.sqrt, AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(self.ModelParameters), self.ModelParameters))
+		local magnitude2 = math.sqrt(AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(self.ModelParameters), self.ModelParameters))
 		
-		local multiplyMatrix = AqwamMatrixLibrary:multiply(magnitudeMatrix1, magnitudeMatrix2)
+		local multiplyMatrix = magnitude1 * magnitude2
 		
-		calculatedKernel = AqwamMatrixLibrary:dotProduct(dotProductMatrix, multiplyMatrix)
+		calculatedKernel = dotProductMatrix / multiplyMatrix
 		
 	else
 		

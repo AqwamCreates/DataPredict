@@ -9,7 +9,7 @@ SupportVectorMachine is a supervised machine learning model that predicts values
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-SupportVectorMachine.new(maxNumberOfIterations: integer, learningRate: number, cValue: number, distanceFunction: string, targetCost: number): ModelObject
+SupportVectorMachine.new(maxNumberOfIterations: integer, learningRate: number, cValue: number, targetCost: number, kernelFunction: string, kernelParameters: table): ModelObject
 ```
 
 #### Parameters:
@@ -20,9 +20,11 @@ SupportVectorMachine.new(maxNumberOfIterations: integer, learningRate: number, c
 
 * cValue: How strict should the model can classify the data correctly. Higher the cValue, less stricter the model can classify the data correctly.
 
-* distanceFunction: The function to calculate the cost and cost derivatives of each training. Available options are "manhattan" and "euclidean".
-
 * targetCost: The cost at which the model stops training.
+
+* kernelFunction: The kernel function to be used to train the model. Available options are "linear", "polynomial", "rbf" and "cosineSimilarity".
+
+* kernelParameters: A table containg the required parameters 
 
 #### Returns:
 
@@ -35,7 +37,7 @@ SupportVectorMachine.new(maxNumberOfIterations: integer, learningRate: number, c
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-SupportVectorMachine:setParameters(maxNumberOfIterations: integer, learningRate: number, cValue: number, distanceFunction: string, targetCost: number)
+SupportVectorMachine:setParameters(maxNumberOfIterations: integer, learningRate: number, cValue: number, targetCost: number,  kernelFunction: string, kernelParameters: table)
 ```
 
 #### Parameters:
@@ -46,9 +48,11 @@ SupportVectorMachine:setParameters(maxNumberOfIterations: integer, learningRate:
 
 * cValue: How strict should the model can classify the data correctly. Higher the cValue, less stricter the model can classify the data correctly.
 
-* distanceFunction: The function to calculate the cost and cost derivaties of each training. Available options are "manhattan" and "euclidean".
-
 * targetCost: The cost at which the model stops training.
+
+* kernelFunction: The kernel function to be used to train the model. Available options are "linear", "polynomial", "rbf" and "cosineSimilarity".
+
+* kernelParameters: A table containg the required parameters 
 
 ### setCValue()
 

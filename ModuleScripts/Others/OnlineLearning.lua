@@ -6,7 +6,7 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibrary
 
 local modelDivergedWarningText = "The model diverged! Reverting to previous model parameters! Please repeat the experiment again or change the argument values if this warning occurs often."
 
-function OnlineLearning.new(Model, isOutputRequired, batchSize, isSequentialModel)
+function OnlineLearning.new(Model, isOutputRequired, batchSize)
 
 	if (Model == nil) then error("Please set a model") end
 
@@ -30,89 +30,7 @@ function OnlineLearning.new(Model, isOutputRequired, batchSize, isSequentialMode
 
 	NewOnlineLearning.BatchSize = batchSize or 1
 
-	NewOnlineLearning.IsSequentialModel = isSequentialModel or false
-
 	return NewOnlineLearning
-
-end
-
-function OnlineLearning:startNonSequentialTraining()
-
-	local featureMatrix = {}
-
-	local labelVector = {}
-
-	local costArray
-	
-	local minimumBatchSize = math.min(self.BatchSize, #self.InputQueue)
-
-	for data = 1, minimumBatchSize, 1 do
-
-		table.insert(featureMatrix, self.InputQueue[1][1])
-
-		table.remove(self.InputQueue, 1)
-
-		if (self.IsOutputRequired == true) then
-
-			table.insert(labelVector, {self.OutputQueue[1]}) 
-
-			table.remove(self.OutputQueue, 1)
-
-		end
-
-	end
-
-	costArray = self.Model:train(featureMatrix, labelVector)
-	
-	if (costArray[1] == math.huge) then
-
-		self.Model:setModelParameters(self.PreviousModelParameters)
-
-		warn(modelDivergedWarningText) 
-
-	end
-
-	return costArray
-
-end
-
-function OnlineLearning:startSequentialTraining()
-
-	local tokenInputSequenceArray
-
-	local tokenOutputSequenceArray
-
-	local costArray
-	
-	local minimumBatchSize = math.min(self.BatchSize, #self.InputQueue)
-
-	for data = 1, minimumBatchSize, 1 do
-		
-		tokenInputSequenceArray = self.InputQueue[1]
-
-		table.remove(self.InputQueue, 1)
-
-		if (self.IsOutputRequired == true) then 
-			
-			tokenOutputSequenceArray = self.OutputQueue[1]
-			
-			table.remove(self.OutputQueue, 1)
-			
-		end
-		
-		costArray = self.Model:train(tokenInputSequenceArray, tokenOutputSequenceArray)
-		
-		if (costArray[1] == math.huge) then
-
-			self.Model:setModelParameters(self.PreviousModelParameters)
-
-			warn(modelDivergedWarningText) 
-
-		end
-
-	end
-
-	return costArray
 
 end
 
@@ -162,13 +80,37 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 
 			self.PreviousModelParameters = self.Model:getModelParameters()
 
-			if self.IsSequentialModel then
+			local input = {}
 
-				costArray = self:startSequentialTraining()
+			local output = {}
 
-			else
-				
-				costArray = self:startNonSequentialTraining()
+			local costArray
+
+			local minimumBatchSize = math.min(self.BatchSize, #self.InputQueue)
+
+			for data = 1, minimumBatchSize, 1 do
+
+				table.insert(input, self.InputQueue[1])
+
+				table.remove(self.InputQueue, 1)
+
+				if (self.IsOutputRequired == true) then
+
+					table.insert(output, self.OutputQueue[1]) 
+
+					table.remove(self.OutputQueue, 1)
+
+				end
+
+			end
+
+			costArray = self.Model:train(input, output)
+
+			if (costArray[1] == math.huge) then
+
+				self.Model:setModelParameters(self.PreviousModelParameters)
+
+				warn(modelDivergedWarningText) 
 
 			end
 

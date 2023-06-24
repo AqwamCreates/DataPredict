@@ -346,7 +346,11 @@ function KMedoidsModel:train(featureMatrix)
 	
 	for iteration = 1, self.numberOfClusters, 1 do
 		
+		self:iterationWait()
+		
 		for row = 1, #featureMatrix, 1 do
+			
+			self:dataWait()
 
 			featureRowVector = {featureMatrix[row]}
 

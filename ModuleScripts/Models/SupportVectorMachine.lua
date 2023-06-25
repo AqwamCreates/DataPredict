@@ -12,7 +12,7 @@ local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.3
 
-local defaultCvalue = 0.0
+local defaultCvalue = 1
 
 local defaultTargetCost = 0
 
@@ -45,37 +45,37 @@ local kernelFunctionList = {
 	["rbf"] = function(x1, gamma)
 
 		local numberOfRows = #x1
-		
+
 		local pairwiseDistances = {}
 
 		for i = 1, numberOfRows, 1 do
-			
+
 			pairwiseDistances[i] = {}
-			
+
 			local x2 = {x1[i]}
-			
+
 			for j = 1, numberOfRows, 1 do
-				
+
 				local x3 = {x1[j]}
-				
+
 				local distance = AqwamMatrixLibrary:subtract(x2, x3)
-				
+
 				local squaredDistance = AqwamMatrixLibrary:power(distance, 2)
-				
+
 				local sumSquaredDistance = AqwamMatrixLibrary:sum(squaredDistance)
-				
+
 				pairwiseDistances[i][j] = math.sqrt(sumSquaredDistance)
-				
+
 			end
-			
+
 		end
 
 		local squaredDistances = AqwamMatrixLibrary:power(pairwiseDistances, 2)
-		
+
 		local exponent = AqwamMatrixLibrary:multiply(-gamma, squaredDistances)
-		
+
 		local k = AqwamMatrixLibrary:applyFunction(math.exp, exponent)
-		
+
 		return k
 
 	end,
@@ -85,7 +85,7 @@ local kernelFunctionList = {
 		local dotProductMatrix = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x1))
 
 		local magnitudeMatrix = AqwamMatrixLibrary:applyFunction(math.sqrt, AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x1)))
-		
+
 		local multiplyMatrix = AqwamMatrixLibrary:multiply(magnitudeMatrix, magnitudeMatrix)
 
 		return AqwamMatrixLibrary:divide(dotProductMatrix, multiplyMatrix)
@@ -103,13 +103,13 @@ local mappingList = {
 	end,
 
 	["polynomial"] = function(x, degree)
-		
+
 		return AqwamMatrixLibrary:power(x, degree)
 
 	end,
 
 	["rbf"] = function(x, gamma)
-		
+
 		local multiplied = AqwamMatrixLibrary:multiply(x, -gamma)
 
 		return AqwamMatrixLibrary:applyFunction(math.exp, multiplied)
@@ -117,7 +117,7 @@ local mappingList = {
 	end,
 
 	["cosineSimilarity"] = function(x)
-		
+
 		return x
 
 	end,
@@ -169,45 +169,45 @@ local function calculateMapping(x, kernelFunction, kernelParameters)
 end
 
 local function calculateCost(modelParameters, featureMatrix, labelVector, cValue, kernelFunction, kernelParameters)
-	
+
 	local cost
-	
+
 	local predictedValue
-	
+
 	local featureVector
-	
+
 	local mappedFeatureVector
-	
+
 	local regularizationTerm 
-	
+
 	local sumError
-	
+
 	local numberOfData = #featureMatrix
 
 	local squaredErrorVector = AqwamMatrixLibrary:createMatrix(numberOfData, 1)
-	
+
 	local dotProductedModelParameters = AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(modelParameters), modelParameters)
 
 	local divisionConstant = (1 / 2)
-	
+
 	for i = 1, numberOfData, 1 do
-		
+
 		featureVector = {featureMatrix[i]}
-		
+
 		mappedFeatureVector = calculateMapping(featureVector, kernelFunction, kernelParameters)
-		
+
 		predictedValue = AqwamMatrixLibrary:dotProduct(mappedFeatureVector, modelParameters)
-		
+
 		squaredErrorVector[i][1] = (predictedValue - labelVector[i][1])^2
-		
+
 	end
-	
+
 	sumError = AqwamMatrixLibrary:sum(squaredErrorVector)
-	
+
 	cost = divisionConstant * sumError
-	
+
 	regularizationTerm = cValue * divisionConstant * dotProductedModelParameters
-	
+
 	cost += regularizationTerm
 
 	return cost
@@ -221,7 +221,7 @@ local function gradientDescent(modelParameters, featureMatrix, labelVector, cVal
 	local numberOfFeatures = #featureMatrix[1]
 
 	local kernelMatrix = calculateKernel(featureMatrix, kernelFunction, kernelParameters)
-	
+
 	local transposedModelMatrix = AqwamMatrixLibrary:transpose(modelParameters)
 
 	local transposedLabelVector = AqwamMatrixLibrary:transpose(labelVector)
@@ -242,17 +242,15 @@ local function gradientDescent(modelParameters, featureMatrix, labelVector, cVal
 
 	local multipliedFeatureAndGradientMatrix = AqwamMatrixLibrary:multiply(gradientMatrix, featureMatrix)
 
-	local costFunctionDerivatives = AqwamMatrixLibrary:verticalSum(multipliedFeatureAndGradientMatrix)
-	
-	local regularizationTerm = AqwamMatrixLibrary:multiply((cValue / numberOfData), modelParameters)
+	local NewModelParameters = AqwamMatrixLibrary:verticalSum(multipliedFeatureAndGradientMatrix)
 
-	costFunctionDerivatives = AqwamMatrixLibrary:divide(costFunctionDerivatives, numberOfData)
+	NewModelParameters = AqwamMatrixLibrary:divide(NewModelParameters, cValue)
 
-	costFunctionDerivatives = AqwamMatrixLibrary:transpose(costFunctionDerivatives)
-	
-	costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, regularizationTerm)
+	NewModelParameters = AqwamMatrixLibrary:transpose(NewModelParameters)
 
-	return costFunctionDerivatives
+	NewModelParameters = AqwamMatrixLibrary:multiply(-1, NewModelParameters)
+
+	return NewModelParameters
 
 end
 
@@ -284,9 +282,9 @@ function SupportVectorMachineModel.new(maxNumberOfIterations, learningRate, cVal
 end
 
 function SupportVectorMachineModel:setOptimizer(Optimizer)
-	
+
 	self.Optimizer = Optimizer
-	
+
 end
 
 function SupportVectorMachineModel:setParameters(maxNumberOfIterations, learningRate, cValue, targetCost, kernelFunction, kernelParameters)
@@ -344,7 +342,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	end
 
 	repeat
-		
+
 		self:iterationWait()
 
 		numberOfIterations += 1
@@ -358,10 +356,10 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 		end
 
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
-		
+
 		previousCostFunctionDerivatives = costFunctionDerivatives
 
-		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, costFunctionDerivatives)
+		self.ModelParameters = costFunctionDerivatives
 
 		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.cValue, self.kernelFunction, self.kernelParameters)
 
@@ -387,23 +385,23 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 end
 
 function SupportVectorMachineModel:predict(featureMatrix)
-	
+
 	local mappedFeatureVector = calculateMapping(featureMatrix, self.kernelFunction, self.kernelParameters)
 
 	local predictedValue = AqwamMatrixLibrary:dotProduct(mappedFeatureVector, self.ModelParameters)
-	
+
 	if (predictedValue > 0) then
-		
+
 		return 1
-		
+
 	elseif (predictedValue < 0) then
-		
+
 		return -1
-		
+
 	else
-		
+
 		return 0
-		
+
 	end
 
 end

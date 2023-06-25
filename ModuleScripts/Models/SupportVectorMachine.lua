@@ -94,6 +94,36 @@ local kernelFunctionList = {
 
 }
 
+local nonLinearMappingList = {
+
+	["linear"] = function(x)
+
+		return x
+
+	end,
+
+	["polynomial"] = function(x, degree)
+		
+		return AqwamMatrixLibrary:power(x, degree)
+
+	end,
+
+	["rbf"] = function(x, gamma)
+		
+		local multiplied = AqwamMatrixLibrary:multiply(x, -gamma)
+
+		return AqwamMatrixLibrary:applyFunction(math.exp, multiplied)
+
+	end,
+
+	["cosineSimilarity"] = function(x)
+		
+		return x
+
+	end,
+
+}
+
 local function calculateKernel(x, kernelFunction, kernelParameters)
 
 	if (kernelFunction == "linear") or (kernelFunction == "cosineSimilarity") then
@@ -116,45 +146,67 @@ local function calculateKernel(x, kernelFunction, kernelParameters)
 
 end
 
-local function calculateCost(modelParameters, featureMatrix, labelVector, cValue, kernelFunction, kernelParameters)
+local function calculateNonLinearMapping(x, kernelFunction, kernelParameters)
 
-	local numberOfData = #featureMatrix
-	
-	local hypothesisVector = AqwamMatrixLibrary:dotProduct(featureMatrix, modelParameters)
-	
-	local subtractedVector = AqwamMatrixLibrary:subtract(hypothesisVector, labelVector)
-
-	local squaredDistanceMatrix = AqwamMatrixLibrary:power(subtractedVector, 2)
-
-	local sumSquaredDistance = AqwamMatrixLibrary:sum(squaredDistanceMatrix)
-	
-	local squaredModelParameters = AqwamMatrixLibrary:power(modelParameters, 2)
-	
-	local sumSquaredModelParameters = AqwamMatrixLibrary:sum(squaredModelParameters)
-	
-	local divisionConstant = (1 / (2 * numberOfData))
-	
-	local regularizationTerm = cValue * divisionConstant * sumSquaredModelParameters
-	
-	local cost 
-	
 	if (kernelFunction == "linear") or (kernelFunction == "cosineSimilarity") then
-		
-		cost = divisionConstant * sumSquaredDistance
-		
+
+		return nonLinearMappingList[kernelFunction](x)
+
 	elseif (kernelFunction == "polynomial") then
-		
+
 		local degree = kernelParameters.degree or defaultDegree
-		
-		cost = divisionConstant * AqwamMatrixLibrary:sum(AqwamMatrixLibrary:power(subtractedVector, degree))
-		
+
+		return nonLinearMappingList[kernelFunction](x, degree)
+
 	elseif (kernelFunction == "rbf") then
-		
+
 		local gamma = kernelParameters.gamma or defaultGamma
+
+		return nonLinearMappingList[kernelFunction](x, gamma)
+
+	end
+
+end
+
+local function calculateCost(modelParameters, featureMatrix, labelVector, cValue, kernelFunction, kernelParameters)
+	
+	local cost
+	
+	local predictedValue
+	
+	local featureVector
+	
+	local nonLinearFeatureVector
+	
+	local regularizationTerm 
+	
+	local sumError
+	
+	local numberOfData = #featureMatrix
+
+	local squaredErrorVector = AqwamMatrixLibrary:createMatrix(numberOfData, 1)
+	
+	local dotProductedModelParameters = AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(modelParameters), modelParameters)
+
+	local divisionConstant = (1 / 2)
+	
+	for i = 1, numberOfData, 1 do
 		
-		cost = divisionConstant * AqwamMatrixLibrary:sum(AqwamMatrixLibrary:multiply(subtractedVector, subtractedVector)) / gamma
+		featureVector = {featureMatrix[i]}
+		
+		nonLinearFeatureVector = calculateNonLinearMapping(featureVector, kernelFunction, kernelParameters)
+		
+		predictedValue = AqwamMatrixLibrary:dotProduct(nonLinearFeatureVector, modelParameters)
+		
+		squaredErrorVector[i][1] = (predictedValue - labelVector[i][1])^2
 		
 	end
+	
+	sumError = AqwamMatrixLibrary:sum(squaredErrorVector)
+	
+	cost = divisionConstant * sumError
+	
+	regularizationTerm = cValue * divisionConstant * dotProductedModelParameters
 	
 	cost += regularizationTerm
 
@@ -335,58 +387,16 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 end
 
 function SupportVectorMachineModel:predict(featureMatrix)
-
-	local calculatedKernel
-
-	if (self.kernelFunction == "linear") then
-		
-		calculatedKernel = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
-		
-	elseif (self.kernelFunction == "polynomial") then
-		
-		local result = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
-		
-		local degree = self.kernelParameters.degree or defaultDegree
-		
-		calculatedKernel = math.pow(result, degree)
-		
-	elseif (self.kernelFunction == "rbf") then
-		
-		local gamma = self.kernelParameters.gamma or defaultGamma
-		
-		local transposedModelParameters = AqwamMatrixLibrary:transpose(self.ModelParameters)
-		
-		local part1 = AqwamMatrixLibrary:subtract(featureMatrix, transposedModelParameters)
-		
-		local part2 = AqwamMatrixLibrary:power(part1, 2)
-		
-		local sum = AqwamMatrixLibrary:sum(part2)
-		
-		calculatedKernel = math.exp(-gamma * sum)
-		
-	elseif (self.kernelFunction == "cosineSimilarity") then
-		
-		local dotProductMatrix = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
-		
-		local magnitude1 = math.sqrt(AqwamMatrixLibrary:dotProduct(featureMatrix, AqwamMatrixLibrary:transpose(featureMatrix)))
-		
-		local magnitude2 = math.sqrt(AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(self.ModelParameters), self.ModelParameters))
-		
-		local multiplyMatrix = magnitude1 * magnitude2
-		
-		calculatedKernel = dotProductMatrix / multiplyMatrix
-		
-	else
-		
-		error("Invalid kernel function!")
-		
-	end
 	
-	if (calculatedKernel > 0) then
+	local nonLinearFeatureVector = calculateNonLinearMapping(featureMatrix, self.kernelFunction, self.kernelParameters)
+
+	local predictedValue = AqwamMatrixLibrary:dotProduct(nonLinearFeatureVector, self.ModelParameters)
+	
+	if (predictedValue > 0) then
 		
 		return 1
 		
-	elseif (calculatedKernel < 0) then
+	elseif (predictedValue < 0) then
 		
 		return -1
 		

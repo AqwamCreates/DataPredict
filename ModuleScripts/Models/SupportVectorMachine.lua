@@ -94,7 +94,7 @@ local kernelFunctionList = {
 
 }
 
-local nonLinearMappingList = {
+local mappingList = {
 
 	["linear"] = function(x)
 
@@ -146,23 +146,23 @@ local function calculateKernel(x, kernelFunction, kernelParameters)
 
 end
 
-local function calculateNonLinearMapping(x, kernelFunction, kernelParameters)
+local function calculateMapping(x, kernelFunction, kernelParameters)
 
 	if (kernelFunction == "linear") or (kernelFunction == "cosineSimilarity") then
 
-		return nonLinearMappingList[kernelFunction](x)
+		return mappingList[kernelFunction](x)
 
 	elseif (kernelFunction == "polynomial") then
 
 		local degree = kernelParameters.degree or defaultDegree
 
-		return nonLinearMappingList[kernelFunction](x, degree)
+		return mappingList[kernelFunction](x, degree)
 
 	elseif (kernelFunction == "rbf") then
 
 		local gamma = kernelParameters.gamma or defaultGamma
 
-		return nonLinearMappingList[kernelFunction](x, gamma)
+		return mappingList[kernelFunction](x, gamma)
 
 	end
 
@@ -176,7 +176,7 @@ local function calculateCost(modelParameters, featureMatrix, labelVector, cValue
 	
 	local featureVector
 	
-	local nonLinearFeatureVector
+	local mappedFeatureVector
 	
 	local regularizationTerm 
 	
@@ -194,9 +194,9 @@ local function calculateCost(modelParameters, featureMatrix, labelVector, cValue
 		
 		featureVector = {featureMatrix[i]}
 		
-		nonLinearFeatureVector = calculateNonLinearMapping(featureVector, kernelFunction, kernelParameters)
+		mappedFeatureVector = calculateMapping(featureVector, kernelFunction, kernelParameters)
 		
-		predictedValue = AqwamMatrixLibrary:dotProduct(nonLinearFeatureVector, modelParameters)
+		predictedValue = AqwamMatrixLibrary:dotProduct(mappedFeatureVector, modelParameters)
 		
 		squaredErrorVector[i][1] = (predictedValue - labelVector[i][1])^2
 		
@@ -388,9 +388,9 @@ end
 
 function SupportVectorMachineModel:predict(featureMatrix)
 	
-	local nonLinearFeatureVector = calculateNonLinearMapping(featureMatrix, self.kernelFunction, self.kernelParameters)
+	local mappedFeatureVector = calculateMapping(featureMatrix, self.kernelFunction, self.kernelParameters)
 
-	local predictedValue = AqwamMatrixLibrary:dotProduct(nonLinearFeatureVector, self.ModelParameters)
+	local predictedValue = AqwamMatrixLibrary:dotProduct(mappedFeatureVector, self.ModelParameters)
 	
 	if (predictedValue > 0) then
 		

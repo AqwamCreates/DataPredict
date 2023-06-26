@@ -30,6 +30,8 @@
 
 [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) (a.k.a. DBSCAN)
 
+[MeanShift](Models/MeanShift.md)
+
 [ExpectationMaximization](Models/ExpectationMaximization.md)
 
 [KMeans](Models/KMeans.md)

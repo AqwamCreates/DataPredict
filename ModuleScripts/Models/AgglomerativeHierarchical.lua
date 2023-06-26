@@ -117,7 +117,7 @@ local function areModelParametersMatricesEqualInSizeAndValues(ModelParameters, P
 	
 	if (PreviousModelParameters == nil) then return areModelParametersEqual end
 
-	if (#ModelParameters ~= #PreviousModelParameters) and (#ModelParameters[1] ~= #PreviousModelParameters[1]) then return areModelParametersEqual end
+	if (#ModelParameters ~= #PreviousModelParameters) or (#ModelParameters[1] ~= #PreviousModelParameters[1]) then return areModelParametersEqual end
 
 	areModelParametersEqual = AqwamMatrixLibrary:areMatricesEqual(ModelParameters, PreviousModelParameters)
 	

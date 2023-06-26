@@ -287,27 +287,11 @@ end
 
 local function checkIfModelParametersAreEqual(ModelParameters, PreviousModelParameters)
 	
-	local areEqual = true
+	if (PreviousModelParameters == nil) then return false end
 	
-	for i = 1, #ModelParameters, 1 do
-		
-		local centroid = {ModelParameters[i]}
-		
-		for j = 1, #PreviousModelParameters, 1 do
-			
-			local previousCentroid = {PreviousModelParameters[j]}
-			
-			areEqual = AqwamMatrixLibrary:areMatricesEqual(centroid, previousCentroid)
-			
-			if (areEqual == false) then break end
-			
-		end
-		
-		if (areEqual == false) then break end
-		
-	end
+	if (#ModelParameters ~= #PreviousModelParameters) then return false end
 	
-	return areEqual
+	return AqwamMatrixLibrary:areMatricesEqual(ModelParameters, PreviousModelParameters)
 	
 end
 

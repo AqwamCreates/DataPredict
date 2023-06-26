@@ -155,7 +155,7 @@ function AgglomerativeHierarchicalModel:setParameters(numberOfClusters, distance
 
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 
-	self.stopWhenModelParametersDoesNotChange =  BaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
+	self.stopWhenModelParametersDoesNotChange =  self:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
 
 end
 

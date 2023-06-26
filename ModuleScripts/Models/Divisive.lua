@@ -92,11 +92,11 @@ end
 
 local function findFarthestCluster(clusters, distanceFunction, linkageMethod)
 	
-	local clusterIndex1
+	local clusterIndex1 = 1
 
-	local clusterIndex2
+	local clusterIndex2 = 1
 	
-	local maxDistance = -1
+	local maxDistance = calculateDistance({clusters[clusterIndex2]}, {clusters[clusterIndex2]}, distanceFunction)
 	
 	for i = 1, #clusters do
 		
@@ -106,7 +106,7 @@ local function findFarthestCluster(clusters, distanceFunction, linkageMethod)
 			
 			local linkageDistance = linkageMethodList[linkageMethod](distance, maxDistance)
 			
-			if not maxDistance or (linkageDistance > maxDistance) then
+			if (linkageDistance > maxDistance) then
 				
 				maxDistance = distance
 				

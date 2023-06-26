@@ -327,11 +327,11 @@ function KMeansModel:setParameters(maxNumberOfIterations, learningRate, numberOf
 
 	self.learningRate = learningRate or self.learningRate
 
-	self.stopWhenModelParametersDoesNotChange =  BaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
+	self.stopWhenModelParametersDoesNotChange =  self:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
 
-	self.setInitialClustersOnDataPoints =  BaseModel:getBooleanOrDefaultOption(setInitialClustersOnDataPoints, self.setInitialClustersOnDataPoints)
+	self.setInitialClustersOnDataPoints =  self:getBooleanOrDefaultOption(setInitialClustersOnDataPoints, self.setInitialClustersOnDataPoints)
 
-	self.setTheCentroidsDistanceFarthest =  BaseModel:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
+	self.setTheCentroidsDistanceFarthest =  self:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
 	
 end
 

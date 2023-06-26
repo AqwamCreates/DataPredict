@@ -18,7 +18,9 @@ local defaultDistanceFunction = "euclidean"
 
 local defaultStopWhenModelParametersDoesNotChange = true
 
-local defaultBandwidth = 0.3
+local defaultBandwidth = 5
+
+local defaultBandwidthStep = 100
 
 local distanceFunctionList = {
 
@@ -181,7 +183,9 @@ local function removeDuplicateRows(ModelParameters)
 	
 end
 
-local function mergeCentroids(ModelParameters, featureMatrix, bandwidth, distanceFunction)
+local function mergeCentroids(ModelParameters, featureMatrix, bandwidth, weights, distanceFunction)
+	
+	local bandwidthStep = #weights
 	
 	local NewModelParameters = {}
 	
@@ -197,7 +201,25 @@ local function mergeCentroids(ModelParameters, featureMatrix, bandwidth, distanc
 			
 			local distance = calculateDistance(featureVector, centroid, distanceFunction)
 			
-			if (distance <= bandwidth) then table.insert(inBandwidth, featureVector[1]) end
+			if (bandwidthStep <= 0) then
+				
+				if (distance <= bandwidth) then table.insert(inBandwidth, featureVector[1]) end
+				
+			else
+				
+				if (distance == 0) then distance = 0.00000001 end
+				
+				local weightIndex = math.floor(distance/bandwidth)
+				
+				if (weightIndex > (bandwidthStep - 1)) then weightIndex = (bandwidthStep - 1) end
+				
+				local multiplyFactor = math.pow(weights[weightIndex], 2)
+				
+				local newCentroid = AqwamMatrixLibrary:multiply(featureVector, multiplyFactor)
+				
+				table.insert(inBandwidth, newCentroid[1]) 
+				
+			end
 			
 		end
 		
@@ -221,7 +243,7 @@ local function mergeCentroids(ModelParameters, featureMatrix, bandwidth, distanc
 	
 end
 
-function MeanShiftModel.new(maxNumberOfIterations, bandwidth, distanceFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
+function MeanShiftModel.new(maxNumberOfIterations, bandwidth, bandwidthStep, distanceFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
 	
 	local NewMeanShiftModel = BaseModel.new()
 	
@@ -237,13 +259,15 @@ function MeanShiftModel.new(maxNumberOfIterations, bandwidth, distanceFunction, 
 
 	NewMeanShiftModel.bandwidth = bandwidth or defaultBandwidth
 	
+	NewMeanShiftModel.bandwidthStep = bandwidthStep or defaultBandwidthStep
+	
 	NewMeanShiftModel.stopWhenModelParametersDoesNotChange =  BaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, defaultStopWhenModelParametersDoesNotChange)
 	
 	return NewMeanShiftModel
 	
 end
 
-function MeanShiftModel:setParameters(maxNumberOfIterations, bandwidth, distanceFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
+function MeanShiftModel:setParameters(maxNumberOfIterations, bandwidth, bandwidthStep, distanceFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -254,6 +278,8 @@ function MeanShiftModel:setParameters(maxNumberOfIterations, bandwidth, distance
 	self.distanceFunction = distanceFunction or self.distanceFunction
 
 	self.bandwidth = bandwidth or self.bandwidth
+	
+	self.bandwidthStep = bandwidthStep or self.bandwidthStep
 
 	self.stopWhenModelParametersDoesNotChange =  BaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
 	
@@ -297,6 +323,8 @@ function MeanShiftModel:train(featureMatrix)
 	
 	local costArray = {}
 	
+	local weights = {}
+	
 	local numberOfIterations = 0
 	
 	if (self.ModelParameters) then
@@ -309,6 +337,20 @@ function MeanShiftModel:train(featureMatrix)
 		
 	end
 	
+	if (self.bandwidth <= 0) then
+		
+		local verticalMean = AqwamMatrixLibrary:verticalMean(featureMatrix)
+		
+		local zeroMatrix = AqwamMatrixLibrary:createMatrix(1, #featureMatrix[1])
+		
+		local distance = calculateDistance(verticalMean, zeroMatrix, self.distanceFunction)
+		
+		self.bandwidth = distance / self.bandwidthStep
+		
+		for i = 1, self.bandwidthStep, 1 do table.insert(weights, i) end
+
+	end
+	
 	repeat
 		
 		self:iterationWait()
@@ -317,7 +359,7 @@ function MeanShiftModel:train(featureMatrix)
 		
 		PreviousModelParameters = self.ModelParameters
 
-		self.ModelParameters = mergeCentroids(self.ModelParameters, featureMatrix, self.bandwidth, self.distanceFunction)
+		self.ModelParameters = mergeCentroids(self.ModelParameters, featureMatrix, self.bandwidth, weights, self.distanceFunction)
 
 		areModelParametersEqual = checkIfModelParametersAreEqual(self.ModelParameters, PreviousModelParameters)
 		

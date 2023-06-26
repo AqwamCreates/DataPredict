@@ -73,7 +73,7 @@ local linkageMethodList = {
 	
 	["ward"] = function (distance1, distance2, size1, size2, sizeMerged)
 		
-		local part1 = 3* distance1
+		local part1 = 3 * distance1
 		
 		local part2 = 3 * distance2
 		

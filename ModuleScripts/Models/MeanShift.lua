@@ -281,7 +281,7 @@ function MeanShiftModel:setParameters(maxNumberOfIterations, bandwidth, bandwidt
 	
 	self.bandwidthStep = bandwidthStep or self.bandwidthStep
 
-	self.stopWhenModelParametersDoesNotChange =  BaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
+	self.stopWhenModelParametersDoesNotChange =  self:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
 	
 end
 

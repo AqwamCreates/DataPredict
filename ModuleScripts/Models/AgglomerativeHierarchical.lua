@@ -183,6 +183,8 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 	
 	if self.ModelParameters then
 		
+		if (#featureMatrix[1] ~= #self.ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
+		
 		clusters = AqwamMatrixLibrary:verticalConcatenate(self.ModelParameters, clusters)
 		
 	end

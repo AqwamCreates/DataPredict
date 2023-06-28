@@ -51,24 +51,32 @@ Tokenizer:addAllItems(itemArray: [])
 Gets the item from a given token number. If no item is found from the given token number, then it will return nil.
 
 ```
-Tokenizer:convertTokenToItem(tokenNumber: integer)
+Tokenizer:convertTokenToItem(tokenNumber: integer): any
 ```
 
 #### Parameters:
 
-* tokenNumber: The token number to retrieve the item
+* tokenNumber: A positive integer that represents the item.
+
+#### Returns:
+
+* item: An item that is retrieved by the token number.
 
 ### convertItemToToken()
 
 Gets the token number from a given item. If no item is found, then it will return nil.
 
 ```
-Tokenizer:convertItemToToken(item: any)
+Tokenizer:convertItemToToken(item: any): integer
 ```
 
 #### Parameters:
 
 * item: The item to be converted into token.
+
+#### Returns:
+
+* token: A positive integer that represents the item.
 
 ### getTokenizedItemArray()
 

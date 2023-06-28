@@ -4,7 +4,7 @@ LinearRegression is a supervised machine learning model that predicts continuous
 
 ## Stored Model Parameters
 
-Contains a matrix.  
+* Contains a matrix.  
 
 * ModelParameters[I][J]: Value of matrix at row I and column J.
 

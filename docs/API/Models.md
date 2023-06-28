@@ -4,6 +4,8 @@
 
 [LinearRegression](Models/LinearRegression.md)
 
+[NormalLinearRegression](Models/NormalLinearRegression.md)
+
 ## Classification
 
 [NaiveBayes](Models/NaiveBayes.md) (Currently Broken)

@@ -10,7 +10,7 @@ If you wish to create your own models and optimizers rom our library, we already
   
 * predict() function takes in featureMatrix or featureVector.
 
-* The code for the models must be object-oriented.
+* The code for the models are object-oriented.
 
 ## Optimizers
 
@@ -20,7 +20,7 @@ If you wish to create your own models and optimizers rom our library, we already
 
 * reset() does not take in any parameters.
 
-* The code for the optimizers must be object-oriented.
+* The code for the optimizers are object-oriented.
 
 ## Regularization
 
@@ -32,5 +32,5 @@ If you wish to create your own models and optimizers rom our library, we already
 
 * calculateCostFunctionRegularization() returns regularization values for modelParameters (matrix).
 
-* * The code for the regularization objects must be object-oriented.
+* * The code for the regularization objects are object-oriented.
 

@@ -32,6 +32,31 @@ featureMatrix2 = {
 }
 ```
 
+## FeatureVector
+
+Typically contains numbers stored in a (1 x n) matrix, where n is the number of features.
+
+### Examples
+
+```
+featureVector1 = {
+
+  {10,2, 9},
+
+}
+
+featureVector2 = {
+
+  {11, 30}
+
+}
+
+featureVector3 = {
+
+  {1, 31, 123, 30, 120},
+
+}
+```
 
 ## LabelVector
 

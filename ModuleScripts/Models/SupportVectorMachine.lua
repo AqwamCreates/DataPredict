@@ -20,7 +20,7 @@ local defaultKernelFunction = "linear"
 
 local defaultDegree = 3
 
-local defaultGamma = 1
+local defaultSigma = 1
 
 local kernelFunctionList = {
 
@@ -140,7 +140,7 @@ local function calculateKernel(x, kernelFunction, kernelParameters)
 
 	elseif (kernelFunction == "rbf") then
 
-		local gamma = kernelParameters.gamma or defaultGamma
+		local gamma = kernelParameters.sigma or defaultSigma
 
 		return kernelFunctionList[kernelFunction](x, gamma)
 
@@ -162,7 +162,7 @@ local function calculateMapping(x, kernelFunction, kernelParameters)
 
 	elseif (kernelFunction == "rbf") then
 
-		local gamma = kernelParameters.gamma or defaultGamma
+		local gamma = kernelParameters.sigma or defaultSigma
 
 		return mappingList[kernelFunction](x, gamma)
 

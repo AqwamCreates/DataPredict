@@ -6,7 +6,7 @@ LogisticRegression is a supervised machine learning model that predicts values o
 
 Contains a matrix.  
 
-* ModelParameters[I][J]: Value of matrix at row I and column J.
+* ModelParameters[I][J]: Value of matrix at row I and column J. The rows are the features.
 
 ## Constructors
 

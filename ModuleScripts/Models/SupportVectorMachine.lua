@@ -214,13 +214,11 @@ local function calculateCost(modelParameters, featureMatrix, labelVector, cValue
 
 end
 
-local function gradientDescent(modelParameters, featureMatrix, labelVector, cValue, kernelFunction, kernelParameters)
+local function gradientDescent(modelParameters, kernelMatrix, featureMatrix, labelVector, cValue)
 
 	local numberOfData = #featureMatrix
 
 	local numberOfFeatures = #featureMatrix[1]
-
-	local kernelMatrix = calculateKernel(featureMatrix, kernelFunction, kernelParameters)
 
 	local transposedModelMatrix = AqwamMatrixLibrary:transpose(modelParameters)
 
@@ -310,17 +308,7 @@ function SupportVectorMachineModel:setCValue(cValue)
 end
 
 function SupportVectorMachineModel:train(featureMatrix, labelVector)
-
-	local cost
-
-	local costArray = {}
-
-	local numberOfIterations = 0
-
-	local costFunctionDerivatives
-
-	local previousCostFunctionDerivatives
-
+	
 	if (#featureMatrix ~= #labelVector) then
 
 		error("The feature matrix and the label vector do not contain the same number of rows!")
@@ -340,6 +328,18 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 		self.ModelParameters = self:initializeMatrixBasedOnMode(#featureMatrix[1], 1)
 
 	end
+	
+	local cost
+
+	local costArray = {}
+
+	local numberOfIterations = 0
+
+	local costFunctionDerivatives
+
+	local previousCostFunctionDerivatives
+	
+	local kernelMatrix  = calculateKernel(featureMatrix, self.kernelFunction, self.kernelParameters)
 
 	repeat
 
@@ -347,7 +347,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 		numberOfIterations += 1
 
-		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.cValue, self.kernelFunction, self.kernelParameters)
+		costFunctionDerivatives = gradientDescent(self.ModelParameters, kernelMatrix, featureMatrix, labelVector, self.cValue)
 
 		if (self.Optimizer) then
 

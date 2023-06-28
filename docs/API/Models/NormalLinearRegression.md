@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - LinearRegression
+# [API Reference](../../API.md) - [Models](../Models.md) - NormalLinearRegression
 
-LinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ).
+NormalLinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses matrix calculations to find the best model parameters.
 
 ## Stored Model Parameters
 
@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-LinearRegression.new(): ModelObject
+NormalLinearRegression.new(): ModelObject
 ```
 
 #### Returns:
@@ -29,7 +29,7 @@ LinearRegression.new(): ModelObject
 Train the model.
 
 ```
-LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
+NormalLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 ```
 
 #### Parameters:
@@ -43,7 +43,7 @@ LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict the value for a given data.
 
 ```
-LinearRegression:predict(featureMatrix: Matrix): number
+NormalLinearRegression:predict(featureMatrix: Matrix): number
 ```
 
 #### Parameters:

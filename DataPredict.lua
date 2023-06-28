@@ -83,6 +83,8 @@ local ModelsDictionary = {
 	
 	DivisiveHierarchical = require(Models.DivisiveHierarchical),
 	
+	NormalLinearRegression = require(Models.NormalLinearRegression),
+	
 }
 
 local AqwamCustomModelsDictionary = {

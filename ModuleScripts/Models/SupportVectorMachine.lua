@@ -128,11 +128,11 @@ local function calculateKernel(x, kernelFunction, kernelParameters)
 
 		return kernelFunctionList[kernelFunction](x, degree)
 
-	elseif (kernelFunction == "rbf") then
+	elseif ("radialBasisFunction")then
 
-		local gamma = kernelParameters.sigma or defaultSigma
+		local sigma = kernelParameters.sigma or defaultSigma
 
-		return kernelFunctionList[kernelFunction](x, gamma)
+		return kernelFunctionList[kernelFunction](x, sigma)
 
 	end
 
@@ -150,11 +150,11 @@ local function calculateMapping(x, kernelFunction, kernelParameters)
 
 		return mappingList[kernelFunction](x, degree)
 
-	elseif (kernelFunction == "rbf") then
+	elseif (kernelFunction == "radialBasisFunction") then
 
-		local gamma = kernelParameters.sigma or defaultSigma
+		local sigma = kernelParameters.sigma or defaultSigma
 
-		return mappingList[kernelFunction](x, gamma)
+		return mappingList[kernelFunction](x, sigma)
 
 	end
 

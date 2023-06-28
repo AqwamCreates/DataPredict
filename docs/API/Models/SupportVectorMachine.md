@@ -2,6 +2,12 @@
 
 SupportVectorMachine is a supervised machine learning model that predicts values of -1 and 1 only. It assumes that the data is seperable by a decision boundary.
 
+## Stored Model Parameters
+
+Contains a matrix.  
+
+* ModelParameters[I][J]: Value of matrix at row I and column J. The columns represent the features.
+
 ## Constructors
 
 ### new()

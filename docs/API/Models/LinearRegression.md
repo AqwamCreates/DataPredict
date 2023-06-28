@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - LinearRegression
 
-LinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses iterative method to find the best model parameters.
+LinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses iterative calculations to find the best model parameters.
 
 ## Stored Model Parameters
 

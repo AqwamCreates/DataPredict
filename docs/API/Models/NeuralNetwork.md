@@ -158,7 +158,7 @@ NeuralNetwork:getClassesList(): []
 ### setClassesList()
 
 ```
-NeuralNetwork:setClassesList(classesList)
+NeuralNetwork:setClassesList(classesList: [])
 ```
 
 #### Parameters:

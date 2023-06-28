@@ -42,7 +42,7 @@ local kernelFunctionList = {
 
 	end,
 
-	["rbf"] = function(x1, sigma)
+	["radialBasisFunction"] = function(x1, sigma)
 		
 		local subtractedMatrix = AqwamMatrixLibrary:subtract(x1, x1)
 		
@@ -96,7 +96,7 @@ local mappingList = {
 
 	end,
 
-	["rbf"] = function(x, gamma)
+	["radialBasisFunction"] = function(x, gamma)
 
 		local multiplied = AqwamMatrixLibrary:multiply(x, -gamma)
 

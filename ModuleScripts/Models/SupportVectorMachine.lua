@@ -58,9 +58,9 @@ local kernelFunctionList = {
 		
 		local exponent = AqwamMatrixLibrary:divide(distance, kDivisortPart2)
 
-		local k = AqwamMatrixLibrary:applyFunction(math.exp, exponent)
+		local kTransposed = AqwamMatrixLibrary:applyFunction(math.exp, exponent)
 		
-		k = AqwamMatrixLibrary:transpose(k)
+		local k = AqwamMatrixLibrary:transpose(kTransposed)
 
 		return k
 

@@ -226,7 +226,7 @@ local function gradientDescent(modelParameters, featureMatrix, labelVector, cVal
 
 	local transposedLabelVector = AqwamMatrixLibrary:transpose(labelVector)
 
-	local multipliedMatrix = AqwamMatrixLibrary:multiply(transposedLabelVector, kernelMatrix)
+	local multipliedMatrix = AqwamMatrixLibrary:subtract(kernelMatrix, transposedLabelVector)
 
 	local expandedTransposedModelMatrix = {}
 

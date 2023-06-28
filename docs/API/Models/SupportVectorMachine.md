@@ -50,7 +50,7 @@ SupportVectorMachine:setParameters(maxNumberOfIterations: integer, learningRate:
 
 * targetCost: The cost at which the model stops training.
 
-* kernelFunction: The kernel function to be used to train the model. Available options are "linear", "polynomial", "rbf" and "cosineSimilarity".
+* kernelFunction: The kernel function to be used to train the model. Available options are "linear", "polynomial", "radialBasisFunction" and "cosineSimilarity".
 
 * kernelParameters: A table containg the required parameters 
 

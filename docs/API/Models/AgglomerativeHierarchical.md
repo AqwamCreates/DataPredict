@@ -9,14 +9,16 @@ AgglomerativeHierarchical clustering groups similar data points into clusters ba
 Create new model object. If any of the arguments are nil default argument values for that argument will be used.
 
 ```
-AgglomerativeHierarchical.new(numberOfClusters: integer, distanceFunction: string, highestCost: number, lowestCost:number, stopWhenModelParametersDoesNotChange: boolean): ModelObject
+AgglomerativeHierarchical.new(numberOfClusters: integer, distanceFunction: string, linkageFunction: string, highestCost: number, lowestCost:number, stopWhenModelParametersDoesNotChange: boolean): ModelObject
 ```
 
 #### Parameters:
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are “euclidean” and “manhattan“.
+* distanceFunction: The function that the model will use to train. Available options are “euclidean” and “manhattan“.
+
+* linkageFunction: The function to determine how clusters are merged together. Available options are "minimum", "maximum", "groupAverage".
 
 * highestCost: The maximum cost where the training will stop when it is higher than this value.
 
@@ -37,14 +39,16 @@ AgglomerativeHierarchical.new(numberOfClusters: integer, distanceFunction: strin
 Set model's parameters. When any of the arguments are nil previous argument values for that argument will be used.
 
 ```
-AgglomerativeHierarchical:setParameters(numberOfClusters: integer, distanceFunction: string, highestCost: number, lowestCost:number, stopWhenModelParametersDoesNotChange: boolean)
+AgglomerativeHierarchical:setParameters(numberOfClusters: integer, distanceFunction: string, linkageFunction: string, highestCost: number, lowestCost:number, stopWhenModelParametersDoesNotChange: boolean)
 ```
 
 #### Parameters:
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are “euclidean” and “manhattan“.
+* distanceFunction: The function that the model will use to train. Available options are “euclidean” and “manhattan“.
+
+* linkageFunction: The function to determine how clusters are merged together. Available options are "minimum", "maximum", "groupAverage".
 
 * highestCost: The maximum cost where the training will stop when it is higher than this value.
 

@@ -41,7 +41,7 @@ Typically contains numbers stored in a (1 x n) matrix, where n is the number of 
 ```
 featureVector1 = {
 
-  {10,2, 9},
+  {10,2, 9}
 
 }
 
@@ -53,7 +53,7 @@ featureVector2 = {
 
 featureVector3 = {
 
-  {1, 31, 123, 30, 120},
+  {1, 31, 123, 30, 120}
 
 }
 ```

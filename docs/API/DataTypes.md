@@ -1,6 +1,6 @@
 # [API Reference](../API.md) - DataTypes
 
-## FeatureMatrix / matrix
+## FeatureMatrix / Matrix
 
 Typically contains numbers stored in a (m x n) matrix, where m is the number of data and n is the number of features.
 
@@ -32,7 +32,7 @@ featureMatrix2 = {
 }
 ```
 
-## FeatureVector / vector
+## FeatureVector / Vector
 
 Typically contains numbers stored in a (1 x n) matrix, where n is the number of features.
 

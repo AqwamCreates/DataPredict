@@ -2,6 +2,12 @@
 
 KMedoids is an unsupervised machine learning model that assigns data points to clusters by selecting representative points, called medoids, as cluster centers. It then predicts the cluster membership of new data points based on their distances to the medoids.
 
+## Stored Model Parameters
+
+Contains a matrix.  
+
+* ModelParameters[I][J]: Value of matrix at row I and column J. The rows represent the clusters. The columns represent the features.
+
 ## Constructors
 
 ### new()

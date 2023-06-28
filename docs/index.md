@@ -34,6 +34,10 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 [API Reference](API.md)
 
+## Want To Create Your Own Models, Optimizers And More?
+
+[API Design](APIDesign.md)
+
 ## Links
 
 ### ModuleScripts Packages (Recommended For Up-To-Date Libraries)

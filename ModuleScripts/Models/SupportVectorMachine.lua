@@ -96,11 +96,15 @@ local mappingList = {
 
 	end,
 
-	["radialBasisFunction"] = function(x, gamma)
+	["radialBasisFunction"] = function(x, sigma)
+		
+		local kDivisortPart1 = AqwamMatrixLibrary:power(sigma, 2)
 
-		local multiplied = AqwamMatrixLibrary:multiply(x, -gamma)
+		local kDivisortPart2 = AqwamMatrixLibrary:multiply(-2, kDivisortPart1)
+		
+		local exponent = AqwamMatrixLibrary:divide(x, kDivisortPart2) 
 
-		return AqwamMatrixLibrary:applyFunction(math.exp, multiplied)
+		return AqwamMatrixLibrary:applyFunction(math.exp, exponent)
 
 	end,
 

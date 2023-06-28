@@ -12,7 +12,7 @@ If you wish to create your own models and optimizers rom our library, we already
 
 ## Optimizers
 
-* All optimizers have calculate() and reset() functions.
+* All our optimizers have calculate() and reset() functions.
 
 * calculate() function takes in costFunctionDerivatives (matrix) and previousCostFunctionDerivatives (matrix) in order.
 
@@ -20,6 +20,6 @@ If you wish to create your own models and optimizers rom our library, we already
 
 ## Regularization Objects
 
-* All regularization objects have calculateLossFunctionDerivativeRegularizaion() and calculateLossFunctionRegularization() functions.
+* All our regularization objects have calculateLossFunctionDerivativeRegularizaion() and calculateLossFunctionRegularization() functions.
 
 * Both takes in modelParameters (matrix) and numberOfData (integer) in order.

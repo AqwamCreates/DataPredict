@@ -10,7 +10,7 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibrary
 
 local defaultMaxNumberOfIterations = 500
 
-local defaultLearningRate = 0.3
+local defaultLearningRate = 0.1
 
 local defaultCvalue = 1
 

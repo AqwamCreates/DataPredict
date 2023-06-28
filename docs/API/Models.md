@@ -2,7 +2,7 @@
 
 ## Regression
 
-[LinearRegression](Models/LinearRegression.md)
+[LinearRegression](Models/LinearRegression.md) (Recommended to use this over NormalLinearRegression)
 
 [NormalLinearRegression](Models/NormalLinearRegression.md)
 

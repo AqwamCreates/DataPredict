@@ -69,8 +69,12 @@ local function createClusterDistanceMatrix(clusters, distanceFunction)
 	for i = 1, numberOfData, 1 do
 
 		for j = 1, numberOfData, 1 do
-
-			distanceMatrix[i][j] = calculateDistance({clusters[i]}, {clusters[j]} , distanceFunction)
+			
+			if (i ~= j) then
+				
+				distanceMatrix[i][j] = calculateDistance({clusters[i]}, {clusters[j]} , distanceFunction)
+				
+			end
 
 		end
 
@@ -106,17 +110,17 @@ local function createNewMergedDistanceMatrix(clusterDistanceMatrix, clusterIndex
 	
 	local newRow = {}
 	
-	for i = 1, (numberOfData - 2) do
+	for i = 1, (numberOfData - 1) do
 		
 		table.insert(newRow, 0)
 		
 	end
 	
-	table.insert(newClusterDistanceMatrix, 1, newRow)
+	table.insert(newClusterDistanceMatrix, newRow)
 	
 	for i = 1, (numberOfData - 1) do
 
-		table.insert(newClusterDistanceMatrix[i], 1, 0)
+		table.insert(newClusterDistanceMatrix[i], 0)
 
 	end
 	
@@ -128,29 +132,31 @@ local function applyFunctionToFirstRowAndColumnOfDistanceMatrix(functionToApply,
 	
 	local totalDistance = 0
 	
-	local newColumnIndex = 2
+	local newColumnIndex = 1
 
-	local newRowIndex = 2
+	local newRowIndex = 1
 	
-	for column = 1, #clusterDistanceMatrix, 1 do
+	local numberOfClusters = #clusterDistanceMatrix
+	
+	for column = 1, numberOfClusters, 1 do
 
 		if (column == clusterIndex1) or (column == clusterIndex2) then continue end
 
 		local distance = functionToApply(clusterDistanceMatrix[clusterIndex1][column],  clusterDistanceMatrix[clusterIndex2][column])
 
-		newClusterDistanceMatrix[1][newColumnIndex] = distance
+		newClusterDistanceMatrix[numberOfClusters - 1][newColumnIndex] = distance
 
 		newColumnIndex += 1
 
 	end
 
-	for row = 1, #clusterDistanceMatrix, 1 do
+	for row = 1, numberOfClusters, 1 do
 
 		if (row == clusterIndex1) or (row == clusterIndex2) then continue end
 
 		local distance = functionToApply(clusterDistanceMatrix[row][clusterIndex1],  clusterDistanceMatrix[row][clusterIndex2])
 
-		newClusterDistanceMatrix[newRowIndex][1] = distance
+		newClusterDistanceMatrix[newRowIndex][numberOfClusters - 1] = distance
 
 		totalDistance += distance
 

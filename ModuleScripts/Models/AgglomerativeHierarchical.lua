@@ -14,9 +14,11 @@ local defaultHighestCost = math.huge
 
 local defaultLowestCost = -math.huge
 
-local defaultNumberOfClusters = 2
+local defaultNumberOfClusters = 1
 
-local defaultDistanceFunction = "manhattan"
+local defaultDistanceFunction = "euclidean"
+
+local defaultLinkageFunction = "minimum"
 
 local defaultStopWhenModelParametersDoesNotChange = false
 
@@ -58,56 +60,225 @@ local function calculateDistance(vector1, vector2, distanceFunction)
 end
 
 
-local function findClosestClusters(clusters, distanceFunction)
+local function createClusterDistanceMatrix(clusters, distanceFunction)
+
+	local numberOfData = #clusters
+
+	local distanceMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfData)
+
+	for i = 1, numberOfData, 1 do
+
+		for j = 1, numberOfData, 1 do
+
+			distanceMatrix[i][j] = calculateDistance({clusters[i]}, {clusters[j]} , distanceFunction)
+
+		end
+
+	end
+
+	return distanceMatrix
+
+end
+
+local function createNewMergedDistanceMatrix(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 	
-	local distance
+	local numberOfData = #clusterDistanceMatrix
 	
-	local minDistance = math.huge
+	local newClusterDistanceMatrix = {}
 	
-	local clusterIndex1 = nil
+	for i = 1, numberOfData, 1 do
 		
-	local clusterIndex2 = nil
-	
-	for i = 1, #clusters, 1 do
+		if (i == clusterIndex1) or (i == clusterIndex2) then continue end
 		
-		for j = i + 1, #clusters, 1 do
+		local newClusterDistanceVector = {}
+		
+		for j = 1, numberOfData, 1 do
 			
-			distance = calculateDistance({clusters[i]}, {clusters[j]}, distanceFunction)
+			if (j == clusterIndex1) or (j == clusterIndex2) then continue end
 			
-			if (distance < minDistance) then
-				
-				minDistance = distance
-				
-				clusterIndex1 = i
-				
-				clusterIndex2 = j
-				
-			end
+			table.insert(newClusterDistanceVector, clusterDistanceMatrix[i][j])
 			
 		end
 		
+		table.insert(newClusterDistanceMatrix, newClusterDistanceVector)
+		
 	end
 	
-	return clusterIndex1, clusterIndex2, minDistance
+	local newRow = {}
+	
+	for i = 1, (numberOfData - 2) do
+		
+		table.insert(newRow, 0)
+		
+	end
+	
+	table.insert(newClusterDistanceMatrix, 1, newRow)
+	
+	for i = 1, (numberOfData - 1) do
+
+		table.insert(newClusterDistanceMatrix[i], 1, 0)
+
+	end
+	
+	return newClusterDistanceMatrix
 	
 end
 
+local function applyFunctionToFirstRowAndColumnOfDistanceMatrix(functionToApply, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
+	
+	local totalDistance = 0
+	
+	local newColumnIndex = 2
 
-local function mergeClusters(clusters, clusterIndex1, clusterIndex2)
+	local newRowIndex = 2
 	
-	local newCluster = AqwamMatrixLibrary:add({clusters[clusterIndex1]}, {clusters[clusterIndex2]})
+	for column = 1, #clusterDistanceMatrix, 1 do
+
+		if (column == clusterIndex1) or (column == clusterIndex2) then continue end
+
+		local distance = functionToApply(clusterDistanceMatrix[clusterIndex1][column],  clusterDistanceMatrix[clusterIndex2][column])
+
+		newClusterDistanceMatrix[1][newColumnIndex] = distance
+
+		newColumnIndex += 1
+
+	end
+
+	for row = 1, #clusterDistanceMatrix, 1 do
+
+		if (row == clusterIndex1) or (row == clusterIndex2) then continue end
+
+		local distance = functionToApply(clusterDistanceMatrix[row][clusterIndex1],  clusterDistanceMatrix[row][clusterIndex2])
+
+		newClusterDistanceMatrix[newRowIndex][1] = distance
+
+		totalDistance += distance
+
+		newRowIndex += 1
+
+	end
 	
-	newCluster = AqwamMatrixLibrary:divide(newCluster, 2)
+	return newClusterDistanceMatrix, totalDistance
 	
-	newCluster = newCluster[1]
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+
+local function minimumLinkage(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 	
-	table.remove(clusters, clusterIndex2)
+	local newClusterDistanceMatrix = createNewMergedDistanceMatrix(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 	
-	table.remove(clusters, clusterIndex1)
+	local newClusterDistanceMatrix, totalDistance = applyFunctionToFirstRowAndColumnOfDistanceMatrix(math.min, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
 	
-	table.insert(clusters, newCluster)
+	return newClusterDistanceMatrix, totalDistance
 	
-	return clusters
+end
+
+local function maximumLinkage(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+
+	local newClusterDistanceMatrix = createNewMergedDistanceMatrix(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+
+	local newClusterDistanceMatrix, totalDistance = applyFunctionToFirstRowAndColumnOfDistanceMatrix(math.max, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
+
+	return newClusterDistanceMatrix, totalDistance
+
+end
+
+local function groupAverageLinkage(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+	
+	local weightedGroupAverage = function (x, y) return (x + y) / 2 end
+	
+	local newClusterDistanceMatrix = createNewMergedDistanceMatrix(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+	
+	local newClusterDistanceMatrix, totalDistance = applyFunctionToFirstRowAndColumnOfDistanceMatrix(weightedGroupAverage, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
+
+	return newClusterDistanceMatrix, totalDistance
+
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+
+local function findClosestClusters(clusterDistanceMatrix)
+
+	local distance
+
+	local minimumClusterDistance = math.huge
+
+	local clusterIndex1 = nil
+
+	local clusterIndex2 = nil
+
+	for i = 1, #clusterDistanceMatrix, 1 do
+
+		for j = i + 1, #clusterDistanceMatrix, 1 do
+
+			local clusterDistance = clusterDistanceMatrix[i][j]
+
+			if (clusterDistance < minimumClusterDistance) then
+
+				minimumClusterDistance = clusterDistance
+
+				clusterIndex1 = i
+
+				clusterIndex2 = j
+
+			end
+
+		end
+
+	end
+
+	return clusterIndex1, clusterIndex2
+
+end
+
+local function updateDistanceMatrix(linkageFunction, clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+	
+	local clusterVector
+	
+	local distance
+	
+	if (linkageFunction == "minimum") then
+
+		return minimumLinkage(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+
+	elseif (linkageFunction == "maximum") then
+
+		return maximumLinkage(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+		
+	elseif (linkageFunction == "groupAverage") then
+		
+		return groupAverageLinkage(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+		
+	else
+		
+		error("Invalid linkage!")
+		
+	end
+	
+end
+
+local function createNewClusters(clusters, clusterIndex1Combine, clusterIndex2ToCombine)
+	
+	local newClusters = {}
+	
+	local cluster1 = {clusters[clusterIndex1Combine]}
+	
+	local cluster2 = {clusters[clusterIndex2ToCombine]}
+	
+	local combinedCluster = AqwamMatrixLibrary:add(cluster1, cluster2)
+	
+	local clusterToBeAdded = AqwamMatrixLibrary:divide(combinedCluster, 2)
+	
+	for i = 1, #clusters, 1 do
+		
+		if (i ~= clusterIndex1Combine) and (i ~= clusterIndex2ToCombine) then table.insert(newClusters, clusters[i]) end
+		
+	end
+		
+	table.insert(newClusters, clusterToBeAdded[1])
+	
+	return newClusters
 	
 end
 
@@ -125,7 +296,7 @@ local function areModelParametersMatricesEqualInSizeAndValues(ModelParameters, P
 	
 end
 
-function AgglomerativeHierarchicalModel.new(numberOfClusters, distanceFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
+function AgglomerativeHierarchicalModel.new(numberOfClusters, distanceFunction, linkageFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
 	
 	local NewAgglomerativeHierarchicalModel = BaseModel.new()
 	
@@ -136,6 +307,8 @@ function AgglomerativeHierarchicalModel.new(numberOfClusters, distanceFunction, 
 	NewAgglomerativeHierarchicalModel.lowestCost = lowestCost or defaultLowestCost
 
 	NewAgglomerativeHierarchicalModel.distanceFunction = distanceFunction or defaultDistanceFunction
+	
+	NewAgglomerativeHierarchicalModel.linkageFunction = linkageFunction or defaultLinkageFunction
 
 	NewAgglomerativeHierarchicalModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
 	
@@ -145,13 +318,15 @@ function AgglomerativeHierarchicalModel.new(numberOfClusters, distanceFunction, 
 	
 end
 
-function AgglomerativeHierarchicalModel:setParameters(numberOfClusters, distanceFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
+function AgglomerativeHierarchicalModel:setParameters(numberOfClusters, distanceFunction, linkageFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
 
 	self.highestCost = highestCost or self.highestCost
 	
 	self.lowestCost = lowestCost or self.lowestCost
 
 	self.distanceFunction = distanceFunction or self.distanceFunction
+	
+	self.linkageFunction = linkageFunction or defaultLinkageFunction
 
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 
@@ -177,9 +352,19 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 	
 	local PreviousModelParameters
 	
+	local clusterDistanceMatrix
+	
+	local clusterIndex1
+	
+	local clusterIndex2
+	
+	local distance
+	
 	local areModelParametersEqual = false
 	
 	local clusters = AqwamMatrixLibrary:copy(featureMatrix)
+	
+	local newCluster
 	
 	if self.ModelParameters then
 		
@@ -189,21 +374,23 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		
 	end
 	
+	clusterDistanceMatrix = createClusterDistanceMatrix(clusters, self.distanceFunction)
+	
 	repeat
 		
 		self:iterationWait()
 		
 		numberOfIterations += 1
 		
-		clusterIndex1, clusterIndex2, minimumDistance = findClosestClusters(clusters, self.distanceFunction)
+		clusterIndex1, clusterIndex2 = findClosestClusters(clusterDistanceMatrix)
+
+		clusters = createNewClusters(clusters, clusterIndex1, clusterIndex2)
 		
-		PreviousModelParameters = self.ModelParameters
-		
-		clusters = mergeClusters(clusters, clusterIndex1, clusterIndex2)
+		clusterDistanceMatrix, distance = updateDistanceMatrix(self.linkageFunction, clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 		
 		self.ModelParameters = clusters
 		
-		cost += minimumDistance
+		cost = distance
 
 		table.insert(costArray, cost)
 		
@@ -212,6 +399,8 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		areModelParametersEqual = areModelParametersMatricesEqualInSizeAndValues(self.ModelParameters, PreviousModelParameters)
 		
 		isOutsideCostBounds = (cost <= self.lowestCost) or (cost >= self.highestCost)
+		
+		PreviousModelParameters = self.ModelParameters
 		
 	until isOutsideCostBounds or (#clusters == self.numberOfClusters) or (#clusters == 1) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 	

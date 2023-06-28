@@ -10,6 +10,8 @@ If you wish to create your own models and optimizers rom our library, we already
   
 * predict() function takes in featureMatrix or featureVector.
 
+* The code for the models must be object-oriented.
+
 ## Optimizers
 
 * All our optimizers have calculate() and reset() functions. They will be called inside called inside our models.
@@ -17,6 +19,8 @@ If you wish to create your own models and optimizers rom our library, we already
 * calculate() function takes in costFunctionDerivatives (matrix) and previousCostFunctionDerivatives (matrix) in order. It returns the adjusted costFunctionDerivatives.
 
 * reset() does not take in any parameters.
+
+* The code for the optimizers must be object-oriented.
 
 ## Regularization
 
@@ -27,3 +31,6 @@ If you wish to create your own models and optimizers rom our library, we already
 * calculateCostFunctionDerivativeRegularization() returns regularization values for costFunctionDerivatives (matrix).
 
 * calculateCostFunctionRegularization() returns regularization values for modelParameters (matrix).
+
+* * The code for the regularization objects must be object-oriented.
+

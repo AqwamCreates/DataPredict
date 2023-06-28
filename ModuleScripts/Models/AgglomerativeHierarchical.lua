@@ -212,11 +212,11 @@ local function findClosestClusters(clusterDistanceMatrix)
 
 		for j = i + 1, #clusterDistanceMatrix, 1 do
 
-			local clusterDistance = clusterDistanceMatrix[i][j]
+			distance = clusterDistanceMatrix[i][j]
 
-			if (clusterDistance < minimumClusterDistance) then
+			if (distance < minimumClusterDistance) then
 
-				minimumClusterDistance = clusterDistance
+				minimumClusterDistance = distance
 
 				clusterIndex1 = i
 

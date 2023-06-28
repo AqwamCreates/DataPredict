@@ -42,39 +42,25 @@ local kernelFunctionList = {
 
 	end,
 
-	["rbf"] = function(x1, gamma)
-
-		local numberOfRows = #x1
-
-		local pairwiseDistances = {}
-
-		for i = 1, numberOfRows, 1 do
-
-			pairwiseDistances[i] = {}
-
-			local x2 = {x1[i]}
-
-			for j = 1, numberOfRows, 1 do
-
-				local x3 = {x1[j]}
-
-				local distance = AqwamMatrixLibrary:subtract(x2, x3)
-
-				local squaredDistance = AqwamMatrixLibrary:power(distance, 2)
-
-				local sumSquaredDistance = AqwamMatrixLibrary:sum(squaredDistance)
-
-				pairwiseDistances[i][j] = math.sqrt(sumSquaredDistance)
-
-			end
-
-		end
-
-		local squaredDistances = AqwamMatrixLibrary:power(pairwiseDistances, 2)
-
-		local exponent = AqwamMatrixLibrary:multiply(-gamma, squaredDistances)
+	["rbf"] = function(x1, sigma)
+		
+		local subtractedMatrix = AqwamMatrixLibrary:subtract(x1, x1)
+		
+		local squaredDistance = AqwamMatrixLibrary:power(subtractedMatrix, 2)
+		
+		local sumSquaredDistance = AqwamMatrixLibrary:horizontalSum(subtractedMatrix)
+		
+		local distance = AqwamMatrixLibrary:applyFunction(math.sqrt, sumSquaredDistance)
+		
+		local kDivisortPart1 = AqwamMatrixLibrary:power(sigma, 2)
+		
+		local kDivisortPart2 = AqwamMatrixLibrary:multiply(-2, kDivisortPart1)
+		
+		local exponent = AqwamMatrixLibrary:divide(distance, kDivisortPart2)
 
 		local k = AqwamMatrixLibrary:applyFunction(math.exp, exponent)
+		
+		k = AqwamMatrixLibrary:transpose(k)
 
 		return k
 

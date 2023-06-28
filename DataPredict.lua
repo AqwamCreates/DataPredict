@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Version 1.9.0
+	Version 1.10.0
 
 	Aqwam's Roblox Deep Learning Library (AR-MDLL)
 
@@ -78,6 +78,10 @@ local ModelsDictionary = {
 	AgglomerativeHierarchical = require(Models.AgglomerativeHierarchical),
 	
 	DensityBasedSpatialClusteringOfApplicationsWithNoise = require(Models.DensityBasedSpatialClusteringOfApplicationsWithNoise),
+	
+	MeanShift = require(Models.MeanShift),
+	
+	DivisiveHierarchical = require(Models.DivisiveHierarchical),
 	
 }
 

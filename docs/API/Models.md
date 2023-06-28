@@ -2,9 +2,9 @@
 
 ## Regression
 
-[LinearRegression](Models/LinearRegression.md) (Recommended to use this over NormalLinearRegression)
+[LinearRegression](Models/LinearRegression.md) 
 
-[NormalLinearRegression](Models/NormalLinearRegression.md)
+[NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended)
 
 ## Classification
 

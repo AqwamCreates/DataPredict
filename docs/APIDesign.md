@@ -18,7 +18,7 @@ If you wish to create your own models and optimizers rom our library, we already
 
 * reset() does not take in any parameters.
 
-## Regularization Objects
+## Regularization
 
 * All our regularization objects have calculateLossFunctionDerivativeRegularizaion() and calculateLossFunctionRegularization() functions. They will be called inside called inside our models.
 

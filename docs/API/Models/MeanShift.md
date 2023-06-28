@@ -4,9 +4,9 @@ MeanShift is a clustering algorithm that finds cluster centers by moving points 
 
 ## Stored Model Parameters
 
-* Contains a matrix.  
+Contains a matrix.  
 
-* ModelParameters[I][J]: Value of matrix at row I and column J. The rows represent the clusters.
+* ModelParameters[I][J]: Value of matrix at row I and column J. The rows represent the clusters. The columns represent the features.
 
 ## Constructors
 

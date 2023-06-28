@@ -81,10 +81,12 @@ local kernelFunctionList = {
 	end,
 
 	["cosineSimilarity"] = function(x1)
+		
+		local x2 = AqwamMatrixLibrary:transpose(x1)
 
-		local dotProductMatrix = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x1))
+		local dotProductMatrix = AqwamMatrixLibrary:dotProduct(x1, x2)
 
-		local magnitudeMatrix = AqwamMatrixLibrary:applyFunction(math.sqrt, AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x1)))
+		local magnitudeMatrix = AqwamMatrixLibrary:applyFunction(math.sqrt, AqwamMatrixLibrary:dotProduct(x1, x2))
 
 		local multiplyMatrix = AqwamMatrixLibrary:multiply(magnitudeMatrix, magnitudeMatrix)
 

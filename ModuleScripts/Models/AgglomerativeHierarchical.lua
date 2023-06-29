@@ -273,10 +273,6 @@ end
 
 local function updateDistanceMatrix(linkageFunction, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
-	local clusterVector
-
-	local distance
-
 	if (linkageFunction == "minimum") then
 
 		return minimumLinkage(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
@@ -291,7 +287,7 @@ local function updateDistanceMatrix(linkageFunction, clusterDistanceMatrix, clus
 
 	else
 
-		error("Invalid linkage!")
+		error("Invalid linkage function!")
 
 	end
 

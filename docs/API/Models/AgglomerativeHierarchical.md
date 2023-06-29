@@ -24,7 +24,7 @@ AgglomerativeHierarchical.new(numberOfClusters: integer, distanceFunction: strin
 
 * distanceFunction: The function that the model will use to train. Available options are “euclidean” and “manhattan“.
 
-* linkageFunction: The function to determine how clusters are merged together. Available options are "minimum", "maximum" and "groupAverage".
+* linkageFunction: The function to determine how clusters are merged together. Available options are "minimum", "maximum", "groupAverage" and "ward.
 
 * highestCost: The maximum cost where the training will stop when it is higher than this value.
 
@@ -54,7 +54,7 @@ AgglomerativeHierarchical:setParameters(numberOfClusters: integer, distanceFunct
 
 * distanceFunction: The function that the model will use to train. Available options are “euclidean” and “manhattan“.
 
-* linkageFunction: The function to determine how clusters are merged together. Available options are "minimum", "maximum" and "groupAverage".
+* linkageFunction: The function to determine how clusters are merged together. Available options are "minimum", "maximum", "groupAverage" and "ward".
 
 * highestCost: The maximum cost where the training will stop when it is higher than this value.
 

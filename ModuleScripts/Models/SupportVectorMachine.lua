@@ -216,7 +216,7 @@ local function gradientDescent(modelParameters, kernelMatrix, featureMatrix, lab
 
 	local transposedLabelVector = AqwamMatrixLibrary:transpose(labelVector)
 
-	local multipliedMatrix = AqwamMatrixLibrary:subtract(kernelMatrix, transposedLabelVector)
+	local subtractedMatrix = AqwamMatrixLibrary:subtract(kernelMatrix, transposedLabelVector)
 
 	local expandedTransposedModelMatrix = {}
 
@@ -226,7 +226,7 @@ local function gradientDescent(modelParameters, kernelMatrix, featureMatrix, lab
 
 	end
 
-	local dotProductMatrix = AqwamMatrixLibrary:dotProduct(multipliedMatrix, expandedTransposedModelMatrix)
+	local dotProductMatrix = AqwamMatrixLibrary:dotProduct(subtractedMatrix, expandedTransposedModelMatrix)
 
 	local gradientMatrix = AqwamMatrixLibrary:subtract(dotProductMatrix, 1)
 

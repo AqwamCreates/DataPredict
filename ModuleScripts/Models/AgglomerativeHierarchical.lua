@@ -385,12 +385,12 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		clusterIndex1, clusterIndex2 = findClosestClusters(clusterDistanceMatrix)
 
 		clusters = createNewClusters(clusters, clusterIndex1, clusterIndex2)
-
+			
 		clusterDistanceMatrix, distance = updateDistanceMatrix(self.linkageFunction, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
 		self.ModelParameters = clusters
 
-		cost = distance
+		cost += distance
 
 		table.insert(costArray, cost)
 

@@ -387,8 +387,6 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		clusters = createNewClusters(clusters, clusterIndex1, clusterIndex2)
 
 		clusterDistanceMatrix, distance = updateDistanceMatrix(self.linkageFunction, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
-		
-		AqwamMatrixLibrary:printMatrix(clusterDistanceMatrix)
 
 		self.ModelParameters = clusters
 

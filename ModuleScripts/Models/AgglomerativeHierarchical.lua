@@ -152,8 +152,6 @@ local function applyFunctionToFirstRowAndColumnOfDistanceMatrix(functionToApply,
 		newRowIndex += 1
 
 	end
-	
-	AqwamMatrixLibrary:printMatrix(clusterDistanceMatrix)
 
 	return newClusterDistanceMatrix
 

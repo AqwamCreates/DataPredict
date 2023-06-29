@@ -109,7 +109,7 @@ local function createClusterDistanceMatrix(clusters, distanceFunction)
 
 		for j = 1, numberOfData, 1 do
 			
-			if (i ~= j) then -- Necessary, because for some reason math.pow(o, 2) gives 1 instead of zero. So skip this step when same clusters.
+			if (i ~= j) then -- Necessary, because for some reason math.pow(0, 2) gives 1 instead of zero. So skip this step when same clusters.
 				
 				distanceMatrix[i][j] = calculateDistance({clusters[i]}, {clusters[j]} , distanceFunction)
 				

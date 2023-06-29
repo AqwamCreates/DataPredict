@@ -351,7 +351,7 @@ local function calculateCost(centroids, featureMatrix, distanceFunction)
 			
 			local distance = calculateDistance(featureVector, centroid, distanceFunction)
 			
-			minimumDistance = math.min(minDistance, distance)
+			minimumDistance = math.min(minimumDistance, distance)
 			
 		end
 		

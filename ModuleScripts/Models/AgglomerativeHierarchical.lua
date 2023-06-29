@@ -163,8 +163,6 @@ end
 
 local function applyFunctionToFirstRowAndColumnOfDistanceMatrix(functionToApply, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
-	local totalDistance = 0
-
 	local newColumnIndex = 2
 
 	local newRowIndex = 2
@@ -191,47 +189,61 @@ local function applyFunctionToFirstRowAndColumnOfDistanceMatrix(functionToApply,
 
 		newClusterDistanceMatrix[newRowIndex][1] = distance
 
-		totalDistance += distance
-
 		newRowIndex += 1
 
 	end
 
-	return newClusterDistanceMatrix, totalDistance
+	return newClusterDistanceMatrix
 
 end
 
 -----------------------------------------------------------------------------------------------------------------------
 
-local function minimumLinkage(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+local function minimumLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
 	local newClusterDistanceMatrix = createNewMergedDistanceMatrix(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
-	local newClusterDistanceMatrix, totalDistance = applyFunctionToFirstRowAndColumnOfDistanceMatrix(math.min, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
+	newClusterDistanceMatrix = applyFunctionToFirstRowAndColumnOfDistanceMatrix(math.min, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
-	return newClusterDistanceMatrix, totalDistance
+	return newClusterDistanceMatrix
 
 end
 
-local function maximumLinkage(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+local function maximumLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
 	local newClusterDistanceMatrix = createNewMergedDistanceMatrix(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
-	local newClusterDistanceMatrix, totalDistance = applyFunctionToFirstRowAndColumnOfDistanceMatrix(math.max, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
+	newClusterDistanceMatrix = applyFunctionToFirstRowAndColumnOfDistanceMatrix(math.max, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
-	return newClusterDistanceMatrix, totalDistance
+	return newClusterDistanceMatrix
 
 end
 
-local function groupAverageLinkage(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+local function groupAverageLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
 	local weightedGroupAverage = function (x, y) return (x + y) / 2 end
 
 	local newClusterDistanceMatrix = createNewMergedDistanceMatrix(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
-	local newClusterDistanceMatrix, totalDistance = applyFunctionToFirstRowAndColumnOfDistanceMatrix(weightedGroupAverage, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
+	newClusterDistanceMatrix = applyFunctionToFirstRowAndColumnOfDistanceMatrix(weightedGroupAverage, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
-	return newClusterDistanceMatrix, totalDistance
+	return newClusterDistanceMatrix
+
+end
+
+local function wardLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+
+	local newClusterDistanceMatrix = createClusterDistanceMatrix(clusters, "euclidean")
+	
+	for i = 2, #newClusterDistanceMatrix,1 do
+		
+		newClusterDistanceMatrix[1][i] = math.pow(newClusterDistanceMatrix[1][i], 2)
+		
+		newClusterDistanceMatrix[i][1] = math.pow(newClusterDistanceMatrix[i][1], 2)
+		
+	end
+
+	return newClusterDistanceMatrix
 
 end
 
@@ -271,19 +283,23 @@ local function findClosestClusters(clusterDistanceMatrix)
 
 end
 
-local function updateDistanceMatrix(linkageFunction, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+local function updateDistanceMatrix(linkageFunction, clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
 	if (linkageFunction == "minimum") then
 
-		return minimumLinkage(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+		return minimumLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
 	elseif (linkageFunction == "maximum") then
 
-		return maximumLinkage(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+		return maximumLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
 	elseif (linkageFunction == "groupAverage") then
 
-		return groupAverageLinkage(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+		return groupAverageLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+		
+	elseif (linkageFunction == "ward") then
+
+		return wardLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
 	else
 
@@ -421,8 +437,6 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 	local clusterIndex2
 
-	local distance
-
 	local areModelParametersEqual = false
 
 	local clusters = AqwamMatrixLibrary:copy(featureMatrix)
@@ -449,7 +463,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 		clusters = createNewClusters(clusters, clusterIndex1, clusterIndex2)
 			
-		clusterDistanceMatrix, distance = updateDistanceMatrix(self.linkageFunction, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+		clusterDistanceMatrix = updateDistanceMatrix(self.linkageFunction, clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
 
 		self.ModelParameters = clusters
 

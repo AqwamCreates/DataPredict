@@ -355,11 +355,12 @@ local function calculateCost(centroids, featureMatrix, distanceFunction)
 			
 		end
 		
-		cost = cost + minimumDistance
+		cost += minimumDistance
 		
 	end
 
 	return cost
+	
 end
 
 function AgglomerativeHierarchicalModel.new(numberOfClusters, distanceFunction, linkageFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)

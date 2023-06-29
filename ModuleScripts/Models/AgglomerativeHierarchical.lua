@@ -335,6 +335,33 @@ local function areModelParametersMatricesEqualInSizeAndValues(ModelParameters, P
 
 end
 
+local function calculateCost(centroids, featureMatrix, distanceFunction)
+	
+	local cost = 0
+	
+	for i = 1, #featureMatrix, 1 do
+		
+		local featureVector = {featureMatrix[i]}
+		
+		local minimumDistance = math.huge
+
+		for j = 1, #centroids, 1 do
+			
+			local centroid = {centroids[j]}
+			
+			local distance = calculateDistance(featureVector, centroid, distanceFunction)
+			
+			minimumDistance = math.min(minDistance, distance)
+			
+		end
+		
+		cost = cost + minimumDistance
+		
+	end
+
+	return cost
+end
+
 function AgglomerativeHierarchicalModel.new(numberOfClusters, distanceFunction, linkageFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
 
 	local NewAgglomerativeHierarchicalModel = BaseModel.new()
@@ -429,7 +456,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 		self.ModelParameters = clusters
 
-		cost += distance
+		cost = calculateCost(clusters, featureMatrix, self.distanceFunction)
 
 		table.insert(costArray, cost)
 

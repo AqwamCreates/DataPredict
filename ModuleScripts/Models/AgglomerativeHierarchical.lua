@@ -59,6 +59,45 @@ local function calculateDistance(vector1, vector2, distanceFunction)
 
 end
 
+local function assignToCluster(distanceFromClusterRowVector) -- Number of columns -> number of clusters
+	
+	local distanceFromCluster
+	
+	local shortestDistance = math.huge
+	
+	local clusterNumber
+	
+	for cluster = 1, #distanceFromClusterRowVector[1], 1 do
+		
+		distanceFromCluster = distanceFromClusterRowVector[1][cluster]
+		
+		if (distanceFromCluster < shortestDistance) then
+			
+			shortestDistance = distanceFromCluster
+			
+			clusterNumber = cluster
+			
+		end
+		
+	end
+	
+	return clusterNumber, shortestDistance
+	
+end
+
+local function checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClusterNumber, cluster)
+	
+	if (dataPointClusterNumber == cluster) then
+		
+		return 1
+		
+	else
+		
+		return 0
+		
+	end
+	
+end
 
 local function createClusterDistanceMatrix(clusters, distanceFunction)
 

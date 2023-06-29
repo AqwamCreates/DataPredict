@@ -211,6 +211,8 @@ local function mergeCentroids(ModelParameters, featureMatrix, bandwidth, weights
 				
 				local weightIndex = math.floor(distance/bandwidth)
 				
+				weightIndex = math.max(weightIndex, 1)
+				
 				if (weightIndex > (bandwidthStep - 1)) then weightIndex = (bandwidthStep - 1) end
 				
 				local multiplyFactor = math.pow(weights[weightIndex], 2)

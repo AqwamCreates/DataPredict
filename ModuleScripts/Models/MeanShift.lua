@@ -18,7 +18,7 @@ local defaultDistanceFunction = "euclidean"
 
 local defaultStopWhenModelParametersDoesNotChange = true
 
-local defaultBandwidth = 5
+local defaultBandwidth = math.huge
 
 local defaultBandwidthStep = 100
 

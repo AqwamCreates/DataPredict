@@ -366,7 +366,7 @@ function ExpectationMaximizationModel:predict(featureVector)
 
 	local numberOfClusters = self.numberOfClusters
 
-	local probabilityVector
+	local probability
 	local selectedCluster
 
 	for k = 1, #featureVector, 1 do
@@ -387,7 +387,7 @@ function ExpectationMaximizationModel:predict(featureVector)
 
 			if weight > max_weight then
 
-				probabilityVector = weight
+				probability = weight
 
 				selectedCluster = i
 
@@ -397,7 +397,7 @@ function ExpectationMaximizationModel:predict(featureVector)
 
 	end
 
-	return selectedCluster, probabilityVector
+	return selectedCluster, probability
 end
 
 return ExpectationMaximizationModel

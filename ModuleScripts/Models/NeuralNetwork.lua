@@ -474,17 +474,17 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 	
 end
 
-function NeuralNetworkModel:addLayer(numberOfNeurons, addBiasNeuron, activationFunction, Optimizer, Regularization)
+function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, Optimizer, Regularization)
 
 	if (typeof(numberOfNeurons) ~= "number") then error("Invalid input for number of neurons!") end
 
-	if (typeof(addBiasNeuron) ~= "boolean") then error("Invalid input for adding bias!") end
+	if (typeof(hasBiasNeuron) ~= "boolean") then error("Invalid input for adding bias!") end
 
 	if (typeof(activationFunction) ~= "string") then error("Invalid input for activation function!") end
 
 	table.insert(self.numberOfNeuronsTable, numberOfNeurons)
 
-	table.insert(self.hasBiasNeuronTable, addBiasNeuron)
+	table.insert(self.hasBiasNeuronTable, hasBiasNeuron)
 
 	table.insert(self.activationFunctionTable, activationFunction)
 

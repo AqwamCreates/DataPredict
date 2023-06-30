@@ -57,14 +57,14 @@ NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number
 Add a layer to the neural network.
 
 ```
-NeuralNetwork:addLayer(numberOfNeurons: integer, addBiasNeuron: boolean, activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
+NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
 ```
 
 #### Parameters:
 
 * numberOfNeurons: Set the number of neurons to be added to the next layer (excluding bias neuron).
 
-* addBiasNeuron: Set whether or not the bias neuron will be added to next layer.
+* hasBiasNeuron: Set whether or not the bias neuron will be added to next layer.
 
 * activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
 

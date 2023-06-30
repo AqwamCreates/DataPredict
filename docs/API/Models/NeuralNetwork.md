@@ -72,6 +72,26 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activat
 
 * Regularization: The regularization object to be added at the last layer.
 
+### setLayer()
+
+Add a layer to the neural network.
+
+```
+NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
+```
+
+#### Parameters:
+
+* layerNumber: The layer that you wish to change properties on.
+
+* hasBiasNeuron: Set whether or not this layer has a bias neuron.
+
+* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
+
+* Optimizer: The optimizer object to be used by to this layer.
+
+* Regularization: The regularization object to be used by to this layer.
+
 ### createLayers()
 
 Create all the neurons (with bias neuron) in each of those layers. It also set all the activation function of all neuron to the activation function given in the function's parameters. Resets the current model parameters stored in the neural network.

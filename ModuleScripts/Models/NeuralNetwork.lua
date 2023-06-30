@@ -496,7 +496,7 @@ end
 
 function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunction, Optimizer, Regularization)
 
-	if (typeof(layerNumber) ~= "number") then error("Invalid invalid layer number!") end
+	if (typeof(layerNumber) ~= "number") then error("Invalid input layer number!") end
 
 	if (typeof(hasBiasNeuron) ~= "boolean") then error("Invalid input for adding bias!") end
 

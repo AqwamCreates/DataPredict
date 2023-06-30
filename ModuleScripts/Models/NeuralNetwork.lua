@@ -494,6 +494,24 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, addBiasNeuron, activationF
 
 end
 
+function NeuralNetworkModel:setLayer(layerNumber, isBiasNeuron, activationFunction, Optimizer, Regularization)
+
+	if (typeof(layerNumber) ~= "number") then error("Invalid invalid layer number!") end
+
+	if (typeof(isBiasNeuron) ~= "boolean") then error("Invalid input for adding bias!") end
+
+	if (typeof(activationFunction) ~= "string") then error("Invalid input for activation function!") end
+
+	self.addBiasNeuronTable[layerNumber] = isBiasNeuron or self.addBiasNeuronTable[layerNumber]
+	
+	self.activationFunctionTable[layerNumber] = activationFunction or self.activationFunctionTable[layerNumber] 
+
+	self.OptimizerTable[layerNumber] = Optimizer or self.OptimizerTable[layerNumber]
+
+	self.RegularizationTable[layerNumber] = Regularization or self.RegularizationTable[layerNumber]
+
+end
+
 function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	if (self.ModelParameters == nil) then 

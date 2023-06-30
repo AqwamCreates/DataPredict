@@ -281,11 +281,11 @@ local function calculateModelParametersMean(modelParameters, featureMatrix, dist
 		
 	end
 	
-	local modelParametersWithLearningRate = AqwamMatrixLibrary:multiply(learningRate, AqwamMatrixLibrary:subtract(newModelParameters, modelParameters))
+	local modelParametersWithLearningRate = AqwamMatrixLibrary:multiply(learningRate, newModelParameters)
 	
 	modelParameters = AqwamMatrixLibrary:subtract(modelParameters, modelParametersWithLearningRate)
 	
-	return modelParameters
+	return newModelParameters
 	
 end
 

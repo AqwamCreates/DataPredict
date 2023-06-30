@@ -158,7 +158,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix)
 
 		inputMatrix = AqwamMatrixLibrary:applyFunction(activationFunctionList[self.activationFunctionTable[layerNumber]], layerZ)
 
-		if (layerNumber < numberOfLayers) and (self.addBiasNeuronTable[layerNumber]) then
+		if (layerNumber < numberOfLayers) and (self.hasBiasNeuronTable[layerNumber]) then
 
 			for data = 1, #featureMatrix, 1 do inputMatrix[data][1] = 1 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron
 
@@ -372,7 +372,7 @@ function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 
 	NewNeuralNetworkModel.ClassesList = {}
 
-	NewNeuralNetworkModel.addBiasNeuronTable = {}
+	NewNeuralNetworkModel.hasBiasNeuronTable = {}
 
 	NewNeuralNetworkModel.activationFunctionTable = {}
 
@@ -410,11 +410,11 @@ function NeuralNetworkModel:generateLayers()
 
 		numberOfCurrentLayerNeurons = layersArray[layer]
 
-		if self.addBiasNeuronTable[layer] then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
+		if self.hasBiasNeuronTable[layer] then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
 
 		numberOfNextLayerNeurons = layersArray[layer + 1]
 
-		if self.addBiasNeuronTable[layer + 1] then numberOfNextLayerNeurons += 1 end
+		if self.hasBiasNeuronTable[layer + 1] then numberOfNextLayerNeurons += 1 end
 
 		weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
 
@@ -438,7 +438,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 	
 	self.numberOfNeuronsTable = numberOfNeuronsArray
 	
-	self.addBiasNeuronTable = {}
+	self.hasBiasNeuronTable = {}
 	
 	self.activationFunctionTable = {}
 	
@@ -454,7 +454,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		
 		if (layer == numberOfLayers) then
 			
-			self.addBiasNeuronTable[layer] = false
+			self.hasBiasNeuronTable[layer] = false
 
 			self.OptimizerTable[layer] = Optimizer
 
@@ -462,7 +462,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 			
 		else
 			
-			self.addBiasNeuronTable[layer] = true
+			self.hasBiasNeuronTable[layer] = true
 
 			self.OptimizerTable[layer] = nil
 
@@ -484,7 +484,7 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, addBiasNeuron, activationF
 
 	table.insert(self.numberOfNeuronsTable, numberOfNeurons)
 
-	table.insert(self.addBiasNeuronTable, addBiasNeuron)
+	table.insert(self.hasBiasNeuronTable, addBiasNeuron)
 
 	table.insert(self.activationFunctionTable, activationFunction)
 
@@ -502,7 +502,7 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 	if (typeof(activationFunction) ~= "string") then error("Invalid input for activation function!") end
 
-	self.addBiasNeuronTable[layerNumber] = hasBiasNeuron or self.addBiasNeuronTable[layerNumber]
+	self.hasBiasNeuronTable[layerNumber] = hasBiasNeuron or self.hasBiasNeuronTable[layerNumber]
 	
 	self.activationFunctionTable[layerNumber] = activationFunction or self.activationFunctionTable[layerNumber] 
 
@@ -623,14 +623,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 end
 
 function NeuralNetworkModel:predict(featureMatrix)
-	
-	if (self.addBiasNeuronTable[1]) then 
-
-		local biasMatrix = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1, 1)
-
-		featureMatrix = AqwamMatrixLibrary:horizontalConcatenate(biasMatrix, featureMatrix)
-
-	end
 
 	local forwardPropagateTable = self:forwardPropagate(featureMatrix, self.ModelParameters, self.activationFunction)
 

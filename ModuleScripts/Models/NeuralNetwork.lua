@@ -252,7 +252,7 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateT
 
 		if self.RegularizationTable[layer] then
 
-			regularizationDerivatives = self.Regularization[layer]:calculateCostFunctionDerivativeRegularization(self.ModelParameters[layer], numberOfData)
+			regularizationDerivatives = self.RegularizationTable[layer]:calculateCostFunctionDerivativeRegularization(self.ModelParameters[layer], numberOfData)
 
 			deltaMatrix = AqwamMatrixLibrary:add(deltaMatrix, regularizationDerivatives)
 
@@ -284,7 +284,7 @@ function NeuralNetworkModel:gradientDescent(deltaTable, numberOfData)
 
 		costFunctionDerivative = AqwamMatrixLibrary:multiply(calculatedLearningRate, deltaTable[layerNumber])
 
-		newWeightMatrix = AqwamMatrixLibrary:add(weightMatrix, costFunctionDerivative)
+		newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivative)
 
 		table.insert(NewModelParameters, newWeightMatrix)
 

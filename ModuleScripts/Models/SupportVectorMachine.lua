@@ -238,8 +238,6 @@ local function gradientDescent(modelParameters, kernelMatrix, featureMatrix, lab
 
 	NewModelParameters = AqwamMatrixLibrary:transpose(NewModelParameters)
 
-	NewModelParameters = AqwamMatrixLibrary:multiply(-1, NewModelParameters)
-
 	return NewModelParameters
 
 end

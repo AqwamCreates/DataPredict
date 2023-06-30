@@ -183,7 +183,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		
 		previousCostFunctionDerivatives = costFunctionDerivatives
 
-		self.ModelParameters = AqwamMatrixLibrary:add(self.ModelParameters, costFunctionDerivatives)
+		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
 		
 		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
 		

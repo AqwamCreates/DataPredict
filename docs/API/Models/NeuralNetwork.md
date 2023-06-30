@@ -74,7 +74,7 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activat
 
 ### setLayer()
 
-Add a layer to the neural network.
+Change the properties of a selected layer of the neural netowrk.
 
 ```
 NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)

@@ -344,7 +344,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 			
 		end
 
-		cost = likelihood
+		cost = -likelihood
 
 		table.insert(costArray, likelihood)
 		

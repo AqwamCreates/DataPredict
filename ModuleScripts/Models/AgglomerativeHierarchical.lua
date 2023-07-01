@@ -14,7 +14,7 @@ local defaultHighestCost = math.huge
 
 local defaultLowestCost = -math.huge
 
-local defaultNumberOfClusters = 1
+local defaultNumberOfcentroids = 1
 
 local defaultDistanceFunction = "euclidean"
 
@@ -59,179 +59,179 @@ local function calculateDistance(vector1, vector2, distanceFunction)
 
 end
 
-local function createClusterDistanceMatrix(clusters, distanceFunction)
+local function createCentroidDistanceMatrix(centroids, distanceFunction)
 
-	local numberOfData = #clusters
+	local numberOfData = #centroids
 
 	local distanceMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfData)
 
 	for i = 1, numberOfData, 1 do
 
 		for j = 1, numberOfData, 1 do
-			
-			if (i ~= j) then -- Necessary, because for some reason math.pow(0, 2) gives 1 instead of zero. So skip this step when same clusters.
-				
-				distanceMatrix[i][j] = calculateDistance({clusters[i]}, {clusters[j]} , distanceFunction)
-				
+
+			if (i ~= j) then -- Necessary, because for some reason math.pow(0, 2) gives 1 instead of zero. So skip this step when same centroids.
+
+				distanceMatrix[i][j] = calculateDistance({centroids[i]}, {centroids[j]} , distanceFunction)
+
 			end
 
 		end
 
 	end
-	
+
 	return distanceMatrix
 
 end
 
-local function createNewMergedDistanceMatrix(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+local function createNewMergedDistanceMatrix(centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-	local numberOfData = #clusterDistanceMatrix
+	local numberOfData = #centroidDistanceMatrix
 
-	local newClusterDistanceMatrix = {}
+	local newCentroidDistanceMatrix = {}
 
 	for i = 1, numberOfData, 1 do
 
-		if (i == clusterIndex1) or (i == clusterIndex2) then continue end
+		if (i == centroidIndex1) or (i == centroidIndex2) then continue end
 
-		local newClusterDistanceVector = {}
+		local newCentroidDistanceVector = {}
 
 		for j = 1, numberOfData, 1 do
 
-			if (j == clusterIndex1) or (j == clusterIndex2) then continue end
+			if (j == centroidIndex1) or (j == centroidIndex2) then continue end
 
-			table.insert(newClusterDistanceVector, clusterDistanceMatrix[i][j])
+			table.insert(newCentroidDistanceVector, centroidDistanceMatrix[i][j])
 
 		end
 
-		table.insert(newClusterDistanceMatrix, newClusterDistanceVector)
+		table.insert(newCentroidDistanceMatrix, newCentroidDistanceVector)
 
 	end
-	
-	if (#newClusterDistanceMatrix == 0) then return {{0}} end
-	
+
+	if (#newCentroidDistanceMatrix == 0) then return {{0}} end
+
 	local newRow = {}
 
-	for i = 1, #newClusterDistanceMatrix[1], 1 do table.insert(newRow, 1, 0) end
+	for i = 1, #newCentroidDistanceMatrix[1], 1 do table.insert(newRow, 1, 0) end
 
-	table.insert(newClusterDistanceMatrix, 1, newRow)
-	
-	for i = 1, #newClusterDistanceMatrix, 1 do table.insert(newClusterDistanceMatrix[i], 1, 0) end
+	table.insert(newCentroidDistanceMatrix, 1, newRow)
 
-	return newClusterDistanceMatrix
+	for i = 1, #newCentroidDistanceMatrix, 1 do table.insert(newCentroidDistanceMatrix[i], 1, 0) end
+
+	return newCentroidDistanceMatrix
 
 end
 
-local function applyFunctionToFirstRowAndColumnOfDistanceMatrix(functionToApply, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
+local function applyFunctionToFirstRowAndColumnOfDistanceMatrix(functionToApply, centroidDistanceMatrix, newCentroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
 	local newColumnIndex = 2
 
 	local newRowIndex = 2
 
-	local numberOfClusters = #clusterDistanceMatrix
+	local numberOfcentroids = #centroidDistanceMatrix
 
-	for column = 1, numberOfClusters, 1 do
+	for column = 1, numberOfcentroids, 1 do
 
-		if (column == clusterIndex1) or (column == clusterIndex2) then continue end
+		if (column == centroidIndex1) or (column == centroidIndex2) then continue end
 
-		local distance = functionToApply(clusterDistanceMatrix[clusterIndex1][column],  clusterDistanceMatrix[clusterIndex2][column])
+		local distance = functionToApply(centroidDistanceMatrix[centroidIndex1][column],  centroidDistanceMatrix[centroidIndex2][column])
 
-		newClusterDistanceMatrix[1][newColumnIndex] = distance
+		newCentroidDistanceMatrix[1][newColumnIndex] = distance
 
 		newColumnIndex += 1
 
 	end
 
-	for row = 1, numberOfClusters, 1 do
+	for row = 1, numberOfcentroids, 1 do
 
-		if (row == clusterIndex1) or (row == clusterIndex2) then continue end
+		if (row == centroidIndex1) or (row == centroidIndex2) then continue end
 
-		local distance = functionToApply(clusterDistanceMatrix[row][clusterIndex1],  clusterDistanceMatrix[row][clusterIndex2])
+		local distance = functionToApply(centroidDistanceMatrix[row][centroidIndex1],  centroidDistanceMatrix[row][centroidIndex2])
 
-		newClusterDistanceMatrix[newRowIndex][1] = distance
+		newCentroidDistanceMatrix[newRowIndex][1] = distance
 
 		newRowIndex += 1
 
 	end
 
-	return newClusterDistanceMatrix
+	return newCentroidDistanceMatrix
 
 end
 
 -----------------------------------------------------------------------------------------------------------------------
 
-local function minimumLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+local function minimumLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-	local newClusterDistanceMatrix = createNewMergedDistanceMatrix(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+	local newCentroidDistanceMatrix = createNewMergedDistanceMatrix(centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-	newClusterDistanceMatrix = applyFunctionToFirstRowAndColumnOfDistanceMatrix(math.min, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
+	newCentroidDistanceMatrix = applyFunctionToFirstRowAndColumnOfDistanceMatrix(math.min, centroidDistanceMatrix, newCentroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-	return newClusterDistanceMatrix
-
-end
-
-local function maximumLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
-
-	local newClusterDistanceMatrix = createNewMergedDistanceMatrix(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
-
-	newClusterDistanceMatrix = applyFunctionToFirstRowAndColumnOfDistanceMatrix(math.max, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
-
-	return newClusterDistanceMatrix
+	return newCentroidDistanceMatrix
 
 end
 
-local function groupAverageLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+local function maximumLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
+
+	local newCentroidDistanceMatrix = createNewMergedDistanceMatrix(centroidDistanceMatrix, centroidIndex1, centroidIndex2)
+
+	newCentroidDistanceMatrix = applyFunctionToFirstRowAndColumnOfDistanceMatrix(math.max, centroidDistanceMatrix, newCentroidDistanceMatrix, centroidIndex1, centroidIndex2)
+
+	return newCentroidDistanceMatrix
+
+end
+
+local function groupAverageLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
 	local weightedGroupAverage = function (x, y) return (x + y) / 2 end
 
-	local newClusterDistanceMatrix = createNewMergedDistanceMatrix(clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+	local newCentroidDistanceMatrix = createNewMergedDistanceMatrix(centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-	newClusterDistanceMatrix = applyFunctionToFirstRowAndColumnOfDistanceMatrix(weightedGroupAverage, clusterDistanceMatrix, newClusterDistanceMatrix, clusterIndex1, clusterIndex2)
+	newCentroidDistanceMatrix = applyFunctionToFirstRowAndColumnOfDistanceMatrix(weightedGroupAverage, centroidDistanceMatrix, newCentroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-	return newClusterDistanceMatrix
+	return newCentroidDistanceMatrix
 
 end
 
-local function wardLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+local function wardLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-	local newClusterDistanceMatrix = createClusterDistanceMatrix(clusters, "euclidean")
-	
-	for i = 2, #newClusterDistanceMatrix,1 do
-		
-		newClusterDistanceMatrix[1][i] = math.pow(newClusterDistanceMatrix[1][i], 2)
-		
-		newClusterDistanceMatrix[i][1] = math.pow(newClusterDistanceMatrix[i][1], 2)
-		
+	local newCentroidDistanceMatrix = createCentroidDistanceMatrix(centroids, "euclidean")
+
+	for i = 2, #newCentroidDistanceMatrix,1 do
+
+		newCentroidDistanceMatrix[1][i] = math.pow(newCentroidDistanceMatrix[1][i], 2)
+
+		newCentroidDistanceMatrix[i][1] = math.pow(newCentroidDistanceMatrix[i][1], 2)
+
 	end
 
-	return newClusterDistanceMatrix
+	return newCentroidDistanceMatrix
 
 end
 
 -----------------------------------------------------------------------------------------------------------------------
 
-local function findClosestClusters(clusterDistanceMatrix)
+local function findClosestcentroids(centroidDistanceMatrix)
 
 	local distance
 
-	local minimumClusterDistance = math.huge
+	local minimumCentroidDistance = -math.huge
 
-	local clusterIndex1 = nil
+	local centroidIndex1 = nil
 
-	local clusterIndex2 = nil
+	local centroidIndex2 = nil
 
-	for i = 1, #clusterDistanceMatrix, 1 do
+	for i = 1, #centroidDistanceMatrix, 1 do
 
-		for j = 1, #clusterDistanceMatrix, 1 do
+		for j = 1, #centroidDistanceMatrix, 1 do
 
-			distance = clusterDistanceMatrix[i][j]
+			distance = centroidDistanceMatrix[i][j]
 
-			if (distance < minimumClusterDistance) and (i~=j) then
+			if (distance > minimumCentroidDistance) and (i~=j) then
 
-				minimumClusterDistance = distance
+				minimumCentroidDistance = distance
 
-				clusterIndex1 = i
+				centroidIndex1 = i
 
-				clusterIndex2 = j
+				centroidIndex2 = j
 
 			end
 
@@ -239,27 +239,27 @@ local function findClosestClusters(clusterDistanceMatrix)
 
 	end
 
-	return clusterIndex1, clusterIndex2
+	return centroidIndex1, centroidIndex2
 
 end
 
-local function updateDistanceMatrix(linkageFunction, clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+local function updateDistanceMatrix(linkageFunction, centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
 	if (linkageFunction == "minimum") then
 
-		return minimumLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+		return minimumLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
 	elseif (linkageFunction == "maximum") then
 
-		return maximumLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+		return maximumLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
 	elseif (linkageFunction == "groupAverage") then
 
-		return groupAverageLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
-		
+		return groupAverageLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
+
 	elseif (linkageFunction == "ward") then
 
-		return wardLinkage(clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+		return wardLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
 	else
 
@@ -269,27 +269,27 @@ local function updateDistanceMatrix(linkageFunction, clusters, clusterDistanceMa
 
 end
 
-local function createNewClusters(clusters, clusterIndex1Combine, clusterIndex2ToCombine)
+local function createNewcentroids(centroids, centroidIndex1Combine, centroidIndex2ToCombine)
 
-	local newClusters = {}
+	local newcentroids = {}
 
-	local cluster1 = {clusters[clusterIndex1Combine]}
+	local centroid1 = {centroids[centroidIndex1Combine]}
 
-	local cluster2 = {clusters[clusterIndex2ToCombine]}
+	local centroid2 = {centroids[centroidIndex2ToCombine]}
 
-	local combinedCluster = AqwamMatrixLibrary:add(cluster1, cluster2)
+	local combinedCentroid = AqwamMatrixLibrary:add(centroid1, centroid2)
 
-	local clusterToBeAdded = AqwamMatrixLibrary:divide(combinedCluster, 2)
-	
-	table.insert(newClusters, clusterToBeAdded[1])
+	local centroidToBeAdded = AqwamMatrixLibrary:divide(combinedCentroid, 2)
 
-	for i = 1, #clusters, 1 do
+	table.insert(newcentroids, centroidToBeAdded[1])
 
-		if (i ~= clusterIndex1Combine) and (i ~= clusterIndex2ToCombine) then table.insert(newClusters, clusters[i]) end
+	for i = 1, #centroids, 1 do
+
+		if (i ~= centroidIndex1Combine) and (i ~= centroidIndex2ToCombine) then table.insert(newcentroids, centroids[i]) end
 
 	end
 
-	return newClusters
+	return newcentroids
 
 end
 
@@ -308,34 +308,34 @@ local function areModelParametersMatricesEqualInSizeAndValues(ModelParameters, P
 end
 
 local function calculateCost(centroids, featureMatrix, distanceFunction)
-	
+
 	local cost = 0
-	
+
 	for i = 1, #featureMatrix, 1 do
-		
+
 		local featureVector = {featureMatrix[i]}
-		
+
 		local minimumDistance = math.huge
 
 		for j = 1, #centroids, 1 do
-			
+
 			local centroid = {centroids[j]}
-			
+
 			local distance = calculateDistance(featureVector, centroid, distanceFunction)
-			
+
 			minimumDistance = math.min(minimumDistance, distance)
-			
+
 		end
-		
+
 		cost += minimumDistance
-		
+
 	end
 
 	return cost
-	
+
 end
 
-function AgglomerativeHierarchicalModel.new(numberOfClusters, distanceFunction, linkageFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
+function AgglomerativeHierarchicalModel.new(numberOfCentroids, distanceFunction, linkageFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
 
 	local NewAgglomerativeHierarchicalModel = BaseModel.new()
 
@@ -349,7 +349,7 @@ function AgglomerativeHierarchicalModel.new(numberOfClusters, distanceFunction, 
 
 	NewAgglomerativeHierarchicalModel.linkageFunction = linkageFunction or defaultLinkageFunction
 
-	NewAgglomerativeHierarchicalModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
+	NewAgglomerativeHierarchicalModel.numberOfCentroids = numberOfCentroids or defaultNumberOfcentroids
 
 	NewAgglomerativeHierarchicalModel.stopWhenModelParametersDoesNotChange =  BaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, defaultStopWhenModelParametersDoesNotChange)
 
@@ -357,7 +357,7 @@ function AgglomerativeHierarchicalModel.new(numberOfClusters, distanceFunction, 
 
 end
 
-function AgglomerativeHierarchicalModel:setParameters(numberOfClusters, distanceFunction, linkageFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
+function AgglomerativeHierarchicalModel:setParameters(numberOfCentroids, distanceFunction, linkageFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
 
 	self.highestCost = highestCost or self.highestCost
 
@@ -365,9 +365,9 @@ function AgglomerativeHierarchicalModel:setParameters(numberOfClusters, distance
 
 	self.distanceFunction = distanceFunction or self.distanceFunction
 
-	self.linkageFunction = linkageFunction or defaultLinkageFunction
+	self.linkageFunction = linkageFunction or self.linkageFunction
 
-	self.numberOfClusters = numberOfClusters or self.numberOfClusters
+	self.numberOfCentroids = numberOfCentroids or self.numberOfCentroids
 
 	self.stopWhenModelParametersDoesNotChange =  self:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
 
@@ -375,9 +375,9 @@ end
 
 function AgglomerativeHierarchicalModel:train(featureMatrix)
 
-	local clusterIndex1
+	local centroidIndex1
 
-	local clusterIndex2
+	local centroidIndex2
 
 	local minimumDistance
 
@@ -391,27 +391,27 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 	local PreviousModelParameters
 
-	local clusterDistanceMatrix
+	local centroidDistanceMatrix
 
-	local clusterIndex1
+	local centroidIndex1
 
-	local clusterIndex2
+	local centroidIndex2
 
 	local areModelParametersEqual = false
 
-	local clusters = AqwamMatrixLibrary:copy(featureMatrix)
+	local centroids = AqwamMatrixLibrary:copy(featureMatrix)
 
-	local newCluster
+	local newcentroid
 
 	if self.ModelParameters then
 
 		if (#featureMatrix[1] ~= #self.ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
 
-		clusters = AqwamMatrixLibrary:verticalConcatenate(clusters, self.ModelParameters)
+		centroids = AqwamMatrixLibrary:verticalConcatenate(centroids, self.ModelParameters)
 
 	end
 
-	clusterDistanceMatrix = createClusterDistanceMatrix(clusters, self.distanceFunction)
+	centroidDistanceMatrix = createCentroidDistanceMatrix(centroids, self.distanceFunction)
 
 	repeat
 
@@ -419,15 +419,15 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 		numberOfIterations += 1
 
-		clusterIndex1, clusterIndex2 = findClosestClusters(clusterDistanceMatrix)
+		centroidIndex1, centroidIndex2 = findClosestcentroids(centroidDistanceMatrix)
 
-		clusters = createNewClusters(clusters, clusterIndex1, clusterIndex2)
-			
-		clusterDistanceMatrix = updateDistanceMatrix(self.linkageFunction, clusters, clusterDistanceMatrix, clusterIndex1, clusterIndex2)
+		centroids = createNewcentroids(centroids, centroidIndex1, centroidIndex2)
 
-		self.ModelParameters = clusters
+		centroidDistanceMatrix = updateDistanceMatrix(self.linkageFunction, centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-		cost = calculateCost(clusters, featureMatrix, self.distanceFunction)
+		self.ModelParameters = centroids
+
+		cost = calculateCost(centroids, featureMatrix, self.distanceFunction)
 
 		table.insert(costArray, cost)
 
@@ -439,9 +439,9 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 		PreviousModelParameters = self.ModelParameters
 
-	until isOutsideCostBounds or (#clusters == self.numberOfClusters) or (#clusters == 1) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
+	until isOutsideCostBounds or (#centroids == self.numberOfcentroids) or (#centroids == 1) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 
-	self.ModelParameters = clusters
+	self.ModelParameters = centroids
 
 	return costArray
 
@@ -451,29 +451,29 @@ function AgglomerativeHierarchicalModel:predict(featureMatrix)
 
 	local distance
 
-	local closestCluster
+	local closestcentroid
 
-	local clusterVector
+	local centroidVector
 
 	local minimumDistance = math.huge
 
-	for i, cluster in ipairs(self.ModelParameters) do
+	for i, centroid in ipairs(self.ModelParameters) do
 
-		clusterVector = {cluster}
+		centroidVector = {centroid}
 
-		distance = calculateDistance(featureMatrix, clusterVector, self.distanceFunction)
+		distance = calculateDistance(featureMatrix, centroidVector, self.distanceFunction)
 
 		if (distance < minimumDistance) then
 
 			minimumDistance = distance
 
-			closestCluster = i
+			closestcentroid = i
 
 		end
 
 	end
 
-	return closestCluster, minimumDistance
+	return closestcentroid, minimumDistance
 
 end
 

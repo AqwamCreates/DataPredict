@@ -271,20 +271,20 @@ local function removeDuplicateRows(ModelParameters)
 end
 
 local function splitCentroid(featureMatrix, centroids, featureMatrixIndex, centroidIndex)
+	
+	local featureVector = {featureMatrix[featureMatrixIndex]}
 
 	local centroid = {centroids[centroidIndex]}
-
-	local featureVector = {featureMatrix[featureMatrixIndex]}
 
 	local newCentroid = AqwamMatrixLibrary:subtract(centroid, featureVector)
 
 	newCentroid = AqwamMatrixLibrary:multiply(newCentroid, 2)
 
-	table.remove(centroids, centroidIndex)
+	--table.remove(centroids, centroidIndex)
 
 	table.insert(centroids, 1, newCentroid[1])
 
-	table.insert(centroids, 2, featureVector[1])
+	--table.insert(centroids, 2, featureVector[1])
 
 	return centroids
 
@@ -455,6 +455,8 @@ function DivisiveHierarchicalModel:train(featureMatrix)
 		cost = calculateCost(centroids, featureMatrix, self.distanceFunction)
 
 		table.insert(costArray, cost)
+		
+		AqwamMatrixLibrary:printMatrix(centroids)
 
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 

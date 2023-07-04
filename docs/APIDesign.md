@@ -32,5 +32,5 @@ If you wish to create your own models and optimizers rom our library, we already
 
 * calculateCostFunctionRegularization() returns regularization values for modelParameters (matrix).
 
-* * The code for the regularization objects are object-oriented.
+* The code for the regularization objects are object-oriented.
 

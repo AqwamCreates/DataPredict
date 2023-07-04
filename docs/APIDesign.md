@@ -6,7 +6,7 @@ If you wish to create your own models and optimizers rom our library, we already
 
 * All our models have train() and predict() functions. They will be called when using some parts in "Others" section of library.
 
-* train() function takes in featureMatrix / tableOfTokenSequenceArray  and labelVector / tableOfTokenSequenceArray  (optional for some models) in order.
+* train() function takes in featureMatrix / tableOfTokenSequenceArray (mandatory for all models) and labelVector / tableOfTokenSequenceArray  (optional for some models) in order.
   
 * predict() function takes in featureMatrix or featureVector.
 

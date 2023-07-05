@@ -8,7 +8,7 @@ If you wish to create your own models and optimizers rom our library, we already
 
 * train() function takes in featureMatrix / tableOfTokenSequenceArray (mandatory for all models) and labelVector / tableOfTokenSequenceArray  (optional for some models) in order.
   
-* predict() function takes in featureMatrix or featureVector.
+* predict() function takes in featureMatrix or featureVector or tableOfTokenSequenceArray.
 
 * The code for the models are object-oriented.
 

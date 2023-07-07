@@ -4,7 +4,7 @@ In this library, we can customize many of our models, optimizers and others to f
 
 To start, we must first link our machine/deep learning library with our matrix library. However, you must use "Aqwam's Roblox Matrix Library" as every calculations made by our models are based on that matrix library.
 
-| Version                     | Machine Learning Library           | Matrix Library     |
+| Version                     | Machine And Deep Learning Library           | Matrix Library     |
 |-----------------------------|------------------------------------|--------------------|
 | Stable v1.0 (Module Script) |                                    |                    |
 | Auto Update (Package)       | [DataPredict](https://www.roblox.com/library/12727977273/DataPredict-Library)                   | [MatrixL](https://www.roblox.com/library/12728472338/MatrixL-Aqwams-Roblox-Matrix-Library)             |

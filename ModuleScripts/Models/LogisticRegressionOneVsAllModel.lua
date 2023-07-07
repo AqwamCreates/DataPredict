@@ -112,18 +112,6 @@ function LogisticRegressionOneVsAllModel:setParameters(maxNumberOfIterations, le
 
 end
 
-function LogisticRegressionOneVsAllModel:setOptimizer(Optimizer)
-
-	self.Optimizer = Optimizer
-
-end
-
-function LogisticRegressionOneVsAllModel:setRegularization(Regularization)
-
-	self.Regularization = Regularization
-
-end
-
 function LogisticRegressionOneVsAllModel:train(featureMatrix, labelVector)
 	
 	local classesList = getClassesList(labelVector)
@@ -137,6 +125,8 @@ function LogisticRegressionOneVsAllModel:train(featureMatrix, labelVector)
 	local cost
 	
 	local costArray = {}
+	
+	local internalCostArray = {}
 	
 	local ModelParameters = {}
 	
@@ -160,10 +150,6 @@ function LogisticRegressionOneVsAllModel:train(featureMatrix, labelVector)
 		
 		LogisticRegressionModel = LogisticRegression.new(1, self.learningRate, self.sigmoidFunction, self.targetCost)
 		
-		LogisticRegressionModel:setOptimizer(self.Optimizer)
-		
-		LogisticRegressionModel:setRegularization(self.Regularization)
-		
 		LogisticRegressionModel:setPrintOutput(false) 
 		
 		binaryLabelVector = convertToBinaryLabelVector(labelVector, class)
@@ -186,9 +172,9 @@ function LogisticRegressionOneVsAllModel:train(featureMatrix, labelVector)
 			
 			LogisticRegressionModel = LogisticRegressionModelsArray[i]
 
-			cost = LogisticRegressionModel:train(featureMatrix, binaryLabelVector)
+			internalCostArray = LogisticRegressionModel:train(featureMatrix, binaryLabelVector)
 			
-			cost = cost[1]
+			cost = internalCostArray[1]
 			
 			totalCost += cost
 			
@@ -230,13 +216,15 @@ function LogisticRegressionOneVsAllModel:predict(featureMatrix)
 	
 	local zVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
 	
-	local softmaxVector = AqwamMatrixLibrary:applyFunction(math.exp, zVector)
+	local expVector = AqwamMatrixLibrary:applyFunction(math.exp, zVector)
 	
-	local softmaxSumVector = AqwamMatrixLibrary:sum(softmaxVector)
+	local softmaxSumVector = AqwamMatrixLibrary:sum(expVector)
+	
+	local softmaxVector = AqwamMatrixLibrary:divide(expVector, softmaxSumVector)
 	
 	for column = 1, #softmaxVector[1], 1 do
 		
-		softmax = softmaxVector[1][column] / softmaxSumVector
+		softmax = softmaxVector[1][column]
 		
 		if (softmax > highestSoftmax) then
 			
@@ -245,6 +233,12 @@ function LogisticRegressionOneVsAllModel:predict(featureMatrix)
 			highestSoftmax = softmax
 			
 		end
+		
+	end
+	
+	if (softmaxSumVector == math.huge) then
+		
+		highestSoftmax = 1.0
 		
 	end
 	
@@ -291,4 +285,3 @@ function LogisticRegressionOneVsAllModel:setPrintOutput(option)
 end
 
 return LogisticRegressionOneVsAllModel
-

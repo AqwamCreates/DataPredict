@@ -112,6 +112,12 @@ function LogisticRegressionOneVsAllModel:setParameters(maxNumberOfIterations, le
 
 end
 
+function LogisticRegressionOneVsAllModel:setRegularization(Regularization)
+
+	self.Regularization = Regularization
+
+end
+
 function LogisticRegressionOneVsAllModel:train(featureMatrix, labelVector)
 	
 	local classesList = getClassesList(labelVector)
@@ -149,6 +155,8 @@ function LogisticRegressionOneVsAllModel:train(featureMatrix, labelVector)
 	for i, class in ipairs(classesList) do
 		
 		LogisticRegressionModel = LogisticRegression.new(1, self.learningRate, self.sigmoidFunction, self.targetCost)
+		
+		LogisticRegressionModel:setRegularization(self.Regularization)
 		
 		LogisticRegressionModel:setPrintOutput(false) 
 		
@@ -216,11 +224,9 @@ function LogisticRegressionOneVsAllModel:predict(featureMatrix)
 	
 	local zVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
 	
-	local expVector = AqwamMatrixLibrary:applyFunction(math.exp, zVector)
+	local softmaxVector = AqwamMatrixLibrary:applyFunction(math.exp, zVector)
 	
-	local softmaxSumVector = AqwamMatrixLibrary:sum(expVector)
-	
-	local softmaxVector = AqwamMatrixLibrary:divide(expVector, softmaxSumVector)
+	local softmaxSumVector = AqwamMatrixLibrary:sum(softmaxVector)
 	
 	for column = 1, #softmaxVector[1], 1 do
 		
@@ -236,7 +242,11 @@ function LogisticRegressionOneVsAllModel:predict(featureMatrix)
 		
 	end
 	
-	if (softmaxSumVector == math.huge) then
+	if (softmaxSumVector ~= math.huge) then
+		
+		highestSoftmax = highestSoftmax / softmaxSumVector
+		
+	else
 		
 		highestSoftmax = 1.0
 		

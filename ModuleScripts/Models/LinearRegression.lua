@@ -49,7 +49,7 @@ local function calculateHypothesisVector(featureMatrix, modelParameters)
 	
 end
 
-local function calculateCost(modelParameters, featureMatrix, labelVector, lossFunction, lambda)
+local function calculateCost(modelParameters, featureMatrix, labelVector, lossFunction)
 	
 	local numberOfData = #featureMatrix
 	
@@ -81,7 +81,7 @@ local function gradientDescent(modelParameters, featureMatrix, labelVector, loss
 	
 end
 
-function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lambda, lossFunction, targetCost)
+function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lossFunction, targetCost)
 	
 	local NewLinearRegressionModel = BaseModel.new()
 	
@@ -189,7 +189,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
 		
-		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.lossFunction, self.lambda)
+		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.lossFunction)
 		
 		if (self.Regularization) then 
 

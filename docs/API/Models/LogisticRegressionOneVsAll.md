@@ -51,7 +51,7 @@ LogisticRegressionOneVsAll:setParameters(maxNumberOfIterations: integer, learnin
 Set a regularization for the model by inputting the optimizer object.
 
 ```
-LogisticRegression:setRegularization(Regularization: RegularizationObject)
+LogisticRegressionOneVsAll:setRegularization(Regularization: RegularizationObject)
 ```
 
 #### Parameters:

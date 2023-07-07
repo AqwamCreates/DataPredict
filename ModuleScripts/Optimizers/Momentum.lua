@@ -14,6 +14,8 @@ function MomentumOptimizer.new(DecayRate)
 	
 	NewMomentumOptimizer.DecayRate = DecayRate or defaultDecayRate
 	
+	NewMomentumOptimizer.Velocity = nil
+	
 	return NewMomentumOptimizer
 	
 end
@@ -24,13 +26,17 @@ function MomentumOptimizer:setDecayRate(DecayRate)
 	
 end
 
-function MomentumOptimizer:calculate(costFunctionDerivatives, previousCostFunctionDerivatives)
+function MomentumOptimizer:calculate(costFunctionDerivatives)
 	
-	if (previousCostFunctionDerivatives == nil) then return costFunctionDerivatives end
+	self.Velocity = self.Velocity or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 	
-	local MomentumMatrixPart1 = AqwamMatrixLibrary:multiply(self.DecayRate, previousCostFunctionDerivatives)
+	local VelocityPart1 = AqwamMatrixLibrary:multiply(self.DecayRate, self.Velocity)
 	
-	local costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, MomentumMatrixPart1)
+	local VelocityPart2 = AqwamMatrixLibrary:multiply((1 - self.DecayRate), costFunctionDerivatives)
+	
+	self.Velocity = AqwamMatrixLibrary:add(VelocityPart1, VelocityPart2)
+	
+	costFunctionDerivatives = self.Velocity
 	
 	return costFunctionDerivatives
 	
@@ -41,3 +47,4 @@ function MomentumOptimizer:reset()
 end
 
 return MomentumOptimizer
+

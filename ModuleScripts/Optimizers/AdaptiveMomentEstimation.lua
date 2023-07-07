@@ -65,7 +65,7 @@ function AdaptiveMomentEstimationOptimizer:calculate(costFunctionDerivatives)
 	
 	local squareRootedDivisor = AqwamMatrixLibrary:power(meanVelocity, 0.5)
 
-	local updatedParameters = AqwamMatrixLibrary:divide(meanMomentum, squareRootedDivisor)
+	local costFunctionDerivatives = AqwamMatrixLibrary:divide(meanMomentum, squareRootedDivisor)
 
 	self.PreviousMomentum = momentum
 	

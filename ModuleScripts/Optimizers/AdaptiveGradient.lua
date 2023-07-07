@@ -28,8 +28,6 @@ function AdaptiveGradientOptimizer:calculate(costFunctionDerivatives)
 
 	local costFunctionDerivatives = AqwamMatrixLibrary:divide(costFunctionDerivatives, SquareRootSumOfGradientSquared)
 	
-	costFunctionDerivatives = AqwamMatrixLibrary:multiply(-1, SquareRootSumOfGradientSquared)
-	
 	self.PreviousSumOfGradientSquaredMatrix = CurrentSumOfGradientSquaredMatrix
 
 	return costFunctionDerivatives
@@ -43,3 +41,4 @@ function AdaptiveGradientOptimizer:reset()
 end
 
 return AdaptiveGradientOptimizer
+

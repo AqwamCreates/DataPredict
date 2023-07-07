@@ -131,6 +131,8 @@ local testData = {
 
 # And Finally...
 
+Don't forget to leave a like in Roblox's DevForum and the Github's repository if you find this information useful! 
+
 Since you read the whole introduction, I recommend you to have a look at these to further your knowledge.
 
 * [Using Model Checking](UsingModelChecking.md)

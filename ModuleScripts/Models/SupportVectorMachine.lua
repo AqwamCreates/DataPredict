@@ -66,9 +66,9 @@ local kernelFunctionList = {
 		
 		local squaredDistance = AqwamMatrixLibrary:power(distanceMatrix, 2)
 		
-		local kDivisortPart1 = AqwamMatrixLibrary:power(sigma, 2)
+		local kDivisorPart1 = AqwamMatrixLibrary:power(sigma, 2)
 		
-		local kDivisor = AqwamMatrixLibrary:multiply(-2, kDivisortPart1)
+		local kDivisor = AqwamMatrixLibrary:multiply(-2, kDivisorPart1)
 		
 		local exponent = AqwamMatrixLibrary:divide(squaredDistance, kDivisor)
 
@@ -110,11 +110,11 @@ local mappingList = {
 
 	["radialBasisFunction"] = function(x, sigma)
 		
-		local kDivisortPart1 = AqwamMatrixLibrary:power(sigma, 2)
+		local kDivisorPart1 = AqwamMatrixLibrary:power(sigma, 2)
 
-		local kDivisortPart2 = AqwamMatrixLibrary:multiply(-2, kDivisortPart1)
+		local kDivisor = AqwamMatrixLibrary:multiply(-2, kDivisorPart1)
 		
-		local exponent = AqwamMatrixLibrary:divide(x, kDivisortPart2) 
+		local exponent = AqwamMatrixLibrary:divide(x, kDivisor) 
 
 		return AqwamMatrixLibrary:applyFunction(math.exp, exponent)
 

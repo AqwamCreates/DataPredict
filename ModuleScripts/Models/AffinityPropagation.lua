@@ -316,7 +316,7 @@ function AffinityPropagationModel:predict(featureMatrix)
 		
 		for j = 1, #featureMatrix do
 			
-			similarity = similarity - (self.previousFeatureMatrix[i][j] - featureMatrix[1][j])^2
+			similarity += (self.previousFeatureMatrix[i][j] - featureMatrix[1][j])^2
 			
 		end
 		

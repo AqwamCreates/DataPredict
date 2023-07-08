@@ -88,9 +88,7 @@ local kernelFunctionList = {
 		
 		local x1Powered = AqwamMatrixLibrary:power(x1, 2)
 		
-		local sumX1Power = AqwamMatrixLibrary:sum(x1Powered)
-		
-		local divisor = AqwamMatrixLibrary:power(sumX1Power, 2)
+		local divisor = AqwamMatrixLibrary:sum(x1Powered) -- euclidian distance squared. So no need for square root
 
 		return AqwamMatrixLibrary:divide(dotProductMatrix, divisor)
 

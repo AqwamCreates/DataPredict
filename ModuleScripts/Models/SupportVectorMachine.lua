@@ -140,7 +140,7 @@ local function calculateKernel(x, kernelFunction, kernelParameters)
 
 		return kernelFunctionList[kernelFunction](x, degree)
 
-	elseif ("radialBasisFunction")then
+	elseif (kernelFunction == "radialBasisFunction") then
 
 		local sigma = kernelParameters.sigma or defaultSigma
 

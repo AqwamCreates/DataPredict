@@ -383,7 +383,7 @@ function ExpectationMaximizationModel:predict(featureVector)
 
 			end
 
-			if weight > maxWeight then
+			if (weight > maxWeight) then
 
 				probability = weight
 

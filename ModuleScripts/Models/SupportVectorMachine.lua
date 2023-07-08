@@ -72,9 +72,7 @@ local kernelFunctionList = {
 		
 		local exponent = AqwamMatrixLibrary:divide(squaredDistance, kDivisor)
 
-		local k = AqwamMatrixLibrary:applyFunction(math.exp, exponent)
-
-		return k
+		return AqwamMatrixLibrary:applyFunction(math.exp, exponent)
 
 	end,
 

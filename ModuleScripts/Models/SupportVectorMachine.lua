@@ -44,23 +44,35 @@ local kernelFunctionList = {
 
 	["radialBasisFunction"] = function(x1, sigma)
 		
-		local subtractedMatrix = AqwamMatrixLibrary:subtract(x1, x1)
+		local distanceMatrix = {}
 		
-		local squaredDistance = AqwamMatrixLibrary:power(subtractedMatrix, 2)
+		for i = 1, #x1, 1 do
+			
+			distanceMatrix[i] = {}
+			
+			for j = 1, #x1, 1 do
+				
+				local distanceVector = AqwamMatrixLibrary:subtract({x1[i]}, {x1[j]})
+				
+				local squaredDistanceVector = AqwamMatrixLibrary:power(distanceVector, 2)
+				
+				local distance = AqwamMatrixLibrary:sum(distanceVector) -- euclidean distance squared, so no square rooting.
+				
+				distanceMatrix[i][j] = distance
+				
+			end
+			
+		end
 		
-		local sumSquaredDistance = AqwamMatrixLibrary:horizontalSum(subtractedMatrix)
-		
-		local distance = AqwamMatrixLibrary:applyFunction(math.sqrt, sumSquaredDistance)
+		local squaredDistance = AqwamMatrixLibrary:power(distanceMatrix, 2)
 		
 		local kDivisortPart1 = AqwamMatrixLibrary:power(sigma, 2)
 		
-		local kDivisortPart2 = AqwamMatrixLibrary:multiply(-2, kDivisortPart1)
+		local kDivisor = AqwamMatrixLibrary:multiply(-2, kDivisortPart1)
 		
-		local exponent = AqwamMatrixLibrary:divide(distance, kDivisortPart2)
+		local exponent = AqwamMatrixLibrary:divide(squaredDistance, kDivisor)
 
-		local kTransposed = AqwamMatrixLibrary:applyFunction(math.exp, exponent)
-		
-		local k = AqwamMatrixLibrary:transpose(kTransposed)
+		local k = AqwamMatrixLibrary:applyFunction(math.exp, exponent)
 
 		return k
 

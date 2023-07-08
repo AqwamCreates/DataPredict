@@ -44,7 +44,8 @@ end
 
 function MomentumOptimizer:reset()
 	
+	self.Velocity = nil
+	
 end
 
 return MomentumOptimizer
-

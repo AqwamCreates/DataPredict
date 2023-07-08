@@ -371,7 +371,7 @@ function ExpectationMaximizationModel:predict(featureVector)
 
 	for k = 1, #featureVector, 1 do
 
-		local max_weight = -math.huge
+		local maxWeight = -math.huge
 
 		local max_cluster = 0
 
@@ -385,7 +385,7 @@ function ExpectationMaximizationModel:predict(featureVector)
 
 			end
 
-			if weight > max_weight then
+			if weight > maxWeight then
 
 				probability = weight
 

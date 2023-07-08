@@ -373,8 +373,6 @@ function ExpectationMaximizationModel:predict(featureVector)
 
 		local maxWeight = -math.huge
 
-		local max_cluster = 0
-
 		for i = 1, numberOfClusters, 1 do
 
 			local weight = piTable[i]

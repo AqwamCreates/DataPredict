@@ -78,7 +78,7 @@ local function startMiniBatchGradientDescent(MachineLearningModel, featureMatrix
 	
 	for currentBatchNumber = 1, numberOfBatches, 1 do
 		
-		print("Batch: " .. currentBatchNumber)
+		print("Batch: " .. currentBatchNumber .. "\n")
 
 		batchFeatureMatrix = featureMatrixBatchesTable[currentBatchNumber]
 

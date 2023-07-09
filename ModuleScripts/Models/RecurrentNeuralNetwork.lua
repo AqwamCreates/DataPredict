@@ -130,11 +130,13 @@ function RecurrentNeuralNetworkModel:createLayers(inputSize, hiddenSize, outputS
 
 end
 
-function RecurrentNeuralNetworkModel:convertTokenToLogisticVector(size, token)
+function RecurrentNeuralNetworkModel:convertTokenToLogisticVector(token)
 	
 	if (type(token) == nil) then error("A token is not an integer!") end
 
-	local logisticMatrix = AqwamMatrixLibrary:createMatrix(size, 1)
+	if (token > self.outputSize) then error("A token value is larger than the number of output neurons!") end
+
+	local logisticMatrix = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
 
 	if (token ~= 0) then
 
@@ -296,7 +298,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 			local tokenInput = tokenInputSequenceArray[t]
 
-			local xt = self:convertTokenToLogisticVector(self.inputSize, tokenInput)
+			local xt = self:convertTokenToLogisticVector(tokenInput)
 
 			table.insert(tokenInputSequenceLogisticMatrices, xt)
 			

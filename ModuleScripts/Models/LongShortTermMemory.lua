@@ -110,11 +110,13 @@ function LongShortTermMemoryModel:setParameters(maxNumberOfIterations, learningR
 	
 end
 
-function LongShortTermMemoryModel:convertTokenToLogisticVector(size, token)
+function LongShortTermMemoryModel:convertTokenToLogisticVector(token)
 
 	if (type(token) == nil) then error("A token is not an integer!") end
+	
+	if (token > self.outputSize) then error("A token value is larger than the number of output neurons!") end
 
-	local logisticMatrix = AqwamMatrixLibrary:createMatrix(size, 1)
+	local logisticMatrix = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
 
 	if (token ~= 0) then
 
@@ -480,7 +482,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 			local tokenInput = tokenInputSequenceArray[t]
 
-			local xt = self:convertTokenToLogisticVector(self.inputSize, tokenInput)
+			local xt = self:convertTokenToLogisticVector(tokenInput)
 
 			table.insert(tokenInputSequenceLogisticMatrices, xt)
 			

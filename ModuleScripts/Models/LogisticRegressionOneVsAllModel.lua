@@ -218,41 +218,33 @@ function LogisticRegressionOneVsAllModel:predict(featureMatrix)
 	
 	local highestClass
 	
-	local softmax
+	local probability
 
-	local highestSoftmax = -math.huge
+	local highestProbability = -math.huge
 	
 	local zVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
 	
 	local softmaxVector = AqwamMatrixLibrary:applyFunction(math.exp, zVector)
 	
-	local softmaxSumVector = AqwamMatrixLibrary:sum(softmaxVector)
+	local softmaxSum = AqwamMatrixLibrary:sum(softmaxVector)
+	
+	local softmax = AqwamMatrixLibrary:divide(softmaxVector, softmaxSum)
 	
 	for column = 1, #softmaxVector[1], 1 do
 		
-		softmax = softmaxVector[1][column]
+		probability = softmaxVector[1][column]
 		
-		if (softmax > highestSoftmax) then
+		if (probability > highestProbability) then
 			
 			highestClass = self.ClassesList[column]
 			
-			highestSoftmax = softmax
+			highestProbability = probability
 			
 		end
 		
 	end
 	
-	if (softmaxSumVector ~= math.huge) then
-		
-		highestSoftmax = highestSoftmax / softmaxSumVector
-		
-	else
-		
-		highestSoftmax = 1.0
-		
-	end
-	
-	return highestClass, highestSoftmax
+	return highestClass, highestProbability
 	
 end
 

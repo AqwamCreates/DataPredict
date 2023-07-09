@@ -461,6 +461,8 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 				dWaa = AqwamMatrixLibrary:add(dWaa, dWaat)
 
 				dba = AqwamMatrixLibrary:add(dba, dbat)
+				
+				dby = AqwamMatrixLibrary:add(dby, dxt)
 
 				if (yTable) then
 
@@ -493,6 +495,8 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 		dWya = AqwamMatrixLibrary:multiply(self.learningRate, dWya)
 
 		dba = AqwamMatrixLibrary:multiply(self.learningRate, dba)
+		
+		dby = AqwamMatrixLibrary:multiply(self.learningRate, dby)
 
 		if (self.InputLayerOptimizer) then
 
@@ -534,15 +538,15 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 		previousdby = dby
 
-		self.Wax = AqwamMatrixLibrary:add(self.Wax, dWax)
+		self.Wax = AqwamMatrixLibrary:subtract(self.Wax, dWax)
 
-		self.Waa = AqwamMatrixLibrary:add(self.Waa, dWaa)
+		self.Waa = AqwamMatrixLibrary:subtract(self.Waa, dWaa)
 
-		self.Wya = AqwamMatrixLibrary:add(self.Wya, dWya)
+		self.Wya = AqwamMatrixLibrary:subtract(self.Wya, dWya)
 
-		self.ba = AqwamMatrixLibrary:add(self.ba, dba)
+		self.ba = AqwamMatrixLibrary:subtract(self.ba, dba)
 
-		self.by = AqwamMatrixLibrary:add(self.by, dby)
+		self.by = AqwamMatrixLibrary:subtract(self.by, dby)
 
 		self.ModelParameters = {self.Wax, self.Waa, self.Wya, self.ba, self.by}
 

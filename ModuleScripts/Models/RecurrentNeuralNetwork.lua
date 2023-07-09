@@ -464,7 +464,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 				
 				dby = AqwamMatrixLibrary:add(dby, dxt)
 
-				if (yTable) then
+				if (yTable[t]) then
 
 					local yt = yTable[t]
 

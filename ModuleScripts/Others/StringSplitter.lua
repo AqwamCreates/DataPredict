@@ -56,6 +56,8 @@ function StringSplitter:splitStringToArray(inputString, patternWhereToSplitBetwe
 	
 	local stringTable = string.split(newInputString, " ")
 	
+	if (stringTable[1] == "") then table.remove(stringTable, 1) end
+	
 	return stringTable
 	
 end

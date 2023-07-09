@@ -74,25 +74,11 @@ local derivativeList = {
 
 local function softMax(matrix)
 
-	local maxValue = AqwamMatrixLibrary:findMaximumValueInMatrix(matrix)
+	local e = AqwamMatrixLibrary:applyFunction(math.exp, matrix)
 
-	local subtractedValues = AqwamMatrixLibrary:subtract(matrix, maxValue)
+	local eSumValues = AqwamMatrixLibrary:sum(e)
 
-	local p = AqwamMatrixLibrary:applyFunction(math.exp, subtractedValues)
-
-	local sumValues = AqwamMatrixLibrary:sum(p)
-
-	local result
-
-	if (sumValues ~= 0) then
-
-		result = AqwamMatrixLibrary:divide(p, sumValues)
-
-	else
-
-		result = matrix
-
-	end
+	local result = AqwamMatrixLibrary:divide(e, eSumValues)
 
 	return result
 

@@ -1,6 +1,6 @@
 local StringSplitter = {}
 
-local function addSpacesBetweenSymbols(inputString)
+local function addSpacesBetweenPattern(inputString, patternWhereToSplitBetween)
 	
 	local stringLength = string.len(inputString)
 	
@@ -12,11 +12,11 @@ local function addSpacesBetweenSymbols(inputString)
 	
 	local nextSubString
 	
-	local isCurrentSubStringASymbol
+	local isCurrentSubStringMatched
 	
-	local isNextSubStringNotSymbol
+	local isNextSubStringNotWhiteSpace
 	
-	local isPreviousSubStringNotSymbol
+	local isPreviousSubStringNotWhiteSpace
 	
 	for index = 1, stringLength, 1 do
 		
@@ -26,17 +26,17 @@ local function addSpacesBetweenSymbols(inputString)
 
 		previousSubString = string.sub(inputString, index + 1, index + 1)
 		
-		isCurrentSubStringASymbol = string.find(currentSubString, '%p')
+		isCurrentSubStringMatched = string.find(currentSubString, patternWhereToSplitBetween)
 		
-		isNextSubStringNotSymbol =  string.find(nextSubString, '[%a%d]')
+		isNextSubStringNotWhiteSpace = not string.find(nextSubString, '%s')
 			
-		isPreviousSubStringNotSymbol = string.find(previousSubString, '[%a%d]')
+		isPreviousSubStringNotWhiteSpace = not string.find(previousSubString, '%s')
 		
-		if isCurrentSubStringASymbol then
+		if isCurrentSubStringMatched then
 			
-			if isPreviousSubStringNotSymbol then currentSubString = " " .. currentSubString end
+			if isPreviousSubStringNotWhiteSpace then currentSubString = " " .. currentSubString end
 			
-			if isNextSubStringNotSymbol then currentSubString = currentSubString .. " " end
+			if isNextSubStringNotWhiteSpace then currentSubString = currentSubString .. " " end
 			
 		end
 		
@@ -50,25 +50,17 @@ end
 
 local function convertStringToTable(inputString)
 	
-	local stringTable = {}
-	
-	local stringTableWithSpaces = string.split(inputString, " ")
-	
-	for i, value in ipairs(stringTableWithSpaces)  do
-		
-		if (value ~= "") then table.insert(stringTable, value) end
-		
-	end
+	local stringTable = string.split(inputString, " ")
 	
 	return stringTable
 	
 end
 
-function StringSplitter:splitStringToArray(inputString)
+function StringSplitter:splitStringToArray(inputString, patternWhereToSplitBetween)
 	
 	if (typeof(inputString) ~= "string") then error("Input is not a string!") end
 	
-	local inputStringWithSpacesBetweenSymbols = addSpacesBetweenSymbols(inputString)
+	local inputStringWithSpacesBetweenSymbols = addSpacesBetweenPattern(inputString, patternWhereToSplitBetween)
 	
 	local stringTable = convertStringToTable(inputStringWithSpacesBetweenSymbols)
 	

@@ -436,23 +436,23 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		self.Wf = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize + self.inputSize)
 
-		self.bf = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+		self.bf = self:initializeMatrixBasedOnMode(self.hiddenSize, 1)
 
 		self.Wi = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize + self.inputSize)
 
-		self.bi = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+		self.bi = self:initializeMatrixBasedOnMode(self.hiddenSize, 1)
 
 		self.Wc = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize + self.inputSize)
 
-		self.bc = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+		self.bc = self:initializeMatrixBasedOnMode(self.hiddenSize, 1)
 
 		self.Wo = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize + self.inputSize)
 
-		self.bo = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+		self.bo = self:initializeMatrixBasedOnMode(self.hiddenSize, 1)
 
 		self.Wy = self:initializeMatrixBasedOnMode(self.outputSize, self.hiddenSize)
 
-		self.by = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
+		self.by = self:initializeMatrixBasedOnMode(self.outputSize, 1)
 
 	end
 	

@@ -77,6 +77,8 @@ local function startMiniBatchGradientDescent(MachineLearningModel, featureMatrix
 	local dataArray
 	
 	for currentBatchNumber = 1, numberOfBatches, 1 do
+		
+		print("Batch: " .. currentBatchNumber)
 
 		batchFeatureMatrix = featureMatrixBatchesTable[currentBatchNumber]
 
@@ -85,8 +87,6 @@ local function startMiniBatchGradientDescent(MachineLearningModel, featureMatrix
 		dataArray = {batchFeatureMatrix, batchLabelVector}
 
 		MachineLearningModel:train(featureMatrix, labelVector)
-		
-		print("Batch: " .. currentBatchNumber)
 		
 	end
 
@@ -135,5 +135,3 @@ function GradientDescentModes:startGradientDescent(MachineLearningModel, gradien
 end
 
 return GradientDescentModes
-
-

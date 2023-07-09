@@ -232,7 +232,7 @@ function LogisticRegressionOneVsAllModel:predict(featureMatrix)
 	
 	for column = 1, #softmaxVector[1], 1 do
 		
-		probability = softmaxVector[1][column]
+		probability = softmax[1][column]
 		
 		if (probability > highestProbability) then
 			

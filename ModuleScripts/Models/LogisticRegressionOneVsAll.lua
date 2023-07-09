@@ -68,6 +68,18 @@ local function convertToBinaryLabelVector(labelVector, selectedClass)
 	
 end
 
+local function softMax(matrix)
+	
+	local e = AqwamMatrixLibrary:applyFunction(math.exp, matrix)
+
+	local eSum = AqwamMatrixLibrary:sum(e)
+
+	local result = AqwamMatrixLibrary:divide(e, eSum)
+	
+	return result
+	
+end
+
 function LogisticRegressionOneVsAllModel.new(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
 
 	local NewLogisticRegressionOneVsAllModel = {}
@@ -224,15 +236,13 @@ function LogisticRegressionOneVsAllModel:predict(featureMatrix)
 	
 	local zVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
 	
-	local softmaxVector = AqwamMatrixLibrary:applyFunction(math.exp, zVector)
+	local zNormalVector = AqwamMatrixLibrary:mean(zVector)
 	
-	local softmaxSum = AqwamMatrixLibrary:sum(softmaxVector)
+	local softMaxVector = softMax(zNormalVector)
 	
-	local softmax = AqwamMatrixLibrary:divide(softmaxVector, softmaxSum)
-	
-	for column = 1, #softmaxVector[1], 1 do
+	for column = 1, #softMaxVector[1], 1 do
 		
-		probability = softmax[1][column]
+		probability = softMaxVector[1][column]
 		
 		if (probability > highestProbability) then
 			

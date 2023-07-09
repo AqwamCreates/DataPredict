@@ -276,9 +276,9 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 		self.Wya = self:initializeMatrixBasedOnMode(self.outputSize, self.hiddenSize)
 
-		self.ba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+		self.ba = self:initializeMatrixBasedOnMode(self.hiddenSize, 1)
 
-		self.by = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
+		self.by = self:initializeMatrixBasedOnMode(self.outputSize, 1)
 
 	end
 

@@ -464,7 +464,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 				dWya = AqwamMatrixLibrary:add(dWya, dWyat)
 
-				partialCost = AqwamMatrixLibrary:sum(dWya) / self.outputSize
+				partialCost = AqwamMatrixLibrary:sum(dWya)
 
 				cost = cost + partialCost
 

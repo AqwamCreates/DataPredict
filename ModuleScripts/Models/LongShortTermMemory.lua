@@ -748,7 +748,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 				dbo = AqwamMatrixLibrary:add(dbo, dbot)
 
-				if (yTable[t]) then
+				if (yTable) then
 
 					local yt = yTable[t]
 
@@ -772,27 +772,31 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		cost = cost / tokenInputSequenceLength
 		
-		dWf = AqwamMatrixLibrary:multiply(self.learningRate, dWf)
-		
-		dbf = AqwamMatrixLibrary:multiply(self.learningRate, dbf)
-		
-		dWi = AqwamMatrixLibrary:multiply(self.learningRate, dWi)
-		
-		dbi = AqwamMatrixLibrary:multiply(self.learningRate, dbi)
-		
-		dWc = AqwamMatrixLibrary:multiply(self.learningRate, dWc)
-		
-		dbc = AqwamMatrixLibrary:multiply(self.learningRate, dbc)
-		
-		dWo = AqwamMatrixLibrary:multiply(self.learningRate, dWo)
-		
-		dbo = AqwamMatrixLibrary:multiply(self.learningRate, dbo)
-		
-		dWy = AqwamMatrixLibrary:multiply(self.learningRate, dWy)
-		
 		dWy = AqwamMatrixLibrary:extractColumns(dWy, 0, self.hiddenSize)
 		
-		dby = AqwamMatrixLibrary:multiply(self.learningRate, dby)
+		if (self.learningRate ~= 1) then
+			
+			dWf = AqwamMatrixLibrary:multiply(self.learningRate, dWf)
+
+			dbf = AqwamMatrixLibrary:multiply(self.learningRate, dbf)
+
+			dWi = AqwamMatrixLibrary:multiply(self.learningRate, dWi)
+
+			dbi = AqwamMatrixLibrary:multiply(self.learningRate, dbi)
+
+			dWc = AqwamMatrixLibrary:multiply(self.learningRate, dWc)
+
+			dbc = AqwamMatrixLibrary:multiply(self.learningRate, dbc)
+
+			dWo = AqwamMatrixLibrary:multiply(self.learningRate, dWo)
+
+			dbo = AqwamMatrixLibrary:multiply(self.learningRate, dbo)
+
+			dWy = AqwamMatrixLibrary:multiply(self.learningRate, dWy)
+
+			dby = AqwamMatrixLibrary:multiply(self.learningRate, dby)
+			
+		end
 		
 		if (self.ForgetGateWeightOptimizer) then
 			

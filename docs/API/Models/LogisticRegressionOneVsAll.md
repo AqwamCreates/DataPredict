@@ -80,7 +80,7 @@ LogisticRegressionOneVsAll:train(featureMatrix: Matrix, labelVector: Matrix): nu
 * Predict the value for a given data.
 
 ```
-LogisticRegressionOneVsAll:predict(featureMatrix: Matrix): number
+LogisticRegressionOneVsAll:predict(featureMatrix: Matrix): number, number
 ```
 
 #### Parameters:
@@ -90,6 +90,8 @@ LogisticRegressionOneVsAll:predict(featureMatrix: Matrix): number
 #### Returns:
 
 * predictedValue: A value that is predicted by the model.
+
+* probability: The probability of the predicted value.
 
 ## Inherited From
 

@@ -748,7 +748,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 				dbo = AqwamMatrixLibrary:add(dbo, dbot)
 
-				if (yTable) then
+				if (yTable[t]) then
 
 					local yt = yTable[t]
 
@@ -876,25 +876,25 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 		previousdby = dby
 
-		self.Wf = AqwamMatrixLibrary:add(self.Wf, dWf)
+		self.Wf = AqwamMatrixLibrary:subtract(self.Wf, dWf)
 		
-		self.bf = AqwamMatrixLibrary:add(self.bf, dbf)
+		self.bf = AqwamMatrixLibrary:subtract(self.bf, dbf)
 		
-		self.Wi = AqwamMatrixLibrary:add(self.Wi, dWi)
+		self.Wi = AqwamMatrixLibrary:subtract(self.Wi, dWi)
 		
-		self.bi = AqwamMatrixLibrary:add(self.bi, dbi)
+		self.bi = AqwamMatrixLibrary:subtract(self.bi, dbi)
 		
-		self.Wc = AqwamMatrixLibrary:add(self.Wc, dWc)
+		self.Wc = AqwamMatrixLibrary:subtract(self.Wc, dWc)
 		
-		self.bc = AqwamMatrixLibrary:add(self.bc, dbc)
+		self.bc = AqwamMatrixLibrary:subtract(self.bc, dbc)
 		
-		self.Wo = AqwamMatrixLibrary:add(self.Wo, dWo)
+		self.Wo = AqwamMatrixLibrary:subtract(self.Wo, dWo)
 		
-		self.bo = AqwamMatrixLibrary:add(self.bo, dbo)
+		self.bo = AqwamMatrixLibrary:subtract(self.bo, dbo)
 		
-		self.Wy = AqwamMatrixLibrary:add(self.Wy, dWy)
+		self.Wy = AqwamMatrixLibrary:subtract(self.Wy, dWy)
 		
-		self.by = AqwamMatrixLibrary:add(self.by, dby)
+		self.by = AqwamMatrixLibrary:subtract(self.by, dby)
 
 		self.ModelParameters = {self.Wf, self.bf, self.Wi, self.bi, self.Wc, self.bc, self.Wo, self.bo, self.Wy, self.by}
 		

@@ -748,7 +748,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 				dWy = AqwamMatrixLibrary:add(dWy, dWyt)
 
-				partialCost = AqwamMatrixLibrary:sum(dWy) / self.outputSize
+				partialCost = AqwamMatrixLibrary:sum(dWy)
 
 				cost = cost + partialCost
 				

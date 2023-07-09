@@ -236,7 +236,7 @@ function LogisticRegressionOneVsAllModel:predict(featureMatrix)
 	
 	local zVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
 	
-	local zNormalVector = AqwamMatrixLibrary:mean(zVector)
+	local zNormalVector = AqwamMatrixLibrary:normalize(zVector)
 	
 	local softMaxVector = softMax(zNormalVector)
 	

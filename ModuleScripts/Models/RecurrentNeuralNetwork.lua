@@ -78,9 +78,9 @@ local function softMax(matrix)
 
 	local e = AqwamMatrixLibrary:applyFunction(math.exp, matrix)
 
-	local eSumValues = AqwamMatrixLibrary:sum(e)
+	local eSum = AqwamMatrixLibrary:sum(e)
 
-	local result = AqwamMatrixLibrary:divide(e, eSumValues)
+	local result = AqwamMatrixLibrary:divide(e, eSum)
 
 	return result
 

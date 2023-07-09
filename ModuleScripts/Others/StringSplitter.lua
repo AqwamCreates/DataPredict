@@ -48,7 +48,11 @@ local function addSpacesBetweenPattern(inputString, patternWhereToSplitBetween)
 	
 end
 
-local function convertStringToTable(inputString)
+function StringSplitter:splitStringToArray(inputString, patternWhereToSplitBetween)
+	
+	if (typeof(inputString) ~= "string") then error("Input is not a string!") end
+	
+	local inputStringWithSpacesBetweenSymbols = addSpacesBetweenPattern(inputString, patternWhereToSplitBetween)
 	
 	local stringTable = string.split(inputString, " ")
 	
@@ -56,16 +60,5 @@ local function convertStringToTable(inputString)
 	
 end
 
-function StringSplitter:splitStringToArray(inputString, patternWhereToSplitBetween)
-	
-	if (typeof(inputString) ~= "string") then error("Input is not a string!") end
-	
-	local inputStringWithSpacesBetweenSymbols = addSpacesBetweenPattern(inputString, patternWhereToSplitBetween)
-	
-	local stringTable = convertStringToTable(inputStringWithSpacesBetweenSymbols)
-	
-	return stringTable
-	
-end
-
 return StringSplitter
+

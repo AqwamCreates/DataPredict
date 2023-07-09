@@ -202,17 +202,17 @@ function LongShortTermMemoryModel:backwardPropagateCell(daNext, dcNext, aNext, c
 	
 	------------------------------------------------------------------------------------------------------------------------
 	
-	local dtanh = AqwamMatrixLibrary:applyFunction(activationFunctionList["tanh"], cNext)
+	local tanh = AqwamMatrixLibrary:applyFunction(activationFunctionList["tanh"], cNext)
 	
 	------------------------------------------------------------------------------------------------------------------------
 
-	local dtanh2 = AqwamMatrixLibrary:applyFunction(derivativeList["tanh"], cNext)
+	local dtanh = AqwamMatrixLibrary:applyFunction(derivativeList["tanh"], cNext)
 	
 	------------------------------------------------------------------------------------------------------------------------
 
 	local dotPart1 = AqwamMatrixLibrary:subtract(1, ot)
 	
-	local dot = AqwamMatrixLibrary:multiply(daNext, dtanh, ot, dotPart1)
+	local dot = AqwamMatrixLibrary:multiply(daNext, tanh, ot, dotPart1)
 	
 	------------------------------------------------------------------------------------------------------------------------
 
@@ -222,7 +222,7 @@ function LongShortTermMemoryModel:backwardPropagateCell(daNext, dcNext, aNext, c
 	
 	local dcctPart3 = AqwamMatrixLibrary:multiply(dcNext, it)
 	
-	local dcctPart4 = AqwamMatrixLibrary:multiply(ot, dtanh2, it, daNext)
+	local dcctPart4 = AqwamMatrixLibrary:multiply(ot, dtanh, it, daNext)
 	
 	local dcctPart5 = AqwamMatrixLibrary:add(dcctPart3, dcctPart4)
 	
@@ -232,7 +232,7 @@ function LongShortTermMemoryModel:backwardPropagateCell(daNext, dcNext, aNext, c
 
 	local ditPart1 = AqwamMatrixLibrary:subtract(1, it)
 	
-	local ditPart2 = AqwamMatrixLibrary:multiply(ot, dtanh2, cct, daNext)
+	local ditPart2 = AqwamMatrixLibrary:multiply(ot, dtanh, cct, daNext)
 	
 	local ditPart3 = AqwamMatrixLibrary:multiply(dcNext, cct)
 	
@@ -244,7 +244,7 @@ function LongShortTermMemoryModel:backwardPropagateCell(daNext, dcNext, aNext, c
 
 	local dftPart1 = AqwamMatrixLibrary:subtract(1, ft)
 	
-	local dftPart2 = AqwamMatrixLibrary:multiply(ot, dtanh2, cPrevious, daNext)
+	local dftPart2 = AqwamMatrixLibrary:multiply(ot, dtanh, cPrevious, daNext)
 	
 	local dftPart3 = AqwamMatrixLibrary:multiply(dcNext, cPrevious)
 	
@@ -310,7 +310,7 @@ function LongShortTermMemoryModel:backwardPropagateCell(daNext, dcNext, aNext, c
 
 	local dcPreviousPart1 = AqwamMatrixLibrary:multiply(dcNext, ft)
 	
-	local dcPreviousPart2 = AqwamMatrixLibrary:multiply(ot, dtanh2, ft, daNext)
+	local dcPreviousPart2 = AqwamMatrixLibrary:multiply(ot, dtanh, ft, daNext)
 	
 	local dcPrevious = AqwamMatrixLibrary:add(dcPreviousPart1, dcPreviousPart2)
 	

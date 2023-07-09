@@ -1,16 +1,18 @@
 local BaseModel = require(script.Parent.BaseModel)
 
-LongShortTermMemoryModel = {}
+RecurrentNeuralNetworkModel = {}
 
-LongShortTermMemoryModel.__index = LongShortTermMemoryModel
+RecurrentNeuralNetworkModel.__index = RecurrentNeuralNetworkModel
 
-setmetatable(LongShortTermMemoryModel, BaseModel)
+setmetatable(RecurrentNeuralNetworkModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
 local defaultMaxNumberOfIterations = 500
 
-local defaultLearningRate = 0.0001
+local defaultLearningRate = 0.001
+
+local defaultActivationFunction = "tanh"
 
 local defaultTargetCost = 0
 
@@ -84,34 +86,52 @@ local function softMax(matrix)
 
 end
 
-function LongShortTermMemoryModel.new(maxNumberOfIterations, learningRate, targetCost)
-	
-	local NewLongShortTermMemoryModel = BaseModel.new()
+function RecurrentNeuralNetworkModel.new(maxNumberOfIterations, learningRate, activationFunction, targetCost)
 
-	setmetatable(NewLongShortTermMemoryModel, LongShortTermMemoryModel)
-	
-	NewLongShortTermMemoryModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
-	
-	NewLongShortTermMemoryModel.learningRate = learningRate or defaultLearningRate
+	local NewRecurrentNeuralNetworkModel = BaseModel.new()
 
-	NewLongShortTermMemoryModel.targetCost = targetCost or defaultTargetCost
-	
-	return NewLongShortTermMemoryModel
-	
+	setmetatable(NewRecurrentNeuralNetworkModel, RecurrentNeuralNetworkModel)
+
+	NewRecurrentNeuralNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+
+	NewRecurrentNeuralNetworkModel.learningRate = learningRate or defaultLearningRate
+
+	NewRecurrentNeuralNetworkModel.activationFunction = activationFunction or defaultActivationFunction
+
+	NewRecurrentNeuralNetworkModel.targetCost = targetCost or defaultTargetCost
+
+	return NewRecurrentNeuralNetworkModel
+
 end
 
-function LongShortTermMemoryModel:setParameters(maxNumberOfIterations, learningRate, targetCost)
-	
+function RecurrentNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, activationFunction, targetCost)
+
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
+	self.activationFunction = activationFunction or self.activationFunction
+
 	self.targetCost = targetCost or self.targetCost
-	
+
 end
 
-function LongShortTermMemoryModel:convertTokenToLogisticVector(size, token)
+function RecurrentNeuralNetworkModel:createLayers(inputSize, hiddenSize, outputSize)
 
+	self.inputSize = inputSize or self.inputSize
+
+	self.hiddenSize = hiddenSize or self.hiddenSize
+
+	self.outputSize = outputSize or self.outputSize
+
+	if (inputSize == nil) and (hiddenSize == nil) and (outputSize == nil) then return nil end
+
+	self.ModelParameters = nil
+
+end
+
+function RecurrentNeuralNetworkModel:convertTokenToLogisticVector(size, token)
+	
 	if (type(token) == nil) then error("A token is not an integer!") end
 
 	local logisticMatrix = AqwamMatrixLibrary:createMatrix(size, 1)
@@ -126,356 +146,152 @@ function LongShortTermMemoryModel:convertTokenToLogisticVector(size, token)
 
 end
 
-function LongShortTermMemoryModel:forwardPropagateCell(xt, aPrevious, cPrevious)
-	
-	------------------------------------------------------------------------------------------------------------------------
-	
-	local concat = AqwamMatrixLibrary:verticalConcatenate(aPrevious, xt)
-	
-	------------------------------------------------------------------------------------------------------------------------
-	
-	local ftPart1 = AqwamMatrixLibrary:dotProduct(self.Wf, concat)
-	
-	local ftPart2 = AqwamMatrixLibrary:add(ftPart1, self.bf)
-	
-	local ft = AqwamMatrixLibrary:applyFunction(activationFunctionList["sigmoid"], ftPart2)
-	
-	------------------------------------------------------------------------------------------------------------------------
+function RecurrentNeuralNetworkModel:forwardPropagateCell(xt, aPrevious)
 
-	local itPart1 = AqwamMatrixLibrary:dotProduct(self.Wi, concat)
-	
-	local itPart2 = AqwamMatrixLibrary:add(itPart1, self.bi)
-	
-	local it = AqwamMatrixLibrary:applyFunction(activationFunctionList["sigmoid"], itPart2)
-	
-	------------------------------------------------------------------------------------------------------------------------
+	local zNextPart1 = AqwamMatrixLibrary:dotProduct(self.Wax, xt)
 
-	local cctPart1 = AqwamMatrixLibrary:dotProduct(self.Wc, concat)
-	
-	local cctPart2 = AqwamMatrixLibrary:add(cctPart1, self.bc)
-	
-	local cct = AqwamMatrixLibrary:applyFunction(activationFunctionList["tanh"], cctPart2)
-	
-	------------------------------------------------------------------------------------------------------------------------
+	local zNextPart2 = AqwamMatrixLibrary:dotProduct(self.Waa, aPrevious)
 
-	local cNextPart1 = AqwamMatrixLibrary:multiply(ft, cPrevious)
-	
-	local cNextPart2 = AqwamMatrixLibrary:multiply(it, cct)
-	
-	local cNext = AqwamMatrixLibrary:add(cNextPart1, cNextPart2)
-	
-	------------------------------------------------------------------------------------------------------------------------
+	local zNext = AqwamMatrixLibrary:add(zNextPart1, zNextPart2, self.ba)
 
-	local otPart1 = AqwamMatrixLibrary:dotProduct(self.Wo, concat)
-	
-	local otPart2 = AqwamMatrixLibrary:add(otPart1, self.bo)
-	
-	local ot = AqwamMatrixLibrary:applyFunction(activationFunctionList["sigmoid"], otPart2)
-	
-	------------------------------------------------------------------------------------------------------------------------
+	local activationFunction = activationFunctionList[self.activationFunction]
 
-	local aNextPart1 = AqwamMatrixLibrary:applyFunction(activationFunctionList["tanh"], cNext)
-	
-	local aNext = AqwamMatrixLibrary:multiply(ot, aNextPart1)
-	
-	------------------------------------------------------------------------------------------------------------------------
-	
-	return aNext, cNext, ft, it, cct, ot
-	
+	local aNext =  AqwamMatrixLibrary:applyFunction(activationFunction, zNext)
+
+	return aNext
+
 end
 
-function LongShortTermMemoryModel:calculatePrediction(aNext)
-	
-	local ytPredictionPart1 = AqwamMatrixLibrary:dotProduct(self.Wy, aNext)
-	
+function RecurrentNeuralNetworkModel:calculatePrediction(aNext)
+
+	local ytPredictionPart1 = AqwamMatrixLibrary:dotProduct(self.Wya, aNext)
+
 	local ytPredictionPart2 = AqwamMatrixLibrary:add(ytPredictionPart1, self.by)
 
 	local ytPrediction = softMax(ytPredictionPart2)
-	
+
 	return ytPrediction
-	
-end
-
-function LongShortTermMemoryModel:backwardPropagateCell(daNext, dcNext, aNext, cNext, aPrevious, cPrevious, ft, it, cct, ot, xt)
-	
-	------------------------------------------------------------------------------------------------------------------------
-	
-	local dtanh = AqwamMatrixLibrary:applyFunction(activationFunctionList["tanh"], cNext)
-	
-	------------------------------------------------------------------------------------------------------------------------
-
-	local dtanh2 = AqwamMatrixLibrary:applyFunction(derivativeList["tanh"], cNext)
-	
-	------------------------------------------------------------------------------------------------------------------------
-
-	local dotPart1 = AqwamMatrixLibrary:subtract(1, ot)
-	
-	local dot = AqwamMatrixLibrary:multiply(daNext, dtanh, ot, dotPart1)
-	
-	------------------------------------------------------------------------------------------------------------------------
-
-	local dcctPart1 = AqwamMatrixLibrary:power(cct, 2)
-	
-	local dcctPart2 = AqwamMatrixLibrary:subtract(1, dcctPart1)
-	
-	local dcctPart3 = AqwamMatrixLibrary:multiply(dcNext, it)
-	
-	local dcctPart4 = AqwamMatrixLibrary:multiply(ot, dtanh2, it, daNext)
-	
-	local dcctPart5 = AqwamMatrixLibrary:add(dcctPart3, dcctPart4)
-	
-	local dcct = AqwamMatrixLibrary:multiply(dcctPart5, dcctPart2)
-	
-	------------------------------------------------------------------------------------------------------------------------
-
-	local ditPart1 = AqwamMatrixLibrary:subtract(1, it)
-	
-	local ditPart2 = AqwamMatrixLibrary:multiply(ot, dtanh2, cct, daNext)
-	
-	local ditPart3 = AqwamMatrixLibrary:multiply(dcNext, cct)
-	
-	local ditPart4 = AqwamMatrixLibrary:add(ditPart3, ditPart2)
-	
-	local dit = AqwamMatrixLibrary:multiply(ditPart4, it, ditPart1)
-	
-	------------------------------------------------------------------------------------------------------------------------
-
-	local dftPart1 = AqwamMatrixLibrary:subtract(1, ft)
-	
-	local dftPart2 = AqwamMatrixLibrary:multiply(ot, dtanh2, cPrevious, daNext)
-	
-	local dftPart3 = AqwamMatrixLibrary:multiply(dcNext, cPrevious)
-	
-	local dftPart4 = AqwamMatrixLibrary:add(dftPart3, dftPart2)
-	
-	local dft = AqwamMatrixLibrary:multiply(dftPart4, ft, dftPart1)
-	
-	------------------------------------------------------------------------------------------------------------------------
-
-	local concatPart1 = AqwamMatrixLibrary:verticalConcatenate(aPrevious, xt)
-	
-	local concat = AqwamMatrixLibrary:transpose(concatPart1)
-	
-	------------------------------------------------------------------------------------------------------------------------
-
-	local dWf = AqwamMatrixLibrary:dotProduct(dft, concat)
-	
-	local dWi = AqwamMatrixLibrary:dotProduct(dit, concat)
-	
-	local dWc = AqwamMatrixLibrary:dotProduct(dcct, concat)
-	
-	local dWo = AqwamMatrixLibrary:dotProduct(dot, concat)
-	
-	local dbf = AqwamMatrixLibrary:sum(dft)
-	
-	local dbi = AqwamMatrixLibrary:sum(dit)
-	
-	local dbc = AqwamMatrixLibrary:sum(dcct)
-	
-	local dbo = AqwamMatrixLibrary:sum(dot)
-	
-	------------------------------------------------------------------------------------------------------------------------
-	
-	local WfTransposed = AqwamMatrixLibrary:transpose(self.Wf)
-	
-	local WiTransposed = AqwamMatrixLibrary:transpose(self.Wi)
-	
-	local WcTransposed = AqwamMatrixLibrary:transpose(self.Wc)
-	
-	local WoTransposed = AqwamMatrixLibrary:transpose(self.Wo)
-	
-	------------------------------------------------------------------------------------------------------------------------
-	
-	local WfTransposedExtracted1 = AqwamMatrixLibrary:extractRows(WfTransposed, 0, self.hiddenSize)
-	
-	local WiTransposedExtracted1 = AqwamMatrixLibrary:extractRows(WiTransposed, 0, self.hiddenSize)
-	
-	local WcTransposedExtracted1 = AqwamMatrixLibrary:extractRows(WcTransposed, 0, self.hiddenSize)
-	
-	local WoTransposedExtracted1 = AqwamMatrixLibrary:extractRows(WoTransposed, 0, self.hiddenSize)
-	
-	local daPreviousPart1 = AqwamMatrixLibrary:dotProduct(WfTransposedExtracted1, dft)
-	
-	local daPreviousPart2 = AqwamMatrixLibrary:dotProduct(WiTransposedExtracted1, dit)
-	
-	local daPreviousPart3 = AqwamMatrixLibrary:dotProduct(WcTransposedExtracted1, dcct)
-	
-	local daPreviousPart4 = AqwamMatrixLibrary:dotProduct(WoTransposedExtracted1, dot)
-	
-	local daPrevious = AqwamMatrixLibrary:add(daPreviousPart1, daPreviousPart2, daPreviousPart3, daPreviousPart4)
-	
-	------------------------------------------------------------------------------------------------------------------------
-
-	local dcPreviousPart1 = AqwamMatrixLibrary:multiply(dcNext, ft)
-	
-	local dcPreviousPart2 = AqwamMatrixLibrary:multiply(ot, dtanh2, ft, daNext)
-	
-	local dcPrevious = AqwamMatrixLibrary:add(dcPreviousPart1, dcPreviousPart2)
-	
-	------------------------------------------------------------------------------------------------------------------------
-	
-	local WfTransposedExtracted2 = AqwamMatrixLibrary:extractRows(WfTransposed, self.hiddenSize, nil)
-
-	local WiTransposedExtracted2 = AqwamMatrixLibrary:extractRows(WiTransposed, self.hiddenSize, nil)
-
-	local WcTransposedExtracted2 = AqwamMatrixLibrary:extractRows(WcTransposed, self.hiddenSize, nil)
-
-	local WoTransposedExtracted2 = AqwamMatrixLibrary:extractRows(WoTransposed, self.hiddenSize, nil)
-	
-	local dxtPart1 = AqwamMatrixLibrary:dotProduct(WfTransposedExtracted2, dft)
-	
-	local dxtPart2 = AqwamMatrixLibrary:dotProduct(WiTransposedExtracted2, dit)
-	
-	local dxtPart3 = AqwamMatrixLibrary:dotProduct(WcTransposedExtracted2, dcct)
-	
-	local dxtPart4 = AqwamMatrixLibrary:dotProduct(WoTransposedExtracted2, dot)
-	
-	local dxt = AqwamMatrixLibrary:add(dxtPart1, dxtPart2, dxtPart3, dxtPart4)
-	
-	------------------------------------------------------------------------------------------------------------------------
-	
-	return dxt, daPrevious, dcPrevious, dWf, dbf, dWi, dbi, dWc, dbc, dWo, dbo
-	
-end
-
-function LongShortTermMemoryModel:createLayers(inputSize, hiddenSize, outputSize)
-	
-	self.inputSize = inputSize or self.inputSize
-
-	self.hiddenSize = hiddenSize or self.hiddenSize
-
-	self.outputSize = outputSize or self.outputSize
-
-	if (inputSize == nil) and (hiddenSize == nil) and (outputSize == nil) then return nil end
-	
-	self.ModelParameters = nil
-	
-end
-
-function LongShortTermMemoryModel:setOptimizers(ForgetGateWeightOptimizer, SaveGateWeightOptimizer, TanhWeightOptimizer, FocusGateOptimizer, OutputWeightOptimizer, ForgetGateBiasOptimizer, SaveGateBiasOptimizer, TanhBiasOptimizer, FocusBiasOptimizer, OutputBiasOptimizer)
-
-	self.ForgetGateWeightOptimizer = ForgetGateWeightOptimizer
-
-	self.SaveGateWeightOptimizer = SaveGateWeightOptimizer
-
-	self.TanhWeightOptimizer = TanhWeightOptimizer
-	
-	self.FocusGateOptimizer = FocusGateOptimizer
-	
-	self.OutputWeightOptimizer = OutputWeightOptimizer
-	
-	self.ForgetGateBiasOptimizer = ForgetGateBiasOptimizer
-
-	self.SaveGateBiasOptimizer = SaveGateBiasOptimizer
-
-	self.TanhBiasOptimizer = TanhBiasOptimizer
-
-	self.FocusGateOptimizer = FocusGateOptimizer
-
-	self.OutputBiasOptimizer = OutputBiasOptimizer
 
 end
 
-function LongShortTermMemoryModel:loadModelParameters()
-	
-	self.Wf = self.ModelParameters[1]
+function RecurrentNeuralNetworkModel:backwardPropagateCell(daNext, aNext, aPrevious, xt)
 
-	self.bf = self.ModelParameters[2]
+	local xtTransposed = AqwamMatrixLibrary:transpose(xt)
 
-	self.Wi = self.ModelParameters[3]
+	local WaxTransposed = AqwamMatrixLibrary:transpose(self.Wax)
 
-	self.bi = self.ModelParameters[4]
+	local aPreviousTransposed = AqwamMatrixLibrary:transpose(aPrevious)
 
-	self.Wc = self.ModelParameters[5]
-	
-	self.bc = self.ModelParameters[6]
-	
-	self.Wo = self.ModelParameters[7]
-	
-	self.bo = self.ModelParameters[8]
-	
-	self.Wy = self.ModelParameters[9]
-	
-	self.by = self.ModelParameters[10]
-	
+	local WaaTransposed = AqwamMatrixLibrary:transpose(self.Waa)
+
+	local derivativeFunction = derivativeList[self.activationFunction]
+
+	local derivativePart1 = AqwamMatrixLibrary:applyFunction(derivativeFunction, aNext)
+
+	local da = AqwamMatrixLibrary:multiply(derivativePart1, daNext)
+
+	local dWax = AqwamMatrixLibrary:dotProduct(da, xtTransposed)
+
+	local dxt = AqwamMatrixLibrary:dotProduct(WaxTransposed, da)
+
+	local dWaa = AqwamMatrixLibrary:dotProduct(da, aPreviousTransposed)
+
+	local daPrevious = AqwamMatrixLibrary:dotProduct(WaaTransposed, da)
+
+	local dba = AqwamMatrixLibrary:sum(da)
+
+	return dxt, daPrevious, dWax, dWaa, dba
+
+end
+
+function RecurrentNeuralNetworkModel:loadModelParameters()
+
+	self.Wax = self.ModelParameters[1]
+
+	self.Waa = self.ModelParameters[2]
+
+	self.Wya = self.ModelParameters[3]
+
+	self.ba = self.ModelParameters[4]
+
+	self.by = self.ModelParameters[5]
+
+end
+
+function RecurrentNeuralNetworkModel:setOptimizers(InputLayerOptimizer, HiddenLayerOptimizer, OutputLayerOptimizer, BiasHiddenLayerOptimizer, BiasOutputLayerOptimizer)
+
+	self.InputLayerOptimizer = InputLayerOptimizer
+
+	self.HiddenLayerOptimizer = HiddenLayerOptimizer
+
+	self.OutputLayerOptimizer = OutputLayerOptimizer
+
+	self.BiasHiddenLayerOptimizer = BiasHiddenLayerOptimizer
+
+	self.BiasOutputLayerOptimizer = BiasOutputLayerOptimizer
+
 end
 
 local function throwErrorIfSequenceLengthAreNotEqual(tokenInputSequenceArray, tokenOutputSequenceArray)
-
+	
 	if (tokenOutputSequenceArray == nil) then return nil end
-
+		
 	local tokenInputSequenceLength = #tokenInputSequenceArray
-
+		
 	local tokenOutputSequenceLength = #tokenOutputSequenceArray
 
 	if (tokenInputSequenceLength ~= tokenOutputSequenceLength) then error("The length of token input and output sequence arrays are not equal!") end
-
+	
 end
 
-function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfTokenOutputSequenceArray)
+function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, tableOfTokenOutputSequenceArray)
 
 	if (self.ModelParameters) then
-		
+
 		self:loadModelParameters()
 
+	elseif (self.inputSize == nil) or (self.hiddenSize == nil) or (self.outputSize == nil) then
+
+		error("Layers are not set!")
+
 	else
-		
-		self.Wf = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize + self.inputSize)
 
-		self.bf = self:initializeMatrixBasedOnMode(self.hiddenSize, 1)
+		self.Wax = self:initializeMatrixBasedOnMode(self.hiddenSize, self.inputSize)
 
-		self.Wi = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize + self.inputSize)
+		self.Waa = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize)
 
-		self.bi = self:initializeMatrixBasedOnMode(self.hiddenSize, 1)
+		self.Wya = self:initializeMatrixBasedOnMode(self.outputSize, self.hiddenSize)
 
-		self.Wc = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize + self.inputSize)
-
-		self.bc = self:initializeMatrixBasedOnMode(self.hiddenSize, 1)
-
-		self.Wo = self:initializeMatrixBasedOnMode(self.hiddenSize, self.hiddenSize + self.inputSize)
-
-		self.bo = self:initializeMatrixBasedOnMode(self.hiddenSize, 1)
-
-		self.Wy = self:initializeMatrixBasedOnMode(self.outputSize, self.hiddenSize)
+		self.ba = self:initializeMatrixBasedOnMode(self.hiddenSize, 1)
 
 		self.by = self:initializeMatrixBasedOnMode(self.outputSize, 1)
 
 	end
-	
-	local tokenInputSequenceLength = 0
-	
-	local numberOfIterations = 0
-	
-	local costArray = {}
-	
-	local tableOfTokenInputSequenceLogisticMatrices = {}
 
-	local tableOfTokenOutputSequenceLogisticMatrices = {}
-	
-	local previousdWf
+	local previousdWax
 
-	local previousdbf
+	local previousdWaa
 
-	local previousdWi
-
-	local previousdbi
-
-	local previousdWc
-
-	local previousdbc
-
-	local previousdWo
-
-	local previousdbo
-
-	local previousdWy
+	local previousdWya
 
 	local previousdby
 
+	local previousdba
+	
+	local totalNumberOfTokens = 0
+
+	local numberOfIterations = 0
+
+	local costArray = {}
+	
+	local tableOfTokenInputSequenceLogisticMatrices = {}
+	
+	local tableOfTokenOutputSequenceLogisticMatrices = {}
+	
 	for i, tokenInputSequenceArray in ipairs(tableOfTokenInputSequenceArray) do
-
+		
 		local tokenInputSequenceLogisticMatrices = {}
-
+		
 		for t = 1, #tokenInputSequenceArray, 1 do
 
 			local tokenInput = tokenInputSequenceArray[t]
@@ -484,18 +300,18 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 			table.insert(tokenInputSequenceLogisticMatrices, xt)
 			
-			tokenInputSequenceLength += 1
+			totalNumberOfTokens += 1
 
 		end
-
+		
 		table.insert(tableOfTokenInputSequenceLogisticMatrices, tokenInputSequenceLogisticMatrices)
-
+		
 	end
 
 	if (tableOfTokenOutputSequenceArray) then
 
 		for j, tokenOutputSequenceArray in ipairs(tableOfTokenOutputSequenceArray) do
-
+			
 			throwErrorIfSequenceLengthAreNotEqual(tableOfTokenInputSequenceArray[j], tokenOutputSequenceArray)
 
 			local tokenOutputSequenceLogisticMatrices = {}
@@ -515,64 +331,40 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		end
 
 	end
-	
+
 	repeat
 		
 		self:iterationWait()
-		
+
 		numberOfIterations += 1
-		
+
 		local cost = 0
-		
+
 		local partialCost = 0
-		
-		local dWf = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.hiddenSize + self.inputSize)
 
-		local dbf = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+		local dWax = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.inputSize)
 
-		local dWi = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.hiddenSize + self.inputSize)
+		local dWaa = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.hiddenSize)
 
-		local dbi = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+		local dWya = AqwamMatrixLibrary:createMatrix(self.outputSize, self.hiddenSize)
 
-		local dWc = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.hiddenSize + self.inputSize)
-
-		local dbc = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
-
-		local dWo = AqwamMatrixLibrary:createMatrix(self.hiddenSize, self.hiddenSize + self.inputSize)
-
-		local dbo = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
-
-		local dWy = AqwamMatrixLibrary:createMatrix(self.outputSize, self.hiddenSize + self.inputSize)
+		local dba = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
 		local dby = AqwamMatrixLibrary:createMatrix(self.outputSize, 1)
 		
 		for s = 1, #tableOfTokenInputSequenceArray, 1 do
 			
 			self:dataWait()
-
+			
 			local xTable = tableOfTokenInputSequenceLogisticMatrices[s]
-
+			
 			local yTable = tableOfTokenOutputSequenceLogisticMatrices[s]
 			
-			local dx = {}
-
 			local aTable = {}
-
-			local cTable = {}
 
 			local ytPredictionTable = {}
 
 			local daTable = {}
-
-			local dcTable = {}
-
-			local fTable = {}
-
-			local iTable = {}
-
-			local ccTable = {}
-
-			local oTable = {}
 
 			local tokenInput
 
@@ -580,21 +372,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 			local aFirst = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
 
-			local cFirst = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
-
 			local aPrevious = aFirst
-
-			local cPrevious = cFirst
-
-			local cNext
-
-			local ft
-
-			local it
-
-			local cct
-
-			local ot
 
 			local aNext
 
@@ -602,37 +380,19 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 			local daNext
 
-			local dcNext
-
 			local dxt
 
 			local daPrevious
 
-			local dcPrevious
+			local dWaxt
 
-			local dWft
+			local dWaat
 
-			local dbft
+			local dWyat
 
-			local dWit
-
-			local dbit
-
-			local dWct
-
-			local dbct
-
-			local dWot
-
-			local dbot
+			local dbat
 
 			local dat
-
-			local dct
-
-			local dWyt
-
-			local Wyt
 
 			for t = 1, #xTable, 1 do
 				
@@ -640,13 +400,11 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 				xt = xTable[t]
 
-				aNext, cNext, ft, it, cct, ot = self:forwardPropagateCell(xt, aPrevious, cPrevious)
+				aNext = self:forwardPropagateCell(xt, aPrevious)
 
 				ytPrediction = self:calculatePrediction(aNext)
 
 				dat = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
-
-				dct = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
 				aPrevious = aNext
 
@@ -654,19 +412,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 				table.insert(ytPredictionTable, ytPrediction)
 
-				table.insert(cTable, cNext)
-
-				table.insert(fTable, ft)
-
-				table.insert(iTable, it)
-
-				table.insert(ccTable, cct)
-
-				table.insert(oTable, ot)
-
 				table.insert(daTable, dat)
-
-				table.insert(dcTable, dct)
 
 			end
 
@@ -678,13 +424,9 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 					aPrevious = aTable[t-1]
 
-					cPrevious = cTable[t-1]
-
 				else
 
 					aPrevious = aFirst
-
-					cPrevious = cFirst
 
 				end
 
@@ -696,308 +438,184 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 				daNext = daTable[t]
 
-				dcNext = dcTable[t] 
+				dxt, daPrevious, dWaxt, dWaat, dbat = self:backwardPropagateCell(daNext, aNext, aPrevious, xt)
 
-				cNext = cTable[t]
+				if (t > 1) then daTable[t-1] = AqwamMatrixLibrary:add(daNext, daPrevious) end
 
-				ft = fTable[t]
+				dWax = AqwamMatrixLibrary:add(dWax, dWaxt)
 
-				it = iTable[t]
+				dWaa = AqwamMatrixLibrary:add(dWaa, dWaat)
 
-				cct = ccTable[t]
-
-				ot = oTable[t]
-
-				dxt, daPrevious, dcPrevious, dWft, dbft, dWit, dbit, dWct, dbct, dWot, dbot = self:backwardPropagateCell(daNext, dcNext, aNext, cNext, aPrevious, cPrevious, ft, it, cct, ot, xt)
-
-				if (t > 1) then 
-
-					daTable[t-1] = AqwamMatrixLibrary:add(daNext, daPrevious) 
-
-					dcTable[t-1] = AqwamMatrixLibrary:add(dcNext, dcPrevious)
-
-				end
-
-				dWf = AqwamMatrixLibrary:add(dWf, dWft)
-
-				dbf = AqwamMatrixLibrary:add(dbf, dbft)
-
-				dWi = AqwamMatrixLibrary:add(dWi, dWit)
-
-				dbi = AqwamMatrixLibrary:add(dbi, dbit)
-
-				dWc = AqwamMatrixLibrary:add(dWc, dWct)
-
-				dbc = AqwamMatrixLibrary:add(dbc, dbct)
-
-				dWo = AqwamMatrixLibrary:add(dWo, dWot)
-
-				dbo = AqwamMatrixLibrary:add(dbo, dbot)
+				dba = AqwamMatrixLibrary:add(dba, dbat)
+				
+				dby = AqwamMatrixLibrary:add(dby, dxt)
 
 				if (yTable) then
 
 					local yt = yTable[t]
 
-					dWyt = AqwamMatrixLibrary:subtract(ytPrediction, yt)
+					dWyat = AqwamMatrixLibrary:subtract(ytPrediction, yt)
 
 				else
 
-					dWyt = AqwamMatrixLibrary:subtract(ytPrediction, xt)
+					dWyat = AqwamMatrixLibrary:subtract(ytPrediction, xt)
 
 				end
 
-				dWy = AqwamMatrixLibrary:add(dWy, dWyt)
+				dWya = AqwamMatrixLibrary:add(dWya, dWyat)
 
-				partialCost = AqwamMatrixLibrary:sum(dWy)
+				partialCost = AqwamMatrixLibrary:sum(dWya)
 
 				cost = cost + partialCost
-				
+
 			end
 			
 		end
-		
-		cost = cost / tokenInputSequenceLength
-		
-		dWy = AqwamMatrixLibrary:extractColumns(dWy, 0, self.hiddenSize)
+
+		cost = cost / totalNumberOfTokens
 		
 		if (self.learningRate ~= 1) then
 			
-			dWf = AqwamMatrixLibrary:multiply(self.learningRate, dWf)
+			dWax = AqwamMatrixLibrary:multiply(self.learningRate, dWax)
 
-			dbf = AqwamMatrixLibrary:multiply(self.learningRate, dbf)
+			dWaa = AqwamMatrixLibrary:multiply(self.learningRate, dWaa)
 
-			dWi = AqwamMatrixLibrary:multiply(self.learningRate, dWi)
+			dWya = AqwamMatrixLibrary:multiply(self.learningRate, dWya)
 
-			dbi = AqwamMatrixLibrary:multiply(self.learningRate, dbi)
-
-			dWc = AqwamMatrixLibrary:multiply(self.learningRate, dWc)
-
-			dbc = AqwamMatrixLibrary:multiply(self.learningRate, dbc)
-
-			dWo = AqwamMatrixLibrary:multiply(self.learningRate, dWo)
-
-			dbo = AqwamMatrixLibrary:multiply(self.learningRate, dbo)
-
-			dWy = AqwamMatrixLibrary:multiply(self.learningRate, dWy)
+			dba = AqwamMatrixLibrary:multiply(self.learningRate, dba)
 
 			dby = AqwamMatrixLibrary:multiply(self.learningRate, dby)
 			
 		end
-		
-		if (self.ForgetGateWeightOptimizer) then
-			
-			dWf = self.ForgetGateWeightOptimizer:calculate(dWf, previousdWf)
-			
-		end
-		
-		if (self.SaveGateWeightOptimizer) then
 
-			dWi = self.SaveGateWeightOptimizer:calculate(dWi, previousdWi)
+		if (self.InputLayerOptimizer) then
+
+			dWax = self.InputLayerOptimizer:calculate(dWax, previousdWax)
 
 		end
-		
-		if (self.TanhWeightOptimizer) then
 
-			dWc = self.TanhWeightOptimizer:calculate(dWc, previousdWc)
+		if (self.HiddenLayerOptimizer) then
 
-		end
-		
-		if (self.FocusGateOptimizer) then
-
-			dWo = self.FocusGateOptimizer:calculate(dWo, previousdWo)
+			dWaa = self.HiddenLayerOptimizer:calculate(dWaa, previousdWaa)
 
 		end
-		
-		if (self.OutputWeightOptimizer) then
 
-			dWy = self.OutputWeightOptimizer:calculate(dWy, previousdWy)
+		if (self.OutputLayerOptimizer) then
 
-		end
-		
-		if (self.ForgetGateBiasOptimizer) then
-
-			dbf = self.ForgetGateBiasOptimizer:calculate(dbf, previousdbf)
+			dWya = self.OutputLayerOptimizer:calculate(dWya, previousdWya)
 
 		end
-		
-		if (self.SaveGateBiasOptimizer) then
 
-			dbi = self.SaveGateBiasOptimizer:calculate(dbi, previousdbi)
+		if (self.BiasHiddenLayerOptimizer) then
 
-		end
-		
-		if (self.TanhBiasOptimizer) then
-
-			dbc = self.TanhBiasOptimizer:calculate(dbc, previousdbc)
+			dba = self.BiasHiddenLayerOptimizer:calculate(dba, previousdba)
 
 		end
-		
-		if (self.FocusGateOptimizer) then
 
-			dbo = self.FocusGateOptimizer:calculate(dbo, previousdbo)
+		if (self.BiasOutputLayerOptimizer) then
 
-		end
-		
-		if (self.OutputBiasOptimizer) then
-
-			dby = self.OutputBiasOptimizer:calculate(dby, previousdby)
+			dby = self.BiasOutputLayerOptimizer:calculate(dby, previousdby)
 
 		end
-		
-		previousdWf = dWf
 
-		previousdbf = dbf
+		previousdWax = dWax
 
-		previousdWi = dWi
+		previousdWaa = dWaa
 
-		previousdbi = dbi
+		previousdWya = dWya
 
-		previousdWc = dWc
-
-		previousdbc = dbc
-
-		previousdWo = dWo
-
-		previousdbo = dbo
-
-		previousdWy = dWy
-
-		previousdWy = dWy
+		previousdba = dba
 
 		previousdby = dby
 
-		self.Wf = AqwamMatrixLibrary:subtract(self.Wf, dWf)
-		
-		self.bf = AqwamMatrixLibrary:subtract(self.bf, dbf)
-		
-		self.Wi = AqwamMatrixLibrary:subtract(self.Wi, dWi)
-		
-		self.bi = AqwamMatrixLibrary:subtract(self.bi, dbi)
-		
-		self.Wc = AqwamMatrixLibrary:subtract(self.Wc, dWc)
-		
-		self.bc = AqwamMatrixLibrary:subtract(self.bc, dbc)
-		
-		self.Wo = AqwamMatrixLibrary:subtract(self.Wo, dWo)
-		
-		self.bo = AqwamMatrixLibrary:subtract(self.bo, dbo)
-		
-		self.Wy = AqwamMatrixLibrary:subtract(self.Wy, dWy)
-		
+		self.Wax = AqwamMatrixLibrary:subtract(self.Wax, dWax)
+
+		self.Waa = AqwamMatrixLibrary:subtract(self.Waa, dWaa)
+
+		self.Wya = AqwamMatrixLibrary:subtract(self.Wya, dWya)
+
+		self.ba = AqwamMatrixLibrary:subtract(self.ba, dba)
+
 		self.by = AqwamMatrixLibrary:subtract(self.by, dby)
 
-		self.ModelParameters = {self.Wf, self.bf, self.Wi, self.bi, self.Wc, self.bc, self.Wo, self.bo, self.Wy, self.by}
-		
+		self.ModelParameters = {self.Wax, self.Waa, self.Wya, self.ba, self.by}
+
 		cost = math.abs(cost)
-		
+
 		table.insert(costArray, cost)
-		
+
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-		
+
 	until (numberOfIterations == self.maxNumberOfIterations) or (cost <= self.targetCost)
-	
-	if (self.ForgetGateWeightOptimizer) then
 
-		self.ForgetGateWeightOptimizer:reset()
+	if (self.InputLayerOptimizer) then
 
-	end
-
-	if (self.SaveGateWeightOptimizer) then
-
-		self.SaveGateWeightOptimizer:reset()
+		self.InputLayerOptimizer:reset()
 
 	end
 
-	if (self.TanhWeightOptimizer) then
+	if (self.HiddenLayerOptimizer) then
 
-		self.TanhWeightOptimizer:reset()
-
-	end
-
-	if (self.FocusGateOptimizer) then
-
-		self.FocusGateOptimizer:reset()
+		self.HiddenLayerOptimizer:reset()
 
 	end
 
-	if (self.OutputWeightOptimizer) then
+	if (self.OutputLayerOptimizer) then
 
-		self.OutputWeightOptimizer:reset()
-
-	end
-
-	if (self.ForgetGateBiasOptimizer) then
-
-		self.ForgetGateBiasOptimizer:reset()
+		self.OutputLayerOptimizer:reset()
 
 	end
 
-	if (self.SaveGateBiasOptimizer) then
+	if (self.BiasHiddenLayerOptimizer) then
 
-		self.SaveGateBiasOptimizer:reset()
-
-	end
-
-	if (self.TanhBiasOptimizer) then
-
-		self.TanhBiasOptimizer:reset()
+		self.BiasHiddenLayerOptimizer:reset()
 
 	end
 
-	if (self.FocusGateOptimizer) then
+	if (self.BiasOutputLayerOptimizer) then
 
-		self.FocusGateOptimizer:reset()
-
-	end
-
-	if (self.OutputBiasOptimizer) then
-
-		self.OutputBiasOptimizer:reset()
+		self.BiasOutputLayerOptimizer:reset()
 
 	end
-	
+
 	return costArray
-	
+
 end
 
-function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
-	
-	if (self.ModelParameters == nil) then error("No Model Parameters Found!") end
-	
-	self:loadModelParameters()
-	
-	local cPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
-	
-	local aPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
-	
-	local predictionArray = {}
-	
-	for i = 1, #tokenInputSequenceArray, 1 do
-		
-		local tokenInput = tokenInputSequenceArray[i]
-		
-		local xt = self:convertTokenToLogisticVector(self.inputSize, tokenInput)
-		
-		local aNext, cNext = self:forwardPropagateCell(xt, aPrevious, cPrevious)
-		
-		local ytPrediction = self:calculatePrediction(aNext)
-		
-		local _, predictedTokenIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(ytPrediction)
-		
-		local predictedToken = nil
+function RecurrentNeuralNetworkModel:predict(tokenInputSequenceArray)
 
+	if (self.ModelParameters == nil) then error("No Model Parameters Found!") end
+
+	self:loadModelParameters()
+
+	local aPrevious = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
+
+	local predictionArray = {}
+
+	for i = 1, #tokenInputSequenceArray, 1 do
+
+		local tokenInput = tokenInputSequenceArray[i]
+
+		local xt = self:convertTokenToLogisticVector(self.inputSize, tokenInput)
+
+		local aNext = self:forwardPropagateCell(xt, aPrevious)
+
+		local ytPrediction = self:calculatePrediction(aNext)
+
+		local _, predictedTokenIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(ytPrediction)
+
+		local predictedToken = nil
+		
 		if predictedTokenIndex then predictedToken = predictedTokenIndex[1] end
 
 		table.insert(predictionArray, predictedToken)
-		
+
 		aPrevious = aNext
-		
-		cPrevious = cNext
-		
+
 	end
-	
+
 	return predictionArray
-	
+
 end
 
-return LongShortTermMemoryModel
+return RecurrentNeuralNetworkModel

@@ -52,13 +52,12 @@ function StringSplitter:splitStringToArray(inputString, patternWhereToSplitBetwe
 	
 	if (typeof(inputString) ~= "string") then error("Input is not a string!") end
 	
-	local inputStringWithSpacesBetweenSymbols = addSpacesBetweenPattern(inputString, patternWhereToSplitBetween)
+	local newInputString = addSpacesBetweenPattern(inputString, patternWhereToSplitBetween)
 	
-	local stringTable = string.split(inputString, " ")
+	local stringTable = string.split(newInputString, " ")
 	
 	return stringTable
 	
 end
 
 return StringSplitter
-

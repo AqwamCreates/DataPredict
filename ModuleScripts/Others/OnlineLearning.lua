@@ -12,9 +12,9 @@ local onlineLearningActiveText = "Online Learning is already active!"
 
 function OnlineLearning.new(Model, isOutputRequired, batchSize)
 
-	if (Model == nil) then error("Please set a model") end
+	if (Model == nil) then error("Please set a model!") end
 
-	if (isOutputRequired == nil) then error("Please set whether or not the model requires a Output") end
+	if (isOutputRequired == nil) then error("Please set whether or not the model requires a output!") end
 
 	local NewOnlineLearning = {}
 

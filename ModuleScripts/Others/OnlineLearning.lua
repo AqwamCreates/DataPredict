@@ -6,6 +6,10 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibrary
 
 local modelDivergedWarningText = "The model diverged! Reverting to previous model parameters! Please repeat the experiment again or change the argument values if this warning occurs often."
 
+local onlineLearningNotActiveText = "Online Learning is not active!"
+
+local onlineLearningActiveText = "Online Learning is already active!"
+
 function OnlineLearning.new(Model, isOutputRequired, batchSize)
 
 	if (Model == nil) then error("Please set a model") end
@@ -34,9 +38,59 @@ function OnlineLearning.new(Model, isOutputRequired, batchSize)
 
 end
 
+function OnlineLearning:generateDataset(minimumBatchSize)
+	
+	local input = {}
+	
+	local output = {}
+	
+	for data = 1, minimumBatchSize, 1 do
+
+		table.insert(input, self.InputQueue[1])
+
+		table.remove(self.InputQueue, 1)
+
+		if (self.IsOutputRequired == true) then
+
+			table.insert(output, self.OutputQueue[1]) 
+
+			table.remove(self.OutputQueue, 1)
+
+		end
+
+	end
+	
+	return input, output
+	
+end
+
+function OnlineLearning:autoRemoveCostArrayAfterCertainDuration()
+	
+	task.spawn(function()
+
+		for frame = 1, 70 do task.wait() end -- to allow cost to be fetched. Otherwise it will remove it before it can be fetched!
+
+		table.remove(self.CostArrayQueue, 1)
+
+	end)
+	
+end
+
+function OnlineLearning:restorePreviousModelParametersIfCostIsInfinity(cost)
+	
+	if (cost == math.huge) then
+
+		self.Model:setModelParameters(self.PreviousModelParameters)
+
+		warn(modelDivergedWarningText) 
+
+	end
+	
+end
+
 function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 
-	if (self.IsOnlineLearningRunning == true) then error("Online Learning is already active!") end
+	if (self.IsOnlineLearningRunning == true) then error(onlineLearningActiveText) end
 
 	self.IsOnlineLearningRunning = true
 
@@ -79,54 +133,24 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 			elseif (self.IsOnlineLearningRunning == false) then break end
 
 			self.PreviousModelParameters = self.Model:getModelParameters()
-
-			local input = {}
-
-			local output = {}
-
-			local costArray
-
+			
 			local minimumBatchSize = math.min(self.BatchSize, #self.InputQueue)
+			
+			local input, output = self:generateDataset(minimumBatchSize)
 
-			for data = 1, minimumBatchSize, 1 do
-
-				table.insert(input, self.InputQueue[1])
-
-				table.remove(self.InputQueue, 1)
-
-				if (self.IsOutputRequired == true) then
-
-					table.insert(output, self.OutputQueue[1]) 
-
-					table.remove(self.OutputQueue, 1)
-
-				end
-
-			end
-
-			costArray = self.Model:train(input, output)
-
-			if (costArray[1] == math.huge) then
-
-				self.Model:setModelParameters(self.PreviousModelParameters)
-
-				warn(modelDivergedWarningText) 
-
-			end
+			local costArray = self.Model:train(input, output)
 
 			cost = costArray[#costArray]
+			
+			self:restorePreviousModelParametersIfCostIsInfinity(cost)
 
 			table.insert(self.CostArrayQueue, costArray)
 
 			if (showFinalCost == true) then print("Final Cost: " .. cost) end
-
-			task.spawn(function()
-
-				for frame = 1, 70 do task.wait() end -- to allow cost to be fetched. Otherwise it will remove it before it can be fetched!
-
-				table.remove(self.CostArrayQueue, 1)
-
-			end)
+			
+			self:autoRemoveCostArrayAfterCertainDuration()
+			
+			waitDuration = 0
 
 		until (self.IsQueuedReinforcementRunning == false)
 
@@ -160,7 +184,7 @@ end
 
 function OnlineLearning:addInputToOnlineLearningQueue(input)
 
-	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error("Online Learning is not active!") end
+	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error(onlineLearningNotActiveText) end
 
 	table.insert(self.InputQueue, input)
 
@@ -168,7 +192,7 @@ end
 
 function OnlineLearning:addOutputToOnlineLearningQueue(output)
 
-	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error("Online Learning is not active!") end
+	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error(onlineLearningNotActiveText) end
 	
 	if (type(output) == "number") then output = {{output}} end
 
@@ -179,7 +203,7 @@ end
 
 function OnlineLearning:returnCostArrayFromOnlineLearningQueue()
 
-	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error("Online Learning is not active!") end
+	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error(onlineLearningNotActiveText) end
 
 	return self.CostArrayQueue[1]
 

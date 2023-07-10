@@ -530,7 +530,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	
 	local numberOfFeatures = #featureMatrix[1]
 
-	if (#self.ModelParameters[1] ~= numberOfFeatures) then error("Input layer has " .. (#self.ModelParameters[1] - 1) .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features!") end
+	if (#self.ModelParameters[1] ~= numberOfFeatures) then error("Input layer has " .. #self.ModelParameters[1] .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features!") end
 
 	if (#featureMatrix ~= #labelVector) then error("Number of rows of feature matrix and the label vector is not the same!") end
 

@@ -218,8 +218,6 @@ function NaiveBayesModel:predict(featureMatrix)
 	
 	local predictedClass
 	
-	local highestProbabilityVector
-	
 	local probabilityVector
 	
 	local probability
@@ -228,7 +226,13 @@ function NaiveBayesModel:predict(featureMatrix)
 		
 		probabilityVector = {multipliedProbalitiesMatrices[classIndex]}
 		
-		probability = AqwamMatrixLibrary:sum(probabilityVector) 
+		probability = 1
+		
+		for column = 1, #probabilityVector[1], 1 do
+			
+			probability *= probabilityVector[1][column]
+			
+		end
 		
 		if (probability > highestProbability) then
 			
@@ -236,13 +240,11 @@ function NaiveBayesModel:predict(featureMatrix)
 
 			highestProbability = probability
 
-			highestProbabilityVector = probabilityVector
-
 		end
 		
 	end
 	
-	return predictedClass, highestProbabilityVector
+	return predictedClass, highestProbability
 	
 end
 

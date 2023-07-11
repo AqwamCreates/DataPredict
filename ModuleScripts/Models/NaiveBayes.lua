@@ -84,13 +84,13 @@ local function calculateGaussianDensity(useLogProbabilities, featureVector, mean
 	
 	if (useLogProbabilities) then
 		
+		logGaussianDensity = AqwamMatrixLibrary:applyFunction(math.log, gaussianDensity)
+		
 		return logGaussianDensity	
 		
 	else
 		
-		logGaussianDensity = AqwamMatrixLibrary:applyFunction(math.log, gaussianDensity)
-		
-		return logGaussianDensity
+		return gaussianDensity
 		
 	end
 	

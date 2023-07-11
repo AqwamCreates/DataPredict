@@ -116,7 +116,7 @@ function GradientDescentModes:startGradientDescent(MachineLearningModel, gradien
 		
 		startBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector)
 		
-	elseif (gradientDescentAlgorithmType == "Minibatch") then
+	elseif (gradientDescentAlgorithmType == "MiniBatch") then
 		
 		batchSize = batchSize or 2
 		

@@ -290,51 +290,37 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 	
 	local tableOfTokenOutputSequenceLogisticMatrices = {}
 	
-	for i, tokenInputSequenceArray in ipairs(tableOfTokenInputSequenceArray) do
-		
-		local tokenInputSequenceLogisticMatrices = {}
-		
-		for t = 1, #tokenInputSequenceArray, 1 do
+	if (tableOfTokenOutputSequenceArray == nil) then tableOfTokenOutputSequenceArray = tableOfTokenInputSequenceArray end
 
-			local tokenInput = tokenInputSequenceArray[t]
+	for s = 1, #tableOfTokenInputSequenceArray, 1 do
+		
+		throwErrorIfSequenceLengthAreNotEqual(tableOfTokenInputSequenceArray[s], tableOfTokenOutputSequenceArray[s])
+
+		local tokenInputSequenceLogisticMatrices = {}
+
+		local tokenOutputSequenceLogisticMatrices = {}
+
+		for t = 1, #tableOfTokenInputSequenceArray[s], 1 do
+
+			local tokenInput = tableOfTokenInputSequenceArray[s][t]
+
+			local tokenOutput = tableOfTokenOutputSequenceArray[s][t]
 
 			local xt = self:convertTokenToLogisticVector(tokenInput)
 
+			local yt = self:convertTokenToLogisticVector(self.outputSize, tokenInput)
+
 			table.insert(tokenInputSequenceLogisticMatrices, xt)
-			
+
+			table.insert(tokenOutputSequenceLogisticMatrices, yt)
+
 			totalNumberOfTokens += 1
 
 		end
-		
+
 		table.insert(tableOfTokenInputSequenceLogisticMatrices, tokenInputSequenceLogisticMatrices)
-		
-	end
 
-	if (tableOfTokenOutputSequenceArray) then
-
-		for j, tokenOutputSequenceArray in ipairs(tableOfTokenOutputSequenceArray) do
-			
-			throwErrorIfSequenceLengthAreNotEqual(tableOfTokenInputSequenceArray[j], tokenOutputSequenceArray)
-
-			local tokenOutputSequenceLogisticMatrices = {}
-
-			for t = 1, #tokenOutputSequenceArray, 1 do
-
-				local tokenInput = tokenOutputSequenceArray[t]
-
-				local yt = self:convertTokenToLogisticVector(self.outputSize, tokenInput)
-
-				table.insert(tokenOutputSequenceLogisticMatrices, yt)
-
-			end
-
-			table.insert(tableOfTokenOutputSequenceLogisticMatrices, tokenOutputSequenceLogisticMatrices)
-
-		end
-		
-	else
-
-		tableOfTokenOutputSequenceLogisticMatrices = tableOfTokenInputSequenceLogisticMatrices
+		table.insert(tableOfTokenOutputSequenceLogisticMatrices, tokenOutputSequenceLogisticMatrices)
 
 	end
 

@@ -8,28 +8,6 @@ setmetatable(NaiveBayesModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
-local function getClassesList(labelVector)
-	
-	local classesList = {}
-	
-	local value
-	
-	for i = 1, #labelVector, 1 do
-		
-		value = labelVector[i][1]
-		
-		if not table.find(classesList, value) then
-			
-			table.insert(classesList, value)
-			
-		end
-		
-	end
-	
-	return classesList
-	
-end
-
 local function extractFeatureMatrixFromPosition(featureMatrix, positionList)
 	
 	local extractedFeatureMatrix = {}
@@ -80,7 +58,7 @@ local function separateFeatureMatrixByClass(featureMatrix, labelVector, classesL
 		
 	end
 	
-	return extractedFeatureMatricesTable, classesList
+	return extractedFeatureMatricesTable
 	
 end
 
@@ -172,8 +150,6 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 
 	end
 	
-	local extractedFeatureMatricesTable
-	
 	local gaussianDensityVector
 
 	local extractedFeatureMatrix
@@ -192,7 +168,7 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 	
 	local probabilitiesMatrix
 	
-	extractedFeatureMatricesTable = separateFeatureMatrixByClass(featureMatrix, labelVector, self.ClassesList)
+	local extractedFeatureMatricesTable = separateFeatureMatrixByClass(featureMatrix, labelVector, self.ClassesList)
 	
 	if (self.ModelParameters) then
 		

@@ -331,6 +331,10 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 			table.insert(tableOfTokenOutputSequenceLogisticMatrices, tokenOutputSequenceLogisticMatrices)
 
 		end
+		
+	else
+
+		tableOfTokenOutputSequenceLogisticMatrices = tableOfTokenInputSequenceLogisticMatrices
 
 	end
 
@@ -371,6 +375,8 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 			local tokenInput
 
 			local xt
+			
+			local yt 
 
 			local aFirst = AqwamMatrixLibrary:createRandomNormalMatrix(self.hiddenSize, 1)
 
@@ -452,17 +458,9 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 				
 				dby = AqwamMatrixLibrary:add(dby, dxt)
 
-				if (yTable) then
+				yt = yTable[t]
 
-					local yt = yTable[t]
-
-					dWyat = AqwamMatrixLibrary:subtract(ytPrediction, yt)
-
-				else
-
-					dWyat = AqwamMatrixLibrary:subtract(ytPrediction, xt)
-
-				end
+				dWyat = AqwamMatrixLibrary:subtract(ytPrediction, yt)
 
 				dWya = AqwamMatrixLibrary:add(dWya, dWyat)
 

@@ -62,11 +62,13 @@ local function separateFeatureMatrixByClass(featureMatrix, labelVector, classesL
 	
 end
 
-local function calculateGaussianDensity(featureMatrix, meanMatrix, standardDeviationMatrix)
+local function calculateGaussianDensity(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 	
-	local exponentStep1 = AqwamMatrixLibrary:subtract(featureMatrix, meanMatrix)
+	local logGaussianDensity
 	
-	local exponentStep2 = AqwamMatrixLibrary:divide(exponentStep1, standardDeviationMatrix)
+	local exponentStep1 = AqwamMatrixLibrary:subtract(featureVector, meanVector)
+	
+	local exponentStep2 = AqwamMatrixLibrary:divide(exponentStep1, standardDeviationVector)
 	
 	local exponentStep3 = AqwamMatrixLibrary:multiply(exponentStep2, exponentStep2)
 	
@@ -74,13 +76,23 @@ local function calculateGaussianDensity(featureMatrix, meanMatrix, standardDevia
 	
 	local exponentWithTerms = AqwamMatrixLibrary:applyFunction(math.exp, exponentStep4)
 	
-	local fractionStep1 = AqwamMatrixLibrary:multiply(standardDeviationMatrix, math.sqrt(2 * math.pi))
+	local fractionStep1 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
 	
 	local fractionStep2 = AqwamMatrixLibrary:divide(1, fractionStep1)
 	
 	local gaussianDensity = AqwamMatrixLibrary:multiply(fractionStep2, exponentWithTerms)
 	
-	return gaussianDensity	
+	if (useLogProbabilities) then
+		
+		return logGaussianDensity	
+		
+	else
+		
+		logGaussianDensity = AqwamMatrixLibrary:applyFunction(math.log, gaussianDensity)
+		
+		return logGaussianDensity
+		
+	end
 	
 end
 
@@ -122,7 +134,7 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
 
 end
 
-function NaiveBayesModel.new()
+function NaiveBayesModel.new(useLogProbabilities)
 	
 	local NewNaiveBayesModel = BaseModel.new()
 	
@@ -130,8 +142,16 @@ function NaiveBayesModel.new()
 	
 	NewNaiveBayesModel.ClassesList = {}
 	
+	NewNaiveBayesModel.UseLogProbabilities = BaseModel:getBooleanOrDefaultOption(useLogProbabilities, false)
+	
 	return NewNaiveBayesModel
 	
+end
+
+function NaiveBayesModel:setParameters(useLogProbabilities)
+
+	self.UseLogProbabilities = useLogProbabilities or self.UseLogProbabilities
+
 end
 
 function NaiveBayesModel:train(featureMatrix, labelVector)
@@ -208,7 +228,7 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 			
 			featureVector = {featureMatrix[data]}
 			
-			gaussianDensityVector = calculateGaussianDensity(featureVector, meanVector, standardDeviationVector)
+			gaussianDensityVector = calculateGaussianDensity(self.UseLogProbabilities, featureVector, meanVector, standardDeviationVector)
 			
 			probabilitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, gaussianDensityVector)
 			
@@ -224,15 +244,15 @@ end
 
 function NaiveBayesModel:predict(featureMatrix)
 	
-	local meanMatrix = self.ModelParameters[1]
+	local meanVector 
 	
-	local standardDeviationMatrix = self.ModelParameters[2]
+	local standardDeviationVector
 	
-	local probabilitiesMatrix = self.ModelParameters[3]
+	local probabilitiesVector
 	
-	local priorProbabilitiesMatrix = calculateGaussianDensity(featureMatrix, meanMatrix, standardDeviationMatrix)
+	local priorProbabilitiesVector
 	
-	local multipliedProbalitiesMatrices = AqwamMatrixLibrary:multiply(probabilitiesMatrix, priorProbabilitiesMatrix)
+	local multipliedProbalitiesVector 
 	
 	local highestProbability = -math.huge
 	
@@ -244,13 +264,37 @@ function NaiveBayesModel:predict(featureMatrix)
 	
 	for classIndex, classValue in ipairs(self.ClassesList) do
 		
-		probabilityVector = {multipliedProbalitiesMatrices[classIndex]}
+		meanVector = {self.ModelParameters[1][classIndex]}
+
+		standardDeviationVector = {self.ModelParameters[2][classIndex]}
+
+		probabilitiesVector = {self.ModelParameters[3][classIndex]}
 		
-		probability = 1
+		priorProbabilitiesVector = calculateGaussianDensity(self.UseLogProbabilities, featureMatrix, meanVector, standardDeviationVector)
 		
-		for column = 1, #probabilityVector[1], 1 do
+		multipliedProbalitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, priorProbabilitiesVector)
+		
+		if (self.UseLogProbabilities) then
 			
-			probability *= probabilityVector[1][column]
+			probability = 0
+			
+		else
+			
+			probability = 1
+			
+		end
+		
+		for column = 1, #multipliedProbalitiesVector[1], 1 do
+			
+			if (self.UseLogProbabilities) then
+
+				probability += multipliedProbalitiesVector[1][column]
+
+			else
+
+				probability *= multipliedProbalitiesVector[1][column]
+
+			end
 			
 		end
 		

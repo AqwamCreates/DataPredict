@@ -190,23 +190,11 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 	
 	local extractedFeatureMatricesTable = separateFeatureMatrixByClass(featureMatrix, labelVector, self.ClassesList)
 	
-	if (self.ModelParameters) then
-		
-		meanMatrix = self.ModelParameters[1]
-		
-		standardDeviationMatrix = self.ModelParameters[2]
-		
-		probabilitiesMatrix = self.ModelParameters[3]
-		
-	else
-		
-		meanMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1])
-		
-		standardDeviationMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1])
-		
-		probabilitiesMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1], 1)
-		
-	end
+	meanMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1])
+
+	standardDeviationMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1])
+
+	probabilitiesMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1], 1)
 	
 	if (#featureMatrix[1] ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
 	
@@ -236,6 +224,16 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 		
 		probabilitiesMatrix[classIndex] = probabilitiesVector[1]
 		
+	end
+	
+	if (self.ModelParameters) then
+
+		meanMatrix = AqwamMatrixLibrary:divide(AqwamMatrixLibrary:add(self.ModelParameters[1], meanMatrix), 2) 
+		
+		standardDeviationMatrix = AqwamMatrixLibrary:divide(AqwamMatrixLibrary:add(self.ModelParameters[2], standardDeviationMatrix), 2) 
+		
+		probabilitiesMatrix = AqwamMatrixLibrary:divide(AqwamMatrixLibrary:add(self.ModelParameters[3], probabilitiesMatrix), 2) 
+
 	end
 	
 	self.ModelParameters = {meanMatrix, standardDeviationMatrix, probabilitiesMatrix}

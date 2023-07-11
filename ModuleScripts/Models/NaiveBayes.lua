@@ -190,6 +190,10 @@ function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	
 	local predictedClass
 	
+	local classIndex
+	
+	local label
+	
 	local predictedProbabilitiesMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, #self.ClassesList)
 	
 	local predictedProbabilitiesVector = AqwamMatrixLibrary:createMatrix(#labelVector, #labelVector[1])
@@ -205,42 +209,38 @@ function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	end
 	
 	for data = 1, #featureMatrix, 1 do
+		
+		label = labelVector[data][1]
+		
+		classIndex = table.find(self.ClassesList, label)
+		
+		meanVector = {self.ModelParameters[1][classIndex]}
 
-		for classIndex, classValue in ipairs(self.ClassesList) do
+		standardDeviationVector = {self.ModelParameters[2][classIndex]}
 
-			meanVector = {self.ModelParameters[1][classIndex]}
+		probabilitiesVector = {self.ModelParameters[3][classIndex]}
 
-			standardDeviationVector = {self.ModelParameters[2][classIndex]}
+		priorProbabilitiesVector = calculateGaussianDensity(self.UseLogProbabilities, featureMatrix, meanVector, standardDeviationVector)
 
-			probabilitiesVector = {self.ModelParameters[3][classIndex]}
+		multipliedProbalitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, priorProbabilitiesVector)
+		
+		probability = initialProbability
+		
+		for column = 1, #multipliedProbalitiesVector[1], 1 do
 
-			priorProbabilitiesVector = calculateGaussianDensity(self.UseLogProbabilities, featureMatrix, meanVector, standardDeviationVector)
+			if (self.UseLogProbabilities) then
 
-			multipliedProbalitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, priorProbabilitiesVector)
+				probability += multipliedProbalitiesVector[1][column]
 
-			probability = initialProbability
+			else
 
-			for column = 1, #multipliedProbalitiesVector[1], 1 do
-
-				if (self.UseLogProbabilities) then
-
-					probability += multipliedProbalitiesVector[1][column]
-
-				else
-
-					probability *= multipliedProbalitiesVector[1][column]
-
-				end
-
-			end
-
-			if (classValue == labelVector[data][1]) then
-
-				predictedProbabilitiesVector[data][1] = probability
+				probability *= multipliedProbalitiesVector[1][column]
 
 			end
 
 		end
+		
+		predictedProbabilitiesVector[data][1] = probability
 
 	end
 

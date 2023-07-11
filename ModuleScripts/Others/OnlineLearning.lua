@@ -58,7 +58,15 @@ function OnlineLearning:generateDataset(minimumBatchSize)
 		
 	end
 	
-	return input, output
+	if (self.IsOutputRequired) then
+		
+		return input, output
+		
+	else
+		
+		return input, nil
+		
+	end
 	
 end
 

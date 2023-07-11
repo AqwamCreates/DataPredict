@@ -478,7 +478,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 	for s = 1, #tableOfTokenInputSequenceArray, 1 do
 		
-		throwErrorIfSequenceLengthAreNotEqual(tableOfTokenInputSequenceArray[s],  tableOfTokenOutputSequenceArray[s])
+		throwErrorIfSequenceLengthAreNotEqual(tableOfTokenInputSequenceArray[s], tableOfTokenOutputSequenceArray[s])
 
 		local tokenInputSequenceLogisticMatrices = {}
 		

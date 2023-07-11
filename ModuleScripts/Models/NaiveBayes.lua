@@ -48,9 +48,7 @@ local function extractFeatureMatrixFromPosition(featureMatrix, positionList)
 	
 end
 
-local function separateFeatureMatrixByClass(featureMatrix, labelVector)
-	
-	local classesList = getClassesList(labelVector)
+local function separateFeatureMatrixByClass(featureMatrix, labelVector, classesList)
 	
 	local classesPositionTable = {}
 	
@@ -108,15 +106,51 @@ local function calculateGaussianDensity(featureMatrix, meanMatrix, standardDevia
 	
 end
 
+local function createClassesList(labelVector)
+
+	local classesList = {}
+
+	local value
+
+	for i = 1, #labelVector, 1 do
+
+		value = labelVector[i][1]
+
+		if not table.find(classesList, value) then
+
+			table.insert(classesList, value)
+
+		end
+
+	end
+
+	return classesList
+
+end
+
+local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
+
+	local labelVectorColumn = AqwamMatrixLibrary:transpose(labelVector)
+
+	for i, value in ipairs(labelVectorColumn[1]) do
+
+		if table.find(classesList, value) then continue end
+
+		return true
+
+	end
+
+	return false
+
+end
+
 function NaiveBayesModel.new()
 	
 	local NewNaiveBayesModel = BaseModel.new()
 	
 	setmetatable(NewNaiveBayesModel, NaiveBayesModel)
 	
-	NewNaiveBayesModel.classesList = nil
-	
-	NewNaiveBayesModel.gaussianDensityMatrix = nil
+	NewNaiveBayesModel.ClassesList = {}
 	
 	return NewNaiveBayesModel
 	
@@ -125,6 +159,18 @@ end
 function NaiveBayesModel:train(featureMatrix, labelVector)
 	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
+	
+	if (#self.ClassesList == 0) then
+
+		self.ClassesList = createClassesList(labelVector)
+
+		table.sort(self.ClassesList, function(a,b) return a < b end)
+
+	else
+
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector") end
+
+	end
 	
 	local extractedFeatureMatricesTable
 	
@@ -146,9 +192,7 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 	
 	local probabilitiesMatrix
 	
-	local gaussianDensityMatrix
-	
-	extractedFeatureMatricesTable, self.classesList = separateFeatureMatrixByClass(featureMatrix, labelVector)
+	extractedFeatureMatricesTable = separateFeatureMatrixByClass(featureMatrix, labelVector, self.ClassesList)
 	
 	if (self.ModelParameters) then
 		
@@ -160,17 +204,17 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 		
 	else
 		
-		meanMatrix = AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1])
+		meanMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1])
 		
-		standardDeviationMatrix = AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1])
+		standardDeviationMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1])
 		
-		probabilitiesMatrix = AqwamMatrixLibrary:createMatrix(#self.classesList, #featureMatrix[1], 1)
+		probabilitiesMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1], 1)
 		
 	end
 	
 	if (#featureMatrix[1] ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
 	
-	for classIndex, classValue in ipairs(self.classesList) do
+	for classIndex, classValue in ipairs(self.ClassesList) do
 		
 		extractedFeatureMatrix = extractedFeatureMatricesTable[classIndex]
 		
@@ -222,7 +266,7 @@ function NaiveBayesModel:predict(featureMatrix)
 	
 	local probability
 	
-	for classIndex, classValue in ipairs(self.classesList) do
+	for classIndex, classValue in ipairs(self.ClassesList) do
 		
 		probabilityVector = {multipliedProbalitiesMatrices[classIndex]}
 		
@@ -246,6 +290,18 @@ function NaiveBayesModel:predict(featureMatrix)
 	
 	return predictedClass, highestProbability
 	
+end
+
+function NaiveBayesModel:getClassesList()
+
+	return self.ClassesList
+
+end
+
+function NaiveBayesModel:setClassesList(classesList)
+
+	self.ClassesList = classesList
+
 end
 
 return NaiveBayesModel

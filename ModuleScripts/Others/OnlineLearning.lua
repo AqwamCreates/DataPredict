@@ -46,18 +46,16 @@ function OnlineLearning:generateDataset(minimumBatchSize)
 	
 	for data = 1, minimumBatchSize, 1 do
 
-		table.insert(input, self.InputQueue[1])
+		table.insert(input, self.InputQueue[1][1])
 
 		table.remove(self.InputQueue, 1)
 
-		if (self.IsOutputRequired == true) then
+		if (self.IsOutputRequired == false) then continue end
 
-			table.insert(output, self.OutputQueue[1]) 
+		table.insert(output, self.OutputQueue[1][1]) 
 
-			table.remove(self.OutputQueue, 1)
-
-		end
-
+		table.remove(self.OutputQueue, 1)
+		
 	end
 	
 	return input, output
@@ -137,7 +135,7 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 			local minimumBatchSize = math.min(self.BatchSize, #self.InputQueue)
 			
 			local input, output = self:generateDataset(minimumBatchSize)
-
+			
 			local costArray = self.Model:train(input, output)
 
 			cost = costArray[#costArray]

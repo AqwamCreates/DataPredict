@@ -134,6 +134,20 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
 
 end
 
+local function logLoss(labelVector, predictedProbabilitiesVector)
+	
+	local loglossFunction = function (y, p) return (y * math.log(p)) + ((1 - y) * math.log(1 - p)) end
+	
+	local logLossVector = AqwamMatrixLibrary:applyFunction(loglossFunction, labelVector, predictedProbabilitiesVector)
+	
+	local logLossSum = AqwamMatrixLibrary:sum(logLossVector)
+
+	local logLoss = -logLossSum / #labelVector
+	
+	return logLoss
+	
+end
+
 function NaiveBayesModel.new(useLogProbabilities)
 	
 	local NewNaiveBayesModel = BaseModel.new()
@@ -152,6 +166,88 @@ function NaiveBayesModel:setParameters(useLogProbabilities)
 
 	self.UseLogProbabilities = useLogProbabilities or self.UseLogProbabilities
 
+end
+
+function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
+	
+	local cost
+	
+	local meanVector
+	
+	local standardDeviationVector
+	
+	local probabilitiesVector
+	
+	local priorProbabilitiesVector
+	
+	local initialProbability
+	
+	local multipliedProbalitiesVector
+	
+	local probability
+	
+	local highestProbability
+	
+	local predictedClass
+	
+	local predictedProbabilitiesMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, #self.ClassesList)
+	
+	local predictedProbabilitiesVector = AqwamMatrixLibrary:createMatrix(#labelVector, #labelVector[1])
+	
+	if (self.UseLogProbabilities) then
+
+		initialProbability = 0
+
+	else
+
+		initialProbability = 1
+
+	end
+	
+	for data = 1, #featureMatrix, 1 do
+
+		for classIndex, classValue in ipairs(self.ClassesList) do
+
+			meanVector = {self.ModelParameters[1][classIndex]}
+
+			standardDeviationVector = {self.ModelParameters[2][classIndex]}
+
+			probabilitiesVector = {self.ModelParameters[3][classIndex]}
+
+			priorProbabilitiesVector = calculateGaussianDensity(self.UseLogProbabilities, featureMatrix, meanVector, standardDeviationVector)
+
+			multipliedProbalitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, priorProbabilitiesVector)
+
+			probability = initialProbability
+
+			for column = 1, #multipliedProbalitiesVector[1], 1 do
+
+				if (self.UseLogProbabilities) then
+
+					probability += multipliedProbalitiesVector[1][column]
+
+				else
+
+					probability *= multipliedProbalitiesVector[1][column]
+
+				end
+
+			end
+
+			if (classValue == labelVector[data][1]) then
+
+				predictedProbabilitiesVector[data][1] = probability
+
+			end
+
+		end
+
+	end
+
+	cost = logLoss(labelVector, predictedProbabilitiesVector)
+	
+	return cost
+	
 end
 
 function NaiveBayesModel:train(featureMatrix, labelVector)
@@ -188,6 +284,8 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 	
 	local probabilitiesMatrix
 	
+	local cost
+	
 	local extractedFeatureMatricesTable = separateFeatureMatrixByClass(featureMatrix, labelVector, self.ClassesList)
 	
 	meanMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1])
@@ -212,9 +310,9 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 		
 		probabilitiesVector = AqwamMatrixLibrary:createMatrix(1, #featureMatrix[1], 1)
 		
-		for data = 1, #featureMatrix, 1 do
+		for data = 1, #extractedFeatureMatrix, 1 do
 			
-			featureVector = {featureMatrix[data]}
+			featureVector = {extractedFeatureMatrix[data]}
 			
 			gaussianDensityVector = calculateGaussianDensity(self.UseLogProbabilities, featureVector, meanVector, standardDeviationVector)
 			
@@ -237,6 +335,10 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 	end
 	
 	self.ModelParameters = {meanMatrix, standardDeviationMatrix, probabilitiesMatrix}
+	
+	cost = self:calculateCost(featureMatrix, labelVector)
+	
+	return {cost}
 	
 end
 

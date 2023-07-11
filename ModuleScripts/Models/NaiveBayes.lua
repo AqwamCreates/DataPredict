@@ -168,7 +168,7 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 
 	else
 
-		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector") end
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the naive bayes\'s classes list is present in the label vector") end
 
 	end
 	

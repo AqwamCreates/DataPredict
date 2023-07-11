@@ -14,7 +14,7 @@ GradientDescentMode:startGradientDescent(Model: ModelObject, mode: string, featu
 
 * Model: The model that you want to train
 
-* mode: The mode of gradient descent. Available modes are "Batch", "Minibatch" and "Stochastic".
+* mode: The mode of gradient descent. Available modes are "Batch", "MiniBatch" and "Stochastic".
 
 * featureMatrix: Matrix containing all data.
 

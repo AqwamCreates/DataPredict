@@ -444,7 +444,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 	end
 	
-	local tokenInputSequenceLength = 0
+	local totalNumberOfTokens = 0
 	
 	local numberOfIterations = 0
 	
@@ -473,52 +473,38 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 	local previousdWy
 
 	local previousdby
+	
+	if (tableOfTokenOutputSequenceArray == nil) then tableOfTokenOutputSequenceArray = tableOfTokenInputSequenceArray end
 
-	for i, tokenInputSequenceArray in ipairs(tableOfTokenInputSequenceArray) do
+	for s = 1, #tableOfTokenInputSequenceArray, 1 do
+		
+		throwErrorIfSequenceLengthAreNotEqual(tableOfTokenInputSequenceArray[s],  tableOfTokenOutputSequenceArray[s])
 
 		local tokenInputSequenceLogisticMatrices = {}
+		
+		local tokenOutputSequenceLogisticMatrices = {}
+		
+		for t = 1, #tableOfTokenInputSequenceArray[s], 1 do
 
-		for t = 1, #tokenInputSequenceArray, 1 do
-
-			local tokenInput = tokenInputSequenceArray[t]
+			local tokenInput = tableOfTokenInputSequenceArray[s][t]
+			
+			local tokenOutput = tableOfTokenOutputSequenceArray[s][t]
 
 			local xt = self:convertTokenToLogisticVector(tokenInput)
+			
+			local yt = self:convertTokenToLogisticVector(self.outputSize, tokenInput)
 
 			table.insert(tokenInputSequenceLogisticMatrices, xt)
 			
-			tokenInputSequenceLength += 1
+			table.insert(tokenOutputSequenceLogisticMatrices, yt)
+			
+			totalNumberOfTokens += 1
 
 		end
 
 		table.insert(tableOfTokenInputSequenceLogisticMatrices, tokenInputSequenceLogisticMatrices)
-
-	end
-
-	if (tableOfTokenOutputSequenceArray) then
-
-		for j, tokenOutputSequenceArray in ipairs(tableOfTokenOutputSequenceArray) do
-
-			throwErrorIfSequenceLengthAreNotEqual(tableOfTokenInputSequenceArray[j], tokenOutputSequenceArray)
-
-			local tokenOutputSequenceLogisticMatrices = {}
-
-			for t = 1, #tokenOutputSequenceArray, 1 do
-
-				local tokenInput = tokenOutputSequenceArray[t]
-
-				local yt = self:convertTokenToLogisticVector(self.outputSize, tokenInput)
-
-				table.insert(tokenOutputSequenceLogisticMatrices, yt)
-
-			end
-
-			table.insert(tableOfTokenOutputSequenceLogisticMatrices, tokenOutputSequenceLogisticMatrices)
-
-		end
 		
-	else
-		
-		tableOfTokenOutputSequenceLogisticMatrices = tableOfTokenInputSequenceLogisticMatrices
+		table.insert(tableOfTokenOutputSequenceLogisticMatrices, tokenOutputSequenceLogisticMatrices)
 
 	end
 	
@@ -756,7 +742,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 			
 		end
 		
-		cost = cost / tokenInputSequenceLength
+		cost = cost / totalNumberOfTokens
 		
 		dWy = AqwamMatrixLibrary:extractColumns(dWy, 1, self.hiddenSize)
 		

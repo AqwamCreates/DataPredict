@@ -68,19 +68,19 @@ local function calculateGaussianDensity(useLogProbabilities, featureVector, mean
 	
 	local exponentStep1 = AqwamMatrixLibrary:subtract(featureVector, meanVector)
 	
-	local exponentStep2 = AqwamMatrixLibrary:divide(exponentStep1, standardDeviationVector)
+	local exponentStep2 = AqwamMatrixLibrary:power(exponentStep1, 2)
 	
-	local exponentStep3 = AqwamMatrixLibrary:multiply(exponentStep2, exponentStep2)
+	local exponentPart3 = AqwamMatrixLibrary:power(standardDeviationVector, 2)
 	
-	local exponentStep4 = AqwamMatrixLibrary:multiply((-1/2), exponentStep3)
+	local exponentStep4 = AqwamMatrixLibrary:divide(exponentStep2, exponentPart3)
 	
-	local exponentWithTerms = AqwamMatrixLibrary:applyFunction(math.exp, exponentStep4)
+	local exponentStep5 = AqwamMatrixLibrary:multiply(-0.5, exponentStep4)
 	
-	local fractionStep1 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+	local exponentWithTerms = AqwamMatrixLibrary:applyFunction(math.exp, exponentStep5)
 	
-	local fractionStep2 = AqwamMatrixLibrary:divide(1, fractionStep1)
+	local divisor = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
 	
-	local gaussianDensity = AqwamMatrixLibrary:multiply(fractionStep2, exponentWithTerms)
+	local gaussianDensity = AqwamMatrixLibrary:divide(exponentWithTerms, divisor)
 	
 	if (useLogProbabilities) then
 		
@@ -260,6 +260,18 @@ function NaiveBayesModel:predict(featureMatrix)
 	
 	local probability
 	
+	local initialProbability
+	
+	if (self.UseLogProbabilities) then
+
+		initialProbability = 0
+
+	else
+
+		initialProbability = 1
+
+	end
+	
 	for classIndex, classValue in ipairs(self.ClassesList) do
 		
 		meanVector = {self.ModelParameters[1][classIndex]}
@@ -272,15 +284,7 @@ function NaiveBayesModel:predict(featureMatrix)
 		
 		multipliedProbalitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, priorProbabilitiesVector)
 		
-		if (self.UseLogProbabilities) then
-			
-			probability = 0
-			
-		else
-			
-			probability = 1
-			
-		end
+		probability = initialProbability
 		
 		for column = 1, #multipliedProbalitiesVector[1], 1 do
 			

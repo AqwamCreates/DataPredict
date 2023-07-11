@@ -419,6 +419,10 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 	if (self.ModelParameters) then
 		
 		self:loadModelParameters()
+		
+	elseif (self.inputSize == nil) or (self.hiddenSize == nil) or (self.outputSize == nil) then
+
+		error("Layers are not set!")
 
 	else
 		

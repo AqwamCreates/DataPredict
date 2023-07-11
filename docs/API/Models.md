@@ -8,7 +8,7 @@
 
 ## Classification
 
-[NaiveBayes](Models/NaiveBayes.md) (Currently Broken)
+[NaiveBayes](Models/NaiveBayes.md)
 
 [NeuralNetwork](Models/NeuralNetwork.md)
 

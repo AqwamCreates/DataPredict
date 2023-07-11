@@ -18,7 +18,7 @@ NaiveBayes.new(useLogProbabilities: boolean): ModelObject
 
 #### Returns:
 
-* Model:  The generated model object.
+* ModelObject:  The generated model object.
 
 ## Functions
 

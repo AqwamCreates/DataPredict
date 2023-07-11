@@ -24,7 +24,7 @@ NaiveBayes.new(useLogProbabilities: boolean): ModelObject
 
 ### setParameters()
 
-Set the parameters for the model
+Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
 NaiveBayes:setParameters(useLogProbabilities: boolean)

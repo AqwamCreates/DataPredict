@@ -378,6 +378,30 @@ function LongShortTermMemoryModel:setOptimizers(ForgetGateWeightOptimizer, SaveG
 
 end
 
+function LongShortTermMemoryModel:setRegularizations(ForgetGateWeightRegularization, SaveGateWeightRegularization, TanhWeightRegularization, FocusGateRegularization, OutputWeightRegularization, ForgetGateBiasRegularization, SaveGateBiasRegularization, TanhBiasRegularization, FocusBiasRegularization, OutputBiasRegularization)
+
+	self.ForgetGateWeightRegularization = ForgetGateWeightRegularization
+
+	self.SaveGateWeightRegularization = SaveGateWeightRegularization
+
+	self.TanhWeightRegularization = TanhWeightRegularization
+
+	self.FocusGateRegularization = FocusGateRegularization
+
+	self.OutputWeightRegularization = OutputWeightRegularization
+
+	self.ForgetGateBiasRegularization = ForgetGateBiasRegularization
+
+	self.SaveGateBiasRegularization = SaveGateBiasRegularization
+
+	self.TanhBiasRegularization = TanhBiasRegularization
+
+	self.FocusGateRegularization = FocusGateRegularization
+
+	self.OutputBiasRegularization = OutputBiasRegularization
+
+end
+
 function LongShortTermMemoryModel:loadModelParameters()
 	
 	self.Wf = self.ModelParameters[1]
@@ -831,6 +855,88 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		if (self.OutputBiasOptimizer) then
 
 			dby = self.OutputBiasOptimizer:calculate(dby, previousdby)
+
+		end
+		
+		--------------------------------------------------------------------------------------------------------
+		
+		if (self.ForgetGateWeightRegularization) then
+
+			local regularizationDerivatives = self.ForgetGateWeightRegularization:calculateCostFunctionDerivativeRegularization(self.Wf, 1)
+			
+			dWf = AqwamMatrixLibrary:add(dWf, regularizationDerivatives)
+
+		end
+
+		if (self.SaveGateWeightRegularization) then
+
+			local regularizationDerivatives = self.SaveGateWeightRegularization:calculateCostFunctionDerivativeRegularization(self.Wi, 1)
+			
+			dWi = AqwamMatrixLibrary:add(dWi, regularizationDerivatives)
+
+		end
+
+		if (self.TanhWeightRegularization) then
+
+			local regularizationDerivatives = self.TanhWeightRegularization:calculateCostFunctionDerivativeRegularization(self.Wc, 1)
+			
+			dWc = AqwamMatrixLibrary:add(dWc, regularizationDerivatives)
+
+		end
+
+		if (self.FocusGateRegularization) then
+
+			local regularizationDerivatives = self.FocusGateRegularization:calculateCostFunctionDerivativeRegularization(self.Wo, 1)
+			
+			dWo = AqwamMatrixLibrary:add(dWo, regularizationDerivatives)
+
+		end
+
+		if (self.OutputWeightRegularization) then
+
+			local regularizationDerivatives = self.OutputWeightRegularization:calculateCostFunctionDerivativeRegularization(self.Wy, 1)
+			
+			dWy = AqwamMatrixLibrary:add(dWy, regularizationDerivatives)
+
+		end
+
+		if (self.ForgetGateBiasRegularization) then
+
+			local regularizationDerivatives = self.ForgetGateBiasRegularization:calculateCostFunctionDerivativeRegularization(self.bf, 1)
+			
+			dbf = AqwamMatrixLibrary:add(dbf, regularizationDerivatives)
+
+		end
+
+		if (self.SaveGateBiasRegularization) then
+
+			local regularizationDerivatives = self.SaveGateBiasRegularization:calculateCostFunctionDerivativeRegularization(self.bi, 1)
+			
+			dbi = AqwamMatrixLibrary:add(dbi, regularizationDerivatives)
+
+		end
+
+		if (self.TanhBiasRegularization) then
+
+			local regularizationDerivatives = self.TanhBiasRegularization:calculateCostFunctionDerivativeRegularization(self.bc, 1)
+			
+			dbc = AqwamMatrixLibrary:add(dbc, regularizationDerivatives)
+
+		end
+
+		if (self.FocusGateRegularization) then
+
+			local regularizationDerivatives = self.FocusGateRegularization:calculateCostFunctionDerivativeRegularization(self.bo, 1)
+			
+			dbo = AqwamMatrixLibrary:add(dbo, regularizationDerivatives)
+
+		end
+
+		if (self.OutputBiasRegularization) then
+
+			local regularizationDerivatives = self.OutputBiasRegularization:calculateCostFunctionDerivativeRegularization(self.by, 1)
+			
+			dby = AqwamMatrixLibrary:add(dby, regularizationDerivatives)
 
 		end
 		

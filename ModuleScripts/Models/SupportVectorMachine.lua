@@ -338,8 +338,6 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	local numberOfIterations = 0
 
 	local costFunctionDerivatives
-
-	local previousCostFunctionDerivatives
 	
 	local kernelMatrix  = calculateKernel(featureMatrix, self.kernelFunction, self.kernelParameters)
 
@@ -353,15 +351,13 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 		if (self.Optimizer) then
 
-			costFunctionDerivatives = self.Optimizer:calculate(self.learningRate, costFunctionDerivatives, previousCostFunctionDerivatives)
+			costFunctionDerivatives = self.Optimizer:calculate(self.learningRate, costFunctionDerivatives)
 			
 		else
 			
 			costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
 
 		end
-
-		previousCostFunctionDerivatives = costFunctionDerivatives
 
 		self.ModelParameters = costFunctionDerivatives
 

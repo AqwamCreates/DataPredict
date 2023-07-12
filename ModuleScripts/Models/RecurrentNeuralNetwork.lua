@@ -441,12 +441,16 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 				ytPrediction = ytPredictionTable[t]
 
 				xt = xTable[t]
+				
+				yt = yTable[t]
 
 				aNext = aTable[t]
 
 				daNext = daTable[t]
 
 				dxt, daPrevious, dWaxt, dWaat, dbat = self:backwardPropagateCell(daNext, aNext, aPrevious, xt)
+
+				dWyat = AqwamMatrixLibrary:subtract(ytPrediction, yt)
 
 				if (t > 1) then daTable[t-1] = AqwamMatrixLibrary:add(daNext, daPrevious) end
 
@@ -457,10 +461,6 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 				dba = AqwamMatrixLibrary:add(dba, dbat)
 				
 				dby = AqwamMatrixLibrary:add(dby, dxt)
-
-				yt = yTable[t]
-
-				dWyat = AqwamMatrixLibrary:subtract(ytPrediction, yt)
 
 				dWya = AqwamMatrixLibrary:add(dWya, dWyat)
 

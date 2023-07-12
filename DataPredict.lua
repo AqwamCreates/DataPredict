@@ -99,9 +99,13 @@ local OptimizersDictionary = {
 	
 	AdaptiveGradient = require(Optimizers.AdaptiveGradient),
 	
+	AdaptiveGradientDelta = require(Optimizers.AdaptiveGradientDelta),
+	
 	AdaptiveMomentEstimation = require(Optimizers.AdaptiveMomentEstimation),
 	
 	AdaptiveMomentEstimationMaximum = require(Optimizers.AdaptiveMomentEstimationMaximum),
+	
+	NesterovAcceleratedAdaptiveMomentEstimation = require(Optimizers.NesterovAcceleratedAdaptiveMomentEstimation),
 	
 }
 

@@ -9,6 +9,7 @@ Creates a new optimizer object.
 ```
 AdaptiveGradient.new(): OptimizerObject
 ```
+
 #### Returns:
 
 * OptimizerObject: The generated optimizer object.

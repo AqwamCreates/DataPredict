@@ -36,7 +36,7 @@ function RootMeanSquarePropagationOptimizer:setEpsilon(Epsilon)
 
 end
 
-function RootMeanSquarePropagationOptimizer:calculate(costFunctionDerivatives)
+function RootMeanSquarePropagationOptimizer:calculate(learningRate, costFunctionDerivatives)
 	
 	self.PreviousVelocityMatrix = self.PreviousVelocityMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 	
@@ -52,7 +52,9 @@ function RootMeanSquarePropagationOptimizer:calculate(costFunctionDerivatives)
 	
 	local SquaredRootVelocityMatrix = AqwamMatrixLibrary:power(NonZeroDivisorMatrix, 0.5)
 	
-	local costFunctionDerivatives = AqwamMatrixLibrary:multiply(costFunctionDerivatives, SquaredRootVelocityMatrix)
+	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, SquaredRootVelocityMatrix)
+	
+	local costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 	
 	self.PreviousVelocityMatrix = CurrentVelocityMatrix
 	

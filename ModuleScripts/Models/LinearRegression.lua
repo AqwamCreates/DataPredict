@@ -171,17 +171,17 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
 		
+		if (self.Optimizer) then 
+
+			costFunctionDerivatives = self.Optimizer:calculate(costFunctionDerivatives, previousCostFunctionDerivatives) 
+
+		end
+		
 		if (self.Regularization) then
 			
 			RegularizationDerivatives = self.Regularization:calculateCostFunctionDerivativeRegularization(self.ModelParameters, numberOfData)
 			
 			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, RegularizationDerivatives)
-
-		end
-
-		if (self.Optimizer) then 
-
-			costFunctionDerivatives = self.Optimizer:calculate(costFunctionDerivatives, previousCostFunctionDerivatives) 
 
 		end
 		

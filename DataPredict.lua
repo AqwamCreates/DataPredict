@@ -107,6 +107,8 @@ local OptimizersDictionary = {
 	
 	NesterovAcceleratedAdaptiveMomentEstimation = require(Optimizers.NesterovAcceleratedAdaptiveMomentEstimation),
 	
+	Gravity = require(Optimizers.Gravity),
+	
 }
 
 local OthersDictionary = {

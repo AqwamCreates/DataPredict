@@ -2,7 +2,7 @@
 
 [AdaptiveGradient](Optimizers/AdaptiveGradient.md) - a.k.a Adagrad
 
-[AdaptiveGradient](Optimizers/AdaptiveGradientDelta.md) - a.k.a AdaDelta
+[AdaptiveGradientDelta](Optimizers/AdaptiveGradientDelta.md) - a.k.a AdaDelta
 
 [AdaptiveMomentEstimation](Optimizers/AdaptiveMomentEstimation.md) - a.k.a Adam
 

@@ -24,13 +24,13 @@ If you wish to create your own models and optimizers rom our library, we already
 
 ## Regularization
 
-* All our regularization objects have calculateCostFunctionDerivativeRegularizaion() and calculateCostFunctionRegularization() functions. They will be called inside called inside our models.
+* All our regularization objects have calculateRegularizaion() and calculateRegularizationDerivatives() functions. They will be called inside called inside our models.
 
-* Both takes in modelParameters (matrix) and numberOfData (integer) in order. 
+* Both takes in modelParameters (matrix) and numberOfData (integer) in order.
 
-* calculateCostFunctionDerivativeRegularization() returns regularization values for costFunctionDerivatives (matrix).
+* calculateRegularizaion() returns regularization values for modelParameters (matrix).
 
-* calculateCostFunctionRegularization() returns regularization values for modelParameters (matrix).
+* calculateRegularizationDerivatives() returns regularization values for costFunctionDerivatives (matrix).
 
 * The code for the regularization objects are object-oriented.
 

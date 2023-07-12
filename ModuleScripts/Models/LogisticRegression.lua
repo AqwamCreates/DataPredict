@@ -165,11 +165,13 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		
 		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
 		
-		costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
-		
 		if (self.Optimizer) then 
 
-			costFunctionDerivatives = self.Optimizer:calculate(costFunctionDerivatives, previousCostFunctionDerivatives) 
+			costFunctionDerivatives = self.Optimizer:calculate(self.learningRate, costFunctionDerivatives, previousCostFunctionDerivatives)
+			
+		else
+			
+			costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
 
 		end
 		

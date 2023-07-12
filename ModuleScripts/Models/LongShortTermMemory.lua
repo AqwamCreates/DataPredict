@@ -354,7 +354,7 @@ function LongShortTermMemoryModel:createLayers(inputSize, hiddenSize, outputSize
 	
 end
 
-function LongShortTermMemoryModel:setOptimizers(ForgetGateWeightOptimizer, SaveGateWeightOptimizer, TanhWeightOptimizer, FocusGateOptimizer, OutputWeightOptimizer, ForgetGateBiasOptimizer, SaveGateBiasOptimizer, TanhBiasOptimizer, FocusBiasOptimizer, OutputBiasOptimizer)
+function LongShortTermMemoryModel:setOptimizers(ForgetGateWeightOptimizer, SaveGateWeightOptimizer, TanhWeightOptimizer, FocusGateOptimizer, OutputWeightOptimizer, ForgetGateBiasOptimizer, SaveGateBiasOptimizer, TanhBiasOptimizer, FocusGateBiasOptimizer, OutputBiasOptimizer)
 
 	self.ForgetGateWeightOptimizer = ForgetGateWeightOptimizer
 
@@ -372,13 +372,13 @@ function LongShortTermMemoryModel:setOptimizers(ForgetGateWeightOptimizer, SaveG
 
 	self.TanhBiasOptimizer = TanhBiasOptimizer
 
-	self.FocusGateOptimizer = FocusGateOptimizer
+	self.FocusGateBiasOptimizer = FocusGateBiasOptimizer
 
 	self.OutputBiasOptimizer = OutputBiasOptimizer
 
 end
 
-function LongShortTermMemoryModel:setRegularizations(ForgetGateWeightRegularization, SaveGateWeightRegularization, TanhWeightRegularization, FocusGateRegularization, OutputWeightRegularization, ForgetGateBiasRegularization, SaveGateBiasRegularization, TanhBiasRegularization, FocusBiasRegularization, OutputBiasRegularization)
+function LongShortTermMemoryModel:setRegularizations(ForgetGateWeightRegularization, SaveGateWeightRegularization, TanhWeightRegularization, FocusGateRegularization, OutputWeightRegularization, ForgetGateBiasRegularization, SaveGateBiasRegularization, TanhBiasRegularization, FocusGateBiasRegularization, OutputBiasRegularization)
 
 	self.ForgetGateWeightRegularization = ForgetGateWeightRegularization
 
@@ -396,7 +396,7 @@ function LongShortTermMemoryModel:setRegularizations(ForgetGateWeightRegularizat
 
 	self.TanhBiasRegularization = TanhBiasRegularization
 
-	self.FocusGateRegularization = FocusGateRegularization
+	self.FocusGateBiasRegularization = FocusGateBiasRegularization
 
 	self.OutputBiasRegularization = OutputBiasRegularization
 
@@ -846,9 +846,9 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 		end
 		
-		if (self.FocusGateOptimizer) then
+		if (self.FocusGateBiasOptimizer) then
 
-			dbo = self.FocusGateOptimizer:calculate(dbo, previousdbo)
+			dbo = self.FocusGateBiasOptimizer:calculate(dbo, previousdbo)
 
 		end
 		
@@ -924,9 +924,9 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 		end
 
-		if (self.FocusGateRegularization) then
+		if (self.FocusGateBiasRegularization) then
 
-			local regularizationDerivatives = self.FocusGateRegularization:calculateRegularizationDerivatives(self.bo, 1)
+			local regularizationDerivatives = self.FocusGateBiasRegularization:calculateRegularizationDerivatives(self.bo, 1)
 			
 			dbo = AqwamMatrixLibrary:add(dbo, regularizationDerivatives)
 

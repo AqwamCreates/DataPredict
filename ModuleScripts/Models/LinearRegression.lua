@@ -143,8 +143,6 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	local numberOfData = #featureMatrix[1]
 	
-	local previousCostFunctionDerivatives
-	
 	local regularizationDerivatives
 	
 	local regularizationCost
@@ -171,7 +169,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		if (self.Optimizer) then 
 
-			costFunctionDerivatives = self.Optimizer:calculate(self.learningRate, costFunctionDerivatives, previousCostFunctionDerivatives) 
+			costFunctionDerivatives = self.Optimizer:calculate(self.learningRate, costFunctionDerivatives) 
 			
 		else
 			
@@ -186,8 +184,6 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, regularizationDerivatives)
 
 		end
-		
-		previousCostFunctionDerivatives = costFunctionDerivatives
 		
 		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
 		

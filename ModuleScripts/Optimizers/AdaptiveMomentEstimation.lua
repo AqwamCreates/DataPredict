@@ -10,7 +10,7 @@ local defaultBeta2 = 0.999
 
 local defaultEpsilon = 1 * math.pow(10, -7)
 
-function AdaptiveMomentEstimationOptimizer.new(Beta1, Beta2)
+function AdaptiveMomentEstimationOptimizer.new(Beta1, Beta2, Epsilon)
 
 	local NewAdaptiveMomentEstimationOptimizer = {}
 
@@ -23,6 +23,8 @@ function AdaptiveMomentEstimationOptimizer.new(Beta1, Beta2)
 	NewAdaptiveMomentEstimationOptimizer.Beta1 = Beta1 or defaultBeta1
 	
 	NewAdaptiveMomentEstimationOptimizer.Beta2 = Beta2 or defaultBeta2
+	
+	NewAdaptiveMomentEstimationOptimizer.Epsilon = Epsilon or defaultEpsilon
 
 	return NewAdaptiveMomentEstimationOptimizer
 

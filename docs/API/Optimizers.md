@@ -4,6 +4,8 @@
 
 [AdaptiveMomentEstimation](Optimizers/AdaptiveMomentEstimation.md) - a.k.a Adam
 
+[AdaptiveMomentEstimationMaximum](Optimizers/AdaptiveMomentEstimationMaximum.md) - a.k.a AdaMax
+
 [RootMeanSquarePropagation](Optimizers/RootMeanSquarePropagation.md) - a.k.a. RMSProp
 
 [Momentum](Optimizers/Momentum.md)

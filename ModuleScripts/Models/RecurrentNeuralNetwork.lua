@@ -283,16 +283,6 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 		self.by = self:initializeMatrixBasedOnMode(self.outputSize, 1)
 
 	end
-
-	local previousdWax
-
-	local previousdWaa
-
-	local previousdWya
-
-	local previousdby
-
-	local previousdba
 	
 	local totalNumberOfTokens = 0
 
@@ -476,7 +466,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 		if (self.InputLayerOptimizer) then
 
-			dWax = self.InputLayerOptimizer:calculate(self.learningRate, dWax, previousdWax)
+			dWax = self.InputLayerOptimizer:calculate(self.learningRate, dWax)
 			
 		else
 			
@@ -486,7 +476,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 		if (self.HiddenLayerOptimizer) then
 
-			dWaa = self.HiddenLayerOptimizer:calculate(self.learningRate, dWaa, previousdWaa)
+			dWaa = self.HiddenLayerOptimizer:calculate(self.learningRate, dWaa)
 			
 		else
 			
@@ -496,7 +486,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 		if (self.OutputLayerOptimizer) then
 
-			dWya = self.OutputLayerOptimizer:calculate(self.learningRate, dWya, previousdWya)
+			dWya = self.OutputLayerOptimizer:calculate(self.learningRate, dWya)
 			
 		else
 			
@@ -506,7 +496,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 		if (self.BiasHiddenLayerOptimizer) then
 
-			dba = self.BiasHiddenLayerOptimizer:calculate(self.learningRate, dba, previousdba)
+			dba = self.BiasHiddenLayerOptimizer:calculate(self.learningRate, dba)
 			
 		else
 			
@@ -516,7 +506,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 		if (self.BiasOutputLayerOptimizer) then
 
-			dby = self.BiasOutputLayerOptimizer:calculate(self.learningRate, dby, previousdby)
+			dby = self.BiasOutputLayerOptimizer:calculate(self.learningRate, dby)
 			
 		else
 			
@@ -565,16 +555,6 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 			dby = AqwamMatrixLibrary:add(dby, regularizationDerivatives)
 
 		end
-
-		previousdWax = dWax
-
-		previousdWaa = dWaa
-
-		previousdWya = dWya
-
-		previousdba = dba
-
-		previousdby = dby
 
 		self.Wax = AqwamMatrixLibrary:subtract(self.Wax, dWax)
 

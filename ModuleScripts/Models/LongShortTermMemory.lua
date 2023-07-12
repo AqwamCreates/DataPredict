@@ -774,87 +774,103 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		dWy = AqwamMatrixLibrary:extractColumns(dWy, 1, self.hiddenSize)
 		
-		if (self.learningRate ~= 1) then
-			
-			dWf = AqwamMatrixLibrary:multiply(self.learningRate, dWf)
-
-			dbf = AqwamMatrixLibrary:multiply(self.learningRate, dbf)
-
-			dWi = AqwamMatrixLibrary:multiply(self.learningRate, dWi)
-
-			dbi = AqwamMatrixLibrary:multiply(self.learningRate, dbi)
-
-			dWc = AqwamMatrixLibrary:multiply(self.learningRate, dWc)
-
-			dbc = AqwamMatrixLibrary:multiply(self.learningRate, dbc)
-
-			dWo = AqwamMatrixLibrary:multiply(self.learningRate, dWo)
-
-			dbo = AqwamMatrixLibrary:multiply(self.learningRate, dbo)
-
-			dWy = AqwamMatrixLibrary:multiply(self.learningRate, dWy)
-
-			dby = AqwamMatrixLibrary:multiply(self.learningRate, dby)
-			
-		end
-		
 		if (self.ForgetGateWeightOptimizer) then
 			
-			dWf = self.ForgetGateWeightOptimizer:calculate(dWf, previousdWf)
+			dWf = self.ForgetGateWeightOptimizer:calculate(self.learningRate, dWf, previousdWf)
+			
+		else
+			
+			dWf = AqwamMatrixLibrary:multiply(self.learningRate, dWf)
 			
 		end
 		
 		if (self.SaveGateWeightOptimizer) then
 
-			dWi = self.SaveGateWeightOptimizer:calculate(dWi, previousdWi)
+			dWi = self.SaveGateWeightOptimizer:calculate(self.learningRate, dWi, previousdWi)
+			
+		else
+			
+			dWi = AqwamMatrixLibrary:multiply(self.learningRate, dWi)
 
 		end
 		
 		if (self.TanhWeightOptimizer) then
 
-			dWc = self.TanhWeightOptimizer:calculate(dWc, previousdWc)
+			dWc = self.TanhWeightOptimizer:calculate(self.learningRate, dWc, previousdWc)
+			
+		else
+			
+			dWc = AqwamMatrixLibrary:multiply(self.learningRate, dWc)
 
 		end
 		
 		if (self.FocusGateOptimizer) then
 
-			dWo = self.FocusGateOptimizer:calculate(dWo, previousdWo)
+			dWo = self.FocusGateOptimizer:calculate(self.learningRate, dWo, previousdWo)
+			
+		else
+			
+			dWo = AqwamMatrixLibrary:multiply(self.learningRate, dWo)
 
 		end
 		
 		if (self.OutputWeightOptimizer) then
 
-			dWy = self.OutputWeightOptimizer:calculate(dWy, previousdWy)
+			dWy = self.OutputWeightOptimizer:calculate(self.learningRate, dWy, previousdWy)
+			
+		else
+			
+			dWy = AqwamMatrixLibrary:multiply(self.learningRate, dWy)
 
 		end
 		
 		if (self.ForgetGateBiasOptimizer) then
 
-			dbf = self.ForgetGateBiasOptimizer:calculate(dbf, previousdbf)
+			dbf = self.ForgetGateBiasOptimizer:calculate(self.learningRate, dbf, previousdbf)
+			
+		else
+			
+			dbf = AqwamMatrixLibrary:multiply(self.learningRate, dbf)
 
 		end
 		
 		if (self.SaveGateBiasOptimizer) then
 
-			dbi = self.SaveGateBiasOptimizer:calculate(dbi, previousdbi)
+			dbi = self.SaveGateBiasOptimizer:calculate(self.learningRate, dbi, previousdbi)
+			
+		else
+			
+			dbi = AqwamMatrixLibrary:multiply(self.learningRate, dbi)
 
 		end
 		
 		if (self.TanhBiasOptimizer) then
 
-			dbc = self.TanhBiasOptimizer:calculate(dbc, previousdbc)
+			dbc = self.TanhBiasOptimizer:calculate(self.learningRate, dbc, previousdbc)
+			
+		else
+			
+			dbc = AqwamMatrixLibrary:multiply(self.learningRate, dbc)
 
 		end
 		
 		if (self.FocusGateBiasOptimizer) then
 
-			dbo = self.FocusGateBiasOptimizer:calculate(dbo, previousdbo)
+			dbo = self.FocusGateBiasOptimizer:calculate(self.learningRate, dbo, previousdbo)
+			
+		else
+			
+			dbo = AqwamMatrixLibrary:multiply(self.learningRate, dbo)
 
 		end
 		
 		if (self.OutputBiasOptimizer) then
 
-			dby = self.OutputBiasOptimizer:calculate(dby, previousdby)
+			dby = self.OutputBiasOptimizer:calculate(self.learningRate, dby, previousdby)
+			
+		else
+			
+			dby = AqwamMatrixLibrary:multiply(self.learningRate, dby)
 
 		end
 		

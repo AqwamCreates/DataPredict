@@ -82,7 +82,7 @@ SupportVectorMachine:setOptimizer(Optimizer: OptimizerObject)
 
 #### Parameters:
 
-* Optimizer: The optimizer to be used.
+* Optimizer: The optimizer object to be used.
 
 ### train()
 

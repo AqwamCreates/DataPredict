@@ -22,6 +22,8 @@ If you wish to create your own models and optimizers rom our library, we already
 
 * The code for the optimizers are object-oriented.
 
+* You can get more optimizer formulas [here](https://paperswithcode.com/methods/category/stochastic-optimization).
+
 ## Regularization
 
 * All our regularization objects have calculateRegularizaion() and calculateRegularizationDerivatives() functions. They will be called inside called inside our models.

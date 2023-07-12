@@ -102,10 +102,6 @@ end
 
 function GravityOptimizer:reset()
 	
-	self.InitialStepSize = nil
-	
-	self.MovingAverage = nil
-	
 	self.PreviousVelocity = nil
 	
 	self.TimeStep = 0

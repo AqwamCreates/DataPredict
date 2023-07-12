@@ -6,7 +6,7 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibrary
 
 local defaultBeta1 = 0.9
 
-local defaultBeta2 = 0.9
+local defaultBeta2 = 0.999
 
 function AdaptiveMomentEstimationOptimizer.new(Beta1, Beta2)
 

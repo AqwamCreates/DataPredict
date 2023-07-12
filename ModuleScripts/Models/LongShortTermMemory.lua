@@ -862,7 +862,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		if (self.ForgetGateWeightRegularization) then
 
-			local regularizationDerivatives = self.ForgetGateWeightRegularization:calculateCostFunctionDerivativeRegularization(self.Wf, 1)
+			local regularizationDerivatives = self.ForgetGateWeightRegularization:calculateRegularizationDerivatives(self.Wf, 1)
 			
 			dWf = AqwamMatrixLibrary:add(dWf, regularizationDerivatives)
 
@@ -870,7 +870,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 		if (self.SaveGateWeightRegularization) then
 
-			local regularizationDerivatives = self.SaveGateWeightRegularization:calculateCostFunctionDerivativeRegularization(self.Wi, 1)
+			local regularizationDerivatives = self.SaveGateWeightRegularization:calculateRegularizationDerivatives(self.Wi, 1)
 			
 			dWi = AqwamMatrixLibrary:add(dWi, regularizationDerivatives)
 
@@ -878,7 +878,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 		if (self.TanhWeightRegularization) then
 
-			local regularizationDerivatives = self.TanhWeightRegularization:calculateCostFunctionDerivativeRegularization(self.Wc, 1)
+			local regularizationDerivatives = self.TanhWeightRegularization:calculateRegularizationDerivatives(self.Wc, 1)
 			
 			dWc = AqwamMatrixLibrary:add(dWc, regularizationDerivatives)
 
@@ -886,7 +886,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 		if (self.FocusGateRegularization) then
 
-			local regularizationDerivatives = self.FocusGateRegularization:calculateCostFunctionDerivativeRegularization(self.Wo, 1)
+			local regularizationDerivatives = self.FocusGateRegularization:calculateRegularizationDerivatives(self.Wo, 1)
 			
 			dWo = AqwamMatrixLibrary:add(dWo, regularizationDerivatives)
 
@@ -894,7 +894,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 		if (self.OutputWeightRegularization) then
 
-			local regularizationDerivatives = self.OutputWeightRegularization:calculateCostFunctionDerivativeRegularization(self.Wy, 1)
+			local regularizationDerivatives = self.OutputWeightRegularization:calculateRegularizationDerivatives(self.Wy, 1)
 			
 			dWy = AqwamMatrixLibrary:add(dWy, regularizationDerivatives)
 
@@ -902,7 +902,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 		if (self.ForgetGateBiasRegularization) then
 
-			local regularizationDerivatives = self.ForgetGateBiasRegularization:calculateCostFunctionDerivativeRegularization(self.bf, 1)
+			local regularizationDerivatives = self.ForgetGateBiasRegularization:calculateRegularizationDerivatives(self.bf, 1)
 			
 			dbf = AqwamMatrixLibrary:add(dbf, regularizationDerivatives)
 
@@ -910,7 +910,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 		if (self.SaveGateBiasRegularization) then
 
-			local regularizationDerivatives = self.SaveGateBiasRegularization:calculateCostFunctionDerivativeRegularization(self.bi, 1)
+			local regularizationDerivatives = self.SaveGateBiasRegularization:calculateRegularizationDerivatives(self.bi, 1)
 			
 			dbi = AqwamMatrixLibrary:add(dbi, regularizationDerivatives)
 
@@ -918,7 +918,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 		if (self.TanhBiasRegularization) then
 
-			local regularizationDerivatives = self.TanhBiasRegularization:calculateCostFunctionDerivativeRegularization(self.bc, 1)
+			local regularizationDerivatives = self.TanhBiasRegularization:calculateRegularizationDerivatives(self.bc, 1)
 			
 			dbc = AqwamMatrixLibrary:add(dbc, regularizationDerivatives)
 
@@ -926,7 +926,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 		if (self.FocusGateRegularization) then
 
-			local regularizationDerivatives = self.FocusGateRegularization:calculateCostFunctionDerivativeRegularization(self.bo, 1)
+			local regularizationDerivatives = self.FocusGateRegularization:calculateRegularizationDerivatives(self.bo, 1)
 			
 			dbo = AqwamMatrixLibrary:add(dbo, regularizationDerivatives)
 
@@ -934,7 +934,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 		if (self.OutputBiasRegularization) then
 
-			local regularizationDerivatives = self.OutputBiasRegularization:calculateCostFunctionDerivativeRegularization(self.by, 1)
+			local regularizationDerivatives = self.OutputBiasRegularization:calculateRegularizationDerivatives(self.by, 1)
 			
 			dby = AqwamMatrixLibrary:add(dby, regularizationDerivatives)
 

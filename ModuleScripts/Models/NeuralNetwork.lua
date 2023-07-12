@@ -252,7 +252,7 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateT
 
 		if self.RegularizationTable[layer] then
 
-			regularizationDerivatives = self.RegularizationTable[layer]:calculateCostFunctionDerivativeRegularization(self.ModelParameters[layer], numberOfData)
+			regularizationDerivatives = self.RegularizationTable[layer]:calculateRegularizationDerivatives(self.ModelParameters[layer], numberOfData)
 
 			deltaMatrix = AqwamMatrixLibrary:add(deltaMatrix, regularizationDerivatives)
 

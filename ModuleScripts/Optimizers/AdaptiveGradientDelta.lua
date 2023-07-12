@@ -24,6 +24,18 @@ function AdaptiveGradientDeltaOptimizer.new(DecayRate, Epsilon)
 
 end
 
+function AdaptiveGradientDeltaOptimizer:setEpsilon(Epsilon)
+
+	self.Epsilon = Epsilon
+
+end
+
+function AdaptiveGradientDeltaOptimizer:setDecayRate(DecayRate)
+	
+	self.DecayRate = DecayRate
+	
+end
+
 function AdaptiveGradientDeltaOptimizer:calculate(learningRate, costFunctionDerivatives)
 
 	self.PreviousRunningGradientSquaredMatrix = self.PreviousRunningGradientSquaredMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])

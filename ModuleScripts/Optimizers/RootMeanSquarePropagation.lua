@@ -6,7 +6,7 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibrary
 
 local defaultBetaValue = 0.1
 
-local defaultEpsilonValue = 1 * math.pow(10, -10)
+local defaultEpsilonValue = 1 * math.pow(10, -7)
 
 function RootMeanSquarePropagationOptimizer.new(Beta, Epsilon)
 	

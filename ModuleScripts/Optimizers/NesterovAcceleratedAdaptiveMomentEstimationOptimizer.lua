@@ -24,7 +24,7 @@ function NesterovAcceleratedAdaptiveMomentEstimationOptimizer.new(Beta1, Beta2, 
 	
 	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.Beta2 = Beta2 or defaultBeta2
 	
-	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.Beta2 = Epsilon or defaultEpsilon
+	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.Epsilon = Epsilon or defaultEpsilon
 
 	return NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer
 

@@ -114,7 +114,7 @@ LongShortTermMemory:setOptimizers(ForgetGateWeightOptimizer: OptimizerObject, Sa
 
 ### setRegularizations()
 
-Add optimizers to different matrices.
+Add regularizations to different matrices.
 
 ```
 LongShortTermMemory:setRegularizations(ForgetGateWeightRegularization: RegularizationObject, SaveGateWeightRegularization: RegularizationObject, TanhWeightRegularization: RegularizationObject, FocusGateRegularization: RegularizationObject, OutputWeightRegularization: RegularizationObject, ForgetGateBiasRegularization: RegularizationObject, SaveGateBiasRegularization: RegularizationObject, TanhBiasRegularization: RegularizationObject, FocusBiasRegularization: RegularizationObject, OutputBiasRegularization: RegularizationObject)

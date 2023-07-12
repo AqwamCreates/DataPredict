@@ -7,7 +7,7 @@
 Creates a new optimizer object. If there are no parameters given for that particular argument, then that argument will use default value.
 
 ```
-AdaptiveMomentEstimation.new(Beta1: number, Beta2: number): OptimizerObject
+AdaptiveMomentEstimation.new(Beta1: number, Beta2: number, Epsilon: number): OptimizerObject
 ```
 
 #### Returns:
@@ -26,6 +26,12 @@ AdaptiveMomentEstimation:setBeta1(Beta1: number)
 
 ```
 AdaptiveMomentEstimation:setBeta2(Beta2: number)
+```
+
+### setEpsilon()
+
+```
+AdaptiveMomentEstimationMaximum:setEpsilon(Epsilon: number)
 ```
 
 ### reset()

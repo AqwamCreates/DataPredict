@@ -44,9 +44,9 @@ function Regularization:calculateRegularizationDerivatives(ModelParameters, numb
 	
 	if (self.regularizationMode == "L1") or (self.regularizationMode == "Lasso") then
 		
-		RegularizationDerivative = AqwamMatrixLibrary:applyFunction(math.abs, ModelParameters)
+		ModelParametersSign = AqwamMatrixLibrary:applyFunction(math.sign, ModelParameters)
 		
-		RegularizationDerivative = AqwamMatrixLibrary:multiply(self.lambda, RegularizationDerivative)
+		RegularizationDerivative = AqwamMatrixLibrary:multiply(ModelParametersSign, self.lambda, ModelParameters)
 		
 		RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
 	

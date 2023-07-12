@@ -36,7 +36,7 @@ function Regularization:getLambda()
 	
 end
 
-function Regularization:calculateLossFunctionDerivativeRegularizaion(ModelParameters, numberOfData)
+function Regularization:calculateRegularizationDerivatives(ModelParameters, numberOfData)
 	
 	local ModelParametersSign
 	
@@ -44,15 +44,15 @@ function Regularization:calculateLossFunctionDerivativeRegularizaion(ModelParame
 	
 	if (self.regularizationMode == "L1") or (self.regularizationMode == "Lasso") then
 		
-		ModelParametersSign = AqwamMatrixLibrary:applyFunction(math.sign, ModelParameters)
-
-		RegularizationDerivative = AqwamMatrixLibrary:multiply(2, self.lambda, ModelParameters)
+		RegularizationDerivative = AqwamMatrixLibrary:applyFunction(math.abs, ModelParameters)
+		
+		RegularizationDerivative = AqwamMatrixLibrary:multiply(self.lambda, RegularizationDerivative)
 		
 		RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
 	
 	elseif (self.regularizationMode == "L2") or (self.regularizationMode == "Ridge") then
 		
-		RegularizationDerivative = AqwamMatrixLibrary:multiply(self.lambda, ModelParameters)
+		RegularizationDerivative = AqwamMatrixLibrary:multiply(2, self.lambda, ModelParameters)
 		
 		RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
 		
@@ -78,7 +78,7 @@ function Regularization:calculateLossFunctionDerivativeRegularizaion(ModelParame
 	
 end
 
-function Regularization:calculateLossFunctionRegularization(ModelParameters, numberOfData)
+function Regularization:calculateRegularization(ModelParameters, numberOfData)
 	
 	local SquaredModelParameters 
 	

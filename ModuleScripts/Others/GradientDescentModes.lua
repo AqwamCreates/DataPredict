@@ -104,7 +104,7 @@ local function startStochasticGradientDescent(MachineLearningModel, featureMatri
 		
 		cost = costArray[#costArray]
 		
-		if (showOutputCost) then print("Data number: " .. dataIndex .. "\t\tFinal Cost: " .. cost .. "\n") end
+		if (showOutputCost) then print("Data Number: " .. dataIndex .. "\t\tFinal Cost: " .. cost .. "\n") end
 		
 	end
 

@@ -54,7 +54,7 @@ function AdaptiveMomentEstimationMaximumOptimizer:setEpsilon(Epsilon)
 
 end
 
-function AdaptiveMomentEstimationMaximumOptimizer:calculate(costFunctionDerivatives)
+function AdaptiveMomentEstimationMaximumOptimizer:calculate(learningRate, costFunctionDerivatives)
 
 	self.Moment = self.Moment or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 	
@@ -80,7 +80,9 @@ function AdaptiveMomentEstimationMaximumOptimizer:calculate(costFunctionDerivati
 	
 	local Divisor = AqwamMatrixLibrary:multiply(DivisorPart1, DivisorPart1)
 	
-	costFunctionDerivatives = AqwamMatrixLibrary:divide(self.Moment, Divisor)
+	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(self.Moment, Divisor)
+	
+	costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 
 	return costFunctionDerivatives
 end

@@ -8,6 +8,8 @@ local defaultBeta1 = 0.9
 
 local defaultBeta2 = 0.999
 
+local defaultEpsilon = 1 * math.pow(10, -7)
+
 function AdaptiveMomentEstimationOptimizer.new(Beta1, Beta2)
 
 	local NewAdaptiveMomentEstimationOptimizer = {}
@@ -38,6 +40,11 @@ function AdaptiveMomentEstimationOptimizer:setBeta2(Beta2)
 	
 end
 
+function AdaptiveMomentEstimationOptimizer:setEpsilon(Epsilon)
+
+	self.Epsilon = Epsilon
+
+end
 
 function AdaptiveMomentEstimationOptimizer:calculate(learningRate, costFunctionDerivatives)
 
@@ -64,8 +71,10 @@ function AdaptiveMomentEstimationOptimizer:calculate(learningRate, costFunctionD
 	local meanVelocity = AqwamMatrixLibrary:divide(velocity, (1 - self.Beta2))
 	
 	local squareRootedDivisor = AqwamMatrixLibrary:power(meanVelocity, 0.5)
+	
+	local finalDivisor = AqwamMatrixLibrary:add(squareRootedDivisor, self.Epsilon)
 
-	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(meanMomentum, squareRootedDivisor)
+	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(meanMomentum, finalDivisor)
 	
 	costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 
@@ -74,6 +83,7 @@ function AdaptiveMomentEstimationOptimizer:calculate(learningRate, costFunctionD
 	self.PreviousVelocity = velocity
 
 	return costFunctionDerivatives
+	
 end
 
 function AdaptiveMomentEstimationOptimizer:reset()

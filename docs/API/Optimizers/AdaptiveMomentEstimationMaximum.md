@@ -9,6 +9,7 @@ Creates a new optimizer object. If there are no parameters given for that partic
 ```
 AdaptiveMomentEstimationMaximum.new(Beta1: number, Beta2: number, Epsilon: number): OptimizerObject
 ```
+
 #### Returns:
 
 * OptimizerObject: The generated optimizer object.

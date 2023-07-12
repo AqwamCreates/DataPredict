@@ -482,26 +482,6 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 	local tableOfTokenOutputSequenceLogisticMatrices = {}
 	
-	local previousdWf
-
-	local previousdbf
-
-	local previousdWi
-
-	local previousdbi
-
-	local previousdWc
-
-	local previousdbc
-
-	local previousdWo
-
-	local previousdbo
-
-	local previousdWy
-
-	local previousdby
-	
 	if (tableOfTokenOutputSequenceArray == nil) then tableOfTokenOutputSequenceArray = tableOfTokenInputSequenceArray end
 
 	for s = 1, #tableOfTokenInputSequenceArray, 1 do
@@ -776,7 +756,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		if (self.ForgetGateWeightOptimizer) then
 			
-			dWf = self.ForgetGateWeightOptimizer:calculate(self.learningRate, dWf, previousdWf)
+			dWf = self.ForgetGateWeightOptimizer:calculate(self.learningRate, dWf)
 			
 		else
 			
@@ -786,7 +766,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		if (self.SaveGateWeightOptimizer) then
 
-			dWi = self.SaveGateWeightOptimizer:calculate(self.learningRate, dWi, previousdWi)
+			dWi = self.SaveGateWeightOptimizer:calculate(self.learningRate, dWi)
 			
 		else
 			
@@ -796,7 +776,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		if (self.TanhWeightOptimizer) then
 
-			dWc = self.TanhWeightOptimizer:calculate(self.learningRate, dWc, previousdWc)
+			dWc = self.TanhWeightOptimizer:calculate(self.learningRate, dWc)
 			
 		else
 			
@@ -806,7 +786,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		if (self.FocusGateOptimizer) then
 
-			dWo = self.FocusGateOptimizer:calculate(self.learningRate, dWo, previousdWo)
+			dWo = self.FocusGateOptimizer:calculate(self.learningRate, dWo)
 			
 		else
 			
@@ -816,7 +796,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		if (self.OutputWeightOptimizer) then
 
-			dWy = self.OutputWeightOptimizer:calculate(self.learningRate, dWy, previousdWy)
+			dWy = self.OutputWeightOptimizer:calculate(self.learningRate, dWy)
 			
 		else
 			
@@ -826,7 +806,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		if (self.ForgetGateBiasOptimizer) then
 
-			dbf = self.ForgetGateBiasOptimizer:calculate(self.learningRate, dbf, previousdbf)
+			dbf = self.ForgetGateBiasOptimizer:calculate(self.learningRate, dbf)
 			
 		else
 			
@@ -836,7 +816,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		if (self.SaveGateBiasOptimizer) then
 
-			dbi = self.SaveGateBiasOptimizer:calculate(self.learningRate, dbi, previousdbi)
+			dbi = self.SaveGateBiasOptimizer:calculate(self.learningRate, dbi)
 			
 		else
 			
@@ -846,7 +826,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		if (self.TanhBiasOptimizer) then
 
-			dbc = self.TanhBiasOptimizer:calculate(self.learningRate, dbc, previousdbc)
+			dbc = self.TanhBiasOptimizer:calculate(self.learningRate, dbc)
 			
 		else
 			
@@ -856,7 +836,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		if (self.FocusGateBiasOptimizer) then
 
-			dbo = self.FocusGateBiasOptimizer:calculate(self.learningRate, dbo, previousdbo)
+			dbo = self.FocusGateBiasOptimizer:calculate(self.learningRate, dbo)
 			
 		else
 			
@@ -866,7 +846,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		if (self.OutputBiasOptimizer) then
 
-			dby = self.OutputBiasOptimizer:calculate(self.learningRate, dby, previousdby)
+			dby = self.OutputBiasOptimizer:calculate(self.learningRate, dby)
 			
 		else
 			
@@ -955,28 +935,6 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 			dby = AqwamMatrixLibrary:add(dby, regularizationDerivatives)
 
 		end
-		
-		previousdWf = dWf
-
-		previousdbf = dbf
-
-		previousdWi = dWi
-
-		previousdbi = dbi
-
-		previousdWc = dWc
-
-		previousdbc = dbc
-
-		previousdWo = dWo
-
-		previousdbo = dbo
-
-		previousdWy = dWy
-
-		previousdWy = dWy
-
-		previousdby = dby
 
 		self.Wf = AqwamMatrixLibrary:subtract(self.Wf, dWf)
 		

@@ -733,7 +733,9 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 				ot = oTable[t]
 
 				dxt, daPrevious, dcPrevious, dWft, dbft, dWit, dbit, dWct, dbct, dWot, dbot = self:backwardPropagateCell(daNext, dcNext, aNext, cNext, aPrevious, cPrevious, ft, it, cct, ot, xt)
-
+				
+				dWyt = AqwamMatrixLibrary:subtract(ytPrediction, yt)
+				
 				if (t > 1) then 
 
 					daTable[t-1] = AqwamMatrixLibrary:add(daNext, daPrevious) 
@@ -758,8 +760,6 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 				dbo = AqwamMatrixLibrary:add(dbo, dbot)
 				
-				dWyt = AqwamMatrixLibrary:subtract(ytPrediction, yt)
-
 				dWy = AqwamMatrixLibrary:add(dWy, dWyt)
 
 				partialCost = AqwamMatrixLibrary:sum(dWy)

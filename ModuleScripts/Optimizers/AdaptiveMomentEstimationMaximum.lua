@@ -92,6 +92,7 @@ function AdaptiveMomentEstimationMaximumOptimizer:reset()
 	self.ExponentWeight = nil
 
 	self.Moment = nil
+	
 end
 
 return AdaptiveMomentEstimationMaximumOptimizer

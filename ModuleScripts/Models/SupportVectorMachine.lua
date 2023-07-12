@@ -353,11 +353,13 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 		if (self.Optimizer) then
 
-			costFunctionDerivatives = self.Optimizer:calculate(costFunctionDerivatives, previousCostFunctionDerivatives)
+			costFunctionDerivatives = self.Optimizer:calculate(self.learningRate, costFunctionDerivatives, previousCostFunctionDerivatives)
+			
+		else
+			
+			costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
 
 		end
-
-		costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
 
 		previousCostFunctionDerivatives = costFunctionDerivatives
 

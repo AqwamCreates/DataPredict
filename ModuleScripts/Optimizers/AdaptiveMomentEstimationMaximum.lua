@@ -85,6 +85,7 @@ function AdaptiveMomentEstimationMaximumOptimizer:calculate(learningRate, costFu
 	costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 
 	return costFunctionDerivatives
+	
 end
 
 function AdaptiveMomentEstimationMaximumOptimizer:reset()

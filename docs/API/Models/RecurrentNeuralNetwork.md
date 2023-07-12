@@ -86,15 +86,35 @@ RecurrentNeuralNetwork:setOptimizers(InputLayerOptimizer: OptimizerObject, Hidde
 
 #### Parameters:
 
-* InputLayerOptimizer: Optimizer for input layer calculations.
+* InputLayerOptimizer: Optimizer object for input layer calculations.
 
-* HiddenLayerOptimizer: Optimizer for hidden layer calculations.
+* HiddenLayerOptimizer: Optimizer object for hidden layer calculations.
 
-* OutputLayerOptimizer: Optimizer for output layer calculations.
+* OutputLayerOptimizer: Optimizer object for output layer calculations.
 
-* BiasHiddenLayerOptimizer: Optimizer for hidden bias layer calculations.
+* BiasHiddenLayerOptimizer: Optimizer object for hidden bias layer calculations.
 
-* BiasOutputLayerOptimizer: Optimizer for output bias layer calculations.
+* BiasOutputLayerOptimizer: Optimizer object for output bias layer calculations.
+
+### setRegularizations()
+
+Add regularizations to different matrices.
+
+```
+RecurrentNeuralNetwork:setRegularizations(InputLayerRegularization: RegularizationObject, HiddenLayerRegularization: RegularizationObject, OutputLayerRegularization: RegularizationObject, BiasHiddenLayerRegularization: RegularizationObject, BiasOutputLayerRegularization: RegularizationObject)
+```
+
+#### Parameters:
+
+* InputLayerRegularization: Regularization object for input layer calculations.
+
+* HiddenLayerRegularization: Regularization object for hidden layer calculations.
+
+* OutputLayerRegularization: Regularization object for output layer calculations.
+
+* BiasHiddenLayerRegularization: Regularization object for hidden bias layer calculations.
+
+* BiasOutputLayerRegularization: Regularization object for output bias layer calculations.
 
 ### train()
 

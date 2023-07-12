@@ -473,48 +473,54 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 		end
 
 		cost = cost / totalNumberOfTokens
-		
-		if (self.learningRate ~= 1) then
-			
-			dWax = AqwamMatrixLibrary:multiply(self.learningRate, dWax)
-
-			dWaa = AqwamMatrixLibrary:multiply(self.learningRate, dWaa)
-
-			dWya = AqwamMatrixLibrary:multiply(self.learningRate, dWya)
-
-			dba = AqwamMatrixLibrary:multiply(self.learningRate, dba)
-
-			dby = AqwamMatrixLibrary:multiply(self.learningRate, dby)
-			
-		end
 
 		if (self.InputLayerOptimizer) then
 
-			dWax = self.InputLayerOptimizer:calculate(dWax, previousdWax)
+			dWax = self.InputLayerOptimizer:calculate(self.learningRate, dWax, previousdWax)
+			
+		else
+			
+			dWax = AqwamMatrixLibrary:multiply(self.learningRate, dWax)
 
 		end
 
 		if (self.HiddenLayerOptimizer) then
 
-			dWaa = self.HiddenLayerOptimizer:calculate(dWaa, previousdWaa)
+			dWaa = self.HiddenLayerOptimizer:calculate(self.learningRate, dWaa, previousdWaa)
+			
+		else
+			
+			dWaa = AqwamMatrixLibrary:multiply(self.learningRate, dWaa)
 
 		end
 
 		if (self.OutputLayerOptimizer) then
 
-			dWya = self.OutputLayerOptimizer:calculate(dWya, previousdWya)
+			dWya = self.OutputLayerOptimizer:calculate(self.learningRate, dWya, previousdWya)
+			
+		else
+			
+			dWya = AqwamMatrixLibrary:multiply(self.learningRate, dWya)
 
 		end
 
 		if (self.BiasHiddenLayerOptimizer) then
 
-			dba = self.BiasHiddenLayerOptimizer:calculate(dba, previousdba)
+			dba = self.BiasHiddenLayerOptimizer:calculate(self.learningRate, dba, previousdba)
+			
+		else
+			
+			dba = AqwamMatrixLibrary:multiply(self.learningRate, dba)
 
 		end
 
 		if (self.BiasOutputLayerOptimizer) then
 
-			dby = self.BiasOutputLayerOptimizer:calculate(dby, previousdby)
+			dby = self.BiasOutputLayerOptimizer:calculate(self.learningRate, dby, previousdby)
+			
+		else
+			
+			dby = AqwamMatrixLibrary:multiply(self.learningRate, dby)
 
 		end
 		

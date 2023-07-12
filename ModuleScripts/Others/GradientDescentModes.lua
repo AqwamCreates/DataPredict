@@ -84,7 +84,7 @@ local function startMiniBatchGradientDescent(MachineLearningModel, featureMatrix
 
 end
 
-local function startStochasticGradientDescent(MachineLearningModel, featureMatrix, labelVector, showOutputCost)
+local function startStochasticGradientDescent(MachineLearningModel, featureMatrix, labelVector, isLabelRequired, showOutputCost)
 	
 	local featureVector
 	
@@ -98,7 +98,7 @@ local function startStochasticGradientDescent(MachineLearningModel, featureMatri
 		
 		featureVector = {featureMatrix[dataIndex]}
 		
-		label = {labelVector[dataIndex]}
+		if (isLabelRequired) then label = {labelVector[dataIndex]} end
 		
 		costArray = MachineLearningModel:train(featureVector, label)
 		
@@ -128,7 +128,7 @@ function GradientDescentModes:startGradientDescent(MachineLearningModel, gradien
 		
 	elseif (gradientDescentAlgorithmType == "Stochastic") then
 		
-		startStochasticGradientDescent(MachineLearningModel, featureMatrix, labelVector)
+		startStochasticGradientDescent(MachineLearningModel, featureMatrix, labelVector, isLabelRequired, showOutputCost)
 		
 	else
 		

@@ -81,8 +81,6 @@ local ModelsDictionary = {
 	
 	MeanShift = require(Models.MeanShift),
 	
-	DivisiveHierarchical = require(Models.DivisiveHierarchical),
-	
 	NormalLinearRegression = require(Models.NormalLinearRegression),
 	
 }
@@ -101,7 +99,9 @@ local OptimizersDictionary = {
 	
 	AdaptiveGradient = require(Optimizers.AdaptiveGradient),
 	
-	AdaptiveMomentEstimation = require(Optimizers.AdaptiveMomentEstimation)
+	AdaptiveMomentEstimation = require(Optimizers.AdaptiveMomentEstimation),
+	
+	AdaptiveMomentEstimationMaximum = require(Optimizers.AdaptiveMomentEstimationMaximum),
 	
 }
 
@@ -117,7 +117,7 @@ local OthersDictionary = {
 	
 	OnlineLearning = require(Others.OnlineLearning),
 	
-	Tokenizer = require(Others.Tokenizer)
+	Tokenizer = require(Others.Tokenizer),
 	
 }
 

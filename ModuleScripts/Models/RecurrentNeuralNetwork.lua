@@ -522,7 +522,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 		
 		if (self.InputLayerRegularization) then
 			
-			local regularizationDerivatives =  self.InputLayerRegularization:calculateCostFunctionDerivativeRegularization(self.Wax, 1)
+			local regularizationDerivatives =  self.InputLayerRegularization:calculateRegularizationDerivatives(self.Wax, 1)
 			
 			dWax = AqwamMatrixLibrary:add(dWax, regularizationDerivatives)
 
@@ -530,7 +530,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 		if (self.HiddenLayerRegularization) then
 			
-			local regularizationDerivatives =  self.HiddenLayerRegularization:calculateCostFunctionDerivativeRegularization(self.Waa, 1)
+			local regularizationDerivatives =  self.HiddenLayerRegularization:calculateRegularizationDerivatives(self.Waa, 1)
 
 			dWaa = AqwamMatrixLibrary:add(dWaa, regularizationDerivatives)
 
@@ -538,7 +538,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 		if (self.OutputLayerRegularization) then
 			
-			local regularizationDerivatives =  self.OutputLayerRegularization:calculateCostFunctionDerivativeRegularization(self.Wya, 1)
+			local regularizationDerivatives =  self.OutputLayerRegularization:calculateRegularizationDerivatives(self.Wya, 1)
 
 			dWya = AqwamMatrixLibrary:add(dWya, regularizationDerivatives)
 
@@ -546,7 +546,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 		if (self.BiasHiddenLayerRegularization) then
 			
-			local regularizationDerivatives =  self.BiasHiddenLayerRegularization:calculateCostFunctionDerivativeRegularization(self.ba, 1)
+			local regularizationDerivatives =  self.BiasHiddenLayerRegularization:calculateRegularizationDerivatives(self.ba, 1)
 
 			dba = AqwamMatrixLibrary:add(dba, regularizationDerivatives)
 
@@ -554,7 +554,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 		if (self.BiasOutputLayerRegularization) then
 			
-			local regularizationDerivatives =  self.BiasOutputLayerRegularization:calculateCostFunctionDerivativeRegularization(self.by, 1)
+			local regularizationDerivatives =  self.BiasOutputLayerRegularization:calculateRegularizationDerivatives(self.by, 1)
 
 			dby = AqwamMatrixLibrary:add(dby, regularizationDerivatives)
 

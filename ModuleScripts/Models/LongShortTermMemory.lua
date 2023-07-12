@@ -713,6 +713,8 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 				ytPrediction = ytPredictionTable[t]
 
 				xt = xTable[t]
+				
+				yt = yTable[t]
 
 				aNext = aTable[t]
 
@@ -755,8 +757,6 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 				dWo = AqwamMatrixLibrary:add(dWo, dWot)
 
 				dbo = AqwamMatrixLibrary:add(dbo, dbot)
-				
-				yt = yTable[t]
 				
 				dWyt = AqwamMatrixLibrary:subtract(ytPrediction, yt)
 

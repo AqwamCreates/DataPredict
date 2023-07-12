@@ -16,7 +16,7 @@ If you wish to create your own models and optimizers rom our library, we already
 
 * All our optimizers have calculate() and reset() functions. They will be called inside called inside our models.
 
-* calculate() function takes in costFunctionDerivatives (matrix) and previousCostFunctionDerivatives (matrix) in order. It returns the adjusted costFunctionDerivatives.
+* calculate() function takes in learningRate (number) and costFunctionDerivatives (matrix) in order. It returns the adjusted costFunctionDerivatives.
 
 * reset() does not take in any parameters.
 

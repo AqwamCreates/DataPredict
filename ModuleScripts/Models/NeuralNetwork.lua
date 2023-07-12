@@ -246,7 +246,7 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateT
 
 		if self.OptimizerTable[layer] then
 
-			deltaMatrix = self.OptimizerTable[layer]:calculate(deltaMatrix, self.previousDeltaMatricesTable[layer])
+			deltaMatrix = self.OptimizerTable[layer]:calculate(self.learningRate, deltaMatrix, self.previousDeltaMatricesTable[layer])
 
 		end
 

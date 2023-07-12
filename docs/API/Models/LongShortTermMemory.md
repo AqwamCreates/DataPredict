@@ -87,7 +87,7 @@ LongShortTermMemory:createLayers(inputSize: integer, hiddenSize: integer, output
 Add optimizers to different matrices.
 
 ```
-LongShortTermMemory:setOptimizers(ForgetGateWeightOptimizer: OptimizerObject, SaveGateWeightOptimizer: OptimizerObject, TanhWeightOptimizer: OptimizerObject, FocusGateOptimizer: OptimizerObject, OutputWeightOptimizer: OptimizerObject, ForgetGateBiasOptimizer: OptimizerObject, SaveGateBiasOptimizer: OptimizerObject, TanhBiasOptimizer: OptimizerObject, FocusBiasOptimizer: OptimizerObject, OutputBiasOptimizer: OptimizerObject)
+LongShortTermMemory:setOptimizers(ForgetGateWeightOptimizer: OptimizerObject, SaveGateWeightOptimizer: OptimizerObject, TanhWeightOptimizer: OptimizerObject, FocusGateOptimizer: OptimizerObject, OutputWeightOptimizer: OptimizerObject, ForgetGateBiasOptimizer: OptimizerObject, SaveGateBiasOptimizer: OptimizerObject, TanhBiasOptimizer: OptimizerObject, FocusGateBiasOptimizer: OptimizerObject, OutputBiasOptimizer: OptimizerObject)
 ```
 
 #### Parameters:
@@ -108,7 +108,7 @@ LongShortTermMemory:setOptimizers(ForgetGateWeightOptimizer: OptimizerObject, Sa
 
 * TanhBiasOptimizer: Optimizer object for tanh bias calculations.
 
-* FocusBiasOptimizer: Optimizer object for focus gate bias calculations.
+* FocusGateBiasOptimizer: Optimizer object for focus gate bias calculations.
 
 * OutputBiasOptimizer: Optimizer object for output bias layer calculations.
 
@@ -117,7 +117,7 @@ LongShortTermMemory:setOptimizers(ForgetGateWeightOptimizer: OptimizerObject, Sa
 Add regularizations to different matrices.
 
 ```
-LongShortTermMemory:setRegularizations(ForgetGateWeightRegularization: RegularizationObject, SaveGateWeightRegularization: RegularizationObject, TanhWeightRegularization: RegularizationObject, FocusGateRegularization: RegularizationObject, OutputWeightRegularization: RegularizationObject, ForgetGateBiasRegularization: RegularizationObject, SaveGateBiasRegularization: RegularizationObject, TanhBiasRegularization: RegularizationObject, FocusBiasRegularization: RegularizationObject, OutputBiasRegularization: RegularizationObject)
+LongShortTermMemory:setRegularizations(ForgetGateWeightRegularization: RegularizationObject, SaveGateWeightRegularization: RegularizationObject, TanhWeightRegularization: RegularizationObject, FocusGateRegularization: RegularizationObject, OutputWeightRegularization: RegularizationObject, ForgetGateBiasRegularization: RegularizationObject, SaveGateBiasRegularization: RegularizationObject, TanhBiasRegularization: RegularizationObject, FocusGateBiasRegularization: RegularizationObject, OutputBiasRegularization: RegularizationObject)
 ```
 
 #### Parameters:
@@ -138,7 +138,7 @@ LongShortTermMemory:setRegularizations(ForgetGateWeightRegularization: Regulariz
 
 * TanhBiasRegularization: Regularization object for tanh bias calculations.
 
-* FocusBiasRegularization: Regularization object for focus gate bias calculations.
+* FocusGateBiasRegularization: Regularization object for focus gate bias calculations.
 
 * OutputBiasRegularization: Regularization object for output bias layer calculations.
 

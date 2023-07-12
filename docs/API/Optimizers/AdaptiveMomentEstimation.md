@@ -9,6 +9,7 @@ Creates a new optimizer object. If there are no parameters given for that partic
 ```
 AdaptiveMomentEstimation.new(Beta1: number, Beta2: number): OptimizerObject
 ```
+
 #### Returns:
 
 * OptimizerObject: The generated optimizer object.
@@ -20,6 +21,7 @@ AdaptiveMomentEstimation.new(Beta1: number, Beta2: number): OptimizerObject
 ```
 AdaptiveMomentEstimation:setBeta1(Beta1: number)
 ```
+
 ### setBeta2()
 
 ```

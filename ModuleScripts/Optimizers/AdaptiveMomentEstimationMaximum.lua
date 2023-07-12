@@ -8,7 +8,7 @@ local defaultBeta1 = 0.9
 
 local defaultBeta2 = 0.9
 
-local defaultEpsilon = 1 * math.pow(10, -10)
+local defaultEpsilon = 1 * math.pow(10, -7)
 
 function AdaptiveMomentEstimationMaximumOptimizer.new(Beta1, Beta2, Epsilon)
 

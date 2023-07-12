@@ -12,4 +12,4 @@
 
 [Momentum](Optimizers/Momentum.md)
 
-[NesterovAcceleratedAdaptiveMomentEstimation](Optimizers/NesterovAcceleratedAdaptiveMomentEstimation.md) -a.k.a NAdam
+[NesterovAcceleratedAdaptiveMomentEstimation](Optimizers/NesterovAcceleratedAdaptiveMomentEstimation.md) - a.k.a NAdam

@@ -1,6 +1,8 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - StringSplitter
 
-### Functions
+## Functions
+
+### splitStringToArray()
 
 ```
 StringSplitter:splitStringToArray(inputString: string, patternWhereToSplitBetween: string): string[]

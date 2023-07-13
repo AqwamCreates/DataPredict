@@ -76,7 +76,7 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 				idleWarningIssued = true	
 
-			elseif (#self.FeatureVectorQueue == 0) then continue
+			elseif (#self.FeatureVectorQueue == 0) or (#self.LabelQueue == 0) then continue
 
 			elseif (self.IsQueuedReinforcementRunning == false) then break end
 

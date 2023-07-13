@@ -270,7 +270,7 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateT
 
 end
 
-function NeuralNetworkModel:gradientDescent(deltaTable, numberOfData)
+function NeuralNetworkModel:gradientDescent(learningRate, deltaTable, numberOfData)
 
 	local costFunctionDerivative
 
@@ -278,7 +278,7 @@ function NeuralNetworkModel:gradientDescent(deltaTable, numberOfData)
 
 	local NewModelParameters = {}
 
-	local calculatedLearningRate = self.learningRate / numberOfData
+	local calculatedLearningRate = learningRate / numberOfData
 
 	for layerNumber, weightMatrix in ipairs(self.ModelParameters) do
 
@@ -654,11 +654,11 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 
 	if (predictedLabel == label) then
 
-		self.ModelParameters = self:gradientDescent(rewardValue, self.ModelParameters, deltaTable, 1)
+		self.ModelParameters = self:gradientDescent(rewardValue, deltaTable, 1)
 
 	else
 
-		self.ModelParameters = self:gradientDescent(-punishValue, self.ModelParameters, deltaTable, 1)
+		self.ModelParameters = self:gradientDescent(-punishValue, deltaTable, 1)
 
 	end
 

@@ -651,16 +651,20 @@ function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishV
 	local deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable)
 
 	local predictedLabel = self:getLabelFromOutputVector(allOutputsMatrix, self.ClassesList)
+	
+	local multiplyFactor
 
 	if (predictedLabel == label) then
-
-		self.ModelParameters = self:gradientDescent(rewardValue, deltaTable, 1)
+		
+		multiplyFactor = rewardValue
 
 	else
-
-		self.ModelParameters = self:gradientDescent(-punishValue, deltaTable, 1)
+		
+		multiplyFactor = punishValue
 
 	end
+	
+	self.ModelParameters = self:gradientDescent(multiplyFactor, deltaTable, 1)
 
 	for i, Optimizer in ipairs(self.OptimizerTable) do
 

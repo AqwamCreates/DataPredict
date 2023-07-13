@@ -128,7 +128,7 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 
 			areBatchesFilled = (#self.InputQueue >= self.BatchSize) and (not self.IsOutputRequired or (#self.OutputQueue >= self.BatchSize))
 
-			if (waitDuration >= 30) and (waitWarningIssued == false) and (waitWarningIssued == true) then 
+			if (waitDuration >= 30) and (waitWarningIssued == false) and (showWaitWarning == true) then 
 
 				warn("The neural network has been waiting for more than 30 seconds. Leaving the thread running may use unnecessary resource.") 
 

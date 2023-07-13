@@ -18,7 +18,7 @@ It was first discovered by Aqwam and does not exists in any research literature.
 Creates new threads for real-time reinforcement.
 
 ```
-NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning): coroutine, coroutine, coroutine
+QueuedReinforcementNeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning): coroutine, coroutine, coroutine
 ```
 
 #### Parameters:
@@ -46,7 +46,7 @@ NeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLa
 Stops the threads for real-time reinforcement.
 
 ```
-NeuralNetwork:stopQueuedReinforcement()
+QueuedReinforcementNeuralNetwork:stopQueuedReinforcement()
 ```
 
 ### addFeatureVectorToReinforcementQueue()
@@ -54,7 +54,7 @@ NeuralNetwork:stopQueuedReinforcement()
 Adds feature vector to queue.
 
 ```
-NeuralNetwork:addFeatureVectorToReinforcementQueue(featureVector)
+QueuedReinforcementNeuralNetwork:addFeatureVectorToReinforcementQueue(featureVector)
 ```
 
 #### Parameters:
@@ -66,7 +66,7 @@ NeuralNetwork:addFeatureVectorToReinforcementQueue(featureVector)
 Adds label to queue.
 
 ```
-NeuralNetwork:addLabelToReinforcementQueue(label)
+QueuedReinforcementNeuralNetwork:addLabelToReinforcementQueue(label)
 ```
 
 #### Parameters:
@@ -78,7 +78,7 @@ NeuralNetwork:addLabelToReinforcementQueue(label)
 Returns predicted label from the queue.
 
 ```
-NeuralNetwork:returnPredictedLabelFromReinforcementQueue(): integer
+QueuedReinforcementNeuralNetwork:returnPredictedLabelFromReinforcementQueue(): integer
 ```
 
 #### Returns:
@@ -90,7 +90,7 @@ NeuralNetwork:returnPredictedLabelFromReinforcementQueue(): integer
 Returns predicted label from the queue.
 
 ```
-NeuralNetwork:returnCostFromReinforcementQueue(): number
+QueuedReinforcementNeuralNetwork:returnCostFromReinforcementQueue(): number
 ```
 
 #### Returns:

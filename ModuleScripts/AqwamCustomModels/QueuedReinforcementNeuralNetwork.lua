@@ -22,6 +22,8 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 	if (self.IsQueuedReinforcementRunning == true) then error("Queued reinforcement is already active!") end
 	
+	if (#self.ClassesList == 0) then error("Classes list is not set!") end
+	
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
 	self:checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
@@ -74,9 +76,11 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 				warn("The neural network has been idle for more than 30 seconds. Leaving the thread running may use unnecessary resource.") 
 
-				idleWarningIssued = true	
+				idleWarningIssued = true
+				
+				continue
 
-			elseif (#self.FeatureVectorQueue == 0) or (#self.LabelQueue == 0) then continue
+			elseif (#self.FeatureVectorQueue == 0) then continue
 
 			elseif (self.IsQueuedReinforcementRunning == false) then break end
 
@@ -89,8 +93,6 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 			local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
 
 			local predictedLabel = self:getLabelFromOutputVector(allOutputsMatrix, self.ClassesList)
-			
-			if (showPredictedLabel) then print(predictedLabel) end
 
 			table.insert(self.PredictedLabelQueue, predictedLabel)
 
@@ -117,7 +119,9 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 				warn("The neural network has been waiting for a label for more than 30 seconds. Leaving the thread running may use unnecessary resource.") 
 
-				labelWarningIssued = true	
+				labelWarningIssued = true
+				
+				continue
 
 			elseif (#self.LabelQueue == 0) or (#self.PredictedLabelQueue == 0) or (#self.ForwardPropagationTableQueue == 0) or (#self.ZTableQueue == 0) or (isCurrentlyBackpropagating == true) then continue
 
@@ -125,7 +129,7 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 			
 			isCurrentlyBackpropagating = true
 
-			if (showPredictedLabel == true) then print("Predicted Label: " .. self.PredictedLabelQueue[1] .. "\t\t\tActual Label: " .. self.LabelQueue[1]) end
+			if (showPredictedLabel == true) then print("Predicted Label: " .. self.PredictedLabelQueue[1] .. "\t\t\t\tActual Label: " .. self.LabelQueue[1]) end
 
 			local logisticMatrix = self:convertLabelVectorToLogisticMatrix(self.ModelParameters, self.LabelQueue[1], self.ClassesList)
 
@@ -151,19 +155,31 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 			local lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
 
-			local backwardPropagateTable = self:backPropagate(self.ModelParameters, lossMatrix, self.ZTableQueue[1], self.activationFunction)
+			local backwardPropagateTable = self:backPropagate(lossMatrix, self.ZTableQueue[1])
 
-			local deltaTable = self:calculateDelta(self.ForwardPropagationTableQueue[1], backwardPropagateTable)
+			local deltaTable = self:calculateDelta(self.ForwardPropagationTableQueue[1], backwardPropagateTable, 1)
+			
+			local calculatedDeltaTable = {}
+			
+			local multiplyFactor
 			
 			if (self.PredictedLabelQueue[1] == self.LabelQueue[1]) then
 
-				self.ModelParameters = self:gradientDescent(rewardValue, self.ModelParameters, deltaTable, 1)
+				multiplyFactor = rewardValue
 
 			else
 
-				self.ModelParameters = self:gradientDescent(-punishValue, self.ModelParameters, deltaTable, 1)
-
+				multiplyFactor = -punishValue
+				
 			end
+			
+			for i = 1, #deltaTable,1 do
+				
+				calculatedDeltaTable[i] = AqwamMatrixLibrary:multiply(multiplyFactor, deltaTable[i])
+				
+			end
+			
+			self.ModelParameters = self:gradientDescent(calculatedDeltaTable, 1)
 			
 			isCurrentlyBackpropagating = false
 			

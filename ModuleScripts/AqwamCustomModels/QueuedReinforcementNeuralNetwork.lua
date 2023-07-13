@@ -10,6 +10,10 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibrary
 
 function QueuedReinforcementNeuralNetworkModel.new(maxNumberOfIterations, learningRate, activationFunction, targetCost)
 	
+	maxNumberOfIterations = NeuralNetworkModel:getBooleanOrDefaultOption(maxNumberOfIterations, 1)
+	
+	learningRate = NeuralNetworkModel:getBooleanOrDefaultOption(learningRate, 1)
+	
 	local NewQueuedReinforcementNeuralNetworkModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate, activationFunction, targetCost)
 	
 	setmetatable(NewQueuedReinforcementNeuralNetworkModel, QueuedReinforcementNeuralNetworkModel)

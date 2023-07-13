@@ -42,7 +42,9 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 ### ModuleScripts Packages (Recommended For Up-To-Date Libraries)
 
-[DataPredict Library](https://www.roblox.com/library/12727977273/DataPredict-Library)
+[DataPredict Library (Release Version 1.0)](https://www.roblox.com/library/14048670741/DataPredict-Release-Version-1-0)
+
+[DataPredict Library (Beta Version)](https://www.roblox.com/library/12727977273/DataPredict-Library)
 
 [MatrixL (Matrix Library)](https://www.roblox.com/library/12728472338/MatrixL-Aqwams-Roblox-Matrix-Library)
 

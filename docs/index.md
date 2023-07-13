@@ -75,4 +75,4 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 [Beta](VersionHistory/BetaVersionHistory.md)
 
-[All](VersionHistory/AllVersionHistory.md)
+[All](VersionHistory/AllVersionsHistory.md)

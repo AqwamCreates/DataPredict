@@ -1,0 +1,5 @@
+
+
+```
+StringSplitter:splitStringToArray(inputString, patternWhereToSplitBetween)
+```

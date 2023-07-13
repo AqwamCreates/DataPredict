@@ -26,7 +26,7 @@ If you wish to create your own models and optimizers rom our library, we already
 
 ## Regularization
 
-* All our regularization objects have calculateRegularizaion() and calculateRegularizationDerivatives() functions. They will be called inside called inside our models.
+* All our regularization objects have calculateRegularization() and calculateRegularizationDerivatives() functions. They will be called inside called inside our models.
 
 * Both takes in modelParameters (matrix) and numberOfData (integer) in order.
 

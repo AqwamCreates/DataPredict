@@ -64,6 +64,8 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 ## Version History
 
-[All](VersionHistory/AllVersionHistory.md)
+[Release](VersionHistory/ReleaseVersionHistory.md)
 
 [Beta](VersionHistory/BetaVersionHistory.md)
+
+[All](VersionHistory/AllVersionHistory.md)

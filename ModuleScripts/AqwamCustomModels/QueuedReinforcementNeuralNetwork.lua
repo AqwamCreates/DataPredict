@@ -163,8 +163,6 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 			local deltaTable = self:calculateDelta(self.ForwardPropagationTableQueue[1], backwardPropagateTable, 1)
 			
-			local calculatedDeltaTable = {}
-			
 			local multiplyFactor
 			
 			if (self.PredictedLabelQueue[1] == self.LabelQueue[1]) then
@@ -173,17 +171,11 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 			else
 
-				multiplyFactor = -punishValue
+				multiplyFactor = punishValue
 				
 			end
 			
-			for i = 1, #deltaTable,1 do
-				
-				calculatedDeltaTable[i] = AqwamMatrixLibrary:multiply(multiplyFactor, deltaTable[i])
-				
-			end
-			
-			self.ModelParameters = self:gradientDescent(calculatedDeltaTable, 1)
+			self.ModelParameters = self:gradientDescent(multiplyFactor, deltaTable, 1)
 			
 			isCurrentlyBackpropagating = false
 			

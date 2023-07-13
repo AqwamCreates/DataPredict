@@ -74,9 +74,11 @@ function GravityOptimizer:calculate(learningRate, costFunctionDerivatives)
 	
 	local meanMovingAverage = ((self.MovingAverage * self.TimeStep) + 1) / (self.TimeStep + 2)
 	
-	local MDivisor = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
+	local AbsoluteM = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
 	
-	local M = AqwamMatrixLibrary:divide(1, MDivisor)
+	local maxM = AqwamMatrixLibrary:findMaximumValueInMatrix(AbsoluteM)
+	
+	local M = AqwamMatrixLibrary:divide(1, maxM)
 	
 	local WeirdLPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, M)
 	

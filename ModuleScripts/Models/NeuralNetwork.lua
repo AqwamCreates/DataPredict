@@ -598,7 +598,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable, numberOfData)
 
-		self.ModelParameters = self:gradientDescent(deltaTable, numberOfData) -- do not refactor the code where the output is self.ModelParameters. Otherwise it cannot update to new model parameters values!
+		self.ModelParameters = self:gradientDescent(self.learningRate, deltaTable, numberOfData) -- do not refactor the code where the output is self.ModelParameters. Otherwise it cannot update to new model parameters values!
 
 		cost = self:calculateCost(allOutputsMatrix, logisticMatrix, numberOfData)
 

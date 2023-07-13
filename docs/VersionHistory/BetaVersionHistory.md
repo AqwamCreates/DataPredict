@@ -1,4 +1,4 @@
-# Beta Version History
+# Beta Version
 
 ## Version 1.11
 

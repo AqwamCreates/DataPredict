@@ -10,7 +10,7 @@ StringSplitter:splitStringToArray(inputString: string, patternWhereToSplitBetwee
 
 * inputString: The string to be split into array.
 
-* patternWhereToSplitBetween: The regular expression that determines the spllit locations.
+* patternWhereToSplitBetween: The regular expression that determines the split locations.
 
 #### Returns:
 

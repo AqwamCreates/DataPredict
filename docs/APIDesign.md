@@ -1,6 +1,6 @@
 # API Design
 
-If you wish to create your own models and optimizers rom our library, we already have set a standard for our API design.
+If you wish to create your own models and optimizers from our library, we already have set a standard for our API design.
 
 ## Models
 

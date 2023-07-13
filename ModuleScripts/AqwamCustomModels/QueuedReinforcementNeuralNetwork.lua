@@ -89,6 +89,8 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 			local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
 
 			local predictedLabel = self:getLabelFromOutputVector(allOutputsMatrix, self.ClassesList)
+			
+			if (showPredictedLabel) then print(predictedLabel) end
 
 			table.insert(self.PredictedLabelQueue, predictedLabel)
 

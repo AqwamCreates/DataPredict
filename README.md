@@ -3,7 +3,10 @@
 
 --------------------------------------------------------------------
 
-Version 1.11.0
+| Version | Current Version Number |
+|---------|------------------------|
+| Release | 1.0                    |
+| Beta    | 1.11.0                 |
 
 Aqwam's Roblox Machine And Deep Learning Library (AR-MDLL)
 

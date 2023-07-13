@@ -94,15 +94,15 @@ function OnlineLearning:restorePreviousModelParametersIfCostIsInfinity(cost)
 	
 end
 
-function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
+function OnlineLearning:startOnlineLearning(showFinalCost, showIdleWarning)
 
 	if (self.IsOnlineLearningRunning == true) then error(onlineLearningActiveText) end
 
 	self.IsOnlineLearningRunning = true
 
-	if (showFinalCost == nil) then showFinalCost = false else showFinalCost = showFinalCost end
+	if (showFinalCost == nil) then showFinalCost = false end
 
-	if (showWaitWarning == nil) then showWaitWarning = true else showWaitWarning = showWaitWarning end
+	if (showIdleWarning == nil) then showIdleWarning = true end
 
 	local waitInterval = 0.1
 
@@ -128,9 +128,9 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 
 			areBatchesFilled = (#self.InputQueue >= self.BatchSize) and (not self.IsOutputRequired or (#self.OutputQueue >= self.BatchSize))
 
-			if (waitDuration >= 30) and (waitWarningIssued == false) and (showWaitWarning == true) then 
+			if (waitDuration >= 30) and (waitWarningIssued == false) and (showIdleWarning == true) then 
 
-				warn("The neural network has been waiting for more than 30 seconds. Leaving the thread running may use unnecessary resource.") 
+				warn("The neural network has been idle for more than 30 seconds. Leaving the thread running may use unnecessary resource.") 
 
 				waitWarningIssued = true
 				

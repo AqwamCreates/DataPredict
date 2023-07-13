@@ -132,7 +132,9 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showWaitWarning)
 
 				warn("The neural network has been waiting for more than 30 seconds. Leaving the thread running may use unnecessary resource.") 
 
-				waitWarningIssued = true	
+				waitWarningIssued = true
+				
+				continue
 
 			elseif (areBatchesFilled == false) then continue
 

@@ -2,9 +2,10 @@
 
 ![DataPredictIconSmall](https://user-images.githubusercontent.com/67371914/223632639-dea075fe-9dce-430c-af82-2fb0fbeb43d3.png)
 
-Current Release Version 1.0
-
-Current Beta Version: 1.11.0
+| Version | Current Version Number |
+------------------------------------
+| Release | 1.0                    |
+| Beta    | 1.11.0                 |
 
 DataPredict is a machine and deep learning library for Roblox.
 

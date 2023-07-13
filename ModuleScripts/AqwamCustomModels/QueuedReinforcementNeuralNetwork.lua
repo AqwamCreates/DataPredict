@@ -21,6 +21,8 @@ end
 function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning)
 
 	if (self.IsQueuedReinforcementRunning == true) then error("Queued reinforcement is already active!") end
+	
+	if (self.ModelParameters == nil) then self:generateLayers() end
 
 	self:checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
 

@@ -8,4 +8,6 @@
 
 [OnlineLearning](Others/OnlineLearning.md)
 
+[StringSplitter](Others/StringSplitter.md)
+
 [Tokenizer](Others/Tokenizer.md)

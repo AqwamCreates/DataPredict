@@ -40,15 +40,17 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 ## Links
 
-### ModuleScripts Packages (Recommended For Up-To-Date Libraries)
+## ModuleScripts - Release Versions (Fully Tested and Stable)
 
 [DataPredict Library (Release Version 1.0)](https://www.roblox.com/library/14048670741/DataPredict-Release-Version-1-0)
+
+### ModuleScripts Packages (Recommended For Up-To-Date Libraries)
 
 [DataPredict Library (Beta Version)](https://www.roblox.com/library/12727977273/DataPredict-Library)
 
 [MatrixL (Matrix Library)](https://www.roblox.com/library/12728472338/MatrixL-Aqwams-Roblox-Matrix-Library)
 
-### ModuleScripts
+### ModuleScripts - Beta Versions (Contains Bugs)
 
 [Aqwam's Roblox Machine And Deep Learning Library](https://create.roblox.com/marketplace/asset/12591886004/Aqwams-Roblox-Machine-And-Deep-Learning-Library)
 

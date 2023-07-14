@@ -5,7 +5,7 @@
 | Version | Current Version Number | Source Code + Documentation
 |---------|------------------------|------------------------------------------------------------------|
 | Release | 1.0                    | https://github.com/AqwamCreates/DataPredict/releases/tag/v1.0.0  |
-| Beta    | 1.11.0                 | This documentation and repository                                |           
+| Beta    | 1.11.0                 | This Documentation And Repository                                |           
 
 DataPredict is a machine and deep learning library for Roblox.
 

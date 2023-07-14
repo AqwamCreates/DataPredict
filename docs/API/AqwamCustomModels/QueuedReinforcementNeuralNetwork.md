@@ -103,6 +103,6 @@ QueuedReinforcementNeuralNetwork:returnCostFromReinforcementQueue(): number
 
 * This model has the capability of reverting to previous model parameters if it starts to "unlearn". While it is a nice mechanism to avoid potential troubles on live games, I do recommend that you use appropriate reward and punish values.
 
-## Inherited From:
+## Inherited From
 
 [NeuralNetwork](../Models/NeuralNetwork.md)

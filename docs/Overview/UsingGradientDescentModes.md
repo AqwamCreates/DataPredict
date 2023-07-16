@@ -23,7 +23,7 @@ In this tutorial, we will be using "Mini Batch" gradient descent. We also need t
 Then we feed it to startGradientDescentFunction(). Since we're using batch size, we ensure that the batch size value is inputted.
 
 ```
-GradientDescentModes:startGradientDescent(LogisticRegressionModel, "Minibatch", featureMatrix, labelVector, 2)
+GradientDescentModes:startGradientDescent(LogisticRegressionModel, "MiniBatch", featureMatrix, labelVector, 2)
 ```
 
 That's all for today!

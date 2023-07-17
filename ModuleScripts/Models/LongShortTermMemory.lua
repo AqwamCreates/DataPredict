@@ -1054,9 +1054,11 @@ function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
 		
 		local _, predictedTokenIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(ytPrediction)
 		
-		local predictedToken = nil
+		local predictedToken = 0
 
 		if predictedTokenIndex then predictedToken = predictedTokenIndex[1] end
+		
+		predictedToken = predictedToken or 0
 
 		table.insert(predictionArray, predictedToken)
 		

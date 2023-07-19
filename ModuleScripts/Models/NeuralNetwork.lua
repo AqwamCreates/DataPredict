@@ -253,6 +253,8 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateT
 end
 
 function NeuralNetworkModel:gradientDescent(learningRate, deltaTable, numberOfData)
+	
+	local regularizationDerivatives
 
 	local costFunctionDerivatives
 
@@ -261,8 +263,6 @@ function NeuralNetworkModel:gradientDescent(learningRate, deltaTable, numberOfDa
 	local NewModelParameters = {}
 
 	local calculatedLearningRate = learningRate / numberOfData
-	
-	local regularizationDerivatives
 
 	for layerNumber, weightMatrix in ipairs(self.ModelParameters) do
 		

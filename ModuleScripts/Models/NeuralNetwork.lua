@@ -226,13 +226,11 @@ end
 
 function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateTable, numberOfData)
 
-	local deltaMatrix
-
 	local partialDerivativeMatrix
 
 	local activationLayerMatrix
 
-	local regularizationDerivatives
+	local costFunctionDerivatives
 
 	local deltaTable = {}
 
@@ -242,27 +240,11 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateT
 
 		partialDerivativeMatrix = AqwamMatrixLibrary:transpose(backpropagateTable[layer])
 
-		deltaMatrix = AqwamMatrixLibrary:dotProduct(partialDerivativeMatrix, activationLayerMatrix)
+		costFunctionDerivatives = AqwamMatrixLibrary:dotProduct(partialDerivativeMatrix, activationLayerMatrix)
 
-		if self.OptimizerTable[layer] then
+		costFunctionDerivatives = AqwamMatrixLibrary:transpose(costFunctionDerivatives)
 
-			deltaMatrix = self.OptimizerTable[layer]:calculate(self.learningRate, deltaMatrix, self.previousDeltaMatricesTable[layer])
-
-		end
-
-		if self.RegularizationTable[layer] then
-
-			regularizationDerivatives = self.RegularizationTable[layer]:calculateRegularizationDerivatives(self.ModelParameters[layer], numberOfData)
-
-			deltaMatrix = AqwamMatrixLibrary:add(deltaMatrix, regularizationDerivatives)
-
-		end
-
-		self.previousDeltaMatricesTable[layer] = deltaMatrix
-
-		deltaMatrix = AqwamMatrixLibrary:transpose(deltaMatrix)
-
-		table.insert(deltaTable, 1, deltaMatrix)
+		table.insert(deltaTable, 1, costFunctionDerivatives)
 
 	end
 
@@ -272,19 +254,41 @@ end
 
 function NeuralNetworkModel:gradientDescent(learningRate, deltaTable, numberOfData)
 
-	local costFunctionDerivative
+	local costFunctionDerivatives
 
 	local newWeightMatrix
 
 	local NewModelParameters = {}
 
 	local calculatedLearningRate = learningRate / numberOfData
+	
+	local regularizationDerivatives
 
 	for layerNumber, weightMatrix in ipairs(self.ModelParameters) do
+		
+		local costFunctionDerivatives = deltaTable[layerNumber]
+		
+		if self.OptimizerTable[layerNumber] then
 
-		costFunctionDerivative = AqwamMatrixLibrary:multiply(calculatedLearningRate, deltaTable[layerNumber])
+			costFunctionDerivatives = self.OptimizerTable[layerNumber]:calculate(calculatedLearningRate, costFunctionDerivatives)
+			
+		else
+			
+			costFunctionDerivatives = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivatives)
 
-		newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivative)
+		end
+
+		if self.RegularizationTable[layerNumber] then
+
+			regularizationDerivatives = self.RegularizationTable[layerNumber]:calculateRegularizationDerivatives(self.ModelParameters[layerNumber], numberOfData)
+
+			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, costFunctionDerivatives)
+
+		end
+
+		costFunctionDerivatives = AqwamMatrixLibrary:multiply(calculatedLearningRate, deltaTable[layerNumber])
+
+		newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivatives)
 
 		table.insert(NewModelParameters, newWeightMatrix)
 

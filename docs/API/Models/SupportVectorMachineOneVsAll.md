@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - SupportVectorMachineOneVsAll
 
-SupportVectorMachineOneVsAll is a supervised machine learning model that predicts values of positive integers. It uses multiple support vector machine models to achieve multi-class classification capabilities. It assumes that the data is seperable by a decision boundary.
+SupportVectorMachineOneVsAll is a supervised machine learning model that predicts values of positive integers. It uses multiple support vector machine models to achieve multi-class classification capabilities.
 
 ## Constructors
 

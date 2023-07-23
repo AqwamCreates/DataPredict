@@ -40,7 +40,7 @@ local mappingList = {
 		
 		local XSquared = AqwamMatrixLibrary:power(X, 2)
 		
-		local normsSquared = AqwamMatrixLibrary:verticalSum(XSquared, 2)
+		local normsSquared = AqwamMatrixLibrary:verticalSum(XSquared)
 		
 		local sigmaSquared = sigma * sigma
 		
@@ -54,7 +54,7 @@ local mappingList = {
 		
 		local XSquared = AqwamMatrixLibrary:power(X, 2)
 		
-		local XSquaredSum = AqwamMatrixLibrary:verticalSum(XSquared, 2)
+		local XSquaredSum = AqwamMatrixLibrary:verticalSum(XSquared)
 
 		local normX = AqwamMatrixLibrary:applyFunction(math.sqrt, XSquaredSum)
 		

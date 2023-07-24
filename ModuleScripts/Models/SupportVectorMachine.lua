@@ -40,9 +40,9 @@ local mappingList = {
 		
 		local XSquared = AqwamMatrixLibrary:power(X, 2)
 		
-		local sigmaSquared = sigma * sigma
+		local sigmaSquared = AqwamMatrixLibrary:power(sigma, 2)
 		
-		local rbfFunction = function(x) return math.exp(-x / (2 * sigmaSquared)) end
+		local rbfFunction = function(x, sigmaSquared) return math.exp(-x / (2 * sigmaSquared)) end
 		
 		return AqwamMatrixLibrary:applyFunction(rbfFunction, XSquared)
 

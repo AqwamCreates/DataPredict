@@ -145,17 +145,13 @@ local function gradientDescent(modelParameters, kernelMatrix, labelVector, cValu
 
 	end
 
-	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:verticalSum(hingeCostDerivatives)
+	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:transpose(AqwamMatrixLibrary:verticalSum(hingeCostDerivatives))
 
-	local regularizationPart1 = AqwamMatrixLibrary:sum(AqwamMatrixLibrary:power(modelParameters, 2))
+	local regularizationPart1 = AqwamMatrixLibrary:divide(modelParameters, cValue)
 
-	local regularizationPart2 = AqwamMatrixLibrary:divide(regularizationPart1, 2)
-
-	local costFunctionDerivatives = AqwamMatrixLibrary:add(regularizationPart2, costFunctionDerivativesPart1)
+	local costFunctionDerivatives = AqwamMatrixLibrary:add(regularizationPart1, costFunctionDerivativesPart1)
 
 	costFunctionDerivatives = AqwamMatrixLibrary:divide(costFunctionDerivatives, numberOfData)
-
-	costFunctionDerivatives = AqwamMatrixLibrary:transpose(costFunctionDerivatives)
 
 	return costFunctionDerivatives
 

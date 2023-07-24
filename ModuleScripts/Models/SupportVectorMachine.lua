@@ -38,23 +38,23 @@ local mappingList = {
 
 	["radialBasisFunction"] = function(X, sigma)
 		
-		local XSquared = AqwamMatrixLibrary:power(X, 2)
+		local XSquaredVector = AqwamMatrixLibrary:power(X, 2)
 		
-		local sigmaSquared = AqwamMatrixLibrary:power(sigma, 2)
+		local sigmaSquaredVector = AqwamMatrixLibrary:power(sigma, 2)
 		
 		local rbfFunction = function(x, sigmaSquared) return math.exp(-x / (2 * sigmaSquared)) end
 		
-		return AqwamMatrixLibrary:applyFunction(rbfFunction, XSquared)
+		return AqwamMatrixLibrary:applyFunction(rbfFunction, XSquaredVector, sigmaSquaredVector)
 
 	end,
 
 	["cosineSimilarity"] = function(X)
 		
-		local XSquared = AqwamMatrixLibrary:power(X, 2)
+		local XSquaredVector = AqwamMatrixLibrary:power(X, 2)
 
-		local normX = AqwamMatrixLibrary:applyFunction(math.sqrt, XSquared)
+		local normXVector = AqwamMatrixLibrary:applyFunction(math.sqrt, XSquaredVector)
 		
-		return AqwamMatrixLibrary:divide(X, normX)
+		return AqwamMatrixLibrary:divide(X, normXVector)
 
 	end,
 

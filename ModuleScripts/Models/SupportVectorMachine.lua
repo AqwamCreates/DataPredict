@@ -40,23 +40,19 @@ local mappingList = {
 		
 		local XSquared = AqwamMatrixLibrary:power(X, 2)
 		
-		local normsSquared = AqwamMatrixLibrary:verticalSum(XSquared)
-		
 		local sigmaSquared = sigma * sigma
 		
 		local rbfFunction = function(x) return math.exp(-x / (2 * sigmaSquared)) end
 		
-		return AqwamMatrixLibrary:applyFunction(rbfFunction, normsSquared)
+		return AqwamMatrixLibrary:applyFunction(rbfFunction, XSquared)
 
 	end,
 
 	["cosineSimilarity"] = function(X)
 		
 		local XSquared = AqwamMatrixLibrary:power(X, 2)
-		
-		local XSquaredSum = AqwamMatrixLibrary:verticalSum(XSquared)
 
-		local normX = AqwamMatrixLibrary:applyFunction(math.sqrt, XSquaredSum)
+		local normX = AqwamMatrixLibrary:applyFunction(math.sqrt, XSquared)
 		
 		return AqwamMatrixLibrary:divide(X, normX)
 
@@ -128,27 +124,39 @@ end
 local function gradientDescent(modelParameters, kernelMatrix, labelVector, cValue)
 	
 	local numberOfData = #labelVector
-	
+
 	local prediction = AqwamMatrixLibrary:dotProduct(kernelMatrix, modelParameters)
-	
+
 	local costPart1 = AqwamMatrixLibrary:multiply(labelVector, prediction)
-	
+
 	local cost = AqwamMatrixLibrary:subtract(1, costPart1)
-	
+
 	local hingeCost = AqwamMatrixLibrary:applyFunction(hingeCostFunction, cost)
-	
-	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:verticalSum(hingeCost)
-	
-	local costFunctionDerivativesPart2 = AqwamMatrixLibrary:multiply(cValue, costFunctionDerivativesPart1)
-	
+
+	local hingeCostDerivatives = AqwamMatrixLibrary:createMatrix(#kernelMatrix, #kernelMatrix[1])
+
+	for i = 1, numberOfData, 1 do
+
+		if (hingeCost[i][1] ~= 0) then
+
+			hingeCostDerivatives = AqwamMatrixLibrary:multiply(-cValue, labelVector, kernelMatrix)
+
+		end
+
+	end
+
+	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:verticalSum(hingeCostDerivatives)
+
 	local regularizationPart1 = AqwamMatrixLibrary:sum(AqwamMatrixLibrary:power(modelParameters, 2))
-	
+
 	local regularizationPart2 = AqwamMatrixLibrary:divide(regularizationPart1, 2)
-	
-	local costFunctionDerivatives = AqwamMatrixLibrary:add(regularizationPart2, costFunctionDerivativesPart2)
-	
+
+	local costFunctionDerivatives = AqwamMatrixLibrary:add(regularizationPart2, costFunctionDerivativesPart1)
+
 	costFunctionDerivatives = AqwamMatrixLibrary:divide(costFunctionDerivatives, numberOfData)
-	
+
+	costFunctionDerivatives = AqwamMatrixLibrary:transpose(costFunctionDerivatives)
+
 	return costFunctionDerivatives
 
 end

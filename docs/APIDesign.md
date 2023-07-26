@@ -30,7 +30,7 @@ If you wish to create your own models and optimizers from our library, we alread
 
 * Both takes in modelParameters (matrix) and numberOfData (integer) in order.
 
-* calculateRegularizaion() returns regularization values for modelParameters (matrix).
+* calculateRegularization() returns regularization values for modelParameters (matrix).
 
 * calculateRegularizationDerivatives() returns regularization values for costFunctionDerivatives (matrix).
 

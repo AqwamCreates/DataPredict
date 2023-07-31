@@ -31,7 +31,7 @@ NesterovAcceleratedAdaptiveMomentEstimation:setBeta2(Beta2: number)
 ### setEpsilon()
 
 ```
-AdaptiveMomentEstimationMaximum:setEpsilon(Epsilon: number)
+NesterovAcceleratedAdaptiveMomentEstimation:setEpsilon(Epsilon: number)
 ```
 
 ### reset()
@@ -39,7 +39,7 @@ AdaptiveMomentEstimationMaximum:setEpsilon(Epsilon: number)
 Reset optimizer's stored values (excluding the parameters).
 
 ```
-AdaptiveMomentEstimation:reset()
+NesterovAcceleratedAdaptiveMomentEstimation:reset()
 ```
 
 

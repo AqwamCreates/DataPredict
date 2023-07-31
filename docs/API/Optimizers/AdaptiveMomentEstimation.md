@@ -31,7 +31,7 @@ AdaptiveMomentEstimation:setBeta2(Beta2: number)
 ### setEpsilon()
 
 ```
-AdaptiveMomentEstimationMaximum:setEpsilon(Epsilon: number)
+AdaptiveMomentEstimation:setEpsilon(Epsilon: number)
 ```
 
 ### reset()

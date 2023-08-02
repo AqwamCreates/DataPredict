@@ -7,7 +7,7 @@
 Creates a new optimizer object. If there are no parameters given for that particular argument, then that argument will use default value.
 
 ```
-RootMeanSquarePropagation.new(Beta: Number, Epsilon: Number): OptimizerObject
+RootMeanSquarePropagation.new(Beta: number, Epsilon: number): OptimizerObject
 ```
 
 #### Parameters:
@@ -25,7 +25,7 @@ RootMeanSquarePropagation.new(Beta: Number, Epsilon: Number): OptimizerObject
 ### setBeta()
 
 ```
-RootMeanSquarePropagation:setBeta(Beta: Number)
+RootMeanSquarePropagation:setBeta(Beta: number)
 ```
 
 #### Parameters:
@@ -35,7 +35,7 @@ RootMeanSquarePropagation:setBeta(Beta: Number)
 ### setEpsilon()
 
 ```
-RootMeanSquarePropagation:setEpsilon(Epsilon: Number)
+RootMeanSquarePropagation:setEpsilon(Epsilon: number)
 ```
 
 #### Parameters:

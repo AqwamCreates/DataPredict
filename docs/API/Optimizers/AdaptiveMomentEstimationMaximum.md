@@ -9,6 +9,13 @@ Creates a new optimizer object. If there are no parameters given for that partic
 ```
 AdaptiveMomentEstimationMaximum.new(Beta1: number, Beta2: number, Epsilon: number): OptimizerObject
 ```
+#### Parameters:
+
+* Beta1: The decay rate of the moving average of the first moment of the gradients.
+
+* Beta2: The decay rate of the moving average of the squared gradients.
+
+* Epsilon: The value to ensure that the numbers are not divided by zero.
 
 #### Returns:
 
@@ -22,17 +29,29 @@ AdaptiveMomentEstimationMaximum.new(Beta1: number, Beta2: number, Epsilon: numbe
 AdaptiveMomentEstimationMaximum:setBeta1(Beta1: number)
 ```
 
+#### Parameters:
+
+* Beta1: The decay rate of the moving average of the first moment of the gradients.
+
 ### setBeta2()
 
 ```
 AdaptiveMomentEstimationMaximum:setBeta2(Beta2: number)
 ```
 
+#### Parameters:
+
+* Beta2: The decay rate of the moving average of the squared gradients.
+
 ### setEpsilon()
 
 ```
 AdaptiveMomentEstimationMaximum:setEpsilon(Epsilon: number)
 ```
+
+#### Parameters:
+
+* Epsilon: The value to ensure that the numbers are not divided by zero.
 
 ### reset()
 
@@ -41,11 +60,3 @@ Reset optimizer's stored values (excluding the parameters).
 ```
 AdaptiveMomentEstimationMaximum:reset()
 ```
-
-## Notes:
-
-* Epsilon is used to prevent a numerator from dividing by zero. Otherwise, the resulting calculation would be infinity.
-
-* Generally, the epsilon values are usually set to very small positive decimal numbers.
-
-* If you are unsure how epsilon works, then leave the setting to default.

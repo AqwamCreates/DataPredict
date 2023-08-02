@@ -9,6 +9,9 @@ Creates a new optimizer object. If there are no parameters given for that partic
 ```
 Momentum.new(DecayRate: Number): OptimizerObject
 ```
+#### Parameters:
+
+* DecayRate: The value that controls the rate of decay.
 
 #### Returns:
 
@@ -21,6 +24,10 @@ Momentum.new(DecayRate: Number): OptimizerObject
 ```
 Momentum:setDecayRate(DecayRate: Number)
 ```
+
+#### Parameters:
+
+* DecayRate: The value that controls the rate of decay.
 
 ### reset()
 

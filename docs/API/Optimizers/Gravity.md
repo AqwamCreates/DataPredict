@@ -10,6 +10,12 @@ Creates a new optimizer object. If there are no parameters given for that partic
 Gravity.new(InitialStepSize: number, MovingAverage: number): OptimizerObject
 ```
 
+#### Parameters:
+
+* InitialStepSize: The value to set the initial velocity during the first iteration.
+
+* MovingAverage: The value that controls the smoothing of gradients during training.
+
 #### Returns:
 
 * OptimizerObject: The generated optimizer object.
@@ -22,11 +28,19 @@ Gravity.new(InitialStepSize: number, MovingAverage: number): OptimizerObject
 Gravity:setDecayRate(InitialStepSize: number)
 ```
 
+#### Parameters:
+
+ InitialStepSize: The value to set the initial velocity during the first iteration.
+
 ### setMovingAverage()
 
 ```
 Gravity:setDecayRate(MovingAverage: number)
 ```
+
+#### Parameters:
+
+* MovingAverage: The value that controls the smoothing of gradients during training.
 
 ### reset()
 

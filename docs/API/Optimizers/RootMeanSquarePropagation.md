@@ -12,7 +12,7 @@ RootMeanSquarePropagation.new(Beta: Number, Epsilon: Number): OptimizerObject
 
 #### Parameters:
 
-* Beta: The value that controls the exponential decay rate for the moving average of squared gradients
+* Beta: The value that controls the exponential decay rate for the moving average of squared gradients.
 
 * Epsilon: The value to ensure that the numbers are not divided by zero.
 
@@ -30,7 +30,7 @@ RootMeanSquarePropagation:setBeta(Beta: Number)
 
 #### Parameters:
 
-* Beta: The value that controls the exponential decay rate for the moving average of squared gradients
+* Beta: The value that controls the exponential decay rate for the moving average of squared gradients.
 
 ### setEpsilon()
 

@@ -12,7 +12,7 @@ AdaptiveGradientDelta.new(DecayRate: number, Epsilon: number): OptimizerObject
 
 #### Parameters:
 
-* DecayRate: The rate of decay.
+* DecayRate: The value that controls the rate of decay.
 
 * Epsilon: The value to ensure that the numbers are not divided by zero.
 
@@ -30,7 +30,7 @@ AdaptiveGradientDelta:setDecayRate(DecayRate: number)
 
 #### Parameters:
 
-* DecayRate: The rate of decay.
+* DecayRate: The value that controls the rate of decay.
 
 ### setEpsilon()
 

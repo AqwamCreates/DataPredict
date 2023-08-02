@@ -30,7 +30,7 @@ Gravity:setDecayRate(InitialStepSize: number)
 
 #### Parameters:
 
- InitialStepSize: The value to set the initial velocity during the first iteration.
+* InitialStepSize: The value to set the initial velocity during the first iteration.
 
 ### setMovingAverage()
 

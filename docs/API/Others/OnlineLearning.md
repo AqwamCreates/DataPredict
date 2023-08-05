@@ -53,7 +53,7 @@ OnlineLearning:stopOnlineLearning()
 Adds feature vector / token input sequence array to to queue.
 
 ```
-OnlineLearning:addFeatureVectorToOnlineLearningQueue(input: matrix / tokenSequenceArray[])
+OnlineLearning:addInputToOnlineLearningQueue(input: matrix / tokenSequenceArray[])
 ```
 
 #### Parameters:
@@ -65,7 +65,7 @@ OnlineLearning:addFeatureVectorToOnlineLearningQueue(input: matrix / tokenSequen
 Adds label / token output sequence array  to queue.
 
 ```
-OnlineLearning:addLabelToOnlineLearningQueue(output: integer / tokenSequenceArray[])
+OnlineLearning:addOutputToOnlineLearningQueue(output: integer / tokenSequenceArray[])
 ```
 
 #### Parameters:

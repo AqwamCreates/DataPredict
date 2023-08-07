@@ -42,9 +42,11 @@ local mappingList = {
 		
 		local sigmaSquaredVector = AqwamMatrixLibrary:power(sigma, 2)
 		
-		local rbfFunction = function(x, sigmaSquared) return math.exp(-x / (2 * sigmaSquared)) end
+		local multipliedSigmaSquaredVector = AqwamMatrixLibrary:multiply(-2, sigmaSquaredVector)
 		
-		return AqwamMatrixLibrary:applyFunction(rbfFunction, XSquaredVector, sigmaSquaredVector)
+		local zVector = AqwamMatrixLibrary:divide(XSquaredVector, multipliedSigmaSquaredVector)
+		
+		return AqwamMatrixLibrary:applyFunction(math.exp, zVector)
 
 	end,
 

@@ -64,7 +64,6 @@ local mappingList = {
 
 local hingeCostFunction = function (x) return math.max(0, x) end
 
-
 local function calculateMapping(x, kernelFunction, kernelParameters)
 
 	if (kernelFunction == "linear") or (kernelFunction == "cosineSimilarity") then

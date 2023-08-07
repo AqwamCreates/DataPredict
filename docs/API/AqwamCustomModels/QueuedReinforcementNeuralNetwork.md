@@ -11,6 +11,28 @@ It has the ability to adapt real-time. It is also efficient amd flexible in many
 
 It was first discovered by Aqwam and does not exists in any research literature.
 
+## Constructors
+
+### new()
+
+Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
+
+```
+QueuedReinforcementNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number): ModelObject
+```
+
+#### Parameters:
+
+* maxNumberOfIterations: How many times should the model needed to be trained.
+
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+
+* targetCost: The cost at which the model stops training.
+
+#### Returns:
+
+* ModelObject: The generated model object.
+
 ## Functions
 
 ### startQueuedReinforcement()

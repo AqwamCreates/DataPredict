@@ -12,7 +12,7 @@ local defaultMaxNumberOfEpisode = 500
 
 local defaultEpsilon = 0.5
 
-local defaultEpsilonDecayFactor = 0.5
+local defaultEpsilonDecayFactor = 0.999
 
 local defaultDiscountFactor = 0.95
 

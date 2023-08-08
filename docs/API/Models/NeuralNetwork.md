@@ -143,28 +143,6 @@ NeuralNetwork:predict(featureMatrix: Matrix): integer
 
 * predictedValue: A value that is predicted by the model.
 
-### reinforce()
-
-Reward or punish model based on the predicted output.
-
-```
-NeuralNetwork:reinforce(featureVector: Matrix, label: integer, rewardValue: number, punishValue: number): integer
-```
-
-#### Parameters:
-
-* featureVector: Matrix containing data.
-
-* label: Actual label.
-
-* rewardValue: How much do we reward the model if it gets the prediction correct (value between 0 and 1).
-
-* punishValue: How much do we punish the model if it gets the prediction incorrect (value between 0 and 1).
-
-#### Returns:
-
-* predictedValue: A value that is predicted by the model.
-
 ### getClassesList()
 
 ```

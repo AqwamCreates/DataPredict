@@ -14,6 +14,8 @@
 
 [ReinforcingNeuralNetwork](Models/ReinforcingNeuralNetwork.md)
 
+[QLearningNeuralNetwork](Models/QLearningNeuralNetwork.md)
+
 [RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md) - a.k.a. RNN
 
 [LongShortTermMemory](Models/LongShortTermMemory.md) - a.k.a. LSTM

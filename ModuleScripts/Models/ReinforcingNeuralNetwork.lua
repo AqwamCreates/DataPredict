@@ -18,6 +18,16 @@ function ReinforcingNeuralNetworkModel.new(maxNumberOfIterations, learningRate, 
 
 end
 
+function ReinforcingNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost)
+
+	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+
+	self.learningRate = learningRate or self.learningRate
+
+	self.targetCost = targetCost or self.targetCost
+
+end
+
 function ReinforcingNeuralNetworkModel:checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
 
 	if (rewardValue == nil) then error("Reward value is nil!") end

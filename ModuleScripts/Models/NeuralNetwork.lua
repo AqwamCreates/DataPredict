@@ -354,10 +354,6 @@ function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 
 	NewNeuralNetworkModel.targetCost = targetCost or defaultTargetCost
 
-	NewNeuralNetworkModel.validationFeatureMatrix = nil
-
-	NewNeuralNetworkModel.validationLabelVector = nil
-
 	NewNeuralNetworkModel.numberOfNeuronsTable = {}
 
 	NewNeuralNetworkModel.RegularizationTable = {}

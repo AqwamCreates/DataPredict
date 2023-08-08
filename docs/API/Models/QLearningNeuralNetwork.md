@@ -84,6 +84,14 @@ QLearningNeuralNetwork:reinforce(featureVector: Matrix, rewardValue: number): in
 
 * probability: The probability of predicted value.
 
+### reset()
+
+Reset model's stored values (excluding the parameters).
+
+```
+QLearningNeuralNetwork:reset()
+```
+
 ## Inherited From
 
 * [NeuralNetwork](NeuralNetwork.md)

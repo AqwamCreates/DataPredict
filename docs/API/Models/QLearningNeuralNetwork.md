@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-QLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number): ModelObject
+QLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -25,6 +25,14 @@ QLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number,
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * targetCost: The cost at which the model stops training.
+
+* maxNumberOfEpisodes: Controls how well the model learns the best actions for maximizing rewards in an environment.
+
+* epsilon: The higher the value, more likely it focuses on exploration over exploitation.
+
+* epsilonDecayFactor: Controls how fast the model goes from exploring to exploiting as it learns.
+
+* discountFactor: Balances present and future rewards in agent decisions.
 
 #### Returns:
 
@@ -37,7 +45,7 @@ QLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number,
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-QLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number)
+QLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
 ```
 
 #### Parameters:
@@ -47,6 +55,14 @@ QLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRat
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * targetCost: The cost at which the model stops training.
+
+* maxNumberOfEpisodes: Controls how well the model learns the best actions for maximizing rewards in an environment.
+
+* epsilon: The higher the value, more likely it focuses on exploration over exploitation.
+
+* epsilonDecayFactor: Controls how fast the model goes from exploring to exploiting as it learns.
+
+* discountFactor: Balances present and future rewards in agent decisions.
 
 ### reinforce()
 

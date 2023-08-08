@@ -50,21 +50,27 @@ ReinforcingNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningR
 
 ### reinforce()
 
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
+Reward or punish model based on the predicted output.
 
 ```
-ReinforcingNeuralNetwork:reinforce(featureVector: FeatureVector, label: integer, rewardValue: number, punishValue: number)
+NeuralNetwork:reinforce(featureVector: Matrix, label: integer, rewardValue: number, punishValue: number): integer
 ```
 
 #### Parameters:
 
-* featureVector: How many times should the model needed to be trained.
+* featureVector: Matrix containing data.
 
-* label: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+* label: Actual label.
 
-* rewardValue: The cost at which the model stops training.
+* rewardValue: How much do we reward the model if it gets the prediction correct (value between 0 and 1).
 
-* punishValue: The value 
+* punishValue: How much do we punish the model if it gets the prediction incorrect (value between 0 and 1).
+
+#### Returns:
+
+* predictedValue: A value that is predicted by the model.
+
+* probability: The 
 
 ## Inherited From
 

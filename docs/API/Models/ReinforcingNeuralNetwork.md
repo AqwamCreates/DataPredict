@@ -70,7 +70,7 @@ NeuralNetwork:reinforce(featureVector: Matrix, label: integer, rewardValue: numb
 
 * predictedValue: A value that is predicted by the model.
 
-* probability: The 
+* probability: The probability of predicted value.
 
 ## Inherited From
 

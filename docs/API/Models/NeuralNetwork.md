@@ -132,7 +132,7 @@ NeuralNetwork:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 * Predict the value for a given data.
 
 ```
-NeuralNetwork:predict(featureMatrix: Matrix): integer
+NeuralNetwork:predict(featureMatrix: Matrix): integer, number
 ```
 
 #### Parameters:
@@ -142,6 +142,8 @@ NeuralNetwork:predict(featureMatrix: Matrix): integer
 #### Returns:
 
 * predictedValue: A value that is predicted by the model.
+
+* probability: The probability of predicted value.
 
 ### getClassesList()
 

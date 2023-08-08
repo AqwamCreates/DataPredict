@@ -18,6 +18,18 @@ function QueuedReinforcementNeuralNetworkModel.new(maxNumberOfIterations, learni
 	
 end
 
+function QueuedReinforcementNeuralNetworkModel:checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
+
+	if (rewardValue == nil) then error("Reward value is nil!") end
+
+	if (punishValue == nil) then error("Punish value is nil!") end
+
+	if (rewardValue < 0) then error("Reward value must be a positive integer!") end
+
+	if (punishValue < 0) then error("Punish value must be a positive integer!") end
+
+end
+
 function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning)
 
 	if (self.IsQueuedReinforcementRunning == true) then error("Queued reinforcement is already active!") end
@@ -92,7 +104,7 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 			local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
 
-			local predictedLabel = self:getLabelFromOutputVector(allOutputsMatrix, self.ClassesList)
+			local predictedLabel = self:getLabelFromOutputVector(allOutputsMatrix)
 
 			table.insert(self.PredictedLabelQueue, predictedLabel)
 
@@ -130,8 +142,10 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 			isCurrentlyBackpropagating = true
 
 			if (showPredictedLabel == true) then print("Predicted Label: " .. self.PredictedLabelQueue[1] .. "\t\t\t\tActual Label: " .. self.LabelQueue[1]) end
+			
+			local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsTable[#self.numberOfNeuronsTable]
 
-			local logisticMatrix = self:convertLabelVectorToLogisticMatrix(self.ModelParameters, self.LabelQueue[1], self.ClassesList)
+			local logisticMatrix = self:convertLabelVectorToLogisticMatrix(self.LabelQueue[1])
 
 			local forwardPropagationTable = self.ForwardPropagationTableQueue[1]
 

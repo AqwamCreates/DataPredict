@@ -54,10 +54,6 @@ function BaseModel.new()
 
 	NewBaseModel.ModelParameters = nil
 	
-	NewBaseModel.LastPredictedOutput = nil
-	
-	NewBaseModel.LastCalculations = nil
-	
 	NewBaseModel.ModelParametersInitializationMode = "RandomNormalPositive"
 	
 	NewBaseModel.MinimumModelParametersInitializationValue = nil
@@ -126,7 +122,11 @@ end
 
 function BaseModel:setModelParameters(ModelParameters)
 	
-	self.ModelParameters = ModelParameters or self.ModelParameters
+	if ModelParameters then
+		
+		self.ModelParameters = deepCopyTable(ModelParameters) 
+		
+	end
 	
 end
 
@@ -136,32 +136,11 @@ function BaseModel:clearModelParameters()
 	
 end
 
-function BaseModel:clearLastPredictedOutput()
-	
-	self.LastPredictedOutput = nil
-	
-end
-
-function BaseModel:clearLastCalculations()
-	
-	self.LastCalculations = nil
-	
-end
-
-function BaseModel:clearLastPredictedOutputAndCalculations()
-	
-	BaseModel:clearLastCalculations()
-	
-	BaseModel:clearLastPredictedOutput()
-	
-end
-
 function BaseModel:printCostAndNumberOfIterations(cost, numberOfIteration)
 	
 	if self.IsOutputPrinted then print("Iteration: " .. numberOfIteration .. "\t\tCost: " .. cost) end
 
 end
-
 
 function BaseModel:setPrintOutput(option) 
 	

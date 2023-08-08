@@ -62,30 +62,6 @@ Clears the model parameters contained inside base model.
 BaseModel:clearModelParameters()
 ```
 
-### clearLastPredictedOutput()
-
-Clears the last predicted outputs made by the base model.
-
-```
-BaseModel:clearLastPredictedOutput()
-```
-
-### clearLastCalculations()
-
-Clears last calculation made by the base model.
-
-```
-BaseModel:clearLastCalculations()
-```
-
-### clearLastPredictedOutputAndCalculations()
-
-Clears the last predicted outputs and calculation made by the base model.
-
-```
-BaseModel:clearLastPredictedOutputAndCalculations()
-```
-
 ### setPrintOutput()
 
 Set if the model prints output.

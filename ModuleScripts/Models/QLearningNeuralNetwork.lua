@@ -66,17 +66,35 @@ function QLearningNeuralNetworkModel:calculateTargetModelParameters(currentFeatu
 	
 	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsTable[#self.numberOfNeuronsTable]
 
-	--local logisticMatrix = self:convertLabelVectorToLogisticMatrix(action)
+	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(action)
 
 	local forwardPropagateTable, zTable = self:forwardPropagate(currentFeatureVector)
 
 	local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
+	
+	--[[
+	
+	for column = 1, #allOutputsMatrix[1], 1 do
+		
+		if (column == actionIndex) then
+			
+			allOutputsMatrix[1][column] = target
+			
+		else
+			
+			allOutputsMatrix[1][column] = 0
+			
+		end
+		
+	end
+	
+	--]]
+	
+	logisticMatrix[1][actionIndex] = target
 
-	allOutputsMatrix[1][actionIndex] = target
+	local lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
 
-	--local lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
-
-	local backwardPropagateTable = self:backPropagate(allOutputsMatrix, zTable)
+	local backwardPropagateTable = self:backPropagate(lossMatrix, zTable)
 
 	local deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable)
 

@@ -1,0 +1,21 @@
+# Beta Version 1.12.0
+
+## Added
+
+* QLearningNeuralNetwork
+
+## Fixes
+
+* None
+
+## Changes
+
+* Removed some unused functions and internal parameters of BaseModel.
+
+* Removed unused stuff related to validation testing from neural network.
+
+* LogisticRegression and NeuralNetwork now gives probability upon calling predict() function.
+
+* Moved reinforce() function to new model called ReinforcingNeuralNetwork.
+
+* Changed some parameters in GradientDescentModes.

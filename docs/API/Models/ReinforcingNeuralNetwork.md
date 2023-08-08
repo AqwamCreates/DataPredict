@@ -53,7 +53,7 @@ ReinforcingNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningR
 Reward or punish model based on the predicted output.
 
 ```
-NeuralNetwork:reinforce(featureVector: Matrix, label: integer, rewardValue: number, punishValue: number): integer
+NeuralNetwork:reinforce(featureVector: Matrix, label: integer, rewardValue: number, punishValue: number): integer, number
 ```
 
 #### Parameters:

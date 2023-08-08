@@ -53,7 +53,7 @@ ReinforcingNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningR
 Reward or punish model based on the predicted output.
 
 ```
-NeuralNetwork:reinforce(featureVector: Matrix, label: integer, rewardValue: number, punishValue: number): integer, number
+ReinforcingNeuralNetwork:reinforce(featureVector: Matrix, label: integer, rewardValue: number, punishValue: number): integer, number
 ```
 
 #### Parameters:
@@ -71,6 +71,14 @@ NeuralNetwork:reinforce(featureVector: Matrix, label: integer, rewardValue: numb
 * predictedValue: A value that is predicted by the model.
 
 * probability: The probability of predicted value.
+
+### reset()
+
+Reset model's stored values (excluding the parameters).
+
+```
+ReinforcingNeuralNetwork:reset()
+```
 
 ## Inherited From
 

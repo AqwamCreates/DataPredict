@@ -12,9 +12,9 @@
 
 [NeuralNetwork](Models/NeuralNetwork.md)
 
-[RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md) - a.k.a. RNN
-
 [ReinforcingNeuralNetwork](Models/ReinforcingNeuralNetwork.md)
+
+[RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md) - a.k.a. RNN
 
 [LongShortTermMemory](Models/LongShortTermMemory.md) - a.k.a. LSTM
 

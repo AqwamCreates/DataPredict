@@ -96,7 +96,7 @@ QLearningNeuralNetwork:reset()
 
 * [NeuralNetwork](NeuralNetwork.md)
 
-## References:
+## References
 
 * [Reinforcement Learning with Neural Network](https://www.baeldung.com/cs/reinforcement-learning-neural-network)
 

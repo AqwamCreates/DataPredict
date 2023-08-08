@@ -14,6 +14,8 @@
 
 [RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md) - a.k.a. RNN
 
+[ReinforcingtNeuralNetwork](Models/ReinforcingtNeuralNetwork.md)
+
 [LongShortTermMemory](Models/LongShortTermMemory.md) - a.k.a. LSTM
 
 [LogisticRegression](Models/LogisticRegression.md)

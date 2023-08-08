@@ -28,7 +28,7 @@ QLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number,
 
 * maxNumberOfEpisodes: Controls how well the model learns the best actions for maximizing rewards in an environment.
 
-* epsilon: The higher the value, more likely it focuses on exploration over exploitation.
+* epsilon: The higher the value, the more likely it focuses on exploration over exploitation.
 
 * epsilonDecayFactor: Controls how fast the model goes from exploring to exploiting as it learns.
 
@@ -58,7 +58,7 @@ QLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRat
 
 * maxNumberOfEpisodes: Controls how well the model learns the best actions for maximizing rewards in an environment.
 
-* epsilon: The higher the value, more likely it focuses on exploration over exploitation.
+* epsilon: The higher the value, the more likely it focuses on exploration over exploitation.
 
 * epsilonDecayFactor: Controls how fast the model goes from exploring to exploiting as it learns.
 

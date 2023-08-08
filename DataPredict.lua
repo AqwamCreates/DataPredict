@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Version 1.11.0
+	Version 1.12.0
 
 	Aqwam's Roblox Deep Learning Library (AR-MDLL)
 
@@ -62,14 +62,18 @@ local ModelsDictionary = {
 	ExpectationMaximization = require(Models.ExpectationMaximization),
 	
 	NeuralNetwork = require(Models.NeuralNetwork),
-	
+
+	ReinforcingNeuralNetwork = require(Models.ReinforcingNeuralNetwork),
+
+	QLearningNeuralNetwork = require(Models.QLearningNeuralNetwork),
+
 	RecurrentNeuralNetwork = require(Models.RecurrentNeuralNetwork),
+
+	LongShortTermMemory = require(Models.LongShortTermMemory),
 	
 	KMedoids = require(Models.KMedoids),
 	
 	LogisticRegressionOneVsAll = require(Models.LogisticRegressionOneVsAll),
-	
-	LongShortTermMemory = require(Models.LongShortTermMemory),
 	
 	SupportVectorMachineOneVsAll = require(Models.SupportVectorMachineOneVsAll),
 	

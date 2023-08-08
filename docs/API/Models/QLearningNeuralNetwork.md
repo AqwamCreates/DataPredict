@@ -95,3 +95,9 @@ QLearningNeuralNetwork:reset()
 ## Inherited From
 
 * [NeuralNetwork](NeuralNetwork.md)
+
+## References:
+
+* [Reinforcement Learning with Neural Network](https://www.baeldung.com/cs/reinforcement-learning-neural-network)
+
+* [Deep Q Networks (DQN) in Python From Scratch by Using OpenAI Gym and TensorFlow- Reinforcement Learning Tutorial]([https://www.baeldung.com/cs/reinforcement-learning-neural-network](https://aleksandarhaber.com/deep-q-networks-dqn-in-python-from-scratch-by-using-openai-gym-and-tensorflow-reinforcement-learning-tutorial/)https://aleksandarhaber.com/deep-q-networks-dqn-in-python-from-scratch-by-using-openai-gym-and-tensorflow-reinforcement-learning-tutorial/)

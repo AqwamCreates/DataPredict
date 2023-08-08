@@ -69,14 +69,14 @@ QLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRat
 Reward or punish model based on the predicted output.
 
 ```
-QLearningNeuralNetwork:reinforce(featureVector: Matrix, rewardValue: number): integer, number
+QLearningNeuralNetwork:reinforce(currentFeatureVector: Matrix, rewardValue: number): integer, number
 ```
 
 #### Parameters:
 
-* featureVector: Matrix containing data.
+* currentFeatureVector: Matrix containing data for current state.
 
-* rewardValue: How much do we reward the model if it gets the prediction correct (value between 0 and 1).
+* rewardValue: The reward value added/subtracted during current state (recommended value between -1 and 1, but can be larger than these values). 
 
 #### Returns:
 

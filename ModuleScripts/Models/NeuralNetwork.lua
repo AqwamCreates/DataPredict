@@ -96,17 +96,11 @@ local function createClassesList(labelVector)
 
 end
 
-function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(modelParameters, labelVector, classesList)
+function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
+	
+	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsTable[#self.numberOfNeuronsTable]
 
-	local logisticMatrix
-
-	local lastLayerNumber = #modelParameters
-
-	local layerMatrix = modelParameters[lastLayerNumber]
-
-	local numberOfNeurons = #layerMatrix[1]
-
-	if (numberOfNeurons ~= #classesList) then error("The number of classes are not equal to number of neurons. Please adjust your last layer using setLayers() function.") end
+	if (numberOfNeuronsAtFinalLayer ~= #self.ClassesList) then error("The number of classes are not equal to number of neurons. Please adjust your last layer using setLayers() function.") end
 
 	if (typeof(labelVector) == "number") then
 
@@ -114,7 +108,7 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(modelParameters, 
 
 	end
 
-	local logisticMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, numberOfNeurons)
+	local logisticMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, numberOfNeuronsAtFinalLayer)
 
 	local label
 
@@ -124,7 +118,7 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(modelParameters, 
 
 		label = labelVector[row][1]
 
-		labelPosition = table.find(classesList, label)
+		labelPosition = table.find(self.ClassesList, label)
 
 		logisticMatrix[row][labelPosition] = 1
 
@@ -310,15 +304,25 @@ function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix, numb
 
 end
 
-function NeuralNetworkModel:getLabelFromOutputVector(outputVector, classesList)
+function NeuralNetworkModel:getLabelFromOutputVector(outputVector)
+	
+	local z = AqwamMatrixLibrary:applyFunction(math.exp, outputVector)
+	
+	local zSum = AqwamMatrixLibrary:sum(z)
+	
+	local softmax = AqwamMatrixLibrary:divide(z, zSum)
+	
+	local highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(softmax)
+	
+	local label
+	
+	if classIndex then
+		
+		label = self.ClassesList[classIndex[2]]
+		
+	end
 
-	local highestValue = math.max(unpack(outputVector[1]))
-
-	local labelPosition = table.find(outputVector[1], highestValue)
-
-	local label = classesList[labelPosition]
-
-	return label
+	return label, highestProbability
 
 end
 
@@ -335,18 +339,6 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
 	end
 
 	return false
-
-end
-
-function NeuralNetworkModel:checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
-
-	if (rewardValue == nil) then error("Reward value is nil!") end
-
-	if (punishValue == nil) then error("Punish value is nil!") end
-
-	if (rewardValue < 0) then error("Reward value must be a positive integer!") end
-
-	if (punishValue < 0) then error("Punish value must be a positive integer!") end
 
 end
 
@@ -399,6 +391,8 @@ function NeuralNetworkModel:generateLayers()
 	local layersArray = self.numberOfNeuronsTable
 
 	local numberOfLayers = #layersArray
+	
+	if (#self.numberOfNeuronsTable == 1) then error("There is only one layer!") end
 
 	local ModelParameters = {}
 
@@ -516,19 +510,7 @@ end
 
 function NeuralNetworkModel:train(featureMatrix, labelVector)
 
-	if (self.ModelParameters == nil) then 
-		
-		if (#self.numberOfNeuronsTable > 1) then 
-			
-			self:generateLayers() 
-			
-		else
-			
-			error("There is only one layer!")
-			
-		end
-		
-	end
+	if (self.ModelParameters == nil) then self:generateLayers() end
 	
 	local numberOfFeatures = #featureMatrix[1]
 
@@ -566,8 +548,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	local classesList
 
-	local previousDeltaTable
-
 	local lossMatrix
 
 	if (#self.ClassesList == 0) then
@@ -582,7 +562,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	end
 
-	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(self.ModelParameters, labelVector, self.ClassesList)
+	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(labelVector)
 
 	repeat
 		
@@ -608,8 +588,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
-		previousDeltaTable = deltaTable
-
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
@@ -626,55 +604,13 @@ end
 
 function NeuralNetworkModel:predict(featureMatrix)
 
-	local forwardPropagateTable = self:forwardPropagate(featureMatrix, self.ModelParameters, self.activationFunction)
+	local forwardPropagateTable = self:forwardPropagate(featureMatrix)
 
 	local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
 
-	local label = self:getLabelFromOutputVector(allOutputsMatrix, self.ClassesList)
+	local label, highestProbability = self:getLabelFromOutputVector(allOutputsMatrix)
 
-	return label
-
-end
-
-function NeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishValue)
-
-	self:checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
-
-	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(self.ModelParameters, label, self.ClassesList)
-
-	local forwardPropagateTable, zTable = self:forwardPropagate(featureVector, self.ModelParameters, self.activationFunction)
-
-	local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
-
-	local lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
-
-	local backwardPropagateTable = self:backPropagate(self.ModelParameters, lossMatrix, zTable, self.activationFunction)
-
-	local deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable)
-
-	local predictedLabel = self:getLabelFromOutputVector(allOutputsMatrix, self.ClassesList)
-	
-	local multiplyFactor
-
-	if (predictedLabel == label) then
-		
-		multiplyFactor = rewardValue
-
-	else
-		
-		multiplyFactor = punishValue
-
-	end
-	
-	self.ModelParameters = self:gradientDescent(multiplyFactor, deltaTable, 1)
-
-	for i, Optimizer in ipairs(self.OptimizerTable) do
-
-		if Optimizer then Optimizer:reset() end
-
-	end
-
-	return predictedLabel
+	return label, highestProbability
 
 end
 

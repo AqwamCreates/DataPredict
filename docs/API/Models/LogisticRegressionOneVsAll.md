@@ -80,7 +80,7 @@ LogisticRegressionOneVsAll:train(featureMatrix: Matrix, labelVector: Matrix): nu
 * Predict the value for a given data.
 
 ```
-LogisticRegressionOneVsAll:predict(featureMatrix: Matrix): number, number
+LogisticRegressionOneVsAll:predict(featureMatrix: Matrix): integer, number
 ```
 
 #### Parameters:

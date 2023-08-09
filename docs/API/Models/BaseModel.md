@@ -62,6 +62,18 @@ Clears the model parameters contained inside base model.
 BaseModel:clearModelParameters()
 ```
 
+### setAutoResetOptimizers()
+
+Set if the optimizer resets at the end of iterations.
+
+```
+BaseModel:setAutoResetOptimizers(option: boolean)
+```
+
+#### Parameters:
+
+* option: A boolean value that specifies if optimizers resets at the end of iterations.
+
 ### setPrintOutput()
 
 Set if the model prints output.

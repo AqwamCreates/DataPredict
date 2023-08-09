@@ -587,11 +587,15 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	
+	if (self.AutoResetOptimizers) then
+		
+		for i, Optimizer in ipairs(self.OptimizerTable) do
 
-	for i, Optimizer in ipairs(self.OptimizerTable) do
+			if Optimizer then Optimizer:reset() end
 
-		if Optimizer then Optimizer:reset() end
-
+		end
+		
 	end
 	
 	return costArray

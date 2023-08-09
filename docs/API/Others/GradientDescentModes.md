@@ -7,7 +7,7 @@
 Runs the machine/deep learning model specific gradient descent mode.
 
 ```
-GradientDescentMode:startGradientDescent(Model: ModelObject, mode: string, featureMatrix: Matrix, labelVector: Matrix, batchSize: integer, isLabelRequired: boolean, showOutputCost: boolean)
+GradientDescentMode:startGradientDescent(Model: ModelObject, mode: string, featureMatrix: Matrix, labelVector: Matrix, batchSize: integer, showOutputCost: boolean)
 ```
 
 #### Parameters:
@@ -21,8 +21,6 @@ GradientDescentMode:startGradientDescent(Model: ModelObject, mode: string, featu
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
 * batchSize: The batch size to be inputted into the model.
-
-* isLabelRequired: Set whether or not the model requires labels.
 
 * showOutputCost: Set whether or not to show the final cost for each epoch (MiniBatch) or data (Stochastic).
 

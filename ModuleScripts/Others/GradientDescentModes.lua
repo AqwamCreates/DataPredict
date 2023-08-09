@@ -1,6 +1,6 @@
 local GradientDescentModes = {}
 
-local function breakFeatureMatrixToBatches(featureMatrix, labelVector, batchSize, isLabelRequired)
+local function breakFeatureMatrixToBatches(featureMatrix, labelVector, batchSize)
 	
 	local numberOfBatches = math.ceil(#featureMatrix/batchSize)
 	
@@ -26,7 +26,7 @@ local function breakFeatureMatrixToBatches(featureMatrix, labelVector, batchSize
 		
 		table.insert(featureMatrixBatchesTable, batchFeatureMatrix)
 		
-		if (isLabelRequired == false) then continue end
+		if (labelVector == nil) then continue end
 		
 		batchLabelVector  = {}
 		
@@ -46,7 +46,7 @@ local function startBatchGradientDescent(MachineLearningModel, featureMatrix, la
 	
 end
 
-local function startMiniBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector, batchSize, isLabelRequired, showOutputCost)
+local function startMiniBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector, batchSize, showOutputCost)
 	
 	if (batchSize < 0) then error("Batch size cannot be negative!") end
 	
@@ -54,13 +54,11 @@ local function startMiniBatchGradientDescent(MachineLearningModel, featureMatrix
 	
 	local numberOfBatches = math.ceil(#featureMatrix/batchSize)
 	
-	local featureMatrixBatchesTable, labelVectorBatchesTable = breakFeatureMatrixToBatches(featureMatrix, labelVector, batchSize, isLabelRequired)
+	local featureMatrixBatchesTable, labelVectorBatchesTable = breakFeatureMatrixToBatches(featureMatrix, labelVector, batchSize)
 	
 	local batchFeatureMatrix
 	
 	local batchLabelVector
-	
-	local dataArray
 	
 	local costArray
 	
@@ -72,8 +70,6 @@ local function startMiniBatchGradientDescent(MachineLearningModel, featureMatrix
 
 		batchLabelVector = labelVectorBatchesTable[currentBatchNumber]
 
-		dataArray = {batchFeatureMatrix, batchLabelVector}
-
 		costArray = MachineLearningModel:train(featureMatrix, labelVector)
 		
 		cost = costArray[#costArray]
@@ -84,7 +80,7 @@ local function startMiniBatchGradientDescent(MachineLearningModel, featureMatrix
 
 end
 
-local function startStochasticGradientDescent(MachineLearningModel, featureMatrix, labelVector, isLabelRequired, showOutputCost)
+local function startStochasticGradientDescent(MachineLearningModel, featureMatrix, labelVector, showOutputCost)
 	
 	local featureVector
 	
@@ -98,7 +94,7 @@ local function startStochasticGradientDescent(MachineLearningModel, featureMatri
 		
 		featureVector = {featureMatrix[dataIndex]}
 		
-		if (isLabelRequired) then label = {labelVector[dataIndex]} end
+		if (labelVector[dataIndex]) then label = {labelVector[dataIndex]} end
 		
 		costArray = MachineLearningModel:train(featureVector, label)
 		
@@ -110,9 +106,7 @@ local function startStochasticGradientDescent(MachineLearningModel, featureMatri
 
 end
 
-function GradientDescentModes:startGradientDescent(MachineLearningModel, gradientDescentAlgorithmType, featureMatrix, labelVector, batchSize, isLabelRequired, showOutputCost)
-	
-	if (typeof(isLabelRequired) == "nil") then isLabelRequired = true end
+function GradientDescentModes:startGradientDescent(MachineLearningModel, gradientDescentAlgorithmType, featureMatrix, labelVector, batchSize, showOutputCost)
 	
 	if (typeof(showOutputCost) == "nil") then showOutputCost = true end
 	
@@ -124,11 +118,11 @@ function GradientDescentModes:startGradientDescent(MachineLearningModel, gradien
 		
 		batchSize = batchSize or 2
 		
-		startMiniBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector, batchSize, isLabelRequired, showOutputCost)
+		startMiniBatchGradientDescent(MachineLearningModel, featureMatrix, labelVector, batchSize, showOutputCost)
 		
 	elseif (gradientDescentAlgorithmType == "Stochastic") then
 		
-		startStochasticGradientDescent(MachineLearningModel, featureMatrix, labelVector, isLabelRequired, showOutputCost)
+		startStochasticGradientDescent(MachineLearningModel, featureMatrix, labelVector, showOutputCost)
 		
 	else
 		

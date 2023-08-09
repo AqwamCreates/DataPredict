@@ -275,13 +275,10 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 	end
 
-	if self.Optimizer then
-
-		self.Optimizer:reset()
-
-	end
+	if (self.Optimizer) and (self.AutoResetOptimizers) then self.Optimizer:reset() end
 
 	return costArray
+	
 end
 
 function SupportVectorMachineModel:predict(featureMatrix)

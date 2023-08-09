@@ -65,8 +65,16 @@ function BaseModel.new()
 	NewBaseModel.DataWaitDuration = nil
 	
 	NewBaseModel.SequenceWaitDuration = nil
+	
+	NewBaseModel.AutoResetOptimizers = true
 
 	return NewBaseModel
+	
+end
+
+function BaseModel:setAutoResetOptimizers(option)
+	
+	self.AutoResetOptimizers = self:getBooleanOrDefaultOption(option, self.AutoResetOptimizers)
 	
 end
 
@@ -225,7 +233,6 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 	end
 	
 end
-
 
 function BaseModel:destroy()
 	

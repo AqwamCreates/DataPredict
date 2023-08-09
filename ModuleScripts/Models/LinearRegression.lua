@@ -205,7 +205,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values") end
 	
-	if self.Optimizer then self.Optimizer:reset() end
+	if (self.Optimizer) and (self.AutoResetOptimizers) then self.Optimizer:reset() end
 	
 	return costArray
 	

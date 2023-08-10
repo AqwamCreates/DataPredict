@@ -18,13 +18,9 @@ local defaultDiscountFactor = 0.95
 
 local defaultMaxNumberOfIterations = 1
 
-local defaultLearningRate = 1
-
 function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 	
 	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
-
-	learningRate = learningRate or defaultLearningRate
 
 	local NewStateActionRewardStateActionNeuralNetworkModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 

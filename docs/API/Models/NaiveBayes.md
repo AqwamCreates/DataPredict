@@ -74,7 +74,7 @@ NaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput): integer, number
 
 -OR-
 
-* predictedMatrix: A matrix containing all 
+* predictedMatrix: A matrix containing all predicted values from all classes.
 
 ### getClassesList()
 

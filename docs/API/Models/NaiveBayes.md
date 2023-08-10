@@ -62,9 +62,9 @@ NaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput): integer, number
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* predictedValue: A value that is predicted by the model.
 
-* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability. 
+* probability: The probability of predicted value.
 
 #### Returns:
 

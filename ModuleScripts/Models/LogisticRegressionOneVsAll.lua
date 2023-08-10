@@ -226,7 +226,7 @@ function LogisticRegressionOneVsAllModel:train(featureMatrix, labelVector)
 	
 end
 
-function LogisticRegressionOneVsAllModel:predict(featureMatrix)
+function LogisticRegressionOneVsAllModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local highestClass
 	
@@ -239,6 +239,8 @@ function LogisticRegressionOneVsAllModel:predict(featureMatrix)
 	local zNormalVector = AqwamMatrixLibrary:normalizeMatrix(zVector)
 	
 	local softMaxVector = softMax(zNormalVector)
+	
+	if (returnOriginalOutput == true) then return softMaxVector end
 	
 	for column = 1, #softMaxVector[1], 1 do
 		

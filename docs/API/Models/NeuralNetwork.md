@@ -115,13 +115,13 @@ NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: 
 Train the model.
 
 ```
-NeuralNetwork:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+NeuralNetwork:train(featureMatrix: Matrix, labelVector / labelMatrix: Matrix): number[]
 ```
 #### Parameters:
 
 * featureMatrix: Matrix containing all data.
 
-* labelVector: A (n x 1) matrix containing values related to featureMatrix.
+* labelVector / labelMatrix: A (n x 1) / (n x o) matrix containing values related to featureMatrix. When using the label matrix, the number of columns must be equal to number of classes.
 
 #### Returns:
 
@@ -132,18 +132,24 @@ NeuralNetwork:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 * Predict the value for a given data.
 
 ```
-NeuralNetwork:predict(featureMatrix: Matrix): integer, number
+NeuralNetwork:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): integer, number -OR- Matrix
 ```
 
 #### Parameters:
 
 * featureMatrix: Matrix containing all data.
 
+* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability. 
+
 #### Returns:
 
 * predictedValue: A value that is predicted by the model.
 
 * probability: The probability of predicted value.
+
+-OR-
+
+* predictedMatrix: A matrix containing all 
 
 ### getClassesList()
 

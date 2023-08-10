@@ -14,6 +14,8 @@
 
 [ReinforcingNeuralNetwork](Models/ReinforcingNeuralNetwork.md)
 
+[StateActionRewardStateActionNeuralNetwork](Models/StateActionRewardStateActionNeuralNetwork.md) - a.k.a. SARSA-NN
+
 [QLearningNeuralNetwork](Models/QLearningNeuralNetwork.md)
 
 [RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md) - a.k.a. RNN

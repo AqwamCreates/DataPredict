@@ -86,8 +86,6 @@ function StateActionRewardStateActionNeuralNetworkModel:update(previousFeatureVe
 	
 	local newTargetVector = AqwamMatrixLibrary:add(predictedVector, multipliedReward)
 	
-	local actionIndex = table.find(self.ClassesList, previousAction)
-	
 	self:train(previousFeatureVector, newTargetVector)
 
 end

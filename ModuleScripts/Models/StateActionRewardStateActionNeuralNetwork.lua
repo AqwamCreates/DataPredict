@@ -68,7 +68,7 @@ function StateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberO
 
 end
 
-function StateActionRewardStateActionNeuralNetworkModel:update(previousFeatureVector, currentFeatureVector, previousAction, currentAction, rewardValue)
+function StateActionRewardStateActionNeuralNetworkModel:update(previousFeatureVector, currentFeatureVector, rewardValue)
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
@@ -145,18 +145,8 @@ function StateActionRewardStateActionNeuralNetworkModel:reinforce(currentFeature
 		currentAction, highestProbability = self:predict(currentFeatureVector)
 
 	end
-	
-	if (self.previousAction == nil) then
-		
-		self.previousAction = currentAction
-		
-		return nil
-		
-	end
 
-	self:update(self.previousFeatureVector, currentFeatureVector, self.previousAction, currentAction, rewardValue)
-	
-	self.previousAction = currentAction
+	self:update(self.previousFeatureVector, currentFeatureVector, rewardValue)
 	
 	return currentAction, highestProbability
 

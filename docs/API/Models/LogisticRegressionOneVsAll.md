@@ -80,18 +80,20 @@ LogisticRegressionOneVsAll:train(featureMatrix: Matrix, labelVector: Matrix): nu
 * Predict the value for a given data.
 
 ```
-LogisticRegressionOneVsAll:predict(featureMatrix: Matrix): integer, number
+LogisticRegressionOneVsAll:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): integer, number -OR-
 ```
 
 #### Parameters:
 
 * featureMatrix: Matrix containing all data.
 
+* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability.
+
 #### Returns:
 
-* predictedValue: A value that is predicted by the model.
+* predictedValue: The cluster which the data belongs to.
 
-* probability: The probability of the predicted value.
+* highestProbability: The probability.
 
 ## Inherited From
 

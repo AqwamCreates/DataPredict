@@ -16,11 +16,15 @@ local defaultEpsilonDecayFactor = 0.999
 
 local defaultDiscountFactor = 0.95
 
+local defaultMaxNumberOfIterations = 1
+
+local defaultLearningRate = 1
+
 function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 	
-	maxNumberOfIterations = maxNumberOfIterations or 1
+	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
-	learningRate = learningRate or 1
+	learningRate = learningRate or defaultLearningRate
 
 	local NewQLearningNeuralNetworkModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 

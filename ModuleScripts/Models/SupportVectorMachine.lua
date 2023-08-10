@@ -281,11 +281,13 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	
 end
 
-function SupportVectorMachineModel:predict(featureMatrix)
+function SupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
 
 	local mappedFeatureVector = calculateMapping(featureMatrix, self.kernelFunction, self.kernelParameters)
 
 	local predictedValue = AqwamMatrixLibrary:dotProduct(mappedFeatureVector, self.ModelParameters)
+	
+	if (returnOriginalOutput == true) then return predictedValue end
 
 	if (predictedValue > 0) then
 

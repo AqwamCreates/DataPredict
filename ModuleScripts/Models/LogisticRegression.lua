@@ -88,10 +88,6 @@ function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, sigmoi
 	NewLogisticRegressionModel.sigmoidFunction = sigmoidFunction or defaultSigmoidFunction
 
 	NewLogisticRegressionModel.targetCost = targetCost or defaultTargetCost
-
-	NewLogisticRegressionModel.validationFeatureMatrix = nil
-
-	NewLogisticRegressionModel.validationLabelVector = nil
 	
 	NewLogisticRegressionModel.Optimizer = nil
 	

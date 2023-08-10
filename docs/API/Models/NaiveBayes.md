@@ -57,18 +57,24 @@ NaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-NaiveBayes:predict(featureMatrix: Matrix): integer, number
+NaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput): integer, number -OR- predictedMatrix
 ```
 
 #### Parameters:
 
 * featureMatrix: Matrix containing data.
 
+* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability. 
+
 #### Returns:
 
-* clusterNumber: The cluster which the data belongs to.
+* predictedValue: The cluster which the data belongs to.
 
-* highestProbabilityVector: The probability (n x 1) matrix of the datapoint belongs to that particular cluster.
+* highestProbability: The probability.
+
+-OR-
+
+* predictedMatrix: A matrix containing all 
 
 ### getClassesList()
 

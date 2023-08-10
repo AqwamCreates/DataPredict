@@ -28,9 +28,9 @@ StateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: integer, le
 
 * maxNumberOfEpisodes: Controls how well the model learns the best actions for maximizing rewards in an environment.
 
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation.
+* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
 
-* epsilonDecayFactor: Controls how fast the model goes from exploring to exploiting as it learns.
+* epsilonDecayFactor: Controls how fast the model goes from exploring to exploiting as it learns. The value must be set between 0 and 1.
 
 * discountFactor: Balances present and future rewards in agent decisions.
 
@@ -58,9 +58,9 @@ StateActionRewardStateActionNeuralNetwork:setParameters(maxNumberOfIterations: i
 
 * maxNumberOfEpisodes: Controls how well the model learns the best actions for maximizing rewards in an environment.
 
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation.
+* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
 
-* epsilonDecayFactor: Controls how fast the model goes from exploring to exploiting as it learns.
+* epsilonDecayFactor: Controls how fast the model goes from exploring to exploiting as it learns. The value must be set between 0 and 1.
 
 * discountFactor: Balances present and future rewards in agent decisions.
 

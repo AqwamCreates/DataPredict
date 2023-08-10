@@ -45,6 +45,8 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 ### ModuleScripts - Release Versions (Fully Tested and Stable)
 
+[DataPredict Library (Release Version 1.1)](https://www.roblox.com/library/14383260890/DataPredict-Release-Version-1-1)
+
 [DataPredict Library (Release Version 1.0)](https://www.roblox.com/library/14048670741/DataPredict-Release-Version-1-0)
 
 ### ModuleScripts Packages (Recommended For Up-To-Date Libraries)

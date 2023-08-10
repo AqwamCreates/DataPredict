@@ -60,7 +60,7 @@ featureVector3 = {
 
 ## LabelVector
 
-Typically contains numbers stored in a (m x 1) matrix, where m is the number of data
+Typically contains numbers stored in a (m x 1) matrix, where m is the number of data.
 
 ### Examples
 
@@ -90,6 +90,37 @@ labelVector3 = {
 }
 ```
 
+## LabelMatrix
+
+Typically contains numbers stored in a (m x o) matrix, where m is the number of data and o is the number of classes.
+
+### Examples
+
+```
+labelVector1 = {
+
+  {1, 0.1, 99},
+  {1, 2, 3}
+
+}
+
+labelVector2 = {
+
+  {-1, 12},
+  {1, 12},
+  {2, 1}
+
+}
+
+labelVector3 = {
+
+  {1, 3, 4, 5, 6},
+  {1, 98, 12, 53, 12},
+  {0, 12, 0, 12, 3},
+  {0, 12, 0, 3, 3},
+
+}
+```
 
 ## TokenSequenceArray / TokenInputSequenceArray / TokenOutputSequenceArray
 

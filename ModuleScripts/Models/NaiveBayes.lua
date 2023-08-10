@@ -342,77 +342,87 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 	
 end
 
-function NaiveBayesModel:predict(featureMatrix)
+function NaiveBayesModel:calculateFinalProbability(featureVector, probabilitiesVector, meanVector, standardDeviationVector)
 	
-	local meanVector 
-	
-	local standardDeviationVector
-	
-	local probabilitiesVector
-	
-	local priorProbabilitiesVector
-	
-	local multipliedProbalitiesVector 
-	
-	local highestProbability = -math.huge
-	
-	local predictedClass
-	
-	local probabilityVector
-	
-	local probability
-	
-	local initialProbability
-	
+	local finalProbability
+
+	local priorProbabilitiesVector = calculateGaussianDensity(self.UseLogProbabilities, featureVector, meanVector, standardDeviationVector)
+
+	local multipliedProbalitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, priorProbabilitiesVector)
+
 	if (self.UseLogProbabilities) then
 
-		initialProbability = 0
+		finalProbability = AqwamMatrixLibrary:sum(multipliedProbalitiesVector)
 
 	else
 
-		initialProbability = 1
+		finalProbability = 1
+
+		for column = 1, #multipliedProbalitiesVector[1], 1 do
+
+			finalProbability *= multipliedProbalitiesVector[1][column]
+
+		end
 
 	end
 	
+	return finalProbability
+	
+end
+
+function NaiveBayesModel:predictClass(probabilityMatrix)
+	
+	local probability 
+	
+	local predictedClass
+	
+	local highestProbability = -math.huge
+	
 	for classIndex, classValue in ipairs(self.ClassesList) do
-		
-		meanVector = {self.ModelParameters[1][classIndex]}
 
-		standardDeviationVector = {self.ModelParameters[2][classIndex]}
+		probability = probabilityMatrix[1][classIndex]
 
-		probabilitiesVector = {self.ModelParameters[3][classIndex]}
-		
-		priorProbabilitiesVector = calculateGaussianDensity(self.UseLogProbabilities, featureMatrix, meanVector, standardDeviationVector)
-		
-		multipliedProbalitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, priorProbabilitiesVector)
-		
-		probability = initialProbability
-		
-		for column = 1, #multipliedProbalitiesVector[1], 1 do
-			
-			if (self.UseLogProbabilities) then
-
-				probability += multipliedProbalitiesVector[1][column]
-
-			else
-
-				probability *= multipliedProbalitiesVector[1][column]
-
-			end
-			
-		end
-		
 		if (probability > highestProbability) then
-			
+
 			predictedClass = classValue
 
 			highestProbability = probability
 
 		end
+
+	end
+
+	return predictedClass, highestProbability
+	
+end
+
+function NaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
+	
+	local finalProbabilityVector
+	
+	local finalProbabilityMatrix = AqwamMatrixLibrary:createMatrix(#featureMatrix, #self.ClassesList)
+	
+	for classIndex, classValue in ipairs(self.ClassesList) do
+		
+		local meanVector = {self.ModelParameters[1][classIndex]}
+
+		local standardDeviationVector = {self.ModelParameters[2][classIndex]}
+
+		local probabilitiesVector = {self.ModelParameters[3][classIndex]}
+		
+		for i = 1, #featureMatrix, 1 do
+			
+			local featureVector = {featureMatrix[i]}
+			
+			finalProbabilityMatrix[i][classIndex] = self:calculateFinalProbability(featureVector, probabilitiesVector, meanVector, standardDeviationVector)
+			
+		end
 		
 	end
 	
-	return predictedClass, highestProbability
+	if (returnOriginalOutput == true) then return finalProbabilityMatrix end
+	
+	return self:predictClass(finalProbabilityMatrix)
 	
 end
 

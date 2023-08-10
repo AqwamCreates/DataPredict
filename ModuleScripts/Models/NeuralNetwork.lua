@@ -98,7 +98,7 @@ end
 
 function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 	
-	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsTable[#self.numberOfNeuronsTable]
+	local numberOfNeuronsAtFinalLayer = #self.ModelParameters[#self.ModelParameters][1]
 
 	if (numberOfNeuronsAtFinalLayer ~= #self.ClassesList) then error("The number of classes are not equal to number of neurons. Please adjust your last layer using setLayers() function.") end
 
@@ -549,6 +549,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	local numberOfData = #featureMatrix
 
 	local numberOfLayers = #self.ModelParameters
+	
+	local numberOfNeuronsAtFinalLayer = #self.ModelParameters[numberOfLayers][1]
 
 	local transposedLayerMatrix
 
@@ -573,6 +575,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		logisticMatrix = self:processLabelVector(labelVector)
 		
 	else
+		
+		if (#labelVector[1] ~= numberOfNeuronsAtFinalLayer) then error("The number of columns for the label matrix is not equal to number of neurons at final layer!") end
 		
 		logisticMatrix = labelVector
 		
@@ -621,6 +625,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 end
 
 function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)
+	
+	if (self.ModelParameters == nil) then self:generateLayers() end
 
 	local forwardPropagateTable = self:forwardPropagate(featureMatrix)
 

@@ -17,6 +17,10 @@ local defaultEpsilonDecayFactor = 0.999
 local defaultDiscountFactor = 0.95
 
 function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+	
+	maxNumberOfIterations = maxNumberOfIterations or 1
+	
+	learningRate = learningRate or 1
 
 	local NewQLearningNeuralNetworkModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 
@@ -58,50 +62,6 @@ function QLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learni
 
 	self.currentEpsilon = epsilon or self.currentEpsilon
 
-end
-
-function QLearningNeuralNetworkModel:calculateTargetModelParameters(currentFeatureVector, action, target)
-	
-	local actionIndex = table.find(self.ClassesList, action)
-	
-	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsTable[#self.numberOfNeuronsTable]
-
-	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(action)
-
-	local forwardPropagateTable, zTable = self:forwardPropagate(currentFeatureVector)
-
-	local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
-	
-	--[[
-	
-	for column = 1, #allOutputsMatrix[1], 1 do
-		
-		if (column == actionIndex) then
-			
-			allOutputsMatrix[1][column] = target
-			
-		else
-			
-			allOutputsMatrix[1][column] = 0
-			
-		end
-		
-	end
-	
-	--]]
-	
-	logisticMatrix[1][actionIndex] = target
-
-	local lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
-
-	local backwardPropagateTable = self:backPropagate(lossMatrix, zTable)
-
-	local deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable)
-
-	local TargetModelParameters = self:gradientDescent(self.learningRate, deltaTable, 1)
-	
-	return TargetModelParameters
-	
 end
 
 function QLearningNeuralNetworkModel:update(previousFeatureVector, currentFeatureVector, action, rewardValue)

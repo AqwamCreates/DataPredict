@@ -288,20 +288,8 @@ function SupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
 	local predictedValue = AqwamMatrixLibrary:dotProduct(mappedFeatureVector, self.ModelParameters)
 	
 	if (returnOriginalOutput == true) then return predictedValue end
-
-	if (predictedValue > 0) then
-
-		return 1
-
-	elseif (predictedValue < 0) then
-
-		return -1
-
-	else
-
-		return 0
-
-	end
+	
+	return math.clamp(predictedValue, -1, 1)
 
 end
 

@@ -64,13 +64,13 @@ NaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): intege
 
 * featureMatrix: Matrix containing all data.
 
-* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability.
+* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability. 
 
 #### Returns:
 
-* predictedValue: The cluster which the data belongs to.
+* predictedValue: A value that is predicted by the model.
 
-* highestProbability: The probability.
+* probability: The probability of predicted value.
 
 -OR-
 

@@ -95,10 +95,6 @@ function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lossFunc
 	
 	NewLinearRegressionModel.targetCost = targetCost or defaultTargetCost
 	
-	NewLinearRegressionModel.validationFeatureMatrix = nil
-	
-	NewLinearRegressionModel.validationLabelVector = nil
-	
 	NewLinearRegressionModel.Optimizer = nil
 	
 	NewLinearRegressionModel.Regularization = nil

@@ -504,6 +504,26 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 end
 
+function NeuralNetworkModel:processLabelVector(labelVector)
+	
+	if (#self.ClassesList == 0) then
+
+		self.ClassesList = createClassesList(labelVector)
+
+		table.sort(self.ClassesList, function(a,b) return a < b end)
+
+	else
+
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector") end
+
+	end
+
+	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(labelVector)
+	
+	return logisticMatrix
+	
+end
+
 function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
@@ -545,20 +565,18 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	local classesList
 
 	local lossMatrix
-
-	if (#self.ClassesList == 0) then
-
-		self.ClassesList = createClassesList(labelVector)
-
-		table.sort(self.ClassesList, function(a,b) return a < b end)
-
+	
+	local logisticMatrix
+	
+	if (#labelVector[1] == 1) then
+		
+		logisticMatrix = self:processLabelVector(labelVector)
+		
 	else
-
-		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector") end
-
+		
+		logisticMatrix = labelVector
+		
 	end
-
-	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(labelVector)
 
 	repeat
 		
@@ -602,11 +620,13 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 end
 
-function NeuralNetworkModel:predict(featureMatrix)
+function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)
 
 	local forwardPropagateTable = self:forwardPropagate(featureMatrix)
 
 	local allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
+	
+	if (returnOriginalOutput == true) then return allOutputsMatrix end
 
 	local label, highestProbability = self:getLabelFromOutputVector(allOutputsMatrix)
 

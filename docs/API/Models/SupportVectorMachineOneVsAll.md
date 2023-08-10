@@ -91,9 +91,17 @@ SupportVectorMachineOneVsAll:predict(featureMatrix: Matrix): number
 
 * featureMatrix: Matrix containing all data.
 
+* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest distance. 
+
 #### Returns:
 
 * predictedValue: A value that is predicted by the model.
+
+* distance: The distance of predicted value.
+
+-OR-
+
+* predictedMatrix: A matrix containing all predicted values from all classes.
 
 ## Inherited From
 

@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Version 1.12.0
+	Version 1.13.0
 
 	Aqwam's Roblox Deep Learning Library (AR-MDLL)
 
@@ -66,6 +66,8 @@ local ModelsDictionary = {
 	ReinforcingNeuralNetwork = require(Models.ReinforcingNeuralNetwork),
 
 	QLearningNeuralNetwork = require(Models.QLearningNeuralNetwork),
+	
+	StateActionRewardStateActionNeuralNetwork = require(Models.StateActionRewardStateActionNeuralNetwork),
 
 	RecurrentNeuralNetwork = require(Models.RecurrentNeuralNetwork),
 

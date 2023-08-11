@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - ReinforcingNeuralNetwork
 
-NeuralNetwork is a supervised machine learning model that predicts any positive numbers of discrete values.
+ReinforcingNeuralNetwork is a model inherited from NeuralNetwork with extra functionalities added. It predicts any positive numbers of discrete values.
 
 ## Stored Model Parameters
 

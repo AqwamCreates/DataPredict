@@ -76,7 +76,7 @@ StateActionRewardStateActionNeuralNetwork:reinforce(currentFeatureVector: Matrix
 
 * currentFeatureVector: Matrix containing data from the current state.
 
-* rewardValue: The reward value added/subtracted from the current current state (recommended value between -1 and 1, but can be larger than these values). 
+* rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
 
 #### Returns:
 

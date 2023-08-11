@@ -216,13 +216,21 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variance = 2 / numberOfColumns
 		
-		return AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns) * math.sqrt(variance)
+		local squareRootVariance = math.sqrt(variance)
+		
+		local RandomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		
+		return AqwamMatrixLibrary:multiply(squareRootVariance, RandomNormal) 
 
 	elseif (initializationMode == "Xavier") then
 
 		local variance = 1 / numberOfColumns
-		
-		return AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns) * math.sqrt(variance)
+
+		local squareRootVariance = math.sqrt(variance)
+
+		local RandomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+
+		return AqwamMatrixLibrary:multiply(squareRootVariance, RandomNormal) 
 		
 	elseif (initializationMode == "Uniform") then
 		

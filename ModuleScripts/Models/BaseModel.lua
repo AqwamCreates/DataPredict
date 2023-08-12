@@ -54,7 +54,7 @@ function BaseModel.new()
 
 	NewBaseModel.ModelParameters = nil
 	
-	NewBaseModel.ModelParametersInitializationMode = "RandomNormalPositive"
+	NewBaseModel.ModelParametersInitializationMode = "RandomNormalNegativeAndPositive"
 	
 	NewBaseModel.MinimumModelParametersInitializationValue = nil
 
@@ -212,32 +212,78 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		return AqwamMatrixLibrary:subtract(RandomNormal1, RandomNormal2)
 		
-	elseif (initializationMode == "He") then
-
-		local variance = 2 / numberOfColumns
+	elseif (initializationMode == "HeNormal") then
 		
-		local squareRootVariance = math.sqrt(variance)
+		local variancePart1 = 2 / numberOfRows
+		
+		local variancePart = math.sqrt(variancePart1)
 		
 		local RandomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 		
-		return AqwamMatrixLibrary:multiply(squareRootVariance, RandomNormal) 
+		return  AqwamMatrixLibrary:multiply(variancePart, RandomNormal) 
+		
+	elseif (initializationMode == "XavierNormal") then
 
-	elseif (initializationMode == "Xavier") then
+		local variancePart1 = 2 / (numberOfRows + numberOfColumns)
 
-		local variance = 1 / numberOfColumns
-
-		local squareRootVariance = math.sqrt(variance)
+		local variancePart = math.sqrt(variancePart1)
 
 		local RandomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 
-		return AqwamMatrixLibrary:multiply(squareRootVariance, RandomNormal) 
+		return AqwamMatrixLibrary:multiply(variancePart, RandomNormal) 
 		
-	elseif (initializationMode == "Uniform") then
-		
-		local range = math.sqrt(3 / numberOfColumns)  -- Uniform initialization range
-		
-		return AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns, -range, range)
+	elseif (initializationMode == "HeUniform") then
 
+		local variancePart1 = 6 / numberOfRows
+
+		local variancePart = math.sqrt(variancePart1)
+
+		local RandomNormalPart1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		
+		local RandomNormalPart2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		
+		local RandomNormal = AqwamMatrixLibrary:subtract(RandomNormalPart1, RandomNormalPart2)
+
+		return  AqwamMatrixLibrary:multiply(variancePart, RandomNormal) 
+
+	elseif (initializationMode == "XavierUniform") then
+
+		local variancePart1 = 6 / (numberOfRows + numberOfColumns)
+
+		local variancePart = math.sqrt(variancePart1)
+
+		local RandomNormalPart1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+
+		local RandomNormalPart2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+
+		local RandomNormal = AqwamMatrixLibrary:subtract(RandomNormalPart1, RandomNormalPart2)
+
+		return AqwamMatrixLibrary:multiply(variancePart, RandomNormal) 
+		
+	elseif (initializationMode == "LeCunNormal") then
+
+		local variancePart1 = 1 / numberOfRows
+
+		local variancePart = math.sqrt(variancePart1)
+
+		local RandomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+
+		return  AqwamMatrixLibrary:multiply(variancePart, RandomNormal) 
+		
+	elseif (initializationMode == "LeCunUniform") then
+
+		local variancePart1 = 1 / numberOfRows
+
+		local variancePart = math.sqrt(variancePart1)
+
+		local RandomNormalPart1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+
+		local RandomNormalPart2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+
+		local RandomNormal = AqwamMatrixLibrary:subtract(RandomNormalPart1, RandomNormalPart2)
+
+		return AqwamMatrixLibrary:multiply(variancePart, RandomNormal) 
+		
 	end
 	
 end

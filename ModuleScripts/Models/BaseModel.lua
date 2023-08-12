@@ -182,6 +182,18 @@ function BaseModel:setModelParametersInitializationMode(initializationMode, mini
 	
 end
 
+local function createRandomUniformMatrix(numberOfRows, numberOfColumns)
+	
+	local RandomUniformPart1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+
+	local RandomUniformPart2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+	
+	local RandomUniform = AqwamMatrixLibrary:subtract(RandomUniformPart1, RandomUniformPart2)
+	
+	return RandomUniform
+	
+end
+
 function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 	
 	local initializationMode = self.ModelParametersInitializationMode
@@ -228,13 +240,9 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomNormalPart1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		local RandomUniform = createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
-		local RandomNormalPart2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-
-		local RandomNormal = AqwamMatrixLibrary:subtract(RandomNormalPart1, RandomNormalPart2)
-
-		return  AqwamMatrixLibrary:multiply(variancePart, RandomNormal) 
+		return  AqwamMatrixLibrary:multiply(variancePart, RandomUniform) 
 		
 	elseif (initializationMode == "XavierNormal") then
 
@@ -252,13 +260,9 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomNormalPart1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		local RandomUniform = createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
-		local RandomNormalPart2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-
-		local RandomNormal = AqwamMatrixLibrary:subtract(RandomNormalPart1, RandomNormalPart2)
-
-		return AqwamMatrixLibrary:multiply(variancePart, RandomNormal)
+		return AqwamMatrixLibrary:multiply(variancePart, RandomUniform)
 		
 	elseif (initializationMode == "LeCunNormal") then
 
@@ -272,17 +276,13 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "LeCunUniform") then
 
-		local variancePart1 = 1 / numberOfRows
+		local variancePart1 = 3 / numberOfRows
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomNormalPart1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		local RandomUniform = createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
-		local RandomNormalPart2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-
-		local RandomNormal = AqwamMatrixLibrary:subtract(RandomNormalPart1, RandomNormalPart2)
-
-		return AqwamMatrixLibrary:multiply(variancePart, RandomNormal) 
+		return AqwamMatrixLibrary:multiply(variancePart, RandomUniform) 
 
 	end
 	

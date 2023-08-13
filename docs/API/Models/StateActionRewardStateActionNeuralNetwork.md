@@ -84,6 +84,18 @@ StateActionRewardStateActionNeuralNetwork:reinforce(currentFeatureVector: Matrix
 
 * probability: The probability of predicted value.
 
+### setPrintReinforcementOutput()
+
+Set whether or not to show the current number of episodes and current epsilon.
+
+```
+StateActionRewardStateActionNeuralNetwork:setPrintReinforcementOutput(option: boolean)
+```
+
+#### Parameters:
+
+* option: A boolean value that determines the reinforcement output to be printed or not.
+
 ### reset()
 
 Reset model's stored values (excluding the parameters).

@@ -50,7 +50,7 @@ end
 
 function QLearningNeuralNetworkModel:setPrintReinforcementOutput(option)
 	
-	self.printReinforcementOutput = option or self.printReinforcementOutput
+	self.printReinforcementOutput = self:getBooleanOrDefaultOption(option, self.printReinforcementOutput)
 	
 end
 

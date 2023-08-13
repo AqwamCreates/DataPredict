@@ -84,6 +84,18 @@ QLearningNeuralNetwork:reinforce(currentFeatureVector: Matrix, rewardValue: numb
 
 * probability: The probability of predicted value.
 
+### setPrintReinforcementOutput()
+
+Set whether or not to show the current max number of episodes and current epsilon.
+
+```
+QLearningNeuralNetwork:setPrintReinforcementOutput(option: boolean)
+```
+
+#### Parameters:
+
+* option: A boolean value that determines the reinforcement output to be printed or not.
+
 ### reset()
 
 Reset model's stored values (excluding the parameters).

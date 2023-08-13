@@ -23,6 +23,8 @@ function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
 	local NewQLearningNeuralNetworkModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
+	
+	NewQLearningNeuralNetworkModel:setPrintOutput(false)
 
 	setmetatable(NewQLearningNeuralNetworkModel, QLearningNeuralNetworkModel)
 
@@ -39,9 +41,17 @@ function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 	NewQLearningNeuralNetworkModel.currentEpsilon = epsilon or defaultEpsilon
 
 	NewQLearningNeuralNetworkModel.previousFeatureVector = nil
+	
+	NewQLearningNeuralNetworkModel.printReinforcementOutput = true
 
 	return NewQLearningNeuralNetworkModel
 
+end
+
+function QLearningNeuralNetworkModel:setPrintReinforcementOutput(option)
+	
+	self.printReinforcementOutput = option or self.printReinforcementOutput
+	
 end
 
 function QLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
@@ -139,6 +149,8 @@ function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue
 	end
 
 	self:update(self.previousFeatureVector, currentFeatureVector, action, rewardValue)
+	
+	if (self.printReinforcementOutput == true) then print("Current Number Of Episodes: " .. self.currentNumberOfEpisodes .. "\t\tCurrent Epsilon: " .. self.currentEpsilon) end
 	
 	return action, highestProbability
 

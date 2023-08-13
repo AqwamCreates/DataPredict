@@ -86,7 +86,7 @@ QLearningNeuralNetwork:reinforce(currentFeatureVector: Matrix, rewardValue: numb
 
 ### setPrintReinforcementOutput()
 
-Set whether or not to show the current max number of episodes and current epsilon.
+Set whether or not to show the current number of episodes and current epsilon.
 
 ```
 QLearningNeuralNetwork:setPrintReinforcementOutput(option: boolean)

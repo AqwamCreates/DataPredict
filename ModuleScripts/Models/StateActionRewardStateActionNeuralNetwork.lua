@@ -50,7 +50,7 @@ end
 
 function StateActionRewardStateActionNeuralNetworkModel:setPrintReinforcementOutput(option)
 
-	self.printReinforcementOutput = option or self.printReinforcementOutput
+	self.printReinforcementOutput = self:getBooleanOrDefaultOption(option, self.printReinforcementOutput)
 
 end
 

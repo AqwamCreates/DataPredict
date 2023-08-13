@@ -23,6 +23,8 @@ function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIteration
 	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
 	local NewStateActionRewardStateActionNeuralNetworkModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
+	
+	NewStateActionRewardStateActionNeuralNetworkModel:setPrintOutput(false)
 
 	setmetatable(NewStateActionRewardStateActionNeuralNetworkModel, StateActionRewardStateActionNeuralNetworkModel)
 
@@ -39,8 +41,16 @@ function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIteration
 	NewStateActionRewardStateActionNeuralNetworkModel.currentEpsilon = epsilon or defaultEpsilon
 
 	NewStateActionRewardStateActionNeuralNetworkModel.previousFeatureVector = nil
+	
+	NewStateActionRewardStateActionNeuralNetworkModel.printReinforcementOutput = true
 
 	return NewStateActionRewardStateActionNeuralNetworkModel
+
+end
+
+function StateActionRewardStateActionNeuralNetworkModel:setPrintReinforcementOutput(option)
+
+	self.printReinforcementOutput = option or self.printReinforcementOutput
 
 end
 
@@ -141,6 +151,8 @@ function StateActionRewardStateActionNeuralNetworkModel:reinforce(currentFeature
 	end
 
 	self:update(self.previousFeatureVector, currentFeatureVector, rewardValue)
+	
+	if (self.printReinforcementOutput == true) then print("Current Number Of Episodes: " .. self.currentNumberOfEpisodes .. "\t\tCurrent Epsilon: " .. self.currentEpsilon) end
 	
 	return currentAction, highestProbability
 

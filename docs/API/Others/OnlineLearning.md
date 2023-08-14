@@ -22,12 +22,12 @@ Creates a new online learning object
 
 ## Functions
 
-### startOnlineLearning()
+### start()
 
 Creates new threads for real-time training.
 
 ```
-OnlineLearning:startOnlineLearning(showFinalCost: boolean, showWaitWarning: boolean): coroutine
+OnlineLearning:start(showFinalCost: boolean, showWaitWarning: boolean): coroutine
 ```
 
 #### Parameters:
@@ -40,44 +40,44 @@ OnlineLearning:startOnlineLearning(showFinalCost: boolean, showWaitWarning: bool
 
 * trainCoroutine: A coroutine that trains the model.
 
-### stopOnlineLearning()
+### stop()
 
 Stops the threads for real-time training.
 
 ```
-OnlineLearning:stopOnlineLearning()
+OnlineLearning:stop()
 ```
 
-### addInputToOnlineLearningQueue()
+### addInput()
 
 Adds feature vector / token input sequence array to to queue.
 
 ```
-OnlineLearning:addInputToOnlineLearningQueue(input: matrix / tokenSequenceArray[])
+OnlineLearning:addInput(input: matrix / tokenSequenceArray[])
 ```
 
 #### Parameters:
 
 * input: A (1 x n) matrix / a token input sequence array to be added to the reinforcement queue.
 
-### addOutputToOnlineLearningQueue()
+### addOutput()
 
 Adds label / token output sequence array  to queue.
 
 ```
-OnlineLearning:addOutputToOnlineLearningQueue(output: integer / tokenSequenceArray[])
+OnlineLearning:addOutput(output: integer / tokenSequenceArray[])
 ```
 
 #### Parameters:
 
 * output: The actual label related to the previous feature vector / a token output sequence array.  
 
-### returnCostArrayFromOnlineLearningQueue()
+### returnCostArray()
 
 Returns cost array from the queue.
 
 ```
-OnlineLearning:returnCostArrayFromOnlineLearningQueue(): number[]
+OnlineLearning:returnCostArray(): number[]
 ```
 
 #### Returns:

@@ -30,7 +30,7 @@ function QueuedReinforcementNeuralNetworkModel:checkIfRewardAndPunishValueAreGiv
 
 end
 
-function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning)
+function QueuedReinforcementNeuralNetworkModel:start(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning)
 
 	if (self.IsQueuedReinforcementRunning == true) then error("Queued reinforcement is already active!") end
 	
@@ -259,13 +259,13 @@ function QueuedReinforcementNeuralNetworkModel:startQueuedReinforcement(rewardVa
 
 end
 
-function QueuedReinforcementNeuralNetworkModel:stopQueuedReinforcement()
+function QueuedReinforcementNeuralNetworkModel:stop()
 
 	self.IsQueuedReinforcementRunning = false
 
 end
 
-function QueuedReinforcementNeuralNetworkModel:addFeatureVectorToReinforcementQueue(featureVector)
+function QueuedReinforcementNeuralNetworkModel:addFeatureVector(featureVector)
 
 	if (self.IsQueuedReinforcementRunning == nil) or (self.IsQueuedReinforcementRunning == false) then error("Queued reinforcement is not active!") end
 
@@ -273,7 +273,7 @@ function QueuedReinforcementNeuralNetworkModel:addFeatureVectorToReinforcementQu
 
 end
 
-function QueuedReinforcementNeuralNetworkModel:addLabelToReinforcementQueue(label)
+function QueuedReinforcementNeuralNetworkModel:addLabel(label)
 
 	if (self.IsQueuedReinforcementRunning == nil) or (self.IsQueuedReinforcementRunning == false) then error("Queued reinforcement is not active!") end
 
@@ -281,7 +281,7 @@ function QueuedReinforcementNeuralNetworkModel:addLabelToReinforcementQueue(labe
 
 end
 
-function QueuedReinforcementNeuralNetworkModel:returnPredictedLabelFromReinforcementQueue()
+function QueuedReinforcementNeuralNetworkModel:returnPredictedLabel()
 
 	if (self.IsQueuedReinforcementRunning == nil) or (self.IsQueuedReinforcementRunning == false) then error("Queued reinforcement is not active!") end
 
@@ -289,7 +289,7 @@ function QueuedReinforcementNeuralNetworkModel:returnPredictedLabelFromReinforce
 
 end
 
-function QueuedReinforcementNeuralNetworkModel:returnCostFromReinforcementQueue()
+function QueuedReinforcementNeuralNetworkModel:returnCost()
 
 	if (self.IsQueuedReinforcementRunning == nil) or (self.IsQueuedReinforcementRunning == false) then error("Queued reinforcement is not active!") end
 

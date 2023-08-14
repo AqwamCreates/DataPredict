@@ -35,12 +35,12 @@ QueuedReinforcementNeuralNetwork.new(maxNumberOfIterations: integer, learningRat
 
 ## Functions
 
-### startQueuedReinforcement()
+### start()
 
 Creates new threads for real-time reinforcement.
 
 ```
-QueuedReinforcementNeuralNetwork:startQueuedReinforcement(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning): coroutine, coroutine, coroutine
+QueuedReinforcementNeuralNetwork:start(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning): coroutine, coroutine, coroutine
 ```
 
 #### Parameters:
@@ -63,56 +63,56 @@ QueuedReinforcementNeuralNetwork:startQueuedReinforcement(rewardValue, punishVal
 
 * resetCoroutine: A coroutine where it resets the internal data. This is mainly to avoid memory leaks.
 
-### stopQueuedReinforcement()
+### stop()
 
 Stops the threads for real-time reinforcement.
 
 ```
-QueuedReinforcementNeuralNetwork:stopQueuedReinforcement()
+QueuedReinforcementNeuralNetwork:stop()
 ```
 
-### addFeatureVectorToReinforcementQueue()
+### addFeatureVector()
 
 Adds feature vector to queue.
 
 ```
-QueuedReinforcementNeuralNetwork:addFeatureVectorToReinforcementQueue(featureVector)
+QueuedReinforcementNeuralNetwork:addFeatureVector(featureVector)
 ```
 
 #### Parameters:
 
 * featureVector: A (1 x n) matrix containing all the features to be added to the reinforcement queue.
 
-### addLabelToReinforcementQueue()
+### addLabel()
 
 Adds label to queue.
 
 ```
-QueuedReinforcementNeuralNetwork:addLabelToReinforcementQueue(label)
+QueuedReinforcementNeuralNetwork:addLabel(label)
 ```
 
 #### Parameters:
 
 * label: The actual label related to the previous feature vector.  
 
-### returnPredictedLabelFromReinforcementQueue()
+### returnPredictedLabel()
 
 Returns predicted label from the queue.
 
 ```
-QueuedReinforcementNeuralNetwork:returnPredictedLabelFromReinforcementQueue(): integer
+QueuedReinforcementNeuralNetwork:returnPredictedLabel(): integer
 ```
 
 #### Returns:
 
 * label: The predicted label related to the previous feature vector.
 
-### returnCostFromReinforcementQueue()
+### returnCost()
 
 Returns predicted label from the queue.
 
 ```
-QueuedReinforcementNeuralNetwork:returnCostFromReinforcementQueue(): number
+QueuedReinforcementNeuralNetwork:returnCost(): number
 ```
 
 #### Returns:

@@ -197,8 +197,6 @@ function QueuedReinforcementNeuralNetworkModel:start(rewardValue, punishValue, s
 
 			table.remove(self.LabelQueue, 1)
 
-			table.remove(self.PredictedLabelQueue, 1)
-
 			table.remove(self.ZTableQueue, 1)
 
 			table.remove(self.ForwardPropagationTableQueue, 1)
@@ -206,6 +204,8 @@ function QueuedReinforcementNeuralNetworkModel:start(rewardValue, punishValue, s
 			task.spawn(function()
 				
 				for frame = 1, 70 do task.wait() end -- to allow cost to be fetched. Otherwise it will remove it before it can be fetched!
+				
+				table.remove(self.PredictedLabelQueue, 1)
 				
 				table.remove(self.CostArrayQueue, 1)
 				

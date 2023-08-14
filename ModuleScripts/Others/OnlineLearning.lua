@@ -94,7 +94,7 @@ function OnlineLearning:restorePreviousModelParametersIfCostIsInfinity(cost)
 	
 end
 
-function OnlineLearning:startOnlineLearning(showFinalCost, showIdleWarning)
+function OnlineLearning:start(showFinalCost, showIdleWarning)
 
 	if (self.IsOnlineLearningRunning == true) then error(onlineLearningActiveText) end
 
@@ -184,13 +184,13 @@ function OnlineLearning:startOnlineLearning(showFinalCost, showIdleWarning)
 
 end
 
-function OnlineLearning:stopOnlineLearning()
+function OnlineLearning:stop()
 
 	self.IsOnlineLearningRunning = false
 
 end
 
-function OnlineLearning:addInputToOnlineLearningQueue(input)
+function OnlineLearning:addInput(input)
 
 	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error(onlineLearningNotActiveText) end
 
@@ -198,7 +198,7 @@ function OnlineLearning:addInputToOnlineLearningQueue(input)
 
 end
 
-function OnlineLearning:addOutputToOnlineLearningQueue(output)
+function OnlineLearning:addOutput(output)
 
 	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error(onlineLearningNotActiveText) end
 	
@@ -209,7 +209,7 @@ function OnlineLearning:addOutputToOnlineLearningQueue(output)
 end
 
 
-function OnlineLearning:returnCostArrayFromOnlineLearningQueue()
+function OnlineLearning:returnCostArray()
 
 	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error(onlineLearningNotActiveText) end
 

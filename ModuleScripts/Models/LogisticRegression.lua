@@ -235,7 +235,7 @@ function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local predictedLabelVector = AqwamMatrixLibrary:applyFunction(cutOffFunction, probabilityVector)
 	
-	return predictedLabelVector
+	return predictedLabelVector, probabilityVector
 
 end
 

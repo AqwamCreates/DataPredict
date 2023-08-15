@@ -652,7 +652,7 @@ function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)
 	
 	if (returnOriginalOutput == true) then return allOutputsMatrix end
 
-	local predictedLabelVector, highestProbabilitiesVector = self:getLabelFromOutputVector(allOutputsMatrix)
+	local predictedLabelVector, highestProbabilitiesVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 
 	return predictedLabelVector, highestProbabilitiesVector
 

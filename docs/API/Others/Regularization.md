@@ -27,7 +27,7 @@ Regularization.new(lambda: number, regularisationMode: string): RegularizationOb
 Set regularization’s parameters. When any of the arguments are not given, previous argument values for that argument will be used.
 
 ```
-Regularization:setParameters(lambda: number, regularisationMode: string): RegularizationObject
+Regularization:setParameters(lambda: number, regularisationMode: string)
 ```
 
 #### Parameters:

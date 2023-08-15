@@ -207,13 +207,15 @@ function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local z = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
 	
-	local probability = sigmoidFunctionList[self.sigmoidFunction](z)
+	local sigmoidFunction = sigmoidFunctionList[self.sigmoidFunction]
+	
+	local probability = AqwamMatrixLibrary:applyFunction(sigmoidFunction, z)
 	
 	if (returnOriginalOutput == true) then return probability end
 	
 	local label
 	
-	if (probability >= 0.5) then 
+	if (probability[1] >= 0.5) then 
 		
 		label = 1
 		

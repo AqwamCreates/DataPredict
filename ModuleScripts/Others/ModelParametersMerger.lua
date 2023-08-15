@@ -482,6 +482,10 @@ function ModelParametersMerger:generate()
 		
 		NewModelParameters = bestMerge(Model, ModelParametersArray, modelType, featureMatrix, labelVector)
 		
+	else
+		
+		error("Unknown merge type")
+		
 	end
 
 	return NewModelParameters

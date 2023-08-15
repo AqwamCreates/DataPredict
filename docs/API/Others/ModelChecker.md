@@ -12,7 +12,7 @@ ModelChecker.new(Model: ModelObject, modelType: string, maxNumberOfIterations: i
 
 #### Parameters:
 
-* Model: The model object needed to perform certain merges.
+* Model: The model object needed to perform testing and validation.
 
 * modelType: The type where the model falls under. Available options are "regression" and "classification".
 
@@ -36,7 +36,7 @@ ModelChecker:setParameters(Model: ModelObject, modelType: string, maxNumberOfIte
 
 #### Parameters:
 
-* Model: The model object needed to perform certain merges.
+* Model: The model object needed to perform testing and validation.
 
 * modelType: The type where the model falls under. Available options are "regression" and "classification".
 

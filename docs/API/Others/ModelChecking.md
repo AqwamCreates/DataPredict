@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - ModelChecking
+# [API Reference](../../API.md) - [Others](../Others.md) - ModelChecker
 
 ## Functions
 

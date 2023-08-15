@@ -18,7 +18,7 @@ ModelChecker.new(Model: ModelObject, modelType: string, maxNumberOfIterations: i
 
 * maxNumberOfIterations: How many times should the model needed to be trained if it is being validated.
 
-* maxGeneralizationError: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are "average", "weightedAverage" and "best".
+* maxGeneralizationError: The maximum generalization error so that it stops training if it is being validated. It is calculated by subtracting the validation cost and the training cost.
 
 #### Returns:
 
@@ -40,7 +40,9 @@ ModelChecker:setParameters(Model: ModelObject, modelType: string, maxNumberOfIte
 
 * modelType: The type where the model falls under. Available options are "regression" and "classification".
 
-* mergeType: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are "average", "weightedAverage" and "best".
+* maxNumberOfIterations: How many times should the model needed to be trained if it is being validated.
+
+* maxGeneralizationError: The maximum generalization error so that it stops training if it is being validated. It is calculated by subtracting the validation cost and the training cost.
 
 ### setModelParametersArray()
 

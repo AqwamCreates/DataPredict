@@ -2,8 +2,6 @@
 
 [ModelChecking](Others/ModelChecking.md)
 
-[ModelParametersMerger](Others/ModelParametersMerger.md)
-
 [GradientDescentModes](Others/GradientDescentModes.md)
 
 [Regularization](Others/Regularization.md)

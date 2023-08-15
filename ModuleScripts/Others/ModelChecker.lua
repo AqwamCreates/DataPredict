@@ -8,6 +8,8 @@ local defaultMaxNumberOfIterations = 100
 
 local defaultMaxGeneralizationError = math.huge
 
+local logLossFunction = function (y, p) return -(y * math.log10(p)) end
+
 function ModelChecker.new(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
 	
 	if (Model == nil) then error("No model in the ModelChecker!") end
@@ -76,11 +78,9 @@ function ModelChecker:convertLabelVectorToLogisticMatrix(labelVector)
 
 end
 
-function ModelChecker:testClassification(testFeatureMatrix, testLabelVector) -- only works with supervised learning
+function ModelChecker:testClassification(testFeatureMatrix, testLabelVector)
 	
 	local testLogisticMatrix
-	
-	local logLossFunction = function (y, p) return -(y * math.log(p)) end
 	
 	if (#testLabelVector[1] == 1) then
 
@@ -144,11 +144,7 @@ function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVecto
 
 	local validationCostArray = {}
 	
-	local numberOfValidationData = #validationFeatureMatrix
-	
-	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#validationLabelVector, 1)
-	
-	local logLossFunction = function (y, p) return -(y * math.log(p)) end
+	local numberOfValidationData = #validationFeatureMatrix 
 	
 	if (#validationLabelVector[1] == 1) then
 		
@@ -164,8 +160,8 @@ function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVecto
 
 		trainCost = self.Model:train(trainFeatureMatrix, trainLabelVector)
 		
-		predictedLabelMatrix = self.Model:predict(validationFeatureMatrix, true) 
-		
+		predictedLabelMatrix = self.Model:predict(validationFeatureMatrix, true)
+	
 		validationCostVector = AqwamMatrixLibrary:applyFunction(logLossFunction, validationLogisticMatrix, predictedLabelMatrix)
 		
 		validationCost = AqwamMatrixLibrary:sum(validationCostVector)

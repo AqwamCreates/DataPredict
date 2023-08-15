@@ -44,7 +44,7 @@ end
 
 function ModelParametersMerger:setModelParametersArray(ModelParametersArray)
 	
-	self.ModelParametersArray = ModelParametersArray
+	self.ModelParametersArray = ModelParametersArray or self.ModelParametersArray 
 	
 end
 
@@ -66,7 +66,9 @@ local function checkDepth(array, depth)
 	
 	depth = depth or 0
 	
-	if (typeof(array[1]) == "table") then
+	local valueType = typeof(array)
+	
+	if (valueType == "table") then
 		
 		return checkDepth(array[1], depth + 1)
 		
@@ -82,7 +84,7 @@ local function checkIfIsTable(array)
 	
 	local depth = checkDepth(array)
 	
-	local isTable = (depth == 2)
+	local isTable = (depth == 3)
 	
 	return isTable
 	
@@ -236,33 +238,55 @@ local function calculateScaledModelParameters(ModelParametersArray, percentageAr
 	
 end
 
-local function weightedAverageMergeRegression(Model, ModelParametersArray, featureMatrix, labelVector)
+local function generateErrorArray(Model, ModelParametersArray, featureMatrix, labelVector)
 	
 	local errorArray = {}
 	
-	local errorPercentageArray
-	
-	local NewModelParameters
-	
 	for i, ModelParameters in ipairs(ModelParametersArray) do
-		
+
 		Model:setModelParameters(ModelParameters)
-		
+
 		local predictVector = Model:predict(featureMatrix)
-		
+
 		local errorVector = AqwamMatrixLibrary:subtract(labelVector, predictVector)
-		
-		local absoluteErrorVector = AqwamMatrixLibrary:apply(math.abs, errorVector)
-		
+
+		local absoluteErrorVector = AqwamMatrixLibrary:applyFunction(math.abs, errorVector)
+
 		local errorValue = AqwamMatrixLibrary:sum(absoluteErrorVector)
-		
+
 		table.insert(errorArray, errorValue)
+
+	end
+	
+	return errorArray
+	
+end
+
+local function convertErrorArrayToAccuracyArray(errorArray)
+	
+	local accuracyArray = {}
+	
+	local errorPercentageArray = convertValueArrayToPercentageArray(errorArray)
+	
+	for i, errorPercentage in ipairs(errorPercentageArray) do
+		
+		local accuracy = 1 - errorPercentage
+		
+		table.insert(accuracyArray, accuracy)
 		
 	end
 	
-	errorPercentageArray = convertValueArrayToPercentageArray(errorArray)
+	return accuracyArray
 	
-	NewModelParameters = calculateScaledModelParameters(ModelParametersArray, errorPercentageArray)
+end
+
+local function weightedAverageMergeRegression(Model, ModelParametersArray, featureMatrix, labelVector)
+	
+	local errorArray =  generateErrorArray(Model, ModelParametersArray, featureMatrix, labelVector)
+	
+	local accuracyArray = convertErrorArrayToAccuracyArray(errorArray)
+	
+	local NewModelParameters = calculateScaledModelParameters(ModelParametersArray, accuracyArray)
 	
 	return NewModelParameters
 	
@@ -348,43 +372,31 @@ local function weightedAverageMerge(Model, ModelParametersArray, modelType, feat
 	
 end
 
-local function votingMerge(Model, ModelParametersArray, featureMatrix, labelVector)
+local function bestMerge(Model, ModelParametersArray, modelType, featureMatrix, labelVector)
+	
+	local accuracyArray
 	
 	local NewModelParameters
 	
-	local highestNumberOfCorrects = -math.huge
+	local highestAccuracy = -math.huge
 	
-	local numberOfCorrectsArray = {}
-	
-	local totalLabel = #labelVector
-
-	for i, ModelParameters in ipairs(ModelParametersArray) do
-
-		local numberOfCorrects = 0
-
-		Model:setModelParameters(ModelParameters)
-
-		for j = 1, totalLabel, 1 do
-
-			local label = Model:predict(featureMatrix)
-
-			if (label == labelVector[j][1]) then
-
-				numberOfCorrects += 1
-
-			end
-
-		end
-
-		table.insert(numberOfCorrectsArray, numberOfCorrects)
-
+	if (modelType == "regression") then
+		
+		local errorArray = generateErrorArray(Model, ModelParametersArray, featureMatrix, labelVector)
+		
+		accuracyArray = convertErrorArrayToAccuracyArray(errorArray)
+		
+	elseif (modelType == "classification") then
+		
+		accuracyArray = generateAccuracyArray(Model, ModelParametersArray, featureMatrix, labelVector)
+		
 	end
 	
-	for i, numberOfCorrects in ipairs(numberOfCorrectsArray)  do
+	for i, accuracy in ipairs(accuracyArray)  do
 		
-		if (numberOfCorrects > highestNumberOfCorrects) then 
+		if (accuracy > highestAccuracy) then 
 			
-			highestNumberOfCorrects = numberOfCorrects
+			highestAccuracy = accuracy
 			
 			NewModelParameters = ModelParametersArray[i]
 			
@@ -420,9 +432,9 @@ function ModelParametersMerger:generate()
 		
 		NewModelParameters = weightedAverageMerge(Model, ModelParametersArray, modelType, featureMatrix, labelVector)
 		
-	elseif (mergeType == "voting") then
+	elseif (mergeType == "best") then
 		
-		NewModelParameters = votingMerge(Model, ModelParametersArray, featureMatrix, labelVector)
+		NewModelParameters = bestMerge(Model, ModelParametersArray, modelType, featureMatrix, labelVector)
 		
 	end
 

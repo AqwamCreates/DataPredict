@@ -18,7 +18,7 @@ function QueuedReinforcementNeuralNetworkModel.new(maxNumberOfIterations, learni
 	
 end
 
-function QueuedReinforcementNeuralNetworkModel:checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
+function QueuedReinforcementNeuralNetworkModel:checkIfRewardAndPunishValuesAreGiven(rewardValue, punishValue)
 
 	if (rewardValue == nil) then error("Reward value is nil!") end
 
@@ -38,7 +38,7 @@ function QueuedReinforcementNeuralNetworkModel:start(rewardValue, punishValue, s
 	
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
-	self:checkIfRewardAndPunishValueAreGiven(rewardValue, punishValue)
+	self:checkIfRewardAndPunishValuesAreGiven(rewardValue, punishValue)
 
 	self.FeatureVectorQueue = {}
 

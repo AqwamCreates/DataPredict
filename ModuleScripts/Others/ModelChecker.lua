@@ -10,9 +10,9 @@ local defaultMaxGeneralizationError = math.huge
 
 function ModelChecker.new(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
 	
-	if (Model == nil) then error("No models in the ModelChecker!") end
+	if (Model == nil) then error("No model in the ModelChecker!") end
 
-	if (modelType == nil) then error("No modelType in the ModelChecker!") end
+	if (modelType == nil) then error("No model type in the ModelChecker!") end
 	
 	local NewModelChecker = {}
 	

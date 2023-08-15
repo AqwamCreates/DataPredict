@@ -20,7 +20,7 @@ ModelParametersMerger.new(Model: ModelObjects, modelType: string, mergeType: str
 
 #### Returns:
 
-* ModelParametersMergerObject: The generated regularization object.
+* ModelParametersMergerObject: The generated ModelParametersMerger object.
 
 ## Functions
 

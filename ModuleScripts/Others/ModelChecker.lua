@@ -143,14 +143,14 @@ function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVecto
 		validationCost = AqwamMatrixLibrary:sum(validationCostVector)
 		
 		validationCost /= numberOfValidationData
+		
+		generalizationError = validationCost - trainCost[1]
 
 		table.insert(validationCostArray, validationCost)
 
 		table.insert(trainCostArray, trainCost[1])
 
 		numberOfIterations += 1
-		
-		generalizationError = validationCost - trainCost[1]
 
 	until (self.maxNumberOfIterations >= numberOfIterations) or (generalizationError >= self.maxGeneralizationError)
 
@@ -190,13 +190,13 @@ function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, v
 		
 		validationCost /= numberOfValidationData
 		
+		generalizationError = validationCost - trainCost[1]
+		
 		table.insert(validationCostArray, validationCost)
 		
 		table.insert(trainCostArray, trainCost[1])
 		
 		numberOfIterations += 1
-		
-		generalizationError = validationCost - trainCost[1]
 		
 	until (self.maxNumberOfIterations >= numberOfIterations) or (generalizationError >= self.maxGeneralizationError)
 	

@@ -131,7 +131,7 @@ Don't forget to leave a like in Roblox's DevForum and the Github's repository if
 
 Since you read the whole introduction, I recommend you to have a look at these to further your knowledge.
 
-* [Using Model Checking](UsingModelChecking.md)
+* [Using Model Checker](UsingModelChecker.md)
 
 * [Using Optimizers](UsingOptimizers.md)
 

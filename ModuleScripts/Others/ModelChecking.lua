@@ -1,83 +1,250 @@
-local AqwamMachineLearningModels = script.Parent:GetChildren()
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
 local ModelChecking = {}
 
-function ModelChecking:testClassificationModel(MachineLearningModel, featureMatrix, labelVector) -- only works with supervised learning
+ModelChecking.__index = ModelChecking
+
+local defaultMaxNumberOfIterations = 100
+
+local defaultMaxGeneralizationError = math.huge
+
+function ModelChecking.new(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
 	
-	local modelOutputVector = AqwamMatrixLibrary:createMatrix(#labelVector, 1)
+	local NewModelChecking = {}
 	
-	local modelOutput
+	setmetatable(NewModelChecking, ModelChecking)
 	
-	local featureVector
+	NewModelChecking.Model = Model
 	
-	local accuracy
+	NewModelChecking.modelType = modelType
 	
-	local correctAtDataArray = {}
+	NewModelChecking.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
-	local wrongAtDataArray = {}
+	NewModelChecking.maxGeneralizationError = maxGeneralizationError or defaultMaxGeneralizationError
 	
-	local numberOfData = #featureMatrix
-	
-	for data = 1, numberOfData, 1 do
-		
-		featureVector = {featureMatrix[1]}
-		
-		modelOutput = MachineLearningModel:predict(featureVector)
-		
-		modelOutputVector[data][1] = modelOutput
-		
-		if (modelOutput == labelVector[data][1]) then
-			
-			table.insert(correctAtDataArray, data)
-			
-		else
-			
-			table.insert(wrongAtDataArray, data)
-			
-		end
-		
-	end
-	
-	accuracy = #correctAtDataArray / numberOfData
-	
-	return accuracy, correctAtDataArray, wrongAtDataArray, modelOutputVector
+	return NewModelChecking
 	
 end
 
-function ModelChecking:testRegressionModel(MachineLearningModel, featureMatrix, labelVector)
-
-	local modelOutputVector = AqwamMatrixLibrary:createMatrix(#labelVector, 1)
-
-	local modelOutput
-
-	local featureVector
+function ModelChecking:setParameters(Model, modelType, maxNumberOfIterations)
 	
-	local errorVector
+	self.Model = Model or self.Model
 	
-	local totalError
+	self.modelType = modelType or self.modelType
+
+	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
-	local averageError
+end
 
-	local numberOfData = #featureMatrix
+function ModelChecking:setClassesList(classesList)
+
+	self.ClassesList = classesList
+
+end
+
+function ModelChecking:testClassification(testFeatureMatrix, testLabelVector) -- only works with supervised learning
 	
-	for data = 1, numberOfData, 1 do
+	local testLogisticMatrix
+	
+	local logLossFunction = function (y, p) return -(y * math.log(p)) end
+	
+	if (#testLabelVector[1] == 1) then
 
-		featureVector = {featureMatrix[1]}
+		testLogisticMatrix = self:convertLabelVectorToLogisticMatrix(testLabelVector)
 
-		modelOutput = MachineLearningModel:predict(featureVector)
+	else
 
-		modelOutputVector[data][1] = modelOutput
+		testLogisticMatrix = testLabelVector
 
 	end
 	
-	errorVector = AqwamMatrixLibrary:subtract(modelOutputVector, labelVector)
+	local numberOfData = #testFeatureMatrix
 	
-	totalError = AqwamMatrixLibrary:verticalSum(errorVector)
+	local predictedLabelMatrix = self.Model:predict(testFeatureMatrix, true)
 	
-	averageError = totalError/numberOfData
+	local errorMatrix = AqwamMatrixLibrary:subtract(predictedLabelMatrix, testLogisticMatrix)
 	
-	return averageError, errorVector, modelOutputVector
+	local errorVector = AqwamMatrixLibrary:horizontalSum(errorMatrix)
+	
+	local totalError = AqwamMatrixLibrary:sum(errorVector)
+	
+	local testCost = totalError / numberOfData
+
+	return testCost, errorVector, predictedLabelMatrix
+
+end
+
+function ModelChecking:testRegression(testFeatureMatrix, testLabelVector)
+
+	local numberOfData = #testFeatureMatrix
+	
+	local predictedLabelVector = self.Model:predict(testFeatureMatrix)
+
+	local errorVector = AqwamMatrixLibrary:subtract(predictedLabelVector, testLabelVector)
+
+	local totalError = AqwamMatrixLibrary:sum(errorVector)
+
+	local testCost = totalError/numberOfData
+
+	return testCost, errorVector, predictedLabelVector
+
+end
+
+function ModelChecking:validateClassification(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+
+	local trainCost
+
+	local validationCost
+	
+	local validationCostVector
+	
+	local predictedLabelMatrix
+	
+	local validationLogisticMatrix
+	
+	local generalizationError
+	
+	local numberOfIterations = 0
+
+	local trainCostArray = {}
+
+	local validationCostArray = {}
+	
+	local numberOfValidationData = #validationFeatureMatrix
+	
+	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#validationLabelVector, 1)
+	
+	local logLossFunction = function (y, p) return -(y * math.log(p)) end
+	
+	if (#validationLabelVector[1] == 1) then
+		
+		validationLogisticMatrix = self:convertLabelVectorToLogisticMatrix(validationLabelVector)
+		
+	else
+		
+		validationLogisticMatrix = validationLabelVector
+		
+	end
+
+	repeat
+
+		trainCost = self.Model:train(trainFeatureMatrix, trainLabelVector)
+		
+		predictedLabelMatrix = self.Model:predict(validationFeatureMatrix, true) 
+		
+		validationCostVector = AqwamMatrixLibrary:applyFunction(logLossFunction, validationLogisticMatrix, predictedLabelMatrix)
+		
+		validationCost = AqwamMatrixLibrary:sum(validationCostVector)
+		
+		validationCost /= numberOfValidationData
+
+		table.insert(validationCostArray, validationCost)
+
+		table.insert(trainCostArray, trainCost[1])
+
+		numberOfIterations += 1
+		
+		generalizationError = validationCost - trainCost[1]
+
+	until (self.maxNumberOfIterations >= numberOfIterations) or (generalizationError >= self.maxGeneralizationError)
+
+	return trainCostArray, validationCostArray
+
+end
+
+function ModelChecking:validateRegression(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+	
+	local trainCost
+	
+	local validationCost
+	
+	local validationCostVector
+	
+	local predictedLabelVector
+	
+	local generalizationError
+	
+	local numberOfIterations = 0
+
+	local trainCostArray = {}
+
+	local validationCostArray = {}
+	
+	local numberOfValidationData = #validationFeatureMatrix
+	
+	repeat
+		
+		trainCost = self.Model:train(trainFeatureMatrix, trainLabelVector)
+		
+		predictedLabelVector = self.Model:predict(validationFeatureMatrix)
+		
+		validationCostVector = AqwamMatrixLibrary:subtract(predictedLabelVector, validationLabelVector)
+		
+		validationCost = AqwamMatrixLibrary:sum(validationCostVector)
+		
+		validationCost /= numberOfValidationData
+		
+		table.insert(validationCostArray, validationCost)
+		
+		table.insert(trainCostArray, trainCost[1])
+		
+		numberOfIterations += 1
+		
+		generalizationError = validationCost - trainCost[1]
+		
+	until (self.maxNumberOfIterations >= numberOfIterations) or (generalizationError >= self.maxGeneralizationError)
+	
+	return trainCostArray, validationCostArray
+	
+end
+
+function ModelChecking:test(testFeatureMatrix, testLabelVector)
+	
+	local testCost
+
+	local errorVector
+	
+	local predictedLabelMatrix
+
+	if (self.modelType == "regression") then
+
+		testCost, errorVector, predictedLabelMatrix = self:testRegression(testFeatureMatrix, testLabelVector)
+
+	elseif (self.modelType == "classification") then
+
+		testCost, errorVector, predictedLabelMatrix = self:testClassification(testFeatureMatrix, testLabelVector)
+		
+	else
+		
+		error("Invalid model type!")
+
+	end
+
+	return testCost, errorVector, predictedLabelMatrix
+
+end
+
+function ModelChecking:validate(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+	
+	local trainCostArray
+	
+	local validationCostArray
+	
+	if (self.modelType == "regression") then
+		
+		trainCostArray, validationCostArray = self:validateRegression(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+		
+	elseif (self.modelType == "classification") then
+		
+		trainCostArray, validationCostArray = self:validateClassification(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+		
+	else
+		
+		error("Invalid model type!")
+		
+	end
+	
+	return trainCostArray, validationCostArray
 	
 end
 

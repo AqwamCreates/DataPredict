@@ -40,6 +40,18 @@ ModelParametersMerger:setParameters(Model: ModelObjects, modelType: string, merg
 
 * mergeType: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are "average", "weightedAverage" and "best".
 
+### setModelParametersArray()
+
+Set the feature matrix and the label vector to perform certain merges.
+
+```
+ModelParametersMerger:setModelParametersArray(ModelParametersArray: [])
+```
+
+#### Parameters:
+
+* ModelParametersArray: An array containing all the model parameters from the models of same properties.
+
 ### setData()
 
 Set the feature matrix and the label vector to perform certain merges.

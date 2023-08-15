@@ -29,6 +29,24 @@ local lossFunctionList = {
 	
 }
 
+local cutOffFunctionList = {
+	
+	["sigmoid"] = function (x) 
+
+		if (x >= 0.5) then 
+
+			return 1 
+
+		else 
+
+			return 0 
+
+		end 
+
+	end
+	
+}
+
 local function calculateHypothesisVector(featureMatrix, modelParameters, sigmoidFunction)
 	
 	local numberOfData = #featureMatrix
@@ -213,19 +231,11 @@ function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
 	
 	if (returnOriginalOutput == true) then return probability end
 	
-	local label
+	local cutOffFunction = cutOffFunctionList[self.sigmoidFunction]
 	
-	if (probability[1] >= 0.5) then 
-		
-		label = 1
-		
-	else
-		
-		label = 0
-		
-	end
+	local predictedLabelVector = AqwamMatrixLibrary:applyFunction(cutOffFunction, probability)
 	
-	return label, probability
+	return predictedLabelVector, probability
 
 end
 

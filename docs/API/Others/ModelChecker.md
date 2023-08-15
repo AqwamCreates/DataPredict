@@ -7,7 +7,7 @@
 Creates a new ModelParametersMerger object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-ModelParametersMerger.new(Model: ModelObjects, modelType: string, mergeType: string): ModelParametersMergerObject
+ModelParametersMerger.new(Model: ModelObjects, modelType: string, maxNumberOfIterations: integer, ): ModelCheckerObject
 ```
 
 #### Parameters:
@@ -20,7 +20,7 @@ ModelParametersMerger.new(Model: ModelObjects, modelType: string, mergeType: str
 
 #### Returns:
 
-* ModelParametersMergerObject: The generated regularization object.
+* ModelCheckerObject: The generated ModelParametersMerger object.
 
 ## Functions
 

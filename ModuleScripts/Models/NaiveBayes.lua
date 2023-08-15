@@ -370,30 +370,44 @@ function NaiveBayesModel:calculateFinalProbability(featureVector, probabilitiesV
 	
 end
 
-function NaiveBayesModel:predictClass(probabilityMatrix)
-	
-	local probability 
-	
-	local predictedClass
-	
-	local highestProbability = -math.huge
-	
-	for classIndex, classValue in ipairs(self.ClassesList) do
+function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
-		probability = probabilityMatrix[1][classIndex]
+	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 
-		if (probability > highestProbability) then
+	local highestProbabilitiesVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 
-			predictedClass = classValue
+	local z = AqwamMatrixLibrary:applyFunction(math.exp, outputMatrix)
 
-			highestProbability = probability
+	local zSum = AqwamMatrixLibrary:horizontalSum(z)
 
-		end
+	local softmaxMatrix = AqwamMatrixLibrary:divide(z, zSum)
+
+	local highestProbability
+
+	local softMaxVector
+
+	local classIndex
+
+	local predictedLabel
+
+	for i = 1, #outputMatrix, 1 do
+
+		softMaxVector = {softmaxMatrix[i]}
+
+		highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(softMaxVector)
+
+		if (classIndex == nil) then continue end
+
+		predictedLabel = self.ClassesList[classIndex[2]]
+
+		predictedLabelVector[i][1] = predictedLabel
+
+		highestProbabilitiesVector[i][1] = highestProbability
 
 	end
 
-	return predictedClass, highestProbability
-	
+	return predictedLabelVector, highestProbabilitiesVector
+
 end
 
 function NaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
@@ -422,7 +436,7 @@ function NaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 	
 	if (returnOriginalOutput == true) then return finalProbabilityMatrix end
 	
-	return self:predictClass(finalProbabilityMatrix)
+	return self:getLabelFromOutputMatrix(finalProbabilityMatrix)
 	
 end
 

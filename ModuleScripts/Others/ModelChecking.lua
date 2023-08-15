@@ -26,13 +26,15 @@ function ModelChecking.new(Model, modelType, maxNumberOfIterations, maxGeneraliz
 	
 end
 
-function ModelChecking:setParameters(Model, modelType, maxNumberOfIterations)
+function ModelChecking:setParameters(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
 	
 	self.Model = Model or self.Model
 	
 	self.modelType = modelType or self.modelType
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	
+	self.maxGeneralizationError = maxGeneralizationError or self.maxGeneralizationError
 	
 end
 

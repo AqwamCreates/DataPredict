@@ -56,28 +56,16 @@ ModelChecker:setClassesList(classesList: [])
 
 * classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
 
-### setData()
+### test()
 
-Set the feature matrix and the label vector to perform certain merges.
+Test the model.
 
 ```
-ModelParametersMerger:setData(featureMatrix: Matrix, labelVector: Matrix)
+LinearRegression:test(testFeatureMatrix: Matrix, testLabelVector: Matrix): number[]
 ```
 
 #### Parameters:
 
-* featureMatrix: The matrix that contains all the data.
+* featureMatrix: Matrix containing all data.
 
-* labelVector: The matrix that contains data related to feature matrix (optional).
-
-### generate()
-
-Generates and returns new model parameters.
-
-```
-ModelParametersMerger:generate(): table / matrix
-```
-
-#### Returns:
-
-* ModelParameters: The table / matrix that is generated from the merger.
+* labelVector: A (n x 1) matrix containing values related to featureMatrix.

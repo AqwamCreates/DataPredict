@@ -152,7 +152,7 @@ function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVecto
 
 		numberOfIterations += 1
 
-	until (self.maxNumberOfIterations >= numberOfIterations) or (generalizationError >= self.maxGeneralizationError)
+	until (numberOfIterations >= self.maxNumberOfIterations) or (generalizationError >= self.maxGeneralizationError)
 
 	return trainCostArray, validationCostArray
 
@@ -198,7 +198,7 @@ function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, v
 		
 		numberOfIterations += 1
 		
-	until (self.maxNumberOfIterations >= numberOfIterations) or (generalizationError >= self.maxGeneralizationError)
+	until (numberOfIterations >= self.maxNumberOfIterations) or (generalizationError >= self.maxGeneralizationError)
 	
 	return trainCostArray, validationCostArray
 	

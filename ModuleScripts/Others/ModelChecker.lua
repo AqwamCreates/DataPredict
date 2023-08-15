@@ -96,7 +96,7 @@ function ModelChecker:testClassification(testFeatureMatrix, testLabelVector)
 	
 	local predictedLabelMatrix = self.Model:predict(testFeatureMatrix, true)
 	
-	local errorMatrix = AqwamMatrixLibrary:applyFunction(logLossFunction, predictedLabelMatrix, testLogisticMatrix)
+	local errorMatrix = AqwamMatrixLibrary:applyFunction(logLossFunction, testLogisticMatrix, predictedLabelMatrix)
 	
 	local errorVector = AqwamMatrixLibrary:horizontalSum(errorMatrix)
 	

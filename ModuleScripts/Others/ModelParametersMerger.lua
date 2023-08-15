@@ -182,13 +182,23 @@ end
 
 local function convertValueArrayToPercentageArray(array)
 	
+	local percentage
+	
 	local total = calculateTotalFromArray(array)
 	
 	local percentageArray = {}
 	
 	for i, value in ipairs(array) do
 		
-		local percentage = (value / total)
+		if (total == 0) then
+			
+			percentage = 0
+			
+		else
+			
+			percentage = (value / total)
+			
+		end
 		
 		table.insert(percentageArray, percentage)
 		
@@ -328,6 +338,22 @@ local function generateAccuracyArray(Model, ModelParametersArray, featureMatrix,
 	
 end
 
+local function checkIfAllValuesAreZeroesInArray(array)
+	
+	local allZeroes = true
+	
+	for i, accuracyPercentage in ipairs(array) do
+
+		array = (accuracyPercentage == 0)
+
+		if (allZeroes == false) then break end
+
+	end
+	
+	return allZeroes
+	
+end
+
 local function weightedAverageMergeClassification(Model, ModelParametersArray, featureMatrix, labelVector)
 	
 	local isTable = checkIfIsTable(ModelParametersArray[1])
@@ -336,7 +362,17 @@ local function weightedAverageMergeClassification(Model, ModelParametersArray, f
 	
 	local accuracyPercentageArray = convertValueArrayToPercentageArray(accuracyArray)
 	
+	local areAllZeroes = checkIfAllValuesAreZeroesInArray(accuracyPercentageArray)
+	
 	local NewModelParameters
+	
+	if (areAllZeroes == true) then
+
+		local randomModelParametersIndex = Random.new():NextInteger(1, #ModelParametersArray)
+
+		return ModelParametersArray[randomModelParametersIndex]
+
+	end
 	
 	if isTable then
 		
@@ -390,6 +426,16 @@ local function bestMerge(Model, ModelParametersArray, modelType, featureMatrix, 
 		
 		accuracyArray = generateAccuracyArray(Model, ModelParametersArray, featureMatrix, labelVector)
 		
+	end
+	
+	local areAllZeroes = checkIfAllValuesAreZeroesInArray(accuracyArray)
+	
+	if (areAllZeroes == true) then
+
+		local randomModelParametersIndex = Random.new():NextInteger(1, #ModelParametersArray)
+
+		return ModelParametersArray[randomModelParametersIndex]
+
 	end
 	
 	for i, accuracy in ipairs(accuracyArray)  do

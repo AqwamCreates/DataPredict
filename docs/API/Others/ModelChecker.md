@@ -44,12 +44,12 @@ ModelChecker:setParameters(Model: ModelObject, modelType: string, maxNumberOfIte
 
 * maxGeneralizationError: The maximum generalization error so that it stops training if it is being validated. It is calculated by subtracting the validation cost and the training cost.
 
-### setModelParametersArray()
+### setClassesList()
 
 Set the feature matrix and the label vector to perform certain merges.
 
 ```
-ModelParametersMerger:setModelParametersArray(ModelParametersArray: [])
+ModelChecker:setClassesList(classesList: [])
 ```
 
 #### Parameters:

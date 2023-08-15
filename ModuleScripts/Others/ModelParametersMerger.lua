@@ -4,7 +4,7 @@ local ModelParametersMerger = {}
 
 ModelParametersMerger.__index = ModelParametersMerger
 
-local defaultMergeType = "simpleAverage"
+local defaultMergeType = "average"
 
 function ModelParametersMerger.new(Model, modelType, mergeType)
 	
@@ -102,7 +102,7 @@ local function generateModelParametersTableWithMatricesOfZeroValues(ModelParamet
 		
 		local newMatrix = AqwamMatrixLibrary:createMatrix(numberOfRows, numberOfColumns)
 		
-		table.insert(newMatrix)
+		table.insert(NewModelParameters, newMatrix)
 		
 	end
 	
@@ -114,7 +114,7 @@ local function applyFunctionToEachMatricesInModelParameters(functionToApply, Mod
 	
 	for k, matrix in ipairs(ModelParameters) do
 
-		ModelParameters[k] =  AqwamMatrixLibrary:applyFunction(functionToApply, ModelParameters)
+		ModelParameters[k] =  AqwamMatrixLibrary:applyFunction(functionToApply, matrix)
 
 	end
 	
@@ -130,7 +130,7 @@ local function applyFunctionToModelParameters(functionToApply, ModelParametersAr
 
 		for j, matrix in ipairs(ModelParameters) do
 
-			NewModelParameters[i] = AqwamMatrixLibrary:applyFunction(functionToApply, NewModelParameters[i], matrix)
+			NewModelParameters[j] = AqwamMatrixLibrary:applyFunction(functionToApply, NewModelParameters[j], matrix)
 
 		end
 
@@ -208,7 +208,7 @@ local function calculateScaledModelParametersTable(ModelParametersArray, percent
 
 			local calculatedMatrix = AqwamMatrixLibrary:multiply(matrix, percentageArray[i])
 
-			NewModelParameters[i] = AqwamMatrixLibrary:add(NewModelParameters[i], calculatedMatrix)
+			NewModelParameters[j] = AqwamMatrixLibrary:add(NewModelParameters[j], calculatedMatrix)
 
 		end
 
@@ -424,7 +424,7 @@ function ModelParametersMerger:generate()
 	
 	local NewModelParameters
 	
-	if (mergeType == "simpleAverage") then
+	if (mergeType == "average") then
 		
 		NewModelParameters = simpleAverageMerge(ModelParametersArray)
 		

@@ -227,6 +227,8 @@ function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local sigmoidFunction = sigmoidFunctionList[self.sigmoidFunction]
 	
+	if (typeof(z) == "number") then z = {{z}} end
+	
 	local probabilityVector = AqwamMatrixLibrary:applyFunction(sigmoidFunction, z)
 	
 	local probabilityMatrix = AqwamMatrixLibrary:createMatrix(#featureMatrix, 2)

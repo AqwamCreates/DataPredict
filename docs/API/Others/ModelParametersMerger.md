@@ -7,7 +7,7 @@
 Creates a new ModelParametersMerger object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-ModelParametersMerger.new(Model: ModelObjects, modelType: string, mergeType: string): ModelParametersMergerObject
+ModelParametersMerger.new(Model: ModelObject, modelType: string, mergeType: string): ModelParametersMergerObject
 ```
 
 #### Parameters:
@@ -29,7 +29,7 @@ ModelParametersMerger.new(Model: ModelObjects, modelType: string, mergeType: str
 Set ModelParametersMerger’s parameters. When any of the arguments are not given, previous argument values for that argument will be used.
 
 ```
-ModelParametersMerger:setParameters(Model: ModelObjects, modelType: string, mergeType: string)
+ModelParametersMerger:setParameters(Model: ModelObject, modelType: string, mergeType: string)
 ```
 
 #### Parameters:

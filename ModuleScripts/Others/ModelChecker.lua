@@ -26,7 +26,7 @@ function ModelChecker.new(Model, modelType, maxNumberOfIterations, maxGeneraliza
 	
 	NewModelChecker.maxGeneralizationError = maxGeneralizationError or defaultMaxGeneralizationError
 	
-	return ModelChecker
+	return NewModelChecker
 	
 end
 

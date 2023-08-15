@@ -2,7 +2,7 @@ It is important for us to check the accuracy of our model. Hence, in this tutori
 
 # Getting Started
 
-First, we need to create a linear regression model and a model checker objects for testing and validation. We will set the second parameter as "regression" because the linear regression model falls under the "regrression".
+First, we need to create a linear regression model and a model checker objects for testing and validation. We will set the second parameter as "regression" for the ModelChecker because the linear regression model falls under the "regrression".
 
 ```
 local Model = MDLL.Model.LinearRegression.new()

@@ -7,7 +7,7 @@
 Creates a new ModelParametersMerger object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-ModelParametersMerger.new(Model: ModelObjects, modelType: string, maxNumberOfIterations: integer, ): ModelCheckerObject
+ModelParametersMerger.new(Model: ModelObjects, modelType: string, maxNumberOfIterations: integer, maxGeneralizationError: number): ModelCheckerObject
 ```
 
 #### Parameters:
@@ -16,7 +16,9 @@ ModelParametersMerger.new(Model: ModelObjects, modelType: string, maxNumberOfIte
 
 * modelType: The type where the model falls under. Available options are "regression" and "classification".
 
-* mergeType: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are "average", "weightedAverage" and "best".
+* maxNumberOfIterations: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are "average", "weightedAverage" and "best".
+
+* maxGeneralizationError: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are "average", "weightedAverage" and "best".
 
 #### Returns:
 

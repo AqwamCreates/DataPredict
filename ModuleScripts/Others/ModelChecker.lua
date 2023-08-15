@@ -76,7 +76,6 @@ function ModelChecker:convertLabelVectorToLogisticMatrix(labelVector)
 
 end
 
-
 function ModelChecker:testClassification(testFeatureMatrix, testLabelVector) -- only works with supervised learning
 	
 	local testLogisticMatrix

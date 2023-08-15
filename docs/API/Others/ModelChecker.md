@@ -61,7 +61,29 @@ ModelChecker:setClassesList(classesList: [])
 Test the model.
 
 ```
-LinearRegression:test(testFeatureMatrix: Matrix, testLabelVector: Matrix): number, Matrix, Matrix
+ModelChecker:test(testFeatureMatrix: Matrix, testLabelVector: Matrix): number, Matrix, Matrix
+```
+
+#### Parameters:
+
+* testFeatureMatrix: Matrix containing all data.
+
+* testLabelVector: A (n x 1) matrix containing values related to featureMatrix.
+
+#### Returns:
+
+* testCost
+
+* errorVector
+
+* predictedLabelMatrix
+
+### validate()
+
+Validate the model.
+
+```
+ModelChecker:validate(trainFeatureMatrix: Matrix, trainLabelVector: Matrix, validationFeatureMatrix: Matrix, validationLabelVector: Matrix): number[], number[]
 ```
 
 #### Parameters:
@@ -72,8 +94,6 @@ LinearRegression:test(testFeatureMatrix: Matrix, testLabelVector: Matrix): numbe
 
 #### Returns:
 
-* testCost
+* trainCostArray
 
-* errorVector
-
-* predictedLabelMatrix
+* validationCostArray

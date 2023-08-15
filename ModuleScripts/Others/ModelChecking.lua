@@ -1,32 +1,36 @@
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
-local ModelChecking = {}
+local ModelChecker = {}
 
-ModelChecking.__index = ModelChecking
+ModelChecker.__index = ModelChecker
 
 local defaultMaxNumberOfIterations = 100
 
 local defaultMaxGeneralizationError = math.huge
 
-function ModelChecking.new(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
+function ModelChecker.new(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
 	
-	local NewModelChecking = {}
+	if (Model == nil) then error("No models in the ModelParametersMerger!") end
+
+	if (modelType == nil) then error("No modelType in the ModelParametersMerger!") end
 	
-	setmetatable(NewModelChecking, ModelChecking)
+	local NewModelChecker = {}
 	
-	NewModelChecking.Model = Model
+	setmetatable(NewModelChecker, ModelChecker)
 	
-	NewModelChecking.modelType = modelType
+	NewModelChecker.Model = Model
 	
-	NewModelChecking.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewModelChecker.modelType = modelType
 	
-	NewModelChecking.maxGeneralizationError = maxGeneralizationError or defaultMaxGeneralizationError
+	NewModelChecker.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
-	return NewModelChecking
+	NewModelChecker.maxGeneralizationError = maxGeneralizationError or defaultMaxGeneralizationError
+	
+	return ModelChecker
 	
 end
 
-function ModelChecking:setParameters(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
+function ModelChecker:setParameters(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
 	
 	self.Model = Model or self.Model
 	
@@ -38,13 +42,13 @@ function ModelChecking:setParameters(Model, modelType, maxNumberOfIterations, ma
 	
 end
 
-function ModelChecking:setClassesList(classesList)
+function ModelChecker:setClassesList(classesList)
 
 	self.ClassesList = classesList
 
 end
 
-function ModelChecking:testClassification(testFeatureMatrix, testLabelVector) -- only works with supervised learning
+function ModelChecker:testClassification(testFeatureMatrix, testLabelVector) -- only works with supervised learning
 	
 	local testLogisticMatrix
 	
@@ -76,7 +80,7 @@ function ModelChecking:testClassification(testFeatureMatrix, testLabelVector) --
 
 end
 
-function ModelChecking:testRegression(testFeatureMatrix, testLabelVector)
+function ModelChecker:testRegression(testFeatureMatrix, testLabelVector)
 
 	local numberOfData = #testFeatureMatrix
 	
@@ -92,7 +96,7 @@ function ModelChecking:testRegression(testFeatureMatrix, testLabelVector)
 
 end
 
-function ModelChecking:validateClassification(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
 
 	local trainCost
 
@@ -154,7 +158,7 @@ function ModelChecking:validateClassification(trainFeatureMatrix, trainLabelVect
 
 end
 
-function ModelChecking:validateRegression(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
 	
 	local trainCost
 	
@@ -200,7 +204,7 @@ function ModelChecking:validateRegression(trainFeatureMatrix, trainLabelVector, 
 	
 end
 
-function ModelChecking:test(testFeatureMatrix, testLabelVector)
+function ModelChecker:test(testFeatureMatrix, testLabelVector)
 	
 	local testCost
 
@@ -226,7 +230,7 @@ function ModelChecking:test(testFeatureMatrix, testLabelVector)
 
 end
 
-function ModelChecking:validate(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+function ModelChecker:validate(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
 	
 	local trainCostArray
 	
@@ -250,4 +254,4 @@ function ModelChecking:validate(trainFeatureMatrix, trainLabelVector, validation
 	
 end
 
-return ModelChecking
+return ModelChecker

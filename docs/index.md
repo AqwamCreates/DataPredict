@@ -27,7 +27,7 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 [Using Gradient Descent Modes](Overview/UsingGradientDescentModes.md)
 
-[Using Model Checking](Overview/UsingModelChecking.md)
+[Using Model Checker](Overview/UsingModelChecker.md)
 
 [Using Regularization](Overview/UsingRegularization.md)
 

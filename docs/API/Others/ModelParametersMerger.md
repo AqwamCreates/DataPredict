@@ -4,7 +4,7 @@
 
 ### new()
 
-Creates a new regularization object. If any of the arguments are not given, default argument values for that argument will be used.
+Creates a new ModelParametersMerger object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
 ModelParametersMerger.new(Model: ModelObjects, modelType: string, mergeType: string): ModelParametersMergerObject

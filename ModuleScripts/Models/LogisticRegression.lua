@@ -229,7 +229,21 @@ function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local probabilityVector = AqwamMatrixLibrary:applyFunction(sigmoidFunction, z)
 	
-	if (returnOriginalOutput == true) then return probabilityVector end
+	local probabilityMatrix = AqwamMatrixLibrary:createMatrix(#featureMatrix, 2)
+	
+	local probability
+	
+	for i = 1, #probabilityMatrix, 1 do
+		
+		probability = probabilityVector[i][1]
+		
+		probabilityMatrix[i][1] = (1 - probability)
+			
+		probabilityMatrix[i][2] = probability
+		
+	end
+	
+	if (returnOriginalOutput == true) then return probabilityMatrix end
 	
 	local cutOffFunction = cutOffFunctionList[self.sigmoidFunction]
 	

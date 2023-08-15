@@ -2,26 +2,46 @@ It is important for us to check the accuracy of our model. Hence, in this tutori
 
 # Getting Started
 
-First, we need to get one of our functions from the library.
+First, we need to create a linear regression model and a model checker objects for testing and validation. We will set the second parameter as "regression" because the linear regression model falls under the "regrression".
 
 ```
-local ModelChecking = MDLL.Others.ModelChecking
+local Model = MDLL.Model.LinearRegression.new()
+
+local ModelChecker = MDLL.Others.ModelChecker.new(Model, "regression")
 ```
 
-# Testing For Accuracy
+# Testing
 
-Right now, we will test our LogisticRegression model accuracy. Since Logistic regression is a classification algorithm, we will apply testClassificationModel(). We will also provide featureMatrix and labelVector as well.
+Right now, we will test our LogisticRegression model for test cost.  We will also provide testFeatureMatrix and testLabelVector as well.
 
 ```
-local accuracy = ModelChecking:testClassificationModel(MachineLearningModel, featureMatrix, labelVector)
+local testCost = ModelChecker:test(testFeatureMatrix, testLabelVector)
 ```
 
 The above function will generate the accuracy of the model by comparing the predicted output made by the model and the actual value.
 
-Then use print() to see the accuracy.
+Then use print() to see the test cost.
 
 ```
-print(accuracy)
+print(testCost)
+```
+
+# Validation
+
+Validation is similar to testing, but instead requires two pairs of featureMatrix and labelVector. The output we get are the training and validation cost arrays. 
+
+```
+local trainCostArray, validationCostArray = ModelChecker:testClassificationModel(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+```
+
+The above function will generate the accuracy of the model by comparing the predicted output made by the model and the actual value.
+
+Then use print() to see the train and validation cost arrays.
+
+```
+print(trainCostArray)
+
+print(validationCostArray)
 ```
 
 That's all for today!

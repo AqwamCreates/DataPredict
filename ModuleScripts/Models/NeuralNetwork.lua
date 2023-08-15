@@ -304,25 +304,43 @@ function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix, numb
 
 end
 
-function NeuralNetworkModel:getLabelFromOutputVector(outputVector)
+function NeuralNetworkModel:getLabelFromOutputMatrix(outputMatrix)
 	
-	local z = AqwamMatrixLibrary:applyFunction(math.exp, outputVector)
+	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 	
-	local zSum = AqwamMatrixLibrary:sum(z)
+	local highestProbabilitiesVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 	
-	local softmax = AqwamMatrixLibrary:divide(z, zSum)
+	local z = AqwamMatrixLibrary:applyFunction(math.exp, outputMatrix)
 	
-	local highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(softmax)
+	local zSum = AqwamMatrixLibrary:horizontalSum(z)
 	
-	local label
+	local softmaxMatrix = AqwamMatrixLibrary:divide(z, zSum)
 	
-	if classIndex then
+	local highestProbability
+	
+	local softMaxVector
+	
+	local classIndex
+	
+	local predictedLabel
+	
+	for i = 1, #outputMatrix, 1 do
 		
-		label = self.ClassesList[classIndex[2]]
+		softMaxVector = {softmaxMatrix[i]}
+		
+		highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(softMaxVector)
+		
+		if (classIndex == nil) then continue end
+
+		predictedLabel = self.ClassesList[classIndex[2]]
+		
+		predictedLabelVector[i][1] = predictedLabel
+		
+		highestProbabilitiesVector[i][1] = highestProbability
 		
 	end
-
-	return label, highestProbability
+	
+	return predictedLabelVector, highestProbabilitiesVector
 
 end
 
@@ -634,9 +652,9 @@ function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)
 	
 	if (returnOriginalOutput == true) then return allOutputsMatrix end
 
-	local label, highestProbability = self:getLabelFromOutputVector(allOutputsMatrix)
+	local predictedLabelVector, highestProbabilitiesVector = self:getLabelFromOutputVector(allOutputsMatrix)
 
-	return label, highestProbability
+	return predictedLabelVector, highestProbabilitiesVector
 
 end
 

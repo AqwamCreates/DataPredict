@@ -8,7 +8,7 @@ local defaultMergeType = "average"
 
 function ModelParametersMerger.new(Model, modelType, mergeType)
 
-	if (Model == nil) then error("No models in the ModelParametersMerger!") end
+	if (Model == nil) then error("No model in the ModelParametersMerger!") end
 
 	if (modelType == nil) then error("No model type in the ModelParametersMerger!") end
 

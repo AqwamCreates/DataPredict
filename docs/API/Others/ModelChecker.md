@@ -66,13 +66,13 @@ ModelChecker:test(testFeatureMatrix: Matrix, testLabelVector: Matrix): number, M
 
 #### Parameters:
 
-* testFeatureMatrix: Matrix containing all data.
+* testFeatureMatrix: Matrix containing all data for testing.
 
 * testLabelVector: A (n x 1) matrix containing values related to featureMatrix.
 
 #### Returns:
 
-* testCost
+* testCost: An array containing all the testing cost.
 
 * errorVector
 
@@ -88,12 +88,16 @@ ModelChecker:validate(trainFeatureMatrix: Matrix, trainLabelVector: Matrix, vali
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* trainFeatureMatrix: Matrix containing all data for training.
 
-* labelVector: A (n x 1) matrix containing values related to featureMatrix.
+* trainLabelVector: A (n x 1) matrix containing values related to trainFeatureMatrix.
+
+* testFeatureMatrix: Matrix containing all data for validation.
+
+* testLabelVector: A (n x 1) matrix containing values related to testFeatureMatrix.
 
 #### Returns:
 
-* trainCostArray
+* trainCostArray: An array containing all the training cost.
 
-* validationCostArray
+* validationCostArray: An array containing all the validation cost.

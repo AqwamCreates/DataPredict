@@ -227,15 +227,15 @@ function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local sigmoidFunction = sigmoidFunctionList[self.sigmoidFunction]
 	
-	local probability = AqwamMatrixLibrary:applyFunction(sigmoidFunction, z)
+	local probabilityVector = AqwamMatrixLibrary:applyFunction(sigmoidFunction, z)
 	
-	if (returnOriginalOutput == true) then return probability end
+	if (returnOriginalOutput == true) then return probabilityVector end
 	
 	local cutOffFunction = cutOffFunctionList[self.sigmoidFunction]
 	
-	local predictedLabelVector = AqwamMatrixLibrary:applyFunction(cutOffFunction, probability)
+	local predictedLabelVector = AqwamMatrixLibrary:applyFunction(cutOffFunction, probabilityVector)
 	
-	return predictedLabelVector, probability
+	return predictedLabelVector, probabilityVector
 
 end
 

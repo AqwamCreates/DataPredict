@@ -1,0 +1,15 @@
+# Beta Version 1.15.0
+
+## Added
+
+* None 
+
+## Fixes
+
+* None
+
+## Changes
+
+* Changed the ModelChecking to ModelChecker. Also changed a lot of its functionalities.
+
+* Some of the classification models now returns predictedLabelVector as opposed to single value.

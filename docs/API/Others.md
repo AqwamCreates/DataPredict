@@ -1,6 +1,6 @@
 # [API Reference](../API.md) - Others
 
-[ModelChecking](Others/ModelChecking.md)
+[ModelChecker](Others/ModelChecker.md)
 
 [ModelParametersMerger](Others/ModelParametersMerger.md)
 

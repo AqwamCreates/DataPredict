@@ -22,8 +22,6 @@ local defaultSetInitialClustersOnDataPoints = true
 
 local defaultSetTheCentroidsDistanceFarthest = false
 
-local defaultLearningRate = 0.3
-
 local distanceFunctionList = {
 
 	["manhattan"] = function (x1, x2)
@@ -273,7 +271,7 @@ local function calculateCost(modelParameters, featureMatrix, distanceFunction)
 	
 end
 
-local function calculateModelParametersMean(modelParameters, featureMatrix, distanceFunction, learningRate)
+local function calculateModelParametersMean(modelParameters, featureMatrix, distanceFunction)
 	
 	local distanceMatrix = createDistanceMatrix(modelParameters, featureMatrix, distanceFunction)
 
@@ -291,15 +289,11 @@ local function calculateModelParametersMean(modelParameters, featureMatrix, dist
 		
 	end
 	
-	local modelParametersWithLearningRate = AqwamMatrixLibrary:multiply(learningRate, newModelParameters)
-	
-	modelParameters = AqwamMatrixLibrary:subtract(modelParameters, modelParametersWithLearningRate)
-	
 	return newModelParameters
 	
 end
 
-function KMeansModel.new(maxNumberOfIterations, learningRate, numberOfClusters, distanceFunction, targetCost, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest, stopWhenModelParametersDoesNotChange)
+function KMeansModel.new(maxNumberOfIterations, numberOfClusters, distanceFunction, targetCost, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest, stopWhenModelParametersDoesNotChange)
 	
 	local NewKMeansModel = BaseModel.new()
 	
@@ -312,8 +306,6 @@ function KMeansModel.new(maxNumberOfIterations, learningRate, numberOfClusters, 
 	NewKMeansModel.distanceFunction = distanceFunction or defaultDistanceFunction
 
 	NewKMeansModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
-
-	NewKMeansModel.learningRate = learningRate or defaultLearningRate
 	
 	NewKMeansModel.stopWhenModelParametersDoesNotChange =  BaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, defaultStopWhenModelParametersDoesNotChange)
 
@@ -325,7 +317,7 @@ function KMeansModel.new(maxNumberOfIterations, learningRate, numberOfClusters, 
 	
 end
 
-function KMeansModel:setParameters(maxNumberOfIterations, learningRate, numberOfClusters, distanceFunction, targetCost, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest, stopWhenModelParametersDoesNotChange)
+function KMeansModel:setParameters(maxNumberOfIterations, numberOfClusters, distanceFunction, targetCost, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest, stopWhenModelParametersDoesNotChange)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -334,8 +326,6 @@ function KMeansModel:setParameters(maxNumberOfIterations, learningRate, numberOf
 	self.distanceFunction = distanceFunction or self.distanceFunction
 
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
-
-	self.learningRate = learningRate or self.learningRate
 
 	self.stopWhenModelParametersDoesNotChange =  self:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
 
@@ -397,7 +387,7 @@ function KMeansModel:train(featureMatrix)
 		
 		PreviousModelParameters = self.ModelParameters
 
-		self.ModelParameters = calculateModelParametersMean(self.ModelParameters, featureMatrix, self.distanceFunction, self.learningRate)
+		self.ModelParameters = calculateModelParametersMean(self.ModelParameters, featureMatrix, self.distanceFunction)
 
 		areModelParametersEqual =  AqwamMatrixLibrary:areMatricesEqual(self.ModelParameters, PreviousModelParameters)
 		

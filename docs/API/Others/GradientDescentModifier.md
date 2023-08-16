@@ -7,7 +7,7 @@
 Creates a new gradient descent modifier object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-GradientDescentModifier.new(Model: ModelObject, gradientDescentType: string, batchSize: integer, showOutput: boolean): RegularizationObject
+GradientDescentModifier.new(Model: ModelObject, gradientDescentType: string, batchSize: integer, showOutput: boolean): GradientDescentModifierObject
 ```
 
 #### Parameters:
@@ -19,6 +19,10 @@ GradientDescentModifier.new(Model: ModelObject, gradientDescentType: string, bat
 * batchSize: The batch size to be inputted into the model.
 
 * showOutput: Set whether or not to show the final cost for each epoch (MiniBatch) or data (Stochastic).
+
+#### Returns:
+
+* GradientDescentModifierObject: A gradient descent modifier object that uses the model's train() and predict() functions so that it behaves like a regular model.
 
 ## Functions
 

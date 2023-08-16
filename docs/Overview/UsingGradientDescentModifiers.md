@@ -12,18 +12,26 @@ Gradient descent is one of the way on how our machine/deep learning model "learn
 
 # Getting Started
 
-By default, the machine/deep learning models uses batch gradient descent upon initialization. To change this we will use one of our special features.
+By default, the machine/deep learning models uses batch gradient descent upon initialization. To change this we create a GradientDescentModifier object.
+
+We will modify the graident descent to mini batch gradient descent.
 
 ```
-local GradientDescentModes = MDLL.Others.GradientDescentModes
+local Model = MDLL.Models.SupportVectorMachine.new()
+
+local ModifiedModel = MDLL.Others.GradientDescentModifier.new(SupportVectorMachine, "MiniBatch")
 ```
 
-In this tutorial, we will be using "Mini Batch" gradient descent. We also need to supply the machine/deep learning model, featureMatrix and labelVector (optional). We will skip this part for now.
+Once that is set up, you can call train() and predict() functions from the ModifiedModel. This is because it uses the original model's train() and predict() functions.
 
-Then we feed it to startGradientDescentFunction(). Since we're using batch size, we ensure that the batch size value is inputted.
+In other words, you can do what the original model can do, except the behaviour of the gradient descent and the cost has been changed.
 
 ```
-GradientDescentModes:startGradientDescent(LogisticRegressionModel, "MiniBatch", featureMatrix, labelVector, 2)
+local costArray = ModifiedModel:train(featureMatrix, labelVector)
+
+local predictedVector = ModifiedModel:predict(featureMatrix2)
 ```
+
+Looks pretty similar huh? You can try to combine this with other functionalitiees as well.
 
 That's all for today!

@@ -112,7 +112,7 @@ It means that during training, the model is no longer "learning" but does the co
 To predict, we will use predict() function for our model. We will then supply data to the model so that it can predict the value.
 
 ```
-local predictedValue = LogisticRegressionModel:predict(testData)
+local predictedVector = LogisticRegressionModel:predict(testData)
 ```
 
 I will give you a test data for you to use. The value of prediction should be 1.

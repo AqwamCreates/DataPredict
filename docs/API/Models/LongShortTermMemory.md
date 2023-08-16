@@ -161,7 +161,7 @@ LongShortTermMemory:train(tableOfTokenInputSequenceArray: tableOfTokenInputSeque
 
 ### predict()
 
-* Predict a sequence of output tokens for a given sequence of input tokens.
+Predict a sequence of output tokens for a given sequence of input tokens.
 
 ```
 LongShortTermMemory:predict(tokenInputSequenceArray: integer[]): integer[]

@@ -57,7 +57,7 @@ NaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-NaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): integer, number -OR- Matrix
+NaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
@@ -68,9 +68,9 @@ NaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): intege
 
 #### Returns:
 
-* predictedValue: A value that is predicted by the model.
+* predictedVector: A vector that is predicted by the model.
 
-* probability: The probability of predicted value.
+* probabilityVector: A vector that contains the probability of predicted values in predictedVector.
 
 -OR-
 

@@ -157,12 +157,12 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	local likelihood = AqwamMatrixLibrary:applyFunction(math.log, gaussianMatrix)
 
 	local sumLikelihood = AqwamMatrixLibrary:sum(likelihood)
-
-	local freeParameters = numberOfClusters * (#featureMatrix[1] + 1) * 2 -- number of mean, variance and mixture weights for each cluster
 	
 	local numberOfData = #featureMatrix
 	
-	local bayesianInformationCriterion = sumLikelihood - (0.5 * freeParameters * math.log(numberOfData))
+	local numberOfFeatures = numberOfClusters * #featureMatrix[1]
+	
+	local bayesianInformationCriterion = (-2 * sumLikelihood) + (math.log(numberOfData) * numberOfFeatures)
 	
 	return bayesianInformationCriterion
 	
@@ -172,7 +172,7 @@ function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, e
 	
 	local numberOfClusters = 2
 	
-	local bestBayesianInformationCriterion = -math.huge
+	local bestBayesianInformationCriterion = math.huge
 	
 	local bestNumberOfClusters = numberOfClusters
 
@@ -180,7 +180,7 @@ function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, e
 		
 		local bayesianInformationCriterion = self:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
 
-		if (bayesianInformationCriterion > bestBayesianInformationCriterion) then
+		if (bayesianInformationCriterion < bestBayesianInformationCriterion) then
 			
 			bestBayesianInformationCriterion = bayesianInformationCriterion
 			
@@ -195,6 +195,8 @@ function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, e
 		numberOfClusters = numberOfClusters + 1
 		
 	end
+	
+	print(bestNumberOfClusters)
 
 	return bestNumberOfClusters
 	

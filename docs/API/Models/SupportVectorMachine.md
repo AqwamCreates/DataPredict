@@ -106,7 +106,7 @@ SupportVectorMachine:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 * Predict the value for a given data.
 
 ```
-SupportVectorMachine:predict(featureMatrix: Matrix): number
+SupportVectorMachine:predict(featureMatrix: Matrix, returnOriginalOutput): Matrix -OR- Matrix
 ```
 
 #### Parameters:
@@ -115,7 +115,11 @@ SupportVectorMachine:predict(featureMatrix: Matrix): number
 
 #### Returns:
 
-* predictedValue: A value that is predicted by the model.
+* predictedVector: A vector that is predicted by the model.
+
+-OR-
+
+* originalPredictedVector: A vector that contains the original predicted values.
 
 ## Inherited From
 

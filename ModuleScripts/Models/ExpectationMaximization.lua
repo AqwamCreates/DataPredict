@@ -36,18 +36,6 @@ local function gaussian(featureVector, meanVector, varianceVector, epsilon)
 
 	local gaussianDensity = AqwamMatrixLibrary:divide(exponentWithTerms, divisor)
 	
-	for i, value in ipairs(exponentStep4[1]) do
-		
-		if (value == math.huge) or (value == -math.huge) then error() end
-		
-	end
-	
-	for i, value in ipairs(exponentWithTerms[1]) do
-
-		if (value == math.huge) or (value == -math.huge) then error() end
-
-	end
-	
 	return gaussianDensity
 
 end

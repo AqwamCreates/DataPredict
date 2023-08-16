@@ -135,7 +135,7 @@ RecurrentNeuralNetwork:train(LongShortTermMemory:train(tableOfTokenInputSequence
 
 ### predict()
 
-* Predict a sequence of output tokens for a given sequence of input tokens.
+Predict a sequence of output tokens for a given sequence of input tokens.
 
 ```
 RecurrentNeuralNetwork:predict(tokenInputSequenceArray: integer[]): integer[]

@@ -106,9 +106,11 @@ function GradientDescentModifier:startMiniBatchGradientDescent(featureMatrix, la
 	
 	local batchLabelVector
 	
-	local costArray
+	local miniBatchCostArray
 	
 	local cost
+	
+	local costArray = {}
 	
 	for currentBatchNumber = 1, numberOfBatches, 1 do
 
@@ -116,13 +118,17 @@ function GradientDescentModifier:startMiniBatchGradientDescent(featureMatrix, la
 
 		batchLabelVector = labelVectorBatchesTable[currentBatchNumber]
 
-		costArray = self.Model:train(featureMatrix, labelVector)
+		miniBatchCostArray = self.Model:train(featureMatrix, labelVector)
 		
-		cost = costArray[#costArray]
+		cost = miniBatchCostArray[#miniBatchCostArray]
+		
+		table.insert(costArray, costArray)
 		
 		if (self.showOutputCost) then print("Epoch: " .. currentBatchNumber .. "\t\t\tFinal Cost: " .. cost .. "\n") end
 		
 	end
+	
+	return costArray
 
 end
 

@@ -205,6 +205,8 @@ function ExpectationMaximizationModel.new(maxNumberOfIterations, numberOfCluster
 	local NewExpectationMaximizationModel = BaseModel.new()
 
 	setmetatable(NewExpectationMaximizationModel, ExpectationMaximizationModel)
+	
+	NewExpectationMaximizationModel:setModelParametersInitializationMode("RandomNormalPositive")
 
 	NewExpectationMaximizationModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
 

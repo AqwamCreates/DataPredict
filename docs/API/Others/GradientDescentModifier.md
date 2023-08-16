@@ -80,7 +80,7 @@ GradientDescentModifier:predict(featureMatrix: Matrix, returnOriginalOutput: boo
 
 * predictedMatrix: A matrix containing all predicted values from all classes.
 
-#### Note:
+### Note:
 
 * When using "Stochastic" mode, make sure you set the model's max number of iterations to 1.
 

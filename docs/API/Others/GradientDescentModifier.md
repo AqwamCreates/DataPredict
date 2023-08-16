@@ -1,5 +1,7 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - GradientDescentModifier
 
+## Constructors
+
 ### new()
 
 Creates a new gradient descent modifier object. If any of the arguments are not given, default argument values for that argument will be used.
@@ -80,7 +82,7 @@ GradientDescentModifier:predict(featureMatrix: Matrix, returnOriginalOutput: boo
 
 * predictedMatrix: A matrix containing all predicted values from all classes.
 
-### Note:
+## Note:
 
 * When using "Stochastic" mode, make sure you set the model's max number of iterations to 1.
 

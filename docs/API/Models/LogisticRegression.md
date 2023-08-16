@@ -95,7 +95,7 @@ LogisticRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 
 ### predict()
 
-* Predict the value for a given data.
+Predict the values for given data.
 
 ```
 LogisticRegression:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix

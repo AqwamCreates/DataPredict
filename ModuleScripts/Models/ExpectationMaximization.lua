@@ -195,8 +195,6 @@ function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, e
 		numberOfClusters = numberOfClusters + 1
 		
 	end
-	
-	print(bestNumberOfClusters)
 
 	return bestNumberOfClusters
 	

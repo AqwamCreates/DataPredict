@@ -291,6 +291,8 @@ function SupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local clampFunction = function (x) return math.clamp(x, -1, 1) end
 	
+	if (typeof(originalPredictedVector) == "number") then originalPredictedVector = {{originalPredictedVector}} end
+	
 	local predictedVector = AqwamMatrixLibrary:applyFunction(clampFunction, originalPredictedVector)
 	
 	return predictedVector

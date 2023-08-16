@@ -74,11 +74,11 @@ end
 
 function ExpectationMaximizationModel:initializeParameters(numberOfClusters, numberOfFeatures)
 
-	local piMatrix = AqwamMatrixLibrary:initializeMatrixBasedOnMode(numberOfClusters, 1)
+	local piMatrix = self:initializeMatrixBasedOnMode(numberOfClusters, 1)
 
-	local meanMatrix = AqwamMatrixLibrary:initializeMatrixBasedOnMode(numberOfClusters, numberOfFeatures)
+	local meanMatrix = self:initializeMatrixBasedOnMode(numberOfClusters, numberOfFeatures)
 
-	local varianceMatrix = AqwamMatrixLibrary:initializeMatrixBasedOnMode(numberOfClusters, numberOfFeatures)
+	local varianceMatrix = self:initializeMatrixBasedOnMode(numberOfClusters, numberOfFeatures)
 
 	return piMatrix, meanMatrix, varianceMatrix
 	

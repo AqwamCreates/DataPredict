@@ -2,7 +2,7 @@ local GradientDescentModifier = {}
 
 GradientDescentModifier.__index = GradientDescentModifier
 
-local defaultGradientDescentType = "stochastic"
+local defaultGradientDescentType = "Stochastic"
 
 local defaultBatchSize = 2
 

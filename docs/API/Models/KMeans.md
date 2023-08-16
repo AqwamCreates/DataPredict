@@ -15,14 +15,12 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-KMeans.new(maxNumberOfIterations: integer, learningRate: number, numberOfClusters: integer, distanceFunction: string, targetCost: number, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean, stopWhenModelParametersDoesNotChange:boolean): ModelObject
+KMeans.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, targetCost: number, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean, stopWhenModelParametersDoesNotChange:boolean): ModelObject
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 
@@ -47,14 +45,12 @@ KMeans.new(maxNumberOfIterations: integer, learningRate: number, numberOfCluster
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-KMeans:setParameters(maxNumberOfIterations: integer, learningRate: number, numberOfClusters: integer, distanceFunction: string, targetCost: number, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean, stopWhenModelParametersDoesNotChange:boolean)
+KMeans:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, targetCost: number, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean, stopWhenModelParametersDoesNotChange:boolean)
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 

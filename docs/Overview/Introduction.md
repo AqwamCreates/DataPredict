@@ -135,6 +135,6 @@ Since you read the whole introduction, I recommend you to have a look at these t
 
 * [Using Optimizers](UsingOptimizers.md)
 
-* [Using Gradient Descent Modes](UsingGradientDescentModes.md)
+* [Using Gradient Descent Modifiers](UsingGradientDescentModifier.md)
 
 * [Using Regularization](UsingRegularization.md)

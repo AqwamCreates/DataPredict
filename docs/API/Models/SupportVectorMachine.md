@@ -103,7 +103,7 @@ SupportVectorMachine:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 
 ### predict()
 
-* Predict the value for a given data.
+Predict the values for given data.
 
 ```
 SupportVectorMachine:predict(featureMatrix: Matrix, returnOriginalOutput): Matrix -OR- Matrix

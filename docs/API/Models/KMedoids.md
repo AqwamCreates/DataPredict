@@ -74,7 +74,7 @@ KMedoids:train(featureMatrix: Matrix)
 
 ### predict()
 
-Predict which cluster does it belong to for given data.
+Predict which clusters does it belong to for a given data.
 
 ```
 KMedoids:predict(featureMatrix: Matrix): integer, number

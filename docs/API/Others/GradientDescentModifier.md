@@ -62,7 +62,7 @@ GradientDescentModifier:train(...): number[]
 
 ### predict()
 
-* Predict the value for a given data.
+* Predict the values for given data.
 
 ```
 GradientDescentModifier:predict(...): ...

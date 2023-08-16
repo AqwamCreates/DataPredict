@@ -132,7 +132,7 @@ NeuralNetwork:train(featureMatrix: Matrix, labelVector / labelMatrix: Matrix): n
 * Predict the value for a given data.
 
 ```
-NeuralNetwork:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): integer, number -OR- Matrix
+NeuralNetwork:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
@@ -143,9 +143,9 @@ NeuralNetwork:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): int
 
 #### Returns:
 
-* predictedValue: A value that is predicted by the model.
+* predictedVector: A vector that is predicted by the model.
 
-* probability: The probability of predicted value.
+* probabilityVector: A vector that contains the probability of predicted values in predictedVector.
 
 -OR-
 

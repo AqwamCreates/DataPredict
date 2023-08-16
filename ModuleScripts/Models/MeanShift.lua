@@ -59,29 +59,37 @@ local function calculateDistance(vector1, vector2, distanceFunction)
 	
 end
 
-local function assignToCluster(distanceFromClusterRowVector) -- Number of columns -> number of clusters
+local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
 	
-	local distanceFromCluster
+	local clusterNumberVector = AqwamMatrixLibrary:createMatrix(#distanceMatrix, 1)
 	
-	local shortestDistance = math.huge
+	local clusterDistanceVector = AqwamMatrixLibrary:createMatrix(#distanceMatrix, 1) 
 	
-	local clusterNumber
-	
-	for cluster = 1, #distanceFromClusterRowVector[1], 1 do
+	for dataIndex, distanceVector in ipairs(distanceMatrix) do
 		
-		distanceFromCluster = distanceFromClusterRowVector[1][cluster]
+		local closestClusterNumber
 		
-		if (distanceFromCluster < shortestDistance) then
+		local shortestDistance = math.huge
+		
+		for i, distance in ipairs(distanceVector) do
 			
-			shortestDistance = distanceFromCluster
-			
-			clusterNumber = cluster
+			if (distance < shortestDistance) then
+				
+				closestClusterNumber = i
+				
+				shortestDistance = distance
+				
+			end
 			
 		end
 		
+		clusterNumberVector[dataIndex][1] = closestClusterNumber
+		
+		clusterDistanceVector[dataIndex][1] = shortestDistance
+		
 	end
 	
-	return clusterNumber, shortestDistance
+	return clusterNumberVector, clusterDistanceVector
 	
 end
 
@@ -365,13 +373,15 @@ function MeanShiftModel:train(featureMatrix)
 	
 end
 
-function MeanShiftModel:predict(featureMatrix)
+function MeanShiftModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local distanceFromClusterRowVector = createDistanceMatrix(self.ModelParameters, featureMatrix, self.distanceFunction)
+	local distanceMatrix = createDistanceMatrix(self.ModelParameters, featureMatrix, self.distanceFunction)
+	
+	if (returnOriginalOutput == true) then return distanceMatrix end
 
-	local clusterNumber, shortestDistance = assignToCluster(distanceFromClusterRowVector)
+	local clusterNumberVector, clusterDistanceVector = assignToCluster(distanceMatrix)
 	
-	return clusterNumber, shortestDistance
+	return clusterNumberVector, clusterDistanceVector
 	
 end
 

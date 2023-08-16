@@ -96,7 +96,7 @@ LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 
 ### predict()
 
-Predict the value for a given data.
+Predict the values for given data.
 
 ```
 LinearRegression:predict(featureMatrix: Matrix): number

@@ -313,7 +313,7 @@ end
 
 function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local piMatrix, meanMatrix, varianceMatrix = unpack(self.ModelParameters)
+	local piMatrix, meanMatrix, varianceMatrix = table.unpack(self.ModelParameters)
 
 	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
 	

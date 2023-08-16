@@ -6,7 +6,7 @@ ExpectationMaximization is an unsupervised machine learning model that estimates
 
 Contains a table of matrices.  
 
-* ModelParameters[1]: piMatrix. The rows represent the clusters. The columns represent the features.
+* ModelParameters[1]: piMatrix. The rows represent the clusters.
 
 * ModelParameters[2]: meanMatrix. The rows represent the clusters. The columns represent the features.
 

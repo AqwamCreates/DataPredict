@@ -25,7 +25,7 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 [Using Optimizers](Overview/UsingOptimizers.md)
 
-[Using Gradient Descent Modes](Overview/UsingGradientDescentModes.md)
+[Using Gradient Descent Modifiers](Overview/UsingGradientDescentModifiers.md)
 
 [Using Model Checker](Overview/UsingModelChecker.md)
 

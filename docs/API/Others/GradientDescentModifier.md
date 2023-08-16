@@ -1,4 +1,6 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - GradientDescentModes
+# [API Reference](../../API.md) - [Others](../Others.md) - GradientDescentModifier
+
+
 
 ## Functions
 

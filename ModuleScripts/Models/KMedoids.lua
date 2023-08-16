@@ -228,25 +228,27 @@ end
 local function createClusterAssignmentMatrix(distanceMatrix) -- contains values of 0 and 1, where 0 is "does not belong to this cluster"
 	
 	local numberOfData = #distanceMatrix -- Number of rows
-	
+
 	local numberOfClusters = #distanceMatrix[1]
-	
+
 	local clusterAssignmentMatrix = AqwamMatrixLibrary:createMatrix(#distanceMatrix, #distanceMatrix[1])
-	
+
 	local dataPointClusterNumber
-	
+
 	for dataIndex = 1, numberOfData, 1 do
-		
-		dataPointClusterNumber = assignToCluster({distanceMatrix[dataIndex]})
-		
-		for cluster = 1, numberOfClusters, 1 do
 
-			clusterAssignmentMatrix[dataIndex][cluster] = checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClusterNumber, cluster)
+		local distanceVector = {distanceMatrix[dataIndex]}
 
-		end
-		
+		local _, vectorIndexArray = AqwamMatrixLibrary:findMaximumValueInMatrix(distanceVector)
+
+		if (vectorIndexArray == nil) then continue end
+
+		local clusterNumber = vectorIndexArray[2]
+
+		clusterAssignmentMatrix[dataIndex][clusterNumber] = 1
+
 	end
-	
+
 	return clusterAssignmentMatrix
 	
 end
@@ -257,9 +259,7 @@ local function calculateCost(modelParameters, featureMatrix, distanceFunction)
 	
 	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 	
-	local costMatrixSquareRoot = AqwamMatrixLibrary:multiply(distanceMatrix, clusterAssignmentMatrix)
-	
-	local costMatrix = AqwamMatrixLibrary:multiply(costMatrixSquareRoot, costMatrixSquareRoot)
+	local costMatrix = AqwamMatrixLibrary:multiply(distanceMatrix, clusterAssignmentMatrix)
 	
 	local cost = AqwamMatrixLibrary:sum(costMatrix)
 	

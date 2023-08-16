@@ -54,7 +54,7 @@ GradientDescentModifier:train(featureMatrix, labelVector): number[]
 
 #### Returns:
 
-* costArray: An array containing all the cost.
+* costArray: An array containing cost values.
 
 #### Note:
 

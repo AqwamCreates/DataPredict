@@ -1,4 +1,4 @@
-It is important for us to check the accuracy of our model. Hence, in this tutorial we will show you on how to check your model's accuracy.
+It is important for us to check the accuracy of our model. Hence, in this tutorial we will show you on how to check your model's test and validation costs.
 
 # Getting Started
 

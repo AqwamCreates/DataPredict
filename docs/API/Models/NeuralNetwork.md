@@ -129,7 +129,7 @@ NeuralNetwork:train(featureMatrix: Matrix, labelVector / labelMatrix: Matrix): n
 
 ### predict()
 
-* Predict the value for a given data.
+Predict the values for given data.
 
 ```
 NeuralNetwork:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix

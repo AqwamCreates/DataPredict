@@ -74,7 +74,7 @@ GradientDescentModifier:predict(featureMatrix: Matrix, returnOriginalOutput: boo
 
 * featureMatrix: Matrix containing all data.
 
-* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability. 
+* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability (optional). 
 
 #### Returns:
 

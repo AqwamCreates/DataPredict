@@ -4,7 +4,7 @@
 
 [ModelParametersMerger](Others/ModelParametersMerger.md)
 
-[GradientDescentModes](Others/GradientDescentModes.md)
+[GradientDescentModifier](Others/GradientDescentModifier.md)
 
 [Regularization](Others/Regularization.md)
 

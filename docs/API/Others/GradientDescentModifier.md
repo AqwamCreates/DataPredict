@@ -49,14 +49,12 @@ GradientDescentModifier:setParameters(Model: ModelObject, gradientDescentType: s
 Trains the machine/deep learning model under specific gradient descent mode.
 
 ```
-GradientDescentModifier:train(featureMatrix, labelVector): number[]
+GradientDescentModifier:train(...): number[]
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
-
-* labelVector: A (n x 1) matrix containing values related to featureMatrix (optional). 
+* ...: The parameters are the same to the original model's train() function.
 
 #### Returns:
 
@@ -67,24 +65,16 @@ GradientDescentModifier:train(featureMatrix, labelVector): number[]
 * Predict the value for a given data.
 
 ```
-GradientDescentModifier:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+GradientDescentModifier:predict(...): ...
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
-
-* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability (optional). 
+...: The parameters are the same to the original model's predict() function.
 
 #### Returns:
 
-* predictedVector: A vector that is predicted by the model.
-
-* probabilityVector: A vector that contains the probability of predicted values in predictedVector.
-
--OR-
-
-* predictedMatrix: A matrix containing all predicted values from all classes.
+...: The outputs are the same to the original model's predict() function.
 
 ## Note:
 

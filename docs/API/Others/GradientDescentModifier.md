@@ -40,7 +40,7 @@ GradientDescentModifier:setParameters(Model: ModelObject, gradientDescentType: s
 
 ### train()
 
-Runs the machine/deep learning model specific gradient descent mode.
+Trains the machine/deep learning model under specific gradient descent mode.
 
 ```
 GradientDescentModifier:train(featureMatrix, labelVector): number[]
@@ -48,17 +48,13 @@ GradientDescentModifier:train(featureMatrix, labelVector): number[]
 
 #### Parameters:
 
-* Model: The model that you want to train
-
-* mode: The mode of gradient descent. Available modes are "Batch", "MiniBatch" and "Stochastic".
-
 * featureMatrix: Matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
-* batchSize: The batch size to be inputted into the model.
+#### Returns:
 
-* showOutputCost: Set whether or not to show the final cost for each epoch (MiniBatch) or data (Stochastic).
+* costArray: An array containing all the cost.
 
 #### Note:
 

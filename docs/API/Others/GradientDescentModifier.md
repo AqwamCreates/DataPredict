@@ -16,7 +16,7 @@ GradientDescentModifier.new(Model: ModelObject, gradientDescentType: string, bat
 
 * gradientDescentType: The type of gradient descent to be used when train() function is called. Available modes are "Batch", "MiniBatch" and "Stochastic".
 
-* batchSize: The batch size to be inputted into the model.
+* batchSize: The batch size to split the featureMatirx and labelVector into multiple parts.
 
 * showOutput: Set whether or not to show the final cost for each epoch (MiniBatch) or data (Stochastic).
 
@@ -40,7 +40,7 @@ GradientDescentModifier:setParameters(Model: ModelObject, gradientDescentType: s
 
 * gradientDescentType: The type of gradient descent to be used when train() function is called. Available modes are "Batch", "MiniBatch" and "Stochastic".
 
-* batchSize: The batch size to be inputted into the model.
+* batchSize: The batch size to split the featureMatirx and labelVector into multiple parts.
 
 * showOutput: Set whether or not to show the final cost for each epoch (MiniBatch) or data (Stochastic).
 

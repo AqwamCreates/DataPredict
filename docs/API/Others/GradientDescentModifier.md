@@ -63,7 +63,7 @@ GradientDescentModifier:train(featureMatrix, labelVector): number[]
 * Predict the value for a given data.
 
 ```
-GradientDescentModifier:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): integer, number -OR- Matrix
+GradientDescentModifier:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
@@ -74,9 +74,9 @@ GradientDescentModifier:predict(featureMatrix: Matrix, returnOriginalOutput: boo
 
 #### Returns:
 
-* predictedValue: A value that is predicted by the model.
+* predictedVector: A vector that is predicted by the model.
 
-* probability: The probability of predicted value.
+* probabilityVector: A vector that contains the probability of predicted values in predictedVector.
 
 -OR-
 

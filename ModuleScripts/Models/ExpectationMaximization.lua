@@ -247,7 +247,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	
 	local likelihoodArray = {}
 	
-	local cost = 1
+	local cost
 	
 	local numberOfIterations = 0
 
@@ -294,6 +294,10 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		if (#likelihoodArray > 1) then
 			
 			cost = sumLikelihood - likelihoodArray[#likelihoodArray - 1] 
+			
+		else
+			
+			cost = -sumLikelihood
 			
 		end
 		

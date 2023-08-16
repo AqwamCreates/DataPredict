@@ -57,29 +57,37 @@ local function calculateDistance(vector1, vector2, distanceFunction)
 	
 end
 
-local function assignToCluster(distanceFromClusterRowVector) -- Number of columns -> number of clusters
+local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
 	
-	local distanceFromCluster
-	
-	local shortestDistance = math.huge
-	
-	local clusterNumber
-	
-	for cluster = 1, #distanceFromClusterRowVector[1], 1 do
-		
-		distanceFromCluster = distanceFromClusterRowVector[1][cluster]
-		
-		if (distanceFromCluster < shortestDistance) then
-			
-			shortestDistance = distanceFromCluster
-			
-			clusterNumber = cluster
-			
+	local clusterNumberVector = AqwamMatrixLibrary:createMatrix(#distanceMatrix, 1)
+
+	local clusterDistanceVector = AqwamMatrixLibrary:createMatrix(#distanceMatrix, 1) 
+
+	for dataIndex, distanceVector in ipairs(distanceMatrix) do
+
+		local closestClusterNumber
+
+		local shortestDistance = math.huge
+
+		for i, distance in ipairs(distanceVector) do
+
+			if (distance < shortestDistance) then
+
+				closestClusterNumber = i
+
+				shortestDistance = distance
+
+			end
+
 		end
-		
+
+		clusterNumberVector[dataIndex][1] = closestClusterNumber
+
+		clusterDistanceVector[dataIndex][1] = shortestDistance
+
 	end
-	
-	return clusterNumber, shortestDistance
+
+	return clusterNumberVector, clusterDistanceVector
 	
 end
 
@@ -402,13 +410,15 @@ function KMedoidsModel:train(featureMatrix)
 	
 end
 
-function KMedoidsModel:predict(featureMatrix)
+function KMedoidsModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local distanceFromClusterRowVector = createDistanceMatrix(self.ModelParameters, featureMatrix, self.distanceFunction)
+	local distanceMatrix = createDistanceMatrix(self.ModelParameters, featureMatrix, self.distanceFunction)
+	
+	if (returnOriginalOutput == true) then return distanceMatrix end
 
-	local clusterNumber, shortestDistance = assignToCluster(distanceFromClusterRowVector)
-	
-	return clusterNumber, shortestDistance
+	local clusterNumberVector, clusterDistanceVector = assignToCluster(distanceMatrix)
+
+	return clusterNumberVector, clusterDistanceVector
 	
 end
 

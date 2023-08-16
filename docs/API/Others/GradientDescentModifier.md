@@ -52,7 +52,7 @@ GradientDescentModifier:train(featureMatrix, labelVector): number[]
 
 * featureMatrix: Matrix containing all data.
 
-* labelVector: A (n x 1) matrix containing values related to featureMatrix.
+* labelVector: A (n x 1) matrix containing values related to featureMatrix (optional). 
 
 #### Returns:
 

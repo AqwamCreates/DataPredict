@@ -241,13 +241,15 @@ local function createClusterAssignmentMatrix(distanceMatrix) -- contains values 
 	
 	for dataIndex = 1, numberOfData, 1 do
 		
-		dataPointClusterNumber = assignToCluster({distanceMatrix[dataIndex]})
+		local distanceVector = {distanceMatrix[dataIndex]}
 		
-		for cluster = 1, numberOfClusters, 1 do
-
-			clusterAssignmentMatrix[dataIndex][cluster] = checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClusterNumber, cluster)
-
-		end
+		local _, vectorIndexArray = AqwamMatrixLibrary:findMaximumValueInMatrix(distanceVector)
+		
+		if (vectorIndexArray == nil) then continue end
+		
+		local clusterNumber = vectorIndexArray[2]
+		
+		clusterAssignmentMatrix[dataIndex][clusterNumber] = 1
 		
 	end
 	

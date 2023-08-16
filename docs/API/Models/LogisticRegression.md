@@ -98,7 +98,7 @@ LogisticRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 * Predict the value for a given data.
 
 ```
-LogisticRegression:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): integer, number
+LogisticRegression:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
@@ -109,9 +109,9 @@ LogisticRegression:predict(featureMatrix: Matrix, returnOriginalOutput: boolean)
 
 #### Returns:
 
-* predictedValue: A value that is predicted by the model.
+* predictedVector: A vector that is predicted by the model.
 
-* probability: The probability of predicted value.
+* probabilityVector: A vector that contains the probability of predicted values in predictedVector.
 
 -OR-
 

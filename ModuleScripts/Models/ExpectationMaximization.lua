@@ -72,13 +72,13 @@ local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, vari
 	
 end
 
-local function initializeParameters(numberOfClusters, numberOfFeatures)
+function ExpectationMaximizationModel:initializeParameters(numberOfClusters, numberOfFeatures)
 
-	local piMatrix = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfClusters, 1)
+	local piMatrix = AqwamMatrixLibrary:initializeMatrixBasedOnMode(numberOfClusters, 1)
 
-	local meanMatrix = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfClusters, numberOfFeatures)
+	local meanMatrix = AqwamMatrixLibrary:initializeMatrixBasedOnMode(numberOfClusters, numberOfFeatures)
 
-	local varianceMatrix = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfClusters, numberOfFeatures)
+	local varianceMatrix = AqwamMatrixLibrary:initializeMatrixBasedOnMode(numberOfClusters, numberOfFeatures)
 
 	return piMatrix, meanMatrix, varianceMatrix
 	
@@ -142,11 +142,11 @@ local function mStep(featureMatrix, responsibilitiesMatrix, numberOfClusters) --
 
 end
 
-local function getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
+function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
-	local piMatrix, meanMatrix, varianceMatrix = initializeParameters(numberOfClusters, numberOfFeatures)
+	local piMatrix, meanMatrix, varianceMatrix = self:initializeParameters(numberOfClusters, numberOfFeatures)
 	
 	local responsibilities = eStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
@@ -168,7 +168,7 @@ local function getBayesianInformationCriterion(featureMatrix, numberOfClusters, 
 	
 end
 
-local function fetchBestNumberOfClusters(featureMatrix, epsilon)
+function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, epsilon)
 	
 	local numberOfClusters = 2
 	
@@ -178,7 +178,7 @@ local function fetchBestNumberOfClusters(featureMatrix, epsilon)
 
 	while true do
 		
-		local bayesianInformationCriterion = getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
+		local bayesianInformationCriterion = self:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
 
 		if (bayesianInformationCriterion > bestBayesianInformationCriterion) then
 			
@@ -265,11 +265,11 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		if (self.numberOfClusters == math.huge) then
 			
-			self.numberOfClusters = fetchBestNumberOfClusters(featureMatrix, self.epsilon)
+			self.numberOfClusters = self:fetchBestNumberOfClusters(featureMatrix, self.epsilon)
 			
 		end
 		
-		piMatrix, meanMatrix, varianceMatrix = initializeParameters(self.numberOfClusters, numberOfFeatures) 
+		piMatrix, meanMatrix, varianceMatrix = self:initializeParameters(self.numberOfClusters, numberOfFeatures) 
 
 	end
 
@@ -325,7 +325,7 @@ function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutpu
 	
 	for dataIndex, gausssianVector in ipairs(gaussianMatrix) do
 		
-		local selectedCluster 
+		local selectedCluster
 		
 		local highestWeight = -math.huge
 		

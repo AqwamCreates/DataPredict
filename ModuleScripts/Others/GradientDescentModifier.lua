@@ -4,7 +4,7 @@ GradientDescentModifier.__index = GradientDescentModifier
 
 local defaultGradientDescentType = "stochastic"
 
-local defaultBatchSize = math.huge
+local defaultBatchSize = 2
 
 local defaultShowOutput = true
 
@@ -124,7 +124,7 @@ function GradientDescentModifier:startMiniBatchGradientDescent(featureMatrix, la
 		
 		table.insert(costArray, costArray)
 		
-		if (self.showOutputCost) then print("Epoch: " .. currentBatchNumber .. "\t\t\tFinal Cost: " .. cost .. "\n") end
+		if (self.showOutput) then print("Epoch: " .. currentBatchNumber .. "\t\t\tFinal Cost: " .. cost .. "\n") end
 		
 	end
 	
@@ -156,7 +156,7 @@ function GradientDescentModifier:startStochasticGradientDescent(featureMatrix, l
 		
 		table.insert(costArray, cost)
 		
-		if (self.showOutputCost) then print("Data Number: " .. dataIndex .. "\t\tFinal Cost: " .. cost .. "\n") end
+		if (self.showOutput) then print("Data Number: " .. dataIndex .. "\t\tFinal Cost: " .. cost .. "\n") end
 		
 	end
 	

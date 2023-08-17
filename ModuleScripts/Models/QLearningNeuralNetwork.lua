@@ -128,9 +128,9 @@ function QLearningNeuralNetworkModel:sampleBatch()
 
 	for i = 1, self.experienceReplayBatchSize, 1 do
 		
-		local index = Random.new():NextInteger(1, #self.replayBuffer)
+		local index = Random.new():NextInteger(1, #self.replayBufferArray)
 		
-		table.insert(batch, self.replayBuffer[index])
+		table.insert(batch, self.replayBufferArray[index])
 		
 	end
 

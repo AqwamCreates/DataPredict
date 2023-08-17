@@ -64,6 +64,22 @@ QLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRat
 
 * discountFactor: Balances present and future rewards in agent decisions.
 
+### setExperienceReplay()
+
+Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings.
+
+```
+QLearningNeuralNetwork:setExperienceReplay(useExperienceReplay: boolean, experienceReplayBatchSize: integer, maxExperienceReplayBufferSize: integer)
+```
+
+#### Parameters:
+
+* useExperienceReplay: The option to set whether or not to enable experience reeplay. When enabled, it may require more resources.
+
+* experienceReplayBatchSize: Determines how many of these experiences are sampled at once for batch training
+
+* maxExperienceReplayBufferSize: The maximum size that the model can store the experiences.
+
 ### reinforce()
 
 Reward or punish model based on the current state of the environment.

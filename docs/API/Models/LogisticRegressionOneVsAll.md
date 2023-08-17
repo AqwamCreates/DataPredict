@@ -91,9 +91,9 @@ LogisticRegressionOneVsAll:predict(featureMatrix: Matrix, returnOriginalOutput: 
 
 #### Returns:
 
-* predictedValue: A value that is predicted by the model.
+* predictedVector: A vector that is predicted by the model.
 
-* probability: The probability of predicted value.
+* probabilityVector: A vector that contains the probability of predicted values in predictedVector.
 
 -OR-
 

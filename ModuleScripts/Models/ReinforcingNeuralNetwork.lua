@@ -84,7 +84,13 @@ function ReinforcingNeuralNetworkModel:reinforce(featureVector, labelVector, rew
 
 	local predictedVector, probabilityVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 	
-	local areLabelsEqual = (predictedVector[1][1] == labelVector[1][1]) 
+	local predictedLabel = predictedVector[1][1]
+	
+	local label = labelVector[1][1]
+	
+	local areLabelsEqual = (predictedLabel == label) 
+	
+	local probability = probabilityVector[1][1]
 
 	local multiplyFactor = (areLabelsEqual and rewardValue) or punishValue
 
@@ -92,7 +98,7 @@ function ReinforcingNeuralNetworkModel:reinforce(featureVector, labelVector, rew
 	
 	if (returnOriginalOutput == true) then return allOutputsMatrix end
 
-	return predictedVector[1][1], probabilityVector[1][1]
+	return predictedLabel, probability
 
 end
 

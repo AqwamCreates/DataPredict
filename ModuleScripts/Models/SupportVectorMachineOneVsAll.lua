@@ -332,13 +332,9 @@ end
 
 function SupportVectorMachineOneVsAllModel:setPrintOutput(option) 
 
-	if (option == false) then
+	if (typeof(option) ~= "nil") then
 
-		self.IsOutputPrinted = false
-
-	else
-
-		self.IsOutputPrinted = true
+		self.IsOutputPrinted = option
 
 	end
 

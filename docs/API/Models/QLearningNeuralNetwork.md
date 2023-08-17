@@ -69,7 +69,7 @@ QLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRat
 Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings for that particular parameter.
 
 ```
-QLearningNeuralNetwork:setExperienceReplay(useExperienceReplay: boolean, experienceReplayBatchSize: integer, maxExperienceReplayBufferSize: integer)
+QLearningNeuralNetwork:setExperienceReplay(useExperienceReplay: boolean, experienceReplayBatchSize: integer, numberOfReinforcementsForExperienceReplayUpdate: integer, maxExperienceReplayBufferSize: integer)
 ```
 
 #### Parameters:
@@ -77,6 +77,8 @@ QLearningNeuralNetwork:setExperienceReplay(useExperienceReplay: boolean, experie
 * useExperienceReplay: The option to set whether or not to enable experience reeplay. When enabled, it may require more resources.
 
 * experienceReplayBatchSize: Determines how many of these experiences are sampled at once for batch training
+
+* numberOfReinforcementsForExperienceReplayUpdate: How many times does the reinforce() function needed to be called in order to update he model based on experience replay.
 
 * maxExperienceReplayBufferSize: The maximum size that the model can store the experiences.
 

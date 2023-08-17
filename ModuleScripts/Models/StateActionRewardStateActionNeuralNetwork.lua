@@ -174,7 +174,7 @@ function StateActionRewardStateActionNeuralNetworkModel:reset()
 
 end
 
-function StateActionRewardStateActionNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue)
+function StateActionRewardStateActionNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
@@ -201,6 +201,8 @@ function StateActionRewardStateActionNeuralNetworkModel:reinforce(currentFeature
 	local highestProbability
 
 	local highestProbabilityVector
+	
+	local allOutputsMatrix
 
 	local randomProbability = Random.new():NextNumber()
 
@@ -211,10 +213,16 @@ function StateActionRewardStateActionNeuralNetworkModel:reinforce(currentFeature
 		action = self.ClassesList[randomNumber]
 
 		highestProbabilityVector = randomProbability
+		
+		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 
+		allOutputsMatrix[1][randomNumber] = randomProbability
+		
 	else
 
-		actionVector, highestProbabilityVector = self:predict(currentFeatureVector)
+		allOutputsMatrix = self:predict(currentFeatureVector, true)
+		
+		actionVector, highestProbabilityVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 
 		action = actionVector[1][1]
 
@@ -239,6 +247,8 @@ function StateActionRewardStateActionNeuralNetworkModel:reinforce(currentFeature
 	end
 
 	if (self.printReinforcementOutput == true) then print("Current Number Of Episodes: " .. self.currentNumberOfEpisodes .. "\t\tCurrent Epsilon: " .. self.currentEpsilon) end
+	
+	if (returnOriginalOutput == true) then return allOutputsMatrix end
 
 	return action, highestProbability
 

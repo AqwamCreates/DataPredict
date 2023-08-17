@@ -22,6 +22,8 @@ local defaultExperienceReplayBatchSize = 32
 
 local defaultMaxExperienceReplayBufferSize = 100
 
+local defaultNumberOfReinforcementsForExperienceReplayUpdate = 1
+
 function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 
 	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
@@ -55,16 +57,22 @@ function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIteration
 	NewStateActionRewardStateActionNeuralNetworkModel.useExperienceReplay = false
 
 	NewStateActionRewardStateActionNeuralNetworkModel.maxExperienceReplayBufferSize = defaultMaxExperienceReplayBufferSize
+	
+	NewStateActionRewardStateActionNeuralNetworkModel.numberOfReinforcementsForExperienceReplayUpdate = defaultNumberOfReinforcementsForExperienceReplayUpdate
+	
+	NewStateActionRewardStateActionNeuralNetworkModel.numberOfReinforcements = 0
 
 	return NewStateActionRewardStateActionNeuralNetworkModel
 
 end
 
-function StateActionRewardStateActionNeuralNetworkModel:setExperienceReplay(useExperienceReplay, experienceReplayBatchSize, maxExperienceReplayBufferSize)
+function StateActionRewardStateActionNeuralNetworkModel:setExperienceReplay(useExperienceReplay, experienceReplayBatchSize, numberOfReinforcementsForExperienceReplayUpdate, maxExperienceReplayBufferSize)
 
 	self.useExperienceReplay = self:getBooleanOrDefaultOption(useExperienceReplay, self.useExperienceReplay)
 
 	self.experienceReplayBatchSize = experienceReplayBatchSize or self.experienceReplayBatchSize
+
+	self.numberOfReinforcementsForExperienceReplayUpdate = numberOfReinforcementsForExperienceReplayUpdate or self.numberOfReinforcementsForExperienceReplayUpdate 
 
 	self.maxExperienceReplayBufferSize = maxExperienceReplayBufferSize or self.maxExperienceReplayBufferSize
 
@@ -147,6 +155,8 @@ function StateActionRewardStateActionNeuralNetworkModel:experienceReplayUpdate()
 end
 
 function StateActionRewardStateActionNeuralNetworkModel:reset()
+	
+	self.numberOfReinforcements = 0
 
 	self.currentNumberOfEpisodes = 0
 
@@ -215,8 +225,10 @@ function StateActionRewardStateActionNeuralNetworkModel:reinforce(currentFeature
 	self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 	if (self.useExperienceReplay) then 
+		
+		self.numberOfReinforcements = (self.numberOfReinforcements + 1) % self.numberOfReinforcementsForExperienceReplayUpdate
 
-		self:experienceReplayUpdate()
+		if (self.numberOfReinforcements == 0) then self:experienceReplayUpdate() end
 
 		local experience = {self.previousFeatureVector, action, rewardValue, currentFeatureVector}
 

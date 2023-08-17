@@ -78,7 +78,7 @@ QLearningNeuralNetwork:setExperienceReplay(useExperienceReplay: boolean, experie
 
 * experienceReplayBatchSize: Determines how many of these experiences are sampled at once for batch training
 
-* numberOfReinforcementsForExperienceReplayUpdate: How many times does the reinforce() function needed to be called in order to update he model based on experience replay.
+* numberOfReinforcementsForExperienceReplayUpdate: How many times does the reinforce() function needed to be called in order to for a single update from experience replay.
 
 * maxExperienceReplayBufferSize: The maximum size that the model can store the experiences.
 

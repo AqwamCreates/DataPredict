@@ -1,193 +1,102 @@
-local BaseModel = require(script.Parent.BaseModel)
+local DataPredictLibrary = script.Parent.Parent
 
-SupportVectorMachineModel = {}
+local SupportVectorMachine = require(DataPredictLibrary.Models.SupportVectorMachine)
 
-SupportVectorMachineModel.__index = SupportVectorMachineModel
-
-setmetatable(SupportVectorMachineModel, BaseModel)
+local Optimizers = DataPredictLibrary.Optimizers
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
 local defaultMaxNumberOfIterations = 500
 
-local defaultLearningRate = 0.01
+local defaultLearningRate = 0.3
 
-local defaultCvalue = 1
+local defaultCvalue = 0.0
 
 local defaultTargetCost = 0
 
 local defaultKernelFunction = "linear"
 
-local defaultDegree = 3
+local SupportVectorMachineOneVsAllModel = {}
 
-local defaultSigma = 1
+SupportVectorMachineOneVsAllModel.__index = SupportVectorMachineOneVsAllModel
 
-local mappingList = {
+local function getClassesList(labelVector)
 
-	["linear"] = function(X)
+	local classesList = {}
 
-		return X
+	local value
 
-	end,
+	for i = 1, #labelVector, 1 do
 
-	["polynomial"] = function(X, degree)
+		value = labelVector[i][1]
 
-		return AqwamMatrixLibrary:power(X, degree)
+		if not table.find(classesList, value) then
 
-	end,
-
-	["radialBasisFunction"] = function(X, sigma)
-		
-		local XSquaredVector = AqwamMatrixLibrary:power(X, 2)
-		
-		local sigmaSquaredVector = AqwamMatrixLibrary:power(sigma, 2)
-		
-		local multipliedSigmaSquaredVector = AqwamMatrixLibrary:multiply(-2, sigmaSquaredVector)
-		
-		local zVector = AqwamMatrixLibrary:divide(XSquaredVector, multipliedSigmaSquaredVector)
-		
-		return AqwamMatrixLibrary:applyFunction(math.exp, zVector)
-
-	end,
-
-	["cosineSimilarity"] = function(X)
-		
-		local XSquaredVector = AqwamMatrixLibrary:power(X, 2)
-
-		local normXVector = AqwamMatrixLibrary:applyFunction(math.sqrt, XSquaredVector)
-		
-		return AqwamMatrixLibrary:divide(X, normXVector)
-
-	end,
-
-}
-
-local hingeCostFunction = function (x) return math.max(0, x) end
-
-local function calculateMapping(x, kernelFunction, kernelParameters)
-
-	if (kernelFunction == "linear") or (kernelFunction == "cosineSimilarity") then
-
-		return mappingList[kernelFunction](x)
-
-	elseif (kernelFunction == "polynomial") then
-
-		local degree = kernelParameters.degree or defaultDegree
-
-		return mappingList[kernelFunction](x, degree)
-
-	elseif (kernelFunction == "radialBasisFunction") then
-
-		local sigma = kernelParameters.sigma or defaultSigma
-
-		return mappingList[kernelFunction](x, sigma)
-
-	end
-
-end
-
-local function calculateCost(modelParameters, kernelMatrix, labelVector, cValue)
-
-	local cost
-
-	local predictedValue
-
-	local featureVector
-
-	local mappedFeatureVector
-
-	local regularizationTerm 
-
-	local sumError
-
-	local numberOfData = #labelVector
-
-	local regularizationTermPart1 = AqwamMatrixLibrary:sum(AqwamMatrixLibrary:power(modelParameters, 2))
-
-	local prediction = AqwamMatrixLibrary:dotProduct(kernelMatrix, modelParameters)
-
-	local cost = AqwamMatrixLibrary:subtract(1, AqwamMatrixLibrary:multiply(labelVector, prediction))
-
-	local hingeCostVector = AqwamMatrixLibrary:applyFunction(hingeCostFunction, cost)
-
-	local hingeCostSum = AqwamMatrixLibrary:sum(hingeCostVector)
-
-	cost = hingeCostSum/2
-
-	regularizationTerm = (cValue / 2) * regularizationTermPart1
-
-	cost += regularizationTerm
-
-	return cost
-
-end
-
-local function gradientDescent(modelParameters, kernelMatrix, labelVector, cValue)
-	
-	local numberOfData = #labelVector
-
-	local prediction = AqwamMatrixLibrary:dotProduct(kernelMatrix, modelParameters)
-
-	local costPart1 = AqwamMatrixLibrary:multiply(labelVector, prediction)
-
-	local cost = AqwamMatrixLibrary:subtract(1, costPart1)
-
-	local hingeCost = AqwamMatrixLibrary:applyFunction(hingeCostFunction, cost)
-
-	local hingeCostDerivatives = AqwamMatrixLibrary:createMatrix(#kernelMatrix, #kernelMatrix[1])
-
-	for i = 1, numberOfData, 1 do
-
-		if (hingeCost[i][1] ~= 0) then
-
-			hingeCostDerivatives = AqwamMatrixLibrary:multiply(-cValue, labelVector, kernelMatrix)
+			table.insert(classesList, value)
 
 		end
 
 	end
 
-	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:transpose(AqwamMatrixLibrary:verticalSum(hingeCostDerivatives))
-
-	local regularizationPart1 = AqwamMatrixLibrary:divide(modelParameters, cValue)
-
-	local costFunctionDerivatives = AqwamMatrixLibrary:add(regularizationPart1, costFunctionDerivativesPart1)
-
-	costFunctionDerivatives = AqwamMatrixLibrary:divide(costFunctionDerivatives, numberOfData)
-
-	return costFunctionDerivatives
+	return classesList
 
 end
 
-function SupportVectorMachineModel.new(maxNumberOfIterations, learningRate, cValue, targetCost, kernelFunction, kernelParameters)
+local function convertToBinaryLabelVector(labelVector, selectedClass)
 
-	local NewSupportVectorMachine = BaseModel.new()
+	local numberOfRows = #labelVector
 
-	setmetatable(NewSupportVectorMachine, SupportVectorMachineModel)
+	local newLabelVector = AqwamMatrixLibrary:createMatrix(numberOfRows, 1)
 
-	NewSupportVectorMachine.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	for row = 1, numberOfRows, 1 do
 
-	NewSupportVectorMachine.learningRate = learningRate or defaultLearningRate
+		if (labelVector[row][1] == selectedClass) then
 
-	NewSupportVectorMachine.cValue = cValue or defaultCvalue
+			newLabelVector[row][1] = 1
 
-	NewSupportVectorMachine.targetCost = targetCost or defaultTargetCost
+		else
 
-	NewSupportVectorMachine.kernelFunction = kernelFunction or defaultKernelFunction
+			newLabelVector[row][1] = -1
 
-	NewSupportVectorMachine.kernelParameters = kernelParameters or {}
+		end
 
-	NewSupportVectorMachine.Optimizer = nil
+	end
 
-	return NewSupportVectorMachine
-end
-
-function SupportVectorMachineModel:setOptimizer(Optimizer)
-
-	self.Optimizer = Optimizer
+	return newLabelVector
 
 end
 
-function SupportVectorMachineModel:setParameters(maxNumberOfIterations, learningRate, cValue, targetCost, kernelFunction, kernelParameters)
+function SupportVectorMachineOneVsAllModel.new(maxNumberOfIterations, learningRate, cValue, targetCost, kernelFunction, kernelParameters)
+
+	local NewSupportVectorMachineOneVsAll = {}
+
+	setmetatable(NewSupportVectorMachineOneVsAll, SupportVectorMachineOneVsAllModel)
+
+	NewSupportVectorMachineOneVsAll.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+
+	NewSupportVectorMachineOneVsAll.learningRate = learningRate or defaultLearningRate
+
+	NewSupportVectorMachineOneVsAll.cValue = cValue or defaultCvalue
+
+	NewSupportVectorMachineOneVsAll.targetCost = targetCost or defaultTargetCost
+
+	NewSupportVectorMachineOneVsAll.kernelFunction = kernelFunction or defaultKernelFunction
+
+	NewSupportVectorMachineOneVsAll.kernelParameters = kernelParameters or {}
+
+	NewSupportVectorMachineOneVsAll.validationFeatureMatrix = nil
+
+	NewSupportVectorMachineOneVsAll.validationLabelVector = nil
+
+	NewSupportVectorMachineOneVsAll.Optimizer = nil
+
+	NewSupportVectorMachineOneVsAll.IsOutputPrinted = false
+
+	return NewSupportVectorMachineOneVsAll
+
+end
+
+function SupportVectorMachineOneVsAllModel:setParameters(maxNumberOfIterations, learningRate, cValue, targetCost, kernelFunction, kernelParameters)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -203,100 +112,166 @@ function SupportVectorMachineModel:setParameters(maxNumberOfIterations, learning
 
 end
 
-function SupportVectorMachineModel:setCValue(cValue)
+function SupportVectorMachineOneVsAllModel:train(featureMatrix, labelVector)
 
-	self.cValue = cValue or self.cValue
+	local classesList = getClassesList(labelVector)
 
-end
+	table.sort(classesList, function(a,b) return a < b end)
 
-function SupportVectorMachineModel:train(featureMatrix, labelVector)
+	local total
 
-	if (#featureMatrix ~= #labelVector) then
-
-		error("The feature matrix and the label vector do not contain the same number of rows!")
-
-	end
-
-	if (self.ModelParameters) then
-
-		if (#featureMatrix[1] ~= #self.ModelParameters) then
-
-			error("The number of features is not the same as the model parameters!")
-
-		end
-
-	else
-
-		self.ModelParameters = self:initializeMatrixBasedOnMode(#featureMatrix[1], 1)
-
-	end
+	local totalCost
 
 	local cost
 
 	local costArray = {}
+	
+	local internalCostArray = {}
+
+	local ModelParameters = {}
+
+	local SupportVectorMachineModel
+
+	local SupportVectorMachineModelsArray = {}
+
+	local binaryLabelVector
+
+	local binaryLabelVectorTable = {}
+
+	local ModelParametersVectorColumn
+
+	local ModelParametersVectorRow
 
 	local numberOfIterations = 0
 
-	local costFunctionDerivatives
+	self.ClassesList = classesList
 
-	local kernelMatrix  = calculateMapping(featureMatrix, self.kernelFunction, self.kernelParameters)
+	for i, class in ipairs(classesList) do
 
-	repeat
+		SupportVectorMachineModel = SupportVectorMachine.new(1, self.learningRate, self.cValue, self.targetCost, self.kernelFunction, self.kernelParameters)
 
-		self:iterationWait()
+		SupportVectorMachineModel:setPrintOutput(false) 
 
-		numberOfIterations += 1
+		binaryLabelVector = convertToBinaryLabelVector(labelVector, class)
 
-		costFunctionDerivatives = gradientDescent(self.ModelParameters, kernelMatrix, labelVector, self.cValue)
+		table.insert(SupportVectorMachineModelsArray, SupportVectorMachineModel)
 
-		if (self.Optimizer) then
-
-			costFunctionDerivatives = self.Optimizer:calculate(self.learningRate, costFunctionDerivatives)
-
-		else
-
-			costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
-
-		end
-
-		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
-
-		cost = calculateCost(self.ModelParameters, kernelMatrix, labelVector, self.cValue, self.kernelFunction, self.kernelParameters)
-
-		table.insert(costArray, cost)
-
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-
-	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
-
-	if (cost == math.huge) then
-
-		warn("The model diverged! Please repeat the experiment or change the argument values.")
+		table.insert(binaryLabelVectorTable, binaryLabelVector)
 
 	end
 
-	if (self.Optimizer) and (self.AutoResetOptimizers) then self.Optimizer:reset() end
+	repeat
+
+		numberOfIterations += 1
+
+		totalCost = 0
+
+		for i, class in ipairs(classesList) do
+
+			binaryLabelVector = binaryLabelVectorTable[i]
+
+			SupportVectorMachineModel = SupportVectorMachineModelsArray[i]
+
+			internalCostArray = SupportVectorMachineModel:train(featureMatrix, binaryLabelVector)
+
+			cost = internalCostArray[1]
+
+			totalCost += cost
+
+		end
+
+		if self.IsOutputPrinted then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. cost) end
+
+		table.insert(costArray, totalCost)
+
+	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(totalCost) <= self.targetCost)
+
+	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+
+	for i, class in ipairs(classesList) do
+
+		SupportVectorMachineModel = SupportVectorMachineModelsArray[i]
+
+		ModelParametersVectorColumn = SupportVectorMachineModel:getModelParameters()
+
+		ModelParametersVectorRow = AqwamMatrixLibrary:transpose(ModelParametersVectorColumn)
+
+		table.insert(ModelParameters, ModelParametersVectorRow[1])
+
+	end
+
+	self.ModelParameters = AqwamMatrixLibrary:transpose(ModelParameters)
 
 	return costArray
-	
-end
-
-function SupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
-
-	local mappedFeatureVector = calculateMapping(featureMatrix, self.kernelFunction, self.kernelParameters)
-
-	local originalPredictedVector = AqwamMatrixLibrary:dotProduct(mappedFeatureVector, self.ModelParameters)
-	
-	if (returnOriginalOutput == true) then return originalPredictedVector end
-	
-	local clampFunction = function (x) return math.clamp(x, -1, 1) end
-	
-	if (typeof(originalPredictedVector) == "number") then originalPredictedVector = {{originalPredictedVector}} end
-	
-	local predictedVector = AqwamMatrixLibrary:applyFunction(clampFunction, originalPredictedVector)
-	
-	return predictedVector
 
 end
 
-return SupportVectorMachineModel
+function SupportVectorMachineOneVsAllModel:predict(featureMatrix, returnOriginalOutput)
+
+	local distanceMatrix = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	
+	if (returnOriginalOutput == true) then return distanceMatrix end
+	
+	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
+
+	local highestDistanceVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
+
+	for j = 1, #distanceMatrix, 1 do
+
+		local distance = {distanceMatrix[j]}
+
+		local highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(distance)
+
+		if (classIndex == nil) then continue end
+
+		local predictedLabel = self.ClassesList[classIndex[2]]
+
+		predictedLabelVector[j][1] = predictedLabel
+
+		highestDistanceVector[j][1] = highestProbability
+
+	end
+
+	return predictedLabelVector, highestDistanceVector
+
+end
+
+function SupportVectorMachineOneVsAllModel:getModelParameters()
+
+	return self.ModelParameters
+
+end
+
+function SupportVectorMachineOneVsAllModel:getClassesList()
+
+	return self.ClassesList
+
+end
+
+function SupportVectorMachineOneVsAllModel:setModelParameters(ModelParameters)
+
+	self.ModelParameters = ModelParameters
+
+end
+
+function SupportVectorMachineOneVsAllModel:setClassesList(ClassesList)
+
+	self.ClassesList = ClassesList
+
+end
+
+function SupportVectorMachineOneVsAllModel:setPrintOutput(option) 
+
+	if (option == false) then
+
+		self.IsOutputPrinted = false
+
+	else
+
+		self.IsOutputPrinted = true
+
+	end
+
+end
+
+return SupportVectorMachineOneVsAllModel

@@ -231,32 +231,44 @@ function LogisticRegressionOneVsAllModel:predict(featureMatrix, returnOriginalOu
 	local highestClass
 	
 	local probability
+	
+	local softMaxMatrix = {}
 
 	local highestProbability = -math.huge
 	
-	local zVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	local zMatrix = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
 	
-	local zNormalVector = AqwamMatrixLibrary:normalizeMatrix(zVector)
-	
-	local softMaxVector = softMax(zNormalVector)
-	
-	if (returnOriginalOutput == true) then return softMaxVector end
-	
-	for column = 1, #softMaxVector[1], 1 do
+	for i = 1, #zMatrix, 1 do
 		
-		probability = softMaxVector[1][column]
+		local softMaxVector = softMax({zMatrix[i]})
 		
-		if (probability > highestProbability) then
-			
-			highestClass = self.ClassesList[column]
-			
-			highestProbability = probability
-			
-		end
+		table.insert(softMaxMatrix, softMaxVector[1])
 		
 	end
 	
-	return highestClass, highestProbability
+	if (returnOriginalOutput == true) then return softMaxMatrix end
+	
+	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
+	
+	local highestProbabilitiesVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
+	
+	for j = 1, #softMaxMatrix, 1 do
+		
+		local softMaxVector = {softMaxMatrix[j]}
+		
+		local highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(softMaxVector)
+		
+		if (classIndex == nil) then continue end
+		
+		local predictedLabel = self.ClassesList[classIndex[2]]
+
+		predictedLabelVector[j][1] = predictedLabel
+
+		highestProbabilitiesVector[j][1] = highestProbability
+		
+	end
+	
+	return predictedLabelVector, highestProbabilitiesVector
 	
 end
 

@@ -96,7 +96,7 @@ StateActionRewardStateActionNeuralNetwork:reinforce(currentFeatureVector: Matrix
 
 * rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
 
-* returnOriginalOutput: Set whether or not to return original output matrix predicted from the model. 
+* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability.
 
 #### Returns:
 

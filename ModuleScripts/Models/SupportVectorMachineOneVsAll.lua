@@ -8,17 +8,85 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibrary
 
 local defaultMaxNumberOfIterations = 500
 
-local defaultLearningRate = 0.3
+local defaultLearningRate = 0.01
 
-local defaultCvalue = 0.0
+local defaultCvalue = 1
 
 local defaultTargetCost = 0
 
 local defaultKernelFunction = "linear"
 
+local defaultDegree = 3
+
+local defaultSigma = 1
+
 local SupportVectorMachineOneVsAllModel = {}
 
 SupportVectorMachineOneVsAllModel.__index = SupportVectorMachineOneVsAllModel
+
+local mappingList = {
+
+	["linear"] = function(X)
+
+		return X
+
+	end,
+
+	["polynomial"] = function(X, degree)
+
+		return AqwamMatrixLibrary:power(X, degree)
+
+	end,
+
+	["radialBasisFunction"] = function(X, sigma)
+
+		local XSquaredVector = AqwamMatrixLibrary:power(X, 2)
+
+		local sigmaSquaredVector = AqwamMatrixLibrary:power(sigma, 2)
+
+		local multipliedSigmaSquaredVector = AqwamMatrixLibrary:multiply(-2, sigmaSquaredVector)
+
+		local zVector = AqwamMatrixLibrary:divide(XSquaredVector, multipliedSigmaSquaredVector)
+
+		return AqwamMatrixLibrary:applyFunction(math.exp, zVector)
+
+	end,
+
+	["cosineSimilarity"] = function(X)
+
+		local XSquaredVector = AqwamMatrixLibrary:power(X, 2)
+
+		local normXVector = AqwamMatrixLibrary:applyFunction(math.sqrt, XSquaredVector)
+
+		return AqwamMatrixLibrary:divide(X, normXVector)
+
+	end,
+
+}
+
+local hingeCostFunction = function (x) return math.max(0, x) end
+
+local function calculateMapping(x, kernelFunction, kernelParameters)
+
+	if (kernelFunction == "linear") or (kernelFunction == "cosineSimilarity") then
+
+		return mappingList[kernelFunction](x)
+
+	elseif (kernelFunction == "polynomial") then
+
+		local degree = kernelParameters.degree or defaultDegree
+
+		return mappingList[kernelFunction](x, degree)
+
+	elseif (kernelFunction == "radialBasisFunction") then
+
+		local sigma = kernelParameters.sigma or defaultSigma
+
+		return mappingList[kernelFunction](x, sigma)
+
+	end
+
+end
 
 local function getClassesList(labelVector)
 
@@ -206,31 +274,35 @@ function SupportVectorMachineOneVsAllModel:train(featureMatrix, labelVector)
 
 end
 
-function SupportVectorMachineOneVsAllModel:predict(featureMatrix)
+function SupportVectorMachineOneVsAllModel:predict(featureMatrix, returnOriginalOutput)
+	
+	local mappedFeatureVector = calculateMapping(featureMatrix, self.kernelFunction, self.kernelParameters)
 
-	local hypothesis
+	local distanceMatrix = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	
+	if (returnOriginalOutput == true) then return distanceMatrix end
+	
+	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
 
-	local highestClass
+	local highestDistanceVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
 
-	local longestDistance = -math.huge
+	for j = 1, #distanceMatrix, 1 do
 
-	local hypothesisVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+		local distance = {distanceMatrix[j]}
 
-	for column = 1, #hypothesisVector[1], 1 do
+		local highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(distance)
 
-		hypothesis = hypothesisVector[1][column]
+		if (classIndex == nil) then continue end
 
-		if (hypothesis > 0) and (hypothesis > longestDistance) then
+		local predictedLabel = self.ClassesList[classIndex[2]]
 
-			highestClass = self.ClassesList[column]
+		predictedLabelVector[j][1] = predictedLabel
 
-			longestDistance = hypothesis
-
-		end
+		highestDistanceVector[j][1] = highestProbability
 
 	end
 
-	return highestClass, longestDistance
+	return predictedLabelVector, highestDistanceVector
 
 end
 

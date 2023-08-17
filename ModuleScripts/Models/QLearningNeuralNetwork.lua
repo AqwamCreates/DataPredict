@@ -172,10 +172,10 @@ function QLearningNeuralNetworkModel:reset()
 
 end
 
-function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue)
+function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 	
 	if (self.ModelParameters == nil) then self:generateLayers() end
-	
+
 	if (self.previousFeatureVector == nil) then
 
 		self.previousFeatureVector = currentFeatureVector
@@ -183,7 +183,7 @@ function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue
 		return nil
 
 	end
-	
+
 	if (self.currentNumberOfEpisodes == 0) then
 
 		self.currentEpsilon *= self.epsilonDecayFactor
@@ -191,53 +191,63 @@ function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue
 	end
 
 	self.currentNumberOfEpisodes = (self.currentNumberOfEpisodes + 1) % self.maxNumberOfEpisodes
-	
+
 	local action
 
 	local actionVector
-	
+
 	local highestProbability
-	
+
 	local highestProbabilityVector
 
+	local allOutputsMatrix
+
 	local randomProbability = Random.new():NextNumber()
-	
+
 	if (randomProbability < self.epsilon) then
 
 		local randomNumber = Random.new():NextInteger(1, #self.ClassesList)
 
 		action = self.ClassesList[randomNumber]
-		
+
 		highestProbabilityVector = randomProbability
+		
+		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
+
+		allOutputsMatrix[1][randomNumber] = randomProbability
 
 	else
 
-		actionVector, highestProbabilityVector = self:predict(currentFeatureVector)
-		
+		allOutputsMatrix = self:predict(currentFeatureVector, true)
+
+		actionVector, highestProbabilityVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
+
 		action = actionVector[1][1]
-		
+
 		highestProbability = highestProbabilityVector[1][1]
 
 	end
 
 	self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
-	
+
 	if (self.useExperienceReplay) then 
-		
+
 		self.numberOfReinforcements = (self.numberOfReinforcements + 1) % self.numberOfReinforcementsForExperienceReplayUpdate
 
 		if (self.numberOfReinforcements == 0) then self:experienceReplayUpdate() end
-		
+
 		local experience = {self.previousFeatureVector, action, rewardValue, currentFeatureVector}
 
 		table.insert(self.replayBufferArray, experience)
-		
+
 		if (#self.replayBufferArray >= self.maxExperienceReplayBufferSize) then table.remove(self.replayBufferArray, 1) end
-		
+
 	end
-	
+
 	if (self.printReinforcementOutput == true) then print("Current Number Of Episodes: " .. self.currentNumberOfEpisodes .. "\t\tCurrent Epsilon: " .. self.currentEpsilon) end
-	
+
+	if (returnOriginalOutput == true) then return allOutputsMatrix end
+
 	return action, highestProbability
 
 end

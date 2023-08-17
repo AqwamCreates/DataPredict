@@ -50,7 +50,7 @@ function ReinforcingNeuralNetworkModel:reset()
 	
 end
 
-function ReinforcingNeuralNetworkModel:reinforce(featureVector, label, rewardValue, punishValue)
+function ReinforcingNeuralNetworkModel:reinforce(featureVector, labelVector, rewardValue, punishValue, returnOriginalOutput)
 	
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
@@ -58,7 +58,17 @@ function ReinforcingNeuralNetworkModel:reinforce(featureVector, label, rewardVal
 	
 	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsTable[#self.numberOfNeuronsTable]
 
-	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(label)
+	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(labelVector)
+	
+	if (#labelVector[1] == 1) then
+		
+		logisticMatrix = self:convertLabelVectorToLogisticMatrix(labelVector)
+		
+	else
+
+		logisticMatrix = labelVector
+		
+	end
 
 	local forwardPropagateTable, zTable = self:forwardPropagate(featureVector)
 
@@ -70,23 +80,17 @@ function ReinforcingNeuralNetworkModel:reinforce(featureVector, label, rewardVal
 
 	local deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable)
 
-	local predictedLabel, probability = self:getLabelFromOutputVector(allOutputsMatrix)
+	local predictedVector, probabilityVector = self:getLabelFromOutputVector(allOutputsMatrix)
+	
+	local areLabelsEqual = (predictedVector[1][1] == labelVector[1][1]) 
 
-	local multiplyFactor
-
-	if (predictedLabel == label) then
-
-		multiplyFactor = rewardValue
-
-	else
-
-		multiplyFactor = punishValue
-
-	end
+	local multiplyFactor = (areLabelsEqual and rewardValue) or punishValue
 
 	self.ModelParameters = self:gradientDescent(multiplyFactor, deltaTable, 1)
+	
+	if (returnOriginalOutput == true) then return allOutputsMatrix end
 
-	return predictedLabel, probability
+	return predictedVector, probabilityVector
 
 end
 

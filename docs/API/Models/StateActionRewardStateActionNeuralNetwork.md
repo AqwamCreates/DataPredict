@@ -66,7 +66,7 @@ StateActionRewardStateActionNeuralNetwork:setParameters(maxNumberOfIterations: i
 
 ### setExperienceReplay()
 
-Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings.
+Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings for that particular parameter.
 
 ```
 StateActionRewardStateActionNeuralNetwork:setExperienceReplay(useExperienceReplay: boolean, experienceReplayBatchSize: integer, maxExperienceReplayBufferSize: integer)

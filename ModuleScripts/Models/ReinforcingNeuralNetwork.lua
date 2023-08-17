@@ -90,7 +90,7 @@ function ReinforcingNeuralNetworkModel:reinforce(featureVector, labelVector, rew
 	
 	if (returnOriginalOutput == true) then return allOutputsMatrix end
 
-	return predictedVector, probabilityVector
+	return predictedVector[1][1], probabilityVector[1][1]
 
 end
 

@@ -66,7 +66,7 @@ QLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRat
 
 ### setExperienceReplay()
 
-Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings.
+Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings for that particular parameter.
 
 ```
 QLearningNeuralNetwork:setExperienceReplay(useExperienceReplay: boolean, experienceReplayBatchSize: integer, maxExperienceReplayBufferSize: integer)

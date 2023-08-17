@@ -80,7 +80,7 @@ function ReinforcingNeuralNetworkModel:reinforce(featureVector, labelVector, rew
 
 	local deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable)
 
-	local predictedVector, probabilityVector = self:getLabelFromOutputVector(allOutputsMatrix)
+	local predictedVector, probabilityVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 	
 	local areLabelsEqual = (predictedVector[1][1] == labelVector[1][1]) 
 

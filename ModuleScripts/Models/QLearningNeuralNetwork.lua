@@ -18,6 +18,10 @@ local defaultDiscountFactor = 0.95
 
 local defaultMaxNumberOfIterations = 1
 
+local defaultExperienceReplayBatchSize = 32
+
+local defaultMaxExperienceReplayBufferSize = 100
+
 function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 	
 	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
@@ -43,9 +47,27 @@ function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 	NewQLearningNeuralNetworkModel.previousFeatureVector = nil
 	
 	NewQLearningNeuralNetworkModel.printReinforcementOutput = true
+	
+	NewQLearningNeuralNetworkModel.replayBufferArray = {}
+	
+	NewQLearningNeuralNetworkModel.experienceReplayBatchSize = defaultExperienceReplayBatchSize
+	
+	NewQLearningNeuralNetworkModel.useExperienceReplay = false
+	
+	NewQLearningNeuralNetworkModel.maxExperienceReplayBufferSize = defaultMaxExperienceReplayBufferSize
 
 	return NewQLearningNeuralNetworkModel
 
+end
+
+function QLearningNeuralNetworkModel:setExperienceReplay(useExperienceReplay, experienceReplayBatchSize, maxExperienceReplayBufferSize)
+
+	self.useExperienceReplay = self:getBooleanOrDefaultOption(useExperienceReplay, self.useExperienceReplay)
+	
+	self.experienceReplayBatchSize = experienceReplayBatchSize or self.experienceReplayBatchSize
+	
+	self.maxExperienceReplayBufferSize = maxExperienceReplayBufferSize or self.maxExperienceReplayBufferSize
+	
 end
 
 function QLearningNeuralNetworkModel:setPrintReinforcementOutput(option)
@@ -74,22 +96,52 @@ function QLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learni
 
 end
 
-function QLearningNeuralNetworkModel:update(previousFeatureVector, currentFeatureVector, action, rewardValue)
+function QLearningNeuralNetworkModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
 	local predictedValue, maxQValue = self:predict(currentFeatureVector)
 
-	local target = rewardValue + (self.discountFactor * maxQValue)
-	
-	local targetVector = self:predict(previousFeatureVector, true)
-	
-	local actionIndex = table.find(self.ClassesList, action)
-	
-	targetVector[1][actionIndex] = target
-	
-	self:train(previousFeatureVector, targetVector)
+	local target = rewardValue + (self.discountFactor * maxQValue[1][1])
 
+	local targetVector = self:predict(previousFeatureVector, true)
+
+	local actionIndex = table.find(self.ClassesList, action)
+
+	targetVector[1][actionIndex] = target
+
+	self:train(previousFeatureVector, targetVector)
+	
+end
+
+function QLearningNeuralNetworkModel:sampleBatch()
+	
+	local batch = {}
+
+	for i = 1, self.experienceReplayBatchSize, 1 do
+		
+		local index = Random.new():NextInteger(1, #self.replayBuffer)
+		
+		table.insert(batch, self.replayBuffer[index])
+		
+	end
+
+	return batch
+	
+end
+
+function QLearningNeuralNetworkModel:experienceReplayUpdate()
+	
+	if (#self.replayBufferArray < self.experienceReplayBatchSize) then return nil end
+	
+	local experienceReplayBatch = self:sampleBatch()
+
+	for _, experience in ipairs(experienceReplayBatch) do -- (s1, a, r, s2)
+		
+		self:update(experience[1], experience[2], experience[3], experience[4])
+		
+	end
+	
 end
 
 function QLearningNeuralNetworkModel:reset()
@@ -99,6 +151,8 @@ function QLearningNeuralNetworkModel:reset()
 	self.previousFeatureVector = nil
 
 	self.currentEpsilon = self.epsilon
+	
+	self.replayBufferArray = {}
 	
 	for i, Optimizer in ipairs(self.OptimizerTable) do
 
@@ -127,10 +181,14 @@ function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue
 	end
 
 	self.currentNumberOfEpisodes = (self.currentNumberOfEpisodes + 1) % self.maxNumberOfEpisodes
-
+	
 	local action
+
+	local actionVector
 	
 	local highestProbability
+	
+	local highestProbabilityVector
 
 	local randomProbability = Random.new():NextNumber()
 	
@@ -140,15 +198,31 @@ function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue
 
 		action = self.ClassesList[randomNumber]
 		
-		highestProbability = randomProbability
+		highestProbabilityVector = randomProbability
 
 	else
 
-		action, highestProbability = self:predict(currentFeatureVector)
+		actionVector, highestProbabilityVector = self:predict(currentFeatureVector)
+		
+		action = actionVector[1][1]
+		
+		highestProbability = highestProbabilityVector[1][1]
 
 	end
 
-	self:update(self.previousFeatureVector, currentFeatureVector, action, rewardValue)
+	self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
+	
+	if (self.useExperienceReplay) then 
+		
+		self:experienceReplayUpdate()
+		
+		local experience = {self.previousFeatureVector, action, rewardValue, currentFeatureVector}
+
+		table.insert(self.replayBufferArray, experience)
+		
+		if (#self.replayBufferArray >= self.maxExperienceReplayBufferSize) then table.remove(self.replayBufferArray, 1) end
+		
+	end
 	
 	if (self.printReinforcementOutput == true) then print("Current Number Of Episodes: " .. self.currentNumberOfEpisodes .. "\t\tCurrent Epsilon: " .. self.currentEpsilon) end
 	

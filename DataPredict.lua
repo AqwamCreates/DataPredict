@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Version 1.13.0
+	Version 1.15.0
 
 	Aqwam's Roblox Deep Learning Library (AR-MDLL)
 
@@ -119,9 +119,11 @@ local OptimizersDictionary = {
 
 local OthersDictionary = {
 	
-	ModelChecking = require(Others.ModelChecking),
+	ModelChecker = require(Others.ModelChecker),
 	
-	GradientDescentModes =  require(Others.GradientDescentModes),
+	ModelParametersMerger = require(Others.ModelParametersMerger),
+	
+	GradientDescentModifier =  require(Others.GradientDescentModifier),
 	
 	Regularization = require(Others.Regularization),
 	

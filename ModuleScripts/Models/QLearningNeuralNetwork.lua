@@ -22,7 +22,7 @@ local defaultExperienceReplayBatchSize = 32
 
 local defaultMaxExperienceReplayBufferSize = 100
 
-local defaultNumberOfReinforcementsForExperienceReplayUpdate = 0
+local defaultNumberOfReinforcementsForExperienceReplayUpdate = 1
 
 function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 	

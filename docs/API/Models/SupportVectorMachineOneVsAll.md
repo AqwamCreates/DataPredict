@@ -95,9 +95,9 @@ SupportVectorMachineOneVsAll:predict(featureMatrix: Matrix, returnOriginalOutput
 
 #### Returns:
 
-* predictedValue: A value that is predicted by the model.
+* predictedVector: A vector that is predicted by the model.
 
-* distance: The distance of predicted value.
+* distanceVector: A vector that contains the distance of predicted values in predictedVector.
 
 -OR-
 

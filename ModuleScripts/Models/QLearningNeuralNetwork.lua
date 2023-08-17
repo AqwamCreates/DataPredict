@@ -22,6 +22,8 @@ local defaultExperienceReplayBatchSize = 32
 
 local defaultMaxExperienceReplayBufferSize = 100
 
+local defaultNumberOfReinforcementsForExperienceReplayUpdate = 0
+
 function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 	
 	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
@@ -55,16 +57,22 @@ function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 	NewQLearningNeuralNetworkModel.useExperienceReplay = false
 	
 	NewQLearningNeuralNetworkModel.maxExperienceReplayBufferSize = defaultMaxExperienceReplayBufferSize
+	
+	NewQLearningNeuralNetworkModel.numberOfReinforcementsForExperienceReplayUpdate = defaultNumberOfReinforcementsForExperienceReplayUpdate
+	
+	NewQLearningNeuralNetworkModel.numberOfReinforcements = 0
 
 	return NewQLearningNeuralNetworkModel
 
 end
 
-function QLearningNeuralNetworkModel:setExperienceReplay(useExperienceReplay, experienceReplayBatchSize, maxExperienceReplayBufferSize)
+function QLearningNeuralNetworkModel:setExperienceReplay(useExperienceReplay, experienceReplayBatchSize, numberOfReinforcementsForExperienceReplayUpdate, maxExperienceReplayBufferSize)
 
 	self.useExperienceReplay = self:getBooleanOrDefaultOption(useExperienceReplay, self.useExperienceReplay)
 	
 	self.experienceReplayBatchSize = experienceReplayBatchSize or self.experienceReplayBatchSize
+	
+	self.numberOfReinforcementsForExperienceReplayUpdate = numberOfReinforcementsForExperienceReplayUpdate or self.numberOfReinforcementsForExperienceReplayUpdate 
 	
 	self.maxExperienceReplayBufferSize = maxExperienceReplayBufferSize or self.maxExperienceReplayBufferSize
 	
@@ -146,6 +154,8 @@ end
 
 function QLearningNeuralNetworkModel:reset()
 	
+	self.numberOfReinforcements = 0
+	
 	self.currentNumberOfEpisodes = 0
 	
 	self.previousFeatureVector = nil
@@ -214,7 +224,9 @@ function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue
 	
 	if (self.useExperienceReplay) then 
 		
-		self:experienceReplayUpdate()
+		self.numberOfReinforcements = (self.numberOfReinforcements + 1) % self.numberOfReinforcementsForExperienceReplayUpdate
+
+		if (self.numberOfReinforcements == 0) then self:experienceReplayUpdate() end
 		
 		local experience = {self.previousFeatureVector, action, rewardValue, currentFeatureVector}
 

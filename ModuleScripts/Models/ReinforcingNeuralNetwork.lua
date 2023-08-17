@@ -9,6 +9,8 @@ setmetatable(ReinforcingNeuralNetworkModel, NeuralNetworkModel)
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
 function ReinforcingNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
+	
+	maxNumberOfIterations = maxNumberOfIterations or 1
 
 	local NewReinforcingNeuralNetworkModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 
@@ -86,7 +88,7 @@ function ReinforcingNeuralNetworkModel:reinforce(featureVector, labelVector, rew
 
 	local multiplyFactor = (areLabelsEqual and rewardValue) or punishValue
 
-	self.ModelParameters = self:gradientDescent(multiplyFactor, deltaTable, 1)
+	self.ModelParameters = self:gradientDescent(multiplyFactor, deltaTable, self.maxNumberOfIterations)
 	
 	if (returnOriginalOutput == true) then return allOutputsMatrix end
 

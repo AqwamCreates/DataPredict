@@ -87,7 +87,7 @@ StateActionRewardStateActionNeuralNetwork:setExperienceReplay(useExperienceRepla
 Reward or punish model based on the current state of the environment.
 
 ```
-StateActionRewardStateActionNeuralNetwork:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number
+StateActionRewardStateActionNeuralNetwork:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
 ```
 
 #### Parameters:

@@ -87,7 +87,7 @@ QLearningNeuralNetwork:setExperienceReplay(useExperienceReplay: boolean, experie
 Reward or punish model based on the current state of the environment.
 
 ```
-QLearningNeuralNetwork:reinforce(currentFeatureVector: Matrix, rewardValue: number): integer, number
+QLearningNeuralNetwork:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
 ```
 
 #### Parameters:
@@ -95,6 +95,8 @@ QLearningNeuralNetwork:reinforce(currentFeatureVector: Matrix, rewardValue: numb
 * currentFeatureVector: Matrix containing data from the current state.
 
 * rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
+
+* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability.
 
 #### Returns:
 

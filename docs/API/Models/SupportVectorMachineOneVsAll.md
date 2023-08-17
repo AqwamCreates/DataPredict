@@ -84,7 +84,7 @@ SupportVectorMachineOneVsAll:train(featureMatrix: Matrix, labelVector: Matrix): 
 Predict the values for given data.
 
 ```
-SupportVectorMachineOneVsAll:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): number
+SupportVectorMachineOneVsAll:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:

@@ -8,7 +8,7 @@ Contains a table.
 
 * ModelParameters[1]: Contains previously stored feature matrix.
 
-* ModelParameters[2][k][p]: Contains a table of integers table, where k is the cluster number and p is the index of previously stored feature matrix.
+* ModelParameters[2][k][p]: Contains a table of integers table, where k is the cluster number and p is the index of a single feature vector from previously stored feature matrix.
 
 ## Constructors
 

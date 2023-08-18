@@ -6,11 +6,11 @@ NaiveBayes is an supervised machine learning model that predicts which classes t
 
 Contains a table of matrices.  
 
-* ModelParameters[1][I][J]: Mean matrix. Value of matrix at row I and column J. The rows are the features.
+* ModelParameters[1]: meanMatrix. Value of matrix at row I and column J. The columns are the features.
 
-* ModelParameters[2][I][J]: Standard deviation matrix. Value of matrix at row I and column J. The rows are the features.
+* ModelParameters[2]: standardDeviationMatrix. The columns are the features.
 
-* ModelParameters[3][I][J]: Prior probabilities matrix. Value of matrix at row I and column J. The rows are the features.
+* ModelParameters[3]: priorProbabilitiesMatrix. The columns are the features.
 
 ## Constructors
 

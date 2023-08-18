@@ -379,9 +379,9 @@ function AffinityPropagationModel:predict(featureMatrix)
 
 end
 
-function AffinityPropagationModel:clearPreviousFeatureMatrix()
+function AffinityPropagationModel:setPreviousFeatureMatrix(featureMatrix)
 
-	self.ModelParameters[1] = nil
+	self.ModelParameters[1] = featureMatrix
 
 end
 

@@ -16,7 +16,7 @@ local defaultDamping = 0.5
 
 local defaultSimilarityFunction = "euclidean"
 
-local defaultNumberOfIterationsToConfirmConvergence = 5
+local defaultNumberOfIterationsToConfirmConvergence = math.huge
 
 local distanceFunctionList = {
 
@@ -339,7 +339,7 @@ function AffinityPropagationModel:train(featureMatrix)
 
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
-	until (numberOfIterations >= self.maxNumberOfIterations) or (cost <= self.targetCost) or (numberOfIterationsWhenConvergenceOccurred == self.numberOfIterationsToConfirmConvergence)
+	until (numberOfIterations >= self.maxNumberOfIterations) or (cost <= self.targetCost) or (numberOfIterationsWhenConvergenceOccurred >= self.numberOfIterationsToConfirmConvergence)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 
@@ -376,6 +376,12 @@ function AffinityPropagationModel:predict(featureMatrix)
 	end
 	
 	return predictedClusterVector, maxSimilarityVector
+
+end
+
+function AffinityPropagationModel:clearPreviousFeatureMatrix()
+
+	self.ModelParameters[1] = nil
 
 end
 

@@ -379,4 +379,10 @@ function AffinityPropagationModel:predict(featureMatrix)
 
 end
 
+function AffinityPropagationModel:getPreviousFeatureMatrix()
+
+	return self.ModelParameters[1]
+
+end
+
 return AffinityPropagationModel

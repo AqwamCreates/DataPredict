@@ -10,7 +10,7 @@ Contains a table of matrices.
 
 * ModelParameters[2]: standardDeviationMatrix. The columns are the features.
 
-* ModelParameters[3]: priorProbabilitiesMatrix. The columns are the features.
+* ModelParameters[3]: probabilitiesMatrix. The columns are the features.
 
 ## Constructors
 

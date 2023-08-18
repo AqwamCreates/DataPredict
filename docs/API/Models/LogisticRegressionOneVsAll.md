@@ -2,6 +2,12 @@
 
 LogisticRegressionOneVsAll is a supervised machine learning model that predicts values of positive integers. It uses multiple logistic regression models to produce multi-class prediction capabilities for this model.
 
+## Stored Model Parameters
+
+Contains a matrix.  
+
+* ModelParameters[I][J]: Value of matrix at row I and column J. The rows are the features.
+
 ## Constructors
 
 ### new()

@@ -9,7 +9,7 @@ AffinityPropagation is an unsupervised machine learning model that predicts whic
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-AffinityPropagation.new(maxNumberOfIterations: integer, damping: number, targetCost: integer): ModelObject
+AffinityPropagation.new(maxNumberOfIterations: integer, damping: number, numberOfIterationsToConfirmConvergence: integer, targetCost: integer): ModelObject
 ```
 
 #### Parameters:
@@ -17,6 +17,8 @@ AffinityPropagation.new(maxNumberOfIterations: integer, damping: number, targetC
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * damping: A high value leads to fewer changes, while a low value leads to more exploration. The value can be set between 0 and 1.
+
+* numberOfIterationsToConfirmConvergence: Determines how many iterations should the model check cluster assignments to determine convergence.
 
 * targetCost: The cost at which the model stops training.
 
@@ -31,7 +33,7 @@ AffinityPropagation.new(maxNumberOfIterations: integer, damping: number, targetC
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-AffinityPropagation:setParameters(maxNumberOfIterations: integer, damping: number, targetCost: integer)
+AffinityPropagation:setParameters(maxNumberOfIterations: integer, damping: number, numberOfIterationsToConfirmConvergence: integer, targetCost: integer)
 ```
 
 #### Parameters:
@@ -39,6 +41,8 @@ AffinityPropagation:setParameters(maxNumberOfIterations: integer, damping: numbe
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * damping: A high value leads to fewer changes, while a low value leads to more exploration. The value is set between 0 and 1.
+
+* numberOfIterationsToConfirmConvergence: Determines how many iterations should the model check cluster assignments to determine convergence.
 
 * targetCost: The cost at which the model stops training.
 

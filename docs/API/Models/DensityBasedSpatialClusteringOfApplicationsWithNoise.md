@@ -79,7 +79,7 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise:train(featureMatrix: Matrix
 Predict which cluster does it belong to for a given data.
 
 ```
-DensityBasedSpatialClusteringOfApplicationsWithNoise:predict(featureMatrix: Matrix): integer, number
+DensityBasedSpatialClusteringOfApplicationsWithNoise:predict(featureMatrix: Matrix): Matrix, Matrix
 ```
 
 #### Parameters:

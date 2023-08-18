@@ -379,16 +379,4 @@ function AffinityPropagationModel:predict(featureMatrix)
 
 end
 
-function AffinityPropagationModel:setPreviousFeatureMatrix(featureMatrix)
-
-	self.ModelParameters[1] = featureMatrix
-
-end
-
-function AffinityPropagationModel:getPreviousFeatureMatrix()
-
-	return self.ModelParameters[1]
-
-end
-
 return AffinityPropagationModel

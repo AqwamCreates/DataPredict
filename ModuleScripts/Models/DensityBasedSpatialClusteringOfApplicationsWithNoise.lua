@@ -306,10 +306,10 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featu
 			distance = distance / #clusterPoints
 
 			if (distance < shortestDistance) then
+				
+				closestCluster = clusterNumber
 
 				shortestDistance = distance
-
-				closestCluster = clusterNumber
 
 			end
 

@@ -79,7 +79,7 @@ AffinityPropagation:train(featureMatrix: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-AffinityPropagation:predict(featureMatrix: Matrix): integer, number
+AffinityPropagation:predict(featureMatrix: Matrix): Matrix, Matrix
 ```
 
 #### Parameters:

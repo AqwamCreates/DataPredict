@@ -315,13 +315,13 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featu
 
 		end
 		
-		shortestDistanceVector[i][1] = shortestDistance
-
 		closestClusterVector[i][1] = closestCluster
+		
+		shortestDistanceVector[i][1] = shortestDistance
 		
 	end
 	
-	return shortestDistanceVector, closestClusterVector
+	return closestClusterVector, shortestDistanceVector
 	
 end
 

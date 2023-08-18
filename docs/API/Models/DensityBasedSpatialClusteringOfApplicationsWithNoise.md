@@ -58,26 +58,6 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise:canAppendPreviousFeatureMat
 
 * option: the boolean value to set whether or not the feature matrices can be appended.
 
-### clearPreviousFeatureMatrix()
-
-Clears previous feature matrix that was stored in the model.
-
-```
-DensityBasedSpatialClusteringOfApplicationsWithNoise:clearPreviousFeatureMatrix()
-```
-
-### getPreviousFeatureMatrix()
-
-Get the previous feature matrix that was stored in the model.
-
-```
-DensityBasedSpatialClusteringOfApplicationsWithNoise:getPreviousFeatureMatrix(): matrix
-```
-
-### returns:
-
-* featureMatrix: a matrix containing data that was previously stored in the model
-
 ### train()
 
 Train the model.

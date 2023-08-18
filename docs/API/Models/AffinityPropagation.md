@@ -2,6 +2,14 @@
 
 AffinityPropagation is an unsupervised machine learning model that predicts which cluster that the input belongs to using a similarity matrix that measures the similarity between each data point.
 
+## Stored Model Parameters
+
+Contains a table.  
+
+* ModelParameters[1]: Contains previously stored feature matrix.
+
+* ModelParameters[2]: Contains a vector (m x 1) containing cluster numbers, where m is the number of data from previous feature matrix.
+
 ## Constructors
 
 ### new()

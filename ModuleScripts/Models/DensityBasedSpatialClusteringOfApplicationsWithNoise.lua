@@ -325,16 +325,4 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featu
 	
 end
 
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:setPreviousFeatureMatrix(featureMatrix)
-
-	self.ModelParameters[1] = featureMatrix
-
-end
-
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:getPreviousFeatureMatrix()
-
-	return self.ModelParameters[1]
-
-end
-
 return DensityBasedSpatialClusteringOfApplicationsWithNoiseModel

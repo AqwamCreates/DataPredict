@@ -2,6 +2,12 @@
 
 SupportVectorMachineOneVsAll is a supervised machine learning model that predicts values of positive integers. It uses multiple support vector machine models to achieve multi-class classification capabilities.
 
+## Stored Model Parameters
+
+Contains a matrix.  
+
+* ModelParameters[I][J]: Value of matrix at row I and column J. The rows are the features.
+
 ## Constructors
 
 ### new()

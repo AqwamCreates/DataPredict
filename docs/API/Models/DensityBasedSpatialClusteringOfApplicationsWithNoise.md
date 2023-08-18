@@ -2,6 +2,14 @@
 
 DBSCAN is an unsupervised machine learning model that clusters data points based on their spatial density and proximity to each other, using epsilon distance and minimum number of points required to form a cluster.
 
+## Stored Model Parameters
+
+Contains a table.  
+
+* ModelParameters[1]: Contains previously stored feature matrix.
+
+* ModelParameters[2][k]: Contains a table of matrices extracted from previously stored feature matrix, where k is the cluster number.
+
 ## Constructors
 
 ### new()

@@ -104,9 +104,9 @@ AffinityPropagation:predict(featureMatrix: Matrix): integer, number
 
 #### Returns:
 
-* clusterNumber: The cluster which the data belongs to.
+* clusterNumberVector: The cluster which the data belongs to.
 
-* shortestDistance: The distance between the datapoint and the center of the cluster (centroids).
+* shortestDistanceVector: The distance between the datapoint and the center of the cluster (centroids).
 
 ## Inherited From
 

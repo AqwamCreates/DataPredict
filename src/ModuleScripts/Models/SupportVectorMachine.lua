@@ -385,8 +385,6 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 	end
 
-	if (self.Optimizer) and (self.AutoResetOptimizers) then self.Optimizer:reset() end
-
 	return costArray
 
 end

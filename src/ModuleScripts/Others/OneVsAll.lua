@@ -174,6 +174,8 @@ function OneVsAll:train(featureMatrix, labelVector)
 	
 	self:processLabelVector(labelVector)
 	
+	if (#self.ModelsArray ~= #self.ClassesList) then error("The number of models does not match with number of classes.") end
+	
 	local binaryLabelVectorTable = {}
 	
 	for i, class in ipairs(self.ClassesList) do
@@ -183,8 +185,6 @@ function OneVsAll:train(featureMatrix, labelVector)
 		table.insert(binaryLabelVectorTable, binaryLabelVector)
 
 	end
-	
-	local numberOfModels = #self.ModelsArray
 	
 	local costArray = {}
 	

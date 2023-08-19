@@ -52,7 +52,7 @@ OneVsAll:setModels(...: ModelObject)
 
 * ...: Models to be added. Each model correspond to each class.
 
-### setParameters()
+### setAllModelsParameters()
 
 ```
 OneVsAll:setAllModelsParameters(...: any)

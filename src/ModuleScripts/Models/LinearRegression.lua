@@ -209,7 +209,11 @@ end
 
 function LinearRegressionModel:predict(featureMatrix)
 	
-	return AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	local predictedVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	
+	if (typeof(predictedVector) == "number") then predictedVector = {{predictedVector}} end
+	
+	return predictedVector
 
 end
 

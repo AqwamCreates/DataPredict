@@ -84,6 +84,12 @@ function OneVsAll:setClassesList(classesList)
 
 end
 
+function OneVsAll:getClassesList()
+
+	return self.ClassesList
+
+end
+
 local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
 
 	local labelVectorColumn = AqwamMatrixLibrary:transpose(labelVector)

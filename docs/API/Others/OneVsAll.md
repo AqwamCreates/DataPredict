@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - NeuralNetwork
+# [API Reference](../../API.md) - [Models](../Models.md) - OneVsAll
 
 Allows binary classification models (such as LogisticRegression) be merged together to form multi-class models.
 

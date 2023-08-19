@@ -42,6 +42,8 @@ function OneVsAll:setModels(...)
 	
 	local proccesedModelsArray = ((#inputtedModels > 0) and inputtedModels) or nil
 	
+	for m, Model in ipairs(proccesedModelsArray) do Model:setPrintOutput(false) end
+	
 	self.ModelsArray = proccesedModelsArray
 	
 end

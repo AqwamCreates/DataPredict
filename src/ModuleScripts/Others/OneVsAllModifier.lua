@@ -20,6 +20,14 @@ function OneVsAllModifier.new(maxNumberOfIterations)
 	
 end
 
+function OneVsAllModifier:checkIfModelsSet()
+	
+	local typeOfModelsArray = typeof(self.ModelsArray)
+
+	if (typeOfModelsArray ~= "table") then error("No models set!") end
+	
+end
+
 function OneVsAllModifier:setParameters(maxNumberOfIterations)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
@@ -38,9 +46,7 @@ end
 
 function OneVsAllModifier:setAllModelsParameters(...)
 	
-	local typeOfModelsArray = typeof(self.ModelsArray)
-
-	if (typeOfModelsArray ~= "table") then error("No models set!") end
+	self:checkIfModelsSet()
 	
 	for _, Model in ipairs(self.ModelsArray) do Model:setParameters(...) end
 	
@@ -54,9 +60,7 @@ end
 
 function OneVsAllModifier:train(featureMatrix, labelVector)
 	
-	local typeOfModelsArray = typeof(self.ModelsArray)
-	
-	if (typeOfModelsArray ~= "table") then error("No models set!") end
+	self:checkIfModelsSet()
 	
 	local numberOfModels = #self.ModelsArray
 	
@@ -118,9 +122,7 @@ end
 
 function OneVsAllModifier:predict(featureMatrix)
 	
-	local typeOfModelsArray = typeof(self.ModelsArray)
-
-	if (typeOfModelsArray ~= "table") then error("No models set!") end
+	self:checkIfModelsSet()
 	
 	local selectedModelNumberVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
 	

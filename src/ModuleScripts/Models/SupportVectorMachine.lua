@@ -399,9 +399,13 @@ function SupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
 
 	if (returnOriginalOutput == true) then return originalPredictedVector end
 
-	local clampFunction = function (x) return math.clamp(x, -1, 1) end
+	local seperatorFunction = function (x) 
+		
+		return ((x > 0) and 1) or ((x < 0) and -1) or 0
+		
+	end
 
-	local predictedVector = AqwamMatrixLibrary:applyFunction(clampFunction, originalPredictedVector)
+	local predictedVector = AqwamMatrixLibrary:applyFunction(seperatorFunction, originalPredictedVector)
 
 	return predictedVector
 

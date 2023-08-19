@@ -9,14 +9,14 @@ Allows binary classification models (such as LogisticRegression) be merged toget
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-OneVsAll.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number): ModelObject
+OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean, targetCost: number): ModelObject
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+* useNegativeOneBinaryLabel: Set whether or not if the incorrect label uses -1 instead of 0
 
 * targetCost: The cost at which the model stops training.
 
@@ -38,7 +38,7 @@ OneVsAll:setParameters(maxNumberOfIterations: integer, learningRate: number, tar
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+* useNegativeOneBinaryLabel: Set whether or not if the incorrect label uses -1 instead of 0
 
 * targetCost: The cost at which the model stops training.
 
@@ -87,7 +87,7 @@ OneVsAll:getClassesList(): []
 
 #### Returns:
 
-* classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
+* classesList: A list of classes. The index of the list relates to which model belong to. For example, {3, 1} means that the output for 3 is at first model, and the output for 1 is at second model.
 
 ### setClassesList()
 
@@ -97,7 +97,7 @@ OneVsAll:setClassesList(classesList: [])
 
 #### Parameters:
 
-* OneVsAll: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
+* classesList: A list of classes. The index of the list relates to which model belong to. For example, {3, 1} means that the output for 3 is at first model, and the output for 1 is at second model.
 
 ## Inherited From
 

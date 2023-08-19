@@ -1,28 +1,28 @@
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
-OneVsAllModifier = {}
+OneVsAll = {}
 
-OneVsAllModifier.__index = OneVsAllModifier
+OneVsAll.__index = OneVsAll
 
 local defaultMaxNumberOfIterations = 500
 
-function OneVsAllModifier.new(maxNumberOfIterations)
+function OneVsAll.new(maxNumberOfIterations)
 	
-	local NewOneVsAllModifier = {}
+	local NewOneVsAll = {}
 	
-	setmetatable(NewOneVsAllModifier, OneVsAllModifier)
+	setmetatable(NewOneVsAll, OneVsAll)
 	
-	NewOneVsAllModifier.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewOneVsAll.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
-	NewOneVsAllModifier.ModelsArray = nil
+	NewOneVsAll.ModelsArray = nil
 	
-	NewOneVsAllModifier.ClassesList = {}
+	NewOneVsAll.ClassesList = {}
 	
-	return NewOneVsAllModifier
+	return NewOneVsAll
 	
 end
 
-function OneVsAllModifier:checkIfModelsSet()
+function OneVsAll:checkIfModelsSet()
 	
 	local typeOfModelsArray = typeof(self.ModelsArray)
 
@@ -30,13 +30,13 @@ function OneVsAllModifier:checkIfModelsSet()
 	
 end
 
-function OneVsAllModifier:setParameters(maxNumberOfIterations)
+function OneVsAll:setParameters(maxNumberOfIterations)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
 end
 
-function OneVsAllModifier:setModels(...)
+function OneVsAll:setModels(...)
 	
 	local inputtedModels = {...}
 	
@@ -46,7 +46,7 @@ function OneVsAllModifier:setModels(...)
 	
 end
 
-function OneVsAllModifier:setAllModelsParameters(...)
+function OneVsAll:setAllModelsParameters(...)
 	
 	self:checkIfModelsSet()
 	
@@ -54,13 +54,13 @@ function OneVsAllModifier:setAllModelsParameters(...)
 	
 end
 
-function OneVsAllModifier:setClassesList(classesList)
+function OneVsAll:setClassesList(classesList)
 
 	self.ClassesList = classesList
 
 end
 
-function OneVsAllModifier:train(featureMatrix, labelVector)
+function OneVsAll:train(featureMatrix, labelVector)
 	
 	self:checkIfModelsSet()
 	
@@ -88,13 +88,15 @@ function OneVsAllModifier:train(featureMatrix, labelVector)
 		
 		table.insert(costArray, totalCost)
 		
+		print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost)
+		
 	until (numberOfIterations >= self.maxNumberOfIterations)
 	
 	return costArray
 	
 end
 
-function OneVsAllModifier:getBestPrediction(featureVector)
+function OneVsAll:getBestPrediction(featureVector)
 	
 	local selectedModelNumber = 0
 	
@@ -122,7 +124,7 @@ function OneVsAllModifier:getBestPrediction(featureVector)
 	
 end
 
-function OneVsAllModifier:predict(featureMatrix)
+function OneVsAll:predict(featureMatrix)
 	
 	self:checkIfModelsSet()
 	
@@ -146,4 +148,4 @@ function OneVsAllModifier:predict(featureMatrix)
 	
 end
 
-return OneVsAllModifier
+return OneVsAll

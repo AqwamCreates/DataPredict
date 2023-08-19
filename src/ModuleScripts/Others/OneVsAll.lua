@@ -56,11 +56,15 @@ end
 
 function OneVsAll:setModels(...)
 	
-	local inputtedModels = {...}
+	local inputtedModelsArray = {...}
 	
-	local proccesedModelsArray = ((#inputtedModels > 0) and inputtedModels) or nil
+	local proccesedModelsArray = ((#inputtedModelsArray > 0) and inputtedModelsArray) or nil
 	
-	for m, Model in ipairs(proccesedModelsArray) do Model:setPrintOutput(false) end
+	if (proccesedModelsArray ~= nil) then
+		
+		for m, Model in ipairs(proccesedModelsArray) do Model:setPrintOutput(false) end
+		
+	end
 	
 	self.ModelsArray = proccesedModelsArray
 	

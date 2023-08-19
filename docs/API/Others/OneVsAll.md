@@ -150,3 +150,15 @@ Clears the model parameters contained inside base model.
 ```
 OneVsAll:clearModelParameters()
 ```
+
+### setPrintOutput()
+
+Set if the OneVsAll object prints output.
+
+```
+OneVsAll:setPrintOutput(option: boolean)
+```
+
+#### Parameters:
+
+* option: A boolean value that specifies if the output is printed.

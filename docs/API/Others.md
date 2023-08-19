@@ -6,6 +6,8 @@
 
 [GradientDescentModifier](Others/GradientDescentModifier.md)
 
+[OneVsAll](Others/OneVsAll.md)
+
 [Regularization](Others/Regularization.md)
 
 [OnlineLearning](Others/OnlineLearning.md)

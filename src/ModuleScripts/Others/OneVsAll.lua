@@ -206,11 +206,9 @@ function OneVsAll:getBestPrediction(featureVector)
 
 		local allOutputVector = Model:predict(featureVector, true)
 
-		local highestValue, maximumValueIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(allOutputVector)
+		local value, maximumValueIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(allOutputVector)
 
 		if (maximumValueIndex == nil) then continue end
-
-		local value = highestValue
 
 		if (value <= highestValue) then continue end
 		

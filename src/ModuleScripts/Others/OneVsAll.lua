@@ -270,4 +270,40 @@ function OneVsAll:predict(featureMatrix)
 	
 end
 
+function OneVsAll:getModelParametersArray()
+	
+	self:checkIfModelsSet()
+	
+	local ModelParametersArray = {}
+	
+	for m, Model in ipairs(self.ModelsArray) do 
+		
+		local ModelParameters = Model:getModelParameters()
+		
+		table.insert(ModelParametersArray, ModelParameters) 
+		
+	end
+	
+	return ModelParametersArray
+	
+end
+
+function OneVsAll:setModelParameters(...)
+	
+	self:checkIfModelsSet()
+	
+	local ModelParametersArray = {...}
+	
+	if (#ModelParametersArray ~= #self.ModelsArray) then error("The number of model parameters does not match with the number of models!") end
+	
+	for m, Model in ipairs(self.ModelsArray) do 
+		
+		local ModelParameters = ModelParametersArray[m]
+
+		Model:setModelParameters(ModelParameters)
+
+	end
+	
+end
+
 return OneVsAll

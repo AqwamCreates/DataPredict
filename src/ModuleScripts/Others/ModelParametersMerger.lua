@@ -164,7 +164,7 @@ local function simpleAverageMerge(ModelParametersArray)
 
 	else
 
-		NewModelParameters = AqwamMatrixLibrary:add(unpack(ModelParametersArray))
+		NewModelParameters = AqwamMatrixLibrary:add(table.unpack(ModelParametersArray))
 
 		NewModelParameters = AqwamMatrixLibrary:divide(NewModelParameters, numberOfModelParameters)
 

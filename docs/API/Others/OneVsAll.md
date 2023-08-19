@@ -42,7 +42,7 @@ OneVsAll:setParameters(maxNumberOfIterations: integer, learningRate: number, tar
 
 * targetCost: The cost at which the model stops training.
 
-# setModels()
+### setModels()
 
 ```
 OneVsAll:setModels(...: ModelObject)
@@ -52,15 +52,15 @@ OneVsAll:setModels(...: ModelObject)
 
 * ...: Models to be added. Each model correspond to each class.
 
-# setParameters()
+### setParameters()
 
 ```
-OneVsAll:setParameters(...: any)
+OneVsAll:setAllModelsParameters(...: any)
 ```
 
 #### Parameters:
 
-* ...: The parameters to be set to all models stored in this OneVsAll object.
+* ...: The parameters to be set to all models stored in this OneVsAll object. Not to be confused with ModelParameters that stores table of matrices or matrix.
 
 ### train()
 

@@ -8,9 +8,9 @@ local defaultMergeType = "average"
 
 function ModelParametersMerger.new(Model, modelType, mergeType)
 
-	if (Model == nil) then error("No model in the ModelParametersMerger!") end
+	if (Model == nil) then error("No model!") end
 
-	if (modelType == nil) then error("No model type in the ModelParametersMerger!") end
+	if (modelType == nil) then error("No model type!") end
 
 	local NewModelParametersMerger = {}
 
@@ -471,6 +471,8 @@ function ModelParametersMerger:generate()
 	local labelVector = self.labelVector
 
 	local ModelParametersArray = self.ModelParametersArray
+	
+	if (typeof(ModelParametersArray) ~= "table") then error("No model parameters set!") end
 
 	local NewModelParameters
 

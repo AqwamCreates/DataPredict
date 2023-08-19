@@ -34,7 +34,7 @@ end
 
 function ModelParametersMerger:setParameters(Model, modelType, mergeType)
 
-	self.Model = Model or self.mergeType
+	self.Model = Model or self.Model
 
 	self.modelType = modelType or self.modelType
 

@@ -16,7 +16,7 @@ OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean,
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
-* useNegativeOneBinaryLabel: Set whether or not if the incorrect label uses -1 instead of 0
+* useNegativeOneBinaryLabel: Set whether or not if the incorrect label uses -1 instead of 0.
 
 * targetCost: The cost at which the model stops training.
 
@@ -38,7 +38,7 @@ OneVsAll:setParameters(maxNumberOfIterations: integer, learningRate: number, tar
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
-* useNegativeOneBinaryLabel: Set whether or not if the incorrect label uses -1 instead of 0
+* useNegativeOneBinaryLabel: Set whether or not if the incorrect label uses -1 instead of 0.
 
 * targetCost: The cost at which the model stops training.
 

@@ -276,7 +276,7 @@ function OneVsAll:getModelParametersArray()
 	
 	local ModelParametersArray = {}
 	
-	for m, Model in ipairs(self.ModelsArray) do 
+	for _, Model in ipairs(self.ModelsArray) do 
 		
 		local ModelParameters = Model:getModelParameters()
 		
@@ -304,6 +304,14 @@ function OneVsAll:setModelParameters(...)
 
 	end
 	
+end
+
+function OneVsAll:clearModelParameters()
+	
+	self:checkIfModelsSet()
+	
+	for _, Model in ipairs(self.ModelsArray) do Model:clearModelParameters() end
+
 end
 
 return OneVsAll

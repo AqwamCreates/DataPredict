@@ -6,7 +6,9 @@ OneVsAll.__index = OneVsAll
 
 local defaultMaxNumberOfIterations = 500
 
-function OneVsAll.new(maxNumberOfIterations)
+local defaultTargetCost = 0
+
+function OneVsAll.new(maxNumberOfIterations, useNegativeOneLabel, targetCost)
 	
 	local NewOneVsAll = {}
 	
@@ -14,12 +16,24 @@ function OneVsAll.new(maxNumberOfIterations)
 	
 	NewOneVsAll.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
+	NewOneVsAll.useNegativeOneLabel = useNegativeOneLabel or false
+	
+	NewOneVsAll.targetCost = defaultTargetCost
+	
 	NewOneVsAll.ModelsArray = nil
 	
 	NewOneVsAll.ClassesList = {}
 	
 	return NewOneVsAll
 	
+end
+
+function OneVsAll:getBooleanOrDefaultOption(boolean, defaultBoolean)
+
+	if (type(boolean) == "nil") then return defaultBoolean end
+
+	return boolean
+
 end
 
 function OneVsAll:checkIfModelsSet()
@@ -30,9 +44,13 @@ function OneVsAll:checkIfModelsSet()
 	
 end
 
-function OneVsAll:setParameters(maxNumberOfIterations)
+function OneVsAll:setParameters(maxNumberOfIterations, useNegativeOneLabel, targetCost)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	
+	self.useNegativeOneLabel = self:getBooleanOrDefaultOption(useNegativeOneLabel, self.useNegativeOneLabel)
+	
+	self.targetCost = targetCost or self.targetCost 
 	
 end
 
@@ -116,7 +134,7 @@ function OneVsAll:processLabelVector(labelVector)
 
 end
 
-local function convertToBinaryLabelVector(labelVector, selectedClass)
+local function convertToBinaryLabelVector(labelVector, selectedClass, useNegativeOneLabel)
 
 	local numberOfRows = #labelVector
 
@@ -130,7 +148,7 @@ local function convertToBinaryLabelVector(labelVector, selectedClass)
 
 		else
 
-			newLabelVector[row][1] = 0
+			newLabelVector[row][1] = (useNegativeOneLabel and -1) or 0
 
 		end
 
@@ -150,7 +168,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 	
 	for i, class in ipairs(self.ClassesList) do
 
-		local binaryLabelVector = convertToBinaryLabelVector(labelVector, class)
+		local binaryLabelVector = convertToBinaryLabelVector(labelVector, class, self.useNegativeOneLabel)
 
 		table.insert(binaryLabelVectorTable, binaryLabelVector)
 
@@ -184,7 +202,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 		
 		print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost)
 		
-	until (numberOfIterations >= self.maxNumberOfIterations)
+	until (numberOfIterations >= self.maxNumberOfIterations) or (totalCost <= self.targetCost)
 	
 	return costArray
 	

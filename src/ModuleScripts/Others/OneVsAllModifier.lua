@@ -12,11 +12,13 @@ function OneVsAllModifier.new(maxNumberOfIterations)
 	
 	setmetatable(NewOneVsAllModifier, OneVsAllModifier)
 	
-	OneVsAllModifier.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewOneVsAllModifier.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
-	OneVsAllModifier.ModelsArray = nil
+	NewOneVsAllModifier.ModelsArray = nil
 	
-	OneVsAllModifier.ClassesList = {}
+	NewOneVsAllModifier.ClassesList = {}
+	
+	return NewOneVsAllModifier
 	
 end
 

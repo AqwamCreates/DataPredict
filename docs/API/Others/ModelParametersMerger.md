@@ -77,3 +77,7 @@ ModelParametersMerger:generate(): table / matrix
 #### Returns:
 
 * ModelParameters: The table / matrix that is generated from the merger.
+
+## Notes
+
+* "average" and "weighted average" does not work with models that do not store tables of matrices or matrix. For example, DBSCAN and AffinityPropagation models.

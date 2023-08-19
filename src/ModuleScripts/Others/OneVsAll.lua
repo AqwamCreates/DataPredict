@@ -1,4 +1,12 @@
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+local DataPredictLibrary = script.Parent.Parent
+
+local Models = DataPredictLibrary.Models
+
+local Optimizers = DataPredictLibrary.Optimizers
+
+local Regularization = DataPredictLibrary.Others.Regularization
+
+local AqwamMatrixLibrary = require(DataPredictLibrary.AqwamRobloxMatrixLibraryLinker.Value)
 
 OneVsAll = {}
 
@@ -22,7 +30,9 @@ function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel, targetCo
 	
 	NewOneVsAll.IsOutputPrinted = true
 	
-	NewOneVsAll.ModelsArray = nil
+	NewOneVsAll.ModelsArray = {nil}
+	
+	NewOneVsAll.OptimizersArray = {}
 	
 	NewOneVsAll.ClassesList = {}
 	
@@ -40,9 +50,9 @@ end
 
 function OneVsAll:checkIfModelsSet()
 	
-	local typeOfModelsArray = typeof(self.ModelsArray)
+	local numberOfModels = #self.ModelsArray
 
-	if (typeOfModelsArray ~= "table") then error("No models set!") end
+	if (numberOfModels == 0) then error("No models set!") end
 	
 end
 
@@ -56,19 +66,97 @@ function OneVsAll:setParameters(maxNumberOfIterations, useNegativeOneBinaryLabel
 	
 end
 
-function OneVsAll:setModels(...)
+function OneVsAll:setModel(modelName, numberOfClasses)
 	
-	local inputtedModelsArray = {...}
+	local ModelObject
 	
-	local proccesedModelsArray = ((#inputtedModelsArray > 0) and inputtedModelsArray) or nil
+	local SelectedModel
 	
-	if (proccesedModelsArray ~= nil) then
+	local ModelsArray = {}
+	
+	local isNameAdded = (typeof(modelName) == "string")
+	
+	if isNameAdded then  SelectedModel = require(Models[modelName]) end
+	
+	for i = 1, numberOfClasses, 1 do
+
+		if (isNameAdded == nil) then continue end
+
+		ModelObject = SelectedModel.new(1)
+			
+		ModelObject:setPrintOutput(false)
 		
-		for m, Model in ipairs(proccesedModelsArray) do Model:setPrintOutput(false) end
+		table.insert(ModelsArray, ModelObject)
+
+	end
+	
+	self.ModelsArray = ModelsArray
+	
+end
+
+function OneVsAll:setOptimizer(optimizerName, ...)
+	
+	self:checkIfModelsSet()
+
+	local OptimizerObject
+	
+	local isNameAdded = (typeof(optimizerName) == "string")
+	
+	local SelectedOptimizer
+	
+	if isNameAdded then SelectedOptimizer = require(Optimizers[optimizerName]) end
+	
+	local success = pcall(function()
+		
+		self.ModelsArray[1]:setOptimizer() 
+		
+	end)
+	
+	if (success == false) then 
+		
+		warn("The model do not have setOptimizer() function. No optimizer objects have been added.") 
+		
+		return nil
 		
 	end
 	
-	self.ModelsArray = proccesedModelsArray
+	for _, Model in ipairs(self.ModelsArray) do 
+
+		if SelectedOptimizer then
+
+			OptimizerObject = SelectedOptimizer.new(...)
+
+		end
+
+		Model:setOptimizer(OptimizerObject) 
+
+	end
+	
+end
+
+function OneVsAll:setRegularization(lambda, regularizationMode)
+	
+	self:checkIfModelsSet()
+	
+	local RegularizationObject
+
+	if lambda and regularizationMode then
+		
+		RegularizationObject = require(Regularization).new(lambda, regularizationMode)
+	
+	else
+		
+		RegularizationObject = nil
+		
+	end
+	
+	local success = pcall(function()
+		
+		for _, Model in ipairs(self.ModelsArray) do Model:setRegularization(RegularizationObject) end
+		
+	end)
+	
+	if (success == false) then warn("The model do not have setRegularization() function. No regularization objects have been added.") end
 	
 end
 

@@ -48,7 +48,7 @@ function ModelParametersMerger:setModelParameters(...)
 
 	local proccesedModelsArray = ((#inputtedModelParametersArray > 0) and inputtedModelParametersArray) or nil
 	
-	self.ModelParametersArray = inputtedModelParametersArray
+	self.ModelParametersArray = proccesedModelsArray
 
 end
 

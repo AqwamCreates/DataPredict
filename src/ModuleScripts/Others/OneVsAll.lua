@@ -62,9 +62,79 @@ function OneVsAll:setClassesList(classesList)
 
 end
 
+local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
+
+	local labelVectorColumn = AqwamMatrixLibrary:transpose(labelVector)
+
+	for i, value in ipairs(labelVectorColumn[1]) do
+
+		if table.find(classesList, value) then continue end
+
+		return true
+
+	end
+
+	return false
+
+end
+
+local function createClassesList(labelVector)
+
+	local classesList = {}
+
+	local value
+
+	for i = 1, #labelVector, 1 do
+
+		value = labelVector[i][1]
+
+		if not table.find(classesList, value) then
+
+			table.insert(classesList, value)
+
+		end
+
+	end
+
+	return classesList
+
+end
+
+function OneVsAll:processLabelVector(labelVector)
+
+	if (#self.ClassesList == 0) then
+
+		self.ClassesList = createClassesList(labelVector)
+
+		table.sort(self.ClassesList, function(a,b) return a < b end)
+
+	else
+
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the classes list is present in the label vector") end
+
+	end
+
+	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(labelVector)
+
+	return logisticMatrix
+
+end
+
 function OneVsAll:train(featureMatrix, labelVector)
 	
 	self:checkIfModelsSet()
+	
+	local logisticMatrix
+	
+	if (#labelVector[1] == 1) then
+
+		logisticMatrix = self:processLabelVector(labelVector)
+
+	else
+
+		logisticMatrix = labelVector
+
+	end
 	
 	local numberOfModels = #self.ModelsArray
 	
@@ -80,7 +150,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 		
 		for _, Model in ipairs(self.ModelsArray) do
 
-			modelCostArray = Model:train(featureMatrix, labelVector)
+			modelCostArray = Model:train(featureMatrix, logisticMatrix)
 
 			totalCost += modelCostArray[#modelCostArray]
 

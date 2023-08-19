@@ -20,6 +20,8 @@ function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel, targetCo
 	
 	NewOneVsAll.targetCost = defaultTargetCost
 	
+	NewOneVsAll.IsOutputPrinted = true
+	
 	NewOneVsAll.ModelsArray = nil
 	
 	NewOneVsAll.ClassesList = {}
@@ -210,7 +212,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 		
 		table.insert(costArray, totalCost)
 		
-		print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost)
+		if (self.IsOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost) end
 		
 	until (numberOfIterations >= self.maxNumberOfIterations) or (totalCost <= self.targetCost)
 	
@@ -311,6 +313,20 @@ function OneVsAll:clearModelParameters()
 	self:checkIfModelsSet()
 	
 	for _, Model in ipairs(self.ModelsArray) do Model:clearModelParameters() end
+
+end
+
+function OneVsAll:setPrintOutput(option) 
+
+	if (option == false) then
+
+		self.IsOutputPrinted = false
+
+	else
+
+		self.IsOutputPrinted = true
+
+	end
 
 end
 

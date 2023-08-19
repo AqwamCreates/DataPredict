@@ -8,7 +8,7 @@ local defaultMaxNumberOfIterations = 500
 
 local defaultTargetCost = 0
 
-function OneVsAll.new(maxNumberOfIterations, useNegativeOneLabel, targetCost)
+function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel, targetCost)
 	
 	local NewOneVsAll = {}
 	
@@ -16,7 +16,7 @@ function OneVsAll.new(maxNumberOfIterations, useNegativeOneLabel, targetCost)
 	
 	NewOneVsAll.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
-	NewOneVsAll.useNegativeOneLabel = useNegativeOneLabel or false
+	NewOneVsAll.useNegativeOneBinaryLabel = useNegativeOneBinaryLabel or false
 	
 	NewOneVsAll.targetCost = defaultTargetCost
 	
@@ -44,11 +44,11 @@ function OneVsAll:checkIfModelsSet()
 	
 end
 
-function OneVsAll:setParameters(maxNumberOfIterations, useNegativeOneLabel, targetCost)
+function OneVsAll:setParameters(maxNumberOfIterations, useNegativeOneBinaryLabel, targetCost)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
-	self.useNegativeOneLabel = self:getBooleanOrDefaultOption(useNegativeOneLabel, self.useNegativeOneLabel)
+	self.useNegativeOneBinaryLabel = self:getBooleanOrDefaultOption(useNegativeOneBinaryLabel, self.useNegativeOneBinaryLabel)
 	
 	self.targetCost = targetCost or self.targetCost 
 	
@@ -138,7 +138,7 @@ function OneVsAll:processLabelVector(labelVector)
 
 end
 
-local function convertToBinaryLabelVector(labelVector, selectedClass, useNegativeOneLabel)
+local function convertToBinaryLabelVector(labelVector, selectedClass, useNegativeOneBinaryLabel)
 
 	local numberOfRows = #labelVector
 
@@ -152,7 +152,7 @@ local function convertToBinaryLabelVector(labelVector, selectedClass, useNegativ
 
 		else
 
-			newLabelVector[row][1] = (useNegativeOneLabel and -1) or 0
+			newLabelVector[row][1] = (useNegativeOneBinaryLabel and -1) or 0
 
 		end
 
@@ -172,7 +172,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 	
 	for i, class in ipairs(self.ClassesList) do
 
-		local binaryLabelVector = convertToBinaryLabelVector(labelVector, class, self.useNegativeOneLabel)
+		local binaryLabelVector = convertToBinaryLabelVector(labelVector, class, self.useNegativeOneBinaryLabel)
 
 		table.insert(binaryLabelVectorTable, binaryLabelVector)
 

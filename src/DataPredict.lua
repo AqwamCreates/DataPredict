@@ -75,10 +75,6 @@ local ModelsDictionary = {
 	
 	KMedoids = require(Models.KMedoids),
 	
-	LogisticRegressionOneVsAll = require(Models.LogisticRegressionOneVsAll),
-	
-	SupportVectorMachineOneVsAll = require(Models.SupportVectorMachineOneVsAll),
-	
 	AffinityPropagation = require(Models.AffinityPropagation),
 	
 	AgglomerativeHierarchical = require(Models.AgglomerativeHierarchical),
@@ -132,6 +128,8 @@ local OthersDictionary = {
 	OnlineLearning = require(Others.OnlineLearning),
 	
 	Tokenizer = require(Others.Tokenizer),
+	
+	OneVsAll = require(Others.OneVsAll),
 	
 }
 

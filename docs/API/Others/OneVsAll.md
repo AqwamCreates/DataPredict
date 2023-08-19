@@ -119,6 +119,34 @@ OneVsAll:setClassesList(classesList: [])
 
 * classesList: A list of classes. The index of the list relates to which model belong to. For example, {3, 1} means that the output for 3 is at first model, and the output for 1 is at second model.
 
-## Inherited From
+### getModelParameters()
 
-* [BaseModel](BaseModel.md)
+Gets the model parameters from the base model.
+
+```
+OneVsAll:getModelParametersArray(): ModelParameters []
+```
+
+#### Returns
+
+* ModelParameters: An array containing model parameters (matrix/table) fetched from each model. The index of the array determines which model it belongs to.
+
+### setModelParameters()
+
+Set the model parameters to the base model.
+
+```
+OneVsAll:setModelParameters(ModelParameters: ModelParameters)
+```
+
+#### Parameters
+
+* ModelParameters: A table containing model parameters (matrix/table) to be given to be given to each model stored in OneVsAll object.  The position of the parameters determines which model it belongs to.
+
+### clearModelParameters()
+
+Clears the model parameters contained inside base model.
+
+```
+OneVsAll:clearModelParameters()
+```

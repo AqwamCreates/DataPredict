@@ -102,17 +102,13 @@ end
 
 function OneVsAll:convertLabelVectorToLogisticMatrix(labelVector)
 
-	local numberOfNeuronsAtFinalLayer = #self.ModelParameters[#self.ModelParameters][1]
-
-	if (numberOfNeuronsAtFinalLayer ~= #self.ClassesList) then error("The number of classes are not equal to number of neurons. Please adjust your last layer using setLayers() function.") end
-
 	if (typeof(labelVector) == "number") then
 
 		labelVector = {{labelVector}}
 
 	end
 
-	local logisticMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, numberOfNeuronsAtFinalLayer)
+	local logisticMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, #self.ClassesList)
 
 	local label
 
@@ -210,17 +206,17 @@ function OneVsAll:getBestPrediction(featureVector)
 
 		local allOutputVector = Model:predict(featureVector, true)
 
-		local _, maximumValueIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(allOutputVector)
+		local highestValue, maximumValueIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(allOutputVector)
 
 		if (maximumValueIndex == nil) then continue end
 
-		local value = maximumValueIndex[2]
+		local value = highestValue
 
 		if (value <= highestValue) then continue end
+		
+		selectedModelNumber = m
 
 		highestValue = value
-
-		selectedModelNumber = m
 
 	end
 	

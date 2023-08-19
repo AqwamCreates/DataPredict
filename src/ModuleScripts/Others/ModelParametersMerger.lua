@@ -42,9 +42,13 @@ function ModelParametersMerger:setParameters(Model, modelType, mergeType)
 
 end
 
-function ModelParametersMerger:setModelParametersArray(ModelParametersArray)
+function ModelParametersMerger:setModelParameters(...)
+	
+	local inputtedModelParametersArray = {...}
 
-	self.ModelParametersArray = ModelParametersArray or self.ModelParametersArray 
+	local proccesedModelsArray = ((#inputtedModelParametersArray > 0) and inputtedModelParametersArray) or nil
+	
+	self.ModelParametersArray = inputtedModelParametersArray
 
 end
 

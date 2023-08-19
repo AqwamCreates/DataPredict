@@ -359,7 +359,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 	local costFunctionDerivatives
 
-	local individualKernelMatrix  = calculateMapping(featureMatrix, self.kernelFunction, self.kernelParameters)
+	local mappedFeatureMatrix  = calculateMapping(featureMatrix, self.kernelFunction, self.kernelParameters)
 	
 	local kernelMatrix  = calculateKernel(featureMatrix, self.kernelFunction, self.kernelParameters)
 	
@@ -369,9 +369,9 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 		numberOfIterations += 1
 
-		self.ModelParameters = gradientDescent(self.ModelParameters, individualKernelMatrix, labelVector, self.cValue)
+		self.ModelParameters = gradientDescent(self.ModelParameters, mappedFeatureMatrix, labelVector, self.cValue)
 
-		cost = calculateCost(self.ModelParameters, individualKernelMatrix, kernelMatrix, labelVector, self.cValue)
+		cost = calculateCost(self.ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, self.cValue)
 
 		table.insert(costArray, cost)
 

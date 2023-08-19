@@ -276,6 +276,26 @@ local function generateErrorArray(Model, ModelParametersArray, featureMatrix, la
 
 end
 
+local function generateErrorArrayForClustering(Model, ModelParametersArray, featureMatrix)
+
+	local errorArray = {}
+
+	for i, ModelParameters in ipairs(ModelParametersArray) do
+
+		Model:setModelParameters(ModelParameters)
+
+		local _, distanceVector = Model:predict(featureMatrix)
+
+		local errorValue = AqwamMatrixLibrary:sum(distanceVector)
+
+		table.insert(errorArray, errorValue)
+
+	end
+
+	return errorArray
+
+end
+
 local function convertErrorArrayToAccuracyArray(errorArray)
 
 	local accuracyArray = {}
@@ -304,6 +324,30 @@ local function weightedAverageMergeRegression(Model, ModelParametersArray, featu
 
 	return NewModelParameters
 
+end
+
+local function weightedAverageMergeClustering(Model, ModelParametersArray, featureMatrix, labelVector)
+	
+	local isTable = checkIfIsTable(ModelParametersArray[1])
+	
+	local errorArray =  generateErrorArrayForClustering(Model, ModelParametersArray, featureMatrix)
+
+	local accuracyArray = convertErrorArrayToAccuracyArray(errorArray)
+
+	local NewModelParameters
+	
+	if (isTable) then
+		
+		NewModelParameters = calculateScaledModelParametersTable(ModelParametersArray, accuracyArray)
+		
+	else
+		
+		NewModelParameters = calculateScaledModelParameters(ModelParametersArray, accuracyArray)
+		
+	end
+	
+	return NewModelParameters
+	
 end
 
 local function generateAccuracyArray(Model, ModelParametersArray, featureMatrix, labelVector)
@@ -405,6 +449,11 @@ local function weightedAverageMerge(Model, ModelParametersArray, modelType, feat
 	elseif (modelType == "classification") then
 
 		NewModelParameters = weightedAverageMergeClassification(Model, ModelParametersArray, featureMatrix, labelVector)
+		
+		
+	elseif (modelType == "clustering") then
+		
+		NewModelParameters = weightedAverageMergeClustering(Model, ModelParametersArray, featureMatrix, labelVector)
 
 	end
 
@@ -413,23 +462,31 @@ local function weightedAverageMerge(Model, ModelParametersArray, modelType, feat
 end
 
 local function bestMerge(Model, ModelParametersArray, modelType, featureMatrix, labelVector)
-
+	
+	local errorArray
+	
 	local accuracyArray
 
 	local NewModelParameters
 
 	local highestAccuracy = -math.huge
 
-	if (modelType == "regression") then
+	if (modelType == "regression")  then
 
-		local errorArray = generateErrorArray(Model, ModelParametersArray, featureMatrix, labelVector)
+		errorArray = generateErrorArray(Model, ModelParametersArray, featureMatrix, labelVector)
 
 		accuracyArray = convertErrorArrayToAccuracyArray(errorArray)
 
 	elseif (modelType == "classification") then
 
 		accuracyArray = generateAccuracyArray(Model, ModelParametersArray, featureMatrix, labelVector)
+		
+	elseif (modelType == "clustering") then
+		
+		errorArray = generateErrorArrayForClustering(Model, ModelParametersArray, featureMatrix)
 
+		accuracyArray = convertErrorArrayToAccuracyArray(errorArray)
+		
 	end
 
 	local areAllZeroes = checkIfAllValuesAreZeroesInArray(accuracyArray)

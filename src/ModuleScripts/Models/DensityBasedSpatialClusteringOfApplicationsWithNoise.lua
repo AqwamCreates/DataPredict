@@ -66,7 +66,7 @@ local function getNeighbors(currentCorePointNumber, featureMatrix, epsilon, dist
 			
 			distance = calculateDistance({featureMatrix[currentCorePointNumber]}, {featureMatrix[i]}, distanceFunction)
 			
-			if distance <= epsilon then
+			if (distance <= epsilon) then
 				
 				neighbors[#neighbors + 1] = i
 				
@@ -120,7 +120,7 @@ local function expandCluster(currentCorePointNumber, neighbors, neighbouringCore
 		
 		for j = 1, #clusters do
 			
-			if clusters[j][neighbouringPointNumber] then
+			if (clusters[j][neighbouringPointNumber]) then
 				
 				isInCluster = true
 				
@@ -148,7 +148,7 @@ local function calculateCost(featureMatrix, clusters, distanceFunction)
 			
 		for i = 1, #clusterPoints, 1 do
 				
-			for j = i+1, #clusterPoints, 1 do
+			for j = i + 1, #clusterPoints, 1 do
 					
 				cost = cost + calculateDistance({featureMatrix[clusterPoints[i]]}, {featureMatrix[clusterPoints[j]]}, distanceFunction)
 					

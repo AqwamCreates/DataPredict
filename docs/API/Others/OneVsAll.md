@@ -64,7 +64,7 @@ NeuralNetwork:train(featureMatrix: Matrix, labelVector / labelMatrix: Matrix): n
 Predict the values for given data.
 
 ```
-NeuralNetwork:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+OneVsAll:predict(featureMatrix: Matrix): Matrix, Matrix
 ```
 
 #### Parameters:
@@ -77,16 +77,12 @@ NeuralNetwork:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Mat
 
 * predictedVector: A vector that is predicted by the model.
 
-* probabilityVector: A vector that contains the probability of predicted values in predictedVector.
-
--OR-
-
-* predictedMatrix: A matrix containing all predicted values from all classes.
+* highestValueVector: A vector that contains the predicted values in predictedVector.
 
 ### getClassesList()
 
 ```
-NeuralNetwork:getClassesList(): []
+OneVsAll:getClassesList(): []
 ```
 
 #### Returns:
@@ -96,20 +92,12 @@ NeuralNetwork:getClassesList(): []
 ### setClassesList()
 
 ```
-NeuralNetwork:setClassesList(classesList: [])
+OneVsAll:setClassesList(classesList: [])
 ```
 
 #### Parameters:
 
-* classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
-
-### showDetails()
-
-Shows the details of all layers. The details includes the number of neurons, is bias added and so on.
-
-```
-NeuralNetwork:showDetails()
-```
+* OneVsAll: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
 
 ## Inherited From
 

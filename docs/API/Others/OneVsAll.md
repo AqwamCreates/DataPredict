@@ -145,7 +145,7 @@ OneVsAll:setModelParameters(ModelParameters: ModelParameters)
 
 ### clearModelParameters()
 
-Clears the model parameters contained inside base model.
+Clears the model parameters contained inside OneVsAll object.
 
 ```
 OneVsAll:clearModelParameters()

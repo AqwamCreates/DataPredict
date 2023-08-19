@@ -282,7 +282,7 @@ local function gradientDescent(modelParameters, individualkernelMatrix, labelVec
 	
 	local dotProductErrorVector = AqwamMatrixLibrary:dotProduct(transposedKernelMatrix, errorVector) -- n x m, m x 1
 	
-	local NewModelParameters = AqwamMatrixLibrary:multiply(-1, cValue, dotProductErrorVector)
+	local NewModelParameters = AqwamMatrixLibrary:multiply(-cValue, dotProductErrorVector)
 
 	return NewModelParameters
 

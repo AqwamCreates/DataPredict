@@ -80,9 +80,9 @@ OneVsAll:setRegularization(lambda: number, regularizationMode: string)
 
 #### Parameters:
 
-* lambda: The regularization factor.
+* lambda: Regularization factor. Recommended values are between 0 to 1.
 
-* regularizationMode The parameters to be prodived by to the optimizer. 
+* regularisationMode: The mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2" (or "Ridge") and "L1+L2" (or "ElasticNet").
 
 ### setAllModelsParameters()
 

@@ -24,11 +24,7 @@
 
 [LogisticRegression](Models/LogisticRegression.md)
 
-[LogisticRegressionOneVsAll](Models/LogisticRegressionOneVsAll.md)
-
 [SupportVectorMachine](Models/SupportVectorMachine.md)
-
-[SupportVectorMachineOneVsAll](Models/SupportVectorMachineOneVsAll.md)
 
 ## Clustering
 

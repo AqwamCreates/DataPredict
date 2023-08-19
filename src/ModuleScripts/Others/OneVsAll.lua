@@ -100,34 +100,6 @@ local function createClassesList(labelVector)
 
 end
 
-function OneVsAll:convertLabelVectorToLogisticMatrix(labelVector)
-
-	if (typeof(labelVector) == "number") then
-
-		labelVector = {{labelVector}}
-
-	end
-
-	local logisticMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, #self.ClassesList)
-
-	local label
-
-	local labelPosition
-
-	for row = 1, #labelVector, 1 do
-
-		label = labelVector[row][1]
-
-		labelPosition = table.find(self.ClassesList, label)
-
-		logisticMatrix[row][labelPosition] = 1
-
-	end
-
-	return logisticMatrix
-
-end
-
 function OneVsAll:processLabelVector(labelVector)
 
 	if (#self.ClassesList == 0) then
@@ -142,9 +114,29 @@ function OneVsAll:processLabelVector(labelVector)
 
 	end
 
-	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(labelVector)
+end
 
-	return logisticMatrix
+local function convertToBinaryLabelVector(labelVector, selectedClass)
+
+	local numberOfRows = #labelVector
+
+	local newLabelVector = AqwamMatrixLibrary:createMatrix(numberOfRows, 1)
+
+	for row = 1, numberOfRows, 1 do
+
+		if (labelVector[row][1] == selectedClass) then
+
+			newLabelVector[row][1] = 1
+
+		else
+
+			newLabelVector[row][1] = 0
+
+		end
+
+	end
+
+	return newLabelVector
 
 end
 
@@ -152,15 +144,15 @@ function OneVsAll:train(featureMatrix, labelVector)
 	
 	self:checkIfModelsSet()
 	
-	local logisticMatrix
+	self:processLabelVector(labelVector)
 	
-	if (#labelVector[1] == 1) then
+	local binaryLabelVectorTable = {}
+	
+	for i, class in ipairs(self.ClassesList) do
 
-		logisticMatrix = self:processLabelVector(labelVector)
+		local binaryLabelVector = convertToBinaryLabelVector(labelVector, class)
 
-	else
-
-		logisticMatrix = labelVector
+		table.insert(binaryLabelVectorTable, binaryLabelVector)
 
 	end
 	
@@ -176,9 +168,11 @@ function OneVsAll:train(featureMatrix, labelVector)
 		
 		local totalCost = 0
 		
-		for _, Model in ipairs(self.ModelsArray) do
+		for m, Model in ipairs(self.ModelsArray) do
+			
+			local binaryLabelVector = binaryLabelVectorTable[m]
 
-			modelCostArray = Model:train(featureMatrix, logisticMatrix)
+			modelCostArray = Model:train(featureMatrix, binaryLabelVector)
 
 			totalCost += modelCostArray[#modelCostArray]
 
@@ -205,6 +199,8 @@ function OneVsAll:getBestPrediction(featureVector)
 	for m, Model in ipairs(self.ModelsArray) do 
 
 		local allOutputVector = Model:predict(featureVector, true)
+		
+		if (typeof(allOutputVector) == "number") then allOutputVector = {{allOutputVector}} end
 
 		local value, maximumValueIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(allOutputVector)
 

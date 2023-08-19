@@ -42,15 +42,47 @@ OneVsAll:setParameters(maxNumberOfIterations: integer, learningRate: number, tar
 
 * targetCost: The cost at which the model stops training.
 
-### setModels()
+### setModel()
+
+Sets the model and number of classes to be used by the OneVsAll object. Leaving it empty will clear the model.
 
 ```
-OneVsAll:setModels(...: ModelObject)
+OneVsAll:setModel(modelName: string, numberOfClasses: integer)
 ```
 
 #### Parameters:
 
-* ...: Models to be added. Each model correspond to each class.
+* modelName: The full name of the model to be used in OneVsAll object.
+
+* numberOfClasses: The number of models to be generated based on number of classes.
+
+### setOptimizer()
+
+Sets the optimizer and its parameters. Leaving it empty will clear the optimizer.
+
+```
+OneVsAll:setOptimizer(optimizerName: string, ...)
+```
+
+#### Parameters:
+
+* optimizerName: The full name of the optimizer to be used in OneVsAll object.
+
+* ...: The parameters to be provided to the optimizer. 
+
+### setRegularization()
+
+Sets the optimizer and its parameters. Leaving it empty will clear the optimizer.
+
+```
+OneVsAll:setRegularization(lambda: number, regularizationMode: string)
+```
+
+#### Parameters:
+
+* lambda: The regularization factor.
+
+* regularizationMode The parameters to be prodived by to the optimizer. 
 
 ### setAllModelsParameters()
 

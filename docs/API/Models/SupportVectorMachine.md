@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-SupportVectorMachine.new(maxNumberOfIterations: integer, learningRate: number, cValue: number, targetCost: number, kernelFunction: string, kernelParameters: table): ModelObject
+SupportVectorMachine.new(maxNumberOfIterations: integer, cValue: number, targetCost: number, kernelFunction: string, kernelParameters: table): ModelObject
 ```
 
 #### Parameters:
@@ -43,7 +43,7 @@ SupportVectorMachine.new(maxNumberOfIterations: integer, learningRate: number, c
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-SupportVectorMachine:setParameters(maxNumberOfIterations: integer, learningRate: number, cValue: number, targetCost: number,  kernelFunction: string, kernelParameters: table)
+SupportVectorMachine:setParameters(maxNumberOfIterations: integer, cValue: number, targetCost: number,  kernelFunction: string, kernelParameters: table)
 ```
 
 #### Parameters:
@@ -71,18 +71,6 @@ SupportVectorMachine:setCValue(cValue: number)
 #### Parameters:
 
 * cValue: The value of c to be used.
-
-### setOptimizer()
-
-Set optimizer for the model by inputting the optimizer object.
-
-```
-SupportVectorMachine:setOptimizer(Optimizer: OptimizerObject)
-```
-
-#### Parameters:
-
-* Optimizer: The optimizer object to be used.
 
 ### train()
 

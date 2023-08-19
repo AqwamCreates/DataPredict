@@ -100,6 +100,38 @@ local function createClassesList(labelVector)
 
 end
 
+function OneVsAll:convertLabelVectorToLogisticMatrix(labelVector)
+
+	local numberOfNeuronsAtFinalLayer = #self.ModelParameters[#self.ModelParameters][1]
+
+	if (numberOfNeuronsAtFinalLayer ~= #self.ClassesList) then error("The number of classes are not equal to number of neurons. Please adjust your last layer using setLayers() function.") end
+
+	if (typeof(labelVector) == "number") then
+
+		labelVector = {{labelVector}}
+
+	end
+
+	local logisticMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, numberOfNeuronsAtFinalLayer)
+
+	local label
+
+	local labelPosition
+
+	for row = 1, #labelVector, 1 do
+
+		label = labelVector[row][1]
+
+		labelPosition = table.find(self.ClassesList, label)
+
+		logisticMatrix[row][labelPosition] = 1
+
+	end
+
+	return logisticMatrix
+
+end
+
 function OneVsAll:processLabelVector(labelVector)
 
 	if (#self.ClassesList == 0) then

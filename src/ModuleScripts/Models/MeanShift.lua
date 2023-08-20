@@ -361,9 +361,9 @@ function MeanShiftModel:train(featureMatrix)
 
 		areModelParametersEqual = checkIfModelParametersAreEqual(self.ModelParameters, PreviousModelParameters)
 		
-		numberOfIterations += 1
-		
 		isOutsideCostBounds = (cost <= self.lowestCost) or (cost >= self.highestCost)
+		
+		numberOfIterations += 1
 
 	until (numberOfIterations == self.maxNumberOfIterations) or isOutsideCostBounds or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 	

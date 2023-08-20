@@ -66,7 +66,7 @@ function OneVsAll:setParameters(maxNumberOfIterations, useNegativeOneBinaryLabel
 	
 end
 
-function OneVsAll:setModel(modelName, numberOfClasses)
+function OneVsAll:setModels(modelName, numberOfClasses)
 	
 	local ModelObject
 	
@@ -160,7 +160,7 @@ function OneVsAll:setRegularization(lambda, regularizationMode)
 	
 end
 
-function OneVsAll:setAllModelsParameters(...)
+function OneVsAll:setModelsSettings(...)
 	
 	self:checkIfModelsSet()
 	
@@ -378,11 +378,11 @@ function OneVsAll:getModelParametersArray()
 	
 end
 
-function OneVsAll:setModelParameters(...)
+function OneVsAll:setModelParametersArray(ModelParametersArray)
 	
 	self:checkIfModelsSet()
 	
-	local ModelParametersArray = {...}
+	if (ModelParametersArray == nil) then return nil end
 	
 	if (#ModelParametersArray ~= #self.ModelsArray) then error("The number of model parameters does not match with the number of models!") end
 	

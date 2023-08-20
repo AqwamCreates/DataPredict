@@ -576,31 +576,31 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (cost <= self.targetCost)
 
-	if (self.InputLayerOptimizer) then
+	if (self.InputLayerOptimizer) and (self.AutoResetOptimizers) then
 
 		self.InputLayerOptimizer:reset()
 
 	end
 
-	if (self.HiddenLayerOptimizer) then
+	if (self.HiddenLayerOptimizer) and (self.AutoResetOptimizers) then
 
 		self.HiddenLayerOptimizer:reset()
 
 	end
 
-	if (self.OutputLayerOptimizer) then
+	if (self.OutputLayerOptimizer) and (self.AutoResetOptimizers) then
 
 		self.OutputLayerOptimizer:reset()
 
 	end
 
-	if (self.BiasHiddenLayerOptimizer) then
+	if (self.BiasHiddenLayerOptimizer) and (self.AutoResetOptimizers) then
 
 		self.BiasHiddenLayerOptimizer:reset()
 
 	end
 
-	if (self.BiasOutputLayerOptimizer) then
+	if (self.BiasOutputLayerOptimizer) and (self.AutoResetOptimizers) then
 
 		self.BiasOutputLayerOptimizer:reset()
 

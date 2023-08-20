@@ -42,12 +42,12 @@ OneVsAll:setParameters(maxNumberOfIterations: integer, learningRate: number, tar
 
 * targetCost: The cost at which the model stops training.
 
-### setModel()
+### setModels()
 
 Sets the model and number of classes to be used by the OneVsAll object. Leaving it empty will clear the model.
 
 ```
-OneVsAll:setModel(modelName: string, numberOfClasses: integer)
+OneVsAll:setModels(modelName: string, numberOfClasses: integer)
 ```
 
 #### Parameters:
@@ -84,10 +84,10 @@ OneVsAll:setRegularization(lambda: number, regularizationMode: string)
 
 * regularisationMode: The mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2" (or "Ridge") and "L1+L2" (or "ElasticNet").
 
-### setAllModelSettings()
+### setModelsSettings()
 
 ```
-OneVsAll:setAllModelSettings(...: any)
+OneVsAll:setModelsSettings(...: any)
 ```
 
 #### Parameters:

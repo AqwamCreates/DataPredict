@@ -108,8 +108,6 @@ function StateActionRewardStateActionNeuralNetworkModel:update(previousFeatureVe
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
-	local predictedVector = self:predict(previousFeatureVector, true)
-
 	local targetVector = self:predict(currentFeatureVector, true)
 
 	local rewardVectorPart1 = AqwamMatrixLibrary:multiply(self.discountFactor, targetVector)

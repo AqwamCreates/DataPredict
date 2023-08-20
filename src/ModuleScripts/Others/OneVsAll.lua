@@ -410,4 +410,12 @@ function OneVsAll:setPrintOutput(option)
 
 end
 
+function OneVsAll:setAutoResetOptimizers(option)
+
+	self:checkIfModelsSet()
+
+	for _, Model in ipairs(self.ModelsArray) do Model:setAutoResetOptimizers(option) end
+
+end
+
 return OneVsAll

@@ -276,21 +276,25 @@ function NeuralNetworkModel:gradientDescent(learningRate, deltaTable, numberOfDa
 		
 		local costFunctionDerivatives = deltaTable[layerNumber]
 		
-		if self.OptimizerTable[layerNumber] then
+		local Regularization = self.RegularizationTable[layerNumber]
+		
+		local Optimizer = self.OptimizerTable[layerNumber]
 
-			costFunctionDerivatives = self.OptimizerTable[layerNumber]:calculate(calculatedLearningRate, costFunctionDerivatives)
-			
-		else
-			
-			costFunctionDerivatives = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivatives)
+		if Regularization then
 
-		end
-
-		if self.RegularizationTable[layerNumber] then
-
-			regularizationDerivatives = self.RegularizationTable[layerNumber]:calculateRegularizationDerivatives(self.ModelParameters[layerNumber], numberOfData)
+			regularizationDerivatives = Regularization:calculateRegularizationDerivatives(self.ModelParameters[layerNumber], numberOfData)
 
 			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, costFunctionDerivatives)
+
+		end
+		
+		if Optimizer then
+
+			costFunctionDerivatives = Optimizer:calculate(calculatedLearningRate, costFunctionDerivatives)
+
+		else
+
+			costFunctionDerivatives = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivatives)
 
 		end
 
@@ -618,11 +622,15 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 		self:iterationWait()
 
-		numberOfIterations += 1
-
 		forwardPropagateTable, zTable = self:forwardPropagate(featureMatrix)
 
 		allOutputsMatrix = forwardPropagateTable[#forwardPropagateTable]
+		
+		cost = self:calculateCost(allOutputsMatrix, logisticMatrix, numberOfData)
+
+		table.insert(costArray, cost)
+
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
 		lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix) 
 
@@ -631,12 +639,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable, numberOfData)
 
 		self.ModelParameters = self:gradientDescent(self.learningRate, deltaTable, numberOfData) -- do not refactor the code where the output is self.ModelParameters. Otherwise it cannot update to new model parameters values!
-
-		cost = self:calculateCost(allOutputsMatrix, logisticMatrix, numberOfData)
-
-		table.insert(costArray, cost)
-
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
+		
+		numberOfIterations += 1
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 

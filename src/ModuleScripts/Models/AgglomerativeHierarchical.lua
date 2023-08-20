@@ -416,8 +416,12 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 	repeat
 
 		self:iterationWait()
+		
+		cost = calculateCost(centroids, featureMatrix, self.distanceFunction)
 
-		numberOfIterations += 1
+		table.insert(costArray, cost)
+
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
 		centroidIndex1, centroidIndex2 = findClosestcentroids(centroidDistanceMatrix)
 
@@ -427,17 +431,13 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 		self.ModelParameters = centroids
 
-		cost = calculateCost(centroids, featureMatrix, self.distanceFunction)
-
-		table.insert(costArray, cost)
-
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-
 		areModelParametersEqual = areModelParametersMatricesEqualInSizeAndValues(self.ModelParameters, PreviousModelParameters)
 
 		isOutsideCostBounds = (cost <= self.lowestCost) or (cost >= self.highestCost)
 
 		PreviousModelParameters = self.ModelParameters
+		
+		numberOfIterations += 1
 
 	until isOutsideCostBounds or (#centroids == self.numberOfcentroids) or (#centroids == 1) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 

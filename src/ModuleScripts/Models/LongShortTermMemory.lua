@@ -750,9 +750,97 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 			
 		end
 		
-		cost = cost / totalNumberOfTokens
+		cost /= totalNumberOfTokens
+		
+		cost = math.abs(cost)
+
+		table.insert(costArray, cost)
+
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
 		dWy = AqwamMatrixLibrary:extractColumns(dWy, 1, self.hiddenSize)
+
+		if (self.ForgetGateWeightRegularization) then
+
+			local regularizationDerivatives = self.ForgetGateWeightRegularization:calculateRegularizationDerivatives(self.Wf, 1)
+
+			dWf = AqwamMatrixLibrary:add(dWf, regularizationDerivatives)
+
+		end
+
+		if (self.SaveGateWeightRegularization) then
+
+			local regularizationDerivatives = self.SaveGateWeightRegularization:calculateRegularizationDerivatives(self.Wi, 1)
+
+			dWi = AqwamMatrixLibrary:add(dWi, regularizationDerivatives)
+
+		end
+
+		if (self.TanhWeightRegularization) then
+
+			local regularizationDerivatives = self.TanhWeightRegularization:calculateRegularizationDerivatives(self.Wc, 1)
+
+			dWc = AqwamMatrixLibrary:add(dWc, regularizationDerivatives)
+
+		end
+
+		if (self.FocusGateRegularization) then
+
+			local regularizationDerivatives = self.FocusGateRegularization:calculateRegularizationDerivatives(self.Wo, 1)
+
+			dWo = AqwamMatrixLibrary:add(dWo, regularizationDerivatives)
+
+		end
+
+		if (self.OutputWeightRegularization) then
+
+			local regularizationDerivatives = self.OutputWeightRegularization:calculateRegularizationDerivatives(self.Wy, 1)
+
+			dWy = AqwamMatrixLibrary:add(dWy, regularizationDerivatives)
+
+		end
+
+		if (self.ForgetGateBiasRegularization) then
+
+			local regularizationDerivatives = self.ForgetGateBiasRegularization:calculateRegularizationDerivatives(self.bf, 1)
+
+			dbf = AqwamMatrixLibrary:add(dbf, regularizationDerivatives)
+
+		end
+
+		if (self.SaveGateBiasRegularization) then
+
+			local regularizationDerivatives = self.SaveGateBiasRegularization:calculateRegularizationDerivatives(self.bi, 1)
+
+			dbi = AqwamMatrixLibrary:add(dbi, regularizationDerivatives)
+
+		end
+
+		if (self.TanhBiasRegularization) then
+
+			local regularizationDerivatives = self.TanhBiasRegularization:calculateRegularizationDerivatives(self.bc, 1)
+
+			dbc = AqwamMatrixLibrary:add(dbc, regularizationDerivatives)
+
+		end
+
+		if (self.FocusGateBiasRegularization) then
+
+			local regularizationDerivatives = self.FocusGateBiasRegularization:calculateRegularizationDerivatives(self.bo, 1)
+
+			dbo = AqwamMatrixLibrary:add(dbo, regularizationDerivatives)
+
+		end
+
+		if (self.OutputBiasRegularization) then
+
+			local regularizationDerivatives = self.OutputBiasRegularization:calculateRegularizationDerivatives(self.by, 1)
+
+			dby = AqwamMatrixLibrary:add(dby, regularizationDerivatives)
+
+		end
+		
+		--------------------------------------------------------------------------------------------------------
 		
 		if (self.ForgetGateWeightOptimizer) then
 			
@@ -853,88 +941,6 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 			dby = AqwamMatrixLibrary:multiply(self.learningRate, dby)
 
 		end
-		
-		--------------------------------------------------------------------------------------------------------
-		
-		if (self.ForgetGateWeightRegularization) then
-
-			local regularizationDerivatives = self.ForgetGateWeightRegularization:calculateRegularizationDerivatives(self.Wf, 1)
-			
-			dWf = AqwamMatrixLibrary:add(dWf, regularizationDerivatives)
-
-		end
-
-		if (self.SaveGateWeightRegularization) then
-
-			local regularizationDerivatives = self.SaveGateWeightRegularization:calculateRegularizationDerivatives(self.Wi, 1)
-			
-			dWi = AqwamMatrixLibrary:add(dWi, regularizationDerivatives)
-
-		end
-
-		if (self.TanhWeightRegularization) then
-
-			local regularizationDerivatives = self.TanhWeightRegularization:calculateRegularizationDerivatives(self.Wc, 1)
-			
-			dWc = AqwamMatrixLibrary:add(dWc, regularizationDerivatives)
-
-		end
-
-		if (self.FocusGateRegularization) then
-
-			local regularizationDerivatives = self.FocusGateRegularization:calculateRegularizationDerivatives(self.Wo, 1)
-			
-			dWo = AqwamMatrixLibrary:add(dWo, regularizationDerivatives)
-
-		end
-
-		if (self.OutputWeightRegularization) then
-
-			local regularizationDerivatives = self.OutputWeightRegularization:calculateRegularizationDerivatives(self.Wy, 1)
-			
-			dWy = AqwamMatrixLibrary:add(dWy, regularizationDerivatives)
-
-		end
-
-		if (self.ForgetGateBiasRegularization) then
-
-			local regularizationDerivatives = self.ForgetGateBiasRegularization:calculateRegularizationDerivatives(self.bf, 1)
-			
-			dbf = AqwamMatrixLibrary:add(dbf, regularizationDerivatives)
-
-		end
-
-		if (self.SaveGateBiasRegularization) then
-
-			local regularizationDerivatives = self.SaveGateBiasRegularization:calculateRegularizationDerivatives(self.bi, 1)
-			
-			dbi = AqwamMatrixLibrary:add(dbi, regularizationDerivatives)
-
-		end
-
-		if (self.TanhBiasRegularization) then
-
-			local regularizationDerivatives = self.TanhBiasRegularization:calculateRegularizationDerivatives(self.bc, 1)
-			
-			dbc = AqwamMatrixLibrary:add(dbc, regularizationDerivatives)
-
-		end
-
-		if (self.FocusGateBiasRegularization) then
-
-			local regularizationDerivatives = self.FocusGateBiasRegularization:calculateRegularizationDerivatives(self.bo, 1)
-			
-			dbo = AqwamMatrixLibrary:add(dbo, regularizationDerivatives)
-
-		end
-
-		if (self.OutputBiasRegularization) then
-
-			local regularizationDerivatives = self.OutputBiasRegularization:calculateRegularizationDerivatives(self.by, 1)
-			
-			dby = AqwamMatrixLibrary:add(dby, regularizationDerivatives)
-
-		end
 
 		self.Wf = AqwamMatrixLibrary:subtract(self.Wf, dWf)
 		
@@ -957,12 +963,6 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		self.by = AqwamMatrixLibrary:subtract(self.by, dby)
 
 		self.ModelParameters = {self.Wf, self.bf, self.Wi, self.bi, self.Wc, self.bc, self.Wo, self.bo, self.Wy, self.by}
-		
-		cost = math.abs(cost)
-		
-		table.insert(costArray, cost)
-		
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
 	until (numberOfIterations == self.maxNumberOfIterations) or (cost <= self.targetCost)
 	

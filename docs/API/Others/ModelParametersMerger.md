@@ -80,4 +80,8 @@ ModelParametersMerger:generate(): table / matrix
 
 ## Notes
 
-* "average" and "weighted average" does not work with models that do not store tables of matrices or matrix. For example, DBSCAN and AffinityPropagation models.
+* "average" and "weighted average" does not work with models that do not store tables of matrices or matrix. It also does not work for sequential models. For example:
+
+  *  DBSCAN and AffinityPropagation models.
+
+  *  Recurrent Neural Network and LSTM models.

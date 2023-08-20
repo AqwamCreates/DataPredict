@@ -328,14 +328,14 @@ function AffinityPropagationModel:train(featureMatrix)
 			end
 			
 		end
-
-		cost = calculateCost(clusterVector, responsibilityMatrix)
-
-		table.insert(costArray, cost)
 		
 		previousClusterVector = clusterVector
+		
+		cost = calculateCost(clusterVector, responsibilityMatrix)
 
 		numberOfIterations += 1
+		
+		table.insert(costArray, cost)
 
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 

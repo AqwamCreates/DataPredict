@@ -628,10 +628,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 		cost = self:calculateCost(allOutputsMatrix, logisticMatrix, numberOfData)
 
-		table.insert(costArray, cost)
-
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-
 		lossMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix) 
 
 		backwardPropagateTable = self:backPropagate(lossMatrix, zTable)
@@ -641,6 +637,10 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		self.ModelParameters = self:gradientDescent(self.learningRate, deltaTable, numberOfData) -- do not refactor the code where the output is self.ModelParameters. Otherwise it cannot update to new model parameters values!
 		
 		numberOfIterations += 1
+		
+		table.insert(costArray, cost)
+
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 

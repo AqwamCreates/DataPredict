@@ -966,61 +966,61 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 	until (numberOfIterations == self.maxNumberOfIterations) or (cost <= self.targetCost)
 	
-	if (self.ForgetGateWeightOptimizer) then
+	if (self.ForgetGateWeightOptimizer) and (self.AutoResetOptimizers) then
 
 		self.ForgetGateWeightOptimizer:reset()
 
 	end
 
-	if (self.SaveGateWeightOptimizer) then
+	if (self.SaveGateWeightOptimizer) and (self.AutoResetOptimizers) then
 
 		self.SaveGateWeightOptimizer:reset()
 
 	end
 
-	if (self.TanhWeightOptimizer) then
+	if (self.TanhWeightOptimizer) and (self.AutoResetOptimizers) then
 
 		self.TanhWeightOptimizer:reset()
 
 	end
 
-	if (self.FocusGateOptimizer) then
+	if (self.FocusGateOptimizer) and (self.AutoResetOptimizers) then
 
 		self.FocusGateOptimizer:reset()
 
 	end
 
-	if (self.OutputWeightOptimizer) then
+	if (self.OutputWeightOptimizer) and (self.AutoResetOptimizers) then
 
 		self.OutputWeightOptimizer:reset()
 
 	end
 
-	if (self.ForgetGateBiasOptimizer) then
+	if (self.ForgetGateBiasOptimizer) and (self.AutoResetOptimizers) then
 
 		self.ForgetGateBiasOptimizer:reset()
 
 	end
 
-	if (self.SaveGateBiasOptimizer) then
+	if (self.SaveGateBiasOptimizer) and (self.AutoResetOptimizers) then
 
 		self.SaveGateBiasOptimizer:reset()
 
 	end
 
-	if (self.TanhBiasOptimizer) then
+	if (self.TanhBiasOptimizer) and (self.AutoResetOptimizers) then
 
 		self.TanhBiasOptimizer:reset()
 
 	end
 
-	if (self.FocusGateOptimizer) then
+	if (self.FocusGateOptimizer) and (self.AutoResetOptimizers) then
 
 		self.FocusGateOptimizer:reset()
 
 	end
 
-	if (self.OutputBiasOptimizer) then
+	if (self.OutputBiasOptimizer) and (self.AutoResetOptimizers) then
 
 		self.OutputBiasOptimizer:reset()
 

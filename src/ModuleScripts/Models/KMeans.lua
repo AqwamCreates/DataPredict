@@ -384,10 +384,6 @@ function KMeansModel:train(featureMatrix)
 		self:iterationWait()
 
 		cost = calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
-
-		table.insert(costArray, cost)
-
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
 		PreviousModelParameters = self.ModelParameters
 
@@ -396,6 +392,10 @@ function KMeansModel:train(featureMatrix)
 		areModelParametersEqual =  AqwamMatrixLibrary:areMatricesEqual(self.ModelParameters, PreviousModelParameters)
 		
 		numberOfIterations += 1
+		
+		table.insert(costArray, cost)
+		
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 	

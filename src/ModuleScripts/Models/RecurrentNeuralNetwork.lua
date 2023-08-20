@@ -576,31 +576,31 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (cost <= self.targetCost)
 
-	if (self.InputLayerOptimizer) and (self.AutoResetOptimizers) then
+	if (self.InputLayerOptimizer) then
 
 		self.InputLayerOptimizer:reset()
 
 	end
 
-	if (self.HiddenLayerOptimizer) and (self.AutoResetOptimizers) then
+	if (self.HiddenLayerOptimizer) then
 
 		self.HiddenLayerOptimizer:reset()
 
 	end
 
-	if (self.OutputLayerOptimizer) and (self.AutoResetOptimizers) then
+	if (self.OutputLayerOptimizer) then
 
 		self.OutputLayerOptimizer:reset()
 
 	end
 
-	if (self.BiasHiddenLayerOptimizer) and (self.AutoResetOptimizers) then
+	if (self.BiasHiddenLayerOptimizer) then
 
 		self.BiasHiddenLayerOptimizer:reset()
 
 	end
 
-	if (self.BiasOutputLayerOptimizer) and (self.AutoResetOptimizers) then
+	if (self.BiasOutputLayerOptimizer) then
 
 		self.BiasOutputLayerOptimizer:reset()
 
@@ -610,41 +610,51 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 end
 
-function RecurrentNeuralNetworkModel:predict(tokenInputSequenceArray)
+function RecurrentNeuralNetworkModel:predict(tableOfTokenInputSequenceLogisticMatrices)
 
 	if (self.ModelParameters == nil) then error("No Model Parameters Found!") end
 
 	self:loadModelParameters()
-
-	local aPrevious = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
-
-	local predictionArray = {}
-
-	for i = 1, #tokenInputSequenceArray, 1 do
-
-		local tokenInput = tokenInputSequenceArray[i]
-
-		local xt = self:convertTokenToLogisticVector(self.inputSize, tokenInput)
-
-		local aNext = self:forwardPropagateCell(xt, aPrevious)
-
-		local ytPrediction = self:calculatePrediction(aNext)
-
-		local _, predictedTokenIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(ytPrediction)
-
-		local predictedToken = 0
+	
+	local tableOfTokenOutputSequenceArray = {}
+	
+	for i = 1, #tableOfTokenInputSequenceLogisticMatrices, 1 do
 		
-		if predictedTokenIndex then predictedToken = predictedTokenIndex[1] end
+		local tokenInputSequenceArray = tableOfTokenInputSequenceLogisticMatrices[i]
 		
-		predictedToken = predictedToken or 0
+		local aPrevious = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
-		table.insert(predictionArray, predictedToken)
+		local predictionArray = {}
+		
+		for j = 1, #tokenInputSequenceArray, 1 do
 
-		aPrevious = aNext
+			local tokenInput = tokenInputSequenceArray[j]
 
+			local xt = self:convertTokenToLogisticVector(self.inputSize, tokenInput)
+
+			local aNext = self:forwardPropagateCell(xt, aPrevious)
+
+			local ytPrediction = self:calculatePrediction(aNext)
+
+			local _, predictedTokenIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(ytPrediction)
+
+			local predictedToken = 0
+
+			if predictedTokenIndex then predictedToken = predictedTokenIndex[1] end
+
+			predictedToken = predictedToken or 0
+
+			table.insert(predictionArray, predictedToken)
+
+			aPrevious = aNext
+
+		end
+		
+		table.insert(tableOfTokenOutputSequenceArray, predictionArray)
+		
 	end
 
-	return predictionArray
+	return tableOfTokenOutputSequenceArray
 
 end
 

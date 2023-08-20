@@ -368,14 +368,14 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 		self:iterationWait()
 
 		cost = calculateCost(self.ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, self.cValue)
-		
-		table.insert(costArray, cost)
 
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
 		self.ModelParameters = gradientDescent(self.ModelParameters, mappedFeatureMatrix, labelVector, self.cValue)
 		
 		numberOfIterations += 1
+		
+		table.insert(costArray, cost)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 

@@ -164,12 +164,14 @@ LongShortTermMemory:train(tableOfTokenInputSequenceArray: tokenInputSequenceArra
 Predict a sequence of output tokens for a given sequence of input tokens.
 
 ```
-LongShortTermMemory:predict(tableOfTokenInputSequenceArray: tokenInputSequenceArray[]): tokenOutputSequenceArray[]
+LongShortTermMemory:predict(tableOfTokenInputSequenceArray: tokenInputSequenceArray[], returnOriginalOutput: boolean): tokenOutputSequenceArray[]
 ```
 
 #### Parameters:
 
 * tableOfTokenInputSequenceArray: An array containing sequences of tokens.
+
+* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability.
 
 #### Returns:
 

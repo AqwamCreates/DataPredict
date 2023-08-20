@@ -1030,45 +1030,55 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 	
 end
 
-function LongShortTermMemoryModel:predict(tokenInputSequenceArray)
+function LongShortTermMemoryModel:predict(tableOfTokenInputSequenceLogisticMatrices)
 	
 	if (self.ModelParameters == nil) then error("No Model Parameters Found!") end
 	
 	self:loadModelParameters()
 	
-	local cPrevious = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
+	local tableOfTokenOutputSequenceArray = {}
 	
-	local aPrevious = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
-	
-	local predictionArray = {}
-	
-	for i = 1, #tokenInputSequenceArray, 1 do
+	for i = 1, #tableOfTokenInputSequenceLogisticMatrices, 1 do
 		
-		local tokenInput = tokenInputSequenceArray[i]
+		local tokenInputSequenceArray = tableOfTokenInputSequenceLogisticMatrices[i]
 		
-		local xt = self:convertTokenToLogisticVector(self.inputSize, tokenInput)
-		
-		local aNext, cNext = self:forwardPropagateCell(xt, aPrevious, cPrevious)
-		
-		local ytPrediction = self:calculatePrediction(aNext)
-		
-		local _, predictedTokenIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(ytPrediction)
-		
-		local predictedToken = 0
+		local cPrevious = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
-		if predictedTokenIndex then predictedToken = predictedTokenIndex[1] end
-		
-		predictedToken = predictedToken or 0
+		local aPrevious = AqwamMatrixLibrary:createMatrix(self.hiddenSize, 1)
 
-		table.insert(predictionArray, predictedToken)
+		local predictionArray = {}
 		
-		aPrevious = aNext
+		for j = 1, #tokenInputSequenceArray, 1 do
+
+			local tokenInput = tokenInputSequenceArray[j]
+
+			local xt = self:convertTokenToLogisticVector(self.inputSize, tokenInput)
+
+			local aNext, cNext = self:forwardPropagateCell(xt, aPrevious, cPrevious)
+
+			local ytPrediction = self:calculatePrediction(aNext)
+
+			local _, predictedTokenIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(ytPrediction)
+
+			local predictedToken = 0
+
+			if predictedTokenIndex then predictedToken = predictedTokenIndex[1] end
+
+			predictedToken = predictedToken or 0
+
+			table.insert(predictionArray, predictedToken)
+
+			aPrevious = aNext
+
+			cPrevious = cNext
+
+		end
 		
-		cPrevious = cNext
+		table.insert(tableOfTokenOutputSequenceArray, predictionArray)
 		
 	end
 	
-	return predictionArray
+	return tableOfTokenOutputSequenceArray
 	
 end
 

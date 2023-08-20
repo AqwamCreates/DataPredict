@@ -350,10 +350,6 @@ function MeanShiftModel:train(featureMatrix)
 		self:iterationWait()
 
 		cost = calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
-
-		table.insert(costArray, cost)
-
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
 		PreviousModelParameters = self.ModelParameters
 
@@ -364,6 +360,10 @@ function MeanShiftModel:train(featureMatrix)
 		isOutsideCostBounds = (cost <= self.lowestCost) or (cost >= self.highestCost)
 		
 		numberOfIterations += 1
+		
+		table.insert(costArray, cost)
+		
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or isOutsideCostBounds or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 	

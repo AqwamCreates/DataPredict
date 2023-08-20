@@ -752,12 +752,6 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		cost /= totalNumberOfTokens
 		
-		cost = math.abs(cost)
-
-		table.insert(costArray, cost)
-
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-		
 		dWy = AqwamMatrixLibrary:extractColumns(dWy, 1, self.hiddenSize)
 
 		if (self.ForgetGateWeightRegularization) then
@@ -963,6 +957,12 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		self.by = AqwamMatrixLibrary:subtract(self.by, dby)
 
 		self.ModelParameters = {self.Wf, self.bf, self.Wi, self.bi, self.Wc, self.bc, self.Wo, self.bo, self.Wy, self.by}
+		
+		cost = math.abs(cost)
+		
+		table.insert(costArray, cost)
+
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
 	until (numberOfIterations == self.maxNumberOfIterations) or (cost <= self.targetCost)
 	

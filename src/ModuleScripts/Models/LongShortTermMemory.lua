@@ -1030,7 +1030,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 	
 end
 
-function LongShortTermMemoryModel:predict(tableOfTokenInputSequenceLogisticMatrices)
+function LongShortTermMemoryModel:predict(tableOfTokenInputSequenceLogisticMatrices, returnOriginalOutput)
 	
 	if (self.ModelParameters == nil) then error("No Model Parameters Found!") end
 	
@@ -1057,16 +1057,24 @@ function LongShortTermMemoryModel:predict(tableOfTokenInputSequenceLogisticMatri
 			local aNext, cNext = self:forwardPropagateCell(xt, aPrevious, cPrevious)
 
 			local ytPrediction = self:calculatePrediction(aNext)
+			
+			if (returnOriginalOutput) then
+				
+				table.insert(predictionArray, ytPrediction)
+				
+			else
+				
+				local _, predictedTokenIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(ytPrediction)
 
-			local _, predictedTokenIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(ytPrediction)
+				local predictedToken = 0
 
-			local predictedToken = 0
+				if predictedTokenIndex then predictedToken = predictedTokenIndex[1] end
 
-			if predictedTokenIndex then predictedToken = predictedTokenIndex[1] end
+				predictedToken = predictedToken or 0
 
-			predictedToken = predictedToken or 0
-
-			table.insert(predictionArray, predictedToken)
+				table.insert(predictionArray, predictedToken)
+				
+			end
 
 			aPrevious = aNext
 

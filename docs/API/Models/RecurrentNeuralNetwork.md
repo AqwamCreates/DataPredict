@@ -121,7 +121,7 @@ RecurrentNeuralNetwork:setRegularizations(InputLayerRegularization: Regularizati
 Train the model. 
 
 ```
-RecurrentNeuralNetwork:train(LongShortTermMemory:train(tableOfTokenInputSequenceArray: tableOfTokenInputSequenceArray[], tableOfTokenOutputSequenceArray: tokenOutputSequenceArray[]): number[]
+RecurrentNeuralNetwork:train(LongShortTermMemory:train(tableOfTokenInputSequenceArray: tokenInputSequenceArray[], tableOfTokenOutputSequenceArray: tokenOutputSequenceArray[]): number[]
 ```
 #### Parameters:
 
@@ -138,16 +138,16 @@ RecurrentNeuralNetwork:train(LongShortTermMemory:train(tableOfTokenInputSequence
 Predict a sequence of output tokens for a given sequence of input tokens.
 
 ```
-RecurrentNeuralNetwork:predict(tokenInputSequenceArray: integer[]): integer[]
+RecurrentNeuralNetwork:predict(tableOfTokenInputSequenceArray: tokenInputSequenceArray[]): tokenOutputSequenceArray[]
 ```
 
 #### Parameters:
 
-* tokenInputSequenceArray: An array containing a sequence of tokens.
+* tableOfTokenInputSequenceArray: An array containing a sequence of tokens.
 
 #### Returns:
 
-* tokenOutputSequenceArray: An array containing a sequence of tokens.
+* tableOfTokenOutputSequenceArray: An array containing a sequence of tokens.
 
 ## Notes:
 

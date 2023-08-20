@@ -173,9 +173,29 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		
 		self:iterationWait()
 		
-		numberOfIterations += 1
+		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
+
+		if (self.Regularization) then 
+
+			regularizationCost = self.Regularization:calculateRegularization(self.ModelParameters, numberOfData)
+
+			cost += regularizationCost
+
+		end
+		
+		table.insert(costArray, cost)
+
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
 		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
+		
+		if (self.Regularization) then
+
+			regularizationDerivatives = self.Regularization:calculateRegularizationDerivatives(self.ModelParameters, numberOfData)
+
+			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, regularizationDerivatives)
+
+		end
 		
 		if (self.Optimizer) then 
 
@@ -186,30 +206,10 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 			costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
 
 		end
-		
-		if (self.Regularization) then
-
-			regularizationDerivatives = self.Regularization:calculateRegularizationDerivatives(self.ModelParameters, numberOfData)
-
-			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, regularizationDerivatives)
-
-		end
 
 		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
 		
-		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
-		
-		if (self.Regularization) then 
-
-			regularizationCost = self.Regularization:calculateRegularization(self.ModelParameters, numberOfData)
-
-			cost += regularizationCost
-
-		end
-		
-		table.insert(costArray, cost)
-		
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
+		numberOfIterations += 1
 		
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 	

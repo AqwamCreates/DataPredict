@@ -245,15 +245,15 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 	local costArray = {}
 	
-	local likelihoodArray = {}
+	local logLikelihoodArray = {}
 	
 	local cost
 	
 	local numberOfIterations = 0
 
-	local likelihood
+	local logLikelihood
 	
-	local sumLikelihood
+	local sumLogLikelihood
 	
 	local numberOfFeatures = #featureMatrix[1]
 
@@ -285,27 +285,27 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
 		
-		likelihood = AqwamMatrixLibrary:applyFunction(math.log, gaussianMatrix)
+		logLikelihood = AqwamMatrixLibrary:applyFunction(math.log, gaussianMatrix)
 
-		sumLikelihood = AqwamMatrixLibrary:sum(likelihood)
+		sumLogLikelihood = AqwamMatrixLibrary:sum(logLikelihood)
 		
-		table.insert(likelihoodArray, sumLikelihood)
+		table.insert(logLikelihoodArray, sumLogLikelihood)
 		
-		if (#likelihoodArray > 1) then
+		if (#logLikelihoodArray > 1) then
 			
-			cost = sumLikelihood - likelihoodArray[#likelihoodArray - 1] 
+			cost = sumLogLikelihood - logLikelihoodArray[#logLikelihoodArray - 1] 
 			
 		else
 			
-			cost = -sumLikelihood
+			cost = -sumLogLikelihood
 			
 		end
-		
-		table.insert(costArray, cost)
 		
 		if (cost ~= cost) then error("Too much variance in the data! Please change the argument values.") end
 		
 		numberOfIterations += 1
+		
+		table.insert(costArray, cost)
 		
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 

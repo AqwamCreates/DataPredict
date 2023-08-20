@@ -183,10 +183,6 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 		end
 		
-		table.insert(costArray, cost)
-
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-		
 		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
 		
 		if (self.Regularization) then
@@ -210,6 +206,10 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
 		
 		numberOfIterations += 1
+		
+		table.insert(costArray, cost)
+
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 	

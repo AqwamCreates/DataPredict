@@ -171,7 +171,7 @@ LongShortTermMemory:predict(tableOfTokenInputSequenceArray: tokenInputSequenceAr
 
 * tableOfTokenInputSequenceArray: An array containing sequences of tokens.
 
-* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability.
+* returnOriginalOutput: Set whether or not to return predicted matrices instead of value with highest probability.
 
 #### Returns:
 

@@ -138,16 +138,18 @@ RecurrentNeuralNetwork:train(LongShortTermMemory:train(tableOfTokenInputSequence
 Predict a sequence of output tokens for a given sequence of input tokens.
 
 ```
-RecurrentNeuralNetwork:predict(tableOfTokenInputSequenceArray: tokenInputSequenceArray[]): tokenOutputSequenceArray[]
+RecurrentNeuralNetwork:predict(tableOfTokenInputSequenceArray: tokenInputSequenceArray[], returnreturnOriginalOutput: boolean): tokenOutputSequenceArray[]
 ```
 
 #### Parameters:
 
-* tableOfTokenInputSequenceArray: An array containing a sequence of tokens.
+* tableOfTokenInputSequenceArray: An array containing sequences of tokens.
+
+* returnOriginalOutput: Set whether or not to return predicted matrices instead of value with highest probability.
 
 #### Returns:
 
-* tableOfTokenOutputSequenceArray: An array containing a sequence of tokens.
+* tableOfTokenOutputSequenceArray: An array containing sequences of tokens.
 
 ## Notes:
 

@@ -406,15 +406,7 @@ end
 
 function OneVsAll:setPrintOutput(option) 
 
-	if (option == false) then
-
-		self.IsOutputPrinted = false
-
-	else
-
-		self.IsOutputPrinted = true
-
-	end
+	self.IsOutputPrinted = self:getBooleanOrDefaultOption(option, self.IsOutputPrinted)
 
 end
 

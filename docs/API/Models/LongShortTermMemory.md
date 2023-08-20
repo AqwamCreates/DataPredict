@@ -147,13 +147,13 @@ LongShortTermMemory:setRegularizations(ForgetGateWeightRegularization: Regulariz
 Train the model. 
 
 ```
-LongShortTermMemory:train(tableOfTokenInputSequenceArray: tableOfTokenInputSequenceArray[], tableOfTokenOutputSequenceArray: tokenOutputSequenceArray[]): number[]
+LongShortTermMemory:train(tableOfTokenInputSequenceArray: tokenInputSequenceArray[], tableOfTokenOutputSequenceArray: tokenOutputSequenceArray[]): number[]
 ```
 #### Parameters:
 
 * tableOfTokenInputSequenceArray: An array containing sequences of tokens.
 
-* tokenOutputSequenceArray: An array containing sequences of tokens. Leave this empty if you want to use tokenInputSequenceArray only.
+* tableOfTokenOutputSequenceArray: An array containing sequences of tokens. Leave this empty if you want to use tokenInputSequenceArray only.
 
 #### Returns:
 
@@ -164,16 +164,16 @@ LongShortTermMemory:train(tableOfTokenInputSequenceArray: tableOfTokenInputSeque
 Predict a sequence of output tokens for a given sequence of input tokens.
 
 ```
-LongShortTermMemory:predict(tokenInputSequenceArray: integer[]): integer[]
+LongShortTermMemory:predict(tableOfTokenInputSequenceArray: tokenInputSequenceArray[]): tokenOutputSequenceArray[]
 ```
 
 #### Parameters:
 
-* tokenInputSequenceArray: An array containing a sequence of tokens.
+* tableOfTokenInputSequenceArray: An array containing sequences of tokens.
 
 #### Returns:
 
-* tokenOutputSequenceArray: An array containing a sequence of tokens.
+* tableOfTokenOutputSequenceArray: An array containing sequences of tokens.
 
 ## Notes:
 

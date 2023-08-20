@@ -183,6 +183,18 @@ Clears the model parameters stored insside models
 OneVsAll:clearModelParameters()
 ```
 
+### setAutoResetOptimizers()
+
+Set if the optimizer resets at the end of iterations.
+
+```
+OneVsAll:setAutoResetOptimizers(option: boolean)
+```
+
+#### Parameters:
+
+* option: A boolean value that specifies if optimizers resets at the end of iterations.
+
 ### setPrintOutput()
 
 Set if the OneVsAll object prints output.

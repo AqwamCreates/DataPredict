@@ -140,7 +140,7 @@ function OneVsAll:setRegularization(lambda, regularizationMode)
 	
 	local RegularizationObject
 
-	if lambda and regularizationMode then
+	if lambda or regularizationMode then
 		
 		RegularizationObject = require(Regularization).new(lambda, regularizationMode)
 	

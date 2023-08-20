@@ -389,10 +389,10 @@ function KMedoidsModel:train(featureMatrix)
 					cost = previousCost
 
 				end
+				
+				numberOfIterations += 1
 
 				table.insert(costArray, cost)
-
-				numberOfIterations += 1
 
 				self:printCostAndNumberOfIterations(cost, numberOfIterations)
 

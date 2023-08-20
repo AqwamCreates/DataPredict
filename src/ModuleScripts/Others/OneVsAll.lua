@@ -30,7 +30,7 @@ function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel, targetCo
 	
 	NewOneVsAll.IsOutputPrinted = true
 	
-	NewOneVsAll.ModelsArray = {nil}
+	NewOneVsAll.ModelsArray = {}
 	
 	NewOneVsAll.OptimizersArray = {}
 	

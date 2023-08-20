@@ -116,11 +116,7 @@ function StateActionRewardStateActionNeuralNetworkModel:update(previousFeatureVe
 
 	local rewardVector = AqwamMatrixLibrary:add(rewardValue, rewardVectorPart1)
 
-	local calculatedReward = AqwamMatrixLibrary:subtract(rewardVector, predictedVector)
-
-	local newTargetVector = AqwamMatrixLibrary:add(predictedVector, calculatedReward)
-
-	self:train(previousFeatureVector, newTargetVector)
+	self:train(previousFeatureVector, rewardVector)
 
 end
 

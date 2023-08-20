@@ -84,15 +84,15 @@ OneVsAll:setRegularization(lambda: number, regularizationMode: string)
 
 * regularisationMode: The mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2" (or "Ridge") and "L1+L2" (or "ElasticNet").
 
-### setAllModelsParameters()
+### setAllModelSettings()
 
 ```
-OneVsAll:setAllModelsParameters(...: any)
+OneVsAll:setAllModelSettings(...: any)
 ```
 
 #### Parameters:
 
-* ...: The parameters to be set to all models stored in this OneVsAll object. Not to be confused with ModelParameters that stores table of matrices or matrix.
+* ...: The parameters to be set to all models stored in this OneVsAll object.
 
 ### train()
 
@@ -163,17 +163,17 @@ OneVsAll:getModelParametersArray(): ModelParameters []
 
 * ModelParameters: An array containing model parameters (matrix/table) fetched from each model. The index of the array determines which model it belongs to.
 
-### setModelParameters()
+### setModelParametersArray()
 
 Set the model parameters to the base model.
 
 ```
-OneVsAll:setModelParameters(ModelParameters: ModelParameters)
+OneVsAll:setModelParameters(ModelParametersArray: ModelParameters[])
 ```
 
 #### Parameters
 
-* ModelParameters: A table containing model parameters (matrix/table) to be given to be given to each model stored in OneVsAll object.  The position of the parameters determines which model it belongs to.
+* ModelParametersArray: A table containing model parameters (matrix/table) to be given to be given to each model stored in OneVsAll object.  The position of the parameters determines which model it belongs to.
 
 ### clearModelParameters()
 

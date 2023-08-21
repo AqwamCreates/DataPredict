@@ -206,16 +206,14 @@ function StateActionRewardStateActionNeuralNetworkModel:reinforce(currentFeature
 
 		action = self.ClassesList[randomNumber]
 
-		highestProbabilityVector = randomProbability
-		
 		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 
 		allOutputsMatrix[1][randomNumber] = randomProbability
-		
+
 	else
 
 		allOutputsMatrix = self:predict(currentFeatureVector, true)
-		
+
 		actionVector, highestProbabilityVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 
 		action = actionVector[1][1]

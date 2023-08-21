@@ -32,6 +32,8 @@ ExpectedStateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: int
 
 * epsilonDecayFactor: Controls how fast the model goes from exploring to exploiting as it learns. The value must be set between 0 and 1.
 
+* epsilon2: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
+
 * discountFactor: Balances present and future rewards in agent decisions.
 
 #### Returns:
@@ -61,6 +63,8 @@ ExpectedStateActionRewardStateActionNeuralNetwork:setParameters(maxNumberOfItera
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
 
 * epsilonDecayFactor: Controls how fast the model goes from exploring to exploiting as it learns. The value must be set between 0 and 1.
+
+* epsilon2: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
 * discountFactor: Balances present and future rewards in agent decisions.
 

@@ -1,4 +1,4 @@
-# What is regularization?
+# What Is Regularization?
 
 Regularization is to ensure that the model do not overfit. In other words, we want to ensure that the model to generalize instead of memorizing solutions.
 

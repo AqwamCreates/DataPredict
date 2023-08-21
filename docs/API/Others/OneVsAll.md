@@ -177,7 +177,7 @@ OneVsAll:setModelParameters(ModelParametersArray: ModelParameters[])
 
 ### clearModelParameters()
 
-Clears the model parameters stored insside models
+Clears the model parameters stored inside models
 
 ```
 OneVsAll:clearModelParameters()

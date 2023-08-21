@@ -176,14 +176,6 @@ function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue
 	
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
-	if (self.previousFeatureVector == nil) then
-
-		self.previousFeatureVector = currentFeatureVector
-
-		return nil
-
-	end
-
 	if (self.currentNumberOfEpisodes == 0) then
 
 		self.currentEpsilon *= self.epsilonDecayFactor
@@ -226,9 +218,9 @@ function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue
 
 	end
 
-	self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
+	if (self.previousFeatureVector) then self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) end
 
-	if (self.useExperienceReplay) then 
+	if (self.useExperienceReplay) and (self.previousFeatureVector) then 
 
 		self.numberOfReinforcements = (self.numberOfReinforcements + 1) % self.numberOfReinforcementsForExperienceReplayUpdate
 
@@ -241,6 +233,8 @@ function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue
 		if (#self.replayBufferArray >= self.maxExperienceReplayBufferSize) then table.remove(self.replayBufferArray, 1) end
 
 	end
+
+	self.previousFeatureVector = currentFeatureVector
 
 	if (self.printReinforcementOutput == true) then print("Current Number Of Episodes: " .. self.currentNumberOfEpisodes .. "\t\tCurrent Epsilon: " .. self.currentEpsilon) end
 

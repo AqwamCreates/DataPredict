@@ -16,7 +16,7 @@ local defaultEpsilonDecayFactor = 0.999
 
 local defaultDiscountFactor = 0.95
 
-local defaultEpsilon2 = 0.1
+local defaultEpsilon2 = 0.5
 
 local defaultMaxNumberOfIterations = 1
 

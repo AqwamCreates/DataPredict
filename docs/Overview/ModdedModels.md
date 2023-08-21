@@ -1,4 +1,4 @@
-# What are Modded Models?
+# What Are Modded Models?
 
 Modded Models is where the model have been "evolved" to have additional features without changing much of its functionality.
 To use them, you must use the constructors of the model. Then use some functions provided under specialization section of a model (if it exists).

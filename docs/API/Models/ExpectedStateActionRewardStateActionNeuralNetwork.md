@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - ExpectedStateActionRewardStateActionNeuralNetwork
 
-StateActionRewardStateActionNeuralNetwork is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+ExpectedStateActionRewardStateActionNeuralNetwork is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Stored Model Parameters
 

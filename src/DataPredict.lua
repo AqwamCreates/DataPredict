@@ -69,6 +69,8 @@ local ModelsDictionary = {
 	
 	StateActionRewardStateActionNeuralNetwork = require(Models.StateActionRewardStateActionNeuralNetwork),
 
+	ExpectedStateActionRewardStateActionNeuralNetwork = require(Models.ExpectedStateActionRewardStateActionNeuralNetwork),
+
 	RecurrentNeuralNetwork = require(Models.RecurrentNeuralNetwork),
 
 	LongShortTermMemory = require(Models.LongShortTermMemory),

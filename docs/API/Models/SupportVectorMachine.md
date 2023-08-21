@@ -6,7 +6,7 @@ SupportVectorMachine is a supervised machine learning model that predicts values
 
 Contains a matrix.  
 
-* ModelParameters[I][J]: Value of matrix at row I and column J. The columns represent the features.
+* ModelParameters[I][J]: Value of matrix at row I and column J. The rows represent the features.
 
 ## Constructors
 

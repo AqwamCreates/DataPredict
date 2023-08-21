@@ -209,8 +209,6 @@ function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue
 		local randomNumber = Random.new():NextInteger(1, #self.ClassesList)
 
 		action = self.ClassesList[randomNumber]
-
-		highestProbabilityVector = randomProbability
 		
 		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 

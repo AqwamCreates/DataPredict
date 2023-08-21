@@ -214,14 +214,6 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel:reinforce(curren
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
-	if (self.previousFeatureVector == nil) then
-
-		self.previousFeatureVector = currentFeatureVector
-
-		return nil
-
-	end
-
 	if (self.currentNumberOfEpisodes == 0) then
 
 		self.currentEpsilon *= self.epsilonDecayFactor
@@ -248,8 +240,6 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel:reinforce(curren
 
 		action = self.ClassesList[randomNumber]
 
-		highestProbabilityVector = randomProbability
-
 		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 
 		allOutputsMatrix[1][randomNumber] = randomProbability
@@ -266,9 +256,9 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel:reinforce(curren
 
 	end
 
-	self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
+	if (self.previousFeatureVector) then self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) end
 
-	if (self.useExperienceReplay) then 
+	if (self.useExperienceReplay) and (self.previousFeatureVector) then 
 
 		self.numberOfReinforcements = (self.numberOfReinforcements + 1) % self.numberOfReinforcementsForExperienceReplayUpdate
 
@@ -279,6 +269,12 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel:reinforce(curren
 		table.insert(self.replayBufferArray, experience)
 
 		if (#self.replayBufferArray >= self.maxExperienceReplayBufferSize) then table.remove(self.replayBufferArray, 1) end
+
+	end
+	
+	if (self.previousFeatureVector == nil) then
+
+		self.previousFeatureVector = currentFeatureVector
 
 	end
 

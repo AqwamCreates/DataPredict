@@ -271,12 +271,8 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel:reinforce(curren
 		if (#self.replayBufferArray >= self.maxExperienceReplayBufferSize) then table.remove(self.replayBufferArray, 1) end
 
 	end
-	
-	if (self.previousFeatureVector == nil) then
 
-		self.previousFeatureVector = currentFeatureVector
-
-	end
+	self.previousFeatureVector = currentFeatureVector
 
 	if (self.printReinforcementOutput == true) then print("Current Number Of Episodes: " .. self.currentNumberOfEpisodes .. "\t\tCurrent Epsilon: " .. self.currentEpsilon) end
 

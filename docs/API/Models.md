@@ -18,6 +18,8 @@
 
 [StateActionRewardStateActionNeuralNetwork](Models/StateActionRewardStateActionNeuralNetwork.md) - a.k.a. SARSA-NN
 
+[ExpectedStateActionRewardStateActionNeuralNetwork](Models/ExpectedStateActionRewardStateActionNeuralNetwork.md) - a.k.a. SARSA-NN
+
 [RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md) - a.k.a. RNN
 
 [LongShortTermMemory](Models/LongShortTermMemory.md) - a.k.a. LSTM

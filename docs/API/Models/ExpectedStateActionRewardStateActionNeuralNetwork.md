@@ -134,6 +134,8 @@ ExpectedStateActionRewardStateActionNeuralNetwork:reset()
 
 ## References
 
+* [Expected SARSA in Reinforcement Learning](https://www.geeksforgeeks.org/expected-sarsa-in-reinforcement-learning/)
+
 * [SARSA Reinforcement Learning](https://www.geeksforgeeks.org/sarsa-reinforcement-learning/)
 
 * [Reinforcement Learning with Neural Network](https://www.baeldung.com/cs/reinforcement-learning-neural-network)

@@ -76,7 +76,7 @@ QLearningNeuralNetwork:setExperienceReplay(useExperienceReplay: boolean, experie
 
 * useExperienceReplay: The option to set whether or not to enable experience replay. When enabled, it may require more resources.
 
-* experienceReplayBatchSize: Determines how many of these experiences are sampled at once for batch training
+* experienceReplayBatchSize: Determines how many of these experiences are sampled for batch training.
 
 * numberOfReinforcementsForExperienceReplayUpdate: How many times does the reinforce() function needed to be called in order to for a single update from experience replay.
 

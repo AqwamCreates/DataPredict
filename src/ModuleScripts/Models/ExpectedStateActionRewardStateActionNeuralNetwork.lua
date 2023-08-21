@@ -44,7 +44,7 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfI
 
 	NewExpectedStateActionRewardStateActionNeuralNetworkModel.discountFactor =  discountFactor or defaultDiscountFactor
 	
-	NewExpectedStateActionRewardStateActionNeuralNetworkModel.epsilon2 = epsilon2 or defaultEpsilon
+	NewExpectedStateActionRewardStateActionNeuralNetworkModel.epsilon2 = epsilon2 or defaultEpsilon2
 
 	NewExpectedStateActionRewardStateActionNeuralNetworkModel.currentNumberOfEpisodes = 0
 

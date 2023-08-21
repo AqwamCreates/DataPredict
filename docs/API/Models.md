@@ -16,9 +16,9 @@
 
 [QLearningNeuralNetwork](Models/QLearningNeuralNetwork.md) - a.k.a. DQN
 
-[StateActionRewardStateActionNeuralNetwork](Models/StateActionRewardStateActionNeuralNetwork.md) - a.k.a. SARSA-NN
+[StateActionRewardStateActionNeuralNetwork](Models/StateActionRewardStateActionNeuralNetwork.md) - a.k.a. SARSA NN
 
-[ExpectedStateActionRewardStateActionNeuralNetwork](Models/ExpectedStateActionRewardStateActionNeuralNetwork.md) - a.k.a. SARSA-NN
+[ExpectedStateActionRewardStateActionNeuralNetwork](Models/ExpectedStateActionRewardStateActionNeuralNetwork.md) - a.k.a. Expected SARSA NN
 
 [RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md) - a.k.a. RNN
 

@@ -250,21 +250,42 @@ function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	
 end
 
-function NaiveBayesModel:train(featureMatrix, labelVector)
-	
-	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
-	
+local function areNumbersOnlyInList(list)
+
+	for i, value in ipairs(list) do
+
+		if (typeof(value) ~= "number") then return false end
+
+	end
+
+	return true
+
+end
+
+function NaiveBayesModel:processLabelVector(labelVector)
+
 	if (#self.ClassesList == 0) then
 
 		self.ClassesList = createClassesList(labelVector)
 
-		table.sort(self.ClassesList, function(a,b) return a < b end)
+		local areNumbersOnly = areNumbersOnlyInList(self.ClassesList)
+
+		if (areNumbersOnly) then table.sort(self.ClassesList, function(a,b) return a < b end) end
 
 	else
 
-		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the naive bayes\'s classes list is present in the label vector") end
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector") end
 
 	end
+
+end
+
+	
+function NaiveBayesModel:train(featureMatrix, labelVector)
+	
+	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
+	
+	self:processLabelVector(labelVector)
 	
 	local gaussianDensityVector
 

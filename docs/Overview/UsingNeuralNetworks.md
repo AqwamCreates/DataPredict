@@ -2,7 +2,7 @@
 
 Neural networks are classification and regression model where it can predict a number of classes (classification) or range of values (regression).
 
-Neural networks typically contains a number of layers. Inside those each layer, the ycontain a number of neurons that determines the output of the model.
+Neural networks typically contains a number of layers. Inside each of those layers, they contain a number of neurons that determines the output of the model.
 
 # Getting Started
 

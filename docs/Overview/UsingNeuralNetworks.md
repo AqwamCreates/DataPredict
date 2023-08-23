@@ -13,3 +13,29 @@ local NeuralNetworkModel = DataPredict.Models.NeuralNetwork.new() -- Creating a 
 
 NeuralNetworkModel:setClassesList({0, 1}) -- Setting exising classes, but these can be automatically set by our model if the model uses batch gradient descent.
 ```
+
+# Creating Layers
+
+We have two ways of creating our neural network layers:
+
+1. Create all layers in one go.
+
+2. Create each layer with their own individual settings.
+
+Below, I will show the codes that demonstrates these two options
+
+## Create All Layers
+
+We will use createLayers() function to create the layers. The first parameters takes in a table of integers, where the index determines the position and the values determines the number of neurons.
+
+```
+local numberOfNeuronsArray = {2, 3, 2}
+
+NeuralNetworkModel:createLayers(numberOfNeuronsArray)
+```
+
+Using this function, we have set 2 neurons at first layer, 3 neurons at second layer and 2 neurons at final layer. 
+
+Do make note that the bias neurons are not added yet to each of the layer (except the final layer) and will be added automatically once this function is call.
+
+In other words, after running the function, the model will have 3 neurons at first layer, 4 neurons at second layer and 2 neurons at final layer.

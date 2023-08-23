@@ -130,7 +130,7 @@ local derivativeList = {
 		
 		local tanhDerivativeFunction = function (a) return (1 - math.pow(a, 2)) end
 		
-		local aMatrix = tanhDerivativeFunction(zMatrix)
+		local aMatrix = tanhFunction(zMatrix)
 
 		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(tanhDerivativeFunction, aMatrix)
 

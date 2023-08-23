@@ -103,6 +103,8 @@ local activationFunctionList = {
 		return aMatrix
 
 	end,
+	
+	["None"] = function (zMatrix) return zMatrix end,
 
 }
 
@@ -240,6 +242,8 @@ local derivativeList = {
 		return derivativeMatrix
 		
 	end,
+	
+	["None"] = function (zMatrix) return AqwamMatrixLibrary:createMatrix(#zMatrix, #zMatrix[1], 1) end,
 
 }
 

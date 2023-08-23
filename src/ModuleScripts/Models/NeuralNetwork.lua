@@ -12,7 +12,7 @@ local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
 
-local defaultActivationFunction = "ReLU"
+local defaultActivationFunction = "LeakyReLU"
 
 local defaultTargetCost = 0
 

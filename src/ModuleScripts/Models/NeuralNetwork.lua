@@ -1,100 +1,269 @@
 local BaseModel = require(script.Parent.BaseModel)
 
-NaiveBayesModel = {}
+NeuralNetworkModel = {}
 
-NaiveBayesModel.__index = NaiveBayesModel
+NeuralNetworkModel.__index = NeuralNetworkModel
 
-setmetatable(NaiveBayesModel, BaseModel)
+setmetatable(NeuralNetworkModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
-local function extractFeatureMatrixFromPosition(featureMatrix, positionList)
-	
-	local extractedFeatureMatrix = {}
-	
-	for i = 1, #featureMatrix, 1 do
-		
-		if table.find(positionList, i) then
-			
-			table.insert(extractedFeatureMatrix, featureMatrix[i])
-			
-		end	
-		
-	end
-	
-	return extractedFeatureMatrix
-	
-end
+local defaultMaxNumberOfIterations = 500
 
-local function separateFeatureMatrixByClass(featureMatrix, labelVector, classesList)
-	
-	local classesPositionTable = {}
-	
-	for classIndex, class in ipairs(classesList) do
+local defaultLearningRate = 0.1
+
+local defaultActivationFunction = "ReLU"
+
+local defaultTargetCost = 0
+
+local activationFunctionList = {
+
+	["sigmoid"] = function (zMatrix) 
 		
-		classesPositionTable[classIndex] = {}
+		local sigmoidFunction = function(z) return 1/(1+math.exp(-1 * z)) end
 		
-		for i = 1, #labelVector, 1 do
+		local aMatrix = AqwamMatrixLibrary:applyFunction(sigmoidFunction, zMatrix)
+		
+		return aMatrix
+		
+	end,
+
+	["tanh"] = function (zMatrix) 
+		
+		local aMatrix = AqwamMatrixLibrary:applyFunction(math.tanh, zMatrix)
+		
+		return aMatrix
+		
+	end,
+
+	["ReLU"] = function (zMatrix) 
+		
+		local ReLUFunction = function (z) return math.max(0, z) end
+		
+		local aMatrix = AqwamMatrixLibrary:applyFunction(ReLUFunction, zMatrix)
+		
+		return aMatrix
+		
+	end,
+
+	["LeakyReLU"] = function (zMatrix) 
+		
+		local LeakyReLU = function (z) return math.max((0.01 * z), z) end
+
+		local aMatrix = AqwamMatrixLibrary:applyFunction(LeakyReLU, zMatrix)
+		
+		return aMatrix
+		
+	end,
+
+	["ELU"] = function (zMatrix) 
+		
+		local ELUFunction = function (z) return if (z > 0) then z else (0.01 * (math.exp(z) - 1)) end
+		
+		local aMatrix = AqwamMatrixLibrary:applyFunction(ELUFunction, zMatrix)
+		
+		return aMatrix
+		
+	end,
+	
+	["Softmax"] = function (zMatrix) -- apparently roblox doesn't really handle very small values such as math.exp(-1000), so I added a more stable computation exp(a) / exp(b) -> exp (a - b)
+		
+		local expMatrix = AqwamMatrixLibrary:applyFunction(math.exp, zMatrix)
+		
+		local expSum = AqwamMatrixLibrary:horizontalSum(expMatrix)
+		
+		local aMatrix = AqwamMatrixLibrary:divide(expMatrix, expSum)
+		
+		return aMatrix
+		
+	end,
+	
+	["None"] = function (zMatrix) return zMatrix end,
+	
+	["StableSoftmax"] = function (zMatrix)
+		
+		local normalizedZMatrix = AqwamMatrixLibrary:createMatrix(#zMatrix, #zMatrix[1])
+		
+		for i = 1, #zMatrix, 1 do
 			
-			if (labelVector[i][1] == class) then
-				
-				table.insert(classesPositionTable[classIndex], i)
-				
-			end
+			local zVector = {zMatrix[i]}
+			
+			local highestZValue = AqwamMatrixLibrary:findMaximumValueInMatrix(zVector)
+			
+			local subtractedZVector = AqwamMatrixLibrary:subtract(zVector, highestZValue)
+			
+			normalizedZMatrix[i] = subtractedZVector[1]
 			
 		end
 		
-	end
-	
-	local extractedFeatureMatricesTable = {}
-	
-	local extractedFeatureMatrix
-	
-	for classIndex, class in ipairs(classesList) do
-		
-		extractedFeatureMatrix = extractFeatureMatrixFromPosition(featureMatrix, classesPositionTable[classIndex])
-		
-		table.insert(extractedFeatureMatricesTable, extractedFeatureMatrix)
-		
-	end
-	
-	return extractedFeatureMatricesTable
-	
-end
+		local expMatrix = AqwamMatrixLibrary:applyFunction(math.exp, normalizedZMatrix)
 
-local function calculateGaussianDensity(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
-	
-	local logGaussianDensity
-	
-	local exponentStep1 = AqwamMatrixLibrary:subtract(featureVector, meanVector)
-	
-	local exponentStep2 = AqwamMatrixLibrary:power(exponentStep1, 2)
-	
-	local exponentPart3 = AqwamMatrixLibrary:power(standardDeviationVector, 2)
-	
-	local exponentStep4 = AqwamMatrixLibrary:divide(exponentStep2, exponentPart3)
-	
-	local exponentStep5 = AqwamMatrixLibrary:multiply(-0.5, exponentStep4)
-	
-	local exponentWithTerms = AqwamMatrixLibrary:applyFunction(math.exp, exponentStep5)
-	
-	local divisor = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
-	
-	local gaussianDensity = AqwamMatrixLibrary:divide(exponentWithTerms, divisor)
-	
-	if (useLogProbabilities) then
+		local expSum = AqwamMatrixLibrary:horizontalSum(expMatrix)
+
+		local aMatrix = AqwamMatrixLibrary:divide(expMatrix, expSum)
+
+		return aMatrix
+
+	end,
+
+}
+
+local derivativeList = {
+
+	["sigmoid"] = function (zMatrix) 
+
+		local sigmoidFunction = activationFunctionList["sigmoid"]
 		
-		logGaussianDensity = AqwamMatrixLibrary:applyFunction(math.log, gaussianDensity)
+		local sigmoidDerivativeFunction = function (a) return (a * (1-a)) end
+
+		local aMatrix = AqwamMatrixLibrary:applyFunction(sigmoidFunction, zMatrix)
 		
-		return logGaussianDensity	
+		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(sigmoidDerivativeFunction, aMatrix)
 		
-	else
+		return derivativeMatrix
+
+	end,
+
+	["tanh"] = function (zMatrix)
+
+		local tanhFunction = activationFunctionList["tanh"]
 		
-		return gaussianDensity
+		local tanhDerivativeFunction = function (a) return (1 - math.pow(a, 2)) end
 		
-	end
+		local aMatrix = AqwamMatrixLibrary:applyFunction(tanhDerivativeFunction, zMatrix)
+
+		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(tanhDerivativeFunction, aMatrix)
+
+		return derivativeMatrix
+
+	end,
+
+	["ReLU"] = function (zMatrix)
+		
+		local ReLUDerivativeFunction = function (z) if (z > 0) then return 1 else return 0 end end
+			
+		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(ReLUDerivativeFunction, zMatrix)
+		
+		return derivativeMatrix
+
+	end,
+
+	["LeakyReLU"] = function (zMatrix)
+
+		local LeakyReLUDerivativeFunction = function (z) if (z > 0) then return 1 else return 0.01 end end
+
+		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(LeakyReLUDerivativeFunction, zMatrix)
+		
+		return derivativeMatrix
+
+	end,
+
+	["ELU"] = function (zMatrix)
+
+		local ELUDerivativeFunction = function (z) if (z > 0) then return 1 else return 0.01 * math.exp(z) end end
+
+		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(ELUDerivativeFunction, zMatrix)
+		
+		return derivativeMatrix
+		
+		
+	end,
 	
-end
+	["Softmax"] = function (zMatrix)
+
+		local SoftmaxFunction = activationFunctionList["Softmax"]
+		
+		local aMatrix = SoftmaxFunction(zMatrix)
+		
+		local numberOfRows, numberOfColumns = #aMatrix, #aMatrix[1]
+		
+		local derivativeMatrix = AqwamMatrixLibrary:createMatrix(numberOfRows, numberOfColumns)
+		
+		for i = 1, numberOfRows, 1 do
+			
+			for j = 1, numberOfColumns do
+
+				for k = 1, numberOfColumns do
+
+					if (j == k) then
+
+						derivativeMatrix[i][j] += aMatrix[i][j] * (1 - aMatrix[i][k])
+
+
+					else
+
+						derivativeMatrix[i][j] += -aMatrix[i][j] * aMatrix[i][k]
+
+					end
+
+				end
+
+			end
+			
+		end
+
+		return derivativeMatrix
+
+	end,
+	
+	["None"] = function (zMatrix) return AqwamMatrixLibrary:createMatrix(#zMatrix, #zMatrix[1], 1) end,
+	
+	["StableSoftmax"] = function (zMatrix)
+
+		local StableSoftmaxFunction = activationFunctionList["StableSoftmax"]
+
+		local aMatrix = StableSoftmaxFunction(zMatrix)
+
+		local numberOfRows, numberOfColumns = #aMatrix, #aMatrix[1]
+
+		local derivativeMatrix = AqwamMatrixLibrary:createMatrix(numberOfRows, numberOfColumns)
+
+		for i = 1, numberOfRows, 1 do
+
+			for j = 1, numberOfColumns do
+
+				for k = 1, numberOfColumns do
+
+					if (j == k) then
+
+						derivativeMatrix[i][j] += aMatrix[i][j] * (1 - aMatrix[i][k])
+
+
+					else
+
+						derivativeMatrix[i][j] += -aMatrix[i][j] * aMatrix[i][k]
+
+					end
+
+				end
+
+			end
+
+		end
+
+		return derivativeMatrix
+		
+	end,
+
+}
+
+local cutOffListForScalarValues = {
+	
+	["sigmoid"] = function (a) return (a >= 0.5) end,
+	
+	["tanh"] = function (a) return (a >= 0) end,
+	
+	["ReLU"] = function (a) return (a >= 0) end,
+	
+	["LeakyReLU"] = function (a) return (a >= 0) end,
+	
+	["ELU"] = function (a) return (a >= 0) end,
+	
+	["Softmax"] = function (a) return (a >= 0.5) end,
+	
+	["StableSoftmax"] = function (a) return (a >= 0.5) end,
+	
+}
 
 local function createClassesList(labelVector)
 
@@ -118,6 +287,332 @@ local function createClassesList(labelVector)
 
 end
 
+function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
+	
+	local numberOfNeuronsAtFinalLayer = #self.ModelParameters[#self.ModelParameters][1]
+
+	if (numberOfNeuronsAtFinalLayer ~= #self.ClassesList) then error("The number of classes are not equal to number of neurons. Please adjust your last layer using setLayers() function.") end
+
+	if (typeof(labelVector) == "number") then
+
+		labelVector = {{labelVector}}
+
+	end
+	
+	local incorrectLabelValue
+	
+	local numberOfLayers = #self.activationFunctionTable
+	
+	local activationFunctionAtFinalLayer = self.activationFunctionTable[numberOfLayers]
+	
+	if (activationFunctionAtFinalLayer == "None") then activationFunctionAtFinalLayer = self.activationFunctionTable[numberOfLayers - 1] end
+	
+	if (activationFunctionAtFinalLayer == "tanh") or (activationFunctionAtFinalLayer == "ELU") then
+		
+		incorrectLabelValue = -1
+		
+	else
+		
+		incorrectLabelValue = 0
+		
+	end
+
+	local logisticMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, numberOfNeuronsAtFinalLayer, incorrectLabelValue)
+
+	local label
+
+	local labelPosition
+
+	for row = 1, #labelVector, 1 do
+
+		label = labelVector[row][1]
+
+		labelPosition = table.find(self.ClassesList, label)
+
+		logisticMatrix[row][labelPosition] = 1
+
+	end
+
+	return logisticMatrix
+
+end
+
+function NeuralNetworkModel:forwardPropagate(featureMatrix)
+
+	local layerZ
+
+	local forwardPropagateTable = {}
+
+	local zTable = {}
+
+	local inputMatrix = featureMatrix
+	
+	local numberOfData = #featureMatrix
+	
+	local activationFunctionName
+	
+	local activationFunction
+	
+	local hasBiasNeuron
+
+	local numberOfLayers = #self.ModelParameters
+	
+	table.insert(zTable, inputMatrix)
+
+	table.insert(forwardPropagateTable, inputMatrix) -- don't remove this! otherwise the code won't work!
+
+	for layerNumber, weightMatrix in ipairs(self.ModelParameters) do
+		
+		activationFunctionName = self.activationFunctionTable[layerNumber]
+		
+		activationFunction = activationFunctionList[activationFunctionName]
+
+		layerZ = AqwamMatrixLibrary:dotProduct(inputMatrix, weightMatrix)
+		
+		if (typeof(layerZ) == "number") then layerZ = {{layerZ}} end
+
+		inputMatrix = activationFunction(layerZ)
+		
+		hasBiasNeuron = self.hasBiasNeuronTable[layerNumber]
+
+		if (layerNumber < numberOfLayers) and (hasBiasNeuron) then
+
+			for data = 1, numberOfData, 1 do inputMatrix[data][1] = 1 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron
+
+		end
+		
+		table.insert(zTable, layerZ)
+		
+		table.insert(forwardPropagateTable, inputMatrix)
+		
+	end
+
+	return forwardPropagateTable, zTable
+
+end
+
+function NeuralNetworkModel:backPropagate(lossMatrix, zTable)
+
+	local backpropagateTable = {}
+
+	local numberOfLayers = #self.activationFunctionTable
+
+	local derivativeFunction
+
+	local layerCostMatrix
+
+	local layerMatrix
+
+	local biasMatrix
+
+	local layerMatrixTransposed
+
+	local errorPart1
+
+	local errorPart2
+
+	local errorPart3
+
+	local zLayerMatrix
+	
+	local activationFunctionName
+
+	layerCostMatrix = lossMatrix
+
+	table.insert(backpropagateTable, layerCostMatrix)
+
+	for output = #self.ModelParameters, 2, -1 do
+		
+		activationFunctionName = self.activationFunctionTable[output]
+
+		derivativeFunction = derivativeList[activationFunctionName]
+
+		layerMatrix = self.ModelParameters[output]
+
+		layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
+
+		zLayerMatrix = zTable[output]
+
+		errorPart1 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
+
+		errorPart2 = derivativeFunction(zLayerMatrix)
+
+		layerCostMatrix = AqwamMatrixLibrary:multiply(errorPart1, errorPart2)
+
+		table.insert(backpropagateTable, 1, layerCostMatrix)
+
+	end
+
+	return backpropagateTable
+
+end
+
+function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateTable, numberOfData)
+
+	local partialDerivativeMatrix
+
+	local activationLayerMatrix
+
+	local costFunctionDerivatives
+
+	local deltaTable = {}
+
+	for layer = #backpropagateTable, 1, -1 do
+
+		activationLayerMatrix = forwardPropagateTable[layer]
+
+		partialDerivativeMatrix = AqwamMatrixLibrary:transpose(backpropagateTable[layer])
+
+		costFunctionDerivatives = AqwamMatrixLibrary:dotProduct(partialDerivativeMatrix, activationLayerMatrix)
+
+		costFunctionDerivatives = AqwamMatrixLibrary:transpose(costFunctionDerivatives)
+
+		table.insert(deltaTable, 1, costFunctionDerivatives)
+
+	end
+
+	return deltaTable
+
+end
+
+function NeuralNetworkModel:gradientDescent(learningRate, deltaTable, numberOfData)
+	
+	local regularizationDerivatives
+
+	local costFunctionDerivatives
+
+	local newWeightMatrix
+
+	local NewModelParameters = {}
+
+	local calculatedLearningRate = learningRate / numberOfData
+
+	for layerNumber, weightMatrix in ipairs(self.ModelParameters) do
+		
+		local costFunctionDerivatives = deltaTable[layerNumber]
+		
+		local Regularization = self.RegularizationTable[layerNumber]
+		
+		local Optimizer = self.OptimizerTable[layerNumber]
+
+		if Regularization then
+
+			regularizationDerivatives = Regularization:calculateRegularizationDerivatives(self.ModelParameters[layerNumber], numberOfData)
+
+			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, costFunctionDerivatives)
+
+		end
+		
+		if Optimizer then
+
+			costFunctionDerivatives = Optimizer:calculate(calculatedLearningRate, costFunctionDerivatives)
+
+		else
+
+			costFunctionDerivatives = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivatives)
+
+		end
+
+		newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivatives)
+
+		table.insert(NewModelParameters, newWeightMatrix)
+
+	end
+
+	return NewModelParameters
+
+end
+
+function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix, numberOfData)
+
+	local subtractedMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
+
+	local squaredSubtractedMatrix = AqwamMatrixLibrary:power(subtractedMatrix, 2)
+
+	local sumSquaredSubtractedMatrix = AqwamMatrixLibrary:sum(squaredSubtractedMatrix)
+
+	local cost = sumSquaredSubtractedMatrix / numberOfData
+
+	return cost
+
+end
+
+function NeuralNetworkModel:fetchValueFromScalar(outputVector)
+	
+	local value = outputVector[1][1]
+	
+	local numberOfLayers = #self.numberOfNeuronsTable
+	
+	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
+	
+	if (activationFunctionName == "None") then activationFunctionName = self.activationFunctionTable[numberOfLayers - 1] end
+	
+	local isValueOverCutOff = cutOffListForScalarValues[activationFunctionName](value)
+	
+	local classIndex = (isValueOverCutOff and 2) or 1
+	
+	local predictedLabel = self.ClassesList[classIndex]
+	
+	return predictedLabel, value
+	
+end
+
+function NeuralNetworkModel:fetchHighestValueInVector(outputVector)
+	
+	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(outputVector)
+
+	if (classIndex == nil) then return nil, highestValue end
+
+	local predictedLabel = self.ClassesList[classIndex[2]]
+	
+	return predictedLabel, highestValue
+	
+end
+
+function NeuralNetworkModel:getLabelFromOutputMatrix(outputMatrix)
+	
+	local numberOfLayers = #self.ModelParameters
+	
+	local matrixAtFinalLayer = self.ModelParameters[numberOfLayers]
+	
+	local numberOfNeuronsAtFinalLayer = #matrixAtFinalLayer[1]
+	
+	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
+	
+	local highestValueVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
+	
+	local highestValue
+	
+	local outputVector
+	
+	local classIndex
+	
+	local predictedLabel
+	
+	for i = 1, #outputMatrix, 1 do
+		
+		outputVector = {outputMatrix[i]}
+		
+		if (numberOfNeuronsAtFinalLayer == 1) then
+			
+			predictedLabel, highestValue = self:fetchValueFromScalar(outputVector)
+			
+		else
+			
+			predictedLabel, highestValue = self:fetchHighestValueInVector(outputVector)
+			
+		end
+		
+		predictedLabelVector[i][1] = predictedLabel
+		
+		highestValueVector[i][1] = highestValue
+		
+	end
+	
+	return predictedLabelVector, highestValueVector
+
+end
+
 local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
 
 	local labelVectorColumn = AqwamMatrixLibrary:transpose(labelVector)
@@ -134,140 +629,190 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
 
 end
 
-local function logLoss(labelVector, predictedProbabilitiesVector)
-	
-	local loglossFunction = function (y, p) return (y * math.log(p)) + ((1 - y) * math.log(1 - p)) end
-	
-	local logLossVector = AqwamMatrixLibrary:applyFunction(loglossFunction, labelVector, predictedProbabilitiesVector)
-	
-	local logLossSum = AqwamMatrixLibrary:sum(logLossVector)
+function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 
-	local logLoss = -logLossSum / #labelVector
-	
-	return logLoss
-	
-end
+	local NewNeuralNetworkModel = BaseModel.new()
 
-function NaiveBayesModel.new(useLogProbabilities)
-	
-	local NewNaiveBayesModel = BaseModel.new()
-	
-	setmetatable(NewNaiveBayesModel, NaiveBayesModel)
-	
-	NewNaiveBayesModel.ClassesList = {}
-	
-	NewNaiveBayesModel.UseLogProbabilities = BaseModel:getBooleanOrDefaultOption(useLogProbabilities, false)
-	
-	return NewNaiveBayesModel
-	
-end
+	setmetatable(NewNeuralNetworkModel, NeuralNetworkModel)
 
-function NaiveBayesModel:setParameters(useLogProbabilities)
+	NewNeuralNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
-	self.UseLogProbabilities = useLogProbabilities or self.UseLogProbabilities
+	NewNeuralNetworkModel.learningRate = learningRate or defaultLearningRate
+
+	NewNeuralNetworkModel.targetCost = targetCost or defaultTargetCost
+
+	NewNeuralNetworkModel.numberOfNeuronsTable = {}
+
+	NewNeuralNetworkModel.RegularizationTable = {}
+
+	NewNeuralNetworkModel.OptimizerTable = {}
+
+	NewNeuralNetworkModel.ClassesList = {}
+
+	NewNeuralNetworkModel.hasBiasNeuronTable = {}
+
+	NewNeuralNetworkModel.activationFunctionTable = {}
+
+	NewNeuralNetworkModel.previousDeltaMatricesTable = {}
+
+	return NewNeuralNetworkModel
 
 end
 
-function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
-	
-	local cost
-	
-	local meanVector
-	
-	local standardDeviationVector
-	
-	local probabilitiesVector
-	
-	local priorProbabilitiesVector
-	
-	local initialProbability
-	
-	local multipliedProbalitiesVector
-	
-	local probability
-	
-	local highestProbability
-	
-	local predictedClass
-	
-	local classIndex
-	
-	local label
-	
-	local predictedProbabilitiesMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, #self.ClassesList)
-	
-	local predictedProbabilitiesVector = AqwamMatrixLibrary:createMatrix(#labelVector, #labelVector[1])
-	
-	if (self.UseLogProbabilities) then
+function NeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost)
 
-		initialProbability = 0
+	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
-	else
+	self.learningRate = learningRate or self.learningRate
 
-		initialProbability = 1
+	self.targetCost = targetCost or self.targetCost
+
+end
+
+function NeuralNetworkModel:generateLayers()
+
+	local layersArray = self.numberOfNeuronsTable
+
+	local numberOfLayers = #layersArray
+	
+	if (#self.numberOfNeuronsTable == 1) then error("There is only one layer!") end
+
+	local ModelParameters = {}
+
+	local weightMatrix
+
+	local numberOfCurrentLayerNeurons
+
+	local numberOfNextLayerNeurons
+
+	for layer = 1, (numberOfLayers - 1), 1 do
+
+		numberOfCurrentLayerNeurons = layersArray[layer]
+
+		if self.hasBiasNeuronTable[layer] then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
+
+		numberOfNextLayerNeurons = layersArray[layer + 1]
+
+		if self.hasBiasNeuronTable[layer + 1] then numberOfNextLayerNeurons += 1 end
+
+		weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
+
+		table.insert(ModelParameters, weightMatrix)
 
 	end
+
+	self.ModelParameters = ModelParameters
+
+end
+
+function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunction, Optimizer, Regularization)
 	
-	for data = 1, #featureMatrix, 1 do
+	activationFunction = activationFunction or defaultActivationFunction
+	
+	if (typeof(numberOfNeuronsArray) ~= "table") then error("Invalid input for number of neurons!") end
+
+	if (typeof(activationFunction) ~= "string") then error("Invalid input for activation function!") end
+	
+	self.ModelParameters = nil
+	
+	self.numberOfNeuronsTable = numberOfNeuronsArray
+	
+	self.hasBiasNeuronTable = {}
+	
+	self.activationFunctionTable = {}
+	
+	self.OptimizerTable = {}
+	
+	self.RegularizationTable = {}
+	
+	local numberOfLayers = #self.numberOfNeuronsTable
+	
+	for layer = 1, numberOfLayers, 1 do
 		
-		label = labelVector[data][1]
+		self.activationFunctionTable[layer] = activationFunction
 		
-		classIndex = table.find(self.ClassesList, label)
-		
-		meanVector = {self.ModelParameters[1][classIndex]}
+		if (layer == numberOfLayers) then
+			
+			self.hasBiasNeuronTable[layer] = false
 
-		standardDeviationVector = {self.ModelParameters[2][classIndex]}
+			self.OptimizerTable[layer] = Optimizer
 
-		probabilitiesVector = {self.ModelParameters[3][classIndex]}
+			self.RegularizationTable[layer] = Regularization
+			
+		else
+			
+			self.hasBiasNeuronTable[layer] = true
 
-		priorProbabilitiesVector = calculateGaussianDensity(self.UseLogProbabilities, featureMatrix, meanVector, standardDeviationVector)
+			self.OptimizerTable[layer] = nil
 
-		multipliedProbalitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, priorProbabilitiesVector)
-		
-		probability = initialProbability
-		
-		for column = 1, #multipliedProbalitiesVector[1], 1 do
-
-			if (self.UseLogProbabilities) then
-
-				probability += multipliedProbalitiesVector[1][column]
-
-			else
-
-				probability *= multipliedProbalitiesVector[1][column]
-
-			end
-
+			self.RegularizationTable[layer] = nil
+			
 		end
 		
-		predictedProbabilitiesVector[data][1] = probability
-
 	end
+	
+end
 
-	cost = logLoss(labelVector, predictedProbabilitiesVector)
+function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, Optimizer, Regularization)
+
+	if (typeof(numberOfNeurons) ~= "number") then error("Invalid input for number of neurons!") end
+
+	if (typeof(hasBiasNeuron) ~= "boolean") then error("Invalid input for adding bias!") end
 	
-	return cost
+	local activationFunctionType = typeof(activationFunction)
 	
+	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
+	
+	activationFunction = activationFunction or defaultActivationFunction
+
+	table.insert(self.numberOfNeuronsTable, numberOfNeurons)
+
+	table.insert(self.hasBiasNeuronTable, hasBiasNeuron)
+
+	table.insert(self.activationFunctionTable, activationFunction)
+
+	table.insert(self.OptimizerTable, Optimizer)
+
+	table.insert(self.RegularizationTable, Regularization)
+
+end
+
+function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunction, Optimizer, Regularization)
+
+	if (typeof(layerNumber) ~= "number") then error("Invalid input layer number!") end
+
+	if (typeof(hasBiasNeuron) ~= "boolean") then error("Invalid input for adding bias!") end
+
+	if  (typeof(activationFunction) ~= "string") then error("Invalid input for activation function!") end 
+
+	self.hasBiasNeuronTable[layerNumber] = hasBiasNeuron or self.hasBiasNeuronTable[layerNumber]
+	
+	self.activationFunctionTable[layerNumber] = activationFunction or self.activationFunctionTable[layerNumber] 
+
+	self.OptimizerTable[layerNumber] = Optimizer or self.OptimizerTable[layerNumber]
+
+	self.RegularizationTable[layerNumber] = Regularization or self.RegularizationTable[layerNumber]
+
 end
 
 local function areNumbersOnlyInList(list)
-
+	
 	for i, value in ipairs(list) do
-
+	
 		if (typeof(value) ~= "number") then return false end
-
+		
 	end
-
+	
 	return true
-
+	
 end
 
-function NaiveBayesModel:processLabelVector(labelVector)
-
+function NeuralNetworkModel:processLabelVector(labelVector)
+	
 	if (#self.ClassesList == 0) then
 
 		self.ClassesList = createClassesList(labelVector)
-
+		
 		local areNumbersOnly = areNumbersOnlyInList(self.ClassesList)
 
 		if (areNumbersOnly) then table.sort(self.ClassesList, function(a,b) return a < b end) end
@@ -278,199 +823,243 @@ function NaiveBayesModel:processLabelVector(labelVector)
 
 	end
 
+	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(labelVector)
+	
+	return logisticMatrix
+	
 end
 
-	
-function NaiveBayesModel:train(featureMatrix, labelVector)
-	
-	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
-	
-	self:processLabelVector(labelVector)
-	
-	local gaussianDensityVector
+function NeuralNetworkModel:train(featureMatrix, labelVector)
 
-	local extractedFeatureMatrix
-
-	local featureVector
-
-	local meanVector
-
-	local standardDeviationVector
-
-	local probabilitiesVector
+	if (self.ModelParameters == nil) then self:generateLayers() end
 	
-	local meanMatrix
-	
-	local standardDeviationMatrix
-	
-	local probabilitiesMatrix
-	
+	local numberOfFeatures = #featureMatrix[1]
+
+	if (#self.ModelParameters[1] ~= numberOfFeatures) then error("Input layer has " .. #self.ModelParameters[1] .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features!") end
+
+	if (#featureMatrix ~= #labelVector) then error("Number of rows of feature matrix and the label vector is not the same!") end
+
 	local cost
-	
-	local extractedFeatureMatricesTable = separateFeatureMatrixByClass(featureMatrix, labelVector, self.ClassesList)
-	
-	meanMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1])
 
-	standardDeviationMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1])
+	local costArray = {}
 
-	probabilitiesMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1], 1)
+	local numberOfIterations = 0
+
+	local outputMatrix
+
+	local regularizationCost 
+
+	local numberOfData = #featureMatrix
+
+	local numberOfLayers = #self.numberOfNeuronsTable
 	
-	if (#featureMatrix[1] ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
+	local numberOfNeuronsAtFinalLayer = #self.ModelParameters[numberOfLayers - 1][1]
+
+	local transposedLayerMatrix
+
+	local deltaTable
+
+	local RegularizationDerivatives
+
+	local forwardPropagateTable
+
+	local zTable
+
+	local backwardPropagateTable
+
+	local classesList
+
+	local lossMatrix
 	
-	for classIndex, classValue in ipairs(self.ClassesList) do
-		
-		extractedFeatureMatrix = extractedFeatureMatricesTable[classIndex]
-		
-		meanVector = AqwamMatrixLibrary:verticalMean(extractedFeatureMatrix)
-		
-		standardDeviationVector = AqwamMatrixLibrary:verticalStandardDeviation(extractedFeatureMatrix)
-		
-		meanMatrix[classIndex] = meanVector[1]
-		
-		standardDeviationMatrix[classIndex] = standardDeviationVector[1]
-		
-		probabilitiesVector = AqwamMatrixLibrary:createMatrix(1, #featureMatrix[1], 1)
-		
-		for data = 1, #extractedFeatureMatrix, 1 do
-			
-			featureVector = {extractedFeatureMatrix[data]}
-			
-			gaussianDensityVector = calculateGaussianDensity(self.UseLogProbabilities, featureVector, meanVector, standardDeviationVector)
-			
-			probabilitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, gaussianDensityVector)
-			
-		end
-		
-		probabilitiesMatrix[classIndex] = probabilitiesVector[1]
-		
-	end
+	local logisticMatrix
 	
-	if (self.ModelParameters) then
-
-		meanMatrix = AqwamMatrixLibrary:divide(AqwamMatrixLibrary:add(self.ModelParameters[1], meanMatrix), 2) 
+	local activatedOutputsMatrix
+	
+	local finalActivationFunction
+	
+	local finalActivationFunctionDerivatives
+	
+	local finalActivationFunctionName
+	
+	local outputDerivativeMatrix
+	
+	local ModelParameters
+	
+	if (#labelVector[1] == 1) and (numberOfNeuronsAtFinalLayer ~= 1) then
 		
-		standardDeviationMatrix = AqwamMatrixLibrary:divide(AqwamMatrixLibrary:add(self.ModelParameters[2], standardDeviationMatrix), 2) 
+		logisticMatrix = self:processLabelVector(labelVector)
 		
-		probabilitiesMatrix = AqwamMatrixLibrary:divide(AqwamMatrixLibrary:add(self.ModelParameters[3], probabilitiesMatrix), 2) 
-
-	end
-	
-	self.ModelParameters = {meanMatrix, standardDeviationMatrix, probabilitiesMatrix}
-	
-	cost = self:calculateCost(featureMatrix, labelVector)
-	
-	return {cost}
-	
-end
-
-function NaiveBayesModel:calculateFinalProbability(featureVector, probabilitiesVector, meanVector, standardDeviationVector)
-	
-	local finalProbability
-
-	local priorProbabilitiesVector = calculateGaussianDensity(self.UseLogProbabilities, featureVector, meanVector, standardDeviationVector)
-
-	local multipliedProbalitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, priorProbabilitiesVector)
-
-	if (self.UseLogProbabilities) then
-
-		finalProbability = AqwamMatrixLibrary:sum(multipliedProbalitiesVector)
-
 	else
-
-		finalProbability = 1
-
-		for column = 1, #multipliedProbalitiesVector[1], 1 do
-
-			finalProbability *= multipliedProbalitiesVector[1][column]
-
-		end
-
+		
+		if (#labelVector[1] ~= numberOfNeuronsAtFinalLayer) then error("The number of columns for the label matrix is not equal to number of neurons at final layer!") end
+		
+		logisticMatrix = labelVector
+		
 	end
 	
-	return finalProbability
+	finalActivationFunctionName = self.activationFunctionTable[#self.activationFunctionTable]
 	
-end
-
-function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
-
-	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
-
-	local highestProbabilitiesVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
-
-	local z = AqwamMatrixLibrary:applyFunction(math.exp, outputMatrix)
-
-	local zSum = AqwamMatrixLibrary:horizontalSum(z)
-
-	local softmaxMatrix = AqwamMatrixLibrary:divide(z, zSum)
-
-	local highestProbability
-
-	local softMaxVector
-
-	local classIndex
-
-	local predictedLabel
-
-	for i = 1, #outputMatrix, 1 do
-
-		softMaxVector = {softmaxMatrix[i]}
-
-		highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(softMaxVector)
-
-		if (classIndex == nil) then continue end
-
-		predictedLabel = self.ClassesList[classIndex[2]]
-
-		predictedLabelVector[i][1] = predictedLabel
-
-		highestProbabilitiesVector[i][1] = highestProbability
-
-	end
-
-	return predictedLabelVector, highestProbabilitiesVector
-
-end
-
-function NaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
+	finalActivationFunction = activationFunctionList[finalActivationFunctionName]
 	
-	local finalProbabilityVector
-	
-	local finalProbabilityMatrix = AqwamMatrixLibrary:createMatrix(#featureMatrix, #self.ClassesList)
-	
-	for classIndex, classValue in ipairs(self.ClassesList) do
+	finalActivationFunctionDerivatives = derivativeList[finalActivationFunctionName]
+
+	repeat
 		
-		local meanVector = {self.ModelParameters[1][classIndex]}
+		self:iterationWait()
 
-		local standardDeviationVector = {self.ModelParameters[2][classIndex]}
+		forwardPropagateTable, zTable = self:forwardPropagate(featureMatrix)
 
-		local probabilitiesVector = {self.ModelParameters[3][classIndex]}
+		outputMatrix = forwardPropagateTable[#forwardPropagateTable]
 		
-		for i = 1, #featureMatrix, 1 do
-			
-			local featureVector = {featureMatrix[i]}
-			
-			finalProbabilityMatrix[i][classIndex] = self:calculateFinalProbability(featureVector, probabilitiesVector, meanVector, standardDeviationVector)
-			
+		activatedOutputsMatrix = finalActivationFunction(outputMatrix)
+		
+		cost = self:calculateCost(activatedOutputsMatrix, logisticMatrix, numberOfData)
+
+		lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
+		
+		outputDerivativeMatrix = finalActivationFunctionDerivatives(lossMatrix)
+
+		backwardPropagateTable = self:backPropagate(outputDerivativeMatrix, zTable)
+
+		deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable, numberOfData)
+
+		ModelParameters = self:gradientDescent(self.learningRate, deltaTable, numberOfData) -- do not refactor the code where the output is self.ModelParameters. Otherwise it cannot update to new model parameters values!
+		
+		numberOfIterations += 1
+		
+		table.insert(costArray, cost)
+
+		self:printCostAndNumberOfIterations(cost, numberOfIterations)
+
+	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
+
+	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	
+	self.ModelParameters = ModelParameters
+	
+	if (self.AutoResetOptimizers) then
+		
+		for i, Optimizer in ipairs(self.OptimizerTable) do
+
+			if Optimizer then Optimizer:reset() end
+
 		end
 		
 	end
 	
-	if (returnOriginalOutput == true) then return finalProbabilityMatrix end
-	
-	return self:getLabelFromOutputMatrix(finalProbabilityMatrix)
-	
+	return costArray
+
 end
 
-function NaiveBayesModel:getClassesList()
+function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)
+	
+	if (self.ModelParameters == nil) then self:generateLayers() end
+
+	local forwardPropagateTable = self:forwardPropagate(featureMatrix)
+
+	local outputMatrix = forwardPropagateTable[#forwardPropagateTable]
+	
+	local finalActivationFunctionName = self.activationFunctionTable[#self.activationFunctionTable]
+
+	local finalActivationFunction = activationFunctionList[finalActivationFunctionName]
+	
+	outputMatrix = finalActivationFunction(outputMatrix)
+	
+	if (returnOriginalOutput == true) then return outputMatrix end
+
+	local predictedLabelVector, highestValueVector = self:getLabelFromOutputMatrix(outputMatrix)
+
+	return predictedLabelVector, highestValueVector
+
+end
+
+function NeuralNetworkModel:getClassesList()
 
 	return self.ClassesList
 
 end
 
-function NaiveBayesModel:setClassesList(classesList)
+function NeuralNetworkModel:setClassesList(classesList)
 
 	self.ClassesList = classesList
 
 end
 
-return NaiveBayesModel
+function NeuralNetworkModel:showDetails()
+	-- Calculate the maximum length for each column
+	local maxLayerLength = string.len("Layer")
+	local maxNeuronsLength = string.len("Number Of Neurons")
+	local maxBiasLength = string.len("Bias Neuron Added")
+	local maxActivationLength = string.len("Activation Function")
+	local maxOptimizerLength = string.len("Optimizer Added")
+	local maxRegularizationLength = string.len("Regularization Added")
+
+	for i = 1, #self.numberOfNeuronsTable do
+
+		maxLayerLength = math.max(maxLayerLength, string.len(tostring(i)))
+
+		maxNeuronsLength = math.max(maxNeuronsLength, string.len(tostring(self.numberOfNeuronsTable[i])))
+
+		maxBiasLength = math.max(maxBiasLength, string.len(tostring(self.addBiasNeuronTable[i])))
+
+		maxActivationLength = math.max(maxActivationLength, string.len(self.activationFunctionTable[i]))
+
+		maxOptimizerLength = math.max(maxOptimizerLength, string.len("false"))
+
+		maxRegularizationLength = math.max(maxRegularizationLength, string.len("false"))
+
+	end
+
+	-- Print the table header
+	print("Layer Details: \n")
+
+	print("|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
+		string.rep("-", maxNeuronsLength) .. "-|-" ..
+		string.rep("-", maxBiasLength) .. "-|-" ..
+		string.rep("-", maxActivationLength) .. "-|-" ..
+		string.rep("-", maxOptimizerLength) .. "-|-" ..
+		string.rep("-", maxRegularizationLength) .. "-|")
+
+	print("| " .. string.format("%-" .. maxLayerLength .. "s", "Layer") .. " | " ..
+		string.format("%-" .. maxNeuronsLength .. "s", "Number Of Neurons") .. " | " ..
+		string.format("%-" .. maxBiasLength .. "s", "Bias Neuron Added") .. " | " ..
+		string.format("%-" .. maxActivationLength .. "s", "Activation Function") .. " | " ..
+		string.format("%-" .. maxOptimizerLength .. "s", "Optimizer Added") .. " | " ..
+		string.format("%-" .. maxRegularizationLength .. "s", "Regularization Added") .. " |")
+
+	print("|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
+		string.rep("-", maxNeuronsLength) .. "-|-" ..
+		string.rep("-", maxBiasLength) .. "-|-" ..
+		string.rep("-", maxActivationLength) .. "-|-" ..
+		string.rep("-", maxOptimizerLength) .. "-|-" ..
+		string.rep("-", maxRegularizationLength) .. "-|")
+
+	-- Print the layer details
+	for i = 1, #self.numberOfNeuronsTable do
+
+		local layer = "| " .. string.format("%-" .. maxLayerLength .. "s", i) .. " "
+
+		local neurons = "| " .. string.format("%-" .. maxNeuronsLength .. "s", self.numberOfNeuronsTable[i]) .. " "
+
+		local bias = "| " .. string.format("%-" .. maxBiasLength .. "s", tostring(self.addBiasNeuronTable[i])) .. " "
+
+		local activation = "| " .. string.format("%-" .. maxActivationLength .. "s", self.activationFunctionTable[i]) .. " "
+
+		local optimizer = "| " .. string.format("%-" .. maxOptimizerLength .. "s", self.OptimizerTable[i] and "true" or "false") .. " "
+
+		local regularization = "| " .. string.format("%-" .. maxRegularizationLength .. "s", self.RegularizationTable[i] and "true" or "false") .. " |"
+
+		print(layer .. neurons .. bias .. activation .. optimizer .. regularization)
+
+	end
+
+	print("|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
+		string.rep("-", maxNeuronsLength) .. "-|-" ..
+		string.rep("-", maxBiasLength) .. "-|-" ..
+		string.rep("-", maxActivationLength) .. "-|-" ..
+		string.rep("-", maxOptimizerLength) .. "-|-" ..
+		string.rep("-", maxRegularizationLength) .. "-|")
+
+end
+
+return NeuralNetworkModel

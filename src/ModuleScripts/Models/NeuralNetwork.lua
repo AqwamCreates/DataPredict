@@ -756,12 +756,16 @@ end
 function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, Optimizer, Regularization)
 
 	if (typeof(numberOfNeurons) ~= "number") then error("Invalid input for number of neurons!") end
+	
+	local hasBiasNeuronType = typeof(hasBiasNeuron)
 
-	if (typeof(hasBiasNeuron) ~= "boolean") then error("Invalid input for adding bias!") end
+	if (hasBiasNeuronType ~= "nil") and (hasBiasNeuronType ~= "boolean") then error("Invalid input for adding bias!") end
 	
 	local activationFunctionType = typeof(activationFunction)
 	
 	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
+	
+	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron, true)
 	
 	activationFunction = activationFunction or defaultActivationFunction
 

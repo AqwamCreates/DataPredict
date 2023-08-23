@@ -62,4 +62,12 @@ NeuralNetworkModel:addLayer(3, true, "Tanh")
 NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
 ```
 
-In this code, we have set 3 neurons (including bias neuron) at first layer, 4 neurons (including bias neuron) at second layer and 2 neurons (without bias neuron) at final layer. 
+In this code, we have set 3 neurons (including the bias neuron) at first layer, 4 neurons (including the bias neuron) at second layer and 2 neurons (without the bias neuron) at final layer. 
+
+# Wrapping it all up.
+
+The tutorial covers the basics on how to create your neural networks. 
+
+However, it does not cover the use of regularization and optimizers on each layer. These can be found under the API reference.
+
+That's all for today!

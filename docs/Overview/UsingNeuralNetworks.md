@@ -24,7 +24,7 @@ We have two ways of creating our neural network layers:
 
 Below, I will show the codes that demonstrates these two options
 
-## Create All Layers
+## Creating All Layers
 
 We will use createLayers() function to create the layers. The first parameters takes in a table of integers, where the index determines the position and the values determines the number of neurons.
 
@@ -39,3 +39,5 @@ Using this function, we have set 2 neurons at first layer, 3 neurons at second l
 Do make note that the bias neurons are not added yet to each of the layer (except the final layer) and will be added automatically once this function is call.
 
 In other words, after running the function, the model will have 3 neurons at first layer, 4 neurons at second layer and 2 neurons at final layer.
+
+## Creating Individual Layers

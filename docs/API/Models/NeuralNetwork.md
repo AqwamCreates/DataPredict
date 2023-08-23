@@ -82,6 +82,8 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activat
 
   *  StableSoftmax
 
+  *  None
+
 * Optimizer: The optimizer object to be added at the last layer.
 
 * Regularization: The regularization object to be added at the last layer.
@@ -115,6 +117,8 @@ NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationF
   *  Softmax
 
   *  StableSoftmax
+
+  *  None
 
 * Optimizer: The optimizer object to be used by to this layer.
 

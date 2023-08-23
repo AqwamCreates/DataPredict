@@ -66,7 +66,21 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activat
 
 * hasBiasNeuron: Set whether or not the bias neuron will be added to next layer.
 
-* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
+* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
+  
+  *  "Sigmoid"
+
+  *  "Tanh"
+
+  *  "ReLU"
+
+  *  "LeakyReLU"
+
+  *  "ELU"
+
+  *  "Softmax"
+
+  *  "StableSoftmax"
 
 * Optimizer: The optimizer object to be added at the last layer.
 
@@ -86,7 +100,21 @@ NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationF
 
 * hasBiasNeuron: Set whether or not this layer has a bias neuron.
 
-* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
+* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
+
+  *  "Sigmoid"
+
+  *  "Tanh"
+
+  *  "ReLU"
+
+  *  "LeakyReLU"
+
+  *  "ELU"
+
+  *  "Softmax"
+
+  *  "StableSoftmax"
 
 * Optimizer: The optimizer object to be used by to this layer.
 

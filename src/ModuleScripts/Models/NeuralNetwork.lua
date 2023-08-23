@@ -114,9 +114,9 @@ local derivativeList = {
 
 		local sigmoidFunction = activationFunctionList["sigmoid"]
 		
-		local sigmoidDerivativeFunction = function (a) return (a * (1-a)) end
+		local sigmoidDerivativeFunction = function (a) return (a * (1 - a)) end
 
-		local aMatrix = AqwamMatrixLibrary:applyFunction(sigmoidFunction, zMatrix)
+		local aMatrix = sigmoidFunction(zMatrix)
 		
 		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(sigmoidDerivativeFunction, aMatrix)
 		
@@ -130,7 +130,7 @@ local derivativeList = {
 		
 		local tanhDerivativeFunction = function (a) return (1 - math.pow(a, 2)) end
 		
-		local aMatrix = AqwamMatrixLibrary:applyFunction(tanhDerivativeFunction, zMatrix)
+		local aMatrix = tanhDerivativeFunction(zMatrix)
 
 		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(tanhDerivativeFunction, aMatrix)
 

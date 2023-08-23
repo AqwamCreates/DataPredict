@@ -112,7 +112,7 @@ local derivativeList = {
 
 	["Sigmoid"] = function (zMatrix) 
 
-		local sigmoidFunction = activationFunctionList["sigmoid"]
+		local sigmoidFunction = activationFunctionList["Sigmoid"]
 		
 		local sigmoidDerivativeFunction = function (a) return (a * (1 - a)) end
 
@@ -126,7 +126,7 @@ local derivativeList = {
 
 	["Tanh"] = function (zMatrix)
 
-		local tanhFunction = activationFunctionList["tanh"]
+		local tanhFunction = activationFunctionList["Tanh"]
 		
 		local tanhDerivativeFunction = function (a) return (1 - math.pow(a, 2)) end
 		

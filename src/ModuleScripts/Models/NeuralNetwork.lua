@@ -189,7 +189,6 @@ local derivativeList = {
 
 						derivativeMatrix[i][j] += aMatrix[i][j] * (1 - aMatrix[i][k])
 
-
 					else
 
 						derivativeMatrix[i][j] += -aMatrix[i][j] * aMatrix[i][k]
@@ -225,7 +224,6 @@ local derivativeList = {
 					if (j == k) then
 
 						derivativeMatrix[i][j] += aMatrix[i][j] * (1 - aMatrix[i][k])
-
 
 					else
 

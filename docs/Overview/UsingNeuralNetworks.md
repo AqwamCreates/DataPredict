@@ -68,6 +68,6 @@ In this code, we have set 3 neurons (including the bias neuron) at first layer, 
 
 The tutorial covers the basics on how to create your neural networks. 
 
-However, it does not cover the use of regularization and optimizers on each layer. These can be found under the API reference.
+However, it does not cover the use of regularization and optimizers on each layer. These can be found in the API reference.
 
 That's all for today!

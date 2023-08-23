@@ -31,6 +31,8 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 [Using Regularization](Overview/UsingRegularization.md)
 
+[Using Neural Networks](Overview/UsingNeuralNetworks.md)
+
 [Modded Models](Overview/ModdedModels.md)
 
 ## API Reference

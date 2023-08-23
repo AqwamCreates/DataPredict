@@ -20,7 +20,7 @@ local activationFunctionList = {
 
 	["sigmoid"] = function (zMatrix) 
 		
-		local sigmoidFunction = function(z) return 1/(1+math.exp(-1 * z)) end
+		local sigmoidFunction = function(z) return 1/(1 + math.exp(-1 * z)) end
 		
 		local aMatrix = AqwamMatrixLibrary:applyFunction(sigmoidFunction, zMatrix)
 		

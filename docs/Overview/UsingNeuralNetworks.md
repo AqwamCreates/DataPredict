@@ -41,3 +41,25 @@ Do make note that the bias neurons are not added yet to each of the layer (excep
 In other words, after running the function, the model will have 3 neurons at first layer, 4 neurons at second layer and 2 neurons at final layer.
 
 ## Creating Individual Layers
+
+If you wish to have more control over each layer, then we can use addLayer() function. Below, we will show on how to create a single layer.
+
+```
+NeuralNetworkModel:addLayer(2, true, "Tanh")
+```
+
+The first parameter determines the number of neurons on that layer, the second parameter is to set whether or not to add a bias neuron. The third parameter is to set the activation function for that layer.
+
+Do make note that if you add a bias neuron, it will not be included in the first parameter. (e.g. Before adding a bias neuron, it is 2 neuron, but after adding a bias neuron, it becomes three.)
+
+Once that is covered, we will now shwo you on how to add multiple layers using the same function.
+
+```
+NeuralNetworkModel:addLayer(2, true, "Tanh")
+
+NeuralNetworkModel:addLayer(3, true, "Tanh")
+
+NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
+```
+
+In this code, we have set 3 neurons (including bias neuron) at first layer, 4 neurons (including bias neuron) at second layer and 2 neurons (without bias neuron) at final layer. 

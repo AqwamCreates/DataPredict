@@ -78,8 +78,6 @@ local activationFunctionList = {
 		
 	end,
 	
-	["None"] = function (zMatrix) return zMatrix end,
-	
 	["StableSoftmax"] = function (zMatrix)
 		
 		local normalizedZMatrix = AqwamMatrixLibrary:createMatrix(#zMatrix, #zMatrix[1])
@@ -205,8 +203,6 @@ local derivativeList = {
 		return derivativeMatrix
 
 	end,
-	
-	["None"] = function (zMatrix) return AqwamMatrixLibrary:createMatrix(#zMatrix, #zMatrix[1], 1) end,
 	
 	["StableSoftmax"] = function (zMatrix)
 
@@ -897,7 +893,9 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 	end
 	
-	finalActivationFunctionName = self.activationFunctionTable[#self.activationFunctionTable]
+	finalActivationFunctionName = self.activationFunctionTable[numberOfLayers]
+	
+	if (finalActivationFunctionName == "None") then finalActivationFunctionName = self.activationFunctionTable[numberOfLayers - 1] end
 	
 	finalActivationFunction = activationFunctionList[finalActivationFunctionName]
 	

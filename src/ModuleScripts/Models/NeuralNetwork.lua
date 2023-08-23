@@ -18,7 +18,7 @@ local defaultTargetCost = 0
 
 local activationFunctionList = {
 
-	["sigmoid"] = function (zMatrix) 
+	["Sigmoid"] = function (zMatrix) 
 		
 		local sigmoidFunction = function(z) return 1/(1 + math.exp(-1 * z)) end
 		
@@ -28,7 +28,7 @@ local activationFunctionList = {
 		
 	end,
 
-	["tanh"] = function (zMatrix) 
+	["Tanh"] = function (zMatrix) 
 		
 		local aMatrix = AqwamMatrixLibrary:applyFunction(math.tanh, zMatrix)
 		
@@ -108,7 +108,7 @@ local activationFunctionList = {
 
 local derivativeList = {
 
-	["sigmoid"] = function (zMatrix) 
+	["Sigmoid"] = function (zMatrix) 
 
 		local sigmoidFunction = activationFunctionList["sigmoid"]
 		
@@ -122,7 +122,7 @@ local derivativeList = {
 
 	end,
 
-	["tanh"] = function (zMatrix)
+	["Tanh"] = function (zMatrix)
 
 		local tanhFunction = activationFunctionList["tanh"]
 		
@@ -245,9 +245,9 @@ local derivativeList = {
 
 local cutOffListForScalarValues = {
 	
-	["sigmoid"] = function (a) return (a >= 0.5) end,
+	["Sigmoid"] = function (a) return (a >= 0.5) end,
 	
-	["tanh"] = function (a) return (a >= 0) end,
+	["Tanh"] = function (a) return (a >= 0) end,
 	
 	["ReLU"] = function (a) return (a >= 0) end,
 	
@@ -303,7 +303,7 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 	
 	if (activationFunctionAtFinalLayer == "None") then activationFunctionAtFinalLayer = self.activationFunctionTable[numberOfLayers - 1] end
 	
-	if (activationFunctionAtFinalLayer == "tanh") or (activationFunctionAtFinalLayer == "ELU") then
+	if (activationFunctionAtFinalLayer == "Tanh") or (activationFunctionAtFinalLayer == "ELU") then
 		
 		incorrectLabelValue = -1
 		

@@ -16,7 +16,7 @@ By default, the machine/deep learning models uses batch gradient descent upon in
 
 We will modify the graident descent to mini batch gradient descent.
 
-```
+```lua
 local Model = MDLL.Models.SupportVectorMachine.new()
 
 local ModifiedModel = MDLL.Others.GradientDescentModifier.new(SupportVectorMachine, "MiniBatch")
@@ -26,7 +26,7 @@ Once that is set up, you can call train() and predict() functions from the Modif
 
 In other words, you can do what the original model can do, except the behaviour of the gradient descent and the cost has been changed.
 
-```
+```lua
 local costArray = ModifiedModel:train(featureMatrix, labelVector)
 
 local predictedVector = ModifiedModel:predict(featureMatrix2)

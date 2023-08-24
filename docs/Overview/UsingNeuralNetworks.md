@@ -46,7 +46,7 @@ local labelVector = {
 }
 ```
 
-As you can see the feature matrix contains 3 columns, which means that we need 3 input neurons. Also the feature matrix contains bias values, which means one of the three input neurons is a bias neuron.
+As you can see the feature matrix contains 3 columns, which means that we need 3 input neurons. It also contains the bias values, so one of the three input neurons must be a bias neuron.
 
 # Creating Layers
 

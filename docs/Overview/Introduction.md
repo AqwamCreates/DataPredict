@@ -58,7 +58,7 @@ local featureMatrix = {
 
 }
 
-Value of 1 is added at first column for bias.
+-- Value of 1 is added at first column for bias.
 
 local labelVectorLogistic = {
 	

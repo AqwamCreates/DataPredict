@@ -6,7 +6,7 @@ Regularization is to ensure that the model do not overfit. In other words, we wa
 
 In order for us to use the regularization, we need to create an regularization object.
 
-```
+```lua
 local Regularization = MDLL.Others.Regularization
 
 local RegularizationObject = Regularization.new()
@@ -18,7 +18,7 @@ Regularization object takes in two parameters. For the sake of this tutorial, we
 
 To combine, you must put the regularization object into the model's setOptimizer() function.
 
-```
+```lua
 LogisticRegressionModel:setRegularization(RegularizationObject)
 ```
 

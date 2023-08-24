@@ -17,7 +17,7 @@ It was first discovered by Aqwam and does not exists in any research literature.
 
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
-```lua
+```
 QueuedReinforcementNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number): ModelObject
 ```
 
@@ -39,7 +39,7 @@ QueuedReinforcementNeuralNetwork.new(maxNumberOfIterations: integer, learningRat
 
 Creates new threads for real-time reinforcement.
 
-```lua
+```
 QueuedReinforcementNeuralNetwork:start(rewardValue, punishValue, showPredictedLabel, showIdleWarning, showWaitingForLabelWarning): coroutine, coroutine, coroutine
 ```
 
@@ -67,7 +67,7 @@ QueuedReinforcementNeuralNetwork:start(rewardValue, punishValue, showPredictedLa
 
 Stops the threads for real-time reinforcement.
 
-```lua
+```
 QueuedReinforcementNeuralNetwork:stop()
 ```
 
@@ -75,7 +75,7 @@ QueuedReinforcementNeuralNetwork:stop()
 
 Adds feature vector to queue.
 
-```lua
+```
 QueuedReinforcementNeuralNetwork:addFeatureVector(featureVector)
 ```
 
@@ -87,7 +87,7 @@ QueuedReinforcementNeuralNetwork:addFeatureVector(featureVector)
 
 Adds label to queue.
 
-```lua
+```
 QueuedReinforcementNeuralNetwork:addLabel(label)
 ```
 
@@ -99,7 +99,7 @@ QueuedReinforcementNeuralNetwork:addLabel(label)
 
 Returns predicted label from the queue.
 
-```lua
+```
 QueuedReinforcementNeuralNetwork:returnPredictedLabel(): integer
 ```
 
@@ -111,7 +111,7 @@ QueuedReinforcementNeuralNetwork:returnPredictedLabel(): integer
 
 Returns predicted label from the queue.
 
-```lua
+```
 QueuedReinforcementNeuralNetwork:returnCost(): number
 ```
 

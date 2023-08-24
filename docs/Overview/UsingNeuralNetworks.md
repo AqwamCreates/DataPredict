@@ -8,7 +8,7 @@ Neural networks typically contains a number of layers. Inside each of those laye
 
 Before we start building layers for our neural network, we first need to define a number of stuff in our neural network code.
 
-```
+```lua
 local NeuralNetworkModel = DataPredict.Models.NeuralNetwork.new() -- Creating a new model object.
 
 NeuralNetworkModel:setClassesList({0, 1}) -- Setting exising classes, but these can be automatically set by our model if the model uses batch gradient descent.
@@ -16,7 +16,7 @@ NeuralNetworkModel:setClassesList({0, 1}) -- Setting exising classes, but these 
 
 And under here, we have our data. Notice that all of our first column of the feature matrix contain values of 1. Those are bias values.
 
-```
+```lua
 local featureMatrix = {
 
 	{1, 0,  0},
@@ -44,7 +44,6 @@ local labelVector = {
 	{0}
 
 }
-
 ```
 
 # Creating Layers
@@ -61,7 +60,7 @@ Below, I will show the codes that demonstrates these two options
 
 We will use createLayers() function to create the layers. The first parameters takes in a table of integers, where the index determines the position and the values determines the number of neurons.
 
-```
+```lua
 local numberOfNeuronsArray = {2, 3, 2}
 
 NeuralNetworkModel:createLayers(numberOfNeuronsArray)
@@ -77,7 +76,7 @@ In other words, after running the function, the model will have 3 neurons at fir
 
 If you wish to have more control over each layer, then we can use addLayer() function. Below, we will show on how to create a single layer.
 
-```
+```lua
 NeuralNetworkModel:addLayer(2, true, "Tanh")
 ```
 
@@ -87,7 +86,7 @@ Do make note that if you add a bias neuron, it will not be included in the first
 
 Once that is covered, we will now shwo you on how to add multiple layers using the same function.
 
-```
+```lua
 NeuralNetworkModel:addLayer(2, true, "Tanh")
 
 NeuralNetworkModel:addLayer(3, true, "Tanh")

@@ -46,17 +46,19 @@ I will give you the codes for the featureMatrix and the labelVector for you to p
 ```
 local featureMatrix = {
 	
-	{ 0,  0},
-	{10, 2},
-	{-3, -2},
-	{-12, -22},
-	{ 2,  2},
-	{ 1,  1},
-	{-11, -12},
-	{ 3,  3},
-	{-2, -2},
+	{1, 0,  0},
+	{1, 10, 2},
+	{1, -3, -2},
+	{1, -12, -22},
+	{1, 2,  2},
+	{1, 1,  1},
+	{1,-11, -12},
+	{1, 3,  3},
+	{1, -2, -2},
 
 }
+
+Value of 1 is added at first column for bias.
 
 local labelVectorLogistic = {
 	

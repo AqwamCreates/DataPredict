@@ -84,7 +84,7 @@ The first parameter determines the number of neurons on that layer, the second p
 
 Do make note that if you add a bias neuron, it will not be included in the first parameter. (e.g. Before adding a bias neuron, it is 2 neuron, but after adding a bias neuron, it becomes three.)
 
-Once that is covered, we will now shwo you on how to add multiple layers using the same function.
+Once that is covered, we will now show you on how to add multiple layers using the same function.
 
 ```lua
 NeuralNetworkModel:addLayer(2, true, "Tanh")

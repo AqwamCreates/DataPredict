@@ -8,7 +8,7 @@ In order for us to use the optimizers, we need to create an optimizer object. In
 
 So first, lets initialize a new Adagrad optimizer object.
 
-```
+```lua
 local Adagrad = MDLL.Optimizers.AdaptiveGradient
 
 local AdagradOptimizer = Adagrad.new()
@@ -20,7 +20,7 @@ For this optimizer, there are no parameters for us to set. So, we will leave it 
 
 To combine, you must put the optimizer object into the model's setOptimizer() function.
 
-```
+```lua
 LogisticRegressionModel:setOptimizer(AdagradOptimizer)
 ```
 

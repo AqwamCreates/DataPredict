@@ -14,6 +14,39 @@ local NeuralNetworkModel = DataPredict.Models.NeuralNetwork.new() -- Creating a 
 NeuralNetworkModel:setClassesList({0, 1}) -- Setting exising classes, but these can be automatically set by our model if the model uses batch gradient descent.
 ```
 
+And under here, we have our data. Notice that all of our first column of the feature matrix contain values of 1. Those are bias values.
+
+```
+local featureMatrix = {
+
+	{1, 0,  0},
+	{1, 10, 2},
+	{1, -3, -2},
+	{1, -12, -22},
+	{1,  2,  2},
+	{1, 1,  1},
+	{1, -11, -12},
+	{1,  3,  3},
+	{1, -2, -2},
+
+}
+
+local labelVector = {
+
+	{1},
+	{1},
+	{0},
+	{0},
+	{1},
+	{1},
+	{0},
+	{1},
+	{0}
+
+}
+
+```
+
 # Creating Layers
 
 We have two ways of creating our neural network layers:

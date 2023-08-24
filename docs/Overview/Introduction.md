@@ -17,7 +17,7 @@ Once you put those two libraries into your game make sure you link the Machine L
 
 Next, we will use require() function to our machine/deep learning library
 
-```
+```lua
 local MDLL = require(AqwamRobloxMachineAndDeepLearningLibrary) 
 ```
 
@@ -25,7 +25,7 @@ local MDLL = require(AqwamRobloxMachineAndDeepLearningLibrary)
 
 For our first model, we will use "LogisticRegression". We will create a new "LogisticRegression" model object using new(). 
 
-```
+```lua
 local LogisticRegression = MDLL.Models.LogisticRegression
 
 local LogisticRegressionModel = LogisticRegression.new()
@@ -43,7 +43,7 @@ To train our model, we need to supply two things: featureMatrix and labelVector.
 
 I will give you the codes for the featureMatrix and the labelVector for you to practice. You can see that if the data contains 0 or greater, it will result to 1. Otherise, the value is 0.
 
-```
+```lua
 local featureMatrix = {
 	
 	{1, 0,  0},
@@ -77,7 +77,7 @@ local labelVectorLogistic = {
 
 With our featureMatrix and labelVector in place, we will supply them to our model's train() function.
 
-```
+```lua
 LogisticRegressionModel:train(featureMatrix, labelVectorLogistic)
 ```
 
@@ -113,13 +113,13 @@ It means that during training, the model is no longer "learning" but does the co
 
 To predict, we will use predict() function for our model. We will then supply data to the model so that it can predict the value.
 
-```
+```lua
 local predictedVector = LogisticRegressionModel:predict(testData)
 ```
 
 I will give you a test data for you to use. The value of prediction should be 1.
 
-```
+```lua
 local testData = {
 
 	{90, 90}

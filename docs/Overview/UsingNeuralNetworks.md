@@ -68,7 +68,7 @@ NeuralNetworkModel:createLayers(numberOfNeuronsArray)
 
 Using this function, we have set 2 neurons at first layer, 3 neurons at second layer and 2 neurons at final layer. 
 
-Do make note that the bias neurons are not added yet to each of the layer (except the final layer) and will be added automatically once this function is call.
+Do make note that the bias neurons are not added yet to each of the layer (except the final layer) and will be added automatically once this function is called.
 
 In other words, after running the function, the model will have 3 neurons at first layer, 4 neurons at second layer and 2 neurons at final layer.
 

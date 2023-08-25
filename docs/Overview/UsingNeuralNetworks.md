@@ -98,10 +98,53 @@ NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
 
 In this code, we have set 3 neurons (including the bias neuron) at first layer, 4 neurons (including the bias neuron) at second layer and 2 neurons (without the bias neuron) at final layer. 
 
+# Optimizers and Regularization
+
+If you wish to use optimizers on multiple layers, then you need one optimizer for each layer. The example is shown below.
+
+```lua
+local AdaptiveGradientOptimizer = DataPredict.Optimizers.AdaptiveGradient
+
+local Adagrad1 = AdaptiveGradientOptimizer.new()
+
+local Adagrad2 = AdaptiveGradientOptimizer.new()
+
+NeuralNetworkModel:addLayer(2, true, "Tanh", Adagrad2)
+
+NeuralNetworkModel:addLayer(3, true, "Tanh", Adagrad2)
+
+NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
+```
+
+For regularization, you can use single regularization object for all layers. But you can also use on regularization object for each layer. The xample is shown below.
+
+```lua
+local Regularization = DataPredict.Others.Regularization
+
+local Reg1 = Regularization.new()
+
+local Reg2 = Regularization.new()
+
+NeuralNetworkModel:addLayer(2, true, "Tanh", nil, Reg1)
+
+NeuralNetworkModel:addLayer(3, true, "Tanh", nil, Reg2)
+
+NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
+
+-- OR
+
+NeuralNetworkModel:addLayer(2, true, "Tanh", nil, Reg1)
+
+NeuralNetworkModel:addLayer(3, true, "Tanh", nil, Reg1)
+
+NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
+
+```
+
 # Wrapping it all up.
 
 The tutorial covers the basics on how to create your neural networks. 
 
-However, it does not cover the use of regularization and optimizers on each layer. These can be found in the API reference [here](../API/Models/NeuralNetwork.md).
+Further information relating to neural networks can be found in the API reference [here](../API/Models/NeuralNetwork.md).
 
 That's all for today!

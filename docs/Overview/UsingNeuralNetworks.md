@@ -118,7 +118,7 @@ NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
 
 # Regularization
 
-For regularization, you can use one regularization object for each layer. You can also use single regularization object for all layers. The examples are shown below.
+For regularization, you can use one regularization object for each layer. You can also use one regularization object for all layers. The examples are shown below.
 
 ```lua
 local Regularization = DataPredict.Others.Regularization

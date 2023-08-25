@@ -116,7 +116,7 @@ NeuralNetworkModel:addLayer(3, true, "Tanh", Adagrad2)
 NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
 ```
 
-#Regularization
+# Regularization
 
 For regularization, you can use single regularization object for all layers. But you can also use on regularization object for each layer. The example is shown below.
 

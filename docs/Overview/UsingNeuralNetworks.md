@@ -98,7 +98,7 @@ NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
 
 In this code, we have set 3 neurons (including the bias neuron) at first layer, 4 neurons (including the bias neuron) at second layer and 2 neurons (without the bias neuron) at final layer. 
 
-# Optimizers and Regularization
+# Optimizers
 
 If you wish to use optimizers on multiple layers, then you need one optimizer for each layer. The example is shown below.
 
@@ -116,7 +116,9 @@ NeuralNetworkModel:addLayer(3, true, "Tanh", Adagrad2)
 NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
 ```
 
-For regularization, you can use single regularization object for all layers. But you can also use on regularization object for each layer. The xample is shown below.
+#Regularization
+
+For regularization, you can use single regularization object for all layers. But you can also use on regularization object for each layer. The example is shown below.
 
 ```lua
 local Regularization = DataPredict.Others.Regularization

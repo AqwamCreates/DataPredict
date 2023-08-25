@@ -127,13 +127,15 @@ local Reg1 = Regularization.new()
 
 local Reg2 = Regularization.new()
 
+-- Different regularization objects for each layers.
+
 NeuralNetworkModel:addLayer(2, true, "Tanh", nil, Reg1)
 
 NeuralNetworkModel:addLayer(3, true, "Tanh", nil, Reg2)
 
 NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
 
--- OR
+-- Same regularization objects for each layers.
 
 NeuralNetworkModel:addLayer(2, true, "Tanh", nil, Reg1)
 

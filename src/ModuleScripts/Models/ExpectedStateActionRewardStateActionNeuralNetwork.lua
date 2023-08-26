@@ -234,7 +234,7 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel:reinforce(curren
 
 	local randomProbability = Random.new():NextNumber()
 
-	if (randomProbability < self.epsilon) then
+	if (randomProbability < self.currentEpsilon) then
 
 		local randomNumber = Random.new():NextInteger(1, #self.ClassesList)
 

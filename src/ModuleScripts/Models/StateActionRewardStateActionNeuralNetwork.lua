@@ -172,8 +172,6 @@ function StateActionRewardStateActionNeuralNetworkModel:reinforce(currentFeature
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
-
-
 	if (self.currentNumberOfEpisodes == 0) then
 
 		self.currentEpsilon *= self.epsilonDecayFactor

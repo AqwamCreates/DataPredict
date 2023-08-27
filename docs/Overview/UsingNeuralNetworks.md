@@ -146,7 +146,7 @@ NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
 
 # Wrapping it all up.
 
-The tutorial covers the basics on how to create your neural networks. 
+The tutorial covers the basics on how to create your own neural networks. 
 
 Further information relating to neural networks can be found in the API reference [here](../API/Models/NeuralNetwork.md).
 

@@ -175,14 +175,14 @@ end
 function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 	
 	if (self.ModelParameters == nil) then self:generateLayers() end
+	
+	self.currentNumberOfEpisodes = (self.currentNumberOfEpisodes + 1) % self.maxNumberOfEpisodes
 
 	if (self.currentNumberOfEpisodes == 0) then
 
 		self.currentEpsilon *= self.epsilonDecayFactor
 
 	end
-
-	self.currentNumberOfEpisodes = (self.currentNumberOfEpisodes + 1) % self.maxNumberOfEpisodes
 
 	local action
 

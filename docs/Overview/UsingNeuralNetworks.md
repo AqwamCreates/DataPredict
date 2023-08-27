@@ -144,7 +144,7 @@ NeuralNetworkModel:addLayer(3, true, "Tanh", nil, Reg1)
 NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
 ```
 
-# Wrapping it all up.
+# Wrapping it all up
 
 The tutorial covers the basics on how to create your own neural networks. 
 

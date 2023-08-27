@@ -109,7 +109,7 @@ local Adagrad1 = AdaptiveGradientOptimizer.new()
 
 local Adagrad2 = AdaptiveGradientOptimizer.new()
 
-NeuralNetworkModel:addLayer(2, true, "Tanh", Adagrad2)
+NeuralNetworkModel:addLayer(2, true, "Tanh", Adagrad1)
 
 NeuralNetworkModel:addLayer(3, true, "Tanh", Adagrad2)
 

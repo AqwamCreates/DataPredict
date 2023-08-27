@@ -612,15 +612,13 @@ function NeuralNetworkModel:getLabelFromOutputMatrix(outputMatrix)
 end
 
 local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
-
-	local labelVectorColumn = AqwamMatrixLibrary:transpose(labelVector)
-
-	for i, value in ipairs(labelVectorColumn[1]) do
-
-		if table.find(classesList, value) then continue end
-
+	
+	for i = 1, #labelVector, 1 do
+		
+		if table.find(classesList, labelVector[i][1]) then continue end
+		
 		return true
-
+		
 	end
 
 	return false

@@ -100,9 +100,9 @@ QLearningNeuralNetwork:reinforce(currentFeatureVector: Matrix, rewardValue: numb
 
 #### Returns:
 
-* predictedValue: A value that is predicted by the model.
+* predictedLabel: A label that is predicted by the model.
 
-* probability: The probability of predicted value.
+* value: The value of predicted label.
 
 -OR-
 

@@ -14,7 +14,7 @@
 
 [ReinforcingNeuralNetwork](Models/ReinforcingNeuralNetwork.md)
 
-[QLearningNeuralNetwork](Models/QLearningNeuralNetwork.md) - a.k.a. DQN
+[QLearningNeuralNetwork](Models/QLearningNeuralNetwork.md) - a.k.a. DQN / Deep Q-Learning
 
 [StateActionRewardStateActionNeuralNetwork](Models/StateActionRewardStateActionNeuralNetwork.md) - a.k.a. Deep SARSA
 

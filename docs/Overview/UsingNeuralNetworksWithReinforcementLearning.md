@@ -2,7 +2,7 @@
 
 * Knowledge on how to build neural networks, which can be found [here](UsingNeuralNetwork.md).
 
-$ What Is Reinforcement Learning?
+# What Is Reinforcement Learning?
 
 Reinforcement learning is a way for our models to learn on its own without the labels.
 

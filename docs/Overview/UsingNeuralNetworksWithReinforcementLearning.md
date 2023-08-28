@@ -34,7 +34,7 @@ An environment feature vector is a vector containing all the information related
 
 An example of environment feature vector will look like this:
 
-```
+```lua
 local environmentFeatureVector = {{1, 4345, 234, 1234}} -- 1 is added at first column for bias, but it is not neccessary.
 ```
 
@@ -62,7 +62,7 @@ Action label is a label produced by the model. This label can be a part of decis
 
 Upon calling reinforce() function, it will return two values, but we are interested in the first one for this tutorial.
 
-```
+```lua
 local actionLabel = QLearningNeuralNetwork:reinforce(environmentFeatureVector, rewardValue)
 ```
 

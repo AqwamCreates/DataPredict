@@ -38,7 +38,7 @@
 
 [MeanShift](Models/MeanShift.md)
 
-[ExpectationMaximization](Models/ExpectationMaximization.md)
+[ExpectationMaximization](Models/ExpectationMaximization.md) - a.k.a. EM
 
 [KMeans](Models/KMeans.md)
 

@@ -74,7 +74,7 @@ Ensure that both environment feature vector and reward value is from the same st
 
 In this tutorial, you have learnt the starting point of the reinforcement learning neural networks. 
 
-These only cover the basics and you can find more information here:
+These only cover the basics and you can find more information here.
 
 * [Deep Q-Learning](../API/Models/QLearningNeuralNetwork.md)
 

@@ -26,15 +26,15 @@ ExpectedStateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: int
 
 * targetCost: The cost at which the model stops training.
 
-* maxNumberOfEpisodes: Controls how well the model learns the best actions for maximizing rewards in an environment.
+* maxNumberOfEpisodes: The number of episodes to decay the epsilon value.
 
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
 
-* epsilonDecayFactor: Controls how fast the model goes from exploring to exploiting as it learns. The value must be set between 0 and 1.
+* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * epsilon2: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
-* discountFactor: Balances present and future rewards in agent decisions.
+* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
 #### Returns:
 
@@ -58,15 +58,15 @@ ExpectedStateActionRewardStateActionNeuralNetwork:setParameters(maxNumberOfItera
 
 * targetCost: The cost at which the model stops training.
 
-* maxNumberOfEpisodes: Controls how well the model learns the best actions for maximizing rewards in an environment.
+* maxNumberOfEpisodes: The number of episodes to decay the epsilon value.
 
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
 
-* epsilonDecayFactor: Controls how fast the model goes from exploring to exploiting as it learns. The value must be set between 0 and 1.
+* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * epsilon2: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
-* discountFactor: Balances present and future rewards in agent decisions.
+* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
 ### setExperienceReplay()
 

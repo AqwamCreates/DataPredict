@@ -38,7 +38,7 @@ An example of environment feature vector will look like this:
 local environmentFeatureVector = {{1, 4345, 234, 1234}} -- 1 is added at first column for bias, but it is not neccessary.
 ```
 
-### Reward Value
+## Reward Value
 
 This is the value where we reward or punish the models. The properties of reward value is shown below:
 

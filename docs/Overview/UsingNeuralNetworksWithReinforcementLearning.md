@@ -66,4 +66,13 @@ Upon calling reinforce() function, it will return two values, but we are interes
 local actionLabel = QLearningNeuralNetwork:reinforce(environmentFeatureVector, rewardValue)
 ```
 
+Each time we use reinforce() function with input parameters in it, it will train the neural network.
+
+Ensure that both environment feature vector and reward value is from the same state.
+
+## Wrapping It All Up
+
+In this tutorial, you have learnt the starting point of the reinforcement learning neural networks. 
+
+These only cover the basics and you can find more information.
 

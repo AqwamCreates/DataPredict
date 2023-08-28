@@ -188,9 +188,9 @@ function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue
 
 	local actionVector
 
-	local highestProbability
+	local highestValue
 
-	local highestProbabilityVector
+	local highestValueVector
 
 	local allOutputsMatrix
 
@@ -210,11 +210,11 @@ function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue
 
 		allOutputsMatrix = self:predict(currentFeatureVector, true)
 
-		actionVector, highestProbabilityVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
+		actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 
 		action = actionVector[1][1]
 
-		highestProbability = highestProbabilityVector[1][1]
+		highestValue = highestValueVector[1][1]
 
 	end
 
@@ -240,7 +240,7 @@ function QLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue
 
 	if (returnOriginalOutput == true) then return allOutputsMatrix end
 
-	return action, highestProbability
+	return action, highestValue
 
 end
 

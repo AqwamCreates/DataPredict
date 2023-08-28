@@ -143,6 +143,8 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	local regularizationCost
 	
+	local calculatedLearningRate = self.learningRate / numberOfData
+	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 	
 	if (self.ModelParameters) then
@@ -181,11 +183,11 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		if (self.Optimizer) then 
 
-			costFunctionDerivatives = self.Optimizer:calculate(self.learningRate, costFunctionDerivatives) 
+			costFunctionDerivatives = self.Optimizer:calculate(calculatedLearningRate, costFunctionDerivatives) 
 			
 		else
 			
-			costFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivatives)
+			costFunctionDerivatives = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivatives)
 
 		end
 		

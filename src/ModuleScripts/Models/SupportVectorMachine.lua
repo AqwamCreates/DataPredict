@@ -272,7 +272,7 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 
 end
 
-local function gradientDescent(modelParameters, individualkernelMatrix, labelVector, cValue)
+local function calculateModelParameters(modelParameters, individualkernelMatrix, labelVector, cValue)
 
 	local predictionVector = AqwamMatrixLibrary:dotProduct(individualkernelMatrix, modelParameters) -- m x 1
 	
@@ -369,7 +369,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 		cost = calculateCost(self.ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, self.cValue)
 
-		self.ModelParameters = gradientDescent(self.ModelParameters, mappedFeatureMatrix, labelVector, self.cValue)
+		self.ModelParameters = calculateModelParameters(self.ModelParameters, mappedFeatureMatrix, labelVector, self.cValue)
 		
 		numberOfIterations += 1
 		

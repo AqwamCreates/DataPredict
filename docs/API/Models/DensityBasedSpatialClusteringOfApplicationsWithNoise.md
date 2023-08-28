@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DensityBasedSpatialClusteringOfApplicationsWithNoise
+# [API Reference](../../API.md) - [Models](../Models.md) - DensityBasedSpatialClusteringOfApplicationsWithNoise (DBSCAN)
 
 DBSCAN is an unsupervised machine learning model that clusters data points based on their spatial density and proximity to each other, using epsilon distance and minimum number of points required to form a cluster.
 

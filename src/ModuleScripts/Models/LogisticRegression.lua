@@ -12,25 +12,25 @@ local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
 
-local defaultSigmoidFunction = "sigmoid"
+local defaultSigmoidFunction = "Sigmoid"
 
 local defaultTargetCost = 0
 
 local sigmoidFunctionList = {
 
-	["sigmoid"] = function (z) return 1/(1+math.exp(-1 * z)) end,
+	["Sigmoid"] = function (z) return 1/(1+math.exp(-1 * z)) end,
 
 }
 
 local lossFunctionList = {
 	
-	["sigmoid"] = function (y, h) return -(y * math.log10(h) + (1 - y) * math.log10(1 - h)) end
+	["Sigmoid"] = function (y, h) return -(y * math.log10(h) + (1 - y) * math.log10(1 - h)) end
 	
 }
 
 local cutOffFunctionList = {
 	
-	["sigmoid"] = function (x) 
+	["Sigmoid"] = function (x) 
 
 		if (x >= 0.5) then 
 

@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - LongShortTermMemory
+# [API Reference](../../API.md) - [Models](../Models.md) - LongShortTermMemory (LSTM)
 
 LongShortTermMemory is a supervised machine learning model that predicts a sequence of positive numbers of discrete values (a.k.a. tokens).
 

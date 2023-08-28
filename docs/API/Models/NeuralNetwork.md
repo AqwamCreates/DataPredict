@@ -193,7 +193,7 @@ NeuralNetwork:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Mat
 
 * predictedVector: A vector that is predicted by the model.
 
-* probabilityVector: A vector that contains the probability of predicted values in predictedVector.
+* valueVector: A vector that contains the probability of predicted values in predictedVector.
 
 -OR-
 

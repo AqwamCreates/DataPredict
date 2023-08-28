@@ -24,7 +24,7 @@ local sigmoidFunctionList = {
 
 local lossFunctionList = {
 	
-	["Sigmoid"] = function (y, h) return -(y * math.log10(h) + (1 - y) * math.log10(1 - h)) end
+	["Sigmoid"] = function (y, h) return -(y * math.log(h) + (1 - y) * math.log(1 - h)) end
 	
 }
 

@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - StateActionRewardStateActionNeuralNetwork
+# [API Reference](../../API.md) - [Models](../Models.md) - StateActionRewardStateActionNeuralNetwork (Deep SARSA)
 
 StateActionRewardStateActionNeuralNetwork is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 

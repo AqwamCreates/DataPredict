@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - ExpectedStateActionRewardStateActionNeuralNetwork
+# [API Reference](../../API.md) - [Models](../Models.md) - ExpectedStateActionRewardStateActionNeuralNetwork (Deep Expected SARSA)
 
 ExpectedStateActionRewardStateActionNeuralNetwork is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 

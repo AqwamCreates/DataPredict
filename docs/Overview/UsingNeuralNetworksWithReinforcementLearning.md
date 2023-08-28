@@ -68,7 +68,7 @@ local actionLabel = QLearningNeuralNetwork:reinforce(environmentFeatureVector, r
 
 Each time we use reinforce() function with input parameters in it, it will train the neural network.
 
-Ensure that both environment feature vector and reward value is from the same state.
+Ensure that both environment feature vector and reward value are from the same state.
 
 ## Wrapping It All Up
 

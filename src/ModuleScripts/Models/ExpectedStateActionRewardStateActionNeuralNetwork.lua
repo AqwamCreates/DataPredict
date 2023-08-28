@@ -226,9 +226,9 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel:reinforce(curren
 
 	local actionVector
 
-	local highestProbability
+	local highestValue
 
-	local highestProbabilityVector
+	local highestValueVector
 
 	local allOutputsMatrix
 
@@ -248,11 +248,11 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel:reinforce(curren
 
 		allOutputsMatrix = self:predict(currentFeatureVector, true)
 
-		actionVector, highestProbabilityVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
+		actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 
 		action = actionVector[1][1]
 
-		highestProbability = highestProbabilityVector[1][1]
+		highestValue = highestValueVector[1][1]
 
 	end
 
@@ -278,7 +278,7 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel:reinforce(curren
 
 	if (returnOriginalOutput == true) then return allOutputsMatrix end
 
-	return action, highestProbability
+	return action, highestValue
 
 end
 

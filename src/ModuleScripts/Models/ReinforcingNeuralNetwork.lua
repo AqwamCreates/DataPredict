@@ -82,7 +82,7 @@ function ReinforcingNeuralNetworkModel:reinforce(featureVector, labelVector, rew
 
 	local deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable)
 
-	local predictedVector, probabilityVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
+	local predictedVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 	
 	local predictedLabel = predictedVector[1][1]
 	
@@ -90,7 +90,7 @@ function ReinforcingNeuralNetworkModel:reinforce(featureVector, labelVector, rew
 	
 	local areLabelsEqual = (predictedLabel == label) 
 	
-	local probability = probabilityVector[1][1]
+	local highestValue = highestValueVector[1][1]
 
 	local multiplyFactor = (areLabelsEqual and rewardValue) or punishValue
 
@@ -98,7 +98,7 @@ function ReinforcingNeuralNetworkModel:reinforce(featureVector, labelVector, rew
 	
 	if (returnOriginalOutput == true) then return allOutputsMatrix end
 
-	return predictedLabel, probability
+	return predictedLabel, highestValue
 
 end
 

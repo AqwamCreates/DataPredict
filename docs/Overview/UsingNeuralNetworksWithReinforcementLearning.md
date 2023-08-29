@@ -54,7 +54,7 @@ This is the value where we reward or punish the models. The properties of reward
 
 Action label is a label produced by the model. This label can be a part of decision-making classes or classification classes. For example:
 
-* Decision-Making classes: "Up", "Down", "Left", "Right", "Forward", "Backward"
+* Decision-making classes: "Up", "Down", "Left", "Right", "Forward", "Backward"
 
 * Classification classes: 1, 2, 3, 4, 5, 6
 

@@ -63,7 +63,13 @@ Action label is a label produced by the model. This label can be a part of decis
 Upon calling reinforce() function, it will return two values, but we are interested in the first one for this tutorial.
 
 ```lua
-local actionLabel = QLearningNeuralNetwork:reinforce(environmentFeatureVector, rewardValue)
+local DQN = DataPredict.Models.QLearningNeuralNetwork.new() -- Create a new model object.
+
+DQN:createLayers({4, 3, 2}) -- Setting up our layers
+
+DQN:setClassesList({"Up", "Down"}) -- Setting up our classes
+
+local actionLabel = DQN:reinforce(environmentFeatureVector, rewardValue) -- Run the reinforce() function.
 ```
 
 Each time we use reinforce() function with input parameters in it, it will train the neural network.

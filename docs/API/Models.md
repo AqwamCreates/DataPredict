@@ -11,7 +11,7 @@
 
 | Model                                                                                                            | Alternate Names        | Use Cases                                                                   |
 |------------------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------|
-| [LogisticRegression](Models/LogisticRegression.md)                                                               | None                   | Sales Prediction                                                            |
+| [LogisticRegression](Models/LogisticRegression.md)                                                               | None                   | Sales Prediction, Confidence Prediction                                     |
 | [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | None                   | Hacking Detection, Anomaly Detection                                        |
 | [NaiveBayes](Models/NaiveBayes.md)                                                                               | None                   | Text Classification                                                         |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Fake Players                                               |

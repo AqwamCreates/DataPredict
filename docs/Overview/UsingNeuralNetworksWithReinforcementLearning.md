@@ -65,9 +65,9 @@ Upon calling reinforce() function, it will return two values, but we are interes
 ```lua
 local DQN = DataPredict.Models.QLearningNeuralNetwork.new() -- Create a new model object.
 
-DQN:createLayers({4, 3, 2}) -- Setting up our layers
+DQN:createLayers({4, 3, 2}) -- Setting up our layers.
 
-DQN:setClassesList({"Up", "Down"}) -- Setting up our classes
+DQN:setClassesList({"Up", "Down"}) -- Setting up our classes.
 
 local actionLabel = DQN:reinforce(environmentFeatureVector, rewardValue) -- Run the reinforce() function.
 ```

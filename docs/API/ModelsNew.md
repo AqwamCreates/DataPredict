@@ -22,24 +22,17 @@
 | [LongShortTermMemory](Models/LongShortTermMemory.md)                                                             | LSTM                   | Text Generation, Text Analysis                                              |
 | [RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md)                                                       | RNN                    | Same As Long Short Term Memory                                              |
 
-
-
-
 ## Clustering
 
-[AffinityPropagation](Models/AffinityPropagation.md)
-
-[AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)
-
-[DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) - a.k.a. DBSCAN
-
-[MeanShift](Models/MeanShift.md)
-
-[ExpectationMaximization](Models/ExpectationMaximization.md) - a.k.a. EM
-
-[KMeans](Models/KMeans.md)
-
-[KMedoids](Models/KMedoids.md)
+| Model                                                                                                                  | Alternate Names | Use Cases                             |
+|------------------------------------------------------------------------------------------------------------------------|-----------------|---------------------------------------|
+| [AffinityPropagation](Models/AffinityPropagation.md)                                                                   |                 | Player Grouping                       |
+| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       |                 | Similarity Grouping                   |
+| [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | Density Grouping                      |
+| [MeanShift](Models/MeanShift.md)                                                                                       |                 | Center Of Data Search                 |
+| [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | Hacking Detection, Anomaly Detection  |
+| [KMeans](Models/KMeans.md)                                                                                             |                 | Market Segmentation, General Grouping |
+| [KMedoids](Models/KMedoids.md)                                                                                         |                 | Same as KMeans                        |
 
 ## BaseModels
 

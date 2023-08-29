@@ -26,13 +26,13 @@
 
 | Model                                                                                                                  | Alternate Names | Use Cases                             |
 |------------------------------------------------------------------------------------------------------------------------|-----------------|---------------------------------------|
-| [AffinityPropagation](Models/AffinityPropagation.md)                                                                   |                 | Player Grouping                       |
-| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       |                 | Similarity Grouping                   |
+| [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | None            | Player Grouping                       |
+| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | Similarity Grouping                   |
 | [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | Density Grouping                      |
-| [MeanShift](Models/MeanShift.md)                                                                                       |                 | Center Of Data Search                 |
+| [MeanShift](Models/MeanShift.md)                                                                                       | None            | Center Of Data Search                 |
 | [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | Hacking Detection, Anomaly Detection  |
-| [KMeans](Models/KMeans.md)                                                                                             |                 | Market Segmentation, General Grouping |
-| [KMedoids](Models/KMedoids.md)                                                                                         |                 | Same as KMeans                        |
+| [KMeans](Models/KMeans.md)                                                                                             | None            | Market Segmentation, General Grouping |
+| [KMedoids](Models/KMedoids.md)                                                                                         | None            | Same as KMeans                        |
 
 ## BaseModels
 

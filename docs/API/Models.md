@@ -32,7 +32,7 @@
 | [MeanShift](Models/MeanShift.md)                                                                                       | None            | Center Of Data Search                 |
 | [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | Hacking Detection, Anomaly Detection  |
 | [KMeans](Models/KMeans.md)                                                                                             | None            | Market Segmentation, General Grouping |
-| [KMedoids](Models/KMedoids.md)                                                                                         | None            | Same as KMeans                        |
+| [KMedoids](Models/KMedoids.md)                                                                                         | None            | Same as K-Means                       |
 
 ## BaseModels
 

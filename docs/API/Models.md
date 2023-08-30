@@ -9,6 +9,8 @@
 
 ## Classification
 
+### Non-Sequential
+
 | Model                                                                                                            | Alternate Names        | Use Cases                                                                   |
 |------------------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------|
 | [LogisticRegression](Models/LogisticRegression.md)                                                               | None                   | Sales Prediction, Confidence Prediction                                     |
@@ -19,6 +21,11 @@
 | [StateActionRewardStateActionNeuralNetwork](Models/StateActionRewardStateActionNeuralNetwork.md)                 | Deep SARSA             | Same As Q-Learning Neural Network                                           |
 | [ExpectedStateActionRewardStateActionNeuralNetwork](Models/ExpectedStateActionRewardStateActionNeuralNetwork.md) | Deep Expected SARSA    | Same As Q-Learning Neural Network                                           |
 | [ReinforcingNeuralNetwork](Models/ReinforcingNeuralNetwork.md)                                                   | None                   | Same As Q-Learning Neural Network                                           |
+
+### Sequential
+
+| Model                                                                                                            | Alternate Names        | Use Cases                                                                   |
+|------------------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------|
 | [LongShortTermMemory](Models/LongShortTermMemory.md)                                                             | LSTM                   | Text Generation, Text Analysis                                              |
 | [RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md)                                                       | RNN                    | Same As Long Short Term Memory                                              |
 

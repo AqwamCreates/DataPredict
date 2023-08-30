@@ -117,20 +117,24 @@ To predict, we will use predict() function for our model. We will then supply da
 local predictedVector = LogisticRegressionModel:predict(testData)
 ```
 
-I will give you a test data for you to use. The value of prediction should be 1.
+I will give you a test data for you to use. The value of prediction should be 1 and 0.
 
 ```lua
 local testData = {
 
-	{1, 90, 90}
-	
+	{1, 90, 32}
+	{1, -120, -41}
 }
 
 local predictedVector = predict(testData)
 
-local value = predictedVector[1][1]
+local value1 = predictedVector[1][1]
 
-print(value)
+local value2 = predictedVector[2][1]
+
+print(value1) -- This is 1.
+
+print(value2) -- This is 2.
 ```
 
 # And Finally...

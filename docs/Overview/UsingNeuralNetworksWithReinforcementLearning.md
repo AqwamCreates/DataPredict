@@ -37,7 +37,7 @@ An example of environment feature vector will look like this:
 ```lua
 local environmentFeatureVector = {
 
-  {1, -32, 234, 12}-- 1 is added at first column for bias, but it is optional.
+  {1, -32, 234, 12} -- 1 is added at first column for bias, but it is optional.
 
 }
 ```

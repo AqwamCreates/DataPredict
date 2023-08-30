@@ -122,7 +122,7 @@ I will give you a test data for you to use. The value of prediction should be 1.
 ```lua
 local testData = {
 
-	{90, 90}
+	{1, 90, 90}
 	
 }
 ```

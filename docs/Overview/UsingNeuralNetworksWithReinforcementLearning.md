@@ -35,7 +35,7 @@ An environment feature vector is a vector containing all the information related
 An example of environment feature vector will look like this:
 
 ```lua
-local environmentFeatureVector = {{1, 4345, 234, 1234}} -- 1 is added at first column for bias, but it is optional.
+local environmentFeatureVector = {{1, 4345, 234, 1234} -- 1 is added at first column for bias, but it is optional.
 ```
 
 ## Reward Value

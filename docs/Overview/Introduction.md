@@ -134,7 +134,7 @@ local value2 = predictedVector[2][1]
 
 print(value1) -- This is 1.
 
-print(value2) -- This is 2.
+print(value2) -- This is 0.
 ```
 
 # And Finally...

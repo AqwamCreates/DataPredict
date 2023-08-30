@@ -17,6 +17,10 @@
 | [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | None                   | Hacking Detection, Anomaly Detection                                        |
 | [NaiveBayes](Models/NaiveBayes.md)                                                                               | None                   | Text Classification                                                         |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Fake Players                                               |
+
+### Non-Sequential + Reinforcement Learning
+
+| Model                                                                                                            | Alternate Names        | Use Cases                                                                   |
 | [QLearningNeuralNetwork](Models/QLearningNeuralNetwork.md)                                                       | DQN, Deep Q-Learning   | Self-Learning Fighting AIs, Self-Learning Parkouring AIs, Self-Driving Cars |
 | [StateActionRewardStateActionNeuralNetwork](Models/StateActionRewardStateActionNeuralNetwork.md)                 | Deep SARSA             | Same As Q-Learning Neural Network                                           |
 | [ExpectedStateActionRewardStateActionNeuralNetwork](Models/ExpectedStateActionRewardStateActionNeuralNetwork.md) | Deep Expected SARSA    | Same As Q-Learning Neural Network                                           |

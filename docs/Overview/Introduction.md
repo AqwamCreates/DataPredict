@@ -125,6 +125,12 @@ local testData = {
 	{1, 90, 90}
 	
 }
+
+local predictedVector = predict(testData)
+
+local value = predictedVector[1][1]
+
+print(value)
 ```
 
 # And Finally...

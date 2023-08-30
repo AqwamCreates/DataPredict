@@ -126,7 +126,7 @@ local testData = {
 	{1, -120, -41}
 }
 
-local predictedVector = predict(testData)
+local predictedVector = LogisticRegressionModel:predict(testData)
 
 local value1 = predictedVector[1][1]
 

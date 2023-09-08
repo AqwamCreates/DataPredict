@@ -138,6 +138,8 @@ DoubleQLearningNeuralNetwork:reset()
 
 ## References
 
+* [Double Deep Q Networks](https://towardsdatascience.com/double-deep-q-networks-905dd8325412)
+
 * [Reinforcement Learning with Neural Network](https://www.baeldung.com/cs/reinforcement-learning-neural-network)
 
 * [Deep Q Networks (DQN) in Python From Scratch by Using OpenAI Gym and TensorFlow- Reinforcement Learning Tutorial](https://aleksandarhaber.com/deep-q-networks-dqn-in-python-from-scratch-by-using-openai-gym-and-tensorflow-reinforcement-learning-tutorial/)

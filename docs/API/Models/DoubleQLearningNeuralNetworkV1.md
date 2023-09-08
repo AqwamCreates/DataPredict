@@ -2,6 +2,8 @@
 
 DoubleQLearningNeuralNetworkV1 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
+It uses Hasselt et al. (2010) version, where a single neural network is selected from two neural networks with equal probability.
+
 ## Stored Model Parameters
 
 Contains a table of matrices.  

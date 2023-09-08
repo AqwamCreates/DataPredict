@@ -20,12 +20,15 @@
 
 ### Non-Sequential + Reinforcement Learning
 
-| Model                                                                                                            | Alternate Names        | Use Cases                                                                   |
-|------------------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------|
-| [QLearningNeuralNetwork](Models/QLearningNeuralNetwork.md)                                                       | DQN, Deep Q-Learning   | Self-Learning Fighting AIs, Self-Learning Parkouring AIs, Self-Driving Cars |
-| [StateActionRewardStateActionNeuralNetwork](Models/StateActionRewardStateActionNeuralNetwork.md)                 | Deep SARSA             | Same As Q-Learning Neural Network                                           |
-| [ExpectedStateActionRewardStateActionNeuralNetwork](Models/ExpectedStateActionRewardStateActionNeuralNetwork.md) | Deep Expected SARSA    | Same As Q-Learning Neural Network                                           |
-| [ReinforcingNeuralNetwork](Models/ReinforcingNeuralNetwork.md)                                                   | None                   | Same As Q-Learning Neural Network                                           |
+| Model                                                                                                            | Alternate Names                | Use Cases                                                                   |
+|------------------------------------------------------------------------------------------------------------------|--------------------------------|-----------------------------------------------------------------------------|
+| [QLearningNeuralNetwork](Models/QLearningNeuralNetwork.md)                                                       | DQN, Deep Q-Learning           | Self-Learning Fighting AIs, Self-Learning Parkouring AIs, Self-Driving Cars |
+| [DoubleQLearningNeuralNetworkV1](Models/DoubleQLearningNeuralNetworkV1.md)                                       | DDQN, Double Deep Q-Learning   | Same As Q-Learning Neural Network                                           |
+| [DoubleQLearningNeuralNetworkV2](Models/DoubleQLearningNeuralNetworkV2.md)                                       | DDQN, Double Deep Q-Learning   | Same As Q-Learning Neural Network                                           |
+| [ClippedDoubleQLearningNeuralNetwork](Models/ClippedDoubleQLearningNeuralNetwork.md)                             | Clipped Double Deep Q-Learning | Same As Q-Learning Neural Network                                           |
+| [StateActionRewardStateActionNeuralNetwork](Models/StateActionRewardStateActionNeuralNetwork.md)                 | Deep SARSA                     | Same As Q-Learning Neural Network                                           |
+| [ExpectedStateActionRewardStateActionNeuralNetwork](Models/ExpectedStateActionRewardStateActionNeuralNetwork.md) | Deep Expected SARSA            | Same As Q-Learning Neural Network                                           |
+| [ReinforcingNeuralNetwork](Models/ReinforcingNeuralNetwork.md)                                                   | None                           | Same As Q-Learning Neural Network                                           |
 
 ### Sequential
 

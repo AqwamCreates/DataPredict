@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Version 1.15.0
+	Version 1.16.0
 
 	Aqwam's Roblox Deep Learning Library (AR-MDLL)
 

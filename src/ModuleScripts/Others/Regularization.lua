@@ -8,7 +8,15 @@ local defaultRegularizationMode = "L2"
 
 local defaultLambda = 0.01
 
-function Regularization.new(lambda, regularizationMode)
+local function getBooleanOrDefaultOption(boolean, defaultBoolean)
+	
+	if (type(boolean) == "nil") then return defaultBoolean end
+
+	return boolean
+	
+end
+
+function Regularization.new(lambda, regularizationMode, hasBias)
 	
 	local NewRegularization = {}
 	
@@ -18,15 +26,19 @@ function Regularization.new(lambda, regularizationMode)
 	
 	NewRegularization.regularizationMode = regularizationMode or defaultRegularizationMode
 	
+	NewRegularization.hasBias = getBooleanOrDefaultOption(hasBias, true)
+	
 	return NewRegularization
 	
 end
 
-function Regularization:setParameters(lambda, regularizationMode)
+function Regularization:setParameters(lambda, regularizationMode, hasBias)
 	
 	self.lambda = lambda or self.lambda
 	
 	self.regularizationMode = regularizationMode or self.regularizationMode
+	
+	self.hasBias = getBooleanOrDefaultOption(hasBias, self.hasBias)
 	
 end
 

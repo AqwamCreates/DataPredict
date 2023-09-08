@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - DoubleQLearningNeuralNetworkV2 (DDQN / Double Deep Q-Learning)
 
-QLearningNeuralNetwork is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+DoubleQLearningNeuralNetwork is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Stored Model Parameters
 

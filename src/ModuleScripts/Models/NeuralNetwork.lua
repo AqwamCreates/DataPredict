@@ -110,7 +110,7 @@ local activationFunctionList = {
 
 local derivativeList = {
 
-	["Sigmoid"] = function (zMatrix) 
+	["Sigmoid"] = function (zMatrix, weightMatrix) 
 
 		local sigmoidFunction = activationFunctionList["Sigmoid"]
 		
@@ -124,7 +124,7 @@ local derivativeList = {
 
 	end,
 
-	["Tanh"] = function (zMatrix)
+	["Tanh"] = function (zMatrix, weightMatrix)
 
 		local tanhFunction = activationFunctionList["Tanh"]
 		
@@ -138,7 +138,7 @@ local derivativeList = {
 
 	end,
 
-	["ReLU"] = function (zMatrix)
+	["ReLU"] = function (zMatrix, weightMatrix)
 		
 		local ReLUDerivativeFunction = function (z) if (z > 0) then return 1 else return 0 end end
 			
@@ -148,7 +148,7 @@ local derivativeList = {
 
 	end,
 
-	["LeakyReLU"] = function (zMatrix)
+	["LeakyReLU"] = function (zMatrix, weightMatrix)
 
 		local LeakyReLUDerivativeFunction = function (z) if (z > 0) then return 1 else return 0.01 end end
 
@@ -158,7 +158,7 @@ local derivativeList = {
 
 	end,
 
-	["ELU"] = function (zMatrix)
+	["ELU"] = function (zMatrix, weightMatrix)
 
 		local ELUDerivativeFunction = function (z) if (z > 0) then return 1 else return 0.01 * math.exp(z) end end
 
@@ -169,7 +169,7 @@ local derivativeList = {
 		
 	end,
 	
-	["Softmax"] = function (zMatrix)
+	["Softmax"] = function (zMatrix, weightMatrix)
 
 		local SoftmaxFunction = activationFunctionList["Softmax"]
 		
@@ -205,7 +205,7 @@ local derivativeList = {
 
 	end,
 	
-	["StableSoftmax"] = function (zMatrix)
+	["StableSoftmax"] = function (zMatrix, weightMatrix)
 
 		local StableSoftmaxFunction = activationFunctionList["StableSoftmax"]
 
@@ -241,7 +241,7 @@ local derivativeList = {
 		
 	end,
 	
-	["None"] = function (zMatrix) return AqwamMatrixLibrary:createMatrix(#zMatrix, #zMatrix[1], 1) end,
+	["None"] = function (zMatrix, weightMatrix) return weightMatrix end,
 
 }
 
@@ -433,7 +433,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix, zTable)
 
 		errorPart1 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
-		errorPart2 = derivativeFunction(zLayerMatrix)
+		errorPart2 = derivativeFunction(zLayerMatrix, layerMatrix)
 
 		layerCostMatrix = AqwamMatrixLibrary:multiply(errorPart1, errorPart2)
 

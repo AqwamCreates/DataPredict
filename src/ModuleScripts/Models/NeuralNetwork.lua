@@ -447,7 +447,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix, zTable)
 
 end
 
-function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateTable, numberOfData)
+function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateTable)
 
 	local partialDerivativeMatrix
 
@@ -925,7 +925,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		backwardPropagateTable = self:backPropagate(outputDerivativeMatrix, zTable)
 
-		deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable, numberOfData)
+		deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable)
 
 		ModelParameters = self:gradientDescent(self.learningRate, deltaTable, numberOfData) -- do not refactor the code where the output is self.ModelParameters. Otherwise it cannot update to new model parameters values!
 

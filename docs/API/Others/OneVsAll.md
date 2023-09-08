@@ -75,7 +75,7 @@ OneVsAll:setOptimizer(optimizerName: string, ...)
 Sets the optimizer and its parameters. Leaving it empty will clear the optimizer.
 
 ```
-OneVsAll:setRegularization(lambda: number, regularizationMode: string)
+OneVsAll:setRegularization(lambda: number, regularizationMode: string, hasBias: boolean)
 ```
 
 #### Parameters:
@@ -83,6 +83,8 @@ OneVsAll:setRegularization(lambda: number, regularizationMode: string)
 * lambda: Regularization factor. Recommended values are between 0 to 1.
 
 * regularisationMode: The mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2" (or "Ridge") and "L1+L2" (or "ElasticNet").
+
+* 
 
 ### setModelsSettings()
 

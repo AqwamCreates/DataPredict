@@ -84,7 +84,7 @@ OneVsAll:setRegularization(lambda: number, regularizationMode: string, hasBias: 
 
 * regularisationMode: The mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2" (or "Ridge") and "L1+L2" (or "ElasticNet").
 
-* 
+* hasBias: Set whether or not the regularization has bias.
 
 ### setModelsSettings()
 

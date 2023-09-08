@@ -126,7 +126,6 @@ function ClippedDoubleQLearningNeuralNetworkModel:getModelParametersArray()
 
 end
 
-
 function ClippedDoubleQLearningNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 	self:setModelParameters(self.ModelParametersArray[1])

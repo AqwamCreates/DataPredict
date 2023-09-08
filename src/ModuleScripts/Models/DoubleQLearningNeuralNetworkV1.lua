@@ -106,13 +106,11 @@ function DoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, 
 
 end
 
-function DoubleQLearningNeuralNetworkModel:setModelParametersArray(...)
+function DoubleQLearningNeuralNetworkModel:setModelParametersArray(ModelParameters1, ModelParameters2)
 	
-	local ModelParametersArray = {...}
-	
-	if (#ModelParametersArray > 0) then
+	if (ModelParameters1) or (ModelParameters2) then
 		
-		self.ModelParametersArray = ModelParametersArray
+		self.ModelParametersArray = {ModelParameters1, ModelParameters2}
 		
 	else
 		

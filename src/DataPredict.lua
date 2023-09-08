@@ -67,8 +67,14 @@ local ModelsDictionary = {
 
 	QLearningNeuralNetwork = require(Models.QLearningNeuralNetwork),
 	
+	DoubleQLearningNeuralNetworkV1 = require(Models.DoubleQLearningNeuralNetworkV1),
+	
+	DoubleQLearningNeuralNetworkV2 = require(Models.DoubleQLearningNeuralNetworkV2),
+	
+	ClippedDoubleQLearningNeuralNetwork = require(Models.ClippedDoubleQLearningNeuralNetwork),
+	
 	StateActionRewardStateActionNeuralNetwork = require(Models.StateActionRewardStateActionNeuralNetwork),
-
+	
 	ExpectedStateActionRewardStateActionNeuralNetwork = require(Models.ExpectedStateActionRewardStateActionNeuralNetwork),
 
 	RecurrentNeuralNetwork = require(Models.RecurrentNeuralNetwork),

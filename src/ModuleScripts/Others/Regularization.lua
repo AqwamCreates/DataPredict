@@ -16,6 +16,18 @@ local function getBooleanOrDefaultOption(boolean, defaultBoolean)
 	
 end
 
+local function makeLambdaAtBiasZero(ModelParameters)
+	
+	for i = 1, #ModelParameters[1], 1 do
+		
+		ModelParameters[1][i] = 0
+		
+	end
+	
+	return ModelParameters
+	
+end
+
 function Regularization.new(lambda, regularizationMode, hasBias)
 	
 	local NewRegularization = {}
@@ -26,7 +38,7 @@ function Regularization.new(lambda, regularizationMode, hasBias)
 	
 	NewRegularization.regularizationMode = regularizationMode or defaultRegularizationMode
 	
-	NewRegularization.hasBias = getBooleanOrDefaultOption(hasBias, true)
+	NewRegularization.hasBias = getBooleanOrDefaultOption(hasBias, false)
 	
 	return NewRegularization
 	
@@ -60,13 +72,13 @@ function Regularization:calculateRegularizationDerivatives(ModelParameters, numb
 		
 		RegularizationDerivative = AqwamMatrixLibrary:multiply(ModelParametersSign, self.lambda, ModelParameters)
 		
-		RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
+		if (self.hasBias) then RegularizationDerivative = makeLambdaAtBiasZero(RegularizationDerivative) end
 	
 	elseif (self.regularizationMode == "L2") or (self.regularizationMode == "Ridge") then
 		
 		RegularizationDerivative = AqwamMatrixLibrary:multiply(2, self.lambda, ModelParameters)
 		
-		RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
+		if (self.hasBias) then RegularizationDerivative = makeLambdaAtBiasZero(RegularizationDerivative) end
 		
 	elseif (self.regularizationMode == "L1+L2") or (self.regularizationMode == "ElasticNet") then
 		
@@ -78,13 +90,15 @@ function Regularization:calculateRegularizationDerivatives(ModelParameters, numb
 		
 		RegularizationDerivative = AqwamMatrixLibrary:add(RegularizationDerivativePart1, RegularizationDerivativePart2)
 		
-		RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
+		if (self.hasBias) then RegularizationDerivative = makeLambdaAtBiasZero(RegularizationDerivative) end
 
 	else
 
 		error("Regularization Mode Does Not Exist!")
 
 	end
+	
+	RegularizationDerivative = AqwamMatrixLibrary:divide(RegularizationDerivative, numberOfData)
 	
 	return RegularizationDerivative
 	
@@ -106,25 +120,27 @@ function Regularization:calculateRegularization(ModelParameters, numberOfData)
 		
 		AbsoluteModelParameters = AqwamMatrixLibrary:applyFunction(math.abs, ModelParameters)
 		
+		if (self.hasBias) then AbsoluteModelParameters = makeLambdaAtBiasZero(AbsoluteModelParameters) end
+		
 		SumAbsoluteModelParameters = AqwamMatrixLibrary:sum(AbsoluteModelParameters)
 		
 		regularizationValue = self.lambda * SumAbsoluteModelParameters
-		
-		regularizationValue = regularizationValue / numberOfData
 		
 	elseif (self.regularizationMode == "L2") or (self.regularizationMode == "Ridge") then
 		
 		SquaredModelParameters = AqwamMatrixLibrary:power(ModelParameters, 2)
 		
+		if (self.hasBias) then SquaredModelParameters = makeLambdaAtBiasZero(SquaredModelParameters) end
+		
 		SumSquaredModelParameters = AqwamMatrixLibrary:sum(SquaredModelParameters)
 		
 		regularizationValue = self.lambda * SumSquaredModelParameters
 		
-		regularizationValue = regularizationValue / numberOfData
-		
 	elseif (self.regularizationMode == "L1+L2") or (self.regularizationMode == "ElasticNet") then
 		
 		SquaredModelParameters = AqwamMatrixLibrary:power(ModelParameters, 2)
+		
+		if (self.hasBias) then SquaredModelParameters = makeLambdaAtBiasZero(SquaredModelParameters) end
 		
 		SumSquaredModelParameters = AqwamMatrixLibrary:sum(SquaredModelParameters)
 		
@@ -138,13 +154,13 @@ function Regularization:calculateRegularization(ModelParameters, numberOfData)
 		
 		regularizationValue = regularizationValuePart1 + regularizationValuePart2
 		
-		regularizationValue = regularizationValue / numberOfData
-		
 	else
 		
 		error("Regularization Mode Does Not Exist!")
 		
 	end
+	
+	regularizationValue = regularizationValue / numberOfData
 	
 	return regularizationValue
 	

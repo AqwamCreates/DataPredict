@@ -120,6 +120,12 @@ function DoubleQLearningNeuralNetworkModel:setModelParametersArray(ModelParamete
 	
 end
 
+function DoubleQLearningNeuralNetworkModel:getModelParametersArray()
+	
+	return self.ModelParametersArray
+	
+end
+
 function DoubleQLearningNeuralNetworkModel:saveModelParametersFromModelParametersArray(index)
 
 	local ModelParameters = self:getModelParameters()

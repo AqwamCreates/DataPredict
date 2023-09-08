@@ -130,6 +130,32 @@ Reset model's stored values (excluding the parameters).
 DoubleQLearningNeuralNetwork:reset()
 ```
 
+### setModelParametersArray()
+
+Sets model parameters to be used by the model.
+
+```
+DoubleQLearningNeuralNetwork:setModelParametersArray(ModelParameters1: ModelParameters, ModelParameters2: ModelParameters,)
+```
+
+#### Parameters:
+
+* ModelParameters1: First model parameters to be used by the model.
+
+* ModelParameters2: Second model parameters to be used by the model.
+
+### getModelParametersArray()
+
+Sets model parameters to be used by the model.
+
+```
+DoubleQLearningNeuralNetwork:getModelParametersArray(): ModelParameters
+```
+
+#### Returns:
+
+* ModelParametersArray: An array containing all the model parameters.
+
 ## Inherited From
 
 * [NeuralNetwork](NeuralNetwork.md)

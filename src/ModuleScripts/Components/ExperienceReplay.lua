@@ -67,6 +67,8 @@ end
 function ExperienceReplayComponent:run(updateFunction)
 	
 	if (self.numberOfExperience < self.numberOfExperienceToUpdate) then return nil end
+	
+	self.numberOfExperience = 0
 
 	local experienceReplayBatchArray = self:sampleBatch()
 
@@ -83,8 +85,6 @@ function ExperienceReplayComponent:run(updateFunction)
 		updateFunction(previousStateVector, action, rewardValue, currentStateVector)
 
 	end
-	
-	self.numberOfExperience = 0
 	
 end
 

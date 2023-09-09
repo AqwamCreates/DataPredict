@@ -74,23 +74,23 @@ function ExperienceReplayComponent:run(updateFunction)
 
 	for _, experience in ipairs(experienceReplayBatchArray) do -- (s1, a, r, s2)
 		
-		local previousStateVector = experience[1]
+		local previousState = experience[1]
 		
 		local action = experience[2]
 		
 		local rewardValue = experience[3]
 		
-		local currentStateVector = experience[4]
+		local currentState = experience[4]
 
-		updateFunction(previousStateVector, action, rewardValue, currentStateVector)
+		updateFunction(previousState, action, rewardValue, currentState)
 
 	end
 	
 end
 
-function ExperienceReplayComponent:addExperience(previousStateVector, action, rewardValue, currentStateVector)
+function ExperienceReplayComponent:addExperience(previousState, action, rewardValue, currentState)
 	
-	local experience = {previousStateVector, action, rewardValue, currentStateVector}
+	local experience = {previousState, action, rewardValue, currentState}
 
 	table.insert(self.replayBufferArray, experience)
 

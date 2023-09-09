@@ -52,8 +52,6 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 
 	NewDoubleQLearningNeuralNetworkModel.useExperienceReplay = false
 	
-	NewDoubleQLearningNeuralNetworkModel.PrimaryModelParameters = nil
-	
 	NewDoubleQLearningNeuralNetworkModel.ExperienceReplayComponent = nil
 
 	return NewDoubleQLearningNeuralNetworkModel
@@ -124,9 +122,9 @@ end
 
 function DoubleQLearningNeuralNetworkModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
 	
-	if (self.PrimaryModelParameters == nil) then self:generateLayers() end
+	if (self.ModelParameters == nil) then self:generateLayers() end
 	
-	self.PrimaryModelParameters = self:getModelParameters()
+	local PrimaryModelParameters = self:getModelParameters()
 
 	local predictedValue, maxQValue = self:predict(currentFeatureVector)
 
@@ -142,7 +140,7 @@ function DoubleQLearningNeuralNetworkModel:update(previousFeatureVector, action,
 	
 	local TargetModelParameters = self:getModelParameters()
 	
-	TargetModelParameters = rateAverageModelParameters(self.averagingRate, self.PrimaryModelParameters, TargetModelParameters)
+	TargetModelParameters = rateAverageModelParameters(self.averagingRate, PrimaryModelParameters, TargetModelParameters)
 	
 	self:setModelParameters(TargetModelParameters)
 

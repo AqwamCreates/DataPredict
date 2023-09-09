@@ -106,11 +106,13 @@ end
 
 local function rateAverageModelParameters(averagingRate, PrimaryModelParametersPart, TargetModelParameters)
 	
+	local averagingRateComplement = 1 - averagingRate
+	
 	for layer = 1, #TargetModelParameters, 1 do
 		
 		local PrimaryModelParametersPart = AqwamMatrixLibrary:multiply(averagingRate, PrimaryModelParametersPart[layer])
 		
-		local TargetModelParametersPart = AqwamMatrixLibrary:multiply((1 - averagingRate), TargetModelParameters[layer])
+		local TargetModelParametersPart = AqwamMatrixLibrary:multiply(averagingRateComplement, TargetModelParameters[layer])
 		
 		TargetModelParameters[layer] = AqwamMatrixLibrary:add(PrimaryModelParametersPart, TargetModelParametersPart)
 		

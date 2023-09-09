@@ -16,7 +16,7 @@
 | [LogisticRegression](Models/LogisticRegression.md)                                                               | None                   | Sales Prediction, Confidence Prediction                                     |
 | [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | None                   | Hacking Detection, Anomaly Detection                                        |
 | [NaiveBayes](Models/NaiveBayes.md)                                                                               | None                   | Text Classification                                                         |
-| [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Fake Players                                               |
+| [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                |
 
 ### Non-Sequential + Reinforcement Learning
 

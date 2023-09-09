@@ -6,6 +6,8 @@ DoubleQLearningNeuralNetworkModel.__index = DoubleQLearningNeuralNetworkModel
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
+local ExperienceReplayComponent = require(script.Parent.Parent.Components.ExperienceReplay)
+
 setmetatable(DoubleQLearningNeuralNetworkModel, NeuralNetworkModel)
 
 local defaultMaxNumberOfEpisode = 500
@@ -17,12 +19,6 @@ local defaultEpsilonDecayFactor = 0.999
 local defaultDiscountFactor = 0.95
 
 local defaultMaxNumberOfIterations = 1
-
-local defaultExperienceReplayBatchSize = 32
-
-local defaultMaxExperienceReplayBufferSize = 100
-
-local defaultNumberOfReinforcementsForExperienceReplayUpdate = 1
 
 function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 
@@ -50,19 +46,11 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 
 	NewDoubleQLearningNeuralNetworkModel.printReinforcementOutput = true
 
-	NewDoubleQLearningNeuralNetworkModel.replayBufferArray = {}
-
-	NewDoubleQLearningNeuralNetworkModel.experienceReplayBatchSize = defaultExperienceReplayBatchSize
-
 	NewDoubleQLearningNeuralNetworkModel.useExperienceReplay = false
-
-	NewDoubleQLearningNeuralNetworkModel.maxExperienceReplayBufferSize = defaultMaxExperienceReplayBufferSize
-
-	NewDoubleQLearningNeuralNetworkModel.numberOfReinforcementsForExperienceReplayUpdate = defaultNumberOfReinforcementsForExperienceReplayUpdate
-
-	NewDoubleQLearningNeuralNetworkModel.numberOfReinforcements = 0
 	
 	NewDoubleQLearningNeuralNetworkModel.ModelParametersArray = {}
+	
+	NewDoubleQLearningNeuralNetworkModel.ExperienceReplayComponent = nil
 
 	return NewDoubleQLearningNeuralNetworkModel
 
@@ -72,11 +60,15 @@ function DoubleQLearningNeuralNetworkModel:setExperienceReplay(useExperienceRepl
 
 	self.useExperienceReplay = self:getBooleanOrDefaultOption(useExperienceReplay, self.useExperienceReplay)
 
-	self.experienceReplayBatchSize = experienceReplayBatchSize or self.experienceReplayBatchSize
+	if (self.useExperienceReplay) then
 
-	self.numberOfReinforcementsForExperienceReplayUpdate = numberOfReinforcementsForExperienceReplayUpdate or self.numberOfReinforcementsForExperienceReplayUpdate 
+		self.ExperienceReplayComponent = ExperienceReplayComponent.new(experienceReplayBatchSize, numberOfReinforcementsForExperienceReplayUpdate, maxExperienceReplayBufferSize)
 
-	self.maxExperienceReplayBufferSize = maxExperienceReplayBufferSize or self.maxExperienceReplayBufferSize
+	else
+
+		self.ExperienceReplayComponent = nil
+
+	end
 
 end
 
@@ -196,39 +188,7 @@ function DoubleQLearningNeuralNetworkModel:update(previousFeatureVector, action,
 
 end
 
-function DoubleQLearningNeuralNetworkModel:sampleBatch()
-
-	local batch = {}
-
-	for i = 1, self.experienceReplayBatchSize, 1 do
-
-		local index = Random.new():NextInteger(1, #self.replayBufferArray)
-
-		table.insert(batch, self.replayBufferArray[index])
-
-	end
-
-	return batch
-
-end
-
-function DoubleQLearningNeuralNetworkModel:experienceReplayUpdate()
-
-	if (#self.replayBufferArray < self.experienceReplayBatchSize) then return nil end
-
-	local experienceReplayBatch = self:sampleBatch()
-
-	for _, experience in ipairs(experienceReplayBatch) do -- (s1, a, r, s2)
-
-		self:update(experience[1], experience[2], experience[3], experience[4])
-
-	end
-
-end
-
 function DoubleQLearningNeuralNetworkModel:reset()
-
-	self.numberOfReinforcements = 0
 
 	self.currentNumberOfEpisodes = 0
 
@@ -236,13 +196,13 @@ function DoubleQLearningNeuralNetworkModel:reset()
 
 	self.currentEpsilon = self.epsilon
 
-	self.replayBufferArray = {}
-
 	for i, Optimizer in ipairs(self.OptimizerTable) do
 
 		if Optimizer then Optimizer:reset() end
 
 	end
+	
+	if (self.useExperienceReplay) then self.ExperienceReplayComponent:reset() end
 
 end
 
@@ -296,15 +256,13 @@ function DoubleQLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewar
 
 	if (self.useExperienceReplay) and (self.previousFeatureVector) then 
 
-		self.numberOfReinforcements = (self.numberOfReinforcements + 1) % self.numberOfReinforcementsForExperienceReplayUpdate
+		self.ExperienceReplayComponent:addExperience(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		if (self.numberOfReinforcements == 0) then self:experienceReplayUpdate() end
+		self.ExperienceReplayComponent:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
-		local experience = {self.previousFeatureVector, action, rewardValue, currentFeatureVector}
+			self:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
-		table.insert(self.replayBufferArray, experience)
-
-		if (#self.replayBufferArray >= self.maxExperienceReplayBufferSize) then table.remove(self.replayBufferArray, 1) end
+		end)
 
 	end
 

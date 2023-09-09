@@ -1,12 +1,14 @@
 local NeuralNetworkModel = require(script.Parent.NeuralNetwork)
 
-DoubleQLearningNeuralNetworkModel = {}
+ClippedDoubleQLearningNeuralNetworkModel = {}
 
-DoubleQLearningNeuralNetworkModel.__index = DoubleQLearningNeuralNetworkModel
+ClippedDoubleQLearningNeuralNetworkModel.__index = ClippedDoubleQLearningNeuralNetworkModel
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
-setmetatable(DoubleQLearningNeuralNetworkModel, NeuralNetworkModel)
+local ExperienceReplayComponent = require(script.Parent.Parent.Components.ExperienceReplay)
+
+setmetatable(ClippedDoubleQLearningNeuralNetworkModel, NeuralNetworkModel)
 
 local defaultMaxNumberOfEpisode = 500
 
@@ -16,81 +18,65 @@ local defaultEpsilonDecayFactor = 0.999
 
 local defaultDiscountFactor = 0.95
 
-local defaultAveragingRate = 0.01
-
 local defaultMaxNumberOfIterations = 1
 
-local defaultExperienceReplayBatchSize = 32
-
-local defaultMaxExperienceReplayBufferSize = 100
-
-local defaultNumberOfReinforcementsForExperienceReplayUpdate = 1
-
-function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor, averagingRate)
+function ClippedDoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 
 	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
-	local NewDoubleQLearningNeuralNetworkModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
+	local NewClippedDoubleQLearningNeuralNetworkModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 
-	NewDoubleQLearningNeuralNetworkModel:setPrintOutput(false)
+	NewClippedDoubleQLearningNeuralNetworkModel:setPrintOutput(false)
 
-	setmetatable(NewDoubleQLearningNeuralNetworkModel, DoubleQLearningNeuralNetworkModel)
+	setmetatable(NewClippedDoubleQLearningNeuralNetworkModel, ClippedDoubleQLearningNeuralNetworkModel)
 
-	NewDoubleQLearningNeuralNetworkModel.maxNumberOfEpisodes = maxNumberOfEpisodes or defaultMaxNumberOfEpisode
+	NewClippedDoubleQLearningNeuralNetworkModel.maxNumberOfEpisodes = maxNumberOfEpisodes or defaultMaxNumberOfEpisode
 
-	NewDoubleQLearningNeuralNetworkModel.epsilon = epsilon or defaultEpsilon
+	NewClippedDoubleQLearningNeuralNetworkModel.epsilon = epsilon or defaultEpsilon
 
-	NewDoubleQLearningNeuralNetworkModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
+	NewClippedDoubleQLearningNeuralNetworkModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
 
-	NewDoubleQLearningNeuralNetworkModel.discountFactor =  discountFactor or defaultDiscountFactor
-	
-	NewDoubleQLearningNeuralNetworkModel.averagingRate = averagingRate or defaultAveragingRate
+	NewClippedDoubleQLearningNeuralNetworkModel.discountFactor =  discountFactor or defaultDiscountFactor
 
-	NewDoubleQLearningNeuralNetworkModel.currentNumberOfEpisodes = 0
+	NewClippedDoubleQLearningNeuralNetworkModel.currentNumberOfEpisodes = 0
 
-	NewDoubleQLearningNeuralNetworkModel.currentEpsilon = epsilon or defaultEpsilon
+	NewClippedDoubleQLearningNeuralNetworkModel.currentEpsilon = epsilon or defaultEpsilon
 
-	NewDoubleQLearningNeuralNetworkModel.previousFeatureVector = nil
+	NewClippedDoubleQLearningNeuralNetworkModel.previousFeatureVector = nil
 
-	NewDoubleQLearningNeuralNetworkModel.printReinforcementOutput = true
+	NewClippedDoubleQLearningNeuralNetworkModel.printReinforcementOutput = true
 
-	NewDoubleQLearningNeuralNetworkModel.replayBufferArray = {}
+	NewClippedDoubleQLearningNeuralNetworkModel.useExperienceReplay = false
 
-	NewDoubleQLearningNeuralNetworkModel.experienceReplayBatchSize = defaultExperienceReplayBatchSize
+	NewClippedDoubleQLearningNeuralNetworkModel.ModelParametersArray = {}
 
-	NewDoubleQLearningNeuralNetworkModel.useExperienceReplay = false
-
-	NewDoubleQLearningNeuralNetworkModel.maxExperienceReplayBufferSize = defaultMaxExperienceReplayBufferSize
-
-	NewDoubleQLearningNeuralNetworkModel.numberOfReinforcementsForExperienceReplayUpdate = defaultNumberOfReinforcementsForExperienceReplayUpdate
-
-	NewDoubleQLearningNeuralNetworkModel.numberOfReinforcements = 0
-	
-	NewDoubleQLearningNeuralNetworkModel.PrimaryModelParameters = nil
-
-	return NewDoubleQLearningNeuralNetworkModel
+	return NewClippedDoubleQLearningNeuralNetworkModel
 
 end
 
-function DoubleQLearningNeuralNetworkModel:setExperienceReplay(useExperienceReplay, experienceReplayBatchSize, numberOfReinforcementsForExperienceReplayUpdate, maxExperienceReplayBufferSize)
+function ClippedDoubleQLearningNeuralNetworkModel:setExperienceReplay(useExperienceReplay, experienceReplayBatchSize, numberOfReinforcementsForExperienceReplayUpdate, maxExperienceReplayBufferSize)
 
 	self.useExperienceReplay = self:getBooleanOrDefaultOption(useExperienceReplay, self.useExperienceReplay)
 
-	self.experienceReplayBatchSize = experienceReplayBatchSize or self.experienceReplayBatchSize
+	if (self.useExperienceReplay) then
 
-	self.numberOfReinforcementsForExperienceReplayUpdate = numberOfReinforcementsForExperienceReplayUpdate or self.numberOfReinforcementsForExperienceReplayUpdate 
+		self.ExperienceReplayComponent = ExperienceReplayComponent.new(experienceReplayBatchSize, numberOfReinforcementsForExperienceReplayUpdate, maxExperienceReplayBufferSize)
 
-	self.maxExperienceReplayBufferSize = maxExperienceReplayBufferSize or self.maxExperienceReplayBufferSize
+	else
+
+		self.ExperienceReplayComponent = nil
+
+	end
 
 end
 
-function DoubleQLearningNeuralNetworkModel:setPrintReinforcementOutput(option)
+function ClippedDoubleQLearningNeuralNetworkModel:setPrintReinforcementOutput(option)
 
 	self.printReinforcementOutput = self:getBooleanOrDefaultOption(option, self.printReinforcementOutput)
 
 end
 
-function DoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor, averagingRate)
+function ClippedDoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -105,88 +91,66 @@ function DoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, 
 	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
 
 	self.discountFactor =  discountFactor or self.discountFactor
-	
-	self.averagingRate = averagingRate or self.averagingRate
 
 	self.currentEpsilon = epsilon or self.currentEpsilon
 
 end
 
-function DoubleQLearningNeuralNetworkModel:rateAverageModelParameters()
-	
-	local TargetModelParameters = self:getModelParameters()
-	
-	for layer = 1, #TargetModelParameters, 1 do
-		
-		local PrimaryModelParametersPart = AqwamMatrixLibrary:multiply(self.averagingRate, self.PrimaryModelParameters[layer])
-		
-		local TargetModelParametersPart = AqwamMatrixLibrary:multiply((1 - self.averagingRate), TargetModelParameters[layer])
-		
-		TargetModelParameters[layer] = AqwamMatrixLibrary:add(PrimaryModelParametersPart, TargetModelParametersPart)
-		
+function ClippedDoubleQLearningNeuralNetworkModel:setModelParametersArray(ModelParameters1, ModelParameters2)
+
+	if (ModelParameters1) or (ModelParameters2) then
+
+		self.ModelParametersArray = {ModelParameters1, ModelParameters2}
+
+	else
+
+		self.ModelParametersArray = {}
+
 	end
-	
-	return TargetModelParameters
-	
+
 end
 
-function DoubleQLearningNeuralNetworkModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function ClippedDoubleQLearningNeuralNetworkModel:getModelParametersArray()
+
+	return self.ModelParametersArray
+
+end
+
+function ClippedDoubleQLearningNeuralNetworkModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
 	
-	if (self.PrimaryModelParameters == nil) then self:generateLayers() end
+	local maxQValues = {}
 	
-	self.PrimaryModelParameters = self:getModelParameters()
+	for i = 1, 2, 1 do
+		
+		self:setModelParameters(self.ModelParametersArray[i])
 
-	local predictedValue, maxQValue = self:predict(currentFeatureVector)
+		local predictedValue, maxQValue = self:predict(currentFeatureVector)
+		
+		table.insert(maxQValues, maxQValue[1][1])
+		
+	end
 
-	local target = rewardValue + (self.discountFactor * maxQValue[1][1])
+	local maxQValue = math.min(table.unpack(maxQValues))
 
-	local targetVector = self:predict(previousFeatureVector, true)
+	local target = rewardValue + (self.discountFactor * maxQValue)
 
 	local actionIndex = table.find(self.ClassesList, action)
-
-	targetVector[1][actionIndex] = target
-
-	self:train(previousFeatureVector, targetVector)
 	
-	local TargetModelParameters = self:rateAverageModelParameters()
-	
-	self:setModelParameters(TargetModelParameters)
-
-end
-
-function DoubleQLearningNeuralNetworkModel:sampleBatch()
-
-	local batch = {}
-
-	for i = 1, self.experienceReplayBatchSize, 1 do
-
-		local index = Random.new():NextInteger(1, #self.replayBufferArray)
-
-		table.insert(batch, self.replayBufferArray[index])
-
-	end
-
-	return batch
-
-end
-
-function DoubleQLearningNeuralNetworkModel:experienceReplayUpdate()
-
-	if (#self.replayBufferArray < self.experienceReplayBatchSize) then return nil end
-
-	local experienceReplayBatch = self:sampleBatch()
-
-	for _, experience in ipairs(experienceReplayBatch) do -- (s1, a, r, s2)
-
-		self:update(experience[1], experience[2], experience[3], experience[4])
-
+	for i = 1, 2, 1 do
+		
+		self:setModelParameters(self.ModelParametersArray[i])
+		
+		local targetVector = self:predict(previousFeatureVector, true)
+		
+		targetVector[1][actionIndex] = maxQValue
+		
+		self:train(previousFeatureVector, targetVector)
+		
 	end
 
 end
 
-function DoubleQLearningNeuralNetworkModel:reset()
-
-	self.numberOfReinforcements = 0
+function ClippedDoubleQLearningNeuralNetworkModel:reset()
 
 	self.currentNumberOfEpisodes = 0
 
@@ -194,17 +158,17 @@ function DoubleQLearningNeuralNetworkModel:reset()
 
 	self.currentEpsilon = self.epsilon
 
-	self.replayBufferArray = {}
-
 	for i, Optimizer in ipairs(self.OptimizerTable) do
 
 		if Optimizer then Optimizer:reset() end
 
 	end
 
+	if (self.useExperienceReplay) then self.ExperienceReplayComponent:reset() end
+
 end
 
-function DoubleQLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+function ClippedDoubleQLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
@@ -254,15 +218,13 @@ function DoubleQLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewar
 
 	if (self.useExperienceReplay) and (self.previousFeatureVector) then 
 
-		self.numberOfReinforcements = (self.numberOfReinforcements + 1) % self.numberOfReinforcementsForExperienceReplayUpdate
+		self.ExperienceReplayComponent:addExperience(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		if (self.numberOfReinforcements == 0) then self:experienceReplayUpdate() end
+		self.ExperienceReplayComponent:run(function(previousStateVector, action, rewardValue, currentStateVector)
 
-		local experience = {self.previousFeatureVector, action, rewardValue, currentFeatureVector}
+			self:update(previousStateVector, action, rewardValue, currentStateVector)
 
-		table.insert(self.replayBufferArray, experience)
-
-		if (#self.replayBufferArray >= self.maxExperienceReplayBufferSize) then table.remove(self.replayBufferArray, 1) end
+		end)
 
 	end
 
@@ -276,4 +238,4 @@ function DoubleQLearningNeuralNetworkModel:reinforce(currentFeatureVector, rewar
 
 end
 
-return DoubleQLearningNeuralNetworkModel
+return ClippedDoubleQLearningNeuralNetworkModel

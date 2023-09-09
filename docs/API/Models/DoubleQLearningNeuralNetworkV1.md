@@ -132,7 +132,7 @@ DoubleQLearningNeuralNetwork:reset()
 
 ### setModelParametersArray()
 
-Gets model parameters to be used by the model.
+Sets model parameters to be used by the model.
 
 ```
 DoubleQLearningNeuralNetwork:setModelParametersArray(ModelParameters1: ModelParameters, ModelParameters2: ModelParameters)
@@ -146,7 +146,7 @@ DoubleQLearningNeuralNetwork:setModelParametersArray(ModelParameters1: ModelPara
 
 ### getModelParametersArray()
 
-Sets model parameters to be used by the model.
+Gets model parameters array used by the model. It contains two model parameters.
 
 ```
 DoubleQLearningNeuralNetwork:getModelParametersArray(): ModelParameters

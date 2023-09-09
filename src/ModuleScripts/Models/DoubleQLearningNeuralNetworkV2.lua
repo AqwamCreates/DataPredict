@@ -104,13 +104,13 @@ function DoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, 
 
 end
 
-local function rateAverageModelParameters(averagingRate, PrimaryModelParametersPart, TargetModelParameters)
+local function rateAverageModelParameters(averagingRate, PrimaryModelParameters, TargetModelParameters)
 	
 	local averagingRateComplement = 1 - averagingRate
 	
 	for layer = 1, #TargetModelParameters, 1 do
 		
-		local PrimaryModelParametersPart = AqwamMatrixLibrary:multiply(averagingRate, PrimaryModelParametersPart[layer])
+		local PrimaryModelParametersPart = AqwamMatrixLibrary:multiply(averagingRate, PrimaryModelParameters[layer])
 		
 		local TargetModelParametersPart = AqwamMatrixLibrary:multiply(averagingRateComplement, TargetModelParameters[layer])
 		

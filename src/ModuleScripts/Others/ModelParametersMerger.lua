@@ -147,7 +147,7 @@ local function convertValueArrayToPercentageArray(array)
 		table.insert(percentageArray, percentage)
 
 	end
-
+	
 	return percentageArray
 
 end
@@ -254,7 +254,7 @@ local function convertErrorArrayToAccuracyArray(errorArray)
 
 end
 
-local function generateAccuracyArray(Model, ModelParametersArray, featureMatrix, labelVector)
+local function generateAccuracyArrayForClassification(Model, ModelParametersArray, featureMatrix, labelVector)
 
 	local accuracyArray = {}
 
@@ -267,16 +267,12 @@ local function generateAccuracyArray(Model, ModelParametersArray, featureMatrix,
 		local totalCorrect = 0
 
 		Model:setModelParameters(ModelParameters)
+		
+		local predictedlabelVector = Model:predict(featureMatrix)
 
 		for j = 1, totalLabel, 1 do
 
-			local label = Model:predict(featureMatrix)
-
-			if (label == labelVector[j][1]) then
-
-				totalCorrect += 1
-
-			end
+			if (predictedlabelVector[j][1] == labelVector[j][1]) then totalCorrect += 1 end
 
 		end
 
@@ -318,9 +314,9 @@ local function generateAccuracyForEachModel(Model, modelType, mergeType, ModelPa
 
 	elseif (modelType == "classification") then
 
-		accuracyArray = generateAccuracyArray(Model, ModelParametersArray, featureMatrix, labelVector)
+		accuracyArray = generateAccuracyArrayForClassification(Model, ModelParametersArray, featureMatrix, labelVector)
 
-	elseif (modelType == "clustering") and (mergeType ~= "average") then
+	elseif (modelType == "clustering") then
 
 		local errorArray = generateErrorArrayForClustering(Model, ModelParametersArray, featureMatrix)
 
@@ -363,8 +359,12 @@ local function getSplitPercentageArray(mergeType, accuracyArray)
 	local percentageSplitArray
 	
 	local numberOfModelParameters = #accuracyArray
-
-	if (mergeType == "weightedAverage") then
+	
+	if (mergeType == "average") then
+		
+		percentageSplitArray = {}
+	
+	elseif (mergeType == "weightedAverage") then
 
 		percentageSplitArray = convertValueArrayToPercentageArray(accuracyArray)
 

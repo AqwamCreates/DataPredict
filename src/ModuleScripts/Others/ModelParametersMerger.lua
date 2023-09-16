@@ -370,7 +370,7 @@ local function getSplitPercentageArray(mergeType, accuracyArray)
 		
 	elseif (mergeType == "weightedAverageEqual") then
 		
-		local average = 1/numberOfModelParameters
+		local average = 1 / numberOfModelParameters
 		
 		percentageSplitArray = table.create(numberOfModelParameters, average)
 
@@ -383,7 +383,6 @@ local function getSplitPercentageArray(mergeType, accuracyArray)
 		if (areAllZeroes == true) then 
 			
 			bestModelParametersIndex = Random.new():NextInteger(1, numberOfModelParameters)
-
 			
 		else
 			

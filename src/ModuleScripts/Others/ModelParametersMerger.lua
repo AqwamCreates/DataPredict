@@ -367,6 +367,12 @@ local function getSplitPercentageArray(mergeType, accuracyArray)
 	elseif (mergeType == "weightedAverage") then
 
 		percentageSplitArray = convertValueArrayToPercentageArray(accuracyArray)
+		
+	elseif (mergeType == "weightedAverageEqual") then
+		
+		local average = 1/numberOfModelParameters
+		
+		percentageSplitArray = table.create(numberOfModelParameters, average)
 
 	elseif (mergeType == "best") then
 

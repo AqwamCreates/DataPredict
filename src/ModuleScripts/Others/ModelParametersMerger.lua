@@ -114,66 +114,6 @@ local function generateModelParametersTableWithMatricesOfZeroValues(ModelParamet
 
 end
 
-local function applyFunctionToEachMatricesInModelParameters(functionToApply, ModelParameters)
-
-	for k, matrix in ipairs(ModelParameters) do
-
-		ModelParameters[k] =  AqwamMatrixLibrary:applyFunction(functionToApply, matrix)
-
-	end
-
-	return ModelParameters
-
-end
-
-local function applyFunctionToModelParameters(functionToApply, ModelParametersArray)
-
-	local NewModelParameters = generateModelParametersTableWithMatricesOfZeroValues(ModelParametersArray[1])
-
-	for i, ModelParameters in ipairs(ModelParametersArray) do
-
-		for j, matrix in ipairs(ModelParameters) do
-
-			NewModelParameters[j] = AqwamMatrixLibrary:applyFunction(functionToApply, NewModelParameters[j], matrix)
-
-		end
-
-	end
-
-	return NewModelParameters
-
-end
-
-local function simpleAverageMerge(ModelParametersArray)
-
-	local NewModelParameters
-
-	local numberOfModelParameters = #ModelParametersArray
-
-	local isTable = checkIfIsTable(ModelParametersArray[1])
-
-	if isTable then
-
-		local averageFunction = function(x) return (x / numberOfModelParameters) end
-
-		local addFunction = function(x, y) return (x + y) end
-
-		NewModelParameters = applyFunctionToModelParameters(addFunction, ModelParametersArray)
-
-		NewModelParameters = applyFunctionToEachMatricesInModelParameters(averageFunction, NewModelParameters)
-
-	else
-
-		NewModelParameters = AqwamMatrixLibrary:add(table.unpack(ModelParametersArray))
-
-		NewModelParameters = AqwamMatrixLibrary:divide(NewModelParameters, numberOfModelParameters)
-
-	end
-
-	return NewModelParameters
-
-end
-
 local function calculateTotalFromArray(array)
 
 	local total = 0
@@ -252,7 +192,7 @@ local function calculateScaledModelParameters(ModelParametersArray, percentageAr
 
 end
 
-local function generateErrorArray(Model, ModelParametersArray, featureMatrix, labelVector)
+local function generateErrorArrayForRegression(Model, ModelParametersArray, featureMatrix, labelVector)
 
 	local errorArray = {}
 
@@ -314,42 +254,6 @@ local function convertErrorArrayToAccuracyArray(errorArray)
 
 end
 
-local function weightedAverageMergeRegression(Model, ModelParametersArray, featureMatrix, labelVector)
-
-	local errorArray =  generateErrorArray(Model, ModelParametersArray, featureMatrix, labelVector)
-
-	local accuracyArray = convertErrorArrayToAccuracyArray(errorArray)
-
-	local NewModelParameters = calculateScaledModelParameters(ModelParametersArray, accuracyArray)
-
-	return NewModelParameters
-
-end
-
-local function weightedAverageMergeClustering(Model, ModelParametersArray, featureMatrix, labelVector)
-	
-	local isTable = checkIfIsTable(ModelParametersArray[1])
-	
-	local errorArray =  generateErrorArrayForClustering(Model, ModelParametersArray, featureMatrix)
-
-	local accuracyArray = convertErrorArrayToAccuracyArray(errorArray)
-
-	local NewModelParameters
-	
-	if (isTable) then
-		
-		NewModelParameters = calculateScaledModelParametersTable(ModelParametersArray, accuracyArray)
-		
-	else
-		
-		NewModelParameters = calculateScaledModelParameters(ModelParametersArray, accuracyArray)
-		
-	end
-	
-	return NewModelParameters
-	
-end
-
 local function generateAccuracyArray(Model, ModelParametersArray, featureMatrix, labelVector)
 
 	local accuracyArray = {}
@@ -402,126 +306,130 @@ local function checkIfAllValuesAreZeroesInArray(array)
 
 end
 
-local function weightedAverageMergeClassification(Model, ModelParametersArray, featureMatrix, labelVector)
+local function generateAccuracyForEachModel(Model, modelType, mergeType, ModelParametersArray, featureMatrix, labelVector)
+	
+	local accuracyArray
+	
+	if (modelType == "regression") and (mergeType ~= "average") then
 
-	local isTable = checkIfIsTable(ModelParametersArray[1])
+		local errorArray = generateErrorArrayForRegression(Model, ModelParametersArray, featureMatrix, labelVector)
 
-	local accuracyArray = generateAccuracyArray(Model, ModelParametersArray, featureMatrix, labelVector)
+		accuracyArray = convertErrorArrayToAccuracyArray(errorArray)
 
-	local accuracyPercentageArray = convertValueArrayToPercentageArray(accuracyArray)
+	elseif (modelType == "classification") and (mergeType ~= "average") then
 
-	local areAllZeroes = checkIfAllValuesAreZeroesInArray(accuracyPercentageArray)
+		accuracyArray = generateAccuracyArray(Model, ModelParametersArray, featureMatrix, labelVector)
 
-	local NewModelParameters
+	elseif (modelType == "clustering") and (mergeType ~= "average") then
 
-	if (areAllZeroes == true) then
+		local errorArray = generateErrorArrayForClustering(Model, ModelParametersArray, featureMatrix)
 
-		local randomModelParametersIndex = Random.new():NextInteger(1, #ModelParametersArray)
-
-		return ModelParametersArray[randomModelParametersIndex]
-
-	end
-
-	if isTable then
-
-		NewModelParameters = calculateScaledModelParametersTable(ModelParametersArray, accuracyPercentageArray)
+		accuracyArray = convertErrorArrayToAccuracyArray(errorArray)
 
 	else
 
-		NewModelParameters = calculateScaledModelParameters(ModelParametersArray, accuracyPercentageArray)
+		error("Invalid model type!")
 
 	end
-
-	return NewModelParameters
-
+	
+	return accuracyArray
+	
 end
 
-local function weightedAverageMerge(Model, ModelParametersArray, modelType, featureMatrix, labelVector)
-
-	local NewModelParameters
-
-	local numberOfModelParameters = #ModelParametersArray
-
-	if (modelType == "regression") then
-
-		NewModelParameters =  weightedAverageMergeRegression(Model, ModelParametersArray, featureMatrix, labelVector)
-
-	elseif (modelType == "classification") then
-
-		NewModelParameters = weightedAverageMergeClassification(Model, ModelParametersArray, featureMatrix, labelVector)
-		
-		
-	elseif (modelType == "clustering") then
-		
-		NewModelParameters = weightedAverageMergeClustering(Model, ModelParametersArray, featureMatrix, labelVector)
-
-	end
-
-	return NewModelParameters
-
-end
-
-local function bestMerge(Model, ModelParametersArray, modelType, featureMatrix, labelVector)
+local function getIndexOfHighestAccuracy(accuracyArray)
 	
-	local errorArray
+	local index
 	
-	local accuracyArray
-
-	local NewModelParameters
-
 	local highestAccuracy = -math.huge
-
-	if (modelType == "regression")  then
-
-		errorArray = generateErrorArray(Model, ModelParametersArray, featureMatrix, labelVector)
-
-		accuracyArray = convertErrorArrayToAccuracyArray(errorArray)
-
-	elseif (modelType == "classification") then
-
-		accuracyArray = generateAccuracyArray(Model, ModelParametersArray, featureMatrix, labelVector)
-		
-	elseif (modelType == "clustering") then
-		
-		errorArray = generateErrorArrayForClustering(Model, ModelParametersArray, featureMatrix)
-
-		accuracyArray = convertErrorArrayToAccuracyArray(errorArray)
-		
-	end
-
-	local areAllZeroes = checkIfAllValuesAreZeroesInArray(accuracyArray)
-
-	if (areAllZeroes == true) then
-
-		local randomModelParametersIndex = Random.new():NextInteger(1, #ModelParametersArray)
-
-		return ModelParametersArray[randomModelParametersIndex]
-
-	end
 
 	for i, accuracy in ipairs(accuracyArray)  do
 
 		if (accuracy > highestAccuracy) then 
 
-			highestAccuracy = accuracy
+			highestAccuracy = accuracy 
 
-			NewModelParameters = ModelParametersArray[i]
+			index = i
 
 		end
 
 	end
+	
+	return index
+	
+end
 
+local function getSplitPercentageArray(mergeType, accuracyArray, numberOfModelParameters)
+	
+	local percentageSplitArray
+	
+	if (mergeType == "average") then
+
+		local averageValue = 1 / numberOfModelParameters
+
+		percentageSplitArray = table.create(numberOfModelParameters, averageValue)
+
+	elseif (mergeType == "weightedAverage") then
+
+		percentageSplitArray = convertValueArrayToPercentageArray(accuracyArray)
+
+	elseif (mergeType == "best") then
+
+		local areAllZeroes = checkIfAllValuesAreZeroesInArray(accuracyArray)
+		
+		local bestModelParametersIndex
+
+		if (areAllZeroes == true) then 
+			
+			bestModelParametersIndex = Random.new():NextInteger(1, numberOfModelParameters)
+
+			
+		else
+			
+			bestModelParametersIndex = getIndexOfHighestAccuracy(accuracyArray)
+
+		end
+		
+		percentageSplitArray = table.create(numberOfModelParameters, 0)
+
+		percentageSplitArray[bestModelParametersIndex] = 1
+
+	else
+
+		error("Invalid merge type!")
+
+	end
+	
+	return percentageSplitArray
+	
+end
+
+local function mergeModelParameters(ModelParametersArray, percentageSplitArray)
+	
+	local NewModelParameters
+	
+	local isTable = checkIfIsTable(ModelParametersArray[1])
+	
+	if isTable then
+
+		NewModelParameters = calculateScaledModelParametersTable(ModelParametersArray, percentageSplitArray)
+
+	else
+
+		NewModelParameters = calculateScaledModelParameters(ModelParametersArray, percentageSplitArray)
+
+	end
+	
 	return NewModelParameters
-
+	
 end
 
 function ModelParametersMerger:generate()
 
 	local Model = self.Model
-
-	local mergeType = self.mergeType
-
+	
 	local modelType = self.modelType
+	
+	local mergeType = self.mergeType
 
 	local featureMatrix = self.featureMatrix
 
@@ -529,27 +437,17 @@ function ModelParametersMerger:generate()
 
 	local ModelParametersArray = self.ModelParametersArray
 	
-	if (typeof(ModelParametersArray) ~= "table") then error("No model parameters set!") end
-
+	local numberOfModelParameters = #ModelParametersArray
+	
 	local NewModelParameters
-
-	if (mergeType == "average") then
-
-		NewModelParameters = simpleAverageMerge(ModelParametersArray)
-
-	elseif (mergeType == "weightedAverage") then
-
-		NewModelParameters = weightedAverageMerge(Model, ModelParametersArray, modelType, featureMatrix, labelVector)
-
-	elseif (mergeType == "best") then
-
-		NewModelParameters = bestMerge(Model, ModelParametersArray, modelType, featureMatrix, labelVector)
-
-	else
-
-		error("Invalid merge type!")
-
-	end
+	
+	if (typeof(ModelParametersArray) ~= "table") then error("No model parameters set!") end
+	
+	local accuracyArray = generateAccuracyForEachModel(Model, modelType, mergeType, ModelParametersArray, featureMatrix, labelVector) 
+	
+	local percentageSplitArray = getSplitPercentageArray(mergeType, accuracyArray, numberOfModelParameters)
+	
+	local NewModelParameters = mergeModelParameters(ModelParametersArray, percentageSplitArray)
 
 	return NewModelParameters
 

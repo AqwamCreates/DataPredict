@@ -358,9 +358,11 @@ local function getIndexOfHighestAccuracy(accuracyArray)
 	
 end
 
-local function getSplitPercentageArray(mergeType, accuracyArray, numberOfModelParameters)
+local function getSplitPercentageArray(mergeType, accuracyArray)
 	
 	local percentageSplitArray
+	
+	local numberOfModelParameters = #accuracyArray
 	
 	if (mergeType == "average") then
 
@@ -437,15 +439,11 @@ function ModelParametersMerger:generate()
 
 	local ModelParametersArray = self.ModelParametersArray
 	
-	local numberOfModelParameters = #ModelParametersArray
-	
-	local NewModelParameters
-	
 	if (typeof(ModelParametersArray) ~= "table") then error("No model parameters set!") end
 	
 	local accuracyArray = generateAccuracyForEachModel(Model, modelType, mergeType, ModelParametersArray, featureMatrix, labelVector) 
 	
-	local percentageSplitArray = getSplitPercentageArray(mergeType, accuracyArray, numberOfModelParameters)
+	local percentageSplitArray = getSplitPercentageArray(mergeType, accuracyArray)
 	
 	local NewModelParameters = mergeModelParameters(ModelParametersArray, percentageSplitArray)
 

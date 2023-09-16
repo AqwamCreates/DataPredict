@@ -16,7 +16,7 @@ ModelParametersMerger.new(Model: ModelObject, modelType: string, mergeType: stri
 
 * modelType: The type where the model falls under. Available options are "regression", "classification" and "clustering".
 
-* mergeType: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are "average", "weightedAverage" and "best".
+* mergeType: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are "average", "weightedAverage", "weightedAverageEqual", and "best".
 
 #### Returns:
 
@@ -38,7 +38,7 @@ ModelParametersMerger:setParameters(Model: ModelObject, modelType: string, merge
 
 * modelType: The type where the model falls under. Available options are "regression", "classification" and "clustering".
 
-* mergeType: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are "average", "weightedAverage" and "best".
+* mergeType: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are "average", "weightedAverage", "weightedAverageEqual", and "best".
 
 ### setModelParameters()
 
@@ -80,7 +80,7 @@ ModelParametersMerger:generate(): table / matrix
 
 ## Notes
 
-* "weighted average" and "best" does not work with models that do not store tables of matrices or matrix. It also does not work for sequential models. For example:
+* "weightedAverage" and "best" does not work with models that do not store tables of matrices or matrix. It also does not work for sequential models. For example:
 
   *  DBSCAN and AffinityPropagation models.
 

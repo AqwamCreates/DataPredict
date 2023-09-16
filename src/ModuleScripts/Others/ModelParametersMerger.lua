@@ -310,13 +310,13 @@ local function generateAccuracyForEachModel(Model, modelType, mergeType, ModelPa
 	
 	local accuracyArray
 	
-	if (modelType == "regression") and (mergeType ~= "average") then
+	if (modelType == "regression") then
 
 		local errorArray = generateErrorArrayForRegression(Model, ModelParametersArray, featureMatrix, labelVector)
 
 		accuracyArray = convertErrorArrayToAccuracyArray(errorArray)
 
-	elseif (modelType == "classification") and (mergeType ~= "average") then
+	elseif (modelType == "classification") then
 
 		accuracyArray = generateAccuracyArray(Model, ModelParametersArray, featureMatrix, labelVector)
 
@@ -363,14 +363,8 @@ local function getSplitPercentageArray(mergeType, accuracyArray)
 	local percentageSplitArray
 	
 	local numberOfModelParameters = #accuracyArray
-	
-	if (mergeType == "average") then
 
-		local averageValue = 1 / numberOfModelParameters
-
-		percentageSplitArray = table.create(numberOfModelParameters, averageValue)
-
-	elseif (mergeType == "weightedAverage") then
+	if (mergeType == "weightedAverage") then
 
 		percentageSplitArray = convertValueArrayToPercentageArray(accuracyArray)
 
@@ -405,19 +399,67 @@ local function getSplitPercentageArray(mergeType, accuracyArray)
 	
 end
 
-local function mergeModelParameters(ModelParametersArray, percentageSplitArray)
+local function applyFunctionToEachMatricesInModelParameters(functionToApply, ModelParameters)
+
+	for k, matrix in ipairs(ModelParameters) do
+
+		ModelParameters[k] =  AqwamMatrixLibrary:applyFunction(functionToApply, matrix)
+
+	end
+
+	return ModelParameters
+
+end
+
+local function applyFunctionToModelParameters(functionToApply, ModelParametersArray)
+
+	local NewModelParameters = generateModelParametersTableWithMatricesOfZeroValues(ModelParametersArray[1])
+
+	for i, ModelParameters in ipairs(ModelParametersArray) do
+
+		for j, matrix in ipairs(ModelParameters) do
+
+			NewModelParameters[j] = AqwamMatrixLibrary:applyFunction(functionToApply, NewModelParameters[j], matrix)
+
+		end
+
+	end
+
+	return NewModelParameters
+
+end
+
+local function mergeModelParameters(mergeType, ModelParametersArray, percentageSplitArray)
 	
 	local NewModelParameters
 	
+	local numberOfModelParameters = #ModelParametersArray
+	
 	local isTable = checkIfIsTable(ModelParametersArray[1])
 	
-	if isTable then
+	if (isTable) and (mergeType ~= "average") then
 
 		NewModelParameters = calculateScaledModelParametersTable(ModelParametersArray, percentageSplitArray)
 
-	else
+	elseif (isTable == false) and (mergeType ~= "average") then
 
 		NewModelParameters = calculateScaledModelParameters(ModelParametersArray, percentageSplitArray)
+		
+	elseif (isTable) and (mergeType == "average") then
+		
+		local averageFunction = function(x) return (x / numberOfModelParameters) end
+
+		local addFunction = function(x, y) return (x + y) end
+
+		NewModelParameters = applyFunctionToModelParameters(addFunction, ModelParametersArray)
+
+		NewModelParameters = applyFunctionToEachMatricesInModelParameters(averageFunction, NewModelParameters)
+
+	elseif (isTable == false) and (mergeType == "average") then
+
+		NewModelParameters = AqwamMatrixLibrary:add(table.unpack(ModelParametersArray))
+
+		NewModelParameters = AqwamMatrixLibrary:divide(NewModelParameters, numberOfModelParameters)
 
 	end
 	
@@ -445,7 +487,7 @@ function ModelParametersMerger:generate()
 	
 	local percentageSplitArray = getSplitPercentageArray(mergeType, accuracyArray)
 	
-	local NewModelParameters = mergeModelParameters(ModelParametersArray, percentageSplitArray)
+	local NewModelParameters = mergeModelParameters(mergeType, ModelParametersArray, percentageSplitArray)
 
 	return NewModelParameters
 

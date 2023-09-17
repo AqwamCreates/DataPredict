@@ -52,7 +52,7 @@ ModelParametersMerger:setModelParametersArray(...: table/matrix)
 
 * ModelParameter: A table / matrix containg the models' pararameters. The number of parameters determines number of model parameters to be used by the ModelParametersMerger.
 
-#### setCustomSplitPercentageArray()
+### setCustomSplitPercentageArray()
 
 Sets a custom split percentage for each of the model parameters.
 

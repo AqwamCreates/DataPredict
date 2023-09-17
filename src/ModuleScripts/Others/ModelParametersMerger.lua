@@ -27,6 +27,8 @@ function ModelParametersMerger.new(Model, modelType, mergeType)
 	NewModelParametersMerger.featureMatrix = nil
 
 	NewModelParametersMerger.labelVector = nil
+	
+	NewModelParametersMerger.customSplitPercentage = {}
 
 	return NewModelParametersMerger
 
@@ -50,6 +52,12 @@ function ModelParametersMerger:setModelParameters(...)
 	
 	self.ModelParametersArray = proccesedModelsArray
 
+end
+
+function ModelParametersMerger:setCustomSplitPercentage(splitPercentageArray)
+	
+	self.customSplitPercentage = splitPercentageArray or self.customSplitPercentage
+	
 end
 
 function ModelParametersMerger:setData(featureMatrix, labelVector)
@@ -490,7 +498,17 @@ function ModelParametersMerger:generate()
 	
 	local accuracyArray = generateAccuracyForEachModel(Model, modelType, mergeType, ModelParametersArray, featureMatrix, labelVector) 
 	
-	local percentageSplitArray = getSplitPercentageArray(mergeType, accuracyArray)
+	local percentageSplitArray
+	
+	if (mergeType == "custom") then
+		
+		percentageSplitArray = self.customSplitPercentage
+		
+	else
+		
+		percentageSplitArray = getSplitPercentageArray(mergeType, accuracyArray)
+		
+	end
 	
 	local NewModelParameters = mergeModelParameters(mergeType, ModelParametersArray, percentageSplitArray)
 

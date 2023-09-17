@@ -18,15 +18,15 @@ ModelParametersMerger.new(Model: ModelObject, modelType: string, mergeType: stri
 
 * mergeType: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are:
 
- * average
+  * average
 
- * weightedAverage
+  * weightedAverage
 
- * weightedAverageEqual
+  * weightedAverageEqual
 
- * best
+  * best
 
- * custom
+  * custom
 
 #### Returns:
 
@@ -50,15 +50,15 @@ ModelParametersMerger:setParameters(Model: ModelObject, modelType: string, merge
 
 * mergeType: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are:
 
- * average
+  * average
 
- * weightedAverage
+  * weightedAverage
 
- * weightedAverageEqual
+  * weightedAverageEqual
 
- * best
+  * best
 
- * custom
+  * custom
 
 ### setModelParameters()
 

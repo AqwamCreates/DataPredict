@@ -16,7 +16,17 @@ ModelParametersMerger.new(Model: ModelObject, modelType: string, mergeType: stri
 
 * modelType: The type where the model falls under. Available options are "regression", "classification" and "clustering".
 
-* mergeType: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are "average", "weightedAverage", "weightedAverageEqual", and "best".
+* mergeType: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are:
+
+ * average
+
+ * weightedAverage
+
+ * weightedAverageEqual
+
+ * best
+
+ * custom
 
 #### Returns:
 
@@ -38,7 +48,17 @@ ModelParametersMerger:setParameters(Model: ModelObject, modelType: string, merge
 
 * modelType: The type where the model falls under. Available options are "regression", "classification" and "clustering".
 
-* mergeType: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are "average", "weightedAverage", "weightedAverageEqual", and "best".
+* mergeType: Sets how a new ModelParameters is generated from given multiple ModelParameters. Available options are:
+
+ * average
+
+ * weightedAverage
+
+ * weightedAverageEqual
+
+ * best
+
+ * custom
 
 ### setModelParameters()
 

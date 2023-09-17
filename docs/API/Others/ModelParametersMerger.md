@@ -74,7 +74,7 @@ ModelParametersMerger:setModelParametersArray(...: table/matrix)
 
 ### setCustomSplitPercentageArray()
 
-Sets a custom split percentage for each of the model parameters.
+Sets a custom split percentage for each of the model parameters. This will be used when "custom" merge type is used.
 
 ```
 ModelParametersMerger:setCustomSplitPercentageArray(splitPercentageArray: number[])

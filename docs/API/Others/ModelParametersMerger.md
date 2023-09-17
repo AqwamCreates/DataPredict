@@ -52,6 +52,18 @@ ModelParametersMerger:setModelParametersArray(...: table/matrix)
 
 * ModelParameter: A table / matrix containg the models' pararameters. The number of parameters determines number of model parameters to be used by the ModelParametersMerger.
 
+#### setCustomSplitPercentageArray()
+
+Sets a custom split percentage for each of the model parameters.
+
+```
+ModelParametersMerger:setCustomSplitPercentageArray(splitPercentageArray: number[])
+```
+
+#### Parameters:
+
+* Sets the percentage to be applied to individual model parameters. The index of each value in the array determines which model parameter it applies to. For example, if you place 0.5 in the first index, it will apply a 0.5 multiplier to the first model parameter. It is recommended that the sum of all values in the array equals 1.
+
 ### setData()
 
 Set the feature matrix and the label vector to perform certain merges.

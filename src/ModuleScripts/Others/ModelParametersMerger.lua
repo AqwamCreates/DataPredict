@@ -54,7 +54,7 @@ function ModelParametersMerger:setModelParameters(...)
 
 end
 
-function ModelParametersMerger:setCustomSplitPercentage(splitPercentageArray)
+function ModelParametersMerger:setCustomSplitPercentageArray(splitPercentageArray)
 	
 	self.customSplitPercentage = splitPercentageArray or self.customSplitPercentage
 	

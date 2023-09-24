@@ -120,7 +120,7 @@ local function mStep(featureMatrix, responsibilitiesMatrix, numberOfClusters) --
 
 	local sumWeightX = AqwamMatrixLibrary:dotProduct(responsibilitiesMatrixTransposed, featureMatrix) -- clusters x features
 
-	local meanMatrix = AqwamMatrixLibrary:divide(sumWeightX, sumWeight) -- clusters x features
+	local meanMatrix = AqwamMatrixLibrary:divide(sumWeightX, numberOfData) -- clusters x features
 
 	local varianceMatrix = AqwamMatrixLibrary:createMatrix(numberOfClusters, numberOfFeatures)
 
@@ -138,7 +138,7 @@ local function mStep(featureMatrix, responsibilitiesMatrix, numberOfClusters) --
 
 	end
 
-	varianceMatrix = AqwamMatrixLibrary:divide(varianceMatrix, sumWeight)
+	varianceMatrix = AqwamMatrixLibrary:divide(varianceMatrix, numberOfData)
 
 	return piMatrix, meanMatrix, varianceMatrix
 

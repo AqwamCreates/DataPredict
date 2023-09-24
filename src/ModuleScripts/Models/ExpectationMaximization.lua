@@ -21,12 +21,14 @@ local function gaussian(featureVector, meanVector, varianceVector, epsilon)
 	local exponentStep1 = AqwamMatrixLibrary:subtract(featureVector, meanVector)
 
 	local exponentStep2 = AqwamMatrixLibrary:power(exponentStep1, 2)
+	
+	local exponentStep3 = AqwamMatrixLibrary:multiply(varianceVector, 2)
 
-	local exponentStep3 = AqwamMatrixLibrary:divide(exponentStep2, varianceVector)
+	local exponentStep4 = AqwamMatrixLibrary:divide(exponentStep2, exponentStep3)
 
-	local exponentStep4 = AqwamMatrixLibrary:multiply(-0.5, exponentStep3)
+	local exponentStep5 = AqwamMatrixLibrary:multiply(-0.5, exponentStep4)
 
-	local exponentWithTerms = AqwamMatrixLibrary:applyFunction(math.exp, exponentStep4)
+	local exponentWithTerms = AqwamMatrixLibrary:applyFunction(math.exp, exponentStep5)
 	
 	local standardDeviationVector = AqwamMatrixLibrary:applyFunction(math.sqrt, varianceVector)
 

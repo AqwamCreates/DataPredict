@@ -287,6 +287,22 @@ local function createClassesList(labelVector)
 
 end
 
+function NeuralNetworkModel:getActivationLayerAtFinalLayer()
+	
+	local finalLayerActivationFunctionName
+	
+	for layerNumber = #self.activationFunctionTable, 1, -1 do
+		
+		finalLayerActivationFunctionName = self.activationFunctionTable[layerNumber]
+		
+		if (finalLayerActivationFunctionName ~= "None") then break end
+		
+	end
+	
+	return finalLayerActivationFunctionName
+	
+end
+
 function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 	local numberOfNeuronsAtFinalLayer = #self.ModelParameters[#self.ModelParameters][1]
@@ -301,11 +317,7 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 	local incorrectLabelValue
 
-	local numberOfLayers = #self.activationFunctionTable
-
-	local activationFunctionAtFinalLayer = self.activationFunctionTable[numberOfLayers]
-
-	if (activationFunctionAtFinalLayer == "None") then activationFunctionAtFinalLayer = self.activationFunctionTable[numberOfLayers - 1] end
+	local activationFunctionAtFinalLayer = self:getActivationLayerAtFinalLayer()
 
 	if (activationFunctionAtFinalLayer == "Tanh") or (activationFunctionAtFinalLayer == "ELU") then
 
@@ -543,11 +555,9 @@ function NeuralNetworkModel:fetchValueFromScalar(outputVector)
 
 	local numberOfLayers = #self.numberOfNeuronsTable
 
-	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
+	local activationFunctionAtFinalLayer = self:getActivationLayerAtFinalLayer()
 
-	if (activationFunctionName == "None") and (#self.activationFunctionTable > 1) then activationFunctionName = self.activationFunctionTable[numberOfLayers - 1] end
-
-	local isValueOverCutOff = cutOffListForScalarValues[activationFunctionName](value)
+	local isValueOverCutOff = cutOffListForScalarValues[activationFunctionAtFinalLayer](value)
 
 	local classIndex = (isValueOverCutOff and 2) or 1
 

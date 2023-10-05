@@ -280,7 +280,7 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 	
 	costPart4 = AqwamMatrixLibrary:dotProduct(costPart4, costVector)
 	
-	costPart4 *= (0.5 / cValue)
+	costPart4 *= (1 / (2 * cValue))
 	
 	local cost = costPart1 - costPart2 + costPart3 + costPart4
 	

@@ -247,14 +247,16 @@ local function calculateKernel(x, kernelFunction, kernelParameters)
 end
 
 local function calculateCost(modelParameters, individualKernelMatrix, kernelMatrix, labelVector, cValue)
-
-	local numberOfData = #labelVector
-
-	local prediction = AqwamMatrixLibrary:dotProduct(individualKernelMatrix, modelParameters)
-
-	local costVector = AqwamMatrixLibrary:subtract(prediction, labelVector)
 	
-	local transposedCostVector = AqwamMatrixLibrary:transpose(costVector) -- 1 x m
+	local predictedVector = AqwamMatrixLibrary:dotProduct(individualKernelMatrix, modelParameters)
+	
+	local costVector = AqwamMatrixLibrary:subtract(predictedVector, labelVector)
+	
+	costVector = AqwamMatrixLibrary:multiply(-cValue, costVector)
+	
+	local transposedCostVector = AqwamMatrixLibrary:transpose(costVector)
+	
+	local transposedLabelVector = AqwamMatrixLibrary:transpose(labelVector)
 	
 	local costPart1 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix)
 	
@@ -262,22 +264,20 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 	
 	costPart1 = AqwamMatrixLibrary:dotProduct(costPart1, costVector)
 	
-	costPart1 = 0.5 * costPart1
+	costPart1 *= 0.5
 	
-	local costPart2 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix, labelVector) -- 1 x m, m x n
-	
-	local transposedLabelVector = AqwamMatrixLibrary:transpose(labelVector)
+	local costPart2 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix, labelVector)
 	
 	local costPart3 = AqwamMatrixLibrary:dotProduct(transposedLabelVector, labelVector)
 	
-	costPart3 = 0.5 * costPart3
+	costPart3 *= 0.5
 	
 	local costPart4 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix, costVector)
 	
-	costPart4 = (0.5 / cValue) * costPart4
+	costPart4 *= (0.5 / cValue)
 	
 	local cost = costPart1 - costPart2 + costPart3 + costPart4
-
+	
 	return cost
 
 end

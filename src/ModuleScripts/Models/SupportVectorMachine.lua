@@ -248,6 +248,8 @@ end
 
 local function calculateCost(modelParameters, individualKernelMatrix, kernelMatrix, labelVector, cValue)
 	
+	-- The dotProduct() only takes two arguments here to reduce computational time
+	
 	local predictedVector = AqwamMatrixLibrary:dotProduct(individualKernelMatrix, modelParameters)
 	
 	local costVector = AqwamMatrixLibrary:subtract(predictedVector, labelVector)
@@ -266,13 +268,17 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 	
 	costPart1 *= 0.5
 	
-	local costPart2 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix, labelVector)
+	local costPart2 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix)
+	
+	costPart2 = AqwamMatrixLibrary:dotProduct(costPart2, labelVector)
 	
 	local costPart3 = AqwamMatrixLibrary:dotProduct(transposedLabelVector, labelVector)
 	
 	costPart3 *= 0.5
 	
-	local costPart4 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix, costVector)
+	local costPart4 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix)
+	
+	costPart4 = AqwamMatrixLibrary:dotProduct(costPart4, costVector)
 	
 	costPart4 *= (0.5 / cValue)
 	

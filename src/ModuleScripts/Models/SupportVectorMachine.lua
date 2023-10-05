@@ -64,7 +64,13 @@ local mappingList = {
 
 	end,
 
-	["polynomial"] = function(X, degree, gamma, r)
+	["polynomial"] = function(X, kernelParameters)
+		
+		local degree = kernelParameters.degree or defaultDegree
+		
+		local gamma = kernelParameters.gamma or defaultGamma
+		
+		local r = kernelParameters.r or defaultR
 		
 		local scaledX = AqwamMatrixLibrary:multiply(X, gamma)
 		
@@ -74,7 +80,9 @@ local mappingList = {
 
 	end,
 
-	["radialBasisFunction"] = function(X, sigma)
+	["radialBasisFunction"] = function(X, kernelParameters)
+		
+		local sigma	= kernelParameters.sigma or defaultSigma
 
 		local XSquaredVector = AqwamMatrixLibrary:power(X, 2)
 
@@ -97,6 +105,22 @@ local mappingList = {
 		return AqwamMatrixLibrary:divide(X, normXVector)
 
 	end,
+	
+	["sigmoid"] = function(X, kernelParameters)
+
+		local gamma = kernelParameters.gamma or defaultGamma
+
+		local r = kernelParameters.r or defaultR
+		
+		local kernelMatrixPart1 = AqwamMatrixLibrary:multiply(gamma, X)
+
+		local kernelMatrixPart2 = AqwamMatrixLibrary:add(kernelMatrixPart1, r)
+
+		local kernelMatrix = AqwamMatrixLibrary:applyFunction(math.tanh, kernelMatrixPart2)
+		
+		return kernelMatrix
+
+	end,
 
 }
 
@@ -108,27 +132,7 @@ end
 
 local function calculateMapping(x, kernelFunction, kernelParameters)
 
-	if (kernelFunction == "linear") or (kernelFunction == "cosineSimilarity") then
-
-		return mappingList[kernelFunction](x)
-
-	elseif (kernelFunction == "polynomial") then
-
-		local degree = kernelParameters.degree or defaultDegree
-		
-		local gamma = kernelParameters.gamma or defaultGamma
-		
-		local r = kernelParameters.r or defaultR
-
-		return mappingList[kernelFunction](x, degree, gamma, r)
-
-	elseif (kernelFunction == "radialBasisFunction") then
-
-		local sigma = kernelParameters.sigma or defaultSigma
-
-		return mappingList[kernelFunction](x, sigma)
-
-	end
+	return mappingList[kernelFunction](x, kernelParameters)
 
 end
 
@@ -164,7 +168,13 @@ local kernelFunctionList = {
 
 	end,
 
-	["polynomial"] = function(X, degree, gamma, r)
+	["polynomial"] = function(X, kernelParameters)
+		
+		local degree = kernelParameters.degree or defaultDegree
+
+		local gamma = kernelParameters.gamma or defaultGamma
+
+		local r = kernelParameters.r or defaultR
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(X, AqwamMatrixLibrary:transpose(X))
 
@@ -178,7 +188,9 @@ local kernelFunctionList = {
 
 	end,
 
-	["radialBasisFunction"] = function(X, sigma)
+	["radialBasisFunction"] = function(X, kernelParameters)
+		
+		local sigma	= kernelParameters.sigma or defaultSigma
 
 		local distanceMatrix = createDistanceMatrix(X, X, "euclidean")
 
@@ -207,32 +219,30 @@ local kernelFunctionList = {
 		return kernelMatrix
 
 	end,
+	
+	["sigmoid"] = function(X, kernelParameters)
+
+		local gamma = kernelParameters.gamma or defaultGamma
+
+		local r = kernelParameters.r or defaultR
+		
+		local dotProductedX = AqwamMatrixLibrary:dotProduct(X, AqwamMatrixLibrary:transpose(X))
+		
+		local kernelMatrixPart1 = AqwamMatrixLibrary:multiply(gamma, dotProductedX)
+		
+		local kernelMatrixPart2 = AqwamMatrixLibrary:add(kernelMatrixPart1, r)
+		
+		local kernelMatrix = AqwamMatrixLibrary:applyFunction(math.tanh, kernelMatrixPart2)
+		
+		return kernelMatrix
+		
+	end,
 
 }
 
 local function calculateKernel(x, kernelFunction, kernelParameters)
 
-	if (kernelFunction == "linear") or (kernelFunction == "cosineSimilarity") then
-
-		return kernelFunctionList[kernelFunction](x)
-
-	elseif (kernelFunction == "polynomial") then
-
-		local degree = kernelParameters.degree or defaultDegree
-
-		local gamma = kernelParameters.gamma or defaultGamma
-		
-		local r = kernelParameters.r or defaultR
-
-		return kernelFunctionList[kernelFunction](x, degree, gamma, r)
-
-	elseif (kernelFunction == "radialBasisFunction") then
-
-		local sigma = kernelParameters.sigma or defaultSigma
-
-		return kernelFunctionList[kernelFunction](x, sigma)
-
-	end
+	return kernelFunctionList[kernelFunction](x, kernelParameters)
 
 end
 

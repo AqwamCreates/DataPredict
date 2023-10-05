@@ -82,7 +82,7 @@ local mappingList = {
 
 	["radialBasisFunction"] = function(X, kernelParameters)
 		
-		local sigma	= kernelParameters.sigma or defaultSigma
+		local sigma = kernelParameters.sigma or defaultSigma
 
 		local XSquaredVector = AqwamMatrixLibrary:power(X, 2)
 

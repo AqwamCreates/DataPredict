@@ -28,7 +28,17 @@ SupportVectorMachine.new(maxNumberOfIterations: integer, cValue: number, targetC
 
 * targetCost: The cost at which the model stops training.
 
-* kernelFunction: The kernel function to be used to train the model. Available options are "linear", "polynomial", "radialBasisFunction" and "cosineSimilarity".
+* kernelFunction: The kernel function to be used to train the model. Available options are:
+  
+  *  linear
+
+  *  polynomial
+
+  *  radialBasisFunction
+
+  *  cosineSimilarity
+
+  *  sigmoid
 
 * kernelParameters: A table containg the required parameters 
 
@@ -56,7 +66,17 @@ SupportVectorMachine:setParameters(maxNumberOfIterations: integer, cValue: numbe
 
 * targetCost: The cost at which the model stops training.
 
-* kernelFunction: The kernel function to be used to train the model. Available options are "linear", "polynomial", "radialBasisFunction" and "cosineSimilarity".
+* kernelFunction: The kernel function to be used to train the model. Available options are:
+  
+  *  linear
+
+  *  polynomial
+
+  *  radialBasisFunction
+
+  *  cosineSimilarity
+
+  *  sigmoid
 
 * kernelParameters: A table containg the required parameters 
 

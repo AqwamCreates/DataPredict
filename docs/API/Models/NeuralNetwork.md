@@ -6,7 +6,7 @@ NeuralNetwork is a supervised machine learning model that predicts any positive 
 
 Contains a table of matrices.  
 
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J. L does not include the input layer.
+* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J. The row I indicates the number of neurons in previous layer, while column J indicates the number of neurons at next layer.
 
 ## Modded Models
 

@@ -24,7 +24,7 @@ SupportVectorMachine.new(maxNumberOfIterations: integer, cValue: number, targetC
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* cValue: How strict should the model can classify the data correctly. Higher the cValue, less stricter the model can classify the data correctly.
+* cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
 
 * targetCost: The cost at which the model stops training.
 
@@ -62,7 +62,7 @@ SupportVectorMachine:setParameters(maxNumberOfIterations: integer, cValue: numbe
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* cValue: How strict should the model can classify the data correctly. Higher the cValue, less stricter the model can classify the data correctly.
+* cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
 
 * targetCost: The cost at which the model stops training.
 

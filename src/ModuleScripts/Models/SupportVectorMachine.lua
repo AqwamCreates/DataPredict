@@ -193,12 +193,14 @@ local kernelFunctionList = {
 		local sigma	= kernelParameters.sigma or defaultSigma
 
 		local distanceMatrix = createDistanceMatrix(X, X, "euclidean")
+		
+		local squaredDistanceMatrix = AqwamMatrixLibrary:power(distanceMatrix, 2)
 
 		local sigmaSquaredVector = AqwamMatrixLibrary:power(sigma, 2)
 
 		local multipliedSigmaSquaredVector = AqwamMatrixLibrary:multiply(-2, sigmaSquaredVector)
 
-		local zMatrix = AqwamMatrixLibrary:divide(distanceMatrix, multipliedSigmaSquaredVector)
+		local zMatrix = AqwamMatrixLibrary:divide(squaredDistanceMatrix, multipliedSigmaSquaredVector)
 
 		local kernelMatrix = AqwamMatrixLibrary:applyFunction(math.exp, zMatrix)
 

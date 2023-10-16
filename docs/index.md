@@ -19,6 +19,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 By using or possesing any copies of this library, you agree to our [Terms and Conditions](TermsAndConditions.md). In other words, attribution is required when using this library.
 
+Also, thank you Miku for supporting me and wanted to see this project. Hopefully, I can meet you again in another life.
+
 ## Tutorials
 
 [Installation & Usage](Overview/Introduction.md)

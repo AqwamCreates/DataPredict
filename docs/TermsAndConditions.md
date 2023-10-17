@@ -3,6 +3,10 @@
 ## License
 These terms and conditions (“Agreement”) are a legal agreement between you (or company or organization) recognized as “User” and Aqwam Harish Aiman recognised as “Licensor” for the use of DataPredict Library (or formerly known as Aqwam’s Roblox Machine and Deep Learning Library) (“Library”) within this terms and conditions. By using the Library, User,  agrees to be bound by the terms of this Agreement.
 
+## License Exceptions
+
+This license will not be granted to Roblox Corporation or any of its employees. A separate commercial agreement must be made between the Licensor and Roblox Corporation in order to use or possess the Library.
+
 ## Prohibited Actions
 User shall not:
 * Sell, resell, distribute, sublicense, or otherwise transfer the Library, in whole or in part, to any third party, whether for profit or not;

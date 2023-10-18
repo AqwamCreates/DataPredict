@@ -24,7 +24,7 @@ The Library is provided "AS IS" and without warranty of any kind. Licensor shall
 
 ## Removal of Credit
 * If the User wish to remove the credits or source information from the User’s publication or presentation that uses the Library, the User shall seek the Licensor’s confirmation that the library can been removed but may subject to commercial agreement.
-* Once the Licensor have agreed that the library have been removed, the User may remove the credits or source information in any publication or presentation that uses the Library.
+* Once the Licensor have agreed that the Library have been removed, the User may remove the credits or source information in all publications or presentations that uses the Library.
 
 ## Governing Law
 This Agreement shall be governed by and construed in accordance with the laws of a jurisdiction selected at the sole discretion of the Licensor. In the absence of a choice by the Licensor, the laws of Malaysia shall apply.

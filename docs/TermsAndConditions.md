@@ -27,7 +27,7 @@ The Library is provided "AS IS" and without warranty of any kind. Licensor shall
 * If the User wish to remove the credits or source information from the User’s publication or presentation that uses the Library, the User shall seek the Licensor’s confirmation that the Library have been removed but may subject to commercial agreement.
 * Once the Licensor have agreed that the Library have been removed, the User may remove the credits or source information in all publications or presentations that uses the Library.
 
-## Compensatory Damages for Cheating, Cheat and Exploit Distribution, and Anti-Cheat and Anti-Exploit Evasion Distribution
+## Compensatory Damages for Cheating, Exploiting, Cheat and Exploit Distribution, and Anti-Cheat and Anti-Exploit Evasion Distribution
 
 In the event that the User engages in cheating, cheat development, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution, and such actions result in damages to the person/company/organization that owns the target application or the Licensor, the User shall be liable for compensatory damages. These damages may include, but are not limited to, the following:
 
@@ -39,7 +39,7 @@ In the event that the User engages in cheating, cheat development, cheat and exp
 
 * Reputation Damage: If the cheating, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution activities result in damage to the reputation of the person/company/organization that owns the target application or the Licensor, the User shall be liable for compensating them for any harm to their reputation.
 
-* Mitigation Costs: The User shall cover the costs incurred by the person/company/organization that owns the target application or the Licensor in their efforts to mitigate and prevent the effects of cheating, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution.
+* Mitigation Costs: The User shall cover the costs incurred by the person/company/organization that owns the target application or the Licensor in their efforts to mitigate and prevent the effects of cheating, exploiting, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution.
 
 The determination of compensatory damages shall be made by a court of competent jurisdiction, and the User shall be legally bound to fulfill their obligations regarding such damages. The User understands that the Licensor and the person/company/organization that owns the target application reserve the right to pursue any available legal remedies to enforce these compensatory damages.
 

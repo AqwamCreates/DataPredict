@@ -27,7 +27,7 @@ The Library is provided "AS IS" and without warranty of any kind. Licensor shall
 * If the User wish to remove the credits or source information from the User’s publication or presentation that uses the Library, the User shall seek the Licensor’s confirmation that the Library have been removed but may subject to commercial agreement.
 * Once the Licensor have agreed that the Library have been removed, the User may remove the credits or source information in all publications or presentations that uses the Library.
 
-## Compensatory Damages for Cheating, Cheat Evasion, Distribution of Cheats and Distribution Of Cheat Evasions
+## Compensatory Damages for Cheating, Cheat Evasion, Distribution of Cheats and Distribution of Cheat Evasions
 
 In the event that the User engages in cheating, cheat development, cheat evasion, distribution of cheats, or distribution of cheat evasions, and such actions result in damages to the person/company/organisation that owns the target application and the Licensor, the User shall be liable for compensatory damages. These damages may include, but are not limited to, the following:
 

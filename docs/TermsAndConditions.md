@@ -26,7 +26,7 @@ The Library is provided "AS IS" and without warranty of any kind. Licensor shall
 * Once the Licensor have agreed that the library can been removed, the User may remove the credits or source information in any publication or presentation that uses the Library.
 
 ## Governing Law
-This Agreement shall be governed by and construed in accordance with the laws of Malaysia, without giving effect to any principles of conflicts of law.
+This Agreement shall be governed by and construed in accordance with the laws of a jurisdiction selected at the sole discretion of the Licensor. In the absence of a choice by the Licensor, the laws of Malaysia shall apply.
 
 ## Changes to Terms and Conditions
 Licensor reserve the right to change these terms and conditions at any time, without prior notice. User continued use of the software library after such changes will constitute User's acceptance of the new terms and conditions.

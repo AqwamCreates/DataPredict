@@ -31,15 +31,15 @@ The Library is provided "AS IS" and without warranty of any kind. Licensor shall
 
 In the event that the User engages in cheating, cheat development, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution, and such actions result in damages to the person/company/organization that owns the target application or the Licensor, the User shall be liable for compensatory damages. These damages may include, but are not limited to, the following:
 
-Loss of Revenue: The User shall be responsible for compensating the person/company/organization that owns the target application or the Licensor for any loss of revenue incurred due to cheating, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution activities.
+* Loss of Revenue: The User shall be responsible for compensating the person/company/organization that owns the target application or the Licensor for any loss of revenue incurred due to cheating, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution activities.
 
-Profits Derived: The User shall be liable to surrender any profits derived directly or indirectly from cheating, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution, and these profits shall be awarded to the person/company/organization that owns the target application or the Licensor.
+* Profits Derived: The User shall be liable to surrender any profits derived directly or indirectly from cheating, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution, and these profits shall be awarded to the person/company/organization that owns the target application or the Licensor.
 
-Legal Costs: The User shall bear the costs associated with any legal actions, including but not limited to attorney's fees and court costs, initiated by the person/company/organization that owns the target application or the Licensor to address the cheating, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution activities.
+* Legal Costs: The User shall bear the costs associated with any legal actions, including but not limited to attorney's fees and court costs, initiated by the person/company/organization that owns the target application or the Licensor to address the cheating, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution activities.
 
-Reputation Damage: If the cheating, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution activities result in damage to the reputation of the person/company/organization that owns the target application or the Licensor, the User shall be liable for compensating them for any harm to their reputation.
+* Reputation Damage: If the cheating, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution activities result in damage to the reputation of the person/company/organization that owns the target application or the Licensor, the User shall be liable for compensating them for any harm to their reputation.
 
-Mitigation Costs: The User shall cover the costs incurred by the person/company/organization that owns the target application or the Licensor in their efforts to mitigate and prevent the effects of cheating, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution.
+* Mitigation Costs: The User shall cover the costs incurred by the person/company/organization that owns the target application or the Licensor in their efforts to mitigate and prevent the effects of cheating, cheat and exploit distribution, or anti-cheat and anti-exploit evasion distribution.
 
 The determination of compensatory damages shall be made by a court of competent jurisdiction, and the User shall be legally bound to fulfill their obligations regarding such damages. The User understands that the Licensor and the person/company/organization that owns the target application reserve the right to pursue any available legal remedies to enforce these compensatory damages.
 

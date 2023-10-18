@@ -29,7 +29,7 @@ The Library is provided "AS IS" and without warranty of any kind. Licensor shall
 
 ## Compensatory Damages for Cheating, Cheat Evasion, Distribution of Cheats and Distribution of Cheat Evasions
 
-In the event that the User engages in cheating, cheat development, cheat evasion, distribution of cheats, or distribution of cheat evasions, and such actions result in damages to the person/company/organisation that owns the target application and the Licensor, the User shall be liable for compensatory damages. These damages may include, but are not limited to, the following:
+In the event that the User engages in cheating, cheat development, cheat evasion, distribution of cheats, or distribution of cheat evasions, and such actions result in damages to the person/company/organisation that owns the target application or the Licensor, the User shall be liable for compensatory damages. These damages may include, but are not limited to, the following:
 
 * Loss of Revenue: The User shall be responsible for compensating the person/company/organisation that owns the target application or the Licensor for any loss of revenue incurred due to cheating, cheat evasion, or distribution of cheats.
 

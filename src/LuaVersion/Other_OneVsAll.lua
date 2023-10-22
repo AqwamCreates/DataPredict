@@ -1,9 +1,3 @@
-local DataPredictLibrary = script.Parent.Parent
-
-local Models = DataPredictLibrary.Models
-
-local Optimizers = DataPredictLibrary.Optimizers
-
 local Regularization = require("Other_Regularization")
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
@@ -76,7 +70,7 @@ function OneVsAll:setModels(modelName, numberOfClasses)
 	
 	local isNameAdded = (typeof(modelName) == "string")
 	
-	if isNameAdded then  SelectedModel = require(Models[modelName]) end
+	if isNameAdded then  SelectedModel = require("Model_" .. modelName) end
 	
 	for i = 1, numberOfClasses, 1 do
 
@@ -104,7 +98,7 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 	
 	local SelectedOptimizer
 	
-	if isNameAdded then SelectedOptimizer = require(Optimizers[optimizerName]) end
+	if isNameAdded then SelectedOptimizer = require("Optimizer_" .. optimizerName) end
 	
 	local success = pcall(function()
 		

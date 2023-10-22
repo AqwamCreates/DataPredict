@@ -7,7 +7,7 @@
 
 --------------------------------------------------------------------
 
-Aqwam's Roblox Machine And Deep Learning Library (AR-MDLL)
+Aqwam's Machine And Deep Learning Library (A-MDLL)
 
 Author: Aqwam Harish Aiman
 	

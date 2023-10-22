@@ -7,7 +7,7 @@
 
 --------------------------------------------------------------------
 
-Aqwam's Machine And Deep Learning Library (A-MDLL)
+Aqwam's Machine And Deep Learning Library (Aqwam-MDLL)
 
 Author: Aqwam Harish Aiman
 	

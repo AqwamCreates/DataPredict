@@ -2,10 +2,6 @@
 
 	--------------------------------------------------------------------
 
-	Version 1.16.0
-
-	Aqwam's Roblox Deep Learning Library (AR-MDLL)
-
 	Author: Aqwam Harish Aiman
 	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
@@ -29,7 +25,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/Aqwam-Roblox-Machine-And-Deep-Learning-Library/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 

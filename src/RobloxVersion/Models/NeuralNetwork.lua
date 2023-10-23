@@ -110,13 +110,9 @@ local activationFunctionList = {
 
 local derivativeList = {
 
-	["Sigmoid"] = function (zMatrix) 
-
-		local sigmoidFunction = activationFunctionList["Sigmoid"]
+	["Sigmoid"] = function (aMatrix, zMatrix) 
 
 		local sigmoidDerivativeFunction = function (a) return (a * (1 - a)) end
-
-		local aMatrix = sigmoidFunction(zMatrix)
 
 		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(sigmoidDerivativeFunction, aMatrix)
 
@@ -124,13 +120,9 @@ local derivativeList = {
 
 	end,
 
-	["Tanh"] = function (zMatrix)
-
-		local tanhFunction = activationFunctionList["Tanh"]
+	["Tanh"] = function (aMatrix, zMatrix)
 
 		local tanhDerivativeFunction = function (a) return (1 - math.pow(a, 2)) end
-
-		local aMatrix = tanhFunction(zMatrix)
 
 		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(tanhDerivativeFunction, aMatrix)
 
@@ -138,7 +130,7 @@ local derivativeList = {
 
 	end,
 
-	["ReLU"] = function (zMatrix)
+	["ReLU"] = function (aMatrix, zMatrix)
 
 		local ReLUDerivativeFunction = function (z) if (z > 0) then return 1 else return 0 end end
 
@@ -148,7 +140,7 @@ local derivativeList = {
 
 	end,
 
-	["LeakyReLU"] = function (zMatrix)
+	["LeakyReLU"] = function (aMatrix, zMatrix)
 
 		local LeakyReLUDerivativeFunction = function (z) if (z > 0) then return 1 else return 0.01 end end
 
@@ -158,7 +150,7 @@ local derivativeList = {
 
 	end,
 
-	["ELU"] = function (zMatrix)
+	["ELU"] = function (aMatrix, zMatrix)
 
 		local ELUDerivativeFunction = function (z) if (z > 0) then return 1 else return 0.01 * math.exp(z) end end
 
@@ -169,11 +161,7 @@ local derivativeList = {
 
 	end,
 
-	["Softmax"] = function (zMatrix)
-
-		local SoftmaxFunction = activationFunctionList["Softmax"]
-
-		local aMatrix = SoftmaxFunction(zMatrix)
+	["Softmax"] = function (aMatrix, zMatrix)
 
 		local numberOfRows, numberOfColumns = #aMatrix, #aMatrix[1]
 
@@ -205,11 +193,7 @@ local derivativeList = {
 
 	end,
 
-	["StableSoftmax"] = function (zMatrix)
-
-		local StableSoftmaxFunction = activationFunctionList["StableSoftmax"]
-
-		local aMatrix = StableSoftmaxFunction(zMatrix)
+	["StableSoftmax"] = function (aMatrix, zMatrix)
 
 		local numberOfRows, numberOfColumns = #aMatrix, #aMatrix[1]
 
@@ -403,7 +387,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix)
 
 end
 
-function NeuralNetworkModel:backPropagate(lossMatrix, zTable)
+function NeuralNetworkModel:backPropagate(lossMatrix, aMatrix, zTable)
 
 	local backpropagateTable = {}
 
@@ -447,7 +431,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix, zTable)
 
 		errorPart1 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
-		errorPart2 = derivativeFunction(zLayerMatrix)
+		errorPart2 = derivativeFunction(aMatrix, zLayerMatrix)
 
 		layerCostMatrix = AqwamMatrixLibrary:multiply(errorPart1, errorPart2)
 
@@ -882,6 +866,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	local classesList
 
 	local lossMatrix
+	
+	local aTable
 
 	local logisticMatrix
 
@@ -921,7 +907,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		self:iterationWait()
 
-		forwardPropagateTable, zTable = self:forwardPropagate(featureMatrix)
+		forwardPropagateTable, aTable, zTable = self:forwardPropagate(featureMatrix)
 
 		outputMatrix = forwardPropagateTable[#forwardPropagateTable]
 
@@ -931,9 +917,9 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
 
-		outputDerivativeMatrix = finalActivationFunctionDerivatives(lossMatrix)
+		outputDerivativeMatrix = finalActivationFunctionDerivatives(aTable[#aTable], lossMatrix)
 
-		backwardPropagateTable = self:backPropagate(outputDerivativeMatrix, zTable)
+		backwardPropagateTable = self:backPropagate(outputDerivativeMatrix, aTable, zTable)
 
 		deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable)
 

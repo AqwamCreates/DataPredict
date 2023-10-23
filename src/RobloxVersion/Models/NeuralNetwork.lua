@@ -427,11 +427,9 @@ function NeuralNetworkModel:backPropagate(lossMatrix, forwardPropagateTable, zTa
 
 		layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 
-		zLayerMatrix = zTable[output]
-
 		errorPart1 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
-		errorPart2 = derivativeFunction(forwardPropagateTable[output+1], zLayerMatrix)
+		errorPart2 = derivativeFunction(forwardPropagateTable[output], zTable[output])
 
 		layerCostMatrix = AqwamMatrixLibrary:multiply(errorPart1, errorPart2)
 

@@ -2,6 +2,8 @@
 
 	--------------------------------------------------------------------
 
+	Version 1.16.0
+
 	Author: Aqwam Harish Aiman
 	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw

@@ -387,7 +387,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix)
 
 end
 
-function NeuralNetworkModel:backPropagate(lossMatrix, aMatrix, zTable)
+function NeuralNetworkModel:backPropagate(lossMatrix, forwardPropagateTable, zTable)
 
 	local backpropagateTable = {}
 
@@ -427,11 +427,9 @@ function NeuralNetworkModel:backPropagate(lossMatrix, aMatrix, zTable)
 
 		layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 
-		zLayerMatrix = zTable[output]
-
 		errorPart1 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
-		errorPart2 = derivativeFunction(aMatrix, zLayerMatrix)
+		errorPart2 = derivativeFunction(forwardPropagateTable[output], zTable[output])
 
 		layerCostMatrix = AqwamMatrixLibrary:multiply(errorPart1, errorPart2)
 
@@ -866,8 +864,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	local classesList
 
 	local lossMatrix
-	
-	local aTable
 
 	local logisticMatrix
 
@@ -907,7 +903,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		self:iterationWait()
 
-		forwardPropagateTable, aTable, zTable = self:forwardPropagate(featureMatrix)
+		forwardPropagateTable, zTable = self:forwardPropagate(featureMatrix)
 
 		outputMatrix = forwardPropagateTable[#forwardPropagateTable]
 
@@ -917,9 +913,9 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
 
-		outputDerivativeMatrix = finalActivationFunctionDerivatives(aTable[#aTable], lossMatrix)
+		outputDerivativeMatrix = finalActivationFunctionDerivatives(forwardPropagateTable[#forwardPropagateTable], lossMatrix)
 
-		backwardPropagateTable = self:backPropagate(outputDerivativeMatrix, aTable, zTable)
+		backwardPropagateTable = self:backPropagate(outputDerivativeMatrix, forwardPropagateTable, zTable)
 
 		deltaTable = self:calculateDelta(forwardPropagateTable, backwardPropagateTable)
 

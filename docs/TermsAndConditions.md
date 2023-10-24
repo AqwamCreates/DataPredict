@@ -1,7 +1,7 @@
 # TERMS AND CONDITIONS
 
 ## License
-These terms and conditions (“Agreement”) are a legal agreement between you (or company or organization) recognized as “User” and Aqwam Harish Aiman recognised as “Licensor” for the use of DataPredict Library (or formerly known as Aqwam’s Roblox Machine and Deep Learning Library) (“Library”) within this terms and conditions. By using the Library, User,  agrees to be bound by the terms of this Agreement.
+These terms and conditions (“Agreement”) are a legal agreement between you (or company or organization) recognized as “User” and Aqwam Harish Aiman recognised as “Licensor” for the use of DataPredict Library (or formerly known as Aqwam’s Machine and Deep Learning Library) (“Library”) within this terms and conditions. By using the Library, User,  agrees to be bound by the terms of this Agreement.
 
 ## License Exceptions
 

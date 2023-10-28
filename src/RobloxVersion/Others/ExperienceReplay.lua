@@ -1,6 +1,6 @@
-ExperienceReplayComponent = {}
+ExperienceReplay = {}
 
-ExperienceReplayComponent.__index = ExperienceReplayComponent
+ExperienceReplay.__index = ExperienceReplay
 
 local defaultBatchSize = 32
 
@@ -8,27 +8,27 @@ local defaultMaxBufferSize = 100
 
 local defaultNumberOfExperienceToUpdate = 1
 
-function ExperienceReplayComponent.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+function ExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 	
-	local NewExperienceReplayComponent = {}
+	local NewExperienceReplay = {}
 	
-	setmetatable(NewExperienceReplayComponent, ExperienceReplayComponent)
+	setmetatable(NewExperienceReplay, ExperienceReplay)
 
-	NewExperienceReplayComponent.batchSize = batchSize or defaultBatchSize
+	NewExperienceReplay.batchSize = batchSize or defaultBatchSize
 
-	NewExperienceReplayComponent.numberOfExperienceToUpdate = numberOfExperienceToUpdate or defaultNumberOfExperienceToUpdate
+	NewExperienceReplay.numberOfExperienceToUpdate = numberOfExperienceToUpdate or defaultNumberOfExperienceToUpdate
 
-	NewExperienceReplayComponent.maxBufferSize = maxBufferSize or defaultMaxBufferSize
+	NewExperienceReplay.maxBufferSize = maxBufferSize or defaultMaxBufferSize
 	
-	NewExperienceReplayComponent.numberOfExperience = 0
+	NewExperienceReplay.numberOfExperience = 0
 	
-	NewExperienceReplayComponent.replayBufferArray = {}
+	NewExperienceReplay.replayBufferArray = {}
 	
-	return NewExperienceReplayComponent
+	return NewExperienceReplay
 	
 end
 
-function ExperienceReplayComponent:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+function ExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 	
 	self.batchSize = batchSize or self.batchSize
 
@@ -38,7 +38,7 @@ function ExperienceReplayComponent:setParameters(batchSize, numberOfExperienceTo
 	
 end
 
-function ExperienceReplayComponent:reset()
+function ExperienceReplay:reset()
 	
 	self.numberOfExperience = 0
 
@@ -46,7 +46,7 @@ function ExperienceReplayComponent:reset()
 	
 end
 
-function ExperienceReplayComponent:sampleBatch()
+function ExperienceReplay:sampleBatch()
 	
 	local batchArray = {}
 	
@@ -64,7 +64,7 @@ function ExperienceReplayComponent:sampleBatch()
 	
 end
 
-function ExperienceReplayComponent:run(updateFunction)
+function ExperienceReplay:run(updateFunction)
 	
 	if (self.numberOfExperience < self.numberOfExperienceToUpdate) then return nil end
 	
@@ -88,7 +88,7 @@ function ExperienceReplayComponent:run(updateFunction)
 	
 end
 
-function ExperienceReplayComponent:addExperience(previousState, action, rewardValue, currentState)
+function ExperienceReplay:addExperience(previousState, action, rewardValue, currentState)
 	
 	local experience = {previousState, action, rewardValue, currentState}
 
@@ -100,4 +100,4 @@ function ExperienceReplayComponent:addExperience(previousState, action, rewardVa
 	
 end
 
-return ExperienceReplayComponent
+return ExperienceReplay

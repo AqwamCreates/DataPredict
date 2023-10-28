@@ -57,7 +57,7 @@ NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number
 Add a layer to the neural network.
 
 ```
-NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
+NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activationFunction: string, learningRate: number Optimizer: OptimizerObject, Regularization: RegularizationObject)
 ```
 
 #### Parameters:
@@ -84,6 +84,8 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activat
 
   *  None
 
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+
 * Optimizer: The optimizer object to be added at the last layer.
 
 * Regularization: The regularization object to be added at the last layer.
@@ -93,7 +95,7 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activat
 Change the properties of a selected layer of the neural netowrk.
 
 ```
-NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
+NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationFunction: string, learningRate: number, Optimizer: OptimizerObject, Regularization: RegularizationObject)
 ```
 
 #### Parameters:
@@ -120,6 +122,8 @@ NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationF
 
   *  None
 
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+
 * Optimizer: The optimizer object to be used by to this layer.
 
 * Regularization: The regularization object to be used by to this layer.
@@ -129,7 +133,7 @@ NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationF
 Create all the neurons (with bias neuron) in each of those layers. It also set all the activation function of all neuron to the activation function given in the function's parameters. Resets the current model parameters stored in the neural network.
 
 ```
-NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: string, Optimizer: OptimizerObject, Regularization: RegularizationObject)
+NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: string, learningRate, Optimizer: OptimizerObject, Regularization: RegularizationObject)
 ```
 
 #### Parameters:
@@ -153,6 +157,8 @@ NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: 
   *  StableSoftmax
 
   *  None
+
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * Optimizer: The optimizer object to be added at the last layer.
 

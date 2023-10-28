@@ -1,47 +1,63 @@
 local ReinforcementLearningNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningNeuralNetworkBaseModel)
 
-QLearningNeuralNetworkModel = {}
+ClippedDoubleQLearningNeuralNetworkModel = {}
 
-QLearningNeuralNetworkModel.__index = QLearningNeuralNetworkModel
+ClippedDoubleQLearningNeuralNetworkModel.__index = ClippedDoubleQLearningNeuralNetworkModel
 
-setmetatable(QLearningNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
+setmetatable(ClippedDoubleQLearningNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+function ClippedDoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 
-	local NewQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+	local NewClippedDoubleQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+
+	NewClippedDoubleQLearningNeuralNetworkModel.ModelParametersArray = {}
 	
-	NewQLearningNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
-		
-		if (NewQLearningNeuralNetworkModel.ModelParameters == nil) then NewQLearningNeuralNetworkModel:generateLayers() end
+	NewClippedDoubleQLearningNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		local predictedValue, maxQValue = NewQLearningNeuralNetworkModel:predict(currentFeatureVector)
+		local maxQValues = {}
 
-		local target = rewardValue + (NewQLearningNeuralNetworkModel.discountFactor * maxQValue[1][1])
+		for i = 1, 2, 1 do
 
-		local targetVector = NewQLearningNeuralNetworkModel:predict(previousFeatureVector, true)
+			NewClippedDoubleQLearningNeuralNetworkModel:setModelParameters(NewClippedDoubleQLearningNeuralNetworkModel.ModelParametersArray[i])
 
-		local actionIndex = table.find(NewQLearningNeuralNetworkModel.ClassesList, action)
+			local predictedValue, maxQValue = NewClippedDoubleQLearningNeuralNetworkModel:predict(currentFeatureVector)
 
-		targetVector[1][actionIndex] = target
+			table.insert(maxQValues, maxQValue[1][1])
 
-		NewQLearningNeuralNetworkModel:train(previousFeatureVector, targetVector)
-		
+		end
+
+		local maxQValue = math.min(table.unpack(maxQValues))
+
+		local target = rewardValue + (NewClippedDoubleQLearningNeuralNetworkModel.discountFactor * maxQValue)
+
+		local actionIndex = table.find(NewClippedDoubleQLearningNeuralNetworkModel.ClassesList, action)
+
+		for i = 1, 2, 1 do
+
+			NewClippedDoubleQLearningNeuralNetworkModel:setModelParameters(NewClippedDoubleQLearningNeuralNetworkModel.ModelParametersArray[i])
+
+			local targetVector = NewClippedDoubleQLearningNeuralNetworkModel:predict(previousFeatureVector, true)
+
+			targetVector[1][actionIndex] = maxQValue
+
+			NewClippedDoubleQLearningNeuralNetworkModel:train(previousFeatureVector, targetVector)
+
+		end
+
 	end)
-	
-	setmetatable(NewQLearningNeuralNetworkModel, QLearningNeuralNetworkModel)
 
-	return NewQLearningNeuralNetworkModel
+	return NewClippedDoubleQLearningNeuralNetworkModel
 
 end
 
-function QLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
-	
+function ClippedDoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
 	self.targetCost = targetCost or self.targetCost
-	
+
 	self.maxNumberOfEpisodes = maxNumberOfEpisodes or self.maxNumberOfEpisodes
 
 	self.epsilon = epsilon or self.epsilon
@@ -54,4 +70,24 @@ function QLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learni
 
 end
 
-return QLearningNeuralNetworkModel
+function ClippedDoubleQLearningNeuralNetworkModel:setModelParametersArray(ModelParameters1, ModelParameters2)
+
+	if (ModelParameters1) or (ModelParameters2) then
+
+		self.ModelParametersArray = {ModelParameters1, ModelParameters2}
+
+	else
+
+		self.ModelParametersArray = {}
+
+	end
+
+end
+
+function ClippedDoubleQLearningNeuralNetworkModel:getModelParametersArray()
+
+	return self.ModelParametersArray
+
+end
+
+return ClippedDoubleQLearningNeuralNetworkModel

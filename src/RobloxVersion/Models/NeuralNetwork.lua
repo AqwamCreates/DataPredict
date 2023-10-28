@@ -479,15 +479,19 @@ function NeuralNetworkModel:gradientDescent(learningRate, deltaTable, numberOfDa
 
 	local NewModelParameters = {}
 
-	local calculatedLearningRate = learningRate / numberOfData
+	local calculatedLearningRate
 
 	for layerNumber, weightMatrix in ipairs(self.ModelParameters) do
 
 		local costFunctionDerivatives = deltaTable[layerNumber]
+		
+		local learningRate = self.learningRateTable[layerNumber]
 
 		local Regularization = self.RegularizationTable[layerNumber]
 
 		local Optimizer = self.OptimizerTable[layerNumber]
+		
+		calculatedLearningRate = learningRate / numberOfData
 
 		if Regularization then
 
@@ -640,6 +644,8 @@ function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 	NewNeuralNetworkModel.ClassesList = {}
 
 	NewNeuralNetworkModel.hasBiasNeuronTable = {}
+	
+	NewNeuralNetworkModel.learningRateTable = {}
 
 	NewNeuralNetworkModel.activationFunctionTable = {}
 
@@ -695,9 +701,11 @@ function NeuralNetworkModel:generateLayers()
 
 end
 
-function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunction, Optimizer, Regularization)
+function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunction, learningRate, Optimizer, Regularization)
 
 	activationFunction = activationFunction or defaultActivationFunction
+	
+	learningRate = activationFunction or self.learningRate
 
 	if (typeof(numberOfNeuronsArray) ~= "table") then error("Invalid input for number of neurons!") end
 
@@ -708,6 +716,8 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 	self.numberOfNeuronsTable = numberOfNeuronsArray
 
 	self.hasBiasNeuronTable = {}
+	
+	self.learningRateTable = {}
 
 	self.activationFunctionTable = {}
 
@@ -720,6 +730,8 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 	for layer = 1, numberOfLayers, 1 do
 
 		self.activationFunctionTable[layer] = activationFunction
+		
+		self.learningRateTable[layer] = learningRate
 
 		if (layer == numberOfLayers) then
 
@@ -743,19 +755,27 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 end
 
-function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, Optimizer, Regularization)
+function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization)
 
 	if (typeof(numberOfNeurons) ~= "number") then error("Invalid input for number of neurons!") end
 
 	local hasBiasNeuronType = typeof(hasBiasNeuron)
 
 	if (hasBiasNeuronType ~= "nil") and (hasBiasNeuronType ~= "boolean") then error("Invalid input for adding bias!") end
+	
+	local learningRateType = typeof(learningRate)
+	
+	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learningRate!") end
+	
+	if (typeof(numberOfNeurons) ~= "number") then error("Invalid input for number of neurons!") end
 
 	local activationFunctionType = typeof(activationFunction)
 
 	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
 
 	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron, true)
+	
+	learningRate = learningRate or self.learningRate
 
 	activationFunction = activationFunction or defaultActivationFunction
 
@@ -764,6 +784,8 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 	table.insert(self.hasBiasNeuronTable, hasBiasNeuron)
 
 	table.insert(self.activationFunctionTable, activationFunction)
+	
+	table.insert(self.learningRateTable, learningRate)
 
 	table.insert(self.OptimizerTable, Optimizer)
 
@@ -771,17 +793,21 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 
 end
 
-function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunction, Optimizer, Regularization)
+function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization)
 
 	if (typeof(layerNumber) ~= "number") then error("Invalid input layer number!") end
 
 	if (typeof(hasBiasNeuron) ~= "boolean") then error("Invalid input for adding bias!") end
+	
+	if (typeof(learningRate) ~= "number") then error("Invalid learning rate!") end
 
 	if  (typeof(activationFunction) ~= "string") then error("Invalid input for activation function!") end 
 
 	self.hasBiasNeuronTable[layerNumber] = hasBiasNeuron or self.hasBiasNeuronTable[layerNumber]
 
 	self.activationFunctionTable[layerNumber] = activationFunction or self.activationFunctionTable[layerNumber] 
+	
+	self.learningRateTable[layerNumber] = activationFunction or self.learningRateTable[layerNumber] 
 
 	self.OptimizerTable[layerNumber] = Optimizer or self.OptimizerTable[layerNumber]
 

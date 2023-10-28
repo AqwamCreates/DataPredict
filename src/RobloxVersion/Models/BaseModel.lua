@@ -294,7 +294,7 @@ function BaseModel:destroy()
 	
 	table.clear(self)
 	
-	table.freeze(self)
+	self = nil
 	
 end
 

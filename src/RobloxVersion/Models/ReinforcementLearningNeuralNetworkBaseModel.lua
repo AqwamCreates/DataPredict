@@ -2,11 +2,11 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibrary
 
 local NeuralNetworkModel = require(script.Parent.NeuralNetwork)
 
-NeuralNetworkReinforcementLearningBaseModel = {}
+ReinforcementLearningNeuralNetworkBaseModel = {}
 
-NeuralNetworkReinforcementLearningBaseModel.__index = NeuralNetworkReinforcementLearningBaseModel
+ReinforcementLearningNeuralNetworkBaseModel.__index = ReinforcementLearningNeuralNetworkBaseModel
 
-setmetatable(NeuralNetworkReinforcementLearningBaseModel, NeuralNetworkModel)
+setmetatable(ReinforcementLearningNeuralNetworkBaseModel, NeuralNetworkModel)
 
 local defaultMaxNumberOfEpisode = 500
 
@@ -18,37 +18,37 @@ local defaultDiscountFactor = 0.95
 
 local defaultMaxNumberOfIterations = 1
 
-function NeuralNetworkReinforcementLearningBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+function ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 	
 	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
-	local NewNeuralNetworkReinforcementLearningBaseModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
+	local NewReinforcementLearningNeuralNetworkBaseModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 
-	NewNeuralNetworkReinforcementLearningBaseModel:setPrintOutput(false)
+	NewReinforcementLearningNeuralNetworkBaseModel:setPrintOutput(false)
 
-	setmetatable(NewNeuralNetworkReinforcementLearningBaseModel, NeuralNetworkReinforcementLearningBaseModel)
+	setmetatable(NewReinforcementLearningNeuralNetworkBaseModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-	NewNeuralNetworkReinforcementLearningBaseModel.maxNumberOfEpisodes = maxNumberOfEpisodes or defaultMaxNumberOfEpisode
+	NewReinforcementLearningNeuralNetworkBaseModel.maxNumberOfEpisodes = maxNumberOfEpisodes or defaultMaxNumberOfEpisode
 
-	NewNeuralNetworkReinforcementLearningBaseModel.epsilon = epsilon or defaultEpsilon
+	NewReinforcementLearningNeuralNetworkBaseModel.epsilon = epsilon or defaultEpsilon
 
-	NewNeuralNetworkReinforcementLearningBaseModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
+	NewReinforcementLearningNeuralNetworkBaseModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
 
-	NewNeuralNetworkReinforcementLearningBaseModel.discountFactor =  discountFactor or defaultDiscountFactor
+	NewReinforcementLearningNeuralNetworkBaseModel.discountFactor =  discountFactor or defaultDiscountFactor
 
-	NewNeuralNetworkReinforcementLearningBaseModel.currentNumberOfEpisodes = 0
+	NewReinforcementLearningNeuralNetworkBaseModel.currentNumberOfEpisodes = 0
 
-	NewNeuralNetworkReinforcementLearningBaseModel.currentEpsilon = epsilon or defaultEpsilon
+	NewReinforcementLearningNeuralNetworkBaseModel.currentEpsilon = epsilon or defaultEpsilon
 
-	NewNeuralNetworkReinforcementLearningBaseModel.previousFeatureVector = nil
+	NewReinforcementLearningNeuralNetworkBaseModel.previousFeatureVector = nil
 
-	NewNeuralNetworkReinforcementLearningBaseModel.printReinforcementOutput = true
+	NewReinforcementLearningNeuralNetworkBaseModel.printReinforcementOutput = true
 
-	return NewNeuralNetworkReinforcementLearningBaseModel
+	return NewReinforcementLearningNeuralNetworkBaseModel
 	
 end
 
-function NeuralNetworkReinforcementLearningBaseModel:setParameters(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+function ReinforcementLearningNeuralNetworkBaseModel:setParameters(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -68,31 +68,31 @@ function NeuralNetworkReinforcementLearningBaseModel:setParameters(maxNumberOfIt
 
 end
 
-function NeuralNetworkReinforcementLearningBaseModel:setUpdateFunction(updateFunction)
+function ReinforcementLearningNeuralNetworkBaseModel:setUpdateFunction(updateFunction)
 	
 	self.updateFunction = updateFunction
 	
 end
 
-function NeuralNetworkReinforcementLearningBaseModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function ReinforcementLearningNeuralNetworkBaseModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
 	
 	self.updateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector)
 	
 end
 
-function NeuralNetworkReinforcementLearningBaseModel:setExperienceReplay(ExperienceReplay)
+function ReinforcementLearningNeuralNetworkBaseModel:setExperienceReplay(ExperienceReplay)
 
 	self.ExperienceReplay = ExperienceReplay
 
 end
 
-function NeuralNetworkReinforcementLearningBaseModel:setPrintReinforcementOutput(option)
+function ReinforcementLearningNeuralNetworkBaseModel:setPrintReinforcementOutput(option)
 
 	self.printReinforcementOutput = self:getBooleanOrDefaultOption(option, self.printReinforcementOutput)
 
 end
 
-function NeuralNetworkReinforcementLearningBaseModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
@@ -162,7 +162,7 @@ function NeuralNetworkReinforcementLearningBaseModel:reinforce(currentFeatureVec
 
 end
 
-function NeuralNetworkReinforcementLearningBaseModel:reset()
+function ReinforcementLearningNeuralNetworkBaseModel:reset()
 
 	self.currentNumberOfEpisodes = 0
 
@@ -180,4 +180,4 @@ function NeuralNetworkReinforcementLearningBaseModel:reset()
 
 end
 
-return NeuralNetworkReinforcementLearningBaseModel
+return ReinforcementLearningNeuralNetworkBaseModel

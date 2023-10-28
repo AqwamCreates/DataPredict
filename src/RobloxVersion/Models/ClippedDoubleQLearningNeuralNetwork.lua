@@ -1,14 +1,14 @@
-local NeuralNetworkReinforcementLearningBaseModel = require(script.Parent.NeuralNetworkReinforcementLearningBaseModel)
+local NewReinforcementLearningNeuralNetworkBaseModel = require(script.Parent.NewReinforcementLearningNeuralNetworkBaseModel)
 
 QLearningNeuralNetworkModel = {}
 
 QLearningNeuralNetworkModel.__index = QLearningNeuralNetworkModel
 
-setmetatable(QLearningNeuralNetworkModel, NeuralNetworkReinforcementLearningBaseModel)
+setmetatable(QLearningNeuralNetworkModel, NewReinforcementLearningNeuralNetworkBaseModel)
 
 function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 
-	local NewQLearningNeuralNetworkModel = NeuralNetworkReinforcementLearningBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+	local NewQLearningNeuralNetworkModel = NewReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 	
 	NewQLearningNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		

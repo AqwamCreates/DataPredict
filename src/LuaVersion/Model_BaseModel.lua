@@ -326,8 +326,8 @@ function BaseModel:destroy()
 	setmetatable(self, nil)
 	
 	table.clear(self)
-	
-	table.freeze(self)
+
+	self = nil
 	
 end
 

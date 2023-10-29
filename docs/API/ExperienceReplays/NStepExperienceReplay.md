@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [ExperienceReplays](../ExperienceReplays.md) - PrioritizedExperienceReplay
+# [API Reference](../../API.md) - [ExperienceReplays](../ExperienceReplays.md) - NStepExperienceReplay
 
-It is used to update the models from experiences stored in the experience replay object. It boosts learning in reinforcement by focusing on important experiences, improving efficiency compared to regular replay.
+It is used to update the models from experiences stored in the experience replay object. It uses longer action-state sequences to enhance reinforcement learning.
 
 ## Constructors
 

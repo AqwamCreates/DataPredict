@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DoubleStateActionRewardStateActionNV2 (Double Deep SARSA)
+# [API Reference](../../API.md) - [Models](../Models.md) - DoubleStateActionRewardStateActionNeuralNetworkV2 (Double Deep SARSA)
 
 DoubleStateActionRewardStateActionV2 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values. 
 
@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleStateActionRewardStateActionV2.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number): ModelObject
+DoubleStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number): ModelObject
 ```
 
 #### Parameters:
@@ -47,7 +47,7 @@ DoubleStateActionRewardStateActionV2.new(maxNumberOfIterations: integer, learnin
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleStateActionRewardStateActionV2:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number)
+DoubleStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number)
 ```
 
 #### Parameters:

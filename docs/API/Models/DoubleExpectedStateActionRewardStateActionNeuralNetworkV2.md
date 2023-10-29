@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number): ModelObject
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number, averagingRate: number): ModelObject
 ```
 
 #### Parameters:
@@ -35,6 +35,8 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterati
 * epsilon2: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+
+* averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
 #### Returns:
 
@@ -47,7 +49,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterati
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number)
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number, averagingRate: number)
 ```
 
 #### Parameters:
@@ -67,6 +69,8 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumbe
 * epsilon2: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+
+* averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
 ## Inherited From
 

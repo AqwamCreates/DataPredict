@@ -33,6 +33,8 @@
 
 local ReinforcementLearningNeuralNetworkBaseModel = require("Model_ReinforcementLearningNeuralNetworkBaseModel")
 
+local LogisticRegression = require("Model_LogisticRegression")
+
 ConfidenceQLearningNeuralNetwork = {}
 
 ConfidenceQLearningNeuralNetwork.__index = ConfidenceQLearningNeuralNetwork

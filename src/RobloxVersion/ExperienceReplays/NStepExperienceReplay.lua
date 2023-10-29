@@ -14,7 +14,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 	
 	setmetatable(NewUniformExperienceReplay, NStepExperienceReplay)
 	
-	BaseExperienceReplay.nStep = nStep or defaultNStep -- Define the n-step value
+	BaseExperienceReplay.nStep = nStep or defaultNStep
 	
 	NewUniformExperienceReplay:setSampleFunction(function()
 		
@@ -80,7 +80,7 @@ function NStepExperienceReplay:run(updateFunction)
 			
 			if not experienceReplayBatchArray[i] then break end
 			
-			nStepRewards += experienceReplayBatchArray[i][3] -- Summing rewards for the n-step
+			nStepRewards += experienceReplayBatchArray[i][3]
 			
 		end
 

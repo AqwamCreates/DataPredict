@@ -18,13 +18,17 @@ local defaultTargetCost = 0
 
 local sigmoidFunctionList = {
 
-	["Sigmoid"] = function (z) return 1/(1+math.exp(-1 * z)) end,
+	["Sigmoid"] = function (z) return 1/(1 + math.exp(-1 * z)) end,
+	
+	["Tanh"] = function (z) return math.tanh(z) end
 
 }
 
 local lossFunctionList = {
 	
-	["Sigmoid"] = function (y, h) return -(y * math.log(h) + (1 - y) * math.log(1 - h)) end
+	["Sigmoid"] = function (y, h) return -(y * math.log(h) + (1 - y) * math.log(1 - h)) end,
+	
+	["Tanh"] = function (y, h) return (y - h)^2 end
 	
 }
 
@@ -34,11 +38,29 @@ local cutOffFunctionList = {
 
 		if (x >= 0.5) then 
 
-			return 1 
+			return 1
 
 		else 
 
 			return 0 
+
+		end 
+
+	end,
+	
+	["Tanh"] = function (x) 
+
+		if (x > 0) then 
+
+			return 1
+
+		elseif (x < 0) then
+			
+			return -1
+			
+		else
+			
+			return 0
 
 		end 
 

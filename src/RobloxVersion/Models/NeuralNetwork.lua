@@ -815,6 +815,12 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 end
 
+function NeuralNetworkModel:getLayerProperties(layerNumber)
+	
+	return self.hasBiasNeuronTable[layerNumber], self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], self.OptimizerTable[layerNumber], self.RegularizationTable[layerNumber]
+	
+end
+
 local function areNumbersOnlyInList(list)
 
 	for i, value in ipairs(list) do
@@ -1013,6 +1019,7 @@ function NeuralNetworkModel:showDetails()
 	local maxNeuronsLength = string.len("Number Of Neurons")
 	local maxBiasLength = string.len("Bias Neuron Added")
 	local maxActivationLength = string.len("Activation Function")
+	local maxLearningRateLength = string.len("Learning Rate")
 	local maxOptimizerLength = string.len("Optimizer Added")
 	local maxRegularizationLength = string.len("Regularization Added")
 
@@ -1022,9 +1029,11 @@ function NeuralNetworkModel:showDetails()
 
 		maxNeuronsLength = math.max(maxNeuronsLength, string.len(tostring(self.numberOfNeuronsTable[i])))
 
-		maxBiasLength = math.max(maxBiasLength, string.len(tostring(self.addBiasNeuronTable[i])))
+		maxBiasLength = math.max(maxBiasLength, string.len(tostring(self.hasBiasNeuronTable[i])))
 
 		maxActivationLength = math.max(maxActivationLength, string.len(self.activationFunctionTable[i]))
+		
+		maxLearningRateLength = math.max(maxLearningRateLength, string.len(tostring(self.learningRateTable[i])))
 
 		maxOptimizerLength = math.max(maxOptimizerLength, string.len("false"))
 
@@ -1039,6 +1048,7 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maxNeuronsLength) .. "-|-" ..
 		string.rep("-", maxBiasLength) .. "-|-" ..
 		string.rep("-", maxActivationLength) .. "-|-" ..
+		string.rep("-", maxLearningRateLength) .. "-|-" ..
 		string.rep("-", maxOptimizerLength) .. "-|-" ..
 		string.rep("-", maxRegularizationLength) .. "-|")
 
@@ -1046,6 +1056,7 @@ function NeuralNetworkModel:showDetails()
 		string.format("%-" .. maxNeuronsLength .. "s", "Number Of Neurons") .. " | " ..
 		string.format("%-" .. maxBiasLength .. "s", "Bias Neuron Added") .. " | " ..
 		string.format("%-" .. maxActivationLength .. "s", "Activation Function") .. " | " ..
+		string.format("%-" .. maxLearningRateLength .. "s", "Learning Rate") .. " | " ..
 		string.format("%-" .. maxOptimizerLength .. "s", "Optimizer Added") .. " | " ..
 		string.format("%-" .. maxRegularizationLength .. "s", "Regularization Added") .. " |")
 
@@ -1053,6 +1064,7 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maxNeuronsLength) .. "-|-" ..
 		string.rep("-", maxBiasLength) .. "-|-" ..
 		string.rep("-", maxActivationLength) .. "-|-" ..
+		string.rep("-", maxLearningRateLength) .. "-|-" ..
 		string.rep("-", maxOptimizerLength) .. "-|-" ..
 		string.rep("-", maxRegularizationLength) .. "-|")
 
@@ -1063,15 +1075,17 @@ function NeuralNetworkModel:showDetails()
 
 		local neurons = "| " .. string.format("%-" .. maxNeuronsLength .. "s", self.numberOfNeuronsTable[i]) .. " "
 
-		local bias = "| " .. string.format("%-" .. maxBiasLength .. "s", tostring(self.addBiasNeuronTable[i])) .. " "
+		local bias = "| " .. string.format("%-" .. maxBiasLength .. "s", tostring(self.hasBiasNeuronTable[i])) .. " "
 
 		local activation = "| " .. string.format("%-" .. maxActivationLength .. "s", self.activationFunctionTable[i]) .. " "
+		
+		local learningRate = "| " .. string.format("%-" .. maxLearningRateLength .. "s", self.learningRateTable[i]) .. " "
 
 		local optimizer = "| " .. string.format("%-" .. maxOptimizerLength .. "s", self.OptimizerTable[i] and "true" or "false") .. " "
 
 		local regularization = "| " .. string.format("%-" .. maxRegularizationLength .. "s", self.RegularizationTable[i] and "true" or "false") .. " |"
 
-		print(layer .. neurons .. bias .. activation .. optimizer .. regularization)
+		print(layer .. neurons .. bias .. activation .. learningRate .. optimizer .. regularization)
 
 	end
 
@@ -1079,6 +1093,7 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maxNeuronsLength) .. "-|-" ..
 		string.rep("-", maxBiasLength) .. "-|-" ..
 		string.rep("-", maxActivationLength) .. "-|-" ..
+		string.rep("-", maxLearningRateLength) .. "-|-" ..
 		string.rep("-", maxOptimizerLength) .. "-|-" ..
 		string.rep("-", maxRegularizationLength) .. "-|")
 

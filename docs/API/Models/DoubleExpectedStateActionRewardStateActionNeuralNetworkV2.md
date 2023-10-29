@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DoubleExpectedStateActionRewardStateActionNeuralNetworkV2 (Double Deep Expected SARSA V2)
+# [API Reference](../../API.md) - [Models](../Models.md) - DoubleExpectedStateActionRewardStateActionNeuralNetworkV2 (Double Deep Expected SARSA)
 
 DoubleExpectedStateActionRewardStateActionNeuralNetworkV2 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 

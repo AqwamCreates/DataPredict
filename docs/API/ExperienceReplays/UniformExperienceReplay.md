@@ -1,12 +1,12 @@
 # [API Reference](../../API.md) - [ExperienceReplays](../ExperienceReplays.md) - UniformExperienceReplay
 
-It is used to update the models from experiences stored in the UniformExperienceReplay oject. All experience have equal chances of being chosen.
+It is used to update the models from experiences stored in the experience replay object. All experience have equal chances of being chosen.
 
 ## Constructors
 
 ### new()
 
-Creates a new base experience replay object.
+Creates a new experience replay object.
 
 ```
 UniformExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)
@@ -24,7 +24,7 @@ UniformExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: numbe
 
 ### setParameters()
 
-Change the parameters of a base experience replay object.
+Change the parameters of an experience replay object.
 
 ```
 UniformExperienceReplay:setParametersbatchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)

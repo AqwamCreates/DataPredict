@@ -84,52 +84,6 @@ ClippedDoubleQLearningNeuralNetwork:setExperienceReplay(useExperienceReplay: boo
 
 * maxExperienceReplayBufferSize: The maximum size that the model can store the experiences.
 
-### reinforce()
-
-Reward or punish model based on the current state of the environment.
-
-```
-ClippedDoubleQLearningNeuralNetwork:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
-```
-
-#### Parameters:
-
-* currentFeatureVector: Matrix containing data from the current state.
-
-* rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
-
-* returnOriginalOutput: Set whether or not to return predicted vector instead of value with highest probability.
-
-#### Returns:
-
-* predictedLabel: A label that is predicted by the model.
-
-* value: The value of predicted label.
-
--OR-
-
-* predictedVector: A matrix containing all predicted values from all classes.
-
-### setPrintReinforcementOutput()
-
-Set whether or not to show the current number of episodes and current epsilon.
-
-```
-ClippedDoubleQLearningNeuralNetwork:setPrintReinforcementOutput(option: boolean)
-```
-
-#### Parameters:
-
-* option: A boolean value that determines the reinforcement output to be printed or not.
-
-### reset()
-
-Reset model's stored values (excluding the parameters).
-
-```
-ClippedDoubleQLearningNeuralNetwork:reset()
-```
-
 ### setModelParametersArray()
 
 Sets model parameters to be used by the model.
@@ -158,7 +112,7 @@ ClippedDoubleQLearningNeuralNetwork:getModelParametersArray(): ModelParameters
 
 ## Inherited From
 
-* [NeuralNetwork](NeuralNetwork.md)
+* [ReinforcementLearningNeuralNetworkBaseModel](ReinforcementLearningNeuralNetworkBaseModel.md)
 
 ## References
 

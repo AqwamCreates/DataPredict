@@ -52,3 +52,5 @@
 ## BaseModels
 
 [BaseModel](Models/BaseModel.md)
+
+[ReinforcementLearningNeuralNetworkBaseModel](Models/ReinforcementLearningNeuralNetworkBaseModel.md)

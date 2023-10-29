@@ -8,4 +8,6 @@
 
 [Optimizers](API/Optimizers.md)
 
+[ExperienceReplays](API/ExperienceReplays.md)
+
 [Others](API/Others.md)

@@ -10,13 +10,17 @@ ConfidenceQLearningNeuralNetwork.__index = ConfidenceQLearningNeuralNetwork
 
 setmetatable(ConfidenceQLearningNeuralNetwork, ReinforcementLearningNeuralNetworkBaseModel)
 
-function ConfidenceQLearningNeuralNetwork.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+local defaultConfidenceLearningRate = 0.1
+
+function ConfidenceQLearningNeuralNetwork.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor, confidenceLearningRate)
 
 	local NewConfidenceQLearningNeuralNetwork = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 	
 	setmetatable(NewConfidenceQLearningNeuralNetwork, ConfidenceQLearningNeuralNetwork)
 	
-	local NewLogisticRegression = LogisticRegression.new(1, 0.1, "Tanh")
+	confidenceLearningRate = confidenceLearningRate
+	
+	local NewLogisticRegression = LogisticRegression.new(1, confidenceLearningRate, "Tanh")
 	
 	NewLogisticRegression:setPrintOutput(false)
 	

@@ -80,6 +80,18 @@ Each time we use reinforce() function with input parameters in it, it will train
 
 Ensure that both environment feature vector and reward value are from the same state.
 
+## Experience Replay
+
+Additionally, you can add experience replay to your model. All you have to do is to call the setExperienceReplay() function.
+
+```lua
+local DQN = DataPredict.Models.QLearningNeuralNetwork.new() -- Create a new model object.
+
+local UniformExperienceReplay = DataPredict.ExperienceReplays.UniformExperienceReplay.new()
+
+DQN:setExperienceReplay(UniformExperienceReplay) -- Placing our experience replay object here.
+```
+
 ## Wrapping It All Up
 
 In this tutorial, you have learnt the starting point of the reinforcement learning neural networks. 

@@ -148,7 +148,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 	
 	local costFunctionDerivatives
 	
-	local numberOfData = #featureMatrix[1]
+	local numberOfData = #featureMatrix
 	
 	local lambda
 	

@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - ExpectedStateActionRewardStateActionNeuralNetwork (Deep Expected SARSA)
 
-ExpectedStateActionRewardStateActionNeuralNetwork is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV1 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Stored Model Parameters
 
@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ExpectedStateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number): ModelObject
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -47,7 +47,7 @@ ExpectedStateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: int
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ExpectedStateActionRewardStateActionNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number)
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number)
 ```
 
 #### Parameters:

@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DoubleQLearningNeuralNetworkV1 (DDQN / Double Deep Q-Learning)
+# [API Reference](../../API.md) - [Models](../Models.md) - DoubleQLearningNeuralNetworkV1 (Double Deep SARSA V1)
 
 DoubleQLearningNeuralNetworkV1 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 

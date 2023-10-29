@@ -16,7 +16,7 @@ function ConfidenceQLearningNeuralNetwork.new(maxNumberOfIterations, learningRat
 	
 	setmetatable(NewConfidenceQLearningNeuralNetwork, ConfidenceQLearningNeuralNetwork)
 	
-	local NewLogisticRegression = LogisticRegression.new(1, 0.3, "Tanh")
+	local NewLogisticRegression = LogisticRegression.new(1, 0.1, "Tanh")
 	
 	NewLogisticRegression:setPrintOutput(false)
 	

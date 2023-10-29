@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [ExperienceReplays](../ExperienceReplays.md) - PrioritizedExperienceReplay
 
-The base class for most experience replay classes. It serves as a template for using it with the reinforcement learning models.
+It is used to update the models from experiences stored in the experience replay object. It boosts learning in reinforcement by focusing on important experiences, improving efficiency compared to regular replay.
 
 ## Constructors
 
@@ -24,7 +24,7 @@ PrioritizedExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: n
 
 ### setParameters()
 
-Change the parameters of a PrioritizedExperienceReplay object.
+Change the parameters of an experience replay object.
 
 ```
 PrioritizedExperienceReplay:setParametersbatchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)

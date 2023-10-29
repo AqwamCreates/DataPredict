@@ -1,8 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DoubleQLearningNeuralNetworkV2 (DDQN / Double Deep Q-Learning)
+# [API Reference](../../API.md) - [Models](../Models.md) - DoubleStateActionRewardStateActionV2 (Double Deep SARSA)
 
-DoubleQLearningNeuralNetworkV2 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values. 
-
-It uses Hasselt et al. (2015) version, where it uses target and primary neural networks for training.
+DoubleStateActionRewardStateActionV2 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values. 
 
 ## Stored Model Parameters
 
@@ -17,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number): ModelObject
+DoubleStateActionRewardStateActionV2.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number): ModelObject
 ```
 
 #### Parameters:
@@ -49,7 +47,7 @@ DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: n
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number)
+DoubleStateActionRewardStateActionV2:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number)
 ```
 
 #### Parameters:

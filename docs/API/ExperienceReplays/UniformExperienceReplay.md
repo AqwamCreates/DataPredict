@@ -38,6 +38,6 @@ UniformExperienceReplay:setParametersbatchSize: number, numberOfExperienceToUpda
 
 * maxBufferSize: The maximum number of experiences that can be kept inside the object.
 
-### Inherited From
+## Inherited From
 
 [BaseExperienceReplay](../BaseExperienceReplay.md)

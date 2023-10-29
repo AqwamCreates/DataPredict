@@ -77,7 +77,15 @@ local ModelsDictionary = {
 	
 	StateActionRewardStateActionNeuralNetwork = require(Models.StateActionRewardStateActionNeuralNetwork),
 	
+	DoubleStateActionRewardStateActionNeuralNetworkV1 = require(Models.DoubleStateActionRewardStateActionNeuralNetworkV1),
+	
+	DoubleStateActionRewardStateActionNeuralNetworkV2 = require(Models.DoubleStateActionRewardStateActionNeuralNetworkV2),
+	
 	ExpectedStateActionRewardStateActionNeuralNetwork = require(Models.ExpectedStateActionRewardStateActionNeuralNetwork),
+	
+	DoubleExpectedStateActionRewardStateActionNeuralNetworkV1 = require(Models.DoubleExpectedStateActionRewardStateActionNeuralNetworkV1),
+	
+	DoubleExpectedStateActionRewardStateActionNeuralNetworkV2 = require(Models.DoubleExpectedStateActionRewardStateActionNeuralNetworkV2),
 
 	RecurrentNeuralNetwork = require(Models.RecurrentNeuralNetwork),
 

@@ -34,7 +34,7 @@ ConfidenceQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRat
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
-* confidenceLearningRate: The higher the value, the more likely it will become over confident on its prediction.
+* confidenceLearningRate: The higher the value, the more likely it will become over confident on its prediction. The value must be set between 0 and 1.
 
 #### Returns:
 
@@ -66,7 +66,7 @@ ConfidenceQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, l
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
-* confidenceLearningRate: The higher the value, the more likely it will become over confident on its prediction.
+* confidenceLearningRate: The higher the value, the more likely it will become over confident on its prediction. The value must be set between 0 and 1.
 
 ## Inherited From
 

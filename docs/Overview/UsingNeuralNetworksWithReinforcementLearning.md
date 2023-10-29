@@ -98,6 +98,8 @@ In this tutorial, you have learnt the starting point of the reinforcement learni
 
 These only cover the basics. You can find more information here:
 
+* [Reinforcement Learning Neural Network Base Model](../API/Models/ReinforcementLearningNeuralNetworkBaseModel.md)
+
 * [Deep Q-Learning](../API/Models/QLearningNeuralNetwork.md)
 
 * [Deep SARSA](../API/Models/StateActionRewardStateActionNeuralNetwork.md)

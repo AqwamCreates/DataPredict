@@ -70,7 +70,7 @@ ConfidenceQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, l
 
 ## Inherited From
 
-* [ReinforcementLearningNeuralNetworkBaseModel](ReinforcementLearningNeuralNetworkBaseModel.md)
+* [ReinforcementLearningNeuralNetworkBaseModel](../Model/ReinforcementLearningNeuralNetworkBaseModel.md)
 
 ## References
 

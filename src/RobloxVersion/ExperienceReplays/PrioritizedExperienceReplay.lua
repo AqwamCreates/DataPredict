@@ -1,14 +1,14 @@
-local ExperienceReplayBase = require(script.Parent.ExperienceReplayBase)
+local BaseExperienceReplay = require(script.Parent.BaseExperienceReplay)
 
 PrioritizedExperienceReplay = {}
 
 PrioritizedExperienceReplay.__index = PrioritizedExperienceReplay
 
-setmetatable(PrioritizedExperienceReplay, ExperienceReplayBase)
+setmetatable(PrioritizedExperienceReplay, BaseExperienceReplay)
 
 function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 	
-	local NewPrioritizedExperienceReplay = ExperienceReplayBase.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+	local NewPrioritizedExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 	
 	setmetatable(NewPrioritizedExperienceReplay, PrioritizedExperienceReplay)
 	

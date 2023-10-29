@@ -60,7 +60,7 @@ function HindsightExperienceReplay:run(updateFunction)
 
 	self.numberOfExperience = 0
 
-	local experienceReplayBatchArray = self:sampleBatch()
+	local experienceReplayBatchArray = self:sample()
 
 	for _, experience in ipairs(experienceReplayBatchArray) do
 		

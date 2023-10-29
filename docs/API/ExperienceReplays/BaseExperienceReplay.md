@@ -38,6 +38,30 @@ BaseExperienceReplay:setParametersbatchSize: number, numberOfExperienceToUpdate:
 
 * maxBufferSize: The maximum number of experiences that can be kept inside the object.
 
+### setSampleFunction()
+
+Set the function to run when sample() function is called.
+
+```
+BaseExperienceReplay:setSampleFunction(sampleFunction)
+```
+
+#### Parameters:
+
+* setSampleFunction: The function that samples the experiences from the buffer in the base experience replay object.
+
+### sample()
+
+Samples a number of experiences based on batch size.
+
+```
+BaseExperienceReplay:sample(): []
+```
+
+#### Returns:
+
+* experience: A table containing previous state, action selected, reward value and next state.
+
 ### setResetFunction()
 
 Set the function to run when reset() function is called.
@@ -56,26 +80,6 @@ Resets the base experience replay object.
 
 ```
 BaseExperienceReplay:reset()
-```
-
-### setSampleFunction()
-
-Set the function to run when sample() function is called.
-
-```
-BaseExperienceReplay:setSampleFunction(sampleFunction)
-```
-
-#### Parameters:
-
-* setSampleFunction: The function that samples the experiences from the buffer in the base experience replay object.
-
-### sample()
-
-Samples a number of experiences based on batch size.
-
-```
-BaseExperienceReplay:sample()
 ```
 
 ### run()

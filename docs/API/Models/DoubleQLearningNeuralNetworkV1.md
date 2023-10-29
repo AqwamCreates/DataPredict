@@ -66,70 +66,6 @@ DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learn
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
-### setExperienceReplay()
-
-Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings for that particular parameter.
-
-```
-DoubleQLearningNeuralNetwork:setExperienceReplay(useExperienceReplay: boolean, experienceReplayBatchSize: integer, numberOfReinforcementsForExperienceReplayUpdate: integer, maxExperienceReplayBufferSize: integer)
-```
-
-#### Parameters:
-
-* useExperienceReplay: The option to set whether or not to enable experience replay. When enabled, it may require more resources.
-
-* experienceReplayBatchSize: Determines how many of these experiences are sampled for batch training.
-
-* numberOfReinforcementsForExperienceReplayUpdate: How many times does the reinforce() function needed to be called in order to for a single update from experience replay.
-
-* maxExperienceReplayBufferSize: The maximum size that the model can store the experiences.
-
-### reinforce()
-
-Reward or punish model based on the current state of the environment.
-
-```
-DoubleQLearningNeuralNetwork:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
-```
-
-#### Parameters:
-
-* currentFeatureVector: Matrix containing data from the current state.
-
-* rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
-
-* returnOriginalOutput: Set whether or not to return predicted vector instead of value with highest probability.
-
-#### Returns:
-
-* predictedLabel: A label that is predicted by the model.
-
-* value: The value of predicted label.
-
--OR-
-
-* predictedVector: A matrix containing all predicted values from all classes.
-
-### setPrintReinforcementOutput()
-
-Set whether or not to show the current number of episodes and current epsilon.
-
-```
-DoubleQLearningNeuralNetwork:setPrintReinforcementOutput(option: boolean)
-```
-
-#### Parameters:
-
-* option: A boolean value that determines the reinforcement output to be printed or not.
-
-### reset()
-
-Reset model's stored values (excluding the parameters).
-
-```
-DoubleQLearningNeuralNetwork:reset()
-```
-
 ### setModelParametersArray()
 
 Sets model parameters to be used by the model.
@@ -158,7 +94,7 @@ DoubleQLearningNeuralNetwork:getModelParametersArray(): ModelParameters
 
 ## Inherited From
 
-* [NeuralNetwork](NeuralNetwork.md)
+* [ReinforcementLearningNeuralNetworkBaseModel](ReinforcementLearningNeuralNetworkBaseModel.md)
 
 ## References
 

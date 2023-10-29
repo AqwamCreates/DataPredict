@@ -4,8 +4,8 @@
 
 | Version | Current Version Number | Source Code + Documentation                                                                                                         |
 |---------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| Release | 1.3                    | [https://github.com/AqwamCreates/DataPredict/releases/tag/v1.3.0](https://github.com/AqwamCreates/DataPredict/releases/tag/v1.3.0)  |
-| Beta    | 1.16.0                 | This Documentation And Repository                                                                                                   |           
+| Release | 1.4                    | [https://github.com/AqwamCreates/DataPredict/releases/tag/v1.4.0](https://github.com/AqwamCreates/DataPredict/releases/tag/v1.4.0)  |
+| Beta    | 1.17.0                 | This Documentation And Repository                                                                                                   |           
 
 DataPredict is a machine and deep learning library for Roblox.
 
@@ -50,6 +50,8 @@ Also, thank you Miku for supporting me in my darkest times and wanted to see me 
 ## Links
 
 ### ModuleScripts - Release Versions (Fully Tested and Stable)
+
+[DataPredict Library (Release Version 1.4)](https://create.roblox.com/marketplace/asset/15199714521)
 
 [DataPredict Library (Release Version 1.3)](https://www.roblox.com/library/14716528959/DataPredict-Release-Version-1-3)
 

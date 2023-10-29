@@ -28,7 +28,7 @@ function ConfidenceQLearningNeuralNetwork.new(maxNumberOfIterations, learningRat
 		
 		local maxQValue = math.max(table.unpack(table.unpack(predictedValueVector)))
 		
-		if NewLogisticRegression:getModelParameters() ~= nil then
+		if (NewLogisticRegression:getModelParameters() ~= nil) then
 			
 			local confidenceValue = NewLogisticRegression:predict(predictedValueVector)
 			

@@ -131,6 +131,8 @@ local ExperienceReplaysDictionary = {
 	
 	PrioritizedExperienceReplay = require(ExperienceReplays.PrioritizedExperienceReplay),
 	
+	NStepExperienceReplay = require(ExperienceReplays.NStepExperienceReplay),
+	
 }
 
 local OthersDictionary = {

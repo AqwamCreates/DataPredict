@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [ExperienceReplays](../ExperienceReplays.md) - NStepExperienceReplay
 
-It is used to update the models from experiences stored in the experience replay object. It uses longer action-state sequences to enhance reinforcement learning.
+It is used to update the models from experiences stored in the experience replay object. It uses longer experience sequences to enhance reinforcement learning.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ It is used to update the models from experiences stored in the experience replay
 Creates a new PrioritizedExperienceReplay object.
 
 ```
-PrioritizedExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)
+PrioritizedExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number, nStep: number)
 ```
 
 #### Parameters:
@@ -19,6 +19,8 @@ PrioritizedExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: n
 * numberOfExperienceToUpdate: The number of experience needed for a single event of experience replay.
 
 * maxBufferSize: The maximum number of experiences that can be kept inside the object.
+
+* nStep: The maximum length of experience sequences to be sampled.
 
 ## Functions
 
@@ -27,7 +29,7 @@ PrioritizedExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: n
 Change the parameters of an experience replay object.
 
 ```
-PrioritizedExperienceReplay:setParametersbatchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)
+PrioritizedExperienceReplay:setParametersbatchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number, nStep: number)
 ```
 
 #### Parameters:
@@ -37,6 +39,8 @@ PrioritizedExperienceReplay:setParametersbatchSize: number, numberOfExperienceTo
 * numberOfExperienceToUpdate: The number of experience needed for a single event of experience replay.
 
 * maxBufferSize: The maximum number of experiences that can be kept inside the object.
+
+* nStep: The maximum length of experience sequences to be sampled.
 
 ## Inherited From
 

@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [ExperienceReplays](../ExperienceReplays.md) - UniformExperienceReplay
 
-The base class for most experience replay classes. It serves as a template for using it with the reinforcement learning models.
+It is used to update the models from experiences stored in the UniformExperienceReplay oject. All experience have equal chances of being chosen.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ The base class for most experience replay classes. It serves as a template for u
 Creates a new base experience replay object.
 
 ```
-BaseExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)
+UniformExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)
 ```
 
 #### Parameters:
@@ -27,7 +27,7 @@ BaseExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: number, 
 Change the parameters of a base experience replay object.
 
 ```
-BaseExperienceReplay:setParametersbatchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)
+UniformExperienceReplay:setParametersbatchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)
 ```
 
 #### Parameters:

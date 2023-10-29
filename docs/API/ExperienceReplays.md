@@ -1,4 +1,4 @@
-# [API Reference](../API.md) - Experience Replays
+# [API Reference](../API.md) - ExperienceReplays
 
 [UniformExperienceReplay](ExperienceReplays/UniformExperienceReplay.md) - a.k.a Adagrad
 

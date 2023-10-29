@@ -44,7 +44,7 @@ function ConfidenceQLearningNeuralNetwork.new(maxNumberOfIterations, learningRat
 			
 		end
 		
-		NewLogisticRegression:train(predictedValueVector, {{math.min(rewardValue, 1)}})
+		NewLogisticRegression:train(predictedValueVector, {{math.clamp(rewardValue, -1, 1)}})
 		
 	end)
 

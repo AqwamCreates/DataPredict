@@ -2,7 +2,9 @@
 
 	--------------------------------------------------------------------
 
-	Version 1.16.0
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Version 1.17.0
 
 	Author: Aqwam Harish Aiman
 	
@@ -44,6 +46,8 @@ local AqwamCustomModels = script.AqwamCustomModels
 local Others = script.Others
 
 local Optimizers = script.Optimizers
+
+local ExperienceReplays = script.ExperienceReplays
 
 local ModelsDictionary = {
 	
@@ -97,6 +101,8 @@ local AqwamCustomModelsDictionary = {
 	
 	QueuedReinforcementNeuralNetwork = require(AqwamCustomModels.QueuedReinforcementNeuralNetwork),
 	
+	ConfidenceQLearningNeuralNetwork = require(AqwamCustomModels.ConfidenceQLearningNeuralNetwork),
+	
 }
 
 local OptimizersDictionary = {
@@ -116,6 +122,14 @@ local OptimizersDictionary = {
 	NesterovAcceleratedAdaptiveMomentEstimation = require(Optimizers.NesterovAcceleratedAdaptiveMomentEstimation),
 	
 	Gravity = require(Optimizers.Gravity),
+	
+}
+
+local ExperienceReplaysDictionary = {
+	
+	UniformExperienceReplay = require(ExperienceReplays.UniformExperienceReplay),
+	
+	PrioritizedExperienceReplay = require(ExperienceReplays.PrioritizedExperienceReplay),
 	
 }
 
@@ -146,6 +160,8 @@ AqwamRobloxMachineLearningLibrary.Models =  ModelsDictionary
 AqwamRobloxMachineLearningLibrary.AqwamCustomModels = AqwamCustomModelsDictionary
 
 AqwamRobloxMachineLearningLibrary.Optimizers = OptimizersDictionary
+
+AqwamRobloxMachineLearningLibrary.ExperienceReplays = ExperienceReplaysDictionary
 
 AqwamRobloxMachineLearningLibrary.Others = OthersDictionary
 

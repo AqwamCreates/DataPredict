@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - QLearningNeuralNetwork (DQN / Deep Q-Learning)
+# [API Reference](../../API.md) - [Models](../Models.md) - ConfidenceQLearningNeuralNetwork (DcQN / Deep Confidence Q-Learning)
 
 QLearningNeuralNetwork is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 

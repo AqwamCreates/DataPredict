@@ -74,7 +74,11 @@ DoubleStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfItera
 
 ## References
 
-* [Double Deep Q Networks](https://towardsdatascience.com/double-deep-q-networks-905dd8325412)
+* [Double Sarsa and Double Expected Sarsa with Shallow and Deep Learning](https://www.scirp.org/journal/paperinformation.aspx?paperid=71237)
+
+* [Expected SARSA in Reinforcement Learning](https://www.geeksforgeeks.org/expected-sarsa-in-reinforcement-learning/)
+
+* [SARSA Reinforcement Learning](https://www.geeksforgeeks.org/sarsa-reinforcement-learning/)
 
 * [Reinforcement Learning with Neural Network](https://www.baeldung.com/cs/reinforcement-learning-neural-network)
 

@@ -72,6 +72,32 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setParameters(maxNumbe
 
 * averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
+### setModelParametersArray()
+
+Sets model parameters to be used by the model.
+
+```
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setModelParametersArray(ModelParameters1: ModelParameters, ModelParameters2: ModelParameters)
+```
+
+#### Parameters:
+
+* ModelParameters1: First model parameters to be used by the model.
+
+* ModelParameters2: Second model parameters to be used by the model.
+
+### getModelParametersArray()
+
+Gets model parameters array used by the model. It contains two model parameters.
+
+```
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:getModelParametersArray(): ModelParameters
+```
+
+#### Returns:
+
+* ModelParametersArray: An array containing all the model parameters.
+
 ## Inherited From
 
 * [ReinforcementLearningNeuralNetworkBaseModel](ReinforcementLearningNeuralNetworkBaseModel.md)

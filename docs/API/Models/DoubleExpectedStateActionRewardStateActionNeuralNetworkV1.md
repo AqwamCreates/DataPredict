@@ -104,6 +104,8 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:getModelParametersArra
 
 ## References
 
+* [Double Sarsa and Double Expected Sarsa with Shallow and Deep Learning](https://www.scirp.org/journal/paperinformation.aspx?paperid=71237)
+
 * [Expected SARSA in Reinforcement Learning](https://www.geeksforgeeks.org/expected-sarsa-in-reinforcement-learning/)
 
 * [SARSA Reinforcement Learning](https://www.geeksforgeeks.org/sarsa-reinforcement-learning/)

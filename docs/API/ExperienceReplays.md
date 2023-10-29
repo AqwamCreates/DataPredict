@@ -1,7 +1,9 @@
 # [API Reference](../API.md) - ExperienceReplays
 
-[UniformExperienceReplay](ExperienceReplays/UniformExperienceReplay.md) - a.k.a Adagrad
+[UniformExperienceReplay](ExperienceReplays/UniformExperienceReplay.md)
 
-[PrioritizedExperienceReplay](ExperienceReplays/PrioritizedExperienceReplay.md) - a.k.a AdaDelta
+[PrioritizedExperienceReplay](ExperienceReplays/PrioritizedExperienceReplay.md)
 
-[NStepExperienceReplay](ExperienceReplays/NStepExperienceReplay.md) - a.k.a Adam
+[NStepExperienceReplay](ExperienceReplays/NStepExperienceReplay.md)
+
+[BaseExperienceReplay](ExperienceReplays/BaseExperienceReplay.md)

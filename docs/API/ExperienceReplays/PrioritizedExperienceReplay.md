@@ -6,7 +6,7 @@ It is used to update the models from experiences stored in the experience replay
 
 ### new()
 
-Creates a new PrioritizedExperienceReplay object.
+Creates a new experience replay object.
 
 ```
 PrioritizedExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)

@@ -31,81 +31,40 @@
 
 --]]
 
-local NeuralNetworkModel = require("Model_NeuralNetwork")
+local ReinforcementLearningNeuralNetworkBaseModel = require("Model_ReinforcementLearningNeuralNetworkBaseModel")
+
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 StateActionRewardStateActionNeuralNetworkModel = {}
 
 StateActionRewardStateActionNeuralNetworkModel.__index = StateActionRewardStateActionNeuralNetworkModel
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
-
-local ExperienceReplayComponent = require("Component_ExperienceReplay")
-
-setmetatable(StateActionRewardStateActionNeuralNetworkModel, NeuralNetworkModel)
-
-local defaultMaxNumberOfEpisode = 500
-
-local defaultEpsilon = 0.5
-
-local defaultEpsilonDecayFactor = 0.999
-
-local defaultDiscountFactor = 0.95
-
-local defaultMaxNumberOfIterations = 1
+setmetatable(StateActionRewardStateActionNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
 function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 
-	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
-
-	local NewStateActionRewardStateActionNeuralNetworkModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
-
-	NewStateActionRewardStateActionNeuralNetworkModel:setPrintOutput(false)
+	local NewStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 
 	setmetatable(NewStateActionRewardStateActionNeuralNetworkModel, StateActionRewardStateActionNeuralNetworkModel)
 
-	NewStateActionRewardStateActionNeuralNetworkModel.maxNumberOfEpisodes = maxNumberOfEpisodes or defaultMaxNumberOfEpisode
+	NewStateActionRewardStateActionNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-	NewStateActionRewardStateActionNeuralNetworkModel.epsilon = epsilon or defaultEpsilon
+		if (NewStateActionRewardStateActionNeuralNetworkModel.ModelParameters == nil) then NewStateActionRewardStateActionNeuralNetworkModel:generateLayers() end
 
-	NewStateActionRewardStateActionNeuralNetworkModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
+		local targetVector = NewStateActionRewardStateActionNeuralNetworkModel:predict(currentFeatureVector, true)
 
-	NewStateActionRewardStateActionNeuralNetworkModel.discountFactor =  discountFactor or defaultDiscountFactor
+		local dicountedVector = AqwamMatrixLibrary:multiply(NewStateActionRewardStateActionNeuralNetworkModel.discountFactor, targetVector)
 
-	NewStateActionRewardStateActionNeuralNetworkModel.currentNumberOfEpisodes = 0
+		local newTargetVector = AqwamMatrixLibrary:add(rewardValue, dicountedVector)
 
-	NewStateActionRewardStateActionNeuralNetworkModel.currentEpsilon = epsilon or defaultEpsilon
+		NewStateActionRewardStateActionNeuralNetworkModel:train(previousFeatureVector, newTargetVector)
 
-	NewStateActionRewardStateActionNeuralNetworkModel.previousFeatureVector = nil
-
-	NewStateActionRewardStateActionNeuralNetworkModel.printReinforcementOutput = true
-
-	NewStateActionRewardStateActionNeuralNetworkModel.useExperienceReplay = false
+	end)
 
 	return NewStateActionRewardStateActionNeuralNetworkModel
 
 end
 
-function StateActionRewardStateActionNeuralNetworkModel:setExperienceReplay(useExperienceReplay, experienceReplayBatchSize, numberOfReinforcementsForExperienceReplayUpdate, maxExperienceReplayBufferSize)
-
-	self.useExperienceReplay = self:getBooleanOrDefaultOption(useExperienceReplay, self.useExperienceReplay)
-
-	if (self.useExperienceReplay) then
-
-		self.ExperienceReplayComponent = ExperienceReplayComponent.new(experienceReplayBatchSize, numberOfReinforcementsForExperienceReplayUpdate, maxExperienceReplayBufferSize)
-
-	else
-
-		self.ExperienceReplayComponent = nil
-
-	end
-
-end
-
-function StateActionRewardStateActionNeuralNetworkModel:setPrintReinforcementOutput(option)
-
-	self.printReinforcementOutput = self:getBooleanOrDefaultOption(option, self.printReinforcementOutput)
-
-end
 
 function StateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
 
@@ -124,108 +83,6 @@ function StateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberO
 	self.discountFactor =  discountFactor or self.discountFactor
 
 	self.currentEpsilon = epsilon or self.currentEpsilon
-
-end
-
-function StateActionRewardStateActionNeuralNetworkModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-	if (self.ModelParameters == nil) then self:generateLayers() end
-
-	local targetVector = self:predict(currentFeatureVector, true)
-
-	local dicountedVector = AqwamMatrixLibrary:multiply(self.discountFactor, targetVector)
-
-	local newTargetVector = AqwamMatrixLibrary:add(rewardValue, dicountedVector)
-
-	self:train(previousFeatureVector, newTargetVector)
-
-end
-
-function StateActionRewardStateActionNeuralNetworkModel:reset()
-	
-	self.currentNumberOfEpisodes = 0
-
-	self.previousFeatureVector = nil
-
-	self.currentEpsilon = self.epsilon
-
-	for i, Optimizer in ipairs(self.OptimizerTable) do
-
-		if Optimizer then Optimizer:reset() end
-
-	end
-
-	if (self.useExperienceReplay) then self.ExperienceReplayComponent:reset() end
-
-end
-
-function StateActionRewardStateActionNeuralNetworkModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
-
-	if (self.ModelParameters == nil) then self:generateLayers() end
-
-	self.currentNumberOfEpisodes = (self.currentNumberOfEpisodes + 1) % self.maxNumberOfEpisodes
-
-	if (self.currentNumberOfEpisodes == 0) then
-
-		self.currentEpsilon *= self.epsilonDecayFactor
-
-	end
-
-	local action
-
-	local actionVector
-
-	local highestValue
-
-	local highestValueVector
-	
-	local allOutputsMatrix
-
-	local randomProbability = Random.new():NextNumber()
-
-	if (randomProbability < self.currentEpsilon) then
-
-		local randomNumber = Random.new():NextInteger(1, #self.ClassesList)
-
-		action = self.ClassesList[randomNumber]
-
-		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
-
-		allOutputsMatrix[1][randomNumber] = randomProbability
-
-	else
-
-		allOutputsMatrix = self:predict(currentFeatureVector, true)
-
-		actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
-
-		action = actionVector[1][1]
-
-		highestValue = highestValueVector[1][1]
-
-	end
-
-	if (self.previousFeatureVector) then self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) end
-
-	if (self.useExperienceReplay) and (self.previousFeatureVector) then 
-		
-		self.ExperienceReplayComponent:addExperience(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-		self.ExperienceReplayComponent:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
-
-			self:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
-
-		end)
-
-	end
-
-	self.previousFeatureVector = currentFeatureVector
-
-	if (self.printReinforcementOutput == true) then print("Current Number Of Episodes: " .. self.currentNumberOfEpisodes .. "\t\tCurrent Epsilon: " .. self.currentEpsilon) end
-	
-	if (returnOriginalOutput == true) then return allOutputsMatrix end
-
-	return action, highestValue
 
 end
 

@@ -1,6 +1,6 @@
-ExperienceReplayBase = {}
+BaseExperienceReplay = {}
 
-ExperienceReplayBase.__index = ExperienceReplayBase
+BaseExperienceReplay.__index = BaseExperienceReplay
 
 local defaultBatchSize = 32
 
@@ -8,27 +8,27 @@ local defaultMaxBufferSize = 100
 
 local defaultNumberOfExperienceToUpdate = 1
 
-function ExperienceReplayBase.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+function BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 	
-	local NewExperienceReplayBase = {}
+	local NewBaseExperienceReplay = {}
 	
-	setmetatable(NewExperienceReplayBase, ExperienceReplayBase)
+	setmetatable(NewBaseExperienceReplay, BaseExperienceReplay)
 
-	NewExperienceReplayBase.batchSize = batchSize or defaultBatchSize
+	NewBaseExperienceReplay.batchSize = batchSize or defaultBatchSize
 
-	NewExperienceReplayBase.numberOfExperienceToUpdate = numberOfExperienceToUpdate or defaultNumberOfExperienceToUpdate
+	NewBaseExperienceReplay.numberOfExperienceToUpdate = numberOfExperienceToUpdate or defaultNumberOfExperienceToUpdate
 
-	NewExperienceReplayBase.maxBufferSize = maxBufferSize or defaultMaxBufferSize
+	NewBaseExperienceReplay.maxBufferSize = maxBufferSize or defaultMaxBufferSize
 	
-	NewExperienceReplayBase.numberOfExperience = 0
+	NewBaseExperienceReplay.numberOfExperience = 0
 	
-	NewExperienceReplayBase.replayBufferArray = {}
+	NewBaseExperienceReplay.replayBufferArray = {}
 	
-	return NewExperienceReplayBase
+	return NewBaseExperienceReplay
 	
 end
 
-function ExperienceReplayBase:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+function BaseExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 	
 	self.batchSize = batchSize or self.batchSize
 
@@ -38,31 +38,31 @@ function ExperienceReplayBase:setParameters(batchSize, numberOfExperienceToUpdat
 	
 end
 
-function ExperienceReplayBase:setResetFunction(resetFunction)
+function BaseExperienceReplay:setResetFunction(resetFunction)
 	
 	self.resetFunction = resetFunction
 	
 end
 
-function ExperienceReplayBase:reset()
+function BaseExperienceReplay:reset()
 	
 	self.resetFunction()
 	
 end
 
-function ExperienceReplayBase:setSampleFunction(sampleFunction)
+function BaseExperienceReplay:setSampleFunction(sampleFunction)
 	
 	self.sampleFunction = sampleFunction
 	
 end
 
-function ExperienceReplayBase:sample()
+function BaseExperienceReplay:sample()
 
 	return self.sampleFunction()
 	
 end
 
-function ExperienceReplayBase:run(updateFunction)
+function BaseExperienceReplay:run(updateFunction)
 	
 	if (self.numberOfExperience < self.numberOfExperienceToUpdate) then return nil end
 	
@@ -86,7 +86,7 @@ function ExperienceReplayBase:run(updateFunction)
 	
 end
 
-function ExperienceReplayBase:addExperience(previousState, action, rewardValue, currentState)
+function BaseExperienceReplay:addExperience(previousState, action, rewardValue, currentState)
 	
 	local experience = {previousState, action, rewardValue, currentState}
 
@@ -98,4 +98,4 @@ function ExperienceReplayBase:addExperience(previousState, action, rewardValue, 
 	
 end
 
-return ExperienceReplayBase
+return BaseExperienceReplay

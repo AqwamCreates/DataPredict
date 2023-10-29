@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DoubleQLearningNeuralNetworkV1 (Double Deep SARSA V1)
+# [API Reference](../../API.md) - [Models](../Models.md) - DoubleStateActionRewardStateActionNeuralNetworkV1 (Double Deep SARSA V1)
 
-DoubleQLearningNeuralNetworkV1 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+DoubleStateActionRewardStateActionNeuralNetworkV1 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 It uses Hasselt et al. (2010) version, where a single neural network is selected from two neural networks with equal probability for training.
 
@@ -17,7 +17,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
+DoubleStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -47,7 +47,7 @@ DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: n
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
+DoubleStateActionRewardStateActionNeuralNetworkV1:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
 ```
 
 #### Parameters:
@@ -71,7 +71,7 @@ DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learn
 Sets model parameters to be used by the model.
 
 ```
-DoubleQLearningNeuralNetwork:setModelParametersArray(ModelParameters1: ModelParameters, ModelParameters2: ModelParameters)
+DoubleStateActionRewardStateActionNeuralNetworkV1:setModelParametersArray(ModelParameters1: ModelParameters, ModelParameters2: ModelParameters)
 ```
 
 #### Parameters:
@@ -85,7 +85,7 @@ DoubleQLearningNeuralNetwork:setModelParametersArray(ModelParameters1: ModelPara
 Gets model parameters array used by the model. It contains two model parameters.
 
 ```
-DoubleQLearningNeuralNetwork:getModelParametersArray(): ModelParameters
+DoubleStateActionRewardStateActionNeuralNetworkV1:getModelParametersArray(): ModelParameters
 ```
 
 #### Returns:

@@ -36,6 +36,8 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterati
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
+* averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
+
 #### Returns:
 
 * ModelObject: The generated model object.
@@ -67,6 +69,8 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setParameters(maxNumbe
 * epsilon2: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+
+* averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
 ## Inherited From
 

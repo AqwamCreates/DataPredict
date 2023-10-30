@@ -207,6 +207,8 @@ NeuralNetwork:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Mat
 
 ### getClassesList()
 
+Gets all the classes stored in the NeuralNetwork model.
+
 ```
 NeuralNetwork:getClassesList(): []
 ```
@@ -232,6 +234,30 @@ Shows the details of all layers. The details includes the number of neurons, is 
 ```
 NeuralNetwork:showDetails()
 ```
+
+#### getLayerProperties()
+
+Gets the settings of a particular layer.
+
+```
+NeuralNetwork:getLayerProperties(layerNumber: number): number, boolean, string, number, OptimizerObject, RegularizationObject
+```
+
+#### Parameters:
+
+* layerNumber: The layer number to retrieve its properties.
+
+#### Returns:
+
+* numberOfNeurons: The number of neurons at that particular layer.
+
+* activationFunction: The function to calculate the cost and cost derivaties of each training.
+
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+
+* Optimizer: The optimizer object to be added at the last layer.
+
+* Regularization: The regularization object to be added at the last layer.
 
 ## Inherited From
 

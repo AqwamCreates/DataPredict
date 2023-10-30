@@ -109,11 +109,11 @@ local Adagrad1 = AdaptiveGradientOptimizer.new()
 
 local Adagrad2 = AdaptiveGradientOptimizer.new()
 
-NeuralNetworkModel:addLayer(2, true, "Tanh", Adagrad1)
+NeuralNetworkModel:addLayer(2, true, "Tanh", nil, Adagrad1)
 
-NeuralNetworkModel:addLayer(3, true, "Tanh", Adagrad2)
+NeuralNetworkModel:addLayer(3, true, "Tanh", nil, Adagrad2)
 
-NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
+NeuralNetworkModel:addLayer(2, false, nil, "StableSoftmax")
 ```
 
 # Regularization
@@ -129,17 +129,17 @@ local Reg2 = Regularization.new()
 
 -- Different regularization objects for each layers.
 
-NeuralNetworkModel:addLayer(2, true, "Tanh", nil, Reg1)
+NeuralNetworkModel:addLayer(2, true, "Tanh", nil, nil, Reg1)
 
-NeuralNetworkModel:addLayer(3, true, "Tanh", nil, Reg2)
+NeuralNetworkModel:addLayer(3, true, "Tanh", nil, nil, Reg2)
 
 NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
 
 -- Same regularization object for each layers.
 
-NeuralNetworkModel:addLayer(2, true, "Tanh", nil, Reg1)
+NeuralNetworkModel:addLayer(2, true, "Tanh", nil, nil, Reg1)
 
-NeuralNetworkModel:addLayer(3, true, "Tanh", nil, Reg1)
+NeuralNetworkModel:addLayer(3, true, "Tanh", nil, nil, Reg1)
 
 NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
 ```

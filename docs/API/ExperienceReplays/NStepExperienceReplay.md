@@ -44,4 +44,4 @@ PrioritizedExperienceReplay:setParametersbatchSize: number, numberOfExperienceTo
 
 ## Inherited From
 
-[BaseExperienceReplay](../BaseExperienceReplay.md)
+[BaseExperienceReplay](BaseExperienceReplay.md)

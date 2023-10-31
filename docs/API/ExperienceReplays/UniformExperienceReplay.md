@@ -40,4 +40,4 @@ UniformExperienceReplay:setParametersbatchSize: number, numberOfExperienceToUpda
 
 ## Inherited From
 
-[BaseExperienceReplay](/BaseExperienceReplay.md)
+[BaseExperienceReplay](BaseExperienceReplay.md)

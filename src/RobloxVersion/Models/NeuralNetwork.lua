@@ -972,8 +972,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		numberOfIterations += 1
 
 		table.insert(costArray, cost)
-		
-		self:iterationWait()
 
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 

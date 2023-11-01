@@ -902,8 +902,8 @@ function NeuralNetworkModel:trainBackPropagate(lossMatrix)
 	local backwardPropagateTable = self:backPropagate(outputDerivativeMatrix, self.forwardPropagateTable, self.zTable)
 
 	local deltaTable = self:calculateDelta(self.forwardPropagateTable, backwardPropagateTable)
-
-	self.ModelParameters = self:gradientDescent(self.learningRate, deltaTable, numberOfData)
+	
+	local ModelParameters = self:gradientDescent(self.learningRate, deltaTable, numberOfData)
 	
 	self.forwardPropagateTable = nil 
 	
@@ -972,6 +972,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		numberOfIterations += 1
 
 		table.insert(costArray, cost)
+		
+		self:iterationWait()
 
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 

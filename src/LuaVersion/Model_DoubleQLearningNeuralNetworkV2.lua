@@ -33,11 +33,11 @@
 
 local ReinforcementLearningNeuralNetworkBaseModel = require("Model_ReinforcementLearningNeuralNetworkBaseModel")
 
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+
 DoubleQLearningNeuralNetworkModel = {}
 
 DoubleQLearningNeuralNetworkModel.__index = DoubleQLearningNeuralNetworkModel
-
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
 setmetatable(DoubleQLearningNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 

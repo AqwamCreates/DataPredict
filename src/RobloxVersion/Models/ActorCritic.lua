@@ -70,6 +70,12 @@ function ActorCriticModel:setExperienceReplay(ExperienceReplay)
 
 end
 
+function ActorCriticModel:setPrintReinforcementOutput(option)
+
+	self.printReinforcementOutput = self:getBooleanOrDefaultOption(option, self.printReinforcementOutput)
+
+end
+
 function ActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 	
 	if (self.ActorModel == nil) then error("No actor model!") end

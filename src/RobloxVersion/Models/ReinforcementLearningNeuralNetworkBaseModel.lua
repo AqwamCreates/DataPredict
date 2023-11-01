@@ -123,12 +123,14 @@ function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVec
 	local randomProbability = Random.new():NextNumber()
 
 	if (randomProbability < self.currentEpsilon) then
+		
+		local numberOfClasses = #self.ClassesList
 
-		local randomNumber = Random.new():NextInteger(1, #self.ClassesList)
+		local randomNumber = Random.new():NextInteger(1, numberOfClasses)
 
 		action = self.ClassesList[randomNumber]
 
-		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
+		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, numberOfClasses)
 
 		allOutputsMatrix[1][randomNumber] = randomProbability
 

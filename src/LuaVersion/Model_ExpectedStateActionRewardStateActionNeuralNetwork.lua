@@ -43,9 +43,9 @@ setmetatable(ExpectedStateActionRewardStateActionNeuralNetworkModel, Reinforceme
 
 local defaultEpsilon2 = 0.5
 
-function ExpectedStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, epsilon2, discountFactor)
+function ExpectedStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, epsilon2, discountFactor)
 
-	local NewExpectedStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+	local NewExpectedStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
 	setmetatable(NewExpectedStateActionRewardStateActionNeuralNetworkModel, ExpectedStateActionRewardStateActionNeuralNetworkModel)
 	
@@ -105,7 +105,7 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfI
 
 end
 
-function ExpectedStateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, epsilon2, discountFactor)
+function ExpectedStateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, epsilon2, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -113,7 +113,7 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel:setParameters(ma
 
 	self.targetCost = targetCost or self.targetCost
 
-	self.maxNumberOfEpisodes = maxNumberOfEpisodes or self.maxNumberOfEpisodes
+	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
 	self.epsilon = epsilon or self.epsilon
 

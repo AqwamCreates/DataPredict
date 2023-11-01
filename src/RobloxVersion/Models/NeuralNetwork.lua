@@ -903,7 +903,7 @@ function NeuralNetworkModel:trainBackPropagate(lossMatrix)
 
 	local deltaTable = self:calculateDelta(self.forwardPropagateTable, backwardPropagateTable)
 
-	self.ModelParameters = self:gradientDescent(self.learningRate, deltaTable, numberOfData) -- do not refactor the code where the output is self.ModelParameters. Otherwise it cannot update to new model parameters values!
+	self.ModelParameters = self:gradientDescent(self.learningRate, deltaTable, numberOfData)
 	
 	self.forwardPropagateTable = nil 
 	

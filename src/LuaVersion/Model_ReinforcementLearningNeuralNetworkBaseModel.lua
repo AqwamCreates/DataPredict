@@ -215,6 +215,12 @@ function ReinforcementLearningNeuralNetworkBaseModel:getCurrentNumberOfReinforce
 	
 end
 
+function ReinforcementLearningNeuralNetworkBaseModel:getCurrentEpsilon()
+	
+	return self.currentEpsilon
+	
+end
+
 function ReinforcementLearningNeuralNetworkBaseModel:reset()
 	
 	self.currentNumberOfReinforcements = 0
@@ -236,4 +242,3 @@ function ReinforcementLearningNeuralNetworkBaseModel:reset()
 end
 
 return ReinforcementLearningNeuralNetworkBaseModel
-

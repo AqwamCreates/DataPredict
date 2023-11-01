@@ -8,7 +8,7 @@ ReinforcementLearningNeuralNetworkBaseModel.__index = ReinforcementLearningNeura
 
 setmetatable(ReinforcementLearningNeuralNetworkBaseModel, NeuralNetworkModel)
 
-local defaultMaxNumberOfEpisode = 500
+local defaultNumberOfReinforcementsPerEpisode = 500
 
 local defaultEpsilon = 0.5
 
@@ -18,7 +18,7 @@ local defaultDiscountFactor = 0.95
 
 local defaultMaxNumberOfIterations = 1
 
-function ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+function ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
 	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
@@ -28,7 +28,7 @@ function ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, 
 
 	setmetatable(NewReinforcementLearningNeuralNetworkBaseModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-	NewReinforcementLearningNeuralNetworkBaseModel.maxNumberOfEpisodes = maxNumberOfEpisodes or defaultMaxNumberOfEpisode
+	NewReinforcementLearningNeuralNetworkBaseModel.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
 
 	NewReinforcementLearningNeuralNetworkBaseModel.epsilon = epsilon or defaultEpsilon
 
@@ -36,13 +36,15 @@ function ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, 
 
 	NewReinforcementLearningNeuralNetworkBaseModel.discountFactor =  discountFactor or defaultDiscountFactor
 
-	NewReinforcementLearningNeuralNetworkBaseModel.currentNumberOfEpisodes = 0
-
 	NewReinforcementLearningNeuralNetworkBaseModel.currentEpsilon = epsilon or defaultEpsilon
 
 	NewReinforcementLearningNeuralNetworkBaseModel.previousFeatureVector = nil
 
 	NewReinforcementLearningNeuralNetworkBaseModel.printReinforcementOutput = true
+	
+	NewReinforcementLearningNeuralNetworkBaseModel.currentNumberOfReinforcements = 0
+	
+	NewReinforcementLearningNeuralNetworkBaseModel.currentNumberOfEpisodes = 0
 
 	return NewReinforcementLearningNeuralNetworkBaseModel
 	
@@ -95,14 +97,18 @@ end
 function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
-
-	self.currentNumberOfEpisodes = (self.currentNumberOfEpisodes + 1) % self.maxNumberOfEpisodes
-
-	if (self.currentNumberOfEpisodes == 0) then
-
+	
+	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
+		
+		self.currentNumberOfReinforcements = 0
+		
+		self.currentNumberOfEpisodes += 1
+		
 		self.currentEpsilon *= self.epsilonDecayFactor
-
+		
 	end
+	
+	self.currentNumberOfReinforcements += 1
 
 	local action
 
@@ -154,7 +160,7 @@ function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVec
 
 	self.previousFeatureVector = currentFeatureVector
 
-	if (self.printReinforcementOutput == true) then print("Current Number Of Episodes: " .. self.currentNumberOfEpisodes .. "\t\tCurrent Epsilon: " .. self.currentEpsilon) end
+	if (self.printReinforcementOutput == true) then print("Episode: " .. self.currentNumberOfEpisodes .. "\t\tEpsilon: " .. self.currentEpsilon .. "\t\tReinforcement Count: " .. self.currentNumberOfReinforcements) end
 
 	if (returnOriginalOutput == true) then return allOutputsMatrix end
 
@@ -162,8 +168,22 @@ function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVec
 
 end
 
-function ReinforcementLearningNeuralNetworkBaseModel:reset()
+function ReinforcementLearningNeuralNetworkBaseModel:getCurrentNumberOfEpisodes()
+	
+	return self.currentNumberOfEpisodes
+	
+end
 
+function ReinforcementLearningNeuralNetworkBaseModel:getCurrentNumberOfReinforcements()
+	
+	return self.currentNumberOfReinforcements
+	
+end
+
+function ReinforcementLearningNeuralNetworkBaseModel:reset()
+	
+	self.currentNumberOfReinforcements = 0
+	
 	self.currentNumberOfEpisodes = 0
 
 	self.previousFeatureVector = nil

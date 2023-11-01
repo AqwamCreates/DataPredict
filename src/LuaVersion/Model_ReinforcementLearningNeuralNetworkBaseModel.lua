@@ -193,9 +193,9 @@ function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVec
 
 	self.previousFeatureVector = currentFeatureVector
 
-	if (self.printReinforcementOutput == true) then print("Episode: " .. self.currentNumberOfEpisodes .. "\t\tEpsilon: " .. self.currentEpsilon .. "\t\tReinforcement Count: " .. self.currentNumberOfReinforcements) end
+	if (self.printReinforcementOutput) then print("Episode: " .. self.currentNumberOfEpisodes .. "\t\tEpsilon: " .. self.currentEpsilon .. "\t\tReinforcement Count: " .. self.currentNumberOfReinforcements) end
 
-	if (returnOriginalOutput == true) then return allOutputsMatrix end
+	if (returnOriginalOutput) then return allOutputsMatrix end
 
 	return action, highestValue
 

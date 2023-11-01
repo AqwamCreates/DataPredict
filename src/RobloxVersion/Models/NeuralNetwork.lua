@@ -539,7 +539,9 @@ function NeuralNetworkModel:gradientDescent(learningRate, deltaTable, numberOfDa
 
 end
 
-function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix, numberOfData)
+function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix)
+	
+	local numberOfData = #logisticMatrix
 
 	local subtractedMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
 
@@ -885,7 +887,7 @@ function NeuralNetworkModel:fetchFinalActivationFunctionForTraining()
 	
 end
 
-function NeuralNetworkModel:backPropagate(lossMatrix)
+function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	
 	if (self.forwardPropagateTable == nil) then error("Table not found for forward propagation.") end
 	
@@ -909,9 +911,13 @@ function NeuralNetworkModel:backPropagate(lossMatrix)
 	
 	self.ModelParameters = self:gradientDescent(self.learningRate, costDerivativesTable, numberOfData)
 	
-	self.forwardPropagateTable = nil
+	if clearTables then
+		
+		self.forwardPropagateTable = nil
 
-	self.zTable = nil
+		self.zTable = nil
+		
+	end
 	
 	return costDerivativesTable
 	
@@ -932,8 +938,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	local costArray = {}
 
 	local numberOfIterations = 0
-
-	local numberOfData = #featureMatrix
 
 	local numberOfLayers = #self.numberOfNeuronsTable
 
@@ -967,11 +971,11 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		activatedOutputsMatrix = self:forwardPropagate(featureMatrix, true)
 
-		cost = self:calculateCost(activatedOutputsMatrix, logisticMatrix, numberOfData)
+		cost = self:calculateCost(activatedOutputsMatrix, logisticMatrix)
 
 		lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
 
-		self:backPropagate(lossMatrix)
+		self:backPropagate(lossMatrix, true)
 
 		numberOfIterations += 1
 

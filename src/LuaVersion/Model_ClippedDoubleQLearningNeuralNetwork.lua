@@ -39,9 +39,9 @@ ClippedDoubleQLearningNeuralNetworkModel.__index = ClippedDoubleQLearningNeuralN
 
 setmetatable(ClippedDoubleQLearningNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-function ClippedDoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+function ClippedDoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
-	local NewClippedDoubleQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+	local NewClippedDoubleQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
 	NewClippedDoubleQLearningNeuralNetworkModel.ModelParametersArray = {}
 	
@@ -83,7 +83,7 @@ function ClippedDoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, lea
 
 end
 
-function ClippedDoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+function ClippedDoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -91,7 +91,7 @@ function ClippedDoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfItera
 
 	self.targetCost = targetCost or self.targetCost
 
-	self.maxNumberOfEpisodes = maxNumberOfEpisodes or self.maxNumberOfEpisodes
+	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
 	self.epsilon = epsilon or self.epsilon
 

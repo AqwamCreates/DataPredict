@@ -905,7 +905,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix)
 	
 	self.ModelParameters = self:gradientDescent(self.learningRate, costDerivativesTable, numberOfData)
 	
-	return costDerivativesTable, ModelParameters
+	return costDerivativesTable
 	
 end
 

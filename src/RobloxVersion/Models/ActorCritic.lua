@@ -168,12 +168,6 @@ function ActorCriticModel:reset()
 
 	self.currentEpsilon = self.epsilon
 
-	for i, Optimizer in ipairs(self.OptimizerTable) do
-
-		if Optimizer then Optimizer:reset() end
-
-	end
-
 	if (self.ExperienceReplay) then self.ExperienceReplay:reset() end
 
 end

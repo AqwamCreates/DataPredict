@@ -889,7 +889,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix)
 	
 	local numberOfData = #lossMatrix
 	
-	local numberOfLayers = #self.forwardPropagateTable
+	local numberOfLayers = #self.numberOfNeuronsTable
 	
 	local finalActivationFunctionName = self:fetchFinalActivationFunctionForTraining()
 	

@@ -366,7 +366,7 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 end
 
-function NeuralNetworkModel:forwardPropagate(featureMatrix)
+function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 
 	local layerZ
 
@@ -426,9 +426,13 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix)
 
 	table.insert(forwardPropagateTable, activatedOutputMatrix)
 	
-	self.forwardPropagateTable = forwardPropagateTable
+	if saveTables then
+		
+		self.forwardPropagateTable = forwardPropagateTable
 
-	self.zTable = zTable
+		self.zTable = zTable
+		
+	end
 
 	return activatedOutputMatrix
 
@@ -938,6 +942,10 @@ function NeuralNetworkModel:backPropagate(lossMatrix)
 	
 	self.ModelParameters = self:gradientDescent(self.learningRate, costDerivativesTable, numberOfData)
 	
+	self.forwardPropagateTable = nil
+
+	self.zTable = nil
+	
 	return costDerivativesTable
 	
 end
@@ -990,7 +998,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		self:iterationWait()
 
-		activatedOutputsMatrix = self:forwardPropagate(featureMatrix)
+		activatedOutputsMatrix = self:forwardPropagate(featureMatrix, true)
 
 		cost = self:calculateCost(activatedOutputsMatrix, logisticMatrix, numberOfData)
 
@@ -1026,7 +1034,7 @@ function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
-	local outputMatrix = self:forwardPropagate(featureMatrix)
+	local outputMatrix = self:forwardPropagate(featureMatrix, false)
 
 	if (returnOriginalOutput == true) then return outputMatrix end
 

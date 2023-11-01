@@ -382,12 +382,26 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix)
 		table.insert(forwardPropagateTable, inputMatrix)
 
 	end
+	
+	local finalActivationFunctionName = self:fetchFinalActivationFunctionForTraining()
 
-	return forwardPropagateTable, zTable
+	local finalActivationFunction = activationFunctionList[finalActivationFunctionName]
+
+	local activatedOutputMatrix = finalActivationFunction(inputMatrix)
+	
+	table.insert(zTable, inputMatrix)
+
+	table.insert(forwardPropagateTable, activatedOutputMatrix)
+	
+	self.forwardPropagateTable = forwardPropagateTable
+
+	self.zTable = zTable
+
+	return activatedOutputMatrix
 
 end
 
-function NeuralNetworkModel:backPropagate(lossMatrix, forwardPropagateTable, zTable)
+function NeuralNetworkModel:calculatePartialDerivatives(lossMatrix, forwardPropagateTable, zTable)
 
 	local backpropagateTable = {}
 
@@ -867,23 +881,7 @@ function NeuralNetworkModel:fetchFinalActivationFunctionForTraining()
 	
 end
 
-function NeuralNetworkModel:trainForwardPropagate(featureMatrix)
-	
-	local finalActivationFunctionName = self:fetchFinalActivationFunctionForTraining()
-
-	local finalActivationFunction = activationFunctionList[finalActivationFunctionName]
-	
-	self.forwardPropagateTable, self.zTable = self:forwardPropagate(featureMatrix)
-	
-	local outputMatrix = self.forwardPropagateTable[#self.forwardPropagateTable]
-	
-	local activatedOutputsMatrix = finalActivationFunction(outputMatrix)
-	
-	return activatedOutputsMatrix
-	
-end
-
-function NeuralNetworkModel:trainBackPropagate(lossMatrix)
+function NeuralNetworkModel:backPropagate(lossMatrix)
 	
 	if (self.forwardPropagateTable == nil) then error("Table not found for forward propagation.") end
 	
@@ -891,25 +889,23 @@ function NeuralNetworkModel:trainBackPropagate(lossMatrix)
 	
 	local numberOfData = #lossMatrix
 	
+	local numberOfLayers = #self.forwardPropagateTable
+	
 	local finalActivationFunctionName = self:fetchFinalActivationFunctionForTraining()
 	
 	local finalActivationFunction = activationFunctionList[finalActivationFunctionName]
 
 	local finalActivationFunctionDerivatives = derivativeList[finalActivationFunctionName]
 	
-	local outputDerivativeMatrix = finalActivationFunctionDerivatives(self.forwardPropagateTable[#self.forwardPropagateTable], lossMatrix)
+	local outputDerivativeMatrix = finalActivationFunctionDerivatives(self.forwardPropagateTable[numberOfLayers], lossMatrix)
 
-	local backwardPropagateTable = self:backPropagate(outputDerivativeMatrix, self.forwardPropagateTable, self.zTable)
+	local partialDerivativesTable = self:calculatePartialDerivatives(outputDerivativeMatrix, self.forwardPropagateTable, self.zTable)
 
-	local deltaTable = self:calculateDelta(self.forwardPropagateTable, backwardPropagateTable)
+	local costDerivativesTable = self:calculateDelta(self.forwardPropagateTable, partialDerivativesTable)
 	
-	self.ModelParameters = self:gradientDescent(self.learningRate, deltaTable, numberOfData)
+	self.ModelParameters = self:gradientDescent(self.learningRate, costDerivativesTable, numberOfData)
 	
-	self.forwardPropagateTable = nil 
-	
-	self.zTable = nil
-	
-	return deltaTable
+	return costDerivativesTable, ModelParameters
 	
 end
 
@@ -961,13 +957,13 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		self:iterationWait()
 
-		activatedOutputsMatrix = self:trainForwardPropagate(featureMatrix)
+		activatedOutputsMatrix = self:forwardPropagate(featureMatrix)
 
 		cost = self:calculateCost(activatedOutputsMatrix, logisticMatrix, numberOfData)
 
 		lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
 
-		self:trainBackPropagate(lossMatrix)
+		self:backPropagate(lossMatrix)
 
 		numberOfIterations += 1
 
@@ -997,15 +993,7 @@ function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
-	local forwardPropagateTable = self:forwardPropagate(featureMatrix)
-
-	local outputMatrix = forwardPropagateTable[#forwardPropagateTable]
-
-	local finalActivationFunctionName = self.activationFunctionTable[#self.activationFunctionTable]
-
-	local finalActivationFunction = activationFunctionList[finalActivationFunctionName]
-
-	outputMatrix = finalActivationFunction(outputMatrix)
+	local outputMatrix = self:forwardPropagate(featureMatrix)
 
 	if (returnOriginalOutput == true) then return outputMatrix end
 

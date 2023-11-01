@@ -909,6 +909,8 @@ function NeuralNetworkModel:trainBackPropagate(lossMatrix)
 	
 	self.zTable = nil
 	
+	return deltaTable
+	
 end
 
 function NeuralNetworkModel:train(featureMatrix, labelVector)

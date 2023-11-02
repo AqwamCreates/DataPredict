@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number, averagingRate: number): ModelObject
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number, averagingRate: number): ModelObject
 ```
 
 #### Parameters:
@@ -26,7 +26,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterati
 
 * targetCost: The cost at which the model stops training.
 
-* maxNumberOfEpisodes: The number of episodes to decay the epsilon value.
+* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
 
@@ -49,7 +49,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterati
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number, averagingRate: number)
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number, averagingRate: number)
 ```
 
 #### Parameters:
@@ -60,7 +60,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumbe
 
 * targetCost: The cost at which the model stops training.
 
-* maxNumberOfEpisodes: The number of episodes to decay the epsilon value.
+* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
 

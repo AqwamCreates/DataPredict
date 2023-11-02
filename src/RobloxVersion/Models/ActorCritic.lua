@@ -12,7 +12,9 @@ local defaultEpsilonDecayFactor = 0.999
 
 local defaultDiscountFactor = 0.95
 
-function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the episodic reward, but lower running reward
+
+function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
 	
 	local NewActorCriticModel = {}
 	
@@ -27,6 +29,8 @@ function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilon
 	NewActorCriticModel.discountFactor =  discountFactor or defaultDiscountFactor
 
 	NewActorCriticModel.currentEpsilon = epsilon or defaultEpsilon
+	
+	NewActorCriticModel.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
 
 	NewActorCriticModel.previousFeatureVector = nil
 
@@ -164,7 +168,7 @@ end
 
 function ActorCriticModel:episodeUpdate(numberOfFeatures)
 
-	self.runningReward = (0.05 * self.episodeReward) + (0.95 * self.runningReward)
+	self.runningReward = (self.rewardAveragingRate * self.episodeReward) + ((1 - self.rewardAveragingRate) * self.runningReward)
 	
 	local returnsVector = {{}}
 	

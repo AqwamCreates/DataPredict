@@ -116,6 +116,10 @@ Set whether or not to show the current number of episodes and current epsilon.
 ReinforcementLearningNeuralNetworkBaseModel:setPrintReinforcementOutput(option: boolean)
 ```
 
+#### Parameters:
+
+* option: A boolean value that determines the reinforcement output to be printed or not.
+
 ### setUpdateFunction()
 
 Sets the model's update function.
@@ -136,6 +140,8 @@ Updates the model parameters.
 ReinforcementLearningNeuralNetworkBaseModel:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
 ```
 
+#### Parameters:
+
 * previousFeatiureVector: The previous state of the environment.
 
 * action: The action selected.
@@ -143,14 +149,6 @@ ReinforcementLearningNeuralNetworkBaseModel:update(previousFeatiureVector: featu
 * rewardValue: The reward gained at current state.
 
 * currentFeatureVector: The currrent state of the environment.
-
-#### Parameters:
-
-* updateFunction: The function to run when update() is called.
-
-#### Parameters:
-
-* option: A boolean value that determines the reinforcement output to be printed or not.
 
 ### setResetFunction()
 

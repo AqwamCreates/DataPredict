@@ -31,7 +31,9 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 [Using Regularization](Overview/UsingRegularization.md)
 
-[Using Neural Networks](Overview/UsingNeuralNetworks.md)
+[Using Neural Networks Part 1](Overview/UsingNeuralNetworksPart1.md)
+
+[Using Neural Networks Part 2](Overview/UsingNeuralNetworksPart2.md)
 
 [Using Neural Networks With Reinforcement Learning](Overview/UsingNeuralNetworksWithReinforcementLearning.md)
 

@@ -227,6 +227,38 @@ NeuralNetwork:setClassesList(classesList: [])
 
 * classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
 
+### forwardPropagate()
+
+```
+NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean): labelMatrix
+```
+
+### Parameters:
+
+* featureMatrix: Matrix containing all data.
+
+* saveTables: Set whether or not the forward propagation table and z table is stored in the model.
+
+### Returns:
+
+* labelMatrix: A matrix containing final layer outputs.
+
+### forwardPropagate()
+
+```
+NeuralNetwork:backPropagate(lossMatrix: Matrix, clearTables: boolean): []
+```
+
+### Parameters:
+
+* lossMatrix: Matrix containing the loss.
+
+* clearTables: Set whether or not to clear forward propagation table and z table is stored in the model after backpropagation is done.
+
+### Returns:
+
+* costDerivativesTable: A table of matrices containing the model's weights cost derivatives values.
+
 ### showDetails()
 
 Shows the details of all layers. The details includes the number of neurons, is bias added and so on.

@@ -489,22 +489,22 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, partialDerivat
 
 end
 
-function NeuralNetworkModel:gradientDescent(learningRate, deltaTable, numberOfData)
-
+function NeuralNetworkModel:calculateCostDerivatives(learningRate, deltaTable, numberOfData)
+	
 	local regularizationDerivatives
 
 	local costFunctionDerivatives
 
 	local newWeightMatrix
 
-	local NewModelParameters = {}
+	local costDerivativesTable = {}
 
 	local calculatedLearningRate
-	
+
 	local numberOfLayers = #self.numberOfNeuronsTable
-	
+
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
-		
+
 		local delta = deltaTable[layerNumber]
 
 		local learningRate = self.learningRateTable[layerNumber]
@@ -512,13 +512,13 @@ function NeuralNetworkModel:gradientDescent(learningRate, deltaTable, numberOfDa
 		local Regularization = self.RegularizationTable[layerNumber]
 
 		local Optimizer = self.OptimizerTable[layerNumber]
-		
+
 		local weightMatrix = self.ModelParameters[layerNumber]
 
 		calculatedLearningRate = learningRate / numberOfData
 
 		costFunctionDerivatives = AqwamMatrixLibrary:dotProduct(weightMatrix, delta)
-		
+
 		if Regularization then
 
 			regularizationDerivatives = Regularization:calculateRegularizationDerivatives(weightMatrix, numberOfData)
@@ -537,7 +537,27 @@ function NeuralNetworkModel:gradientDescent(learningRate, deltaTable, numberOfDa
 
 		end
 		
-		newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivatives) 
+		table.insert(costDerivativesTable, costFunctionDerivatives)
+
+	end
+	
+	return costDerivativesTable
+	
+end
+
+function NeuralNetworkModel:gradientDescent(costDerivativesTable)
+	
+	local NewModelParameters = {}
+	
+	local numberOfLayers = #self.numberOfNeuronsTable
+	
+	for layerNumber = 1, (numberOfLayers - 1), 1 do
+		
+		local costFunctionDerivatives = costDerivativesTable[layerNumber]
+		
+		local weightMatrix = self.ModelParameters[layerNumber]
+
+		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivatives) 
 
 		table.insert(NewModelParameters, newWeightMatrix)
 		
@@ -917,9 +937,11 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 
 	local partialDerivativesTable = self:calculatePartialDerivatives(outputDerivativeMatrix, self.forwardPropagateTable, self.zTable)
 
-	local costDerivativesTable = self:calculateDelta(self.forwardPropagateTable, partialDerivativesTable)
+	local deltaTable = self:calculateDelta(self.forwardPropagateTable, partialDerivativesTable)
 	
-	self.ModelParameters = self:gradientDescent(self.learningRate, costDerivativesTable, numberOfData)
+	local costDerivativesTable = self:calculateCostDerivatives(self.learningRate, deltaTable, numberOfData)
+	
+	self.ModelParameters = self:gradientDescent(costDerivativesTable)
 	
 	if clearTables then
 		

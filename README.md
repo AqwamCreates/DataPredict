@@ -1,5 +1,9 @@
 # DataPredict
 
+## THIS IS A PROPRIETARY SOURCE CODE! NOT OPEN SOURCE! 
+
+--------------------------------------------------------------------
+
 | Version | Current Version Number |
 |---------|------------------------|
 | Release | 1.4                    |

@@ -128,7 +128,3 @@ Reset model's stored values (excluding the parameters).
 ```
 ReinforcementLearningNeuralNetworkBaseModel:reset()
 ```
-
-## Inherited From
-
-* [NeuralNetwork](NeuralNetwork.md)

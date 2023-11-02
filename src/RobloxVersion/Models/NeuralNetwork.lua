@@ -354,10 +354,6 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 	local numberOfLayers = #self.numberOfNeuronsTable
 	
 	local weightMatrix
-
-	--table.insert(zTable, inputMatrix)
-
-	--table.insert(forwardPropagateTable, inputMatrix) -- don't remove this! otherwise the code won't work!
 	
 	for layerNumber = 1,  (numberOfLayers - 1), 1 do
 		
@@ -463,7 +459,7 @@ function NeuralNetworkModel:calculatePartialDerivatives(lossMatrix, forwardPropa
 
 end
 
-function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateTable)
+function NeuralNetworkModel:calculateDelta(forwardPropagateTable, partialDerivativesTable)
 
 	local errorMatrix
 
@@ -473,11 +469,11 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateT
 
 	local deltaTable = {}
 
-	for layer = #backpropagateTable, 1, -1 do
+	for layer = #partialDerivativesTable, 1, -1 do
 
 		activationLayerMatrix = AqwamMatrixLibrary:transpose(forwardPropagateTable[layer])
 
-		errorMatrix = backpropagateTable[layer]
+		errorMatrix = partialDerivativesTable[layer]
 
 		costFunctionDerivatives = AqwamMatrixLibrary:dotProduct(activationLayerMatrix, errorMatrix)
 		

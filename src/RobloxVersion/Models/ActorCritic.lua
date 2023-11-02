@@ -12,7 +12,7 @@ local defaultEpsilonDecayFactor = 0.999
 
 local defaultDiscountFactor = 0.95
 
-local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the episodic reward, but lower running reward
+local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the episodic reward, but lower the running reward.
 
 function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
 	
@@ -27,10 +27,10 @@ function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilon
 	NewActorCriticModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
 
 	NewActorCriticModel.discountFactor =  discountFactor or defaultDiscountFactor
-
-	NewActorCriticModel.currentEpsilon = epsilon or defaultEpsilon
 	
 	NewActorCriticModel.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
+	
+	NewActorCriticModel.currentEpsilon = epsilon or defaultEpsilon
 
 	NewActorCriticModel.previousFeatureVector = nil
 
@@ -53,6 +53,22 @@ function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilon
 	NewActorCriticModel.ClassesList = nil
 	
 	return NewActorCriticModel
+	
+end
+
+function ActorCriticModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
+	
+	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
+
+	self.epsilon = epsilon or self.epsilon
+
+	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
+
+	self.discountFactor =  discountFactor or self.discountFactor
+
+	self.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
+	
+	self.currentEpsilon = epsilon or self.currentEpsilon
 	
 end
 

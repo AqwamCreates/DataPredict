@@ -489,7 +489,7 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, partialDerivat
 
 end
 
-function NeuralNetworkModel:calculateCostDerivatives(learningRate, deltaTable, numberOfData)
+function NeuralNetworkModel:calculateCostFunctionDerivatives(learningRate, deltaTable, numberOfData)
 	
 	local regularizationDerivatives
 
@@ -497,7 +497,7 @@ function NeuralNetworkModel:calculateCostDerivatives(learningRate, deltaTable, n
 
 	local newWeightMatrix
 
-	local costDerivativesTable = {}
+	local costFunctionDerivativesTable = {}
 
 	local calculatedLearningRate
 
@@ -537,11 +537,11 @@ function NeuralNetworkModel:calculateCostDerivatives(learningRate, deltaTable, n
 
 		end
 		
-		table.insert(costDerivativesTable, costFunctionDerivatives)
+		table.insert(costFunctionDerivativesTable, costFunctionDerivatives)
 
 	end
 	
-	return costDerivativesTable
+	return costFunctionDerivativesTable
 	
 end
 
@@ -939,9 +939,9 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 
 	local deltaTable = self:calculateDelta(self.forwardPropagateTable, partialDerivativesTable)
 	
-	local costDerivativesTable = self:calculateCostDerivatives(self.learningRate, deltaTable, numberOfData)
+	local costFunctionDerivativesTable = self:calculateCostFunctionDerivatives(self.learningRate, deltaTable, numberOfData)
 	
-	self.ModelParameters = self:gradientDescent(costDerivativesTable)
+	self.ModelParameters = self:gradientDescent(costFunctionDerivativesTable)
 	
 	if clearTables then
 		
@@ -951,7 +951,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 		
 	end
 	
-	return costDerivativesTable
+	return costFunctionDerivativesTable
 	
 end
 

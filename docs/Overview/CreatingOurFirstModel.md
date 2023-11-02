@@ -128,4 +128,4 @@ Since you read the whole introduction, I recommend you to have a look at these t
 
 * [Using Regularization](UsingRegularization.md)
 
-* [Using Neural Networks](UsingNeuralNetworks.md)
+* [Using Neural Networks Part 1](UsingNeuralNetworksPart1.md)

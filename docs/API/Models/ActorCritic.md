@@ -9,7 +9,7 @@ ActorCritic is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
+ReinforcementLearningNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number): ModelObject
 ```
 
 #### Parameters:
@@ -21,6 +21,8 @@ ReinforcementLearningNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode
 * epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+
+* rewardAveragingRate: The higher the value, the higher the episodic reward, but lower the running reward.
 
 #### Returns:
 
@@ -33,7 +35,7 @@ ReinforcementLearningNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
+ReinforcementLearningNeuralNetworkBaseModel:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number)
 ```
 
 #### Parameters:
@@ -45,6 +47,8 @@ ReinforcementLearningNeuralNetworkBaseModel:setParameters(numberOfReinforcements
 * epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+
+* rewardAveragingRate: The higher the value, the higher the episodic reward, but lower the running reward.
 
 ### setExperienceReplay()
 

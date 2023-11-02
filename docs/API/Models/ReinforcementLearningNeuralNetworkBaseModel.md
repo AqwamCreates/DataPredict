@@ -125,7 +125,7 @@ ReinforcementLearningNeuralNetworkBaseModel:setPrintReinforcementOutput(option: 
 Sets the model's update function.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:setResetFunction(updateFunction)
+ReinforcementLearningNeuralNetworkBaseModel:setUpdateFunction(updateFunction)
 ```
 
 #### Parameters:

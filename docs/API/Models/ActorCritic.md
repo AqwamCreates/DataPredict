@@ -97,8 +97,9 @@ Set whether or not to show the current number of episodes and current epsilon.
 ```
 ReinforcementLearningNeuralNetworkBaseModel:setPrintReinforcementOutput(option: boolean)
 ```
+#### Parameters:
 
-
+* option: A boolean value that determines the reinforcement output to be printed or not.
 
 ### update()
 

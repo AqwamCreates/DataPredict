@@ -6,6 +6,7 @@ In this tutorial, we will show you another way of training our model.
 We will use forwardPropagate() and backPropagate() functions to train our neural network model. We will show you a code sample with explanations below.
 
 ```lua
+
 local DataPredict = require(DataPredict)
 local MatrixL = require(AqwamMatrixLibrary)
 

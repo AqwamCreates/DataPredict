@@ -4,7 +4,7 @@ ActorCriticModel = {}
 
 ActorCriticModel.__index = ActorCriticModel
 
-local defaultNumberOfReinforcementsPerEpisode = 500
+local defaultNumberOfReinforcementsPerEpisode = 10
 
 local defaultEpsilon = 0.5
 
@@ -36,6 +36,18 @@ function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilon
 
 	NewActorCriticModel.currentNumberOfEpisodes = 0
 	
+	NewActorCriticModel.actionProbabilityHistory = {}
+	
+	NewActorCriticModel.criticValueHistory = {}
+	
+	NewActorCriticModel.rewardHistory = {}
+	
+	NewActorCriticModel.episodeReward = 0
+	
+	NewActorCriticModel.runningReward = 0
+	
+	NewActorCriticModel.ClassesList = nil
+	
 	return NewActorCriticModel
 	
 end
@@ -58,9 +70,75 @@ function ActorCriticModel:setClassesList(classesList)
 	
 end
 
+local function softmax(zMatrix)
+
+	local expMatrix = AqwamMatrixLibrary:applyFunction(math.exp, zMatrix)
+
+	local expSum = AqwamMatrixLibrary:horizontalSum(expMatrix)
+
+	local aMatrix = AqwamMatrixLibrary:divide(expMatrix, expSum)
+
+	return aMatrix
+	
+end
+
+local function sampleAction(actionProbabilityVector)
+	
+	local totalProbability = 0
+	
+	for _, probability in ipairs(actionProbabilityVector[1]) do
+		
+		totalProbability += probability
+		
+	end
+
+	local randomValue = math.random() * totalProbability
+
+	local cumulativeProbability = 0
+	
+	local actionIndex = 1
+	
+	for i, probability in ipairs(actionProbabilityVector[1]) do
+		
+		cumulativeProbability += probability
+		
+		if (randomValue > cumulativeProbability) then continue end
+			
+		actionIndex = i
+		
+		break
+		
+	end
+	
+	return actionIndex
+	
+end
+
 function ActorCriticModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
+	local allOutputsVector = self.ActorModel:predict(previousFeatureVector, true)
+	
+	local actionProbabilityVector = softmax(allOutputsVector)
 
+	local criticValue = self.CriticModel:predict(previousFeatureVector, true)[1][1]
+	
+	local numberOfActions = #allOutputsVector[1]
+	
+	local actionIndex = sampleAction(actionProbabilityVector)
+	
+	local action = self.ClassesList[actionIndex]
+	
+	local actionProbability = math.log(actionProbabilityVector[1][actionIndex])
+	
+	self.episodeReward += rewardValue
+	
+	table.insert(self.actionProbabilityHistory, actionProbability)
+	
+	table.insert(self.criticValueHistory, criticValue)
+	
+	table.insert(self.rewardHistory, rewardValue)
+	
+	return action, actionProbabilityVector, actionIndex
 
 end
 
@@ -84,6 +162,83 @@ function ActorCriticModel:setPrintReinforcementOutput(option)
 
 end
 
+function ActorCriticModel:episodeUpdate(numberOfFeatures)
+
+	self.runningReward = (0.05 * self.episodeReward) + (0.95 * self.runningReward)
+	
+	local returnsVector = {{}}
+	
+	local discountedSum = 0
+	
+	local historyLength = #self.rewardHistory
+	
+	for r = historyLength, 1, -1 do
+		
+		discountedSum = r + self.discountFactor * discountedSum
+		
+		table.insert(returnsVector[1], 1, discountedSum)
+		
+	end
+	
+	local returnsVectorMean = AqwamMatrixLibrary:mean(returnsVector)
+	
+	local returnsVectorStandardDeviation = AqwamMatrixLibrary:standardDeviation(returnsVector)
+	
+	local normalizedReturnVector = AqwamMatrixLibrary:subtract(returnsVector, returnsVectorMean)
+	
+	normalizedReturnVector = AqwamMatrixLibrary:divide(normalizedReturnVector, returnsVectorStandardDeviation)
+	
+	local sumActorLosses = 0
+	
+	local sumCriticLosses = 0
+	
+	for h = 1, historyLength, 1 do
+		
+		local reward = self.rewardHistory[h]
+		
+		local returns = normalizedReturnVector[1][h]
+		
+		local actionProbability = self.actionProbabilityHistory[h]
+		
+		local actorLoss = -math.log(actionProbability) * (returns - reward) 
+		
+		local criticLoss = (returns - reward)^2
+		
+		sumActorLosses += actorLoss
+		
+		sumCriticLosses += criticLoss
+		
+	end
+	
+	local lossValue = sumActorLosses + sumCriticLosses
+	
+	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+	local lossVector = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList, lossValue)
+	
+	self.ActorModel:forwardPropagate(featureVector, true)
+	self.CriticModel:forwardPropagate(featureVector, true)
+	
+	self.ActorModel:backPropagate(lossVector, true)
+	self.CriticModel:backPropagate(lossValue, true)
+	
+	------------------------------------------------------
+	
+	self.episodeReward = 0
+
+	self.currentNumberOfReinforcements = 0
+
+	self.currentNumberOfEpisodes += 1
+
+	self.currentEpsilon *= self.epsilonDecayFactor
+	
+	table.clear(self.actionProbabilityHistory)
+	
+	table.clear(self.criticValueHistory)
+	
+	table.clear(self.rewardHistory)
+	
+end
+
 function ActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 	
 	if (self.ActorModel == nil) then error("No actor model!") end
@@ -91,26 +246,22 @@ function ActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOri
 	if (self.CriticModel == nil) then error("No critic model!") end
 
 	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
-
-		self.currentNumberOfReinforcements = 0
-
-		self.currentNumberOfEpisodes += 1
-
-		self.currentEpsilon *= self.epsilonDecayFactor
+		
+		self:episodeUpdate(#currentFeatureVector[1])
 
 	end
 
 	self.currentNumberOfReinforcements += 1
 	
 	local action
-
-	local actionVector
+	
+	local actionIndex
 
 	local highestValue
 
 	local highestValueVector
 
-	local allOutputsMatrix
+	local allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 
 	local randomProbability = Random.new():NextNumber()
 
@@ -120,23 +271,21 @@ function ActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOri
 
 		action = self.ClassesList[randomNumber]
 
-		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
-
 		allOutputsMatrix[1][randomNumber] = randomProbability
 
 	else
 
-		allOutputsMatrix = self:predict(currentFeatureVector, true)
+		if (self.previousFeatureVector) then
+			
+			action, highestValueVector, actionIndex = self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
-
-		action = actionVector[1][1]
-
-		highestValue = highestValueVector[1][1]
+			highestValue = highestValueVector[1][1]
+			
+			allOutputsMatrix[1][actionIndex] = highestValue
+			
+		end
 
 	end
-	
-	if (self.previousFeatureVector) then self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) end
 
 	if (self.ExperienceReplay) and (self.previousFeatureVector) then 
 
@@ -173,6 +322,10 @@ function ActorCriticModel:getCurrentNumberOfReinforcements()
 end
 
 function ActorCriticModel:reset()
+	
+	self.episodeReward = 0
+	
+	self.runningReward = 0
 
 	self.currentNumberOfReinforcements = 0
 
@@ -181,6 +334,12 @@ function ActorCriticModel:reset()
 	self.previousFeatureVector = nil
 
 	self.currentEpsilon = self.epsilon
+	
+	table.clear(self.actionProbabilityHistory)
+
+	table.clear(self.criticValueHistory)
+
+	table.clear(self.rewardHistory)
 
 	if (self.ExperienceReplay) then self.ExperienceReplay:reset() end
 

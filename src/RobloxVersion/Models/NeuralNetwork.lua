@@ -369,10 +369,10 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 		
 		layerZ = AqwamMatrixLibrary:dotProduct(inputMatrix, weightMatrix)
 		
-		inputMatrix = activationFunction(layerZ)
+		if (type(layerZ) == "number") then layerZ = {{layerZ}} end
 		
-		if (typeof(layerZ) == "number") then layerZ = {{layerZ}} end
-
+		inputMatrix = activationFunction(layerZ)
+	
 		hasBiasNeuron = self.hasBiasNeuronTable[layerNumber]
 
 		if (layerNumber < numberOfLayers) and (hasBiasNeuron) then
@@ -480,6 +480,8 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, backpropagateT
 		errorMatrix = backpropagateTable[layer]
 
 		costFunctionDerivatives = AqwamMatrixLibrary:dotProduct(activationLayerMatrix, errorMatrix)
+		
+		if (type(costFunctionDerivatives) == "number") then costFunctionDerivatives = {{costFunctionDerivatives}} end
 
 		costFunctionDerivatives = AqwamMatrixLibrary:transpose(costFunctionDerivatives)
 
@@ -902,6 +904,8 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	if (self.forwardPropagateTable == nil) then error("Table not found for forward propagation.") end
 	
 	if (self.zTable == nil) then error("Table not found for z matrix.") end
+	
+	if type(lossMatrix) == "number" then lossMatrix = {{lossMatrix}} end
 	
 	local numberOfData = #lossMatrix
 	

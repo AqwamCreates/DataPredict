@@ -393,4 +393,14 @@ function AdvantageActorCriticModel:reset()
 
 end
 
+function AdvantageActorCriticModel:destroy()
+
+	setmetatable(self, nil)
+
+	table.clear(self)
+
+	self = nil
+
+end
+
 return AdvantageActorCriticModel

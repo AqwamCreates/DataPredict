@@ -491,7 +491,7 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, partialDerivat
 
 end
 
-function NeuralNetworkModel:calculateCostFunctionDerivatives(learningRate, deltaTable, numberOfData)
+function NeuralNetworkModel:gradientDescent(learningRate, deltaTable, numberOfData)
 	
 	local regularizationDerivatives
 
@@ -499,7 +499,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivatives(learningRate, delta
 
 	local newWeightMatrix
 
-	local costFunctionDerivativesTable = {}
+	local NewModelParameters = {}
 
 	local calculatedLearningRate
 
@@ -507,7 +507,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivatives(learningRate, delta
 
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
-		local delta = deltaTable[layerNumber]
+		local costDerivativesTable = deltaTable[layerNumber]
 
 		local learningRate = self.learningRateTable[layerNumber]
 
@@ -523,7 +523,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivatives(learningRate, delta
 
 			regularizationDerivatives = Regularization:calculateRegularizationDerivatives(weightMatrix, numberOfData)
 
-			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, costFunctionDerivatives)
+			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, regularizationDerivatives)
 
 		end
 
@@ -536,35 +536,17 @@ function NeuralNetworkModel:calculateCostFunctionDerivatives(learningRate, delta
 			costFunctionDerivatives = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivatives)
 
 		end
-		
-		table.insert(costFunctionDerivativesTable, costFunctionDerivatives)
 
-	end
-	
-	return costFunctionDerivativesTable
-	
-end
-
-function NeuralNetworkModel:gradientDescent(costDerivativesTable)
-	
-	local NewModelParameters = {}
-	
-	local numberOfLayers = #self.numberOfNeuronsTable
-	
-	for layerNumber = 1, (numberOfLayers - 1), 1 do
-		
-		local costFunctionDerivatives = costDerivativesTable[layerNumber]
-		
 		local weightMatrix = self.ModelParameters[layerNumber]
 
 		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivatives) 
 
 		table.insert(NewModelParameters, newWeightMatrix)
-		
+
 	end
-
+	
 	return NewModelParameters
-
+	
 end
 
 function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix)
@@ -903,18 +885,6 @@ function NeuralNetworkModel:processLabelVector(labelVector)
 
 end
 
-function NeuralNetworkModel:fetchFinalActivationFunctionForTraining()
-	
-	local numberOfLayers = #self.numberOfNeuronsTable
-	
-	local finalActivationFunctionName = self.activationFunctionTable[numberOfLayers]
-
-	if (finalActivationFunctionName == "None") then finalActivationFunctionName = self.activationFunctionTable[numberOfLayers - 1] end
-	
-	return finalActivationFunctionName
-	
-end
-
 function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	
 	if (self.forwardPropagateTable == nil) then error("Table not found for forward propagation.") end
@@ -927,7 +897,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	
 	local numberOfLayers = #self.numberOfNeuronsTable
 	
-	local finalActivationFunctionName = self:fetchFinalActivationFunctionForTraining()
+	local finalActivationFunctionName = self.activationFunctionTable[numberOfLayers]
 	
 	local finalActivationFunction = activationFunctionList[finalActivationFunctionName]
 
@@ -939,9 +909,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 
 	local deltaTable = self:calculateDelta(self.forwardPropagateTable, partialDerivativesTable)
 	
-	local costFunctionDerivativesTable = self:calculateCostFunctionDerivatives(self.learningRate, deltaTable, numberOfData)
-	
-	self.ModelParameters = self:gradientDescent(costFunctionDerivativesTable)
+	self.ModelParameters = self:gradientDescent(self.learningRate, deltaTable, numberOfData)
 	
 	if clearTables then
 		
@@ -951,7 +919,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 		
 	end
 	
-	return costFunctionDerivativesTable
+	return deltaTable
 	
 end
 

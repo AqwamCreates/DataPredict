@@ -383,6 +383,10 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 		
 	end
 	
+	activationFunctionName = self.activationFunctionTable[numberOfLayers]
+
+	activationFunction = activationFunctionList[activationFunctionName]
+	
 	inputMatrix = activationFunction(layerZ)
 	
 	table.insert(zTable, layerZ)

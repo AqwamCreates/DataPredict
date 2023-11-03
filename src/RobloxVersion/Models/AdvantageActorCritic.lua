@@ -136,9 +136,9 @@ end
 
 function AdvantageActorCriticModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-	local allOutputsVector = self.ActorModel:predict(previousFeatureVector, true)
+	local allOutputsMatrix = self.ActorModel:predict(previousFeatureVector, true)
 	
-	local actionProbabilityVector = softmax(allOutputsVector)
+	local actionProbabilityVector = softmax(allOutputsMatrix)
 
 	local previousCriticValue = self.criticValueHistory[#self.criticValueHistory - 1] or self.CriticModel:predict(previousFeatureVector, true)[1][1]
 	
@@ -146,7 +146,7 @@ function AdvantageActorCriticModel:update(previousFeatureVector, action, rewardV
 	
 	local advantageValue = rewardValue + (self.discountFactor * (currentCriticValue - currentCriticValue))
 	
-	local numberOfActions = #allOutputsVector[1]
+	local numberOfActions = #allOutputsMatrix[1]
 	
 	local actionIndex = sampleAction(actionProbabilityVector)
 	
@@ -162,7 +162,7 @@ function AdvantageActorCriticModel:update(previousFeatureVector, action, rewardV
 	
 	table.insert(self.criticValueHistory, previousCriticValue)
 	
-	return action, actionProbabilityVector, actionIndex
+	return allOutputsMatrix
 
 end
 
@@ -241,6 +241,48 @@ function AdvantageActorCriticModel:episodeUpdate(numberOfFeatures)
 	
 end
 
+function AdvantageActorCriticModel:fetchHighestValueInVector(outputVector)
+
+	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(outputVector)
+
+	if (classIndex == nil) then return nil, highestValue end
+
+	local predictedLabel = self.ClassesList[classIndex[2]]
+
+	return predictedLabel, highestValue
+	
+end
+
+function AdvantageActorCriticModel:getLabelFromOutputMatrix(outputMatrix)
+
+	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
+
+	local highestValueVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
+
+	local highestValue
+
+	local outputVector
+
+	local classIndex
+
+	local predictedLabel
+
+	for i = 1, #outputMatrix, 1 do
+
+		outputVector = {outputMatrix[i]}
+
+		predictedLabel, highestValue = self:fetchHighestValueInVector(outputVector)
+
+		predictedLabelVector[i][1] = predictedLabel
+
+		highestValueVector[i][1] = highestValue
+
+	end
+
+	return predictedLabelVector, highestValueVector
+
+end
+
 function AdvantageActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 	
 	if (self.ActorModel == nil) then error("No actor model!") end
@@ -258,6 +300,8 @@ function AdvantageActorCriticModel:reinforce(currentFeatureVector, rewardValue, 
 	local action
 	
 	local actionIndex
+	
+	local actionVector
 
 	local highestValue
 
@@ -279,11 +323,13 @@ function AdvantageActorCriticModel:reinforce(currentFeatureVector, rewardValue, 
 
 		if (self.previousFeatureVector) then
 			
-			action, highestValueVector, actionIndex = self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
+			allOutputsMatrix = self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
+			
+			actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
+
+			action = actionVector[1][1]
 
 			highestValue = highestValueVector[1][1]
-			
-			allOutputsMatrix[1][actionIndex] = highestValue
 			
 		end
 

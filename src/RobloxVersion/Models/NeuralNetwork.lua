@@ -597,11 +597,7 @@ end
 
 function NeuralNetworkModel:getLabelFromOutputMatrix(outputMatrix)
 
-	local numberOfLayers = #self.ModelParameters
-
-	local matrixAtFinalLayer = self.ModelParameters[numberOfLayers]
-
-	local numberOfNeuronsAtFinalLayer = #matrixAtFinalLayer[1]
+	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsTable[#self.numberOfNeuronsTable]
 
 	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 

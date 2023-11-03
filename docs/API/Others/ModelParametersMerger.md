@@ -1,5 +1,16 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - ModelParametersMerger
 
+It is a class for handling the merging of model parameters.
+
+## Notes
+
+* "weightedAverage" and "best" does not work with models that do not store tables of matrices or matrix. It also does not work for sequential models. For example:
+
+  *  DBSCAN and AffinityPropagation models.
+
+  *  Recurrent Neural Network and LSTM models.
+
+
 ## Constructors
 
 ### new()
@@ -109,11 +120,3 @@ ModelParametersMerger:generate(): table / matrix
 #### Returns:
 
 * ModelParameters: The table / matrix that is generated from the merger.
-
-## Notes
-
-* "weightedAverage" and "best" does not work with models that do not store tables of matrices or matrix. It also does not work for sequential models. For example:
-
-  *  DBSCAN and AffinityPropagation models.
-
-  *  Recurrent Neural Network and LSTM models.

@@ -4,12 +4,11 @@ It is a class for handling the merging of model parameters.
 
 ## Notes
 
-* "weightedAverage" and "best" does not work with models that do not store tables of matrices or matrix. It also does not work for sequential models. For example:
+* "weightedAverage" and "best" does not work with models that do not store tables of matrices or matrix. It also does not work for models with sequential output. For example:
 
-  *  DBSCAN and AffinityPropagation models.
+  *  DBSCAN and AffinityPropagation models. (Contains non-matrices)
 
-  *  Recurrent Neural Network and LSTM models.
-
+  *  Recurrent Neural Network and LSTM models. (The outputs are sequential)
 
 ## Constructors
 

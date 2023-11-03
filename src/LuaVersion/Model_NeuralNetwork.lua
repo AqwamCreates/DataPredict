@@ -98,6 +98,36 @@ local activationFunctionList = {
 		return aMatrix
 
 	end,
+	
+	["Gaussian"] = function (zMatrix)
+
+		local GaussianFunction = function (z) return math.exp(-math.pow(z, 2)) end
+		
+		local aMatrix = AqwamMatrixLibrary:applyFunction(GaussianFunction, zMatrix)
+
+		return aMatrix
+
+	end,
+	
+	["SiLU"] = function (zMatrix)
+
+		local SiLUFunction = function (z) return z / (1 + math.exp(-z)) end
+
+		local aMatrix = AqwamMatrixLibrary:applyFunction(SiLUFunction, zMatrix)
+
+		return aMatrix
+
+	end,
+	
+	["BinaryStep"] = function (aMatrix, zMatrix)
+
+		local BinaryStepFunction = function (z) return ((z > 0) and 1) or 0 end
+
+		local aMatrix = AqwamMatrixLibrary:applyFunction(BinaryStepFunction, zMatrix)
+
+		return aMatrix
+
+	end,
 
 	["Softmax"] = function (zMatrix) -- apparently roblox doesn't really handle very small values such as math.exp(-1000), so I added a more stable computation exp(a) / exp(b) -> exp (a - b)
 
@@ -193,6 +223,28 @@ local derivativeList = {
 
 
 	end,
+	
+	["Gaussian"] = function (aMatrix, zMatrix)
+
+		local GaussianDerivativeFunction = function (z) return -2 * z * math.exp(-math.pow(z, 2)) end
+
+		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(GaussianDerivativeFunction, zMatrix)
+
+		return derivativeMatrix
+
+	end,
+	
+	["SiLU"] = function (aMatrix, zMatrix)
+
+		local SiLUDerivativeFunction = function (z) return (1 + math.exp(-z) + (z * math.exp(-z))) / (1 + math.exp(-z))^2 end
+
+		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(SiLUDerivativeFunction, zMatrix)
+
+		return derivativeMatrix
+
+	end,
+	
+	["BinaryStep"] = function (aMatrix, zMatrix) return AqwamMatrixLibrary:createMatrix(#zMatrix, #zMatrix[1], 0) end,
 
 	["Softmax"] = function (aMatrix, zMatrix)
 

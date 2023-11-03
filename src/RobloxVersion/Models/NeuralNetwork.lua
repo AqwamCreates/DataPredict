@@ -426,14 +426,14 @@ function NeuralNetworkModel:calculatePartialDerivatives(lossMatrix, forwardPropa
 	local errorPart3
 
 	local zLayerMatrix
-
-	local derivativeMatrix
 	
 	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
 
 	local derivativeFunction = derivativeList[activationFunctionName]
 	
-	local errorMatrix = lossMatrix
+	local derivativeMatrix = derivativeFunction(forwardPropagateTable[numberOfLayers], zTable[numberOfLayers])
+	
+	local errorMatrix = AqwamMatrixLibrary:multiply(lossMatrix, derivativeMatrix)
 
 	table.insert(backpropagateTable, errorMatrix)
 	
@@ -449,7 +449,7 @@ function NeuralNetworkModel:calculatePartialDerivatives(lossMatrix, forwardPropa
 		
 		errorMatrixPart1 = AqwamMatrixLibrary:dotProduct(errorMatrix, layerMatrixTransposed)
 		
-		derivativeMatrix =  derivativeFunction(forwardPropagateTable[layerNumber - 1], zTable[layerNumber - 1])
+		derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
 		
 		errorMatrix = AqwamMatrixLibrary:multiply(errorMatrixPart1, derivativeMatrix)
 		

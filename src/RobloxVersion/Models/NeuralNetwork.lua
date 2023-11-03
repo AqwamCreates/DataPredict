@@ -447,7 +447,7 @@ function NeuralNetworkModel:calculatePartialDerivatives(lossMatrix, forwardPropa
 		
 		errorMatrixPart1 = AqwamMatrixLibrary:dotProduct(errorMatrix, layerMatrixTransposed)
 		
-		derivativeMatrix =  derivativeFunction(forwardPropagateTable[layerNumber - 1], zTable[layerNumber - 1])
+		derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber - 1], zTable[layerNumber - 1])
 		
 		errorMatrix = AqwamMatrixLibrary:multiply(errorMatrixPart1, derivativeMatrix)
 		

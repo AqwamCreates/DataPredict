@@ -155,6 +155,14 @@ Reset model's stored values (excluding the parameters).
 AdvantageActorCritic:reset()
 ```
 
+### destroy()
+
+Destroys the model object.
+
+```
+ActorCritic:destroy()
+```
+
 ### References
 
 * [Advantage Actor Critic (A2C) implementation by Alvaro Durán Tovar](https://medium.com/deeplearningmadeeasy/advantage-actor-critic-a2c-implementation-944e98616b)

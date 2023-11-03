@@ -387,6 +387,12 @@ function ActorCriticModel:getCurrentNumberOfReinforcements()
 
 end
 
+function ActorCriticModel:getCurrentEpsilon(actorCriticModelNumber)
+
+	return self.currentEpsilon
+
+end
+
 function ActorCriticModel:reset()
 	
 	self.episodeReward = 0

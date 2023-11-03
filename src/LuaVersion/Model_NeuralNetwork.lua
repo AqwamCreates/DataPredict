@@ -459,14 +459,16 @@ function NeuralNetworkModel:calculatePartialDerivatives(lossMatrix, forwardPropa
 	local errorPart3
 
 	local zLayerMatrix
-
-	local derivativeMatrix
+	
+	local errorMatrix
 	
 	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
 
 	local derivativeFunction = derivativeList[activationFunctionName]
 	
-	local errorMatrix = derivativeFunction(lossMatrix, lossMatrix)
+	local derivativeMatrix = derivativeFunction(forwardPropagateTable[numberOfLayers], zTable[numberOfLayers])
+	
+	local errorMatrix = AqwamMatrixLibrary:multiply(lossMatrix, derivativeMatrix)
 
 	table.insert(backpropagateTable, errorMatrix)
 	
@@ -482,7 +484,7 @@ function NeuralNetworkModel:calculatePartialDerivatives(lossMatrix, forwardPropa
 		
 		errorMatrixPart1 = AqwamMatrixLibrary:dotProduct(errorMatrix, layerMatrixTransposed)
 		
-		derivativeMatrix =  derivativeFunction(forwardPropagateTable[layerNumber - 1], zTable[layerNumber - 1])
+		derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
 		
 		errorMatrix = AqwamMatrixLibrary:multiply(errorMatrixPart1, derivativeMatrix)
 		
@@ -923,18 +925,8 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	if type(lossMatrix) == "number" then lossMatrix = {{lossMatrix}} end
 	
 	local numberOfData = #lossMatrix
-	
-	local numberOfLayers = #self.numberOfNeuronsTable
-	
-	local finalActivationFunctionName = self.activationFunctionTable[numberOfLayers]
-	
-	local finalActivationFunction = activationFunctionList[finalActivationFunctionName]
 
-	local finalActivationFunctionDerivatives = derivativeList[finalActivationFunctionName]
-	
-	local outputDerivativeMatrix = finalActivationFunctionDerivatives(self.forwardPropagateTable[numberOfLayers], lossMatrix)
-
-	local partialDerivativesTable = self:calculatePartialDerivatives(outputDerivativeMatrix, self.forwardPropagateTable, self.zTable)
+	local partialDerivativesTable = self:calculatePartialDerivatives(lossMatrix, self.forwardPropagateTable, self.zTable)
 
 	local deltaTable = self:calculateDelta(self.forwardPropagateTable, partialDerivativesTable)
 	

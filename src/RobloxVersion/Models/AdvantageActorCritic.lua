@@ -369,6 +369,12 @@ function AdvantageActorCriticModel:getCurrentNumberOfReinforcements()
 
 end
 
+function AdvantageActorCriticModel:getCurrentEpsilon(actorCriticModelNumber)
+
+	return self.currentEpsilon
+
+end
+
 function AdvantageActorCriticModel:reset()
 	
 	self.episodeReward = 0

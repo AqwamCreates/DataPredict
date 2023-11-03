@@ -225,7 +225,7 @@ local derivativeList = {
 
 	end,
 
-	["None"] = function (aMatrix, zMatrix) return AqwamMatrixLibrary:createMatrix(#zMatrix, #zMatrix[1], 1) end,
+	["None"] = function (aMatrix, zMatrix) return aMatrix end,
 
 }
 
@@ -427,13 +427,13 @@ function NeuralNetworkModel:calculatePartialDerivatives(lossMatrix, forwardPropa
 
 	local zLayerMatrix
 	
+	local derivativeMatrix
+	
 	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
 
 	local derivativeFunction = derivativeList[activationFunctionName]
 	
-	local derivativeMatrix = derivativeFunction(forwardPropagateTable[numberOfLayers], zTable[numberOfLayers])
-	
-	local errorMatrix = AqwamMatrixLibrary:multiply(lossMatrix, derivativeMatrix)
+	local errorMatrix = derivativeFunction(lossMatrix, lossMatrix)
 
 	table.insert(backpropagateTable, errorMatrix)
 	

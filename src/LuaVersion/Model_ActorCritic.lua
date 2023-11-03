@@ -411,4 +411,14 @@ function ActorCriticModel:reset()
 
 end
 
+function ActorCriticModel:destroy()
+
+	setmetatable(self, nil)
+
+	table.clear(self)
+
+	self = nil
+
+end
+
 return ActorCriticModel

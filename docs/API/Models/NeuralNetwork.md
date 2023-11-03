@@ -78,6 +78,12 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activat
 
   *  ELU
 
+  * Gaussian
+ 
+  * SiLU
+ 
+  * BinaryStep
+
   *  Softmax
 
   *  StableSoftmax
@@ -115,6 +121,12 @@ NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationF
   *  LeakyReLU
 
   *  ELU
+
+  * Gaussian
+ 
+  * SiLU
+ 
+  * BinaryStep
 
   *  Softmax
 

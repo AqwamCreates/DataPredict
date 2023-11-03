@@ -41,6 +41,8 @@ NeuralNetworkModel.__index = NeuralNetworkModel
 
 setmetatable(NeuralNetworkModel, BaseModel)
 
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+
 local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
@@ -480,7 +482,7 @@ function NeuralNetworkModel:calculatePartialDerivatives(lossMatrix, forwardPropa
 		
 		errorMatrixPart1 = AqwamMatrixLibrary:dotProduct(errorMatrix, layerMatrixTransposed)
 		
-		derivativeMatrix =  derivativeFunction(forwardPropagateTable[layerNumber - 1], zTable[layerNumber - 1])
+		derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber - 1], zTable[layerNumber - 1])
 		
 		errorMatrix = AqwamMatrixLibrary:multiply(errorMatrixPart1, derivativeMatrix)
 		
@@ -936,18 +938,6 @@ function NeuralNetworkModel:processLabelVector(labelVector)
 
 end
 
-function NeuralNetworkModel:fetchFinalActivationFunctionForTraining()
-	
-	local numberOfLayers = #self.numberOfNeuronsTable
-	
-	local finalActivationFunctionName = self.activationFunctionTable[numberOfLayers]
-
-	if (finalActivationFunctionName == "None") then finalActivationFunctionName = self.activationFunctionTable[numberOfLayers - 1] end
-	
-	return finalActivationFunctionName
-	
-end
-
 function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	
 	if (self.forwardPropagateTable == nil) then error("Table not found for forward propagation.") end
@@ -960,7 +950,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	
 	local numberOfLayers = #self.numberOfNeuronsTable
 	
-	local finalActivationFunctionName = self:fetchFinalActivationFunctionForTraining()
+	local finalActivationFunctionName = self.activationFunctionTable[numberOfLayers]
 	
 	local finalActivationFunction = activationFunctionList[finalActivationFunctionName]
 

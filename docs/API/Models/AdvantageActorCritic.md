@@ -160,7 +160,7 @@ AdvantageActorCritic:reset()
 Destroys the model object.
 
 ```
-ActorCritic:destroy()
+AdvantageActorCritic:destroy()
 ```
 
 ### References

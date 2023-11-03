@@ -4,7 +4,7 @@ local ModelParametersMerger = {}
 
 ModelParametersMerger.__index = ModelParametersMerger
 
-local defaultMergeType = "average"
+local defaultMergeType = "Average"
 
 function ModelParametersMerger.new(Model, modelType, mergeType)
 
@@ -314,17 +314,17 @@ local function generateAccuracyForEachModel(Model, modelType, mergeType, ModelPa
 	
 	local accuracyArray
 	
-	if (modelType == "regression") then
+	if (modelType == "Regression") then
 
 		local errorArray = generateErrorArrayForRegression(Model, ModelParametersArray, featureMatrix, labelVector)
 
 		accuracyArray = convertErrorArrayToAccuracyArray(errorArray)
 
-	elseif (modelType == "classification") then
+	elseif (modelType == "Classification") then
 
 		accuracyArray = generateAccuracyArrayForClassification(Model, ModelParametersArray, featureMatrix, labelVector)
 
-	elseif (modelType == "clustering") then
+	elseif (modelType == "Clustering") then
 
 		local errorArray = generateErrorArrayForClustering(Model, ModelParametersArray, featureMatrix)
 
@@ -368,21 +368,21 @@ local function getSplitPercentageArray(mergeType, accuracyArray)
 	
 	local numberOfModelParameters = #accuracyArray
 	
-	if (mergeType == "average") then
+	if (mergeType == "Average") then
 		
 		percentageSplitArray = {}
 	
-	elseif (mergeType == "weightedAverage") then
+	elseif (mergeType == "WeightedAverage") then
 
 		percentageSplitArray = convertValueArrayToPercentageArray(accuracyArray)
 		
-	elseif (mergeType == "weightedAverageEqual") then
+	elseif (mergeType == "WeightedAverageEqual") then
 		
 		local average = 1 / numberOfModelParameters
 		
 		percentageSplitArray = table.create(numberOfModelParameters, average)
 
-	elseif (mergeType == "best") then
+	elseif (mergeType == "Best") then
 
 		local areAllZeroes = checkIfAllValuesAreZeroesInArray(accuracyArray)
 		
@@ -450,15 +450,15 @@ local function mergeModelParameters(mergeType, ModelParametersArray, percentageS
 	
 	local isTable = checkIfIsTable(ModelParametersArray[1])
 	
-	if (isTable) and (mergeType ~= "average") then
+	if (isTable) and (mergeType ~= "Average") then
 
 		NewModelParameters = calculateScaledModelParametersTable(ModelParametersArray, percentageSplitArray)
 
-	elseif (isTable == false) and (mergeType ~= "average") then
+	elseif (isTable == false) and (mergeType ~= "Average") then
 
 		NewModelParameters = calculateScaledModelParameters(ModelParametersArray, percentageSplitArray)
 		
-	elseif (isTable) and (mergeType == "average") then
+	elseif (isTable) and (mergeType == "Average") then
 		
 		local averageFunction = function(x) return (x / numberOfModelParameters) end
 
@@ -468,7 +468,7 @@ local function mergeModelParameters(mergeType, ModelParametersArray, percentageS
 
 		NewModelParameters = applyFunctionToEachMatricesInModelParameters(averageFunction, NewModelParameters)
 
-	elseif (isTable == false) and (mergeType == "average") then
+	elseif (isTable == false) and (mergeType == "Average") then
 
 		NewModelParameters = AqwamMatrixLibrary:add(table.unpack(ModelParametersArray))
 
@@ -500,7 +500,7 @@ function ModelParametersMerger:generate()
 	
 	local percentageSplitArray
 	
-	if (mergeType == "custom") then
+	if (mergeType == "Custom") then
 		
 		percentageSplitArray = self.customSplitPercentage
 		

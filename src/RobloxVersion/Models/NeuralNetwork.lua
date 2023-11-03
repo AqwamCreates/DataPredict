@@ -433,7 +433,7 @@ function NeuralNetworkModel:calculatePartialDerivatives(lossMatrix, forwardPropa
 
 	local derivativeFunction = derivativeList[activationFunctionName]
 	
-	local errorMatrix = derivativeFunction(lossMatrix, lossMatrix)
+	local errorMatrix = lossMatrix
 
 	table.insert(backpropagateTable, errorMatrix)
 	
@@ -890,18 +890,8 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	if type(lossMatrix) == "number" then lossMatrix = {{lossMatrix}} end
 	
 	local numberOfData = #lossMatrix
-	
-	local numberOfLayers = #self.numberOfNeuronsTable
-	
-	local finalActivationFunctionName = self.activationFunctionTable[numberOfLayers]
-	
-	local finalActivationFunction = activationFunctionList[finalActivationFunctionName]
 
-	local finalActivationFunctionDerivatives = derivativeList[finalActivationFunctionName]
-	
-	local outputDerivativeMatrix = finalActivationFunctionDerivatives(self.forwardPropagateTable[numberOfLayers], lossMatrix)
-
-	local partialDerivativesTable = self:calculatePartialDerivatives(outputDerivativeMatrix, self.forwardPropagateTable, self.zTable)
+	local partialDerivativesTable = self:calculatePartialDerivatives(lossMatrix, self.forwardPropagateTable, self.zTable)
 
 	local deltaTable = self:calculateDelta(self.forwardPropagateTable, partialDerivativesTable)
 	

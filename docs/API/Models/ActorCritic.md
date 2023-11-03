@@ -139,6 +139,8 @@ Updates the model parameters.
 ActorCritic:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
 ```
 
+#### Parameters:
+
 * previousFeatiureVector: The previous state of the environment.
 
 * action: The action selected.
@@ -146,6 +148,36 @@ ActorCritic:update(previousFeatiureVector: featureVector, action: number/string,
 * rewardValue: The reward gained at current state.
 
 * currentFeatureVector: The currrent state of the environment.
+
+### getCurrentNumberOfEpisodes()
+
+```
+ActorCritic:getCurrentNumberOfEpisodes(): number
+```
+
+#### Returns:
+
+* currentNumberOfEpisodes: The current number of episodes.
+
+### getCurrentNumberOfReinforcements()
+
+```
+ActorCritic:getCurrentNumberOfReinforcements(): number
+```
+
+#### Returns:
+
+* numberOfReinforcements: The number of reinforce() funcion called.
+
+### getCurrentEpsilon()
+
+```
+ActorCritic:getCurrentEpsilon(): number
+```
+
+#### Returns:
+
+* currentEpsilon: The current epsilon.
 
 ### reset()
 

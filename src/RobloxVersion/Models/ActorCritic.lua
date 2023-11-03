@@ -387,7 +387,7 @@ function ActorCriticModel:getCurrentNumberOfReinforcements()
 
 end
 
-function ActorCriticModel:getCurrentEpsilon(actorCriticModelNumber)
+function ActorCriticModel:getCurrentEpsilon()
 
 	return self.currentEpsilon
 

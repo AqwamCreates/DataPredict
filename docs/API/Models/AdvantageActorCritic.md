@@ -1,10 +1,10 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - ActorCritic
+# [API Reference](../../API.md) - [Models](../Models.md) - AdvantageActorCritic
 
-ActorCritic is a base class for reinforcement learning.
+AdvantageActorCritic is a base class for reinforcement learning.
 
 ## Notes:
 
-* You must create Actor and Critic models separately. Then use setActorModel() and setCriticModel() to put it inside the ActorCritic model.
+* The Actor and Critic models must be created separately. Then use setActorModel() and setCriticModel() to put it inside the AdvantageActorCritic model.
 
 * Actor and Critic must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 
@@ -15,7 +15,7 @@ ActorCritic is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ActorCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number): ModelObject
+AdvantageActorCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number): ModelObject
 ```
 
 #### Parameters:
@@ -41,7 +41,7 @@ ActorCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsi
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ActorCritic:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number)
+AdvantageActorCritic:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number)
 ```
 
 #### Parameters:
@@ -59,7 +59,7 @@ ActorCritic:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: nu
 ### setActorModel()
 
 ```
-ActorCritic:setActorModel(Model: ModelObject)
+AdvantageActorCritic:setActorModel(Model: ModelObject)
 ```
 
 #### Parameters:
@@ -69,7 +69,7 @@ ActorCritic:setActorModel(Model: ModelObject)
 ### setCriticModel()
 
 ```
-ActorCritic:setActorModel(Model: ModelObject)
+AdvantageActorCritic:setActorModel(Model: ModelObject)
 ```
 
 #### Parameters:
@@ -81,7 +81,7 @@ ActorCritic:setActorModel(Model: ModelObject)
 Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings for that particular parameter.
 
 ```
-ActorCritic:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
+AdvantageActorCritic:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
 ```
 
 #### Parameters:
@@ -99,7 +99,7 @@ ActorCritic:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
 Reward or punish model based on the current state of the environment.
 
 ```
-ActorCritic:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
+AdvantageActorCritic:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
 ```
 
 #### Parameters:
@@ -125,7 +125,7 @@ ActorCritic:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnO
 Set whether or not to show the current number of episodes and current epsilon.
 
 ```
-ActorCritic:setPrintReinforcementOutput(option: boolean)
+AdvantageActorCritic:setPrintReinforcementOutput(option: boolean)
 ```
 #### Parameters:
 
@@ -136,7 +136,7 @@ ActorCritic:setPrintReinforcementOutput(option: boolean)
 Updates the model parameters.
 
 ```
-ActorCritic:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
+AdvantageActorCritic:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
 ```
 
 * previousFeatiureVector: The previous state of the environment.
@@ -152,7 +152,7 @@ ActorCritic:update(previousFeatiureVector: featureVector, action: number/string,
 Reset model's stored values (excluding the parameters).
 
 ```
-ActorCritic:reset()
+AdvantageActorCritic:reset()
 ```
 
 ### References

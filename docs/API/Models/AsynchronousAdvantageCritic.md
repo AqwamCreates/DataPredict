@@ -15,7 +15,7 @@ AsynchronousAdvantageCritic is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-AsynchronousAdvantageCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number): ModelObject
+AsynchronousAdvantageCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number, totalNumberOfReinforcementsToUpdateMainModel: number): ModelObject
 ```
 
 #### Parameters:
@@ -30,6 +30,8 @@ AsynchronousAdvantageCritic.new(numberOfReinforcementsPerEpisode: integer, epsil
 
 * rewardAveragingRate: The higher the value, the higher the episodic reward, but lower the running reward.
 
+* totalNumberOfReinforcementsToUpdateMainModel: The required total number of reinforce() function call from all child models to update the main model.
+
 #### Returns:
 
 * ModelObject: The generated model object.
@@ -41,7 +43,7 @@ AsynchronousAdvantageCritic.new(numberOfReinforcementsPerEpisode: integer, epsil
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-AsynchronousAdvantageCritic:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number)
+AsynchronousAdvantageCritic:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number, totalNumberOfReinforcementsToUpdateMainModel: number)
 ```
 
 #### Parameters:
@@ -59,47 +61,47 @@ AsynchronousAdvantageCritic:setParameters(numberOfReinforcementsPerEpisode: inte
 ### setActorModel()
 
 ```
-AsynchronousAdvantageCritic:setActorModel(Model: ModelObject)
+AsynchronousAdvantageCritic:addActorCriticModel(ActorModel: ModelObject, CriticModel: ModelObject, ExperienceReplay: ExperienceReplayObject)
 ```
 
 #### Parameters:
 
-* Model: The model to be used as an Actor model.
+* ActorModel: The model to be used as an Actor model.
 
-### setCriticModel()
-
-```
-AsynchronousAdvantageCritic:setActorModel(Model: ModelObject)
-```
-
-#### Parameters:
-
-* Model: The model to be used as a Critic model.
-
-### setExperienceReplay()
-
-Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings for that particular parameter.
-
-```
-AsynchronousAdvantageCritic:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
-```
-
-#### Parameters:
+* CriticModel: The model to be used as a Critic model.
 
 * ExperienceReplay: The experience replay object 
 
-* experienceReplayBatchSize: Determines how many of these experiences are sampled for batch training.
+### setActorCriticMainModelParameters()
 
-* numberOfReinforcementsForExperienceReplayUpdate: How many times does the reinforce() function needed to be called in order to for a single update from experience replay.
+```
+AsynchronousAdvantageCritic:setActorCriticMainModelParameters(ActorMainModelParameters: [], CriticMainModelParameters[])
+```
 
-* maxExperienceReplayBufferSize: The maximum size that the model can store the experiences.
+#### Parameters:
+
+* ActorMainModelParameters: The model parameters to be set for main actor model.
+
+* CriticMainModelParameters: The model parameters to be set for main critic model.
+
+### getActorCriticMainModelParameters()
+
+```
+AsynchronousAdvantageCritic:getActorCriticMainModelParameters(): [], []
+```
+
+#### Returns:
+
+* ActorMainModelParameters: The model parameters from the main actor model.
+
+* CriticMainModelParameters: The model parameters from the main critic model.
 
 ### reinforce()
 
 Reward or punish model based on the current state of the environment.
 
 ```
-AsynchronousAdvantageCritic:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
+AsynchronousAdvantageCritic:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean, actorCriticModelNumber: number): integer, number -OR- Matrix
 ```
 
 #### Parameters:
@@ -109,6 +111,8 @@ AsynchronousAdvantageCritic:reinforce(currentFeatureVector: Matrix, rewardValue:
 * rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
 
 * returnOriginalOutput: Set whether or not to return predicted vector instead of value with highest probability.
+
+* actorCriticModelNumber: The model number to be reinforced.
 
 #### Returns:
 
@@ -120,23 +124,12 @@ AsynchronousAdvantageCritic:reinforce(currentFeatureVector: Matrix, rewardValue:
 
 * predictedVector: A matrix containing all predicted values from all classes.
 
-### setPrintReinforcementOutput()
-
-Set whether or not to show the current number of episodes and current epsilon.
-
-```
-AsynchronousAdvantageCritic:setPrintReinforcementOutput(option: boolean)
-```
-#### Parameters:
-
-* option: A boolean value that determines the reinforcement output to be printed or not.
-
 ### update()
 
 Updates the model parameters.
 
 ```
-AsynchronousAdvantageCritic:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
+AsynchronousAdvantageCritic:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector, actorCriticModelNumber: number)
 ```
 
 #### Parameters:
@@ -149,11 +142,17 @@ AsynchronousAdvantageCritic:update(previousFeatiureVector: featureVector, action
 
 * currentFeatureVector: The currrent state of the environment.
 
+* actorCriticModelNumber: The model number to update the parameters.
+
 ### getCurrentNumberOfEpisodes()
 
 ```
-AsynchronousAdvantageCritic:getCurrentNumberOfEpisodes(): number
+AsynchronousAdvantageCritic:getCurrentNumberOfEpisodes(actorCriticModelNumber: number): number
 ```
+
+#### Parameters:
+
+* actorCriticModelNumber: The model number to get the current number of episodes.
 
 #### Returns:
 
@@ -162,8 +161,12 @@ AsynchronousAdvantageCritic:getCurrentNumberOfEpisodes(): number
 ### getCurrentNumberOfReinforcements()
 
 ```
-AsynchronousAdvantageCritic:getCurrentNumberOfReinforcements(): number
+AsynchronousAdvantageCritic:getCurrentNumberOfReinforcements(actorCriticModelNumber: number): number
 ```
+
+#### Parameters:
+
+* actorCriticModelNumber: The model number to get the current number of reinforcements.
 
 #### Returns:
 
@@ -172,16 +175,32 @@ AsynchronousAdvantageCritic:getCurrentNumberOfReinforcements(): number
 ### getCurrentEpsilon()
 
 ```
-AsynchronousAdvantageCritic:getCurrentEpsilon(): number
+AsynchronousAdvantageCritic:getCurrentEpsilon(actorCriticModelNumber: number): number
 ```
+
+#### Parameters:
+
+* actorCriticModelNumber: The model number to get the epsilon.
 
 #### Returns:
 
 * currentEpsilon: The current epsilon.
 
+### singleReset()
+
+Reset reset a single child model's stored values (excluding the parameters).
+
+```
+AsynchronousAdvantageCritic:singleReset(actorCriticModelNumber)
+```
+
+#### Parameters:
+
+* actorCriticModelNumber: The model number to apply the reset.
+
 ### reset()
 
-Reset model's stored values (excluding the parameters).
+Reset the main model's and child models' stored values (excluding the parameters).
 
 ```
 AsynchronousAdvantageCritic:reset()

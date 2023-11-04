@@ -82,11 +82,38 @@ DistributedLearning:train(featureMatrix: Matrix, labelVector/labelMatrix: matrix
 
 * labelVector / labelMatrix: A (n x 1) / (n x o) matrix containing values related to featureMatrix. When using the label matrix, the number of columns must be equal to number of classes.
 
-* modelNumber: The model number to be reinforced.
+* modelNumber: The model number for a model to be trained.
 
 #### Returns:
 
 * costArray: An array containing all the costs
+
+### predict()
+
+Predict the values for given data.
+
+```
+DistributedLearning:predict(featureMatrix: Matrix, returnOriginalOutput: boolean,  modelNumber: number): Matrix, Matrix -OR- Matrix
+```
+
+#### Parameters:
+
+* featureMatrix: Matrix containing all data.
+
+* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability. 
+
+* modelNumber: The model number for a model to return the prediction.
+
+#### Returns:
+
+* predictedlabelVector: A vector tcontaining predicted labels generated from the model.
+
+* valueVector: A vector that contains the values of predicted labels.
+
+-OR-
+
+* predictedMatrix: A matrix containing all predicted values from all classes.
+
 
 ### reinforce()
 
@@ -104,7 +131,7 @@ DistributedLearning:reinforce(currentFeatureVector: Matrix, rewardValue: number,
 
 * returnOriginalOutput: Set whether or not to return predicted vector instead of value with highest probability.
 
-* modelNumber: The model number to be reinforced.
+* modelNumber: The model number for a model to be reinforced.
 
 #### Returns:
 

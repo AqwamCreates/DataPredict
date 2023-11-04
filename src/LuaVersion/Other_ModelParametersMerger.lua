@@ -41,8 +41,6 @@ local defaultMergeType = "Average"
 
 function ModelParametersMerger.new(Model, modelType, mergeType)
 
-	if (Model == nil) then error("No model!") end
-
 	local NewModelParametersMerger = {}
 
 	setmetatable(NewModelParametersMerger, ModelParametersMerger)
@@ -342,6 +340,8 @@ local function checkIfAllValuesAreZeroesInArray(array)
 end
 
 local function generateAccuracyForEachModel(Model, modelType, mergeType, ModelParametersArray, featureMatrix, labelVector)
+	
+	if (Model == nil) then error("No model!") end
 	
 	local accuracyArray
 	

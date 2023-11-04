@@ -126,7 +126,7 @@ AsynchronousAdvantageCritic:reinforce(currentFeatureVector: Matrix, rewardValue:
 
 * returnOriginalOutput: Set whether or not to return predicted vector instead of value with highest probability.
 
-* actorCriticModelNumber: The model number to be reinforced.
+* actorCriticModelNumber: The model number for a model to be reinforced.
 
 #### Returns:
 
@@ -156,7 +156,7 @@ AsynchronousAdvantageCritic:update(previousFeatiureVector: featureVector, action
 
 * currentFeatureVector: The currrent state of the environment.
 
-* actorCriticModelNumber: The model number to update the parameters.
+* actorCriticModelNumber: The model number for a model to update the parameters.
 
 ### getCurrentNumberOfEpisodes()
 
@@ -166,7 +166,7 @@ AsynchronousAdvantageCritic:getCurrentNumberOfEpisodes(actorCriticModelNumber: n
 
 #### Parameters:
 
-* actorCriticModelNumber: The model number to get the current number of episodes.
+* actorCriticModelNumber: The model number for a model to get the current number of episodes.
 
 #### Returns:
 
@@ -180,7 +180,7 @@ AsynchronousAdvantageCritic:getCurrentNumberOfReinforcements(actorCriticModelNum
 
 #### Parameters:
 
-* actorCriticModelNumber: The model number to get the current number of reinforcements.
+* actorCriticModelNumber: The model number for a model to get the current number of reinforcements.
 
 #### Returns:
 
@@ -194,7 +194,7 @@ AsynchronousAdvantageCritic:getCurrentEpsilon(actorCriticModelNumber: number): n
 
 #### Parameters:
 
-* actorCriticModelNumber: The model number to get the epsilon.
+* actorCriticModelNumber: The model number for a model to get the epsilon.
 
 #### Returns:
 
@@ -221,7 +221,7 @@ AsynchronousAdvantageCritic:singleReset(actorCriticModelNumber)
 
 #### Parameters:
 
-* actorCriticModelNumber: The model number to apply the reset.
+* actorCriticModelNumber: The model number for a model to be reset.
 
 ### reset()
 

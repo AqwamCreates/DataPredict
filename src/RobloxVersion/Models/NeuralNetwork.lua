@@ -467,7 +467,13 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 
 	local zLayerMatrix
 	
-	local layerCostMatrix = lossMatrix
+	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
+
+	local derivativeFunction = derivativeList[activationFunctionName]
+	
+	local derivativeMatrix = derivativeFunction(forwardPropagateTable[numberOfLayers], zTable[numberOfLayers])
+
+	local layerCostMatrix = AqwamMatrixLibrary:multiply(lossMatrix, derivativeMatrix)
 
 	table.insert(errorMatrixTable, layerCostMatrix)
 
@@ -481,11 +487,11 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 
 		local layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 
-		local errorPart1 = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
+		local partialErrorMatrix = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
-		local errorPart2 = derivativeFunction(forwardPropagateTable[output], zTable[output])
+		local derivativeMatrix = derivativeFunction(forwardPropagateTable[output], zTable[output])
 
-		layerCostMatrix = AqwamMatrixLibrary:multiply(errorPart1, errorPart2)
+		layerCostMatrix = AqwamMatrixLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 
 		table.insert(errorMatrixTable, 1, layerCostMatrix)
 

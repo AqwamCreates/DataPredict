@@ -140,7 +140,7 @@ function AdvantageActorCriticModel:update(previousFeatureVector, action, rewardV
 	
 	local actionProbabilityVector = softmax(allOutputsMatrix)
 
-	local previousCriticValue = self.criticValueHistory[#self.criticValueHistory - 1] or self.CriticModel:predict(previousFeatureVector, true)[1][1]
+	local previousCriticValue = self.CriticModel:predict(previousFeatureVector, true)[1][1]
 	
 	local currentCriticValue = self.CriticModel:predict(currentFeatureVector, true)[1][1]
 	

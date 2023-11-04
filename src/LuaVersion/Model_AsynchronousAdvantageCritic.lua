@@ -436,7 +436,7 @@ function AsynchronousAdvantageCriticModel:start()
 
 		repeat
 			
-			task.wait()
+			wait()
 			
 			if (self.currentTotalNumberOfReinforcementsToUpdateMainModel < self.totalNumberOfReinforcementsToUpdateMainModel) then continue end
 			

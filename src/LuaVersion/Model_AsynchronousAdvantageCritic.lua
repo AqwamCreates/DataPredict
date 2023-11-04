@@ -1,8 +1,8 @@
 local DataPredict = script.Parent.Parent
 
-local AqwamMatrixLibrary = require(")
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local ModelParametersMerger = require(DataPredict.Others.ModelParametersMerger)
+local ModelParametersMerger = require("Others_ModelParametersMerger")
 
 AsynchronousAdvantageCriticModel = {}
 

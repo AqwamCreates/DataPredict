@@ -105,4 +105,4 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 * Blue colour is chosen as it represents knowledge. This represents the data.
 
-* White  
+* White octagon makes use focus on the blue blocks. This represent the focus on the components of this library.

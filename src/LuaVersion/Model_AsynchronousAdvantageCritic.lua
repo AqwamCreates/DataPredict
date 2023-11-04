@@ -451,12 +451,6 @@ function AsynchronousAdvantageCriticModel:getActorCriticMainModelParameters()
 	
 end
 
-function  AsynchronousAdvantageCriticModel:currentTotalNumberOfReinforcementsToUpdateMainModel()
-	
-	return self.currentTotalNumberOfReinforcementsToUpdateMainModel
-	
-end
-
 function AsynchronousAdvantageCriticModel:start()
 	
 	if (self.IsModelRunning == true) then error("The model is already running!") end
@@ -532,6 +526,12 @@ function AsynchronousAdvantageCriticModel:getCurrentEpsilon(actorCriticModelNumb
 
 end
 
+function AsynchronousAdvantageCriticModel:getCurrentTotalNumberOfReinforcementsToUpdateMainModel()
+
+	return self.currentTotalNumberOfReinforcementsToUpdateMainModel
+
+end
+
 function AsynchronousAdvantageCriticModel:singleReset(actorCriticModelNumber)
 	
 	self.episodeRewardArray[actorCriticModelNumber] = 0
@@ -577,4 +577,3 @@ function AsynchronousAdvantageCriticModel:destroy()
 end
 
 return AsynchronousAdvantageCriticModel
-

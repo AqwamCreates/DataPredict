@@ -155,7 +155,7 @@ function OnlineLearning:start(showFinalCost, showIdleWarning)
 
 		repeat
 
-			task.wait(waitInterval)
+			wait(waitInterval)
 
 			waitDuration += waitInterval
 

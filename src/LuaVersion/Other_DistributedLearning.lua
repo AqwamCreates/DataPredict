@@ -86,7 +86,7 @@ function DistributedLearning:getMainModelParameters()
 	
 end
 
-function DistributedLearning:currentTotalNumberOfReinforcementsToUpdateMainModel()
+function DistributedLearning:getCurrentTotalNumberOfChildModelUpdatesToUpdateMainModel()
 	
 	return self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel
 	

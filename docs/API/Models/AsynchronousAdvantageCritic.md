@@ -196,6 +196,17 @@ AsynchronousAdvantageCritic:getCurrentEpsilon(actorCriticModelNumber: number): n
 
 * currentEpsilon: The current epsilon.
 
+### getCurrentTotalNumberOfReinforcementsToUpdateMainModel()
+
+```
+AsynchronousAdvantageCritic:getCurrentTotalNumberOfReinforcementsToUpdateMainModel(): number
+```
+
+#### Returns:
+
+* getCurrentTotalNumberOfReinforcementsToUpdateMainModel: The current total number of reinforcements from all child models.
+
+
 ### singleReset()
 
 Reset reset a single child model's stored values (excluding the parameters).

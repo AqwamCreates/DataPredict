@@ -58,7 +58,7 @@ DistributedLearning:setMainModelParameters(MainModelParameters: any)
 
 * MainModelParameters: The model parameters for the main model.
 
-### getActorCriticMainModelParameters()
+### getMainModelParameters()
 
 ```
 DistributedLearning:getMainModelParameters(): any

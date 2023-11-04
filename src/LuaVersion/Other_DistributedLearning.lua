@@ -102,7 +102,7 @@ function DistributedLearning:start()
 
 		repeat
 			
-			task.wait()
+			wait()
 			
 			if (self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel < self.totalNumberOfChildModelUpdatesToUpdateMainModel) then continue end
 			

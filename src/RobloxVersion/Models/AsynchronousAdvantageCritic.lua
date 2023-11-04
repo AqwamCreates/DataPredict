@@ -74,7 +74,7 @@ function AsynchronousAdvantageCriticModel.new(numberOfReinforcementsPerEpisode, 
 	
 	NewAsynchronousAdvantageCriticModel.IsModelRunning = false
 	
-	NewAsynchronousAdvantageCriticModel.ModelParametersMerger = ModelParametersMerger.new(true, "Classification", "Average")
+	NewAsynchronousAdvantageCriticModel.ModelParametersMerger = ModelParametersMerger.new(nil, nil, "Average")
 	
 	return NewAsynchronousAdvantageCriticModel
 	

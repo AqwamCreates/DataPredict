@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - AdvantageActorCritic
+# [API Reference](../../API.md) - [Models](../Models.md) - AsynchronousAdvantageCritic (A3C)
 
 AsynchronousAdvantageCritic is a base class for reinforcement learning.
 

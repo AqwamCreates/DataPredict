@@ -14,6 +14,8 @@ local defaultDiscountFactor = 0.95
 
 local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the episodic reward, but lower the running reward.
 
+local defaultTotalNumberOfReinforcementsToUpdateMainModel
+
 function AsynchronousAdvantageCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate, totalNumberOfReinforcementsToUpdateMainModel)
 	
 	local NewAsynchronousAdvantageCriticModel = {}
@@ -58,7 +60,9 @@ function AsynchronousAdvantageCriticModel.new(numberOfReinforcementsPerEpisode, 
 	
 	NewAsynchronousAdvantageCriticModel.ClassesList = nil
 	
-	NewAsynchronousAdvantageCriticModel.totalNumberOfReinforcementsToUpdateMainModel = 0
+	NewAsynchronousAdvantageCriticModel.totalNumberOfReinforcementsToUpdateMainModel = totalNumberOfReinforcementsToUpdateMainModel or 0
+	
+	NewAsynchronousAdvantageCriticModel.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
 	
 	return NewAsynchronousAdvantageCriticModel
 	
@@ -196,8 +200,6 @@ function AsynchronousAdvantageCriticModel:update(previousFeatureVector, action, 
 	
 	table.insert(self.criticValueHistoryArray[actorCriticModelNumber], previousCriticValue)
 	
-	self.totalNumberOfReinforcementsToUpdateMainModel += 1
-	
 	return allOutputsMatrix
 
 end
@@ -302,7 +304,7 @@ function AsynchronousAdvantageCriticModel:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function AsynchronousAdvantageCriticModel:reinforce(actorCriticModelNumber, currentFeatureVector, rewardValue, returnOriginalOutput)
+function AsynchronousAdvantageCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, actorCriticModelNumber)
 
 	if (self.currentNumberOfReinforcementsArray[actorCriticModelNumber] >= self.numberOfReinforcementsPerEpisode) then
 		
@@ -311,6 +313,8 @@ function AsynchronousAdvantageCriticModel:reinforce(actorCriticModelNumber, curr
 	end
 
 	self.currentNumberOfReinforcementsArray[actorCriticModelNumber] += 1
+	
+	self.currentTotalNumberOfReinforcementsToUpdateMainModel += 1
 	
 	local action
 	

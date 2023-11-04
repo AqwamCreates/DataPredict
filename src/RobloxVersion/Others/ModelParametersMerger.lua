@@ -496,21 +496,15 @@ function ModelParametersMerger:generate()
 
 	if (typeof(ModelParametersArray) ~= "table") then error("No model parameters set!") end
 
-	local accuracyArray
-
 	local percentageSplitArray
-
-	if (self.mergeType ~= "Average") then
-
-		accuracyArray = generateAccuracyForEachModel(Model, modelType, mergeType, ModelParametersArray, featureMatrix, labelVector) 
-
-	end
 
 	if (mergeType == "Custom") then
 
 		percentageSplitArray = self.customSplitPercentage
 
 	elseif (mergeType ~= "Average") then
+		
+		local accuracyArray = generateAccuracyForEachModel(Model, modelType, mergeType, ModelParametersArray, featureMatrix, labelVector) 
 
 		percentageSplitArray = getSplitPercentageArray(mergeType, accuracyArray)
 

@@ -163,7 +163,7 @@ function OnlineLearning:start(showFinalCost, showIdleWarning)
 
 			if (waitDuration >= 30) and (waitWarningIssued == false) and (showIdleWarning == true) then 
 
-				warn("The neural network has been idle for more than 30 seconds. Leaving the thread running may use unnecessary resource.") 
+				warn("The online learning model has been idle for more than 30 seconds. Leaving the thread running may use unnecessary resource.") 
 
 				waitWarningIssued = true
 				

@@ -13,7 +13,7 @@ DistributedLearning is a base class for distributed learning. The individual chi
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DistributedLearning.new(totalNumberOfChildModelUpdatesToUpdateMainModel: number): ModelObject
+DistributedLearning.new(totalNumberOfChildModelUpdatesToUpdateMainModel: number): DistributedLearningObject
 ```
 
 #### Parameters:
@@ -22,7 +22,7 @@ DistributedLearning.new(totalNumberOfChildModelUpdatesToUpdateMainModel: number)
 
 #### Returns:
 
-* ModelObject: The generated model object.
+* DistributedLearningObject: The generated distributed learning object.
 
 ## Functions
 
@@ -48,17 +48,15 @@ DistributedLearning:addModel(Model: ModelObject)
 
 * Model: The child model to be added to main model.
 
-* ExperienceReplay: The experience replay object 
-
 ### setMainModelParameters()
 
 ```
-DistributedLearning:setActorCriticMainModelParameters(ActorMainModelParameters: any)
+DistributedLearning:setMainModelParameters(MainModelParameters: any)
 ```
 
 #### Parameters:
 
-* ActorMainModelParameters: The model parameters to be set for main actor model.
+* MainModelParameters: The model parameters for the main model.
 
 ### getActorCriticMainModelParameters()
 
@@ -68,16 +66,14 @@ DistributedLearning:getMainModelParameters(): any
 
 #### Returns:
 
-* ActorMainModelParameters: The model parameters from the main actor model.
-
-* CriticMainModelParameters: The model parameters from the main critic model.
+* MainModelParameters: The model parameters for the main model.
 
 ### reinforce()
 
 Reward or punish model based on the current state of the environment.
 
 ```
-DistributedLearning:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean, actorCriticModelNumber: number): integer, number -OR- Matrix
+DistributedLearning:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean, modelNumber: number): integer, number -OR- Matrix
 ```
 
 #### Parameters:

@@ -1,4 +1,8 @@
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+local DataPredict = script.Parent.Parent
+
+local AqwamMatrixLibrary = require(DataPredict.AqwamRobloxMatrixLibraryLinker.Value)
+
+local ModelParametersMerger = require(DataPredict.Others.ModelParametersMerger)
 
 AsynchronousAdvantageCriticModel = {}
 
@@ -14,7 +18,7 @@ local defaultDiscountFactor = 0.95
 
 local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the episodic reward, but lower the running reward.
 
-local defaultTotalNumberOfReinforcementsToUpdateMainModel
+local defaultTotalNumberOfReinforcementsToUpdateMainModel = 100
 
 function AsynchronousAdvantageCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate, totalNumberOfReinforcementsToUpdateMainModel)
 	
@@ -60,13 +64,17 @@ function AsynchronousAdvantageCriticModel.new(numberOfReinforcementsPerEpisode, 
 	
 	NewAsynchronousAdvantageCriticModel.ClassesList = nil
 	
-	NewAsynchronousAdvantageCriticModel.totalNumberOfReinforcementsToUpdateMainModel = totalNumberOfReinforcementsToUpdateMainModel or 0
+	NewAsynchronousAdvantageCriticModel.totalNumberOfReinforcementsToUpdateMainModel = totalNumberOfReinforcementsToUpdateMainModel or defaultTotalNumberOfReinforcementsToUpdateMainModel
 	
 	NewAsynchronousAdvantageCriticModel.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
 	
 	NewAsynchronousAdvantageCriticModel.ActorMainModelParameters = nil
 	
 	NewAsynchronousAdvantageCriticModel.CriticMainModelParameters = nil
+	
+	NewAsynchronousAdvantageCriticModel.IsModelRunning = false
+	
+	NewAsynchronousAdvantageCriticModel.ModelParametersMerger = ModelParametersMerger.new(true, "Classification", "Average")
 	
 	return NewAsynchronousAdvantageCriticModel
 	
@@ -103,6 +111,10 @@ function AsynchronousAdvantageCriticModel:addActorCriticModel(ActorModel, Critic
 	if not ActorModel then error("No actor model!") end
 	
 	if not CriticModel then error("No critic model!") end
+	
+	if self.ActorMainModelParameters then ActorModel:setModelParameters(self.ActorMainModelParameters) end
+	
+	if self.CriticMainModelParameters then CriticModel:setModelParameters(self.CriticMainModelParameters) end
 	
 	table.insert(self.ActorModelArray, ActorModel)
 		
@@ -400,15 +412,60 @@ end
 
 function AsynchronousAdvantageCriticModel:start()
 	
+	if (self.IsModelRunning == true) then error("The model is already running!") end
+	
+	self.IsModelRunning = true
+	
+	local trainCoroutine = coroutine.create(function()
+
+		repeat
+			
+			task.wait()
+			
+			if (self.currentTotalNumberOfReinforcementsToUpdateMainModel < self.totalNumberOfReinforcementsToUpdateMainModel) then continue end
+			
+			self.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
+			
+			local ActorModelParametersArray = {}
+			
+			local CriticModelParametersArray = {}
+			
+			for _, ActorModel in ipairs(self.ActorModelArray) do table.insert(ActorModelParametersArray, ActorModel:getModelParameters()) end
+			
+			for _, CriticModel in ipairs(self.CriticModelArray) do table.insert(CriticModelParametersArray, CriticModel:getModelParameters()) end
+			
+			self.ModelParametersMerger:setModelParameters(table.unpack(ActorModelParametersArray))
+			
+			local ActorModelParameters = self.ModelParametersMerger:generate()
+
+			self.ModelParametersMerger:setModelParameters(table.unpack(CriticModelParametersArray))
+			
+			local CriticModelParameters = self.ModelParametersMerger:generate()
+			
+			for _, ActorModel in ipairs(self.ActorModelArray) do ActorModel:setModelParameters(ActorModelParameters) end
+
+			for _, CriticModel in ipairs(self.CriticModelArray) do CriticModel:setModelParameters(ActorModelParameters) end
+			
+			self.ActorMainModelParameters = ActorModelParameters
+
+			self.CriticMainModelParameters = CriticModelParameters
+
+		until (self.IsModelRunning == false)
+
+	end)
+
+	coroutine.resume(trainCoroutine)
+
+	return trainCoroutine
 		
 	
 end
 
 function AsynchronousAdvantageCriticModel:stop()
 	
+	self.IsModelRunning = false
 	
 end
-
 
 function AsynchronousAdvantageCriticModel:getCurrentNumberOfEpisodes(actorCriticModelNumber)
 

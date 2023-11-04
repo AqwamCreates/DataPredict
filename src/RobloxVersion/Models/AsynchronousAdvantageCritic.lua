@@ -426,7 +426,7 @@ function AsynchronousAdvantageCriticModel:reset()
 	
 	for i = 1, #self.currentEpsilonArray, 1 do self:singleReset(i) end
 	
-	self.totalNumberOfReinforcementsToUpdateMainModel = 0
+	self.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
 	
 end
 

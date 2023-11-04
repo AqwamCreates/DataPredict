@@ -620,4 +620,3 @@ function AsynchronousAdvantageCriticModel:destroy()
 end
 
 return AsynchronousAdvantageCriticModel
-

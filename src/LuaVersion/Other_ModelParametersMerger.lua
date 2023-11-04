@@ -43,8 +43,6 @@ function ModelParametersMerger.new(Model, modelType, mergeType)
 
 	if (Model == nil) then error("No model!") end
 
-	if (modelType == nil) then error("No model type!") end
-
 	local NewModelParametersMerger = {}
 
 	setmetatable(NewModelParametersMerger, ModelParametersMerger)

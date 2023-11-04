@@ -4,7 +4,7 @@ AsynchronousAdvantageCritic is a base class for reinforcement learning.
 
 ## Notes:
 
-* The Actor and Critic models must be created separately. Then use setActorModel() and setCriticModel() to put it inside the AdvantageActorCritic model.
+* The Actor and Critic child models must be created separately. Then use addActorCriticModel() to put it inside the AsynchronousAdvantageCritic model.
 
 * Actor and Critic must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 
@@ -58,7 +58,7 @@ AsynchronousAdvantageCritic:setParameters(numberOfReinforcementsPerEpisode: inte
 
 * rewardAveragingRate: The higher the value, the higher the episodic reward, but lower the running reward.
 
-### setActorModel()
+### addActorCriticModel()
 
 ```
 AsynchronousAdvantageCritic:addActorCriticModel(ActorModel: ModelObject, CriticModel: ModelObject, ExperienceReplay: ExperienceReplayObject)

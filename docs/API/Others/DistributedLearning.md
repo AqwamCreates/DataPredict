@@ -68,6 +68,34 @@ DistributedLearning:getMainModelParameters(): any
 
 * MainModelParameters: The model parameters for the main model.
 
+### train()
+
+Reward or punish model based on the current state of the environment.
+
+```
+DistributedLearning:train(featureMatrix: Matrix, labelVector: matrix, modelNumber: number): integer, number -OR- Matrix
+```
+
+#### Parameters:
+
+* currentFeatureVector: Matrix containing data from the current state.
+
+* rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
+
+* returnOriginalOutput: Set whether or not to return predicted vector instead of value with highest probability.
+
+* modelNumber: The model number to be reinforced.
+
+#### Returns:
+
+* predictedLabel: A label that is predicted by the model.
+
+* value: The value of predicted label.
+
+-OR-
+
+* predictedVector: A matrix containing all predicted values from all classes.
+
 ### reinforce()
 
 Reward or punish model based on the current state of the environment.
@@ -95,6 +123,7 @@ DistributedLearning:reinforce(currentFeatureVector: Matrix, rewardValue: number,
 -OR-
 
 * predictedVector: A matrix containing all predicted values from all classes.
+
 
 ### getCurrentTotalNumberOfChildModelUpdatesToUpdateMainModel()
 

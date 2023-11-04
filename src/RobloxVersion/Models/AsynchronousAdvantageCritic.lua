@@ -410,6 +410,12 @@ function AsynchronousAdvantageCriticModel:getActorCriticMainModelParameters()
 	
 end
 
+function  AsynchronousAdvantageCriticModel:currentTotalNumberOfReinforcementsToUpdateMainModel()
+	
+	return self.currentTotalNumberOfReinforcementsToUpdateMainModel
+	
+end
+
 function AsynchronousAdvantageCriticModel:start()
 	
 	if (self.IsModelRunning == true) then error("The model is already running!") end

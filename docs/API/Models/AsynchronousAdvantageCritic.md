@@ -15,10 +15,12 @@ AsynchronousAdvantageCritic is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-AsynchronousAdvantageCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number, totalNumberOfReinforcementsToUpdateMainModel: number): ModelObject
+AsynchronousAdvantageCritic.new(learningRate: integer, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number, totalNumberOfReinforcementsToUpdateMainModel: number): ModelObject
 ```
 
 #### Parameters:
+
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value. It will be also used for actor and critic loss calculations.
 
@@ -43,10 +45,12 @@ AsynchronousAdvantageCritic.new(numberOfReinforcementsPerEpisode: integer, epsil
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-AsynchronousAdvantageCritic:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number, totalNumberOfReinforcementsToUpdateMainModel: number)
+AsynchronousAdvantageCritic:setParameters(learningRate: integer, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number, totalNumberOfReinforcementsToUpdateMainModel: number)
 ```
 
 #### Parameters:
+
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value. It will be also used for actor and critic loss calculations.
 

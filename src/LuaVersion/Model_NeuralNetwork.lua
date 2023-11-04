@@ -550,8 +550,6 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, errorMatrixTab
 
 		if (type(costFunctionDerivatives) == "number") then costFunctionDerivatives = {{costFunctionDerivatives}} end
 
-		costFunctionDerivatives = AqwamMatrixLibrary:transpose(costFunctionDerivatives)
-
 		table.insert(deltaTable, costFunctionDerivatives)
 
 	end

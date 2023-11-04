@@ -1,4 +1,4 @@
-local ModelParametersMerger = require("Others_ModelParametersMerger")
+local ModelParametersMerger = require("Other_ModelParametersMerger")
 
 DistributedLearning = {}
 
@@ -14,7 +14,7 @@ function DistributedLearning.new(totalNumberOfChildModelUpdatesToUpdateMainModel
 	
 	NewDistributedLearning.totalNumberOfChildModelUpdatesToUpdateMainModel = totalNumberOfChildModelUpdatesToUpdateMainModel or defaultTotalNumberOfChildModelUpdatesToUpdateMainModel
 	
-	NewDistributedLearning.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
+	NewDistributedLearning.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = 0
 	
 	NewDistributedLearning.ModelArray = {}
 	
@@ -42,7 +42,7 @@ end
 
 function DistributedLearning:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, modelNumber)
 	
-	self.currentTotalNumberOfReinforcementsToUpdateMainModel += 1
+	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel += 1
 	
 	local Model = self.ModelArray[modelNumber]
 	
@@ -54,7 +54,7 @@ end
 
 function DistributedLearning:train(featureVector, labelVector, modelNumber)
 	
-	self.currentTotalNumberOfReinforcementsToUpdateMainModel += 1
+	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel += 1
 
 	local Model = self.ModelArray[modelNumber]
 	
@@ -88,7 +88,7 @@ end
 
 function DistributedLearning:currentTotalNumberOfReinforcementsToUpdateMainModel()
 	
-	return self.totalNumberOfChildModelUpdatesToUpdateMainModel
+	return self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel
 	
 end
 
@@ -104,9 +104,9 @@ function DistributedLearning:start()
 			
 			task.wait()
 			
-			if (self.currentTotalNumberOfReinforcementsToUpdateMainModel < self.totalNumberOfReinforcementsToUpdateMainModel) then continue end
+			if (self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel < self.totalNumberOfChildModelUpdatesToUpdateMainModel) then continue end
 			
-			self.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
+			self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = 0
 			
 			local ModelParametersArray = {}
 			
@@ -119,7 +119,6 @@ function DistributedLearning:start()
 			for _, Model in ipairs(self.ModelArray) do Model:setModelParameters(MainModelParameters) end
 			
 			self.MainModelParameters = MainModelParameters
-
 
 		until (self.IsDistributedLearningRunning == false)
 
@@ -139,7 +138,7 @@ end
 
 function DistributedLearning:reset()
 	
-	self.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
+	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = 0
 	
 end
 

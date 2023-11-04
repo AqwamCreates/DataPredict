@@ -64,6 +64,10 @@ function AsynchronousAdvantageCriticModel.new(numberOfReinforcementsPerEpisode, 
 	
 	NewAsynchronousAdvantageCriticModel.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
 	
+	NewAsynchronousAdvantageCriticModel.ActorMainModelParameters = nil
+	
+	NewAsynchronousAdvantageCriticModel.CriticMainModelParameters = nil
+	
 	return NewAsynchronousAdvantageCriticModel
 	
 end
@@ -305,6 +309,8 @@ function AsynchronousAdvantageCriticModel:getLabelFromOutputMatrix(outputMatrix)
 end
 
 function AsynchronousAdvantageCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, actorCriticModelNumber)
+	
+	actorCriticModelNumber = actorCriticModelNumber or Random.new():NextInteger(1, #self.currentEpsilonArray)
 
 	if (self.currentNumberOfReinforcementsArray[actorCriticModelNumber] >= self.numberOfReinforcementsPerEpisode) then
 		
@@ -377,6 +383,32 @@ function AsynchronousAdvantageCriticModel:reinforce(currentFeatureVector, reward
 	return action, highestValue
 	
 end
+
+function AsynchronousAdvantageCriticModel:setActorCriticMainModelParameters(ActorMainModelParameters, CriticMainModelParameters)
+	
+	self.ActorMainModelParameters = ActorMainModelParameters
+
+	self.CriticMainModelParameters = CriticMainModelParameters
+	
+end
+
+function AsynchronousAdvantageCriticModel:getActorCriticMainModelParameters()
+	
+	return self.ActorMainModelParameters, self.CriticMainModelParameters
+	
+end
+
+function AsynchronousAdvantageCriticModel:start()
+	
+		
+	
+end
+
+function AsynchronousAdvantageCriticModel:stop()
+	
+	
+end
+
 
 function AsynchronousAdvantageCriticModel:getCurrentNumberOfEpisodes(actorCriticModelNumber)
 

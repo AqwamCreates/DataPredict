@@ -70,7 +70,7 @@ DistributedLearning:getMainModelParameters(): any
 
 ### train()
 
-Reward or punish model based on the current state of the environment.
+Train a model for a given model number.
 
 ```
 DistributedLearning:train(featureMatrix: Matrix, labelVector/labelMatrix: matrix, modelNumber: number): []
@@ -90,7 +90,7 @@ DistributedLearning:train(featureMatrix: Matrix, labelVector/labelMatrix: matrix
 
 ### predict()
 
-Predict the values for given data.
+Predict values for the given data using the specified model number.
 
 ```
 DistributedLearning:predict(featureMatrix: Matrix, returnOriginalOutput: boolean,  modelNumber: number): Matrix, Matrix -OR- Matrix
@@ -117,7 +117,7 @@ DistributedLearning:predict(featureMatrix: Matrix, returnOriginalOutput: boolean
 
 ### reinforce()
 
-Reward or punish model based on the current state of the environment.
+Reward or punish a model from a model number based on the current state of the environment.
 
 ```
 DistributedLearning:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean, modelNumber: number): integer, number -OR- Matrix

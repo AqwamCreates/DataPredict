@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DistributedLearning
+# [API Reference](../../API.md) - [Others](../Others.md) - DistributedLearning
 
 DistributedLearning is a base class for distributed learning. The individual child model will calculate their own model parameters and these will create a new main model parameters using average.
 

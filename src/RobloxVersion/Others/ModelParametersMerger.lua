@@ -310,6 +310,8 @@ local function generateAccuracyForEachModel(Model, modelType, mergeType, ModelPa
 	
 	if (Model == nil) then error("No model!") end
 	
+	if (modelType == nil) then error("No model type!") end
+	
 	local accuracyArray
 	
 	if (modelType == "Regression") then

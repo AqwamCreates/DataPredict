@@ -6,7 +6,7 @@ To start, we must first link our machine/deep learning library with our matrix l
 
 | Version                     | Machine And Deep Learning Library            | Matrix Library     |
 |-----------------------------|----------------------------------------------|--------------------|
-| Release (ModuleScript)      | [DataPredict (Release Version 1.4)](https://create.roblox.com/marketplace/asset/15199714521)           |                    |
+| Release (ModuleScript)      | [DataPredict (Release Version 1.5)](https://create.roblox.com/marketplace/asset/15268337462)           |                    |
 | Auto Update (Package)       | [DataPredict](https://www.roblox.com/library/12727977273/DataPredict-Library)                                      | [MatrixL](https://www.roblox.com/library/12728472338/MatrixL-Aqwams-Roblox-Matrix-Library) |
 | Unstable (ModuleScript)    | [Aqwam's Roblox Machine And Deep Learning Library](https://create.roblox.com/marketplace/asset/12591886004/Aqwams-Roblox-Machine-And-Deep-Learning-Library) | [Aqwam's Roblox Matrix Library](https://www.roblox.com/library/12256162800/Aqwams-Roblox-Matrix-Library) |
 

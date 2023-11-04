@@ -970,7 +970,7 @@ function NeuralNetworkModel:processLabelVector(labelVector)
 
 end
 
-function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
+function NeuralNetworkModel:backPropagate(lossMatrix, clearTables, doNotUpdateModelParameters)
 
 	if (self.forwardPropagateTable == nil) then error("Table not found for forward propagation.") end
 
@@ -983,8 +983,12 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	local partialDerivativesTable = self:calculatePartialDerivatives(lossMatrix, self.forwardPropagateTable, self.zTable)
 
 	local deltaTable = self:calculateDelta(self.forwardPropagateTable, partialDerivativesTable)
-
-	self.ModelParameters = self:gradientDescent(self.learningRate, deltaTable, numberOfData)
+	
+	if not doNotUpdateModelParameters then
+		
+		self.ModelParameters = self:gradientDescent(self.learningRate, deltaTable, numberOfData)
+		
+	end
 
 	if clearTables then
 

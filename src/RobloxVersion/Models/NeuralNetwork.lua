@@ -408,8 +408,10 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 	table.insert(zTable, inputMatrix)
 
 	table.insert(forwardPropagateTable, inputMatrix) -- don't remove this! otherwise the code won't work!
-
-	for layerNumber, weightMatrix in ipairs(self.ModelParameters) do
+	
+	for layerNumber = 1, (numberOfLayers - 1), 1 do
+		
+		local weightMatrix = self.ModelParameters[layerNumber]
 		
 		local hasBiasNeuron = self.hasBiasNeuronTable[layerNumber]
 
@@ -432,7 +434,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 		table.insert(zTable, layerZ)
 
 		table.insert(forwardPropagateTable, inputMatrix)
-
+		
 	end
 
 	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
@@ -461,7 +463,7 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 
 	local errorMatrixTable = {}
 
-	local numberOfLayerMatrix = #self.activationFunctionTable
+	local numberOfLayers = #self.numberOfNeuronsTable
 
 	local zLayerMatrix
 	
@@ -469,7 +471,7 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 
 	table.insert(errorMatrixTable, layerCostMatrix)
 
-	for output = #self.ModelParameters, 2, -1 do
+	for output = (numberOfLayers - 1), 2, -1 do
 
 		local activationFunctionName = self.activationFunctionTable[output]
 

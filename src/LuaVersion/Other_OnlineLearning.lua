@@ -193,7 +193,7 @@ function OnlineLearning:start(showFinalCost, showIdleWarning)
 			
 			waitDuration = 0
 
-		until (self.IsQueuedReinforcementRunning == false)
+		until (self.IsOnlineLearningRunning == false)
 
 		self.InputQueue = {}
 

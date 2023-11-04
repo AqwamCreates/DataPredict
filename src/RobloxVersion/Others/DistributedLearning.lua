@@ -46,6 +46,8 @@ function DistributedLearning:reinforce(currentFeatureVector, rewardValue, return
 	
 	local Model = self.ModelArray[modelNumber]
 	
+	if not Model then error("No model!") end
+	
 	return Model:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 	
 end
@@ -55,6 +57,8 @@ function DistributedLearning:train(featureVector, labelVector, modelNumber)
 	self.currentTotalNumberOfReinforcementsToUpdateMainModel += 1
 
 	local Model = self.ModelArray[modelNumber]
+	
+	if not Model then error("No model!") end
 
 	return Model:train(featureVector, labelVector)
 
@@ -63,6 +67,8 @@ end
 function DistributedLearning:predict(featureVector, returnOriginalOutput, modelNumber)
 
 	local Model = self.ModelArray[modelNumber]
+	
+	if not Model then error("No model!") end
 
 	return Model:predict(featureVector, returnOriginalOutput)
 

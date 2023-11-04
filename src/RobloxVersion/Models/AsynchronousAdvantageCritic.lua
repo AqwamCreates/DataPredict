@@ -80,7 +80,7 @@ function AsynchronousAdvantageCriticModel.new(numberOfReinforcementsPerEpisode, 
 	
 end
 
-function AsynchronousAdvantageCriticModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
+function AsynchronousAdvantageCriticModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate, totalNumberOfReinforcementsToUpdateMainModel)
 	
 	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
@@ -91,6 +91,8 @@ function AsynchronousAdvantageCriticModel:setParameters(numberOfReinforcementsPe
 	self.discountFactor =  discountFactor or self.discountFactor
 
 	self.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
+	
+	self.totalNumberOfReinforcementsToUpdateMainModel = totalNumberOfReinforcementsToUpdateMainModel or self.totalNumberOfReinforcementsToUpdateMainModel
 	
 	for i = 1, #self.previousFeatureVectorArray, 1 do
 		

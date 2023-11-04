@@ -4,7 +4,7 @@
 
 	Aqwam's Machine And Deep Learning Library (DataPredict)
 
-	Version 1.17.0
+	Version 1.18.0
 
 	Author: Aqwam Harish Aiman
 	
@@ -66,7 +66,13 @@ local ModelsDictionary = {
 	NeuralNetwork = require(Models.NeuralNetwork),
 
 	ReinforcingNeuralNetwork = require(Models.ReinforcingNeuralNetwork),
-
+	
+	ActorCritic = require(Models.ActorCritic),
+	
+	AdvantageActorCritic = require(Models.AdvantageActorCritic),
+	
+	AsynchronousAdvantageActorCritic = require(Models.AsynchronousAdvantageActorCritic),
+	
 	QLearningNeuralNetwork = require(Models.QLearningNeuralNetwork),
 	
 	DoubleQLearningNeuralNetworkV1 = require(Models.DoubleQLearningNeuralNetworkV1),
@@ -156,6 +162,8 @@ local OthersDictionary = {
 	StringSplitter = require(Others.StringSplitter),
 	
 	OnlineLearning = require(Others.OnlineLearning),
+	
+	DistributedLearning = require(Others.DistributedLearning),
 	
 	Tokenizer = require(Others.Tokenizer),
 	

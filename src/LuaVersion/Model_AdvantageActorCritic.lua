@@ -1,8 +1,8 @@
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-ActorCriticModel = {}
+AdvantageActorCriticModel = {}
 
-ActorCriticModel.__index = ActorCriticModel
+AdvantageActorCriticModel.__index = AdvantageActorCriticModel
 
 local defaultNumberOfReinforcementsPerEpisode = 10
 
@@ -14,49 +14,49 @@ local defaultDiscountFactor = 0.95
 
 local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the episodic reward, but lower the running reward.
 
-function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
+function AdvantageActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
 	
-	local NewActorCriticModel = {}
+	local NewAdvantageActorCriticModel = {}
 	
-	setmetatable(NewActorCriticModel, ActorCriticModel)
+	setmetatable(NewAdvantageActorCriticModel, AdvantageActorCriticModel)
 	
-	NewActorCriticModel.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
+	NewAdvantageActorCriticModel.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
 
-	NewActorCriticModel.epsilon = epsilon or defaultEpsilon
+	NewAdvantageActorCriticModel.epsilon = epsilon or defaultEpsilon
 
-	NewActorCriticModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
+	NewAdvantageActorCriticModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
 
-	NewActorCriticModel.discountFactor =  discountFactor or defaultDiscountFactor
+	NewAdvantageActorCriticModel.discountFactor =  discountFactor or defaultDiscountFactor
 	
-	NewActorCriticModel.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
+	NewAdvantageActorCriticModel.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
 	
-	NewActorCriticModel.currentEpsilon = epsilon or defaultEpsilon
+	NewAdvantageActorCriticModel.currentEpsilon = epsilon or defaultEpsilon
 
-	NewActorCriticModel.previousFeatureVector = nil
+	NewAdvantageActorCriticModel.previousFeatureVector = nil
 
-	NewActorCriticModel.printReinforcementOutput = true
+	NewAdvantageActorCriticModel.printReinforcementOutput = true
 
-	NewActorCriticModel.currentNumberOfReinforcements = 0
+	NewAdvantageActorCriticModel.currentNumberOfReinforcements = 0
 
-	NewActorCriticModel.currentNumberOfEpisodes = 0
+	NewAdvantageActorCriticModel.currentNumberOfEpisodes = 0
 	
-	NewActorCriticModel.actionProbabilityHistory = {}
+	NewAdvantageActorCriticModel.advantageHistory = {}
 	
-	NewActorCriticModel.criticValueHistory = {}
+	NewAdvantageActorCriticModel.actionProbabilityHistory = {}
 	
-	NewActorCriticModel.rewardHistory = {}
+	NewAdvantageActorCriticModel.criticValueHistory = {}
 	
-	NewActorCriticModel.episodeReward = 0
+	NewAdvantageActorCriticModel.episodeReward = 0
 	
-	NewActorCriticModel.runningReward = 0
+	NewAdvantageActorCriticModel.runningReward = 0
 	
-	NewActorCriticModel.ClassesList = nil
+	NewAdvantageActorCriticModel.ClassesList = nil
 	
-	return NewActorCriticModel
+	return NewAdvantageActorCriticModel
 	
 end
 
-function ActorCriticModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
+function AdvantageActorCriticModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
 	
 	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
@@ -72,19 +72,19 @@ function ActorCriticModel:setParameters(numberOfReinforcementsPerEpisode, epsilo
 	
 end
 
-function ActorCriticModel:setActorModel(Model)
+function AdvantageActorCriticModel:setActorModel(Model)
 	
 	self.ActorModel = Model
 	
 end
 
-function ActorCriticModel:setCriticModel(Model)
+function AdvantageActorCriticModel:setCriticModel(Model)
 
 	self.CriticModel = Model
 
 end
 
-function ActorCriticModel:setClassesList(classesList)
+function AdvantageActorCriticModel:setClassesList(classesList)
 	
 	self.ClassesList = classesList
 	
@@ -134,13 +134,17 @@ local function sampleAction(actionProbabilityVector)
 	
 end
 
-function ActorCriticModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function AdvantageActorCriticModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 	local allOutputsMatrix = self.ActorModel:predict(previousFeatureVector, true)
 	
 	local actionProbabilityVector = softmax(allOutputsMatrix)
 
-	local criticValue = self.CriticModel:predict(previousFeatureVector, true)[1][1]
+	local previousCriticValue = self.CriticModel:predict(previousFeatureVector, true)[1][1]
+	
+	local currentCriticValue = self.CriticModel:predict(currentFeatureVector, true)[1][1]
+	
+	local advantageValue = rewardValue + (self.discountFactor * (currentCriticValue - currentCriticValue))
 	
 	local numberOfActions = #allOutputsMatrix[1]
 	
@@ -152,17 +156,17 @@ function ActorCriticModel:update(previousFeatureVector, action, rewardValue, cur
 	
 	self.episodeReward += rewardValue
 	
+	table.insert(self.advantageHistory, advantageValue)
+	
 	table.insert(self.actionProbabilityHistory, actionProbability)
 	
-	table.insert(self.criticValueHistory, criticValue)
-	
-	table.insert(self.rewardHistory, rewardValue)
+	table.insert(self.criticValueHistory, previousCriticValue)
 	
 	return allOutputsMatrix
 
 end
 
-function ActorCriticModel:setExperienceReplay(ExperienceReplay)
+function AdvantageActorCriticModel:setExperienceReplay(ExperienceReplay)
 
 	self.ExperienceReplay = ExperienceReplay
 
@@ -176,37 +180,17 @@ local function getBooleanOrDefaultOption(boolean, defaultBoolean)
 
 end
 
-function ActorCriticModel:setPrintReinforcementOutput(option)
+function AdvantageActorCriticModel:setPrintReinforcementOutput(option)
 
 	self.printReinforcementOutput = getBooleanOrDefaultOption(option, self.printReinforcementOutput)
 
 end
 
-function ActorCriticModel:episodeUpdate(numberOfFeatures)
+function AdvantageActorCriticModel:episodeUpdate(numberOfFeatures)
 
 	self.runningReward = (self.rewardAveragingRate * self.episodeReward) + ((1 - self.rewardAveragingRate) * self.runningReward)
 	
-	local returnsVector = {{}}
-	
-	local discountedSum = 0
-	
-	local historyLength = #self.rewardHistory
-	
-	for r = historyLength, 1, -1 do
-		
-		discountedSum = r + self.discountFactor * discountedSum
-		
-		table.insert(returnsVector[1], 1, discountedSum)
-		
-	end
-	
-	local returnsVectorMean = AqwamMatrixLibrary:mean(returnsVector)
-	
-	local returnsVectorStandardDeviation = AqwamMatrixLibrary:standardDeviation(returnsVector)
-	
-	local normalizedReturnVector = AqwamMatrixLibrary:subtract(returnsVector, returnsVectorMean)
-	
-	normalizedReturnVector = AqwamMatrixLibrary:divide(normalizedReturnVector, returnsVectorStandardDeviation)
+	local historyLength = #self.advantageHistory
 	
 	local sumActorLosses = 0
 	
@@ -214,15 +198,13 @@ function ActorCriticModel:episodeUpdate(numberOfFeatures)
 	
 	for h = 1, historyLength, 1 do
 		
-		local reward = self.rewardHistory[h]
-		
-		local returns = normalizedReturnVector[1][h]
+		local advantage = self.advantageHistory[h]
 		
 		local actionProbability = self.actionProbabilityHistory[h]
 		
-		local actorLoss = -math.log(actionProbability) * (returns - reward) 
+		local actorLoss = -math.log(actionProbability) * advantage
 		
-		local criticLoss = (returns - reward)^2
+		local criticLoss = math.pow(advantage, 2)
 		
 		sumActorLosses += actorLoss
 		
@@ -238,8 +220,8 @@ function ActorCriticModel:episodeUpdate(numberOfFeatures)
 	self.ActorModel:forwardPropagate(featureVector, true)
 	self.CriticModel:forwardPropagate(featureVector, true)
 	
-	self.ActorModel:backPropagate(lossVector, true)
-	self.CriticModel:backPropagate(lossValue, true)
+	self.ActorModel:backPropagate(sumActorLosses, true)
+	self.CriticModel:backPropagate(sumCriticLosses, true)
 	
 	------------------------------------------------------
 	
@@ -251,15 +233,15 @@ function ActorCriticModel:episodeUpdate(numberOfFeatures)
 
 	self.currentEpsilon *= self.epsilonDecayFactor
 	
+	table.clear(self.advantageHistory)
+	
 	table.clear(self.actionProbabilityHistory)
 	
 	table.clear(self.criticValueHistory)
 	
-	table.clear(self.rewardHistory)
-	
 end
 
-function ActorCriticModel:fetchHighestValueInVector(outputVector)
+function AdvantageActorCriticModel:fetchHighestValueInVector(outputVector)
 
 	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(outputVector)
 
@@ -268,10 +250,10 @@ function ActorCriticModel:fetchHighestValueInVector(outputVector)
 	local predictedLabel = self.ClassesList[classIndex[2]]
 
 	return predictedLabel, highestValue
-
+	
 end
 
-function ActorCriticModel:getLabelFromOutputMatrix(outputMatrix)
+function AdvantageActorCriticModel:getLabelFromOutputMatrix(outputMatrix)
 
 	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 
@@ -301,7 +283,7 @@ function ActorCriticModel:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function ActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+function AdvantageActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 	
 	if (self.ActorModel == nil) then error("No actor model!") end
 	
@@ -342,7 +324,7 @@ function ActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOri
 		if (self.previousFeatureVector) then
 			
 			allOutputsMatrix = self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
-
+			
 			actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 
 			action = actionVector[1][1]
@@ -375,25 +357,25 @@ function ActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOri
 	
 end
 
-function ActorCriticModel:getCurrentNumberOfEpisodes()
+function AdvantageActorCriticModel:getCurrentNumberOfEpisodes()
 
 	return self.currentNumberOfEpisodes
 
 end
 
-function ActorCriticModel:getCurrentNumberOfReinforcements()
+function AdvantageActorCriticModel:getCurrentNumberOfReinforcements()
 
 	return self.currentNumberOfReinforcements
 
 end
 
-function ActorCriticModel:getCurrentEpsilon()
+function AdvantageActorCriticModel:getCurrentEpsilon()
 
 	return self.currentEpsilon
 
 end
 
-function ActorCriticModel:reset()
+function AdvantageActorCriticModel:reset()
 	
 	self.episodeReward = 0
 	
@@ -407,17 +389,17 @@ function ActorCriticModel:reset()
 
 	self.currentEpsilon = self.epsilon
 	
+	table.clear(self.advantageHistory)
+	
 	table.clear(self.actionProbabilityHistory)
 
 	table.clear(self.criticValueHistory)
-
-	table.clear(self.rewardHistory)
 
 	if (self.ExperienceReplay) then self.ExperienceReplay:reset() end
 
 end
 
-function ActorCriticModel:destroy()
+function AdvantageActorCriticModel:destroy()
 
 	setmetatable(self, nil)
 
@@ -427,4 +409,4 @@ function ActorCriticModel:destroy()
 
 end
 
-return ActorCriticModel
+return AdvantageActorCriticModel

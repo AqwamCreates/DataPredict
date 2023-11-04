@@ -4,15 +4,15 @@ DistributedLearning = {}
 
 DistributedLearning.__index = DistributedLearning
 
-local defaultTotalNumberOfReinforcementsToUpdateMainModel = 100
+local defaultTotalNumberOfChildModelUpdatesToUpdateMainModel = 100
 
-function DistributedLearning.new(totalNumberOfReinforcementsToUpdateMainModel)
+function DistributedLearning.new(totalNumberOfChildModelUpdatesToUpdateMainModel)
 	
 	local NewDistributedLearning = {}
 	
 	setmetatable(NewDistributedLearning, DistributedLearning)
 	
-	NewDistributedLearning.totalNumberOfReinforcementsToUpdateMainModel = totalNumberOfReinforcementsToUpdateMainModel or defaultTotalNumberOfReinforcementsToUpdateMainModel
+	NewDistributedLearning.totalNumberOfChildModelUpdatesToUpdateMainModel = totalNumberOfChildModelUpdatesToUpdateMainModel or defaultTotalNumberOfChildModelUpdatesToUpdateMainModel
 	
 	NewDistributedLearning.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
 	
@@ -26,9 +26,9 @@ function DistributedLearning.new(totalNumberOfReinforcementsToUpdateMainModel)
 	
 end
 
-function DistributedLearning:setParameters(totalNumberOfReinforcementsToUpdateMainModel)
+function DistributedLearning:setParameters(totalNumberOfChildModelUpdatesToUpdateMainModel)
 	
-	self.totalNumberOfReinforcementsToUpdateMainModel = totalNumberOfReinforcementsToUpdateMainModel or defaultTotalNumberOfReinforcementsToUpdateMainModel
+	self.totalNumberOfChildModelUpdatesToUpdateMainModel = totalNumberOfChildModelUpdatesToUpdateMainModel or self.totalNumberOfChildModelUpdatesToUpdateMainModel
 	
 end
 
@@ -42,6 +42,8 @@ end
 
 function DistributedLearning:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, modelNumber)
 	
+	self.currentTotalNumberOfReinforcementsToUpdateMainModel += 1
+	
 	local Model = self.ModelArray[modelNumber]
 	
 	return Model:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
@@ -49,6 +51,8 @@ function DistributedLearning:reinforce(currentFeatureVector, rewardValue, return
 end
 
 function DistributedLearning:train(featureVector, labelVector, modelNumber)
+	
+	self.currentTotalNumberOfReinforcementsToUpdateMainModel += 1
 
 	local Model = self.ModelArray[modelNumber]
 
@@ -76,9 +80,9 @@ function DistributedLearning:getMainModelParameters()
 	
 end
 
-function  DistributedLearning:currentTotalNumberOfReinforcementsToUpdateMainModel()
+function DistributedLearning:currentTotalNumberOfReinforcementsToUpdateMainModel()
 	
-	return self.currentTotalNumberOfReinforcementsToUpdateMainModel
+	return self.totalNumberOfChildModelUpdatesToUpdateMainModel
 	
 end
 

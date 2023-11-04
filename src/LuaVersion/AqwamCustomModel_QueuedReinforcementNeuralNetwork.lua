@@ -113,7 +113,7 @@ function QueuedReinforcementNeuralNetworkModel:start(rewardValue, punishValue, s
 
 		repeat
 
-			task.wait(waitInterval)
+			wait(waitInterval)
 
 			idleDuration += waitInterval
 
@@ -156,7 +156,7 @@ function QueuedReinforcementNeuralNetworkModel:start(rewardValue, punishValue, s
 
 		repeat
 
-			task.wait(waitInterval)
+			wait(waitInterval)
 
 			waitDuration += waitInterval
 

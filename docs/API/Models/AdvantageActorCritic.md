@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - AdvantageActorCritic
+# [API Reference](../../API.md) - [Models](../Models.md) - AdvantageActorCritic (A2C)
 
 AdvantageActorCritic is a base class for reinforcement learning.
 

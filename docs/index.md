@@ -85,7 +85,7 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 [Aqwam's Roblox Matrix Library](https://robloxmatrixl.substack.com/p/directory)
 
-## Version History
+### Version History
 
 [Release](VersionHistory/ReleaseVersionHistory.md)
 

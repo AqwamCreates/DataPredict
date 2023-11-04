@@ -34,7 +34,7 @@
 | [DoubleExpectedStateActionRewardStateActionNeuralNetworkV2](Models/DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.md) | Double Deep Expected SARSA           | Same As Q-Learning Neural Network                                           |
 | [ActorCritic](Models/ActorCritic.md)                                                                                             | AC                                   | Same As Q-Learning Neural Network                                           |
 | [AdvantageActorCritic](Models/AdvantageActorCritic.md)                                                                           | A2C                                  | Same As Q-Learning Neural Network                                           |
-| [AsynchronousAdvantageCritic](Models/AsynchronousAdvantageCritic.md)                                                             | A3C                                  | Same As Q-Learning Neural Network                                           |
+| [AsynchronousAdvantageCritic](Models/AsynchronousAdvantageCritic.md) (Not Recommended)                                           | A3C                                  | Same As Q-Learning Neural Network                                           |
 | [ReinforcingNeuralNetwork](Models/ReinforcingNeuralNetwork.md)                                                                   | None                                 | Same As Q-Learning Neural Network                                           |
 
 ### Sequential

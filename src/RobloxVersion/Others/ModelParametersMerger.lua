@@ -483,9 +483,9 @@ end
 function ModelParametersMerger:generate()
 
 	local Model = self.Model
-	
+
 	local modelType = self.modelType
-	
+
 	local mergeType = self.mergeType
 
 	local featureMatrix = self.featureMatrix
@@ -493,23 +493,29 @@ function ModelParametersMerger:generate()
 	local labelVector = self.labelVector
 
 	local ModelParametersArray = self.ModelParametersArray
-	
+
 	if (typeof(ModelParametersArray) ~= "table") then error("No model parameters set!") end
-	
-	local accuracyArray = generateAccuracyForEachModel(Model, modelType, mergeType, ModelParametersArray, featureMatrix, labelVector) 
-	
+
+	local accuracyArray
+
 	local percentageSplitArray
-	
-	if (mergeType == "Custom") then
-		
-		percentageSplitArray = self.customSplitPercentage
-		
-	else
-		
-		percentageSplitArray = getSplitPercentageArray(mergeType, accuracyArray)
-		
+
+	if (self.mergeType ~= "Average") then
+
+		accuracyArray = generateAccuracyForEachModel(Model, modelType, mergeType, ModelParametersArray, featureMatrix, labelVector) 
+
 	end
-	
+
+	if (mergeType == "Custom") then
+
+		percentageSplitArray = self.customSplitPercentage
+
+	elseif (mergeType ~= "Average") then
+
+		percentageSplitArray = getSplitPercentageArray(mergeType, accuracyArray)
+
+	end
+
 	local NewModelParameters = mergeModelParameters(mergeType, ModelParametersArray, percentageSplitArray)
 
 	return NewModelParameters

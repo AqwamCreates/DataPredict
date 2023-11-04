@@ -213,7 +213,7 @@ AsynchronousAdvantageCritic:getCurrentTotalNumberOfReinforcementsToUpdateMainMod
 
 ### singleReset()
 
-Reset reset a single child model's stored values (excluding the parameters).
+Reset a single child model's stored values (excluding the parameters).
 
 ```
 AsynchronousAdvantageCritic:singleReset(actorCriticModelNumber)

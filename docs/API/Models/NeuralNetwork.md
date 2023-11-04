@@ -242,7 +242,7 @@ NeuralNetwork:setClassesList(classesList: [])
 ### forwardPropagate()
 
 ```
-NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean): labelMatrix
+NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean, doNotUpdateModelParameters: boolean): labelMatrix
 ```
 
 ### Parameters:
@@ -266,6 +266,8 @@ NeuralNetwork:backPropagate(lossMatrix: Matrix, clearTables: boolean): []
 * lossMatrix: Matrix containing the loss.
 
 * clearTables: Set whether or not to clear forward propagation table and z table is stored in the model after backpropagation is done.
+
+* doNotUpdateModelParameters: Set whether or not to not update model parameters during the backpropagation.
 
 ### Returns:
 

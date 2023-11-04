@@ -110,7 +110,7 @@ function DistributedLearning:start()
 			
 			local MainModelParameters = self.ModelParametersMerger:generate()
 			
-			for _, CriticModel in ipairs(self.ModelArray) do CriticModel:setModelParameters(MainModelParameters) end
+			for _, Model in ipairs(self.ModelArray) do Model:setModelParameters(MainModelParameters) end
 			
 			self.MainModelParameters = MainModelParameters
 

@@ -1,5 +1,3 @@
-local DataPredict = script.Parent.Parent
-
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local ModelParametersMerger = require("Others_ModelParametersMerger")
@@ -74,7 +72,7 @@ function AsynchronousAdvantageCriticModel.new(numberOfReinforcementsPerEpisode, 
 	
 	NewAsynchronousAdvantageCriticModel.IsModelRunning = false
 	
-	NewAsynchronousAdvantageCriticModel.ModelParametersMerger = ModelParametersMerger.new(true, "Classification", "Average")
+	NewAsynchronousAdvantageCriticModel.ModelParametersMerger = ModelParametersMerger.new(nil, nil, "Average")
 	
 	return NewAsynchronousAdvantageCriticModel
 	
@@ -436,7 +434,7 @@ function AsynchronousAdvantageCriticModel:start()
 
 		repeat
 			
-			wait()
+			task.wait()
 			
 			if (self.currentTotalNumberOfReinforcementsToUpdateMainModel < self.totalNumberOfReinforcementsToUpdateMainModel) then continue end
 			
@@ -546,3 +544,4 @@ function AsynchronousAdvantageCriticModel:destroy()
 end
 
 return AsynchronousAdvantageCriticModel
+

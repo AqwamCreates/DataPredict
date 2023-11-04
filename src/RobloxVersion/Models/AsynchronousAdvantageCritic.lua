@@ -2,11 +2,11 @@ local DataPredict = script.Parent.Parent
 
 local AqwamMatrixLibrary = require(DataPredict.AqwamRobloxMatrixLibraryLinker.Value)
 
-local ModelParametersMerger = require(DataPredict.Others.ModelParametersMerger)
-
 AsynchronousAdvantageCriticModel = {}
 
 AsynchronousAdvantageCriticModel.__index = AsynchronousAdvantageCriticModel
+
+local defaultLearningRate = 0.1
 
 local defaultNumberOfReinforcementsPerEpisode = 10
 
@@ -20,11 +20,13 @@ local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the 
 
 local defaultTotalNumberOfReinforcementsToUpdateMainModel = 100
 
-function AsynchronousAdvantageCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate, totalNumberOfReinforcementsToUpdateMainModel)
+function AsynchronousAdvantageCriticModel.new(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate, totalNumberOfReinforcementsToUpdateMainModel)
 	
 	local NewAsynchronousAdvantageCriticModel = {}
 	
 	setmetatable(NewAsynchronousAdvantageCriticModel, AsynchronousAdvantageCriticModel)
+	
+	NewAsynchronousAdvantageCriticModel.learningRate = learningRate or defaultLearningRate
 	
 	NewAsynchronousAdvantageCriticModel.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
 
@@ -60,6 +62,10 @@ function AsynchronousAdvantageCriticModel.new(numberOfReinforcementsPerEpisode, 
 	
 	NewAsynchronousAdvantageCriticModel.CriticModelArray = {}
 	
+	NewAsynchronousAdvantageCriticModel.ActorModelCostFunctionDerivativesArray = {}
+
+	NewAsynchronousAdvantageCriticModel.CriticModelCostFunctionDerivativesArray = {}
+	
 	NewAsynchronousAdvantageCriticModel.ExperienceReplayArray = {}
 	
 	NewAsynchronousAdvantageCriticModel.ClassesList = nil
@@ -74,13 +80,13 @@ function AsynchronousAdvantageCriticModel.new(numberOfReinforcementsPerEpisode, 
 	
 	NewAsynchronousAdvantageCriticModel.IsModelRunning = false
 	
-	NewAsynchronousAdvantageCriticModel.ModelParametersMerger = ModelParametersMerger.new(nil, nil, "Average")
-	
 	return NewAsynchronousAdvantageCriticModel
 	
 end
 
-function AsynchronousAdvantageCriticModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate, totalNumberOfReinforcementsToUpdateMainModel)
+function AsynchronousAdvantageCriticModel:setParameters(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate, totalNumberOfReinforcementsToUpdateMainModel)
+	
+	self.learningRate = learningRate or self.learningRate
 	
 	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
@@ -267,8 +273,8 @@ function AsynchronousAdvantageCriticModel:episodeUpdate(numberOfFeatures, actorC
 	ActorModel:forwardPropagate(featureVector, true)
 	CriticModel:forwardPropagate(featureVector, true)
 	
-	ActorModel:backPropagate(sumActorLosses, true)
-	CriticModel:backPropagate(sumCriticLosses, true)
+	self.ActorModelCostFunctionDerivativesArray[actorCriticModelNumber] = ActorModel:backPropagate(sumActorLosses, true)
+	self.CriticModelCostFunctionDerivativesArray[actorCriticModelNumber] = CriticModel:backPropagate(sumCriticLosses, true, true)
 	
 	------------------------------------------------------
 	
@@ -434,31 +440,66 @@ function AsynchronousAdvantageCriticModel:start()
 			
 			if (self.currentTotalNumberOfReinforcementsToUpdateMainModel < self.totalNumberOfReinforcementsToUpdateMainModel) then continue end
 			
+			local ActorMainModelParameters = self.ActorMainModelParameters
+			
+			local CriticMainModelParameters = self.CriticMainModelParameters
+			
+			if not ActorMainModelParameters or not CriticMainModelParameters then
+				
+				local randomInteger = Random.new():NextInteger(1, #self.ActorModelArray)
+				
+				ActorMainModelParameters = self.ActorModelArray[randomInteger]:getModelParameters()
+				CriticMainModelParameters = self.CriticModelArray[randomInteger]:getModelParameters()
+				
+			end
+			
+			if not ActorMainModelParameters or not CriticMainModelParameters then continue end
+
 			self.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
 			
-			local ActorModelParametersArray = {}
+			local CriticMainModelCostFunctionDerivatives = {}
 			
-			local CriticModelParametersArray = {}
-			
-			for _, ActorModel in ipairs(self.ActorModelArray) do table.insert(ActorModelParametersArray, ActorModel:getModelParameters()) end
-			
-			for _, CriticModel in ipairs(self.CriticModelArray) do table.insert(CriticModelParametersArray, CriticModel:getModelParameters()) end
-			
-			self.ModelParametersMerger:setModelParameters(table.unpack(ActorModelParametersArray))
-			
-			local ActorModelParameters = self.ModelParametersMerger:generate()
+			for i = 1, #ActorMainModelParameters, 1 do
+				
+				local ActorMainModelCostFunctionDerivatives = AqwamMatrixLibrary:createMatrix(#ActorMainModelParameters[i], #ActorMainModelParameters[i][1])
+				
+				for _, ActorModelCostFunctionDerivatives in ipairs(self.ActorModelCostFunctionDerivativesArray) do
 
-			self.ModelParametersMerger:setModelParameters(table.unpack(CriticModelParametersArray))
-			
-			local CriticModelParameters = self.ModelParametersMerger:generate()
-			
-			for _, ActorModel in ipairs(self.ActorModelArray) do ActorModel:setModelParameters(ActorModelParameters) end
+					ActorMainModelCostFunctionDerivatives = AqwamMatrixLibrary:add(ActorMainModelCostFunctionDerivatives, ActorModelCostFunctionDerivatives[i])
 
-			for _, CriticModel in ipairs(self.CriticModelArray) do CriticModel:setModelParameters(ActorModelParameters) end
+				end
+				
+				ActorMainModelCostFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, ActorMainModelCostFunctionDerivatives)
+				
+				ActorMainModelParameters[i] = AqwamMatrixLibrary:subtract(ActorMainModelParameters[i], ActorMainModelCostFunctionDerivatives)
+				
+			end
 			
-			self.ActorMainModelParameters = ActorModelParameters
+			for i = 1, #CriticMainModelParameters, 1 do
+				
+				local CriticMainModelCostFunctionDerivatives = AqwamMatrixLibrary:createMatrix(#ActorMainModelParameters[i], #ActorMainModelParameters[i][1])
+				
+				for _, CriticModelCostFunctionDerivatives in ipairs(self.CriticModelCostFunctionDerivativesArray) do 
 
-			self.CriticMainModelParameters = CriticModelParameters
+					CriticMainModelCostFunctionDerivatives = AqwamMatrixLibrary:add(CriticMainModelCostFunctionDerivatives, CriticModelCostFunctionDerivatives[i])
+
+				end
+				
+				CriticMainModelCostFunctionDerivatives = AqwamMatrixLibrary:multiply(self.learningRate, CriticMainModelCostFunctionDerivatives)
+				
+				CriticMainModelParameters[i] = AqwamMatrixLibrary:subtract(CriticMainModelParameters[i], CriticMainModelCostFunctionDerivatives)
+
+			end
+			
+			AqwamMatrixLibrary:printMatrix(table.unpack(ActorMainModelParameters))
+			
+			for _, ActorModel in ipairs(self.ActorModelArray) do ActorModel:setModelParameters(ActorMainModelParameters) end
+
+			for _, CriticModel in ipairs(self.CriticModelArray) do CriticModel:setModelParameters(CriticMainModelParameters) end
+			
+			self.ActorMainModelParameters = ActorMainModelParameters
+
+			self.CriticMainModelParameters = CriticMainModelParameters
 
 		until (self.IsModelRunning == false)
 

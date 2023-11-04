@@ -86,13 +86,7 @@ ActorCritic:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
 
 #### Parameters:
 
-* ExperienceReplay: The experience replay object 
-
-* experienceReplayBatchSize: Determines how many of these experiences are sampled for batch training.
-
-* numberOfReinforcementsForExperienceReplayUpdate: How many times does the reinforce() function needed to be called in order to for a single update from experience replay.
-
-* maxExperienceReplayBufferSize: The maximum size that the model can store the experiences.
+* ExperienceReplay: The experience replay object.
 
 ### reinforce()
 

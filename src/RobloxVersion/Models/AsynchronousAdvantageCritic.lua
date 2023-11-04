@@ -189,6 +189,10 @@ function AsynchronousAdvantageCriticModel:update(previousFeatureVector, action, 
 	local ActorModel = self.ActorModelArray[actorCriticModelNumber]
 	
 	local CriticModel = self.CriticModelArray[actorCriticModelNumber]
+	
+	if not ActorModel then error("No actor model!") end
+
+	if not CriticModel then error("No critic model!") end
 
 	local allOutputsMatrix = ActorModel:predict(previousFeatureVector, true)
 	
@@ -253,6 +257,10 @@ function AsynchronousAdvantageCriticModel:episodeUpdate(numberOfFeatures, actorC
 	
 	local ActorModel = self.ActorModelArray[actorCriticModelNumber]
 	local CriticModel = self.CriticModelArray[actorCriticModelNumber]
+	
+	if not ActorModel then error("No actor model!") end
+
+	if not CriticModel then error("No critic model!") end
 	
 	ActorModel:forwardPropagate(featureVector, true)
 	CriticModel:forwardPropagate(featureVector, true)

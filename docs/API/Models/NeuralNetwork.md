@@ -255,7 +255,7 @@ NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean, doNot
 
 * labelMatrix: A matrix containing final layer outputs.
 
-### forwardPropagate()
+### backPropagate()
 
 ```
 NeuralNetwork:backPropagate(lossMatrix: Matrix, clearTables: boolean): []

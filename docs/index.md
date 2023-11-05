@@ -95,7 +95,7 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 [All](VersionHistory/AllVersionsHistory.md)
 
-### Fun Facts About The DataPredict's Icon
+## Fun Facts About The DataPredict's Icon
 
 The three blocks in the icons represents these meanings, which also show's the DataPredict's Library main design principles:
 

@@ -275,7 +275,7 @@ NeuralNetwork:backPropagate(lossMatrix: Matrix, clearTables: boolean, doNotUpdat
 
 ### Returns:
 
-* costDerivativesTable: A table of matrices containing the model's weights cost derivatives values.
+* costFunctionDerivativesTable: A table of matrices containing the model's weights cost derivatives values.
 
 ### showDetails()
 

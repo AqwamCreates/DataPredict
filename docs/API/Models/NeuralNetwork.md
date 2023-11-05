@@ -242,7 +242,7 @@ NeuralNetwork:setClassesList(classesList: [])
 ### forwardPropagate()
 
 ```
-NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean, doNotUpdateModelParameters: boolean): labelMatrix
+NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean: labelMatrix
 ```
 
 ### Parameters:
@@ -271,7 +271,7 @@ NeuralNetwork:backPropagate(lossMatrix: Matrix, clearTables: boolean, doNotUpdat
 
 ### Returns:
 
-* costFunctionDerivativesTable: A table of matrices containing the model's weights cost derivatives values.
+* costFunctionDerivativesTable: A table of matrices containing the model's weights cost function derivatives values.
 
 ### showDetails()
 

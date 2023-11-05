@@ -81,7 +81,9 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activat
   * Gaussian
  
   * SiLU
- 
+
+  * Mish
+
   * BinaryStep
 
   *  Softmax
@@ -125,7 +127,9 @@ NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationF
   * Gaussian
  
   * SiLU
- 
+
+  * Mish
+
   * BinaryStep
 
   *  Softmax

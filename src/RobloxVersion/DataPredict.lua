@@ -64,8 +64,6 @@ local ModelsDictionary = {
 	ExpectationMaximization = require(Models.ExpectationMaximization),
 	
 	NeuralNetwork = require(Models.NeuralNetwork),
-
-	ReinforcingNeuralNetwork = require(Models.ReinforcingNeuralNetwork),
 	
 	ActorCritic = require(Models.ActorCritic),
 	
@@ -112,8 +110,6 @@ local ModelsDictionary = {
 }
 
 local AqwamCustomModelsDictionary = {
-	
-	QueuedReinforcementNeuralNetwork = require(AqwamCustomModels.QueuedReinforcementNeuralNetwork),
 	
 	ConfidenceQLearningNeuralNetwork = require(AqwamCustomModels.ConfidenceQLearningNeuralNetwork),
 	

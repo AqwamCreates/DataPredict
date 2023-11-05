@@ -39,8 +39,6 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 [Using Neural Networks With Reinforcement Learning](Overview/UsingNeuralNetworksWithReinforcementLearning.md)
 
-[Modded Models](Overview/ModdedModels.md)
-
 ## API Reference
 
 [API Reference](API.md)

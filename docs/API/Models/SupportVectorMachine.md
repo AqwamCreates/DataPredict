@@ -135,4 +135,4 @@ SupportVectorMachine:predict(featureMatrix: Matrix, returnOriginalOutput): Matri
 
 ## References
 
-* Kernel Methods and Support Vector Machines by Zhiyuan Chen from University Of Nottingham Malaysia. It is the university that Aqwam got his Bachelor's degree in.
+* Kernel Methods and Support Vector Machines by Zhiyuan Chen from University Of Nottingham Malaysia (2022/2023). It is the university that Aqwam got his Bachelor's degree in.

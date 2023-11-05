@@ -262,7 +262,7 @@ NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean, doNot
 ### backPropagate()
 
 ```
-NeuralNetwork:backPropagate(lossMatrix: Matrix, clearTables: boolean): []
+NeuralNetwork:backPropagate(lossMatrix: Matrix, clearTables: boolean, doNotUpdateModelParameters: boolean): []
 ```
 
 ### Parameters:

@@ -2,4 +2,4 @@
 
 ## Classification
 
-[ConfidenceQLearningNeuralNetwork](AqwamCustomModels/ConfidenceQLearningNeuralNetwork.md) (a.k.a. DCQN)
+[ConfidenceQLearningNeuralNetwork](AqwamCustomModels/ConfidenceQLearningNeuralNetwork.md) (a.k.a. CDQN)

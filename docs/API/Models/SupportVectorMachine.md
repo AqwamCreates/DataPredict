@@ -132,3 +132,7 @@ SupportVectorMachine:predict(featureMatrix: Matrix, returnOriginalOutput): Matri
 ## Inherited From
 
 * [BaseModel](BaseModel.md)
+
+## References
+
+* Lecture 5: Kernel Methods and Support Vector Machines by Zhiyuan Chen from University Of Nottingham Malaysia.

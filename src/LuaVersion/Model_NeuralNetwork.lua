@@ -118,6 +118,16 @@ local activationFunctionList = {
 		return aMatrix
 
 	end,
+	
+	["Mish"] = function (zMatrix)
+		
+		local MishFunction = function (z) return z * math.tanh(math.log(1 + math.exp(z))) end
+		
+		local aMatrix = AqwamMatrixLibrary:applyFunction(MishFunction, zMatrix)
+		
+		return aMatrix
+		
+	end,
 
 	["BinaryStep"] = function (aMatrix, zMatrix)
 
@@ -243,7 +253,21 @@ local derivativeList = {
 		return derivativeMatrix
 
 	end,
+	
+	["Mish"] = function (aMatrix, zMatrix)
 
+		local MishDerivativeFunction = function (z) 
+			
+			return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2)
+			
+		end
+
+		local aMatrix = AqwamMatrixLibrary:applyFunction(MishDerivativeFunction, zMatrix)
+
+		return aMatrix
+
+	end,
+	
 	["BinaryStep"] = function (aMatrix, zMatrix) return AqwamMatrixLibrary:createMatrix(#zMatrix, #zMatrix[1], 0) end,
 
 	["Softmax"] = function (aMatrix, zMatrix)
@@ -329,6 +353,8 @@ local cutOffListForScalarValues = {
 	["Gaussian"] = function (a) return (a >= 0.5) end,
 	
 	["SiLU"] = function (a) return (a >= 0) end,
+	
+	["Mish"] = function (a) return (a >= 0) end,
 	
 	["BinaryStep"] = function (a) return (a > 0) end,
 

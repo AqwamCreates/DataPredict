@@ -1,5 +1,7 @@
 # Welcome to Aqwam's DataPredict Library!
 
+By using or possesing any copies of this library, you agree to our [Terms and Conditions](TermsAndConditions.md) (Last updated on 5/11/2023). In other words, attribution is required when using this library. Tthere are also limitations when using this library for commercial purposes.
+
 ![DataPredictIconSmall](https://user-images.githubusercontent.com/67371914/223632639-dea075fe-9dce-430c-af82-2fb0fbeb43d3.png)
 
 | Version | Current Version Number | Source Code + Documentation                                                                                                         |
@@ -16,8 +18,6 @@ If there are any suggestions or issues for this library, don't be afraid to reac
 In addition, if you are interested in Roblox tutorials and future projects by me, then you can subscribe to me in [YouTube](https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw).
 
 To know what this library is all about from scratch, let's have a look at the quick introduction [here](QuickIntroduction.md).
-
-By using or possesing any copies of this library, you agree to our [Terms and Conditions](TermsAndConditions.md) (Last updated on 5/11/2023). In other words, attribution is required when using this library. Also, there are limitations when using this library for commercial purposes.
 
 ## Tutorials
 

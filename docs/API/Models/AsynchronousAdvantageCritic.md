@@ -74,7 +74,7 @@ AsynchronousAdvantageCritic:addActorCriticModel(ActorModel: ModelObject, CriticM
 
 * CriticModel: The model to be used as a Critic model.
 
-* ExperienceReplay: The experience replay object 
+* ExperienceReplay: The experience replay object.
 
 ### setClassesList()
 

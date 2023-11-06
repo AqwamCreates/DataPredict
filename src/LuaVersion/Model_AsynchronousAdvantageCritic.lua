@@ -129,7 +129,7 @@ function AsynchronousAdvantageCriticModel:setParameters(learningRate, numberOfRe
 
 	self.discountFactor =  discountFactor or self.discountFactor
 
-	self.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
+	self.rewardAveragingRate = rewardAveragingRate or self.rewardAveragingRate
 	
 	self.totalNumberOfReinforcementsToUpdateMainModel = totalNumberOfReinforcementsToUpdateMainModel or self.totalNumberOfReinforcementsToUpdateMainModel
 	

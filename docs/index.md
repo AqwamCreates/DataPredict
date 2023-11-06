@@ -17,7 +17,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 To know what this library is all about from scratch, let's have a look at the quick introduction [here](QuickIntroduction.md).
 
-By using or possesing any copies of this library, you agree to our [Terms and Conditions](TermsAndConditions.md). In other words, attribution is required when using this library. Also, there are limitations when using this library for commercial purposes.
+By using or possesing any copies of this library, you agree to our [Terms and Conditions](TermsAndConditions.md) (last updated on 5/11/2023). In other words, attribution is required when using this library. Also, there are limitations when using this library for commercial purposes.
 
 ## Tutorials
 

@@ -8,6 +8,8 @@ AdvantageActorCritic is a base class for reinforcement learning.
 
 * Actor and Critic must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 
+* Ensure the final layer of the Critic model has only one neuron. It is the default setting for all Critic models in research papers.
+
 ## Constructors
 
 ### new()

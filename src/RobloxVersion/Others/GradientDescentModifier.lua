@@ -192,4 +192,10 @@ function GradientDescentModifier:predict(featureMatrix, returnOriginalOutput)
 	
 end
 
+function GradientDescentModifier:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+	
+	return self.Model:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+	
+end
+
 return GradientDescentModifier

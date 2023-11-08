@@ -14,7 +14,7 @@ ModelChecker.new(Model: ModelObject, modelType: string, maxNumberOfIterations: i
 
 * Model: The model object needed to perform testing and validation.
 
-* modelType: The type where the model falls under. Available options are "regression" and "classification".
+* modelType: The type where the model falls under. Available options are "Regression" and "Classification".
 
 * maxNumberOfIterations: How many times should the model needed to be trained if it is being validated.
 
@@ -38,7 +38,7 @@ ModelChecker:setParameters(Model: ModelObject, modelType: string, maxNumberOfIte
 
 * Model: The model object needed to perform testing and validation.
 
-* modelType: The type where the model falls under. Available options are "regression" and "classification".
+* modelType: The type where the model falls under. Available options are "Regression" and "Classification".
 
 * maxNumberOfIterations: How many times should the model needed to be trained if it is being validated.
 

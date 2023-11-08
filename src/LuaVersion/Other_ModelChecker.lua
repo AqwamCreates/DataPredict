@@ -41,7 +41,7 @@ local defaultMaxNumberOfIterations = 100
 
 local defaultMaxGeneralizationError = math.huge
 
-local logLossFunction = function (y, p) return -(y * math.log10(p)) end
+local logLossFunction = function (y, p) return -(y * math.log(p)) end
 
 function ModelChecker.new(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
 	
@@ -269,11 +269,11 @@ function ModelChecker:test(testFeatureMatrix, testLabelVector)
 	
 	local predictedLabelMatrix
 
-	if (self.modelType == "regression") then
+	if (self.modelType == "Regression") then
 
 		testCost, errorVector, predictedLabelMatrix = self:testRegression(testFeatureMatrix, testLabelVector)
 
-	elseif (self.modelType == "classification") then
+	elseif (self.modelType == "Classification") then
 
 		testCost, errorVector, predictedLabelMatrix = self:testClassification(testFeatureMatrix, testLabelVector)
 		
@@ -293,11 +293,11 @@ function ModelChecker:validate(trainFeatureMatrix, trainLabelVector, validationF
 	
 	local validationCostArray
 	
-	if (self.modelType == "regression") then
+	if (self.modelType == "Regression") then
 		
 		trainCostArray, validationCostArray = self:validateRegression(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
 		
-	elseif (self.modelType == "classification") then
+	elseif (self.modelType == "Classification") then
 		
 		trainCostArray, validationCostArray = self:validateClassification(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
 		

@@ -1,5 +1,13 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - GradientDescentModifier
 
+Modifies the model's batch gradient descent to other modes.
+
+## Note:
+
+* When using "Stochastic" mode, make sure you set the model's max number of iterations to 1.
+
+* numberOfBatches is only applicable for "Minibatch" mode.
+
 ## Constructors
 
 ### new()
@@ -76,8 +84,18 @@ GradientDescentModifier:predict(...): ...
 
 ...: The outputs are the same to the original model's predict() function.
 
-## Note:
+### reinforce()
 
-* When using "Stochastic" mode, make sure you set the model's max number of iterations to 1.
+Reward or punish model based on the current state of the environment.
 
-* numberOfBatches is only applicable for "Minibatch" mode.
+```
+ActorCritic:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
+```
+
+#### Parameters:
+
+* currentFeatureVector: Matrix containing data from the current state.
+
+* rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
+
+* returnOriginalOutput: Set whether or not to return predicted vector instead of value with highest probability.

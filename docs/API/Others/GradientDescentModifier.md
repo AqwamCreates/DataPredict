@@ -6,7 +6,7 @@ Modifies the model's batch gradient descent to other modes.
 
 * When using "Stochastic" mode, make sure you set the model's max number of iterations to 1.
 
-* numberOfBatches is only applicable for "Minibatch" mode.
+* batchSize is only applicable for "Minibatch" mode.
 
 ## Constructors
 

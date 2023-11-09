@@ -65,7 +65,7 @@ Licensor reserve the right to change these terms and conditions at any time, wit
 ## Termination
 * Licensor may terminate this Agreement at any time if User breaches any provision of this Agreement. Upon termination, User shall immediately cease all use of the Library and destroy all copies of the Library in its possession.
 
-* Upon the event of a modification or update to this Agreement, it shall hereby render the previous iteration of this Agreement null and void. The terms and stipulations articulated within the revised Agreement shall instantaneously supersede any antecedent agreements. The User is thereby mandated to promptly adhere to the conditions delineated within the updated Agreement. Failure to comply shall warrant termination in accordance with the provisions detailed above. 
+* Upon the event of a modification or update to this Agreement, it shall hereby render the previous iteration of this Agreement null and void, with the authority to do so exercised without prior notice. The terms and stipulations articulated within the revised Agreement shall instantaneously supersede any antecedent agreements. The User is thereby mandated to promptly adhere to the conditions delineated within the updated license. Failure to comply shall warrant termination in accordance with the provisions detailed above.
 
 ## Entire Agreement
 This Agreement constitutes the entire agreement between User and Licensor with respect to the subject matter hereof and supersedes all prior or contemporaneous communications and proposals, whether oral or written, between User and Licensor.

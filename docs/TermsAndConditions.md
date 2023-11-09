@@ -5,9 +5,9 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 ## License Exceptions
 
-* The License is not granted to Roblox Corporation or any of its employees. A separate commercial agreement must be made between the Licensor and Roblox Corporation in order to use or possess the Library.
+* The Agreement is not granted to Roblox Corporation or any of its employees. A separate commercial agreement must be made between the Licensor and Roblox Corporation in order to use or possess the Library.
 
-* The License is not granted to Users intending to incorporate this Library within a product (excluding services). A separate commercial agreement must be made between the Licensor and User in order to use or possess the Library in User's products.
+* The Agreement is not granted to Users intending to incorporate this Library within a product (excluding services). A separate commercial agreement must be made between the Licensor and User in order to use or possess the Library in User's products.
 
 ## Prohibited Actions
 User shall not:

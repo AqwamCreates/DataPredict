@@ -1,7 +1,7 @@
 # TERMS AND CONDITIONS
 
 ## License
-These terms and conditions (“Agreement”) are a legal agreement between you (or company or organization) recognized as “User” and Aqwam Harish Aiman recognised as “Licensor” for the use of DataPredict Library (or formerly known as Aqwam’s Machine and Deep Learning Library) (“Library”) within this terms and conditions. By using the Library, User,  agrees to be bound by the terms of this Agreement.
+These terms and conditions (“Agreement”) are a legal agreement between you (or company or organization) recognized as “User” and Aqwam Harish Aiman recognised as “Licensor” for the use of DataPredict Library (or formerly known as Aqwam’s Machine and Deep Learning Library) (“Library”) within this terms and conditions. By using the Library, User, agrees to be bound by the terms of this Agreement.
 
 ## License Exceptions
 
@@ -22,7 +22,7 @@ User shall not:
 The Library is provided "AS IS" and without warranty of any kind. Licensor shall not be liable for any damages or losses, including but not limited to direct, indirect, incidental, consequential, or punitive damages arising out of the use or inability to use the Library.
 
 ## Ownership and Credit
-* User acknowledges that Licensor owns all rights, title, and interest in and to the Library, and User shall not claim ownership of the Library or any part thereof. User shall attribute to the Licensor in all publications or presentations that uses the Library. The attributions must be placed in areas that are commonly viewed by the general public. The attributions must include one of the combinations of materials as stated below:
+* User acknowledges that Licensor owns all rights, title, and interest in and to the Library, and User shall not claim ownership of the Library or any part thereof. User shall attribute to the Licensor in all publications or presentations that uses the Library. The attributions must be placed in areas that are commonly viewed by the general public. The attributions must also include one of the combinations of materials as stated below:
   
   * The Lbrary's icon and the Library's name.
   * The Licensor's full name and the Library's source.

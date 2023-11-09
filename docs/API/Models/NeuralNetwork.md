@@ -308,7 +308,3 @@ NeuralNetwork:getLayerProperties(layerNumber: number): number, boolean, string, 
 ## Inherited From
 
 * [BaseModel](BaseModel.md)
-
-## References
-
-* [Backpropagation Algorithm by Andrew Ng](https://www.youtube.com/watch?v=mO7BpWmzT78)

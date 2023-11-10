@@ -1,10 +1,10 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - AsynchronousAdvantageCritic (A3C)
+# [API Reference](../../API.md) - [Models](../Models.md) - AsynchronousAdvantageActorCritic (A3C)
 
 AsynchronousAdvantageCritic is a base class for reinforcement learning.
 
 ## Notes:
 
-* The Actor and Critic child models must be created separately. Then use addActorCriticModel() to put it inside the AsynchronousAdvantageCritic model.
+* The Actor and Critic child models must be created separately. Then use addActorCriticModel() to put it inside the AsynchronousAdvantageActorCritic model.
 
 * Actor and Critic must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 

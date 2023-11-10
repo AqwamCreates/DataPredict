@@ -41,6 +41,8 @@ NeuralNetworkModel.__index = NeuralNetworkModel
 
 setmetatable(NeuralNetworkModel, BaseModel)
 
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+
 local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
@@ -451,6 +453,8 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 end
 
 function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
+	
+	if (self.ModelParameters == nil) then self:generateLayers() end
 
 	local layerZ
 
@@ -1024,23 +1028,21 @@ end
 
 function NeuralNetworkModel:train(featureMatrix, labelVector)
 
-	if (self.ModelParameters == nil) then self:generateLayers() end
-
 	local numberOfFeatures = #featureMatrix[1]
+	
+	local numberOfNeuronsAtInputLayer = self.numberOfNeuronsTable[1] + (self.hasBiasNeuronTable[1] and 1) or 0
 
-	if (#self.ModelParameters[1] ~= numberOfFeatures) then error("Input layer has " .. #self.ModelParameters[1] .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features!") end
+	if (numberOfNeuronsAtInputLayer ~= numberOfFeatures) then error("Input layer has " .. numberOfNeuronsAtInputLayer .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features!") end
 
 	if (#featureMatrix ~= #labelVector) then error("Number of rows of feature matrix and the label vector is not the same!") end
+	
+	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsTable[#self.numberOfNeuronsTable]
+	
+	local numberOfIterations = 0
 
 	local cost
 
 	local costArray = {}
-
-	local numberOfIterations = 0
-
-	local numberOfLayers = #self.numberOfNeuronsTable
-
-	local numberOfNeuronsAtFinalLayer = #self.ModelParameters[numberOfLayers - 1][1]
 
 	local deltaTable
 

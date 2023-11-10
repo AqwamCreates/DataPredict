@@ -360,11 +360,11 @@ function ActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOri
 
 	local allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 
-	local randomProbability = Random.new():NextNumber()
+	local randomProbability = math.random()
 
 	if (randomProbability < self.currentEpsilon) then
 
-		local randomNumber = Random.new():NextInteger(1, #self.ClassesList)
+		local randomNumber = math.random(1, #self.ClassesList)
 
 		action = self.ClassesList[randomNumber]
 

@@ -153,13 +153,13 @@ function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVec
 
 	local allOutputsMatrix
 
-	local randomProbability = Random.new():NextNumber()
+	local randomProbability = math.random()
 
 	if (randomProbability < self.currentEpsilon) then
 		
 		local numberOfClasses = #self.ClassesList
 
-		local randomNumber = Random.new():NextInteger(1, numberOfClasses)
+		local randomNumber = math.random(1, numberOfClasses)
 
 		action = self.ClassesList[randomNumber]
 

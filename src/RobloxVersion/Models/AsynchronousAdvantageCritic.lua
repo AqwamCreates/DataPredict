@@ -412,12 +412,22 @@ function AsynchronousAdvantageCriticModel:reinforce(currentFeatureVector, reward
 	
 end
 
-function AsynchronousAdvantageCriticModel:setActorCriticMainModelParameters(ActorMainModelParameters, CriticMainModelParameters)
+function AsynchronousAdvantageCriticModel:setActorCriticMainModelParameters(ActorMainModelParameters, CriticMainModelParameters, applyToAllChildModels)
 	
 	self.ActorMainModelParameters = ActorMainModelParameters
 
 	self.CriticMainModelParameters = CriticMainModelParameters
 	
+	if not applyToAllChildModels then return nil end
+		
+	for i = 1, #self.ActorModelArray, 1 do
+			
+		self.ActorModelArray[i]:setModelParameters(ActorMainModelParameters)
+		
+		self.CriticModelArray[i]:setModelParameters(CriticMainModelParameters)
+			
+	end
+		
 end
 
 function AsynchronousAdvantageCriticModel:getActorCriticMainModelParameters()

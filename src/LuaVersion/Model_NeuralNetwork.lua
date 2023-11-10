@@ -41,8 +41,6 @@ NeuralNetworkModel.__index = NeuralNetworkModel
 
 setmetatable(NeuralNetworkModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
-
 local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.1

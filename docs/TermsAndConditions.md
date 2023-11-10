@@ -30,6 +30,7 @@ The Library is provided "AS IS" and without warranty of any kind. Licensor shall
 * User acknowledges that Licensor owns all rights, title, and interest in and to the Library, and User shall not claim ownership of the Library or any part thereof. User shall attribute to the Licensor in all publications or presentations that uses the Library. The attributions must be placed in areas that are commonly viewed by the general public. The attributions must also include one of the combinations of materials as stated below:
   
   * The Lbrary's icon and the Library's name.
+  * The Lbrary's name and the Library's source.
   * The Licensor's full name and the Library's source.
   * The Licensor's full name and the Library's icon.
   * The Licensor's full name and the Library's name.

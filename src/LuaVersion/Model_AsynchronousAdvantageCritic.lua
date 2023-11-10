@@ -397,7 +397,7 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 
 	local allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 
-	local randomProbability = Random.new():NextNumber()
+	local randomProbability = math.random()
 	
 	local previousFeatureVector = self.previousFeatureVectorArray[actorCriticModelNumber]
 	

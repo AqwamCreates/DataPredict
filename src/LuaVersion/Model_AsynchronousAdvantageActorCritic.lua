@@ -33,10 +33,6 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local DataPredict = script.Parent.Parent
-
-local AqwamMatrixLibrary = require(DataPredict.AqwamRobloxMatrixLibraryLinker.Value)
-
 AsynchronousAdvantageActorCriticModel = {}
 
 AsynchronousAdvantageActorCriticModel.__index = AsynchronousAdvantageActorCriticModel

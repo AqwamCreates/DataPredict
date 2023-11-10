@@ -33,9 +33,13 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-AsynchronousAdvantageCriticModel = {}
+local DataPredict = script.Parent.Parent
 
-AsynchronousAdvantageCriticModel.__index = AsynchronousAdvantageCriticModel
+local AqwamMatrixLibrary = require(DataPredict.AqwamRobloxMatrixLibraryLinker.Value)
+
+AsynchronousAdvantageActorCriticModel = {}
+
+AsynchronousAdvantageActorCriticModel.__index = AsynchronousAdvantageActorCriticModel
 
 local defaultLearningRate = 0.1
 
@@ -51,71 +55,71 @@ local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the 
 
 local defaultTotalNumberOfReinforcementsToUpdateMainModel = 100
 
-function AsynchronousAdvantageCriticModel.new(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate, totalNumberOfReinforcementsToUpdateMainModel)
+function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate, totalNumberOfReinforcementsToUpdateMainModel)
 	
-	local NewAsynchronousAdvantageCriticModel = {}
+	local NewAsynchronousAdvantageActorCriticModel = {}
 	
-	setmetatable(NewAsynchronousAdvantageCriticModel, AsynchronousAdvantageCriticModel)
+	setmetatable(NewAsynchronousAdvantageActorCriticModel, AsynchronousAdvantageActorCriticModel)
 	
-	NewAsynchronousAdvantageCriticModel.learningRate = learningRate or defaultLearningRate
+	NewAsynchronousAdvantageActorCriticModel.learningRate = learningRate or defaultLearningRate
 	
-	NewAsynchronousAdvantageCriticModel.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
+	NewAsynchronousAdvantageActorCriticModel.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
 
-	NewAsynchronousAdvantageCriticModel.epsilon = epsilon or defaultEpsilon
+	NewAsynchronousAdvantageActorCriticModel.epsilon = epsilon or defaultEpsilon
 
-	NewAsynchronousAdvantageCriticModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
+	NewAsynchronousAdvantageActorCriticModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
 
-	NewAsynchronousAdvantageCriticModel.discountFactor =  discountFactor or defaultDiscountFactor
+	NewAsynchronousAdvantageActorCriticModel.discountFactor =  discountFactor or defaultDiscountFactor
 	
-	NewAsynchronousAdvantageCriticModel.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
+	NewAsynchronousAdvantageActorCriticModel.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
 	
-	NewAsynchronousAdvantageCriticModel.currentEpsilonArray = {}
+	NewAsynchronousAdvantageActorCriticModel.currentEpsilonArray = {}
 
-	NewAsynchronousAdvantageCriticModel.previousFeatureVectorArray = {}
+	NewAsynchronousAdvantageActorCriticModel.previousFeatureVectorArray = {}
 
-	NewAsynchronousAdvantageCriticModel.printReinforcementOutput = true
+	NewAsynchronousAdvantageActorCriticModel.printReinforcementOutput = true
 
-	NewAsynchronousAdvantageCriticModel.currentNumberOfReinforcementsArray = {}
+	NewAsynchronousAdvantageActorCriticModel.currentNumberOfReinforcementsArray = {}
 
-	NewAsynchronousAdvantageCriticModel.currentNumberOfEpisodesArray = {}
+	NewAsynchronousAdvantageActorCriticModel.currentNumberOfEpisodesArray = {}
 	
-	NewAsynchronousAdvantageCriticModel.advantageHistoryArray = {}
+	NewAsynchronousAdvantageActorCriticModel.advantageHistoryArray = {}
 	
-	NewAsynchronousAdvantageCriticModel.actionProbabilityHistoryArray = {}
+	NewAsynchronousAdvantageActorCriticModel.actionProbabilityHistoryArray = {}
 	
-	NewAsynchronousAdvantageCriticModel.criticValueHistoryArray = {}
+	NewAsynchronousAdvantageActorCriticModel.criticValueHistoryArray = {}
 	
-	NewAsynchronousAdvantageCriticModel.episodeRewardArray = {}
+	NewAsynchronousAdvantageActorCriticModel.episodeRewardArray = {}
 	
-	NewAsynchronousAdvantageCriticModel.runningRewardArray = {}
+	NewAsynchronousAdvantageActorCriticModel.runningRewardArray = {}
 	
-	NewAsynchronousAdvantageCriticModel.ActorModelArray = {}
+	NewAsynchronousAdvantageActorCriticModel.ActorModelArray = {}
 	
-	NewAsynchronousAdvantageCriticModel.CriticModelArray = {}
+	NewAsynchronousAdvantageActorCriticModel.CriticModelArray = {}
 	
-	NewAsynchronousAdvantageCriticModel.ActorModelCostFunctionDerivativesArray = {}
+	NewAsynchronousAdvantageActorCriticModel.ActorModelCostFunctionDerivativesArray = {}
 
-	NewAsynchronousAdvantageCriticModel.CriticModelCostFunctionDerivativesArray = {}
+	NewAsynchronousAdvantageActorCriticModel.CriticModelCostFunctionDerivativesArray = {}
 	
-	NewAsynchronousAdvantageCriticModel.ExperienceReplayArray = {}
+	NewAsynchronousAdvantageActorCriticModel.ExperienceReplayArray = {}
 	
-	NewAsynchronousAdvantageCriticModel.ClassesList = nil
+	NewAsynchronousAdvantageActorCriticModel.ClassesList = nil
 	
-	NewAsynchronousAdvantageCriticModel.totalNumberOfReinforcementsToUpdateMainModel = totalNumberOfReinforcementsToUpdateMainModel or defaultTotalNumberOfReinforcementsToUpdateMainModel
+	NewAsynchronousAdvantageActorCriticModel.totalNumberOfReinforcementsToUpdateMainModel = totalNumberOfReinforcementsToUpdateMainModel or defaultTotalNumberOfReinforcementsToUpdateMainModel
 	
-	NewAsynchronousAdvantageCriticModel.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
+	NewAsynchronousAdvantageActorCriticModel.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
 	
-	NewAsynchronousAdvantageCriticModel.ActorMainModelParameters = nil
+	NewAsynchronousAdvantageActorCriticModel.ActorMainModelParameters = nil
 	
-	NewAsynchronousAdvantageCriticModel.CriticMainModelParameters = nil
+	NewAsynchronousAdvantageActorCriticModel.CriticMainModelParameters = nil
 	
-	NewAsynchronousAdvantageCriticModel.IsModelRunning = false
+	NewAsynchronousAdvantageActorCriticModel.IsModelRunning = false
 	
-	return NewAsynchronousAdvantageCriticModel
+	return NewAsynchronousAdvantageActorCriticModel
 	
 end
 
-function AsynchronousAdvantageCriticModel:setParameters(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate, totalNumberOfReinforcementsToUpdateMainModel)
+function AsynchronousAdvantageActorCriticModel:setParameters(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate, totalNumberOfReinforcementsToUpdateMainModel)
 	
 	self.learningRate = learningRate or self.learningRate
 	
@@ -139,13 +143,13 @@ function AsynchronousAdvantageCriticModel:setParameters(learningRate, numberOfRe
 	
 end
 
-function AsynchronousAdvantageCriticModel:setClassesList(classesList)
+function AsynchronousAdvantageActorCriticModel:setClassesList(classesList)
 
 	self.ClassesList = classesList
 
 end
 
-function AsynchronousAdvantageCriticModel:addActorCriticModel(ActorModel, CriticModel, ExperienceReplay)
+function AsynchronousAdvantageActorCriticModel:addActorCriticModel(ActorModel, CriticModel, ExperienceReplay)
 	
 	if not ActorModel then error("No actor model!") end
 	
@@ -223,7 +227,7 @@ local function sampleAction(actionProbabilityVector)
 	
 end
 
-function AsynchronousAdvantageCriticModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector, actorCriticModelNumber)
+function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector, actorCriticModelNumber)
 	
 	local ActorModel = self.ActorModelArray[actorCriticModelNumber]
 	
@@ -263,7 +267,7 @@ function AsynchronousAdvantageCriticModel:update(previousFeatureVector, action, 
 
 end
 
-function AsynchronousAdvantageCriticModel:episodeUpdate(numberOfFeatures, actorCriticModelNumber)
+function AsynchronousAdvantageActorCriticModel:episodeUpdate(numberOfFeatures, actorCriticModelNumber)
 
 	self.runningRewardArray[actorCriticModelNumber] = (self.rewardAveragingRate * self.episodeRewardArray[actorCriticModelNumber]) + ((1 - self.rewardAveragingRate) * self.runningRewardArray[actorCriticModelNumber])
 	
@@ -325,7 +329,7 @@ function AsynchronousAdvantageCriticModel:episodeUpdate(numberOfFeatures, actorC
 	
 end
 
-function AsynchronousAdvantageCriticModel:fetchHighestValueInVector(outputVector)
+function AsynchronousAdvantageActorCriticModel:fetchHighestValueInVector(outputVector)
 
 	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(outputVector)
 
@@ -337,7 +341,7 @@ function AsynchronousAdvantageCriticModel:fetchHighestValueInVector(outputVector
 	
 end
 
-function AsynchronousAdvantageCriticModel:getLabelFromOutputMatrix(outputMatrix)
+function AsynchronousAdvantageActorCriticModel:getLabelFromOutputMatrix(outputMatrix)
 
 	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 
@@ -367,7 +371,7 @@ function AsynchronousAdvantageCriticModel:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function AsynchronousAdvantageCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, actorCriticModelNumber)
+function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, actorCriticModelNumber)
 	
 	actorCriticModelNumber = actorCriticModelNumber or Random.new():NextInteger(1, #self.currentEpsilonArray)
 
@@ -393,7 +397,7 @@ function AsynchronousAdvantageCriticModel:reinforce(currentFeatureVector, reward
 
 	local allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 
-	local randomProbability = math.random()
+	local randomProbability = Random.new():NextNumber()
 	
 	local previousFeatureVector = self.previousFeatureVectorArray[actorCriticModelNumber]
 	
@@ -443,7 +447,7 @@ function AsynchronousAdvantageCriticModel:reinforce(currentFeatureVector, reward
 	
 end
 
-function AsynchronousAdvantageCriticModel:setActorCriticMainModelParameters(ActorMainModelParameters, CriticMainModelParameters, applyToAllChildModels)
+function AsynchronousAdvantageActorCriticModel:setActorCriticMainModelParameters(ActorMainModelParameters, CriticMainModelParameters, applyToAllChildModels)
 	
 	self.ActorMainModelParameters = ActorMainModelParameters
 
@@ -461,13 +465,13 @@ function AsynchronousAdvantageCriticModel:setActorCriticMainModelParameters(Acto
 		
 end
 
-function AsynchronousAdvantageCriticModel:getActorCriticMainModelParameters()
+function AsynchronousAdvantageActorCriticModel:getActorCriticMainModelParameters()
 	
 	return self.ActorMainModelParameters, self.CriticMainModelParameters
 	
 end
 
-function AsynchronousAdvantageCriticModel:start()
+function AsynchronousAdvantageActorCriticModel:start()
 	
 	if (self.IsModelRunning == true) then error("The model is already running!") end
 	
@@ -553,37 +557,37 @@ function AsynchronousAdvantageCriticModel:start()
 	
 end
 
-function AsynchronousAdvantageCriticModel:stop()
+function AsynchronousAdvantageActorCriticModel:stop()
 	
 	self.IsModelRunning = false
 	
 end
 
-function AsynchronousAdvantageCriticModel:getCurrentNumberOfEpisodes(actorCriticModelNumber)
+function AsynchronousAdvantageActorCriticModel:getCurrentNumberOfEpisodes(actorCriticModelNumber)
 
 	return self.currentNumberOfEpisodesArray[actorCriticModelNumber]
 
 end
 
-function AsynchronousAdvantageCriticModel:getCurrentNumberOfReinforcements(actorCriticModelNumber)
+function AsynchronousAdvantageActorCriticModel:getCurrentNumberOfReinforcements(actorCriticModelNumber)
 
 	return self.currentNumberOfReinforcementsArray[actorCriticModelNumber]
 
 end
 
-function AsynchronousAdvantageCriticModel:getCurrentEpsilon(actorCriticModelNumber)
+function AsynchronousAdvantageActorCriticModel:getCurrentEpsilon(actorCriticModelNumber)
 
 	return self.currentEpsilonArray[actorCriticModelNumber]
 
 end
 
-function AsynchronousAdvantageCriticModel:getCurrentTotalNumberOfReinforcementsToUpdateMainModel()
+function AsynchronousAdvantageActorCriticModel:getCurrentTotalNumberOfReinforcementsToUpdateMainModel()
 
 	return self.currentTotalNumberOfReinforcementsToUpdateMainModel
 
 end
 
-function AsynchronousAdvantageCriticModel:singleReset(actorCriticModelNumber)
+function AsynchronousAdvantageActorCriticModel:singleReset(actorCriticModelNumber)
 	
 	self.episodeRewardArray[actorCriticModelNumber] = 0
 	
@@ -609,7 +613,7 @@ function AsynchronousAdvantageCriticModel:singleReset(actorCriticModelNumber)
 
 end
 
-function AsynchronousAdvantageCriticModel:reset()
+function AsynchronousAdvantageActorCriticModel:reset()
 	
 	for i = 1, #self.currentEpsilonArray, 1 do self:singleReset(i) end
 	
@@ -617,7 +621,7 @@ function AsynchronousAdvantageCriticModel:reset()
 	
 end
 
-function AsynchronousAdvantageCriticModel:destroy()
+function AsynchronousAdvantageActorCriticModel:destroy()
 
 	setmetatable(self, nil)
 
@@ -627,4 +631,4 @@ function AsynchronousAdvantageCriticModel:destroy()
 
 end
 
-return AsynchronousAdvantageCriticModel
+return AsynchronousAdvantageActorCriticModel

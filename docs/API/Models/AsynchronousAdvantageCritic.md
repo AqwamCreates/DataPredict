@@ -91,7 +91,7 @@ AsynchronousAdvantageCritic:setClassesList(classesList: [])
 ### setActorCriticMainModelParameters()
 
 ```
-AsynchronousAdvantageCritic:setActorCriticMainModelParameters(ActorMainModelParameters: [], CriticMainModelParameters[])
+AsynchronousAdvantageCritic:setActorCriticMainModelParameters(ActorMainModelParameters: [], CriticMainModelParameters[], applyToAllChildModels: boolean)
 ```
 
 #### Parameters:
@@ -99,6 +99,8 @@ AsynchronousAdvantageCritic:setActorCriticMainModelParameters(ActorMainModelPara
 * ActorMainModelParameters: The model parameters to be set for main actor model.
 
 * CriticMainModelParameters: The model parameters to be set for main critic model.
+
+* applyToAllChildModels: Set whether or not the main model parameters will be applied to all child models in the main model.
 
 ### getActorCriticMainModelParameters()
 

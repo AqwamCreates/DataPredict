@@ -49,7 +49,7 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 	
 	NewDoubleQLearningNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local randomProbability = Random.new():NextNumber()
+		local randomProbability = math.random()
 
 		local updateSecondModel = (randomProbability >= 0.5)
 

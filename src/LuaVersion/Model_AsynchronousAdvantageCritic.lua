@@ -369,7 +369,7 @@ end
 
 function AsynchronousAdvantageCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, actorCriticModelNumber)
 	
-	actorCriticModelNumber = actorCriticModelNumber or Random.new():NextInteger(1, #self.currentEpsilonArray)
+	actorCriticModelNumber = actorCriticModelNumber or math.random(1, #self.currentEpsilonArray)
 
 	if (self.currentNumberOfReinforcementsArray[actorCriticModelNumber] >= self.numberOfReinforcementsPerEpisode) then
 		
@@ -393,7 +393,7 @@ function AsynchronousAdvantageCriticModel:reinforce(currentFeatureVector, reward
 
 	local allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 
-	local randomProbability = Random.new():NextNumber()
+	local randomProbability = math.random()
 	
 	local previousFeatureVector = self.previousFeatureVectorArray[actorCriticModelNumber]
 	
@@ -477,7 +477,7 @@ function AsynchronousAdvantageCriticModel:start()
 			
 			if not ActorMainModelParameters or not CriticMainModelParameters then
 				
-				local randomInteger = Random.new():NextInteger(1, #self.ActorModelArray)
+				local randomInteger = math.random(1, #self.ActorModelArray)
 				
 				ActorMainModelParameters = self.ActorModelArray[randomInteger]:getModelParameters()
 				CriticMainModelParameters = self.CriticModelArray[randomInteger]:getModelParameters()

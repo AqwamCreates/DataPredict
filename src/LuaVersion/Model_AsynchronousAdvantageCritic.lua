@@ -33,8 +33,6 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local ModelParametersMerger = require("Others_ModelParametersMerger")
-
 AsynchronousAdvantageCriticModel = {}
 
 AsynchronousAdvantageCriticModel.__index = AsynchronousAdvantageCriticModel
@@ -510,7 +508,7 @@ function AsynchronousAdvantageCriticModel:start()
 			
 			for i = 1, #CriticMainModelParameters, 1 do
 				
-				local CriticMainModelCostFunctionDerivatives = AqwamMatrixLibrary:createMatrix(#ActorMainModelParameters[i], #ActorMainModelParameters[i][1])
+				local CriticMainModelCostFunctionDerivatives = AqwamMatrixLibrary:createMatrix(#CriticMainModelParameters[i], #CriticMainModelParameters[i][1])
 				
 				for _, CriticModelCostFunctionDerivatives in ipairs(self.CriticModelCostFunctionDerivativesArray) do 
 

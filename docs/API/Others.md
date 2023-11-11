@@ -1,5 +1,7 @@
 # [API Reference](../API.md) - Others
 
+[DistributedLearning](Others/DistributedLearning.md)
+
 [ModelChecker](Others/ModelChecker.md)
 
 [ModelParametersMerger](Others/ModelParametersMerger.md)

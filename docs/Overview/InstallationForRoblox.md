@@ -7,7 +7,7 @@ To start, we must first link our machine/deep learning library with our matrix l
 | Version                     | Machine And Deep Learning Library            | Matrix Library     |
 |-----------------------------|----------------------------------------------|--------------------|
 | Release (ModuleScript)      | [DataPredict (Release Version 1.5)](https://create.roblox.com/marketplace/asset/15268337462)           |                    |
-| Auto Update (Package)       | [DataPredict](https://www.roblox.com/library/12727977273/DataPredict-Library)                                      | [MatrixL](https://www.roblox.com/library/12728472338/MatrixL-Aqwams-Matrix-Library) |
+| Auto Update (Package)       | [DataPredict](https://www.roblox.com/library/12727977273/DataPredict-Library)                                      | [MatrixL](https://www.roblox.com/library/12728472338/MatrixL) |
 | Unstable (ModuleScript)    | [Aqwam's Machine And Deep Learning Library](https://create.roblox.com/marketplace/asset/12591886004/Aqwams-Roblox-Machine-And-Deep-Learning-Library) | [Aqwam's Matrix Library](https://www.roblox.com/library/12256162800/Aqwams-Matrix-Library) |
 
 Once you put those two libraries into your game make sure you link the Machine Learning Library with the Matrix Library. This can be done via setting the “AqwamRobloxMatrixLibraryLinker” value (under the Machine Learning library) to the Matrix Library.

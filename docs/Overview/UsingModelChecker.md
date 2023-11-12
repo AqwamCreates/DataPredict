@@ -7,7 +7,7 @@ First, we need to create a linear regression model and a model checker objects f
 ```lua
 local Model = MDLL.Model.LinearRegression.new()
 
-local ModelChecker = MDLL.Others.ModelChecker.new(Model, "regression")
+local ModelChecker = MDLL.Others.ModelChecker.new(Model, "Regression")
 ```
 
 # Testing

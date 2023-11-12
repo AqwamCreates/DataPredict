@@ -1,6 +1,6 @@
 # Welcome to Aqwam's DataPredict Library!
 
-By using or possesing any copies of this library, you agree to our [Terms and Conditions](TermsAndConditions.md). In other words, attribution is required when using this library. There are also some important stuff as well.
+By using or possesing any copies of this library, you agree to our [Terms and Conditions](TermsAndConditions.md). In other words, attribution is required when using this library. Also, a separate agreement is needed for commercial use.
 
 ![DataPredictIconSmall](https://user-images.githubusercontent.com/67371914/223632639-dea075fe-9dce-430c-af82-2fb0fbeb43d3.png)
 

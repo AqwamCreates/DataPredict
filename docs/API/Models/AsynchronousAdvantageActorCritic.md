@@ -10,6 +10,8 @@ AsynchronousAdvantageCritic is a base class for reinforcement learning.
 
 * Ensure the final layer of the Critic model has only one neuron. It is the default setting for all Critic models in research papers.
 
+* Ensure that setActorCriticMainModelParameters() is called first so that other child models can duplicate the main model parameters. Otherwise, the main model parameters will be selected randomly from the child models.
+
 ## Constructors
 
 ### new()

@@ -12,11 +12,10 @@ To start, we must first link our machine/deep learning library with our matrix l
 
 Once you put those two libraries into your game make sure you link the Machine Learning Library with the Matrix Library. This can be done via setting the “AqwamRobloxMatrixLibraryLinker” value (under the Machine Learning library) to the Matrix Library.
 
-![c](https://user-images.githubusercontent.com/67371914/221095215-d5df15ad-5b2c-4bb5-8a78-40911edd482a.PNG)
-
+![Screenshot 2023-11-12 100319](https://github.com/AqwamCreates/DataPredict/assets/67371914/d51de4c0-e2b8-4c4a-a835-12876eeb269f)
 
 Next, we will use require() function to our machine/deep learning library
 
 ```lua
-local MDLL = require(AqwamRobloxMachineAndDeepLearningLibrary) 
+local MDLL = require(AqwamMachineAndDeepLearningLibrary) 
 ```

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>DataPredict Documentation</title>
+
+<link rel="stylesheet" href="../default_style.css">
+
+</head>
+
+<object data="../sidebar.html" class="sidebar"></object>
+
+<body>
+
+<h1>Installation For Roblox</h1>
+
+<p>To install, we must first download and link our machine and deep learning library with our matrix library. However, you must use "Aqwam's Matrix Library" as every calculations made by our models are based on that matrix library.<p>
+
+<table>
+	<tr>
+		<th>Version</th>
+		<th>Machine And Deep Learning Library</th>
+		<th>Matrix Library</th>
+	<tr>
+	<tr>
+		<td>Release (ModuleScript)</td>
+		<td><a href="https://create.roblox.com/marketplace/asset/15268337462">DataPredict (Release Version 1.5)</a></td>
+		<td></td>
+	<tr>
+		<tr>
+		<td>Auto Update (Package)</td>
+		<td><a href="https://create.roblox.com/marketplace/asset/15268337462">DataPredict</a></td>
+		<td><a href="https://www.roblox.com/library/12728472338/MatrixL">MatrixL</a></td>
+	<tr>
+		<tr>
+		<td>Beta/Unstable (ModuleScript)</td>
+		<td><a href="https://create.roblox.com/marketplace/asset/12591886004/Aqwams-Machine-And-Deep-Learning-Library">Aqwam's Machine And Deep Learning Library</a></td>
+		<td><a href="https://www.roblox.com/library/12256162800/Aqwams-Matrix-Library">Aqwam's Matrix Library</a></td>
+	<tr>
+</table>
+
+<p>Once you put those two libraries into your game make sure you link the Machine Learning Library with the Matrix Library. This can be done via setting the “AqwamRobloxMatrixLibraryLinker” value (under the Machine Learning library) to the Matrix Library.</p>
+
+<img src="InstallationForRobloxPicture.png" alt="A picture showing how the DataPredict and MatrixL are linked">
+
+<p>Next, we will use require() function to our machine/deep learning library.</p>
+
+<pre class="code-block">
+        <code class="line-numbers">
+            // Your code here
+            function greet(name) {
+                console.log(`Hello, ${name}!`);
+            }
+
+            greet("World");
+			
+			local MDLL = require(AqwamMachineAndDeepLearningLibrary)
+        </code>
+    </pre>
+
+</body>
+</html>

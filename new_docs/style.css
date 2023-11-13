@@ -1,0 +1,177 @@
+h1 {
+	
+	font-family: Arial, sans-serif;
+	text-align: center;
+}
+
+h2 {
+	
+	font-family: Arial, sans-serif;
+	text-align: center;
+}
+
+h3 {
+	
+	font-family: Arial, sans-serif;
+	text-align: center;
+}
+
+p {
+	
+	font-family: Arial, sans-serif;
+	text-align: center;
+}
+
+
+
+table, th, td {
+	
+	border: 1px solid black;
+	border-collapse: collapse;
+	font-family: Arial, sans-serif;
+	padding: 10px
+  
+}
+
+table.center {
+	
+	margin-left: auto; 
+	margin-right: auto; 
+	
+}
+
+img.center {
+	
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+	
+}
+
+div.column {
+	
+	float: left;
+	width: 33.33%;
+	
+}
+
+div.reset {
+	
+	float: middle;
+	width: 100%;
+	
+}
+
+div.row:after {
+	
+	content: “”;
+	display: table;
+	clear: both;
+
+}
+
+ul li { 
+
+	padding: 3px 0px; 
+
+}
+
+/* The side navigation menu */
+div.sidebar {
+	
+	height: 100%; /* 100% Full-height */
+	width: 0; /* 0 width - change this with JavaScript */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Stay on top */
+	top: 0; /* Stay at the top */
+	left: 0;
+	background-color: #000080;
+	overflow-x: hidden; /* Disable horizontal scroll */
+	padding-top: 60px; /* Place content 60px from the top */
+	transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+	
+}
+
+/* The navigation menu links */
+div.sidebar a {
+	
+	font-family: Arial, sans-serif;
+	padding: 8px 8px 8px 32px;
+	text-decoration: none;
+	font-size: 17px;
+	color: #818181;
+	display: block;
+	transition: 0.3s;
+	
+}
+
+/* When you mouse over the navigation links, change their color */
+div.sidebar a:hover {
+	
+	font-family: Arial, sans-serif;
+	color: #f1f1f1;
+}
+
+div.sidebar p {
+	
+	font-size: 15px;
+	font-family: Arial, sans-serif;
+	color:  #FFFFFF;
+	padding: 8px 8px 8px 32px;
+	text-align: left
+	
+}
+
+div.sidebar li{
+	
+	font-size: 15px;
+	margin-bottom: 10px;
+	font-family: Arial, sans-serif;
+	color:  #FFFFFF;
+	list-style-position: outside;
+	text-align: left
+	
+}
+
+/* Position and style the close button (top right corner) */
+div.sidebar .closebutton {
+	
+	position: absolute;
+	top: 0;
+	right: 25px;
+	font-size: 36px;
+	margin-left: 50px;
+	
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+	
+	div.sidebar {padding-top: 15px;}
+	div.sidebar a {font-size: 18px;}
+	
+}
+
+object.sidebar {
+	
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 20%;
+	z-index: 1;
+	
+}
+
+a.hidden_link {
+	
+	text-decoration: none;
+	color: inherit;
+}
+
+/* Define your preferred link color when not hovered */
+a.hidden_link:hover {
+	
+	color: inherit; /* Replace with your preferred color */
+}

@@ -19,13 +19,6 @@ body {
 	max-width: 700px;
 }
 
-p {
-	
-	
-	font-family: Arial, sans-serif;
-	
-}
-
 table, th, td {
 	
 	border: 1px solid black;
@@ -33,6 +26,18 @@ table, th, td {
 	font-family: Arial, sans-serif;
 	padding: 10px
   
+}
+
+p {
+	
+	font-family: Arial, sans-serif;
+}
+
+ul li { 
+
+	font-family: Arial, sans-serif;
+	padding: 5px 0px; 
+
 }
 
 table.center {
@@ -73,11 +78,7 @@ div.row:after {
 
 }
 
-ul li { 
 
-	padding: 3px 0px; 
-
-}
 
 /* The side navigation menu */
 div.sidebar {

@@ -1,33 +1,3 @@
-.code-block {
-    background-color: #ffffff;
-    border: 1px solid #d1d5da;
-    border-radius: 6px;
-    overflow: auto;
-    margin: 16px;
-    padding: 16px;
-}
-
-/* Add styles for line numbers */
-.line-numbers {
-    position: relative;
-    padding-left: 2.8em; /* Space for line numbers */
-}
-
-.line-numbers .line-numbers-rows {
-    counter-reset: linenumber;
-}
-
-.line-numbers-rows > span:before {
-    content: counter(linenumber);
-    counter-increment: linenumber;
-    position: absolute;
-    left: -2.8em; /* Move line numbers to the left */
-    width: 2.4em;
-    text-align: right;
-    color: #999;
-    user-select: none;
-}
-
 h1 {
 	
 	font-family: Arial, sans-serif;

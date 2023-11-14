@@ -9,6 +9,14 @@
 
 </head>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<!-- and it's easy to individually load additional languages -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+
 <object data="../sidebar.html" class="sidebar"></object>
 
 <body>
@@ -47,17 +55,10 @@
 <p>Next, we will use require() function to our machine/deep learning library.</p>
 
 <pre class="code-block">
-        <code class="line-numbers">
-            // Your code here
-            function greet(name) {
-                console.log(`Hello, ${name}!`);
-            }
-
-            greet("World");
-			
-			local MDLL = require(AqwamMachineAndDeepLearningLibrary)
-        </code>
-    </pre>
+	<code class="language-lua">
+    local DataPredict = require(AqwamMachineAndDeepLearningLibrary) 
+	</code>
+</pre>
 
 </body>
 </html>

@@ -40,6 +40,13 @@ ul li {
 
 }
 
+ol li { 
+
+	font-family: Arial, sans-serif;
+	padding: 5px 0px; 
+
+}
+
 table.center {
 	
 	margin-left: auto; 

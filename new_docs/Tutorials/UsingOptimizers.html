@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>DataPredict Documentation</title>
+
+<link rel="stylesheet" href="../default_style.css">
+
+</head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+
+<object data="../sidebar.html" class="sidebar"></object>
+
+<body>
+
+<h1>Using Optimizers</h1>
+
+<p>Optimizers are deep learning techinques that adjusts our machine/deep learning model learning rates. They make our models train faster and hence require less number of iterations.</p>
+
+<h2>Getting Started</h2>
+
+<p>
+In order for us to use the optimizers, we need to create an optimizer object. In this tutorial, we will use "Adaptive Gradient" (a.k.a. Adagrad).
+<br><br>So first, lets initialize a new Adagrad optimizer object.
+</p>
+
+<pre class="code-block">
+<code class="language-lua">local Adagrad = MDLL.Optimizers.AdaptiveGradient
+
+local AdagradOptimizer = Adagrad.new()
+</code></pre>
+
+<p>For this optimizer, there are no parameters for us to set. So, we will leave it empty. However, for others, they may use default parameter values.</p>
+
+<h2>Combining Our Optimizer With Our Model</h2>
+
+<p>To combine, you must put the optimizer object into the model's setOptimizer() function.</p>
+
+<pre class="code-block">
+<code class="language-lua">LogisticRegressionModel:setOptimizer(AdagradOptimizer)
+</code></pre>
+
+<p>
+Then, we can now train with our optimizer included. Do note that not all models uses optimizers, so please check the API reference if this option is available or not.
+<br><br>That's all for now!
+</p>
+
+</body>
+</html>

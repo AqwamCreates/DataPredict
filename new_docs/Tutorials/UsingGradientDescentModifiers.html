@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>DataPredict Documentation</title>
+
+<link rel="stylesheet" href="../default_style.css">
+
+</head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+
+<object data="../sidebar.html" class="sidebar"></object>
+
+<body>
+
+<h1>Using Gradient Descent Modifiers</h1>
+
+<p>Gradient descent is one of the way on how our machine/deep learning model "learn" things. The model attempts to find the best possible solution through this technique.</p>
+
+<h2>Types Of Gradient Descents</h2>
+
+<ul>
+	<li>Batch Gradient Descent: All data is used to train the model in one go.</li>
+	<li>Mini Batch Gradient Descent: All the data is separated to multiple groups and the model will be trained based on the grouped data.</li>
+	<li>Stochastic Gradient Descent: The model will be trained on individual data.</li>
+</ul>
+
+<h2>Getting Started</h2>
+
+<p>By default, the machine/deep learning models uses batch gradient descent upon initialization. To change this we create a GradientDescentModifier object.
+
+<br><br>We will modify the graident descent to mini batch gradient descent.</p>
+
+<pre class="code-block">
+<code class="language-lua">local Model = DataPredict.Models.SupportVectorMachine.new()
+
+local ModifiedModel = DataPredict.Others.GradientDescentModifier.new(SupportVectorMachine, "MiniBatch")
+</code></pre>
+
+<p>Once that is set up, you can call train() and predict() functions from the ModifiedModel. This is because it uses the original model's train() and predict() functions.
+
+<br><br>In other words, you can do what the original model can do, except the behaviour of the gradient descent and the cost has been changed.</p>
+
+<pre class="code-block">
+<code class="language-lua">local costArray = ModifiedModel:train(featureMatrix, labelVector)
+
+local predictedVector = ModifiedModel:predict(featureMatrix2)
+</code></pre>
+
+<p>Looks pretty similar huh? You can try to combine this with other functionalitiees as well.
+
+<br><br>That's all for today!</p>
+
+</body>
+</html>

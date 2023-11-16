@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>DataPredict Documentation</title>
+
+<link rel="stylesheet" href="../default_style.css">
+
+</head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+
+<object data="../sidebar.html" class="sidebar"></object>
+
+<body>
+
+<h1>Using Model Checker</h1>
+
+<p>It is important for us to check the accuracy of our model. Hence, in this tutorial we will show you on how to check your model's test and validation costs.</p>
+
+<h2>Getting Started</h2>
+
+<p>First, we need to create a linear regression model and a model checker objects for testing and validation. We will set the second parameter as "regression" for the ModelChecker because the linear regression model falls under the "regrression".</p>
+
+<pre class="code-block">
+<code class="language-lua">local Model = DataPredict.Model.LinearRegression.new()
+
+local ModelChecker = DataPredict.Others.ModelChecker.new(Model, "Regression")
+</code></pre>
+
+<h2>Testing</h2>
+
+<p>Right now, we will test our LogisticRegression model for test cost.  We will also provide testFeatureMatrix and testLabelVector as well.</p>
+
+<pre class="code-block">
+<code class="language-lua">local testCost = ModelChecker:test(testFeatureMatrix, testLabelVector)
+</code></pre>
+
+<p>
+The above function will generate the accuracy of the model by comparing the predicted output made by the model and the actual value.
+<br><br>Then use print() to see the test cost.
+</p>
+
+<pre class="code-block">
+<code class="language-lua">print(testCost)
+</code></pre>
+
+<h2>Validation</h2>
+
+<p>Validation is similar to testing, but instead requires two pairs of featureMatrix and labelVector. The output we get are the training and validation cost arrays.</p>
+
+<pre class="code-block">
+<code class="language-lua">local trainCostArray, validationCostArray = ModelChecker:testClassificationModel(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+</code></pre>
+
+<p>
+The above function will generate the accuracy of the model by comparing the predicted output made by the model and the actual value.
+<br><br>Then use print() to see the train and validation cost arrays.
+</p>
+
+<pre class="code-block">
+<code class="language-lua">print(trainCostArray)
+
+print(validationCostArray)
+</code></pre>
+
+<p>That's all for today!</p>
+
+</body>
+</html>

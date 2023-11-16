@@ -43,9 +43,10 @@
 local ModifiedModel = DataPredict.Others.GradientDescentModifier.new(SupportVectorMachine, "MiniBatch")
 </code></pre>
 
-<p>Once that is set up, you can call train() and predict() functions from the ModifiedModel. This is because it uses the original model's train() and predict() functions.
-
-<br><br>In other words, you can do what the original model can do, except the behaviour of the gradient descent and the cost has been changed.</p>
+<p>
+Once that is set up, you can call train() and predict() functions from the ModifiedModel. This is because it uses the original model's train() and predict() functions.
+<br><br>In other words, you can do what the original model can do, except the behaviour of the gradient descent and the cost has been changed.
+</p>
 
 <pre class="code-block">
 <code class="language-lua">local costArray = ModifiedModel:train(featureMatrix, labelVector)
@@ -53,9 +54,10 @@ local ModifiedModel = DataPredict.Others.GradientDescentModifier.new(SupportVect
 local predictedVector = ModifiedModel:predict(featureMatrix2)
 </code></pre>
 
-<p>Looks pretty similar huh? You can try to combine this with other functionalitiees as well.
-
-<br><br>That's all for today!</p>
+<p>
+Looks pretty similar huh? You can try to combine this with other functionalitiees as well.
+<br><br>That's all for today!
+</p>
 
 </body>
 </html>

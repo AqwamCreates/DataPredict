@@ -104,11 +104,11 @@ local labelVectorLogistic = {
 
 <h3>Case 2 - Cost Printing Out "nan"</h3>
 
-<p>It means that during training, the calculations may have resulted in either arithmetic underflow or overflow. To fix this, limit the max number of iterations or set a target cost. This is a hardware limitation issue.
-
+<p>
+It means that during training, the calculations may have resulted in either arithmetic underflow or overflow. To fix this, limit the max number of iterations or set a target cost. This is a hardware limitation issue.
 <br><br>Another reason is that the calculated model parameters contain infinity values. This can be solved by feature scaling. This is issue is due to the some of the dataset values are too large to be calculated by the model.
-
-<br><br>This case can also happen if any of the internal model components are calculating numbers with not a number. This issue can propagate to final output without raising any suspicion. If the "nan" value shows up after the first or second iterations and you tried to solve based on the information given above, then you need to contact me regarding this issue.<p>
+<br><br>This case can also happen if any of the internal model components are calculating numbers with not a number. This issue can propagate to final output without raising any suspicion. If the "nan" value shows up after the first or second iterations and you tried to solve based on the information given above, then you need to contact me regarding this issue.
+<p>
 
 <h2>Predicting Using Our Models</h2>
 

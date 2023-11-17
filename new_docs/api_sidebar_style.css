@@ -33,6 +33,7 @@ div a {
 	color: #818181;
 	display: block;
 	transition: 0.3s;
+	text-align: right;
 }
 
 /* When you mouse over the navigation links, change their color */
@@ -40,6 +41,7 @@ div a:hover {
 	
 	font-family: Arial, sans-serif;
 	color: #f1f1f1;
+	text-align: right;
 }
 
 div p {
@@ -48,7 +50,7 @@ div p {
 	font-family: Arial, sans-serif;
 	color:  #FFFFFF;
 	padding: 8px 8px 8px 32px;
-	text-align: left
+	text-align: right;
 	
 }
 
@@ -81,6 +83,7 @@ div li ul li {
 /* Position and style the close button (top left corner) */
 div .closebutton {
 	
+	padding-left: 10px;
 	position: absolute;
 	top: 0;
 	left: 25px;

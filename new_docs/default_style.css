@@ -96,6 +96,17 @@ object.left_sidebar {
 	
 }
 
+object.right_sidebar {
+	
+	position: fixed;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 20%;
+	z-index: 1;
+	
+}
+
 a.hidden_link {
 	
 	text-decoration: none;

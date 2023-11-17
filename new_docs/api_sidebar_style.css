@@ -5,7 +5,7 @@ div {
 	position: fixed; /* Stay in place */
 	z-index: 1; /* Stay on top */
 	top: 0; /* Stay at the top */
-	left: 0;
+	right: 0;
 	background-color: #000080;
 	overflow-x: hidden; /* Disable horizontal scroll */
 	padding-top: 60px; /* Place content 60px from the top */

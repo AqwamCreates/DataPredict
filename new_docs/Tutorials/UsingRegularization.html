@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>DataPredict Documentation</title>
+
+<link rel="stylesheet" href="../default_style.css">
+
+</head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+
+<object data="../sidebar.html" class="sidebar"></object>
+
+<body>
+
+<h1>Using Regularization</h1>
+
+<p>Regularization is to ensure that the model do not overfit. In other words, we want to ensure that the model to generalize instead of memorizing solutions.</p>
+
+<h2>Getting Started</h2>
+
+<p>In order for us to use the regularization, we need to create an regularization object.</p>
+
+<pre class="code-block">
+<code class="language-lua">local Regularization = DataPredict.Others.Regularization
+
+local RegularizationObject = Regularization.new()
+</code></pre>
+
+<p>Regularization object takes in three parameters. For the sake of this tutorial, we will leave them empty.</p>
+
+<h2>Combining Our Regularization With Our Model</h2>
+
+<p>To combine, you must put the optimizer object into the model's setRegularization() function.</p>
+
+<pre class="code-block">
+<code class="language-lua">LogisticRegressionModel:setRegularization(RegularizationObject)
+</code></pre>
+
+<p>
+Then, we can now train with our regularization  included. Do note that not all models uses regularization, so please check the API reference if this option is available or not.
+<br><br>That's all for now!
+</p>
+
+</body>
+</html>

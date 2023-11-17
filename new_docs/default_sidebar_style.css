@@ -13,6 +13,16 @@ div {
 	
 }
 
+div img {
+	
+	width:200px;
+	height:200px;
+	padding-bottom:20px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 /* The navigation menu links */
 div a {
 	

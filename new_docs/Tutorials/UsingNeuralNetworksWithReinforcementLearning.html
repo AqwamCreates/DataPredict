@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>DataPredict Documentation</title>
+
+<link rel="stylesheet" href="../default_style.css">
+
+</head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+
+<object data="../sidebar.html" class="sidebar"></object>
+
+<body>
+
+<h1>Using Neural Networks With Reinforcement Learning</h1>
+
+<h2>Requirements</h2>
+
+<p>Knowledge on how to build neural networks (part 1), which can be found <a href="UsingNeuralNetworksPart1.html">here</a>.</p>
+
+<h2>What Is Reinforcement Learning?</h2>
+
+<p>Reinforcement learning is a way for our models to learn on its own without the labels.
+<br><br>We can expect our models to perform poorly at the start of the training but they will gradually improve over time.
+</p>
+
+<h2>Getting Started</h2>
+
+<p>Most of the reinforcement learning neural networks here uses reward values to train our models. Here are some examples of variants of neural networks that follow this rule:</p>
+
+<ul>
+	<li>Deep Q-Learning / DQN</li>
+	<li>Deep SARSA</li>
+	<li>Deep Expected SARSA</li>
+</ul>
+
+<p>All these models contains reinforce() function and have similar input parameters. We will focus on Deep Q-Learning, but we can also apply what you will learn to the other two as well.</p>
+
+<h2>The Basics</h2>
+
+<h3>Environment Feature Vector</h3>
+
+<p>An environment feature vector is a vector containing all the information related to model's environment. It can contain as many information such as:</p>
+
+<ul>
+	<li>Distance</li>
+	<li>Health</li>
+	<li>Speed</li>
+</ul>
+
+<pre class="code-block">
+<code class="language-lua">local environmentFeatureVector = {
+
+  {1, -32, 234, 12, -97} -- 1 is added at first column for bias, but it is optional.
+
+}
+</code></pre>
+
+<h2>Reward Value</h2>
+
+<p>This is the value where we reward or punish the models. The properties of reward value is shown below:</p>
+
+<ul>
+	<li>Positive value: Reward</li>
+	<li>Negative Value: Punishment</li>
+	<li>Large value: Large reward / punishment</li>
+	<li>Small value: Small reward / punishment</li>
+</ul>
+
+<h2>Action Labels</h2>
+
+<p>Action label is a label produced by the model. This label can be a part of decision-making classes or classification classes. For example:</p>
+
+<ul>
+	<li>Decision-making classes: "Up", "Down", "Left", "Right", "Forward", "Backward"</li>
+	<li>Classification classes: 1, 2, 3, 4, 5, 6</li>
+</ul>
+
+<h2>Reinforce Function</h2>
+
+<p>Upon calling reinforce() function, it will return two values, but we are interested in the first one for this tutorial.</p>
+
+<pre class="code-block">
+<code class="language-lua">local DQN = DataPredict.Models.QLearningNeuralNetwork.new() -- Create a new model object.
+
+DQN:createLayers({4, 3, 2}) -- Setting up our layers.
+
+DQN:setClassesList({"Up", "Down"}) -- Setting up our classes.
+
+local actionLabel = DQN:reinforce(environmentFeatureVector, rewardValue) -- Run the reinforce() function.
+</code></pre>
+
+<p>
+Each time we use reinforce() function with input parameters in it, it will train the neural network.
+<br><br>Ensure that both environment feature vector and reward value are from the same state.
+</p>
+
+<h2>Experience Replay</h2>
+
+<p>Additionally, you can add experience replay to your model. All you have to do is to call the setExperienceReplay() function.</p>
+
+<pre class="code-block">
+<code class="language-lua">local DQN = DataPredict.Models.QLearningNeuralNetwork.new() -- Create a new model object.
+
+local UniformExperienceReplay = DataPredict.ExperienceReplays.UniformExperienceReplay.new()
+
+DQN:setExperienceReplay(UniformExperienceReplay) -- Placing our experience replay object here.
+</code></pre>
+
+<h2>Wrapping It All Up</h2>
+
+<p>
+In this tutorial, you have learnt the starting point of the reinforcement learning neural networks. 
+<br><br>These only cover the basics. You can find more information here:
+</p>
+
+<ul>
+	<li><a href="../API/Models/ReinforcementLearningNeuralNetworkBaseModel.html">Reinforcement Learning Neural Network Base Model</a></li>
+	<li><a href="../API/Models/QLearningNeuralNetwork.html">Deep Q-Learning</a></li>
+	<li><a href="../API/Models/StateActionRewardStateActionNeuralNetwork.html">Deep SARSA</a></li>
+	<li><a href="../API/Models/ExpectedStateActionRewardStateActionNeuralNetwork.html">Deep Expected SARSA</a></li>
+</ul>
+
+</body>
+</html>

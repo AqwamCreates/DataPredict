@@ -10,7 +10,7 @@ We can expect our models to perform poorly at the start of the training but they
 
 # Getting Started
 
-Most of the reinforcement learning neural netwworks here uses reward values to train our models. There are three variants of neural networks that follow this rule:
+Most of the reinforcement learning neural networks here uses reward values to train our models. There are three variants of neural networks that follow this rule:
 
 * Deep Q-Learning / DQN
 

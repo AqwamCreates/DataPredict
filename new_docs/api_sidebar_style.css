@@ -78,14 +78,14 @@ div li ul li {
 
 }
 
-/* Position and style the close button (top right corner) */
+/* Position and style the close button (top left corner) */
 div .closebutton {
 	
 	position: absolute;
 	top: 0;
-	right: 25px;
+	left: 25px;
 	font-size: 36px;
-	margin-left: 50px;
+	margin-right: 50px;
 	
 }
 

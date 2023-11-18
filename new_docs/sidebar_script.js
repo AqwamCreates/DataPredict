@@ -13,6 +13,7 @@ const urlParams = new URLSearchParams(window.location.search);
     // Scroll to the specified header
     if (scrollToHeaderText) {
         const headerElement = document.getElementById(scrollToHeaderText);
+		alert(headerElement)
         if (headerElement) {
             headerElement.scrollIntoView({ behavior: 'smooth' });
         }

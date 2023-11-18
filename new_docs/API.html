@@ -13,9 +13,11 @@
 
 <script src="sidebar_script.js"></script>
 
-<script>scrollToTextWhenQueried()</script>
+
 
 <body>
+
+<script>scrollToTextWhenQueried()</script>
 
 <h1>API Reference</h1>
 
@@ -32,14 +34,13 @@
         <th>Use Cases</th>
 	</tr>
 	<tr>
-        <td><a href="Models/LinearRegression.md" target="_blank">LinearRegression</a></td>
+        <td><a href="API/Models/LinearRegression.md" target="_blank">LinearRegression</a></td>
         <td>None</td>
-        <td>Price Prediction, Time To Level Up Prediction</td>
+        <td rowspan="2">Price Prediction, Time To Level Up Prediction</td>
 	</tr>
 	<tr>
-        <td><a href="Models/NormalLinearRegression.md" target="_blank">NormalLinearRegression</a><br>(Not Recommended)</td>
+        <td><a href="API/Models/NormalLinearRegression.md" target="_blank">NormalLinearRegression</a><br>(Not Recommended)</td>
         <td>None</td>
-        <td>Same As Above</td>
       </tr>
  </table>
 
@@ -54,25 +55,107 @@
         <th>Use Cases</th>
 	</tr>
 	<tr>
-        <td><a href="Models/LogisticRegression.md" target="_blank">LogisticRegression</a></td>
+        <td><a href="API/Models/LogisticRegression.md" target="_blank">LogisticRegression</a></td>
         <td>Perceptron</td>
         <td>Sales Prediction, Confidence Prediction</td>
 	</tr>
 	<tr>
-        <td><a href="Models/SupportVectorMachine.md" target="_blank">SupportVectorMachine</a></td>
+        <td><a href="API/Models/SupportVectorMachine.md" target="_blank">SupportVectorMachine</a></td>
         <td>SVM</td>
         <td>Hacking Detection, Anomaly Detection</td>
 	</tr>
 		<tr>
-        <td><a href="Models/NaiveBayes.md" target="_blank">NaiveBayes</a></td>
+        <td><a href="API/Models/NaiveBayes.md" target="_blank">NaiveBayes</a></td>
         <td>None</td>
         <td>Text Classification</td>
 	</tr>
 		<tr>
-        <td><a href="Models/NeuralNetwork.md" target="_blank">NeuralNetwork</a></td>
+        <td><a href="API/Models/NeuralNetwork.md" target="_blank">NeuralNetwork</a></td>
         <td>Multi-Layer Perceptron</td>
         <td>Decision-Making, Player Behaviour Prediction</td>
 	</tr>
+ </table>
+ 
+ <h4>Non-Sequential + Reinforcement Learning</h4>
+
+<table>
+	<tr>
+        <th>Model</th>
+        <th>Alternate Names</th>
+        <th>Use Cases</th>
+	</tr>
+	<tr>
+        <td><a href="API/Models/QLearningNeuralNetwork.md" target="_blank">QLearningNeuralNetwork</a></td>
+        <td>DQN, Deep Q-Learning</td>
+        <td rowspan="13">Self-Learning Fighting AIs, Self-Learning Parkouring AIs, Self-Driving Cars</td>
+	</tr>
+	<tr>
+        <td><a href="API/Models/DoubleQLearningNeuralNetworkV1.md" target="_blank">DoubleQLearningNeuralNetworkV1</a></td>
+        <td>Double DQN, Double Deep Q-Learning (2010)</td>
+	</tr>
+	<tr>
+        <td><a href="API/Models/DoubleQLearningNeuralNetworkV2.md" target="_blank">DoubleQLearningNeuralNetworkV2</a></td>
+        <td>Double DQN, Double Deep Q-Learning (2015)</td>
+	</tr>
+	<tr>
+        <td><a href="API/Models/ClippedDoubleQLearningNeuralNetwork.md" target="_blank">ClippedDoubleQLearningNeuralNetwork</a></td>
+        <td>Clipped Double DQN, Clipped Double Deep Q-Learning</td>
+	</tr>
+	<tr>
+        <td><a href="API/Models/StateActionRewardStateActionNeuralNetwork.md" target="_blank">StateActionRewardStateActionNeuralNetwork</a></td>
+        <td>Double SARSA</td>
+	</tr>
+	<tr>
+        <td><a href="API/Models/DoubleStateActionRewardStateActionNeuralNetworkV1.md" target="_blank">DoubleStateActionRewardStateActionNeuralNetworkV1</a></td>
+        <td>Deep Deep SARSA</td>
+	</tr>
+	<tr>
+        <td><a href="API/Models/DoubleStateActionRewardStateActionNeuralNetworkV2.md" target="_blank">DoubleStateActionRewardStateActionNeuralNetworkV2</a></td>
+        <td>Double Deep SARSA</td>
+	</tr>
+	<tr>
+        <td><a href="API/Models/ExpectedStateActionRewardStateActionNeuralNetwork.md" target="_blank">ExpectedStateActionRewardStateActionNeuralNetwork</a></td>
+        <td>Deep Expected SARSA</td>
+	</tr>
+	<tr>
+        <td><a href="API/Models/DoubleExpectedStateActionRewardStateActionNeuralNetworkV1.md" target="_blank">DoubleExpectedStateActionRewardStateActionNeuralNetworkV1</a></td>
+        <td>Double Deep Expected SARSA</td>
+	</tr>
+	<tr>
+        <td><a href="API/Models/DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.md" target="_blank">DoubleExpectedStateActionRewardStateActionNeuralNetworkV2</a></td>
+        <td>Double Deep Expected SARSA</td>
+	</tr>
+	<tr>
+        <td><a href="API/Models/ActorCritic.md" target="_blank">ActorCritic</a></td>
+        <td>AC</td>
+	</tr>
+	<tr>
+        <td><a href="API/Models/AdvantageActorCritic.md" target="_blank">AdvantageActorCritic</a></td>
+        <td>A2C</td>
+	</tr>
+	<tr>
+        <td><a href="API/Models/AsynchronousAdvantageActorCritic.md" target="_blank">AsynchronousAdvantageActorCritic</a></td>
+        <td>A3C</td>
+	</tr>
+ </table>
+
+<h4>Sequential</h4>
+
+<table>
+	<tr>
+        <th>Model</th>
+        <th>Alternate Names</th>
+        <th>Use Cases</th>
+	</tr>
+	<tr>
+        <td><a href="API/Models/LongShortTermMemory.md" target="_blank">LongShortTermMemory</a></td>
+        <td>LSTM</td>
+        <td rowspan="2">Text Generation, Text Analysis</td>
+	</tr>
+	<tr>
+        <td><a href="API/Models/RecurrentNeuralNetwork.md" target="_blank">RecurrentNeuralNetwork</a></td>
+        <td>RNN</td>
+      </tr>
  </table>
 
 <h2 id="Optimizers">Optimizers</h2>

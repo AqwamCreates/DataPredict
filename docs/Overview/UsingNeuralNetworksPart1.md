@@ -1,4 +1,4 @@
-# What Are Neural Networks?
+# Using Neural Networks, Part 1
 
 Neural networks are classification and regression model where it can predict a number of classes (classification) or range of values (regression).
 

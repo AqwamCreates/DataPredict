@@ -71,9 +71,9 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### ModuleScripts - Beta Versions (Contains Bugs)
 
-[Aqwam's Roblox Machine And Deep Learning Library](https://create.roblox.com/marketplace/asset/12591886004/Aqwams-Roblox-Machine-And-Deep-Learning-Library)
+[Aqwam's Machine And Deep Learning Library](https://create.roblox.com/marketplace/asset/12591886004/Aqwams-Machine-And-Deep-Learning-Library)
 
-[Aqwam's Roblox Matrix Library](https://www.roblox.com/library/12256162800/Aqwams-Roblox-Matrix-Library)
+[Aqwam's Matrix Library](https://www.roblox.com/library/12256162800/Aqwams-Matrix-Library)
 
 ### Repository
 

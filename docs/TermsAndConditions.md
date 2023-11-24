@@ -17,9 +17,9 @@ User shall not:
 
 * Remove or alter any copyright, trademark, or other proprietary notices or labels contained in the Library;
 
-* Use the Library for cheat/exploit development, use, or any activities falling within that category, unless explicitly approved by the person/company/organization that owns the target application or the Licensor.
+* Use the Library for cheat/exploit development, use, or any activities falling within that category, unless explicitly approved by the person/company/organization that owns the target application or the Licensor;
 
-* Use the Library for anti-exploit or anti-cheat evasion purposes, or engage in any actions intended to circumvent security measures, unless explicitly approved by the person/company/organization that owns the target application or the Licensor.
+* Use the Library for anti-exploit or anti-cheat evasion purposes, or engage in any actions intended to circumvent security measures, unless explicitly approved by the person/company/organization that owns the target application or the Licensor;
 
 * Use the Library in any manner that violates any applicable laws or regulations.
 

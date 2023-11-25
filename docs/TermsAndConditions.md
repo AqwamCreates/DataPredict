@@ -51,7 +51,7 @@ In the event that the User uses the Library for cheating, cheat development, che
 
 * Legal Costs: The User shall bear the costs associated with any legal actions, including but not limited to attorney's fees and court costs, initiated by the Licensor to address the cheating and exploiting, cheat and exploit distribution, anti-cheat and anti-exploit evasion, or anti-cheat and anti-exploit evasion distribution activities.
 
-* Reputation Damage: If the cheating and exploiting, cheat and exploit distribution, anti-cheat and anti-exploit evasion, or anti-cheat and anti-exploit evasion distribution activities result in damage to the reputation of the Licensor, the User shall be liable for compensating them for any harm to their reputation.
+* Reputation Damage: If the cheating and exploiting, cheat and exploit distribution, anti-cheat and anti-exploit evasion, or anti-cheat and anti-exploit evasion distribution activities result in damage to the reputation of the Licensor or the Library, the User shall be liable for compensating them for any harm to their reputation.
 
 * Mitigation Costs: The User shall cover the costs incurred by the Licensor in their efforts to mitigate and prevent the effects of cheating and exploiting, cheat and exploit distribution, anti-cheat and anti-exploit evasion, or anti-cheat and anti-exploit evasion distribution.
 

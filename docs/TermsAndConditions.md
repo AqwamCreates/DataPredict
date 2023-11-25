@@ -43,7 +43,7 @@ The Library is provided "AS IS" and without warranty of any kind. Licensor shall
 
 ## Compensatory Damages for Cheating and Exploiting, Cheat and Exploit Distribution, Anti-Cheat and Anti-Cheat Evasion, Anti-Cheat and Anti-Exploit Evasion Distribution
 
-In the event that the User uses the Library for cheating, cheat development, cheat and exploit distribution, anti-cheat and anti-exploit evasion, or anti-cheat and anti-exploit evasion distribution, and such actions result in damages to the Licensor, the User shall be liable for compensatory damages. These damages may include, but are not limited to, the following:
+In the event that the User uses the Library for cheating and exploiting, cheat and exploit development, cheat and exploit distribution, anti-cheat and anti-exploit evasion, or anti-cheat and anti-exploit evasion distribution, and such actions result in damages to the Licensor, the User shall be liable for compensatory damages. These damages may include, but are not limited to, the following:
 
 * Loss of Revenue: The User shall be responsible for compensating the Licensor for any loss of revenue incurred due to cheating and exploiting, cheat and exploit distribution, anti-cheat and anti-exploit evasion, or anti-cheat and anti-exploit evasion distribution activities.
 

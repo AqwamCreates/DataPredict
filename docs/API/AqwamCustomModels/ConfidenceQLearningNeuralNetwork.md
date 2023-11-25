@@ -26,7 +26,7 @@ ConfidenceQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRat
 
 * targetCost: The cost at which the model stops training.
 
-* numberOfReinforcementsPerEpisode: The number of reinforcements in a single episode. It is also the value when to decay the epsilon value.
+* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
 
@@ -58,7 +58,7 @@ ConfidenceQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, l
 
 * targetCost: The cost at which the model stops training.
 
-* numberOfReinforcementsPerEpisode: The number of reinforcements in a single episode. It is also the value when to decay the epsilon value.
+* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
 

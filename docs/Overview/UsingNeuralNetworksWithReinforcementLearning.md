@@ -54,7 +54,11 @@ This is the value where we reward or punish the models. The properties of reward
 
 * Small value: Small reward / punishment
 
-It is recommended to set the reward that is within the range of -1 <= (reward * learning rate) <= 1.
+It is recommended to set the reward that is within the range of:
+
+```
+-1 <= (reward * learning rate) <= 1.
+```
 
 ## Action Labels
 

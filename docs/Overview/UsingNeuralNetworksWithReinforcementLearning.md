@@ -54,6 +54,8 @@ This is the value where we reward or punish the models. The properties of reward
 
 * Small value: Small reward / punishment
 
+It is recommended to set the reward that is within the range of -1 <= (reward * learning rate) <= 1.
+
 ## Action Labels
 
 Action label is a label produced by the model. This label can be a part of decision-making classes or classification classes. For example:

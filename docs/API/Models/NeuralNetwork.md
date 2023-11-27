@@ -132,7 +132,7 @@ NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationF
 
   *  StableSoftmax
 
-  *  None
+  *  Non
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 

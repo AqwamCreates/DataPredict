@@ -6,9 +6,9 @@ QLearningNeuralNetworkModel.__index = QLearningNeuralNetworkModel
 
 setmetatable(QLearningNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
-	local NewQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+	local NewQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
 	setmetatable(NewQLearningNeuralNetworkModel, QLearningNeuralNetworkModel)
 	
@@ -34,7 +34,7 @@ function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 
 end
 
-function QLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+function QLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -42,7 +42,7 @@ function QLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learni
 
 	self.targetCost = targetCost or self.targetCost
 	
-	self.maxNumberOfEpisodes = maxNumberOfEpisodes or self.maxNumberOfEpisodes
+	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
 	self.epsilon = epsilon or self.epsilon
 

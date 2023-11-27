@@ -30,7 +30,6 @@
 	--------------------------------------------------------------------
 
 --]]
-
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 Regularization = {}

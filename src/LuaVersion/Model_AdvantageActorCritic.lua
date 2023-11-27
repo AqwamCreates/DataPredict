@@ -19,7 +19,7 @@
 	GIVE CREDIT AND SOURCE WHEN USING THIS LIBRARY IF YOUR USAGE FALLS UNDER ONE OF THESE CATEGORIES:
 	
 		- USED AS A VIDEO OR ARTICLE CONTENT
-		- USED AS COMMERCIAL USE OR PUBLIC USE
+		- USED AS RESEARCH AND EDUCATION CONTENT
 	
 	--------------------------------------------------------------------
 		
@@ -30,7 +30,6 @@
 	--------------------------------------------------------------------
 
 --]]
-
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 AdvantageActorCriticModel = {}

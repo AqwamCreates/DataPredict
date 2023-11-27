@@ -64,15 +64,15 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activat
 
 * activationFunction: The function to calculate the cost and cost derivatives of each training. Available options are:
   
-  *  Sigmoid
+  * Sigmoid
 
-  *  Tanh
+  * Tanh
 
-  *  ReLU
+  * ReLU
 
-  *  LeakyReLU
+  * LeakyReLU
 
-  *  ELU
+  * ELU
 
   * Gaussian
  
@@ -82,11 +82,11 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activat
 
   * BinaryStep
 
-  *  Softmax
+  * Softmax
 
-  *  StableSoftmax
+  * StableSoftmax
 
-  *  None
+  * None
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
@@ -110,15 +110,15 @@ NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationF
 
 * activationFunction: The function to calculate the cost and cost derivatives of each training. Available options are:
 
-  *  Sigmoid
+  * Sigmoid
 
-  *  Tanh
+  * Tanh
 
-  *  ReLU
+  * ReLU
 
-  *  LeakyReLU
+  * LeakyReLU
 
-  *  ELU
+  * ELU
 
   * Gaussian
  
@@ -128,11 +128,11 @@ NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationF
 
   * BinaryStep
 
-  *  Softmax
+  * Softmax
 
-  *  StableSoftmax
+  * StableSoftmax
 
-  *  Non
+  * None
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 

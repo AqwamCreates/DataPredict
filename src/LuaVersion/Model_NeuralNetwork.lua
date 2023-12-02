@@ -1056,7 +1056,7 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 		
 	end
 	
-	local numberOfLayers = #self.numberOfNeuronsTable
+	local numberOfLayers = #self.numberOfNeuronsTable -- DON'T FORGET THAT IT DOES NOT INCLUDE BIAS!
 	
 	if (layerNumber > numberOfLayers) then error("Layer number exceeds this model's number of layers.") end
 	
@@ -1087,7 +1087,8 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 	
 	local absoluteSize = math.abs(size)
 	
-	local secondNeuronIndex = initialNeuronIndex + absoluteSize
+	local secondNeuronIndex = initialNeuronIndex + size + 1
+	local thirdNeuronIndex = initialNeuronIndex + 2
 	
 	local newCurrentWeightMatrix
 	local newNextWeightMatrix
@@ -1101,51 +1102,77 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 	local currentWeightMatrixToAdd
 	local nextWeightMatrixToAdd
 	
-	if (size > 0) and (hasNextLayer) then
+	print(numberOfNeurons)
+	
+	if (initialNeuronIndex == 0) and (size > 0) and (hasNextLayer) then
+
+		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode(#currentWeightMatrix, size)
+		nextWeightMatrixToAdd =  self:initializeMatrixBasedOnMode(size, #nextWeightMatrix[1])
+
+		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrix, currentWeightMatrixToAdd)
+		newNextWeightMatrix = AqwamMatrixLibrary:verticalConcatenate(nextWeightMatrix, nextWeightMatrixToAdd)
+		
+	elseif (initialNeuronIndex == 0) and (size > 0) and (not hasNextLayer) then
+		
+		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode(#currentWeightMatrix, size)
+		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixToAdd, currentWeightMatrix)
+	
+	elseif (initialNeuronIndex > 0) and (size > 0) and (hasNextLayer) then
 		
 		currentWeightMatrixLeft = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, 1, initialNeuronIndex)
-		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, initialNeuronIndex, #currentWeightMatrix[1])
+		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, initialNeuronIndex + 1, #currentWeightMatrix[1])
 		
 		nextWeightMatrixTop = AqwamMatrixLibrary:extractRows(nextWeightMatrix, 1, initialNeuronIndex)
-		nextWeightMatrixBottom = AqwamMatrixLibrary:extractRows(nextWeightMatrix, initialNeuronIndex, #nextWeightMatrix)
+		nextWeightMatrixBottom = AqwamMatrixLibrary:extractRows(nextWeightMatrix, initialNeuronIndex + 1, #nextWeightMatrix)
 		
 		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode(#currentWeightMatrix, size)
 		nextWeightMatrixToAdd =  self:initializeMatrixBasedOnMode(size, #nextWeightMatrix[1])
 		
 		newCurrentWeightMatrix, newNextWeightMatrix = mergeLayers(numberOfNeurons, initialNeuronIndex, currentWeightMatrixLeft, currentWeightMatrixRight, currentWeightMatrixToAdd, nextWeightMatrixTop, nextWeightMatrixToAdd, nextWeightMatrixBottom)
 		
-	elseif (size > 0) and (not hasNextLayer) then
+	elseif (initialNeuronIndex > 0) and (size > 0) and (not hasNextLayer) then
 		
 		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode(#currentWeightMatrix, size)
 		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrix, currentWeightMatrixToAdd)
 		
-	elseif (size < 0) and (hasNextLayer) and (absoluteSize <= numberOfNeurons) then
-		
-		currentWeightMatrixLeft = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, 1, initialNeuronIndex)
-		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, secondNeuronIndex, #currentWeightMatrix[1])
+	elseif (size == -1) and (hasNextLayer) and (numberOfNeurons == 1) then
 
-		nextWeightMatrixTop = AqwamMatrixLibrary:extractRows(nextWeightMatrix, 1, initialNeuronIndex)
-		nextWeightMatrixBottom = AqwamMatrixLibrary:extractRows(nextWeightMatrix, secondNeuronIndex, #nextWeightMatrix)
+		newCurrentWeightMatrix = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, initialNeuronIndex, initialNeuronIndex)
+		newNextWeightMatrix = AqwamMatrixLibrary:extractRows(nextWeightMatrix, initialNeuronIndex, initialNeuronIndex)
+		
+	elseif (size == -1) and (not hasNextLayer) and (numberOfNeurons == 1) then
+
+		newCurrentWeightMatrix = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, initialNeuronIndex, initialNeuronIndex)
+		
+	elseif (size < 0) and (hasNextLayer) and (numberOfNeurons > absoluteSize) then
+		
+		currentWeightMatrixLeft = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, 1, secondNeuronIndex)
+		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, thirdNeuronIndex, #currentWeightMatrix[1])
+
+		nextWeightMatrixTop = AqwamMatrixLibrary:extractRows(nextWeightMatrix, 1, secondNeuronIndex)
+		nextWeightMatrixBottom = AqwamMatrixLibrary:extractRows(nextWeightMatrix, thirdNeuronIndex, #nextWeightMatrix)
 		
 		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixLeft, currentWeightMatrixRight)
 		newNextWeightMatrix = AqwamMatrixLibrary:verticalConcatenate(nextWeightMatrixTop, nextWeightMatrixBottom)
 		
-	elseif (size < 0) and (not hasNextLayer) and (absoluteSize <= numberOfNeurons) then
+	elseif (size < 0) and (not hasNextLayer) and (numberOfNeurons > absoluteSize) then
 		
-		currentWeightMatrixLeft = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, 1, initialNeuronIndex)
-		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, secondNeuronIndex, #currentWeightMatrix[1])
+		currentWeightMatrixLeft = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, 1, secondNeuronIndex)
+		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, thirdNeuronIndex, #currentWeightMatrix[1])
 		
 		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixLeft, currentWeightMatrixRight)
 		
-	elseif (size < 0) and (absoluteSize > numberOfNeurons) then
+	elseif (size < 0) and (numberOfNeurons == 1)  then
 		
-		error("Size is greater than the number of neurons!")
+		error("Size is too large!")
 		
 	elseif (size == 0) then
 		
 		error("Size is zero!")
 		
 	end
+	
+	AqwamMatrixLibrary:printMatrix(newCurrentWeightMatrix)
 	
 	if (layerNumber == numberOfLayers) then
 		

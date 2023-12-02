@@ -1052,7 +1052,9 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 	
 	local hasNextLayer = (typeof(nextWeightMatrix) ~= "nil")
 	
-	local secondNeuronIndex = initialNeuronIndex + size
+	local absoluteSize = math.abs(size)
+	
+	local secondNeuronIndex = initialNeuronIndex + absoluteSize
 	
 	local newCurrentWeightMatrix
 	local newNextWeightMatrix
@@ -1084,7 +1086,7 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode(#currentWeightMatrix, size)
 		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrix, currentWeightMatrixToAdd)
 		
-	elseif (size < 0) and (hasNextLayer) then
+	elseif (size < 0) and (hasNextLayer) and (absoluteSize <= numberOfNeurons) then
 		
 		currentWeightMatrixLeft = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, 1, initialNeuronIndex)
 		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, secondNeuronIndex, #currentWeightMatrix[1])
@@ -1095,16 +1097,20 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixLeft, currentWeightMatrixRight)
 		newNextWeightMatrix = AqwamMatrixLibrary:verticalConcatenate(nextWeightMatrixTop, nextWeightMatrixBottom)
 		
-	elseif (size < 0) and (not hasNextLayer) then
+	elseif (size < 0) and (not hasNextLayer) and (absoluteSize <= numberOfNeurons) then
 		
 		currentWeightMatrixLeft = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, 1, initialNeuronIndex)
 		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, secondNeuronIndex, #currentWeightMatrix[1])
 		
 		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixLeft, currentWeightMatrixRight)
 		
+	elseif (size < 0) and (absoluteSize > numberOfNeurons) then
+		
+		error("Size is greater than the number of neurons!")
+		
 	elseif (size == 0) then
 		
-			error("Size is zero!")
+		error("Size is zero!")
 		
 	end
 	

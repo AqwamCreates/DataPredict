@@ -1069,18 +1069,18 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 	local currentWeightMatrixToAdd
 	local nextWeightMatrixToAdd
 	
-	if (size < 0) and (numberOfNeurons == 0)  then
-
-		error("No neurons to remove!")
-
-	elseif (size < 0) and ((numberOfNeurons < absoluteSize) or (initialNeuronIndex - absoluteSize < 0)) then
-
-		error("Size is too large!")
-
-	elseif (size == 0) then
+	if (size == 0) then
 
 		error("Size is zero!")
 	
+	elseif (size < 0) and (numberOfNeurons == 0)  then
+
+		error("No neurons to remove!")
+
+	elseif (size < 0) and ((initialNeuronIndex + size) < 0) then
+
+		error("Size is too large!")
+
 	elseif (initialNeuronIndex == 0) and (size > 0) and (hasNextLayer) then
 
 		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode(#currentWeightMatrix, size)

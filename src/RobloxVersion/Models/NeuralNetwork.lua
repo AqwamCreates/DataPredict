@@ -1044,6 +1044,7 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 	else
 		
 		currentWeightMatrix = self.ModelParameters[1]
+		nextWeightMatrix = self.ModelParameters[2]
 		
 	end
 	
@@ -1064,8 +1065,6 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 	
 	local currentWeightMatrixToAdd
 	local nextWeightMatrixToAdd
-	
-	AqwamMatrixLibrary:printMatrix(currentWeightMatrix, nextWeightMatrix)
 	
 	if (size > 0) and (hasNextLayer) then
 		
@@ -1121,6 +1120,7 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 	else
 		
 		self.ModelParameters[1] = newCurrentWeightMatrix
+		self.ModelParameters[2] = newNextWeightMatrix
 
 	end
 	

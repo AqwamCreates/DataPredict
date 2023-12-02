@@ -917,7 +917,7 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 end
 
-function NeuralNetworkModel:getLayerProperties(layerNumber)
+function NeuralNetworkModel:getLayer(layerNumber)
 
 	return self.numberOfNeuronsTable[layerNumber], self.hasBiasNeuronTable[layerNumber], self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], self.OptimizerTable[layerNumber], self.RegularizationTable[layerNumber]
 

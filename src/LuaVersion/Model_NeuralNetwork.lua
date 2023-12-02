@@ -1024,6 +1024,143 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables, doNotUpdateMo
 
 end
 
+local function mergeLayers(numberOfNeurons, initialNeuronIndex, currentWeightMatrixTop, currentWeightMatrixBottom, currentWeightMatrixToAdd, nextWeightMatrixLeft, nextWeightMatrixToAdd, nextWeightMatrixRight)
+	
+	local newCurrentWeightMatrix
+	local newNextWeightMatrix
+	
+	if (numberOfNeurons < initialNeuronIndex) then
+
+		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixTop, currentWeightMatrixToAdd, currentWeightMatrixBottom)
+		newNextWeightMatrix = AqwamMatrixLibrary:verticalConcatenate(nextWeightMatrixLeft, nextWeightMatrixToAdd, nextWeightMatrixRight)
+
+	else
+
+		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixTop, currentWeightMatrixBottom, currentWeightMatrixToAdd)
+		newNextWeightMatrix = AqwamMatrixLibrary:verticalConcatenate(nextWeightMatrixLeft, nextWeightMatrixRight, nextWeightMatrixToAdd)
+
+	end
+	
+	return newCurrentWeightMatrix, newNextWeightMatrix
+	
+end
+
+function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, size)
+	
+	if (self.ModelParameters == nil) then error("No Model Parameters!") end
+	
+	if (#self.ModelParameters == 0) then 
+		
+		self.ModelParameters = nil
+		error("No Model Parameters!") 
+		
+	end
+	
+	local numberOfLayers = #self.numberOfNeuronsTable
+	
+	if (layerNumber > numberOfLayers) then error("Layer number exceeds this model's number of layers.") end
+	
+	local numberOfNeurons = self.numberOfNeuronsTable[layerNumber]
+	
+	local currentWeightMatrix
+	local nextWeightMatrix
+	
+	if (layerNumber == numberOfLayers) then
+		
+		currentWeightMatrix = self.ModelParameters[numberOfLayers - 1]
+		
+	elseif (layerNumber > 1) and (layerNumber < numberOfLayers) then
+		
+		currentWeightMatrix = self.ModelParameters[layerNumber - 1]
+		nextWeightMatrix = self.ModelParameters[layerNumber]
+		
+	else
+		
+		currentWeightMatrix = self.ModelParameters[1]
+		
+	end
+	
+	if (initialNeuronIndex > #currentWeightMatrix) then error("The index exceeds this layer's number of neurons.") end
+	
+	local hasNextLayer = (typeof(nextWeightMatrix) ~= "nil")
+	
+	local secondNeuronIndex = initialNeuronIndex + size
+	
+	local newCurrentWeightMatrix
+	local newNextWeightMatrix
+	
+	local currentWeightMatrixLeft
+	local currentWeightMatrixRight
+	
+	local nextWeightMatrixTop
+	local nextWeightMatrixBottom
+	
+	local currentWeightMatrixToAdd
+	local nextWeightMatrixToAdd
+	
+	AqwamMatrixLibrary:printMatrix(currentWeightMatrix, nextWeightMatrix)
+	
+	if (size > 0) and (hasNextLayer) then
+		
+		currentWeightMatrixLeft = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, 1, initialNeuronIndex)
+		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, initialNeuronIndex, #currentWeightMatrix[1])
+		
+		nextWeightMatrixTop = AqwamMatrixLibrary:extractRows(nextWeightMatrix, 1, initialNeuronIndex)
+		nextWeightMatrixBottom = AqwamMatrixLibrary:extractRows(nextWeightMatrix, initialNeuronIndex, #nextWeightMatrix)
+		
+		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode(#currentWeightMatrix, size)
+		nextWeightMatrixToAdd =  self:initializeMatrixBasedOnMode(size, #nextWeightMatrix[1])
+		
+		newCurrentWeightMatrix, newNextWeightMatrix = mergeLayers(numberOfNeurons, initialNeuronIndex, currentWeightMatrixLeft, currentWeightMatrixRight, currentWeightMatrixToAdd, nextWeightMatrixTop, nextWeightMatrixToAdd, nextWeightMatrixBottom)
+		
+	elseif (size > 0) and (not hasNextLayer) then
+		
+		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode(#currentWeightMatrix, size)
+		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrix, currentWeightMatrixToAdd)
+		
+	elseif (size < 0) and (hasNextLayer) then
+		
+		currentWeightMatrixLeft = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, 1, initialNeuronIndex)
+		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, secondNeuronIndex, #currentWeightMatrix[1])
+
+		nextWeightMatrixTop = AqwamMatrixLibrary:extractRows(nextWeightMatrix, 1, initialNeuronIndex)
+		nextWeightMatrixBottom = AqwamMatrixLibrary:extractRows(nextWeightMatrix, secondNeuronIndex, #nextWeightMatrix)
+		
+		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixLeft, currentWeightMatrixRight)
+		newNextWeightMatrix = AqwamMatrixLibrary:verticalConcatenate(nextWeightMatrixTop, nextWeightMatrixBottom)
+		
+	elseif (size < 0) and (not hasNextLayer) then
+		
+		currentWeightMatrixLeft = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, 1, initialNeuronIndex)
+		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, secondNeuronIndex, #currentWeightMatrix[1])
+		
+		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixLeft, currentWeightMatrixRight)
+		
+	elseif (size == 0) then
+		
+			error("Size is zero!")
+		
+	end
+	
+	if (layerNumber == numberOfLayers) then
+		
+		self.ModelParameters[numberOfLayers - 1] = newCurrentWeightMatrix
+
+	elseif (layerNumber > 1) and (layerNumber < numberOfLayers) then
+		
+		self.ModelParameters[layerNumber - 1] = newCurrentWeightMatrix
+		self.ModelParameters[layerNumber] = newNextWeightMatrix
+
+	else
+		
+		self.ModelParameters[1] = newCurrentWeightMatrix
+
+	end
+	
+	self.numberOfNeuronsTable[layerNumber] += size
+	
+end
+
 function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	local numberOfFeatures = #featureMatrix[1]

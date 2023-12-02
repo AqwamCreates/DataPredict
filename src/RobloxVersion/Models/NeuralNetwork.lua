@@ -1023,7 +1023,7 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 		
 	end
 	
-	local numberOfLayers = #self.numberOfNeuronsTable
+	local numberOfLayers = #self.numberOfNeuronsTable -- DON'T FORGET THAT IT DOES NOT INCLUDE BIAS!
 	
 	if (layerNumber > numberOfLayers) then error("Layer number exceeds this model's number of layers.") end
 	
@@ -1069,6 +1069,8 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 	local currentWeightMatrixToAdd
 	local nextWeightMatrixToAdd
 	
+	print(numberOfNeurons)
+	
 	if (initialNeuronIndex == 0) and (size > 0) and (hasNextLayer) then
 
 		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode(#currentWeightMatrix, size)
@@ -1100,6 +1102,15 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode(#currentWeightMatrix, size)
 		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrix, currentWeightMatrixToAdd)
 		
+	elseif (size == -1) and (hasNextLayer) and (numberOfNeurons == 1) then
+
+		newCurrentWeightMatrix = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, initialNeuronIndex, initialNeuronIndex)
+		newNextWeightMatrix = AqwamMatrixLibrary:extractRows(nextWeightMatrix, initialNeuronIndex, initialNeuronIndex)
+		
+	elseif (size == -1) and (not hasNextLayer) and (numberOfNeurons == 1) then
+
+		newCurrentWeightMatrix = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, initialNeuronIndex, initialNeuronIndex)
+		
 	elseif (size < 0) and (hasNextLayer) and (numberOfNeurons > absoluteSize) then
 		
 		currentWeightMatrixLeft = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, 1, secondNeuronIndex)
@@ -1117,6 +1128,10 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, thirdNeuronIndex, #currentWeightMatrix[1])
 		
 		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixLeft, currentWeightMatrixRight)
+		
+	elseif (size < 0) and (numberOfNeurons == 1)  then
+		
+		error("Size is too large!")
 		
 	elseif (size == 0) then
 		

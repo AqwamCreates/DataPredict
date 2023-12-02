@@ -867,7 +867,7 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 
 	local learningRateType = typeof(learningRate)
 
-	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learningRate!") end
+	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
 
 	if (typeof(numberOfNeurons) ~= "number") then error("Invalid input for number of neurons!") end
 

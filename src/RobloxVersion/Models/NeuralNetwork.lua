@@ -1111,7 +1111,7 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 
 		newCurrentWeightMatrix = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, initialNeuronIndex, initialNeuronIndex)
 		
-	elseif (size < 0) and (hasNextLayer) and (numberOfNeurons > absoluteSize) then
+	elseif (size < 0) and (hasNextLayer) and (numberOfNeurons >= absoluteSize) then
 		
 		currentWeightMatrixLeft = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, 1, secondNeuronIndex)
 		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, thirdNeuronIndex, #currentWeightMatrix[1])
@@ -1122,14 +1122,18 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixLeft, currentWeightMatrixRight)
 		newNextWeightMatrix = AqwamMatrixLibrary:verticalConcatenate(nextWeightMatrixTop, nextWeightMatrixBottom)
 		
-	elseif (size < 0) and (not hasNextLayer) and (numberOfNeurons > absoluteSize) then
+	elseif (size < 0) and (not hasNextLayer) and (numberOfNeurons >= absoluteSize) then
 		
 		currentWeightMatrixLeft = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, 1, secondNeuronIndex)
 		currentWeightMatrixRight = AqwamMatrixLibrary:extractColumns(currentWeightMatrix, thirdNeuronIndex, #currentWeightMatrix[1])
 		
 		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixLeft, currentWeightMatrixRight)
 		
-	elseif (size < 0) and (numberOfNeurons == 1)  then
+	elseif (size < 0) and (numberOfNeurons == 0)  then
+
+		error("No neurons to remove!")
+		
+	elseif (size < 0) and (numberOfNeurons < absoluteSize) then
 		
 		error("Size is too large!")
 		

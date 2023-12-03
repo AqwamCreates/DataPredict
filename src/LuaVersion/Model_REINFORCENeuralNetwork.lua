@@ -24,9 +24,11 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 
 		local predictedVector = NewREINFORCENeuralNetworkModel:predict(previousFeatureVector, true)
 		
-		local logPredictedVector = AqwamMatrixLibrary:applyFunction(math.log, predictedVector)
+		local normalizedPredictedVector = AqwamMatrixLibrary:verticalNormalizeMatrix(predictedVector)
+		
+		local logNormalizedPredictedVector = AqwamMatrixLibrary:applyFunction(math.log, normalizedPredictedVector)
 
-		table.insert(logProbilitiesMatrix, logPredictedVector[1])
+		table.insert(logProbilitiesMatrix, logNormalizedPredictedVector[1])
 		
 		table.insert(rewardVector, {rewardValue})
 

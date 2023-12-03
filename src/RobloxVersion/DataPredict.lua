@@ -23,7 +23,7 @@
 	GIVE CREDIT AND SOURCE WHEN USING THIS LIBRARY IF YOUR USAGE FALLS UNDER ONE OF THESE CATEGORIES:
 	
 		- USED AS A VIDEO OR ARTICLE CONTENT
-		- USED AS COMMERCIAL USE OR PUBLIC USE
+		- USED AS RESEARCH AND EDUCATION CONTENT
 	
 	--------------------------------------------------------------------
 		
@@ -90,6 +90,8 @@ local ModelsDictionary = {
 	DoubleExpectedStateActionRewardStateActionNeuralNetworkV1 = require(Models.DoubleExpectedStateActionRewardStateActionNeuralNetworkV1),
 	
 	DoubleExpectedStateActionRewardStateActionNeuralNetworkV2 = require(Models.DoubleExpectedStateActionRewardStateActionNeuralNetworkV2),
+	
+	REINFORCENeuralNetwork = require(Models.REINFORCENeuralNetwork),
 
 	RecurrentNeuralNetwork = require(Models.RecurrentNeuralNetwork),
 

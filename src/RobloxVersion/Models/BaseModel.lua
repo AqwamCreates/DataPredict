@@ -54,7 +54,7 @@ function BaseModel.new()
 
 	NewBaseModel.ModelParameters = nil
 	
-	NewBaseModel.ModelParametersInitializationMode = "RandomNormalNegativeAndPositive"
+	NewBaseModel.ModelParametersInitializationMode = "RandomUniformNegativeAndPositive"
 	
 	NewBaseModel.MinimumModelParametersInitializationValue = nil
 

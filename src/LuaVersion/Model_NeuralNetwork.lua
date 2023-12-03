@@ -1339,31 +1339,38 @@ function NeuralNetworkModel:showDetails()
 	end
 
 	-- Print the table header
-	print("Layer Details: \n")
-
-	print("|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
+	
+	local stringToPrint = ""
+	
+	stringToPrint ..= "Layer Details: \n\n"
+	
+	stringToPrint ..= "|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
 		string.rep("-", maxNeuronsLength) .. "-|-" ..
 		string.rep("-", maxBiasLength) .. "-|-" ..
 		string.rep("-", maxActivationLength) .. "-|-" ..
 		string.rep("-", maxLearningRateLength) .. "-|-" ..
 		string.rep("-", maxOptimizerLength) .. "-|-" ..
-		string.rep("-", maxRegularizationLength) .. "-|")
-
-	print("| " .. string.format("%-" .. maxLayerLength .. "s", "Layer") .. " | " ..
+		string.rep("-", maxRegularizationLength) .. "-|" .. 
+		"\n"
+	
+	stringToPrint ..= "| " .. string.format("%-" .. maxLayerLength .. "s", "Layer") .. " | " ..
 		string.format("%-" .. maxNeuronsLength .. "s", "Number Of Neurons") .. " | " ..
-		string.format("%-" .. maxBiasLength .. "s", "Bias Neuron Added") .. " | " ..
+		string.format("%-" .. maxBiasLength .. "s", "Has Bias Neuron") .. " | " ..
 		string.format("%-" .. maxActivationLength .. "s", "Activation Function") .. " | " ..
 		string.format("%-" .. maxLearningRateLength .. "s", "Learning Rate") .. " | " ..
 		string.format("%-" .. maxOptimizerLength .. "s", "Optimizer Added") .. " | " ..
-		string.format("%-" .. maxRegularizationLength .. "s", "Regularization Added") .. " |")
-
-	print("|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
+		string.format("%-" .. maxRegularizationLength .. "s", "Regularization Added") .. " |" .. 
+		"\n"
+	
+	
+	stringToPrint ..= "|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
 		string.rep("-", maxNeuronsLength) .. "-|-" ..
 		string.rep("-", maxBiasLength) .. "-|-" ..
 		string.rep("-", maxActivationLength) .. "-|-" ..
 		string.rep("-", maxLearningRateLength) .. "-|-" ..
 		string.rep("-", maxOptimizerLength) .. "-|-" ..
-		string.rep("-", maxRegularizationLength) .. "-|")
+		string.rep("-", maxRegularizationLength) .. "-|" .. 
+		"\n"
 
 	-- Print the layer details
 	for i = 1, #self.numberOfNeuronsTable do
@@ -1383,18 +1390,23 @@ function NeuralNetworkModel:showDetails()
 		local optimizer = "| " .. string.format("%-" .. maxOptimizerLength .. "s", self.OptimizerTable[i] and "true" or "false") .. " "
 
 		local regularization = "| " .. string.format("%-" .. maxRegularizationLength .. "s", self.RegularizationTable[i] and "true" or "false") .. " |"
-
-		print(layer .. neurons .. bias .. activation .. learningRate .. optimizer .. regularization)
+		
+		local stringPart = layer .. neurons .. bias .. activation .. learningRate .. optimizer .. regularization .. "\n"
+		
+		stringToPrint ..= stringPart
 
 	end
-
-	print("|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
+	
+	stringToPrint ..= "|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
 		string.rep("-", maxNeuronsLength) .. "-|-" ..
 		string.rep("-", maxBiasLength) .. "-|-" ..
 		string.rep("-", maxActivationLength) .. "-|-" ..
 		string.rep("-", maxLearningRateLength) .. "-|-" ..
 		string.rep("-", maxOptimizerLength) .. "-|-" ..
-		string.rep("-", maxRegularizationLength) .. "-|")
+		string.rep("-", maxRegularizationLength) .. "-|".. 
+		"\n\n"
+
+	print(stringToPrint)
 
 end
 

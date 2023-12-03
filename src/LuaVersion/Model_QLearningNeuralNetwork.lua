@@ -47,8 +47,6 @@ function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 	
 	NewQLearningNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		if (NewQLearningNeuralNetworkModel.ModelParameters == nil) then NewQLearningNeuralNetworkModel:generateLayers() end
-
 		local predictedValue, maxQValue = NewQLearningNeuralNetworkModel:predict(currentFeatureVector)
 
 		local target = rewardValue + (NewQLearningNeuralNetworkModel.discountFactor * maxQValue[1][1])

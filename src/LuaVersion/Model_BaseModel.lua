@@ -87,7 +87,7 @@ function BaseModel.new()
 
 	NewBaseModel.ModelParameters = nil
 	
-	NewBaseModel.ModelParametersInitializationMode = "RandomNormalNegativeAndPositive"
+	NewBaseModel.ModelParametersInitializationMode = "RandomUniformNegativeAndPositive"
 	
 	NewBaseModel.MinimumModelParametersInitializationValue = nil
 
@@ -244,6 +244,24 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		local RandomNormal2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 
 		return AqwamMatrixLibrary:subtract(RandomNormal1, RandomNormal2)
+		
+	elseif (initializationMode == "RandomUniformPositive") then
+
+		return AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+
+	elseif (initializationMode == "RandomUniformNegative") then
+
+		local RandomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+
+		return AqwamMatrixLibrary:multiply(RandomUniform, -1)
+
+	elseif (initializationMode == "RandomUniformNegativeAndPositive") then
+
+		local RandomUniform1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+
+		local RandomUniform2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+
+		return AqwamMatrixLibrary:subtract(RandomUniform1, RandomUniform2)
 		
 	elseif (initializationMode == "HeNormal") then
 		

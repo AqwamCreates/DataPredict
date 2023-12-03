@@ -109,9 +109,9 @@ function ReinforcementLearningNeuralNetworkBaseModel:setUpdateFunction(updateFun
 	
 end
 
-function ReinforcementLearningNeuralNetworkBaseModel:setEpisodeUpdateFunction(updateFunction)
+function ReinforcementLearningNeuralNetworkBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 	
-	self.episodeUpdateFunction = updateFunction
+	self.episodeUpdateFunction = episodeUpdateFunction
 	
 end
 
@@ -239,6 +239,12 @@ function ReinforcementLearningNeuralNetworkBaseModel:getCurrentEpsilon()
 	
 end
 
+function ReinforcementLearningNeuralNetworkBaseModel:extendResetFunction(resetFunction)
+	
+	self.resetFunction = resetFunction
+	
+end
+
 function ReinforcementLearningNeuralNetworkBaseModel:reset()
 	
 	self.currentNumberOfReinforcements = 0
@@ -256,6 +262,8 @@ function ReinforcementLearningNeuralNetworkBaseModel:reset()
 	end
 
 	if (self.ExperienceReplay) then self.ExperienceReplay:reset() end
+	
+	if (self.resetFunction) then self.resetFunction() end
 
 end
 

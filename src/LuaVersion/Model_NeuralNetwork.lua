@@ -1310,7 +1310,7 @@ function NeuralNetworkModel:showDetails()
 	-- Calculate the maximum length for each column
 	local maxLayerLength = string.len("Layer")
 	local maxNeuronsLength = string.len("Number Of Neurons")
-	local maxBiasLength = string.len("Bias Neuron Added")
+	local maxBiasLength = string.len("Has Bias Neuron")
 	local maxActivationLength = string.len("Activation Function")
 	local maxLearningRateLength = string.len("Learning Rate")
 	local maxOptimizerLength = string.len("Optimizer Added")

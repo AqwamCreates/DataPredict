@@ -32,9 +32,9 @@
 | [ExpectedStateActionRewardStateActionNeuralNetwork](Models/ExpectedStateActionRewardStateActionNeuralNetwork.md)                 | Deep Expected SARSA                        | Same As Q-Learning Neural Network                                           |
 | [DoubleExpectedStateActionRewardStateActionNeuralNetworkV1](Models/DoubleExpectedStateActionRewardStateActionNeuralNetworkV1.md) | Double Deep Expected SARSA                 | Same As Q-Learning Neural Network                                           |
 | [DoubleExpectedStateActionRewardStateActionNeuralNetworkV2](Models/DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.md) | Double Deep Expected SARSA                 | Same As Q-Learning Neural Network                                           |
-| [ActorCritic](Models/ActorCritic.md)                                                                                             | AC                                         | Same As Q-Learning Neural Network                                           |
-| [AdvantageActorCritic](Models/AdvantageActorCritic.md)                                                                           | A2C                                        | Same As Q-Learning Neural Network                                           |
-| [AsynchronousAdvantageActorCritic](Models/AsynchronousAdvantageActorCritic.md) (Not Recommended)                                 | A3C                                        | Same As Q-Learning Neural Network                                           |
+| [ActorCritic](Models/ActorCritic.md) (Under maintenance)                                                                                             | AC                                         | Same As Q-Learning Neural Network                                           |
+| [AdvantageActorCritic](Models/AdvantageActorCritic.md) (Under maintenance)                                                                         | A2C                                        | Same As Q-Learning Neural Network                                           |
+| [AsynchronousAdvantageActorCritic](Models/AsynchronousAdvantageActorCritic.md) (Under maintenance)                                 | A3C                                        | Same As Q-Learning Neural Network                                           |
 
 ### Sequential
 

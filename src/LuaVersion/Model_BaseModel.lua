@@ -215,18 +215,6 @@ function BaseModel:setModelParametersInitializationMode(initializationMode, mini
 	
 end
 
-local function createRandomUniformMatrix(numberOfRows, numberOfColumns)
-	
-	local RandomUniformPart1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-
-	local RandomUniformPart2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-	
-	local RandomUniform = AqwamMatrixLibrary:subtract(RandomUniformPart1, RandomUniformPart2)
-	
-	return RandomUniform
-	
-end
-
 function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 	
 	local initializationMode = self.ModelParametersInitializationMode

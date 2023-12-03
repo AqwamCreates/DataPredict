@@ -49,6 +49,14 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 		table.clear(logProbilitiesMatrix)
 		
 	end)
+	
+	NewREINFORCENeuralNetworkModel:extendResetFunction(function()
+		
+		table.clear(rewardVector)
+
+		table.clear(logProbilitiesMatrix)
+		
+	end)
 
 	return NewREINFORCENeuralNetworkModel
 
@@ -75,5 +83,6 @@ function REINFORCENeuralNetworkModel:setParameters(maxNumberOfIterations, learni
 end
 
 return REINFORCENeuralNetworkModel
+
 
 

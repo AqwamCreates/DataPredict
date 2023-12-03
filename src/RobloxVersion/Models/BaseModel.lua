@@ -240,7 +240,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomUniform = createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local RandomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
 		return  AqwamMatrixLibrary:multiply(variancePart, RandomUniform) 
 		
@@ -260,7 +260,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomUniform = createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local RandomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
 		return AqwamMatrixLibrary:multiply(variancePart, RandomUniform)
 		
@@ -280,7 +280,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomUniform = createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local RandomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
 		return AqwamMatrixLibrary:multiply(variancePart, RandomUniform) 
 

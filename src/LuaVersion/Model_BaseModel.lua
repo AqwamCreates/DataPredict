@@ -127,11 +127,11 @@ function BaseModel:baseModelWait(waitDuration)
 	
 	if (type(waitDuration) == "number") then
 		
-		wait(waitDuration)
+		task.wait(waitDuration)
 		
 	else
 		
-		wait()
+		task.wait()
 		
 	end
 	
@@ -273,7 +273,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomUniform = createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local RandomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
 		return  AqwamMatrixLibrary:multiply(variancePart, RandomUniform) 
 		
@@ -293,7 +293,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomUniform = createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local RandomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
 		return AqwamMatrixLibrary:multiply(variancePart, RandomUniform)
 		
@@ -313,7 +313,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomUniform = createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local RandomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
 		return AqwamMatrixLibrary:multiply(variancePart, RandomUniform) 
 
@@ -326,7 +326,7 @@ function BaseModel:destroy()
 	setmetatable(self, nil)
 	
 	table.clear(self)
-
+	
 	self = nil
 	
 end

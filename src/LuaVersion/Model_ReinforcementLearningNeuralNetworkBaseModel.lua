@@ -109,9 +109,25 @@ function ReinforcementLearningNeuralNetworkBaseModel:setUpdateFunction(updateFun
 	
 end
 
+function ReinforcementLearningNeuralNetworkBaseModel:setEpisodeUpdateFunction(updateFunction)
+	
+	self.episodeUpdateFunction = updateFunction
+	
+end
+
 function ReinforcementLearningNeuralNetworkBaseModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
 	
 	self.updateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	
+end
+
+function ReinforcementLearningNeuralNetworkBaseModel:episodeUpdate()
+	
+	local episodeUpdateFunction = self.episodeUpdateFunction
+	
+	if not episodeUpdateFunction then return end
+	
+	episodeUpdateFunction()
 	
 end
 
@@ -133,6 +149,8 @@ function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVec
 	
 	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
 		
+		self:episodeUpdate()
+		
 		self.currentNumberOfReinforcements = 0
 		
 		self.currentNumberOfEpisodes += 1
@@ -153,13 +171,13 @@ function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVec
 
 	local allOutputsMatrix
 
-	local randomProbability = math.random()
+	local randomProbability = Random.new():NextNumber()
 
 	if (randomProbability < self.currentEpsilon) then
 		
 		local numberOfClasses = #self.ClassesList
 
-		local randomNumber = math.random(1, numberOfClasses)
+		local randomNumber = Random.new():NextInteger(1, numberOfClasses)
 
 		action = self.ClassesList[randomNumber]
 

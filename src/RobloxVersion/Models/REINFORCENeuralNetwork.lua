@@ -36,9 +36,7 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 		
 		local sumReward = AqwamMatrixLibrary:sum(rewardVector)
 		
-		local negativeMeanLogProbabilitiesVector = AqwamMatrixLibrary:multiply(-1, meanLogProbabilitiesVector)
-		
-		local targetVector = AqwamMatrixLibrary:multiply(negativeMeanLogProbabilitiesVector, sumReward)
+		local targetVector = AqwamMatrixLibrary:multiply(meanLogProbabilitiesVector, sumReward)
 		
 		local numberOfNeurons = NewREINFORCENeuralNetworkModel.numberOfNeuronsTable[1] + NewREINFORCENeuralNetworkModel.hasBiasNeuronTable[1]
 		

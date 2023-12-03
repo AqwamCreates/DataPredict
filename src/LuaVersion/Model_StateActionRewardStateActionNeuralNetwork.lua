@@ -49,8 +49,6 @@ function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIteration
 
 	NewStateActionRewardStateActionNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		if (NewStateActionRewardStateActionNeuralNetworkModel.ModelParameters == nil) then NewStateActionRewardStateActionNeuralNetworkModel:generateLayers() end
-
 		local targetVector = NewStateActionRewardStateActionNeuralNetworkModel:predict(currentFeatureVector, true)
 
 		local dicountedVector = AqwamMatrixLibrary:multiply(NewStateActionRewardStateActionNeuralNetworkModel.discountFactor, targetVector)
@@ -87,4 +85,3 @@ function StateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberO
 end
 
 return StateActionRewardStateActionNeuralNetworkModel
-

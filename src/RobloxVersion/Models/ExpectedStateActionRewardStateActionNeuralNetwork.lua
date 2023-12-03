@@ -20,8 +20,6 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfI
 
 	NewExpectedStateActionRewardStateActionNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		if (NewExpectedStateActionRewardStateActionNeuralNetworkModel.ModelParameters == nil) then NewExpectedStateActionRewardStateActionNeuralNetworkModel:generateLayers() end
-
 		local expectedQValue = 0
 
 		local numberOfGreedyActions = 0

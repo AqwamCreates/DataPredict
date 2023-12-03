@@ -176,6 +176,22 @@ NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: 
 
 * Regularization: The regularization object to be added at the last layer.
 
+### evolvaLayerSize() (Not Released)
+
+Evolves a specified layer by changing the number of neurons.
+
+```
+NeuralNetwork:evolvaLayerSize(layerNumber: number, initialNeuronIndex: number, size: number)
+```
+
+#### Parameters:
+
+* layerNumber: The layer to evolve.
+
+* initialNeuronIndex: The starting point where to add or remove new neurons. When removing neurons, this will be the first neuron to be removed. When adding neurons, the new neurons will be added this specified neuron.
+
+* size: The number of neurons to add or to remove. Positive value indicates the addition of new neurons, while negative values indicates the removal of current neurons.
+
 ### train()
 
 Train the model.
@@ -281,7 +297,7 @@ Shows the details of all layers. The details includes the number of neurons, is 
 NeuralNetwork:showDetails()
 ```
 
-#### getLayerProperties()
+#### getLayer()
 
 Gets the settings of a particular layer.
 

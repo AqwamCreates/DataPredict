@@ -486,7 +486,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 
 		inputMatrix = activationFunction(layerZ)
 
-		if (hasBiasNeuron) then
+		if (hasBiasNeuron == 1) then
 
 			for data = 1, numberOfData, 1 do inputMatrix[data][1] = 1 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron
 
@@ -820,11 +820,11 @@ function NeuralNetworkModel:generateLayers()
 
 		numberOfCurrentLayerNeurons = layersArray[layer]
 
-		if self.hasBiasNeuronTable[layer] then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
+		if (self.hasBiasNeuronTable[layer] == 1) then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
 
 		numberOfNextLayerNeurons = layersArray[layer + 1]
 
-		if self.hasBiasNeuronTable[layer + 1] then numberOfNextLayerNeurons += 1 end
+		if (self.hasBiasNeuronTable[layer + 1] == 1) then numberOfNextLayerNeurons += 1 end
 
 		weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
 
@@ -870,7 +870,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 		if (layer == numberOfLayers) then
 
-			self.hasBiasNeuronTable[layer] = false
+			self.hasBiasNeuronTable[layer] = 0
 
 			self.OptimizerTable[layer] = Optimizer
 
@@ -878,7 +878,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 		else
 
-			self.hasBiasNeuronTable[layer] = true
+			self.hasBiasNeuronTable[layer] = 1
 
 			self.OptimizerTable[layer] = nil
 
@@ -909,6 +909,8 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
 
 	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron, true)
+	
+	hasBiasNeuron = (hasBiasNeuron and 1) or 0
 
 	learningRate = learningRate or self.learningRate
 
@@ -937,8 +939,12 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 	if (typeof(learningRate) ~= "number") then error("Invalid learning rate!") end
 
 	if  (typeof(activationFunction) ~= "string") then error("Invalid input for activation function!") end 
+	
+	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron,  self.hasBiasNeuronTable[layerNumber])
+	
+	hasBiasNeuron = (hasBiasNeuron and 1) or 0
 
-	self.hasBiasNeuronTable[layerNumber] = hasBiasNeuron or self.hasBiasNeuronTable[layerNumber]
+	self.hasBiasNeuronTable[layerNumber] = hasBiasNeuron
 
 	self.activationFunctionTable[layerNumber] = activationFunction or self.activationFunctionTable[layerNumber] 
 
@@ -1060,7 +1066,9 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 	
 	if (layerNumber > numberOfLayers) then error("Layer number exceeds this model's number of layers.") end
 	
-	local numberOfNeurons = self.numberOfNeuronsTable[layerNumber]
+	local hasBiasNeuronValue = self.hasBiasNeuronTable[layerNumber]
+	
+	local numberOfNeurons = self.numberOfNeuronsTable[layerNumber] + hasBiasNeuronValue
 	
 	local currentWeightMatrix
 	local nextWeightMatrix
@@ -1083,7 +1091,7 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 	
 	initialNeuronIndex = initialNeuronIndex or numberOfNeurons
 	
-	if (initialNeuronIndex > #currentWeightMatrix) then error("The index exceeds this layer's number of neurons.") end
+	if (initialNeuronIndex > numberOfNeurons) then error("The index exceeds this layer's number of neurons.") end
 	
 	local hasNextLayer = (typeof(nextWeightMatrix) ~= "nil")
 	
@@ -1200,7 +1208,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	local numberOfFeatures = #featureMatrix[1]
 	
-	local numberOfNeuronsAtInputLayer = self.numberOfNeuronsTable[1] + (self.hasBiasNeuronTable[1] and 1) or 0
+	local numberOfNeuronsAtInputLayer = self.numberOfNeuronsTable[1] + self.hasBiasNeuronTable[1]
 
 	if (numberOfNeuronsAtInputLayer ~= numberOfFeatures) then error("Input layer has " .. numberOfNeuronsAtInputLayer .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features!") end
 
@@ -1307,14 +1315,18 @@ function NeuralNetworkModel:showDetails()
 	local maxLearningRateLength = string.len("Learning Rate")
 	local maxOptimizerLength = string.len("Optimizer Added")
 	local maxRegularizationLength = string.len("Regularization Added")
+	
+	local hasBias
 
 	for i = 1, #self.numberOfNeuronsTable do
 
 		maxLayerLength = math.max(maxLayerLength, string.len(tostring(i)))
 
 		maxNeuronsLength = math.max(maxNeuronsLength, string.len(tostring(self.numberOfNeuronsTable[i])))
-
-		maxBiasLength = math.max(maxBiasLength, string.len(tostring(self.hasBiasNeuronTable[i])))
+		
+		hasBias = (self.hasBiasNeuronTable[i] == 1)
+		
+		maxBiasLength = math.max(maxBiasLength, string.len(tostring(hasBias)))
 
 		maxActivationLength = math.max(maxActivationLength, string.len(self.activationFunctionTable[i]))
 
@@ -1359,8 +1371,10 @@ function NeuralNetworkModel:showDetails()
 		local layer = "| " .. string.format("%-" .. maxLayerLength .. "s", i) .. " "
 
 		local neurons = "| " .. string.format("%-" .. maxNeuronsLength .. "s", self.numberOfNeuronsTable[i]) .. " "
-
-		local bias = "| " .. string.format("%-" .. maxBiasLength .. "s", tostring(self.hasBiasNeuronTable[i])) .. " "
+		
+		hasBias = (self.hasBiasNeuronTable[i] == 1)
+		
+		local bias = "| " .. string.format("%-" .. maxBiasLength .. "s", tostring(hasBias)) .. " "
 
 		local activation = "| " .. string.format("%-" .. maxActivationLength .. "s", self.activationFunctionTable[i]) .. " "
 

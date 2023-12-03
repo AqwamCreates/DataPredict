@@ -91,6 +91,8 @@ local ModelsDictionary = {
 	
 	DoubleExpectedStateActionRewardStateActionNeuralNetworkV2 = require(Models.DoubleExpectedStateActionRewardStateActionNeuralNetworkV2),
 	
+	DuelingQLearning = require(Models.DuelingQLearning),
+	
 	REINFORCENeuralNetwork = require(Models.REINFORCENeuralNetwork),
 
 	RecurrentNeuralNetwork = require(Models.RecurrentNeuralNetwork),

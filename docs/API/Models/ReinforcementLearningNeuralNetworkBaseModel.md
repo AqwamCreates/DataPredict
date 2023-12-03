@@ -126,9 +126,21 @@ ReinforcementLearningNeuralNetworkBaseModel:setUpdateFunction(updateFunction)
 
 * updateFunction: The function to run when update() is called.
 
+### setEpisodeUpdateFunction()
+
+Sets the model's episode update function.
+
+```
+ReinforcementLearningNeuralNetworkBaseModel:setUpdateFunction(episodeUpdateFunction)
+```
+
+#### Parameters:
+
+* episodeUpdateFunction: The function to run when episodeUpdate() is called.
+
 ### update()
 
-Updates the model parameters.
+Updates the model parameters using updateFunction().
 
 ```
 ReinforcementLearningNeuralNetworkBaseModel:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
@@ -144,12 +156,20 @@ ReinforcementLearningNeuralNetworkBaseModel:update(previousFeatiureVector: featu
 
 * currentFeatureVector: The currrent state of the environment.
 
-### setResetFunction()
+### episodeUpdate()
 
-Sets the model's reset function.
+Updates the model parameters using episodeUpdateFunction().
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:setResetFunction(resetFunction)
+ReinforcementLearningNeuralNetworkBaseModel:episodeUpdate()
+```
+
+### extendResetFunction()
+
+Adds new function on reset alongside with the current reset() function. 
+
+```
+ReinforcementLearningNeuralNetworkBaseModel:extendResetFunction(resetFunction)
 ```
 
 #### Parameters:

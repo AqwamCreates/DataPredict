@@ -20,15 +20,11 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 	
 	NewREINFORCENeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		local predictedValue, maxQValue = NewREINFORCENeuralNetworkModel:predict(currentFeatureVector)
-
 		local predictedVector = NewREINFORCENeuralNetworkModel:predict(previousFeatureVector, true)
 		
-		local normalizedPredictedVector = AqwamMatrixLibrary:horizontalNormalizeMatrix(predictedVector)
-		
-		local logNormalizedPredictedVector = AqwamMatrixLibrary:applyFunction(math.log, normalizedPredictedVector)
+		local logPredictedVector = AqwamMatrixLibrary:applyFunction(math.log, predictedVector)
 
-		table.insert(logProbilitiesMatrix, logNormalizedPredictedVector[1])
+		table.insert(logProbilitiesMatrix, logPredictedVector[1])
 		
 		table.insert(rewardVector, {rewardValue})
 

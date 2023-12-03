@@ -224,9 +224,9 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 	elseif (initializationMode == "RandomUniformNegativeAndPositive") then
 
-		local RandomUniform1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		local RandomUniform1 = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
-		local RandomUniform2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		local RandomUniform2 = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
 		return AqwamMatrixLibrary:subtract(RandomUniform1, RandomUniform2)
 		

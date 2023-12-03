@@ -131,7 +131,7 @@ ReinforcementLearningNeuralNetworkBaseModel:setUpdateFunction(updateFunction)
 Sets the model's episode update function.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:setUpdateFunction(episodeUpdateFunction)
+ReinforcementLearningNeuralNetworkBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 ```
 
 #### Parameters:

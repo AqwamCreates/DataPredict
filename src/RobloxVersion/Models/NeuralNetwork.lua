@@ -1048,6 +1048,8 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 		
 	end
 	
+	initialNeuronIndex = initialNeuronIndex or numberOfNeurons
+	
 	if (initialNeuronIndex > #currentWeightMatrix) then error("The index exceeds this layer's number of neurons.") end
 	
 	local hasNextLayer = (typeof(nextWeightMatrix) ~= "nil")

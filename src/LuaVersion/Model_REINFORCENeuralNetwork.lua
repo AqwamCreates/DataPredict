@@ -73,6 +73,3 @@ function REINFORCENeuralNetworkModel:setParameters(maxNumberOfIterations, learni
 end
 
 return REINFORCENeuralNetworkModel
-
-
-

@@ -1024,20 +1024,20 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables, doNotUpdateMo
 
 end
 
-local function mergeLayers(numberOfNeurons, initialNeuronIndex, currentWeightMatrixTop, currentWeightMatrixBottom, currentWeightMatrixToAdd, nextWeightMatrixLeft, nextWeightMatrixToAdd, nextWeightMatrixRight)
+local function mergeLayers(numberOfNeurons, initialNeuronIndex, currentWeightMatrixLeft, currentWeightMatrixRight, currentWeightMatrixToAdd, nextWeightMatrixTop, nextWeightMatrixToAdd, nextWeightMatrixBottom)
 	
 	local newCurrentWeightMatrix
 	local newNextWeightMatrix
 	
 	if (numberOfNeurons < initialNeuronIndex) then
 
-		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixTop, currentWeightMatrixToAdd, currentWeightMatrixBottom)
-		newNextWeightMatrix = AqwamMatrixLibrary:verticalConcatenate(nextWeightMatrixLeft, nextWeightMatrixToAdd, nextWeightMatrixRight)
+		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixLeft, currentWeightMatrixToAdd, currentWeightMatrixRight)
+		newNextWeightMatrix = AqwamMatrixLibrary:verticalConcatenate(nextWeightMatrixTop, nextWeightMatrixToAdd, nextWeightMatrixBottom)
 
 	else
 
-		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixTop, currentWeightMatrixBottom, currentWeightMatrixToAdd)
-		newNextWeightMatrix = AqwamMatrixLibrary:verticalConcatenate(nextWeightMatrixLeft, nextWeightMatrixRight, nextWeightMatrixToAdd)
+		newCurrentWeightMatrix = AqwamMatrixLibrary:horizontalConcatenate(currentWeightMatrixLeft, currentWeightMatrixRight, currentWeightMatrixToAdd)
+		newNextWeightMatrix = AqwamMatrixLibrary:verticalConcatenate(nextWeightMatrixTop, nextWeightMatrixBottom, nextWeightMatrixToAdd)
 
 	end
 	

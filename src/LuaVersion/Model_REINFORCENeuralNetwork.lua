@@ -14,29 +14,23 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 	
 	setmetatable(NewREINFORCENeuralNetworkModel, REINFORCENeuralNetworkModel)
 	
-	local logProbilitiesMatrix = {}
-	
-	local rewardVector = {}
+	local policyGradientMatrix = {}
 	
 	NewREINFORCENeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 		local predictedVector = NewREINFORCENeuralNetworkModel:predict(previousFeatureVector, true)
 		
 		local logPredictedVector = AqwamMatrixLibrary:applyFunction(math.log, predictedVector)
-
-		table.insert(logProbilitiesMatrix, logPredictedVector[1])
 		
-		table.insert(rewardVector, {rewardValue})
+		local targetVector = AqwamMatrixLibrary:multiply(logPredictedVector, rewardValue)
+
+		table.insert(policyGradientMatrix, targetVector[1])
 
 	end)
 	
 	NewREINFORCENeuralNetworkModel:setEpisodeUpdateFunction(function()
 		
-		local meanLogProbabilitiesVector = AqwamMatrixLibrary:verticalMean(logProbilitiesMatrix)
-		
-		local sumReward = AqwamMatrixLibrary:sum(rewardVector)
-		
-		local targetVector = AqwamMatrixLibrary:multiply(meanLogProbabilitiesVector, sumReward)
+		local targetVector = AqwamMatrixLibrary:verticalMean(policyGradientMatrix)
 		
 		local numberOfNeurons = NewREINFORCENeuralNetworkModel.numberOfNeuronsTable[1] + NewREINFORCENeuralNetworkModel.hasBiasNeuronTable[1]
 		
@@ -44,17 +38,13 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 		
 		NewREINFORCENeuralNetworkModel:train(inputVector, targetVector)
 		
-		table.clear(rewardVector)
-		
-		table.clear(logProbilitiesMatrix)
+		table.clear(policyGradientMatrix)
 		
 	end)
 	
 	NewREINFORCENeuralNetworkModel:extendResetFunction(function()
-		
-		table.clear(rewardVector)
 
-		table.clear(logProbilitiesMatrix)
+		table.clear(policyGradientMatrix)
 		
 	end)
 

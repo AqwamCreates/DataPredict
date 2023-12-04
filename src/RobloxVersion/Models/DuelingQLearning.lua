@@ -146,19 +146,19 @@ function DuelingQLearningModel:update(previousFeatureVector, action, rewardValue
 	
 	local _, maxCurrentQValue = self:fetchHighestValueInVector(currentQValue)
 	
-	local expectedQValue = rewardValue + (self.discountFactor * currentValue)
+	local expectedQValue = rewardValue + (self.discountFactor * maxCurrentQValue)
 	
-	local qValueLoss = AqwamMatrixLibrary:subtract(previousQValue, expectedQValue)
+	local qLoss = AqwamMatrixLibrary:subtract(previousQValue, expectedQValue)
 	
-	local valueLoss =  AqwamMatrixLibrary:subtract(previousValue, currentValue)
+	local vLoss = AqwamMatrixLibrary:subtract(previousValue, currentValue)
 	
 	self.ValueModel:forwardPropagate(previousFeatureVector, true)
 	
-	self.ValueModel:backPropagate(valueLoss, true)
+	self.ValueModel:backPropagate(qLoss, true)
 	
 	local allOutputsMatrix = self.AdvantageModel:forwardPropagate(previousFeatureVector, true)
 	
-	self.AdvantageModel:backPropagate(qValueLoss, true)
+	self.AdvantageModel:backPropagate(vLoss, true)
 	
 	return allOutputsMatrix
 

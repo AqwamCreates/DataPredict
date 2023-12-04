@@ -41,7 +41,7 @@ ConfidenceQLearningNeuralNetwork.__index = ConfidenceQLearningNeuralNetwork
 
 setmetatable(ConfidenceQLearningNeuralNetwork, ReinforcementLearningNeuralNetworkBaseModel)
 
-local defaultConfidenceLearningRate = 0.1
+-- Do not multiply confidenceValue with target! Otherwise, it will cause poor performance!
 
 function ConfidenceQLearningNeuralNetwork.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor, confidenceLearningRate)
 

@@ -30,6 +30,7 @@
 	--------------------------------------------------------------------
 
 --]]
+
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 AdvantageActorCriticModel = {}

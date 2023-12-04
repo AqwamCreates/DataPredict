@@ -10,7 +10,7 @@ ConfidenceQLearningNeuralNetwork.__index = ConfidenceQLearningNeuralNetwork
 
 setmetatable(ConfidenceQLearningNeuralNetwork, ReinforcementLearningNeuralNetworkBaseModel)
 
-local defaultConfidenceLearningRate = 0.1
+-- Do not multiply confidenceValue with target! Otherwise, it will cause poor performance!
 
 function ConfidenceQLearningNeuralNetwork.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor, confidenceLearningRate)
 
@@ -48,7 +48,7 @@ function ConfidenceQLearningNeuralNetwork.new(maxNumberOfIterations, learningRat
 			
 		end
 		
-		NewLogisticRegression:train(predictedValueVector, {{math.clamp(rewardValue, -1, 1)}})
+		NewLogisticRegression:train(predictedValueVector, {{rewardValue}})
 		
 	end)
 

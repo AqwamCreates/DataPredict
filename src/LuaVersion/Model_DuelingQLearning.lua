@@ -1,8 +1,8 @@
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
-DuelingQLearningModel = {}
+ActorCriticModel = {}
 
-DuelingQLearningModel.__index = DuelingQLearningModel
+ActorCriticModel.__index = ActorCriticModel
 
 local defaultNumberOfReinforcementsPerEpisode = 10
 
@@ -12,42 +12,48 @@ local defaultEpsilonDecayFactor = 0.999
 
 local defaultDiscountFactor = 0.95
 
-local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the episodic reward, but lower the running reward.
+function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
+	
+	local NewActorCriticModel = {}
+	
+	setmetatable(NewActorCriticModel, ActorCriticModel)
+	
+	NewActorCriticModel.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
 
-function DuelingQLearningModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
+	NewActorCriticModel.epsilon = epsilon or defaultEpsilon
 
-	local NewDuelingQLearningModel = {}
+	NewActorCriticModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
 
-	setmetatable(NewDuelingQLearningModel, DuelingQLearningModel)
+	NewActorCriticModel.discountFactor =  discountFactor or defaultDiscountFactor
+	
+	NewActorCriticModel.currentEpsilon = epsilon or defaultEpsilon
 
-	NewDuelingQLearningModel.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
+	NewActorCriticModel.previousFeatureVector = nil
 
-	NewDuelingQLearningModel.epsilon = epsilon or defaultEpsilon
+	NewActorCriticModel.printReinforcementOutput = true
 
-	NewDuelingQLearningModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
+	NewActorCriticModel.currentNumberOfReinforcements = 0
 
-	NewDuelingQLearningModel.discountFactor =  discountFactor or defaultDiscountFactor
-
-	NewDuelingQLearningModel.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
-
-	NewDuelingQLearningModel.currentEpsilon = epsilon or defaultEpsilon
-
-	NewDuelingQLearningModel.previousFeatureVector = nil
-
-	NewDuelingQLearningModel.printReinforcementOutput = true
-
-	NewDuelingQLearningModel.currentNumberOfReinforcements = 0
-
-	NewDuelingQLearningModel.currentNumberOfEpisodes = 0
-
-	NewDuelingQLearningModel.ClassesList = nil
-
-	return NewDuelingQLearningModel
-
+	NewActorCriticModel.currentNumberOfEpisodes = 0
+	
+	NewActorCriticModel.actionProbabilityHistory = {}
+	
+	NewActorCriticModel.criticValueHistory = {}
+	
+	NewActorCriticModel.rewardHistory = {}
+	
+	NewActorCriticModel.episodeReward = 0
+	
+	NewActorCriticModel.runningReward = 0
+	
+	NewActorCriticModel.ClassesList = nil
+	
+	return NewActorCriticModel
+	
 end
 
-function DuelingQLearningModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
-
+function ActorCriticModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	
 	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
 	self.epsilon = epsilon or self.epsilon
@@ -55,32 +61,199 @@ function DuelingQLearningModel:setParameters(numberOfReinforcementsPerEpisode, e
 	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
 
 	self.discountFactor =  discountFactor or self.discountFactor
-
-	self.rewardAveragingRate = rewardAveragingRate or self.rewardAveragingRate
-
+	
 	self.currentEpsilon = epsilon or self.currentEpsilon
+	
+end
+
+function ActorCriticModel:setActorModel(Model)
+	
+	self.ActorModel = Model
+	
+end
+
+function ActorCriticModel:setCriticModel(Model)
+
+	self.CriticModel = Model
 
 end
 
-function DuelingQLearningModel:setAdvantageModel(Model)
-
-	self.AdvantageModel = Model
-
-end
-
-function DuelingQLearningModel:setValueModel(Model)
-
-	self.ValueModel = Model
-
-end
-
-function DuelingQLearningModel:setClassesList(classesList)
-
+function ActorCriticModel:setClassesList(classesList)
+	
 	self.ClassesList = classesList
+	
+end
+
+local function softmax(zMatrix)
+
+	local expMatrix = AqwamMatrixLibrary:applyFunction(math.exp, zMatrix)
+
+	local expSum = AqwamMatrixLibrary:horizontalSum(expMatrix)
+
+	local aMatrix = AqwamMatrixLibrary:divide(expMatrix, expSum)
+
+	return aMatrix
+	
+end
+
+local function sampleAction(actionProbabilityVector)
+	
+	local totalProbability = 0
+	
+	for _, probability in ipairs(actionProbabilityVector[1]) do
+		
+		totalProbability += probability
+		
+	end
+
+	local randomValue = math.random() * totalProbability
+
+	local cumulativeProbability = 0
+	
+	local actionIndex = 1
+	
+	for i, probability in ipairs(actionProbabilityVector[1]) do
+		
+		cumulativeProbability += probability
+		
+		if (randomValue > cumulativeProbability) then continue end
+			
+		actionIndex = i
+		
+		break
+		
+	end
+	
+	return actionIndex
+	
+end
+
+function ActorCriticModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
+
+	local allOutputsMatrix = self.ActorModel:predict(previousFeatureVector, true)
+	
+	local actionProbabilityVector = softmax(allOutputsMatrix)
+
+	local criticValue = self.CriticModel:predict(previousFeatureVector, true)[1][1]
+	
+	local numberOfActions = #allOutputsMatrix[1]
+	
+	local actionIndex = sampleAction(actionProbabilityVector)
+	
+	local action = self.ClassesList[actionIndex]
+	
+	local actionProbability = AqwamMatrixLibrary:horizontalMean(actionProbabilityVector[1][actionIndex])
+	
+	self.episodeReward += rewardValue
+	
+	table.insert(self.actionProbabilityHistory, actionProbability)
+	
+	table.insert(self.criticValueHistory, criticValue)
+	
+	table.insert(self.rewardHistory, rewardValue)
+	
+	return allOutputsMatrix
 
 end
 
-function DuelingQLearningModel:fetchHighestValueInVector(outputVector)
+function ActorCriticModel:setExperienceReplay(ExperienceReplay)
+
+	self.ExperienceReplay = ExperienceReplay
+
+end
+
+local function getBooleanOrDefaultOption(boolean, defaultBoolean)
+
+	if (type(boolean) == "nil") then return defaultBoolean end
+
+	return boolean
+
+end
+
+function ActorCriticModel:setPrintReinforcementOutput(option)
+
+	self.printReinforcementOutput = getBooleanOrDefaultOption(option, self.printReinforcementOutput)
+
+end
+
+function ActorCriticModel:episodeUpdate(numberOfFeatures)
+
+	self.runningReward = (self.rewardAveragingRate * self.episodeReward) + ((1 - self.rewardAveragingRate) * self.runningReward)
+	
+	local returnsVector = {{}}
+	
+	local discountedSum = 0
+	
+	local historyLength = #self.rewardHistory
+	
+	for r = historyLength, 1, -1 do
+		
+		discountedSum = r + self.discountFactor * discountedSum
+		
+		table.insert(returnsVector[1], 1, discountedSum)
+		
+	end
+	
+	local returnsVectorMean = AqwamMatrixLibrary:mean(returnsVector)
+	
+	local returnsVectorStandardDeviation = AqwamMatrixLibrary:standardDeviation(returnsVector)
+	
+	local normalizedReturnVector = AqwamMatrixLibrary:subtract(returnsVector, returnsVectorMean)
+	
+	normalizedReturnVector = AqwamMatrixLibrary:divide(normalizedReturnVector, returnsVectorStandardDeviation)
+	
+	local sumActorLosses = 0
+	
+	local sumCriticLosses = 0
+	
+	for h = 1, historyLength, 1 do
+		
+		local reward = self.rewardHistory[h]
+		
+		local returns = normalizedReturnVector[1][h]
+		
+		local actionProbability = self.actionProbabilityHistory[h]
+		
+		local actorLoss = math.log(actionProbability) * (returns - reward) 
+		
+		local criticLoss = (returns - reward)^2
+		
+		sumActorLosses += actorLoss
+		
+		sumCriticLosses += criticLoss
+		
+	end
+	
+	local lossValue = sumActorLosses + sumCriticLosses
+	
+	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+	local lossVector = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList, lossValue)
+	
+	self.ActorModel:forwardPropagate(featureVector, true)
+	self.CriticModel:forwardPropagate(featureVector, true)
+	
+	self.ActorModel:backPropagate(lossVector, true)
+	self.CriticModel:backPropagate(lossValue, true)
+	
+	------------------------------------------------------
+	
+	self.episodeReward = 0
+
+	self.currentNumberOfReinforcements = 0
+
+	self.currentNumberOfEpisodes += 1
+
+	self.currentEpsilon *= self.epsilonDecayFactor
+	
+	table.clear(self.actionProbabilityHistory)
+	
+	table.clear(self.criticValueHistory)
+	
+	table.clear(self.rewardHistory)
+	
+end
+
+function ActorCriticModel:fetchHighestValueInVector(outputVector)
 
 	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(outputVector)
 
@@ -92,7 +265,7 @@ function DuelingQLearningModel:fetchHighestValueInVector(outputVector)
 
 end
 
-function DuelingQLearningModel:getLabelFromOutputMatrix(outputMatrix)
+function ActorCriticModel:getLabelFromOutputMatrix(outputMatrix)
 
 	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 
@@ -122,90 +295,24 @@ function DuelingQLearningModel:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function DuelingQLearningModel:forwardPropagate(featureVector)
-
-	local value = self.ValueModel:predict(featureVector, true)[1][1]
-
-	local advantageMatrix = self.AdvantageModel:predict(featureVector, true)
-
-	local meanAdvantageVector = AqwamMatrixLibrary:horizontalMean(advantageMatrix)
-
-	local qValuePart1 = AqwamMatrixLibrary:subtract(advantageMatrix, meanAdvantageVector)
-
-	local qValue = AqwamMatrixLibrary:add(value, qValuePart1)
-
-	return qValue, value
-
-end
-
-function DuelingQLearningModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-	local previousQValue, previousValue = self:forwardPropagate(previousFeatureVector)
-
-	local currentQValue, currentValue = self:forwardPropagate(currentFeatureVector)
-
-	local _, maxCurrentQValue = self:fetchHighestValueInVector(currentQValue)
-
-	local expectedQValue = rewardValue + (self.discountFactor * maxCurrentQValue)
-
-	local qLoss = AqwamMatrixLibrary:subtract(previousQValue, expectedQValue)
-
-	local vLoss = AqwamMatrixLibrary:subtract(previousValue, currentValue)
-
-	self.ValueModel:forwardPropagate(previousFeatureVector, true)
-
-	self.ValueModel:backPropagate(qLoss, true)
-
-	local allOutputsMatrix = self.AdvantageModel:forwardPropagate(previousFeatureVector, true)
-
-	self.AdvantageModel:backPropagate(vLoss, true)
-
-	return allOutputsMatrix
-
-end
-
-function DuelingQLearningModel:setExperienceReplay(ExperienceReplay)
-
-	self.ExperienceReplay = ExperienceReplay
-
-end
-
-local function getBooleanOrDefaultOption(boolean, defaultBoolean)
-
-	if (type(boolean) == "nil") then return defaultBoolean end
-
-	return boolean
-
-end
-
-function DuelingQLearningModel:setPrintReinforcementOutput(option)
-
-	self.printReinforcementOutput = getBooleanOrDefaultOption(option, self.printReinforcementOutput)
-
-end
-
-function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
-
-	if (self.ValueModel == nil) then error("No value model!") end
-
-	if (self.AdvantageModel == nil) then error("No advantage model!") end
+function ActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+	
+	if (self.ActorModel == nil) then error("No actor model!") end
+	
+	if (self.CriticModel == nil) then error("No critic model!") end
 
 	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
-
-		self.currentNumberOfReinforcements = 0
-
-		self.currentNumberOfEpisodes += 1
-
-		self.currentEpsilon *= self.epsilonDecayFactor
+		
+		self:episodeUpdate(#currentFeatureVector[1])
 
 	end
 
 	self.currentNumberOfReinforcements += 1
-
+	
 	local action
-
+	
 	local actionIndex
-
+	
 	local actionVector
 
 	local highestValue
@@ -227,7 +334,7 @@ function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, retu
 	else
 
 		if (self.previousFeatureVector) then
-
+			
 			allOutputsMatrix = self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 			actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
@@ -235,7 +342,7 @@ function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, retu
 			action = actionVector[1][1]
 
 			highestValue = highestValueVector[1][1]
-
+			
 		end
 
 	end
@@ -259,28 +366,32 @@ function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, retu
 	if (returnOriginalOutput) then return allOutputsMatrix end
 
 	return action, highestValue
-
+	
 end
 
-function DuelingQLearningModel:getCurrentNumberOfEpisodes()
+function ActorCriticModel:getCurrentNumberOfEpisodes()
 
 	return self.currentNumberOfEpisodes
 
 end
 
-function DuelingQLearningModel:getCurrentNumberOfReinforcements()
+function ActorCriticModel:getCurrentNumberOfReinforcements()
 
 	return self.currentNumberOfReinforcements
 
 end
 
-function DuelingQLearningModel:getCurrentEpsilon()
+function ActorCriticModel:getCurrentEpsilon()
 
 	return self.currentEpsilon
 
 end
 
-function DuelingQLearningModel:reset()
+function ActorCriticModel:reset()
+	
+	self.episodeReward = 0
+	
+	self.runningReward = 0
 
 	self.currentNumberOfReinforcements = 0
 
@@ -289,12 +400,18 @@ function DuelingQLearningModel:reset()
 	self.previousFeatureVector = nil
 
 	self.currentEpsilon = self.epsilon
+	
+	table.clear(self.actionProbabilityHistory)
+
+	table.clear(self.criticValueHistory)
+
+	table.clear(self.rewardHistory)
 
 	if (self.ExperienceReplay) then self.ExperienceReplay:reset() end
 
 end
 
-function DuelingQLearningModel:destroy()
+function ActorCriticModel:destroy()
 
 	setmetatable(self, nil)
 
@@ -304,4 +421,4 @@ function DuelingQLearningModel:destroy()
 
 end
 
-return DuelingQLearningModel
+return ActorCriticModel

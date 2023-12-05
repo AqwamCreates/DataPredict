@@ -4,10 +4,10 @@ By using or possesing any copies of this library, you agree to our [Terms and Co
 
 ![DataPredictIconSmall](https://user-images.githubusercontent.com/67371914/223632639-dea075fe-9dce-430c-af82-2fb0fbeb43d3.png)
 
-| Version | Current Version Number | Source Code + Documentation                                                                                                         |
-|---------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| Release | 1.5                    | [https://github.com/AqwamCreates/DataPredict/releases/tag/v1.5.0](https://github.com/AqwamCreates/DataPredict/releases/tag/v1.5.0)  |
-| Beta    | 1.19.0                 | This Documentation And Repository                                                                                                   |           
+| Version | Current Version Number |
+|---------|------------------------|
+| Release | 1.6                    |
+| Beta    | 1.19.0                 |          
 
 DataPredict is a machine and deep learning library for Roblox and Pure Lua.
 

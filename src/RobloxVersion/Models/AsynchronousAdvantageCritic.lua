@@ -499,8 +499,6 @@ function AsynchronousAdvantageActorCriticModel:start()
 
 			end
 			
-			AqwamMatrixLibrary:printMatrix(table.unpack(ActorMainModelParameters))
-			
 			for _, ActorModel in ipairs(self.ActorModelArray) do ActorModel:setModelParameters(ActorMainModelParameters) end
 
 			for _, CriticModel in ipairs(self.CriticModelArray) do CriticModel:setModelParameters(CriticMainModelParameters) end

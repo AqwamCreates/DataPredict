@@ -148,16 +148,14 @@ function AsynchronousAdvantageActorCriticModel:addActorCriticModel(ActorModel, C
 	
 end
 
-local function softmax(zMatrix)
+local function calculateProbability(outputMatrix)
 
-	local expMatrix = AqwamMatrixLibrary:applyFunction(math.exp, zMatrix)
+	local sumVector = AqwamMatrixLibrary:horizontalSum(outputMatrix)
 
-	local expSum = AqwamMatrixLibrary:horizontalSum(expMatrix)
+	local result = AqwamMatrixLibrary:divide(outputMatrix, sumVector)
 
-	local aMatrix = AqwamMatrixLibrary:divide(expMatrix, expSum)
+	return result
 
-	return aMatrix
-	
 end
 
 local function sampleAction(actionProbabilityVector)
@@ -204,7 +202,7 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 
 	local allOutputsMatrix = ActorModel:predict(previousFeatureVector, true)
 	
-	local actionProbabilityVector = softmax(allOutputsMatrix)
+	local actionProbabilityVector = calculateProbability(allOutputsMatrix)
 
 	local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 	

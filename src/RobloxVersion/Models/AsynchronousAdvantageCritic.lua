@@ -216,7 +216,7 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 	
 	local action = self.ClassesList[actionIndex]
 	
-	local actionProbability = math.log(actionProbabilityVector[1][actionIndex])
+	local actionProbability = actionProbabilityVector[1][actionIndex]
 	
 	self.episodeRewardArray[actorCriticModelNumber] += rewardValue
 	

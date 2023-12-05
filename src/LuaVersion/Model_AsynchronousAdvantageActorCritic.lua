@@ -545,7 +545,6 @@ function AsynchronousAdvantageActorCriticModel:start()
 	coroutine.resume(trainCoroutine)
 
 	return trainCoroutine
-		
 	
 end
 

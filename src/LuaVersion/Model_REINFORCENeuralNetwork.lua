@@ -1,6 +1,6 @@
-local ReinforcementLearningNeuralNetworkBaseModel = require("Model_ReinforcementLearningNeuralNetworkBaseModel")
+local ReinforcementLearningNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningNeuralNetworkBaseModel)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
 
 REINFORCENeuralNetworkModel = {}
 
@@ -36,7 +36,9 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 		
 		local inputVector = {table.create(numberOfNeurons, 1)}
 		
-		NewREINFORCENeuralNetworkModel:train(inputVector, targetVector)
+		NewREINFORCENeuralNetworkModel:forwardPropagate(inputVector, true)
+		
+		NewREINFORCENeuralNetworkModel:backPropagate(targetVector, true)
 		
 		table.clear(policyGradientMatrix)
 		

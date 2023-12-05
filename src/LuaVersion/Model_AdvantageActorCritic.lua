@@ -33,8 +33,6 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
-
 AdvantageActorCriticModel = {}
 
 AdvantageActorCriticModel.__index = AdvantageActorCriticModel
@@ -185,7 +183,7 @@ function AdvantageActorCriticModel:update(previousFeatureVector, action, rewardV
 	
 	local action = self.ClassesList[actionIndex]
 	
-	local actionProbability = math.log(actionProbabilityVector[1][actionIndex])
+	local actionProbability = actionProbabilityVector[1][actionIndex]
 	
 	self.episodeReward += rewardValue
 	

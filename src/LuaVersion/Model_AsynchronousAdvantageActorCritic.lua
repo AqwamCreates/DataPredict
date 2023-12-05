@@ -179,16 +179,14 @@ function AsynchronousAdvantageActorCriticModel:addActorCriticModel(ActorModel, C
 	
 end
 
-local function softmax(zMatrix)
+local function calculateProbability(outputMatrix)
 
-	local expMatrix = AqwamMatrixLibrary:applyFunction(math.exp, zMatrix)
+	local sumVector = AqwamMatrixLibrary:horizontalSum(outputMatrix)
 
-	local expSum = AqwamMatrixLibrary:horizontalSum(expMatrix)
+	local result = AqwamMatrixLibrary:divide(outputMatrix, sumVector)
 
-	local aMatrix = AqwamMatrixLibrary:divide(expMatrix, expSum)
+	return result
 
-	return aMatrix
-	
 end
 
 local function sampleAction(actionProbabilityVector)
@@ -235,7 +233,7 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 
 	local allOutputsMatrix = ActorModel:predict(previousFeatureVector, true)
 	
-	local actionProbabilityVector = softmax(allOutputsMatrix)
+	local actionProbabilityVector = calculateProbability(allOutputsMatrix)
 
 	local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 	
@@ -393,7 +391,7 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 
 	local allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 
-	local randomProbability = math.random()
+	local randomProbability = Random.new():NextNumber()
 	
 	local previousFeatureVector = self.previousFeatureVectorArray[actorCriticModelNumber]
 	
@@ -401,7 +399,7 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 
 	if (randomProbability < self.currentEpsilonArray[actorCriticModelNumber]) then
 
-		local randomNumber = math.random(1, #self.ClassesList)
+		local randomNumber = Random.new():NextInteger(1, #self.ClassesList)
 
 		action = self.ClassesList[randomNumber]
 

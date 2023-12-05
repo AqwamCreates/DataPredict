@@ -36,7 +36,9 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 		
 		local inputVector = {table.create(numberOfNeurons, 1)}
 		
-		NewREINFORCENeuralNetworkModel:train(inputVector, targetVector)
+		NewREINFORCENeuralNetworkModel:forwardPropagate(inputVector, true)
+		
+		NewREINFORCENeuralNetworkModel:backPropagate(targetVector, true)
 		
 		table.clear(policyGradientMatrix)
 		

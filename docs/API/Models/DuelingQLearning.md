@@ -4,7 +4,7 @@ DuelingQLearning is a base class for reinforcement learning.
 
 ## Notes:
 
-* The Advantage and Value models must be created separately. Then use setActorModel() and setCriticModel() to put it inside the ActorCritic model.
+* The Advantage and Value models must be created separately. Then use setAdvantageModel() and setValueodel() to put it inside the DuelingQLearning model.
 
 * Advantage and Value models must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 

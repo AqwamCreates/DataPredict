@@ -99,7 +99,7 @@ function ActorCriticModel:setParameters(numberOfReinforcementsPerEpisode, epsilo
 
 	self.discountFactor =  discountFactor or self.discountFactor
 
-	self.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
+	self.rewardAveragingRate = rewardAveragingRate or self.rewardAveragingRate
 	
 	self.currentEpsilon = epsilon or self.currentEpsilon
 	
@@ -120,18 +120,6 @@ end
 function ActorCriticModel:setClassesList(classesList)
 	
 	self.ClassesList = classesList
-	
-end
-
-local function softmax(zMatrix)
-
-	local expMatrix = AqwamMatrixLibrary:applyFunction(math.exp, zMatrix)
-
-	local expSum = AqwamMatrixLibrary:horizontalSum(expMatrix)
-
-	local aMatrix = AqwamMatrixLibrary:divide(expMatrix, expSum)
-
-	return aMatrix
 	
 end
 
@@ -167,11 +155,21 @@ local function sampleAction(actionProbabilityVector)
 	
 end
 
+local function calculateProbability(outputMatrix)
+	
+	local sumVector = AqwamMatrixLibrary:horizontalSum(outputMatrix)
+	
+	local result = AqwamMatrixLibrary:divide(outputMatrix, sumVector)
+	
+	return result
+	
+end
+
 function ActorCriticModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 	local allOutputsMatrix = self.ActorModel:predict(previousFeatureVector, true)
 	
-	local actionProbabilityVector = softmax(allOutputsMatrix)
+	local actionProbabilityVector = calculateProbability(allOutputsMatrix)
 
 	local criticValue = self.CriticModel:predict(previousFeatureVector, true)[1][1]
 	
@@ -181,7 +179,7 @@ function ActorCriticModel:update(previousFeatureVector, action, rewardValue, cur
 	
 	local action = self.ClassesList[actionIndex]
 	
-	local actionProbability = math.log(actionProbabilityVector[1][actionIndex])
+	local actionProbability = actionProbabilityVector[1][actionIndex]
 	
 	self.episodeReward += rewardValue
 	
@@ -360,11 +358,11 @@ function ActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOri
 
 	local allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 
-	local randomProbability = math.random()
+	local randomProbability = Random.new():NextNumber()
 
 	if (randomProbability < self.currentEpsilon) then
 
-		local randomNumber = math.random(1, #self.ClassesList)
+		local randomNumber = Random.new():NextInteger(1, #self.ClassesList)
 
 		action = self.ClassesList[randomNumber]
 
@@ -420,7 +418,7 @@ function ActorCriticModel:getCurrentNumberOfReinforcements()
 
 end
 
-function ActorCriticModel:getCurrentEpsilon(actorCriticModelNumber)
+function ActorCriticModel:getCurrentEpsilon()
 
 	return self.currentEpsilon
 

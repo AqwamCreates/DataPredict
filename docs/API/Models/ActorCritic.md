@@ -6,7 +6,7 @@ ActorCritic is a base class for reinforcement learning.
 
 * The Actor and Critic models must be created separately. Then use setActorModel() and setCriticModel() to put it inside the ActorCritic model.
 
-* Actor and Critic must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
+* Actor and Critic models must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 
 * Ensure the final layer of the Critic model has only one neuron. It is the default setting for all Critic models in research papers.
 

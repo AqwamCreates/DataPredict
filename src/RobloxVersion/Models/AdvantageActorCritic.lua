@@ -66,7 +66,7 @@ function AdvantageActorCriticModel:setParameters(numberOfReinforcementsPerEpisod
 
 	self.discountFactor =  discountFactor or self.discountFactor
 
-	self.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
+	self.rewardAveragingRate = rewardAveragingRate or self.rewardAveragingRate
 	
 	self.currentEpsilon = epsilon or self.currentEpsilon
 	
@@ -90,16 +90,14 @@ function AdvantageActorCriticModel:setClassesList(classesList)
 	
 end
 
-local function softmax(zMatrix)
+local function calculateProbability(outputMatrix)
 
-	local expMatrix = AqwamMatrixLibrary:applyFunction(math.exp, zMatrix)
+	local sumVector = AqwamMatrixLibrary:horizontalSum(outputMatrix)
 
-	local expSum = AqwamMatrixLibrary:horizontalSum(expMatrix)
+	local result = AqwamMatrixLibrary:divide(outputMatrix, sumVector)
 
-	local aMatrix = AqwamMatrixLibrary:divide(expMatrix, expSum)
+	return result
 
-	return aMatrix
-	
 end
 
 local function sampleAction(actionProbabilityVector)
@@ -138,7 +136,7 @@ function AdvantageActorCriticModel:update(previousFeatureVector, action, rewardV
 
 	local allOutputsMatrix = self.ActorModel:predict(previousFeatureVector, true)
 	
-	local actionProbabilityVector = softmax(allOutputsMatrix)
+	local actionProbabilityVector = calculateProbability(allOutputsMatrix)
 
 	local previousCriticValue = self.CriticModel:predict(previousFeatureVector, true)[1][1]
 	

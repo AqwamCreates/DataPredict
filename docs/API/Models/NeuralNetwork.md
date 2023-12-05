@@ -176,12 +176,12 @@ NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: 
 
 * Regularization: The regularization object to be added at the last layer.
 
-### evolvaLayerSize()
+### evolveLayerSize()
 
 Evolves a specified layer by changing the number of neurons.
 
 ```
-NeuralNetwork:evolvaLayerSize(layerNumber: number, initialNeuronIndex: number, size: number)
+NeuralNetwork:evolveLayerSize(layerNumber: number, initialNeuronIndex: number, size: number)
 ```
 
 #### Parameters:

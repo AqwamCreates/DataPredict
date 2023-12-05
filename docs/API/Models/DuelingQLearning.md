@@ -199,4 +199,4 @@ ActorCritic:destroy()
 
 ### References
 
-* [Actor Critic Method by Apoorv Nandan - Keras](https://keras.io/examples/rl/actor_critic_cartpole/)
+* [Dueling Deep Q Networks by Chris Yoon](https://towardsdatascience.com/dueling-deep-q-networks-81ffab672751)

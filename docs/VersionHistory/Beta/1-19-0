@@ -1,0 +1,11 @@
+# Beta Version 1.18.0
+
+## Added
+
+* Added REINFORCE and DuelingQLearning models.
+
+* Added evolveLayerSize() function to NeuralNetwork.
+
+## Fixes
+
+* Made some fixes with the ActorCritic, AdvantageActorCritic and AsynchronousActorCritic models.

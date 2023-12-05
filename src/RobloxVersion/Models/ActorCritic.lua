@@ -122,11 +122,11 @@ local function sampleAction(actionProbabilityVector)
 	
 end
 
-local function calculateProbability(outputVector)
+local function calculateProbability(outputMatrix)
 	
-	local sumVector = AqwamMatrixLibrary:horizontalSum(outputVector)
+	local sumVector = AqwamMatrixLibrary:horizontalSum(outputMatrix)
 	
-	local result = AqwamMatrixLibrary:divide(outputVector, sumVector)
+	local result = AqwamMatrixLibrary:divide(outputMatrix, sumVector)
 	
 	return result
 	

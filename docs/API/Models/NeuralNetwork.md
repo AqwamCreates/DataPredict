@@ -188,7 +188,7 @@ NeuralNetwork:evolveLayerSize(layerNumber: number, initialNeuronIndex: number, s
 
 * layerNumber: The layer to evolve.
 
-* initialNeuronIndex: The starting point where to add or remove new neurons. When removing neurons, this will be the first neuron to be removed. When adding neurons, the new neurons will be added this specified neuron. Setting this to nil will cause it to choose the final neuron.
+* initialNeuronIndex: The starting point where to add or remove new neurons. When removing neurons, this will be the first neuron to be removed. When adding neurons, the new neurons will be added after this neuron. Setting this to nil will cause it to choose the final neuron.
 
 * size: The number of neurons to add or to remove. Positive value indicates the addition of new neurons, while negative values indicates the removal of current neurons.
 

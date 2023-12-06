@@ -22,7 +22,7 @@ DuelingQLearning.new(numberOfReinforcementsPerEpisode: integer, epsilon: number,
 
 #### Parameters:
 
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value. It will be also used for actor and critic loss calculations.
+* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
 
@@ -46,7 +46,7 @@ DuelingQLearning:setParameters(numberOfReinforcementsPerEpisode: integer, epsilo
 
 #### Parameters:
 
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value. It will be also used for actor and critic loss calculations.
+* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
 

@@ -6,7 +6,7 @@ NaiveBayesModel.__index = NaiveBayesModel
 
 setmetatable(NaiveBayesModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local function extractFeatureMatrixFromPosition(featureMatrix, positionList)
 	

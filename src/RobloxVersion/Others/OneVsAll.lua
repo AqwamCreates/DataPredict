@@ -6,7 +6,7 @@ local Optimizers = DataPredictLibrary.Optimizers
 
 local Regularization = DataPredictLibrary.Others.Regularization
 
-local AqwamMatrixLibrary = require(DataPredictLibrary.AqwamRobloxMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require(DataPredictLibrary.AqwamMatrixLibraryLinker.Value)
 
 OneVsAll = {}
 

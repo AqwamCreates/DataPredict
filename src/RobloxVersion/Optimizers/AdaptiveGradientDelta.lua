@@ -2,7 +2,7 @@ AdaptiveGradientDeltaOptimizer = {}
 
 AdaptiveGradientDeltaOptimizer.__index = AdaptiveGradientDeltaOptimizer
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local defaultDecayRate = 0.9
 

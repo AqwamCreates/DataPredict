@@ -6,7 +6,7 @@ KMedoidsModel.__index = KMedoidsModel
 
 setmetatable(KMedoidsModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local defaultMaxNumberOfIterations = math.huge
 

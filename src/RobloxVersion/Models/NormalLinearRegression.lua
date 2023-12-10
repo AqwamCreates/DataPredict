@@ -6,7 +6,7 @@ NormalLinearRegressionModel.__index = NormalLinearRegressionModel
 
 setmetatable(NormalLinearRegressionModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 function NormalLinearRegressionModel.new()
 	

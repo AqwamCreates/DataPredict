@@ -2,7 +2,7 @@ AdaptiveGradientOptimizer = {}
 
 AdaptiveGradientOptimizer.__index = AdaptiveGradientOptimizer
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 function AdaptiveGradientOptimizer.new()
 	

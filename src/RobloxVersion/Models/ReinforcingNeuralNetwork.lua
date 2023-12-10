@@ -6,7 +6,7 @@ ReinforcingNeuralNetworkModel.__index = ReinforcingNeuralNetworkModel
 
 setmetatable(ReinforcingNeuralNetworkModel, NeuralNetworkModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamRobloxMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 function ReinforcingNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 	

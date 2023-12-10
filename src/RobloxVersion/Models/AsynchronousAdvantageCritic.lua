@@ -1,6 +1,6 @@
 local DataPredict = script.Parent.Parent
 
-local AqwamMatrixLibrary = require(DataPredict.AqwamRobloxMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require(DataPredict.AqwamMatrixLibraryLinker.Value)
 
 AsynchronousAdvantageActorCriticModel = {}
 

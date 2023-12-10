@@ -17,5 +17,5 @@ Once you put those two libraries into your game make sure you link the Machine L
 Next, we will use require() function to our machine/deep learning library
 
 ```lua
-local MDLL = require(AqwamMachineAndDeepLearningLibrary) 
+local DataPredict = require(AqwamMachineAndDeepLearningLibrary) 
 ```

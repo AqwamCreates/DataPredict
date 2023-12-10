@@ -65,6 +65,39 @@ local lossFunctionList = {
 	
 }
 
+local adjustedOutputFunctionList = {
+	
+	["Sigmoid"] = function (x) 
+
+		if (x >= 0.5) then 
+
+			return x
+
+		else 
+
+			return (1 - x)
+
+		end 
+
+	end,
+
+	["Tanh"] = function (x) 
+
+		if (x >= 0) then 
+
+			return x
+
+		else
+
+			return (2 - x)
+
+
+		end 
+
+	end
+	
+}
+
 local cutOffFunctionList = {
 	
 	["Sigmoid"] = function (x) 
@@ -285,29 +318,19 @@ function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
 	
 	if (typeof(z) == "number") then z = {{z}} end
 	
-	local probabilityVector = AqwamMatrixLibrary:applyFunction(sigmoidFunction, z)
+	local outputVector = AqwamMatrixLibrary:applyFunction(sigmoidFunction, z)
 	
-	local probabilityMatrix = AqwamMatrixLibrary:createMatrix(#featureMatrix, 2)
-	
-	local probability
-	
-	for i = 1, #probabilityMatrix, 1 do
-		
-		probability = probabilityVector[i][1]
-		
-		probabilityMatrix[i][1] = (1 - probability)
-			
-		probabilityMatrix[i][2] = probability
-		
-	end
-	
-	if (returnOriginalOutput == true) then return probabilityMatrix end
+	if (returnOriginalOutput == true) then return outputVector end
 	
 	local cutOffFunction = cutOffFunctionList[self.sigmoidFunction]
 	
-	local predictedLabelVector = AqwamMatrixLibrary:applyFunction(cutOffFunction, probabilityVector)
+	local adjustedOutputFunction = adjustedOutputFunctionList[self.sigmoidFunction]
 	
-	return predictedLabelVector, probabilityVector
+	local predictedLabelVector = AqwamMatrixLibrary:applyFunction(cutOffFunction, outputVector)
+	
+	local adjustedOutputVector = AqwamMatrixLibrary:applyFunction(adjustedOutputFunction, outputVector)
+	
+	return predictedLabelVector, outputVector
 
 end
 

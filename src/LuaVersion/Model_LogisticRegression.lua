@@ -89,7 +89,7 @@ local adjustedOutputFunctionList = {
 
 		else
 
-			return (2 - x)
+			return (2 + x)
 
 
 		end 

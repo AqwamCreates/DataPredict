@@ -16,15 +16,15 @@ local defaultLowestCost = -math.huge
 
 local defaultNumberOfcentroids = 1
 
-local defaultDistanceFunction = "euclidean"
+local defaultDistanceFunction = "Euclidean"
 
-local defaultLinkageFunction = "minimum"
+local defaultLinkageFunction = "Minimum"
 
 local defaultStopWhenModelParametersDoesNotChange = false
 
 local distanceFunctionList = {
 
-	["manhattan"] = function (x1, x2)
+	["Manhattan"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -36,7 +36,7 @@ local distanceFunctionList = {
 
 	end,
 
-	["euclidean"] = function (x1, x2)
+	["Euclidean"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -245,19 +245,19 @@ end
 
 local function updateDistanceMatrix(linkageFunction, centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-	if (linkageFunction == "minimum") then
+	if (linkageFunction == "Minimum") then
 
 		return minimumLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-	elseif (linkageFunction == "maximum") then
+	elseif (linkageFunction == "Maximum") then
 
 		return maximumLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-	elseif (linkageFunction == "groupAverage") then
+	elseif (linkageFunction == "GroupAverage") then
 
 		return groupAverageLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-	elseif (linkageFunction == "ward") then
+	elseif (linkageFunction == "Ward") then
 
 		return wardLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
@@ -414,10 +414,28 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 	centroidDistanceMatrix = createCentroidDistanceMatrix(centroids, self.distanceFunction)
 
 	repeat
+		
+		numberOfIterations += 1
 
 		self:iterationWait()
 		
-		cost = calculateCost(centroids, featureMatrix, self.distanceFunction)
+		cost = self:getCostWhenRequired(numberOfIterations, function()
+			
+			return calculateCost(centroids, featureMatrix, self.distanceFunction)
+			
+		end)
+		
+		if cost then
+			
+			table.insert(costArray, cost)
+
+			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+			
+			isOutsideCostBounds = (cost <= self.lowestCost) or (cost >= self.highestCost)
+			
+			if isOutsideCostBounds then break end
+			
+		end
 
 		centroidIndex1, centroidIndex2 = findClosestcentroids(centroidDistanceMatrix)
 
@@ -429,17 +447,11 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 		areModelParametersEqual = areModelParametersMatricesEqualInSizeAndValues(self.ModelParameters, PreviousModelParameters)
 
-		isOutsideCostBounds = (cost <= self.lowestCost) or (cost >= self.highestCost)
+		
 
 		PreviousModelParameters = self.ModelParameters
-		
-		numberOfIterations += 1
-		
-		table.insert(costArray, cost)
 
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-
-	until isOutsideCostBounds or (#centroids == self.numberOfcentroids) or (#centroids == 1) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
+	until (#centroids == self.numberOfcentroids) or (#centroids == 1) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 
 	self.ModelParameters = centroids
 

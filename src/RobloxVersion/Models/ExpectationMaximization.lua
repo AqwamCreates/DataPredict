@@ -279,6 +279,8 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 	repeat
 		
+		numberOfIterations += 1
+		
 		self:iterationWait()
 
 		responsibilities = eStep(featureMatrix, self.numberOfClusters, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
@@ -287,29 +289,35 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
 		
-		logLikelihood = AqwamMatrixLibrary:applyFunction(math.log, gaussianMatrix)
+		cost = self:getCostWhenRequired(numberOfIterations, function()
+			
+			logLikelihood = AqwamMatrixLibrary:applyFunction(math.log, gaussianMatrix)
 
-		sumLogLikelihood = AqwamMatrixLibrary:sum(logLikelihood)
+			sumLogLikelihood = AqwamMatrixLibrary:sum(logLikelihood)
+
+			table.insert(logLikelihoodArray, sumLogLikelihood)
+
+			if (#logLikelihoodArray > 1) then
+
+				cost = sumLogLikelihood - logLikelihoodArray[#logLikelihoodArray - 1] 
+
+			else
+
+				cost = -sumLogLikelihood
+
+			end
+			
+		end)
 		
-		table.insert(logLikelihoodArray, sumLogLikelihood)
-		
-		if (#logLikelihoodArray > 1) then
+		if cost then
 			
-			cost = sumLogLikelihood - logLikelihoodArray[#logLikelihoodArray - 1] 
-			
-		else
-			
-			cost = -sumLogLikelihood
+			table.insert(costArray, cost)
+
+			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+
+			if (cost ~= cost) then error("Too much variance in the data! Please change the argument values.") end
 			
 		end
-		
-		if (cost ~= cost) then error("Too much variance in the data! Please change the argument values.") end
-		
-		numberOfIterations += 1
-		
-		table.insert(costArray, cost)
-		
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
 	until (numberOfIterations >= self.maxNumberOfIterations) or (cost <= self.targetCost)
 

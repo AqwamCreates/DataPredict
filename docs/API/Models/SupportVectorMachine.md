@@ -30,15 +30,15 @@ SupportVectorMachine.new(maxNumberOfIterations: integer, cValue: number, targetC
 
 * kernelFunction: The kernel function to be used to train the model. Available options are:
   
-  *  linear
+  *  Linear
 
-  *  polynomial
+  *  Polynomial
 
-  *  radialBasisFunction
+  *  RadialBasisFunction
 
-  *  cosineSimilarity
+  *  CosineSimilarity
 
-  *  sigmoid
+  *  Sigmoid
 
 * kernelParameters: A table containg the required parameters 
 
@@ -68,15 +68,15 @@ SupportVectorMachine:setParameters(maxNumberOfIterations: integer, cValue: numbe
 
 * kernelFunction: The kernel function to be used to train the model. Available options are:
   
-  *  linear
+  *  Linear
 
-  *  polynomial
+  *  Polynomial
 
-  *  radialBasisFunction
+  *  RadialBasisFunction
 
-  *  cosineSimilarity
+  *  CosineSimilarity
 
-  *  sigmoid
+  *  Sigmoid
 
 * kernelParameters: A table containg the required parameters 
 

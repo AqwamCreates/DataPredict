@@ -1212,6 +1212,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	end
 
 	repeat
+		
+		numberOfIterations += 1
 
 		self:iterationWait()
 
@@ -1236,8 +1238,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
 
 		self:backPropagate(lossMatrix, true)
-
-		numberOfIterations += 1
 
 	until (numberOfIterations == self.maxNumberOfIterations)
 

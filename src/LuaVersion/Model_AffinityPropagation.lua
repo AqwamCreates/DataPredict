@@ -116,7 +116,7 @@ local function initializePreferences(featureMatrix)
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, "manhattan")
+	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, "Manhattan")
 	
 	local preferencesVector = AqwamMatrixLibrary:horizontalSum(distanceMatrix)
 	
@@ -398,7 +398,7 @@ function AffinityPropagationModel:predict(featureMatrix)
 	
 	local storedFeatureMatrix, clusterVector = table.unpack(self.ModelParameters)
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, storedFeatureMatrix, "manhattan")
+	local distanceMatrix = createDistanceMatrix(featureMatrix, storedFeatureMatrix, "Manhattan")
 	
 	for i = 1, #featureMatrix, 1 do
 		

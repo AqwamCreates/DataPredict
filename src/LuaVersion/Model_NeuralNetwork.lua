@@ -1225,6 +1225,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	local logisticMatrix
 
 	local activatedOutputsMatrix
+	
+	if not self.ModelParameters then self.ModelParameters = self:generateLayers() end
 
 	if (#labelVector[1] == 1) and (numberOfNeuronsAtFinalLayer ~= 1) then
 

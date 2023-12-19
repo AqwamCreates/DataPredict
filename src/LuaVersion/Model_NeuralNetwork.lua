@@ -35,12 +35,6 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
-NeuralNetworkModel = {}
-
-NeuralNetworkModel.__index = NeuralNetworkModel
-
-setmetatable(NeuralNetworkModel, BaseModel)
-
 local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
@@ -1245,6 +1239,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	end
 
 	repeat
+		
+		numberOfIterations += 1
 
 		self:iterationWait()
 
@@ -1269,8 +1265,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
 
 		self:backPropagate(lossMatrix, true)
-
-		numberOfIterations += 1
 
 	until (numberOfIterations == self.maxNumberOfIterations)
 

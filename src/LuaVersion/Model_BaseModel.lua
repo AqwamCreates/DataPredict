@@ -107,11 +107,11 @@ function BaseModel.new()
 	
 end
 
-function BaseModel:calculateCost(currentNumberOfIteration, costFunction, ...)
+function BaseModel:calculateCost(currentNumberOfIteration, costFunction)
 	
-	if (currentNumberOfIteration % self.NumberOfIterationsPerCostCalculation) == 0 then 
+	if ((currentNumberOfIteration % self.NumberOfIterationsPerCostCalculation) == 0) then 
 		
-		return costFunction(...)
+		return costFunction()
 		
 	else
 		

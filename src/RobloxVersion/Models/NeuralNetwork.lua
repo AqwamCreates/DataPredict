@@ -1216,8 +1216,22 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		self:iterationWait()
 
 		activatedOutputsMatrix = self:forwardPropagate(featureMatrix, true)
+		
+		cost = self:getCostWhenRequired(numberOfIterations, function()
 
-		cost = self:calculateCost(activatedOutputsMatrix, logisticMatrix)
+			return self:calculateCost(activatedOutputsMatrix, logisticMatrix)
+
+		end)
+
+		if cost then 
+
+			table.insert(costArray, cost)
+
+			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+
+			if (math.abs(cost) <= self.targetCost) then break end
+
+		end
 
 		lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
 
@@ -1225,11 +1239,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		numberOfIterations += 1
 
-		table.insert(costArray, cost)
-
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-
-	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
+	until (numberOfIterations == self.maxNumberOfIterations)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 

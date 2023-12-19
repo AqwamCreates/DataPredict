@@ -47,13 +47,13 @@ local defaultTargetCost = 0
 
 local defaultDamping = 0.5
 
-local defaultSimilarityFunction = "euclidean"
+local defaultSimilarityFunction = "Euclidean"
 
 local defaultNumberOfIterationsToConfirmConvergence = math.huge
 
 local distanceFunctionList = {
 
-	["manhattan"] = function (x1, x2)
+	["Manhattan"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -65,7 +65,7 @@ local distanceFunctionList = {
 
 	end,
 
-	["euclidean"] = function (x1, x2)
+	["Euclidean"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -335,7 +335,9 @@ function AffinityPropagationModel:train(featureMatrix)
 	local cost
 
 	repeat
-
+		
+		numberOfIterations += 1
+		
 		self:iterationWait()
 
 		similarityMatrix = calculateSimilarityMatrix(featureMatrix, similarityMatrix, preferenceVector)
@@ -364,14 +366,20 @@ function AffinityPropagationModel:train(featureMatrix)
 		
 		previousClusterVector = clusterVector
 		
-		cost = calculateCost(clusterVector, responsibilityMatrix)
-
-		numberOfIterations += 1
+		cost = self:getCostWhenRequired(numberOfIterations, function()
+			
+			return calculateCost(clusterVector, responsibilityMatrix)
+			
+		end) 
 		
-		table.insert(costArray, cost)
+		if cost then
+			
+			table.insert(costArray, cost)
 
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-
+			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+			
+		end
+		
 	until (numberOfIterations >= self.maxNumberOfIterations) or (cost <= self.targetCost) or (numberOfIterationsWhenConvergenceOccurred >= self.numberOfIterationsToConfirmConvergence)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end

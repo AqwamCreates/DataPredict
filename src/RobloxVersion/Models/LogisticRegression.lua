@@ -229,7 +229,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		
 		self:iterationWait()
 		
-		cost = self:calculateCost(numberOfIterations, function()
+		cost = self:getCostWhenRequired(numberOfIterations, function()
 
 			cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
 

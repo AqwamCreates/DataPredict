@@ -16,7 +16,7 @@ local defaultCvalue = 1
 
 local defaultTargetCost = 0
 
-local defaultKernelFunction = "linear"
+local defaultKernelFunction = "Linear"
 
 local defaultGamma = 1
 
@@ -28,7 +28,7 @@ local defaultR = 0
 
 local distanceFunctionList = {
 
-	["manhattan"] = function (x1, x2)
+	["Manhattan"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -40,7 +40,7 @@ local distanceFunctionList = {
 
 	end,
 
-	["euclidean"] = function (x1, x2)
+	["Euclidean"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -58,13 +58,13 @@ local distanceFunctionList = {
 
 local mappingList = {
 
-	["linear"] = function(X)
+	["Linear"] = function(X)
 
 		return X
 
 	end,
 
-	["polynomial"] = function(X, kernelParameters)
+	["Polynomial"] = function(X, kernelParameters)
 		
 		local degree = kernelParameters.degree or defaultDegree
 		
@@ -80,7 +80,7 @@ local mappingList = {
 
 	end,
 
-	["radialBasisFunction"] = function(X, kernelParameters)
+	["RadialBasisFunction"] = function(X, kernelParameters)
 		
 		local sigma = kernelParameters.sigma or defaultSigma
 
@@ -96,7 +96,7 @@ local mappingList = {
 
 	end,
 
-	["cosineSimilarity"] = function(X)
+	["CosineSimilarity"] = function(X)
 
 		local XSquaredVector = AqwamMatrixLibrary:power(X, 2)
 
@@ -106,7 +106,7 @@ local mappingList = {
 
 	end,
 	
-	["sigmoid"] = function(X, kernelParameters)
+	["Sigmoid"] = function(X, kernelParameters)
 
 		local gamma = kernelParameters.gamma or defaultGamma
 
@@ -160,7 +160,7 @@ end
 
 local kernelFunctionList = {
 
-	["linear"] = function(X)
+	["Linear"] = function(X)
 
 		local kernelMatrix = AqwamMatrixLibrary:dotProduct(X, AqwamMatrixLibrary:transpose(X))
 
@@ -168,7 +168,7 @@ local kernelFunctionList = {
 
 	end,
 
-	["polynomial"] = function(X, kernelParameters)
+	["Polynomial"] = function(X, kernelParameters)
 		
 		local degree = kernelParameters.degree or defaultDegree
 
@@ -188,11 +188,11 @@ local kernelFunctionList = {
 
 	end,
 
-	["radialBasisFunction"] = function(X, kernelParameters)
+	["RadialBasisFunction"] = function(X, kernelParameters)
 		
 		local sigma	= kernelParameters.sigma or defaultSigma
 
-		local distanceMatrix = createDistanceMatrix(X, X, "euclidean")
+		local distanceMatrix = createDistanceMatrix(X, X, "Euclidean")
 		
 		local squaredDistanceMatrix = AqwamMatrixLibrary:power(distanceMatrix, 2)
 
@@ -208,11 +208,11 @@ local kernelFunctionList = {
 
 	end,
 
-	["cosineSimilarity"] = function(X)
+	["CosineSimilarity"] = function(X)
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(X, AqwamMatrixLibrary:transpose(X))
 
-		local distanceMatrix = calculateDistance(X, X, "euclidean")
+		local distanceMatrix = calculateDistance(X, X, "Euclidean")
 
 		local normX = AqwamMatrixLibrary:power(distanceMatrix, 2)
 
@@ -222,7 +222,7 @@ local kernelFunctionList = {
 
 	end,
 	
-	["sigmoid"] = function(X, kernelParameters)
+	["Sigmoid"] = function(X, kernelParameters)
 
 		local gamma = kernelParameters.gamma or defaultGamma
 

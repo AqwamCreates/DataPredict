@@ -399,11 +399,13 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 			self:printCostAndNumberOfIterations(cost, numberOfIterations)
 			
+			if (math.abs(cost) <= self.targetCost) then break end
+			
 		end
 
 		self.ModelParameters = calculateModelParameters(self.ModelParameters, mappedFeatureMatrix, labelVector, self.cValue)
 
-	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
+	until (numberOfIterations == self.maxNumberOfIterations)
 
 	if (cost == math.huge) then
 

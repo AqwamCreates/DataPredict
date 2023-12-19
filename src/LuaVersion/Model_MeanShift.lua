@@ -47,7 +47,7 @@ local defaultHighestCost = math.huge
 
 local defaultLowestCost = -math.huge
 
-local defaultDistanceFunction = "euclidean"
+local defaultDistanceFunction = "Euclidean"
 
 local defaultStopWhenModelParametersDoesNotChange = true
 
@@ -57,7 +57,7 @@ local defaultBandwidthStep = 100
 
 local distanceFunctionList = {
 
-	["manhattan"] = function (x1, x2)
+	["Manhattan"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -69,7 +69,7 @@ local distanceFunctionList = {
 
 	end,
 
-	["euclidean"] = function (x1, x2)
+	["Euclidean"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -380,9 +380,27 @@ function MeanShiftModel:train(featureMatrix)
 	
 	repeat
 		
+		numberOfIterations += 1
+		
 		self:iterationWait()
 
-		cost = calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
+		cost = self:getCostWhenRequired(numberOfIterations, function()
+			
+			calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
+			
+		end)
+		
+		if cost then
+			
+			table.insert(costArray, cost)
+			
+			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+			
+			isOutsideCostBounds = (cost <= self.lowestCost) or (cost >= self.highestCost)
+			
+			if isOutsideCostBounds then break end
+			
+		end
 		
 		PreviousModelParameters = self.ModelParameters
 
@@ -390,15 +408,7 @@ function MeanShiftModel:train(featureMatrix)
 
 		areModelParametersEqual = checkIfModelParametersAreEqual(self.ModelParameters, PreviousModelParameters)
 		
-		isOutsideCostBounds = (cost <= self.lowestCost) or (cost >= self.highestCost)
-		
-		numberOfIterations += 1
-		
-		table.insert(costArray, cost)
-		
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-
-	until (numberOfIterations == self.maxNumberOfIterations) or isOutsideCostBounds or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
+	until (numberOfIterations == self.maxNumberOfIterations) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

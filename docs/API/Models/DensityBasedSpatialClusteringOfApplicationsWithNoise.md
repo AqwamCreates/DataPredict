@@ -26,7 +26,7 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise.new(epsilon: number, minimu
 
 * minimumNumberOfPoints: Minimum number of data points required to form a cluster.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are “euclidean” and “manhattan“.
+* distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“.
 
 * targetCost: The cost at which the model stops training.
 
@@ -50,7 +50,7 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise:setParameters(epsilon: numb
 
 * minimumNumberOfPoints: Minimum number of data points required to form a cluster.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are “euclidean” and “manhattan“.
+* distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“.
 
 * targetCost: The cost at which the model stops training.
 

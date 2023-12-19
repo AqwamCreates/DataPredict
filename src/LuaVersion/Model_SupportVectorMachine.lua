@@ -33,14 +33,6 @@
 
 local BaseModel = require("Model_BaseModel")
 
-SupportVectorMachineModel = {}
-
-SupportVectorMachineModel.__index = SupportVectorMachineModel
-
-setmetatable(SupportVectorMachineModel, BaseModel)
-
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
-
 local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.01
@@ -415,18 +407,26 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	local kernelMatrix  = calculateKernel(featureMatrix, self.kernelFunction, self.kernelParameters)
 	
 	repeat
-
-		self:iterationWait()
-
-		cost = calculateCost(self.ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, self.cValue)
-
-		self.ModelParameters = calculateModelParameters(self.ModelParameters, mappedFeatureMatrix, labelVector, self.cValue)
 		
 		numberOfIterations += 1
+
+		self:iterationWait()
 		
-		table.insert(costArray, cost)
-		
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
+		cost = self:getCostWhenRequired(numberOfIterations, function()
+			
+			return calculateCost(self.ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, self.cValue)
+			
+		end)
+
+		if cost then
+			
+			table.insert(costArray, cost)
+
+			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+			
+		end
+
+		self.ModelParameters = calculateModelParameters(self.ModelParameters, mappedFeatureMatrix, labelVector, self.cValue)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
 

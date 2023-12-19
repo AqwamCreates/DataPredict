@@ -12,13 +12,13 @@ local defaultTargetCost = 0
 
 local defaultMinimumNumberOfPoints = 2
 
-local defaultDistanceFunction = "manhattan"
+local defaultDistanceFunction = "Manhattan"
 
 local defaultEpsilon = 10
 
 local distanceFunctionList = {
 
-	["manhattan"] = function (x1, x2)
+	["Manhattan"] = function (x1, x2)
 		
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 		
@@ -30,7 +30,7 @@ local distanceFunctionList = {
 		
 	end,
 
-	["euclidean"] = function (x1, x2)
+	["Euclidean"] = function (x1, x2)
 		
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 		
@@ -255,13 +255,21 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 			
 		end
 		
-		cost = calculateCost(featureMatrix, clusters, self.distanceFunction)
-
-		table.insert(costArray, cost)
-
-		self:printCostAndNumberOfIterations(cost, currentCorePointNumber)
+		cost = self:getCostWhenRequired(currentCorePointNumber, function()
+			
+			return calculateCost(featureMatrix, clusters, self.distanceFunction)
+			
+		end)
 		
-		if (cost == self.targetCost) then break end
+		if cost then
+			
+			table.insert(costArray, cost)
+
+			self:printCostAndNumberOfIterations(cost, currentCorePointNumber)
+
+			if (cost == self.targetCost) then break end
+			
+		end
 		
 	end
 	

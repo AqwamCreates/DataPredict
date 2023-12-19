@@ -193,7 +193,7 @@ end
 
 local function wardLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-	local newCentroidDistanceMatrix = createCentroidDistanceMatrix(centroids, "euclidean")
+	local newCentroidDistanceMatrix = createCentroidDistanceMatrix(centroids, "Euclidean")
 
 	for i = 2, #newCentroidDistanceMatrix,1 do
 

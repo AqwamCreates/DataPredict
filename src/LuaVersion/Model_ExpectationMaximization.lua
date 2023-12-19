@@ -347,12 +347,14 @@ function ExpectationMaximizationModel:train(featureMatrix)
 			table.insert(costArray, cost)
 
 			self:printCostAndNumberOfIterations(cost, numberOfIterations)
-
+			
 			if (cost ~= cost) then error("Too much variance in the data! Please change the argument values.") end
 			
+			if (cost <= self.targetCost) then break end
+
 		end
 
-	until (numberOfIterations >= self.maxNumberOfIterations) or (cost <= self.targetCost)
+	until (numberOfIterations >= self.maxNumberOfIterations)
 
 	self.ModelParameters = {piMatrix, meanMatrix, varianceMatrix}
 

@@ -116,11 +116,11 @@ function Regularization:calculateRegularizationDerivatives(ModelParameters, numb
 		
 		ModelParametersSign = AqwamMatrixLibrary:applyFunction(math.sign, ModelParameters)
 		
-		local RegularizationDerivativePart1 = AqwamMatrixLibrary:multiply(self.lambda, ModelParametersSign)
+		local regularizationDerivativesPart1 = AqwamMatrixLibrary:multiply(self.lambda, ModelParametersSign)
 		
-		local RegularizationDerivativePart2 = AqwamMatrixLibrary:multiply(self.lambda, ModelParameters)
+		local regularizationDerivativesPart2 = AqwamMatrixLibrary:multiply(self.lambda, ModelParameters)
 		
-		regularizationDerivatives = AqwamMatrixLibrary:add(RegularizationDerivativePart1, RegularizationDerivativePart2)
+		regularizationDerivatives = AqwamMatrixLibrary:add(regularizationDerivativesPart1, regularizationDerivativesPart2)
 		
 		if (self.hasBias) then regularizationDerivatives = makeLambdaAtBiasZero(regularizationDerivatives) end
 

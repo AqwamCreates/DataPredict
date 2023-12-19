@@ -14,7 +14,7 @@ local defaultTargetCost = 0
 
 local defaultNumberOfClusters = 2
 
-local defaultDistanceFunction = "euclidean"
+local defaultDistanceFunction = "Euclidean"
 
 local defaultStopWhenModelParametersDoesNotChange = false
 
@@ -24,7 +24,7 @@ local defaultSetTheCentroidsDistanceFarthest = false
 
 local distanceFunctionList = {
 
-	["manhattan"] = function (x1, x2)
+	["Manhattan"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -36,7 +36,7 @@ local distanceFunctionList = {
 
 	end,
 
-	["euclidean"] = function (x1, x2)
+	["Euclidean"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -381,23 +381,33 @@ function KMeansModel:train(featureMatrix)
 	
 	repeat
 		
+		numberOfIterations += 1
+		
 		self:iterationWait()
 
-		cost = calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
+		cost = self:getCostWhenRequired(numberOfIterations, function()
+			
+			return calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
+			
+		end) 
+		
+		if cost then
+			
+			table.insert(costArray, cost)
+			
+			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+			
+			if (math.abs(cost) <= self.targetCost) then break end
+			
+		end
 		
 		PreviousModelParameters = self.ModelParameters
 
 		self.ModelParameters = calculateModelParametersMean(self.ModelParameters, featureMatrix, self.distanceFunction)
 
 		areModelParametersEqual =  AqwamMatrixLibrary:areMatricesEqual(self.ModelParameters, PreviousModelParameters)
-		
-		numberOfIterations += 1
-		
-		table.insert(costArray, cost)
-		
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
-	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
+	until (numberOfIterations == self.maxNumberOfIterations) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

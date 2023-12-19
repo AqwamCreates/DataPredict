@@ -1261,7 +1261,7 @@ end
 
 function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)
 
-	if (self.ModelParameters == nil) then self:generateLayers() end
+	if (not self.ModelParameters) then self:generateLayers() end
 
 	local outputMatrix = self:forwardPropagate(featureMatrix, false)
 

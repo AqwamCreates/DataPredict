@@ -353,7 +353,7 @@ function MeanShiftModel:train(featureMatrix)
 
 		cost = self:getCostWhenRequired(numberOfIterations, function()
 			
-			calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
+			return calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
 			
 		end)
 		

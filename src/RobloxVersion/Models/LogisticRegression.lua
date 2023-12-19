@@ -227,6 +227,8 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 	
 	repeat
 		
+		numberOfIterations += 1
+		
 		self:iterationWait()
 		
 		cost = self:getCostWhenRequired(numberOfIterations, function()
@@ -274,8 +276,6 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		end
 
 		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
-		
-		numberOfIterations += 1
 		
 	until (numberOfIterations == self.maxNumberOfIterations)
 	

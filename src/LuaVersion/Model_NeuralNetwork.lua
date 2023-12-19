@@ -35,6 +35,12 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
+NeuralNetworkModel = {}
+
+NeuralNetworkModel.__index = NeuralNetworkModel
+
+setmetatable(NeuralNetworkModel, BaseModel)
+
 local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.1

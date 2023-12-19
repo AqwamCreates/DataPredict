@@ -277,10 +277,6 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		
 		numberOfIterations += 1
 		
-		table.insert(costArray, cost)
-
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-		
 	until (numberOfIterations == self.maxNumberOfIterations)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end

@@ -43,151 +43,219 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 
-local defaultLearningRate = 0.3
+local defaultLearningRate = 0.1
 
-local defaultLossFunction = "L2"
+local defaultSigmoidFunction = "Sigmoid"
 
 local defaultTargetCost = 0
 
-local lossFunctionList = {
+local sigmoidFunctionList = {
 
-	["L1"] = function (x1, x2)
-
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
-		
-		part1 = AqwamMatrixLibrary:applyFunction(math.abs, part1)
-
-		local distance = AqwamMatrixLibrary:sum(part1)
-
-		return distance 
-
-	end,
-
-	["L2"] = function (x1, x2)
-
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
-
-		local part2 = AqwamMatrixLibrary:power(part1, 2)
-
-		local distance = AqwamMatrixLibrary:sum(part2)
-
-		return distance 
-
-	end,
+	["Sigmoid"] = function (z) return 1/(1 + math.exp(-1 * z)) end,
+	
+	["Tanh"] = function (z) return math.tanh(z) end
 
 }
-local function calculateHypothesisVector(featureMatrix, modelParameters)
-	
-	return AqwamMatrixLibrary:dotProduct(featureMatrix, modelParameters)
-	
-end
 
-local function calculateCost(modelParameters, featureMatrix, labelVector, lossFunction)
+local lossFunctionList = {
+	
+	["Sigmoid"] = function (y, h) return -(y * math.log(h) + (1 - y) * math.log(1 - h)) end,
+	
+	["Tanh"] = function (y, h) return (y - h)^2 end
+	
+}
+
+local adjustedOutputFunctionList = {
+	
+	["Sigmoid"] = function (x) 
+
+		if (x >= 0.5) then 
+
+			return x
+
+		else 
+
+			return (1 - x)
+
+		end 
+
+	end,
+
+	["Tanh"] = function (x) 
+
+		if (x >= 0) then 
+
+			return x
+
+		else
+
+			return (2 + x)
+
+
+		end 
+
+	end
+	
+}
+
+local cutOffFunctionList = {
+	
+	["Sigmoid"] = function (x) 
+
+		if (x >= 0.5) then 
+
+			return 1
+
+		else 
+
+			return 0 
+
+		end 
+
+	end,
+	
+	["Tanh"] = function (x) 
+
+		if (x > 0) then 
+
+			return 1
+
+		elseif (x < 0) then
+			
+			return -1
+			
+		else
+			
+			return 0
+
+		end 
+
+	end
+	
+}
+
+local function calculateHypothesisVector(featureMatrix, modelParameters, sigmoidFunction)
 	
 	local numberOfData = #featureMatrix
 	
-	local hypothesisVector = calculateHypothesisVector(featureMatrix, modelParameters)
+	local zVector = AqwamMatrixLibrary:dotProduct(featureMatrix, modelParameters)
 	
-	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
+	if (type(zVector) == "number") then zVector = {{zVector}} end
+		
+	local result = AqwamMatrixLibrary:applyFunction(sigmoidFunctionList[sigmoidFunction], zVector)
 	
-	local costVector = lossFunctionList[lossFunction](hypothesisVector, labelVector) 
+	return result
 	
-	local averageCost = costVector / (2 * numberOfData)
+end
+
+local function calculateCost(modelParameters, featureMatrix, labelVector, sigmoidFunction)
+	
+	local numberOfData = #featureMatrix
+	
+	local hypothesisVector = calculateHypothesisVector(featureMatrix, modelParameters, sigmoidFunction)
+	
+	local costVector = AqwamMatrixLibrary:applyFunction(lossFunctionList[sigmoidFunction], labelVector, hypothesisVector)
+
+	local totalCost = AqwamMatrixLibrary:sum(costVector)
+	
+	local averageCost = totalCost / numberOfData
 	
 	return averageCost
 	
 end
 
-local function gradientDescent(modelParameters, featureMatrix, labelVector, lossFunction)
+local function gradientDescent(modelParameters, featureMatrix, labelVector, sigmoidFunction)
 	
 	local numberOfData = #featureMatrix
-	
-	local hypothesisVector = calculateHypothesisVector(featureMatrix, modelParameters)
-	
-	local calculatedError = AqwamMatrixLibrary:subtract(hypothesisVector, labelVector)
 
+	local hypothesisVector = calculateHypothesisVector(featureMatrix, modelParameters, sigmoidFunction)
+
+	local calculatedError = AqwamMatrixLibrary:subtract(hypothesisVector, labelVector)
+	
 	local calculatedErrorWithFeatureMatrix = AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(featureMatrix), calculatedError)
 
-	local costFunctionDerivative = AqwamMatrixLibrary:multiply((1/numberOfData),  calculatedErrorWithFeatureMatrix)
+	local costFunctionDerivatives = AqwamMatrixLibrary:multiply((1/numberOfData),  calculatedErrorWithFeatureMatrix)
 	
-	return costFunctionDerivative
-	
-end
-
-function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lossFunction, targetCost)
-	
-	local NewLinearRegressionModel = BaseModel.new()
-	
-	setmetatable(NewLinearRegressionModel, LinearRegressionModel)
-	
-	NewLinearRegressionModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
-	
-	NewLinearRegressionModel.learningRate = learningRate or defaultLearningRate
-	
-	NewLinearRegressionModel.lossFunction = lossFunction or defaultLossFunction
-	
-	NewLinearRegressionModel.targetCost = targetCost or defaultTargetCost
-	
-	NewLinearRegressionModel.Optimizer = nil
-	
-	NewLinearRegressionModel.Regularization = nil
-	
-	return NewLinearRegressionModel
+	return costFunctionDerivatives
 	
 end
 
-function LinearRegressionModel:setParameters(maxNumberOfIterations, learningRate, lossFunction, targetCost)
+function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
+	
+	local NewLogisticRegressionModel = BaseModel.new()
+
+	setmetatable(NewLogisticRegressionModel, LogisticRegressionModel)
+
+	NewLogisticRegressionModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+
+	NewLogisticRegressionModel.learningRate = learningRate or defaultLearningRate
+
+	NewLogisticRegressionModel.sigmoidFunction = sigmoidFunction or defaultSigmoidFunction
+
+	NewLogisticRegressionModel.targetCost = targetCost or defaultTargetCost
+	
+	NewLogisticRegressionModel.Optimizer = nil
+	
+	NewLogisticRegressionModel.Regularization = nil
+	
+	return NewLogisticRegressionModel
+	
+end
+
+function LogisticRegressionModel:setParameters(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
-	self.lossFunction = lossFunction or self.lossFunction
+	self.sigmoidFunction = sigmoidFunction or self.sigmoidFunction
 
 	self.targetCost = targetCost or self.targetCost
-	
+
 end
 
-function LinearRegressionModel:setOptimizer(Optimizer)
-	
+function LogisticRegressionModel:setOptimizer(Optimizer)
+
 	self.Optimizer = Optimizer
-	
+
 end
 
-function LinearRegressionModel:setRegularization(Regularization)
-	
+function LogisticRegressionModel:setRegularization(Regularization)
+
 	self.Regularization = Regularization
-	
+
 end
 
-function LinearRegressionModel:train(featureMatrix, labelVector)
+function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 	local cost
-
+	
 	local costArray = {}
 	
 	local numberOfIterations = 0
 	
 	local costFunctionDerivatives
 	
-	local numberOfData = #featureMatrix[1]
+	local numberOfData = #featureMatrix
 	
-	local regularizationDerivatives
+	local lambda
 	
 	local regularizationCost
+	
+	local regularizationDerivatives
 	
 	local calculatedLearningRate = self.learningRate / numberOfData
 	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
-	
+
 	if (self.ModelParameters) then
-		
+
 		if (#featureMatrix[1] ~= #self.ModelParameters) then error("The number of features are not the same as the model parameters!") end
-		
+
 	else
-		
+
 		self.ModelParameters = self:initializeMatrixBasedOnMode(#featureMatrix[1], 1)
-		
+
 	end
 	
 	repeat
@@ -195,30 +263,30 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		self:iterationWait()
 		
 		cost = self:getCostWhenRequired(numberOfIterations, function()
-			
-			cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.lossFunction)
-			
+
+			cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
+
 			if (not self.Regularization) then return cost end
 
 			regularizationCost = self.Regularization:calculateRegularization(self.ModelParameters, numberOfData)
 
 			cost += regularizationCost
-			
+
 			return cost
-			
+
 		end)
-		
+
 		if cost then 
-			
+
 			table.insert(costArray, cost)
-			
+
 			self:printCostAndNumberOfIterations(cost, numberOfIterations)
-			
+
 			if (math.abs(cost) <= self.targetCost) then break end
-			
+
 		end
 		
-		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.lossFunction)
+		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
 		
 		if (self.Regularization) then
 
@@ -230,21 +298,21 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		if (self.Optimizer) then 
 
-			costFunctionDerivatives = self.Optimizer:calculate(calculatedLearningRate, costFunctionDerivatives) 
+			costFunctionDerivatives = self.Optimizer:calculate(calculatedLearningRate, costFunctionDerivatives)
 			
 		else
 			
 			costFunctionDerivatives = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivatives)
 
 		end
-		
+
 		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
 		
 		numberOfIterations += 1
 		
 	until (numberOfIterations == self.maxNumberOfIterations)
 	
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values") end
+	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	
 	if (self.Optimizer) and (self.AutoResetOptimizers) then self.Optimizer:reset() end
 	
@@ -252,14 +320,28 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 end
 
-function LinearRegressionModel:predict(featureMatrix)
+function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local predictedVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	local z = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
 	
-	if (typeof(predictedVector) == "number") then predictedVector = {{predictedVector}} end
+	local sigmoidFunction = sigmoidFunctionList[self.sigmoidFunction]
 	
-	return predictedVector
+	if (typeof(z) == "number") then z = {{z}} end
+	
+	local outputVector = AqwamMatrixLibrary:applyFunction(sigmoidFunction, z)
+	
+	if (returnOriginalOutput == true) then return outputVector end
+	
+	local cutOffFunction = cutOffFunctionList[self.sigmoidFunction]
+	
+	local adjustedOutputFunction = adjustedOutputFunctionList[self.sigmoidFunction]
+	
+	local predictedLabelVector = AqwamMatrixLibrary:applyFunction(cutOffFunction, outputVector)
+	
+	local adjustedOutputVector = AqwamMatrixLibrary:applyFunction(adjustedOutputFunction, outputVector)
+	
+	return predictedLabelVector, outputVector
 
 end
 
-return LinearRegressionModel
+return LogisticRegressionModel

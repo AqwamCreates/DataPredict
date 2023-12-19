@@ -17,12 +17,14 @@ Contains a table.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-AffinityPropagation.new(maxNumberOfIterations: integer, damping: number, numberOfIterationsToConfirmConvergence: integer, targetCost: integer): ModelObject
+AffinityPropagation.new(maxNumberOfIterations: integer, similarityFunction: string, damping: number, numberOfIterationsToConfirmConvergence: integer, targetCost: integer): ModelObject
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
+
+* similarityFunction: The similarity function to be used. Available options are "Euclidean" and "Manhattan"
 
 * damping: A high value leads to fewer changes, while a low value leads to more exploration. The value can be set between 0 and 1.
 
@@ -41,12 +43,14 @@ AffinityPropagation.new(maxNumberOfIterations: integer, damping: number, numberO
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-AffinityPropagation:setParameters(maxNumberOfIterations: integer, damping: number, numberOfIterationsToConfirmConvergence: integer, targetCost: integer)
+AffinityPropagation:setParameters(maxNumberOfIterations: integer, similarityFunction: string, damping: number, numberOfIterationsToConfirmConvergence: integer, targetCost: integer)
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
+
+* similarityFunction: The similarity function to be used. Available options are "Euclidean" and "Manhattan"
 
 * damping: A high value leads to fewer changes, while a low value leads to more exploration. The value is set between 0 and 1.
 

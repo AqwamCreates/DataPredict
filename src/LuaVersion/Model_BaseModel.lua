@@ -89,6 +89,8 @@ function BaseModel.new()
 	
 	NewBaseModel.ModelParametersInitializationMode = "RandomUniformNegativeAndPositive"
 	
+	NewBaseModel.NumberOfIterationsPerCostCalculation = 1
+	
 	NewBaseModel.MinimumModelParametersInitializationValue = nil
 
 	NewBaseModel.MaximumModelParametersInitializationValue = nil
@@ -102,6 +104,26 @@ function BaseModel.new()
 	NewBaseModel.AutoResetOptimizers = true
 
 	return NewBaseModel
+	
+end
+
+function BaseModel:calculateCost(currentNumberOfIteration, costFunction, ...)
+	
+	if (currentNumberOfIteration % self.NumberOfIterationsPerCostCalculation) == 0 then 
+		
+		return costFunction(...)
+		
+	else
+		
+		return nil
+		
+	end
+	
+end
+
+function BaseModel:setNumberOfIterationsPerCostCalculation(numberOfIterationsPerCostCalculation)
+	
+	self.NumberOfIterationsPerCostCalculation = self:getBooleanOrDefaultOption(numberOfIterationsPerCostCalculation, self.NumberOfIterationsPerCostCalculation)
 	
 end
 

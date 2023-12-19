@@ -159,6 +159,8 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	repeat
 		
+		numberOfIterations += 1
+		
 		self:iterationWait()
 		
 		cost = self:getCostWhenRequired(numberOfIterations, function()
@@ -206,8 +208,6 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		end
 		
 		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
-		
-		numberOfIterations += 1
 		
 	until (numberOfIterations == self.maxNumberOfIterations)
 	

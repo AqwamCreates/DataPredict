@@ -194,14 +194,28 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		self:iterationWait()
 		
-		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.lossFunction)
-
-		if (self.Regularization) then 
+		cost = self:calculateCost(numberOfIterations, function()
+			
+			cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.lossFunction)
+			
+			if (not self.Regularization) then return cost end
 
 			regularizationCost = self.Regularization:calculateRegularization(self.ModelParameters, numberOfData)
 
 			cost += regularizationCost
-
+			
+			return cost
+			
+		end)
+		
+		if cost then 
+			
+			table.insert(costArray, cost)
+			
+			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+			
+			if (math.abs(cost) <= self.targetCost) then break end
+			
 		end
 		
 		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.lossFunction)
@@ -228,11 +242,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		numberOfIterations += 1
 		
-		table.insert(costArray, cost)
-
-		self:printCostAndNumberOfIterations(cost, numberOfIterations)
-		
-	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
+	until (numberOfIterations == self.maxNumberOfIterations)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values") end
 	

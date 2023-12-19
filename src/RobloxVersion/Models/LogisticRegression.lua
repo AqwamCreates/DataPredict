@@ -58,6 +58,7 @@ local adjustedOutputFunctionList = {
 
 			return (2 + x)
 
+
 		end 
 
 	end
@@ -228,13 +229,27 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		
 		self:iterationWait()
 		
-		cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
+		cost = self:calculateCost(numberOfIterations, function()
 
-		if (self.Regularization) then 
+			cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
+
+			if (not self.Regularization) then return cost end
 
 			regularizationCost = self.Regularization:calculateRegularization(self.ModelParameters, numberOfData)
 
 			cost += regularizationCost
+
+			return cost
+
+		end)
+
+		if cost then 
+
+			table.insert(costArray, cost)
+
+			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+
+			if (math.abs(cost) <= self.targetCost) then break end
 
 		end
 		
@@ -266,7 +281,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
-	until (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost)
+	until (numberOfIterations == self.maxNumberOfIterations)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

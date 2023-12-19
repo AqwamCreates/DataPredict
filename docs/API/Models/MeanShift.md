@@ -26,7 +26,7 @@ MeanShift.new(maxNumberOfIterations: integer, bandwidth: number, bandwidthStep: 
 
 * bandwidthStep: Number of clusters for model to train and predict on.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are “euclidean” and “manhattan“.
+* distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“.
 
 * highestCost: The highest cost at which the model stops training.
 
@@ -56,7 +56,7 @@ MeanShift:setParameters(maxNumberOfIterations: integer, bandwidth: number, bandw
 
 * bandwidthStep: Number of clusters for model to train and predict on.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are “euclidean” and “manhattan“.
+* distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“.
 
 * highestCost: The highest cost at which the model stops training.
 

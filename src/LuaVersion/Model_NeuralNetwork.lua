@@ -480,7 +480,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 		
 		if (hasBiasNeuron == 1) then
 
-			for data = 1, numberOfData, 1 do layerZ[data][1] = 0 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron
+			for data = 1, numberOfData, 1 do layerZ[data][1] = 0 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to zero so that it remains as bias neuron.
 
 		end
 
@@ -488,7 +488,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 
 		if (hasBiasNeuron == 1) then
 
-			for data = 1, numberOfData, 1 do inputMatrix[data][1] = 1 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron
+			for data = 1, numberOfData, 1 do inputMatrix[data][1] = 1 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
 
 		end
 

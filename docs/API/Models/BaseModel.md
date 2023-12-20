@@ -89,12 +89,12 @@ BaseModel:clearModelParameters()
 Set the number of iterations needed to calculate the costs. This is to save computational time.
 
 ```
-BaseModel:setModelParameters(numerOfIterationsPerCostCalculation: number)
+BaseModel:setModelParameters(numberOfIterationsPerCostCalculation: number)
 ```
 
 #### Parameters
 
-* numerOfIterationsPerCostCalculation: The number of iterations for each cost calculation.
+* numberOfIterationsPerCostCalculation: The number of iterations for each cost calculation.
 
 ### setAutoResetOptimizers()
 

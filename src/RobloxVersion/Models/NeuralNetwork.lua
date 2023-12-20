@@ -450,6 +450,12 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 		layerZ = AqwamMatrixLibrary:dotProduct(inputMatrix, weightMatrix)
 
 		if (typeof(layerZ) == "number") then layerZ = {{layerZ}} end
+		
+		if (hasBiasNeuron == 1) then
+
+			for data = 1, numberOfData, 1 do layerZ[data][1] = 0 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron
+
+		end
 
 		inputMatrix = activationFunction(layerZ)
 

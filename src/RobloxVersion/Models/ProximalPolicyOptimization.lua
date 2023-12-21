@@ -98,7 +98,7 @@ function ProximalPolicyOptimizationModel:update(previousFeatureVector, action, r
 	
 	local currentCriticValue = self.CriticModel:predict(currentFeatureVector, true)[1][1]
 	
-	local advantageValue = rewardValue + (self.discountFactor * (currentCriticValue - currentCriticValue))
+	local advantageValue = rewardValue + (self.discountFactor * (currentCriticValue - previousCriticValue))
 	
 	table.insert(self.advantageHistory, advantageValue)
 	

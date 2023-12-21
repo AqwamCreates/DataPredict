@@ -176,8 +176,6 @@ function ProximalPolicyOptimizationModel:episodeUpdate(numberOfFeatures)
 	
 	table.clear(self.actionVectorHistory)
 	
-	table.clear(self.criticValueHistory)
-	
 end
 
 function ProximalPolicyOptimizationModel:fetchHighestValueInVector(outputVector)

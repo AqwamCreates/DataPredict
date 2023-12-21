@@ -452,7 +452,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 		self:iterationWait()
 		
-		cost = self:getCostWhenRequired(numberOfIterations, function()
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
 			return calculateCost(centroids, featureMatrix, self.distanceFunction)
 			

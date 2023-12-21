@@ -1,336 +1,343 @@
-local BaseModel = require("Model_BaseModel")
-
-DensityBasedSpatialClusteringOfApplicationsWithNoiseModel = {}
-
-DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.__index = DensityBasedSpatialClusteringOfApplicationsWithNoiseModel
-
-setmetatable(DensityBasedSpatialClusteringOfApplicationsWithNoiseModel, BaseModel)
-
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local defaultTargetCost = 0
+ProximalPolicyOptimizationModel = {}
 
-local defaultMinimumNumberOfPoints = 2
+ProximalPolicyOptimizationModel.__index = ProximalPolicyOptimizationModel
 
-local defaultDistanceFunction = "Manhattan"
+local defaultNumberOfReinforcementsPerEpisode = 10
 
-local defaultEpsilon = 10
+local defaultEpsilon = 0.5
 
-local distanceFunctionList = {
+local defaultEpsilonDecayFactor = 0.999
 
-	["Manhattan"] = function (x1, x2)
-		
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
-		
-		local part2 = AqwamMatrixLibrary:sum(part1)
-		
-		local distance = math.abs(part2)
-		
-		return distance 
-		
-	end,
+local defaultDiscountFactor = 0.95
 
-	["Euclidean"] = function (x1, x2)
-		
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
-		
-		local part2 = AqwamMatrixLibrary:power(part1, 2)
-		
-		local part3 = AqwamMatrixLibrary:sum(part2)
-		
-		local distance = math.sqrt(part3)
-		
-		return distance 
-		
-	end,
-
-}
-
-
-local function calculateDistance(vector1, vector2, distanceFunction)
+function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
-	return distanceFunctionList[distanceFunction](vector1, vector2) 
+	local NewProximalPolicyOptimizationModel = {}
+	
+	setmetatable(NewProximalPolicyOptimizationModel, ProximalPolicyOptimizationModel)
+	
+	NewProximalPolicyOptimizationModel.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
+
+	NewProximalPolicyOptimizationModel.epsilon = epsilon or defaultEpsilon
+
+	NewProximalPolicyOptimizationModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
+
+	NewProximalPolicyOptimizationModel.discountFactor =  discountFactor or defaultDiscountFactor
+	
+	NewProximalPolicyOptimizationModel.currentEpsilon = epsilon or defaultEpsilon
+
+	NewProximalPolicyOptimizationModel.previousFeatureVector = nil
+
+	NewProximalPolicyOptimizationModel.printReinforcementOutput = true
+
+	NewProximalPolicyOptimizationModel.currentNumberOfReinforcements = 0
+
+	NewProximalPolicyOptimizationModel.currentNumberOfEpisodes = 0
+	
+	NewProximalPolicyOptimizationModel.advantageHistory = {}
+	
+	NewProximalPolicyOptimizationModel.actionVectorHistory = {}
+	
+	NewProximalPolicyOptimizationModel.ClassesList = nil
+	
+	return NewProximalPolicyOptimizationModel
 	
 end
 
+function ProximalPolicyOptimizationModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	
+	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
-local function getNeighbors(currentCorePointNumber, featureMatrix, epsilon, distanceFunction)
+	self.epsilon = epsilon or self.epsilon
+
+	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
+
+	self.discountFactor =  discountFactor or self.discountFactor
 	
-	local distance
+	self.currentEpsilon = epsilon or self.currentEpsilon
 	
-	local neighbors = {}
+end
+
+function ProximalPolicyOptimizationModel:setActorModel(Model)
 	
-	for i = 1, #featureMatrix, 1 do
+	self.ActorModel = Model
+	
+end
+
+function ProximalPolicyOptimizationModel:setCriticModel(Model)
+
+	self.CriticModel = Model
+
+end
+
+function ProximalPolicyOptimizationModel:setClassesList(classesList)
+	
+	self.ClassesList = classesList
+	
+end
+
+local function calculateProbability(outputMatrix)
+
+	local sumVector = AqwamMatrixLibrary:horizontalSum(outputMatrix)
+
+	local result = AqwamMatrixLibrary:divide(outputMatrix, sumVector)
+
+	return result
+
+end
+
+function ProximalPolicyOptimizationModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
+
+	local allOutputsMatrix = self.ActorModel:predict(previousFeatureVector, true)
+	
+	local actionProbabilityVector = calculateProbability(allOutputsMatrix)
+
+	local previousCriticValue = self.CriticModel:predict(previousFeatureVector, true)[1][1]
+	
+	local currentCriticValue = self.CriticModel:predict(currentFeatureVector, true)[1][1]
+	
+	local advantageValue = rewardValue + (self.discountFactor * (currentCriticValue - previousCriticValue))
+	
+	table.insert(self.advantageHistory, advantageValue)
+	
+	table.insert(self.actionVectorHistory, actionProbabilityVector)
+	
+	return allOutputsMatrix
+
+end
+
+function ProximalPolicyOptimizationModel:setExperienceReplay(ExperienceReplay)
+
+	self.ExperienceReplay = ExperienceReplay
+
+end
+
+local function getBooleanOrDefaultOption(boolean, defaultBoolean)
+
+	if (type(boolean) == "nil") then return defaultBoolean end
+
+	return boolean
+
+end
+
+function ProximalPolicyOptimizationModel:setPrintReinforcementOutput(option)
+
+	self.printReinforcementOutput = getBooleanOrDefaultOption(option, self.printReinforcementOutput)
+
+end
+
+function ProximalPolicyOptimizationModel:episodeUpdate(numberOfFeatures)
+	
+	local historyLength = #self.advantageHistory
+	
+	local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
+	
+	local sumCriticLosses = 0
+	
+	for h = 2, historyLength, 1 do
 		
-		if (i ~= currentCorePointNumber) then
-			
-			distance = calculateDistance({featureMatrix[currentCorePointNumber]}, {featureMatrix[i]}, distanceFunction)
-			
-			if (distance <= epsilon) then
-				
-				neighbors[#neighbors + 1] = i
-				
-			end
-			
-		end
+		local advantage = self.advantageHistory[h]
+		
+		local previousActionVector = self.actionVectorHistory[h - 1]
+		
+		local currentActionVector = self.actionVectorHistory[h]
+		
+		local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
+		
+		local actorLossVector = AqwamMatrixLibrary:multiply(-1, ratioVector, advantage)
+		
+		sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
+		
+		sumCriticLosses += advantage
 		
 	end
 	
-	return neighbors
+	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+	
+	self.ActorModel:forwardPropagate(featureVector, true)
+	self.CriticModel:forwardPropagate(featureVector, true)
+	
+	self.ActorModel:backPropagate(sumActorLossVector, true)
+	self.CriticModel:backPropagate(sumCriticLosses, true)
+	
+	------------------------------------------------------
+	
+	self.episodeReward = 0
+
+	self.currentNumberOfReinforcements = 0
+
+	self.currentNumberOfEpisodes += 1
+
+	self.currentEpsilon *= self.epsilonDecayFactor
+	
+	table.clear(self.advantageHistory)
+	
+	table.clear(self.actionVectorHistory)
 	
 end
 
-local function mergeTables(table1, table2)
-	
-	for i=1, #table2, 1 do
-		
-		table1[#table1+1] = table2[i]
-		
-	end
-	
-	return table1
+function ProximalPolicyOptimizationModel:fetchHighestValueInVector(outputVector)
+
+	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(outputVector)
+
+	if (classIndex == nil) then return nil, highestValue end
+
+	local predictedLabel = self.ClassesList[classIndex[2]]
+
+	return predictedLabel, highestValue
 	
 end
 
-local function expandCluster(currentCorePointNumber, neighbors, neighbouringCorePointNumber, clusters, visited, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunction)
-	
-	clusters[neighbouringCorePointNumber] = clusters[neighbouringCorePointNumber] or {}
-	
-	clusters[neighbouringCorePointNumber][#clusters[neighbouringCorePointNumber] + 1] = currentCorePointNumber
-	
-	for i = 1, #neighbors do
-		
-		local neighbouringPointNumber = neighbors[i]
-		
-		if not visited[neighbouringPointNumber] then
-			
-			visited[neighbouringPointNumber] = true
-			
-			local qNeighbors = getNeighbors(neighbouringPointNumber, featureMatrix, epsilon, distanceFunction)
-			
-			if (#qNeighbors >= minimumNumberOfPoints) then
-				
-				neighbors = mergeTables(neighbors, qNeighbors)
-				
-			end
-			
-		end
-		
-		local isInCluster = false
-		
-		for j = 1, #clusters do
-			
-			if (clusters[j][neighbouringPointNumber]) then
-				
-				isInCluster = true
-				
-				break
-				
-			end
-			
-		end
-		
-		if not isInCluster then
-			
-			clusters[neighbouringCorePointNumber][#clusters[neighbouringCorePointNumber] + 1] = neighbouringPointNumber
-			
-		end
-		
-	end
-	
-end
+function ProximalPolicyOptimizationModel:getLabelFromOutputMatrix(outputMatrix)
 
-local function calculateCost(featureMatrix, clusters, distanceFunction)
-	
-	local cost = 0
-	
-	for cluster_id, clusterPoints in pairs(clusters) do
-			
-		for i = 1, #clusterPoints, 1 do
-				
-			for j = i + 1, #clusterPoints, 1 do
-					
-				cost = cost + calculateDistance({featureMatrix[clusterPoints[i]]}, {featureMatrix[clusterPoints[j]]}, distanceFunction)
-					
-			end
-				
-		end
-		
-	end
-	
-	return cost
-	
-end
+	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 
+	local highestValueVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.new(epsilon, minimumNumberOfPoints, distanceFunction, targetCost)
-	
-	local NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel = BaseModel.new()
-	
-	setmetatable(NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel, DensityBasedSpatialClusteringOfApplicationsWithNoiseModel)
-	
-	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.minimumNumberOfPoints = minimumNumberOfPoints or defaultMinimumNumberOfPoints
-	
-	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.epsilon = epsilon or defaultEpsilon
+	local highestValue
 
-	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.targetCost = targetCost or defaultTargetCost
+	local outputVector
 
-	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.distanceFunction = distanceFunction or defaultDistanceFunction
-	
-	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.appendPreviousFeatureMatrix = false
-	
-	return NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel
-	
-end
+	local classIndex
 
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:setParameters(epsilon, minimumNumberOfPoints, distanceFunction, targetCost)
-	
-	self.minimumNumberOfPoints = minimumNumberOfPoints or defaultMinimumNumberOfPoints
+	local predictedLabel
 
-	self.epsilon = epsilon or defaultEpsilon
+	for i = 1, #outputMatrix, 1 do
 
-	self.targetCost = targetCost or defaultTargetCost
+		outputVector = {outputMatrix[i]}
 
-	self.distanceFunction = distanceFunction or defaultDistanceFunction
-	
-end
+		predictedLabel, highestValue = self:fetchHighestValueInVector(outputVector)
 
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:canAppendPreviousFeatureMatrix(option)
+		predictedLabelVector[i][1] = predictedLabel
 
-	self.appendPreviousFeatureMatrix = option
-
-end
-
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(featureMatrix)
-	
-	if (self.ModelParameters) and (self.appendPreviousFeatureMatrix) then
-
-		local storedFeatureMatrix = self.ModelParameters[1]
-
-		if (#storedFeatureMatrix[1] ~= #featureMatrix[1]) then error("The previous and current feature matrices do not have the same number of features.") end 
-
-		featureMatrix = AqwamMatrixLibrary:verticalConcatenate(featureMatrix, storedFeatureMatrix)
+		highestValueVector[i][1] = highestValue
 
 	end
-	
-	local cost
-	
-	local neighbouringCorePointNumber 
-	
-	local neighbors 
 
-	local costArray = {}
+	return predictedLabelVector, highestValueVector
 
-	local visited = {}
-	
-	local clusters = {}
-	
-	local visited = {}
-	
-	local noise = {}
-	
-	local numberOfData = #featureMatrix
+end
 
-	for currentCorePointNumber = 1, numberOfData, 1 do
+function ProximalPolicyOptimizationModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+	
+	if (self.ActorModel == nil) then error("No actor model!") end
+	
+	if (self.CriticModel == nil) then error("No critic model!") end
+
+	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
 		
-		self:iterationWait()
-		
-		if not visited[currentCorePointNumber] then
+		self:episodeUpdate(#currentFeatureVector[1])
+
+	end
+
+	self.currentNumberOfReinforcements += 1
+	
+	local action
+	
+	local actionIndex
+	
+	local actionVector
+
+	local highestValue
+
+	local highestValueVector
+
+	local allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
+
+	local randomProbability = Random.new():NextNumber()
+
+	if (randomProbability < self.currentEpsilon) then
+
+		local randomNumber = Random.new():NextInteger(1, #self.ClassesList)
+
+		action = self.ClassesList[randomNumber]
+
+		allOutputsMatrix[1][randomNumber] = randomProbability
+
+	else
+
+		if (self.previousFeatureVector) then
 			
-			visited[currentCorePointNumber] = true
+			allOutputsMatrix = self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
 			
-			neighbors = getNeighbors(currentCorePointNumber, featureMatrix, self.epsilon, self.distanceFunction)
-			
-			if (#neighbors < self.minimumNumberOfPoints) then
-				
-				noise[#noise + 1] = currentCorePointNumber
-				
-			else
-				
-				neighbouringCorePointNumber  = #clusters + 1
-				
-				expandCluster(currentCorePointNumber, neighbors, neighbouringCorePointNumber , clusters, visited, featureMatrix, self.epsilon, self.minimumNumberOfPoints, self.distanceFunction)
-				
-			end
+			actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
+
+			action = actionVector[1][1]
+
+			highestValue = highestValueVector[1][1]
 			
 		end
-		
-		cost = self:calculateCostWhenRequired(currentCorePointNumber, function()
-			
-			return calculateCost(featureMatrix, clusters, self.distanceFunction)
-			
+
+	end
+
+	if (self.ExperienceReplay) and (self.previousFeatureVector) then 
+
+		self.ExperienceReplay:addExperience(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
+
+		self.ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
+
+			self:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
+
 		end)
-		
-		if cost then
-			
-			table.insert(costArray, cost)
 
-			self:printCostAndNumberOfIterations(cost, currentCorePointNumber)
-
-			if (cost == self.targetCost) then break end
-			
-		end
-		
 	end
-	
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
-	
-	self.ModelParameters = {featureMatrix, clusters}
-	
-	return costArray
+
+	self.previousFeatureVector = currentFeatureVector
+
+	if (self.printReinforcementOutput) then print("Episode: " .. self.currentNumberOfEpisodes .. "\t\tEpsilon: " .. self.currentEpsilon .. "\t\tReinforcement Count: " .. self.currentNumberOfReinforcements) end
+
+	if (returnOriginalOutput) then return allOutputsMatrix end
+
+	return action, highestValue
 	
 end
 
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featureMatrix)
-	
-	local shortestDistanceVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
+function ProximalPolicyOptimizationModel:getCurrentNumberOfEpisodes()
 
-	local closestClusterVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
-	
-	local storedFeatureVector, cluster = table.unpack(self.ModelParameters)
-	
-	for i = 1, #featureMatrix, 1 do
-		
-		local closestCluster
+	return self.currentNumberOfEpisodes
 
-		local shortestDistance = math.huge
-		
-		local featureVector = {featureMatrix[i]}
-
-		for clusterNumber, clusterPoints in ipairs(cluster) do
-
-			local distance = 0
-
-			for j = 1, #clusterPoints, 1 do
-
-				local pointNumber = clusterPoints[j]
-
-				local point = {storedFeatureVector[pointNumber]}
-
-				distance += calculateDistance(featureVector, point, self.distanceFunction)
-
-			end
-
-			distance = distance / #clusterPoints
-
-			if (distance < shortestDistance) then
-				
-				closestCluster = clusterNumber
-
-				shortestDistance = distance
-
-			end
-
-		end
-		
-		closestClusterVector[i][1] = closestCluster
-		
-		shortestDistanceVector[i][1] = shortestDistance
-		
-	end
-	
-	return closestClusterVector, shortestDistanceVector
-	
 end
 
-return DensityBasedSpatialClusteringOfApplicationsWithNoiseModel
+function ProximalPolicyOptimizationModel:getCurrentNumberOfReinforcements()
+
+	return self.currentNumberOfReinforcements
+
+end
+
+function ProximalPolicyOptimizationModel:getCurrentEpsilon()
+
+	return self.currentEpsilon
+
+end
+
+function ProximalPolicyOptimizationModel:reset()
+
+	self.currentNumberOfReinforcements = 0
+
+	self.currentNumberOfEpisodes = 0
+
+	self.previousFeatureVector = nil
+
+	self.currentEpsilon = self.epsilon
+	
+	table.clear(self.advantageHistory)
+	
+	table.clear(self.actionVectorHistory)
+
+	if (self.ExperienceReplay) then self.ExperienceReplay:reset() end
+
+end
+
+function ProximalPolicyOptimizationModel:destroy()
+
+	setmetatable(self, nil)
+
+	table.clear(self)
+
+	self = nil
+
+end
+
+return ProximalPolicyOptimizationModel

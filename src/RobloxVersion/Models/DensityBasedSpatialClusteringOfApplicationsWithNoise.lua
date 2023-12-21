@@ -255,7 +255,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 			
 		end
 		
-		cost = self:getCostWhenRequired(currentCorePointNumber, function()
+		cost = self:calculateCostWhenRequired(currentCorePointNumber, function()
 			
 			return calculateCost(featureMatrix, clusters, self.distanceFunction)
 			

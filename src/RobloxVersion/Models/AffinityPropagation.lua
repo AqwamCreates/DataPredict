@@ -336,7 +336,7 @@ function AffinityPropagationModel:train(featureMatrix)
 		
 		previousClusterVector = clusterVector
 		
-		cost = self:getCostWhenRequired(numberOfIterations, function()
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
 			return calculateCost(clusterVector, responsibilityMatrix)
 			

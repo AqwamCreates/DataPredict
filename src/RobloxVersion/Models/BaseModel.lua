@@ -74,7 +74,7 @@ function BaseModel.new()
 	
 end
 
-function BaseModel:getCostWhenRequired(currentNumberOfIteration, costFunction)
+function BaseModel:calculateCostWhenRequired(currentNumberOfIteration, costFunction)
 	
 	if ((currentNumberOfIteration % self.NumberOfIterationsPerCostCalculation) == 0) then 
 		

@@ -1227,7 +1227,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		activatedOutputsMatrix = self:forwardPropagate(featureMatrix, true)
 		
-		cost = self:getCostWhenRequired(numberOfIterations, function()
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
 			return self:calculateCost(activatedOutputsMatrix, logisticMatrix)
 

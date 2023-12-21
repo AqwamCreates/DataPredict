@@ -148,11 +148,9 @@ function ProximalPolicyOptimizationModel:episodeUpdate(numberOfFeatures)
 		
 		local actorLossVector = AqwamMatrixLibrary:multiply(-1, ratioVector, advantage)
 		
-		local criticLoss = math.pow(advantage, 2)
-		
 		sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
 		
-		sumCriticLosses += criticLoss
+		sumCriticLosses += advantage
 		
 	end
 	

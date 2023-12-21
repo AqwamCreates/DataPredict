@@ -35,6 +35,12 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
+NeuralNetworkModel = {}
+
+NeuralNetworkModel.__index = NeuralNetworkModel
+
+setmetatable(NeuralNetworkModel, BaseModel)
+
 local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
@@ -1254,7 +1260,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		activatedOutputsMatrix = self:forwardPropagate(featureMatrix, true)
 		
-		cost = self:getCostWhenRequired(numberOfIterations, function()
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
 			return self:calculateCost(activatedOutputsMatrix, logisticMatrix)
 

@@ -196,7 +196,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		self:iterationWait()
 		
-		cost = self:getCostWhenRequired(numberOfIterations, function()
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
 			cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.lossFunction)
 			

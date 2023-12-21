@@ -202,3 +202,5 @@ ProximalPolicyOptimization:destroy()
 ### References
 
 * [Proximal Policy Optimization by OpenAI](https://spinningup.openai.com/en/latest/algorithms/ppo.html)
+
+* [PPO Python Code by nikhilbarhate99](https://github.com/nikhilbarhate99/PPO-PyTorch/blob/master/PPO.py)

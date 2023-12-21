@@ -387,7 +387,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 		self:iterationWait()
 		
-		cost = self:getCostWhenRequired(numberOfIterations, function()
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
 			return calculateCost(self.ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, self.cValue)
 			

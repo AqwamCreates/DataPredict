@@ -322,7 +322,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
 		
-		cost = self:getCostWhenRequired(numberOfIterations, function()
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
 			logLikelihood = AqwamMatrixLibrary:applyFunction(math.log, gaussianMatrix)
 

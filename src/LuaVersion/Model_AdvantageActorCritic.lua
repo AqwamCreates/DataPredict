@@ -175,7 +175,7 @@ function AdvantageActorCriticModel:update(previousFeatureVector, action, rewardV
 	
 	local currentCriticValue = self.CriticModel:predict(currentFeatureVector, true)[1][1]
 	
-	local advantageValue = rewardValue + (self.discountFactor * (currentCriticValue - currentCriticValue))
+	local advantageValue = rewardValue + (self.discountFactor * (currentCriticValue - previousCriticValue))
 	
 	local numberOfActions = #allOutputsMatrix[1]
 	
@@ -233,7 +233,7 @@ function AdvantageActorCriticModel:episodeUpdate(numberOfFeatures)
 		
 		local actionProbability = self.actionProbabilityHistory[h]
 		
-		local actorLoss = -math.log(actionProbability) * advantage
+		local actorLoss = math.log(actionProbability) * advantage
 		
 		local criticLoss = math.pow(advantage, 2)
 		
@@ -243,10 +243,7 @@ function AdvantageActorCriticModel:episodeUpdate(numberOfFeatures)
 		
 	end
 	
-	local lossValue = sumActorLosses + sumCriticLosses
-	
 	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-	local lossVector = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList, lossValue)
 	
 	self.ActorModel:forwardPropagate(featureVector, true)
 	self.CriticModel:forwardPropagate(featureVector, true)

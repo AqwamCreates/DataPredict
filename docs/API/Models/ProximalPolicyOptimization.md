@@ -17,7 +17,7 @@ ProximalPolicyOptimization is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-AdvantageActorCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
+ProximalPolicyOptimization.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -41,7 +41,7 @@ AdvantageActorCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: num
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-AdvantageActorCritic:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
+ProximalPolicyOptimization:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
 ```
 
 #### Parameters:
@@ -59,7 +59,7 @@ AdvantageActorCritic:setParameters(numberOfReinforcementsPerEpisode: integer, ep
 ### setActorModel()
 
 ```
-AdvantageActorCritic:setActorModel(Model: ModelObject)
+ProximalPolicyOptimization:setActorModel(Model: ModelObject)
 ```
 
 #### Parameters:
@@ -69,7 +69,7 @@ AdvantageActorCritic:setActorModel(Model: ModelObject)
 ### setCriticModel()
 
 ```
-AdvantageActorCritic:setActorModel(Model: ModelObject)
+ProximalPolicyOptimization:setActorModel(Model: ModelObject)
 ```
 
 #### Parameters:
@@ -81,7 +81,7 @@ AdvantageActorCritic:setActorModel(Model: ModelObject)
 Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings for that particular parameter.
 
 ```
-AdvantageActorCritic:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
+ProximalPolicyOptimization:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
 ```
 
 #### Parameters:
@@ -91,7 +91,7 @@ AdvantageActorCritic:setExperienceReplay(ExperienceReplay: ExperienceReplayObjec
 ### setClassesList()
 
 ```
-AdvantageActorCritic:setClassesList(classesList: [])
+ProximalPolicyOptimization:setClassesList(classesList: [])
 ```
 
 #### Parameters:
@@ -103,7 +103,7 @@ AdvantageActorCritic:setClassesList(classesList: [])
 Reward or punish model based on the current state of the environment.
 
 ```
-AdvantageActorCritic:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
+ProximalPolicyOptimization:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
 ```
 
 #### Parameters:
@@ -129,7 +129,7 @@ AdvantageActorCritic:reinforce(currentFeatureVector: Matrix, rewardValue: number
 Set whether or not to show the current number of episodes and current epsilon.
 
 ```
-AdvantageActorCritic:setPrintReinforcementOutput(option: boolean)
+ProximalPolicyOptimization:setPrintReinforcementOutput(option: boolean)
 ```
 #### Parameters:
 
@@ -140,7 +140,7 @@ AdvantageActorCritic:setPrintReinforcementOutput(option: boolean)
 Updates the model parameters.
 
 ```
-AdvantageActorCritic:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
+ProximalPolicyOptimization:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
 ```
 
 #### Parameters:
@@ -156,7 +156,7 @@ AdvantageActorCritic:update(previousFeatiureVector: featureVector, action: numbe
 ### getCurrentNumberOfEpisodes()
 
 ```
-AdvantageActorCritic:getCurrentNumberOfEpisodes(): number
+ProximalPolicyOptimization:getCurrentNumberOfEpisodes(): number
 ```
 
 #### Returns:
@@ -166,7 +166,7 @@ AdvantageActorCritic:getCurrentNumberOfEpisodes(): number
 ### getCurrentNumberOfReinforcements()
 
 ```
-AdvantageActorCritic:getCurrentNumberOfReinforcements(): number
+ProximalPolicyOptimization:getCurrentNumberOfReinforcements(): number
 ```
 
 #### Returns:
@@ -176,7 +176,7 @@ AdvantageActorCritic:getCurrentNumberOfReinforcements(): number
 ### getCurrentEpsilon()
 
 ```
-AdvantageActorCritic:getCurrentEpsilon(): number
+ProximalPolicyOptimization:getCurrentEpsilon(): number
 ```
 
 #### Returns:
@@ -188,7 +188,7 @@ AdvantageActorCritic:getCurrentEpsilon(): number
 Reset model's stored values (excluding the parameters).
 
 ```
-AdvantageActorCritic:reset()
+ProximalPolicyOptimization:reset()
 ```
 
 ### destroy()
@@ -196,7 +196,7 @@ AdvantageActorCritic:reset()
 Destroys the model object.
 
 ```
-AdvantageActorCritic:destroy()
+ProximalPolicyOptimization:destroy()
 ```
 
 ### References

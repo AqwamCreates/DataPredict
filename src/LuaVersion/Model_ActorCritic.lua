@@ -245,15 +245,15 @@ function ActorCriticModel:episodeUpdate(numberOfFeatures)
 	
 	for h = 1, historyLength, 1 do
 		
-		local reward = self.rewardHistory[h]
+		local criticValue = self.criticValueHistory[h]
 		
 		local returns = normalizedReturnVector[1][h]
 		
 		local actionProbability = self.actionProbabilityHistory[h]
 		
-		local actorLoss = -math.log(actionProbability) * (returns - reward) 
+		local actorLoss = -math.log(actionProbability) * (returns - criticValue) 
 		
-		local criticLoss = (returns - reward)^2
+		local criticLoss = (returns - criticValue)^2
 		
 		sumActorLosses += actorLoss
 		

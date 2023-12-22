@@ -35,9 +35,10 @@
 | [ActorCritic](Models/ActorCritic.md)                                                                                             | AC                                        | Same As Q-Learning Neural Network                                           |
 | [AdvantageActorCritic](Models/AdvantageActorCritic.md)                                                                           | A2C                                       | Same As Q-Learning Neural Network                                           |
 | [AsynchronousAdvantageActorCritic](Models/AsynchronousAdvantageActorCritic.md)                                                   | A3C                                       | Same As Q-Learning Neural Network                                           |
-| [REINFORCENeuralNetwork](Models/REINFORCENeuralNetwork.md)                                                                       | Vanilla Policy Gradient                   | Same As Q-Learning Neural Network                                           |
+| [REINFORCENeuralNetwork](Models/REINFORCENeuralNetwork.md)                                                                       |                                           | Same As Q-Learning Neural Network                                           |
 | [DuelingQLearning](Models/DuelingQLearning.md)                                                                                   | None                                      | Same As Q-Learning Neural Network                                           |
 | [ProximalPolicyOptimization](Models/ProximalPolicyOptimization.md) (Beta Version Only)                                           | PPO                                       | Same As Q-Learning Neural Network                                           |
+| [VanillaPolicyGradient](Models/VanillaPolicyGradient.md) (Beta Version Only)                                                     | VPG                                       | Same As Q-Learning Neural Network                                           |
 
 ### Sequential
 

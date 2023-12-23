@@ -471,7 +471,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 			
 			for data = 1, numberOfData, 1 do
 				
-				for neuron = 1, #data[1], 1 do
+				for neuron = 1, #inputMatrix[1], 1 do
 					
 					if (Random.new():NextNumber() < dropoutRate) then continue end
 						

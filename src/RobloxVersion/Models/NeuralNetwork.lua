@@ -444,6 +444,8 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 		local hasBiasNeuron = self.hasBiasNeuronTable[layerNumber]
 
 		local activationFunctionName = self.activationFunctionTable[layerNumber]
+		
+		local dropoutRate = self.dropoutRate[layerNumber]
 
 		local activationFunction = activationFunctionList[activationFunctionName]
 
@@ -463,6 +465,24 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 
 			for data = 1, numberOfData, 1 do inputMatrix[data][1] = 1 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
 
+		end
+		
+		if (dropoutRate > 0) then
+			
+			for data = 1, numberOfData, 1 do
+				
+				for neuron = 1, #data[1], 1 do
+					
+					if (Random.new():NextNumber() > dropoutRate) then continue end
+						
+					zTable[data][neuron] = 0
+						
+					inputMatrix[data][neuron] = 0
+					
+				end
+				
+			end
+			
 		end
 
 		table.insert(zTable, layerZ)
@@ -756,6 +776,8 @@ function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 	NewNeuralNetworkModel.learningRateTable = {}
 
 	NewNeuralNetworkModel.activationFunctionTable = {}
+	
+	NewNeuralNetworkModel.dropoutRateTable = {}
 
 	NewNeuralNetworkModel.previousDeltaMatricesTable = {}
 
@@ -828,6 +850,8 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 	self.learningRateTable = {}
 
 	self.activationFunctionTable = {}
+	
+	self.dropoutRateTable = {}
 
 	self.OptimizerTable = {}
 
@@ -840,6 +864,8 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		self.activationFunctionTable[layer] = activationFunction
 
 		self.learningRateTable[layer] = learningRate
+		
+		self.dropoutRateTable[layer] = 0
 
 		if (layer == numberOfLayers) then
 
@@ -900,6 +926,8 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 	table.insert(self.OptimizerTable, Optimizer)
 
 	table.insert(self.RegularizationTable, Regularization)
+	
+	table.insert(self.dropoutRateTable, 0)
 
 end
 
@@ -927,6 +955,18 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 	self.RegularizationTable[layerNumber] = Regularization or self.RegularizationTable[layerNumber]
 
+end
+
+function NeuralNetworkModel:setDropoutRate(layerNumber, dropoutRate)
+	
+	self.dropoutRateTable[layerNumber] = dropoutRate or self.dropoutRateTable[layerNumber]
+	
+end
+
+function NeuralNetworkModel:getDropoutRate(layerNumber)
+	
+	return self.dropoutRateTable[layerNumber]
+	
 end
 
 function NeuralNetworkModel:getLayer(layerNumber)

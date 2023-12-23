@@ -445,7 +445,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 
 		local activationFunctionName = self.activationFunctionTable[layerNumber]
 		
-		local dropoutRate = self.dropoutRate[layerNumber]
+		local dropoutRate = self.dropoutRateTable[layerNumber]
 
 		local activationFunction = activationFunctionList[activationFunctionName]
 

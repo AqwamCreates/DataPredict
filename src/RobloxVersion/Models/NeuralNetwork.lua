@@ -469,11 +469,13 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 		
 		if (dropoutRate > 0) then
 			
+			local nonDropoutRate = 1 - dropoutRate
+			
 			for data = 1, numberOfData, 1 do
 				
 				for neuron = 1, #inputMatrix[1], 1 do
 					
-					if (Random.new():NextNumber() < dropoutRate) then continue end
+					if (Random.new():NextNumber() <= nonDropoutRate) then continue end
 						
 					zTable[data][neuron] = 0
 						

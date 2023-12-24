@@ -257,15 +257,17 @@ NeuralNetwork:setClassesList(classesList: [])
 
 ### setDropoutRate()
 
+Makes a random number of neurons to output 0 based on dropoutRate.
+
 ```
 NeuralNetwork:setDropoutRate(layerNumer: integer, dropoutRate: number)
 ```
 
 #### Parameters:
 
-* layerNumer: The layer number to apply dropout when required.
+* layerNumer: The layer number to apply dropout when required. This will set a random number of output neurons at this particular layer to 0.
 
-* dropoutRate: The probabiliy of a neuron for selected layer number to be dropped out when required. Must be set between 0 and 1. By default, it is set to zero.
+* dropoutRate: The probabiliy of a neuron for selected layer number to be dropped out when required. Must be set between 0 and 1. Increasing the rate will cause more neurons more likely to output 0. By default, the dropoutRate is set to 0.
 
 ### forwardPropagate()
 

@@ -840,18 +840,20 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 	local learningRateType = typeof(learningRate)
 
 	local activationFunctionType = typeof(activationFunction)
-
-	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
 	
-	activationFunction = activationFunction or defaultActivationFunction
-
-	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
-	
-	learningRate = learningRate or defaultLearningRate
-
 	local dropoutRateType = typeof(dropoutRate)
 
+	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
+
+	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
+
 	if (dropoutRateType ~= "nil") and (dropoutRateType ~= "number") then error("Invalid input for dropout rate!") end
+	
+	activationFunction = activationFunction or defaultActivationFunction
+	
+	learningRate = learningRate or defaultLearningRate
+	
+	dropoutRate = dropoutRate or defaultDropoutRate
 
 	self.ModelParameters = nil
 
@@ -952,18 +954,18 @@ end
 function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization, dropoutRate)
 
 	local hasBiasNeuronType = typeof(hasBiasNeuron)
-
-	if (hasBiasNeuronType ~= "nil") and (hasBiasNeuronType ~= "boolean") then error("Invalid input for adding bias!") end
-
+	
 	local learningRateType = typeof(learningRate)
 
 	local activationFunctionType = typeof(activationFunction)
+	
+	local dropoutRateType = typeof(dropoutRate)
+
+	if (hasBiasNeuronType ~= "nil") and (hasBiasNeuronType ~= "boolean") then error("Invalid input for adding bias!") end
 
 	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
 
 	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
-
-	local dropoutRateType = typeof(dropoutRate)
 
 	if (dropoutRateType ~= "nil") and (dropoutRateType ~= "number") then error("Invalid input for dropout rate!") end
 	
@@ -999,7 +1001,7 @@ end
 
 function NeuralNetworkModel:getLayer(layerNumber)
 
-	return self.numberOfNeuronsTable[layerNumber], self.hasBiasNeuronTable[layerNumber], self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], self.OptimizerTable[layerNumber], self.RegularizationTable[layerNumber]
+	return self.numberOfNeuronsTable[layerNumber], self.hasBiasNeuronTable[layerNumber], self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], self.OptimizerTable[layerNumber], self.RegularizationTable[layerNumber], self.dropoutRateTable
 
 end
 

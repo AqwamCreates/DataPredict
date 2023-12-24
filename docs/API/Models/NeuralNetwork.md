@@ -342,3 +342,7 @@ NeuralNetwork:getLayer(layerNumber: number): number, boolean, string, number, Op
 ## Inherited From
 
 * [BaseModel](BaseModel.md)
+
+## References
+
+* [Dropout in Neural Networks By Harsh Yadav](https://towardsdatascience.com/dropout-in-neural-networks-47a162d621d9)

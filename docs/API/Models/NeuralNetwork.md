@@ -270,7 +270,7 @@ NeuralNetwork:setDropoutRate(layerNumer: integer, dropoutRate: number)
 ### forwardPropagate()
 
 ```
-NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean, doNotDropoutNeurons: boolean): labelMatrix
+NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean, doNotDropoutNeurons: boolean): predictedLabelMatrix, forwardPropagateTable, zTable
 ```
 
 ### Parameters:
@@ -283,7 +283,11 @@ NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean, doNot
 
 ### Returns:
 
-* labelMatrix: A matrix containing final layer outputs.
+* predictedLabelMatrix: A matrix containing final layer outputs.
+
+* forwardPropagateTable: A table containing matrices where its original values are transformed by selected activation functions.
+
+* zTable: A table containing matrices that was produced by each neuron.
 
 ### backPropagate()
 

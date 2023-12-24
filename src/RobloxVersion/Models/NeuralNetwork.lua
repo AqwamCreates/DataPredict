@@ -417,7 +417,7 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 end
 
-function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
+function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDropoutNeurons)
 	
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
@@ -467,7 +467,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 
 		end
 		
-		if (dropoutRate > 0) then
+		if (dropoutRate > 0) and (not doNotDropoutNeurons) then
 			
 			local nonDropoutRate = 1 - dropoutRate
 			
@@ -511,7 +511,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables)
 
 	end
 
-	return inputMatrix
+	return inputMatrix, forwardPropagateTable, zTable
 
 end
 
@@ -1311,7 +1311,7 @@ function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)
 
 	if (not self.ModelParameters) then self:generateLayers() end
 
-	local outputMatrix = self:forwardPropagate(featureMatrix, false)
+	local outputMatrix = self:forwardPropagate(featureMatrix, false, true)
 
 	if (returnOriginalOutput == true) then return outputMatrix end
 

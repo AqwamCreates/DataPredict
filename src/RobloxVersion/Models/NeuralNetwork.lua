@@ -898,6 +898,8 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		end
 
 	end
+	
+	self:generateLayers()
 
 end
 

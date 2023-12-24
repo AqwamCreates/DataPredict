@@ -16,6 +16,8 @@ local defaultActivationFunction = "LeakyReLU"
 
 local defaultTargetCost = 0
 
+local defaultDropoutRate = 0
+
 local activationFunctionList = {
 
 	["Sigmoid"] = function (zMatrix) 
@@ -833,15 +835,23 @@ function NeuralNetworkModel:generateLayers()
 
 end
 
-function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunction, learningRate, Optimizer, Regularization)
+function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunction, learningRate, Optimizer, Regularization, dropoutRate)
 
 	activationFunction = activationFunction or defaultActivationFunction
 
 	learningRate = activationFunction or self.learningRate
 
-	if (typeof(numberOfNeuronsArray) ~= "table") then error("Invalid input for number of neurons!") end
+	local learningRateType = typeof(learningRate)
 
-	if (typeof(activationFunction) ~= "string") then error("Invalid input for activation function!") end
+	local activationFunctionType = typeof(activationFunction)
+
+	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
+
+	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
+
+	local dropoutRateType = typeof(dropoutRate)
+
+	if (dropoutRateType ~= "nil") and (dropoutRateType ~= "number") then error("Invalid input for dropout rate!") end
 
 	self.ModelParameters = nil
 
@@ -863,11 +873,11 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 	for layer = 1, numberOfLayers, 1 do
 
-		self.activationFunctionTable[layer] = activationFunction
+		self.activationFunctionTable[layer] = activationFunction or defaultActivationFunction
 
-		self.learningRateTable[layer] = learningRate
+		self.learningRateTable[layer] = learningRate or defaultLearningRate
 		
-		self.dropoutRateTable[layer] = 0
+		self.dropoutRateTable[layer] = dropoutRate or defaultDropoutRate
 
 		if (layer == numberOfLayers) then
 
@@ -891,7 +901,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 end
 
-function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization)
+function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization, dropoutRate)
 
 	if (typeof(numberOfNeurons) ~= "number") then error("Invalid input for number of neurons!") end
 
@@ -900,14 +910,16 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 	if (hasBiasNeuronType ~= "nil") and (hasBiasNeuronType ~= "boolean") then error("Invalid input for adding bias!") end
 
 	local learningRateType = typeof(learningRate)
-
-	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
-
-	if (typeof(numberOfNeurons) ~= "number") then error("Invalid input for number of neurons!") end
-
+	
 	local activationFunctionType = typeof(activationFunction)
 
 	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
+
+	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
+	
+	local dropoutRateType = typeof(dropoutRate)
+	
+	if (dropoutRateType ~= "nil") and (dropoutRateType ~= "number") then error("Invalid input for dropout rate!") end
 
 	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron, true)
 	
@@ -916,6 +928,8 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 	learningRate = learningRate or self.learningRate
 
 	activationFunction = activationFunction or defaultActivationFunction
+	
+	dropoutRate = dropoutRate or defaultDropoutRate
 
 	table.insert(self.numberOfNeuronsTable, numberOfNeurons)
 
@@ -929,19 +943,27 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 
 	table.insert(self.RegularizationTable, Regularization)
 	
-	table.insert(self.dropoutRateTable, 0)
+	table.insert(self.dropoutRateTable, dropoutRate)
 
 end
 
-function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization)
+function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization, dropoutRate)
 
-	if (typeof(layerNumber) ~= "number") then error("Invalid input layer number!") end
+	local hasBiasNeuronType = typeof(hasBiasNeuron)
 
-	if (typeof(hasBiasNeuron) ~= "boolean") then error("Invalid input for adding bias!") end
+	if (hasBiasNeuronType ~= "nil") and (hasBiasNeuronType ~= "boolean") then error("Invalid input for adding bias!") end
 
-	if (typeof(learningRate) ~= "number") then error("Invalid learning rate!") end
+	local learningRateType = typeof(learningRate)
 
-	if  (typeof(activationFunction) ~= "string") then error("Invalid input for activation function!") end 
+	local activationFunctionType = typeof(activationFunction)
+
+	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
+
+	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
+
+	local dropoutRateType = typeof(dropoutRate)
+
+	if (dropoutRateType ~= "nil") and (dropoutRateType ~= "number") then error("Invalid input for dropout rate!") end
 	
 	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron,  self.hasBiasNeuronTable[layerNumber])
 	
@@ -956,6 +978,8 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 	self.OptimizerTable[layerNumber] = Optimizer or self.OptimizerTable[layerNumber]
 
 	self.RegularizationTable[layerNumber] = Regularization or self.RegularizationTable[layerNumber]
+	
+	self.dropoutRateTable[layerNumber] = dropoutRate or self.dropoutRateTable[layerNumber]
 
 end
 

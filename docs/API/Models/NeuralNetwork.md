@@ -53,7 +53,7 @@ NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number
 Add a layer to the neural network.
 
 ```
-NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activationFunction: string, learningRate: number Optimizer: OptimizerObject, Regularization: RegularizationObject)
+NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activationFunction: string, learningRate: number Optimizer: OptimizerObject, Regularization: RegularizationObject. dropoutRate: number)
 ```
 
 #### Parameters:
@@ -94,12 +94,14 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activat
 
 * Regularization: The regularization object to be added at the last layer.
 
+* dropoutRate: The probabiliy of a neuron for selected layer number to be dropped out when required. Must be set between 0 and 1. Increasing the rate will cause more neurons more likely to output 0. By default, the dropoutRate is set to 0.
+
 ### setLayer()
 
 Change the properties of a selected layer of the neural netowrk.
 
 ```
-NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationFunction: string, learningRate: number, Optimizer: OptimizerObject, Regularization: RegularizationObject)
+NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationFunction: string, learningRate: number, Optimizer: OptimizerObject, Regularization: RegularizationObject, dropoutRate: number)
 ```
 
 #### Parameters:
@@ -140,12 +142,14 @@ NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationF
 
 * Regularization: The regularization object to be used by to this layer.
 
+* dropoutRate: The probabiliy of a neuron for selected layer number to be dropped out when required. Must be set between 0 and 1. Increasing the rate will cause more neurons more likely to output 0. By default, the dropoutRate is set to 0.
+
 ### createLayers()
 
 Create all the neurons (with bias neuron) in each of those layers. It also set all the activation function of all neuron to the activation function given in the function's parameters. Resets the current model parameters stored in the neural network.
 
 ```
-NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: string, learningRate, Optimizer: OptimizerObject, Regularization: RegularizationObject)
+NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: string, learningRate, Optimizer: OptimizerObject, Regularization: RegularizationObject, dropoutRate: number)
 ```
 
 #### Parameters:
@@ -175,6 +179,8 @@ NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: 
 * Optimizer: The optimizer object to be added at the last layer.
 
 * Regularization: The regularization object to be added at the last layer.
+
+* dropoutRate: The probabiliy of a neuron for selected layer number to be dropped out when required. Must be set between 0 and 1. Increasing the rate will cause more neurons more likely to output 0. By default, the dropoutRate is set to 0.
 
 ### evolveLayerSize()
 
@@ -322,7 +328,7 @@ NeuralNetwork:showDetails()
 Gets the settings of a particular layer.
 
 ```
-NeuralNetwork:getLayer(layerNumber: number): number, boolean, string, number, OptimizerObject, RegularizationObject
+NeuralNetwork:getLayer(layerNumber: number): number, boolean, string, number, OptimizerObject, RegularizationObject, number
 ```
 
 #### Parameters:
@@ -340,6 +346,8 @@ NeuralNetwork:getLayer(layerNumber: number): number, boolean, string, number, Op
 * Optimizer: The optimizer object to be added at the last layer.
 
 * Regularization: The regularization object to be added at the last layer.
+
+* dropoutRate: The probabiliy of a neuron for selected layer number to be dropped out when required. Must be set between 0 and 1. Increasing the rate will cause more neurons more likely to output 0. By default, the dropoutRate is set to 0.
 
 ## Inherited From
 

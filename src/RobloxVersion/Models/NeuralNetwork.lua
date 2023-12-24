@@ -1001,7 +1001,7 @@ end
 
 function NeuralNetworkModel:getLayer(layerNumber)
 
-	return self.numberOfNeuronsTable[layerNumber], self.hasBiasNeuronTable[layerNumber], self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], self.OptimizerTable[layerNumber], self.RegularizationTable[layerNumber], self.dropoutRateTable
+	return self.numberOfNeuronsTable[layerNumber], self.hasBiasNeuronTable[layerNumber], self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], self.OptimizerTable[layerNumber], self.RegularizationTable[layerNumber], self.dropoutRateTable[layerNumber]
 
 end
 

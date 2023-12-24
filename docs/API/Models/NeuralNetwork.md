@@ -265,7 +265,7 @@ NeuralNetwork:setDropoutRate(layerNumer: integer, dropoutRate: number)
 
 * layerNumer: The layer number to apply dropout when required.
 
-* dropoutRate: The probabiliy of a neuron for selected layer number to be dropped out when required. Must be set between 0 and 1.
+* dropoutRate: The probabiliy of a neuron for selected layer number to be dropped out when required. Must be set between 0 and 1. By default, it is set to zero.
 
 ### forwardPropagate()
 

@@ -255,10 +255,22 @@ NeuralNetwork:setClassesList(classesList: [])
 
 * classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
 
+### setDropoutRate()
+
+```
+NeuralNetwork:setDropoutRate(layerNumer: integer, dropoutRate: number)
+```
+
+#### Parameters:
+
+* layerNumer: The layer number to apply dropout when required.
+
+* dropoutRate: The probabiliy of a neuron for selected layer number to be dropped out when required. Must be set between 0 and 1.
+
 ### forwardPropagate()
 
 ```
-NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean: labelMatrix
+NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean, doNotDropoutNeurons: boolean): labelMatrix
 ```
 
 ### Parameters:
@@ -266,6 +278,8 @@ NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean: label
 * featureMatrix: Matrix containing all data.
 
 * saveTables: Set whether or not the forward propagation table and z table is stored in the model.
+
+* doNotDropoutNeurons: Set whether or not to dropout neurons during forward propagation.
 
 ### Returns:
 
@@ -297,7 +311,7 @@ Shows the details of all layers. The details includes the number of neurons, is 
 NeuralNetwork:showDetails()
 ```
 
-#### getLayer()
+### getLayer()
 
 Gets the settings of a particular layer.
 

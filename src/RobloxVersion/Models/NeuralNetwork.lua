@@ -837,17 +837,17 @@ end
 
 function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunction, learningRate, Optimizer, Regularization, dropoutRate)
 
-	activationFunction = activationFunction or defaultActivationFunction
-
-	learningRate = activationFunction or self.learningRate
-
 	local learningRateType = typeof(learningRate)
 
 	local activationFunctionType = typeof(activationFunction)
 
 	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
+	
+	activationFunction = activationFunction or defaultActivationFunction
 
 	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
+	
+	learningRate = learningRate or defaultLearningRate
 
 	local dropoutRateType = typeof(dropoutRate)
 
@@ -873,11 +873,11 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 	for layer = 1, numberOfLayers, 1 do
 
-		self.activationFunctionTable[layer] = activationFunction or defaultActivationFunction
+		self.activationFunctionTable[layer] = activationFunction
 
-		self.learningRateTable[layer] = learningRate or defaultLearningRate
+		self.learningRateTable[layer] = learningRate
 		
-		self.dropoutRateTable[layer] = dropoutRate or defaultDropoutRate
+		self.dropoutRateTable[layer] = dropoutRate
 
 		if (layer == numberOfLayers) then
 

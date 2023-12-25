@@ -182,6 +182,52 @@ NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: 
 
 * dropoutRate: The probabiliy of a neuron for selected layer number to be dropped out when required. Must be set between 0 and 1. Increasing the rate will cause more neurons more likely to output 0. By default, the dropoutRate is set to 0.
 
+### setLayerProperty()
+
+```
+NeuralNetwork:setLayerProperty(layerNumber: integer, property: string, value: any): []
+```
+
+### Parameters:
+
+* layerNumber: The layer that you wish to change properties on.
+
+* property: The property to be changed. The options available are:
+
+  * HasBias
+
+  * ActivationFunction
+
+  * LearningRate
+
+  * DropoutRate
+
+* value: The value to be set to the property for selected layer.
+
+### getLayerProperty()
+
+```
+NeuralNetwork:getLayerProperty(layerNumber: integer, property: string): any
+```
+
+### Parameters:
+
+* layerNumber: The layer that you wish to change properties on.
+
+* property: The property to be changed. The options available are:
+
+  * HasBias
+
+  * ActivationFunction
+
+  * LearningRate
+
+  * DropoutRate
+
+### Returns:
+
+* value: The value for that particular property for selected layer.
+
 ### evolveLayerSize()
 
 Evolves a specified layer by changing the number of neurons.

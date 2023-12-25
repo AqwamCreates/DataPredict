@@ -1091,6 +1091,8 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 	else
 
 		warn("Layer property does not exists. Returning nil value.")
+		
+		return nil
 
 	end
 	

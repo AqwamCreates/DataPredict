@@ -987,9 +987,51 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 end
 
-function NeuralNetworkModel:setDropoutRate(layerNumber, dropoutRate)
+function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 	
-	self.dropoutRateTable[layerNumber] = dropoutRate or self.dropoutRateTable[layerNumber]
+	local valueType = type(value)
+	
+	if (property == "HasBias") then
+		
+		if (valueType ~= "nil") and (valueType ~= "boolean") then error("Invalid input for adding bias!") end
+		
+		local hasBiasNeuron = self:getBooleanOrDefaultOption(value,  self.hasBiasNeuronTable[layerNumber])
+
+		hasBiasNeuron = (hasBiasNeuron and 1) or 0
+
+		self.hasBiasNeuronTable[layerNumber] = hasBiasNeuron
+		
+	elseif (property == "ActivationFunction") then
+		
+		if (valueType ~= "nil") and (valueType ~= "string") then error("Invalid input for activation function!") end
+		
+		self.activationFunctionTable[layerNumber] = value or self.activationFunctionTable[layerNumber]
+		
+	elseif (property == "LearningRate") then
+		
+		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for learning rate!") end
+		
+		self.learningRateTable[layerNumber] = value or self.learningRateTable[layerNumber]
+		
+	elseif (property == "Optimizer") then
+		
+		self.OptimizerTable[layerNumber] = value or self.OptimizerTable[layerNumber]
+		
+	elseif (property == "Regularization") then
+		
+		self.RegularizationTable[layerNumber] = value or self.RegularizationTable[layerNumber]
+		
+	elseif (property == "DropoutRate") then
+		
+		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for dropout rate!") end
+		
+		self.dropoutRateTable[layerNumber] = value or self.dropoutRateTable[layerNumber]
+		
+	else
+		
+		warn("Layer property does not exists. Did not change the layer's properties.")
+		
+	end
 	
 end
 

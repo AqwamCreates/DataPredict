@@ -18,6 +18,51 @@ local defaultTargetCost = 0
 
 local defaultDropoutRate = 0
 
+local layerPropertyValueTypeCheckingFunctionList = {
+	
+	["NumberOfNeurons"] = function(value)
+		
+		local valueType = type(value)
+		
+		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for number of neurons!") end 
+		
+	end,
+	
+	["HasBias"] = function(value)
+
+		local valueType = type(value)
+
+		if (valueType ~= "nil") and (valueType ~= "boolean") then error("Invalid input for has bias!") end 
+
+	end,
+	
+	["ActivationFunction"] = function(value)
+		
+		local valueType = type(value)
+		
+		if (valueType ~= "nil") and (valueType ~= "string") then error("Invalid input for activation function!") end
+		
+	end,
+	
+	["LearningRate"] = function(value)
+		
+		local valueType = type(value)
+		
+		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for learning rate!") end
+		
+	end,
+	
+	["DropoutRate"] = function(value)
+
+		local valueType = type(value)
+
+		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for dropout rate!") end
+
+	end,
+	
+	
+}
+
 local activationFunctionList = {
 
 	["Sigmoid"] = function (zMatrix) 
@@ -906,24 +951,16 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 end
 
 function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization, dropoutRate)
-
-	if (typeof(numberOfNeurons) ~= "number") then error("Invalid input for number of neurons!") end
-
-	local hasBiasNeuronType = typeof(hasBiasNeuron)
-
-	if (hasBiasNeuronType ~= "nil") and (hasBiasNeuronType ~= "boolean") then error("Invalid input for adding bias!") end
-
-	local learningRateType = typeof(learningRate)
 	
-	local activationFunctionType = typeof(activationFunction)
-
-	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
-
-	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
+	layerPropertyValueTypeCheckingFunctionList["NumberOfNeurons"](numberOfNeurons)
 	
-	local dropoutRateType = typeof(dropoutRate)
-	
-	if (dropoutRateType ~= "nil") and (dropoutRateType ~= "number") then error("Invalid input for dropout rate!") end
+	layerPropertyValueTypeCheckingFunctionList["HasBias"](hasBiasNeuron)
+
+	layerPropertyValueTypeCheckingFunctionList["ActivationFunction"](activationFunction)
+
+	layerPropertyValueTypeCheckingFunctionList["LearningRate"](learningRate)
+
+	layerPropertyValueTypeCheckingFunctionList["DropoutRate"](dropoutRate)
 
 	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron, true)
 	
@@ -952,22 +989,14 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 end
 
 function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization, dropoutRate)
-
-	local hasBiasNeuronType = typeof(hasBiasNeuron)
 	
-	local learningRateType = typeof(learningRate)
-
-	local activationFunctionType = typeof(activationFunction)
+	layerPropertyValueTypeCheckingFunctionList["HasBias"](hasBiasNeuron)
 	
-	local dropoutRateType = typeof(dropoutRate)
-
-	if (hasBiasNeuronType ~= "nil") and (hasBiasNeuronType ~= "boolean") then error("Invalid input for adding bias!") end
-
-	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
-
-	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
-
-	if (dropoutRateType ~= "nil") and (dropoutRateType ~= "number") then error("Invalid input for dropout rate!") end
+	layerPropertyValueTypeCheckingFunctionList["ActivationFunction"](activationFunction)
+	
+	layerPropertyValueTypeCheckingFunctionList["LearningRate"](learningRate)
+	
+	layerPropertyValueTypeCheckingFunctionList["DropoutRate"](dropoutRate)
 	
 	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron,  self.hasBiasNeuronTable[layerNumber])
 	
@@ -989,11 +1018,9 @@ end
 
 function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 	
-	local valueType = type(value)
-	
 	if (property == "HasBias") then
 		
-		if (valueType ~= "nil") and (valueType ~= "boolean") then error("Invalid input for adding bias!") end
+		layerPropertyValueTypeCheckingFunctionList["HasBias"](value)
 		
 		local hasBiasNeuron = self:getBooleanOrDefaultOption(value,  self.hasBiasNeuronTable[layerNumber])
 
@@ -1003,13 +1030,13 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 		
 	elseif (property == "ActivationFunction") then
 		
-		if (valueType ~= "nil") and (valueType ~= "string") then error("Invalid input for activation function!") end
+		layerPropertyValueTypeCheckingFunctionList["ActivationFunction"](value)
 		
 		self.activationFunctionTable[layerNumber] = value or self.activationFunctionTable[layerNumber]
 		
 	elseif (property == "LearningRate") then
 		
-		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for learning rate!") end
+		layerPropertyValueTypeCheckingFunctionList["LearningRate"](value)
 		
 		self.learningRateTable[layerNumber] = value or self.learningRateTable[layerNumber]
 		
@@ -1023,7 +1050,7 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 		
 	elseif (property == "DropoutRate") then
 		
-		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for dropout rate!") end
+		layerPropertyValueTypeCheckingFunctionList["DropoutRate"](value)
 		
 		self.dropoutRateTable[layerNumber] = value or self.dropoutRateTable[layerNumber]
 		

@@ -1062,9 +1062,37 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 	
 end
 
-function NeuralNetworkModel:getDropoutRate(layerNumber)
+function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 	
-	return self.dropoutRateTable[layerNumber]
+	if (property == "HasBias") then
+
+		return self.hasBiasNeuronTable[layerNumber]
+
+	elseif (property == "ActivationFunction") then
+
+		return self.activationFunctionTable[layerNumber]
+
+	elseif (property == "LearningRate") then
+
+		return self.learningRateTable[layerNumber]
+
+	elseif (property == "Optimizer") then
+
+		return self.OptimizerTable[layerNumber]
+
+	elseif (property == "Regularization") then
+
+		return self.RegularizationTable[layerNumber]
+
+	elseif (property == "DropoutRate") then
+
+		return self.dropoutRateTable[layerNumber]
+
+	else
+
+		warn("Layer property does not exists. Returning nil value.")
+
+	end
 	
 end
 

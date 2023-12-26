@@ -51,6 +51,51 @@ local defaultTargetCost = 0
 
 local defaultDropoutRate = 0
 
+local layerPropertyValueTypeCheckingFunctionList = {
+	
+	["NumberOfNeurons"] = function(value)
+		
+		local valueType = type(value)
+		
+		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for number of neurons!") end 
+		
+	end,
+	
+	["HasBias"] = function(value)
+
+		local valueType = type(value)
+
+		if (valueType ~= "nil") and (valueType ~= "boolean") then error("Invalid input for has bias!") end 
+
+	end,
+	
+	["ActivationFunction"] = function(value)
+		
+		local valueType = type(value)
+		
+		if (valueType ~= "nil") and (valueType ~= "string") then error("Invalid input for activation function!") end
+		
+	end,
+	
+	["LearningRate"] = function(value)
+		
+		local valueType = type(value)
+		
+		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for learning rate!") end
+		
+	end,
+	
+	["DropoutRate"] = function(value)
+
+		local valueType = type(value)
+
+		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for dropout rate!") end
+
+	end,
+	
+	
+}
+
 local activationFunctionList = {
 
 	["Sigmoid"] = function (zMatrix) 
@@ -939,24 +984,16 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 end
 
 function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization, dropoutRate)
-
-	if (typeof(numberOfNeurons) ~= "number") then error("Invalid input for number of neurons!") end
-
-	local hasBiasNeuronType = typeof(hasBiasNeuron)
-
-	if (hasBiasNeuronType ~= "nil") and (hasBiasNeuronType ~= "boolean") then error("Invalid input for adding bias!") end
-
-	local learningRateType = typeof(learningRate)
 	
-	local activationFunctionType = typeof(activationFunction)
-
-	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
-
-	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
+	layerPropertyValueTypeCheckingFunctionList["NumberOfNeurons"](numberOfNeurons)
 	
-	local dropoutRateType = typeof(dropoutRate)
-	
-	if (dropoutRateType ~= "nil") and (dropoutRateType ~= "number") then error("Invalid input for dropout rate!") end
+	layerPropertyValueTypeCheckingFunctionList["HasBias"](hasBiasNeuron)
+
+	layerPropertyValueTypeCheckingFunctionList["ActivationFunction"](activationFunction)
+
+	layerPropertyValueTypeCheckingFunctionList["LearningRate"](learningRate)
+
+	layerPropertyValueTypeCheckingFunctionList["DropoutRate"](dropoutRate)
 
 	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron, true)
 	
@@ -985,22 +1022,14 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 end
 
 function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization, dropoutRate)
-
-	local hasBiasNeuronType = typeof(hasBiasNeuron)
 	
-	local learningRateType = typeof(learningRate)
-
-	local activationFunctionType = typeof(activationFunction)
+	layerPropertyValueTypeCheckingFunctionList["HasBias"](hasBiasNeuron)
 	
-	local dropoutRateType = typeof(dropoutRate)
-
-	if (hasBiasNeuronType ~= "nil") and (hasBiasNeuronType ~= "boolean") then error("Invalid input for adding bias!") end
-
-	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
-
-	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
-
-	if (dropoutRateType ~= "nil") and (dropoutRateType ~= "number") then error("Invalid input for dropout rate!") end
+	layerPropertyValueTypeCheckingFunctionList["ActivationFunction"](activationFunction)
+	
+	layerPropertyValueTypeCheckingFunctionList["LearningRate"](learningRate)
+	
+	layerPropertyValueTypeCheckingFunctionList["DropoutRate"](dropoutRate)
 	
 	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron,  self.hasBiasNeuronTable[layerNumber])
 	
@@ -1020,15 +1049,85 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 end
 
-function NeuralNetworkModel:setDropoutRate(layerNumber, dropoutRate)
+function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 	
-	self.dropoutRateTable[layerNumber] = dropoutRate or self.dropoutRateTable[layerNumber]
+	if (property == "HasBias") then
+		
+		layerPropertyValueTypeCheckingFunctionList["HasBias"](value)
+		
+		local hasBiasNeuron = self:getBooleanOrDefaultOption(value,  self.hasBiasNeuronTable[layerNumber])
+
+		hasBiasNeuron = (hasBiasNeuron and 1) or 0
+
+		self.hasBiasNeuronTable[layerNumber] = hasBiasNeuron
+		
+	elseif (property == "ActivationFunction") then
+		
+		layerPropertyValueTypeCheckingFunctionList["ActivationFunction"](value)
+		
+		self.activationFunctionTable[layerNumber] = value or self.activationFunctionTable[layerNumber]
+		
+	elseif (property == "LearningRate") then
+		
+		layerPropertyValueTypeCheckingFunctionList["LearningRate"](value)
+		
+		self.learningRateTable[layerNumber] = value or self.learningRateTable[layerNumber]
+		
+	elseif (property == "Optimizer") then
+		
+		self.OptimizerTable[layerNumber] = value or self.OptimizerTable[layerNumber]
+		
+	elseif (property == "Regularization") then
+		
+		self.RegularizationTable[layerNumber] = value or self.RegularizationTable[layerNumber]
+		
+	elseif (property == "DropoutRate") then
+		
+		layerPropertyValueTypeCheckingFunctionList["DropoutRate"](value)
+		
+		self.dropoutRateTable[layerNumber] = value or self.dropoutRateTable[layerNumber]
+		
+	else
+		
+		warn("Layer property does not exists. Did not change the layer's properties.")
+		
+	end
 	
 end
 
-function NeuralNetworkModel:getDropoutRate(layerNumber)
+function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 	
-	return self.dropoutRateTable[layerNumber]
+	if (property == "HasBias") then
+
+		return self.hasBiasNeuronTable[layerNumber]
+
+	elseif (property == "ActivationFunction") then
+
+		return self.activationFunctionTable[layerNumber]
+
+	elseif (property == "LearningRate") then
+
+		return self.learningRateTable[layerNumber]
+
+	elseif (property == "Optimizer") then
+
+		return self.OptimizerTable[layerNumber]
+
+	elseif (property == "Regularization") then
+
+		return self.RegularizationTable[layerNumber]
+
+	elseif (property == "DropoutRate") then
+
+		return self.dropoutRateTable[layerNumber]
+
+	else
+
+		warn("Layer property does not exists. Returning nil value.")
+		
+		return nil
+
+	end
 	
 end
 
@@ -1403,6 +1502,7 @@ function NeuralNetworkModel:showDetails()
 	local maxLearningRateLength = string.len("Learning Rate")
 	local maxOptimizerLength = string.len("Optimizer Added")
 	local maxRegularizationLength = string.len("Regularization Added")
+	local maxDropoutRateLength = string.len("Dropout Rate")
 	
 	local hasBias
 
@@ -1423,6 +1523,8 @@ function NeuralNetworkModel:showDetails()
 		maxOptimizerLength = math.max(maxOptimizerLength, string.len("false"))
 
 		maxRegularizationLength = math.max(maxRegularizationLength, string.len("false"))
+		
+		maxDropoutRateLength = math.max(maxDropoutRateLength, string.len(tostring(self.dropoutRateTable[i])))
 
 	end
 
@@ -1438,7 +1540,8 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maxActivationLength) .. "-|-" ..
 		string.rep("-", maxLearningRateLength) .. "-|-" ..
 		string.rep("-", maxOptimizerLength) .. "-|-" ..
-		string.rep("-", maxRegularizationLength) .. "-|" .. 
+		string.rep("-", maxRegularizationLength) .. "-|-" .. 
+		string.rep("-", maxDropoutRateLength) .. "-|" .. 
 		"\n"
 	
 	stringToPrint ..= "| " .. string.format("%-" .. maxLayerLength .. "s", "Layer") .. " | " ..
@@ -1447,7 +1550,8 @@ function NeuralNetworkModel:showDetails()
 		string.format("%-" .. maxActivationLength .. "s", "Activation Function") .. " | " ..
 		string.format("%-" .. maxLearningRateLength .. "s", "Learning Rate") .. " | " ..
 		string.format("%-" .. maxOptimizerLength .. "s", "Optimizer Added") .. " | " ..
-		string.format("%-" .. maxRegularizationLength .. "s", "Regularization Added") .. " |" .. 
+		string.format("%-" .. maxRegularizationLength .. "s", "Regularization Added") .. " | " .. 
+		string.format("%-" .. maxDropoutRateLength .. "s", "Dropout Rate") .. " |" .. 
 		"\n"
 	
 	
@@ -1457,7 +1561,8 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maxActivationLength) .. "-|-" ..
 		string.rep("-", maxLearningRateLength) .. "-|-" ..
 		string.rep("-", maxOptimizerLength) .. "-|-" ..
-		string.rep("-", maxRegularizationLength) .. "-|" .. 
+		string.rep("-", maxRegularizationLength) .. "-|-" .. 
+		string.rep("-", maxDropoutRateLength) .. "-|" .. 
 		"\n"
 
 	-- Print the layer details
@@ -1477,9 +1582,11 @@ function NeuralNetworkModel:showDetails()
 
 		local optimizer = "| " .. string.format("%-" .. maxOptimizerLength .. "s", self.OptimizerTable[i] and "true" or "false") .. " "
 
-		local regularization = "| " .. string.format("%-" .. maxRegularizationLength .. "s", self.RegularizationTable[i] and "true" or "false") .. " |"
+		local regularization = "| " .. string.format("%-" .. maxRegularizationLength .. "s", self.RegularizationTable[i] and "true" or "false") .. " "
 		
-		local stringPart = layer .. neurons .. bias .. activation .. learningRate .. optimizer .. regularization .. "\n"
+		local dropoutRate = "| " .. string.format("%-" .. maxDropoutRateLength .. "s", self.dropoutRateTable[i]) .. " |"
+		
+		local stringPart = layer .. neurons .. bias .. activation .. learningRate .. optimizer .. regularization .. dropoutRate .. "\n"
 		
 		stringToPrint ..= stringPart
 
@@ -1491,7 +1598,8 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maxActivationLength) .. "-|-" ..
 		string.rep("-", maxLearningRateLength) .. "-|-" ..
 		string.rep("-", maxOptimizerLength) .. "-|-" ..
-		string.rep("-", maxRegularizationLength) .. "-|".. 
+		string.rep("-", maxRegularizationLength) .. "-|-".. 
+		string.rep("-", maxDropoutRateLength) .. "-|".. 
 		"\n\n"
 
 	print(stringToPrint)

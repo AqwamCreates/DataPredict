@@ -1025,15 +1025,11 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 	
 	if (layerNumber <= 0) then 
 
-		warn("The layer number can't be lesss than or equal to zero!") 
-
-		return nil
+		error("The layer number can't be less than or equal to zero!") 
 
 	elseif (layerNumber > #self.numberOfNeuronsTable)  then
 
-		warn("The layer number exceeds the number of layers!") 
-
-		return nil
+		error("The layer number exceeds the number of layers!") 
 
 	end 
 	
@@ -1067,15 +1063,11 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 	
 	if (layerNumber <= 0) then 
 
-		warn("The layer number can't be lesss than or equal to zero!") 
-
-		return nil
+		error("The layer number can't be less than or equal to zero!") 
 
 	elseif (layerNumber > #self.numberOfNeuronsTable)  then
 
-		warn("The layer number exceeds the number of layers!") 
-
-		return nil
+		error("The layer number exceeds the number of layers!") 
 
 	end 
 	
@@ -1127,15 +1119,11 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 	
 	if (layerNumber <= 0) then 
 		
-		warn("The layer number can't be lesss than or equal to zero!") 
-		
-		return nil
+		error("The layer number can't be less than or equal to zero!") 
 		
 	elseif (layerNumber > #self.numberOfNeuronsTable)  then
 		
-		warn("The layer number exceeds the number of layers!") 
-		
-		return nil
+		error("The layer number exceeds the number of layers!") 
 		
 	end 
 	
@@ -1174,6 +1162,16 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 end
 
 function NeuralNetworkModel:getLayer(layerNumber)
+	
+	if (layerNumber <= 0) then 
+
+		error("The layer number can't be less than or equal to zero!") 
+
+	elseif (layerNumber > #self.numberOfNeuronsTable)  then
+
+		error("The layer number exceeds the number of layers!") 
+
+	end 
 
 	return self.numberOfNeuronsTable[layerNumber], self.hasBiasNeuronTable[layerNumber], self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], self.OptimizerTable[layerNumber], self.RegularizationTable[layerNumber], self.dropoutRateTable[layerNumber]
 

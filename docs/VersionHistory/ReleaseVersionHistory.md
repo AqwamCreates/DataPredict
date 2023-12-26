@@ -2,6 +2,7 @@
 
 | Version                           | Number Of Models | Number Of Optimizers | Number Of Others | Number Of Experience Replays |
 |-----------------------------------|------------------|----------------------|------------------|------------------------------|
+| [1.7](Release/1-7.md)             | 32               | 8                    | 10               | 4                            |
 | [1.6](Release/1-6.md)             | 32               | 8                    | 10               | 4                            |
 | [1.5](Release/1-5.md)             | 30               | 8                    | 10               | 4                            |
 | [1.4](Release/1-4.md)             | 28               | 8                    | 9                | 4                            |

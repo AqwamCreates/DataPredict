@@ -98,7 +98,7 @@ function VanillaPolicyGradientModel:update(previousFeatureVector, action, reward
 	
 	table.insert(self.gradientHistory, gradientMatrix[1])
 	
-	table.insert(self.advantageHistory, advantageValue)
+	table.insert(self.advantageHistory, {advantageValue})
 	
 	return allOutputsMatrix
 
@@ -128,7 +128,7 @@ function VanillaPolicyGradientModel:episodeUpdate(numberOfFeatures)
 	
 	local sumGradient = AqwamMatrixLibrary:verticalSum(self.gradientHistory)
 	
-	local sumAdvantage = AqwamMatrixLibrary:verticalSum({self.advantageHistory})
+	local sumAdvantage = AqwamMatrixLibrary:verticalSum(self.advantageHistory)
 	
 	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 	
@@ -148,7 +148,7 @@ function VanillaPolicyGradientModel:episodeUpdate(numberOfFeatures)
 	
 	table.clear(self.advantageHistory)
 	
-	table.clear(self.actionProbabilityHistory)
+	table.clear(self.gradientHistory)
 	
 end
 
@@ -298,7 +298,7 @@ function VanillaPolicyGradientModel:reset()
 	
 	table.clear(self.advantageHistory)
 	
-	table.clear(self.actionProbabilityHistory)
+	table.clear(self.gradientHistory)
 
 	if (self.ExperienceReplay) then self.ExperienceReplay:reset() end
 

@@ -1,8 +1,8 @@
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-ProximalPolicyOptimizationModel = {}
+VanillaPolicyGradientModel = {}
 
-ProximalPolicyOptimizationModel.__index = ProximalPolicyOptimizationModel
+VanillaPolicyGradientModel.__index = VanillaPolicyGradientModel
 
 local defaultNumberOfReinforcementsPerEpisode = 10
 
@@ -12,41 +12,45 @@ local defaultEpsilonDecayFactor = 0.999
 
 local defaultDiscountFactor = 0.95
 
-function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
-	
-	local NewProximalPolicyOptimizationModel = {}
-	
-	setmetatable(NewProximalPolicyOptimizationModel, ProximalPolicyOptimizationModel)
-	
-	NewProximalPolicyOptimizationModel.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
+local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the episodic reward, but lower the running reward.
 
-	NewProximalPolicyOptimizationModel.epsilon = epsilon or defaultEpsilon
-
-	NewProximalPolicyOptimizationModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
-
-	NewProximalPolicyOptimizationModel.discountFactor =  discountFactor or defaultDiscountFactor
+function VanillaPolicyGradientModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
 	
-	NewProximalPolicyOptimizationModel.currentEpsilon = epsilon or defaultEpsilon
-
-	NewProximalPolicyOptimizationModel.previousFeatureVector = nil
-
-	NewProximalPolicyOptimizationModel.printReinforcementOutput = true
-
-	NewProximalPolicyOptimizationModel.currentNumberOfReinforcements = 0
-
-	NewProximalPolicyOptimizationModel.currentNumberOfEpisodes = 0
+	local NewVanillaPolicyGradientModel = {}
 	
-	NewProximalPolicyOptimizationModel.advantageHistory = {}
+	setmetatable(NewVanillaPolicyGradientModel, VanillaPolicyGradientModel)
 	
-	NewProximalPolicyOptimizationModel.actionVectorHistory = {}
+	NewVanillaPolicyGradientModel.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
+
+	NewVanillaPolicyGradientModel.epsilon = epsilon or defaultEpsilon
+
+	NewVanillaPolicyGradientModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
+
+	NewVanillaPolicyGradientModel.discountFactor =  discountFactor or defaultDiscountFactor
 	
-	NewProximalPolicyOptimizationModel.ClassesList = nil
+	NewVanillaPolicyGradientModel.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
 	
-	return NewProximalPolicyOptimizationModel
+	NewVanillaPolicyGradientModel.currentEpsilon = epsilon or defaultEpsilon
+
+	NewVanillaPolicyGradientModel.previousFeatureVector = nil
+
+	NewVanillaPolicyGradientModel.printReinforcementOutput = true
+
+	NewVanillaPolicyGradientModel.currentNumberOfReinforcements = 0
+
+	NewVanillaPolicyGradientModel.currentNumberOfEpisodes = 0
+	
+	NewVanillaPolicyGradientModel.advantageHistory = {}
+	
+	NewVanillaPolicyGradientModel.gradientHistory = {}
+	
+	NewVanillaPolicyGradientModel.ClassesList = nil
+	
+	return NewVanillaPolicyGradientModel
 	
 end
 
-function ProximalPolicyOptimizationModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function VanillaPolicyGradientModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
 	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
@@ -55,44 +59,34 @@ function ProximalPolicyOptimizationModel:setParameters(numberOfReinforcementsPer
 	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
 
 	self.discountFactor =  discountFactor or self.discountFactor
-	
+
 	self.currentEpsilon = epsilon or self.currentEpsilon
 	
 end
 
-function ProximalPolicyOptimizationModel:setActorModel(Model)
+function VanillaPolicyGradientModel:setActorModel(Model)
 	
 	self.ActorModel = Model
 	
 end
 
-function ProximalPolicyOptimizationModel:setCriticModel(Model)
+function VanillaPolicyGradientModel:setCriticModel(Model)
 
 	self.CriticModel = Model
 
 end
 
-function ProximalPolicyOptimizationModel:setClassesList(classesList)
+function VanillaPolicyGradientModel:setClassesList(classesList)
 	
 	self.ClassesList = classesList
 	
 end
 
-local function calculateProbability(outputMatrix)
-
-	local sumVector = AqwamMatrixLibrary:horizontalSum(outputMatrix)
-
-	local result = AqwamMatrixLibrary:divide(outputMatrix, sumVector)
-
-	return result
-
-end
-
-function ProximalPolicyOptimizationModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function VanillaPolicyGradientModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 	local allOutputsMatrix = self.ActorModel:predict(previousFeatureVector, true)
 	
-	local actionProbabilityVector = calculateProbability(allOutputsMatrix)
+	local logOutputMatrix = AqwamMatrixLibrary:applyFunction(math.log, allOutputsMatrix)
 
 	local previousCriticValue = self.CriticModel:predict(previousFeatureVector, true)[1][1]
 	
@@ -100,15 +94,17 @@ function ProximalPolicyOptimizationModel:update(previousFeatureVector, action, r
 	
 	local advantageValue = rewardValue + (self.discountFactor * (currentCriticValue - previousCriticValue))
 	
-	table.insert(self.advantageHistory, advantageValue)
+	local gradientMatrix = AqwamMatrixLibrary:multiply(logOutputMatrix, advantageValue)
 	
-	table.insert(self.actionVectorHistory, actionProbabilityVector)
+	table.insert(self.gradientHistory, gradientMatrix[1])
+	
+	table.insert(self.advantageHistory, {advantageValue})
 	
 	return allOutputsMatrix
 
 end
 
-function ProximalPolicyOptimizationModel:setExperienceReplay(ExperienceReplay)
+function VanillaPolicyGradientModel:setExperienceReplay(ExperienceReplay)
 
 	self.ExperienceReplay = ExperienceReplay
 
@@ -122,49 +118,27 @@ local function getBooleanOrDefaultOption(boolean, defaultBoolean)
 
 end
 
-function ProximalPolicyOptimizationModel:setPrintReinforcementOutput(option)
+function VanillaPolicyGradientModel:setPrintReinforcementOutput(option)
 
 	self.printReinforcementOutput = getBooleanOrDefaultOption(option, self.printReinforcementOutput)
 
 end
 
-function ProximalPolicyOptimizationModel:episodeUpdate(numberOfFeatures)
+function VanillaPolicyGradientModel:episodeUpdate(numberOfFeatures)
 	
-	local historyLength = #self.advantageHistory
+	local sumGradient = AqwamMatrixLibrary:verticalSum(self.gradientHistory)
 	
-	local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
-	
-	local sumCriticLosses = 0
-	
-	for h = 2, historyLength, 1 do
-		
-		local advantage = self.advantageHistory[h]
-		
-		local previousActionVector = self.actionVectorHistory[h - 1]
-		
-		local currentActionVector = self.actionVectorHistory[h]
-		
-		local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
-		
-		local actorLossVector = AqwamMatrixLibrary:multiply(-1, ratioVector, advantage)
-		
-		sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
-		
-		sumCriticLosses += advantage
-		
-	end
+	local sumAdvantage = AqwamMatrixLibrary:verticalSum(self.advantageHistory)
 	
 	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 	
 	self.ActorModel:forwardPropagate(featureVector, true)
 	self.CriticModel:forwardPropagate(featureVector, true)
 	
-	self.ActorModel:backPropagate(sumActorLossVector, true)
-	self.CriticModel:backPropagate(sumCriticLosses, true)
+	self.ActorModel:backPropagate(sumGradient, true)
+	self.CriticModel:backPropagate(sumAdvantage, true)
 	
 	------------------------------------------------------
-	
-	self.episodeReward = 0
 
 	self.currentNumberOfReinforcements = 0
 
@@ -174,11 +148,11 @@ function ProximalPolicyOptimizationModel:episodeUpdate(numberOfFeatures)
 	
 	table.clear(self.advantageHistory)
 	
-	table.clear(self.actionVectorHistory)
+	table.clear(self.gradientHistory)
 	
 end
 
-function ProximalPolicyOptimizationModel:fetchHighestValueInVector(outputVector)
+function VanillaPolicyGradientModel:fetchHighestValueInVector(outputVector)
 
 	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(outputVector)
 
@@ -190,7 +164,7 @@ function ProximalPolicyOptimizationModel:fetchHighestValueInVector(outputVector)
 	
 end
 
-function ProximalPolicyOptimizationModel:getLabelFromOutputMatrix(outputMatrix)
+function VanillaPolicyGradientModel:getLabelFromOutputMatrix(outputMatrix)
 
 	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 
@@ -220,7 +194,7 @@ function ProximalPolicyOptimizationModel:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function ProximalPolicyOptimizationModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+function VanillaPolicyGradientModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 	
 	if (self.ActorModel == nil) then error("No actor model!") end
 	
@@ -294,25 +268,25 @@ function ProximalPolicyOptimizationModel:reinforce(currentFeatureVector, rewardV
 	
 end
 
-function ProximalPolicyOptimizationModel:getCurrentNumberOfEpisodes()
+function VanillaPolicyGradientModel:getCurrentNumberOfEpisodes()
 
 	return self.currentNumberOfEpisodes
 
 end
 
-function ProximalPolicyOptimizationModel:getCurrentNumberOfReinforcements()
+function VanillaPolicyGradientModel:getCurrentNumberOfReinforcements()
 
 	return self.currentNumberOfReinforcements
 
 end
 
-function ProximalPolicyOptimizationModel:getCurrentEpsilon()
+function VanillaPolicyGradientModel:getCurrentEpsilon()
 
 	return self.currentEpsilon
 
 end
 
-function ProximalPolicyOptimizationModel:reset()
+function VanillaPolicyGradientModel:reset()
 
 	self.currentNumberOfReinforcements = 0
 
@@ -324,13 +298,13 @@ function ProximalPolicyOptimizationModel:reset()
 	
 	table.clear(self.advantageHistory)
 	
-	table.clear(self.actionVectorHistory)
+	table.clear(self.gradientHistory)
 
 	if (self.ExperienceReplay) then self.ExperienceReplay:reset() end
 
 end
 
-function ProximalPolicyOptimizationModel:destroy()
+function VanillaPolicyGradientModel:destroy()
 
 	setmetatable(self, nil)
 
@@ -340,4 +314,4 @@ function ProximalPolicyOptimizationModel:destroy()
 
 end
 
-return ProximalPolicyOptimizationModel
+return VanillaPolicyGradientModel

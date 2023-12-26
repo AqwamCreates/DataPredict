@@ -990,6 +990,20 @@ end
 
 function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization, dropoutRate)
 	
+	if (layerNumber <= 0) then 
+
+		warn("The layer number can't be lesss than or equal to zero!") 
+
+		return nil
+
+	elseif (layerNumber > #self.numberOfNeuronsTable)  then
+
+		warn("The layer number exceeds the number of layers!") 
+
+		return nil
+
+	end 
+	
 	layerPropertyValueTypeCheckingFunctionList["HasBias"](hasBiasNeuron)
 	
 	layerPropertyValueTypeCheckingFunctionList["ActivationFunction"](activationFunction)

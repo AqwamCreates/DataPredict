@@ -1438,7 +1438,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(activatedOutputsMatrix, activatedOutputsMatrix)
+			return self:calculateCost(activatedOutputsMatrix, logisticMatrix)
 
 		end)
 

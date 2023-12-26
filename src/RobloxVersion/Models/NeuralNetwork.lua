@@ -1030,7 +1030,7 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 	
 	if (layerNumber <= 0) then 
 
-		error("The layer number can't be lesss than or equal to zero!") 
+		error("The layer number can't be less than or equal to zero!") 
 
 	elseif (layerNumber > #self.numberOfNeuronsTable)  then
 

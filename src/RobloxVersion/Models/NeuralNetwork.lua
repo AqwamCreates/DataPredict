@@ -1469,6 +1469,7 @@ function NeuralNetworkModel:showDetails()
 	local maxLearningRateLength = string.len("Learning Rate")
 	local maxOptimizerLength = string.len("Optimizer Added")
 	local maxRegularizationLength = string.len("Regularization Added")
+	local maxDropoutRateLength = string.len("Dropout Rate")
 	
 	local hasBias
 
@@ -1489,6 +1490,8 @@ function NeuralNetworkModel:showDetails()
 		maxOptimizerLength = math.max(maxOptimizerLength, string.len("false"))
 
 		maxRegularizationLength = math.max(maxRegularizationLength, string.len("false"))
+		
+		maxDropoutRateLength = math.max(maxDropoutRateLength, string.len(tostring(self.dropoutRateTable[i])))
 
 	end
 
@@ -1504,7 +1507,8 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maxActivationLength) .. "-|-" ..
 		string.rep("-", maxLearningRateLength) .. "-|-" ..
 		string.rep("-", maxOptimizerLength) .. "-|-" ..
-		string.rep("-", maxRegularizationLength) .. "-|" .. 
+		string.rep("-", maxRegularizationLength) .. "-|-" .. 
+		string.rep("-", maxDropoutRateLength) .. "-|" .. 
 		"\n"
 	
 	stringToPrint ..= "| " .. string.format("%-" .. maxLayerLength .. "s", "Layer") .. " | " ..
@@ -1513,7 +1517,8 @@ function NeuralNetworkModel:showDetails()
 		string.format("%-" .. maxActivationLength .. "s", "Activation Function") .. " | " ..
 		string.format("%-" .. maxLearningRateLength .. "s", "Learning Rate") .. " | " ..
 		string.format("%-" .. maxOptimizerLength .. "s", "Optimizer Added") .. " | " ..
-		string.format("%-" .. maxRegularizationLength .. "s", "Regularization Added") .. " |" .. 
+		string.format("%-" .. maxRegularizationLength .. "s", "Regularization Added") .. " | " .. 
+		string.format("%-" .. maxDropoutRateLength .. "s", "Dropout Rate") .. " |" .. 
 		"\n"
 	
 	
@@ -1523,7 +1528,8 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maxActivationLength) .. "-|-" ..
 		string.rep("-", maxLearningRateLength) .. "-|-" ..
 		string.rep("-", maxOptimizerLength) .. "-|-" ..
-		string.rep("-", maxRegularizationLength) .. "-|" .. 
+		string.rep("-", maxRegularizationLength) .. "-|-" .. 
+		string.rep("-", maxDropoutRateLength) .. "-|" .. 
 		"\n"
 
 	-- Print the layer details
@@ -1543,9 +1549,11 @@ function NeuralNetworkModel:showDetails()
 
 		local optimizer = "| " .. string.format("%-" .. maxOptimizerLength .. "s", self.OptimizerTable[i] and "true" or "false") .. " "
 
-		local regularization = "| " .. string.format("%-" .. maxRegularizationLength .. "s", self.RegularizationTable[i] and "true" or "false") .. " |"
+		local regularization = "| " .. string.format("%-" .. maxRegularizationLength .. "s", self.RegularizationTable[i] and "true" or "false") .. " "
 		
-		local stringPart = layer .. neurons .. bias .. activation .. learningRate .. optimizer .. regularization .. "\n"
+		local dropoutRate = "| " .. string.format("%-" .. maxDropoutRateLength .. "s", self.dropoutRateTable[i]) .. " |"
+		
+		local stringPart = layer .. neurons .. bias .. activation .. learningRate .. optimizer .. regularization .. dropoutRate .. "\n"
 		
 		stringToPrint ..= stringPart
 
@@ -1557,7 +1565,8 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maxActivationLength) .. "-|-" ..
 		string.rep("-", maxLearningRateLength) .. "-|-" ..
 		string.rep("-", maxOptimizerLength) .. "-|-" ..
-		string.rep("-", maxRegularizationLength) .. "-|".. 
+		string.rep("-", maxRegularizationLength) .. "-|-".. 
+		string.rep("-", maxDropoutRateLength) .. "-|".. 
 		"\n\n"
 
 	print(stringToPrint)

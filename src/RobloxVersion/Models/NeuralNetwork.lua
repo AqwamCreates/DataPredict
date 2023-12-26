@@ -1452,7 +1452,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		end
 
-		lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
+		lossMatrix = AqwamMatrixLibrary:subtract(logisticMatrix, activatedOutputsMatrix)
 
 		self:backPropagate(lossMatrix, true)
 

@@ -733,11 +733,11 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativesTable)
 
 end
 
-function NeuralNetworkModel:calculateCost(logisticMatrix, allOutputsMatrix)
+function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix)
 
 	local numberOfData = #logisticMatrix
 
-	local subtractedMatrix = AqwamMatrixLibrary:subtract(logisticMatrix, allOutputsMatrix)
+	local subtractedMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
 
 	local squaredSubtractedMatrix = AqwamMatrixLibrary:power(subtractedMatrix, 2)
 

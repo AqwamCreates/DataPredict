@@ -1018,6 +1018,20 @@ end
 
 function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 	
+	if (layerNumber <= 0) then 
+
+		warn("The layer number can't be lesss than or equal to zero!") 
+
+		return nil
+
+	elseif (layerNumber > #self.numberOfNeuronsTable)  then
+
+		warn("The layer number exceeds the number of layers!") 
+
+		return nil
+
+	end 
+	
 	if (property == "HasBias") then
 		
 		layerPropertyValueTypeCheckingFunctionList["HasBias"](value)
@@ -1063,6 +1077,20 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 end
 
 function NeuralNetworkModel:getLayerProperty(layerNumber, property)
+	
+	if (layerNumber <= 0) then 
+		
+		warn("The layer number can't be lesss than or equal to zero!") 
+		
+		return nil
+		
+	elseif (layerNumber > #self.numberOfNeuronsTable)  then
+		
+		warn("The layer number exceeds the number of layers!") 
+		
+		return nil
+		
+	end 
 	
 	if (property == "HasBias") then
 

@@ -35,8 +35,6 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local DataPredict = script.Parent.Parent
 
-local AqwamMatrixLibrary = require(DataPredict.AqwamMatrixLibraryLinker.Value)
-
 AsynchronousAdvantageActorCriticModel = {}
 
 AsynchronousAdvantageActorCriticModel.__index = AsynchronousAdvantageActorCriticModel
@@ -267,7 +265,7 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(numberOfFeatures, a
 		
 		local actionProbability = self.actionProbabilityHistoryArray[actorCriticModelNumber][h]
 		
-		local actorLoss = -math.log(actionProbability) * advantage
+		local actorLoss = math.log(actionProbability) * advantage
 		
 		local criticLoss = math.pow(advantage, 2)
 		

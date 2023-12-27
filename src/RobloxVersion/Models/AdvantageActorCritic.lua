@@ -12,9 +12,7 @@ local defaultEpsilonDecayFactor = 0.999
 
 local defaultDiscountFactor = 0.95
 
-local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the episodic reward, but lower the running reward.
-
-function AdvantageActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
+function AdvantageActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
 	local NewAdvantageActorCriticModel = {}
 	
@@ -27,8 +25,6 @@ function AdvantageActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon
 	NewAdvantageActorCriticModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
 
 	NewAdvantageActorCriticModel.discountFactor =  discountFactor or defaultDiscountFactor
-	
-	NewAdvantageActorCriticModel.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
 	
 	NewAdvantageActorCriticModel.currentEpsilon = epsilon or defaultEpsilon
 
@@ -46,17 +42,13 @@ function AdvantageActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon
 	
 	NewAdvantageActorCriticModel.criticValueHistory = {}
 	
-	NewAdvantageActorCriticModel.episodeReward = 0
-	
-	NewAdvantageActorCriticModel.runningReward = 0
-	
 	NewAdvantageActorCriticModel.ClassesList = nil
 	
 	return NewAdvantageActorCriticModel
 	
 end
 
-function AdvantageActorCriticModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
+function AdvantageActorCriticModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
 	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
@@ -65,8 +57,6 @@ function AdvantageActorCriticModel:setParameters(numberOfReinforcementsPerEpisod
 	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
 
 	self.discountFactor =  discountFactor or self.discountFactor
-
-	self.rewardAveragingRate = rewardAveragingRate or self.rewardAveragingRate
 	
 	self.currentEpsilon = epsilon or self.currentEpsilon
 	
@@ -152,8 +142,6 @@ function AdvantageActorCriticModel:update(previousFeatureVector, action, rewardV
 	
 	local actionProbability = actionProbabilityVector[1][actionIndex]
 	
-	self.episodeReward += rewardValue
-	
 	table.insert(self.advantageHistory, advantageValue)
 	
 	table.insert(self.actionProbabilityHistory, actionProbability)
@@ -185,8 +173,6 @@ function AdvantageActorCriticModel:setPrintReinforcementOutput(option)
 end
 
 function AdvantageActorCriticModel:episodeUpdate(numberOfFeatures)
-
-	self.runningReward = (self.rewardAveragingRate * self.episodeReward) + ((1 - self.rewardAveragingRate) * self.runningReward)
 	
 	local historyLength = #self.advantageHistory
 	
@@ -219,8 +205,6 @@ function AdvantageActorCriticModel:episodeUpdate(numberOfFeatures)
 	self.CriticModel:backPropagate(sumCriticLosses, true)
 	
 	------------------------------------------------------
-	
-	self.episodeReward = 0
 
 	self.currentNumberOfReinforcements = 0
 
@@ -371,10 +355,6 @@ function AdvantageActorCriticModel:getCurrentEpsilon()
 end
 
 function AdvantageActorCriticModel:reset()
-	
-	self.episodeReward = 0
-	
-	self.runningReward = 0
 
 	self.currentNumberOfReinforcements = 0
 

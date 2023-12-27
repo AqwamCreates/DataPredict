@@ -199,6 +199,8 @@ AdvantageActorCritic:destroy()
 
 ### References
 
+* [Asynchronous Methods for Deep Reinforcement Learning By Volodymyr Mnih, Adrià Puigdomènech Badia, Mehdi Mirza, Alex Graves, Timothy P. Lillicrap, Tim Harley, David Silver, Koray Kavukcuoglu](https://arxiv.org/pdf/1602.01783v2.pdf)
+
 * [Advantage Actor Critic (A2C) implementation by Alvaro Durán Tovar](https://medium.com/deeplearningmadeeasy/advantage-actor-critic-a2c-implementation-944e98616b)
 
 * [Actor Critic Method by Apoorv Nandan - Keras](https://keras.io/examples/rl/actor_critic_cartpole/)

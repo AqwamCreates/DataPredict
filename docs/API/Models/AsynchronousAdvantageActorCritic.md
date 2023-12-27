@@ -19,7 +19,7 @@ AsynchronousAdvantageCritic is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-AsynchronousAdvantageCritic.new(learningRate: integer, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number, totalNumberOfReinforcementsToUpdateMainModel: number): ModelObject
+AsynchronousAdvantageCritic.new(learningRate: integer, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, totalNumberOfReinforcementsToUpdateMainModel: number): ModelObject
 ```
 
 #### Parameters:
@@ -33,8 +33,6 @@ AsynchronousAdvantageCritic.new(learningRate: integer, numberOfReinforcementsPer
 * epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
-
-* rewardAveragingRate: The higher the value, the higher the episodic reward, but lower the running reward.
 
 * totalNumberOfReinforcementsToUpdateMainModel: The required total number of reinforce() function call from all child models to update the main model.
 
@@ -49,7 +47,7 @@ AsynchronousAdvantageCritic.new(learningRate: integer, numberOfReinforcementsPer
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-AsynchronousAdvantageCritic:setParameters(learningRate: integer, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number, totalNumberOfReinforcementsToUpdateMainModel: number)
+AsynchronousAdvantageCritic:setParameters(learningRate: integer, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, totalNumberOfReinforcementsToUpdateMainModel: number)
 ```
 
 #### Parameters:
@@ -63,8 +61,6 @@ AsynchronousAdvantageCritic:setParameters(learningRate: integer, numberOfReinfor
 * epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
-
-* rewardAveragingRate: The higher the value, the higher the episodic reward, but lower the running reward.
 
 ### addActorCriticModel()
 

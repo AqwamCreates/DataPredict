@@ -232,7 +232,7 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(numberOfFeatures, a
 		
 		local actionProbability = self.actionProbabilityHistoryArray[actorCriticModelNumber][h]
 		
-		local actorLoss = -math.log(actionProbability) * advantage
+		local actorLoss = math.log(actionProbability) * advantage
 		
 		local criticLoss = math.pow(advantage, 2)
 		

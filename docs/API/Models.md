@@ -37,8 +37,8 @@
 | [AsynchronousAdvantageActorCritic](Models/AsynchronousAdvantageActorCritic.md)                                                   | A3C                                       | Same As Q-Learning Neural Network                                           |
 | [REINFORCENeuralNetwork](Models/REINFORCENeuralNetwork.md)                                                                       | None                                      | Same As Q-Learning Neural Network                                           |
 | [DuelingQLearning](Models/DuelingQLearning.md)                                                                                   | None                                      | Same As Q-Learning Neural Network                                           |
-| [ProximalPolicyOptimization](Models/ProximalPolicyOptimization.md) (Beta Version Only)                                           | PPO                                       | Same As Q-Learning Neural Network                                           |
-| [VanillaPolicyGradient](Models/VanillaPolicyGradient.md) (Beta Version Only)                                                     | VPG                                       | Same As Q-Learning Neural Network                                           |
+| [ProximalPolicyOptimization](Models/ProximalPolicyOptimization.md)                                                               | PPO                                       | Same As Q-Learning Neural Network                                           |
+| [VanillaPolicyGradient](Models/VanillaPolicyGradient.md)                                                                         | VPG                                       | Same As Q-Learning Neural Network                                           |
 
 ### Sequential
 

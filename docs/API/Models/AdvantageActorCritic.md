@@ -17,7 +17,7 @@ AdvantageActorCritic is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-AdvantageActorCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number): ModelObject
+AdvantageActorCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -29,8 +29,6 @@ AdvantageActorCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: num
 * epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
-
-* rewardAveragingRate: The higher the value, the higher the episodic reward, but lower the running reward.
 
 #### Returns:
 
@@ -43,7 +41,7 @@ AdvantageActorCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: num
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-AdvantageActorCritic:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number)
+AdvantageActorCritic:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
 ```
 
 #### Parameters:
@@ -55,8 +53,6 @@ AdvantageActorCritic:setParameters(numberOfReinforcementsPerEpisode: integer, ep
 * epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
-
-* rewardAveragingRate: The higher the value, the higher the episodic reward, but lower the running reward.
 
 ### setActorModel()
 

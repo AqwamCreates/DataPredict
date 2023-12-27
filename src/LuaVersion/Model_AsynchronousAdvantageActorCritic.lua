@@ -33,6 +33,10 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
+local DataPredict = script.Parent.Parent
+
+local AqwamMatrixLibrary = require(DataPredict.AqwamMatrixLibraryLinker.Value)
+
 AsynchronousAdvantageActorCriticModel = {}
 
 AsynchronousAdvantageActorCriticModel.__index = AsynchronousAdvantageActorCriticModel
@@ -47,11 +51,9 @@ local defaultEpsilonDecayFactor = 0.999
 
 local defaultDiscountFactor = 0.95
 
-local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the episodic reward, but lower the running reward.
-
 local defaultTotalNumberOfReinforcementsToUpdateMainModel = 100
 
-function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate, totalNumberOfReinforcementsToUpdateMainModel)
+function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, totalNumberOfReinforcementsToUpdateMainModel)
 	
 	local NewAsynchronousAdvantageActorCriticModel = {}
 	
@@ -66,8 +68,6 @@ function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinfor
 	NewAsynchronousAdvantageActorCriticModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
 
 	NewAsynchronousAdvantageActorCriticModel.discountFactor =  discountFactor or defaultDiscountFactor
-	
-	NewAsynchronousAdvantageActorCriticModel.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
 	
 	NewAsynchronousAdvantageActorCriticModel.currentEpsilonArray = {}
 
@@ -115,7 +115,7 @@ function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinfor
 	
 end
 
-function AsynchronousAdvantageActorCriticModel:setParameters(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate, totalNumberOfReinforcementsToUpdateMainModel)
+function AsynchronousAdvantageActorCriticModel:setParameters(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, totalNumberOfReinforcementsToUpdateMainModel)
 	
 	self.learningRate = learningRate or self.learningRate
 	
@@ -126,8 +126,6 @@ function AsynchronousAdvantageActorCriticModel:setParameters(learningRate, numbe
 	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
 
 	self.discountFactor =  discountFactor or self.discountFactor
-
-	self.rewardAveragingRate = rewardAveragingRate or self.rewardAveragingRate
 	
 	self.totalNumberOfReinforcementsToUpdateMainModel = totalNumberOfReinforcementsToUpdateMainModel or self.totalNumberOfReinforcementsToUpdateMainModel
 	
@@ -160,16 +158,12 @@ function AsynchronousAdvantageActorCriticModel:addActorCriticModel(ActorModel, C
 	table.insert(self.CriticModelArray, CriticModel)
 	
 	if ExperienceReplay then table.insert(self.ExperienceReplayArray, ExperienceReplay) end
-	
-	table.insert(self.episodeRewardArray,  0)
 
 	table.insert(self.currentNumberOfReinforcementsArray,  0)
 
 	table.insert(self.currentNumberOfEpisodesArray,  0)
 
 	table.insert(self.currentEpsilonArray,  0)
-
-	table.insert(self.runningRewardArray,  0)
 
 	table.insert(self.advantageHistoryArray, {})
 
@@ -249,8 +243,6 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 	
 	local actionProbability = actionProbabilityVector[1][actionIndex]
 	
-	self.episodeRewardArray[actorCriticModelNumber] += rewardValue
-	
 	table.insert(self.advantageHistoryArray[actorCriticModelNumber], advantageValue)
 	
 	table.insert(self.actionProbabilityHistoryArray[actorCriticModelNumber], actionProbability)
@@ -262,8 +254,6 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 end
 
 function AsynchronousAdvantageActorCriticModel:episodeUpdate(numberOfFeatures, actorCriticModelNumber)
-
-	self.runningRewardArray[actorCriticModelNumber] = (self.rewardAveragingRate * self.episodeRewardArray[actorCriticModelNumber]) + ((1 - self.rewardAveragingRate) * self.runningRewardArray[actorCriticModelNumber])
 	
 	local historyLength = #self.advantageHistoryArray[actorCriticModelNumber]
 	
@@ -306,8 +296,6 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(numberOfFeatures, a
 	self.CriticModelCostFunctionDerivativesArray[actorCriticModelNumber] = CriticModel:backPropagate(sumCriticLosses, true, true)
 	
 	------------------------------------------------------
-	
-	self.episodeRewardArray[actorCriticModelNumber] = 0
 
 	self.currentNumberOfReinforcementsArray[actorCriticModelNumber] = 0
 
@@ -579,10 +567,6 @@ function AsynchronousAdvantageActorCriticModel:getCurrentTotalNumberOfReinforcem
 end
 
 function AsynchronousAdvantageActorCriticModel:singleReset(actorCriticModelNumber)
-	
-	self.episodeRewardArray[actorCriticModelNumber] = 0
-	
-	self.runningRewardArray[actorCriticModelNumber] = 0
 
 	self.currentNumberOfReinforcementsArray[actorCriticModelNumber] = 0
 

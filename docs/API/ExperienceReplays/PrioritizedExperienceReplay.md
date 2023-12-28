@@ -44,4 +44,4 @@ PrioritizedExperienceReplay:setParametersbatchSize: number, numberOfExperienceTo
 
 ## Reference
 
-[Tom Schaul, John Quan, Ioannis Antonoglou and David Silver (Google DeepMind)](https://arxiv.org/pdf/1511.05952.pdf)
+[Prioritized ExperienceReplay By Tom Schaul, John Quan, Ioannis Antonoglou and David Silver (Google DeepMind)](https://arxiv.org/pdf/1511.05952.pdf)

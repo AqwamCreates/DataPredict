@@ -41,3 +41,7 @@ PrioritizedExperienceReplay:setParametersbatchSize: number, numberOfExperienceTo
 ## Inherited From
 
 [BaseExperienceReplay](BaseExperienceReplay.md)
+
+## Reference
+
+[Tom Schaul, John Quan, Ioannis Antonoglou and David Silver](https://arxiv.org/pdf/1511.05952.pdf)

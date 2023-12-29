@@ -86,20 +86,6 @@ local function checkNumberOfData(featureMatrix, labelVectorOrMatrix)
 	
 end
 
-local function deepCopyData(featureMatrix, labelVectorOrMatrix)
-	
-	featureMatrix = deepCopyTable(featureMatrix)
-	
-	if (type(labelVectorOrMatrix) ~= "nil") then
-		
-		labelVectorOrMatrix = deepCopyTable(labelVectorOrMatrix)
-		
-	end
-	
-	return featureMatrix, labelVectorOrMatrix
-	
-end
-
 function ModelDatasetCreator.new()
 	
 	local NewModelDatasetCreator = {}
@@ -144,7 +130,9 @@ function ModelDatasetCreator:randomizeDataset(featureMatrix, labelVectorOrMatrix
 	
 	local randomizationProbabilityThreshold = self.randomizationProbabilityThreshold
 	
-	local randomizedFeatureMatrix, randomizedLabelVectorOrMatrix = deepCopyTable(featureMatrix, labelVectorOrMatrix)
+	local randomizedFeatureMatrix = deepCopyTable(featureMatrix)
+	
+	local randomizedLabelVectorOrMatrix = deepCopyTable(labelVectorOrMatrix)
 	
 	for index = 1, numberOfData, 1 do
 		

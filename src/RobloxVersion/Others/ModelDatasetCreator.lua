@@ -10,7 +10,7 @@ local defaultTestDataPercentage = 0.1
 
 local defaultIsDatasetRandomized = false
 
-local defaultRandomizationProbabilityThreshold = 0.3
+local defaultRandomizationProbabilityThreshold = 0.95
 
 local function getBooleanOrDefaultOption(boolean, defaultBoolean)
 

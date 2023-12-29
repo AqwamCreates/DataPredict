@@ -44,8 +44,8 @@
 
 | Model                                                                                                            | Alternate Names        | Use Cases                                                                   |
 |------------------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------|
-| [LongShortTermMemory](Models/LongShortTermMemory.md)                                                             | LSTM                   | Text Generation, Text Analysis                                              |
-| [RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md)                                                       | RNN                    | Same As Long Short Term Memory                                              |
+| [LongShortTermMemory](Models/LongShortTermMemory.md) (Deprecated)                                                | LSTM                   | Text Generation, Text Analysis                                              |
+| [RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md) (Deprecated)                                          | RNN                    | Same As Long Short Term Memory                                              |
 
 ## Clustering
 

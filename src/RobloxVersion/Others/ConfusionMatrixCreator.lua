@@ -78,7 +78,7 @@ function ConfusionMatrixCreator.new(classesList)
 	
 	setmetatable(NewConfusionMatrixCreator, ConfusionMatrixCreator)
 	
-	NewConfusionMatrixCreator.ClassesList = classesList
+	NewConfusionMatrixCreator.ClassesList = classesList or {}
 	
 	return NewConfusionMatrixCreator
 	
@@ -130,23 +130,26 @@ function ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector, predictedL
 
 	-- Find the maximum length of class labels for formatting
 	for _, classLabel in ipairs(classesList) do
+		
 		maxClassLabelLength = math.max(maxClassLabelLength, #tostring(classLabel))
+		
 	end
 
+	-- Print column headers (predicted labels)
 	print(string.rep(" ", maxClassLabelLength + 2)) -- Space for row labels
 	
 	for _, predictedLabel in ipairs(classesList) do
 		
-		print(string.format("%-" .. maxClassLabelLength .. "s ", predictedLabel))
+		print(string.format("%-" .. maxClassLabelLength .. "s ", "Predicted " .. predictedLabel))
 		
 	end
 	
 	print("\n")
 
+	-- Print rows (true labels) along with confusion matrix values
 	for i, trueLabel in ipairs(classesList) do
 		
-		print(string.format("%-" .. maxClassLabelLength .. "s | ", trueLabel))
-		
+		print(string.format("%-" .. maxClassLabelLength .. "s | ", "Actual " .. trueLabel))
 
 		for j, predictedLabel in ipairs(classesList) do
 			
@@ -157,8 +160,6 @@ function ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector, predictedL
 		print("\n")
 		
 	end
-
-	print("\n")
 	
 	return confusionMatrix
 	

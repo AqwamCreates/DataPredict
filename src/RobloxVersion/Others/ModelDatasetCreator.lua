@@ -158,7 +158,7 @@ function ModelDatasetCreator:randomizeDataset(featureMatrix, labelVectorOrMatrix
 		
 		table.remove(randomizedFeatureMatrix, index)
 		
-		table.insert(randomizedFeatureMatrix, temporaryRandomFeatureVector, randomIndex)
+		table.insert(randomizedFeatureMatrix, randomIndex, temporaryRandomFeatureVector)
 		
 		if (type(labelVectorOrMatrix) == "nil") then continue end
 		
@@ -166,7 +166,7 @@ function ModelDatasetCreator:randomizeDataset(featureMatrix, labelVectorOrMatrix
 
 		table.remove(randomizedLabelVectorOrMatrix, index)
 
-		table.insert(randomizedLabelVectorOrMatrix, temporaryRandomLabelVector, randomIndex)
+		table.insert(randomizedLabelVectorOrMatrix, randomIndex, temporaryRandomLabelVector)
 		
 	end
 	

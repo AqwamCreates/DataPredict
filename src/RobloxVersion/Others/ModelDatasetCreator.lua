@@ -174,17 +174,23 @@ function ModelDatasetCreator:randomizeDataset(featureMatrix, labelVectorOrMatrix
 	
 end
 
-function ModelDatasetCreator:splitDataset(dataset)
+function ModelDatasetCreator:splitDataset(datasetMatrix)
 	
-	local numberOfData = checkNumberOfData(dataset)
+	local numberOfData = checkNumberOfData(datasetMatrix)
 	
-	local datasetCopy = deepCopyTable(dataset)
+	local datasetCopy = deepCopyTable(datasetMatrix)
 	
 	local numberOfTrainData = math.floor(self.trainDataPercentage * numberOfData)
 	
 	local numberOfValidationData = math.floor(self.validationDataPercentage * numberOfData)
 	
 	local numberOfTestData = math.floor(self.testDataPercentage * numberOfData)
+	
+	local trainDataMaxValue = numberOfTrainData
+	
+	local trainValidationDataMaxValue = numberOfTrainData + numberOfValidationData
+	
+	local trainValidationTestDataMaxValue = trainValidationDataMaxValue + numberOfTestData
 	
 	local trainData = {}
 
@@ -193,6 +199,48 @@ function ModelDatasetCreator:splitDataset(dataset)
 	local testData = {}
 	
 	for index = 1, numberOfData, 1 do
+		
+		if (index < numberOfTrainData) then 
+			
+			table.insert(trainData, datasetCopy[index])
+			continue
+			
+		end
+		
+		if (index < trainValidationDataMaxValue) then 
+
+			table.insert(validationData, datasetCopy[index])
+			continue
+
+		end
+		
+		if (index < trainValidationTestDataMaxValue) then 
+
+			table.insert(testData, datasetCopy[index])
+			continue
+
+		end
+		
+		if (numberOfTrainData > 0) then
+			
+			table.insert(trainData, datasetCopy[index])
+			continue
+			
+		end
+		
+		if (numberOfValidationData > 0) then
+
+			table.insert(validationData, datasetCopy[index])
+			continue
+
+		end
+		
+		if (numberOfTestData > 0) then
+
+			table.insert(testData, datasetCopy[index])
+			continue
+
+		end
 		
 	end
 

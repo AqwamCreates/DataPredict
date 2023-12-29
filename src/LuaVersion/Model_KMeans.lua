@@ -86,12 +86,6 @@ local distanceFunctionList = {
 }
 
 
-local function calculateDistance(vector1, vector2, distanceFunction)
-	
-	return distanceFunctionList[distanceFunction](vector1, vector2) 
-	
-end
-
 local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
 	
 	local clusterNumberVector = AqwamMatrixLibrary:createMatrix(#distanceMatrix, 1)
@@ -147,12 +141,14 @@ local function createDistanceMatrix(modelParameters, featureMatrix, distanceFunc
 	local numberOfClusters = #modelParameters
 
 	local distanceMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfClusters)
+	
+	local calculateDistance = distanceFunctionList[distanceFunction]
 
 	for datasetIndex = 1, #featureMatrix, 1 do
 
 		for cluster = 1, #modelParameters, 1 do
 
-			distanceMatrix[datasetIndex][cluster] = calculateDistance({featureMatrix[datasetIndex]}, {modelParameters[cluster]} , distanceFunction)
+			distanceMatrix[datasetIndex][cluster] = calculateDistance({featureMatrix[datasetIndex]}, {modelParameters[cluster]})
 
 		end
 

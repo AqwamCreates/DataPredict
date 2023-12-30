@@ -158,6 +158,7 @@ local function merge(distanceVector, labelVector, left, mid, right)
 	while (indexOfSubArrayOne <= subArrayOne) do
 		
 		distanceVector[1][indexOfMergedArray] = leftDistanceVector[indexOfSubArrayOne]
+		labelVector[indexOfMergedArray][1] = leftLabelVector[indexOfSubArrayOne]
 		indexOfSubArrayOne = indexOfSubArrayOne + 1
 		indexOfMergedArray = indexOfMergedArray + 1
 		
@@ -166,6 +167,7 @@ local function merge(distanceVector, labelVector, left, mid, right)
 	while (indexOfSubArrayTwo <= subArrayTwo) do
 		
 		distanceVector[1][indexOfMergedArray] = rightDistanceVector[indexOfSubArrayTwo]
+		labelVector[indexOfMergedArray][1] = leftLabelVector[indexOfSubArrayTwo]
 		indexOfSubArrayTwo = indexOfSubArrayTwo + 1
 		indexOfMergedArray = indexOfMergedArray + 1
 		

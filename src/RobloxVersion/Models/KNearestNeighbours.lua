@@ -106,38 +106,83 @@ local function deepCopyTable(original, copies)
 
 end
 
-function partition(distanceVector, storedLabelVector, low, high)
-	-- Choose the pivot
-	local pivot = distanceVector[1][high]
+local function merge(distanceVector, labelVector, left, mid, right)
+	
+	local subArrayOne = mid - left + 1
+	local subArrayTwo = right - mid
 
-	-- Index of smaller element and indicate
-	-- the right position of pivot found so far
-	local i = low - 1
+	local leftDistanceVector = {}
+	local rightDistanceVector = {}
+	
+	local leftLabelVector = {}
+	local rightLabelVector = {}
 
-	for j = low, high do
-		-- If current element is smaller than the pivot
-		if distanceVector[1][j] < pivot then
-			-- Increment index of smaller element
-			i = i + 1
-			distanceVector[1][i], distanceVector[1][j] = distanceVector[1][j], distanceVector[1][i]
-			storedLabelVector[i][1], storedLabelVector[j][1] = storedLabelVector[j][1], storedLabelVector[i][1]
-		end
+	for i = 1, subArrayOne do
+		
+		leftDistanceVector[i] = distanceVector[1][left + i - 1]
+		leftLabelVector[i] = labelVector[left + i - 1][1]
+		
 	end
 
-	distanceVector[1][i + 1], distanceVector[1][high] = distanceVector[1][high], distanceVector[1][i + 1]
-	storedLabelVector[i + 1][1], storedLabelVector[high][1] = storedLabelVector[high][1], storedLabelVector[i + 1][1]
+	for j = 1, subArrayTwo do
+		
+		rightDistanceVector[j] = distanceVector[1][mid + 1 + j - 1]
+		rightLabelVector[j] = labelVector[left + j - 1][1]
+		
+	end
 
-	return i + 1
+	local indexOfSubArrayOne = 1
+	local indexOfSubArrayTwo = 1
+	local indexOfMergedArray = left
+
+	while indexOfSubArrayOne <= subArrayOne and indexOfSubArrayTwo <= subArrayTwo do
+		
+		if leftDistanceVector[indexOfSubArrayOne] <= rightDistanceVector[indexOfSubArrayTwo] then
+			
+			distanceVector[1][indexOfMergedArray] = leftDistanceVector[indexOfSubArrayOne]
+			labelVector[indexOfMergedArray][1] = leftLabelVector[indexOfSubArrayOne]
+			indexOfSubArrayOne = indexOfSubArrayOne + 1
+			
+		else
+			
+			distanceVector[1][indexOfMergedArray] = rightDistanceVector[indexOfSubArrayTwo]
+			labelVector[indexOfMergedArray][1] = rightLabelVector[indexOfSubArrayOne]
+			indexOfSubArrayTwo = indexOfSubArrayTwo + 1
+			
+		end
+		
+		indexOfMergedArray = indexOfMergedArray + 1
+		
+	end
+
+	while (indexOfSubArrayOne <= subArrayOne) do
+		
+		distanceVector[1][indexOfMergedArray] = leftDistanceVector[indexOfSubArrayOne]
+		indexOfSubArrayOne = indexOfSubArrayOne + 1
+		indexOfMergedArray = indexOfMergedArray + 1
+		
+	end
+
+	while (indexOfSubArrayTwo <= subArrayTwo) do
+		
+		distanceVector[1][indexOfMergedArray] = rightDistanceVector[indexOfSubArrayTwo]
+		indexOfSubArrayTwo = indexOfSubArrayTwo + 1
+		indexOfMergedArray = indexOfMergedArray + 1
+		
+	end
 end
 
--- The Quicksort function implementation
-function quickSort(distanceVector, labelVector, low, high)
-	-- When low is less than high
-	if low < high then
-		local partitionIndex = partition(distanceVector, labelVector, low, high)
-		quickSort(distanceVector, labelVector, low, partitionIndex - 1)
-		quickSort(distanceVector, labelVector, partitionIndex + 1, high)
+local function mergeSort(distanceVector, labelVector, startingValue, endValue)
+	
+	if startingValue >= endValue then
+		return
 	end
+
+	local mid = math.floor(startingValue + (endValue - startingValue) / 2)
+	mergeSort(distanceVector, labelVector, startingValue, mid)
+	mergeSort(distanceVector, labelVector, mid + 1, endValue)
+	merge(distanceVector, labelVector, startingValue, mid, endValue)
+	
 end
 
 function KNearestNeighbours.new(kValue, distanceFunction)
@@ -202,7 +247,7 @@ function KNearestNeighbours:predict(featureMatrix, returnOriginalOutput)
 			
 		local storedLabelVectorCopy = deepCopyTable(storedLabelVector)
 		
-		quickSort(distanceVector, storedLabelVectorCopy, 1, #distanceVector)
+		mergeSort(distanceVector, storedLabelVectorCopy, 1, #distanceVector[1])
 		
 		print(distanceVector)
 			

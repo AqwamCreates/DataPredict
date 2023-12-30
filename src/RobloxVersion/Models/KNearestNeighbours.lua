@@ -127,7 +127,7 @@ local function merge(distanceVector, labelVector, left, mid, right)
 	for j = 1, subArrayTwo do
 		
 		rightDistanceVector[j] = distanceVector[1][mid + 1 + j - 1]
-		rightLabelVector[j] = labelVector[left + j - 1][1]
+		rightLabelVector[j] = labelVector[mid + j - 1][1]
 		
 	end
 

@@ -1,4 +1,4 @@
-local BaseModel = require("Model_BaseModel")
+local BaseModel = require(script.Parent.BaseModel)
 
 KNearestNeighbours = {}
 
@@ -6,7 +6,7 @@ KNearestNeighbours.__index = KNearestNeighbours
 
 setmetatable(KNearestNeighbours, BaseModel)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local defaultKValue = 3
 

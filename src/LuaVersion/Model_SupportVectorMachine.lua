@@ -37,6 +37,8 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 SupportVectorMachineModel = {}
 
+SupportVectorMachineModel.__index = SupportVectorMachineModel
+
 setmetatable(SupportVectorMachineModel, BaseModel)
 
 local defaultMaxNumberOfIterations = 500
@@ -246,8 +248,6 @@ local kernelFunctionList = {
 		local normX = AqwamMatrixLibrary:power(X, 2)
 		
 		normX = AqwamMatrixLibrary:horizontalSum(normX)
-		
-		normX = AqwamMatrixLibrary:applyFunction(math.sqrt, normX)
 
 		local kernelMatrix = AqwamMatrixLibrary:divide(dotProductedX, normX)
 

@@ -277,6 +277,8 @@ end
 
 function KNearestNeighbours:predict(featureMatrix, returnOriginalOutput)
 	
+	if (#self.ModelParameters == 0) then error("No model parameters!") end
+	
 	local storedFeatureMatrix = self.ModelParameters[1]
 	
 	local storedLabelVector = self.ModelParameters[2]

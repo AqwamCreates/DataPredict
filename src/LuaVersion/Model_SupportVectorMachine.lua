@@ -35,8 +35,6 @@ local BaseModel = require("Model_BaseModel")
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local BaseModel = require(script.Parent.BaseModel)
-
 SupportVectorMachineModel = {}
 
 setmetatable(SupportVectorMachineModel, BaseModel)
@@ -249,9 +247,9 @@ local kernelFunctionList = {
 
 		local normX = AqwamMatrixLibrary:power(X, 2)
 		
-		normX = AqwamMatrixLibrary:sum(normX)
+		normX = AqwamMatrixLibrary:horizontalSum(normX)
 		
-		normX = math.sqrt(normX)
+		normX = AqwamMatrixLibrary:applyFunction(math.sqrt, normX)
 
 		local kernelMatrix = AqwamMatrixLibrary:divide(dotProductedX, normX)
 

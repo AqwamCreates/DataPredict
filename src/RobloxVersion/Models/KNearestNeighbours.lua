@@ -187,6 +187,50 @@ local function mergeSort(distanceVector, labelVector, startingValue, endValue)
 	
 end
 
+local function getMajorityClass(sortedLabelVectorLowestToHighest, kValue)
+	
+	local classesList = {}
+	
+	local numberOfDataWithClassList = {}
+	
+	local highestNumberOfClasses = -math.huge
+	
+	local minimumNumberOfkValue = math.min(#sortedLabelVectorLowestToHighest, kValue)
+	
+	local majorityClass
+	
+	for k = 1, minimumNumberOfkValue, 1 do
+		
+		local index = table.find(classesList, sortedLabelVectorLowestToHighest[k][1])
+		
+		if not index then
+			
+			table.insert(classesList, sortedLabelVectorLowestToHighest[k][1])
+			table.insert(numberOfDataWithClassList, 1)
+			
+			
+		else
+			
+			numberOfDataWithClassList[index] += 1
+			
+		end
+		
+	end
+	
+	for index, value in ipairs(numberOfDataWithClassList) do
+		
+		if (value <= highestNumberOfClasses) then continue end
+		
+		highestNumberOfClasses = value
+		
+		majorityClass = classesList[index]
+		
+	end 
+	
+	return majorityClass
+	
+end
+
 function KNearestNeighbours.new(kValue, distanceFunction)
 	
 	local newKNearestNeighbours = {}
@@ -211,6 +255,8 @@ end
 
 function KNearestNeighbours:train(featureMatrix, labelVector)
 	
+	if (#featureMatrix ~= #labelVector) then error("The number of data in feature matrix and the label vector are not the same!") end
+	
 	if self.ModelParameters then
 		
 		local storedFeatureMatrix = self.ModelParameters[1]
@@ -222,6 +268,8 @@ function KNearestNeighbours:train(featureMatrix, labelVector)
 		labelVector = AqwamMatrixLibrary:verticalConcatenate(labelVector, storedLabelVector)
 		
 	end
+	
+	if (self.kValue > #featureMatrix) then warn("Number of data is less than the K value. Please add more data before doing any predictions.") end
 	
 	self.ModelParameters = {featureMatrix, labelVector}
 	
@@ -235,23 +283,25 @@ function KNearestNeighbours:predict(featureMatrix, returnOriginalOutput)
 	
 	local distanceFunction = self.distanceFunction
 	
+	local kValue = self.kValue
+	
 	local distanceMatrix = createDistanceMatrix(featureMatrix, storedFeatureMatrix, distanceFunction)
 	
 	if returnOriginalOutput then return distanceMatrix end
 	
 	local predictedLabelVector = {}
 	
-	local numberOfDatapoints = {}
-	
 	for i = 1, #featureMatrix, 1 do
 		
 		local distanceVector = {deepCopyTable(distanceMatrix[i])}
 			
-		local storedLabelVectorCopy = deepCopyTable(storedLabelVector)
+		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
 		
-		mergeSort(distanceVector, storedLabelVectorCopy, 1, #distanceVector[1])
+		mergeSort(distanceVector, sortedLabelVectorLowestToHighest, 1, #distanceVector[1])
 		
-		print(distanceVector)
+		local majorityClass = getMajorityClass(sortedLabelVectorLowestToHighest, kValue)
+		
+		predictedLabelVector[i] = {majorityClass}
 			
 	end
 	

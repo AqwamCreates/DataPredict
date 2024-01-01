@@ -14,7 +14,7 @@ local defaultDistanceFunction = "Euclidean"
 
 local distanceFunctionList = {
 
-	["Manhattan"] = function (x1, x2)
+	["Manhattan"] = function(x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -26,7 +26,7 @@ local distanceFunctionList = {
 
 	end,
 
-	["Euclidean"] = function (x1, x2)
+	["Euclidean"] = function(x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -37,6 +37,26 @@ local distanceFunctionList = {
 		local distance = math.sqrt(part3)
 
 		return distance 
+
+	end,
+	
+	["CosineSimilarity"] = function(x1, x2)
+
+		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
+		
+		local distancePart1 = AqwamMatrixLibrary:subtract(x1, x2)
+
+		local distancePart2 = AqwamMatrixLibrary:power(distancePart1, 2)
+
+		local distancePart3 = AqwamMatrixLibrary:sum(distancePart2)
+
+		local distance = math.sqrt(distancePart3)
+
+		local normX = AqwamMatrixLibrary:power(distance, 2)
+
+		local kernelMatrix = AqwamMatrixLibrary:divide(dotProductedX, normX)
+
+		return kernelMatrix
 
 	end,
 

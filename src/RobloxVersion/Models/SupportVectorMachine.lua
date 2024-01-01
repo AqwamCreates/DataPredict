@@ -212,13 +212,11 @@ local kernelFunctionList = {
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(X, AqwamMatrixLibrary:transpose(X))
 
-		local distanceMatrix = calculateDistance(X, X, "Euclidean")
-
 		local normX = AqwamMatrixLibrary:power(X, 2)
 		
-		normX = AqwamMatrixLibrary:sum(normX)
+		normX = AqwamMatrixLibrary:horizontalSum(normX)
 		
-		normX = math.sqrt(normX)
+		normX = AqwamMatrixLibrary:applyFunction(math.sqrt, normX)
 
 		local kernelMatrix = AqwamMatrixLibrary:divide(dotProductedX, normX)
 

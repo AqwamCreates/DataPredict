@@ -215,8 +215,6 @@ local kernelFunctionList = {
 		local normX = AqwamMatrixLibrary:power(X, 2)
 		
 		normX = AqwamMatrixLibrary:horizontalSum(normX)
-		
-		normX = AqwamMatrixLibrary:applyFunction(math.sqrt, normX)
 
 		local kernelMatrix = AqwamMatrixLibrary:divide(dotProductedX, normX)
 

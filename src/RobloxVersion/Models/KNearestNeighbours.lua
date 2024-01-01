@@ -48,15 +48,11 @@ local distanceFunctionList = {
 
 		local distancePart2 = AqwamMatrixLibrary:power(distancePart1, 2)
 
-		local distancePart3 = AqwamMatrixLibrary:sum(distancePart2)
+		local normX = AqwamMatrixLibrary:sum(distancePart2)
 
-		local distance = math.sqrt(distancePart3)
+		local similarity = dotProductedX / normX
 
-		local normX = AqwamMatrixLibrary:power(distance, 2)
-
-		local kernelMatrix = AqwamMatrixLibrary:divide(dotProductedX, normX)
-
-		return kernelMatrix
+		return similarity
 
 	end,
 

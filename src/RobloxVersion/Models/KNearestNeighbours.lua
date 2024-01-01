@@ -329,8 +329,6 @@ function KNearestNeighbours:predict(featureMatrix, returnOriginalOutput)
 		
 		mergeSort(distanceVector, sortedLabelVectorLowestToHighest, 1, #distanceVector[1])
 		
-		print(distanceVector)
-		
 		local majorityClass = getMajorityClass(sortedLabelVectorLowestToHighest, kValue)
 		
 		predictedLabelVector[i] = {majorityClass}

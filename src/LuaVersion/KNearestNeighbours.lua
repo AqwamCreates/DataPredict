@@ -1,4 +1,4 @@
-local BaseModel = require("Model_BaseModel")
+local BaseModel = require(script.Parent.BaseModel)
 
 KNearestNeighbours = {}
 
@@ -6,7 +6,7 @@ KNearestNeighbours.__index = KNearestNeighbours
 
 setmetatable(KNearestNeighbours, BaseModel)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local defaultKValue = 3
 
@@ -44,19 +44,23 @@ local distanceFunctionList = {
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
 		
-		local distancePart1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local x1MagnitudePart1 = AqwamMatrixLibrary:power(x1, 2)
+		
+		local x1MagnitudePart2 = AqwamMatrixLibrary:sum(x1MagnitudePart1)
+		
+		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
+		
+		local x2MagnitudePart1 = AqwamMatrixLibrary:power(x2, 2)
 
-		local distancePart2 = AqwamMatrixLibrary:power(distancePart1, 2)
+		local x2MagnitudePart2 = AqwamMatrixLibrary:sum(x2MagnitudePart1)
 
-		local distancePart3 = AqwamMatrixLibrary:sum(distancePart2)
+		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
 
-		local distance = math.sqrt(distancePart3)
+		local normX = x1Magnitude * x2Magnitude
 
-		local normX = AqwamMatrixLibrary:power(distance, 2)
+		local similarity = dotProductedX / normX
 
-		local kernelMatrix = AqwamMatrixLibrary:divide(dotProductedX, normX)
-
-		return kernelMatrix
+		return similarity
 
 	end,
 

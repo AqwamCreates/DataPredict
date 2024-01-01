@@ -60,11 +60,11 @@ local distanceFunctionList = {
 
 		local similarity = dotProductedX / normX
 		
-		similarity = similarity % 1
-		
 		local dissimilarity = 1 - similarity
+		
+		local cosineDistance = math.deg(dissimilarity)
 
-		return dissimilarity
+		return cosineDistance
 
 	end,
 

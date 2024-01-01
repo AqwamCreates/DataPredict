@@ -59,8 +59,12 @@ local distanceFunctionList = {
 		local normX = x1Magnitude * x2Magnitude
 
 		local similarity = dotProductedX / normX
+		
+		local dissimilarity = 1 - similarity
+		
+		local cosineValue = math.deg(dissimilarity)
 
-		return similarity
+		return cosineValue
 
 	end,
 
@@ -324,6 +328,8 @@ function KNearestNeighbours:predict(featureMatrix, returnOriginalOutput)
 		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
 		
 		mergeSort(distanceVector, sortedLabelVectorLowestToHighest, 1, #distanceVector[1])
+		
+		print(distanceVector)
 		
 		local majorityClass = getMajorityClass(sortedLabelVectorLowestToHighest, kValue)
 		

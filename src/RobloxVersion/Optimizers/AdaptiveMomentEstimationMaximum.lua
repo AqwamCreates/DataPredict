@@ -26,8 +26,6 @@ function AdaptiveMomentEstimationMaximumOptimizer.new(beta1, beta2, epsilon)
 	
 	NewAdaptiveMomentEstimationMaximumOptimizer.epsilon = epsilon or defaultEpsilon
 	
-	NewAdaptiveMomentEstimationMaximumOptimizer.timeStep = 0
-	
 	NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = nil
 	
 	NewAdaptiveMomentEstimationMaximumOptimizer.moment = nil
@@ -39,8 +37,6 @@ function AdaptiveMomentEstimationMaximumOptimizer.new(beta1, beta2, epsilon)
 		NewAdaptiveMomentEstimationMaximumOptimizer.moment = NewAdaptiveMomentEstimationMaximumOptimizer.moment or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 
 		NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
-
-		NewAdaptiveMomentEstimationMaximumOptimizer.timeStep += 1
 
 		local MomentPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveMomentEstimationMaximumOptimizer.beta1, NewAdaptiveMomentEstimationMaximumOptimizer.moment)
 
@@ -71,8 +67,6 @@ function AdaptiveMomentEstimationMaximumOptimizer.new(beta1, beta2, epsilon)
 	--------------------------------------------------------------------------------
 	
 	NewAdaptiveMomentEstimationMaximumOptimizer:setResetFunction(function()
-	
-		NewAdaptiveMomentEstimationMaximumOptimizer.timeStep = 0
 
 		NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = nil
 

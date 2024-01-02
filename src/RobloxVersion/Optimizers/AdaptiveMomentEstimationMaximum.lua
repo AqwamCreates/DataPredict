@@ -1,12 +1,12 @@
-local BaseModel = require(script.Parent.BaseOptimizer)
+local BaseOptimizer = require(script.Parent.BaseOptimizer)
+
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 AdaptiveMomentEstimationMaximumOptimizer = {}
 
 AdaptiveMomentEstimationMaximumOptimizer.__index = AdaptiveMomentEstimationMaximumOptimizer
 
-setmetatable(AdaptiveMomentEstimationMaximumOptimizer, BaseModel)
-
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+setmetatable(AdaptiveMomentEstimationMaximumOptimizer, BaseOptimizer)
 
 local defaultBeta1 = 0.9
 
@@ -16,7 +16,7 @@ local defaultEpsilon = 1 * math.pow(10, -7)
 
 function AdaptiveMomentEstimationMaximumOptimizer.new(beta1, beta2, epsilon)
 
-	local NewAdaptiveMomentEstimationMaximumOptimizer = BaseModel.new("AdaptiveMomentEstimationMaximum")
+	local NewAdaptiveMomentEstimationMaximumOptimizer = BaseOptimizer.new("AdaptiveMomentEstimationMaximum")
 
 	setmetatable(NewAdaptiveMomentEstimationMaximumOptimizer, AdaptiveMomentEstimationMaximumOptimizer)
 

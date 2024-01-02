@@ -20,7 +20,6 @@ function AdaptiveMomentEstimationMaximumOptimizer.new(beta1, beta2, epsilon)
 
 	setmetatable(NewAdaptiveMomentEstimationMaximumOptimizer, AdaptiveMomentEstimationMaximumOptimizer)
 
-	
 	NewAdaptiveMomentEstimationMaximumOptimizer.beta1 = beta1 or defaultBeta1
 	
 	NewAdaptiveMomentEstimationMaximumOptimizer.beta2 = beta2 or defaultBeta2

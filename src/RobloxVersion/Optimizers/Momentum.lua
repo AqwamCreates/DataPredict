@@ -1,50 +1,58 @@
+local BaseOptimizer = require(script.Parent.BaseOptimizer)
+
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
 MomentumOptimizer = {}
 
 MomentumOptimizer.__index = MomentumOptimizer
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+setmetatable(MomentumOptimizer, BaseOptimizer)
 
 local defaultDecayRate = 0.1
 
-function MomentumOptimizer.new(DecayRate)
+function MomentumOptimizer.new(decayRate)
 	
-	local NewMomentumOptimizer = {}
+	local NewMomentumOptimizer = BaseOptimizer.new("Momentum")
 	
 	setmetatable(NewMomentumOptimizer, MomentumOptimizer)
 	
-	NewMomentumOptimizer.DecayRate = DecayRate or defaultDecayRate
+	NewMomentumOptimizer.decayRate = decayRate or defaultDecayRate
 	
-	NewMomentumOptimizer.Velocity = nil
+	NewMomentumOptimizer.velocity = nil
+	
+	--------------------------------------------------------------------------------
+	
+	NewMomentumOptimizer:setCalculationFunction(function(learningRate, costFunctionDerivatives)
+		
+		NewMomentumOptimizer.velocity = NewMomentumOptimizer.velocity or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+
+		local VelocityPart1 = AqwamMatrixLibrary:multiply(NewMomentumOptimizer.decayRate, NewMomentumOptimizer.velocity)
+
+		local VelocityPart2 = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivatives)
+
+		NewMomentumOptimizer.velocity = AqwamMatrixLibrary:add(VelocityPart1, VelocityPart2)
+
+		costFunctionDerivatives = NewMomentumOptimizer.velocity
+
+		return costFunctionDerivatives
+		
+	end)
+	
+	--------------------------------------------------------------------------------
+	
+	NewMomentumOptimizer:setResetFunction(function()
+		
+		NewMomentumOptimizer.velocity = nil
+		
+	end) 
 	
 	return NewMomentumOptimizer
 	
 end
 
-function MomentumOptimizer:setDecayRate(DecayRate)
+function MomentumOptimizer:setDecayRate(decayRate)
 	
-	self.DecayRate = DecayRate
-	
-end
-
-function MomentumOptimizer:calculate(learningRate, costFunctionDerivatives)
-	
-	self.Velocity = self.Velocity or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
-	
-	local VelocityPart1 = AqwamMatrixLibrary:multiply(self.DecayRate, self.Velocity)
-	
-	local VelocityPart2 = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivatives)
-	
-	self.Velocity = AqwamMatrixLibrary:add(VelocityPart1, VelocityPart2)
-	
-	costFunctionDerivatives = self.Velocity
-	
-	return costFunctionDerivatives
-	
-end
-
-function MomentumOptimizer:reset()
-	
-	self.Velocity = nil
+	self.decayRate = decayRate
 	
 end
 

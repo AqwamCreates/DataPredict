@@ -31,27 +31,67 @@
 
 --]]
 
+local BaseOptimizer = require("BaseOptimizer")
+
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+
 AdaptiveGradientDeltaOptimizer = {}
 
 AdaptiveGradientDeltaOptimizer.__index = AdaptiveGradientDeltaOptimizer
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+setmetatable(AdaptiveGradientDeltaOptimizer, BaseOptimizer)
 
 local defaultDecayRate = 0.9
 
 local defaultEpsilon = 1 * math.pow(10, -7)
 
-function AdaptiveGradientDeltaOptimizer.new(DecayRate, Epsilon)
+function AdaptiveGradientDeltaOptimizer.new(decayRate, epsilon)
 
-	local NewAdaptiveGradientDeltaOptimizer = {}
+	local NewAdaptiveGradientDeltaOptimizer = BaseOptimizer.new("AdaptiveGradientDelta")
 
 	setmetatable(NewAdaptiveGradientDeltaOptimizer, AdaptiveGradientDeltaOptimizer)
 
-	NewAdaptiveGradientDeltaOptimizer.PreviousRunningGradientSquaredMatrix = nil
+	NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix = nil
 	
-	NewAdaptiveGradientDeltaOptimizer.Epsilon = Epsilon or defaultEpsilon
+	NewAdaptiveGradientDeltaOptimizer.decayRate = decayRate or defaultDecayRate
 	
-	NewAdaptiveGradientDeltaOptimizer.DecayRate = DecayRate or defaultDecayRate
+	NewAdaptiveGradientDeltaOptimizer.epsilon = epsilon or defaultEpsilon
+	
+	--------------------------------------------------------------------------------
+	
+	NewAdaptiveGradientDeltaOptimizer:setCalculationFunction(function(learningRate, costFunctionDerivatives)
+		
+		NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix = NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+
+		local GradientSquaredMatrix = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
+
+		local RunningDeltaMatrixPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveGradientDeltaOptimizer.decayRate, NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix)
+
+		local RunningDeltaMatrixPart2 = AqwamMatrixLibrary:multiply((1 - NewAdaptiveGradientDeltaOptimizer.decayRate), GradientSquaredMatrix)
+
+		local CurrentRunningGradientSquaredMatrix =  AqwamMatrixLibrary:add(RunningDeltaMatrixPart1, RunningDeltaMatrixPart2)
+
+		local RootMeanSquarePart1 = AqwamMatrixLibrary:add(CurrentRunningGradientSquaredMatrix, NewAdaptiveGradientDeltaOptimizer.epsilon)
+
+		local RootMeanSquare = AqwamMatrixLibrary:applyFunction(math.sqrt, RootMeanSquarePart1)
+
+		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, RootMeanSquare)
+
+		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
+
+		NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix = CurrentRunningGradientSquaredMatrix
+
+		return costFunctionDerivatives
+		
+	end)
+	
+	--------------------------------------------------------------------------------
+	
+	NewAdaptiveGradientDeltaOptimizer:setResetFunction(function()
+		
+		NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix = nil
+		
+	end)
 
 	return NewAdaptiveGradientDeltaOptimizer
 
@@ -67,38 +107,6 @@ function AdaptiveGradientDeltaOptimizer:setDecayRate(DecayRate)
 	
 	self.DecayRate = DecayRate
 	
-end
-
-function AdaptiveGradientDeltaOptimizer:calculate(learningRate, costFunctionDerivatives)
-
-	self.PreviousRunningGradientSquaredMatrix = self.PreviousRunningGradientSquaredMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
-
-	local GradientSquaredMatrix = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
-	
-	local RunningDeltaMatrixPart1 = AqwamMatrixLibrary:multiply(self.DecayRate, self.PreviousRunningGradientSquaredMatrix)
-	
-	local RunningDeltaMatrixPart2 = AqwamMatrixLibrary:multiply((1 - self.DecayRate), GradientSquaredMatrix)
-	
-	local CurrentRunningGradientSquaredMatrix =  AqwamMatrixLibrary:add(RunningDeltaMatrixPart1, RunningDeltaMatrixPart2)
-	
-	local RootMeanSquarePart1 = AqwamMatrixLibrary:add(CurrentRunningGradientSquaredMatrix, self.Epsilon)
-	
-	local RootMeanSquare = AqwamMatrixLibrary:applyFunction(math.sqrt, RootMeanSquarePart1)
-	
-	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, RootMeanSquare)
-	
-	costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
-
-	self.PreviousRunningGradientSquaredMatrix = CurrentRunningGradientSquaredMatrix
-
-	return costFunctionDerivatives
-
-end
-
-function AdaptiveGradientDeltaOptimizer:reset()
-
-	self.PreviousRunningGradientSquaredMatrix = nil
-
 end
 
 return AdaptiveGradientDeltaOptimizer

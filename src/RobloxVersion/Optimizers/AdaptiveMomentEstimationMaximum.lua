@@ -1,6 +1,10 @@
+local BaseModel = require(script.Parent.BaseOptimizer)
+
 AdaptiveMomentEstimationMaximumOptimizer = {}
 
 AdaptiveMomentEstimationMaximumOptimizer.__index = AdaptiveMomentEstimationMaximumOptimizer
+
+setmetatable(AdaptiveMomentEstimationMaximumOptimizer, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
@@ -10,92 +14,93 @@ local defaultBeta2 = 0.999
 
 local defaultEpsilon = 1 * math.pow(10, -7)
 
-function AdaptiveMomentEstimationMaximumOptimizer.new(Beta1, Beta2, Epsilon)
+function AdaptiveMomentEstimationMaximumOptimizer.new(beta1, beta2, epsilon)
 
-	local NewAdaptiveMomentEstimationMaximumOptimizer = {}
+	local NewAdaptiveMomentEstimationMaximumOptimizer = BaseModel.new("AdaptiveMomentEstimationMaximum")
 
 	setmetatable(NewAdaptiveMomentEstimationMaximumOptimizer, AdaptiveMomentEstimationMaximumOptimizer)
 
-	NewAdaptiveMomentEstimationMaximumOptimizer.PreviousMomentum = nil
 	
-	NewAdaptiveMomentEstimationMaximumOptimizer.PreviousVelocity = nil
+	NewAdaptiveMomentEstimationMaximumOptimizer.beta1 = beta1 or defaultBeta1
 	
-	NewAdaptiveMomentEstimationMaximumOptimizer.Beta1 = Beta1 or defaultBeta1
+	NewAdaptiveMomentEstimationMaximumOptimizer.beta2 = beta2 or defaultBeta2
 	
-	NewAdaptiveMomentEstimationMaximumOptimizer.Beta2 = Beta2 or defaultBeta2
+	NewAdaptiveMomentEstimationMaximumOptimizer.epsilon = epsilon or defaultEpsilon
 	
-	NewAdaptiveMomentEstimationMaximumOptimizer.Epsilon = Epsilon or defaultEpsilon
+	NewAdaptiveMomentEstimationMaximumOptimizer.timeStep = 0
 	
-	NewAdaptiveMomentEstimationMaximumOptimizer.TimeStep = 0
+	NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = nil
 	
-	NewAdaptiveMomentEstimationMaximumOptimizer.ExponentWeight = nil
+	NewAdaptiveMomentEstimationMaximumOptimizer.moment = nil
 	
-	NewAdaptiveMomentEstimationMaximumOptimizer.Moment = nil
+	--------------------------------------------------------------------------------
+	
+	NewAdaptiveMomentEstimationMaximumOptimizer:setCalculationFunction(function(learningRate, costFunctionDerivatives)
+
+		NewAdaptiveMomentEstimationMaximumOptimizer.moment = NewAdaptiveMomentEstimationMaximumOptimizer.moment or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+
+		NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+
+		NewAdaptiveMomentEstimationMaximumOptimizer.timeStep += 1
+
+		local MomentPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveMomentEstimationMaximumOptimizer.beta1, NewAdaptiveMomentEstimationMaximumOptimizer.moment)
+
+		local MomentPart2 = AqwamMatrixLibrary:multiply((1 - NewAdaptiveMomentEstimationMaximumOptimizer.beta1), costFunctionDerivatives)
+
+		NewAdaptiveMomentEstimationMaximumOptimizer.moment = AqwamMatrixLibrary:add(MomentPart1, MomentPart2)
+
+		local ExponentWeightPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveMomentEstimationMaximumOptimizer.beta2, NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight)
+
+		local ExponentWeightPart2 = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
+
+		NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = AqwamMatrixLibrary:applyFunction(math.max, ExponentWeightPart1, ExponentWeightPart2)
+
+		local DivisorPart1 = 1 - math.pow(NewAdaptiveMomentEstimationMaximumOptimizer.beta1, 2)
+
+		local DivisorPart2 = AqwamMatrixLibrary:add(NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight, NewAdaptiveMomentEstimationMaximumOptimizer.epsilon)
+
+		local Divisor = AqwamMatrixLibrary:multiply(DivisorPart1, DivisorPart1)
+
+		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(NewAdaptiveMomentEstimationMaximumOptimizer.moment, Divisor)
+
+		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
+
+		return costFunctionDerivatives
+
+	end)
+	
+	--------------------------------------------------------------------------------
+	
+	NewAdaptiveMomentEstimationMaximumOptimizer:setResetFunction(function()
+	
+		NewAdaptiveMomentEstimationMaximumOptimizer.timeStep = 0
+
+		NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = nil
+
+		NewAdaptiveMomentEstimationMaximumOptimizer.moment = nil
+		
+	end)
 
 	return NewAdaptiveMomentEstimationMaximumOptimizer
 
 end
 
-function AdaptiveMomentEstimationMaximumOptimizer:setBeta1(Beta1)
+function AdaptiveMomentEstimationMaximumOptimizer:setBeta1(beta1)
 	
-	self.Beta1 = Beta1
+	self.beta1 = beta1
 	
 end
 
-function AdaptiveMomentEstimationMaximumOptimizer:setBeta2(Beta2)
+function AdaptiveMomentEstimationMaximumOptimizer:setBeta2(beta2)
 		
-	self.Beta2 = Beta2
+	self.beta2 = beta2
 	
 end
 
-function AdaptiveMomentEstimationMaximumOptimizer:setEpsilon(Epsilon)
+function AdaptiveMomentEstimationMaximumOptimizer:setEpsilon(epsilon)
 
-	self.Epsilon = Epsilon
+	self.epsilon = epsilon
 
-end
-
-function AdaptiveMomentEstimationMaximumOptimizer:calculate(learningRate, costFunctionDerivatives)
-
-	self.Moment = self.Moment or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
-	
-	self.ExponentWeight = self.ExponentWeight or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
-	
-	self.TimeStep += 1
-	
-	local MomentPart1 = AqwamMatrixLibrary:multiply(self.Beta1, self.Moment)
-	
-	local MomentPart2 = AqwamMatrixLibrary:multiply((1 - self.Beta1), costFunctionDerivatives)
-	
-	self.Moment = AqwamMatrixLibrary:add(MomentPart1, MomentPart2)
-	
-	local ExponentWeightPart1 = AqwamMatrixLibrary:multiply(self.Beta2, self.ExponentWeight)
-	
-	local ExponentWeightPart2 = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
-	
-	self.ExponentWeight = AqwamMatrixLibrary:applyFunction(math.max, ExponentWeightPart1, ExponentWeightPart2)
-	
-	local DivisorPart1 = 1 - math.pow(self.Beta1, 2)
-	
-	local DivisorPart2 = AqwamMatrixLibrary:add(self.ExponentWeight, self.Epsilon)
-	
-	local Divisor = AqwamMatrixLibrary:multiply(DivisorPart1, DivisorPart1)
-	
-	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(self.Moment, Divisor)
-	
-	costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
-
-	return costFunctionDerivatives
-	
-end
-
-function AdaptiveMomentEstimationMaximumOptimizer:reset()
-
-	self.TimeStep = 0
-
-	self.ExponentWeight = nil
-
-	self.Moment = nil
-	
 end
 
 return AdaptiveMomentEstimationMaximumOptimizer

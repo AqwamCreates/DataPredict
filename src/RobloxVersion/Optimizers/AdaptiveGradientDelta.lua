@@ -64,15 +64,15 @@ function AdaptiveGradientDeltaOptimizer.new(decayRate, epsilon)
 
 end
 
-function AdaptiveGradientDeltaOptimizer:setEpsilon(Epsilon)
+function AdaptiveGradientDeltaOptimizer:setEpsilon(epsilon)
 
-	self.Epsilon = Epsilon
+	self.epsilon = epsilon
 
 end
 
-function AdaptiveGradientDeltaOptimizer:setDecayRate(DecayRate)
+function AdaptiveGradientDeltaOptimizer:setDecayRate(decayRate)
 	
-	self.DecayRate = DecayRate
+	self.decayRate = decayRate
 	
 end
 

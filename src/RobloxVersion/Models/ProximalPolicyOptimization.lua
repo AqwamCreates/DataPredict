@@ -122,20 +122,6 @@ local function getBooleanOrDefaultOption(boolean, defaultBoolean)
 
 end
 
-local function convertListOfVectorsToMatrix(listOfVectors)
-	
-	local matrix = {}
-	
-	for i = 1, #listOfVectors, 1 do
-		
-		table.insert(matrix, listOfVectors[i][1])
-		
-	end
-	
-	return matrix
-	
-end
-
 function ProximalPolicyOptimizationModel:setPrintReinforcementOutput(option)
 
 	self.printReinforcementOutput = getBooleanOrDefaultOption(option, self.printReinforcementOutput)
@@ -150,15 +136,15 @@ function ProximalPolicyOptimizationModel:episodeUpdate(numberOfFeatures)
 	
 	local sumCriticLosses = 0
 	
-	local actionMatrix = convertListOfVectorsToMatrix(self.actionVectorHistory)
-	
-	for h = 1, historyLength, 1 do
+	for h = 2, historyLength, 1 do
 		
 		local advantage = self.advantageHistory[h]
 		
-		local currentActionVector = {actionMatrix[h]}
+		local previousActionVector = self.actionVectorHistory[h - 1]
 		
-		local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, actionMatrix)
+		local currentActionVector = self.actionVectorHistory[h]
+		
+		local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
 		
 		local actorLossVector = AqwamMatrixLibrary:multiply(-1, ratioVector, advantage)
 		
@@ -168,7 +154,7 @@ function ProximalPolicyOptimizationModel:episodeUpdate(numberOfFeatures)
 		
 	end
 	
-	local featureVector = AqwamMatrixLibrary:createMatrix(historyLength, numberOfFeatures, 1)
+	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 	
 	self.ActorModel:forwardPropagate(featureVector, true)
 	self.CriticModel:forwardPropagate(featureVector, true)

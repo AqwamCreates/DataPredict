@@ -177,8 +177,6 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.new(epsilon, 
 
 	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.distanceFunction = distanceFunction or defaultDistanceFunction
 	
-	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.appendPreviousFeatureMatrix = false
-	
 	return NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel
 	
 end
@@ -195,15 +193,9 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:setParameters
 	
 end
 
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:canAppendPreviousFeatureMatrix(option)
-
-	self.appendPreviousFeatureMatrix = option
-
-end
-
 function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(featureMatrix)
 	
-	if (self.ModelParameters) and (self.appendPreviousFeatureMatrix) then
+	if (self.ModelParameters) then
 
 		local storedFeatureMatrix = self.ModelParameters[1]
 

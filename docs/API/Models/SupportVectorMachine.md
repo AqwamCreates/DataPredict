@@ -36,8 +36,6 @@ SupportVectorMachine.new(maxNumberOfIterations: integer, cValue: number, targetC
 
   *  RadialBasisFunction
 
-  *  CosineSimilarity
-
   *  Sigmoid
 
 * kernelParameters: A table containg the required parameters 
@@ -73,8 +71,6 @@ SupportVectorMachine:setParameters(maxNumberOfIterations: integer, cValue: numbe
   *  Polynomial
 
   *  RadialBasisFunction
-
-  *  CosineSimilarity
 
   *  Sigmoid
 

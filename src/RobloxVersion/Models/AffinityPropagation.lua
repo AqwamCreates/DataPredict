@@ -240,8 +240,6 @@ function AffinityPropagationModel.new(maxNumberOfIterations, similarityFunction,
 
 	NewAffinityPropagationModel.targetCost = targetCost or defaultTargetCost
 
-	NewAffinityPropagationModel.appendPreviousFeatureMatrix = false
-
 	return NewAffinityPropagationModel
 
 end
@@ -260,15 +258,9 @@ function AffinityPropagationModel:setParameters(maxNumberOfIterations, similarit
 
 end
 
-function AffinityPropagationModel:canAppendPreviousFeatureMatrix(option)
-
-	self.appendPreviousFeatureMatrix = option
-
-end
-
 function AffinityPropagationModel:train(featureMatrix)
 	
-	if (self.ModelParameters) and (self.appendPreviousFeatureMatrix) then
+	if (self.ModelParameters) then
 		
 		local storedFeatureMatrix = self.ModelParameters[1]
 

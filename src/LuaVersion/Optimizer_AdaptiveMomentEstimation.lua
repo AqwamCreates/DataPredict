@@ -31,11 +31,15 @@
 
 --]]
 
+local BaseModel = require("Optimizer_BaseOptimizer")
+
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+
 AdaptiveMomentEstimationOptimizer = {}
 
 AdaptiveMomentEstimationOptimizer.__index = AdaptiveMomentEstimationOptimizer
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+setmetatable(AdaptiveMomentEstimationOptimizer, BaseModel)
 
 local defaultBeta1 = 0.9
 
@@ -43,89 +47,93 @@ local defaultBeta2 = 0.999
 
 local defaultEpsilon = 1 * math.pow(10, -7)
 
-function AdaptiveMomentEstimationOptimizer.new(Beta1, Beta2, Epsilon)
+function AdaptiveMomentEstimationOptimizer.new(beta1, beta2, epsilon)
 
-	local NewAdaptiveMomentEstimationOptimizer = {}
+	local NewAdaptiveMomentEstimationOptimizer = BaseModel.new("AdaptiveMomentEstimation")
 
 	setmetatable(NewAdaptiveMomentEstimationOptimizer, AdaptiveMomentEstimationOptimizer)
 
-	NewAdaptiveMomentEstimationOptimizer.PreviousMomentum = nil
+	NewAdaptiveMomentEstimationOptimizer.previousMomentum = nil
 	
-	NewAdaptiveMomentEstimationOptimizer.PreviousVelocity = nil
+	NewAdaptiveMomentEstimationOptimizer.previousVelocity = nil
 	
-	NewAdaptiveMomentEstimationOptimizer.Beta1 = Beta1 or defaultBeta1
+	NewAdaptiveMomentEstimationOptimizer.beta1 = beta1 or defaultBeta1
 	
-	NewAdaptiveMomentEstimationOptimizer.Beta2 = Beta2 or defaultBeta2
+	NewAdaptiveMomentEstimationOptimizer.beta2 = beta2 or defaultBeta2
 	
-	NewAdaptiveMomentEstimationOptimizer.Epsilon = Epsilon or defaultEpsilon
+	NewAdaptiveMomentEstimationOptimizer.epsilon = epsilon or defaultEpsilon
+	
+	--------------------------------------------------------------------------------
+	
+	NewAdaptiveMomentEstimationOptimizer:setCalculationFunction(function(learningRate, costFunctionDerivatives)
+		
+		NewAdaptiveMomentEstimationOptimizer.previousMomentum = NewAdaptiveMomentEstimationOptimizer.previousMomentum or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+
+		NewAdaptiveMomentEstimationOptimizer.previousVelocity = NewAdaptiveMomentEstimationOptimizer.previousVelocity or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+
+		local momentumPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveMomentEstimationOptimizer.beta1, NewAdaptiveMomentEstimationOptimizer.previousMomentum)
+
+		local momentumPart2 = AqwamMatrixLibrary:multiply((1 - NewAdaptiveMomentEstimationOptimizer.beta1), costFunctionDerivatives)
+
+		local momentum = AqwamMatrixLibrary:add(momentumPart1, momentumPart2)
+
+		local squaredModelParameters = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
+
+		local velocityPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveMomentEstimationOptimizer.beta2, NewAdaptiveMomentEstimationOptimizer.PreviousVelocity)
+
+		local velocityPart2 = AqwamMatrixLibrary:multiply((1 - NewAdaptiveMomentEstimationOptimizer.beta2), squaredModelParameters)
+
+		local velocity = AqwamMatrixLibrary:add(velocityPart1, velocityPart2)
+
+		local meanMomentum = AqwamMatrixLibrary:divide(momentum, (1 - NewAdaptiveMomentEstimationOptimizer.beta1))
+
+		local meanVelocity = AqwamMatrixLibrary:divide(velocity, (1 - NewAdaptiveMomentEstimationOptimizer.beta2))
+
+		local squareRootedDivisor = AqwamMatrixLibrary:power(meanVelocity, 0.5)
+
+		local finalDivisor = AqwamMatrixLibrary:add(squareRootedDivisor, NewAdaptiveMomentEstimationOptimizer.Epsilon)
+
+		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(meanMomentum, finalDivisor)
+
+		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
+
+		NewAdaptiveMomentEstimationOptimizer.previousMomentum = momentum
+
+		NewAdaptiveMomentEstimationOptimizer.previousVelocity = velocity
+
+		return costFunctionDerivatives
+		
+	end)
+	
+	--------------------------------------------------------------------------------
+	
+	NewAdaptiveMomentEstimationOptimizer:setResetFunction(function()
+		
+		NewAdaptiveMomentEstimationOptimizer.previousMomentum = nil
+
+		NewAdaptiveMomentEstimationOptimizer.previousVelocity = nil
+		
+	end)
 
 	return NewAdaptiveMomentEstimationOptimizer
 
 end
 
-function AdaptiveMomentEstimationOptimizer:setBeta1(Beta1)
+function AdaptiveMomentEstimationOptimizer:setBeta1(beta1)
 	
-	self.Beta1 = Beta1
+	self.beta1 = beta1
 	
 end
 
-function AdaptiveMomentEstimationOptimizer:setBeta2(Beta2)
+function AdaptiveMomentEstimationOptimizer:setBeta2(beta2)
 		
-	self.Beta2 = Beta2
+	self.beta2 = beta2
 	
 end
 
-function AdaptiveMomentEstimationOptimizer:setEpsilon(Epsilon)
+function AdaptiveMomentEstimationOptimizer:setEpsilon(epsilon)
 
-	self.Epsilon = Epsilon
-
-end
-
-function AdaptiveMomentEstimationOptimizer:calculate(learningRate, costFunctionDerivatives)
-
-	self.PreviousMomentum = self.PreviousMomentum or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
-	
-	self.PreviousVelocity = self.PreviousVelocity or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
-
-	local momentumPart1 = AqwamMatrixLibrary:multiply(self.Beta1, self.PreviousMomentum)
-	
-	local momentumPart2 = AqwamMatrixLibrary:multiply((1 - self.Beta1), costFunctionDerivatives)
-	
-	local momentum = AqwamMatrixLibrary:add(momentumPart1, momentumPart2)
-
-	local squaredModelParameters = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
-
-	local velocityPart1 = AqwamMatrixLibrary:multiply(self.Beta2, self.PreviousVelocity)
-	
-	local velocityPart2 = AqwamMatrixLibrary:multiply((1 - self.Beta2), squaredModelParameters)
-	
-	local velocity = AqwamMatrixLibrary:add(velocityPart1, velocityPart2)
-
-	local meanMomentum = AqwamMatrixLibrary:divide(momentum, (1 - self.Beta1))
-	
-	local meanVelocity = AqwamMatrixLibrary:divide(velocity, (1 - self.Beta2))
-	
-	local squareRootedDivisor = AqwamMatrixLibrary:power(meanVelocity, 0.5)
-	
-	local finalDivisor = AqwamMatrixLibrary:add(squareRootedDivisor, self.Epsilon)
-
-	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(meanMomentum, finalDivisor)
-	
-	costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
-
-	self.PreviousMomentum = momentum
-	
-	self.PreviousVelocity = velocity
-
-	return costFunctionDerivatives
-	
-end
-
-function AdaptiveMomentEstimationOptimizer:reset()
-
-	self.PreviousMomentum = nil
-
-	self.PreviousVelocity = nil
+	self.epsilon = epsilon
 
 end
 

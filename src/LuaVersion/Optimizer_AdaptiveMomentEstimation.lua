@@ -39,7 +39,7 @@ AdaptiveMomentEstimationOptimizer = {}
 
 AdaptiveMomentEstimationOptimizer.__index = AdaptiveMomentEstimationOptimizer
 
-setmetatable(AdaptiveMomentEstimationOptimizer, BaseModel)
+setmetatable(AdaptiveMomentEstimationOptimizer, BaseOptimizer)
 
 local defaultBeta1 = 0.9
 
@@ -49,7 +49,7 @@ local defaultEpsilon = 1 * math.pow(10, -7)
 
 function AdaptiveMomentEstimationOptimizer.new(beta1, beta2, epsilon)
 
-	local NewAdaptiveMomentEstimationOptimizer = BaseModel.new("AdaptiveMomentEstimation")
+	local NewAdaptiveMomentEstimationOptimizer = BaseOptimizer.new("AdaptiveMomentEstimation")
 
 	setmetatable(NewAdaptiveMomentEstimationOptimizer, AdaptiveMomentEstimationOptimizer)
 

@@ -40,7 +40,7 @@ local distanceFunctionList = {
 
 	end,
 	
-	["CosineSimilarity"] = function(x1, x2)
+	["CosineDistance"] = function(x1, x2)
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
 		

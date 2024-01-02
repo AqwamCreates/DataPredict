@@ -54,18 +54,6 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise:setParameters(epsilon: numb
 
 * targetCost: The cost at which the model stops training.
 
-### canAppendPreviousFeatureMatrix()
-
-Set the option if the previous feature matrix should append with the new feature matrix during training.
-
-```
-DensityBasedSpatialClusteringOfApplicationsWithNoise:canAppendPreviousFeatureMatrix(option: boolean)
-```
-
-#### Parameters:
-
-* option: the boolean value to set whether or not the feature matrices can be appended.
-
 ### train()
 
 Train the model.

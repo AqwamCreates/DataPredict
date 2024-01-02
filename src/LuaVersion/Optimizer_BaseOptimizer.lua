@@ -8,7 +8,7 @@ function BaseOptimizer.new(optimizerName)
 	
 	setmetatable(NewBaseOptimizer, BaseOptimizer)
 	
-	NewBaseOptimizer.optimizerName = optimizerName
+	NewBaseOptimizer.optimizerName = optimizerName or "Unknown"
 	
 	NewBaseOptimizer.calculationFunction = nil
 	

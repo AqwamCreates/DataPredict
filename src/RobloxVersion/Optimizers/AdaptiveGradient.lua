@@ -14,17 +14,17 @@ function AdaptiveGradientOptimizer.new()
 	
 	setmetatable(NewAdaptiveGradientOptimizer, AdaptiveGradientOptimizer)
 	
-	NewAdaptiveGradientOptimizer.PreviousSumOfGradientSquaredMatrix = nil
+	NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix = nil
 	
 	--------------------------------------------------------------------------------
 	
 	NewAdaptiveGradientOptimizer:setCalculationFunction(function(learningRate, costFunctionDerivatives)
 		
-		NewAdaptiveGradientOptimizer.PreviousSumOfGradientSquaredMatrix = NewAdaptiveGradientOptimizer.PreviousSumOfGradientSquaredMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix = NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 
 		local GradientSquaredMatrix = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
 
-		local CurrentSumOfGradientSquaredMatrix = AqwamMatrixLibrary:add(NewAdaptiveGradientOptimizer.PreviousSumOfGradientSquaredMatrix, GradientSquaredMatrix)
+		local CurrentSumOfGradientSquaredMatrix = AqwamMatrixLibrary:add(NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix, GradientSquaredMatrix)
 
 		local SquareRootSumOfGradientSquared = AqwamMatrixLibrary:power(CurrentSumOfGradientSquaredMatrix, 0.5)
 
@@ -32,7 +32,7 @@ function AdaptiveGradientOptimizer.new()
 
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 
-		NewAdaptiveGradientOptimizer.PreviousSumOfGradientSquaredMatrix = CurrentSumOfGradientSquaredMatrix
+		NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix = CurrentSumOfGradientSquaredMatrix
 
 		return costFunctionDerivatives
 		
@@ -42,7 +42,7 @@ function AdaptiveGradientOptimizer.new()
 	
 	NewAdaptiveGradientOptimizer:setResetFunction(function()
 		
-		NewAdaptiveGradientOptimizer.PreviousSumOfGradientSquaredMatrix = nil
+		NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix = nil
 		
 	end)
 	

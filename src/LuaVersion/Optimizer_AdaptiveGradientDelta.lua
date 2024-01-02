@@ -31,9 +31,9 @@
 
 --]]
 
-local BaseOptimizer = require(script.Parent.BaseOptimizer)
+local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 AdaptiveGradientDeltaOptimizer = {}
 

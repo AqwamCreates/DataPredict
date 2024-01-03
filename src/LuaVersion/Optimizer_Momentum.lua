@@ -55,7 +55,7 @@ function MomentumOptimizer.new(decayRate)
 	
 	--------------------------------------------------------------------------------
 	
-	NewMomentumOptimizer:setCalculationFunction(function(learningRate, costFunctionDerivatives)
+	NewMomentumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
 		NewMomentumOptimizer.velocity = NewMomentumOptimizer.velocity or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 

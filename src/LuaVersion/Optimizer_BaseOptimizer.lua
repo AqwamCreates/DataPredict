@@ -30,7 +30,7 @@ function BaseOptimizer:reset()
  	
 end
 
-function BaseOptimizer:setCalculationFunction(calculationFunction)
+function BaseOptimizer:setCalculateFunction(calculationFunction)
 	
 	self.calculationFunction = calculationFunction
 	

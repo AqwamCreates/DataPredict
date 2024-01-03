@@ -36,3 +36,7 @@ Reset optimizer's stored values (excluding the parameters).
 ```
 Momentum:reset()
 ```
+
+## Inherited From:
+
+* [BaseOptimizer](BaseOptimizer.md)

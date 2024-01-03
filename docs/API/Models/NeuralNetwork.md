@@ -229,7 +229,11 @@ NeuralNetwork:getLayerProperty(layerNumber: integer, property: string): any
   * ActivationFunction
 
   * LearningRate
-
+    
+  * Optimizer
+    
+  * Regularization
+    
   * DropoutRate
 
 ### Returns:

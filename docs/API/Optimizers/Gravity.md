@@ -7,14 +7,14 @@
 Creates a new optimizer object. If there are no parameters given for that particular argument, then that argument will use default value.
 
 ```
-Gravity.new(InitialStepSize: number, MovingAverage: number): OptimizerObject
+Gravity.new(initialStepSize: number, movingAverage: number): OptimizerObject
 ```
 
 #### Parameters:
 
-* InitialStepSize: The value to set the initial velocity during the first iteration.
+* initialStepSize: The value to set the initial velocity during the first iteration.
 
-* MovingAverage: The value that controls the smoothing of gradients during training.
+* movingAverage: The value that controls the smoothing of gradients during training.
 
 #### Returns:
 
@@ -25,22 +25,22 @@ Gravity.new(InitialStepSize: number, MovingAverage: number): OptimizerObject
 ### setInitialStepSize()
 
 ```
-Gravity:setDecayRate(InitialStepSize: number)
+Gravity:setDecayRate(initialStepSize: number)
 ```
 
 #### Parameters:
 
-* InitialStepSize: The value to set the initial velocity during the first iteration.
+* initialStepSize: The value to set the initial velocity during the first iteration.
 
 ### setMovingAverage()
 
 ```
-Gravity:setDecayRate(MovingAverage: number)
+Gravity:setDecayRate(movingAverage: number)
 ```
 
 #### Parameters:
 
-* MovingAverage: The value that controls the smoothing of gradients during training.
+* movingAverage: The value that controls the smoothing of gradients during training.
 
 ### reset()
 

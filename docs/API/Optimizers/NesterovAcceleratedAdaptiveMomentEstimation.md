@@ -7,16 +7,16 @@
 Creates a new optimizer object. If there are no parameters given for that particular argument, then that argument will use default value.
 
 ```
-NesterovAcceleratedAdaptiveMomentEstimation.new(Beta1: number, Beta2: number, Epsilon: number): OptimizerObject
+NesterovAcceleratedAdaptiveMomentEstimation.new(beta1: number, beta2: number, epsilon: number): OptimizerObject
 ```
 
 #### Parameters:
 
-* Beta1: The decay rate of the moving average of the first moment of the gradients.
+* beta1: The decay rate of the moving average of the first moment of the gradients.
 
-* Beta2: The decay rate of the moving average of the squared gradients.
+* beta2: The decay rate of the moving average of the squared gradients.
 
-* Epsilon: The value to ensure that the numbers are not divided by zero.
+* epsilon: The value to ensure that the numbers are not divided by zero.
 
 #### Returns:
 
@@ -27,32 +27,32 @@ NesterovAcceleratedAdaptiveMomentEstimation.new(Beta1: number, Beta2: number, Ep
 ### setBeta1()
 
 ```
-NesterovAcceleratedAdaptiveMomentEstimation:setBeta1(Beta1: number)
+NesterovAcceleratedAdaptiveMomentEstimation:setBeta1(beta1: number)
 ```
 
 #### Parameters:
 
-* Beta1: The decay rate of the moving average of the first moment of the gradients.
+* beta1: The decay rate of the moving average of the first moment of the gradients.
 
 ### setBeta2()
 
 ```
-NesterovAcceleratedAdaptiveMomentEstimation:setBeta2(Beta2: number)
+NesterovAcceleratedAdaptiveMomentEstimation:setBeta2(beta2: number)
 ```
 
 #### Parameters:
 
-* Beta2: The decay rate of the moving average of the squared gradients.
+* beta2: The decay rate of the moving average of the squared gradients.
 
 ### setEpsilon()
 
 ```
-NesterovAcceleratedAdaptiveMomentEstimation:setEpsilon(Epsilon: number)
+NesterovAcceleratedAdaptiveMomentEstimation:setEpsilon(epsilon: number)
 ```
 
 #### Parameters:
 
-* Epsilon: The value to ensure that the numbers are not divided by zero.
+* epsilon: The value to ensure that the numbers are not divided by zero.
 
 ### reset()
 

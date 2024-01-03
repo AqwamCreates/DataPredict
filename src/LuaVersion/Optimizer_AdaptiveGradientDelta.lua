@@ -59,7 +59,7 @@ function AdaptiveGradientDeltaOptimizer.new(decayRate, epsilon)
 	
 	--------------------------------------------------------------------------------
 	
-	NewAdaptiveGradientDeltaOptimizer:setCalculationFunction(function(learningRate, costFunctionDerivatives)
+	NewAdaptiveGradientDeltaOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
 		NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix = NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 

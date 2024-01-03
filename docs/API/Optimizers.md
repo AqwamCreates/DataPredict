@@ -17,3 +17,5 @@
 [NesterovAcceleratedAdaptiveMomentEstimation](Optimizers/NesterovAcceleratedAdaptiveMomentEstimation.md) - a.k.a NAdam
 
 [RootMeanSquarePropagation](Optimizers/RootMeanSquarePropagation.md) - a.k.a. RMSProp
+
+[BaseOptimizer](Optimizers/BaseOptimizer.md)

@@ -8,7 +8,7 @@ function BaseOptimizer.new(optimizerName)
 	
 	setmetatable(NewBaseOptimizer, BaseOptimizer)
 	
-	NewBaseOptimizer.optimizerName = optimizerName
+	NewBaseOptimizer.optimizerName = optimizerName or "Unknown"
 	
 	NewBaseOptimizer.calculationFunction = nil
 	
@@ -30,7 +30,7 @@ function BaseOptimizer:reset()
  	
 end
 
-function BaseOptimizer:setCalculationFunction(calculationFunction)
+function BaseOptimizer:setCalculateFunction(calculationFunction)
 	
 	self.calculationFunction = calculationFunction
 	

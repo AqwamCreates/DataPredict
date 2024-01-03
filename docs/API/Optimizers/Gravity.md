@@ -49,3 +49,7 @@ Reset optimizer's stored values (excluding the parameters).
 ```
 Gravity:reset()
 ```
+
+## Inherited From:
+
+* [BaseOptimizer](BaseOptimizer.md)

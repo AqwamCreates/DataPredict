@@ -39,7 +39,7 @@ GravityOptimizer = {}
 
 GravityOptimizer.__index = GravityOptimizer
 
-setmetatable(GravityOptimizer, BaseModel)
+setmetatable(GravityOptimizer, BaseOptimizer)
 
 local defaultInitialStepSize = 0.01
 

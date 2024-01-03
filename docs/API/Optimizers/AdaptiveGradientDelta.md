@@ -30,7 +30,7 @@ AdaptiveGradientDelta:setDecayRate(decayRate: number)
 
 #### Parameters:
 
-* DecayRate: The value that controls the rate of decay.
+* decayRate: The value that controls the rate of decay.
 
 ### setEpsilon()
 
@@ -40,7 +40,7 @@ AdaptiveGradientDelta:setEpsilon(epsilon: number)
 
 #### Parameters:
 
-* Epsilon: The value to ensure that the numbers are not divided by zero.
+* epsilon: The value to ensure that the numbers are not divided by zero.
 
 ### reset()
 

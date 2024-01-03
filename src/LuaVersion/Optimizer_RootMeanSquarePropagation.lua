@@ -31,74 +31,82 @@
 
 --]]
 
+local BaseOptimizer = require("Optimizer_BaseOptimizer")
+
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+
 RootMeanSquarePropagationOptimizer = {}
 
 RootMeanSquarePropagationOptimizer.__index = RootMeanSquarePropagationOptimizer
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+setmetatable(RootMeanSquarePropagationOptimizer, BaseOptimizer)
 
 local defaultBetaValue = 0.1
 
 local defaultEpsilonValue = 1 * math.pow(10, -7)
 
-function RootMeanSquarePropagationOptimizer.new(Beta, Epsilon)
+function RootMeanSquarePropagationOptimizer.new(beta, epsilon)
 	
-	local NewRootMeanSquarePropagationOptimizer = {}
+	local NewRootMeanSquarePropagationOptimizer = BaseOptimizer.new("RootMeanSquarePropagation")
 	
 	setmetatable(NewRootMeanSquarePropagationOptimizer, RootMeanSquarePropagationOptimizer)
 	
-	NewRootMeanSquarePropagationOptimizer.Beta = Beta or defaultBetaValue
+	NewRootMeanSquarePropagationOptimizer.beta = beta or defaultBetaValue
 	
-	NewRootMeanSquarePropagationOptimizer.Epsilon = Epsilon or defaultEpsilonValue
+	NewRootMeanSquarePropagationOptimizer.epsilon = epsilon or defaultEpsilonValue
 	
-	NewRootMeanSquarePropagationOptimizer.PreviousVelocityMatrix = nil
+	NewRootMeanSquarePropagationOptimizer.previousVelocityMatrix = nil
+	
+	--------------------------------------------------------------------------------
+	
+	NewRootMeanSquarePropagationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
+		
+		NewRootMeanSquarePropagationOptimizer.previousVelocityMatrix = NewRootMeanSquarePropagationOptimizer.previousVelocityMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+
+		local SquaredModelParameters = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
+
+		local VMatrixPart1 = AqwamMatrixLibrary:multiply(NewRootMeanSquarePropagationOptimizer.beta, NewRootMeanSquarePropagationOptimizer.previousVelocityMatrix)
+
+		local VMatrixPart2 = AqwamMatrixLibrary:multiply((1-NewRootMeanSquarePropagationOptimizer.beta), SquaredModelParameters)
+
+		local CurrentVelocityMatrix = AqwamMatrixLibrary:add(VMatrixPart1, VMatrixPart2)
+
+		local NonZeroDivisorMatrix = AqwamMatrixLibrary:add(CurrentVelocityMatrix, NewRootMeanSquarePropagationOptimizer.epsilon)
+
+		local SquaredRootVelocityMatrix = AqwamMatrixLibrary:power(NonZeroDivisorMatrix, 0.5)
+
+		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, SquaredRootVelocityMatrix)
+
+		local costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
+
+		NewRootMeanSquarePropagationOptimizer.previousVelocityMatrix = CurrentVelocityMatrix
+
+		return costFunctionDerivatives
+		
+	end)
+	
+	--------------------------------------------------------------------------------
+	
+	NewRootMeanSquarePropagationOptimizer:setResetFunction(function()
+		
+		NewRootMeanSquarePropagationOptimizer.previousVelocityMatrix = nil
+		
+	end)
 	
 	return NewRootMeanSquarePropagationOptimizer
 	
 end
 
-function RootMeanSquarePropagationOptimizer:setBeta(Beta)
+function RootMeanSquarePropagationOptimizer:setBeta(beta)
 	
-	self.Beta = Beta
-	
-end
-
-function RootMeanSquarePropagationOptimizer:setEpsilon(Epsilon)
-
-	self.Epsilon = Epsilon
-
-end
-
-function RootMeanSquarePropagationOptimizer:calculate(learningRate, costFunctionDerivatives)
-	
-	self.PreviousVelocityMatrix = self.PreviousVelocityMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
-	
-	local SquaredModelParameters = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
-	
-	local VMatrixPart1 = AqwamMatrixLibrary:multiply(self.Beta, self.PreviousVelocityMatrix)
-	
-	local VMatrixPart2 = AqwamMatrixLibrary:multiply((1-self.Beta), SquaredModelParameters)
-	
-	local CurrentVelocityMatrix = AqwamMatrixLibrary:add(VMatrixPart1, VMatrixPart2)
-	
-	local NonZeroDivisorMatrix = AqwamMatrixLibrary:add(CurrentVelocityMatrix, self.Epsilon)
-	
-	local SquaredRootVelocityMatrix = AqwamMatrixLibrary:power(NonZeroDivisorMatrix, 0.5)
-	
-	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, SquaredRootVelocityMatrix)
-	
-	local costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
-	
-	self.PreviousVelocityMatrix = CurrentVelocityMatrix
-	
-	return costFunctionDerivatives
+	self.beta = beta
 	
 end
 
-function RootMeanSquarePropagationOptimizer:reset()
-	
-	self.PreviousVelocityMatrix = nil
-	
+function RootMeanSquarePropagationOptimizer:setEpsilon(epsilon)
+
+	self.epsilon = epsilon
+
 end
 
 return RootMeanSquarePropagationOptimizer

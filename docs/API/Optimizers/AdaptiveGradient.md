@@ -23,3 +23,7 @@ Reset optimizer's stored values (excluding the parameters).
 ```
 AdaptiveGradient:reset()
 ```
+
+## Inherited From:
+
+* [BaseOptimizer](BaseOptimizer.md)

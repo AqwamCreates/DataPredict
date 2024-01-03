@@ -20,7 +20,7 @@ end
 
 function BaseOptimizer:calculate(learningRate, costFunctionDerivatives)
 	
-	if not self.calculationFunction then return self.calculationFunction(costFunctionDerivatives) end
+	if not self.calculateFunction then return self.calculateFunction(costFunctionDerivatives) end
 	
 end
 
@@ -30,9 +30,9 @@ function BaseOptimizer:reset()
  	
 end
 
-function BaseOptimizer:setCalculateFunction(calculationFunction)
+function BaseOptimizer:setCalculateFunction(calculateFunction)
 	
-	self.calculationFunction = calculationFunction
+	self.calculateFunction = calculateFunction
 	
 end
 

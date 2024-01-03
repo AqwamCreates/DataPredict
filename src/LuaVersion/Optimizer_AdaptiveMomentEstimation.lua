@@ -31,7 +31,7 @@
 
 --]]
 
-local BaseModel = require("Optimizer_BaseOptimizer")
+local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
@@ -65,7 +65,7 @@ function AdaptiveMomentEstimationOptimizer.new(beta1, beta2, epsilon)
 	
 	--------------------------------------------------------------------------------
 	
-	NewAdaptiveMomentEstimationOptimizer:setCalculationFunction(function(learningRate, costFunctionDerivatives)
+	NewAdaptiveMomentEstimationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
 		NewAdaptiveMomentEstimationOptimizer.previousMomentum = NewAdaptiveMomentEstimationOptimizer.previousMomentum or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 

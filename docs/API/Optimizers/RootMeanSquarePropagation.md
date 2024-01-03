@@ -7,14 +7,14 @@
 Creates a new optimizer object. If there are no parameters given for that particular argument, then that argument will use default value.
 
 ```
-RootMeanSquarePropagation.new(Beta: number, Epsilon: number): OptimizerObject
+RootMeanSquarePropagation.new(beta: number, epsilon: number): OptimizerObject
 ```
 
 #### Parameters:
 
-* Beta: The value that controls the exponential decay rate for the moving average of squared gradients.
+* beta: The value that controls the exponential decay rate for the moving average of squared gradients.
 
-* Epsilon: The value to ensure that the numbers are not divided by zero.
+* epsilon: The value to ensure that the numbers are not divided by zero.
 
 #### Returns:
 
@@ -25,22 +25,22 @@ RootMeanSquarePropagation.new(Beta: number, Epsilon: number): OptimizerObject
 ### setBeta()
 
 ```
-RootMeanSquarePropagation:setBeta(Beta: number)
+RootMeanSquarePropagation:setBeta(beta: number)
 ```
 
 #### Parameters:
 
-* Beta: The value that controls the exponential decay rate for the moving average of squared gradients.
+* beta: The value that controls the exponential decay rate for the moving average of squared gradients.
 
 ### setEpsilon()
 
 ```
-RootMeanSquarePropagation:setEpsilon(Epsilon: number)
+RootMeanSquarePropagation:setEpsilon(epsilon: number)
 ```
 
 #### Parameters:
 
-* Epsilon: The value to ensure that the numbers are not divided by zero.
+* epsilon: The value to ensure that the numbers are not divided by zero.
 
 ### reset()
 

@@ -158,21 +158,29 @@ NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: 
 
 * activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
 
-  *  Sigmoid
+  * Sigmoid
 
-  *  Tanh
+  * Tanh
 
-  *  ReLU
+  * ReLU
 
-  *  LeakyReLU
+  * LeakyReLU
 
-  *  ELU
+  * ELU
 
-  *  Softmax
+  * Gaussian
+ 
+  * SiLU
 
-  *  StableSoftmax
+  * Mish
 
-  *  None
+  * BinaryStep
+
+  * Softmax
+
+  * StableSoftmax
+
+  * None
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 

@@ -8,9 +8,9 @@ LearningRateDecayOptimizer.__index = LearningRateDecayOptimizer
 
 setmetatable(LearningRateDecayOptimizer, BaseOptimizer)
 
-local defaultDecayRate = 0.95
+local defaultDecayRate = 0.5
 
-local defaultTimeStepToDecay = 1000
+local defaultTimeStepToDecay = 100
 
 function LearningRateDecayOptimizer.new(decayRate, timeStepToDecay)
 	

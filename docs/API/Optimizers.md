@@ -12,6 +12,8 @@
 
 [Momentum](Optimizers/Momentum.md)
 
+[LearningRateDecay](Optimizers/LearningRateDecay,md)
+
 [NesterovAcceleratedAdaptiveMomentEstimation](Optimizers/NesterovAcceleratedAdaptiveMomentEstimation.md) - a.k.a NAdam
 
 [RootMeanSquarePropagation](Optimizers/RootMeanSquarePropagation.md) - a.k.a. RMSProp

@@ -61,3 +61,7 @@ Reset optimizer's stored values (excluding the parameters).
 ```
 NesterovAcceleratedAdaptiveMomentEstimation:reset()
 ```
+
+## Inherited From:
+
+* [BaseOptimizer](BaseOptimizer.md)

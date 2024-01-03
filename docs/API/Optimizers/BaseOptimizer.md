@@ -14,7 +14,7 @@ BaseOptimizer.new(optimizerName: string): BaseOptimizerObject
 
 #### Parameters
 
-* optimizerName: The optimizer name to inherit the base class.
+* optimizerName: The optimizer name that is stored in base optimizer.
 
 #### Returns:
 
@@ -47,6 +47,18 @@ Reset optimizer's stored values (excluding the parameters).
 ```
 BaseOptimizer:reset()
 ```
+
+### getOptimizerName()
+
+Gets the optimizer's name from the base optimizer.
+
+```
+BaseOptimizer:getOptimizerName()
+```
+
+#### Returns:
+
+* optimizerName: The optimizer name that is stored in base optimizer.
 
 ### setCalculateFunction()
 

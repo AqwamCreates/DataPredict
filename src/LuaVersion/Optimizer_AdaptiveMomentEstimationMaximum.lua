@@ -32,7 +32,7 @@ function AdaptiveMomentEstimationMaximumOptimizer.new(beta1, beta2, epsilon)
 	
 	--------------------------------------------------------------------------------
 	
-	NewAdaptiveMomentEstimationMaximumOptimizer:setCalculationFunction(function(learningRate, costFunctionDerivatives)
+	NewAdaptiveMomentEstimationMaximumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 
 		NewAdaptiveMomentEstimationMaximumOptimizer.moment = NewAdaptiveMomentEstimationMaximumOptimizer.moment or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 

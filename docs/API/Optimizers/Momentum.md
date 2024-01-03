@@ -7,11 +7,11 @@
 Creates a new optimizer object. If there are no parameters given for that particular argument, then that argument will use default value.
 
 ```
-Momentum.new(DecayRate: number): OptimizerObject
+Momentum.new(decayRate: number): OptimizerObject
 ```
 #### Parameters:
 
-* DecayRate: The value that controls the rate of decay.
+* decayRate: The value that controls the rate of decay.
 
 #### Returns:
 
@@ -22,12 +22,12 @@ Momentum.new(DecayRate: number): OptimizerObject
 ### setDecayRate()
 
 ```
-Momentum:setDecayRate(DecayRate: number)
+Momentum:setDecayRate(decayRate: number)
 ```
 
 #### Parameters:
 
-* DecayRate: The value that controls the rate of decay.
+* decayRate: The value that controls the rate of decay.
 
 ### reset()
 

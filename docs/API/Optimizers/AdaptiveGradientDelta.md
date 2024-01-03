@@ -7,14 +7,14 @@
 Creates a new optimizer object.
 
 ```
-AdaptiveGradientDelta.new(DecayRate: number, Epsilon: number): OptimizerObject
+AdaptiveGradientDelta.new(decayRate: number, epsilon: number): OptimizerObject
 ```
 
 #### Parameters:
 
-* DecayRate: The value that controls the rate of decay.
+* decayRate: The value that controls the rate of decay.
 
-* Epsilon: The value to ensure that the numbers are not divided by zero.
+* epsilon: The value to ensure that the numbers are not divided by zero.
 
 #### Returns:
 
@@ -25,7 +25,7 @@ AdaptiveGradientDelta.new(DecayRate: number, Epsilon: number): OptimizerObject
 ### setDecayRate()
 
 ```
-AdaptiveGradientDelta:setDecayRate(DecayRate: number)
+AdaptiveGradientDelta:setDecayRate(decayRate: number)
 ```
 
 #### Parameters:
@@ -35,7 +35,7 @@ AdaptiveGradientDelta:setDecayRate(DecayRate: number)
 ### setEpsilon()
 
 ```
-AdaptiveGradientDelta:setEpsilon(Epsilon: number)
+AdaptiveGradientDelta:setEpsilon(epsilon: number)
 ```
 
 #### Parameters:

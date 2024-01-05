@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Optimizers](../Optimizers.md) - LearningRateDecay
+# [API Reference](../../API.md) - [Optimizers](../Optimizers.md) - LearningRateStepDecay
 
 ## Constructors
 

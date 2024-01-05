@@ -7,7 +7,7 @@
 Creates a new optimizer object.
 
 ```
-LearningRateDecay.new(decayRate: number, timeStepToDecay: integer): OptimizerObject
+LearningRateStepDecay.new(decayRate: number, timeStepToDecay: integer): OptimizerObject
 ```
 
 #### Parameters:
@@ -25,7 +25,7 @@ LearningRateDecay.new(decayRate: number, timeStepToDecay: integer): OptimizerObj
 ### setDecayRate()
 
 ```
-LearningRateDecay:setDecayRate(decayRate: number)
+LearningRateStepDecay:setDecayRate(decayRate: number)
 ```
 
 #### Parameters:
@@ -35,7 +35,7 @@ LearningRateDecay:setDecayRate(decayRate: number)
 ### setTimeStepToDecay()
 
 ```
-LearningRateDecay:setTimeStepToDecay(timeStepToDecay: integer)
+LearningRateStepDecay:setTimeStepToDecay(timeStepToDecay: integer)
 ```
 
 #### Parameters:
@@ -47,7 +47,7 @@ LearningRateDecay:setTimeStepToDecay(timeStepToDecay: integer)
 Reset optimizer's stored values (excluding the parameters).
 
 ```
-AdaptiveGradient:reset()
+LearningRateStepDecay:reset()
 ```
 
 ## Inherited From:

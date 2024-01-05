@@ -66,24 +66,6 @@ ClippedDoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
-### setExperienceReplay()
-
-Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings for that particular parameter.
-
-```
-ClippedDoubleQLearningNeuralNetwork:setExperienceReplay(useExperienceReplay: boolean, experienceReplayBatchSize: integer, numberOfReinforcementsForExperienceReplayUpdate: integer, maxExperienceReplayBufferSize: integer)
-```
-
-#### Parameters:
-
-* useExperienceReplay: The option to set whether or not to enable experience replay. When enabled, it may require more resources.
-
-* experienceReplayBatchSize: Determines how many of these experiences are sampled for batch training.
-
-* numberOfReinforcementsForExperienceReplayUpdate: How many times does the reinforce() function needed to be called in order to for a single update from experience replay.
-
-* maxExperienceReplayBufferSize: The maximum size that the model can store the experiences.
-
 ### setModelParametersArray()
 
 Sets model parameters to be used by the model.

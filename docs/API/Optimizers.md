@@ -10,7 +10,9 @@
 
 [Gravity](Optimizers/Gravity.md)
 
-[LearningRateDecay](Optimizers/LearningRateDecay.md)
+[LearningRateStepDecay](Optimizers/LearningRateStepDecay.md)
+
+[LearningRateTimeDecay](Optimizers/LearningRateTimeDecay.md)
 
 [Momentum](Optimizers/Momentum.md)
 

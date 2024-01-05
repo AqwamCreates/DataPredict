@@ -79,7 +79,7 @@ KNearestNeighbours:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 Predict the values for given data.
 
 ```
-KNearestNeighbours:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): number
+KNearestNeighbours:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters

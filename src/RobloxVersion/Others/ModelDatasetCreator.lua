@@ -4,9 +4,9 @@ ModelDatasetCreator.__index = ModelDatasetCreator
 
 local defaultTrainDataPercentage = 0.7
 
-local defaultValidationDataPercentage = 0.2
+local defaultValidationDataPercentage = 0
 
-local defaultTestDataPercentage = 0.1
+local defaultTestDataPercentage = 0.3
 
 local defaultIsDatasetRandomized = false
 

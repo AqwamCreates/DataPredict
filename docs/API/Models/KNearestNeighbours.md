@@ -82,13 +82,17 @@ Predict the values for given data.
 KNearestNeighbours:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): number
 ```
 
-#### Parameters:
+#### Parameters
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: Matrix containing all data.
+
+* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability.
 
 #### Returns:
 
-* predictedValue: A value that is predicted by the model.
+* predictedlabelVector: A vector tcontaining predicted labels generated from the model.
+
+* valueVector: A vector that contains the values of predicted labels
 
 ## Inherited From
 

@@ -252,7 +252,7 @@ end
 
 function ModelChecker:test(testFeatureMatrix, testLabelVector)
 	
-	local testCost
+	local calculatedError
 
 	local errorVector
 	
@@ -260,11 +260,11 @@ function ModelChecker:test(testFeatureMatrix, testLabelVector)
 
 	if (self.modelType == "Regression") then
 
-		testCost, errorVector, predictedLabelMatrix = self:testRegression(testFeatureMatrix, testLabelVector)
+		calculatedError, errorVector, predictedLabelMatrix = self:testRegression(testFeatureMatrix, testLabelVector)
 
 	elseif (self.modelType == "Classification") then
 
-		testCost, errorVector, predictedLabelMatrix = self:testClassification(testFeatureMatrix, testLabelVector)
+		calculatedError, errorVector, predictedLabelMatrix = self:testClassification(testFeatureMatrix, testLabelVector)
 		
 	else
 		
@@ -272,7 +272,7 @@ function ModelChecker:test(testFeatureMatrix, testLabelVector)
 
 	end
 
-	return testCost, errorVector, predictedLabelMatrix
+	return calculatedError, errorVector, predictedLabelMatrix
 
 end
 

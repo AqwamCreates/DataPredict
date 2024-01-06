@@ -94,6 +94,8 @@ function ConfusionMatrixCreator:createConfusionMatrix(trueLabelVector, predicted
 	
 	if (#trueLabelVector ~= #predictedLabelVector) then error("The number of data are not equal!") end
 	
+	if (#trueLabelVector[1] ~= 1) or (#predictedLabelVector[1] ~= 1) then error("Both vector must only have one column!") end
+	
 	self:checkLabelVectors(trueLabelVector, predictedLabelVector)
 	
 	local classesList = self.ClassesList

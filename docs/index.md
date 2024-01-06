@@ -21,25 +21,25 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Tutorials
 
-[Installation For Roblox](Overview/InstallationForRoblox.md)
+[Installation For Roblox](Tutorial/InstallationForRoblox.md)
 
-[Creating Our First Model](Overview/CreatingOurFirstModel.md)
+[Creating Our First Model](Tutorial/CreatingOurFirstModel.md)
 
-[Saving And Loading Model Parameters](Overview/SavingAndLoadingModelParameters.md)
+[Saving And Loading Model Parameters](Tutorial/SavingAndLoadingModelParameters.md)
 
-[Using Optimizers](Overview/UsingOptimizers.md)
+[Using Optimizers](Tutorial/UsingOptimizers.md)
 
-[Using Gradient Descent Modifiers](Overview/UsingGradientDescentModifiers.md)
+[Using Gradient Descent Modifiers](Tutorial/UsingGradientDescentModifiers.md)
 
-[Using Model Checker](Overview/UsingModelChecker.md)
+[Using Model Checker](Tutorial/UsingModelChecker.md)
 
-[Using Regularization](Overview/UsingRegularization.md)
+[Using Regularization](Tutorial/UsingRegularization.md)
 
-[Using Neural Networks Part 1](Overview/UsingNeuralNetworksPart1.md)
+[Using Neural Networks Part 1](Tutorial/UsingNeuralNetworksPart1.md)
 
-[Using Neural Networks Part 2](Overview/UsingNeuralNetworksPart2.md)
+[Using Neural Networks Part 2](Tutorial/UsingNeuralNetworksPart2.md)
 
-[Using Neural Networks With Reinforcement Learning](Overview/UsingNeuralNetworksWithReinforcementLearning.md)
+[Using Neural Networks With Reinforcement Learning](Tutorial/UsingNeuralNetworksWithReinforcementLearning.md)
 
 ## API Reference
 

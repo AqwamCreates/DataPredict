@@ -130,46 +130,131 @@ end
 
 function ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector, predictedLabelVector)
 	
-	local confusionMatrix = self:createConfusionMatrix(trueLabelVector, predictedLabelVector)
+	local confusionMatrix, numberOfUnknownClassifications = self:createConfusionMatrix(trueLabelVector, predictedLabelVector)
 	
 	local classesList = self.ClassesList
 	
-	local maxClassLabelLength = 0
+	local numberOfClasses = #classesList
+	
+	local maxClassLabelLengthArray = {}
+	
+	local maxColumnValueLength = 3
 
-	-- Find the maximum length of class labels for formatting
-	for _, classLabel in ipairs(classesList) do
+	for i, classLabel in ipairs(classesList) do
 		
-		maxClassLabelLength = math.max(maxClassLabelLength, #tostring(classLabel))
+		local length = string.len(tostring(classLabel))
+		
+		maxClassLabelLengthArray[i] = length
+		
+		maxColumnValueLength = math.max(maxColumnValueLength, length)
 		
 	end
 
-	-- Print column headers (predicted labels)
-	print(string.rep(" ", maxClassLabelLength + 2)) -- Space for row labels
-	
-	for _, predictedLabel in ipairs(classesList) do
+	for column = 1, #confusionMatrix[1], 1 do
 		
-		print(string.format("%-" .. maxClassLabelLength .. "s ", "Predicted " .. predictedLabel))
-		
-	end
-	
-	print("\n")
-
-	-- Print rows (true labels) along with confusion matrix values
-	for i, trueLabel in ipairs(classesList) do
-		
-		print(string.format("%-" .. maxClassLabelLength .. "s | ", "Actual " .. trueLabel))
-
-		for j, predictedLabel in ipairs(classesList) do
+		for row = 1, #confusionMatrix, 1 do
 			
-			print(string.format("%-" .. maxClassLabelLength .. "d ", confusionMatrix[i][j]))
-			
+			maxClassLabelLengthArray[column] = math.max(maxClassLabelLengthArray[column], string.len(tostring(confusionMatrix[row][column]))) 
+
 		end
 		
-		print("\n")
-		
 	end
 	
-	return confusionMatrix
+	local text =  "\n\n" .. string.rep(" ", maxColumnValueLength + 3) .. "+"
+	
+	for i, classLabel in ipairs(classesList) do
+
+		local cellWidth = string.len(classLabel)
+
+		local padding = maxClassLabelLengthArray[i] + 2
+
+		text = text .. string.rep("-", padding)
+
+		text = text .. "+"
+
+	end
+	
+	text = text .. "\n " .. tostring(" ", maxColumnValueLength - 1) .. "T\\P" .. " |"
+	
+	for i, classLabel in ipairs(classesList) do
+		
+		local cellText = tostring(classLabel) 
+		
+		local cellWidth = string.len(classLabel)
+		
+		local padding = maxClassLabelLengthArray[i] - cellWidth + 1
+		
+		text = text .. string.rep(" ", padding) .. cellText
+
+		text = text .. " |"
+
+	end
+	
+	text = text .. "\n+".. string.rep("-", maxColumnValueLength  + 2) .. "+"
+	
+	for i, classLabel in ipairs(classesList) do
+
+		local cellWidth = string.len(classLabel)
+
+		local padding = maxClassLabelLengthArray[i] + 2
+
+		text = text .. string.rep("-", padding)
+
+		text = text .. "+"
+
+	end
+	
+	text = text .. "\n" 
+
+	for row = 1, numberOfClasses, 1 do
+		
+		local cellRowHeaderText = tostring(classesList[row]) 
+
+		local cellWidth = string.len(cellRowHeaderText)
+
+		local columnRowPadding = maxColumnValueLength - cellWidth + 1
+
+		text = text .. "|" .. string.rep(" ", columnRowPadding) .. cellRowHeaderText .. " |"
+
+		for column = 1, numberOfClasses, 1 do
+
+			local cellValue = confusionMatrix[row][column]
+
+			local cellText = tostring(cellValue) 
+
+			local cellWidth = string.len(cellText)
+
+			local padding = maxClassLabelLengthArray[column] - cellWidth + 1
+
+			text = text .. string.rep(" ", padding) .. cellText
+			
+			text = text .. " |"
+
+		end
+
+		text = text .. "\n"
+
+	end
+	
+	text = text .. "+" .. string.rep("-", maxColumnValueLength + 2) .. "+"
+	
+	for i, classLabel in ipairs(classesList) do
+
+		local cellWidth = string.len(classLabel)
+
+		local padding = maxClassLabelLengthArray[i] + 2
+
+		text = text .. string.rep("-", padding)
+
+		text = text .. "+"
+
+	end
+	
+	text = text .. "\n\n"
+	
+	print(text)
+	
+	return confusionMatrix, numberOfUnknownClassifications
 	
 end
 

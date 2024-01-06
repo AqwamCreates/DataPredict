@@ -33,6 +33,8 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
 local ModelChecker = {}
 
 ModelChecker.__index = ModelChecker

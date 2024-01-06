@@ -100,23 +100,31 @@ function ConfusionMatrixCreator:createConfusionMatrix(trueLabelVector, predicted
 	
 	local confusionMatrix = AqwamMatrixLibrary:createMatrix(#classesList, #classesList)
 	
+	local numberOfUnknownClassifications = 0
+	
 	for i = 1, #trueLabelVector, 1 do -- row: true value, column: predictedLabel
 		
 		local trueLabel = trueLabelVector[i][1]
-
-		for j = 1, #predictedLabelVector, 1 do
 			
-			local predictedLabel = predictedLabelVector[j][1]
-
-			if trueLabel ~= classesList[i] or predictedLabel ~= classesList[j] then continue end
-				
-			confusionMatrix[i][j] = confusionMatrix[i][j] + 1
+		local predictedLabel = predictedLabelVector[i][1]
+			
+		local trueClassIndex = table.find(classesList, trueLabel)
+			
+		local predictedClassIndex = table.find(classesList, predictedLabel)
+		
+		if (trueClassIndex) and (predictedClassIndex) then
+			
+			confusionMatrix[trueClassIndex][predictedClassIndex] = confusionMatrix[trueClassIndex][predictedClassIndex] + 1
+			
+		else
+			
+			numberOfUnknownClassifications += 1
 			
 		end
-		
+			
 	end
 	
-	return confusionMatrix
+	return confusionMatrix, numberOfUnknownClassifications
 	
 end
 

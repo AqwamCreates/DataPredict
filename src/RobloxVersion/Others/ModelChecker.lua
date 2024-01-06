@@ -18,7 +18,7 @@ local function calculateError(predictedLabelMatrix, trueLabelMatrix, numberOfDat
 
 	local totalError = AqwamMatrixLibrary:sum(errorVector)
 	
-	local calculatedError = totalError/numberOfData
+	local calculatedError = totalError/(2 * numberOfData)
 	
 	return calculatedError, errorVector
 	

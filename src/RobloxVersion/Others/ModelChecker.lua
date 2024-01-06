@@ -1,261 +1,303 @@
-ModelDatasetCreator = {}
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-ModelDatasetCreator.__index = ModelDatasetCreator
+local ModelChecker = {}
 
-local defaultTrainDataPercentage = 0.7
+ModelChecker.__index = ModelChecker
 
-local defaultValidationDataPercentage = 0.2
+local defaultMaxNumberOfIterations = 100
 
-local defaultTestDataPercentage = 0.1
+local defaultMaxGeneralizationError = math.huge
 
-local defaultIsDatasetRandomized = false
+local function calculateError(predictedLabelMatrix, trueLabelMatrix, numberOfData)
+	
+	local errorMatrix = AqwamMatrixLibrary:subtract(predictedLabelMatrix, trueLabelMatrix)
 
-local defaultRandomizationProbabilityThreshold = 0.3
+	errorMatrix = AqwamMatrixLibrary:power(errorMatrix, 2)
 
-local function getBooleanOrDefaultOption(boolean, defaultBoolean)
+	local errorVector = AqwamMatrixLibrary:horizontalSum(errorMatrix)
 
-	if (type(boolean) == "nil") then return defaultBoolean end
+	local totalError = AqwamMatrixLibrary:sum(errorVector)
+	
+	local calculatedError = totalError/numberOfData
+	
+	return calculatedError, errorVector
+	
+end
 
-	return boolean
+function ModelChecker.new(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
+	
+	if (Model == nil) then error("No model in the ModelChecker!") end
+
+	if (modelType == nil) then error("No model type in the ModelChecker!") end
+	
+	local NewModelChecker = {}
+	
+	setmetatable(NewModelChecker, ModelChecker)
+	
+	NewModelChecker.Model = Model
+	
+	NewModelChecker.modelType = modelType
+	
+	NewModelChecker.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	
+	NewModelChecker.maxGeneralizationError = maxGeneralizationError or defaultMaxGeneralizationError
+	
+	return NewModelChecker
+	
+end
+
+function ModelChecker:setParameters(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
+	
+	self.Model = Model or self.Model
+	
+	self.modelType = modelType or self.modelType
+
+	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	
+	self.maxGeneralizationError = maxGeneralizationError or self.maxGeneralizationError
+	
+end
+
+function ModelChecker:setClassesList(classesList)
+
+	self.ClassesList = classesList
 
 end
 
-local function deepCopyTable(original, copies)
+function ModelChecker:convertLabelVectorToLogisticMatrix(labelVector)
 
-	copies = copies or {}
+	if (typeof(labelVector) == "number") then
 
-	local originalType = type(original)
-
-	local copy
-
-	if (originalType == 'table') then
-
-		if copies[original] then
-
-			copy = copies[original]
-
-		else
-
-			copy = {}
-
-			copies[original] = copy
-
-			for originalKey, originalValue in next, original, nil do
-
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-
-			end
-
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
-
-		end
-
-	else -- number, string, boolean, etc
-
-		copy = original
+		labelVector = {{labelVector}}
 
 	end
 
-	return copy
+	local logisticMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, #self.ClassesList)
+
+	local label
+
+	local labelPosition
+
+	for row = 1, #labelVector, 1 do
+
+		label = labelVector[row][1]
+
+		labelPosition = table.find(self.ClassesList, label)
+
+		logisticMatrix[row][labelPosition] = 1
+
+	end
+
+	return logisticMatrix
 
 end
 
-local function returnNilIfTableIsEmpty(tableToCheck)
+function ModelChecker:testClassification(testFeatureMatrix, testLabelVector)
 	
-	if (#tableToCheck >= 1) then 
+	local testLabelMatrix
+	
+	if (#testLabelVector[1] == 1) then
+
+		testLabelMatrix = self:convertLabelVectorToLogisticMatrix(testLabelVector)
+
+	else
+
+		testLabelMatrix = testLabelVector
+
+	end
+	
+	local numberOfData = #testFeatureMatrix
+	
+	local predictedTestLabelMatrix = self.Model:predict(testFeatureMatrix, true)
+	
+	local calculatedError, errorVector = calculateError(predictedTestLabelMatrix, testLabelMatrix, numberOfData)
+
+	return calculatedError, errorVector, predictedTestLabelMatrix
+
+end
+
+function ModelChecker:testRegression(testFeatureMatrix, testLabelVector)
+
+	local numberOfData = #testFeatureMatrix
+	
+	local predictedLabelVector = self.Model:predict(testFeatureMatrix)
+
+	local calculatedError, errorVector = calculateError(predictedLabelVector, testLabelVector, numberOfData)
+
+	return calculatedError, errorVector, predictedLabelVector
+
+end
+
+function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+
+	local trainError
+
+	local validationError
+	
+	local predictedTrainLabelMatrix
+	
+	local predictedValidationLabelMatrix
+	
+	local trainLabelMatrix
+	
+	local validationLabelMatrix
+	
+	local generalizationError
+	
+	local numberOfIterations = 0
+
+	local trainErrorArray = {}
+
+	local validationErrorArray = {}
+	
+	local numberOfValidationData = #validationFeatureMatrix
+	
+	local numberOfTrainData = #trainFeatureMatrix 
+	
+	if (#trainLabelVector[1] == 1) then
+
+		trainLabelMatrix = self:convertLabelVectorToLogisticMatrix(trainLabelVector)
+
+	else
+
+		trainLabelMatrix = validationLabelVector
+
+	end
+	
+	if (#validationLabelVector[1] == 1) then
 		
-		return tableToCheck
+		validationLabelMatrix = self:convertLabelVectorToLogisticMatrix(validationLabelVector)
 		
 	else
 		
-		return nil	
-		
-	end
-	
-end
-
-local function checkNumberOfData(featureMatrix, labelVectorOrMatrix)
-	
-	if (type(labelVectorOrMatrix) ~= "nil") then
-
-		if (#featureMatrix ~= #labelVectorOrMatrix) then error("The feature matrix and the label vector/matrix do not contain the same number of data.") end
-
-	end
-	
-	return #featureMatrix
-	
-end
-
-local function deepCopyData(featureMatrix, labelVectorOrMatrix)
-	
-	featureMatrix = deepCopyTable(featureMatrix)
-	
-	if (type(labelVectorOrMatrix) ~= "nil") then
-		
-		labelVectorOrMatrix = deepCopyTable(labelVectorOrMatrix)
-		
-	end
-	
-	return featureMatrix, labelVectorOrMatrix
-	
-end
-
-function ModelDatasetCreator.new()
-	
-	local NewModelDatasetCreator = {}
-
-	setmetatable(NewModelDatasetCreator, ModelDatasetCreator)
-	
-	NewModelDatasetCreator.trainDataPercentage = defaultTrainDataPercentage
-	
-	NewModelDatasetCreator.validationDataPercentage = defaultValidationDataPercentage
-	
-	NewModelDatasetCreator.testDataPercentage = defaultTestDataPercentage
-	
-	NewModelDatasetCreator.isDatasetRandomized = defaultIsDatasetRandomized
-	
-	NewModelDatasetCreator.randomizationProbabilityThreshold = defaultRandomizationProbabilityThreshold
-	
-	return NewModelDatasetCreator
-	
-end
-
-function ModelDatasetCreator:setDatasetSplitPercentages(trainDataPercentage, validationDataPercentage, testDataPercentage)
-	
-	self.trainDataPercentage = trainDataPercentage or self.trainDataPercentage
-
-	self.validationDataPercentage = validationDataPercentage or self.validationDataPercentage
-
-	self.testDataPercentage = testDataPercentage or self.testDataPercentage
-	
-end
-
-function ModelDatasetCreator:setDatasetRandomizationProperties(isDatasetRandomized, randomizationProbabilityThreshold)
-	
-	self.isDatasetRandomized = getBooleanOrDefaultOption(isDatasetRandomized, self.isDatasetRandomized)
-	
-	self.randomizationProbabilityThreshold = randomizationProbabilityThreshold or self.randomizationProbabilityThreshold
-	
-end
-
-function ModelDatasetCreator:randomizeDataset(featureMatrix, labelVectorOrMatrix)
-	
-	local numberOfData = checkNumberOfData(featureMatrix, labelVectorOrMatrix)
-	
-	local randomizationProbabilityThreshold = self.randomizationProbabilityThreshold
-	
-	local randomizedFeatureMatrix, randomizedLabelVectorOrMatrix = deepCopyTable(featureMatrix, labelVectorOrMatrix)
-	
-	for index = 1, numberOfData, 1 do
-		
-		if (math.random() < randomizationProbabilityThreshold) then continue end
-		
-		local randomIndex = math.random(0, index)
-		
-		randomIndex = math.ceil(randomIndex)
-		
-		local temporaryRandomFeatureVector = randomizedFeatureMatrix[index]
-		
-		table.remove(randomizedFeatureMatrix, index)
-		
-		table.insert(randomizedFeatureMatrix, temporaryRandomFeatureVector, randomIndex)
-		
-		if (type(labelVectorOrMatrix) == "nil") then continue end
-		
-		local temporaryRandomLabelVector = randomizedLabelVectorOrMatrix[index]
-
-		table.remove(randomizedLabelVectorOrMatrix, index)
-
-		table.insert(randomizedLabelVectorOrMatrix, temporaryRandomLabelVector, randomIndex)
-		
-	end
-	
-	return randomizedFeatureMatrix, randomizedLabelVectorOrMatrix
-	
-end
-
-function ModelDatasetCreator:splitDataset(datasetMatrix)
-	
-	local numberOfData = checkNumberOfData(datasetMatrix)
-	
-	local datasetCopy = deepCopyTable(datasetMatrix)
-	
-	local numberOfTrainData = math.floor(self.trainDataPercentage * numberOfData)
-	
-	local numberOfValidationData = math.floor(self.validationDataPercentage * numberOfData)
-	
-	local numberOfTestData = math.floor(self.testDataPercentage * numberOfData)
-	
-	local trainDataMaxValue = numberOfTrainData
-	
-	local trainValidationDataMaxValue = numberOfTrainData + numberOfValidationData
-	
-	local trainValidationTestDataMaxValue = trainValidationDataMaxValue + numberOfTestData
-	
-	local trainData = {}
-
-	local validationData = {}
-
-	local testData = {}
-	
-	for index = 1, numberOfData, 1 do
-		
-		if (index < numberOfTrainData) then 
-			
-			table.insert(trainData, datasetCopy[index])
-			continue
-			
-		end
-		
-		if (index < trainValidationDataMaxValue) then 
-
-			table.insert(validationData, datasetCopy[index])
-			continue
-
-		end
-		
-		if (index < trainValidationTestDataMaxValue) then 
-
-			table.insert(testData, datasetCopy[index])
-			continue
-
-		end
-		
-		if (numberOfTrainData > 0) then
-			
-			table.insert(trainData, datasetCopy[index])
-			continue
-			
-		end
-		
-		if (numberOfValidationData > 0) then
-
-			table.insert(validationData, datasetCopy[index])
-			continue
-
-		end
-		
-		if (numberOfTestData > 0) then
-
-			table.insert(testData, datasetCopy[index])
-			continue
-
-		end
+		validationLabelMatrix = validationLabelVector
 		
 	end
 
-	trainData = returnNilIfTableIsEmpty(trainData)
+	repeat
 
-	validationData = returnNilIfTableIsEmpty(validationData)
-
-	testData = returnNilIfTableIsEmpty(testData)
+		self.Model:train(trainFeatureMatrix, trainLabelMatrix)
+		
+		predictedTrainLabelMatrix = self.Model:predict(validationFeatureMatrix, true)
+		
+		predictedValidationLabelMatrix = self.Model:predict(validationFeatureMatrix, true)
+		
+		trainError = calculateError(predictedTrainLabelMatrix, trainLabelMatrix, numberOfValidationData)
 	
-	table.clear(datasetCopy)
-	
-	datasetCopy = nil
+		validationError = calculateError(predictedValidationLabelMatrix, validationLabelMatrix, numberOfValidationData)
+		
+		generalizationError = validationError - trainError
 
-	return trainData, validationData, testData
+		table.insert(validationErrorArray, validationError)
+
+		table.insert(trainErrorArray, trainError)
+
+		numberOfIterations += 1
+
+	until (numberOfIterations >= self.maxNumberOfIterations) or (generalizationError >= self.maxGeneralizationError)
+
+	return trainErrorArray, validationErrorArray
+
+end
+
+function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+	
+	local trainError
+	
+	local validationError
+	
+	local validationCostVector
+	
+	local predictedLabelVector
+	
+	local generalizationError
+	
+	local numberOfIterations = 0
+
+	local trainErrorArray = {}
+
+	local validationErrorArray = {}
+	
+	local numberOfValidationData = #validationFeatureMatrix
+	
+	local predictedTrainLabelVector
+	
+	local predictedValidationLabelVector
+	
+	repeat
+		
+		self.Model:train(trainFeatureMatrix, trainLabelVector)
+
+		predictedTrainLabelVector = self.Model:predict(validationFeatureMatrix)
+
+		predictedValidationLabelVector = self.Model:predict(validationFeatureMatrix)
+
+		trainError = calculateError(predictedTrainLabelVector, trainLabelVector, numberOfValidationData)
+
+		validationError = calculateError(predictedValidationLabelVector, validationLabelVector, numberOfValidationData)
+
+		generalizationError = validationError - trainError
+		
+		table.insert(trainErrorArray, trainError)
+
+		table.insert(validationErrorArray, validationError)
+
+		numberOfIterations += 1
+		
+	until (numberOfIterations >= self.maxNumberOfIterations) or (generalizationError >= self.maxGeneralizationError)
+	
+	return trainErrorArray, validationErrorArray
 	
 end
 
-return ModelDatasetCreator
+function ModelChecker:test(testFeatureMatrix, testLabelVector)
+	
+	local testCost
+
+	local errorVector
+	
+	local predictedLabelMatrix
+
+	if (self.modelType == "Regression") then
+
+		testCost, errorVector, predictedLabelMatrix = self:testRegression(testFeatureMatrix, testLabelVector)
+
+	elseif (self.modelType == "Classification") then
+
+		testCost, errorVector, predictedLabelMatrix = self:testClassification(testFeatureMatrix, testLabelVector)
+		
+	else
+		
+		error("Invalid model type!")
+
+	end
+
+	return testCost, errorVector, predictedLabelMatrix
+
+end
+
+function ModelChecker:validate(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+	
+	local trainCostArray
+	
+	local validationCostArray
+	
+	if (self.modelType == "Regression") then
+		
+		trainCostArray, validationCostArray = self:validateRegression(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+		
+	elseif (self.modelType == "Classification") then
+		
+		trainCostArray, validationCostArray = self:validateClassification(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+		
+	else
+		
+		error("Invalid model type!")
+		
+	end
+	
+	return trainCostArray, validationCostArray
+	
+end
+
+return ModelChecker

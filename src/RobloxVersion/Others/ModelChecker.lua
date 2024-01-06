@@ -278,17 +278,17 @@ end
 
 function ModelChecker:validate(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
 	
-	local trainCostArray
+	local trainErrorArray
 	
-	local validationCostArray
+	local validationErrorArray
 	
 	if (self.modelType == "Regression") then
 		
-		trainCostArray, validationCostArray = self:validateRegression(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+		trainErrorArray, validationErrorArray = self:validateRegression(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
 		
 	elseif (self.modelType == "Classification") then
 		
-		trainCostArray, validationCostArray = self:validateClassification(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+		trainErrorArray, validationErrorArray = self:validateClassification(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
 		
 	else
 		
@@ -296,7 +296,7 @@ function ModelChecker:validate(trainFeatureMatrix, trainLabelVector, validationF
 		
 	end
 	
-	return trainCostArray, validationCostArray
+	return trainErrorArray, validationErrorArray
 	
 end
 

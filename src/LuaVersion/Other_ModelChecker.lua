@@ -33,8 +33,6 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
-
 local ModelChecker = {}
 
 ModelChecker.__index = ModelChecker
@@ -53,7 +51,7 @@ local function calculateError(predictedLabelMatrix, trueLabelMatrix, numberOfDat
 
 	local totalError = AqwamMatrixLibrary:sum(errorVector)
 	
-	local calculatedError = totalError/numberOfData
+	local calculatedError = totalError/(2 * numberOfData)
 	
 	return calculatedError, errorVector
 	

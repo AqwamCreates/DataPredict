@@ -36,7 +36,7 @@ Make sure the model parameters structure are the same as shown as in the API ref
 
 # Wrapping up
 
-Saving and loading on DataPredict has never been easier. All you need is to call few lines of codes and you're off!.
+Saving and loading on DataPredict has never been easier. All you need is to call few lines of codes and you're off!
 
 That's all you need to do. Pretty simple, right?
 

@@ -41,7 +41,21 @@ local defaultMaxNumberOfIterations = 100
 
 local defaultMaxGeneralizationError = math.huge
 
-local logLossFunction = function (y, p) return -(y * math.log(p)) end
+local function calculateError(predictedLabelMatrix, trueLabelMatrix, numberOfData)
+	
+	local errorMatrix = AqwamMatrixLibrary:subtract(predictedLabelMatrix, trueLabelMatrix)
+
+	errorMatrix = AqwamMatrixLibrary:power(errorMatrix, 2)
+
+	local errorVector = AqwamMatrixLibrary:horizontalSum(errorMatrix)
+
+	local totalError = AqwamMatrixLibrary:sum(errorVector)
+	
+	local calculatedError = totalError/numberOfData
+	
+	return calculatedError, errorVector
+	
+end
 
 function ModelChecker.new(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
 	
@@ -113,31 +127,25 @@ end
 
 function ModelChecker:testClassification(testFeatureMatrix, testLabelVector)
 	
-	local testLogisticMatrix
+	local testLabelMatrix
 	
 	if (#testLabelVector[1] == 1) then
 
-		testLogisticMatrix = self:convertLabelVectorToLogisticMatrix(testLabelVector)
+		testLabelMatrix = self:convertLabelVectorToLogisticMatrix(testLabelVector)
 
 	else
 
-		testLogisticMatrix = testLabelVector
+		testLabelMatrix = testLabelVector
 
 	end
 	
 	local numberOfData = #testFeatureMatrix
 	
-	local predictedLabelMatrix = self.Model:predict(testFeatureMatrix, true)
+	local predictedTestLabelMatrix = self.Model:predict(testFeatureMatrix, true)
 	
-	local errorMatrix = AqwamMatrixLibrary:applyFunction(logLossFunction, testLogisticMatrix, predictedLabelMatrix)
-	
-	local errorVector = AqwamMatrixLibrary:horizontalSum(errorMatrix)
-	
-	local totalError = AqwamMatrixLibrary:sum(errorVector)
-	
-	local testCost = totalError / numberOfData
+	local calculatedError, errorVector = calculateError(predictedTestLabelMatrix, testLabelMatrix, numberOfData)
 
-	return testCost, errorVector, predictedLabelMatrix
+	return calculatedError, errorVector, predictedTestLabelMatrix
 
 end
 
@@ -147,79 +155,89 @@ function ModelChecker:testRegression(testFeatureMatrix, testLabelVector)
 	
 	local predictedLabelVector = self.Model:predict(testFeatureMatrix)
 
-	local errorVector = AqwamMatrixLibrary:subtract(predictedLabelVector, testLabelVector)
+	local calculatedError, errorVector = calculateError(predictedLabelVector, testLabelVector, numberOfData)
 
-	local totalError = AqwamMatrixLibrary:sum(errorVector)
-
-	local testCost = totalError/numberOfData
-
-	return testCost, errorVector, predictedLabelVector
+	return calculatedError, errorVector, predictedLabelVector
 
 end
 
 function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
 
-	local trainCost
+	local trainError
 
-	local validationCost
+	local validationError
 	
-	local validationCostVector
+	local predictedTrainLabelMatrix
 	
-	local predictedLabelMatrix
+	local predictedValidationLabelMatrix
 	
-	local validationLogisticMatrix
+	local trainLabelMatrix
+	
+	local validationLabelMatrix
 	
 	local generalizationError
 	
 	local numberOfIterations = 0
 
-	local trainCostArray = {}
+	local trainErrorArray = {}
 
-	local validationCostArray = {}
+	local validationErrorArray = {}
 	
-	local numberOfValidationData = #validationFeatureMatrix 
+	local numberOfValidationData = #validationFeatureMatrix
+	
+	local numberOfTrainData = #trainFeatureMatrix 
+	
+	if (#trainLabelVector[1] == 1) then
+
+		trainLabelMatrix = self:convertLabelVectorToLogisticMatrix(trainLabelVector)
+
+	else
+
+		trainLabelMatrix = validationLabelVector
+
+	end
 	
 	if (#validationLabelVector[1] == 1) then
 		
-		validationLogisticMatrix = self:convertLabelVectorToLogisticMatrix(validationLabelVector)
+		validationLabelMatrix = self:convertLabelVectorToLogisticMatrix(validationLabelVector)
 		
 	else
 		
-		validationLogisticMatrix = validationLabelVector
+		validationLabelMatrix = validationLabelVector
 		
 	end
 
 	repeat
 
-		trainCost = self.Model:train(trainFeatureMatrix, trainLabelVector)
+		self.Model:train(trainFeatureMatrix, trainLabelMatrix)
 		
-		predictedLabelMatrix = self.Model:predict(validationFeatureMatrix, true)
+		predictedTrainLabelMatrix = self.Model:predict(validationFeatureMatrix, true)
+		
+		predictedValidationLabelMatrix = self.Model:predict(validationFeatureMatrix, true)
+		
+		trainError = calculateError(predictedTrainLabelMatrix, trainLabelMatrix, numberOfValidationData)
 	
-		validationCostVector = AqwamMatrixLibrary:applyFunction(logLossFunction, validationLogisticMatrix, predictedLabelMatrix)
+		validationError = calculateError(predictedValidationLabelMatrix, validationLabelMatrix, numberOfValidationData)
 		
-		validationCost = AqwamMatrixLibrary:sum(validationCostVector)
-		
-		validationCost /= numberOfValidationData
-		
-		generalizationError = validationCost - trainCost[1]
+		generalizationError = validationError - trainError
 
-		table.insert(validationCostArray, validationCost)
+		table.insert(validationErrorArray, validationError)
 
-		table.insert(trainCostArray, trainCost[1])
+		table.insert(trainErrorArray, trainError)
 
 		numberOfIterations += 1
 
 	until (numberOfIterations >= self.maxNumberOfIterations) or (generalizationError >= self.maxGeneralizationError)
 
-	return trainCostArray, validationCostArray
+	return trainErrorArray, validationErrorArray
 
 end
 
 function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
 	
-	local trainCost
+	local trainError
 	
-	local validationCost
+	local validationError
 	
 	local validationCostVector
 	
@@ -229,41 +247,45 @@ function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, v
 	
 	local numberOfIterations = 0
 
-	local trainCostArray = {}
+	local trainErrorArray = {}
 
-	local validationCostArray = {}
+	local validationErrorArray = {}
 	
 	local numberOfValidationData = #validationFeatureMatrix
 	
+	local predictedTrainLabelVector
+	
+	local predictedValidationLabelVector
+	
 	repeat
 		
-		trainCost = self.Model:train(trainFeatureMatrix, trainLabelVector)
+		self.Model:train(trainFeatureMatrix, trainLabelVector)
+
+		predictedTrainLabelVector = self.Model:predict(validationFeatureMatrix)
+
+		predictedValidationLabelVector = self.Model:predict(validationFeatureMatrix)
+
+		trainError = calculateError(predictedTrainLabelVector, trainLabelVector, numberOfValidationData)
+
+		validationError = calculateError(predictedValidationLabelVector, validationLabelVector, numberOfValidationData)
+
+		generalizationError = validationError - trainError
 		
-		predictedLabelVector = self.Model:predict(validationFeatureMatrix)
-		
-		validationCostVector = AqwamMatrixLibrary:subtract(predictedLabelVector, validationLabelVector)
-		
-		validationCost = AqwamMatrixLibrary:sum(validationCostVector)
-		
-		validationCost /= numberOfValidationData
-		
-		generalizationError = validationCost - trainCost[1]
-		
-		table.insert(validationCostArray, validationCost)
-		
-		table.insert(trainCostArray, trainCost[1])
-		
+		table.insert(trainErrorArray, trainError)
+
+		table.insert(validationErrorArray, validationError)
+
 		numberOfIterations += 1
 		
 	until (numberOfIterations >= self.maxNumberOfIterations) or (generalizationError >= self.maxGeneralizationError)
 	
-	return trainCostArray, validationCostArray
+	return trainErrorArray, validationErrorArray
 	
 end
 
 function ModelChecker:test(testFeatureMatrix, testLabelVector)
 	
-	local testCost
+	local calculatedError
 
 	local errorVector
 	
@@ -271,11 +293,11 @@ function ModelChecker:test(testFeatureMatrix, testLabelVector)
 
 	if (self.modelType == "Regression") then
 
-		testCost, errorVector, predictedLabelMatrix = self:testRegression(testFeatureMatrix, testLabelVector)
+		calculatedError, errorVector, predictedLabelMatrix = self:testRegression(testFeatureMatrix, testLabelVector)
 
 	elseif (self.modelType == "Classification") then
 
-		testCost, errorVector, predictedLabelMatrix = self:testClassification(testFeatureMatrix, testLabelVector)
+		calculatedError, errorVector, predictedLabelMatrix = self:testClassification(testFeatureMatrix, testLabelVector)
 		
 	else
 		
@@ -283,7 +305,7 @@ function ModelChecker:test(testFeatureMatrix, testLabelVector)
 
 	end
 
-	return testCost, errorVector, predictedLabelMatrix
+	return calculatedError, errorVector, predictedLabelMatrix
 
 end
 

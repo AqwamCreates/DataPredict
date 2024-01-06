@@ -20,7 +20,7 @@ You have two ways of saving the model parameters:
 
 1. Storing it to DataStores.
 
-2. Print out the matrices using printPortableMatrix() from MatrixL / Aqwam's Matrix Library and copy paste the text to a new text file. Don't forget to remove the unncessary lines produced by the console.
+2. Print out the matrices using printPortableMatrix() from MatrixL / Aqwam's Matrix Library and copy paste the text to a new text file. Don't forget to remove the unncessary lines and characters produced by the console.
 
 # Loading
 

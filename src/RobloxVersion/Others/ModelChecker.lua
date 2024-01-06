@@ -150,9 +150,9 @@ function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVecto
 
 	local validationErrorArray = {}
 	
-	local numberOfValidationData = #validationFeatureMatrix
-	
 	local numberOfTrainData = #trainFeatureMatrix 
+	
+	local numberOfValidationData = #validationFeatureMatrix
 	
 	if (#trainLabelVector[1] == 1) then
 
@@ -182,7 +182,7 @@ function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVecto
 		
 		predictedValidationLabelMatrix = self.Model:predict(validationFeatureMatrix, true)
 		
-		trainError = calculateError(predictedTrainLabelMatrix, trainLabelMatrix, numberOfValidationData)
+		trainError = calculateError(predictedTrainLabelMatrix, trainLabelMatrix, numberOfTrainData)
 	
 		validationError = calculateError(predictedValidationLabelMatrix, validationLabelMatrix, numberOfValidationData)
 		
@@ -218,6 +218,8 @@ function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, v
 
 	local validationErrorArray = {}
 	
+	local numberOfTrainData = #trainFeatureMatrix
+	
 	local numberOfValidationData = #validationFeatureMatrix
 	
 	local predictedTrainLabelVector
@@ -232,7 +234,7 @@ function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, v
 
 		predictedValidationLabelVector = self.Model:predict(validationFeatureMatrix)
 
-		trainError = calculateError(predictedTrainLabelVector, trainLabelVector, numberOfValidationData)
+		trainError = calculateError(predictedTrainLabelVector, trainLabelVector, numberOfTrainData)
 
 		validationError = calculateError(predictedValidationLabelVector, validationLabelVector, numberOfValidationData)
 

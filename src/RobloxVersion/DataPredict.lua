@@ -143,7 +143,9 @@ local OptimizersDictionary = {
 	
 	Gravity = require(Optimizers.Gravity),
 	
-	LearningRateDecay = require(Optimizers.LearningRateDecay),
+	LearningRateStepDecay = require(Optimizers.LearningRateStepDecay),
+	
+	LearningRateTimeDecay = require(Optimizers.LearningRateTimeDecay),
 	
 }
 
@@ -197,7 +199,7 @@ local function checkVersion()
 	
 	local matrixLibraryVersion
 	
-	if (AqwamMatrixLibrary == nil) then error("\n\nMatrixL (or Aqwam's Matrix Library) is not linked to this library. \nPlease read the \"Installation & Usage \" in DataPredict's documentation for installation details. ") end
+	if (AqwamMatrixLibrary == nil) then error("\n\nMatrixL (or Aqwam's Matrix Library) is not linked to this library. \nPlease read the \"Tutorial \" in DataPredict's documentation for installation details. ") end
 	
 	local success = pcall(function()
 		

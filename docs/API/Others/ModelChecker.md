@@ -72,7 +72,7 @@ ModelChecker:test(testFeatureMatrix: Matrix, testLabelVector: Matrix): number, M
 
 #### Returns:
 
-* testCost: An array containing all the testing cost.
+* calculatedError: An array containing all the testing cost.
 
 * errorVector: A vector that contains the error values during the testing.
 
@@ -98,6 +98,6 @@ ModelChecker:validate(trainFeatureMatrix: Matrix, trainLabelVector: Matrix, vali
 
 #### Returns:
 
-* trainCostArray: An array containing all the training cost.
+* trainErrorArray: An array containing all the training cost.
 
-* validationCostArray: An array containing all the validation cost.
+* validationErrorArray: An array containing all the validation cost.

@@ -178,7 +178,7 @@ function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVecto
 
 		self.Model:train(trainFeatureMatrix, trainLabelMatrix)
 		
-		predictedTrainLabelMatrix = self.Model:predict(validationFeatureMatrix, true)
+		predictedTrainLabelMatrix = self.Model:predict(trainFeatureMatrix, true)
 		
 		predictedValidationLabelMatrix = self.Model:predict(validationFeatureMatrix, true)
 		
@@ -230,7 +230,7 @@ function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, v
 		
 		self.Model:train(trainFeatureMatrix, trainLabelVector)
 
-		predictedTrainLabelVector = self.Model:predict(validationFeatureMatrix)
+		predictedTrainLabelVector = self.Model:predict(trainFeatureMatrix)
 
 		predictedValidationLabelVector = self.Model:predict(validationFeatureMatrix)
 

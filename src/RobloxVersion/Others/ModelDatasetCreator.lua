@@ -98,8 +98,6 @@ function ModelDatasetCreator.new()
 	
 	NewModelDatasetCreator.testDataPercentage = defaultTestDataPercentage
 	
-	NewModelDatasetCreator.isDatasetRandomized = defaultIsDatasetRandomized
-	
 	NewModelDatasetCreator.randomizationProbabilityThreshold = defaultRandomizationProbabilityThreshold
 	
 	return NewModelDatasetCreator
@@ -116,9 +114,7 @@ function ModelDatasetCreator:setDatasetSplitPercentages(trainDataPercentage, val
 	
 end
 
-function ModelDatasetCreator:setDatasetRandomizationProperties(isDatasetRandomized, randomizationProbabilityThreshold)
-	
-	self.isDatasetRandomized = getBooleanOrDefaultOption(isDatasetRandomized, self.isDatasetRandomized)
+function ModelDatasetCreator:setDatasetRandomizationProperties(randomizationProbabilityThreshold)
 	
 	self.randomizationProbabilityThreshold = randomizationProbabilityThreshold or self.randomizationProbabilityThreshold
 	

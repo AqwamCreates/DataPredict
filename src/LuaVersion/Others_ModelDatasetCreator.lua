@@ -209,69 +209,69 @@ function ModelDatasetCreator:splitDataset(datasetMatrix)
 	
 	local trainValidationTestDataMaxValue = trainValidationDataMaxValue + numberOfTestData
 	
-	local trainData = {}
+	local trainDatasetMatrix = {}
 
-	local validationData = {}
+	local validationDatasetMatrix = {}
 
-	local testData = {}
+	local testDatasetMatrix = {}
 	
 	for index = 1, numberOfData, 1 do
 		
 		if (index < numberOfTrainData) then 
 			
-			table.insert(trainData, datasetCopy[index])
+			table.insert(trainDatasetMatrix, datasetCopy[index])
 			continue
 			
 		end
 		
 		if (index < trainValidationDataMaxValue) then 
 
-			table.insert(validationData, datasetCopy[index])
+			table.insert(validationDatasetMatrix, datasetCopy[index])
 			continue
 
 		end
 		
 		if (index < trainValidationTestDataMaxValue) then 
 
-			table.insert(testData, datasetCopy[index])
+			table.insert(testDatasetMatrix, datasetCopy[index])
 			continue
 
 		end
 		
 		if (numberOfTrainData > 0) then
 			
-			table.insert(trainData, datasetCopy[index])
+			table.insert(trainDatasetMatrix, datasetCopy[index])
 			continue
 			
 		end
 		
 		if (numberOfValidationData > 0) then
 
-			table.insert(validationData, datasetCopy[index])
+			table.insert(validationDatasetMatrix, datasetCopy[index])
 			continue
 
 		end
 		
 		if (numberOfTestData > 0) then
 
-			table.insert(testData, datasetCopy[index])
+			table.insert(testDatasetMatrix, datasetCopy[index])
 			continue
 
 		end
 		
 	end
 
-	trainData = returnNilIfTableIsEmpty(trainData)
+	trainDatasetMatrix = returnNilIfTableIsEmpty(trainDatasetMatrix)
 
-	validationData = returnNilIfTableIsEmpty(validationData)
+	validationDatasetMatrix = returnNilIfTableIsEmpty(validationDatasetMatrix)
 
-	testData = returnNilIfTableIsEmpty(testData)
+	testDatasetMatrix = returnNilIfTableIsEmpty(testDatasetMatrix)
 	
 	table.clear(datasetCopy)
 	
 	datasetCopy = nil
 
-	return trainData, validationData, testData
+	return trainDatasetMatrix, validationDatasetMatrix, testDatasetMatrix
 	
 end
 

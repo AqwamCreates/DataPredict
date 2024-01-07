@@ -24,56 +24,60 @@ ModelDatasetCreator:setDatasetSplitPercentages(trainDataPercentage: number, vali
 
 #### Parameters:
 
-* trainDataPercentage: The percentage of dataset to be turned to training data. Must convert the percentage to its decimal form first.
+* trainDataPercentage: The percentage of dataset to be turned to training data. The value must be between 0 and 1.
 
-* validationDataPercentage: The percentage of dataset to be turned to validation data. Must convert the percentage to its decimal form first.
+* validationDataPercentage: The percentage of dataset to be turned to validation data. The value must be between 0 and 1.
 
-* testDataPercentage: The percentage of dataset to be turned to testing data. Must convert the percentage to its decimal form first.
+* testDataPercentage: The percentage of dataset to be turned to testing data. The value must be between 0 and 1.
 
-### train()
+### setDatasetRandomizationProperties()
 
-Trains the machine/deep learning model under specific gradient descent mode.
+Set the split percentages for training, validation and testing. The current default values are 0.7 for training and 0.3 for testing.
 
 ```
-GradientDescentModifier:train(...): number[]
+ModelDatasetCreator:setDatasetRandomizationProperties(randomizationProbabilityThreshold: number)
 ```
 
 #### Parameters:
 
-* ...: The parameters are the same to the original model's train() function.
+* randomizationProbabilityThreshold: The probability to randomize the positions of each datapoints. The value must be between 0 and 1.
+
+### randomizeDataset()
+
+Randomizes the each data positions in te dataset 
+
+```
+ModelDatasetCreator:randomizeDataset(featureMatrix: matrix, labelVectorOrMatrix: matrix): matrix, matrix
+```
+
+#### Parameters:
+
+* featureMatrix: The matrix containing all the data.
+
+* labelVectorOrMatrix: The matrix containing all the label values related to feature matrix. Optional argument.
 
 #### Returns:
 
-* costArray: An array containing cost values.
+* randomizedFeatureMatrix: The matrix containing all the data.
 
-### predict()
+* randomizedLabelVectorOrMatrix: The matrix containing all the label values related to feature matrix. Only returns if labelVectorOrMatrix is added.
+
+### splitDataset()
 
 Predict the values for given data.
 
 ```
-GradientDescentModifier:predict(...): ...
+ModelDatasetCreator:splitDataset(datasetMatrix): matrix, matrix, matrix
 ```
 
 #### Parameters:
 
-...: The parameters are the same to the original model's predict() function.
+* datasetMatrix: The feature matrix or label matrix to split.
 
 #### Returns:
 
-...: The outputs are the same to the original model's predict() function.
+* trainDatasetMatrix: The dataset for training models.
 
-### reinforce()
+* validationDatasetMatrix: The dataset for validating models.
 
-Reward or punish model based on the current state of the environment.
-
-```
-ActorCritic:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
-```
-
-#### Parameters:
-
-* currentFeatureVector: Matrix containing data from the current state.
-
-* rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
-
-* returnOriginalOutput: Set whether or not to return predicted vector instead of value with highest probability.
+* testDatasetMatrix: The dataset for testing models.

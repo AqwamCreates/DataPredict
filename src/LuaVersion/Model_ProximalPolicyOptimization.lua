@@ -36,9 +36,13 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 
 	NewProximalPolicyOptimizationModel.currentNumberOfEpisodes = 0
 	
-	NewProximalPolicyOptimizationModel.advantageHistory = {}
+	NewProximalPolicyOptimizationModel.rewardHistory = {}
+	
+	NewProximalPolicyOptimizationModel.criticValueHistory = {}
 	
 	NewProximalPolicyOptimizationModel.actionVectorHistory = {}
+	
+	NewProximalPolicyOptimizationModel.advantageValueHistory = {}
 	
 	NewProximalPolicyOptimizationModel.ClassesList = nil
 	
@@ -95,12 +99,16 @@ function ProximalPolicyOptimizationModel:update(previousFeatureVector, action, r
 	local actionProbabilityVector = calculateProbability(allOutputsMatrix)
 
 	local previousCriticValue = self.CriticModel:predict(previousFeatureVector, true)[1][1]
-	
+
 	local currentCriticValue = self.CriticModel:predict(currentFeatureVector, true)[1][1]
-	
+
 	local advantageValue = rewardValue + (self.discountFactor * (currentCriticValue - previousCriticValue))
 	
-	table.insert(self.advantageHistory, advantageValue)
+	table.insert(self.advantageValueHistory, advantageValue)
+	
+	table.insert(self.rewardHistory, rewardValue)
+	
+	table.insert(self.criticValueHistory, previousCriticValue)
 	
 	table.insert(self.actionVectorHistory, actionProbabilityVector)
 	
@@ -136,6 +144,26 @@ local function convertListOfVectorsToMatrix(listOfVectors)
 	
 end
 
+function ProximalPolicyOptimizationModel:calculateRewardsToGo()
+	
+	local rewardsToGoArray = {}
+	
+	local discountedReward = 0
+	
+	local rewardHistory = self.rewardHistory
+	
+	for h = #rewardHistory, 1, -1 do
+		
+		discountedReward += rewardHistory[h] + (self.discountFactor * discountedReward)
+		
+		table.insert(rewardsToGoArray, 1, discountedReward)
+		
+	end
+	
+	return rewardsToGoArray
+	
+end
+
 function ProximalPolicyOptimizationModel:setPrintReinforcementOutput(option)
 
 	self.printReinforcementOutput = getBooleanOrDefaultOption(option, self.printReinforcementOutput)
@@ -144,37 +172,45 @@ end
 
 function ProximalPolicyOptimizationModel:episodeUpdate(numberOfFeatures)
 	
-	local historyLength = #self.advantageHistory
+	local rewardsToGoArray = self:calculateRewardsToGo()
 	
 	local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 	
-	local sumCriticLosses = 0
+	local criticValueHistory = self.criticValueHistory
 	
-	local actionMatrix = convertListOfVectorsToMatrix(self.actionVectorHistory)
+	local historyLength = #criticValueHistory
 	
-	for h = 1, historyLength, 1 do
+	local sumCriticLoss = 0
+	
+	for h = 1, historyLength - 1, 1 do
 		
-		local advantage = self.advantageHistory[h]
+		local currentActionVector = self.actionVectorHistory[h + 1]
 		
-		local currentActionVector = {actionMatrix[h]}
+		local previousActionVector = self.actionVectorHistory[h]
 		
-		local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, actionMatrix)
+		local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
 		
-		local actorLossVector = AqwamMatrixLibrary:multiply(-1, ratioVector, advantage)
+		local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, self.advantageValueHistory[h])
+		
+		local criticLoss = math.pow(criticValueHistory[h] - rewardsToGoArray[h], 2)
 		
 		sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
 		
-		sumCriticLosses += advantage
+		sumCriticLoss += criticLoss
 		
 	end
+	
+	local calculatedActorLossVector = AqwamMatrixLibrary:divide(sumActorLossVector, historyLength)
+	
+	local calculatedCriticLossVector = sumCriticLoss / historyLength
 	
 	local featureVector = AqwamMatrixLibrary:createMatrix(historyLength, numberOfFeatures, 1)
 	
 	self.ActorModel:forwardPropagate(featureVector, true)
 	self.CriticModel:forwardPropagate(featureVector, true)
 	
-	self.ActorModel:backPropagate(sumActorLossVector, true)
-	self.CriticModel:backPropagate(sumCriticLosses, true)
+	self.ActorModel:backPropagate(calculatedActorLossVector, true)
+	self.CriticModel:backPropagate(calculatedCriticLossVector, true)
 	
 	------------------------------------------------------
 	
@@ -186,7 +222,11 @@ function ProximalPolicyOptimizationModel:episodeUpdate(numberOfFeatures)
 
 	self.currentEpsilon *= self.epsilonDecayFactor
 	
-	table.clear(self.advantageHistory)
+	table.clear(self.advantageValueHistory)
+	
+	table.clear(self.criticValueHistory)
+	
+	table.clear(self.rewardHistory)
 	
 	table.clear(self.actionVectorHistory)
 	
@@ -336,9 +376,13 @@ function ProximalPolicyOptimizationModel:reset()
 
 	self.currentEpsilon = self.epsilon
 	
-	table.clear(self.advantageHistory)
+	table.clear(self.rewardHistory)
+	
+	table.clear(self.criticValueHistory)
 	
 	table.clear(self.actionVectorHistory)
+	
+	table.clear(self.advantageValueHistory)
 
 	if (self.ExperienceReplay) then self.ExperienceReplay:reset() end
 

@@ -53,23 +53,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### ModuleScripts - Release Versions (Fully Tested and Stable)
 
-[DataPredict Library (Release Version 1.8)](https://create.roblox.com/marketplace/asset/15759662956)
-
-[DataPredict Library (Release Version 1.7)](https://create.roblox.com/marketplace/asset/15684193316)
-
-[DataPredict Library (Release Version 1.6)](https://create.roblox.com/marketplace/asset/15552669178)
-
-[DataPredict Library (Release Version 1.5)](https://create.roblox.com/marketplace/asset/15268337462)
-
-[DataPredict Library (Release Version 1.4)](https://create.roblox.com/marketplace/asset/15199714521)
-
-[DataPredict Library (Release Version 1.3)](https://www.roblox.com/library/14716528959/DataPredict-Release-Version-1-3)
-
-[DataPredict Library (Release Version 1.2)](https://www.roblox.com/library/14503414633/DataPredict-Release-Version-1-2)
-
-[DataPredict Library (Release Version 1.1)](https://www.roblox.com/library/14383260890/DataPredict-Release-Version-1-1)
-
-[DataPredict Library (Release Version 1.0)](https://www.roblox.com/library/14048670741/DataPredict-Release-Version-1-0)
+[All Release Versions](https://github.com/AqwamCreates/DataPredict/tree/main/release_src)
 
 ### ModuleScripts Packages (Recommended For Up-To-Date Libraries)
 

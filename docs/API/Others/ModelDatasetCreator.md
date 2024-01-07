@@ -1,12 +1,12 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - ModelDatasetCreator
 
-Creates a dataset for models to train on
+Modifies existing dataset so that it can be used by the models.
 
 ## Constructors
 
 ### new()
 
-Creates a new gradient descent modifier object. If any of the arguments are not given, default argument values for that argument will be used.
+Creates a ModelDatasetCreator object.
 
 ```
 ModelDatasetCreator.new(): ModelDatasetCreatorObject

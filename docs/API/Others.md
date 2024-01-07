@@ -1,8 +1,12 @@
 # [API Reference](../API.md) - Others
 
+[ConfusionMatrixCreator](Others/ConfusionMatrixCreator.md)
+
 [DistributedLearning](Others/DistributedLearning.md)
 
 [ModelChecker](Others/ModelChecker.md)
+
+[ModelDatasetCreator](Others/ModelDatasetCreator.md)
 
 [ModelParametersMerger](Others/ModelParametersMerger.md)
 

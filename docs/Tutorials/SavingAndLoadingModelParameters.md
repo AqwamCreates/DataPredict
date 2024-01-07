@@ -40,4 +40,4 @@ Saving and loading on DataPredict has never been easier. All you need is to call
 
 That's all you need to do. Pretty simple, right?
 
-Thank you very much for reading this tutorial.
+Thank you very much for reading this tutorial!

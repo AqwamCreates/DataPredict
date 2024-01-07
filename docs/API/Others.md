@@ -12,9 +12,9 @@
 
 [GradientDescentModifier](Others/GradientDescentModifier.md)
 
-[OneVsAll](Others/OneVsAll.md)
-
 [Regularization](Others/Regularization.md)
+
+[OneVsAll](Others/OneVsAll.md)
 
 [OnlineLearning](Others/OnlineLearning.md)
 

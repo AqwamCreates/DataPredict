@@ -35,12 +35,12 @@ ModelDatasetCreator:setDatasetSplitPercentages(trainDataPercentage: number, vali
 Set the split percentages for training, validation and testing. The current default values are 0.7 for training and 0.3 for testing.
 
 ```
-ModelDatasetCreator:setDatasetRandomizationProperties(randomizationProbabilityThreshold: number)
+ModelDatasetCreator:setDatasetRandomizationProperties(randomizationProbability: number)
 ```
 
 #### Parameters:
 
-* randomizationProbabilityThreshold: The probability to randomize the positions of each datapoints. The value must be between 0 and 1.
+* randomizationProbability: The probability to randomize the positions of each datapoints. The higher the value, the more likely it will be randomized. The value must be between 0 and 1. 
 
 ### randomizeDataset()
 

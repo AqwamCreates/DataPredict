@@ -6,7 +6,7 @@ By using or possesing any copies of this library or its assets (including the ic
 
 * A separate agreement is needed for commercial use. 
 
-* A special agreement can be made if you are using this for anticheats.
+* A special agreement can be made if you are using this for anti-cheats.
 
 ![DataPredictIconSmall](https://user-images.githubusercontent.com/67371914/223632639-dea075fe-9dce-430c-af82-2fb0fbeb43d3.png)
 

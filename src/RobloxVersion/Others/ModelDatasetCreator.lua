@@ -10,7 +10,7 @@ local defaultTestDataPercentage = 0.3
 
 local defaultIsDatasetRandomized = false
 
-local defaultRandomizationProbabilityThreshold = 0.95
+local defaultDatasetRandomizationProbability = 0.95
 
 local function getBooleanOrDefaultOption(boolean, defaultBoolean)
 
@@ -98,7 +98,7 @@ function ModelDatasetCreator.new()
 	
 	NewModelDatasetCreator.testDataPercentage = defaultTestDataPercentage
 	
-	NewModelDatasetCreator.randomizationProbabilityThreshold = defaultRandomizationProbabilityThreshold
+	NewModelDatasetCreator.datasetRandomizationProbability = defaultDatasetRandomizationProbability
 	
 	return NewModelDatasetCreator
 	
@@ -114,9 +114,9 @@ function ModelDatasetCreator:setDatasetSplitPercentages(trainDataPercentage, val
 	
 end
 
-function ModelDatasetCreator:setDatasetRandomizationProperties(randomizationProbabilityThreshold)
+function ModelDatasetCreator:setDatasetRandomizationProbability(datasetRandomizationProbability)
 	
-	self.randomizationProbabilityThreshold = randomizationProbabilityThreshold or self.randomizationProbabilityThreshold
+	self.datasetRandomizationProbability = datasetRandomizationProbability or self.datasetRandomizationProbability
 	
 end
 
@@ -124,7 +124,7 @@ function ModelDatasetCreator:randomizeDataset(featureMatrix, labelVectorOrMatrix
 	
 	local numberOfData = checkNumberOfData(featureMatrix, labelVectorOrMatrix)
 	
-	local randomizationProbabilityThreshold = self.randomizationProbabilityThreshold
+	local datasetRandomizationProbability = self.datasetRandomizationProbability
 	
 	local randomizedFeatureMatrix = deepCopyTable(featureMatrix)
 	
@@ -132,7 +132,7 @@ function ModelDatasetCreator:randomizeDataset(featureMatrix, labelVectorOrMatrix
 	
 	for index = 1, numberOfData, 1 do
 		
-		if (math.random() < randomizationProbabilityThreshold) then continue end
+		if (datasetRandomizationProbability < math.random()) then continue end
 		
 		local randomIndex = math.random(0, index)
 		

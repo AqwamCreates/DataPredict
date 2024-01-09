@@ -538,6 +538,8 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 
 		table.insert(forwardPropagateTable, inputMatrix)
 		
+		self:sequenceWait()
+		
 	end
 
 	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
@@ -597,6 +599,8 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 		layerCostMatrix = AqwamMatrixLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 
 		table.insert(errorMatrixTable, 1, layerCostMatrix)
+		
+		self:sequenceWait()
 
 	end
 
@@ -621,6 +625,8 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, errorMatrixTab
 		if (type(costFunctionDerivatives) == "number") then costFunctionDerivatives = {{costFunctionDerivatives}} end
 
 		table.insert(deltaTable, costFunctionDerivatives)
+		
+		self:sequenceWait()
 
 	end
 

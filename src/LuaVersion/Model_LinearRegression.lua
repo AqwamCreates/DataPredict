@@ -192,7 +192,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	repeat
 		
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 		
 		self:iterationWait()
 		
@@ -204,7 +204,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 			regularizationCost = self.Regularization:calculateRegularization(self.ModelParameters, numberOfData)
 
-			cost += regularizationCost
+			cost = cost + regularizationCost
 			
 			return cost
 			

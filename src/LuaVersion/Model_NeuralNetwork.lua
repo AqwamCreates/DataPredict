@@ -35,11 +35,15 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
+local BaseModel = require(script.Parent.BaseModel)
+
 NeuralNetworkModel = {}
 
 NeuralNetworkModel.__index = NeuralNetworkModel
 
 setmetatable(NeuralNetworkModel, BaseModel)
+
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local defaultMaxNumberOfIterations = 500
 
@@ -571,6 +575,8 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 
 		table.insert(forwardPropagateTable, inputMatrix)
 		
+		self:sequenceWait()
+		
 	end
 
 	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
@@ -630,6 +636,8 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 		layerCostMatrix = AqwamMatrixLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 
 		table.insert(errorMatrixTable, 1, layerCostMatrix)
+		
+		self:sequenceWait()
 
 	end
 
@@ -654,6 +662,8 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, errorMatrixTab
 		if (type(costFunctionDerivatives) == "number") then costFunctionDerivatives = {{costFunctionDerivatives}} end
 
 		table.insert(deltaTable, costFunctionDerivatives)
+		
+		self:sequenceWait()
 
 	end
 

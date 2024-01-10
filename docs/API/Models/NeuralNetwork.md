@@ -399,4 +399,6 @@ NeuralNetwork:getLayer(layerNumber: number): number, boolean, string, number, Op
 
 ## References
 
+* [The Derivative Of Softmax Z Function By Mehran](https://www.mldawn.com/the-derivative-of-softmaxz-function-w-r-t-z/)
+
 * [Dropout in Neural Networks By Harsh Yadav](https://towardsdatascience.com/dropout-in-neural-networks-47a162d621d9)

@@ -32,6 +32,8 @@ NeuralNetwork:setModelParameters(SavedModelParameters)
 
 ```
 
+Additionally, if you had saved your model as a text file, then you can copy paste the content to a module script and require it to a new variable. Once that is done, you can load the model parameters as shown above
+
 Make sure the model parameters structure are the same as shown as in the API reference. Otherwise, it will break the model when you try to run it.
 
 # Wrapping up

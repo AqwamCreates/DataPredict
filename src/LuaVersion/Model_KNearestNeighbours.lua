@@ -41,6 +41,8 @@ setmetatable(KNearestNeighbours, BaseModel)
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
+local BaseModel = require(script.Parent.BaseModel)
+
 local defaultKValue = 3
 
 local defaultDistanceFunction = "Euclidean"
@@ -73,7 +75,7 @@ local distanceFunctionList = {
 
 	end,
 	
-	["AngularCosineDistance"] = function(x1, x2)
+	["CosineDistance"] = function(x1, x2)
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
 		
@@ -93,9 +95,9 @@ local distanceFunctionList = {
 
 		local similarity = dotProductedX / normX
 		
-		local angularCosineDistance = 1 / (math.pi * similarity)
+		local cosineDistance = 1 - similarity
 
-		return angularCosineDistance
+		return cosineDistance
 
 	end,
 
@@ -226,7 +228,7 @@ local function merge(distanceVector, labelVector, left, mid, right)
 	while (indexOfSubArrayTwo <= subArrayTwo) do
 		
 		distanceVector[1][indexOfMergedArray] = rightDistanceVector[indexOfSubArrayTwo]
-		labelVector[indexOfMergedArray][1] = leftLabelVector[indexOfSubArrayTwo]
+		labelVector[indexOfMergedArray][1] = rightLabelVector[indexOfSubArrayTwo]
 		indexOfSubArrayTwo = indexOfSubArrayTwo + 1
 		indexOfMergedArray = indexOfMergedArray + 1
 		
@@ -354,6 +356,8 @@ function KNearestNeighbours:predict(featureMatrix, returnOriginalOutput)
 	
 	for i = 1, #featureMatrix, 1 do
 		
+		self:dataWait()
+		
 		local distanceVector = {deepCopyTable(distanceMatrix[i])}
 			
 		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
@@ -371,3 +375,4 @@ function KNearestNeighbours:predict(featureMatrix, returnOriginalOutput)
 end
 
 return KNearestNeighbours
+

@@ -234,7 +234,6 @@ local function getMajorityClass(sortedLabelVectorLowestToHighest, kValue)
 			table.insert(classesList, sortedLabelVectorLowestToHighest[k][1])
 			table.insert(numberOfDataWithClassList, 1)
 			
-			
 		else
 			
 			numberOfDataWithClassList[index] += 1

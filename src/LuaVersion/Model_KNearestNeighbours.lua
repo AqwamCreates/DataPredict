@@ -41,8 +41,6 @@ setmetatable(KNearestNeighbours, BaseModel)
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local BaseModel = require(script.Parent.BaseModel)
-
 local defaultKValue = 3
 
 local defaultDistanceFunction = "Euclidean"
@@ -269,7 +267,6 @@ local function getMajorityClass(sortedLabelVectorLowestToHighest, kValue)
 			table.insert(classesList, sortedLabelVectorLowestToHighest[k][1])
 			table.insert(numberOfDataWithClassList, 1)
 			
-			
 		else
 			
 			numberOfDataWithClassList[index] += 1
@@ -375,4 +372,3 @@ function KNearestNeighbours:predict(featureMatrix, returnOriginalOutput)
 end
 
 return KNearestNeighbours
-

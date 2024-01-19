@@ -114,6 +114,10 @@ function AsynchronousAdvantageActorCriticModel:addActorCriticModel(ActorModel, C
 	
 	if not CriticModel then error("No critic model!") end
 	
+	ActorModel:setPrintOutput(false)
+	
+	CriticModel:setPrintOutput(false)
+	
 	if self.ActorMainModelParameters then ActorModel:setModelParameters(self.ActorMainModelParameters) end
 	
 	if self.CriticMainModelParameters then CriticModel:setModelParameters(self.CriticMainModelParameters) end

@@ -290,16 +290,6 @@ function ReinforcementLearningActorCriticNeuralNetworkBaseModel:reset()
 
 end
 
-function ReinforcementLearningActorCriticNeuralNetworkBaseModel:onNextEpisode()
-	
-	self.currentNumberOfReinforcements = 0
-
-	self.currentNumberOfEpisodes += 1
-
-	self.currentEpsilon *= self.epsilonDecayFactor
-	
-end
-
 function ReinforcementLearningActorCriticNeuralNetworkBaseModel:destroy()
 
 	setmetatable(self, nil)

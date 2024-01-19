@@ -1,86 +1,12 @@
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
+local ReinforcementLearningActorCriticNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningActorCriticNeuralNetworkBaseModel)
+
 ProximalPolicyOptimizationModel = {}
 
 ProximalPolicyOptimizationModel.__index = ProximalPolicyOptimizationModel
 
-local defaultNumberOfReinforcementsPerEpisode = 10
-
-local defaultEpsilon = 0.5
-
-local defaultEpsilonDecayFactor = 0.999
-
-local defaultDiscountFactor = 0.95
-
-function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
-	
-	local NewProximalPolicyOptimizationModel = {}
-	
-	setmetatable(NewProximalPolicyOptimizationModel, ProximalPolicyOptimizationModel)
-	
-	NewProximalPolicyOptimizationModel.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
-
-	NewProximalPolicyOptimizationModel.epsilon = epsilon or defaultEpsilon
-
-	NewProximalPolicyOptimizationModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
-
-	NewProximalPolicyOptimizationModel.discountFactor =  discountFactor or defaultDiscountFactor
-	
-	NewProximalPolicyOptimizationModel.currentEpsilon = epsilon or defaultEpsilon
-
-	NewProximalPolicyOptimizationModel.previousFeatureVector = nil
-
-	NewProximalPolicyOptimizationModel.printReinforcementOutput = true
-
-	NewProximalPolicyOptimizationModel.currentNumberOfReinforcements = 0
-
-	NewProximalPolicyOptimizationModel.currentNumberOfEpisodes = 0
-	
-	NewProximalPolicyOptimizationModel.rewardHistory = {}
-	
-	NewProximalPolicyOptimizationModel.criticValueHistory = {}
-	
-	NewProximalPolicyOptimizationModel.actionVectorHistory = {}
-	
-	NewProximalPolicyOptimizationModel.advantageValueHistory = {}
-	
-	NewProximalPolicyOptimizationModel.ClassesList = nil
-	
-	return NewProximalPolicyOptimizationModel
-	
-end
-
-function ProximalPolicyOptimizationModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
-	
-	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
-
-	self.epsilon = epsilon or self.epsilon
-
-	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
-
-	self.discountFactor =  discountFactor or self.discountFactor
-	
-	self.currentEpsilon = epsilon or self.currentEpsilon
-	
-end
-
-function ProximalPolicyOptimizationModel:setActorModel(Model)
-	
-	self.ActorModel = Model
-	
-end
-
-function ProximalPolicyOptimizationModel:setCriticModel(Model)
-
-	self.CriticModel = Model
-
-end
-
-function ProximalPolicyOptimizationModel:setClassesList(classesList)
-	
-	self.ClassesList = classesList
-	
-end
+setmetatable(ProximalPolicyOptimizationModel, ReinforcementLearningActorCriticNeuralNetworkBaseModel)
 
 local function calculateProbability(outputMatrix)
 
@@ -92,310 +18,130 @@ local function calculateProbability(outputMatrix)
 
 end
 
-function ProximalPolicyOptimizationModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-	local allOutputsMatrix = self.ActorModel:predict(previousFeatureVector, true)
-	
-	local actionProbabilityVector = calculateProbability(allOutputsMatrix)
-
-	local previousCriticValue = self.CriticModel:predict(previousFeatureVector, true)[1][1]
-
-	local currentCriticValue = self.CriticModel:predict(currentFeatureVector, true)[1][1]
-
-	local advantageValue = rewardValue + (self.discountFactor * (currentCriticValue - previousCriticValue))
-	
-	table.insert(self.advantageValueHistory, advantageValue)
-	
-	table.insert(self.rewardHistory, rewardValue)
-	
-	table.insert(self.criticValueHistory, previousCriticValue)
-	
-	table.insert(self.actionVectorHistory, actionProbabilityVector)
-	
-	return allOutputsMatrix
-
-end
-
-function ProximalPolicyOptimizationModel:setExperienceReplay(ExperienceReplay)
-
-	self.ExperienceReplay = ExperienceReplay
-
-end
-
-local function getBooleanOrDefaultOption(boolean, defaultBoolean)
-
-	if (type(boolean) == "nil") then return defaultBoolean end
-
-	return boolean
-
-end
-
-local function convertListOfVectorsToMatrix(listOfVectors)
-	
-	local matrix = {}
-	
-	for i = 1, #listOfVectors, 1 do
-		
-		table.insert(matrix, listOfVectors[i][1])
-		
-	end
-	
-	return matrix
-	
-end
-
 function ProximalPolicyOptimizationModel:calculateRewardsToGo()
-	
+
 	local rewardsToGoArray = {}
-	
+
 	local discountedReward = 0
-	
+
 	local rewardHistory = self.rewardHistory
-	
+
 	for h = #rewardHistory, 1, -1 do
-		
+
 		discountedReward += rewardHistory[h] + (self.discountFactor * discountedReward)
-		
+
 		table.insert(rewardsToGoArray, 1, discountedReward)
-		
+
 	end
-	
+
 	return rewardsToGoArray
-	
-end
-
-function ProximalPolicyOptimizationModel:setPrintReinforcementOutput(option)
-
-	self.printReinforcementOutput = getBooleanOrDefaultOption(option, self.printReinforcementOutput)
 
 end
 
-function ProximalPolicyOptimizationModel:episodeUpdate(numberOfFeatures)
+function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
-	local rewardsToGoArray = self:calculateRewardsToGo()
+	local NewProximalPolicyOptimizationModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
-	local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
+	setmetatable(NewProximalPolicyOptimizationModel, ProximalPolicyOptimizationModel)
 	
-	local criticValueHistory = self.criticValueHistory
+	local rewardHistory = {}
 	
-	local historyLength = #criticValueHistory
+	local criticValueHistory = {}
 	
-	local sumCriticLoss = 0
+	local actionVectorHistory = {}
 	
-	for h = 1, historyLength - 1, 1 do
+	local advantageValueHistory = {}
+	
+	NewProximalPolicyOptimizationModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local currentActionVector = self.actionVectorHistory[h + 1]
+		local allOutputsMatrix = NewProximalPolicyOptimizationModel.ActorModel:predict(previousFeatureVector, true)
+
+		local actionProbabilityVector = calculateProbability(allOutputsMatrix)
+
+		local previousCriticValue = NewProximalPolicyOptimizationModel.CriticModel:predict(previousFeatureVector, true)[1][1]
+
+		local currentCriticValue = NewProximalPolicyOptimizationModel.CriticModel:predict(currentFeatureVector, true)[1][1]
+
+		local advantageValue = rewardValue + (NewProximalPolicyOptimizationModel.discountFactor * (currentCriticValue - previousCriticValue))
+
+		table.insert(advantageValueHistory, advantageValue)
+
+		table.insert(rewardHistory, rewardValue)
+
+		table.insert(criticValueHistory, previousCriticValue)
+
+		table.insert(actionVectorHistory, actionProbabilityVector)
 		
-		local previousActionVector = self.actionVectorHistory[h]
+	end)
+	
+	NewProximalPolicyOptimizationModel:setEpisodeUpdateFunction(function()
 		
-		local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
-		
-		local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, self.advantageValueHistory[h])
-		
-		local criticLoss = math.pow(criticValueHistory[h] - rewardsToGoArray[h], 2)
-		
-		sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
-		
-		sumCriticLoss += criticLoss
-		
-	end
-	
-	local calculatedActorLossVector = AqwamMatrixLibrary:divide(sumActorLossVector, historyLength)
-	
-	local calculatedCriticLossVector = sumCriticLoss / historyLength
-	
-	local featureVector = AqwamMatrixLibrary:createMatrix(historyLength, numberOfFeatures, 1)
-	
-	self.ActorModel:forwardPropagate(featureVector, true)
-	self.CriticModel:forwardPropagate(featureVector, true)
-	
-	self.ActorModel:backPropagate(calculatedActorLossVector, true)
-	self.CriticModel:backPropagate(calculatedCriticLossVector, true)
-	
-	------------------------------------------------------
-	
-	self.episodeReward = 0
+		local rewardsToGoArray = NewProximalPolicyOptimizationModel:calculateRewardsToGo()
 
-	self.currentNumberOfReinforcements = 0
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewProximalPolicyOptimizationModel.ClassesList)
 
-	self.currentNumberOfEpisodes += 1
+		local historyLength = #criticValueHistory
 
-	self.currentEpsilon *= self.epsilonDecayFactor
-	
-	table.clear(self.advantageValueHistory)
-	
-	table.clear(self.criticValueHistory)
-	
-	table.clear(self.rewardHistory)
-	
-	table.clear(self.actionVectorHistory)
-	
-end
+		local sumCriticLoss = 0
 
-function ProximalPolicyOptimizationModel:fetchHighestValueInVector(outputVector)
+		for h = 1, historyLength - 1, 1 do
 
-	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(outputVector)
+			local currentActionVector = actionVectorHistory[h + 1]
 
-	if (classIndex == nil) then return nil, highestValue end
+			local previousActionVector = actionVectorHistory[h]
 
-	local predictedLabel = self.ClassesList[classIndex[2]]
+			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
 
-	return predictedLabel, highestValue
-	
-end
+			local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, advantageValueHistory[h + 1])
 
-function ProximalPolicyOptimizationModel:getLabelFromOutputMatrix(outputMatrix)
+			local criticLoss = math.pow(rewardsToGoArray[h] - criticValueHistory[h], 2)
 
-	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
+			sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
 
-	local highestValueVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
+			sumCriticLoss += criticLoss
 
-	local highestValue
-
-	local outputVector
-
-	local classIndex
-
-	local predictedLabel
-
-	for i = 1, #outputMatrix, 1 do
-
-		outputVector = {outputMatrix[i]}
-
-		predictedLabel, highestValue = self:fetchHighestValueInVector(outputVector)
-
-		predictedLabelVector[i][1] = predictedLabel
-
-		highestValueVector[i][1] = highestValue
-
-	end
-
-	return predictedLabelVector, highestValueVector
-
-end
-
-function ProximalPolicyOptimizationModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
-	
-	if (self.ActorModel == nil) then error("No actor model!") end
-	
-	if (self.CriticModel == nil) then error("No critic model!") end
-
-	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
-		
-		self:episodeUpdate(#currentFeatureVector[1])
-
-	end
-
-	self.currentNumberOfReinforcements += 1
-	
-	local action
-	
-	local actionIndex
-	
-	local actionVector
-
-	local highestValue
-
-	local highestValueVector
-
-	local allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
-
-	local randomProbability = Random.new():NextNumber()
-
-	if (randomProbability < self.currentEpsilon) then
-
-		local randomNumber = Random.new():NextInteger(1, #self.ClassesList)
-
-		action = self.ClassesList[randomNumber]
-
-		allOutputsMatrix[1][randomNumber] = randomProbability
-
-	else
-
-		if (self.previousFeatureVector) then
-			
-			allOutputsMatrix = self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
-			
-			actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
-
-			action = actionVector[1][1]
-
-			highestValue = highestValueVector[1][1]
-			
 		end
 
-	end
+		local calculatedActorLossVector = AqwamMatrixLibrary:divide(sumActorLossVector, historyLength)
 
-	if (self.ExperienceReplay) and (self.previousFeatureVector) then 
+		local calculatedCriticLossVector = sumCriticLoss / historyLength
+		
+		local numberOfFeatures, hasBias = NewProximalPolicyOptimizationModel.ActorModel:getLayer(1)
 
-		self.ExperienceReplay:addExperience(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
+		numberOfFeatures += (hasBias and 1) or 0
 
-		self.ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
+		local featureVector = AqwamMatrixLibrary:createMatrix(historyLength, numberOfFeatures, 1)
 
-			self:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
+		NewProximalPolicyOptimizationModel.ActorModel:forwardPropagate(featureVector, true)
+		NewProximalPolicyOptimizationModel.CriticModel:forwardPropagate(featureVector, true)
 
-		end)
+		NewProximalPolicyOptimizationModel.ActorModel:backPropagate(calculatedActorLossVector, true)
+		NewProximalPolicyOptimizationModel.CriticModel:backPropagate(calculatedCriticLossVector, true)
+		
+		table.clear(advantageValueHistory)
 
-	end
+		table.clear(criticValueHistory)
 
-	self.previousFeatureVector = currentFeatureVector
+		table.clear(rewardHistory)
 
-	if (self.printReinforcementOutput) then print("Episode: " .. self.currentNumberOfEpisodes .. "\t\tEpsilon: " .. self.currentEpsilon .. "\t\tReinforcement Count: " .. self.currentNumberOfReinforcements) end
-
-	if (returnOriginalOutput) then return allOutputsMatrix end
-
-	return action, highestValue
+		table.clear(actionVectorHistory)
+		
+	end)
 	
-end
+	NewProximalPolicyOptimizationModel:extendResetFunction(function()
+		
+		table.clear(rewardHistory)
 
-function ProximalPolicyOptimizationModel:getCurrentNumberOfEpisodes()
+		table.clear(criticValueHistory)
 
-	return self.currentNumberOfEpisodes
+		table.clear(actionVectorHistory)
 
-end
-
-function ProximalPolicyOptimizationModel:getCurrentNumberOfReinforcements()
-
-	return self.currentNumberOfReinforcements
-
-end
-
-function ProximalPolicyOptimizationModel:getCurrentEpsilon()
-
-	return self.currentEpsilon
-
-end
-
-function ProximalPolicyOptimizationModel:reset()
-
-	self.currentNumberOfReinforcements = 0
-
-	self.currentNumberOfEpisodes = 0
-
-	self.previousFeatureVector = nil
-
-	self.currentEpsilon = self.epsilon
+		table.clear(advantageValueHistory)
+		
+	end)
 	
-	table.clear(self.rewardHistory)
+	return NewProximalPolicyOptimizationModel
 	
-	table.clear(self.criticValueHistory)
-	
-	table.clear(self.actionVectorHistory)
-	
-	table.clear(self.advantageValueHistory)
-
-	if (self.ExperienceReplay) then self.ExperienceReplay:reset() end
-
-end
-
-function ProximalPolicyOptimizationModel:destroy()
-
-	setmetatable(self, nil)
-
-	table.clear(self)
-
-	self = nil
-
 end
 
 return ProximalPolicyOptimizationModel

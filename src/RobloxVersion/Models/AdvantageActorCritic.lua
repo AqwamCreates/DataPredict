@@ -2,43 +2,11 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker
 
 local ReinforcementLearningActorCriticNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningActorCriticNeuralNetworkBaseModel)
 
-AdvantageActorCriticModel = {}
+ProximalPolicyOptimizationModel = {}
 
-AdvantageActorCriticModel.__index = AdvantageActorCriticModel
+ProximalPolicyOptimizationModel.__index = ProximalPolicyOptimizationModel
 
-setmetatable(AdvantageActorCriticModel, ReinforcementLearningActorCriticNeuralNetworkBaseModel)
-
-local function sampleAction(actionProbabilityVector)
-
-	local totalProbability = 0
-
-	for _, probability in ipairs(actionProbabilityVector[1]) do
-
-		totalProbability += probability
-
-	end
-
-	local randomValue = math.random() * totalProbability
-
-	local cumulativeProbability = 0
-
-	local actionIndex = 1
-
-	for i, probability in ipairs(actionProbabilityVector[1]) do
-
-		cumulativeProbability += probability
-
-		if (randomValue > cumulativeProbability) then continue end
-
-		actionIndex = i
-
-		break
-
-	end
-
-	return actionIndex
-
-end
+setmetatable(ProximalPolicyOptimizationModel, ReinforcementLearningActorCriticNeuralNetworkBaseModel)
 
 local function calculateProbability(outputMatrix)
 
@@ -50,100 +18,134 @@ local function calculateProbability(outputMatrix)
 
 end
 
-function AdvantageActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+local function calculateRewardsToGo(rewardHistory, discountFactor)
 
-	local NewAdvantageActorCriticModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local rewardsToGoArray = {}
 
-	setmetatable(NewAdvantageActorCriticModel, AdvantageActorCriticModel)
+	local discountedReward = 0
+
+	for h = #rewardHistory, 1, -1 do
+
+		discountedReward += rewardHistory[h] + (discountFactor * discountedReward)
+
+		table.insert(rewardsToGoArray, 1, discountedReward)
+
+	end
+
+	return rewardsToGoArray
+
+end
+
+function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
-	local advantageHistory = {}
-
-	local actionProbabilityHistory = {}
+	local NewProximalPolicyOptimizationModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
-	NewAdvantageActorCriticModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	setmetatable(NewProximalPolicyOptimizationModel, ProximalPolicyOptimizationModel)
+	
+	local rewardHistory = {}
+	
+	local criticValueHistory = {}
+	
+	local actionVectorHistory = {}
+	
+	local advantageValueHistory = {}
+	
+	NewProximalPolicyOptimizationModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local allOutputsMatrix = NewAdvantageActorCriticModel.ActorModel:predict(previousFeatureVector, true)
+		local allOutputsMatrix = NewProximalPolicyOptimizationModel.ActorModel:predict(previousFeatureVector, true)
 
 		local actionProbabilityVector = calculateProbability(allOutputsMatrix)
 		
-		local CriticModel = NewAdvantageActorCriticModel.CriticModel
+		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
 
 		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 
 		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
 
-		local advantageValue = rewardValue + (NewAdvantageActorCriticModel.discountFactor * (currentCriticValue - previousCriticValue))
+		local advantageValue = rewardValue + (NewProximalPolicyOptimizationModel.discountFactor * (currentCriticValue - previousCriticValue))
 
-		local numberOfActions = #allOutputsMatrix[1]
+		table.insert(advantageValueHistory, advantageValue)
 
-		local actionIndex = sampleAction(actionProbabilityVector)
+		table.insert(criticValueHistory, previousCriticValue)
 
-		local action = NewAdvantageActorCriticModel.ClassesList[actionIndex]
-
-		local actionProbability = actionProbabilityVector[1][actionIndex]
-
-		table.insert(advantageHistory, advantageValue)
-
-		table.insert(actionProbabilityHistory, actionProbability)
-
+		table.insert(actionVectorHistory, actionProbabilityVector)
+		
+		table.insert(rewardHistory, rewardValue)
+		
 	end)
+	
+	NewProximalPolicyOptimizationModel:setEpisodeUpdateFunction(function()
+		
+		local rewardsToGoArray = calculateRewardsToGo(rewardHistory, NewProximalPolicyOptimizationModel.discountFactor)
 
-	NewAdvantageActorCriticModel:setEpisodeUpdateFunction(function()
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewProximalPolicyOptimizationModel.ClassesList)
 
-		local historyLength = #advantageHistory
+		local historyLength = #criticValueHistory
 
-		local sumActorLosses = 0
+		local sumCriticLoss = 0
 
-		local sumCriticLosses = 0
+		for h = 1, historyLength - 1, 1 do
 
-		for h = 1, historyLength, 1 do
+			local currentActionVector = actionVectorHistory[h + 1]
 
-			local advantage = advantageHistory[h]
+			local previousActionVector = actionVectorHistory[h]
 
-			local actionProbability = actionProbabilityHistory[h]
+			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
 
-			local actorLoss = math.log(actionProbability) * advantage
+			local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, advantageValueHistory[h + 1])
 
-			local criticLoss = math.pow(advantage, 2)
+			local criticLoss = math.pow(rewardsToGoArray[h] - criticValueHistory[h], 2)
 
-			sumActorLosses += actorLoss
+			sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
 
-			sumCriticLosses += criticLoss
+			sumCriticLoss += criticLoss
 
 		end
-		
-		local ActorModel = NewAdvantageActorCriticModel.ActorModel
 
-		local CriticModel = NewAdvantageActorCriticModel.CriticModel
+		local calculatedActorLossVector = AqwamMatrixLibrary:divide(sumActorLossVector, historyLength)
+
+		local calculatedCriticLossVector = sumCriticLoss / historyLength
+		
+		local ActorModel = NewProximalPolicyOptimizationModel.ActorModel
+		
+		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
 		
 		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
 
 		numberOfFeatures += (hasBias and 1) or 0
 
-		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+		local featureVector = AqwamMatrixLibrary:createMatrix(historyLength, numberOfFeatures, 1)
 
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)
 
-		ActorModel:backPropagate(sumActorLosses, true)
-		CriticModel:backPropagate(sumCriticLosses, true)
+		ActorModel:backPropagate(calculatedActorLossVector, true)
+		CriticModel:backPropagate(calculatedCriticLossVector, true)
+		
+		table.clear(advantageValueHistory)
 
-		table.clear(advantageHistory)
+		table.clear(criticValueHistory)
 
-		table.clear(actionProbabilityHistory)
+		table.clear(rewardHistory)
 
+		table.clear(actionVectorHistory)
+		
 	end)
+	
+	NewProximalPolicyOptimizationModel:extendResetFunction(function()
+		
+		table.clear(advantageValueHistory)
 
-	NewAdvantageActorCriticModel:extendResetFunction(function()
+		table.clear(criticValueHistory)
 
-		table.clear(advantageHistory)
+		table.clear(rewardHistory)
 
-		table.clear(actionProbabilityHistory)
-
+		table.clear(actionVectorHistory)
+		
 	end)
-
-	return NewAdvantageActorCriticModel
-
+	
+	return NewProximalPolicyOptimizationModel
+	
 end
 
-return AdvantageActorCriticModel
+return ProximalPolicyOptimizationModel

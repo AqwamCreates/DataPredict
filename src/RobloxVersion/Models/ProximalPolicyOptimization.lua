@@ -44,8 +44,6 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 	
 	setmetatable(NewProximalPolicyOptimizationModel, ProximalPolicyOptimizationModel)
 	
-	local rewardHistory = {}
-	
 	local criticValueHistory = {}
 	
 	local actionVectorHistory = {}
@@ -65,8 +63,6 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 		local advantageValue = rewardValue + (NewProximalPolicyOptimizationModel.discountFactor * (currentCriticValue - previousCriticValue))
 
 		table.insert(advantageValueHistory, advantageValue)
-
-		table.insert(rewardHistory, rewardValue)
 
 		table.insert(criticValueHistory, previousCriticValue)
 
@@ -122,21 +118,17 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 
 		table.clear(criticValueHistory)
 
-		table.clear(rewardHistory)
-
 		table.clear(actionVectorHistory)
 		
 	end)
 	
 	NewProximalPolicyOptimizationModel:extendResetFunction(function()
-		
-		table.clear(rewardHistory)
+
+		table.clear(advantageValueHistory)
 
 		table.clear(criticValueHistory)
 
 		table.clear(actionVectorHistory)
-
-		table.clear(advantageValueHistory)
 		
 	end)
 	

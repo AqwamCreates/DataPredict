@@ -156,21 +156,25 @@ function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilon
 			sumCriticLosses += criticLoss
 
 		end
+		
+		local ActorModel = NewActorCriticModel.ActorModel
+
+		local CriticModel = NewActorCriticModel.CriticModel
 
 		local lossValue = sumActorLosses + sumCriticLosses
 		
-		local numberOfFeatures, hasBias = NewActorCriticModel.ActorModel:getLayer(1)
+		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
 		
 		numberOfFeatures += (hasBias and 1) or 0
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 		local lossVector = AqwamMatrixLibrary:createMatrix(1, #NewActorCriticModel.ClassesList, lossValue)
 
-		NewActorCriticModel.ActorModel:forwardPropagate(featureVector, true)
-		NewActorCriticModel.CriticModel:forwardPropagate(featureVector, true)
+		ActorModel:forwardPropagate(featureVector, true)
+		CriticModel:forwardPropagate(featureVector, true)
 
-		NewActorCriticModel.ActorModel:backPropagate(lossVector, true)
-		NewActorCriticModel.CriticModel:backPropagate(lossValue, true)
+		ActorModel:backPropagate(lossVector, true)
+		CriticModel:backPropagate(lossValue, true)
 
 		table.clear(actionProbabilityHistory)
 

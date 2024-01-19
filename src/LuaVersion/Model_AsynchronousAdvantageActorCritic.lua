@@ -33,8 +33,6 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local DataPredict = script.Parent.Parent
-
 AsynchronousAdvantageActorCriticModel = {}
 
 AsynchronousAdvantageActorCriticModel.__index = AsynchronousAdvantageActorCriticModel
@@ -355,12 +353,6 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 	
 	actorCriticModelNumber = actorCriticModelNumber or Random.new():NextInteger(1, #self.currentEpsilonArray)
 
-	if (self.currentNumberOfReinforcementsArray[actorCriticModelNumber] >= self.numberOfReinforcementsPerEpisode) then
-		
-		self:episodeUpdate(#currentFeatureVector[1], actorCriticModelNumber)
-
-	end
-
 	self.currentNumberOfReinforcementsArray[actorCriticModelNumber] += 1
 	
 	self.currentTotalNumberOfReinforcementsToUpdateMainModel += 1
@@ -404,6 +396,12 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 			highestValue = highestValueVector[1][1]
 			
 		end
+
+	end
+	
+	if (self.currentNumberOfReinforcementsArray[actorCriticModelNumber] >= self.numberOfReinforcementsPerEpisode) then
+
+		self:episodeUpdate(#currentFeatureVector[1], actorCriticModelNumber)
 
 	end
 

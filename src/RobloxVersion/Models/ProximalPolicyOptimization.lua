@@ -18,17 +18,15 @@ local function calculateProbability(outputMatrix)
 
 end
 
-function ProximalPolicyOptimizationModel:calculateRewardsToGo()
+local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 	local rewardsToGoArray = {}
 
 	local discountedReward = 0
 
-	local rewardHistory = self.rewardHistory
-
 	for h = #rewardHistory, 1, -1 do
 
-		discountedReward += rewardHistory[h] + (self.discountFactor * discountedReward)
+		discountedReward += rewardHistory[h] + (discountFactor * discountedReward)
 
 		table.insert(rewardsToGoArray, 1, discountedReward)
 
@@ -43,6 +41,8 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 	local NewProximalPolicyOptimizationModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
 	setmetatable(NewProximalPolicyOptimizationModel, ProximalPolicyOptimizationModel)
+	
+	local rewardHistory = {}
 	
 	local criticValueHistory = {}
 	
@@ -68,11 +68,13 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 
 		table.insert(actionVectorHistory, actionProbabilityVector)
 		
+		table.insert(rewardHistory, rewardValue)
+		
 	end)
 	
 	NewProximalPolicyOptimizationModel:setEpisodeUpdateFunction(function()
 		
-		local rewardsToGoArray = NewProximalPolicyOptimizationModel:calculateRewardsToGo()
+		local rewardsToGoArray = calculateRewardsToGo(rewardHistory, NewProximalPolicyOptimizationModel.discountFactor)
 
 		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewProximalPolicyOptimizationModel.ClassesList)
 
@@ -118,15 +120,19 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 
 		table.clear(criticValueHistory)
 
+		table.clear(rewardHistory)
+
 		table.clear(actionVectorHistory)
 		
 	end)
 	
 	NewProximalPolicyOptimizationModel:extendResetFunction(function()
-
+		
 		table.clear(advantageValueHistory)
 
 		table.clear(criticValueHistory)
+
+		table.clear(rewardHistory)
 
 		table.clear(actionVectorHistory)
 		

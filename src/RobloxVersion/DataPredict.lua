@@ -4,7 +4,7 @@
 
 	Aqwam's Machine And Deep Learning Library (DataPredict)
 
-	Version 1.24.0
+	Version 1.25.0
 
 	Author: Aqwam Harish Aiman
 	
@@ -97,6 +97,8 @@ local ModelsDictionary = {
 	
 	ProximalPolicyOptimization = require(Models.ProximalPolicyOptimization),
 	
+	ProximalPolicyOptimizationClip = require(Models.ProximalPolicyOptimizationClip),
+	
 	VanillaPolicyGradient = require(Models.VanillaPolicyGradient),
 
 	RecurrentNeuralNetwork = require(Models.RecurrentNeuralNetwork),
@@ -180,6 +182,8 @@ local OthersDictionary = {
 	Tokenizer = require(Others.Tokenizer),
 	
 	OneVsAll = require(Others.OneVsAll),
+	
+	ConfusionMatrixCreator = require(Others.ConfusionMatrixCreator),
 	
 }
 

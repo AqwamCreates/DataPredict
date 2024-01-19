@@ -55,10 +55,12 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 		local allOutputsMatrix = NewProximalPolicyOptimizationModel.ActorModel:predict(previousFeatureVector, true)
 
 		local actionProbabilityVector = calculateProbability(allOutputsMatrix)
+		
+		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
 
-		local previousCriticValue = NewProximalPolicyOptimizationModel.CriticModel:predict(previousFeatureVector, true)[1][1]
+		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 
-		local currentCriticValue = NewProximalPolicyOptimizationModel.CriticModel:predict(currentFeatureVector, true)[1][1]
+		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
 
 		local advantageValue = rewardValue + (NewProximalPolicyOptimizationModel.discountFactor * (currentCriticValue - previousCriticValue))
 

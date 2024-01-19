@@ -447,6 +447,12 @@ function AsynchronousAdvantageActorCriticModel:setActorCriticMainModelParameters
 		
 end
 
+function AsynchronousAdvantageActorCriticModel:getActorCriticModels(actorCriticModelNumber)
+
+	return self.ActorModelArray[actorCriticModelNumber], self.CriticModelArray[actorCriticModelNumber]
+
+end
+
 function AsynchronousAdvantageActorCriticModel:getActorCriticMainModelParameters()
 	
 	return self.ActorMainModelParameters, self.CriticMainModelParameters

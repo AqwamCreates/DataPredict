@@ -88,7 +88,7 @@ function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilon
 	
 	NewActorCriticModel:setEpisodeUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local returnsVector = {{}}
+		local returnsHistory = {{}}
 
 		local discountedSum = 0
 
@@ -98,19 +98,9 @@ function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilon
 
 			discountedSum = rewardHistory[h] + NewActorCriticModel.discountFactor * discountedSum
 
-			table.insert(returnsVector[1], 1, discountedSum)
+			table.insert(returnsHistory, 1, discountedSum)
 
 		end
-
-		local returnsVectorMean = AqwamMatrixLibrary:mean(returnsVector)
-
-		local returnsVectorStandardDeviation = AqwamMatrixLibrary:standardDeviation(returnsVector)
-
-		local normalizedReturnVector = AqwamMatrixLibrary:subtract(returnsVector, returnsVectorMean)
-
-		normalizedReturnVector = AqwamMatrixLibrary:divide(normalizedReturnVector, returnsVectorStandardDeviation)
-		
-		local normalizedReturnHistory = normalizedReturnVector[1]
 
 		local sumActorLosses = 0
 
@@ -120,7 +110,7 @@ function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilon
 
 			local criticValue = criticValueHistory[h]
 
-			local returns = normalizedReturnHistory[h]
+			local returns = returnsHistory[h]
 
 			local actionProbability = actionProbabilityHistory[h]
 

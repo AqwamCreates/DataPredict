@@ -114,18 +114,6 @@ function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVec
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
 	
-	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
-		
-		self:episodeUpdate()
-		
-		self.currentNumberOfReinforcements = 0
-		
-		self.currentNumberOfEpisodes += 1
-		
-		self.currentEpsilon *= self.epsilonDecayFactor
-		
-	end
-	
 	self.currentNumberOfReinforcements += 1
 
 	local action
@@ -165,6 +153,18 @@ function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVec
 	end
 
 	if (self.previousFeatureVector) then self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) end
+	
+	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
+
+		self:episodeUpdate()
+
+		self.currentNumberOfReinforcements = 0
+
+		self.currentNumberOfEpisodes += 1
+
+		self.currentEpsilon *= self.epsilonDecayFactor
+
+	end
 
 	if (self.ExperienceReplay) and (self.previousFeatureVector) then 
 

@@ -1102,7 +1102,7 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 	
 	if (property == "HasBias") then
 
-		return self.hasBiasNeuronTable[layerNumber]
+		return (self.hasBiasNeuronTable[layerNumber] == 1)
 
 	elseif (property == "ActivationFunction") then
 
@@ -1146,7 +1146,7 @@ function NeuralNetworkModel:getLayer(layerNumber)
 
 	end 
 
-	return self.numberOfNeuronsTable[layerNumber], self.hasBiasNeuronTable[layerNumber], self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], self.OptimizerTable[layerNumber], self.RegularizationTable[layerNumber], self.dropoutRateTable[layerNumber]
+	return self.numberOfNeuronsTable[layerNumber], (self.hasBiasNeuronTable[layerNumber] == 1), self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], self.OptimizerTable[layerNumber], self.RegularizationTable[layerNumber], self.dropoutRateTable[layerNumber]
 
 end
 

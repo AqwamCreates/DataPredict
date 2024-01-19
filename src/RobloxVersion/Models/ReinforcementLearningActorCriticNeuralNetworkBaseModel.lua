@@ -292,9 +292,13 @@ function ReinforcementLearningActorCriticNeuralNetworkBaseModel:reset()
 
 	self.currentEpsilon = self.epsilon
 	
-	if (self.ActorModel) then self.ActorModel:reset() end
+	local ActorModel = self.ActorModel
 	
-	if (self.CriticModel) then self.CriticModel:reset() end
+	local CriticModel = self.CriticModel
+	
+	if (ActorModel) then ActorModel:reset() end
+	
+	if (CriticModel) then CriticModel:reset() end
 
 	if (self.ExperienceReplay) then self.ExperienceReplay:reset() end
 

@@ -1140,7 +1140,7 @@ function NeuralNetworkModel:getLayer(layerNumber)
 
 		error("The layer number can't be less than or equal to zero!") 
 
-	elseif (layerNumber > #self.numberOfNeuronsTable)  then
+	elseif (layerNumber > #self.numberOfNeuronsTable) then
 
 		error("The layer number exceeds the number of layers!") 
 

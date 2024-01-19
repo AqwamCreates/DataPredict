@@ -171,22 +171,10 @@ function ReinforcementLearningActorCriticNeuralNetworkBaseModel:reinforce(curren
 	if (self.ActorModel == nil) then error("No actor model!") end
 
 	if (self.CriticModel == nil) then error("No critic model!") end
-	
-	local action
-
-	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
-
-		self:episodeUpdate(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-		self.currentNumberOfReinforcements = 0
-
-		self.currentNumberOfEpisodes += 1
-
-		self.currentEpsilon *= self.epsilonDecayFactor
-
-	end
 
 	self.currentNumberOfReinforcements += 1
+	
+	local action
 
 	local actionVector
 
@@ -223,6 +211,18 @@ function ReinforcementLearningActorCriticNeuralNetworkBaseModel:reinforce(curren
 	end
 
 	if (self.previousFeatureVector) then self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) end
+	
+	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
+
+		self:episodeUpdate()
+
+		self.currentNumberOfReinforcements = 0
+
+		self.currentNumberOfEpisodes += 1
+
+		self.currentEpsilon *= self.epsilonDecayFactor
+
+	end
 
 	if (self.ExperienceReplay) and (self.previousFeatureVector) then
 

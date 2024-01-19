@@ -35,15 +35,11 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
-local BaseModel = require(script.Parent.BaseModel)
-
 NeuralNetworkModel = {}
 
 NeuralNetworkModel.__index = NeuralNetworkModel
 
 setmetatable(NeuralNetworkModel, BaseModel)
-
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local defaultMaxNumberOfIterations = 500
 
@@ -1139,7 +1135,7 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 	
 	if (property == "HasBias") then
 
-		return self.hasBiasNeuronTable[layerNumber]
+		return (self.hasBiasNeuronTable[layerNumber] == 1)
 
 	elseif (property == "ActivationFunction") then
 
@@ -1177,13 +1173,13 @@ function NeuralNetworkModel:getLayer(layerNumber)
 
 		error("The layer number can't be less than or equal to zero!") 
 
-	elseif (layerNumber > #self.numberOfNeuronsTable)  then
+	elseif (layerNumber > #self.numberOfNeuronsTable) then
 
 		error("The layer number exceeds the number of layers!") 
 
 	end 
 
-	return self.numberOfNeuronsTable[layerNumber], self.hasBiasNeuronTable[layerNumber], self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], self.OptimizerTable[layerNumber], self.RegularizationTable[layerNumber], self.dropoutRateTable[layerNumber]
+	return self.numberOfNeuronsTable[layerNumber], (self.hasBiasNeuronTable[layerNumber] == 1), self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], self.OptimizerTable[layerNumber], self.RegularizationTable[layerNumber], self.dropoutRateTable[layerNumber]
 
 end
 

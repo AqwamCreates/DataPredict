@@ -104,17 +104,21 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 
 		local calculatedCriticLossVector = sumCriticLoss / historyLength
 		
-		local numberOfFeatures, hasBias = NewProximalPolicyOptimizationModel.ActorModel:getLayer(1)
+		local ActorModel = NewProximalPolicyOptimizationModel.ActorModel
+		
+		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
+		
+		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
 
 		numberOfFeatures += (hasBias and 1) or 0
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(historyLength, numberOfFeatures, 1)
 
-		NewProximalPolicyOptimizationModel.ActorModel:forwardPropagate(featureVector, true)
-		NewProximalPolicyOptimizationModel.CriticModel:forwardPropagate(featureVector, true)
+		ActorModel:forwardPropagate(featureVector, true)
+		CriticModel:forwardPropagate(featureVector, true)
 
-		NewProximalPolicyOptimizationModel.ActorModel:backPropagate(calculatedActorLossVector, true)
-		NewProximalPolicyOptimizationModel.CriticModel:backPropagate(calculatedCriticLossVector, true)
+		ActorModel:backPropagate(calculatedActorLossVector, true)
+		CriticModel:backPropagate(calculatedCriticLossVector, true)
 		
 		table.clear(advantageValueHistory)
 

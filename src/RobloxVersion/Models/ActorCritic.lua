@@ -109,6 +109,8 @@ function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilon
 		local normalizedReturnVector = AqwamMatrixLibrary:subtract(returnsVector, returnsVectorMean)
 
 		normalizedReturnVector = AqwamMatrixLibrary:divide(normalizedReturnVector, returnsVectorStandardDeviation)
+		
+		local normalizedReturnHistory = normalizedReturnVector[1]
 
 		local sumActorLosses = 0
 
@@ -118,7 +120,7 @@ function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilon
 
 			local criticValue = criticValueHistory[h]
 
-			local returns = normalizedReturnVector[1][h]
+			local returns = normalizedReturnHistory[h]
 
 			local actionProbability = actionProbabilityHistory[h]
 

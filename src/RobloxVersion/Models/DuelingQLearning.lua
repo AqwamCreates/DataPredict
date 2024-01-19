@@ -15,11 +15,11 @@ local defaultDiscountFactor = 0.95
 local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the episodic reward, but lower the running reward.
 
 function DuelingQLearningModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
-	
+
 	local NewDuelingQLearningModel = {}
-	
+
 	setmetatable(NewDuelingQLearningModel, DuelingQLearningModel)
-	
+
 	NewDuelingQLearningModel.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
 
 	NewDuelingQLearningModel.epsilon = epsilon or defaultEpsilon
@@ -27,9 +27,9 @@ function DuelingQLearningModel.new(numberOfReinforcementsPerEpisode, epsilon, ep
 	NewDuelingQLearningModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
 
 	NewDuelingQLearningModel.discountFactor =  discountFactor or defaultDiscountFactor
-	
+
 	NewDuelingQLearningModel.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
-	
+
 	NewDuelingQLearningModel.currentEpsilon = epsilon or defaultEpsilon
 
 	NewDuelingQLearningModel.previousFeatureVector = nil
@@ -39,15 +39,15 @@ function DuelingQLearningModel.new(numberOfReinforcementsPerEpisode, epsilon, ep
 	NewDuelingQLearningModel.currentNumberOfReinforcements = 0
 
 	NewDuelingQLearningModel.currentNumberOfEpisodes = 0
-	
+
 	NewDuelingQLearningModel.ClassesList = nil
-	
+
 	return NewDuelingQLearningModel
-	
+
 end
 
 function DuelingQLearningModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
-	
+
 	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
 	self.epsilon = epsilon or self.epsilon
@@ -57,15 +57,15 @@ function DuelingQLearningModel:setParameters(numberOfReinforcementsPerEpisode, e
 	self.discountFactor =  discountFactor or self.discountFactor
 
 	self.rewardAveragingRate = rewardAveragingRate or self.rewardAveragingRate
-	
+
 	self.currentEpsilon = epsilon or self.currentEpsilon
-	
+
 end
 
 function DuelingQLearningModel:setAdvantageModel(Model)
-	
+
 	self.AdvantageModel = Model
-	
+
 end
 
 function DuelingQLearningModel:setValueModel(Model)
@@ -75,9 +75,9 @@ function DuelingQLearningModel:setValueModel(Model)
 end
 
 function DuelingQLearningModel:setClassesList(classesList)
-	
+
 	self.ClassesList = classesList
-	
+
 end
 
 function DuelingQLearningModel:fetchHighestValueInVector(outputVector)
@@ -123,7 +123,7 @@ function DuelingQLearningModel:getLabelFromOutputMatrix(outputMatrix)
 end
 
 function DuelingQLearningModel:forwardPropagate(featureVector)
-	
+
 	local value = self.ValueModel:predict(featureVector, true)[1][1]
 
 	local advantageMatrix = self.AdvantageModel:predict(featureVector, true)
@@ -133,33 +133,33 @@ function DuelingQLearningModel:forwardPropagate(featureVector)
 	local qValuePart1 = AqwamMatrixLibrary:subtract(advantageMatrix, meanAdvantageVector)
 
 	local qValue = AqwamMatrixLibrary:add(value, qValuePart1)
-	
+
 	return qValue, value
-	
+
 end
 
 function DuelingQLearningModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
-	
+
 	local previousQValue, previousValue = self:forwardPropagate(previousFeatureVector)
-	
+
 	local currentQValue, currentValue = self:forwardPropagate(currentFeatureVector)
-	
+
 	local _, maxCurrentQValue = self:fetchHighestValueInVector(currentQValue)
-	
+
 	local expectedQValue = rewardValue + (self.discountFactor * maxCurrentQValue)
-	
+
 	local qLoss = AqwamMatrixLibrary:subtract(previousQValue, expectedQValue)
-	
+
 	local vLoss = AqwamMatrixLibrary:subtract(previousValue, currentValue)
-	
+
 	self.ValueModel:forwardPropagate(previousFeatureVector, true)
-	
+
 	self.ValueModel:backPropagate(qLoss, true)
-	
+
 	local allOutputsMatrix = self.AdvantageModel:forwardPropagate(previousFeatureVector, true)
-	
+
 	self.AdvantageModel:backPropagate(vLoss, true)
-	
+
 	return allOutputsMatrix
 
 end
@@ -185,27 +185,17 @@ function DuelingQLearningModel:setPrintReinforcementOutput(option)
 end
 
 function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
-	
+
 	if (self.ValueModel == nil) then error("No value model!") end
-	
+
 	if (self.AdvantageModel == nil) then error("No advantage model!") end
 
-	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
-		
-		self.currentNumberOfReinforcements = 0
-
-		self.currentNumberOfEpisodes += 1
-
-		self.currentEpsilon *= self.epsilonDecayFactor
-
-	end
-
 	self.currentNumberOfReinforcements += 1
-	
+
 	local action
-	
+
 	local actionIndex
-	
+
 	local actionVector
 
 	local highestValue
@@ -227,7 +217,7 @@ function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, retu
 	else
 
 		if (self.previousFeatureVector) then
-			
+
 			allOutputsMatrix = self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 			actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
@@ -235,8 +225,18 @@ function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, retu
 			action = actionVector[1][1]
 
 			highestValue = highestValueVector[1][1]
-			
+
 		end
+
+	end
+	
+	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
+
+		self.currentNumberOfReinforcements = 0
+
+		self.currentNumberOfEpisodes += 1
+
+		self.currentEpsilon *= self.epsilonDecayFactor
 
 	end
 
@@ -259,7 +259,7 @@ function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, retu
 	if (returnOriginalOutput) then return allOutputsMatrix end
 
 	return action, highestValue
-	
+
 end
 
 function DuelingQLearningModel:getCurrentNumberOfEpisodes()

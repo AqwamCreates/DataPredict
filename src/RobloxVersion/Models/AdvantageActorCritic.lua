@@ -110,17 +110,21 @@ function AdvantageActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon
 
 		end
 		
-		local numberOfFeatures, hasBias = NewAdvantageActorCriticModel.ActorModel:getLayer(1)
+		local ActorModel = NewAdvantageActorCriticModel.ActorModel
+
+		local CriticModel = NewAdvantageActorCriticModel.CriticModel
+		
+		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
 
 		numberOfFeatures += (hasBias and 1) or 0
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
-		NewAdvantageActorCriticModel.ActorModel:forwardPropagate(featureVector, true)
-		NewAdvantageActorCriticModel.CriticModel:forwardPropagate(featureVector, true)
+		ActorModel:forwardPropagate(featureVector, true)
+		CriticModel:forwardPropagate(featureVector, true)
 
-		NewAdvantageActorCriticModel.ActorModel:backPropagate(sumActorLosses, true)
-		NewAdvantageActorCriticModel.CriticModel:backPropagate(sumCriticLosses, true)
+		ActorModel:backPropagate(sumActorLosses, true)
+		CriticModel:backPropagate(sumCriticLosses, true)
 
 		table.clear(advantageHistory)
 

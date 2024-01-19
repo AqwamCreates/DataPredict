@@ -88,7 +88,7 @@ function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilon
 	
 	NewActorCriticModel:setEpisodeUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local returnsHistory = {{}}
+		local returnsHistory = {}
 
 		local discountedSum = 0
 

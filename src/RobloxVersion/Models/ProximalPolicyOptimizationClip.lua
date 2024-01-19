@@ -118,7 +118,7 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 
 		local calculatedActorLossVector = AqwamMatrixLibrary:divide(sumActorLossVector, historyLength)
 
-		local calculatedCriticLossVector = sumCriticLoss / historyLength
+		local calculatedCriticLoss = sumCriticLoss / historyLength
 		
 		local ActorModel = NewProximalPolicyOptimizationClipModel.ActorModel
 		
@@ -134,7 +134,7 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 		CriticModel:forwardPropagate(featureVector, true)
 
 		ActorModel:backPropagate(calculatedActorLossVector, true)
-		CriticModel:backPropagate(calculatedCriticLossVector, true)
+		CriticModel:backPropagate(calculatedCriticLoss, true)
 		
 		table.clear(advantageValueHistory)
 

@@ -246,6 +246,18 @@ function ReinforcementLearningActorCriticNeuralNetworkBaseModel:reinforce(curren
 
 end
 
+function ReinforcementLearningActorCriticNeuralNetworkBaseModel:getActorModel()
+	
+	return self.ActorModel
+	
+end
+
+function ReinforcementLearningActorCriticNeuralNetworkBaseModel:getCriticModel()
+
+	return self.CriticModel
+
+end
+
 function ReinforcementLearningActorCriticNeuralNetworkBaseModel:getCurrentNumberOfEpisodes()
 
 	return self.currentNumberOfEpisodes

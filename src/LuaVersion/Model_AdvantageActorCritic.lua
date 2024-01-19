@@ -119,7 +119,7 @@ function AdvantageActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon
 
 	end)
 
-	NewAdvantageActorCriticModel:setEpisodeUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewAdvantageActorCriticModel:setEpisodeUpdateFunction(function()
 
 		local historyLength = #advantageHistory
 
@@ -154,8 +154,6 @@ function AdvantageActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon
 
 		NewAdvantageActorCriticModel.ActorModel:backPropagate(sumActorLosses, true)
 		NewAdvantageActorCriticModel.CriticModel:backPropagate(sumCriticLosses, true)
-
-		------------------------------------------------------
 
 		table.clear(advantageHistory)
 

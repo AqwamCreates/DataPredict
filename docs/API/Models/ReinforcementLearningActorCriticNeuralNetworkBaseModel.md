@@ -9,16 +9,10 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel is a base class for reinf
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
+ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* targetCost: The cost at which the model stops training.
 
 * maxNumberOfEpisodes: The number of episodes to decay the epsilon value.
 
@@ -39,16 +33,10 @@ ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations: integer, 
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
+ReinforcementLearningActorCriticNeuralNetworkBaseModel:setParameters( maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* targetCost: The cost at which the model stops training.
 
 * maxNumberOfEpisodes: The number of episodes to decay the epsilon value.
 
@@ -63,7 +51,7 @@ ReinforcementLearningNeuralNetworkBaseModel:setParameters(maxNumberOfIterations:
 Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings for that particular parameter.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
+ReinforcementLearningActorCriticNeuralNetworkBaseModel:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
 ```
 
 #### Parameters:
@@ -75,7 +63,7 @@ ReinforcementLearningNeuralNetworkBaseModel:setExperienceReplay(ExperienceReplay
 Reward or punish model based on the current state of the environment.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
+ReinforcementLearningActorCriticNeuralNetworkBaseModel:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
 ```
 
 #### Parameters:
@@ -101,7 +89,7 @@ ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVector: Matr
 Set whether or not to show the current number of episodes and current epsilon.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:setPrintReinforcementOutput(option: boolean)
+ReinforcementLearningActorCriticNeuralNetworkBaseModel:setPrintReinforcementOutput(option: boolean)
 ```
 
 #### Parameters:
@@ -113,7 +101,7 @@ ReinforcementLearningNeuralNetworkBaseModel:setPrintReinforcementOutput(option: 
 Sets the model's update function.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:setUpdateFunction(updateFunction)
+ReinforcementLearningActorCriticNeuralNetworkBaseModel:setUpdateFunction(updateFunction)
 ```
 
 #### Parameters:
@@ -125,7 +113,7 @@ ReinforcementLearningNeuralNetworkBaseModel:setUpdateFunction(updateFunction)
 Sets the model's episode update function.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
+ReinforcementLearningActorCriticNeuralNetworkBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 ```
 
 #### Parameters:
@@ -137,7 +125,7 @@ ReinforcementLearningNeuralNetworkBaseModel:setEpisodeUpdateFunction(episodeUpda
 Updates the model parameters using updateFunction().
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
+ReinforcementLearningActorCriticNeuralNetworkBaseModel:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
 ```
 
 #### Parameters:
@@ -155,7 +143,7 @@ ReinforcementLearningNeuralNetworkBaseModel:update(previousFeatiureVector: featu
 Updates the model parameters using episodeUpdateFunction().
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:episodeUpdate()
+ReinforcementLearningActorCriticNeuralNetworkBaseModel:episodeUpdate()
 ```
 
 ### extendResetFunction()
@@ -163,7 +151,7 @@ ReinforcementLearningNeuralNetworkBaseModel:episodeUpdate()
 Adds new function on reset alongside with the current reset() function. 
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:extendResetFunction(resetFunction)
+ReinforcementLearningActorCriticNeuralNetworkBaseModel:extendResetFunction(resetFunction)
 ```
 
 #### Parameters:
@@ -175,9 +163,5 @@ ReinforcementLearningNeuralNetworkBaseModel:extendResetFunction(resetFunction)
 Reset model's stored values (excluding the parameters).
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:reset()
+ReinforcementLearningActorCriticNeuralNetworkBaseModel:reset()
 ```
-
-## Inherited From
-
-* [NeuralNetwork](NeuralNetwork.md)

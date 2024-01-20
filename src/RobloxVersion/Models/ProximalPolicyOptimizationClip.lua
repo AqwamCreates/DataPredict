@@ -8,7 +8,7 @@ ProximalPolicyOptimizationClipModel.__index = ProximalPolicyOptimizationClipMode
 
 setmetatable(ProximalPolicyOptimizationClipModel, ReinforcementLearningActorCriticNeuralNetworkBaseModel)
 
-local defaultEpsilon2 = 0.005
+local defaultEpsilon2 = 0.5
 
 local function calculateProbability(outputMatrix)
 
@@ -104,9 +104,11 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 
 			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
 			
-			local clippedRatioVector = AqwamMatrixLibrary:applyFunction(clipFunction, ratioVector)
+			local surrogateLoss1 = AqwamMatrixLibrary:multiply(ratioVector, advantageValueHistory[h + 1])
+			
+			local surrogateLoss2 = AqwamMatrixLibrary:applyFunction(clipFunction, ratioVector)
 
-			local actorLossVector = AqwamMatrixLibrary:multiply(clippedRatioVector, advantageValueHistory[h + 1])
+			local actorLossVector = AqwamMatrixLibrary:applyFunction(math.min, surrogateLoss1, surrogateLoss2)
 
 			local criticLoss = math.pow(rewardsToGoArray[h] - criticValueHistory[h], 2)
 

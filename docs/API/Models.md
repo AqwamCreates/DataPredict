@@ -66,3 +66,5 @@
 [BaseModel](Models/BaseModel.md)
 
 [ReinforcementLearningNeuralNetworkBaseModel](Models/ReinforcementLearningNeuralNetworkBaseModel.md)
+
+[ReinforcementLearningActorCriticNeuralNetworkBaseModel](Models/ReinforcementLearningActorCriticNeuralNetworkBaseModel.md)

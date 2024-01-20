@@ -9,12 +9,12 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel is a base class for reinf
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
+ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
 
-* maxNumberOfEpisodes: The number of episodes to decay the epsilon value.
+* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value. It will be also used for actor and critic loss calculations.
 
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
 
@@ -33,12 +33,12 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(maxNumberOfEpisodes: 
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ReinforcementLearningActorCriticNeuralNetworkBaseModel:setParameters( maxNumberOfEpisodes: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
+ReinforcementLearningActorCriticNeuralNetworkBaseModel:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
 ```
 
 #### Parameters:
 
-* maxNumberOfEpisodes: The number of episodes to decay the epsilon value.
+* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value. It will be also used for actor and critic loss calculations.
 
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
 

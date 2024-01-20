@@ -199,6 +199,10 @@ Destroys the model object.
 VanillaPolicyGradient:destroy()
 ```
 
-### References
+## Inherited From
+
+* [ReinforcementLearningActorCriticNeuralNetworkBaseModel](ReinforcementLearningActorCriticNeuralNetworkBaseModel.md)
+
+## References
 
 * [Vanilla Policy Gradient By OpenAI](https://spinningup.openai.com/en/latest/algorithms/vpg.html)

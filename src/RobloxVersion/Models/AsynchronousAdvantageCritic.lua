@@ -202,7 +202,7 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 	
 	local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
 	
-	local advantageValue = rewardValue + (self.discountFactor * (currentCriticValue - currentCriticValue))
+	local advantageValue = rewardValue + (self.discountFactor * currentCriticValue) - previousCriticValue
 	
 	local numberOfActions = #allOutputsMatrix[1]
 	

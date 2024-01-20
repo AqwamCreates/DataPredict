@@ -54,8 +54,6 @@ ProximalPolicyOptimization:setParameters(numberOfReinforcementsPerEpisode: integ
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
-* rewardAveragingRate: The higher the value, the higher the episodic reward, but lower the running reward.
-
 ### setActorModel()
 
 ```

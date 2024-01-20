@@ -66,7 +66,7 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 
 		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
 
-		local advantageValue = rewardValue + (NewProximalPolicyOptimizationClipModel.discountFactor * (currentCriticValue - previousCriticValue))
+		local advantageValue = rewardValue + (NewProximalPolicyOptimizationClipModel.discountFactor * currentCriticValue) - previousCriticValue
 
 		table.insert(advantageValueHistory, advantageValue)
 
@@ -165,6 +165,22 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 	end)
 	
 	return NewProximalPolicyOptimizationClipModel
+	
+end
+
+function ProximalPolicyOptimizationClipModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, clipRatio)
+	
+	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
+
+	self.epsilon = epsilon or self.epsilon
+
+	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
+
+	self.discountFactor =  discountFactor or self.discountFactor
+	
+	self.clipRatio = clipRatio or self.clipRatio
+
+	self.currentEpsilon = epsilon or self.currentEpsilon
 	
 end
 

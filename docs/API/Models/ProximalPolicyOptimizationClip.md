@@ -199,7 +199,11 @@ Destroys the model object.
 ProximalPolicyOptimizationClip:destroy()
 ```
 
-### References
+## Inherited From
+
+* [ReinforcementLearningActorCriticNeuralNetworkBaseModel](ReinforcementLearningActorCriticNeuralNetworkBaseModel.md)
+
+## References
 
 * [Proximal Policy Optimization By OpenAI](https://spinningup.openai.com/en/latest/algorithms/ppo.html)
 

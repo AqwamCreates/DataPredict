@@ -46,6 +46,26 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel:setParameters(numberOfRei
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
+### setActorModel()
+
+```
+ProximalPolicyOptimizationClip:setActorModel(Model: ModelObject)
+```
+
+#### Parameters:
+
+* Model: The model to be used as an Actor model.
+
+### setCriticModel()
+
+```
+ProximalPolicyOptimizationClip:setActorModel(Model: ModelObject)
+```
+
+#### Parameters:
+
+* Model: The model to be used as a Critic model.
+
 ### setExperienceReplay()
 
 Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings for that particular parameter.

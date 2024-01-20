@@ -114,7 +114,7 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 
 		numberOfFeatures += (hasBias and 1) or 0
 
-		local featureVector = AqwamMatrixLibrary:createMatrix(historyLength, numberOfFeatures, 1)
+		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)

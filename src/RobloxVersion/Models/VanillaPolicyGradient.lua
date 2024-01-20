@@ -30,7 +30,7 @@ function VanillaPolicyGradientModel.new(numberOfReinforcementsPerEpisode, epsilo
 
 		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
 
-		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * (currentCriticValue - previousCriticValue))
+		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
 
 		local gradientMatrix = AqwamMatrixLibrary:multiply(logOutputMatrix, advantageValue)
 		

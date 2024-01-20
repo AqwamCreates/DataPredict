@@ -197,6 +197,10 @@ Destroys the model object.
 ActorCritic:destroy()
 ```
 
-### References
+## Inherited From
+
+* [ReinforcementLearningActorCriticNeuralNetworkBaseModel](ReinforcementLearningActorCriticNeuralNetworkBaseModel.md)
+
+## References
 
 * [Actor Critic Method by Apoorv Nandan - Keras](https://keras.io/examples/rl/actor_critic_cartpole/)

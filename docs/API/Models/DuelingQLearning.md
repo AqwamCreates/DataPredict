@@ -197,6 +197,6 @@ Destroys the model object.
 ActorCritic:destroy()
 ```
 
-### References
+## References
 
 * [Dueling Deep Q Networks by Chris Yoon](https://towardsdatascience.com/dueling-deep-q-networks-81ffab672751)

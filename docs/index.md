@@ -10,7 +10,7 @@ By using or possesing any copies of this library or its assets (including the ic
 
 | Version | Current Version Number |
 |---------|------------------------|
-| Release | 1.9                    |
+| Release | 1.10                   |
 | Beta    | 1.25.0                 |          
 
 DataPredict is a machine and deep learning library for Roblox and Pure Lua.
@@ -56,6 +56,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 ## Links
 
 ### ModuleScripts - Release Versions (Fully Tested and Stable)
+
+[DataPredict Library (Release Version 1.10)](https://create.roblox.com/marketplace/asset/16041994137)
 
 [DataPredict Library (Release Version 1.9)](https://create.roblox.com/marketplace/asset/15905508985)
 

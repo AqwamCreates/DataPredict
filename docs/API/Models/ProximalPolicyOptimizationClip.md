@@ -17,7 +17,7 @@ ProximalPolicyOptimizationClip is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ProximalPolicyOptimizationClip.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
+ProximalPolicyOptimizationClip.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, clipRatio: number): ModelObject
 ```
 
 #### Parameters:
@@ -29,6 +29,8 @@ ProximalPolicyOptimizationClip.new(numberOfReinforcementsPerEpisode: integer, ep
 * epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+
+* clipRatio: A value that controls how far the new policy can get far from old policy. The value must be set between 0 and 1.
 
 #### Returns:
 
@@ -41,7 +43,7 @@ ProximalPolicyOptimizationClip.new(numberOfReinforcementsPerEpisode: integer, ep
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ProximalPolicyOptimizationClip:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
+ProximalPolicyOptimizationClip:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, clipRatio: number)
 ```
 
 #### Parameters:
@@ -54,7 +56,7 @@ ProximalPolicyOptimizationClip:setParameters(numberOfReinforcementsPerEpisode: i
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
-* rewardAveragingRate: The higher the value, the higher the episodic reward, but lower the running reward.
+* clipRatio: A value that controls how far the new policy can get far from old policy. The value must be set between 0 and 1.
 
 ### setActorModel()
 

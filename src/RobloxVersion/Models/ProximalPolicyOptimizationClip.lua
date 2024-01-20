@@ -8,7 +8,7 @@ ProximalPolicyOptimizationClipModel.__index = ProximalPolicyOptimizationClipMode
 
 setmetatable(ProximalPolicyOptimizationClipModel, ReinforcementLearningActorCriticNeuralNetworkBaseModel)
 
-local defaultEpsilon2 = 0.95
+local defaultClipRatio = 0.1
 
 local function calculateProbability(outputMatrix)
 
@@ -38,13 +38,13 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 end
 
-function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, epsilon2)
+function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, clipRatio)
 	
 	local NewProximalPolicyOptimizationClipModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
 	setmetatable(NewProximalPolicyOptimizationClipModel, ProximalPolicyOptimizationClipModel)
 	
-	NewProximalPolicyOptimizationClipModel.epsilon2 = epsilon2 or defaultEpsilon2
+	NewProximalPolicyOptimizationClipModel.clipRatio = clipRatio or defaultClipRatio
 	
 	local rewardHistory = {}
 	
@@ -90,9 +90,9 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 		
 		local clipFunction = function(value) 
 			
-			local epsilon2 = NewProximalPolicyOptimizationClipModel.epsilon2 
+			local clipRatio = NewProximalPolicyOptimizationClipModel.clipRatio 
 			
-			return math.clamp(value, 1 - epsilon2, 1 + epsilon2) 
+			return math.clamp(value, 1 - clipRatio, 1 + clipRatio) 
 			
 		end
 
@@ -104,9 +104,13 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 
 			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
 			
-			local surrogateLoss1 = AqwamMatrixLibrary:multiply(ratioVector, advantageValueHistory[h + 1])
+			local advantageValue = advantageValueHistory[h + 1]
 			
-			local surrogateLoss2 = AqwamMatrixLibrary:applyFunction(clipFunction, ratioVector)
+			local surrogateLoss1 = AqwamMatrixLibrary:multiply(ratioVector, advantageValue)
+			
+			local surrogateLoss2Part1 = AqwamMatrixLibrary:applyFunction(clipFunction, ratioVector)
+			
+			local surrogateLoss2 = AqwamMatrixLibrary:multiply(surrogateLoss2Part1, advantageValue)
 
 			local actorLossVector = AqwamMatrixLibrary:applyFunction(math.min, surrogateLoss1, surrogateLoss2)
 

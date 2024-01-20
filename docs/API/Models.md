@@ -39,6 +39,7 @@
 | [REINFORCENeuralNetwork](Models/REINFORCENeuralNetwork.md)                                                                       | None                                      | Same As Q-Learning Neural Network                                           |
 | [DuelingQLearning](Models/DuelingQLearning.md)                                                                                   | None                                      | Same As Q-Learning Neural Network                                           |
 | [ProximalPolicyOptimization](Models/ProximalPolicyOptimization.md)                                                               | PPO                                       | Same As Q-Learning Neural Network                                           |
+| [ProximalPolicyOptimizationClip](Models/ProximalPolicyOptimizationClip.md)                                                       | PPO-Clip                                  | Same As Q-Learning Neural Network                                           |
 | [VanillaPolicyGradient](Models/VanillaPolicyGradient.md)                                                                         | VPG                                       | Same As Q-Learning Neural Network                                           |
 
 ### Sequential

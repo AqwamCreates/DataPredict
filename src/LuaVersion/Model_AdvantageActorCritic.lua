@@ -105,7 +105,7 @@ function AdvantageActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon
 
 		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
 
-		local advantageValue = rewardValue + (NewAdvantageActorCriticModel.discountFactor * (currentCriticValue - previousCriticValue))
+		local advantageValue = rewardValue + (NewAdvantageActorCriticModel.discountFactor * currentCriticValue) - previousCriticValue
 
 		local numberOfActions = #allOutputsMatrix[1]
 

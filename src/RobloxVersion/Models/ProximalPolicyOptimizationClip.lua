@@ -8,7 +8,7 @@ ProximalPolicyOptimizationClipModel.__index = ProximalPolicyOptimizationClipMode
 
 setmetatable(ProximalPolicyOptimizationClipModel, ReinforcementLearningActorCriticNeuralNetworkBaseModel)
 
-local defaultEpsilon2 = 0.1
+local defaultEpsilon2 = 0.95
 
 local function calculateProbability(outputMatrix)
 

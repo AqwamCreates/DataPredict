@@ -197,7 +197,11 @@ Destroys the model object.
 AdvantageActorCritic:destroy()
 ```
 
-### References
+## Inherited From
+
+* [ReinforcementLearningActorCriticNeuralNetworkBaseModel](ReinforcementLearningActorCriticNeuralNetworkBaseModel.md)
+
+## References
 
 * [Asynchronous Methods for Deep Reinforcement Learning By Volodymyr Mnih, Adrià Puigdomènech Badia, Mehdi Mirza, Alex Graves, Timothy P. Lillicrap, Tim Harley, David Silver, Koray Kavukcuoglu](https://arxiv.org/pdf/1602.01783v2.pdf)
 

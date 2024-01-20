@@ -17,7 +17,7 @@ ActorCritic is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ActorCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number): ModelObject
+ActorCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -29,8 +29,6 @@ ActorCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsi
 * epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
-
-* rewardAveragingRate: The higher the value, the higher the episodic reward, but lower the running reward.
 
 #### Returns:
 
@@ -43,7 +41,7 @@ ActorCritic.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsi
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ActorCritic:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, rewardAveragingRate: number)
+ActorCritic:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
 ```
 
 #### Parameters:
@@ -55,8 +53,6 @@ ActorCritic:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: nu
 * epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
-
-* rewardAveragingRate: The higher the value, the higher the episodic reward, but lower the running reward.
 
 ### setActorModel()
 

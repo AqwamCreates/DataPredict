@@ -80,7 +80,15 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 		
 		if (#oldActionVectorHistory == 0) then 
 
-			oldActionVectorHistory = actionVectorHistory
+			oldActionVectorHistory = table.clone(actionVectorHistory)
+			
+			table.clear(advantageValueHistory)
+
+			table.clear(criticValueHistory)
+
+			table.clear(rewardHistory)
+
+			table.clear(actionVectorHistory)
 
 			return 
 

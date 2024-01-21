@@ -48,6 +48,8 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 	
 	local actionVectorHistory = {}
 	
+	local oldActionVectorHistory = {}
+	
 	local advantageValueHistory = {}
 	
 	NewProximalPolicyOptimizationModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
@@ -76,6 +78,22 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 	
 	NewProximalPolicyOptimizationModel:setEpisodeUpdateFunction(function()
 		
+		if (#oldActionVectorHistory == 0) then 
+
+			oldActionVectorHistory = table.clone(actionVectorHistory)
+			
+			table.clear(advantageValueHistory)
+
+			table.clear(criticValueHistory)
+
+			table.clear(rewardHistory)
+
+			table.clear(actionVectorHistory)
+
+			return 
+
+		end
+		
 		local rewardsToGoArray = calculateRewardsToGo(rewardHistory, NewProximalPolicyOptimizationModel.discountFactor)
 
 		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewProximalPolicyOptimizationModel.ClassesList)
@@ -84,15 +102,15 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 
 		local sumCriticLoss = 0
 
-		for h = 1, historyLength - 1, 1 do
+		for h = 1, historyLength, 1 do
 
-			local currentActionVector = actionVectorHistory[h + 1]
+			local currentActionVector = actionVectorHistory[h]
 
-			local previousActionVector = actionVectorHistory[h]
+			local previousActionVector = oldActionVectorHistory[h]
 
 			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
 
-			local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, advantageValueHistory[h + 1])
+			local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, advantageValueHistory[h])
 
 			local criticLoss = math.pow(rewardsToGoArray[h] - criticValueHistory[h], 2)
 
@@ -122,6 +140,8 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 		ActorModel:backPropagate(calculatedActorLossVector, true)
 		CriticModel:backPropagate(calculatedCriticLoss, true)
 		
+		oldActionVectorHistory = table.clone(actionVectorHistory)
+		
 		table.clear(advantageValueHistory)
 
 		table.clear(criticValueHistory)
@@ -141,6 +161,8 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 		table.clear(rewardHistory)
 
 		table.clear(actionVectorHistory)
+		
+		table.clear(oldActionVectorHistory)
 		
 	end)
 	

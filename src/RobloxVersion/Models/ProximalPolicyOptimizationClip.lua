@@ -86,6 +86,14 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 			
 			oldActionVectorHistory = table.clone(actionVectorHistory)
 			
+			table.clear(advantageValueHistory)
+
+			table.clear(criticValueHistory)
+
+			table.clear(rewardHistory)
+
+			table.clear(actionVectorHistory)
+			
 			return 
 				
 		end

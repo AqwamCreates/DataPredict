@@ -8,7 +8,7 @@ ProximalPolicyOptimizationClipModel.__index = ProximalPolicyOptimizationClipMode
 
 setmetatable(ProximalPolicyOptimizationClipModel, ReinforcementLearningActorCriticNeuralNetworkBaseModel)
 
-local defaultClipRatio = 0.1
+local defaultClipRatio = 0.3
 
 local function calculateProbability(outputMatrix)
 

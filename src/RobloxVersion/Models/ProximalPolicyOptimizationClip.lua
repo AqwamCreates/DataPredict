@@ -52,6 +52,8 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 	
 	local actionVectorHistory = {}
 	
+	local oldActionVectorHistory = {}
+	
 	local advantageValueHistory = {}
 	
 	NewProximalPolicyOptimizationClipModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
@@ -80,6 +82,14 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 	
 	NewProximalPolicyOptimizationClipModel:setEpisodeUpdateFunction(function()
 		
+		if (#oldActionVectorHistory == 0) then 
+			
+			oldActionVectorHistory = actionVectorHistory
+			
+			return 
+				
+		end
+		
 		local rewardsToGoArray = calculateRewardsToGo(rewardHistory, NewProximalPolicyOptimizationClipModel.discountFactor)
 
 		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewProximalPolicyOptimizationClipModel.ClassesList)
@@ -96,15 +106,15 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 			
 		end
 
-		for h = 1, historyLength - 1, 1 do
+		for h = 1, historyLength, 1 do
 
-			local currentActionVector = actionVectorHistory[h + 1]
+			local currentActionVector = actionVectorHistory[h]
 
-			local previousActionVector = actionVectorHistory[h]
+			local previousActionVector = oldActionVectorHistory[h]
 
 			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
 			
-			local advantageValue = advantageValueHistory[h + 1]
+			local advantageValue = advantageValueHistory[h]
 			
 			local surrogateLoss1 = AqwamMatrixLibrary:multiply(ratioVector, advantageValue)
 			
@@ -142,6 +152,8 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 		ActorModel:backPropagate(calculatedActorLossVector, true)
 		CriticModel:backPropagate(calculatedCriticLoss, true)
 		
+		oldActionVectorHistory = table.clone(actionVectorHistory)
+		
 		table.clear(advantageValueHistory)
 
 		table.clear(criticValueHistory)
@@ -161,6 +173,8 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 		table.clear(rewardHistory)
 
 		table.clear(actionVectorHistory)
+		
+		table.clear(oldActionVectorHistory)
 		
 	end)
 	

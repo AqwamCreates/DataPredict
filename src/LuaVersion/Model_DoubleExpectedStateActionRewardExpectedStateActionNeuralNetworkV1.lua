@@ -73,6 +73,8 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.ne
 		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:train(previousFeatureVector, targetVector)
 
 		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+		
+		return targetValue
 
 	end)
 

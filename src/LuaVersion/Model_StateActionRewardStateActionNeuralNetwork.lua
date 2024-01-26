@@ -56,6 +56,8 @@ function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIteration
 		local newTargetVector = AqwamMatrixLibrary:add(rewardValue, dicountedVector)
 
 		NewStateActionRewardStateActionNeuralNetworkModel:train(previousFeatureVector, newTargetVector)
+		
+		return newTargetVector
 
 	end)
 
@@ -85,3 +87,4 @@ function StateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberO
 end
 
 return StateActionRewardStateActionNeuralNetworkModel
+

@@ -14,7 +14,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 	
 	setmetatable(NewNStepExperienceReplay, NStepExperienceReplay)
 	
-	BaseExperienceReplay.nStep = nStep or defaultNStep
+	NewNStepExperienceReplay.nStep = nStep or defaultNStep
 	
 	NewNStepExperienceReplay:setSampleFunction(function()
 		
@@ -36,6 +36,18 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 	
 	return NewNStepExperienceReplay
 	
+end
+
+function NStepExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep)
+
+	self.batchSize = batchSize or self.batchSize
+
+	self.numberOfExperienceToUpdate = numberOfExperienceToUpdate or self.numberOfExperienceToUpdate
+
+	self.maxBufferSize = maxBufferSize or self.maxBufferSize
+	
+	self.nStep = nStep or self.nStep
+
 end
 
 function NStepExperienceReplay:run(updateFunction)

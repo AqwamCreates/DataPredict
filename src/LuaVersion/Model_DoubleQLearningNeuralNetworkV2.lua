@@ -61,7 +61,6 @@ local function rateAverageModelParameters(averagingRate, PrimaryModelParameters,
 
 end
 
-
 function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, averagingRate)
 
 	local NewDoubleQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
@@ -78,13 +77,13 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 
 		local predictedValue, maxQValue = NewDoubleQLearningNeuralNetworkModel:predict(currentFeatureVector)
 
-		local target = rewardValue + (NewDoubleQLearningNeuralNetworkModel.discountFactor * maxQValue[1][1])
+		local targetValue = rewardValue + (NewDoubleQLearningNeuralNetworkModel.discountFactor * maxQValue[1][1])
 
 		local targetVector = NewDoubleQLearningNeuralNetworkModel:predict(previousFeatureVector, true)
 
 		local actionIndex = table.find(NewDoubleQLearningNeuralNetworkModel.ClassesList, action)
 
-		targetVector[1][actionIndex] = target
+		targetVector[1][actionIndex] = targetValue
 
 		NewDoubleQLearningNeuralNetworkModel:train(previousFeatureVector, targetVector)
 
@@ -93,6 +92,8 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 		TargetModelParameters = rateAverageModelParameters(NewDoubleQLearningNeuralNetworkModel.averagingRate, PrimaryModelParameters, TargetModelParameters)
 
 		NewDoubleQLearningNeuralNetworkModel:setModelParameters(TargetModelParameters)
+		
+		return targetValue
 
 	end)
 	

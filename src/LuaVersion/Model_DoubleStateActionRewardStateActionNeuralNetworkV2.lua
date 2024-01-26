@@ -39,6 +39,8 @@ DoubleStateActionRewardStateActionNeuralNetworkModel = {}
 
 DoubleStateActionRewardStateActionNeuralNetworkModel.__index = DoubleStateActionRewardStateActionNeuralNetworkModel
 
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
 setmetatable(DoubleStateActionRewardStateActionNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
 local defaultAveragingRate = 0.01
@@ -61,10 +63,9 @@ local function rateAverageModelParameters(averagingRate, PrimaryModelParameters,
 
 end
 
+function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, averagingRate)
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor, averagingRate)
-
-	local NewDoubleStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+	local NewDoubleStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
 	setmetatable(NewDoubleStateActionRewardStateActionNeuralNetworkModel, DoubleStateActionRewardStateActionNeuralNetworkModel)
 
@@ -89,6 +90,8 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIte
 		TargetModelParameters = rateAverageModelParameters(NewDoubleStateActionRewardStateActionNeuralNetworkModel.averagingRate, PrimaryModelParameters, TargetModelParameters)
 
 		NewDoubleStateActionRewardStateActionNeuralNetworkModel:setModelParameters(TargetModelParameters)
+		
+		return newTargetVector
 
 	end)
 
@@ -96,7 +99,7 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIte
 
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor, averagingRate)
+function DoubleStateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, averagingRate)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -104,7 +107,7 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel:setParameters(maxN
 
 	self.targetCost = targetCost or self.targetCost
 
-	self.maxNumberOfEpisodes = maxNumberOfEpisodes or self.maxNumberOfEpisodes
+	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
 	self.epsilon = epsilon or self.epsilon
 
@@ -119,3 +122,4 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel:setParameters(maxN
 end
 
 return DoubleStateActionRewardStateActionNeuralNetworkModel
+

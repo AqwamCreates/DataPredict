@@ -58,11 +58,13 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfI
 
 		end
 
-		local newTargetValue = rewardValue + (NewExpectedStateActionRewardStateActionNeuralNetworkModel.discountFactor * expectedQValue)
+		local targetValue = rewardValue + (NewExpectedStateActionRewardStateActionNeuralNetworkModel.discountFactor * expectedQValue)
 
-		targetVector[1][actionIndex] = newTargetValue
+		targetVector[1][actionIndex] = targetValue
 
 		NewExpectedStateActionRewardStateActionNeuralNetworkModel:train(previousFeatureVector, targetVector)
+		
+		return targetValue
 
 	end)
 

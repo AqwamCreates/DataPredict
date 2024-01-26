@@ -10,23 +10,23 @@ local defaultNStep = 3
 
 function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep)
 	
-	local NewUniformExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+	local NewNStepExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 	
-	setmetatable(NewUniformExperienceReplay, NStepExperienceReplay)
+	setmetatable(NewNStepExperienceReplay, NStepExperienceReplay)
 	
 	BaseExperienceReplay.nStep = nStep or defaultNStep
 	
-	NewUniformExperienceReplay:setSampleFunction(function()
+	NewNStepExperienceReplay:setSampleFunction(function()
 		
 		local batchArray = {}
 
-		local lowestNumberOfBatchSize = math.min(NewUniformExperienceReplay.batchSize, #NewUniformExperienceReplay.replayBufferArray)
+		local lowestNumberOfBatchSize = math.min(NewNStepExperienceReplay.batchSize, #NewNStepExperienceReplay.replayBufferArray)
 
 		for i = 1, lowestNumberOfBatchSize, 1 do
 
-			local index = Random.new():NextInteger(1, #NewUniformExperienceReplay.replayBufferArray)
+			local index = Random.new():NextInteger(1, #NewNStepExperienceReplay.replayBufferArray)
 
-			table.insert(batchArray, NewUniformExperienceReplay.replayBufferArray[index])
+			table.insert(batchArray, NewNStepExperienceReplay.replayBufferArray[index])
 
 		end
 
@@ -34,25 +34,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 		
 	end)
 	
-	NewUniformExperienceReplay:setResetFunction(function()
-		
-		NewUniformExperienceReplay.numberOfExperience = 0
-
-		NewUniformExperienceReplay.replayBufferArray = {}
-		
-	end)
-	
-	return NewUniformExperienceReplay
-	
-end
-
-function NStepExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize)
-	
-	self.batchSize = batchSize or self.batchSize
-
-	self.numberOfExperienceToUpdate = numberOfExperienceToUpdate or self.numberOfExperienceToUpdate
-
-	self.maxBufferSize = maxBufferSize or self.maxBufferSize
+	return NewNStepExperienceReplay
 	
 end
 

@@ -193,7 +193,7 @@ function DuelingQLearningModel:update(previousFeatureVector, action, rewardValue
 
 	self.AdvantageModel:backPropagate(vLoss, true)
 
-	return allOutputsMatrix
+	return expectedQValue
 
 end
 
@@ -249,19 +249,17 @@ function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, retu
 
 	else
 
-		if (self.previousFeatureVector) then
+		allOutputsMatrix = self.ActorModel:predict(currentFeatureVector, true)
 
-			allOutputsMatrix = self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
+		actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 
-			actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
+		action = actionVector[1][1]
 
-			action = actionVector[1][1]
-
-			highestValue = highestValueVector[1][1]
-
-		end
+		highestValue = highestValueVector[1][1]
 
 	end
+	
+	if (self.previousFeatureVector) then self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) end
 	
 	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
 
@@ -279,7 +277,7 @@ function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, retu
 
 		self.ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
-			self:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
+			return self:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
 		end)
 

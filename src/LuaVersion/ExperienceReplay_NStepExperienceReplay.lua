@@ -33,6 +33,8 @@
 
 local BaseExperienceReplay = require("ExperienceReplay_BaseExperienceReplay")
 
+local BaseExperienceReplay = require(script.Parent.BaseExperienceReplay)
+
 NStepExperienceReplay = {}
 
 NStepExperienceReplay.__index = NStepExperienceReplay
@@ -106,4 +108,3 @@ function NStepExperienceReplay:run(updateFunction)
 end
 
 return NStepExperienceReplay
-

@@ -28,7 +28,6 @@ local function rateAverageModelParameters(averagingRate, PrimaryModelParameters,
 
 end
 
-
 function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, averagingRate)
 
 	local NewDoubleStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
@@ -56,6 +55,8 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIte
 		TargetModelParameters = rateAverageModelParameters(NewDoubleStateActionRewardStateActionNeuralNetworkModel.averagingRate, PrimaryModelParameters, TargetModelParameters)
 
 		NewDoubleStateActionRewardStateActionNeuralNetworkModel:setModelParameters(TargetModelParameters)
+		
+		return newTargetVector
 
 	end)
 

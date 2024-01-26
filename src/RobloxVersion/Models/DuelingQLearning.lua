@@ -156,7 +156,7 @@ function DuelingQLearningModel:update(previousFeatureVector, action, rewardValue
 
 	self.ValueModel:backPropagate(qLoss, true)
 
-	local allOutputsMatrix = self.AdvantageModel:forwardPropagate(previousFeatureVector, true)
+	self.AdvantageModel:forwardPropagate(previousFeatureVector, true)
 
 	self.AdvantageModel:backPropagate(vLoss, true)
 

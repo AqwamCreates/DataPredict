@@ -49,7 +49,7 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 	
 	NewDoubleQLearningNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local randomProbability = math.random()
+		local randomProbability = Random.new():NextNumber()
 
 		local updateSecondModel = (randomProbability >= 0.5)
 
@@ -59,7 +59,7 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 
 		NewDoubleQLearningNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-		local targetVector = NewDoubleQLearningNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		local targetVector, targetValue = NewDoubleQLearningNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 		NewDoubleQLearningNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
@@ -68,6 +68,8 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 		NewDoubleQLearningNeuralNetworkModel:train(previousFeatureVector, targetVector)
 
 		NewDoubleQLearningNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+		
+		return targetValue
 		
 	end)
 
@@ -149,15 +151,15 @@ function DoubleQLearningNeuralNetworkModel:generateTargetVector(previousFeatureV
 
 	local predictedValue, maxQValue = self:predict(currentFeatureVector)
 
-	local target = rewardValue + (self.discountFactor * maxQValue[1][1])
+	local targetValue = rewardValue + (self.discountFactor * maxQValue[1][1])
 
 	local targetVector = self:predict(previousFeatureVector, true)
 
 	local actionIndex = table.find(self.ClassesList, action)
 
-	targetVector[1][actionIndex] = target
+	targetVector[1][actionIndex] = targetValue
 	
-	return targetVector
+	return targetVector, targetValue
 	
 end
 

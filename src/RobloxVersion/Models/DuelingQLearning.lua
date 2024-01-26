@@ -216,17 +216,13 @@ function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, retu
 
 	else
 
-		if (self.previousFeatureVector) then
+		allOutputsMatrix = self.ActorModel:predict(currentFeatureVector, true)
 
-			allOutputsMatrix = self.ActorModel:predict(currentFeatureVector, true)
+		actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 
-			actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
+		action = actionVector[1][1]
 
-			action = actionVector[1][1]
-
-			highestValue = highestValueVector[1][1]
-
-		end
+		highestValue = highestValueVector[1][1]
 
 	end
 	

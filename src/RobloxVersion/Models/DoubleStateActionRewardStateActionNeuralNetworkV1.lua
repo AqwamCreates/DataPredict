@@ -37,6 +37,8 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIte
 		NewDoubleStateActionRewardStateActionNeuralNetworkModel:train(previousFeatureVector, targetVector)
 
 		NewDoubleStateActionRewardStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+		
+		return targetVector
 
 	end)
 

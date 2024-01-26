@@ -158,6 +158,8 @@ function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVec
 	local highestValueVector
 
 	local allOutputsMatrix
+	
+	local temporalDifferenceError
 
 	local randomProbability = Random.new():NextNumber()
 
@@ -185,7 +187,11 @@ function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVec
 
 	end
 
-	if (self.previousFeatureVector) then self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) end
+	if (self.previousFeatureVector) then 
+		
+		temporalDifferenceError = self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) 
+		
+	end
 	
 	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
 
@@ -202,10 +208,12 @@ function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVec
 	if (self.ExperienceReplay) and (self.previousFeatureVector) then 
 
 		self.ExperienceReplay:addExperience(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
+		
+		self.ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
 
 		self.ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
-			return self:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
+			self:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
 		end)
 

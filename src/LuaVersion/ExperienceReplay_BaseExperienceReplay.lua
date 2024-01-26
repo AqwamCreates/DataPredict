@@ -71,13 +71,17 @@ function BaseExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdat
 	
 end
 
-function BaseExperienceReplay:setResetFunction(resetFunction)
+function BaseExperienceReplay:extendResetFunction(resetFunction)
 	
 	self.resetFunction = resetFunction
 	
 end
 
 function BaseExperienceReplay:reset()
+	
+	self.numberOfExperience = 0
+	
+	table.clear(self.replayBufferArray)
 	
 	self.resetFunction()
 	

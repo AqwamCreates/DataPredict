@@ -16,15 +16,17 @@ function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 
 		local predictedValue, maxQValue = NewQLearningNeuralNetworkModel:predict(currentFeatureVector)
 
-		local target = rewardValue + (NewQLearningNeuralNetworkModel.discountFactor * maxQValue[1][1])
+		local targetValue = rewardValue + (NewQLearningNeuralNetworkModel.discountFactor * maxQValue[1][1])
 
 		local targetVector = NewQLearningNeuralNetworkModel:predict(previousFeatureVector, true)
 
 		local actionIndex = table.find(NewQLearningNeuralNetworkModel.ClassesList, action)
 
-		targetVector[1][actionIndex] = target
+		targetVector[1][actionIndex] = targetValue
 
-		NewQLearningNeuralNetworkModel:train(previousFeatureVector, targetVector)
+		local costArray = NewQLearningNeuralNetworkModel:train(previousFeatureVector, targetVector)
+		
+		return targetValue
 
 	end)
 

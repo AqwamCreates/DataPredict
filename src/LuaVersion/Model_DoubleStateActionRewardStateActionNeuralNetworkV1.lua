@@ -50,7 +50,7 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIte
 
 	NewDoubleStateActionRewardStateActionNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		local randomProbability = math.random()
+		local randomProbability = Random.new():NextNumber()
 
 		local updateSecondModel = (randomProbability >= 0.5)
 
@@ -69,6 +69,8 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIte
 		NewDoubleStateActionRewardStateActionNeuralNetworkModel:train(previousFeatureVector, targetVector)
 
 		NewDoubleStateActionRewardStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+		
+		return targetVector
 
 	end)
 
@@ -159,3 +161,4 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel:generateTargetVect
 end
 
 return DoubleStateActionRewardStateActionNeuralNetworkModel
+

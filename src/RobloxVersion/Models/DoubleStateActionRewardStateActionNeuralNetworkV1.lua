@@ -1,23 +1,21 @@
 local ReinforcementLearningNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningNeuralNetworkBaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+DoubleQLearningNeuralNetworkModel = {}
 
-DoubleStateActionRewardStateActionNeuralNetworkModel = {}
+DoubleQLearningNeuralNetworkModel.__index = DoubleQLearningNeuralNetworkModel
 
-DoubleStateActionRewardStateActionNeuralNetworkModel.__index = DoubleStateActionRewardStateActionNeuralNetworkModel
+setmetatable(DoubleQLearningNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-setmetatable(DoubleStateActionRewardStateActionNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
+function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewDoubleQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
-	local NewDoubleStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
-
-	setmetatable(NewDoubleStateActionRewardStateActionNeuralNetworkModel, DoubleStateActionRewardStateActionNeuralNetworkModel)
-
-	NewDoubleStateActionRewardStateActionNeuralNetworkModel.ModelParametersArray = {}
-
-	NewDoubleStateActionRewardStateActionNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
+	setmetatable(NewDoubleQLearningNeuralNetworkModel, DoubleQLearningNeuralNetworkModel)
+	
+	NewDoubleQLearningNeuralNetworkModel.ModelParametersArray = {}
+	
+	NewDoubleQLearningNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		
 		local randomProbability = Random.new():NextNumber()
 
 		local updateSecondModel = (randomProbability >= 0.5)
@@ -26,27 +24,27 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIte
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		NewDoubleStateActionRewardStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
+		NewDoubleQLearningNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-		local targetVector = NewDoubleStateActionRewardStateActionNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		local targetVector, targetValue = NewDoubleQLearningNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		NewDoubleStateActionRewardStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
+		NewDoubleQLearningNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-		NewDoubleStateActionRewardStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+		NewDoubleQLearningNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 
-		NewDoubleStateActionRewardStateActionNeuralNetworkModel:train(previousFeatureVector, targetVector)
+		NewDoubleQLearningNeuralNetworkModel:train(previousFeatureVector, targetVector)
 
-		NewDoubleStateActionRewardStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+		NewDoubleQLearningNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		return targetVector
-
+		return targetValue
+		
 	end)
 
-	return NewDoubleStateActionRewardStateActionNeuralNetworkModel
+	return NewDoubleQLearningNeuralNetworkModel
 
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function DoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
@@ -66,27 +64,27 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel:setParameters(maxN
 
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:setModelParametersArray(ModelParameters1, ModelParameters2)
-
+function DoubleQLearningNeuralNetworkModel:setModelParametersArray(ModelParameters1, ModelParameters2)
+	
 	if (ModelParameters1) or (ModelParameters2) then
-
+		
 		self.ModelParametersArray = {ModelParameters1, ModelParameters2}
-
+		
 	else
-
+		
 		self.ModelParametersArray = {}
-
+		
 	end
-
+	
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:getModelParametersArray()
-
+function DoubleQLearningNeuralNetworkModel:getModelParametersArray()
+	
 	return self.ModelParametersArray
-
+	
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(index)
+function DoubleQLearningNeuralNetworkModel:saveModelParametersFromModelParametersArray(index)
 
 	local ModelParameters = self:getModelParameters()
 
@@ -94,38 +92,42 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel:saveModelParameter
 
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(index)
-
+function DoubleQLearningNeuralNetworkModel:loadModelParametersFromModelParametersArray(index)
+	
 	local FirstModelParameters = self.ModelParametersArray[1]
-
+	
 	local SecondModelParameters = self.ModelParametersArray[2]
-
+	
 	if (FirstModelParameters == nil) and (SecondModelParameters == nil) then
-
+		
 		self:generateLayers()
-
+		
 		self:saveModelParametersFromModelParametersArray(1)
-
+		
 		self:saveModelParametersFromModelParametersArray(2)
-
+		
 	end
-
+	
 	local CurrentModelParameters = self.ModelParametersArray[index]
-
+	
 	self:setModelParameters(CurrentModelParameters)
-
+	
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function DoubleQLearningNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-	local targetVector = self:predict(currentFeatureVector, true)
+	local predictedValue, maxQValue = self:predict(currentFeatureVector)
 
-	local dicountedVector = AqwamMatrixLibrary:multiply(self.discountFactor, targetVector)
+	local targetValue = rewardValue + (self.discountFactor * maxQValue[1][1])
 
-	local newTargetVector = AqwamMatrixLibrary:add(rewardValue, dicountedVector)
+	local targetVector = self:predict(previousFeatureVector, true)
 
-	return newTargetVector
+	local actionIndex = table.find(self.ClassesList, action)
 
+	targetVector[1][actionIndex] = targetValue
+	
+	return targetVector, targetValue
+	
 end
 
-return DoubleStateActionRewardStateActionNeuralNetworkModel
+return DoubleQLearningNeuralNetworkModel

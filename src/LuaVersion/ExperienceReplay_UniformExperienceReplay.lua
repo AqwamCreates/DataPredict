@@ -63,14 +63,6 @@ function UniformExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxB
 		
 	end)
 	
-	NewUniformExperienceReplay:setResetFunction(function()
-		
-		NewUniformExperienceReplay.numberOfExperience = 0
-
-		NewUniformExperienceReplay.replayBufferArray = {}
-		
-	end)
-	
 	return NewUniformExperienceReplay
 	
 end

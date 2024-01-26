@@ -32,7 +32,6 @@ function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIteration
 
 end
 
-
 function StateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations

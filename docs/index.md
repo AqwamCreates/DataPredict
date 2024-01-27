@@ -57,6 +57,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### ModuleScripts - Release Versions (Fully Tested and Stable)
 
+[DataPredict Library (Release Version 1.11)](https://create.roblox.com/store/asset/16127849536)
+
 [DataPredict Library (Release Version 1.10)](https://create.roblox.com/marketplace/asset/16041994137)
 
 [DataPredict Library (Release Version 1.9)](https://create.roblox.com/marketplace/asset/15905508985)

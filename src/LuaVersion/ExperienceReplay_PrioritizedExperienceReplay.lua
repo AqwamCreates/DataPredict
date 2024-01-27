@@ -33,59 +33,61 @@
 
 local BaseExperienceReplay = require("ExperienceReplay_BaseExperienceReplay")
 
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+
 PrioritizedExperienceReplay = {}
 
 PrioritizedExperienceReplay.__index = PrioritizedExperienceReplay
 
 setmetatable(PrioritizedExperienceReplay, BaseExperienceReplay)
 
-function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+local defaultAlpha = 0.6
+
+local defaultBeta = 0.4
+
+local defaultAggregateFunction = "Maximum"
+
+local defaultEpsilon = math.pow(10, -4)
+
+local aggregrateFunctionList = {
+	
+	["Maximum"] = function (vector) 
+		
+		return AqwamMatrixLibrary:findMaximumValueInMatrix(vector) 
+		
+	end,
+	
+	["Sum"] = function (vector) 
+		
+		return AqwamMatrixLibrary:sum(vector) 
+		
+	end,
+	
+}
+
+function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, alpha, beta, aggregateFunction, epsilon)
 	
 	local NewPrioritizedExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 	
 	setmetatable(NewPrioritizedExperienceReplay, PrioritizedExperienceReplay)
 	
-	NewPrioritizedExperienceReplay.priorities = {} -- Store priorities
+	NewPrioritizedExperienceReplay.alpha = alpha or defaultAlpha
 	
-	NewPrioritizedExperienceReplay:setSampleFunction(function()
-		
-		local batchArray = {}
-		
-		local prioritySum = 0
-
-		for i, priority in ipairs(NewPrioritizedExperienceReplay.priorities) do prioritySum += priority end
-
-		for _ = 1, NewPrioritizedExperienceReplay.batchSize, 1 do
-			
-			local threshold = prioritySum * math.random()
-			
-			local cumulativePriority = 0
-
-			for i, priority in ipairs(NewPrioritizedExperienceReplay.priorities) do
-				
-				cumulativePriority += priority
-
-				if cumulativePriority < threshold then continue end
-				
-				table.insert(batchArray, NewPrioritizedExperienceReplay.replayBufferArray[i])
-				
-				break
-				
-			end
-			
-		end
-		
-		return batchArray
-		
-	end)
+	NewPrioritizedExperienceReplay.beta = beta or defaultBeta
 	
-	NewPrioritizedExperienceReplay:setResetFunction(function()
+	NewPrioritizedExperienceReplay.aggregateFunction = aggregateFunction or defaultAggregateFunction
+	
+	NewPrioritizedExperienceReplay.epsilon = epsilon or defaultEpsilon
+	
+	NewPrioritizedExperienceReplay.Model = nil
+	
+	NewPrioritizedExperienceReplay.prioritiesArray = {} -- Store priorities
+	
+	NewPrioritizedExperienceReplay:setIsTemporalDifferenceErrorRequired(true)
+	
+	NewPrioritizedExperienceReplay:extendResetFunction(function()
 		
-		NewPrioritizedExperienceReplay.numberOfExperience = 0
-
-		NewPrioritizedExperienceReplay.replayBufferArray = {}
-		
-		NewPrioritizedExperienceReplay.priorities = {}
+		table.clear(NewPrioritizedExperienceReplay.prioritiesArray)
 		
 	end)
 	
@@ -93,13 +95,101 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 	
 end
 
-function PrioritizedExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+function PrioritizedExperienceReplay:setModel(Model)
+	
+	self.Model = Model or self.Model
+	
+end
+
+function PrioritizedExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize, alpha, beta, aggregateFunction, epsilon)
 	
 	self.batchSize = batchSize or self.batchSize
 
 	self.numberOfExperienceToUpdate = numberOfExperienceToUpdate or self.numberOfExperienceToUpdate
 
 	self.maxBufferSize = maxBufferSize or self.maxBufferSize
+	
+	self.alpha = alpha or self.alpha
+
+	self.beta = beta or self.beta
+
+	self.aggregateFunction = aggregateFunction or self.aggregateFunction
+	
+	self.epsilon = epsilon or self.epsilon
+	
+end
+
+function PrioritizedExperienceReplay:run()
+	
+	if (not self.Model) then error("No Model!") end
+	
+	if (self.numberOfExperience < self.numberOfExperienceToUpdate) then return nil end
+	
+	self.numberOfExperience = 0
+	
+	local batchArray = {}
+
+	local alpha = self.alpha
+
+	local beta = self.beta
+	
+	local replayBufferArray = self.replayBufferArray
+
+	local aggregateFunctionToApply = aggregrateFunctionList[self.aggregateFunction]
+
+	local lowestNumberOfBatchSize = math.min(self.batchSize, #replayBufferArray)
+
+	local prioritiesArray = self.prioritiesArray
+	
+	local epsilon = self.epsilon
+	
+	local totalPrioritySum = epsilon * #prioritiesArray
+	
+	local sizeArray = AqwamMatrixLibrary:getSize(replayBufferArray[1][1])
+	
+	local inputMatrix = AqwamMatrixLibrary:createMatrix(sizeArray[1], sizeArray[2], 1)
+	
+	local sumLossMatrix
+
+	for i, priorityValue in ipairs(prioritiesArray) do totalPrioritySum += math.pow(priorityValue, alpha) end
+
+	for i, temporalDifferenceErrorValueOrVector in ipairs(self.temporalDifferenceErrorArray) do
+
+		local temporalDifferenceErrorValue = temporalDifferenceErrorValueOrVector
+
+		if (type(temporalDifferenceErrorValue) ~= "number") then
+
+			temporalDifferenceErrorValue = aggregateFunctionToApply(temporalDifferenceErrorValue)
+
+		end
+
+		local transitionProbability = math.pow(temporalDifferenceErrorValue, alpha) / totalPrioritySum
+
+		local importanceSamplingWeight = math.pow((lowestNumberOfBatchSize * transitionProbability), -beta)
+
+		prioritiesArray[i] = math.abs(temporalDifferenceErrorValue) + epsilon
+		
+		local outputMatrix = self.Model:forwardPropagate(replayBufferArray[i][1], false)
+		
+		local adjustedOutputMatrix = AqwamMatrixLibrary:multiply(outputMatrix, temporalDifferenceErrorValue, importanceSamplingWeight)
+		
+		local lossMatrix = AqwamMatrixLibrary:subtract(adjustedOutputMatrix, outputMatrix)
+		
+		if (sumLossMatrix) then
+			
+			sumLossMatrix = AqwamMatrixLibrary:add(sumLossMatrix, lossMatrix)
+			
+		else
+			
+			sumLossMatrix = lossMatrix
+			
+		end
+		
+	end
+	
+	self.Model:forwardPropagate(inputMatrix, true)
+	
+	self.Model:backPropagate(sumLossMatrix, true)
 	
 end
 

@@ -62,7 +62,7 @@ BaseExperienceReplay:sample(): []
 
 * experience: A table containing previous state, action selected, reward value and next state.
 
-### setResetFunction()
+### extendResetFunction()
 
 Set the function to run when reset() function is called.
 

@@ -64,7 +64,7 @@ BaseExperienceReplay:sample(): []
 
 ### extendResetFunction()
 
-Set the function to run when reset() function is called.
+Adds new function on reset alongside with the current reset() function.
 
 ```
 BaseExperienceReplay:setResetFunction(resetFunction)
@@ -109,3 +109,23 @@ BaseExperienceReplay:addExperience(previousState, action: number/string, rewardV
 * rewardValue: The reward gained at current state.
 
 * currentState: The currrent state of the environment.
+
+### addTemporalDifferenceError()
+
+Adds a temporal difference error to the experiance replay object.
+
+```
+BaseExperienceReplay:addTemporalDifferenceError(temporalDifferenceErrorVectorOrValue)
+```
+
+* temporalDifferenceErrorVectorOrValue: The temporal difference error in a form of vector or value.
+
+### setIsTemporalDifferenceErrorRequired()
+
+Set whether or not to store temporal difference errors to the experiance replay object.
+
+```
+BaseExperienceReplay:setIsTemporalDifferenceErrorRequired(option)
+```
+
+* option: Set whether or not to store temporal difference errors.

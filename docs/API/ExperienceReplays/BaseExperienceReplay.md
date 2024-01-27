@@ -102,6 +102,8 @@ Adds an experience to the experiance replay object.
 BaseExperienceReplay:addExperience(previousState, action: number/string, rewardValue: number, currentState)
 ```
 
+#### Parameters:
+
 * previousState: The previous state of the environment.
 
 * action: The action selected.
@@ -118,6 +120,8 @@ Adds a temporal difference error to the experiance replay object.
 BaseExperienceReplay:addTemporalDifferenceError(temporalDifferenceErrorVectorOrValue)
 ```
 
+#### Parameters:
+
 * temporalDifferenceErrorVectorOrValue: The temporal difference error in a form of vector or value.
 
 ### setIsTemporalDifferenceErrorRequired()
@@ -127,5 +131,7 @@ Set whether or not to store temporal difference errors to the experiance replay 
 ```
 BaseExperienceReplay:setIsTemporalDifferenceErrorRequired(option)
 ```
+
+#### Parameters:
 
 * option: Set whether or not to store temporal difference errors.

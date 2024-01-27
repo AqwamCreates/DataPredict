@@ -84,7 +84,7 @@ end
 
 function ReinforcementLearningNeuralNetworkBaseModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
 	
-	self.updateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	return self.updateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector)
 	
 end
 

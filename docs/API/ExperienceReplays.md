@@ -2,8 +2,8 @@
 
 [UniformExperienceReplay](ExperienceReplays/UniformExperienceReplay.md)
 
-[PrioritizedExperienceReplay](ExperienceReplays/PrioritizedExperienceReplay.md)
-
 [NStepExperienceReplay](ExperienceReplays/NStepExperienceReplay.md)
+
+[PrioritizedExperienceReplay](ExperienceReplays/PrioritizedExperienceReplay.md)
 
 [BaseExperienceReplay](ExperienceReplays/BaseExperienceReplay.md)

@@ -35,10 +35,6 @@ local BaseExperienceReplay = require("ExperienceReplay_BaseExperienceReplay")
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
-
-local BaseExperienceReplay = require(script.Parent.BaseExperienceReplay)
-
 PrioritizedExperienceReplay = {}
 
 PrioritizedExperienceReplay.__index = PrioritizedExperienceReplay

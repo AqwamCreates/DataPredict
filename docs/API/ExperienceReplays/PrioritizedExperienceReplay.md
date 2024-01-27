@@ -24,7 +24,7 @@ PrioritizedExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: n
 
 * beta: Corrects the bias introduced by prioritization. Adjusts the importance sampling weights. Must set the value between 0 and 1. 1 for fully compensation.
 
-* aggregateFunction: The function to apply to temporal difference error if it is a vector. The options are:
+* aggregateFunction: The function to choose a temporal difference if it is a vector. The options are:
 
   * Maximum
 
@@ -54,7 +54,7 @@ PrioritizedExperienceReplay:setParametersbatchSize: number, numberOfExperienceTo
 
 * beta: Corrects the bias introduced by prioritization. Adjusts the importance sampling weights. Must set the value between 0 and 1. 1 for fully compensation.
 
-* aggregateFunction: The function to apply to temporal difference error if it is a vector. The options are:
+* aggregateFunction: The function to choose a temporal difference if it is a vector. The options are:
 
   * Maximum
 

@@ -4,7 +4,7 @@ local Models = DataPredictLibrary.Models
 
 local Optimizers = DataPredictLibrary.Optimizers
 
-local Regularization = DataPredictLibrary.Others.Regularization
+local Regularization = require(DataPredictLibrary.Others.Regularization)
 
 local AqwamMatrixLibrary = require(DataPredictLibrary.AqwamMatrixLibraryLinker.Value)
 
@@ -134,15 +134,15 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 	
 end
 
-function OneVsAll:setRegularization(lambda, regularizationMode)
+function OneVsAll:setRegularization(lambda, regularizationMode, hasBias)
 	
 	self:checkIfModelsSet()
 	
 	local RegularizationObject
 
-	if lambda or regularizationMode then
+	if lambda or regularizationMode or hasBias then
 		
-		RegularizationObject = require(Regularization).new(lambda, regularizationMode)
+		RegularizationObject = Regularization.new(lambda, regularizationMode, hasBias)
 	
 	else
 		

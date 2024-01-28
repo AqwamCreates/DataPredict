@@ -103,7 +103,7 @@ function OneVsAll:setModels(modelName, numberOfClasses)
 	
 	local isNameAdded = (typeof(modelName) == "string")
 	
-	if isNameAdded then  SelectedModel = require("Model_" .. modelName) end
+	if isNameAdded then  SelectedModel = require(Models[modelName]) end
 	
 	for i = 1, numberOfClasses, 1 do
 
@@ -131,7 +131,7 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 	
 	local SelectedOptimizer
 	
-	if isNameAdded then SelectedOptimizer = require("Optimizer_" .. optimizerName) end
+	if isNameAdded then SelectedOptimizer = require(Optimizers[optimizerName]) end
 	
 	local success = pcall(function()
 		
@@ -161,15 +161,15 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 	
 end
 
-function OneVsAll:setRegularization(lambda, regularizationMode)
+function OneVsAll:setRegularization(lambda, regularizationMode, hasBias)
 	
 	self:checkIfModelsSet()
 	
 	local RegularizationObject
 
-	if lambda or regularizationMode then
+	if lambda or regularizationMode or hasBias then
 		
-		RegularizationObject = Regularization.new(lambda, regularizationMode)
+		RegularizationObject = Regularization.new(lambda, regularizationMode, hasBias)
 	
 	else
 		

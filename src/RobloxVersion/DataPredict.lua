@@ -4,7 +4,7 @@
 
 	Aqwam's Machine And Deep Learning Library (DataPredict)
 
-	Version 1.25.0
+	Version 1.26.0
 
 	Author: Aqwam Harish Aiman
 	

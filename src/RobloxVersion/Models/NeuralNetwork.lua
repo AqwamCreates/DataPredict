@@ -806,7 +806,7 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
 
 end
 
-function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
+function NeuralNetworkModel.new(maxNumberOfIterations, learningRate)
 
 	local NewNeuralNetworkModel = BaseModel.new()
 
@@ -815,8 +815,6 @@ function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 	NewNeuralNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
 	NewNeuralNetworkModel.learningRate = learningRate or defaultLearningRate
-
-	NewNeuralNetworkModel.targetCost = targetCost or defaultTargetCost
 
 	NewNeuralNetworkModel.numberOfNeuronsTable = {}
 
@@ -840,13 +838,11 @@ function NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 
 end
 
-function NeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost)
+function NeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
-
-	self.targetCost = targetCost or self.targetCost
 
 end
 
@@ -1454,15 +1450,13 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 			self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
-			if (math.abs(cost) <= self.targetCost) then break end
-
 		end
 
 		lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
 
 		self:backPropagate(lossMatrix, true)
 
-	until (numberOfIterations == self.maxNumberOfIterations)
+	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 

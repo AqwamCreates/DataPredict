@@ -41,9 +41,13 @@ setmetatable(KMeansModel, BaseModel)
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local defaultMaxNumberOfIterations = 500
+KMeansModel = {}
 
-local defaultTargetCost = 0
+KMeansModel.__index = KMeansModel
+
+setmetatable(KMeansModel, BaseModel)
+
+local defaultMaxNumberOfIterations = 500
 
 local defaultNumberOfClusters = 2
 
@@ -322,15 +326,13 @@ local function calculateModelParametersMean(modelParameters, featureMatrix, dist
 	
 end
 
-function KMeansModel.new(maxNumberOfIterations, numberOfClusters, distanceFunction, targetCost, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest, stopWhenModelParametersDoesNotChange)
+function KMeansModel.new(maxNumberOfIterations, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest, stopWhenModelParametersDoesNotChange)
 	
 	local NewKMeansModel = BaseModel.new()
 	
 	setmetatable(NewKMeansModel, KMeansModel)
 	
 	NewKMeansModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
-
-	NewKMeansModel.targetCost = targetCost or defaultTargetCost
 
 	NewKMeansModel.distanceFunction = distanceFunction or defaultDistanceFunction
 
@@ -346,11 +348,9 @@ function KMeansModel.new(maxNumberOfIterations, numberOfClusters, distanceFuncti
 	
 end
 
-function KMeansModel:setParameters(maxNumberOfIterations, numberOfClusters, distanceFunction, targetCost, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest, stopWhenModelParametersDoesNotChange)
+function KMeansModel:setParameters(maxNumberOfIterations, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest, stopWhenModelParametersDoesNotChange)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.targetCost = targetCost or self.targetCost
 
 	self.distanceFunction = distanceFunction or self.distanceFunction
 
@@ -434,9 +434,7 @@ function KMeansModel:train(featureMatrix)
 
 		self.ModelParameters = calculateModelParametersMean(self.ModelParameters, featureMatrix, self.distanceFunction)
 
-		areModelParametersEqual =  AqwamMatrixLibrary:areMatricesEqual(self.ModelParameters, PreviousModelParameters)
-
-	until (numberOfIterations == self.maxNumberOfIterations) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
+	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

@@ -289,20 +289,6 @@ local function createNewcentroids(centroids, centroidIndex1Combine, centroidInde
 
 end
 
-local function areModelParametersMatricesEqualInSizeAndValues(ModelParameters, PreviousModelParameters)
-
-	local areModelParametersEqual = false
-
-	if (PreviousModelParameters == nil) then return areModelParametersEqual end
-
-	if (#ModelParameters ~= #PreviousModelParameters) or (#ModelParameters[1] ~= #PreviousModelParameters[1]) then return areModelParametersEqual end
-
-	areModelParametersEqual = AqwamMatrixLibrary:areMatricesEqual(ModelParameters, PreviousModelParameters)
-
-	return areModelParametersEqual
-
-end
-
 local function calculateCost(centroids, featureMatrix, distanceFunction)
 
 	local cost = 0

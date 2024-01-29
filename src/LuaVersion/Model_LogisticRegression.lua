@@ -180,7 +180,7 @@ local function gradientDescent(modelParameters, featureMatrix, labelVector, sigm
 	
 end
 
-function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
+function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, sigmoidFunction)
 	
 	local NewLogisticRegressionModel = BaseModel.new()
 
@@ -191,8 +191,6 @@ function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, sigmoi
 	NewLogisticRegressionModel.learningRate = learningRate or defaultLearningRate
 
 	NewLogisticRegressionModel.sigmoidFunction = sigmoidFunction or defaultSigmoidFunction
-
-	NewLogisticRegressionModel.targetCost = targetCost or defaultTargetCost
 	
 	NewLogisticRegressionModel.Optimizer = nil
 	
@@ -202,15 +200,13 @@ function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, sigmoi
 	
 end
 
-function LogisticRegressionModel:setParameters(maxNumberOfIterations, learningRate, sigmoidFunction, targetCost)
+function LogisticRegressionModel:setParameters(maxNumberOfIterations, learningRate, sigmoidFunction)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
 	self.sigmoidFunction = sigmoidFunction or self.sigmoidFunction
-
-	self.targetCost = targetCost or self.targetCost
 
 end
 
@@ -284,8 +280,6 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 			self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
-			if (math.abs(cost) <= self.targetCost) then break end
-
 		end
 		
 		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.sigmoidFunction)
@@ -310,7 +304,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
 		
-	until (numberOfIterations == self.maxNumberOfIterations)
+	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

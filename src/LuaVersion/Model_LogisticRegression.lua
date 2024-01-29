@@ -47,8 +47,6 @@ local defaultLearningRate = 0.1
 
 local defaultSigmoidFunction = "Sigmoid"
 
-local defaultTargetCost = 0
-
 local sigmoidFunctionList = {
 
 	["Sigmoid"] = function (z) return 1/(1 + math.exp(-1 * z)) end,

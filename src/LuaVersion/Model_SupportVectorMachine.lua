@@ -47,8 +47,6 @@ local defaultLearningRate = 0.01
 
 local defaultCvalue = 1
 
-local defaultTargetCost = 0
-
 local defaultKernelFunction = "Linear"
 
 local defaultGamma = 1

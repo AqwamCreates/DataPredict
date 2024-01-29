@@ -47,8 +47,6 @@ local defaultLearningRate = 0.3
 
 local defaultLossFunction = "L2"
 
-local defaultTargetCost = 0
-
 local lossFunctionList = {
 
 	["L1"] = function (x1, x2)
@@ -114,7 +112,7 @@ local function gradientDescent(modelParameters, featureMatrix, labelVector, loss
 	
 end
 
-function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lossFunction, targetCost)
+function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lossFunction)
 	
 	local NewLinearRegressionModel = BaseModel.new()
 	
@@ -126,8 +124,6 @@ function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lossFunc
 	
 	NewLinearRegressionModel.lossFunction = lossFunction or defaultLossFunction
 	
-	NewLinearRegressionModel.targetCost = targetCost or defaultTargetCost
-	
 	NewLinearRegressionModel.Optimizer = nil
 	
 	NewLinearRegressionModel.Regularization = nil
@@ -136,15 +132,13 @@ function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lossFunc
 	
 end
 
-function LinearRegressionModel:setParameters(maxNumberOfIterations, learningRate, lossFunction, targetCost)
+function LinearRegressionModel:setParameters(maxNumberOfIterations, learningRate, lossFunction)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
 	self.lossFunction = lossFunction or self.lossFunction
-
-	self.targetCost = targetCost or self.targetCost
 	
 end
 
@@ -192,7 +186,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	repeat
 		
-		numberOfIterations = numberOfIterations + 1
+		numberOfIterations += 1
 		
 		self:iterationWait()
 		
@@ -204,7 +198,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 			regularizationCost = self.Regularization:calculateRegularization(self.ModelParameters, numberOfData)
 
-			cost = cost + regularizationCost
+			cost += regularizationCost
 			
 			return cost
 			
@@ -215,8 +209,6 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 			table.insert(costArray, cost)
 			
 			self:printCostAndNumberOfIterations(cost, numberOfIterations)
-			
-			if (math.abs(cost) <= self.targetCost) then break end
 			
 		end
 		
@@ -242,7 +234,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
 		
-	until (numberOfIterations == self.maxNumberOfIterations)
+	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values") end
 	

@@ -14,8 +14,6 @@ local defaultNumberOfClusters = 2
 
 local defaultDistanceFunction = "Manhattan"
 
-local defaultStopWhenModelParametersDoesNotChange = false
-
 local defaultSetTheCentroidsDistanceFarthest = false
 
 local distanceFunctionList = {

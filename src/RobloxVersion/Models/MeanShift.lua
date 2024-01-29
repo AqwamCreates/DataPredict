@@ -251,7 +251,7 @@ local function mergeCentroids(ModelParameters, featureMatrix, bandwidth, weights
 	
 end
 
-function MeanShiftModel.new(maxNumberOfIterations, bandwidth, bandwidthStep, distanceFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
+function MeanShiftModel.new(maxNumberOfIterations, bandwidth, bandwidthStep, distanceFunction)
 	
 	local NewMeanShiftModel = BaseModel.new()
 	
@@ -259,47 +259,25 @@ function MeanShiftModel.new(maxNumberOfIterations, bandwidth, bandwidthStep, dis
 	
 	NewMeanShiftModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
-	NewMeanShiftModel.highestCost = highestCost or defaultHighestCost
-
-	NewMeanShiftModel.lowestCost = lowestCost or defaultLowestCost
-
 	NewMeanShiftModel.distanceFunction = distanceFunction or defaultDistanceFunction
 
 	NewMeanShiftModel.bandwidth = bandwidth or defaultBandwidth
 	
 	NewMeanShiftModel.bandwidthStep = bandwidthStep or defaultBandwidthStep
 	
-	NewMeanShiftModel.stopWhenModelParametersDoesNotChange =  BaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, defaultStopWhenModelParametersDoesNotChange)
-	
 	return NewMeanShiftModel
 	
 end
 
-function MeanShiftModel:setParameters(maxNumberOfIterations, bandwidth, bandwidthStep, distanceFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
+function MeanShiftModel:setParameters(maxNumberOfIterations, bandwidth, bandwidthStep, distanceFunction)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.highestCost = highestCost or self.highestCost
-
-	self.lowestCost = lowestCost or self.lowestCost
 
 	self.distanceFunction = distanceFunction or self.distanceFunction
 
 	self.bandwidth = bandwidth or self.bandwidth
 	
 	self.bandwidthStep = bandwidthStep or self.bandwidthStep
-
-	self.stopWhenModelParametersDoesNotChange =  self:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
-	
-end
-
-local function checkIfModelParametersAreEqual(ModelParameters, PreviousModelParameters)
-	
-	if (PreviousModelParameters == nil) then return false end
-	
-	if (#ModelParameters ~= #PreviousModelParameters) then return false end
-	
-	return AqwamMatrixLibrary:areMatricesEqual(ModelParameters, PreviousModelParameters)
 	
 end
 
@@ -308,8 +286,6 @@ function MeanShiftModel:train(featureMatrix)
 	local isOutsideCostBounds
 	
 	local PreviousModelParameters
-	
-	local areModelParametersEqual
 	
 	local cost
 	
@@ -363,19 +339,11 @@ function MeanShiftModel:train(featureMatrix)
 			
 			self:printCostAndNumberOfIterations(cost, numberOfIterations)
 			
-			isOutsideCostBounds = (cost <= self.lowestCost) or (cost >= self.highestCost)
-			
-			if isOutsideCostBounds then break end
-			
 		end
-		
-		PreviousModelParameters = self.ModelParameters
 
 		self.ModelParameters = mergeCentroids(self.ModelParameters, featureMatrix, self.bandwidth, weights, self.distanceFunction)
-
-		areModelParametersEqual = checkIfModelParametersAreEqual(self.ModelParameters, PreviousModelParameters)
 		
-	until (numberOfIterations == self.maxNumberOfIterations) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
+	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

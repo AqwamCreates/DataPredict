@@ -47,8 +47,6 @@ local defaultLearningRate = 0.1
 
 local defaultActivationFunction = "LeakyReLU"
 
-local defaultTargetCost = 0
-
 local defaultDropoutRate = 0
 
 local layerPropertyValueTypeCheckingFunctionList = {

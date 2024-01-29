@@ -329,8 +329,6 @@ function SupportVectorMachineModel.new(maxNumberOfIterations, cValue, kernelFunc
 
 	NewSupportVectorMachine.kernelParameters = kernelParameters or {}
 
-	NewSupportVectorMachine.Optimizer = nil
-
 	return NewSupportVectorMachine
 end
 

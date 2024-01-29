@@ -380,9 +380,9 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 	local costFunctionDerivatives
 
-	local mappedFeatureMatrix  = calculateMapping(featureMatrix, self.kernelFunction, self.kernelParameters)
+	local mappedFeatureMatrix = calculateMapping(featureMatrix, self.kernelFunction, self.kernelParameters)
 	
-	local kernelMatrix  = calculateKernel(featureMatrix, self.kernelFunction, self.kernelParameters)
+	local kernelMatrix = calculateKernel(featureMatrix, self.kernelFunction, self.kernelParameters)
 	
 	repeat
 		

@@ -41,12 +41,6 @@ setmetatable(KMeansModel, BaseModel)
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-KMeansModel = {}
-
-KMeansModel.__index = KMeansModel
-
-setmetatable(KMeansModel, BaseModel)
-
 local defaultMaxNumberOfIterations = 500
 
 local defaultNumberOfClusters = 2
@@ -425,8 +419,6 @@ function KMeansModel:train(featureMatrix)
 			table.insert(costArray, cost)
 			
 			self:printCostAndNumberOfIterations(cost, numberOfIterations)
-			
-			if (math.abs(cost) <= self.targetCost) then break end
 			
 		end
 		

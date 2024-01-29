@@ -104,6 +104,8 @@ function BaseModel:checkIfConverged(cost)
 	
 	if (self.currentCostToCheckForConvergence ~= cost) then
 		
+		self.currentNumberOfIterationsToCheckIfConverged = 0
+		
 		self.currentCostToCheckForConvergence = cost
 
 		return false
@@ -112,13 +114,15 @@ function BaseModel:checkIfConverged(cost)
 	
 	if (self.currentNumberOfIterationsToCheckIfConverged < self.numberOfIterationsToCheckIfConverged) then
 		
-		self.currentCostToCheckForConvergence += 1
+		self.currentNumberOfIterationsToCheckIfConverged += 1
 		
 		return false
 		
 	end
 	
 	self.currentNumberOfIterationsToCheckIfConverged = 0
+	
+	self.currentCostToCheckForConvergence = nil
 	
 	return true
 	

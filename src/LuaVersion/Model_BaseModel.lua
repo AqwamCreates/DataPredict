@@ -101,13 +101,79 @@ function BaseModel.new()
 	
 	NewBaseModel.SequenceWaitDuration = nil
 	
+	NewBaseModel.targetCostUpperBound = 0
+	
+	NewBaseModel.targetCostLowerBound = 0
+	
+	NewBaseModel.currentCostToCheckForConvergence = nil
+	
+	NewBaseModel.currentNumberOfIterationsToCheckIfConverged = 0
+	
+	NewBaseModel.numberOfIterationsToCheckIfConverged = math.huge
+	
 	NewBaseModel.AutoResetOptimizers = true
 
 	return NewBaseModel
 	
 end
 
-function BaseModel:getCostWhenRequired(currentNumberOfIteration, costFunction)
+function BaseModel:setNumberOfIterationsToCheckIfConverged(numberOfIterations)
+	
+	self.numberOfIterationsToCheckIfConverged = numberOfIterations or self.numberOfIterationsToCheckIfConverged
+	
+end
+
+function BaseModel:checkIfConverged(cost)
+	
+	if (not cost) then return false end
+	
+	if (not self.currentCostToCheckForConvergence) then
+		
+		self.currentCostToCheckForConvergence = cost
+		
+		return false
+		
+	end
+	
+	if (self.currentCostToCheckForConvergence ~= cost) then
+		
+		self.currentCostToCheckForConvergence = cost
+
+		return false
+		
+	end
+	
+	if (self.currentNumberOfIterationsToCheckIfConverged < self.numberOfIterationsToCheckIfConverged) then
+		
+		self.currentCostToCheckForConvergence += 1
+		
+		return false
+		
+	end
+	
+	self.currentNumberOfIterationsToCheckIfConverged = 0
+	
+	return true
+	
+end
+
+function BaseModel:setTargetCost(upperBound, lowerBound)
+
+	self.targetCostUpperBound = upperBound or self.targetCostUpperBound
+	
+	self.targetCostLowerBound = lowerBound or self.targetCostLowerBound
+
+end
+
+function BaseModel:checkIfTargetCostReached(cost)
+	
+	if (not cost) then return false end
+	
+	return (cost >= self.targetCostLowerBound) and (cost <= self.targetCostUpperBound)
+	
+end
+
+function BaseModel:calculateCostWhenRequired(currentNumberOfIteration, costFunction)
 	
 	if ((currentNumberOfIteration % self.NumberOfIterationsPerCostCalculation) == 0) then 
 		

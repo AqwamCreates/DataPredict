@@ -42,11 +42,9 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = math.huge
 
-local defaultTargetCost = 0
-
 local defaultNumberOfClusters = 2
 
-local defaultDistanceFunction = "manhattan"
+local defaultDistanceFunction = "Manhattan"
 
 local defaultStopWhenModelParametersDoesNotChange = false
 
@@ -54,7 +52,7 @@ local defaultSetTheCentroidsDistanceFarthest = false
 
 local distanceFunctionList = {
 
-	["manhattan"] = function (x1, x2)
+	["Manhattan"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -66,7 +64,7 @@ local distanceFunctionList = {
 
 	end,
 
-	["euclidean"] = function (x1, x2)
+	["Euclidean"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 
@@ -318,35 +316,31 @@ local function initializeCentroids(featureMatrix, numberOfClusters, distanceFunc
 end
 
 
-function KMedoidsModel.new(maxNumberOfIterations, numberOfClusters, distanceFunction, targetCost, setTheCentroidsDistanceFarthest)
+function KMedoidsModel.new(maxNumberOfIterations, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
 	
 	local NewKMedoidsModel = BaseModel.new()
 	
 	setmetatable(NewKMedoidsModel, KMedoidsModel)
 	
 	NewKMedoidsModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
-
-	NewKMedoidsModel.targetCost = targetCost or defaultTargetCost
+	
+	NewKMedoidsModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
 
 	NewKMedoidsModel.distanceFunction = distanceFunction or defaultDistanceFunction
 
-	NewKMedoidsModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
-	
 	NewKMedoidsModel.setTheCentroidsDistanceFarthest = BaseModel:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
 	
 	return NewKMedoidsModel
 	
 end
 
-function KMedoidsModel:setParameters(maxNumberOfIterations, numberOfClusters, distanceFunction, targetCost, setTheCentroidsDistanceFarthest)
+function KMedoidsModel:setParameters(maxNumberOfIterations, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.targetCost = targetCost or self.targetCost
+	
+	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 
 	self.distanceFunction = distanceFunction or self.distanceFunction
-
-	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 
 	self.setTheCentroidsDistanceFarthest =  self:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
 	
@@ -428,15 +422,15 @@ function KMedoidsModel:train(featureMatrix)
 
 				self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
-				if (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) then break end
+				if (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
 
 			end
 
-			if (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) then break end
+			if (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
 
 		end
 		
-		if (numberOfIterations == self.maxNumberOfIterations) or (math.abs(cost) <= self.targetCost) then break end
+		if (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
 		
 	end
 	

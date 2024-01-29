@@ -239,24 +239,22 @@ function ExpectationMaximizationModel.new(maxNumberOfIterations, numberOfCluster
 
 	setmetatable(NewExpectationMaximizationModel, ExpectationMaximizationModel)
 	
-	NewExpectationMaximizationModel:setModelParametersInitializationMode("RandomNormalPositive")
+	NewExpectationMaximizationModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
 	NewExpectationMaximizationModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
 
 	NewExpectationMaximizationModel.epsilon = epsilon or defaultEpsilon
-
-	NewExpectationMaximizationModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
 	return NewExpectationMaximizationModel
 end
 
 function ExpectationMaximizationModel:setParameters(maxNumberOfIterations, numberOfClusters, epsilon)
+	
+	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 
 	self.epsilon = epsilon or self.epsilon
-
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 end
 

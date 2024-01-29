@@ -43,10 +43,6 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 
-local defaultHighestCost = math.huge
-
-local defaultLowestCost = -math.huge
-
 local defaultNumberOfcentroids = 1
 
 local defaultDistanceFunction = "Euclidean"
@@ -368,15 +364,11 @@ local function calculateCost(centroids, featureMatrix, distanceFunction)
 
 end
 
-function AgglomerativeHierarchicalModel.new(numberOfCentroids, distanceFunction, linkageFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
+function AgglomerativeHierarchicalModel.new(numberOfCentroids, distanceFunction, linkageFunction)
 
 	local NewAgglomerativeHierarchicalModel = BaseModel.new()
 
 	setmetatable(NewAgglomerativeHierarchicalModel, AgglomerativeHierarchicalModel)
-
-	NewAgglomerativeHierarchicalModel.highestCost = highestCost or defaultHighestCost
-
-	NewAgglomerativeHierarchicalModel.lowestCost = lowestCost or defaultLowestCost
 
 	NewAgglomerativeHierarchicalModel.distanceFunction = distanceFunction or defaultDistanceFunction
 
@@ -384,25 +376,17 @@ function AgglomerativeHierarchicalModel.new(numberOfCentroids, distanceFunction,
 
 	NewAgglomerativeHierarchicalModel.numberOfCentroids = numberOfCentroids or defaultNumberOfcentroids
 
-	NewAgglomerativeHierarchicalModel.stopWhenModelParametersDoesNotChange =  BaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, defaultStopWhenModelParametersDoesNotChange)
-
 	return NewAgglomerativeHierarchicalModel
 
 end
 
-function AgglomerativeHierarchicalModel:setParameters(numberOfCentroids, distanceFunction, linkageFunction, highestCost, lowestCost, stopWhenModelParametersDoesNotChange)
-
-	self.highestCost = highestCost or self.highestCost
-
-	self.lowestCost = lowestCost or self.lowestCost
+function AgglomerativeHierarchicalModel:setParameters(numberOfCentroids, distanceFunction, linkageFunction)
 
 	self.distanceFunction = distanceFunction or self.distanceFunction
 
 	self.linkageFunction = linkageFunction or self.linkageFunction
 
 	self.numberOfCentroids = numberOfCentroids or self.numberOfCentroids
-
-	self.stopWhenModelParametersDoesNotChange =  self:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
 
 end
 
@@ -414,15 +398,11 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 	local minimumDistance
 
-	local isOutsideCostBounds
-
 	local numberOfIterations = 0
 
 	local cost = 0
 
 	local costArray = {}
-
-	local PreviousModelParameters
 
 	local centroidDistanceMatrix
 
@@ -464,10 +444,6 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 			self:printCostAndNumberOfIterations(cost, numberOfIterations)
 			
-			isOutsideCostBounds = (cost <= self.lowestCost) or (cost >= self.highestCost)
-			
-			if isOutsideCostBounds then break end
-			
 		end
 
 		centroidIndex1, centroidIndex2 = findClosestcentroids(centroidDistanceMatrix)
@@ -478,13 +454,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 		self.ModelParameters = centroids
 
-		areModelParametersEqual = areModelParametersMatricesEqualInSizeAndValues(self.ModelParameters, PreviousModelParameters)
-
-		
-
-		PreviousModelParameters = self.ModelParameters
-
-	until (#centroids == self.numberOfcentroids) or (#centroids == 1) or (areModelParametersEqual and self.stopWhenModelParametersDoesNotChange)
+	until (#centroids == self.numberOfcentroids) or (#centroids == 1) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	self.ModelParameters = centroids
 

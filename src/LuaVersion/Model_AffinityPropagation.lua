@@ -271,7 +271,7 @@ function AffinityPropagationModel.new(maxNumberOfIterations, similarityFunction,
 
 end
 
-function AffinityPropagationModel:setParameters(maxNumberOfIterations, similarityFunction, damping, targetCost)
+function AffinityPropagationModel:setParameters(maxNumberOfIterations, similarityFunction, damping)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	

@@ -14,8 +14,6 @@ local defaultMaxNumberOfIterations = 10
 
 local defaultNumberOfClusters = math.huge
 
-local defaultTargetCost = 0
-
 local function gaussian(featureVector, meanVector, varianceVector, epsilon)
 	
 	local exponentStep1 = AqwamMatrixLibrary:subtract(featureVector, meanVector)
@@ -202,7 +200,7 @@ function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, e
 	
 end
 
-function ExpectationMaximizationModel.new(maxNumberOfIterations, numberOfClusters, epsilon, targetCost)
+function ExpectationMaximizationModel.new(maxNumberOfIterations, numberOfClusters, epsilon)
 
 	local NewExpectationMaximizationModel = BaseModel.new()
 
@@ -215,21 +213,17 @@ function ExpectationMaximizationModel.new(maxNumberOfIterations, numberOfCluster
 	NewExpectationMaximizationModel.epsilon = epsilon or defaultEpsilon
 
 	NewExpectationMaximizationModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
-
-	NewExpectationMaximizationModel.targetCost = targetCost or defaultTargetCost
-
+	
 	return NewExpectationMaximizationModel
 end
 
-function ExpectationMaximizationModel:setParameters(maxNumberOfIterations, numberOfClusters, epsilon, targetCost)
+function ExpectationMaximizationModel:setParameters(maxNumberOfIterations, numberOfClusters, epsilon)
 
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 
 	self.epsilon = epsilon or self.epsilon
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.targetCost = targetCost
 
 end
 
@@ -316,12 +310,10 @@ function ExpectationMaximizationModel:train(featureMatrix)
 			self:printCostAndNumberOfIterations(cost, numberOfIterations)
 			
 			if (cost ~= cost) then error("Too much variance in the data! Please change the argument values.") end
-			
-			if (cost <= self.targetCost) then break end
 
 		end
 
-	until (numberOfIterations >= self.maxNumberOfIterations)
+	until (numberOfIterations >= self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	self.ModelParameters = {piMatrix, meanMatrix, varianceMatrix}
 

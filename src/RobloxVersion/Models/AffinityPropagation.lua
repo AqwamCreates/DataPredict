@@ -10,8 +10,6 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker
 
 local defaultMaxNumberOfIterations = 500
 
-local defaultTargetCost = 0
-
 local defaultDamping = 0.5
 
 local defaultSimilarityFunction = "Euclidean"
@@ -224,7 +222,7 @@ local function assignClusters(availibilityMatrix, responsibilityMatrix)
 
 end
 
-function AffinityPropagationModel.new(maxNumberOfIterations, similarityFunction, damping, numberOfIterationsToConfirmConvergence, targetCost)
+function AffinityPropagationModel.new(maxNumberOfIterations, similarityFunction, damping)
 
 	local NewAffinityPropagationModel = BaseModel.new()
 
@@ -235,26 +233,18 @@ function AffinityPropagationModel.new(maxNumberOfIterations, similarityFunction,
 	NewAffinityPropagationModel.similarityFunction = similarityFunction or defaultSimilarityFunction
 
 	NewAffinityPropagationModel.damping = damping or defaultDamping
-	
-	NewAffinityPropagationModel.numberOfIterationsToConfirmConvergence = numberOfIterationsToConfirmConvergence or defaultNumberOfIterationsToConfirmConvergence
-
-	NewAffinityPropagationModel.targetCost = targetCost or defaultTargetCost
 
 	return NewAffinityPropagationModel
 
 end
 
-function AffinityPropagationModel:setParameters(maxNumberOfIterations, similarityFunction, damping, numberOfIterationsToConfirmConvergence, targetCost)
+function AffinityPropagationModel:setParameters(maxNumberOfIterations, similarityFunction, damping, targetCost)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
 	self.similarityFunction = similarityFunction or self.similarityFunction
 
 	self.damping = damping or self.damping
-	
-	self.numberOfIterationsToConfirmConvergence = numberOfIterationsToConfirmConvergence or self.numberOfIterationsToConfirmConvergence
-
-	self.targetCost = targetCost or self.targetCost
 
 end
 
@@ -283,8 +273,6 @@ function AffinityPropagationModel:train(featureMatrix)
 	local availabilityMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfData)
 
 	local numberOfIterations = 0
-	
-	local numberOfIterationsWhenConvergenceOccurred = 0
 
 	local clusterVector
 	
@@ -310,22 +298,6 @@ function AffinityPropagationModel:train(featureMatrix)
 		
 		clusterVector = assignClusters(availabilityMatrix, responsibilityMatrix)
 		
-		if previousClusterVector then
-			
-			isConverged = AqwamMatrixLibrary:areMatricesEqual(clusterVector, previousClusterVector)
-			
-			if isConverged then
-				
-				numberOfIterationsWhenConvergenceOccurred += 1
-				
-			else
-				
-				numberOfIterationsWhenConvergenceOccurred = 0
-				
-			end
-			
-		end
-		
 		previousClusterVector = clusterVector
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
@@ -342,7 +314,7 @@ function AffinityPropagationModel:train(featureMatrix)
 			
 		end
 		
-	until (numberOfIterations >= self.maxNumberOfIterations) or (cost <= self.targetCost) or (numberOfIterationsWhenConvergenceOccurred >= self.numberOfIterationsToConfirmConvergence)
+	until (numberOfIterations >= self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 

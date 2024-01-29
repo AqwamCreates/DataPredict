@@ -8,8 +8,6 @@ setmetatable(DensityBasedSpatialClusteringOfApplicationsWithNoiseModel, BaseMode
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local defaultTargetCost = 0
-
 local defaultMinimumNumberOfPoints = 2
 
 local defaultDistanceFunction = "Manhattan"
@@ -163,7 +161,7 @@ local function calculateCost(featureMatrix, clusters, distanceFunction)
 end
 
 
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.new(epsilon, minimumNumberOfPoints, distanceFunction, targetCost)
+function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.new(epsilon, minimumNumberOfPoints, distanceFunction)
 	
 	local NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel = BaseModel.new()
 	
@@ -173,21 +171,17 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.new(epsilon, 
 	
 	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.epsilon = epsilon or defaultEpsilon
 
-	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.targetCost = targetCost or defaultTargetCost
-
 	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.distanceFunction = distanceFunction or defaultDistanceFunction
 	
 	return NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel
 	
 end
 
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:setParameters(epsilon, minimumNumberOfPoints, distanceFunction, targetCost)
+function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:setParameters(epsilon, minimumNumberOfPoints, distanceFunction)
 	
 	self.minimumNumberOfPoints = minimumNumberOfPoints or defaultMinimumNumberOfPoints
 
 	self.epsilon = epsilon or defaultEpsilon
-
-	self.targetCost = targetCost or defaultTargetCost
 
 	self.distanceFunction = distanceFunction or defaultDistanceFunction
 	
@@ -259,7 +253,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 
 			self:printCostAndNumberOfIterations(cost, currentCorePointNumber)
 
-			if (cost == self.targetCost) then break end
+			if self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
 			
 		end
 		

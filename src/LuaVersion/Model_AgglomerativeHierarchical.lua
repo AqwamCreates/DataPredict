@@ -386,7 +386,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 	local numberOfIterations = 0
 
-	local cost = math.huge
+	local cost = 0
 
 	local costArray = {}
 

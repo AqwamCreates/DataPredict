@@ -395,15 +395,9 @@ function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 	local highestProbabilitiesVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 
-	local z = AqwamMatrixLibrary:applyFunction(math.exp, outputMatrix)
-
-	local zSum = AqwamMatrixLibrary:horizontalSum(z)
-
-	local softmaxMatrix = AqwamMatrixLibrary:divide(z, zSum)
-
 	local highestProbability
 
-	local softMaxVector
+	local outputVector
 
 	local classIndex
 
@@ -411,9 +405,9 @@ function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 	for i = 1, #outputMatrix, 1 do
 
-		softMaxVector = {softmaxMatrix[i]}
+		outputVector = {outputMatrix[i]}
 
-		highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(softMaxVector)
+		highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(outputMatrix)
 
 		if (classIndex == nil) then continue end
 

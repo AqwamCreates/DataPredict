@@ -35,6 +35,10 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local NeuralNetworkModel = require("Model_NeuralNetwork")
 
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
+local NeuralNetworkModel = require(script.Parent.NeuralNetwork)
+
 ReinforcementLearningNeuralNetworkBaseModel = {}
 
 ReinforcementLearningNeuralNetworkBaseModel.__index = ReinforcementLearningNeuralNetworkBaseModel
@@ -51,11 +55,11 @@ local defaultDiscountFactor = 0.95
 
 local defaultMaxNumberOfIterations = 1
 
-function ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
 	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
-	local NewReinforcementLearningNeuralNetworkBaseModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
+	local NewReinforcementLearningNeuralNetworkBaseModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate)
 
 	NewReinforcementLearningNeuralNetworkBaseModel:setPrintOutput(false)
 
@@ -83,13 +87,11 @@ function ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, 
 	
 end
 
-function ReinforcementLearningNeuralNetworkBaseModel:setParameters(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function ReinforcementLearningNeuralNetworkBaseModel:setParameters(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
-
-	self.targetCost = targetCost or self.targetCost
 
 	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 

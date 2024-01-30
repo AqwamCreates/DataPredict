@@ -8,9 +8,9 @@ REINFORCENeuralNetworkModel.__index = REINFORCENeuralNetworkModel
 
 setmetatable(REINFORCENeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
-	local NewREINFORCENeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewREINFORCENeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
 	setmetatable(NewREINFORCENeuralNetworkModel, REINFORCENeuralNetworkModel)
 	
@@ -54,13 +54,11 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, ta
 
 end
 
-function REINFORCENeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function REINFORCENeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
-
-	self.targetCost = targetCost or self.targetCost
 	
 	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 

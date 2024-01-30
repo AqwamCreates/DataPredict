@@ -35,6 +35,10 @@ local ReinforcementLearningNeuralNetworkBaseModel = require("Model_Reinforcement
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
+local ReinforcementLearningNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningNeuralNetworkBaseModel)
+
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
 ExpectedStateActionRewardStateActionNeuralNetworkModel = {}
 
 ExpectedStateActionRewardStateActionNeuralNetworkModel.__index = ExpectedStateActionRewardStateActionNeuralNetworkModel

@@ -53,7 +53,7 @@ function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel, targetCo
 	
 	NewOneVsAll.useNegativeOneBinaryLabel = useNegativeOneBinaryLabel or false
 	
-	NewOneVsAll.targetCost = defaultTargetCost
+	NewOneVsAll.targetCost = targetCost or defaultTargetCost
 	
 	NewOneVsAll.IsOutputPrinted = true
 	
@@ -441,6 +441,19 @@ function OneVsAll:setAutoResetOptimizers(option)
 
 	for _, Model in ipairs(self.ModelsArray) do Model:setAutoResetOptimizers(option) end
 
+end
+
+function OneVsAll:setNumberOfIterationsToCheckIfConverged(numberOfIterations)
+	
+	for _, Model in ipairs(self.ModelsArray) do Model:setNumberOfIterationsToCheckIfConverged(numberOfIterations) end
+	
+end
+
+function OneVsAll:setTargetCost(upperBound, lowerBound)
+	
+
+	for _, Model in ipairs(self.ModelsArray) do Model:setTargetCost(upperBound, lowerBound) end
+	
 end
 
 return OneVsAll

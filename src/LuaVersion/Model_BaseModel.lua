@@ -33,6 +33,8 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
 BaseModel = {}
 
 BaseModel.__index = BaseModel
@@ -107,7 +109,7 @@ function BaseModel.new()
 	
 	NewBaseModel.currentCostToCheckForConvergence = nil
 	
-	NewBaseModel.currentNumberOfIterationsToCheckIfConverged = 0
+	NewBaseModel.currentNumberOfIterationsToCheckIfConverged = 1
 	
 	NewBaseModel.numberOfIterationsToCheckIfConverged = math.huge
 	
@@ -137,7 +139,7 @@ function BaseModel:checkIfConverged(cost)
 	
 	if (self.currentCostToCheckForConvergence ~= cost) then
 		
-		self.currentNumberOfIterationsToCheckIfConverged = 0
+		self.currentNumberOfIterationsToCheckIfConverged = 1
 		
 		self.currentCostToCheckForConvergence = cost
 
@@ -153,7 +155,7 @@ function BaseModel:checkIfConverged(cost)
 		
 	end
 	
-	self.currentNumberOfIterationsToCheckIfConverged = 0
+	self.currentNumberOfIterationsToCheckIfConverged = 1
 	
 	self.currentCostToCheckForConvergence = nil
 	

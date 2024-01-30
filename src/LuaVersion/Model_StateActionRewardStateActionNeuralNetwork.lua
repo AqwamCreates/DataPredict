@@ -35,15 +35,19 @@ local ReinforcementLearningNeuralNetworkBaseModel = require("Model_Reinforcement
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
+local ReinforcementLearningNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningNeuralNetworkBaseModel)
+
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
 StateActionRewardStateActionNeuralNetworkModel = {}
 
 StateActionRewardStateActionNeuralNetworkModel.__index = StateActionRewardStateActionNeuralNetworkModel
 
 setmetatable(StateActionRewardStateActionNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
-	local NewStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
 	setmetatable(NewStateActionRewardStateActionNeuralNetworkModel, StateActionRewardStateActionNeuralNetworkModel)
 
@@ -65,14 +69,11 @@ function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIteration
 
 end
 
-
-function StateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, targetCost, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function StateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
-
-	self.targetCost = targetCost or self.targetCost
 
 	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
@@ -87,4 +88,3 @@ function StateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberO
 end
 
 return StateActionRewardStateActionNeuralNetworkModel
-

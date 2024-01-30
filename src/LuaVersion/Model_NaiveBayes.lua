@@ -277,7 +277,7 @@ function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	cost = logLoss(labelVector, predictedProbabilitiesVector)
 	
-	return cost
+	return {cost}
 	
 end
 

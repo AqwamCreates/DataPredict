@@ -41,6 +41,12 @@ setmetatable(NaiveBayesModel, BaseModel)
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
+NaiveBayesModel = {}
+
+NaiveBayesModel.__index = NaiveBayesModel
+
+setmetatable(NaiveBayesModel, BaseModel)
+
 local function extractFeatureMatrixFromPosition(featureMatrix, positionList)
 	
 	local extractedFeatureMatrix = {}

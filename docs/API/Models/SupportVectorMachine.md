@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-SupportVectorMachine.new(maxNumberOfIterations: integer, cValue: number, targetCost: number, kernelFunction: string, kernelParameters: table): ModelObject
+SupportVectorMachine.new(maxNumberOfIterations: integer, cValue: number, kernelFunction: string, kernelParameters: table): ModelObject
 ```
 
 #### Parameters:
@@ -25,8 +25,6 @@ SupportVectorMachine.new(maxNumberOfIterations: integer, cValue: number, targetC
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
-
-* targetCost: The cost at which the model stops training.
 
 * kernelFunction: The kernel function to be used to train the model. Available options are:
   
@@ -51,7 +49,7 @@ SupportVectorMachine.new(maxNumberOfIterations: integer, cValue: number, targetC
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-SupportVectorMachine:setParameters(maxNumberOfIterations: integer, cValue: number, targetCost: number,  kernelFunction: string, kernelParameters: table)
+SupportVectorMachine:setParameters(maxNumberOfIterations: integer, cValue: number, kernelFunction: string, kernelParameters: table)
 ```
 
 #### Parameters:
@@ -61,8 +59,6 @@ SupportVectorMachine:setParameters(maxNumberOfIterations: integer, cValue: numbe
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
-
-* targetCost: The cost at which the model stops training.
 
 * kernelFunction: The kernel function to be used to train the model. Available options are:
   

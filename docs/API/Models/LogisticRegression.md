@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, sigmoidFunction: string, targetCost: number): ModelObject
+LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, sigmoidFunction: string): ModelObject
 ```
 
 #### Parameters:
@@ -25,8 +25,6 @@ LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, sig
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "Sigmoid".
-
-* targetCost: The cost at which the model stops training.
 
 #### Returns:
 
@@ -39,7 +37,7 @@ LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, sig
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-LogisticRegression:setParameters(maxNumberOfIterations: integer, learningRate: number, sigmoidFunction: string, targetCost: number)
+LogisticRegression:setParameters(maxNumberOfIterations: integer, learningRate: number, sigmoidFunction: string)
 ```
 
 #### Parameters:
@@ -49,8 +47,6 @@ LogisticRegression:setParameters(maxNumberOfIterations: integer, learningRate: n
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "Sigmoid".
-
-* targetCost: The cost at which the model stops training.
 
 ### setOptimizer()
 

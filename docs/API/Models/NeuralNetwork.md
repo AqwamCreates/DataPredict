@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-NeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number): ModelObject
+NeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number): ModelObject
 ```
 
 #### Parameters:
@@ -23,8 +23,6 @@ NeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, targetCo
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* targetCost: The cost at which the model stops training.
 
 #### Returns:
 
@@ -37,7 +35,7 @@ NeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, targetCo
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number)
+NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number)
 ```
 
 #### Parameters:
@@ -45,8 +43,6 @@ NeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* targetCost: The cost at which the model stops training.
 
 ### addLayer()
 

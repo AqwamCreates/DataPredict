@@ -33,7 +33,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-LongShortTermMemory.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number): ModelObject
+LongShortTermMemory.new(maxNumberOfIterations: integer, learningRate: number): ModelObject
 ```
 
 #### Parameters:
@@ -55,7 +55,7 @@ LongShortTermMemory.new(maxNumberOfIterations: integer, learningRate: number, ta
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-LongShortTermMemory:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number)
+LongShortTermMemory:setParameters(maxNumberOfIterations: integer, learningRate: number)
 ```
 
 #### Parameters:

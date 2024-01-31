@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ExpectedStateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number): ModelObject
+ExpectedStateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -23,8 +23,6 @@ ExpectedStateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: int
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* targetCost: The cost at which the model stops training.
 
 * numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 
@@ -47,7 +45,7 @@ ExpectedStateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: int
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ExpectedStateActionRewardStateActionNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number)
+ExpectedStateActionRewardStateActionNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number)
 ```
 
 #### Parameters:
@@ -55,8 +53,6 @@ ExpectedStateActionRewardStateActionNeuralNetwork:setParameters(maxNumberOfItera
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* targetCost: The cost at which the model stops training.
 
 * numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 

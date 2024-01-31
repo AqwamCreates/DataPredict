@@ -17,7 +17,7 @@ Contains a table.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-AffinityPropagation.new(maxNumberOfIterations: integer, similarityFunction: string, damping: number, numberOfIterationsToConfirmConvergence: integer, targetCost: integer): ModelObject
+AffinityPropagation.new(maxNumberOfIterations: integer, similarityFunction: string, damping: number): ModelObject
 ```
 
 #### Parameters:
@@ -27,10 +27,6 @@ AffinityPropagation.new(maxNumberOfIterations: integer, similarityFunction: stri
 * similarityFunction: The similarity function to be used. Available options are "Euclidean" and "Manhattan"
 
 * damping: A high value leads to fewer changes, while a low value leads to more exploration. The value can be set between 0 and 1.
-
-* numberOfIterationsToConfirmConvergence: Determines how many iterations should the model check cluster assignments to determine convergence.
-
-* targetCost: The cost at which the model stops training.
 
 #### Returns:
 
@@ -43,7 +39,7 @@ AffinityPropagation.new(maxNumberOfIterations: integer, similarityFunction: stri
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-AffinityPropagation:setParameters(maxNumberOfIterations: integer, similarityFunction: string, damping: number, numberOfIterationsToConfirmConvergence: integer, targetCost: integer)
+AffinityPropagation:setParameters(maxNumberOfIterations: integer, similarityFunction: string, damping: number)
 ```
 
 #### Parameters:
@@ -53,10 +49,6 @@ AffinityPropagation:setParameters(maxNumberOfIterations: integer, similarityFunc
 * similarityFunction: The similarity function to be used. Available options are "Euclidean" and "Manhattan"
 
 * damping: A high value leads to fewer changes, while a low value leads to more exploration. The value is set between 0 and 1.
-
-* numberOfIterationsToConfirmConvergence: Determines how many iterations should the model check cluster assignments to determine convergence.
-
-* targetCost: The cost at which the model stops training.
 
 ### train()
 

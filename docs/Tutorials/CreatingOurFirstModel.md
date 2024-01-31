@@ -3,7 +3,7 @@
 For our first model, we will use "LogisticRegression". We will create a new "LogisticRegression" model object using new(). 
 
 ```lua
-local LogisticRegression = MDLL.Models.LogisticRegression
+local LogisticRegression = DataPredict.Models.LogisticRegression
 
 local LogisticRegressionModel = LogisticRegression.new()
 ```

@@ -19,7 +19,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ExpectationMaximization.new(maxNumberOfIterations: integer, numberOfClusters: integer, epsilon: number, targetCost: number): ModelObject
+ExpectationMaximization.new(maxNumberOfIterations: integer, numberOfClusters: integer, epsilon: number): ModelObject
 ```
 #### Parameters
 
@@ -28,8 +28,6 @@ ExpectationMaximization.new(maxNumberOfIterations: integer, numberOfClusters: in
 * numberOfClusters: Number of clusters for model to train and predict on. By default or set to math.huge(), it will find the best number of clusters using bayesian information criterion.
 
 * epsilon: The value to ensure that gaussian calculation doesn't reach infinity.
-
-* targetCost: The cost at which the model stops training.
 
 #### Returns:
 
@@ -42,7 +40,7 @@ ExpectationMaximization.new(maxNumberOfIterations: integer, numberOfClusters: in
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used. 
 
 ```
-ExpectationMaximization:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, epsilon: number, targetCost: number)
+ExpectationMaximization:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, epsilon: number)
 ```
 
 #### Parameters
@@ -52,8 +50,6 @@ ExpectationMaximization:setParameters(maxNumberOfIterations: integer, numberOfCl
 * numberOfClusters: Number of clusters for model to train and predict on. By default or set to math.huge(), it will find the best number of clusters using bayesian information criterion.
 
 * epsilon: The value to ensure that gaussian calculation doesn't reach infinity.
-
-* targetCost: The cost at which the model stops training.
 
 ### train()
 

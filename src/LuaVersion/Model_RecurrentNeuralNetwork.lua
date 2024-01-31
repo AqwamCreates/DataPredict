@@ -51,9 +51,9 @@ local defaultTargetCost = 0
 
 local activationFunctionList = {
 
-	["sigmoid"] = function (z) return 1/(1+math.exp(-1 * z)) end,
+	["Sigmoid"] = function (z) return 1/(1+math.exp(-1 * z)) end,
 
-	["tanh"] = function (z) return math.tanh(z) end,
+	["Tanh"] = function (z) return math.tanh(z) end,
 
 	["ReLU"] = function (z) return math.max(0, z) end,
 
@@ -65,7 +65,7 @@ local activationFunctionList = {
 
 local derivativeList = {
 
-	["sigmoid"] = function (z) 
+	["Sigmoid"] = function (z) 
 
 		local a = activationFunctionList["sigmoid"](z)
 
@@ -73,7 +73,7 @@ local derivativeList = {
 
 	end,
 
-	["tanh"] = function (z)
+	["Tanh"] = function (z)
 
 		local a = activationFunctionList["tanh"](z)
 

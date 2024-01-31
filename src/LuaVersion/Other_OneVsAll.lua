@@ -41,9 +41,9 @@ OneVsAll.__index = OneVsAll
 
 local defaultMaxNumberOfIterations = 500
 
-local defaultTargetCost = 0
+local defaultTotalTargetCost = 0
 
-function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel, targetCost)
+function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel, totalTargetCost)
 	
 	local NewOneVsAll = {}
 	
@@ -53,7 +53,7 @@ function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel, targetCo
 	
 	NewOneVsAll.useNegativeOneBinaryLabel = useNegativeOneBinaryLabel or false
 	
-	NewOneVsAll.targetCost = targetCost or defaultTargetCost
+	NewOneVsAll.totalTargetCost = totalTargetCost or defaultTotalTargetCost
 	
 	NewOneVsAll.IsOutputPrinted = true
 	
@@ -83,13 +83,13 @@ function OneVsAll:checkIfModelsSet()
 	
 end
 
-function OneVsAll:setParameters(maxNumberOfIterations, useNegativeOneBinaryLabel, targetCost)
+function OneVsAll:setParameters(maxNumberOfIterations, useNegativeOneBinaryLabel, totalTargetCost)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
 	self.useNegativeOneBinaryLabel = self:getBooleanOrDefaultOption(useNegativeOneBinaryLabel, self.useNegativeOneBinaryLabel)
 	
-	self.targetCost = targetCost or self.targetCost 
+	self.totalTargetCost = totalTargetCost or self.totalTargetCost 
 	
 end
 
@@ -327,7 +327,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 		
 		if (self.IsOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost) end
 		
-	until (numberOfIterations >= self.maxNumberOfIterations) or (totalCost <= self.targetCost)
+	until (numberOfIterations >= self.maxNumberOfIterations) or (totalCost <= self.totalTargetCost)
 	
 	return costArray
 	

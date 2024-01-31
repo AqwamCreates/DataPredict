@@ -17,7 +17,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number): ModelObject
+DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number): ModelObject
 ```
 
 #### Parameters:
@@ -25,8 +25,6 @@ DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: n
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* targetCost: The cost at which the model stops training.
 
 * numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 
@@ -49,7 +47,7 @@ DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: n
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number)
+DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number)
 ```
 
 #### Parameters:
@@ -57,8 +55,6 @@ DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learn
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* targetCost: The cost at which the model stops training.
 
 * numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 

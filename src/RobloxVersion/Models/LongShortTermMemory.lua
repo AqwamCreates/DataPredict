@@ -84,7 +84,7 @@ local function softMax(matrix)
 
 end
 
-function LongShortTermMemoryModel.new(maxNumberOfIterations, learningRate, targetCost)
+function LongShortTermMemoryModel.new(maxNumberOfIterations, learningRate)
 	
 	local NewLongShortTermMemoryModel = BaseModel.new()
 
@@ -93,20 +93,16 @@ function LongShortTermMemoryModel.new(maxNumberOfIterations, learningRate, targe
 	NewLongShortTermMemoryModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
 	NewLongShortTermMemoryModel.learningRate = learningRate or defaultLearningRate
-
-	NewLongShortTermMemoryModel.targetCost = targetCost or defaultTargetCost
 	
 	return NewLongShortTermMemoryModel
 	
 end
 
-function LongShortTermMemoryModel:setParameters(maxNumberOfIterations, learningRate, targetCost)
+function LongShortTermMemoryModel:setParameters(maxNumberOfIterations, learningRate)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
-
-	self.targetCost = targetCost or self.targetCost
 	
 end
 
@@ -964,7 +960,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 		
-	until (numberOfIterations == self.maxNumberOfIterations) or (cost <= self.targetCost)
+	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (self.ForgetGateWeightOptimizer) and (self.AutoResetOptimizers) then
 

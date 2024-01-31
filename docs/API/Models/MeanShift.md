@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-MeanShift.new(maxNumberOfIterations: integer, bandwidth: number, bandwidthStep: integer, distanceFunction: string, highestCost: number, lowestCost: number, stopWhenModelParametersDoesNotChange: boolean): ModelObject
+MeanShift.new(maxNumberOfIterations: integer, bandwidth: number, bandwidthStep: integer, distanceFunction: string): ModelObject
 ```
 
 #### Parameters:
@@ -27,12 +27,6 @@ MeanShift.new(maxNumberOfIterations: integer, bandwidth: number, bandwidthStep: 
 * bandwidthStep: Number of clusters for model to train and predict on.
 
 * distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“.
-
-* highestCost: The highest cost at which the model stops training.
-
-* lowestCost: The lowest cost at which the model stops training.
-
-* stopWhenModelParametersDoesNotChange: Stop the training if the model parameters does not change from the previous iteration.
 
 #### Returns:
 
@@ -45,7 +39,7 @@ MeanShift.new(maxNumberOfIterations: integer, bandwidth: number, bandwidthStep: 
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-MeanShift:setParameters(maxNumberOfIterations: integer, bandwidth: number, bandwidthStep: integer, distanceFunction: string, highestCost: number, lowestCost: number, stopWhenModelParametersDoesNotChange: boolean)
+MeanShift:setParameters(maxNumberOfIterations: integer, bandwidth: number, bandwidthStep: integer, distanceFunction: string)
 ```
 
 #### Parameters:
@@ -57,12 +51,6 @@ MeanShift:setParameters(maxNumberOfIterations: integer, bandwidth: number, bandw
 * bandwidthStep: Number of clusters for model to train and predict on.
 
 * distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“.
-
-* highestCost: The highest cost at which the model stops training.
-
-* lowestCost: The lowest cost at which the model stops training.
-
-* stopWhenModelParametersDoesNotChange: Stop the training if the model parameters does not change from the previous iteration.
 
 ### train()
 

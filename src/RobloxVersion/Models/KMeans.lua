@@ -287,7 +287,7 @@ local function calculateModelParametersMean(modelParameters, featureMatrix, dist
 	
 end
 
-function KMeansModel.new(maxNumberOfIterations, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest, stopWhenModelParametersDoesNotChange)
+function KMeansModel.new(maxNumberOfIterations, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest)
 	
 	local NewKMeansModel = BaseModel.new()
 	
@@ -298,8 +298,6 @@ function KMeansModel.new(maxNumberOfIterations, numberOfClusters, distanceFuncti
 	NewKMeansModel.distanceFunction = distanceFunction or defaultDistanceFunction
 
 	NewKMeansModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
-	
-	NewKMeansModel.stopWhenModelParametersDoesNotChange =  BaseModel:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, defaultStopWhenModelParametersDoesNotChange)
 
 	NewKMeansModel.setInitialClustersOnDataPoints =  BaseModel:getBooleanOrDefaultOption(setInitialClustersOnDataPoints, defaultSetInitialClustersOnDataPoints)
 	
@@ -309,15 +307,13 @@ function KMeansModel.new(maxNumberOfIterations, numberOfClusters, distanceFuncti
 	
 end
 
-function KMeansModel:setParameters(maxNumberOfIterations, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest, stopWhenModelParametersDoesNotChange)
+function KMeansModel:setParameters(maxNumberOfIterations, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.distanceFunction = distanceFunction or self.distanceFunction
 
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
-
-	self.stopWhenModelParametersDoesNotChange =  self:getBooleanOrDefaultOption(stopWhenModelParametersDoesNotChange, self.stopWhenModelParametersDoesNotChange)
 
 	self.setInitialClustersOnDataPoints =  self:getBooleanOrDefaultOption(setInitialClustersOnDataPoints, self.setInitialClustersOnDataPoints)
 

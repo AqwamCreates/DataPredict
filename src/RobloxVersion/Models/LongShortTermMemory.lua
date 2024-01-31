@@ -136,7 +136,7 @@ function LongShortTermMemoryModel:forwardPropagateCell(xt, aPrevious, cPrevious)
 	
 	local ftPart2 = AqwamMatrixLibrary:add(ftPart1, self.bf)
 	
-	local ft = AqwamMatrixLibrary:applyFunction(activationFunctionList["sigmoid"], ftPart2)
+	local ft = AqwamMatrixLibrary:applyFunction(activationFunctionList["Sigmoid"], ftPart2)
 	
 	------------------------------------------------------------------------------------------------------------------------
 
@@ -144,7 +144,7 @@ function LongShortTermMemoryModel:forwardPropagateCell(xt, aPrevious, cPrevious)
 	
 	local itPart2 = AqwamMatrixLibrary:add(itPart1, self.bi)
 	
-	local it = AqwamMatrixLibrary:applyFunction(activationFunctionList["sigmoid"], itPart2)
+	local it = AqwamMatrixLibrary:applyFunction(activationFunctionList["Sigmoid"], itPart2)
 	
 	------------------------------------------------------------------------------------------------------------------------
 
@@ -152,7 +152,7 @@ function LongShortTermMemoryModel:forwardPropagateCell(xt, aPrevious, cPrevious)
 	
 	local cctPart2 = AqwamMatrixLibrary:add(cctPart1, self.bc)
 	
-	local cct = AqwamMatrixLibrary:applyFunction(activationFunctionList["tanh"], cctPart2)
+	local cct = AqwamMatrixLibrary:applyFunction(activationFunctionList["Tanh"], cctPart2)
 	
 	------------------------------------------------------------------------------------------------------------------------
 
@@ -168,11 +168,11 @@ function LongShortTermMemoryModel:forwardPropagateCell(xt, aPrevious, cPrevious)
 	
 	local otPart2 = AqwamMatrixLibrary:add(otPart1, self.bo)
 	
-	local ot = AqwamMatrixLibrary:applyFunction(activationFunctionList["sigmoid"], otPart2)
+	local ot = AqwamMatrixLibrary:applyFunction(activationFunctionList["Sigmoid"], otPart2)
 	
 	------------------------------------------------------------------------------------------------------------------------
 
-	local aNextPart1 = AqwamMatrixLibrary:applyFunction(activationFunctionList["tanh"], cNext)
+	local aNextPart1 = AqwamMatrixLibrary:applyFunction(activationFunctionList["Tanh"], cNext)
 	
 	local aNext = AqwamMatrixLibrary:multiply(ot, aNextPart1)
 	
@@ -198,11 +198,11 @@ function LongShortTermMemoryModel:backwardPropagateCell(daNext, dcNext, aNext, c
 	
 	------------------------------------------------------------------------------------------------------------------------
 	
-	local tanh = AqwamMatrixLibrary:applyFunction(activationFunctionList["tanh"], cNext)
+	local tanh = AqwamMatrixLibrary:applyFunction(activationFunctionList["Tanh"], cNext)
 	
 	------------------------------------------------------------------------------------------------------------------------
 
-	local dtanh = AqwamMatrixLibrary:applyFunction(derivativeList["tanh"], cNext)
+	local dtanh = AqwamMatrixLibrary:applyFunction(derivativeList["Tanh"], cNext)
 	
 	------------------------------------------------------------------------------------------------------------------------
 

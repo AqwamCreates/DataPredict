@@ -117,9 +117,9 @@ BaseModel:setTargetCost(upperBound: number, lowerBound: number)
 
 #### Parameters
 
-* upperBound: The upper bound of target cost
+* upperBound: The upper bound of target cost.
 
-* lowerBound: The lower bound of target cost
+* lowerBound: The lower bound of target cost.
 
 ### setAutoResetOptimizers()
 

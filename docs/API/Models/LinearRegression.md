@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lossFunction: string, targetCost: number): ModelObject
+LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lossFunction: string): ModelObject
 ```
 
 #### Parameters:
@@ -25,8 +25,6 @@ LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lossF
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * lossFunction: The function to calculate the cost of each training. Available options are "L1" and "L2".
-
-* targetCost: The cost at which the model stops training.
 
 #### Returns:
 
@@ -39,7 +37,7 @@ LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lossF
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-LinearRegression:setParameters(maxNumberOfIterations: integer, learningRate: number, lossFunction: string, targetCost: number)
+LinearRegression:setParameters(maxNumberOfIterations: integer, learningRate: number, lossFunction: string)
 ```
 
 #### Parameters:
@@ -49,8 +47,6 @@ LinearRegression:setParameters(maxNumberOfIterations: integer, learningRate: num
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * lossFunction: The function to calculate the cost of each training. Available options are "L1" and "L2".
-
-* targetCost: The cost at which the model stops training.
 
 ### setOptimizer()
 

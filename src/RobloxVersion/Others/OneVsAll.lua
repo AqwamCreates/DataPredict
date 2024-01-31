@@ -300,7 +300,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 		
 		if (self.IsOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost) end
 		
-	until (numberOfIterations >= self.maxNumberOfIterations) or (totalCost <= self.totalTargetCost)
+	until (numberOfIterations >= self.maxNumberOfIterations) or (totalCost <= self.targetTotalCost)
 	
 	return costArray
 	

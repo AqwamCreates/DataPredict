@@ -9,7 +9,7 @@ Allows binary classification models (such as LogisticRegression) be merged toget
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean, targetCost: number): OneVsAllObject
+OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean, targetTotalCost: number): OneVsAllObject
 ```
 
 #### Parameters:
@@ -18,7 +18,7 @@ OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean,
 
 * useNegativeOneBinaryLabel: Set whether or not if the incorrect label uses -1 instead of 0.
 
-* targetCost: The cost at which the model stops training.
+* targetTotalCost: The total cost at which the model stops training.
 
 #### Returns:
 
@@ -31,7 +31,7 @@ OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean,
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-OneVsAll:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number)
+OneVsAll:setParameters(maxNumberOfIterations: integer, learningRate: number, targetTotalCost: number)
 ```
 
 #### Parameters:
@@ -40,7 +40,7 @@ OneVsAll:setParameters(maxNumberOfIterations: integer, learningRate: number, tar
 
 * useNegativeOneBinaryLabel: Set whether or not if the incorrect label uses -1 instead of 0.
 
-* targetCost: The cost at which the model stops training.
+* targetTotalCost: The total cost at which the model stops training.
 
 ### setModels()
 

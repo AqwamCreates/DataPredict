@@ -17,7 +17,7 @@ Contains a table.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DensityBasedSpatialClusteringOfApplicationsWithNoise.new(epsilon: number, minimumNumberOfPoints: integer, distanceFunction: string, targetCost: number): ModelObject
+DensityBasedSpatialClusteringOfApplicationsWithNoise.new(epsilon: number, minimumNumberOfPoints: integer, distanceFunction: string): ModelObject
 ```
 
 #### Parameters:
@@ -27,8 +27,6 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise.new(epsilon: number, minimu
 * minimumNumberOfPoints: Minimum number of data points required to form a cluster.
 
 * distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“.
-
-* targetCost: The cost at which the model stops training.
 
 #### Returns:
 
@@ -41,7 +39,7 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise.new(epsilon: number, minimu
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DensityBasedSpatialClusteringOfApplicationsWithNoise:setParameters(epsilon: number, minimumNumberOfPoints: integer, distanceFunction: string, targetCost: number)
+DensityBasedSpatialClusteringOfApplicationsWithNoise:setParameters(epsilon: number, minimumNumberOfPoints: integer, distanceFunction: string)
 ```
 
 #### Parameters:
@@ -51,8 +49,6 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise:setParameters(epsilon: numb
 * minimumNumberOfPoints: Minimum number of data points required to form a cluster.
 
 * distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“.
-
-* targetCost: The cost at which the model stops training.
 
 ### train()
 

@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-KMeans.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, targetCost: number, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean, stopWhenModelParametersDoesNotChange:boolean): ModelObject
+KMeans.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean): ModelObject
 ```
 
 #### Parameters:
@@ -26,13 +26,9 @@ KMeans.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFu
 
 * distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“.
 
-* targetCost: The cost at which the model stops training.
-
 * setInitialClustersOnDataPoints: Set whether or not the model to create centroids on any data points.
 
 * setTheCentroidsDistanceFarthest: Set whether or not the model to create centroids that are furthest from each other.
-
-* stopWhenModelParametersDoesNotChange: Stop the training if the model parameters does not change from the previous iteration.
 
 #### Returns:
 
@@ -45,7 +41,7 @@ KMeans.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFu
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-KMeans:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, targetCost: number, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean, stopWhenModelParametersDoesNotChange:boolean)
+KMeans:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean)
 ```
 
 #### Parameters:
@@ -56,13 +52,9 @@ KMeans:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, 
 
 * distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“
 
-* targetCost: The cost at which the model stops training.
-
 * setInitialClustersOnDataPoints: Set whether or not the model to create centroids on any data points.
 
 * setTheCentroidsDistanceFarthest: Set whether or not the model to create centroids that are furthest from each other.
-
-* stopWhenModelParametersDoesNotChange: Stop the training if the model parameters does not change from the previous iteration.
 
 ### train()
 

@@ -185,6 +185,31 @@ Clears the model parameters stored inside the models.
 OneVsAll:clearModelParameters()
 ```
 
+### setNumberOfIterationsToCheckIfConverged()
+
+Set the number of iterations needed to confirm convergence.
+
+```
+OneVsAll:setNumberOfIterationsToCheckIfConverged(numberOfIterations: number)
+```
+
+#### Parameters
+
+* numberOfIterations: The number of iterations for confirming convergence.
+
+### setTargetCost()
+
+Set the upper bound and lower bounds of the target cost.
+```
+OneVsAll:setTargetCost(upperBound: number, lowerBound: number)
+```
+
+#### Parameters
+
+* upperBound: The upper bound of target cost.
+
+* lowerBound: The lower bound of target cost.
+
 ### setAutoResetOptimizers()
 
 Set if the optimizer resets at the end of iterations.

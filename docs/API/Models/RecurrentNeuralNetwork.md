@@ -23,7 +23,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-RecurrentNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, activationFunction: string, targetCost: number): ModelObject
+RecurrentNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, activationFunction: string): ModelObject
 ```
 
 #### Parameters:
@@ -32,7 +32,7 @@ RecurrentNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number,
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* activationFunction: The activation function to be used in hidden layer. Available functions are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
+* activationFunction: The activation function to be used in hidden layer. Available functions are "Sigmoid", "Tanh", "ReLU", "LeakyReLU" and "ELU".
 
 * targetCost: The cost at which the model stops training.
 
@@ -47,7 +47,7 @@ RecurrentNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number,
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-RecurrentNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, activationFunction: string, targetCost: number)
+RecurrentNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, activationFunction)
 ```
 
 #### Parameters:
@@ -58,7 +58,7 @@ RecurrentNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRat
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* activationFunction: The activation function to be used in hidden layer. Available functions are "sigmoid", "tanh", "ReLU", "LeakyReLU" and "ELU".
+* activationFunction: The activation function to be used in hidden layer. Available functions are "Sigmoid", "Tanh", "ReLU", "LeakyReLU" and "ELU".
 
 * targetCost: The cost at which the model stops training.
 

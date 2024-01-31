@@ -14,9 +14,9 @@ OneVsAll.__index = OneVsAll
 
 local defaultMaxNumberOfIterations = 500
 
-local defaultTotalTargetCost = 0
+local defaultTargetTotalCost = 0
 
-function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel, totalTargetCost)
+function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel, targetTotalCost)
 	
 	local NewOneVsAll = {}
 	
@@ -26,7 +26,7 @@ function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel, totalTar
 	
 	NewOneVsAll.useNegativeOneBinaryLabel = useNegativeOneBinaryLabel or false
 	
-	NewOneVsAll.totalTargetCost = totalTargetCost or defaultTotalTargetCost
+	NewOneVsAll.targetTotalCost = targetTotalCost or defaultTargetTotalCost
 	
 	NewOneVsAll.IsOutputPrinted = true
 	
@@ -56,13 +56,13 @@ function OneVsAll:checkIfModelsSet()
 	
 end
 
-function OneVsAll:setParameters(maxNumberOfIterations, useNegativeOneBinaryLabel, totalTargetCost)
+function OneVsAll:setParameters(maxNumberOfIterations, useNegativeOneBinaryLabel, targetTotalCost)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
 	self.useNegativeOneBinaryLabel = self:getBooleanOrDefaultOption(useNegativeOneBinaryLabel, self.useNegativeOneBinaryLabel)
 	
-	self.totalTargetCost = totalTargetCost or self.totalTargetCost 
+	self.targetTotalCost = targetTotalCost or self.targetTotalCost 
 	
 end
 

@@ -119,7 +119,7 @@ local function softMax(matrix)
 
 end
 
-function RecurrentNeuralNetworkModel.new(maxNumberOfIterations, learningRate, activationFunction, targetCost)
+function RecurrentNeuralNetworkModel.new(maxNumberOfIterations, learningRate, activationFunction)
 
 	local NewRecurrentNeuralNetworkModel = BaseModel.new()
 
@@ -131,21 +131,17 @@ function RecurrentNeuralNetworkModel.new(maxNumberOfIterations, learningRate, ac
 
 	NewRecurrentNeuralNetworkModel.activationFunction = activationFunction or defaultActivationFunction
 
-	NewRecurrentNeuralNetworkModel.targetCost = targetCost or defaultTargetCost
-
 	return NewRecurrentNeuralNetworkModel
 
 end
 
-function RecurrentNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, activationFunction, targetCost)
+function RecurrentNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, activationFunction)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
 	self.activationFunction = activationFunction or self.activationFunction
-
-	self.targetCost = targetCost or self.targetCost
 
 end
 

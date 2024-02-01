@@ -34,7 +34,7 @@ local derivativeList = {
 
 	["Sigmoid"] = function (z) 
 
-		local a = activationFunctionList["sigmoid"](z)
+		local a = activationFunctionList["Sigmoid"](z)
 
 		return (a * (1-a))
 
@@ -42,7 +42,7 @@ local derivativeList = {
 
 	["Tanh"] = function (z)
 
-		local a = activationFunctionList["tanh"](z)
+		local a = activationFunctionList["Tanh"](z)
 
 		return (1 - math.pow(a, 2))
 
@@ -574,7 +574,7 @@ function RecurrentNeuralNetworkModel:train(tableOfTokenInputSequenceArray, table
 
 		self:printCostAndNumberOfIterations(cost, numberOfIterations)
 
-	until (numberOfIterations == self.maxNumberOfIterations) or (cost <= self.targetCost)
+	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	if (self.InputLayerOptimizer) then
 

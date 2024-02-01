@@ -45,7 +45,7 @@ local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.001
 
-local defaultActivationFunction = "tanh"
+local defaultActivationFunction = "Tanh"
 
 local defaultTargetCost = 0
 

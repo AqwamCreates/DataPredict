@@ -53,7 +53,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [API Design](APIDesign.md)
 
-## Download Links
+## Links
 
 [Download Links](DownloadLinks.md)
 
@@ -67,7 +67,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Aqwam's Matrix Library](https://robloxmatrixl.substack.com/p/directory)
 
-### Version History
+## Version History
 
 [Release](VersionHistory/ReleaseVersionHistory.md)
 

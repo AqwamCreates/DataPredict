@@ -52,6 +52,8 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 	
 	local advantageValueHistory = {}
 	
+	local oldAdvantageValueHistory = {}
+	
 	NewProximalPolicyOptimizationModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local allOutputsMatrix = NewProximalPolicyOptimizationModel.ActorModel:predict(previousFeatureVector, true)
@@ -82,6 +84,8 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 
 			oldActionVectorHistory = table.clone(actionVectorHistory)
 			
+			oldAdvantageValueHistory = table.clone(advantageValueHistory)
+			
 			table.clear(advantageValueHistory)
 
 			table.clear(criticValueHistory)
@@ -110,7 +114,7 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 
 			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
 
-			local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, advantageValueHistory[h])
+			local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, oldAdvantageValueHistory[h])
 
 			local criticLoss = math.pow(rewardsToGoArray[h] - criticValueHistory[h], 2)
 
@@ -142,6 +146,8 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 		
 		oldActionVectorHistory = table.clone(actionVectorHistory)
 		
+		oldAdvantageValueHistory = table.clone(advantageValueHistory)
+		
 		table.clear(advantageValueHistory)
 
 		table.clear(criticValueHistory)
@@ -155,7 +161,9 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 	NewProximalPolicyOptimizationModel:extendResetFunction(function()
 		
 		table.clear(advantageValueHistory)
-
+		
+		table.clear(oldAdvantageValueHistory)
+		
 		table.clear(criticValueHistory)
 
 		table.clear(rewardHistory)

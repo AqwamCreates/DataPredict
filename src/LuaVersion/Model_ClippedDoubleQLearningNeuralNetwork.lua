@@ -33,8 +33,6 @@
 
 local ReinforcementLearningNeuralNetworkBaseModel = require("Model_ReinforcementLearningNeuralNetworkBaseModel")
 
-local ReinforcementLearningNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningNeuralNetworkBaseModel)
-
 ClippedDoubleQLearningNeuralNetworkModel = {}
 
 ClippedDoubleQLearningNeuralNetworkModel.__index = ClippedDoubleQLearningNeuralNetworkModel
@@ -53,7 +51,7 @@ function ClippedDoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, lea
 
 		for i = 1, 2, 1 do
 
-			NewClippedDoubleQLearningNeuralNetworkModel:setModelParameters(NewClippedDoubleQLearningNeuralNetworkModel.ModelParametersArray[i])
+			NewClippedDoubleQLearningNeuralNetworkModel:setModelParameters(NewClippedDoubleQLearningNeuralNetworkModel.ModelParametersArray[i], true)
 
 			local predictedValue, maxQValue = NewClippedDoubleQLearningNeuralNetworkModel:predict(currentFeatureVector)
 
@@ -69,7 +67,7 @@ function ClippedDoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, lea
 
 		for i = 1, 2, 1 do
 
-			NewClippedDoubleQLearningNeuralNetworkModel:setModelParameters(NewClippedDoubleQLearningNeuralNetworkModel.ModelParametersArray[i])
+			NewClippedDoubleQLearningNeuralNetworkModel:setModelParameters(NewClippedDoubleQLearningNeuralNetworkModel.ModelParametersArray[i], true)
 
 			local targetVector = NewClippedDoubleQLearningNeuralNetworkModel:predict(previousFeatureVector, true)
 

@@ -84,3 +84,5 @@ OneVsAll:setModelParametersArray(TargetModelParameters: ModelParameters, Predict
 ## References
 
 * [Random Network Distillation: A New Take on Curiosity-Driven Learning By Thomas Simonini](https://blog.dataiku.com/random-network-distillation-a-new-take-on-curiosity-driven-learning)
+
+* [Exploration by Random Network Distillation](https://arxiv.org/abs/1810.12894v1)

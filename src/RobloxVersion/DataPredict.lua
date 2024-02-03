@@ -4,7 +4,7 @@
 
 	Aqwam's Machine And Deep Learning Library (DataPredict)
 
-	Version 1.26.0
+	Version 1.28.0
 
 	Author: Aqwam Harish Aiman
 	
@@ -170,6 +170,8 @@ local OthersDictionary = {
 	ModelParametersMerger = require(Others.ModelParametersMerger),
 	
 	GradientDescentModifier =  require(Others.GradientDescentModifier),
+	
+	RandomNetworkDistillation = require(Others.RandomNetworkDistillation),
 	
 	Regularization = require(Others.Regularization),
 	

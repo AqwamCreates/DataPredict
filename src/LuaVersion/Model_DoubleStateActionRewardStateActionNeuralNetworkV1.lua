@@ -142,7 +142,7 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel:loadModelParameter
 
 	local CurrentModelParameters = self.ModelParametersArray[index]
 
-	self:setModelParameters(CurrentModelParameters)
+	self:setModelParameters(CurrentModelParameters, true)
 
 end
 

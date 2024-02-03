@@ -76,3 +76,7 @@ OneVsAll:setModelParametersArray(TargetModelParameters: ModelParameters, Predict
 #### Parameters
 
 * ModelParametersArray: A table containing model parameters (matrix/table) to be given to be given to each model stored in OneVsAll object.  The position of the parameters determines which model it belongs to.
+
+## Inherited From
+
+* [NeuralNetwork](NeuralNetwork.md)

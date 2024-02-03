@@ -214,15 +214,27 @@ function BaseModel:sequenceWait()
 
 end
 
-function BaseModel:getModelParameters()
+function BaseModel:getModelParameters(doNotDeepCopy)
 	
-	return deepCopyTable(self.ModelParameters)
+	if doNotDeepCopy then
+		
+		return self.ModelParameters
+		
+	else
+		
+		return deepCopyTable(self.ModelParameters)
+		
+	end
 	
 end
 
-function BaseModel:setModelParameters(ModelParameters)
+function BaseModel:setModelParameters(ModelParameters, doNotDeepCopy)
 	
-	if ModelParameters then
+	if ModelParameters and doNotDeepCopy then
+		
+		self.ModelParameters = ModelParameters
+		
+	elseif ModelParameters and not doNotDeepCopy then
 		
 		self.ModelParameters = deepCopyTable(ModelParameters) 
 		

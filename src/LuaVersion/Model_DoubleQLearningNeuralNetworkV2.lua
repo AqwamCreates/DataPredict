@@ -91,7 +91,7 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 
 		TargetModelParameters = rateAverageModelParameters(NewDoubleQLearningNeuralNetworkModel.averagingRate, PrimaryModelParameters, TargetModelParameters)
 
-		NewDoubleQLearningNeuralNetworkModel:setModelParameters(TargetModelParameters)
+		NewDoubleQLearningNeuralNetworkModel:setModelParameters(TargetModelParameters, true)
 		
 		return targetValue
 

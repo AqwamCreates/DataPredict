@@ -63,9 +63,7 @@ OneVsAll:getModelParametersArray(): ModelParametersArray []
 
 #### Returns
 
-* TargetModelParameters: Target network model parameters to be used for predictor network training.
-
-* PredictorModelParameters: Predictor network model parameters to be trained so that it tries to match up with target network model parameters.
+* ModelParametersArray. An array containing TargetModelParameters (when index at 1) and PredictorModelParameters (when index at 2)
 
 ### setModelParametersArray()
 

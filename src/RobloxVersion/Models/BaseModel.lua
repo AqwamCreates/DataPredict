@@ -34,7 +34,7 @@ local function deepCopyTable(original, copies)
 			
 		end
 		
-	else -- number, string, boolean, etc
+	else
 		
 		copy = original
 		

@@ -153,7 +153,7 @@ OneVsAll:setClassesList(classesList: [])
 
 * classesList: A list of classes. The index of the list relates to which model belong to. For example, {3, 1} means that the output for 3 is at first model, and the output for 1 is at second model.
 
-### getModelParameters()
+### getModelParametersArray()
 
 Gets the model parameters from the base model.
 

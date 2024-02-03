@@ -124,7 +124,7 @@ end
 
 function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(index)
 
-	local ModelParameters = self:getModelParameters(true)
+	local ModelParameters = self:getModelParameters()
 
 	self.ModelParametersArray[index] = ModelParameters
 
@@ -148,7 +148,7 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:lo
 
 	local CurrentModelParameters = self.ModelParametersArray[index]
 
-	self:setModelParameters(CurrentModelParameters)
+	self:setModelParameters(CurrentModelParameters, true)
 
 end
 

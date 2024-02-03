@@ -12,6 +12,8 @@
 
 [GradientDescentModifier](Others/GradientDescentModifier.md)
 
+[RandomNetworkDistillation](Others/RandomNetworkDistillation.md)
+
 [Regularization](Others/Regularization.md)
 
 [OneVsAll](Others/OneVsAll.md)

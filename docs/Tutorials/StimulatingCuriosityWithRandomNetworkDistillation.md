@@ -48,7 +48,7 @@ As you can see, creating a random network distillation object is pretty similar 
 
 You can discourage the AI from exploring by changing one thing, which is:
 
-```
+```lua
 
  local internalReward = RandomNetworkDistillation:generateReward(environmentVector)
 
@@ -56,7 +56,7 @@ You can discourage the AI from exploring by changing one thing, which is:
 
 to 
 
-```
+```lua
 
  local internalReward = -RandomNetworkDistillation:generateReward(environmentVector)
 

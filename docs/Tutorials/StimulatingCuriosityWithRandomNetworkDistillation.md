@@ -20,7 +20,7 @@ local RandomNetworkDistillation = DataPredict.Others.RandomNetworkDistillation.n
 
 RandomNetworkDistillation:addLayer(10, true, "LeakyReLU")
 
-RandomNetworkDistillation:addLayer(1, true, "Sigmoid")
+RandomNetworkDistillation:addLayer(4, true, "Sigmoid")
 
 local QLearningNeuralNetwork = DataPredict.Model.QLearning.new()
 
@@ -42,7 +42,7 @@ end
 
 ```
 
-As you can see, creating a random network distillation object is pretty similar to creating neural networks. The difference lies on the number of output it produces, where the random network distillation always produce one output.
+As you can see, creating a random network distillation object is pretty similar to creating neural networks. The difference lies on the number of output it produces, where the random network distillation always produce one output. The number of neurons you add at the final layer does not matter, as generateReward() function will convert multiple outputs to one.
 
 # Discouraging Exploration
 

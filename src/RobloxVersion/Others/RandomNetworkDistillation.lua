@@ -89,17 +89,27 @@ function RandomNetworkDistillation:generateReward(featureVector)
 	
 end
 
-function RandomNetworkDistillation:getModelParametersArray()
+function RandomNetworkDistillation:getTargetModelParameters()
 	
-	return {self.TargetModelParameters, self.PredictorModelParameters}
+	return self.TargetModelParameters 
 	
 end
 
-function RandomNetworkDistillation:setModelParametersArray(TargetModelParameters, PredictorModelParameters)
+function RandomNetworkDistillation:getPredictorModelParameters()
 	
-	self.TargetModelParameters = TargetModelParameters
+	return self.PredictorModelParameters
 	
-	self.PredictorModelParameters = PredictorModelParameters
+end
+
+function RandomNetworkDistillation:setTargetModelParameters(TargetModelParameters)
+	
+	self.TargetModelParameters  = TargetModelParameters
+	
+end
+
+function RandomNetworkDistillation:setPredictorModelParameters(PredictorModelParameters)
+
+	self.PredictorModelParameters  = PredictorModelParameters
 
 end
 

@@ -55,19 +55,21 @@ NeuralNetwork:generateReward(featureMatrix: Matrix): number
 
 ### getModelParametersArray()
 
-Gets the model parameters from the base model.
+Gets the model parameters from the network.
 
 ```
-OneVsAll:getModelParametersArray(): ModelParameters []
+OneVsAll:getModelParametersArray(): ModelParametersArray []
 ```
 
 #### Returns
 
-* ModelParameters: An array containing model parameters (matrix/table) fetched from each model. The index of the array determines which model it belongs to.
+* TargetModelParameters: Target network model parameters to be used for predictor network training.
+
+* PredictorModelParameters: Predictor network model parameters to be trained so that it tries to match up with target network model parameters.
 
 ### setModelParametersArray()
 
-Set the model parameters to the base model.
+Set the model parameters to the network
 
 ```
 OneVsAll:setModelParametersArray(TargetModelParameters: ModelParameters, PredictorModelParameters: ModelParameters)
@@ -75,7 +77,9 @@ OneVsAll:setModelParametersArray(TargetModelParameters: ModelParameters, Predict
 
 #### Parameters
 
-* ModelParametersArray: A table containing model parameters (matrix/table) to be given to be given to each model stored in OneVsAll object.  The position of the parameters determines which model it belongs to.
+* TargetModelParameters: Target network model parameters to be used for predictor network training.
+
+* PredictorModelParameters: Predictor network model parameters to be trained so that it tries to match up with target network model parameters.
 
 ## Inherited From
 

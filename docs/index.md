@@ -25,6 +25,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Tutorials
 
+### The Basics
+
 [Installation For Roblox](Tutorials/InstallationForRoblox.md)
 
 [Creating Our First Model](Tutorials/CreatingOurFirstModel.md)
@@ -42,6 +44,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 [Using Neural Networks Part 1](Tutorials/UsingNeuralNetworksPart1.md)
 
 [Using Neural Networks Part 2](Tutorials/UsingNeuralNetworksPart2.md)
+
+### Learning AIs
 
 [Using Neural Networks With Reinforcement Learning](Tutorials/UsingNeuralNetworksWithReinforcementLearning.md)
 

@@ -80,3 +80,7 @@ OneVsAll:setModelParametersArray(TargetModelParameters: ModelParameters, Predict
 ## Inherited From
 
 * [NeuralNetwork](NeuralNetwork.md)
+
+## References
+
+* [Random Network Distillation: A New Take on Curiosity-Driven Learning By Thomas Simonini](https://blog.dataiku.com/random-network-distillation-a-new-take-on-curiosity-driven-learning)

@@ -32,7 +32,7 @@ QLearningNeuralNetwork:addLayer(4, true, "StableSoftmax")
 
 local function onEnvironmentVectorReceived(environmentVector)
 
-  local internalReward = RandomNetworkDistillation:generateReward()
+  local internalReward = RandomNetworkDistillation:generateReward(environmentVector)
 
   local action = QLearningNeuralNetwork:reinforce(environmentVector, internalReward)
 
@@ -44,4 +44,30 @@ end
 
 As you can see, creating a random network distillation object is pretty similar to creating neural networks. The difference lies on the number of output it produces, where the random network distillation always produce one output.
 
-That's all for today!
+# Discouraging Exploration
+
+You can discourage the AI from exploring by changing one thing, which is:
+
+```
+
+ local internalReward = RandomNetworkDistillation:generateReward(environmentVector)
+
+```
+
+to 
+
+```
+
+ local internalReward = -RandomNetworkDistillation:generateReward(environmentVector)
+
+```
+
+This is particularly useful if you want to prevent AI from doing certain things like:
+
+* Keep walking forward even if it is blocked by a wall.
+
+* Moves to area that actively harms the AI.
+
+* And many others!
+
+Anyways, that's all for today!

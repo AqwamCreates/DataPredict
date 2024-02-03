@@ -70,7 +70,7 @@ OneVsAll:getModelParametersArray(): ModelParameters []
 Set the model parameters to the base model.
 
 ```
-OneVsAll:setModelParameters(ModelParametersArray: ModelParameters[])
+OneVsAll:setModelParametersArray(ModelParametersArray: ModelParameters[])
 ```
 
 #### Parameters

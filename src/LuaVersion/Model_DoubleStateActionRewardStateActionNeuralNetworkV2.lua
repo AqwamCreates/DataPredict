@@ -87,7 +87,7 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIte
 
 		TargetModelParameters = rateAverageModelParameters(NewDoubleStateActionRewardStateActionNeuralNetworkModel.averagingRate, PrimaryModelParameters, TargetModelParameters)
 
-		NewDoubleStateActionRewardStateActionNeuralNetworkModel:setModelParameters(TargetModelParameters)
+		NewDoubleStateActionRewardStateActionNeuralNetworkModel:setModelParameters(TargetModelParameters, true)
 		
 		return newTargetVector
 

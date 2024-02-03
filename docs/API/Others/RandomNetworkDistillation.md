@@ -9,7 +9,7 @@ RandomNetworkDistillation is a network for producing internal rewards to encoura
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-RandomNetworkDistillation.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean, targetTotalCost: number): RandomNetworkDistillationObject
+RandomNetworkDistillation.new(maxNumberOfIterations: integer, learningRate: number): RandomNetworkDistillationObject
 ```
 
 #### Parameters:
@@ -29,7 +29,7 @@ RandomNetworkDistillation.new(maxNumberOfIterations: integer, useNegativeOneBina
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-RandomNetworkDistillation:setParameters(maxNumberOfIterations: integer, learningRate: number, targetTotalCost: number)
+RandomNetworkDistillation:setParameters(maxNumberOfIterations: integer, learningRate: number)
 ```
 
 #### Parameters:

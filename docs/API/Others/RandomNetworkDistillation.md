@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - RandomNetworkDistillation
 
-RandomNetworkDistillation is a network for producing internal rewards to encourage exploration in an environment lacking external rewards.
+RandomNetworkDistillation is a neural network for producing internal rewards to encourage exploration.
 
 ## Constructors
 

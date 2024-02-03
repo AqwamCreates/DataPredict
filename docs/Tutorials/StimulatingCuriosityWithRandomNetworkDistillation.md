@@ -62,7 +62,7 @@ to
 
 ```
 
-This is particularly useful if you want to prevent AI from doing certain things like:
+This is particularly useful if you want to prevent AI from doing things like:
 
 * Keep walking forward even if it is blocked by a wall.
 

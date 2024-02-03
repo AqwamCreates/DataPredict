@@ -20,7 +20,7 @@ RandomNetworkDistillation.new(maxNumberOfIterations: integer, learningRate: numb
 
 #### Returns:
 
-* RandomNetworkDistillation: The generated RandomNetworkDistillation object.
+* RandomNetworkDistillationObject: The generated RandomNetworkDistillation object.
 
 ## Functions
 

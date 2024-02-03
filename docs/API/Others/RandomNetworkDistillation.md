@@ -53,7 +53,7 @@ NeuralNetwork:generateReward(featureMatrix: Matrix): number
 
 * reward: A value produced when comparing the target and predictor network outputs.
 
-### getModelParameters()
+### getModelParametersArray()
 
 Gets the model parameters from the base model.
 

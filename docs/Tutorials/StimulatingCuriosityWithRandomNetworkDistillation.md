@@ -26,7 +26,7 @@ local QLearningNeuralNetwork = DataPredict.Model.QLearning.new()
 
 QLearningNeuralNetwork:addLayer(10, true, "LeakyReLU")
 
-QLearningNeuralNetwork:addLayer(4, true, "Stable Softmax")
+QLearningNeuralNetwork:addLayer(4, true, "StableSoftmax")
 
 -- Creating A simple function when receiving environment vector received.
 

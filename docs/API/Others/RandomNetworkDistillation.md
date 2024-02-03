@@ -43,7 +43,7 @@ RandomNetworkDistillation:setParameters(maxNumberOfIterations: integer, learning
 Train the model.
 
 ```
-NeuralNetwork:generateReward(featureMatrix: Matrix): number
+RandomNetworkDistillation:generateReward(featureMatrix: Matrix): number
 ```
 #### Parameters:
 
@@ -53,29 +53,51 @@ NeuralNetwork:generateReward(featureMatrix: Matrix): number
 
 * reward: A value produced when comparing the target and predictor network outputs.
 
-### getModelParametersArray()
+### getTargetModelParameters()
 
-Gets the model parameters from the network.
+Gets the target model parameters from the network.
 
 ```
-OneVsAll:getModelParametersArray(): ModelParametersArray []
+RandomNetworkDistillation:getTargetModelParameters(): ModelParameters
 ```
 
 #### Returns
 
-* ModelParametersArray. An array containing TargetModelParameters (when index at 1) and PredictorModelParameters (when index at 2)
+* TargetModelParameters: Target network model parameters to be used for predictor network training.
 
-### setModelParametersArray()
+### getPredictorModelParameters()
+
+Gets the target model parameters from the network.
+
+```
+RandomNetworkDistillation:getPredictorModelParameters(): ModelParameters
+```
+
+#### Returns
+
+* PredictorModelParameters: Target network model parameters to be used for predictor network training.
+
+### setTargetModelParameters()
 
 Set the model parameters to the network
 
 ```
-OneVsAll:setModelParametersArray(TargetModelParameters: ModelParameters, PredictorModelParameters: ModelParameters)
+RandomNetworkDistillation:setTargetModelParameters(TargetModelParameters: ModelParameters)
 ```
 
 #### Parameters
 
 * TargetModelParameters: Target network model parameters to be used for predictor network training.
+
+### setPredictorModelParameters()
+
+Set the model parameters to the network
+
+```
+RandomNetworkDistillation:setPredictorModelParameters(PredictorModelParameters: ModelParameters)
+```
+
+#### Parameters
 
 * PredictorModelParameters: Predictor network model parameters to be trained so that it tries to match up with target network model parameters.
 

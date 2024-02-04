@@ -101,23 +101,27 @@ function ClippedDoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfItera
 
 end
 
-function ClippedDoubleQLearningNeuralNetworkModel:setModelParametersArray(ModelParameters1, ModelParameters2)
+function ClippedDoubleQLearningNeuralNetworkModel:setModelParameters1(ModelParameters1)
 
-	if (ModelParameters1) or (ModelParameters2) then
-
-		self.ModelParametersArray = {ModelParameters1, ModelParameters2}
-
-	else
-
-		self.ModelParametersArray = {}
-
-	end
+	self.ModelParametersArray[1] = ModelParameters1
 
 end
 
-function ClippedDoubleQLearningNeuralNetworkModel:getModelParametersArray()
+function ClippedDoubleQLearningNeuralNetworkModel:setModelParameters2(ModelParameters2)
 
-	return self.ModelParametersArray
+	self.ModelParametersArray[2] = ModelParameters2
+
+end
+
+function ClippedDoubleQLearningNeuralNetworkModel:getModelParameters1(ModelParameters1)
+
+	return self.ModelParametersArray[1]
+
+end
+
+function ClippedDoubleQLearningNeuralNetworkModel:getModelParameters2(ModelParameters2)
+
+	return self.ModelParametersArray[2]
 
 end
 

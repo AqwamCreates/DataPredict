@@ -96,26 +96,6 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel:setParameters(maxN
 
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:setModelParametersArray(ModelParameters1, ModelParameters2)
-
-	if (ModelParameters1) or (ModelParameters2) then
-
-		self.ModelParametersArray = {ModelParameters1, ModelParameters2}
-
-	else
-
-		self.ModelParametersArray = {}
-
-	end
-
-end
-
-function DoubleStateActionRewardStateActionNeuralNetworkModel:getModelParametersArray()
-
-	return self.ModelParametersArray
-
-end
-
 function DoubleStateActionRewardStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(index)
 
 	local ModelParameters = self:getModelParameters()
@@ -155,6 +135,30 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel:generateTargetVect
 	local newTargetVector = AqwamMatrixLibrary:add(rewardValue, dicountedVector)
 
 	return newTargetVector
+
+end
+
+function DoubleStateActionRewardStateActionNeuralNetworkModel:setModelParameters1(ModelParameters1)
+
+	self.ModelParametersArray[1] = ModelParameters1
+
+end
+
+function DoubleStateActionRewardStateActionNeuralNetworkModel:setModelParameters2(ModelParameters2)
+
+	self.ModelParametersArray[2] = ModelParameters2
+
+end
+
+function DoubleStateActionRewardStateActionNeuralNetworkModel:getModelParameters1(ModelParameters1)
+
+	return self.ModelParametersArray[1]
+
+end
+
+function DoubleStateActionRewardStateActionNeuralNetworkModel:getModelParameters2(ModelParameters2)
+
+	return self.ModelParametersArray[2]
 
 end
 

@@ -64,7 +64,7 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.ne
 
 		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-		local targetVector, targetValue = NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		local targetVector, expectedQValue = NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
@@ -74,7 +74,7 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.ne
 
 		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		return targetValue
+		return expectedQValue
 
 	end)
 
@@ -196,7 +196,7 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:ge
 
 	targetVector[1][actionIndex] = targetValue
 
-	return targetVector, targetValue
+	return targetVector, expectedQValue
 
 end
 

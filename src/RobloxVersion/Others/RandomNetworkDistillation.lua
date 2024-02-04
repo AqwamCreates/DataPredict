@@ -54,7 +54,7 @@ function RandomNetworkDistillation:generateModelParameters()
 	
 end
 
-function RandomNetworkDistillation:generateReward(featureVector)
+function RandomNetworkDistillation:generate(featureVector)
 	
 	if (not self.TargetModelParameters) or (not self.PredictorModelParameters) then
 		
@@ -72,13 +72,11 @@ function RandomNetworkDistillation:generateReward(featureVector)
 	
 	local errorVector = AqwamMatrixLibrary:subtract(predictorVector, targetVector)
 	
-	errorVector = AqwamMatrixLibrary:horizontalNormalizeMatrix(errorVector)
-	
 	local squaredErrorVector = AqwamMatrixLibrary:power(errorVector, 2)
 	
 	local sumError = AqwamMatrixLibrary:sum(squaredErrorVector)
 	
-	local reward = math.sqrt(sumError)
+	local value = math.sqrt(sumError)
 	
 	local numberOfFeatures = #featureVector[1]
 	
@@ -87,7 +85,7 @@ function RandomNetworkDistillation:generateReward(featureVector)
 	self:forwardPropagate(featureVector, true)
 	self:backPropagate(errorVector, true)
 	
-	return reward
+	return value
 	
 end
 

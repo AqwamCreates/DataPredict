@@ -84,20 +84,6 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:se
 
 end
 
-function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:getModelParametersArray()
-
-	return self.ModelParametersArray
-
-end
-
-function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(index)
-
-	local ModelParameters = self:getModelParameters()
-
-	self.ModelParametersArray[index] = ModelParameters
-
-end
-
 function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(index)
 
 	local FirstModelParameters = self.ModelParametersArray[1]
@@ -165,6 +151,30 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:ge
 	targetVector[1][actionIndex] = targetValue
 
 	return targetVector, expectedQValue
+
+end
+
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:setModelParameters1(ModelParameters1)
+	
+	self.ModelParametersArray[1] = ModelParameters1
+	
+end
+
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:setModelParameters2(ModelParameters2)
+
+	self.ModelParametersArray[2] = ModelParameters2
+
+end
+
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:getModelParameters1(ModelParameters1)
+
+	return self.ModelParametersArray[1]
+
+end
+
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:getModelParameters2(ModelParameters2)
+
+	return self.ModelParametersArray[2]
 
 end
 

@@ -4,7 +4,7 @@ By using or possesing any copies of this library or its assets (including the ic
 
 * Attribution is required when using this library. 
 
-* A separate agreement is needed for commercial use. (Unlikely to be charged if you or your company (if you own one) generate less than 300 US Dollars).
+* A separate agreement is needed for commercial use.
 
 ![DataPredictIconSmall](https://user-images.githubusercontent.com/67371914/223632639-dea075fe-9dce-430c-af82-2fb0fbeb43d3.png)
 

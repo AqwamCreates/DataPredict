@@ -62,26 +62,6 @@ function DoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, 
 
 end
 
-function DoubleQLearningNeuralNetworkModel:setModelParametersArray(ModelParameters1, ModelParameters2)
-	
-	if (ModelParameters1) or (ModelParameters2) then
-		
-		self.ModelParametersArray = {ModelParameters1, ModelParameters2}
-		
-	else
-		
-		self.ModelParametersArray = {}
-		
-	end
-	
-end
-
-function DoubleQLearningNeuralNetworkModel:getModelParametersArray()
-	
-	return self.ModelParametersArray
-	
-end
-
 function DoubleQLearningNeuralNetworkModel:saveModelParametersFromModelParametersArray(index)
 
 	local ModelParameters = self:getModelParameters()
@@ -126,6 +106,30 @@ function DoubleQLearningNeuralNetworkModel:generateTargetVector(previousFeatureV
 	
 	return targetVector, targetValue
 	
+end
+
+function DoubleQLearningNeuralNetworkModel:setModelParameters1(ModelParameters1)
+
+	self.ModelParametersArray[1] = ModelParameters1
+
+end
+
+function DoubleQLearningNeuralNetworkModel:setModelParameters2(ModelParameters2)
+
+	self.ModelParametersArray[2] = ModelParameters2
+
+end
+
+function DoubleQLearningNeuralNetworkModel:getModelParameters1(ModelParameters1)
+
+	return self.ModelParametersArray[1]
+
+end
+
+function DoubleQLearningNeuralNetworkModel:getModelParameters2(ModelParameters2)
+
+	return self.ModelParametersArray[2]
+
 end
 
 return DoubleQLearningNeuralNetworkModel

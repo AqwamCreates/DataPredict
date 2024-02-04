@@ -62,31 +62,53 @@ ClippedDoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
-### setModelParametersArray()
+### setModelParameters1()
 
 Sets model parameters to be used by the model.
 
 ```
-ClippedDoubleQLearningNeuralNetwork:setModelParametersArray(ModelParameters1: ModelParameters, ModelParameters2: ModelParameters)
+ClippedDoubleQLearningNeuralNetwork:setModelParameters1(ModelParameters1: ModelParameters)
 ```
 
 #### Parameters:
 
 * ModelParameters1: First model parameters to be used by the model.
 
-* ModelParameters2: Second model parameters to be used by the model.
-
-### getModelParametersArray()
+### setModelParameters2()
 
 Sets model parameters to be used by the model.
 
 ```
-ClippedDoubleQLearningNeuralNetwork:getModelParametersArray(): ModelParameters
+ClippedDoubleQLearningNeuralNetwork:setModelParameters1(ModelParameters2: ModelParameters)
+```
+
+#### Parameters:
+
+* ModelParameters2: Second model parameters to be used by the model.
+
+### getModelParameters1()
+
+Sets model parameters to be used by the model.
+
+```
+ClippedDoubleQLearningNeuralNetwork:getModelParameters1(): ModelParameters
 ```
 
 #### Returns:
 
-* ModelParametersArray: An array containing all the model parameters.
+* ModelParameters1: First model parameters that was used by the model.
+
+### getModelParameters2()
+
+Sets model parameters to be used by the model.
+
+```
+ClippedDoubleQLearningNeuralNetwork:getModelParameters2(): ModelParameters
+```
+
+#### Returns:
+
+* ModelParameters2: Second model parameters that was used by the model.
 
 ## Inherited From
 

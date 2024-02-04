@@ -46,7 +46,7 @@ As you can see, creating a random network distillation object is pretty similar 
 
 # Discouraging Exploration
 
-You can discourage the AI from exploring by making the value negative, which is shown below:
+You can discourage the AI from exploring by making the internal reward value to negative. An example is shown below:
 
 ```lua
 

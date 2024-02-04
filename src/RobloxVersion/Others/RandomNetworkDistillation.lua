@@ -72,6 +72,8 @@ function RandomNetworkDistillation:generateReward(featureVector)
 	
 	local errorVector = AqwamMatrixLibrary:subtract(predictorVector, targetVector)
 	
+	errorVector = AqwamMatrixLibrary:horizontalNormalizeMatrix(errorVector)
+	
 	local squaredErrorVector = AqwamMatrixLibrary:power(errorVector, 2)
 	
 	local sumError = AqwamMatrixLibrary:sum(squaredErrorVector)
@@ -103,13 +105,13 @@ end
 
 function RandomNetworkDistillation:setTargetModelParameters(TargetModelParameters)
 	
-	self.TargetModelParameters  = TargetModelParameters
+	self.TargetModelParameters = TargetModelParameters
 	
 end
 
 function RandomNetworkDistillation:setPredictorModelParameters(PredictorModelParameters)
 
-	self.PredictorModelParameters  = PredictorModelParameters
+	self.PredictorModelParameters = PredictorModelParameters
 
 end
 

@@ -85,6 +85,8 @@ function AdvantageActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon
 		table.insert(advantageHistory, advantageValue)
 
 		table.insert(actionProbabilityHistory, actionProbability)
+		
+		return advantageValue
 
 	end)
 

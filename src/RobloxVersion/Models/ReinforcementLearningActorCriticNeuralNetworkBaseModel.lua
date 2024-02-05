@@ -183,6 +183,8 @@ function ReinforcementLearningActorCriticNeuralNetworkBaseModel:reinforce(curren
 	local highestValueVector
 
 	local allOutputsMatrix
+	
+	local temporalDifferenceError
 
 	local randomProbability = Random.new():NextNumber()
 
@@ -210,7 +212,11 @@ function ReinforcementLearningActorCriticNeuralNetworkBaseModel:reinforce(curren
 
 	end
 
-	if (self.previousFeatureVector) then self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) end
+	if (self.previousFeatureVector) then 
+		
+		temporalDifferenceError = self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) 
+		
+	end
 	
 	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
 
@@ -227,6 +233,8 @@ function ReinforcementLearningActorCriticNeuralNetworkBaseModel:reinforce(curren
 	if (self.ExperienceReplay) and (self.previousFeatureVector) then
 
 		self.ExperienceReplay:addExperience(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
+		
+		self.ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
 
 		self.ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 

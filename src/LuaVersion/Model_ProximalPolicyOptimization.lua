@@ -76,6 +76,8 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 		
 		table.insert(rewardHistory, rewardValue)
 		
+		return advantageValue
+		
 	end)
 	
 	NewProximalPolicyOptimizationModel:setEpisodeUpdateFunction(function()

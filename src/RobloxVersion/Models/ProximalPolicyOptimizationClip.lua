@@ -80,6 +80,8 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 		
 		table.insert(rewardHistory, rewardValue)
 		
+		return advantageValue
+		
 	end)
 	
 	NewProximalPolicyOptimizationClipModel:setEpisodeUpdateFunction(function()

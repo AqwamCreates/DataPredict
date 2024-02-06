@@ -64,17 +64,19 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.ne
 
 		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-		local targetVector, targetValue = NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		local lossVector, temporalDifferenceError = NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
 		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 
-		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:train(previousFeatureVector, targetVector)
+		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:forwardPropagate(previousFeatureVector, true)
+
+		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:backPropagate(lossVector, true)
 
 		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		return targetValue
+		return temporalDifferenceError
 
 	end)
 
@@ -102,17 +104,11 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:se
 
 end
 
-function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:setModelParametersArray(ModelParameters1, ModelParameters2)
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(index)
 
-	if (ModelParameters1) or (ModelParameters2) then
+	local ModelParameters = self:getModelParameters()
 
-		self.ModelParametersArray = {ModelParameters1, ModelParameters2}
-
-	else
-
-		self.ModelParametersArray = {}
-
-	end
+	self.ModelParametersArray[index] = ModelParameters
 
 end
 
@@ -148,9 +144,9 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:ge
 
 	local actionIndex = table.find(self.ClassesList, action)
 
-	local predictedVector, maxQValue = self:predict(previousFeatureVector)
+	local previousVector = self:predict(previousFeatureVector, true)
 
-	local targetVector = self:predict(currentFeatureVector, true)
+	local targetVector, maxQValue = self:predict(currentFeatureVector)
 
 	for i = 1, numberOfActions, 1 do
 
@@ -177,12 +173,20 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:ge
 		end
 
 	end
+	
+	local numberOfClasses = #self:getClassesList()
 
 	local targetValue = rewardValue + (self.discountFactor * expectedQValue)
+	
+	local lastValue = previousVector[1][actionIndex]
 
-	targetVector[1][actionIndex] = targetValue
+	local temporalDifferenceError = targetValue - lastValue
 
-	return targetVector, targetValue
+	local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses, 0)
+
+	lossVector[1][actionIndex] = temporalDifferenceError
+
+	return lossVector, temporalDifferenceError
 
 end
 

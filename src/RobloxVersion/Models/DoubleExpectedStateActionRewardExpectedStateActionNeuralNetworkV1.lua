@@ -32,7 +32,7 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.ne
 
 		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-		local lossVector, temporalDifferenceError = NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		local lossVector, temporalDifferenceError = NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
@@ -102,7 +102,7 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:lo
 
 end
 
-function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 	local expectedQValue = 0
 

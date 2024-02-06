@@ -1,3 +1,5 @@
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
 local ReinforcementLearningNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningNeuralNetworkBaseModel)
 
 DoubleQLearningNeuralNetworkModel = {}
@@ -26,17 +28,19 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 
 		NewDoubleQLearningNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-		local targetVector, targetValue = NewDoubleQLearningNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		local lossVector, temporalDifferenceError = NewDoubleQLearningNeuralNetworkModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 		NewDoubleQLearningNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
 		NewDoubleQLearningNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 
-		NewDoubleQLearningNeuralNetworkModel:train(previousFeatureVector, targetVector)
+		NewDoubleQLearningNeuralNetworkModel:forwardPropagate(previousFeatureVector, true)
+		
+		NewDoubleQLearningNeuralNetworkModel:backPropagate(lossVector, true)
 
 		NewDoubleQLearningNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		return targetValue
+		return temporalDifferenceError
 		
 	end)
 
@@ -92,19 +96,27 @@ function DoubleQLearningNeuralNetworkModel:loadModelParametersFromModelParameter
 	
 end
 
-function DoubleQLearningNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function DoubleQLearningNeuralNetworkModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 	local predictedValue, maxQValue = self:predict(currentFeatureVector)
 
 	local targetValue = rewardValue + (self.discountFactor * maxQValue[1][1])
+	
+	local numberOfClasses = #self:getClassesList()
 
-	local targetVector = self:predict(previousFeatureVector, true)
+	local previousVector = self:predict(previousFeatureVector, true)
 
 	local actionIndex = table.find(self.ClassesList, action)
-
-	targetVector[1][actionIndex] = targetValue
 	
-	return targetVector, targetValue
+	local lastValue = previousVector[1][actionIndex]
+	
+	local temporalDifferenceError = targetValue - lastValue
+		
+	local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses, 0)
+
+	lossVector[1][actionIndex] = temporalDifferenceError
+	
+	return lossVector, temporalDifferenceError
 	
 end
 

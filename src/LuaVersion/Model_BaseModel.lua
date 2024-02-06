@@ -117,6 +117,12 @@ function BaseModel.new()
 	
 end
 
+function BaseModel:deepCopyTable(original)
+	
+	return deepCopyTable(original)
+	
+end
+
 function BaseModel:setNumberOfIterationsToCheckIfConverged(numberOfIterations)
 	
 	self.numberOfIterationsToCheckIfConverged = numberOfIterations or self.numberOfIterationsToCheckIfConverged

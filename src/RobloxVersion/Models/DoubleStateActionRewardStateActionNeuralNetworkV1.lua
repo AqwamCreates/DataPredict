@@ -28,17 +28,19 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIte
 
 		NewDoubleStateActionRewardStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-		local targetVector = NewDoubleStateActionRewardStateActionNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		local lossVector = NewDoubleStateActionRewardStateActionNeuralNetworkModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 		NewDoubleStateActionRewardStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
 		NewDoubleStateActionRewardStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 
-		NewDoubleStateActionRewardStateActionNeuralNetworkModel:train(previousFeatureVector, targetVector)
+		NewDoubleStateActionRewardStateActionNeuralNetworkModel:forwardPropagate(previousFeatureVector, true)
+		
+		NewDoubleStateActionRewardStateActionNeuralNetworkModel:backPropagate(lossVector, true)
 
 		NewDoubleStateActionRewardStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		return targetVector
+		return lossVector
 
 	end)
 
@@ -94,15 +96,19 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel:loadModelParameter
 
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function DoubleStateActionRewardStateActionNeuralNetworkModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 	local targetVector = self:predict(currentFeatureVector, true)
 
 	local dicountedVector = AqwamMatrixLibrary:multiply(self.discountFactor, targetVector)
 
 	local newTargetVector = AqwamMatrixLibrary:add(rewardValue, dicountedVector)
+	
+	local previousVector = self:predict(previousFeatureVector, true)
+	
+	local lossVector = AqwamMatrixLibrary:subtract(newTargetVector, previousVector)
 
-	return newTargetVector
+	return lossVector
 
 end
 

@@ -79,13 +79,23 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 
 		local targetValue = rewardValue + (NewDoubleQLearningNeuralNetworkModel.discountFactor * maxQValue[1][1])
 
-		local targetVector = NewDoubleQLearningNeuralNetworkModel:predict(previousFeatureVector, true)
+		local previousVector = NewDoubleQLearningNeuralNetworkModel:predict(previousFeatureVector, true)
 
 		local actionIndex = table.find(NewDoubleQLearningNeuralNetworkModel.ClassesList, action)
 
-		targetVector[1][actionIndex] = targetValue
+		local lastValue = previousVector[1][actionIndex]
 
-		NewDoubleQLearningNeuralNetworkModel:train(previousFeatureVector, targetVector)
+		local temporalDifferenceError = targetValue - lastValue
+		
+		local numberOfClasses = #NewDoubleQLearningNeuralNetworkModel:getClassesList()
+
+		local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses, 0)
+
+		lossVector[1][actionIndex] = temporalDifferenceError
+
+		NewDoubleQLearningNeuralNetworkModel:forwardPropagate(previousFeatureVector, true)
+
+		NewDoubleQLearningNeuralNetworkModel:backPropagate(lossVector, true)
 
 		local TargetModelParameters = NewDoubleQLearningNeuralNetworkModel:getModelParameters(true)
 
@@ -93,7 +103,7 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 
 		NewDoubleQLearningNeuralNetworkModel:setModelParameters(TargetModelParameters, true)
 		
-		return targetValue
+		return temporalDifferenceError
 
 	end)
 	

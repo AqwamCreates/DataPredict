@@ -37,6 +37,8 @@ function VanillaPolicyGradientModel.new(numberOfReinforcementsPerEpisode, epsilo
 		table.insert(advantageHistory, advantageValue)
 
 		table.insert(gradientHistory, gradientMatrix[1])
+		
+		return advantageValue
 
 	end)
 

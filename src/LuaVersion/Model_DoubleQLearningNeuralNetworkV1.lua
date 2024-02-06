@@ -59,17 +59,19 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 
 		NewDoubleQLearningNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-		local targetVector, targetValue = NewDoubleQLearningNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		local lossVector, temporalDifferenceError = NewDoubleQLearningNeuralNetworkModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 		NewDoubleQLearningNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
 		NewDoubleQLearningNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 
-		NewDoubleQLearningNeuralNetworkModel:train(previousFeatureVector, targetVector)
+		NewDoubleQLearningNeuralNetworkModel:forwardPropagate(previousFeatureVector, true)
+		
+		NewDoubleQLearningNeuralNetworkModel:backPropagate(lossVector, true)
 
 		NewDoubleQLearningNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		return targetValue
+		return temporalDifferenceError
 		
 	end)
 
@@ -93,26 +95,6 @@ function DoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, 
 
 	self.currentEpsilon = epsilon or self.currentEpsilon
 
-end
-
-function DoubleQLearningNeuralNetworkModel:setModelParametersArray(ModelParameters1, ModelParameters2)
-	
-	if (ModelParameters1) or (ModelParameters2) then
-		
-		self.ModelParametersArray = {ModelParameters1, ModelParameters2}
-		
-	else
-		
-		self.ModelParametersArray = {}
-		
-	end
-	
-end
-
-function DoubleQLearningNeuralNetworkModel:getModelParametersArray()
-	
-	return self.ModelParametersArray
-	
 end
 
 function DoubleQLearningNeuralNetworkModel:saveModelParametersFromModelParametersArray(index)
@@ -145,20 +127,52 @@ function DoubleQLearningNeuralNetworkModel:loadModelParametersFromModelParameter
 	
 end
 
-function DoubleQLearningNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function DoubleQLearningNeuralNetworkModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 	local predictedValue, maxQValue = self:predict(currentFeatureVector)
 
 	local targetValue = rewardValue + (self.discountFactor * maxQValue[1][1])
+	
+	local numberOfClasses = #self:getClassesList()
 
-	local targetVector = self:predict(previousFeatureVector, true)
+	local previousVector = self:predict(previousFeatureVector, true)
 
 	local actionIndex = table.find(self.ClassesList, action)
+	
+	local lastValue = previousVector[1][actionIndex]
+	
+	local temporalDifferenceError = targetValue - lastValue
+		
+	local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses, 0)
 
-	targetVector[1][actionIndex] = targetValue
+	lossVector[1][actionIndex] = temporalDifferenceError
 	
-	return targetVector, targetValue
+	return lossVector, temporalDifferenceError
 	
+end
+
+function DoubleQLearningNeuralNetworkModel:setModelParameters1(ModelParameters1)
+
+	self.ModelParametersArray[1] = ModelParameters1
+
+end
+
+function DoubleQLearningNeuralNetworkModel:setModelParameters2(ModelParameters2)
+
+	self.ModelParametersArray[2] = ModelParameters2
+
+end
+
+function DoubleQLearningNeuralNetworkModel:getModelParameters1(ModelParameters1)
+
+	return self.ModelParametersArray[1]
+
+end
+
+function DoubleQLearningNeuralNetworkModel:getModelParameters2(ModelParameters2)
+
+	return self.ModelParametersArray[2]
+
 end
 
 return DoubleQLearningNeuralNetworkModel

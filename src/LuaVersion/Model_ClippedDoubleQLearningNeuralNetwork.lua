@@ -61,21 +61,35 @@ function ClippedDoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, lea
 
 		local maxQValue = math.min(table.unpack(maxQValues))
 
-		local target = rewardValue + (NewClippedDoubleQLearningNeuralNetworkModel.discountFactor * maxQValue)
+		local targetValue = rewardValue + (NewClippedDoubleQLearningNeuralNetworkModel.discountFactor * maxQValue)
 
 		local actionIndex = table.find(NewClippedDoubleQLearningNeuralNetworkModel.ClassesList, action)
+		
+		local numberOfClasses = #NewClippedDoubleQLearningNeuralNetworkModel:getClassesList()
+		
+		local temporalDifferenceVector = AqwamMatrixLibrary:createMatrix(1, 2)
 
 		for i = 1, 2, 1 do
 
 			NewClippedDoubleQLearningNeuralNetworkModel:setModelParameters(NewClippedDoubleQLearningNeuralNetworkModel.ModelParametersArray[i], true)
 
-			local targetVector = NewClippedDoubleQLearningNeuralNetworkModel:predict(previousFeatureVector, true)
+			local previousVector = NewClippedDoubleQLearningNeuralNetworkModel:forwardPropagate(previousFeatureVector, true)
 
-			targetVector[1][actionIndex] = maxQValue
+			local lastValue = previousVector[1][actionIndex]
+			
+			local temporalDifferenceError = targetValue - lastValue
 
-			NewClippedDoubleQLearningNeuralNetworkModel:train(previousFeatureVector, targetVector)
+			local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses, 0)
+			
+			lossVector[1][actionIndex] = temporalDifferenceError
+			
+			temporalDifferenceVector[1][i] = temporalDifferenceError
+
+			NewClippedDoubleQLearningNeuralNetworkModel:train(previousFeatureVector, lossVector)
 
 		end
+		
+		return temporalDifferenceVector
 
 	end)
 

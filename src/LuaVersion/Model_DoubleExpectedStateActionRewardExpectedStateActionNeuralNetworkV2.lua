@@ -88,7 +88,7 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.ne
 
 		local actionIndex = table.find(NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.ClassesList, action)
 
-		local predictedVector, maxQValue = NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:predict(previousFeatureVector)
+		local previousVector, maxQValue = NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:predict(previousFeatureVector)
 
 		local targetVector = NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:predict(currentFeatureVector, true)
 
@@ -118,11 +118,17 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.ne
 
 		end
 
+		local numberOfClasses = #NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:getClassesList()
+
 		local targetValue = rewardValue + (NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.discountFactor * expectedQValue)
 
-		targetVector[1][actionIndex] = targetValue
+		local lastValue = previousVector[1][actionIndex]
 
-		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:train(previousFeatureVector, targetVector)
+		local temporalDifferenceError = targetValue - lastValue
+
+		local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses, 0)
+
+		lossVector[1][actionIndex] = temporalDifferenceError
 
 		local TargetModelParameters = NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:getModelParameters(true)
 
@@ -130,7 +136,7 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.ne
 
 		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:setModelParameters(TargetModelParameters, true)
 		
-		return targetValue
+		return temporalDifferenceError
 
 	end)
 

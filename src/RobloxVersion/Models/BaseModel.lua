@@ -1,4 +1,4 @@
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 BaseModel = {}
 
@@ -81,6 +81,12 @@ function BaseModel.new()
 	NewBaseModel.AutoResetOptimizers = true
 
 	return NewBaseModel
+	
+end
+
+function BaseModel:deepCopyTable(original)
+	
+	return deepCopyTable(original)
 	
 end
 

@@ -156,6 +156,12 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 	
 	NewPrioritizedExperienceReplay:extendResetFunction(function()
 		
+		NewPrioritizedExperienceReplay.sumPriorityAlpha = 0
+
+		NewPrioritizedExperienceReplay.maxPriority = 1
+
+		NewPrioritizedExperienceReplay.maxWeight = 1
+		
 		table.clear(NewPrioritizedExperienceReplay.priorityArray)
 		
 		table.clear(NewPrioritizedExperienceReplay.probabilityArray)

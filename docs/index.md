@@ -53,13 +53,11 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Stimulating Curiosity With Random Network Distillation](Tutorials/StimulatingCuriosityWithRandomNetworkDistillation.md)
 
-## API Reference
+## The API
 
-[API Reference](API.md)
+[API Reference](API.md) - The Documentation On How To Use All The Code In The Library!
 
-## Want To Create Your Own Models, Optimizers And More?
-
-[API Design](APIDesign.md)
+[API Design](APIDesign.md) - Guideline For Creating Your Own Models, Optimizers And More!
 
 ## Links
 

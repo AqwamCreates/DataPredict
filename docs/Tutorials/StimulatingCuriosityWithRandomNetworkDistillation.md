@@ -30,7 +30,7 @@ QLearningNeuralNetwork:addLayer(10, true, "LeakyReLU")
 
 QLearningNeuralNetwork:addLayer(4, true, "StableSoftmax")
 
--- Creating A simple function when receiving environment vector received.
+-- Creating a simple function when receiving environment vector received.
 
 local function onEnvironmentVectorReceived(environmentVector)
 

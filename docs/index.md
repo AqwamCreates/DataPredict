@@ -43,7 +43,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Using Regularization](Tutorials/UsingRegularization.md)
 
-## The Neural Networks
+### The Neural Networks
 
 [Using Neural Networks Part 1](Tutorials/UsingNeuralNetworksPart1.md)
 

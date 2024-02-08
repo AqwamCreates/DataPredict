@@ -8,7 +8,7 @@ Then, we need to find a way for our AIs to be "curious".
 
 # The Random Network Distillation
 
-Random Network Distillation uses neural networks to generate internal rewards to stimulate curiousity. At the start, it will encourage exploration. But over time, it sees more than enough similar data and this will reduce exploration.
+Random Network Distillation uses neural networks to generate internal rewards to stimulate curiousity. At the start, it will encourage exploration. But over time, it sees more than enough similar data and this will cause the model to stop exploring.
 
 Under here, this is how you integrate your reinforcement learning algorithms with the random network distillation.
 

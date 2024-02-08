@@ -55,9 +55,13 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## The API
 
-[API Reference](API.md) - The Documentation On How To Use All The Code In The Library!
+### API Reference
 
-[API Design](APIDesign.md) - Guideline For Creating Your Own Models, Optimizers And More!
+[API Reference](API.md)
+
+### Want To Create Your Own Models, Optimizers And More?
+
+[API Design](APIDesign.md)
 
 ## Links
 

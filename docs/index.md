@@ -25,9 +25,11 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Tutorials
 
-### The Basics
+### Installation
 
 [Installation For Roblox](Tutorials/InstallationForRoblox.md)
+
+### The Basics
 
 [Creating Our First Model](Tutorials/CreatingOurFirstModel.md)
 

@@ -48,6 +48,12 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 	
 	NewPrioritizedExperienceReplay.Model = nil
 	
+	NewPrioritizedExperienceReplay.sumPriorityAlpha = 0
+
+	NewPrioritizedExperienceReplay.maxPriority = 1
+
+	NewPrioritizedExperienceReplay.maxWeight = 1
+	
 	NewPrioritizedExperienceReplay.priorityArray = {} -- Store priorities
 	
 	NewPrioritizedExperienceReplay.probabilityArray = {}
@@ -55,12 +61,6 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 	NewPrioritizedExperienceReplay.weightArray = {}
 	
 	NewPrioritizedExperienceReplay.indexArray = {}
-	
-	NewPrioritizedExperienceReplay.sumPriorityAlpha = 0
-	
-	NewPrioritizedExperienceReplay.maxPriority = 1
-	
-	NewPrioritizedExperienceReplay.maxWeight = 1
 	
 	for i = 1, NewPrioritizedExperienceReplay.maxBufferSize, 1 do
 		

@@ -58,11 +58,9 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 	
 	NewPrioritizedExperienceReplay.sumPriorityAlpha = 0
 	
-	NewPrioritizedExperienceReplay.maxPriority = 0
+	NewPrioritizedExperienceReplay.maxPriority = 1
 	
-	NewPrioritizedExperienceReplay.maxWeight = 0
-	
-	NewPrioritizedExperienceReplay.memoryExperienceArray = {}
+	NewPrioritizedExperienceReplay.maxWeight = 1
 	
 	for i = 1, NewPrioritizedExperienceReplay.maxBufferSize, 1 do
 		
@@ -99,7 +97,7 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 
 				NewPrioritizedExperienceReplay.weightArray[index] = 0
 
-				NewPrioritizedExperienceReplay.maxPriority = math.max(table.unpack(NewPrioritizedExperienceReplay.priorityArray))
+				NewPrioritizedExperienceReplay.weightArray = math.max(table.unpack(NewPrioritizedExperienceReplay.weightArray))
 
 			end
 			
@@ -112,8 +110,6 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 		NewPrioritizedExperienceReplay.sumPriorityAlpha += math.pow(priority, NewPrioritizedExperienceReplay.alpha)
 
 		local probability = math.pow(priority, (NewPrioritizedExperienceReplay.alpha / NewPrioritizedExperienceReplay.sumPriorityAlpha))
-
-		NewPrioritizedExperienceReplay.memoryExperienceArray[index] = experience
 		
 		NewPrioritizedExperienceReplay.priorityArray[index] = priority-- Store priorities
 
@@ -127,9 +123,22 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 	
 	NewPrioritizedExperienceReplay:extendResetFunction(function()
 		
-		table.clear(NewPrioritizedExperienceReplay.prioritiesArray)
+		table.clear(NewPrioritizedExperienceReplay.priorityArray)
 		
-		table.clear(NewPrioritizedExperienceReplay.memoryData)
+		table.clear(NewPrioritizedExperienceReplay.probabilityArray)
+		
+		table.clear(NewPrioritizedExperienceReplay.weightArray)
+		
+		table.clear(NewPrioritizedExperienceReplay.weightArray)
+		
+		for i = 1, NewPrioritizedExperienceReplay.indexArray, 1 do
+
+			table.insert(NewPrioritizedExperienceReplay.priorityArray, NewPrioritizedExperienceReplay.epsilon)
+			table.insert(NewPrioritizedExperienceReplay.probabilityArray, 0)
+			table.insert(NewPrioritizedExperienceReplay.weightArray, 0)
+			table.insert(NewPrioritizedExperienceReplay.indexArray, i)
+
+		end
 		
 	end)
 	
@@ -234,15 +243,15 @@ function PrioritizedExperienceReplay:run()
 		end
 
 		local transitionProbability = math.pow(temporalDifferenceErrorValue, alpha) / self.sumPriorityAlpha
+		
+		if (transitionProbability ~= transitionProbability) then continue end -- Not sure why there is a bug when calculating transition probability for a number of cases. Anyways, it gives nan value when this happens.
 
 		local importanceSamplingWeight = math.pow((lowestNumberOfBatchSize * transitionProbability), -beta) / self.maxWeight
 
 		local outputMatrix = self.Model:forwardPropagate(replayBufferArray[i][1], false)
 
 		local adjustedOutputMatrix = AqwamMatrixLibrary:multiply(outputMatrix, temporalDifferenceErrorValue, importanceSamplingWeight)
-
-		print(importanceSamplingWeight, transitionProbability)
-
+		
 		local lossMatrix = AqwamMatrixLibrary:subtract(adjustedOutputMatrix, outputMatrix)
 
 		if (sumLossMatrix) then

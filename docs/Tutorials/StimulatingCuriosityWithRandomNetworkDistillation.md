@@ -24,7 +24,7 @@ RandomNetworkDistillation:addLayer(4, true, "Sigmoid")
 
 -- Initializing our QLearningNeuralNetwork
 
-local QLearningNeuralNetwork = DataPredict.Model.QLearning.new()
+local QLearningNeuralNetwork = DataPredict.Model.QLearningNeuralNetwork.new()
 
 QLearningNeuralNetwork:addLayer(10, true, "LeakyReLU")
 

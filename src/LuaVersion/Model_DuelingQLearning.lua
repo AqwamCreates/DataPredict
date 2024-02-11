@@ -33,8 +33,6 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
-
 DuelingQLearningModel = {}
 
 DuelingQLearningModel.__index = DuelingQLearningModel

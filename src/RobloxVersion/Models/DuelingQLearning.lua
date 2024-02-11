@@ -14,7 +14,7 @@ local defaultDiscountFactor = 0.95
 
 local defaultRewardAveragingRate = 0.05 -- The higher the value, the higher the episodic reward, but lower the running reward.
 
-function DuelingQLearningModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
+function DuelingQLearningModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
 	local NewDuelingQLearningModel = {}
 
@@ -27,8 +27,6 @@ function DuelingQLearningModel.new(numberOfReinforcementsPerEpisode, epsilon, ep
 	NewDuelingQLearningModel.epsilonDecayFactor =  epsilonDecayFactor or defaultEpsilonDecayFactor
 
 	NewDuelingQLearningModel.discountFactor =  discountFactor or defaultDiscountFactor
-
-	NewDuelingQLearningModel.rewardAveragingRate = rewardAveragingRate or defaultRewardAveragingRate
 
 	NewDuelingQLearningModel.currentEpsilon = epsilon or defaultEpsilon
 
@@ -46,7 +44,7 @@ function DuelingQLearningModel.new(numberOfReinforcementsPerEpisode, epsilon, ep
 
 end
 
-function DuelingQLearningModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
+function DuelingQLearningModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
 	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
@@ -55,8 +53,6 @@ function DuelingQLearningModel:setParameters(numberOfReinforcementsPerEpisode, e
 	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
 
 	self.discountFactor =  discountFactor or self.discountFactor
-
-	self.rewardAveragingRate = rewardAveragingRate or self.rewardAveragingRate
 
 	self.currentEpsilon = epsilon or self.currentEpsilon
 
@@ -216,7 +212,7 @@ function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, retu
 
 	else
 
-		allOutputsMatrix = self.ActorModel:predict(currentFeatureVector, true)
+		allOutputsMatrix = self.AdvantageModel:predict(currentFeatureVector, true)
 
 		actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 

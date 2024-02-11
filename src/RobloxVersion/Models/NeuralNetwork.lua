@@ -578,9 +578,9 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 
 		for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative respect to bias is equal to sum of all weights. So set the bias to zero before summing it horizontally.
 		
-		local biasDerivative = AqwamMatrixLibrary:horizontalSum(derivativeMatrix)
+		local biasDerivativeVector = AqwamMatrixLibrary:horizontalSum(derivativeMatrix)
 		
-		for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = biasDerivative[data][1] end 
+		for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = biasDerivativeVector[data][1] end 
 
 	end
 
@@ -608,9 +608,9 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 			
 			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative respect to bias is equal to sum of all weights. So set the bias to zero before summing it horizontally.
 			
-			local biasDerivative = AqwamMatrixLibrary:horizontalSum(derivativeMatrix)
+			local biasDerivativeVector = AqwamMatrixLibrary:horizontalSum(derivativeMatrix)
 			
-			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = biasDerivative[data][1] end 
+			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = biasDerivativeVector[data][1] end 
 			
 		end
 

@@ -497,12 +497,6 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 		layerZ = AqwamMatrixLibrary:dotProduct(inputMatrix, weightMatrix)
 
 		if (typeof(layerZ) == "number") then layerZ = {{layerZ}} end
-		
-		if (hasBiasNeuron == 1) then
-
-			for data = 1, numberOfData, 1 do layerZ[data][1] = 0 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to zero so that it remains as bias neuron.
-
-		end
 
 		inputMatrix = activationFunction(layerZ)
 
@@ -565,34 +559,60 @@ end
 function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTable, zTable)
 
 	local errorMatrixTable = {}
+	
+	local numberOfData = #lossMatrix
 
 	local numberOfLayers = #self.numberOfNeuronsTable
 
 	local zLayerMatrix
 	
 	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
+	
+	local hasBiasNeuron = self.hasBiasNeuronTable[numberOfLayers]
 
 	local derivativeFunction = derivativeList[activationFunctionName]
 	
 	local derivativeMatrix = derivativeFunction(forwardPropagateTable[numberOfLayers], zTable[numberOfLayers])
+	
+	if hasBiasNeuron then
+
+		for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative respect to bias is equal to sum of all weights. So set the bias to zero before summing it horizontally.
+		
+		local biasDerivative = AqwamMatrixLibrary:horizontalSum(derivativeMatrix)
+		
+		for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = biasDerivative[data][1] end 
+
+	end
 
 	local layerCostMatrix = AqwamMatrixLibrary:multiply(lossMatrix, derivativeMatrix)
 
 	table.insert(errorMatrixTable, layerCostMatrix)
 
-	for output = (numberOfLayers - 1), 2, -1 do
+	for layerNumber = (numberOfLayers - 1), 2, -1 do
 
-		local activationFunctionName = self.activationFunctionTable[output]
+		local activationFunctionName = self.activationFunctionTable[layerNumber]
 
 		local derivativeFunction = derivativeList[activationFunctionName]
 
-		local layerMatrix = self.ModelParameters[output]
+		local layerMatrix = self.ModelParameters[layerNumber]
+		
+		local hasBiasNeuron = self.hasBiasNeuronTable[layerNumber]
 
 		local layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 
 		local partialErrorMatrix = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
-		local derivativeMatrix = derivativeFunction(forwardPropagateTable[output], zTable[output])
+		local derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
+		
+		if hasBiasNeuron then
+			
+			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative respect to bias is equal to sum of all weights. So set the bias to zero before summing it horizontally.
+			
+			local biasDerivative = AqwamMatrixLibrary:horizontalSum(derivativeMatrix)
+			
+			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = biasDerivative[data][1] end 
+			
+		end
 
 		layerCostMatrix = AqwamMatrixLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 

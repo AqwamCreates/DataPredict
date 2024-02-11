@@ -34,7 +34,7 @@ QLearningNeuralNetwork:addLayer(4, true, "StableSoftmax")
 
 local function onEnvironmentVectorReceived(environmentVector)
 
-  local internalReward = RandomNetworkDistillation:generateReward(environmentVector)
+  local internalReward = RandomNetworkDistillation:generate(environmentVector)
 
   local action = QLearningNeuralNetwork:reinforce(environmentVector, internalReward)
 

@@ -574,23 +574,13 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 	
 	local derivativeMatrix = derivativeFunction(forwardPropagateTable[numberOfLayers], zTable[numberOfLayers])
 	
-	local biasDerivativeVector
-	
 	if hasBiasNeuron then
 
-		for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative respect to bias is equal to sum of all weights. So set the bias to zero before summing it horizontally.
-		
-		biasDerivativeVector = AqwamMatrixLibrary:horizontalSum(derivativeMatrix)
+		for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative respect to bias is equal to zero.
 
 	end
 
 	local layerCostMatrix = AqwamMatrixLibrary:multiply(lossMatrix, derivativeMatrix)
-	
-	if hasBiasNeuron then
-
-		for data = 1, numberOfData, 1 do layerCostMatrix[data][1] = biasDerivativeVector[data][1] end
-
-	end
 
 	table.insert(errorMatrixTable, layerCostMatrix)
 
@@ -611,20 +601,12 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 		local derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
 		
 		if hasBiasNeuron then
-			
-			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative respect to bias is equal to sum of all weights. So set the bias to zero before summing it horizontally.
-			
-			biasDerivativeVector = AqwamMatrixLibrary:horizontalSum(derivativeMatrix)
-			
+
+			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative respect to bias is equal to zero.
+
 		end
 
 		layerCostMatrix = AqwamMatrixLibrary:multiply(partialErrorMatrix, derivativeMatrix)
-		
-		if hasBiasNeuron then
-			
-			for data = 1, numberOfData, 1 do layerCostMatrix[data][1] = biasDerivativeVector[data][1] end
-			
-		end
 
 		table.insert(errorMatrixTable, 1, layerCostMatrix)
 		

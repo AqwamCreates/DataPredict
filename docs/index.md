@@ -53,6 +53,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Using Neural Networks With Reinforcement Learning](Tutorials/UsingNeuralNetworksWithReinforcementLearning.md)
 
+[Choosing The Best Environment Inputs](ChoosingTheBestEnvironmentInputs.md)
+
 [Stimulating Curiosity With Random Network Distillation](Tutorials/StimulatingCuriosityWithRandomNetworkDistillation.md)
 
 ## The API

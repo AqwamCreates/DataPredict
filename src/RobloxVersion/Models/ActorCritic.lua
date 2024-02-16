@@ -74,8 +74,6 @@ function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilon
 
 		local actionIndex = sampleAction(actionProbabilityVector)
 
-		local action = NewActorCriticModel.ClassesList[actionIndex]
-
 		local actionProbability = actionProbabilityVector[1][actionIndex]
 
 		table.insert(actionProbabilityHistory, actionProbability)

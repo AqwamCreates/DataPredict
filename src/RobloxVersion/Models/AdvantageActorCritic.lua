@@ -78,15 +78,11 @@ function AdvantageActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon
 
 		local actionIndex = sampleAction(actionProbabilityVector)
 
-		local action = NewAdvantageActorCriticModel.ClassesList[actionIndex]
-
 		local actionProbability = actionProbabilityVector[1][actionIndex]
 
 		table.insert(advantageHistory, advantageValue)
 
 		table.insert(actionProbabilityHistory, actionProbability)
-		
-		return advantageValue
 
 	end)
 

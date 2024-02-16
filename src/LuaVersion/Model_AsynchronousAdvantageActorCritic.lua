@@ -239,8 +239,6 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 	
 	local actionIndex = sampleAction(actionProbabilityVector)
 	
-	local action = self.ClassesList[actionIndex]
-	
 	local actionProbability = actionProbabilityVector[1][actionIndex]
 	
 	table.insert(self.advantageHistoryArray[actorCriticModelNumber], advantageValue)
@@ -249,7 +247,7 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 	
 	table.insert(self.criticValueHistoryArray[actorCriticModelNumber], previousCriticValue)
 	
-	return advantageValue
+	return allOutputsMatrix
 
 end
 
@@ -370,10 +368,6 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 	local highestValue
 
 	local highestValueVector
-	
-	local temporalDifferenceError
-	
-	local ActorModel = self.ActorModelArray[actorCriticModelNumber]
 
 	local allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 
@@ -392,21 +386,19 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 		allOutputsMatrix[1][randomNumber] = randomProbability
 
 	else
+
+		if (previousFeatureVector) then
 			
-		allOutputsMatrix = ActorModel:predict(currentFeatureVector, true)
-		
-		actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
+			allOutputsMatrix = self:update(previousFeatureVector, action, rewardValue, currentFeatureVector, actorCriticModelNumber)
+			
+			actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 
-		action = actionVector[1][1]
+			action = actionVector[1][1]
 
-		highestValue = highestValueVector[1][1]
+			highestValue = highestValueVector[1][1]
+			
+		end
 
-	end
-	
-	if (previousFeatureVector) then
-		
-		temporalDifferenceError = self:update(previousFeatureVector, action, rewardValue, currentFeatureVector, actorCriticModelNumber)
-		
 	end
 	
 	if (self.currentNumberOfReinforcementsArray[actorCriticModelNumber] >= self.numberOfReinforcementsPerEpisode) then
@@ -418,8 +410,6 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 	if (ExperienceReplay) and (previousFeatureVector) then 
 
 		ExperienceReplay:addExperience(previousFeatureVector, action, rewardValue, currentFeatureVector)
-		
-		ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
 
 		ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 

@@ -20,7 +20,7 @@ local rotationValueNeededToFaceTheEnemy = math.tanh(distanceX / distanceZ) - cur
 
 Meanwhile magnitude is the value from zero. For example:
 
-```
+```lua
 
 local position = primaryPart.Position
 

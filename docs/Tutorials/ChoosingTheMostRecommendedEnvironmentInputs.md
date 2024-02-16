@@ -1,6 +1,6 @@
 # Choosing The Most Recommended Environment Inputs
 
-I've commonly encounter programmers choosing poor inputs that led to very slow AI learning. In this tutorial, I will show you the most recommended inputs so that you can get the best out of this library.
+I've commonly encounter programmers choosing inputs that led to very slow AI learning. In this tutorial, I will show you the most recommended inputs so that you can get the best out of this library.
 
 ## Relative Magnitude Over Magnitude
 

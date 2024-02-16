@@ -14,7 +14,7 @@ local distance = position1 - position2
 
 local rotationDifference = rotation1 - rotation2
 
-local rotationValueNeededToFaceTheEnemy = math.tanh(distanceX / distanceZ) - currentRotation
+local rotationValueNeededToFaceTheEnemy = math.tanh(distanceX / distanceZ) - currentRotationY
 
 ```
 

@@ -4,7 +4,7 @@ I've commonly encounter programmers choosing inputs that led to very slow AI lea
 
 ## Relative Magnitude Over Magnitude
 
-Relative magnitude means that the magnitude is the result from subtracting between two magnitudes. For example:
+Relative magnitude means that the magnitude is the result from subtracting / dividing between two magnitudes. For example:
 
 ```lua
 

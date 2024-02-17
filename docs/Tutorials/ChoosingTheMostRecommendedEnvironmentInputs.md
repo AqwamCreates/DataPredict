@@ -16,7 +16,7 @@ local rotationDifference = rotation1 - rotation2
 
 local rotationValueNeededToFaceTheEnemy = math.tanh(distanceX / distanceZ) - currentRotationY
 
-local healthPercentage = currentHealth / maxHealth
+local healthRatio = currentHealth / maxHealth
 
 ```
 

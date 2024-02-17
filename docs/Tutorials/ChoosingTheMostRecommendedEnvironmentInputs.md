@@ -58,7 +58,7 @@ local rotationY = math.tanh(distanceX / distanceZ)
 
 ```
 
-Because rotationY contains those two values, distanceX and distanceZ can be removed. However, if you want the distance for rotationY, then calculate the distance using both distance X and Z.
+Because rotationY contains those two values, distanceX and distanceZ can be removed. However, if you want the distance for rotationY, then you need to calculate the distance using both distance X and Z.
 
 Using redundant values will cause the learning to slow down as the neural network will have to find the connection between these values that already exists.
 

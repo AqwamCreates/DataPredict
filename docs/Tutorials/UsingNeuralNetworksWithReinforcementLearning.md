@@ -56,7 +56,7 @@ This is the value where we reward or punish the models. The properties of reward
 
 It is recommended to set the reward that is within the range of:
 
-```
+```lua
 -1 <= (total reward * learning rate) <= 1
 ```
 

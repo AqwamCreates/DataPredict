@@ -213,6 +213,16 @@ function DuelingQLearningModel:setPrintReinforcementOutput(option)
 
 end
 
+function DuelingQLearningModel:episodeUpdate()
+	
+	self.currentNumberOfReinforcements = 0
+
+	self.currentNumberOfEpisodes += 1
+
+	self.currentEpsilon *= self.epsilonDecayFactor
+	
+end
+
 function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 
 	if (self.ValueModel == nil) then error("No value model!") end
@@ -259,11 +269,7 @@ function DuelingQLearningModel:reinforce(currentFeatureVector, rewardValue, retu
 	
 	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
 
-		self.currentNumberOfReinforcements = 0
-
-		self.currentNumberOfEpisodes += 1
-
-		self.currentEpsilon *= self.epsilonDecayFactor
+		self:episodeUpdate()
 
 	end
 

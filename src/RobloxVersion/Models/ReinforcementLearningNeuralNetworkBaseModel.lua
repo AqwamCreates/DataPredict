@@ -90,6 +90,12 @@ function ReinforcementLearningNeuralNetworkBaseModel:episodeUpdate()
 	
 	local episodeUpdateFunction = self.episodeUpdateFunction
 	
+	self.currentNumberOfReinforcements = 0
+
+	self.currentNumberOfEpisodes += 1
+
+	self.currentEpsilon *= self.epsilonDecayFactor
+	
 	if not episodeUpdateFunction then return end
 	
 	episodeUpdateFunction()
@@ -161,12 +167,6 @@ function ReinforcementLearningNeuralNetworkBaseModel:reinforce(currentFeatureVec
 	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
 
 		self:episodeUpdate()
-
-		self.currentNumberOfReinforcements = 0
-
-		self.currentNumberOfEpisodes += 1
-
-		self.currentEpsilon *= self.epsilonDecayFactor
 
 	end
 

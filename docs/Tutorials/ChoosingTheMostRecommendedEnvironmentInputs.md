@@ -42,7 +42,7 @@ These two values can effect our neural networks very differently. Below, I will 
 
 ### Magnitude
 
-* Since this is a raw value, the neural network now has to learn a solution for this and it might not be even correct.
+* Since this is a raw value, the neural network now has to learn a solution related to output and it might not be even correct.
 
 * This will lead to slower learning and require larger neural network structure.
 

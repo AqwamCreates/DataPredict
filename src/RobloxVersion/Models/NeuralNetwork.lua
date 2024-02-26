@@ -1484,6 +1484,16 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 end
 
+function NeuralNetworkModel:reset()
+	
+	for i, Optimizer in ipairs(self.OptimizerTable) do
+
+		if Optimizer then Optimizer:reset() end
+
+	end
+	
+end
+
 function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)
 
 	if (not self.ModelParameters) then self:generateLayers() end

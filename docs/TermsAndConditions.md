@@ -75,6 +75,9 @@ Licensor reserve the right to change these terms and conditions at any time, wit
 
 * Upon the event of a modification or update to this Agreement, it shall hereby render the previous iteration of this Agreement null and void, with the authority to do so exercised without prior notice. The terms and stipulations articulated within the revised Agreement shall instantaneously supersede any antecedent agreements. The User is thereby mandated to promptly adhere to the conditions delineated within the updated license. Failure to comply shall warrant termination in accordance with the provisions detailed above.
 
+## No Waiver
+No failure or delay by either party in exercising any right, power, or remedy under this Agreement shall operate as a waiver of any such right, power, or remedy. The waiver by either party of any breach of any provision of this Agreement shall not be construed as a waiver of any subsequent breach of the same or any other provision.
+
 ## Entire Agreement
 This Agreement constitutes the entire agreement between User and Licensor with respect to the subject matter hereof and supersedes all prior or contemporaneous communications and proposals, whether oral or written, between User and Licensor.
 

@@ -63,7 +63,7 @@ Below, I will show the codes that demonstrates these two options
 We will use createLayers() function to create the layers. The first parameters takes in a table of integers, where the index determines the position and the values determines the number of neurons.
 
 ```lua
-local numberOfNeuronsArray = {2, 3, 2}
+local numberOfNeuronsWithoutBiasArray = {2, 3, 2}
 
 NeuralNetworkModel:createLayers(numberOfNeuronsArray)
 ```

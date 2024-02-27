@@ -41,13 +41,33 @@ REINFORCENeuralNetworkModel.__index = REINFORCENeuralNetworkModel
 
 setmetatable(REINFORCENeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
+local function calculateRewardsToGo(rewardHistory, discountFactor)
+
+	local rewardsToGoArray = {}
+
+	local discountedReward = 0
+
+	for h = #rewardHistory, 1, -1 do
+
+		discountedReward += rewardHistory[h] + (discountFactor * discountedReward)
+
+		table.insert(rewardsToGoArray, 1, discountedReward)
+
+	end
+
+	return rewardsToGoArray
+
+end
+
 function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 
 	local NewREINFORCENeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
 	
 	setmetatable(NewREINFORCENeuralNetworkModel, REINFORCENeuralNetworkModel)
 	
-	local policyGradientMatrix = {}
+	local targetVectorArray = {}
+	
+	local rewardArray = {}
 	
 	NewREINFORCENeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
@@ -57,29 +77,43 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, nu
 		
 		local targetVector = AqwamMatrixLibrary:multiply(logPredictedVector, rewardValue)
 
-		table.insert(policyGradientMatrix, targetVector[1])
+		table.insert(targetVectorArray, targetVector)
+		
+		table.insert(rewardArray, rewardValue)
 
 	end)
 	
 	NewREINFORCENeuralNetworkModel:setEpisodeUpdateFunction(function()
 		
-		local targetVector = AqwamMatrixLibrary:verticalMean(policyGradientMatrix)
+		local rewardsToGoArray = calculateRewardsToGo(rewardArray, discountFactor)
+		
+		local lossVector = AqwamMatrixLibrary:createMatrix(1, #NewREINFORCENeuralNetworkModel.ClassesList)
+		
+		for i = 1, #targetVectorArray, 1 do
+			
+			local discountedReward = AqwamMatrixLibrary:multiply(targetVectorArray[i], rewardsToGoArray[i])
+			
+			lossVector = AqwamMatrixLibrary:add(lossVector, discountedReward)
+			
+		end
 		
 		local numberOfNeurons = NewREINFORCENeuralNetworkModel.numberOfNeuronsTable[1] + NewREINFORCENeuralNetworkModel.hasBiasNeuronTable[1]
-		
+
 		local inputVector = {table.create(numberOfNeurons, 1)}
 		
 		NewREINFORCENeuralNetworkModel:forwardPropagate(inputVector, true)
+
+		NewREINFORCENeuralNetworkModel:backPropagate(lossVector, true)
 		
-		NewREINFORCENeuralNetworkModel:backPropagate(targetVector, true)
-		
-		table.clear(policyGradientMatrix)
+		table.clear(targetVectorArray)
+		table.clear(rewardArray)
 		
 	end)
 	
 	NewREINFORCENeuralNetworkModel:extendResetFunction(function()
 
-		table.clear(policyGradientMatrix)
+		table.clear(targetVectorArray)
+		table.clear(rewardArray)
 		
 	end)
 

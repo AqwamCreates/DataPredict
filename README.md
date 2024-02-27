@@ -2,7 +2,7 @@
 
 --------------------------------------------------------------------
 
-## THIS IS A PROPRIETARY SOURCE CODE! NOT OPEN SOURCE! 
+## THIS IS A SOURCE AVAILABLE CODE! NOT OPEN SOURCE! 
 
 --------------------------------------------------------------------
 

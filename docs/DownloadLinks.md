@@ -12,21 +12,21 @@
 
 [Release Version 1.10](https://create.roblox.com/marketplace/asset/16041994137)
 
-[Release Version 1.9](https://create.roblox.com/marketplace/asset/15905508985)
+[Release Version 1.9](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.9.rbxm)
 
-[Release Version 1.8](https://create.roblox.com/marketplace/asset/15759662956)
+[Release Version 1.8](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.8.rbxm)
 
-[Release Version 1.7](https://create.roblox.com/marketplace/asset/15684193316)
+[Release Version 1.7](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.7.rbxm)
 
-[Release Version 1.6](https://create.roblox.com/marketplace/asset/15552669178)
+[Release Version 1.6](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.6.rbxm)
 
-[Release Version 1.5](https://create.roblox.com/marketplace/asset/15268337462)
+[Release Version 1.5](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.5.rbxm)
 
-[Release Version 1.4](https://create.roblox.com/marketplace/asset/15199714521)
+[Release Version 1.4](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.4.rbxm)
 
-[Release Version 1.3](https://www.roblox.com/library/14716528959/DataPredict-Release-Version-1-3)
+[Release Version 1.3](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.3.rbxm)
 
-[Release Version 1.2](https://www.roblox.com/library/14503414633/DataPredict-Release-Version-1-2)
+[Release Version 1.2](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.2.rbxm)
 
 [Release Version 1.1](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.1.rbxm)
 

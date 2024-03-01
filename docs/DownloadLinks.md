@@ -36,4 +36,4 @@
 
 [Aqwam's Machine And Deep Learning Library](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/AqwamMachineAndDeepLearningLibrary.rbxm)
 
-[Aqwam's Matrix Library](https://www.roblox.com/library/12256162800/Aqwams-Matrix-Library)
+[Aqwam's Matrix Library](https://github.com/AqwamCreates/MatrixL/blob/main/module_scripts/AqwamMatrixLibrary.rbxm)

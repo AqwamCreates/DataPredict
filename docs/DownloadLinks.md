@@ -34,6 +34,6 @@
 
 ## ModuleScripts - Beta Versions (Contains Bugs)
 
-[Aqwam's Machine And Deep Learning Library](https://create.roblox.com/marketplace/asset/12591886004/Aqwams-Machine-And-Deep-Learning-Library)
+[Aqwam's Machine And Deep Learning Library](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/AqwamMachineAndDeepLearningLibrary.rbxm)
 
 [Aqwam's Matrix Library](https://www.roblox.com/library/12256162800/Aqwams-Matrix-Library)

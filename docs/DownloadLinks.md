@@ -28,9 +28,9 @@
 
 [Release Version 1.2](https://www.roblox.com/library/14503414633/DataPredict-Release-Version-1-2)
 
-[Release Version 1.1](https://www.roblox.com/library/14383260890/DataPredict-Release-Version-1-1)
+[Release Version 1.1](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.1.rbxm)
 
-[Release Version 1.0](https://www.roblox.com/library/14048670741/DataPredict-Release-Version-1-0)
+[Release Version 1.0](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.0.rbxm)
 
 ### ModuleScripts Packages (Recommended For Up-To-Date Libraries)
 

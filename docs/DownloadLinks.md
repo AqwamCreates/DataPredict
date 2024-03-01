@@ -4,13 +4,13 @@
 
 ### DataPredict Library
 
-[Release Version 1.13](https://create.roblox.com/store/asset/16287322195)
+[Release Version 1.13](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.13.rbxm)
 
-[Release Version 1.12](https://create.roblox.com/store/asset/16188578746)
+[Release Version 1.12](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.12.rbxm)
 
-[Release Version 1.11](https://create.roblox.com/store/asset/16127849536)
+[Release Version 1.11](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.11.rbxm)
 
-[Release Version 1.10](https://create.roblox.com/marketplace/asset/16041994137)
+[Release Version 1.10](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.10.rbxm)
 
 [Release Version 1.9](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.9.rbxm)
 
@@ -31,12 +31,6 @@
 [Release Version 1.1](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.1.rbxm)
 
 [Release Version 1.0](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.0.rbxm)
-
-### ModuleScripts Packages (Recommended For Up-To-Date Libraries)
-
-[DataPredict Library (Beta Version)](https://www.roblox.com/library/12727977273/DataPredict-Library)
-
-[MatrixL (Matrix Library)](https://www.roblox.com/library/12728472338/MatrixL-Aqwams-Roblox-Matrix-Library)
 
 ## ModuleScripts - Beta Versions (Contains Bugs)
 

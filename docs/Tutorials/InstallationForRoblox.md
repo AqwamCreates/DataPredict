@@ -9,7 +9,7 @@ To start, we must first link our machine/deep learning library with our matrix l
 | Release (ModuleScript)      | [DataPredict (Release Version 1.13)](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.13.rbxm)           |                                                                                                                    |
 | Unstable (ModuleScript)     | [Aqwam's Machine And Deep Learning Library](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/AqwamMachineAndDeepLearningLibrary.rbxm)               | [Aqwam's Matrix Library](https://github.com/AqwamCreates/MatrixL/blob/main/module_scripts/AqwamMatrixLibrary.rbxm) |
 
-To download from files from GitHub, you must click on the download button highlighted in the red box.
+To download the files from GitHub, you must click on the download button highlighted in the red box.
 
 ![Github File Download Screenshot](https://github.com/AqwamCreates/DataPredict/assets/67371914/cdd701ba-daed-4ef4-9485-5c690077adf6)
 

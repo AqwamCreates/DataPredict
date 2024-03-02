@@ -15,7 +15,7 @@ To download the files from GitHub, you must click on the download button highlig
 
 Then drag the files into Roblox Studio from a file explorer of your choice.
 
-Once you put those two libraries into your game make sure you link the Machine Learning Library with the Matrix Library. This can be done via setting the “AqwamMatrixLibraryLinker” value (under the Machine Learning library) to the Matrix Library.
+Once you put those two libraries into your game, make sure you link the Machine Learning Library with the Matrix Library. This can be done via setting the “AqwamMatrixLibraryLinker” value (under the Machine Learning library) to the Matrix Library.
 
 ![Screenshot 2023-12-11 011824](https://github.com/AqwamCreates/DataPredict/assets/67371914/f8dee5ef-edb0-455f-bf4a-5160ccbc35ef)
 

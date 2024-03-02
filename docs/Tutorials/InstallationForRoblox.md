@@ -11,7 +11,7 @@ To start, we must first link our machine/deep learning library with our matrix l
 
 To download the files from GitHub, you must click on the download button highlighted in the red box.
 
-![Github File Download Screenshot](https://github.com/AqwamCreates/DataPredict/assets/67371914/8194867c-a28c-4470-b4a3-64384f42ec5a)
+![Github File Download Screenshot](https://github.com/AqwamCreates/DataPredict/assets/67371914/b921d568-81b9-4f47-8a96-e0ab0316a4fe)
 
 Then drag the files into Roblox Studio from a file explorer of your choice.
 

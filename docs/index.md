@@ -4,7 +4,7 @@ By using or possesing any copies of this library or its assets (including the ic
 
 * Attribution is required when using this library. 
 
-* A separate agreement is needed for commercial use. This is for companies that have large revenue (>= $1000) or player base (>= 100 player per game).
+* A separate agreement is needed for commercial use. This is for companies that have large revenue (>= $1000) or player base (>= 100 players per game).
 
 ![DataPredictIconSmall](https://user-images.githubusercontent.com/67371914/223632639-dea075fe-9dce-430c-af82-2fb0fbeb43d3.png)
 

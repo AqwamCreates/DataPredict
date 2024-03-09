@@ -30,39 +30,6 @@ local lossFunctionList = {
 	
 }
 
-local adjustedOutputFunctionList = {
-	
-	["Sigmoid"] = function (x) 
-
-		if (x >= 0.5) then 
-
-			return x
-
-		else 
-
-			return (1 - x)
-
-		end 
-
-	end,
-
-	["Tanh"] = function (x) 
-
-		if (x >= 0) then 
-
-			return x
-
-		else
-
-			return (2 + x)
-
-
-		end 
-
-	end
-	
-}
-
 local cutOffFunctionList = {
 	
 	["Sigmoid"] = function (x) 
@@ -293,11 +260,7 @@ function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local cutOffFunction = cutOffFunctionList[self.sigmoidFunction]
 	
-	local adjustedOutputFunction = adjustedOutputFunctionList[self.sigmoidFunction]
-	
 	local predictedLabelVector = AqwamMatrixLibrary:applyFunction(cutOffFunction, outputVector)
-	
-	local adjustedOutputVector = AqwamMatrixLibrary:applyFunction(adjustedOutputFunction, outputVector)
 	
 	return predictedLabelVector, outputVector
 

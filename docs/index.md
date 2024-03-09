@@ -79,7 +79,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### Other Documentations
 
-[Aqwam's Matrix Library](https://robloxmatrixl.substack.com/p/directory)
+[Aqwam's Matrix Library](https://aqwamcreates.github.io/MatrixL/)
 
 ## Version History
 

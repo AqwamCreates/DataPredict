@@ -1,3 +1,5 @@
+# Switching Between Low And High Level APIs For Deep Reinforcement Learning
+
 Previously, you have saw that we commonly use reinforce() function. However, that is considered a high-level API function as that functions handle majority of the work. 
 
 But if you wish to have more control over the model, we can use a lower level API function. There are two main functions that you need to remember: update() and episodeUpdate(). I'll show you on how to use those function below. Please do note that this code configuration is specific to QLearningNeuralNetwork and other models may need adjustments.

@@ -16,27 +16,25 @@ local maxNumberOfSteps = 100
 
 while true do
 
-  local isGameCompleted = false
-
   local previousEnvironmentVector = {{0, 0, 0, 0}}
 
-  repeat
+  local action = 1
 
-    for i = 1, maxNumberOfSteps, 1 do
+  for i = 1, maxNumberOfSteps, 1 do
 
-      local environmentVector = fetchEnvironmentVector()
+    local environmentVector = fetchEnvironmentVector(action)
 
-      local action = QLearningNeuralNetwork:predict(environmentVector)
+    action = QLearningNeuralNetwork:predict(environmentVector)
 
-      local reward = getReward(environmentVector, action)
+    local reward = getReward(environmentVector, action)
 
-      QLearningNeuralNetwork:update(previousEnvironmentVector, reward, action, environmentVector)
+    QLearningNeuralNetwork:update(previousEnvironmentVector, reward, action, environmentVector)
 
-    end
+    previousEnvironmentVector = environmentVector
 
-  until isGameCompleted
+  end
 
-     QLearningNeuralNetwork:episodeUpdate()
+  QLearningNeuralNetwork:episodeUpdate()
 
 end
 

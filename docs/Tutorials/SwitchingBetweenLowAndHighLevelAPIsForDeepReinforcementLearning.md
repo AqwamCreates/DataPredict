@@ -10,7 +10,7 @@ Please do note that this code configuration is specific to QLearningNeuralNetwor
 
 local QLearningNeuralNetwork = DataPredict.Models.QLearningNeuralNetwork.new()
 
-QLearningNeuralNetwork:addLayer(5, true)
+QLearningNeuralNetwork:addLayer(4, true)
 
 QLearningNeuralNetwork:addLayer(2, false)
 
@@ -18,7 +18,7 @@ QLearningNeuralNetwork:setClassesList({1, 2})
 
 while true do
 
-  local previousEnvironmentVector = {{0, 0, 0, 0}}
+  local previousEnvironmentVector = {{1, 0, 0, 0, 0}}
 
   local action = 1
 

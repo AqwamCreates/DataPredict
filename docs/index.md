@@ -57,7 +57,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Stimulating Curiosity With Random Network Distillation](Tutorials/StimulatingCuriosityWithRandomNetworkDistillation.md)
 
-[Switching Between Low And High Level APIs For Deep Reinforcement Learning](SwitchingBetweenLowAndHighLevelAPIsForDeepReinforcementLearning.md)
+[Switching Between Low And High Level APIs For Deep Reinforcement Learning](Tutorials/SwitchingBetweenLowAndHighLevelAPIsForDeepReinforcementLearning.md)
 
 ## The API
 

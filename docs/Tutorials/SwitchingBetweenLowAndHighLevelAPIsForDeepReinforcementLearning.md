@@ -22,7 +22,7 @@ while true do
 
   for i = 1, maxNumberOfSteps, 1 do
 
-    local environmentVector = fetchEnvironmentVector(action)
+    local environmentVector = fetchEnvironmentVector(previousEnvironmentVector, action)
 
     action = QLearningNeuralNetwork:predict(environmentVector)
 

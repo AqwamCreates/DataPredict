@@ -33,7 +33,7 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local GradientMethodBaseModel = require("GradientMethodBaseModel")
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 NeuralNetworkModel = {}
 

@@ -51,7 +51,7 @@ function DistributedLearning.new(totalNumberOfChildModelUpdatesToUpdateMainModel
 	
 	NewDistributedLearning.ModelArray = {}
 	
-	NewDistributedLearning.IsDistributedLearningRunning = false
+	NewDistributedLearning.isDistributedLearningRunning = false
 	
 	NewDistributedLearning.ModelParametersMerger = ModelParametersMerger.new(nil, nil, "Average")
 	
@@ -127,15 +127,15 @@ end
 
 function DistributedLearning:start()
 	
-	if (self.IsDistributedLearningRunning == true) then error("The model is already running!") end
+	if (self.isDistributedLearningRunning == true) then error("The model is already running!") end
 	
-	self.IsDistributedLearningRunning = true
+	self.isDistributedLearningRunning = true
 	
 	local trainCoroutine = coroutine.create(function()
 
 		repeat
 			
-			wait()
+			task.wait()
 			
 			if (self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel < self.totalNumberOfChildModelUpdatesToUpdateMainModel) then continue end
 			
@@ -153,7 +153,7 @@ function DistributedLearning:start()
 			
 			self.MainModelParameters = MainModelParameters
 
-		until (self.IsDistributedLearningRunning == false)
+		until (self.isDistributedLearningRunning == false)
 
 	end)
 
@@ -165,7 +165,7 @@ end
 
 function DistributedLearning:stop()
 	
-	self.IsDistributedLearningRunning = false
+	self.isDistributedLearningRunning = false
 	
 end
 

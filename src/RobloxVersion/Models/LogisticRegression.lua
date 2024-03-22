@@ -1,10 +1,10 @@
-local BaseModel = require(script.Parent.BaseModel)
+local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
 LogisticRegressionModel = {}
 
 LogisticRegressionModel.__index = LogisticRegressionModel
 
-setmetatable(LogisticRegressionModel, BaseModel)
+setmetatable(LogisticRegressionModel, GradientMethodBaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
@@ -114,7 +114,7 @@ end
 
 function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, sigmoidFunction)
 	
-	local NewLogisticRegressionModel = BaseModel.new()
+	local NewLogisticRegressionModel = GradientMethodBaseModel.new()
 
 	setmetatable(NewLogisticRegressionModel, LogisticRegressionModel)
 
@@ -233,6 +233,8 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 			costFunctionDerivatives = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivatives)
 
 		end
+		
+		if (self.isGradientSaved) then self.Gradient = costFunctionDerivatives end
 
 		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
 		

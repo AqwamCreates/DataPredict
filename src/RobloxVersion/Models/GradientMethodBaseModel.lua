@@ -10,17 +10,17 @@ function GradientMethodBaseModel.new()
 	
 	local NewGradientMethodBaseModel = BaseModel.new()
 	
-	NewGradientMethodBaseModel.isGradientSaved = false
+	NewGradientMethodBaseModel.areGradientsSaved = false
 	
-	NewGradientMethodBaseModel.Gradient = nil
+	NewGradientMethodBaseModel.Gradients = nil
 	
 	return NewGradientMethodBaseModel
 	
 end
 
-function GradientMethodBaseModel:setIsGradientSaved(option)
+function GradientMethodBaseModel:setAreGradientsSaved(option)
 	
-	self.isGradientSaved = self:getBooleanOrDefaultOption(option, self.isGradientSaved)
+	self.areGradientsSaved = self:getBooleanOrDefaultOption(option, self.areGradientsSaved)
 	
 end
 
@@ -28,33 +28,33 @@ function GradientMethodBaseModel:getGradient(doNotDeepCopy)
 	
 	if doNotDeepCopy then
 
-		return self.Gradient
+		return self.Gradients
 
 	else
 
-		return self:deepCopyTable(self.Gradient)
+		return self:deepCopyTable(self.Gradients)
 
 	end
 	
 end
 
-function GradientMethodBaseModel:setGradient(gradient, doNotDeepCopy)
+function GradientMethodBaseModel:setGradients(Gradients, doNotDeepCopy)
 
 	if doNotDeepCopy then
 
-		self.Gradient = gradient
+		self.Gradients = Gradients
 
 	else
 
-		self.Gradient = self:deepCopyTable(gradient)
+		self.Gradients = self:deepCopyTable(Gradients)
 
 	end
 
 end
 
-function GradientMethodBaseModel:clearGradient()
+function GradientMethodBaseModel:clearGradients()
 	
-	self.Gradient = nil
+	self.Gradients = nil
 	
 end
 

@@ -33,13 +33,13 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local BaseModel = require("Model_BaseModel")
+local GradientMethodBaseModel = require("GradientMethodBaseModel")
 
 NeuralNetworkModel = {}
 
 NeuralNetworkModel.__index = NeuralNetworkModel
 
-setmetatable(NeuralNetworkModel, BaseModel)
+setmetatable(NeuralNetworkModel, GradientMethodBaseModel)
 
 local defaultMaxNumberOfIterations = 500
 
@@ -851,7 +851,7 @@ end
 
 function NeuralNetworkModel.new(maxNumberOfIterations, learningRate)
 
-	local NewNeuralNetworkModel = BaseModel.new()
+	local NewNeuralNetworkModel = GradientMethodBaseModel.new()
 
 	setmetatable(NewNeuralNetworkModel, NeuralNetworkModel)
 
@@ -1239,6 +1239,8 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables, doNotUpdateMo
 	
 	local costFunctionDerivativesTable = self:calculateCostFunctionDerivatives(self.learningRate, deltaTable, numberOfData)
 	
+	if (self.isGradientSaved) then self.Gradient = costFunctionDerivativesTable end
+	
 	if not doNotUpdateModelParameters then
 		
 		self.ModelParameters = self:gradientDescent(costFunctionDerivativesTable)
@@ -1515,6 +1517,16 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	return costArray
 
+end
+
+function NeuralNetworkModel:reset()
+	
+	for i, Optimizer in ipairs(self.OptimizerTable) do
+
+		if Optimizer then Optimizer:reset() end
+
+	end
+	
 end
 
 function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)

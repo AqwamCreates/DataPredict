@@ -1206,7 +1206,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables, doNotUpdateMo
 	
 	local costFunctionDerivativesTable = self:calculateCostFunctionDerivatives(self.learningRate, deltaTable, numberOfData)
 	
-	if (self.isGradientSaved) then self.Gradient = costFunctionDerivativesTable end
+	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativesTable end
 	
 	if (not doNotUpdateModelParameters) then
 		

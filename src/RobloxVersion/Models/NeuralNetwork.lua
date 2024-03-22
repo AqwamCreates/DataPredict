@@ -644,7 +644,7 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, errorMatrixTab
 
 end
 
-function NeuralNetworkModel:calculateCostFunctionDerivatives(learningRate, deltaTable, numberOfData)
+function NeuralNetworkModel:calculateCostFunctionDerivatives(deltaTable, numberOfData)
 	
 	local regularizationDerivatives
 
@@ -1204,7 +1204,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables, doNotUpdateMo
 
 	local deltaTable = self:calculateDelta(self.forwardPropagateTable, errorMatrixTable)
 	
-	local costFunctionDerivativesTable = self:calculateCostFunctionDerivatives(self.learningRate, deltaTable, numberOfData)
+	local costFunctionDerivativesTable = self:calculateCostFunctionDerivatives(deltaTable, numberOfData)
 	
 	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativesTable end
 	

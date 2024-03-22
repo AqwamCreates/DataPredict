@@ -234,7 +234,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 		end
 		
-		if (self.isGradientSaved) then self.Gradient = costFunctionDerivatives end
+		if (self.areGradientsSaved) then self.Gradients = costFunctionDerivatives end
 
 		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
 		

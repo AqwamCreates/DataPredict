@@ -1208,13 +1208,13 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables, doNotUpdateMo
 	
 	if (self.isGradientSaved) then self.Gradient = costFunctionDerivativesTable end
 	
-	if not doNotUpdateModelParameters then
+	if (not doNotUpdateModelParameters) then
 		
 		self.ModelParameters = self:gradientDescent(costFunctionDerivativesTable)
 		
 	end
 
-	if clearTables then
+	if (clearTables) then
 
 		self.forwardPropagateTable = nil
 

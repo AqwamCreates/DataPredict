@@ -31,7 +31,7 @@
 
 --]]
 
-local GradientMethodBaseModel = require("GradientMethodBaseModel")
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 LinearRegressionModel = {}
 

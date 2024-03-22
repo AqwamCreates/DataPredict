@@ -4,7 +4,7 @@
 
 	Aqwam's Machine And Deep Learning Library (DataPredict)
 
-	Version 1.28.0
+	Version 1.29.0
 
 	Author: Aqwam Harish Aiman
 	
@@ -123,7 +123,15 @@ local ModelsDictionary = {
 
 local AqwamCustomModelsDictionary = {
 	
+	AdvantageLearningNeuralNetwork = require(AqwamCustomModels.AdvantageLearningNeuralNetwork),
+	
 	ConfidenceQLearningNeuralNetwork = require(AqwamCustomModels.ConfidenceQLearningNeuralNetwork),
+	
+	ConfidenceQLearningNeuralNetworkV2 = require(AqwamCustomModels.ConfidenceQLearningNeuralNetworkV2),
+	
+	ConfidenceQLearningNeuralNetworkV3 = require(AqwamCustomModels.ConfidenceQLearningNeuralNetworkV3),
+	
+	ConfidenceQLearningNeuralNetworkV4 = require(AqwamCustomModels.ConfidenceQLearningNeuralNetworkV4)
 	
 }
 
@@ -179,7 +187,9 @@ local OthersDictionary = {
 	
 	OnlineLearning = require(Others.OnlineLearning),
 	
-	DistributedLearning = require(Others.DistributedLearning),
+	DistributedTraining = require(Others.DistributedTraining),
+	
+	DistributedGradientDescent = require(Others.DistributedGradientDescent),
 	
 	Tokenizer = require(Others.Tokenizer),
 	

@@ -115,4 +115,4 @@ LogisticRegression:predict(featureMatrix: Matrix, returnOriginalOutput: boolean)
 
 ## Inherited From
 
-* [BaseModel](BaseModel.md)
+* [GradientMethodBaseModel](GradientMethodBaseModel.md)

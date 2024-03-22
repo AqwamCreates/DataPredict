@@ -121,7 +121,7 @@ local function checkDepth(array, depth)
 
 end
 
-local function checkIfIsTable(array)
+local function checkIfIsTableOfMatrices(array)
 
 	local depth = checkDepth(array)
 
@@ -481,17 +481,17 @@ local function mergeModelParameters(mergeType, ModelParametersArray, percentageS
 	
 	local numberOfModelParameters = #ModelParametersArray
 	
-	local isTable = checkIfIsTable(ModelParametersArray[1])
+	local isTableOfMatrices = checkIfIsTableOfMatrices(ModelParametersArray[1])
 	
-	if (isTable) and (mergeType ~= "Average") then
+	if (isTableOfMatrices) and (mergeType ~= "Average") then
 
 		NewModelParameters = calculateScaledModelParametersTable(ModelParametersArray, percentageSplitArray)
 
-	elseif (isTable == false) and (mergeType ~= "Average") then
+	elseif (isTableOfMatrices == false) and (mergeType ~= "Average") then
 
 		NewModelParameters = calculateScaledModelParameters(ModelParametersArray, percentageSplitArray)
 		
-	elseif (isTable) and (mergeType == "Average") then
+	elseif (isTableOfMatrices) and (mergeType == "Average") then
 		
 		local averageFunction = function(x) return (x / numberOfModelParameters) end
 
@@ -501,7 +501,7 @@ local function mergeModelParameters(mergeType, ModelParametersArray, percentageS
 
 		NewModelParameters = applyFunctionToEachMatricesInModelParameters(averageFunction, NewModelParameters)
 
-	elseif (isTable == false) and (mergeType == "Average") then
+	elseif (isTableOfMatrices == false) and (mergeType == "Average") then
 
 		NewModelParameters = AqwamMatrixLibrary:add(table.unpack(ModelParametersArray))
 

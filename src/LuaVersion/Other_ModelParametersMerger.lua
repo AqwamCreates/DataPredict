@@ -125,9 +125,9 @@ local function checkIfIsTableOfMatrices(array)
 
 	local depth = checkDepth(array)
 
-	local isTable = (depth == 3)
+	local isTableOfMatrices = (depth == 3)
 
-	return isTable
+	return isTableOfMatrices
 
 end
 

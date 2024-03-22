@@ -2,7 +2,7 @@
 
 [ConfusionMatrixCreator](Others/ConfusionMatrixCreator.md)
 
-[DistributedLearning](Others/DistributedLearning.md)
+[DistributedTraining](Others/DistributedTraining.md)
 
 [ModelChecker](Others/ModelChecker.md)
 

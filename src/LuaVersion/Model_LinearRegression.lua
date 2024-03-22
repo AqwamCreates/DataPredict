@@ -31,13 +31,13 @@
 
 --]]
 
-local BaseModel = require("Model_BaseModel")
+local GradientMethodBaseModel = require("GradientMethodBaseModel")
 
 LinearRegressionModel = {}
 
 LinearRegressionModel.__index = LinearRegressionModel
 
-setmetatable(LinearRegressionModel, BaseModel)
+setmetatable(LinearRegressionModel, GradientMethodBaseModel)
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
@@ -114,7 +114,7 @@ end
 
 function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lossFunction)
 	
-	local NewLinearRegressionModel = BaseModel.new()
+	local NewLinearRegressionModel = GradientMethodBaseModel.new()
 	
 	setmetatable(NewLinearRegressionModel, LinearRegressionModel)
 	
@@ -231,6 +231,8 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 			costFunctionDerivatives = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivatives)
 
 		end
+		
+		if (self.isGradientSaved) then self.Gradient = costFunctionDerivatives end
 		
 		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
 		

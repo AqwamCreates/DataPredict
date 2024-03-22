@@ -391,7 +391,7 @@ NeuralNetwork:getLayer(layerNumber: number): number, boolean, string, number, Op
 
 ## Inherited From
 
-* [BaseModel](BaseModel.md)
+* [GradientMethodBaseModel](GradientMethodBaseModel.md)
 
 ## References
 

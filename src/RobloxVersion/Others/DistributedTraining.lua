@@ -46,7 +46,7 @@ function DistributedTraining:train(featureVector, labelVector, modelNumber)
 
 	local Model = self.ModelArray[modelNumber]
 
-	if not Model then error("No model!") end
+	if (not Model) then error("No model!") end
 
 	return Model:train(featureVector, labelVector)
 
@@ -68,7 +68,7 @@ function DistributedTraining:reinforce(currentFeatureVector, rewardValue, return
 	
 	local Model = self.ModelArray[modelNumber]
 	
-	if not Model then error("No model!") end
+	if (not Model) then error("No model!") end
 	
 	return Model:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 	

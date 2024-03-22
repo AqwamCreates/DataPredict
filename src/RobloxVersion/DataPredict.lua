@@ -215,7 +215,7 @@ local function checkVersion()
 	
 	local matrixLibraryVersion
 	
-	if (AqwamMatrixLibrary == nil) then error("\n\nMatrixL (or Aqwam's Matrix Library) is not linked to this library. \nPlease read the \"Tutorial \" in DataPredict's documentation for installation details. ") end
+	if (AqwamMatrixLibrary == nil) then error("\n\nMatrixL (or Aqwam's Matrix Library) is not linked to this library. \nPlease read the \"Tutorial \" in DataPredict's documentation for installation details.") end
 	
 	local success = pcall(function()
 		

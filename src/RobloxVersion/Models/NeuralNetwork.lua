@@ -1,10 +1,10 @@
-local BaseModel = require(script.Parent.BaseModel)
+local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
 NeuralNetworkModel = {}
 
 NeuralNetworkModel.__index = NeuralNetworkModel
 
-setmetatable(NeuralNetworkModel, BaseModel)
+setmetatable(NeuralNetworkModel, GradientMethodBaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
@@ -818,7 +818,7 @@ end
 
 function NeuralNetworkModel.new(maxNumberOfIterations, learningRate)
 
-	local NewNeuralNetworkModel = BaseModel.new()
+	local NewNeuralNetworkModel = GradientMethodBaseModel.new()
 
 	setmetatable(NewNeuralNetworkModel, NeuralNetworkModel)
 
@@ -1205,6 +1205,8 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables, doNotUpdateMo
 	local deltaTable = self:calculateDelta(self.forwardPropagateTable, errorMatrixTable)
 	
 	local costFunctionDerivativesTable = self:calculateCostFunctionDerivatives(self.learningRate, deltaTable, numberOfData)
+	
+	if (self.isGradientSaved) then self.Gradient = costFunctionDerivativesTable end
 	
 	if not doNotUpdateModelParameters then
 		

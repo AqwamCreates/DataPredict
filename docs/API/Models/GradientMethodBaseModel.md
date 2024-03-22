@@ -32,7 +32,7 @@ GradientMethodBaseModel:setAreGradientSaved(option: boolean)
 
 ```lua
 
-GradientMethodBaseModel:getGradients(doNotDeepCopy: boolean)
+GradientMethodBaseModel:getGradients(doNotDeepCopy: boolean): any
 
 ```
 

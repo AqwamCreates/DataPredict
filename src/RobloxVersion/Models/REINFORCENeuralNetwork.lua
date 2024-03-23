@@ -26,9 +26,9 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 end
 
-function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, discountFactor)
 
-	local NewREINFORCENeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewREINFORCENeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, discountFactor)
 	
 	setmetatable(NewREINFORCENeuralNetworkModel, REINFORCENeuralNetworkModel)
 	
@@ -88,21 +88,13 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, nu
 
 end
 
-function REINFORCENeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function REINFORCENeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, discountFactor)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
-	
-	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
-
-	self.epsilon = epsilon or self.epsilon
-
-	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
 
 	self.discountFactor =  discountFactor or self.discountFactor
-
-	self.currentEpsilon = epsilon or self.currentEpsilon
 
 end
 

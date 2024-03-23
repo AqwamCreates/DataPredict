@@ -9,7 +9,9 @@ DistributedGradients is a base class for distributed gradient ascent / descent.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
+
 DistributedGradients.new(gradientChangeMode: string): DistributedGradientObject
+
 ```
 
 #### Parameters:
@@ -31,7 +33,9 @@ DistributedGradients.new(gradientChangeMode: string): DistributedGradientObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
+
 DistributedGradients:setParameters(gradientChangeMode: string)
+
 ```
 
 #### Parameters:
@@ -45,7 +49,9 @@ DistributedGradients:setParameters(gradientChangeMode: string)
 ### addGradients()
 
 ```
+
 DistributedGradients:addGradients(Gradients: any)
+
 ```
 
 #### Parameters:
@@ -55,7 +61,9 @@ DistributedGradients:addGradients(Gradients: any)
 ### setModelParameters()
 
 ```
+
 DistributedGradients:setMainModelParameters(ModelParameters: any)
+
 ```
 
 #### Parameters:
@@ -65,7 +73,9 @@ DistributedGradients:setMainModelParameters(ModelParameters: any)
 ### getMainModelParameters()
 
 ```
+
 DistributedGradients:getModelParameters(): any
+
 ```
 
 #### Returns:
@@ -77,7 +87,9 @@ DistributedGradients:getModelParameters(): any
 Clears the stored gradients inside the DistributedGradients object.
 
 ```
+
 DistributedGradients:clearGradients()
+
 ```
 
 ### destroy()
@@ -85,5 +97,7 @@ DistributedGradients:clearGradients()
 Destroys the model object.
 
 ```
+
 DistributedGradients:destroy()
+
 ```

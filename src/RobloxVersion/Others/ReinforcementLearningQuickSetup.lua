@@ -290,6 +290,12 @@ function ReinforcementLearningQuickSetup:getCurrentEpsilon()
 
 end
 
+function ReinforcementLearningQuickSetup:getModel()
+	
+	return self.Model
+	
+end
+
 function ReinforcementLearningQuickSetup:reset()
 	
 	self.currentNumberOfReinforcements = 0

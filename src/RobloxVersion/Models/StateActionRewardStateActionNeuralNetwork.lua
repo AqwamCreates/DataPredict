@@ -8,9 +8,9 @@ StateActionRewardStateActionNeuralNetworkModel.__index = StateActionRewardStateA
 
 setmetatable(StateActionRewardStateActionNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, discountFactor)
 
-	local NewStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, discountFactor)
 
 	setmetatable(NewStateActionRewardStateActionNeuralNetworkModel, StateActionRewardStateActionNeuralNetworkModel)
 
@@ -32,21 +32,13 @@ function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIteration
 
 end
 
-function StateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function StateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
-	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
-
-	self.epsilon = epsilon or self.epsilon
-
-	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
-
 	self.discountFactor =  discountFactor or self.discountFactor
-
-	self.currentEpsilon = epsilon or self.currentEpsilon
 
 end
 

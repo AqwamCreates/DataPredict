@@ -8,9 +8,9 @@ VanillaPolicyGradientModel.__index = VanillaPolicyGradientModel
 
 setmetatable(VanillaPolicyGradientModel, ReinforcementLearningActorCriticNeuralNetworkBaseModel)
 
-function VanillaPolicyGradientModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, rewardAveragingRate)
+function VanillaPolicyGradientModel.new(discountFactor)
 	
-	local NewVanillaPolicyGradientModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewVanillaPolicyGradientModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(discountFactor)
 
 	setmetatable(NewVanillaPolicyGradientModel, VanillaPolicyGradientModel)
 

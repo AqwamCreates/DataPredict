@@ -17,16 +17,10 @@ DuelingQLearning is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DuelingQLearning.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
+DuelingQLearning.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
-
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
-
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
-
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -41,16 +35,10 @@ DuelingQLearning.new(numberOfReinforcementsPerEpisode: integer, epsilon: number,
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DuelingQLearning:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
+DuelingQLearning:setParameters(discountFactor: number)
 ```
 
 #### Parameters:
-
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
-
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
-
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 

@@ -10,7 +10,7 @@ local defaultEpsilon = 0.5
 
 local defaultEpsilonDecayFactor = 0.999
 
-local defaultActionSelectionFunction = "Max"
+local defaultActionSelectionFunction = "Maximum"
 
 local function sampleAction(actionProbabilityVector)
 
@@ -172,7 +172,7 @@ function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector)
 	
 	local selectedValue
 	
-	if (self.actionSelectionFunction == "Max") then
+	if (self.actionSelectionFunction == "Maximum") then
 		
 		local actionVector, selectedValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 		

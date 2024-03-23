@@ -55,22 +55,26 @@ DistributedGradients:addGradients(Gradients: any)
 ### setModelParameters()
 
 ```
-DistributedGradients:setMainModelParameters(ModelParameters: any)
+DistributedGradients:setMainModelParameters(ModelParameters: any, doNotDeepCopy: boolean)
 ```
 
 #### Parameters:
 
 * ModelParameters: The model parameters for the main model.
 
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
 ### getModelParameters()
 
 ```
-DistributedGradients:getModelParameters(): any
+DistributedGradients:getModelParameters(doNotDeepCopy: boolean): any
 ```
 
 #### Returns:
 
 * ModelParameters: The model parameters for the main model.
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
 ### start()
 

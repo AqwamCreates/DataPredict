@@ -8,9 +8,9 @@ DoubleStateActionRewardStateActionNeuralNetworkModel.__index = DoubleStateAction
 
 setmetatable(DoubleStateActionRewardStateActionNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, discountFactor)
 
-	local NewDoubleStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewDoubleStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, discountFactor)
 
 	setmetatable(NewDoubleStateActionRewardStateActionNeuralNetworkModel, DoubleStateActionRewardStateActionNeuralNetworkModel)
 
@@ -48,21 +48,13 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIte
 
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function DoubleStateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
-	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
-
-	self.epsilon = epsilon or self.epsilon
-
-	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
-
 	self.discountFactor =  discountFactor or self.discountFactor
-
-	self.currentEpsilon = epsilon or self.currentEpsilon
 
 end
 

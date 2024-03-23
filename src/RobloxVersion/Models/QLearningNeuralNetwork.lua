@@ -1,3 +1,5 @@
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
 local ReinforcementLearningNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningNeuralNetworkBaseModel)
 
 QLearningNeuralNetworkModel = {}
@@ -6,9 +8,9 @@ QLearningNeuralNetworkModel.__index = QLearningNeuralNetworkModel
 
 setmetatable(QLearningNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, discountFactor)
 
-	local NewQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, discountFactor)
 	
 	setmetatable(NewQLearningNeuralNetworkModel, QLearningNeuralNetworkModel)
 	
@@ -18,15 +20,25 @@ function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, nu
 
 		local targetValue = rewardValue + (NewQLearningNeuralNetworkModel.discountFactor * maxQValue[1][1])
 
-		local targetVector = NewQLearningNeuralNetworkModel:predict(previousFeatureVector, true)
+		local numberOfClasses = #NewQLearningNeuralNetworkModel:getClassesList()
+
+		local previousVector = NewQLearningNeuralNetworkModel:predict(previousFeatureVector, true)
 
 		local actionIndex = table.find(NewQLearningNeuralNetworkModel.ClassesList, action)
 
-		targetVector[1][actionIndex] = targetValue
+		local lastValue = previousVector[1][actionIndex]
 
-		local costArray = NewQLearningNeuralNetworkModel:train(previousFeatureVector, targetVector)
+		local temporalDifferenceError = targetValue - lastValue
+
+		local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses, 0)
+
+		lossVector[1][actionIndex] = temporalDifferenceError
 		
-		return targetValue
+		NewQLearningNeuralNetworkModel:forwardPropagate(previousFeatureVector, true)
+
+		NewQLearningNeuralNetworkModel:backPropagate(lossVector, true)
+		
+		return temporalDifferenceError
 
 	end)
 
@@ -34,21 +46,13 @@ function QLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, nu
 
 end
 
-function QLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function QLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, discountFactor)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
-	
-	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
-
-	self.epsilon = epsilon or self.epsilon
-
-	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
 
 	self.discountFactor =  discountFactor or self.discountFactor
-
-	self.currentEpsilon = epsilon or self.currentEpsilon
 
 end
 

@@ -8,20 +8,16 @@ The base model for all machine and deep learning models that uses gradient desce
 
 Creates a new gradient method base model.
 
-```lua
-
+```
 GradientMethodBaseModel.new(): GradientMethodBaseModelObject
-
 ```
 
 ## Functions
 
 ### setAreGradientsSaved()
 
-```lua
-
+```
 GradientMethodBaseModel:setAreGradientSaved(option: boolean)
-
 ```
 
 #### Parameters:
@@ -30,10 +26,8 @@ GradientMethodBaseModel:setAreGradientSaved(option: boolean)
 
 ### getGradients()
 
-```lua
-
+```
 GradientMethodBaseModel:getGradients(doNotDeepCopy: boolean): any
-
 ```
 
 #### Parameters:
@@ -46,10 +40,8 @@ GradientMethodBaseModel:getGradients(doNotDeepCopy: boolean): any
 
 ### setGradients()
 
-```lua
-
+```
 GradientMethodBaseModel:setGradients(Gradients: any, doNotDeepCopy: boolean)
-
 ```
 
 #### Parameters:
@@ -60,8 +52,8 @@ GradientMethodBaseModel:setGradients(Gradients: any, doNotDeepCopy: boolean)
 
 ### clearGradients()
 
-```lua
+Clears stored gradients inside the gradient method base model.
 
+```
 GradientMethodBaseModel:clearGradients()
-
 ```

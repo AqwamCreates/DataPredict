@@ -36,9 +36,9 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 end
 
-function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function ProximalPolicyOptimizationModel.new(discountFactor)
 	
-	local NewProximalPolicyOptimizationModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewProximalPolicyOptimizationModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(discountFactor)
 	
 	setmetatable(NewProximalPolicyOptimizationModel, ProximalPolicyOptimizationModel)
 	
@@ -75,8 +75,6 @@ function ProximalPolicyOptimizationModel.new(numberOfReinforcementsPerEpisode, e
 		table.insert(actionVectorHistory, actionProbabilityVector)
 		
 		table.insert(rewardHistory, rewardValue)
-		
-		return advantageValue
 		
 	end)
 	

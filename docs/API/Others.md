@@ -2,6 +2,8 @@
 
 [ConfusionMatrixCreator](Others/ConfusionMatrixCreator.md)
 
+[DistributedGradients](Others/DistributedGradients.md)
+
 [DistributedTraining](Others/DistributedTraining.md)
 
 [ModelChecker](Others/ModelChecker.md)

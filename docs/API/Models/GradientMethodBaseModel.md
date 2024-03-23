@@ -14,10 +14,6 @@ GradientMethodBaseModel.new(): GradientMethodBaseModelObject
 
 ```
 
-#### Returns:
-
-* GradientMethodBaseModelObject: The cr
-
 ## Functions
 
 ### setAreGradientsSaved()

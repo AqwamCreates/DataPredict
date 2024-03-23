@@ -203,7 +203,7 @@ end
 
 function DistributedGradient:stop()
 
-	self.isDistributedGradientChangerRunning = false
+	self.isDistributedGradientRunning = false
 
 end
 

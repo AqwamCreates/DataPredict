@@ -116,9 +116,9 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:ge
 
 	end
 
-	local nonGreedyActionProbability = self.epsilon2 / numberOfActions
+	local nonGreedyActionProbability = self.epsilon / numberOfActions
 
-	local greedyActionProbability = ((1 - self.epsilon2) / numberOfGreedyActions) + nonGreedyActionProbability
+	local greedyActionProbability = ((1 - self.epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
 
 	for i, qValue in ipairs(targetVector[1]) do
 

@@ -166,7 +166,7 @@ end
 
 function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector)
 	
-	local allOutputsMatrix = self.ActorModel:predict(currentFeatureVector, true)
+	local allOutputsMatrix = self.Model:predict(currentFeatureVector, true)
 	
 	local action
 	
@@ -230,13 +230,13 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	if (self.previousFeatureVector) then 
 
-		temporalDifferenceError = self:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) 
+		temporalDifferenceError = self.Model:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) 
 
 	end
 
 	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
 
-		self:episodeUpdate()
+		self.Model:episodeUpdate()
 
 	end
 
@@ -248,7 +248,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 		self.ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
-			return self:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
+			return self.Model:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
 		end)
 

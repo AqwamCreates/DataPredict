@@ -42,7 +42,7 @@ DistributedGradients:setParameters(gradientChangeMode: string)
 
 * gradientChangeMode: Set what to do with the model parameters for a given gradient. Available options are:
 
-  * Descent (Default)
+  * Descent
 
   * Ascent  
 

@@ -17,7 +17,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number): ModelObject
+DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, averagingRate: number, discountFactor: number( : ModelObject
 ```
 
 #### Parameters:
@@ -26,15 +26,9 @@ DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: n
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
-
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
-
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
+* averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
-
-* averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
 #### Returns:
 
@@ -56,15 +50,9 @@ DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learn
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
-
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
-
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
+* averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
-
-* averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
 ## Inherited From
 

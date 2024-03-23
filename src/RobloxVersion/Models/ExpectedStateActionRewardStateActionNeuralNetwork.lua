@@ -8,15 +8,15 @@ ExpectedStateActionRewardStateActionNeuralNetworkModel.__index = ExpectedStateAc
 
 setmetatable(ExpectedStateActionRewardStateActionNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-local defaultEpsilon2 = 0.5
+local defaultEpsilon = 0.5
 
-function ExpectedStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, epsilon2, discountFactor)
+function ExpectedStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, epsilon, discountFactor)
 
-	local NewExpectedStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewExpectedStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, discountFactor)
 
 	setmetatable(NewExpectedStateActionRewardStateActionNeuralNetworkModel, ExpectedStateActionRewardStateActionNeuralNetworkModel)
 	
-	NewExpectedStateActionRewardStateActionNeuralNetworkModel.epsilon2 = epsilon2 or defaultEpsilon2
+	NewExpectedStateActionRewardStateActionNeuralNetworkModel.epsilon = epsilon or defaultEpsilon
 
 	NewExpectedStateActionRewardStateActionNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
@@ -40,9 +40,9 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfI
 
 		end
 
-		local nonGreedyActionProbability = NewExpectedStateActionRewardStateActionNeuralNetworkModel.epsilon2 / numberOfActions
+		local nonGreedyActionProbability = NewExpectedStateActionRewardStateActionNeuralNetworkModel.epsilon / numberOfActions
 
-		local greedyActionProbability = ((1 - NewExpectedStateActionRewardStateActionNeuralNetworkModel.epsilon2) / numberOfGreedyActions) + nonGreedyActionProbability
+		local greedyActionProbability = ((1 - NewExpectedStateActionRewardStateActionNeuralNetworkModel.epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
 
 		for i, qValue in ipairs(targetVector[1]) do
 
@@ -72,23 +72,15 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfI
 
 end
 
-function ExpectedStateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, epsilon2, discountFactor)
+function ExpectedStateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, epsilon, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
-	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
-
 	self.epsilon = epsilon or self.epsilon
 
-	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
-	
-	self.epsilon2 = epsilon2 or self.epsilon2
-
 	self.discountFactor =  discountFactor or self.discountFactor
-
-	self.currentEpsilon = epsilon or self.currentEpsilon
 
 end
 

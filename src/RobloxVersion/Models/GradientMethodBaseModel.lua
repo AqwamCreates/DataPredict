@@ -24,7 +24,7 @@ function GradientMethodBaseModel:setAreGradientsSaved(option)
 	
 end
 
-function GradientMethodBaseModel:getGradient(doNotDeepCopy)
+function GradientMethodBaseModel:getGradients(doNotDeepCopy)
 	
 	if doNotDeepCopy then
 

@@ -9,9 +9,7 @@ DistributedGradients is a base class for distributed gradient ascent / descent.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-
 DistributedGradients.new(gradientChangeMode: string): DistributedGradientObject
-
 ```
 
 #### Parameters:
@@ -33,9 +31,7 @@ DistributedGradients.new(gradientChangeMode: string): DistributedGradientObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-
 DistributedGradients:setParameters(gradientChangeMode: string)
-
 ```
 
 #### Parameters:
@@ -49,9 +45,7 @@ DistributedGradients:setParameters(gradientChangeMode: string)
 ### addGradients()
 
 ```
-
 DistributedGradients:addGradients(Gradients: any)
-
 ```
 
 #### Parameters:
@@ -61,35 +55,49 @@ DistributedGradients:addGradients(Gradients: any)
 ### setModelParameters()
 
 ```
-
 DistributedGradients:setMainModelParameters(ModelParameters: any)
-
 ```
 
 #### Parameters:
 
 * ModelParameters: The model parameters for the main model.
 
-### getMainModelParameters()
+### getModelParameters()
 
 ```
-
 DistributedGradients:getModelParameters(): any
-
 ```
 
 #### Returns:
 
 * ModelParameters: The model parameters for the main model.
 
+### start()
+
+Creates a new thread for real-time gradient descent / ascent.
+
+```
+ModelParameters:start(): coroutine
+```
+
+#### Returns:
+
+* gradientChangeCoroutine: A coroutine that handles the modification of the model parameters.
+
+### stop()
+
+Stops the threads for real-time training.
+
+```
+ModelParameters:stop()
+```
+
 ### clearGradients()
 
 Clears the stored gradients inside the DistributedGradients object.
 
 ```
-
 DistributedGradients:clearGradients()
-
 ```
 
 ### destroy()
@@ -97,7 +105,5 @@ DistributedGradients:clearGradients()
 Destroys the model object.
 
 ```
-
 DistributedGradients:destroy()
-
 ```

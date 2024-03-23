@@ -1,8 +1,8 @@
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-DistributedGradient = {}
+DistributedGradients = {}
 
-DistributedGradient.__index = DistributedGradient
+DistributedGradients.__index = DistributedGradients
 
 local defaultGradientChangeMode = "Descent"
 
@@ -81,37 +81,37 @@ local function checkIfIsTableOfMatrices(array)
 
 end
 
-function DistributedGradient.new(gradientChangeMode)
+function DistributedGradients.new(gradientChangeMode)
 
-	local NewDistributedGradient = {}
+	local NewDistributedGradients = {}
 
-	setmetatable(NewDistributedGradient, DistributedGradient)
+	setmetatable(NewDistributedGradients, DistributedGradients)
 	
-	NewDistributedGradient.gradientChangeMode = gradientChangeMode or defaultGradientChangeMode
+	NewDistributedGradients.gradientChangeMode = gradientChangeMode or defaultGradientChangeMode
 	
-	NewDistributedGradient.ModelParameters = nil
+	NewDistributedGradients.ModelParameters = nil
 
-	NewDistributedGradient.isDistributedGradientRunning = false
+	NewDistributedGradients.isDistributedGradientRunning = false
 	
-	NewDistributedGradient.GradientArray = {}
+	NewDistributedGradients.GradientArray = {}
 
-	return NewDistributedGradient
+	return NewDistributedGradients
 
 end
 
-function DistributedGradient:setParameters(gradientChangeMode)
+function DistributedGradients:setParameters(gradientChangeMode)
 	
 	self.gradientChangeMode = gradientChangeMode or self.gradientChangeMode
 	
 end
 
-function DistributedGradient:addGradient(Gradient)
+function DistributedGradients:addGradient(Gradient)
 	
 	table.insert(self.GradientArray, Gradient)
 	
 end
 
-function DistributedGradient:setModelParameters(ModelParameters, doNotDeepCopy)
+function DistributedGradients:setModelParameters(ModelParameters, doNotDeepCopy)
 	
 	if (doNotDeepCopy) then
 		
@@ -125,7 +125,7 @@ function DistributedGradient:setModelParameters(ModelParameters, doNotDeepCopy)
 
 end
 
-function DistributedGradient:getModelParameters(doNotDeepCopy)
+function DistributedGradients:getModelParameters(doNotDeepCopy)
 	
 	if (doNotDeepCopy) then
 
@@ -139,7 +139,7 @@ function DistributedGradient:getModelParameters(doNotDeepCopy)
 
 end
 
-function DistributedGradient:gradientDescent(Gradient, isTableOfMatrices, functionToApply)
+function DistributedGradients:gradientDescent(Gradient, isTableOfMatrices, functionToApply)
 	
 	local ModelParameters = self.ModelParameters
 	
@@ -161,7 +161,7 @@ function DistributedGradient:gradientDescent(Gradient, isTableOfMatrices, functi
 	
 end
 
-function DistributedGradient:start()
+function DistributedGradients:start()
 	
 	if (self.ModelParameters == nil) then error("No model parameters loaded!") end
 
@@ -201,13 +201,13 @@ function DistributedGradient:start()
 
 end
 
-function DistributedGradient:stop()
+function DistributedGradients:stop()
 
 	self.isDistributedGradientRunning = false
 
 end
 
-function DistributedGradient:destroy()
+function DistributedGradients:destroy()
 
 	setmetatable(self, nil)
 
@@ -217,4 +217,4 @@ function DistributedGradient:destroy()
 
 end
 
-return DistributedGradient
+return DistributedGradients

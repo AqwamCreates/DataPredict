@@ -28,9 +28,9 @@ local function rateAverageModelParameters(averagingRate, PrimaryModelParameters,
 
 end
 
-function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, averagingRate)
+function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, averagingRate, discountFactor)
 
-	local NewDoubleQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewDoubleQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, discountFactor)
 
 	setmetatable(NewDoubleQLearningNeuralNetworkModel, DoubleQLearningNeuralNetworkModel)
 	
@@ -78,23 +78,15 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 
 end
 
-function DoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, averagingRate)
+function DoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, averagingRate, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
-	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
-
-	self.epsilon = epsilon or self.epsilon
-
-	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
-
 	self.discountFactor =  discountFactor or self.discountFactor
 	
 	self.averagingRate = averagingRate or self.averagingRate
-
-	self.currentEpsilon = epsilon or self.currentEpsilon
 
 end
 

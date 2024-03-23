@@ -26,7 +26,7 @@ end
 
 function GradientMethodBaseModel:getGradients(doNotDeepCopy)
 	
-	if doNotDeepCopy then
+	if (doNotDeepCopy) then
 
 		return self.Gradients
 
@@ -40,7 +40,7 @@ end
 
 function GradientMethodBaseModel:setGradients(Gradients, doNotDeepCopy)
 
-	if doNotDeepCopy then
+	if (doNotDeepCopy) then
 
 		self.Gradients = Gradients
 

@@ -10,9 +10,13 @@ Creates a new gradient method base model.
 
 ```lua
 
-GradientMethodBaseModel.new(): BaseModelObject
+GradientMethodBaseModel.new(): GradientMethodBaseModelObject
 
 ```
+
+#### Returns:
+
+* GradientMethodBaseModelObject: The cr
 
 ## Functions
 

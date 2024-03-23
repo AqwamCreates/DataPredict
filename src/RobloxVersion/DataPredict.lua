@@ -187,6 +187,8 @@ local OthersDictionary = {
 	
 	OnlineLearning = require(Others.OnlineLearning),
 	
+	DistributedGradient = require(Others.DistributedGradient),
+	
 	DistributedTraining = require(Others.DistributedTraining),
 	
 	DistributedGradientDescent = require(Others.DistributedGradientDescent),

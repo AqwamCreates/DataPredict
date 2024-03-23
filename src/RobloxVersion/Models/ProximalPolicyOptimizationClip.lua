@@ -38,9 +38,9 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 end
 
-function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, clipRatio)
+function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 	
-	local NewProximalPolicyOptimizationClipModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewProximalPolicyOptimizationClipModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(discountFactor)
 	
 	setmetatable(NewProximalPolicyOptimizationClipModel, ProximalPolicyOptimizationClipModel)
 	
@@ -79,8 +79,6 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 		table.insert(actionVectorHistory, actionProbabilityVector)
 		
 		table.insert(rewardHistory, rewardValue)
-		
-		return advantageValue
 		
 	end)
 	
@@ -200,19 +198,11 @@ function ProximalPolicyOptimizationClipModel.new(numberOfReinforcementsPerEpisod
 	
 end
 
-function ProximalPolicyOptimizationClipModel:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, clipRatio)
-	
-	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
-
-	self.epsilon = epsilon or self.epsilon
-
-	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
-
-	self.discountFactor =  discountFactor or self.discountFactor
+function ProximalPolicyOptimizationClipModel:setParameters(clipRatio, discountFactor)
 	
 	self.clipRatio = clipRatio or self.clipRatio
 
-	self.currentEpsilon = epsilon or self.currentEpsilon
+	self.discountFactor =  discountFactor or self.discountFactor
 	
 end
 

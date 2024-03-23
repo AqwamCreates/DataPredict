@@ -2,21 +2,25 @@ local ReinforcementLearningNeuralNetworkBaseModel = require(script.Parent.Reinfo
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-DoubleStateActionRewardStateActionNeuralNetworkModel = {}
+DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel = {}
 
-DoubleStateActionRewardStateActionNeuralNetworkModel.__index = DoubleStateActionRewardStateActionNeuralNetworkModel
+DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.__index = DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel
 
-setmetatable(DoubleStateActionRewardStateActionNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
+setmetatable(DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+local defaultEpsilon = 0.5
 
-	local NewDoubleStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, epsilon, discountFactor)
 
-	setmetatable(NewDoubleStateActionRewardStateActionNeuralNetworkModel, DoubleStateActionRewardStateActionNeuralNetworkModel)
+	local NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, epsilon, discountFactor)
+	
+	NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.epsilon = epsilon or defaultEpsilon
+	
+	setmetatable(NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel, DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel)
 
-	NewDoubleStateActionRewardStateActionNeuralNetworkModel.ModelParametersArray = {}
+	NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel.ModelParametersArray = {}
 
-	NewDoubleStateActionRewardStateActionNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 		local randomProbability = Random.new():NextNumber()
 
@@ -26,47 +30,41 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIte
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		NewDoubleStateActionRewardStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
+		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-		local lossVector = NewDoubleStateActionRewardStateActionNeuralNetworkModel:generateTargetVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		local lossVector, temporalDifferenceError = NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		NewDoubleStateActionRewardStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
+		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-		NewDoubleStateActionRewardStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 
-		NewDoubleStateActionRewardStateActionNeuralNetworkModel:forwardPropagate(previousFeatureVector, true)
+		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:forwardPropagate(previousFeatureVector, true)
+
+		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:backPropagate(lossVector, true)
+
+		NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		NewDoubleStateActionRewardStateActionNeuralNetworkModel:backPropagate(lossVector, true)
-
-		NewDoubleStateActionRewardStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
-		
-		return lossVector
+		return temporalDifferenceError
 
 	end)
 
-	return NewDoubleStateActionRewardStateActionNeuralNetworkModel
+	return NewDoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel
 
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, epsilon, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
-	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
-
 	self.epsilon = epsilon or self.epsilon
-
-	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
 
 	self.discountFactor =  discountFactor or self.discountFactor
 
-	self.currentEpsilon = epsilon or self.currentEpsilon
-
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(index)
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:saveModelParametersFromModelParametersArray(index)
 
 	local ModelParameters = self:getModelParameters()
 
@@ -74,7 +72,7 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel:saveModelParameter
 
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(index)
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:loadModelParametersFromModelParametersArray(index)
 
 	local FirstModelParameters = self.ModelParametersArray[1]
 
@@ -96,44 +94,84 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel:loadModelParameter
 
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-	local targetVector = self:predict(currentFeatureVector, true)
+	local expectedQValue = 0
 
-	local dicountedVector = AqwamMatrixLibrary:multiply(self.discountFactor, targetVector)
+	local numberOfGreedyActions = 0
 
-	local newTargetVector = AqwamMatrixLibrary:add(rewardValue, dicountedVector)
-	
+	local numberOfActions = #self.ClassesList
+
+	local actionIndex = table.find(self.ClassesList, action)
+
 	local previousVector = self:predict(previousFeatureVector, true)
+
+	local targetVector, maxQValue = self:predict(currentFeatureVector)
+
+	for i = 1, numberOfActions, 1 do
+
+		if (targetVector[1][i] ~= maxQValue) then continue end
+
+		numberOfGreedyActions += 1
+
+	end
+
+	local nonGreedyActionProbability = self.epsilon2 / numberOfActions
+
+	local greedyActionProbability = ((1 - self.epsilon2) / numberOfGreedyActions) + nonGreedyActionProbability
+
+	for i, qValue in ipairs(targetVector[1]) do
+
+		if (qValue == maxQValue) then
+
+			expectedQValue += (qValue * greedyActionProbability)
+
+		else
+
+			expectedQValue += (qValue * nonGreedyActionProbability)
+
+		end
+
+	end
 	
-	local lossVector = AqwamMatrixLibrary:subtract(newTargetVector, previousVector)
+	local numberOfClasses = #self:getClassesList()
 
-	return lossVector
+	local targetValue = rewardValue + (self.discountFactor * expectedQValue)
+	
+	local lastValue = previousVector[1][actionIndex]
+
+	local temporalDifferenceError = targetValue - lastValue
+
+	local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses, 0)
+
+	lossVector[1][actionIndex] = temporalDifferenceError
+
+	return lossVector, temporalDifferenceError
 
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:setModelParameters1(ModelParameters1)
-
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:setModelParameters1(ModelParameters1)
+	
 	self.ModelParametersArray[1] = ModelParameters1
-
+	
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:setModelParameters2(ModelParameters2)
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:setModelParameters2(ModelParameters2)
 
 	self.ModelParametersArray[2] = ModelParameters2
 
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:getModelParameters1(ModelParameters1)
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:getModelParameters1(ModelParameters1)
 
 	return self.ModelParametersArray[1]
 
 end
 
-function DoubleStateActionRewardStateActionNeuralNetworkModel:getModelParameters2(ModelParameters2)
+function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:getModelParameters2(ModelParameters2)
 
 	return self.ModelParametersArray[2]
 
 end
 
-return DoubleStateActionRewardStateActionNeuralNetworkModel
+return DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel

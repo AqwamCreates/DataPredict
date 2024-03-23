@@ -191,8 +191,6 @@ local OthersDictionary = {
 	
 	DistributedTraining = require(Others.DistributedTraining),
 	
-	DistributedGradientDescent = require(Others.DistributedGradientDescent),
-	
 	Tokenizer = require(Others.Tokenizer),
 	
 	OneVsAll = require(Others.OneVsAll),

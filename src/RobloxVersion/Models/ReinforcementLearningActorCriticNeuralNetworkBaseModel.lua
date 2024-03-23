@@ -4,12 +4,6 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel = {}
 
 ReinforcementLearningActorCriticNeuralNetworkBaseModel.__index = ReinforcementLearningActorCriticNeuralNetworkBaseModel
 
-local defaultNumberOfReinforcementsPerEpisode = 500
-
-local defaultEpsilon = 0.5
-
-local defaultEpsilonDecayFactor = 0.999
-
 local defaultDiscountFactor = 0.95
 
 function ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(discountFactor)

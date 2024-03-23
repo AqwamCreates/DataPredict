@@ -14,7 +14,7 @@ function BaseOptimizer.new(optimizerName)
 	
 	NewBaseOptimizer.resetFunction = nil
 	
-	return BaseOptimizer
+	return NewBaseOptimizer
 	
 end
 

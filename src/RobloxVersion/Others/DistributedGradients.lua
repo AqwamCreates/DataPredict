@@ -111,6 +111,12 @@ function DistributedGradients:addGradients(Gradients)
 	
 end
 
+function DistributedGradients:clearGradients()
+	
+	table.clear(self.GradientsArray)
+	
+end
+
 function DistributedGradients:setModelParameters(ModelParameters, doNotDeepCopy)
 	
 	if (doNotDeepCopy) then

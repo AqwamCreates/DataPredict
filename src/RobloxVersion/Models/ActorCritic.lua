@@ -50,9 +50,9 @@ local function calculateProbability(outputMatrix)
 
 end
 
-function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function ActorCriticModel.new(discountFactor)
 	
-	local NewActorCriticModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewActorCriticModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(discountFactor)
 	
 	setmetatable(NewActorCriticModel, ActorCriticModel)
 	

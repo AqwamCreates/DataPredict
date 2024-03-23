@@ -91,7 +91,7 @@ function DistributedGradients.new(gradientChangeMode)
 	
 	NewDistributedGradients.ModelParameters = nil
 
-	NewDistributedGradients.isDistributedGradientRunning = false
+	NewDistributedGradients.isDistributedGradientsRunning = false
 	
 	NewDistributedGradients.GradientArray = {}
 
@@ -165,7 +165,7 @@ function DistributedGradients:start()
 	
 	if (self.ModelParameters == nil) then error("No model parameters loaded!") end
 
-	if (self.isDistributedGradientRunning == true) then error("The model is already running!") end
+	if (self.isDistributedGradientsRunning == true) then error("The model is already running!") end
 	
 	local isTableOfMatrices = checkIfIsTableOfMatrices(self.ModelParameters)
 	
@@ -173,7 +173,7 @@ function DistributedGradients:start()
 	
 	local functionToApply = functionToApplyList[self.gradientChangeMode]
 
-	self.isDistributedGradientRunning = true
+	self.isDistributedGradientsRunning = true
 
 	local gradientChangeCoroutine = coroutine.create(function()
 
@@ -191,7 +191,7 @@ function DistributedGradients:start()
 				
 			end
 
-		until (self.isDistributedGradientRunning == false)
+		until (self.isDistributedGradientsRunning == false)
 
 	end)
 
@@ -203,7 +203,7 @@ end
 
 function DistributedGradients:stop()
 
-	self.isDistributedGradientRunning = false
+	self.isDistributedGradientsRunning = false
 
 end
 

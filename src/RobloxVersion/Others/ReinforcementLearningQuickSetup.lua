@@ -164,7 +164,7 @@ function ReinforcementLearningQuickSetup:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector)
+function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, classesList)
 	
 	local allOutputsMatrix = self.Model:predict(currentFeatureVector, true)
 	
@@ -184,7 +184,7 @@ function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector)
 		
 		local actionIndex = sampleAction(allOutputsMatrix)
 		
-		action = self.ClassesList[actionIndex]
+		action = classesList[actionIndex]
 		
 		selectedValue = allOutputsMatrix[1][actionIndex]
 		
@@ -197,6 +197,14 @@ end
 function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 
 	if (self.Model == nil) then error("No model!") end
+	
+	local ExperienceReplay = self.ExperienceReplay
+	
+	local previousFeatureVector = self.previousFeatureVector
+	
+	local Model = self.Model
+	
+	local ClassesList = self.ClassesList
 
 	self.currentNumberOfReinforcements += 1
 
@@ -212,11 +220,11 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	if (randomProbability < self.currentEpsilon) then
 
-		local numberOfClasses = #self.ClassesList
+		local numberOfClasses = #ClassesList
 
 		local randomNumber = Random.new():NextInteger(1, numberOfClasses)
 
-		action = self.ClassesList[randomNumber]
+		action = ClassesList[randomNumber]
 
 		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, numberOfClasses)
 
@@ -224,31 +232,31 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	else
 
-		action, selectedValue = self:selectAction(currentFeatureVector)
+		action, selectedValue = self:selectAction(currentFeatureVector, ClassesList)
 
 	end
 
-	if (self.previousFeatureVector) then 
+	if (previousFeatureVector) then 
 
-		temporalDifferenceError = self.Model:update(self.previousFeatureVector, action, rewardValue, currentFeatureVector) 
+		temporalDifferenceError = Model:update(previousFeatureVector, action, rewardValue, currentFeatureVector) 
 
 	end
 
 	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
 
-		self.Model:episodeUpdate()
+		Model:episodeUpdate()
 
 	end
 
-	if (self.ExperienceReplay) and (self.previousFeatureVector) then
+	if (ExperienceReplay) and (previousFeatureVector) then
 
-		self.ExperienceReplay:addExperience(self.previousFeatureVector, action, rewardValue, currentFeatureVector)
+		ExperienceReplay:addExperience(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		self.ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
+		ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
 
-		self.ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
+		ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
-			return self.Model:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
+			return Model:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
 		end)
 

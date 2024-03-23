@@ -93,7 +93,7 @@ function DistributedGradients.new(gradientChangeMode)
 
 	NewDistributedGradients.isDistributedGradientsRunning = false
 	
-	NewDistributedGradients.GradientArray = {}
+	NewDistributedGradients.GradientsArray = {}
 
 	return NewDistributedGradients
 
@@ -105,9 +105,9 @@ function DistributedGradients:setParameters(gradientChangeMode)
 	
 end
 
-function DistributedGradients:addGradient(Gradient)
+function DistributedGradients:addGradients(Gradients)
 	
-	table.insert(self.GradientArray, Gradient)
+	table.insert(self.GradientsArray, Gradients)
 	
 end
 
@@ -169,7 +169,7 @@ function DistributedGradients:start()
 	
 	local isTableOfMatrices = checkIfIsTableOfMatrices(self.ModelParameters)
 	
-	local GradientArray = self.GradientArray
+	local GradientsArray = self.GradientsArray
 	
 	local functionToApply = functionToApplyList[self.gradientChangeMode]
 
@@ -181,13 +181,13 @@ function DistributedGradients:start()
 
 			task.wait()
 
-			if (#GradientArray == 0) then continue end
+			if (#GradientsArray == 0) then continue end
 			
-			while (#GradientArray > 0) do
+			while (#GradientsArray > 0) do
 				
-				self:gradientDescent(GradientArray[1], isTableOfMatrices, functionToApply)
+				self:gradientDescent(GradientsArray[1], isTableOfMatrices, functionToApply)
 
-				table.remove(GradientArray, 1)
+				table.remove(GradientsArray, 1)
 				
 			end
 

@@ -8,8 +8,8 @@ local defaultGradientChangeMode = "Descent"
 
 local functionToApplyList = {
 	
-	["Descent"] = function (x, y) return x - y end,
-	["Ascent"] = function (x, y) return x + y end,
+	["Descent"] = function (x, y) return (x - y) end,
+	["Ascent"] = function (x, y) return (x + y) end,
 	
 }
 
@@ -165,7 +165,7 @@ function DistributedGradient:start()
 	
 	if (self.ModelParameters == nil) then error("No model parameters loaded!") end
 
-	if (self.isDistributedGradientRunning) then error("The model is already running!") end
+	if (self.isDistributedGradientRunning == true) then error("The model is already running!") end
 	
 	local isTableOfMatrices = checkIfIsTableOfMatrices(self.ModelParameters)
 	

@@ -98,7 +98,7 @@ while true do
 
     action = QLearningNeuralNetwork:predict(environmentVector)
 
-    local reward = getReward(environmentVector, action)
+    local reward = getReward(environmentVector)
 
     QLearningNeuralNetwork:update(previousEnvironmentVector, reward, action, environmentVector) -- update() is called whenever a step is made.
 
@@ -120,7 +120,27 @@ As you can see, there are a lot of things that we must track of, but it gives yo
 
 ```lua
 
+local QLearningNeuralNetworkQuickSetup = DataPredict.Others.ReinforcementLearningQuickSetup.new()
+
+QLearningNeuralNetworkQuickSetup:setModel(QLearningNeuralNetwork)
+
+local environmentVector
+
+local action
+
+while true do
+
+  environmentVector = fetchEnvironmentVector(environmentVector, action)
+
+  local reward = getReward(environmentVector, action)
+
+  action = QLearningNeuralNetworkQuickSetup:reinforce(environmentVector, reward)
+
+end
+
 ```
+
+As you can see, the ReinforcementLearningQuickSetup compresses a number of codes into reinforce() function.
 
 # Wrapping It All Up
 

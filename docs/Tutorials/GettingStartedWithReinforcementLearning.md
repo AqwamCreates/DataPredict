@@ -68,7 +68,22 @@ Action label is a label produced by the model. This label can be a part of decis
 
 * Classification classes: 1, 2, 3, 4, 5, 6
 
-## Wrapping It All Up
+# Setting Up Our Reinforcement Learning Model
+
+There are two ways we can setup our models for our environment:
+
+* Classical Setup (Recommended for experts or people who wants more control over their models)
+
+* Quick Setup (Recommended for beginners)
+
+Below we will show you the difference between the two above
+
+## Classical Setup
+
+
+## Quick Setup
+
+# Wrapping It All Up
 
 In this tutorial, you have learnt the starting point of the reinforcement learning neural networks. 
 

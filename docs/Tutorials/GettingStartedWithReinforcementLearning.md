@@ -118,6 +118,8 @@ As you can see, there are a lot of things that we must track of, but it gives yo
 
 ## Quick Setup
 
+To reduce the amount of things we need to track, we can use ReinforcementLearningQuickSetup in "Others" section.
+
 ```lua
 
 local QLearningNeuralNetworkQuickSetup = DataPredict.Others.ReinforcementLearningQuickSetup.new()

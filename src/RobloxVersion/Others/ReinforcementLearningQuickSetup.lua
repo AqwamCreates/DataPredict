@@ -243,6 +243,8 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	end
 
 	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
+		
+		self.currentNumberOfReinforcements = 0
 
 		Model:episodeUpdate()
 

@@ -64,7 +64,21 @@ There are two ways we can setup our models for our environment:
 
 * Quick Setup (Recommended for beginners)
 
-Below we will show you the difference between the two above
+Below we will show you the difference between the two above. But first, let's define a number of variables and setup the first part of the model.
+
+```lua
+
+local classesList = {1, 2}
+
+local QLearningNeuralNetwork = DataPredict.Models.QLearningNeuralNetwork.new()
+
+QLearningNeuralNetwork:addLayer(4, false)
+
+QLearningNeuralNetwork:addLayer(2, false)
+
+QLearningNeuralNetwork:setClassesList()
+
+```
 
 ## Classical Setup
 
@@ -72,9 +86,41 @@ All the reinforcement learning models have two important functions: update() and
 
 ```lua
 
+while true do
+
+  local previousEnvironmentVector = {{0, 0, 0, 0}} -- We must keep track our previous feature vector.
+
+  local action = 1
+
+  for step = 1, 1000, 1 do
+
+    local environmentVector = fetchEnvironmentVector(previousEnvironmentVector, action)
+
+    action = QLearningNeuralNetwork:predict(environmentVector)
+
+    local reward = getReward(environmentVector, action)
+
+    QLearningNeuralNetwork:update(previousEnvironmentVector, reward, action, environmentVector) -- update() is called whenever a step is made.
+
+    previousEnvironmentVector = environmentVector
+
+    hasGameEnded = checkIfGameHasEnded(environmentVector)
+
+  end
+
+  QLearningNeuralNetwork:episodeUpdate() -- episodeUpdate() is used whenever an episode ends. An episode is the total number of steps that determines when the model should stop training.
+
+end
+
 ```
 
+As you can see, there are a lot of things that we must track of, but it gives you total freedom on what you want to do with the reinforcement learning models.
+
 ## Quick Setup
+
+```lua
+
+```
 
 # Wrapping It All Up
 

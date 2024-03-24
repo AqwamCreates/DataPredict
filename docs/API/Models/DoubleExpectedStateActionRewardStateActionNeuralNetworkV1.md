@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterations: integer, learningRate: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number): ModelObject
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterations: integer, learningRate: number, epsilon: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -24,13 +24,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterati
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
-
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
-
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
-
-* epsilon2: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
+* epsilon: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -45,7 +39,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterati
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setParameters(maxNumberOfIterations: integer, learningRate: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number)
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setParameters(maxNumberOfIterations: integer, learningRate: number, epsilon: number, discountFactor: number)
 ```
 
 #### Parameters:
@@ -54,13 +48,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setParameters(maxNumbe
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
-
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
-
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
-
-* epsilon2: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
+* epsilon: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 

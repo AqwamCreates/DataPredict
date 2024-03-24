@@ -125,21 +125,19 @@ function ActorCriticModel.new(discountFactor)
 		local ActorModel = NewActorCriticModel.ActorModel
 
 		local CriticModel = NewActorCriticModel.CriticModel
-
-		local lossValue = sumActorLosses + sumCriticLosses
 		
 		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
 		
 		numberOfFeatures += (hasBias and 1) or 0
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-		local lossVector = AqwamMatrixLibrary:createMatrix(1, #NewActorCriticModel.ClassesList, lossValue)
+		local lossVector = AqwamMatrixLibrary:createMatrix(1, #NewActorCriticModel.ClassesList, -sumActorLosses)
 
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)
 
 		ActorModel:backPropagate(lossVector, true)
-		CriticModel:backPropagate(lossValue, true)
+		CriticModel:backPropagate(-sumCriticLosses, true)
 
 		table.clear(actionProbabilityHistory)
 

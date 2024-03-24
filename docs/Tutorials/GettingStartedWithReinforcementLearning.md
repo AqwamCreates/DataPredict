@@ -68,36 +68,6 @@ Action label is a label produced by the model. This label can be a part of decis
 
 * Classification classes: 1, 2, 3, 4, 5, 6
 
-## Reinforce Function
-
-Upon calling reinforce() function, it will return two values, but we are interested in the first one for this tutorial.
-
-```lua
-local DQN = DataPredict.Models.QLearningNeuralNetwork.new() -- Create a new model object.
-
-DQN:createLayers({4, 3, 2}) -- Setting up our layers.
-
-DQN:setClassesList({"Up", "Down"}) -- Setting up our classes.
-
-local actionLabel = DQN:reinforce(environmentFeatureVector, rewardValue) -- Run the reinforce() function.
-```
-
-Each time we use reinforce() function with input parameters in it, it will train the neural network.
-
-Ensure that both environment feature vector and reward value are from the same state.
-
-## Experience Replay
-
-Additionally, you can add experience replay to your model. All you have to do is to call the setExperienceReplay() function.
-
-```lua
-local DQN = DataPredict.Models.QLearningNeuralNetwork.new() -- Create a new model object.
-
-local UniformExperienceReplay = DataPredict.ExperienceReplays.UniformExperienceReplay.new()
-
-DQN:setExperienceReplay(UniformExperienceReplay) -- Placing our experience replay object here.
-```
-
 ## Wrapping It All Up
 
 In this tutorial, you have learnt the starting point of the reinforcement learning neural networks. 

@@ -12,7 +12,7 @@ Contains a table of matrices.
 
 ### new()
 
-Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
+Creates a new base model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
 ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations: integer, learningRate: number, discountFactor: number): ModelObject

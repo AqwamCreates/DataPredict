@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - ReinforcementLearningQuickSetup
 
-ReinforcementLearningQuickSetup is a base class for reinforcement learning neural network models.
+ReinforcementLearningQuickSetup is a base class for setuping up reinforcement learning functions.
 
 ## Constructors
 

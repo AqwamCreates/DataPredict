@@ -68,6 +68,11 @@ Below we will show you the difference between the two above
 
 ## Classical Setup
 
+All the reinforcement learning models have two important functions: update() and episode update(). Below, I will show a code sample using these functions.
+
+```lua
+
+```
 
 ## Quick Setup
 

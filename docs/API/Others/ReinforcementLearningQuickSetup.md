@@ -144,6 +144,8 @@ ReinforcementLearningQuickSetup:reinforce(currentFeatureVector: Matrix, rewardVa
 
 ### reset()
 
+Resets the current parameters values.
+
 ```
 ReinforcementLearningQuickSetup:reset()
 ```

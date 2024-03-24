@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterations: integer, learningRate: number, targetCost: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number, averagingRate: number): ModelObject
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterations: integer, learningRate: number, epsilon: number, averagingRate: number, discountFactor: number, ): ModelObject
 ```
 
 #### Parameters:
@@ -24,19 +24,11 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterati
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* targetCost: The cost at which the model stops training.
-
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
-
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
-
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
-
-* epsilon2: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
-
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+* epsilon: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
 * averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
+
+* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
 #### Returns:
 
@@ -49,7 +41,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterati
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, epsilon2: number, discountFactor: number, averagingRate: number)
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfIterations: integer, learningRate: number, targetCost: number, epsilon: number, averagingRate: number, discountFactor: number)
 ```
 
 #### Parameters:
@@ -58,19 +50,11 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumbe
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
-* targetCost: The cost at which the model stops training.
-
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
-
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
-
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
-
-* epsilon2: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
-
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+* epsilon: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
 * averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
+
+* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
 ## Inherited From
 

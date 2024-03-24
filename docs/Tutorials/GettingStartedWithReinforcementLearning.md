@@ -124,6 +124,8 @@ local QLearningNeuralNetworkQuickSetup = DataPredict.Others.ReinforcementLearnin
 
 QLearningNeuralNetworkQuickSetup:setModel(QLearningNeuralNetwork)
 
+QLearningNeuralNetworkQuickSetup:setClassesList(classesList)
+
 local environmentVector
 
 local action

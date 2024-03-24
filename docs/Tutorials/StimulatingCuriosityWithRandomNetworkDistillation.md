@@ -30,11 +30,15 @@ QLearningNeuralNetwork:addLayer(10, true, "LeakyReLU")
 
 QLearningNeuralNetwork:addLayer(4, true, "StableSoftmax")
 
+QLearningNeuralNetwork:setClassesList({1, 2, 3, 4})
+
 -- Initializing our ReinforcementLearningQuickSetup.
 
 local QLearningNeuralNetworkQuickSetup = DataPredict.Others.ReinforcementLearningQuickSetup.new()
 
 QLearningNeuralNetworkQuickSetup:setModel(QLearningNeuralNetwork)
+
+QLearningNeuralNetworkQuickSetup:setClassesList({1, 2, 3, 4})
 
 -- Creating a simple function when receiving environment vector received.
 

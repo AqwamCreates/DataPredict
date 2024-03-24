@@ -54,6 +54,8 @@ ReinforcementLearningQuickSetup:setParameters(numberOfReinforcementsPerEpisode: 
 
   * Sample 
 
+### setExperienceReplay()
+
 ```
 ReinforcementLearningQuickSetup:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
 ```

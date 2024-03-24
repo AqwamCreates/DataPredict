@@ -180,6 +180,8 @@ ReinforcementLearningQuickSetup:getCurrentNumberOfReinforcements(): integer
 ReinforcementLearningQuickSetup:getCurrentEpsilon(): number
 ```
 
+#### Returns
+
 * currentEpsilon: The current epsilon value stored inside the reinforcement learning quick setup object.
 
 ## Inherited From

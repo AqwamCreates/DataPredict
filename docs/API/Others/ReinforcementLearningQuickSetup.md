@@ -147,12 +147,40 @@ ReinforcementLearningQuickSetup:reinforce(currentFeatureVector: Matrix, rewardVa
 Set whether or not to show the current number of episodes and current epsilon.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:setPrintReinforcementOutput(option: boolean)
+ReinforcementLearningQuickSetup:setPrintReinforcementOutput(option: boolean)
 ```
 
 #### Parameters:
 
 * option: A boolean value that determines the reinforcement output to be printed or not.
+
+### getCurrentNumberOfEpisodes()
+
+```
+ReinforcementLearningQuickSetup:getCurrentNumberOfEpisodes(): integer
+```
+
+#### Returns
+
+* currentNumberOfEpisodes: The current number of episode stored inside the reinforcement learning quick setup object.
+
+### getCurrentNumberOfReinforcements()
+
+```
+ReinforcementLearningQuickSetup:getCurrentNumberOfReinforcements(): integer
+```
+
+#### Returns
+
+* currentNumberOfReinforcements: The current number of times reinforce() has been called stored inside the reinforcement learning quick setup object.
+
+### getCurrentEpsilon()
+
+```
+ReinforcementLearningQuickSetup:getCurrentEpsilon(): number
+```
+
+* currentEpsilon: The current epsilon value stored inside the reinforcement learning quick setup object.
 
 ## Inherited From
 

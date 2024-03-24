@@ -14,7 +14,7 @@ Under here, this is how you integrate your reinforcement learning algorithms wit
 
 ```lua
 
--- Initializing our RandomNetworkDistillation
+-- Initializing our RandomNetworkDistillation.
 
 local RandomNetworkDistillation = DataPredict.Others.RandomNetworkDistillation.new()
 
@@ -22,13 +22,15 @@ RandomNetworkDistillation:addLayer(10, true, "LeakyReLU")
 
 RandomNetworkDistillation:addLayer(4, true, "Sigmoid")
 
--- Initializing our QLearningNeuralNetwork
+-- Initializing our QLearningNeuralNetwork.
 
 local QLearningNeuralNetwork = DataPredict.Model.QLearningNeuralNetwork.new()
 
 QLearningNeuralNetwork:addLayer(10, true, "LeakyReLU")
 
 QLearningNeuralNetwork:addLayer(4, true, "StableSoftmax")
+
+-- Initializing our ReinforcementLearningQuickSetup.
 
 local QLearningNeuralNetworkQuickSetup = DataPredict.Others.ReinforcementLearningQuickSetup.new()
 

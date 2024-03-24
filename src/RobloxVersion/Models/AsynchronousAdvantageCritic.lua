@@ -244,10 +244,7 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(numberOfFeatures, a
 		
 	end
 	
-	local lossValue = sumActorLosses + sumCriticLosses
-	
 	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-	local lossVector = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList, lossValue)
 	
 	local ActorModel = self.ActorModelArray[actorCriticModelNumber]
 	local CriticModel = self.CriticModelArray[actorCriticModelNumber]

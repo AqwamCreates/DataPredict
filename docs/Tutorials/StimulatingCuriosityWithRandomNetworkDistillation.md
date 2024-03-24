@@ -30,13 +30,17 @@ QLearningNeuralNetwork:addLayer(10, true, "LeakyReLU")
 
 QLearningNeuralNetwork:addLayer(4, true, "StableSoftmax")
 
+local QLearningNeuralNetworkQuickSetup = DataPredict.Others.ReinforcementLearningQuickSetup.new()
+
+QLearningNeuralNetworkQuickSetup:setModel(QLearningNeuralNetwork)
+
 -- Creating a simple function when receiving environment vector received.
 
 local function onEnvironmentVectorReceived(environmentVector)
 
   local internalReward = RandomNetworkDistillation:generate(environmentVector)
 
-  local action = QLearningNeuralNetwork:reinforce(environmentVector, internalReward)
+  local action = QLearningNeuralNetworkQuickSetup:reinforce(environmentVector, internalReward)
 
   return action
 

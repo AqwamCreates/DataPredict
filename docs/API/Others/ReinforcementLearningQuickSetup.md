@@ -50,7 +50,7 @@ ReinforcementLearningQuickSetup:setParameters(numberOfReinforcementsPerEpisode: 
 
 * actionSelectionFunction: The function on how to choose an action. Available options are:
 
-  * Maximum (Default)
+  * Maximum
 
   * Sample 
 

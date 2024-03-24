@@ -144,7 +144,7 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 		end
 
-		local calculatedActorLossVector = AqwamMatrixLibrary:divide(sumActorLossVector, historyLength)
+		local calculatedActorLossVector = AqwamMatrixLibrary:divide(-sumActorLossVector, historyLength)
 
 		local calculatedCriticLoss = sumCriticLoss / historyLength
 		

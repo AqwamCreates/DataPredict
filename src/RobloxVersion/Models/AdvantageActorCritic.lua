@@ -123,8 +123,8 @@ function AdvantageActorCriticModel.new(discountFactor)
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)
 
-		ActorModel:backPropagate(sumActorLosses, true)
-		CriticModel:backPropagate(sumCriticLosses, true)
+		ActorModel:backPropagate(-sumActorLosses, true)
+		CriticModel:backPropagate(-sumCriticLosses, true)
 
 		table.clear(advantageHistory)
 

@@ -259,8 +259,8 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(numberOfFeatures, a
 	ActorModel:forwardPropagate(featureVector, true)
 	CriticModel:forwardPropagate(featureVector, true)
 	
-	self.ActorModelCostFunctionDerivativesArray[actorCriticModelNumber] = ActorModel:backPropagate(sumActorLosses, true)
-	self.CriticModelCostFunctionDerivativesArray[actorCriticModelNumber] = CriticModel:backPropagate(sumCriticLosses, true, true)
+	self.ActorModelCostFunctionDerivativesArray[actorCriticModelNumber] = ActorModel:backPropagate(-sumActorLosses, true)
+	self.CriticModelCostFunctionDerivativesArray[actorCriticModelNumber] = CriticModel:backPropagate(-sumCriticLosses, true, true)
 	
 	------------------------------------------------------
 

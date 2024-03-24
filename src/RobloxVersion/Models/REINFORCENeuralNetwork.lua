@@ -68,6 +68,8 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, di
 
 		local inputVector = {table.create(numberOfNeurons, 1)}
 		
+		lossVector = AqwamMatrixLibrary:multiply(-1, lossVector)
+		
 		NewREINFORCENeuralNetworkModel:forwardPropagate(inputVector, true)
 
 		NewREINFORCENeuralNetworkModel:backPropagate(lossVector, true)

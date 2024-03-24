@@ -142,6 +142,12 @@ ReinforcementLearningQuickSetup:reinforce(currentFeatureVector: Matrix, rewardVa
 
 * predictedVector: A matrix containing all predicted values from all classes.
 
+### reset()
+
+```
+ReinforcementLearningQuickSetup:reset()
+```
+
 ### setPrintReinforcementOutput()
 
 Set whether or not to show the current number of episodes and current epsilon.

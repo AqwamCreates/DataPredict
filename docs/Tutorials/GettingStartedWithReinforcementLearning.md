@@ -60,7 +60,7 @@ Action label is a label produced by the model. This label can be a part of decis
 
 There are two ways we can setup our models for our environment:
 
-* Classical Setup (Recommended for experts or people who wants more control over their models)
+* Classic Setup (Recommended for experts or people who wants more control over their models)
 
 * Quick Setup (Recommended for beginners)
 
@@ -80,7 +80,7 @@ QLearningNeuralNetwork:setClassesList()
 
 ```
 
-## Classical Setup
+## Classic Setup
 
 All the reinforcement learning models have two important functions: update() and episode update(). Below, I will show a code sample using these functions.
 

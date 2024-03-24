@@ -53,13 +53,11 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### Learning AIs
 
-[Using Neural Networks With Reinforcement Learning](Tutorials/UsingNeuralNetworksWithReinforcementLearning.md)
+[Getting Started With Reinforcement Learning](Tutorials/GettingStartedWithReinforcementLearning.md)
 
 [Choosing The Most Recommended Environment Inputs](Tutorials/ChoosingTheMostRecommendedEnvironmentInputs.md)
 
 [Stimulating Curiosity With Random Network Distillation](Tutorials/StimulatingCuriosityWithRandomNetworkDistillation.md)
-
-[Switching Between Low And High Level APIs For Deep Reinforcement Learning](Tutorials/SwitchingBetweenLowAndHighLevelAPIsForDeepReinforcementLearning.md)
 
 ## The API
 

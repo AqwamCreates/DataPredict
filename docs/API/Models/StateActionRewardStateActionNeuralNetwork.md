@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-StateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number): ModelObject
+StateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -23,12 +23,6 @@ StateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: integer, le
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
-
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
-
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -43,7 +37,7 @@ StateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: integer, le
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-StateActionRewardStateActionNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number)
+StateActionRewardStateActionNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, discountFactor: number)
 ```
 
 #### Parameters:
@@ -51,12 +45,6 @@ StateActionRewardStateActionNeuralNetwork:setParameters(maxNumberOfIterations: i
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
-
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
-
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 

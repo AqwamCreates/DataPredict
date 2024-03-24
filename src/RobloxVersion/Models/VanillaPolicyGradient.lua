@@ -68,7 +68,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		CriticModel:forwardPropagate(featureVector, true)
 
 		ActorModel:backPropagate(-sumGradient, true)
-		CriticModel:backPropagate(-sumAdvantage, true)
+		CriticModel:backPropagate(sumAdvantage, true)
 		
 		table.clear(advantageHistory)
 

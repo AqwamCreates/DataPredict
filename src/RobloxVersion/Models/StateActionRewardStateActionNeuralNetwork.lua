@@ -8,9 +8,9 @@ StateActionRewardStateActionNeuralNetworkModel.__index = StateActionRewardStateA
 
 setmetatable(StateActionRewardStateActionNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, discountFactor)
+function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, discountFactor)
 
-	local NewStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, discountFactor)
+	local NewStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, discountFactor)
 
 	setmetatable(NewStateActionRewardStateActionNeuralNetworkModel, StateActionRewardStateActionNeuralNetworkModel)
 
@@ -32,11 +32,9 @@ function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIteration
 
 end
 
-function StateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, discountFactor)
+function StateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.learningRate = learningRate or self.learningRate
 
 	self.discountFactor =  discountFactor or self.discountFactor
 

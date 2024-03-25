@@ -10,9 +10,9 @@ setmetatable(ExpectedStateActionRewardStateActionNeuralNetworkModel, Reinforceme
 
 local defaultEpsilon = 0.5
 
-function ExpectedStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, learningRate, epsilon, discountFactor)
+function ExpectedStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIterations, epsilon, discountFactor)
 
-	local NewExpectedStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, discountFactor)
+	local NewExpectedStateActionRewardStateActionNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, discountFactor)
 
 	setmetatable(NewExpectedStateActionRewardStateActionNeuralNetworkModel, ExpectedStateActionRewardStateActionNeuralNetworkModel)
 	
@@ -72,11 +72,9 @@ function ExpectedStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfI
 
 end
 
-function ExpectedStateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, epsilon, discountFactor)
+function ExpectedStateActionRewardStateActionNeuralNetworkModel:setParameters(maxNumberOfIterations, epsilon, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.learningRate = learningRate or self.learningRate
 
 	self.epsilon = epsilon or self.epsilon
 

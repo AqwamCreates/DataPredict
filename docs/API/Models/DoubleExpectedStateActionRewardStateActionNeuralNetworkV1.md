@@ -15,14 +15,12 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterations: integer, learningRate: number, epsilon: number, discountFactor: number): ModelObject
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterations: integer, epsilon: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * epsilon: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
@@ -39,14 +37,12 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterati
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setParameters(maxNumberOfIterations: integer, learningRate: number, epsilon: number, discountFactor: number)
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setParameters(maxNumberOfIterations: integer, epsilon: number, discountFactor: number)
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * epsilon: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 

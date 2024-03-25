@@ -15,14 +15,12 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-REINFORCENeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, discountFactor: number): ModelObject
+REINFORCENeuralNetwork.new(maxNumberOfIterations: integer, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -37,14 +35,12 @@ REINFORCENeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number,
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-REINFORCENeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, discountFactor: number)
+REINFORCENeuralNetwork:setParameters(maxNumberOfIterations: integer, discountFactor: number)
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 

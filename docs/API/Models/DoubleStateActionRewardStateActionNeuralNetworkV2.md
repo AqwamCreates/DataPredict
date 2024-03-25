@@ -15,14 +15,12 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterations: integer, learningRate: number, averagingRate: number, discountFactor: number): ModelObject
+DoubleStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterations: integer, averagingRate: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
@@ -39,14 +37,12 @@ DoubleStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterations: int
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfIterations: integer, learningRate: number, averagingRate: number, discountFactor: number)
+DoubleStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfIterations: integer, averagingRate: number, discountFactor: number)
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 

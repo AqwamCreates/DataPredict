@@ -28,9 +28,9 @@ local function rateAverageModelParameters(averagingRate, PrimaryModelParameters,
 
 end
 
-function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, averagingRate, discountFactor)
+function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, averagingRate, discountFactor)
 
-	local NewDoubleQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, discountFactor)
+	local NewDoubleQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, discountFactor)
 
 	setmetatable(NewDoubleQLearningNeuralNetworkModel, DoubleQLearningNeuralNetworkModel)
 	
@@ -78,11 +78,9 @@ function DoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRa
 
 end
 
-function DoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, averagingRate, discountFactor)
+function DoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, averagingRate, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.learningRate = learningRate or self.learningRate
 
 	self.discountFactor =  discountFactor or self.discountFactor
 	

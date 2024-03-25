@@ -8,17 +8,15 @@ ReinforcementLearningNeuralNetworkBaseModel.__index = ReinforcementLearningNeura
 
 setmetatable(ReinforcementLearningNeuralNetworkBaseModel, NeuralNetworkModel)
 
-local defaultNumberOfReinforcementsPerEpisode = 500
-
 local defaultDiscountFactor = 0.95
 
 local defaultMaxNumberOfIterations = 1
 
-function ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, discountFactor)
+function ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, discountFactor)
 	
 	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 
-	local NewReinforcementLearningNeuralNetworkBaseModel = NeuralNetworkModel.new(maxNumberOfIterations, learningRate)
+	local NewReinforcementLearningNeuralNetworkBaseModel = NeuralNetworkModel.new(maxNumberOfIterations)
 
 	NewReinforcementLearningNeuralNetworkBaseModel:setPrintOutput(false)
 
@@ -30,11 +28,9 @@ function ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, 
 	
 end
 
-function ReinforcementLearningNeuralNetworkBaseModel:setParameters(maxNumberOfIterations, learningRate, discountFactor)
+function ReinforcementLearningNeuralNetworkBaseModel:setParameters(maxNumberOfIterations, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.learningRate = learningRate or self.learningRate
 
 	self.discountFactor =  discountFactor or self.discountFactor
 

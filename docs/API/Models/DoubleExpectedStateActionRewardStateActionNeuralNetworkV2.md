@@ -22,7 +22,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterati
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
-* epsilon: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
+* epsilon: Controls the balance between exploration and exploitation for calculating expected Q-values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
 * averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
@@ -46,7 +46,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumbe
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
-* epsilon: Controls the balance between exploration and exploitation for calculating expected q values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
+* epsilon: Controls the balance between exploration and exploitation for calculating expected Q-values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
 * averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 

@@ -816,15 +816,13 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
 
 end
 
-function NeuralNetworkModel.new(maxNumberOfIterations, learningRate)
+function NeuralNetworkModel.new(maxNumberOfIterations)
 
 	local NewNeuralNetworkModel = GradientMethodBaseModel.new()
 
 	setmetatable(NewNeuralNetworkModel, NeuralNetworkModel)
 
 	NewNeuralNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
-
-	NewNeuralNetworkModel.learningRate = learningRate or defaultLearningRate
 
 	NewNeuralNetworkModel.numberOfNeuronsTable = {}
 
@@ -848,11 +846,9 @@ function NeuralNetworkModel.new(maxNumberOfIterations, learningRate)
 
 end
 
-function NeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate)
+function NeuralNetworkModel:setParameters(maxNumberOfIterations)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.learningRate = learningRate or self.learningRate
 
 end
 
@@ -978,7 +974,7 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 	
 	hasBiasNeuron = (hasBiasNeuron and 1) or 0
 
-	learningRate = learningRate or self.learningRate
+	learningRate = learningRate or defaultLearningRate
 
 	activationFunction = activationFunction or defaultActivationFunction
 	

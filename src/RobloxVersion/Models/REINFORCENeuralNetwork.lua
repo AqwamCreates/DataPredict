@@ -26,9 +26,9 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 end
 
-function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, discountFactor)
+function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, discountFactor)
 
-	local NewREINFORCENeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, discountFactor)
+	local NewREINFORCENeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, discountFactor)
 	
 	setmetatable(NewREINFORCENeuralNetworkModel, REINFORCENeuralNetworkModel)
 	
@@ -90,13 +90,11 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, learningRate, di
 
 end
 
-function REINFORCENeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, discountFactor)
+function REINFORCENeuralNetworkModel:setParameters(maxNumberOfIterations, discountFactor)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 
-	self.learningRate = learningRate or self.learningRate
-
-	self.discountFactor =  discountFactor or self.discountFactor
+	self.discountFactor = discountFactor or self.discountFactor
 
 end
 

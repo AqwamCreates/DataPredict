@@ -8,9 +8,9 @@ ReinforcementLearningNeuralNetworkBaseModel.__index = ReinforcementLearningNeura
 
 setmetatable(ReinforcementLearningNeuralNetworkBaseModel, NeuralNetworkModel)
 
-local defaultDiscountFactor = 0.95
-
 local defaultMaxNumberOfIterations = 1
+
+local defaultDiscountFactor = 0.95
 
 function ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, discountFactor)
 	

@@ -8,9 +8,9 @@ ClippedDoubleQLearningNeuralNetworkModel.__index = ClippedDoubleQLearningNeuralN
 
 setmetatable(ClippedDoubleQLearningNeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
 
-function ClippedDoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, learningRate, discountFactor)
+function ClippedDoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, discountFactor)
 
-	local NewClippedDoubleQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, discountFactor)
+	local NewClippedDoubleQLearningNeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, discountFactor)
 
 	NewClippedDoubleQLearningNeuralNetworkModel.ModelParametersArray = {}
 	
@@ -66,11 +66,9 @@ function ClippedDoubleQLearningNeuralNetworkModel.new(maxNumberOfIterations, lea
 
 end
 
-function ClippedDoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, learningRate, discountFactor)
+function ClippedDoubleQLearningNeuralNetworkModel:setParameters(maxNumberOfIterations, discountFactor)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.learningRate = learningRate or self.learningRate
 
 	self.discountFactor =  discountFactor or self.discountFactor
 

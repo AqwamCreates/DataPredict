@@ -17,14 +17,12 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: number, averagingRate: number, discountFactor: number( : ModelObject
+DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, averagingRate: number, discountFactor: number( : ModelObject
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
@@ -41,14 +39,12 @@ DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, learningRate: n
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningRate: number, numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number)
+DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number)
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 * averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 

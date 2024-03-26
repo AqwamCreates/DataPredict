@@ -128,9 +128,9 @@ QLearningNeuralNetworkQuickSetup:setModel(QLearningNeuralNetwork)
 
 QLearningNeuralNetworkQuickSetup:setClassesList(classesList)
 
-local environmentVector
+local environmentVector = {{0, 0, 0, 0}}
 
-local action
+local action = 1
 
 while true do
 

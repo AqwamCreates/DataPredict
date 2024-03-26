@@ -82,7 +82,7 @@ QLearningNeuralNetwork:setClassesList()
 
 ## Classic Setup
 
-All the reinforcement learning models have two important functions: update() and episode update(). Below, I will show a code sample using these functions.
+All the reinforcement learning models have two important functions: update() and episodeUpdate(). Below, I will show a code sample using these functions.
 
 ```lua
 

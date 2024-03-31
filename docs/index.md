@@ -91,6 +91,10 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [All](VersionHistory/AllVersionsHistory.md)
 
+## Acknowledgements
+
+[Acknowledgements](Acknowledgements.md)
+
 ## Fun Facts About The DataPredict's Icon
 
 The three blocks in the icons represents these meanings, which also show's the DataPredict's Library main design principles:

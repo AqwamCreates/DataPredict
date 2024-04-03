@@ -153,7 +153,7 @@ function DistributedGradients:gradientDescent(Gradient, isTableOfMatrices, funct
 		
 		for i = 1, #ModelParameters, 1 do
 			
-			ModelParameters[i] = AqwamMatrixLibrary:applyFunction(functionToApply, ModelParameters[i], Gradient)
+			ModelParameters[i] = AqwamMatrixLibrary:applyFunction(functionToApply, ModelParameters[i], Gradient[i])
 			
 		end
 		

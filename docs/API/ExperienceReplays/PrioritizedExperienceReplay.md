@@ -26,9 +26,13 @@ PrioritizedExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: n
 
 * aggregateFunction: The function to choose a temporal difference if it is a vector. The options are:
 
-  * Maximum
+  * Maximum (Default)
+
+ * Minimum
 
   * Sum  
+
+ * Average
 
 * epsilon: A number that prevents 0 priority. Recommended to set to very small values.
 
@@ -58,7 +62,11 @@ PrioritizedExperienceReplay:setParametersbatchSize: number, numberOfExperienceTo
 
   * Maximum
 
+ * Minimum
+
   * Sum  
+
+ * Average
 
 * epsilon: A number that prevents 0 priority. Recommended to set to very small values.
 

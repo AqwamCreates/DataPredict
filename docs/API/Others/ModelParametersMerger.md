@@ -70,9 +70,9 @@ ModelParametersMerger:setParameters(Model: ModelObject, modelType: string, merge
 
   * Custom
 
-### setModelParameters()
+### merge()
 
-Generates and returns new model parameters.
+Merges existing model parameters to create a new one.
 
 ```
 ModelParametersMerger:merge(...: table/matrix): table / matrix

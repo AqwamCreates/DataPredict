@@ -112,9 +112,7 @@ function DistributedTraining:start()
 			
 			for _, Model in ipairs(self.ModelArray) do table.insert(ModelParametersArray, Model:getModelParameters()) end
 			
-			self.ModelParametersMerger:setModelParameters(table.unpack(ModelParametersArray))
-			
-			local MainModelParameters = self.ModelParametersMerger:generate()
+			local MainModelParameters = self.ModelParametersMerger:merge(table.unpack(ModelParametersArray))
 			
 			for _, Model in ipairs(self.ModelArray) do Model:setModelParameters(MainModelParameters) end
 			

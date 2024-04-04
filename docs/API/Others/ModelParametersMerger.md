@@ -72,15 +72,19 @@ ModelParametersMerger:setParameters(Model: ModelObject, modelType: string, merge
 
 ### setModelParameters()
 
-Set the feature matrix and the label vector to perform certain merges.
+Generates and returns new model parameters.
 
 ```
-ModelParametersMerger:setModelParametersArray(...: table/matrix)
+ModelParametersMerger:merge(...: table/matrix): table / matrix
 ```
 
 #### Parameters:
 
 * ModelParameter: A table / matrix containg the models' pararameters. The number of parameters determines number of model parameters to be used by the ModelParametersMerger.
+
+#### Returns:
+
+* ModelParameters: The table / matrix that is generated from the merger.
 
 ### setCustomSplitPercentageArray()
 
@@ -107,15 +111,3 @@ ModelParametersMerger:setData(featureMatrix: Matrix, labelVector: Matrix)
 * featureMatrix: The matrix that contains all the data.
 
 * labelVector: The matrix that contains data related to feature matrix (optional).
-
-### generate()
-
-Generates and returns new model parameters.
-
-```
-ModelParametersMerger:generate(): table / matrix
-```
-
-#### Returns:
-
-* ModelParameters: The table / matrix that is generated from the merger.

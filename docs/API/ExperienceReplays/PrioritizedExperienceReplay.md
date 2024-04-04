@@ -28,11 +28,11 @@ PrioritizedExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: n
 
   * Maximum (Default)
 
- * Minimum
+  * Minimum
 
   * Sum  
 
- * Average
+  * Average
 
 * epsilon: A number that prevents 0 priority. Recommended to set to very small values.
 
@@ -62,11 +62,11 @@ PrioritizedExperienceReplay:setParametersbatchSize: number, numberOfExperienceTo
 
   * Maximum
 
- * Minimum
+  * Minimum
 
   * Sum  
 
- * Average
+  * Average
 
 * epsilon: A number that prevents 0 priority. Recommended to set to very small values.
 

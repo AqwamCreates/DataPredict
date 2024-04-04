@@ -40,16 +40,6 @@ function ModelParametersMerger:setParameters(Model, modelType, mergeType)
 
 end
 
-function ModelParametersMerger:setModelParameters(...)
-	
-	local inputtedModelParametersArray = {...}
-
-	local proccesedModelsArray = ((#inputtedModelParametersArray > 0) and inputtedModelParametersArray) or nil
-	
-	self.ModelParametersArray = proccesedModelsArray
-
-end
-
 function ModelParametersMerger:setCustomSplitPercentageArray(splitPercentageArray)
 	
 	self.customSplitPercentage = splitPercentageArray or self.customSplitPercentage
@@ -480,7 +470,13 @@ local function mergeModelParameters(mergeType, ModelParametersArray, percentageS
 	
 end
 
-function ModelParametersMerger:generate()
+function ModelParametersMerger:merge(...)
+	
+	local inputtedModelParametersArray = {...}
+
+	local proccesedModelsArray = ((#inputtedModelParametersArray > 0) and inputtedModelParametersArray) or nil
+
+	self.ModelParametersArray = proccesedModelsArray
 
 	local Model = self.Model
 

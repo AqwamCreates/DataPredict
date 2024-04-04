@@ -18,8 +18,6 @@ function ModelParametersMerger.new(Model, modelType, mergeType)
 
 	NewModelParametersMerger.mergeType = mergeType or defaultMergeType
 
-	NewModelParametersMerger.ModelParametersArray = {}
-
 	NewModelParametersMerger.featureMatrix = nil
 
 	NewModelParametersMerger.labelVector = nil

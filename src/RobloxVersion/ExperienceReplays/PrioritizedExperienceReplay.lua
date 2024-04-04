@@ -24,10 +24,22 @@ local aggregrateFunctionList = {
 		
 	end,
 	
+	["Minimum"] = function (vector) 
+
+		return AqwamMatrixLibrary:findMinimumValueInMatrix(vector) 
+
+	end,
+	
 	["Sum"] = function (vector) 
 		
 		return AqwamMatrixLibrary:sum(vector) 
 		
+	end,
+	
+	["Average"] = function (vector) 
+
+		return AqwamMatrixLibrary:sum(vector) / #vector[1] 
+
 	end,
 	
 }

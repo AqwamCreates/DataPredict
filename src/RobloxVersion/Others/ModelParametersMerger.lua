@@ -472,11 +472,7 @@ end
 
 function ModelParametersMerger:merge(...)
 	
-	local inputtedModelParametersArray = {...}
-
-	local proccesedModelsArray = ((#inputtedModelParametersArray > 0) and inputtedModelParametersArray) or nil
-
-	self.ModelParametersArray = proccesedModelsArray
+	local ModelParametersArray = {...}
 
 	local Model = self.Model
 
@@ -488,9 +484,7 @@ function ModelParametersMerger:merge(...)
 
 	local labelVector = self.labelVector
 
-	local ModelParametersArray = self.ModelParametersArray
-
-	if (typeof(ModelParametersArray) ~= "table") then error("No model parameters set!") end
+	if (#ModelParametersArray <= 0) then error("No model parameters set!") end
 
 	local percentageSplitArray
 

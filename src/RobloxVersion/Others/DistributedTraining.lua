@@ -20,7 +20,7 @@ function DistributedTraining.new(totalNumberOfChildModelUpdatesToUpdateMainModel
 	
 	NewDistributedTraining.isDistributedLearningRunning = false
 	
-	NewDistributedTraining.ModelParametersMerger = ModelParametersMerger.new(nil, nil, "Average")
+	NewDistributedTraining.ModelParametersMerger = nil
 	
 	return NewDistributedTraining
 	
@@ -37,6 +37,12 @@ function DistributedTraining:addModel(Model)
 	if not Model then error("Model is empty!") end
 
 	table.insert(self.ModelArray, Model)
+	
+end
+
+function DistributedTraining:setModelParametersMerger(ModelParametersMerger)
+	
+	self.ModelParametersMerger = ModelParametersMerger or self.ModelParametersMerger
 	
 end
 

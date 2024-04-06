@@ -50,7 +50,7 @@ DistributedGradients:addGradients(Gradients: any)
 
 #### Parameters:
 
-* Gradients: The child model to be added to main model.
+* Gradients: The table of matrices / matrix containing the gradient values.
 
 ### setModelParameters()
 

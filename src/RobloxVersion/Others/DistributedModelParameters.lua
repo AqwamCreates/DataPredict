@@ -48,11 +48,11 @@ end
 
 function DistributedModelParameters:train(featureVector, labelVector, modelNumber)
 
-	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel += 1
-
 	local Model = self.ModelArray[modelNumber]
 
 	if (not Model) then error("No model!") end
+	
+	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel += 1
 
 	return Model:train(featureVector, labelVector)
 
@@ -70,11 +70,11 @@ end
 
 function DistributedModelParameters:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, modelNumber)
 	
-	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel += 1
-	
 	local Model = self.ModelArray[modelNumber]
 	
 	if (not Model) then error("No model!") end
+	
+	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel += 1
 	
 	return Model:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 	
@@ -110,11 +110,11 @@ function DistributedModelParameters:start()
 			
 			task.wait()
 			
-			if (self.ModelParametersMerger == nil) then warn("No model parameters merger!") continue end
-			
 			if (self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel < self.totalNumberOfChildModelUpdatesToUpdateMainModel) then continue end
 			
 			self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = 0
+			
+			if (self.ModelParametersMerger == nil) then warn("No model parameters merger!") continue end
 			
 			local ModelParametersArray = {}
 			

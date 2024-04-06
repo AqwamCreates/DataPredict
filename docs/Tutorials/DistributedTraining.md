@@ -109,7 +109,7 @@ DistributedModelParameters:setMainModelParameters(ModelParameters1)
 
 LinearRegression1:setAreGradientsSaved(false) -- We don't need to save the gradients because we're directly using the model parameters.
 
-LinearRegression1:setParameters(500) -- We need to set the number of iterations so that the cost value converges.
+LinearRegression1:setParameters(500) -- We need to set the number of iterations to certain values so the cost values converges.
 
 -- We then need to add the models to DistributedModelParameters.
 

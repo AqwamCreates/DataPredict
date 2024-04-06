@@ -10,7 +10,7 @@ There are two types of distributed training classes contained in this library:
 
 Below, I will show you how to use these classes below. But first, we need to create multiple models and train them first.
 
-```
+```lua
 
 -- We will initialize our models here.
 

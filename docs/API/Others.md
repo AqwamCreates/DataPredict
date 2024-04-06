@@ -4,7 +4,7 @@
 
 [DistributedGradients](Others/DistributedGradients.md)
 
-[DistributedTraining](Others/DistributedTraining.md)
+[DistributedModelParameters](Others/DistributedModelParameters.md)
 
 [ModelChecker](Others/ModelChecker.md)
 

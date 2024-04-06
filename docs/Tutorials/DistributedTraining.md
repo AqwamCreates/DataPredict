@@ -22,13 +22,13 @@ local LinearRegression2 = LinearRegression.new()
 
 local LinearRegression3 = LinearRegression.new()
 
--- Then, we will train them here. Let's assume we know the dataset of featureMatrix and labelVector.
+-- Then, we will train them here. Let's assume we know the dataset of featureMatrix and labelVector for each model.
 
-LinearRegression1:train(featureMatrix, labelVector)
+LinearRegression1:train(featureMatrix1, labelVector1)
 
-LinearRegression2:train(featureMatrix, labelVector)
+LinearRegression2:train(featureMatrix2, labelVector2)
 
-LinearRegression3:train(featureMatrix, labelVector)
+LinearRegression3:train(featureMatrix3, labelVector3)
 
 ```
 

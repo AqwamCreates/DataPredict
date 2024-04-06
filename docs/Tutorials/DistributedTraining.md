@@ -42,7 +42,7 @@ For DistributedGradients, the calculated gradients from child model parameters a
     
   * NeuralNetwork
 
-I will show how to use DistributedGradients in the sample code shown below.
+I will show you how to use DistributedGradients in the sample code shown below.
 
 ```lua
 
@@ -56,14 +56,14 @@ local ModelParameters1 = LinearRegression1:getModelParameters()
 
 DistributedGradients:setModelParameters(ModelParameters1)
 
--- For this to work, we need to change the LinearRegression to change some parameters for the LinearRegression objects.
+-- For this to work, we need to change some parameters for the LinearRegression objects.
 -- I will only set parameters for one model, so let's assume I also did this to other models.
 
 LinearRegression1:setAreGradientsSaved(true) -- We need to save the gradients for every iterations, so we set this true.
 
-LinearRegression:setParameters(1) -- We also need to make the number of iterations to 1.
+LinearRegression1:setParameters(1) -- We also need to make the number of iterations to 1.
 
--- Once set we can start training our models individually and update the model parameters in DistributedGradients object.
+-- Once set, we can start training our models individually and update the model parameters in DistributedGradients object.
 
 LinearRegression1:train(featureVector1, labelScalar1)
 
@@ -83,3 +83,45 @@ LinearRegression1:setModelParameters(UpdatedModelParameters)
 ## DistributedModelParameters
 
 For DistributedModelParameters, the child model parameters are combined to create new main model parameters.
+
+Just like the DistributedGradients, I will show you how to use DistributedModelParameters.
+
+```lua
+
+-- First, let's initialize our DistributedModelParameters object here.
+
+local DistributedModelParameters = DataPredict.Models.DistributedModelParameters.new()
+
+-- Second, we need to initialize our ModelParametersMerger object and put it into
+
+-- Then we need a model parameters from a model and send it to the DistributedModelParameters object.
+
+local ModelParameters1 = LinearRegression1:getModelParameters()
+
+DistributedModelParameters:setMainModelParameters(ModelParameters1)
+
+-- For this to work, we need to change some parameters for the LinearRegression objects.
+-- I will only set parameters for one model, so let's assume I also did this to other models.
+
+LinearRegression1:setAreGradientsSaved(false) -- We don't need to save the gradients because we're directly using the model parameters.
+
+LinearRegression1:setParameters(500) -- We need to set the number of iterations so that the cost value converges.
+
+-- We then need to add the models to DistributedModelParameters.
+
+DistributedModelParameters:addModel(LinearRegression1)
+
+-- Once set, we can start training our models individually and update the model parameters in DistributedModelParameters object.
+
+DistributedModelParameters:train(featureVector1, labelScalar1, 1)
+
+-- train() or reinforce() functions from DistributedModelParameters will update the main model parameters in DistributedModelParameters object when the number of train() or reinforce() function calls reaches certain limits.
+-- Once updated, you can call DistributedGradients' getMainModelParameters() to update the LinearRegression's model parameters.
+
+local UpdatedModelParameters = DistributedModelParameters:getMainModelParameters()
+
+LinearRegression1:setModelParameters(UpdatedModelParameters)
+
+```
+
+That's all for today!

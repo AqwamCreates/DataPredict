@@ -92,7 +92,11 @@ Just like the DistributedGradients, I will show you how to use DistributedModelP
 
 local DistributedModelParameters = DataPredict.Models.DistributedModelParameters.new()
 
--- Second, we need to initialize our ModelParametersMerger object and put it into
+-- Second, we need to initialize our ModelParametersMerger object and put it into the DistributedModelParameters object.
+
+local ModelParametersMerger = DataPredict.Models.ModelParametersMerger.new()
+
+DistributedModelParameters:setModelParametersMerger(ModelParametersMerger)
 
 -- Then we need a model parameters from a model and send it to the DistributedModelParameters object.
 
@@ -123,5 +127,9 @@ local UpdatedModelParameters = DistributedModelParameters:getMainModelParameters
 LinearRegression1:setModelParameters(UpdatedModelParameters)
 
 ```
+
+## Conclusion
+
+The code samples might seem complex for setting up distributed training classes at first, but with practice, you'll find it much easier to set up.
 
 That's all for today!

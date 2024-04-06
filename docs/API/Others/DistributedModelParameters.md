@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - DistributedTraining
+# [API Reference](../../API.md) - [Others](../Others.md) - DistributedModelParameters
 
 DistributedTraining is a base class for distributed learning. The individual child models will calculate their own model parameters and these will create a new main model parameters using average.
 
@@ -13,7 +13,7 @@ DistributedTraining is a base class for distributed learning. The individual chi
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DistributedTraining.new(totalNumberOfChildModelUpdatesToUpdateMainModel: number): DistributedLearningObject
+DistributedModelParameters.new(totalNumberOfChildModelUpdatesToUpdateMainModel: number): DistributedLearningObject
 ```
 
 #### Parameters:
@@ -31,7 +31,7 @@ DistributedTraining.new(totalNumberOfChildModelUpdatesToUpdateMainModel: number)
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DistributedTraining:setParameters(totalNumberOfChildModelUpdatesToUpdateMainModel: number)
+DistributedModelParameters:setParameters(totalNumberOfChildModelUpdatesToUpdateMainModel: number)
 ```
 
 #### Parameters:
@@ -41,17 +41,28 @@ DistributedTraining:setParameters(totalNumberOfChildModelUpdatesToUpdateMainMode
 ### addModel()
 
 ```
-DistributedTraining:addModel(Model: ModelObject)
+DistributedModelParameters:addModel(Model: ModelObject)
 ```
 
 #### Parameters:
 
 * Model: The child model to be added to main model.
 
+
+### setModelParametersMerger()
+
+Sets the ModelParametersMerger into the DistributedModelParameters.
+
+```
+DistributedModelParameters:setModelParametersMerger(ModelParametersMerger: ModelParametersMergerObject)
+```
+
+ModelParametersMerger: A ModelParametersMerger object to be used by the DistributedModelParameters object
+
 ### setMainModelParameters()
 
 ```
-DistributedTraining:setMainModelParameters(MainModelParameters: any)
+DistributedModelParameters:setMainModelParameters(MainModelParameters: any)
 ```
 
 #### Parameters:
@@ -61,7 +72,7 @@ DistributedTraining:setMainModelParameters(MainModelParameters: any)
 ### getMainModelParameters()
 
 ```
-DistributedTraining:getMainModelParameters(): any
+DistributedModelParameters:getMainModelParameters(): any
 ```
 
 #### Returns:
@@ -73,7 +84,7 @@ DistributedTraining:getMainModelParameters(): any
 Train a model for a given model number.
 
 ```
-DistributedTraining:train(featureMatrix: Matrix, labelVector/labelMatrix: matrix, modelNumber: number): []
+DistributedModelParameters:train(featureMatrix: Matrix, labelVector/labelMatrix: matrix, modelNumber: number): []
 ```
 
 #### Parameters:
@@ -93,7 +104,7 @@ DistributedTraining:train(featureMatrix: Matrix, labelVector/labelMatrix: matrix
 Predict values for the given data using the specified model number.
 
 ```
-DistributedTraining:predict(featureMatrix: Matrix, returnOriginalOutput: boolean,  modelNumber: number): Matrix, Matrix -OR- Matrix
+DistributedModelParameters:predict(featureMatrix: Matrix, returnOriginalOutput: boolean,  modelNumber: number): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
@@ -120,7 +131,7 @@ DistributedTraining:predict(featureMatrix: Matrix, returnOriginalOutput: boolean
 Reward or punish a model from a model number based on the current state of the environment.
 
 ```
-DistributedTraining:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean, modelNumber: number): integer, number -OR- Matrix
+DistributedModelParameters:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean, modelNumber: number): integer, number -OR- Matrix
 ```
 
 #### Parameters:
@@ -147,7 +158,7 @@ DistributedTraining:reinforce(currentFeatureVector: Matrix, rewardValue: number,
 ### getCurrentTotalNumberOfChildModelUpdatesToUpdateMainModel()
 
 ```
-DistributedTraining:getCurrentTotalNumberOfChildModelUpdatesToUpdateMainModel(): number
+DistributedModelParameters:getCurrentTotalNumberOfChildModelUpdatesToUpdateMainModel(): number
 ```
 
 #### Returns:
@@ -159,7 +170,7 @@ DistributedTraining:getCurrentTotalNumberOfChildModelUpdatesToUpdateMainModel():
 Reset the main model's stored values (excluding the parameters).
 
 ```
-DistributedTraining:reset()
+DistributedModelParameters:reset()
 ```
 
 ### destroy()
@@ -167,5 +178,5 @@ DistributedTraining:reset()
 Destroys the model object.
 
 ```
-DistributedTraining:destroy()
+DistributedModelParameters:destroy()
 ```

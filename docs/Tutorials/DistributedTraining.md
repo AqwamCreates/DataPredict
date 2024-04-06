@@ -52,7 +52,8 @@ local ModelParameters1 = LinearRegression1:getModelParameters()
 
 DistributedGradients:setModelParameters(ModelParameters1)
 
--- For this to work, we need to change the LinearRegression to change some parameters for the LinearRegression objects. I will only set parameters for one model, so let's assume I also did this to other models.
+-- For this to work, we need to change the LinearRegression to change some parameters for the LinearRegression objects.
+-- I will only set parameters for one model, so let's assume I also did this to other models.
 
 LinearRegression1:setAreGradientsSaved(true) -- We need to save the gradients for every iterations, so we set this true.
 
@@ -66,7 +67,8 @@ local Gradients1 = LinearRegression:getGradients()
 
 DistributedGradients:addGradients(Gradients1)
 
--- addGradients() will update the model parameters in DistributedGradients object. Once updated, you can call DistributedGradients' getModelParameters() to update the LinearRegression's model parameters.
+-- addGradients() will update the model parameters in DistributedGradients object.
+-- Once updated, you can call DistributedGradients' getModelParameters() to update the LinearRegression's model parameters.
 
 local UpdatedModelParameters = DistributedGradients:getModelParameters()
 

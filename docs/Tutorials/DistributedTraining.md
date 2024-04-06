@@ -12,7 +12,7 @@ Below, I will show you how to use these classes below. But first, we need to cre
 
 ```lua
 
--- We will initialize our models here.
+-- Let's initialize 3 LinearRegression models here.
 
 local LinearRegression = DataPredict.Models.LinearRegression
 
@@ -22,7 +22,7 @@ local LinearRegression2 = LinearRegression.new()
 
 local LinearRegression3 = LinearRegression.new()
 
--- We will train them here. Let's assume we know the dataset of featureMatrix and labelVector.
+-- Then, we will train them here. Let's assume we know the dataset of featureMatrix and labelVector.
 
 LinearRegression1:train(featureMatrix, labelVector)
 

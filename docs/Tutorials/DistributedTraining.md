@@ -4,13 +4,7 @@ Distributed training is a way to train main model parameters from child model pa
 
 There are two types of distributed training classes contained in this library:
 
-* DistributedGradients - The calculated gradients from child model parameters are sent to the main model parameters. Only applicable for:
-
-  * LinearRegression
-    
-  * LogisticRegression
-    
-  * NeuralNetwork
+* DistributedGradients
 
 * DistributedModelParameters - The child model parameters are combined to create new main model parameters.
 
@@ -39,6 +33,16 @@ LinearRegression3:train(featureMatrix3, labelVector3)
 ```
 
 ## DistributedGradients
+
+For DistributedGradients, the calculated gradients from child model parameters are sent to the main model parameters. Only applicable for:
+
+  * LinearRegression
+    
+  * LogisticRegression
+    
+  * NeuralNetwork
+
+I will show how to use DistributedGradients in the sample code shown below.
 
 ```lua
 

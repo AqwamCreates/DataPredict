@@ -119,7 +119,8 @@ DistributedModelParameters:addModel(LinearRegression1)
 
 DistributedModelParameters:train(featureVector1, labelScalar1, 1)
 
--- train() or reinforce() functions from DistributedModelParameters will update the main model parameters in DistributedModelParameters object when the number of train() or reinforce() function calls reaches certain limits.
+-- The train() or reinforce() functions from DistributedModelParameters will update the main model parameters in DistributedModelParameters
+-- object when the number of train() or reinforce() function calls reaches certain limits.
 -- Once updated, you can call DistributedGradients' getMainModelParameters() to update the LinearRegression's model parameters.
 
 local UpdatedModelParameters = DistributedModelParameters:getMainModelParameters()

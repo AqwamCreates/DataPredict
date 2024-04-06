@@ -25,7 +25,7 @@ User shall not:
 
 * Use the Library for anti-exploit or anti-cheat evasion purposes, or engage in any actions intended to circumvent security measures, unless explicitly approved by the person/company/organization that owns the target application;
 
-* Use the codes, content, or any part of the Library as a dataset, input for AI, or for any similar purpose aiming to derive new data, content, or applications;
+* Use the codes, content, or any part of the Library as a dataset, input for artificial intelligence, or for any similar purpose aiming to derive new data, content, or applications;
 
 * Use the Library in any manner that violates any applicable laws or regulations.
 

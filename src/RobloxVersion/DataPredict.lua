@@ -189,13 +189,15 @@ local OthersDictionary = {
 	
 	DistributedGradients = require(Others.DistributedGradients),
 	
-	DistributedTraining = require(Others.DistributedTraining),
+	DistributedModelParameters = require(Others.DistributedModelParameters),
 	
 	Tokenizer = require(Others.Tokenizer),
 	
 	OneVsAll = require(Others.OneVsAll),
 	
 	ConfusionMatrixCreator = require(Others.ConfusionMatrixCreator),
+	
+	ReinforcementLearningQuickSetup = require(Others.ReinforcementLearningQuickSetup)
 	
 }
 

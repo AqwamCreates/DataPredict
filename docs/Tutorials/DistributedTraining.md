@@ -61,7 +61,7 @@ DistributedGradients:setModelParameters(ModelParameters1)
 
 LinearRegression1:setAreGradientsSaved(true) -- We need to save the gradients for every iterations, so we set this true.
 
-LinearRegression:setParameters(1) -- We also need to make the number of iterations to one.
+LinearRegression:setParameters(1) -- We also need to make the number of iterations to 1.
 
 -- Once set we can start training our models individually and update the model parameters in DistributedGradients object.
 

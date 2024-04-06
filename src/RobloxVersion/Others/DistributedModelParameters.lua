@@ -1,38 +1,38 @@
 local ModelParametersMerger = require(script.Parent.Parent.Others.ModelParametersMerger)
 
-DistributedTraining = {}
+DistributedModelParameters = {}
 
-DistributedTraining.__index = DistributedTraining
+DistributedModelParameters.__index = DistributedModelParameters
 
 local defaultTotalNumberOfChildModelUpdatesToUpdateMainModel = 100
 
-function DistributedTraining.new(totalNumberOfChildModelUpdatesToUpdateMainModel)
+function DistributedModelParameters.new(totalNumberOfChildModelUpdatesToUpdateMainModel)
 	
-	local NewDistributedTraining = {}
+	local NewDistributedModelParameters = {}
 	
-	setmetatable(NewDistributedTraining, DistributedTraining)
+	setmetatable(NewDistributedModelParameters, DistributedModelParameters)
 	
-	NewDistributedTraining.totalNumberOfChildModelUpdatesToUpdateMainModel = totalNumberOfChildModelUpdatesToUpdateMainModel or defaultTotalNumberOfChildModelUpdatesToUpdateMainModel
+	NewDistributedModelParameters.totalNumberOfChildModelUpdatesToUpdateMainModel = totalNumberOfChildModelUpdatesToUpdateMainModel or defaultTotalNumberOfChildModelUpdatesToUpdateMainModel
 	
-	NewDistributedTraining.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = 0
+	NewDistributedModelParameters.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = 0
 	
-	NewDistributedTraining.ModelArray = {}
+	NewDistributedModelParameters.ModelArray = {}
 	
-	NewDistributedTraining.isDistributedLearningRunning = false
+	NewDistributedModelParameters.isDistributedLearningRunning = false
 	
-	NewDistributedTraining.ModelParametersMerger = nil
+	NewDistributedModelParameters.ModelParametersMerger = nil
 	
-	return NewDistributedTraining
+	return NewDistributedModelParameters
 	
 end
 
-function DistributedTraining:setParameters(totalNumberOfChildModelUpdatesToUpdateMainModel)
+function DistributedModelParameters:setParameters(totalNumberOfChildModelUpdatesToUpdateMainModel)
 	
 	self.totalNumberOfChildModelUpdatesToUpdateMainModel = totalNumberOfChildModelUpdatesToUpdateMainModel or self.totalNumberOfChildModelUpdatesToUpdateMainModel
 	
 end
 
-function DistributedTraining:addModel(Model)
+function DistributedModelParameters:addModel(Model)
 	
 	if not Model then error("Model is empty!") end
 
@@ -40,13 +40,13 @@ function DistributedTraining:addModel(Model)
 	
 end
 
-function DistributedTraining:setModelParametersMerger(ModelParametersMerger)
+function DistributedModelParameters:setModelParametersMerger(ModelParametersMerger)
 	
 	self.ModelParametersMerger = ModelParametersMerger or self.ModelParametersMerger
 	
 end
 
-function DistributedTraining:train(featureVector, labelVector, modelNumber)
+function DistributedModelParameters:train(featureVector, labelVector, modelNumber)
 
 	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel += 1
 
@@ -58,7 +58,7 @@ function DistributedTraining:train(featureVector, labelVector, modelNumber)
 
 end
 
-function DistributedTraining:predict(featureVector, returnOriginalOutput, modelNumber)
+function DistributedModelParameters:predict(featureVector, returnOriginalOutput, modelNumber)
 
 	local Model = self.ModelArray[modelNumber]
 
@@ -68,7 +68,7 @@ function DistributedTraining:predict(featureVector, returnOriginalOutput, modelN
 
 end
 
-function DistributedTraining:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, modelNumber)
+function DistributedModelParameters:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, modelNumber)
 	
 	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel += 1
 	
@@ -80,25 +80,25 @@ function DistributedTraining:reinforce(currentFeatureVector, rewardValue, return
 	
 end
 
-function DistributedTraining:setMainModelParameters(MainModelParameters)
+function DistributedModelParameters:setMainModelParameters(MainModelParameters)
 	
 	self.MainModelParameters = MainModelParameters
 	
 end
 
-function DistributedTraining:getMainModelParameters()
+function DistributedModelParameters:getMainModelParameters()
 	
 	return self.MainModelParameters
 	
 end
 
-function DistributedTraining:getCurrentTotalNumberOfChildModelUpdatesToUpdateMainModel()
+function DistributedModelParameters:getCurrentTotalNumberOfChildModelUpdatesToUpdateMainModel()
 	
 	return self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel
 	
 end
 
-function DistributedTraining:start()
+function DistributedModelParameters:start()
 	
 	if (self.isDistributedLearningRunning == true) then error("The model is already running!") end
 	
@@ -134,19 +134,19 @@ function DistributedTraining:start()
 		
 end
 
-function DistributedTraining:stop()
+function DistributedModelParameters:stop()
 	
 	self.isDistributedLearningRunning = false
 	
 end
 
-function DistributedTraining:reset()
+function DistributedModelParameters:reset()
 	
 	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = 0
 	
 end
 
-function DistributedTraining:destroy()
+function DistributedModelParameters:destroy()
 
 	setmetatable(self, nil)
 
@@ -156,4 +156,4 @@ function DistributedTraining:destroy()
 
 end
 
-return DistributedTraining
+return DistributedModelParameters

@@ -40,7 +40,7 @@ LinearRegression3:train(featureMatrix3, labelVector3)
 
 ## DistributedGradients
 
-```
+```lua
 
 -- First, let's initialize our DistributedGradients object here.
 

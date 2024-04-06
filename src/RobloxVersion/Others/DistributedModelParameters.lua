@@ -110,6 +110,8 @@ function DistributedModelParameters:start()
 			
 			task.wait()
 			
+			if (self.ModelParametersMerger == nil) then warn("No model parameters merger!") continue end
+			
 			if (self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel < self.totalNumberOfChildModelUpdatesToUpdateMainModel) then continue end
 			
 			self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = 0

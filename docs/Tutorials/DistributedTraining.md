@@ -117,7 +117,7 @@ DistributedModelParameters:addModel(LinearRegression1)
 
 -- Once set, we can start training our models individually and update the model parameters in DistributedModelParameters object.
 
-DistributedModelParameters:train(featureVector1, labelScalar1, 1) -- The third parameter indicated which model you want to train.
+DistributedModelParameters:train(featureVector1, labelScalar1, 1) -- The third parameter indicates which model you want to train.
 
 -- The train() or reinforce() functions from DistributedModelParameters will update the main model parameters 
 -- in DistributedModelParameters object when the number of train() or reinforce() function calls reaches certain limits.

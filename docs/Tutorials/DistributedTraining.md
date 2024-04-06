@@ -10,7 +10,7 @@ There are two types of distributed training classes contained in this library:
     
   * LogisticRegression
     
-  * NeuralNetworks
+  * NeuralNetwork
 
 * DistributedModelParameters - The child model parameters are combined to create new main model parameters.
 
@@ -39,3 +39,37 @@ LinearRegression3:train(featureMatrix3, labelVector3)
 ```
 
 ## DistributedGradients
+
+```
+
+-- First, let's initialize our DistributedGradients object here.
+
+local DistributedGradients = DataPredict.Models.DistributedGradients.new()
+
+-- Then we need a model parameters from a model and send it to the DistributedGradients object.
+
+local ModelParameters1 = LinearRegression1:getModelParameters()
+
+DistributedGradients:setModelParameters(ModelParameters1)
+
+-- For this to work, we need to change the LinearRegression to change some parameters for the LinearRegression objects. I will only set parameters for one model, so let's assume I also did this to other models.
+
+LinearRegression1:setAreGradientsSaved(true) -- We need to save the gradients for every iterations, so we set this true.
+
+LinearRegression:setParameters(1) -- We also need to make the number of iterations to one.
+
+-- Once set we can start training our models individually and update the model parameters in DistributedGradients object.
+
+LinearRegression1:train(featureVector1, labelScalar1)
+
+local Gradients1 = LinearRegression:getGradients()
+
+DistributedGradients:addGradients(Gradients1)
+
+-- addGradients() will update the model parameters in DistributedGradients object. Once updated, you can call DistributedGradients' getModelParameters() to update the LinearRegression's model parameters.
+
+local UpdatedModelParameters = DistributedGradients:getModelParameters()
+
+LinearRegression1:setModelParameters(UpdatedModelParameters)
+
+```

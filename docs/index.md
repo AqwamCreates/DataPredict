@@ -61,7 +61,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### Advanced
 
-[Distrubuted Training](Tutorials/DistributedTraining.md)
+[Distributed Training](Tutorials/DistributedTraining.md)
 
 ## The API
 

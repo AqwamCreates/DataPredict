@@ -6,7 +6,7 @@ There are two types of distributed training classes contained in this library:
 
 * DistributedGradients
 
-* DistributedModelParameters - The child model parameters are combined to create new main model parameters.
+* DistributedModelParameters
 
 Below, I will show you how to use these classes below. But first, we need to create multiple models and train them first.
 
@@ -79,3 +79,7 @@ local UpdatedModelParameters = DistributedGradients:getModelParameters()
 LinearRegression1:setModelParameters(UpdatedModelParameters)
 
 ```
+
+## DistributedModelParameters
+
+The child model parameters are combined to create new main model parameters.

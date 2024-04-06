@@ -59,6 +59,10 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Stimulating Curiosity With Random Network Distillation](Tutorials/StimulatingCuriosityWithRandomNetworkDistillation.md)
 
+### Advanced
+
+[Distrubuted Training](Tutorials/DistributedTraining.md)
+
 ## The API
 
 ### API Reference

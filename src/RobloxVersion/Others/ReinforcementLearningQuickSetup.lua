@@ -168,11 +168,13 @@ function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, clas
 	
 	local allOutputsMatrix = self.Model:predict(currentFeatureVector, true)
 	
+	local actionSelectionFunction = self.actionSelectionFunction
+	
 	local action
 	
 	local selectedValue
 	
-	if (self.actionSelectionFunction == "Maximum") then
+	if (actionSelectionFunction == "Maximum") then
 		
 		local actionVector, selectedValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
 		
@@ -180,7 +182,7 @@ function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, clas
 
 		selectedValue = selectedValueVector[1][1]
 		
-	elseif (self.actionSelectionFunction == "Sample") then
+	elseif (actionSelectionFunction == "Sample") then
 		
 		local actionIndex = sampleAction(allOutputsMatrix)
 		
@@ -190,7 +192,7 @@ function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, clas
 		
 	end
 	
-	return action, selectedValue
+	return action, selectedValue, allOutputsMatrix
 	
 end
 
@@ -204,7 +206,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	
 	local Model = self.Model
 	
-	local ClassesList = self.ClassesList
+	local classesList = self.ClassesList
 
 	self.currentNumberOfReinforcements += 1
 
@@ -220,11 +222,11 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	if (randomProbability < self.currentEpsilon) then
 
-		local numberOfClasses = #ClassesList
+		local numberOfClasses = #classesList
 
 		local randomNumber = Random.new():NextInteger(1, numberOfClasses)
 
-		action = ClassesList[randomNumber]
+		action = classesList[randomNumber]
 
 		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, numberOfClasses)
 
@@ -232,7 +234,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	else
 
-		action, selectedValue = self:selectAction(currentFeatureVector, ClassesList)
+		action, selectedValue, allOutputsMatrix = self:selectAction(currentFeatureVector, classesList)
 
 	end
 
@@ -295,6 +297,18 @@ end
 function ReinforcementLearningQuickSetup:getModel()
 	
 	return self.Model
+	
+end
+
+function ReinforcementLearningQuickSetup:getClassesList()
+	
+	return self.ClassesList
+	
+end
+
+function ReinforcementLearningQuickSetup:getExperienceReplay()
+	
+	return self.ExperienceReplay
 	
 end
 

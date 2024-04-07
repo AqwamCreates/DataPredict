@@ -124,6 +124,10 @@ Sets a new function on reset alongside with the current model's update() functio
 ReinforcementLearningQuickSetup:extendUpdateFunction(updateFunction)
 ```
 
+#### Parameters:
+
+* updateFunction: The function to run after calling the model's update() function
+
 ### extendEpisodeUpdateFunction
 
 Sets a new function on reset alongside with the current model's episodeUpdate() function. 
@@ -131,6 +135,10 @@ Sets a new function on reset alongside with the current model's episodeUpdate() 
 ```
 ReinforcementLearningQuickSetup:extendEpisodeUpdateFunction(episodeUpdateFunction)
 ```
+
+#### Parameters:
+
+* episodeUpdateFunction: The function to run after calling the model's episodeUpdate() function
 
 ### reinforce()
 

@@ -96,7 +96,7 @@ ReinforcementLearningNeuralNetworkBaseModel:episodeUpdate()
 
 ### extendResetFunction()
 
-Adds new function on reset alongside with the current reset() function. 
+Sets a new function on reset alongside with the current reset() function. 
 
 ```
 ReinforcementLearningNeuralNetworkBaseModel:extendResetFunction(resetFunction)

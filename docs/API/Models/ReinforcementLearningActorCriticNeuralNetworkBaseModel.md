@@ -106,7 +106,7 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel:episodeUpdate()
 
 ### extendResetFunction()
 
-Adds new function on reset alongside with the current reset() function. 
+Sets a new function on reset alongside with the current reset() function. 
 
 ```
 ReinforcementLearningActorCriticNeuralNetworkBaseModel:extendResetFunction(resetFunction)

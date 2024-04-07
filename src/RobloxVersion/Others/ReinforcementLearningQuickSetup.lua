@@ -72,6 +72,10 @@ function ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode, e
 	
 	NewReinforcementLearningQuickSetup.ClassesList = {}
 	
+	NewReinforcementLearningQuickSetup.updateFunction = nil
+	
+	NewReinforcementLearningQuickSetup.episodeUpdateFunction = nil
+	
 	return NewReinforcementLearningQuickSetup
 	
 end
@@ -105,6 +109,18 @@ end
 function ReinforcementLearningQuickSetup:setClassesList(classesList)
 
 	self.ClassesList = classesList
+
+end
+
+function ReinforcementLearningQuickSetup:extendUpdateFunction(updateFunction)
+
+	self.updateFunction = updateFunction
+
+end
+
+function ReinforcementLearningQuickSetup:extendEpisodeUpdateFunction(episodeUpdateFunction)
+
+	self.episodeUpdateFunction = episodeUpdateFunction
 
 end
 
@@ -207,6 +223,8 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	local Model = self.Model
 	
 	local classesList = self.ClassesList
+	
+	local updateFunction = self.updateFunction
 
 	self.currentNumberOfReinforcements += 1
 
@@ -246,9 +264,13 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
 		
+		local episodeUpdateFunction = self.episodeUpdateFunction
+		
 		self.currentNumberOfReinforcements = 0
 
 		Model:episodeUpdate()
+		
+		if episodeUpdateFunction then episodeUpdateFunction() end
 
 	end
 
@@ -265,6 +287,8 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 		end)
 
 	end
+	
+	if updateFunction then updateFunction() end
 
 	self.previousFeatureVector = currentFeatureVector
 

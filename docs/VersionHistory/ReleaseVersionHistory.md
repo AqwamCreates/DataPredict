@@ -1,6 +1,6 @@
 # Release Version
 
-| Version                           | Number Of Models | Number Of Optimizers | Number Of Others | Number Of Experience Replays | Contains Breaking API Changes |
+| Version                           | Number Of Models | Number Of Optimizers | Number Of Others | Number Of Experience Replays | Backward Incompatibility      |
 |-----------------------------------|------------------|----------------------|------------------|------------------------------| ------------------------------|
 | [1.14](Release/1-14.md)           | 38               | 11                   | 15               | 4                            | Yes                           |
 | [1.13](Release/1-13.md)           | 37               | 11                   | 13               | 4                            | No                            |

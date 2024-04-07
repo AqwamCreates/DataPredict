@@ -97,7 +97,7 @@ ReinforcementLearningQuickSetup:getExperienceReplay(): ExperienceReplayObject
 ### setClassesList()
 
 ```
-NeuralNetwork:setClassesList(classesList: [])
+ReinforcementLearningQuickSetup:setClassesList(classesList: [])
 ```
 
 #### Parameters:
@@ -109,12 +109,28 @@ NeuralNetwork:setClassesList(classesList: [])
 Gets all the classes stored in the NeuralNetwork model.
 
 ```
-NeuralNetwork:getClassesList(): []
+ReinforcementLearningQuickSetup:getClassesList(): []
 ```
 
 #### Returns:
 
 * classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
+
+### extendUpdateFunction
+
+Sets a new function on reset alongside with the current model's update() function. 
+
+```
+ReinforcementLearningQuickSetup:extendUpdateFunction(updateFunction)
+```
+
+### extendEpisodeUpdateFunction
+
+Sets a new function on reset alongside with the current model's episodeUpdate() function. 
+
+```
+ReinforcementLearningQuickSetup:extendEpisodeUpdateFunction(episodeUpdateFunction)
+```
 
 ### reinforce()
 

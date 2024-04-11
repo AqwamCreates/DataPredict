@@ -104,7 +104,9 @@ while true do
 
     previousEnvironmentVector = environmentVector
 
-    hasGameEnded = checkIfGameHasEnded(environmentVector)
+    local hasGameEnded = checkIfGameHasEnded(environmentVector)
+
+    if hasGameEnded then break end
 
   end
 

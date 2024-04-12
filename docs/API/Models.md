@@ -69,4 +69,4 @@
 
 [ReinforcementLearningNeuralNetworkBaseModel](Models/ReinforcementLearningNeuralNetworkBaseModel.md)
 
-[ReinforcementLearningActorCriticNeuralNetworkBaseModel](Models/ReinforcementLearningActorCriticNeuralNetworkBaseModel.md)
+[ReinforcementLearningActorCriticBaseModel](Models/ReinforcementLearningActorCriticBaseModel.md)

@@ -48,7 +48,7 @@ ProximalPolicyOptimizationClip:setParameters(clipRatio: number, discountFactor: 
 
 ## Inherited From
 
-* [ReinforcementLearningActorCriticNeuralNetworkBaseModel](ReinforcementLearningActorCriticNeuralNetworkBaseModel.md)
+* [ReinforcementLearningActorCriticBaseModel](ReinforcementLearningActorCriticBaseModel.md)
 
 ## References
 

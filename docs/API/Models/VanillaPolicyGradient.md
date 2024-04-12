@@ -187,7 +187,7 @@ VanillaPolicyGradient:destroy()
 
 ## Inherited From
 
-* [ReinforcementLearningActorCriticNeuralNetworkBaseModel](ReinforcementLearningActorCriticNeuralNetworkBaseModel.md)
+* [ReinforcementLearningActorCriticBaseModel](ReinforcementLearningActorCriticBaseModel.md)
 
 ## References
 

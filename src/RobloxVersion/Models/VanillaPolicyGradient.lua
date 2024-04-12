@@ -1,16 +1,16 @@
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local ReinforcementLearningActorCriticNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningActorCriticNeuralNetworkBaseModel)
+local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
 
 VanillaPolicyGradientModel = {}
 
 VanillaPolicyGradientModel.__index = VanillaPolicyGradientModel
 
-setmetatable(VanillaPolicyGradientModel, ReinforcementLearningActorCriticNeuralNetworkBaseModel)
+setmetatable(VanillaPolicyGradientModel, ReinforcementLearningActorCriticBaseModel)
 
 function VanillaPolicyGradientModel.new(discountFactor)
 	
-	local NewVanillaPolicyGradientModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(discountFactor)
+	local NewVanillaPolicyGradientModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
 
 	setmetatable(NewVanillaPolicyGradientModel, VanillaPolicyGradientModel)
 

@@ -1,12 +1,12 @@
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local ReinforcementLearningActorCriticNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningActorCriticNeuralNetworkBaseModel)
+local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
 
 ProximalPolicyOptimizationClipModel = {}
 
 ProximalPolicyOptimizationClipModel.__index = ProximalPolicyOptimizationClipModel
 
-setmetatable(ProximalPolicyOptimizationClipModel, ReinforcementLearningActorCriticNeuralNetworkBaseModel)
+setmetatable(ProximalPolicyOptimizationClipModel, ReinforcementLearningActorCriticBaseModel)
 
 local defaultClipRatio = 0.3
 
@@ -40,7 +40,7 @@ end
 
 function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 	
-	local NewProximalPolicyOptimizationClipModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(discountFactor)
+	local NewProximalPolicyOptimizationClipModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
 	
 	setmetatable(NewProximalPolicyOptimizationClipModel, ProximalPolicyOptimizationClipModel)
 	

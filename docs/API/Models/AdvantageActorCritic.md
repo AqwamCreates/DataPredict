@@ -44,7 +44,7 @@ AdvantageActorCritic:setParameters(discountFactor: number)
 
 ## Inherited From
 
-* [ReinforcementLearningActorCriticNeuralNetworkBaseModel](ReinforcementLearningActorCriticNeuralNetworkBaseModel.md)
+* [ReinforcementLearningActorCriticBaseModel](ReinforcementLearningActorCriticBaseModel.md)
 
 ## References
 

@@ -52,7 +52,7 @@ end
 
 function AdvantageActorCriticModel.new(discountFactor)
 
-	local NewAdvantageActorCriticModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(discountFactor)
+	local NewAdvantageActorCriticModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
 
 	setmetatable(NewAdvantageActorCriticModel, AdvantageActorCriticModel)
 	

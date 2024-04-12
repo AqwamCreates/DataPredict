@@ -1,12 +1,12 @@
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local ReinforcementLearningActorCriticNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningActorCriticNeuralNetworkBaseModel)
+local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
 
 AdvantageActorCriticModel = {}
 
 AdvantageActorCriticModel.__index = AdvantageActorCriticModel
 
-setmetatable(AdvantageActorCriticModel, ReinforcementLearningActorCriticNeuralNetworkBaseModel)
+setmetatable(AdvantageActorCriticModel, ReinforcementLearningActorCriticBaseModel)
 
 local function sampleAction(actionProbabilityVector)
 

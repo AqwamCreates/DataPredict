@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - ReinforcementLearningActorCriticNeuralNetworkBaseModel
+# [API Reference](../../API.md) - [Models](../Models.md) - ReinforcementLearningActorCriticBaseModel
 
-ReinforcementLearningActorCriticNeuralNetworkBaseModel is a base class for reinforcement learning neural network models.
+ReinforcementLearningActorCriticBaseModel is a base class for reinforcement learning neural network models.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel is a base class for reinf
 Creates a new base model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(discountFactor: number): ModelObject
+ReinforcementLearningActorCriticBaseModel.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -27,7 +27,7 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(discountFactor: numbe
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ReinforcementLearningActorCriticNeuralNetworkBaseModel:setParameters(discountFactor: number)
+ReinforcementLearningActorCriticBaseModel:setParameters(discountFactor: number)
 ```
 
 #### Parameters:
@@ -37,7 +37,7 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel:setParameters(discountFac
 ### setActorModel()
 
 ```
-ProximalPolicyOptimizationClip:setActorModel(Model: ModelObject)
+ReinforcementLearningActorCriticBaseModel:setActorModel(Model: ModelObject)
 ```
 
 #### Parameters:
@@ -47,7 +47,7 @@ ProximalPolicyOptimizationClip:setActorModel(Model: ModelObject)
 ### setCriticModel()
 
 ```
-ProximalPolicyOptimizationClip:setActorModel(Model: ModelObject)
+ReinforcementLearningActorCriticBaseModel:setActorModel(Model: ModelObject)
 ```
 
 #### Parameters:
@@ -59,7 +59,7 @@ ProximalPolicyOptimizationClip:setActorModel(Model: ModelObject)
 Sets the model's update function.
 
 ```
-ReinforcementLearningActorCriticNeuralNetworkBaseModel:setUpdateFunction(updateFunction)
+ReinforcementLearningActorCriticBaseModel:setUpdateFunction(updateFunction)
 ```
 
 #### Parameters:
@@ -71,7 +71,7 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel:setUpdateFunction(updateF
 Sets the model's episode update function.
 
 ```
-ReinforcementLearningActorCriticNeuralNetworkBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
+ReinforcementLearningActorCriticBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 ```
 
 #### Parameters:
@@ -83,7 +83,7 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel:setEpisodeUpdateFunction(
 Updates the model parameters using updateFunction().
 
 ```
-ReinforcementLearningActorCriticNeuralNetworkBaseModel:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
+ReinforcementLearningActorCriticBaseModel:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
 ```
 
 #### Parameters:
@@ -101,7 +101,7 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel:update(previousFeatiureVe
 Updates the model parameters using episodeUpdateFunction().
 
 ```
-ReinforcementLearningActorCriticNeuralNetworkBaseModel:episodeUpdate()
+ReinforcementLearningActorCriticBaseModel:episodeUpdate()
 ```
 
 ### extendResetFunction()
@@ -109,7 +109,7 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel:episodeUpdate()
 Sets a new function on reset alongside with the current reset() function. 
 
 ```
-ReinforcementLearningActorCriticNeuralNetworkBaseModel:extendResetFunction(resetFunction)
+ReinforcementLearningActorCriticBaseModel:extendResetFunction(resetFunction)
 ```
 
 #### Parameters:
@@ -121,5 +121,5 @@ ReinforcementLearningActorCriticNeuralNetworkBaseModel:extendResetFunction(reset
 Reset model's stored values (excluding the parameters).
 
 ```
-ReinforcementLearningActorCriticNeuralNetworkBaseModel:reset()
+ReinforcementLearningActorCriticBaseModel:reset()
 ```

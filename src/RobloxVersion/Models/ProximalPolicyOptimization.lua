@@ -1,12 +1,12 @@
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local ReinforcementLearningActorCriticNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningActorCriticNeuralNetworkBaseModel)
+local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
 
 ProximalPolicyOptimizationModel = {}
 
 ProximalPolicyOptimizationModel.__index = ProximalPolicyOptimizationModel
 
-setmetatable(ProximalPolicyOptimizationModel, ReinforcementLearningActorCriticNeuralNetworkBaseModel)
+setmetatable(ProximalPolicyOptimizationModel, ReinforcementLearningActorCriticBaseModel)
 
 local function calculateProbability(outputMatrix)
 
@@ -38,7 +38,7 @@ end
 
 function ProximalPolicyOptimizationModel.new(discountFactor)
 	
-	local NewProximalPolicyOptimizationModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(discountFactor)
+	local NewProximalPolicyOptimizationModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
 	
 	setmetatable(NewProximalPolicyOptimizationModel, ProximalPolicyOptimizationModel)
 	

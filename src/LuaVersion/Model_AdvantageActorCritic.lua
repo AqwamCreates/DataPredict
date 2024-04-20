@@ -42,11 +42,23 @@ end
 
 local function calculateProbability(outputMatrix)
 
-	local sumVector = AqwamMatrixLibrary:horizontalSum(outputMatrix)
+	local meanVector = AqwamMatrixLibrary:horizontalMean(outputMatrix)
 
-	local result = AqwamMatrixLibrary:divide(outputMatrix, sumVector)
+	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(outputMatrix)
 
-	return result
+	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(outputMatrix, meanVector)
+
+	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
+
+	local zScoreSquaredVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+
+	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
+
+	local probabilityVectorPart2 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+
+	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart1, probabilityVectorPart2)
+
+	return probabilityVector
 
 end
 
@@ -76,7 +88,17 @@ function AdvantageActorCriticModel.new(discountFactor)
 
 		local numberOfActions = #allOutputsMatrix[1]
 
-		local actionIndex = sampleAction(actionProbabilityVector)
+		local actionIndex
+		
+		if action then
+
+			actionIndex = table.find(NewAdvantageActorCriticModel.ActorModel:getClassesList(), action)
+
+		else
+
+			actionIndex = sampleAction(actionProbabilityVector)
+
+		end
 
 		local actionProbability = actionProbabilityVector[1][actionIndex]
 
@@ -104,9 +126,9 @@ function AdvantageActorCriticModel.new(discountFactor)
 
 			local criticLoss = math.pow(advantage, 2)
 
-			sumActorLosses = sumActorLosses + actorLoss
+			sumActorLosses += actorLoss
 
-			sumCriticLosses = sumCriticLosses + criticLoss
+			sumCriticLosses += criticLoss
 
 		end
 		
@@ -116,7 +138,7 @@ function AdvantageActorCriticModel.new(discountFactor)
 		
 		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
 
-		numberOfFeatures = numberOfFeatures + (hasBias and 1) or 0
+		numberOfFeatures += (hasBias and 1) or 0
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 

@@ -44,6 +44,30 @@ local function sampleAction(actionProbabilityVector)
 
 end
 
+local function calculateProbability(outputMatrix)
+
+	local meanVector = AqwamMatrixLibrary:horizontalMean(outputMatrix)
+
+	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(outputMatrix)
+
+	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(outputMatrix, meanVector)
+
+	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
+
+	local zScoreSquaredVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+
+	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
+
+	local probabilityVectorPart2 = AqwamMatrixLibrary:applyFunction(math.exp, probabilityVectorPart1)
+
+	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+
+	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
+
+	return probabilityVector
+
+end
+
 function ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, actionSelectionFunction)
 	
 	local NewReinforcementLearningQuickSetup = {}
@@ -200,7 +224,9 @@ function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, clas
 		
 	elseif (actionSelectionFunction == "Sample") then
 		
-		local actionIndex = sampleAction(allOutputsMatrix)
+		local actionProbabilityVector = calculateProbability(allOutputsMatrix)
+		
+		local actionIndex = sampleAction(actionProbabilityVector)
 		
 		action = classesList[actionIndex]
 		

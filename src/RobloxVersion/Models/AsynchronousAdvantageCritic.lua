@@ -364,8 +364,10 @@ function AsynchronousAdvantageActorCriticModel:selectAction(currentFeatureVector
 		selectedValue = selectedValueVector[1][1]
 
 	elseif (actionSelectionFunction == "Sample") then
+		
+		local actionProbabilityVector = calculateProbability(allOutputsMatrix)
 
-		local actionIndex = sampleAction(allOutputsMatrix)
+		local actionIndex = sampleAction(actionProbabilityVector)
 
 		action = classesList[actionIndex]
 

@@ -28,7 +28,7 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 	for h = #rewardHistory, 1, -1 do
 
-		discountedReward += rewardHistory[h] + (discountFactor * discountedReward)
+		discountedReward = rewardHistory[h] + (discountFactor * discountedReward)
 
 		table.insert(rewardsToGoArray, 1, discountedReward)
 

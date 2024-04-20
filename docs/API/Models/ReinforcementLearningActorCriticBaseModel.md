@@ -36,6 +36,8 @@ ReinforcementLearningActorCriticBaseModel:setParameters(discountFactor: number)
 
 ### setActorModel()
 
+Sets the actor model. The outputs of the actor model is required to be in normal distribution format.
+
 ```
 ReinforcementLearningActorCriticBaseModel:setActorModel(Model: ModelObject)
 ```
@@ -45,6 +47,8 @@ ReinforcementLearningActorCriticBaseModel:setActorModel(Model: ModelObject)
 * Model: The model to be used as an Actor model.
 
 ### setCriticModel()
+
+Sets the critic model.
 
 ```
 ReinforcementLearningActorCriticBaseModel:setActorModel(Model: ModelObject)

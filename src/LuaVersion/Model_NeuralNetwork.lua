@@ -1,4 +1,4 @@
-local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 NeuralNetworkModel = {}
 
@@ -6,7 +6,7 @@ NeuralNetworkModel.__index = NeuralNetworkModel
 
 setmetatable(NeuralNetworkModel, GradientMethodBaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 
@@ -872,11 +872,11 @@ function NeuralNetworkModel:generateLayers()
 
 		numberOfCurrentLayerNeurons = layersArray[layer]
 
-		if (self.hasBiasNeuronTable[layer] == 1) then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
+		if (self.hasBiasNeuronTable[layer] == 1) then numberOfCurrentLayerNeurons = numberOfCurrentLayerNeurons + 1 end -- 1 is added for bias
 
 		numberOfNextLayerNeurons = layersArray[layer + 1]
 
-		if (self.hasBiasNeuronTable[layer + 1] == 1) then numberOfNextLayerNeurons += 1 end
+		if (self.hasBiasNeuronTable[layer + 1] == 1) then numberOfNextLayerNeurons = numberOfNextLayerNeurons + 1 end
 
 		weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
 
@@ -1392,7 +1392,7 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 
 	end
 	
-	self.numberOfNeuronsTable[layerNumber] += size
+	self.numberOfNeuronsTable[layerNumber] = self.numberOfNeuronsTable[layerNumber] + size
 	
 end
 
@@ -1440,7 +1440,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	repeat
 		
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 
 		self:iterationWait()
 

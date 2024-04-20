@@ -1,4 +1,4 @@
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 NaiveBayesModel = {}
 
@@ -6,7 +6,7 @@ NaiveBayesModel.__index = NaiveBayesModel
 
 setmetatable(NaiveBayesModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local function extractFeatureMatrixFromPosition(featureMatrix, positionList)
 	

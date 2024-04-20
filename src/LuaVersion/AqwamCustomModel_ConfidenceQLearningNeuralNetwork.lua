@@ -1,8 +1,6 @@
-local Models = script.Parent.Parent.Models
+local LogisticRegression = require("Model_LogisticRegression")
 
-local LogisticRegression = require(Models.LogisticRegression)
-
-local ReinforcementLearningNeuralNetworkBaseModel = require(Models.ReinforcementLearningNeuralNetworkBaseModel)
+local ReinforcementLearningNeuralNetworkBaseModel = require("Model_ReinforcementLearningNeuralNetworkBaseModel")
 
 ConfidenceQLearningNeuralNetwork = {}
 

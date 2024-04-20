@@ -1,4 +1,4 @@
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 KMedoidsModel = {}
 
@@ -6,7 +6,7 @@ KMedoidsModel.__index = KMedoidsModel
 
 setmetatable(KMedoidsModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = math.huge
 
@@ -382,7 +382,7 @@ function KMedoidsModel:train(featureMatrix)
 
 				end
 				
-				numberOfIterations += 1
+				numberOfIterations = numberOfIterations + 1
 
 				table.insert(costArray, cost)
 

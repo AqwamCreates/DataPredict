@@ -1,4 +1,4 @@
-local NeuralNetworkModel = require(script.Parent.Parent.Models.NeuralNetwork)
+local NeuralNetworkModel = require("Model_NeuralNetwork")
 
 QueuedReinforcementNeuralNetworkModel = {}
 
@@ -6,7 +6,7 @@ QueuedReinforcementNeuralNetworkModel.__index = QueuedReinforcementNeuralNetwork
 
 setmetatable(QueuedReinforcementNeuralNetworkModel, NeuralNetworkModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 function QueuedReinforcementNeuralNetworkModel.new(maxNumberOfIterations, learningRate, targetCost)
 	

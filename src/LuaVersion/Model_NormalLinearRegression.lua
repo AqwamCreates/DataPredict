@@ -1,4 +1,4 @@
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 NormalLinearRegressionModel = {}
 
@@ -6,7 +6,7 @@ NormalLinearRegressionModel.__index = NormalLinearRegressionModel
 
 setmetatable(NormalLinearRegressionModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 function NormalLinearRegressionModel.new()
 	

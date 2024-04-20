@@ -1,4 +1,4 @@
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 KMeansModel = {}
 
@@ -6,7 +6,7 @@ KMeansModel.__index = KMeansModel
 
 setmetatable(KMeansModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 
@@ -367,7 +367,7 @@ function KMeansModel:train(featureMatrix)
 	
 	repeat
 		
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 		
 		self:iterationWait()
 

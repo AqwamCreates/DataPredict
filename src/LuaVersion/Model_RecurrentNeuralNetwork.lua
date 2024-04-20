@@ -1,4 +1,4 @@
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 RecurrentNeuralNetworkModel = {}
 
@@ -6,7 +6,7 @@ RecurrentNeuralNetworkModel.__index = RecurrentNeuralNetworkModel
 
 setmetatable(RecurrentNeuralNetworkModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 

@@ -1,4 +1,4 @@
-local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
+local BaseModel = require("Model_GradientMethodBaseModel")
 
 LinearRegressionModel = {}
 
@@ -6,7 +6,7 @@ LinearRegressionModel.__index = LinearRegressionModel
 
 setmetatable(LinearRegressionModel, GradientMethodBaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 
@@ -153,7 +153,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	repeat
 		
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 		
 		self:iterationWait()
 		

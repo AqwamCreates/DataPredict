@@ -24,7 +24,7 @@ ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode: integer, e
 
   * Maximum (Default)
 
-  * Sample (Requires the output to be in normal distribution format)
+  * Sample (Requires the outputs to be in normal distribution format)
 
 #### Returns:
 
@@ -52,7 +52,7 @@ ReinforcementLearningQuickSetup:setParameters(numberOfReinforcementsPerEpisode: 
 
   * Maximum
 
-  * Sample (Requires the output to be in normal distribution format)
+  * Sample (Requires the outputs to be in normal distribution format)
 
 ### setModel()
 

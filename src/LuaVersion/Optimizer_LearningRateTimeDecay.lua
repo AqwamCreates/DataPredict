@@ -1,6 +1,6 @@
-local BaseOptimizer = require("Optimizer_BaseOptimizer")
+local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 LearningRateTimeDecayOptimizer = {}
 
@@ -30,7 +30,7 @@ function LearningRateTimeDecayOptimizer.new(decayRate, timeStepToDecay)
 	
 	NewLearningRateTimeDecayOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		NewLearningRateTimeDecayOptimizer.currentTimeStep += 1
+		NewLearningRateTimeDecayOptimizer.currentTimeStep = NewLearningRateTimeDecayOptimizer.currentTimeStep + 1
 		
 		local currentLearningRate = NewLearningRateTimeDecayOptimizer.currentLearningRate or learningRate
 			

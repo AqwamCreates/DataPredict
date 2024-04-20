@@ -1,36 +1,3 @@
---[[
-
-	--------------------------------------------------------------------
-
-	Author: Aqwam Harish Aiman
-	
-	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
-	
-	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
-	
-	--------------------------------------------------------------------
-	
-	DO NOT SELL, RENT, DISTRIBUTE THIS LIBRARY
-	
-	DO NOT SELL, RENT, DISTRIBUTE MODIFIED VERSION OF THIS LIBRARY
-	
-	DO NOT CLAIM OWNERSHIP OF THIS LIBRARY
-	
-	GIVE CREDIT AND SOURCE WHEN USING THIS LIBRARY IF YOUR USAGE FALLS UNDER ONE OF THESE CATEGORIES:
-	
-		- USED AS A VIDEO OR ARTICLE CONTENT
-		- USED AS RESEARCH AND EDUCATION CONTENT
-	
-	--------------------------------------------------------------------
-		
-	By using this library, you agree to comply with our Terms and Conditions in the link below:
-	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
-	
-	--------------------------------------------------------------------
-
---]]
-
 local Regularization = require("Other_Regularization")
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
@@ -101,9 +68,9 @@ function OneVsAll:setModels(modelName, numberOfClasses)
 	
 	local ModelsArray = {}
 	
-	local isNameAdded = (typeof(modelName) == "string")
+	local isNameAdded = (type(modelName) == "string")
 	
-	if isNameAdded then  SelectedModel = require(Models[modelName]) end
+	if isNameAdded then  SelectedModel = require("Model_" .. modelName) end
 	
 	for i = 1, numberOfClasses, 1 do
 
@@ -127,11 +94,11 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 
 	local OptimizerObject
 	
-	local isNameAdded = (typeof(optimizerName) == "string")
+	local isNameAdded = (type(optimizerName) == "string")
 	
 	local SelectedOptimizer
 	
-	if isNameAdded then SelectedOptimizer = require(Optimizers[optimizerName]) end
+	if isNameAdded then SelectedOptimizer = require("Optimizer_" .. optimizerName) end
 	
 	local success = pcall(function()
 		
@@ -155,7 +122,7 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 
 		end
 
-		Model:setOptimizer(OptimizerObject) 
+		Model:setOptimizer(OptimizerObject)
 
 	end
 	
@@ -317,11 +284,11 @@ function OneVsAll:train(featureMatrix, labelVector)
 
 			modelCostArray = Model:train(featureMatrix, binaryLabelVector)
 
-			totalCost += modelCostArray[#modelCostArray]
+			totalCost = totalCost + modelCostArray[#modelCostArray]
 
 		end
 		
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 		
 		table.insert(costArray, totalCost)
 		

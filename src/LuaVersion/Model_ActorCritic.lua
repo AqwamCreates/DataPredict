@@ -1,45 +1,12 @@
---[[
-
-	--------------------------------------------------------------------
-
-	Author: Aqwam Harish Aiman
-	
-	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
-	
-	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
-	
-	--------------------------------------------------------------------
-	
-	DO NOT SELL, RENT, DISTRIBUTE THIS LIBRARY
-	
-	DO NOT SELL, RENT, DISTRIBUTE MODIFIED VERSION OF THIS LIBRARY
-	
-	DO NOT CLAIM OWNERSHIP OF THIS LIBRARY
-	
-	GIVE CREDIT AND SOURCE WHEN USING THIS LIBRARY IF YOUR USAGE FALLS UNDER ONE OF THESE CATEGORIES:
-	
-		- USED AS A VIDEO OR ARTICLE CONTENT
-		- USED AS RESEARCH AND EDUCATION CONTENT
-	
-	--------------------------------------------------------------------
-		
-	By using this library, you agree to comply with our Terms and Conditions in the link below:
-	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
-	
-	--------------------------------------------------------------------
-
---]]
-
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local ReinforcementLearningActorCriticNeuralNetworkBaseModel = require("Model_ReinforcementLearningActorCriticNeuralNetworkBaseModel")
+local ReinforcementLearningActorCriticBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
 
 ActorCriticModel = {}
 
 ActorCriticModel.__index = ActorCriticModel
 
-setmetatable(ActorCriticModel, ReinforcementLearningActorCriticNeuralNetworkBaseModel)
+setmetatable(ActorCriticModel, ReinforcementLearningActorCriticBaseModel)
 
 local function sampleAction(actionProbabilityVector)
 
@@ -47,7 +14,7 @@ local function sampleAction(actionProbabilityVector)
 
 	for _, probability in ipairs(actionProbabilityVector[1]) do
 
-		totalProbability += probability
+		totalProbability = totalProbability + probability
 
 	end
 
@@ -59,7 +26,7 @@ local function sampleAction(actionProbabilityVector)
 
 	for i, probability in ipairs(actionProbabilityVector[1]) do
 
-		cumulativeProbability += probability
+		cumulativeProbability = cumulativeProbability + probability
 
 		if (randomValue > cumulativeProbability) then continue end
 
@@ -83,9 +50,9 @@ local function calculateProbability(outputMatrix)
 
 end
 
-function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+function ActorCriticModel.new(discountFactor)
 	
-	local NewActorCriticModel = ReinforcementLearningActorCriticNeuralNetworkBaseModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor)
+	local NewActorCriticModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
 	
 	setmetatable(NewActorCriticModel, ActorCriticModel)
 	
@@ -149,30 +116,28 @@ function ActorCriticModel.new(numberOfReinforcementsPerEpisode, epsilon, epsilon
 
 			local criticLoss = (returns - criticValue)^2
 
-			sumActorLosses += actorLoss
+			sumActorLosses = sumActorLosses + actorLoss
 
-			sumCriticLosses += criticLoss
+			sumCriticLosses = sumCriticLosses + criticLoss
 
 		end
 		
 		local ActorModel = NewActorCriticModel.ActorModel
 
 		local CriticModel = NewActorCriticModel.CriticModel
-
-		local lossValue = sumActorLosses + sumCriticLosses
 		
 		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
 		
-		numberOfFeatures += (hasBias and 1) or 0
+		numberOfFeatures = numberOfFeatures + (hasBias and 1) or 0
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-		local lossVector = AqwamMatrixLibrary:createMatrix(1, #NewActorCriticModel.ClassesList, lossValue)
+		local lossVector = AqwamMatrixLibrary:createMatrix(1, #NewActorCriticModel.ClassesList, -sumActorLosses)
 
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)
 
 		ActorModel:backPropagate(lossVector, true)
-		CriticModel:backPropagate(lossValue, true)
+		CriticModel:backPropagate(-sumCriticLosses, true)
 
 		table.clear(actionProbabilityHistory)
 

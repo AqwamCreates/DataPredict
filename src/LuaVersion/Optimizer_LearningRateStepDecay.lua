@@ -30,7 +30,7 @@ function LearningRateStepDecayOptimizer.new(decayRate, timeStepToDecay)
 	
 	NewLearningRateStepDecayOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		NewLearningRateStepDecayOptimizer.currentTimeStep += 1
+		NewLearningRateStepDecayOptimizer.currentTimeStep = NewLearningRateStepDecayOptimizer.currentTimeStep + 1
 		
 		local currentLearningRate = NewLearningRateStepDecayOptimizer.currentLearningRate or learningRate
 		

@@ -41,12 +41,24 @@ local function sampleAction(actionProbabilityVector)
 end
 
 local function calculateProbability(outputMatrix)
+	
+	local meanVector = AqwamMatrixLibrary:horizontalMean(outputMatrix)
+	
+	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(outputMatrix)
+	
+	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(outputMatrix, meanVector)
+	
+	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
+	
+	local zScoreSquaredVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+	
+	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
+	
+	local probabilityVectorPart2 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+	
+	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart1, probabilityVectorPart2)
 
-	local sumVector = AqwamMatrixLibrary:horizontalSum(outputMatrix)
-
-	local result = AqwamMatrixLibrary:divide(outputMatrix, sumVector)
-
-	return result
+	return probabilityVector
 
 end
 
@@ -73,6 +85,16 @@ function ActorCriticModel.new(discountFactor)
 		local numberOfActions = #allOutputsMatrix[1]
 
 		local actionIndex = sampleAction(actionProbabilityVector)
+		
+		if action then
+			
+			actionIndex = table.find(NewActorCriticModel.ActorModel:getClassesList(), action)
+			
+		else
+			
+			actionIndex = sampleAction(actionProbabilityVector)
+			
+		end
 
 		local actionProbability = actionProbabilityVector[1][actionIndex]
 

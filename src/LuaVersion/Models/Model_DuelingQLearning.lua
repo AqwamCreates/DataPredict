@@ -86,13 +86,13 @@ function DuelingQLearningModel:update(previousFeatureVector, action, rewardValue
 
 	local vLoss = AqwamMatrixLibrary:subtract(currentValue, previousValue)
 
-	self.ValueModel:forwardPropagate(previousFeatureVector, true)
-
-	self.ValueModel:backPropagate(qLoss, true)
-
 	self.AdvantageModel:forwardPropagate(previousFeatureVector, true)
 
-	self.AdvantageModel:backPropagate(vLoss, true)
+	self.AdvantageModel:backPropagate(qLoss, true)
+
+	self.ValueModel:forwardPropagate(previousFeatureVector, true)
+
+	self.ValueModel:backPropagate(vLoss, true)
 
 	return expectedQValue
 

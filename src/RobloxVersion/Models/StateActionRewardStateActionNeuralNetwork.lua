@@ -18,13 +18,19 @@ function StateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIteration
 
 		local targetVector = NewStateActionRewardStateActionNeuralNetworkModel:predict(currentFeatureVector, true)
 
-		local dicountedVector = AqwamMatrixLibrary:multiply(NewStateActionRewardStateActionNeuralNetworkModel.discountFactor, targetVector)
+		local discountedTargetVector = AqwamMatrixLibrary:multiply(NewStateActionRewardStateActionNeuralNetworkModel.discountFactor, targetVector)
 
-		local newTargetVector = AqwamMatrixLibrary:add(rewardValue, dicountedVector)
+		local newTargetVector = AqwamMatrixLibrary:add(rewardValue, discountedTargetVector)
 
-		NewStateActionRewardStateActionNeuralNetworkModel:train(previousFeatureVector, newTargetVector)
+		local previousTargetVector = NewStateActionRewardStateActionNeuralNetworkModel:predict(previousFeatureVector, true)
+
+		local temporalDifferenceVector = AqwamMatrixLibrary:subtract(newTargetVector, previousTargetVector)
 		
-		return newTargetVector
+		NewStateActionRewardStateActionNeuralNetworkModel:forwardPropagate(previousFeatureVector, true)
+
+		NewStateActionRewardStateActionNeuralNetworkModel:backPropagate(temporalDifferenceVector, true)
+		
+		return temporalDifferenceVector
 
 	end)
 

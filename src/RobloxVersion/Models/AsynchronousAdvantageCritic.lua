@@ -339,7 +339,7 @@ end
 
 function AsynchronousAdvantageActorCriticModel:predict(currentFeatureVector, returnOriginalOutput, actorCriticModelNumber)
 	
-	local Model	= self.ActorModelArray[actorCriticModelNumber]
+	local Model = self.ActorModelArray[actorCriticModelNumber]
 	
 	return Model:predict(currentFeatureVector, returnOriginalOutput)
 	

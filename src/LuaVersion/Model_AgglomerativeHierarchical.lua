@@ -1,4 +1,4 @@
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 AgglomerativeHierarchicalModel = {}
 
@@ -6,7 +6,7 @@ AgglomerativeHierarchicalModel.__index = AgglomerativeHierarchicalModel
 
 setmetatable(AgglomerativeHierarchicalModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 
@@ -133,7 +133,7 @@ local function applyFunctionToFirstRowAndColumnOfDistanceMatrix(functionToApply,
 
 		newCentroidDistanceMatrix[1][newColumnIndex] = distance
 
-		newColumnIndex += 1
+		newColumnIndex = newColumnIndex + 1
 
 	end
 
@@ -145,7 +145,7 @@ local function applyFunctionToFirstRowAndColumnOfDistanceMatrix(functionToApply,
 
 		newCentroidDistanceMatrix[newRowIndex][1] = distance
 
-		newRowIndex += 1
+		newRowIndex = newRowIndex + 1
 
 	end
 
@@ -381,7 +381,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 	repeat
 		
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 
 		self:iterationWait()
 		

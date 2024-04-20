@@ -1,6 +1,4 @@
-local DataPredict = script.Parent.Parent
-
-local AqwamMatrixLibrary = require(DataPredict.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 AsynchronousAdvantageActorCriticModel = {}
 
@@ -158,7 +156,7 @@ local function sampleAction(actionProbabilityVector)
 	
 	for _, probability in ipairs(actionProbabilityVector[1]) do
 		
-		totalProbability += probability
+		totalProbability = totalProbability + probability
 		
 	end
 
@@ -170,7 +168,7 @@ local function sampleAction(actionProbabilityVector)
 	
 	for i, probability in ipairs(actionProbabilityVector[1]) do
 		
-		cumulativeProbability += probability
+		cumulativeProbability = cumulativeProbability + probability
 		
 		if (randomValue > cumulativeProbability) then continue end
 			

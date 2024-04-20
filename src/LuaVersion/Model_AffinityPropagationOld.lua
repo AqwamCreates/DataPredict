@@ -1,4 +1,4 @@
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 local AffinityPropagationModel = {}
 
@@ -6,7 +6,7 @@ AffinityPropagationModel.__index = AffinityPropagationModel
 
 setmetatable(AffinityPropagationModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 
@@ -162,7 +162,7 @@ local function calculateCost(ModelParameters, responsibilities)
 	
 	for i = 1, #ModelParameters do
 		
-		totalCost += responsibilities[i][ModelParameters[i]]
+		totalCost = totalCost + responsibilities[i][ModelParameters[i]]
 		
 	end
 	

@@ -1,4 +1,4 @@
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 DensityBasedSpatialClusteringOfApplicationsWithNoiseModel = {}
 
@@ -8,17 +8,15 @@ setmetatable(DensityBasedSpatialClusteringOfApplicationsWithNoiseModel, BaseMode
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local defaultTargetCost = 0
-
 local defaultMinimumNumberOfPoints = 2
 
-local defaultDistanceFunction = "manhattan"
+local defaultDistanceFunction = "Manhattan"
 
 local defaultEpsilon = 10
 
 local distanceFunctionList = {
 
-	["manhattan"] = function (x1, x2)
+	["Manhattan"] = function (x1, x2)
 		
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 		
@@ -30,7 +28,7 @@ local distanceFunctionList = {
 		
 	end,
 
-	["euclidean"] = function (x1, x2)
+	["Euclidean"] = function (x1, x2)
 		
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
 		
@@ -66,7 +64,7 @@ local function getNeighbors(currentCorePointNumber, featureMatrix, epsilon, dist
 			
 			distance = calculateDistance({featureMatrix[currentCorePointNumber]}, {featureMatrix[i]}, distanceFunction)
 			
-			if distance <= epsilon then
+			if (distance <= epsilon) then
 				
 				neighbors[#neighbors + 1] = i
 				
@@ -120,7 +118,7 @@ local function expandCluster(currentCorePointNumber, neighbors, neighbouringCore
 		
 		for j = 1, #clusters do
 			
-			if clusters[j][neighbouringPointNumber] then
+			if (clusters[j][neighbouringPointNumber]) then
 				
 				isInCluster = true
 				
@@ -148,7 +146,7 @@ local function calculateCost(featureMatrix, clusters, distanceFunction)
 			
 		for i = 1, #clusterPoints, 1 do
 				
-			for j = i+1, #clusterPoints, 1 do
+			for j = i + 1, #clusterPoints, 1 do
 					
 				cost = cost + calculateDistance({featureMatrix[clusterPoints[i]]}, {featureMatrix[clusterPoints[j]]}, distanceFunction)
 					
@@ -163,7 +161,7 @@ local function calculateCost(featureMatrix, clusters, distanceFunction)
 end
 
 
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.new(epsilon, minimumNumberOfPoints, distanceFunction, targetCost)
+function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.new(epsilon, minimumNumberOfPoints, distanceFunction)
 	
 	local NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel = BaseModel.new()
 	
@@ -173,43 +171,31 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.new(epsilon, 
 	
 	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.epsilon = epsilon or defaultEpsilon
 
-	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.targetCost = targetCost or defaultTargetCost
-
 	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.distanceFunction = distanceFunction or defaultDistanceFunction
-	
-	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.appendPreviousFeatureMatrix = false
-
-	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.previousFeatureMatrix = nil
 	
 	return NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel
 	
 end
 
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:setParameters(epsilon, minimumNumberOfPoints, distanceFunction, targetCost)
+function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:setParameters(epsilon, minimumNumberOfPoints, distanceFunction)
 	
 	self.minimumNumberOfPoints = minimumNumberOfPoints or defaultMinimumNumberOfPoints
 
 	self.epsilon = epsilon or defaultEpsilon
 
-	self.targetCost = targetCost or defaultTargetCost
-
 	self.distanceFunction = distanceFunction or defaultDistanceFunction
 	
 end
 
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:canAppendPreviousFeatureMatrix(option)
-
-	self.appendPreviousFeatureMatrix = option
-
-end
-
 function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(featureMatrix)
 	
-	if (self.previousFeatureMatrix) and (self.appendPreviousFeatureMatrix) then
+	if (self.ModelParameters) then
 
-		if (#self.previousFeatureMatrix[1] ~= #featureMatrix[1]) then error("The previous and current feature matrices do not have the same number of features.") end 
+		local storedFeatureMatrix = self.ModelParameters[1]
 
-		featureMatrix = AqwamMatrixLibrary:verticalConcatenate(featureMatrix, self.previousFeatureMatrix)
+		if (#storedFeatureMatrix[1] ~= #featureMatrix[1]) then error("The previous and current feature matrices do not have the same number of features.") end 
+
+		featureMatrix = AqwamMatrixLibrary:verticalConcatenate(featureMatrix, storedFeatureMatrix)
 
 	end
 	
@@ -255,21 +241,27 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 			
 		end
 		
-		cost = calculateCost(featureMatrix, clusters, self.distanceFunction)
-
-		table.insert(costArray, cost)
-
-		self:printCostAndNumberOfIterations(cost, currentCorePointNumber)
+		cost = self:calculateCostWhenRequired(currentCorePointNumber, function()
+			
+			return calculateCost(featureMatrix, clusters, self.distanceFunction)
+			
+		end)
 		
-		if (cost == self.targetCost) then break end
+		if cost then
+			
+			table.insert(costArray, cost)
+
+			self:printCostAndNumberOfIterations(cost, currentCorePointNumber)
+
+			if self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
+			
+		end
 		
 	end
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	
-	self.ModelParameters = clusters
-	
-	self.previousFeatureMatrix = featureMatrix
+	self.ModelParameters = {featureMatrix, clusters}
 	
 	return costArray
 	
@@ -277,52 +269,54 @@ end
 
 function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featureMatrix)
 	
-	if (self.previousFeatureMatrix == nil) then error("There are no feature matrix stored in this model. Please retrain the model.") end
+	local shortestDistanceVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
+
+	local closestClusterVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
 	
-	local shortestDistance = math.huge
+	local storedFeatureVector, cluster = table.unpack(self.ModelParameters)
 	
-	local closestCluster = nil
-	
-	for clusterNumber, clusterPoints in ipairs(self.ModelParameters) do
+	for i = 1, #featureMatrix, 1 do
 		
-		local distance = 0
+		local closestCluster
+
+		local shortestDistance = math.huge
 		
-		for i = 1, #clusterPoints, 1 do
-			
-			local pointNumber = clusterPoints[i]
-			
-			local point = {self.previousFeatureMatrix[pointNumber]}
-			
-			distance += calculateDistance(featureMatrix, point, self.distanceFunction)
-			
+		local featureVector = {featureMatrix[i]}
+
+		for clusterNumber, clusterPoints in ipairs(cluster) do
+
+			local distance = 0
+
+			for j = 1, #clusterPoints, 1 do
+
+				local pointNumber = clusterPoints[j]
+
+				local point = {storedFeatureVector[pointNumber]}
+
+				distance = distance + calculateDistance(featureVector, point, self.distanceFunction)
+
+			end
+
+			distance = distance / #clusterPoints
+
+			if (distance < shortestDistance) then
+				
+				closestCluster = clusterNumber
+
+				shortestDistance = distance
+
+			end
+
 		end
 		
-		distance = distance / #clusterPoints
+		closestClusterVector[i][1] = closestCluster
 		
-		if (distance < shortestDistance) then
-			
-			shortestDistance = distance
-			
-			closestCluster = clusterNumber
-			
-		end
+		shortestDistanceVector[i][1] = shortestDistance
 		
 	end
 	
-	return closestCluster, shortestDistance
+	return closestClusterVector, shortestDistanceVector
 	
-end
-
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:clearPreviousFeatureMatrix()
-
-	self.previousFeatureMatrix = nil
-
-end
-
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:getPreviousFeatureMatrix()
-
-	return self.previousFeatureMatrix
-
 end
 
 return DensityBasedSpatialClusteringOfApplicationsWithNoiseModel

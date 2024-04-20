@@ -1,4 +1,4 @@
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 DivisiveHierarchicalModel = {}
 
@@ -6,7 +6,7 @@ DivisiveHierarchicalModel.__index = DivisiveHierarchicalModel
 
 setmetatable(DivisiveHierarchicalModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 
@@ -440,7 +440,7 @@ function DivisiveHierarchicalModel:train(featureMatrix)
 
 		self:iterationWait()
 
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 
 		featureMatrixIndex, centroidIndex = findFarthestcentroids(centroidDistanceMatrix)
 

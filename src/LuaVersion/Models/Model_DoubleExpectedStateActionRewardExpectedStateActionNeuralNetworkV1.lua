@@ -1,6 +1,6 @@
-local ReinforcementLearningNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningNeuralNetworkBaseModel)
+local ReinforcementLearningNeuralNetworkBaseModel = require("Model_ReinforcementLearningNeuralNetworkBaseModel")
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel = {}
 
@@ -110,7 +110,7 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:ge
 
 		if (targetVector[1][i] ~= maxQValue) then continue end
 
-		numberOfGreedyActions += 1
+		numberOfGreedyActions = numberOfGreedyActions + 1
 
 	end
 
@@ -122,11 +122,11 @@ function DoubleExpectedStateActionRewardExpectedStateActionNeuralNetworkModel:ge
 
 		if (qValue == maxQValue) then
 
-			expectedQValue += (qValue * greedyActionProbability)
+			expectedQValue = expectedQValue + (qValue * greedyActionProbability)
 
 		else
 
-			expectedQValue += (qValue * nonGreedyActionProbability)
+			expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
 
 		end
 

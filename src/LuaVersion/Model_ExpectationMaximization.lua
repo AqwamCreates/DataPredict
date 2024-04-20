@@ -1,4 +1,4 @@
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 local ExpectationMaximizationModel = {}
 
@@ -6,7 +6,7 @@ ExpectationMaximizationModel.__index = ExpectationMaximizationModel
 
 setmetatable(ExpectationMaximizationModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultEpsilon = math.pow(10, -9)
 

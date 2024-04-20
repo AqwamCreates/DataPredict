@@ -1,6 +1,6 @@
-local ReinforcementLearningNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningNeuralNetworkBaseModel)
+local ReinforcementLearningNeuralNetworkBaseModel = require("Model_ReinforcementLearningNeuralNetworkBaseModel")
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 REINFORCENeuralNetworkModel = {}
 
@@ -16,7 +16,7 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 	for h = #rewardHistory, 1, -1 do
 
-		discountedReward += rewardHistory[h] + (discountFactor * discountedReward)
+		discountedReward = rewardHistory[h] + (discountFactor * discountedReward)
 
 		table.insert(rewardsToGoArray, 1, discountedReward)
 

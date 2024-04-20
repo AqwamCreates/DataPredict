@@ -1,6 +1,6 @@
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
+local ReinforcementLearningActorCriticBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
 
 VanillaPolicyGradientModel = {}
 
@@ -50,7 +50,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		
 		for _, advantageValue in ipairs(advantageHistory) do
 			
-			sumAdvantage += advantageValue
+			sumAdvantage = sumAdvantage + advantageValue
 			
 		end
 		
@@ -60,7 +60,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
 
-		numberOfFeatures += (hasBias and 1) or 0
+		numberOfFeatures = numberOfFeatures + (hasBias and 1) or 0
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 

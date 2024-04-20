@@ -1,4 +1,4 @@
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 ReinforcementLearningActorCriticBaseModel = {}
 

@@ -1,4 +1,4 @@
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 SupportVectorMachineModel = {}
 
@@ -6,7 +6,7 @@ SupportVectorMachineModel.__index = SupportVectorMachineModel
 
 setmetatable(SupportVectorMachineModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 
@@ -242,7 +242,7 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 	
 	costPart1 = AqwamMatrixLibrary:dotProduct(costPart1, costVector)
 	
-	costPart1 /= 2
+	costPart1 = costPart1 / 2
 	
 	local costPart2 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix)
 	
@@ -250,13 +250,13 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 	
 	local costPart3 = AqwamMatrixLibrary:dotProduct(transposedLabelVector, labelVector)
 	
-	costPart3 /= 2
+	costPart3 = costPart3 / 2
 	
 	local costPart4 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix)
 	
 	costPart4 = AqwamMatrixLibrary:dotProduct(costPart4, costVector)
 	
-	costPart4 /= (2 * cValue)
+	costPart4 = costPart4 / (2 * cValue)
 	
 	local cost = costPart1 - costPart2 + costPart3 + costPart4
 	
@@ -351,7 +351,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	
 	repeat
 		
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 
 		self:iterationWait()
 		

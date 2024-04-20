@@ -1,6 +1,6 @@
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local NeuralNetworkModel = require(script.Parent.NeuralNetwork)
+local NeuralNetworkModel = require("Model_NeuralNetwork")
 
 ReinforcementLearningNeuralNetworkBaseModel = {}
 

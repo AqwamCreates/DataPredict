@@ -40,7 +40,7 @@ AsynchronousAdvantageCritic.new(learningRate: integer, numberOfReinforcementsPer
 
     * Maximum (Default)
 
-    * Sample (Requires the outputs to be in normal distribution format)
+    * Sample
 
 #### Returns:
 
@@ -74,7 +74,7 @@ AsynchronousAdvantageCritic:setParameters(learningRate: integer, numberOfReinfor
 
     * Maximum
 
-    * Sample (Requires the outputs to be in normal distribution format)
+    * Sample
 
 ### addActorCriticModel()
 

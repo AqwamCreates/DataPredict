@@ -1,3 +1,5 @@
+local DataPredict = script.Parent.Parent
+
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 AsynchronousAdvantageActorCriticModel = {}
@@ -16,7 +18,9 @@ local defaultDiscountFactor = 0.95
 
 local defaultTotalNumberOfReinforcementsToUpdateMainModel = 100
 
-function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, totalNumberOfReinforcementsToUpdateMainModel)
+local defaultActionSelectionFunction = "Maximum"
+
+function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, totalNumberOfReinforcementsToUpdateMainModel, actionSelectionFunction)
 	
 	local NewAsynchronousAdvantageActorCriticModel = {}
 	
@@ -68,6 +72,8 @@ function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinfor
 	
 	NewAsynchronousAdvantageActorCriticModel.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
 	
+	NewAsynchronousAdvantageActorCriticModel.actionSelectionFunction = actionSelectionFunction or defaultActionSelectionFunction
+	
 	NewAsynchronousAdvantageActorCriticModel.ActorMainModelParameters = nil
 	
 	NewAsynchronousAdvantageActorCriticModel.CriticMainModelParameters = nil
@@ -78,7 +84,7 @@ function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinfor
 	
 end
 
-function AsynchronousAdvantageActorCriticModel:setParameters(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, totalNumberOfReinforcementsToUpdateMainModel)
+function AsynchronousAdvantageActorCriticModel:setParameters(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, totalNumberOfReinforcementsToUpdateMainModel, actionSelectionFunction)
 	
 	self.learningRate = learningRate or self.learningRate
 	
@@ -91,6 +97,8 @@ function AsynchronousAdvantageActorCriticModel:setParameters(learningRate, numbe
 	self.discountFactor =  discountFactor or self.discountFactor
 	
 	self.totalNumberOfReinforcementsToUpdateMainModel = totalNumberOfReinforcementsToUpdateMainModel or self.totalNumberOfReinforcementsToUpdateMainModel
+	
+	self.actionSelectionFunction = actionSelectionFunction or self.actionSelectionFunction
 	
 	for i = 1, #self.previousFeatureVectorArray, 1 do
 		
@@ -141,23 +149,23 @@ function AsynchronousAdvantageActorCriticModel:addActorCriticModel(ActorModel, C
 end
 
 local function calculateProbability(outputMatrix)
-	
+
 	local meanVector = AqwamMatrixLibrary:horizontalMean(outputMatrix)
-	
+
 	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(outputMatrix)
-	
+
 	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(outputMatrix, meanVector)
-	
+
 	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
-	
+
 	local zScoreSquaredVector = AqwamMatrixLibrary:power(zScoreVector, 2)
-	
+
 	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
-	
+
 	local probabilityVectorPart2 = AqwamMatrixLibrary:applyFunction(math.exp, probabilityVectorPart1)
-	
+
 	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
-	
+
 	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
 
 	return probabilityVector
@@ -170,7 +178,7 @@ local function sampleAction(actionProbabilityVector)
 	
 	for _, probability in ipairs(actionProbabilityVector[1]) do
 		
-		totalProbability = totalProbability + probability
+		totalProbability = probability
 		
 	end
 
@@ -329,13 +337,53 @@ function AsynchronousAdvantageActorCriticModel:getLabelFromOutputMatrix(outputMa
 
 end
 
+function AsynchronousAdvantageActorCriticModel:predict(currentFeatureVector, returnOriginalOutput, actorCriticModelNumber)
+	
+	local Model = self.ActorModelArray[actorCriticModelNumber]
+	
+	return Model:predict(currentFeatureVector, returnOriginalOutput)
+	
+end
+
+function AsynchronousAdvantageActorCriticModel:selectAction(currentFeatureVector, classesList, actorCriticModelNumber)
+	
+	local allOutputsMatrix = self:predict(currentFeatureVector, true, actorCriticModelNumber)
+
+	local actionSelectionFunction = self.actionSelectionFunction
+
+	local action
+
+	local selectedValue
+
+	if (actionSelectionFunction == "Maximum") then
+
+		local actionVector, selectedValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
+
+		action = actionVector[1][1]
+
+		selectedValue = selectedValueVector[1][1]
+
+	elseif (actionSelectionFunction == "Sample") then
+
+		local actionIndex = sampleAction(allOutputsMatrix)
+
+		action = classesList[actionIndex]
+
+		selectedValue = allOutputsMatrix[1][actionIndex]
+
+	end
+
+	return action, selectedValue, allOutputsMatrix
+
+end
+
 function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, actorCriticModelNumber)
 	
 	actorCriticModelNumber = actorCriticModelNumber or Random.new():NextInteger(1, #self.currentEpsilonArray)
 
-	self.currentNumberOfReinforcementsArray[actorCriticModelNumber] += 1
+	self.currentNumberOfReinforcementsArray[actorCriticModelNumber] = self.currentNumberOfReinforcementsArray[actorCriticModelNumber] + 1
 	
-	self.currentTotalNumberOfReinforcementsToUpdateMainModel += 1
+	self.currentTotalNumberOfReinforcementsToUpdateMainModel = self.currentTotalNumberOfReinforcementsToUpdateMainModel + 1
 	
 	local action
 	
@@ -343,9 +391,7 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 	
 	local actionVector
 
-	local highestValue
-
-	local highestValueVector
+	local selectedValue
 
 	local allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, #self.ClassesList)
 
@@ -354,28 +400,34 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 	local previousFeatureVector = self.previousFeatureVectorArray[actorCriticModelNumber]
 	
 	local ExperienceReplay = self.ExperienceReplayArray[actorCriticModelNumber]
+	
+	local currrentEpsilon = self.currentEpsilonArray[actorCriticModelNumber]
+	
+	local classesList = self.ClassesList
+		
+	local temporalDifferenceError
+	
+	if (randomProbability < currrentEpsilon) then
+		
+		local numberOfClasses = #classesList
 
-	if (randomProbability < self.currentEpsilonArray[actorCriticModelNumber]) then
+		local randomNumber = Random.new():NextInteger(1, numberOfClasses)
 
-		local randomNumber = Random.new():NextInteger(1, #self.ClassesList)
+		action = classesList[randomNumber]
 
-		action = self.ClassesList[randomNumber]
+		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, numberOfClasses)
 
 		allOutputsMatrix[1][randomNumber] = randomProbability
 
 	else
 
-		if (previousFeatureVector) then
-			
-			allOutputsMatrix = self:update(previousFeatureVector, action, rewardValue, currentFeatureVector, actorCriticModelNumber)
-			
-			actionVector, highestValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
+		action, selectedValue, allOutputsMatrix = self:selectAction(currentFeatureVector, classesList, actorCriticModelNumber)
 
-			action = actionVector[1][1]
+	end
 
-			highestValue = highestValueVector[1][1]
-			
-		end
+	if (previousFeatureVector) then 
+
+		temporalDifferenceError = self:update(previousFeatureVector, action, rewardValue, currentFeatureVector, actorCriticModelNumber) 
 
 	end
 	
@@ -389,9 +441,11 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 
 		ExperienceReplay:addExperience(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
+		ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
+
 		ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
-			self:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, actorCriticModelNumber)
+			return self:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
 		end)
 
@@ -401,7 +455,7 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 
 	if (returnOriginalOutput) then return allOutputsMatrix end
 
-	return action, highestValue
+	return action, selectedValue
 	
 end
 

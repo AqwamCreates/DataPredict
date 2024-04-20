@@ -218,17 +218,7 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 	
 	local numberOfActions = #allOutputsMatrix[1]
 	
-	local actionIndex
-
-	if action then
-
-		actionIndex = table.find(ActorModel:getClassesList(), action)
-
-	else
-
-		actionIndex = sampleAction(actionProbabilityVector)
-
-	end
+	local actionIndex = table.find(ActorModel:getClassesList(), action)
 	
 	local actionProbability = actionProbabilityVector[1][actionIndex]
 	

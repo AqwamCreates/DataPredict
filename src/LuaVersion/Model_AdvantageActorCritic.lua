@@ -8,38 +8,6 @@ AdvantageActorCriticModel.__index = AdvantageActorCriticModel
 
 setmetatable(AdvantageActorCriticModel, ReinforcementLearningActorCriticBaseModel)
 
-local function sampleAction(actionProbabilityVector)
-
-	local totalProbability = 0
-
-	for _, probability in ipairs(actionProbabilityVector[1]) do
-
-		totalProbability = totalProbability + probability
-
-	end
-
-	local randomValue = math.random() * totalProbability
-
-	local cumulativeProbability = 0
-
-	local actionIndex = 1
-
-	for i, probability in ipairs(actionProbabilityVector[1]) do
-
-		cumulativeProbability = cumulativeProbability + probability
-
-		if (randomValue > cumulativeProbability) then continue end
-
-		actionIndex = i
-
-		break
-
-	end
-
-	return actionIndex
-
-end
-
 local function calculateProbability(outputMatrix)
 	
 	local meanVector = AqwamMatrixLibrary:horizontalMean(outputMatrix)
@@ -90,17 +58,7 @@ function AdvantageActorCriticModel.new(discountFactor)
 
 		local numberOfActions = #allOutputsMatrix[1]
 
-		local actionIndex
-		
-		if action then
-
-			actionIndex = table.find(NewAdvantageActorCriticModel.ActorModel:getClassesList(), action)
-
-		else
-
-			actionIndex = sampleAction(actionProbabilityVector)
-
-		end
+		local actionIndex = table.find(NewAdvantageActorCriticModel.ActorModel:getClassesList(), action)
 
 		local actionProbability = actionProbabilityVector[1][actionIndex]
 

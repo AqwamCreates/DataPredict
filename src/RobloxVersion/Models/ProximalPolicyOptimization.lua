@@ -10,11 +10,23 @@ setmetatable(ProximalPolicyOptimizationModel, ReinforcementLearningActorCriticBa
 
 local function calculateProbability(outputMatrix)
 
-	local sumVector = AqwamMatrixLibrary:horizontalSum(outputMatrix)
+	local meanVector = AqwamMatrixLibrary:horizontalMean(outputMatrix)
 
-	local result = AqwamMatrixLibrary:divide(outputMatrix, sumVector)
+	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(outputMatrix)
 
-	return result
+	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(outputMatrix, meanVector)
+
+	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
+
+	local zScoreSquaredVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+
+	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
+
+	local probabilityVectorPart2 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+
+	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart1, probabilityVectorPart2)
+
+	return probabilityVector
 
 end
 

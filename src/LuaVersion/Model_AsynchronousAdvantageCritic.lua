@@ -141,12 +141,26 @@ function AsynchronousAdvantageActorCriticModel:addActorCriticModel(ActorModel, C
 end
 
 local function calculateProbability(outputMatrix)
+	
+	local meanVector = AqwamMatrixLibrary:horizontalMean(outputMatrix)
+	
+	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(outputMatrix)
+	
+	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(outputMatrix, meanVector)
+	
+	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
+	
+	local zScoreSquaredVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+	
+	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
+	
+	local probabilityVectorPart2 = AqwamMatrixLibrary:applyFunction(math.exp, probabilityVectorPart1)
+	
+	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+	
+	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
 
-	local sumVector = AqwamMatrixLibrary:horizontalSum(outputMatrix)
-
-	local result = AqwamMatrixLibrary:divide(outputMatrix, sumVector)
-
-	return result
+	return probabilityVector
 
 end
 
@@ -204,7 +218,17 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 	
 	local numberOfActions = #allOutputsMatrix[1]
 	
-	local actionIndex = sampleAction(actionProbabilityVector)
+	local actionIndex
+
+	if action then
+
+		actionIndex = table.find(ActorModel:getClassesList(), action)
+
+	else
+
+		actionIndex = sampleAction(actionProbabilityVector)
+
+	end
 	
 	local actionProbability = actionProbabilityVector[1][actionIndex]
 	
@@ -236,9 +260,9 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(numberOfFeatures, a
 		
 		local criticLoss = math.pow(advantage, 2)
 		
-		sumActorLosses += actorLoss
+		sumActorLosses = sumActorLosses + actorLoss
 		
-		sumCriticLosses += criticLoss
+		sumCriticLosses = sumCriticLosses + criticLoss
 		
 	end
 	
@@ -261,9 +285,9 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(numberOfFeatures, a
 
 	self.currentNumberOfReinforcementsArray[actorCriticModelNumber] = 0
 
-	self.currentNumberOfEpisodesArray[actorCriticModelNumber] += 1
+	self.currentNumberOfEpisodesArray[actorCriticModelNumber] = self.currentNumberOfEpisodesArray[actorCriticModelNumber] + 1
 
-	self.currentEpsilonArray[actorCriticModelNumber] *= self.epsilonDecayFactor
+	self.currentEpsilonArray[actorCriticModelNumber] = self.currentEpsilonArray[actorCriticModelNumber] * self.epsilonDecayFactor
 	
 	table.clear(self.advantageHistoryArray[actorCriticModelNumber])
 	

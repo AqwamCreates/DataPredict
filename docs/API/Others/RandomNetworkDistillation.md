@@ -9,14 +9,12 @@ RandomNetworkDistillation is a neural network for producing internal rewards to 
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-RandomNetworkDistillation.new(maxNumberOfIterations: integer, learningRate: number): RandomNetworkDistillationObject
+RandomNetworkDistillation.new(maxNumberOfIterations: integer: RandomNetworkDistillationObject
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 #### Returns:
 
@@ -29,14 +27,12 @@ RandomNetworkDistillation.new(maxNumberOfIterations: integer, learningRate: numb
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-RandomNetworkDistillation:setParameters(maxNumberOfIterations: integer, learningRate: number)
+RandomNetworkDistillation:setParameters(maxNumberOfIterations: integer)
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
 ### train()
 

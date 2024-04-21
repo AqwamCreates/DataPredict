@@ -10,11 +10,11 @@ setmetatable(RandomNetworkDistillation, NeuralNetworkModel)
 
 local defaultMaxNumberOfIterations = 1
 
-function RandomNetworkDistillation.new(maxNumberOfIterations, learningRate)
+function RandomNetworkDistillation.new(maxNumberOfIterations)
 	
 	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
-	local NewRandomNetworkDistillation = NeuralNetworkModel.new(maxNumberOfIterations, learningRate)
+	local NewRandomNetworkDistillation = NeuralNetworkModel.new(maxNumberOfIterations)
 	
 	setmetatable(NewRandomNetworkDistillation, RandomNetworkDistillation)
 	
@@ -26,11 +26,9 @@ function RandomNetworkDistillation.new(maxNumberOfIterations, learningRate)
 	
 end
 
-function RandomNetworkDistillation:setParameters(maxNumberOfIterations, learningRate)
+function RandomNetworkDistillation:setParameters(maxNumberOfIterations)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-	
-	self.learningRate = learningRate or self.learningRate
 	
 end
 

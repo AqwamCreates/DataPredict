@@ -8,7 +8,7 @@ GenerativeAdversarialNetwork uses two neural networks to generate new content fr
 
 * GeneratorNeuralNetwork and DiscriminatorNeuralNetwork models must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 
-* Ensure the final layer of the DiscriminatorNeuralNetwork model has only one neuron. It is the default setting for all DiscriminatorNeuralNetwork models in research papers.
+* Ensure the final layer of the DiscriminatorNeuralNetwork model has only one neuron and its activation function set to "Sigmoid". It is the default setting for all DiscriminatorNeuralNetwork models in research papers.
 
 ## Constructors
 
@@ -22,7 +22,7 @@ GenerativeAdversarialNetwork.new(maxNumberOfIterations: number): ModelObject
 
 #### Parameters:
 
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+* maxNumberOfIterations: How many times should the model needed to be trained.
 
 #### Returns:
 
@@ -40,8 +40,8 @@ GenerativeAdversarialNetwork:setParameters(maxNumberOfIterations: number)
 
 #### Parameters:
 
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+* maxNumberOfIterations: How many times should the model needed to be trained.
 
 ## References
 
-* [Proximal Policy Optimization By OpenAI](https://spinningup.openai.com/en/latest/algorithms/ppo.html)
+* [Generative Adversarial Networks](https://arxiv.org/abs/1406.2661)

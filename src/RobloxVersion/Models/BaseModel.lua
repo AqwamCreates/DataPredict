@@ -348,7 +348,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 		local randomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 		
-		return  AqwamMatrixLibrary:multiply(variancePart, randomNormal)
+		return AqwamMatrixLibrary:multiply(variancePart, randomNormal)
 		
 	elseif (initializationMode == "HeUniform") then
 
@@ -358,7 +358,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local randomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
-		return  AqwamMatrixLibrary:multiply(variancePart, randomUniform) 
+		return AqwamMatrixLibrary:multiply(variancePart, randomUniform) 
 		
 	elseif (initializationMode == "XavierNormal") then
 

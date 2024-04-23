@@ -114,4 +114,6 @@ GenerativeAdversarialNetwork:generate(featureMatrix: matrix): matrix
 
 ## References
 
+* [GANs — Theory and Introduction in PyTorch](https://medium.com/geekculture/introduction-to-the-gan-in-pytorch-bba920347b01)
+
 * [Generative Adversarial Networks](https://arxiv.org/abs/1406.2661)

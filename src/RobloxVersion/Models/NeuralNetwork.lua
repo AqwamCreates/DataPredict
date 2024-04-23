@@ -1468,7 +1468,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 
-	if (self.AutoResetOptimizers) then
+	if (self.autoResetOptimizers) then
 
 		for i, Optimizer in ipairs(self.OptimizerTable) do
 

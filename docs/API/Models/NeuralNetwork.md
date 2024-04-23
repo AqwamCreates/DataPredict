@@ -385,6 +385,18 @@ NeuralNetwork:getLayer(layerNumber: number): number, boolean, string, number, Op
 
 * dropoutRate: The probabiliy of a neuron for selected layer number to be dropped out when required. Must be set between 0 and 1. Increasing the rate will cause more neurons more likely to output 0. By default, the dropoutRate is set to 0.
 
+### getNumberOfLayers()
+
+Gets the number of layers.
+
+```
+NeuralNetwork:getNumberOfLayers(): number
+```
+
+#### Returns:
+
+* numberOfLayers: The number of layers contained in the NeuralNetwork model.
+
 ## Inherited From
 
 * [GradientMethodBaseModel](GradientMethodBaseModel.md)

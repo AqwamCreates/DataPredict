@@ -58,8 +58,6 @@ end
 
 function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatrix)
 	
-	if (#realFeatureMatrix ~= #noiseFeatureMatrix) then error("Both feature matrices must contain same number of data.") end
-	
 	local DiscriminatorNeuralNetwork = self.DiscriminatorNeuralNetwork
 	
 	local GeneratorNeuralNetwork = self.GeneratorNeuralNetwork
@@ -68,9 +66,37 @@ function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatri
 	
 	if (not GeneratorNeuralNetwork) then error("No generator neural network.") end
 	
-	local discriminatorNumberOfFeatures, discriminatorHasBias = GeneratorNeuralNetwork:getLayer(1)
+	local discriminatorNumberOfLayers = GeneratorNeuralNetwork:getNumberOfLayers()
+
+	local generatorNumberOfLayers = GeneratorNeuralNetwork:getNumberOfLayers()
 	
-	local generatorNumberOfFeatures, generatorHasBias = GeneratorNeuralNetwork:getLayer(1)
+	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorNeuralNetwork:getLayer(1)
+	
+	local generatorInputNumberOfFeatures, generatorInputHasBias = GeneratorNeuralNetwork:getLayer(1)
+	
+	local discriminatorOutputNumberOfFeatures, discriminatorOutputHasBias = DiscriminatorNeuralNetwork:getLayer(discriminatorNumberOfLayers)
+
+	local generatorOutputNumberOfFeatures, generatorOutputHasBias = GeneratorNeuralNetwork:getLayer(generatorNumberOfLayers)
+	
+	discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
+
+	generatorInputNumberOfFeatures = generatorInputNumberOfFeatures + ((generatorInputHasBias and 1) or 0)
+	
+	discriminatorOutputNumberOfFeatures = discriminatorOutputNumberOfFeatures + ((discriminatorOutputHasBias and 1) or 0)
+	
+	generatorOutputNumberOfFeatures = generatorOutputNumberOfFeatures + ((generatorOutputHasBias and 1) or 0)
+	
+	if (generatorOutputNumberOfFeatures ~= discriminatorInputNumberOfFeatures) then error("The generator's output layer and the discriminator's input layer must contain the same number of neurons!") end
+	
+	if (#realFeatureMatrix ~= #noiseFeatureMatrix) then error("Both feature matrices must contain same number of data.") end
+	
+	if (#noiseFeatureMatrix[1] ~= generatorInputNumberOfFeatures) then error("The number of columns in noise feature matrix must contain the same number as the number of neurons in generator's input layer.") end
+	
+	if (#realFeatureMatrix[1] ~= discriminatorInputNumberOfFeatures) then error("The number of columns in noise feature matrix must contain the same number as the number of neurons in discriminator's input layer.") end
+
+	local discriminatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, discriminatorInputNumberOfFeatures, 1)
+
+	local generatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, generatorInputNumberOfFeatures, 1)
 	
 	local functionToApplyToDiscriminator = function (discriminatorRealLabel, discriminatorGeneratedLabel) return math.log(discriminatorRealLabel) + math.log(1 - discriminatorGeneratedLabel) end
 	
@@ -82,14 +108,6 @@ function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatri
 	
 	local isOutputPrinted = self.isOutputPrinted
 
-	discriminatorNumberOfFeatures = discriminatorNumberOfFeatures + (discriminatorHasBias and 1) or 0
-	
-	generatorNumberOfFeatures = generatorNumberOfFeatures + (generatorHasBias and 1) or 0
-	
-	local discriminatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, discriminatorNumberOfFeatures, 1)
-	
-	local generatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, generatorNumberOfFeatures, 1)
-	
 	repeat
 		
 		task.wait()

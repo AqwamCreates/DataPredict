@@ -61,6 +61,14 @@
 | [KMeans](Models/KMeans.md)                                                                                             | None            | Market Segmentation, General Grouping |
 | [KMedoids](Models/KMedoids.md)                                                                                         | None            | Same as K-Means                       |
 
+## Generative
+
+| Model                                                                                                                  | Alternate Names | Use Cases                             |
+|------------------------------------------------------------------------------------------------------------------------|-----------------|---------------------------------------|
+| [GenerativeAdversarialNetwork](Models/GenerativeAdversarialNetwork.md)                                                 | GAN             | Building And Art Generation           |
+
+ 
+
 ## BaseModels
 
 [BaseModel](Models/BaseModel.md)

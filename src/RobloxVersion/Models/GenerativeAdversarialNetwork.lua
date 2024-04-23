@@ -16,9 +16,9 @@ function GenerativeAdversarialNetwork.new(maxNumberOfIterations)
 	
 	NewGenerativeAdversarialNetwork.isOutputPrinted = true
 	
-	NewGenerativeAdversarialNetwork.GeneratorNeuralNetwork = nil
+	NewGenerativeAdversarialNetwork.Generator = nil
 	
-	NewGenerativeAdversarialNetwork.DiscriminatorNeuralNetwork = nil
+	NewGenerativeAdversarialNetwork.Discriminator = nil
 	
 	return NewGenerativeAdversarialNetwork
 	
@@ -30,15 +30,15 @@ function GenerativeAdversarialNetwork:setParameters(maxNumberOfIterations)
 	
 end
 
-function GenerativeAdversarialNetwork:setDiscriminatorNeuralNetwork(DiscriminatorNeuralNetwork)
+function GenerativeAdversarialNetwork:setDiscriminatorNeuralNetwork(Discriminator)
 	
-	self.DiscriminatorNeuralNetwork = DiscriminatorNeuralNetwork
+	self.Discriminator = Discriminator
 	
 end
 
-function GenerativeAdversarialNetwork:setGeneratorNeuralNetwork(GeneratorNeuralNetwork)
+function GenerativeAdversarialNetwork:setGeneratorNeuralNetwork(Generator)
 	
-	self.GeneratorNeuralNetwork = GeneratorNeuralNetwork
+	self.Generator = Generator
 	
 end
 
@@ -58,25 +58,25 @@ end
 
 function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatrix)
 	
-	local DiscriminatorNeuralNetwork = self.DiscriminatorNeuralNetwork
+	local Discriminator = self.Discriminator
 	
-	local GeneratorNeuralNetwork = self.GeneratorNeuralNetwork
+	local Generator = self.Generator
 	
-	if (not DiscriminatorNeuralNetwork) then error("No discriminator neural network.") end
+	if (not Discriminator) then error("No discriminator neural network.") end
 	
-	if (not GeneratorNeuralNetwork) then error("No generator neural network.") end
+	if (not Generator) then error("No generator neural network.") end
 	
-	local discriminatorNumberOfLayers = GeneratorNeuralNetwork:getNumberOfLayers()
+	local discriminatorNumberOfLayers = Generator:getNumberOfLayers()
 
-	local generatorNumberOfLayers = GeneratorNeuralNetwork:getNumberOfLayers()
+	local generatorNumberOfLayers = Generator:getNumberOfLayers()
 	
-	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorNeuralNetwork:getLayer(1)
+	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = Discriminator:getLayer(1)
 	
-	local generatorInputNumberOfFeatures, generatorInputHasBias = GeneratorNeuralNetwork:getLayer(1)
+	local generatorInputNumberOfFeatures, generatorInputHasBias = Generator:getLayer(1)
 	
-	local discriminatorOutputNumberOfFeatures, discriminatorOutputHasBias = DiscriminatorNeuralNetwork:getLayer(discriminatorNumberOfLayers)
+	local discriminatorOutputNumberOfFeatures, discriminatorOutputHasBias = Discriminator:getLayer(discriminatorNumberOfLayers)
 
-	local generatorOutputNumberOfFeatures, generatorOutputHasBias = GeneratorNeuralNetwork:getLayer(generatorNumberOfLayers)
+	local generatorOutputNumberOfFeatures, generatorOutputHasBias = Generator:getLayer(generatorNumberOfLayers)
 	
 	discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 
@@ -86,9 +86,9 @@ function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatri
 	
 	generatorOutputNumberOfFeatures = generatorOutputNumberOfFeatures + ((generatorOutputHasBias and 1) or 0)
 	
-	if (generatorOutputNumberOfFeatures ~= discriminatorInputNumberOfFeatures) then error("The generator's output layer and the discriminator's input layer must contain the same number of neurons!") end
+	if (generatorOutputNumberOfFeatures ~= discriminatorInputNumberOfFeatures) then error("The generator's output layer and the discriminator's input layer must contain the same number of neurons.") end
 	
-	if (generatorOutputNumberOfFeatures ~= discriminatorOutputNumberOfFeatures) then error("The generator's output layer and the discriminator's output layer must contain the same number of neurons!") end
+	if (discriminatorOutputNumberOfFeatures ~= 1) then error("The number of neurons at the discriminator's output layer must be equal to 1.") end
 	
 	if (#realFeatureMatrix ~= #noiseFeatureMatrix) then error("Both feature matrices must contain same number of data.") end
 	
@@ -114,11 +114,11 @@ function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatri
 		
 		task.wait()
 		
-		local generatedLabelMatrix = GeneratorNeuralNetwork:predict(noiseFeatureMatrix, true)
+		local generatedLabelMatrix = Generator:predict(noiseFeatureMatrix, true)
 		
-		local discriminatorGeneratedLabelMatrix = DiscriminatorNeuralNetwork:predict(generatedLabelMatrix, true)
+		local discriminatorGeneratedLabelMatrix = Discriminator:predict(generatedLabelMatrix, true)
 		
-		local discriminatorRealLabelMatrix = DiscriminatorNeuralNetwork:predict(realFeatureMatrix, true)
+		local discriminatorRealLabelMatrix = Discriminator:predict(realFeatureMatrix, true)
 		
 		local discriminatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToDiscriminator, discriminatorRealLabelMatrix, discriminatorGeneratedLabelMatrix)
 		
@@ -128,13 +128,13 @@ function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatri
 		
 		local meanGeneratorLossVector = AqwamMatrixLibrary:verticalMean(generatorLossMatrix)
 		
-		DiscriminatorNeuralNetwork:forwardPropagate(discriminatorInputMatrix, true)
+		Discriminator:forwardPropagate(discriminatorInputMatrix, true)
 		
-		DiscriminatorNeuralNetwork:backPropagate(meanDiscriminatorLossMatrix, true)
+		Discriminator:backPropagate(meanDiscriminatorLossMatrix, true)
 		
-		GeneratorNeuralNetwork:forwardPropagate(generatorInputMatrix, true)
+		Generator:forwardPropagate(generatorInputMatrix, true)
 		
-		GeneratorNeuralNetwork:backPropagate(meanGeneratorLossVector, true)
+		Generator:backPropagate(meanGeneratorLossVector, true)
 		
 		numberOfIterations = numberOfIterations + 1
 		
@@ -146,13 +146,13 @@ end
 
 function GenerativeAdversarialNetwork:evaluate(featureMatrix)
 	
-	return self.DiscriminatorNeuralNetwork:predict(featureMatrix, true)
+	return self.Discriminator:predict(featureMatrix, true)
 	
 end
 
 function GenerativeAdversarialNetwork:generate(featureMatrix)
 	
-	return self.GeneratorNeuralNetwork:predict(featureMatrix, true)
+	return self.Generator:predict(featureMatrix, true)
 	
 end
 

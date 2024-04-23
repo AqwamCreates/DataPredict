@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - GenerativeAdversarialNetwork (GAN)
 
-GenerativeAdversarialNetwork uses two neural networks to generate new content from noise.
+GenerativeAdversarialNetwork uses two neural networks to generate new contents from noise.
 
 ## Notes:
 

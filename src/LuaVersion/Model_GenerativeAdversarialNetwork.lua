@@ -146,13 +146,13 @@ end
 
 function GenerativeAdversarialNetwork:evaluate(featureMatrix)
 	
-	return self.DiscriminatorNeuralNetwork:predict(featureMatrix, true)
+	return self.Discriminator:predict(featureMatrix, true)
 	
 end
 
 function GenerativeAdversarialNetwork:generate(featureMatrix)
 	
-	return self.GeneratorNeuralNetwork:predict(featureMatrix, true)
+	return self.Generator:predict(featureMatrix, true)
 	
 end
 

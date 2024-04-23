@@ -58,7 +58,7 @@ end
 
 function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatrix)
 	
-	if (#realFeatureMatrix ~= noiseFeatureMatrix) then error("Both feature matrices must contain same number of data.") end
+	if (#realFeatureMatrix ~= #noiseFeatureMatrix) then error("Both feature matrices must contain same number of data.") end
 	
 	local DiscriminatorNeuralNetwork = self.DiscriminatorNeuralNetwork
 	
@@ -98,7 +98,7 @@ function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatri
 		
 		local discriminatorGeneratedLabelMatrix = DiscriminatorNeuralNetwork:predict(generatedLabelMatrix, true)
 		
-		local discriminatorRealLabelMatrix = DiscriminatorNeuralNetwork:predict(generatedLabelMatrix, true)
+		local discriminatorRealLabelMatrix = DiscriminatorNeuralNetwork:predict(realFeatureMatrix, true)
 		
 		local discriminatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToDiscriminator, discriminatorRealLabelMatrix, discriminatorGeneratedLabelMatrix)
 		

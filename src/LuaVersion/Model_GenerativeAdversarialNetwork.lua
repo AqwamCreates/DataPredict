@@ -88,6 +88,8 @@ function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatri
 	
 	if (generatorOutputNumberOfFeatures ~= discriminatorInputNumberOfFeatures) then error("The generator's output layer and the discriminator's input layer must contain the same number of neurons!") end
 	
+	if (generatorOutputNumberOfFeatures ~= discriminatorOutputNumberOfFeatures) then error("The generator's output layer and the discriminator's output layer must contain the same number of neurons!") end
+	
 	if (#realFeatureMatrix ~= #noiseFeatureMatrix) then error("Both feature matrices must contain same number of data.") end
 	
 	if (#noiseFeatureMatrix[1] ~= generatorInputNumberOfFeatures) then error("The number of columns in noise feature matrix must contain the same number as the number of neurons in generator's input layer.") end

@@ -1,4 +1,4 @@
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 BaseModel = {}
 
@@ -50,23 +50,23 @@ function BaseModel.new()
 	
 	setmetatable(NewBaseModel, BaseModel)
 	
-	NewBaseModel.IsOutputPrinted = true
+	NewBaseModel.isOutputPrinted = true
 
 	NewBaseModel.ModelParameters = nil
 	
-	NewBaseModel.ModelParametersInitializationMode = "RandomUniformNegativeAndPositive"
+	NewBaseModel.modelParametersInitializationMode = "RandomUniformNegativeAndPositive"
 	
-	NewBaseModel.NumberOfIterationsPerCostCalculation = 1
+	NewBaseModel.numberOfIterationsPerCostCalculation = 1
 	
-	NewBaseModel.MinimumModelParametersInitializationValue = nil
+	NewBaseModel.minimumModelParametersInitializationValue = nil
 
-	NewBaseModel.MaximumModelParametersInitializationValue = nil
+	NewBaseModel.maximumModelParametersInitializationValue = nil
 	
-	NewBaseModel.IterationWaitDuration = nil
+	NewBaseModel.iterationWaitDuration = nil
 	
-	NewBaseModel.DataWaitDuration = nil
+	NewBaseModel.dataWaitDuration = nil
 	
-	NewBaseModel.SequenceWaitDuration = nil
+	NewBaseModel.sequenceWaitDuration = nil
 	
 	NewBaseModel.targetCostUpperBound = 0
 	
@@ -78,7 +78,7 @@ function BaseModel.new()
 	
 	NewBaseModel.numberOfIterationsToCheckIfConverged = math.huge
 	
-	NewBaseModel.AutoResetOptimizers = true
+	NewBaseModel.autoResetOptimizers = true
 
 	return NewBaseModel
 	
@@ -120,7 +120,7 @@ function BaseModel:checkIfConverged(cost)
 	
 	if (self.currentNumberOfIterationsToCheckIfConverged < self.numberOfIterationsToCheckIfConverged) then
 		
-		self.currentNumberOfIterationsToCheckIfConverged += 1
+		self.currentNumberOfIterationsToCheckIfConverged =  self.currentNumberOfIterationsToCheckIfConverged + 1
 		
 		return false
 		
@@ -152,7 +152,7 @@ end
 
 function BaseModel:calculateCostWhenRequired(currentNumberOfIteration, costFunction)
 	
-	if ((currentNumberOfIteration % self.NumberOfIterationsPerCostCalculation) == 0) then 
+	if ((currentNumberOfIteration % self.numberOfIterationsPerCostCalculation) == 0) then 
 		
 		return costFunction()
 		
@@ -166,23 +166,23 @@ end
 
 function BaseModel:setNumberOfIterationsPerCostCalculation(numberOfIterationsPerCostCalculation)
 	
-	self.NumberOfIterationsPerCostCalculation = self:getBooleanOrDefaultOption(numberOfIterationsPerCostCalculation, self.NumberOfIterationsPerCostCalculation)
+	self.numberOfIterationsPerCostCalculation = self:getBooleanOrDefaultOption(numberOfIterationsPerCostCalculation, self.numberOfIterationsPerCostCalculation)
 	
 end
 
 function BaseModel:setAutoResetOptimizers(option)
 	
-	self.AutoResetOptimizers = self:getBooleanOrDefaultOption(option, self.AutoResetOptimizers)
+	self.autoResetOptimizers = self:getBooleanOrDefaultOption(option, self.autoResetOptimizers)
 	
 end
 
 function BaseModel:setWaitDurations(iterationWaitDuration, dataWaitDuration, sequenceWaitDuration)
 	
-	self.IterationWaitDuration = iterationWaitDuration
+	self.iterationWaitDuration = iterationWaitDuration
 
-	self.DataWaitDuration = dataWaitDuration
+	self.dataWaitDuration = dataWaitDuration
 
-	self.SequenceWaitDuration = sequenceWaitDuration
+	self.sequenceWaitDuration = sequenceWaitDuration
 	
 end
 
@@ -204,19 +204,19 @@ end
 
 function BaseModel:iterationWait()
 	
-	self:baseModelWait(self.IterationWaitDuration)
+	self:baseModelWait(self.iterationWaitDuration)
 	
 end
 
 function BaseModel:dataWait()
 
-	self:baseModelWait(self.DataWaitDuration)
+	self:baseModelWait(self.dataWaitDuration)
 
 end
 
 function BaseModel:sequenceWait()
 
-	self:baseModelWait(self.SequenceWaitDuration)
+	self:baseModelWait(self.sequenceWaitDuration)
 
 end
 
@@ -256,7 +256,7 @@ end
 
 function BaseModel:printCostAndNumberOfIterations(cost, numberOfIteration)
 	
-	if self.IsOutputPrinted then print("Iteration: " .. numberOfIteration .. "\t\tCost: " .. cost) end
+	if self.isOutputPrinted then print("Iteration: " .. numberOfIteration .. "\t\tCost: " .. cost) end
 
 end
 
@@ -264,11 +264,11 @@ function BaseModel:setPrintOutput(option)
 	
 	if (option == false) then
 		
-		self.IsOutputPrinted = false
+		self.isOutputPrinted = false
 		
 	else
 		
-		self.IsOutputPrinted = true
+		self.isOutputPrinted = true
 		
 	end
 	
@@ -284,17 +284,17 @@ end
 
 function BaseModel:setModelParametersInitializationMode(initializationMode, minimumModelParametersInitializationValue, maximumModelParametersInitializationValue)
 	
-	self.ModelParametersInitializationMode = initializationMode
+	self.modelParametersInitializationMode = initializationMode
 	
-	self.MinimumModelParametersInitializationValue = minimumModelParametersInitializationValue
+	self.minimumModelParametersInitializationValue = minimumModelParametersInitializationValue
 	
-	self.MaximumModelParametersInitializationValue = maximumModelParametersInitializationValue
+	self.maximumModelParametersInitializationValue = maximumModelParametersInitializationValue
 	
 end
 
 function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 	
-	local initializationMode = self.ModelParametersInitializationMode
+	local initializationMode = self.modelParametersInitializationMode
 	
 	if (initializationMode == "Zero") then
 		
@@ -302,7 +302,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 	
 	elseif (initializationMode == "Random") then
 		
-		return AqwamMatrixLibrary:createRandomMatrix(numberOfRows, numberOfColumns, self.MinimumModelParametersInitializationValue, self.MaximumModelParametersInitializationValue)
+		return AqwamMatrixLibrary:createRandomMatrix(numberOfRows, numberOfColumns, self.minimumModelParametersInitializationValue, self.maximumModelParametersInitializationValue)
 		
 	elseif (initializationMode == "RandomNormalPositive") then
 		
@@ -310,17 +310,17 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "RandomNormalNegative") then
 		
-		local RandomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		local randomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 
-		return AqwamMatrixLibrary:multiply(RandomNormal, -1)
+		return AqwamMatrixLibrary:multiply(randomNormal, -1)
 		
 	elseif (initializationMode == "RandomNormalNegativeAndPositive") then
 		
-		local RandomNormal1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		local randomNormal1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 		
-		local RandomNormal2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		local randomNormal2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 
-		return AqwamMatrixLibrary:subtract(RandomNormal1, RandomNormal2)
+		return AqwamMatrixLibrary:subtract(randomNormal1, randomNormal2)
 		
 	elseif (initializationMode == "RandomUniformPositive") then
 
@@ -328,17 +328,17 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 	elseif (initializationMode == "RandomUniformNegative") then
 
-		local RandomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local randomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
-		return AqwamMatrixLibrary:multiply(RandomUniform, -1)
+		return AqwamMatrixLibrary:multiply(randomUniform, -1)
 
 	elseif (initializationMode == "RandomUniformNegativeAndPositive") then
 
-		local RandomUniform1 = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local randomUniform1 = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
-		local RandomUniform2 = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local randomUniform2 = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
-		return AqwamMatrixLibrary:subtract(RandomUniform1, RandomUniform2)
+		return AqwamMatrixLibrary:subtract(randomUniform1, randomUniform2)
 		
 	elseif (initializationMode == "HeNormal") then
 		
@@ -346,9 +346,9 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 		local variancePart = math.sqrt(variancePart1)
 		
-		local RandomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		local randomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 		
-		return  AqwamMatrixLibrary:multiply(variancePart, RandomNormal)
+		return  AqwamMatrixLibrary:multiply(variancePart, randomNormal)
 		
 	elseif (initializationMode == "HeUniform") then
 
@@ -356,9 +356,9 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local randomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
-		return  AqwamMatrixLibrary:multiply(variancePart, RandomUniform) 
+		return  AqwamMatrixLibrary:multiply(variancePart, randomUniform) 
 		
 	elseif (initializationMode == "XavierNormal") then
 
@@ -366,9 +366,9 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		local randomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 
-		return AqwamMatrixLibrary:multiply(variancePart, RandomNormal) 
+		return AqwamMatrixLibrary:multiply(variancePart, randomNormal) 
 
 	elseif (initializationMode == "XavierUniform") then
 
@@ -376,9 +376,9 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local randomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
-		return AqwamMatrixLibrary:multiply(variancePart, RandomUniform)
+		return AqwamMatrixLibrary:multiply(variancePart, randomUniform)
 		
 	elseif (initializationMode == "LeCunNormal") then
 
@@ -386,9 +386,9 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		local randomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 
-		return AqwamMatrixLibrary:multiply(variancePart, RandomNormal) 
+		return AqwamMatrixLibrary:multiply(variancePart, randomNormal) 
 		
 	elseif (initializationMode == "LeCunUniform") then
 
@@ -396,9 +396,9 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local RandomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local randomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
-		return AqwamMatrixLibrary:multiply(variancePart, RandomUniform) 
+		return AqwamMatrixLibrary:multiply(variancePart, randomUniform) 
 
 	end
 	

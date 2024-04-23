@@ -1518,6 +1518,12 @@ function NeuralNetworkModel:setClassesList(classesList)
 
 end
 
+function NeuralNetworkModel:getNumberOfLayers()
+	
+	return #self.numberOfNeuronsTable
+	
+end
+	
 function NeuralNetworkModel:showDetails()
 	-- Calculate the maximum length for each column
 	local maxLayerLength = string.len("Layer")

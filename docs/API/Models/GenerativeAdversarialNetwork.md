@@ -90,27 +90,27 @@ GenerativeAdversarialNetwork:evaluate(featureMatrix: matrix): matrix
 
 #### Parameters:
 
-* featureMatrix: The matrix containing the features of the real contents.
+* featureMatrix: Matrix containing all data.
 
 #### Returns:
 
-* outputMatrix: The matrix containing all the output values.
+* outputMatrix: Matrix containing all the output values.
 
 ### generate()
 
 Generates the output from Generator.
 
 ```
-GenerativeAdversarialNetwork:evaluate(featureMatrix: matrix): matrix
+GenerativeAdversarialNetwork:generate(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: The matrix containing the features of the real contents.
+* featureMatrix: Matrix containing all data.
 
 #### Returns:
 
-* outputMatrix: The matrix containing all the output values.
+* outputMatrix: Matrix containing all the output values.
 
 ## References
 

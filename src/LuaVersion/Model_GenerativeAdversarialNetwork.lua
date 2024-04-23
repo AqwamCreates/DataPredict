@@ -100,7 +100,7 @@ function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatri
 
 	local generatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, generatorInputNumberOfFeatures, 1)
 	
-	local functionToApplyToDiscriminator = function (discriminatorRealLabel, discriminatorGeneratedLabel) return math.log(discriminatorRealLabel) + math.log(1 - discriminatorGeneratedLabel) end
+	local functionToApplyToDiscriminator = function (discriminatorRealLabel, discriminatorGeneratedLabel) return -(math.log(discriminatorRealLabel) + math.log(1 - discriminatorGeneratedLabel)) end
 	
 	local functionToApplyToGenerator = function (discriminatorGeneratedLabel) return math.log(1 - discriminatorGeneratedLabel) end
 	

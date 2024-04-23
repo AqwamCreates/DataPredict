@@ -30,13 +30,13 @@ function GenerativeAdversarialNetwork:setParameters(maxNumberOfIterations)
 	
 end
 
-function GenerativeAdversarialNetwork:setDiscriminatorNeuralNetwork(Discriminator)
+function GenerativeAdversarialNetwork:setDiscriminator(Discriminator)
 	
 	self.Discriminator = Discriminator
 	
 end
 
-function GenerativeAdversarialNetwork:setGeneratorNeuralNetwork(Generator)
+function GenerativeAdversarialNetwork:setGenerator(Generator)
 	
 	self.Generator = Generator
 	

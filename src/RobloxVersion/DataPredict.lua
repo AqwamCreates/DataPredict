@@ -4,7 +4,7 @@
 
 	Aqwam's Machine And Deep Learning Library (DataPredict)
 
-	Version 1.29.0
+	Version 1.30.0
 
 	Author: Aqwam Harish Aiman
 	
@@ -118,6 +118,8 @@ local ModelsDictionary = {
 	KNearestNeighbours = require(Models.KNearestNeighbours),
 	
 	NormalLinearRegression = require(Models.NormalLinearRegression),
+	
+	GenerativeAdversarialNetwork = require(Models.GenerativeAdversarialNetwork),
 	
 }
 

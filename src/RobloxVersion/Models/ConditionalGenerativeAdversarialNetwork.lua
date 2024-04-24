@@ -66,6 +66,8 @@ function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	
 	if (not Generator) then error("No generator neural network.") end
 	
+	local numberOfFeaturesInLabelMatrix = #labelMatrix[1]
+	
 	local discriminatorNumberOfLayers = Generator:getNumberOfLayers()
 
 	local generatorNumberOfLayers = Generator:getNumberOfLayers()
@@ -86,15 +88,15 @@ function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	
 	generatorOutputNumberOfFeatures = generatorOutputNumberOfFeatures + ((generatorOutputHasBias and 1) or 0)
 	
-	if (generatorOutputNumberOfFeatures ~= discriminatorInputNumberOfFeatures) then error("The generator's output layer and the discriminator's input layer must contain the same number of neurons.") end
+	if ((generatorOutputNumberOfFeatures + numberOfFeaturesInLabelMatrix) ~= discriminatorInputNumberOfFeatures) then error("The number of neurons at the discriminator's input layer must equal to the total of number of neurons at the generator's output layer and the number of features in label matrix.") end
 	
 	if (discriminatorOutputNumberOfFeatures ~= 1) then error("The number of neurons at the discriminator's output layer must be equal to 1.") end
 	
 	if (#realFeatureMatrix ~= #noiseFeatureMatrix) or (#realFeatureMatrix ~= #labelMatrix) then error("All matrices must contain same number of data.") end
 	
-	if ((#noiseFeatureMatrix[1] + #labelMatrix[1])  ~= generatorInputNumberOfFeatures) then error("The total number of columns in noise feature matrix and label matrix must contain the same number as the number of neurons in generator's input layer.") end
+	if ((#noiseFeatureMatrix[1] + numberOfFeaturesInLabelMatrix)  ~= generatorInputNumberOfFeatures) then error("The total number of columns in noise feature matrix and label matrix must contain the same number as the number of neurons in generator's input layer.") end
 	
-	if ((#realFeatureMatrix[1] + #labelMatrix[1]) ~= discriminatorInputNumberOfFeatures) then error("The total number of columns in real feature matrix and label matrix must contain the same number as the number of neurons in discriminator's input layer.") end
+	if ((#realFeatureMatrix[1] + numberOfFeaturesInLabelMatrix) ~= discriminatorInputNumberOfFeatures) then error("The total number of columns in real feature matrix and label matrix must contain the same number as the number of neurons in discriminator's input layer.") end
 
 	local discriminatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, discriminatorInputNumberOfFeatures, 1)
 
@@ -103,6 +105,8 @@ function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	local functionToApplyToDiscriminator = function (discriminatorRealLabel, discriminatorGeneratedLabel) return -(math.log(discriminatorRealLabel) + math.log(1 - discriminatorGeneratedLabel)) end
 	
 	local functionToApplyToGenerator = function (discriminatorGeneratedLabel) return math.log(1 - discriminatorGeneratedLabel) end
+	
+	local concatenatedNoiseFeatureMatrix = AqwamMatrixLibrary:horizontalConcatenate(noiseFeatureMatrix, labelMatrix)
 	
 	local concatenatedRealFeatureMatrix = AqwamMatrixLibrary:horizontalConcatenate(realFeatureMatrix, labelMatrix)
 	
@@ -116,7 +120,7 @@ function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		task.wait()
 		
-		local generatedLabelMatrix = Generator:predict(noiseFeatureMatrix, true)
+		local generatedLabelMatrix = Generator:predict(concatenatedNoiseFeatureMatrix, true)
 		
 		local concatenatedAndGeneratedLabelMatrix = AqwamMatrixLibrary:horizontalConcatenate(generatedLabelMatrix, labelMatrix)
 		

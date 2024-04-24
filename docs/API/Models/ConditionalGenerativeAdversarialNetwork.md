@@ -12,6 +12,8 @@ ConditionalGenerativeAdversarialNetwork uses two neural networks to generate new
 
 * The number of neurons at the Generator's output layer must be equal to the number of neurons at the Discriminator's input layer.
 
+* It is recommended that the learning rate for the Generator is lower than the Discriminator.
+
 ## Constructors
 
 ### new()

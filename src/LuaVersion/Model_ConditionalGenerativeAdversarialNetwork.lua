@@ -1,48 +1,48 @@
-GenerativeAdversarialNetworkModel = {}
+ConditionalGenerativeAdversarialNetworkModel = {}
 
-GenerativeAdversarialNetworkModel.__index = GenerativeAdversarialNetworkModel
+ConditionalGenerativeAdversarialNetworkModel.__index = ConditionalGenerativeAdversarialNetworkModel
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 
-function GenerativeAdversarialNetworkModel.new(maxNumberOfIterations)
+function ConditionalGenerativeAdversarialNetworkModel.new(maxNumberOfIterations)
 	
-	local NewGenerativeAdversarialNetworkModel = {}
+	local NewConditionalGenerativeAdversarialNetworkModel = {}
 	
-	setmetatable(NewGenerativeAdversarialNetworkModel, GenerativeAdversarialNetworkModel)
+	setmetatable(NewConditionalGenerativeAdversarialNetworkModel, ConditionalGenerativeAdversarialNetworkModel)
 	
-	NewGenerativeAdversarialNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewConditionalGenerativeAdversarialNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
-	NewGenerativeAdversarialNetworkModel.isOutputPrinted = true
+	NewConditionalGenerativeAdversarialNetworkModel.isOutputPrinted = true
 	
-	NewGenerativeAdversarialNetworkModel.Generator = nil
+	NewConditionalGenerativeAdversarialNetworkModel.Generator = nil
 	
-	NewGenerativeAdversarialNetworkModel.Discriminator = nil
+	NewConditionalGenerativeAdversarialNetworkModel.Discriminator = nil
 	
-	return NewGenerativeAdversarialNetworkModel
+	return NewConditionalGenerativeAdversarialNetworkModel
 	
 end
 
-function GenerativeAdversarialNetworkModel:setParameters(maxNumberOfIterations)
+function ConditionalGenerativeAdversarialNetworkModel:setParameters(maxNumberOfIterations)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
 end
 
-function GenerativeAdversarialNetworkModel:setDiscriminator(Discriminator)
+function ConditionalGenerativeAdversarialNetworkModel:setDiscriminator(Discriminator)
 	
 	self.Discriminator = Discriminator
 	
 end
 
-function GenerativeAdversarialNetworkModel:setGenerator(Generator)
+function ConditionalGenerativeAdversarialNetworkModel:setGenerator(Generator)
 	
 	self.Generator = Generator
 	
 end
 
-function GenerativeAdversarialNetworkModel:setPrintOutput(option)
+function ConditionalGenerativeAdversarialNetworkModel:setPrintOutput(option)
 	
 	if (option == false) then
 
@@ -56,7 +56,7 @@ function GenerativeAdversarialNetworkModel:setPrintOutput(option)
 	
 end
 
-function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeatureMatrix)
+function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeatureMatrix, labelMatrix)
 	
 	local Discriminator = self.Discriminator
 	
@@ -65,6 +65,8 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 	if (not Discriminator) then error("No discriminator neural network.") end
 	
 	if (not Generator) then error("No generator neural network.") end
+	
+	local numberOfFeaturesInLabelMatrix = #labelMatrix[1]
 	
 	local discriminatorNumberOfLayers = Generator:getNumberOfLayers()
 
@@ -86,15 +88,15 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 	
 	generatorOutputNumberOfFeatures = generatorOutputNumberOfFeatures + ((generatorOutputHasBias and 1) or 0)
 	
-	if (generatorOutputNumberOfFeatures ~= discriminatorInputNumberOfFeatures) then error("The generator's output layer and the discriminator's input layer must contain the same number of neurons.") end
+	if ((generatorOutputNumberOfFeatures + numberOfFeaturesInLabelMatrix) ~= discriminatorInputNumberOfFeatures) then error("The number of neurons at the discriminator's input layer must equal to the total of number of neurons at the generator's output layer and the number of features in label matrix.") end
 	
 	if (discriminatorOutputNumberOfFeatures ~= 1) then error("The number of neurons at the discriminator's output layer must be equal to 1.") end
 	
-	if (#realFeatureMatrix ~= #noiseFeatureMatrix) then error("Both feature matrices must contain same number of data.") end
+	if (#realFeatureMatrix ~= #noiseFeatureMatrix) or (#realFeatureMatrix ~= #labelMatrix) then error("All matrices must contain same number of data.") end
 	
-	if (#noiseFeatureMatrix[1] ~= generatorInputNumberOfFeatures) then error("The number of columns in noise feature matrix must contain the same number as the number of neurons in generator's input layer.") end
+	if ((#noiseFeatureMatrix[1] + numberOfFeaturesInLabelMatrix)  ~= generatorInputNumberOfFeatures) then error("The total number of columns in noise feature matrix and label matrix must contain the same number as the number of neurons in generator's input layer.") end
 	
-	if (#realFeatureMatrix[1] ~= discriminatorInputNumberOfFeatures) then error("The number of columns in real feature matrix must contain the same number as the number of neurons in discriminator's input layer.") end
+	if ((#realFeatureMatrix[1] + numberOfFeaturesInLabelMatrix) ~= discriminatorInputNumberOfFeatures) then error("The total number of columns in real feature matrix and label matrix must contain the same number as the number of neurons in discriminator's input layer.") end
 
 	local discriminatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, discriminatorInputNumberOfFeatures, 1)
 
@@ -103,6 +105,10 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 	local functionToApplyToDiscriminator = function (discriminatorRealLabel, discriminatorGeneratedLabel) return -(math.log(discriminatorRealLabel) + math.log(1 - discriminatorGeneratedLabel)) end
 	
 	local functionToApplyToGenerator = function (discriminatorGeneratedLabel) return math.log(1 - discriminatorGeneratedLabel) end
+	
+	local concatenatedNoiseFeatureMatrix = AqwamMatrixLibrary:horizontalConcatenate(noiseFeatureMatrix, labelMatrix)
+	
+	local concatenatedRealFeatureMatrix = AqwamMatrixLibrary:horizontalConcatenate(realFeatureMatrix, labelMatrix)
 	
 	local numberOfIterations = 0
 	
@@ -114,11 +120,13 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 		
 		task.wait()
 		
-		local generatedLabelMatrix = Generator:predict(noiseFeatureMatrix, true)
+		local generatedLabelMatrix = Generator:predict(concatenatedNoiseFeatureMatrix, true)
 		
-		local discriminatorGeneratedLabelMatrix = Discriminator:predict(generatedLabelMatrix, true)
+		local concatenatedAndGeneratedLabelMatrix = AqwamMatrixLibrary:horizontalConcatenate(generatedLabelMatrix, labelMatrix)
 		
-		local discriminatorRealLabelMatrix = Discriminator:predict(realFeatureMatrix, true)
+		local discriminatorGeneratedLabelMatrix = Discriminator:predict(concatenatedAndGeneratedLabelMatrix, true)
+		
+		local discriminatorRealLabelMatrix = Discriminator:predict(concatenatedRealFeatureMatrix, true)
 		
 		local discriminatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToDiscriminator, discriminatorRealLabelMatrix, discriminatorGeneratedLabelMatrix)
 		
@@ -144,28 +152,36 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 	
 end
 
-function GenerativeAdversarialNetworkModel:evaluate(featureMatrix)
+function ConditionalGenerativeAdversarialNetworkModel:evaluate(featureMatrix, labelMatrix)
 	
-	return self.Discriminator:predict(featureMatrix, true)
+	if (#featureMatrix ~= #labelMatrix) then error("The feature matrix and the label matrix must contain same number of data.") end
 	
-end
-
-function GenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix)
+	local concatenatedMatrices = AqwamMatrixLibrary:horizontalConcatenate(featureMatrix, labelMatrix)
 	
-	return self.Generator:predict(noiseFeatureMatrix, true)
+	return self.Discriminator:predict(concatenatedMatrices, true)
 	
 end
 
-function GenerativeAdversarialNetworkModel:getGenerator()
+function ConditionalGenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix, labelMatrix)
+	
+	if (#noiseFeatureMatrix ~= #labelMatrix) then error("The noise feature matrix and the label matrix must contain same number of data.") end
 
+	local concatenatedMatrices = AqwamMatrixLibrary:horizontalConcatenate(noiseFeatureMatrix, labelMatrix)
+	
+	return self.Generator:predict(concatenatedMatrices, true)
+	
+end
+
+function ConditionalGenerativeAdversarialNetworkModel:getGenerator()
+	
 	return self.Generator
-
+	
 end
 
-function GenerativeAdversarialNetworkModel:getDiscriminator()
-
+function ConditionalGenerativeAdversarialNetworkModel:getDiscriminator()
+	
 	return self.Discriminator
-
+	
 end
 
-return GenerativeAdversarialNetworkModel
+return ConditionalGenerativeAdversarialNetworkModel

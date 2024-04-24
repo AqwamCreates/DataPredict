@@ -1,48 +1,48 @@
-GenerativeAdversarialNetwork = {}
+GenerativeAdversarialNetworkModel = {}
 
-GenerativeAdversarialNetwork.__index = GenerativeAdversarialNetwork
+GenerativeAdversarialNetworkModel.__index = GenerativeAdversarialNetworkModel
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local defaultMaxNumberOfIterations = 500
 
-function GenerativeAdversarialNetwork.new(maxNumberOfIterations)
+function GenerativeAdversarialNetworkModel.new(maxNumberOfIterations)
 	
-	local NewGenerativeAdversarialNetwork = {}
+	local NewGenerativeAdversarialNetworkModel = {}
 	
-	setmetatable(NewGenerativeAdversarialNetwork, GenerativeAdversarialNetwork)
+	setmetatable(NewGenerativeAdversarialNetworkModel, GenerativeAdversarialNetworkModel)
 	
-	NewGenerativeAdversarialNetwork.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewGenerativeAdversarialNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
-	NewGenerativeAdversarialNetwork.isOutputPrinted = true
+	NewGenerativeAdversarialNetworkModel.isOutputPrinted = true
 	
-	NewGenerativeAdversarialNetwork.Generator = nil
+	NewGenerativeAdversarialNetworkModel.Generator = nil
 	
-	NewGenerativeAdversarialNetwork.Discriminator = nil
+	NewGenerativeAdversarialNetworkModel.Discriminator = nil
 	
-	return NewGenerativeAdversarialNetwork
+	return NewGenerativeAdversarialNetworkModel
 	
 end
 
-function GenerativeAdversarialNetwork:setParameters(maxNumberOfIterations)
+function GenerativeAdversarialNetworkModel:setParameters(maxNumberOfIterations)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
 end
 
-function GenerativeAdversarialNetwork:setDiscriminator(Discriminator)
+function GenerativeAdversarialNetworkModel:setDiscriminator(Discriminator)
 	
 	self.Discriminator = Discriminator
 	
 end
 
-function GenerativeAdversarialNetwork:setGenerator(Generator)
+function GenerativeAdversarialNetworkModel:setGenerator(Generator)
 	
 	self.Generator = Generator
 	
 end
 
-function GenerativeAdversarialNetwork:setPrintOutput(option)
+function GenerativeAdversarialNetworkModel:setPrintOutput(option)
 	
 	if (option == false) then
 
@@ -56,7 +56,7 @@ function GenerativeAdversarialNetwork:setPrintOutput(option)
 	
 end
 
-function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatrix)
+function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeatureMatrix)
 	
 	local Discriminator = self.Discriminator
 	
@@ -144,16 +144,16 @@ function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatri
 	
 end
 
-function GenerativeAdversarialNetwork:evaluate(featureMatrix)
+function GenerativeAdversarialNetworkModel:evaluate(featureMatrix)
 	
 	return self.Discriminator:predict(featureMatrix, true)
 	
 end
 
-function GenerativeAdversarialNetwork:generate(noiseFeatureMatrix)
+function GenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix)
 	
 	return self.Generator:predict(noiseFeatureMatrix, true)
 	
 end
 
-return GenerativeAdversarialNetwork
+return GenerativeAdversarialNetworkModel

@@ -178,19 +178,19 @@ function GradientDescentModifier:startStochasticGradientDescent(...)
 
 end
 
-function GradientDescentModifier:train(featureMatrix, labelVector)
+function GradientDescentModifier:train(...)
 	
 	if (self.gradientDescentType == "Batch") then
 		
-		return self:startBatchGradientDescent(featureMatrix, labelVector)
+		return self:startBatchGradientDescent(...)
 		
 	elseif (self.gradientDescentType == "MiniBatch") then
 		
-		return self:startMiniBatchGradientDescent(featureMatrix, labelVector)
+		return self:startMiniBatchGradientDescent(...)
 		
 	elseif (self.gradientDescentType == "Stochastic") then
 		
-		return self:startStochasticGradientDescent(featureMatrix, labelVector)
+		return self:startStochasticGradientDescent(...)
 		
 	else
 		
@@ -200,15 +200,15 @@ function GradientDescentModifier:train(featureMatrix, labelVector)
 	
 end
 
-function GradientDescentModifier:predict(featureMatrix, returnOriginalOutput)
+function GradientDescentModifier:predict(...)
 	
-	return self.Model:predict(featureMatrix, returnOriginalOutput)
+	return self.Model:predict(...)
 	
 end
 
-function GradientDescentModifier:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+function GradientDescentModifier:reinforce(...)
 	
-	return self.Model:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+	return self.Model:reinforce(...)
 	
 end
 

@@ -8,7 +8,9 @@ GenerativeAdversarialNetwork uses two neural networks to generate new contents f
 
 * Generator and Discriminator models must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 
-* Ensure the final layer of the Discriminator model has only one neuron and its activation function set to "Sigmoid". It is the default setting for all Discriminator models in research papers.
+* Ensure the output layer of the Discriminator model has only one neuron and its activation function set to "Sigmoid". It is the default setting for all Discriminator models in research papers.
+
+* The number of neurons at the Generator's output layer must be equal to the number of neurons at the Discriminator's input layer.
 
 ## Constructors
 
@@ -76,9 +78,9 @@ GenerativeAdversarialNetwork:train(realFeatureMatrix: matrix, noiseFeatureMatrix
 
 #### Parameters:
 
-* realFeatureMatrix: The matrix containing the features of the real contents.
+* realFeatureMatrix: The matrix containing the features of the real contents. The number of columns must be equal to number of neurons at the output layer of the Generator.
 
-* noiseFeatureMatrix: The matrix containing the noise in order to generate fake contents.
+* noiseFeatureMatrix: The matrix containing the noise in order to generate fake contents. The number of columns must be equal to number of neurons at the input layer of the Generator.
 
 ### evaluate()
 

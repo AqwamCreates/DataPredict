@@ -92,23 +92,23 @@ GenerativeAdversarialNetwork:evaluate(featureMatrix: matrix): matrix
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: The matrix containing all data.
 
 #### Returns:
 
-* outputMatrix: Matrix containing all the output values.
+* outputMatrix: The matrix containing all the output values.
 
 ### generate()
 
 Generates the output from Generator.
 
 ```
-GenerativeAdversarialNetwork:generate(featureMatrix: matrix): matrix
+GenerativeAdversarialNetwork:generate(noiseFeatureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* noiseFeatureMatrix: The matrix containing the noise in order to generate fake contents. The number of columns must be equal to number of neurons at the input layer of the Generator.
 
 #### Returns:
 

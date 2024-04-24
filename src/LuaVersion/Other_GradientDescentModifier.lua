@@ -130,7 +130,7 @@ function GradientDescentModifier:startMiniBatchGradientDescent(...)
 		
 		table.insert(costArray, costArray)
 		
-		if (self.showOutput) then print("Epoch: " .. currentBatchNumber .. "\t\t\tFinal Cost: " .. cost .. "\n") end
+		if (self.showOutput) then print("Epoch: " .. currentBatchNumber .. "\t\t\tFinal cost: " .. cost .. "\n") end
 		
 	end
 	
@@ -170,7 +170,7 @@ function GradientDescentModifier:startStochasticGradientDescent(...)
 		
 		table.insert(costArray, cost)
 		
-		if (self.showOutput) then print("Data Number: " .. dataIndex .. "\t\tFinal Cost: " .. cost .. "\n") end
+		if (self.showOutput) then print("Data number: " .. dataIndex .. "\t\tFinal cost: " .. cost .. "\n") end
 		
 	end
 	
@@ -194,7 +194,7 @@ function GradientDescentModifier:train(featureMatrix, labelVector)
 		
 	else
 		
-		error("The Selected Gradient Descent Algorithm Type Cannot Be Found!")
+		error("The selected gradient descent algorithm type cannot be found.")
 		
 	end
 	

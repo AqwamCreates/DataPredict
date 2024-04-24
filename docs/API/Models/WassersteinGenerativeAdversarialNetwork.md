@@ -8,7 +8,7 @@ WassersteinGenerativeAdversarialNetwork uses two neural networks to generate new
 
 * Generator and Discriminator models must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 
-* Ensure the output layer of the Discriminator model has only one neuron and its activation function set to "Sigmoid". It is the default setting for all Discriminator models in research papers.
+* Ensure the output layer of the Discriminator model has only one neuron and its activation function set to "LeakyReLU". It is the default setting for all Discriminator models in research papers.
 
 * The number of neurons at the Generator's output layer must be equal to the number of neurons at the Discriminator's input layer.
 

@@ -150,9 +150,9 @@ function GenerativeAdversarialNetwork:evaluate(featureMatrix)
 	
 end
 
-function GenerativeAdversarialNetwork:generate(featureMatrix)
+function GenerativeAdversarialNetwork:generate(noiseFeatureMatrix)
 	
-	return self.Generator:predict(featureMatrix, true)
+	return self.Generator:predict(noiseFeatureMatrix, true)
 	
 end
 

@@ -138,7 +138,7 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 		
 		numberOfIterations = numberOfIterations + 1
 		
-		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations) end
+		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. meanDiscriminatorLossMatrix[1][1]) end
 		
 	until (numberOfIterations >= maxNumberOfIterations)
 	

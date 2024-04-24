@@ -122,6 +122,6 @@ ConditionalGenerativeAdversarialNetwork:generate(noiseFeatureMatrix: matrix, lab
 
 ## References
 
-* [LoGAN: Generating Logos with a Generative Adversarial Neural Network Conditioned on color](https://www.researchgate.net/publication/328494719_LoGAN_Generating_Logos_with_a_Generative_Adversarial_Neural_Network_Conditioned_on_color)
+* [ACGAN Architectural Design](https://stephan-osterburg.gitbook.io/coding/coding/ml-dl/tensorfow/chapter-4-conditional-generative-adversarial-network/acgan-architectural-design)
 
 * [Generative Adversarial Networks](https://arxiv.org/abs/1406.2661)

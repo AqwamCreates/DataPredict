@@ -187,9 +187,9 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	
 	local generatorLossMatrix = Generator:predict(finalNoiseFeatureMatrixBatch, true)
 	
-	generatorLossMatrix = AqwamMatrixLibrary:multiply(-1, generatorLossMatrix)
-	
 	local meanGeneratorLossVector = AqwamMatrixLibrary:verticalMean(generatorLossMatrix)
+	
+	meanGeneratorLossVector = AqwamMatrixLibrary:multiply(-1, meanGeneratorLossVector)
 	
 	Generator:forwardPropagate(generatorInputMatrix, true)
 

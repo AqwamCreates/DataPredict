@@ -46,13 +46,11 @@ function GradientDescentModifier:setParameters(Model, gradientDescentType, batch
 	
 end
 
-local function breakFeatureMatrixToBatches(featureMatrix, labelVector, batchSize)
+local function breakMatrixToMultipleSmallerMatrices(matrix, batchSize)
 	
-	local numberOfBatches = math.ceil(#featureMatrix/batchSize)
+	local numberOfBatches = math.ceil(#matrix/batchSize)
 	
-	local featureMatrixBatchesTable = {}
-	
-	local labelVectorBatchesTable = {}
+	local matrixBatchesTable = {}
 	
 	local batchPositions = {}
 	
@@ -64,63 +62,71 @@ local function breakFeatureMatrixToBatches(featureMatrix, labelVector, batchSize
 		
 		local startIndex = (batch - 1) * batchSize + 1
 		
-		local endIndex = math.min(batch * batchSize, #featureMatrix)
+		local endIndex = math.min(batch * batchSize, #matrix)
 		
 		local batchFeatureMatrix = {}
 		
-		for i = startIndex, endIndex do table.insert(batchFeatureMatrix, featureMatrix[i]) end
+		for i = startIndex, endIndex do table.insert(batchFeatureMatrix, matrix[i]) end
 		
-		table.insert(featureMatrixBatchesTable, batchFeatureMatrix)
-		
-		if (labelVector == nil) then continue end
-		
-		batchLabelVector  = {}
-		
-		for j = startIndex, endIndex do table.insert(batchLabelVector, labelVector[j])	end
-		
-		table.insert(labelVectorBatchesTable, batchLabelVector)
+		table.insert(matrixBatchesTable, batchFeatureMatrix)
 		
 	end
 	
-	return featureMatrixBatchesTable, labelVectorBatchesTable
+	return matrixBatchesTable
 	
 end
 
-function GradientDescentModifier:startBatchGradientDescent(featureMatrix, labelVector)
+function GradientDescentModifier:startBatchGradientDescent(...)
 	
-	return self.Model:train(featureMatrix, labelVector)
+	return self.Model:train(...)
 	
 end
 
-function GradientDescentModifier:startMiniBatchGradientDescent(featureMatrix, labelVector)
+function GradientDescentModifier:startMiniBatchGradientDescent(...)
 	
 	if (self.batchSize < 0) then error("Batch size cannot be negative!") end
 	
-	if (self.batchSize > #featureMatrix) then error("Batch size is greater than the number of data!") end
+	local matrixArray = {...}
 	
-	local numberOfBatches = math.ceil(#featureMatrix/self.batchSize)
+	local numberOfMatrices = #matrixArray
+
+	local numberOfData = #matrixArray[1]
+
+	for matrixIndex = 1, numberOfMatrices, 1 do
+
+		if (numberOfData ~= #matrixArray[matrixIndex]) then error("All matrices or vectors must contain same number of data") end
+
+	end
 	
-	local featureMatrixBatchesTable, labelVectorBatchesTable = breakFeatureMatrixToBatches(featureMatrix, labelVector, self.batchSize)
+	if (self.batchSize > numberOfData) then error("Batch size is greater than the number of data!") end
 	
-	local batchFeatureMatrix
+	local numberOfBatches = math.ceil(numberOfData/self.batchSize)
 	
-	local batchLabelVector
+	local miniBatchMatrixArray = {}
 	
-	local miniBatchCostArray
-	
-	local cost
+	for matrixIndex = 1, numberOfMatrices, 1 do
+		
+		local matrices = breakMatrixToMultipleSmallerMatrices(matrixArray[matrixIndex], self.batchSize)
+		
+		table.insert(miniBatchMatrixArray, matrices)
+		
+	end
 	
 	local costArray = {}
 	
 	for currentBatchNumber = 1, numberOfBatches, 1 do
-
-		batchFeatureMatrix = featureMatrixBatchesTable[currentBatchNumber]
-
-		batchLabelVector = labelVectorBatchesTable[currentBatchNumber]
-
-		miniBatchCostArray = self.Model:train(featureMatrix, labelVector)
 		
-		cost = miniBatchCostArray[#miniBatchCostArray]
+		local currentMatrixBatchArray = {}
+		
+		for matrixIndex = 1, numberOfMatrices, 1 do
+			
+			table.insert(currentMatrixBatchArray, miniBatchMatrixArray[matrixIndex][currentBatchNumber])
+			
+		end
+
+		local miniBatchCostArray = self.Model:train(table.unpack(currentMatrixBatchArray))
+		
+		local cost = miniBatchCostArray[#miniBatchCostArray]
 		
 		table.insert(costArray, costArray)
 		
@@ -132,27 +138,35 @@ function GradientDescentModifier:startMiniBatchGradientDescent(featureMatrix, la
 
 end
 
-function GradientDescentModifier:startStochasticGradientDescent(featureMatrix, labelVector)
+function GradientDescentModifier:startStochasticGradientDescent(...)
 	
-	local featureVector
-	
-	local label
-	
-	local stochasticCostArray
+	local matrixArray = {...}
+
+	local numberOfMatrices = #matrixArray
+
+	local numberOfData = #matrixArray[1]
+
+	for matrixIndex = 1, numberOfMatrices, 1 do
+
+		if (numberOfData ~= #matrixArray[matrixIndex]) then error("All matrices or vectors must contain same number of data") end
+
+	end
 	
 	local costArray = {}
 	
-	local cost
-	
-	for dataIndex = 1, #featureMatrix, 1 do
+	for dataIndex = 1, numberOfData, 1 do
 		
-		featureVector = {featureMatrix[dataIndex]}
+		local currentMatrixBatchArray = {}
+
+		for matrixIndex = 1, numberOfMatrices, 1 do
+
+			table.insert(currentMatrixBatchArray, {matrixArray[matrixIndex][dataIndex]})
+			
+		end
 		
-		if (labelVector[dataIndex]) then label = {labelVector[dataIndex]} end
+		local stochasticCostArray = self.Model:train(table.unpack(currentMatrixBatchArray))
 		
-		stochasticCostArray = self.Model:train(featureVector, label)
-		
-		cost = stochasticCostArray[#stochasticCostArray]
+		local cost = stochasticCostArray[#stochasticCostArray]
 		
 		table.insert(costArray, cost)
 		

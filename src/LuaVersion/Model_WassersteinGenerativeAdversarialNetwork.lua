@@ -8,42 +8,21 @@ local defaultMaxNumberOfIterations = 500
 
 local defaultSampleSize = 3
 
-local function samplePair(realFeatureMatrix, noiseFeatureMatrix, sampleSize)
-	
-	local realFeatureMatrixBatch = {}
-	
-	local noiseFeatureMatrixBatch = {}
-	
-	local numberOfData = #realFeatureMatrixBatch
-	
-	for sample = 1, sampleSize, 1 do
-		
-		local randomIndex = Random.new():NextInteger(1, numberOfData)
-		
-		table.insert(realFeatureMatrixBatch, realFeatureMatrix[randomIndex])
-		table.insert(noiseFeatureMatrixBatch, noiseFeatureMatrix[randomIndex])
-		
-	end
-	
-	return realFeatureMatrixBatch, noiseFeatureMatrixBatch
-	
-end
+local function sample(matrix, sampleSize)
 
-local function sample(noiseFeatureMatrix, sampleSize)
+	local matrixBatch = {}
 
-	local noiseFeatureMatrixBatch = {}
-
-	local numberOfData = #noiseFeatureMatrix
+	local numberOfData = #matrix
 
 	for sample = 1, sampleSize, 1 do
 
 		local randomIndex = Random.new():NextInteger(1, numberOfData)
 
-		table.insert(noiseFeatureMatrixBatch, noiseFeatureMatrix[randomIndex])
+		table.insert(matrixBatch, matrix[randomIndex])
 
 	end
 
-	return noiseFeatureMatrixBatch
+	return matrixBatch
 
 end
 
@@ -159,7 +138,9 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		task.wait()
 		
-		local realFeatureMatrixBatch, noiseFeatureMatrixBatch = samplePair(realFeatureMatrix, noiseFeatureMatrix, sampleSize)
+		local realFeatureMatrixBatch  = sample(realFeatureMatrix, sampleSize)
+		
+		local noiseFeatureMatrixBatch = sample(noiseFeatureMatrix, sampleSize)
 		
 		local generatedLabelMatrix = Generator:predict(noiseFeatureMatrix, true)
 		

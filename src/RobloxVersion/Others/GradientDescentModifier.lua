@@ -130,7 +130,7 @@ function GradientDescentModifier:startMiniBatchGradientDescent(...)
 		
 		table.insert(costArray, costArray)
 		
-		if (self.showOutput) then print("Epoch: " .. currentBatchNumber .. "\t\t\tFinal Cost: " .. cost .. "\n") end
+		if (self.showOutput) then print("Epoch: " .. currentBatchNumber .. "\t\t\tFinal cost: " .. cost) end
 		
 	end
 	
@@ -170,7 +170,7 @@ function GradientDescentModifier:startStochasticGradientDescent(...)
 		
 		table.insert(costArray, cost)
 		
-		if (self.showOutput) then print("Data Number: " .. dataIndex .. "\t\tFinal Cost: " .. cost .. "\n") end
+		if (self.showOutput) then print("Data number: " .. dataIndex .. "\t\tFinal cost: " .. cost) end
 		
 	end
 	
@@ -178,37 +178,37 @@ function GradientDescentModifier:startStochasticGradientDescent(...)
 
 end
 
-function GradientDescentModifier:train(featureMatrix, labelVector)
+function GradientDescentModifier:train(...)
 	
 	if (self.gradientDescentType == "Batch") then
 		
-		return self:startBatchGradientDescent(featureMatrix, labelVector)
+		return self:startBatchGradientDescent(...)
 		
 	elseif (self.gradientDescentType == "MiniBatch") then
 		
-		return self:startMiniBatchGradientDescent(featureMatrix, labelVector)
+		return self:startMiniBatchGradientDescent(...)
 		
 	elseif (self.gradientDescentType == "Stochastic") then
 		
-		return self:startStochasticGradientDescent(featureMatrix, labelVector)
+		return self:startStochasticGradientDescent(...)
 		
 	else
 		
-		error("The Selected Gradient Descent Algorithm Type Cannot Be Found!")
+		error("The selected gradient descent algorithm type cannot be found.")
 		
 	end
 	
 end
 
-function GradientDescentModifier:predict(featureMatrix, returnOriginalOutput)
+function GradientDescentModifier:predict(...)
 	
-	return self.Model:predict(featureMatrix, returnOriginalOutput)
+	return self.Model:predict(...)
 	
 end
 
-function GradientDescentModifier:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+function GradientDescentModifier:reinforce(...)
 	
-	return self.Model:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+	return self.Model:reinforce(...)
 	
 end
 

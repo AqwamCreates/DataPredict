@@ -66,6 +66,7 @@
 | Model                                                                                                                  | Alternate Names | Use Cases                             |
 |------------------------------------------------------------------------------------------------------------------------|-----------------|---------------------------------------|
 | [GenerativeAdversarialNetwork](Models/GenerativeAdversarialNetwork.md)                                                 | GAN             | Building And Art Generation           |
+| [ConditionalGenerativeAdversarialNetwork](Models/ConditionalGenerativeAdversarialNetwork.md)                           | CGAN            | Same As Above, But More Advanced      |
 
  
 

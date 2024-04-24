@@ -2,7 +2,7 @@ ConditionalGenerativeAdversarialNetworkModel = {}
 
 ConditionalGenerativeAdversarialNetworkModel.__index = ConditionalGenerativeAdversarialNetworkModel
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 
@@ -150,7 +150,7 @@ end
 
 function ConditionalGenerativeAdversarialNetworkModel:evaluate(featureMatrix, labelMatrix)
 	
-	if (#featureMatrix ~= #labelMatrix) then error("All matrices must contain same number of data.") end
+	if (#featureMatrix ~= #labelMatrix) then error("The feature matrix and the label matrix must contain same number of data.") end
 	
 	local concatenatedMatrices = AqwamMatrixLibrary:horizontalConcatenate(featureMatrix, labelMatrix)
 	
@@ -160,7 +160,7 @@ end
 
 function ConditionalGenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix, labelMatrix)
 	
-	if (#noiseFeatureMatrix ~= #labelMatrix) then error("All matrices must contain same number of data.") end
+	if (#noiseFeatureMatrix ~= #labelMatrix) then error("The noise feature matrix and the label matrix must contain same number of data.") end
 
 	local concatenatedMatrices = AqwamMatrixLibrary:horizontalConcatenate(noiseFeatureMatrix, labelMatrix)
 	

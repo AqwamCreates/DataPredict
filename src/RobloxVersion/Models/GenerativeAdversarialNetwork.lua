@@ -138,7 +138,7 @@ function GenerativeAdversarialNetwork:train(realFeatureMatrix, noiseFeatureMatri
 		
 		numberOfIterations = numberOfIterations + 1
 		
-		if isOutputPrinted then print("Iteration: " .. numberOfIterations) end
+		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations) end
 		
 	until (numberOfIterations >= maxNumberOfIterations)
 	

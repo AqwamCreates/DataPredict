@@ -10,7 +10,7 @@ ConditionalGenerativeAdversarialNetwork uses two neural networks to generate new
 
 * Ensure the output layer of the Discriminator model has only one neuron and its activation function set to "Sigmoid". It is the default setting for all Discriminator models in research papers.
 
-* The number of neurons at the Generator's output layer must be equal to the number of neurons at the Discriminator's input layer.
+* The number of neurons at the Generator's input layer must be equal to the total the number of neurons at the Discriminator's output layer and the number of features in label matrix.
 
 * It is recommended that the learning rate for the Generator is lower than the Discriminator.
 

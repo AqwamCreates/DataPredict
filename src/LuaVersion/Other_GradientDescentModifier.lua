@@ -130,7 +130,7 @@ function GradientDescentModifier:startMiniBatchGradientDescent(...)
 		
 		table.insert(costArray, costArray)
 		
-		if (self.showOutput) then print("Epoch: " .. currentBatchNumber .. "\t\t\tFinal cost: " .. cost .. "\n") end
+		if (self.showOutput) then print("Epoch: " .. currentBatchNumber .. "\t\t\tFinal cost: " .. cost) end
 		
 	end
 	
@@ -170,7 +170,7 @@ function GradientDescentModifier:startStochasticGradientDescent(...)
 		
 		table.insert(costArray, cost)
 		
-		if (self.showOutput) then print("Data number: " .. dataIndex .. "\t\tFinal cost: " .. cost .. "\n") end
+		if (self.showOutput) then print("Data number: " .. dataIndex .. "\t\tFinal cost: " .. cost) end
 		
 	end
 	

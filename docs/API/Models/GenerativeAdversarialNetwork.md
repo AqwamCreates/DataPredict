@@ -68,6 +68,30 @@ GenerativeAdversarialNetwork:setDiscriminator(Discriminator: Model)
 
 * Discriminator: The model to be used for discriminating real and fake contents.
 
+### getGenerator()
+
+Sets the Generator into the model. 
+
+```
+GenerativeAdversarialNetwork:getGenerator(): Model
+```
+
+#### Returns:
+
+* Generator: The model used for generating contents out of random noise.
+
+### setDiscriminator()
+
+Sets the Discriminator into the model. 
+
+```
+GenerativeAdversarialNetwork:setDiscriminator(): Model
+```
+
+#### Returns:
+
+* Discriminator: The model used for discriminating real and fake contents.
+
 ### train()
 
 Trains the model.

@@ -172,4 +172,16 @@ function ConditionalGenerativeAdversarialNetworkModel:generate(noiseFeatureMatri
 	
 end
 
+function ConditionalGenerativeAdversarialNetworkModel:getGenerator()
+
+	return self.Generator
+
+end
+
+function ConditionalGenerativeAdversarialNetworkModel:getDiscriminator()
+
+	return self.Discriminator
+
+end
+
 return ConditionalGenerativeAdversarialNetworkModel

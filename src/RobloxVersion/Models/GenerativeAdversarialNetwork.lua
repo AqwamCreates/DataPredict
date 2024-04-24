@@ -156,4 +156,16 @@ function GenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix)
 	
 end
 
+function GenerativeAdversarialNetworkModel:getGenerator()
+
+	return self.Generator
+
+end
+
+function GenerativeAdversarialNetworkModel:getDiscriminator()
+
+	return self.Discriminator
+
+end
+
 return GenerativeAdversarialNetworkModel

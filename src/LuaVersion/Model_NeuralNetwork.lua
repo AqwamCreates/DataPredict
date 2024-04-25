@@ -574,7 +574,7 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 	
 	local derivativeMatrix = derivativeFunction(forwardPropagateTable[numberOfLayers], zTable[numberOfLayers])
 	
-	if hasBiasNeuron then
+	if (hasBiasNeuron == 1) then
 
 		for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative of bias is equal to zero.
 
@@ -600,7 +600,7 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 
 		local derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
 		
-		if hasBiasNeuron then
+		if (hasBiasNeuron == 1) then
 
 			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative of bias is equal to zero.
 

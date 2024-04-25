@@ -1512,7 +1512,7 @@ function NeuralNetworkModel:reset()
 	
 	for i, Optimizer in ipairs(self.OptimizerTable) do
 
-		if Optimizer then Optimizer:reset() end
+		if (Optimizer ~= 0) then Optimizer:reset() end
 
 	end
 	

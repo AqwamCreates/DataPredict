@@ -584,7 +584,7 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 
 	table.insert(errorMatrixTable, layerCostMatrix)
 
-	for layerNumber = (numberOfLayers - 1), 2, -1 do
+	for layerNumber = (numberOfLayers - 1), 1, -1 do
 
 		local activationFunctionName = self.activationFunctionTable[layerNumber]
 

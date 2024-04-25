@@ -282,6 +282,14 @@ function BaseModel:getBooleanOrDefaultOption(boolean, defaultBoolean)
 	
 end
 
+function BaseModel:getValueOrDefaultOption(value, defaultValue)
+
+	if (type(value) == "nil") then return defaultValue end
+
+	return value
+
+end
+
 function BaseModel:setModelParametersInitializationMode(initializationMode, minimumModelParametersInitializationValue, maximumModelParametersInitializationValue)
 	
 	self.modelParametersInitializationMode = initializationMode

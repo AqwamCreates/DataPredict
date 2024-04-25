@@ -624,7 +624,7 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, errorMatrixTab
 	
 	local numberOfLayers = #self.numberOfNeuronsTable
 
-	for layer = 1, (numberOfLayers - 1), -1 do
+	for layer = 1, (numberOfLayers - 1), 1 do
 
 		local activationLayerMatrix = AqwamMatrixLibrary:transpose(forwardPropagateTable[layer])
 
@@ -1498,7 +1498,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		for i, Optimizer in ipairs(self.OptimizerTable) do
 
-			if Optimizer then Optimizer:reset() end
+			if (Optimizer ~= 0) then Optimizer:reset() end
 
 		end
 
@@ -1512,7 +1512,7 @@ function NeuralNetworkModel:reset()
 	
 	for i, Optimizer in ipairs(self.OptimizerTable) do
 
-		if Optimizer then Optimizer:reset() end
+		if (Optimizer ~= 0) then Optimizer:reset() end
 
 	end
 	

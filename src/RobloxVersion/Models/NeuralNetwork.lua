@@ -1020,7 +1020,7 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 	
 	hasBiasNeuron = (hasBiasNeuron and 1) or 0
 	
-	Optimizer = self:getBooleanOrDefaultOption(Optimizer,  self.OptimizerTable[layerNumber])
+	Optimizer = self:getValueOrDefaultOption(Optimizer,  self.OptimizerTable[layerNumber])
 	
 	Optimizer = Optimizer or 0
 
@@ -1074,7 +1074,7 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 		
 	elseif (property == "Optimizer") then
 		
-		value = self:getBooleanOrDefaultOption(value, self.OptimizerTable[layerNumber])
+		value = self:getValueOrDefaultOption(value, self.OptimizerTable[layerNumber])
 
 		value = value or 0
 		
@@ -1123,8 +1123,18 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 		return self.learningRateTable[layerNumber]
 
 	elseif (property == "Optimizer") then
-
-		return self.OptimizerTable[layerNumber]
+		
+		local Optimizer = self.OptimizerTable[layerNumber]
+		
+		if (Optimizer ~= 0) then
+			
+			return Optimizer
+			
+		else
+			
+			return nil
+			
+		end
 
 	elseif (property == "Regularization") then
 
@@ -1155,8 +1165,16 @@ function NeuralNetworkModel:getLayer(layerNumber)
 		error("The layer number exceeds the number of layers!") 
 
 	end 
+	
+	local Optimizer = self.OptimizerTable[layerNumber]
 
-	return self.numberOfNeuronsTable[layerNumber], (self.hasBiasNeuronTable[layerNumber] == 1), self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], self.OptimizerTable[layerNumber], self.RegularizationTable[layerNumber], self.dropoutRateTable[layerNumber]
+	if (Optimizer == 0) then
+
+		Optimizer = nil
+
+	end
+
+	return self.numberOfNeuronsTable[layerNumber], (self.hasBiasNeuronTable[layerNumber] == 1), self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], Optimizer, self.RegularizationTable[layerNumber], self.dropoutRateTable[layerNumber]
 
 end
 
@@ -1619,7 +1637,7 @@ function NeuralNetworkModel:showDetails()
 
 		local learningRate = "| " .. string.format("%-" .. maxLearningRateLength .. "s", self.learningRateTable[i]) .. " "
 
-		local optimizer = "| " .. string.format("%-" .. maxOptimizerLength .. "s", self.OptimizerTable[i] and "true" or "false") .. " "
+		local optimizer = "| " .. string.format("%-" .. maxOptimizerLength .. "s", (self.OptimizerTable[i] ~= 0) and "true" or "false") .. " "
 
 		local regularization = "| " .. string.format("%-" .. maxRegularizationLength .. "s", self.RegularizationTable[i] and "true" or "false") .. " "
 		

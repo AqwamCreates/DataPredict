@@ -1637,7 +1637,7 @@ function NeuralNetworkModel:showDetails()
 
 		local learningRate = "| " .. string.format("%-" .. maxLearningRateLength .. "s", self.learningRateTable[i]) .. " "
 
-		local optimizer = "| " .. string.format("%-" .. maxOptimizerLength .. "s", self.OptimizerTable[i] and "true" or "false") .. " "
+		local optimizer = "| " .. string.format("%-" .. maxOptimizerLength .. "s", (self.OptimizerTable[i] ~= 0) and "true" or "false") .. " "
 
 		local regularization = "| " .. string.format("%-" .. maxRegularizationLength .. "s", self.RegularizationTable[i] and "true" or "false") .. " "
 		

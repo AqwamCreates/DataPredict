@@ -478,10 +478,6 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 
 	local numberOfLayers = #self.numberOfNeuronsTable
 
-	table.insert(zTable, inputMatrix)
-
-	table.insert(forwardPropagateTable, inputMatrix) -- don't remove this! otherwise the code won't work!
-
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
 		local weightMatrix = self.ModelParameters[layerNumber]
@@ -537,11 +533,11 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
 
 	local activationFunction = activationFunctionList[activationFunctionName]
-
-	inputMatrix = activationFunction(layerZ)
-
-	table.insert(zTable, layerZ)
-
+	
+	table.insert(zTable, inputMatrix)
+	
+	inputMatrix = activationFunction(inputMatrix)
+	
 	table.insert(forwardPropagateTable, inputMatrix)
 
 	if saveTables then
@@ -574,37 +570,23 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 
 	local derivativeMatrix = derivativeFunction(forwardPropagateTable[numberOfLayers], zTable[numberOfLayers])
 
-	if (hasBiasNeuron == 1) then
-
-		for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative of bias is equal to zero.
-
-	end
-
 	local layerCostMatrix = AqwamMatrixLibrary:multiply(lossMatrix, derivativeMatrix)
 
-	table.insert(errorMatrixTable, layerCostMatrix)
-
-	for layerNumber = (numberOfLayers - 1), 1, -1 do
+	for layerNumber = numberOfLayers, 2, -1 do
 
 		local activationFunctionName = self.activationFunctionTable[layerNumber]
 
 		local derivativeFunction = derivativeList[activationFunctionName]
 
-		local layerMatrix = self.ModelParameters[layerNumber]
+		local layerMatrix = self.ModelParameters[layerNumber - 1]
 
-		local hasBiasNeuron = self.hasBiasNeuronTable[layerNumber]
+		local hasBiasNeuron = self.hasBiasNeuronTable[layerNumber - 1]
 
 		local layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 
 		local partialErrorMatrix = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
 		local derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
-
-		if (hasBiasNeuron == 1) then
-
-			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative of bias is equal to zero.
-
-		end
 
 		layerCostMatrix = AqwamMatrixLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 
@@ -623,14 +605,14 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, errorMatrixTab
 	local deltaTable = {}
 
 	local numberOfLayers = #self.numberOfNeuronsTable
-
+	
 	for layer = 1, (numberOfLayers - 1), 1 do
 
-		local errorMatrix = errorMatrixTable[layer + 1]
+		local errorMatrix = AqwamMatrixLibrary:transpose(errorMatrixTable[layer])
 		
-		local activationLayerMatrix = AqwamMatrixLibrary:transpose(forwardPropagateTable[layer])
+		local activationLayerMatrix = forwardPropagateTable[layer]
 
-		local costFunctionDerivatives = AqwamMatrixLibrary:dotProduct(activationLayerMatrix, errorMatrix)
+		local costFunctionDerivatives = AqwamMatrixLibrary:dotProduct(errorMatrix, activationLayerMatrix)
 
 		if (type(costFunctionDerivatives) == "number") then costFunctionDerivatives = {{costFunctionDerivatives}} end
 
@@ -706,7 +688,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativesTable)
 
 		local costFunctionDerivatives = costFunctionDerivativesTable[layerNumber]
 
-		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivatives)
+		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivatives) 
 
 		table.insert(NewModelParameters, newWeightMatrix)
 

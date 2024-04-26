@@ -626,11 +626,11 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, errorMatrixTab
 
 	for layer = 1, (numberOfLayers - 1), 1 do
 
-		local activationLayerMatrix = AqwamMatrixLibrary:transpose(forwardPropagateTable[layer])
+		--local activationLayerMatrix = AqwamMatrixLibrary:transpose()
 
-		local errorMatrix = errorMatrixTable[layer]
+		local errorMatrix = errorMatrixTable[layer + 1]
 
-		local costFunctionDerivatives = AqwamMatrixLibrary:dotProduct(activationLayerMatrix, errorMatrix)
+		local costFunctionDerivatives = AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(forwardPropagateTable[layer]), errorMatrix)
 
 		if (type(costFunctionDerivatives) == "number") then costFunctionDerivatives = {{costFunctionDerivatives}} end
 
@@ -675,6 +675,8 @@ function NeuralNetworkModel:calculateCostFunctionDerivatives(deltaTable, numberO
 			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, regularizationDerivatives)
 
 		end
+		
+		
 
 		if (Optimizer ~= 0) then
 

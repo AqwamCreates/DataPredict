@@ -482,7 +482,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 
 		local weightMatrix = self.ModelParameters[layerNumber]
 
-		local hasBiasNeuron = self.hasBiasNeuronTable[layerNumber]
+		local hasBiasNeuron = self.hasBiasNeuronTable[layerNumber + 1]
 
 		local activationFunctionName = self.activationFunctionTable[layerNumber]
 

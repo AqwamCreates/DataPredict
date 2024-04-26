@@ -675,8 +675,6 @@ function NeuralNetworkModel:calculateCostFunctionDerivatives(deltaTable, numberO
 			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, regularizationDerivatives)
 
 		end
-		
-		
 
 		if (Optimizer ~= 0) then
 

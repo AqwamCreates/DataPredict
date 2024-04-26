@@ -676,7 +676,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivatives(deltaTable, numberO
 
 		end
 
-		if Optimizer then
+		if (Optimizer ~= 0) then
 
 			costFunctionDerivatives = Optimizer:calculate(calculatedLearningRate, costFunctionDerivatives)
 
@@ -1498,7 +1498,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		for i, Optimizer in ipairs(self.OptimizerTable) do
 
-			if Optimizer then Optimizer:reset() end
+			if (Optimizer ~= 0) then Optimizer:reset() end
 
 		end
 

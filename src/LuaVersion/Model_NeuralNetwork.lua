@@ -706,9 +706,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativesTable)
 
 		local costFunctionDerivatives = costFunctionDerivativesTable[layerNumber]
 
-		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivatives) 
-		
-		AqwamMatrixLibrary:printMatrix(costFunctionDerivatives)
+		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivatives)
 
 		table.insert(NewModelParameters, newWeightMatrix)
 

@@ -477,12 +477,8 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 	local numberOfData = #featureMatrix
 
 	local numberOfLayers = #self.numberOfNeuronsTable
-
-	table.insert(zTable, inputMatrix)
-
-	table.insert(forwardPropagateTable, inputMatrix) -- don't remove this! otherwise the code won't work!
 	
-	for layerNumber = 1, (numberOfLayers - 1), 1 do
+	for layerNumber = 1, numberOfLayers, 1 do
 		
 		local weightMatrix = self.ModelParameters[layerNumber]
 		
@@ -534,16 +530,6 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 		
 	end
 
-	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
-
-	local activationFunction = activationFunctionList[activationFunctionName]
-
-	inputMatrix = activationFunction(layerZ)
-
-	table.insert(zTable, layerZ)
-
-	table.insert(forwardPropagateTable, inputMatrix)
-
 	if saveTables then
 
 		self.forwardPropagateTable = forwardPropagateTable
@@ -565,24 +551,8 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 	local numberOfLayers = #self.numberOfNeuronsTable
 
 	local zLayerMatrix
-	
-	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
-	
-	local hasBiasNeuron = self.hasBiasNeuronTable[numberOfLayers]
 
-	local derivativeFunction = derivativeList[activationFunctionName]
-	
-	local derivativeMatrix = derivativeFunction(forwardPropagateTable[numberOfLayers], zTable[numberOfLayers])
-	
-	if (hasBiasNeuron == 1) then
-
-		for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative of bias is equal to zero.
-
-	end
-
-	local layerCostMatrix = AqwamMatrixLibrary:multiply(lossMatrix, derivativeMatrix)
-
-	table.insert(errorMatrixTable, layerCostMatrix)
+	local layerCostMatrix = lossMatrix
 
 	for layerNumber = (numberOfLayers - 1), 1, -1 do
 
@@ -593,19 +563,13 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 		local layerMatrix = self.ModelParameters[layerNumber]
 		
 		local hasBiasNeuron = self.hasBiasNeuronTable[layerNumber]
-
+		
 		local layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 
 		local partialErrorMatrix = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
 		local derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
 		
-		if (hasBiasNeuron == 1) then
-
-			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative of bias is equal to zero.
-
-		end
-
 		layerCostMatrix = AqwamMatrixLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 
 		table.insert(errorMatrixTable, 1, layerCostMatrix)
@@ -624,7 +588,7 @@ function NeuralNetworkModel:calculateDelta(forwardPropagateTable, errorMatrixTab
 	
 	local numberOfLayers = #self.numberOfNeuronsTable
 
-	for layer = 1, (numberOfLayers - 1), 1 do
+	for layer = 1, numberOfLayers, 1 do
 
 		local activationLayerMatrix = AqwamMatrixLibrary:transpose(forwardPropagateTable[layer])
 
@@ -654,7 +618,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivatives(deltaTable, numberO
 
 	local numberOfLayers = #self.numberOfNeuronsTable
 
-	for layerNumber = 1, (numberOfLayers - 1), 1 do
+	for layerNumber = 1, numberOfLayers, 1 do
 
 		local costFunctionDerivatives = deltaTable[layerNumber]
 
@@ -676,7 +640,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivatives(deltaTable, numberO
 
 		end
 
-		if Optimizer then
+		if Optimizer ~= 0 then
 
 			costFunctionDerivatives = Optimizer:calculate(calculatedLearningRate, costFunctionDerivatives)
 
@@ -704,9 +668,11 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativesTable)
 
 		local weightMatrix = self.ModelParameters[layerNumber]
 		
-		local costFunctionDerivatives = costFunctionDerivativesTable[layerNumber]
+		local costFunctionDerivatives = AqwamMatrixLibrary:transpose(costFunctionDerivativesTable[layerNumber])
 
 		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivatives) 
+		
+		AqwamMatrixLibrary:printMatrix(costFunctionDerivatives)
 
 		table.insert(NewModelParameters, newWeightMatrix)
 
@@ -888,7 +854,7 @@ function NeuralNetworkModel:generateLayers()
 
 end
 
-function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunction, learningRate, Optimizer, Regularization, dropoutRate)
+function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunction, learningRate, OptimizerArray, Regularization, dropoutRate)
 
 	local learningRateType = typeof(learningRate)
 
@@ -938,7 +904,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 			self.hasBiasNeuronTable[layer] = 0
 
-			self.OptimizerTable[layer] = Optimizer
+			self.OptimizerTable[layer] = OptimizerArray[layer] or 0
 
 			self.RegularizationTable[layer] = Regularization
 
@@ -988,7 +954,7 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 
 	table.insert(self.learningRateTable, learningRate)
 
-	table.insert(self.OptimizerTable, Optimizer)
+	table.insert(self.OptimizerTable, Optimizer or 0)
 
 	table.insert(self.RegularizationTable, Regularization)
 	
@@ -1019,6 +985,10 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron,  self.hasBiasNeuronTable[layerNumber])
 	
 	hasBiasNeuron = (hasBiasNeuron and 1) or 0
+	
+	Optimizer = self:getValueOrDefaultOption(Optimizer,  self.OptimizerTable[layerNumber])
+	
+	Optimizer = Optimizer or 0
 
 	self.hasBiasNeuronTable[layerNumber] = hasBiasNeuron
 
@@ -1026,7 +996,7 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 	self.learningRateTable[layerNumber] = activationFunction or self.learningRateTable[layerNumber] 
 
-	self.OptimizerTable[layerNumber] = Optimizer or self.OptimizerTable[layerNumber]
+	self.OptimizerTable[layerNumber] = Optimizer
 
 	self.RegularizationTable[layerNumber] = Regularization or self.RegularizationTable[layerNumber]
 	
@@ -1070,7 +1040,11 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 		
 	elseif (property == "Optimizer") then
 		
-		self.OptimizerTable[layerNumber] = value or self.OptimizerTable[layerNumber]
+		value = self:getValueOrDefaultOption(value, self.OptimizerTable[layerNumber])
+
+		value = value or 0
+		
+		self.OptimizerTable[layerNumber] = value
 		
 	elseif (property == "Regularization") then
 		
@@ -1115,8 +1089,18 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 		return self.learningRateTable[layerNumber]
 
 	elseif (property == "Optimizer") then
-
-		return self.OptimizerTable[layerNumber]
+		
+		local Optimizer = self.OptimizerTable[layerNumber]
+		
+		if (Optimizer ~= 0) then
+			
+			return Optimizer
+			
+		else
+			
+			return nil
+			
+		end
 
 	elseif (property == "Regularization") then
 
@@ -1147,8 +1131,16 @@ function NeuralNetworkModel:getLayer(layerNumber)
 		error("The layer number exceeds the number of layers!") 
 
 	end 
+	
+	local Optimizer = self.OptimizerTable[layerNumber]
 
-	return self.numberOfNeuronsTable[layerNumber], (self.hasBiasNeuronTable[layerNumber] == 1), self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], self.OptimizerTable[layerNumber], self.RegularizationTable[layerNumber], self.dropoutRateTable[layerNumber]
+	if (Optimizer == 0) then
+
+		Optimizer = nil
+
+	end
+
+	return self.numberOfNeuronsTable[layerNumber], (self.hasBiasNeuronTable[layerNumber] == 1), self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], Optimizer, self.RegularizationTable[layerNumber], self.dropoutRateTable[layerNumber]
 
 end
 
@@ -1468,11 +1460,11 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 
-	if (self.AutoResetOptimizers) then
+	if (self.autoResetOptimizers) then
 
 		for i, Optimizer in ipairs(self.OptimizerTable) do
 
-			if Optimizer then Optimizer:reset() end
+			if (Optimizer ~= 0) then Optimizer:reset() end
 
 		end
 
@@ -1486,7 +1478,7 @@ function NeuralNetworkModel:reset()
 	
 	for i, Optimizer in ipairs(self.OptimizerTable) do
 
-		if Optimizer then Optimizer:reset() end
+		if (Optimizer ~= 0) then Optimizer:reset() end
 
 	end
 	
@@ -1516,6 +1508,12 @@ function NeuralNetworkModel:setClassesList(classesList)
 
 	self.ClassesList = classesList
 
+end
+
+function NeuralNetworkModel:getNumberOfLayers()
+	
+	return #self.numberOfNeuronsTable
+	
 end
 
 function NeuralNetworkModel:showDetails()
@@ -1605,7 +1603,7 @@ function NeuralNetworkModel:showDetails()
 
 		local learningRate = "| " .. string.format("%-" .. maxLearningRateLength .. "s", self.learningRateTable[i]) .. " "
 
-		local optimizer = "| " .. string.format("%-" .. maxOptimizerLength .. "s", self.OptimizerTable[i] and "true" or "false") .. " "
+		local optimizer = "| " .. string.format("%-" .. maxOptimizerLength .. "s", (self.OptimizerTable[i] ~= 0) and "true" or "false") .. " "
 
 		local regularization = "| " .. string.format("%-" .. maxRegularizationLength .. "s", self.RegularizationTable[i] and "true" or "false") .. " "
 		

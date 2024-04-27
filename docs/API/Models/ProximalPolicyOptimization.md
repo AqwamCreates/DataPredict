@@ -2,7 +2,7 @@
 
 ProximalPolicyOptimization is a base class for reinforcement learning.
 
-## Notes:
+## Notes
 
 * The Actor and Critic models must be created separately. Then use setActorModel() and setCriticModel() to put it inside the AdvantageActorCritic model.
 

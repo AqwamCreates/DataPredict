@@ -114,9 +114,9 @@ local Adagrad2 = AdaptiveGradientOptimizer.new()
 
 NeuralNetworkModel:addLayer(2, true) -- For the first layer, we can only choose number of neurons and set whether or not it has bias.
 
-NeuralNetworkModel:addLayer(3, true, "Tanh", nil, Adagrad2)
+NeuralNetworkModel:addLayer(3, true, "Tanh", nil, Adagrad1)
 
-NeuralNetworkModel:addLayer(2, false, nil, "StableSoftmax")
+NeuralNetworkModel:addLayer(2, false, "StableSoftmax", Adagrad2)
 
 ```
 
@@ -136,7 +136,7 @@ local Reg2 = Regularization.new()
 
 NeuralNetworkModel:addLayer(2, true)
 
-NeuralNetworkModel:addLayer(3, true, "Tanh", nil, nil,  Reg1)
+NeuralNetworkModel:addLayer(3, true, "Tanh", nil, nil, Reg1)
 
 NeuralNetworkModel:addLayer(2, false, "StableSoftmax", Reg2)
 

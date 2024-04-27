@@ -10,7 +10,7 @@ Contains a table of matrices.
 
 ## Notes
 
-* Setting an activation function at the first layer does nothing.
+* Only number of neurons is used for the first layer.
 
 ## Constructors
 

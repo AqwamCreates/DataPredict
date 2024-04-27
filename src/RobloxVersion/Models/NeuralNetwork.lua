@@ -555,7 +555,7 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 	local numberOfLayers = #self.numberOfNeuronsTable
 
 	local zLayerMatrix
-	
+
 	local layerCostMatrix = lossMatrix
 
 	table.insert(errorMatrixTable, layerCostMatrix)
@@ -567,15 +567,15 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 		local derivativeFunction = derivativeList[activationFunctionName]
 
 		local layerMatrix = self.ModelParameters[layerNumber]
-		
-		local hasBiasNeuron = self.hasBiasNeuronTable[layerNumber + 1]
+
+		local hasBiasNeuron = self.hasBiasNeuronTable[layerNumber]
 
 		local layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 
 		local partialErrorMatrix = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
 		local derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
-		
+
 		if (hasBiasNeuron == 1) then
 
 			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative of bias is 0.

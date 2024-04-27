@@ -534,18 +534,6 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 
 	end
 
-	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
-
-	local activationFunction = activationFunctionList[activationFunctionName]
-	
-	layerZ = inputMatrix
-
-	inputMatrix = activationFunction(layerZ)
-
-	table.insert(zTable, layerZ)
-
-	table.insert(forwardPropagateTable, inputMatrix)
-
 	if saveTables then
 
 		self.forwardPropagateTable = forwardPropagateTable
@@ -567,16 +555,8 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 	local numberOfLayers = #self.numberOfNeuronsTable
 
 	local zLayerMatrix
-
-	local activationFunctionName = self.activationFunctionTable[numberOfLayers]
-
-	local hasBiasNeuron = self.hasBiasNeuronTable[numberOfLayers]
-
-	local derivativeFunction = derivativeList[activationFunctionName]
-
-	local derivativeMatrix = derivativeFunction(forwardPropagateTable[numberOfLayers], zTable[numberOfLayers])
-
-	local layerCostMatrix = AqwamMatrixLibrary:multiply(lossMatrix, derivativeMatrix)
+	
+	local layerCostMatrix = lossMatrix
 
 	table.insert(errorMatrixTable, layerCostMatrix)
 

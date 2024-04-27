@@ -76,7 +76,7 @@ WassersteinGenerativeAdversarialNetwork:setDiscriminator(Discriminator: Model)
 
 ### getGenerator()
 
-Sets the Generator into the model. 
+Gets the Generator from the model. 
 
 ```
 WassersteinGenerativeAdversarialNetwork:getGenerator(): Model
@@ -86,12 +86,12 @@ WassersteinGenerativeAdversarialNetwork:getGenerator(): Model
 
 * Generator: The model used for generating contents out of random noise.
 
-### setDiscriminator()
+### getDiscriminator()
 
-Sets the Discriminator into the model. 
+Gets the Discriminator from the model. 
 
 ```
-WassersteinGenerativeAdversarialNetwork:setDiscriminator(): Model
+WassersteinGenerativeAdversarialNetwork:getDiscriminator(): Model
 ```
 
 #### Returns:

@@ -2,7 +2,7 @@
 
 AsynchronousAdvantageCritic is a base class for reinforcement learning.
 
-## Notes:
+## Notes
 
 * The Actor and Critic child models must be created separately. Then use addActorCriticModel() to put it inside the AsynchronousAdvantageActorCritic model.
 

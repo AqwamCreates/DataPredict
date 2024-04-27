@@ -568,8 +568,6 @@ function NeuralNetworkModel:calculateErrorMatrix(lossMatrix, forwardPropagateTab
 
 		local layerMatrix = self.ModelParameters[layerNumber]
 
-		local hasBiasNeuron = self.hasBiasNeuronTable[layerNumber]
-
 		local layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 
 		local partialErrorMatrix = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
@@ -628,11 +626,11 @@ function NeuralNetworkModel:calculateCostFunctionDerivatives(deltaTable, numberO
 
 		local costFunctionDerivatives = deltaTable[layerNumber]
 
-		local learningRate = self.learningRateTable[layerNumber]
+		local learningRate = self.learningRateTable[layerNumber + 1]
 
-		local Regularization = self.RegularizationTable[layerNumber]
+		local Regularization = self.RegularizationTable[layerNumber + 1]
 
-		local Optimizer = self.OptimizerTable[layerNumber]
+		local Optimizer = self.OptimizerTable[layerNumber + 1]
 
 		local weightMatrix = self.ModelParameters[layerNumber]
 
@@ -683,22 +681,6 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativesTable)
 	end
 
 	return NewModelParameters
-
-end
-
-function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix)
-
-	local numberOfData = #logisticMatrix
-
-	local subtractedMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
-
-	local squaredSubtractedMatrix = AqwamMatrixLibrary:power(subtractedMatrix, 2)
-
-	local sumSquaredSubtractedMatrix = AqwamMatrixLibrary:sum(squaredSubtractedMatrix)
-
-	local cost = sumSquaredSubtractedMatrix / numberOfData
-
-	return cost
 
 end
 

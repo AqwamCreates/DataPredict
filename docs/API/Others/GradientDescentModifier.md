@@ -2,7 +2,7 @@
 
 Modifies the model's batch gradient descent to other modes.
 
-## Note:
+## Notes
 
 * When using "Stochastic" mode, make sure you set the model's max number of iterations to 1.
 

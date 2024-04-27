@@ -10,7 +10,7 @@ Contains a table of matrices.
 
 ## Notes
 
-* Only number of neurons is used for the first layer.
+* Only numberOfNeurons and hasBiasNeurons parameters are used for the first layer.
 
 ## Constructors
 

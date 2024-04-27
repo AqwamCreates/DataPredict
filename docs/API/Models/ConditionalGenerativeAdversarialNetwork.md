@@ -2,7 +2,7 @@
 
 ConditionalGenerativeAdversarialNetwork uses two neural networks to generate new contents from noise.
 
-## Notes:
+## Notes
 
 * The Generator and Discriminator models must be created separately. Then use setGenerator() and setDiscriminator() to put it inside the GenerativeAdversarialNetwork model.
 

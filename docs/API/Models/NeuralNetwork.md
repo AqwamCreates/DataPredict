@@ -8,6 +8,10 @@ Contains a table of matrices.
 
 * ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J. The row I indicates the number of neurons in the previous layer, while column J indicates the number of neurons in the next layer.
 
+## Note
+
+* Setting an activation function at the first layer does nothing.
+
 ## Constructors
 
 ### new()

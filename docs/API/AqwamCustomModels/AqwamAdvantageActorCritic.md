@@ -8,7 +8,7 @@ Aqwam's version of AdvantageActorCritic have two types of actions: sampled actio
 
 The theory is that the when a "sampled action" is associated with a positive reward, it pushes the probability to choose the "sampled action" higher. This leads to "sampled action" more likely to become "selected action".
 
-The algorithm was found by accident when I incorrectly implemented the AdvantageActorCritic at first.
+The algorithm was found by accident when I first incorrectly implemented the AdvantageActorCritic model.
 
 ## Notes
 

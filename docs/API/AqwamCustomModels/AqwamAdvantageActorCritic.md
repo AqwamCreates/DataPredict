@@ -4,7 +4,7 @@ AqwamAdvantageActorCritic is a base class for reinforcement learning.
 
 It is more sample efficient than the AdvantageActorCritic model, but its mathematical proof might be incorrect or non-existent. 
 
-Aqwam's version of AdvantageActorCritic have two types of actions: sampled action and selected action. An AI will act on "selected action" that has highest value but the AI will reward on "sampled action". 
+Aqwam's version of AdvantageActorCritic have two types of actions: "sampled action" and "selected action". An AI will act on "selected action" that has highest value but the AI will reward on "sampled action". 
 
 The theory is that the when a "sampled action" is associated with a positive reward, it pushes the probability to choose the "sampled action" higher. This leads to "sampled action" more likely to become "selected action". This also allows the algorithm not requiring additional exploration techniques. 
 

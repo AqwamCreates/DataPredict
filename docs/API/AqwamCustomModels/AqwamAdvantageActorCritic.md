@@ -6,7 +6,7 @@ It is more sample efficient than the AdvantageActorCritic model, but its mathema
 
 Aqwam's version of AdvantageActorCritic have two types of actions: sampled action and selected action. An AI will act on "selected action" that has highest value but the AI will reward on "sampled action". 
 
-The theory is that the when a "sampled action" is associated with a positive reward, it pushes the probability to choose the "sampled action" higher. This leads to "sampled action" more likely to become "selected action".
+The theory is that the when a "sampled action" is associated with a positive reward, it pushes the probability to choose the "sampled action" higher. This leads to "sampled action" more likely to become "selected action". This allows the algorithm not requiring additional exploration techniques.
 
 The algorithm was found by accident when I first incorrectly implemented the AdvantageActorCritic model.
 

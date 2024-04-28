@@ -166,6 +166,8 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	
 	meanGeneratorLossVector = AqwamMatrixLibrary:multiply(-1, meanGeneratorLossVector)
 	
+	meanGeneratorLossVector = AqwamMatrixLibrary:createMatrix(1, discriminatorInputNumberOfFeatures, meanGeneratorLossVector[1][1])
+	
 	Generator:forwardPropagate(generatorInputMatrix, true)
 
 	Generator:backPropagate(meanGeneratorLossVector, true)

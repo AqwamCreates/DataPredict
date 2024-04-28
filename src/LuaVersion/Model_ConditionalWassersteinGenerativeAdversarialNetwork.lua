@@ -1,52 +1,56 @@
-WassersteinGenerativeAdversarialNetworkModel = {}
+ConditionalWassersteinGenerativeAdversarialNetworkModel = {}
 
-WassersteinGenerativeAdversarialNetworkModel.__index = WassersteinGenerativeAdversarialNetworkModel
+ConditionalWassersteinGenerativeAdversarialNetworkModel.__index = ConditionalWassersteinGenerativeAdversarialNetworkModel
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 
 local defaultSampleSize = 3
 
-local function sample(matrix, sampleSize)
+local function sample(matrix1, matrix2, sampleSize)
 
-	local matrixBatch = {}
+	local matrix1Batch = {}
+	
+	local matrix2Batch = {}
 
-	local numberOfData = #matrix
+	local numberOfData = #matrix1
 
 	for sample = 1, sampleSize, 1 do
 
 		local randomIndex = Random.new():NextInteger(1, numberOfData)
 
-		table.insert(matrixBatch, matrix[randomIndex])
+		table.insert(matrix1Batch, matrix1[randomIndex])
+		
+		table.insert(matrix2Batch, matrix2[randomIndex])
 
 	end
 
-	return matrixBatch
+	return matrix1, matrix2
 
 end
 
-function WassersteinGenerativeAdversarialNetworkModel.new(maxNumberOfIterations, sampleSize)
+function ConditionalWassersteinGenerativeAdversarialNetworkModel.new(maxNumberOfIterations, sampleSize)
 	
-	local NewWassersteinGenerativeAdversarialNetworkModel = {}
+	local NewConditionalWassersteinGenerativeAdversarialNetworkModel = {}
 	
-	setmetatable(NewWassersteinGenerativeAdversarialNetworkModel, WassersteinGenerativeAdversarialNetworkModel)
+	setmetatable(NewConditionalWassersteinGenerativeAdversarialNetworkModel, ConditionalWassersteinGenerativeAdversarialNetworkModel)
 	
-	NewWassersteinGenerativeAdversarialNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewConditionalWassersteinGenerativeAdversarialNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
-	NewWassersteinGenerativeAdversarialNetworkModel.sampleSize = sampleSize or defaultSampleSize
+	NewConditionalWassersteinGenerativeAdversarialNetworkModel.sampleSize = sampleSize or defaultSampleSize
 	
-	NewWassersteinGenerativeAdversarialNetworkModel.isOutputPrinted = true
+	NewConditionalWassersteinGenerativeAdversarialNetworkModel.isOutputPrinted = true
 	
-	NewWassersteinGenerativeAdversarialNetworkModel.Generator = nil
+	NewConditionalWassersteinGenerativeAdversarialNetworkModel.Generator = nil
 	
-	NewWassersteinGenerativeAdversarialNetworkModel.Discriminator = nil
+	NewConditionalWassersteinGenerativeAdversarialNetworkModel.Discriminator = nil
 	
-	return NewWassersteinGenerativeAdversarialNetworkModel
+	return NewConditionalWassersteinGenerativeAdversarialNetworkModel
 	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:setParameters(maxNumberOfIterations, sampleSize)
+function ConditionalWassersteinGenerativeAdversarialNetworkModel:setParameters(maxNumberOfIterations, sampleSize)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
@@ -54,19 +58,19 @@ function WassersteinGenerativeAdversarialNetworkModel:setParameters(maxNumberOfI
 	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:setDiscriminator(Discriminator)
+function ConditionalWassersteinGenerativeAdversarialNetworkModel:setDiscriminator(Discriminator)
 	
 	self.Discriminator = Discriminator
 	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:setGenerator(Generator)
+function ConditionalWassersteinGenerativeAdversarialNetworkModel:setGenerator(Generator)
 	
 	self.Generator = Generator
 	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:setPrintOutput(option)
+function ConditionalWassersteinGenerativeAdversarialNetworkModel:setPrintOutput(option)
 	
 	if (option == false) then
 
@@ -80,7 +84,7 @@ function WassersteinGenerativeAdversarialNetworkModel:setPrintOutput(option)
 	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeatureMatrix)
+function ConditionalWassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeatureMatrix, labelMatrix)
 	
 	local Discriminator = self.Discriminator
 	
@@ -89,6 +93,8 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	if (not Discriminator) then error("No discriminator neural network.") end
 	
 	if (not Generator) then error("No generator neural network.") end
+	
+	local numberOfFeaturesInLabelMatrix = #labelMatrix[1]
 	
 	local discriminatorNumberOfLayers = Generator:getNumberOfLayers()
 
@@ -110,13 +116,15 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	
 	generatorOutputNumberOfFeatures = generatorOutputNumberOfFeatures + ((generatorOutputHasBias and 1) or 0)
 	
-	if (generatorOutputNumberOfFeatures ~= discriminatorInputNumberOfFeatures) then error("The generator's output layer and the discriminator's input layer must contain the same number of neurons.") end
+	if ((generatorOutputNumberOfFeatures + numberOfFeaturesInLabelMatrix) ~= discriminatorInputNumberOfFeatures) then error("The number of neurons at the discriminator's input layer must equal to the total of number of neurons at the generator's output layer and the number of features in label matrix.") end
 	
 	if (discriminatorOutputNumberOfFeatures ~= 1) then error("The number of neurons at the discriminator's output layer must be equal to 1.") end
 	
-	if (#noiseFeatureMatrix[1] ~= generatorInputNumberOfFeatures) then error("The number of columns in noise feature matrix must contain the same number as the number of neurons in generator's input layer.") end
+	if (#realFeatureMatrix ~= #noiseFeatureMatrix) or (#realFeatureMatrix ~= #labelMatrix) then error("All matrices must contain same number of data.") end
 	
-	if (#realFeatureMatrix[1] ~= discriminatorInputNumberOfFeatures) then error("The number of columns in real feature matrix must contain the same number as the number of neurons in discriminator's input layer.") end
+	if ((#noiseFeatureMatrix[1] + numberOfFeaturesInLabelMatrix)  ~= generatorInputNumberOfFeatures) then error("The total number of columns in noise feature matrix and label matrix must contain the same number as the number of neurons in generator's input layer.") end
+	
+	if ((#realFeatureMatrix[1] + numberOfFeaturesInLabelMatrix) ~= discriminatorInputNumberOfFeatures) then error("The total number of columns in real feature matrix and label matrix must contain the same number as the number of neurons in discriminator's input layer.") end
 
 	local discriminatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, discriminatorInputNumberOfFeatures, 1)
 
@@ -124,76 +132,94 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	
 	local functionToApplyToDiscriminator = function (discriminatorRealLabel, discriminatorGeneratedLabel) return -(discriminatorRealLabel - discriminatorGeneratedLabel) end
 	
+	local concatenatedNoiseFeatureMatrix = AqwamMatrixLibrary:horizontalConcatenate(noiseFeatureMatrix, labelMatrix)
+	
+	local concatenatedRealFeatureMatrix = AqwamMatrixLibrary:horizontalConcatenate(realFeatureMatrix, labelMatrix)
+	
 	local numberOfIterations = 0
 	
 	local maxNumberOfIterations = self.maxNumberOfIterations
 	
+	local isOutputPrinted = self.isOutputPrinted
+
 	local sampleSize = self.sampleSize
-	
+
 	local isOutputPrinted = self.isOutputPrinted
 
 	repeat
-		
+
 		task.wait()
-		
-		local realFeatureMatrixBatch = sample(realFeatureMatrix, sampleSize)
-		
-		local noiseFeatureMatrixBatch = sample(noiseFeatureMatrix, sampleSize)
-		
+
+		local realFeatureMatrixBatch, noiseFeatureMatrixBatch = sample(concatenatedRealFeatureMatrix, concatenatedNoiseFeatureMatrix, sampleSize)
+
 		local generatedLabelMatrixBatch = Generator:predict(noiseFeatureMatrix, true)
-		
+
 		local discriminatorGeneratedLabelMatrix = Discriminator:predict(generatedLabelMatrixBatch, true)
-		
+
 		local discriminatorRealLabelMatrix = Discriminator:predict(realFeatureMatrixBatch, true)
-		
+
 		local meanDiscriminatorGeneratedLabelMatrix = AqwamMatrixLibrary:verticalMean(discriminatorGeneratedLabelMatrix)
-		
+
 		local meanDiscriminatorRealLabelMatrix = AqwamMatrixLibrary:verticalMean(discriminatorRealLabelMatrix)
+
+		local discriminatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToDiscriminator, meanDiscriminatorRealLabelMatrix, meanDiscriminatorGeneratedLabelMatrix)
+
+		Discriminator:forwardPropagate(discriminatorInputMatrix, true)
+
+		Discriminator:backPropagate(discriminatorLossMatrix, true)
 		
 		local discriminatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToDiscriminator, meanDiscriminatorRealLabelMatrix, meanDiscriminatorGeneratedLabelMatrix)
-		
+
 		numberOfIterations = numberOfIterations + 1
-		
+
 		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. discriminatorLossMatrix[1][1]) end
-		
+
 	until (numberOfIterations >= maxNumberOfIterations)
-	
+
 	local finalNoiseFeatureMatrixBatch = sample(noiseFeatureMatrix, sampleSize)
-	
+
 	local generatorLossMatrix = Generator:predict(finalNoiseFeatureMatrixBatch, true)
-	
+
 	local meanGeneratorLossVector = AqwamMatrixLibrary:verticalMean(generatorLossMatrix)
-	
+
 	meanGeneratorLossVector = AqwamMatrixLibrary:multiply(-1, meanGeneratorLossVector)
-	
+
 	Generator:forwardPropagate(generatorInputMatrix, true)
 
 	Generator:backPropagate(meanGeneratorLossVector, true)
 	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:evaluate(featureMatrix)
+function ConditionalWassersteinGenerativeAdversarialNetworkModel:evaluate(featureMatrix, labelMatrix)
 	
-	return self.Discriminator:predict(featureMatrix, true)
+	if (#featureMatrix ~= #labelMatrix) then error("The feature matrix and the label matrix must contain same number of data.") end
 	
-end
-
-function WassersteinGenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix)
+	local concatenatedMatrices = AqwamMatrixLibrary:horizontalConcatenate(featureMatrix, labelMatrix)
 	
-	return self.Generator:predict(noiseFeatureMatrix, true)
+	return self.Discriminator:predict(concatenatedMatrices, true)
 	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:getGenerator()
+function ConditionalWassersteinGenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix, labelMatrix)
+	
+	if (#noiseFeatureMatrix ~= #labelMatrix) then error("The noise feature matrix and the label matrix must contain same number of data.") end
 
+	local concatenatedMatrices = AqwamMatrixLibrary:horizontalConcatenate(noiseFeatureMatrix, labelMatrix)
+	
+	return self.Generator:predict(concatenatedMatrices, true)
+	
+end
+
+function ConditionalWassersteinGenerativeAdversarialNetworkModel:getGenerator()
+	
 	return self.Generator
-
+	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:getDiscriminator()
-
+function ConditionalWassersteinGenerativeAdversarialNetworkModel:getDiscriminator()
+	
 	return self.Discriminator
-
+	
 end
 
-return WassersteinGenerativeAdversarialNetworkModel
+return ConditionalWassersteinGenerativeAdversarialNetworkModel

@@ -12,7 +12,7 @@ ConditionalGenerativeAdversarialNetwork uses two neural networks to generate new
 
 * The number of neurons at the Generator's input layer must be equal to the total the number of neurons at the Discriminator's output layer and the number of features in label matrix.
 
-* It is recommended that the learning rate for the Generator is lower than the Discriminator.
+* It is recommended that the learning rate for the Generator is higher than the Discriminator.
 
 ## Constructors
 

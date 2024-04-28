@@ -21,12 +21,14 @@ ConditionalWassersteinGenerativeAdversarialNetwork uses two neural networks to g
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ConditionalWassersteinGenerativeAdversarialNetwork.new(maxNumberOfIterations: number): ModelObject
+ConditionalWassersteinGenerativeAdversarialNetwork.new(maxNumberOfIterations: number, sampleSize: number): ModelObject
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
+
+* sampleSize: How many randomly chosen data will be used from the real feature matrix and noise feature matrix on every iteration.
 
 #### Returns:
 
@@ -39,12 +41,14 @@ ConditionalWassersteinGenerativeAdversarialNetwork.new(maxNumberOfIterations: nu
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ConditionalWassersteinGenerativeAdversarialNetwork:setParameters(maxNumberOfIterations: number)
+ConditionalWassersteinGenerativeAdversarialNetwork:setParameters(maxNumberOfIterations: number, sampleSize: number)
 ```
 
 #### Parameters:
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
+
+* sampleSize: How many randomly chosen data will be used from the real feature matrix and noise feature matrix on every iteration.
 
 ### setGenerator()
 

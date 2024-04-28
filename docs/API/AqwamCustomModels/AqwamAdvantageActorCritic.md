@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [AqwamCustomModels](../AqwamCustomModels.md) - AqwamAdvantageActorCritic (Aqwam A2C)
+# [API Reference](../../API.md) - [AqwamCustomModels](../AqwamCustomModels.md) - AqwamAdvantageActorCritic (Aqwam's A2C)
 
 AqwamAdvantageActorCritic is a base class for reinforcement learning. 
 

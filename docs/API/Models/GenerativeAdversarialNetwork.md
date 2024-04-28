@@ -12,7 +12,7 @@ GenerativeAdversarialNetwork uses two neural networks to generate new contents f
 
 * The number of neurons at the Generator's output layer must be equal to the number of neurons at the Discriminator's input layer.
 
-* It is recommended that the learning rate for the Generator is lower than the Discriminator.
+* It is recommended that the learning rate for the Generator is higher than the Discriminator.
 
 ## Constructors
 

@@ -117,7 +117,9 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	if (#noiseFeatureMatrix[1] ~= generatorInputNumberOfFeatures) then error("The number of columns in noise feature matrix must contain the same number as the number of neurons in generator's input layer.") end
 	
 	if (#realFeatureMatrix[1] ~= discriminatorInputNumberOfFeatures) then error("The number of columns in real feature matrix must contain the same number as the number of neurons in discriminator's input layer.") end
-
+	
+	local sampleSize = self.sampleSize
+	
 	local discriminatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, discriminatorInputNumberOfFeatures, 1)
 
 	local generatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, generatorInputNumberOfFeatures, 1)
@@ -127,8 +129,6 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	local numberOfIterations = 0
 	
 	local maxNumberOfIterations = self.maxNumberOfIterations
-	
-	local sampleSize = self.sampleSize
 	
 	local isOutputPrinted = self.isOutputPrinted
 
@@ -152,6 +152,10 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		local discriminatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToDiscriminator, meanDiscriminatorRealLabelMatrix, meanDiscriminatorGeneratedLabelMatrix)
 		
+		Discriminator:forwardPropagate(discriminatorInputMatrix, true)
+
+		Discriminator:backPropagate(discriminatorLossMatrix, true)
+		
 		numberOfIterations = numberOfIterations + 1
 		
 		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. discriminatorLossMatrix[1][1]) end
@@ -160,7 +164,9 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	
 	local finalNoiseFeatureMatrixBatch = sample(noiseFeatureMatrix, sampleSize)
 	
-	local generatorLossMatrix = Generator:predict(finalNoiseFeatureMatrixBatch, true)
+	local finalGeneratedLabelMatrix = Generator:predict(finalNoiseFeatureMatrixBatch, true)
+	
+	local generatorLossMatrix = Discriminator:predict(finalGeneratedLabelMatrix, true)
 	
 	local meanGeneratorLossVector = AqwamMatrixLibrary:verticalMean(generatorLossMatrix)
 	

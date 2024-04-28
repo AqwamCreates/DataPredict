@@ -67,8 +67,8 @@
 |------------------------------------------------------------------------------------------------------------------------|-----------------|---------------------------------------|
 | [GenerativeAdversarialNetwork](Models/GenerativeAdversarialNetwork.md)                                                 | GAN             | Building And Art Generation           |
 | [ConditionalGenerativeAdversarialNetwork](Models/ConditionalGenerativeAdversarialNetwork.md)                           | CGAN            | Same As GAN, But Can Assign Classes   |
-| [WassersteinGenerativeAdversarialNetworkModel](Models/WassersteinGenerativeAdversarialNetwork.md)                      | WGAN            | Same As GAN, But More Advanced        |
-| [ConditionalWassersteinGenerativeAdversarialNetworkModel](Models/WassersteinGenerativeAdversarialNetwork.md)           | CWGAN           | Combination Of Both CGAN And WGAN     |
+| [WassersteinGenerativeAdversarialNetwork](Models/WassersteinGenerativeAdversarialNetwork.md)                           | WGAN            | Same As GAN, But More Advanced        |
+| [ConditionalWassersteinGenerativeAdversarialNetwork](Models/WassersteinGenerativeAdversarialNetwork.md)                | CWGAN           | Combination Of Both CGAN And WGAN     |
 
 ## BaseModels
 

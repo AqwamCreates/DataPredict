@@ -10,7 +10,7 @@ The theory is that the when a "sampled action" is associated with a positive rew
 
 Meanwhile, the original A2C model randomly samples actions for "selected action" instead of choosing action with highest values.
 
-Might be a new subset for "Markov Decision Process". I shall call it "Aqwam's Cumulative Probabilities Decision Process".
+Might be a new subset for "Markov Decision Process". I shall call it "Aqwam's Cumulative Probability Decision Process".
 
 The algorithm was found by accident when I first incorrectly implemented the AdvantageActorCritic model.
 

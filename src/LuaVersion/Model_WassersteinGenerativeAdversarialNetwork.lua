@@ -140,11 +140,11 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		local noiseFeatureMatrixBatch = sample(noiseFeatureMatrix, sampleSize)
 		
-		local generatedLabelMatrix = Generator:predict(noiseFeatureMatrix, true)
+		local generatedLabelMatrixBatch = Generator:predict(noiseFeatureMatrix, true)
 		
-		local discriminatorGeneratedLabelMatrix = Discriminator:predict(generatedLabelMatrix, true)
+		local discriminatorGeneratedLabelMatrix = Discriminator:predict(generatedLabelMatrixBatch, true)
 		
-		local discriminatorRealLabelMatrix = Discriminator:predict(realFeatureMatrix, true)
+		local discriminatorRealLabelMatrix = Discriminator:predict(realFeatureMatrixBatch, true)
 		
 		local meanDiscriminatorGeneratedLabelMatrix = AqwamMatrixLibrary:verticalMean(discriminatorGeneratedLabelMatrix)
 		

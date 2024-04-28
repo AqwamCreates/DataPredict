@@ -125,6 +125,8 @@ local ModelsDictionary = {
 	
 	WassersteinGenerativeAdversarialNetwork = require(Models.WassersteinGenerativeAdversarialNetwork),
 	
+	ConditionalWassersteinGenerativeAdversarialNetwork = require(Models.ConditionalWassersteinGenerativeAdversarialNetwork),
+	
 }
 
 local AqwamCustomModelsDictionary = {

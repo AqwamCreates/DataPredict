@@ -89,11 +89,13 @@ Do make note that if you add a bias neuron, it will not be included in the first
 Once that is covered, we will now show you on how to add multiple layers using the same function.
 
 ```lua
-NeuralNetworkModel:addLayer(2, true, "Tanh")
+
+NeuralNetworkModel:addLayer(2, true)
 
 NeuralNetworkModel:addLayer(3, true, "Tanh")
 
 NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
+
 ```
 
 In this code, we have set 3 neurons (including the bias neuron) at first layer, 4 neurons (including the bias neuron) at second layer and 2 neurons (without the bias neuron) at final layer. 
@@ -103,17 +105,19 @@ In this code, we have set 3 neurons (including the bias neuron) at first layer, 
 If you wish to use optimizers on multiple layers, then you need one optimizer for each layer. The example is shown below.
 
 ```lua
+
 local AdaptiveGradientOptimizer = DataPredict.Optimizers.AdaptiveGradient
 
 local Adagrad1 = AdaptiveGradientOptimizer.new()
 
 local Adagrad2 = AdaptiveGradientOptimizer.new()
 
-NeuralNetworkModel:addLayer(2, true, "Tanh", nil, Adagrad1)
+NeuralNetworkModel:addLayer(2, true) -- For the first layer, we can only choose number of neurons and set whether or not it has bias.
 
-NeuralNetworkModel:addLayer(3, true, "Tanh", nil, Adagrad2)
+NeuralNetworkModel:addLayer(3, true, "Tanh", nil, Adagrad1)
 
-NeuralNetworkModel:addLayer(2, false, nil, "StableSoftmax")
+NeuralNetworkModel:addLayer(2, false, "StableSoftmax", Adagrad2)
+
 ```
 
 # Regularization
@@ -121,6 +125,7 @@ NeuralNetworkModel:addLayer(2, false, nil, "StableSoftmax")
 For regularization, you can use one regularization object for each layer. You can also use one regularization object for all layers. The examples are shown below.
 
 ```lua
+
 local Regularization = DataPredict.Others.Regularization
 
 local Reg1 = Regularization.new()
@@ -129,11 +134,11 @@ local Reg2 = Regularization.new()
 
 -- Different regularization objects for each layers.
 
-NeuralNetworkModel:addLayer(2, true, "Tanh", nil, nil, Reg1)
+NeuralNetworkModel:addLayer(2, true)
 
-NeuralNetworkModel:addLayer(3, true, "Tanh", nil, nil, Reg2)
+NeuralNetworkModel:addLayer(3, true, "Tanh", nil, nil, Reg1)
 
-NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
+NeuralNetworkModel:addLayer(2, false, "StableSoftmax", Reg2)
 
 -- Same regularization object for each layers.
 
@@ -142,6 +147,7 @@ NeuralNetworkModel:addLayer(2, true, "Tanh", nil, nil, Reg1)
 NeuralNetworkModel:addLayer(3, true, "Tanh", nil, nil, Reg1)
 
 NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
+
 ```
 
 # Wrapping it all up

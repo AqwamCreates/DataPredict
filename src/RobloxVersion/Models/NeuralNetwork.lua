@@ -1633,4 +1633,10 @@ function NeuralNetworkModel:showDetails()
 
 end
 
+function NeuralNetworkModel:getNumberOfLayers()
+	
+	return #self.numberOfNeuronsTable
+	
+end
+	
 return NeuralNetworkModel

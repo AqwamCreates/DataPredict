@@ -152,13 +152,19 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		local discriminatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToDiscriminator, meanDiscriminatorRealLabelMatrix, meanDiscriminatorGeneratedLabelMatrix)
 		
+		local totalDiscriminatorCost = AqwamMatrixLibrary:power(discriminatorLossMatrix, 2)
+		
+		totalDiscriminatorCost = AqwamMatrixLibrary:sum(totalDiscriminatorCost)
+		
+		totalDiscriminatorCost = totalDiscriminatorCost / sampleSize
+		
 		Discriminator:forwardPropagate(discriminatorInputMatrix, true)
 		
 		Discriminator:backPropagate(discriminatorLossMatrix, true)
 		
 		numberOfIterations = numberOfIterations + 1
 		
-		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. discriminatorLossMatrix[1][1]) end
+		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. totalDiscriminatorCost) end
 		
 	until (numberOfIterations >= maxNumberOfIterations)
 	

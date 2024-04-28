@@ -56,8 +56,6 @@ function AdvantageActorCriticModel.new(discountFactor)
 
 		local advantageValue = rewardValue + (NewAdvantageActorCriticModel.discountFactor * currentCriticValue) - previousCriticValue
 
-		local numberOfActions = #allOutputsMatrix[1]
-
 		local actionIndex = table.find(NewAdvantageActorCriticModel.ActorModel:getClassesList(), action)
 
 		local actionProbability = actionProbabilityVector[1][actionIndex]

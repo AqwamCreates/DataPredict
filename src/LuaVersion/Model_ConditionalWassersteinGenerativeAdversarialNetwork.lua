@@ -8,11 +8,13 @@ local defaultMaxNumberOfIterations = 500
 
 local defaultSampleSize = 3
 
-local function sample(matrix1, matrix2, sampleSize)
+local function sampleGroup(matrix1, matrix2, matrix3, sampleSize)
 
 	local matrix1Batch = {}
 	
 	local matrix2Batch = {}
+	
+	local matrix3Batch = {}
 
 	local numberOfData = #matrix1
 
@@ -23,10 +25,35 @@ local function sample(matrix1, matrix2, sampleSize)
 		table.insert(matrix1Batch, matrix1[randomIndex])
 		
 		table.insert(matrix2Batch, matrix2[randomIndex])
+		
+		table.insert(matrix3Batch, matrix3[randomIndex])
 
 	end
 
-	return matrix1, matrix2
+	return matrix1Batch, matrix2Batch, matrix3Batch
+
+end
+
+local function samplePair(matrix, matrix2, sampleSize)
+
+	local matrix1Batch = {}
+	
+	local matrix2Batch = {}
+
+	local numberOfData = #matrix
+
+	for sample = 1, sampleSize, 1 do
+
+		local randomIndex = Random.new():NextInteger(1, numberOfData)
+
+		table.insert(matrix1Batch, matrix[randomIndex])
+		
+		table.insert(matrix2Batch, matrix2[randomIndex])
+
+
+	end
+
+	return matrix1Batch, matrix2Batch
 
 end
 
@@ -150,11 +177,13 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:train(realFeatu
 
 		task.wait()
 
-		local realFeatureMatrixBatch, noiseFeatureMatrixBatch = sample(concatenatedRealFeatureMatrix, concatenatedNoiseFeatureMatrix, sampleSize)
+		local realFeatureMatrixBatch, noiseFeatureMatrixBatch, labelMatrixBatch = sampleGroup(concatenatedRealFeatureMatrix, concatenatedNoiseFeatureMatrix, labelMatrix, sampleSize)
 
-		local generatedLabelMatrixBatch = Generator:predict(noiseFeatureMatrix, true)
+		local generatedLabelMatrixBatch = Generator:predict(noiseFeatureMatrixBatch, true)
+		
+		local concatenatedAndGeneratedLabelMatrix = AqwamMatrixLibrary:horizontalConcatenate(generatedLabelMatrixBatch, labelMatrixBatch)
 
-		local discriminatorGeneratedLabelMatrix = Discriminator:predict(generatedLabelMatrixBatch, true)
+		local discriminatorGeneratedLabelMatrix = Discriminator:predict(concatenatedAndGeneratedLabelMatrix, true)
 
 		local discriminatorRealLabelMatrix = Discriminator:predict(realFeatureMatrixBatch, true)
 
@@ -167,8 +196,6 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:train(realFeatu
 		Discriminator:forwardPropagate(discriminatorInputMatrix, true)
 
 		Discriminator:backPropagate(discriminatorLossMatrix, true)
-		
-		local discriminatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToDiscriminator, meanDiscriminatorRealLabelMatrix, meanDiscriminatorGeneratedLabelMatrix)
 
 		numberOfIterations = numberOfIterations + 1
 
@@ -176,13 +203,19 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:train(realFeatu
 
 	until (numberOfIterations >= maxNumberOfIterations)
 
-	local finalNoiseFeatureMatrixBatch = sample(noiseFeatureMatrix, sampleSize)
+	local finalNoiseFeatureMatrixBatch, finalLabelMatrixBatch = samplePair(concatenatedNoiseFeatureMatrix, labelMatrix, sampleSize)
 
-	local generatorLossMatrix = Generator:predict(finalNoiseFeatureMatrixBatch, true)
+	local finalGeneratedLabelMatrix = Generator:predict(finalNoiseFeatureMatrixBatch, true)
+	
+	local finalConcatenatedAndGeneratedLabelMatrix = AqwamMatrixLibrary:horizontalConcatenate(finalGeneratedLabelMatrix, finalLabelMatrixBatch)
+	
+	local generatorLossMatrix = Discriminator:predict(finalConcatenatedAndGeneratedLabelMatrix, true)
 
 	local meanGeneratorLossVector = AqwamMatrixLibrary:verticalMean(generatorLossMatrix)
 
 	meanGeneratorLossVector = AqwamMatrixLibrary:multiply(-1, meanGeneratorLossVector)
+	
+	meanGeneratorLossVector = AqwamMatrixLibrary:createMatrix(1, generatorOutputNumberOfFeatures, meanGeneratorLossVector[1][1])
 
 	Generator:forwardPropagate(generatorInputMatrix, true)
 

@@ -1,6 +1,14 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - AqwamAdvantageActorCritic (Aqwam A2C)
 
-AqwamAdvantageActorCritic is a base class for reinforcement learning.
+AqwamAdvantageActorCritic is a base class for reinforcement learning. 
+
+It is more sample efficient than the AdvantageActorCritic model, but its mathematical proof might be incorrect or non-existent. 
+
+Aqwam's version of AdvantageActorCritic have two types of actions: sampled action and selected action. An AI will act on "selected action" that has highest value but the AI will reward on "sampled action". 
+
+The theory is that the when a "sampled action" is associated with a positive reward, it pushes the probability to choose the "sampled action" higher. This leads to "sampled action" more likely to become "selected action".
+
+The algorithm was found by accident when I incorrectly implemented the AdvantageActorCritic at first.
 
 ## Notes
 
@@ -9,6 +17,8 @@ AqwamAdvantageActorCritic is a base class for reinforcement learning.
 * Actor and Critic models must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 
 * Ensure the final layer of the Critic model has only one neuron. It is the default setting for all Critic models in research papers.
+
+* Ensure you choose actions that have highest values for best results.
 
 ## Constructors
 

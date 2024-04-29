@@ -58,16 +58,20 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 
-		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
+		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
 
-		numberOfFeatures += (hasBias and 1) or 0
+		local numberOfLayers = ActorModel:getNumberOfLayers()
+
+		local numberOfNeuronsAtFinalLayer = ActorModel:getTotalNumberOfNeurons(numberOfLayers)
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+
+		local actorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumGradient)
 
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)
 
-		ActorModel:backPropagate(-sumGradient, true)
+		ActorModel:backPropagate(actorLossVector, true)
 		CriticModel:backPropagate(sumAdvantage, true)
 		
 		table.clear(advantageHistory)

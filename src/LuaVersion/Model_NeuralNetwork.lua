@@ -1475,13 +1475,13 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 end
 
 function NeuralNetworkModel:reset()
-	
+
 	for i, Optimizer in ipairs(self.OptimizerTable) do
 
 		if (Optimizer ~= 0) then Optimizer:reset() end
 
 	end
-	
+
 end
 
 function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)

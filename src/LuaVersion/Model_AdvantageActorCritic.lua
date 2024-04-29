@@ -115,6 +115,7 @@ function AdvantageActorCriticModel.new(discountFactor)
 		table.clear(actionProbabilityHistory)
 
 	end)
+	end)
 
 	NewAdvantageActorCriticModel:extendResetFunction(function()
 

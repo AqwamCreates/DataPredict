@@ -112,16 +112,18 @@ function AqwamAdvantageActorCriticModel.new(discountFactor)
 
 		local CriticModel = NewAqwamAdvantageActorCriticModel.CriticModel
 
-		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
-
-		numberOfFeatures += (hasBias and 1) or 0
+		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
+		
+		local numberOfNeuronsAtFinalLayer = ActorModel:getTotalNumberOfNeurons(ActorModel:getNumberOfLayers())
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+		
+		sumActorLosses = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumActorLosses)
 
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)
 
-		ActorModel:backPropagate(-sumActorLosses, true)
+		ActorModel:backPropagate(sumActorLosses, true)
 		CriticModel:backPropagate(-sumCriticLosses, true)
 
 		table.clear(advantageHistory)

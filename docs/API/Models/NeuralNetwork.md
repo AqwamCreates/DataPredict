@@ -401,6 +401,22 @@ NeuralNetwork:getNumberOfLayers(): number
 
 * numberOfLayers: The number of layers contained in the NeuralNetwork model.
 
+### getTotalNumberOfNeurons()
+
+Gets the total number of neurons (including the bias if present) at the selected layer number.
+
+```
+NeuralNetwork:getTotalNumberOfNeurons(layerNumber: number): number
+```
+
+#### Returns:
+
+* layerNumber: The layer number to fetch the total number of neurons.
+
+#### Returns:
+
+* totalNumberOfNeurons: The number of neurons including the bias.
+
 ## Inherited From
 
 * [GradientMethodBaseModel](GradientMethodBaseModel.md)

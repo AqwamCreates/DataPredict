@@ -4,7 +4,7 @@ ConditionalGenerativeAdversarialNetwork uses two neural networks to generate new
 
 ## Notes
 
-* The Generator and Discriminator models must be created separately. Then use setGenerator() and setDiscriminator() to put it inside the ConditionalGenerativeAdversarialNetwork model.
+* The Generator and Discriminator models must be created separately. Then use setGeneratorModel() and setDiscriminatorModel() to put it inside the ConditionalGenerativeAdversarialNetwork model.
 
 * Generator and Discriminator models must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 

@@ -38,9 +38,9 @@ function WassersteinGenerativeAdversarialNetworkModel.new(maxNumberOfIterations,
 	
 	NewWassersteinGenerativeAdversarialNetworkModel.isOutputPrinted = true
 	
-	NewWassersteinGenerativeAdversarialNetworkModel.Generator = nil
+	NewWassersteinGenerativeAdversarialNetworkModel.GeneratorModel = nil
 	
-	NewWassersteinGenerativeAdversarialNetworkModel.Discriminator = nil
+	NewWassersteinGenerativeAdversarialNetworkModel.DiscriminatorModel = nil
 	
 	return NewWassersteinGenerativeAdversarialNetworkModel
 	
@@ -54,15 +54,15 @@ function WassersteinGenerativeAdversarialNetworkModel:setParameters(maxNumberOfI
 	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:setDiscriminator(Discriminator)
+function WassersteinGenerativeAdversarialNetworkModel:setDiscriminatorModel(DiscriminatorModel)
 	
-	self.Discriminator = Discriminator
+	self.DiscriminatorModel = DiscriminatorModel
 	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:setGenerator(Generator)
+function WassersteinGenerativeAdversarialNetworkModel:setGeneratorModel(GeneratorModel)
 	
-	self.Generator = Generator
+	self.GeneratorModel = GeneratorModel
 	
 end
 
@@ -82,25 +82,25 @@ end
 
 function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeatureMatrix)
 	
-	local Discriminator = self.Discriminator
+	local DiscriminatorModel = self.DiscriminatorModel
 	
-	local Generator = self.Generator
+	local GeneratorModel = self.GeneratorModel
 	
-	if (not Discriminator) then error("No discriminator neural network.") end
+	if (not DiscriminatorModel) then error("No discriminator neural network.") end
 	
-	if (not Generator) then error("No generator neural network.") end
+	if (not GeneratorModel) then error("No generator neural network.") end
 	
-	local discriminatorNumberOfLayers = Generator:getNumberOfLayers()
+	local discriminatorNumberOfLayers = GeneratorModel:getNumberOfLayers()
 
-	local generatorNumberOfLayers = Generator:getNumberOfLayers()
+	local generatorNumberOfLayers = GeneratorModel:getNumberOfLayers()
 	
-	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = Discriminator:getLayer(1)
+	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 	
-	local generatorInputNumberOfFeatures, generatorInputHasBias = Generator:getLayer(1)
+	local generatorInputNumberOfFeatures, generatorInputHasBias = GeneratorModel:getLayer(1)
 	
-	local discriminatorOutputNumberOfFeatures, discriminatorOutputHasBias = Discriminator:getLayer(discriminatorNumberOfLayers)
+	local discriminatorOutputNumberOfFeatures, discriminatorOutputHasBias = DiscriminatorModel:getLayer(discriminatorNumberOfLayers)
 
-	local generatorOutputNumberOfFeatures, generatorOutputHasBias = Generator:getLayer(generatorNumberOfLayers)
+	local generatorOutputNumberOfFeatures, generatorOutputHasBias = GeneratorModel:getLayer(generatorNumberOfLayers)
 	
 	discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 
@@ -140,11 +140,11 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		local noiseFeatureMatrixBatch = sample(noiseFeatureMatrix, sampleSize)
 		
-		local generatedLabelMatrixBatch = Generator:predict(noiseFeatureMatrix, true)
+		local generatedLabelMatrixBatch = GeneratorModel:predict(noiseFeatureMatrix, true)
 		
-		local discriminatorGeneratedLabelMatrix = Discriminator:predict(generatedLabelMatrixBatch, true)
+		local discriminatorGeneratedLabelMatrix = DiscriminatorModel:predict(generatedLabelMatrixBatch, true)
 		
-		local discriminatorRealLabelMatrix = Discriminator:predict(realFeatureMatrixBatch, true)
+		local discriminatorRealLabelMatrix = DiscriminatorModel:predict(realFeatureMatrixBatch, true)
 		
 		local meanDiscriminatorGeneratedLabelMatrix = AqwamMatrixLibrary:verticalMean(discriminatorGeneratedLabelMatrix)
 		
@@ -152,9 +152,9 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		local discriminatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToDiscriminator, meanDiscriminatorRealLabelMatrix, meanDiscriminatorGeneratedLabelMatrix)
 		
-		Discriminator:forwardPropagate(discriminatorInputMatrix, true)
+		DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
 
-		Discriminator:backPropagate(discriminatorLossMatrix, true)
+		DiscriminatorModel:backPropagate(discriminatorLossMatrix, true)
 		
 		numberOfIterations = numberOfIterations + 1
 		
@@ -164,9 +164,9 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	
 	local finalNoiseFeatureMatrixBatch = sample(noiseFeatureMatrix, sampleSize)
 	
-	local finalGeneratedLabelMatrix = Generator:predict(finalNoiseFeatureMatrixBatch, true)
+	local finalGeneratedLabelMatrix = GeneratorModel:predict(finalNoiseFeatureMatrixBatch, true)
 	
-	local generatorLossMatrix = Discriminator:predict(finalGeneratedLabelMatrix, true)
+	local generatorLossMatrix = DiscriminatorModel:predict(finalGeneratedLabelMatrix, true)
 	
 	local meanGeneratorLossVector = AqwamMatrixLibrary:verticalMean(generatorLossMatrix)
 	
@@ -174,33 +174,33 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	
 	meanGeneratorLossVector = AqwamMatrixLibrary:createMatrix(1, generatorOutputNumberOfFeatures, meanGeneratorLossVector[1][1])
 	
-	Generator:forwardPropagate(generatorInputMatrix, true)
+	GeneratorModel:forwardPropagate(generatorInputMatrix, true)
 
-	Generator:backPropagate(meanGeneratorLossVector, true)
+	GeneratorModel:backPropagate(meanGeneratorLossVector, true)
 	
 end
 
 function WassersteinGenerativeAdversarialNetworkModel:evaluate(featureMatrix)
 	
-	return self.Discriminator:predict(featureMatrix, true)
+	return self.DiscriminatorModel:predict(featureMatrix, true)
 	
 end
 
 function WassersteinGenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix)
 	
-	return self.Generator:predict(noiseFeatureMatrix, true)
+	return self.GeneratorModel:predict(noiseFeatureMatrix, true)
 	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:getGenerator()
+function WassersteinGenerativeAdversarialNetworkModel:getGeneratorModel()
 
-	return self.Generator
+	return self.GeneratorModel
 
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:getDiscriminator()
+function WassersteinGenerativeAdversarialNetworkModel:getDiscriminatorModel()
 
-	return self.Discriminator
+	return self.DiscriminatorModel
 
 end
 

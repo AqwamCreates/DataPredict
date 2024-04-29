@@ -1138,6 +1138,12 @@ function NeuralNetworkModel:getLayer(layerNumber)
 
 end
 
+function NeuralNetworkModel:getTotalNumberOfNeurons(layerNumber)
+	
+	return self.numberOfNeuronsTable[layerNumber] + self.hasBiasNeuronTable[layerNumber]
+	
+end
+
 local function areNumbersOnlyInList(list)
 
 	for i, value in ipairs(list) do

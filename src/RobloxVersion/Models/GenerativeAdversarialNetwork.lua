@@ -30,7 +30,7 @@ function GenerativeAdversarialNetworkModel:setParameters(maxNumberOfIterations)
 	
 end
 
-function GenerativeAdversarialNetworkModel:setDiscriminator(DiscriminatorModel)
+function GenerativeAdversarialNetworkModel:setDiscriminatorModel(DiscriminatorModel)
 	
 	self.DiscriminatorModel = DiscriminatorModel
 	

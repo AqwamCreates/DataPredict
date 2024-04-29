@@ -4,7 +4,7 @@ ConditionalWassersteinGenerativeAdversarialNetwork uses two neural networks to g
 
 ## Notes
 
-* The Generator and Discriminator models must be created separately. Then use setGenerator() and setDiscriminator() to put it inside the ConditionalWassersteinGenerativeAdversarialNetwork model.
+* The Generator and Discriminator models must be created separately. Then use setGeneratorModel() and setDiscriminatorModel() to put it inside the ConditionalWassersteinGenerativeAdversarialNetwork model.
 
 * Generator and Discriminator models must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 
@@ -50,53 +50,53 @@ ConditionalWassersteinGenerativeAdversarialNetwork:setParameters(maxNumberOfIter
 
 * sampleSize: How many randomly chosen data will be used from the real feature matrix and noise feature matrix on every iteration.
 
-### setGenerator()
+### setGeneratorModel()
 
 Sets the Generator into the model. 
 
 ```
-ConditionalWassersteinGenerativeAdversarialNetwork:setGenerator(Generator: Model)
+ConditionalWassersteinGenerativeAdversarialNetwork:setGeneratorModel(GeneratorModel: Model)
 ```
 
 #### Parameters:
 
-* Generator: The model to be used for generating contents out of random noise.
+* GeneratorModel: The model to be used for generating contents out of random noise.
 
-### setDiscriminator()
+### setDiscriminatorModel()
 
 Sets the Discriminator into the model. 
 
 ```
-ConditionalWassersteinGenerativeAdversarialNetwork:setDiscriminator(Discriminator: Model)
+ConditionalWassersteinGenerativeAdversarialNetwork:setDiscriminatorModel(DiscriminatorModel: Model)
 ```
 
 #### Parameters:
 
-* Discriminator: The model to be used for discriminating real and fake contents.
+* DiscriminatorModel: The model to be used for discriminating real and fake contents.
 
-### getGenerator()
+### getGeneratorModel()
 
 Gets the Generator from the model. 
 
 ```
-ConditionalWassersteinGenerativeAdversarialNetwork:getGenerator(): Model
+ConditionalWassersteinGenerativeAdversarialNetwork:getGeneratorModel(): Model
 ```
 
 #### Returns:
 
-* Generator: The model used for generating contents out of random noise.
+* GeneratorModel: The model used for generating contents out of random noise.
 
-### getDiscriminator()
+### getDiscriminatorModel()
 
 Gets the Discriminator from the model. 
 
 ```
-ConditionalWassersteinGenerativeAdversarialNetwork:getDiscriminator(): Model
+ConditionalWassersteinGenerativeAdversarialNetwork:getDiscriminatorModel(): Model
 ```
 
 #### Returns:
 
-* Discriminator: The model used for discriminating real and fake contents.
+* DiscriminatorModel: The model used for discriminating real and fake contents.
 
 ### train()
 

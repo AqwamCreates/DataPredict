@@ -16,9 +16,9 @@ function ConditionalGenerativeAdversarialNetworkModel.new(maxNumberOfIterations)
 	
 	NewConditionalGenerativeAdversarialNetworkModel.isOutputPrinted = true
 	
-	NewConditionalGenerativeAdversarialNetworkModel.Generator = nil
+	NewConditionalGenerativeAdversarialNetworkModel.GeneratorModel = nil
 	
-	NewConditionalGenerativeAdversarialNetworkModel.Discriminator = nil
+	NewConditionalGenerativeAdversarialNetworkModel.DiscriminatorModel = nil
 	
 	return NewConditionalGenerativeAdversarialNetworkModel
 	
@@ -30,15 +30,15 @@ function ConditionalGenerativeAdversarialNetworkModel:setParameters(maxNumberOfI
 	
 end
 
-function ConditionalGenerativeAdversarialNetworkModel:setDiscriminator(Discriminator)
+function ConditionalGenerativeAdversarialNetworkModel:setDiscriminatorModel(DiscriminatorModel)
 	
-	self.Discriminator = Discriminator
+	self.DiscriminatorModel = DiscriminatorModel
 	
 end
 
-function ConditionalGenerativeAdversarialNetworkModel:setGenerator(Generator)
+function ConditionalGenerativeAdversarialNetworkModel:setGeneratorModel(GeneratorModel)
 	
-	self.Generator = Generator
+	self.GeneratorModel = GeneratorModel
 	
 end
 
@@ -58,27 +58,27 @@ end
 
 function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeatureMatrix, labelMatrix)
 	
-	local Discriminator = self.Discriminator
+	local DiscriminatorModel = self.DiscriminatorModel
 	
-	local Generator = self.Generator
+	local GeneratorModel = self.GeneratorModel
 	
-	if (not Discriminator) then error("No discriminator neural network.") end
+	if (not DiscriminatorModel) then error("No discriminator neural network.") end
 	
-	if (not Generator) then error("No generator neural network.") end
+	if (not GeneratorModel) then error("No generator neural network.") end
 	
 	local numberOfFeaturesInLabelMatrix = #labelMatrix[1]
 	
-	local discriminatorNumberOfLayers = Generator:getNumberOfLayers()
+	local discriminatorNumberOfLayers = GeneratorModel:getNumberOfLayers()
 
-	local generatorNumberOfLayers = Generator:getNumberOfLayers()
+	local generatorNumberOfLayers = GeneratorModel:getNumberOfLayers()
 	
-	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = Discriminator:getLayer(1)
+	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 	
-	local generatorInputNumberOfFeatures, generatorInputHasBias = Generator:getLayer(1)
+	local generatorInputNumberOfFeatures, generatorInputHasBias = GeneratorModel:getLayer(1)
 	
-	local discriminatorOutputNumberOfFeatures, discriminatorOutputHasBias = Discriminator:getLayer(discriminatorNumberOfLayers)
+	local discriminatorOutputNumberOfFeatures, discriminatorOutputHasBias = DiscriminatorModel:getLayer(discriminatorNumberOfLayers)
 
-	local generatorOutputNumberOfFeatures, generatorOutputHasBias = Generator:getLayer(generatorNumberOfLayers)
+	local generatorOutputNumberOfFeatures, generatorOutputHasBias = GeneratorModel:getLayer(generatorNumberOfLayers)
 	
 	discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 
@@ -120,13 +120,13 @@ function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		task.wait()
 		
-		local generatedLabelMatrix = Generator:predict(concatenatedNoiseFeatureMatrix, true)
+		local generatedLabelMatrix = GeneratorModel:predict(concatenatedNoiseFeatureMatrix, true)
 		
 		local concatenatedAndGeneratedLabelMatrix = AqwamMatrixLibrary:horizontalConcatenate(generatedLabelMatrix, labelMatrix)
 		
-		local discriminatorGeneratedLabelMatrix = Discriminator:predict(concatenatedAndGeneratedLabelMatrix, true)
+		local discriminatorGeneratedLabelMatrix = DiscriminatorModel:predict(concatenatedAndGeneratedLabelMatrix, true)
 		
-		local discriminatorRealLabelMatrix = Discriminator:predict(concatenatedRealFeatureMatrix, true)
+		local discriminatorRealLabelMatrix = DiscriminatorModel:predict(concatenatedRealFeatureMatrix, true)
 		
 		local discriminatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToDiscriminator, discriminatorRealLabelMatrix, discriminatorGeneratedLabelMatrix)
 		
@@ -138,13 +138,13 @@ function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		meanGeneratorLossVector = AqwamMatrixLibrary:createMatrix(1, generatorOutputNumberOfFeatures, meanGeneratorLossVector[1][1])
 		
-		Discriminator:forwardPropagate(discriminatorInputMatrix, true)
+		DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
 		
-		Discriminator:backPropagate(meanDiscriminatorLossMatrix, true)
+		DiscriminatorModel:backPropagate(meanDiscriminatorLossMatrix, true)
 		
-		Generator:forwardPropagate(generatorInputMatrix, true)
+		GeneratorModel:forwardPropagate(generatorInputMatrix, true)
 		
-		Generator:backPropagate(meanGeneratorLossVector, true)
+		GeneratorModel:backPropagate(meanGeneratorLossVector, true)
 		
 		numberOfIterations = numberOfIterations + 1
 		
@@ -160,7 +160,7 @@ function ConditionalGenerativeAdversarialNetworkModel:evaluate(featureMatrix, la
 	
 	local concatenatedMatrices = AqwamMatrixLibrary:horizontalConcatenate(featureMatrix, labelMatrix)
 	
-	return self.Discriminator:predict(concatenatedMatrices, true)
+	return self.DiscriminatorModel:predict(concatenatedMatrices, true)
 	
 end
 
@@ -170,19 +170,19 @@ function ConditionalGenerativeAdversarialNetworkModel:generate(noiseFeatureMatri
 
 	local concatenatedMatrices = AqwamMatrixLibrary:horizontalConcatenate(noiseFeatureMatrix, labelMatrix)
 	
-	return self.Generator:predict(concatenatedMatrices, true)
+	return self.GeneratorModel:predict(concatenatedMatrices, true)
 	
 end
 
-function ConditionalGenerativeAdversarialNetworkModel:getGenerator()
+function ConditionalGenerativeAdversarialNetworkModel:getGeneratorModel()
 	
-	return self.Generator
+	return self.GeneratorModel
 	
 end
 
-function ConditionalGenerativeAdversarialNetworkModel:getDiscriminator()
+function ConditionalGenerativeAdversarialNetworkModel:getDiscriminatorModel()
 	
-	return self.Discriminator
+	return self.DiscriminatorModel
 	
 end
 

@@ -66,7 +66,7 @@ function ActorCriticModel.new(discountFactor)
 		
 	end)
 	
-	NewActorCriticModel:setEpisodeUpdateFunction(function()
+		NewActorCriticModel:setEpisodeUpdateFunction(function()
 		
 		local returnsHistory = {}
 
@@ -113,12 +113,12 @@ function ActorCriticModel.new(discountFactor)
 		numberOfFeatures += (hasBias and 1) or 0
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-		local lossVector = AqwamMatrixLibrary:createMatrix(1, #NewActorCriticModel.ClassesList, -sumActorLosses)
+		local actorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewActorCriticModel.ClassesList, -sumActorLosses)
 
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)
 
-		ActorModel:backPropagate(lossVector, true)
+		ActorModel:backPropagate(actorLossVector, true)
 		CriticModel:backPropagate(-sumCriticLosses, true)
 
 		table.clear(actionProbabilityHistory)

@@ -50,53 +50,53 @@ WassersteinGenerativeAdversarialNetwork:setParameters(maxNumberOfIterations: num
 
 * sampleSize: How many randomly chosen data will be used from the real feature matrix and noise feature matrix on every iteration.
 
-### setGenerator()
+### setGeneratorModel()
 
 Sets the Generator into the model. 
 
 ```
-WassersteinGenerativeAdversarialNetwork:setGenerator(Generator: Model)
+WassersteinGenerativeAdversarialNetwork:setGeneratorModel(GeneratorModel: Model)
 ```
 
 #### Parameters:
 
-* Generator: The model to be used for generating contents out of random noise.
+* GeneratorModel: The model to be used for generating contents out of random noise.
 
-### setDiscriminator()
+### setDiscriminatorModel()
 
 Sets the Discriminator into the model. 
 
 ```
-WassersteinGenerativeAdversarialNetwork:setDiscriminator(Discriminator: Model)
+WassersteinGenerativeAdversarialNetwork:setDiscriminatorModel(DiscriminatorModel: Model)
 ```
 
 #### Parameters:
 
-* Discriminator: The model to be used for discriminating real and fake contents.
+* DiscriminatorModel: The model to be used for discriminating real and fake contents.
 
-### getGenerator()
+### getGeneratorModel()
 
 Gets the Generator from the model. 
 
 ```
-WassersteinGenerativeAdversarialNetwork:getGenerator(): Model
+WassersteinGenerativeAdversarialNetwork:getGeneratorModel(): Model
 ```
 
 #### Returns:
 
-* Generator: The model used for generating contents out of random noise.
+* GeneratorModel: The model used for generating contents out of random noise.
 
 ### getDiscriminator()
 
 Gets the Discriminator from the model. 
 
 ```
-WassersteinGenerativeAdversarialNetwork:getDiscriminator(): Model
+WassersteinGenerativeAdversarialNetwork:getDiscriminatorModel(): Model
 ```
 
 #### Returns:
 
-* Discriminator: The model used for discriminating real and fake contents.
+* DiscriminatorModel: The model used for discriminating real and fake contents.
 
 ### train()
 

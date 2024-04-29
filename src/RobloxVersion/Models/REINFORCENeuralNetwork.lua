@@ -64,9 +64,9 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, discountFactor)
 			
 		end
 		
-		local numberOfNeurons = NewREINFORCENeuralNetworkModel.numberOfNeuronsTable[1] + NewREINFORCENeuralNetworkModel.hasBiasNeuronTable[1]
+		local numberOfNeurons = NewREINFORCENeuralNetworkModel:getTotalNumberOfNeurons(1)
 
-		local inputVector = {table.create(numberOfNeurons, 1)}
+		local inputVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeurons, 1)
 		
 		lossVector = AqwamMatrixLibrary:multiply(-1, lossVector)
 		

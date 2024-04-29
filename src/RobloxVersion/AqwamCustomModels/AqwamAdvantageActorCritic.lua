@@ -15,8 +15,10 @@ local function sample(vector)
 	local lowestValue = AqwamMatrixLibrary:findMinimumValueInMatrix(vector)
 	
 	local highestValue = AqwamMatrixLibrary:findMaximumValueInMatrix(vector)
+	
+	local randomValue = math.random() - math.random()
 
-	local randomValue = math.clamp(math.random() * totalValue, lowestValue, highestValue)
+	randomValue = math.clamp(randomValue * totalValue, lowestValue, highestValue)
 	
 	local cumulativeValue = 0
 

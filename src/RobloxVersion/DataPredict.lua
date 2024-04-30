@@ -133,7 +133,9 @@ local AqwamCustomModelsDictionary = {
 	
 	AdvantageLearningNeuralNetwork = require(AqwamCustomModels.AdvantageLearningNeuralNetwork),
 	
-	AqwamAdvantageActorCritic = require(AqwamCustomModels.AqwamAdvantageActorCritic),
+	AqwamAdvantageActorCriticV1 = require(AqwamCustomModels.AqwamAdvantageActorCriticV1),
+	
+	AqwamAdvantageActorCriticV2 = require(AqwamCustomModels.AqwamAdvantageActorCriticV2),
 	
 }
 

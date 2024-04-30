@@ -36,7 +36,7 @@ local function sample(probabilityVector)
 
 	end
 
-	return actionIndex
+	return index
 
 end
 

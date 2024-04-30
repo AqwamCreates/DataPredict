@@ -506,7 +506,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 
 		end
 
-		if (dropoutRate > 0) and (not doNotDropoutNeurons) then -- Don't bother using the applyFunction from AqwamMatrixLibrary. Otherwise, you cannot apply dropout at the same index for both z matrix and activation matrix
+		if (dropoutRate > 0) and (not doNotDropoutNeurons) then -- Don't bother using the applyFunction from AqwamMatrixLibrary. Otherwise, you cannot apply dropout at the same index for both z matrix and activation matrix.
 
 			local nonDropoutRate = 1 - dropoutRate
 

@@ -506,7 +506,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 
 		end
 
-		if (dropoutRate > 0) and (not doNotDropoutNeurons) then
+		if (dropoutRate > 0) and (not doNotDropoutNeurons) then -- Don't bother using the applyFunction from AqwamMatrixLibrary. Otherwise, you cannot apply dropout at the same index for both z matrix and activation matrix.
 
 			local nonDropoutRate = 1 - dropoutRate
 
@@ -644,7 +644,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivatives(deltaTable, numberO
 
 		local calculatedLearningRate = learningRate / numberOfData
 
-		if Regularization then
+		if (Regularization ~= 0) then
 
 			regularizationDerivatives = Regularization:calculateRegularizationDerivatives(weightMatrix, numberOfData)
 
@@ -848,12 +848,12 @@ function NeuralNetworkModel:generateLayers()
 
 end
 
-function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunction, learningRate, OptimizerArray, Regularization, dropoutRate)
+function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunction, learningRate, OptimizerArray, RegularizationArray, dropoutRate)
 
 	local learningRateType = typeof(learningRate)
 
 	local activationFunctionType = typeof(activationFunction)
-	
+
 	local dropoutRateType = typeof(dropoutRate)
 
 	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
@@ -861,11 +861,11 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
 
 	if (dropoutRateType ~= "nil") and (dropoutRateType ~= "number") then error("Invalid input for dropout rate!") end
-	
+
 	activationFunction = activationFunction or defaultActivationFunction
-	
+
 	learningRate = learningRate or defaultLearningRate
-	
+
 	dropoutRate = dropoutRate or defaultDropoutRate
 
 	self.ModelParameters = nil
@@ -877,7 +877,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 	self.learningRateTable = {}
 
 	self.activationFunctionTable = {}
-	
+
 	self.dropoutRateTable = {}
 
 	self.OptimizerTable = {}
@@ -891,37 +891,25 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		self.activationFunctionTable[layer] = activationFunction
 
 		self.learningRateTable[layer] = learningRate
-		
+
 		self.dropoutRateTable[layer] = dropoutRate
+		
+		self.hasBiasNeuronTable[layer] = ((layer == numberOfLayers) and 0) or 1
+		
+		self.OptimizerTable[layer] = OptimizerArray[layer] or 0
 
-		if (layer == numberOfLayers) then
-
-			self.hasBiasNeuronTable[layer] = 0
-
-			self.OptimizerTable[layer] = OptimizerArray[layer] or 0
-
-			self.RegularizationTable[layer] = Regularization
-
-		else
-
-			self.hasBiasNeuronTable[layer] = 1
-
-			self.OptimizerTable[layer] = nil
-
-			self.RegularizationTable[layer] = nil
-
-		end
+		self.RegularizationTable[layer] = RegularizationArray[layer] or 0
 
 	end
-	
+
 	self:generateLayers()
 
 end
 
 function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization, dropoutRate)
-	
+
 	layerPropertyValueTypeCheckingFunctionList["NumberOfNeurons"](numberOfNeurons)
-	
+
 	layerPropertyValueTypeCheckingFunctionList["HasBias"](hasBiasNeuron)
 
 	layerPropertyValueTypeCheckingFunctionList["ActivationFunction"](activationFunction)
@@ -931,13 +919,13 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 	layerPropertyValueTypeCheckingFunctionList["DropoutRate"](dropoutRate)
 
 	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron, true)
-	
+
 	hasBiasNeuron = (hasBiasNeuron and 1) or 0
 
 	learningRate = learningRate or defaultLearningRate
 
 	activationFunction = activationFunction or defaultActivationFunction
-	
+
 	dropoutRate = dropoutRate or defaultDropoutRate
 
 	table.insert(self.numberOfNeuronsTable, numberOfNeurons)
@@ -950,14 +938,14 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 
 	table.insert(self.OptimizerTable, Optimizer or 0)
 
-	table.insert(self.RegularizationTable, Regularization)
-	
+	table.insert(self.RegularizationTable, Regularization or 0)
+
 	table.insert(self.dropoutRateTable, dropoutRate)
 
 end
 
 function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularization, dropoutRate)
-	
+
 	if (layerNumber <= 0) then 
 
 		error("The layer number can't be less than or equal to zero!") 
@@ -967,21 +955,25 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 		error("The layer number exceeds the number of layers!") 
 
 	end 
-	
+
 	layerPropertyValueTypeCheckingFunctionList["HasBias"](hasBiasNeuron)
-	
+
 	layerPropertyValueTypeCheckingFunctionList["ActivationFunction"](activationFunction)
-	
+
 	layerPropertyValueTypeCheckingFunctionList["LearningRate"](learningRate)
-	
+
 	layerPropertyValueTypeCheckingFunctionList["DropoutRate"](dropoutRate)
-	
+
 	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron,  self.hasBiasNeuronTable[layerNumber])
-	
+
 	hasBiasNeuron = (hasBiasNeuron and 1) or 0
 	
-	Optimizer = self:getValueOrDefaultOption(Optimizer,  self.OptimizerTable[layerNumber])
+	Regularization = self:getValueOrDefaultOption(Regularization,  self.RegularizationTable[layerNumber])
 	
+	Regularization = Regularization or 0
+
+	Optimizer = self:getValueOrDefaultOption(Optimizer,  self.OptimizerTable[layerNumber])
+
 	Optimizer = Optimizer or 0
 
 	self.hasBiasNeuronTable[layerNumber] = hasBiasNeuron
@@ -992,14 +984,14 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 	self.OptimizerTable[layerNumber] = Optimizer
 
-	self.RegularizationTable[layerNumber] = Regularization or self.RegularizationTable[layerNumber]
-	
+	self.RegularizationTable[layerNumber] = Regularization
+
 	self.dropoutRateTable[layerNumber] = dropoutRate or self.dropoutRateTable[layerNumber]
 
 end
 
 function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
-	
+
 	if (layerNumber <= 0) then 
 
 		error("The layer number can't be less than or equal to zero!") 
@@ -1009,67 +1001,71 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 		error("The layer number exceeds the number of layers!") 
 
 	end 
-	
+
 	if (property == "HasBias") then
-		
+
 		layerPropertyValueTypeCheckingFunctionList["HasBias"](value)
-		
+
 		local hasBiasNeuron = self:getBooleanOrDefaultOption(value,  self.hasBiasNeuronTable[layerNumber])
 
 		hasBiasNeuron = (hasBiasNeuron and 1) or 0
 
 		self.hasBiasNeuronTable[layerNumber] = hasBiasNeuron
-		
+
 	elseif (property == "ActivationFunction") then
-		
+
 		layerPropertyValueTypeCheckingFunctionList["ActivationFunction"](value)
-		
+
 		self.activationFunctionTable[layerNumber] = value or self.activationFunctionTable[layerNumber]
-		
+
 	elseif (property == "LearningRate") then
-		
+
 		layerPropertyValueTypeCheckingFunctionList["LearningRate"](value)
-		
+
 		self.learningRateTable[layerNumber] = value or self.learningRateTable[layerNumber]
-		
+
 	elseif (property == "Optimizer") then
+
+		value = self:getValueOrDefaultOption(value, self.OptimizerTable[layerNumber])
+
+		value = value or 0
+
+		self.OptimizerTable[layerNumber] = value
+
+	elseif (property == "Regularization") then
 		
 		value = self:getValueOrDefaultOption(value, self.OptimizerTable[layerNumber])
 
 		value = value or 0
-		
-		self.OptimizerTable[layerNumber] = value
-		
-	elseif (property == "Regularization") then
-		
-		self.RegularizationTable[layerNumber] = value or self.RegularizationTable[layerNumber]
-		
+
+		self.RegularizationTable[layerNumber] = value or 0
+
 	elseif (property == "DropoutRate") then
-		
+
 		layerPropertyValueTypeCheckingFunctionList["DropoutRate"](value)
-		
+
 		self.dropoutRateTable[layerNumber] = value or self.dropoutRateTable[layerNumber]
-		
+
 	else
-		
+
 		warn("Layer property does not exists. Did not change the layer's properties.")
-		
+
 	end
-	
+
 end
 
 function NeuralNetworkModel:getLayerProperty(layerNumber, property)
-	
+
 	if (layerNumber <= 0) then 
-		
+
 		error("The layer number can't be less than or equal to zero!") 
-		
+
 	elseif (layerNumber > #self.numberOfNeuronsTable)  then
-		
+
 		error("The layer number exceeds the number of layers!") 
-		
+
 	end 
-	
+
 	if (property == "HasBias") then
 
 		return (self.hasBiasNeuronTable[layerNumber] == 1)
@@ -1083,22 +1079,32 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 		return self.learningRateTable[layerNumber]
 
 	elseif (property == "Optimizer") then
-		
+
 		local Optimizer = self.OptimizerTable[layerNumber]
-		
+
 		if (Optimizer ~= 0) then
-			
+
 			return Optimizer
-			
+
 		else
-			
+
 			return nil
-			
+
 		end
 
 	elseif (property == "Regularization") then
+		
+		local Regularization = self.RegularizationTable[layerNumber]
 
-		return self.RegularizationTable[layerNumber]
+		if (Regularization ~= 0) then
+
+			return Regularization
+
+		else
+
+			return nil
+
+		end
 
 	elseif (property == "DropoutRate") then
 
@@ -1107,15 +1113,15 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 	else
 
 		warn("Layer property does not exists. Returning nil value.")
-		
+
 		return nil
 
 	end
-	
+
 end
 
 function NeuralNetworkModel:getLayer(layerNumber)
-	
+
 	if (layerNumber <= 0) then 
 
 		error("The layer number can't be less than or equal to zero!") 
@@ -1125,7 +1131,7 @@ function NeuralNetworkModel:getLayer(layerNumber)
 		error("The layer number exceeds the number of layers!") 
 
 	end 
-	
+
 	local Optimizer = self.OptimizerTable[layerNumber]
 
 	if (Optimizer == 0) then
@@ -1133,8 +1139,16 @@ function NeuralNetworkModel:getLayer(layerNumber)
 		Optimizer = nil
 
 	end
+	
+	local Regularization = self.RegularizationTable[layerNumber]
 
-	return self.numberOfNeuronsTable[layerNumber], (self.hasBiasNeuronTable[layerNumber] == 1), self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], Optimizer, self.RegularizationTable[layerNumber], self.dropoutRateTable[layerNumber]
+	if (Regularization == 0) then
+
+		Regularization = nil
+
+	end
+
+	return self.numberOfNeuronsTable[layerNumber], (self.hasBiasNeuronTable[layerNumber] == 1), self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], Optimizer, Regularization, self.dropoutRateTable[layerNumber]
 
 end
 

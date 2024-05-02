@@ -139,36 +139,6 @@ DuelingQLearning:update(previousFeatiureVector: featureVector, action: number/st
 
 * currentFeatureVector: The currrent state of the environment.
 
-### getCurrentNumberOfEpisodes()
-
-```
-DuelingQLearning:getCurrentNumberOfEpisodes(): number
-```
-
-#### Returns:
-
-* currentNumberOfEpisodes: The current number of episodes.
-
-### getCurrentNumberOfReinforcements()
-
-```
-DuelingQLearning:getCurrentNumberOfReinforcements(): number
-```
-
-#### Returns:
-
-* numberOfReinforcements: The number of reinforce() funcion called.
-
-### getCurrentEpsilon()
-
-```
-DuelingQLearning:getCurrentEpsilon(): number
-```
-
-#### Returns:
-
-* currentEpsilon: The current epsilon.
-
 ### reset()
 
 Reset model's stored values (excluding the parameters).

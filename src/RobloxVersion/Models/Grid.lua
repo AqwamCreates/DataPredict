@@ -126,7 +126,11 @@ function GridModel:train(featureMatrix, labelMatrix)
 	
 	local lossMatrix
 	
+	local classesList = #self.ClassesList
+	
 	local numberOfData = #featureMatrix[1]
+	
+	if (#classesList == 0) then error("The classes list is empty!") end
 	
 	if (#featureMatrix ~= #labelMatrix) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 
@@ -136,7 +140,7 @@ function GridModel:train(featureMatrix, labelMatrix)
 		
 	else
 		
-		self.ModelParameters = self:initializeMatrixBasedOnMode(#featureMatrix[1], #self.ClassesList)
+		self.ModelParameters = self:initializeMatrixBasedOnMode(#featureMatrix[1], classesList)
 		
 	end
 	

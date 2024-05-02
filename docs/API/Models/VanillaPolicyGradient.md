@@ -131,43 +131,13 @@ VanillaPolicyGradient:update(previousFeatiureVector: featureVector, action: numb
 
 #### Parameters:
 
-* previousFeatiureVector: The previous state of the environment.
+* previousFeatureVector: The previous state of the environment.
 
 * action: The action selected.
 
 * rewardValue: The reward gained at current state.
 
 * currentFeatureVector: The currrent state of the environment.
-
-### getCurrentNumberOfEpisodes()
-
-```
-VanillaPolicyGradient:getCurrentNumberOfEpisodes(): number
-```
-
-#### Returns:
-
-* currentNumberOfEpisodes: The current number of episodes.
-
-### getCurrentNumberOfReinforcements()
-
-```
-VanillaPolicyGradient:getCurrentNumberOfReinforcements(): number
-```
-
-#### Returns:
-
-* numberOfReinforcements: The number of reinforce() funcion called.
-
-### getCurrentEpsilon()
-
-```
-VanillaPolicyGradient:getCurrentEpsilon(): number
-```
-
-#### Returns:
-
-* currentEpsilon: The current epsilon.
 
 ### reset()
 

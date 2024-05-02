@@ -8,16 +8,26 @@ setmetatable(GridModel, GradientMethodBaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-function GridModel.new()
+local defaultMergeType = "Average"
+
+function GridModel.new(mergeType)
 	
 	local NewGridModel = GradientMethodBaseModel.new()
 	
 	setmetatable(NewGridModel, GridModel)
 	
+	NewGridModel.mergeType = mergeType or defaultMergeType
+	
 	NewGridModel.ClassesList = {}
 	
 	return NewGridModel
 	
+end
+
+function GridModel:setParameters(mergeType)
+
+	self.mergeType = mergeType or self.mergeType
+
 end
 
 function GridModel:setClassesList(classesList)

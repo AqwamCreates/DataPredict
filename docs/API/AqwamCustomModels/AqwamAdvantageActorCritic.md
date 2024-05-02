@@ -58,7 +58,7 @@ AqwamAdvantageActorCritic:setParameters(discountFactor: number)
 
 ## Inherited From
 
-* [ReinforcementLearningActorCriticBaseModel](ReinforcementLearningActorCriticBaseModel.md)
+* [ReinforcementLearningActorCriticBaseModel](../Models/ReinforcementLearningActorCriticBaseModel.md)
 
 ## References
 

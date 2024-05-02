@@ -14,7 +14,7 @@
 | Model                                                                                                            | Alternate Names        | Use Cases                                                                   |
 |------------------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------|
 | [KNearestNeighbours](Models/KNearestNeighbours.md)                                                               | KNN                    | Recommendation System                                                       |
-| [LogisticRegression](Models/LogisticRegression.md)                                                               | None                   | Sales Prediction, Confidence Prediction                                     |
+| [LogisticRegression](Models/LogisticRegression.md)                                                               | Perceptron             | Sales Prediction, Confidence Prediction                                     |
 | [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | SVM                    | Hacking Detection, Anomaly Detection                                        |
 | [NaiveBayes](Models/NaiveBayes.md)                                                                               | None                   | Text Classification                                                         |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                |

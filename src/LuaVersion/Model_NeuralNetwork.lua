@@ -800,8 +800,6 @@ function NeuralNetworkModel.new(maxNumberOfIterations)
 	
 	NewNeuralNetworkModel.dropoutRateTable = {}
 
-	NewNeuralNetworkModel.previousDeltaMatricesTable = {}
-
 	return NewNeuralNetworkModel
 
 end

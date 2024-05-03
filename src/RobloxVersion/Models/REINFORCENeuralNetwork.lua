@@ -52,7 +52,7 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, discountFactor)
 	
 	NewREINFORCENeuralNetworkModel:setEpisodeUpdateFunction(function()
 		
-		local rewardsToGoArray = calculateRewardsToGo(rewardArray, discountFactor)
+		local rewardsToGoArray = calculateRewardsToGo(rewardArray, NewREINFORCENeuralNetworkModel.discountFactor)
 		
 		local lossVector = AqwamMatrixLibrary:createMatrix(1, #NewREINFORCENeuralNetworkModel.ClassesList)
 		

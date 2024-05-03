@@ -8,26 +8,16 @@ setmetatable(GridModel, GradientMethodBaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local defaultMergeType = "Average"
-
-function GridModel.new(mergeType)
+function GridModel.new()
 	
 	local NewGridModel = GradientMethodBaseModel.new()
 	
 	setmetatable(NewGridModel, GridModel)
 	
-	NewGridModel.mergeType = mergeType or defaultMergeType
-	
 	NewGridModel.ClassesList = {}
 	
 	return NewGridModel
 	
-end
-
-function GridModel:setParameters(mergeType)
-
-	self.mergeType = mergeType or self.mergeType
-
 end
 
 function GridModel:setClassesList(classesList)
@@ -38,13 +28,23 @@ end
 
 function GridModel:forwardPropagate(featureMatrix, saveTables)
 	
+	local ModelParameters = self.ModelParameters
+	
 	local outputMatrix = {}
-	
+
 	local modelParametersRowIndexTable = {}
-	
+
 	local numberOfClassesList = #self.ClassesList
 	
-	local ModelParameters = self.ModelParameters
+	if (ModelParameters) then
+
+		if (#featureMatrix[1] ~= #self.ModelParameters) then error("The number of features are not the same as the model parameters!") end
+
+	else
+
+		ModelParameters = self:initializeMatrixBasedOnMode(#featureMatrix[1], numberOfClassesList)
+
+	end
 	
 	for i, rowVector in ipairs(featureMatrix) do
 		
@@ -72,23 +72,33 @@ end
 
 function GridModel:backPropagate(lossMatrix, clearTables)
 	
+	local ModelParameters = self.ModelParameters
+	
 	local modelParametersRowIndexTable =  self.modelParametersRowIndexTable
 	
-	local costDerivativeMatrix = AqwamMatrixLibrary:createMatrix(#lossMatrix, #lossMatrix[1])
+	local costDerivativeMatrix = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
 	
-	for i, rowVector in ipairs(lossMatrix) do
+	for lossMatrixIndex, rowVector in ipairs(lossMatrix) do
 		
-		local modelParametersRowIndex = modelParametersRowIndexTable[i]
+		local modelParametersRowIndex = modelParametersRowIndexTable[lossMatrixIndex]
 		
 		if (modelParametersRowIndex == 0) then continue end
 		
+		local costDerivativeVector = AqwamMatrixLibrary:add({costDerivativeMatrix[modelParametersRowIndex]}, {rowVector})
+		
+		costDerivativeMatrix[modelParametersRowIndex] = costDerivativeVector[modelParametersRowIndex]
+		
 	end
+	
+	self.ModelParameters = AqwamMatrixLibrary:subtract(ModelParameters, costDerivativeMatrix)
 	
 	if (clearTables) then
 		
 		self.modelParametersRowIndexTable = nil
 		
 	end
+	
+	if (self.areGradientsSaved) then self.Gradients = costDerivativeMatrix end
 	
 	return costDerivativeMatrix
 	
@@ -143,24 +153,14 @@ function GridModel:train(featureMatrix, labelMatrix)
 	if (#classesList == 0) then error("The classes list is empty!") end
 	
 	if (#featureMatrix ~= #labelMatrix) then error("The feature matrix and the label vector does not contain the same number of rows!") end
-
-	if (self.ModelParameters) then
-		
-		if (#featureMatrix[1] ~= #self.ModelParameters) then error("The number of features are not the same as the model parameters!") end
-		
-	else
-		
-		self.ModelParameters = self:initializeMatrixBasedOnMode(#featureMatrix[1], classesList)
-		
-	end
+	
+	AqwamMatrixLibrary:printMatrix(self.ModelParameters)
 	
 	outputMatrix = self:forwardPropagate(featureMatrix, true)
 	
 	lossMatrix = AqwamMatrixLibrary:subtract(outputMatrix, labelMatrix)
 	
 	costFunctionDerivatives = self:backPropagate(lossMatrix, true)
-
-	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivatives end
 	
 	return nil
 	
@@ -168,7 +168,7 @@ end
 
 function GridModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local outputMatrix = self:forwardPropagate(featureMatrix, true)
+	local outputMatrix = self:forwardPropagate(featureMatrix, false)
 	
 	if (returnOriginalOutput == true) then return outputMatrix end
 	

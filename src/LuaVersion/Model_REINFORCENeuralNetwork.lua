@@ -26,108 +26,76 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 end
 
-function VanillaPolicyGradientModel.new(discountFactor)
+function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, discountFactor)
+
+	local NewREINFORCENeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, discountFactor)
 	
-	local NewVanillaPolicyGradientModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
-
-	setmetatable(NewVanillaPolicyGradientModel, VanillaPolicyGradientModel)
-
-	local rewardHistory = {}
-
-	local gradientHistory = {}
+	setmetatable(NewREINFORCENeuralNetworkModel, REINFORCENeuralNetworkModel)
 	
-	local valueHistory = {}
+	local targetVectorArray = {}
+	
+	local rewardArray = {}
+	
+	NewREINFORCENeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-	NewVanillaPolicyGradientModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-		local allOutputsMatrix = NewVanillaPolicyGradientModel.ActorModel:predict(previousFeatureVector, true)
-
-		local logOutputMatrix = AqwamMatrixLibrary:applyFunction(math.log, allOutputsMatrix)
+		local predictedVector = NewREINFORCENeuralNetworkModel:predict(previousFeatureVector, true)
 		
-		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
-
-		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
-
-		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
-
-		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
-
-		local gradientMatrix = AqwamMatrixLibrary:multiply(logOutputMatrix, advantageValue)
+		local logPredictedVector = AqwamMatrixLibrary:applyFunction(math.log, predictedVector)
 		
-		table.insert(rewardHistory, rewardValue)
-		
-		table.insert(valueHistory, previousCriticValue)
+		local targetVector = AqwamMatrixLibrary:multiply(logPredictedVector, rewardValue)
 
-		table.insert(gradientHistory, gradientMatrix[1])
+		table.insert(targetVectorArray, targetVector)
 		
-		return advantageValue
+		table.insert(rewardArray, rewardValue)
 
 	end)
-
-	NewVanillaPolicyGradientModel:setEpisodeUpdateFunction(function()
+	
+	NewREINFORCENeuralNetworkModel:setEpisodeUpdateFunction(function()
 		
-		local rewardToGoArray = calculateRewardsToGo(rewardHistory, NewVanillaPolicyGradientModel.discountFactor)
-
-		local sumGradient = AqwamMatrixLibrary:verticalSum(gradientHistory)
+		local rewardsToGoArray = calculateRewardsToGo(rewardArray, NewREINFORCENeuralNetworkModel.discountFactor)
 		
-		local episodeLength = #rewardHistory
+		local lossVector = AqwamMatrixLibrary:createMatrix(1, #NewREINFORCENeuralNetworkModel.ClassesList)
 		
-		sumGradient = AqwamMatrixLibrary:divide(sumGradient, episodeLength)
-		
-		local criticLoss = 0
-		
-		for i, value in ipairs(valueHistory) do
+		for i = 1, #targetVectorArray, 1 do
 			
-			local valueDifference = value - rewardToGoArray[i]
+			local discountedReward = AqwamMatrixLibrary:multiply(targetVectorArray[i], rewardsToGoArray[i])
 			
-			criticLoss = criticLoss + math.pow(valueDifference, 2)
+			lossVector = AqwamMatrixLibrary:add(lossVector, discountedReward)
 			
 		end
 		
-		criticLoss = criticLoss / episodeLength
+		local numberOfNeurons = NewREINFORCENeuralNetworkModel:getTotalNumberOfNeurons(1)
+
+		local inputVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeurons, 1)
 		
-		criticLoss = {{criticLoss}}
+		lossVector = AqwamMatrixLibrary:multiply(-1, lossVector)
 		
-		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
+		NewREINFORCENeuralNetworkModel:forwardPropagate(inputVector, true)
 
-		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
-
-		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
-
-		local numberOfLayers = ActorModel:getNumberOfLayers()
-
-		local numberOfNeuronsAtFinalLayer = ActorModel:getTotalNumberOfNeurons(numberOfLayers)
-
-		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-
-		local actorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumGradient)
-
-		ActorModel:forwardPropagate(featureVector, true)
-		CriticModel:forwardPropagate(featureVector, true)
-
-		ActorModel:backPropagate(actorLossVector, true)
-		CriticModel:backPropagate(criticLoss, true)
+		NewREINFORCENeuralNetworkModel:backPropagate(lossVector, true)
 		
-		table.clear(rewardHistory)
+		table.clear(targetVectorArray)
+		table.clear(rewardArray)
 		
-		table.clear(valueHistory)
-
-		table.clear(gradientHistory)
-
-	end)
-
-	NewVanillaPolicyGradientModel:extendResetFunction(function()
-
-		table.clear(rewardHistory)
-
-		table.clear(valueHistory)
-
-		table.clear(gradientHistory)
-
 	end)
 	
-	return NewVanillaPolicyGradientModel
-	
+	NewREINFORCENeuralNetworkModel:extendResetFunction(function()
+
+		table.clear(targetVectorArray)
+		table.clear(rewardArray)
+		
+	end)
+
+	return NewREINFORCENeuralNetworkModel
+
 end
 
-return VanillaPolicyGradientModel
+function REINFORCENeuralNetworkModel:setParameters(maxNumberOfIterations, discountFactor)
+	
+	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+
+	self.discountFactor = discountFactor or self.discountFactor
+
+end
+
+return REINFORCENeuralNetworkModel

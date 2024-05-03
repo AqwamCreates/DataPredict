@@ -105,7 +105,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)
 
-		ActorModel:backPropagate(-actorLossVector, true)
+		ActorModel:backPropagate(actorLossVector, true)
 		CriticModel:backPropagate(criticLoss, true)
 		
 		table.clear(rewardHistory)

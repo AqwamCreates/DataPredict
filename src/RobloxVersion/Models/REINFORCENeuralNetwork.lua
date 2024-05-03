@@ -1,12 +1,12 @@
-local ReinforcementLearningNeuralNetworkBaseModel = require(script.Parent.ReinforcementLearningNeuralNetworkBaseModel)
-
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-REINFORCENeuralNetworkModel = {}
+local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
 
-REINFORCENeuralNetworkModel.__index = REINFORCENeuralNetworkModel
+VanillaPolicyGradientModel = {}
 
-setmetatable(REINFORCENeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
+VanillaPolicyGradientModel.__index = VanillaPolicyGradientModel
+
+setmetatable(VanillaPolicyGradientModel, ReinforcementLearningActorCriticBaseModel)
 
 local function calculateRewardsToGo(rewardHistory, discountFactor)
 
@@ -26,76 +26,108 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 end
 
-function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, discountFactor)
+function VanillaPolicyGradientModel.new(discountFactor)
+	
+	local NewVanillaPolicyGradientModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
 
-	local NewREINFORCENeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, discountFactor)
-	
-	setmetatable(NewREINFORCENeuralNetworkModel, REINFORCENeuralNetworkModel)
-	
-	local targetVectorArray = {}
-	
-	local rewardArray = {}
-	
-	NewREINFORCENeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	setmetatable(NewVanillaPolicyGradientModel, VanillaPolicyGradientModel)
 
-		local predictedVector = NewREINFORCENeuralNetworkModel:predict(previousFeatureVector, true)
-		
-		local logPredictedVector = AqwamMatrixLibrary:applyFunction(math.log, predictedVector)
-		
-		local targetVector = AqwamMatrixLibrary:multiply(logPredictedVector, rewardValue)
+	local rewardHistory = {}
 
-		table.insert(targetVectorArray, targetVector)
+	local gradientHistory = {}
+	
+	local valueHistory = {}
+
+	NewVanillaPolicyGradientModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+
+		local allOutputsMatrix = NewVanillaPolicyGradientModel.ActorModel:predict(previousFeatureVector, true)
+
+		local logOutputMatrix = AqwamMatrixLibrary:applyFunction(math.log, allOutputsMatrix)
 		
-		table.insert(rewardArray, rewardValue)
+		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
+
+		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
+
+		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
+
+		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
+
+		local gradientMatrix = AqwamMatrixLibrary:multiply(logOutputMatrix, advantageValue)
+		
+		table.insert(rewardHistory, rewardValue)
+		
+		table.insert(valueHistory, previousCriticValue)
+
+		table.insert(gradientHistory, gradientMatrix[1])
+		
+		return advantageValue
 
 	end)
-	
-	NewREINFORCENeuralNetworkModel:setEpisodeUpdateFunction(function()
+
+	NewVanillaPolicyGradientModel:setEpisodeUpdateFunction(function()
 		
-		local rewardsToGoArray = calculateRewardsToGo(rewardArray, discountFactor)
+		local rewardToGoArray = calculateRewardsToGo(rewardHistory, NewVanillaPolicyGradientModel.discountFactor)
+
+		local sumGradient = AqwamMatrixLibrary:verticalSum(gradientHistory)
 		
-		local lossVector = AqwamMatrixLibrary:createMatrix(1, #NewREINFORCENeuralNetworkModel.ClassesList)
+		local episodeLength = #rewardHistory
 		
-		for i = 1, #targetVectorArray, 1 do
+		sumGradient = AqwamMatrixLibrary:divide(sumGradient, episodeLength)
+		
+		local criticLoss = 0
+		
+		for i, value in ipairs(valueHistory) do
 			
-			local discountedReward = AqwamMatrixLibrary:multiply(targetVectorArray[i], rewardsToGoArray[i])
+			local valueDifference = value - rewardToGoArray[i]
 			
-			lossVector = AqwamMatrixLibrary:add(lossVector, discountedReward)
+			criticLoss = criticLoss + math.pow(valueDifference, 2)
 			
 		end
 		
-		local numberOfNeurons = NewREINFORCENeuralNetworkModel:getTotalNumberOfNeurons(1)
+		criticLoss = criticLoss / episodeLength
+		
+		criticLoss = {{criticLoss}}
+		
+		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
 
-		local inputVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeurons, 1)
-		
-		lossVector = AqwamMatrixLibrary:multiply(-1, lossVector)
-		
-		NewREINFORCENeuralNetworkModel:forwardPropagate(inputVector, true)
+		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 
-		NewREINFORCENeuralNetworkModel:backPropagate(lossVector, true)
+		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
+
+		local numberOfLayers = ActorModel:getNumberOfLayers()
+
+		local numberOfNeuronsAtFinalLayer = ActorModel:getTotalNumberOfNeurons(numberOfLayers)
+
+		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+
+		local actorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumGradient)
+
+		ActorModel:forwardPropagate(featureVector, true)
+		CriticModel:forwardPropagate(featureVector, true)
+
+		ActorModel:backPropagate(actorLossVector, true)
+		CriticModel:backPropagate(criticLoss, true)
 		
-		table.clear(targetVectorArray)
-		table.clear(rewardArray)
+		table.clear(rewardHistory)
 		
+		table.clear(valueHistory)
+
+		table.clear(gradientHistory)
+
+	end)
+
+	NewVanillaPolicyGradientModel:extendResetFunction(function()
+
+		table.clear(rewardHistory)
+
+		table.clear(valueHistory)
+
+		table.clear(gradientHistory)
+
 	end)
 	
-	NewREINFORCENeuralNetworkModel:extendResetFunction(function()
-
-		table.clear(targetVectorArray)
-		table.clear(rewardArray)
-		
-	end)
-
-	return NewREINFORCENeuralNetworkModel
-
-end
-
-function REINFORCENeuralNetworkModel:setParameters(maxNumberOfIterations, discountFactor)
+	return NewVanillaPolicyGradientModel
 	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.discountFactor = discountFactor or self.discountFactor
-
 end
 
-return REINFORCENeuralNetworkModel
+return VanillaPolicyGradientModel

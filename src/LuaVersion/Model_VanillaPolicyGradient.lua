@@ -72,8 +72,6 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local sumGradient = AqwamMatrixLibrary:verticalSum(gradientHistory)
 		
-		sumGradient = AqwamMatrixLibrary:divide(sumGradient, episodeLength)
-		
 		local actorLossVector = AqwamMatrixLibrary:multiply(-1, sumGradient)
 		
 		local criticLoss = 0

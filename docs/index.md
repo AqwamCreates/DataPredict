@@ -6,7 +6,7 @@ By using or possesing any copies of this library or its assets (including the ic
 
 * A separate agreement is needed for commercial use (both internally and externally). This is applicable to companies (or individuals if none) with a revenue of at least $500 in a lifetime, or a player base of at least 100 players in a game, or those engaged in business-to-business activities. 
 
-* If you or your company is applicable and do not want a separate agreement, then you are required to follow the "Commercial Use Conditions" in Terms And Conditions.
+* If you or your company is applicable to the above statement and do not want a separate agreement, then you are required to follow the "Commercial Use Conditions" in Terms And Conditions.
 
 * Plus some more stuff...
 

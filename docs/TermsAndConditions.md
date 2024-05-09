@@ -3,11 +3,9 @@
 ## License
 These terms and conditions (“Agreement”) are a legal agreement between you (or company or organization) recognized as “User” and Aqwam Harish Aiman recognised as “Licensor” for the use of DataPredict Library (or formerly known as Aqwam’s Machine and Deep Learning Library) (“Library”) within this terms and conditions. By using or possessing the Library, User, agrees to be bound by the terms of this Agreement.
 
-## License Exceptions
+## Commercial Use Conditions
 
-* The Agreement is not granted to Roblox Corporation or any of its employees. A separate written commercial agreement must be made between the Licensor and Roblox Corporation in order to use or possess the Library.
-
-* The Agreement is not granted to Users intending to incorporate this Library within a commercial product or service. A separate written commercial agreement must be made between the Licensor and User in order to use or possess the Library in User's products or services. This includes the use of outputs produced by the Library for any parts of commercial products and services.
+* Commercial use for both internal and external use of the Library is permitted provided that all the source code using the Library, whether directly or indirectly, is released and distributed under the MIT license to the public. If the User fails to comply with this license, the User shall pay damages as a result of not releasing and distributing the source codes to the public.
 
 ## Prohibited Actions
 User shall not:

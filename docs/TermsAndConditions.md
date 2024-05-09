@@ -11,7 +11,7 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 * Failure to comply with this condition will result in the User being liable for damages due to non-compliance with the licensing terms.
 
-* The MIT License can be viewed here: https://opensource.org/license/mit.
+* The MIT license can be viewed here: https://opensource.org/license/mit.
 
 ## Prohibited Actions
 User shall not:

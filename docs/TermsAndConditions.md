@@ -9,7 +9,7 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 * The term "use" encompasses all forms of utilization and application, including integration, modification, and hosting from another computer, server or machine.
 
-* Failure to comply with this condition will result in the User being liable for damages to the Licensor due to non-compliance with the licensing terms.
+* Failure to comply with this condition will result in the User being liable for damages due to non-compliance with the licensing terms.
 
 ## Prohibited Actions
 User shall not:

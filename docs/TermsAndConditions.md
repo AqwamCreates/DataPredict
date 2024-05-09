@@ -3,7 +3,7 @@
 ## License
 These terms and conditions (“Agreement”) are a legal agreement between you (or company or organization) recognized as “User” and Aqwam Harish Aiman recognised as “Licensor” for the use of DataPredict Library (or formerly known as Aqwam’s Machine and Deep Learning Library) (“Library”) within this terms and conditions. By using or possessing the Library, User, agrees to be bound by the terms of this Agreement.
 
-## License for Commercial Use
+## Commercial Use Conditions
 
 * The Library may be utilized for both internal and external commercial purposes under the condition that any source code, art, or videos that utilize the Library, whether directly or indirectly, must be released and distributed to the public under the MIT license. This includes but is not limited to hosting the Library from another computer, server or machine.
 

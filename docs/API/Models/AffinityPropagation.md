@@ -30,7 +30,7 @@ AffinityPropagation.new(maxNumberOfIterations: integer, similarityFunction: stri
       
     * Manhattan
       
-    * Euclidean
+    * CosineDistance
 
 * damping: A high value leads to fewer changes, while a low value leads to more exploration. The value can be set between 0 and 1.
 
@@ -58,7 +58,7 @@ AffinityPropagation:setParameters(maxNumberOfIterations: integer, similarityFunc
       
     * Manhattan
       
-    * Euclidean
+    * CosineDistance
 
 * damping: A high value leads to fewer changes, while a low value leads to more exploration. The value is set between 0 and 1.
 

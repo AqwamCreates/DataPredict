@@ -267,6 +267,8 @@ function AffinityPropagationModel:train(featureMatrix)
 	--local preferenceVector = initializePreferences(featureMatrix, self.similarityFunction)
 
 	local similarityMatrix = createDistanceMatrix(featureMatrix, featureMatrix, self.similarityFunction)
+	
+	similarityMatrix = AqwamMatrixLibrary:multiply(-1, similarityMatrix)
 
 	local responsibilityMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfData)
 

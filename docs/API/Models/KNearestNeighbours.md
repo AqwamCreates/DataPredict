@@ -30,7 +30,7 @@ KNearestNeighbours.new(kValue: integer, distanceFunction: string): ModelObject
 
   * Manhattan
 
-  * CosineDistance
+  * Cosine
 
 #### Returns:
 
@@ -48,13 +48,15 @@ KNearestNeighbours:setParameters(kValue: integer, distanceFunction: string)
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* kValue: The number of closest data points taken into consideration for majority voting to determine the class of a given data point.
 
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+* distanceFunction: The distance function to be used to measure the similarity between two data points. Available options are:
 
-* lossFunction: The function to calculate the cost of each training. Available options are "L1" and "L2".
+  * Euclidean
 
-* targetCost: The cost at which the model stops training.
+  * Manhattan
+
+  * Cosine
 
 ### train()
 

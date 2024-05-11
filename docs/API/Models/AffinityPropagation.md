@@ -30,7 +30,7 @@ AffinityPropagation.new(maxNumberOfIterations: integer, distanceFunction: string
       
     * Manhattan
       
-    * CosineDistance
+    * Cosine
 
 * damping: A high value leads to fewer changes, while a low value leads to more exploration. The value can be set between 0 and 1.
 

@@ -76,7 +76,6 @@ local distanceFunctionList = {
 	
 }
 
-
 local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
 	
 	local clusterNumberVector = AqwamMatrixLibrary:createMatrix(#distanceMatrix, 1)

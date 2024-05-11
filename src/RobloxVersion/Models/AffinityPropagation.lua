@@ -338,7 +338,7 @@ function AffinityPropagationModel:predict(featureMatrix)
 		
 		local distanceVector = {distanceMatrix[i]}
 		
-		local _, index = AqwamMatrixLibrary:findMaximumValueInMatrix(distanceVector)
+		local _, index = AqwamMatrixLibrary:findMinimumValueInMatrix(distanceVector)
 		
 		if (index == nil) then continue end
 		

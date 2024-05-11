@@ -32,7 +32,7 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise.new(epsilon: number, minimu
     
   *  Manhattan
  
-  *  CosineDistance
+  *  Cosine
 
 #### Returns:
 
@@ -60,7 +60,7 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise:setParameters(epsilon: numb
     
   *  Manhattan
  
-  *  CosineDistance
+  *  Cosine
 
 ### train()
 

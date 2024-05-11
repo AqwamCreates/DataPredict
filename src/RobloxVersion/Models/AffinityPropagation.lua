@@ -149,8 +149,6 @@ local function calculateResponsibilityMatrix(responsibilityMatrix, similarityMat
 end
 
 local function calculateAvailibilityMatrix(availibilityMatrix, responsibilityMatrix, damping)
-
-	local maxAvailability
 	
 	local numberOfData = #availibilityMatrix
 
@@ -159,20 +157,22 @@ local function calculateAvailibilityMatrix(availibilityMatrix, responsibilityMat
 		for j = 1, numberOfData, 1 do
 
 			if (i ~= j) then
-
-				maxAvailability = -math.huge
+				
+				local sumMaxAvailability = 0
 
 				for k = 1, numberOfData, 1 do
 
-					if (k ~= i) and (k ~= j) then
+					if (k == i) and (k == j) then continue end
 
-						maxAvailability = math.max(maxAvailability, 0, responsibilityMatrix[k][j])
-
-					end
+					local maxAvailability = math.max(0, responsibilityMatrix[k][j])
+					
+					sumMaxAvailability = sumMaxAvailability + maxAvailability
 
 				end
+				
+				local availability = damping * (responsibilityMatrix[j][j] + sumMaxAvailability) + (1 - damping) * availibilityMatrix[i][j]
 
-				availibilityMatrix[i][j] = damping * (responsibilityMatrix[j][j] + maxAvailability) + (1 - damping) * availibilityMatrix[i][j]
+				availibilityMatrix[i][j] = math.max(0, availability)
 
 			end
 

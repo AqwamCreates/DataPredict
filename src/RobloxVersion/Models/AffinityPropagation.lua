@@ -14,8 +14,6 @@ local defaultDamping = 0.5
 
 local defaultDistanceFunction = "Euclidean"
 
-local defaultNumberOfIterationsToConfirmConvergence = math.huge
-
 local distanceFunctionList = {
 
 	["Manhattan"] = function (x1, x2)
@@ -360,7 +358,7 @@ function AffinityPropagationModel:predict(featureMatrix)
 	
 	local storedFeatureMatrix, clusterVector = table.unpack(self.ModelParameters)
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, storedFeatureMatrix, self.similarityFunction)
+	local distanceMatrix = createDistanceMatrix(featureMatrix, storedFeatureMatrix, self.distanceFunction)
 	
 	for i = 1, #featureMatrix, 1 do
 		

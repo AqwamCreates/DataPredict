@@ -32,7 +32,7 @@ MeanShift.new(maxNumberOfIterations: integer, bandwidth: number, bandwidthStep: 
  
   * Manhattan
 
-  * CosineDistance
+  * Cosine
 
 #### Returns:
 
@@ -62,7 +62,7 @@ MeanShift:setParameters(maxNumberOfIterations: integer, bandwidth: number, bandw
  
   * Manhattan
 
-  * CosineDistance
+  * Cosine
 
 ### train()
 

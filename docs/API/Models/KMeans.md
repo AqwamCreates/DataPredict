@@ -30,7 +30,7 @@ KMeans.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFu
     
   *  Manhattan
  
-  *  CosineDistance
+  *  Cosine
 
 * setInitialClustersOnDataPoints: Set whether or not the model to create centroids on any data points.
 
@@ -62,7 +62,7 @@ KMeans:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, 
     
   *  Manhattan
  
-  *  CosineDistance
+  *  Cosine
 
 * setInitialClustersOnDataPoints: Set whether or not the model to create centroids on any data points.
 

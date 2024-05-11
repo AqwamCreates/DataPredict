@@ -28,7 +28,7 @@ AgglomerativeHierarchical.new(numberOfClusters: integer, distanceFunction: strin
  
   * Manhattan
     
-  * CosineDistance
+  * Cosine
 
 * linkageFunction: The function to determine how clusters are merged together. Available options are:
 
@@ -64,8 +64,8 @@ AgglomerativeHierarchical:setParameters(numberOfClusters: integer, distanceFunct
  
   * Manhattan
 
-  * CosineDistance
-
+  * Cosine
+    
 * linkageFunction: The function to determine how clusters are merged together. Available options are:
 
   * Minimum

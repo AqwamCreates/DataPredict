@@ -24,7 +24,13 @@ KMedoids.new(maxNumberOfIterations: integer, numberOfClusters: integer, distance
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“.
+* distanceFunction: The function that the model will use to train. distanceFunction available are:
+  
+  *  Euclidean
+    
+  *  Manhattan
+ 
+  *  CosineDistance
 
 * targetCost: The cost at which the model stops training.
 
@@ -50,7 +56,13 @@ KMedoids:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“
+* distanceFunction: The function that the model will use to train. distanceFunction available are:
+  
+  *  Euclidean
+    
+  *  Manhattan
+ 
+  *  CosineDistance
 
 * targetCost: The cost at which the model stops training.
 

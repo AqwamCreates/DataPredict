@@ -24,7 +24,13 @@ AffinityPropagation.new(maxNumberOfIterations: integer, similarityFunction: stri
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
-* similarityFunction: The similarity function to be used. Available options are "Euclidean" and "Manhattan"
+* distanceFunction: The distance function to be used. Available options are:
+
+    * Euclidean
+      
+    * Manhattan
+      
+    * CosineDistance
 
 * damping: A high value leads to fewer changes, while a low value leads to more exploration. The value can be set between 0 and 1.
 
@@ -46,7 +52,13 @@ AffinityPropagation:setParameters(maxNumberOfIterations: integer, similarityFunc
 
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
-* similarityFunction: The similarity function to be used. Available options are "Euclidean" and "Manhattan"
+* distanceFunction: The distance function to be used. Available options are:
+
+    * Euclidean
+      
+    * Manhattan
+      
+    * CosineDistance
 
 * damping: A high value leads to fewer changes, while a low value leads to more exploration. The value is set between 0 and 1.
 

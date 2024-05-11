@@ -26,7 +26,13 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise.new(epsilon: number, minimu
 
 * minimumNumberOfPoints: Minimum number of data points required to form a cluster.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“.
+* distanceFunction: The function that the model will use to train. distanceFunction available are:
+  
+  *  Euclidean
+    
+  *  Manhattan
+ 
+  *  CosineDistance
 
 #### Returns:
 
@@ -48,7 +54,13 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise:setParameters(epsilon: numb
 
 * minimumNumberOfPoints: Minimum number of data points required to form a cluster.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“.
+* distanceFunction: The function that the model will use to train. distanceFunction available are:
+  
+  *  Euclidean
+    
+  *  Manhattan
+ 
+  *  CosineDistance
 
 ### train()
 

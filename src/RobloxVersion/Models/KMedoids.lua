@@ -72,7 +72,6 @@ local distanceFunctionList = {
 
 }
 
-
 local function calculateDistance(vector1, vector2, distanceFunction)
 	
 	return distanceFunctionList[distanceFunction](vector1, vector2) 

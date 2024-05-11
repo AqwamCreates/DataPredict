@@ -358,7 +358,7 @@ function AffinityPropagationModel:predict(featureMatrix)
 	
 	local storedFeatureMatrix, clusterVector = table.unpack(self.ModelParameters)
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, storedFeatureMatrix, self.similarityFunction)
+	local distanceMatrix = createDistanceMatrix(featureMatrix, storedFeatureMatrix, self.distanceFunction)
 	
 	for i = 1, #featureMatrix, 1 do
 		

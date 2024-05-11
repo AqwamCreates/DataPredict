@@ -30,7 +30,7 @@ KMedoids.new(maxNumberOfIterations: integer, numberOfClusters: integer, distance
     
   *  Manhattan
  
-  *  CosineDistance
+  *  Cosine
 
 * targetCost: The cost at which the model stops training.
 
@@ -62,7 +62,7 @@ KMedoids:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer
     
   *  Manhattan
  
-  *  CosineDistance
+  *  Cosine
 
 * targetCost: The cost at which the model stops training.
 

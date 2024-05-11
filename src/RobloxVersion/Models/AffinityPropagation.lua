@@ -12,7 +12,7 @@ local defaultMaxNumberOfIterations = 500
 
 local defaultDamping = 0.5
 
-local defaultSimilarityFunction = "Euclidean"
+local defaultDistanceFunction = "Euclidean"
 
 local defaultNumberOfIterationsToConfirmConvergence = math.huge
 
@@ -100,13 +100,13 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
 end
 
-local function initializePreferences(featureMatrix, similarityFunction)
+local function initializePreferences(featureMatrix, distanceFunction)
 	
 	local numberOfData = #featureMatrix
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, similarityFunction)
+	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, distanceFunction)
 	
 	local preferencesVector = AqwamMatrixLibrary:horizontalSum(distanceMatrix)
 	
@@ -248,7 +248,7 @@ local function assignClusters(availibilityMatrix, responsibilityMatrix)
 
 end
 
-function AffinityPropagationModel.new(maxNumberOfIterations, similarityFunction, damping)
+function AffinityPropagationModel.new(maxNumberOfIterations, distanceFunction, damping)
 
 	local NewAffinityPropagationModel = BaseModel.new()
 
@@ -256,7 +256,7 @@ function AffinityPropagationModel.new(maxNumberOfIterations, similarityFunction,
 
 	NewAffinityPropagationModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
-	NewAffinityPropagationModel.similarityFunction = similarityFunction or defaultSimilarityFunction
+	NewAffinityPropagationModel.distanceFunction = distanceFunction or defaultDistanceFunction
 
 	NewAffinityPropagationModel.damping = damping or defaultDamping
 
@@ -264,11 +264,11 @@ function AffinityPropagationModel.new(maxNumberOfIterations, similarityFunction,
 
 end
 
-function AffinityPropagationModel:setParameters(maxNumberOfIterations, similarityFunction, damping)
+function AffinityPropagationModel:setParameters(maxNumberOfIterations, distanceFunction, damping)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
-	self.similarityFunction = similarityFunction or self.similarityFunction
+	self.distanceFunction = distanceFunction or self.distanceFunction
 
 	self.damping = damping or self.damping
 
@@ -290,9 +290,9 @@ function AffinityPropagationModel:train(featureMatrix)
 
 	local numberOfFeatures = #featureMatrix[1]
 
-	--local preferenceVector = initializePreferences(featureMatrix, self.similarityFunction)
+	--local preferenceVector = initializePreferences(featureMatrix, self.distanceFunction)
 
-	local similarityMatrix = createDistanceMatrix(featureMatrix, featureMatrix, self.similarityFunction)
+	local similarityMatrix = createDistanceMatrix(featureMatrix, featureMatrix, self.distanceFunction)
 	
 	similarityMatrix = AqwamMatrixLibrary:multiply(-1, similarityMatrix)
 

@@ -17,7 +17,7 @@ Contains a table.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-AffinityPropagation.new(maxNumberOfIterations: integer, similarityFunction: string, damping: number): ModelObject
+AffinityPropagation.new(maxNumberOfIterations: integer, distanceFunction: string, damping: number): ModelObject
 ```
 
 #### Parameters:
@@ -45,7 +45,7 @@ AffinityPropagation.new(maxNumberOfIterations: integer, similarityFunction: stri
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-AffinityPropagation:setParameters(maxNumberOfIterations: integer, similarityFunction: string, damping: number)
+AffinityPropagation:setParameters(maxNumberOfIterations: integer, distanceFunction: string, damping: number)
 ```
 
 #### Parameters:

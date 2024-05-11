@@ -24,7 +24,13 @@ KMeans.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFu
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“.
+* distanceFunction: The function that the model will use to train. distanceFunction available are:
+  
+  *  Euclidean
+    
+  *  Manhattan
+ 
+  *  CosineDistance
 
 * setInitialClustersOnDataPoints: Set whether or not the model to create centroids on any data points.
 
@@ -50,7 +56,13 @@ KMeans:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, 
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are “Euclidean” and “Manhattan“
+* distanceFunction: The function that the model will use to train. distanceFunction available are:
+  
+  *  Euclidean
+    
+  *  Manhattan
+ 
+  *  CosineDistance
 
 * setInitialClustersOnDataPoints: Set whether or not the model to create centroids on any data points.
 

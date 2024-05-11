@@ -48,8 +48,33 @@ local distanceFunctionList = {
 
 	end,
 
-}
+	["CosineDistance"] = function(x1, x2)
 
+		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
+
+		local x1MagnitudePart1 = AqwamMatrixLibrary:power(x1, 2)
+
+		local x1MagnitudePart2 = AqwamMatrixLibrary:sum(x1MagnitudePart1)
+
+		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
+
+		local x2MagnitudePart1 = AqwamMatrixLibrary:power(x2, 2)
+
+		local x2MagnitudePart2 = AqwamMatrixLibrary:sum(x2MagnitudePart1)
+
+		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
+
+		local normX = x1Magnitude * x2Magnitude
+
+		local similarity = dotProductedX / normX
+
+		local cosineDistance = 1 - similarity
+
+		return cosineDistance
+
+	end,
+	
+}
 
 local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
 	

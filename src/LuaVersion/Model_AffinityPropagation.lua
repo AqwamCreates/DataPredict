@@ -301,8 +301,6 @@ function AffinityPropagationModel:train(featureMatrix)
 	local numberOfIterations = 0
 
 	local clusterVector
-	
-	local previousClusterVector
 
 	local isConverged = false
 
@@ -323,8 +321,6 @@ function AffinityPropagationModel:train(featureMatrix)
 		availabilityMatrix = calculateAvailibilityMatrix(availabilityMatrix, responsibilityMatrix, self.damping)
 		
 		clusterVector = assignClusters(availabilityMatrix, responsibilityMatrix)
-		
-		previousClusterVector = clusterVector
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			

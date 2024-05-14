@@ -25,9 +25,9 @@ ExpectationMaximization.new(maxNumberOfIterations: integer, numberOfClusters: in
 
 * maxNumberOfIterations: The maximum number of iterations.
 
-* numberOfClusters: Number of clusters for model to train and predict on. By default or set to math.huge(), it will find the best number of clusters using bayesian information criterion.
+* numberOfClusters: Number of clusters for model to train and predict on. When using default or set to math.huge(), it will find the best number of clusters using Bayesian information criterion.
 
-* epsilon: The value to ensure that gaussian calculation doesn't reach infinity.
+* epsilon: The value to ensure that Gaussian calculation doesn't reach infinity.
 
 #### Returns:
 
@@ -47,9 +47,9 @@ ExpectationMaximization:setParameters(maxNumberOfIterations: integer, numberOfCl
 
 * maxNumberOfIterations: The maximum number of iterations. 
 
-* numberOfClusters: Number of clusters for model to train and predict on. By default or set to math.huge(), it will find the best number of clusters using bayesian information criterion.
+* numberOfClusters: Number of clusters for model to train and predict on. When using default or set to math.huge(), it will find the best number of clusters using Bayesian information criterion.
 
-* epsilon: The value to ensure that gaussian calculation doesn't reach infinity.
+* epsilon: The value to ensure that Gaussian calculation doesn't reach infinity.
 
 ### train()
 

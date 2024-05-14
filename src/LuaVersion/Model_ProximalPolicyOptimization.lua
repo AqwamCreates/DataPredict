@@ -114,10 +114,10 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 		local rewardsToGoArray = calculateRewardsToGo(rewardHistory, NewProximalPolicyOptimizationModel.discountFactor)
 
-		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewProximalPolicyOptimizationModel.ClassesList)
-
 		local historyLength = #criticValueHistory
 
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewProximalPolicyOptimizationModel.ClassesList)
+			
 		local sumCriticLoss = 0
 
 		for h = 1, historyLength, 1 do

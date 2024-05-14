@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [AqwamCustomModels](../AqwamCustomModels.md) - WeightedProximalPolicyOptimizationClip (WPPO-Clip)
+# [API Reference](../../API.md) - [AqwamCustomModels](../AqwamCustomModels.md) - WeightProximalPolicyOptimizationClip (WPPO-Clip)
 
-WeightedProximalPolicyOptimizationClip is a base class for reinforcement learning.
+WeightProximalPolicyOptimizationClip is a base class for reinforcement learning.
 
 It is a modified ProximalPolicyOptimizationClip where the ratio of the weights are used instead of the action probability vector. Hopefully, by directly optimizing the weights, it makes things more sample efficient due to no backpropagation required.
 
@@ -19,7 +19,7 @@ It is a modified ProximalPolicyOptimizationClip where the ratio of the weights a
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-WeightedProximalPolicyOptimizationClip.new(clipRatio: number, discountFactor: number): ModelObject
+WeightProximalPolicyOptimizationClip.new(clipRatio: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -39,7 +39,7 @@ WeightedProximalPolicyOptimizationClip.new(clipRatio: number, discountFactor: nu
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-WeightedProximalPolicyOptimizationClip:setParameters(clipRatio: number, discountFactor: number)
+WeightProximalPolicyOptimizationClip:setParameters(clipRatio: number, discountFactor: number)
 ```
 
 #### Parameters:

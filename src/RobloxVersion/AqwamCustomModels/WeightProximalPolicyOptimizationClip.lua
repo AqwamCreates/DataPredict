@@ -184,6 +184,10 @@ function WeightProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor
 
 		end
 		
+		ActorModel:setModelParameters(NewActorModelParameters)
+		
+		CriticModel:setModelParameters(NewCriticModelParameters)
+		
 		oldAdvantageValueHistory = table.clone(advantageValueHistory)
 		
 		table.clear(advantageValueHistory)

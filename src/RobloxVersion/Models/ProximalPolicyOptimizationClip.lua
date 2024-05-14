@@ -64,9 +64,9 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 	
 	local criticValueHistory = {}
 	
-	local actionVectorHistory = {}
+	local actionProbabilityVectorHistory = {}
 	
-	local oldActionVectorHistory = {}
+	local oldActionProbabilityVectorHistory = {}
 	
 	local advantageValueHistory = {}
 	
@@ -90,7 +90,7 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 		table.insert(criticValueHistory, previousCriticValue)
 
-		table.insert(actionVectorHistory, actionProbabilityVector)
+		table.insert(actionProbabilityVectorHistory, actionProbabilityVector)
 		
 		table.insert(rewardHistory, rewardValue)
 		
@@ -98,9 +98,9 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 	
 	NewProximalPolicyOptimizationClipModel:setEpisodeUpdateFunction(function()
 		
-		if (#oldActionVectorHistory == 0) then 
+		if (#oldActionProbabilityVectorHistory == 0) then 
 			
-			oldActionVectorHistory = table.clone(actionVectorHistory)
+			oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 			
 			oldAdvantageValueHistory = table.clone(advantageValueHistory)
 			
@@ -110,7 +110,7 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 			table.clear(rewardHistory)
 
-			table.clear(actionVectorHistory)
+			table.clear(actionProbabilityVectorHistory)
 			
 			return 
 				
@@ -134,9 +134,9 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 		for h = 1, historyLength, 1 do
 
-			local currentActionVector = actionVectorHistory[h]
+			local currentActionVector = actionProbabilityVectorHistory[h]
 
-			local previousActionVector = oldActionVectorHistory[h]
+			local previousActionVector = oldActionProbabilityVectorHistory[h]
 
 			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
 			
@@ -178,7 +178,7 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 		ActorModel:backPropagate(calculatedActorLossVector, true)
 		CriticModel:backPropagate(calculatedCriticLoss, true)
 		
-		oldActionVectorHistory = table.clone(actionVectorHistory)
+		oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 		
 		oldAdvantageValueHistory = table.clone(advantageValueHistory)
 		
@@ -188,7 +188,7 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 		table.clear(rewardHistory)
 
-		table.clear(actionVectorHistory)
+		table.clear(actionProbabilityVectorHistory)
 		
 	end)
 	
@@ -202,9 +202,9 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 		table.clear(rewardHistory)
 
-		table.clear(actionVectorHistory)
+		table.clear(actionProbabilityVectorHistory)
 		
-		table.clear(oldActionVectorHistory)
+		table.clear(oldActionProbabilityVectorHistory)
 		
 	end)
 	

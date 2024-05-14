@@ -137,6 +137,8 @@ local AqwamCustomModelsDictionary = {
 	
 	AqwamAdvantageActorCriticV2 = require(AqwamCustomModels.AqwamAdvantageActorCriticV2),
 	
+	WeightProximalPolicyOptimizationClip = require(AqwamCustomModels.WeightProximalPolicyOptimizationClip),
+	
 }
 
 local OptimizersDictionary = {

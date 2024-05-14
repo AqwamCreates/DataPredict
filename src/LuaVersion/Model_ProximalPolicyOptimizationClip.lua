@@ -2,6 +2,10 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local ReinforcementLearningActorCriticBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
 
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
+local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
+
 ProximalPolicyOptimizationClipModel = {}
 
 ProximalPolicyOptimizationClipModel.__index = ProximalPolicyOptimizationClipModel
@@ -11,23 +15,23 @@ setmetatable(ProximalPolicyOptimizationClipModel, ReinforcementLearningActorCrit
 local defaultClipRatio = 0.3
 
 local function calculateProbability(outputMatrix)
-	
+
 	local meanVector = AqwamMatrixLibrary:horizontalMean(outputMatrix)
-	
+
 	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(outputMatrix)
-	
+
 	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(outputMatrix, meanVector)
-	
+
 	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
-	
+
 	local zScoreSquaredVector = AqwamMatrixLibrary:power(zScoreVector, 2)
-	
+
 	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
-	
+
 	local probabilityVectorPart2 = AqwamMatrixLibrary:applyFunction(math.exp, probabilityVectorPart1)
-	
+
 	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
-	
+
 	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
 
 	return probabilityVector
@@ -64,9 +68,9 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 	
 	local criticValueHistory = {}
 	
-	local actionVectorHistory = {}
+	local actionProbabilityVectorHistory = {}
 	
-	local oldActionVectorHistory = {}
+	local oldActionProbabilityVectorHistory = {}
 	
 	local advantageValueHistory = {}
 	
@@ -90,7 +94,7 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 		table.insert(criticValueHistory, previousCriticValue)
 
-		table.insert(actionVectorHistory, actionProbabilityVector)
+		table.insert(actionProbabilityVectorHistory, actionProbabilityVector)
 		
 		table.insert(rewardHistory, rewardValue)
 		
@@ -98,9 +102,9 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 	
 	NewProximalPolicyOptimizationClipModel:setEpisodeUpdateFunction(function()
 		
-		if (#oldActionVectorHistory == 0) then 
+		if (#oldActionProbabilityVectorHistory == 0) then 
 			
-			oldActionVectorHistory = table.clone(actionVectorHistory)
+			oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 			
 			oldAdvantageValueHistory = table.clone(advantageValueHistory)
 			
@@ -110,7 +114,7 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 			table.clear(rewardHistory)
 
-			table.clear(actionVectorHistory)
+			table.clear(actionProbabilityVectorHistory)
 			
 			return 
 				
@@ -134,9 +138,9 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 		for h = 1, historyLength, 1 do
 
-			local currentActionVector = actionVectorHistory[h]
+			local currentActionVector = actionProbabilityVectorHistory[h]
 
-			local previousActionVector = oldActionVectorHistory[h]
+			local previousActionVector = oldActionProbabilityVectorHistory[h]
 
 			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
 			
@@ -178,7 +182,7 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 		ActorModel:backPropagate(calculatedActorLossVector, true)
 		CriticModel:backPropagate(calculatedCriticLoss, true)
 		
-		oldActionVectorHistory = table.clone(actionVectorHistory)
+		oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 		
 		oldAdvantageValueHistory = table.clone(advantageValueHistory)
 		
@@ -188,7 +192,7 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 		table.clear(rewardHistory)
 
-		table.clear(actionVectorHistory)
+		table.clear(actionProbabilityVectorHistory)
 		
 	end)
 	
@@ -202,9 +206,9 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 		table.clear(rewardHistory)
 
-		table.clear(actionVectorHistory)
+		table.clear(actionProbabilityVectorHistory)
 		
-		table.clear(oldActionVectorHistory)
+		table.clear(oldActionProbabilityVectorHistory)
 		
 	end)
 	

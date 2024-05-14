@@ -60,7 +60,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 	
 	local criticValueHistory = {}
 	
-	local actionVectorHistory = {}
+	local actionProbabilityVectorHistory = {}
 	
 	local oldActionVectorHistory = {}
 	
@@ -86,7 +86,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		table.insert(criticValueHistory, previousCriticValue)
 
-		table.insert(actionVectorHistory, actionProbabilityVector)
+		table.insert(actionProbabilityVectorHistory, actionProbabilityVector)
 		
 		table.insert(rewardHistory, rewardValue)
 		
@@ -96,7 +96,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 		if (#oldActionVectorHistory == 0) then 
 
-			oldActionVectorHistory = table.clone(actionVectorHistory)
+			oldActionVectorHistory = table.clone(actionProbabilityVectorHistory)
 			
 			oldAdvantageValueHistory = table.clone(advantageValueHistory)
 			
@@ -106,7 +106,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 			table.clear(rewardHistory)
 
-			table.clear(actionVectorHistory)
+			table.clear(actionProbabilityVectorHistory)
 
 			return 
 
@@ -122,7 +122,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		for h = 1, historyLength, 1 do
 
-			local currentActionVector = actionVectorHistory[h]
+			local currentActionVector = actionProbabilityVectorHistory[h]
 
 			local previousActionVector = oldActionVectorHistory[h]
 
@@ -158,7 +158,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		ActorModel:backPropagate(calculatedActorLossVector, true)
 		CriticModel:backPropagate(calculatedCriticLoss, true)
 		
-		oldActionVectorHistory = table.clone(actionVectorHistory)
+		oldActionVectorHistory = table.clone(actionProbabilityVectorHistory)
 		
 		oldAdvantageValueHistory = table.clone(advantageValueHistory)
 		
@@ -168,7 +168,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		table.clear(rewardHistory)
 
-		table.clear(actionVectorHistory)
+		table.clear(actionProbabilityVectorHistory)
 		
 	end)
 	
@@ -182,7 +182,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		table.clear(rewardHistory)
 
-		table.clear(actionVectorHistory)
+		table.clear(actionProbabilityVectorHistory)
 		
 		table.clear(oldActionVectorHistory)
 		

@@ -70,8 +70,6 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 	
 	local advantageValueHistory = {}
 	
-	local oldAdvantageValueHistory = {}
-	
 	NewProximalPolicyOptimizationClipModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local allOutputsMatrix = NewProximalPolicyOptimizationClipModel.ActorModel:predict(previousFeatureVector, true)
@@ -102,8 +100,6 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 			
 			oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 			
-			oldAdvantageValueHistory = table.clone(advantageValueHistory)
-			
 			table.clear(advantageValueHistory)
 
 			table.clear(criticValueHistory)
@@ -119,9 +115,9 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 		local rewardsToGoArray = calculateRewardsToGo(rewardHistory, NewProximalPolicyOptimizationClipModel.discountFactor)
 
 		local historyLength = #criticValueHistory
-
+		
 		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewProximalPolicyOptimizationClipModel.ClassesList)
-			
+		
 		local sumCriticLoss = 0
 		
 		local clipFunction = function(value) 
@@ -180,8 +176,6 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 		
 		oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 		
-		oldAdvantageValueHistory = table.clone(advantageValueHistory)
-		
 		table.clear(advantageValueHistory)
 
 		table.clear(criticValueHistory)
@@ -195,8 +189,6 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 	NewProximalPolicyOptimizationClipModel:extendResetFunction(function()
 		
 		table.clear(advantageValueHistory)
-		
-		table.clear(oldAdvantageValueHistory)
 
 		table.clear(criticValueHistory)
 

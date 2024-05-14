@@ -74,8 +74,6 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 	
 	local advantageValueHistory = {}
 	
-	local oldAdvantageValueHistory = {}
-	
 	NewProximalPolicyOptimizationClipModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local allOutputsMatrix = NewProximalPolicyOptimizationClipModel.ActorModel:predict(previousFeatureVector, true)
@@ -105,8 +103,6 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 		if (#oldActionProbabilityVectorHistory == 0) then 
 			
 			oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
-			
-			oldAdvantageValueHistory = table.clone(advantageValueHistory)
 			
 			table.clear(advantageValueHistory)
 
@@ -184,8 +180,6 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 		
 		oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 		
-		oldAdvantageValueHistory = table.clone(advantageValueHistory)
-		
 		table.clear(advantageValueHistory)
 
 		table.clear(criticValueHistory)
@@ -199,8 +193,6 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 	NewProximalPolicyOptimizationClipModel:extendResetFunction(function()
 		
 		table.clear(advantageValueHistory)
-		
-		table.clear(oldAdvantageValueHistory)
 
 		table.clear(criticValueHistory)
 

@@ -9,23 +9,23 @@ ProximalPolicyOptimizationModel.__index = ProximalPolicyOptimizationModel
 setmetatable(ProximalPolicyOptimizationModel, ReinforcementLearningActorCriticBaseModel)
 
 local function calculateProbability(outputMatrix)
-	
+
 	local meanVector = AqwamMatrixLibrary:horizontalMean(outputMatrix)
-	
+
 	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(outputMatrix)
-	
+
 	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(outputMatrix, meanVector)
-	
+
 	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
-	
+
 	local zScoreSquaredVector = AqwamMatrixLibrary:power(zScoreVector, 2)
-	
+
 	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
-	
+
 	local probabilityVectorPart2 = AqwamMatrixLibrary:applyFunction(math.exp, probabilityVectorPart1)
-	
+
 	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
-	
+
 	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
 
 	return probabilityVector
@@ -60,9 +60,9 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 	
 	local criticValueHistory = {}
 	
-	local actionVectorHistory = {}
+	local actionProbabilityVectorHistory = {}
 	
-	local oldActionVectorHistory = {}
+	local oldActionProbabilityVectorHistory = {}
 	
 	local advantageValueHistory = {}
 	
@@ -86,7 +86,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		table.insert(criticValueHistory, previousCriticValue)
 
-		table.insert(actionVectorHistory, actionProbabilityVector)
+		table.insert(actionProbabilityVectorHistory, actionProbabilityVector)
 		
 		table.insert(rewardHistory, rewardValue)
 		
@@ -94,9 +94,9 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 	
 	NewProximalPolicyOptimizationModel:setEpisodeUpdateFunction(function()
 		
-		if (#oldActionVectorHistory == 0) then 
+		if (#oldActionProbabilityVectorHistory == 0) then 
 
-			oldActionVectorHistory = table.clone(actionVectorHistory)
+			oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 			
 			oldAdvantageValueHistory = table.clone(advantageValueHistory)
 			
@@ -106,7 +106,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 			table.clear(rewardHistory)
 
-			table.clear(actionVectorHistory)
+			table.clear(actionProbabilityVectorHistory)
 
 			return 
 
@@ -122,9 +122,9 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		for h = 1, historyLength, 1 do
 
-			local currentActionVector = actionVectorHistory[h]
+			local currentActionVector = actionProbabilityVectorHistory[h]
 
-			local previousActionVector = oldActionVectorHistory[h]
+			local previousActionVector = oldActionProbabilityVectorHistory[h]
 
 			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
 
@@ -148,7 +148,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
 
-		numberOfFeatures = numberOfFeatures + (hasBias and 1) or 0
+		numberOfFeatures += (hasBias and 1) or 0
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
@@ -158,7 +158,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		ActorModel:backPropagate(calculatedActorLossVector, true)
 		CriticModel:backPropagate(calculatedCriticLoss, true)
 		
-		oldActionVectorHistory = table.clone(actionVectorHistory)
+		oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 		
 		oldAdvantageValueHistory = table.clone(advantageValueHistory)
 		
@@ -168,7 +168,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		table.clear(rewardHistory)
 
-		table.clear(actionVectorHistory)
+		table.clear(actionProbabilityVectorHistory)
 		
 	end)
 	
@@ -182,9 +182,9 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		table.clear(rewardHistory)
 
-		table.clear(actionVectorHistory)
+		table.clear(actionProbabilityVectorHistory)
 		
-		table.clear(oldActionVectorHistory)
+		table.clear(oldActionProbabilityVectorHistory)
 		
 	end)
 	

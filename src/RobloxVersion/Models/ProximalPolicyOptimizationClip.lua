@@ -118,10 +118,10 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 		
 		local rewardsToGoArray = calculateRewardsToGo(rewardHistory, NewProximalPolicyOptimizationClipModel.discountFactor)
 
-		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewProximalPolicyOptimizationClipModel.ClassesList)
-
 		local historyLength = #criticValueHistory
 
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewProximalPolicyOptimizationClipModel.ClassesList)
+			
 		local sumCriticLoss = 0
 		
 		local clipFunction = function(value) 

@@ -148,7 +148,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
 
-		numberOfFeatures += (hasBias and 1) or 0
+		numberOfFeatures = numberOfFeatures + (hasBias and 1) or 0
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 

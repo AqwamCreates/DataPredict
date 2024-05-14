@@ -66,8 +66,6 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 	
 	local advantageValueHistory = {}
 	
-	local oldAdvantageValueHistory = {}
-	
 	NewProximalPolicyOptimizationModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local allOutputsMatrix = NewProximalPolicyOptimizationModel.ActorModel:predict(previousFeatureVector, true)
@@ -97,8 +95,6 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		if (#oldActionProbabilityVectorHistory == 0) then 
 
 			oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
-			
-			oldAdvantageValueHistory = table.clone(advantageValueHistory)
 			
 			table.clear(advantageValueHistory)
 
@@ -160,8 +156,6 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 		oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 		
-		oldAdvantageValueHistory = table.clone(advantageValueHistory)
-		
 		table.clear(advantageValueHistory)
 
 		table.clear(criticValueHistory)
@@ -175,8 +169,6 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 	NewProximalPolicyOptimizationModel:extendResetFunction(function()
 		
 		table.clear(advantageValueHistory)
-		
-		table.clear(oldAdvantageValueHistory)
 		
 		table.clear(criticValueHistory)
 

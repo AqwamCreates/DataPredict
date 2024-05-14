@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-KMedoids.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, targetCost: number, setTheCentroidsDistanceFarthest: boolean): ModelObject
+KMedoids.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setTheCentroidsDistanceFarthest: boolean): ModelObject
 ```
 
 #### Parameters:
@@ -31,8 +31,6 @@ KMedoids.new(maxNumberOfIterations: integer, numberOfClusters: integer, distance
   *  Manhattan
  
   *  Cosine
-
-* targetCost: The cost at which the model stops training.
 
 * setTheCentroidsDistanceFarthest: Set whether or not the model to create centroids that are furthest from each other.
 
@@ -47,7 +45,7 @@ KMedoids.new(maxNumberOfIterations: integer, numberOfClusters: integer, distance
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-KMedoids:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, targetCost: number, setTheCentroidsDistanceFarthest: boolean)
+KMedoids:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setTheCentroidsDistanceFarthest: boolean)
 ```
 
 #### Parameters:
@@ -63,8 +61,6 @@ KMedoids:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer
   *  Manhattan
  
   *  Cosine
-
-* targetCost: The cost at which the model stops training.
 
 * setTheCentroidsDistanceFarthest: Set whether or not the model to create centroids that are furthest from each other.
 

@@ -7,3 +7,5 @@ A list of experimental models made by Aqwam. Use at your own risk.
 ### Non-Sequential + Reinforcement Learning
 
 [AqwamAdvantageActorCritic](AqwamCustomModels/AqwamAdvantageActorCritic.md) (a.k.a. Aqwam's A2C)
+
+[WeightedProximalPolicyOptimizationClip](AqwamCustomModels/WeightedProximalPolicyOptimizationClip.md)

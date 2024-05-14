@@ -7,7 +7,7 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 * The Library can be utilized for both internal and external commercial purposes under the condition that all source codes, data, arts, models, videos, audios, musics or any other assets that utilize the Library, whether directly or indirectly, must be released and distributed to the public under the MIT license for all versions permanently and immediately. It also must be placed in areas that are commonly viewed by the general public.
 
-* The term "commercial use" encompasses all forms of utilization and application, including integration and hosting from another computer, server or machine.
+* The term "commercial use" encompasses all forms of utilization and application, including integration, storing and hosting from another computer, server or machine.
 
 * Failure to comply with this condition will result in the User being liable for damages due to non-compliance with the terms above.
 

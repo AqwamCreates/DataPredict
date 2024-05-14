@@ -62,7 +62,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 	
 	local actionProbabilityVectorHistory = {}
 	
-	local oldActionVectorHistory = {}
+	local oldActionProbabilityVectorHistory = {}
 	
 	local advantageValueHistory = {}
 	
@@ -94,9 +94,9 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 	
 	NewProximalPolicyOptimizationModel:setEpisodeUpdateFunction(function()
 		
-		if (#oldActionVectorHistory == 0) then 
+		if (#oldActionProbabilityVectorHistory == 0) then 
 
-			oldActionVectorHistory = table.clone(actionProbabilityVectorHistory)
+			oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 			
 			oldAdvantageValueHistory = table.clone(advantageValueHistory)
 			
@@ -124,7 +124,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 			local currentActionVector = actionProbabilityVectorHistory[h]
 
-			local previousActionVector = oldActionVectorHistory[h]
+			local previousActionVector = oldActionProbabilityVectorHistory[h]
 
 			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
 
@@ -158,7 +158,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		ActorModel:backPropagate(calculatedActorLossVector, true)
 		CriticModel:backPropagate(calculatedCriticLoss, true)
 		
-		oldActionVectorHistory = table.clone(actionProbabilityVectorHistory)
+		oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 		
 		oldAdvantageValueHistory = table.clone(advantageValueHistory)
 		
@@ -184,7 +184,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		table.clear(actionProbabilityVectorHistory)
 		
-		table.clear(oldActionVectorHistory)
+		table.clear(oldActionProbabilityVectorHistory)
 		
 	end)
 	

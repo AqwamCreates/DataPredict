@@ -260,20 +260,6 @@ function BaseModel:printCostAndNumberOfIterations(cost, numberOfIteration)
 
 end
 
-function BaseModel:setPrintOutput(option) 
-	
-	if (option == false) then
-		
-		self.isOutputPrinted = false
-		
-	else
-		
-		self.isOutputPrinted = true
-		
-	end
-	
-end
-
 function BaseModel:getBooleanOrDefaultOption(boolean, defaultBoolean)
 	
 	if (type(boolean) == "nil") then return defaultBoolean end
@@ -288,6 +274,12 @@ function BaseModel:getValueOrDefaultOption(value, defaultValue)
 
 	return value
 
+end
+
+function BaseModel:setPrintOutput(option) 
+	
+	self.isOutputPrinted = self:getBooleanOrDefaultOption(option, self.isOutputPrinted)
+	
 end
 
 function BaseModel:setModelParametersInitializationMode(initializationMode, minimumModelParametersInitializationValue, maximumModelParametersInitializationValue)

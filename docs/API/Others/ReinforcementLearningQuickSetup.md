@@ -16,9 +16,9 @@ ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode: integer, e
 
 * numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
+* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1. Exploration means choosing a random action to try to get better overall average performance, while exploiting means choosing an action that has the potential to increase the performance.
 
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
+* epsilonDecayFactor: The higher the value, the slower the epsilon decays to lower value. The value must be set between 0 and 1.
 
 * actionSelectionFunction: The function on how to choose an action. Available options are:
 
@@ -44,9 +44,9 @@ ReinforcementLearningQuickSetup:setParameters(numberOfReinforcementsPerEpisode: 
 
 * numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 
-* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.
+* epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.  Exploration means choosing a random action to try to get better overall average performance, while exploiting means choosing an action that has the potential to increase the performance.
 
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays. The value must be set between 0 and 1.
+* epsilonDecayFactor: The higher the value, the slower the epsilon decays to lower value. The value must be set between 0 and 1.
 
 * actionSelectionFunction: The function on how to choose an action. Available options are:
 

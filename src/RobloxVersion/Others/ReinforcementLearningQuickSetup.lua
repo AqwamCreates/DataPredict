@@ -6,9 +6,9 @@ ReinforcementLearningQuickSetup.__index = ReinforcementLearningQuickSetup
 
 local defaultNumberOfReinforcementsPerEpisode = 500
 
-local defaultEpsilon = 0.5
+local defaultEpsilon = 0
 
-local defaultEpsilonDecayFactor = 0.999
+local defaultEpsilonDecayFactor = 0
 
 local defaultActionSelectionFunction = "Maximum"
 

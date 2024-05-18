@@ -6,9 +6,9 @@ ReinforcementLearningQuickSetup.__index = ReinforcementLearningQuickSetup
 
 local defaultNumberOfReinforcementsPerEpisode = 500
 
-local defaultEpsilon = 0.5
+local defaultEpsilon = 0
 
-local defaultEpsilonDecayFactor = 0.999
+local defaultEpsilonDecayFactor = 0
 
 local defaultActionSelectionFunction = "Maximum"
 
@@ -60,7 +60,7 @@ local function calculateProbability(outputMatrix)
 
 	local probabilityVectorPart2 = AqwamMatrixLibrary:applyFunction(math.exp, probabilityVectorPart1)
 
-	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi()))
 
 	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
 

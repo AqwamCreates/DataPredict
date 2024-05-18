@@ -99,18 +99,18 @@ BaseExperienceReplay:run(updateFunction)
 Adds an experience to the experiance replay object.
 
 ```
-BaseExperienceReplay:addExperience(previousState, action: number/string, rewardValue: number, currentState)
+BaseExperienceReplay:addExperience(previousFeatureVector, action: number/string, rewardValue: number, currentFeatureVector)
 ```
 
 #### Parameters:
 
-* previousState: The previous state of the environment.
+* previousFeatureVector: The previous features of the environment.
 
 * action: The action selected.
 
 * rewardValue: The reward gained at current state.
 
-* currentState: The currrent state of the environment.
+* currentFeatureVector: The currrent features of the environment.
 
 ### addTemporalDifferenceError()
 

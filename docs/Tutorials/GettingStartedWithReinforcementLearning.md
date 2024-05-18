@@ -88,7 +88,7 @@ All the reinforcement learning models have two important functions: update() and
 
 while true do
 
-  local previousEnvironmentVector = {{0, 0, 0, 0}} -- We must keep track our previous feature vector.
+  local previousEnvironmentFeatureVector = {{0, 0, 0, 0}} -- We must keep track our previous feature vector.
 
   local action = 1
 
@@ -102,7 +102,7 @@ while true do
 
     QLearningNeuralNetwork:update(previousEnvironmentVector, reward, action, environmentVector) -- update() is called whenever a step is made.
 
-    previousEnvironmentVector = environmentVector
+    previousEnvironmentFeatureVector = environmentVector
 
     local hasGameEnded = checkIfGameHasEnded(environmentVector)
 
@@ -130,17 +130,17 @@ QLearningNeuralNetworkQuickSetup:setModel(QLearningNeuralNetwork)
 
 QLearningNeuralNetworkQuickSetup:setClassesList(classesList)
 
-local environmentVector = {{0, 0, 0, 0}}
+local environmentFeatureVector = {{0, 0, 0, 0}}
 
 local action = 1
 
 while true do
 
-  environmentVector = fetchEnvironmentVector(environmentVector, action)
+  environmentFeatureVector = fetchEnvironmentVector(environmentFeatureVector, action)
 
-  local reward = getReward(environmentVector, action)
+  local reward = getReward(environmentFeatureVector, action)
 
-  action = QLearningNeuralNetworkQuickSetup:reinforce(environmentVector, reward)
+  action = QLearningNeuralNetworkQuickSetup:reinforce(environmentFeatureVector, reward)
 
 end
 

@@ -70,7 +70,7 @@ This is particularly useful if you want to prevent AI from doing things like:
 
 * Keep walking forward even if it is blocked by a wall.
 
-* Moves to area that actively harms the AI.
+* Moves to areas that actively harms the AI.
 
 * And many others!
 

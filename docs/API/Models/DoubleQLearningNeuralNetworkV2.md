@@ -17,7 +17,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, averagingRate: number, discountFactor: number( : ModelObject
+DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, averagingRate: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -39,7 +39,7 @@ DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, averagingRate: 
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, epsilon: number, epsilonDecayFactor: number, discountFactor: number, averagingRate: number)
+DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, averagingRate: number, discountFactor: number)
 ```
 
 #### Parameters:

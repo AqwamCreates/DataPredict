@@ -42,11 +42,11 @@ QLearningNeuralNetworkQuickSetup:setClassesList({1, 2, 3, 4})
 
 -- Creating a simple function when receiving environment vector received.
 
-local function onEnvironmentVectorReceived(environmentVector)
+local function onEnvironmentFeatureVectorReceived(environmentFeatureVector)
 
-  local internalReward = RandomNetworkDistillation:generate(environmentVector)
+  local internalReward = RandomNetworkDistillation:generate(environmentFeatureVector)
 
-  local action = QLearningNeuralNetworkQuickSetup:reinforce(environmentVector, internalReward)
+  local action = QLearningNeuralNetworkQuickSetup:reinforce(environmentFeatureVector, internalReward)
 
   return action
 

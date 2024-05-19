@@ -47,6 +47,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Using Regularization](Tutorials/UsingRegularization.md)
 
+[Distributed Training](Tutorials/DistributedTraining.md)
+
 ### The Neural Networks
 
 [Using Neural Networks Part 1](Tutorials/UsingNeuralNetworksPart1.md)
@@ -60,10 +62,6 @@ To know what this library is all about from scratch, let's have a look at the qu
 [Choosing The Most Recommended Environment Inputs](Tutorials/ChoosingTheMostRecommendedEnvironmentInputs.md)
 
 [Stimulating Curiosity With Random Network Distillation](Tutorials/StimulatingCuriosityWithRandomNetworkDistillation.md)
-
-### Advanced
-
-[Distributed Training](Tutorials/DistributedTraining.md)
 
 ## The API
 

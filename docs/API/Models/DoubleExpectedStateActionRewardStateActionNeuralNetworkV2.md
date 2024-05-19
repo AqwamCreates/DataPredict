@@ -39,7 +39,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterati
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfIterations: integer, targetCost: number, epsilon: number, averagingRate: number, discountFactor: number)
+DoubleExpectedStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfIterations: integer, epsilon: number, averagingRate: number, discountFactor: number)
 ```
 
 #### Parameters:

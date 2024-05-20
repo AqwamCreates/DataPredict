@@ -118,7 +118,7 @@ ReinforcementLearningQuickSetup:getClassesList(): []
 
 ### extendUpdateFunction
 
-Sets a new function on reset alongside with the current model's update() function. 
+Sets a new function on update alongside with the current model's update() function. 
 
 ```
 ReinforcementLearningQuickSetup:extendUpdateFunction(updateFunction)
@@ -130,7 +130,7 @@ ReinforcementLearningQuickSetup:extendUpdateFunction(updateFunction)
 
 ### extendEpisodeUpdateFunction
 
-Sets a new function on reset alongside with the current model's episodeUpdate() function. 
+Sets a new function on episode update alongside with the current model's episodeUpdate() function. 
 
 ```
 ReinforcementLearningQuickSetup:extendEpisodeUpdateFunction(episodeUpdateFunction)

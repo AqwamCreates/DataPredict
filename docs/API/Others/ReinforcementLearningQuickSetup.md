@@ -116,7 +116,7 @@ ReinforcementLearningQuickSetup:getClassesList(): []
 
 * classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
 
-### extendUpdateFunction
+### extendUpdateFunction()
 
 Sets a new function on update alongside with the current model's update() function. 
 
@@ -128,7 +128,7 @@ ReinforcementLearningQuickSetup:extendUpdateFunction(updateFunction)
 
 * updateFunction: The function to run after calling the model's update() function
 
-### extendEpisodeUpdateFunction
+### extendEpisodeUpdateFunction()
 
 Sets a new function on episode update alongside with the current model's episodeUpdate() function. 
 

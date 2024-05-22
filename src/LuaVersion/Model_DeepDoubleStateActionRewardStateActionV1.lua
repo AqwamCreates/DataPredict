@@ -92,9 +92,9 @@ function DeepDoubleStateActionRewardStateActionModel:generateLossVector(previous
 
 	local targetVector = Model:predict(currentFeatureVector, true)
 
-	local dicountedVector = AqwamMatrixLibrary:multiply(self.discountFactor, targetVector)
+	local dicountedTargetVector = AqwamMatrixLibrary:multiply(self.discountFactor, targetVector)
 
-	local newTargetVector = AqwamMatrixLibrary:add(rewardValue, dicountedVector)
+	local newTargetVector = AqwamMatrixLibrary:add(rewardValue, dicountedTargetVector)
 	
 	local previousVector = Model:predict(previousFeatureVector, true)
 	

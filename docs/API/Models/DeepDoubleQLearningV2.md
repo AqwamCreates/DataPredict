@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DoubleQLearningNeuralNetworkV2 (DDQN / Double Deep Q-Learning)
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepDoubleQLearningV2 (DDQN / Double Deep Q-Learning)
 
 DoubleQLearningNeuralNetworkV2 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values. 
 
@@ -17,12 +17,10 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, averagingRate: number, discountFactor: number): ModelObject
+DeepDoubleQLearning.new(averagingRate: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
@@ -39,12 +37,10 @@ DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, averagingRate: 
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, averagingRate: number, discountFactor: number)
+DeepDoubleQLearning:setParameters(, averagingRate: number, discountFactor: number)
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
@@ -52,7 +48,7 @@ DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, avera
 
 ## Inherited From
 
-* [ReinforcementLearningNeuralNetworkBaseModel](ReinforcementLearningNeuralNetworkBaseModel.md)
+* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
 
 ## References
 

@@ -1,12 +1,12 @@
-local ReinforcementLearningNeuralNetworkBaseModel = require("Model_ReinforcementLearningNeuralNetworkBaseModel")
-
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-REINFORCENeuralNetworkModel = {}
+local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
 
-REINFORCENeuralNetworkModel.__index = REINFORCENeuralNetworkModel
+REINFORCEModel = {}
 
-setmetatable(REINFORCENeuralNetworkModel, ReinforcementLearningNeuralNetworkBaseModel)
+REINFORCEModel.__index = REINFORCEModel
+
+setmetatable(REINFORCEModel, ReinforcementLearningBaseModel)
 
 local function calculateRewardsToGo(rewardHistory, discountFactor)
 
@@ -26,19 +26,19 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 end
 
-function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, discountFactor)
+function REINFORCEModel.new(discountFactor)
 
-	local NewREINFORCENeuralNetworkModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, discountFactor)
+	local NewREINFORCEModel = ReinforcementLearningBaseModel.new(discountFactor)
 	
-	setmetatable(NewREINFORCENeuralNetworkModel, REINFORCENeuralNetworkModel)
+	setmetatable(NewREINFORCEModel, REINFORCEModel)
 	
 	local targetVectorArray = {}
 	
 	local rewardArray = {}
 	
-	NewREINFORCENeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewREINFORCEModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		local predictedVector = NewREINFORCENeuralNetworkModel:predict(previousFeatureVector, true)
+		local predictedVector = NewREINFORCEModel.Model:predict(previousFeatureVector, true)
 		
 		local logPredictedVector = AqwamMatrixLibrary:applyFunction(math.log, predictedVector)
 		
@@ -50,11 +50,15 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, discountFactor)
 
 	end)
 	
-	NewREINFORCENeuralNetworkModel:setEpisodeUpdateFunction(function()
+	NewREINFORCEModel:setEpisodeUpdateFunction(function()
 		
-		local rewardsToGoArray = calculateRewardsToGo(rewardArray, NewREINFORCENeuralNetworkModel.discountFactor)
+		local Model = NewREINFORCEModel.Model
 		
-		local lossVector = AqwamMatrixLibrary:createMatrix(1, #NewREINFORCENeuralNetworkModel.ClassesList)
+		local rewardsToGoArray = calculateRewardsToGo(rewardArray, NewREINFORCEModel.discountFactor)
+		
+		local ClassesList = Model:getClassesList()
+		
+		local lossVector = AqwamMatrixLibrary:createMatrix(1, #ClassesList)
 		
 		for i = 1, #targetVectorArray, 1 do
 			
@@ -64,38 +68,36 @@ function REINFORCENeuralNetworkModel.new(maxNumberOfIterations, discountFactor)
 			
 		end
 		
-		local numberOfNeurons = NewREINFORCENeuralNetworkModel:getTotalNumberOfNeurons(1)
+		local numberOfNeurons = Model:getTotalNumberOfNeurons(1)
 
 		local inputVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeurons, 1)
 		
 		lossVector = AqwamMatrixLibrary:multiply(-1, lossVector)
 		
-		NewREINFORCENeuralNetworkModel:forwardPropagate(inputVector, true)
+		Model:forwardPropagate(inputVector, true)
 
-		NewREINFORCENeuralNetworkModel:backPropagate(lossVector, true)
+		Model:backPropagate(lossVector, true)
 		
 		table.clear(targetVectorArray)
 		table.clear(rewardArray)
 		
 	end)
 	
-	NewREINFORCENeuralNetworkModel:extendResetFunction(function()
+	NewREINFORCEModel:extendResetFunction(function()
 
 		table.clear(targetVectorArray)
 		table.clear(rewardArray)
 		
 	end)
 
-	return NewREINFORCENeuralNetworkModel
+	return NewREINFORCEModel
 
 end
 
-function REINFORCENeuralNetworkModel:setParameters(maxNumberOfIterations, discountFactor)
-	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+function REINFORCEModel:setParameters(discountFactor)
 
 	self.discountFactor = discountFactor or self.discountFactor
 
 end
 
-return REINFORCENeuralNetworkModel
+return REINFORCEModel

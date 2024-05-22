@@ -50,7 +50,7 @@ Gets the model.
 ReinforcementLearningBaseModel:getModel(): ModelObject
 ```
 
-#### Parameters:
+#### Returns:
 
 * Model: The model that was set.
 

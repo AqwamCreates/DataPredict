@@ -4,12 +4,6 @@ DeepClippedDoubleQLearning is a neural network with reinforcement learning capab
 
 It uses two neural networks where lowest maximum Q-values are selected for training.
 
-## Stored Model Parameters
-
-Contains a table of matrices.  
-
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
-
 ## Constructors
 
 ### new()

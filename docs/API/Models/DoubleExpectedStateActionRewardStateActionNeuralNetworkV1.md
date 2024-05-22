@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DoubleExpectedStateActionRewardStateActionNeuralNetworkV1 (Double Deep Expected SARSA)
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepDoubleExpectedStateActionRewardStateActionV1 (Double Deep Expected SARSA)
 
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV1 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+DeepDoubleExpectedStateActionRewardStateActionV1 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Stored Model Parameters
 
@@ -15,12 +15,10 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterations: integer, epsilon: number, discountFactor: number): ModelObject
+DeepDoubleExpectedStateActionRewardStateAction.new(epsilon: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * epsilon: Controls the balance between exploration and exploitation for calculating expected Q-values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
@@ -37,12 +35,10 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterati
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setParameters(maxNumberOfIterations: integer, epsilon: number, discountFactor: number)
+DeepDoubleExpectedStateActionRewardStateAction:setParameters(epsilon: number, discountFactor: number)
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * epsilon: Controls the balance between exploration and exploitation for calculating expected Q-values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
@@ -53,7 +49,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setParameters(maxNumbe
 Sets model parameters to be used by the model.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setModelParameters1(ModelParameters1: ModelParameters)
+DeepDoubleExpectedStateActionRewardStateAction:setModelParameters1(ModelParameters1: ModelParameters)
 ```
 
 #### Parameters:
@@ -65,7 +61,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setModelParameters1(Mo
 Sets model parameters to be used by the model.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setModelParameters1(ModelParameters2: ModelParameters)
+DeepDoubleExpectedStateActionRewardStateAction:setModelParameters1(ModelParameters2: ModelParameters)
 ```
 
 #### Parameters:
@@ -77,7 +73,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:setModelParameters1(Mo
 Sets model parameters to be used by the model.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:getModelParameters1(): ModelParameters
+DeepDoubleExpectedStateActionRewardStateAction:getModelParameters1(): ModelParameters
 ```
 
 #### Returns:
@@ -89,7 +85,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:getModelParameters1():
 Sets model parameters to be used by the model.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:getModelParameters2(): ModelParameters
+DeepDoubleExpectedStateActionRewardStateAction:getModelParameters2(): ModelParameters
 ```
 
 #### Returns:
@@ -98,7 +94,7 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV1:getModelParameters2():
 
 ## Inherited From
 
-* [ReinforcementLearningNeuralNetworkBaseModel](ReinforcementLearningNeuralNetworkBaseModel.md)
+* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
 
 ## References
 

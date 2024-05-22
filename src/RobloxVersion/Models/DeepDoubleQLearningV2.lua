@@ -40,7 +40,7 @@ function DeepDoubleQLearningModel.new(maxNumberOfIterations, averagingRate, disc
 		
 		local Model = NewDeepDoubleQLearningModel.Model
 
-		if (NewDeepDoubleQLearningModel.Model == nil) then Model:generateLayers() end
+		if (NewDeepDoubleQLearningModel:getModelParameters() == nil) then Model:generateLayers() end
 
 		local PrimaryModelParameters = Model:getModelParameters()
 

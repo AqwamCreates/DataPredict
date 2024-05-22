@@ -32,15 +32,27 @@ ReinforcementLearningBaseModel:setParameters(discountFactor: number)
 
 ### setModel()
 
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
+Sets the model.
 
 ```
-ReinforcementLearningBaseModel:setParameters(discountFactor: number)
+ReinforcementLearningBaseModel:setModel(Model: ModelObject)
 ```
 
 #### Parameters:
 
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+* Model: The model to be set.
+
+### getModel()
+
+Gets the model.
+
+```
+ReinforcementLearningBaseModel:getModel(): ModelObject
+```
+
+#### Parameters:
+
+* Model: The model to be set.
 
 ### setUpdateFunction()
 

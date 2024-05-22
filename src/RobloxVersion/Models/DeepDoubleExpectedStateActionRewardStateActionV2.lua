@@ -30,9 +30,9 @@ local function rateAverageModelParameters(averagingRate, PrimaryModelParameters,
 
 end
 
-function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIterations, epsilon, averagingRate, discountFactor)
+function DeepDoubleExpectedStateActionRewardStateActionModel.new(epsilon, averagingRate, discountFactor)
 
-	local NewDeepDoubleExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(maxNumberOfIterations, discountFactor)
+	local NewDeepDoubleExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(discountFactor)
 
 	setmetatable(NewDeepDoubleExpectedStateActionRewardStateActionModel, DeepDoubleExpectedStateActionRewardStateActionModel)
 	

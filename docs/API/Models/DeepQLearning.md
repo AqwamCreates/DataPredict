@@ -1,12 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - QLearningNeuralNetwork (DQN / Deep Q-Learning)
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepQLearning (DQN)
 
-QLearningNeuralNetwork is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
-
-## Stored Model Parameters
-
-Contains a table of matrices.  
-
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
+DeepQLearning is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Constructors
 
@@ -15,12 +9,10 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-QLearningNeuralNetwork.new(maxNumberOfIterations: integer, discountFactor: number): ModelObject
+DeepQLearning.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -35,18 +27,16 @@ QLearningNeuralNetwork.new(maxNumberOfIterations: integer, discountFactor: numbe
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-QLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, discountFactor: number)
+DeepQLearning:setParameters(discountFactor: number)
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
 ## Inherited From
 
-* [ReinforcementLearningNeuralNetworkBaseModel](ReinforcementLearningNeuralNetworkBaseModel.md)
+* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
 
 ## References
 

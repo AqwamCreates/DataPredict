@@ -76,6 +76,6 @@
 
 [GradientMethodBaseModel](Models/GradientMethodBaseModel.md)
 
-[ReinforcementLearningNeuralNetworkBaseModel](Models/ReinforcementLearningNeuralNetworkBaseModel.md)
+[ReinforcementLearningBaseModel](Models/ReinforcementLearningBaseModel.md)
 
 [ReinforcementLearningActorCriticBaseModel](Models/ReinforcementLearningActorCriticBaseModel.md)

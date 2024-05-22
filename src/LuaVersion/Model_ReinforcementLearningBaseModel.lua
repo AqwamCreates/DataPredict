@@ -32,6 +32,12 @@ function ReinforcementLearningBaseModel:setModel(Model)
 	
 end
 
+function ReinforcementLearningBaseModel:getModel()
+
+	return self.Model
+
+end
+
 function ReinforcementLearningBaseModel:setUpdateFunction(updateFunction)
 
 	self.updateFunction = updateFunction

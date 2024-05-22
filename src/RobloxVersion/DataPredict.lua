@@ -71,29 +71,29 @@ local ModelsDictionary = {
 	
 	AsynchronousAdvantageActorCritic = require(Models.AsynchronousAdvantageActorCritic),
 	
-	QLearningNeuralNetwork = require(Models.QLearningNeuralNetwork),
+	DeepQLearning = require(Models.DeepQLearning),
 	
-	DoubleQLearningNeuralNetworkV1 = require(Models.DoubleQLearningNeuralNetworkV1),
+	DeepDoubleQLearningV1 = require(Models.DeepDoubleQLearningV1),
 	
-	DoubleQLearningNeuralNetworkV2 = require(Models.DoubleQLearningNeuralNetworkV2),
+	DeepDoubleQLearningV2 = require(Models.DeepDoubleQLearningV2),
 	
-	ClippedDoubleQLearningNeuralNetwork = require(Models.ClippedDoubleQLearningNeuralNetwork),
+	DeepClippedDoubleQLearning = require(Models.DeepClippedDoubleQLearning),
 	
-	StateActionRewardStateActionNeuralNetwork = require(Models.StateActionRewardStateActionNeuralNetwork),
+	DeepStateActionRewardStateAction = require(Models.DeepStateActionRewardStateAction),
 	
-	DoubleStateActionRewardStateActionNeuralNetworkV1 = require(Models.DoubleStateActionRewardStateActionNeuralNetworkV1),
+	--DoubleStateActionRewardStateActionNeuralNetworkV1 = require(Models.DoubleStateActionRewardStateActionNeuralNetworkV1),
 	
-	DoubleStateActionRewardStateActionNeuralNetworkV2 = require(Models.DoubleStateActionRewardStateActionNeuralNetworkV2),
+	--DoubleStateActionRewardStateActionNeuralNetworkV2 = require(Models.DoubleStateActionRewardStateActionNeuralNetworkV2),
 	
-	ExpectedStateActionRewardStateActionNeuralNetwork = require(Models.ExpectedStateActionRewardStateActionNeuralNetwork),
+	DeepExpectedStateActionRewardStateAction = require(Models.DeepExpectedStateActionRewardStateAction),
 	
-	DoubleExpectedStateActionRewardStateActionNeuralNetworkV1 = require(Models.DoubleExpectedStateActionRewardStateActionNeuralNetworkV1),
+	--DoubleExpectedStateActionRewardStateActionNeuralNetworkV1 = require(Models.DoubleExpectedStateActionRewardStateActionNeuralNetworkV1),
 	
-	DoubleExpectedStateActionRewardStateActionNeuralNetworkV2 = require(Models.DoubleExpectedStateActionRewardStateActionNeuralNetworkV2),
+	--DoubleExpectedStateActionRewardStateActionNeuralNetworkV2 = require(Models.DoubleExpectedStateActionRewardStateActionNeuralNetworkV2),
 	
 	DuelingQLearning = require(Models.DuelingQLearning),
 	
-	REINFORCENeuralNetwork = require(Models.REINFORCENeuralNetwork),
+	REINFORCE = require(Models.REINFORCE),
 	
 	ProximalPolicyOptimization = require(Models.ProximalPolicyOptimization),
 	

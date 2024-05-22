@@ -4,7 +4,7 @@
 
 	Aqwam's Machine And Deep Learning Library (DataPredict)
 
-	Version 1.30.0
+	Version 1.31.0
 
 	Author: Aqwam Harish Aiman
 	
@@ -91,7 +91,7 @@ local ModelsDictionary = {
 
 	DeepDoubleExpectedStateActionRewardStateActionV2 = require(Models.DeepDoubleExpectedStateActionRewardStateActionV2),
 	
-	DuelingQLearning = require(Models.DuelingQLearning),
+	DeepDuelingQLearning = require(Models.DeepDuelingQLearning),
 	
 	REINFORCE = require(Models.REINFORCE),
 	

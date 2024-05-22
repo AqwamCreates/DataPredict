@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DuelingQLearning
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepDuelingQLearning
 
-DuelingQLearning is a base class for reinforcement learning.
+DeepDuelingQLearning is a base class for reinforcement learning.
 
 ## Notes:
 
@@ -17,7 +17,7 @@ DuelingQLearning is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DuelingQLearning.new(discountFactor: number): ModelObject
+DeepDuelingQLearning.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -35,7 +35,7 @@ DuelingQLearning.new(discountFactor: number): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DuelingQLearning:setParameters(discountFactor: number)
+DeepDuelingQLearning:setParameters(discountFactor: number)
 ```
 
 #### Parameters:
@@ -45,7 +45,7 @@ DuelingQLearning:setParameters(discountFactor: number)
 ### setAdvantageModel()
 
 ```
-DuelingQLearning:setAdvantageModel(Model: ModelObject)
+DeepDuelingQLearning:setAdvantageModel(Model: ModelObject)
 ```
 
 #### Parameters:
@@ -55,30 +55,12 @@ DuelingQLearning:setAdvantageModel(Model: ModelObject)
 ### setValueModel()
 
 ```
-DuelingQLearning:setValueModel(Model: ModelObject)
+DeepDuelingQLearning:setValueModel(Model: ModelObject)
 ```
 
 #### Parameters:
 
 * Model: The model to be used as a Value model.
-
-### setExperienceReplay()
-
-Set model's settings for experience replay capabilities. When any parameters are set to nil, then it will use previous settings for that particular parameter.
-
-```
-DuelingQLearning:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
-```
-
-### setClassesList()
-
-```
-DuelingQLearning:setClassesList(classesList: [])
-```
-
-#### Parameters:
-
-* classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
 
 #### Parameters:
 
@@ -89,7 +71,7 @@ DuelingQLearning:setClassesList(classesList: [])
 Reward or punish model based on the current state of the environment.
 
 ```
-DuelingQLearning:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
+DeepDuelingQLearning:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
 ```
 
 #### Parameters:
@@ -109,17 +91,6 @@ DuelingQLearning:reinforce(currentFeatureVector: Matrix, rewardValue: number, re
 -OR-
 
 * predictedVector: A matrix containing all predicted values from all classes.
-
-### setPrintReinforcementOutput()
-
-Set whether or not to show the current number of episodes and current epsilon.
-
-```
-DuelingQLearning:setPrintReinforcementOutput(option: boolean)
-```
-#### Parameters:
-
-* option: A boolean value that determines the reinforcement output to be printed or not.
 
 ### update()
 

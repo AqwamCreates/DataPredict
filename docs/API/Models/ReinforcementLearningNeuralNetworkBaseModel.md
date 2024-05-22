@@ -1,12 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - ReinforcementLearningNeuralNetworkBaseModel
+# [API Reference](../../API.md) - [Models](../Models.md) - ReinforcementLearningBaseModel
 
-ReinforcementLearningNeuralNetworkBaseModel is a base class for reinforcement learning neural network models.
-
-## Stored Model Parameters
-
-Contains a table of matrices.  
-
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
+ReinforcementLearningBaseModel is a base class for reinforcement learning neural network models.
 
 ## Constructors
 
@@ -15,12 +9,10 @@ Contains a table of matrices.
 Creates a new base model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations: integer, discountFactor: number): ModelObject
+ReinforcementLearningBaseModel.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -35,12 +27,10 @@ ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations: integer, 
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:setParameters(maxNumberOfIterations: integer, discountFactor: number)
+ReinforcementLearningBaseModel:setParameters(discountFactor: number)
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -49,7 +39,7 @@ ReinforcementLearningNeuralNetworkBaseModel:setParameters(maxNumberOfIterations:
 Sets the model's update function.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:setUpdateFunction(updateFunction)
+ReinforcementLearningBaseModel:setUpdateFunction(updateFunction)
 ```
 
 #### Parameters:
@@ -61,7 +51,7 @@ ReinforcementLearningNeuralNetworkBaseModel:setUpdateFunction(updateFunction)
 Sets the model's episode update function.
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
+ReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 ```
 
 #### Parameters:
@@ -73,7 +63,7 @@ ReinforcementLearningNeuralNetworkBaseModel:setEpisodeUpdateFunction(episodeUpda
 Updates the model parameters using updateFunction().
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
+ReinforcementLearningBaseModel:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
 ```
 
 #### Parameters:
@@ -91,7 +81,7 @@ ReinforcementLearningNeuralNetworkBaseModel:update(previousFeatiureVector: featu
 Updates the model parameters using episodeUpdateFunction().
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:episodeUpdate()
+ReinforcementLearningBaseModel:episodeUpdate()
 ```
 
 ### extendResetFunction()
@@ -99,7 +89,7 @@ ReinforcementLearningNeuralNetworkBaseModel:episodeUpdate()
 Sets a new function on reset alongside with the current reset() function. 
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:extendResetFunction(resetFunction)
+ReinforcementLearningBaseModel:extendResetFunction(resetFunction)
 ```
 
 #### Parameters:
@@ -111,7 +101,7 @@ ReinforcementLearningNeuralNetworkBaseModel:extendResetFunction(resetFunction)
 Reset model's stored values (excluding the parameters).
 
 ```
-ReinforcementLearningNeuralNetworkBaseModel:reset()
+ReinforcementLearningBaseModel:reset()
 ```
 
 ## Inherited From

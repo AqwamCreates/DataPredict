@@ -28,9 +28,9 @@ local function rateAverageModelParameters(averagingRate, PrimaryModelParameters,
 
 end
 
-function DeepDoubleQLearningModel.new(maxNumberOfIterations, averagingRate, discountFactor)
+function DeepDoubleQLearningModel.new(averagingRate, discountFactor)
 
-	local NewDeepDoubleQLearningModel = ReinforcementLearningBaseModel.new(maxNumberOfIterations, discountFactor)
+	local NewDeepDoubleQLearningModel = ReinforcementLearningBaseModel.new(discountFactor)
 
 	setmetatable(NewDeepDoubleQLearningModel, DeepDoubleQLearningModel)
 	
@@ -40,7 +40,7 @@ function DeepDoubleQLearningModel.new(maxNumberOfIterations, averagingRate, disc
 		
 		local Model = NewDeepDoubleQLearningModel.Model
 
-		if (NewDeepDoubleQLearningModel:getModelParameters() == nil) then Model:generateLayers() end
+		if (NewDeepDoubleQLearningModel.Model == nil) then Model:generateLayers() end
 
 		local PrimaryModelParameters = Model:getModelParameters()
 
@@ -82,9 +82,7 @@ function DeepDoubleQLearningModel.new(maxNumberOfIterations, averagingRate, disc
 
 end
 
-function DeepDoubleQLearningModel:setParameters(maxNumberOfIterations, averagingRate, discountFactor)
-
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+function DeepDoubleQLearningModel:setParameters(averagingRate, discountFactor)
 
 	self.discountFactor =  discountFactor or self.discountFactor
 	

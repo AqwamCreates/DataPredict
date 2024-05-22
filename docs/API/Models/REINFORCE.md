@@ -9,7 +9,7 @@ REINFORCE is a neural network with reinforcement learning capabilities. It can p
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-REINFORCE.new(maxNumberOfIterations: integer, discountFactor: number): ModelObject
+REINFORCE.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:

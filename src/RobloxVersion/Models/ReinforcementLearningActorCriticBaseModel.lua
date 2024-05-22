@@ -26,18 +26,26 @@ end
 
 function ReinforcementLearningActorCriticBaseModel:setActorModel(ActorModel)
 	
-	ActorModel:setPrintOutput(false)
-	
 	self.ActorModel = ActorModel
 	
 end
 
 function ReinforcementLearningActorCriticBaseModel:setCriticModel(CriticModel)
-	
-	CriticModel:setPrintOutput(false)
 
 	self.CriticModel = CriticModel
 	
+end
+
+function ReinforcementLearningActorCriticBaseModel:getActorModel()
+
+	return self.ActorModel
+
+end
+
+function ReinforcementLearningActorCriticBaseModel:getCriticModel()
+
+	return self.CriticModel
+
 end
 
 function ReinforcementLearningActorCriticBaseModel:setUpdateFunction(updateFunction)
@@ -74,18 +82,6 @@ function ReinforcementLearningActorCriticBaseModel:episodeUpdate()
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:getActorModel()
-	
-	return self.ActorModel
-	
-end
-
-function ReinforcementLearningActorCriticBaseModel:getCriticModel()
-
-	return self.CriticModel
-
-end
-
 function ReinforcementLearningActorCriticBaseModel:extendResetFunction(resetFunction)
 
 	self.resetFunction = resetFunction
@@ -93,14 +89,6 @@ function ReinforcementLearningActorCriticBaseModel:extendResetFunction(resetFunc
 end
 
 function ReinforcementLearningActorCriticBaseModel:reset()
-	
-	local ActorModel = self.ActorModel
-	
-	local CriticModel = self.CriticModel
-	
-	if (ActorModel) then ActorModel:reset() end
-	
-	if (CriticModel) then CriticModel:reset() end
 
 	if (self.resetFunction) then self.resetFunction() end
 

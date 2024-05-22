@@ -70,13 +70,17 @@ Below we will show you the difference between the two above. But first, let's de
 
 local classesList = {1, 2}
 
-local QLearningNeuralNetwork = DataPredict.Models.QLearningNeuralNetwork.new()
+local NeuralNetwork = DataPredict.Models.NeuralNetwork.new()
 
-QLearningNeuralNetwork:addLayer(4, false)
+NeuralNetwork:addLayer(4, false)
 
-QLearningNeuralNetwork:addLayer(2, false)
+NeuralNetwork:addLayer(2, false)
 
-QLearningNeuralNetwork:setClassesList()
+NeuralNetwork:setClassesList()
+
+local DeepQLearning = DataPredict.Models.DeepQLearning.new()
+
+DeepQLearning:setModel(NeuralNetwork)
 
 ```
 
@@ -96,11 +100,11 @@ while true do
 
     local environmentVector = fetchEnvironmentVector(previousEnvironmentVector, action)
 
-    action = QLearningNeuralNetwork:predict(environmentVector)
+    action = DeepQLearning:predict(environmentVector)
 
     local reward = getReward(environmentVector)
 
-    QLearningNeuralNetwork:update(previousEnvironmentVector, reward, action, environmentVector) -- update() is called whenever a step is made.
+    DeepQLearning:update(previousEnvironmentVector, reward, action, environmentVector) -- update() is called whenever a step is made.
 
     previousEnvironmentFeatureVector = environmentVector
 
@@ -124,11 +128,11 @@ To reduce the amount of things we need to track, we can use ReinforcementLearnin
 
 ```lua
 
-local QLearningNeuralNetworkQuickSetup = DataPredict.Others.ReinforcementLearningQuickSetup.new()
+local DeepQLearningQuickSetup = DataPredict.Others.ReinforcementLearningQuickSetup.new()
 
-QLearningNeuralNetworkQuickSetup:setModel(QLearningNeuralNetwork)
+DeepQLearningQuickSetup:setModel(DeepQLearning)
 
-QLearningNeuralNetworkQuickSetup:setClassesList(classesList)
+DeepQLearningQuickSetup:setClassesList(classesList)
 
 local environmentFeatureVector = {{0, 0, 0, 0}}
 
@@ -140,7 +144,7 @@ while true do
 
   local reward = getReward(environmentFeatureVector, action)
 
-  action = QLearningNeuralNetworkQuickSetup:reinforce(environmentFeatureVector, reward)
+  action = DeepQLearningQuickSetup:reinforce(environmentFeatureVector, reward)
 
 end
 
@@ -154,8 +158,8 @@ In this tutorial, you have learnt the starting point of the reinforcement learni
 
 These only cover the basics. You can find more information here:
 
-* [Deep Q-Learning](../API/Models/QLearningNeuralNetwork.md)
+* [Deep Q-Learning](../API/Models/DeepQLearning.md)
 
-* [Deep SARSA](../API/Models/StateActionRewardStateActionNeuralNetwork.md)
+* [Deep SARSA](../API/Models/DeepStateActionRewardStateAction.md)
 
-* [Deep Expected SARSA](../API/Models/ExpectedStateActionRewardStateActionNeuralNetwork.md) 
+* [Deep Expected SARSA](../API/Models/DeepExpectedStateActionRewardStateAction.md) 

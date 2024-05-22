@@ -4,7 +4,7 @@ DeepDuelingQLearning is a base class for reinforcement learning.
 
 ## Notes:
 
-* The Advantage and Value models must be created separately. Then use setAdvantageModel() and setValueModel() to put it inside the DuelingQLearning model.
+* The Advantage and Value models must be created separately. Then use setAdvantageModel() and setValueModel() to put it inside the DeepDuelingQLearning model.
 
 * Advantage and Value models must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 
@@ -61,36 +61,6 @@ DeepDuelingQLearning:setValueModel(Model: ModelObject)
 #### Parameters:
 
 * Model: The model to be used as a Value model.
-
-#### Parameters:
-
-* ExperienceReplay: The experience replay object.
-
-### reinforce()
-
-Reward or punish model based on the current state of the environment.
-
-```
-DeepDuelingQLearning:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
-```
-
-#### Parameters:
-
-* currentFeatureVector: Matrix containing data from the current state.
-
-* rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
-
-* returnOriginalOutput: Set whether or not to return predicted vector instead of value with highest probability.
-
-#### Returns:
-
-* predictedLabel: A label that is predicted by the model.
-
-* value: The value of predicted label.
-
--OR-
-
-* predictedVector: A matrix containing all predicted values from all classes.
 
 ### update()
 

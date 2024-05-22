@@ -24,7 +24,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(epsilon, discou
 		
 		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model
 
-		local randomProbability = Random.new():NextNumber()
+		local randomProbability = math.random()
 
 		local updateSecondModel = (randomProbability >= 0.5)
 

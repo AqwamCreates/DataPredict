@@ -70,17 +70,17 @@ Below we will show you the difference between the two above. But first, let's de
 
 local classesList = {1, 2}
 
-local NeuralNetwork = DataPredict.Models.NeuralNetwork.new()
+local NeuralNetwork = DataPredict.Models.NeuralNetwork.new() -- Create the NeuralNetwork first.
 
 NeuralNetwork:addLayer(4, false)
 
 NeuralNetwork:addLayer(2, false)
 
-NeuralNetwork:setClassesList()
+NeuralNetwork:setClassesList(classesList)
 
-local DeepQLearning = DataPredict.Models.DeepQLearning.new()
+local DeepQLearning = DataPredict.Models.DeepQLearning.new() -- Then create the DeepQLearning.
 
-DeepQLearning:setModel(NeuralNetwork)
+DeepQLearning:setModel(NeuralNetwork) -- Then put the NeuralNetwork inside DeepQLearning.
 
 ```
 

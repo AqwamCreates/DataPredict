@@ -1,12 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DoubleExpectedStateActionRewardStateActionNeuralNetworkV2 (Double Deep Expected SARSA)
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepDoubleStateActionRewardStateActionV2
 
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV2 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
-
-## Stored Model Parameters
-
-Contains a table of matrices.  
-
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
+DeepDoubleStateActionRewardStateActionV2 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Constructors
 
@@ -15,12 +9,10 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterations: integer, epsilon: number, averagingRate: number, discountFactor: number, ): ModelObject
+DeepDoubleStateActionRewardStateAction.new(epsilon: number, averagingRate: number, discountFactor: number, ): ModelObject
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * epsilon: Controls the balance between exploration and exploitation for calculating expected Q-values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
@@ -39,12 +31,10 @@ DoubleExpectedStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterati
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleExpectedStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfIterations: integer, epsilon: number, averagingRate: number, discountFactor: number)
+DeepDoubleStateActionRewardStateAction:setParameters(epsilon: number, averagingRate: number, discountFactor: number)
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * epsilon: Controls the balance between exploration and exploitation for calculating expected Q-values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 

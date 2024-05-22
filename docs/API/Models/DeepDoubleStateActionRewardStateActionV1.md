@@ -1,14 +1,8 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DoubleStateActionRewardStateActionNeuralNetworkV1 (Double Deep SARSA)
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepDoubleStateActionRewardStateActionV1 (Double Deep SARSA)
 
-DoubleStateActionRewardStateActionNeuralNetworkV1 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+DeepDoubleStateActionRewardStateActionV1 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 It uses Hasselt et al. (2010) version, where a single neural network is selected from two neural networks with equal probability for training.
-
-## Stored Model Parameters
-
-Contains a table of matrices.  
-
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
 
 ## Constructors
 
@@ -17,12 +11,10 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterations: integer, discountFactor: number): ModelObject
+DeepDoubleStateActionRewardStateAction.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -37,12 +29,10 @@ DoubleStateActionRewardStateActionNeuralNetworkV1.new(maxNumberOfIterations: int
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleStateActionRewardStateActionNeuralNetworkV1:setParameters(maxNumberOfIterations: integer, discountFactor: number)
+DeepDoubleStateActionRewardStateAction:setParameters(discountFactor: number)
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -51,7 +41,7 @@ DoubleStateActionRewardStateActionNeuralNetworkV1:setParameters(maxNumberOfItera
 Sets model parameters to be used by the model.
 
 ```
-DoubleStateActionRewardStateActionNeuralNetworkV1:setModelParametersArray(ModelParameters1: ModelParameters, ModelParameters2: ModelParameters)
+DeepDoubleStateActionRewardStateAction:setModelParametersArray(ModelParameters1: ModelParameters, ModelParameters2: ModelParameters)
 ```
 
 #### Parameters:
@@ -65,7 +55,7 @@ DoubleStateActionRewardStateActionNeuralNetworkV1:setModelParametersArray(ModelP
 Gets model parameters array used by the model. It contains two model parameters.
 
 ```
-DoubleStateActionRewardStateActionNeuralNetworkV1:getModelParametersArray(): ModelParameters
+DeepDoubleStateActionRewardStateAction:getModelParametersArray(): ModelParameters
 ```
 
 #### Returns:
@@ -74,7 +64,7 @@ DoubleStateActionRewardStateActionNeuralNetworkV1:getModelParametersArray(): Mod
 
 ## Inherited From
 
-* [ReinforcementLearningNeuralNetworkBaseModel](ReinforcementLearningNeuralNetworkBaseModel.md)
+* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
 
 ## References
 

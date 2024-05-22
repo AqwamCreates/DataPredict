@@ -1,95 +1,59 @@
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-ReinforcementLearningBaseModel = {}
+local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
-ReinforcementLearningBaseModel.__index = ReinforcementLearningBaseModel
+DeepQLearningModel = {}
 
-local defaultDiscountFactor = 0.95
+DeepQLearningModel.__index = DeepQLearningModel
 
-function ReinforcementLearningBaseModel.new(discountFactor)
+setmetatable(DeepQLearningModel, ReinforcementLearningBaseModel)
+
+function DeepQLearningModel.new(discountFactor)
+
+	local NewDeepQLearningModel = ReinforcementLearningBaseModel.new(discountFactor)
 	
-	local NewReinforcementLearningBaseModel = {}
+	setmetatable(NewDeepQLearningModel, DeepQLearningModel)
 	
-	setmetatable(NewReinforcementLearningBaseModel, ReinforcementLearningBaseModel)
-	
-	NewReinforcementLearningBaseModel.discountFactor = discountFactor or defaultDiscountFactor
-	
-	return NewReinforcementLearningBaseModel
-	
+	NewDeepQLearningModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		
+		local Model = NewDeepQLearningModel.Model
+
+		local predictedValue, maxQValue = Model:predict(currentFeatureVector)
+
+		local targetValue = rewardValue + (NewDeepQLearningModel.discountFactor * maxQValue[1][1])
+		
+		local ClassesList = Model:getClassesList()
+
+		local numberOfClasses = #ClassesList
+
+		local previousVector = Model:predict(previousFeatureVector, true)
+
+		local actionIndex = table.find(ClassesList, action)
+
+		local lastValue = previousVector[1][actionIndex]
+
+		local temporalDifferenceError = targetValue - lastValue
+
+		local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses, 0)
+
+		lossVector[1][actionIndex] = temporalDifferenceError
+		
+		Model:forwardPropagate(previousFeatureVector, true)
+
+		Model:backPropagate(lossVector, true)
+		
+		return temporalDifferenceError
+
+	end)
+
+	return NewDeepQLearningModel
+
 end
 
-function ReinforcementLearningBaseModel:setParameters(discountFactor)
+function DeepQLearningModel:setParameters(discountFactor)
 
 	self.discountFactor =  discountFactor or self.discountFactor
-	
-end
-
-function ReinforcementLearningBaseModel:setModel(Model)
-	
-	self.Model = Model
-	
-end
-
-function ReinforcementLearningBaseModel:setUpdateFunction(updateFunction)
-
-	self.updateFunction = updateFunction
 
 end
 
-function ReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
-
-	self.episodeUpdateFunction = episodeUpdateFunction
-
-end
-
-function ReinforcementLearningBaseModel:predict(featureVector, returnOriginalOutput)
-	
-	return self.Model:predict(featureVector, returnOriginalOutput)
-	
-end
-
-function ReinforcementLearningBaseModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-	return self.updateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-end
-
-function ReinforcementLearningBaseModel:episodeUpdate()
-
-	local episodeUpdateFunction = self.episodeUpdateFunction
-
-	if not episodeUpdateFunction then return end
-
-	episodeUpdateFunction()
-
-end
-
-function ReinforcementLearningBaseModel:getModel()
-	
-	return self.Model
-	
-end
-
-function ReinforcementLearningBaseModel:extendResetFunction(resetFunction)
-
-	self.resetFunction = resetFunction
-
-end
-
-function ReinforcementLearningBaseModel:reset()
-
-	if (self.resetFunction) then self.resetFunction() end
-
-end
-
-function ReinforcementLearningBaseModel:destroy()
-
-	setmetatable(self, nil)
-
-	table.clear(self)
-
-	self = nil
-
-end
-
-return ReinforcementLearningBaseModel
+return DeepQLearningModel

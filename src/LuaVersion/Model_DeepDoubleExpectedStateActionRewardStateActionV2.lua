@@ -1,12 +1,12 @@
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local ReinforcementLearningNeuralNetworkBaseModel = require("Model_ReinforcementLearningNeuralNetworkBaseModel")
+local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
 
 DeepDoubleExpectedStateActionRewardStateActionModel = {}
 
 DeepDoubleExpectedStateActionRewardStateActionModel.__index = DeepDoubleExpectedStateActionRewardStateActionModel
 
-setmetatable(DeepDoubleExpectedStateActionRewardStateActionModel, ReinforcementLearningNeuralNetworkBaseModel)
+setmetatable(DeepDoubleExpectedStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
 
 local defaultEpsilon = 0.5
 
@@ -30,10 +30,9 @@ local function rateAverageModelParameters(averagingRate, PrimaryModelParameters,
 
 end
 
-
 function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIterations, epsilon, averagingRate, discountFactor)
 
-	local NewDeepDoubleExpectedStateActionRewardStateActionModel = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, discountFactor)
+	local NewDeepDoubleExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(maxNumberOfIterations, discountFactor)
 
 	setmetatable(NewDeepDoubleExpectedStateActionRewardStateActionModel, DeepDoubleExpectedStateActionRewardStateActionModel)
 	

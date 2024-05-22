@@ -1,12 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - REINFORCENeuralNetwork
+# [API Reference](../../API.md) - [Models](../Models.md) - REINFORCE
 
 REINFORCE is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
-
-## Stored Model Parameters
-
-Contains a table of matrices.  
-
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
 
 ## Constructors
 
@@ -15,12 +9,10 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-REINFORCENeuralNetwork.new(maxNumberOfIterations: integer, discountFactor: number): ModelObject
+REINFORCE.new(maxNumberOfIterations: integer, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -35,12 +27,10 @@ REINFORCENeuralNetwork.new(maxNumberOfIterations: integer, discountFactor: numbe
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-REINFORCENeuralNetwork:setParameters(maxNumberOfIterations: integer, discountFactor: number)
+REINFORCE:setParameters(discountFactor: number)
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 

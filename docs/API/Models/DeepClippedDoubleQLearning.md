@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - ClippedDoubleQLearningNeuralNetwork (Clipped Double Deep Q-Learning)
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepClippedDoubleQLearning (Clipped Double Deep Q-Learning)
 
-DoubleQLearningNeuralNetworkV1 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+DeepClippedDoubleQLearning is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 It uses two neural networks where lowest maximum Q-values are selected for training.
 
@@ -17,12 +17,10 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ClippedDoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, discountFactor: number): ModelObject
+DeepClippedDoubleQLearning.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -37,12 +35,10 @@ ClippedDoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer, discount
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ClippedDoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, discountFactor: number)
+DeepClippedDoubleQLearning:setParameters(discountFactor: number)
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -51,7 +47,7 @@ ClippedDoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer
 Sets model parameters to be used by the model.
 
 ```
-ClippedDoubleQLearningNeuralNetwork:setModelParameters1(ModelParameters1: ModelParameters)
+DeepClippedDoubleQLearning:setModelParameters1(ModelParameters1: ModelParameters)
 ```
 
 #### Parameters:
@@ -63,7 +59,7 @@ ClippedDoubleQLearningNeuralNetwork:setModelParameters1(ModelParameters1: ModelP
 Sets model parameters to be used by the model.
 
 ```
-ClippedDoubleQLearningNeuralNetwork:setModelParameters1(ModelParameters2: ModelParameters)
+DeepClippedDoubleQLearning:setModelParameters1(ModelParameters2: ModelParameters)
 ```
 
 #### Parameters:
@@ -75,7 +71,7 @@ ClippedDoubleQLearningNeuralNetwork:setModelParameters1(ModelParameters2: ModelP
 Sets model parameters to be used by the model.
 
 ```
-ClippedDoubleQLearningNeuralNetwork:getModelParameters1(): ModelParameters
+DeepClippedDoubleQLearning:getModelParameters1(): ModelParameters
 ```
 
 #### Returns:
@@ -87,7 +83,7 @@ ClippedDoubleQLearningNeuralNetwork:getModelParameters1(): ModelParameters
 Sets model parameters to be used by the model.
 
 ```
-ClippedDoubleQLearningNeuralNetwork:getModelParameters2(): ModelParameters
+DeepClippedDoubleQLearning:getModelParameters2(): ModelParameters
 ```
 
 #### Returns:
@@ -96,7 +92,7 @@ ClippedDoubleQLearningNeuralNetwork:getModelParameters2(): ModelParameters
 
 ## Inherited From
 
-* [ReinforcementLearningNeuralNetworkBaseModel](ReinforcementLearningNeuralNetworkBaseModel.md)
+* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
 
 ## References
 

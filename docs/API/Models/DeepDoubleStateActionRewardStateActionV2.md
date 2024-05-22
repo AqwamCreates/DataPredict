@@ -44,7 +44,7 @@ DeepDoubleStateActionRewardStateAction:setParameters(epsilon: number, averagingR
 
 ## Inherited From
 
-* [ReinforcementLearningNeuralNetworkBaseModel](ReinforcementLearningNeuralNetworkBaseModel.md)
+* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
 
 ## References
 

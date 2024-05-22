@@ -1,12 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DoubleStateActionRewardStateActionNeuralNetworkV2 (Double Deep SARSA)
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepDoubleExpectedStateActionRewardStateActionV2 (Double Deep Expected SARSA)
 
-DoubleStateActionRewardStateActionNeuralNetworkV2 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values. 
-
-## Stored Model Parameters
-
-Contains a table of matrices.  
-
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
+DeepDoubleExpectedStateActionRewardStateActionV2 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values. 
 
 ## Constructors
 
@@ -15,12 +9,10 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterations: integer, averagingRate: number, discountFactor: number): ModelObject
+DeepDoubleExpectedStateActionRewardStateAction.new(averagingRate: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
@@ -37,12 +29,10 @@ DoubleStateActionRewardStateActionNeuralNetworkV2.new(maxNumberOfIterations: int
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfIterations: integer, averagingRate: number, discountFactor: number)
+DeepDoubleExpectedStateActionRewardStateAction:setParameters(averagingRate: number, discountFactor: number)
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * averagingRate: The lower the value, the faster the weights changes. The value must be set between 0 and 1.
 
@@ -50,7 +40,7 @@ DoubleStateActionRewardStateActionNeuralNetworkV2:setParameters(maxNumberOfItera
 
 ## Inherited From
 
-* [ReinforcementLearningNeuralNetworkBaseModel](ReinforcementLearningNeuralNetworkBaseModel.md)
+* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
 
 ## References
 

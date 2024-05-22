@@ -1,14 +1,8 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DoubleQLearningNeuralNetworkV1 (DDQN / Double Deep Q-Learning)
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepDoubleQLearningV1 (DDQN)
 
-DoubleQLearningNeuralNetworkV1 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+DeepDoubleQLearningV1 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 It uses Hasselt et al. (2010) version, where a single neural network is selected from two neural networks with equal probability for training.
-
-## Stored Model Parameters
-
-Contains a table of matrices.  
-
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
 
 ## Constructors
 
@@ -17,12 +11,10 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer discountFactor: number): ModelObject
+DeepDoubleQLearning.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -37,12 +29,10 @@ DoubleQLearningNeuralNetwork.new(maxNumberOfIterations: integer discountFactor: 
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, discountFactor: number)
+DeepDoubleQLearning:setParameters(discountFactor: number)
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -51,7 +41,7 @@ DoubleQLearningNeuralNetwork:setParameters(maxNumberOfIterations: integer, disco
 Sets model parameters to be used by the model.
 
 ```
-DoubleQLearningNeuralNetwork:setModelParameters1(ModelParameters1: ModelParameters)
+DeepDoubleQLearning:setModelParameters1(ModelParameters1: ModelParameters)
 ```
 
 #### Parameters:
@@ -63,7 +53,7 @@ DoubleQLearningNeuralNetwork:setModelParameters1(ModelParameters1: ModelParamete
 Sets model parameters to be used by the model.
 
 ```
-DoubleQLearningNeuralNetwork:setModelParameters1(ModelParameters2: ModelParameters)
+DeepDoubleQLearning:setModelParameters2(ModelParameters2: ModelParameters)
 ```
 
 #### Parameters:
@@ -75,7 +65,7 @@ DoubleQLearningNeuralNetwork:setModelParameters1(ModelParameters2: ModelParamete
 Sets model parameters to be used by the model.
 
 ```
-DoubleQLearningNeuralNetwork:getModelParameters1(): ModelParameters
+DeepDoubleQLearning:getModelParameters1(): ModelParameters
 ```
 
 #### Returns:
@@ -87,7 +77,7 @@ DoubleQLearningNeuralNetwork:getModelParameters1(): ModelParameters
 Sets model parameters to be used by the model.
 
 ```
-DoubleQLearningNeuralNetwork:getModelParameters2(): ModelParameters
+DeepDoubleQLearning:getModelParameters2(): ModelParameters
 ```
 
 #### Returns:
@@ -96,7 +86,7 @@ DoubleQLearningNeuralNetwork:getModelParameters2(): ModelParameters
 
 ## Inherited From
 
-* [ReinforcementLearningNeuralNetworkBaseModel](ReinforcementLearningNeuralNetworkBaseModel.md)
+* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
 
 ## References
 

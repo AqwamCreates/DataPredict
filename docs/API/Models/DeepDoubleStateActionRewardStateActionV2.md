@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DeepDoubleStateActionRewardStateActionV2
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepDoubleStateActionRewardStateActionV2 (Double Deep SARSA)
 
 DeepDoubleStateActionRewardStateActionV2 is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 

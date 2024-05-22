@@ -2,6 +2,10 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
 
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
+local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
+
 DeepDoubleExpectedStateActionRewardStateActionModel = {}
 
 DeepDoubleExpectedStateActionRewardStateActionModel.__index = DeepDoubleExpectedStateActionRewardStateActionModel
@@ -30,9 +34,10 @@ local function rateAverageModelParameters(averagingRate, PrimaryModelParameters,
 
 end
 
-function DeepDoubleExpectedStateActionRewardStateActionModel.new(epsilon, averagingRate, discountFactor)
 
-	local NewDeepDoubleExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(discountFactor)
+function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIterations, epsilon, averagingRate, discountFactor)
+
+	local NewDeepDoubleExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(maxNumberOfIterations, discountFactor)
 
 	setmetatable(NewDeepDoubleExpectedStateActionRewardStateActionModel, DeepDoubleExpectedStateActionRewardStateActionModel)
 	
@@ -46,15 +51,17 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(epsilon, averag
 
 		if (Model:getModelParameters() == nil) then Model:generateLayers() end
 
-		local PrimaryModelParameters = NewDeepDoubleExpectedStateActionRewardStateActionModel:getModelParameters(true)
+		local PrimaryModelParameters = Model:getModelParameters(true)
 
 		local expectedQValue = 0
 
 		local numberOfGreedyActions = 0
+		
+		local ClassesList = Model:getClassesList()
 
-		local numberOfActions = #NewDeepDoubleExpectedStateActionRewardStateActionModel.ClassesList
+		local numberOfActions = #ClassesList
 
-		local actionIndex = table.find(NewDeepDoubleExpectedStateActionRewardStateActionModel.ClassesList, action)
+		local actionIndex = table.find(ClassesList, action)
 
 		local previousVector = NewDeepDoubleExpectedStateActionRewardStateActionModel:predict(previousFeatureVector, true)
 
@@ -88,27 +95,25 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(epsilon, averag
 
 		end
 
-		local numberOfClasses = #NewDeepDoubleExpectedStateActionRewardStateActionModel:getClassesList()
-
 		local targetValue = rewardValue + (NewDeepDoubleExpectedStateActionRewardStateActionModel.discountFactor * expectedQValue)
 
 		local lastValue = previousVector[1][actionIndex]
 
 		local temporalDifferenceError = targetValue - lastValue
 
-		local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses, 0)
+		local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, 0)
 
 		lossVector[1][actionIndex] = temporalDifferenceError
 		
-		NewDeepDoubleExpectedStateActionRewardStateActionModel:forwardPropagate(previousFeatureVector, true)
+		Model:forwardPropagate(previousFeatureVector, true)
 
-		NewDeepDoubleExpectedStateActionRewardStateActionModel:backPropagate(lossVector, true)
+		Model:backPropagate(lossVector, true)
 
-		local TargetModelParameters = NewDeepDoubleExpectedStateActionRewardStateActionModel:getModelParameters(true)
+		local TargetModelParameters = Model:getModelParameters(true)
 
 		TargetModelParameters = rateAverageModelParameters(NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate, PrimaryModelParameters, TargetModelParameters)
 
-		NewDeepDoubleExpectedStateActionRewardStateActionModel:setModelParameters(TargetModelParameters, true)
+		Model:setModelParameters(TargetModelParameters, true)
 		
 		return temporalDifferenceError
 

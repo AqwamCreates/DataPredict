@@ -81,15 +81,15 @@ local ModelsDictionary = {
 	
 	DeepStateActionRewardStateAction = require(Models.DeepStateActionRewardStateAction),
 	
-	--DoubleStateActionRewardStateActionNeuralNetworkV1 = require(Models.DoubleStateActionRewardStateActionNeuralNetworkV1),
+	DeepDoubleStateActionRewardStateActionV1 = require(Models.DeepDoubleStateActionRewardStateActionV1),
 	
-	--DoubleStateActionRewardStateActionNeuralNetworkV2 = require(Models.DoubleStateActionRewardStateActionNeuralNetworkV2),
+	DeepDoubleStateActionRewardStateActionV2 = require(Models.DeepDoubleStateActionRewardStateActionV2),
 	
 	DeepExpectedStateActionRewardStateAction = require(Models.DeepExpectedStateActionRewardStateAction),
 	
-	--DoubleExpectedStateActionRewardStateActionNeuralNetworkV1 = require(Models.DoubleExpectedStateActionRewardStateActionNeuralNetworkV1),
-	
-	--DoubleExpectedStateActionRewardStateActionNeuralNetworkV2 = require(Models.DoubleExpectedStateActionRewardStateActionNeuralNetworkV2),
+	DeepDoubleExpectedStateActionRewardStateActionV1 = require(Models.DeepDoubleExpectedStateActionRewardStateActionV1),
+
+	DeepDoubleExpectedStateActionRewardStateActionV2 = require(Models.DeepDoubleExpectedStateActionRewardStateActionV2),
 	
 	DuelingQLearning = require(Models.DuelingQLearning),
 	

@@ -72,12 +72,6 @@ function ReinforcementLearningBaseModel:episodeUpdate()
 
 end
 
-function ReinforcementLearningBaseModel:getModel()
-	
-	return self.Model
-	
-end
-
 function ReinforcementLearningBaseModel:extendResetFunction(resetFunction)
 
 	self.resetFunction = resetFunction

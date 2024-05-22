@@ -1,12 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - ExpectedStateActionRewardStateActionNeuralNetwork (Deep Expected SARSA)
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepExpectedStateActionRewardStateAction (Deep Expected SARSA)
 
-ExpectedStateActionRewardStateActionNeuralNetwork is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
-
-## Stored Model Parameters
-
-Contains a table of matrices.  
-
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
+DeepExpectedStateActionRewardStateAction is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Constructors
 
@@ -15,7 +9,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ExpectedStateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: integer, epsilon: number, discountFactor: number): ModelObject
+DeepExpectedStateActionRewardStateAction.new(epsilon: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -37,12 +31,10 @@ ExpectedStateActionRewardStateActionNeuralNetwork.new(maxNumberOfIterations: int
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ExpectedStateActionRewardStateActionNeuralNetwork:setParameters(maxNumberOfIterations: integer, epsilon: number, discountFactor: number)
+DeepExpectedStateActionRewardStateAction:setParameters(epsilon: number, discountFactor: number)
 ```
 
 #### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
 
 * epsilon: Controls the balance between exploration and exploitation for calculating expected Q-values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
@@ -50,7 +42,7 @@ ExpectedStateActionRewardStateActionNeuralNetwork:setParameters(maxNumberOfItera
 
 ## Inherited From
 
-* [ReinforcementLearningNeuralNetworkBaseModel](ReinforcementLearningNeuralNetworkBaseModel.md)
+* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
 
 ## References
 

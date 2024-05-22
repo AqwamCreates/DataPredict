@@ -64,7 +64,7 @@ ReinforcementLearningActorCriticBaseModel:getActorModel(): ModelObject
 
 #### Returns:
 
-* Model: The model to be used as an Actor model.
+* Model: The model that was used as an Actor model.
 
 ### getCriticModel()
 
@@ -76,7 +76,7 @@ ReinforcementLearningActorCriticBaseModel:getCriticModel(): ModelObject
 
 #### Returns:
 
-* Model: The model to be used as a Critic model.
+* Model: The model that was used as a Critic model.
 
 ### setUpdateFunction()
 

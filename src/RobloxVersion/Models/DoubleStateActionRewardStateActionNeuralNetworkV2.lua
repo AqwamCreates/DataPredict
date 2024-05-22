@@ -38,7 +38,7 @@ function DoubleStateActionRewardStateActionNeuralNetworkModel.new(maxNumberOfIte
 
 	NewDoubleStateActionRewardStateActionNeuralNetworkModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		if (NewDoubleStateActionRewardStateActionNeuralNetworkModel.ModelParameters == nil) then NewDoubleStateActionRewardStateActionNeuralNetworkModel:generateLayers() end
+		if (NewDoubleStateActionRewardStateActionNeuralNetworkModel:getModelParameters() == nil) then NewDoubleStateActionRewardStateActionNeuralNetworkModel:generateLayers() end
 
 		local PrimaryModelParameters = NewDoubleStateActionRewardStateActionNeuralNetworkModel:getModelParameters()
 

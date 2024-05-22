@@ -40,7 +40,7 @@ ReinforcementLearningBaseModel:setModel(Model: ModelObject)
 
 #### Parameters:
 
-* Model: The model to be set.
+* Model: The model to be used.
 
 ### getModel()
 
@@ -52,7 +52,7 @@ ReinforcementLearningBaseModel:getModel(): ModelObject
 
 #### Parameters:
 
-* Model: The model to be set.
+* Model: The model that was set.
 
 ### setUpdateFunction()
 
@@ -123,7 +123,3 @@ Reset model's stored values (excluding the parameters).
 ```
 ReinforcementLearningBaseModel:reset()
 ```
-
-## Inherited From
-
-* [NeuralNetwork](NeuralNetwork.md)

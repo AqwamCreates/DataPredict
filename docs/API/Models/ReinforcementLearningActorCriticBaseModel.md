@@ -51,10 +51,30 @@ ReinforcementLearningActorCriticBaseModel:setActorModel(Model: ModelObject)
 Sets the critic model.
 
 ```
-ReinforcementLearningActorCriticBaseModel:setActorModel(Model: ModelObject)
+ReinforcementLearningActorCriticBaseModel:setCriticModel(Model: ModelObject)
 ```
 
-#### Parameters:
+### getActorModel()
+
+Gets the actor model.
+
+```
+ReinforcementLearningActorCriticBaseModel:getActorModel(): ModelObject
+```
+
+#### Returns:
+
+* Model: The model to be used as an Actor model.
+
+### getCriticModel()
+
+Gets the critic model.
+
+```
+ReinforcementLearningActorCriticBaseModel:getCriticModel(): ModelObject
+```
+
+#### Returns:
 
 * Model: The model to be used as a Critic model.
 

@@ -56,7 +56,9 @@ function BaseExperienceReplay:reset()
 	
 	table.clear(self.temporalDifferenceErrorArray)
 	
-	self.resetFunction()
+	local resetFunction = self.resetFunction
+	
+	if resetFunction then resetFunction() end
 	
 end
 
@@ -67,8 +69,12 @@ function BaseExperienceReplay:setSampleFunction(sampleFunction)
 end
 
 function BaseExperienceReplay:sample()
+	
+	local sampleFunction = self.sampleFunction
+	
+	if not sampleFunction then error("No Sample Function!") end
 
-	return self.sampleFunction()
+	return sampleFunction()
 	
 end
 
@@ -82,15 +88,15 @@ function BaseExperienceReplay:run(updateFunction)
 
 	for _, experience in ipairs(experienceReplayBatchArray) do -- (s1, a, r, s2)
 		
-		local previousState = experience[1]
+		local previousFeatureVector = experience[1]
 		
 		local action = experience[2]
 		
 		local rewardValue = experience[3]
 		
-		local currentState = experience[4]
+		local currentFeatureVector = experience[4]
 
-		updateFunction(previousState, action, rewardValue, currentState)
+		updateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 	end
 	
@@ -108,9 +114,9 @@ function BaseExperienceReplay:extendAddExperienceFunction(addExperienceFunction)
 	
 end
 
-function BaseExperienceReplay:addExperience(previousState, action, rewardValue, currentState)
+function BaseExperienceReplay:addExperience(previousFeatureVector, action, rewardValue, currentFeatureVector)
 	
-	local experience = {previousState, action, rewardValue, currentState}
+	local experience = {previousFeatureVector, action, rewardValue, currentFeatureVector}
 
 	table.insert(self.replayBufferArray, experience)
 	

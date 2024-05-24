@@ -1,6 +1,6 @@
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local BaseExperienceReplay = require("ExperienceReplay_BaseExperienceReplay")
+local BaseExperienceReplay = require(script.Parent.BaseExperienceReplay)
 
 PrioritizedExperienceReplay = {}
 
@@ -77,8 +77,11 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 	for i = 1, NewPrioritizedExperienceReplay.maxBufferSize, 1 do
 		
 		table.insert(NewPrioritizedExperienceReplay.priorityArray, NewPrioritizedExperienceReplay.epsilon)
+		
 		table.insert(NewPrioritizedExperienceReplay.probabilityArray, 0)
+		
 		table.insert(NewPrioritizedExperienceReplay.weightArray, 0)
+		
 		table.insert(NewPrioritizedExperienceReplay.indexArray, i)
 		
 	end
@@ -149,11 +152,14 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 		
 		table.clear(NewPrioritizedExperienceReplay.weightArray)
 		
-		for i = 1, NewPrioritizedExperienceReplay.indexArray, 1 do
+		for i = 1, #NewPrioritizedExperienceReplay.indexArray, 1 do
 
 			table.insert(NewPrioritizedExperienceReplay.priorityArray, NewPrioritizedExperienceReplay.epsilon)
+			
 			table.insert(NewPrioritizedExperienceReplay.probabilityArray, 0)
+			
 			table.insert(NewPrioritizedExperienceReplay.weightArray, 0)
+			
 			table.insert(NewPrioritizedExperienceReplay.indexArray, i)
 
 		end

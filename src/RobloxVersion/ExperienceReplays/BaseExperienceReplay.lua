@@ -56,7 +56,9 @@ function BaseExperienceReplay:reset()
 	
 	table.clear(self.temporalDifferenceErrorArray)
 	
-	self.resetFunction()
+	local resetFunction = self.resetFunction
+	
+	if resetFunction then resetFunction() end
 	
 end
 
@@ -67,8 +69,12 @@ function BaseExperienceReplay:setSampleFunction(sampleFunction)
 end
 
 function BaseExperienceReplay:sample()
+	
+	local sampleFunction = self.sampleFunction
+	
+	if not sampleFunction then error("No Sample Function!") end
 
-	return self.sampleFunction()
+	return sampleFunction()
 	
 end
 

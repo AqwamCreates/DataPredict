@@ -94,6 +94,10 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 	
 	NewProximalPolicyOptimizationModel:setEpisodeUpdateFunction(function()
 		
+		local ActorModel = NewProximalPolicyOptimizationModel.ActorModel
+
+		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
+		
 		if (#oldActionProbabilityVectorHistory == 0) then 
 
 			oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
@@ -116,7 +120,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		local historyLength = #criticValueHistory
 		
-		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewProximalPolicyOptimizationModel.ClassesList)
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #ActorModel:getClassesList())
 		
 		local sumCriticLoss = 0
 
@@ -134,21 +138,19 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 			sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
 
-			sumCriticLoss = sumCriticLoss + criticLoss
+			sumCriticLoss += criticLoss
 
 		end
 
-		local calculatedActorLossVector = AqwamMatrixLibrary:divide(-sumActorLossVector, historyLength)
+		local calculatedActorLossVector = AqwamMatrixLibrary:divide(sumActorLossVector, historyLength)
+		
+		calculatedActorLossVector = AqwamMatrixLibrary:multiply(-1, calculatedActorLossVector)
 
 		local calculatedCriticLoss = sumCriticLoss / historyLength
 		
-		local ActorModel = NewProximalPolicyOptimizationModel.ActorModel
-		
-		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
-		
 		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
 
-		numberOfFeatures = numberOfFeatures + (hasBias and 1) or 0
+		numberOfFeatures += (hasBias and 1) or 0
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 

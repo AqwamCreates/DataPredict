@@ -143,6 +143,8 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		end
 
 		local calculatedActorLossVector = AqwamMatrixLibrary:divide(sumActorLossVector, historyLength)
+		
+		calculatedActorLossVector = AqwamMatrixLibrary:multiply(-1, calculatedActorLossVector)
 
 		local calculatedCriticLoss = sumCriticLoss / historyLength
 		

@@ -27,7 +27,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 To know what this library is all about from scratch, let's have a look at the quick introduction [here](QuickIntroduction.md).
 
-Would you like to hire me for machine, deep and reinforcement learning integration? You can hire me through Fiverr [here](https://www.fiverr.com/aqwamcreates/integrate-machine-and-reinforcement-learning-to-roblox-0beb).
+Would you like to hire me for machine, deep and reinforcement learning integration? You can hire me through [Fiverr](https://www.fiverr.com/aqwamcreates/integrate-machine-and-reinforcement-learning-to-roblox-0beb).
 
 ## Tutorials
 

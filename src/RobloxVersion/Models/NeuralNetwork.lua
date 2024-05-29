@@ -274,9 +274,9 @@ local derivativeList = {
 
 		end
 
-		local aMatrix = AqwamMatrixLibrary:applyFunction(MishDerivativeFunction, zMatrix)
+		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(MishDerivativeFunction, zMatrix)
 
-		return aMatrix
+		return derivativeMatrix
 
 	end,
 

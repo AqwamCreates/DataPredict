@@ -47,7 +47,7 @@ local distanceFunctionList = {
 		return distance 
 
 	end,
-
+	
 	["Cosine"] = function(x1, x2)
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
@@ -73,7 +73,7 @@ local distanceFunctionList = {
 		return cosineDistance
 
 	end,
-	
+
 }
 
 local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
@@ -324,9 +324,9 @@ function KMeansModel.new(maxNumberOfIterations, numberOfClusters, distanceFuncti
 
 	NewKMeansModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
 
-	NewKMeansModel.setInitialClustersOnDataPoints =  BaseModel:getBooleanOrDefaultOption(setInitialClustersOnDataPoints, defaultSetInitialClustersOnDataPoints)
+	NewKMeansModel.setInitialClustersOnDataPoints =  BaseModel:getValueOrDefaultValue(setInitialClustersOnDataPoints, defaultSetInitialClustersOnDataPoints)
 	
-	NewKMeansModel.setTheCentroidsDistanceFarthest = BaseModel:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
+	NewKMeansModel.setTheCentroidsDistanceFarthest = BaseModel:getValueOrDefaultValue(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
 	
 	return NewKMeansModel
 	
@@ -340,9 +340,9 @@ function KMeansModel:setParameters(maxNumberOfIterations, numberOfClusters, dist
 
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 
-	self.setInitialClustersOnDataPoints =  self:getBooleanOrDefaultOption(setInitialClustersOnDataPoints, self.setInitialClustersOnDataPoints)
+	self.setInitialClustersOnDataPoints =  self:getValueOrDefaultValue(setInitialClustersOnDataPoints, self.setInitialClustersOnDataPoints)
 
-	self.setTheCentroidsDistanceFarthest =  self:getBooleanOrDefaultOption(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
+	self.setTheCentroidsDistanceFarthest =  self:getValueOrDefaultValue(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
 	
 end
 

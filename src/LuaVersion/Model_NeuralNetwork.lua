@@ -848,11 +848,11 @@ end
 
 function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunction, learningRate, OptimizerArray, RegularizationArray, dropoutRate)
 
-	local learningRateType = typeof(learningRate)
+	local learningRateType = type(learningRate)
 
-	local activationFunctionType = typeof(activationFunction)
+	local activationFunctionType = type(activationFunction)
 
-	local dropoutRateType = typeof(dropoutRate)
+	local dropoutRateType = type(dropoutRate)
 
 	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
 
@@ -916,7 +916,7 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 
 	layerPropertyValueTypeCheckingFunctionList["DropoutRate"](dropoutRate)
 
-	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron, true)
+	hasBiasNeuron = self:getValueOrDefaultValue(hasBiasNeuron, true)
 
 	hasBiasNeuron = (hasBiasNeuron and 1) or 0
 
@@ -962,15 +962,15 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 	layerPropertyValueTypeCheckingFunctionList["DropoutRate"](dropoutRate)
 
-	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron,  self.hasBiasNeuronTable[layerNumber])
+	hasBiasNeuron = self:getValueOrDefaultValue(hasBiasNeuron,  self.hasBiasNeuronTable[layerNumber])
 
 	hasBiasNeuron = (hasBiasNeuron and 1) or 0
 	
-	Regularization = self:getValueOrDefaultOption(Regularization,  self.RegularizationTable[layerNumber])
+	Regularization = self:getValueOrDefaultValue(Regularization,  self.RegularizationTable[layerNumber])
 	
 	Regularization = Regularization or 0
 
-	Optimizer = self:getValueOrDefaultOption(Optimizer,  self.OptimizerTable[layerNumber])
+	Optimizer = self:getValueOrDefaultValue(Optimizer,  self.OptimizerTable[layerNumber])
 
 	Optimizer = Optimizer or 0
 
@@ -1024,7 +1024,7 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 
 	elseif (property == "Optimizer") then
 
-		value = self:getValueOrDefaultOption(value, self.OptimizerTable[layerNumber])
+		value = self:getValueOrDefaultValue(value, self.OptimizerTable[layerNumber])
 
 		value = value or 0
 
@@ -1032,7 +1032,7 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 
 	elseif (property == "Regularization") then
 		
-		value = self:getValueOrDefaultOption(value, self.OptimizerTable[layerNumber])
+		value = self:getValueOrDefaultValue(value, self.OptimizerTable[layerNumber])
 
 		value = value or 0
 

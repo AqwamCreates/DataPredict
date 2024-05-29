@@ -154,7 +154,7 @@ function NaiveBayesModel.new(useLogProbabilities)
 	
 	NewNaiveBayesModel.ClassesList = {}
 	
-	NewNaiveBayesModel.useLogProbabilities = BaseModel:getBooleanOrDefaultOption(useLogProbabilities, false)
+	NewNaiveBayesModel.useLogProbabilities = BaseModel:getValueOrDefaultValue(useLogProbabilities, false)
 	
 	return NewNaiveBayesModel
 	
@@ -162,7 +162,7 @@ end
 
 function NaiveBayesModel:setParameters(useLogProbabilities)
 
-	self.useLogProbabilities = useLogProbabilities or self.useLogProbabilities
+	self.useLogProbabilities = self:getValueOrDefaultValue(useLogProbabilities, self.useLogProbabilities)
 
 end
 

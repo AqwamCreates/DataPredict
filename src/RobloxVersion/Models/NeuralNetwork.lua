@@ -932,7 +932,7 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 
 	layerPropertyValueTypeCheckingFunctionList["DropoutRate"](dropoutRate)
 
-	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron, true)
+	hasBiasNeuron = self:getValueOrDefaultValue(hasBiasNeuron, true)
 
 	hasBiasNeuron = (hasBiasNeuron and 1) or 0
 
@@ -978,15 +978,15 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 	layerPropertyValueTypeCheckingFunctionList["DropoutRate"](dropoutRate)
 
-	hasBiasNeuron = self:getBooleanOrDefaultOption(hasBiasNeuron,  self.hasBiasNeuronTable[layerNumber])
+	hasBiasNeuron = self:getValueOrDefaultValue(hasBiasNeuron,  self.hasBiasNeuronTable[layerNumber])
 
 	hasBiasNeuron = (hasBiasNeuron and 1) or 0
 	
-	Regularization = self:getValueOrDefaultOption(Regularization,  self.RegularizationTable[layerNumber])
+	Regularization = self:getValueOrDefaultValue(Regularization,  self.RegularizationTable[layerNumber])
 	
 	Regularization = Regularization or 0
 
-	Optimizer = self:getValueOrDefaultOption(Optimizer,  self.OptimizerTable[layerNumber])
+	Optimizer = self:getValueOrDefaultValue(Optimizer,  self.OptimizerTable[layerNumber])
 
 	Optimizer = Optimizer or 0
 
@@ -1020,7 +1020,7 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 
 		layerPropertyValueTypeCheckingFunctionList["HasBias"](value)
 
-		local hasBiasNeuron = self:getBooleanOrDefaultOption(value,  self.hasBiasNeuronTable[layerNumber])
+		local hasBiasNeuron = self:getValueOrDefaultValue(value,  self.hasBiasNeuronTable[layerNumber])
 
 		hasBiasNeuron = (hasBiasNeuron and 1) or 0
 
@@ -1040,7 +1040,7 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 
 	elseif (property == "Optimizer") then
 
-		value = self:getValueOrDefaultOption(value, self.OptimizerTable[layerNumber])
+		value = self:getValueOrDefaultValue(value, self.OptimizerTable[layerNumber])
 
 		value = value or 0
 
@@ -1048,7 +1048,7 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 
 	elseif (property == "Regularization") then
 		
-		value = self:getValueOrDefaultOption(value, self.OptimizerTable[layerNumber])
+		value = self:getValueOrDefaultValue(value, self.OptimizerTable[layerNumber])
 
 		value = value or 0
 

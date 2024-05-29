@@ -77,8 +77,6 @@ function BaseModel.new()
 	NewBaseModel.currentNumberOfIterationsToCheckIfConverged = 1
 	
 	NewBaseModel.numberOfIterationsToCheckIfConverged = math.huge
-	
-	NewBaseModel.autoResetOptimizers = true
 
 	return NewBaseModel
 	
@@ -166,13 +164,7 @@ end
 
 function BaseModel:setNumberOfIterationsPerCostCalculation(numberOfIterationsPerCostCalculation)
 	
-	self.numberOfIterationsPerCostCalculation = self:getBooleanOrDefaultOption(numberOfIterationsPerCostCalculation, self.numberOfIterationsPerCostCalculation)
-	
-end
-
-function BaseModel:setAutoResetOptimizers(option)
-	
-	self.autoResetOptimizers = self:getBooleanOrDefaultOption(option, self.autoResetOptimizers)
+	self.numberOfIterationsPerCostCalculation = self:getValueOrDefaultValue(numberOfIterationsPerCostCalculation, self.numberOfIterationsPerCostCalculation)
 	
 end
 
@@ -260,15 +252,7 @@ function BaseModel:printCostAndNumberOfIterations(cost, numberOfIteration)
 
 end
 
-function BaseModel:getBooleanOrDefaultOption(boolean, defaultBoolean)
-
-	if (type(boolean) == "nil") then return defaultBoolean end
-
-	return boolean
-
-end
-
-function BaseModel:getValueOrDefaultOption(value, defaultValue)
+function BaseModel:getValueOrDefaultValue(value, defaultValue)
 
 	if (type(value) == "nil") then return defaultValue end
 
@@ -278,7 +262,7 @@ end
 
 function BaseModel:setPrintOutput(option) 
 	
-	self.isOutputPrinted = self:getBooleanOrDefaultOption(option, self.isOutputPrinted)
+	self.isOutputPrinted = self:getValueOrDefaultValue(option, self.isOutputPrinted)
 	
 end
 

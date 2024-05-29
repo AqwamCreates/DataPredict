@@ -10,6 +10,10 @@ function GradientMethodBaseModel.new()
 	
 	local NewGradientMethodBaseModel = BaseModel.new()
 	
+	setmetatable(NewGradientMethodBaseModel, GradientMethodBaseModel)
+	
+	NewGradientMethodBaseModel.autoResetOptimizers = true
+	
 	NewGradientMethodBaseModel.areGradientsSaved = false
 	
 	NewGradientMethodBaseModel.Gradients = nil
@@ -18,9 +22,15 @@ function GradientMethodBaseModel.new()
 	
 end
 
+function BaseModel:setAutoResetOptimizers(option)
+
+	self.autoResetOptimizers = self:getValueOrDefaultValue(option, self.autoResetOptimizers)
+
+end
+
 function GradientMethodBaseModel:setAreGradientsSaved(option)
 	
-	self.areGradientsSaved = self:getBooleanOrDefaultOption(option, self.areGradientsSaved)
+	self.areGradientsSaved = self:getValueOrDefaultValue(option, self.areGradientsSaved)
 	
 end
 
@@ -39,7 +49,7 @@ function GradientMethodBaseModel:getGradients(doNotDeepCopy)
 end
 
 function GradientMethodBaseModel:setGradients(Gradients, doNotDeepCopy)
-
+	
 	if (doNotDeepCopy) then
 
 		self.Gradients = Gradients

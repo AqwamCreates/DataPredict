@@ -22,16 +22,6 @@ RandomNetworkDistillation:addLayer(10, true, "LeakyReLU")
 
 RandomNetworkDistillation:addLayer(4, true, "Sigmoid")
 
--- Initializing our QLearningNeuralNetwork.
-
-local QLearningNeuralNetwork = DataPredict.Model.QLearningNeuralNetwork.new()
-
-QLearningNeuralNetwork:addLayer(10, true, "LeakyReLU")
-
-QLearningNeuralNetwork:addLayer(4, true, "StableSoftmax")
-
-QLearningNeuralNetwork:setClassesList({1, 2, 3, 4})
-
 -- Initializing our ReinforcementLearningQuickSetup.
 
 local QLearningNeuralNetworkQuickSetup = DataPredict.Others.ReinforcementLearningQuickSetup.new()

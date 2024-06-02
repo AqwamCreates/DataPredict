@@ -22,17 +22,17 @@ function AdaptiveGradientOptimizer.new()
 		
 		NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix = NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 
-		local GradientSquaredMatrix = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
+		local gradientSquaredMatrix = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
 
-		local CurrentSumOfGradientSquaredMatrix = AqwamMatrixLibrary:add(NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix, GradientSquaredMatrix)
+		local currentSumOfGradientSquaredMatrix = AqwamMatrixLibrary:add(NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix, gradientSquaredMatrix)
 
-		local SquareRootSumOfGradientSquared = AqwamMatrixLibrary:power(CurrentSumOfGradientSquaredMatrix, 0.5)
+		local squareRootSumOfGradientSquared = AqwamMatrixLibrary:power(currentSumOfGradientSquaredMatrix, 0.5)
 
-		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, SquareRootSumOfGradientSquared)
+		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, squareRootSumOfGradientSquared)
 
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 
-		NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix = CurrentSumOfGradientSquaredMatrix
+		NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix = currentSumOfGradientSquaredMatrix
 
 		return costFunctionDerivatives
 		

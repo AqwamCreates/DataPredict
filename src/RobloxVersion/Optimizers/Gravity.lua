@@ -64,29 +64,29 @@ function GravityOptimizer.new(initialStepSize, movingAverage)
 
 		local meanMovingAverage = ((NewGravityOptimizer.movingAverage * NewGravityOptimizer.timeStep) + 1) / (NewGravityOptimizer.timeStep + 2)
 
-		local AbsoluteM = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
+		local absoluteM = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
 
-		local maxM = AqwamMatrixLibrary:findMaximumValueInMatrix(AbsoluteM)
+		local maxM = AqwamMatrixLibrary:findMaximumValueInMatrix(absoluteM)
 
-		local M = AqwamMatrixLibrary:divide(1, maxM)
+		local m = AqwamMatrixLibrary:divide(1, maxM)
 
-		local WeirdLPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, M)
+		local weirdLPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, m)
 
-		local WeirdLPart2 = AqwamMatrixLibrary:power(WeirdLPart1, 2)
+		local weirdLPart2 = AqwamMatrixLibrary:power(weirdLPart1, 2)
 
-		local WeirdLPart3 = AqwamMatrixLibrary:add(1, WeirdLPart2)
+		local weirdLPart3 = AqwamMatrixLibrary:add(1, weirdLPart2)
 
-		local WeirdL = AqwamMatrixLibrary:divide(costFunctionDerivatives, WeirdLPart3)
+		local weirdL = AqwamMatrixLibrary:divide(costFunctionDerivatives, weirdLPart3)
 
-		local VelocityPart1 = AqwamMatrixLibrary:multiply(meanMovingAverage, NewGravityOptimizer.previousVelocity)
+		local velocityPart1 = AqwamMatrixLibrary:multiply(meanMovingAverage, NewGravityOptimizer.previousVelocity)
 
-		local VelocityPart2 = AqwamMatrixLibrary:multiply((1 - meanMovingAverage), WeirdL)
+		local velocityPart2 = AqwamMatrixLibrary:multiply((1 - meanMovingAverage), weirdL)
 
-		local Velocity = AqwamMatrixLibrary:add(VelocityPart1, VelocityPart2)
+		local velocity = AqwamMatrixLibrary:add(velocityPart1, velocityPart2)
 
-		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, Velocity) 
+		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, velocity) 
 
-		NewGravityOptimizer.previousVelocity = Velocity
+		NewGravityOptimizer.previousVelocity = velocity
 
 		return costFunctionDerivatives
 		

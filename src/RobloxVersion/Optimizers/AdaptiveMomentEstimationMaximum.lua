@@ -34,37 +34,51 @@ function AdaptiveMomentEstimationMaximumOptimizer.new(beta1, beta2, epsilon)
 	
 	NewAdaptiveMomentEstimationMaximumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 
-	NewAdaptiveMomentEstimationMaximumOptimizer.moment = NewAdaptiveMomentEstimationMaximumOptimizer.moment or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		NewAdaptiveMomentEstimationMaximumOptimizer.moment = NewAdaptiveMomentEstimationMaximumOptimizer.moment or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 
-	NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 		
-	local beta1 = NewAdaptiveMomentEstimationMaximumOptimizer.beta1
+		local beta1 = NewAdaptiveMomentEstimationMaximumOptimizer.beta1
 		
-	local beta2 = NewAdaptiveMomentEstimationMaximumOptimizer.beta2
+		local beta2 = NewAdaptiveMomentEstimationMaximumOptimizer.beta2
 
-	local momentPart1 = AqwamMatrixLibrary:multiply(beta1, NewAdaptiveMomentEstimationMaximumOptimizer.moment)
+		local momentPart1 = AqwamMatrixLibrary:multiply(beta1, NewAdaptiveMomentEstimationMaximumOptimizer.moment)
 
-	local momentPart2 = AqwamMatrixLibrary:multiply((1 - beta1), costFunctionDerivatives)
+		local momentPart2 = AqwamMatrixLibrary:multiply((1 - beta1), costFunctionDerivatives)
 
-	NewAdaptiveMomentEstimationMaximumOptimizer.moment = AqwamMatrixLibrary:add(momentPart1, momentPart2)
+		NewAdaptiveMomentEstimationMaximumOptimizer.moment = AqwamMatrixLibrary:add(momentPart1, momentPart2)
 
-	local exponentWeightPart1 = AqwamMatrixLibrary:multiply(beta2, NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight)
+		local exponentWeightPart1 = AqwamMatrixLibrary:multiply(beta2, NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight)
 
-	local exponentWeightPart2 = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
+		local exponentWeightPart2 = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
 
-	NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = AqwamMatrixLibrary:applyFunction(math.max, exponentWeightPart1, exponentWeightPart2)
+		NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = AqwamMatrixLibrary:applyFunction(math.max, exponentWeightPart1, exponentWeightPart2)
 
-	local divisorPart1 = 1 - math.pow(beta1, 2)
+		local divisorPart1 = 1 - math.pow(beta1, 2)
 
-	local divisorPart2 = AqwamMatrixLibrary:add(NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight, NewAdaptiveMomentEstimationMaximumOptimizer.epsilon)
+		local divisorPart2 = AqwamMatrixLibrary:add(NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight, NewAdaptiveMomentEstimationMaximumOptimizer.epsilon)
 
-	local divisor = AqwamMatrixLibrary:multiply(divisorPart1, divisorPart2)
+		local divisor = AqwamMatrixLibrary:multiply(divisorPart1, divisorPart2)
 
-	local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(NewAdaptiveMomentEstimationMaximumOptimizer.moment, divisor)
+		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(NewAdaptiveMomentEstimationMaximumOptimizer.moment, divisor)
 
-	costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
+		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 
-	return costFunctionDerivatives
+		return costFunctionDerivatives
+
+	end)
+	
+	--------------------------------------------------------------------------------
+	
+	NewAdaptiveMomentEstimationMaximumOptimizer:setResetFunction(function()
+
+		NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = nil
+
+		NewAdaptiveMomentEstimationMaximumOptimizer.moment = nil
+		
+	end)
+
+	return NewAdaptiveMomentEstimationMaximumOptimizer
 
 end
 

@@ -26,11 +26,11 @@ function MomentumOptimizer.new(decayRate)
 		
 		NewMomentumOptimizer.velocity = NewMomentumOptimizer.velocity or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 
-		local VelocityPart1 = AqwamMatrixLibrary:multiply(NewMomentumOptimizer.decayRate, NewMomentumOptimizer.velocity)
+		local velocityPart1 = AqwamMatrixLibrary:multiply(NewMomentumOptimizer.decayRate, NewMomentumOptimizer.velocity)
 
-		local VelocityPart2 = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivatives)
+		local velocityPart2 = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivatives)
 
-		NewMomentumOptimizer.velocity = AqwamMatrixLibrary:add(VelocityPart1, VelocityPart2)
+		NewMomentumOptimizer.velocity = AqwamMatrixLibrary:add(velocityPart1, velocityPart2)
 
 		costFunctionDerivatives = NewMomentumOptimizer.velocity
 

@@ -37,26 +37,30 @@ function AdaptiveMomentEstimationMaximumOptimizer.new(beta1, beta2, epsilon)
 		NewAdaptiveMomentEstimationMaximumOptimizer.moment = NewAdaptiveMomentEstimationMaximumOptimizer.moment or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 
 		NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		
+		local beta1 = NewAdaptiveMomentEstimationMaximumOptimizer.beta1
+		
+		local beta2 = NewAdaptiveMomentEstimationMaximumOptimizer.beta2
 
-		local MomentPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveMomentEstimationMaximumOptimizer.beta1, NewAdaptiveMomentEstimationMaximumOptimizer.moment)
+		local momentPart1 = AqwamMatrixLibrary:multiply(beta1, NewAdaptiveMomentEstimationMaximumOptimizer.moment)
 
-		local MomentPart2 = AqwamMatrixLibrary:multiply((1 - NewAdaptiveMomentEstimationMaximumOptimizer.beta1), costFunctionDerivatives)
+		local momentPart2 = AqwamMatrixLibrary:multiply((1 - beta1), costFunctionDerivatives)
 
-		NewAdaptiveMomentEstimationMaximumOptimizer.moment = AqwamMatrixLibrary:add(MomentPart1, MomentPart2)
+		NewAdaptiveMomentEstimationMaximumOptimizer.moment = AqwamMatrixLibrary:add(momentPart1, momentPart2)
 
-		local ExponentWeightPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveMomentEstimationMaximumOptimizer.beta2, NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight)
+		local exponentWeightPart1 = AqwamMatrixLibrary:multiply(beta2, NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight)
 
-		local ExponentWeightPart2 = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
+		local exponentWeightPart2 = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
 
-		NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = AqwamMatrixLibrary:applyFunction(math.max, ExponentWeightPart1, ExponentWeightPart2)
+		NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight = AqwamMatrixLibrary:applyFunction(math.max, exponentWeightPart1, exponentWeightPart2)
 
-		local DivisorPart1 = 1 - math.pow(NewAdaptiveMomentEstimationMaximumOptimizer.beta1, 2)
+		local divisorPart1 = 1 - math.pow(beta1, 2)
 
-		local DivisorPart2 = AqwamMatrixLibrary:add(NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight, NewAdaptiveMomentEstimationMaximumOptimizer.epsilon)
+		local divisorPart2 = AqwamMatrixLibrary:add(NewAdaptiveMomentEstimationMaximumOptimizer.exponentWeight, NewAdaptiveMomentEstimationMaximumOptimizer.epsilon)
 
-		local Divisor = AqwamMatrixLibrary:multiply(DivisorPart1, DivisorPart1)
+		local divisor = AqwamMatrixLibrary:multiply(divisorPart1, divisorPart2)
 
-		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(NewAdaptiveMomentEstimationMaximumOptimizer.moment, Divisor)
+		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(NewAdaptiveMomentEstimationMaximumOptimizer.moment, divisor)
 
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 

@@ -32,11 +32,11 @@ function RootMeanSquarePropagationOptimizer.new(beta, epsilon)
 		
 		local beta = NewRootMeanSquarePropagationOptimizer.beta
 
-		local squaredModelParameters = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
+		local squaredCostFunctionDerivatives = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
 
 		local vMatrixPart1 = AqwamMatrixLibrary:multiply(beta, NewRootMeanSquarePropagationOptimizer.previousVelocityMatrix)
 
-		local vMatrixPart2 = AqwamMatrixLibrary:multiply((1 - beta), squaredModelParameters)
+		local vMatrixPart2 = AqwamMatrixLibrary:multiply((1 - beta), squaredCostFunctionDerivatives)
 
 		local currentVelocityMatrix = AqwamMatrixLibrary:add(vMatrixPart1, vMatrixPart2)
 

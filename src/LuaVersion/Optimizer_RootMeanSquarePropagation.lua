@@ -29,24 +29,26 @@ function RootMeanSquarePropagationOptimizer.new(beta, epsilon)
 	NewRootMeanSquarePropagationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
 		NewRootMeanSquarePropagationOptimizer.previousVelocityMatrix = NewRootMeanSquarePropagationOptimizer.previousVelocityMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		
+		local beta = NewRootMeanSquarePropagationOptimizer.beta
 
-		local SquaredModelParameters = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
+		local squaredModelParameters = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
 
-		local VMatrixPart1 = AqwamMatrixLibrary:multiply(NewRootMeanSquarePropagationOptimizer.beta, NewRootMeanSquarePropagationOptimizer.previousVelocityMatrix)
+		local vMatrixPart1 = AqwamMatrixLibrary:multiply(beta, NewRootMeanSquarePropagationOptimizer.previousVelocityMatrix)
 
-		local VMatrixPart2 = AqwamMatrixLibrary:multiply((1-NewRootMeanSquarePropagationOptimizer.beta), SquaredModelParameters)
+		local vMatrixPart2 = AqwamMatrixLibrary:multiply((1 - beta), squaredModelParameters)
 
-		local CurrentVelocityMatrix = AqwamMatrixLibrary:add(VMatrixPart1, VMatrixPart2)
+		local currentVelocityMatrix = AqwamMatrixLibrary:add(vMatrixPart1, vMatrixPart2)
 
-		local NonZeroDivisorMatrix = AqwamMatrixLibrary:add(CurrentVelocityMatrix, NewRootMeanSquarePropagationOptimizer.epsilon)
+		local nonZeroDivisorMatrix = AqwamMatrixLibrary:add(currentVelocityMatrix, NewRootMeanSquarePropagationOptimizer.epsilon)
 
-		local SquaredRootVelocityMatrix = AqwamMatrixLibrary:power(NonZeroDivisorMatrix, 0.5)
+		local squaredRootVelocityMatrix = AqwamMatrixLibrary:power(nonZeroDivisorMatrix, 0.5)
 
-		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, SquaredRootVelocityMatrix)
+		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, squaredRootVelocityMatrix)
 
 		local costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 
-		NewRootMeanSquarePropagationOptimizer.previousVelocityMatrix = CurrentVelocityMatrix
+		NewRootMeanSquarePropagationOptimizer.previousVelocityMatrix = currentVelocityMatrix
 
 		return costFunctionDerivatives
 		

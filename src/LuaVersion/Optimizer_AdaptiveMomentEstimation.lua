@@ -46,7 +46,7 @@ function AdaptiveMomentEstimationOptimizer.new(beta1, beta2, epsilon)
 
 		local squaredModelParameters = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
 
-		local velocityPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveMomentEstimationOptimizer.beta2, NewAdaptiveMomentEstimationOptimizer.PreviousVelocity)
+		local velocityPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveMomentEstimationOptimizer.beta2, NewAdaptiveMomentEstimationOptimizer.previousVelocity)
 
 		local velocityPart2 = AqwamMatrixLibrary:multiply((1 - NewAdaptiveMomentEstimationOptimizer.beta2), squaredModelParameters)
 
@@ -58,7 +58,7 @@ function AdaptiveMomentEstimationOptimizer.new(beta1, beta2, epsilon)
 
 		local squareRootedDivisor = AqwamMatrixLibrary:power(meanVelocity, 0.5)
 
-		local finalDivisor = AqwamMatrixLibrary:add(squareRootedDivisor, NewAdaptiveMomentEstimationOptimizer.Epsilon)
+		local finalDivisor = AqwamMatrixLibrary:add(squareRootedDivisor, NewAdaptiveMomentEstimationOptimizer.epsilon)
 
 		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(meanMomentum, finalDivisor)
 

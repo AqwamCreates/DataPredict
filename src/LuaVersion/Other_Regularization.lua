@@ -86,7 +86,7 @@ function Regularization:calculateRegularizationDerivatives(ModelParameters, numb
 		
 		local regularizationDerivativesPart1 = AqwamMatrixLibrary:multiply(self.lambda, ModelParametersSign)
 		
-		local regularizationDerivativesPart2 = AqwamMatrixLibrary:multiply(self.lambda, ModelParameters)
+		local regularizationDerivativesPart2 = AqwamMatrixLibrary:multiply(2, self.lambda, ModelParameters)
 		
 		regularizationDerivatives = AqwamMatrixLibrary:add(regularizationDerivativesPart1, regularizationDerivativesPart2)
 		

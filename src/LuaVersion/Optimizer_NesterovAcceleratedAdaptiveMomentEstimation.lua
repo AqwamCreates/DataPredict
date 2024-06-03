@@ -20,15 +20,15 @@ function NesterovAcceleratedAdaptiveMomentEstimationOptimizer.new(beta1, beta2, 
 
 	setmetatable(NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer, NesterovAcceleratedAdaptiveMomentEstimationOptimizer)
 
-	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousM = nil
-	
-	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousN = nil
-	
 	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.beta1 = beta1 or defaultBeta1
 	
 	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.beta2 = beta2 or defaultBeta2
 	
 	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.epsilon = epsilon or defaultEpsilon
+
+	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousM = nil
+	
+	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousN = nil
 	
 	--------------------------------------------------------------------------------
 	

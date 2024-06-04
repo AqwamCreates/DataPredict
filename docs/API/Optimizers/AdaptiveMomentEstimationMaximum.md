@@ -7,15 +7,15 @@
 Creates a new optimizer object. If there are no parameters given for that particular argument, then that argument will use default value.
 
 ```
-AdaptiveMomentEstimationMaximum.new(Beta1: number, Beta2: number, Epsilon: number): OptimizerObject
+AdaptiveMomentEstimationMaximum.new(beta1: number, beta2: number, epsilon: number): OptimizerObject
 ```
 #### Parameters:
 
-* Beta1: The decay rate of the moving average of the first moment of the gradients.
+* beta1: The decay rate of the moving average of the first moment of the gradients.
 
-* Beta2: The decay rate of the moving average of the squared gradients.
+* beta2: The decay rate of the moving average of the squared gradients.
 
-* Epsilon: The value to ensure that the numbers are not divided by zero.
+* epsilon: The value to ensure that the numbers are not divided by zero.
 
 #### Returns:
 
@@ -26,40 +26,32 @@ AdaptiveMomentEstimationMaximum.new(Beta1: number, Beta2: number, Epsilon: numbe
 ### setBeta1()
 
 ```
-AdaptiveMomentEstimationMaximum:setBeta1(Beta1: number)
+AdaptiveMomentEstimationMaximum:setBeta1(beta1: number)
 ```
 
 #### Parameters:
 
-* Beta1: The decay rate of the moving average of the first moment of the gradients.
+* beta1: The decay rate of the moving average of the first moment of the gradients.
 
 ### setBeta2()
 
 ```
-AdaptiveMomentEstimationMaximum:setBeta2(Beta2: number)
+AdaptiveMomentEstimationMaximum:setBeta2(beta2: number)
 ```
 
 #### Parameters:
 
-* Beta2: The decay rate of the moving average of the squared gradients.
+* beta2: The decay rate of the moving average of the squared gradients.
 
 ### setEpsilon()
 
 ```
-AdaptiveMomentEstimationMaximum:setEpsilon(Epsilon: number)
+AdaptiveMomentEstimationMaximum:setEpsilon(epsilon: number)
 ```
 
 #### Parameters:
 
-* Epsilon: The value to ensure that the numbers are not divided by zero.
-
-### reset()
-
-Reset optimizer's stored values (excluding the parameters).
-
-```
-AdaptiveMomentEstimationMaximum:reset()
-```
+* epsilon: The value to ensure that the numbers are not divided by zero.
 
 ## Inherited From:
 

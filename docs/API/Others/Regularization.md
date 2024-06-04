@@ -12,7 +12,7 @@ Regularization.new(lambda: number, regularisationMode: string, hasBias: boolean)
 
 #### Parameters:
 
-* lambda: Regularization factor. Recommended values are between 0 to 1.
+* lambda: The regularization factor. Recommended values are between 0 to 1.
 
 * regularisationMode: The mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2" (or "Ridge") and "L1+L2" (or "ElasticNet").
 
@@ -34,7 +34,7 @@ Regularization:setParameters(lambda: number, regularisationMode: string, hasBias
 
 #### Parameters:
 
-* lambda: Regularization factor. Recommended values are between 0 to 1.
+* lambda: The regularization factor. Recommended values are between 0 to 1.
 
 * regularisationMode: The mode which regularization will be used. Currently available ones are "L1" (or "Lasso"), "L2" (or "Ridge") and "L1+L2" (or "ElasticNet").
 
@@ -42,7 +42,7 @@ Regularization:setParameters(lambda: number, regularisationMode: string, hasBias
 
 ### getLambda()
 
-Get the lambda from the regularization object
+Get the lambda from the regularization object.
 
 ```
 Regularization:getLambda(): number
@@ -50,4 +50,4 @@ Regularization:getLambda(): number
 
 #### Returns:
 
-* lambda: Regularization factor
+* lambda: The regularization factor.

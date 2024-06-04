@@ -53,6 +53,10 @@ AdaptiveMomentEstimationMaximum:setEpsilon(epsilon: number)
 
 * epsilon: The value to ensure that the numbers are not divided by zero.
 
+### reset()
+
+Reset optimizer's stored values (excluding the parameters).
+
 ## Inherited From:
 
 * [BaseOptimizer](BaseOptimizer.md)

@@ -288,24 +288,10 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 		return AqwamMatrixLibrary:createRandomMatrix(numberOfRows, numberOfColumns, self.minimumModelParametersInitializationValue, self.maximumModelParametersInitializationValue)
 		
-	elseif (initializationMode == "RandomNormalPositive") then
+	elseif (initializationMode == "RandomNormal") then
 		
 		return AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-		
-	elseif (initializationMode == "RandomNormalNegative") then
-		
-		local randomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-
-		return AqwamMatrixLibrary:multiply(randomNormal, -1)
-		
-	elseif (initializationMode == "RandomNormalNegativeAndPositive") then
-		
-		local randomNormal1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-		
-		local randomNormal2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-
-		return AqwamMatrixLibrary:subtract(randomNormal1, randomNormal2)
-		
+				
 	elseif (initializationMode == "RandomUniformPositive") then
 
 		return AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)

@@ -30,11 +30,7 @@ BaseModel:setModelParametersInitializationMode(initializationMode: string, minim
 
   * "Random"
 
-  * "RandomNormalPositive"
-
-  * "RandomNormalNegative"
-  
-  * "RandomNormalNegativeAndPositive"
+  * "RandomNormal"
 
   * "HeUniform"
 

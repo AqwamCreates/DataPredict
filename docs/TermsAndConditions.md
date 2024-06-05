@@ -58,6 +58,7 @@ The Library is provided "AS IS" and without warranty of any kind. Licensor shall
 ## Removal of Credit
 
 * If the User wish to remove the credits or source information from the User’s publication or presentation that uses the Library, the User shall seek the Licensor’s confirmation that the Library have been removed but may subject to commercial agreement.
+
 * Once the Licensor have agreed that the Library have been removed, the User may remove the credits or source information in all publications or presentations that uses the Library.
 
 ## Compensatory Damages for Cheating and Exploiting, Cheat and Exploit Distribution, Anti-Cheat and Anti-Cheat Evasion, Anti-Cheat and Anti-Exploit Evasion Distribution

@@ -102,7 +102,7 @@ BaseModel:setNumberOfIterationsToCheckIfConverged(numberOfIterations: number)
 
 #### Parameters
 
-* numberOfIterations: The number of iterations for confirming convergence
+* numberOfIterations: The number of iterations for confirming convergence.
 
 ### setTargetCost()
 

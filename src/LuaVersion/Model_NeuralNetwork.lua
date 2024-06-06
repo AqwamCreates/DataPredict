@@ -848,11 +848,15 @@ end
 
 function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunction, learningRate, OptimizerArray, RegularizationArray, dropoutRate)
 
-	local learningRateType = type(learningRate)
+	local learningRateType = typeof(learningRate)
 
-	local activationFunctionType = type(activationFunction)
+	local activationFunctionType = typeof(activationFunction)
 
-	local dropoutRateType = type(dropoutRate)
+	local dropoutRateType = typeof(dropoutRate)
+	
+	OptimizerArray = OptimizerArray or {}
+	
+	RegularizationArray = RegularizationArray or {}
 
 	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
 

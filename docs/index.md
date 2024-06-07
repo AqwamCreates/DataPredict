@@ -10,7 +10,7 @@ By using or possesing any copies of this library or its assets (including the ic
 
 * Plus some more stuff...
 
-![DataPredictIconSmall](https://user-images.githubusercontent.com/67371914/223632639-dea075fe-9dce-430c-af82-2fb0fbeb43d3.png)
+![DataPredictIconSmall](.../icons/DataPredictIconSmall.png)
 
 | Version | Current Version Number |
 |---------|------------------------|

@@ -13,19 +13,6 @@
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
 	
 	--------------------------------------------------------------------
-	
-	DO NOT SELL, RENT, DISTRIBUTE THIS LIBRARY
-	
-	DO NOT SELL, RENT, DISTRIBUTE MODIFIED VERSION OF THIS LIBRARY
-	
-	DO NOT CLAIM OWNERSHIP OF THIS LIBRARY
-	
-	GIVE CREDIT AND SOURCE WHEN USING THIS LIBRARY IF YOUR USAGE FALLS UNDER ONE OF THESE CATEGORIES:
-	
-		- USED AS A VIDEO OR ARTICLE CONTENT
-		- USED AS RESEARCH AND EDUCATION CONTENT
-	
-	--------------------------------------------------------------------
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	

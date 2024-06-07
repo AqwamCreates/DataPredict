@@ -10,7 +10,7 @@ By using or possesing any copies of this library or its assets (including the ic
 
 * Plus some more stuff...
 
-![DataPredictIconSmall](.../icons/DataPredictIconSmall.png)
+![DataPredictIconSmall](.../.../icons/DataPredictIconSmall.png)
 
 | Version | Current Version Number |
 |---------|------------------------|

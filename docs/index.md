@@ -10,7 +10,7 @@ By using or possesing any copies of this library or its assets (including the ic
 
 * Plus some more stuff...
 
-![DataPredictIconSmall](/icons/DataPredictIconSmall.png)
+![DataPredictIconSmall](https://github.com/AqwamCreates/DataPredict/assets/67371914/1122cce4-747b-4054-88f0-2685414b0d73)
 
 | Version | Current Version Number |
 |---------|------------------------|

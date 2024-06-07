@@ -2,6 +2,28 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
 
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+
+--]]
+
 DeepQLearningModel = {}
 
 DeepQLearningModel.__index = DeepQLearningModel

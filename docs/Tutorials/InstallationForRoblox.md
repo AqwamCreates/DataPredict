@@ -19,7 +19,7 @@ Once you put those two libraries into your game, make sure you link the Machine 
 
 ![Screenshot 2023-12-11 011824](https://github.com/AqwamCreates/DataPredict/assets/67371914/f8dee5ef-edb0-455f-bf4a-5160ccbc35ef)
 
-Next, we will use require() function to our machine/deep learning library
+Next, we will use require() function to our machine/deep learning library:
 
 ```lua
 local DataPredict = require(AqwamMachineAndDeepLearningLibrary) 

@@ -83,7 +83,7 @@ Would you like to hire me for machine, deep and reinforcement learning integrati
 
 [DataPredict Library](https://github.com/AqwamCreates/DataPredict)
 
-[MatrixL](https://github.com/AqwamCreates/MatrixL)
+[MatrixL Library](https://github.com/AqwamCreates/MatrixL)
 
 ### Other Documentations
 

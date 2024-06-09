@@ -31,7 +31,7 @@ print(testCost)
 Validation is similar to testing, but instead requires two pairs of featureMatrix and labelVector. The output we get are the training and validation cost arrays. 
 
 ```lua
-local trainCostArray, validationCostArray = ModelChecker:testClassificationModel(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+local trainCostArray, validationCostArray = ModelChecker:validate(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
 ```
 
 The above function will generate the accuracy of the model by comparing the predicted output made by the model and the actual value.

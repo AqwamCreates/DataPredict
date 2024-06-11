@@ -1,16 +1,18 @@
-# Requirements
+# Getting Started With Reinforcement Learning
+
+## Requirements
 
 * Knowledge on how to build neural networks, which can be found [here](UsingNeuralNetworksPart1.md).
 
-# What Is Reinforcement Learning?
+## What Is Reinforcement Learning?
 
 Reinforcement learning is a way for our models to learn on its own without the labels.
 
 We can expect our models to perform poorly at the start of the training but they will gradually improve over time.
 
-# The Basics
+## The Basics
 
-## Environment Feature Vector
+### Environment Feature Vector
 
 An environment feature vector is a vector containing all the information related to model's environment. It can contain as many information such as:
 
@@ -30,7 +32,7 @@ local environmentFeatureVector = {
 }
 ```
 
-## Reward Value
+### Reward Value
 
 This is the value where we reward or punish the models. The properties of reward value is shown below:
 
@@ -48,7 +50,7 @@ It is recommended to set the reward that is within the range of:
 -1 <= (total reward * learning rate) <= 1
 ```
 
-## Action Labels
+### Action Labels
 
 Action label is a label produced by the model. This label can be a part of decision-making classes or classification classes. For example:
 
@@ -56,7 +58,7 @@ Action label is a label produced by the model. This label can be a part of decis
 
 * Classification classes: 1, 2, 3, 4, 5, 6
 
-# Setting Up Our Reinforcement Learning Model
+## Setting Up Our Reinforcement Learning Model
 
 There are two ways we can setup our models for our environment:
 

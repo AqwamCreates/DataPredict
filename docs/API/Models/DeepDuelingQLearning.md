@@ -72,7 +72,7 @@ DuelingQLearning:update(previousFeatiureVector: featureVector, action: number/st
 
 #### Parameters:
 
-* previousFeatiureVector: The previous state of the environment.
+* previousFeatureVector: The previous state of the environment.
 
 * action: The action selected.
 

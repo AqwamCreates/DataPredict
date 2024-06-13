@@ -49,7 +49,7 @@ NeuralNetwork:setParameters(maxNumberOfIterations: integer)
 Add a layer to the neural network.
 
 ```
-NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activationFunction: string, learningRate: number Optimizer: OptimizerObject, Regularization: RegularizationObject. dropoutRate: number)
+NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activationFunction: string, learningRate: number, Optimizer: OptimizerObject, Regularization: RegularizationObject. dropoutRate: number)
 ```
 
 #### Parameters:

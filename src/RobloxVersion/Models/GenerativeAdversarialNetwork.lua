@@ -136,7 +136,7 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 		
 		GeneratorModel:forwardPropagate(generatorInputMatrix, true)
 		
-		GeneratorModel:backPropagate(meanGeneratorLossVector, true)
+		GeneratorModel:backPropagate(meanGeneratorLossMatrix, true)
 		
 		numberOfIterations = numberOfIterations + 1
 		

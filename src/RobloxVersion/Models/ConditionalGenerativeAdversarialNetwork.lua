@@ -174,15 +174,15 @@ function ConditionalGenerativeAdversarialNetworkModel:generate(noiseFeatureMatri
 	
 end
 
-function ConditionalGenerativeAdversarialNetworkModel:getGeneratorModel()
-	
-	return self.GeneratorModel
-	
-end
-
 function ConditionalGenerativeAdversarialNetworkModel:getDiscriminatorModel()
 	
 	return self.DiscriminatorModel
+	
+end
+
+function ConditionalGenerativeAdversarialNetworkModel:getGeneratorModel()
+	
+	return self.GeneratorModel
 	
 end
 

@@ -243,15 +243,15 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:generate(noiseF
 	
 end
 
-function ConditionalWassersteinGenerativeAdversarialNetworkModel:getGeneratorModel()
-	
-	return self.GeneratorModel
-	
-end
-
 function ConditionalWassersteinGenerativeAdversarialNetworkModel:getDiscriminatorModel()
 	
 	return self.DiscriminatorModel
+	
+end
+
+function ConditionalWassersteinGenerativeAdversarialNetworkModel:getGeneratorModel()
+	
+	return self.GeneratorModel
 	
 end
 

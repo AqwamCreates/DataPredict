@@ -134,9 +134,9 @@ function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		local meanDiscriminatorLossMatrix = AqwamMatrixLibrary:verticalMean(discriminatorLossMatrix)
 		
-		local meanGeneratorLossVector = AqwamMatrixLibrary:verticalMean(generatorLossMatrix)
+		local meanGeneratorLossMatrix = AqwamMatrixLibrary:verticalMean(generatorLossMatrix)
 		
-		meanGeneratorLossVector = AqwamMatrixLibrary:createMatrix(1, generatorOutputNumberOfFeatures, meanGeneratorLossVector[1][1])
+		meanGeneratorLossMatrix = AqwamMatrixLibrary:createMatrix(1, generatorOutputNumberOfFeatures, meanGeneratorLossMatrix[1][1])
 		
 		DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
 		

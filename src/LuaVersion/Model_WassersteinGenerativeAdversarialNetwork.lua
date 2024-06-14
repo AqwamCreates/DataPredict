@@ -214,15 +214,15 @@ function WassersteinGenerativeAdversarialNetworkModel:generate(noiseFeatureMatri
 	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:getGeneratorModel()
-
-	return self.GeneratorModel
-
-end
-
 function WassersteinGenerativeAdversarialNetworkModel:getDiscriminatorModel()
 
 	return self.DiscriminatorModel
+
+end
+
+function WassersteinGenerativeAdversarialNetworkModel:getGeneratorModel()
+
+	return self.GeneratorModel
 
 end
 

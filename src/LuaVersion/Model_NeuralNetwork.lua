@@ -568,7 +568,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 
 end
 
-function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatrix, numberOfData)
+function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatrix)
 	
 	local costFunctionDerivativeMatrixTable = {}
 	
@@ -589,6 +589,8 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 	local zLayerMatrix
 
 	local layerCostMatrix = lossMatrix
+	
+	local numberOfData = #lossMatrix
 	
 	if (forwardPropagateTable == nil) then error("Table not found for forward propagation.") end
 
@@ -611,7 +613,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 		local partialErrorMatrix = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
 		local derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
-
+		
 		if (hasBiasNeuron == 1) then
 
 			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 0 end -- Derivative of bias is 0.
@@ -641,6 +643,8 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 		self:sequenceWait()
 
 	end
+	
+	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrixTable  end
 
 	return costFunctionDerivativeMatrixTable
 
@@ -670,29 +674,29 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 
 		local calculatedLearningRate = learningRate / numberOfData
 		
-		local costFunctionDerivatives = costFunctionDerivativeMatrixTable[layerNumber]
+		local costFunctionDerivativeMatrix = costFunctionDerivativeMatrixTable[layerNumber]
 		
 		local weightMatrix = ModelParameters[layerNumber]
 
 		if (Optimizer ~= 0) then
 
-			costFunctionDerivatives = Optimizer:calculate(calculatedLearningRate, costFunctionDerivatives)
+			costFunctionDerivativeMatrix = Optimizer:calculate(calculatedLearningRate, costFunctionDerivativeMatrix)
 
 		else
 
-			costFunctionDerivatives = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivatives)
+			costFunctionDerivativeMatrix = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivativeMatrix)
 
 		end
 		
 		if (Regularization ~= 0) then
 
-			local regularizationDerivatives = Regularization:calculateRegularizationDerivatives(weightMatrix, numberOfData)
+			local regularizationDerivativeMatrix = Regularization:calculateRegularizationDerivatives(weightMatrix, numberOfData)
 
-			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, regularizationDerivatives)
+			costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivativeMatrix)
 
 		end
 		
-		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivatives)
+		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivativeMatrix)
 
 		table.insert(NewModelParameters, newWeightMatrix)
 
@@ -702,15 +706,15 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 
 end
 
-function NeuralNetworkModel:backPropagate(lossMatrix, clearTables, doNotUpdateModelParameters)
+function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
+	
+	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 	
 	local numberOfData = #lossMatrix
 
 	local costFunctionDerivativeMatrixTable = self:calculateCostFunctionDerivativeMatrixTable(lossMatrix, numberOfData)
 
-	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrixTable  end
-
-	if (not doNotUpdateModelParameters) then self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrixTable, numberOfData) end
+	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrixTable, numberOfData)
 
 	if (clearTables) then
 

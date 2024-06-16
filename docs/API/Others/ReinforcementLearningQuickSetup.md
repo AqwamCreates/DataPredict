@@ -145,7 +145,7 @@ ReinforcementLearningQuickSetup:extendEpisodeUpdateFunction(episodeUpdateFunctio
 Reward or punish model based on the current state of the environment.
 
 ```
-ReinforcementLearningQuickSetup:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean, childModelNumber): integer, number -OR- Matrix
+ReinforcementLearningQuickSetup:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean, childModelNumber: integer): integer, number -OR- Matrix
 ```
 
 #### Parameters:

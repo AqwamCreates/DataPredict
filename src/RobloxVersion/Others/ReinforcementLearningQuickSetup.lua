@@ -204,9 +204,9 @@ function ReinforcementLearningQuickSetup:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, classesList, modelNumber)
+function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, classesList, childModelNumber)
 	
-	local allOutputsMatrix = self.Model:predict(currentFeatureVector, true, modelNumber)
+	local allOutputsMatrix = self.Model:predict(currentFeatureVector, true, childModelNumber)
 	
 	local actionSelectionFunction = self.actionSelectionFunction
 	
@@ -238,7 +238,7 @@ function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, clas
 	
 end
 
-function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, modelNumber)
+function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, childModelNumber)
 
 	if (self.Model == nil) then error("No model!") end
 	
@@ -278,13 +278,13 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	else
 
-		action, selectedValue, allOutputsMatrix = self:selectAction(currentFeatureVector, classesList, modelNumber)
+		action, selectedValue, allOutputsMatrix = self:selectAction(currentFeatureVector, classesList, childModelNumber)
 
 	end
 
 	if (previousFeatureVector) then 
 
-		temporalDifferenceError = Model:update(previousFeatureVector, action, rewardValue, currentFeatureVector, modelNumber) 
+		temporalDifferenceError = Model:update(previousFeatureVector, action, rewardValue, currentFeatureVector, childModelNumber) 
 
 	end
 
@@ -294,9 +294,9 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 		
 		self.currentNumberOfReinforcements = 0
 
-		Model:episodeUpdate()
+		Model:episodeUpdate(childModelNumber)
 		
-		if episodeUpdateFunction then episodeUpdateFunction(modelNumber) end
+		if episodeUpdateFunction then episodeUpdateFunction(childModelNumber) end
 
 	end
 

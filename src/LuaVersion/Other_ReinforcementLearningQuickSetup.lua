@@ -40,7 +40,7 @@ local function sampleAction(actionProbabilityVector)
 
 	for _, probability in ipairs(actionProbabilityVector[1]) do
 
-		totalProbability = totalProbability + probability
+		totalProbability += probability
 
 	end
 
@@ -52,7 +52,7 @@ local function sampleAction(actionProbabilityVector)
 
 	for i, probability in ipairs(actionProbabilityVector[1]) do
 
-		cumulativeProbability = cumulativeProbability + probability
+		cumulativeProbability += probability
 
 		if (randomValue > cumulativeProbability) then continue end
 
@@ -226,9 +226,9 @@ function ReinforcementLearningQuickSetup:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, classesList)
+function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, classesList, modelNumber)
 	
-	local allOutputsMatrix = self.Model:predict(currentFeatureVector, true)
+	local allOutputsMatrix = self.Model:predict(currentFeatureVector, true, modelNumber)
 	
 	local actionSelectionFunction = self.actionSelectionFunction
 	
@@ -260,7 +260,7 @@ function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, clas
 	
 end
 
-function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, modelNumber)
 
 	if (self.Model == nil) then error("No model!") end
 	
@@ -300,13 +300,13 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	else
 
-		action, selectedValue, allOutputsMatrix = self:selectAction(currentFeatureVector, classesList)
+		action, selectedValue, allOutputsMatrix = self:selectAction(currentFeatureVector, classesList, modelNumber)
 
 	end
 
 	if (previousFeatureVector) then 
 
-		temporalDifferenceError = Model:update(previousFeatureVector, action, rewardValue, currentFeatureVector) 
+		temporalDifferenceError = Model:update(previousFeatureVector, action, rewardValue, currentFeatureVector, modelNumber) 
 
 	end
 
@@ -318,7 +318,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 		Model:episodeUpdate()
 		
-		if episodeUpdateFunction then episodeUpdateFunction() end
+		if episodeUpdateFunction then episodeUpdateFunction(modelNumber) end
 
 	end
 

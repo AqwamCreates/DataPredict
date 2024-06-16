@@ -24,7 +24,7 @@ local BaseModel = require("Model_GradientMethodBaseModel")
 
 LinearRegressionModel = {}
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibraryLinker")
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 

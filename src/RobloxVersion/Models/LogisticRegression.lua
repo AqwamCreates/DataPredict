@@ -99,6 +99,8 @@ function LogisticRegressionModel:calculateHypothesisVector(featureMatrix, saveFe
 end
 
 function LogisticRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
+	
+	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 
 	local featureMatrix = self.featureMatrix
 
@@ -113,6 +115,8 @@ function LogisticRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatri
 end
 
 function LogisticRegressionModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+	
+	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
 
 	local calculatedLearningRate = self.learningRate / numberOfData
 

@@ -548,6 +548,8 @@ end
 
 function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatrix)
 	
+	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+	
 	local costFunctionDerivativeMatrixTable = {}
 	
 	local errorMatrixTable = {}
@@ -654,6 +656,8 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 		
 		local costFunctionDerivativeMatrix = costFunctionDerivativeMatrixTable[layerNumber]
 		
+		if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
+		
 		local weightMatrix = ModelParameters[layerNumber]
 
 		if (Optimizer ~= 0) then
@@ -690,7 +694,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	
 	local numberOfData = #lossMatrix
 
-	local costFunctionDerivativeMatrixTable = self:calculateCostFunctionDerivativeMatrixTable(lossMatrix, numberOfData)
+	local costFunctionDerivativeMatrixTable = self:calculateCostFunctionDerivativeMatrixTable(lossMatrix)
 
 	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrixTable, numberOfData)
 

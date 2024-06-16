@@ -63,17 +63,10 @@ local lossFunctionList = {
 	end,
 
 }
-local function calculateHypothesisVector(featureMatrix, modelParameters)
-	
-	return AqwamMatrixLibrary:dotProduct(featureMatrix, modelParameters)
-	
-end
 
-local function calculateCost(modelParameters, featureMatrix, labelVector, lossFunction)
+local function calculateCost(hypothesisVector, labelVector, lossFunction)
 	
-	local numberOfData = #featureMatrix
-	
-	local hypothesisVector = calculateHypothesisVector(featureMatrix, modelParameters)
+	local numberOfData = #labelVector
 	
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
@@ -85,19 +78,73 @@ local function calculateCost(modelParameters, featureMatrix, labelVector, lossFu
 	
 end
 
-local function gradientDescent(modelParameters, featureMatrix, labelVector, lossFunction)
+function LinearRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 	
-	local numberOfData = #featureMatrix
+	local hypothesisVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
 	
-	local hypothesisVector = calculateHypothesisVector(featureMatrix, modelParameters)
-	
-	local calculatedError = AqwamMatrixLibrary:subtract(hypothesisVector, labelVector)
+	if (saveFeatureMatrix) then 
+		
+		self.featureMatrix = featureMatrix
+		
+	end
 
-	local calculatedErrorWithFeatureMatrix = AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(featureMatrix), calculatedError)
+	return hypothesisVector
 
-	local costFunctionDerivative = AqwamMatrixLibrary:multiply((1/numberOfData),  calculatedErrorWithFeatureMatrix)
+end
+
+function LinearRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
 	
-	return costFunctionDerivative
+	local featureMatrix = self.featureMatrix
+	
+	if (featureMatrix == nil) then error("Feature matrix not found.") end
+	
+	local costFunctionDerivativeMatrix = AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(featureMatrix), lossMatrix)
+	
+	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrix end
+
+	return costFunctionDerivativeMatrix
+	
+end
+
+function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+	
+	local calculatedLearningRate = self.learningRate / numberOfData
+
+	if (self.Optimizer) then 
+
+		costFunctionDerivativeMatrix = self.Optimizer:calculate(calculatedLearningRate, costFunctionDerivativeMatrix) 
+
+	else
+
+		costFunctionDerivativeMatrix = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivativeMatrix)
+
+	end
+
+	if (self.Regularization) then
+
+		local regularizationDerivatives = self.Regularization:calculateRegularizationDerivatives(self.ModelParameters, numberOfData)
+
+		costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
+
+	end
+	
+	local newModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivativeMatrix)
+	
+	return newModelParameters
+	
+end
+
+function LinearRegressionModel:update(lossMatrix, clearFeatureMatrix, doNotUpdateModelParameters)
+	
+	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+
+	local numberOfData = #lossMatrix
+	
+	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
+	
+	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+	
+	if (clearFeatureMatrix) then self.featureMatrix = nil end
 	
 end
 
@@ -151,15 +198,13 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	local numberOfIterations = 0
 	
-	local costFunctionDerivatives
-	
 	local numberOfData = #featureMatrix[1]
 	
-	local regularizationDerivatives
+	local lossFunction = self.lossFunction
 	
-	local regularizationCost
+	local Regularization = self.Regularization
 	
-	local calculatedLearningRate = self.learningRate / numberOfData
+	local maxNumberOfIterations = self.maxNumberOfIterations
 	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 	
@@ -175,17 +220,19 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	repeat
 		
-		numberOfIterations = numberOfIterations + 1
+		numberOfIterations += 1
 		
 		self:iterationWait()
 		
+		local hypothesisVector = self:calculateHypothesisVector(featureMatrix, true)
+		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			cost = calculateCost(self.ModelParameters, featureMatrix, labelVector, self.lossFunction)
+			cost = calculateCost(hypothesisVector, labelVector, lossFunction)
 			
-			if (not self.Regularization) then return cost end
+			if (not Regularization) then return cost end
 
-			regularizationCost = self.Regularization:calculateRegularization(self.ModelParameters, numberOfData)
+			local regularizationCost = Regularization:calculateRegularization(self.ModelParameters, numberOfData)
 
 			cost += regularizationCost
 			
@@ -201,31 +248,11 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 			
 		end
 		
-		costFunctionDerivatives = gradientDescent(self.ModelParameters, featureMatrix, labelVector, self.lossFunction)
+		local lossVector = AqwamMatrixLibrary:subtract(hypothesisVector, labelVector)
 		
-		if (self.Regularization) then
-
-			regularizationDerivatives = self.Regularization:calculateRegularizationDerivatives(self.ModelParameters, numberOfData)
-
-			costFunctionDerivatives = AqwamMatrixLibrary:add(costFunctionDerivatives, regularizationDerivatives)
-
-		end
+		self:update(lossVector, true, false)
 		
-		if (self.Optimizer) then 
-
-			costFunctionDerivatives = self.Optimizer:calculate(calculatedLearningRate, costFunctionDerivatives) 
-			
-		else
-			
-			costFunctionDerivatives = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivatives)
-
-		end
-		
-		if (self.areGradientsSaved) then self.Gradients = costFunctionDerivatives end
-		
-		self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivatives)
-		
-	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values") end
 	
@@ -239,7 +266,7 @@ function LinearRegressionModel:predict(featureMatrix)
 	
 	local predictedVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
 	
-	if (typeof(predictedVector) == "number") then predictedVector = {{predictedVector}} end
+	if (type(predictedVector) == "number") then predictedVector = {{predictedVector}} end
 	
 	return predictedVector
 

@@ -19,7 +19,28 @@
 | [NaiveBayes](Models/NaiveBayes.md)                                                                               | None                   | Text Classification                                                         |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                |
 
-### Non-Sequential + Reinforcement Learning
+### Sequential
+
+| Model                                                                                                            | Alternate Names        | Use Cases                                                                   |
+|------------------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------|
+| [LongShortTermMemory](Models/LongShortTermMemory.md) (Deprecated)                                                | LSTM                   | Text Generation, Text Analysis                                              |
+| [RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md) (Deprecated)                                          | RNN                    | Same As Long Short Term Memory                                              |
+
+## Clustering
+
+| Model                                                                                                                  | Alternate Names | Use Cases                             |
+|------------------------------------------------------------------------------------------------------------------------|-----------------|---------------------------------------|
+| [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | None            | Player Grouping                       |
+| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | Similarity Grouping                   |
+| [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | Density Grouping                      |
+| [MeanShift](Models/MeanShift.md)                                                                                       | None            | Center Of Data Search                 |
+| [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | Hacking Detection, Anomaly Detection  |
+| [KMeans](Models/KMeans.md)                                                                                             | None            | Market Segmentation, General Grouping |
+| [KMedoids](Models/KMedoids.md)                                                                                         | None            | Same as K-Means                       |
+
+## Deep Reinforcement Learning
+
+### Non-Sequential
 
 | Model                                                                                                                            | Alternate Names                           | Use Cases                                                                   |
 |----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|-----------------------------------------------------------------------------|
@@ -41,25 +62,6 @@
 | [ProximalPolicyOptimization](Models/ProximalPolicyOptimization.md)                                                               | PPO                                       | Same As Deep Q-Learning                                                     |
 | [ProximalPolicyOptimizationClip](Models/ProximalPolicyOptimizationClip.md)                                                       | PPO-Clip                                  | Same As Deep Q-Learning                                                     |
 | [VanillaPolicyGradient](Models/VanillaPolicyGradient.md)                                                                         | VPG                                       | Same As Deep Q-Learning                                                     |
-
-### Sequential
-
-| Model                                                                                                            | Alternate Names        | Use Cases                                                                   |
-|------------------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------|
-| [LongShortTermMemory](Models/LongShortTermMemory.md) (Deprecated)                                                | LSTM                   | Text Generation, Text Analysis                                              |
-| [RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md) (Deprecated)                                          | RNN                    | Same As Long Short Term Memory                                              |
-
-## Clustering
-
-| Model                                                                                                                  | Alternate Names | Use Cases                             |
-|------------------------------------------------------------------------------------------------------------------------|-----------------|---------------------------------------|
-| [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | None            | Player Grouping                       |
-| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | Similarity Grouping                   |
-| [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | Density Grouping                      |
-| [MeanShift](Models/MeanShift.md)                                                                                       | None            | Center Of Data Search                 |
-| [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | Hacking Detection, Anomaly Detection  |
-| [KMeans](Models/KMeans.md)                                                                                             | None            | Market Segmentation, General Grouping |
-| [KMedoids](Models/KMedoids.md)                                                                                         | None            | Same as K-Means                       |
 
 ## Generative
 

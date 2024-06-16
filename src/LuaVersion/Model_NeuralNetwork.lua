@@ -30,16 +30,6 @@ setmetatable(NeuralNetworkModel, GradientMethodBaseModel)
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
-
-NeuralNetworkModel = {}
-
-NeuralNetworkModel.__index = NeuralNetworkModel
-
-setmetatable(NeuralNetworkModel, GradientMethodBaseModel)
-
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
-
 local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
@@ -672,17 +662,17 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativesTable, number
 
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
-		local costFunctionDerivatives = costFunctionDerivativesTable[layerNumber]
-
 		local learningRate = learningRateTable[layerNumber + 1]
 
 		local Regularization = regularizationTable[layerNumber + 1]
 
 		local Optimizer = optimizerTable[layerNumber + 1]
 
-		local weightMatrix = ModelParameters[layerNumber]
-
 		local calculatedLearningRate = learningRate / numberOfData
+		
+		local costFunctionDerivatives = costFunctionDerivativesTable[layerNumber]
+		
+		local weightMatrix = ModelParameters[layerNumber]
 
 		if (Optimizer ~= 0) then
 

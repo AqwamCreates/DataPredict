@@ -314,7 +314,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	end
 	
-	if updateFunction then updateFunction() end
+	if updateFunction then updateFunction(childModelNumber) end
 
 	self.previousFeatureVector = currentFeatureVector
 

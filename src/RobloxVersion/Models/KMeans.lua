@@ -368,13 +368,15 @@ function KMeansModel:train(featureMatrix)
 	
 	local numberOfIterations = 0
 	
-	if (self.ModelParameters) then
+	local modelParameters = self.ModelParameters
+	
+	if (modelParameters) then
 		
 		if (#featureMatrix[1] ~= #self.ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
 		
 	else
 		
-		self.ModelParameters = initializeCentroids(featureMatrix, self.numberOfClusters, self.distanceFunction, self.setInitialClustersOnDataPoints, self.setTheCentroidsDistanceFarthest)
+		modelParameters = initializeCentroids(featureMatrix, self.numberOfClusters, self.distanceFunction, self.setInitialClustersOnDataPoints, self.setTheCentroidsDistanceFarthest)
 		
 	end
 	
@@ -384,9 +386,7 @@ function KMeansModel:train(featureMatrix)
 		
 		self:iterationWait()
 		
-		local ModelParameters = self.ModelParameters
-		
-		local distanceMatrix = createDistanceMatrix(ModelParameters, featureMatrix, self.distanceFunction)
+		local distanceMatrix = createDistanceMatrix(modelParameters, featureMatrix, self.distanceFunction)
 
 		local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 
@@ -404,11 +404,13 @@ function KMeansModel:train(featureMatrix)
 			
 		end
 
-		self.ModelParameters = calculateModelParametersMean(clusterAssignmentMatrix, ModelParameters)
+		modelParameters = calculateModelParametersMean(clusterAssignmentMatrix, modelParameters)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	
+	self.ModelParameters = modelParameters
 	
 	return costArray
 	

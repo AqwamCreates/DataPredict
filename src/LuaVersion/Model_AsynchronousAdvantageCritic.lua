@@ -200,7 +200,7 @@ local function sampleAction(actionProbabilityVector)
 	
 	for _, probability in ipairs(actionProbabilityVector[1]) do
 		
-		totalProbability = probability
+		totalProbability += probability
 		
 	end
 
@@ -212,7 +212,7 @@ local function sampleAction(actionProbabilityVector)
 	
 	for i, probability in ipairs(actionProbabilityVector[1]) do
 		
-		cumulativeProbability = cumulativeProbability + probability
+		cumulativeProbability += probability
 		
 		if (randomValue > cumulativeProbability) then continue end
 			
@@ -280,9 +280,9 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(numberOfFeatures, a
 		
 		local criticLoss = math.pow(advantage, 2)
 		
-		sumActorLosses = sumActorLosses + actorLoss
+		sumActorLosses += actorLoss
 		
-		sumCriticLosses = sumCriticLosses + criticLoss
+		sumCriticLosses += criticLoss
 		
 	end
 	
@@ -298,16 +298,16 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(numberOfFeatures, a
 	ActorModel:forwardPropagate(featureVector, true)
 	CriticModel:forwardPropagate(featureVector, true)
 	
-	self.ActorModelCostFunctionDerivativesArray[actorCriticModelNumber] = ActorModel:backPropagate(-sumActorLosses, true)
-	self.CriticModelCostFunctionDerivativesArray[actorCriticModelNumber] = CriticModel:backPropagate(-sumCriticLosses, true, true)
+	self.ActorModelCostFunctionDerivativesArray[actorCriticModelNumber] = ActorModel:calculateCostFunctionDerivativeMatrixTable(-sumActorLosses, true)
+	self.CriticModelCostFunctionDerivativesArray[actorCriticModelNumber] = CriticModel:calculateCostFunctionDerivativeMatrixTable(-sumCriticLosses, true)
 	
 	------------------------------------------------------
 
 	self.currentNumberOfReinforcementsArray[actorCriticModelNumber] = 0
 
-	self.currentNumberOfEpisodesArray[actorCriticModelNumber] = self.currentNumberOfEpisodesArray[actorCriticModelNumber] + 1
+	self.currentNumberOfEpisodesArray[actorCriticModelNumber] += 1
 
-	self.currentEpsilonArray[actorCriticModelNumber] = self.currentEpsilonArray[actorCriticModelNumber] * self.epsilonDecayFactor
+	self.currentEpsilonArray[actorCriticModelNumber] *= self.epsilonDecayFactor
 	
 	table.clear(self.advantageHistoryArray[actorCriticModelNumber])
 	
@@ -386,9 +386,9 @@ function AsynchronousAdvantageActorCriticModel:selectAction(currentFeatureVector
 		selectedValue = selectedValueVector[1][1]
 
 	elseif (actionSelectionFunction == "Sample") then
-
-		local actionProbabilityVector = calculateProbability(allOutputsMatrix)
 		
+		local actionProbabilityVector = calculateProbability(allOutputsMatrix)
+
 		local actionIndex = sampleAction(actionProbabilityVector)
 
 		action = classesList[actionIndex]
@@ -405,9 +405,9 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 	
 	actorCriticModelNumber = actorCriticModelNumber or Random.new():NextInteger(1, #self.currentEpsilonArray)
 
-	self.currentNumberOfReinforcementsArray[actorCriticModelNumber] = self.currentNumberOfReinforcementsArray[actorCriticModelNumber] + 1
+	self.currentNumberOfReinforcementsArray[actorCriticModelNumber] += 1
 	
-	self.currentTotalNumberOfReinforcementsToUpdateMainModel = self.currentTotalNumberOfReinforcementsToUpdateMainModel + 1
+	self.currentTotalNumberOfReinforcementsToUpdateMainModel += 1
 	
 	local action
 	

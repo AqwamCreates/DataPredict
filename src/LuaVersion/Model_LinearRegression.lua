@@ -24,12 +24,6 @@ local BaseModel = require("Model_GradientMethodBaseModel")
 
 LinearRegressionModel = {}
 
-LinearRegressionModel.__index = LinearRegressionModel
-
-setmetatable(LinearRegressionModel, GradientMethodBaseModel)
-
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
-
 local defaultMaxNumberOfIterations = 500
 
 local defaultLearningRate = 0.3
@@ -94,6 +88,8 @@ end
 
 function LinearRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
 	
+	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+	
 	local featureMatrix = self.featureMatrix
 	
 	if (featureMatrix == nil) then error("Feature matrix not found.") end
@@ -107,6 +103,8 @@ function LinearRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
 end
 
 function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+	
+	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
 	
 	local calculatedLearningRate = self.learningRate / numberOfData
 

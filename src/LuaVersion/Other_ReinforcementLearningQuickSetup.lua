@@ -40,7 +40,7 @@ local function sampleAction(actionProbabilityVector)
 
 	for _, probability in ipairs(actionProbabilityVector[1]) do
 
-		totalProbability += probability
+		totalProbability = totalProbability + probability
 
 	end
 
@@ -52,7 +52,7 @@ local function sampleAction(actionProbabilityVector)
 
 	for i, probability in ipairs(actionProbabilityVector[1]) do
 
-		cumulativeProbability += probability
+		cumulativeProbability = cumulativeProbability + probability
 
 		if (randomValue > cumulativeProbability) then continue end
 
@@ -263,6 +263,8 @@ end
 function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, modelNumber)
 
 	if (self.Model == nil) then error("No model!") end
+
+	local randomProbability = Random.new():NextNumber()
 	
 	local ExperienceReplay = self.ExperienceReplay
 	
@@ -274,7 +276,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	
 	local updateFunction = self.updateFunction
 
-	self.currentNumberOfReinforcements += 1
+	self.currentNumberOfReinforcements = self.currentNumberOfReinforcements 1
 
 	local action
 
@@ -283,8 +285,6 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	local allOutputsMatrix
 
 	local temporalDifferenceError
-
-	local randomProbability = Random.new():NextNumber()
 
 	if (randomProbability < self.currentEpsilon) then
 

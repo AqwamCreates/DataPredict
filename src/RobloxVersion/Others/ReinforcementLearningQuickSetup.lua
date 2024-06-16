@@ -204,9 +204,9 @@ function ReinforcementLearningQuickSetup:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, classesList)
+function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, classesList, modelNumber)
 	
-	local allOutputsMatrix = self.Model:predict(currentFeatureVector, true)
+	local allOutputsMatrix = self.Model:predict(currentFeatureVector, true, modelNumber)
 	
 	local actionSelectionFunction = self.actionSelectionFunction
 	
@@ -238,9 +238,11 @@ function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, clas
 	
 end
 
-function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
+function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, modelNumber)
 
 	if (self.Model == nil) then error("No model!") end
+	
+	local randomProbability = Random.new():NextNumber()
 	
 	local ExperienceReplay = self.ExperienceReplay
 	
@@ -252,8 +254,6 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	
 	local updateFunction = self.updateFunction
 
-	self.currentNumberOfReinforcements += 1
-
 	local action
 
 	local selectedValue
@@ -262,7 +262,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	local temporalDifferenceError
 
-	local randomProbability = Random.new():NextNumber()
+	self.currentNumberOfReinforcements += 1
 
 	if (randomProbability < self.currentEpsilon) then
 
@@ -278,13 +278,13 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	else
 
-		action, selectedValue, allOutputsMatrix = self:selectAction(currentFeatureVector, classesList)
+		action, selectedValue, allOutputsMatrix = self:selectAction(currentFeatureVector, classesList, modelNumber)
 
 	end
 
 	if (previousFeatureVector) then 
 
-		temporalDifferenceError = Model:update(previousFeatureVector, action, rewardValue, currentFeatureVector) 
+		temporalDifferenceError = Model:update(previousFeatureVector, action, rewardValue, currentFeatureVector, modelNumber) 
 
 	end
 
@@ -296,7 +296,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 		Model:episodeUpdate()
 		
-		if episodeUpdateFunction then episodeUpdateFunction() end
+		if episodeUpdateFunction then episodeUpdateFunction(modelNumber) end
 
 	end
 

@@ -38,7 +38,7 @@
 | [KMeans](Models/KMeans.md)                                                                                             | None            | Market Segmentation, General Grouping |
 | [KMedoids](Models/KMedoids.md)                                                                                         | None            | Same as K-Means                       |
 
-## Reinforcement Learning
+## Deep Reinforcement Learning
 
 ### Non-Sequential
 

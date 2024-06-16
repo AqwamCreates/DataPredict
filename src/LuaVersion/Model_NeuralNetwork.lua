@@ -568,9 +568,9 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 
 end
 
-function NeuralNetworkModel:calculateCostFunctionDerivativesTable(lossMatrix, numberOfData)
+function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatrix, numberOfData)
 	
-	local costFunctionDerivativesTable = {}
+	local costFunctionDerivativeMatrixTable = {}
 	
 	local errorMatrixTable = {}
 	
@@ -636,17 +636,17 @@ function NeuralNetworkModel:calculateCostFunctionDerivativesTable(lossMatrix, nu
 
 		if (type(costFunctionDerivatives) == "number") then costFunctionDerivatives = {{costFunctionDerivatives}} end
 
-		table.insert(costFunctionDerivativesTable, costFunctionDerivatives)
+		table.insert(costFunctionDerivativeMatrixTable, costFunctionDerivatives)
 
 		self:sequenceWait()
 
 	end
 
-	return costFunctionDerivativesTable
+	return costFunctionDerivativeMatrixTable
 
 end
 
-function NeuralNetworkModel:gradientDescent(costFunctionDerivativesTable, numberOfData)
+function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, numberOfData)
 	
 	local NewModelParameters = {}
 	
@@ -670,7 +670,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativesTable, number
 
 		local calculatedLearningRate = learningRate / numberOfData
 		
-		local costFunctionDerivatives = costFunctionDerivativesTable[layerNumber]
+		local costFunctionDerivatives = costFunctionDerivativeMatrixTable[layerNumber]
 		
 		local weightMatrix = ModelParameters[layerNumber]
 
@@ -706,11 +706,11 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables, doNotUpdateMo
 	
 	local numberOfData = #lossMatrix
 
-	local costFunctionDerivativesTable = self:calculateCostFunctionDerivativesTable(lossMatrix, numberOfData)
+	local costFunctionDerivativeMatrixTable = self:calculateCostFunctionDerivativeMatrixTable(lossMatrix, numberOfData)
 
-	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativesTable  end
+	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrixTable  end
 
-	if (not doNotUpdateModelParameters) then self.ModelParameters = self:gradientDescent(costFunctionDerivativesTable, numberOfData) end
+	if (not doNotUpdateModelParameters) then self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrixTable, numberOfData) end
 
 	if (clearTables) then
 
@@ -720,7 +720,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables, doNotUpdateMo
 
 	end
 
-	return costFunctionDerivativesTable
+	return costFunctionDerivativeMatrixTable
 
 end
 

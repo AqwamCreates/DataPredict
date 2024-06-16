@@ -69,7 +69,7 @@ local distanceFunctionList = {
 		return distance 
 
 	end,
-
+	
 	["Cosine"] = function(x1, x2)
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
@@ -282,7 +282,7 @@ local function createClusterAssignmentMatrix(distanceMatrix) -- contains values 
 		
 		local distanceVector = {distanceMatrix[dataIndex]}
 		
-		local _, vectorIndexArray = AqwamMatrixLibrary:findMaximumValueInMatrix(distanceVector)
+		local _, vectorIndexArray = AqwamMatrixLibrary:findMinimumValueInMatrix(distanceVector)
 		
 		if (vectorIndexArray == nil) then continue end
 		
@@ -296,15 +296,9 @@ local function createClusterAssignmentMatrix(distanceMatrix) -- contains values 
 	
 end
 
-local function calculateCost(modelParameters, featureMatrix, distanceFunction)
+local function calculateCost(distanceMatrix, clusterAssignmentMatrix)
 	
-	local distanceMatrix = createDistanceMatrix(modelParameters, featureMatrix, distanceFunction)
-	
-	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
-	
-	local costMatrixSquareRoot = AqwamMatrixLibrary:multiply(distanceMatrix, clusterAssignmentMatrix)
-	
-	local costMatrix = AqwamMatrixLibrary:multiply(costMatrixSquareRoot, costMatrixSquareRoot)
+	local costMatrix = AqwamMatrixLibrary:multiply(distanceMatrix, clusterAssignmentMatrix)
 	
 	local cost = AqwamMatrixLibrary:sum(costMatrix)
 	
@@ -312,11 +306,7 @@ local function calculateCost(modelParameters, featureMatrix, distanceFunction)
 	
 end
 
-local function calculateModelParametersMean(modelParameters, featureMatrix, distanceFunction)
-	
-	local distanceMatrix = createDistanceMatrix(modelParameters, featureMatrix, distanceFunction)
-
-	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix) 
+local function calculateModelParametersMean(clusterAssignmentMatrix, modelParameters)
 	
 	local sumOfAssignedCentroidVector = AqwamMatrixLibrary:verticalSum(clusterAssignmentMatrix) -- since row is the number of data in clusterAssignmentMatrix, then we vertical sum it
 	
@@ -392,8 +382,6 @@ end
 
 function KMeansModel:train(featureMatrix)
 	
-	local PreviousModelParameters
-	
 	local areModelParametersEqual
 	
 	local cost
@@ -414,13 +402,19 @@ function KMeansModel:train(featureMatrix)
 	
 	repeat
 		
-		numberOfIterations = numberOfIterations + 1
+		numberOfIterations += 1
 		
 		self:iterationWait()
+		
+		local ModelParameters = self.ModelParameters
+		
+		local distanceMatrix = createDistanceMatrix(ModelParameters, featureMatrix, self.distanceFunction)
+
+		local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			return calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
+			return calculateCost(distanceMatrix, clusterAssignmentMatrix)
 			
 		end) 
 		
@@ -431,10 +425,8 @@ function KMeansModel:train(featureMatrix)
 			self:printCostAndNumberOfIterations(cost, numberOfIterations)
 			
 		end
-		
-		PreviousModelParameters = self.ModelParameters
 
-		self.ModelParameters = calculateModelParametersMean(self.ModelParameters, featureMatrix, self.distanceFunction)
+		self.ModelParameters = calculateModelParametersMean(clusterAssignmentMatrix, ModelParameters)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	

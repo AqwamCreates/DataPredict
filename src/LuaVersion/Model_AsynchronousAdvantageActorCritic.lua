@@ -20,9 +20,11 @@
 
 --]]
 
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+
 local DataPredict = script.Parent.Parent
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(DataPredict.AqwamMatrixLibraryLinker.Value)
 
 AsynchronousAdvantageActorCriticModel = {}
 
@@ -262,7 +264,7 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 
 end
 
-function AsynchronousAdvantageActorCriticModel:episodeUpdate(numberOfFeatures, actorCriticModelNumber)
+function AsynchronousAdvantageActorCriticModel:episodeUpdate(actorCriticModelNumber)
 	
 	local historyLength = #self.advantageHistoryArray[actorCriticModelNumber]
 	
@@ -286,14 +288,17 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(numberOfFeatures, a
 		
 	end
 	
-	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-	
 	local ActorModel = self.ActorModelArray[actorCriticModelNumber]
 	local CriticModel = self.CriticModelArray[actorCriticModelNumber]
 	
 	if not ActorModel then error("No actor model!") end
-
 	if not CriticModel then error("No critic model!") end
+	
+	local numberOfFeatures, hasBias = ActorModel:getLayer(1)
+
+	numberOfFeatures += (hasBias and 1) or 0
+
+	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 	
 	ActorModel:forwardPropagate(featureVector, true)
 	CriticModel:forwardPropagate(featureVector, true)

@@ -116,7 +116,7 @@ NeuralNetworkModel:addLayer(2, true) -- For the first layer, we can only choose 
 
 NeuralNetworkModel:addLayer(3, true, "Tanh", nil, Adagrad1)
 
-NeuralNetworkModel:addLayer(2, false, "StableSoftmax", Adagrad2)
+NeuralNetworkModel:addLayer(2, false, "StableSoftmax", nil, Adagrad2)
 
 ```
 

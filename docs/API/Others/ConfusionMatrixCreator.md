@@ -21,7 +21,7 @@ classesList: A list of classes. The index of the class relates to which the neur
 ### setParameters()
 
 ```
-ConfusionMatrixCreator:setParameters(classesList; [])
+ConfusionMatrixCreator:setParameters(classesList: [])
 ```
 
 #### Parameters

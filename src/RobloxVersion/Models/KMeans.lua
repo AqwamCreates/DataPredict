@@ -124,21 +124,21 @@ local function checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClus
 	
 end
 
-local function createDistanceMatrix(modelParameters, featureMatrix, distanceFunction)
+local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
-	local numberOfData = #featureMatrix
+	local numberOfData1 = #matrix1
 
-	local numberOfClusters = #modelParameters
+	local numberOfData2 = #matrix2
 
-	local distanceMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfClusters)
+	local distanceMatrix = AqwamMatrixLibrary:createMatrix(numberOfData1, numberOfData2)
 	
 	local calculateDistance = distanceFunctionList[distanceFunction]
 
-	for datasetIndex = 1, #featureMatrix, 1 do
+	for matrix1Index = 1, numberOfData1, 1 do
 
-		for cluster = 1, #modelParameters, 1 do
+		for matrix2Index = 1, numberOfData2, 1 do
 
-			distanceMatrix[datasetIndex][cluster] = calculateDistance({featureMatrix[datasetIndex]}, {modelParameters[cluster]})
+			distanceMatrix[matrix1Index][matrix2Index] = calculateDistance({matrix1[matrix1Index]}, {matrix2[matrix2Index]})
 
 		end
 
@@ -386,7 +386,7 @@ function KMeansModel:train(featureMatrix)
 		
 		self:iterationWait()
 		
-		local distanceMatrix = createDistanceMatrix(modelParameters, featureMatrix, self.distanceFunction)
+		local distanceMatrix = createDistanceMatrix(featureMatrix, modelParameters, self.distanceFunction)
 
 		local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 
@@ -418,7 +418,7 @@ end
 
 function KMeansModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local distanceMatrix = createDistanceMatrix(self.ModelParameters, featureMatrix, self.distanceFunction)
+	local distanceMatrix = createDistanceMatrix(featureMatrix, self.ModelParameters, self.distanceFunction)
 	
 	if (returnOriginalOutput == true) then return distanceMatrix end
 

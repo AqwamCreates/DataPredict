@@ -126,7 +126,7 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 
 		local probability = math.pow(priority, (NewPrioritizedExperienceReplay.alpha / NewPrioritizedExperienceReplay.sumPriorityAlpha))
 		
-		NewPrioritizedExperienceReplay.priorityArray[index] = priority-- Store priorities
+		NewPrioritizedExperienceReplay.priorityArray[index] = priority -- Store priorities
 
 		NewPrioritizedExperienceReplay.probabilityArray[index] = probability
 

@@ -254,7 +254,7 @@ local function assignClusters(availibilityMatrix, responsibilityMatrix)
 		
 		local calculatedValuesVector = {calculatedValuesMatrix[i]}
 		
-		local _, clusterIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(calculatedValuesVector)
+		local _, clusterIndex = AqwamMatrixLibrary:findMaximumValue(calculatedValuesVector)
 
 		if (clusterIndex == nil) then continue end
 

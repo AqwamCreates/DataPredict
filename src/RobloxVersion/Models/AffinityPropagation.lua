@@ -14,6 +14,8 @@ local defaultDamping = 0.5
 
 local defaultDistanceFunction = "Euclidean"
 
+local mathSquareRoot = math.sqrt
+
 local distanceFunctionList = {
 
 	["Manhattan"] = function (x1, x2)
@@ -36,7 +38,7 @@ local distanceFunctionList = {
 
 		local part3 = AqwamMatrixLibrary:sum(part2)
 
-		local distance = math.sqrt(part3)
+		local distance = mathSquareRoot(part3)
 
 		return distance 
 
@@ -50,13 +52,13 @@ local distanceFunctionList = {
 
 		local x1MagnitudePart2 = AqwamMatrixLibrary:sum(x1MagnitudePart1)
 
-		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
+		local x1Magnitude = mathSquareRoot(x1MagnitudePart2, 2)
 
 		local x2MagnitudePart1 = AqwamMatrixLibrary:power(x2, 2)
 
 		local x2MagnitudePart2 = AqwamMatrixLibrary:sum(x2MagnitudePart1)
 
-		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
+		local x2Magnitude = mathSquareRoot(x2MagnitudePart2, 2)
 
 		local normX = x1Magnitude * x2Magnitude
 
@@ -232,11 +234,11 @@ local function assignClusters(availibilityMatrix, responsibilityMatrix)
 		
 		local calculatedValuesVector = {calculatedValuesMatrix[i]}
 		
-		local _, clusterIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(calculatedValuesVector)
+		local _, clusterIndexArray = AqwamMatrixLibrary:findMaximumValue(calculatedValuesVector)
 
-		if (clusterIndex == nil) then continue end
+		if (clusterIndexArray == nil) then continue end
 
-		local clusterNumber = clusterIndex[2]
+		local clusterNumber = clusterIndexArray[2]
 
 		clusterVector[i][1] = clusterNumber
 		
@@ -360,7 +362,7 @@ function AffinityPropagationModel:predict(featureMatrix)
 		
 		local distanceVector = {distanceMatrix[i]}
 		
-		local _, index = AqwamMatrixLibrary:findMinimumValueInMatrix(distanceVector)
+		local _, index = AqwamMatrixLibrary:findMinimumValue(distanceVector)
 		
 		if (index == nil) then continue end
 		

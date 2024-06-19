@@ -768,7 +768,7 @@ end
 
 function NeuralNetworkModel:fetchHighestValueInVector(outputVector)
 
-	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(outputVector)
+	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValue(outputVector)
 
 	if (classIndex == nil) then return nil, highestValue end
 

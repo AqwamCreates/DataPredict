@@ -41,7 +41,7 @@ local distanceFunctionList = {
 		return distance 
 		
 	end,
-
+	
 	["Cosine"] = function(x1, x2)
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
@@ -67,8 +67,9 @@ local distanceFunctionList = {
 		return cosineDistance
 
 	end,
-	
+
 }
+
 
 local function calculateDistance(vector1, vector2, distanceFunction)
 	

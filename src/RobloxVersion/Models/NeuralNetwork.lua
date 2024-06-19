@@ -593,12 +593,6 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 		local partialErrorMatrix = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
 		local derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
-		
-		if (hasBiasNeuron == 1) then
-
-			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 1 end -- Derivative of bias is 1.
-
-		end
 
 		layerCostMatrix = AqwamMatrixLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 
@@ -746,7 +740,7 @@ end
 
 function NeuralNetworkModel:fetchHighestValueInVector(outputVector)
 
-	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(outputVector)
+	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValue(outputVector)
 
 	if (classIndex == nil) then return nil, highestValue end
 

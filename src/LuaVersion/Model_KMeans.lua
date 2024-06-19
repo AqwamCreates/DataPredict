@@ -30,15 +30,11 @@ setmetatable(KMeansModel, BaseModel)
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaxNumberOfIterations = math.huge
 
 local defaultNumberOfClusters = 2
 
-local defaultDistanceFunction = "Euclidean"
-
-local defaultStopWhenModelParametersDoesNotChange = false
-
-local defaultSetInitialClustersOnDataPoints = true
+local defaultDistanceFunction = "Manhattan"
 
 local defaultSetTheCentroidsDistanceFarthest = false
 
@@ -98,6 +94,12 @@ local distanceFunctionList = {
 
 }
 
+local function calculateDistance(vector1, vector2, distanceFunction)
+	
+	return distanceFunctionList[distanceFunction](vector1, vector2) 
+	
+end
+
 local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
 	
 	local clusterNumberVector = AqwamMatrixLibrary:createMatrix(#distanceMatrix, 1)
@@ -146,21 +148,19 @@ local function checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClus
 	
 end
 
-local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
+local function createDistanceMatrix(modelParameters, featureMatrix, distanceFunction)
 
-	local numberOfData1 = #matrix1
+	local numberOfData = #featureMatrix
 
-	local numberOfData2 = #matrix2
+	local numberOfClusters = #modelParameters
 
-	local distanceMatrix = AqwamMatrixLibrary:createMatrix(numberOfData1, numberOfData2)
-	
-	local calculateDistance = distanceFunctionList[distanceFunction]
+	local distanceMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfClusters)
 
-	for matrix1Index = 1, numberOfData1, 1 do
+	for datasetIndex = 1, #featureMatrix, 1 do
 
-		for matrix2Index = 1, numberOfData2, 1 do
+		for cluster = 1, #modelParameters, 1 do
 
-			distanceMatrix[matrix1Index][matrix2Index] = calculateDistance({matrix1[matrix1Index]}, {matrix2[matrix2Index]})
+			distanceMatrix[datasetIndex][cluster] = calculateDistance({featureMatrix[datasetIndex]}, {modelParameters[cluster]} , distanceFunction)
 
 		end
 
@@ -271,32 +271,36 @@ end
 local function createClusterAssignmentMatrix(distanceMatrix) -- contains values of 0 and 1, where 0 is "does not belong to this cluster"
 	
 	local numberOfData = #distanceMatrix -- Number of rows
-	
+
 	local numberOfClusters = #distanceMatrix[1]
-	
+
 	local clusterAssignmentMatrix = AqwamMatrixLibrary:createMatrix(#distanceMatrix, #distanceMatrix[1])
-	
+
 	local dataPointClusterNumber
-	
+
 	for dataIndex = 1, numberOfData, 1 do
-		
+
 		local distanceVector = {distanceMatrix[dataIndex]}
-		
+
 		local _, vectorIndexArray = AqwamMatrixLibrary:findMinimumValue(distanceVector)
-		
+
 		if (vectorIndexArray == nil) then continue end
-		
+
 		local clusterNumber = vectorIndexArray[2]
-		
+
 		clusterAssignmentMatrix[dataIndex][clusterNumber] = 1
-		
+
 	end
-	
+
 	return clusterAssignmentMatrix
 	
 end
 
-local function calculateCost(distanceMatrix, clusterAssignmentMatrix)
+local function calculateCost(modelParameters, featureMatrix, distanceFunction)
+	
+	local distanceMatrix = createDistanceMatrix(modelParameters, featureMatrix, distanceFunction)
+	
+	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 	
 	local costMatrix = AqwamMatrixLibrary:multiply(distanceMatrix, clusterAssignmentMatrix)
 	
@@ -306,83 +310,64 @@ local function calculateCost(distanceMatrix, clusterAssignmentMatrix)
 	
 end
 
-local function calculateModelParametersMean(clusterAssignmentMatrix, modelParameters)
-	
-	local sumOfAssignedCentroidVector = AqwamMatrixLibrary:verticalSum(clusterAssignmentMatrix) -- since row is the number of data in clusterAssignmentMatrix, then we vertical sum it
-	
-	local newModelParameters = AqwamMatrixLibrary:createMatrix(#modelParameters, #modelParameters[1])
-	
-	for cluster = 1, #modelParameters, 1 do
-		
-		sumOfAssignedCentroidVector[1][cluster] = math.max(1, sumOfAssignedCentroidVector[1][cluster])
-		
-		newModelParameters[cluster] = AqwamMatrixLibrary:divide({modelParameters[cluster]}, sumOfAssignedCentroidVector[1][cluster])[1]
-		
+local function initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
+
+	local ModelParameters
+
+	if setTheCentroidsDistanceFarthest then
+
+		ModelParameters = chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
+
+	else
+
+		ModelParameters = chooseRandomCentroids(featureMatrix, numberOfClusters)
+
 	end
+
+	return ModelParameters
+
+end
+
+
+function KMedoidsModel.new(maxNumberOfIterations, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
 	
-	return newModelParameters
+	local NewKMedoidsModel = BaseModel.new()
+	
+	setmetatable(NewKMedoidsModel, KMedoidsModel)
+	
+	NewKMedoidsModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	
+	NewKMedoidsModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
+
+	NewKMedoidsModel.distanceFunction = distanceFunction or defaultDistanceFunction
+
+	NewKMedoidsModel.setTheCentroidsDistanceFarthest = BaseModel:getValueOrDefaultValue(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
+	
+	return NewKMedoidsModel
 	
 end
 
-function KMeansModel.new(maxNumberOfIterations, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest)
-	
-	local NewKMeansModel = BaseModel.new()
-	
-	setmetatable(NewKMeansModel, KMeansModel)
-	
-	NewKMeansModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
-
-	NewKMeansModel.distanceFunction = distanceFunction or defaultDistanceFunction
-
-	NewKMeansModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
-
-	NewKMeansModel.setInitialClustersOnDataPoints =  BaseModel:getValueOrDefaultValue(setInitialClustersOnDataPoints, defaultSetInitialClustersOnDataPoints)
-	
-	NewKMeansModel.setTheCentroidsDistanceFarthest = BaseModel:getValueOrDefaultValue(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
-	
-	return NewKMeansModel
-	
-end
-
-function KMeansModel:setParameters(maxNumberOfIterations, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest)
+function KMedoidsModel:setParameters(maxNumberOfIterations, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.distanceFunction = distanceFunction or self.distanceFunction
-
+	
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 
-	self.setInitialClustersOnDataPoints =  self:getValueOrDefaultValue(setInitialClustersOnDataPoints, self.setInitialClustersOnDataPoints)
+	self.distanceFunction = distanceFunction or self.distanceFunction
 
 	self.setTheCentroidsDistanceFarthest =  self:getValueOrDefaultValue(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
 	
 end
 
-local function initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest)
+function KMedoidsModel:train(featureMatrix)
 	
-	local ModelParameters
+	local distanceMatrix
 	
-	if setInitialClustersOnDataPoints and setTheCentroidsDistanceFarthest then
-
-		ModelParameters = chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
-
-	elseif setInitialClustersOnDataPoints and not setTheCentroidsDistanceFarthest then
-
-		ModelParameters = chooseRandomCentroids(featureMatrix, numberOfClusters)
-
-	else
-
-		ModelParameters = AqwamMatrixLibrary:createRandomMatrix(numberOfClusters, #featureMatrix[1])
-
-	end
-	
-	return ModelParameters
-	
-end
-
-function KMeansModel:train(featureMatrix)
+	local PreviousModelParameters
 	
 	local areModelParametersEqual
+	
+	local previousCost
 	
 	local cost
 	
@@ -390,57 +375,81 @@ function KMeansModel:train(featureMatrix)
 	
 	local numberOfIterations = 0
 	
-	local modelParameters = self.ModelParameters
+	local featureRowVector
 	
-	if (modelParameters) then
+	local medoidRowVector
+	
+	if (self.ModelParameters) then
 		
 		if (#featureMatrix[1] ~= #self.ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
 		
+		cost = calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
+		
 	else
 		
-		modelParameters = initializeCentroids(featureMatrix, self.numberOfClusters, self.distanceFunction, self.setInitialClustersOnDataPoints, self.setTheCentroidsDistanceFarthest)
+		self.ModelParameters = initializeCentroids(featureMatrix, self.numberOfClusters, self.distanceFunction, self.setTheCentroidsDistanceFarthest)
+		
+		cost = math.huge
 		
 	end
 	
-	repeat
-		
-		numberOfIterations += 1
+	for iteration = 1, self.numberOfClusters, 1 do
 		
 		self:iterationWait()
 		
-		local distanceMatrix = createDistanceMatrix(featureMatrix, modelParameters, self.distanceFunction)
+		for row = 1, #featureMatrix, 1 do
+			
+			self:dataWait()
 
-		local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
+			featureRowVector = {featureMatrix[row]}
 
-		cost = self:calculateCostWhenRequired(numberOfIterations, function()
-			
-			return calculateCost(distanceMatrix, clusterAssignmentMatrix)
-			
-		end) 
-		
-		if cost then
-			
-			table.insert(costArray, cost)
-			
-			self:printCostAndNumberOfIterations(cost, numberOfIterations)
-			
+			for medoid = 1, self.numberOfClusters, 1 do
+
+				medoidRowVector = {self.ModelParameters[medoid]}
+
+				PreviousModelParameters = self.ModelParameters
+
+				previousCost = cost
+
+				self.ModelParameters[medoid] = featureRowVector[1]
+
+				cost = calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
+
+				if (cost > previousCost) then
+
+					self.ModelParameters = PreviousModelParameters
+
+					cost = previousCost
+
+				end
+				
+				numberOfIterations += 1
+
+				table.insert(costArray, cost)
+
+				self:printCostAndNumberOfIterations(cost, numberOfIterations)
+
+				if (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
+
+			end
+
+			if (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
+
 		end
-
-		modelParameters = calculateModelParametersMean(clusterAssignmentMatrix, modelParameters)
-
-	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+		
+		if (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
+		
+	end
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
-	
-	self.ModelParameters = modelParameters
 	
 	return costArray
 	
 end
 
-function KMeansModel:predict(featureMatrix, returnOriginalOutput)
+function KMedoidsModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, self.ModelParameters, self.distanceFunction)
+	local distanceMatrix = createDistanceMatrix(self.ModelParameters, featureMatrix, self.distanceFunction)
 	
 	if (returnOriginalOutput == true) then return distanceMatrix end
 
@@ -450,4 +459,4 @@ function KMeansModel:predict(featureMatrix, returnOriginalOutput)
 	
 end
 
-return KMeansModel
+return KMedoidsModel

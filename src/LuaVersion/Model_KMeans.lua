@@ -282,7 +282,7 @@ local function createClusterAssignmentMatrix(distanceMatrix) -- contains values 
 		
 		local distanceVector = {distanceMatrix[dataIndex]}
 		
-		local _, vectorIndexArray = AqwamMatrixLibrary:findMinimumValueInMatrix(distanceVector)
+		local _, vectorIndexArray = AqwamMatrixLibrary:findMinimumValue(distanceVector)
 		
 		if (vectorIndexArray == nil) then continue end
 		

@@ -39,31 +39,31 @@ local defaultAggregateFunction = "Maximum"
 local defaultEpsilon = math.pow(10, -4)
 
 local aggregrateFunctionList = {
-	
+
 	["Maximum"] = function (vector) 
-		
-		return AqwamMatrixLibrary:findMaximumValueInMatrix(vector) 
-		
+
+		return AqwamMatrixLibrary:findMaximumValue(vector) 
+
 	end,
-	
+
 	["Minimum"] = function (vector) 
 
-		return AqwamMatrixLibrary:findMinimumValueInMatrix(vector) 
+		return AqwamMatrixLibrary:findMinimumValue(vector) 
 
 	end,
-	
+
 	["Sum"] = function (vector) 
-		
+
 		return AqwamMatrixLibrary:sum(vector) 
-		
+
 	end,
-	
+
 	["Average"] = function (vector) 
 
 		return AqwamMatrixLibrary:sum(vector) / #vector[1] 
 
 	end,
-	
+
 }
 
 function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, alpha, beta, aggregateFunction, epsilon)
@@ -148,7 +148,7 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 
 		local probability = math.pow(priority, (NewPrioritizedExperienceReplay.alpha / NewPrioritizedExperienceReplay.sumPriorityAlpha))
 		
-		NewPrioritizedExperienceReplay.priorityArray[index] = priority-- Store priorities
+		NewPrioritizedExperienceReplay.priorityArray[index] = priority -- Store priorities
 
 		NewPrioritizedExperienceReplay.probabilityArray[index] = probability
 

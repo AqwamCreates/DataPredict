@@ -399,7 +399,7 @@ function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 	local outputVector
 
-	local classIndex
+	local classIndexArray
 
 	local predictedLabel
 
@@ -407,11 +407,11 @@ function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 		outputVector = {outputMatrix[i]}
 
-		highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(outputMatrix)
+		highestProbability, classIndexArray = AqwamMatrixLibrary:findMaximumValue(outputMatrix)
 
-		if (classIndex == nil) then continue end
+		if (classIndexArray == nil) then continue end
 
-		predictedLabel = self.ClassesList[classIndex[2]]
+		predictedLabel = self.ClassesList[classIndexArray[2]]
 
 		predictedLabelVector[i][1] = predictedLabel
 

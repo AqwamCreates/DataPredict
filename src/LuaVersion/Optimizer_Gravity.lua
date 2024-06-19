@@ -88,7 +88,7 @@ function GravityOptimizer.new(initialStepSize, movingAverage)
 
 		local AbsoluteM = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
 
-		local maxM = AqwamMatrixLibrary:findMaximumValueInMatrix(AbsoluteM)
+		local maxM = AqwamMatrixLibrary:findMaximumValue(AbsoluteM)
 
 		local M = AqwamMatrixLibrary:divide(1, maxM)
 

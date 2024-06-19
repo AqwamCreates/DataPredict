@@ -429,7 +429,7 @@ function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 		outputVector = {outputMatrix[i]}
 
-		highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(outputMatrix)
+		highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValue(outputMatrix)
 
 		if (classIndex == nil) then continue end
 

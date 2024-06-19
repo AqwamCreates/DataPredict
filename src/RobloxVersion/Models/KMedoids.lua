@@ -260,7 +260,7 @@ local function createClusterAssignmentMatrix(distanceMatrix) -- contains values 
 
 		local distanceVector = {distanceMatrix[dataIndex]}
 
-		local _, vectorIndexArray = AqwamMatrixLibrary:findMaximumValueInMatrix(distanceVector)
+		local _, vectorIndexArray = AqwamMatrixLibrary:findMinimumValue(distanceVector)
 
 		if (vectorIndexArray == nil) then continue end
 
@@ -357,8 +357,6 @@ function KMedoidsModel:train(featureMatrix)
 	
 	local medoidRowVector
 	
-	local areSameVectors
-	
 	if (self.ModelParameters) then
 		
 		if (#featureMatrix[1] ~= #self.ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
@@ -386,10 +384,6 @@ function KMedoidsModel:train(featureMatrix)
 			for medoid = 1, self.numberOfClusters, 1 do
 
 				medoidRowVector = {self.ModelParameters[medoid]}
-
-				areSameVectors = AqwamMatrixLibrary:areMatricesEqual(medoidRowVector, featureRowVector)
-
-				if (areSameVectors) then continue end
 
 				PreviousModelParameters = self.ModelParameters
 

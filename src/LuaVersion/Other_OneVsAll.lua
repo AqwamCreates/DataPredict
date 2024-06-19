@@ -334,7 +334,7 @@ function OneVsAll:getBestPrediction(featureVector)
 		
 		if (typeof(allOutputVector) == "number") then allOutputVector = {{allOutputVector}} end
 
-		local value, maximumValueIndex = AqwamMatrixLibrary:findMaximumValueInMatrix(allOutputVector)
+		local value, maximumValueIndex = AqwamMatrixLibrary:findMaximum(allOutputVector)
 
 		if (maximumValueIndex == nil) then continue end
 

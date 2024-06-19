@@ -171,7 +171,7 @@ local activationFunctionList = {
 
 			local zVector = {zMatrix[i]}
 
-			local highestZValue = AqwamMatrixLibrary:findMaximumValueInMatrix(zVector)
+			local highestZValue = AqwamMatrixLibrary:findMaximumValue(zVector)
 
 			local subtractedZVector = AqwamMatrixLibrary:subtract(zVector, highestZValue)
 

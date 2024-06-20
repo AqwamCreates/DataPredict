@@ -34,7 +34,7 @@ KMeans.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFu
 
 * setInitialClustersOnDataPoints: Set whether or not the model to create centroids on any data points.
 
-* setTheCentroidsDistanceFarthest: Set whether or not the model to create centroids that are furthest from each other.
+* setTheCentroidsDistanceFarthest: Set whether or not the model to create centroids that are furthest from each other. This can only take effect if the "setInitialClustersOnDataPoints" is set to true.
 
 #### Returns:
 
@@ -66,7 +66,7 @@ KMeans:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, 
 
 * setInitialClustersOnDataPoints: Set whether or not the model to create centroids on any data points.
 
-* setTheCentroidsDistanceFarthest: Set whether or not the model to create centroids that are furthest from each other.
+* setTheCentroidsDistanceFarthest: Set whether or not the model to create centroids that are furthest from each other. This can only take effect if the "setInitialClustersOnDataPoints" is set to true.
 
 ### train()
 
@@ -101,7 +101,6 @@ KMeans:predict(featureMatrix: Matrix): integer, number
 * clusterNumber: The cluster which the data belongs to.
 
 * shortestDistance: The distance between the datapoint and the center of the cluster (centroids).
-
 ## Inherited From
 
 * [BaseModel](BaseModel.md)

@@ -97,7 +97,7 @@ Licensor reserve the right to change these terms and conditions at any time, wit
 
 ## No Waiver
 
-No failure or delay by either party in exercising any right, power, or remedy under this Agreement shall operate as a waiver of any such right, power, or remedy. The waiver by either party of any breach of any provision of this Agreement shall not be construed as a waiver of any subsequent breach of the same or any other provision.
+No waiver by Licensor of any breach of this Agreement by Licensee shall be considered as a waiver of any subsequent breach of the same or any other provision.
 
 ## Entire Agreement
 

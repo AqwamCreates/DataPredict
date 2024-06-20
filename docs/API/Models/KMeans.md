@@ -26,7 +26,7 @@ KMeans.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFu
 
 * distanceFunction: The function that the model will use to train. distanceFunction available are:
   
-  *  Euclidean
+  *  Euclidean (Default)
     
   *  Manhattan
  

@@ -536,6 +536,8 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 
 				for neuron = 1, #inputMatrix[1], 1 do
 
+					if (hasBiasNeuron == 1) and (neuron == 1) then continue end -- Dropout are not applied to bias, so we skip them.
+
 					if (Random.new():NextNumber() <= nonDropoutRate) then continue end
 
 					layerZ[data][neuron] = 0

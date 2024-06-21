@@ -594,6 +594,12 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 
 		local derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
 
+		if (hasBiasNeuron == 1) then
+
+			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 1 end
+
+		end
+
 		layerCostMatrix = AqwamMatrixLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 
 		table.insert(errorMatrixTable, 1, layerCostMatrix)

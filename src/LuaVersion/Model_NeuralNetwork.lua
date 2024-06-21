@@ -618,7 +618,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 		
 		if (hasBiasNeuron == 1) then
 
-			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 1 end -- Derivative of bias is 0.
+			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 1 end
 
 		end
 

@@ -22,23 +22,21 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local NeuralNetworkModel = require("Model_NeuralNetwork")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local RandomNetworkDistillation = {}
 
 RandomNetworkDistillation.__index = RandomNetworkDistillation
 
-setmetatable(RandomNetworkDistillation, NeuralNetworkModel)
-
 local defaultMaxNumberOfIterations = 1
 
-function RandomNetworkDistillation.new(maxNumberOfIterations)
+function RandomNetworkDistillation.new()
 	
-	maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
-	
-	local NewRandomNetworkDistillation = NeuralNetworkModel.new(maxNumberOfIterations)
+	local NewRandomNetworkDistillation = {}
 	
 	setmetatable(NewRandomNetworkDistillation, RandomNetworkDistillation)
+	
+	NewRandomNetworkDistillation.Model = nil
 	
 	NewRandomNetworkDistillation.TargetModelParameters = nil
 	
@@ -48,27 +46,35 @@ function RandomNetworkDistillation.new(maxNumberOfIterations)
 	
 end
 
-function RandomNetworkDistillation:setParameters(maxNumberOfIterations)
+function RandomNetworkDistillation:setModel(Model)
 	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.Model = Model
+	
+end
+
+function RandomNetworkDistillation:getModel(Model)
+	
+	return self.Model
 	
 end
 
 function RandomNetworkDistillation:generateModelParameters()
 	
+	local Model = self.Model
+	
 	if (not self.TargetModelParameters) then
 		
-		self:generateLayers()
+		Model:generateLayers()
 		
-		self.TargetModelParameters = self:getModelParameters(true)
+		self.TargetModelParameters = Model:getModelParameters(true)
 		
 	end
 	
 	if (not self.PredictorModelParameters) then
 
-		self:generateLayers()
+		Model:generateLayers()
 
-		self.PredictorModelParameters = self:getModelParameters(true)
+		self.PredictorModelParameters = Model:getModelParameters(true)
 
 	end
 	
@@ -82,13 +88,15 @@ function RandomNetworkDistillation:generate(featureVector)
 		
 	end
 	
+	local Model = self.Model
+	
 	self:setModelParameters(self.TargetModelParameters, true)
 	
-	local targetVector = self:predict(featureVector, true)
+	local targetVector = Model:predict(featureVector, true)
 	
 	self:setModelParameters(self.PredictorModelParameters, true)
 
-	local predictorVector = self:predict(featureVector, true)
+	local predictorVector = Model:predict(featureVector, true)
 	
 	local errorVector = AqwamMatrixLibrary:subtract(predictorVector, targetVector)
 	
@@ -102,8 +110,8 @@ function RandomNetworkDistillation:generate(featureVector)
 	
 	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
-	self:forwardPropagate(featureVector, true)
-	self:backPropagate(errorVector, true)
+	Model:forwardPropagate(featureVector, true)
+	Model:backPropagate(errorVector, true)
 	
 	return value
 	

@@ -9,8 +9,6 @@
 
 ## Classification
 
-### Non-Sequential
-
 | Model                                                                                                            | Alternate Names        | Use Cases                                                                   |
 |------------------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------|
 | [KNearestNeighbours](Models/KNearestNeighbours.md)                                                               | KNN                    | Recommendation System                                                       |
@@ -18,13 +16,6 @@
 | [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | SVM                    | Hacking Detection, Anomaly Detection                                        |
 | [NaiveBayes](Models/NaiveBayes.md)                                                                               | None                   | Text Classification                                                         |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                |
-
-### Sequential
-
-| Model                                                                                                            | Alternate Names        | Use Cases                                                                   |
-|------------------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------|
-| [LongShortTermMemory](Models/LongShortTermMemory.md) (Deprecated)                                                | LSTM                   | Text Generation, Text Analysis                                              |
-| [RecurrentNeuralNetwork](Models/RecurrentNeuralNetwork.md) (Deprecated)                                          | RNN                    | Same As Long Short Term Memory                                              |
 
 ## Clustering
 
@@ -39,8 +30,6 @@
 | [KMedoids](Models/KMedoids.md)                                                                                         | None            | Same as K-Means                       |
 
 ## Deep Reinforcement Learning
-
-### Non-Sequential
 
 | Model                                                                                                                            | Alternate Names                           | Use Cases                                                                   |
 |----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|-----------------------------------------------------------------------------|

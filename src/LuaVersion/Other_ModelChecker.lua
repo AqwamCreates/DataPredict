@@ -46,17 +46,11 @@ local function calculateError(predictedLabelMatrix, trueLabelMatrix, numberOfDat
 	
 end
 
-function ModelChecker.new(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
-	
-	if (Model == nil) then error("No model in the ModelChecker!") end
-
-	if (modelType == nil) then error("No model type in the ModelChecker!") end
+function ModelChecker.new(modelType, maxNumberOfIterations, maxGeneralizationError)
 	
 	local NewModelChecker = {}
 	
 	setmetatable(NewModelChecker, ModelChecker)
-	
-	NewModelChecker.Model = Model
 	
 	NewModelChecker.modelType = modelType
 	
@@ -64,19 +58,25 @@ function ModelChecker.new(Model, modelType, maxNumberOfIterations, maxGeneraliza
 	
 	NewModelChecker.maxGeneralizationError = maxGeneralizationError or defaultMaxGeneralizationError
 	
+	NewModelChecker.Model = nil
+	
 	return NewModelChecker
 	
 end
 
-function ModelChecker:setParameters(Model, modelType, maxNumberOfIterations, maxGeneralizationError)
-	
-	self.Model = Model or self.Model
+function ModelChecker:setParameters(modelType, maxNumberOfIterations, maxGeneralizationError)
 	
 	self.modelType = modelType or self.modelType
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
 	self.maxGeneralizationError = maxGeneralizationError or self.maxGeneralizationError
+	
+end
+
+function ModelChecker:setModel(Model)
+	
+	self.Model = Model
 	
 end
 
@@ -116,6 +116,10 @@ end
 
 function ModelChecker:testClassification(testFeatureMatrix, testLabelVector)
 	
+	local Model = self.Model
+
+	if (not Model) then error("No model!") end
+	
 	local testLabelMatrix
 	
 	if (#testLabelVector[1] == 1) then
@@ -130,7 +134,7 @@ function ModelChecker:testClassification(testFeatureMatrix, testLabelVector)
 	
 	local numberOfData = #testFeatureMatrix
 	
-	local predictedTestLabelMatrix = self.Model:predict(testFeatureMatrix, true)
+	local predictedTestLabelMatrix = Model:predict(testFeatureMatrix, true)
 	
 	local calculatedError, errorVector = calculateError(predictedTestLabelMatrix, testLabelMatrix, numberOfData)
 
@@ -139,10 +143,14 @@ function ModelChecker:testClassification(testFeatureMatrix, testLabelVector)
 end
 
 function ModelChecker:testRegression(testFeatureMatrix, testLabelVector)
+	
+	local Model = self.Model
+
+	if (not Model) then error("No model!") end
 
 	local numberOfData = #testFeatureMatrix
 	
-	local predictedLabelVector = self.Model:predict(testFeatureMatrix)
+	local predictedLabelVector = Model:predict(testFeatureMatrix)
 
 	local calculatedError, errorVector = calculateError(predictedLabelVector, testLabelVector, numberOfData)
 
@@ -151,6 +159,10 @@ function ModelChecker:testRegression(testFeatureMatrix, testLabelVector)
 end
 
 function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+	
+	local Model = self.Model
+	
+	if (not Model) then error("No model!") end
 
 	local trainError
 
@@ -198,11 +210,11 @@ function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVecto
 
 	repeat
 
-		self.Model:train(trainFeatureMatrix, trainLabelMatrix)
+		Model:train(trainFeatureMatrix, trainLabelMatrix)
 		
-		predictedTrainLabelMatrix = self.Model:predict(trainFeatureMatrix, true)
+		predictedTrainLabelMatrix = Model:predict(trainFeatureMatrix, true)
 		
-		predictedValidationLabelMatrix = self.Model:predict(validationFeatureMatrix, true)
+		predictedValidationLabelMatrix = Model:predict(validationFeatureMatrix, true)
 		
 		trainError = calculateError(predictedTrainLabelMatrix, trainLabelMatrix, numberOfTrainData)
 	
@@ -214,7 +226,7 @@ function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVecto
 
 		table.insert(trainErrorArray, trainError)
 
-		numberOfIterations = numberOfIterations + 1
+		numberOfIterations += 1
 
 	until (numberOfIterations >= self.maxNumberOfIterations) or (generalizationError >= self.maxGeneralizationError)
 
@@ -223,6 +235,10 @@ function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVecto
 end
 
 function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
+	
+	local Model = self.Model
+
+	if (not Model) then error("No model!") end
 	
 	local trainError
 	
@@ -250,11 +266,11 @@ function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, v
 	
 	repeat
 		
-		self.Model:train(trainFeatureMatrix, trainLabelVector)
+		Model:train(trainFeatureMatrix, trainLabelVector)
 
-		predictedTrainLabelVector = self.Model:predict(trainFeatureMatrix)
+		predictedTrainLabelVector = Model:predict(trainFeatureMatrix)
 
-		predictedValidationLabelVector = self.Model:predict(validationFeatureMatrix)
+		predictedValidationLabelVector = Model:predict(validationFeatureMatrix)
 
 		trainError = calculateError(predictedTrainLabelVector, trainLabelVector, numberOfTrainData)
 
@@ -266,7 +282,7 @@ function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, v
 
 		table.insert(validationErrorArray, validationError)
 
-		numberOfIterations = numberOfIterations + 1
+		numberOfIterations += 1
 		
 	until (numberOfIterations >= self.maxNumberOfIterations) or (generalizationError >= self.maxGeneralizationError)
 	
@@ -281,12 +297,16 @@ function ModelChecker:test(testFeatureMatrix, testLabelVector)
 	local errorVector
 	
 	local predictedLabelMatrix
+	
+	local modelType = self.modelType
+	
+	if (modelType == nil) then error("No model type!") end
 
-	if (self.modelType == "Regression") then
+	if (modelType == "Regression") then
 
 		calculatedError, errorVector, predictedLabelMatrix = self:testRegression(testFeatureMatrix, testLabelVector)
 
-	elseif (self.modelType == "Classification") then
+	elseif (modelType == "Classification") then
 
 		calculatedError, errorVector, predictedLabelMatrix = self:testClassification(testFeatureMatrix, testLabelVector)
 		
@@ -306,11 +326,13 @@ function ModelChecker:validate(trainFeatureMatrix, trainLabelVector, validationF
 	
 	local validationErrorArray
 	
-	if (self.modelType == "Regression") then
+	local modelType = self.modelType
+	
+	if (modelType == "Regression") then
 		
 		trainErrorArray, validationErrorArray = self:validateRegression(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
 		
-	elseif (self.modelType == "Classification") then
+	elseif (modelType == "Classification") then
 		
 		trainErrorArray, validationErrorArray = self:validateClassification(trainFeatureMatrix, trainLabelVector, validationFeatureMatrix, validationLabelVector)
 		

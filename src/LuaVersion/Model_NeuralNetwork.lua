@@ -683,22 +683,24 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 		if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
 		
 		local weightMatrix = ModelParameters[layerNumber]
-
-		if (Optimizer ~= 0) then
-
-			costFunctionDerivativeMatrix = Optimizer:calculate(calculatedLearningRate, costFunctionDerivativeMatrix)
-
-		else
-
-			costFunctionDerivativeMatrix = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivativeMatrix)
-
-		end
 		
 		if (Regularization ~= 0) then
 
-			local regularizationDerivativeMatrix = Regularization:calculateRegularizationDerivatives(weightMatrix, numberOfData)
+			local regularizationDerivativeMatrix = Regularization:calculateRegularizationDerivatives(weightMatrix)
 
 			costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivativeMatrix)
+
+		end
+		
+		costFunctionDerivativeMatrix = AqwamMatrixLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
+
+		if (Optimizer ~= 0) then
+
+			costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix)
+
+		else
+
+			costFunctionDerivativeMatrix = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativeMatrix)
 
 		end
 		

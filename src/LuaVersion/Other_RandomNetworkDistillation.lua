@@ -22,13 +22,49 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
-
 local RandomNetworkDistillation = {}
 
 RandomNetworkDistillation.__index = RandomNetworkDistillation
 
-local defaultMaxNumberOfIterations = 1
+local function deepCopyTable(original, copies)
+
+	copies = copies or {}
+
+	local originalType = type(original)
+
+	local copy
+
+	if (originalType == 'table') then
+
+		if copies[original] then
+
+			copy = copies[original]
+
+		else
+
+			copy = {}
+
+			copies[original] = copy
+
+			for originalKey, originalValue in next, original, nil do
+
+				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
+
+			end
+
+			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
+
+		end
+
+	else
+
+		copy = original
+
+	end
+
+	return copy
+
+end
 
 function RandomNetworkDistillation.new()
 	
@@ -117,27 +153,59 @@ function RandomNetworkDistillation:generate(featureVector)
 	
 end
 
-function RandomNetworkDistillation:getTargetModelParameters()
+function RandomNetworkDistillation:getTargetModelParameters(doNotDeepCopy)
 	
-	return self.TargetModelParameters 
-	
-end
-
-function RandomNetworkDistillation:getPredictorModelParameters()
-	
-	return self.PredictorModelParameters
-	
-end
-
-function RandomNetworkDistillation:setTargetModelParameters(TargetModelParameters)
-	
-	self.TargetModelParameters = TargetModelParameters
+	if (doNotDeepCopy) then
+		
+		return self.TargetModelParameters 
+		
+	else
+		
+		return deepCopyTable(self.TargetModelParameters)
+		
+	end
 	
 end
 
-function RandomNetworkDistillation:setPredictorModelParameters(PredictorModelParameters)
+function RandomNetworkDistillation:getPredictorModelParameters(doNotDeepCopy)
+	
+	if (doNotDeepCopy) then
 
-	self.PredictorModelParameters = PredictorModelParameters
+		return self.PredictorModelParameters 
+
+	else
+
+		return deepCopyTable(self.PredictorModelParameters)
+
+	end
+	
+end
+
+function RandomNetworkDistillation:setTargetModelParameters(TargetModelParameters, doNotDeepCopy)
+	
+	if (doNotDeepCopy) then
+
+		self.TargetModelParameters = TargetModelParameters
+
+	else
+
+		self.TargetModelParameters = deepCopyTable(TargetModelParameters)
+
+	end
+	
+end
+
+function RandomNetworkDistillation:setPredictorModelParameters(PredictorModelParameters, doNotDeepCopy)
+	
+	if (doNotDeepCopy) then
+
+		self.PredictorModelParameters = PredictorModelParameters
+
+	else
+
+		self.PredictorModelParameters = deepCopyTable(PredictorModelParameters)
+
+	end
 
 end
 

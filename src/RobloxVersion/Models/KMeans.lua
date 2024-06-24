@@ -150,35 +150,31 @@ end
 
 local function chooseFarthestCentroidFromDatasetDistanceMatrix(distanceMatrix, blacklistedDataIndexArray)
 	
-	local distance
-
-	local maxDistance = 0
-	
 	local dataIndex
-	
+
+	local maxDistance = -math.huge
+
 	for row = 1, #distanceMatrix, 1 do
-		
+
 		if table.find(blacklistedDataIndexArray, row) then continue end
 
-		for column = 1, #distanceMatrix[1], 1 do
-			
-			if table.find(blacklistedDataIndexArray, column) then continue end
+		local totalDistance = 0
 
-			distance = distanceMatrix[row][column]
-			
-			if (distance > maxDistance) then
-				
-				distance = maxDistance
-				dataIndex = row
-				
-			end
+		for column = 1, #distanceMatrix[1], 1 do
+
+			totalDistance = totalDistance + distanceMatrix[row][column]
 
 		end
 
+		if (totalDistance < maxDistance) then continue end
+
+		maxDistance = totalDistance
+		dataIndex = row
+
 	end
-	
+
 	return dataIndex
-	
+
 end
 
 local function chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)

@@ -4,7 +4,7 @@
 
 	Aqwam's Machine And Deep Learning Library (DataPredict)
 
-	Version 1.31.0
+	Version 1.32.0
 
 	Author: Aqwam Harish Aiman
 	
@@ -22,7 +22,7 @@
 
 --]]
 
-local requiredMatrixLibraryVersion = 1.8
+local requiredMatrixLibraryVersion = 1.9
 
 local AqwamMatrixLibrary = require(script.AqwamMatrixLibraryLinker.Value)
 
@@ -87,10 +87,6 @@ local ModelsDictionary = {
 	ProximalPolicyOptimizationClip = require(Models.ProximalPolicyOptimizationClip),
 	
 	VanillaPolicyGradient = require(Models.VanillaPolicyGradient),
-
-	RecurrentNeuralNetwork = require(Models.RecurrentNeuralNetwork),
-
-	LongShortTermMemory = require(Models.LongShortTermMemory),
 	
 	KMedoids = require(Models.KMedoids),
 	

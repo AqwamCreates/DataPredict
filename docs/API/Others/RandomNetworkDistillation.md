@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - RandomNetworkDistillation
 
-RandomNetworkDistillation is a neural network for producing internal rewards to encourage exploration.
+RandomNetworkDistillation is a neural network for producing internal rewards to encourage exploration. Requires neural network as your model.
 
 ## Constructors
 
@@ -9,53 +9,44 @@ RandomNetworkDistillation is a neural network for producing internal rewards to 
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-RandomNetworkDistillation.new(maxNumberOfIterations: integer: RandomNetworkDistillationObject
+RandomNetworkDistillation.new(): RandomNetworkDistillationObject
 ```
-
-#### Parameters:
-
-* maxNumberOfIterations: How many times should the model needed to be trained.
-
-#### Returns:
 
 * RandomNetworkDistillationObject: The generated RandomNetworkDistillation object.
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
+### setModel()
 
 ```
-RandomNetworkDistillation:setParameters(maxNumberOfIterations: integer)
+RandomNetworkDistillation:setModel(Model: ModelObject)
 ```
 
-#### Parameters:
+#### Parameters
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* Model: The model to be used by the RandomNetworkDistillation object.
 
-### train()
-
-Train the model.
+### getModel()
 
 ```
-RandomNetworkDistillation:generateReward(featureMatrix: Matrix): number
+RandomNetworkDistillation:setModel(): ModelObject
 ```
-#### Parameters:
 
-* featureMatrix: Matrix containing all data.
+#### Returns
 
-#### Returns:
+* Model: The model that is used by the RandomNetworkDistillation object.
 
-* reward: A value produced when comparing the target and predictor network outputs.
-
-### getTargetModelParameters()
+### getTargetModelParameters(doNotDeepCopy: boolean)
 
 Gets the target model parameters from the network.
 
 ```
-RandomNetworkDistillation:getTargetModelParameters(): ModelParameters
+RandomNetworkDistillation:getTargetModelParameters(doNotDeepCopy: boolean): ModelParameters
 ```
+
+#### Parameters
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
 #### Returns
 
@@ -66,8 +57,12 @@ RandomNetworkDistillation:getTargetModelParameters(): ModelParameters
 Gets the target model parameters from the network.
 
 ```
-RandomNetworkDistillation:getPredictorModelParameters(): ModelParameters
+RandomNetworkDistillation:getPredictorModelParameters(doNotDeepCopy: boolean): ModelParameters
 ```
+
+#### Parameters
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
 #### Returns
 
@@ -78,24 +73,28 @@ RandomNetworkDistillation:getPredictorModelParameters(): ModelParameters
 Set the model parameters to the network
 
 ```
-RandomNetworkDistillation:setTargetModelParameters(TargetModelParameters: ModelParameters)
+RandomNetworkDistillation:setTargetModelParameters(TargetModelParameters: ModelParameters, doNotDeepCopy: boolean)
 ```
 
 #### Parameters
 
 * TargetModelParameters: Target network model parameters to be used for predictor network training.
 
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
 ### setPredictorModelParameters()
 
 Set the model parameters to the network
 
 ```
-RandomNetworkDistillation:setPredictorModelParameters(PredictorModelParameters: ModelParameters)
+RandomNetworkDistillation:setPredictorModelParameters(PredictorModelParameters: ModelParameters, doNotDeepCopy: boolean)
 ```
 
 #### Parameters
 
 * PredictorModelParameters: Predictor network model parameters to be trained so that it tries to match up with target network model parameters.
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
 ## Inherited From
 

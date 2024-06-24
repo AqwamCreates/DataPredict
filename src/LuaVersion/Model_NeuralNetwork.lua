@@ -732,8 +732,6 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 
 	end
 
-	return costFunctionDerivativeMatrixTable
-
 end
 
 function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix)

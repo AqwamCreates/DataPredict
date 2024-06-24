@@ -139,24 +139,24 @@ end
 function LogisticRegressionModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
 	
 	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
+	
+	if (self.Regularization) then
 
-	local calculatedLearningRate = self.learningRate / numberOfData
+		local regularizationDerivatives = self.Regularization:calculateRegularizationDerivatives(self.ModelParameters)
+
+		costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
+
+	end
+	
+	costFunctionDerivativeMatrix = AqwamMatrixLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
 
 	if (self.Optimizer) then 
 
-		costFunctionDerivativeMatrix = self.Optimizer:calculate(calculatedLearningRate, costFunctionDerivativeMatrix) 
+		costFunctionDerivativeMatrix = self.Optimizer:calculate(self.learningRate, costFunctionDerivativeMatrix) 
 
 	else
 
-		costFunctionDerivativeMatrix = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivativeMatrix)
-
-	end
-
-	if (self.Regularization) then
-
-		local regularizationDerivatives = self.Regularization:calculateRegularizationDerivatives(self.ModelParameters, numberOfData)
-
-		costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
+		costFunctionDerivativeMatrix = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivativeMatrix)
 
 	end
 

@@ -80,6 +80,12 @@ function ModelChecker:setModel(Model)
 	
 end
 
+function ModelChecker:getModel()
+	
+	return self.Model
+	
+end
+
 function ModelChecker:setClassesList(classesList)
 
 	self.ClassesList = classesList

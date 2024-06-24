@@ -82,7 +82,7 @@ function Regularization:getLambda()
 	
 end
 
-function Regularization:calculateRegularizationDerivatives(ModelParameters, numberOfData)
+function Regularization:calculateRegularizationDerivatives(ModelParameters)
 	
 	local ModelParametersSign
 	
@@ -116,17 +116,15 @@ function Regularization:calculateRegularizationDerivatives(ModelParameters, numb
 
 	else
 
-		error("Regularization Mode Does Not Exist!")
+		error("Regularization mode does not exist!")
 
 	end
-	
-	regularizationDerivatives = AqwamMatrixLibrary:divide(regularizationDerivatives, numberOfData)
 	
 	return regularizationDerivatives
 	
 end
 
-function Regularization:calculateRegularization(ModelParameters, numberOfData)
+function Regularization:calculateRegularization(ModelParameters)
 	
 	local SquaredModelParameters 
 	
@@ -178,11 +176,11 @@ function Regularization:calculateRegularization(ModelParameters, numberOfData)
 		
 	else
 		
-		error("Regularization Mode Does Not Exist!")
+		error("Regularization mode does not exist!")
 		
 	end
 	
-	regularizationValue = regularizationValue / numberOfData
+	regularizationValue = regularizationValue / 2
 	
 	return regularizationValue
 	

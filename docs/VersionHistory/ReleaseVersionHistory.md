@@ -2,7 +2,8 @@
 
 | Version                           | Number Of Models | Number Of Optimizers | Number Of Others | Number Of Experience Replays | Backward Incompatible Changes |
 |-----------------------------------|------------------|----------------------|------------------|------------------------------| ------------------------------|
-| [1.16](Release/1-16.md)           | 41               | 11                   | 15               | 4                            | Yes                           |
+| [1.17](Release/1-17.md)           | 39               | 11                   | 15               | 4                            | Yes                           |
+| [1.16](Release/1-16.md)           | 39               | 11                   | 15               | 4                            | Yes                           |
 | [1.15](Release/1-15.md)           | 41               | 11                   | 15               | 4                            | No                            |
 | [1.14](Release/1-14.md)           | 38               | 11                   | 15               | 4                            | Yes                           |
 | [1.13](Release/1-13.md)           | 37               | 11                   | 13               | 4                            | No                            |

@@ -94,7 +94,7 @@ function Regularization:calculateRegularizationDerivatives(ModelParameters)
 
 	else
 
-		error("Regularization Mode Does Not Exist!")
+		error("Regularization mode does not exist!")
 
 	end
 	
@@ -154,9 +154,11 @@ function Regularization:calculateRegularization(ModelParameters)
 		
 	else
 		
-		error("Regularization Mode Does Not Exist!")
+		error("Regularization mode does not exist!")
 		
 	end
+	
+	regularizationValue = regularizationValue / 2
 	
 	return regularizationValue
 	

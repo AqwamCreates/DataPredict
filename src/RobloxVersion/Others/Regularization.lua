@@ -157,6 +157,8 @@ function Regularization:calculateRegularization(ModelParameters)
 		error("Regularization Mode Does Not Exist!")
 		
 	end
+
+	regularizationValue = regularizationValue / 2
 	
 	return regularizationValue
 	

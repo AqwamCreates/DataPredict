@@ -744,9 +744,27 @@ function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix)
 
 	local squaredSubtractedMatrix = AqwamMatrixLibrary:power(subtractedMatrix, 2)
 
-	local sumSquaredSubtractedMatrix = AqwamMatrixLibrary:sum(squaredSubtractedMatrix)
+	local totalCost = AqwamMatrixLibrary:sum(squaredSubtractedMatrix)
+	
+	local numberOfLayers = #self.numberOfNeuronsTable
+	
+	local regularizationTable = self.RegularizationTable
 
-	local cost = sumSquaredSubtractedMatrix / numberOfData
+	local ModelParameters = self.ModelParameters
+
+	for layerNumber = 1, (numberOfLayers - 1), 1 do
+
+		local Regularization = regularizationTable[layerNumber + 1]
+
+		if (Regularization == 0) then continue end
+
+		local regularizationMatrix = Regularization:calculateRegularization(ModelParameters[layerNumber])
+
+		totalCost = totalCost + regularizationMatrix
+
+	end
+
+	local cost = totalCost / numberOfData
 
 	return cost
 

@@ -36,7 +36,7 @@ RandomNetworkDistillation:setModel(): ModelObject
 
 * Model: The model that is used by the RandomNetworkDistillation object.
 
-### getTargetModelParameters(doNotDeepCopy: boolean)
+### getTargetModelParameters()
 
 Gets the target model parameters from the network.
 

@@ -99,15 +99,7 @@ end
 
 function ConditionalWassersteinGenerativeAdversarialNetworkModel:setPrintOutput(option)
 	
-	if (option == false) then
-
-		self.isOutputPrinted = false
-
-	else
-
-		self.isOutputPrinted = true
-
-	end
+	self.isOutputPrinted = option
 	
 end
 

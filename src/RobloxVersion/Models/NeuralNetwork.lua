@@ -640,9 +640,9 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 	
 	local learningRateTable = self.learningRateTable
 	
-	local optimizerTable = self.OptimizerTable
+	local OptimizerTable = self.OptimizerTable
 	
-	local regularizationTable = self.RegularizationTable
+	local RegularizationTable = self.RegularizationTable
 	
 	local ModelParameters = self.ModelParameters
 
@@ -650,9 +650,9 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 
 		local learningRate = learningRateTable[layerNumber + 1]
 
-		local Regularization = regularizationTable[layerNumber + 1]
+		local Regularization = RegularizationTable[layerNumber + 1]
 
-		local Optimizer = optimizerTable[layerNumber + 1]
+		local Optimizer = OptimizerTable[layerNumber + 1]
 
 		local calculatedLearningRate = learningRate / numberOfData
 		
@@ -726,13 +726,13 @@ function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix)
 	
 	local numberOfLayers = #self.numberOfNeuronsTable
 	
-	local regularizationTable = self.RegularizationTable
+	local RegularizationTable = self.RegularizationTable
 
 	local ModelParameters = self.ModelParameters
 
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
-		local Regularization = regularizationTable[layerNumber + 1]
+		local Regularization = RegularizationTable[layerNumber + 1]
 
 		if (Regularization == 0) then continue end
 

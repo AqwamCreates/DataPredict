@@ -90,23 +90,23 @@ function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, num
 	
 	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
 	
-	local calculatedLearningRate = self.learningRate / numberOfData
-
-	if (self.Optimizer) then 
-
-		costFunctionDerivativeMatrix = self.Optimizer:calculate(calculatedLearningRate, costFunctionDerivativeMatrix) 
-
-	else
-
-		costFunctionDerivativeMatrix = AqwamMatrixLibrary:multiply(calculatedLearningRate, costFunctionDerivativeMatrix)
-
-	end
-
 	if (self.Regularization) then
 
 		local regularizationDerivatives = self.Regularization:calculateRegularizationDerivatives(self.ModelParameters, numberOfData)
 
 		costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
+
+	end
+	
+	costFunctionDerivativeMatrix = AqwamMatrixLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
+
+	if (self.Optimizer) then 
+
+		costFunctionDerivativeMatrix = self.Optimizer:calculate(self.learningRate, costFunctionDerivativeMatrix) 
+
+	else
+
+		costFunctionDerivativeMatrix = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivativeMatrix)
 
 	end
 	
@@ -214,9 +214,9 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 			
 			if (not Regularization) then return cost end
 
-			local regularizationCost = Regularization:calculateRegularization(self.ModelParameters, numberOfData)
+			local regularizationCost = Regularization:calculateRegularization(self.ModelParameters)
 
-			cost += regularizationCost
+			cost += (regularizationCost / numberOfData)
 			
 			return cost
 			

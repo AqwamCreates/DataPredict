@@ -96,13 +96,15 @@ end
 
 function RandomNetworkDistillation:generate(featureVector)
 	
+	local Model = self.Model
+	
+	if (not Model) then error("No model!") end
+	
 	if (not self.TargetModelParameters) or (not self.PredictorModelParameters) then
 		
 		self:generateModelParameters()
 		
 	end
-	
-	local Model = self.Model
 	
 	self:setModelParameters(self.TargetModelParameters, true)
 	

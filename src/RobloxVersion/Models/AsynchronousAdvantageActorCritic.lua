@@ -18,7 +18,7 @@ local defaultDiscountFactor = 0.95
 
 local defaultTotalNumberOfReinforcementsToUpdateMainModel = 100
 
-local defaultActionSelectionFunction = "Maximum"
+local defaultActionSelectionFunction = "Sample"
 
 function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, totalNumberOfReinforcementsToUpdateMainModel, actionSelectionFunction)
 	
@@ -49,8 +49,6 @@ function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinfor
 	NewAsynchronousAdvantageActorCriticModel.advantageHistoryArray = {}
 	
 	NewAsynchronousAdvantageActorCriticModel.actionProbabilityHistoryArray = {}
-	
-	NewAsynchronousAdvantageActorCriticModel.criticValueHistoryArray = {}
 	
 	NewAsynchronousAdvantageActorCriticModel.episodeRewardArray = {}
 	
@@ -143,8 +141,6 @@ function AsynchronousAdvantageActorCriticModel:addActorCriticModel(ActorModel, C
 	table.insert(self.advantageHistoryArray, {})
 
 	table.insert(self.actionProbabilityHistoryArray, {})
-
-	table.insert(self.criticValueHistoryArray, {})
 	
 end
 
@@ -234,8 +230,6 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 	
 	table.insert(self.actionProbabilityHistoryArray[actorCriticModelNumber], actionProbability)
 	
-	table.insert(self.criticValueHistoryArray[actorCriticModelNumber], previousCriticValue)
-	
 	return allOutputsMatrix
 
 end
@@ -293,8 +287,6 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(actorCriticModelNum
 	table.clear(self.advantageHistoryArray[actorCriticModelNumber])
 	
 	table.clear(self.actionProbabilityHistoryArray[actorCriticModelNumber])
-	
-	table.clear(self.criticValueHistoryArray[actorCriticModelNumber])
 	
 end
 
@@ -620,8 +612,6 @@ function AsynchronousAdvantageActorCriticModel:singleReset(actorCriticModelNumbe
 	table.clear(self.advantageHistoryArray[actorCriticModelNumber])
 
 	table.clear(self.actionProbabilityHistoryArray[actorCriticModelNumber])
-
-	table.clear(self.criticValueHistoryArray[actorCriticModelNumber])
 	
 	local ExperienceReplay = self.ExperienceReplayArray[actorCriticModelNumber]
 

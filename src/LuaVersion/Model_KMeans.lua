@@ -171,10 +171,10 @@ local function createDistanceMatrix(modelParameters, featureMatrix, distanceFunc
 end
 
 local function chooseFarthestCentroidFromDatasetDistanceMatrix(distanceMatrix, blacklistedDataIndexArray)
+	
+	local dataIndex
 
 	local maxDistance = -math.huge
-
-	local dataIndex
 
 	for row = 1, #distanceMatrix, 1 do
 

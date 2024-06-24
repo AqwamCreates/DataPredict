@@ -34,7 +34,7 @@ local defaultMaxNumberOfIterations = math.huge
 
 local defaultNumberOfClusters = 2
 
-local defaultDistanceFunction = "Manhattan"
+local defaultDistanceFunction = "Euclidean"
 
 local defaultSetTheCentroidsDistanceFarthest = false
 
@@ -171,31 +171,27 @@ local function createDistanceMatrix(modelParameters, featureMatrix, distanceFunc
 end
 
 local function chooseFarthestCentroidFromDatasetDistanceMatrix(distanceMatrix, blacklistedDataIndexArray)
-	
-	local distance
 
-	local maxDistance = 0
+	local maxDistance = -math.huge
 	
 	local dataIndex
 	
 	for row = 1, #distanceMatrix, 1 do
 		
 		if table.find(blacklistedDataIndexArray, row) then continue end
+		
+		local distance = 0
 
 		for column = 1, #distanceMatrix[1], 1 do
-			
-			if table.find(blacklistedDataIndexArray, column) then continue end
 
-			distance = distanceMatrix[row][column]
-			
-			if (distance > maxDistance) then
-				
-				distance = maxDistance
-				dataIndex = row
-				
-			end
+			distance = distance + distanceMatrix[row][column]
 
 		end
+		
+		if (distance < maxDistance) then continue end
+
+		distance = maxDistance
+		dataIndex = row
 
 	end
 	

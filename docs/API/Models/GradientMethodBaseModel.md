@@ -24,6 +24,18 @@ GradientMethodBaseModel:setAreGradientSaved(option: boolean)
 
 * option: Set whether or not to store gradients.
 
+### setAutoResetOptimizers()
+
+Set if the optimizers resets at the end of iterations.
+
+```
+BaseModel:setAutoResetOptimizers(option: boolean)
+```
+
+#### Parameters:
+
+* option: A boolean value that specifies if optimizers resets at the end of iterations.
+
 ### getGradients()
 
 ```

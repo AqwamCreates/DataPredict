@@ -123,18 +123,6 @@ BaseModel:setTargetCost(upperBound: number, lowerBound: number)
 
 * lowerBound: The lower bound of target cost.
 
-### setAutoResetOptimizers()
-
-Set if the optimizers resets at the end of iterations.
-
-```
-BaseModel:setAutoResetOptimizers(option: boolean)
-```
-
-#### Parameters:
-
-* option: A boolean value that specifies if optimizers resets at the end of iterations.
-
 ### setPrintOutput()
 
 Set if the model prints output.

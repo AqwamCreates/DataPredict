@@ -125,7 +125,7 @@ BaseModel:setTargetCost(upperBound: number, lowerBound: number)
 
 ### setAutoResetOptimizers()
 
-Set if the optimizer resets at the end of iterations.
+Set if the optimizers resets at the end of iterations.
 
 ```
 BaseModel:setAutoResetOptimizers(option: boolean)

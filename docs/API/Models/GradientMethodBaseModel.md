@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - BaseModel
+# [API Reference](../../API.md) - [Models](../Models.md) - GradientMethodBaseModel
 
 The base model for all machine and deep learning models that uses gradient descent
 

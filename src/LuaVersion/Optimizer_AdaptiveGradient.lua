@@ -36,17 +36,15 @@ function AdaptiveGradientOptimizer.new()
 	
 	setmetatable(NewAdaptiveGradientOptimizer, AdaptiveGradientOptimizer)
 	
-	NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix = nil
-	
 	--------------------------------------------------------------------------------
 	
 	NewAdaptiveGradientOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix = NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousSumOfGradientSquaredMatrix = NewAdaptiveGradientOptimizer.optimizerInternalParameters[1] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 
 		local gradientSquaredMatrix = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
 
-		local currentSumOfGradientSquaredMatrix = AqwamMatrixLibrary:add(NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix, gradientSquaredMatrix)
+		local currentSumOfGradientSquaredMatrix = AqwamMatrixLibrary:add(previousSumOfGradientSquaredMatrix, gradientSquaredMatrix)
 
 		local squareRootSumOfGradientSquared = AqwamMatrixLibrary:power(currentSumOfGradientSquaredMatrix, 0.5)
 
@@ -54,17 +52,9 @@ function AdaptiveGradientOptimizer.new()
 
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 
-		NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix = currentSumOfGradientSquaredMatrix
+		NewAdaptiveGradientOptimizer.optimizerInternalParameters = {currentSumOfGradientSquaredMatrix}
 
 		return costFunctionDerivatives
-		
-	end)
-	
-	--------------------------------------------------------------------------------
-	
-	NewAdaptiveGradientOptimizer:setResetFunction(function()
-		
-		NewAdaptiveGradientOptimizer.previousSumOfGradientSquaredMatrix = nil
 		
 	end)
 	

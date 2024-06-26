@@ -9,7 +9,7 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 * The term "commercial use" encompasses all forms of utilization and application, including integration, storing and hosting from another computer, server or machine.
 
-* Failure to comply with this condition will result in the User being liable for damages due to non-compliance with the terms above.
+* Failure to comply with this condition will make the User liable for damages due to non-compliance with the terms above, and the User must pay monetary compensation. No other form of compensation will be accepted.
 
 * The MIT license can be viewed here: https://opensource.org/license/mit.
 

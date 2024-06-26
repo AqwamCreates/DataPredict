@@ -18,33 +18,25 @@ function MomentumOptimizer.new(decayRate)
 	
 	NewMomentumOptimizer.decayRate = decayRate or defaultDecayRate
 	
-	NewMomentumOptimizer.velocity = nil
-	
 	--------------------------------------------------------------------------------
 	
 	NewMomentumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		NewMomentumOptimizer.velocity = NewMomentumOptimizer.velocity or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousVelocity = NewMomentumOptimizer.optimizerInternalParameters[1] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 
-		local velocityPart1 = AqwamMatrixLibrary:multiply(NewMomentumOptimizer.decayRate, NewMomentumOptimizer.velocity)
+		local velocityPart1 = AqwamMatrixLibrary:multiply(NewMomentumOptimizer.decayRate, previousVelocity)
 
 		local velocityPart2 = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivatives)
 
-		NewMomentumOptimizer.velocity = AqwamMatrixLibrary:add(velocityPart1, velocityPart2)
+		local velocity = AqwamMatrixLibrary:add(velocityPart1, velocityPart2)
 
-		costFunctionDerivatives = NewMomentumOptimizer.velocity
+		costFunctionDerivatives = velocity
+		
+		NewMomentumOptimizer.optimizerInternalParameters = {velocity}
 
 		return costFunctionDerivatives
 		
 	end)
-	
-	--------------------------------------------------------------------------------
-	
-	NewMomentumOptimizer:setResetFunction(function()
-		
-		NewMomentumOptimizer.velocity = nil
-		
-	end) 
 	
 	return NewMomentumOptimizer
 	

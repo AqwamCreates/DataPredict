@@ -19,24 +19,20 @@ function NesterovAcceleratedAdaptiveMomentEstimationOptimizer.new(beta1, beta2, 
 	local NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer = BaseOptimizer.new("NesterovAcceleratedAdaptiveMomentEstimation")
 
 	setmetatable(NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer, NesterovAcceleratedAdaptiveMomentEstimationOptimizer)
-
+	
 	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.beta1 = beta1 or defaultBeta1
-	
-	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.beta2 = beta2 or defaultBeta2
-	
-	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.epsilon = epsilon or defaultEpsilon
 
-	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousM = nil
-	
-	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousN = nil
+	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.beta2 = beta2 or defaultBeta2
+
+	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.epsilon = epsilon or defaultEpsilon
 	
 	--------------------------------------------------------------------------------
 	
 	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousM = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousM or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousM = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameters[1] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 
-		NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousN = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousN or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousN = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameters[2] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 		
 		local beta1 = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.beta1
 		
@@ -44,7 +40,7 @@ function NesterovAcceleratedAdaptiveMomentEstimationOptimizer.new(beta1, beta2, 
 
 		local meanCostFunctionDerivatives = AqwamMatrixLibrary:divide(costFunctionDerivatives, (1 - beta1))
 
-		local mPart1 = AqwamMatrixLibrary:multiply(beta1, NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousM)
+		local mPart1 = AqwamMatrixLibrary:multiply(beta1, previousM)
 
 		local mPart2 = AqwamMatrixLibrary:multiply((1 - beta1), costFunctionDerivatives)
 
@@ -52,11 +48,11 @@ function NesterovAcceleratedAdaptiveMomentEstimationOptimizer.new(beta1, beta2, 
 
 		local meanM = AqwamMatrixLibrary:divide(m, (1 - beta1))
 
-		local squaredModelParameters = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
+		local squaredCostFunctionDerivatives = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
 
-		local nPart1 = AqwamMatrixLibrary:multiply(beta2, NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousN)
+		local nPart1 = AqwamMatrixLibrary:multiply(beta2, previousN)
 
-		local nPart2 = AqwamMatrixLibrary:multiply((1 - beta2), squaredModelParameters)
+		local nPart2 = AqwamMatrixLibrary:multiply((1 - beta2), squaredCostFunctionDerivatives)
 
 		local n = AqwamMatrixLibrary:add(nPart1, nPart2)
 
@@ -76,24 +72,12 @@ function NesterovAcceleratedAdaptiveMomentEstimationOptimizer.new(beta1, beta2, 
 
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 
-		NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousM = m
-
-		NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousN = n
+		NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameters = {m, n}
 
 		return costFunctionDerivatives
 		
 	end)
 	
-	--------------------------------------------------------------------------------
-	
-	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer:setResetFunction(function()
-		
-		NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousM = nil
-
-		NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.previousN = nil
-		
-	end)
-
 	return NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer
 
 end

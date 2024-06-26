@@ -22,35 +22,23 @@ function LearningRateTimeDecayOptimizer.new(decayRate, timeStepToDecay)
 	
 	NewLearningRateTimeDecayOptimizer.timeStepToDecay = timeStepToDecay or defaultTimeStepToDecay
 	
-	NewLearningRateTimeDecayOptimizer.currentLearningRate = nil
-	
-	NewLearningRateTimeDecayOptimizer.currentTimeStep = 0
-	
 	--------------------------------------------------------------------------------
 	
 	NewLearningRateTimeDecayOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		NewLearningRateTimeDecayOptimizer.currentTimeStep += 1
-		
-		local currentLearningRate = NewLearningRateTimeDecayOptimizer.currentLearningRate or learningRate
+		local currentLearningRate = NewLearningRateTimeDecayOptimizer.optimizerInternalParameters[1] or learningRate
+
+		local currentTimeStep = NewLearningRateTimeDecayOptimizer.optimizerInternalParameters[2] or 0
+
+		currentTimeStep += 1
 			
-		currentLearningRate /= (NewLearningRateTimeDecayOptimizer.decayRate * NewLearningRateTimeDecayOptimizer.currentTimeStep)
+		currentLearningRate = currentLearningRate / (NewLearningRateTimeDecayOptimizer.decayRate * currentTimeStep)
 		
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(currentLearningRate, costFunctionDerivatives)
 		
-		NewLearningRateTimeDecayOptimizer.currentLearningRate = currentLearningRate
+		NewLearningRateTimeDecayOptimizer.optimizerInternalParameters = {currentLearningRate, currentTimeStep}
 
 		return costFunctionDerivatives
-		
-	end)
-	
-	--------------------------------------------------------------------------------
-	
-	NewLearningRateTimeDecayOptimizer:setResetFunction(function()
-		
-		NewLearningRateTimeDecayOptimizer.currentLearningRate = nil
-		
-		NewLearningRateTimeDecayOptimizer.currentTimeStep = 0
 		
 	end)
 	

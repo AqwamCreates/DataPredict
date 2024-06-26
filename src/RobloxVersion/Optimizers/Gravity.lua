@@ -2,64 +2,110 @@ local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-LearningRateStepDecayOptimizer = {}
+GravityOptimizer = {}
 
-LearningRateStepDecayOptimizer.__index = LearningRateStepDecayOptimizer
+GravityOptimizer.__index = GravityOptimizer
 
-setmetatable(LearningRateStepDecayOptimizer, BaseOptimizer)
+setmetatable(GravityOptimizer, BaseOptimizer)
 
-local defaultDecayRate = 0.5
+local defaultInitialStepSize = 0.01
 
-local defaultTimeStepToDecay = 100
+local defaultMovingAverage = 0.9
 
-function LearningRateStepDecayOptimizer.new(decayRate, timeStepToDecay)
+local function calculateGaussianDensity(mean, standardDeviation)
+
+	local exponentStep1 = math.pow(mean, 2)
+
+	local exponentPart2 = math.pow(standardDeviation, 2)
+
+	local exponentStep3 = exponentStep1 / exponentPart2
+
+	local exponentStep4 = -0.5 * exponentStep3
+
+	local exponentWithTerms = math.exp(exponentStep4)
+
+	local divisor = standardDeviation * math.sqrt(2 * math.pi)
+
+	local gaussianDensity = exponentWithTerms / divisor
+
+	return gaussianDensity
+
+end
+
+function GravityOptimizer.new(initialStepSize, movingAverage)
 	
-	local NewLearningRateStepDecayOptimizer = BaseOptimizer.new("LearningRateStepDecay")
+	local NewGravityOptimizer = BaseOptimizer.new("Gravity")
 	
-	setmetatable(NewLearningRateStepDecayOptimizer, LearningRateStepDecayOptimizer)
+	setmetatable(NewGravityOptimizer, GravityOptimizer)
 	
-	NewLearningRateStepDecayOptimizer.decayRate = decayRate or defaultDecayRate
+	NewGravityOptimizer.initialStepSize = initialStepSize or defaultInitialStepSize
 	
-	NewLearningRateStepDecayOptimizer.timeStepToDecay = timeStepToDecay or defaultTimeStepToDecay
+	NewGravityOptimizer.movingAverage = movingAverage or defaultMovingAverage
 	
 	--------------------------------------------------------------------------------
 	
-	NewLearningRateStepDecayOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
+	NewGravityOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		local currentLearningRate = NewLearningRateStepDecayOptimizer.optimizerInternalParameters[1] or learningRate
+		local previousVelocity = NewGravityOptimizer.optimizerInternalParameters[1]
 		
-		local currentTimeStep = NewLearningRateStepDecayOptimizer.optimizerInternalParameters[2] or 0
-
+		local currentTimeStep = NewGravityOptimizer.optimizerInternalParameters[2] or 0
+		
 		currentTimeStep += 1
 		
-		if ((currentTimeStep % NewLearningRateStepDecayOptimizer.timeStepToDecay) == 0) then
-			
-			currentLearningRate *= NewLearningRateStepDecayOptimizer.decayRate
-			
+		if (previousVelocity == nil) then
+
+			local standardDeviation = NewGravityOptimizer.initialStepSize / learningRate
+
+			local gaussianDensity = calculateGaussianDensity(0, standardDeviation)
+
+			previousVelocity = AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1], gaussianDensity)
+
 		end
-		
-		costFunctionDerivatives = AqwamMatrixLibrary:multiply(currentLearningRate, costFunctionDerivatives)
-		
-		NewLearningRateStepDecayOptimizer.optimizerInternalParameters = {currentLearningRate, currentTimeStep}
+
+		local meanMovingAverage = ((NewGravityOptimizer.movingAverage * currentTimeStep) + 1) / (currentTimeStep + 2)
+
+		local absoluteM = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
+
+		local maxM = AqwamMatrixLibrary:findMaximumValue(absoluteM)
+
+		local m = AqwamMatrixLibrary:divide(1, maxM)
+
+		local weirdLPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, m)
+
+		local weirdLPart2 = AqwamMatrixLibrary:power(weirdLPart1, 2)
+
+		local weirdLPart3 = AqwamMatrixLibrary:add(1, weirdLPart2)
+
+		local weirdL = AqwamMatrixLibrary:divide(costFunctionDerivatives, weirdLPart3)
+
+		local velocityPart1 = AqwamMatrixLibrary:multiply(meanMovingAverage, previousVelocity)
+
+		local velocityPart2 = AqwamMatrixLibrary:multiply((1 - meanMovingAverage), weirdL)
+
+		local velocity = AqwamMatrixLibrary:add(velocityPart1, velocityPart2)
+
+		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, velocity) 
+
+		NewGravityOptimizer.optimizerInternalParameters = {velocity, currentTimeStep}
 
 		return costFunctionDerivatives
 		
 	end)
 	
-	return NewLearningRateStepDecayOptimizer
+	return NewGravityOptimizer
 	
 end
 
-function LearningRateStepDecayOptimizer:setDecayRate(decayRate)
+function GravityOptimizer:setInitialStepSize(initialStepSize)
 	
-	self.decayRate = decayRate
-	
-end
-
-function LearningRateStepDecayOptimizer:setTimeStepToDecay(timeStepToDecay)
-	
-	self.timeStepToDecay = timeStepToDecay
+	self.initialStepSize = initialStepSize
 	
 end
 
-return LearningRateStepDecayOptimizer
+function GravityOptimizer:setMovingAverage(movingAverage)
+
+	self.movingAverage = movingAverage
+
+end
+
+return GravityOptimizer

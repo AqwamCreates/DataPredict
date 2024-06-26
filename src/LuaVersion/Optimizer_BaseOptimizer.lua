@@ -24,6 +24,47 @@ BaseOptimizer = {}
 
 BaseOptimizer.__index = BaseOptimizer
 
+local function deepCopyTable(original, copies)
+
+	copies = copies or {}
+
+	local originalType = type(original)
+
+	local copy
+
+	if (originalType == 'table') then
+
+		if copies[original] then
+
+			copy = copies[original]
+
+		else
+
+			copy = {}
+
+			copies[original] = copy
+
+			for originalKey, originalValue in next, original, nil do
+
+				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
+
+			end
+
+			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
+
+		end
+
+	else
+
+		copy = original
+
+	end
+
+	return copy
+
+end
+
+
 function BaseOptimizer.new(optimizerName)
 	
 	local NewBaseOptimizer = {}
@@ -32,9 +73,9 @@ function BaseOptimizer.new(optimizerName)
 	
 	NewBaseOptimizer.optimizerName = optimizerName or "Unknown"
 	
-	NewBaseOptimizer.calculationFunction = nil
+	NewBaseOptimizer.calculateFunction = nil
 	
-	NewBaseOptimizer.resetFunction = nil
+	NewBaseOptimizer.optimizerInternalParameters = {}
 	
 	return NewBaseOptimizer
 	
@@ -46,21 +87,9 @@ function BaseOptimizer:calculate(learningRate, costFunctionDerivatives)
 	
 end
 
-function BaseOptimizer:reset()
-	
-	if (self.resetFunction) then return self.resetFunction() end
- 	
-end
-
 function BaseOptimizer:setCalculateFunction(calculateFunction)
 	
 	self.calculateFunction = calculateFunction
-	
-end
-
-function BaseOptimizer:setResetFunction(resetFunction)
-	
-	self.resetFunction = resetFunction
 	
 end
 
@@ -68,6 +97,40 @@ function BaseOptimizer:getOptimizerName()
 	
 	return self.optimizerName
 	
+end
+
+function BaseOptimizer:getOptimizerInternalParameters(doNotDeepCopy)
+	
+	if (doNotDeepCopy) then
+		
+		return self.optimizerInternalParameters
+		
+	else
+		
+		return deepCopyTable(self.optimizerInternalParameters)
+		
+	end
+	
+end
+
+function BaseOptimizer:setOptimizerInternalParameters(optimizerInternalParameters, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.optimizerInternalParameters = optimizerInternalParameters
+
+	else
+
+		self.optimizerInternalParameters = deepCopyTable(optimizerInternalParameters)
+
+	end
+
+end
+
+function BaseOptimizer:reset()
+
+	self.optimizerInternalParameters = {}
+
 end
 
 return BaseOptimizer

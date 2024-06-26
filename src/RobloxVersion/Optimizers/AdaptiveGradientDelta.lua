@@ -17,8 +17,6 @@ function AdaptiveGradientDeltaOptimizer.new(decayRate, epsilon)
 	local NewAdaptiveGradientDeltaOptimizer = BaseOptimizer.new("AdaptiveGradientDelta")
 
 	setmetatable(NewAdaptiveGradientDeltaOptimizer, AdaptiveGradientDeltaOptimizer)
-
-	NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix = nil
 	
 	NewAdaptiveGradientDeltaOptimizer.decayRate = decayRate or defaultDecayRate
 	
@@ -28,13 +26,13 @@ function AdaptiveGradientDeltaOptimizer.new(decayRate, epsilon)
 	
 	NewAdaptiveGradientDeltaOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix = NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousRunningGradientSquaredMatrix = NewAdaptiveGradientDeltaOptimizer.optimizerInternalParameters[1] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 		
 		local decayRate = NewAdaptiveGradientDeltaOptimizer.decayRate
 
 		local gradientSquaredMatrix = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
 
-		local runningDeltaMatrixPart1 = AqwamMatrixLibrary:multiply(decayRate, NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix)
+		local runningDeltaMatrixPart1 = AqwamMatrixLibrary:multiply(decayRate, previousRunningGradientSquaredMatrix)
 
 		local runningDeltaMatrixPart2 = AqwamMatrixLibrary:multiply((1 - decayRate), gradientSquaredMatrix)
 
@@ -48,17 +46,9 @@ function AdaptiveGradientDeltaOptimizer.new(decayRate, epsilon)
 
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 
-		NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix = currentRunningGradientSquaredMatrix
+		NewAdaptiveGradientDeltaOptimizer.optimizerInternalParameters = {currentRunningGradientSquaredMatrix}
 
 		return costFunctionDerivatives
-		
-	end)
-	
-	--------------------------------------------------------------------------------
-	
-	NewAdaptiveGradientDeltaOptimizer:setResetFunction(function()
-		
-		NewAdaptiveGradientDeltaOptimizer.previousRunningGradientSquaredMatrix = nil
 		
 	end)
 

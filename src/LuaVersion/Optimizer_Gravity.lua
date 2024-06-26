@@ -64,63 +64,53 @@ function GravityOptimizer.new(initialStepSize, movingAverage)
 	
 	NewGravityOptimizer.movingAverage = movingAverage or defaultMovingAverage
 	
-	NewGravityOptimizer.previousVelocity = nil
-	
-	NewGravityOptimizer.timeStep = 0
-	
 	--------------------------------------------------------------------------------
 	
 	NewGravityOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		if (NewGravityOptimizer.previousVelocity == nil) then
+		local previousVelocity = NewGravityOptimizer.optimizerInternalParameters[1]
+		
+		local currentTimeStep = NewGravityOptimizer.optimizerInternalParameters[2] or 0
+		
+		currentTimeStep += 1
+		
+		if (previousVelocity == nil) then
 
 			local standardDeviation = NewGravityOptimizer.initialStepSize / learningRate
 
 			local gaussianDensity = calculateGaussianDensity(0, standardDeviation)
 
-			NewGravityOptimizer.previousVelocity = AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1], gaussianDensity)
+			previousVelocity = AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1], gaussianDensity)
 
 		end
 
-		NewGravityOptimizer.timeStep = NewGravityOptimizer.timeStep + 1
+		local meanMovingAverage = ((NewGravityOptimizer.movingAverage * currentTimeStep) + 1) / (currentTimeStep + 2)
 
-		local meanMovingAverage = ((NewGravityOptimizer.movingAverage * NewGravityOptimizer.timeStep) + 1) / (NewGravityOptimizer.timeStep + 2)
+		local absoluteM = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
 
-		local AbsoluteM = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
+		local maxM = AqwamMatrixLibrary:findMaximumValue(absoluteM)
 
-		local maxM = AqwamMatrixLibrary:findMaximumValue(AbsoluteM)
+		local m = AqwamMatrixLibrary:divide(1, maxM)
 
-		local M = AqwamMatrixLibrary:divide(1, maxM)
+		local weirdLPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, m)
 
-		local WeirdLPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, M)
+		local weirdLPart2 = AqwamMatrixLibrary:power(weirdLPart1, 2)
 
-		local WeirdLPart2 = AqwamMatrixLibrary:power(WeirdLPart1, 2)
+		local weirdLPart3 = AqwamMatrixLibrary:add(1, weirdLPart2)
 
-		local WeirdLPart3 = AqwamMatrixLibrary:add(1, WeirdLPart2)
+		local weirdL = AqwamMatrixLibrary:divide(costFunctionDerivatives, weirdLPart3)
 
-		local WeirdL = AqwamMatrixLibrary:divide(costFunctionDerivatives, WeirdLPart3)
+		local velocityPart1 = AqwamMatrixLibrary:multiply(meanMovingAverage, previousVelocity)
 
-		local VelocityPart1 = AqwamMatrixLibrary:multiply(meanMovingAverage, NewGravityOptimizer.previousVelocity)
+		local velocityPart2 = AqwamMatrixLibrary:multiply((1 - meanMovingAverage), weirdL)
 
-		local VelocityPart2 = AqwamMatrixLibrary:multiply((1 - meanMovingAverage), WeirdL)
+		local velocity = AqwamMatrixLibrary:add(velocityPart1, velocityPart2)
 
-		local Velocity = AqwamMatrixLibrary:add(VelocityPart1, VelocityPart2)
+		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, velocity) 
 
-		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, Velocity) 
-
-		NewGravityOptimizer.previousVelocity = Velocity
+		NewGravityOptimizer.optimizerInternalParameters = {velocity, currentTimeStep}
 
 		return costFunctionDerivatives
-		
-	end)
-	
-	--------------------------------------------------------------------------------
-	
-	NewGravityOptimizer:setResetFunction(function()
-		
-		NewGravityOptimizer.previousVelocity = nil
-
-		NewGravityOptimizer.timeStep = 0
 		
 	end)
 	

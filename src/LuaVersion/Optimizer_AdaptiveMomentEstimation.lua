@@ -41,10 +41,6 @@ function AdaptiveMomentEstimationOptimizer.new(beta1, beta2, epsilon)
 	local NewAdaptiveMomentEstimationOptimizer = BaseOptimizer.new("AdaptiveMomentEstimation")
 
 	setmetatable(NewAdaptiveMomentEstimationOptimizer, AdaptiveMomentEstimationOptimizer)
-
-	NewAdaptiveMomentEstimationOptimizer.previousMomentum = nil
-	
-	NewAdaptiveMomentEstimationOptimizer.previousVelocity = nil
 	
 	NewAdaptiveMomentEstimationOptimizer.beta1 = beta1 or defaultBeta1
 	
@@ -56,11 +52,11 @@ function AdaptiveMomentEstimationOptimizer.new(beta1, beta2, epsilon)
 	
 	NewAdaptiveMomentEstimationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		NewAdaptiveMomentEstimationOptimizer.previousMomentum = NewAdaptiveMomentEstimationOptimizer.previousMomentum or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousMomentum = NewAdaptiveMomentEstimationOptimizer.optimizerInternalParameters[1] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 
-		NewAdaptiveMomentEstimationOptimizer.previousVelocity = NewAdaptiveMomentEstimationOptimizer.previousVelocity or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousVelocity = NewAdaptiveMomentEstimationOptimizer.optimizerInternalParameters[2] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 
-		local momentumPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveMomentEstimationOptimizer.beta1, NewAdaptiveMomentEstimationOptimizer.previousMomentum)
+		local momentumPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveMomentEstimationOptimizer.beta1, previousMomentum)
 
 		local momentumPart2 = AqwamMatrixLibrary:multiply((1 - NewAdaptiveMomentEstimationOptimizer.beta1), costFunctionDerivatives)
 
@@ -68,7 +64,7 @@ function AdaptiveMomentEstimationOptimizer.new(beta1, beta2, epsilon)
 
 		local squaredModelParameters = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
 
-		local velocityPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveMomentEstimationOptimizer.beta2, NewAdaptiveMomentEstimationOptimizer.previousVelocity)
+		local velocityPart1 = AqwamMatrixLibrary:multiply(NewAdaptiveMomentEstimationOptimizer.beta2, previousVelocity)
 
 		local velocityPart2 = AqwamMatrixLibrary:multiply((1 - NewAdaptiveMomentEstimationOptimizer.beta2), squaredModelParameters)
 
@@ -85,22 +81,10 @@ function AdaptiveMomentEstimationOptimizer.new(beta1, beta2, epsilon)
 		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(meanMomentum, finalDivisor)
 
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
-
-		NewAdaptiveMomentEstimationOptimizer.previousMomentum = momentum
-
-		NewAdaptiveMomentEstimationOptimizer.previousVelocity = velocity
+		
+		NewAdaptiveMomentEstimationOptimizer.optimizerInternalParameters = {momentum, velocity}
 
 		return costFunctionDerivatives
-		
-	end)
-	
-	--------------------------------------------------------------------------------
-	
-	NewAdaptiveMomentEstimationOptimizer:setResetFunction(function()
-		
-		NewAdaptiveMomentEstimationOptimizer.previousMomentum = nil
-
-		NewAdaptiveMomentEstimationOptimizer.previousVelocity = nil
 		
 	end)
 

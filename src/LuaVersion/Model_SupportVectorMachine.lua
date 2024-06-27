@@ -228,7 +228,7 @@ local kernelFunctionList = {
 
 	["RadialBasisFunction"] = function(featureMatrix, kernelParameters)
 
-		local sigma	= kernelParameters.sigma or defaultSigma
+		local sigma = kernelParameters.sigma or defaultSigma
 
 		local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, "Euclidean")
 

@@ -14,8 +14,6 @@ local defaultDamping = 0.5
 
 local defaultDistanceFunction = "Euclidean"
 
-local mathSquareRoot = math.sqrt
-
 local distanceFunctionList = {
 
 	["Manhattan"] = function (x1, x2)
@@ -38,7 +36,7 @@ local distanceFunctionList = {
 
 		local part3 = AqwamMatrixLibrary:sum(part2)
 
-		local distance = mathSquareRoot(part3)
+		local distance = math.sqrt(part3)
 
 		return distance 
 
@@ -52,13 +50,13 @@ local distanceFunctionList = {
 
 		local x1MagnitudePart2 = AqwamMatrixLibrary:sum(x1MagnitudePart1)
 
-		local x1Magnitude = mathSquareRoot(x1MagnitudePart2, 2)
+		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
 
 		local x2MagnitudePart1 = AqwamMatrixLibrary:power(x2, 2)
 
 		local x2MagnitudePart2 = AqwamMatrixLibrary:sum(x2MagnitudePart1)
 
-		local x2Magnitude = mathSquareRoot(x2MagnitudePart2, 2)
+		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
 
 		local normX = x1Magnitude * x2Magnitude
 
@@ -181,11 +179,13 @@ local function calculateAvailibilityMatrix(availibilityMatrix, responsibilityMat
 	for i = 1, numberOfData, 1 do
 
 		for j = 1, numberOfData, 1 do
+			
+			local availability
+			
+			local sumMaxAvailability = 0
 
 			if (i ~= j) then
 				
-				local sumMaxAvailability = 0
-
 				for k = 1, numberOfData, 1 do
 
 					if (k == i) and (k == j) then continue end
@@ -196,11 +196,27 @@ local function calculateAvailibilityMatrix(availibilityMatrix, responsibilityMat
 
 				end
 				
-				local availability = damping * (responsibilityMatrix[j][j] + sumMaxAvailability) + (1 - damping) * availibilityMatrix[i][j]
+				availability = (damping * (responsibilityMatrix[j][j] + sumMaxAvailability)) + ((1 - damping) * availibilityMatrix[i][j])
+				
+				availability = math.min(0, availability)
+				
+			else
+				
+				for k = 1, numberOfData, 1 do
 
-				availibilityMatrix[i][j] = math.min(0, availability)
+					if (k == i) then continue end
+
+					local maxAvailability = math.max(0, responsibilityMatrix[k][j])
+
+					sumMaxAvailability = sumMaxAvailability + maxAvailability
+
+				end
+				
+				availability = (damping * sumMaxAvailability) + ((1 - damping) * availibilityMatrix[i][j])
 
 			end
+			
+			availibilityMatrix[i][j] = availability
 
 		end
 

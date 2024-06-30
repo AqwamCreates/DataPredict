@@ -110,7 +110,7 @@ function LogisticRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatri
 
 end
 
-function LogisticRegressionModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+function LogisticRegressionModel:gradientDescent(costFunctionDerivativeMatrix)
 	
 	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
 	
@@ -121,8 +121,6 @@ function LogisticRegressionModel:gradientDescent(costFunctionDerivativeMatrix, n
 		costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
 
 	end
-	
-	costFunctionDerivativeMatrix = AqwamMatrixLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
 
 	if (self.Optimizer) then 
 
@@ -144,11 +142,9 @@ function LogisticRegressionModel:update(lossMatrix, clearFeatureMatrix)
 
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 
-	local numberOfData = #lossMatrix
-
 	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
 
-	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrix)
 
 end
 
@@ -232,9 +228,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			cost = calculateCost(hypothesisVector, labelVector, sigmoidFunction)
-			
-			cost = (cost / numberOfData)
+			cost = calculateCost(hypothesisVector, labelVector, numberOfData, sigmoidFunction)
 
 			if (not Regularization) then return cost end
 
@@ -255,6 +249,8 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		end
 
 		local lossVector = AqwamMatrixLibrary:subtract(hypothesisVector, labelVector)
+		
+		lossVector = AqwamMatrixLibrary:divide(lossVector, numberOfData)
 
 		self:update(lossVector, true, false)
 		

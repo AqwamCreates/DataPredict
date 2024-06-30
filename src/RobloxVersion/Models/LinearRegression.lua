@@ -42,13 +42,13 @@ local lossFunctionList = {
 
 }
 
-local function calculateCost(hypothesisVector, labelVector, lossFunction)
+local function calculateCost(hypothesisVector, labelVector, numberOfData, lossFunction)
 	
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
 	local costVector = lossFunctionList[lossFunction](hypothesisVector, labelVector) 
 	
-	local averageCost = costVector / 2
+	local averageCost = costVector / (2 * numberOfData)
 	
 	return averageCost
 	
@@ -204,9 +204,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			cost = calculateCost(hypothesisVector, labelVector, lossFunction)
-			
-			cost = (cost / numberOfData)
+			cost = calculateCost(hypothesisVector, labelVector, numberOfData, lossFunction)
 			
 			if (not Regularization) then return cost end
 

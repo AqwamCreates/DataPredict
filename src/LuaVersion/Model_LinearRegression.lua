@@ -104,7 +104,7 @@ function LinearRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
 	
 end
 
-function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix)
+function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
 	
 	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
 	
@@ -115,6 +115,8 @@ function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix)
 		costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
 
 	end
+	
+	costFunctionDerivativeMatrix = AqwamMatrixLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
 
 	if (self.Optimizer) then 
 
@@ -134,11 +136,13 @@ end
 
 function LinearRegressionModel:update(lossMatrix, clearFeatureMatrix, doNotUpdateModelParameters)
 	
+	local numberOfData = #lossMatrix
+	
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 	
 	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
 	
-	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrix)
+	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
 	
 	if (clearFeatureMatrix) then self.featureMatrix = nil end
 	
@@ -237,8 +241,6 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		end
 		
 		local lossVector = AqwamMatrixLibrary:subtract(hypothesisVector, labelVector)
-		
-		lossVector = AqwamMatrixLibrary:divide(lossVector, numberOfData)
 		
 		self:update(lossVector, true, false)
 		

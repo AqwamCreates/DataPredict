@@ -653,8 +653,6 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable)
 		local Regularization = RegularizationTable[layerNumber + 1]
 
 		local Optimizer = OptimizerTable[layerNumber + 1]
-
-		local calculatedLearningRate = learningRate / numberOfData
 		
 		local costFunctionDerivativeMatrix = costFunctionDerivativeMatrixTable[layerNumber]
 		
@@ -708,9 +706,7 @@ function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 
 end
 
-function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix)
-
-	local numberOfData = #logisticMatrix
+function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix, numberOfData)
 
 	local subtractedMatrix = AqwamMatrixLibrary:subtract(allOutputsMatrix, logisticMatrix)
 
@@ -1488,7 +1484,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(activatedOutputsMatrix, logisticMatrix)
+			return self:calculateCost(activatedOutputsMatrix, logisticMatrix, numberOfData)
 
 		end)
 

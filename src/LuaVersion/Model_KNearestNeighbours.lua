@@ -249,11 +249,13 @@ local function getMajorityClass(sortedLabelVectorLowestToHighest, kValue)
 	
 	for k = 1, minimumNumberOfkValue, 1 do
 		
-		local index = table.find(classesList, sortedLabelVectorLowestToHighest[k][1])
+		local label = sortedLabelVectorLowestToHighest[k][1]
+		
+		local index = table.find(classesList, label)
 		
 		if not index then
 			
-			table.insert(classesList, sortedLabelVectorLowestToHighest[k][1])
+			table.insert(classesList, label)
 			table.insert(numberOfDataWithClassList, 1)
 			
 		else

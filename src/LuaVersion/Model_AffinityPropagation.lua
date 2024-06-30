@@ -218,7 +218,7 @@ local function calculateAvailibilityMatrix(availibilityMatrix, responsibilityMat
 				
 				local availability = damping * (responsibilityMatrix[j][j] + sumMaxAvailability) + (1 - damping) * availibilityMatrix[i][j]
 
-				availibilityMatrix[i][j] = math.max(0, availability)
+				availibilityMatrix[i][j] = math.min(0, availability)
 
 			end
 

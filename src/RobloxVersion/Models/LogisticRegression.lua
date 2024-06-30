@@ -66,11 +66,13 @@ local cutOffFunctionList = {
 	
 }
 
-local function calculateCost(hypothesisVector, labelVector, sigmoidFunction)
+local function calculateCost(hypothesisVector, labelVector, numberOfData, sigmoidFunction)
 
 	local costVector = AqwamMatrixLibrary:applyFunction(lossFunctionList[sigmoidFunction], labelVector, hypothesisVector)
 
 	local totalCost = AqwamMatrixLibrary:sum(costVector)
+	
+	local averageCost = totalCost / numberOfData
 
 	return totalCost
 

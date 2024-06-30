@@ -80,7 +80,7 @@ function LogisticRegressionModel:calculateCost(hypothesisVector, labelVector, nu
 
 	local averageCost = totalCost / numberOfData
 
-	return totalCost
+	return averageCost
 
 end
 

@@ -28,8 +28,6 @@ AffinityPropagationModel.__index = AffinityPropagationModel
 
 setmetatable(AffinityPropagationModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
-
 local defaultMaxNumberOfIterations = 500
 
 local defaultDamping = 0.5
@@ -201,11 +199,13 @@ local function calculateAvailibilityMatrix(availibilityMatrix, responsibilityMat
 	for i = 1, numberOfData, 1 do
 
 		for j = 1, numberOfData, 1 do
+			
+			local availability
+			
+			local sumMaxAvailability = 0
 
 			if (i ~= j) then
 				
-				local sumMaxAvailability = 0
-
 				for k = 1, numberOfData, 1 do
 
 					if (k == i) and (k == j) then continue end
@@ -216,11 +216,27 @@ local function calculateAvailibilityMatrix(availibilityMatrix, responsibilityMat
 
 				end
 				
-				local availability = damping * (responsibilityMatrix[j][j] + sumMaxAvailability) + (1 - damping) * availibilityMatrix[i][j]
+				availability = (damping * (responsibilityMatrix[j][j] + sumMaxAvailability)) + ((1 - damping) * availibilityMatrix[i][j])
+				
+				availability = math.min(0, availability)
+				
+			else
+				
+				for k = 1, numberOfData, 1 do
 
-				availibilityMatrix[i][j] = math.min(0, availability)
+					if (k == i) then continue end
+
+					local maxAvailability = math.max(0, responsibilityMatrix[k][j])
+
+					sumMaxAvailability = sumMaxAvailability + maxAvailability
+
+				end
+				
+				availability = (damping * sumMaxAvailability) + ((1 - damping) * availibilityMatrix[i][j])
 
 			end
+			
+			availibilityMatrix[i][j] = availability
 
 		end
 
@@ -236,7 +252,7 @@ local function calculateCost(clusters, responsibilityMatrix)
 
 	for i = 1, #clusters do
 
-		totalCost = totalCost + responsibilityMatrix[i][clusters[i][1]]
+		totalCost += responsibilityMatrix[i][clusters[i][1]]
 
 	end
 
@@ -254,11 +270,11 @@ local function assignClusters(availibilityMatrix, responsibilityMatrix)
 		
 		local calculatedValuesVector = {calculatedValuesMatrix[i]}
 		
-		local _, clusterIndex = AqwamMatrixLibrary:findMaximumValue(calculatedValuesVector)
+		local _, clusterIndexArray = AqwamMatrixLibrary:findMaximumValue(calculatedValuesVector)
 
-		if (clusterIndex == nil) then continue end
+		if (clusterIndexArray == nil) then continue end
 
-		local clusterNumber = clusterIndex[2]
+		local clusterNumber = clusterIndexArray[2]
 
 		clusterVector[i][1] = clusterNumber
 		
@@ -332,7 +348,7 @@ function AffinityPropagationModel:train(featureMatrix)
 
 	repeat
 		
-		numberOfIterations = numberOfIterations + 1
+		numberOfIterations += 1
 		
 		self:iterationWait()
 
@@ -382,7 +398,7 @@ function AffinityPropagationModel:predict(featureMatrix)
 		
 		local distanceVector = {distanceMatrix[i]}
 		
-		local _, index = AqwamMatrixLibrary:findMinimumValueInMatrix(distanceVector)
+		local _, index = AqwamMatrixLibrary:findMinimumValue(distanceVector)
 		
 		if (index == nil) then continue end
 		

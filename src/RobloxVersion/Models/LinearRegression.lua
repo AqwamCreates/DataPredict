@@ -19,36 +19,38 @@ local lossFunctionList = {
 	["L1"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
-		
-		part1 = AqwamMatrixLibrary:applyFunction(math.abs, part1)
 
-		local distance = AqwamMatrixLibrary:sum(part1)
-
-		return distance 
+		return AqwamMatrixLibrary:applyFunction(math.abs, part1) 
 
 	end,
 
 	["L2"] = function (x1, x2)
 
 		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		
+		local part2 = AqwamMatrixLibrary:power(part1, 2) 
 
-		local part2 = AqwamMatrixLibrary:power(part1, 2)
-
-		local distance = AqwamMatrixLibrary:sum(part2)
-
-		return distance 
+		return AqwamMatrixLibrary:divide(part2, 2)
 
 	end,
 
 }
 
-local function calculateCost(hypothesisVector, labelVector, numberOfData, lossFunction)
+function LinearRegressionModel:calculateCost(hypothesisVector, labelVector, numberOfData)
 	
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
-	local costVector = lossFunctionList[lossFunction](hypothesisVector, labelVector) 
+	local costVector = lossFunctionList[self.lossFunction](hypothesisVector, labelVector) 
 	
-	local averageCost = costVector / (2 * numberOfData)
+	local totalCost = AqwamMatrixLibrary:sum(costVector)
+	
+	if (self.Regularization) then
+		
+		totalCost = self.Regularization:calculateRegularization(self.ModelParameters)
+		
+	end
+
+	local averageCost = totalCost / numberOfData
 	
 	return averageCost
 	
@@ -204,15 +206,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			cost = calculateCost(hypothesisVector, labelVector, numberOfData, lossFunction)
-			
-			if (not Regularization) then return cost end
-
-			local regularizationCost = Regularization:calculateRegularization(self.ModelParameters)
-
-			cost += (regularizationCost / numberOfData)
-			
-			return cost
+			return self:calculateCost(hypothesisVector, labelVector, numberOfData)
 			
 		end)
 		

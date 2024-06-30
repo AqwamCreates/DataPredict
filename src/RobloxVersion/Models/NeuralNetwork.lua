@@ -632,7 +632,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 
 end
 
-function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, numberOfData)
+function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable)
 	
 	local NewModelParameters = {}
 	
@@ -669,8 +669,6 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 			costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivativeMatrix)
 
 		end
-		
-		costFunctionDerivativeMatrix = AqwamMatrixLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
 
 		if (Optimizer ~= 0) then
 

@@ -44,13 +44,11 @@ local lossFunctionList = {
 
 local function calculateCost(hypothesisVector, labelVector, lossFunction)
 	
-	local numberOfData = #labelVector
-	
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
 	local costVector = lossFunctionList[lossFunction](hypothesisVector, labelVector) 
 	
-	local averageCost = costVector / (2 * numberOfData)
+	local averageCost = costVector / 2
 	
 	return averageCost
 	
@@ -86,19 +84,17 @@ function LinearRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
 	
 end
 
-function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix)
 	
 	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
 	
 	if (self.Regularization) then
 
-		local regularizationDerivatives = self.Regularization:calculateRegularizationDerivatives(self.ModelParameters, numberOfData)
+		local regularizationDerivatives = self.Regularization:calculateRegularizationDerivatives(self.ModelParameters)
 
 		costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
 
 	end
-	
-	costFunctionDerivativeMatrix = AqwamMatrixLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
 
 	if (self.Optimizer) then 
 
@@ -119,12 +115,10 @@ end
 function LinearRegressionModel:update(lossMatrix, clearFeatureMatrix, doNotUpdateModelParameters)
 	
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
-
-	local numberOfData = #lossMatrix
 	
 	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
 	
-	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrix)
 	
 	if (clearFeatureMatrix) then self.featureMatrix = nil end
 	
@@ -180,7 +174,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	local numberOfIterations = 0
 	
-	local numberOfData = #featureMatrix[1]
+	local numberOfData = #featureMatrix
 	
 	local lossFunction = self.lossFunction
 	
@@ -212,6 +206,8 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 			
 			cost = calculateCost(hypothesisVector, labelVector, lossFunction)
 			
+			cost = (cost / numberOfData)
+			
 			if (not Regularization) then return cost end
 
 			local regularizationCost = Regularization:calculateRegularization(self.ModelParameters)
@@ -231,6 +227,8 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		end
 		
 		local lossVector = AqwamMatrixLibrary:subtract(hypothesisVector, labelVector)
+		
+		lossVector = AqwamMatrixLibrary:divide(lossVector, numberOfData)
 		
 		self:update(lossVector, true, false)
 		

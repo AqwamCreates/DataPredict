@@ -1454,8 +1454,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	local RegularizationDerivatives
 
-	local lossMatrix
-
 	local logisticMatrix
 
 	local activatedOutputsMatrix
@@ -1496,7 +1494,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		end
 
-		lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
+		local lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
 		
 		lossMatrix = AqwamMatrixLibrary:divide(lossMatrix, numberOfData)
 

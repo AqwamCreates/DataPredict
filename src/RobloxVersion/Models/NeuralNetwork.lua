@@ -695,12 +695,10 @@ end
 function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
-	
-	local numberOfData = #lossMatrix
 
 	local costFunctionDerivativeMatrixTable = self:calculateCostFunctionDerivativeMatrixTable(lossMatrix)
 
-	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrixTable, numberOfData)
+	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrixTable)
 
 	if (clearTables) then
 
@@ -1439,7 +1437,9 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 end
 
 function NeuralNetworkModel:train(featureMatrix, labelVector)
-
+	
+	local numberOfData = #featureMatrix
+	
 	local numberOfFeatures = #featureMatrix[1]
 
 	local numberOfNeuronsAtInputLayer = self.numberOfNeuronsTable[1] + self.hasBiasNeuronTable[1]
@@ -1503,6 +1503,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		end
 
 		lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
+		
+		lossMatrix = AqwamMatrixLibrary:divide(lossMatrix, numberOfData)
 
 		self:backPropagate(lossMatrix, true)
 

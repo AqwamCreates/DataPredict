@@ -66,12 +66,18 @@ local cutOffFunctionList = {
 	
 }
 
-local function calculateCost(hypothesisVector, labelVector, numberOfData, sigmoidFunction)
+function LogisticRegressionModel:calculateCost(hypothesisVector, labelVector, numberOfData)
 
-	local costVector = AqwamMatrixLibrary:applyFunction(lossFunctionList[sigmoidFunction], labelVector, hypothesisVector)
+	local costVector = AqwamMatrixLibrary:applyFunction(lossFunctionList[self.sigmoidFunction], labelVector, hypothesisVector)
 
 	local totalCost = AqwamMatrixLibrary:sum(costVector)
-	
+
+	if (self.Regularization) then
+
+		totalCost = self.Regularization:calculateRegularization(self.ModelParameters)
+
+	end
+
 	local averageCost = totalCost / numberOfData
 
 	return totalCost
@@ -230,15 +236,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			cost = calculateCost(hypothesisVector, labelVector, numberOfData, sigmoidFunction)
-
-			if (not Regularization) then return cost end
-
-			local regularizationCost = Regularization:calculateRegularization(self.ModelParameters)
-
-			cost += (regularizationCost / numberOfData)
-
-			return cost
+			return self:calculateCost(hypothesisVector, labelVector, numberOfData)
 
 		end)
 

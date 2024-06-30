@@ -193,7 +193,7 @@ local activationFunctionList = {
 
 			local zVector = {zMatrix[i]}
 
-			local highestZValue = AqwamMatrixLibrary:findMaximumValueInMatrix(zVector)
+			local highestZValue = AqwamMatrixLibrary:findMaximumValue(zVector)
 
 			local subtractedZVector = AqwamMatrixLibrary:subtract(zVector, highestZValue)
 
@@ -535,7 +535,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 			for data = 1, numberOfData, 1 do
 
 				for neuron = 1, #inputMatrix[1], 1 do
-
+					
 					if (hasBiasNeuron == 1) and (neuron == 1) then continue end -- Dropout are not applied to bias, so we skip them.
 
 					if (Random.new():NextNumber() <= nonDropoutRate) then continue end
@@ -717,12 +717,10 @@ end
 function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
-	
-	local numberOfData = #lossMatrix
 
 	local costFunctionDerivativeMatrixTable = self:calculateCostFunctionDerivativeMatrixTable(lossMatrix)
 
-	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrixTable, numberOfData)
+	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrixTable)
 
 	if (clearTables) then
 
@@ -1461,7 +1459,9 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 end
 
 function NeuralNetworkModel:train(featureMatrix, labelVector)
-
+	
+	local numberOfData = #featureMatrix
+	
 	local numberOfFeatures = #featureMatrix[1]
 
 	local numberOfNeuronsAtInputLayer = self.numberOfNeuronsTable[1] + self.hasBiasNeuronTable[1]
@@ -1525,6 +1525,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		end
 
 		lossMatrix = AqwamMatrixLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
+		
+		lossMatrix = AqwamMatrixLibrary:divide(lossMatrix, numberOfData)
 
 		self:backPropagate(lossMatrix, true)
 

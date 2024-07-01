@@ -122,7 +122,7 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
 end
 
-local function median(array)
+local function getMedian(array)
 	
 	table.sort(array)
 	
@@ -158,7 +158,7 @@ local function setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, 
 
 	if (preferenceType == "Median") then
 		
-		preferenceValue = median(triangularElementArray)
+		preferenceValue = getMedian(triangularElementArray)
 
 	elseif (preferenceType == "Minimum") then
 

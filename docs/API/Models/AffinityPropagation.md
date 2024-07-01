@@ -17,7 +17,7 @@ Contains a table.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-AffinityPropagation.new(maxNumberOfIterations: integer, distanceFunction: string, damping: number): ModelObject
+AffinityPropagation.new(maxNumberOfIterations: integer, distanceFunction: string, preferenceType: string, damping: number, preferenceValueArray: {number}): ModelObject
 ```
 
 #### Parameters:
@@ -26,13 +26,25 @@ AffinityPropagation.new(maxNumberOfIterations: integer, distanceFunction: string
 
 * distanceFunction: The distance function to be used. Available options are:
 
-    * Euclidean
+    * Euclidean (Default)
       
     * Manhattan
       
     * Cosine
 
+* preferenceType: Determines how the calculations for preferences are calculated. Available options are:
+
+   * Median (Default)
+   
+   * Minimum
+ 
+   * Maximum
+ 
+   * Precomputed
+
 * damping: A high value leads to fewer changes, while a low value leads to more exploration. The value can be set between 0 and 1.
+
+* preferenceValueArray: An array containing preference values. The index determines the preference value for number of data for that index. Can only be used with "Precomputed" preferenceType.
 
 #### Returns:
 
@@ -60,7 +72,19 @@ AffinityPropagation:setParameters(maxNumberOfIterations: integer, distanceFuncti
       
     * Cosine
 
-* damping: A high value leads to fewer changes, while a low value leads to more exploration. The value is set between 0 and 1.
+* preferenceType: Determines how the calculations for preferences are calculated. Available options are:
+
+   * Median
+   
+   * Minimum
+ 
+   * Maximum
+ 
+   * Precomputed
+
+* damping: A high value leads to fewer changes, while a low value leads to more exploration. The value can be set between 0 and 1.
+
+* preferenceValueArray: An array containing preference values. The index determines the preference value for number of data for that index. Can only be used with "Precomputed" preferenceType.
 
 ### train()
 

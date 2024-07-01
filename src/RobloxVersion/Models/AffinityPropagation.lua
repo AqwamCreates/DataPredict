@@ -353,8 +353,6 @@ function AffinityPropagationModel:train(featureMatrix)
 	local numberOfIterations = 0
 	
 	local isConverged = false
-	
-	local preferenceVector
 
 	local responsibilityMatrix
 

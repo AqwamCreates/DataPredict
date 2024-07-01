@@ -714,10 +714,10 @@ end
 
 function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	
-	local numberOfData = #lossMatrix
-	
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 
+	local numberOfData = #lossMatrix
+		
 	local costFunctionDerivativeMatrixTable = self:calculateCostFunctionDerivativeMatrixTable(lossMatrix)
 
 	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrixTable, numberOfData)

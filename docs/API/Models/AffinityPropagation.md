@@ -57,7 +57,7 @@ AffinityPropagation.new(maxNumberOfIterations: integer, distanceFunction: string
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-AffinityPropagation:setParameters(maxNumberOfIterations: integer, distanceFunction: string, damping: number)
+AffinityPropagation:setParameters(maxNumberOfIterations: integer, distanceFunction: string, preferenceType: string, damping: number, preferenceValueArray: {number})
 ```
 
 #### Parameters:

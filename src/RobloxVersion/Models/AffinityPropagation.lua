@@ -174,6 +174,8 @@ end
 
 local function calculateAvailibilityMatrix(availibilityMatrix, responsibilityMatrix, damping)
 	
+	local updateFactor = 1 - damping
+	
 	local numberOfData = #availibilityMatrix
 
 	for i = 1, numberOfData, 1 do
@@ -196,7 +198,7 @@ local function calculateAvailibilityMatrix(availibilityMatrix, responsibilityMat
 
 				end
 				
-				availability = (damping * (responsibilityMatrix[j][j] + sumMaxAvailability)) + ((1 - damping) * availibilityMatrix[i][j])
+				availability = (updateFactor * (responsibilityMatrix[j][j] + sumMaxAvailability)) + (damping * availibilityMatrix[i][j])
 				
 				availability = math.min(0, availability)
 				
@@ -212,7 +214,7 @@ local function calculateAvailibilityMatrix(availibilityMatrix, responsibilityMat
 
 				end
 				
-				availability = (damping * sumMaxAvailability) + ((1 - damping) * availibilityMatrix[i][j])
+				availability = (updateFactor * sumMaxAvailability) + (damping * availibilityMatrix[i][j])
 
 			end
 			

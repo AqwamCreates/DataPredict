@@ -374,8 +374,6 @@ function AffinityPropagationModel:train(featureMatrix)
 
 		availabilityMatrix = ModelParameters[4]
 		
-		preferenceVector = ModelParameters[5]
-		
 	end
 	
 	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, self.distanceFunction)
@@ -418,7 +416,7 @@ function AffinityPropagationModel:train(featureMatrix)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 
-	self.ModelParameters = {featureMatrix, clusterVector, responsibilityMatrix, availabilityMatrix, preferenceVector}
+	self.ModelParameters = {featureMatrix, clusterVector, responsibilityMatrix, availabilityMatrix}
 
 	return costArray
 

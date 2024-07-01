@@ -20,13 +20,15 @@
 
 --]]
 
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 local AffinityPropagationModel = {}
 
 AffinityPropagationModel.__index = AffinityPropagationModel
 
 setmetatable(AffinityPropagationModel, BaseModel)
+
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 
@@ -118,7 +120,7 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
 end
 
-local function initializePreferences(featureMatrix, distanceFunction)
+local function initializePreferenceVector(featureMatrix, distanceFunction)
 	
 	local numberOfData = #featureMatrix
 	
@@ -328,11 +330,13 @@ function AffinityPropagationModel:train(featureMatrix)
 
 	local numberOfFeatures = #featureMatrix[1]
 
-	--local preferenceVector = initializePreferences(featureMatrix, self.distanceFunction)
+	local preferenceVector = initializePreferenceVector(featureMatrix, self.distanceFunction)
 
 	local similarityMatrix = createDistanceMatrix(featureMatrix, featureMatrix, self.distanceFunction)
 	
 	similarityMatrix = AqwamMatrixLibrary:multiply(-1, similarityMatrix)
+	
+	similarityMatrix = calculateSimilarityMatrix(featureMatrix, similarityMatrix, preferenceVector)
 
 	local responsibilityMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfData)
 
@@ -353,8 +357,6 @@ function AffinityPropagationModel:train(featureMatrix)
 		numberOfIterations += 1
 		
 		self:iterationWait()
-
-		--similarityMatrix = calculateSimilarityMatrix(featureMatrix, similarityMatrix, preferenceVector)
 
 		responsibilityMatrix = calculateResponsibilityMatrix(responsibilityMatrix, similarityMatrix, availabilityMatrix)
 

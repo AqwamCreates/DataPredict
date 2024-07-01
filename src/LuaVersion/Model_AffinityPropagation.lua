@@ -1,4 +1,4 @@
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 local AffinityPropagationModel = {}
 
@@ -6,7 +6,7 @@ AffinityPropagationModel.__index = AffinityPropagationModel
 
 setmetatable(AffinityPropagationModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaxNumberOfIterations = 500
 

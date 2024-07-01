@@ -136,9 +136,9 @@ end
 
 function LinearRegressionModel:update(lossMatrix, clearFeatureMatrix, doNotUpdateModelParameters)
 	
-	local numberOfData = #lossMatrix
-	
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+
+	local numberOfData = #lossMatrix
 	
 	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
 	

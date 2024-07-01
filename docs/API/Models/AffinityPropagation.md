@@ -32,9 +32,11 @@ AffinityPropagation.new(maxNumberOfIterations: integer, distanceFunction: string
       
     * Cosine
 
-* preferenceType: Determines how the calculations for preferences are calculated. Available options are:
+* preferenceType: Determines how preferences are calculated. Available options are:
 
    * Median (Default)
+ 
+   * Average
    
    * Minimum
  
@@ -72,9 +74,11 @@ AffinityPropagation:setParameters(maxNumberOfIterations: integer, distanceFuncti
       
     * Cosine
 
-* preferenceType: Determines how the calculations for preferences are calculated. Available options are:
+* preferenceType: Determines how preferences are calculated. Available options are:
 
    * Median
+ 
+   * Average
    
    * Minimum
  

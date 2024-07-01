@@ -12,7 +12,7 @@ Contains a table.
 
 * ModelParameters[3]: Contains the responsibility matrix of (m x m) size, where m is the number of data.
 
-* ModelParameters[3]: Contains the availability matrix of (m x m) size, where m is the number of data.
+* ModelParameters[4]: Contains the availability matrix of (m x m) size, where m is the number of data.
 
 ## Constructors
 

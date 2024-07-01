@@ -108,13 +108,27 @@ local function getMedian(array)
 	
 	if ((#array % 2) == 0) then
 		
-		return (array[mid] + array[mid + 1]) / 2
+		return ((array[mid] + array[mid + 1]) / 2)
 		
 	else
 		
 		return array[mid + 1]
 		
 	end
+	
+end
+
+local function getAverage(array)
+	
+	local total = 0
+	
+	for _, value in ipairs(array) do
+		
+		total = total + value
+		
+	end
+	
+	return (total / #array)
 	
 end
 
@@ -137,6 +151,10 @@ local function setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, 
 	if (preferenceType == "Median") then
 		
 		preferenceValue = getMedian(triangularElementArray)
+		
+	elseif (preferenceType == "Average") then
+
+		preferenceValue = getAverage(triangularElementArray)
 
 	elseif (preferenceType == "Minimum") then
 

@@ -8,7 +8,11 @@ Contains a table.
 
 * ModelParameters[1]: Contains previously stored feature matrix.
 
-* ModelParameters[2]: Contains an array with the length of m containing cluster numbers, where m is the number of data from previous feature matrix. The cluster numbers can be intepreted as the index pointing to a feature vector from the previous feature matrix.
+* ModelParameters[2]: Contains the cluster number array that has a length of m, where m is the number of data from previous feature matrix and its values contains the cluster numbers indicating which of the clusters that each feature vector belongs to.
+
+* ModelParameters[3]: Contains the responsibility matrix of (m x m) size, where m is the number of data.
+
+* ModelParameters[3]: Contains the availability matrix of (m x m) size, where m is the number of data.
 
 ## Constructors
 

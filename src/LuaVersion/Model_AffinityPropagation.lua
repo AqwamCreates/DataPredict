@@ -165,7 +165,7 @@ local function setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, 
 		preferenceValue = math.max(table.unpack(triangularElementArray))
 		
 	elseif (preferenceType == "Precomputed") then
-
+		
 		if (preferenceValueArray == nil) then error("No preference value array!") end
 		
 		if (#preferenceValueArray ~= numberOfData) then error("The length of the preference value array is not equal to number of data!") end
@@ -278,13 +278,13 @@ local function calculateAvailibilityMatrix(responsibilityMatrix, availibilityMat
 
 end
 
-local function calculateCost(clusters, responsibilityMatrix)
+local function calculateCost(clusterNumberArray, responsibilityMatrix)
 
 	local totalCost = 0
 
-	for i = 1, #clusters do
+	for i = 1, #clusterNumberArray do
 
-		totalCost += responsibilityMatrix[i][clusters[i][1]]
+		totalCost += responsibilityMatrix[i][clusterNumberArray[i]]
 
 	end
 
@@ -296,7 +296,7 @@ local function assignClusters(responsibilityMatrix, availibilityMatrix)
 	
 	local calculatedValuesMatrix = AqwamMatrixLibrary:add(responsibilityMatrix, availibilityMatrix)
 	
-	local clusterVector = AqwamMatrixLibrary:createMatrix(#responsibilityMatrix, 1)
+	local clusterNumberArray = {}
 	
 	for i = 1, #calculatedValuesMatrix, 1 do
 		
@@ -308,11 +308,11 @@ local function assignClusters(responsibilityMatrix, availibilityMatrix)
 
 		local clusterNumber = clusterIndexArray[2]
 
-		clusterVector[i][1] = clusterNumber
+		clusterNumberArray[i] = clusterNumber
 		
 	end
 
-	return clusterVector
+	return clusterNumberArray
 
 end
 
@@ -364,7 +364,7 @@ function AffinityPropagationModel:train(featureMatrix)
 
 	local availabilityMatrix
 
-	local clusterVector
+	local clusterNumberArray
 
 	local cost
 	
@@ -398,11 +398,11 @@ function AffinityPropagationModel:train(featureMatrix)
 
 		availabilityMatrix = calculateAvailibilityMatrix(responsibilityMatrix, availabilityMatrix, self.damping)
 		
-		clusterVector = assignClusters(responsibilityMatrix, availabilityMatrix)
+		clusterNumberArray = assignClusters(responsibilityMatrix, availabilityMatrix)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			return calculateCost(clusterVector, responsibilityMatrix)
+			return calculateCost(clusterNumberArray, responsibilityMatrix)
 			
 		end) 
 		
@@ -418,7 +418,7 @@ function AffinityPropagationModel:train(featureMatrix)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 
-	self.ModelParameters = {featureMatrix, clusterVector, responsibilityMatrix, availabilityMatrix}
+	self.ModelParameters = {featureMatrix, clusterNumberArray, responsibilityMatrix, availabilityMatrix}
 
 	return costArray
 
@@ -430,7 +430,7 @@ function AffinityPropagationModel:predict(featureMatrix)
 	
 	local predictedClusterVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
 	
-	local storedFeatureMatrix, clusterVector = table.unpack(self.ModelParameters)
+	local storedFeatureMatrix, clusterNumberArray = table.unpack(self.ModelParameters)
 	
 	local distanceMatrix = createDistanceMatrix(featureMatrix, storedFeatureMatrix, self.distanceFunction)
 	
@@ -444,7 +444,7 @@ function AffinityPropagationModel:predict(featureMatrix)
 		
 		local storedFeatureMatrixRowIndex = index[2]
 		
-		predictedClusterVector[i][1] = clusterVector[storedFeatureMatrixRowIndex][1]
+		predictedClusterVector[i][1] = clusterNumberArray[storedFeatureMatrixRowIndex]
 		
 		maxSimilarityVector[i][1] = distanceVector[1][storedFeatureMatrixRowIndex]
 		

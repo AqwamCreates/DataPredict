@@ -14,6 +14,8 @@ local defaultDamping = 0.5
 
 local defaultDistanceFunction = "Euclidean"
 
+local defaultPreferenceType = "Median"
+
 local distanceFunctionList = {
 
 	["Manhattan"] = function (x1, x2)
@@ -88,7 +90,7 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
 		for j = 1, numberOfData2, 1 do
 
-			distanceMatrix[i][j] = calculateDistance({matrix1[i]}, {matrix2[j]} , distanceFunction)
+			distanceMatrix[i][j] = calculateDistance({matrix1[i]}, {matrix2[j]}, distanceFunction)
 
 		end
 
@@ -98,51 +100,65 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
 end
 
-local function initializePreferenceVector(featureMatrix, distanceFunction)
+local function median(array)
 	
-	local numberOfData = #featureMatrix
+	table.sort(array)
 	
-	local numberOfFeatures = #featureMatrix[1]
+	local mid = math.floor(#array / 2)
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, distanceFunction)
+	if ((#array % 2) == 0) then
+		
+		return (array[mid] + array[mid + 1]) / 2
+		
+	else
+		
+		return array[mid + 1]
+		
+	end
 	
-	local preferencesVector = AqwamMatrixLibrary:horizontalSum(distanceMatrix)
-	
-	preferencesVector = AqwamMatrixLibrary:divide(preferencesVector, -(numberOfData * numberOfFeatures))
-
-	return preferencesVector
-
 end
 
-local function calculateSimilarityMatrix(featureMatrix, similarityMatrix, preferenceVector)
+local function setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, preferenceType)
 	
-	local numberOfData = #featureMatrix
+	local preferenceValue
 	
-	local numberOfFeatures = #featureMatrix[1]
+	local triangularElementArray = {} -- Collect upper triangular non-diagonal elements
 
 	for i = 1, numberOfData do
-
-		for j = 1, numberOfData do
-
-			local similarity = -math.huge
-
-			for k = 1, numberOfFeatures do
-
-				similarity = math.max(similarity, featureMatrix[i][k] * featureMatrix[j][k])
-
-			end
-
-			similarityMatrix[i][j] = similarity + preferenceVector[i][1]
-
+		
+		for j = i + 1, numberOfData do
+			
+			table.insert(triangularElementArray, similarityMatrix[i][j])
+			
 		end
+		
+	end
 
+	if (preferenceType == "Median") then
+		
+		preferenceValue = median(triangularElementArray)
+
+	elseif (preferenceType == "Minimum") then
+
+		preferenceValue = math.min(table.unpack(triangularElementArray))
+		
+	else
+
+		error("Invalid preference type!")
+
+	end
+	
+	for i = 1, numberOfData do -- Fill diagonal with the computed preference value
+		
+		similarityMatrix[i][i] = preferenceValue
+		
 	end
 	
 	return similarityMatrix
 
 end
 
-local function calculateResponsibilityMatrix(responsibilityMatrix, similarityMatrix, availabilityMatrix)
+local function calculateResponsibilityMatrix(responsibilityMatrix, availabilityMatrix, similarityMatrix)
 	
 	local numberOfData = #responsibilityMatrix
 
@@ -154,11 +170,9 @@ local function calculateResponsibilityMatrix(responsibilityMatrix, similarityMat
 
 			for k = 1, numberOfData do
 
-				if k ~= j then
+				if (k == j) then continue end
 
-					maxResponsibility = math.max(maxResponsibility, similarityMatrix[i][k] + availabilityMatrix[k][j])
-
-				end
+				maxResponsibility = math.max(maxResponsibility, similarityMatrix[i][k] + availabilityMatrix[k][j])
 
 			end
 
@@ -172,11 +186,11 @@ local function calculateResponsibilityMatrix(responsibilityMatrix, similarityMat
 
 end
 
-local function calculateAvailibilityMatrix(availibilityMatrix, responsibilityMatrix, damping)
+local function calculateAvailibilityMatrix(responsibilityMatrix, availibilityMatrix, damping)
 	
 	local updateFactor = 1 - damping
 	
-	local numberOfData = #availibilityMatrix
+	local numberOfData = #responsibilityMatrix
 
 	for i = 1, numberOfData, 1 do
 
@@ -242,7 +256,7 @@ local function calculateCost(clusters, responsibilityMatrix)
 
 end
 
-local function assignClusters(availibilityMatrix, responsibilityMatrix)
+local function assignClusters(responsibilityMatrix, availibilityMatrix)
 	
 	local calculatedValuesMatrix = AqwamMatrixLibrary:add(responsibilityMatrix, availibilityMatrix)
 	
@@ -266,7 +280,7 @@ local function assignClusters(availibilityMatrix, responsibilityMatrix)
 
 end
 
-function AffinityPropagationModel.new(maxNumberOfIterations, distanceFunction, damping)
+function AffinityPropagationModel.new(maxNumberOfIterations, distanceFunction, preferenceType, damping)
 
 	local NewAffinityPropagationModel = BaseModel.new()
 
@@ -275,6 +289,8 @@ function AffinityPropagationModel.new(maxNumberOfIterations, distanceFunction, d
 	NewAffinityPropagationModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
 	
 	NewAffinityPropagationModel.distanceFunction = distanceFunction or defaultDistanceFunction
+	
+	NewAffinityPropagationModel.preferenceType = preferenceType or defaultPreferenceType
 
 	NewAffinityPropagationModel.damping = damping or defaultDamping
 
@@ -282,53 +298,59 @@ function AffinityPropagationModel.new(maxNumberOfIterations, distanceFunction, d
 
 end
 
-function AffinityPropagationModel:setParameters(maxNumberOfIterations, distanceFunction, damping)
+function AffinityPropagationModel:setParameters(maxNumberOfIterations, distanceFunction, preferenceType, damping)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
 	self.distanceFunction = distanceFunction or self.distanceFunction
+	
+	self.preferenceType = preferenceType or self.preferenceType
 
 	self.damping = damping or self.damping
 
 end
 
 function AffinityPropagationModel:train(featureMatrix)
-	
-	if (self.ModelParameters) then
-		
-		local storedFeatureMatrix = self.ModelParameters[1]
-
-		if (#storedFeatureMatrix[1] ~= #featureMatrix[1]) then error("The previous and current feature matrices do not have the same number of features.") end 
-
-		featureMatrix = AqwamMatrixLibrary:verticalConcatenate(featureMatrix, storedFeatureMatrix)
-		
-	end
 
 	local numberOfData = #featureMatrix
-
-	local numberOfFeatures = #featureMatrix[1]
-
-	local preferenceVector = initializePreferenceVector(featureMatrix, self.distanceFunction)
-
-	local similarityMatrix = createDistanceMatrix(featureMatrix, featureMatrix, self.distanceFunction)
 	
-	similarityMatrix = AqwamMatrixLibrary:multiply(-1, similarityMatrix)
-	
-	similarityMatrix = calculateSimilarityMatrix(featureMatrix, similarityMatrix, preferenceVector)
-
-	local responsibilityMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfData)
-
-	local availabilityMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfData)
-
 	local numberOfIterations = 0
+	
+	local isConverged = false
+	
+	local preferenceVector
+
+	local responsibilityMatrix
+
+	local availabilityMatrix
 
 	local clusterVector
-
-	local isConverged = false
 
 	local costArray = {}
 
 	local cost
+	
+	local ModelParameters = self.ModelParameters
+	
+	if (ModelParameters) then
+		
+		responsibilityMatrix = ModelParameters[3]
+
+		availabilityMatrix = ModelParameters[4]
+		
+		preferenceVector = ModelParameters[5]
+		
+	end
+	
+	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, self.distanceFunction)
+	
+	local similarityMatrix = AqwamMatrixLibrary:multiply(-1, distanceMatrix)
+	
+	responsibilityMatrix = responsibilityMatrix or AqwamMatrixLibrary:createMatrix(numberOfData, numberOfData)
+	
+	availabilityMatrix = availabilityMatrix or AqwamMatrixLibrary:createMatrix(numberOfData, numberOfData)
+
+	similarityMatrix = setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, self.preferenceType)
 
 	repeat
 		
@@ -336,11 +358,13 @@ function AffinityPropagationModel:train(featureMatrix)
 		
 		self:iterationWait()
 
-		responsibilityMatrix = calculateResponsibilityMatrix(responsibilityMatrix, similarityMatrix, availabilityMatrix)
+		responsibilityMatrix = calculateResponsibilityMatrix(responsibilityMatrix, availabilityMatrix, similarityMatrix)
 
-		availabilityMatrix = calculateAvailibilityMatrix(availabilityMatrix, responsibilityMatrix, self.damping)
+		availabilityMatrix = calculateAvailibilityMatrix(responsibilityMatrix, availabilityMatrix, self.damping)
 		
-		clusterVector = assignClusters(availabilityMatrix, responsibilityMatrix)
+		
+		
+		clusterVector = assignClusters(responsibilityMatrix, availabilityMatrix)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
@@ -360,7 +384,7 @@ function AffinityPropagationModel:train(featureMatrix)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 
-	self.ModelParameters = {featureMatrix, clusterVector}
+	self.ModelParameters = {featureMatrix, clusterVector, responsibilityMatrix, availabilityMatrix, preferenceVector}
 
 	return costArray
 

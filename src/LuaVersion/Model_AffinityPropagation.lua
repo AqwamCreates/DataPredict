@@ -354,15 +354,13 @@ function AffinityPropagationModel:train(featureMatrix)
 	
 	local isConverged = false
 	
-	local preferenceVector
+	local costArray = {}
 
 	local responsibilityMatrix
 
 	local availabilityMatrix
 
 	local clusterVector
-
-	local costArray = {}
 
 	local cost
 	

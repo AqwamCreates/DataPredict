@@ -308,7 +308,7 @@ function AffinityPropagationModel.new(maxNumberOfIterations, distanceFunction, p
 
 	NewAffinityPropagationModel.damping = damping or defaultDamping
 	
-	NewAffinityPropagationModel.preferenceValueArray = preferenceValueArray or NewAffinityPropagationModel.preferenceValueArray
+	NewAffinityPropagationModel.preferenceValueArray = preferenceValueArray
 
 	return NewAffinityPropagationModel
 

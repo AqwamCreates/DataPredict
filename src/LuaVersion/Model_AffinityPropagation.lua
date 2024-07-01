@@ -354,15 +354,13 @@ function AffinityPropagationModel:train(featureMatrix)
 	
 	local isConverged = false
 	
-	local preferenceVector
+	local costArray = {}
 
 	local responsibilityMatrix
 
 	local availabilityMatrix
 
 	local clusterVector
-
-	local costArray = {}
 
 	local cost
 	
@@ -373,8 +371,6 @@ function AffinityPropagationModel:train(featureMatrix)
 		responsibilityMatrix = ModelParameters[3]
 
 		availabilityMatrix = ModelParameters[4]
-		
-		preferenceVector = ModelParameters[5]
 		
 	end
 	
@@ -418,7 +414,7 @@ function AffinityPropagationModel:train(featureMatrix)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 
-	self.ModelParameters = {featureMatrix, clusterVector, responsibilityMatrix, availabilityMatrix, preferenceVector}
+	self.ModelParameters = {featureMatrix, clusterVector, responsibilityMatrix, availabilityMatrix}
 
 	return costArray
 

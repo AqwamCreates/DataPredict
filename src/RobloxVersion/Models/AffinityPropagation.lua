@@ -100,7 +100,7 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
 end
 
-local function median(array)
+local function getMedian(array)
 	
 	table.sort(array)
 	
@@ -118,15 +118,15 @@ local function median(array)
 	
 end
 
-local function setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, preferenceType)
+local function setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, preferenceType, preferenceValueArray)
 	
 	local preferenceValue
 	
 	local triangularElementArray = {} -- Collect upper triangular non-diagonal elements
 
-	for i = 1, numberOfData do
+	for i = 1, numberOfData, 1 do
 		
-		for j = i + 1, numberOfData do
+		for j = i + 1, numberOfData, 1 do
 			
 			table.insert(triangularElementArray, similarityMatrix[i][j])
 			
@@ -136,11 +136,17 @@ local function setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, 
 
 	if (preferenceType == "Median") then
 		
-		preferenceValue = median(triangularElementArray)
+		preferenceValue = getMedian(triangularElementArray)
 
 	elseif (preferenceType == "Minimum") then
 
 		preferenceValue = math.min(table.unpack(triangularElementArray))
+		
+	elseif (preferenceType == "Maximum") then
+
+		preferenceValue = math.max(table.unpack(triangularElementArray))
+		
+	elseif (preferenceType == "Precomputed") then
 		
 	else
 
@@ -150,7 +156,15 @@ local function setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, 
 	
 	for i = 1, numberOfData do -- Fill diagonal with the computed preference value
 		
-		similarityMatrix[i][i] = preferenceValue
+		if (preferenceType == "Precomputed") then
+			
+			similarityMatrix[i][i] = preferenceValueArray[i]
+			
+		else
+			
+			similarityMatrix[i][i] = preferenceValue
+			
+		end
 		
 	end
 	
@@ -280,7 +294,7 @@ local function assignClusters(responsibilityMatrix, availibilityMatrix)
 
 end
 
-function AffinityPropagationModel.new(maxNumberOfIterations, distanceFunction, preferenceType, damping)
+function AffinityPropagationModel.new(maxNumberOfIterations, distanceFunction, preferenceType, damping, preferenceValueArray)
 
 	local NewAffinityPropagationModel = BaseModel.new()
 
@@ -293,12 +307,14 @@ function AffinityPropagationModel.new(maxNumberOfIterations, distanceFunction, p
 	NewAffinityPropagationModel.preferenceType = preferenceType or defaultPreferenceType
 
 	NewAffinityPropagationModel.damping = damping or defaultDamping
+	
+	NewAffinityPropagationModel.preferenceValueArray = preferenceValueArray or NewAffinityPropagationModel.preferenceValueArray
 
 	return NewAffinityPropagationModel
 
 end
 
-function AffinityPropagationModel:setParameters(maxNumberOfIterations, distanceFunction, preferenceType, damping)
+function AffinityPropagationModel:setParameters(maxNumberOfIterations, distanceFunction, preferenceType, damping, preferenceValueArray)
 
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
@@ -307,7 +323,9 @@ function AffinityPropagationModel:setParameters(maxNumberOfIterations, distanceF
 	self.preferenceType = preferenceType or self.preferenceType
 
 	self.damping = damping or self.damping
-
+	
+	self.preferenceValueArray = preferenceValueArray or self.preferenceValueArray
+	
 end
 
 function AffinityPropagationModel:train(featureMatrix)
@@ -350,7 +368,7 @@ function AffinityPropagationModel:train(featureMatrix)
 	
 	availabilityMatrix = availabilityMatrix or AqwamMatrixLibrary:createMatrix(numberOfData, numberOfData)
 
-	similarityMatrix = setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, self.preferenceType)
+	similarityMatrix = setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, self.preferenceType, self.preferenceValueArray)
 
 	repeat
 		
@@ -361,8 +379,6 @@ function AffinityPropagationModel:train(featureMatrix)
 		responsibilityMatrix = calculateResponsibilityMatrix(responsibilityMatrix, availabilityMatrix, similarityMatrix)
 
 		availabilityMatrix = calculateAvailibilityMatrix(responsibilityMatrix, availabilityMatrix, self.damping)
-		
-		
 		
 		clusterVector = assignClusters(responsibilityMatrix, availabilityMatrix)
 		

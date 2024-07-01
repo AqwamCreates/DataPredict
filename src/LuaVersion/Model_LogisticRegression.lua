@@ -177,11 +177,11 @@ function LogisticRegressionModel:gradientDescent(costFunctionDerivativeMatrix, n
 end
 
 function LogisticRegressionModel:update(lossMatrix, clearFeatureMatrix)
-	
-	local numberOfData = #lossMatrix
 
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 
+	local numberOfData = #lossMatrix
+	
 	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
 
 	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)

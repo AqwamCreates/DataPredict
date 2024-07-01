@@ -166,6 +166,8 @@ local function setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, 
 		
 	elseif (preferenceType == "Precomputed") then
 
+		if (preferenceValueArray == nil) then error("No preference value array!") end
+		
 		if (#preferenceValueArray ~= numberOfData) then error("The length of the preference value array does not match number of data!") end
 	
 	else

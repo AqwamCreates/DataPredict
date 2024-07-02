@@ -132,7 +132,7 @@ local function convertValueArrayToPercentageArray(array)
 
 		else
 
-			percentage = (value / total)
+			percentage = math.abs(value / total)
 
 		end
 

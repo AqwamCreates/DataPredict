@@ -351,17 +351,19 @@ function KMedoidsModel:train(featureMatrix)
 	
 	local distanceFunction = self.distanceFunction
 	
+	local setTheCentroidsDistanceFarthest = self.setTheCentroidsDistanceFarthest
+	
 	local ModelParameters = self.ModelParameters
 	
 	if (ModelParameters) then
 		
 		if (#featureMatrix[1] ~= #ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
 		
-		currentCost = calculateCost(ModelParameters, featureMatrix, self.distanceFunction)
+		currentCost = calculateCost(ModelParameters, featureMatrix, distanceFunction)
 		
 	else
 		
-		ModelParameters = initializeCentroids(featureMatrix, self.numberOfClusters, self.distanceFunction, self.setTheCentroidsDistanceFarthest)
+		ModelParameters = initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
 		
 		currentCost = math.huge
 		
@@ -393,7 +395,7 @@ function KMedoidsModel:train(featureMatrix)
 
 				end
 				
-				numberOfIterations += 1
+				numberOfIterations = numberOfIterations + 1
 
 				table.insert(costArray, currentCost)
 

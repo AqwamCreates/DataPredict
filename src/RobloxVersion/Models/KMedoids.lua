@@ -369,7 +369,7 @@ function KMedoidsModel:train(featureMatrix)
 		
 	end
 	
-	for iteration = 1, numberOfClusters, 1 do
+	repeat
 		
 		self:iterationWait()
 		
@@ -409,9 +409,7 @@ function KMedoidsModel:train(featureMatrix)
 
 		end
 		
-		if (numberOfIterations >= maxNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
-		
-	end
+	until (numberOfIterations >= maxNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost)
 	
 	if (currentCost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

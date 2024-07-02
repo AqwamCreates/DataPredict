@@ -65,7 +65,7 @@ local distanceFunctionList = {
 		return distance 
 
 	end,
-
+	
 	["Cosine"] = function(x1, x2)
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
@@ -171,7 +171,7 @@ local function createDistanceMatrix(modelParameters, featureMatrix, distanceFunc
 end
 
 local function chooseFarthestCentroidFromDatasetDistanceMatrix(distanceMatrix, blacklistedDataIndexArray)
-	
+
 	local dataIndex
 
 	local maxDistance = -math.huge
@@ -278,7 +278,7 @@ local function createClusterAssignmentMatrix(distanceMatrix) -- contains values 
 
 		local distanceVector = {distanceMatrix[dataIndex]}
 
-		local _, vectorIndexArray = AqwamMatrixLibrary:findMaximumValueInMatrix(distanceVector)
+		local _, vectorIndexArray = AqwamMatrixLibrary:findMinimumValue(distanceVector)
 
 		if (vectorIndexArray == nil) then continue end
 
@@ -357,41 +357,39 @@ end
 
 function KMedoidsModel:train(featureMatrix)
 	
-	local distanceMatrix
-	
-	local PreviousModelParameters
-	
-	local areModelParametersEqual
+	local previousMedoid
 	
 	local previousCost
-	
-	local cost
-	
+
+	local currentCost
+
 	local costArray = {}
-	
+
 	local numberOfIterations = 0
 	
-	local featureRowVector
+	local maxNumberOfIterations = self.maxNumberOfIterations
 	
-	local medoidRowVector
+	local numberOfClusters = self.numberOfClusters
 	
-	local areSameVectors
+	local distanceFunction = self.distanceFunction
 	
-	if (self.ModelParameters) then
+	local ModelParameters = self.ModelParameters
+	
+	if (ModelParameters) then
 		
-		if (#featureMatrix[1] ~= #self.ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
+		if (#featureMatrix[1] ~= #ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
 		
-		cost = calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
+		currentCost = calculateCost(ModelParameters, featureMatrix, self.distanceFunction)
 		
 	else
 		
-		self.ModelParameters = initializeCentroids(featureMatrix, self.numberOfClusters, self.distanceFunction, self.setTheCentroidsDistanceFarthest)
+		ModelParameters = initializeCentroids(featureMatrix, self.numberOfClusters, self.distanceFunction, self.setTheCentroidsDistanceFarthest)
 		
-		cost = math.huge
+		currentCost = math.huge
 		
 	end
 	
-	for iteration = 1, self.numberOfClusters, 1 do
+	for iteration = 1, numberOfClusters, 1 do
 		
 		self:iterationWait()
 		
@@ -399,51 +397,45 @@ function KMedoidsModel:train(featureMatrix)
 			
 			self:dataWait()
 
-			featureRowVector = {featureMatrix[row]}
+			for medoid = 1, numberOfClusters, 1 do
 
-			for medoid = 1, self.numberOfClusters, 1 do
+				previousCost = currentCost
+				
+				previousMedoid = ModelParameters[medoid]
 
-				medoidRowVector = {self.ModelParameters[medoid]}
+				ModelParameters[medoid] = featureMatrix[row]
 
-				areSameVectors = AqwamMatrixLibrary:areMatricesEqual(medoidRowVector, featureRowVector)
+				currentCost = calculateCost(ModelParameters, featureMatrix, distanceFunction)
 
-				if (areSameVectors) then continue end
+				if (currentCost > previousCost) then
 
-				PreviousModelParameters = self.ModelParameters
+					ModelParameters[medoid] = previousMedoid
 
-				previousCost = cost
-
-				self.ModelParameters[medoid] = featureRowVector[1]
-
-				cost = calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
-
-				if (cost > previousCost) then
-
-					self.ModelParameters = PreviousModelParameters
-
-					cost = previousCost
+					currentCost = previousCost
 
 				end
 				
 				numberOfIterations = numberOfIterations + 1
 
-				table.insert(costArray, cost)
+				table.insert(costArray, currentCost)
 
-				self:printCostAndNumberOfIterations(cost, numberOfIterations)
+				self:printCostAndNumberOfIterations(currentCost, numberOfIterations)
 
-				if (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
+				if (numberOfIterations >= maxNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
 
 			end
 
-			if (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
+			if (numberOfIterations >= maxNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
 
 		end
 		
-		if (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
+		if (numberOfIterations >= maxNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
 		
 	end
 	
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	if (currentCost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	
+	self.ModelParameters = ModelParameters
 	
 	return costArray
 	

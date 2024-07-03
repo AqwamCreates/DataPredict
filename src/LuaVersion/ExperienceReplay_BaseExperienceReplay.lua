@@ -84,22 +84,6 @@ function BaseExperienceReplay:reset()
 	
 end
 
-function BaseExperienceReplay:setSampleFunction(sampleFunction)
-	
-	self.sampleFunction = sampleFunction
-	
-end
-
-function BaseExperienceReplay:sample()
-	
-	local sampleFunction = self.sampleFunction
-	
-	if not sampleFunction then error("No Sample Function!") end
-
-	return sampleFunction()
-	
-end
-
 function BaseExperienceReplay:setRunFunction(runFunction)
 	
 	self.runFunction = runFunction

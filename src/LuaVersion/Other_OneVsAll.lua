@@ -116,7 +116,7 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 
 	local OptimizerObject
 	
-	local isNameAdded = (type(optimizerName) == "string")
+	local isNameAdded = (typeof(optimizerName) == "string")
 	
 	local SelectedOptimizer
 	
@@ -314,7 +314,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 		
 		table.insert(costArray, totalCost)
 		
-		if (self.IsOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost) end
+		if (self.isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost) end
 		
 	until (numberOfIterations >= self.maxNumberOfIterations) or (totalCost <= self.targetTotalCost)
 	
@@ -420,7 +420,7 @@ end
 
 function OneVsAll:setPrintOutput(option) 
 
-	self.IsOutputPrinted = self:getBooleanOrDefaultOption(option, self.IsOutputPrinted)
+	self.isOutputPrinted = self:getBooleanOrDefaultOption(option, self.isOutputPrinted)
 
 end
 

@@ -60,7 +60,7 @@ BaseExperienceReplay:reset()
 
 ### setRunFunction()
 
-Sets a function so that this function will be called upon calling run function() 
+Sets the model's run function.
 
 ```
 BaseExperienceReplay:setRunFunction(updateFunction)

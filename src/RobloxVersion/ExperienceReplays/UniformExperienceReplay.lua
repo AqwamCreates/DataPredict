@@ -6,37 +6,37 @@ UniformExperienceReplay.__index = UniformExperienceReplay
 
 setmetatable(UniformExperienceReplay, BaseExperienceReplay)
 
+local function sample(replayBufferArray, batchSize)
+	
+	local batchArray = {}
+
+	local replayBufferArray = replayBufferArray
+
+	local replayBufferArraySize = #replayBufferArray
+
+	local lowestNumberOfBatchSize = math.min(batchSize, replayBufferArraySize)
+
+	for i = 1, lowestNumberOfBatchSize, 1 do
+
+		local index = Random.new():NextInteger(1, replayBufferArraySize)
+
+		table.insert(batchArray, replayBufferArray[index])
+
+	end
+
+	return batchArray
+	
+end
+
 function UniformExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 	
 	local NewUniformExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 	
 	setmetatable(NewUniformExperienceReplay, UniformExperienceReplay)
 	
-	NewUniformExperienceReplay:setSampleFunction(function()
-
-		local batchArray = {}
-
-		local replayBufferArray = NewUniformExperienceReplay.replayBufferArray
-		
-		local replayBufferArraySize = #replayBufferArray
-
-		local lowestNumberOfBatchSize = math.min(NewUniformExperienceReplay.batchSize, replayBufferArraySize)
-
-		for i = 1, lowestNumberOfBatchSize, 1 do
-
-			local index = Random.new():NextInteger(1, replayBufferArraySize)
-
-			table.insert(batchArray, replayBufferArray[index])
-
-		end
-
-		return batchArray
-
-	end)
-	
 	NewUniformExperienceReplay:setRunFunction(function(updateFunction)
 		
-		local experienceReplayBatchArray = NewUniformExperienceReplay:sample()
+		local experienceReplayBatchArray = sample(NewUniformExperienceReplay.replayBufferArray, NewUniformExperienceReplay.batchSize)
 
 		for _, experience in ipairs(experienceReplayBatchArray) do -- (s1, a, r, s2)
 

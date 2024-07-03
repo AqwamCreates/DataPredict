@@ -62,22 +62,6 @@ function BaseExperienceReplay:reset()
 	
 end
 
-function BaseExperienceReplay:setSampleFunction(sampleFunction)
-	
-	self.sampleFunction = sampleFunction
-	
-end
-
-function BaseExperienceReplay:sample()
-	
-	local sampleFunction = self.sampleFunction
-	
-	if not sampleFunction then error("No Sample Function!") end
-
-	return sampleFunction()
-	
-end
-
 function BaseExperienceReplay:setRunFunction(runFunction)
 	
 	self.runFunction = runFunction
@@ -102,7 +86,7 @@ end
 
 function BaseExperienceReplay:extendAddExperienceFunction(addExperienceFunction)
 	
-	self.AddExperienceFunction = addExperienceFunction
+	self.addExperienceFunction = addExperienceFunction
 	
 end
 
@@ -112,7 +96,7 @@ function BaseExperienceReplay:addExperience(previousFeatureVector, action, rewar
 
 	table.insert(self.replayBufferArray, experience)
 	
-	local addExperienceFunction = self.AddExperienceFunction
+	local addExperienceFunction = self.addExperienceFunction
 	
 	if (addExperienceFunction) then addExperienceFunction(previousFeatureVector, action, rewardValue, currentFeatureVector) end
 
@@ -124,7 +108,7 @@ end
 
 function BaseExperienceReplay:extendAddTemporalDifferenceErrorFunction(addTemporalDifferenceErrorFunction)
 	
-	self.AddTemporalDifferenceErrorFunction = addTemporalDifferenceErrorFunction
+	self.addTemporalDifferenceErrorFunction = addTemporalDifferenceErrorFunction
 	
 end
 
@@ -134,7 +118,7 @@ function BaseExperienceReplay:addTemporalDifferenceError(temporalDifferenceError
 	
 	table.insert(self.temporalDifferenceErrorArray, temporalDifferenceErrorVectorOrValue)
 	
-	local addTemporalDifferenceErrorFunction = self.AddTemporalDifferenceErrorFunction
+	local addTemporalDifferenceErrorFunction = self.addTemporalDifferenceErrorFunction
 	
 	if (addTemporalDifferenceErrorFunction) then addTemporalDifferenceErrorFunction(temporalDifferenceErrorVectorOrValue) end
 	

@@ -78,27 +78,19 @@ function BaseExperienceReplay:sample()
 	
 end
 
+function BaseExperienceReplay:setRunFunction(runFunction)
+	
+	self.runFunction = runFunction
+	
+end
+
 function BaseExperienceReplay:run(updateFunction)
 	
 	if (self.numberOfExperience < self.numberOfExperienceToUpdate) then return nil end
 	
 	self.numberOfExperience = 0
-
-	local experienceReplayBatchArray = self:sample()
-
-	for _, experience in ipairs(experienceReplayBatchArray) do -- (s1, a, r, s2)
-		
-		local previousFeatureVector = experience[1]
-		
-		local action = experience[2]
-		
-		local rewardValue = experience[3]
-		
-		local currentFeatureVector = experience[4]
-
-		updateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-	end
+	
+	self.runFunction(updateFunction)
 	
 end
 
@@ -122,7 +114,7 @@ function BaseExperienceReplay:addExperience(previousFeatureVector, action, rewar
 	
 	local addExperienceFunction = self.AddExperienceFunction
 	
-	if (addExperienceFunction) then addExperienceFunction(experience) end
+	if (addExperienceFunction) then addExperienceFunction(previousFeatureVector, action, rewardValue, currentFeatureVector) end
 
 	self:removeLastValueFromArrayIfExceedsBufferSize(self.replayBufferArray)
 	

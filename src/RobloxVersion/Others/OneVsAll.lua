@@ -424,7 +424,6 @@ end
 
 function OneVsAll:setTargetCost(upperBound, lowerBound)
 	
-
 	for _, Model in ipairs(self.ModelsArray) do Model:setTargetCost(upperBound, lowerBound) end
 	
 end

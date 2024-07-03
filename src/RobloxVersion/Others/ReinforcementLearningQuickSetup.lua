@@ -130,9 +130,9 @@ function ReinforcementLearningQuickSetup:setModel(Model)
 
 end
 
-function ReinforcementLearningQuickSetup:setClassesList(classesList)
+function ReinforcementLearningQuickSetup:setClassesList(ClassesList)
 
-	self.ClassesList = classesList
+	self.ClassesList = ClassesList
 
 end
 
@@ -204,7 +204,7 @@ function ReinforcementLearningQuickSetup:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, classesList, childModelNumber)
+function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, ClassesList, childModelNumber)
 	
 	local allOutputsMatrix = self.Model:predict(currentFeatureVector, true, childModelNumber)
 	
@@ -228,7 +228,7 @@ function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, clas
 		
 		local actionIndex = sampleAction(actionProbabilityVector)
 		
-		action = classesList[actionIndex]
+		action = ClassesList[actionIndex]
 		
 		selectedValue = allOutputsMatrix[1][actionIndex]
 		
@@ -250,7 +250,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	
 	local Model = self.Model
 	
-	local classesList = self.ClassesList
+	local ClassesList = self.ClassesList
 	
 	local updateFunction = self.updateFunction
 
@@ -266,11 +266,11 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	if (randomProbability < self.currentEpsilon) then
 
-		local numberOfClasses = #classesList
+		local numberOfClasses = #ClassesList
 
 		local randomNumber = Random.new():NextInteger(1, numberOfClasses)
 
-		action = classesList[randomNumber]
+		action = ClassesList[randomNumber]
 
 		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, numberOfClasses)
 
@@ -278,7 +278,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	else
 
-		action, selectedValue, allOutputsMatrix = self:selectAction(currentFeatureVector, classesList, childModelNumber)
+		action, selectedValue, allOutputsMatrix = self:selectAction(currentFeatureVector, ClassesList, childModelNumber)
 
 	end
 

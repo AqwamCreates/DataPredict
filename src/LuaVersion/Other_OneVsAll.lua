@@ -90,9 +90,9 @@ function OneVsAll:setModels(modelName, numberOfClasses)
 	
 	local ModelsArray = {}
 	
-	local isNameAdded = (type(modelName) == "string")
+	local isNameAdded = (typeof(modelName) == "string")
 	
-	if isNameAdded then  SelectedModel = require("Model_" .. modelName) end
+	if isNameAdded then  SelectedModel = require(Models[modelName]) end
 	
 	for i = 1, numberOfClasses, 1 do
 
@@ -120,7 +120,7 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 	
 	local SelectedOptimizer
 	
-	if isNameAdded then SelectedOptimizer = require("Optimizer_" .. optimizerName) end
+	if isNameAdded then SelectedOptimizer = require(Optimizers[optimizerName]) end
 	
 	local success = pcall(function()
 		
@@ -144,7 +144,7 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 
 		end
 
-		Model:setOptimizer(OptimizerObject)
+		Model:setOptimizer(OptimizerObject) 
 
 	end
 	
@@ -196,11 +196,11 @@ function OneVsAll:getClassesList()
 
 end
 
-local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
+local function checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList)
 
 	for i = 1, #labelVector, 1 do
 
-		if table.find(classesList, labelVector[i][1]) then continue end
+		if table.find(ClassesList, labelVector[i][1]) then continue end
 
 		return true
 
@@ -212,7 +212,7 @@ end
 
 local function createClassesList(labelVector)
 
-	local classesList = {}
+	local ClassesList = {}
 
 	local value
 
@@ -220,15 +220,15 @@ local function createClassesList(labelVector)
 
 		value = labelVector[i][1]
 
-		if not table.find(classesList, value) then
+		if not table.find(ClassesList, value) then
 
-			table.insert(classesList, value)
+			table.insert(ClassesList, value)
 
 		end
 
 	end
 
-	return classesList
+	return ClassesList
 
 end
 
@@ -306,11 +306,11 @@ function OneVsAll:train(featureMatrix, labelVector)
 
 			modelCostArray = Model:train(featureMatrix, binaryLabelVector)
 
-			totalCost = totalCost + modelCostArray[#modelCostArray]
+			totalCost += modelCostArray[#modelCostArray]
 
 		end
 		
-		numberOfIterations = numberOfIterations + 1
+		numberOfIterations += 1
 		
 		table.insert(costArray, totalCost)
 		
@@ -334,7 +334,7 @@ function OneVsAll:getBestPrediction(featureVector)
 		
 		if (typeof(allOutputVector) == "number") then allOutputVector = {{allOutputVector}} end
 
-		local value, maximumValueIndex = AqwamMatrixLibrary:findMaximum(allOutputVector)
+		local value, maximumValueIndex = AqwamMatrixLibrary:findMaximumValue(allOutputVector)
 
 		if (maximumValueIndex == nil) then continue end
 

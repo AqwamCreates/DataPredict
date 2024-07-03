@@ -48,7 +48,7 @@ BaseExperienceReplay:setResetFunction(resetFunction)
 
 #### Parameters:
 
-* resetFunction: The function that resets the base experience replay object.
+* resetFunction: The function to run when reset() is called.
 
 ### reset()
 
@@ -68,7 +68,7 @@ BaseExperienceReplay:setRunFunction(updateFunction)
 
 #### Parameters:
 
-* runFunction: The run function that runs the experience replay object.
+* runFunction: The function to run when run() is called.
 
 ### run()
 

@@ -28,27 +28,51 @@ UniformExperienceReplay.__index = UniformExperienceReplay
 
 setmetatable(UniformExperienceReplay, BaseExperienceReplay)
 
+local function sample(replayBufferArray, batchSize)
+	
+	local batchArray = {}
+
+	local replayBufferArray = replayBufferArray
+
+	local replayBufferArraySize = #replayBufferArray
+
+	local lowestNumberOfBatchSize = math.min(batchSize, replayBufferArraySize)
+
+	for i = 1, lowestNumberOfBatchSize, 1 do
+
+		local index = Random.new():NextInteger(1, replayBufferArraySize)
+
+		table.insert(batchArray, replayBufferArray[index])
+
+	end
+
+	return batchArray
+	
+end
+
 function UniformExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 	
 	local NewUniformExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 	
 	setmetatable(NewUniformExperienceReplay, UniformExperienceReplay)
 	
-	NewUniformExperienceReplay:setSampleFunction(function()
+	NewUniformExperienceReplay:setRunFunction(function(updateFunction)
 		
-		local batchArray = {}
+		local experienceReplayBatchArray = sample(NewUniformExperienceReplay.replayBufferArray, NewUniformExperienceReplay.batchSize)
 
-		local lowestNumberOfBatchSize = math.min(NewUniformExperienceReplay.batchSize, #NewUniformExperienceReplay.replayBufferArray)
+		for _, experience in ipairs(experienceReplayBatchArray) do -- (s1, a, r, s2)
 
-		for i = 1, lowestNumberOfBatchSize, 1 do
+			local previousFeatureVector = experience[1]
 
-			local index = Random.new():NextInteger(1, #NewUniformExperienceReplay.replayBufferArray)
+			local action = experience[2]
 
-			table.insert(batchArray, NewUniformExperienceReplay.replayBufferArray[index])
+			local rewardValue = experience[3]
+
+			local currentFeatureVector = experience[4]
+
+			updateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 		end
-
-		return batchArray
 		
 	end)
 	

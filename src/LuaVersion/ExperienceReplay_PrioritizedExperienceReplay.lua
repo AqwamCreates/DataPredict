@@ -39,31 +39,31 @@ local defaultAggregateFunction = "Maximum"
 local defaultEpsilon = math.pow(10, -4)
 
 local aggregrateFunctionList = {
-
+	
 	["Maximum"] = function (vector) 
-
+		
 		return AqwamMatrixLibrary:findMaximumValue(vector) 
-
+		
 	end,
-
+	
 	["Minimum"] = function (vector) 
 
 		return AqwamMatrixLibrary:findMinimumValue(vector) 
 
 	end,
-
+	
 	["Sum"] = function (vector) 
-
+		
 		return AqwamMatrixLibrary:sum(vector) 
-
+		
 	end,
-
+	
 	["Average"] = function (vector) 
 
 		return AqwamMatrixLibrary:sum(vector) / #vector[1] 
 
 	end,
-
+	
 }
 
 function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, alpha, beta, aggregateFunction, epsilon)
@@ -110,43 +110,51 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 	
 	NewPrioritizedExperienceReplay:setIsTemporalDifferenceErrorRequired(true)
 	
-	NewPrioritizedExperienceReplay:extendAddExperienceFunction(function(experience)
+	NewPrioritizedExperienceReplay:extendAddExperienceFunction(function()
 		
 		local numberOfExperience = NewPrioritizedExperienceReplay.numberOfExperience
 		
 		local index = numberOfExperience % NewPrioritizedExperienceReplay.maxBufferSize
 		
+		local priorityArray = NewPrioritizedExperienceReplay.priorityArray
+		
+		local weightArray = NewPrioritizedExperienceReplay.weightArray
+		
+		local sumPriorityAlpha = NewPrioritizedExperienceReplay.sumPriorityAlpha
+		
+		local maxPriority = NewPrioritizedExperienceReplay.maxPriority
+		
 		if (numberOfExperience >= NewPrioritizedExperienceReplay.numberOfExperienceToUpdate) then
 			
 			local probability = NewPrioritizedExperienceReplay.probabilityArray[index]
 			
-			NewPrioritizedExperienceReplay.sumPriorityAlpha -= math.pow(probability, NewPrioritizedExperienceReplay.alpha)
+			sumPriorityAlpha -= math.pow(probability, NewPrioritizedExperienceReplay.alpha)
 			
-			if NewPrioritizedExperienceReplay.priority[index] == NewPrioritizedExperienceReplay.maxPriority then
+			if priorityArray[index] == maxPriority then
 				
-				NewPrioritizedExperienceReplay.priority[index] = 0
+				priorityArray[index] = 0
 				
-				NewPrioritizedExperienceReplay.maxPriority = math.max(table.unpack(NewPrioritizedExperienceReplay.priorityArray))
+				maxPriority = math.max(table.unpack(priorityArray))
 				
 			end
 			
-			if (NewPrioritizedExperienceReplay.weightArray[index] == NewPrioritizedExperienceReplay.maxWeight) then
+			if (weightArray[index] == NewPrioritizedExperienceReplay.maxWeight) then
 
-				NewPrioritizedExperienceReplay.weightArray[index] = 0
+				weightArray[index] = 0
 
-				NewPrioritizedExperienceReplay.weightArray = math.max(table.unpack(NewPrioritizedExperienceReplay.weightArray))
+				weightArray = math.max(table.unpack(weightArray))
 
 			end
 			
 		end
 		
-		local priority = NewPrioritizedExperienceReplay.maxPriority
+		local priority = maxPriority
 
 		local weight = NewPrioritizedExperienceReplay.maxWeight
 
-		NewPrioritizedExperienceReplay.sumPriorityAlpha += math.pow(priority, NewPrioritizedExperienceReplay.alpha)
+		sumPriorityAlpha += math.pow(priority, NewPrioritizedExperienceReplay.alpha)
 
-		local probability = math.pow(priority, (NewPrioritizedExperienceReplay.alpha / NewPrioritizedExperienceReplay.sumPriorityAlpha))
+		local probability = math.pow(priority, (NewPrioritizedExperienceReplay.alpha / sumPriorityAlpha))
 		
 		NewPrioritizedExperienceReplay.priorityArray[index] = priority -- Store priorities
 
@@ -155,6 +163,10 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 		NewPrioritizedExperienceReplay.weightArray[index] = weight
 
 		NewPrioritizedExperienceReplay.indexArray[index] = index
+		
+		NewPrioritizedExperienceReplay.sumPriorityAlpha = sumPriorityAlpha
+		
+		NewPrioritizedExperienceReplay.maxPriority = maxPriority
 		
 	end)
 	
@@ -174,7 +186,7 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 		
 		table.clear(NewPrioritizedExperienceReplay.weightArray)
 		
-		for i = 1, #NewPrioritizedExperienceReplay.indexArray, 1 do
+		for i = 1, NewPrioritizedExperienceReplay.maxBufferSize, 1 do
 
 			table.insert(NewPrioritizedExperienceReplay.priorityArray, NewPrioritizedExperienceReplay.epsilon)
 			
@@ -185,6 +197,106 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 			table.insert(NewPrioritizedExperienceReplay.indexArray, i)
 
 		end
+		
+	end)
+	
+	NewPrioritizedExperienceReplay:setRunFunction(function()
+		
+		local Model = NewPrioritizedExperienceReplay.Model
+
+		if (not Model) then error("No Model!") end
+
+		local batchArray = {}
+
+		local alpha = NewPrioritizedExperienceReplay.alpha
+
+		local beta = NewPrioritizedExperienceReplay.beta
+
+		local replayBufferArray = NewPrioritizedExperienceReplay.replayBufferArray
+
+		local aggregateFunctionToApply = aggregrateFunctionList[NewPrioritizedExperienceReplay.aggregateFunction]
+
+		local lowestNumberOfBatchSize = math.min(NewPrioritizedExperienceReplay.batchSize, #replayBufferArray)
+
+		local epsilon = NewPrioritizedExperienceReplay.epsilon
+
+		local probabilityArray = NewPrioritizedExperienceReplay.probabilityArray
+
+		local priorityArray = NewPrioritizedExperienceReplay.priorityArray
+
+		local weightArray = NewPrioritizedExperienceReplay.weightArray
+
+		local indexArray = NewPrioritizedExperienceReplay.indexArray
+
+		local maxWeight = NewPrioritizedExperienceReplay.maxWeight
+
+		local sumPriorityAlpha = 0
+
+		for i = 1, #priorityArray, 1 do
+
+			local priority = priorityArray[i]
+
+			sumPriorityAlpha += math.pow(priority, alpha)
+
+		end
+
+		for i = 1, #priorityArray, 1 do
+
+			local probability = math.pow(priorityArray[i], alpha) / sumPriorityAlpha
+
+			local weightPart1 = lowestNumberOfBatchSize * probabilityArray[i]
+
+			local weight = math.pow(weightPart1, -beta) / maxWeight
+
+			probabilityArray[i] = probability
+
+			weightArray[i] = weight
+
+		end
+
+		local sizeArray = AqwamMatrixLibrary:getSize(replayBufferArray[1][1])
+
+		local inputMatrix = AqwamMatrixLibrary:createMatrix(sizeArray[1], sizeArray[2], 1)
+
+		local sumLossMatrix
+
+		for i, temporalDifferenceErrorValueOrVector in ipairs(NewPrioritizedExperienceReplay.temporalDifferenceErrorArray) do
+
+			if (type(temporalDifferenceErrorValueOrVector) ~= "number") then
+
+				temporalDifferenceErrorValueOrVector = aggregateFunctionToApply(temporalDifferenceErrorValueOrVector)
+
+			end
+
+			priorityArray[i] = math.abs(temporalDifferenceErrorValueOrVector)
+
+			local transitionProbability = math.pow(temporalDifferenceErrorValueOrVector, alpha) / sumPriorityAlpha
+
+			if (transitionProbability ~= transitionProbability) then continue end -- Not sure why there is a bug when calculating transition probability for a number of cases. Anyways, it gives nan value when this happens.
+
+			local importanceSamplingWeight = math.pow((lowestNumberOfBatchSize * transitionProbability), -beta) / maxWeight
+
+			local outputMatrix = Model:forwardPropagate(replayBufferArray[i][1], false)
+
+			local lossMatrix = AqwamMatrixLibrary:multiply(outputMatrix, temporalDifferenceErrorValueOrVector, importanceSamplingWeight)
+
+			if (sumLossMatrix) then
+
+				sumLossMatrix = AqwamMatrixLibrary:add(sumLossMatrix, lossMatrix)
+
+			else
+
+				sumLossMatrix = lossMatrix
+
+			end
+
+		end
+
+		NewPrioritizedExperienceReplay.sumPriorityAlpha = sumPriorityAlpha
+
+		Model:forwardPropagate(inputMatrix, true)
+
+		Model:backPropagate(sumLossMatrix, true)
 		
 	end)
 	
@@ -213,108 +325,6 @@ function PrioritizedExperienceReplay:setParameters(batchSize, numberOfExperience
 	self.aggregateFunction = aggregateFunction or self.aggregateFunction
 	
 	self.epsilon = epsilon or self.epsilon
-	
-end
-
-function PrioritizedExperienceReplay:run()
-	
-	if (not self.Model) then error("No Model!") end
-	
-	if (self.numberOfExperience < self.numberOfExperienceToUpdate) then return nil end
-	
-	self.numberOfExperience = 0
-	
-	local batchArray = {}
-
-	local alpha = self.alpha
-
-	local beta = self.beta
-	
-	local replayBufferArray = self.replayBufferArray
-
-	local aggregateFunctionToApply = aggregrateFunctionList[self.aggregateFunction]
-
-	local lowestNumberOfBatchSize = math.min(self.batchSize, #replayBufferArray)
-	
-	local epsilon = self.epsilon
-	
-	self.sumPriorityAlpha = 0
-	
-	local probabilityArray = self.probabilityArray
-	
-	local priorityArray = self.priorityArray
-	
-	local weightArray = self.weightArray
-	
-	local indexArray = self.indexArray
-	
-	for i = 1, #priorityArray, 1 do
-		
-		self.sumPriorityAlpha += math.pow(priorityArray[i], alpha)
-		
-	end
-	
-	for i = 1, #priorityArray, 1 do
-		
-		local probability = math.pow(priorityArray[i], alpha) / self.sumPriorityAlpha
-			
-		local weightPart1 = lowestNumberOfBatchSize * probabilityArray[i]
-			
-		local weight = math.pow(weightPart1, -beta) / self.maxWeight
-		
-		priorityArray[i] = priorityArray[i]
-
-		probabilityArray[i] = probability
-
-		weightArray[i] = weight
-		
-		indexArray[i] = indexArray[i]
-	
-	end
-	
-	local sizeArray = AqwamMatrixLibrary:getSize(replayBufferArray[1][1])
-
-	local inputMatrix = AqwamMatrixLibrary:createMatrix(sizeArray[1], sizeArray[2], 1)
-	
-	local sumLossMatrix
-	
-	for i, temporalDifferenceErrorValueOrVector in ipairs(self.temporalDifferenceErrorArray) do
-
-		local temporalDifferenceErrorValue = temporalDifferenceErrorValueOrVector
-
-		if (type(temporalDifferenceErrorValue) ~= "number") then
-
-			temporalDifferenceErrorValue = aggregateFunctionToApply(temporalDifferenceErrorValue)
-
-		end
-
-		local transitionProbability = math.pow(temporalDifferenceErrorValue, alpha) / self.sumPriorityAlpha
-		
-		if (transitionProbability ~= transitionProbability) then continue end -- Not sure why there is a bug when calculating transition probability for a number of cases. Anyways, it gives nan value when this happens.
-
-		local importanceSamplingWeight = math.pow((lowestNumberOfBatchSize * transitionProbability), -beta) / self.maxWeight
-
-		local outputMatrix = self.Model:forwardPropagate(replayBufferArray[i][1], false)
-
-		local adjustedOutputMatrix = AqwamMatrixLibrary:multiply(outputMatrix, temporalDifferenceErrorValue, importanceSamplingWeight)
-		
-		local lossMatrix = AqwamMatrixLibrary:subtract(adjustedOutputMatrix, outputMatrix)
-
-		if (sumLossMatrix) then
-
-			sumLossMatrix = AqwamMatrixLibrary:add(sumLossMatrix, lossMatrix)
-
-		else
-
-			sumLossMatrix = lossMatrix
-
-		end
-
-	end
-
-	self.Model:forwardPropagate(inputMatrix, true)
-
-	self.Model:backPropagate(sumLossMatrix, true)
 	
 end
 

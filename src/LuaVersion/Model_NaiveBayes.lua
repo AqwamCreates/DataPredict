@@ -120,7 +120,7 @@ end
 
 local function createClassesList(labelVector)
 
-	local classesList = {}
+	local ClassesList = {}
 
 	local value
 
@@ -128,23 +128,23 @@ local function createClassesList(labelVector)
 
 		value = labelVector[i][1]
 
-		if not table.find(classesList, value) then
+		if not table.find(ClassesList, value) then
 
-			table.insert(classesList, value)
+			table.insert(ClassesList, value)
 
 		end
 
 	end
 
-	return classesList
+	return ClassesList
 
 end
 
-local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
+local function checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList)
 
 	for i = 1, #labelVector, 1 do
 
-		if table.find(classesList, labelVector[i][1]) then continue end
+		if table.find(ClassesList, labelVector[i][1]) then continue end
 
 		return true
 
@@ -184,7 +184,7 @@ end
 
 function NaiveBayesModel:setParameters(useLogProbabilities)
 
-	self.useLogProbabilities = getValueOrDefaultValue(useLogProbabilities, self.useLogProbabilities)
+	self.useLogProbabilities = self:getValueOrDefaultValue(useLogProbabilities, self.useLogProbabilities)
 
 end
 
@@ -421,7 +421,7 @@ function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 	local outputVector
 
-	local classIndex
+	local classIndexArray
 
 	local predictedLabel
 
@@ -429,11 +429,11 @@ function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 		outputVector = {outputMatrix[i]}
 
-		highestProbability, classIndex = AqwamMatrixLibrary:findMaximumValue(outputMatrix)
+		highestProbability, classIndexArray = AqwamMatrixLibrary:findMaximumValue(outputMatrix)
 
-		if (classIndex == nil) then continue end
+		if (classIndexArray == nil) then continue end
 
-		predictedLabel = self.ClassesList[classIndex[2]]
+		predictedLabel = self.ClassesList[classIndexArray[2]]
 
 		predictedLabelVector[i][1] = predictedLabel
 
@@ -481,9 +481,9 @@ function NaiveBayesModel:getClassesList()
 
 end
 
-function NaiveBayesModel:setClassesList(classesList)
+function NaiveBayesModel:setClassesList(ClassesList)
 
-	self.ClassesList = classesList
+	self.ClassesList = ClassesList
 
 end
 

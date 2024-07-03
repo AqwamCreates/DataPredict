@@ -8,6 +8,28 @@ setmetatable(NStepExperienceReplay, BaseExperienceReplay)
 
 local defaultNStep = 3
 
+local function sample(replayBufferArray, batchSize)
+
+	local batchArray = {}
+
+	local replayBufferArray = replayBufferArray
+
+	local replayBufferArraySize = #replayBufferArray
+
+	local lowestNumberOfBatchSize = math.min(batchSize, replayBufferArraySize)
+
+	for i = 1, lowestNumberOfBatchSize, 1 do
+
+		local index = Random.new():NextInteger(1, replayBufferArraySize)
+
+		table.insert(batchArray, replayBufferArray[index])
+
+	end
+
+	return batchArray
+
+end
+
 function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep)
 
 	local NewNStepExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
@@ -16,33 +38,11 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 
 	NewNStepExperienceReplay.nStep = nStep or defaultNStep
 
-	NewNStepExperienceReplay:setSampleFunction(function()
-
-		local batchArray = {}
-
-		local replayBufferArray = NewNStepExperienceReplay.replayBufferArray
-
-		local replayBufferArraySize = #replayBufferArray
-
-		local lowestNumberOfBatchSize = math.min(NewNStepExperienceReplay.batchSize, replayBufferArraySize)
-
-		for i = 1, lowestNumberOfBatchSize, 1 do
-
-			local index = Random.new():NextInteger(1, replayBufferArraySize)
-
-			table.insert(batchArray, replayBufferArray[index])
-
-		end
-
-		return batchArray
-
-	end)
-
 	NewNStepExperienceReplay:setRunFunction(function(updateFunction)
 
-		local experienceReplayBatchArray = NewNStepExperienceReplay:sample()
-		
 		local nStep = NewNStepExperienceReplay.nStep
+
+		local experienceReplayBatchArray = sample(NewNStepExperienceReplay.replayBufferArray, NewNStepExperienceReplay.batchSize)
 
 		for _, experience in ipairs(experienceReplayBatchArray) do
 

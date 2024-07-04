@@ -41,8 +41,6 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 	NewNStepExperienceReplay.discountFactor = discountFactor or defaultDiscountFactor
 
 	NewNStepExperienceReplay:setRunFunction(function(updateFunction)
-
-		local nStep = NewNStepExperienceReplay.nStep
 		
 		local discountFactor = NewNStepExperienceReplay.discountFactor
 		
@@ -60,7 +58,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 		
 		local nStepReward = discountFactor * firstExperience[3]
 		
-		nStep = math.min(nStep, replayBatchArraySize - 1)
+		local nStep = math.min(NewNStepExperienceReplay.nStep, replayBatchArraySize - 1)
 
 		for i = 1, nStep, 1 do
 			

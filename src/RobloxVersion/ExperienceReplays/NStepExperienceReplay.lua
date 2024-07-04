@@ -8,6 +8,8 @@ setmetatable(NStepExperienceReplay, BaseExperienceReplay)
 
 local defaultNStep = 3
 
+local defaultDiscountFactor = 0.95
+
 local function sample(replayBufferArray, batchSize)
 
 	local batchArray = {}
@@ -20,9 +22,7 @@ local function sample(replayBufferArray, batchSize)
 
 	for i = 1, lowestNumberOfBatchSize, 1 do
 
-		local index = Random.new():NextInteger(1, replayBufferArraySize)
-
-		table.insert(batchArray, replayBufferArray[index])
+		table.insert(batchArray, replayBufferArray[i])
 
 	end
 
@@ -30,40 +30,48 @@ local function sample(replayBufferArray, batchSize)
 
 end
 
-function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep)
+function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep, discountFactor)
 
 	local NewNStepExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 
 	setmetatable(NewNStepExperienceReplay, NStepExperienceReplay)
 
 	NewNStepExperienceReplay.nStep = nStep or defaultNStep
+	
+	NewNStepExperienceReplay.discountFactor = discountFactor or defaultDiscountFactor
 
 	NewNStepExperienceReplay:setRunFunction(function(updateFunction)
+		
+		local discountFactor = NewNStepExperienceReplay.discountFactor
+		
+		local replayBufferArray = NewNStepExperienceReplay.replayBufferArray
 
-		local nStep = NewNStepExperienceReplay.nStep
+		local experienceReplayBatchArray = sample(replayBufferArray, NewNStepExperienceReplay.batchSize)
+		
+		local replayBatchArraySize = #replayBufferArray
+		
+		local firstExperience = experienceReplayBatchArray[1]
+		
+		local currentState = firstExperience[1]
+		
+		local action = firstExperience[2]
+		
+		local nStepReward = discountFactor * firstExperience[3]
+		
+		local nStep = math.min(NewNStepExperienceReplay.nStep, replayBatchArraySize - 1)
 
-		local experienceReplayBatchArray = sample(NewNStepExperienceReplay.replayBufferArray, NewNStepExperienceReplay.batchSize)
-
-		for _, experience in ipairs(experienceReplayBatchArray) do
-
-			local nStepRewards = 0
-
-			local previousState = experience[1]
-
-			local action = experience[2]
+		for i = 1, nStep, 1 do
 			
-			local currentState = experience[4]
-
-			for i = 1, nStep do
-
-				if (not experienceReplayBatchArray[i]) then continue end
-
-				nStepRewards += experienceReplayBatchArray[i][3]
-
-			end
-
-			updateFunction(previousState, action, nStepRewards, currentState)
-
+			local experience = experienceReplayBatchArray[i + 1]
+			
+			local previousState = experience[1]
+			
+			local reward = experience[3]
+			
+			nStepReward = nStepReward + (math.pow(discountFactor, i) * reward)
+			
+			updateFunction(previousState, action, nStepReward, currentState)
+			
 		end
 
 	end)
@@ -72,7 +80,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 
 end
 
-function NStepExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep)
+function NStepExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep, discountFactor)
 
 	self.batchSize = batchSize or self.batchSize
 
@@ -81,6 +89,8 @@ function NStepExperienceReplay:setParameters(batchSize, numberOfExperienceToUpda
 	self.maxBufferSize = maxBufferSize or self.maxBufferSize
 
 	self.nStep = nStep or self.nStep
+	
+	self.discountFactor = discountFactor or self.discountFactor
 
 end
 

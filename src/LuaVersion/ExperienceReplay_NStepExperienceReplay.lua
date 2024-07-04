@@ -44,9 +44,7 @@ local function sample(replayBufferArray, batchSize)
 
 	for i = 1, lowestNumberOfBatchSize, 1 do
 
-		local index = Random.new():NextInteger(1, replayBufferArraySize)
-
-		table.insert(batchArray, replayBufferArray[index])
+		table.insert(batchArray, replayBufferArray[i])
 
 	end
 
@@ -69,29 +67,33 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 		local nStep = NewNStepExperienceReplay.nStep
 		
 		local discountFactor = NewNStepExperienceReplay.discountFactor
+		
+		local replayBufferArray = NewNStepExperienceReplay.replayBufferArray
 
-		local experienceReplayBatchArray = sample(NewNStepExperienceReplay.replayBufferArray, NewNStepExperienceReplay.batchSize)
+		local experienceReplayBatchArray = sample(replayBufferArray, NewNStepExperienceReplay.batchSize)
+		
+		local firstExperience = experienceReplayBatchArray[1]
+		
+		local previousState = firstExperience[1]
+		
+		local nStepReward = discountFactor * firstExperience[3]
+		
+		nStep = math.min(nStep, #replayBufferArray)
 
-		for experienceIndex, experience in ipairs(experienceReplayBatchArray) do
-
-			local nStepRewards = 0
-
-			local previousState = experience[1]
+		for i = 2, nStep, 1 do
+			
+			local experience = experienceReplayBatchArray[i]
 
 			local action = experience[2]
 			
+			local reward = experience[3]
+			
 			local currentState = experience[4]
-
-			for i = 1, nStep, 1 do
-
-				if (not experienceReplayBatchArray[i]) then continue end
-
-				nStepRewards += math.pow(discountFactor, i) * experienceReplayBatchArray[i][3]
-
-			end
-
-			updateFunction(previousState, action, nStepRewards, currentState)
-
+			
+			nStepReward = nStepReward + (math.pow(discountFactor, i) * reward)
+			
+			updateFunction(previousState, action, nStepReward, currentState)
+			
 		end
 
 	end)

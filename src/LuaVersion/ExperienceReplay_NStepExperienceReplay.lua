@@ -30,8 +30,6 @@ setmetatable(NStepExperienceReplay, BaseExperienceReplay)
 
 local defaultNStep = 3
 
-local defaultDiscountFactor = 0.95
-
 local function sample(replayBufferArray, batchSize)
 
 	local batchArray = {}

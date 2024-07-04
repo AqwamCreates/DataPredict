@@ -56,7 +56,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 		
 		local nStepReward = discountFactor * firstExperience[3]
 		
-		nStep = math.min(nStep, #replayBufferArray)
+		nStep = math.min(nStep, #replayBufferArray - 1)
 
 		for i = 2, nStep, 1 do
 			

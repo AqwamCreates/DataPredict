@@ -52,15 +52,13 @@ local function sample(replayBufferArray, batchSize)
 
 end
 
-function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep, discountFactor)
+function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep)
 
 	local NewNStepExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 
 	setmetatable(NewNStepExperienceReplay, NStepExperienceReplay)
 
 	NewNStepExperienceReplay.nStep = nStep or defaultNStep
-	
-	NewNStepExperienceReplay.discountFactor = discountFactor or defaultDiscountFactor
 
 	NewNStepExperienceReplay:setRunFunction(function(updateFunction)
 		
@@ -90,7 +88,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 			
 			local reward = experience[3]
 			
-			nStepReward = nStepReward + (discountFactor * reward)
+			nStepReward = nStepReward + reward
 			
 			updateFunction(previousState, action, nStepReward, currentState)
 			
@@ -102,7 +100,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 
 end
 
-function NStepExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep, discountFactor)
+function NStepExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep)
 
 	self.batchSize = batchSize or self.batchSize
 
@@ -111,8 +109,6 @@ function NStepExperienceReplay:setParameters(batchSize, numberOfExperienceToUpda
 	self.maxBufferSize = maxBufferSize or self.maxBufferSize
 
 	self.nStep = nStep or self.nStep
-	
-	self.discountFactor = discountFactor or self.discountFactor
 
 end
 

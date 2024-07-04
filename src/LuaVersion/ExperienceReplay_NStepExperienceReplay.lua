@@ -78,7 +78,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 		
 		local action = firstExperience[2]
 		
-		local nStepReward = discountFactor * firstExperience[3]
+		local nStepReward = firstExperience[3]
 		
 		local nStep = math.min(NewNStepExperienceReplay.nStep, replayBatchArraySize - 1)
 
@@ -90,7 +90,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 			
 			local reward = experience[3]
 			
-			nStepReward = nStepReward + (math.pow(discountFactor, i + 1) * reward)
+			nStepReward = nStepReward + (math.pow(discountFactor, i) * reward)
 			
 			updateFunction(previousState, action, nStepReward, currentState)
 			

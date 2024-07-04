@@ -8,6 +8,8 @@ setmetatable(NStepExperienceReplay, BaseExperienceReplay)
 
 local defaultNStep = 3
 
+local defaultDiscountFactor = 0.95
+
 local function sample(replayBufferArray, batchSize)
 
 	local batchArray = {}
@@ -30,21 +32,25 @@ local function sample(replayBufferArray, batchSize)
 
 end
 
-function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep)
+function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep, discountFactor)
 
 	local NewNStepExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 
 	setmetatable(NewNStepExperienceReplay, NStepExperienceReplay)
 
 	NewNStepExperienceReplay.nStep = nStep or defaultNStep
+	
+	NewNStepExperienceReplay.discountFactor = discountFactor or defaultDiscountFactor
 
 	NewNStepExperienceReplay:setRunFunction(function(updateFunction)
 
 		local nStep = NewNStepExperienceReplay.nStep
+		
+		local discountFactor = NewNStepExperienceReplay.discountFactor
 
 		local experienceReplayBatchArray = sample(NewNStepExperienceReplay.replayBufferArray, NewNStepExperienceReplay.batchSize)
 
-		for _, experience in ipairs(experienceReplayBatchArray) do
+		for experienceIndex, experience in ipairs(experienceReplayBatchArray) do
 
 			local nStepRewards = 0
 
@@ -54,11 +60,11 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 			
 			local currentState = experience[4]
 
-			for i = 1, nStep do
+			for i = 1, nStep, 1 do
 
 				if (not experienceReplayBatchArray[i]) then continue end
 
-				nStepRewards += experienceReplayBatchArray[i][3]
+				nStepRewards += math.pow(discountFactor, i) * experienceReplayBatchArray[i][3]
 
 			end
 
@@ -72,7 +78,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 
 end
 
-function NStepExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep)
+function NStepExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep, discountFactor)
 
 	self.batchSize = batchSize or self.batchSize
 
@@ -81,6 +87,8 @@ function NStepExperienceReplay:setParameters(batchSize, numberOfExperienceToUpda
 	self.maxBufferSize = maxBufferSize or self.maxBufferSize
 
 	self.nStep = nStep or self.nStep
+	
+	self.discountFactor = discountFactor or self.discountFactor
 
 end
 

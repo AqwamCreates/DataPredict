@@ -52,15 +52,9 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 
 			local action = experience[2]
 			
+			nStepRewards = nStepRewards + experienceReplayBatchArray[3]
+			
 			local currentState = experience[4]
-
-			for i = 1, nStep do
-
-				if (not experienceReplayBatchArray[i]) then continue end
-
-				nStepRewards += experienceReplayBatchArray[i][3]
-
-			end
 
 			updateFunction(previousState, action, nStepRewards, currentState)
 

@@ -68,7 +68,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 			
 			local reward = experience[3]
 			
-			nStepReward = nStepReward + (math.pow(discountFactor, i) * reward)
+			nStepReward = nStepReward + (discountFactor * reward)
 			
 			updateFunction(previousState, action, nStepReward, currentState)
 			

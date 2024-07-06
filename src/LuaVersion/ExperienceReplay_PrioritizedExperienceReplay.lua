@@ -122,13 +122,13 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 			
 		end
 		
-		table.insert(priorityArray, 1, maxPriority)
+		table.insert(priorityArray, maxPriority)
 		
-		table.insert(weightArray, 1, 0)
+		table.insert(weightArray, 0)
 		
-		NewPrioritizedExperienceReplay:removeLastValueFromArrayIfExceedsBufferSize(priorityArray)
+		NewPrioritizedExperienceReplay:removeFirstValueFromArrayIfExceedsBufferSize(priorityArray)
 		
-		NewPrioritizedExperienceReplay:removeLastValueFromArrayIfExceedsBufferSize(weightArray)
+		NewPrioritizedExperienceReplay:removeFirstValueFromArrayIfExceedsBufferSize(weightArray)
 	
 	end)
 	
@@ -207,6 +207,8 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 				temporalDifferenceErrorValueOrVector = aggregateFunctionToApply(temporalDifferenceErrorValueOrVector)
 
 			end
+			
+			print(weightArray)
 			
 			weightArray[i] = importanceSamplingWeight
 

@@ -24,6 +24,10 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local BaseExperienceReplay = require("Model_BaseExperienceReplay")
 
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
+local BaseExperienceReplay = require(script.Parent.BaseExperienceReplay)
+
 PrioritizedExperienceReplay = {}
 
 PrioritizedExperienceReplay.__index = PrioritizedExperienceReplay
@@ -66,9 +70,9 @@ local aggregrateFunctionList = {
 	
 }
 
-local function sample(probabilityArray, sumPriorityAlpha)
+local function sample(probabilityArray)
 	
-	local randomProbability = math.random() * sumPriorityAlpha
+	local randomProbability = math.random()
 	
 	local cumulativeProbability = 0
 	
@@ -194,7 +198,7 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 		
 		for i = 1, lowestNumberOfBatchSize, 1 do
 			
-			local index, probability = sample(probabilityArray, sumPriorityAlpha)
+			local index, probability = sample(probabilityArray)
 			
 			local experience = replayBufferArray[index]
 			

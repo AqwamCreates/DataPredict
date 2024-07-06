@@ -78,7 +78,7 @@ function BaseExperienceReplay:run(updateFunction)
 	
 end
 
-function BaseExperienceReplay:removeLastValueFromArrayIfExceedsBufferSize(targetArray)
+function BaseExperienceReplay:removeFirstValueFromArrayIfExceedsBufferSize(targetArray)
 	
 	if (#targetArray > self.maxBufferSize) then table.remove(targetArray, 1) end
 	
@@ -94,13 +94,13 @@ function BaseExperienceReplay:addExperience(previousFeatureVector, action, rewar
 	
 	local experience = {previousFeatureVector, action, rewardValue, currentFeatureVector}
 
-	table.insert(self.replayBufferArray, 1, experience)
+	table.insert(self.replayBufferArray, experience)
 	
 	local addExperienceFunction = self.addExperienceFunction
 	
 	if (addExperienceFunction) then addExperienceFunction(previousFeatureVector, action, rewardValue, currentFeatureVector) end
 
-	self:removeLastValueFromArrayIfExceedsBufferSize(self.replayBufferArray)
+	self:removeFirstValueFromArrayIfExceedsBufferSize(self.replayBufferArray)
 	
 	self.numberOfExperience += 1
 	
@@ -116,13 +116,13 @@ function BaseExperienceReplay:addTemporalDifferenceError(temporalDifferenceError
 	
 	if (not self.isTemporalDifferenceErrorRequired) then return nil end
 	
-	table.insert(self.temporalDifferenceErrorArray, 1, temporalDifferenceErrorVectorOrValue)
+	table.insert(self.temporalDifferenceErrorArray, temporalDifferenceErrorVectorOrValue)
 	
 	local addTemporalDifferenceErrorFunction = self.addTemporalDifferenceErrorFunction
 	
 	if (addTemporalDifferenceErrorFunction) then addTemporalDifferenceErrorFunction(temporalDifferenceErrorVectorOrValue) end
 	
-	self:removeLastValueFromArrayIfExceedsBufferSize(self.temporalDifferenceErrorArray)
+	self:removeFirstValueFromArrayIfExceedsBufferSize(self.temporalDifferenceErrorArray)
 	
 end
 

@@ -240,16 +240,22 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 	local hasVisitedCorePointNumberArray = {}
 	
 	local numberOfData = #featureMatrix
+	
+	local minimumNumberOfPoints = self.minimumNumberOfPoints
+
+	local epsilon = self.epsilon
+
+	local distanceFunction = self.distanceFunction
 
 	for currentCorePointNumber = 1, numberOfData, 1 do
 		
 		self:iterationWait()
 		
-		if not hasVisitedCorePointNumberArray[currentCorePointNumber] then
+		if (not hasVisitedCorePointNumberArray[currentCorePointNumber]) then
 			
 			hasVisitedCorePointNumberArray[currentCorePointNumber] = true
 			
-			neighbors = getNeighbors(currentCorePointNumber, featureMatrix, self.epsilon, self.distanceFunction)
+			neighbors = getNeighbors(currentCorePointNumber, featureMatrix, epsilon, distanceFunction)
 			
 			if (#neighbors < self.minimumNumberOfPoints) then
 				
@@ -259,7 +265,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 				
 				neighbouringCorePointNumber  = #clusters + 1
 				
-				expandCluster(currentCorePointNumber, neighbors, neighbouringCorePointNumber, clusters, hasVisitedCorePointNumberArray, featureMatrix, self.epsilon, self.minimumNumberOfPoints, self.distanceFunction)
+				expandCluster(currentCorePointNumber, neighbors, neighbouringCorePointNumber, clusters, hasVisitedCorePointNumberArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunction)
 				
 			end
 			
@@ -267,7 +273,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 		
 		cost = self:calculateCostWhenRequired(currentCorePointNumber, function()
 			
-			return calculateCost(featureMatrix, clusters, self.distanceFunction)
+			return calculateCost(featureMatrix, clusters, distanceFunction)
 			
 		end)
 		
@@ -299,6 +305,8 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featu
 	
 	local storedFeatureVector, cluster = table.unpack(self.ModelParameters)
 	
+	local distanceFunction = self.distanceFunction
+	
 	for i = 1, #featureMatrix, 1 do
 		
 		local closestCluster
@@ -317,7 +325,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featu
 
 				local pointVector = {storedFeatureVector[pointNumber]}
 
-				distance += calculateDistance(featureVector, pointVector, self.distanceFunction)
+				distance += calculateDistance(featureVector, pointVector, distanceFunction)
 
 			end
 

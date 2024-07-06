@@ -76,17 +76,15 @@ local function sample(probabilityArray, sumPriorityAlpha)
 		
 		cumulativeProbability = cumulativeProbability + randomProbability
 		
-		if (randomProbability < cumulativeProbability) then
-
-			return i, probability
+		if (randomProbability >= cumulativeProbability) then continue end
 		
-		end
+		return i, probability
 		
 	end
 	
 end
 
-function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, alpha, beta, aggregateFunction)
+function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, alpha, beta, aggregateFunction, epsilon)
 	
 	local NewPrioritizedExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
 	
@@ -97,6 +95,8 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 	NewPrioritizedExperienceReplay.beta = beta or defaultBeta
 	
 	NewPrioritizedExperienceReplay.aggregateFunction = aggregateFunction or defaultAggregateFunction
+	
+	NewPrioritizedExperienceReplay.epsilon = epsilon or defaultEpsilon
 	
 	NewPrioritizedExperienceReplay.Model = nil
 	
@@ -151,6 +151,8 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 		local alpha = NewPrioritizedExperienceReplay.alpha
 
 		local beta = NewPrioritizedExperienceReplay.beta
+		
+		local epsilon = NewPrioritizedExperienceReplay.epsilon
 
 		local replayBufferArray = NewPrioritizedExperienceReplay.replayBufferArray
 		
@@ -192,13 +194,13 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 		
 		for i = 1, lowestNumberOfBatchSize, 1 do
 			
-			local index, probability = sample(probabilityArray, i)
+			local index, probability = sample(probabilityArray, sumPriorityAlpha)
 			
 			local experience = replayBufferArray[index]
 			
 			local temporalDifferenceErrorValueOrVector = temporalDifferenceArray[index]
 
-			local importanceSamplingWeight = math.pow((lowestNumberOfBatchSize * probability), -beta) / math.max(table.unpack(weightArray))
+			local importanceSamplingWeight = math.pow((lowestNumberOfBatchSize * probability), -beta) / math.max(table.unpack(weightArray), epsilon) 
 			
 			if (type(temporalDifferenceErrorValueOrVector) ~= "number") then
 
@@ -242,7 +244,7 @@ function PrioritizedExperienceReplay:setModel(Model)
 	
 end
 
-function PrioritizedExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize, alpha, beta, aggregateFunction)
+function PrioritizedExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize, alpha, beta, aggregateFunction, epsilon)
 	
 	self.batchSize = batchSize or self.batchSize
 
@@ -255,6 +257,8 @@ function PrioritizedExperienceReplay:setParameters(batchSize, numberOfExperience
 	self.beta = beta or self.beta
 
 	self.aggregateFunction = aggregateFunction or self.aggregateFunction
+	
+	self.epsilon = epsilon or self.epsilon
 	
 end
 

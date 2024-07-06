@@ -70,13 +70,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 		
 		local replayBatchArraySize = #replayBatchArray
 		
-		local lastExperience = replayBatchArray[replayBatchArraySize]
-		
-		local currentState = lastExperience[1]
-		
-		local action = lastExperience[2]
-		
-		local nStepReward = lastExperience[3]
+		local nStepReward = 0
 		
 		local nStep = math.min(NewNStepExperienceReplay.nStep, replayBufferArraySize - 1)
 

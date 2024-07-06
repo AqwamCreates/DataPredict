@@ -215,8 +215,6 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 			end
 			
 			weightArray[index] = importanceSamplingWeight
-			
-			print(priorityArray)
 
 			priorityArray[index] = math.abs(temporalDifferenceErrorValueOrVector)
 

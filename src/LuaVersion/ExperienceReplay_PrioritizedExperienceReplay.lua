@@ -76,9 +76,11 @@ local function sample(probabilityArray, sumPriorityAlpha)
 		
 		cumulativeProbability = cumulativeProbability + randomProbability
 		
-		if (randomProbability >= cumulativeProbability) then continue end
+		if (randomProbability < cumulativeProbability) then
+
+			return i, probability
 		
-		return i, probability
+		end
 		
 	end
 	

@@ -22,13 +22,13 @@
 
 local BaseModel = require("Model_BaseModel")
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
-
 DensityBasedSpatialClusteringOfApplicationsWithNoiseModel = {}
 
 DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.__index = DensityBasedSpatialClusteringOfApplicationsWithNoiseModel
 
 setmetatable(DensityBasedSpatialClusteringOfApplicationsWithNoiseModel, BaseModel)
+
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMinimumNumberOfPoints = 2
 

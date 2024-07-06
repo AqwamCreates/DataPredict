@@ -72,7 +72,7 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 		
 		local nStepReward = 0
 		
-		local nStep = math.min(NewNStepExperienceReplay.nStep, replayBufferArraySize - 1)
+		local nStep = math.min(NewNStepExperienceReplay.nStep, replayBatchArraySize)
 
 		for i = (replayBatchArraySize), (replayBatchArraySize - nStep), -1 do
 			

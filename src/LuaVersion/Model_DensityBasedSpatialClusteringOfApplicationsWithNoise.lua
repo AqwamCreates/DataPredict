@@ -28,8 +28,6 @@ DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.__index = DensityBased
 
 setmetatable(DensityBasedSpatialClusteringOfApplicationsWithNoiseModel, BaseModel)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
-
 local defaultMinimumNumberOfPoints = 2
 
 local defaultDistanceFunction = "Manhattan"
@@ -176,7 +174,7 @@ local function expandCluster(currentCorePointNumber, neighbors, neighbouringCore
 			
 		end
 		
-		if not isInCluster then
+		if (not isInCluster) then
 			
 			clusters[neighbouringCorePointNumber][#clusters[neighbouringCorePointNumber] + 1] = neighbouringPointNumber
 			

@@ -82,11 +82,9 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 
 		for i = (replayBatchArraySize), (replayBatchArraySize - nStep), -1 do
 			
-			local experience = replayBatchArray[i]
-			
-			local reward = experience[3]
+			local experience = replayBatchArray[i] 
 
-			nStepReward = nStepReward + reward
+			nStepReward = nStepReward + experience[3]
 			
 			updateFunction(experience[1], experience[2], nStepReward, experience[4])
 			

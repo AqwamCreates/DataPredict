@@ -138,7 +138,7 @@ local function mergeTables(table1, table2)
 	
 end
 
-local function expandCluster(currentCorePointNumber, neighbors, neighbouringCorePointNumber, clusters, visited, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunction)
+local function expandCluster(currentCorePointNumber, neighbors, neighbouringCorePointNumber, clusters, visitedCorePointNumberArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunction)
 	
 	clusters[neighbouringCorePointNumber] = clusters[neighbouringCorePointNumber] or {}
 	
@@ -148,9 +148,9 @@ local function expandCluster(currentCorePointNumber, neighbors, neighbouringCore
 		
 		local neighbouringPointNumber = neighbors[i]
 		
-		if not visited[neighbouringPointNumber] then
+		if (not visitedCorePointNumberArray[neighbouringPointNumber]) then
 			
-			visited[neighbouringPointNumber] = true
+			visitedCorePointNumberArray[neighbouringPointNumber] = true
 			
 			local qNeighbors = getNeighbors(neighbouringPointNumber, featureMatrix, epsilon, distanceFunction)
 			
@@ -254,12 +254,12 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 	local neighbors 
 
 	local costArray = {}
-
-	local visited = {}
 	
 	local clusters = {}
 	
-	local noise = {}
+	local noiseCorePointNumberArray = {}
+	
+	local visitedCorePointNumberArray = {}
 	
 	local numberOfData = #featureMatrix
 
@@ -267,21 +267,21 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 		
 		self:iterationWait()
 		
-		if not visited[currentCorePointNumber] then
+		if not visitedCorePointNumberArray[currentCorePointNumber] then
 			
-			visited[currentCorePointNumber] = true
+			visitedCorePointNumberArray[currentCorePointNumber] = true
 			
 			neighbors = getNeighbors(currentCorePointNumber, featureMatrix, self.epsilon, self.distanceFunction)
 			
 			if (#neighbors < self.minimumNumberOfPoints) then
 				
-				table.insert(noise, currentCorePointNumber)
+				table.insert(noiseCorePointNumberArray, currentCorePointNumber)
 				
 			else
 				
 				neighbouringCorePointNumber  = #clusters + 1
 				
-				expandCluster(currentCorePointNumber, neighbors, neighbouringCorePointNumber , clusters, visited, featureMatrix, self.epsilon, self.minimumNumberOfPoints, self.distanceFunction)
+				expandCluster(currentCorePointNumber, neighbors, neighbouringCorePointNumber, clusters, visitedCorePointNumberArray, featureMatrix, self.epsilon, self.minimumNumberOfPoints, self.distanceFunction)
 				
 			end
 			

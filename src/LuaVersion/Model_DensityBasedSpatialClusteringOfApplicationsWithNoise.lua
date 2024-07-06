@@ -22,13 +22,13 @@
 
 local BaseModel = require("Model_BaseModel")
 
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+
 DensityBasedSpatialClusteringOfApplicationsWithNoiseModel = {}
 
 DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.__index = DensityBasedSpatialClusteringOfApplicationsWithNoiseModel
 
 setmetatable(DensityBasedSpatialClusteringOfApplicationsWithNoiseModel, BaseModel)
-
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local defaultMinimumNumberOfPoints = 2
 
@@ -63,7 +63,7 @@ local distanceFunctionList = {
 		return distance 
 		
 	end,
-
+	
 	["Cosine"] = function(x1, x2)
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
@@ -89,8 +89,9 @@ local distanceFunctionList = {
 		return cosineDistance
 
 	end,
-	
+
 }
+
 
 local function calculateDistance(vector1, vector2, distanceFunction)
 	
@@ -338,9 +339,9 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featu
 
 				local pointNumber = clusterPoints[j]
 
-				local point = {storedFeatureVector[pointNumber]}
+				local pointVector = {storedFeatureVector[pointNumber]}
 
-				distance = distance + calculateDistance(featureVector, point, self.distanceFunction)
+				distance += calculateDistance(featureVector, pointVector, self.distanceFunction)
 
 			end
 

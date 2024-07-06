@@ -72,12 +72,14 @@ local function sample(probabilityArray)
 	
 	local cumulativeProbability = 0
 	
-	for i, probability in ipairs(probabilityArray) do
+	for i = #probabilityArray, 1, -1 do
 		
-		cumulativeProbability = cumulativeProbability + randomProbability
+		local probability = probabilityArray[i]
 		
+		cumulativeProbability = cumulativeProbability + probability
+
 		if (randomProbability >= cumulativeProbability) then continue end
-		
+
 		return i, probability
 		
 	end
@@ -163,8 +165,12 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 		local weightArray = NewPrioritizedExperienceReplay.weightArray
 
 		local aggregateFunctionToApply = aggregrateFunctionList[NewPrioritizedExperienceReplay.aggregateFunction]
+		
+		local batchSize = NewPrioritizedExperienceReplay.batchSize
+		
+		local replayBufferArraySize = #replayBufferArray
 
-		local lowestNumberOfBatchSize = math.min(NewPrioritizedExperienceReplay.batchSize, #replayBufferArray)		
+		local lowestNumberOfBatchSize = math.min(batchSize, replayBufferArraySize)		
 		
 		local probabilityArray = {}
 
@@ -194,7 +200,7 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 		
 		for i = 1, lowestNumberOfBatchSize, 1 do
 			
-			local index, probability = sample(probabilityArray)
+			local index, probability = sample(probabilityArray, sumPriorityAlpha)
 			
 			local experience = replayBufferArray[index]
 			
@@ -208,11 +214,11 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 
 			end
 			
-			print(weightArray)
+			weightArray[index] = importanceSamplingWeight
 			
-			weightArray[i] = importanceSamplingWeight
+			print(priorityArray)
 
-			priorityArray[i] = math.abs(temporalDifferenceErrorValueOrVector)
+			priorityArray[index] = math.abs(temporalDifferenceErrorValueOrVector)
 
 			local outputMatrix = Model:forwardPropagate(replayBufferArray[i][1], false)
 

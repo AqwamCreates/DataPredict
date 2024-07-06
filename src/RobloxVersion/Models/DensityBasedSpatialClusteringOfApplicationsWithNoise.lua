@@ -237,8 +237,6 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 	
 	local clusters = {}
 	
-	local visited = {}
-	
 	local noise = {}
 	
 	local numberOfData = #featureMatrix
@@ -255,7 +253,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 			
 			if (#neighbors < self.minimumNumberOfPoints) then
 				
-				noise[#noise + 1] = currentCorePointNumber
+				table.insert(noise, currentCorePointNumber)
 				
 			else
 				

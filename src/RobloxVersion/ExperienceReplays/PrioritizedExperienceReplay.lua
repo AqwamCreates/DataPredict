@@ -100,9 +100,9 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 			
 		end
 		
-		table.insert(priorityArray, maxPriority)
+		table.insert(priorityArray, 1, maxPriority)
 		
-		table.insert(weightArray, 0)
+		table.insert(weightArray, 1, 0)
 		
 		NewPrioritizedExperienceReplay:removeLastValueFromArrayIfExceedsBufferSize(priorityArray)
 		

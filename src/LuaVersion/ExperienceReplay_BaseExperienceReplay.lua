@@ -116,7 +116,7 @@ function BaseExperienceReplay:addExperience(previousFeatureVector, action, rewar
 	
 	local experience = {previousFeatureVector, action, rewardValue, currentFeatureVector}
 
-	table.insert(self.replayBufferArray, experience)
+	table.insert(self.replayBufferArray, 1, experience)
 	
 	local addExperienceFunction = self.addExperienceFunction
 	
@@ -138,7 +138,7 @@ function BaseExperienceReplay:addTemporalDifferenceError(temporalDifferenceError
 	
 	if (not self.isTemporalDifferenceErrorRequired) then return nil end
 	
-	table.insert(self.temporalDifferenceErrorArray, temporalDifferenceErrorVectorOrValue)
+	table.insert(self.temporalDifferenceErrorArray, 1, temporalDifferenceErrorVectorOrValue)
 	
 	local addTemporalDifferenceErrorFunction = self.addTemporalDifferenceErrorFunction
 	

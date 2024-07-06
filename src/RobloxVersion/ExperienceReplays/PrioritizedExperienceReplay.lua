@@ -44,9 +44,9 @@ local aggregrateFunctionList = {
 	
 }
 
-local function sample(probabilityArray, sumPriorityAlpha)
+local function sample(probabilityArray)
 	
-	local randomProbability = math.random() * sumPriorityAlpha
+	local randomProbability = math.random()
 	
 	local cumulativeProbability = 0
 	
@@ -172,7 +172,7 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 		
 		for i = 1, lowestNumberOfBatchSize, 1 do
 			
-			local index, probability = sample(probabilityArray, sumPriorityAlpha)
+			local index, probability = sample(probabilityArray)
 			
 			local experience = replayBufferArray[index]
 			

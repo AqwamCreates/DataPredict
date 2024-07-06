@@ -28,8 +28,6 @@ DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.__index = DensityBased
 
 setmetatable(DensityBasedSpatialClusteringOfApplicationsWithNoiseModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
-
 local defaultMinimumNumberOfPoints = 2
 
 local defaultDistanceFunction = "Manhattan"
@@ -63,7 +61,7 @@ local distanceFunctionList = {
 		return distance 
 		
 	end,
-
+	
 	["Cosine"] = function(x1, x2)
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
@@ -89,8 +87,9 @@ local distanceFunctionList = {
 		return cosineDistance
 
 	end,
-	
+
 }
+
 
 local function calculateDistance(vector1, vector2, distanceFunction)
 	
@@ -175,7 +174,7 @@ local function expandCluster(currentCorePointNumber, neighbors, neighbouringCore
 			
 		end
 		
-		if not isInCluster then
+		if (not isInCluster) then
 			
 			clusters[neighbouringCorePointNumber][#clusters[neighbouringCorePointNumber] + 1] = neighbouringPointNumber
 			
@@ -338,9 +337,9 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featu
 
 				local pointNumber = clusterPoints[j]
 
-				local point = {storedFeatureVector[pointNumber]}
+				local pointVector = {storedFeatureVector[pointNumber]}
 
-				distance = distance + calculateDistance(featureVector, point, self.distanceFunction)
+				distance += calculateDistance(featureVector, pointVector, self.distanceFunction)
 
 			end
 

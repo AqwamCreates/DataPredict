@@ -154,7 +154,7 @@ local function expandCluster(currentCorePointNumber, neighbors, neighbouringCore
 			
 		end
 		
-		if not isInCluster then
+		if (not isInCluster) then
 			
 			clusters[neighbouringCorePointNumber][#clusters[neighbouringCorePointNumber] + 1] = neighbouringPointNumber
 			
@@ -317,9 +317,9 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featu
 
 				local pointNumber = clusterPoints[j]
 
-				local point = {storedFeatureVector[pointNumber]}
+				local pointVector = {storedFeatureVector[pointNumber]}
 
-				distance += calculateDistance(featureVector, point, self.distanceFunction)
+				distance += calculateDistance(featureVector, pointVector, self.distanceFunction)
 
 			end
 

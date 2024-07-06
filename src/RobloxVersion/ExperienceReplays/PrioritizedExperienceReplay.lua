@@ -112,7 +112,7 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, 
 		
 		table.clear(NewPrioritizedExperienceReplay.priorityArray)
 		
-		table.create(NewPrioritizedExperienceReplay.weightArray)
+		table.clear(NewPrioritizedExperienceReplay.weightArray)
 		
 	end)
 	

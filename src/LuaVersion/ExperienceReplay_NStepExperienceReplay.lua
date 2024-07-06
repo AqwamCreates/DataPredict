@@ -64,31 +64,31 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 		
 		local replayBufferArray = NewNStepExperienceReplay.replayBufferArray
 
-		local experienceReplayBatchArray = sample(replayBufferArray, NewNStepExperienceReplay.batchSize)
+		local replayBatchArray = sample(replayBufferArray, NewNStepExperienceReplay.batchSize)
 		
-		local replayBatchArraySize = #replayBufferArray
+		local replayBufferArraySize = #replayBufferArray
 		
-		local firstExperience = experienceReplayBatchArray[1]
+		local replayBatchArraySize = #replayBatchArray
 		
-		local currentState = firstExperience[1]
+		local lastExperience = replayBatchArray[replayBatchArraySize]
 		
-		local action = firstExperience[2]
+		local currentState = lastExperience[1]
 		
-		local nStepReward = firstExperience[3]
+		local action = lastExperience[2]
 		
-		local nStep = math.min(NewNStepExperienceReplay.nStep, replayBatchArraySize - 1)
+		local nStepReward = lastExperience[3]
+		
+		local nStep = math.min(NewNStepExperienceReplay.nStep, replayBufferArraySize - 1)
 
-		for i = 1, nStep, 1 do
+		for i = (replayBatchArraySize), (replayBatchArraySize - nStep), -1 do
 			
-			local experience = experienceReplayBatchArray[i + 1]
-			
-			local previousState = experience[1]
+			local experience = replayBatchArray[i]
 			
 			local reward = experience[3]
-			
+
 			nStepReward = nStepReward + reward
 			
-			updateFunction(previousState, action, nStepReward, currentState)
+			updateFunction(experience[1], experience[2], nStepReward, experience[4])
 			
 		end
 

@@ -368,6 +368,8 @@ function AffinityPropagationModel:train(featureMatrix)
 
 	local cost
 	
+	local damping = self.damping
+	
 	local ModelParameters = self.ModelParameters
 	
 	if (ModelParameters) then
@@ -396,7 +398,7 @@ function AffinityPropagationModel:train(featureMatrix)
 
 		responsibilityMatrix = calculateResponsibilityMatrix(responsibilityMatrix, availabilityMatrix, similarityMatrix)
 
-		availabilityMatrix = calculateAvailibilityMatrix(responsibilityMatrix, availabilityMatrix, self.damping)
+		availabilityMatrix = calculateAvailibilityMatrix(responsibilityMatrix, availabilityMatrix, damping)
 		
 		clusterNumberArray = assignClusters(responsibilityMatrix, availabilityMatrix)
 		

@@ -44,7 +44,7 @@ function MomentumOptimizer.new(decayRate)
 	
 	NewMomentumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		local previousVelocity = NewMomentumOptimizer.optimizerInternalParameters[1] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousVelocity = NewMomentumOptimizer.optimizerInternalParameters or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 
 		local velocityPart1 = AqwamMatrixLibrary:multiply(NewMomentumOptimizer.decayRate, previousVelocity)
 
@@ -54,7 +54,7 @@ function MomentumOptimizer.new(decayRate)
 
 		costFunctionDerivatives = velocity
 		
-		NewMomentumOptimizer.optimizerInternalParameters = {velocity}
+		NewMomentumOptimizer.optimizerInternalParameters = velocity
 
 		return costFunctionDerivatives
 		

@@ -75,7 +75,7 @@ function BaseOptimizer.new(optimizerName)
 	
 	NewBaseOptimizer.calculateFunction = nil
 	
-	NewBaseOptimizer.optimizerInternalParameters = {}
+	NewBaseOptimizer.optimizerInternalParameters = nil
 	
 	return NewBaseOptimizer
 	
@@ -129,7 +129,7 @@ end
 
 function BaseOptimizer:reset()
 
-	self.optimizerInternalParameters = {}
+	self.optimizerInternalParameters = nil
 
 end
 

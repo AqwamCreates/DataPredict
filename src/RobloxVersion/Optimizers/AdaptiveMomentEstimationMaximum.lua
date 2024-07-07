@@ -30,9 +30,23 @@ function AdaptiveMomentEstimationMaximumOptimizer.new(beta1, beta2, epsilon)
 	
 	NewAdaptiveMomentEstimationMaximumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 
-		local moment = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameters[1] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local moment
 
-		local exponentWeight = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameters[2] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local exponentWeight
+		
+		local optimizerInternalParameters = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameters
+		
+		if (optimizerInternalParameters) then
+			
+			moment = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameters[1]
+			
+			exponentWeight = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameters[2]
+			
+		end
+		
+		moment = moment or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		
+		exponentWeight = exponentWeight or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 		
 		local beta1 = NewAdaptiveMomentEstimationMaximumOptimizer.beta1
 		

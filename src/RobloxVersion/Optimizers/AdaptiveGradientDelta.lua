@@ -26,7 +26,7 @@ function AdaptiveGradientDeltaOptimizer.new(decayRate, epsilon)
 	
 	NewAdaptiveGradientDeltaOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		local previousRunningGradientSquaredMatrix = NewAdaptiveGradientDeltaOptimizer.optimizerInternalParameters[1] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousRunningGradientSquaredMatrix = NewAdaptiveGradientDeltaOptimizer.optimizerInternalParameters or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 		
 		local decayRate = NewAdaptiveGradientDeltaOptimizer.decayRate
 
@@ -46,7 +46,7 @@ function AdaptiveGradientDeltaOptimizer.new(decayRate, epsilon)
 
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 
-		NewAdaptiveGradientDeltaOptimizer.optimizerInternalParameters = {currentRunningGradientSquaredMatrix}
+		NewAdaptiveGradientDeltaOptimizer.optimizerInternalParameters = currentRunningGradientSquaredMatrix
 
 		return costFunctionDerivatives
 		

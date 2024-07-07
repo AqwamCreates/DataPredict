@@ -54,9 +54,9 @@ function GravityOptimizer.new(initialStepSize, movingAverage)
 		
 		if (optimizerInternalParameters) then
 			
-			previousVelocity = NewGravityOptimizer.optimizerInternalParameters[1]
+			previousVelocity = optimizerInternalParameters[1]
 			
-			currentTimeStep = NewGravityOptimizer.optimizerInternalParameters[2]
+			currentTimeStep = optimizerInternalParameters[2]
 			
 		end
 		

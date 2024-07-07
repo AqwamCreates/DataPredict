@@ -38,9 +38,9 @@ function AdaptiveMomentEstimationOptimizer.new(beta1, beta2, epsilon)
 		
 		if (optimizerInternalParameters) then
 			
-			previousMomentum = NewAdaptiveMomentEstimationOptimizer.optimizerInternalParameters[1]
+			previousMomentum = optimizerInternalParameters[1]
 			
-			previousVelocity = NewAdaptiveMomentEstimationOptimizer.optimizerInternalParameters[2]
+			previousVelocity = optimizerInternalParameters[2]
 			
 		end
 		

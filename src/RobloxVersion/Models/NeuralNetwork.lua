@@ -589,6 +589,8 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 		local layerMatrix = ModelParameters[layerNumber]
 
 		local hasBiasNeuron = hasBiasNeuronTable[layerNumber]
+		
+		local hasBiasNeuronOnNextLayer = hasBiasNeuronTable[layerNumber + 1]
 
 		local layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
 
@@ -596,9 +598,9 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 
 		local derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
 		
-		if (hasBiasNeuron == 1) then
+		if (hasBiasNeuronOnNextLayer == 1) then
 
-			for data = 1, numberOfData, 1 do derivativeMatrix[data][1] = 1 end
+			for i = 1, #derivativeMatrix, 1 do derivativeMatrix[i][1] = 0 end
 
 		end
 
@@ -644,6 +646,8 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 	
 	local RegularizationTable = self.RegularizationTable
 	
+	local hasBiasNeuronTable = self.hasBiasNeuronTable
+	
 	local ModelParameters = self.ModelParameters
 
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
@@ -655,6 +659,8 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 		local Optimizer = OptimizerTable[layerNumber + 1]
 		
 		local costFunctionDerivativeMatrix = costFunctionDerivativeMatrixTable[layerNumber]
+		
+		local hasBiasNeuronOnNextLayer = hasBiasNeuronTable[layerNumber + 1]
 		
 		if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
 		
@@ -681,7 +687,13 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 		end
 		
 		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivativeMatrix)
-
+		
+		if (hasBiasNeuronOnNextLayer == 1) then
+			
+			for i = 1, #newWeightMatrix, 1 do newWeightMatrix[i][1] = 0 end
+			
+		end
+		
 		table.insert(NewModelParameters, newWeightMatrix)
 
 	end
@@ -693,7 +705,7 @@ end
 function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
 	
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
-
+	
 	local numberOfData = #lossMatrix
 
 	local costFunctionDerivativeMatrixTable = self:calculateCostFunctionDerivativeMatrixTable(lossMatrix)

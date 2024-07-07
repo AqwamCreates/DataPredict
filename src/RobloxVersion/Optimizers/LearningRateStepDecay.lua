@@ -26,9 +26,23 @@ function LearningRateStepDecayOptimizer.new(decayRate, timeStepToDecay)
 	
 	NewLearningRateStepDecayOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		local currentLearningRate = NewLearningRateStepDecayOptimizer.optimizerInternalParameters[1] or learningRate
+		local currentLearningRate
 		
-		local currentTimeStep = NewLearningRateStepDecayOptimizer.optimizerInternalParameters[2] or 0
+		local currentTimeStep
+		
+		local optimizerInternalParameters = NewLearningRateStepDecayOptimizer.optimizerInternalParameters
+		
+		if (optimizerInternalParameters) then
+			
+			currentLearningRate = optimizerInternalParameters[1]
+			
+			currentTimeStep = optimizerInternalParameters[2]
+			
+		end
+		
+		currentLearningRate = currentLearningRate or learningRate
+		
+		currentTimeStep = currentTimeStep or 0
 
 		currentTimeStep += 1
 		

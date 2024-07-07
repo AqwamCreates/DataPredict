@@ -68,11 +68,23 @@ function GravityOptimizer.new(initialStepSize, movingAverage)
 	
 	NewGravityOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		local previousVelocity = NewGravityOptimizer.optimizerInternalParameters[1]
+		local previousVelocity
 		
-		local currentTimeStep = NewGravityOptimizer.optimizerInternalParameters[2] or 0
+		local currentTimeStep
 		
-		currentTimeStep += 1
+		local optimizerInternalParameters = NewGravityOptimizer.optimizerInternalParameters
+		
+		if (optimizerInternalParameters) then
+			
+			previousVelocity = optimizerInternalParameters[1]
+			
+			currentTimeStep = optimizerInternalParameters[2]
+			
+		end
+		
+		currentTimeStep = currentTimeStep or 0
+		
+		currentTimeStep = currentTimeStep + 1
 		
 		if (previousVelocity == nil) then
 

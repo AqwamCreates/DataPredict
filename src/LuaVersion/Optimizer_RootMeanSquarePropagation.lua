@@ -48,7 +48,7 @@ function RootMeanSquarePropagationOptimizer.new(beta, epsilon)
 	
 	NewRootMeanSquarePropagationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		local previousVelocity = NewRootMeanSquarePropagationOptimizer.optimizerInternalParameters[1] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousVelocity = NewRootMeanSquarePropagationOptimizer.optimizerInternalParameters or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 		
 		local beta = NewRootMeanSquarePropagationOptimizer.beta
 
@@ -68,7 +68,7 @@ function RootMeanSquarePropagationOptimizer.new(beta, epsilon)
 
 		local costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 
-		NewRootMeanSquarePropagationOptimizer.optimizerInternalParameters = {velocity}
+		NewRootMeanSquarePropagationOptimizer.optimizerInternalParameters = velocity
 
 		return costFunctionDerivatives
 		

@@ -38,9 +38,9 @@ function AdaptiveMomentEstimationMaximumOptimizer.new(beta1, beta2, epsilon)
 		
 		if (optimizerInternalParameters) then
 			
-			moment = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameters[1]
+			moment = optimizerInternalParameters[1]
 			
-			exponentWeight = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameters[2]
+			exponentWeight = optimizerInternalParameters[2]
 			
 		end
 		

@@ -52,9 +52,23 @@ function NesterovAcceleratedAdaptiveMomentEstimationOptimizer.new(beta1, beta2, 
 	
 	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
 		
-		local previousM = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameters[1] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousM
 
-		local previousN = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameters[2] or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousN
+		
+		local optimizerInternalParameters = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameters
+		
+		if (optimizerInternalParameters) then
+			
+			previousM = optimizerInternalParameters[1]
+			
+			previousN = optimizerInternalParameters[2]
+			
+		end
+		
+		previousM = previousM or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		
+		previousN = previousN or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
 		
 		local beta1 = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.beta1
 		

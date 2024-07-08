@@ -50,9 +50,9 @@ local function sample(replayBufferArray, batchSize)
 	
 end
 
-function UniformExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+function UniformExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize)
 	
-	local NewUniformExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+	local NewUniformExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize)
 	
 	setmetatable(NewUniformExperienceReplay, UniformExperienceReplay)
 	
@@ -80,11 +80,11 @@ function UniformExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxB
 	
 end
 
-function UniformExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+function UniformExperienceReplay:setParameters(batchSize, numberOfRunsToUpdate, maxBufferSize)
 	
 	self.batchSize = batchSize or self.batchSize
 
-	self.numberOfExperienceToUpdate = numberOfExperienceToUpdate or self.numberOfExperienceToUpdate
+	self.numberOfRunsToUpdate = numberOfRunsToUpdate or self.numberOfRunsToUpdate
 
 	self.maxBufferSize = maxBufferSize or self.maxBufferSize
 	

@@ -32,7 +32,7 @@ function RootMeanSquarePropagationOptimizer.new(beta, epsilon)
 
 		local squaredCostFunctionDerivatives = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
 
-		local vPart1 = AqwamMatrixLibrary:multiply(beta, NewRootMeanSquarePropagationOptimizer.previousVelocity)
+		local vPart1 = AqwamMatrixLibrary:multiply(beta, previousVelocity)
 
 		local vPart2 = AqwamMatrixLibrary:multiply((1 - beta), squaredCostFunctionDerivatives)
 

@@ -204,15 +204,13 @@ function ReinforcementLearningQuickSetup:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, ClassesList, childModelNumber)
-	
-	local allOutputsMatrix = self.Model:predict(currentFeatureVector, true, childModelNumber)
-	
-	local actionSelectionFunction = self.actionSelectionFunction
+function ReinforcementLearningQuickSetup:selectAction(allOutputsMatrix, ClassesList)
 	
 	local action
 	
 	local selectedValue
+	
+	local actionSelectionFunction = self.actionSelectionFunction
 	
 	if (actionSelectionFunction == "Maximum") then
 		
@@ -234,7 +232,7 @@ function ReinforcementLearningQuickSetup:selectAction(currentFeatureVector, Clas
 		
 	end
 	
-	return action, selectedValue, allOutputsMatrix
+	return action, selectedValue
 	
 end
 
@@ -277,8 +275,10 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 		allOutputsMatrix[1][randomNumber] = randomProbability
 
 	else
+		
+		allOutputsMatrix = self.Model:predict(currentFeatureVector, true, childModelNumber)
 
-		action, selectedValue, allOutputsMatrix = self:selectAction(currentFeatureVector, ClassesList, childModelNumber)
+		action, selectedValue = self:selectAction(allOutputsMatrix, ClassesList)
 
 	end
 

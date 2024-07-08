@@ -86,9 +86,9 @@ local function sample(probabilityArray)
 	
 end
 
-function PrioritizedExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, alpha, beta, aggregateFunction, epsilon)
+function PrioritizedExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize, alpha, beta, aggregateFunction, epsilon)
 	
-	local NewPrioritizedExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+	local NewPrioritizedExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize)
 	
 	setmetatable(NewPrioritizedExperienceReplay, PrioritizedExperienceReplay)
 	
@@ -250,11 +250,11 @@ function PrioritizedExperienceReplay:setModel(Model)
 	
 end
 
-function PrioritizedExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize, alpha, beta, aggregateFunction, epsilon)
+function PrioritizedExperienceReplay:setParameters(batchSize, numberOfRunsToUpdate, maxBufferSize, alpha, beta, aggregateFunction, epsilon)
 	
 	self.batchSize = batchSize or self.batchSize
 
-	self.numberOfExperienceToUpdate = numberOfExperienceToUpdate or self.numberOfExperienceToUpdate
+	self.numberOfRunsToUpdate = numberOfRunsToUpdate or self.numberOfRunsToUpdate
 
 	self.maxBufferSize = maxBufferSize or self.maxBufferSize
 	

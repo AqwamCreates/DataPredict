@@ -9,14 +9,14 @@ It is used to update the models from experiences stored in the experience replay
 Creates a new experience replay object.
 
 ```
-PrioritizedExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number, alpha: number, beta: number, aggregateFunction: string, epsilon: number)
+PrioritizedExperienceReplay.new(batchSize: number, numberOfRunsToUpdate: number, maxBufferSize: number, alpha: number, beta: number, aggregateFunction: string, epsilon: number)
 ```
 
 #### Parameters:
 
 * batchSize: The number of experience to sample from for training.
 
-* numberOfExperienceToUpdate: The number of experience needed for a single event of experience replay.
+* numberOfRunsToUpdate: The number of run() function needed to be called to run a single event of experience replay.
 
 * maxBufferSize: The maximum number of experiences that can be kept inside the object.
 
@@ -43,14 +43,14 @@ PrioritizedExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: n
 Change the parameters of an experience replay object.
 
 ```
-PrioritizedExperienceReplay:setParametersbatchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number, alpha: number, beta: number, aggregateFunction: string, epsilon: number)
+PrioritizedExperienceReplay:setParametersbatchSize: number, numberOfRunsToUpdate: number, maxBufferSize: number, alpha: number, beta: number, aggregateFunction: string, epsilon: number)
 ```
 
 #### Parameters:
 
 * batchSize: The number of experience to sample from for training.
 
-* numberOfExperienceToUpdate: The number of experience needed for a single event of experience replay.
+* numberOfRunsToUpdate: The number of run() function needed to be called to run a single event of experience replay.
 
 * maxBufferSize: The maximum number of experiences that can be kept inside the object.
 

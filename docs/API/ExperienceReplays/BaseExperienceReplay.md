@@ -9,14 +9,14 @@ The base class for most experience replay classes. It serves as a template for u
 Creates a new base experience replay object.
 
 ```
-BaseExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)
+BaseExperienceReplay.new(batchSize: number, numberOfRunsToUpdate: number, maxBufferSize: number)
 ```
 
 #### Parameters:
 
 * batchSize: The number of experience to sample from for training.
 
-* numberOfExperienceToUpdate: The number of experience needed for a single event of experience replay.
+* numberOfRunsToUpdate: The number of run() function needed to be called to run a single event of experience replay.
 
 * maxBufferSize: The maximum number of experiences that can be kept inside the object.
 
@@ -27,14 +27,14 @@ BaseExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: number, 
 Change the parameters of a base experience replay object.
 
 ```
-BaseExperienceReplay:setParametersbatchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)
+BaseExperienceReplay:setParametersbatchSize: number, numberOfRunsToUpdate: number, maxBufferSize: number)
 ```
 
 #### Parameters:
 
 * batchSize: The number of experience to sample from for training.
 
-* numberOfExperienceToUpdate: The number of experience needed for a single event of experience replay.
+* numberOfRunsToUpdate: The number of run() function needed to be called to run a single event of experience replay.
 
 * maxBufferSize: The maximum number of experiences that can be kept inside the object.
 

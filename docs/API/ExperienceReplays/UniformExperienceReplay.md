@@ -9,14 +9,14 @@ It is used to update the models from experiences stored in the experience replay
 Creates a new experience replay object.
 
 ```
-UniformExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)
+UniformExperienceReplay.new(batchSize: number, numberOfRunsToUpdate: number, maxBufferSize: number)
 ```
 
 #### Parameters:
 
 * batchSize: The number of experience to sample from for training.
 
-* numberOfExperienceToUpdate: The number of experience needed for a single event of experience replay.
+* numberOfRunsToUpdate: The number of run() function needed to be called to run a single event of experience replay.
 
 * maxBufferSize: The maximum number of experiences that can be kept inside the object.
 
@@ -27,14 +27,14 @@ UniformExperienceReplay.new(batchSize: number, numberOfExperienceToUpdate: numbe
 Change the parameters of an experience replay object.
 
 ```
-UniformExperienceReplay:setParametersbatchSize: number, numberOfExperienceToUpdate: number, maxBufferSize: number)
+UniformExperienceReplay:setParametersbatchSize: number, numberOfRunsToUpdate: number, maxBufferSize: number)
 ```
 
 #### Parameters:
 
 * batchSize: The number of experience to sample from for training.
 
-* numberOfExperienceToUpdate: The number of experience needed for a single event of experience replay.
+* numberOfRunsToUpdate: The number of run() function needed to be called to run a single event of experience replay.
 
 * maxBufferSize: The maximum number of experiences that can be kept inside the object.
 

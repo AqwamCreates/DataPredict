@@ -28,9 +28,9 @@ local defaultBatchSize = 32
 
 local defaultMaxBufferSize = 100
 
-local defaultNumberOfExperienceToUpdate = 1
+local defaultNumberOfRunsToUpdate = 1
 
-function BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+function BaseExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize)
 	
 	local NewBaseExperienceReplay = {}
 	
@@ -38,11 +38,11 @@ function BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuff
 
 	NewBaseExperienceReplay.batchSize = batchSize or defaultBatchSize
 
-	NewBaseExperienceReplay.numberOfExperienceToUpdate = numberOfExperienceToUpdate or defaultNumberOfExperienceToUpdate
+	NewBaseExperienceReplay.numberOfRunsToUpdate = numberOfRunsToUpdate or defaultNumberOfRunsToUpdate
 
 	NewBaseExperienceReplay.maxBufferSize = maxBufferSize or defaultMaxBufferSize
 	
-	NewBaseExperienceReplay.numberOfExperience = 0
+	NewBaseExperienceReplay.numberOfRuns = 0
 	
 	NewBaseExperienceReplay.replayBufferArray = {}
 	
@@ -54,11 +54,11 @@ function BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuff
 	
 end
 
-function BaseExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+function BaseExperienceReplay:setParameters(batchSize, numberOfRunsToUpdate, maxBufferSize)
 	
 	self.batchSize = batchSize or self.batchSize
 
-	self.numberOfExperienceToUpdate = numberOfExperienceToUpdate or self.numberOfExperienceToUpdate
+	self.numberOfRunsToUpdate = numberOfRunsToUpdate or self.numberOfRunsToUpdate
 
 	self.maxBufferSize = maxBufferSize or self.maxBufferSize
 	
@@ -72,7 +72,7 @@ end
 
 function BaseExperienceReplay:reset()
 	
-	self.numberOfExperience = 0
+	self.numberOfRuns = 0
 	
 	table.clear(self.replayBufferArray)
 	
@@ -92,9 +92,11 @@ end
 
 function BaseExperienceReplay:run(updateFunction)
 	
-	if (self.numberOfExperience < self.numberOfExperienceToUpdate) then return nil end
+	self.numberOfRuns += 1
 	
-	self.numberOfExperience = 0
+	if (self.numberOfRuns < self.numberOfRunsToUpdate) then return nil end
+	
+	self.numberOfRuns = 0
 	
 	self.runFunction(updateFunction)
 	
@@ -123,8 +125,6 @@ function BaseExperienceReplay:addExperience(previousFeatureVector, action, rewar
 	if (addExperienceFunction) then addExperienceFunction(previousFeatureVector, action, rewardValue, currentFeatureVector) end
 
 	self:removeFirstValueFromArrayIfExceedsBufferSize(self.replayBufferArray)
-	
-	self.numberOfExperience += 1
 	
 end
 

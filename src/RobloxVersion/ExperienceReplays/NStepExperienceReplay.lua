@@ -28,9 +28,9 @@ local function sample(replayBufferArray, batchSize)
 
 end
 
-function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep)
+function NStepExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize, nStep)
 
-	local NewNStepExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBufferSize)
+	local NewNStepExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize)
 
 	setmetatable(NewNStepExperienceReplay, NStepExperienceReplay)
 
@@ -68,11 +68,11 @@ function NStepExperienceReplay.new(batchSize, numberOfExperienceToUpdate, maxBuf
 
 end
 
-function NStepExperienceReplay:setParameters(batchSize, numberOfExperienceToUpdate, maxBufferSize, nStep)
+function NStepExperienceReplay:setParameters(batchSize, numberOfRunsToUpdate, maxBufferSize, nStep)
 
 	self.batchSize = batchSize or self.batchSize
 
-	self.numberOfExperienceToUpdate = numberOfExperienceToUpdate or self.numberOfExperienceToUpdate
+	self.numberOfRunsToUpdate = numberOfRunsToUpdate or self.numberOfRunsToUpdate
 
 	self.maxBufferSize = maxBufferSize or self.maxBufferSize
 

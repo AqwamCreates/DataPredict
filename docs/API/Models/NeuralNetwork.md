@@ -58,7 +58,7 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activat
 
 * hasBiasNeuron: Set whether or not the bias neuron will be added to next layer.
 
-* activationFunction: The function to calculate the cost and cost derivatives of each training. Available options are:
+* activationFunction: The activation function to be used for the next layer. Available options are:
   
   * Sigmoid
 
@@ -106,7 +106,7 @@ NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationF
 
 * hasBiasNeuron: Set whether or not this layer has a bias neuron.
 
-* activationFunction: The function to calculate the cost and cost derivatives of each training. Available options are:
+* activationFunction: The activation function to be used for the current layer. Available options are:
 
   * Sigmoid
 
@@ -152,7 +152,7 @@ NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: 
 
 * numberOfNeuronsArray: The array containing all the number of neurons for each layer (without bias neuron). The index determines the layer, while the value determines the number of neurons. Bias neurons will be added automatically after setting the number of neurons in each layer except for the output layer. For example, {3,7,6} means 3 neurons at layer 1, 7 neurons at layer 2, and 6 neurons at layer 3 wthout the bias neurons.
 
-* activationFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
+* activationFunction: The activation function to be used for all layers. Available options are:
 
   * Sigmoid
 
@@ -204,6 +204,12 @@ NeuralNetwork:setLayerProperty(layerNumber: integer, property: string, value: an
 
   * LearningRate
 
+  * DropoutRate
+
+  * Optimizer
+    
+  * Regularization
+    
   * DropoutRate
 
 * value: The value to be set to the property for selected layer.

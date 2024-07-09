@@ -56,7 +56,7 @@ We have two ways of creating our neural network layers:
 
 2. Create each layer with their own individual settings.
 
-Below, I will show the codes that demonstrates these two options
+Below, I will show the codes that demonstrates these two options.
 
 ## Creating All Layers
 

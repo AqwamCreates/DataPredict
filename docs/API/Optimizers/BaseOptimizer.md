@@ -22,7 +22,7 @@ BaseOptimizer.new(optimizerName: string): BaseOptimizerObject
 
 ## Functions
 
-## calculate()
+### calculate()
 
 Returns a modified cost function derivatives.
 

@@ -78,7 +78,7 @@ BaseOptimizer:getOptimizerInternalParameters(doNotDeepCopy: boolean): {}
 
 #### Returns:
 
-* optimizerInternalParameters: The optimizer internal parameters that is stored in base optimizer.
+* optimizerInternalParameters: A matrix/table containing optimizer internal parameters fetched from the base optimizer.
 
 ### setOptimizerInternalParameters()
 
@@ -90,7 +90,7 @@ BaseOptimizer:setOptimizerInternalParameters(optimizerInternalParameters: {}, do
 
 #### Parameters:
 
-* optimizerInternalParameters: The optimizer internal parameters that is stored to be stored in base optimizer.
+* optimizerInternalParameters: A matrix/table containing optimizer internal parameters that will be used by the base optimizer.
 
 * doNotDeepCopy: Set whether or not to deep copy the optimizer internal parameters.
 

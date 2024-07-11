@@ -12,7 +12,7 @@ We will use forwardPropagate() and backPropagate() functions to train our neural
 local DataPredict = require(DataPredict)
 local MatrixL = require(AqwamMatrixLibrary)
 
-local dataMatrix = {
+local featureMatrix = {
 
   {1, 2, 3, 4},
   {1, 2, 3, 4},

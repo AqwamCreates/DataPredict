@@ -90,11 +90,15 @@ Once that is covered, we will now show you on how to add multiple layers using t
 
 ```lua
 
+local learningRate1 = 0.0001
+
+local learningRate2 = 0.01
+
 NeuralNetworkModel:addLayer(2, true)
 
-NeuralNetworkModel:addLayer(3, true, "Tanh")
+NeuralNetworkModel:addLayer(3, true, "Tanh", learningRate1)
 
-NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
+NeuralNetworkModel:addLayer(2, false, "StableSoftmax", learningRate2)
 
 ```
 

@@ -30,9 +30,11 @@ OneVsAll.__index = OneVsAll
 
 local defaultMaxNumberOfIterations = 500
 
-local defaultTargetTotalCost = 0
+local defaultTotalTargetCostUpperBound = 0
 
-function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel, targetTotalCost)
+local defaultTotalTargetCostLowerBound = 0
+
+function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel)
 	
 	local NewOneVsAll = {}
 	
@@ -42,11 +44,19 @@ function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel, targetTo
 	
 	NewOneVsAll.useNegativeOneBinaryLabel = useNegativeOneBinaryLabel or false
 	
-	NewOneVsAll.targetTotalCost = targetTotalCost or defaultTargetTotalCost
-	
 	NewOneVsAll.IsOutputPrinted = true
 	
-	NewOneVsAll.ModelsArray = {}
+	NewOneVsAll.targetTotalCostUpperBound = defaultTotalTargetCostUpperBound
+
+	NewOneVsAll.targetTotalCostLowerBound = defaultTotalTargetCostLowerBound
+	
+	NewOneVsAll.numberOfIterationsToCheckIfConverged = math.huge
+	
+	NewOneVsAll.currentNumberOfIterationsToCheckIfConverged = 0
+	
+	NewOneVsAll.currentCostToCheckForConvergence = nil
+	
+	NewOneVsAll.ModelArray = {}
 	
 	NewOneVsAll.OptimizersArray = {}
 	
@@ -66,19 +76,17 @@ end
 
 function OneVsAll:checkIfModelsSet()
 	
-	local numberOfModels = #self.ModelsArray
+	local numberOfModels = #self.ModelArray
 
 	if (numberOfModels == 0) then error("No models set!") end
 	
 end
 
-function OneVsAll:setParameters(maxNumberOfIterations, useNegativeOneBinaryLabel, targetTotalCost)
+function OneVsAll:setParameters(maxNumberOfIterations, useNegativeOneBinaryLabel)
 	
 	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
 	
 	self.useNegativeOneBinaryLabel = self:getBooleanOrDefaultOption(useNegativeOneBinaryLabel, self.useNegativeOneBinaryLabel)
-	
-	self.targetTotalCost = targetTotalCost or self.targetTotalCost 
 	
 end
 
@@ -88,11 +96,11 @@ function OneVsAll:setModels(modelName, numberOfClasses)
 	
 	local SelectedModel
 	
-	local ModelsArray = {}
+	local ModelArray = {}
 	
 	local isNameAdded = (typeof(modelName) == "string")
 	
-	if isNameAdded then  SelectedModel = require(Models[modelName]) end
+	if isNameAdded then SelectedModel = require(Models[modelName]) end
 	
 	for i = 1, numberOfClasses, 1 do
 
@@ -102,11 +110,11 @@ function OneVsAll:setModels(modelName, numberOfClasses)
 			
 		ModelObject:setPrintOutput(false)
 		
-		table.insert(ModelsArray, ModelObject)
+		table.insert(ModelArray, ModelObject)
 
 	end
 	
-	self.ModelsArray = ModelsArray
+	self.ModelArray = ModelArray
 	
 end
 
@@ -120,11 +128,11 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 	
 	local SelectedOptimizer
 	
-	if isNameAdded then SelectedOptimizer = require(Optimizers[optimizerName]) end
+	if isNameAdded then SelectedOptimizer = require("Optimizer_" ..  optimizerName) end
 	
 	local success = pcall(function()
 		
-		self.ModelsArray[1]:setOptimizer() 
+		self.ModelArray[1]:setOptimizer() 
 		
 	end)
 	
@@ -136,7 +144,7 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 		
 	end
 	
-	for _, Model in ipairs(self.ModelsArray) do 
+	for _, Model in ipairs(self.ModelArray) do 
 
 		if SelectedOptimizer then
 
@@ -168,7 +176,7 @@ function OneVsAll:setRegularization(lambda, regularizationMode, hasBias)
 	
 	local success = pcall(function()
 		
-		for _, Model in ipairs(self.ModelsArray) do Model:setRegularization(RegularizationObject) end
+		for _, Model in ipairs(self.ModelArray) do Model:setRegularization(RegularizationObject) end
 		
 	end)
 	
@@ -180,7 +188,7 @@ function OneVsAll:setModelsSettings(...)
 	
 	self:checkIfModelsSet()
 	
-	for _, Model in ipairs(self.ModelsArray) do Model:setParameters(...) end
+	for _, Model in ipairs(self.ModelArray) do Model:setParameters(...) end
 	
 end
 
@@ -278,7 +286,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 	
 	self:processLabelVector(labelVector)
 	
-	if (#self.ModelsArray ~= #self.ClassesList) then error("The number of models does not match with number of classes.") end
+	if (#self.ModelArray ~= #self.ClassesList) then error("The number of models does not match with number of classes.") end
 	
 	local binaryLabelVectorTable = {}
 	
@@ -300,7 +308,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 		
 		local totalCost = 0
 		
-		for m, Model in ipairs(self.ModelsArray) do
+		for m, Model in ipairs(self.ModelArray) do
 			
 			local binaryLabelVector = binaryLabelVectorTable[m]
 
@@ -316,10 +324,48 @@ function OneVsAll:train(featureMatrix, labelVector)
 		
 		if (self.isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost) end
 		
-	until (numberOfIterations >= self.maxNumberOfIterations) or (totalCost <= self.targetTotalCost)
+	until (numberOfIterations >= self.maxNumberOfIterations) or ((totalCost >= self.targetTotalCostLowerBound) and (totalCost <= self.targetTotalCostUpperBound)) or self:checkIfConverged(totalCost)
 	
 	return costArray
 	
+end
+
+function OneVsAll:checkIfConverged(cost)
+
+	if (not cost) then return false end
+
+	if (not self.currentCostToCheckForConvergence) then
+
+		self.currentCostToCheckForConvergence = cost
+
+		return false
+
+	end
+
+	if (self.currentCostToCheckForConvergence ~= cost) then
+
+		self.currentNumberOfIterationsToCheckIfConverged = 1
+
+		self.currentCostToCheckForConvergence = cost
+
+		return false
+
+	end
+
+	if (self.currentNumberOfIterationsToCheckIfConverged < self.numberOfIterationsToCheckIfConverged) then
+
+		self.currentNumberOfIterationsToCheckIfConverged += 1
+
+		return false
+
+	end
+
+	self.currentNumberOfIterationsToCheckIfConverged = 1
+
+	self.currentCostToCheckForConvergence = nil
+
+	return true
+
 end
 
 function OneVsAll:getBestPrediction(featureVector)
@@ -328,7 +374,7 @@ function OneVsAll:getBestPrediction(featureVector)
 	
 	local highestValue = -math.huge
 	
-	for m, Model in ipairs(self.ModelsArray) do 
+	for m, Model in ipairs(self.ModelArray) do 
 
 		local allOutputVector = Model:predict(featureVector, true)
 		
@@ -380,7 +426,7 @@ function OneVsAll:getModelParametersArray()
 	
 	local ModelParametersArray = {}
 	
-	for _, Model in ipairs(self.ModelsArray) do 
+	for _, Model in ipairs(self.ModelArray) do 
 		
 		local ModelParameters = Model:getModelParameters()
 		
@@ -398,9 +444,9 @@ function OneVsAll:setModelParametersArray(ModelParametersArray)
 	
 	if (ModelParametersArray == nil) then return nil end
 	
-	if (#ModelParametersArray ~= #self.ModelsArray) then error("The number of model parameters does not match with the number of models!") end
+	if (#ModelParametersArray ~= #self.ModelArray) then error("The number of model parameters does not match with the number of models!") end
 	
-	for m, Model in ipairs(self.ModelsArray) do 
+	for m, Model in ipairs(self.ModelArray) do 
 		
 		local ModelParameters = ModelParametersArray[m]
 
@@ -414,7 +460,7 @@ function OneVsAll:clearModelParameters()
 	
 	self:checkIfModelsSet()
 	
-	for _, Model in ipairs(self.ModelsArray) do Model:clearModelParameters() end
+	for _, Model in ipairs(self.ModelArray) do Model:clearModelParameters() end
 
 end
 
@@ -428,19 +474,33 @@ function OneVsAll:setAutoResetOptimizers(option)
 
 	self:checkIfModelsSet()
 
-	for _, Model in ipairs(self.ModelsArray) do Model:setAutoResetOptimizers(option) end
+	for _, Model in ipairs(self.ModelArray) do Model:setAutoResetOptimizers(option) end
 
 end
 
 function OneVsAll:setNumberOfIterationsToCheckIfConverged(numberOfIterations)
 	
-	for _, Model in ipairs(self.ModelsArray) do Model:setNumberOfIterationsToCheckIfConverged(numberOfIterations) end
+	for _, Model in ipairs(self.ModelArray) do Model:setNumberOfIterationsToCheckIfConverged(numberOfIterations) end
 	
+end
+
+function OneVsAll:setNumberOfIterationsToCheckIfConvergedForOneVsAll(numberOfIterations)
+
+	self.numberOfIterationsToCheckIfConverged = numberOfIterations or self.numberOfIterationsToCheckIfConverged
+
 end
 
 function OneVsAll:setTargetCost(upperBound, lowerBound)
 	
-	for _, Model in ipairs(self.ModelsArray) do Model:setTargetCost(upperBound, lowerBound) end
+	for _, Model in ipairs(self.ModelArray) do Model:setTargetCost(upperBound, lowerBound) end
+	
+end
+
+function OneVsAll:setTargetTotalCost(upperBound, lowerBound)
+	
+	self.targetTotalCostUpperBound = upperBound or self.targetTotalCostUpperBound
+	
+	self.targetTotalCostLowerBound = lowerBound or self.targetTotalCostLowerBound
 	
 end
 

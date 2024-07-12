@@ -9,7 +9,7 @@ Allows binary classification models (such as LogisticRegression) be merged toget
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean, targetTotalCost: number): OneVsAllObject
+OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean): OneVsAllObject
 ```
 
 #### Parameters:
@@ -17,8 +17,6 @@ OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean,
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * useNegativeOneBinaryLabel: Set whether or not if the negative labels uses -1 instead of 0.
-
-* targetTotalCost: The total cost at which the model stops training.
 
 #### Returns:
 
@@ -31,7 +29,7 @@ OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean,
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-OneVsAll:setParameters(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean, targetTotalCost: number)
+OneVsAll:setParameters(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean)
 ```
 
 #### Parameters:
@@ -39,8 +37,6 @@ OneVsAll:setParameters(maxNumberOfIterations: integer, useNegativeOneBinaryLabel
 * maxNumberOfIterations: How many times should the model needed to be trained.
 
 * useNegativeOneBinaryLabel: Set whether or not if the negative labels uses -1 instead of 0.
-
-* targetTotalCost: The total cost at which the model stops training.
 
 ### setModels()
 
@@ -197,11 +193,36 @@ OneVsAll:setNumberOfIterationsToCheckIfConverged(numberOfIterations: number)
 
 * numberOfIterations: The number of iterations for confirming convergence.
 
+### setNumberOfIterationsToCheckIfConvergedForOneVsAll()
+
+Set the number of iterations needed to confirm convergence.
+
+```
+OneVsAll:setNumberOfIterationsToCheckIfConvergedForOneVsAll(numberOfIterations: number)
+```
+
+#### Parameters
+
+* numberOfIterations: The number of iterations for confirming convergence.
+
 ### setTargetCost()
 
 Set the upper bound and lower bounds of the target cost.
 ```
 OneVsAll:setTargetCost(upperBound: number, lowerBound: number)
+```
+
+#### Parameters
+
+* upperBound: The upper bound of target cost.
+
+* lowerBound: The lower bound of target cost.
+
+### setTargetTotalCost()
+
+Set the upper bound and lower bounds of the target cost.
+```
+OneVsAll:setTargetTotalCost(upperBound: number, lowerBound: number)
 ```
 
 #### Parameters

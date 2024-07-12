@@ -79,10 +79,10 @@ In other words, after running the function, the model will have 3 neurons at fir
 If you wish to have more control over each layer, then we can use addLayer() function. Below, we will show on how to create a single layer.
 
 ```lua
-NeuralNetworkModel:addLayer(2, true, "Tanh")
+NeuralNetworkModel:addLayer(2, true, "Tanh", 0.001)
 ```
 
-The first parameter determines the number of neurons on that layer, the second parameter is to set whether or not to add a bias neuron. The third parameter is to set the activation function for that layer.
+The first parameter determines the number of neurons on that layer, the second parameter is to set whether or not to add a bias neuron. The third parameter is to set the activation function for that layer. The fourth parameter determines the learning rate for that layer.
 
 Do make note that if you add a bias neuron, it will not be included in the first parameter. (e.g. Before adding a bias neuron, it is 2 neuron, but after adding a bias neuron, it becomes three.)
 

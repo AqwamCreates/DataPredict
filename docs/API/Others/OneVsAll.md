@@ -31,7 +31,7 @@ OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean,
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-OneVsAll:setParameters(maxNumberOfIterations: integer, learningRate: number, targetTotalCost: number)
+OneVsAll:setParameters(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean, targetTotalCost: number)
 ```
 
 #### Parameters:

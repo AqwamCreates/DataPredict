@@ -183,7 +183,7 @@ OneVsAll:clearModelParameters()
 
 ### setNumberOfIterationsToCheckIfConverged()
 
-Set the number of iterations needed to confirm convergence.
+Set the number of iterations needed to confirm convergence for each model.
 
 ```
 OneVsAll:setNumberOfIterationsToCheckIfConverged(numberOfIterations: number)
@@ -207,7 +207,7 @@ OneVsAll:setNumberOfIterationsToCheckIfConvergedForOneVsAll(numberOfIterations: 
 
 ### setTargetCost()
 
-Set the upper bound and lower bounds of the target cost.
+Set the upper bound and lower bounds of the target cost for each model.
 ```
 OneVsAll:setTargetCost(upperBound: number, lowerBound: number)
 ```

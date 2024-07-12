@@ -31,7 +31,7 @@ OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean,
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-OneVsAll:setParameters(maxNumberOfIterations: integer, learningRate: number)
+OneVsAll:setParameters(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean, targetTotalCost: number)
 ```
 
 #### Parameters:
@@ -47,7 +47,7 @@ OneVsAll:setParameters(maxNumberOfIterations: integer, learningRate: number)
 Sets the model and number of classes to be used by the OneVsAll object. Leaving it empty will clear the model.
 
 ```
-OneVsAll:setModels(modelName: string, numberOfClasses: integer, targetTotalCost: number)
+OneVsAll:setModels(modelName: string, numberOfClasses: integer)
 ```
 
 #### Parameters:

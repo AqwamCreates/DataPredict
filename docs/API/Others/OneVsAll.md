@@ -9,7 +9,7 @@ Allows binary classification models (such as LogisticRegression) be merged toget
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean): OneVsAllObject
+OneVsAll.new(maxNumberOfIterations: integer, useNegativeOneBinaryLabel: boolean, targetTotalCost: number): OneVsAllObject
 ```
 
 #### Parameters:
@@ -47,7 +47,7 @@ OneVsAll:setParameters(maxNumberOfIterations: integer, learningRate: number)
 Sets the model and number of classes to be used by the OneVsAll object. Leaving it empty will clear the model.
 
 ```
-OneVsAll:setModels(modelName: string, numberOfClasses: integer)
+OneVsAll:setModels(modelName: string, numberOfClasses: integer, targetTotalCost: number)
 ```
 
 #### Parameters:

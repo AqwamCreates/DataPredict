@@ -94,17 +94,17 @@ NaiveBayes:getClassesList(): []
 
 #### Returns:
 
-* classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
+* ClassesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
 
 ### setClassesList()
 
 ```
-NaiveBayes:setClassesList(classesList: [])
+NaiveBayes:setClassesList(ClassesList: [])
 ```
 
 #### Parameters:
 
-* classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
+* ClassesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
 
 ## Inherited From
 

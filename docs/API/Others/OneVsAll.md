@@ -137,17 +137,17 @@ OneVsAll:getClassesList(): []
 
 #### Returns:
 
-* classesList: A list of classes. The index of the list relates to which model belong to. For example, {3, 1} means that the output for 3 is at first model, and the output for 1 is at second model.
+* ClassesList: A list of classes. The index of the list relates to which model belong to. For example, {3, 1} means that the output for 3 is at first model, and the output for 1 is at second model.
 
 ### setClassesList()
 
 ```
-OneVsAll:setClassesList(classesList: [])
+OneVsAll:setClassesList(ClassesList: [])
 ```
 
 #### Parameters:
 
-* classesList: A list of classes. The index of the list relates to which model belong to. For example, {3, 1} means that the output for 3 is at first model, and the output for 1 is at second model.
+* ClassesList: A list of classes. The index of the list relates to which model belong to. For example, {3, 1} means that the output for 3 is at first model, and the output for 1 is at second model.
 
 ### getModelParametersArray()
 

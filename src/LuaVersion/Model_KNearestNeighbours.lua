@@ -220,6 +220,7 @@ local function merge(distanceVector, labelVector, left, mid, right)
 		indexOfMergedArray = indexOfMergedArray + 1
 		
 	end
+	
 end
 
 local function mergeSort(distanceVector, labelVector, startingValue, endValue)
@@ -229,6 +230,7 @@ local function mergeSort(distanceVector, labelVector, startingValue, endValue)
 	end
 
 	local mid = math.floor(startingValue + (endValue - startingValue) / 2)
+	
 	mergeSort(distanceVector, labelVector, startingValue, mid)
 	mergeSort(distanceVector, labelVector, mid + 1, endValue)
 	merge(distanceVector, labelVector, startingValue, mid, endValue)

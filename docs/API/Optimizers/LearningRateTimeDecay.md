@@ -50,6 +50,6 @@ Reset optimizer's stored values (excluding the parameters).
 LearningRateTimeDecay:reset()
 ```
 
-## Inherited From:
+## Inherited From
 
 * [BaseOptimizer](BaseOptimizer.md)

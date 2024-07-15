@@ -57,6 +57,6 @@ AdaptiveMomentEstimationMaximum:setEpsilon(epsilon: number)
 
 Reset optimizer's stored values (excluding the parameters).
 
-## Inherited From:
+## Inherited From
 
 * [BaseOptimizer](BaseOptimizer.md)

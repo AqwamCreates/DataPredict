@@ -50,6 +50,6 @@ Reset optimizer's stored values (excluding the parameters).
 Gravity:reset()
 ```
 
-## Inherited From:
+## Inherited From
 
 * [BaseOptimizer](BaseOptimizer.md)

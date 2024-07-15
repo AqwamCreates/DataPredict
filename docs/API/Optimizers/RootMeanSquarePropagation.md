@@ -50,6 +50,6 @@ Reset optimizer's stored values (excluding the parameters).
 RootMeanSquarePropagation:reset()
 ```
 
-## Inherited From:
+## Inherited From
 
 * [BaseOptimizer](BaseOptimizer.md)

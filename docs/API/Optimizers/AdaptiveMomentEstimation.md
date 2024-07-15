@@ -60,6 +60,6 @@ Reset optimizer's stored values (excluding the parameters).
 AdaptiveMomentEstimation:reset()
 ```
 
-## Inherited From:
+## Inherited From
 
 * [BaseOptimizer](BaseOptimizer.md)

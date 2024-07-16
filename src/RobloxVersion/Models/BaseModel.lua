@@ -290,8 +290,12 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "RandomNormal") then
 		
-		return AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-				
+		local randomNormal1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		
+		local randomNormal2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+
+		return AqwamMatrixLibrary:subtract(randomNormal1, randomNormal2)
+		
 	elseif (initializationMode == "RandomUniformPositive") then
 
 		return AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
@@ -312,7 +316,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "HeNormal") then
 		
-		local variancePart1 = 2 / numberOfRows
+		local variancePart1 = 2 / numberOfColumns
 		
 		local variancePart = math.sqrt(variancePart1)
 		
@@ -322,7 +326,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "HeUniform") then
 
-		local variancePart1 = 6 / numberOfRows
+		local variancePart1 = 6 / numberOfColumns
 
 		local variancePart = math.sqrt(variancePart1)
 
@@ -352,7 +356,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "LeCunNormal") then
 
-		local variancePart1 = 1 / numberOfRows
+		local variancePart1 = 1 / numberOfColumns
 
 		local variancePart = math.sqrt(variancePart1)
 
@@ -362,7 +366,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "LeCunUniform") then
 
-		local variancePart1 = 3 / numberOfRows
+		local variancePart1 = 3 / numberOfColumns
 
 		local variancePart = math.sqrt(variancePart1)
 

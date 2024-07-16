@@ -276,7 +276,7 @@ function BaseModel:setModelParametersInitializationMode(initializationMode, mini
 	
 end
 
-function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, numberOfRowsToIgnore, numberOfColumnsToIgnore)
+function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, numberOfRowsToIgnore, numberOfColumnsToIgnore) -- Some of the row/column might not be considered as an input variables/neurons. Hence, it should be ignored by subtracting from original rows and columns with the number of non-input variable/neurons.
 	
 	numberOfRowsToIgnore = numberOfRowsToIgnore or 0
 	

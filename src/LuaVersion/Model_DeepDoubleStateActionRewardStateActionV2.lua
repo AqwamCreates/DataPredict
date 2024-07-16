@@ -30,68 +30,75 @@ DeepDoubleStateActionRewardStateActionModel.__index = DeepDoubleStateActionRewar
 
 setmetatable(DeepDoubleStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
 
-local defaultAveragingRate = 0.01
+local function deepCopyTable(original, copies)
 
-local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
+	copies = copies or {}
 
-	local averagingRateComplement = 1 - averagingRate
+	local originalType = type(original)
 
-	for layer = 1, #TargetModelParameters, 1 do
+	local copy
 
-		local TargetModelParametersPart = AqwamMatrixLibrary:multiply(averagingRate, TargetModelParameters[layer])
+	if (originalType == 'table') then
 
-		local PrimaryModelParametersPart = AqwamMatrixLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
+		if copies[original] then
 
-		TargetModelParameters[layer] = AqwamMatrixLibrary:add(TargetModelParametersPart, PrimaryModelParametersPart)
+			copy = copies[original]
+
+		else
+
+			copy = {}
+
+			copies[original] = copy
+
+			for originalKey, originalValue in next, original, nil do
+
+				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
+
+			end
+
+			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
+
+		end
+
+	else
+
+		copy = original
 
 	end
 
-	return TargetModelParameters
+	return copy
 
 end
 
-function DeepDoubleStateActionRewardStateActionModel.new(averagingRate, discountFactor)
+function DeepDoubleStateActionRewardStateActionModel.new(discountFactor)
 
 	local NewDeepDoubleStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(discountFactor)
 
 	setmetatable(NewDeepDoubleStateActionRewardStateActionModel, DeepDoubleStateActionRewardStateActionModel)
 
-	NewDeepDoubleStateActionRewardStateActionModel.averagingRate = averagingRate or defaultAveragingRate
+	NewDeepDoubleStateActionRewardStateActionModel.ModelParametersArray = {}
 
 	NewDeepDoubleStateActionRewardStateActionModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local Model = NewDeepDoubleStateActionRewardStateActionModel.Model
-		
-		local PrimaryModelParameters = Model:getModelParameters(true)
 
-		if (PrimaryModelParameters == nil) then 
-			
-			Model:generateLayers() 
-			PrimaryModelParameters = Model:getModelParameters(true)
-			
-		end
-		
-		local qVector = Model:predict(currentFeatureVector, true)
+		local randomProbability = math.random()
 
-		local discountedQVector = AqwamMatrixLibrary:multiply(NewDeepDoubleStateActionRewardStateActionModel.discountFactor, qVector)
+		local updateSecondModel = (randomProbability >= 0.5)
 
-		local targetVector = AqwamMatrixLibrary:add(rewardValue, discountedQVector)
+		local selectedModelNumberForTargetVector = (updateSecondModel and 1) or 2
 
-		local previousQVector = Model:predict(previousFeatureVector, true)
+		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceVector = AqwamMatrixLibrary:subtract(targetVector, previousQVector)
+		local lossVector = NewDeepDoubleStateActionRewardStateActionModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 
 		Model:forwardPropagate(previousFeatureVector, true)
-
-		Model:backPropagate(temporalDifferenceVector, true)
 		
-		local TargetModelParameters = Model:getModelParameters(true)
+		Model:backPropagate(lossVector, true)
 
-		TargetModelParameters = rateAverageModelParameters(NewDeepDoubleStateActionRewardStateActionModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
-
-		Model:setModelParameters(TargetModelParameters, true)
+		NewDeepDoubleStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		return temporalDifferenceVector
+		return lossVector
 
 	end)
 
@@ -99,11 +106,117 @@ function DeepDoubleStateActionRewardStateActionModel.new(averagingRate, discount
 
 end
 
-function DeepDoubleStateActionRewardStateActionModel:setParameters(averagingRate, discountFactor)
+function DeepDoubleStateActionRewardStateActionModel:setParameters(discountFactor)
 
-	self.discountFactor =  discountFactor or self.discountFactor
+	self.discountFactor = discountFactor or self.discountFactor
 
-	self.averagingRate = averagingRate or self.averagingRate
+end
+
+function DeepDoubleStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(index)
+
+	self.ModelParametersArray[index] = self.Model:getModelParameters()
+
+end
+
+function DeepDoubleStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(index)
+	
+	local Model = self.Model
+
+	local FirstModelParameters = self.ModelParametersArray[1]
+
+	local SecondModelParameters = self.ModelParametersArray[2]
+
+	if (FirstModelParameters == nil) and (SecondModelParameters == nil) then
+
+		Model:generateLayers()
+
+		self:saveModelParametersFromModelParametersArray(1)
+
+		self:saveModelParametersFromModelParametersArray(2)
+
+	end
+
+	local CurrentModelParameters = self.ModelParametersArray[index]
+
+	Model:setModelParameters(CurrentModelParameters, true)
+
+end
+
+function DeepDoubleStateActionRewardStateActionModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+	
+	local Model = self.Model
+	
+	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+	
+	local previousVector = Model:predict(previousFeatureVector, true)
+	
+	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
+
+	local targetVector = Model:predict(currentFeatureVector, true)
+
+	local dicountedTargetVector = AqwamMatrixLibrary:multiply(self.discountFactor, targetVector)
+
+	local newTargetVector = AqwamMatrixLibrary:add(rewardValue, dicountedTargetVector)
+	
+	local lossVector = AqwamMatrixLibrary:subtract(newTargetVector, previousVector)
+
+	return lossVector
+
+end
+
+function DeepDoubleStateActionRewardStateActionModel:setModelParameters1(ModelParameters1, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.ModelParametersArray[1] = ModelParameters1
+
+	else
+
+		self.ModelParametersArray[1] = deepCopyTable(ModelParameters1)
+
+	end
+
+end
+
+function DeepDoubleStateActionRewardStateActionModel:setModelParameters2(ModelParameters2, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.ModelParametersArray[2] = ModelParameters2
+
+	else
+
+		self.ModelParametersArray[2] = deepCopyTable(ModelParameters2)
+
+	end
+
+end
+
+function DeepDoubleStateActionRewardStateActionModel:getModelParameters1(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.ModelParametersArray[1]
+
+	else
+
+		return deepCopyTable(self.ModelParametersArray[1])
+
+	end
+
+end
+
+function DeepDoubleStateActionRewardStateActionModel:getModelParameters2(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.ModelParametersArray[2]
+
+	else
+
+		return deepCopyTable(self.ModelParametersArray[2])
+
+	end
 
 end
 

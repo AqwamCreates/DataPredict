@@ -20,7 +20,7 @@ function DeepDoubleQLearningModel.new(discountFactor)
 		
 		local Model = NewDeepDoubleQLearningModel.Model
 		
-		local randomProbability = math.random()
+		local randomProbability = Random.new():NextNumber()
 
 		local updateSecondModel = (randomProbability >= 0.5)
 
@@ -52,13 +52,13 @@ end
 
 function DeepDoubleQLearningModel:setParameters(discountFactor)
 
-	self.discountFactor =  discountFactor or self.discountFactor
+	self.discountFactor = discountFactor or self.discountFactor
 
 end
 
 function DeepDoubleQLearningModel:saveModelParametersFromModelParametersArray(index)
 
-	self.ModelParametersArray[index] =  self.Model:getModelParameters()
+	self.ModelParametersArray[index] = self.Model:getModelParameters()
 
 end
 

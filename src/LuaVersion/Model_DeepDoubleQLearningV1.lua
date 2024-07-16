@@ -74,13 +74,13 @@ end
 
 function DeepDoubleQLearningModel:setParameters(discountFactor)
 
-	self.discountFactor =  discountFactor or self.discountFactor
+	self.discountFactor = discountFactor or self.discountFactor
 
 end
 
 function DeepDoubleQLearningModel:saveModelParametersFromModelParametersArray(index)
 
-	self.ModelParametersArray[index] =  self.Model:getModelParameters()
+	self.ModelParametersArray[index] = self.Model:getModelParameters()
 
 end
 

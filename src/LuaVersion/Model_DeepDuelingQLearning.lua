@@ -75,12 +75,22 @@ function DeepDuelingQLearning:forwardPropagate(featureVector)
 end
 
 function DeepDuelingQLearning:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	
+	local AdvantageModel = self.AdvantageModel
+	
+	local ValueModel = self.ValueModel
 
 	local previousQValueVector, previousVValue = self:forwardPropagate(previousFeatureVector)
 
 	local currentQValueVector, currentVValue = self:forwardPropagate(currentFeatureVector)
+	
+	local ClassesList = AdvantageModel:getClassesList()
 
-	local maxCurrentQValue = math.max(table.unpack(currentQValueVector[1]))
+	local numberOfClasses = #ClassesList
+	
+	local actionIndex = table.find(ClassesList, action)
+
+	local maxCurrentQValue = currentQValueVector[1][actionIndex]
 
 	local expectedQValue = rewardValue + (self.discountFactor * maxCurrentQValue)
 
@@ -88,13 +98,13 @@ function DeepDuelingQLearning:update(previousFeatureVector, action, rewardValue,
 
 	local vLoss = currentVValue - previousVValue
 	
-	self.AdvantageModel:forwardPropagate(previousFeatureVector, true)
+	AdvantageModel:forwardPropagate(previousFeatureVector, true)
 
-	self.AdvantageModel:backPropagate(qLossVector, true)
+	AdvantageModel:backPropagate(qLossVector, true)
 
-	self.ValueModel:forwardPropagate(previousFeatureVector, true)
+	ValueModel:forwardPropagate(previousFeatureVector, true)
 
-	self.ValueModel:backPropagate(vLoss, true)
+	ValueModel:backPropagate(vLoss, true)
 
 	return vLoss
 

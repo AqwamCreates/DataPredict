@@ -63,8 +63,6 @@ function DeepDuelingQLearning:update(previousFeatureVector, action, rewardValue,
 	local currentQValueVector, currentVValue = self:forwardPropagate(currentFeatureVector)
 	
 	local ClassesList = AdvantageModel:getClassesList()
-
-	local numberOfClasses = #ClassesList
 	
 	local actionIndex = table.find(ClassesList, action)
 

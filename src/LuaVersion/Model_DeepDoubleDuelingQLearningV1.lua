@@ -20,8 +20,6 @@
 
 --]]
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
-
 local ReinforcementLearningDeepDuelingQLearningBaseModel = require("Model_ReinforcementLearningDeepDuelingQLearningBaseModel")
 
 DeepDoubleDuelingQLearning = {}

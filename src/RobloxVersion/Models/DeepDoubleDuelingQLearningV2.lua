@@ -98,8 +98,6 @@ function DeepDoubleDuelingQLearning:update(previousFeatureVector, action, reward
 
 	local ClassesList = AdvantageModel:getClassesList()
 
-	local numberOfClasses = #ClassesList
-
 	local actionIndex = table.find(ClassesList, action)
 
 	local maxCurrentQValue = currentQValueVector[1][actionIndex]

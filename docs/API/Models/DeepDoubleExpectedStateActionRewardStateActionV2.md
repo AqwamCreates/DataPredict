@@ -9,10 +9,12 @@ DeepDoubleExpectedStateActionRewardStateActionV2 is a neural network with reinfo
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepDoubleExpectedStateActionRewardStateAction.new(averagingRate: number, discountFactor: number): ModelObject
+DeepDoubleExpectedStateActionRewardStateAction.new(epsilon: number, averagingRate: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
+
+* epsilon: Controls the balance between exploration and exploitation for calculating expected Q-values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
 * averagingRate: The higher the value, the faster the weights changes. The value must be set between 0 and 1.
 
@@ -29,10 +31,12 @@ DeepDoubleExpectedStateActionRewardStateAction.new(averagingRate: number, discou
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DeepDoubleExpectedStateActionRewardStateAction:setParameters(averagingRate: number, discountFactor: number)
+DeepDoubleExpectedStateActionRewardStateAction:setParameters(epsilon: number, averagingRate: number, discountFactor: number)
 ```
 
 #### Parameters:
+
+* epsilon: Controls the balance between exploration and exploitation for calculating expected Q-values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only.
 
 * averagingRate: The higher the value, the faster the weights changes. The value must be set between 0 and 1.
 

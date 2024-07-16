@@ -1,114 +1,40 @@
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
+local ReinforcementLearningDeepDuelingQLearningBaseModel = require(script.Parent.ReinforcementLearningDeepDuelingQLearningBaseModel)
+
 DeepDuelingQLearning = {}
 
 DeepDuelingQLearning.__index = DeepDuelingQLearning
 
-local defaultDiscountFactor = 0.95
+setmetatable(DeepDuelingQLearning, ReinforcementLearningDeepDuelingQLearningBaseModel)
 
 function DeepDuelingQLearning.new(discountFactor)
 
-	local NewDeepDuelingQLearning = {}
+	local NewDeepDuelingQLearning = ReinforcementLearningDeepDuelingQLearningBaseModel.new(discountFactor)
 
 	setmetatable(NewDeepDuelingQLearning, DeepDuelingQLearning)
+	
+	NewDeepDuelingQLearning:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		
+		local AdvantageModel = NewDeepDuelingQLearning.AdvantageModel
 
-	NewDeepDuelingQLearning.discountFactor = discountFactor or defaultDiscountFactor
+		local ValueModel = NewDeepDuelingQLearning.ValueModel
+
+		local qLossVector, vLoss = NewDeepDuelingQLearning:generateLoss(previousFeatureVector, action, rewardValue, currentFeatureVector)
+
+		AdvantageModel:forwardPropagate(previousFeatureVector, true)
+
+		AdvantageModel:backPropagate(qLossVector, true)
+
+		ValueModel:forwardPropagate(previousFeatureVector, true)
+
+		ValueModel:backPropagate(vLoss, true)
+
+		return vLoss
+		
+	end)
 
 	return NewDeepDuelingQLearning
-
-end
-
-function DeepDuelingQLearning:setParameters(discountFactor)
-
-	self.discountFactor = discountFactor or self.discountFactor
-
-end
-
-function DeepDuelingQLearning:setAdvantageModel(Model)
-
-	self.AdvantageModel = Model
-
-end
-
-function DeepDuelingQLearning:setValueModel(Model)
-
-	self.ValueModel = Model
-
-end
-
-function DeepDuelingQLearning:forwardPropagate(featureVector)
-
-	local vValue = self.ValueModel:predict(featureVector, true)[1][1]
-
-	local advantageMatrix = self.AdvantageModel:predict(featureVector, true)
-
-	local meanAdvantageVector = AqwamMatrixLibrary:horizontalMean(advantageMatrix)
-
-	local qValueVectorPart1 = AqwamMatrixLibrary:subtract(advantageMatrix, meanAdvantageVector)
-
-	local qValueVector = AqwamMatrixLibrary:add(vValue, qValueVectorPart1)
-
-	return qValueVector, vValue
-
-end
-
-function DeepDuelingQLearning:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
-	
-	local AdvantageModel = self.AdvantageModel
-	
-	local ValueModel = self.ValueModel
-
-	local previousQValueVector, previousVValue = self:forwardPropagate(previousFeatureVector)
-
-	local currentQValueVector, currentVValue = self:forwardPropagate(currentFeatureVector)
-	
-	local ClassesList = AdvantageModel:getClassesList()
-	
-	local actionIndex = table.find(ClassesList, action)
-
-	local maxCurrentQValue = currentQValueVector[1][actionIndex]
-
-	local expectedQValue = rewardValue + (self.discountFactor * maxCurrentQValue)
-
-	local qLossVector = AqwamMatrixLibrary:subtract(expectedQValue, previousQValueVector)
-
-	local vLoss = currentVValue - previousVValue
-	
-	AdvantageModel:forwardPropagate(previousFeatureVector, true)
-
-	AdvantageModel:backPropagate(qLossVector, true)
-
-	ValueModel:forwardPropagate(previousFeatureVector, true)
-
-	ValueModel:backPropagate(vLoss, true)
-
-	return vLoss
-
-end
-
-function DeepDuelingQLearning:predict(featureVector, returnOriginalOutput)
-
-	return self.AdvantageModel:predict(featureVector, returnOriginalOutput)
-
-end
-
-function DeepDuelingQLearning:episodeUpdate()
-	
-	
-end
-
-function DeepDuelingQLearning:reset()
-	
-	
-end
-
-function DeepDuelingQLearning:destroy()
-
-	setmetatable(self, nil)
-
-	table.clear(self)
-
-	self = nil
 
 end
 

@@ -1,10 +1,12 @@
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
+local ReinforcementLearningDeepDuelingQLearningBaseModel = require(script.Parent.ReinforcementLearningDeepDuelingQLearningBaseModel)
+
 DeepDoubleDuelingQLearning = {}
 
 DeepDoubleDuelingQLearning.__index = DeepDoubleDuelingQLearning
 
-local defaultDiscountFactor = 0.95
+setmetatable(DeepDoubleDuelingQLearning, ReinforcementLearningDeepDuelingQLearningBaseModel)
 
 local function deepCopyTable(original, copies)
 
@@ -48,113 +50,55 @@ end
 
 function DeepDoubleDuelingQLearning.new(discountFactor)
 
-	local NewDeepDuelingQLearning = {}
+	local NewDeepDuelingQLearning = ReinforcementLearningDeepDuelingQLearningBaseModel.new(discountFactor)
 
 	setmetatable(NewDeepDuelingQLearning, DeepDoubleDuelingQLearning)
-
-	NewDeepDuelingQLearning.discountFactor = discountFactor or defaultDiscountFactor
 	
 	NewDeepDuelingQLearning.AdvantageModelParametersArray = {}
 	
 	NewDeepDuelingQLearning.ValueModelParametersArray = {}
+	
+	NewDeepDuelingQLearning:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		
+		local AdvantageModel = NewDeepDuelingQLearning.AdvantageModel
+
+		local ValueModel = NewDeepDuelingQLearning.ValueModel
+
+		local randomProbability = Random.new():NextNumber()
+
+		local updateSecondModel = (randomProbability >= 0.5)
+
+		local selectedModelNumberForTargetVector = (updateSecondModel and 1) or 2
+
+		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
+
+		NewDeepDuelingQLearning:loadAdvantageModelParametersFromAdvantageModelParametersArray(selectedModelNumberForTargetVector)
+
+		NewDeepDuelingQLearning:loadValueModelParametersFromValueModelParametersArray(selectedModelNumberForTargetVector)
+
+		local qLossVector, vLoss = NewDeepDuelingQLearning:generateLoss(previousFeatureVector, action, rewardValue, currentFeatureVector)
+
+		NewDeepDuelingQLearning:saveAdvantageModelParametersFromAdvantageModelParametersArray(selectedModelNumberForTargetVector)
+
+		NewDeepDuelingQLearning:saveValueModelParametersFromValueModelParametersArray(selectedModelNumberForTargetVector)
+
+		NewDeepDuelingQLearning:loadAdvantageModelParametersFromAdvantageModelParametersArray(selectedModelNumberForUpdate)
+
+		NewDeepDuelingQLearning:loadValueModelParametersFromValueModelParametersArray(selectedModelNumberForUpdate)
+
+		AdvantageModel:forwardPropagate(previousFeatureVector, true)
+
+		AdvantageModel:backPropagate(qLossVector, true)
+
+		ValueModel:forwardPropagate(previousFeatureVector, true)
+
+		ValueModel:backPropagate(vLoss, true)
+
+		return vLoss
+		
+	end)
 
 	return NewDeepDuelingQLearning
-
-end
-
-function DeepDoubleDuelingQLearning:setParameters(discountFactor)
-
-	self.discountFactor = discountFactor or self.discountFactor
-
-end
-
-function DeepDoubleDuelingQLearning:setAdvantageModel(Model)
-
-	self.AdvantageModel = Model
-
-end
-
-function DeepDoubleDuelingQLearning:setValueModel(Model)
-
-	self.ValueModel = Model
-
-end
-
-function DeepDoubleDuelingQLearning:forwardPropagate(featureVector)
-
-	local vValue = self.ValueModel:predict(featureVector, true)[1][1]
-
-	local advantageMatrix = self.AdvantageModel:predict(featureVector, true)
-
-	local meanAdvantageVector = AqwamMatrixLibrary:horizontalMean(advantageMatrix)
-
-	local qValueVectorPart1 = AqwamMatrixLibrary:subtract(advantageMatrix, meanAdvantageVector)
-
-	local qValueVector = AqwamMatrixLibrary:add(vValue, qValueVectorPart1)
-
-	return qValueVector, vValue
-
-end
-
-function DeepDoubleDuelingQLearning:generateLoss(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-	local previousQValue, previousVValue = self:forwardPropagate(previousFeatureVector)
-
-	local currentQValueVector, currentVValue = self:forwardPropagate(currentFeatureVector)
-
-	local ClassesList = self.AdvantageModel:getClassesList()
-
-	local actionIndex = table.find(ClassesList, action)
-
-	local maxCurrentQValue = currentQValueVector[1][actionIndex]
-
-	local expectedQValue = rewardValue + (self.discountFactor * maxCurrentQValue)
-
-	local qLossVector = AqwamMatrixLibrary:subtract(expectedQValue, previousQValue)
-
-	local vLoss = currentVValue - previousVValue
-
-	return qLossVector, vLoss
-
-end
-
-function DeepDoubleDuelingQLearning:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
-	
-	local AdvantageModel = self.AdvantageModel
-	
-	local ValueModel = self.ValueModel
-	
-	local randomProbability = Random.new():NextNumber()
-
-	local updateSecondModel = (randomProbability >= 0.5)
-
-	local selectedModelNumberForTargetVector = (updateSecondModel and 1) or 2
-
-	local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
-	
-	self:loadAdvantageModelParametersFromAdvantageModelParametersArray(selectedModelNumberForTargetVector)
-	
-	self:loadValueModelParametersFromValueModelParametersArray(selectedModelNumberForTargetVector)
-
-	local qLossVector, vLoss = self:generateLoss(previousFeatureVector, action, rewardValue, currentFeatureVector)
-	
-	self:saveAdvantageModelParametersFromAdvantageModelParametersArray(selectedModelNumberForTargetVector)
-	
-	self:saveValueModelParametersFromValueModelParametersArray(selectedModelNumberForTargetVector)
-
-	self:loadAdvantageModelParametersFromAdvantageModelParametersArray(selectedModelNumberForUpdate)
-	
-	self:loadValueModelParametersFromValueModelParametersArray(selectedModelNumberForUpdate)
-	
-	AdvantageModel:forwardPropagate(previousFeatureVector, true)
-
-	AdvantageModel:backPropagate(qLossVector, true)
-
-	ValueModel:forwardPropagate(previousFeatureVector, true)
-
-	ValueModel:backPropagate(vLoss, true)
-
-	return vLoss
 
 end
 
@@ -222,16 +166,6 @@ function DeepDoubleDuelingQLearning:predict(featureVector, returnOriginalOutput)
 
 	return self.AdvantageModel:predict(featureVector, returnOriginalOutput)
 
-end
-
-function DeepDoubleDuelingQLearning:episodeUpdate()
-	
-	
-end
-
-function DeepDoubleDuelingQLearning:reset()
-	
-	
 end
 
 function DeepDoubleDuelingQLearning:setAdvantageModelParameters1(AdvantageModelParameters1, doNotDeepCopy)
@@ -343,16 +277,6 @@ function DeepDoubleDuelingQLearning:getValueModelParameters2(doNotDeepCopy)
 		return deepCopyTable(self.ValueModelParametersArray[2])
 
 	end
-
-end
-
-function DeepDoubleDuelingQLearning:destroy()
-
-	setmetatable(self, nil)
-
-	table.clear(self)
-
-	self = nil
 
 end
 

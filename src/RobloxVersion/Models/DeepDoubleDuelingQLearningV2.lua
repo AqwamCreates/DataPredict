@@ -18,7 +18,7 @@ local function rateAverageModelParameters(averagingRate, TargetModelParameters, 
 		
 		local PrimaryModelParametersPart = AqwamMatrixLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
 
-		TargetModelParameters[layer] = AqwamMatrixLibrary:add(PrimaryModelParametersPart, TargetModelParametersPart)
+		TargetModelParameters[layer] = AqwamMatrixLibrary:add(TargetModelParametersPart, PrimaryModelParametersPart)
 
 	end
 
@@ -70,9 +70,9 @@ function DeepDoubleDuelingQLearning:forwardPropagate(featureVector)
 
 	local qValuePart1 = AqwamMatrixLibrary:subtract(advantageMatrix, meanAdvantageVector)
 
-	local qValue = AqwamMatrixLibrary:add(vValue, qValuePart1)
+	local qValueVector = AqwamMatrixLibrary:add(vValue, qValuePart1)
 
-	return qValue, vValue
+	return qValueVector, vValue
 
 end
 
@@ -92,21 +92,21 @@ function DeepDoubleDuelingQLearning:update(previousFeatureVector, action, reward
 	
 	local ValueModelPrimaryModelParameters = ValueModel:getModelParameters(true)
 
-	local previousQValue, previousVValue = self:forwardPropagate(previousFeatureVector)
+	local previousQValueVector, previousVValue = self:forwardPropagate(previousFeatureVector)
 
-	local currentQValue, currentVValue = self:forwardPropagate(currentFeatureVector)
+	local currentQValueVector, currentVValue = self:forwardPropagate(currentFeatureVector)
 
-	local maxCurrentQValue = math.max(table.unpack(currentQValue[1]))
+	local maxCurrentQValue = math.max(table.unpack(currentQValueVector[1]))
 
 	local expectedQValue = rewardValue + (self.discountFactor * maxCurrentQValue)
 
-	local qLoss = AqwamMatrixLibrary:subtract(expectedQValue, previousQValue)
+	local qLossVector = AqwamMatrixLibrary:subtract(expectedQValue, previousQValueVector)
 
-	local vLoss = AqwamMatrixLibrary:subtract(currentVValue, previousVValue)
+	local vLoss = currentVValue - previousVValue
 	
 	AdvantageModel:forwardPropagate(previousFeatureVector, true)
 
-	AdvantageModel:backPropagate(qLoss, true)
+	AdvantageModel:backPropagate(qLossVector, true)
 
 	ValueModel:forwardPropagate(previousFeatureVector, true)
 

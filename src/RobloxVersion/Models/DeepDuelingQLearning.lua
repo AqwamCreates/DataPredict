@@ -20,7 +20,7 @@ end
 
 function DeepDuelingQLearning:setParameters(discountFactor)
 
-	self.discountFactor =  discountFactor or self.discountFactor
+	self.discountFactor = discountFactor or self.discountFactor
 
 end
 

@@ -67,7 +67,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIter
 
 		local targetVector = NewDeepDoubleExpectedStateActionRewardStateActionModel:predict(currentFeatureVector, true)
 		
-		local maxQValue = math.max(table.unpack(targetVector[1]))
+		local maxQValue = targetVector[1][actionIndex]
 
 		for i = 1, numberOfActions, 1 do
 

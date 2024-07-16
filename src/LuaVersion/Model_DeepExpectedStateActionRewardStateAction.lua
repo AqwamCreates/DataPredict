@@ -58,7 +58,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFact
 		
 		local targetVector = Model:predict(currentFeatureVector, true)
 		
-		local maxQValue = math.max(table.unpack(targetVector[1]))
+		local maxQValue = targetVector[1][actionIndex]
 
 		for i = 1, numberOfActions, 1 do
 

@@ -43,10 +43,15 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIter
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model
-
-		if (Model:getModelParameters() == nil) then Model:generateLayers() end
-
+		
 		local PrimaryModelParameters = Model:getModelParameters(true)
+
+		if (Model:getModelParameters() == nil) then 
+			
+			Model:generateLayers()
+			PrimaryModelParameters = Model:getModelParameters(true)
+			
+		end
 
 		local expectedQValue = 0
 

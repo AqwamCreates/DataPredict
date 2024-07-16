@@ -36,31 +36,66 @@ DeepDoubleStateActionRewardStateAction:setParameters(discountFactor: number)
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
-### setModelParametersArray()
+### setModelParameters1()
 
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleStateActionRewardStateAction:setModelParametersArray(ModelParameters1: ModelParameters, ModelParameters2: ModelParameters)
+DeepDoubleStateActionRewardStateAction:setModelParameters1(ModelParameters1: ModelParameters, doNotDeepCopy: boolean)
 ```
 
 #### Parameters:
 
 * ModelParameters1: First model parameters to be used by the model.
 
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
+### setModelParameters2()
+
+Sets model parameters to be used by the model.
+
+```
+DeepDoubleStateActionRewardStateAction:setModelParameters2(ModelParameters2: ModelParameters, doNotDeepCopy: boolean)
+```
+
+#### Parameters:
+
 * ModelParameters2: Second model parameters to be used by the model.
 
-### getModelParametersArray()
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
-Gets model parameters array used by the model. It contains two model parameters.
+
+### getModelParameters1()
+
+Sets model parameters to be used by the model.
 
 ```
-DeepDoubleStateActionRewardStateAction:getModelParametersArray(): ModelParameters
+DeepDoubleStateActionRewardStateAction:getModelParameters1(doNotDeepCopy: boolean): ModelParameters
 ```
+
+#### Parameters:
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
 #### Returns:
 
-* ModelParametersArray: An array containing all the model parameters.
+* ModelParameters1: First model parameters that was used by the model.
+
+### getModelParameters2(doNotDeepCopy: boolean)
+
+Sets model parameters to be used by the model.
+
+```
+DeepDoubleStateActionRewardStateAction:getModelParameters2(): ModelParameters
+```
+
+#### Parameters:
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
+#### Returns:
+
+* ModelParameters2: Second model parameters that was used by the model.
 
 ## Inherited From
 

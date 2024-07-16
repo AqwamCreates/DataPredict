@@ -68,25 +68,62 @@ DeepDoubleExpectedStateActionRewardStateAction:setModelParameters1(ModelParamete
 
 * ModelParameters2: Second model parameters to be used by the model.
 
+### setModelParameters1()
+
+Sets model parameters to be used by the model.
+
+```
+DeepDoubleExpectedStateActionRewardStateAction:setModelParameters1(ModelParameters1: ModelParameters, doNotDeepCopy: boolean)
+```
+
+#### Parameters:
+
+* ModelParameters1: First model parameters to be used by the model.
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
+### setModelParameters2()
+
+Sets model parameters to be used by the model.
+
+```
+DeepDoubleExpectedStateActionRewardStateAction:setModelParameters2(ModelParameters2: ModelParameters, doNotDeepCopy: boolean)
+```
+
+#### Parameters:
+
+* ModelParameters2: Second model parameters to be used by the model.
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
+
 ### getModelParameters1()
 
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleExpectedStateActionRewardStateAction:getModelParameters1(): ModelParameters
+DeepDoubleExpectedStateActionRewardStateAction:getModelParameters1(doNotDeepCopy: boolean): ModelParameters
 ```
+
+#### Parameters:
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
 #### Returns:
 
 * ModelParameters1: First model parameters that was used by the model.
 
-### getModelParameters2()
+### getModelParameters2(doNotDeepCopy: boolean)
 
 Sets model parameters to be used by the model.
 
 ```
 DeepDoubleExpectedStateActionRewardStateAction:getModelParameters2(): ModelParameters
 ```
+
+#### Parameters:
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
 #### Returns:
 

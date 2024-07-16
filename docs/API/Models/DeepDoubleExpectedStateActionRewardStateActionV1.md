@@ -113,12 +113,12 @@ DeepDoubleExpectedStateActionRewardStateAction:getModelParameters1(doNotDeepCopy
 
 * ModelParameters1: First model parameters that was used by the model.
 
-### getModelParameters2(doNotDeepCopy: boolean)
+### getModelParameters2()
 
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleExpectedStateActionRewardStateAction:getModelParameters2(): ModelParameters
+DeepDoubleExpectedStateActionRewardStateAction:getModelParameters2(doNotDeepCopy: boolean): ModelParameters
 ```
 
 #### Parameters:

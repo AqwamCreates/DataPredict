@@ -80,12 +80,12 @@ DeepDoubleQLearning:getModelParameters1(doNotDeepCopy: boolean): ModelParameters
 
 * ModelParameters1: First model parameters that was used by the model.
 
-### getModelParameters2(doNotDeepCopy: boolean)
+### getModelParameters2()
 
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleQLearning:getModelParameters2(): ModelParameters
+DeepDoubleQLearning:getModelParameters2(doNotDeepCopy: boolean): ModelParameters
 ```
 
 #### Parameters:

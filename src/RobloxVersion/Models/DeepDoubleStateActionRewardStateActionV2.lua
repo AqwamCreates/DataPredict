@@ -42,7 +42,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(averagingRate, discount
 
 		if (Model:getModelParameters() == nil) then NewDeepDoubleStateActionRewardStateActionModel:generateLayers() end
 
-		local PrimaryModelParameters = Model:getModelParameters()
+		local PrimaryModelParameters = Model:getModelParameters(true)
 
 		local qVector = Model:predict(currentFeatureVector, true)
 

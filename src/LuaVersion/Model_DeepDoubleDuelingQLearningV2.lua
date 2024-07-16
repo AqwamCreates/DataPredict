@@ -118,7 +118,11 @@ function DeepDoubleDuelingQLearning:update(previousFeatureVector, action, reward
 
 	local currentQValueVector, currentVValue = self:forwardPropagate(currentFeatureVector)
 
-	local maxCurrentQValue = math.max(table.unpack(currentQValueVector[1]))
+	local ClassesList = AdvantageModel:getClassesList()
+
+	local actionIndex = table.find(ClassesList, action)
+
+	local maxCurrentQValue = currentQValueVector[1][actionIndex]
 
 	local expectedQValue = rewardValue + (self.discountFactor * maxCurrentQValue)
 

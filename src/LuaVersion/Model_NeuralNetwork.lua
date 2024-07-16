@@ -902,23 +902,19 @@ function NeuralNetworkModel:generateLayers()
 
 	local ModelParameters = {}
 
-	local weightMatrix
-
-	local numberOfCurrentLayerNeurons
-
-	local numberOfNextLayerNeurons
-
 	for layer = 1, (numberOfLayers - 1), 1 do
 
-		numberOfCurrentLayerNeurons = layersArray[layer]
+		local numberOfCurrentLayerNeurons = layersArray[layer]
 
 		if (self.hasBiasNeuronTable[layer] == 1) then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
 
-		numberOfNextLayerNeurons = layersArray[layer + 1]
+		local numberOfNextLayerNeurons = layersArray[layer + 1]
+		
+		local hasBiasNeuronOnNextLayer = self.hasBiasNeuronTable[layer + 1] 
 
-		if (self.hasBiasNeuronTable[layer + 1] == 1) then numberOfNextLayerNeurons += 1 end
+		if (hasBiasNeuronOnNextLayer == 1) then numberOfNextLayerNeurons += 1 end
 
-		weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons)
+		local weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons, 0, hasBiasNeuronOnNextLayer)
 
 		table.insert(ModelParameters, weightMatrix)
 

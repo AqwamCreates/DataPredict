@@ -8,6 +8,46 @@ DeepDoubleQLearningModel.__index = DeepDoubleQLearningModel
 
 setmetatable(DeepDoubleQLearningModel, ReinforcementLearningBaseModel)
 
+local function deepCopyTable(original, copies)
+
+	copies = copies or {}
+
+	local originalType = type(original)
+
+	local copy
+
+	if (originalType == 'table') then
+
+		if copies[original] then
+
+			copy = copies[original]
+
+		else
+
+			copy = {}
+
+			copies[original] = copy
+
+			for originalKey, originalValue in next, original, nil do
+
+				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
+
+			end
+
+			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
+
+		end
+
+	else
+
+		copy = original
+
+	end
+
+	return copy
+
+end
+
 function DeepDoubleQLearningModel.new(discountFactor)
 
 	local NewDeepDoubleQLearningModel = ReinforcementLearningBaseModel.new(discountFactor)
@@ -114,27 +154,59 @@ function DeepDoubleQLearningModel:generateLossVector(previousFeatureVector, acti
 	
 end
 
-function DeepDoubleQLearningModel:setModelParameters1(ModelParameters1)
-
-	self.ModelParametersArray[1] = ModelParameters1
-
-end
-
-function DeepDoubleQLearningModel:setModelParameters2(ModelParameters2)
-
-	self.ModelParametersArray[2] = ModelParameters2
-
-end
-
-function DeepDoubleQLearningModel:getModelParameters1(ModelParameters1)
-
-	return self.ModelParametersArray[1]
+function DeepDoubleQLearningModel:setModelParameters1(ModelParameters1, doNotDeepCopy)
+	
+	if (doNotDeepCopy) then
+		
+		self.ModelParametersArray[1] = ModelParameters1
+		
+	else
+		
+		self.ModelParametersArray[1] = deepCopyTable(ModelParameters1)
+		
+	end
 
 end
 
-function DeepDoubleQLearningModel:getModelParameters2(ModelParameters2)
+function DeepDoubleQLearningModel:setModelParameters2(ModelParameters2, doNotDeepCopy)
 
-	return self.ModelParametersArray[2]
+	if (doNotDeepCopy) then
+
+		self.ModelParametersArray[2] = ModelParameters2
+
+	else
+
+		self.ModelParametersArray[2] = deepCopyTable(ModelParameters2)
+
+	end
+
+end
+
+function DeepDoubleQLearningModel:getModelParameters1(doNotDeepCopy)
+	
+	if (doNotDeepCopy) then
+		
+		return self.ModelParametersArray[1]
+		
+	else
+		
+		return deepCopyTable(self.ModelParametersArray[1])
+		
+	end
+
+end
+
+function DeepDoubleQLearningModel:getModelParameters2(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.ModelParametersArray[2]
+
+	else
+
+		return deepCopyTable(self.ModelParametersArray[2])
+
+	end
 
 end
 

@@ -64,7 +64,7 @@ function DeepDoubleQLearningModel.new(averagingRate, discountFactor)
 
 		if (NewDeepDoubleQLearningModel.Model == nil) then Model:generateLayers() end
 
-		local PrimaryModelParameters = Model:getModelParameters()
+		local PrimaryModelParameters = Model:getModelParameters(true)
 
 		local predictedValue, maxQValue = Model:predict(currentFeatureVector)
 

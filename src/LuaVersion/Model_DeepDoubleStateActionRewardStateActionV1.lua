@@ -30,6 +30,46 @@ DeepDoubleStateActionRewardStateActionModel.__index = DeepDoubleStateActionRewar
 
 setmetatable(DeepDoubleStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
 
+local function deepCopyTable(original, copies)
+
+	copies = copies or {}
+
+	local originalType = type(original)
+
+	local copy
+
+	if (originalType == 'table') then
+
+		if copies[original] then
+
+			copy = copies[original]
+
+		else
+
+			copy = {}
+
+			copies[original] = copy
+
+			for originalKey, originalValue in next, original, nil do
+
+				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
+
+			end
+
+			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
+
+		end
+
+	else
+
+		copy = original
+
+	end
+
+	return copy
+
+end
+
 function DeepDoubleStateActionRewardStateActionModel.new(discountFactor)
 
 	local NewDeepDoubleStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(discountFactor)
@@ -126,27 +166,59 @@ function DeepDoubleStateActionRewardStateActionModel:generateLossVector(previous
 
 end
 
-function DeepDoubleStateActionRewardStateActionModel:setModelParameters1(ModelParameters1)
+function DeepDoubleStateActionRewardStateActionModel:setModelParameters1(ModelParameters1, doNotDeepCopy)
 
-	self.ModelParametersArray[1] = ModelParameters1
+	if (doNotDeepCopy) then
 
-end
+		self.ModelParametersArray[1] = ModelParameters1
 
-function DeepDoubleStateActionRewardStateActionModel:setModelParameters2(ModelParameters2)
+	else
 
-	self.ModelParametersArray[2] = ModelParameters2
+		self.ModelParametersArray[1] = deepCopyTable(ModelParameters1)
 
-end
-
-function DeepDoubleStateActionRewardStateActionModel:getModelParameters1(ModelParameters1)
-
-	return self.ModelParametersArray[1]
+	end
 
 end
 
-function DeepDoubleStateActionRewardStateActionModel:getModelParameters2(ModelParameters2)
+function DeepDoubleStateActionRewardStateActionModel:setModelParameters2(ModelParameters2, doNotDeepCopy)
 
-	return self.ModelParametersArray[2]
+	if (doNotDeepCopy) then
+
+		self.ModelParametersArray[2] = ModelParameters2
+
+	else
+
+		self.ModelParametersArray[2] = deepCopyTable(ModelParameters2)
+
+	end
+
+end
+
+function DeepDoubleStateActionRewardStateActionModel:getModelParameters1(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.ModelParametersArray[1]
+
+	else
+
+		return deepCopyTable(self.ModelParametersArray[1])
+
+	end
+
+end
+
+function DeepDoubleStateActionRewardStateActionModel:getModelParameters2(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.ModelParametersArray[2]
+
+	else
+
+		return deepCopyTable(self.ModelParametersArray[2])
+
+	end
 
 end
 

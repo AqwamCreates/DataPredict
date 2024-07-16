@@ -20,7 +20,7 @@
 
 --]]
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 BaseModel = {}
 
@@ -298,7 +298,15 @@ function BaseModel:setModelParametersInitializationMode(initializationMode, mini
 	
 end
 
-function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
+function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, numberOfRowsToIgnore, numberOfColumnsToIgnore) -- Some of the row/column might not be considered as an input variables/neurons. Hence, it should be ignored by subtracting from original rows and columns with the number of non-input variable/neurons.
+	
+	numberOfRowsToIgnore = numberOfRowsToIgnore or 0
+	
+	numberOfColumnsToIgnore = numberOfColumnsToIgnore or 0
+	
+	local adjustedNumberOfRows = numberOfRows - numberOfRowsToIgnore
+	
+	local adjustedNumberOfColumns = numberOfRows - numberOfColumnsToIgnore
 	
 	local initializationMode = self.modelParametersInitializationMode
 	
@@ -338,7 +346,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "HeNormal") then
 		
-		local variancePart1 = 2 / numberOfColumns
+		local variancePart1 = 2 / adjustedNumberOfColumns
 		
 		local variancePart = math.sqrt(variancePart1)
 		
@@ -348,7 +356,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "HeUniform") then
 
-		local variancePart1 = 6 / numberOfColumns
+		local variancePart1 = 6 / adjustedNumberOfColumns
 
 		local variancePart = math.sqrt(variancePart1)
 
@@ -358,7 +366,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "XavierNormal") then
 
-		local variancePart1 = 2 / (numberOfRows + numberOfColumns)
+		local variancePart1 = 2 / (adjustedNumberOfRows + adjustedNumberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
@@ -368,7 +376,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 
 	elseif (initializationMode == "XavierUniform") then
 
-		local variancePart1 = 6 / (numberOfRows + numberOfColumns)
+		local variancePart1 = 6 / (adjustedNumberOfRows + adjustedNumberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
@@ -378,7 +386,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "LeCunNormal") then
 
-		local variancePart1 = 1 / numberOfColumns
+		local variancePart1 = 1 / adjustedNumberOfColumns
 
 		local variancePart = math.sqrt(variancePart1)
 
@@ -388,7 +396,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "LeCunUniform") then
 
-		local variancePart1 = 3 / numberOfColumns
+		local variancePart1 = 3 / adjustedNumberOfColumns
 
 		local variancePart = math.sqrt(variancePart1)
 

@@ -44,9 +44,9 @@ function DeepDuelingQLearning:forwardPropagate(featureVector)
 
 	local meanAdvantageVector = AqwamMatrixLibrary:horizontalMean(advantageMatrix)
 
-	local qValuePart1 = AqwamMatrixLibrary:subtract(advantageMatrix, meanAdvantageVector)
+	local qValueVectorPart1 = AqwamMatrixLibrary:subtract(advantageMatrix, meanAdvantageVector)
 
-	local qValueVector = AqwamMatrixLibrary:add(vValue, qValuePart1)
+	local qValueVector = AqwamMatrixLibrary:add(vValue, qValueVectorPart1)
 
 	return qValueVector, vValue
 

@@ -914,7 +914,7 @@ function NeuralNetworkModel:generateLayers()
 
 		if (hasBiasNeuronOnNextLayer == 1) then numberOfNextLayerNeurons += 1 end
 
-		local weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons, 0, hasBiasNeuronOnNextLayer)
+		local weightMatrix = self:initializeMatrixBasedOnMode(numberOfCurrentLayerNeurons, numberOfNextLayerNeurons, 0, hasBiasNeuronOnNextLayer) -- Since no outputs are going into the bias neuron, it should not be considered as an input neuron. So the bias column needed to be excluded for our weight initialization.
 
 		table.insert(ModelParameters, weightMatrix)
 

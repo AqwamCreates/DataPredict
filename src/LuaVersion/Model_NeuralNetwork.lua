@@ -618,7 +618,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 
 		local derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
 		
-		if (hasBiasNeuronOnNextLayer == 1) then
+		if (hasBiasNeuronOnNextLayer == 1) then -- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
 
 			for i = 1, #derivativeMatrix, 1 do derivativeMatrix[i][1] = 0 end
 
@@ -708,7 +708,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 		
 		local newWeightMatrix = AqwamMatrixLibrary:subtract(weightMatrix, costFunctionDerivativeMatrix)
 		
-		if (hasBiasNeuronOnNextLayer == 1) then
+		if (hasBiasNeuronOnNextLayer == 1) then -- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
 			
 			for i = 1, #newWeightMatrix, 1 do newWeightMatrix[i][1] = 0 end
 			

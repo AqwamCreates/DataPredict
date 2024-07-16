@@ -284,7 +284,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, nu
 	
 	local adjustedNumberOfRows = numberOfRows - numberOfRowsToIgnore
 	
-	local adjustedNumberOfColumns = numberOfRows - numberOfColumnsToIgnore
+	local adjustedNumberOfColumns = numberOfColumns - numberOfColumnsToIgnore
 	
 	local initializationMode = self.modelParametersInitializationMode
 	

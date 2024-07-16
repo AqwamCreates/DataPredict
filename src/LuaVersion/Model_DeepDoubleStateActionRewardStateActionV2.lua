@@ -61,11 +61,16 @@ function DeepDoubleStateActionRewardStateActionModel.new(averagingRate, discount
 	NewDeepDoubleStateActionRewardStateActionModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local Model = NewDeepDoubleStateActionRewardStateActionModel.Model
-
-		if (Model:getModelParameters() == nil) then NewDeepDoubleStateActionRewardStateActionModel:generateLayers() end
-
+		
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
+		if (PrimaryModelParameters == nil) then 
+			
+			Model:generateLayers() 
+			PrimaryModelParameters = Model:getModelParameters(true)
+			
+		end
+		
 		local qVector = Model:predict(currentFeatureVector, true)
 
 		local discountedQVector = AqwamMatrixLibrary:multiply(NewDeepDoubleStateActionRewardStateActionModel.discountFactor, qVector)

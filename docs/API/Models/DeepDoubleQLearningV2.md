@@ -4,12 +4,6 @@ DoubleQLearningNeuralNetworkV2 is a neural network with reinforcement learning c
 
 It uses Hasselt et al. (2015) version, where it uses target and primary neural networks for training.
 
-## Stored Model Parameters
-
-Contains a table of matrices.  
-
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
-
 ## Constructors
 
 ### new()

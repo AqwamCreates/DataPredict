@@ -276,7 +276,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	else
 		
-		allOutputsMatrix = self.Model:predict(currentFeatureVector, true, childModelNumber)
+		allOutputsMatrix = Model:predict(currentFeatureVector, true, childModelNumber)
 
 		action, selectedValue = self:selectAction(allOutputsMatrix, ClassesList)
 

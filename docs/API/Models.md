@@ -70,3 +70,5 @@
 [ReinforcementLearningBaseModel](Models/ReinforcementLearningBaseModel.md)
 
 [ReinforcementLearningActorCriticBaseModel](Models/ReinforcementLearningActorCriticBaseModel.md)
+
+[ReinforcementLearningDeepDuelingQLearningBaseModel](Models/ReinforcementLearningDeepDuelingQLearningBaseModel.md)

@@ -42,59 +42,9 @@ DeepDuelingQLearning:setParameters(discountFactor: number)
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
-### setAdvantageModel()
+## Inherited From
 
-```
-DeepDuelingQLearning:setAdvantageModel(Model: ModelObject)
-```
-
-#### Parameters:
-
-* Model: The model to be used as an Advantage model.
-
-### setValueModel()
-
-```
-DeepDuelingQLearning:setValueModel(Model: ModelObject)
-```
-
-#### Parameters:
-
-* Model: The model to be used as a Value model.
-
-### update()
-
-Updates the model parameters.
-
-```
-DuelingQLearning:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
-```
-
-#### Parameters:
-
-* previousFeatureVector: The previous state of the environment.
-
-* action: The action selected.
-
-* rewardValue: The reward gained at current state.
-
-* currentFeatureVector: The currrent state of the environment.
-
-### reset()
-
-Reset model's stored values (excluding the parameters).
-
-```
-DuelingQLearning:reset()
-```
-
-### destroy()
-
-Destroys the model object.
-
-```
-ActorCritic:destroy()
-```
+* [ReinforcementLearningDeepDuelingQLearningBaseModel](ReinforcementLearningDeepDuelingQLearningBaseModel.md)
 
 ## References
 

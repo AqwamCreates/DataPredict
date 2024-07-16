@@ -8,15 +8,15 @@ local defaultAveragingRate = 0.01
 
 local defaultDiscountFactor = 0.95
 
-local function rateAverageModelParameters(averagingRate, PrimaryModelParameters, TargetModelParameters)
+local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
 
 	local averagingRateComplement = 1 - averagingRate
 
 	for layer = 1, #TargetModelParameters, 1 do
 
-		local PrimaryModelParametersPart = AqwamMatrixLibrary:multiply(averagingRate, PrimaryModelParameters[layer])
-
-		local TargetModelParametersPart = AqwamMatrixLibrary:multiply(averagingRateComplement, TargetModelParameters[layer])
+		local TargetModelParametersPart = AqwamMatrixLibrary:multiply(averagingRate, TargetModelParameters[layer])
+		
+		local PrimaryModelParametersPart = AqwamMatrixLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
 
 		TargetModelParameters[layer] = AqwamMatrixLibrary:add(PrimaryModelParametersPart, TargetModelParametersPart)
 
@@ -32,7 +32,7 @@ function DeepDoubleDuelingQLearning.new(averagingRate, discountFactor)
 
 	setmetatable(NewDeepDuelingQLearning, DeepDoubleDuelingQLearning)
 	
-	NewDeepDuelingQLearning.averagingRate = averagingRate or defaultDiscountFactor
+	NewDeepDuelingQLearning.averagingRate = averagingRate or defaultAveragingRate
 
 	NewDeepDuelingQLearning.discountFactor = discountFactor or defaultDiscountFactor
 
@@ -82,7 +82,7 @@ function DeepDoubleDuelingQLearning:update(previousFeatureVector, action, reward
 	
 	local ValueModel = self.ValueModel
 	
-	local averagingRate = DeepDoubleDuelingQLearning.averagingRate
+	local averagingRate = self.averagingRate
 	
 	if (AdvantageModel:getModelParameters() == nil) then AdvantageModel:generateLayers() end
 	
@@ -114,11 +114,11 @@ function DeepDoubleDuelingQLearning:update(previousFeatureVector, action, reward
 	
 	local AdvantageModelTargetModelParameters = AdvantageModel:getModelParameters(true)
 	
-	local ValueModelTargetModelParameters = AdvantageModel:getModelParameters(true)
+	local ValueModelTargetModelParameters = ValueModel:getModelParameters(true)
 
-	AdvantageModelTargetModelParameters = rateAverageModelParameters(averagingRate, AdvantageModelPrimaryModelParameters, AdvantageModelTargetModelParameters)
+	AdvantageModelTargetModelParameters = rateAverageModelParameters(averagingRate, AdvantageModelTargetModelParameters, AdvantageModelPrimaryModelParameters)
 	
-	ValueModelTargetModelParameters = rateAverageModelParameters(averagingRate, ValueModelPrimaryModelParameters, ValueModelTargetModelParameters)
+	ValueModelTargetModelParameters = rateAverageModelParameters(averagingRate, ValueModelTargetModelParameters, ValueModelPrimaryModelParameters)
 
 	AdvantageModel:setModelParameters(AdvantageModelTargetModelParameters, true)
 	

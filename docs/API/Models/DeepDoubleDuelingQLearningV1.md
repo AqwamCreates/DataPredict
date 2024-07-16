@@ -36,40 +36,40 @@ DeepDoubleDuelingQLearning:setParameters(discountFactor: number)
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
-### setModelParameters1()
+### setAdvantageModelParameters1()
 
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleQLearning:setModelParameters1(ModelParameters1: ModelParameters, doNotDeepCopy: boolean)
+DeepDoubleDuelingQLearning:setAdvantageModelParameters1(AdvantageModelParameters1: ModelParameters, doNotDeepCopy: boolean)
 ```
 
 #### Parameters:
 
-* ModelParameters1: First model parameters to be used by the model.
+* AdvantageModelParameters1: First model parameters to be used by the model.
 
 * doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
-### setModelParameters2()
+### setAdvantageModelParameters2()
 
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleQLearning:setModelParameters2(ModelParameters2: ModelParameters, doNotDeepCopy: boolean)
+DeepDoubleDuelingQLearning:setAdvantageModelParameters2(AdvantageModelParameters2: ModelParameters, doNotDeepCopy: boolean)
 ```
 
 #### Parameters:
 
-* ModelParameters2: Second model parameters to be used by the model.
+* AdvantageModelParameters2: Second model parameters to be used by the model.
 
 * doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
-### getModelParameters1()
+### getAdvantageModelParameters1()
 
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleQLearning:getModelParameters1(doNotDeepCopy: boolean): ModelParameters
+DeepDoubleQLearning:getAdvantageModelParameters1(doNotDeepCopy: boolean): ModelParameters
 ```
 
 #### Parameters:
@@ -78,14 +78,14 @@ DeepDoubleQLearning:getModelParameters1(doNotDeepCopy: boolean): ModelParameters
 
 #### Returns:
 
-* ModelParameters1: First model parameters that was used by the model.
+* AdvantageModelParameters1: First advantage model parameters that was used by the model.
 
 ### getModelParameters2()
 
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleQLearning:getModelParameters2(doNotDeepCopy: boolean): ModelParameters
+DeepDoubleQLearning:getAdvantageModelParameters2(doNotDeepCopy: boolean): ModelParameters
 ```
 
 #### Parameters:
@@ -94,7 +94,67 @@ DeepDoubleQLearning:getModelParameters2(doNotDeepCopy: boolean): ModelParameters
 
 #### Returns:
 
-* ModelParameters2: Second model parameters that was used by the model.
+* AdvantageModelParameters2: Second advantage model parameters that was used by the model.
+
+### setValueModelParameters1()
+
+Sets model parameters to be used by the model.
+
+```
+DeepDoubleDuelingQLearning:setValueModelParameters1(ValueModelParameters1: ModelParameters, doNotDeepCopy: boolean)
+```
+
+#### Parameters:
+
+* ValueModelParameters1: First model parameters to be used by the model.
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
+### setValueModelParameters2()
+
+Sets model parameters to be used by the model.
+
+```
+DeepDoubleDuelingQLearning:setValueModelParameters2(ValueModelParameters2: ModelParameters, doNotDeepCopy: boolean)
+```
+
+#### Parameters:
+
+* ValueModelParameters2: Second model parameters to be used by the model.
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
+### getValueModelParameters1()
+
+Sets model parameters to be used by the model.
+
+```
+DeepDoubleQLearning:getValueModelParameters1(doNotDeepCopy: boolean): ModelParameters
+```
+
+#### Parameters:
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
+#### Returns:
+
+* ValueModelParameters1: First value model parameters that was used by the model.
+
+### getModelParameters2()
+
+Sets model parameters to be used by the model.
+
+```
+DeepDoubleQLearning:getValueModelParameters2(doNotDeepCopy: boolean): ModelParameters
+```
+
+#### Parameters:
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
+#### Returns:
+
+* ValueModelParameters2: Second value model parameters that was used by the model.
 
 ## Inherited From
 

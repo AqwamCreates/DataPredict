@@ -124,11 +124,11 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 
 	local OptimizerObject
 	
-	local isNameAdded = (typeof(optimizerName) == "string")
+	local isNameAdded = (type(optimizerName) == "string")
 	
 	local SelectedOptimizer
 	
-	if isNameAdded then SelectedOptimizer = require("Optimizer_" ..  optimizerName) end
+	if isNameAdded then SelectedOptimizer = require("Optimizer_" .. optimizerName) end
 	
 	local success = pcall(function()
 		
@@ -420,7 +420,7 @@ function OneVsAll:predict(featureMatrix)
 	
 end
 
-function OneVsAll:getModelParametersArray()
+function OneVsAll:getModelParametersArray(doNotDeepCopy)
 	
 	self:checkIfModelsSet()
 	
@@ -428,7 +428,7 @@ function OneVsAll:getModelParametersArray()
 	
 	for _, Model in ipairs(self.ModelArray) do 
 		
-		local ModelParameters = Model:getModelParameters()
+		local ModelParameters = Model:getModelParameters(doNotDeepCopy)
 		
 		table.insert(ModelParametersArray, ModelParameters) 
 		
@@ -438,7 +438,7 @@ function OneVsAll:getModelParametersArray()
 	
 end
 
-function OneVsAll:setModelParametersArray(ModelParametersArray)
+function OneVsAll:setModelParametersArray(ModelParametersArray, doNotDeepCopy)
 	
 	self:checkIfModelsSet()
 	
@@ -450,7 +450,7 @@ function OneVsAll:setModelParametersArray(ModelParametersArray)
 		
 		local ModelParameters = ModelParametersArray[m]
 
-		Model:setModelParameters(ModelParameters)
+		Model:setModelParameters(ModelParameters, doNotDeepCopy)
 
 	end
 	

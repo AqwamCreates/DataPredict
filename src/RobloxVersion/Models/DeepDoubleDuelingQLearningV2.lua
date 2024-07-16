@@ -1,12 +1,14 @@
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
+local ReinforcementLearningDeepDuelingQLearningBaseModel = require(script.Parent.ReinforcementLearningDeepDuelingQLearningBaseModel)
+
 DeepDoubleDuelingQLearning = {}
 
 DeepDoubleDuelingQLearning.__index = DeepDoubleDuelingQLearning
 
-local defaultAveragingRate = 0.01
+setmetatable(DeepDoubleDuelingQLearning, ReinforcementLearningDeepDuelingQLearningBaseModel)
 
-local defaultDiscountFactor = 0.95
+local defaultAveragingRate = 0.01
 
 local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
 
@@ -28,13 +30,53 @@ end
 
 function DeepDoubleDuelingQLearning.new(averagingRate, discountFactor)
 
-	local NewDeepDuelingQLearning = {}
+	local NewDeepDuelingQLearning = ReinforcementLearningDeepDuelingQLearningBaseModel.new(discountFactor)
 
 	setmetatable(NewDeepDuelingQLearning, DeepDoubleDuelingQLearning)
 	
 	NewDeepDuelingQLearning.averagingRate = averagingRate or defaultAveragingRate
+	
+	NewDeepDuelingQLearning:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		
+		local AdvantageModel = NewDeepDuelingQLearning.AdvantageModel
 
-	NewDeepDuelingQLearning.discountFactor = discountFactor or defaultDiscountFactor
+		local ValueModel = NewDeepDuelingQLearning.ValueModel
+
+		local averagingRate = NewDeepDuelingQLearning.averagingRate
+
+		if (AdvantageModel:getModelParameters() == nil) then AdvantageModel:generateLayers() end
+
+		if (ValueModel:getModelParameters() == nil) then ValueModel:generateLayers() end
+
+		local AdvantageModelPrimaryModelParameters = AdvantageModel:getModelParameters(true)
+
+		local ValueModelPrimaryModelParameters = ValueModel:getModelParameters(true)
+
+		local qLossVector, vLoss = NewDeepDuelingQLearning:generateLoss(previousFeatureVector, action, rewardValue, currentFeatureVector)
+
+		AdvantageModel:forwardPropagate(previousFeatureVector, true)
+
+		AdvantageModel:backPropagate(qLossVector, true)
+
+		ValueModel:forwardPropagate(previousFeatureVector, true)
+
+		ValueModel:backPropagate(vLoss, true)
+
+		local AdvantageModelTargetModelParameters = AdvantageModel:getModelParameters(true)
+
+		local ValueModelTargetModelParameters = ValueModel:getModelParameters(true)
+
+		AdvantageModelTargetModelParameters = rateAverageModelParameters(averagingRate, AdvantageModelTargetModelParameters, AdvantageModelPrimaryModelParameters)
+
+		ValueModelTargetModelParameters = rateAverageModelParameters(averagingRate, ValueModelTargetModelParameters, ValueModelPrimaryModelParameters)
+
+		AdvantageModel:setModelParameters(AdvantageModelTargetModelParameters, true)
+
+		ValueModel:setModelParameters(ValueModelTargetModelParameters, true)
+
+		return vLoss
+		
+	end)
 
 	return NewDeepDuelingQLearning
 
@@ -45,116 +87,6 @@ function DeepDoubleDuelingQLearning:setParameters(averagingRate, discountFactor)
 	self.averagingRate = averagingRate or self.averagingRate
 
 	self.discountFactor =  discountFactor or self.discountFactor
-
-end
-
-function DeepDoubleDuelingQLearning:setAdvantageModel(Model)
-
-	self.AdvantageModel = Model
-
-end
-
-function DeepDoubleDuelingQLearning:setValueModel(Model)
-
-	self.ValueModel = Model
-
-end
-
-function DeepDoubleDuelingQLearning:forwardPropagate(featureVector)
-
-	local vValue = self.ValueModel:predict(featureVector, true)[1][1]
-
-	local advantageMatrix = self.AdvantageModel:predict(featureVector, true)
-
-	local meanAdvantageVector = AqwamMatrixLibrary:horizontalMean(advantageMatrix)
-
-	local qValueVectorPart1 = AqwamMatrixLibrary:subtract(advantageMatrix, meanAdvantageVector)
-
-	local qValueVector = AqwamMatrixLibrary:add(vValue, qValueVectorPart1)
-
-	return qValueVector, vValue
-
-end
-
-function DeepDoubleDuelingQLearning:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
-	
-	local AdvantageModel = self.AdvantageModel
-	
-	local ValueModel = self.ValueModel
-	
-	local averagingRate = self.averagingRate
-	
-	if (AdvantageModel:getModelParameters() == nil) then AdvantageModel:generateLayers() end
-	
-	if (ValueModel:getModelParameters() == nil) then ValueModel:generateLayers() end
-
-	local AdvantageModelPrimaryModelParameters = AdvantageModel:getModelParameters(true)
-	
-	local ValueModelPrimaryModelParameters = ValueModel:getModelParameters(true)
-
-	local previousQValueVector, previousVValue = self:forwardPropagate(previousFeatureVector)
-
-	local currentQValueVector, currentVValue = self:forwardPropagate(currentFeatureVector)
-
-	local ClassesList = AdvantageModel:getClassesList()
-
-	local actionIndex = table.find(ClassesList, action)
-
-	local maxCurrentQValue = currentQValueVector[1][actionIndex]
-
-	local expectedQValue = rewardValue + (self.discountFactor * maxCurrentQValue)
-
-	local qLossVector = AqwamMatrixLibrary:subtract(expectedQValue, previousQValueVector)
-
-	local vLoss = currentVValue - previousVValue
-	
-	AdvantageModel:forwardPropagate(previousFeatureVector, true)
-
-	AdvantageModel:backPropagate(qLossVector, true)
-
-	ValueModel:forwardPropagate(previousFeatureVector, true)
-
-	ValueModel:backPropagate(vLoss, true)
-	
-	local AdvantageModelTargetModelParameters = AdvantageModel:getModelParameters(true)
-	
-	local ValueModelTargetModelParameters = ValueModel:getModelParameters(true)
-
-	AdvantageModelTargetModelParameters = rateAverageModelParameters(averagingRate, AdvantageModelTargetModelParameters, AdvantageModelPrimaryModelParameters)
-	
-	ValueModelTargetModelParameters = rateAverageModelParameters(averagingRate, ValueModelTargetModelParameters, ValueModelPrimaryModelParameters)
-
-	AdvantageModel:setModelParameters(AdvantageModelTargetModelParameters, true)
-	
-	ValueModel:setModelParameters(ValueModelTargetModelParameters, true)
-
-	return vLoss
-
-end
-
-function DeepDoubleDuelingQLearning:predict(featureVector, returnOriginalOutput)
-
-	return self.AdvantageModel:predict(featureVector, returnOriginalOutput)
-
-end
-
-function DeepDoubleDuelingQLearning:episodeUpdate()
-	
-	
-end
-
-function DeepDoubleDuelingQLearning:reset()
-	
-	
-end
-
-function DeepDoubleDuelingQLearning:destroy()
-
-	setmetatable(self, nil)
-
-	table.clear(self)
-
-	self = nil
 
 end
 

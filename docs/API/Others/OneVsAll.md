@@ -154,8 +154,12 @@ OneVsAll:setClassesList(ClassesList: [])
 Gets the model parameters from the base model.
 
 ```
-OneVsAll:getModelParametersArray(): ModelParameters []
+OneVsAll:getModelParametersArray(doNotDeepCopy: boolean): ModelParameters []
 ```
+
+#### Parameters
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
 #### Returns
 
@@ -166,12 +170,14 @@ OneVsAll:getModelParametersArray(): ModelParameters []
 Set the model parameters to the base model.
 
 ```
-OneVsAll:setModelParameters(ModelParametersArray: ModelParameters[])
+OneVsAll:setModelParameters(ModelParametersArray: ModelParameters[], doNotDeepCopy: boolean)
 ```
 
 #### Parameters
 
 * ModelParametersArray: A table containing model parameters (matrix/table) to be given to be given to each model stored in OneVsAll object.  The position of the parameters determines which model it belongs to.
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
 ### clearModelParameters()
 

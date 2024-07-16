@@ -68,13 +68,7 @@ function DeepDoubleQLearningModel.new(discountFactor)
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		NewDeepDoubleQLearningModel:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
-
-		local lossVector, temporalDifferenceError = NewDeepDoubleQLearningModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-		NewDeepDoubleQLearningModel:saveModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
-
-		NewDeepDoubleQLearningModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+		local lossVector, temporalDifferenceError = NewDeepDoubleQLearningModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 
 		Model:forwardPropagate(previousFeatureVector, true)
 		
@@ -126,9 +120,15 @@ function DeepDoubleQLearningModel:loadModelParametersFromModelParametersArray(in
 	
 end
 
-function DeepDoubleQLearningModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function DeepDoubleQLearningModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 	
 	local Model = self.Model
+	
+	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+	
+	local previousVector = Model:predict(previousFeatureVector, true)
+	
+	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
 	local predictedValue, maxQValue = Model:predict(currentFeatureVector)
 
@@ -137,8 +137,6 @@ function DeepDoubleQLearningModel:generateLossVector(previousFeatureVector, acti
 	local ClassesList = Model:getClassesList()
 	
 	local numberOfClasses = #ClassesList
-
-	local previousVector = Model:predict(previousFeatureVector, true)
 
 	local actionIndex = table.find(ClassesList, action)
 	

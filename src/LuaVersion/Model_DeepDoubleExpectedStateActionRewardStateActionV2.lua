@@ -24,10 +24,6 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
-
-local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
-
 DeepDoubleExpectedStateActionRewardStateActionModel = {}
 
 DeepDoubleExpectedStateActionRewardStateActionModel.__index = DeepDoubleExpectedStateActionRewardStateActionModel
@@ -38,24 +34,23 @@ local defaultEpsilon = 0.5
 
 local defaultAveragingRate = 0.01
 
-local function rateAverageModelParameters(averagingRate, PrimaryModelParameters, TargetModelParameters)
+local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
 
 	local averagingRateComplement = 1 - averagingRate
 
 	for layer = 1, #TargetModelParameters, 1 do
 
-		local PrimaryModelParametersPart = AqwamMatrixLibrary:multiply(averagingRate, PrimaryModelParameters[layer])
+		local TargetModelParametersPart = AqwamMatrixLibrary:multiply(averagingRate, TargetModelParameters[layer])
 
-		local TargetModelParametersPart = AqwamMatrixLibrary:multiply(averagingRateComplement, TargetModelParameters[layer])
+		local PrimaryModelParametersPart = AqwamMatrixLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
 
-		TargetModelParameters[layer] = AqwamMatrixLibrary:add(PrimaryModelParametersPart, TargetModelParametersPart)
+		TargetModelParameters[layer] = AqwamMatrixLibrary:add(TargetModelParametersPart, PrimaryModelParametersPart)
 
 	end
 
 	return TargetModelParameters
 
 end
-
 
 function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIterations, epsilon, averagingRate, discountFactor)
 
@@ -133,7 +128,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIter
 
 		local TargetModelParameters = Model:getModelParameters(true)
 
-		TargetModelParameters = rateAverageModelParameters(NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate, PrimaryModelParameters, TargetModelParameters)
+		TargetModelParameters = rateAverageModelParameters(NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
 
 		Model:setModelParameters(TargetModelParameters, true)
 		

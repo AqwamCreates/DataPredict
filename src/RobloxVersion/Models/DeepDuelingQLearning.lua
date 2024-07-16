@@ -62,13 +62,13 @@ function DeepDuelingQLearning:update(previousFeatureVector, action, rewardValue,
 
 	local expectedQValue = rewardValue + (self.discountFactor * maxCurrentQValue)
 
-	local qLoss = AqwamMatrixLibrary:subtract(expectedQValue, previousQValue)
+	local qLossVector = AqwamMatrixLibrary:subtract(expectedQValue, previousQValue)
 
-	local vLoss = AqwamMatrixLibrary:subtract(currentVValue, previousVValue)
+	local vLoss = currentVValue - previousVValue
 	
 	self.AdvantageModel:forwardPropagate(previousFeatureVector, true)
 
-	self.AdvantageModel:backPropagate(qLoss, true)
+	self.AdvantageModel:backPropagate(qLossVector, true)
 
 	self.ValueModel:forwardPropagate(previousFeatureVector, true)
 

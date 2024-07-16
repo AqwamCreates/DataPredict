@@ -41,44 +41,56 @@ DeepDoubleQLearning:setParameters(discountFactor: number)
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleQLearning:setModelParameters1(ModelParameters1: ModelParameters)
+DeepDoubleQLearning:setModelParameters1(ModelParameters1: ModelParameters, doNotDeepCopy: boolean)
 ```
 
 #### Parameters:
 
 * ModelParameters1: First model parameters to be used by the model.
 
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
 ### setModelParameters2()
 
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleQLearning:setModelParameters2(ModelParameters2: ModelParameters)
+DeepDoubleQLearning:setModelParameters2(ModelParameters2: ModelParameters, doNotDeepCopy: boolean)
 ```
 
 #### Parameters:
 
 * ModelParameters2: Second model parameters to be used by the model.
 
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
 ### getModelParameters1()
 
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleQLearning:getModelParameters1(): ModelParameters
+DeepDoubleQLearning:getModelParameters1(doNotDeepCopy: boolean): ModelParameters
 ```
+
+#### Parameters:
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
 #### Returns:
 
 * ModelParameters1: First model parameters that was used by the model.
 
-### getModelParameters2()
+### getModelParameters2(doNotDeepCopy: boolean)
 
 Sets model parameters to be used by the model.
 
 ```
 DeepDoubleQLearning:getModelParameters2(): ModelParameters
 ```
+
+#### Parameters:
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
 #### Returns:
 

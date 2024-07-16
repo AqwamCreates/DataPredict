@@ -11,7 +11,7 @@ It uses Hasselt et al. (2015) version, where it uses target and primary neural n
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepDoubleDuelingQLearningV2.new(averagingRate: number, discountFactor: number): ModelObject
+DeepDoubleDuelingQLearning.new(averagingRate: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -31,7 +31,7 @@ DeepDoubleDuelingQLearningV2.new(averagingRate: number, discountFactor: number):
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DeepDoubleDuelingQLearningV2:setParameters(averagingRate: number, discountFactor: number)
+DeepDoubleDuelingQLearning:setParameters(averagingRate: number, discountFactor: number)
 ```
 
 #### Parameters:

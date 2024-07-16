@@ -59,8 +59,12 @@ BaseModel:setModelParametersInitializationMode(initializationMode: string, minim
 Gets the model parameters from the base model.
 
 ```
-BaseModel:getModelParameters(): ModelParameters
+BaseModel:getModelParameters(doNotDeepCopy: boolean): ModelParameters
 ```
+
+#### Parameters
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
 #### Returns
 
@@ -71,12 +75,14 @@ BaseModel:getModelParameters(): ModelParameters
 Set the model parameters to the base model.
 
 ```
-BaseModel:setModelParameters(ModelParameters: ModelParameters)
+BaseModel:setModelParameters(ModelParameters: ModelParameters, doNotDeepCopy: boolean)
 ```
 
 #### Parameters
 
 * ModelParameters: A matrix/table containing model parameters to be given to the base model.
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
 ### clearModelParameters()
 

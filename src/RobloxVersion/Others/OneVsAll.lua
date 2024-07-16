@@ -404,7 +404,7 @@ function OneVsAll:predict(featureMatrix)
 	
 end
 
-function OneVsAll:getModelParametersArray()
+function OneVsAll:getModelParametersArray(doNotDeepCopy)
 	
 	self:checkIfModelsSet()
 	
@@ -412,7 +412,7 @@ function OneVsAll:getModelParametersArray()
 	
 	for _, Model in ipairs(self.ModelArray) do 
 		
-		local ModelParameters = Model:getModelParameters()
+		local ModelParameters = Model:getModelParameters(doNotDeepCopy)
 		
 		table.insert(ModelParametersArray, ModelParameters) 
 		
@@ -422,7 +422,7 @@ function OneVsAll:getModelParametersArray()
 	
 end
 
-function OneVsAll:setModelParametersArray(ModelParametersArray)
+function OneVsAll:setModelParametersArray(ModelParametersArray, doNotDeepCopy)
 	
 	self:checkIfModelsSet()
 	
@@ -434,7 +434,7 @@ function OneVsAll:setModelParametersArray(ModelParametersArray)
 		
 		local ModelParameters = ModelParametersArray[m]
 
-		Model:setModelParameters(ModelParameters)
+		Model:setModelParameters(ModelParameters, doNotDeepCopy)
 
 	end
 	

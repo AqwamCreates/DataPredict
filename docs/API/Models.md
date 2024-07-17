@@ -47,9 +47,6 @@
 | [AdvantageActorCritic](Models/AdvantageActorCritic.md)                                                                           | A2C                                       | Same As Deep Q-Learning                                                     |
 | [AsynchronousAdvantageActorCritic](Models/AsynchronousAdvantageActorCritic.md)                                                   | A3C                                       | Same As Deep Q-Learning                                                     |
 | [REINFORCE](Models/REINFORCE.md)                                                                                                 | None                                      | Same As Deep Q-Learning                                                     |
-| [DeepDuelingQLearning](Models/DeepDuelingQLearning.md)                                                                           | Deep Dueling Q Network                    | Same As Deep Q-Learning                                                     |
-| [DeepDoubleDuelingQLearningV1](Models/DeepDoubleDuelingQLearningV1.md)                                                           | Deep Double Dueling Q Network             | Same As Deep Q-Learning                                                     |
-| [DeepDoubleDuelingQLearningV2](Models/DeepDoubleDuelingQLearningV2.md)                                                           | Deep Double Dueling Q Network             | Same As Deep Q-Learning                                                     |
 | [ProximalPolicyOptimization](Models/ProximalPolicyOptimization.md)                                                               | PPO                                       | Same As Deep Q-Learning                                                     |
 | [ProximalPolicyOptimizationClip](Models/ProximalPolicyOptimizationClip.md)                                                       | PPO-Clip                                  | Same As Deep Q-Learning                                                     |
 | [VanillaPolicyGradient](Models/VanillaPolicyGradient.md)                                                                         | VPG                                       | Same As Deep Q-Learning                                                     |
@@ -72,5 +69,3 @@
 [ReinforcementLearningBaseModel](Models/ReinforcementLearningBaseModel.md)
 
 [ReinforcementLearningActorCriticBaseModel](Models/ReinforcementLearningActorCriticBaseModel.md)
-
-[ReinforcementLearningDeepDuelingQLearningBaseModel](Models/ReinforcementLearningDeepDuelingQLearningBaseModel.md)

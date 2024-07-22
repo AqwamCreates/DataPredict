@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,10 +19,13 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
-
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 BaseModel = {}
 
@@ -298,7 +303,7 @@ function BaseModel:setModelParametersInitializationMode(initializationMode, mini
 	
 end
 
-function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, numberOfRowsToIgnore, numberOfColumnsToIgnore) -- Some of the row/column might not be considered as an input variables/neurons. Hence, it should be ignored by subtracting from original rows and columns with the number of non-input variable/neurons.
+function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, numberOfRowsToIgnore, numberOfColumnsToIgnore) -- Some of the row/column might not be considered as an input variables/neurons. Hence, it should be ignored by subtracting from original rows and columns with the number of non-input variables/neurons.
 	
 	numberOfRowsToIgnore = numberOfRowsToIgnore or 0
 	
@@ -319,12 +324,8 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, nu
 		return AqwamMatrixLibrary:createRandomMatrix(numberOfRows, numberOfColumns, self.minimumModelParametersInitializationValue, self.maximumModelParametersInitializationValue)
 		
 	elseif (initializationMode == "RandomNormal") then
-		
-		local randomNormal1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-		
-		local randomNormal2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 
-		return AqwamMatrixLibrary:subtract(randomNormal1, randomNormal2)
+		return AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "RandomUniformPositive") then
 
@@ -346,7 +347,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, nu
 		
 	elseif (initializationMode == "HeNormal") then
 		
-		local variancePart1 = 2 / adjustedNumberOfColumns
+		local variancePart1 = 2 / adjustedNumberOfRows
 		
 		local variancePart = math.sqrt(variancePart1)
 		
@@ -356,7 +357,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, nu
 		
 	elseif (initializationMode == "HeUniform") then
 
-		local variancePart1 = 6 / adjustedNumberOfColumns
+		local variancePart1 = 6 / adjustedNumberOfRows
 
 		local variancePart = math.sqrt(variancePart1)
 
@@ -386,7 +387,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, nu
 		
 	elseif (initializationMode == "LeCunNormal") then
 
-		local variancePart1 = 1 / adjustedNumberOfColumns
+		local variancePart1 = 1 / adjustedNumberOfRows
 
 		local variancePart = math.sqrt(variancePart1)
 
@@ -396,7 +397,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, nu
 		
 	elseif (initializationMode == "LeCunUniform") then
 
-		local variancePart1 = 3 / adjustedNumberOfColumns
+		local variancePart1 = 3 / adjustedNumberOfRows
 
 		local variancePart = math.sqrt(variancePart1)
 

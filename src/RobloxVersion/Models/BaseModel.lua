@@ -1,3 +1,30 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 BaseModel = {}
@@ -297,12 +324,8 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, nu
 		return AqwamMatrixLibrary:createRandomMatrix(numberOfRows, numberOfColumns, self.minimumModelParametersInitializationValue, self.maximumModelParametersInitializationValue)
 		
 	elseif (initializationMode == "RandomNormal") then
-		
-		local randomNormal1 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-		
-		local randomNormal2 = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 
-		return AqwamMatrixLibrary:subtract(randomNormal1, randomNormal2)
+		return AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
 		
 	elseif (initializationMode == "RandomUniformPositive") then
 
@@ -324,7 +347,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, nu
 		
 	elseif (initializationMode == "HeNormal") then
 		
-		local variancePart1 = 2 / adjustedNumberOfColumns
+		local variancePart1 = 2 / adjustedNumberOfRows
 		
 		local variancePart = math.sqrt(variancePart1)
 		
@@ -334,7 +357,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, nu
 		
 	elseif (initializationMode == "HeUniform") then
 
-		local variancePart1 = 6 / adjustedNumberOfColumns
+		local variancePart1 = 6 / adjustedNumberOfRows
 
 		local variancePart = math.sqrt(variancePart1)
 
@@ -364,7 +387,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, nu
 		
 	elseif (initializationMode == "LeCunNormal") then
 
-		local variancePart1 = 1 / adjustedNumberOfColumns
+		local variancePart1 = 1 / adjustedNumberOfRows
 
 		local variancePart = math.sqrt(variancePart1)
 
@@ -374,7 +397,7 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, nu
 		
 	elseif (initializationMode == "LeCunUniform") then
 
-		local variancePart1 = 3 / adjustedNumberOfColumns
+		local variancePart1 = 3 / adjustedNumberOfRows
 
 		local variancePart = math.sqrt(variancePart1)
 

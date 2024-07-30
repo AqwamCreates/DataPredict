@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 BaseOptimizer = {}
 
 BaseOptimizer.__index = BaseOptimizer
@@ -53,6 +81,8 @@ function BaseOptimizer.new(optimizerName)
 	
 	NewBaseOptimizer.calculateFunction = nil
 	
+	NewBaseOptimizer.LearningRateScheduler = nil
+	
 	NewBaseOptimizer.optimizerInternalParameters = nil
 	
 	return NewBaseOptimizer
@@ -61,13 +91,27 @@ end
 
 function BaseOptimizer:calculate(learningRate, costFunctionDerivatives)
 	
-	if (self.calculateFunction) then return self.calculateFunction(learningRate, costFunctionDerivatives) end
+	local calculateFunction = self.calculateFunction
+	
+	local LearningRateScheduler = self.LearningRateScheduler
+	
+	if (not calculateFunction) then error("No calculate function for the optimizer!") end
+	
+	if LearningRateScheduler then learningRate = LearningRateScheduler:calculate(learningRate) end
+	
+	return self.calculateFunction(learningRate, costFunctionDerivatives)
 	
 end
 
 function BaseOptimizer:setCalculateFunction(calculateFunction)
 	
 	self.calculateFunction = calculateFunction
+	
+end
+
+function BaseOptimizer:setLearningRateScheduler(ValueScheduler)
+	
+	self.LearningRateScheduler = ValueScheduler
 	
 end
 

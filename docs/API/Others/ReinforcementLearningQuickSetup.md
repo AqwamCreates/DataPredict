@@ -9,7 +9,7 @@ ReinforcementLearningQuickSetup is a base class for setuping up reinforcement le
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, actionSelectionFunction: string): ReinforcementLearningQuickSetupObject
+ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, actionSelectionFunction: string): ReinforcementLearningQuickSetupObject
 ```
 
 #### Parameters:
@@ -17,8 +17,6 @@ ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode: integer, e
 * numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1. Exploration means choosing a random action to try to get better overall average performance, while exploiting means choosing an action that has the potential to increase the performance.
-
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays to lower value. The value must be set between 0 and 1.
 
 * actionSelectionFunction: The function on how to choose an action. Available options are:
 
@@ -37,7 +35,7 @@ ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode: integer, e
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ReinforcementLearningQuickSetup:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, epsilonDecayFactor: number, actionSelectionFunction: string
+ReinforcementLearningQuickSetup:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, actionSelectionFunction: string
 ```
 
 #### Parameters:
@@ -45,8 +43,6 @@ ReinforcementLearningQuickSetup:setParameters(numberOfReinforcementsPerEpisode: 
 * numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1.  Exploration means choosing a random action to try to get better overall average performance, while exploiting means choosing an action that has the potential to increase the performance.
-
-* epsilonDecayFactor: The higher the value, the slower the epsilon decays to lower value. The value must be set between 0 and 1.
 
 * actionSelectionFunction: The function on how to choose an action. Available options are:
 
@@ -93,6 +89,26 @@ ReinforcementLearningQuickSetup:getExperienceReplay(): ExperienceReplayObject
 #### Returns:
 
 * ExperienceReplay: The experience replay object.
+
+### setEpsilonScheduler()
+
+```
+ReinforcementLearningQuickSetup:setEpsilonScheduler(ValueScheduler: ValueSchedulerObject)
+```
+
+#### Parameters:
+
+* ValueScheduler: The value scheduler object to be used by the epsilon.
+
+### getEpsilonScheduler()
+
+```
+ReinforcementLearningQuickSetup:getEpsilonScheduler(): ValueSchedulerObject
+```
+
+#### Returns:
+
+* ValueScheduler: The value scheduler object that was used by the epsilon.
 
 ### setClassesList()
 

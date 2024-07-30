@@ -4,9 +4,9 @@
 
 	Aqwam's Machine And Deep Learning Library (DataPredict)
 
-	Version 1.32.0
-
 	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
 	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
@@ -19,8 +19,14 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
+
+local AqwamRobloxMachineLearningLibrary = {}
 
 local requiredMatrixLibraryVersion = 1.9
 
@@ -30,13 +36,15 @@ local Models = script.Models
 
 local AqwamCustomModels = script.AqwamCustomModels
 
-local Others = script.Others
-
 local Optimizers = script.Optimizers
 
 local ExperienceReplays = script.ExperienceReplays
 
-local ModelsDictionary = {
+local ValueSchedulers = script.ValueSchedulers
+
+local Others = script.Others
+
+AqwamRobloxMachineLearningLibrary.Models = {
 	
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -78,8 +86,6 @@ local ModelsDictionary = {
 
 	DeepDoubleExpectedStateActionRewardStateActionV2 = require(Models.DeepDoubleExpectedStateActionRewardStateActionV2),
 	
-	DeepDuelingQLearning = require(Models.DeepDuelingQLearning),
-	
 	REINFORCE = require(Models.REINFORCE),
 	
 	ProximalPolicyOptimization = require(Models.ProximalPolicyOptimization),
@@ -112,7 +118,7 @@ local ModelsDictionary = {
 	
 }
 
-local AqwamCustomModelsDictionary = {
+AqwamRobloxMachineLearningLibrary.AqwamCustomModels = {
 	
 	AdvantageLearningNeuralNetwork = require(AqwamCustomModels.AdvantageLearningNeuralNetwork),
 	
@@ -124,7 +130,7 @@ local AqwamCustomModelsDictionary = {
 	
 }
 
-local OptimizersDictionary = {
+AqwamRobloxMachineLearningLibrary.Optimizers = {
 	
 	RootMeanSquarePropagation = require(Optimizers.RootMeanSquarePropagation),
 	
@@ -148,7 +154,7 @@ local OptimizersDictionary = {
 	
 }
 
-local ExperienceReplaysDictionary = {
+AqwamRobloxMachineLearningLibrary.ExperienceReplays = {
 	
 	UniformExperienceReplay = require(ExperienceReplays.UniformExperienceReplay),
 	
@@ -158,7 +164,15 @@ local ExperienceReplaysDictionary = {
 	
 }
 
-local OthersDictionary = {
+AqwamRobloxMachineLearningLibrary.ValueSchedulers = {
+	
+	TimeDecay = require(ValueSchedulers.TimeDecay),
+	
+	StepDecay = require(ValueSchedulers.StepDecay)
+	
+}
+
+AqwamRobloxMachineLearningLibrary.Others = {
 	
 	ModelChecker = require(Others.ModelChecker),
 	
@@ -189,18 +203,6 @@ local OthersDictionary = {
 	ReinforcementLearningQuickSetup = require(Others.ReinforcementLearningQuickSetup)
 	
 }
-
-local AqwamRobloxMachineLearningLibrary = {}
-
-AqwamRobloxMachineLearningLibrary.Models =  ModelsDictionary
-
-AqwamRobloxMachineLearningLibrary.AqwamCustomModels = AqwamCustomModelsDictionary
-
-AqwamRobloxMachineLearningLibrary.Optimizers = OptimizersDictionary
-
-AqwamRobloxMachineLearningLibrary.ExperienceReplays = ExperienceReplaysDictionary
-
-AqwamRobloxMachineLearningLibrary.Others = OthersDictionary
 
 local function checkVersion()
 	

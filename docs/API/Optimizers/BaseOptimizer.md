@@ -57,7 +57,7 @@ BaseOptimizer:getOptimizerName()
 Sets a calculate function for the base optimizer.
 
 ```
-BaseOptimizer:setCalculateFunction(calculateFunction)
+BaseOptimizer:setCalculateFunction(calculateFunction: Function)
 ```
 
 #### Parameters:

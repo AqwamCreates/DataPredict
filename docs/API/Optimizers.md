@@ -10,10 +10,6 @@
 
 [Gravity](Optimizers/Gravity.md)
 
-[LearningRateStepDecay](Optimizers/LearningRateStepDecay.md)
-
-[LearningRateTimeDecay](Optimizers/LearningRateTimeDecay.md)
-
 [Momentum](Optimizers/Momentum.md)
 
 [NesterovAcceleratedAdaptiveMomentEstimation](Optimizers/NesterovAcceleratedAdaptiveMomentEstimation.md) - a.k.a NAdam

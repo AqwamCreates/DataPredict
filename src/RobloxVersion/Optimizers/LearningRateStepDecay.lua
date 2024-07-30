@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
@@ -42,15 +70,11 @@ function LearningRateStepDecayOptimizer.new(decayRate, timeStepToDecay)
 		
 		currentLearningRate = currentLearningRate or learningRate
 		
-		currentTimeStep = currentTimeStep or 0
-
-		currentTimeStep += 1
+		currentTimeStep = currentTimeStep or 1
 		
-		if ((currentTimeStep % NewLearningRateStepDecayOptimizer.timeStepToDecay) == 0) then
-			
-			currentLearningRate *= NewLearningRateStepDecayOptimizer.decayRate
-			
-		end
+		if ((currentTimeStep % NewLearningRateStepDecayOptimizer.timeStepToDecay) == 0) then currentLearningRate *= NewLearningRateStepDecayOptimizer.decayRate end
+		
+		currentTimeStep = currentTimeStep + 1
 		
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(currentLearningRate, costFunctionDerivatives)
 		

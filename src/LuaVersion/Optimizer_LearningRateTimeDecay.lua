@@ -32,17 +32,13 @@ setmetatable(LearningRateTimeDecayOptimizer, BaseOptimizer)
 
 local defaultDecayRate = 0.5
 
-local defaultTimeStepToDecay = 100
-
-function LearningRateTimeDecayOptimizer.new(decayRate, timeStepToDecay)
+function LearningRateTimeDecayOptimizer.new(decayRate)
 	
-	local NewLearningRateTimeDecayOptimizer = BaseOptimizer.new("LearningRateDecay")
+	local NewLearningRateTimeDecayOptimizer = BaseOptimizer.new("LearningRateTimeDecay")
 	
 	setmetatable(NewLearningRateTimeDecayOptimizer, LearningRateTimeDecayOptimizer)
 	
 	NewLearningRateTimeDecayOptimizer.decayRate = decayRate or defaultDecayRate
-	
-	NewLearningRateTimeDecayOptimizer.timeStepToDecay = timeStepToDecay or defaultTimeStepToDecay
 	
 	--------------------------------------------------------------------------------
 	

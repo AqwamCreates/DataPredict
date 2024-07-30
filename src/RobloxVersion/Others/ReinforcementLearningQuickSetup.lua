@@ -112,7 +112,7 @@ function ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode, e
 	
 	NewReinforcementLearningQuickSetup.ExperienceReplay = nil
 	
-	NewReinforcementLearningQuickSetup.EpsilonModifier = nil
+	NewReinforcementLearningQuickSetup.EpsilonScheduler = nil
 	
 	NewReinforcementLearningQuickSetup.previousFeatureVector = nil
 	
@@ -250,7 +250,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	
 	local ExperienceReplay = self.ExperienceReplay
 	
-	local EpsilonModifier = self.EpsilonModifier
+	local EpsilonScheduler = self.EpsilonScheduler
 	
 	local currentEpsilon = self.currentEpsilon
 	
@@ -326,9 +326,9 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	
 	if updateFunction then updateFunction(childModelNumber) end
 	
-	if (EpsilonModifier) then
+	if (EpsilonScheduler) then
 		
-		currentEpsilon = EpsilonModifier:calculate(currentEpsilon)
+		currentEpsilon = EpsilonScheduler:calculate(currentEpsilon)
 		
 		self.currentEpsilon = currentEpsilon
 		
@@ -356,9 +356,9 @@ function ReinforcementLearningQuickSetup:setModel(Model)
 
 end
 
-function ReinforcementLearningQuickSetup:setEpsilonModifier(EpsilonModifier)
+function ReinforcementLearningQuickSetup:setEpsilonScheduler(ValueScheduler)
 
-	self.EpsilonModifier = EpsilonModifier
+	self.EpsilonScheduler = ValueScheduler
 
 end
 
@@ -398,9 +398,9 @@ function ReinforcementLearningQuickSetup:getExperienceReplay()
 
 end
 
-function ReinforcementLearningQuickSetup:getEpsilonModifier()
+function ReinforcementLearningQuickSetup:getEpsilonScheduler()
 
-	return self.EpsilonModifier
+	return self.EpsilonScheduler
 
 end
 

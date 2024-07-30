@@ -38,13 +38,17 @@ setmetatable(LearningRateTimeDecayOptimizer, BaseOptimizer)
 
 local defaultDecayRate = 0.5
 
-function LearningRateTimeDecayOptimizer.new(decayRate)
+local defaultTimeStepToDecay = 100
+
+function LearningRateTimeDecayOptimizer.new(decayRate, timeStepToDecay)
 	
-	local NewLearningRateTimeDecayOptimizer = BaseOptimizer.new("LearningRateTimeDecay")
+	local NewLearningRateTimeDecayOptimizer = BaseOptimizer.new("LearningRateDecay")
 	
 	setmetatable(NewLearningRateTimeDecayOptimizer, LearningRateTimeDecayOptimizer)
 	
 	NewLearningRateTimeDecayOptimizer.decayRate = decayRate or defaultDecayRate
+	
+	NewLearningRateTimeDecayOptimizer.timeStepToDecay = timeStepToDecay or defaultTimeStepToDecay
 	
 	--------------------------------------------------------------------------------
 	
@@ -67,10 +71,10 @@ function LearningRateTimeDecayOptimizer.new(decayRate)
 		currentLearningRate = currentLearningRate or learningRate
 
 		currentTimeStep = currentTimeStep or 0
-			
-		currentLearningRate = currentLearningRate / (1 + (NewLearningRateTimeDecayOptimizer.decayRate * currentTimeStep))
-		
+
 		currentTimeStep = currentTimeStep + 1
+			
+		currentLearningRate = currentLearningRate * NewLearningRateTimeDecayOptimizer.decayRate
 		
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(currentLearningRate, costFunctionDerivatives)
 		
@@ -87,6 +91,12 @@ end
 function LearningRateTimeDecayOptimizer:setDecayRate(decayRate)
 	
 	self.decayRate = decayRate
+	
+end
+
+function LearningRateTimeDecayOptimizer:setTimeStepToDecay(timeStepToDecay)
+	
+	self.timeStepToDecay = timeStepToDecay
 	
 end
 

@@ -70,11 +70,11 @@ function TimeDecayValueScheduler.new(decayRate, timeStepToDecay)
 		
 		currentValue = currentValue or value
 
-		currentTimeStep = currentTimeStep or 1
-			
-		currentValue = currentValue / (1 + (NewTimeDecayValueScheduler.decayRate * currentTimeStep))
+		currentTimeStep = currentTimeStep or 0
 		
 		currentTimeStep = currentTimeStep + 1
+			
+		currentValue = currentValue * NewTimeDecayValueScheduler.decayRate
 		
 		NewTimeDecayValueScheduler.valueSchedulerInternalParameters = {currentValue, currentTimeStep}
 

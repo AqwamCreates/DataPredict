@@ -84,10 +84,4 @@ function LearningRateTimeDecayOptimizer:setDecayRate(decayRate)
 	
 end
 
-function LearningRateTimeDecayOptimizer:setTimeStepToDecay(timeStepToDecay)
-	
-	self.timeStepToDecay = timeStepToDecay
-	
-end
-
 return LearningRateTimeDecayOptimizer

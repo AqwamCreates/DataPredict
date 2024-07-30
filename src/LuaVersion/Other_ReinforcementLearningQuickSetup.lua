@@ -30,8 +30,6 @@ local defaultNumberOfReinforcementsPerEpisode = 500
 
 local defaultEpsilon = 0
 
-local defaultEpsilonDecayFactor = 0
-
 local defaultActionSelectionFunction = "Maximum"
 
 local function sampleAction(actionProbabilityVector)
@@ -90,7 +88,7 @@ local function calculateProbability(outputMatrix)
 
 end
 
-function ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, actionSelectionFunction)
+function ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode, epsilon, actionSelectionFunction)
 	
 	local NewReinforcementLearningQuickSetup = {}
 	
@@ -99,8 +97,6 @@ function ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode, e
 	NewReinforcementLearningQuickSetup.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
 
 	NewReinforcementLearningQuickSetup.epsilon = epsilon or defaultEpsilon
-
-	NewReinforcementLearningQuickSetup.epsilonDecayFactor = epsilonDecayFactor or defaultEpsilon
 	
 	NewReinforcementLearningQuickSetup.currentEpsilon = epsilon or defaultEpsilon
 	
@@ -109,6 +105,8 @@ function ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode, e
 	NewReinforcementLearningQuickSetup.Model = nil
 	
 	NewReinforcementLearningQuickSetup.ExperienceReplay = nil
+	
+	NewReinforcementLearningQuickSetup.EpsilonModifier = nil
 	
 	NewReinforcementLearningQuickSetup.previousFeatureVector = nil
 	
@@ -126,36 +124,16 @@ function ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode, e
 	
 end
 
-function ReinforcementLearningQuickSetup:setParameters(numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, actionSelectionFunction)
+function ReinforcementLearningQuickSetup:setParameters(numberOfReinforcementsPerEpisode, epsilon, actionSelectionFunction)
 	
 	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
 
 	self.epsilon = epsilon or self.epsilon 
-
-	self.epsilonDecayFactor = epsilonDecayFactor or self.epsilonDecayFactor
 	
 	self.currentEpsilon = epsilon or self.currentEpsilon
 	
 	self.actionSelectionFunction = actionSelectionFunction or self.actionSelectionFunction
 	
-end
-
-function ReinforcementLearningQuickSetup:setExperienceReplay(ExperienceReplay)
-
-	self.ExperienceReplay = ExperienceReplay
-
-end
-
-function ReinforcementLearningQuickSetup:setModel(Model)
-
-	self.Model = Model or self.Model
-
-end
-
-function ReinforcementLearningQuickSetup:setClassesList(ClassesList)
-
-	self.ClassesList = ClassesList
-
 end
 
 function ReinforcementLearningQuickSetup:extendUpdateFunction(updateFunction)
@@ -266,6 +244,10 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	
 	local ExperienceReplay = self.ExperienceReplay
 	
+	local EpsilonModifier = self.EpsilonModifier
+	
+	local currentEpsilon = self.currentEpsilon
+	
 	local previousFeatureVector = self.previousFeatureVector
 	
 	local Model = self.Model
@@ -282,9 +264,9 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	local temporalDifferenceError
 
-	self.currentNumberOfReinforcements += 1
+	self.currentNumberOfReinforcements = self.currentNumberOfReinforcements + 1
 
-	if (randomProbability < self.currentEpsilon) then
+	if (randomProbability < currentEpsilon) then
 
 		local numberOfClasses = #ClassesList
 
@@ -337,14 +319,46 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	end
 	
 	if updateFunction then updateFunction(childModelNumber) end
+	
+	if (EpsilonModifier) then
+		
+		currentEpsilon = EpsilonModifier:calculate(currentEpsilon)
+		
+		self.currentEpsilon = currentEpsilon
+		
+	end
 
 	self.previousFeatureVector = currentFeatureVector
 
-	if (self.printReinforcementOutput) then print("Episode: " .. self.currentNumberOfEpisodes .. "\t\tEpsilon: " .. self.currentEpsilon .. "\t\tReinforcement Count: " .. self.currentNumberOfReinforcements) end
+	if (self.printReinforcementOutput) then print("Episode: " .. self.currentNumberOfEpisodes .. "\t\tEpsilon: " .. currentEpsilon .. "\t\tReinforcement Count: " .. self.currentNumberOfReinforcements) end
 
 	if (returnOriginalOutput) then return allOutputsMatrix end
 
 	return action, selectedValue
+
+end
+
+function ReinforcementLearningQuickSetup:setExperienceReplay(ExperienceReplay)
+
+	self.ExperienceReplay = ExperienceReplay
+
+end
+
+function ReinforcementLearningQuickSetup:setModel(Model)
+
+	self.Model = Model
+
+end
+
+function ReinforcementLearningQuickSetup:setEpsilonModifier(EpsilonModifier)
+
+	self.EpsilonModifier = EpsilonModifier
+
+end
+
+function ReinforcementLearningQuickSetup:setClassesList(ClassesList)
+
+	self.ClassesList = ClassesList
 
 end
 
@@ -372,15 +386,22 @@ function ReinforcementLearningQuickSetup:getModel()
 	
 end
 
+function ReinforcementLearningQuickSetup:getExperienceReplay()
+
+	return self.ExperienceReplay
+
+end
+
+function ReinforcementLearningQuickSetup:getEpsilonModifier()
+
+	return self.EpsilonModifier
+
+end
+
+
 function ReinforcementLearningQuickSetup:getClassesList()
 	
 	return self.ClassesList
-	
-end
-
-function ReinforcementLearningQuickSetup:getExperienceReplay()
-	
-	return self.ExperienceReplay
 	
 end
 

@@ -7,14 +7,12 @@
 Creates a new optimizer object. If there are no parameters given for that particular argument, then that argument will use default value.
 
 ```
-LearningRateTimeDecay.new(decayRate: number, timeStepToDecay: integer): OptimizerObject
+LearningRateTimeDecay.new(decayRate: number): OptimizerObject
 ```
 
 #### Parameters:
 
 * decayRate: The decay rate for learning rate.
-
-* timeStepToDecay: The number of time steps to decay the learning rate.
 
 #### Returns:
 
@@ -31,24 +29,6 @@ LearningRateTimeDecay:setDecayRate(decayRate: number)
 #### Parameters:
 
 * decayRate: The decay rate for learning rate.
-
-### setTimeStepToDecay()
-
-```
-LearningRateTimeDecay:setTimeStepToDecay(timeStepToDecay: integer)
-```
-
-#### Parameters:
-
-* timeStepToDecay: The number of time steps to decay the learning rate.
-
-### reset()
-
-Reset optimizer's stored values (excluding the parameters).
-
-```
-LearningRateTimeDecay:reset()
-```
 
 ## Inherited From
 

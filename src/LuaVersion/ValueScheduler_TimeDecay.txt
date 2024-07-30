@@ -26,9 +26,9 @@
 
 --]]
 
-local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
+local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 TimeDecayValueScheduler = {}
 

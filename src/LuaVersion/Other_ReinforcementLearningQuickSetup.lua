@@ -350,9 +350,9 @@ function ReinforcementLearningQuickSetup:setModel(Model)
 
 end
 
-function ReinforcementLearningQuickSetup:setEpsilonScheduler(ValueScheduler)
+function ReinforcementLearningQuickSetup:setEpsilonScheduler(EpsilonScheduler)
 
-	self.EpsilonScheduler = ValueScheduler
+	self.EpsilonScheduler = EpsilonScheduler
 
 end
 

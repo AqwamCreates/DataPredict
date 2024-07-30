@@ -109,9 +109,9 @@ function BaseOptimizer:setCalculateFunction(calculateFunction)
 	
 end
 
-function BaseOptimizer:setLearningRateScheduler(ValueScheduler)
+function BaseOptimizer:setLearningRateScheduler(LearningRateScheduler)
 	
-	self.LearningRateScheduler = ValueScheduler
+	self.LearningRateScheduler = LearningRateScheduler
 	
 end
 

@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
@@ -10,17 +38,13 @@ setmetatable(LearningRateTimeDecayOptimizer, BaseOptimizer)
 
 local defaultDecayRate = 0.5
 
-local defaultTimeStepToDecay = 100
-
-function LearningRateTimeDecayOptimizer.new(decayRate, timeStepToDecay)
+function LearningRateTimeDecayOptimizer.new(decayRate)
 	
-	local NewLearningRateTimeDecayOptimizer = BaseOptimizer.new("LearningRateDecay")
+	local NewLearningRateTimeDecayOptimizer = BaseOptimizer.new("LearningRateTimeDecay")
 	
 	setmetatable(NewLearningRateTimeDecayOptimizer, LearningRateTimeDecayOptimizer)
 	
 	NewLearningRateTimeDecayOptimizer.decayRate = decayRate or defaultDecayRate
-	
-	NewLearningRateTimeDecayOptimizer.timeStepToDecay = timeStepToDecay or defaultTimeStepToDecay
 	
 	--------------------------------------------------------------------------------
 	
@@ -43,10 +67,10 @@ function LearningRateTimeDecayOptimizer.new(decayRate, timeStepToDecay)
 		currentLearningRate = currentLearningRate or learningRate
 
 		currentTimeStep = currentTimeStep or 0
-
-		currentTimeStep += 1
 			
-		currentLearningRate = currentLearningRate / (NewLearningRateTimeDecayOptimizer.decayRate * currentTimeStep)
+		currentLearningRate = currentLearningRate / (1 + (NewLearningRateTimeDecayOptimizer.decayRate * currentTimeStep))
+		
+		currentTimeStep = currentTimeStep + 1
 		
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(currentLearningRate, costFunctionDerivatives)
 		
@@ -63,12 +87,6 @@ end
 function LearningRateTimeDecayOptimizer:setDecayRate(decayRate)
 	
 	self.decayRate = decayRate
-	
-end
-
-function LearningRateTimeDecayOptimizer:setTimeStepToDecay(timeStepToDecay)
-	
-	self.timeStepToDecay = timeStepToDecay
 	
 end
 

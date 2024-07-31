@@ -197,7 +197,7 @@ ReinforcementLearningQuickSetup:reset()
 Set whether or not to show the current number of episodes and current epsilon.
 
 ```
-ReinforcementLearningQuickSetup:setPrintReinforcementOutput(option: boolean)
+ReinforcementLearningQuickSetup:setPrintOutput(option: boolean)
 ```
 
 #### Parameters:

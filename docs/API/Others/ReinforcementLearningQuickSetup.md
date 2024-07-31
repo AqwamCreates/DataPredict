@@ -192,7 +192,7 @@ Resets the current parameters values.
 ReinforcementLearningQuickSetup:reset()
 ```
 
-### setPrintReinforcementOutput()
+### setPrintOutput()
 
 Set whether or not to show the current number of episodes and current epsilon.
 

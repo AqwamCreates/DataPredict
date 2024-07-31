@@ -238,6 +238,10 @@ function ReinforcementLearningQuickSetup:selectAction(allOutputsMatrix, ClassesL
 		
 		selectedValue = allOutputsMatrix[1][actionIndex]
 		
+	else
+		
+		error("Invalid action selection function!")
+		
 	end
 	
 	return action, selectedValue

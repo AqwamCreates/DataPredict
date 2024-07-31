@@ -38,17 +38,13 @@ setmetatable(TimeDecayValueScheduler, BaseValueScheduler)
 
 local defaultDecayRate = 0.5
 
-local defaultTimeStepToDecay = 100
-
-function TimeDecayValueScheduler.new(decayRate, timeStepToDecay)
+function TimeDecayValueScheduler.new(decayRate)
 	
 	local NewTimeDecayValueScheduler = BaseValueScheduler.new("TimeDecay")
 	
 	setmetatable(NewTimeDecayValueScheduler, TimeDecayValueScheduler)
 	
 	NewTimeDecayValueScheduler.decayRate = decayRate or defaultDecayRate
-	
-	NewTimeDecayValueScheduler.timeStepToDecay = timeStepToDecay or defaultTimeStepToDecay
 	
 	--------------------------------------------------------------------------------
 	
@@ -70,11 +66,11 @@ function TimeDecayValueScheduler.new(decayRate, timeStepToDecay)
 		
 		currentValue = currentValue or value
 
-		currentTimeStep = currentTimeStep or 1
-			
-		currentValue = currentValue / (1 + (NewTimeDecayValueScheduler.decayRate * currentTimeStep))
+		currentTimeStep = currentTimeStep or 0
 		
 		currentTimeStep = currentTimeStep + 1
+			
+		currentValue = currentValue * NewTimeDecayValueScheduler.decayRate
 		
 		NewTimeDecayValueScheduler.valueSchedulerInternalParameters = {currentValue, currentTimeStep}
 

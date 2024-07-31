@@ -64,11 +64,11 @@ function LearningRateStepDecayOptimizer.new(decayRate, timeStepToDecay)
 		
 		currentLearningRate = currentLearningRate or learningRate
 		
-		currentTimeStep = currentTimeStep or 1
-		
-		if ((currentTimeStep % NewLearningRateStepDecayOptimizer.timeStepToDecay) == 0) then currentLearningRate *= NewLearningRateStepDecayOptimizer.decayRate end
-		
+		currentTimeStep = currentTimeStep or 0
+
 		currentTimeStep = currentTimeStep + 1
+		
+		if ((currentTimeStep % NewLearningRateStepDecayOptimizer.timeStepToDecay) == 0) then currentLearningRate = currentLearningRate * NewLearningRateStepDecayOptimizer.decayRate end
 		
 		costFunctionDerivatives = AqwamMatrixLibrary:multiply(currentLearningRate, costFunctionDerivatives)
 		

@@ -100,6 +100,8 @@ function ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode, e
 	
 	setmetatable(NewReinforcementLearningQuickSetup, ReinforcementLearningQuickSetup)
 	
+	NewReinforcementLearningQuickSetup.isOutputPrinted = true
+	
 	NewReinforcementLearningQuickSetup.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
 
 	NewReinforcementLearningQuickSetup.epsilon = epsilon or defaultEpsilon
@@ -162,9 +164,9 @@ local function getBooleanOrDefaultOption(boolean, defaultBoolean)
 
 end
 
-function ReinforcementLearningQuickSetup:setPrintReinforcementOutput(option)
+function ReinforcementLearningQuickSetup:setPrintOutput(option)
 
-	self.printReinforcementOutput = getBooleanOrDefaultOption(option, self.printReinforcementOutput)
+	self.isOutputPrinted = getBooleanOrDefaultOption(option, self.isOutputPrinted)
 
 end
 
@@ -336,7 +338,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	self.previousFeatureVector = currentFeatureVector
 
-	if (self.printReinforcementOutput) then print("Episode: " .. self.currentNumberOfEpisodes .. "\t\tEpsilon: " .. currentEpsilon .. "\t\tReinforcement Count: " .. self.currentNumberOfReinforcements) end
+	if (self.isOutputPrinted) then print("Episode: " .. self.currentNumberOfEpisodes .. "\t\tEpsilon: " .. currentEpsilon .. "\t\tReinforcement Count: " .. self.currentNumberOfReinforcements) end
 
 	if (returnOriginalOutput) then return allOutputsMatrix end
 

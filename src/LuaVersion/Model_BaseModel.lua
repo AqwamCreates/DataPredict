@@ -25,7 +25,7 @@
 	--------------------------------------------------------------------
 
 --]]
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 BaseModel = {}
 
@@ -404,7 +404,15 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, nu
 		local randomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
 
 		return AqwamMatrixLibrary:multiply(variancePart, randomUniform) 
+		
+	elseif (initializationMode == "None") then
 
+		return nil
+
+	else
+
+		error("Invalid model parameters initialization mode!")
+		
 	end
 	
 end

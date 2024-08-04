@@ -94,21 +94,21 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local sumGradient = AqwamMatrixLibrary:verticalSum(gradientHistory)
 		
-		local actorLossVector = AqwamMatrixLibrary:multiply(-1, sumGradient)
+		local sumActorLossVector = AqwamMatrixLibrary:multiply(-1, sumGradient)
 		
-		local criticLoss = 0
+		local sumCriticLoss = 0
 		
 		for i, value in ipairs(valueHistory) do
 			
-			local valueDifference = value - rewardToGoArray[i]
+			local criticLoss = value - rewardToGoArray[i]
 			
-			criticLoss = criticLoss + math.pow(valueDifference, 2)
+			sumCriticLoss = sumCriticLoss + criticLoss
 			
 		end
 		
-		criticLoss = criticLoss / episodeLength
+		sumCriticLoss = sumCriticLoss / episodeLength
 		
-		criticLoss = {{criticLoss}}
+		sumCriticLoss = {{sumCriticLoss}}
 		
 		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
 
@@ -125,13 +125,13 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)
 
-		ActorModel:backPropagate(actorLossVector, true)
-		CriticModel:backPropagate(criticLoss, true)
+		ActorModel:backPropagate(sumActorLossVector, true)
+		CriticModel:backPropagate(sumCriticLoss, true)
 		
 		table.clear(rewardHistory)
 		
 		table.clear(valueHistory)
-
+		
 		table.clear(gradientHistory)
 
 	end)
@@ -139,9 +139,9 @@ function VanillaPolicyGradientModel.new(discountFactor)
 	NewVanillaPolicyGradientModel:extendResetFunction(function()
 
 		table.clear(rewardHistory)
-
+		
 		table.clear(valueHistory)
-
+		
 		table.clear(gradientHistory)
 
 	end)

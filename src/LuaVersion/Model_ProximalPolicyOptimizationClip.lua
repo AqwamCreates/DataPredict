@@ -176,7 +176,7 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 			local actorLossVector = AqwamMatrixLibrary:applyFunction(math.min, surrogateLoss1, surrogateLoss2)
 
-			local criticLoss = math.pow(rewardsToGoArray[h] - criticValueHistory[h], 2)
+			local criticLoss = rewardsToGoArray[h] - criticValueHistory[h]
 
 			sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
 

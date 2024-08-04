@@ -156,7 +156,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 			local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, oldAdvantageValueHistory[h])
 
-			local criticLoss = math.pow(rewardsToGoArray[h] - criticValueHistory[h], 2)
+			local criticLoss = rewardsToGoArray[h] - criticValueHistory[h]
 
 			sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
 
@@ -203,9 +203,9 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		table.clear(oldAdvantageValueHistory)
 		
 		table.clear(criticValueHistory)
-
+		
 		table.clear(rewardHistory)
-
+		
 		table.clear(actionProbabilityVectorHistory)
 		
 		table.clear(oldActionProbabilityVectorHistory)

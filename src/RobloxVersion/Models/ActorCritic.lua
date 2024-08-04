@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
@@ -90,13 +118,13 @@ function ActorCriticModel.new(discountFactor)
 
 			local criticValue = criticValueHistory[h]
 
-			local returns = returnsHistory[h]
+			local returnValue = returnsHistory[h]
 
 			local actionProbability = actionProbabilityHistory[h]
 
-			local actorLoss = math.log(actionProbability) * (returns - criticValue) 
+			local actorLoss = math.log(actionProbability) * (returnValue - criticValue) 
 
-			local criticLoss = (returns - criticValue)^2
+			local criticLoss = returnValue - criticValue
 
 			sumActorLosses += actorLoss
 
@@ -108,15 +136,12 @@ function ActorCriticModel.new(discountFactor)
 
 		local CriticModel = NewActorCriticModel.CriticModel
 		
-		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
-
-		local numberOfLayers = ActorModel:getNumberOfLayers()
-
-		local numberOfNeuronsAtFinalLayer = ActorModel:getTotalNumberOfNeurons(numberOfLayers)
+		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
+		
+		numberOfFeatures += (hasBias and 1) or 0
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-
-		local actorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumActorLosses)
+		local actorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewActorCriticModel.ClassesList, -sumActorLosses)
 
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)

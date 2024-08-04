@@ -112,17 +112,17 @@ function ActorCriticModel.new(discountFactor)
 
 			local criticValue = criticValueHistory[h]
 
-			local returns = returnsHistory[h]
+			local returnValue = returnsHistory[h]
 
 			local actionProbability = actionProbabilityHistory[h]
 
-			local actorLoss = math.log(actionProbability) * (returns - criticValue) 
+			local actorLoss = math.log(actionProbability) * (returnValue - criticValue) 
 
-			local criticLoss = (returns - criticValue)^2
+			local criticLoss = returnValue - criticValue
 
-			sumActorLosses += actorLoss
+			sumActorLosses = sumActorLosses + actorLoss
 
-			sumCriticLosses += criticLoss
+			sumCriticLosses = sumCriticLosses + criticLoss
 
 		end
 		
@@ -130,15 +130,12 @@ function ActorCriticModel.new(discountFactor)
 
 		local CriticModel = NewActorCriticModel.CriticModel
 		
-		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
-
-		local numberOfLayers = ActorModel:getNumberOfLayers()
-
-		local numberOfNeuronsAtFinalLayer = ActorModel:getTotalNumberOfNeurons(numberOfLayers)
+		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
+		
+		numberOfFeatures += (hasBias and 1) or 0
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-
-		local actorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumActorLosses)
+		local actorLossVector = AqwamMatrixLibrary:createMatrix(1, #NewActorCriticModel.ClassesList, -sumActorLosses)
 
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)

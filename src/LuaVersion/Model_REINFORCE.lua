@@ -101,6 +101,7 @@ function REINFORCEModel.new(discountFactor)
 		Model:backPropagate(lossVector, true)
 		
 		table.clear(targetVectorArray)
+		
 		table.clear(rewardArray)
 		
 	end)
@@ -108,6 +109,7 @@ function REINFORCEModel.new(discountFactor)
 	NewREINFORCEModel:extendResetFunction(function()
 
 		table.clear(targetVectorArray)
+		
 		table.clear(rewardArray)
 		
 	end)

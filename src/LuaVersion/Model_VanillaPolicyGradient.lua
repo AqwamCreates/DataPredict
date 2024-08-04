@@ -108,8 +108,6 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		
 		sumCriticLoss = sumCriticLoss / episodeLength
 		
-		sumCriticLoss = {{sumCriticLoss}}
-		
 		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
 
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel

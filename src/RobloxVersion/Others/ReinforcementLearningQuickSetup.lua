@@ -252,6 +252,10 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	if (self.Model == nil) then error("No model!") end
 	
+	local currentNumberOfReinforcements = self.currentNumberOfReinforcements + 1
+	
+	local currentNumberOfEpisodes = self.currentNumberOfEpisodes
+	
 	local randomProbability = Random.new():NextNumber()
 	
 	local ExperienceReplay = self.ExperienceReplay
@@ -275,8 +279,6 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	local allOutputsMatrix
 
 	local temporalDifferenceError
-
-	self.currentNumberOfReinforcements = self.currentNumberOfReinforcements + 1
 
 	if (randomProbability < currentEpsilon) then
 
@@ -304,13 +306,13 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	end
 
-	if (self.currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
+	if (currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
 		
 		local episodeUpdateFunction = self.episodeUpdateFunction
 		
-		self.currentNumberOfReinforcements = 0
+		currentNumberOfReinforcements = 0
 		
-		self.currentNumberOfEpisodes = self.currentNumberOfEpisodes + 1
+		currentNumberOfEpisodes = currentNumberOfEpisodes + 1
 
 		Model:episodeUpdate(childModelNumber)
 		
@@ -341,10 +343,14 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 		self.currentEpsilon = currentEpsilon
 		
 	end
-
+	
+	self.currentNumberOfReinforcements = currentNumberOfReinforcements
+	
+	self.currentNumberOfEpisodes = currentNumberOfEpisodes
+	
 	self.previousFeatureVector = currentFeatureVector
 
-	if (self.isOutputPrinted) then print("Episode: " .. self.currentNumberOfEpisodes .. "\t\tEpsilon: " .. currentEpsilon .. "\t\tReinforcement Count: " .. self.currentNumberOfReinforcements) end
+	if (self.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tEpsilon: " .. currentEpsilon .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 
 	if (returnOriginalOutput) then return allOutputsMatrix end
 

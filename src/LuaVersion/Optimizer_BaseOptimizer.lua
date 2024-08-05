@@ -81,7 +81,7 @@ function BaseOptimizer.new(optimizerName)
 	
 	NewBaseOptimizer.calculateFunction = nil
 	
-	NewBaseOptimizer.LearningRateScheduler = nil
+	NewBaseOptimizer.LearningRateValueScheduler = nil
 	
 	NewBaseOptimizer.optimizerInternalParameters = nil
 	
@@ -93,11 +93,11 @@ function BaseOptimizer:calculate(learningRate, costFunctionDerivatives)
 	
 	local calculateFunction = self.calculateFunction
 	
-	local LearningRateScheduler = self.LearningRateScheduler
+	local LearningRateValueScheduler = self.LearningRateValueScheduler
 	
 	if (not calculateFunction) then error("No calculate function for the optimizer!") end
 	
-	if LearningRateScheduler then learningRate = LearningRateScheduler:calculate(learningRate) end
+	if LearningRateValueScheduler then learningRate = LearningRateValueScheduler:calculate(learningRate) end
 	
 	return self.calculateFunction(learningRate, costFunctionDerivatives)
 	
@@ -109,9 +109,9 @@ function BaseOptimizer:setCalculateFunction(calculateFunction)
 	
 end
 
-function BaseOptimizer:setLearningRateScheduler(LearningRateScheduler)
+function BaseOptimizer:setLearningRateValueScheduler(LearningRateValueScheduler)
 	
-	self.LearningRateScheduler = LearningRateScheduler
+	self.LearningRateValueScheduler = LearningRateValueScheduler
 	
 end
 
@@ -132,6 +132,12 @@ function BaseOptimizer:getOptimizerInternalParameters(doNotDeepCopy)
 		return deepCopyTable(self.optimizerInternalParameters)
 		
 	end
+	
+end
+
+function BaseOptimizer:getLearningRateValueScheduler()
+	
+	return self.LearningRateValueScheduler
 	
 end
 

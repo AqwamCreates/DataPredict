@@ -90,25 +90,25 @@ ReinforcementLearningQuickSetup:getExperienceReplay(): ExperienceReplayObject
 
 * ExperienceReplay: The experience replay object.
 
-### setEpsilonScheduler()
+### setEpsilonValueScheduler()
 
 ```
-ReinforcementLearningQuickSetup:setEpsilonScheduler(EpsilonScheduler: ValueSchedulerObject)
+ReinforcementLearningQuickSetup:setEpsilonValueScheduler(EpsilonValueScheduler: ValueSchedulerObject)
 ```
 
 #### Parameters:
 
-* EpsilonScheduler: The value scheduler object to be used by the epsilon.
+* EpsilonValueScheduler: The value scheduler object to be used by the epsilon.
 
-### getEpsilonScheduler()
+### getEpsilonValueScheduler()
 
 ```
-ReinforcementLearningQuickSetup:getEpsilonScheduler(): ValueSchedulerObject
+ReinforcementLearningQuickSetup:getEpsilonVaueScheduler(): ValueSchedulerObject
 ```
 
 #### Returns:
 
-* EpsilonScheduler: The value scheduler object that was used by the epsilon.
+* EpsilonValueScheduler: The value scheduler object that was used by the epsilon.
 
 ### setClassesList()
 

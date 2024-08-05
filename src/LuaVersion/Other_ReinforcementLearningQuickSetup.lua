@@ -108,7 +108,7 @@ function ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode, e
 	
 	NewReinforcementLearningQuickSetup.ExperienceReplay = nil
 	
-	NewReinforcementLearningQuickSetup.EpsilonScheduler = nil
+	NewReinforcementLearningQuickSetup.EpsilonValueScheduler = nil
 	
 	NewReinforcementLearningQuickSetup.previousFeatureVector = nil
 	
@@ -250,7 +250,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	
 	local ExperienceReplay = self.ExperienceReplay
 	
-	local EpsilonScheduler = self.EpsilonScheduler
+	local EpsilonValueScheduler = self.EpsilonValueScheduler
 	
 	local currentEpsilon = self.currentEpsilon
 	
@@ -326,9 +326,9 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	
 	if updateFunction then updateFunction(childModelNumber) end
 	
-	if (EpsilonScheduler) then
+	if (EpsilonValueScheduler) then
 		
-		currentEpsilon = EpsilonScheduler:calculate(currentEpsilon)
+		currentEpsilon = EpsilonValueScheduler:calculate(currentEpsilon)
 		
 		self.currentEpsilon = currentEpsilon
 		
@@ -356,9 +356,9 @@ function ReinforcementLearningQuickSetup:setModel(Model)
 
 end
 
-function ReinforcementLearningQuickSetup:setEpsilonScheduler(EpsilonScheduler)
+function ReinforcementLearningQuickSetup:setEpsilonValueScheduler(EpsilonValueScheduler)
 
-	self.EpsilonScheduler = EpsilonScheduler
+	self.EpsilonValueScheduler = EpsilonValueScheduler
 
 end
 
@@ -398,9 +398,9 @@ function ReinforcementLearningQuickSetup:getExperienceReplay()
 
 end
 
-function ReinforcementLearningQuickSetup:getEpsilonScheduler()
+function ReinforcementLearningQuickSetup:getEpsilonValueScheduler()
 
-	return self.EpsilonScheduler
+	return self.EpsilonValueScheduler
 
 end
 
@@ -421,7 +421,9 @@ function ReinforcementLearningQuickSetup:reset()
 
 	self.currentEpsilon = self.epsilon
 	
-	if (self.ExperienceReplay) then self.ExperienceReplay:reset() end
+	local ExperienceReplay = self.ExperienceReplay
+	
+	if (ExperienceReplay) then ExperienceReplay:reset() end
 	
 end
 

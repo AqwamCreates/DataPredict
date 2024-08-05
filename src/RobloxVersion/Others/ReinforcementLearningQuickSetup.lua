@@ -309,6 +309,8 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 		local episodeUpdateFunction = self.episodeUpdateFunction
 		
 		self.currentNumberOfReinforcements = 0
+		
+		self.currentNumberOfEpisodes = self.currentNumberOfEpisodes + 1
 
 		Model:episodeUpdate(childModelNumber)
 		

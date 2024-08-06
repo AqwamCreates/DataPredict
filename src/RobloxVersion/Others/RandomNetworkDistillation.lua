@@ -100,28 +100,6 @@ function RandomNetworkDistillation:getModel(Model)
 	
 end
 
-function RandomNetworkDistillation:generateModelParameters()
-	
-	local Model = self.Model
-	
-	if (not self.TargetModelParameters) then
-		
-		Model:generateLayers()
-		
-		self.TargetModelParameters = Model:getModelParameters(true)
-		
-	end
-	
-	if (not self.PredictorModelParameters) then
-
-		Model:generateLayers()
-
-		self.PredictorModelParameters = Model:getModelParameters(true)
-
-	end
-	
-end
-
 function RandomNetworkDistillation:generate(featureVector)
 	
 	local Model = self.Model
@@ -160,9 +138,9 @@ function RandomNetworkDistillation:generate(featureVector)
 	
 	local squaredErrorVector = AqwamMatrixLibrary:power(errorVector, 2)
 	
-	local sumErrorVector = AqwamMatrixLibrary:horizontalSum(squaredErrorVector)
+	local sumSquaredErrorVector = AqwamMatrixLibrary:horizontalSum(squaredErrorVector)
 	
-	local rewardVector = AqwamMatrixLibrary:power(sumErrorVector, 0.5)
+	local rewardVector = AqwamMatrixLibrary:power(sumSquaredErrorVector, 0.5)
 
 	Model:forwardPropagate(featureVector, true)
 	Model:backPropagate(errorVector, true)

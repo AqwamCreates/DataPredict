@@ -22,36 +22,6 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
---[[
-
-	--------------------------------------------------------------------
-
-	Aqwam's Machine And Deep Learning Library (DataPredict)
-
-	Author: Aqwam Harish Aiman
-	
-	Email: aqwam.harish.aiman@gmail.com
-	
-	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
-	
-	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
-	
-	--------------------------------------------------------------------
-		
-	By using this library, you agree to comply with our Terms and Conditions in the link below:
-	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
-	
-	--------------------------------------------------------------------
-	
-	DO NOT REMOVE THIS TEXT!
-	
-	--------------------------------------------------------------------
-
---]]
-
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
-
 local RandomNetworkDistillation = {}
 
 RandomNetworkDistillation.__index = RandomNetworkDistillation
@@ -124,28 +94,6 @@ function RandomNetworkDistillation:getModel(Model)
 	
 end
 
-function RandomNetworkDistillation:generateModelParameters()
-	
-	local Model = self.Model
-	
-	if (not self.TargetModelParameters) then
-		
-		Model:generateLayers()
-		
-		self.TargetModelParameters = Model:getModelParameters(true)
-		
-	end
-	
-	if (not self.PredictorModelParameters) then
-
-		Model:generateLayers()
-
-		self.PredictorModelParameters = Model:getModelParameters(true)
-
-	end
-	
-end
-
 function RandomNetworkDistillation:generate(featureVector)
 	
 	local Model = self.Model
@@ -184,9 +132,9 @@ function RandomNetworkDistillation:generate(featureVector)
 	
 	local squaredErrorVector = AqwamMatrixLibrary:power(errorVector, 2)
 	
-	local sumErrorVector = AqwamMatrixLibrary:horizontalSum(squaredErrorVector)
+	local sumSquaredErrorVector = AqwamMatrixLibrary:horizontalSum(squaredErrorVector)
 	
-	local rewardVector = AqwamMatrixLibrary:power(sumErrorVector, 0.5)
+	local rewardVector = AqwamMatrixLibrary:power(sumSquaredErrorVector, 0.5)
 
 	Model:forwardPropagate(featureVector, true)
 	Model:backPropagate(errorVector, true)

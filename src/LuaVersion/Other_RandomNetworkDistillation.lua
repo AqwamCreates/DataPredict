@@ -22,6 +22,36 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
 local RandomNetworkDistillation = {}
 
 RandomNetworkDistillation.__index = RandomNetworkDistillation
@@ -134,7 +164,7 @@ function RandomNetworkDistillation:generate(featureVector)
 	
 	local sumSquaredErrorVector = AqwamMatrixLibrary:horizontalSum(squaredErrorVector)
 	
-	local rewardVector = AqwamMatrixLibrary:power(sumSquaredErrorVector, 0.5)
+	local generatedVector = AqwamMatrixLibrary:power(sumSquaredErrorVector, 0.5)
 
 	Model:forwardPropagate(featureVector, true)
 	Model:backPropagate(errorVector, true)
@@ -143,7 +173,7 @@ function RandomNetworkDistillation:generate(featureVector)
 
 	self.TargetModelParameters = TargetModelParameters
 	
-	return rewardVector
+	return generatedVector
 	
 end
 

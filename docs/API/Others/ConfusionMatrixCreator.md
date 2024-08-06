@@ -9,24 +9,24 @@ The confusion matrix serves as a tool for assessing a model's misclassifications
 Creates a ModelDatasetCreator object.
 
 ```
-ConfusionMatrixCreator.new(classesList: []): ConfusionMatrixCreatorObject
+ConfusionMatrixCreator.new(ClassesList: []): ConfusionMatrixCreatorObject
 ```
 
 #### Parameters
 
-classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
+ClassesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
 
 ## Functions
 
 ### setParameters()
 
 ```
-ConfusionMatrixCreator:setParameters(classesList: [])
+ConfusionMatrixCreator:setParameters(ClassesList: [])
 ```
 
 #### Parameters
 
-classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
+ClassesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
 
 ### createConfusionMatrix()
 

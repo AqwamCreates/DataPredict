@@ -140,7 +140,7 @@ function RandomNetworkDistillation:generate(featureVector)
 	
 	local sumSquaredErrorVector = AqwamMatrixLibrary:horizontalSum(squaredErrorVector)
 	
-	local rewardVector = AqwamMatrixLibrary:power(sumSquaredErrorVector, 0.5)
+	local generatedVector = AqwamMatrixLibrary:power(sumSquaredErrorVector, 0.5)
 
 	Model:forwardPropagate(featureVector, true)
 	Model:backPropagate(errorVector, true)
@@ -149,7 +149,7 @@ function RandomNetworkDistillation:generate(featureVector)
 
 	self.TargetModelParameters = TargetModelParameters
 	
-	return rewardVector
+	return generatedVector
 	
 end
 

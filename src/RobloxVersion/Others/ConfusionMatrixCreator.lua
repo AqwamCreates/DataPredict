@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 ConfusionMatrixCreator = {}
@@ -18,7 +46,7 @@ end
 
 local function createClassesList(labelVector)
 
-	local classesList = {}
+	local ClassesList = {}
 
 	local value
 
@@ -26,23 +54,23 @@ local function createClassesList(labelVector)
 
 		value = labelVector[i][1]
 
-		if not table.find(classesList, value) then
+		if not table.find(ClassesList, value) then
 
-			table.insert(classesList, value)
+			table.insert(ClassesList, value)
 
 		end
 
 	end
 
-	return classesList
+	return ClassesList
 
 end
 
-local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
+local function checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList)
 
 	for i = 1, #labelVector, 1 do
 
-		if table.find(classesList, labelVector[i][1]) then continue end
+		if table.find(ClassesList, labelVector[i][1]) then continue end
 
 		return true
 
@@ -72,21 +100,21 @@ function ConfusionMatrixCreator:checkLabelVectors(trueLabelVector, predictedLabe
 
 end
 
-function ConfusionMatrixCreator.new(classesList)
+function ConfusionMatrixCreator.new(ClassesList)
 	
 	local NewConfusionMatrixCreator = {}
 	
 	setmetatable(NewConfusionMatrixCreator, ConfusionMatrixCreator)
 	
-	NewConfusionMatrixCreator.ClassesList = classesList or {}
+	NewConfusionMatrixCreator.ClassesList = ClassesList or {}
 	
 	return NewConfusionMatrixCreator
 	
 end
 
-function ConfusionMatrixCreator:setParameters(classesList)
+function ConfusionMatrixCreator:setParameters(ClassesList)
 	
-	self.ClassesList = classesList or self.ClassesList
+	self.ClassesList = ClassesList or self.ClassesList
 	
 end
 
@@ -98,9 +126,9 @@ function ConfusionMatrixCreator:createConfusionMatrix(trueLabelVector, predicted
 	
 	self:checkLabelVectors(trueLabelVector, predictedLabelVector)
 	
-	local classesList = self.ClassesList
+	local ClassesList = self.ClassesList
 	
-	local confusionMatrix = AqwamMatrixLibrary:createMatrix(#classesList, #classesList)
+	local confusionMatrix = AqwamMatrixLibrary:createMatrix(#ClassesList, #ClassesList)
 	
 	local numberOfUnknownClassifications = 0
 	
@@ -110,9 +138,9 @@ function ConfusionMatrixCreator:createConfusionMatrix(trueLabelVector, predicted
 			
 		local predictedLabel = predictedLabelVector[i][1]
 			
-		local trueClassIndex = table.find(classesList, trueLabel)
+		local trueClassIndex = table.find(ClassesList, trueLabel)
 			
-		local predictedClassIndex = table.find(classesList, predictedLabel)
+		local predictedClassIndex = table.find(ClassesList, predictedLabel)
 		
 		if (trueClassIndex) and (predictedClassIndex) then
 			
@@ -120,7 +148,7 @@ function ConfusionMatrixCreator:createConfusionMatrix(trueLabelVector, predicted
 			
 		else
 			
-			numberOfUnknownClassifications += 1
+			numberOfUnknownClassifications = numberOfUnknownClassifications + 1
 			
 		end
 			
@@ -134,15 +162,15 @@ function ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector, predictedL
 	
 	local confusionMatrix, numberOfUnknownClassifications = self:createConfusionMatrix(trueLabelVector, predictedLabelVector)
 	
-	local classesList = self.ClassesList
+	local ClassesList = self.ClassesList
 	
-	local numberOfClasses = #classesList
+	local numberOfClasses = #ClassesList
 	
 	local maxClassLabelLengthArray = {}
 	
 	local maxColumnValueLength = 3
 
-	for i, classLabel in ipairs(classesList) do
+	for i, classLabel in ipairs(ClassesList) do
 		
 		local length = string.len(tostring(classLabel))
 		
@@ -164,7 +192,7 @@ function ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector, predictedL
 	
 	local text =  "\n\n" .. string.rep(" ", maxColumnValueLength + 3) .. "+"
 	
-	for i, classLabel in ipairs(classesList) do
+	for i, classLabel in ipairs(ClassesList) do
 
 		local cellWidth = string.len(classLabel)
 
@@ -178,7 +206,7 @@ function ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector, predictedL
 	
 	text = text .. "\n " .. tostring(" ", maxColumnValueLength - 1) .. "T\\P" .. " |"
 	
-	for i, classLabel in ipairs(classesList) do
+	for i, classLabel in ipairs(ClassesList) do
 		
 		local cellText = tostring(classLabel) 
 		
@@ -194,7 +222,7 @@ function ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector, predictedL
 	
 	text = text .. "\n+".. string.rep("-", maxColumnValueLength  + 2) .. "+"
 	
-	for i, classLabel in ipairs(classesList) do
+	for i, classLabel in ipairs(ClassesList) do
 
 		local cellWidth = string.len(classLabel)
 
@@ -210,7 +238,7 @@ function ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector, predictedL
 
 	for row = 1, numberOfClasses, 1 do
 		
-		local cellRowHeaderText = tostring(classesList[row]) 
+		local cellRowHeaderText = tostring(ClassesList[row]) 
 
 		local cellWidth = string.len(cellRowHeaderText)
 
@@ -240,7 +268,7 @@ function ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector, predictedL
 	
 	text = text .. "+" .. string.rep("-", maxColumnValueLength + 2) .. "+"
 	
-	for i, classLabel in ipairs(classesList) do
+	for i, classLabel in ipairs(ClassesList) do
 
 		local cellWidth = string.len(classLabel)
 

@@ -22,6 +22,36 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
 local RandomNetworkDistillation = {}
 
 RandomNetworkDistillation.__index = RandomNetworkDistillation
@@ -122,17 +152,31 @@ function RandomNetworkDistillation:generate(featureVector)
 	
 	if (not Model) then error("No model!") end
 	
-	if (not self.TargetModelParameters) or (not self.PredictorModelParameters) then
+	local PredictorModelParameters = self.PredictorModelParameters
+	
+	local TargetModelParameters = self.TargetModelParameters
+	
+	if (not TargetModelParameters) then
 		
-		self:generateModelParameters()
+		Model:generateLayers()
+		
+		TargetModelParameters = Model:getModelParameters(true)
 		
 	end
 	
-	self:setModelParameters(self.TargetModelParameters, true)
+	Model:setModelParameters(TargetModelParameters, true)
 	
 	local targetVector = Model:predict(featureVector, true)
 	
-	self:setModelParameters(self.PredictorModelParameters, true)
+	if (not PredictorModelParameters) then
+
+		Model:generateLayers()
+
+		PredictorModelParameters = Model:getModelParameters(true)
+
+	end
+	
+	Model:setModelParameters(PredictorModelParameters, true)
 
 	local predictorVector = Model:predict(featureVector, true)
 	
@@ -140,18 +184,18 @@ function RandomNetworkDistillation:generate(featureVector)
 	
 	local squaredErrorVector = AqwamMatrixLibrary:power(errorVector, 2)
 	
-	local sumError = AqwamMatrixLibrary:sum(squaredErrorVector)
+	local sumErrorVector = AqwamMatrixLibrary:horizontalSum(squaredErrorVector)
 	
-	local value = math.sqrt(sumError)
-	
-	local numberOfFeatures = #featureVector[1]
-	
-	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+	local rewardVector = AqwamMatrixLibrary:power(sumErrorVector, 0.5)
 
 	Model:forwardPropagate(featureVector, true)
 	Model:backPropagate(errorVector, true)
 	
-	return value
+	self.PredictorModelParameters = PredictorModelParameters
+
+	self.TargetModelParameters = TargetModelParameters
+	
+	return rewardVector
 	
 end
 

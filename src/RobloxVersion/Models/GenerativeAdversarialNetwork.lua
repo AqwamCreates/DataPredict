@@ -124,7 +124,7 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 		
 		DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
 		
-		DiscriminatorModel:backPropagate(meanDiscriminatorLossMatrix, true)
+		DiscriminatorModel:backwardPropagate(meanDiscriminatorLossMatrix, true)
 		
 		GeneratorModel:forwardPropagate(generatorInputMatrix, true)
 		

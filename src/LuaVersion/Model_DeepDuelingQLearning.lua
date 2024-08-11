@@ -48,7 +48,7 @@ function DeepDuelingQLearning.new(discountFactor)
 
 		ValueModel:forwardPropagate(previousFeatureVector, true)
 
-		ValueModel:backPropagate(vLoss, true)
+		ValueModel:backwardPropagate(vLoss, true)
 
 		return vLoss
 		

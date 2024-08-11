@@ -154,11 +154,11 @@ function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
 		
-		DiscriminatorModel:backPropagate(meanDiscriminatorLossMatrix, true)
+		DiscriminatorModel:backwardPropagate(meanDiscriminatorLossMatrix, true)
 		
 		GeneratorModel:forwardPropagate(generatorInputMatrix, true)
 		
-		GeneratorModel:backPropagate(meanGeneratorLossMatrix, true)
+		GeneratorModel:backwardPropagate(meanGeneratorLossMatrix, true)
 		
 		numberOfIterations = numberOfIterations + 1
 		

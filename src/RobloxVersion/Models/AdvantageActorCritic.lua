@@ -30,73 +30,85 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker
 
 local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
 
-AdvantageActorCriticModel = {}
+ActorCriticModel = {}
 
-AdvantageActorCriticModel.__index = AdvantageActorCriticModel
+ActorCriticModel.__index = ActorCriticModel
 
-setmetatable(AdvantageActorCriticModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(ActorCriticModel, ReinforcementLearningActorCriticBaseModel)
 
 local function calculateProbability(outputMatrix)
-
+	
 	local meanVector = AqwamMatrixLibrary:horizontalMean(outputMatrix)
-
+	
 	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(outputMatrix)
-
+	
 	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(outputMatrix, meanVector)
-
+	
 	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
-
+	
 	local zScoreSquaredVector = AqwamMatrixLibrary:power(zScoreVector, 2)
-
+	
 	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
-
+	
 	local probabilityVectorPart2 = AqwamMatrixLibrary:applyFunction(math.exp, probabilityVectorPart1)
-
+	
 	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
-
+	
 	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
 
 	return probabilityVector
 
 end
 
-function AdvantageActorCriticModel.new(discountFactor)
-
-	local NewAdvantageActorCriticModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
-
-	setmetatable(NewAdvantageActorCriticModel, AdvantageActorCriticModel)
+function ActorCriticModel.new(discountFactor)
 	
-	local advantageHistory = {}
-
+	local NewActorCriticModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
+	
+	setmetatable(NewActorCriticModel, ActorCriticModel)
+	
 	local actionProbabilityHistory = {}
 	
-	NewAdvantageActorCriticModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	local criticValueHistory = {}
+	
+	local rewardHistory = {}
+	
+	NewActorCriticModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local allOutputsMatrix = NewAdvantageActorCriticModel.ActorModel:predict(previousFeatureVector, true)
+		local allOutputsMatrix = NewActorCriticModel.ActorModel:predict(previousFeatureVector, true)
 
 		local actionProbabilityVector = calculateProbability(allOutputsMatrix)
-		
-		local CriticModel = NewAdvantageActorCriticModel.CriticModel
 
-		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
+		local criticValue = NewActorCriticModel.CriticModel:predict(previousFeatureVector, true)[1][1]
 
-		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
+		local numberOfActions = #allOutputsMatrix[1]
 
-		local advantageValue = rewardValue + (NewAdvantageActorCriticModel.discountFactor * currentCriticValue) - previousCriticValue
-
-		local actionIndex = table.find(NewAdvantageActorCriticModel.ActorModel:getClassesList(), action)
+		local actionIndex = table.find(NewActorCriticModel.ActorModel:getClassesList(), action)
 
 		local actionProbability = actionProbabilityVector[1][actionIndex]
 
-		table.insert(advantageHistory, advantageValue)
-
 		table.insert(actionProbabilityHistory, actionProbability)
 
+		table.insert(criticValueHistory, criticValue)
+
+		table.insert(rewardHistory, rewardValue)
+		
 	end)
+	
+	NewActorCriticModel:setEpisodeUpdateFunction(function()
+		
+		local returnsHistory = {}
 
-	NewAdvantageActorCriticModel:setEpisodeUpdateFunction(function()
+		local discountedSum = 0
 
-		local historyLength = #advantageHistory
+		local historyLength = #rewardHistory
+
+		for h = historyLength, 1, -1 do
+
+			discountedSum = rewardHistory[h] + NewActorCriticModel.discountFactor * discountedSum
+
+			table.insert(returnsHistory, 1, discountedSum)
+
+		end
 
 		local sumActorLosses = 0
 
@@ -104,22 +116,26 @@ function AdvantageActorCriticModel.new(discountFactor)
 
 		for h = 1, historyLength, 1 do
 
-			local advantage = advantageHistory[h]
+			local criticValue = criticValueHistory[h]
+
+			local returnValue = returnsHistory[h]
 
 			local actionProbability = actionProbabilityHistory[h]
 
-			local actorLoss = math.log(actionProbability) * advantage
+			local actorLoss = math.log(actionProbability) * (returnValue - criticValue) 
+
+			local criticLoss = returnValue - criticValue
 
 			sumActorLosses += actorLoss
 
-			sumCriticLosses += advantage
+			sumCriticLosses += criticLoss
 
 		end
 		
-		local ActorModel = NewAdvantageActorCriticModel.ActorModel
+		local ActorModel = NewActorCriticModel.ActorModel
 
-		local CriticModel = NewAdvantageActorCriticModel.CriticModel
-
+		local CriticModel = NewActorCriticModel.CriticModel
+		
 		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
 
 		local numberOfLayers = ActorModel:getNumberOfLayers()
@@ -127,7 +143,6 @@ function AdvantageActorCriticModel.new(discountFactor)
 		local numberOfNeuronsAtFinalLayer = ActorModel:getTotalNumberOfNeurons(numberOfLayers)
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-
 		local actorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumActorLosses)
 
 		ActorModel:forwardPropagate(featureVector, true)
@@ -136,22 +151,26 @@ function AdvantageActorCriticModel.new(discountFactor)
 		ActorModel:backwardPropagate(actorLossVector, true)
 		CriticModel:backwardPropagate(-sumCriticLosses, true)
 
-		table.clear(advantageHistory)
-
 		table.clear(actionProbabilityHistory)
 
+		table.clear(criticValueHistory)
+
+		table.clear(rewardHistory)
+		
 	end)
-
-	NewAdvantageActorCriticModel:extendResetFunction(function()
-
-		table.clear(advantageHistory)
-
+	
+	NewActorCriticModel:extendResetFunction(function()
+		
 		table.clear(actionProbabilityHistory)
 
+		table.clear(criticValueHistory)
+
+		table.clear(rewardHistory)
+		
 	end)
-
-	return NewAdvantageActorCriticModel
-
+	
+	return NewActorCriticModel
+	
 end
 
-return AdvantageActorCriticModel
+return ActorCriticModel

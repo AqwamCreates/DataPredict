@@ -209,7 +209,7 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:train(realFeatu
 
 		DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
 
-		DiscriminatorModel:backPropagate(discriminatorLossMatrix, true)
+		DiscriminatorModel:backwardPropagate(discriminatorLossMatrix, true)
 
 		numberOfIterations = numberOfIterations + 1
 
@@ -233,7 +233,7 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:train(realFeatu
 
 	GeneratorModel:forwardPropagate(generatorInputMatrix, true)
 
-	GeneratorModel:backPropagate(meanGeneratorLossVector, true)
+	GeneratorModel:backwardPropagate(meanGeneratorLossVector, true)
 	
 end
 

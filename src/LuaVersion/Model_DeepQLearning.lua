@@ -62,7 +62,7 @@ function DeepQLearningModel.new(discountFactor)
 		
 		Model:forwardPropagate(previousFeatureVector, true)
 
-		Model:backPropagate(lossVector, true)
+		Model:backwardPropagate(lossVector, true)
 		
 		return temporalDifferenceError
 

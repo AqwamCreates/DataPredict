@@ -80,7 +80,7 @@ function DeepClippedDoubleQLearningModel.new(discountFactor)
 			
 			temporalDifferenceVector[1][i] = temporalDifferenceError
 			
-			Model:backPropagate(lossVector, true)
+			Model:backwardPropagate(lossVector, true)
 
 		end
 		

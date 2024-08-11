@@ -98,7 +98,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(epsilon, discou
 
 		Model:forwardPropagate(previousFeatureVector, true)
 
-		Model:backPropagate(lossVector, true)
+		Model:backwardPropagate(lossVector, true)
 
 		NewDeepDoubleExpectedStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		

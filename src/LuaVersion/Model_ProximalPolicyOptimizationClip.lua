@@ -199,8 +199,8 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)
 
-		ActorModel:backPropagate(calculatedActorLossVector, true)
-		CriticModel:backPropagate(calculatedCriticLoss, true)
+		ActorModel:backwardPropagate(calculatedActorLossVector, true)
+		CriticModel:backwardPropagate(calculatedCriticLoss, true)
 		
 		oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 		

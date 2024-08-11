@@ -78,11 +78,11 @@ function DeepDoubleDuelingQLearning.new(averagingRate, discountFactor)
 
 		AdvantageModel:forwardPropagate(previousFeatureVector, true)
 
-		AdvantageModel:backPropagate(qLossVector, true)
+		AdvantageModel:backwardPropagate(qLossVector, true)
 
 		ValueModel:forwardPropagate(previousFeatureVector, true)
 
-		ValueModel:backPropagate(vLoss, true)
+		ValueModel:backwardPropagate(vLoss, true)
 
 		local AdvantageModelTargetModelParameters = AdvantageModel:getModelParameters(true)
 

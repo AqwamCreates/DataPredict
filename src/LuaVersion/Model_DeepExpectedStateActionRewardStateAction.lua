@@ -98,7 +98,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFact
 
 		Model:forwardPropagate(previousFeatureVector, true)
 		
-		Model:backPropagate(lossVector, true)
+		Model:backwardPropagate(lossVector, true)
 		
 		return temporalDifferenceError
 

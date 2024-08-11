@@ -129,7 +129,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIter
 		
 		Model:forwardPropagate(previousFeatureVector, true)
 
-		Model:backPropagate(lossVector, true)
+		Model:backwardPropagate(lossVector, true)
 
 		local TargetModelParameters = Model:getModelParameters(true)
 

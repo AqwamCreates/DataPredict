@@ -102,11 +102,11 @@ function DeepDoubleDuelingQLearning.new(discountFactor)
 
 		AdvantageModel:forwardPropagate(previousFeatureVector, true)
 
-		AdvantageModel:backPropagate(qLossVector, true)
+		AdvantageModel:backwardPropagate(qLossVector, true)
 
 		ValueModel:forwardPropagate(previousFeatureVector, true)
 
-		ValueModel:backPropagate(vLoss, true)
+		ValueModel:backwardPropagate(vLoss, true)
 
 		return vLoss
 		

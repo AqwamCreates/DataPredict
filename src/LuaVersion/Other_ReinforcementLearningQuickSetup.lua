@@ -246,11 +246,9 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	if (self.Model == nil) then error("No model!") end
 	
-	local currentNumberOfReinforcements = self.currentNumberOfReinforcements + 1
+	local currentNumberOfReinforcements = self.currentNumberOfReinforcements
 	
 	local currentNumberOfEpisodes = self.currentNumberOfEpisodes
-	
-	local randomProbability = Random.new():NextNumber()
 	
 	local ExperienceReplay = self.ExperienceReplay
 	
@@ -265,12 +263,14 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 	local ClassesList = self.ClassesList
 	
 	local updateFunction = self.updateFunction
+	
+	local randomProbability = Random.new():NextNumber()
+	
+	local allOutputsMatrix = Model:predict(currentFeatureVector, true, childModelNumber)
 
 	local action
 
 	local selectedValue
-
-	local allOutputsMatrix
 
 	local temporalDifferenceError
 
@@ -281,22 +281,22 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 		local randomNumber = Random.new():NextInteger(1, numberOfClasses)
 
 		action = ClassesList[randomNumber]
-
-		allOutputsMatrix = AqwamMatrixLibrary:createMatrix(1, numberOfClasses)
-
-		allOutputsMatrix[1][randomNumber] = randomProbability
+		
+		selectedValue = allOutputsMatrix[1][randomNumber]
 
 	else
-		
-		allOutputsMatrix = Model:predict(currentFeatureVector, true, childModelNumber)
 
 		action, selectedValue = self:selectAction(allOutputsMatrix, ClassesList)
 
 	end
 
-	if (previousFeatureVector) then 
+	if (previousFeatureVector) then
+		
+		currentNumberOfReinforcements = currentNumberOfReinforcements + 1
 
-		temporalDifferenceError = Model:update(previousFeatureVector, action, rewardValue, currentFeatureVector, childModelNumber) 
+		temporalDifferenceError = Model:update(previousFeatureVector, action, rewardValue, currentFeatureVector, childModelNumber)
+		
+		if (updateFunction) then updateFunction(childModelNumber) end
 
 	end
 
@@ -328,9 +328,7 @@ function ReinforcementLearningQuickSetup:reinforce(currentFeatureVector, rewardV
 
 	end
 	
-	if updateFunction then updateFunction(childModelNumber) end
-	
-	if (EpsilonValueScheduler) then
+	if (EpsilonValueScheduler) and (previousFeatureVector) then
 		
 		currentEpsilon = EpsilonValueScheduler:calculate(currentEpsilon)
 		
@@ -429,7 +427,11 @@ function ReinforcementLearningQuickSetup:reset()
 
 	self.currentEpsilon = self.epsilon
 	
+	local Model = self.Model
+	
 	local ExperienceReplay = self.ExperienceReplay
+	
+	if (Model) then Model:reset() end
 	
 	if (ExperienceReplay) then ExperienceReplay:reset() end
 	

@@ -102,19 +102,17 @@ function ConfidenceQLearningNeuralNetwork:update(previousFeatureVector, action, 
 
 	local numberOfClasses = #ClassesList
 	
-	local previousConfidence = ConfidenceModel:predict(previousFeatureVector, true)[1][1]
+	local previousConfidence = ConfidenceModel:predict(previousQVector, true)[1][1]
 
-	local currentConfidence = ConfidenceModel:predict(currentFeatureVector, true)[1][1]
+	local currentConfidence = ConfidenceModel:predict(currentQVector, true)[1][1]
 
 	--local relativeChange = (currentConfidence - previousConfidence) / (currentConfidence + previousConfidence)
 
-	local relativeChange = (currentConfidence - previousConfidence) / previousConfidence
+	local relativeConfidence = (currentConfidence - previousConfidence) / previousConfidence
 
 	--local relativeChange = (currentConfidence - previousConfidence) / previousConfidence -- Doesn't work well.
 
 	--relativeChange = math.clamp(relativeChange, -10, 10)
-
-	local qValue = currentMaxQValue * relativeChange
 
 	--print(previousConfidence)
 
@@ -122,7 +120,7 @@ function ConfidenceQLearningNeuralNetwork:update(previousFeatureVector, action, 
 
 	--relativeConfidence = math.clamp(relativeConfidence, -10, 10)
 
-	local target = (rewardValue) + (self.discountFactor * relativeChange)
+	local target = (rewardValue * relativeConfidence) + (self.discountFactor * currentMaxQValue)
 
 	--local targetVector = AqwamMatrixLibrary:multiply(NewConfidenceQLearningNeuralNetwork.discountFactor, relativeChange, currentQVector)
 
@@ -142,7 +140,7 @@ function ConfidenceQLearningNeuralNetwork:update(previousFeatureVector, action, 
 
 	ActorModel:backwardPropagate(lossVector, true)
 	
-	ConfidenceModel:forwardPropagate(previousFeatureVector, true)
+	ConfidenceModel:forwardPropagate(previousQVector, true)
 	
 	ConfidenceModel:backwardPropagate(rewardValue)
 	

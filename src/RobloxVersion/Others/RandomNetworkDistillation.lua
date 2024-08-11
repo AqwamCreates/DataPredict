@@ -143,7 +143,7 @@ function RandomNetworkDistillation:generate(featureVector)
 	local generatedVector = AqwamMatrixLibrary:power(sumSquaredErrorVector, 0.5)
 
 	Model:forwardPropagate(featureVector, true)
-	Model:backPropagate(errorVector, true)
+	Model:backwardPropagate(errorVector, true)
 	
 	self.PredictorModelParameters = PredictorModelParameters
 

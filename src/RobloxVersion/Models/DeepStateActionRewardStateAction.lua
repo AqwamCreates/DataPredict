@@ -30,7 +30,7 @@ function DeepStateActionRewardStateActionModel.new(discountFactor)
 		
 		Model:forwardPropagate(previousFeatureVector, true)
 
-		Model:backPropagate(temporalDifferenceVector, true)
+		Model:backwardPropagate(temporalDifferenceVector, true)
 		
 		return temporalDifferenceVector
 

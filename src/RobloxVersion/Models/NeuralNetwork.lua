@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
 NeuralNetworkModel = {}
@@ -702,7 +730,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 
 end
 
-function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
+function NeuralNetworkModel:backwardPropagate(lossMatrix, clearTables)
 	
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 	
@@ -1510,7 +1538,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 		lossMatrix = AqwamMatrixLibrary:divide(lossMatrix, numberOfData)
 
-		self:backPropagate(lossMatrix, true)
+		self:backwardPropagate(lossMatrix, true)
 
 	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

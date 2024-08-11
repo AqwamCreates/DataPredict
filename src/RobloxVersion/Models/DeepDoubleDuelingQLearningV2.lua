@@ -1,12 +1,42 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local ReinforcementLearningDeepDuelingQLearningBaseModel = require(script.Parent.ReinforcementLearningDeepDuelingQLearningBaseModel)
+local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
-DeepDoubleDuelingQLearning = {}
+DeepDoubleExpectedStateActionRewardStateActionModel = {}
 
-DeepDoubleDuelingQLearning.__index = DeepDoubleDuelingQLearning
+DeepDoubleExpectedStateActionRewardStateActionModel.__index = DeepDoubleExpectedStateActionRewardStateActionModel
 
-setmetatable(DeepDoubleDuelingQLearning, ReinforcementLearningDeepDuelingQLearningBaseModel)
+setmetatable(DeepDoubleExpectedStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
+
+local defaultEpsilon = 0.5
 
 local defaultAveragingRate = 0.01
 
@@ -17,7 +47,7 @@ local function rateAverageModelParameters(averagingRate, TargetModelParameters, 
 	for layer = 1, #TargetModelParameters, 1 do
 
 		local TargetModelParametersPart = AqwamMatrixLibrary:multiply(averagingRate, TargetModelParameters[layer])
-		
+
 		local PrimaryModelParametersPart = AqwamMatrixLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
 
 		TargetModelParameters[layer] = AqwamMatrixLibrary:add(TargetModelParametersPart, PrimaryModelParametersPart)
@@ -28,66 +58,107 @@ local function rateAverageModelParameters(averagingRate, TargetModelParameters, 
 
 end
 
-function DeepDoubleDuelingQLearning.new(averagingRate, discountFactor)
+function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIterations, epsilon, averagingRate, discountFactor)
 
-	local NewDeepDuelingQLearning = ReinforcementLearningDeepDuelingQLearningBaseModel.new(discountFactor)
+	local NewDeepDoubleExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(maxNumberOfIterations, discountFactor)
 
-	setmetatable(NewDeepDuelingQLearning, DeepDoubleDuelingQLearning)
+	setmetatable(NewDeepDoubleExpectedStateActionRewardStateActionModel, DeepDoubleExpectedStateActionRewardStateActionModel)
 	
-	NewDeepDuelingQLearning.averagingRate = averagingRate or defaultAveragingRate
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = epsilon or defaultEpsilon
 	
-	NewDeepDuelingQLearning:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate = averagingRate or defaultAveragingRate
+
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local AdvantageModel = NewDeepDuelingQLearning.AdvantageModel
-
-		local ValueModel = NewDeepDuelingQLearning.ValueModel
-
-		local averagingRate = NewDeepDuelingQLearning.averagingRate
-
-		if (AdvantageModel:getModelParameters() == nil) then AdvantageModel:generateLayers() end
-
-		if (ValueModel:getModelParameters() == nil) then ValueModel:generateLayers() end
-
-		local AdvantageModelPrimaryModelParameters = AdvantageModel:getModelParameters(true)
-
-		local ValueModelPrimaryModelParameters = ValueModel:getModelParameters(true)
-
-		local qLossVector, vLoss = NewDeepDuelingQLearning:generateLoss(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-		AdvantageModel:forwardPropagate(previousFeatureVector, true)
-
-		AdvantageModel:backPropagate(qLossVector, true)
-
-		ValueModel:forwardPropagate(previousFeatureVector, true)
-
-		ValueModel:backPropagate(vLoss, true)
-
-		local AdvantageModelTargetModelParameters = AdvantageModel:getModelParameters(true)
-
-		local ValueModelTargetModelParameters = ValueModel:getModelParameters(true)
-
-		AdvantageModelTargetModelParameters = rateAverageModelParameters(averagingRate, AdvantageModelTargetModelParameters, AdvantageModelPrimaryModelParameters)
-
-		ValueModelTargetModelParameters = rateAverageModelParameters(averagingRate, ValueModelTargetModelParameters, ValueModelPrimaryModelParameters)
-
-		AdvantageModel:setModelParameters(AdvantageModelTargetModelParameters, true)
-
-		ValueModel:setModelParameters(ValueModelTargetModelParameters, true)
-
-		return vLoss
+		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model
 		
+		local PrimaryModelParameters = Model:getModelParameters(true)
+
+		if (Model:getModelParameters() == nil) then 
+			
+			Model:generateLayers()
+			PrimaryModelParameters = Model:getModelParameters(true)
+			
+		end
+
+		local expectedQValue = 0
+
+		local numberOfGreedyActions = 0
+		
+		local ClassesList = Model:getClassesList()
+
+		local numberOfActions = #ClassesList
+
+		local actionIndex = table.find(ClassesList, action)
+
+		local previousVector = NewDeepDoubleExpectedStateActionRewardStateActionModel:predict(previousFeatureVector, true)
+
+		local targetVector = NewDeepDoubleExpectedStateActionRewardStateActionModel:predict(currentFeatureVector, true)
+		
+		local maxQValue = targetVector[1][actionIndex]
+
+		for i = 1, numberOfActions, 1 do
+
+			if (targetVector[1][i] ~= maxQValue) then continue end
+
+			numberOfGreedyActions = numberOfGreedyActions + 1
+
+		end
+
+		local nonGreedyActionProbability = NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon / numberOfActions
+
+		local greedyActionProbability = ((1 - NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
+
+		for i, qValue in ipairs(targetVector[1]) do
+
+			if (qValue == maxQValue) then
+
+				expectedQValue = expectedQValue + (qValue * greedyActionProbability)
+
+			else
+
+				expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
+
+			end
+
+		end
+
+		local targetValue = rewardValue + (NewDeepDoubleExpectedStateActionRewardStateActionModel.discountFactor * expectedQValue)
+
+		local lastValue = previousVector[1][actionIndex]
+
+		local temporalDifferenceError = targetValue - lastValue
+
+		local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, 0)
+
+		lossVector[1][actionIndex] = temporalDifferenceError
+		
+		Model:forwardPropagate(previousFeatureVector, true)
+
+		Model:backwardPropagate(lossVector, true)
+
+		local TargetModelParameters = Model:getModelParameters(true)
+
+		TargetModelParameters = rateAverageModelParameters(NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
+
+		Model:setModelParameters(TargetModelParameters, true)
+		
+		return temporalDifferenceError
+
 	end)
 
-	return NewDeepDuelingQLearning
+	return NewDeepDoubleExpectedStateActionRewardStateActionModel
 
 end
 
-function DeepDoubleDuelingQLearning:setParameters(averagingRate, discountFactor)
+function DeepDoubleExpectedStateActionRewardStateActionModel:setParameters(epsilon, averagingRate, discountFactor)
 	
-	self.averagingRate = averagingRate or self.averagingRate
+	self.epsilon = epsilon or self.epsilon
 
 	self.discountFactor =  discountFactor or self.discountFactor
 
+	self.averagingRate = averagingRate or self.averagingRate
+
 end
 
-return DeepDoubleDuelingQLearning
+return DeepDoubleExpectedStateActionRewardStateActionModel

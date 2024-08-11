@@ -71,7 +71,7 @@ function DeepDoubleQLearningModel.new(averagingRate, discountFactor)
 
 		Model:forwardPropagate(previousFeatureVector, true)
 
-		Model:backPropagate(lossVector, true)
+		Model:backwardPropagate(lossVector, true)
 
 		local TargetModelParameters = Model:getModelParameters(true)
 

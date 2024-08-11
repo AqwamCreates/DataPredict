@@ -61,7 +61,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(averagingRate, discount
 
 		Model:forwardPropagate(previousFeatureVector, true)
 
-		Model:backPropagate(temporalDifferenceVector, true)
+		Model:backwardPropagate(temporalDifferenceVector, true)
 		
 		local TargetModelParameters = Model:getModelParameters(true)
 

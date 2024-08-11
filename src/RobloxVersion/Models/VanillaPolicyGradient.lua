@@ -129,8 +129,8 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)
 
-		ActorModel:backPropagate(sumActorLossVector, true)
-		CriticModel:backPropagate(sumCriticLoss, true)
+		ActorModel:backwardPropagate(sumActorLossVector, true)
+		CriticModel:backwardPropagate(sumCriticLoss, true)
 		
 		table.clear(rewardHistory)
 		

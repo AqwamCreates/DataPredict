@@ -104,7 +104,7 @@ function REINFORCEModel.new(discountFactor)
 		
 		Model:forwardPropagate(inputVector, true)
 
-		Model:backPropagate(lossVector, true)
+		Model:backwardPropagate(lossVector, true)
 		
 		table.clear(targetVectorArray)
 		

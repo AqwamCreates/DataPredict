@@ -214,7 +214,7 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBuf
 
 		Model:forwardPropagate(inputMatrix, true)
 
-		Model:backPropagate(sumLossMatrix, true)
+		Model:backwardPropagate(sumLossMatrix, true)
 		
 	end)
 	

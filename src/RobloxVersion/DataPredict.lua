@@ -128,6 +128,8 @@ AqwamRobloxMachineLearningLibrary.AqwamCustomModels = {
 	
 	WeightProximalPolicyOptimizationClip = require(AqwamCustomModels.WeightProximalPolicyOptimizationClip),
 	
+	ConfidenceQLearning = require(AqwamCustomModels.ConfidenceQLearningNeuralNetwork)
+	
 }
 
 AqwamRobloxMachineLearningLibrary.Optimizers = {

@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,83 +19,143 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local LogisticRegression = require("Model_LogisticRegression")
-
-local ReinforcementLearningNeuralNetworkBaseModel = require("Model_ReinforcementLearningNeuralNetworkBaseModel")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 ConfidenceQLearningNeuralNetwork = {}
 
 ConfidenceQLearningNeuralNetwork.__index = ConfidenceQLearningNeuralNetwork
 
-setmetatable(ConfidenceQLearningNeuralNetwork, ReinforcementLearningNeuralNetworkBaseModel)
+local defaultDiscountFactor = 0.95
 
 -- Do not multiply confidenceValue with target! Otherwise, it will cause poor performance!
 
-function ConfidenceQLearningNeuralNetwork.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor, confidenceLearningRate)
+function ConfidenceQLearningNeuralNetwork.new(discountFactor)
 
-	local NewConfidenceQLearningNeuralNetwork = ReinforcementLearningNeuralNetworkBaseModel.new(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+	local NewConfidenceQLearningNeuralNetwork = {}
 	
 	setmetatable(NewConfidenceQLearningNeuralNetwork, ConfidenceQLearningNeuralNetwork)
 	
-	confidenceLearningRate = confidenceLearningRate
-	
-	local NewLogisticRegression = LogisticRegression.new(1, confidenceLearningRate, "Tanh")
-	
-	NewLogisticRegression:setPrintOutput(false)
-	
-	NewConfidenceQLearningNeuralNetwork:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-		if (NewConfidenceQLearningNeuralNetwork.ModelParameters == nil) then NewConfidenceQLearningNeuralNetwork:generateLayers() end
-
-		local predictedValueVector = NewConfidenceQLearningNeuralNetwork:predict(currentFeatureVector, true)
-		
-		local maxQValue = math.max(table.unpack(table.unpack(predictedValueVector)))
-		
-		if (NewLogisticRegression:getModelParameters() ~= nil) then
-			
-			local confidenceValue = NewLogisticRegression:predict(predictedValueVector)
-			
-			local target = (rewardValue * confidenceValue[1][1]) + (NewConfidenceQLearningNeuralNetwork.discountFactor * confidenceValue[1][1] * maxQValue)
-
-			local targetVector = NewConfidenceQLearningNeuralNetwork:predict(previousFeatureVector, true)
-
-			local actionIndex = table.find(NewConfidenceQLearningNeuralNetwork.ClassesList, action)
-
-			targetVector[1][actionIndex] = target
-			
-			NewConfidenceQLearningNeuralNetwork:train(previousFeatureVector, targetVector)
-			
-		end
-		
-		NewLogisticRegression:train(predictedValueVector, {{rewardValue}})
-		
-	end)
+	NewConfidenceQLearningNeuralNetwork.discountFactor =  discountFactor or defaultDiscountFactor
 
 	return NewConfidenceQLearningNeuralNetwork
 
 end
 
-function ConfidenceQLearningNeuralNetwork:setParameters(maxNumberOfIterations, learningRate, targetCost, maxNumberOfEpisodes, epsilon, epsilonDecayFactor, discountFactor)
+function ConfidenceQLearningNeuralNetwork:setParameters(discountFactor, confidenceLearningRate)
 	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-
-	self.learningRate = learningRate or self.learningRate
-
-	self.targetCost = targetCost or self.targetCost
-	
-	self.maxNumberOfEpisodes = maxNumberOfEpisodes or self.maxNumberOfEpisodes
-
-	self.epsilon = epsilon or self.epsilon
-
-	self.epsilonDecayFactor =  epsilonDecayFactor or self.epsilonDecayFactor
-
 	self.discountFactor =  discountFactor or self.discountFactor
 
-	self.currentEpsilon = epsilon or self.currentEpsilon
+end
 
+function ConfidenceQLearningNeuralNetwork:predict(featureVector, returnOriginalOutput)
+	
+	return self.ActorModel:predict(featureVector, returnOriginalOutput)
+	
+end
+
+function ConfidenceQLearningNeuralNetwork:setActorModel(ActorModel)
+	
+	self.ActorModel = ActorModel
+	
+end
+
+function ConfidenceQLearningNeuralNetwork:getActorModel()
+	
+	return self.ActorModel
+
+end
+
+function ConfidenceQLearningNeuralNetwork:setConfidenceModel(ConfidenceModel)
+
+	self.ConfidenceModel = ConfidenceModel
+
+end
+
+function ConfidenceQLearningNeuralNetwork:getConfidenceModel()
+
+	return self.ConfidenceModel
+
+end
+
+function ConfidenceQLearningNeuralNetwork:update(currentFeatureVector, action, rewardValue, previousFeatureVector)
+	
+	local ActorModel = self.ActorModel
+	
+	local ConfidenceModel = self.ConfidenceModel
+
+	local currentQVector = ActorModel:predict(currentFeatureVector, true)
+
+	local previousQVector = ActorModel:predict(previousFeatureVector, true)
+
+	local currentMaxQValue = math.max(table.unpack(currentQVector[1]))
+
+	--local qValueRatio = maxQValue / previousMaxQValue
+	
+	local ClassesList = ActorModel:getClassesList()
+
+	local numberOfClasses = #ClassesList
+
+	local currentConfidence = ConfidenceModel:predict(currentFeatureVector, true)[1][1]
+
+	local previousConfidence = ConfidenceModel:predict(previousFeatureVector, true)[1][1]
+
+	--local relativeChange = (currentConfidence - previousConfidence) / (currentConfidence + previousConfidence)
+
+	local relativeChange = (currentConfidence - previousConfidence) / currentConfidence
+
+	--local relativeChange = (currentConfidence - previousConfidence) / previousConfidence -- Doesn't work well.
+
+	--relativeChange = math.clamp(relativeChange, -10, 10)
+
+	local qValue = currentMaxQValue * relativeChange
+
+	--print(previousConfidence)
+
+	--print(relativeChange)
+
+	--relativeConfidence = math.clamp(relativeConfidence, -10, 10)
+
+	local target = (rewardValue) + (self.discountFactor * relativeChange)
+
+	--local targetVector = AqwamMatrixLibrary:multiply(NewConfidenceQLearningNeuralNetwork.discountFactor, relativeChange, currentQVector)
+
+	--targetVector = AqwamMatrixLibrary:add(targetVector, rewardValue)
+
+	local actionIndex = table.find(ClassesList, action)
+
+	local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses, 0)
+	
+	local temporalDifferenceError = target - previousQVector[1][actionIndex]
+
+	--local lossVector = AqwamMatrixLibrary:subtract(targetVector, previousQVector)
+
+	lossVector[1][actionIndex] = temporalDifferenceError
+
+	ActorModel:forwardPropagate(previousFeatureVector, true)
+
+	ActorModel:backwardPropagate(lossVector, true)
+	
+	ConfidenceModel:forwardPropagate(previousFeatureVector, true)
+	
+	ConfidenceModel:backwardPropagate(rewardValue)
+	
+	return temporalDifferenceError
+	
+end
+
+function ConfidenceQLearningNeuralNetwork:episodeUpdate()
+		
+end
+
+function ConfidenceQLearningNeuralNetwork:reset()
+	
 end
 
 return ConfidenceQLearningNeuralNetwork

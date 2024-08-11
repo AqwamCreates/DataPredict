@@ -30,11 +30,13 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker
 
 local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
 
-ProximalPolicyOptimizationModel = {}
+ProximalPolicyOptimizationClipModel = {}
 
-ProximalPolicyOptimizationModel.__index = ProximalPolicyOptimizationModel
+ProximalPolicyOptimizationClipModel.__index = ProximalPolicyOptimizationClipModel
 
-setmetatable(ProximalPolicyOptimizationModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(ProximalPolicyOptimizationClipModel, ReinforcementLearningActorCriticBaseModel)
+
+local defaultClipRatio = 0.3
 
 local function calculateProbability(outputMatrix)
 
@@ -78,11 +80,13 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 end
 
-function ProximalPolicyOptimizationModel.new(discountFactor)
+function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 	
-	local NewProximalPolicyOptimizationModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
+	local NewProximalPolicyOptimizationClipModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
 	
-	setmetatable(NewProximalPolicyOptimizationModel, ProximalPolicyOptimizationModel)
+	setmetatable(NewProximalPolicyOptimizationClipModel, ProximalPolicyOptimizationClipModel)
+	
+	NewProximalPolicyOptimizationClipModel.clipRatio = clipRatio or defaultClipRatio
 	
 	local rewardHistory = {}
 	
@@ -96,19 +100,19 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 	
 	local oldAdvantageValueHistory = {}
 	
-	NewProximalPolicyOptimizationModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewProximalPolicyOptimizationClipModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local allOutputsMatrix = NewProximalPolicyOptimizationModel.ActorModel:predict(previousFeatureVector, true)
+		local allOutputsMatrix = NewProximalPolicyOptimizationClipModel.ActorModel:predict(previousFeatureVector, true)
 
 		local actionProbabilityVector = calculateProbability(allOutputsMatrix)
 		
-		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
+		local CriticModel = NewProximalPolicyOptimizationClipModel.CriticModel
 
 		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 
 		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
 
-		local advantageValue = rewardValue + (NewProximalPolicyOptimizationModel.discountFactor * currentCriticValue) - previousCriticValue
+		local advantageValue = rewardValue + (NewProximalPolicyOptimizationClipModel.discountFactor * currentCriticValue) - previousCriticValue
 
 		table.insert(advantageValueHistory, advantageValue)
 
@@ -120,14 +124,14 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 	end)
 	
-	NewProximalPolicyOptimizationModel:setEpisodeUpdateFunction(function()
+	NewProximalPolicyOptimizationClipModel:setEpisodeUpdateFunction(function()
 		
-		local ActorModel = NewProximalPolicyOptimizationModel.ActorModel
+		local ActorModel = NewProximalPolicyOptimizationClipModel.ActorModel
 
-		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
+		local CriticModel = NewProximalPolicyOptimizationClipModel.CriticModel
 		
 		if (#oldActionProbabilityVectorHistory == 0) then 
-
+			
 			oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 			
 			oldAdvantageValueHistory = table.clone(advantageValueHistory)
@@ -139,28 +143,44 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 			table.clear(rewardHistory)
 
 			table.clear(actionProbabilityVectorHistory)
-
+			
 			return 
-
+				
 		end
 		
-		local rewardsToGoArray = calculateRewardsToGo(rewardHistory, NewProximalPolicyOptimizationModel.discountFactor)
+		local rewardsToGoArray = calculateRewardsToGo(rewardHistory, NewProximalPolicyOptimizationClipModel.discountFactor)
 
 		local historyLength = #criticValueHistory
 		
 		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #ActorModel:getClassesList())
 		
 		local sumCriticLoss = 0
+		
+		local clipFunction = function(value) 
+			
+			local clipRatio = NewProximalPolicyOptimizationClipModel.clipRatio 
+			
+			return math.clamp(value, 1 - clipRatio, 1 + clipRatio) 
+			
+		end
 
-		for h = 1, historyLength, 1 do
+		for h = 2, historyLength, 1 do
 
 			local currentActionVector = actionProbabilityVectorHistory[h]
 
 			local previousActionVector = oldActionProbabilityVectorHistory[h]
 
 			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
+			
+			local advantageValue = advantageValueHistory[h]
+			
+			local surrogateLoss1 = AqwamMatrixLibrary:multiply(ratioVector, advantageValue)
+			
+			local surrogateLoss2Part1 = AqwamMatrixLibrary:applyFunction(clipFunction, ratioVector)
+			
+			local surrogateLoss2 = AqwamMatrixLibrary:multiply(surrogateLoss2Part1, advantageValue)
 
-			local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, oldAdvantageValueHistory[h])
+			local actorLossVector = AqwamMatrixLibrary:applyFunction(math.min, surrogateLoss1, surrogateLoss2)
 
 			local criticLoss = rewardsToGoArray[h] - criticValueHistory[h]
 
@@ -176,9 +196,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		local calculatedCriticLoss = sumCriticLoss / historyLength
 		
-		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
-
-		numberOfFeatures += (hasBias and 1) or 0
+		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
@@ -202,12 +220,12 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 	end)
 	
-	NewProximalPolicyOptimizationModel:extendResetFunction(function()
+	NewProximalPolicyOptimizationClipModel:extendResetFunction(function()
 		
 		table.clear(advantageValueHistory)
 		
 		table.clear(oldAdvantageValueHistory)
-		
+
 		table.clear(criticValueHistory)
 
 		table.clear(rewardHistory)
@@ -218,8 +236,16 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 	end)
 	
-	return NewProximalPolicyOptimizationModel
+	return NewProximalPolicyOptimizationClipModel
 	
 end
 
-return ProximalPolicyOptimizationModel
+function ProximalPolicyOptimizationClipModel:setParameters(clipRatio, discountFactor)
+	
+	self.clipRatio = clipRatio or self.clipRatio
+
+	self.discountFactor =  discountFactor or self.discountFactor
+	
+end
+
+return ProximalPolicyOptimizationClipModel

@@ -153,8 +153,10 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 			local previousActionVector = oldActionProbabilityVectorHistory[h]
 
 			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
+			
+			local oldAdvantageValue = oldAdvantageValueHistory[h]
 
-			local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, oldAdvantageValueHistory[h])
+			local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, oldAdvantageValue)
 
 			local criticLoss = rewardsToGoArray[h] - criticValueHistory[h]
 
@@ -170,9 +172,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		local calculatedCriticLoss = sumCriticLoss / historyLength
 		
-		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
-
-		numberOfFeatures += (hasBias and 1) or 0
+		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 

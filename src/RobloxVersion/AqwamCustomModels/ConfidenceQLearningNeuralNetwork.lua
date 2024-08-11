@@ -84,15 +84,15 @@ function ConfidenceQLearningNeuralNetwork:getConfidenceModel()
 
 end
 
-function ConfidenceQLearningNeuralNetwork:update(currentFeatureVector, action, rewardValue, previousFeatureVector)
+function ConfidenceQLearningNeuralNetwork:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
 	
 	local ActorModel = self.ActorModel
 	
 	local ConfidenceModel = self.ConfidenceModel
 
-	local currentQVector = ActorModel:predict(currentFeatureVector, true)
-
 	local previousQVector = ActorModel:predict(previousFeatureVector, true)
+	
+	local currentQVector = ActorModel:predict(currentFeatureVector, true)
 
 	local currentMaxQValue = math.max(table.unpack(currentQVector[1]))
 
@@ -101,14 +101,14 @@ function ConfidenceQLearningNeuralNetwork:update(currentFeatureVector, action, r
 	local ClassesList = ActorModel:getClassesList()
 
 	local numberOfClasses = #ClassesList
+	
+	local previousConfidence = ConfidenceModel:predict(previousFeatureVector, true)[1][1]
 
 	local currentConfidence = ConfidenceModel:predict(currentFeatureVector, true)[1][1]
 
-	local previousConfidence = ConfidenceModel:predict(previousFeatureVector, true)[1][1]
-
 	--local relativeChange = (currentConfidence - previousConfidence) / (currentConfidence + previousConfidence)
 
-	local relativeChange = (currentConfidence - previousConfidence) / currentConfidence
+	local relativeChange = (currentConfidence - previousConfidence) / previousConfidence
 
 	--local relativeChange = (currentConfidence - previousConfidence) / previousConfidence -- Doesn't work well.
 

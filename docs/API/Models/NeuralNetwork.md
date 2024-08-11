@@ -343,10 +343,10 @@ NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean, doNot
 
 * zTable: A table containing matrices that was produced by each neuron.
 
-### backPropagate()
+### backwardPropagate()
 
 ```
-NeuralNetwork:backPropagate(lossMatrix: Matrix, clearTables: boolean): []
+NeuralNetwork:backwardPropagate(lossMatrix: Matrix, clearTables: boolean): []
 ```
 
 ### Parameters:

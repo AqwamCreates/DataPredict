@@ -30,7 +30,7 @@ setmetatable(SupportVectorMachineModel, BaseModel)
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.01
 
@@ -300,7 +300,7 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 	
 	costPart1 = AqwamMatrixLibrary:dotProduct(costPart1, costVector)
 	
-	costPart1 = costPart1 / 2
+	costPart1 /= 2
 	
 	local costPart2 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix)
 	
@@ -308,13 +308,13 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 	
 	local costPart3 = AqwamMatrixLibrary:dotProduct(transposedLabelVector, labelVector)
 	
-	costPart3 = costPart3 / 2
+	costPart3 /= 2
 	
 	local costPart4 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix)
 	
 	costPart4 = AqwamMatrixLibrary:dotProduct(costPart4, costVector)
 	
-	costPart4 = costPart4 / (2 * cValue)
+	costPart4 /= (2 * cValue)
 	
 	local cost = costPart1 - costPart2 + costPart3 + costPart4
 	
@@ -338,13 +338,13 @@ local function calculateModelParameters(modelParameters, individualkernelMatrix,
 
 end
 
-function SupportVectorMachineModel.new(maxNumberOfIterations, cValue, kernelFunction, kernelParameters)
+function SupportVectorMachineModel.new(maximumNumberOfIterations, cValue, kernelFunction, kernelParameters)
 
 	local NewSupportVectorMachine = BaseModel.new()
 
 	setmetatable(NewSupportVectorMachine, SupportVectorMachineModel)
 
-	NewSupportVectorMachine.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewSupportVectorMachine.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
 	NewSupportVectorMachine.cValue = cValue or defaultCvalue
 
@@ -355,9 +355,9 @@ function SupportVectorMachineModel.new(maxNumberOfIterations, cValue, kernelFunc
 	return NewSupportVectorMachine
 end
 
-function SupportVectorMachineModel:setParameters(maxNumberOfIterations, cValue, kernelFunction, kernelParameters)
+function SupportVectorMachineModel:setParameters(maximumNumberOfIterations, cValue, kernelFunction, kernelParameters)
 
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 
 	self.cValue = cValue or self.cValue
 
@@ -429,7 +429,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 		self.ModelParameters = calculateModelParameters(self.ModelParameters, mappedFeatureMatrix, labelVector, self.cValue)
 
-	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == self.maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	if (cost == math.huge) then
 

@@ -28,7 +28,7 @@ NeuralNetworkModel.__index = NeuralNetworkModel
 
 setmetatable(NeuralNetworkModel, GradientMethodBaseModel)
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
 
@@ -722,7 +722,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 
 end
 
-function NeuralNetworkModel:backPropagate(lossMatrix, clearTables)
+function NeuralNetworkModel:backwardPropagate(lossMatrix, clearTables)
 	
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 	
@@ -858,13 +858,13 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
 
 end
 
-function NeuralNetworkModel.new(maxNumberOfIterations)
+function NeuralNetworkModel.new(maximumNumberOfIterations)
 
 	local NewNeuralNetworkModel = GradientMethodBaseModel.new()
 
 	setmetatable(NewNeuralNetworkModel, NeuralNetworkModel)
 
-	NewNeuralNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewNeuralNetworkModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
 	NewNeuralNetworkModel.numberOfNeuronsTable = {}
 
@@ -886,9 +886,9 @@ function NeuralNetworkModel.new(maxNumberOfIterations)
 
 end
 
-function NeuralNetworkModel:setParameters(maxNumberOfIterations)
+function NeuralNetworkModel:setParameters(maximumNumberOfIterations)
 
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 
 end
 
@@ -1530,9 +1530,9 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		
 		lossMatrix = AqwamMatrixLibrary:divide(lossMatrix, numberOfData)
 
-		self:backPropagate(lossMatrix, true)
+		self:backwardPropagate(lossMatrix, true)
 
-	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == self.maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 

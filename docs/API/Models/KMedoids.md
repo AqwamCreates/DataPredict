@@ -15,12 +15,12 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-KMedoids.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setTheCentroidsDistanceFarthest: boolean): ModelObject
+KMedoids.new(maximumNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setTheCentroidsDistanceFarthest: boolean): ModelObject
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 
@@ -45,12 +45,12 @@ KMedoids.new(maxNumberOfIterations: integer, numberOfClusters: integer, distance
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-KMedoids:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setTheCentroidsDistanceFarthest: boolean)
+KMedoids:setParameters(maximumNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setTheCentroidsDistanceFarthest: boolean)
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 

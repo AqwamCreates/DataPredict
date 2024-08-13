@@ -21,12 +21,12 @@ ConditionalGenerativeAdversarialNetwork uses two neural networks to generate new
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ConditionalGenerativeAdversarialNetwork.new(maxNumberOfIterations: number): ModelObject
+ConditionalGenerativeAdversarialNetwork.new(maximumNumberOfIterations: number): ModelObject
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 #### Returns:
 
@@ -39,12 +39,12 @@ ConditionalGenerativeAdversarialNetwork.new(maxNumberOfIterations: number): Mode
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ConditionalGenerativeAdversarialNetwork:setParameters(maxNumberOfIterations: number)
+ConditionalGenerativeAdversarialNetwork:setParameters(maximumNumberOfIterations: number)
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 ### setGeneratorModel()
 

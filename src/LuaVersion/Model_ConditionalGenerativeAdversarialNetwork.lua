@@ -26,15 +26,15 @@ ConditionalGenerativeAdversarialNetworkModel.__index = ConditionalGenerativeAdve
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaximumNumberOfIterations = 500
 
-function ConditionalGenerativeAdversarialNetworkModel.new(maxNumberOfIterations)
+function ConditionalGenerativeAdversarialNetworkModel.new(maximumNumberOfIterations)
 	
 	local NewConditionalGenerativeAdversarialNetworkModel = {}
 	
 	setmetatable(NewConditionalGenerativeAdversarialNetworkModel, ConditionalGenerativeAdversarialNetworkModel)
 	
-	NewConditionalGenerativeAdversarialNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewConditionalGenerativeAdversarialNetworkModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 	
 	NewConditionalGenerativeAdversarialNetworkModel.isOutputPrinted = true
 	
@@ -46,9 +46,9 @@ function ConditionalGenerativeAdversarialNetworkModel.new(maxNumberOfIterations)
 	
 end
 
-function ConditionalGenerativeAdversarialNetworkModel:setParameters(maxNumberOfIterations)
+function ConditionalGenerativeAdversarialNetworkModel:setParameters(maximumNumberOfIterations)
 	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 	
 end
 
@@ -65,9 +65,9 @@ function ConditionalGenerativeAdversarialNetworkModel:setGeneratorModel(Generato
 end
 
 function ConditionalGenerativeAdversarialNetworkModel:setPrintOutput(option)
-	
+
 	self.isOutputPrinted = option
-	
+
 end
 
 function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeatureMatrix, labelMatrix)
@@ -126,7 +126,7 @@ function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	
 	local numberOfIterations = 0
 	
-	local maxNumberOfIterations = self.maxNumberOfIterations
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local isOutputPrinted = self.isOutputPrinted
 
@@ -164,7 +164,7 @@ function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. meanDiscriminatorLossMatrix[1][1]) end
 		
-	until (numberOfIterations >= maxNumberOfIterations)
+	until (numberOfIterations >= maximumNumberOfIterations)
 	
 end
 
@@ -195,9 +195,9 @@ function ConditionalGenerativeAdversarialNetworkModel:getDiscriminatorModel()
 end
 
 function ConditionalGenerativeAdversarialNetworkModel:getGeneratorModel()
-	
+
 	return self.GeneratorModel
-	
+
 end
 
 return ConditionalGenerativeAdversarialNetworkModel

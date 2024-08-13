@@ -21,12 +21,12 @@ Contains a table.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-AffinityPropagation.new(maxNumberOfIterations: integer, distanceFunction: string, preferenceType: string, damping: number, preferenceValueArray: {number}): ModelObject
+AffinityPropagation.new(maximumNumberOfIterations: integer, distanceFunction: string, preferenceType: string, damping: number, preferenceValueArray: {number}): ModelObject
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * distanceFunction: The distance function to be used. Available options are:
 
@@ -63,12 +63,12 @@ AffinityPropagation.new(maxNumberOfIterations: integer, distanceFunction: string
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-AffinityPropagation:setParameters(maxNumberOfIterations: integer, distanceFunction: string, preferenceType: string, damping: number, preferenceValueArray: {number})
+AffinityPropagation:setParameters(maximumNumberOfIterations: integer, distanceFunction: string, preferenceType: string, damping: number, preferenceValueArray: {number})
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * distanceFunction: The distance function to be used. Available options are:
 

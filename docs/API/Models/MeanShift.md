@@ -15,12 +15,12 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-MeanShift.new(maxNumberOfIterations: integer, bandwidth: number, bandwidthStep: integer, distanceFunction: string): ModelObject
+MeanShift.new(maximumNumberOfIterations: integer, bandwidth: number, bandwidthStep: integer, distanceFunction: string): ModelObject
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * bandwidth: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
@@ -45,12 +45,12 @@ MeanShift.new(maxNumberOfIterations: integer, bandwidth: number, bandwidthStep: 
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-MeanShift:setParameters(maxNumberOfIterations: integer, bandwidth: number, bandwidthStep: integer, distanceFunction: string)
+MeanShift:setParameters(maximumNumberOfIterations: integer, bandwidth: number, bandwidthStep: integer, distanceFunction: string)
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * bandwidth: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 

@@ -15,12 +15,12 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, sigmoidFunction: string): ModelObject
+LogisticRegression.new(maximumNumberOfIterations: integer, learningRate: number, sigmoidFunction: string): ModelObject
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
@@ -37,12 +37,12 @@ LogisticRegression.new(maxNumberOfIterations: integer, learningRate: number, sig
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-LogisticRegression:setParameters(maxNumberOfIterations: integer, learningRate: number, sigmoidFunction: string)
+LogisticRegression:setParameters(maximumNumberOfIterations: integer, learningRate: number, sigmoidFunction: string)
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 

@@ -15,12 +15,12 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lossFunction: string): ModelObject
+LinearRegression.new(maximumNumberOfIterations: integer, learningRate: number, lossFunction: string): ModelObject
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
@@ -37,12 +37,12 @@ LinearRegression.new(maxNumberOfIterations: integer, learningRate: number, lossF
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-LinearRegression:setParameters(maxNumberOfIterations: integer, learningRate: number, lossFunction: string)
+LinearRegression:setParameters(maximumNumberOfIterations: integer, learningRate: number, lossFunction: string)
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 

@@ -21,12 +21,12 @@ GenerativeAdversarialNetwork uses two neural networks to generate new contents f
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-GenerativeAdversarialNetwork.new(maxNumberOfIterations: number): ModelObject
+GenerativeAdversarialNetwork.new(maximumNumberOfIterations: number): ModelObject
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 #### Returns:
 
@@ -39,12 +39,12 @@ GenerativeAdversarialNetwork.new(maxNumberOfIterations: number): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-GenerativeAdversarialNetwork:setParameters(maxNumberOfIterations: number)
+GenerativeAdversarialNetwork:setParameters(maximumNumberOfIterations: number)
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 ### setGeneratorModel()
 

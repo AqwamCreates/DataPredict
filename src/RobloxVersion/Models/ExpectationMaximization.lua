@@ -36,11 +36,11 @@ setmetatable(ExpectationMaximizationModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local defaultEpsilon = math.pow(10, -9)
-
 local defaultMaximumNumberOfIterations = 10
 
 local defaultNumberOfClusters = math.huge
+
+local defaultEpsilon = math.pow(10, -9)
 
 local function gaussian(featureVector, meanVector, varianceVector, epsilon)
 	
@@ -112,7 +112,7 @@ function ExpectationMaximizationModel:initializeParameters(numberOfClusters, num
 	
 end
 
-local function eStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
+local function expectationStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
 	local numberOfData = #featureMatrix
 	
@@ -128,7 +128,7 @@ end
 
 -- This function updates the model parameters based on the responsibility matrix
 
-local function mStep(featureMatrix, responsibilitiesMatrix, numberOfClusters) -- data x features, data x clusters
+local function maximizationStep(featureMatrix, responsibilitiesMatrix, numberOfClusters) -- data x features, data x clusters
 
 	local numberOfData = #featureMatrix
 
@@ -176,9 +176,9 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	local piMatrix, meanMatrix, varianceMatrix = self:initializeParameters(numberOfClusters, numberOfFeatures)
 	
-	local responsibilities = eStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
+	local responsibilities = expectationStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
-	local piMatrix, meanMatrix, varianceMatrix = mStep(featureMatrix, responsibilities, numberOfClusters)
+	local piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilities, numberOfClusters)
 	
 	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
@@ -303,9 +303,9 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		self:iterationWait()
 
-		responsibilities = eStep(featureMatrix, self.numberOfClusters, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
+		responsibilities = expectationStep(featureMatrix, self.numberOfClusters, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
 
-		piMatrix, meanMatrix, varianceMatrix = mStep(featureMatrix, responsibilities, self.numberOfClusters)
+		piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilities, self.numberOfClusters)
 		
 		gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
 		

@@ -15,12 +15,12 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-SupportVectorMachine.new(maxNumberOfIterations: integer, cValue: number, kernelFunction: string, kernelParameters: table): ModelObject
+SupportVectorMachine.new(maximumNumberOfIterations: integer, cValue: number, kernelFunction: string, kernelParameters: table): ModelObject
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
@@ -51,12 +51,12 @@ SupportVectorMachine.new(maxNumberOfIterations: integer, cValue: number, kernelF
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-SupportVectorMachine:setParameters(maxNumberOfIterations: integer, cValue: number, kernelFunction: string, kernelParameters: table)
+SupportVectorMachine:setParameters(maximumNumberOfIterations: integer, cValue: number, kernelFunction: string, kernelParameters: table)
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 

@@ -26,7 +26,7 @@ ConditionalWassersteinGenerativeAdversarialNetworkModel.__index = ConditionalWas
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaximumNumberOfIterations = 500
 
 local defaultSampleSize = 3
 
@@ -79,13 +79,13 @@ local function samplePair(matrix, matrix2, sampleSize)
 
 end
 
-function ConditionalWassersteinGenerativeAdversarialNetworkModel.new(maxNumberOfIterations, sampleSize)
+function ConditionalWassersteinGenerativeAdversarialNetworkModel.new(maximumNumberOfIterations, sampleSize)
 	
 	local NewConditionalWassersteinGenerativeAdversarialNetworkModel = {}
 	
 	setmetatable(NewConditionalWassersteinGenerativeAdversarialNetworkModel, ConditionalWassersteinGenerativeAdversarialNetworkModel)
 	
-	NewConditionalWassersteinGenerativeAdversarialNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewConditionalWassersteinGenerativeAdversarialNetworkModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 	
 	NewConditionalWassersteinGenerativeAdversarialNetworkModel.sampleSize = sampleSize or defaultSampleSize
 	
@@ -99,9 +99,9 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel.new(maxNumberOf
 	
 end
 
-function ConditionalWassersteinGenerativeAdversarialNetworkModel:setParameters(maxNumberOfIterations, sampleSize)
+function ConditionalWassersteinGenerativeAdversarialNetworkModel:setParameters(maximumNumberOfIterations, sampleSize)
 	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 	
 	self.sampleSize = sampleSize or self.sampleSize
 	
@@ -120,9 +120,9 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:setGeneratorMod
 end
 
 function ConditionalWassersteinGenerativeAdversarialNetworkModel:setPrintOutput(option)
-	
+
 	self.isOutputPrinted = option
-	
+
 end
 
 function ConditionalWassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeatureMatrix, labelMatrix)
@@ -179,7 +179,7 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:train(realFeatu
 	
 	local numberOfIterations = 0
 	
-	local maxNumberOfIterations = self.maxNumberOfIterations
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local isOutputPrinted = self.isOutputPrinted
 
@@ -215,7 +215,7 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:train(realFeatu
 
 		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. discriminatorLossMatrix[1][1]) end
 
-	until (numberOfIterations >= maxNumberOfIterations)
+	until (numberOfIterations >= maximumNumberOfIterations)
 
 	local finalNoiseFeatureMatrixBatch, finalLabelMatrixBatch = samplePair(concatenatedNoiseFeatureMatrix, labelMatrix, sampleSize)
 
@@ -264,9 +264,9 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:getDiscriminato
 end
 
 function ConditionalWassersteinGenerativeAdversarialNetworkModel:getGeneratorModel()
-	
+
 	return self.GeneratorModel
-	
+
 end
 
 return ConditionalWassersteinGenerativeAdversarialNetworkModel

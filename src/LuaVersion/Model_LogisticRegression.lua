@@ -28,7 +28,7 @@ LogisticRegressionModel.__index = LogisticRegressionModel
 
 setmetatable(LogisticRegressionModel, GradientMethodBaseModel)
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
 
@@ -179,22 +179,22 @@ end
 function LogisticRegressionModel:update(lossMatrix, clearFeatureMatrix)
 
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
-
-	local numberOfData = #lossMatrix
 	
+	local numberOfData = #lossMatrix
+
 	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
 
 	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
 
 end
 
-function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, sigmoidFunction)
+function LogisticRegressionModel.new(maximumNumberOfIterations, learningRate, sigmoidFunction)
 	
 	local NewLogisticRegressionModel = GradientMethodBaseModel.new()
 
 	setmetatable(NewLogisticRegressionModel, LogisticRegressionModel)
 
-	NewLogisticRegressionModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewLogisticRegressionModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
 	NewLogisticRegressionModel.learningRate = learningRate or defaultLearningRate
 
@@ -208,9 +208,9 @@ function LogisticRegressionModel.new(maxNumberOfIterations, learningRate, sigmoi
 	
 end
 
-function LogisticRegressionModel:setParameters(maxNumberOfIterations, learningRate, sigmoidFunction)
+function LogisticRegressionModel:setParameters(maximumNumberOfIterations, learningRate, sigmoidFunction)
 
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
@@ -244,7 +244,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 	
 	local Regularization = self.Regularization
 	
-	local maxNumberOfIterations = self.maxNumberOfIterations
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 
@@ -284,7 +284,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 		self:update(lossVector, true, false)
 		
-	until (numberOfIterations == maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

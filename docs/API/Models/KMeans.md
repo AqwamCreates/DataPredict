@@ -15,12 +15,12 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-KMeans.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean): ModelObject
+KMeans.new(maximumNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean): ModelObject
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 
@@ -47,12 +47,12 @@ KMeans.new(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFu
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-KMeans:setParameters(maxNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean)
+KMeans:setParameters(maximumNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean)
 ```
 
 #### Parameters:
 
-* maxNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 

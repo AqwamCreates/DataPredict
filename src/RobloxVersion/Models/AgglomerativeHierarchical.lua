@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT WITHOUT PERMISSION!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local BaseModel = require(script.Parent.BaseModel)
 
 AgglomerativeHierarchicalModel = {}
@@ -8,9 +36,7 @@ setmetatable(AgglomerativeHierarchicalModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local defaultMaxNumberOfIterations = 500
-
-local defaultNumberOfcentroids = 1
+local defaultNumberOfCentroids = 1
 
 local defaultDistanceFunction = "Euclidean"
 
@@ -45,7 +71,7 @@ local distanceFunctionList = {
 		return distance 
 
 	end,
-
+	
 	["Cosine"] = function(x1, x2)
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
@@ -71,7 +97,7 @@ local distanceFunctionList = {
 		return cosineDistance
 
 	end,
-	
+
 }
 
 local function calculateDistance(vector1, vector2, distanceFunction)
@@ -230,11 +256,11 @@ end
 
 -----------------------------------------------------------------------------------------------------------------------
 
-local function findClosestcentroids(centroidDistanceMatrix)
+local function findClosestCentroids(centroidDistanceMatrix)
 
 	local distance
 
-	local minimumCentroidDistance = -math.huge
+	local minimumCentroidDistance = math.huge
 
 	local centroidIndex1 = nil
 
@@ -246,7 +272,7 @@ local function findClosestcentroids(centroidDistanceMatrix)
 
 			distance = centroidDistanceMatrix[i][j]
 
-			if (distance > minimumCentroidDistance) and (i~=j) then
+			if (distance < minimumCentroidDistance) and (i~=j) then
 
 				minimumCentroidDistance = distance
 
@@ -352,7 +378,7 @@ function AgglomerativeHierarchicalModel.new(numberOfCentroids, distanceFunction,
 
 	NewAgglomerativeHierarchicalModel.linkageFunction = linkageFunction or defaultLinkageFunction
 
-	NewAgglomerativeHierarchicalModel.numberOfCentroids = numberOfCentroids or defaultNumberOfcentroids
+	NewAgglomerativeHierarchicalModel.numberOfCentroids = numberOfCentroids or defaultNumberOfCentroids
 
 	return NewAgglomerativeHierarchicalModel
 
@@ -424,7 +450,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 			
 		end
 
-		centroidIndex1, centroidIndex2 = findClosestcentroids(centroidDistanceMatrix)
+		centroidIndex1, centroidIndex2 = findClosestCentroids(centroidDistanceMatrix)
 
 		centroids = createNewcentroids(centroids, centroidIndex1, centroidIndex2)
 

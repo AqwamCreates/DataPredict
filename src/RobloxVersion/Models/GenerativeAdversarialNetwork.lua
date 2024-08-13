@@ -1,18 +1,46 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 GenerativeAdversarialNetworkModel = {}
 
 GenerativeAdversarialNetworkModel.__index = GenerativeAdversarialNetworkModel
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaximumNumberOfIterations = 500
 
-function GenerativeAdversarialNetworkModel.new(maxNumberOfIterations)
+function GenerativeAdversarialNetworkModel.new(maximumNumberOfIterations)
 	
 	local NewGenerativeAdversarialNetworkModel = {}
 	
 	setmetatable(NewGenerativeAdversarialNetworkModel, GenerativeAdversarialNetworkModel)
 	
-	NewGenerativeAdversarialNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewGenerativeAdversarialNetworkModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 	
 	NewGenerativeAdversarialNetworkModel.isOutputPrinted = true
 	
@@ -24,9 +52,9 @@ function GenerativeAdversarialNetworkModel.new(maxNumberOfIterations)
 	
 end
 
-function GenerativeAdversarialNetworkModel:setParameters(maxNumberOfIterations)
+function GenerativeAdversarialNetworkModel:setParameters(maximumNumberOfIterations)
 	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 	
 end
 
@@ -43,9 +71,9 @@ function GenerativeAdversarialNetworkModel:setGeneratorModel(GeneratorModel)
 end
 
 function GenerativeAdversarialNetworkModel:setPrintOutput(option)
-	
+
 	self.isOutputPrinted = option
-	
+
 end
 
 function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeatureMatrix)
@@ -150,15 +178,15 @@ function GenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix)
 	
 end
 
-function GenerativeAdversarialNetworkModel:getGeneratorModel()
-
-	return self.GeneratorModel
-
-end
-
 function GenerativeAdversarialNetworkModel:getDiscriminatorModel()
 
 	return self.DiscriminatorModel
+
+end
+
+function GenerativeAdversarialNetworkModel:getGeneratorModel()
+
+	return self.GeneratorModel
 
 end
 

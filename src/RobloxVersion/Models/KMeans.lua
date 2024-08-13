@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local BaseModel = require(script.Parent.BaseModel)
 
 KMeansModel = {}
@@ -8,7 +36,7 @@ setmetatable(KMeansModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaximumNumberOfIterations = 500
 
 local defaultNumberOfClusters = 2
 
@@ -298,13 +326,13 @@ local function calculateModelParametersMean(clusterAssignmentMatrix, modelParame
 	
 end
 
-function KMeansModel.new(maxNumberOfIterations, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest)
+function KMeansModel.new(maximumNumberOfIterations, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest)
 	
 	local NewKMeansModel = BaseModel.new()
 	
 	setmetatable(NewKMeansModel, KMeansModel)
 	
-	NewKMeansModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewKMeansModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
 	NewKMeansModel.distanceFunction = distanceFunction or defaultDistanceFunction
 
@@ -318,9 +346,9 @@ function KMeansModel.new(maxNumberOfIterations, numberOfClusters, distanceFuncti
 	
 end
 
-function KMeansModel:setParameters(maxNumberOfIterations, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest)
+function KMeansModel:setParameters(maximumNumberOfIterations, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest)
 	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 
 	self.distanceFunction = distanceFunction or self.distanceFunction
 
@@ -402,7 +430,7 @@ function KMeansModel:train(featureMatrix)
 
 		modelParameters = calculateModelParametersMean(clusterAssignmentMatrix, modelParameters)
 
-	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == self.maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

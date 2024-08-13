@@ -1,10 +1,38 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 WassersteinGenerativeAdversarialNetworkModel = {}
 
 WassersteinGenerativeAdversarialNetworkModel.__index = WassersteinGenerativeAdversarialNetworkModel
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaximumNumberOfIterations = 500
 
 local defaultSampleSize = 3
 
@@ -26,13 +54,13 @@ local function sample(matrix, sampleSize)
 
 end
 
-function WassersteinGenerativeAdversarialNetworkModel.new(maxNumberOfIterations, sampleSize)
+function WassersteinGenerativeAdversarialNetworkModel.new(maximumNumberOfIterations, sampleSize)
 	
 	local NewWassersteinGenerativeAdversarialNetworkModel = {}
 	
 	setmetatable(NewWassersteinGenerativeAdversarialNetworkModel, WassersteinGenerativeAdversarialNetworkModel)
 	
-	NewWassersteinGenerativeAdversarialNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewWassersteinGenerativeAdversarialNetworkModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 	
 	NewWassersteinGenerativeAdversarialNetworkModel.sampleSize = sampleSize or defaultSampleSize
 	
@@ -46,9 +74,9 @@ function WassersteinGenerativeAdversarialNetworkModel.new(maxNumberOfIterations,
 	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:setParameters(maxNumberOfIterations, sampleSize)
+function WassersteinGenerativeAdversarialNetworkModel:setParameters(maximumNumberOfIterations, sampleSize)
 	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 	
 	self.sampleSize = sampleSize or self.sampleSize
 	
@@ -120,7 +148,7 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	
 	local numberOfIterations = 0
 	
-	local maxNumberOfIterations = self.maxNumberOfIterations
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local isOutputPrinted = self.isOutputPrinted
 
@@ -152,7 +180,7 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. discriminatorLossMatrix[1][1]) end
 		
-	until (numberOfIterations >= maxNumberOfIterations)
+	until (numberOfIterations >= maximumNumberOfIterations)
 	
 	local finalNoiseFeatureMatrixBatch = sample(noiseFeatureMatrix, sampleSize)
 	

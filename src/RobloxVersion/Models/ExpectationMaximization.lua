@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local BaseModel = require(script.Parent.BaseModel)
 
 local ExpectationMaximizationModel = {}
@@ -10,7 +38,7 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker
 
 local defaultEpsilon = math.pow(10, -9)
 
-local defaultMaxNumberOfIterations = 10
+local defaultMaximumNumberOfIterations = 10
 
 local defaultNumberOfClusters = math.huge
 
@@ -200,13 +228,13 @@ function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, e
 	
 end
 
-function ExpectationMaximizationModel.new(maxNumberOfIterations, numberOfClusters, epsilon)
+function ExpectationMaximizationModel.new(maximumNumberOfIterations, numberOfClusters, epsilon)
 
 	local NewExpectationMaximizationModel = BaseModel.new()
 
 	setmetatable(NewExpectationMaximizationModel, ExpectationMaximizationModel)
 	
-	NewExpectationMaximizationModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewExpectationMaximizationModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
 	NewExpectationMaximizationModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
 
@@ -215,9 +243,9 @@ function ExpectationMaximizationModel.new(maxNumberOfIterations, numberOfCluster
 	return NewExpectationMaximizationModel
 end
 
-function ExpectationMaximizationModel:setParameters(maxNumberOfIterations, numberOfClusters, epsilon)
+function ExpectationMaximizationModel:setParameters(maximumNumberOfIterations, numberOfClusters, epsilon)
 	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 
@@ -311,7 +339,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 		end
 
-	until (numberOfIterations >= self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations >= self.maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	self.ModelParameters = {piMatrix, meanMatrix, varianceMatrix}
 

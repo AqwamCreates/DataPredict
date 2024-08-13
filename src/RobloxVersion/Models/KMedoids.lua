@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local BaseModel = require(script.Parent.BaseModel)
 
 KMedoidsModel = {}
@@ -8,7 +36,7 @@ setmetatable(KMedoidsModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local defaultMaxNumberOfIterations = math.huge
+local defaultMaximumNumberOfIterations = math.huge
 
 local defaultNumberOfClusters = 2
 
@@ -303,13 +331,13 @@ local function initializeCentroids(featureMatrix, numberOfClusters, distanceFunc
 end
 
 
-function KMedoidsModel.new(maxNumberOfIterations, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
+function KMedoidsModel.new(maximumNumberOfIterations, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
 	
 	local NewKMedoidsModel = BaseModel.new()
 	
 	setmetatable(NewKMedoidsModel, KMedoidsModel)
 	
-	NewKMedoidsModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewKMedoidsModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 	
 	NewKMedoidsModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
 
@@ -321,9 +349,9 @@ function KMedoidsModel.new(maxNumberOfIterations, numberOfClusters, distanceFunc
 	
 end
 
-function KMedoidsModel:setParameters(maxNumberOfIterations, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
+function KMedoidsModel:setParameters(maximumNumberOfIterations, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
 	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 	
 	self.numberOfClusters = numberOfClusters or self.numberOfClusters
 
@@ -345,7 +373,7 @@ function KMedoidsModel:train(featureMatrix)
 
 	local numberOfIterations = 0
 	
-	local maxNumberOfIterations = self.maxNumberOfIterations
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local numberOfClusters = self.numberOfClusters
 	
@@ -401,15 +429,15 @@ function KMedoidsModel:train(featureMatrix)
 
 				self:printCostAndNumberOfIterations(currentCost, numberOfIterations)
 
-				if (numberOfIterations >= maxNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
+				if (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
 
 			end
 
-			if (numberOfIterations >= maxNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
+			if (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
 
 		end
 		
-	until (numberOfIterations >= maxNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost)
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost)
 	
 	if (currentCost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

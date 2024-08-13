@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local BaseModel = require(script.Parent.BaseModel)
 
 MeanShiftModel = {}
@@ -8,7 +36,7 @@ setmetatable(MeanShiftModel, BaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaximumNumberOfIterations = 500
 
 local defaultDistanceFunction = "Euclidean"
 
@@ -45,7 +73,7 @@ local distanceFunctionList = {
 		return distance 
 
 	end,
-
+	
 	["Cosine"] = function(x1, x2)
 
 		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
@@ -71,7 +99,7 @@ local distanceFunctionList = {
 		return cosineDistance
 
 	end,
-	
+
 }
 
 local function calculateDistance(vector1, vector2, distanceFunction)
@@ -272,13 +300,13 @@ local function mergeCentroids(ModelParameters, featureMatrix, bandwidth, weights
 	
 end
 
-function MeanShiftModel.new(maxNumberOfIterations, bandwidth, bandwidthStep, distanceFunction)
+function MeanShiftModel.new(maximumNumberOfIterations, bandwidth, bandwidthStep, distanceFunction)
 	
 	local NewMeanShiftModel = BaseModel.new()
 	
 	setmetatable(NewMeanShiftModel, MeanShiftModel)
 	
-	NewMeanShiftModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewMeanShiftModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
 	NewMeanShiftModel.distanceFunction = distanceFunction or defaultDistanceFunction
 
@@ -290,9 +318,9 @@ function MeanShiftModel.new(maxNumberOfIterations, bandwidth, bandwidthStep, dis
 	
 end
 
-function MeanShiftModel:setParameters(maxNumberOfIterations, bandwidth, bandwidthStep, distanceFunction)
+function MeanShiftModel:setParameters(maximumNumberOfIterations, bandwidth, bandwidthStep, distanceFunction)
 	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 
 	self.distanceFunction = distanceFunction or self.distanceFunction
 
@@ -364,7 +392,7 @@ function MeanShiftModel:train(featureMatrix)
 
 		self.ModelParameters = mergeCentroids(self.ModelParameters, featureMatrix, self.bandwidth, weights, self.distanceFunction)
 		
-	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == self.maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

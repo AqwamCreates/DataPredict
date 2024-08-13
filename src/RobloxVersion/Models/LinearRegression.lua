@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
 LinearRegressionModel = {}
@@ -8,7 +36,7 @@ setmetatable(LinearRegressionModel, GradientMethodBaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.3
 
@@ -118,9 +146,9 @@ end
 
 function LinearRegressionModel:update(lossMatrix, clearFeatureMatrix, doNotUpdateModelParameters)
 	
-	local numberOfData = #lossMatrix
-	
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+	
+	local numberOfData = #lossMatrix
 	
 	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
 	
@@ -130,13 +158,13 @@ function LinearRegressionModel:update(lossMatrix, clearFeatureMatrix, doNotUpdat
 	
 end
 
-function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lossFunction)
+function LinearRegressionModel.new(maximumNumberOfIterations, learningRate, lossFunction)
 	
 	local NewLinearRegressionModel = GradientMethodBaseModel.new()
 	
 	setmetatable(NewLinearRegressionModel, LinearRegressionModel)
 	
-	NewLinearRegressionModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewLinearRegressionModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 	
 	NewLinearRegressionModel.learningRate = learningRate or defaultLearningRate
 	
@@ -150,9 +178,9 @@ function LinearRegressionModel.new(maxNumberOfIterations, learningRate, lossFunc
 	
 end
 
-function LinearRegressionModel:setParameters(maxNumberOfIterations, learningRate, lossFunction)
+function LinearRegressionModel:setParameters(maximumNumberOfIterations, learningRate, lossFunction)
 
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 
 	self.learningRate = learningRate or self.learningRate
 
@@ -186,7 +214,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	
 	local Regularization = self.Regularization
 	
-	local maxNumberOfIterations = self.maxNumberOfIterations
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 	
@@ -226,7 +254,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		
 		self:update(lossVector, true, false)
 		
-	until (numberOfIterations == maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values") end
 	

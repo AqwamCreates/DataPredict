@@ -126,7 +126,7 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 	
 	local numberOfIterations = 0
 	
-	local maxNumberOfIterations = self.maxNumberOfIterations
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local isOutputPrinted = self.isOutputPrinted
 
@@ -162,7 +162,7 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 		
 		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. meanDiscriminatorLossMatrix[1][1]) end
 		
-	until (numberOfIterations >= maxNumberOfIterations)
+	until (numberOfIterations >= maximumNumberOfIterations)
 	
 end
 

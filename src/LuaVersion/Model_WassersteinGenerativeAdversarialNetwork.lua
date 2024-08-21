@@ -26,7 +26,9 @@ WassersteinGenerativeAdversarialNetworkModel.__index = WassersteinGenerativeAdve
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local defaultMaximumNumberOfIterations = 500
+local defaultGeneratorMaximumNumberOfIterations = 50
+
+local defaultDiscriminatorMaximumNumberOfIterations = 100
 
 local defaultSampleSize = 3
 
@@ -48,13 +50,15 @@ local function sample(matrix, sampleSize)
 
 end
 
-function WassersteinGenerativeAdversarialNetworkModel.new(maximumNumberOfIterations, sampleSize)
+function WassersteinGenerativeAdversarialNetworkModel.new(generatorMaximumNumberOfIterations, discriminatorMaximumNumberOfIterations, sampleSize)
 	
 	local NewWassersteinGenerativeAdversarialNetworkModel = {}
 	
 	setmetatable(NewWassersteinGenerativeAdversarialNetworkModel, WassersteinGenerativeAdversarialNetworkModel)
 	
-	NewWassersteinGenerativeAdversarialNetworkModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	NewWassersteinGenerativeAdversarialNetworkModel.generatorMaximumNumberOfIterations = generatorMaximumNumberOfIterations or defaultGeneratorMaximumNumberOfIterations
+
+	NewWassersteinGenerativeAdversarialNetworkModel.discriminatorMaximumNumberOfIterations = discriminatorMaximumNumberOfIterations or defaultDiscriminatorMaximumNumberOfIterations
 	
 	NewWassersteinGenerativeAdversarialNetworkModel.sampleSize = sampleSize or defaultSampleSize
 	
@@ -68,10 +72,12 @@ function WassersteinGenerativeAdversarialNetworkModel.new(maximumNumberOfIterati
 	
 end
 
-function WassersteinGenerativeAdversarialNetworkModel:setParameters(maximumNumberOfIterations, sampleSize)
+function WassersteinGenerativeAdversarialNetworkModel:setParameters(generatorMaximumNumberOfIterations, discriminatorMaximumNumberOfIterations, sampleSize)
 	
-	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
-	
+	self.generatorMaximumNumberOfIterations = generatorMaximumNumberOfIterations or self.generatorMaximumNumberOfIterations
+
+	self.discriminatorMaximumNumberOfIterations = discriminatorMaximumNumberOfIterations or self.discriminatorMaximumNumberOfIterations
+
 	self.sampleSize = sampleSize or self.sampleSize
 	
 end
@@ -132,65 +138,75 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	
 	if (#realFeatureMatrix[1] ~= discriminatorInputNumberOfFeatures) then error("The number of columns in real feature matrix must contain the same number as the number of neurons in discriminator's input layer.") end
 	
-	local sampleSize = self.sampleSize
-	
 	local discriminatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, discriminatorInputNumberOfFeatures, 1)
 
 	local generatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, generatorInputNumberOfFeatures, 1)
 	
 	local functionToApplyToDiscriminator = function (discriminatorRealLabel, discriminatorGeneratedLabel) return -(discriminatorRealLabel - discriminatorGeneratedLabel) end
 	
-	local numberOfIterations = 0
+	local generatorNumberOfIterations = 0
+
+	local discriminatorNumberOfIterations = 0
+
+	local generatorMaximumNumberOfIterations = self.generatorMaximumNumberOfIterations
+
+	local discriminatorMaximumNumberOfIterations = self.discriminatorMaximumNumberOfIterations
 	
-	local maximumNumberOfIterations = self.maximumNumberOfIterations
+	local sampleSize = self.sampleSize
 	
 	local isOutputPrinted = self.isOutputPrinted
-
+	
 	repeat
 		
-		task.wait()
-		
-		local realFeatureMatrixBatch = sample(realFeatureMatrix, sampleSize)
-		
-		local noiseFeatureMatrixBatch = sample(noiseFeatureMatrix, sampleSize)
-		
-		local generatedLabelMatrixBatch = GeneratorModel:predict(noiseFeatureMatrix, true)
-		
-		local discriminatorGeneratedLabelMatrix = DiscriminatorModel:predict(generatedLabelMatrixBatch, true)
-		
-		local discriminatorRealLabelMatrix = DiscriminatorModel:predict(realFeatureMatrixBatch, true)
-		
-		local meanDiscriminatorGeneratedLabelMatrix = AqwamMatrixLibrary:verticalMean(discriminatorGeneratedLabelMatrix)
-		
-		local meanDiscriminatorRealLabelMatrix = AqwamMatrixLibrary:verticalMean(discriminatorRealLabelMatrix)
-		
-		local discriminatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToDiscriminator, meanDiscriminatorRealLabelMatrix, meanDiscriminatorGeneratedLabelMatrix)
-		
-		DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
+		repeat
 
-		DiscriminatorModel:backwardPropagate(discriminatorLossMatrix, true)
-		
-		numberOfIterations = numberOfIterations + 1
-		
-		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. discriminatorLossMatrix[1][1]) end
-		
-	until (numberOfIterations >= maximumNumberOfIterations)
-	
-	local finalNoiseFeatureMatrixBatch = sample(noiseFeatureMatrix, sampleSize)
-	
-	local finalGeneratedLabelMatrix = GeneratorModel:predict(finalNoiseFeatureMatrixBatch, true)
-	
-	local generatorLossMatrix = DiscriminatorModel:predict(finalGeneratedLabelMatrix, true)
-	
-	local meanGeneratorLossVector = AqwamMatrixLibrary:verticalMean(generatorLossMatrix)
-	
-	meanGeneratorLossVector = AqwamMatrixLibrary:multiply(-1, meanGeneratorLossVector)
-	
-	meanGeneratorLossVector = AqwamMatrixLibrary:createMatrix(1, generatorOutputNumberOfFeatures, meanGeneratorLossVector[1][1])
-	
-	GeneratorModel:forwardPropagate(generatorInputMatrix, true)
+			task.wait()
 
-	GeneratorModel:backwardPropagate(meanGeneratorLossVector, true)
+			local realFeatureMatrixBatch = sample(realFeatureMatrix, sampleSize)
+
+			local noiseFeatureMatrixBatch = sample(noiseFeatureMatrix, sampleSize)
+
+			local generatedLabelMatrixBatch = GeneratorModel:predict(noiseFeatureMatrix, true)
+
+			local discriminatorGeneratedLabelMatrix = DiscriminatorModel:predict(generatedLabelMatrixBatch, true)
+
+			local discriminatorRealLabelMatrix = DiscriminatorModel:predict(realFeatureMatrixBatch, true)
+
+			local meanDiscriminatorGeneratedLabelMatrix = AqwamMatrixLibrary:verticalMean(discriminatorGeneratedLabelMatrix)
+
+			local meanDiscriminatorRealLabelMatrix = AqwamMatrixLibrary:verticalMean(discriminatorRealLabelMatrix)
+
+			local discriminatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToDiscriminator, meanDiscriminatorRealLabelMatrix, meanDiscriminatorGeneratedLabelMatrix)
+
+			DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
+
+			DiscriminatorModel:backwardPropagate(discriminatorLossMatrix, true)
+
+			discriminatorNumberOfIterations = discriminatorNumberOfIterations + 1
+
+			if (isOutputPrinted) then print("Generator Iteration: " .. generatorNumberOfIterations .."\t\tDiscriminator Iteration: " .. discriminatorMaximumNumberOfIterations .. "\t\tDiscriminator Cost: " .. discriminatorLossMatrix[1][1]) end
+
+		until (discriminatorNumberOfIterations >= generatorMaximumNumberOfIterations)
+
+		local finalNoiseFeatureMatrixBatch = sample(noiseFeatureMatrix, sampleSize)
+
+		local finalGeneratedLabelMatrix = GeneratorModel:predict(finalNoiseFeatureMatrixBatch, true)
+
+		local generatorLossMatrix = DiscriminatorModel:predict(finalGeneratedLabelMatrix, true)
+
+		local meanGeneratorLossVector = AqwamMatrixLibrary:verticalMean(generatorLossMatrix)
+
+		meanGeneratorLossVector = AqwamMatrixLibrary:multiply(-1, meanGeneratorLossVector)
+
+		meanGeneratorLossVector = AqwamMatrixLibrary:createMatrix(1, generatorOutputNumberOfFeatures, meanGeneratorLossVector[1][1])
+
+		GeneratorModel:forwardPropagate(generatorInputMatrix, true)
+
+		GeneratorModel:backwardPropagate(meanGeneratorLossVector, true)
+		
+		generatorNumberOfIterations = generatorNumberOfIterations + 1
+		
+	until (generatorNumberOfIterations >= generatorMaximumNumberOfIterations)
 	
 end
 

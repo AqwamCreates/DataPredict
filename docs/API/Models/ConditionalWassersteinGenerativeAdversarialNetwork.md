@@ -21,12 +21,14 @@ ConditionalWassersteinGenerativeAdversarialNetwork uses two neural networks to g
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ConditionalWassersteinGenerativeAdversarialNetwork.new(maximumNumberOfIterations: number, sampleSize: number): ModelObject
+ConditionalWassersteinGenerativeAdversarialNetwork.new(generatorMaximumNumberOfIterations: number, discriminatorMaximumNumberOfIterations: number, sampleSize: number): ModelObject
 ```
 
 #### Parameters:
 
-* maximumNumberOfIterations: How many times should the model needed to be trained.
+* generatorMaximumNumberOfIterations: The number of times that the generator should be trained.
+
+* discriminatorMaximumNumberOfIterations: The number of times that the discriminator should be trained for each of generator's iteration.
 
 * sampleSize: How many randomly chosen data will be used from the real feature matrix and noise feature matrix on every iteration.
 
@@ -41,12 +43,14 @@ ConditionalWassersteinGenerativeAdversarialNetwork.new(maximumNumberOfIterations
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ConditionalWassersteinGenerativeAdversarialNetwork:setParameters(maximumNumberOfIterations: number, sampleSize: number)
+ConditionalWassersteinGenerativeAdversarialNetwork:setParameters(generatorMaximumNumberOfIterations: number, discriminatorMaximumNumberOfIterations: number, sampleSize: number)
 ```
 
 #### Parameters:
 
-* maximumNumberOfIterations: How many times should the model needed to be trained.
+* generatorMaximumNumberOfIterations: The number of times that the generator should be trained.
+
+* discriminatorMaximumNumberOfIterations: The number of times that the discriminator should be trained for each of generator's iteration.
 
 * sampleSize: How many randomly chosen data will be used from the real feature matrix and noise feature matrix on every iteration.
 

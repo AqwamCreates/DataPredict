@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - MeanShift
 
-MeanShift is a clustering algorithm that finds cluster centers by moving points towards higher density regions.
+MeanShift is a an unsupervised machine learning model that finds cluster centers by moving points towards higher density regions.
 
 ## Stored Model Parameters
 

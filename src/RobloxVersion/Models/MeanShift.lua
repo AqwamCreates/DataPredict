@@ -38,11 +38,7 @@ local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker
 
 local defaultMaximumNumberOfIterations = 500
 
-local defaultStopWhenModelParametersDoesNotChange = true
-
-local defaultBandwidth = math.huge
-
-local defaultBandwidthStep = 100
+local defaultBandwidth = 100
 
 local defaultDistanceFunction = "Euclidean"
 

@@ -300,15 +300,15 @@ local function createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidt
 			
 			local multipliedKernelVector = AqwamMatrixLibrary:multiply(kernelVector, featureVector)
 			
-			local kernelSumVector = {sumKernelMatrix[clusterIndex]}
+			local sumKernelVector = {sumKernelMatrix[clusterIndex]}
 			
 			local sumMultipliedKernelVector = {sumMultipliedKernelMatrix[clusterIndex]}
 			
-			kernelSumVector = AqwamMatrixLibrary:add(kernelSumVector, kernelVector) 
+			sumKernelVector = AqwamMatrixLibrary:add(sumKernelVector, kernelVector) 
 			
 			sumMultipliedKernelVector = AqwamMatrixLibrary:add(sumMultipliedKernelVector, multipliedKernelVector)
 
-			sumKernelMatrix[clusterIndex] = kernelSumVector[1]
+			sumKernelMatrix[clusterIndex] = sumKernelVector[1]
 			
 			sumMultipliedKernelMatrix[clusterIndex] = sumMultipliedKernelVector[1]
 			

@@ -250,22 +250,6 @@ local function findEqualRowIndex(matrix1, matrix2)
 	
 end
 
-local function removeDuplicateRows(ModelParameters)
-	
-	local UniqueModelParameters = {}
-	
-	for i = 1, #ModelParameters, 1 do
-		
-		local index = findEqualRowIndex(UniqueModelParameters, {ModelParameters[i]})
-		
-		if (index == nil) then table.insert(UniqueModelParameters, ModelParameters[i]) end
-		
-	end
-	
-	return UniqueModelParameters
-	
-end
-
 local function createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidth, distanceFunction, kernelFunction, kernelParameters)
 	
 	local numberOfData = #featureMatrix
@@ -407,8 +391,6 @@ function MeanShiftModel:train(featureMatrix)
 		local weightedMeanMatrix = createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidth, distanceFunction, kernelFunction, kernelParameters)
 		
 		ModelParameters = AqwamMatrixLibrary:subtract(ModelParameters, weightedMeanMatrix)
-		
-		ModelParameters = removeDuplicateRows(ModelParameters)
 		
 		self.ModelParameters = ModelParameters
 		

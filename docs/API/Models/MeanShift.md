@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - MeanShift
 
-MeanShift is a clustering algorithm that finds cluster centers by moving points towards higher density regions.
+MeanShift is a an unsupervised machine learning model that finds cluster centers by moving points towards higher density regions.
 
 ## Stored Model Parameters
 
@@ -22,9 +22,9 @@ MeanShift.new(maximumNumberOfIterations: integer, bandwidth: number, bandwidthSt
 
 * maximumNumberOfIterations: How many times should the model needed to be trained.
 
-* bandwidth: The speed at which the model learns. Recommended that the value is set between 0 to 1.
+* bandwidth: The size of the area around each data point.
 
-* bandwidthStep: Number of clusters for model to train and predict on.
+* bandwidthStep: The size of the update for each clusters.
 
 * distanceFunction: The function that the model will use to train. Available options are:
 
@@ -52,9 +52,9 @@ MeanShift:setParameters(maximumNumberOfIterations: integer, bandwidth: number, b
 
 * maximumNumberOfIterations: How many times should the model needed to be trained.
 
-* bandwidth: The speed at which the model learns. Recommended that the value is set between 0 to 1.
+* bandwidth: The size of the area around each data point.
 
-* bandwidthStep: Number of clusters for model to train and predict on.
+* bandwidthStep: The size of the update for each clusters.
 
 * distanceFunction: The function that the model will use to train. Available options are:
 
@@ -69,7 +69,7 @@ MeanShift:setParameters(maximumNumberOfIterations: integer, bandwidth: number, b
 Train the model.
 
 ```
-KMeans:train(featureMatrix: Matrix)
+MeanShift:train(featureMatrix: Matrix)
 ```
 
 #### Parameters:
@@ -85,7 +85,7 @@ KMeans:train(featureMatrix: Matrix)
 Predict which clusters does it belong to for a given data.
 
 ```
-KMeans:predict(featureMatrix: Matrix): integer, number
+MeanShift:predict(featureMatrix: Matrix): integer, number
 ```
 
 #### Parameters:

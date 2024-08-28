@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-MeanShift.new(maximumNumberOfIterations: integer, bandwidth: number, bandwidthStep: integer, distanceFunction: string): ModelObject
+MeanShift.new(maximumNumberOfIterations: integer, bandwidth: number, distanceFunction: string, kernelFunction: string, kernelParameters: table): ModelObject
 ```
 
 #### Parameters:
@@ -24,15 +24,19 @@ MeanShift.new(maximumNumberOfIterations: integer, bandwidth: number, bandwidthSt
 
 * bandwidth: The size of the area around each data point.
 
-* bandwidthStep: The size of the update for each clusters.
+* distanceFunction: The function to calculate the distance between the data points and the centroids. Available options are:
 
-* distanceFunction: The function that the model will use to train. Available options are:
-
-  * Euclidean
+  * Euclidean (Default)
  
   * Manhattan
 
   * Cosine
+
+* kernelFunction: The function used to kernelize the distance between the data points and the centroids. Available options are:
+
+ * Gaussian (Default)
+
+ * Linear
 
 #### Returns:
 
@@ -45,7 +49,7 @@ MeanShift.new(maximumNumberOfIterations: integer, bandwidth: number, bandwidthSt
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-MeanShift:setParameters(maximumNumberOfIterations: integer, bandwidth: number, bandwidthStep: integer, distanceFunction: string)
+MeanShift:setParameters(maximumNumberOfIterations: integer, bandwidth: number, distanceFunction: string, kernelFunction: string, kernelParameters: table)
 ```
 
 #### Parameters:
@@ -56,13 +60,19 @@ MeanShift:setParameters(maximumNumberOfIterations: integer, bandwidth: number, b
 
 * bandwidthStep: The size of the update for each clusters.
 
-* distanceFunction: The function that the model will use to train. Available options are:
+* distanceFunction: The function to calculate the distance between the data points and the centroids. Available options are:
 
-  * Euclidean
+  * Euclidean (Default)
  
   * Manhattan
 
   * Cosine
+
+* kernelFunction: The function used to kernelize the distance between the data points and the centroids. Available options are:
+
+ * Gaussian (Default)
+
+ * Linear
 
 ### train()
 

@@ -282,7 +282,9 @@ local function createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidt
 			
 			local kernelInput = distanceMatrix[dataIndex][clusterIndex] / bandwidth
 			
-			local kernelVector = selectedKernelFunction(kernelInput, kernelParameters)
+			local squaredKernelInput = math.pow(kernelInput, 2)
+			
+			local kernelVector = selectedKernelFunction(squaredKernelInput, kernelParameters)
 			
 			local multipliedKernelVector = AqwamMatrixLibrary:multiply(kernelVector, featureVector)
 			

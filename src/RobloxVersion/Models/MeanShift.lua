@@ -282,9 +282,9 @@ local function createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidt
 
 	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix, bandwidth)
 	
-	local sumKernelVector = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
+	local sumKernelMatrix = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
 	
-	local sumMultipliedKernelVector = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
+	local sumMultipliedKernelMatrix = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
 	
 	for dataIndex, featureVector in ipairs(featureMatrix) do
 		
@@ -300,23 +300,23 @@ local function createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidt
 			
 			local multipliedKernelVector = AqwamMatrixLibrary:multiply(kernelVector, featureVector)
 			
-			local kernelizedSumVector = {sumKernelVector[clusterIndex]}
+			local kernelSumVector = {sumKernelMatrix[clusterIndex]}
 			
-			local multipliedKernelizedSumVector = {sumMultipliedKernelVector[clusterIndex]}
+			local sumMultipliedKernelVector = {sumMultipliedKernelMatrix[clusterIndex]}
 			
-			kernelizedSumVector = AqwamMatrixLibrary:add(kernelizedSumVector, kernelVector) 
+			kernelSumVector = AqwamMatrixLibrary:add(kernelSumVector, kernelVector) 
 			
-			multipliedKernelizedSumVector = AqwamMatrixLibrary:add(multipliedKernelizedSumVector, multipliedKernelVector)
+			sumMultipliedKernelVector = AqwamMatrixLibrary:add(sumMultipliedKernelVector, multipliedKernelVector)
 
-			sumKernelVector[clusterIndex] = kernelizedSumVector[1]
+			sumKernelMatrix[clusterIndex] = kernelSumVector[1]
 			
-			sumMultipliedKernelVector[clusterIndex] = multipliedKernelizedSumVector[1]
+			sumMultipliedKernelMatrix[clusterIndex] = sumMultipliedKernelVector[1]
 			
 		end
 		
 	end
 	
-	local weightedMeanMatrix = AqwamMatrixLibrary:divide(sumMultipliedKernelVector, sumKernelVector)
+	local weightedMeanMatrix = AqwamMatrixLibrary:divide(sumMultipliedKernelMatrix, sumKernelMatrix)
 	
 	return weightedMeanMatrix
 	

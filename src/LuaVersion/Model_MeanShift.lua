@@ -176,7 +176,7 @@ local function createDistanceMatrix(featureMatrix, modelParameters, distanceFunc
 
 end
 
-local function createClusterAssignmentMatrix(distanceMatrix, bandwidth) -- contains values of 0 and 1, where 0 is "does not belong to this cluster"
+local function createClusterAssignmentMatrix(distanceMatrix) -- contains values of 0 and 1, where 0 is "does not belong to this cluster"
 
 	local numberOfData = #distanceMatrix -- Number of rows
 
@@ -187,14 +187,16 @@ local function createClusterAssignmentMatrix(distanceMatrix, bandwidth) -- conta
 	local dataPointClusterNumber
 
 	for dataIndex = 1, numberOfData, 1 do
-		
-		for clusterIndex = 1, numberOfClusters, 1 do
-			
-			if (distanceMatrix[dataIndex][clusterIndex] > bandwidth) then continue end
-			
-			clusterAssignmentMatrix[dataIndex][clusterIndex] = 1
-				
-		end
+
+		local distanceVector = {distanceMatrix[dataIndex]}
+
+		local _, vectorIndexArray = AqwamMatrixLibrary:findMinimumValue(distanceVector)
+
+		if (vectorIndexArray == nil) then continue end
+
+		local clusterNumber = vectorIndexArray[2]
+
+		clusterAssignmentMatrix[dataIndex][clusterNumber] = 1
 
 	end
 
@@ -274,7 +276,7 @@ local function createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidt
 	
 	local distanceMatrix = createDistanceMatrix(featureMatrix, ModelParameters, distanceFunction)
 
-	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix, bandwidth)
+	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 	
 	local sumKernelMatrix = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
 	
@@ -288,7 +290,7 @@ local function createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidt
 			
 			local featureVector = {featureVector}
 			
-			local kernelInput = distanceMatrix[dataIndex][clusterIndex]/ bandwidth
+			local kernelInput = distanceMatrix[dataIndex][clusterIndex] / bandwidth
 			
 			local kernelVector = selectedKernelFunction(kernelInput, kernelParameters)
 			

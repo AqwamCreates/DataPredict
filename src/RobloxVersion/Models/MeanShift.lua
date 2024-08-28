@@ -104,21 +104,17 @@ local distanceFunctionList = {
 
 local kernelFunctionList = {
 
-	["Gaussian"] = function(featureMatrix, kernelParameters)
+	["Gaussian"] = function(x, kernelParameters)
 		
-		local functionToApply = function(x) return math.exp(-0.5 * math.pow(x, 2)) / math.sqrt(2 * math.pi) end
-		
-		return AqwamMatrixLibrary:applyFunction(functionToApply, featureMatrix)
+		return math.exp(-0.5 * math.pow(x, 2)) / math.sqrt(2 * math.pi)
 
 	end,
 	
-	["Flat"] = function(featureMatrix, kernelParameters)
+	["Flat"] = function(x, kernelParameters)
 		
 		local lambda = kernelParameters.lambda or defaultLambda
 		
-		local functionToApply = function(x) return ((x <= lambda) and 1) or 0 end
-		
-		return AqwamMatrixLibrary:applyFunction(functionToApply, featureMatrix)
+		return ((x <= lambda) and 1) or 0
 
 	end
 
@@ -274,13 +270,17 @@ local function removeDuplicateRows(ModelParameters)
 	
 end
 
-local function createWeightedMeanMatrix(featureMatrix, ModelParameters, clusterAssignmentMatrix, bandwidth, kernelFunction, kernelParameters)
+local function createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidth, distanceFunction, kernelFunction, kernelParameters)
 	
 	local numberOfData = #featureMatrix
 	
 	local numberOfClusters = #ModelParameters
 	
 	local selectedKernelFunction = kernelFunctionList[kernelFunction]
+	
+	local distanceMatrix = createDistanceMatrix(featureMatrix, ModelParameters, distanceFunction)
+
+	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix, bandwidth)
 	
 	local sumKernelVector = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
 	
@@ -293,12 +293,10 @@ local function createWeightedMeanMatrix(featureMatrix, ModelParameters, clusterA
 			if (clusterAssignmentMatrix[dataIndex][clusterIndex] ~= 1) then continue end
 			
 			local featureVector = {featureVector}
-
-			local subtractedVector = AqwamMatrixLibrary:subtract(featureVector, {clusterVector})
 			
-			local kernelInputVector = AqwamMatrixLibrary:divide(subtractedVector, bandwidth)
+			local kernelInput = distanceMatrix[dataIndex][clusterIndex]/ bandwidth
 			
-			local kernelVector = selectedKernelFunction(subtractedVector, kernelParameters)
+			local kernelVector = selectedKernelFunction(kernelInput, kernelParameters)
 			
 			local multipliedKernelVector = AqwamMatrixLibrary:multiply(kernelVector, featureVector)
 			
@@ -409,12 +407,8 @@ function MeanShiftModel:train(featureMatrix)
 			self:printCostAndNumberOfIterations(cost, numberOfIterations)
 			
 		end
-		
-		local distanceMatrix = createDistanceMatrix(featureMatrix, ModelParameters, distanceFunction)
-		
-		local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix, bandwidth)
 
-		local weightedMeanMatrix = createWeightedMeanMatrix(featureMatrix, ModelParameters, clusterAssignmentMatrix, bandwidth, kernelFunction, kernelParameters)
+		local weightedMeanMatrix = createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidth, distanceFunction, kernelFunction, kernelParameters)
 		
 		ModelParameters = AqwamMatrixLibrary:subtract(ModelParameters, weightedMeanMatrix)
 		

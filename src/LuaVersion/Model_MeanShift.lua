@@ -178,17 +178,17 @@ local function calculateCost(modelParameters, featureMatrix, distanceFunction)
 	
 	for i = 1, #featureMatrix do
 		
-		local minDistance = math.huge
+		local minimumDistance = math.huge
 		
 		for j = 1, #modelParameters do
 			
 			local distance = calculateDistance({featureMatrix[i]}, {modelParameters[j]}, distanceFunction)
 		
-			minDistance = math.min(minDistance, distance)
+			minimumDistance = math.min(minimumDistance, distance)
 			
 		end
 		
-		cost = cost + minDistance
+		cost = cost + minimumDistance
 		
 	end
 	

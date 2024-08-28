@@ -275,12 +275,8 @@ local function mergeCentroids(ModelParameters, featureMatrix, bandwidth, weights
 		end
 		
 		if (#inBandwidth > 0) then
-			
-			local verticalSum = AqwamMatrixLibrary:verticalSum(inBandwidth)
 
-			local numberOfData = #inBandwidth
-
-			local newCentroid = AqwamMatrixLibrary:divide(verticalSum, numberOfData)
+			local newCentroid = AqwamMatrixLibrary:verticalMean(inBandwidth)
 
 			table.insert(NewModelParameters, newCentroid[1])
 			

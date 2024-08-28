@@ -32,9 +32,7 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultMaximumNumberOfIterations = 500
 
-local defaultBandwidth = math.huge
-
-local defaultBandwidthStep = 100
+local defaultBandwidth = 100
 
 local defaultDistanceFunction = "Euclidean"
 

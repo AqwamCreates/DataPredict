@@ -268,7 +268,7 @@ local function removeDuplicateRows(ModelParameters)
 	
 end
 
-local function createWeightedMeanMatrix(featureMatrix, ModelParameters, clusterAssignmentMatrix, bandwidth, kernelFunction)
+local function createWeightedMeanMatrix(featureMatrix, ModelParameters, clusterAssignmentMatrix, bandwidth, kernelFunction, kernelParameters)
 	
 	local numberOfData = #featureMatrix
 	
@@ -292,7 +292,7 @@ local function createWeightedMeanMatrix(featureMatrix, ModelParameters, clusterA
 			
 			local kernelInputVector = AqwamMatrixLibrary:divide(subtractedVector, bandwidth)
 			
-			local kernelVector = selectedKernelFunction(subtractedVector)
+			local kernelVector = selectedKernelFunction(subtractedVector, kernelParameters)
 			
 			local multipliedKernelVector = AqwamMatrixLibrary:multiply(kernelVector, featureVector)
 			
@@ -318,7 +318,7 @@ local function createWeightedMeanMatrix(featureMatrix, ModelParameters, clusterA
 	
 end
 
-function MeanShiftModel.new(maximumNumberOfIterations, bandwidth, distanceFunction, kernelFunction)
+function MeanShiftModel.new(maximumNumberOfIterations, bandwidth, distanceFunction, kernelFunction, kernelParameters)
 	
 	local NewMeanShiftModel = BaseModel.new()
 	
@@ -332,11 +332,13 @@ function MeanShiftModel.new(maximumNumberOfIterations, bandwidth, distanceFuncti
 	
 	NewMeanShiftModel.kernelFunction = kernelFunction or defaultKernelFunction
 	
+	NewMeanShiftModel.kernelParameters = kernelParameters or {}
+	
 	return NewMeanShiftModel
 	
 end
 
-function MeanShiftModel:setParameters(maximumNumberOfIterations, bandwidth, distanceFunction, kernelFunction)
+function MeanShiftModel:setParameters(maximumNumberOfIterations, bandwidth, distanceFunction, kernelFunction, kernelParameters)
 	
 	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 
@@ -345,6 +347,8 @@ function MeanShiftModel:setParameters(maximumNumberOfIterations, bandwidth, dist
 	self.distanceFunction = distanceFunction or self.distanceFunction
 	
 	self.kernelFunction = kernelFunction or self.kernelFunction
+	
+	self.kernelParameters = kernelParameters or self.kernelParameters
 	
 end
 
@@ -369,6 +373,8 @@ function MeanShiftModel:train(featureMatrix)
 	local distanceFunction = self.distanceFunction
 	
 	local kernelFunction = self.kernelFunction
+	
+	local kernelParameters = self.kernelParameters
 	
 	local ModelParameters = self.ModelParameters
 		
@@ -402,7 +408,7 @@ function MeanShiftModel:train(featureMatrix)
 		
 		local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix, bandwidth)
 
-		local weightedMeanMatrix = createWeightedMeanMatrix(featureMatrix, ModelParameters, clusterAssignmentMatrix, bandwidth, kernelFunction)
+		local weightedMeanMatrix = createWeightedMeanMatrix(featureMatrix, ModelParameters, clusterAssignmentMatrix, bandwidth, kernelFunction, kernelParameters)
 		
 		ModelParameters = AqwamMatrixLibrary:subtract(ModelParameters, weightedMeanMatrix)
 		

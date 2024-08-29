@@ -50,4 +50,4 @@ local costFunctionDerivativesTable = NeuralNetwork:backPropagate(lossMatrix, tru
 
 ```
 
-In conclusion, the train() function will do the loss matrix calculations automatically. Meanwhile, this method requires us to calculate the loss function.
+In conclusion, the train() function will do the loss matrix calculations automatically. Meanwhile, this method requires us to calculate the loss function values.

@@ -122,9 +122,9 @@ function ActorCriticModel.new(discountFactor)
 
 			local actionProbability = actionProbabilityHistory[h]
 
-			local actorLoss = math.log(actionProbability) * (returnValue - criticValue) 
+			local actorLoss = math.log(actionProbability) * (criticValue - returnValue) 
 
-			local criticLoss = returnValue - criticValue
+			local criticLoss = criticValue - returnValue
 
 			sumActorLosses += actorLoss
 

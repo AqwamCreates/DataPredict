@@ -158,7 +158,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 			local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, oldAdvantageValue)
 
-			local criticLoss = rewardsToGoArray[h] - criticValueHistory[h]
+			local criticLoss = criticValueHistory[h] - rewardsToGoArray[h]
 
 			sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
 

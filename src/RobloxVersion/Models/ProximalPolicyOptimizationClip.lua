@@ -164,7 +164,7 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 			
 		end
 
-		for h = 1, historyLength, 1 do
+		for h = 2, historyLength, 1 do
 
 			local currentActionVector = actionProbabilityVectorHistory[h]
 
@@ -182,7 +182,7 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 			local actorLossVector = AqwamMatrixLibrary:applyFunction(math.min, surrogateLoss1, surrogateLoss2)
 
-			local criticLoss = rewardsToGoArray[h] - criticValueHistory[h]
+			local criticLoss =  criticValueHistory[h] - rewardsToGoArray[h]
 
 			sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
 
@@ -196,9 +196,7 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 		local calculatedCriticLoss = sumCriticLoss / historyLength
 		
-		local numberOfFeatures, hasBias = ActorModel:getLayer(1)
-
-		numberOfFeatures += (hasBias and 1) or 0
+		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 

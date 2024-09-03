@@ -16,7 +16,7 @@ Under here, this is how you integrate your reinforcement learning algorithms wit
 
 -- Initializing our NeuralNetwork.
 
-local NeuralNetwork = DataPredict.ModelsNeuralNetwork.new()
+local NeuralNetwork = DataPredict.Models.NeuralNetwork.new()
 
 NeuralNetwork:addLayer(10, true, "LeakyReLU")
 

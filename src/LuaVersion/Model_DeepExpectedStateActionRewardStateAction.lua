@@ -40,7 +40,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFact
 	
 	NewDeepExpectedStateActionRewardStateActionModel.epsilon = epsilon or defaultEpsilon
 
-	NewDeepExpectedStateActionRewardStateActionModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local Model = NewDeepExpectedStateActionRewardStateActionModel.Model
 
@@ -103,6 +103,10 @@ function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFact
 		return temporalDifferenceError
 
 	end)
+	
+	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalEpisodeUpdateFunction(function() end)
+
+	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalResetFunction(function() end)
 
 	return NewDeepExpectedStateActionRewardStateActionModel
 

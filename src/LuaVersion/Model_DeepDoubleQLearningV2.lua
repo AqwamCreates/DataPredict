@@ -58,7 +58,7 @@ function DeepDoubleQLearningModel.new(averagingRate, discountFactor)
 	
 	NewDeepDoubleQLearningModel.averagingRate = averagingRate or defaultAveragingRate
 
-	NewDeepDoubleQLearningModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local Model = NewDeepDoubleQLearningModel.Model
 		
@@ -104,6 +104,10 @@ function DeepDoubleQLearningModel.new(averagingRate, discountFactor)
 		return temporalDifferenceError
 
 	end)
+	
+	NewDeepDoubleQLearningModel:setCategoricalEpisodeUpdateFunction(function() end)
+
+	NewDeepDoubleQLearningModel:setCategoricalResetFunction(function() end)
 	
 	return NewDeepDoubleQLearningModel
 

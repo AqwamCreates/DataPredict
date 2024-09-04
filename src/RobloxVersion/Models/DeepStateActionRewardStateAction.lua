@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
@@ -14,7 +42,7 @@ function DeepStateActionRewardStateActionModel.new(discountFactor)
 
 	setmetatable(NewDeepStateActionRewardStateActionModel, DeepStateActionRewardStateActionModel)
 
-	NewDeepStateActionRewardStateActionModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local Model = NewDeepStateActionRewardStateActionModel.Model
 
@@ -35,6 +63,10 @@ function DeepStateActionRewardStateActionModel.new(discountFactor)
 		return temporalDifferenceVector
 
 	end)
+	
+	NewDeepStateActionRewardStateActionModel:setCategoricalEpisodeUpdateFunction(function() end)
+	
+	NewDeepStateActionRewardStateActionModel:setCategoricalResetFunction(function() end)
 
 	return NewDeepStateActionRewardStateActionModel
 

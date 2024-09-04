@@ -1,7 +1,3 @@
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
-
-local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
-
 --[[
 
 	--------------------------------------------------------------------
@@ -24,6 +20,10 @@ local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseM
 
 --]]
 
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+
+local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
+
 DeepQLearningModel = {}
 
 DeepQLearningModel.__index = DeepQLearningModel
@@ -36,7 +36,7 @@ function DeepQLearningModel.new(discountFactor)
 	
 	setmetatable(NewDeepQLearningModel, DeepQLearningModel)
 	
-	NewDeepQLearningModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local Model = NewDeepQLearningModel.Model
 
@@ -67,6 +67,10 @@ function DeepQLearningModel.new(discountFactor)
 		return temporalDifferenceError
 
 	end)
+	
+	NewDeepQLearningModel:setCategoricalEpisodeUpdateFunction(function() end)
+
+	NewDeepQLearningModel:setCategoricalResetFunction(function() end)
 
 	return NewDeepQLearningModel
 

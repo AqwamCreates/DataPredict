@@ -36,7 +36,7 @@ function DeepStateActionRewardStateActionModel.new(discountFactor)
 
 	setmetatable(NewDeepStateActionRewardStateActionModel, DeepStateActionRewardStateActionModel)
 
-	NewDeepStateActionRewardStateActionModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local Model = NewDeepStateActionRewardStateActionModel.Model
 
@@ -57,6 +57,10 @@ function DeepStateActionRewardStateActionModel.new(discountFactor)
 		return temporalDifferenceVector
 
 	end)
+	
+	NewDeepStateActionRewardStateActionModel:setCategoricalEpisodeUpdateFunction(function() end)
+	
+	NewDeepStateActionRewardStateActionModel:setCategoricalResetFunction(function() end)
 
 	return NewDeepStateActionRewardStateActionModel
 

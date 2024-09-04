@@ -78,7 +78,7 @@ function DeepDoubleQLearningModel.new(discountFactor)
 	
 	NewDeepDoubleQLearningModel.ModelParametersArray = {}
 	
-	NewDeepDoubleQLearningModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local Model = NewDeepDoubleQLearningModel.Model
 		
@@ -101,6 +101,10 @@ function DeepDoubleQLearningModel.new(discountFactor)
 		return temporalDifferenceError
 		
 	end)
+	
+	NewDeepDoubleQLearningModel:setCategoricalEpisodeUpdateFunction(function() end)
+	
+	NewDeepDoubleQLearningModel:setCategoricalResetFunction(function() end)
 
 	return NewDeepDoubleQLearningModel
 

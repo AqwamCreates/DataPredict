@@ -78,7 +78,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(discountFactor)
 
 	NewDeepDoubleStateActionRewardStateActionModel.ModelParametersArray = {}
 
-	NewDeepDoubleStateActionRewardStateActionModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local Model = NewDeepDoubleStateActionRewardStateActionModel.Model
 
@@ -90,13 +90,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(discountFactor)
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		NewDeepDoubleStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
-
-		local lossVector = NewDeepDoubleStateActionRewardStateActionModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-		NewDeepDoubleStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
-
-		NewDeepDoubleStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+		local lossVector = NewDeepDoubleStateActionRewardStateActionModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 
 		Model:forwardPropagate(previousFeatureVector, true)
 		
@@ -107,6 +101,10 @@ function DeepDoubleStateActionRewardStateActionModel.new(discountFactor)
 		return lossVector
 
 	end)
+	
+	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalEpisodeUpdateFunction(function() end)
+
+	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalResetFunction(function() end)
 
 	return NewDeepDoubleStateActionRewardStateActionModel
 
@@ -148,17 +146,21 @@ function DeepDoubleStateActionRewardStateActionModel:loadModelParametersFromMode
 
 end
 
-function DeepDoubleStateActionRewardStateActionModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function DeepDoubleStateActionRewardStateActionModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 	
 	local Model = self.Model
+	
+	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+	
+	local previousVector = Model:predict(previousFeatureVector, true)
+	
+	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
 	local targetVector = Model:predict(currentFeatureVector, true)
 
 	local dicountedTargetVector = AqwamMatrixLibrary:multiply(self.discountFactor, targetVector)
 
 	local newTargetVector = AqwamMatrixLibrary:add(rewardValue, dicountedTargetVector)
-	
-	local previousVector = Model:predict(previousFeatureVector, true)
 	
 	local lossVector = AqwamMatrixLibrary:subtract(newTargetVector, previousVector)
 

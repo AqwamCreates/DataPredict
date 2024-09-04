@@ -36,9 +36,33 @@ REINFORCEModel.__index = REINFORCEModel
 
 setmetatable(REINFORCEModel, ReinforcementLearningBaseModel)
 
-local function calculateRewardsToGo(rewardHistory, discountFactor)
+local function calculateProbability(vector)
 
-	local rewardsToGoArray = {}
+	local meanVector = AqwamMatrixLibrary:horizontalMean(vector)
+
+	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(vector)
+
+	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(vector, meanVector)
+
+	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
+
+	local zScoreSquaredVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+
+	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
+
+	local probabilityVectorPart2 = AqwamMatrixLibrary:exponent(probabilityVectorPart1)
+
+	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+
+	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
+
+	return probabilityVector
+
+end
+
+local function calculateRewardToGo(rewardHistory, discountFactor)
+
+	local rewardToGoArray = {}
 
 	local discountedReward = 0
 
@@ -46,11 +70,11 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 		discountedReward = rewardHistory[h] + (discountFactor * discountedReward)
 
-		table.insert(rewardsToGoArray, 1, discountedReward)
+		table.insert(rewardToGoArray, 1, discountedReward)
 
 	end
 
-	return rewardsToGoArray
+	return rewardToGoArray
 
 end
 
@@ -60,66 +84,140 @@ function REINFORCEModel.new(discountFactor)
 	
 	setmetatable(NewREINFORCEModel, REINFORCEModel)
 	
-	local targetVectorArray = {}
+	local actionProbabilityValueHistory = {}
 	
-	local rewardArray = {}
+	local rewardValueHistory = {}
 	
-	NewREINFORCEModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		
+		local Model = NewREINFORCEModel.Model
 
-		local predictedVector = NewREINFORCEModel.Model:predict(previousFeatureVector, true)
+		local actionVector = Model:predict(previousFeatureVector, true)
 		
-		local logPredictedVector = AqwamMatrixLibrary:applyFunction(math.log, predictedVector)
+		local actionProbabilityVector = calculateProbability(actionVector)
 		
-		local targetVector = AqwamMatrixLibrary:multiply(logPredictedVector, rewardValue)
+		local actionIndex = table.find(Model:getClassesList(), action)
+		
+		local actionProbability = actionProbabilityVector[1][actionIndex]
+		
+		local logActionProbability = math.log(actionProbability)
 
-		table.insert(targetVectorArray, targetVector)
+		table.insert(actionProbabilityValueHistory, logActionProbability)
 		
-		table.insert(rewardArray, rewardValue)
+		table.insert(rewardValueHistory, rewardValue)
 
 	end)
 	
-	NewREINFORCEModel:setEpisodeUpdateFunction(function()
+	NewREINFORCEModel:setCategoricalEpisodeUpdateFunction(function()
 		
 		local Model = NewREINFORCEModel.Model
 		
-		local rewardsToGoArray = calculateRewardsToGo(rewardArray, NewREINFORCEModel.discountFactor)
+		local rewardsToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
 		
-		local ClassesList = Model:getClassesList()
+		local sumLossValue = 0
 		
-		local lossVector = AqwamMatrixLibrary:createMatrix(1, #ClassesList)
-		
-		for i = 1, #targetVectorArray, 1 do
+		for i, actionProbabilityValue in ipairs(actionProbabilityValueHistory) do
 			
-			local discountedReward = AqwamMatrixLibrary:multiply(targetVectorArray[i], rewardsToGoArray[i])
+			local lossValue = actionProbabilityValue * rewardsToGoArray[i]
+
+			sumLossValue = sumLossValue + lossValue
 			
-			lossVector = AqwamMatrixLibrary:add(lossVector, discountedReward)
-			
-		end
+		end	
 		
 		local numberOfNeurons = Model:getTotalNumberOfNeurons(1)
 
 		local inputVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeurons, 1)
 		
-		lossVector = AqwamMatrixLibrary:multiply(-1, lossVector)
+		local numberOfLayers = Model:getNumberOfLayers()
+
+		local numberOfNeuronsAtFinalLayer = Model:getTotalNumberOfNeurons(numberOfLayers)
+		
+		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumLossValue)
 		
 		Model:forwardPropagate(inputVector, true)
 
-		Model:backwardPropagate(lossVector, true)
+		Model:backwardPropagate(sumLossVector, true)
 		
-		table.clear(targetVectorArray)
+		table.clear(actionProbabilityValueHistory)
 		
-		table.clear(rewardArray)
+		table.clear(rewardValueHistory)
 		
 	end)
 	
-	NewREINFORCEModel:extendResetFunction(function()
+	NewREINFORCEModel:setCategoricalResetFunction(function()
 
-		table.clear(targetVectorArray)
+		table.clear(actionProbabilityValueHistory)
 		
-		table.clear(rewardArray)
+		table.clear(rewardValueHistory)
 		
 	end)
+	
+	NewREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
+		
+		local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:verticalZScoreNormalization(actionVector)
 
+		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+
+		local logStandardDeviationVector = AqwamMatrixLibrary:logarithm(standardDeviationVector)
+
+		local multipliedLogStandardDeviationVector = AqwamMatrixLibrary:multiply(2, logStandardDeviationVector)
+
+		local numberOfActionDimensions = #NewREINFORCEModel.Model:getClassesList()
+
+		local logLikelihoodPart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
+
+		local logLikelihood = -0.5 * (logLikelihoodPart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
+		
+		table.insert(actionProbabilityValueHistory, logLikelihood)
+
+		table.insert(rewardValueHistory, rewardValue)
+		
+	end)
+	
+	NewREINFORCEModel:setDiagonalGaussianEpisodeUpdateFunction(function()
+
+		local Model = NewREINFORCEModel.Model
+
+		local rewardsToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
+
+		local sumLossValue = 0
+
+		for i, actionProbabilityValue in ipairs(actionProbabilityValueHistory) do
+
+			local lossValue = actionProbabilityValue * rewardsToGoArray[i]
+
+			sumLossValue = sumLossValue + lossValue
+
+		end	
+
+		local numberOfNeurons = Model:getTotalNumberOfNeurons(1)
+
+		local inputVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeurons, 1)
+
+		local numberOfLayers = Model:getNumberOfLayers()
+
+		local numberOfNeuronsAtFinalLayer = Model:getTotalNumberOfNeurons(numberOfLayers)
+
+		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumLossValue)
+
+		Model:forwardPropagate(inputVector, true)
+
+		Model:backwardPropagate(sumLossVector, true)
+
+		table.clear(actionProbabilityValueHistory)
+
+		table.clear(rewardValueHistory)
+
+	end)
+	
+	NewREINFORCEModel:setDiagonalGaussianResetFunction(function()
+
+		table.clear(actionProbabilityValueHistory)
+
+		table.clear(rewardValueHistory)
+
+	end)
+	
 	return NewREINFORCEModel
 
 end

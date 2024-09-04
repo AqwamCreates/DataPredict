@@ -74,7 +74,7 @@ local function calculateProbability(vector)
 
 	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
 
-	local probabilityVectorPart2 = AqwamMatrixLibrary:applyFunction(math.exp, probabilityVectorPart1)
+	local probabilityVectorPart2 = AqwamMatrixLibrary:exponent(probabilityVectorPart1)
 
 	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
 

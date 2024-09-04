@@ -149,6 +149,8 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		table.insert(criticValueHistory, currentCriticValue)
 
 		table.insert(rewardValueHistory, rewardValue)
+		
+		return advantageValue
 
 	end)
 

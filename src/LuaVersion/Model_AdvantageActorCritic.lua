@@ -121,6 +121,8 @@ function AdvantageActorCriticModel.new(discountFactor)
 		table.insert(advantageValueHistory, advantageValue)
 
 		table.insert(actionProbabilityValueHistory, actionProbabilityValue)
+		
+		return advantageValue
 
 	end)
 

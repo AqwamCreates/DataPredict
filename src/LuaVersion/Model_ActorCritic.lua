@@ -163,9 +163,11 @@ function ActorCriticModel.new(discountFactor)
 		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, -sumActorLoss)
 
 		CriticModel:forwardPropagate(featureVector, true)
+		
 		ActorModel:forwardPropagate(featureVector, true)
 
 		CriticModel:backwardPropagate(-sumCriticLoss, true)
+		
 		ActorModel:backwardPropagate(sumActorLossVector, true)
 
 		table.clear(actionProbabilityValueHistory)

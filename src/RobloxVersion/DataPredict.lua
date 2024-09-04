@@ -122,11 +122,7 @@ AqwamRobloxMachineLearningLibrary.Models = {
 
 AqwamRobloxMachineLearningLibrary.AqwamCustomModels = {
 	
-	AdvantageLearningNeuralNetwork = require(AqwamCustomModels.AdvantageLearningNeuralNetwork),
-	
-	AqwamAdvantageActorCriticV1 = require(AqwamCustomModels.AqwamAdvantageActorCriticV1),
-	
-	AqwamAdvantageActorCriticV2 = require(AqwamCustomModels.AqwamAdvantageActorCriticV2),
+	DeepRatioQLearning = require(AqwamCustomModels.DeepRatioQLearning),
 	
 	WeightProximalPolicyOptimizationClip = require(AqwamCustomModels.WeightProximalPolicyOptimizationClip),
 	

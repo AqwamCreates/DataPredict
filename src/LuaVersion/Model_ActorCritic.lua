@@ -30,13 +30,13 @@ ActorCriticModel.__index = ActorCriticModel
 
 setmetatable(ActorCriticModel, ReinforcementLearningActorCriticBaseModel)
 
-local function calculateProbability(outputMatrix)
+local function calculateProbability(vector)
 	
-	local meanVector = AqwamMatrixLibrary:horizontalMean(outputMatrix)
+	local meanVector = AqwamMatrixLibrary:horizontalMean(vector)
 	
-	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(outputMatrix)
+	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(vector)
 	
-	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(outputMatrix, meanVector)
+	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(vector, meanVector)
 	
 	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
 	
@@ -44,7 +44,7 @@ local function calculateProbability(outputMatrix)
 	
 	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
 	
-	local probabilityVectorPart2 = AqwamMatrixLibrary:applyFunction(math.exp, probabilityVectorPart1)
+	local probabilityVectorPart2 = AqwamMatrixLibrary:exponent(probabilityVectorPart1)
 	
 	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
 	

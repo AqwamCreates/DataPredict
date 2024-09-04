@@ -60,13 +60,13 @@ function ActorCriticModel.new(discountFactor)
 	
 	setmetatable(NewActorCriticModel, ActorCriticModel)
 	
-	local categoricalActionProbabilityHistory = {}
+	local categoricalActionProbabilityValueHistory = {}
 	
 	local categoricalCriticValueHistory = {}
 	
 	local categoricalRewardValueHistory = {}
 	
-	local diagonalGaussianActionProbabilityHistory = {}
+	local diagonalGaussianActionProbabilityValueHistory = {}
 	
 	local diagonalGaussianCriticValueHistory = {}
 	
@@ -88,7 +88,7 @@ function ActorCriticModel.new(discountFactor)
 
 		local actionProbability = actionProbabilityVector[1][actionIndex]
 
-		table.insert(categoricalActionProbabilityHistory, math.log(actionProbability))
+		table.insert(categoricalActionProbabilityValueHistory, math.log(actionProbability))
 
 		table.insert(categoricalCriticValueHistory, criticValue)
 
@@ -98,17 +98,19 @@ function ActorCriticModel.new(discountFactor)
 	
 	NewActorCriticModel:setCategoricalEpisodeUpdateFunction(function()
 		
-		local returnsHistory = {}
+		local returnValueHistory = {}
 
 		local discountedSum = 0
 
 		local historyLength = #categoricalRewardValueHistory
+		
+		local discountFactor = NewActorCriticModel.discountFactor
 
 		for h = historyLength, 1, -1 do
 
-			discountedSum = categoricalRewardValueHistory[h] + NewActorCriticModel.discountFactor * discountedSum
+			discountedSum = categoricalRewardValueHistory[h] + (discountFactor * discountedSum)
 
-			table.insert(returnsHistory, 1, discountedSum)
+			table.insert(returnValueHistory, 1, discountedSum)
 
 		end
 
@@ -120,17 +122,17 @@ function ActorCriticModel.new(discountFactor)
 
 			local criticValue = categoricalCriticValueHistory[h]
 
-			local returnValue = returnsHistory[h]
+			local returnValue = returnValueHistory[h]
 
-			local logActionProbability = categoricalActionProbabilityHistory[h]
+			local logActionProbability = categoricalActionProbabilityValueHistory[h]
 			
 			local criticLoss = returnValue - criticValue
 
 			local actorLoss = logActionProbability * criticLoss
 
-			sumCriticLoss += criticLoss
+			sumCriticLoss = sumCriticLoss + criticLoss
 			
-			sumActorLoss += actorLoss
+			sumActorLoss = sumActorLoss + actorLoss
 
 		end
 		
@@ -153,7 +155,7 @@ function ActorCriticModel.new(discountFactor)
 		CriticModel:backwardPropagate(-sumCriticLoss, true)
 		ActorModel:backwardPropagate(sumActorLossVector, true)
 
-		table.clear(categoricalActionProbabilityHistory)
+		table.clear(categoricalActionProbabilityValueHistory)
 
 		table.clear(categoricalCriticValueHistory)
 
@@ -163,7 +165,7 @@ function ActorCriticModel.new(discountFactor)
 	
 	NewActorCriticModel:setCategoricalResetFunction(function()
 		
-		table.clear(categoricalActionProbabilityHistory)
+		table.clear(categoricalActionProbabilityValueHistory)
 
 		table.clear(categoricalCriticValueHistory)
 
@@ -189,7 +191,7 @@ function ActorCriticModel.new(discountFactor)
 
 		local criticValue = NewActorCriticModel.CriticModel:predict(previousFeatureVector, true)[1][1]
 		
-		table.insert(diagonalGaussianActionProbabilityHistory, logLikelihood)
+		table.insert(diagonalGaussianActionProbabilityValueHistory, logLikelihood)
 
 		table.insert(diagonalGaussianCriticValueHistory, criticValue)
 
@@ -199,46 +201,44 @@ function ActorCriticModel.new(discountFactor)
 	
 	NewActorCriticModel:setDiagonalGaussianEpisodeUpdateFunction(function()
 
-		local returnsHistory = {}
+		local returnValueHistory = {}
 
 		local discountedSum = 0
 
-		local historyLength = #diagonalGaussianRewardValueHistory
-		
-		local discountFactor =  NewActorCriticModel.discountFactor
+		local historyLength = #categoricalRewardValueHistory
+
+		local discountFactor = NewActorCriticModel.discountFactor
 
 		for h = historyLength, 1, -1 do
 
 			discountedSum = diagonalGaussianRewardValueHistory[h] + (discountFactor * discountedSum)
 
-			table.insert(returnsHistory, 1, discountedSum)
+			table.insert(returnValueHistory, 1, discountedSum)
 
 		end
 
+		local sumActorLoss = 0
+
 		local sumCriticLoss = 0
-		
-		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #diagonalGaussianActionProbabilityHistory[1][1], 0)
 
 		for h = 1, historyLength, 1 do
 
 			local criticValue = diagonalGaussianCriticValueHistory[h]
 
-			local returnValue = returnsHistory[h]
+			local returnValue = returnValueHistory[h]
 
-			local logActionProbabilityVector = diagonalGaussianActionProbabilityHistory[h]
-			
+			local logActionProbability = diagonalGaussianActionProbabilityValueHistory[h]
+
 			local criticLoss = returnValue - criticValue
 
-			local actorLossVector = AqwamMatrixLibrary:multiply(logActionProbabilityVector, criticLoss)
-			
-			sumCriticLoss += criticLoss
+			local actorLoss = logActionProbability * criticLoss
 
-			sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
+			sumCriticLoss = sumCriticLoss + criticLoss
+
+			sumActorLoss = sumActorLoss + actorLoss
 
 		end
-		
-		sumActorLossVector = AqwamMatrixLibrary:multiply(-1, sumActorLossVector)
-		
+
 		local ActorModel = NewActorCriticModel.ActorModel
 
 		local CriticModel = NewActorCriticModel.CriticModel
@@ -250,6 +250,7 @@ function ActorCriticModel.new(discountFactor)
 		local numberOfNeuronsAtFinalLayer = ActorModel:getTotalNumberOfNeurons(numberOfLayers)
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumActorLoss)
 
 		CriticModel:forwardPropagate(featureVector, true)
 		ActorModel:forwardPropagate(featureVector, true)
@@ -257,7 +258,7 @@ function ActorCriticModel.new(discountFactor)
 		CriticModel:backwardPropagate(-sumCriticLoss, true)
 		ActorModel:backwardPropagate(sumActorLossVector, true)
 
-		table.clear(diagonalGaussianActionProbabilityHistory)
+		table.clear(diagonalGaussianActionProbabilityValueHistory)
 
 		table.clear(diagonalGaussianCriticValueHistory)
 
@@ -267,7 +268,7 @@ function ActorCriticModel.new(discountFactor)
 	
 	NewActorCriticModel:setDiagonalGaussianResetFunction(function()
 
-		table.clear(diagonalGaussianActionProbabilityHistory)
+		table.clear(diagonalGaussianActionProbabilityValueHistory)
 
 		table.clear(diagonalGaussianCriticValueHistory)
 

@@ -106,9 +106,9 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(epsilon, discou
 
 	end)
 	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalEpisodeUpdateFunction(function() end)
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function() end)
 
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalResetFunction(function() end)
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() end)
 
 	return NewDeepDoubleExpectedStateActionRewardStateActionModel
 

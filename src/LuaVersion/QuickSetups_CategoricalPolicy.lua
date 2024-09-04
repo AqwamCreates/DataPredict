@@ -38,45 +38,35 @@ local defaultEpsilon = 0
 
 local defaultActionSelectionFunction = "Maximum"
 
-local function sampleAction(actionProbabilityVector)
+local function selectActionWithHighestValue(actionOutputVector)
+	
+	local selectedActionIndex = 1
+	
+	local highestActionValue = -math.huge
+	
+	for actionIndex, actionValue in ipairs(actionOutputVector[1]) do
 
-	local totalProbability = 0
+		if (highestActionValue > actionValue) then
 
-	for _, probability in ipairs(actionProbabilityVector[1]) do
+			highestActionValue = actionValue
 
-		totalProbability += probability
+			selectedActionIndex = actionIndex
 
-	end
-
-	local randomValue = math.random() * totalProbability
-
-	local cumulativeProbability = 0
-
-	local actionIndex = 1
-
-	for i, probability in ipairs(actionProbabilityVector[1]) do
-
-		cumulativeProbability += probability
-
-		if (randomValue > cumulativeProbability) then continue end
-
-		actionIndex = i
-
-		break
+		end
 
 	end
-
-	return actionIndex
-
+	
+	return selectedActionIndex
+	
 end
 
-local function calculateProbability(outputMatrix)
+local function calculateProbability(vector)
 
-	local meanVector = AqwamMatrixLibrary:horizontalMean(outputMatrix)
+	local meanVector = AqwamMatrixLibrary:horizontalMean(vector)
 
-	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(outputMatrix)
+	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(vector)
 
-	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(outputMatrix, meanVector)
+	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(vector, meanVector)
 
 	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
 
@@ -91,6 +81,40 @@ local function calculateProbability(outputMatrix)
 	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
 
 	return probabilityVector
+
+end
+
+local function sampleAction(actionOutputVector)
+	
+	local actionProbabilityVector = calculateProbability(actionOutputVector)
+
+	local totalProbability = 0
+
+	for _, probability in ipairs(actionProbabilityVector[1]) do
+
+		totalProbability += probability
+
+	end
+
+	local randomValue = math.random() * totalProbability
+
+	local cumulativeProbability = 0
+
+	local selectedActionIndex = 1
+
+	for i, probability in ipairs(actionProbabilityVector[1]) do
+
+		cumulativeProbability += probability
+
+		if (randomValue > cumulativeProbability) then continue end
+
+		selectedActionIndex = i
+
+		break
+
+	end
+
+	return selectedActionIndex
 
 end
 
@@ -182,71 +206,13 @@ function CategoricalPolicyQuickSetup:fetchHighestValueInVector(outputVector)
 
 end
 
-function CategoricalPolicyQuickSetup:getLabelFromOutputMatrix(outputMatrix)
-
-	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
-
-	local highestValueVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
-
-	local highestValue
-
-	local outputVector
-
-	local classIndex
-
-	local predictedLabel
-
-	for i = 1, #outputMatrix, 1 do
-
-		outputVector = {outputMatrix[i]}
-
-		predictedLabel, highestValue = self:fetchHighestValueInVector(outputVector)
-
-		predictedLabelVector[i][1] = predictedLabel
-
-		highestValueVector[i][1] = highestValue
-
-	end
-
-	return predictedLabelVector, highestValueVector
-
-end
-
-function CategoricalPolicyQuickSetup:selectAction(allOutputsMatrix, ClassesList)
+local selectActionFunctionList = {
 	
-	local action
+	["Maximum"] = selectActionWithHighestValue,
 	
-	local selectedValue
+	["Sample"] = sampleAction
 	
-	local actionSelectionFunction = self.actionSelectionFunction
-	
-	if (actionSelectionFunction == "Maximum") then
-		
-		local actionVector, selectedValueVector = self:getLabelFromOutputMatrix(allOutputsMatrix)
-		
-		action = actionVector[1][1]
-
-		selectedValue = selectedValueVector[1][1]
-		
-	elseif (actionSelectionFunction == "Sample") then
-		
-		local actionProbabilityVector = calculateProbability(allOutputsMatrix)
-		
-		local actionIndex = sampleAction(actionProbabilityVector)
-		
-		action = ClassesList[actionIndex]
-		
-		selectedValue = allOutputsMatrix[1][actionIndex]
-		
-	else
-		
-		error("Invalid action selection function!")
-		
-	end
-	
-	return action, selectedValue
-	
-end
+}
 
 function CategoricalPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, childModelNumber)
 
@@ -272,29 +238,29 @@ function CategoricalPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue
 	
 	local randomProbability = Random.new():NextNumber()
 	
-	local allOutputsMatrix = Model:predict(currentFeatureVector, true, childModelNumber)
-
+	local actionVector = Model:predict(currentFeatureVector, true, childModelNumber)
+	
+	local actionIndex
+	
 	local action
 
-	local selectedValue
+	local actionValue
 
 	local temporalDifferenceError
 
 	if (randomProbability < currentEpsilon) then
-
-		local numberOfClasses = #ClassesList
-
-		local randomNumber = Random.new():NextInteger(1, numberOfClasses)
-
-		action = ClassesList[randomNumber]
 		
-		selectedValue = allOutputsMatrix[1][randomNumber]
+		actionIndex = Random.new():NextInteger(1, #ClassesList)
 
 	else
-
-		action, selectedValue = self:selectAction(allOutputsMatrix, ClassesList)
+		
+		actionIndex = selectActionFunctionList[self.actionSelectionFunction](actionVector)
 
 	end
+	
+	action = ClassesList[actionIndex]
+
+	actionValue = actionVector[1][actionIndex]
 
 	if (previousFeatureVector) then
 		
@@ -350,9 +316,9 @@ function CategoricalPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue
 
 	if (self.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tEpsilon: " .. currentEpsilon .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 
-	if (returnOriginalOutput) then return allOutputsMatrix end
+	if (returnOriginalOutput) then return actionVector end
 
-	return action, selectedValue
+	return action, actionValue
 
 end
 

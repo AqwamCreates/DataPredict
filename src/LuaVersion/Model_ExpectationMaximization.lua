@@ -28,7 +28,7 @@ ExpectationMaximizationModel.__index = ExpectationMaximizationModel
 
 setmetatable(ExpectationMaximizationModel, BaseModel)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local defaultMaximumNumberOfIterations = 10
 
@@ -48,9 +48,9 @@ local function gaussian(featureVector, meanVector, varianceVector, epsilon)
 
 	local exponentStep5 = AqwamMatrixLibrary:multiply(-0.5, exponentStep4)
 
-	local exponentWithTerms = AqwamMatrixLibrary:applyFunction(math.exp, exponentStep5)
+	local exponentWithTerms = AqwamMatrixLibrary:exponent(exponentStep5)
 	
-	local standardDeviationVector = AqwamMatrixLibrary:applyFunction(math.sqrt, varianceVector)
+	local standardDeviationVector = AqwamMatrixLibrary:power(varianceVector, 0.5)
 
 	local divisorPart1 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
 	
@@ -176,7 +176,7 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
-	local likelihood = AqwamMatrixLibrary:applyFunction(math.log, gaussianMatrix)
+	local likelihood = AqwamMatrixLibrary:logarithm(gaussianMatrix)
 
 	local sumLikelihood = AqwamMatrixLibrary:sum(likelihood)
 	

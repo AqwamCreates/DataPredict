@@ -111,68 +111,11 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		return advantageValue
 
 	end)
-
-	NewVanillaPolicyGradientModel:setCategoricalEpisodeUpdateFunction(function()
-		
-		local historyLength = #rewardValueHistory
-		
-		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewVanillaPolicyGradientModel.discountFactor)
-		
-		local sumActorLoss = 0
-		
-		local sumCriticLoss = 0
-		
-		for h = 1, historyLength, 1 do
-			
-			sumActorLoss = sumActorLoss + actorLossValueHistory[h]
-			
-			sumCriticLoss = sumCriticLoss + (criticValueHistory[h] - rewardToGoArray[h])
-			
-		end
-		
-		sumCriticLoss = sumCriticLoss / historyLength
-		
-		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
-
-		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
-
-		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
-
-		local numberOfLayers = ActorModel:getNumberOfLayers()
-
-		local numberOfNeuronsAtFinalLayer = ActorModel:getTotalNumberOfNeurons(numberOfLayers)
-
-		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumActorLoss)
-
-		ActorModel:forwardPropagate(featureVector, true)
-		CriticModel:forwardPropagate(featureVector, true)
-
-		ActorModel:backwardPropagate(sumActorLossVector, true)
-		CriticModel:backwardPropagate(-sumCriticLoss, true)
-		
-		table.clear(actorLossValueHistory)
-
-		table.clear(criticValueHistory)
-
-		table.clear(rewardValueHistory)
-
-	end)
-
-	NewVanillaPolicyGradientModel:setCategoricalResetFunction(function()
-
-		table.clear(actorLossValueHistory)
-
-		table.clear(criticValueHistory)
-
-		table.clear(rewardValueHistory)
-
-	end)
 	
 	NewVanillaPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
 
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
-		
+
 		local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(actionVector)
 
 		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
@@ -186,7 +129,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		local actionProbabilityValuePart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
 
 		local actionProbabilityValue = -0.5 * (actionProbabilityValuePart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
-		
+
 		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 
 		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
@@ -200,29 +143,29 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		table.insert(criticValueHistory, currentCriticValue)
 
 		table.insert(rewardValueHistory, rewardValue)
-		
+
 	end)
-	
-	NewVanillaPolicyGradientModel:setDiagonalGaussianEpisodeUpdateFunction(function()
 
+	NewVanillaPolicyGradientModel:setEpisodeUpdateFunction(function()
+		
 		local historyLength = #rewardValueHistory
-
+		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewVanillaPolicyGradientModel.discountFactor)
-
+		
 		local sumActorLoss = 0
-
+		
 		local sumCriticLoss = 0
-
+		
 		for h = 1, historyLength, 1 do
-
+			
 			sumActorLoss = sumActorLoss + actorLossValueHistory[h]
-
+			
 			sumCriticLoss = sumCriticLoss + (criticValueHistory[h] - rewardToGoArray[h])
-
+			
 		end
-
+		
 		sumCriticLoss = sumCriticLoss / historyLength
-
+		
 		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
 
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
@@ -241,7 +184,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		ActorModel:backwardPropagate(sumActorLossVector, true)
 		CriticModel:backwardPropagate(-sumCriticLoss, true)
-
+		
 		table.clear(actorLossValueHistory)
 
 		table.clear(criticValueHistory)
@@ -250,7 +193,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 	end)
 
-	NewVanillaPolicyGradientModel:setDiagonalGaussianResetFunction(function()
+	NewVanillaPolicyGradientModel:setResetFunction(function()
 
 		table.clear(actorLossValueHistory)
 

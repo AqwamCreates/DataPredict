@@ -96,9 +96,9 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local actionIndex = table.find(ActorModel:getClassesList(), action)
 
-		local actionProbability = actionProbabilityVector[1][actionIndex]
+		local actionProbabilityValue = actionProbabilityVector[1][actionIndex]
 
-		local logActionProbability = math.log(actionProbability)
+		local logActionProbabilityValue = math.log(actionProbabilityValue)
 
 		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 
@@ -106,7 +106,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
 		
-		local actorLossValue = logActionProbability * advantageValue
+		local actorLossValue = logActionProbabilityValue * advantageValue
 		
 		table.insert(actorLossValueHistory, actorLossValue)
 		
@@ -189,9 +189,9 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local numberOfActionDimensions = #NewVanillaPolicyGradientModel.ActorModel:getClassesList()
 
-		local logLikelihoodPart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
+		local actionProbabilityValuePart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
 
-		local logLikelihood = -0.5 * (logLikelihoodPart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
+		local actionProbabilityValue = -0.5 * (actionProbabilityValuePart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
 		
 		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 
@@ -199,7 +199,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
 
-		local actorLossValue = logLikelihood * advantageValue
+		local actorLossValue = actionProbabilityValue * advantageValue
 
 		table.insert(actorLossValueHistory, actorLossValue)
 

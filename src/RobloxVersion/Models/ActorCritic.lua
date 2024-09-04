@@ -78,9 +78,11 @@ function ActorCriticModel.new(discountFactor)
 
 		local actionIndex = table.find(ActorModel:getClassesList(), action)
 
-		local actionProbability = actionProbabilityVector[1][actionIndex]
+		local actionProbabilityValue = actionProbabilityVector[1][actionIndex]
+		
+		local logActionProbabilityValue = math.log(actionProbabilityValue)
 
-		table.insert(actionProbabilityValueHistory, math.log(actionProbability))
+		table.insert(actionProbabilityValueHistory, logActionProbabilityValue)
 
 		table.insert(criticValueHistory, criticValue)
 
@@ -176,13 +178,13 @@ function ActorCriticModel.new(discountFactor)
 		
 		local numberOfActionDimensions = #NewActorCriticModel.ActorModel:getClassesList()
 		
-		local logLikelihoodPart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
+		local actionProbabilityValuePart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
 		
-		local logLikelihood = -0.5 * (logLikelihoodPart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
+		local actionProbabilityValue = -0.5 * (actionProbabilityValuePart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
 
 		local criticValue = NewActorCriticModel.CriticModel:predict(previousFeatureVector, true)[1][1]
 		
-		table.insert(actionProbabilityValueHistory, logLikelihood)
+		table.insert(actionProbabilityValueHistory, actionProbabilityValue)
 
 		table.insert(criticValueHistory, criticValue)
 

@@ -60,17 +60,11 @@ function ActorCriticModel.new(discountFactor)
 	
 	setmetatable(NewActorCriticModel, ActorCriticModel)
 	
-	local categoricalActionProbabilityValueHistory = {}
+	local actionProbabilityValueHistory = {}
 	
-	local categoricalCriticValueHistory = {}
+	local criticValueHistory = {}
 	
-	local categoricalRewardValueHistory = {}
-	
-	local diagonalGaussianActionProbabilityValueHistory = {}
-	
-	local diagonalGaussianCriticValueHistory = {}
-	
-	local diagonalGaussianRewardValueHistory = {}
+	local rewardValueHistory = {}
 	
 	NewActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
@@ -88,11 +82,11 @@ function ActorCriticModel.new(discountFactor)
 
 		local actionProbability = actionProbabilityVector[1][actionIndex]
 
-		table.insert(categoricalActionProbabilityValueHistory, math.log(actionProbability))
+		table.insert(actionProbabilityValueHistory, math.log(actionProbability))
 
-		table.insert(categoricalCriticValueHistory, criticValue)
+		table.insert(criticValueHistory, criticValue)
 
-		table.insert(categoricalRewardValueHistory, rewardValue)
+		table.insert(rewardValueHistory, rewardValue)
 		
 	end)
 	
@@ -102,13 +96,13 @@ function ActorCriticModel.new(discountFactor)
 
 		local discountedSum = 0
 
-		local historyLength = #categoricalRewardValueHistory
+		local historyLength = #rewardValueHistory
 		
 		local discountFactor = NewActorCriticModel.discountFactor
 
 		for h = historyLength, 1, -1 do
 
-			discountedSum = categoricalRewardValueHistory[h] + (discountFactor * discountedSum)
+			discountedSum = rewardValueHistory[h] + (discountFactor * discountedSum)
 
 			table.insert(returnValueHistory, 1, discountedSum)
 
@@ -120,11 +114,11 @@ function ActorCriticModel.new(discountFactor)
 
 		for h = 1, historyLength, 1 do
 
-			local criticValue = categoricalCriticValueHistory[h]
+			local criticValue = criticValueHistory[h]
 
 			local returnValue = returnValueHistory[h]
 
-			local logActionProbability = categoricalActionProbabilityValueHistory[h]
+			local logActionProbability = actionProbabilityValueHistory[h]
 			
 			local criticLoss = returnValue - criticValue
 
@@ -155,21 +149,21 @@ function ActorCriticModel.new(discountFactor)
 		CriticModel:backwardPropagate(-sumCriticLoss, true)
 		ActorModel:backwardPropagate(sumActorLossVector, true)
 
-		table.clear(categoricalActionProbabilityValueHistory)
+		table.clear(actionProbabilityValueHistory)
 
-		table.clear(categoricalCriticValueHistory)
+		table.clear(criticValueHistory)
 
-		table.clear(categoricalRewardValueHistory)
+		table.clear(rewardValueHistory)
 		
 	end)
 	
 	NewActorCriticModel:setCategoricalResetFunction(function()
 		
-		table.clear(categoricalActionProbabilityValueHistory)
+		table.clear(actionProbabilityValueHistory)
 
-		table.clear(categoricalCriticValueHistory)
+		table.clear(criticValueHistory)
 
-		table.clear(categoricalRewardValueHistory)
+		table.clear(rewardValueHistory)
 		
 	end)
 	
@@ -191,11 +185,11 @@ function ActorCriticModel.new(discountFactor)
 
 		local criticValue = NewActorCriticModel.CriticModel:predict(previousFeatureVector, true)[1][1]
 		
-		table.insert(diagonalGaussianActionProbabilityValueHistory, logLikelihood)
+		table.insert(actionProbabilityValueHistory, logLikelihood)
 
-		table.insert(diagonalGaussianCriticValueHistory, criticValue)
+		table.insert(criticValueHistory, criticValue)
 
-		table.insert(diagonalGaussianRewardValueHistory, rewardValue)
+		table.insert(rewardValueHistory, rewardValue)
 		
 	end)
 	
@@ -205,13 +199,13 @@ function ActorCriticModel.new(discountFactor)
 
 		local discountedSum = 0
 
-		local historyLength = #categoricalRewardValueHistory
+		local historyLength = #rewardValueHistory
 
 		local discountFactor = NewActorCriticModel.discountFactor
 
 		for h = historyLength, 1, -1 do
 
-			discountedSum = diagonalGaussianRewardValueHistory[h] + (discountFactor * discountedSum)
+			discountedSum = rewardValueHistory[h] + (discountFactor * discountedSum)
 
 			table.insert(returnValueHistory, 1, discountedSum)
 
@@ -223,11 +217,11 @@ function ActorCriticModel.new(discountFactor)
 
 		for h = 1, historyLength, 1 do
 
-			local criticValue = diagonalGaussianCriticValueHistory[h]
+			local criticValue = criticValueHistory[h]
 
 			local returnValue = returnValueHistory[h]
 
-			local logActionProbability = diagonalGaussianActionProbabilityValueHistory[h]
+			local logActionProbability = actionProbabilityValueHistory[h]
 
 			local criticLoss = returnValue - criticValue
 
@@ -258,21 +252,21 @@ function ActorCriticModel.new(discountFactor)
 		CriticModel:backwardPropagate(-sumCriticLoss, true)
 		ActorModel:backwardPropagate(sumActorLossVector, true)
 
-		table.clear(diagonalGaussianActionProbabilityValueHistory)
+		table.clear(actionProbabilityValueHistory)
 
-		table.clear(diagonalGaussianCriticValueHistory)
+		table.clear(criticValueHistory)
 
-		table.clear(diagonalGaussianRewardValueHistory)
+		table.clear(rewardValueHistory)
 
 	end)
 	
 	NewActorCriticModel:setDiagonalGaussianResetFunction(function()
 
-		table.clear(diagonalGaussianActionProbabilityValueHistory)
+		table.clear(actionProbabilityValueHistory)
 
-		table.clear(diagonalGaussianCriticValueHistory)
+		table.clear(criticValueHistory)
 
-		table.clear(diagonalGaussianRewardValueHistory)
+		table.clear(rewardValueHistory)
 
 	end)
 	

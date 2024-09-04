@@ -128,7 +128,7 @@ function DiagonalGaussianPolicyQuickSetup:reinforce(currentFeatureVector, reward
 		
 		currentNumberOfEpisodes = currentNumberOfEpisodes + 1
 
-		Model:diagonalGaussianEpisodeUpdate(childModelNumber)
+		Model:episodeUpdate(childModelNumber)
 		
 		if episodeUpdateFunction then episodeUpdateFunction(childModelNumber) end
 
@@ -180,7 +180,7 @@ function DiagonalGaussianPolicyQuickSetup:reset()
 	
 	local Model = self.Model
 	
-	if (Model) then Model:diagonalGaussianReset() end
+	if (Model) then Model:reset() end
 	
 end
 

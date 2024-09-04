@@ -22,6 +22,36 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
 ReinforcementLearningActorCriticBaseModel = {}
 
 ReinforcementLearningActorCriticBaseModel.__index = ReinforcementLearningActorCriticBaseModel
@@ -70,15 +100,15 @@ function ReinforcementLearningActorCriticBaseModel:getCriticModel()
 
 end
 
+function ReinforcementLearningActorCriticBaseModel:predict(featureVector, returnOriginalOutput)
+	
+	return self.ActorModel:predict(featureVector, returnOriginalOutput)
+	
+end
+
 function ReinforcementLearningActorCriticBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
 
 	self.categoricalUpdateFunction = categoricalUpdateFunction
-
-end
-
-function ReinforcementLearningActorCriticBaseModel:setCategoricalEpisodeUpdateFunction(categoricalEpisodeUpdateFunction)
-
-	self.categoricalEpisodeUpdateFunction = categoricalEpisodeUpdateFunction
 
 end
 
@@ -86,18 +116,6 @@ function ReinforcementLearningActorCriticBaseModel:setDiagonalGaussianUpdateFunc
 
 	self.diagonalGaussianUpdateFunction = diagonalGaussianUpdateFunction
 
-end
-
-function ReinforcementLearningActorCriticBaseModel:setDiagonalGaussianEpisodeUpdateFunction(diagonalGaussianEpisodeUpdateFunction)
-
-	self.diagonalGaussianEpisodeUpdateFunction = diagonalGaussianEpisodeUpdateFunction
-
-end
-
-function ReinforcementLearningActorCriticBaseModel:predict(featureVector, returnOriginalOutput)
-	
-	return self.ActorModel:predict(featureVector, returnOriginalOutput)
-	
 end
 
 function ReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector)
@@ -110,23 +128,7 @@ function ReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFea
 
 	else
 
-		error("Categorical update function is not implemented!")
-
-	end
-
-end
-
-function ReinforcementLearningActorCriticBaseModel:categoricalEpisodeUpdate()
-
-	local categoricalEpisodeUpdateFunction = self.categoricalEpisodeUpdateFunction
-
-	if (categoricalEpisodeUpdateFunction) then
-
-		return categoricalEpisodeUpdateFunction()
-
-	else
-
-		error("Categorical episode update function is not implemented!")
+		error("The categorical update function is not implemented!")
 
 	end
 
@@ -142,67 +144,51 @@ function ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previo
 
 	else
 
-		error("Diagonal Gaussian update function is not implemented!")
+		error("The diagonal Gaussian update function is not implemented!")
 
 	end
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:diagonalGaussianEpisodeUpdate()
+function ReinforcementLearningActorCriticBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 
-	local diagonalGaussianEpisodeUpdateFunction = self.diagonalGaussianEpisodeUpdateFunction
+	self.episodeUpdateFunction = episodeUpdateFunction
 
-	if (diagonalGaussianEpisodeUpdateFunction) then
+end
 
-		return diagonalGaussianEpisodeUpdateFunction()
+function ReinforcementLearningActorCriticBaseModel:episodeUpdate()
+
+	local episodeUpdateFunction = self.episodeUpdateFunction
+
+	if (episodeUpdateFunction) then
+
+		return episodeUpdateFunction()
 
 	else
 
-		error("Diagonal Gaussian episode update function is not implemented!")
+		error("The episode update function is not implemented!")
 
 	end
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:setCategoricalResetFunction(categoricalResetFunction)
+function ReinforcementLearningActorCriticBaseModel:setResetFunction(resetFunction)
 
-	self.categoricalResetFunction = categoricalResetFunction
-
-end
-
-function ReinforcementLearningActorCriticBaseModel:setDiagonalGaussianResetFunction(diagonalGaussianResetFunction)
-
-	self.diagonalGaussianResetFunction = diagonalGaussianResetFunction
+	self.resetFunction = resetFunction
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:categoricalReset()
+function ReinforcementLearningActorCriticBaseModel:reset()
 
-	local categoricalResetFunction = self.categoricalResetFunction
+	local resetFunction = self.resetFunction
 
-	if (categoricalResetFunction) then 
+	if (resetFunction) then 
 
-		return categoricalResetFunction() 
+		return resetFunction() 
 
 	else
 
-		error("Categorical reset function is not implemented!")
-
-	end
-
-end
-
-function ReinforcementLearningActorCriticBaseModel:diagonalGaussianReset()
-
-	local diagonalGaussianResetFunction = self.diagonalGaussianResetFunction
-
-	if (diagonalGaussianResetFunction) then 
-
-		return diagonalGaussianResetFunction()
-
-	else
-
-		error("Diagonal Gaussian reset function is not implemented!")
+		error("The reset function is not implemented!")
 
 	end
 

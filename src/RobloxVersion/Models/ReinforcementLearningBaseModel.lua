@@ -64,33 +64,21 @@ function ReinforcementLearningBaseModel:getModel()
 
 end
 
+function ReinforcementLearningBaseModel:predict(featureVector, returnOriginalOutput)
+
+	return self.Model:predict(featureVector, returnOriginalOutput)
+
+end
+
 function ReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
 
 	self.categoricalUpdateFunction = categoricalUpdateFunction
 
 end
 
-function ReinforcementLearningBaseModel:setCategoricalEpisodeUpdateFunction(categoricalEpisodeUpdateFunction)
-
-	self.categoricalEpisodeUpdateFunction = categoricalEpisodeUpdateFunction
-
-end
-
 function ReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
 	
 	self.diagonalGaussianUpdateFunction = diagonalGaussianUpdateFunction
-	
-end
-
-function ReinforcementLearningBaseModel:setDiagonalGaussianEpisodeUpdateFunction(diagonalGaussianEpisodeUpdateFunction)
-	
-	self.diagonalGaussianEpisodeUpdateFunction = diagonalGaussianEpisodeUpdateFunction
-	
-end
-
-function ReinforcementLearningBaseModel:predict(featureVector, returnOriginalOutput)
-	
-	return self.Model:predict(featureVector, returnOriginalOutput)
 	
 end
 
@@ -104,99 +92,67 @@ function ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector,
 		
 	else
 		
-		error("Categorical update function is not implemented!")
-		
-	end
-
-end
-
-function ReinforcementLearningBaseModel:categoricalEpisodeUpdate()
-
-	local categoricalEpisodeUpdateFunction = self.categoricalEpisodeUpdateFunction
-	
-	if (categoricalEpisodeUpdateFunction) then
-		
-		return categoricalEpisodeUpdateFunction()
-		
-	else
-		
-		error("Categorical episode update function is not implemented!")
+		error("The categorical update function is not implemented!")
 		
 	end
 
 end
 
 function ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
-	
+
 	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
-	
+
 	if (diagonalGaussianUpdateFunction) then
-		
+
 		return diagonalGaussianUpdateFunction(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
-		
-	else
-		
-		error("Diagonal Gaussian update function is not implemented!")
-		
-	end
-	
-end
 
-function ReinforcementLearningBaseModel:diagonalGaussianEpisodeUpdate()
-
-	local diagonalGaussianEpisodeUpdateFunction = self.diagonalGaussianEpisodeUpdateFunction
-	
-	if (diagonalGaussianEpisodeUpdateFunction) then
-		
-		return diagonalGaussianEpisodeUpdateFunction()
-		
 	else
-		
-		error("Diagonal Gaussian episode update function is not implemented!")
-		
+
+		error("The diagonal Gaussian update function is not implemented!")
+
 	end
 
 end
 
-function ReinforcementLearningBaseModel:setCategoricalResetFunction(categoricalResetFunction)
+function ReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 
-	self.categoricalResetFunction = categoricalResetFunction
-
-end
-
-function ReinforcementLearningBaseModel:setDiagonalGaussianResetFunction(diagonalGaussianResetFunction)
-
-	self.diagonalGaussianResetFunction = diagonalGaussianResetFunction
+	self.episodeUpdateFunction = episodeUpdateFunction
 
 end
 
-function ReinforcementLearningBaseModel:categoricalReset()
+function ReinforcementLearningBaseModel:episodeUpdate()
+
+	local episodeUpdateFunction = self.episodeUpdateFunction
 	
-	local categoricalResetFunction = self.categoricalResetFunction
-
-	if (categoricalResetFunction) then 
+	if (episodeUpdateFunction) then
 		
-		return categoricalResetFunction() 
+		return episodeUpdateFunction()
 		
 	else
 		
-		error("Categorical reset function is not implemented!")
+		error("The episode update function is not implemented!")
 		
 	end
 
 end
 
-function ReinforcementLearningBaseModel:diagonalGaussianReset()
-	
-	local diagonalGaussianResetFunction = self.diagonalGaussianResetFunction
+function ReinforcementLearningBaseModel:setResetFunction(resetFunction)
 
-	if (diagonalGaussianResetFunction) then 
+	self.resetFunction = resetFunction
+
+end
+
+function ReinforcementLearningBaseModel:reset()
+	
+	local resetFunction = self.resetFunction
+
+	if (resetFunction) then 
 		
-		return diagonalGaussianResetFunction()
+		return resetFunction() 
 		
 	else
 		
-		error("Diagonal Gaussian reset function is not implemented!")
+		error("The reset function is not implemented!")
 		
 	end
 

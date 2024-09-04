@@ -262,7 +262,7 @@ function CategoricalPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue
 		
 		currentNumberOfEpisodes = currentNumberOfEpisodes + 1
 
-		Model:categoricalEpisodeUpdate(childModelNumber)
+		Model:episodeUpdate(childModelNumber)
 		
 		if episodeUpdateFunction then episodeUpdateFunction(childModelNumber) end
 
@@ -385,7 +385,7 @@ function CategoricalPolicyQuickSetup:reset()
 	
 	local ExperienceReplay = self.ExperienceReplay
 	
-	if (Model) then Model:categoricalReset() end
+	if (Model) then Model:reset() end
 	
 	if (ExperienceReplay) then ExperienceReplay:reset() end
 	

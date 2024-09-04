@@ -62,17 +62,11 @@ end
 
 local function calculateProbability(vector)
 
-	local meanVector = AqwamMatrixLibrary:horizontalMean(vector)
+	local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(vector)
 
-	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(vector)
+	local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
 
-	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(vector, meanVector)
-
-	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
-
-	local zScoreSquaredVector = AqwamMatrixLibrary:power(zScoreVector, 2)
-
-	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
+	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, squaredZScoreVector)
 
 	local probabilityVectorPart2 = AqwamMatrixLibrary:exponent(probabilityVectorPart1)
 

@@ -32,13 +32,7 @@ setmetatable(VanillaPolicyGradientModel, ReinforcementLearningActorCriticBaseMod
 
 local function calculateProbability(vector)
 
-	local meanVector = AqwamMatrixLibrary:horizontalMean(vector)
-
-	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(vector)
-
-	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(vector, meanVector)
-
-	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
+	local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(vector)
 
 	local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
 
@@ -181,7 +175,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 		
-		local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:verticalZScoreNormalization(actionVector)
+		local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(actionVector)
 
 		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
 

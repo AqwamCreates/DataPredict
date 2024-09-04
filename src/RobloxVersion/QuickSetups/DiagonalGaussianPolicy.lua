@@ -92,18 +92,6 @@ function DiagonalGaussianPolicyQuickSetup:setPrintOutput(option)
 
 end
 
-function DiagonalGaussianPolicyQuickSetup:fetchHighestValueInVector(outputVector)
-
-	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValue(outputVector)
-
-	if (classIndex == nil) then return nil, highestValue end
-
-	local predictedLabel = self.ClassesList[classIndex[2]]
-
-	return predictedLabel, highestValue
-
-end
-
 function DiagonalGaussianPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue, childModelNumber)
 
 	if (self.Model == nil) then error("No model!") end

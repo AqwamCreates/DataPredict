@@ -28,6 +28,36 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
 DiagonalGaussianPolicyQuickSetup = {}
 
 DiagonalGaussianPolicyQuickSetup.__index = DiagonalGaussianPolicyQuickSetup
@@ -89,18 +119,6 @@ end
 function DiagonalGaussianPolicyQuickSetup:setPrintOutput(option)
 
 	self.isOutputPrinted = getBooleanOrDefaultOption(option, self.isOutputPrinted)
-
-end
-
-function DiagonalGaussianPolicyQuickSetup:fetchHighestValueInVector(outputVector)
-
-	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValue(outputVector)
-
-	if (classIndex == nil) then return nil, highestValue end
-
-	local predictedLabel = self.ClassesList[classIndex[2]]
-
-	return predictedLabel, highestValue
 
 end
 

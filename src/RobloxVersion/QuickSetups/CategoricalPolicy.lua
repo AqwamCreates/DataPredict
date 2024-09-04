@@ -38,25 +38,25 @@ local defaultEpsilon = 0
 
 local defaultActionSelectionFunction = "Maximum"
 
-local function selectActionWithHighestValue(actionOutputVector)
+local function selectIndexWithHighestValue(vector)
 	
-	local selectedActionIndex = 1
+	local selectedIndex = 1
 	
-	local highestActionValue = -math.huge
+	local highestValue = -math.huge
 	
-	for actionIndex, actionValue in ipairs(actionOutputVector[1]) do
+	for index, value in ipairs(vector[1]) do
 
-		if (highestActionValue > actionValue) then
+		if (highestValue > value) then
 
-			highestActionValue = actionValue
+			highestValue = value
 
-			selectedActionIndex = actionIndex
+			selectedIndex = index
 
 		end
 
 	end
 	
-	return selectedActionIndex
+	return selectedIndex
 	
 end
 
@@ -84,13 +84,13 @@ local function calculateProbability(vector)
 
 end
 
-local function sampleAction(actionOutputVector)
+local function sample(vector)
 	
-	local actionProbabilityVector = calculateProbability(actionOutputVector)
+	local probabilityVector = calculateProbability(vector)
 
 	local totalProbability = 0
 
-	for _, probability in ipairs(actionProbabilityVector[1]) do
+	for _, probability in ipairs(probabilityVector[1]) do
 
 		totalProbability += probability
 
@@ -100,21 +100,21 @@ local function sampleAction(actionOutputVector)
 
 	local cumulativeProbability = 0
 
-	local selectedActionIndex = 1
+	local selectedIndex = 1
 
-	for i, probability in ipairs(actionProbabilityVector[1]) do
+	for i, probability in ipairs(probabilityVector[1]) do
 
 		cumulativeProbability += probability
 
 		if (randomValue > cumulativeProbability) then continue end
 
-		selectedActionIndex = i
+		selectedIndex = i
 
 		break
 
 	end
 
-	return selectedActionIndex
+	return selectedIndex
 
 end
 
@@ -194,23 +194,11 @@ function CategoricalPolicyQuickSetup:setPrintOutput(option)
 
 end
 
-function CategoricalPolicyQuickSetup:fetchHighestValueInVector(outputVector)
-
-	local highestValue, classIndex = AqwamMatrixLibrary:findMaximumValue(outputVector)
-
-	if (classIndex == nil) then return nil, highestValue end
-
-	local predictedLabel = self.ClassesList[classIndex[2]]
-
-	return predictedLabel, highestValue
-
-end
-
 local selectActionFunctionList = {
 	
-	["Maximum"] = selectActionWithHighestValue,
+	["Maximum"] = selectIndexWithHighestValue,
 	
-	["Sample"] = sampleAction
+	["Sample"] = sample
 	
 }
 

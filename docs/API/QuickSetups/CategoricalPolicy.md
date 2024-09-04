@@ -35,7 +35,7 @@ CategoricalPolicy.new(numberOfReinforcementsPerEpisode: integer, epsilon: number
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-CategoricalPolicy:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, actionSelectionFunction: string
+CategoricalPolicy:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, actionSelectionFunction: string)
 ```
 
 #### Parameters:

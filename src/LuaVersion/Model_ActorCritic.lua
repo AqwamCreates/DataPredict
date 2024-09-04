@@ -217,7 +217,7 @@ function ActorCriticModel.new(discountFactor)
 
 		local sumCriticLoss = 0
 		
-		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(#diagonalGaussianActionProbabilityHistory[1], #diagonalGaussianActionProbabilityHistory[1][1], 0)
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #diagonalGaussianActionProbabilityHistory[1][1], 0)
 
 		for h = 1, historyLength, 1 do
 

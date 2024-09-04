@@ -96,7 +96,29 @@ function REINFORCEModel.new(discountFactor)
 
 	end)
 	
-	NewREINFORCEModel:setCategoricalEpisodeUpdateFunction(function()
+	NewREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
+
+		local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(actionVector)
+
+		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+
+		local logStandardDeviationVector = AqwamMatrixLibrary:logarithm(standardDeviationVector)
+
+		local multipliedLogStandardDeviationVector = AqwamMatrixLibrary:multiply(2, logStandardDeviationVector)
+
+		local numberOfActionDimensions = #NewREINFORCEModel.Model:getClassesList()
+
+		local actionProbabilityValuePart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
+
+		local actionProbabilityValue = -0.5 * (actionProbabilityValuePart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
+
+		table.insert(actionProbabilityValueHistory, actionProbabilityValue)
+
+		table.insert(rewardValueHistory, rewardValue)
+
+	end)
+	
+	NewREINFORCEModel:setEpisodeUpdateFunction(function()
 		
 		local Model = NewREINFORCEModel.Model
 		
@@ -128,74 +150,12 @@ function REINFORCEModel.new(discountFactor)
 		
 	end)
 	
-	NewREINFORCEModel:setCategoricalResetFunction(function()
+	NewREINFORCEModel:setResetFunction(function()
 
 		table.clear(actionProbabilityValueHistory)
 		
 		table.clear(rewardValueHistory)
 		
-	end)
-	
-	NewREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
-		
-		local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(actionVector)
-
-		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
-
-		local logStandardDeviationVector = AqwamMatrixLibrary:logarithm(standardDeviationVector)
-
-		local multipliedLogStandardDeviationVector = AqwamMatrixLibrary:multiply(2, logStandardDeviationVector)
-
-		local numberOfActionDimensions = #NewREINFORCEModel.Model:getClassesList()
-
-		local actionProbabilityValuePart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
-
-		local actionProbabilityValue = -0.5 * (actionProbabilityValuePart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
-		
-		table.insert(actionProbabilityValueHistory, actionProbabilityValue)
-
-		table.insert(rewardValueHistory, rewardValue)
-		
-	end)
-	
-	NewREINFORCEModel:setDiagonalGaussianEpisodeUpdateFunction(function()
-
-		local Model = NewREINFORCEModel.Model
-
-		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
-
-		local sumLossValue = 0
-
-		for h, actionProbabilityValue in ipairs(actionProbabilityValueHistory) do
-
-			sumLossValue = sumLossValue + (actionProbabilityValue * rewardToGoArray[h])
-
-		end	
-
-		local numberOfFeatures = Model:getTotalNumberOfNeurons(1)
-
-		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-
-		local numberOfActions = #Model:getClassesList()
-
-		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, -sumLossValue)
-
-		Model:forwardPropagate(featureVector, true)
-
-		Model:backwardPropagate(sumLossVector, true)
-
-		table.clear(actionProbabilityValueHistory)
-
-		table.clear(rewardValueHistory)
-
-	end)
-	
-	NewREINFORCEModel:setDiagonalGaussianResetFunction(function()
-
-		table.clear(actionProbabilityValueHistory)
-
-		table.clear(rewardValueHistory)
-
 	end)
 	
 	return NewREINFORCEModel

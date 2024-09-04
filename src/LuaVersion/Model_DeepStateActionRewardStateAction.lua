@@ -58,9 +58,9 @@ function DeepStateActionRewardStateActionModel.new(discountFactor)
 
 	end)
 	
-	NewDeepStateActionRewardStateActionModel:setCategoricalEpisodeUpdateFunction(function() end)
+	NewDeepStateActionRewardStateActionModel:setEpisodeUpdateFunction(function() end)
 	
-	NewDeepStateActionRewardStateActionModel:setCategoricalResetFunction(function() end)
+	NewDeepStateActionRewardStateActionModel:setResetFunction(function() end)
 
 	return NewDeepStateActionRewardStateActionModel
 

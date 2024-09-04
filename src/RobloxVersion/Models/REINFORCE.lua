@@ -116,17 +116,15 @@ function REINFORCEModel.new(discountFactor)
 			
 		end	
 		
-		local numberOfNeurons = Model:getTotalNumberOfNeurons(1)
+		local numberOfFeatures = Model:getTotalNumberOfNeurons(1)
 
-		local inputVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeurons, 1)
-		
-		local numberOfLayers = Model:getNumberOfLayers()
+		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
-		local numberOfNeuronsAtFinalLayer = Model:getTotalNumberOfNeurons(numberOfLayers)
+		local numberOfActions = #Model:getClassesList()
+
+		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, -sumLossValue)
 		
-		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumLossValue)
-		
-		Model:forwardPropagate(inputVector, true)
+		Model:forwardPropagate(featureVector, true)
 
 		Model:backwardPropagate(sumLossVector, true)
 		
@@ -180,17 +178,15 @@ function REINFORCEModel.new(discountFactor)
 
 		end	
 
-		local numberOfNeurons = Model:getTotalNumberOfNeurons(1)
+		local numberOfFeatures = Model:getTotalNumberOfNeurons(1)
 
-		local inputVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeurons, 1)
+		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
-		local numberOfLayers = Model:getNumberOfLayers()
+		local numberOfActions = #Model:getClassesList()
 
-		local numberOfNeuronsAtFinalLayer = Model:getTotalNumberOfNeurons(numberOfLayers)
+		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, -sumLossValue)
 
-		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumLossValue)
-
-		Model:forwardPropagate(inputVector, true)
+		Model:forwardPropagate(featureVector, true)
 
 		Model:backwardPropagate(sumLossVector, true)
 

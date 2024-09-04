@@ -187,7 +187,7 @@ function ActorCriticModel.new(discountFactor)
 		
 		local logLikelihoodPart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
 		
-		local logLikelihood = 0.5 * (logLikelihoodPart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
+		local logLikelihood = -0.5 * (logLikelihoodPart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
 
 		local criticValue = NewActorCriticModel.CriticModel:predict(previousFeatureVector, true)[1][1]
 		

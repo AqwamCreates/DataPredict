@@ -54,15 +54,15 @@ local function calculateProbability(vector)
 
 end
 
-local function calculateRewardToGo(rewardHistory, discountFactor)
+local function calculateRewardToGo(rewardValueHistory, discountFactor)
 
 	local rewardToGoArray = {}
 
 	local discountedReward = 0
 
-	for h = #rewardHistory, 1, -1 do
+	for h = #rewardValueHistory, 1, -1 do
 
-		discountedReward = rewardHistory[h] + (discountFactor * discountedReward)
+		discountedReward = rewardValueHistory[h] + (discountFactor * discountedReward)
 
 		table.insert(rewardToGoArray, 1, discountedReward)
 

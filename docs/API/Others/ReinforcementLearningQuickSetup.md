@@ -35,7 +35,7 @@ ReinforcementLearningQuickSetup.new(numberOfReinforcementsPerEpisode: integer, e
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ReinforcementLearningQuickSetup:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, actionSelectionFunction: string
+ReinforcementLearningQuickSetup:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, actionSelectionFunction: string)
 ```
 
 #### Parameters:

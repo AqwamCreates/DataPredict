@@ -38,13 +38,7 @@ setmetatable(AdvantageActorCriticModel, ReinforcementLearningActorCriticBaseMode
 
 local function calculateProbability(vector)
 
-	local meanVector = AqwamMatrixLibrary:horizontalMean(vector)
-
-	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(vector)
-
-	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(vector, meanVector)
-
-	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
+	local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(vector)
 
 	local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
 

@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - CategoricalPolicy
+# [API Reference](../../API.md) - [QuickSetups](../QuickSetups.md) - CategoricalPolicy
 
 CategoricalPolicy is a base class for setuping up reinforcement learning functions.
 

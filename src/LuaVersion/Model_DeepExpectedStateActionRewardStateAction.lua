@@ -104,9 +104,9 @@ function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFact
 
 	end)
 	
-	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalEpisodeUpdateFunction(function() end)
+	NewDeepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function() end)
 
-	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalResetFunction(function() end)
+	NewDeepExpectedStateActionRewardStateActionModel:setResetFunction(function() end)
 
 	return NewDeepExpectedStateActionRewardStateActionModel
 

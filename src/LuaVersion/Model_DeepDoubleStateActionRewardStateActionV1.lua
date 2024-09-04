@@ -102,9 +102,9 @@ function DeepDoubleStateActionRewardStateActionModel.new(discountFactor)
 
 	end)
 	
-	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalEpisodeUpdateFunction(function() end)
+	NewDeepDoubleStateActionRewardStateActionModel:setEpisodeUpdateFunction(function() end)
 
-	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalResetFunction(function() end)
+	NewDeepDoubleStateActionRewardStateActionModel:setResetFunction(function() end)
 
 	return NewDeepDoubleStateActionRewardStateActionModel
 

@@ -42,6 +42,8 @@ local ExperienceReplays = script.ExperienceReplays
 
 local ValueSchedulers = script.ValueSchedulers
 
+local QuickSetups = script.QuickSetups
+
 local Others = script.Others
 
 AqwamRobloxMachineLearningLibrary.Models = {
@@ -174,6 +176,14 @@ AqwamRobloxMachineLearningLibrary.ValueSchedulers = {
 	
 }
 
+AqwamRobloxMachineLearningLibrary.QuickSetups = {
+	
+	CategoricalPolicy = require(QuickSetups.CategoricalPolicy),
+	
+	DiagonalGaussianPolicy = require(QuickSetups.DiagonalGaussianPolicy)
+	
+}
+
 AqwamRobloxMachineLearningLibrary.Others = {
 	
 	ModelChecker = require(Others.ModelChecker),
@@ -201,8 +211,6 @@ AqwamRobloxMachineLearningLibrary.Others = {
 	OneVsAll = require(Others.OneVsAll),
 	
 	ConfusionMatrixCreator = require(Others.ConfusionMatrixCreator),
-	
-	ReinforcementLearningQuickSetup = require(Others.ReinforcementLearningQuickSetup)
 	
 }
 

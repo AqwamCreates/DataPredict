@@ -159,12 +159,12 @@ function AdvantageActorCriticModel.new(discountFactor)
 		local numberOfActions = #ActorModel:getClassesList()
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-		local actorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, -sumActorLoss)
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, -sumActorLoss)
 
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)
 
-		ActorModel:backwardPropagate(actorLossVector, true)
+		ActorModel:backwardPropagate(sumActorLossVector, true)
 		CriticModel:backwardPropagate(-sumCriticLoss, true)
 
 		table.clear(advantageValueHistory)

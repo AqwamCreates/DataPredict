@@ -32,21 +32,15 @@ setmetatable(ProximalPolicyOptimizationClipModel, ReinforcementLearningActorCrit
 
 local defaultClipRatio = 0.3
 
-local function calculateProbability(outputMatrix)
+local function calculateProbability(vector)
 
-	local meanVector = AqwamMatrixLibrary:horizontalMean(outputMatrix)
+	local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(vector)
 
-	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(outputMatrix)
+	local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
 
-	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(outputMatrix, meanVector)
+	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, squaredZScoreVector)
 
-	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
-
-	local zScoreSquaredVector = AqwamMatrixLibrary:power(zScoreVector, 2)
-
-	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, zScoreSquaredVector)
-
-	local probabilityVectorPart2 = AqwamMatrixLibrary:applyFunction(math.exp, probabilityVectorPart1)
+	local probabilityVectorPart2 = AqwamMatrixLibrary:exponent(probabilityVectorPart1)
 
 	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
 
@@ -56,9 +50,9 @@ local function calculateProbability(outputMatrix)
 
 end
 
-local function calculateRewardsToGo(rewardHistory, discountFactor)
+local function calculateRewardToGo(rewardHistory, discountFactor)
 
-	local rewardsToGoArray = {}
+	local rewardToGoArray = {}
 
 	local discountedReward = 0
 
@@ -66,11 +60,11 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 		discountedReward = rewardHistory[h] + (discountFactor * discountedReward)
 
-		table.insert(rewardsToGoArray, 1, discountedReward)
+		table.insert(rewardToGoArray, 1, discountedReward)
 
 	end
 
-	return rewardsToGoArray
+	return rewardToGoArray
 
 end
 
@@ -82,25 +76,77 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 	
 	NewProximalPolicyOptimizationClipModel.clipRatio = clipRatio or defaultClipRatio
 	
-	local rewardHistory = {}
+	local rewardValueHistory = {}
 	
 	local criticValueHistory = {}
 	
-	local actionProbabilityVectorHistory = {}
-	
-	local oldActionProbabilityVectorHistory = {}
+	local actionProbabilityValueHistory = {}
+
+	local oldActionProbabilityValueHistory = {}
 	
 	local advantageValueHistory = {}
 	
 	local oldAdvantageValueHistory = {}
 	
-	NewProximalPolicyOptimizationClipModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
-		
-		local allOutputsMatrix = NewProximalPolicyOptimizationClipModel.ActorModel:predict(previousFeatureVector, true)
+	local clipFunction = function(value) 
 
-		local actionProbabilityVector = calculateProbability(allOutputsMatrix)
-		
+		local clipRatio = NewProximalPolicyOptimizationClipModel.clipRatio 
+
+		return math.clamp(value, 1 - clipRatio, 1 + clipRatio) 
+
+	end
+	
+	NewProximalPolicyOptimizationClipModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+
+		local ActorModel = NewProximalPolicyOptimizationClipModel.ActorModel
+
 		local CriticModel = NewProximalPolicyOptimizationClipModel.CriticModel
+
+		local actionVector = ActorModel:predict(previousFeatureVector, true)
+
+		local actionProbabilityVector = calculateProbability(actionVector)
+
+		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
+
+		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
+
+		local advantageValue = rewardValue + (NewProximalPolicyOptimizationClipModel.discountFactor * currentCriticValue) - previousCriticValue
+
+		local actionIndex = table.find(ActorModel:getClassesList(), action)
+
+		local actionProbabilityValue = actionProbabilityVector[1][actionIndex]
+
+		local logActionProbabilityValue = math.log(actionProbabilityValue)
+
+		table.insert(advantageValueHistory, advantageValue)
+
+		table.insert(criticValueHistory, currentCriticValue)
+
+		table.insert(actionProbabilityValueHistory, logActionProbabilityValue)
+
+		table.insert(rewardValueHistory, rewardValue)
+
+		return advantageValue
+
+	end)
+
+	NewProximalPolicyOptimizationClipModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
+
+		local CriticModel = NewProximalPolicyOptimizationClipModel.CriticModel
+
+		local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(actionVector)
+
+		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+
+		local logStandardDeviationVector = AqwamMatrixLibrary:logarithm(standardDeviationVector)
+
+		local multipliedLogStandardDeviationVector = AqwamMatrixLibrary:multiply(2, logStandardDeviationVector)
+
+		local numberOfActionDimensions = #NewProximalPolicyOptimizationClipModel.ActorModel:getClassesList()
+
+		local actionProbabilityValuePart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
+
+		local actionProbabilityValue = -0.5 * (actionProbabilityValuePart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
 
 		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 
@@ -110,12 +156,14 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 		table.insert(advantageValueHistory, advantageValue)
 
-		table.insert(criticValueHistory, previousCriticValue)
+		table.insert(criticValueHistory, currentCriticValue)
 
-		table.insert(actionProbabilityVectorHistory, actionProbabilityVector)
-		
-		table.insert(rewardHistory, rewardValue)
-		
+		table.insert(actionProbabilityValueHistory, actionProbabilityValue)
+
+		table.insert(rewardValueHistory, rewardValue)
+
+		return advantageValue
+
 	end)
 	
 	NewProximalPolicyOptimizationClipModel:setEpisodeUpdateFunction(function()
@@ -124,9 +172,9 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 		local CriticModel = NewProximalPolicyOptimizationClipModel.CriticModel
 		
-		if (#oldActionProbabilityVectorHistory == 0) then 
+		if (#oldActionProbabilityValueHistory == 0) then 
 			
-			oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
+			oldActionProbabilityValueHistory = table.clone(actionProbabilityValueHistory)
 			
 			oldAdvantageValueHistory = table.clone(advantageValueHistory)
 			
@@ -134,87 +182,77 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 			table.clear(criticValueHistory)
 
-			table.clear(rewardHistory)
+			table.clear(rewardValueHistory)
 
-			table.clear(actionProbabilityVectorHistory)
+			table.clear(actionProbabilityValueHistory)
 			
 			return 
 				
 		end
 		
-		local rewardsToGoArray = calculateRewardsToGo(rewardHistory, NewProximalPolicyOptimizationClipModel.discountFactor)
+		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewProximalPolicyOptimizationClipModel.discountFactor)
 
 		local historyLength = #criticValueHistory
 		
-		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #ActorModel:getClassesList())
+		local sumActorLoss = 0
 		
 		local sumCriticLoss = 0
 		
-		local clipFunction = function(value) 
+		for h = 1, historyLength, 1 do
+
+			local ratio = actionProbabilityValueHistory[h] / oldActionProbabilityValueHistory[h]
 			
-			local clipRatio = NewProximalPolicyOptimizationClipModel.clipRatio 
+			local oldAdvantageValueHistory = oldAdvantageValueHistory[h]
+
+			local actorSurrogateLossPart1 = ratio * oldAdvantageValueHistory
 			
-			return math.clamp(value, 1 - clipRatio, 1 + clipRatio) 
+			local actorSurrogateLossPart2 = clipFunction(ratio) * oldAdvantageValueHistory
 			
-		end
+			local actorLoss = math.min(actorSurrogateLossPart1, actorSurrogateLossPart2)
 
-		for h = 2, historyLength, 1 do
+			local criticLoss = criticValueHistory[h] - rewardToGoArray[h]
 
-			local currentActionVector = actionProbabilityVectorHistory[h]
+			sumActorLoss = sumActorLoss + actorLoss
 
-			local previousActionVector = oldActionProbabilityVectorHistory[h]
-
-			local ratioVector = AqwamMatrixLibrary:divide(currentActionVector, previousActionVector)
-			
-			local advantageValue = advantageValueHistory[h]
-			
-			local surrogateLoss1 = AqwamMatrixLibrary:multiply(ratioVector, advantageValue)
-			
-			local surrogateLoss2Part1 = AqwamMatrixLibrary:applyFunction(clipFunction, ratioVector)
-			
-			local surrogateLoss2 = AqwamMatrixLibrary:multiply(surrogateLoss2Part1, advantageValue)
-
-			local actorLossVector = AqwamMatrixLibrary:applyFunction(math.min, surrogateLoss1, surrogateLoss2)
-
-			local criticLoss = criticValueHistory[h] - rewardsToGoArray[h]
-
-			sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
-
-			sumCriticLoss += criticLoss
+			sumCriticLoss = sumCriticLoss + criticLoss
 
 		end
 
-		local calculatedActorLossVector = AqwamMatrixLibrary:divide(sumActorLossVector, historyLength)
-		
-		calculatedActorLossVector = AqwamMatrixLibrary:multiply(-1, calculatedActorLossVector)
+		sumActorLoss = sumActorLoss / historyLength
 
-		local calculatedCriticLoss = sumCriticLoss / historyLength
-		
+		sumCriticLoss = sumCriticLoss / historyLength
+
 		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
+
+		local numberOfActions = #ActorModel:getClassesList()
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, -sumActorLoss)
+
 		ActorModel:forwardPropagate(featureVector, true)
+
 		CriticModel:forwardPropagate(featureVector, true)
 
-		ActorModel:backwardPropagate(calculatedActorLossVector, true)
-		CriticModel:backwardPropagate(calculatedCriticLoss, true)
-		
-		oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
-		
+		ActorModel:backwardPropagate(sumActorLossVector, true)
+
+		CriticModel:backwardPropagate(sumCriticLoss, true)
+
+		oldActionProbabilityValueHistory = table.clone(actionProbabilityValueHistory)
+
 		oldAdvantageValueHistory = table.clone(advantageValueHistory)
-		
+
 		table.clear(advantageValueHistory)
 
 		table.clear(criticValueHistory)
 
-		table.clear(rewardHistory)
+		table.clear(rewardValueHistory)
 
-		table.clear(actionProbabilityVectorHistory)
+		table.clear(actionProbabilityValueHistory)
 		
 	end)
 	
-	NewProximalPolicyOptimizationClipModel:extendResetFunction(function()
+	NewProximalPolicyOptimizationClipModel:setResetFunction(function()
 		
 		table.clear(advantageValueHistory)
 		
@@ -222,11 +260,11 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 		table.clear(criticValueHistory)
 
-		table.clear(rewardHistory)
+		table.clear(rewardValueHistory)
 
-		table.clear(actionProbabilityVectorHistory)
+		table.clear(actionProbabilityValueHistory)
 		
-		table.clear(oldActionProbabilityVectorHistory)
+		table.clear(oldActionProbabilityValueHistory)
 		
 	end)
 	

@@ -176,8 +176,6 @@ function VanillaPolicyGradientModel.new(discountFactor)
 	end)
 	
 	NewVanillaPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
-		
-		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
 
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 		
@@ -189,7 +187,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local multipliedLogStandardDeviationVector = AqwamMatrixLibrary:multiply(2, logStandardDeviationVector)
 
-		local numberOfActionDimensions = #NewVanillaPolicyGradientModel.Model:getClassesList()
+		local numberOfActionDimensions = #NewVanillaPolicyGradientModel.ActorModel:getClassesList()
 
 		local logLikelihoodPart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
 

@@ -34,10 +34,6 @@ DiagonalGaussianPolicy:setParameters(numberOfReinforcementsPerEpisode: integer)
 
 * numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
 
-  * Maximum
-
-  * Sample
-
 ### setModel()
 
 ```

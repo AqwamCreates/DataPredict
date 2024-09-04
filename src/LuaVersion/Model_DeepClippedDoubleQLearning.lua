@@ -36,7 +36,7 @@ function DeepClippedDoubleQLearningModel.new(discountFactor)
 
 	NewDeepClippedDoubleQLearningModel.ModelParametersArray = {}
 	
-	NewDeepClippedDoubleQLearningModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local Model = NewDeepClippedDoubleQLearningModel.Model
 
@@ -87,6 +87,10 @@ function DeepClippedDoubleQLearningModel.new(discountFactor)
 		return temporalDifferenceVector
 
 	end)
+	
+	NewDeepClippedDoubleQLearningModel:setCategoricalEpisodeUpdateFunction(function() end)
+
+	NewDeepClippedDoubleQLearningModel:setCategoricalResetFunction(function() end)
 
 	return NewDeepClippedDoubleQLearningModel
 

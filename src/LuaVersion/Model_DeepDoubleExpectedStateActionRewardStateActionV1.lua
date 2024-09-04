@@ -82,7 +82,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(epsilon, discou
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.ModelParametersArray = {}
 
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model
 
@@ -105,6 +105,10 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(epsilon, discou
 		return temporalDifferenceError
 
 	end)
+	
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalEpisodeUpdateFunction(function() end)
+
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalResetFunction(function() end)
 
 	return NewDeepDoubleExpectedStateActionRewardStateActionModel
 

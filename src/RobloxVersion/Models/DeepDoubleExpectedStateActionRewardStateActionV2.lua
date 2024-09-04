@@ -68,7 +68,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIter
 	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate = averagingRate or defaultAveragingRate
 
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
 		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model
 		
@@ -146,6 +146,10 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIter
 		return temporalDifferenceError
 
 	end)
+	
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalEpisodeUpdateFunction(function() end)
+
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalResetFunction(function() end)
 
 	return NewDeepDoubleExpectedStateActionRewardStateActionModel
 

@@ -70,15 +70,27 @@ function ReinforcementLearningActorCriticBaseModel:getCriticModel()
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:setUpdateFunction(updateFunction)
+function ReinforcementLearningActorCriticBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
 
-	self.updateFunction = updateFunction
+	self.categoricalUpdateFunction = categoricalUpdateFunction
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
+function ReinforcementLearningActorCriticBaseModel:setCategoricalEpisodeUpdateFunction(categoricalEpisodeUpdateFunction)
 
-	self.episodeUpdateFunction = episodeUpdateFunction
+	self.categoricalEpisodeUpdateFunction = categoricalEpisodeUpdateFunction
+
+end
+
+function ReinforcementLearningActorCriticBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
+
+	self.diagonalGaussianUpdateFunction = diagonalGaussianUpdateFunction
+
+end
+
+function ReinforcementLearningActorCriticBaseModel:setDiagonalGaussianEpisodeUpdateFunction(diagonalGaussianEpisodeUpdateFunction)
+
+	self.diagonalGaussianEpisodeUpdateFunction = diagonalGaussianEpisodeUpdateFunction
 
 end
 
@@ -88,31 +100,111 @@ function ReinforcementLearningActorCriticBaseModel:predict(featureVector, return
 	
 end
 
-function ReinforcementLearningActorCriticBaseModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function ReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-	self.updateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	local categoricalUpdateFunction = self.categoricalUpdateFunction
 
-end
+	if (categoricalUpdateFunction) then
 
-function ReinforcementLearningActorCriticBaseModel:episodeUpdate()
+		return categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-	local episodeUpdateFunction = self.episodeUpdateFunction
+	else
 
-	if not episodeUpdateFunction then return end
+		error("Categorical update function is not implemented!")
 
-	episodeUpdateFunction()
-
-end
-
-function ReinforcementLearningActorCriticBaseModel:extendResetFunction(resetFunction)
-
-	self.resetFunction = resetFunction
+	end
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:reset()
+function ReinforcementLearningActorCriticBaseModel:categoricalEpisodeUpdate()
 
-	if (self.resetFunction) then self.resetFunction() end
+	local categoricalEpisodeUpdateFunction = self.categoricalEpisodeUpdateFunction
+
+	if (categoricalEpisodeUpdateFunction) then
+
+		return categoricalEpisodeUpdateFunction()
+
+	else
+
+		error("Categorical episode update function is not implemented!")
+
+	end
+
+end
+
+function ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
+
+	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
+
+	if (diagonalGaussianUpdateFunction) then
+
+		return diagonalGaussianUpdateFunction(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
+
+	else
+
+		error("Diagonal Gaussian update function is not implemented!")
+
+	end
+
+end
+
+function ReinforcementLearningActorCriticBaseModel:diagonalGaussianEpisodeUpdate()
+
+	local diagonalGaussianEpisodeUpdateFunction = self.diagonalGaussianEpisodeUpdateFunction
+
+	if (diagonalGaussianEpisodeUpdateFunction) then
+
+		return diagonalGaussianEpisodeUpdateFunction()
+
+	else
+
+		error("Diagonal Gaussian episode update function is not implemented!")
+
+	end
+
+end
+
+function ReinforcementLearningActorCriticBaseModel:setCategoricalResetFunction(categoricalResetFunction)
+
+	self.categoricalResetFunction = categoricalResetFunction
+
+end
+
+function ReinforcementLearningActorCriticBaseModel:setDiagonalGaussianResetFunction(diagonalGaussianResetFunction)
+
+	self.diagonalGaussianResetFunction = diagonalGaussianResetFunction
+
+end
+
+function ReinforcementLearningActorCriticBaseModel:categoricalReset()
+
+	local categoricalResetFunction = self.categoricalResetFunction
+
+	if (categoricalResetFunction) then 
+
+		return categoricalResetFunction() 
+
+	else
+
+		error("Categorical reset function is not implemented!")
+
+	end
+
+end
+
+function ReinforcementLearningActorCriticBaseModel:diagonalGaussianReset()
+
+	local diagonalGaussianResetFunction = self.diagonalGaussianResetFunction
+
+	if (diagonalGaussianResetFunction) then 
+
+		return diagonalGaussianResetFunction()
+
+	else
+
+		error("Diagonal Gaussian reset function is not implemented!")
+
+	end
 
 end
 

@@ -86,11 +86,11 @@ function REINFORCEModel.new(discountFactor)
 		
 		local actionIndex = table.find(Model:getClassesList(), action)
 		
-		local actionProbability = actionProbabilityVector[1][actionIndex]
+		local actionProbabilityValue = actionProbabilityVector[1][actionIndex]
 		
-		local logActionProbability = math.log(actionProbability)
+		local logActionProbabilityValue = math.log(actionProbabilityValue)
 
-		table.insert(actionProbabilityValueHistory, logActionProbability)
+		table.insert(actionProbabilityValueHistory, logActionProbabilityValue)
 		
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -148,11 +148,11 @@ function REINFORCEModel.new(discountFactor)
 
 		local numberOfActionDimensions = #NewREINFORCEModel.Model:getClassesList()
 
-		local logLikelihoodPart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
+		local actionProbabilityValuePart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
 
-		local logLikelihood = -0.5 * (logLikelihoodPart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
+		local actionProbabilityValue = -0.5 * (actionProbabilityValuePart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
 		
-		table.insert(actionProbabilityValueHistory, logLikelihood)
+		table.insert(actionProbabilityValueHistory, actionProbabilityValue)
 
 		table.insert(rewardValueHistory, rewardValue)
 		

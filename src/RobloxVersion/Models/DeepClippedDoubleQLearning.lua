@@ -94,9 +94,9 @@ function DeepClippedDoubleQLearningModel.new(discountFactor)
 
 	end)
 	
-	NewDeepClippedDoubleQLearningModel:setCategoricalEpisodeUpdateFunction(function() end)
+	NewDeepClippedDoubleQLearningModel:setEpisodeUpdateFunction(function() end)
 
-	NewDeepClippedDoubleQLearningModel:setCategoricalResetFunction(function() end)
+	NewDeepClippedDoubleQLearningModel:setResetFunction(function() end)
 
 	return NewDeepClippedDoubleQLearningModel
 

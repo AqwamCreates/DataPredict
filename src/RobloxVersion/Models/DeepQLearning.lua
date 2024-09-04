@@ -74,9 +74,9 @@ function DeepQLearningModel.new(discountFactor)
 
 	end)
 	
-	NewDeepQLearningModel:setCategoricalEpisodeUpdateFunction(function() end)
+	NewDeepQLearningModel:setEpisodeUpdateFunction(function() end)
 
-	NewDeepQLearningModel:setCategoricalResetFunction(function() end)
+	NewDeepQLearningModel:setResetFunction(function() end)
 
 	return NewDeepQLearningModel
 

@@ -108,9 +108,9 @@ function DeepDoubleQLearningModel.new(discountFactor)
 		
 	end)
 	
-	NewDeepDoubleQLearningModel:setCategoricalEpisodeUpdateFunction(function() end)
+	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function() end)
 	
-	NewDeepDoubleQLearningModel:setCategoricalResetFunction(function() end)
+	NewDeepDoubleQLearningModel:setResetFunction(function() end)
 
 	return NewDeepDoubleQLearningModel
 

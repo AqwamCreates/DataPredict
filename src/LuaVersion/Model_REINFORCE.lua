@@ -111,10 +111,8 @@ function REINFORCEModel.new(discountFactor)
 		local sumLossValue = 0
 		
 		for i, actionProbabilityValue in ipairs(actionProbabilityValueHistory) do
-			
-			local lossValue = actionProbabilityValue * rewardsToGoArray[i]
 
-			sumLossValue = sumLossValue + lossValue
+			sumLossValue = sumLossValue + (actionProbabilityValue * rewardsToGoArray[i])
 			
 		end	
 		
@@ -178,9 +176,7 @@ function REINFORCEModel.new(discountFactor)
 
 		for i, actionProbabilityValue in ipairs(actionProbabilityValueHistory) do
 
-			local lossValue = actionProbabilityValue * rewardsToGoArray[i]
-
-			sumLossValue = sumLossValue + lossValue
+			sumLossValue = sumLossValue + (actionProbabilityValue * rewardsToGoArray[i])
 
 		end	
 

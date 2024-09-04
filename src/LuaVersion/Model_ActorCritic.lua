@@ -76,8 +76,6 @@ function ActorCriticModel.new(discountFactor)
 
 		local criticValue = NewActorCriticModel.CriticModel:predict(previousFeatureVector, true)[1][1]
 
-		local numberOfActions = #actionVector[1]
-
 		local actionIndex = table.find(ActorModel:getClassesList(), action)
 
 		local actionProbability = actionProbabilityVector[1][actionIndex]

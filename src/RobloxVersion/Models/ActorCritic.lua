@@ -82,13 +82,13 @@ function ActorCriticModel.new(discountFactor)
 		
 		local ActorModel = NewActorCriticModel.ActorModel
 		
-		local allOutputsMatrix = ActorModel:predict(previousFeatureVector, true)
+		local actionVector = ActorModel:predict(previousFeatureVector, true)
 
-		local actionProbabilityVector = calculateProbability(allOutputsMatrix)
+		local actionProbabilityVector = calculateProbability(actionVector)
 
 		local criticValue = NewActorCriticModel.CriticModel:predict(previousFeatureVector, true)[1][1]
 
-		local numberOfActions = #allOutputsMatrix[1]
+		local numberOfActions = #actionVector[1]
 
 		local actionIndex = table.find(ActorModel:getClassesList(), action)
 

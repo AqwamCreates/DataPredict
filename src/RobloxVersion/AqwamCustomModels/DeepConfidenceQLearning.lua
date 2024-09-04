@@ -28,63 +28,63 @@
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-ConfidenceQLearningNeuralNetwork = {}
+DeepConfidenceQLearningModel = {}
 
-ConfidenceQLearningNeuralNetwork.__index = ConfidenceQLearningNeuralNetwork
+DeepConfidenceQLearningModel.__index = DeepConfidenceQLearningModel
 
 local defaultDiscountFactor = 0.95
 
 -- Do not multiply confidenceValue with target! Otherwise, it will cause poor performance!
 
-function ConfidenceQLearningNeuralNetwork.new(discountFactor)
+function DeepConfidenceQLearningModel.new(discountFactor)
 
-	local NewConfidenceQLearningNeuralNetwork = {}
+	local NewDeepConfidenceQLearningModel = {}
 	
-	setmetatable(NewConfidenceQLearningNeuralNetwork, ConfidenceQLearningNeuralNetwork)
+	setmetatable(NewDeepConfidenceQLearningModel, DeepConfidenceQLearningModel)
 	
-	NewConfidenceQLearningNeuralNetwork.discountFactor =  discountFactor or defaultDiscountFactor
+	NewDeepConfidenceQLearningModel.discountFactor =  discountFactor or defaultDiscountFactor
 
-	return NewConfidenceQLearningNeuralNetwork
+	return NewDeepConfidenceQLearningModel
 
 end
 
-function ConfidenceQLearningNeuralNetwork:setParameters(discountFactor, confidenceLearningRate)
+function DeepConfidenceQLearningModel:setParameters(discountFactor, confidenceLearningRate)
 	
 	self.discountFactor =  discountFactor or self.discountFactor
 
 end
 
-function ConfidenceQLearningNeuralNetwork:predict(featureVector, returnOriginalOutput)
+function DeepConfidenceQLearningModel:predict(featureVector, returnOriginalOutput)
 	
 	return self.ActorModel:predict(featureVector, returnOriginalOutput)
 	
 end
 
-function ConfidenceQLearningNeuralNetwork:setActorModel(ActorModel)
+function DeepConfidenceQLearningModel:setActorModel(ActorModel)
 	
 	self.ActorModel = ActorModel
 	
 end
 
-function ConfidenceQLearningNeuralNetwork:getActorModel()
+function DeepConfidenceQLearningModel:getActorModel()
 	
 	return self.ActorModel
 
 end
 
-function ConfidenceQLearningNeuralNetwork:setConfidenceModel(ConfidenceModel)
+function DeepConfidenceQLearningModel:setConfidenceModel(ConfidenceModel)
 
 	self.ConfidenceModel = ConfidenceModel
 
 end
 
-function ConfidenceQLearningNeuralNetwork:getConfidenceModel()
+function DeepConfidenceQLearningModel:getConfidenceModel()
 
 	return self.ConfidenceModel
 
 end
 
-function ConfidenceQLearningNeuralNetwork:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function DeepConfidenceQLearningModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector)
 	
 	local ActorModel = self.ActorModel
 	
@@ -148,18 +148,18 @@ function ConfidenceQLearningNeuralNetwork:categoricalUpdate(previousFeatureVecto
 	
 end
 
-function ConfidenceQLearningNeuralNetwork:diagonalGaussianUpdate()
+function DeepConfidenceQLearningModel:diagonalGaussianUpdate()
 	
 	error("The diagonal Gaussian update is not implemented!")
 	
 end
 
-function ConfidenceQLearningNeuralNetwork:episodeUpdate()
+function DeepConfidenceQLearningModel:episodeUpdate()
 		
 end
 
-function ConfidenceQLearningNeuralNetwork:reset()
+function DeepConfidenceQLearningModel:reset()
 	
 end
 
-return ConfidenceQLearningNeuralNetwork
+return DeepConfidenceQLearningModel

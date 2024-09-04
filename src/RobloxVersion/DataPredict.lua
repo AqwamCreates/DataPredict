@@ -124,9 +124,9 @@ AqwamRobloxMachineLearningLibrary.AqwamCustomModels = {
 	
 	DeepRatioQLearning = require(AqwamCustomModels.DeepRatioQLearning),
 	
-	WeightProximalPolicyOptimizationClip = require(AqwamCustomModels.WeightProximalPolicyOptimizationClip),
+	DeepConfidenceQLearning = require(AqwamCustomModels.DeepConfidenceQLearning),
 	
-	ConfidenceQLearning = require(AqwamCustomModels.ConfidenceQLearningNeuralNetwork)
+	WeightProximalPolicyOptimizationClip = require(AqwamCustomModels.WeightProximalPolicyOptimizationClip)
 	
 }
 

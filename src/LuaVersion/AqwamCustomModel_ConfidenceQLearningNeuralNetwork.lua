@@ -84,7 +84,7 @@ function ConfidenceQLearningNeuralNetwork:getConfidenceModel()
 
 end
 
-function ConfidenceQLearningNeuralNetwork:update(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function ConfidenceQLearningNeuralNetwork:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector)
 	
 	local ActorModel = self.ActorModel
 	
@@ -145,6 +145,12 @@ function ConfidenceQLearningNeuralNetwork:update(previousFeatureVector, action, 
 	ConfidenceModel:backwardPropagate(rewardValue)
 	
 	return temporalDifferenceError
+	
+end
+
+function ConfidenceQLearningNeuralNetwork:diagonalGaussianUpdate()
+	
+	error("The diagonal Gaussian update is not implemented!")
 	
 end
 

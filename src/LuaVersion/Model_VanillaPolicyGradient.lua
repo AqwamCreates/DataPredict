@@ -128,11 +128,11 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		
 		local sumCriticLoss = 0
 		
-		for i = 1, historyLength, 1 do
+		for h = 1, historyLength, 1 do
 			
-			sumActorLoss = sumActorLoss + actorLossValueHistory[i]
+			sumActorLoss = sumActorLoss + actorLossValueHistory[h]
 			
-			sumCriticLoss = sumCriticLoss + (criticValueHistory[i] - rewardToGoArray[i])
+			sumCriticLoss = sumCriticLoss + (criticValueHistory[h] - rewardToGoArray[h])
 			
 		end
 		
@@ -221,11 +221,11 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local sumCriticLoss = 0
 
-		for i = 1, historyLength, 1 do
+		for h = 1, historyLength, 1 do
 
-			sumActorLoss = sumActorLoss + actorLossValueHistory[i]
+			sumActorLoss = sumActorLoss + actorLossValueHistory[h]
 
-			sumCriticLoss = sumCriticLoss + (criticValueHistory[i] - rewardToGoArray[i])
+			sumCriticLoss = sumCriticLoss + (criticValueHistory[h] - rewardToGoArray[h])
 
 		end
 

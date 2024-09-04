@@ -30,9 +30,33 @@ VanillaPolicyGradientModel.__index = VanillaPolicyGradientModel
 
 setmetatable(VanillaPolicyGradientModel, ReinforcementLearningActorCriticBaseModel)
 
-local function calculateRewardsToGo(rewardHistory, discountFactor)
+local function calculateProbability(vector)
 
-	local rewardsToGoArray = {}
+	local meanVector = AqwamMatrixLibrary:horizontalMean(vector)
+
+	local standardDeviationVector = AqwamMatrixLibrary:horizontalStandardDeviation(vector)
+
+	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(vector, meanVector)
+
+	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
+
+	local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+
+	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, squaredZScoreVector)
+
+	local probabilityVectorPart2 = AqwamMatrixLibrary:exponent(probabilityVectorPart1)
+
+	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+
+	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
+
+	return probabilityVector
+
+end
+
+local function calculateRewardToGo(rewardHistory, discountFactor)
+
+	local rewardToGoArray = {}
 
 	local discountedReward = 0
 
@@ -40,11 +64,11 @@ local function calculateRewardsToGo(rewardHistory, discountFactor)
 
 		discountedReward = rewardHistory[h] + (discountFactor * discountedReward)
 
-		table.insert(rewardsToGoArray, 1, discountedReward)
+		table.insert(rewardToGoArray, 1, discountedReward)
 
 	end
 
-	return rewardsToGoArray
+	return rewardToGoArray
 
 end
 
@@ -53,60 +77,66 @@ function VanillaPolicyGradientModel.new(discountFactor)
 	local NewVanillaPolicyGradientModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
 
 	setmetatable(NewVanillaPolicyGradientModel, VanillaPolicyGradientModel)
-
-	local rewardHistory = {}
-
-	local gradientHistory = {}
 	
-	local valueHistory = {}
+	local actorLossValueHistory = {}
+	
+	local criticValueHistory = {}
 
-	NewVanillaPolicyGradientModel:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	local rewardValueHistory = {}
 
-		local allOutputsMatrix = NewVanillaPolicyGradientModel.ActorModel:predict(previousFeatureVector, true)
-
-		local logOutputMatrix = AqwamMatrixLibrary:applyFunction(math.log, allOutputsMatrix)
+	NewVanillaPolicyGradientModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
+		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
+
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
+
+		local actionVector = ActorModel:predict(previousFeatureVector, true)
+
+		local actionProbabilityVector = calculateProbability(actionVector)
+
+		local actionIndex = table.find(ActorModel:getClassesList(), action)
+
+		local actionProbability = actionProbabilityVector[1][actionIndex]
+
+		local logActionProbability = math.log(actionProbability)
 
 		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 
 		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
 
 		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
+		
+		local actorLossValue = logActionProbability * advantageValue
+		
+		table.insert(actorLossValueHistory, actorLossValue)
+		
+		table.insert(criticValueHistory, currentCriticValue)
 
-		local gradientMatrix = AqwamMatrixLibrary:multiply(logOutputMatrix, advantageValue)
-		
-		table.insert(rewardHistory, rewardValue)
-		
-		table.insert(valueHistory, previousCriticValue)
+		table.insert(rewardValueHistory, rewardValue)
 
-		table.insert(gradientHistory, gradientMatrix[1])
-		
 		return advantageValue
 
 	end)
 
-	NewVanillaPolicyGradientModel:setEpisodeUpdateFunction(function()
+	NewVanillaPolicyGradientModel:setCategoricalEpisodeUpdateFunction(function()
 		
-		local episodeLength = #rewardHistory
+		local historyLength = #rewardValueHistory
 		
-		local rewardToGoArray = calculateRewardsToGo(rewardHistory, NewVanillaPolicyGradientModel.discountFactor)
-
-		local sumGradient = AqwamMatrixLibrary:verticalSum(gradientHistory)
+		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewVanillaPolicyGradientModel.discountFactor)
 		
-		local sumActorLossVector = AqwamMatrixLibrary:multiply(-1, sumGradient)
+		local sumActorLoss = 0
 		
 		local sumCriticLoss = 0
 		
-		for i, value in ipairs(valueHistory) do
+		for i = 1, historyLength, 1 do
 			
-			local criticLoss = value - rewardToGoArray[i]
+			sumActorLoss = sumActorLoss + actorLossValueHistory[i]
 			
-			sumCriticLoss = sumCriticLoss + criticLoss
+			sumCriticLoss = sumCriticLoss + (criticValueHistory[i] - rewardToGoArray[i])
 			
 		end
 		
-		sumCriticLoss = sumCriticLoss / episodeLength
+		sumCriticLoss = sumCriticLoss / historyLength
 		
 		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
 
@@ -119,28 +149,122 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		local numberOfNeuronsAtFinalLayer = ActorModel:getTotalNumberOfNeurons(numberOfLayers)
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumActorLoss)
 
 		ActorModel:forwardPropagate(featureVector, true)
 		CriticModel:forwardPropagate(featureVector, true)
 
 		ActorModel:backwardPropagate(sumActorLossVector, true)
-		CriticModel:backwardPropagate(sumCriticLoss, true)
+		CriticModel:backwardPropagate(-sumCriticLoss, true)
 		
-		table.clear(rewardHistory)
-		
-		table.clear(valueHistory)
-		
-		table.clear(gradientHistory)
+		table.clear(actorLossValueHistory)
+
+		table.clear(criticValueHistory)
+
+		table.clear(rewardValueHistory)
 
 	end)
 
-	NewVanillaPolicyGradientModel:extendResetFunction(function()
+	NewVanillaPolicyGradientModel:setCategoricalResetFunction(function()
 
-		table.clear(rewardHistory)
+		table.clear(actorLossValueHistory)
+
+		table.clear(criticValueHistory)
+
+		table.clear(rewardValueHistory)
+
+	end)
+	
+	NewVanillaPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
 		
-		table.clear(valueHistory)
+		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
+
+		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 		
-		table.clear(gradientHistory)
+		local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:verticalZScoreNormalization(actionVector)
+
+		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+
+		local logStandardDeviationVector = AqwamMatrixLibrary:logarithm(standardDeviationVector)
+
+		local multipliedLogStandardDeviationVector = AqwamMatrixLibrary:multiply(2, logStandardDeviationVector)
+
+		local numberOfActionDimensions = #NewVanillaPolicyGradientModel.Model:getClassesList()
+
+		local logLikelihoodPart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
+
+		local logLikelihood = -0.5 * (logLikelihoodPart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
+		
+		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
+
+		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
+
+		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
+
+		local actorLossValue = logLikelihood * advantageValue
+
+		table.insert(actorLossValueHistory, actorLossValue)
+
+		table.insert(criticValueHistory, currentCriticValue)
+
+		table.insert(rewardValueHistory, rewardValue)
+		
+	end)
+	
+	NewVanillaPolicyGradientModel:setDiagonalGaussianEpisodeUpdateFunction(function()
+
+		local historyLength = #rewardValueHistory
+
+		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewVanillaPolicyGradientModel.discountFactor)
+
+		local sumActorLoss = 0
+
+		local sumCriticLoss = 0
+
+		for i = 1, historyLength, 1 do
+
+			sumActorLoss = sumActorLoss + actorLossValueHistory[i]
+
+			sumCriticLoss = sumCriticLoss + (criticValueHistory[i] - rewardToGoArray[i])
+
+		end
+
+		sumCriticLoss = sumCriticLoss / historyLength
+
+		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
+
+		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
+
+		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
+
+		local numberOfLayers = ActorModel:getNumberOfLayers()
+
+		local numberOfNeuronsAtFinalLayer = ActorModel:getTotalNumberOfNeurons(numberOfLayers)
+
+		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfNeuronsAtFinalLayer, -sumActorLoss)
+
+		ActorModel:forwardPropagate(featureVector, true)
+		CriticModel:forwardPropagate(featureVector, true)
+
+		ActorModel:backwardPropagate(sumActorLossVector, true)
+		CriticModel:backwardPropagate(-sumCriticLoss, true)
+
+		table.clear(actorLossValueHistory)
+
+		table.clear(criticValueHistory)
+
+		table.clear(rewardValueHistory)
+
+	end)
+
+	NewVanillaPolicyGradientModel:setDiagonalGaussianResetFunction(function()
+
+		table.clear(actorLossValueHistory)
+
+		table.clear(criticValueHistory)
+
+		table.clear(rewardValueHistory)
 
 	end)
 	

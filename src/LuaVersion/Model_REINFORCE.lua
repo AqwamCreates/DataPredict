@@ -106,13 +106,13 @@ function REINFORCEModel.new(discountFactor)
 		
 		local Model = NewREINFORCEModel.Model
 		
-		local rewardsToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
+		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
 		
 		local sumLossValue = 0
 		
-		for i, actionProbabilityValue in ipairs(actionProbabilityValueHistory) do
+		for h, actionProbabilityValue in ipairs(actionProbabilityValueHistory) do
 
-			sumLossValue = sumLossValue + (actionProbabilityValue * rewardsToGoArray[i])
+			sumLossValue = sumLossValue + (actionProbabilityValue * rewardToGoArray[h])
 			
 		end	
 		
@@ -170,13 +170,13 @@ function REINFORCEModel.new(discountFactor)
 
 		local Model = NewREINFORCEModel.Model
 
-		local rewardsToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
+		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
 
 		local sumLossValue = 0
 
-		for i, actionProbabilityValue in ipairs(actionProbabilityValueHistory) do
+		for h, actionProbabilityValue in ipairs(actionProbabilityValueHistory) do
 
-			sumLossValue = sumLossValue + (actionProbabilityValue * rewardsToGoArray[i])
+			sumLossValue = sumLossValue + (actionProbabilityValue * rewardToGoArray[h])
 
 		end	
 

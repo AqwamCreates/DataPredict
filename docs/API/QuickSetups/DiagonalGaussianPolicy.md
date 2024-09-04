@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - DiagonalGaussianPolicy
+# [API Reference](../../API.md) - [QuickSetups](../QuickSetups.md) - DiagonalGaussianPolicy
 
 DiagonalGaussianPolicy is a base class for setuping up reinforcement learning functions.
 

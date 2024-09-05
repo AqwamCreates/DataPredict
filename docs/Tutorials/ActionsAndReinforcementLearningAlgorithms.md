@@ -30,13 +30,13 @@ As you can see, you can set the values for each of the actions. More than one ac
 
 From the above, you can see that different types of action spaces have different types of properties. That also means that the way that our AI will have different way of learning things due for different properties. Because of how much mathematics are involved, we will not cover them any further.
 
-What you will need to know instead that you will need to match the correct functions and algorithms for a given action space type.
+What you will need to know instead that you will need to match the correct QuickSetup object and algorithm functions to use for a given action space type.
 
-| Action Space | QuickSetup Object To Use | Function To Perform The Step Updates |
-|--------------|--------------------------|--------------------------------------|
-| Discrete     | CategoricalPolicy        | categoricalUpdate()                  |
-| Continuous   | DiagonalGaussianPolicy   | diagonalGaussianUpdate()             |
+| Action Space | QuickSetup Object To Use | Function To Perform The Step Updates | What Value Type Is Used To Update The Algorithm        |
+|--------------|--------------------------|--------------------------------------|--------------------------------------------------------|
+| Discrete     | CategoricalPolicy        | categoricalUpdate()                  | A single action                                        |
+| Continuous   | DiagonalGaussianPolicy   | diagonalGaussianUpdate()             | An action vector containing all values for all actions |
 
-That's all you need to know for today!
+That's all what you need to know for today!
 
 Thank you very much for reading this tutorial. Have a nice day!

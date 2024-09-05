@@ -82,17 +82,29 @@ ReinforcementLearningActorCriticBaseModel:getCriticModel(): ModelObject
 
 * Model: The model that was used as a critic model.
 
-### setUpdateFunction()
+### setCategoricalUpdateFunction()
 
-Sets the model's update function.
+Sets the model's categorical policy update function.
 
 ```
-ReinforcementLearningActorCriticBaseModel:setUpdateFunction(updateFunction)
+ReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
 ```
 
 #### Parameters:
 
-* updateFunction: The function to run when update() is called.
+* categoricalUpdateFunction: The function to run when categoricalUpdate() is called.
+
+### setDiagonalGaussianUpdateFunction()
+
+Sets the model's diagonal Gausian policy update function.
+
+```
+ReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
+```
+
+#### Parameters:
+
+* diagonalGaussianUpdateFunction: The function to run when diagonalGaussianUpdate() is called.
 
 ### setEpisodeUpdateFunction()
 
@@ -150,12 +162,12 @@ Updates the model parameters using episodeUpdateFunction().
 ReinforcementLearningActorCriticBaseModel:episodeUpdate()
 ```
 
-### extendResetFunction()
+### setResetFunction()
 
 Sets a new function on reset alongside with the current reset() function. 
 
 ```
-ReinforcementLearningActorCriticBaseModel:extendResetFunction(resetFunction)
+ReinforcementLearningActorCriticBaseModel:setResetFunction(resetFunction)
 ```
 
 #### Parameters:

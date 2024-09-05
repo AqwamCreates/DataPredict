@@ -106,7 +106,7 @@ while true do
 
     local reward = getReward(environmentVector)
 
-    DeepQLearning:update(previousEnvironmentVector, reward, action, environmentVector) -- update() is called whenever a step is made.
+    DeepQLearning:categoricalUpdate(previousEnvironmentVector, reward, action, environmentVector) -- update() is called whenever a step is made.
 
     previousEnvironmentFeatureVector = environmentVector
 
@@ -126,11 +126,11 @@ As you can see, there are a lot of things that we must track of, but it gives yo
 
 ## Quick Setup
 
-To reduce the amount of things we need to track, we can use ReinforcementLearningQuickSetup in "Others" section.
+To reduce the amount of things we need to track, we can use CategoricalPolicy in "QuickSetups" section.
 
 ```lua
 
-local DeepQLearningQuickSetup = DataPredict.Others.ReinforcementLearningQuickSetup.new()
+local DeepQLearningQuickSetup = DataPredict.QuickSetups.CategoricalPolicy.new()
 
 DeepQLearningQuickSetup:setModel(DeepQLearning)
 
@@ -152,7 +152,7 @@ end
 
 ```
 
-As you can see, the ReinforcementLearningQuickSetup compresses a number of codes into reinforce() function.
+As you can see, the CategoricalPolicy compresses a number of codes into reinforce() function.
 
 # Wrapping It All Up
 

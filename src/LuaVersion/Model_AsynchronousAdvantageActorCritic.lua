@@ -70,8 +70,6 @@ function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinfor
 
 	NewAsynchronousAdvantageActorCriticModel.actionProbabilityValueHistoryArray = {}
 
-	NewAsynchronousAdvantageActorCriticModel.criticValueHistoryArray = {}
-
 	NewAsynchronousAdvantageActorCriticModel.episodeRewardArray = {}
 
 	NewAsynchronousAdvantageActorCriticModel.runningRewardArray = {}
@@ -164,8 +162,6 @@ function AsynchronousAdvantageActorCriticModel:addActorCriticModel(ActorModel, C
 
 	table.insert(self.actionProbabilityValueHistoryArray, {})
 
-	table.insert(self.criticValueHistoryArray, {})
-
 end
 
 local function calculateProbability(vector)
@@ -250,8 +246,6 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 
 	table.insert(self.actionProbabilityValueHistoryArray[actorCriticModelNumber], logActionProbabilityValue)
 
-	table.insert(self.criticValueHistoryArray[actorCriticModelNumber], previousCriticValue)
-
 	return allOutputsMatrix
 
 end
@@ -312,9 +306,9 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(actorCriticModelNum
 
 	self.currentEpsilonArray[actorCriticModelNumber] = self.currentEpsilonArray[actorCriticModelNumber] * self.epsilonDecayFactor
 
-	table.clear(self.advantageValueHistoryArray[actorCriticModelNumber])
+	table.clear(advantageValueHistory)
 
-	table.clear(self.actionProbabilityValueHistoryArray[actorCriticModelNumber])
+	table.clear(actionProbabilityValueHistory)
 
 	table.clear(self.criticValueHistoryArray[actorCriticModelNumber])
 
@@ -408,9 +402,9 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 
 	actorCriticModelNumber = actorCriticModelNumber or Random.new():NextInteger(1, #self.currentEpsilonArray)
 
-	self.currentNumberOfReinforcementsArray[actorCriticModelNumber] += 1
+	self.currentNumberOfReinforcementsArray[actorCriticModelNumber] = self.currentNumberOfReinforcementsArray[actorCriticModelNumber] + 1
 
-	self.currentTotalNumberOfReinforcementsToUpdateMainModel += 1
+	self.currentTotalNumberOfReinforcementsToUpdateMainModel = self.currentTotalNumberOfReinforcementsToUpdateMainModel + 1
 	
 	local previousFeatureVector = self.previousFeatureVectorArray[actorCriticModelNumber]
 
@@ -643,8 +637,6 @@ function AsynchronousAdvantageActorCriticModel:reset(actorCriticModelNumber)
 	table.clear(self.advantageValueHistoryArray[actorCriticModelNumber])
 
 	table.clear(self.actionProbabilityValueHistoryArray[actorCriticModelNumber])
-
-	table.clear(self.criticValueHistoryArray[actorCriticModelNumber])
 
 	local ExperienceReplay = self.ExperienceReplayArray[actorCriticModelNumber]
 

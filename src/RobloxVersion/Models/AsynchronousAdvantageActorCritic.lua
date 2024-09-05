@@ -48,6 +48,8 @@ local defaultTotalNumberOfReinforcementsToUpdateMainModel = 100
 
 local defaultActionSelectionFunction = "Maximum"
 
+local defaultPolicyMode = "Categorical"
+
 function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, totalNumberOfReinforcementsToUpdateMainModel, actionSelectionFunction)
 
 	local NewAsynchronousAdvantageActorCriticModel = {}
@@ -146,10 +148,6 @@ function AsynchronousAdvantageActorCriticModel:addActorCriticModel(ActorModel, C
 
 	if not CriticModel then error("No critic model!") end
 
-	ActorModel:setPrintOutput(false)
-
-	CriticModel:setPrintOutput(false)
-
 	if self.ActorMainModelParameters then ActorModel:setModelParameters(self.ActorMainModelParameters) end
 
 	if self.CriticMainModelParameters then CriticModel:setModelParameters(self.CriticMainModelParameters) end
@@ -160,15 +158,37 @@ function AsynchronousAdvantageActorCriticModel:addActorCriticModel(ActorModel, C
 
 	if ExperienceReplay then table.insert(self.ExperienceReplayArray, ExperienceReplay) end
 
-	table.insert(self.currentNumberOfReinforcementsArray,  0)
+	table.insert(self.currentNumberOfReinforcementsArray, 0)
 
-	table.insert(self.currentNumberOfEpisodesArray,  0)
+	table.insert(self.currentNumberOfEpisodesArray, 0)
 
-	table.insert(self.currentEpsilonArray,  0)
+	table.insert(self.currentEpsilonArray, 0)
 
 	table.insert(self.advantageValueHistoryArray, {})
 
 	table.insert(self.actionProbabilityValueHistoryArray, {})
+
+end
+
+local function selectIndexWithHighestValue(vector)
+
+	local selectedIndex = 1
+
+	local highestValue = -math.huge
+
+	for index, value in ipairs(vector[1]) do
+
+		if (highestValue > value) then
+
+			highestValue = value
+
+			selectedIndex = index
+
+		end
+
+	end
+
+	return selectedIndex
 
 end
 
@@ -198,7 +218,7 @@ local function sample(vector)
 
 	for _, probability in ipairs(probabilityVector[1]) do
 
-		totalProbability += probability
+		totalProbability = totalProbability + probability
 
 	end
 
@@ -224,7 +244,7 @@ local function sample(vector)
 
 end
 
-function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, action, rewardValue, currentFeatureVector, actorCriticModelNumber)
+function AsynchronousAdvantageActorCriticModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, actorCriticModelNumber)
 
 	local ActorModel = self.ActorModelArray[actorCriticModelNumber]
 
@@ -246,7 +266,7 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 
 	local numberOfActions = #allOutputsMatrix[1]
 
-	local actionIndex = table.find(ActorModel:getClassesList(), action)
+	local actionIndex = table.find(self.ClassesList, action)
 
 	local actionProbabilityValue = actionProbabilityVector[1][actionIndex]
 	
@@ -256,7 +276,45 @@ function AsynchronousAdvantageActorCriticModel:update(previousFeatureVector, act
 
 	table.insert(self.actionProbabilityValueHistoryArray[actorCriticModelNumber], logActionProbabilityValue)
 
-	return allOutputsMatrix
+	return advantageValue
+
+end
+
+function AsynchronousAdvantageActorCriticModel:diagonalGaussianUpdate(previousFeatureVector, actionVector, rewardValue, currentFeatureVector, actorCriticModelNumber)
+
+	local ActorModel = self.ActorModelArray[actorCriticModelNumber]
+
+	local CriticModel = self.CriticModelArray[actorCriticModelNumber]
+
+	if not ActorModel then error("No actor model!") end
+
+	if not CriticModel then error("No critic model!") end
+
+	local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(actionVector)
+
+	local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+
+	local logStandardDeviationVector = AqwamMatrixLibrary:logarithm(standardDeviationVector)
+
+	local multipliedLogStandardDeviationVector = AqwamMatrixLibrary:multiply(2, logStandardDeviationVector)
+
+	local numberOfActionDimensions = #self.ClassesList
+
+	local actionProbabilityValuePart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
+
+	local actionProbabilityValue = -0.5 * (actionProbabilityValuePart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
+
+	local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
+
+	local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
+
+	local advantageValue = rewardValue + (self.discountFactor * currentCriticValue) - previousCriticValue
+
+	table.insert(self.advantageValueHistoryArray[actorCriticModelNumber], advantageValue)
+
+	table.insert(self.actionProbabilityValueHistoryArray[actorCriticModelNumber], actionProbabilityValue)
+
+	return advantageValue
 
 end
 
@@ -320,8 +378,6 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(actorCriticModelNum
 
 	table.clear(actionProbabilityValueHistory)
 
-	table.clear(self.criticValueHistoryArray[actorCriticModelNumber])
-
 end
 
 function AsynchronousAdvantageActorCriticModel:fetchHighestValueInVector(outputVector)
@@ -374,41 +430,15 @@ function AsynchronousAdvantageActorCriticModel:predict(currentFeatureVector, ret
 
 end
 
-function AsynchronousAdvantageActorCriticModel:selectAction(currentFeatureVector, classesList, actorCriticModelNumber)
+local selectActionFunctionList = {
 
-	local actionVector = self:predict(currentFeatureVector, true, actorCriticModelNumber)
+	["Maximum"] = selectIndexWithHighestValue,
 
-	local actionSelectionFunction = self.actionSelectionFunction
+	["Sample"] = sample,
 
-	local action
+}
 
-	local selectedValue
-
-	if (actionSelectionFunction == "Maximum") then
-
-		local actionVector, selectedValueVector = self:getLabelFromOutputMatrix(actionVector)
-
-		action = actionVector[1][1]
-
-		selectedValue = selectedValueVector[1][1]
-
-	elseif (actionSelectionFunction == "Sample") then
-
-		local actionProbabilityVector = calculateProbability(actionVector)
-
-		local actionIndex = sample(actionProbabilityVector)
-
-		action = classesList[actionIndex]
-
-		selectedValue = actionVector[1][actionIndex]
-
-	end
-
-	return action, selectedValue, actionVector
-
-end
-
-function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, actorCriticModelNumber)
+function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, actorCriticModelNumber, policyMode)
 
 	actorCriticModelNumber = actorCriticModelNumber or Random.new():NextInteger(1, #self.currentEpsilonArray)
 
@@ -416,12 +446,16 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 
 	self.currentTotalNumberOfReinforcementsToUpdateMainModel = self.currentTotalNumberOfReinforcementsToUpdateMainModel + 1
 	
+	local actionSelectionFunction = self.actionSelectionFunction
+	
 	local previousFeatureVector = self.previousFeatureVectorArray[actorCriticModelNumber]
 
 	local ExperienceReplay = self.ExperienceReplayArray[actorCriticModelNumber]
 
-	local currrentEpsilon = self.currentEpsilonArray[actorCriticModelNumber]
-
+	local currentEpsilon = self.currentEpsilonArray[actorCriticModelNumber]
+	
+	local ActorModel = self.ActorModelArray[actorCriticModelNumber]
+	
 	local ClassesList = self.ClassesList
 
 	local action
@@ -430,45 +464,47 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 
 	local actionVector
 
-	local selectedValue
+	local actionValue
 	
 	local temporalDifferenceError
 
-	local actionVector = AqwamMatrixLibrary:createMatrix(1, #ClassesList)
+	local actionVector = ActorModel:predict(currentFeatureVector, true, actorCriticModelNumber)
 
 	local randomProbability = Random.new():NextNumber()
+	
+	policyMode = policyMode or defaultPolicyMode
+	
+	if (policyMode == "Categorical") and (previousFeatureVector) then
+		
+		if (randomProbability < currentEpsilon) then
 
-	if (randomProbability < currrentEpsilon) then
+			actionIndex = Random.new():NextInteger(1, #ClassesList)
 
-		local numberOfClasses = #ClassesList
+		else
 
-		local randomNumber = Random.new():NextInteger(1, numberOfClasses)
+			actionIndex = selectActionFunctionList[actionSelectionFunction](actionVector)
 
-		action = ClassesList[randomNumber]
+		end
+		
+		action = ClassesList[actionIndex]
 
-		actionVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses)
-
-		actionVector[1][randomNumber] = randomProbability
-
-	else
-
-		action, selectedValue, actionVector = self:selectAction(currentFeatureVector, ClassesList, actorCriticModelNumber)
-
-	end
-
-	if (previousFeatureVector) then 
-
-		temporalDifferenceError = self:update(previousFeatureVector, action, rewardValue, currentFeatureVector, actorCriticModelNumber) 
-
+		actionValue = actionVector[1][actionIndex]
+		
+		temporalDifferenceError = self:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, actorCriticModelNumber) 
+		
+	elseif (policyMode == "DiagonalGaussian") and (previousFeatureVector) then 
+		
+		temporalDifferenceError = self:diagonalGaussianUpdate(previousFeatureVector, actionVector, rewardValue, currentFeatureVector, actorCriticModelNumber) 
+		
 	end
 
 	if (self.currentNumberOfReinforcementsArray[actorCriticModelNumber] >= self.numberOfReinforcementsPerEpisode) then
 
-		self:episodeUpdate(#currentFeatureVector[1], actorCriticModelNumber)
+		self:episodeUpdate(actorCriticModelNumber)
 
 	end
 
-	if (ExperienceReplay) and (previousFeatureVector) then 
+	if (policyMode == "Categorical") and (ExperienceReplay) and (previousFeatureVector) then 
 
 		ExperienceReplay:addExperience(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
@@ -486,7 +522,7 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 
 	if (returnOriginalOutput) then return actionVector end
 
-	return action, selectedValue
+	return action, actionValue
 
 end
 
@@ -655,8 +691,8 @@ function AsynchronousAdvantageActorCriticModel:reset(actorCriticModelNumber)
 end
 
 function AsynchronousAdvantageActorCriticModel:resetAll()
-
-	for i = 1, #self.currentEpsilonArray, 1 do self:reset(i) end
+	
+	for i, _ in ipairs(self.ActorModelArray) do self:reset(i) end
 
 	self.currentTotalNumberOfReinforcementsToUpdateMainModel = 0
 

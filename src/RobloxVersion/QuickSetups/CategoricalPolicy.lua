@@ -86,7 +86,7 @@ local function sample(vector)
 
 	for _, probability in ipairs(probabilityVector[1]) do
 
-		totalProbability += probability
+		totalProbability = totalProbability + probability
 
 	end
 
@@ -98,7 +98,7 @@ local function sample(vector)
 
 	for i, probability in ipairs(probabilityVector[1]) do
 
-		cumulativeProbability += probability
+		cumulativeProbability = cumulativeProbability + probability
 
 		if (randomValue > cumulativeProbability) then continue end
 

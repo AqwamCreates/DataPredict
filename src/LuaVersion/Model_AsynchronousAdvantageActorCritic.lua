@@ -184,9 +184,11 @@ end
 
 local function sample(vector)
 
+	local probabilityVector = calculateProbability(vector)
+
 	local totalProbability = 0
 
-	for _, probability in ipairs(vector[1]) do
+	for _, probability in ipairs(probabilityVector[1]) do
 
 		totalProbability += probability
 
@@ -196,21 +198,21 @@ local function sample(vector)
 
 	local cumulativeProbability = 0
 
-	local index = 1
+	local selectedIndex = 1
 
-	for i, probability in ipairs(vector[1]) do
+	for i, probability in ipairs(probabilityVector[1]) do
 
 		cumulativeProbability += probability
 
 		if (randomValue > cumulativeProbability) then continue end
 
-		index = i
+		selectedIndex = i
 
 		break
 
 	end
 
-	return index
+	return selectedIndex
 
 end
 

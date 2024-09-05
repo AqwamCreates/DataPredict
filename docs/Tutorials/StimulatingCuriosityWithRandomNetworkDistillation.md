@@ -30,7 +30,7 @@ RandomNetworkDistillation:setModel(NeuralNetwork)
 
 -- Initializing our ReinforcementLearningQuickSetup.
 
-local QLearningNeuralNetworkQuickSetup = DataPredict.Others.ReinforcementLearningQuickSetup.new()
+local QLearningNeuralNetworkQuickSetup = DataPredict.QuickSetups.CategoricalPolicy.new()
 
 QLearningNeuralNetworkQuickSetup:setModel(QLearningNeuralNetwork)
 

@@ -54,17 +54,29 @@ ReinforcementLearningBaseModel:getModel(): ModelObject
 
 * Model: The model that was set.
 
-### setUpdateFunction()
+### setCategoricalUpdateFunction()
 
-Sets the model's update function.
+Sets the model's categorical policy update function.
 
 ```
-ReinforcementLearningBaseModel:setUpdateFunction(updateFunction)
+ReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
 ```
 
 #### Parameters:
 
-* updateFunction: The function to run when update() is called.
+* categoricalUpdateFunction: The function to run when categoricalUpdate() is called.
+
+### setDiagonalGaussianUpdateFunction()
+
+Sets the model's diagonal Gausian policy update function.
+
+```
+ReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
+```
+
+#### Parameters:
+
+* diagonalGaussianUpdateFunction: The function to run when diagonalGaussianUpdate() is called.
 
 ### setEpisodeUpdateFunction()
 
@@ -78,12 +90,12 @@ ReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 
 * episodeUpdateFunction: The function to run when episodeUpdate() is called.
 
-### update()
+### categoricalUpdate()
 
-Updates the model parameters using updateFunction().
+Updates the model parameters using categoricalUpdateFunction().
 
 ```
-ReinforcementLearningBaseModel:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
+ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
 ```
 
 #### Parameters:
@@ -91,6 +103,24 @@ ReinforcementLearningBaseModel:update(previousFeatiureVector: featureVector, act
 * previousFeatiureVector: The previous state of the environment.
 
 * action: The action selected.
+
+* rewardValue: The reward gained at current state.
+
+* currentFeatureVector: The currrent state of the environment.
+
+### diagonalGaussianUpdate()
+
+Updates the model parameters using diagonalGaussianUpdateFunction().
+
+```
+ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, actionVector: vector rewardValue: number, currentFeatureVector: featureVector)
+```
+
+#### Parameters:
+
+* previousFeatiureVector: The previous state of the environment.
+
+* actionVector: The action vector generated from the model.
 
 * rewardValue: The reward gained at current state.
 
@@ -104,7 +134,7 @@ Updates the model parameters using episodeUpdateFunction().
 ReinforcementLearningBaseModel:episodeUpdate()
 ```
 
-### extendResetFunction()
+### setResetFunction()
 
 Sets a new function on reset alongside with the current reset() function. 
 

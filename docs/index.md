@@ -1,6 +1,6 @@
 # Welcome to Aqwam's DataPredict Library!
 
-By using or possesing any copies of this library or its assets (including the icons), you agree to our [Terms and Conditions](TermsAndConditions.md). In short:
+By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms and Conditions](TermsAndConditions.md). In short:
 
 * Attribution is required when using this library. 
 
@@ -14,8 +14,8 @@ By using or possesing any copies of this library or its assets (including the ic
 
 | Version | Current Version Number |
 |---------|------------------------|
-| Release | 1.18                   |
-| Beta    | 1.33.0                 |          
+| Release | 1.19                   |
+| Beta    | 1.34.0                 |          
 
 DataPredict is a machine and deep learning library for Roblox and Pure Lua.
 

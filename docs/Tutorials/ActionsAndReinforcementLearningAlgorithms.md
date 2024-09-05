@@ -28,7 +28,7 @@ As you can see, you can set the values for each of the actions. More than one ac
 
 # Choosing The Correct Algorithm For A Given Action Space
 
-From the above, you can see that different types of action spaces have different types of properties. That also means that the way that our AI will have different way of learning things due for different properties. However, because of how much mathematics are involved, we will not cover them any further.
+From the above, you can see that different types of action spaces have different types of properties. That also means that the way that our AI will have different way of learning things due for different properties. Because of how much mathematics are involved, we will not cover them any further.
 
 What you will need to know instead that you will need to match the correct functions and algorithms for a given action space type.
 

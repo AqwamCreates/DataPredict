@@ -227,24 +227,24 @@ AsynchronousAdvantageCritic:getCurrentTotalNumberOfReinforcementsToUpdateMainMod
 * getCurrentTotalNumberOfReinforcementsToUpdateMainModel: The current total number of reinforcements from all child models.
 
 
-### singleReset()
+### reset()
 
 Reset a single child model's stored values (excluding the parameters).
 
 ```
-AsynchronousAdvantageCritic:singleReset(actorCriticModelNumber)
+AsynchronousAdvantageCritic:reset(actorCriticModelNumber)
 ```
 
 #### Parameters:
 
 * actorCriticModelNumber: The model number for a model to be reset.
 
-### reset()
+### resetAll()
 
 Reset the main model's and child models' stored values (excluding the parameters).
 
 ```
-AsynchronousAdvantageCritic:reset()
+AsynchronousAdvantageCritic:resetAll()
 ```
 
 ### destroy()

@@ -162,7 +162,7 @@ AsynchronousAdvantageCritic:reinforce(currentFeatureVector: Matrix, rewardValue:
 
 ### categoricalUpdate()
 
-Updates the model parameters.
+Updates the model parameters based on diagonal Gaussian distribution for continuous action spaces.
 
 ```
 AsynchronousAdvantageCritic:categoricalUpdate(previousFeatureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector, actorCriticModelNumber: number)
@@ -182,7 +182,7 @@ AsynchronousAdvantageCritic:categoricalUpdate(previousFeatureVector: featureVect
 
 ### diagonalGaussianUpdate()
 
-Updates the model parameters.
+Updates the model parameters based on categorical distribution for discrete action spaces.
 
 ```
 AsynchronousAdvantageCritic:diagonalGaussianUpdate(previousFeatureVector: featureVector, actionVector: vector, rewardValue: number, currentFeatureVector: featureVector, actorCriticModelNumber: number)

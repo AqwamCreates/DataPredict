@@ -6,6 +6,8 @@
 
 [AqwamCustomModels](API/AqwamCustomModels.md)
 
+[QuickSetups](API/QuickSetups.md)
+
 [Optimizers](API/Optimizers.md)
 
 [ExperienceReplays](API/ExperienceReplays.md)

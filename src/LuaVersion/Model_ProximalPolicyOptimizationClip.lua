@@ -204,11 +204,11 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 			
 			local oldAdvantageValueHistory = oldAdvantageValueHistory[h]
 
-			local actorSurrogateLossPart1 = ratio * oldAdvantageValueHistory
+			local actorLossPart1 = ratio * oldAdvantageValueHistory
 			
-			local actorSurrogateLossPart2 = clipFunction(ratio) * oldAdvantageValueHistory
+			local actorLossPart2 = clipFunction(ratio) * oldAdvantageValueHistory
 			
-			local actorLoss = math.min(actorSurrogateLossPart1, actorSurrogateLossPart2)
+			local actorLoss = math.min(actorLossPart1, actorLossPart2)
 
 			local criticLoss = criticValueHistory[h] - rewardToGoArray[h]
 

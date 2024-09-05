@@ -16,8 +16,6 @@
 
 [RandomNetworkDistillation](Others/RandomNetworkDistillation.md)
 
-[ReinforcementLearningQuickSetup](Others/ReinforcementLearningQuickSetup.md)
-
 [Regularization](Others/Regularization.md)
 
 [OneVsAll](Others/OneVsAll.md)

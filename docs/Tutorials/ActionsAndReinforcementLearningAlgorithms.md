@@ -39,4 +39,4 @@ What you will need to know instead that you will need to match the correct funct
 
 That's all you need to know for today!
 
-Thank you very much for reading this tutorial. Your support means very much to me.
+Thank you very much for reading this tutorial. Have a nice day!

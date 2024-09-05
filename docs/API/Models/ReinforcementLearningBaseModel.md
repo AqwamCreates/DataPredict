@@ -139,7 +139,7 @@ ReinforcementLearningBaseModel:episodeUpdate()
 Sets a new function on reset alongside with the current reset() function. 
 
 ```
-ReinforcementLearningBaseModel:extendResetFunction(resetFunction)
+ReinforcementLearningBaseModel:setResetFunction(resetFunction)
 ```
 
 #### Parameters:

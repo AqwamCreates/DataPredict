@@ -32,10 +32,10 @@ From the above, you can see that different types of action spaces have different
 
 What you will need to know instead that you will need to match the correct QuickSetup object and algorithm functions to use for a given action space type.
 
-| Action Space | QuickSetup Object To Use | Function To Perform The Step Updates | What Value Type Is Used To Update The Algorithm        |
-|--------------|--------------------------|--------------------------------------|--------------------------------------------------------|
-| Discrete     | CategoricalPolicy        | categoricalUpdate()                  | A single action                                        |
-| Continuous   | DiagonalGaussianPolicy   | diagonalGaussianUpdate()             | An action vector containing all values for all actions |
+| Action Space | QuickSetup Object To Use | Function To Use To Perform The Step Updates | What Value Type Is Used To Update The Algorithm        |
+|--------------|--------------------------|---------------------------------------------|--------------------------------------------------------|
+| Discrete     | CategoricalPolicy        | categoricalUpdate()                         | A single action                                        |
+| Continuous   | DiagonalGaussianPolicy   | diagonalGaussianUpdate()                    | An action vector containing all values for all actions |
 
 That's all what you need to know for today!
 

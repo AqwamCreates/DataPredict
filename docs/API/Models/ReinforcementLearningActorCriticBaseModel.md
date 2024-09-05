@@ -106,12 +106,12 @@ ReinforcementLearningActorCriticBaseModel:setEpisodeUpdateFunction(episodeUpdate
 
 * episodeUpdateFunction: The function to run when episodeUpdate() is called.
 
-### update()
+### categoricalUpdate()
 
-Updates the model parameters using updateFunction().
+Updates the model parameters using categoricalUpdateFunction().
 
 ```
-ReinforcementLearningActorCriticBaseModel:update(previousFeatiureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
+ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
 ```
 
 #### Parameters:
@@ -119,6 +119,24 @@ ReinforcementLearningActorCriticBaseModel:update(previousFeatiureVector: feature
 * previousFeatiureVector: The previous state of the environment.
 
 * action: The action selected.
+
+* rewardValue: The reward gained at current state.
+
+* currentFeatureVector: The currrent state of the environment.
+
+### diagonalGaussianUpdate()
+
+Updates the model parameters using diagonalGaussianUpdateFunction().
+
+```
+ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, actionVector: vector rewardValue: number, currentFeatureVector: featureVector)
+```
+
+#### Parameters:
+
+* previousFeatiureVector: The previous state of the environment.
+
+* actionVector: The action vector generated from the model.
 
 * rewardValue: The reward gained at current state.
 

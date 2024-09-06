@@ -2,8 +2,8 @@
 
 | Version                           | Number Of Models | Number Of Optimizers | Number Of Others | Number Of Experience Replays | Value Scheduler | Quick Setups | Backward Incompatible Changes |
 |-----------------------------------|------------------|----------------------|------------------|------------------------------|-----------------| ------------ | ------------------------------|
-| [1.19](Release/1-19.md)           | 37               | 11                   | 14               | 4                            | 2               | 2            | Yes                           |
-| [1.18](Release/1-18.md)           | 37               | 11                   | 15               | 4                            | 2               | 0            | Yes                           |
+| [1.19](Release/1-19.md)           | 35               | 11                   | 14               | 4                            | 2               | 2            | Yes                           |
+| [1.18](Release/1-18.md)           | 34               | 11                   | 15               | 4                            | 2               | 0            | Yes                           |
 | [1.17](Release/1-17.md)           | 39               | 11                   | 15               | 4                            | 0               | 0            | Yes                           |
 | [1.16](Release/1-16.md)           | 39               | 11                   | 15               | 4                            | 0               | 0            | Yes                           |
 | [1.15](Release/1-15.md)           | 41               | 11                   | 15               | 4                            | 0               | 0            | No                            |

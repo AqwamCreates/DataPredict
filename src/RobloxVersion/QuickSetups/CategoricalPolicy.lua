@@ -196,7 +196,7 @@ local selectActionFunctionList = {
 	
 }
 
-function CategoricalPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, childModelNumber)
+function CategoricalPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 
 	if (self.Model == nil) then error("No model!") end
 	
@@ -220,7 +220,7 @@ function CategoricalPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue
 	
 	local randomProbability = Random.new():NextNumber()
 	
-	local actionVector = Model:predict(currentFeatureVector, true, childModelNumber)
+	local actionVector = Model:predict(currentFeatureVector, true)
 	
 	local actionIndex
 	
@@ -248,9 +248,9 @@ function CategoricalPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue
 		
 		currentNumberOfReinforcements = currentNumberOfReinforcements + 1
 
-		temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, childModelNumber)
+		temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		if (updateFunction) then updateFunction(childModelNumber) end
+		if (updateFunction) then updateFunction() end
 
 	end
 
@@ -262,9 +262,9 @@ function CategoricalPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue
 		
 		currentNumberOfEpisodes = currentNumberOfEpisodes + 1
 
-		Model:episodeUpdate(childModelNumber)
+		Model:episodeUpdate()
 		
-		if episodeUpdateFunction then episodeUpdateFunction(childModelNumber) end
+		if episodeUpdateFunction then episodeUpdateFunction() end
 
 	end
 

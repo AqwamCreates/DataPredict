@@ -156,7 +156,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewVanillaPolicyGradientModel.discountFactor)
 		
-		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #actorLossVectorHistory[1][1], 0)
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #actorLossVectorHistory[1], 0)
 		
 		local sumCriticLoss = 0
 		

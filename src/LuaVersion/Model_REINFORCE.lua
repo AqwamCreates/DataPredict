@@ -126,7 +126,7 @@ function REINFORCEModel.new(discountFactor)
 		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
 		
-		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, #actionProbabilityVectorHistory[1][1], 0)
+		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, #actionProbabilityVectorHistory[1], 0)
 		
 		for h, actionProbabilityVector in ipairs(actionProbabilityVectorHistory) do
 			

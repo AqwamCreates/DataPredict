@@ -131,7 +131,7 @@ AsynchronousAdvantageCritic:getActorCriticMainModelParameters(): [], []
 Reward or punish model based on the current state of the environment.
 
 ```
-AsynchronousAdvantageCritic:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean, actorCriticModelNumber: number, policyMode: string): integer, number -OR- Matrix
+AsynchronousAdvantageCritic:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean, actorCriticModelNumber: number, policyMode: string, standardDeviationVector): integer, number -OR- Matrix
 ```
 
 #### Parameters:
@@ -149,6 +149,8 @@ AsynchronousAdvantageCritic:reinforce(currentFeatureVector: Matrix, rewardValue:
    * Categorical (Default)
 
    * DiagonalGaussian
+
+* standardDeviationVector: The vector containing values of standard deviations. The number of columns must match the number of actions.
 
 #### Returns:
 

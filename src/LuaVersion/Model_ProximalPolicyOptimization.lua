@@ -76,9 +76,9 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 	
 	local criticValueHistory = {}
 	
-	local actionProbabilityValueHistory = {}
+	local actionProbabilityVectorHistory = {}
 	
-	local oldActionProbabilityValueHistory = {}
+	local oldActionProbabilityVectorHistory = {}
 	
 	local advantageValueHistory = {}
 	
@@ -100,17 +100,13 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		local advantageValue = rewardValue + (NewProximalPolicyOptimizationModel.discountFactor * currentCriticValue) - previousCriticValue
 
-		local actionIndex = table.find(ActorModel:getClassesList(), action)
-
-		local actionProbabilityValue = actionProbabilityVector[1][actionIndex]
-
-		local logActionProbabilityValue = math.log(actionProbabilityValue)
-
-		table.insert(advantageValueHistory, advantageValue)
+		local logActionProbabilityVector = AqwamMatrixLibrary:logarithm(actionProbabilityVector)
+		
+		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
 		table.insert(criticValueHistory, currentCriticValue)
-
-		table.insert(actionProbabilityValueHistory, logActionProbabilityValue)
+		
+		table.insert(advantageValueHistory, advantageValue)
 		
 		table.insert(rewardValueHistory, rewardValue)
 		
@@ -118,35 +114,41 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 	end)
 	
-	NewProximalPolicyOptimizationModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
+	NewProximalPolicyOptimizationModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, expectedActionVector, rewardValue, currentFeatureVector, standardDeviationVector)
 
 		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
 
-		local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(actionVector)
+		local randomNormalVector = AqwamMatrixLibrary:createRandomNormalMatrix(1, #expectedActionVector[1])
+
+		local actionVectorPart1 = AqwamMatrixLibrary:multiply(standardDeviationVector, randomNormalVector)
+
+		local actionVector = AqwamMatrixLibrary:add(expectedActionVector, actionVectorPart1)
+
+		local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(actionVector, expectedActionVector)
+
+		local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
 
 		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
 
-		local logStandardDeviationVector = AqwamMatrixLibrary:logarithm(standardDeviationVector)
+		local logActionProbabilityVectorPart1 = AqwamMatrixLibrary:logarithm(standardDeviationVector)
 
-		local multipliedLogStandardDeviationVector = AqwamMatrixLibrary:multiply(2, logStandardDeviationVector)
+		local logActionProbabilityVectorPart2 = AqwamMatrixLibrary:multiply(2, logActionProbabilityVectorPart1)
 
-		local numberOfActionDimensions = #NewProximalPolicyOptimizationModel.ActorModel:getClassesList()
+		local logActionProbabilityVectorPart3 = AqwamMatrixLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
 
-		local actionProbabilityValuePart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
-
-		local actionProbabilityValue = -0.5 * (actionProbabilityValuePart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
+		local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
 
 		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 
 		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
 
 		local advantageValue = rewardValue + (NewProximalPolicyOptimizationModel.discountFactor * currentCriticValue) - previousCriticValue
-
-		table.insert(advantageValueHistory, advantageValue)
+		
+		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
 		table.insert(criticValueHistory, currentCriticValue)
 
-		table.insert(actionProbabilityValueHistory, actionProbabilityValue)
+		table.insert(advantageValueHistory, advantageValue)
 
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -160,19 +162,19 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
 		
-		if (#oldActionProbabilityValueHistory == 0) then 
+		if (#oldActionProbabilityVectorHistory == 0) then 
 
-			oldActionProbabilityValueHistory = table.clone(actionProbabilityValueHistory)
+			oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 			
 			oldAdvantageValueHistory = table.clone(advantageValueHistory)
 			
+			table.clear(actionProbabilityVectorHistory)
+			
+			table.clear(criticValueHistory)
+			
 			table.clear(advantageValueHistory)
 
-			table.clear(criticValueHistory)
-
 			table.clear(rewardValueHistory)
-
-			table.clear(actionProbabilityValueHistory)
 
 			return 
 
@@ -182,25 +184,25 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		local historyLength = #criticValueHistory
 		
-		local sumActorLoss = 0
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(#actionProbabilityVectorHistory[1], #actionProbabilityVectorHistory[1][1], 0)
 		
 		local sumCriticLoss = 0
 
 		for h = 1, historyLength, 1 do
 
-			local ratio = actionProbabilityValueHistory[h] / oldActionProbabilityValueHistory[h]
+			local ratioVector = AqwamMatrixLibrary:divide(actionProbabilityVectorHistory[h], oldActionProbabilityVectorHistory[h])
 
-			local actorLoss = ratio * oldAdvantageValueHistory[h]
+			local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, oldAdvantageValueHistory[h])
 
 			local criticLoss = criticValueHistory[h] - rewardToGoArray[h]
 
-			sumActorLoss = sumActorLoss + actorLoss
+			sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
 
 			sumCriticLoss = sumCriticLoss + criticLoss
 
 		end
 		
-		sumActorLoss = sumActorLoss / historyLength
+		sumActorLossVector = AqwamMatrixLibrary:divide(sumActorLossVector, -historyLength)
 		
 		sumCriticLoss = sumCriticLoss / historyLength
 
@@ -209,8 +211,6 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		local numberOfActions = #ActorModel:getClassesList()
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-		
-		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, -sumActorLoss)
 
 		ActorModel:forwardPropagate(featureVector, true)
 		
@@ -220,33 +220,33 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 		CriticModel:backwardPropagate(sumCriticLoss, true)
 		
-		oldActionProbabilityValueHistory = table.clone(actionProbabilityValueHistory)
+		oldActionProbabilityVectorHistory = table.clone(actionProbabilityVectorHistory)
 		
 		oldAdvantageValueHistory = table.clone(advantageValueHistory)
 		
-		table.clear(advantageValueHistory)
+		table.clear(actionProbabilityVectorHistory)
 
 		table.clear(criticValueHistory)
 
-		table.clear(rewardValueHistory)
+		table.clear(advantageValueHistory)
 
-		table.clear(actionProbabilityValueHistory)
+		table.clear(rewardValueHistory)
 		
 	end)
 	
 	NewProximalPolicyOptimizationModel:setResetFunction(function()
 		
+		table.clear(actionProbabilityVectorHistory)
+		
+		table.clear(oldActionProbabilityVectorHistory)
+		
+		table.clear(criticValueHistory)
+		
 		table.clear(advantageValueHistory)
 		
 		table.clear(oldAdvantageValueHistory)
 		
-		table.clear(criticValueHistory)
-		
 		table.clear(rewardValueHistory)
-		
-		table.clear(actionProbabilityValueHistory)
-		
-		table.clear(oldActionProbabilityValueHistory)
 		
 	end)
 	

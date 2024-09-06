@@ -72,7 +72,7 @@ function REINFORCEModel.new(discountFactor)
 	
 	setmetatable(NewREINFORCEModel, REINFORCEModel)
 	
-	local actionProbabilityValueHistory = {}
+	local actionProbabilityVectorHistory = {}
 	
 	local rewardValueHistory = {}
 	
@@ -84,35 +84,37 @@ function REINFORCEModel.new(discountFactor)
 		
 		local actionProbabilityVector = calculateProbability(actionVector)
 		
-		local actionIndex = table.find(Model:getClassesList(), action)
-		
-		local actionProbabilityValue = actionProbabilityVector[1][actionIndex]
-		
-		local logActionProbabilityValue = math.log(actionProbabilityValue)
+		local logActionProbabilityVector = AqwamMatrixLibrary:logarithm(actionProbabilityVector)
 
-		table.insert(actionProbabilityValueHistory, logActionProbabilityValue)
+		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 		
 		table.insert(rewardValueHistory, rewardValue)
 
 	end)
 	
-	NewREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
+	NewREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, expectedActionVector, rewardValue, currentFeatureVector, standardDeviationVector)
 
-		local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(actionVector)
+		local randomNormalVector = AqwamMatrixLibrary:createRandomNormalMatrix(1, #expectedActionVector[1])
+
+		local actionVectorPart1 = AqwamMatrixLibrary:multiply(standardDeviationVector, randomNormalVector)
+
+		local actionVector = AqwamMatrixLibrary:add(expectedActionVector, actionVectorPart1)
+
+		local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(actionVector, expectedActionVector)
+
+		local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
 
 		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
 
-		local logStandardDeviationVector = AqwamMatrixLibrary:logarithm(standardDeviationVector)
+		local logActionProbabilityVectorPart1 = AqwamMatrixLibrary:logarithm(standardDeviationVector)
 
-		local multipliedLogStandardDeviationVector = AqwamMatrixLibrary:multiply(2, logStandardDeviationVector)
+		local logActionProbabilityVectorPart2 = AqwamMatrixLibrary:multiply(2, logActionProbabilityVectorPart1)
 
-		local numberOfActionDimensions = #NewREINFORCEModel.Model:getClassesList()
+		local logActionProbabilityVectorPart3 = AqwamMatrixLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
 
-		local actionProbabilityValuePart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
+		local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
 
-		local actionProbabilityValue = -0.5 * (actionProbabilityValuePart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
-
-		table.insert(actionProbabilityValueHistory, actionProbabilityValue)
+		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -124,11 +126,13 @@ function REINFORCEModel.new(discountFactor)
 		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
 		
-		local sumLossValue = 0
+		local sumLossVector = AqwamMatrixLibrary:createMatrix(#actionProbabilityVectorHistory[1], #actionProbabilityVectorHistory[1][1], 0)
 		
-		for h, actionProbabilityValue in ipairs(actionProbabilityValueHistory) do
+		for h, actionProbabilityVector in ipairs(actionProbabilityVectorHistory) do
+			
+			local lossVector = AqwamMatrixLibrary:multiply(actionProbabilityVector, rewardToGoArray[h])
 
-			sumLossValue = sumLossValue + (actionProbabilityValue * rewardToGoArray[h])
+			sumLossVector = AqwamMatrixLibrary:add(sumLossVector, lossVector)
 			
 		end	
 		
@@ -138,13 +142,13 @@ function REINFORCEModel.new(discountFactor)
 
 		local numberOfActions = #Model:getClassesList()
 
-		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, -sumLossValue)
+		sumLossVector = AqwamMatrixLibrary:unaryMinus(sumLossVector)
 		
 		Model:forwardPropagate(featureVector, true)
 
 		Model:backwardPropagate(sumLossVector, true)
 		
-		table.clear(actionProbabilityValueHistory)
+		table.clear(actionProbabilityVectorHistory)
 		
 		table.clear(rewardValueHistory)
 		
@@ -152,7 +156,7 @@ function REINFORCEModel.new(discountFactor)
 	
 	NewREINFORCEModel:setResetFunction(function()
 
-		table.clear(actionProbabilityValueHistory)
+		table.clear(actionProbabilityVectorHistory)
 		
 		table.clear(rewardValueHistory)
 		

@@ -72,7 +72,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 	setmetatable(NewVanillaPolicyGradientModel, VanillaPolicyGradientModel)
 	
-	local actorLossValueHistory = {}
+	local actorLossVectorHistory = {}
 	
 	local criticValueHistory = {}
 
@@ -88,23 +88,19 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 
-		local actionIndex = table.find(ActorModel:getClassesList(), action)
-
-		local actionProbabilityValue = actionProbabilityVector[1][actionIndex]
-
-		local logActionProbabilityValue = math.log(actionProbabilityValue)
-
 		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 
 		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
 
 		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
 		
-		local actorLossValue = logActionProbabilityValue * advantageValue
+		local logActionProbabilityVector = AqwamMatrixLibrary:logarithm(actionProbabilityVector)
 		
-		table.insert(actorLossValueHistory, actorLossValue)
+		local actorLossVector = AqwamMatrixLibrary:multiply(logActionProbabilityVector, advantageValue)
 		
-		table.insert(criticValueHistory, currentCriticValue)
+		table.insert(criticValueHistory, previousCriticValue)
+		
+		table.insert(actorLossVectorHistory, actorLossVector)
 
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -112,23 +108,29 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 	end)
 	
-	NewVanillaPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
+	NewVanillaPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, expectedActionVector, rewardValue, currentFeatureVector, standardDeviationVector)
 
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 
-		local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(actionVector)
+		local randomNormalVector = AqwamMatrixLibrary:createRandomNormalMatrix(1, #expectedActionVector[1])
+
+		local actionVectorPart1 = AqwamMatrixLibrary:multiply(standardDeviationVector, randomNormalVector)
+
+		local actionVector = AqwamMatrixLibrary:add(expectedActionVector, actionVectorPart1)
+
+		local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(actionVector, expectedActionVector)
+
+		local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
 
 		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
 
-		local logStandardDeviationVector = AqwamMatrixLibrary:logarithm(standardDeviationVector)
+		local logActionProbabilityVectorPart1 = AqwamMatrixLibrary:logarithm(standardDeviationVector)
 
-		local multipliedLogStandardDeviationVector = AqwamMatrixLibrary:multiply(2, logStandardDeviationVector)
+		local logActionProbabilityVectorPart2 = AqwamMatrixLibrary:multiply(2, logActionProbabilityVectorPart1)
 
-		local numberOfActionDimensions = #NewVanillaPolicyGradientModel.ActorModel:getClassesList()
+		local logActionProbabilityVectorPart3 = AqwamMatrixLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
 
-		local actionProbabilityValuePart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
-
-		local actionProbabilityValue = -0.5 * (actionProbabilityValuePart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
+		local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
 
 		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 
@@ -136,12 +138,12 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
 
-		local actorLossValue = actionProbabilityValue * advantageValue
-
-		table.insert(actorLossValueHistory, actorLossValue)
+		local actorLossVector = AqwamMatrixLibrary:multiply(logActionProbabilityVector, advantageValue)
 
 		table.insert(criticValueHistory, currentCriticValue)
-
+		
+		table.insert(actorLossVectorHistory, actorLossVector)
+		
 		table.insert(rewardValueHistory, rewardValue)
 		
 		return advantageValue
@@ -154,13 +156,13 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewVanillaPolicyGradientModel.discountFactor)
 		
-		local sumActorLoss = 0
+		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(#actorLossVectorHistory[1], #actorLossVectorHistory[1][1], 0)
 		
 		local sumCriticLoss = 0
 		
 		for h = 1, historyLength, 1 do
 			
-			sumActorLoss = sumActorLoss + actorLossValueHistory[h]
+			sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVectorHistory[h])
 			
 			sumCriticLoss = sumCriticLoss + (criticValueHistory[h] - rewardToGoArray[h])
 			
@@ -178,7 +180,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 		
-		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, -sumActorLoss)
+		sumActorLossVector = AqwamMatrixLibrary:unaryMinus(sumActorLossVector)
 
 		ActorModel:forwardPropagate(featureVector, true)
 		
@@ -187,10 +189,10 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		ActorModel:backwardPropagate(sumActorLossVector, true)
 		
 		CriticModel:backwardPropagate(-sumCriticLoss, true)
-		
-		table.clear(actorLossValueHistory)
 
 		table.clear(criticValueHistory)
+		
+		table.clear(actorLossVectorHistory)
 
 		table.clear(rewardValueHistory)
 
@@ -198,9 +200,9 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 	NewVanillaPolicyGradientModel:setResetFunction(function()
 
-		table.clear(actorLossValueHistory)
-
 		table.clear(criticValueHistory)
+		
+		table.clear(actorLossVectorHistory)
 
 		table.clear(rewardValueHistory)
 

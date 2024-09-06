@@ -70,7 +70,7 @@ function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinfor
 
 	NewAsynchronousAdvantageActorCriticModel.advantageValueHistoryArray = {}
 
-	NewAsynchronousAdvantageActorCriticModel.actionProbabilityValueHistoryArray = {}
+	NewAsynchronousAdvantageActorCriticModel.actionProbabilityVectorHistoryArray = {}
 
 	NewAsynchronousAdvantageActorCriticModel.episodeRewardArray = {}
 
@@ -158,7 +158,7 @@ function AsynchronousAdvantageActorCriticModel:addActorCriticModel(ActorModel, C
 
 	table.insert(self.advantageValueHistoryArray, {})
 
-	table.insert(self.actionProbabilityValueHistoryArray, {})
+	table.insert(self.actionProbabilityVectorHistoryArray, {})
 
 end
 
@@ -256,23 +256,17 @@ function AsynchronousAdvantageActorCriticModel:categoricalUpdate(previousFeature
 
 	local advantageValue = rewardValue + (self.discountFactor * currentCriticValue) - previousCriticValue
 
-	local numberOfActions = #allOutputsMatrix[1]
-
-	local actionIndex = table.find(self.ClassesList, action)
-
-	local actionProbabilityValue = actionProbabilityVector[1][actionIndex]
+	local logActionProbabilityVector = AqwamMatrixLibrary:logarithm(actionProbabilityVector)
 	
-	local logActionProbabilityValue = math.log(actionProbabilityValue)
+	table.insert(self.actionProbabilityVectorHistoryArray[actorCriticModelNumber], logActionProbabilityVector)
 
 	table.insert(self.advantageValueHistoryArray[actorCriticModelNumber], advantageValue)
-
-	table.insert(self.actionProbabilityValueHistoryArray[actorCriticModelNumber], logActionProbabilityValue)
 
 	return advantageValue
 
 end
 
-function AsynchronousAdvantageActorCriticModel:diagonalGaussianUpdate(previousFeatureVector, actionVector, rewardValue, currentFeatureVector, actorCriticModelNumber)
+function AsynchronousAdvantageActorCriticModel:diagonalGaussianUpdate(previousFeatureVector, expectedActionVector, rewardValue, currentFeatureVector, actorCriticModelNumber, standardDeviationVector)
 
 	local ActorModel = self.ActorModelArray[actorCriticModelNumber]
 
@@ -282,80 +276,84 @@ function AsynchronousAdvantageActorCriticModel:diagonalGaussianUpdate(previousFe
 
 	if not CriticModel then error("No critic model!") end
 
-	local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(actionVector)
+	local randomNormalVector = AqwamMatrixLibrary:createRandomNormalMatrix(1, #expectedActionVector[1])
+
+	local actionVectorPart1 = AqwamMatrixLibrary:multiply(standardDeviationVector, randomNormalVector)
+
+	local actionVector = AqwamMatrixLibrary:add(expectedActionVector, actionVectorPart1)
+
+	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(actionVector, expectedActionVector)
+
+	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
 
 	local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
 
-	local logStandardDeviationVector = AqwamMatrixLibrary:logarithm(standardDeviationVector)
+	local logActionProbabilityVectorPart1 = AqwamMatrixLibrary:logarithm(standardDeviationVector)
 
-	local multipliedLogStandardDeviationVector = AqwamMatrixLibrary:multiply(2, logStandardDeviationVector)
+	local logActionProbabilityVectorPart2 = AqwamMatrixLibrary:multiply(2, logActionProbabilityVectorPart1)
 
-	local numberOfActionDimensions = #self.ClassesList
+	local logActionProbabilityVectorPart3 = AqwamMatrixLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
 
-	local actionProbabilityValuePart1 = AqwamMatrixLibrary:sum(multipliedLogStandardDeviationVector)
-
-	local actionProbabilityValue = -0.5 * (actionProbabilityValuePart1 + (numberOfActionDimensions * math.log(2 * math.pi)))
+	local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
 
 	local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 
 	local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
 
 	local advantageValue = rewardValue + (self.discountFactor * currentCriticValue) - previousCriticValue
+	
+	table.insert(self.actionProbabilityVectorHistoryArray[actorCriticModelNumber], logActionProbabilityVector)
 
 	table.insert(self.advantageValueHistoryArray[actorCriticModelNumber], advantageValue)
-
-	table.insert(self.actionProbabilityValueHistoryArray[actorCriticModelNumber], actionProbabilityValue)
 
 	return advantageValue
 
 end
 
 function AsynchronousAdvantageActorCriticModel:episodeUpdate(actorCriticModelNumber)
-	
+
 	local advantageValueHistory = self.advantageValueHistoryArray[actorCriticModelNumber]
-	
-	local actionProbabilityValueHistory =  self.actionProbabilityValueHistoryArray[actorCriticModelNumber]
+
+	local actionProbabilityVectorHistory =  self.actionProbabilityVectorHistoryArray[actorCriticModelNumber]
 
 	local historyLength = #advantageValueHistory
 
-	local sumActorLoss = 0
+	local sumActorLossVector = AqwamMatrixLibrary:createMatrix(#actionProbabilityVectorHistory[1], #actionProbabilityVectorHistory[1][1], 0)
 
 	local sumCriticLoss = 0
 
 	for h = 1, historyLength, 1 do
 
-		local advantage = advantageValueHistory[h]
+		local advantageValue = advantageValueHistory[h]
 
-		local actionProbabilityValue = actionProbabilityValueHistory[h]
+		local actorLossVector = AqwamMatrixLibrary:multiply(actionProbabilityVectorHistory[h], advantageValue)
 
-		local actorLoss = actionProbabilityValue * advantage
+		sumCriticLoss = sumCriticLoss + advantageValue
 
-		sumActorLoss = sumActorLoss + actorLoss
-
-		sumCriticLoss = sumCriticLoss + advantage
+		sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
 
 	end
+	
+	sumActorLossVector = AqwamMatrixLibrary:unaryMinus(sumActorLossVector)
 
 	local ActorModel = self.ActorModelArray[actorCriticModelNumber]
-	
+
 	local CriticModel = self.CriticModelArray[actorCriticModelNumber]
 
 	if not ActorModel then error("No actor model!") end
-	
+
 	if not CriticModel then error("No critic model!") end
 
-	local numberOfFeatures, hasBias = ActorModel:getLayer(1)
-
-	numberOfFeatures += (hasBias and 1) or 0
+	local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
 
 	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
 	ActorModel:forwardPropagate(featureVector, true)
-	
+
 	CriticModel:forwardPropagate(featureVector, true)
 
-	self.ActorModelCostFunctionDerivativesArray[actorCriticModelNumber] = ActorModel:calculateCostFunctionDerivativeMatrixTable(-sumActorLoss, true)
-	
+	self.ActorModelCostFunctionDerivativesArray[actorCriticModelNumber] = ActorModel:calculateCostFunctionDerivativeMatrixTable(sumActorLossVector, true)
+
 	self.CriticModelCostFunctionDerivativesArray[actorCriticModelNumber] = CriticModel:calculateCostFunctionDerivativeMatrixTable(-sumCriticLoss, true)
 
 	------------------------------------------------------
@@ -365,10 +363,10 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(actorCriticModelNum
 	self.currentNumberOfEpisodesArray[actorCriticModelNumber] = self.currentNumberOfEpisodesArray[actorCriticModelNumber] + 1
 
 	self.currentEpsilonArray[actorCriticModelNumber] = self.currentEpsilonArray[actorCriticModelNumber] * self.epsilonDecayFactor
+	
+	table.clear(actionProbabilityVectorHistory)
 
 	table.clear(advantageValueHistory)
-
-	table.clear(actionProbabilityValueHistory)
 
 end
 
@@ -430,24 +428,24 @@ local selectActionFunctionList = {
 
 }
 
-function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, actorCriticModelNumber, policyMode)
+function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, actorCriticModelNumber, policyMode, standardDeviationVector)
 
 	actorCriticModelNumber = actorCriticModelNumber or Random.new():NextInteger(1, #self.currentEpsilonArray)
 
 	self.currentNumberOfReinforcementsArray[actorCriticModelNumber] = self.currentNumberOfReinforcementsArray[actorCriticModelNumber] + 1
 
 	self.currentTotalNumberOfReinforcementsToUpdateMainModel = self.currentTotalNumberOfReinforcementsToUpdateMainModel + 1
-	
+
 	local actionSelectionFunction = self.actionSelectionFunction
-	
+
 	local previousFeatureVector = self.previousFeatureVectorArray[actorCriticModelNumber]
 
 	local ExperienceReplay = self.ExperienceReplayArray[actorCriticModelNumber]
 
 	local currentEpsilon = self.currentEpsilonArray[actorCriticModelNumber]
-	
+
 	local ActorModel = self.ActorModelArray[actorCriticModelNumber]
-	
+
 	local ClassesList = self.ClassesList
 
 	local action
@@ -457,17 +455,17 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 	local actionVector
 
 	local actionValue
-	
+
 	local temporalDifferenceError
 
 	local actionVector = ActorModel:predict(currentFeatureVector, true, actorCriticModelNumber)
 
 	local randomProbability = Random.new():NextNumber()
-	
+
 	policyMode = policyMode or defaultPolicyMode
-	
+
 	if (policyMode == "Categorical") and (previousFeatureVector) then
-		
+
 		if (randomProbability < currentEpsilon) then
 
 			actionIndex = Random.new():NextInteger(1, #ClassesList)
@@ -477,17 +475,17 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 			actionIndex = selectActionFunctionList[actionSelectionFunction](actionVector)
 
 		end
-		
+
 		action = ClassesList[actionIndex]
 
 		actionValue = actionVector[1][actionIndex]
-		
+
 		temporalDifferenceError = self:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, actorCriticModelNumber) 
-		
+
 	elseif (policyMode == "DiagonalGaussian") and (previousFeatureVector) then 
-		
-		temporalDifferenceError = self:diagonalGaussianUpdate(previousFeatureVector, actionVector, rewardValue, currentFeatureVector, actorCriticModelNumber) 
-		
+
+		temporalDifferenceError = self:diagonalGaussianUpdate(previousFeatureVector, actionVector, rewardValue, currentFeatureVector, actorCriticModelNumber, standardDeviationVector) 
+
 	end
 
 	if (self.currentNumberOfReinforcementsArray[actorCriticModelNumber] >= self.numberOfReinforcementsPerEpisode) then
@@ -571,7 +569,7 @@ function AsynchronousAdvantageActorCriticModel:start()
 				local randomInteger = Random.new():NextInteger(1, #self.ActorModelArray)
 
 				ActorMainModelParameters = self.ActorModelArray[randomInteger]:getModelParameters()
-				
+
 				CriticMainModelParameters = self.CriticModelArray[randomInteger]:getModelParameters()
 
 			end
@@ -671,10 +669,10 @@ function AsynchronousAdvantageActorCriticModel:reset(actorCriticModelNumber)
 	self.previousFeatureVectorArray[actorCriticModelNumber] = nil
 
 	self.currentEpsilonArray[actorCriticModelNumber] = self.epsilon
+	
+	table.clear(self.actionProbabilityVectorHistoryArray[actorCriticModelNumber])
 
 	table.clear(self.advantageValueHistoryArray[actorCriticModelNumber])
-
-	table.clear(self.actionProbabilityValueHistoryArray[actorCriticModelNumber])
 
 	local ExperienceReplay = self.ExperienceReplayArray[actorCriticModelNumber]
 
@@ -683,7 +681,7 @@ function AsynchronousAdvantageActorCriticModel:reset(actorCriticModelNumber)
 end
 
 function AsynchronousAdvantageActorCriticModel:resetAll()
-	
+
 	for i, _ in ipairs(self.ActorModelArray) do self:reset(i) end
 
 	self.currentTotalNumberOfReinforcementsToUpdateMainModel = 0

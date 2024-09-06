@@ -161,7 +161,7 @@ CategoricalPolicy:extendEpisodeUpdateFunction(episodeUpdateFunction)
 Reward or punish model based on the current state of the environment.
 
 ```
-CategoricalPolicy:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean, childModelNumber: integer): integer, number -OR- Matrix
+CategoricalPolicy:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
 ```
 
 #### Parameters:
@@ -171,8 +171,6 @@ CategoricalPolicy:reinforce(currentFeatureVector: Matrix, rewardValue: number, r
 * rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
 
 * returnOriginalOutput: Set whether or not to return predicted vector instead of value with highest probability.
-
-* childModelNumber: The child model number to be selected from the parent model.
 
 #### Returns:
 

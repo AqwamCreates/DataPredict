@@ -105,7 +105,7 @@ DiagonalGaussianPolicy:extendEpisodeUpdateFunction(episodeUpdateFunction)
 Reward or punish model based on the current state of the environment.
 
 ```
-DiagonalGaussianPolicy:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean, childModelNumber: integer): integer, number -OR- Matrix
+DiagonalGaussianPolicy:reinforce(currentFeatureVector: matrix, rewardValue: number, standardDeviationVector: matrix): matrix
 ```
 
 #### Parameters:
@@ -114,7 +114,7 @@ DiagonalGaussianPolicy:reinforce(currentFeatureVector: Matrix, rewardValue: numb
 
 * rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
 
-* childModelNumber: The child model number to be selected from the parent model.
+* standardDeviationVector: The vector containing values of standard deviations. The number of columns must match the number of actions.
 
 #### Returns:
 

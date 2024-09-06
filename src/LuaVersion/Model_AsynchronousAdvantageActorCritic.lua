@@ -318,7 +318,7 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(actorCriticModelNum
 
 	local historyLength = #advantageValueHistory
 
-	local sumActorLossVector = AqwamMatrixLibrary:createMatrix(#actionProbabilityVectorHistory[1], #actionProbabilityVectorHistory[1][1], 0)
+	local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #actionProbabilityVectorHistory[1][1], 0)
 
 	local sumCriticLoss = 0
 

@@ -4,7 +4,7 @@ By using or possessing any copies of this library or its assets (including the i
 
 * Attribution is required when using this library. 
 
-* A separate agreement is needed for commercial use (both internally and externally). This is applicable to companies (or individuals if none) with a revenue of at least $5000 in a lifetime, or a player base of at least total of 100 active players in a game from all servers, or those engaged in business-to-business activities. 
+* A separate agreement is needed for commercial use (both internally and externally). This is applicable to companies (or individuals if none) with a revenue of at least $1000 in a lifetime, or a player base of at least total of 100 active players in a game from all servers, or those engaged in business-to-business activities. 
 
 * If you or your company is applicable to the above statement and do not want a separate agreement, then you are required to follow the "Commercial Use Conditions" in Terms And Conditions.
 

@@ -214,8 +214,6 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
 
-		local numberOfActions = #ActorModel:getClassesList()
-
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
 		ActorModel:forwardPropagate(featureVector, true)

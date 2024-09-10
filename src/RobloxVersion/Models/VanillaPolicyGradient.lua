@@ -182,8 +182,6 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
 
-		local numberOfActions = #ActorModel:getClassesList()
-
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 		
 		sumActorLossVector = AqwamMatrixLibrary:unaryMinus(sumActorLossVector)

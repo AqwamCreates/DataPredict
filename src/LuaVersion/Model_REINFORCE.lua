@@ -140,8 +140,6 @@ function REINFORCEModel.new(discountFactor)
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
-		local numberOfActions = #Model:getClassesList()
-
 		sumLossVector = AqwamMatrixLibrary:unaryMinus(sumLossVector)
 		
 		Model:forwardPropagate(featureVector, true)

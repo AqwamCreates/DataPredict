@@ -26,8 +26,6 @@
 
 --]]
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
-
 ReinforcementLearningActorCriticBaseModel = {}
 
 ReinforcementLearningActorCriticBaseModel.__index = ReinforcementLearningActorCriticBaseModel

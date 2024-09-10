@@ -36,7 +36,7 @@ setmetatable(NeuralNetworkModel, GradientMethodBaseModel)
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
 
@@ -786,8 +786,6 @@ function NeuralNetworkModel:fetchValueFromScalar(outputVector)
 
 	local value = outputVector[1][1]
 
-	local numberOfLayers = #self.numberOfNeuronsTable
-
 	local activationFunctionAtFinalLayer = self:getActivationLayerAtFinalLayer()
 
 	local isValueOverCutOff = cutOffListForScalarValues[activationFunctionAtFinalLayer](value)
@@ -866,13 +864,13 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
 
 end
 
-function NeuralNetworkModel.new(maxNumberOfIterations)
+function NeuralNetworkModel.new(maximumNumberOfIterations)
 
 	local NewNeuralNetworkModel = GradientMethodBaseModel.new()
 
 	setmetatable(NewNeuralNetworkModel, NeuralNetworkModel)
 
-	NewNeuralNetworkModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewNeuralNetworkModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
 	NewNeuralNetworkModel.numberOfNeuronsTable = {}
 
@@ -894,9 +892,9 @@ function NeuralNetworkModel.new(maxNumberOfIterations)
 
 end
 
-function NeuralNetworkModel:setParameters(maxNumberOfIterations)
+function NeuralNetworkModel:setParameters(maximumNumberOfIterations)
 
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 
 end
 
@@ -1540,7 +1538,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		self:backwardPropagate(lossMatrix, true)
 
-	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == self.maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 

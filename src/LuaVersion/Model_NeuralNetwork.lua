@@ -778,8 +778,6 @@ function NeuralNetworkModel:fetchValueFromScalar(outputVector)
 
 	local value = outputVector[1][1]
 
-	local numberOfLayers = #self.numberOfNeuronsTable
-
 	local activationFunctionAtFinalLayer = self:getActivationLayerAtFinalLayer()
 
 	local isValueOverCutOff = cutOffListForScalarValues[activationFunctionAtFinalLayer](value)

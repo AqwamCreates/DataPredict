@@ -63,7 +63,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Stimulating Curiosity With Random Network Distillation](Tutorials/StimulatingCuriosityWithRandomNetworkDistillation.md)
 
-[Actions And Reinforcement Learning Algorithms](Tutorials/ActionsAndReinforcementLearningAlgorithms.md)
+[The Action Space And The Reinforcement Learning Algorithms](Tutorials/TheActionSpaceAndTheReinforcementLearningAlgorithms.md)
 
 ## The API
 

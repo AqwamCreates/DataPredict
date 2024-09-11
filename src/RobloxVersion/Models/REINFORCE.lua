@@ -83,10 +83,8 @@ function REINFORCEModel.new(discountFactor)
 	local rewardValueHistory = {}
 	
 	NewREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
-		
-		local Model = NewREINFORCEModel.Model
 
-		local actionVector = Model:predict(previousFeatureVector, true)
+		local actionVector = NewREINFORCEModel.Model:predict(previousFeatureVector, true)
 		
 		local actionProbabilityVector = calculateProbability(actionVector)
 		

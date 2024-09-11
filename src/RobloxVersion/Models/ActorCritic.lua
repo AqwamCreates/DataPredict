@@ -68,9 +68,7 @@ function ActorCriticModel.new(discountFactor)
 	
 	NewActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local ActorModel = NewActorCriticModel.ActorModel
-		
-		local actionVector = ActorModel:predict(previousFeatureVector, true)
+		local actionVector = NewActorCriticModel.ActorModel:predict(previousFeatureVector, true)
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 

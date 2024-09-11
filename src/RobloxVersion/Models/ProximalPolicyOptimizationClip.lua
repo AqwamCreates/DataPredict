@@ -104,11 +104,9 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 	
 	NewProximalPolicyOptimizationClipModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		local ActorModel = NewProximalPolicyOptimizationClipModel.ActorModel
-
 		local CriticModel = NewProximalPolicyOptimizationClipModel.CriticModel
 
-		local actionVector = ActorModel:predict(previousFeatureVector, true)
+		local actionVector = NewProximalPolicyOptimizationClipModel.ActorModel:predict(previousFeatureVector, true)
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 

@@ -92,7 +92,7 @@ labelVector3 = {
 
 ## LabelMatrix
 
-Typically contains numbers stored in a (m x o) matrix, where m is the number of data and o is the number of classes.
+Typically contains numbers stored in a (m x c) matrix, where m is the number of data and c is the number of classes.
 
 ### Examples
 

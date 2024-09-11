@@ -86,11 +86,9 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 	
 	NewProximalPolicyOptimizationModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local ActorModel = NewProximalPolicyOptimizationModel.ActorModel
-		
 		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
 		
-		local actionVector = ActorModel:predict(previousFeatureVector, true)
+		local actionVector = NewProximalPolicyOptimizationModel.ActorModel:predict(previousFeatureVector, true)
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 

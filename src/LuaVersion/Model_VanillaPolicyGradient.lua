@@ -79,12 +79,10 @@ function VanillaPolicyGradientModel.new(discountFactor)
 	local rewardValueHistory = {}
 
 	NewVanillaPolicyGradientModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
-		
-		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
 
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 
-		local actionVector = ActorModel:predict(previousFeatureVector, true)
+		local actionVector = NewVanillaPolicyGradientModel.ActorModel:predict(previousFeatureVector, true)
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 

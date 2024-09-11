@@ -60,11 +60,9 @@ function AdvantageActorCriticModel.new(discountFactor)
 	
 	NewAdvantageActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local ActorModel = NewAdvantageActorCriticModel.ActorModel
-		
 		local CriticModel = NewAdvantageActorCriticModel.CriticModel
 		
-		local actionVector = ActorModel:predict(previousFeatureVector, true)
+		local actionVector = NewAdvantageActorCriticModel.ActorModel:predict(previousFeatureVector, true)
 		
 		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
 

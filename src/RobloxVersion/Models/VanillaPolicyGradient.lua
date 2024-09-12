@@ -144,7 +144,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local actorLossVector = AqwamMatrixLibrary:multiply(logActionProbabilityVector, advantageValue)
 
-		table.insert(criticValueHistory, currentCriticValue)
+		table.insert(criticValueHistory, previousCriticValue)
 		
 		table.insert(actorLossVectorHistory, actorLossVector)
 		

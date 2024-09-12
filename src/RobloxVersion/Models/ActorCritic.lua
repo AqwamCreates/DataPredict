@@ -68,11 +68,11 @@ function ActorCriticModel.new(discountFactor)
 	
 	NewActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local actionVector = NewActorCriticModel.ActorModel:predict(previousFeatureVector, true)
+		local actionVector = NewActorCriticModel.ActorModel:forwardPropagate(previousFeatureVector)
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 
-		local criticValue = NewActorCriticModel.CriticModel:predict(previousFeatureVector, true)[1][1]
+		local criticValue = NewActorCriticModel.CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 		
 		local logActionProbabilityVector = AqwamMatrixLibrary:logarithm(actionProbabilityVector)
 
@@ -106,7 +106,7 @@ function ActorCriticModel.new(discountFactor)
 		
 		local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
 
-		local criticValue = NewActorCriticModel.CriticModel:predict(previousFeatureVector, true)[1][1]
+		local criticValue = NewActorCriticModel.CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 		
 		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
@@ -166,9 +166,9 @@ function ActorCriticModel.new(discountFactor)
 		
 		sumActorLossVector = AqwamMatrixLibrary:unaryMinus(sumActorLossVector)
 
-		CriticModel:forwardPropagate(featureVector, true)
+		CriticModel:forwardPropagate(featureVector, true, true)
 		
-		ActorModel:forwardPropagate(featureVector, true)
+		ActorModel:forwardPropagate(featureVector, true, true)
 
 		CriticModel:backwardPropagate(-sumCriticLoss, true)
 		

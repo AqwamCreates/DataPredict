@@ -84,7 +84,7 @@ function REINFORCEModel.new(discountFactor)
 	
 	NewREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		local actionVector = NewREINFORCEModel.Model:predict(previousFeatureVector, true)
+		local actionVector = NewREINFORCEModel.Model:forwardPropagate(previousFeatureVector)
 		
 		local actionProbabilityVector = calculateProbability(actionVector)
 		
@@ -146,7 +146,7 @@ function REINFORCEModel.new(discountFactor)
 
 		sumLossVector = AqwamMatrixLibrary:unaryMinus(sumLossVector)
 		
-		Model:forwardPropagate(featureVector, true)
+		Model:forwardPropagate(featureVector, true, true)
 
 		Model:backwardPropagate(sumLossVector, true)
 		

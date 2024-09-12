@@ -208,13 +208,13 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 			local ratioVector = AqwamMatrixLibrary:divide(actionProbabilityVectorHistory[h], oldActionProbabilityVectorHistory[h])
 			
-			local oldAdvantageValueHistory = oldAdvantageValueHistory[h]
+			local oldAdvantageValue = oldAdvantageValueHistory[h]
 
-			local actorLossVectorPart1 = AqwamMatrixLibrary:multiply(ratioVector, oldAdvantageValueHistory)
+			local actorLossVectorPart1 = AqwamMatrixLibrary:multiply(ratioVector, oldAdvantageValue)
 			
 			local clippedRatioVector = AqwamMatrixLibrary:applyFunction(clipFunction, ratioVector)
 			
-			local actorLossVectorPart2 = AqwamMatrixLibrary:multiply(clippedRatioVector, oldAdvantageValueHistory)
+			local actorLossVectorPart2 = AqwamMatrixLibrary:multiply(clippedRatioVector, oldAdvantageValue)
 			
 			local actorLossVector = AqwamMatrixLibrary:applyFunction(math.min, actorLossVectorPart1, actorLossVectorPart2)
 

@@ -108,7 +108,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
-		table.insert(criticValueHistory, currentCriticValue)
+		table.insert(criticValueHistory, previousCriticValue)
 		
 		table.insert(advantageValueHistory, advantageValue)
 		
@@ -150,7 +150,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
-		table.insert(criticValueHistory, currentCriticValue)
+		table.insert(criticValueHistory, previousCriticValue)
 
 		table.insert(advantageValueHistory, advantageValue)
 

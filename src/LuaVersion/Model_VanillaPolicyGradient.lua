@@ -82,13 +82,13 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 
-		local actionVector = NewVanillaPolicyGradientModel.ActorModel:predict(previousFeatureVector, true)
+		local actionVector = NewVanillaPolicyGradientModel.ActorModel:forwardPropagate(previousFeatureVector, true)
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 
-		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
-		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
 		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
 		
@@ -130,15 +130,15 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
 
-		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
-		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
 		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
 
 		local actorLossVector = AqwamMatrixLibrary:multiply(logActionProbabilityVector, advantageValue)
 
-		table.insert(criticValueHistory, previousCriticValue)
+		table.insert(criticValueHistory, currentCriticValue)
 		
 		table.insert(actorLossVectorHistory, actorLossVector)
 		
@@ -178,9 +178,9 @@ function VanillaPolicyGradientModel.new(discountFactor)
 		
 		sumActorLossVector = AqwamMatrixLibrary:unaryMinus(sumActorLossVector)
 
-		ActorModel:forwardPropagate(featureVector, true)
+		ActorModel:forwardPropagate(featureVector, true, true)
 		
-		CriticModel:forwardPropagate(featureVector, true)
+		CriticModel:forwardPropagate(featureVector, true, true)
 
 		ActorModel:backwardPropagate(sumActorLossVector, true)
 		

@@ -250,9 +250,9 @@ function AsynchronousAdvantageActorCriticModel:categoricalUpdate(previousFeature
 
 	local actionProbabilityVector = calculateProbability(allOutputsMatrix)
 
-	local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
+	local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
-	local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
+	local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
 	local advantageValue = rewardValue + (self.discountFactor * currentCriticValue) - previousCriticValue
 
@@ -296,9 +296,9 @@ function AsynchronousAdvantageActorCriticModel:diagonalGaussianUpdate(previousFe
 
 	local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
 
-	local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
+	local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
-	local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
+	local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
 	local advantageValue = rewardValue + (self.discountFactor * currentCriticValue) - previousCriticValue
 	
@@ -348,9 +348,9 @@ function AsynchronousAdvantageActorCriticModel:episodeUpdate(actorCriticModelNum
 
 	local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
-	ActorModel:forwardPropagate(featureVector, true)
+	ActorModel:forwardPropagate(featureVector, true, true)
 
-	CriticModel:forwardPropagate(featureVector, true)
+	CriticModel:forwardPropagate(featureVector, true, true)
 
 	self.ActorModelCostFunctionDerivativesArray[actorCriticModelNumber] = ActorModel:calculateCostFunctionDerivativeMatrixTable(sumActorLossVector, true)
 

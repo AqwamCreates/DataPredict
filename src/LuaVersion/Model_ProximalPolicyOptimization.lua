@@ -88,13 +88,13 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
 		
-		local actionVector = NewProximalPolicyOptimizationModel.ActorModel:predict(previousFeatureVector, true)
+		local actionVector = NewProximalPolicyOptimizationModel.ActorModel:forwardPropagate(previousFeatureVector)
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 
-		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
-		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
 		local advantageValue = rewardValue + (NewProximalPolicyOptimizationModel.discountFactor * currentCriticValue) - previousCriticValue
 
@@ -136,9 +136,9 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
 
-		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
-		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
 		local advantageValue = rewardValue + (NewProximalPolicyOptimizationModel.discountFactor * currentCriticValue) - previousCriticValue
 		
@@ -208,9 +208,9 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
-		ActorModel:forwardPropagate(featureVector, true)
+		ActorModel:forwardPropagate(featureVector, true, true)
 		
-		CriticModel:forwardPropagate(featureVector, true)
+		CriticModel:forwardPropagate(featureVector, true, true)
 
 		ActorModel:backwardPropagate(sumActorLossVector, true)
 		

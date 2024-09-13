@@ -71,7 +71,7 @@ function DeepDoubleQLearningModel.new(averagingRate, discountFactor)
 			
 		end
 
-		local predictedValue, maxQValue = Model:predict(currentFeatureVector)
+		local _, maxQValue = Model:predict(currentFeatureVector)
 
 		local targetValue = rewardValue + (NewDeepDoubleQLearningModel.discountFactor * maxQValue[1][1])
 

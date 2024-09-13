@@ -46,7 +46,7 @@ function DeepClippedDoubleQLearningModel.new(discountFactor)
 
 			Model:setModelParameters(NewDeepClippedDoubleQLearningModel.ModelParametersArray[i], true)
 
-			local predictedValue, maxQValue = Model:predict(currentFeatureVector)
+			local _, maxQValue = Model:predict(currentFeatureVector)
 
 			table.insert(maxQValueArray, maxQValue[1][1])
 

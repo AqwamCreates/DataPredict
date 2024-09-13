@@ -46,7 +46,7 @@ function DeepQLearningModel.new(discountFactor)
 		
 		local Model = NewDeepQLearningModel.Model
 
-		local predictedValue, maxQValue = Model:predict(currentFeatureVector)
+		local _, maxQValue = Model:predict(currentFeatureVector)
 
 		local targetValue = rewardValue + (NewDeepQLearningModel.discountFactor * maxQValue[1][1])
 		

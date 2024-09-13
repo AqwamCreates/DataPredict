@@ -156,7 +156,7 @@ function DeepDoubleQLearningModel:generateLossVector(previousFeatureVector, acti
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-	local predictedValue, maxQValue = Model:predict(currentFeatureVector)
+	local _, maxQValue = Model:predict(currentFeatureVector)
 
 	local targetValue = rewardValue + (self.discountFactor * maxQValue[1][1])
 	

@@ -40,7 +40,7 @@ function DeepClippedDoubleQLearningModel.new(discountFactor)
 		
 		local Model = NewDeepClippedDoubleQLearningModel.Model
 
-		local maxQValues = {}
+		local maxQValueArray = {}
 
 		for i = 1, 2, 1 do
 
@@ -48,11 +48,11 @@ function DeepClippedDoubleQLearningModel.new(discountFactor)
 
 			local predictedValue, maxQValue = Model:predict(currentFeatureVector)
 
-			table.insert(maxQValues, maxQValue[1][1])
+			table.insert(maxQValueArray, maxQValue[1][1])
 
 		end
 
-		local maxQValue = math.min(table.unpack(maxQValues))
+		local maxQValue = math.min(table.unpack(maxQValueArray))
 
 		local targetValue = rewardValue + (NewDeepClippedDoubleQLearningModel.discountFactor * maxQValue)
 		

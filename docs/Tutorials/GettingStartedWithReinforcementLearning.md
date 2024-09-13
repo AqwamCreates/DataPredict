@@ -102,7 +102,7 @@ while true do
 
     local environmentVector = fetchEnvironmentVector(previousEnvironmentVector, action)
 
-    action = DeepQLearning:predict(environmentVector)
+    action = DeepQLearning:predict(environmentVector)[1][1]
 
     local reward = getReward(environmentVector)
 

@@ -34,6 +34,8 @@ function DeepClippedDoubleQLearningModel.new(discountFactor)
 
 	local NewDeepClippedDoubleQLearningModel = ReinforcementLearningBaseModel.new(discountFactor)
 
+	setmetatable(NewDeepClippedDoubleQLearningModel, DeepClippedDoubleQLearningModel)
+
 	NewDeepClippedDoubleQLearningModel.ModelParametersArray = {}
 	
 	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)

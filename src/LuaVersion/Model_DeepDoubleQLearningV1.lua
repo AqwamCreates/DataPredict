@@ -126,11 +126,7 @@ function DeepDoubleQLearningModel:loadModelParametersFromModelParametersArray(in
 	
 	local Model = self.Model
 	
-	local FirstModelParameters = self.ModelParametersArray[1]
-	
-	local SecondModelParameters = self.ModelParametersArray[2]
-	
-	if (FirstModelParameters == nil) and (SecondModelParameters == nil) then
+	if (not self.ModelParametersArray[1]) and (not self.ModelParametersArray[2]) then
 		
 		Model:generateLayers()
 		

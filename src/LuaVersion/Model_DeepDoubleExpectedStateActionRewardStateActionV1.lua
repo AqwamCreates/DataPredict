@@ -164,11 +164,11 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateLossVector(
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 
-	local previousVector = Model:predict(previousFeatureVector, true)
+	local previousVector = Model:forwardPropagate(previousFeatureVector, true)
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-	local targetVector = Model:predict(currentFeatureVector, true)
+	local targetVector = Model:forwardPropagate(currentFeatureVector, true)
 
 	local maxQValue = targetVector[1][actionIndex]
 

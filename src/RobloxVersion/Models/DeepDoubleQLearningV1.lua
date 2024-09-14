@@ -154,7 +154,7 @@ function DeepDoubleQLearningModel:generateLossVector(previousFeatureVector, acti
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
-	local previousVector = Model:predict(previousFeatureVector, true)
+	local previousVector = Model:forwardPropagate(previousFeatureVector, true)
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 

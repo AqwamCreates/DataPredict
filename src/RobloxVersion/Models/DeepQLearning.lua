@@ -54,7 +54,7 @@ function DeepQLearningModel.new(discountFactor)
 
 		local numberOfClasses = #ClassesList
 
-		local previousVector = Model:predict(previousFeatureVector, true)
+		local previousVector = Model:forwardPropagate(previousFeatureVector)
 
 		local actionIndex = table.find(ClassesList, action)
 
@@ -66,7 +66,7 @@ function DeepQLearningModel.new(discountFactor)
 
 		lossVector[1][actionIndex] = temporalDifferenceError
 		
-		Model:forwardPropagate(previousFeatureVector, true)
+		Model:forwardPropagate(previousFeatureVector, true, true)
 
 		Model:backwardPropagate(lossVector, true)
 		

@@ -91,9 +91,9 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIter
 
 		local actionIndex = table.find(ClassesList, action)
 
-		local previousVector = NewDeepDoubleExpectedStateActionRewardStateActionModel:predict(previousFeatureVector, true)
+		local previousVector = Model:forwardPropagate(previousFeatureVector)
 
-		local targetVector = NewDeepDoubleExpectedStateActionRewardStateActionModel:predict(currentFeatureVector, true)
+		local targetVector = Model:forwardPropagate(currentFeatureVector)
 		
 		local maxQValue = targetVector[1][actionIndex]
 
@@ -133,7 +133,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIter
 
 		lossVector[1][actionIndex] = temporalDifferenceError
 		
-		Model:forwardPropagate(previousFeatureVector, true)
+		Model:forwardPropagate(previousFeatureVector, true, true)
 
 		Model:backwardPropagate(lossVector, true)
 

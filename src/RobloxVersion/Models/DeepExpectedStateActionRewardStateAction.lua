@@ -60,9 +60,9 @@ function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFact
 
 		local actionIndex = table.find(ClassesList, action)
 		
-		local previousVector = Model:predict(previousFeatureVector, true)
+		local previousVector = Model:forwardPropagate(previousFeatureVector)
 		
-		local targetVector = Model:predict(currentFeatureVector, true)
+		local targetVector = Model:forwardPropagate(currentFeatureVector)
 		
 		local maxQValue = targetVector[1][actionIndex]
 
@@ -102,7 +102,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFact
 		
 		lossVector[1][actionIndex] = temporalDifferenceError
 
-		Model:forwardPropagate(previousFeatureVector, true)
+		Model:forwardPropagate(previousFeatureVector, true, true)
 		
 		Model:backwardPropagate(lossVector, true)
 		

@@ -98,7 +98,7 @@ function DeepDoubleQLearningModel.new(discountFactor)
 
 		local lossVector, temporalDifferenceError = NewDeepDoubleQLearningModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 
-		Model:forwardPropagate(previousFeatureVector, true)
+		Model:forwardPropagate(previousFeatureVector, true, true)
 		
 		Model:backwardPropagate(lossVector, true)
 
@@ -154,7 +154,7 @@ function DeepDoubleQLearningModel:generateLossVector(previousFeatureVector, acti
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
-	local previousVector = Model:forwardPropagate(previousFeatureVector, true)
+	local previousVector = Model:forwardPropagate(previousFeatureVector)
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 

@@ -102,7 +102,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(epsilon, discou
 
 		local lossVector, temporalDifferenceError = NewDeepDoubleExpectedStateActionRewardStateActionModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 
-		Model:forwardPropagate(previousFeatureVector, true)
+		Model:forwardPropagate(previousFeatureVector, true, true)
 
 		Model:backwardPropagate(lossVector, true)
 
@@ -170,11 +170,11 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateLossVector(
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 
-	local previousVector = Model:forwardPropagate(previousFeatureVector, true)
+	local previousVector = Model:forwardPropagate(previousFeatureVector)
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-	local targetVector = Model:forwardPropagate(currentFeatureVector, true)
+	local targetVector = Model:forwardPropagate(currentFeatureVector)
 
 	local maxQValue = targetVector[1][actionIndex]
 

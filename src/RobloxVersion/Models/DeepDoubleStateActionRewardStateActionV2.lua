@@ -70,9 +70,10 @@ function DeepDoubleStateActionRewardStateActionModel.new(averagingRate, discount
 		
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
-		if (PrimaryModelParameters == nil) then 
+		if (PrimaryModelParameters) then 
 			
-			Model:generateLayers() 
+			Model:generateLayers()
+			
 			PrimaryModelParameters = Model:getModelParameters(true)
 			
 		end

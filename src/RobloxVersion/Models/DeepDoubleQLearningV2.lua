@@ -70,9 +70,10 @@ function DeepDoubleQLearningModel.new(averagingRate, discountFactor)
 		
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
-		if (PrimaryModelParameters == nil) then 
+		if (not PrimaryModelParameters) then 
 			
 			Model:generateLayers()
+			
 			PrimaryModelParameters = Model:getModelParameters(true)
 			
 		end

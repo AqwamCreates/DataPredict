@@ -74,9 +74,10 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIter
 		
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
-		if (Model:getModelParameters() == nil) then 
+		if (not PrimaryModelParameters) then 
 			
 			Model:generateLayers()
+			
 			PrimaryModelParameters = Model:getModelParameters(true)
 			
 		end
@@ -99,9 +100,11 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(maxNumberOfIter
 
 		for i = 1, numberOfActions, 1 do
 
-			if (targetVector[1][i] ~= maxQValue) then continue end
-
-			numberOfGreedyActions = numberOfGreedyActions + 1
+			if (targetVector[1][i] ~= maxQValue) then
+				
+				numberOfGreedyActions = numberOfGreedyActions + 1
+				
+			end
 
 		end
 

@@ -75,7 +75,7 @@ function DeepDoubleQLearningModel.new(averagingRate, discountFactor)
 
 		local targetValue = rewardValue + (NewDeepDoubleQLearningModel.discountFactor * maxQValue[1][1])
 
-		local previousVector = Model:predict(previousFeatureVector, true)
+		local previousVector = Model:forwardPropagate(previousFeatureVector)
 		
 		local ClassesList = Model:getClassesList()
 
@@ -91,7 +91,7 @@ function DeepDoubleQLearningModel.new(averagingRate, discountFactor)
 
 		lossVector[1][actionIndex] = temporalDifferenceError
 
-		Model:forwardPropagate(previousFeatureVector, true)
+		Model:forwardPropagate(previousFeatureVector, true, true)
 
 		Model:backwardPropagate(lossVector, true)
 

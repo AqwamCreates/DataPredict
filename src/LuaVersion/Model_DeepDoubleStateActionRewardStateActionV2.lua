@@ -71,17 +71,17 @@ function DeepDoubleStateActionRewardStateActionModel.new(averagingRate, discount
 			
 		end
 		
-		local qVector = Model:predict(currentFeatureVector, true)
+		local qVector = Model:forwardPropagate(currentFeatureVector, true)
 
 		local discountedQVector = AqwamMatrixLibrary:multiply(NewDeepDoubleStateActionRewardStateActionModel.discountFactor, qVector)
 
 		local targetVector = AqwamMatrixLibrary:add(rewardValue, discountedQVector)
 
-		local previousQVector = Model:predict(previousFeatureVector, true)
+		local previousQVector = Model:forwardPropagate(previousFeatureVector)
 
 		local temporalDifferenceVector = AqwamMatrixLibrary:subtract(targetVector, previousQVector)
 
-		Model:forwardPropagate(previousFeatureVector, true)
+		Model:forwardPropagate(previousFeatureVector, true, true)
 
 		Model:backwardPropagate(temporalDifferenceVector, true)
 		

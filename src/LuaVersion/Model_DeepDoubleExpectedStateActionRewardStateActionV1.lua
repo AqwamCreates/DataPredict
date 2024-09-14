@@ -24,248 +24,100 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
 
-DeepDoubleExpectedStateActionRewardStateActionModel = {}
+DeepExpectedStateActionRewardStateActionModel = {}
 
-DeepDoubleExpectedStateActionRewardStateActionModel.__index = DeepDoubleExpectedStateActionRewardStateActionModel
+DeepExpectedStateActionRewardStateActionModel.__index = DeepExpectedStateActionRewardStateActionModel
 
-setmetatable(DeepDoubleExpectedStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
+setmetatable(DeepExpectedStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
 
 local defaultEpsilon = 0.5
 
-local function deepCopyTable(original, copies)
+function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFactor)
 
-	copies = copies or {}
+	local NewDeepExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(discountFactor)
 
-	local originalType = type(original)
+	setmetatable(NewDeepExpectedStateActionRewardStateActionModel, DeepExpectedStateActionRewardStateActionModel)
+	
+	NewDeepExpectedStateActionRewardStateActionModel.epsilon = epsilon or defaultEpsilon
 
-	local copy
+	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		
+		local Model = NewDeepExpectedStateActionRewardStateActionModel.Model
 
-	if (originalType == 'table') then
+		local expectedQValue = 0
 
-		if copies[original] then
+		local numberOfGreedyActions = 0
+		
+		local ClassesList = Model:getClassesList()
 
-			copy = copies[original]
+		local numberOfActions = #ClassesList
 
-		else
+		local actionIndex = table.find(ClassesList, action)
+		
+		local previousVector = Model:forwardPropagate(previousFeatureVector)
+		
+		local targetVector = Model:forwardPropagate(currentFeatureVector)
+		
+		local maxQValue = targetVector[1][actionIndex]
 
-			copy = {}
+		for i = 1, numberOfActions, 1 do
 
-			copies[original] = copy
+			if (targetVector[1][i] ~= maxQValue) then continue end
 
-			for originalKey, originalValue in next, original, nil do
-
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-
-			end
-
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
+			numberOfGreedyActions = numberOfGreedyActions + 1
 
 		end
 
-	else
+		local nonGreedyActionProbability = NewDeepExpectedStateActionRewardStateActionModel.epsilon / numberOfActions
 
-		copy = original
+		local greedyActionProbability = ((1 - NewDeepExpectedStateActionRewardStateActionModel.epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
 
-	end
+		for i, qValue in ipairs(targetVector[1]) do
 
-	return copy
+			if (qValue == maxQValue) then
 
-end
+				expectedQValue = expectedQValue + (qValue * greedyActionProbability)
 
-function DeepDoubleExpectedStateActionRewardStateActionModel.new(epsilon, discountFactor)
+			else
 
-	local NewDeepDoubleExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(discountFactor)
-	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = epsilon or defaultEpsilon
-	
-	setmetatable(NewDeepDoubleExpectedStateActionRewardStateActionModel, DeepDoubleExpectedStateActionRewardStateActionModel)
+				expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
 
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.ModelParametersArray = {}
+			end
 
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		end
 		
-		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model
+		local targetValue = rewardValue + (NewDeepExpectedStateActionRewardStateActionModel.discountFactor * expectedQValue)
 
-		local randomProbability = Random.new():NextNumber()
+		local lastValue = previousVector[1][actionIndex]
 
-		local updateSecondModel = (randomProbability >= 0.5)
+		local temporalDifferenceError = targetValue - lastValue
 
-		local selectedModelNumberForTargetVector = (updateSecondModel and 1) or 2
+		local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, 0)
+		
+		lossVector[1][actionIndex] = temporalDifferenceError
 
-		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
-
-		local lossVector, temporalDifferenceError = NewDeepDoubleExpectedStateActionRewardStateActionModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
-
-		Model:forwardPropagate(previousFeatureVector, true)
-
+		Model:forwardPropagate(previousFeatureVector, true, true)
+		
 		Model:backwardPropagate(lossVector, true)
-
-		NewDeepDoubleExpectedStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
 		return temporalDifferenceError
 
 	end)
 	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function() end)
+	NewDeepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function() end)
 
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() end)
+	NewDeepExpectedStateActionRewardStateActionModel:setResetFunction(function() end)
 
-	return NewDeepDoubleExpectedStateActionRewardStateActionModel
+	return NewDeepExpectedStateActionRewardStateActionModel
 
 end
 
-function DeepDoubleExpectedStateActionRewardStateActionModel:setParameters(epsilon, discountFactor)
+function DeepExpectedStateActionRewardStateActionModel:setParameters(epsilon, discountFactor)
 
 	self.epsilon = epsilon or self.epsilon
 
-	self.discountFactor = discountFactor or self.discountFactor
+	self.discountFactor =  discountFactor or self.discountFactor
 
 end
 
-function DeepDoubleExpectedStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(index)
-
-	self.ModelParametersArray[index] = self.Model:getModelParameters()
-
-end
-
-function DeepDoubleExpectedStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(index)
-	
-	local Model = self.Model
-
-	if (not self.ModelParametersArray[1]) and (not self.ModelParametersArray[2]) then
-
-		Model:generateLayers()
-
-		self:saveModelParametersFromModelParametersArray(1)
-
-		self:saveModelParametersFromModelParametersArray(2)
-
-	end
-
-	local CurrentModelParameters = self.ModelParametersArray[index]
-
-	Model:setModelParameters(CurrentModelParameters, true)
-
-end
-
-function DeepDoubleExpectedStateActionRewardStateActionModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
-	
-	local Model = self.Model
-
-	local expectedQValue = 0
-
-	local numberOfGreedyActions = 0
-	
-	local ClassesList = Model:getClassesList()
-
-	local numberOfActions = #ClassesList
-
-	local actionIndex = table.find(ClassesList, action)
-	
-	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
-
-	local previousVector = Model:forwardPropagate(previousFeatureVector, true)
-	
-	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
-
-	local targetVector = Model:forwardPropagate(currentFeatureVector, true)
-
-	local maxQValue = targetVector[1][actionIndex]
-
-	for i = 1, numberOfActions, 1 do
-
-		if (targetVector[1][i] ~= maxQValue) then continue end
-
-		numberOfGreedyActions = numberOfGreedyActions + 1
-
-	end
-
-	local nonGreedyActionProbability = self.epsilon / numberOfActions
-
-	local greedyActionProbability = ((1 - self.epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
-
-	for i, qValue in ipairs(targetVector[1]) do
-
-		if (qValue == maxQValue) then
-
-			expectedQValue = expectedQValue + (qValue * greedyActionProbability)
-
-		else
-
-			expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
-
-		end
-
-	end
-
-	local targetValue = rewardValue + (self.discountFactor * expectedQValue)
-	
-	local lastValue = previousVector[1][actionIndex]
-
-	local temporalDifferenceError = targetValue - lastValue
-
-	local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, 0)
-
-	lossVector[1][actionIndex] = temporalDifferenceError
-
-	return lossVector, temporalDifferenceError
-
-end
-
-function DeepDoubleExpectedStateActionRewardStateActionModel:setModelParameters1(ModelParameters1, doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		self.ModelParametersArray[1] = ModelParameters1
-
-	else
-
-		self.ModelParametersArray[1] = deepCopyTable(ModelParameters1)
-
-	end
-
-end
-
-function DeepDoubleExpectedStateActionRewardStateActionModel:setModelParameters2(ModelParameters2, doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		self.ModelParametersArray[2] = ModelParameters2
-
-	else
-
-		self.ModelParametersArray[2] = deepCopyTable(ModelParameters2)
-
-	end
-
-end
-
-function DeepDoubleExpectedStateActionRewardStateActionModel:getModelParameters1(doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		return self.ModelParametersArray[1]
-
-	else
-
-		return deepCopyTable(self.ModelParametersArray[1])
-
-	end
-
-end
-
-function DeepDoubleExpectedStateActionRewardStateActionModel:getModelParameters2(doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		return self.ModelParametersArray[2]
-
-	else
-
-		return deepCopyTable(self.ModelParametersArray[2])
-
-	end
-
-end
-
-return DeepDoubleExpectedStateActionRewardStateActionModel
+return DeepExpectedStateActionRewardStateActionModel

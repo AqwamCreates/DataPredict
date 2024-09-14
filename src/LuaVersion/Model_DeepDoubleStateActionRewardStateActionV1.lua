@@ -92,7 +92,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(discountFactor)
 
 		local lossVector = NewDeepDoubleStateActionRewardStateActionModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 
-		Model:forwardPropagate(previousFeatureVector, true)
+		Model:forwardPropagate(previousFeatureVector, true, true)
 		
 		Model:backwardPropagate(lossVector, true)
 
@@ -148,11 +148,11 @@ function DeepDoubleStateActionRewardStateActionModel:generateLossVector(previous
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
-	local previousVector = Model:forwardPropagate(previousFeatureVector, true)
+	local previousVector = Model:forwardPropagate(previousFeatureVector)
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-	local targetVector = Model:forwardPropagate(currentFeatureVector, true)
+	local targetVector = Model:forwardPropagate(currentFeatureVector)
 
 	local dicountedTargetVector = AqwamMatrixLibrary:multiply(self.discountFactor, targetVector)
 

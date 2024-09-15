@@ -82,7 +82,7 @@ function DeepDoubleQLearningModel.new(discountFactor)
 		
 		local Model = NewDeepDoubleQLearningModel.Model
 		
-		local randomProbability = Random.new():NextNumber()
+		local randomProbability = math.random()
 
 		local updateSecondModel = (randomProbability >= 0.5)
 

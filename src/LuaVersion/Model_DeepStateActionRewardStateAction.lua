@@ -68,7 +68,7 @@ end
 
 function DeepStateActionRewardStateActionModel:setParameters(discountFactor)
 
-	self.discountFactor =  discountFactor or self.discountFactor
+	self.discountFactor = discountFactor or self.discountFactor
 
 end
 

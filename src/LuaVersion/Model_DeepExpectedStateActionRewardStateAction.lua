@@ -116,7 +116,7 @@ function DeepExpectedStateActionRewardStateActionModel:setParameters(epsilon, di
 
 	self.epsilon = epsilon or self.epsilon
 
-	self.discountFactor =  discountFactor or self.discountFactor
+	self.discountFactor = discountFactor or self.discountFactor
 
 end
 

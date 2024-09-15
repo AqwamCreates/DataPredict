@@ -122,7 +122,7 @@ end
 
 function DeepDoubleQLearningModel:setParameters(averagingRate, discountFactor)
 
-	self.discountFactor =  discountFactor or self.discountFactor
+	self.discountFactor = discountFactor or self.discountFactor
 	
 	self.averagingRate = averagingRate or self.averagingRate
 

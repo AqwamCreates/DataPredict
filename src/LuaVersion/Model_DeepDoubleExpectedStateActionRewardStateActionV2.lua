@@ -156,7 +156,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:setParameters(epsil
 	
 	self.epsilon = epsilon or self.epsilon
 
-	self.discountFactor =  discountFactor or self.discountFactor
+	self.discountFactor = discountFactor or self.discountFactor
 
 	self.averagingRate = averagingRate or self.averagingRate
 

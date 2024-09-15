@@ -78,7 +78,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFact
 
 		local greedyActionProbability = ((1 - NewDeepExpectedStateActionRewardStateActionModel.epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
 
-		for i, qValue in ipairs(targetVector[1]) do
+		for _, qValue in ipairs(targetVector[1]) do
 
 			if (qValue == maxQValue) then
 

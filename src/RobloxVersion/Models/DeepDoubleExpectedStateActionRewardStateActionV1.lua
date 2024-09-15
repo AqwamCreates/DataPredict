@@ -190,7 +190,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateLossVector(
 
 	local greedyActionProbability = ((1 - self.epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
 
-	for i, qValue in ipairs(targetVector[1]) do
+	for _, qValue in ipairs(targetVector[1]) do
 
 		if (qValue == maxQValue) then
 

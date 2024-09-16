@@ -22,6 +22,8 @@
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+
 NeuralNetworkModel = {}
 
 NeuralNetworkModel.__index = NeuralNetworkModel
@@ -482,21 +484,67 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 end
 
+local function dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNotDropoutNeurons) -- Don't bother using the applyFunction from AqwamMatrixLibrary. Otherwise, you cannot apply dropout at the same index for both z matrix and activation matrix.
+	
+	if (doNotDropoutNeurons) or (dropoutRate == 0) then return inputMatrix end
+
+	local numberOfData = #inputMatrix
+
+	local numberOfFeatures = #inputMatrix[1]
+
+	local nonDropoutRate = 1 - dropoutRate
+	
+	local scaleFactor = (1 / nonDropoutRate)
+
+	for data = 1, numberOfData, 1 do
+
+		for neuron = (hasBiasNeuron + 1), numberOfFeatures, 1 do -- Dropout are not applied to bias, so we skip them.
+
+			if (math.random() > nonDropoutRate) then
+				
+				inputMatrix[data][neuron] = 0
+
+			else
+				
+				inputMatrix[data][neuron] = inputMatrix[data][neuron] * scaleFactor
+
+			end
+
+		end
+
+	end
+
+	return inputMatrix
+
+end
+
 function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDropoutNeurons)
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
-
-	local layerZ
+	
+	local ModelParameters = self.ModelParameters
+	
+	local numberOfLayers = #self.numberOfNeuronsTable
+	
+	local hasBiasNeuronTable = self.hasBiasNeuronTable
+	
+	local activationFunctionTable = self.activationFunctionTable
+	
+	local dropoutRateTable = self.dropoutRateTable
 
 	local forwardPropagateTable = {}
 
 	local zTable = {}
+	
+	local layerZMatrix = featureMatrix
 
 	local inputMatrix = featureMatrix
 
 	local numberOfData = #featureMatrix
+	
+	inputMatrix = activationFunctionList[activationFunctionTable[1]](layerZMatrix)
 
-	local numberOfLayers = #self.numberOfNeuronsTable
+	inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuronTable[1], dropoutRateTable[1], doNotDropoutNeurons)
 
 	table.insert(zTable, inputMatrix)
 
@@ -504,51 +552,31 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
-		local weightMatrix = self.ModelParameters[layerNumber]
+		local weightMatrix = ModelParameters[layerNumber]
 
-		local hasBiasNeuron = self.hasBiasNeuronTable[layerNumber + 1]
+		local hasBiasNeuron = hasBiasNeuronTable[layerNumber + 1]
 
-		local activationFunctionName = self.activationFunctionTable[layerNumber + 1]
+		local activationFunctionName = activationFunctionTable[layerNumber + 1]
 
-		local dropoutRate = self.dropoutRateTable[layerNumber + 1]
+		local dropoutRate = dropoutRateTable[layerNumber + 1]
 
 		local activationFunction = activationFunctionList[activationFunctionName]
 
-		layerZ = AqwamMatrixLibrary:dotProduct(inputMatrix, weightMatrix)
+		layerZMatrix = AqwamMatrixLibrary:dotProduct(inputMatrix, weightMatrix)
 
-		if (typeof(layerZ) == "number") then layerZ = {{layerZ}} end
+		if (typeof(layerZMatrix) == "number") then layerZMatrix = {{layerZMatrix}} end
 
-		inputMatrix = activationFunction(layerZ)
+		inputMatrix = activationFunction(layerZMatrix)
 
 		if (hasBiasNeuron == 1) then
 
 			for data = 1, numberOfData, 1 do inputMatrix[data][1] = 1 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
 
 		end
+		
+		inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNotDropoutNeurons)
 
-		if (dropoutRate > 0) and (not doNotDropoutNeurons) then -- Don't bother using the applyFunction from AqwamMatrixLibrary. Otherwise, you cannot apply dropout at the same index for both z matrix and activation matrix.
-
-			local nonDropoutRate = 1 - dropoutRate
-
-			for data = 1, numberOfData, 1 do
-
-				for neuron = 1, #inputMatrix[1], 1 do
-					
-					if (hasBiasNeuron == 1) and (neuron == 1) then continue end -- Dropout are not applied to bias, so we skip them.
-
-					if (Random.new():NextNumber() <= nonDropoutRate) then continue end
-
-					layerZ[data][neuron] = 0
-
-					inputMatrix[data][neuron] = 0
-
-				end
-
-			end
-
-		end
-
-		table.insert(zTable, layerZ)
+		table.insert(zTable, layerZMatrix)
 
 		table.insert(forwardPropagateTable, inputMatrix)
 

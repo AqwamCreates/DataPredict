@@ -105,16 +105,16 @@ DiagonalGaussianPolicy:extendEpisodeUpdateFunction(episodeUpdateFunction)
 Reward or punish model based on the current state of the environment.
 
 ```
-DiagonalGaussianPolicy:reinforce(currentFeatureVector: matrix, rewardValue: number, standardDeviationVector: matrix): matrix
+DiagonalGaussianPolicy:reinforce(currentFeatureVector: matrix, actionStandardDeviationVector: matrix, rewardValue: number): matrix
 ```
 
 #### Parameters:
 
 * currentFeatureVector: Matrix containing data from the current state.
 
-* rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
+* actionStandardDeviationVector: The vector containing values of action's standard deviations. The number of columns must match the number of actions.
 
-* standardDeviationVector: The vector containing values of standard deviations. The number of columns must match the number of actions.
+* rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
 
 #### Returns:
 

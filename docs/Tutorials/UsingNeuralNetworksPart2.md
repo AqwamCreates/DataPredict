@@ -28,11 +28,11 @@ local labelMatrix = {
 
 local NeuralNetwork = DataPredict.Model.NeuralNetwork.new() -- Creating our neural network model.
 
-NeuralNetwork:addLayer(3, true)
+NeuralNetwork:addLayer(3, true, "None")
 
-NeuralNetwork:addLayer(6, true)
+NeuralNetwork:addLayer(6, true, "LeakyReLU")
 
-NeuralNetwork:addLayer(6, false)
+NeuralNetwork:addLayer(6, false, "LeakyReLU")
 
 NeuralNetwork:setClassesList({1, 2, 3, 4, 5, 6})
 
@@ -44,9 +44,9 @@ local predictedMatrix = NeuralNetwork:forwardPropagate(dataMatrix, true)
 
 local lossMatrix = MatrixL:subtract(predictedMatrix, labelMatrix)
 
-local costFunctionDerivativesTable = NeuralNetwork:backPropagate(lossMatrix, true)
+local costFunctionDerivativesTable = NeuralNetwork:backwardPropagate(lossMatrix, true)
 
--- Unlike train(), we need to calculate the loss matrix before we can pass it to backPropagate() function.
+-- Unlike train(), we need to calculate the loss matrix before we can pass it to backwardPropagate() function.
 
 ```
 

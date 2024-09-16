@@ -94,7 +94,7 @@ local learningRate1 = 0.0001
 
 local learningRate2 = 0.01
 
-NeuralNetworkModel:addLayer(2, true)
+NeuralNetworkModel:addLayer(2, true, "None")
 
 NeuralNetworkModel:addLayer(3, true, "Tanh", learningRate1)
 

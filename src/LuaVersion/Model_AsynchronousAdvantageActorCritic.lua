@@ -24,6 +24,8 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 AsynchronousAdvantageActorCriticModel = {}
 
+AsynchronousAdvantageActorCriticModel = {}
+
 AsynchronousAdvantageActorCriticModel.__index = AsynchronousAdvantageActorCriticModel
 
 local defaultLearningRate = 0.1
@@ -266,7 +268,7 @@ function AsynchronousAdvantageActorCriticModel:categoricalUpdate(previousFeature
 
 end
 
-function AsynchronousAdvantageActorCriticModel:diagonalGaussianUpdate(previousFeatureVector, expectedActionVector, rewardValue, currentFeatureVector, actorCriticModelNumber, standardDeviationVector)
+function AsynchronousAdvantageActorCriticModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector, actorCriticModelNumber)
 
 	local ActorModel = self.ActorModelArray[actorCriticModelNumber]
 
@@ -276,19 +278,19 @@ function AsynchronousAdvantageActorCriticModel:diagonalGaussianUpdate(previousFe
 
 	if not CriticModel then error("No critic model!") end
 
-	local randomNormalVector = AqwamMatrixLibrary:createRandomNormalMatrix(1, #expectedActionVector[1])
+	local randomNormalVector = AqwamMatrixLibrary:createRandomNormalMatrix(1, #actionMeanVector[1])
 
-	local actionVectorPart1 = AqwamMatrixLibrary:multiply(standardDeviationVector, randomNormalVector)
+	local actionVectorPart1 = AqwamMatrixLibrary:multiply(actionStandardDeviationVector, randomNormalVector)
 
-	local actionVector = AqwamMatrixLibrary:add(expectedActionVector, actionVectorPart1)
+	local actionVector = AqwamMatrixLibrary:add(actionMeanVector, actionVectorPart1)
 
-	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(actionVector, expectedActionVector)
+	local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(actionVector, actionMeanVector)
 
-	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, standardDeviationVector)
+	local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, actionStandardDeviationVector)
 
 	local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
 
-	local logActionProbabilityVectorPart1 = AqwamMatrixLibrary:logarithm(standardDeviationVector)
+	local logActionProbabilityVectorPart1 = AqwamMatrixLibrary:logarithm(actionStandardDeviationVector)
 
 	local logActionProbabilityVectorPart2 = AqwamMatrixLibrary:multiply(2, logActionProbabilityVectorPart1)
 

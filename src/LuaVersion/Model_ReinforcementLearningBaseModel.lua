@@ -96,13 +96,13 @@ function ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector,
 
 end
 
-function ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionVector, rewardValue, currentFeatureVector, standardDeviationVector)
+function ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
 
 	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
 
 	if (diagonalGaussianUpdateFunction) then
 
-		return diagonalGaussianUpdateFunction(previousFeatureVector, actionVector, rewardValue, currentFeatureVector, standardDeviationVector)
+		return diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
 
 	else
 

@@ -92,7 +92,7 @@ function DiagonalGaussianPolicyQuickSetup:setPrintOutput(option)
 
 end
 
-function DiagonalGaussianPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue, standardDeviationVector)
+function DiagonalGaussianPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue, actionStandardDeviationVector)
 
 	if (self.Model == nil) then error("No model!") end
 	
@@ -108,13 +108,13 @@ function DiagonalGaussianPolicyQuickSetup:reinforce(currentFeatureVector, reward
 	
 	local randomProbability = Random.new():NextNumber()
 	
-	local actionVector = Model:predict(currentFeatureVector, true)
+	local actionMeanVector = Model:predict(currentFeatureVector, true)
 
 	if (previousFeatureVector) then
 		
 		currentNumberOfReinforcements = currentNumberOfReinforcements + 1
 
-		Model:diagonalGaussianUpdate(previousFeatureVector, actionVector, rewardValue, currentFeatureVector, standardDeviationVector)
+		Model:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
 		
 		if (updateFunction) then updateFunction() end
 
@@ -142,7 +142,7 @@ function DiagonalGaussianPolicyQuickSetup:reinforce(currentFeatureVector, reward
 
 	if (self.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 
-	return actionVector
+	return actionMeanVector
 
 end
 

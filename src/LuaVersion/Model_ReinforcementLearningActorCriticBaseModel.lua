@@ -108,13 +108,13 @@ function ReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFea
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionVector, rewardValue, currentFeatureVector, standardDeviationVector)
+function ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
 
 	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
 
 	if (diagonalGaussianUpdateFunction) then
 
-		return diagonalGaussianUpdateFunction(previousFeatureVector, actionVector, rewardValue, currentFeatureVector, standardDeviationVector)
+		return diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
 
 	else
 

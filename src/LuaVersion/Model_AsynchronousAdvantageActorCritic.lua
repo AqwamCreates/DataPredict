@@ -24,8 +24,6 @@ local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 AsynchronousAdvantageActorCriticModel = {}
 
-AsynchronousAdvantageActorCriticModel = {}
-
 AsynchronousAdvantageActorCriticModel.__index = AsynchronousAdvantageActorCriticModel
 
 local defaultLearningRate = 0.1
@@ -41,8 +39,6 @@ local defaultDiscountFactor = 0.95
 local defaultTotalNumberOfReinforcementsToUpdateMainModel = 100
 
 local defaultActionSelectionFunction = "Maximum"
-
-local defaultPolicyMode = "Categorical"
 
 function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinforcementsPerEpisode, epsilon, epsilonDecayFactor, discountFactor, totalNumberOfReinforcementsToUpdateMainModel, actionSelectionFunction)
 
@@ -430,7 +426,7 @@ local selectActionFunctionList = {
 
 }
 
-function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, actorCriticModelNumber, policyMode, standardDeviationVector)
+function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, actionStandardDeviationVector, rewardValue, returnOriginalOutput, actorCriticModelNumber)
 
 	actorCriticModelNumber = actorCriticModelNumber or Random.new():NextInteger(1, #self.currentEpsilonArray)
 
@@ -464,9 +460,7 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 
 	local randomProbability = Random.new():NextNumber()
 
-	policyMode = policyMode or defaultPolicyMode
-
-	if (policyMode == "Categorical") and (previousFeatureVector) then
+	if (previousFeatureVector) and (not actionStandardDeviationVector) then
 
 		if (randomProbability < currentEpsilon) then
 
@@ -484,9 +478,9 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 
 		temporalDifferenceError = self:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, actorCriticModelNumber) 
 
-	elseif (policyMode == "DiagonalGaussian") and (previousFeatureVector) then 
+	elseif (previousFeatureVector) and (actionStandardDeviationVector) then 
 
-		temporalDifferenceError = self:diagonalGaussianUpdate(previousFeatureVector, actionVector, rewardValue, currentFeatureVector, actorCriticModelNumber, standardDeviationVector) 
+		temporalDifferenceError = self:diagonalGaussianUpdate(previousFeatureVector, actionVector, actionStandardDeviationVector, rewardValue, currentFeatureVector, actorCriticModelNumber) 
 
 	end
 
@@ -496,7 +490,7 @@ function AsynchronousAdvantageActorCriticModel:reinforce(currentFeatureVector, r
 
 	end
 
-	if (policyMode == "Categorical") and (ExperienceReplay) and (previousFeatureVector) then 
+	if (not actionStandardDeviationVector) and (ExperienceReplay) and (previousFeatureVector) then 
 
 		ExperienceReplay:addExperience(previousFeatureVector, action, rewardValue, currentFeatureVector)
 

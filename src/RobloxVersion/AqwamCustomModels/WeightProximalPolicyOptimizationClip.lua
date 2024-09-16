@@ -80,9 +80,9 @@ function WeightProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor
 
 		local CriticModel = NewWeightProximalPolicyOptimizationClipModel.CriticModel
 
-		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
-		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
 		local advantageValue = rewardValue + (NewWeightProximalPolicyOptimizationClipModel.discountFactor * currentCriticValue) - previousCriticValue
 
@@ -96,13 +96,13 @@ function WeightProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor
 
 	end)
 
-	NewWeightProximalPolicyOptimizationClipModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionVector, rewardValue, currentFeatureVector)
+	NewWeightProximalPolicyOptimizationClipModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
 
 		local CriticModel = NewWeightProximalPolicyOptimizationClipModel.CriticModel
 
-		local previousCriticValue = CriticModel:predict(previousFeatureVector, true)[1][1]
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
-		local currentCriticValue = CriticModel:predict(currentFeatureVector, true)[1][1]
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
 		local advantageValue = rewardValue + (NewWeightProximalPolicyOptimizationClipModel.discountFactor * currentCriticValue) - previousCriticValue
 

@@ -92,7 +92,7 @@ function DiagonalGaussianPolicyQuickSetup:setPrintOutput(option)
 
 end
 
-function DiagonalGaussianPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue, actionStandardDeviationVector)
+function DiagonalGaussianPolicyQuickSetup:reinforce(currentFeatureVector, actionStandardDeviationVector, rewardValue)
 
 	if (self.Model == nil) then error("No model!") end
 	

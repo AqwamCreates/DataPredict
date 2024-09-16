@@ -141,14 +141,16 @@ ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureV
 Updates the model parameters using diagonalGaussianUpdateFunction().
 
 ```
-ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, actionVector: vector rewardValue: number, currentFeatureVector: featureVector)
+ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, actionMeanVector: vector, actionStandardDeviationVector, rewardValue: number, currentFeatureVector: featureVector)
 ```
 
 #### Parameters:
 
 * previousFeatiureVector: The previous state of the environment.
 
-* actionVector: The action vector generated from the model.
+* actionMeanVector: The vector containing mean values for all actions.
+
+* actionStandardDeviationVector: The vector containing standard deviation values for all actions.
 
 * rewardValue: The reward gained at current state.
 

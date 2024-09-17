@@ -81,7 +81,7 @@ function BaseValueScheduler.new(valueSchedulerName)
 	
 	NewBaseValueScheduler.calculateFunction = nil
 	
-	NewBaseValueScheduler.epsilonModifierInternalParameters = nil
+	NewBaseValueScheduler.valueSchedulerInternalParameters = nil
 	
 	return NewBaseValueScheduler
 	

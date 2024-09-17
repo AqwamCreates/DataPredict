@@ -31,7 +31,7 @@ DeepDoubleQLearning.new(averagingRate: number, discountFactor: number): ModelObj
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DeepDoubleQLearning:setParameters(, averagingRate: number, discountFactor: number)
+DeepDoubleQLearning:setParameters(averagingRate: number, discountFactor: number)
 ```
 
 #### Parameters:

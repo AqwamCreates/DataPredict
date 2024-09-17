@@ -28,8 +28,6 @@
 
 local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
-
 TimeDecayValueScheduler = {}
 
 TimeDecayValueScheduler.__index = TimeDecayValueScheduler

@@ -79,9 +79,9 @@ function BaseOptimizer.new(optimizerName)
 	
 	NewBaseOptimizer.optimizerName = optimizerName or "Unknown"
 	
-	NewBaseOptimizer.calculateFunction = nil
-	
 	NewBaseOptimizer.LearningRateValueScheduler = nil
+
+	NewBaseOptimizer.calculateFunction = nil
 	
 	NewBaseOptimizer.optimizerInternalParameters = nil
 	

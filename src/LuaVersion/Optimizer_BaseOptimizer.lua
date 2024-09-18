@@ -78,10 +78,10 @@ function BaseOptimizer.new(optimizerName)
 	setmetatable(NewBaseOptimizer, BaseOptimizer)
 	
 	NewBaseOptimizer.optimizerName = optimizerName or "Unknown"
+
+	NewBaseOptimizer.LearningRateValueScheduler = nil
 	
 	NewBaseOptimizer.calculateFunction = nil
-	
-	NewBaseOptimizer.LearningRateValueScheduler = nil
 	
 	NewBaseOptimizer.optimizerInternalParameters = nil
 	

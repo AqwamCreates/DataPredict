@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamRobloxMachineLearningLibrary = {}
+local AqwamMachineAndDeepLearningLibrary = {}
 
 local requiredMatrixLibraryVersion = 1.9
 
@@ -46,7 +46,7 @@ local QuickSetups = script.QuickSetups
 
 local Others = script.Others
 
-AqwamRobloxMachineLearningLibrary.Models = {
+AqwamMachineAndDeepLearningLibrary.Models = {
 	
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -120,7 +120,7 @@ AqwamRobloxMachineLearningLibrary.Models = {
 	
 }
 
-AqwamRobloxMachineLearningLibrary.AqwamCustomModels = {
+AqwamMachineAndDeepLearningLibrary.AqwamCustomModels = {
 	
 	DeepRatioQLearning = require(AqwamCustomModels.DeepRatioQLearning),
 	
@@ -130,7 +130,7 @@ AqwamRobloxMachineLearningLibrary.AqwamCustomModels = {
 	
 }
 
-AqwamRobloxMachineLearningLibrary.Optimizers = {
+AqwamMachineAndDeepLearningLibrary.Optimizers = {
 	
 	RootMeanSquarePropagation = require(Optimizers.RootMeanSquarePropagation),
 	
@@ -154,7 +154,7 @@ AqwamRobloxMachineLearningLibrary.Optimizers = {
 	
 }
 
-AqwamRobloxMachineLearningLibrary.ExperienceReplays = {
+AqwamMachineAndDeepLearningLibrary.ExperienceReplays = {
 	
 	UniformExperienceReplay = require(ExperienceReplays.UniformExperienceReplay),
 	
@@ -164,7 +164,7 @@ AqwamRobloxMachineLearningLibrary.ExperienceReplays = {
 	
 }
 
-AqwamRobloxMachineLearningLibrary.ValueSchedulers = {
+AqwamMachineAndDeepLearningLibrary.ValueSchedulers = {
 	
 	TimeDecay = require(ValueSchedulers.TimeDecay),
 	
@@ -172,7 +172,7 @@ AqwamRobloxMachineLearningLibrary.ValueSchedulers = {
 	
 }
 
-AqwamRobloxMachineLearningLibrary.QuickSetups = {
+AqwamMachineAndDeepLearningLibrary.QuickSetups = {
 	
 	CategoricalPolicy = require(QuickSetups.CategoricalPolicy),
 	
@@ -180,7 +180,7 @@ AqwamRobloxMachineLearningLibrary.QuickSetups = {
 	
 }
 
-AqwamRobloxMachineLearningLibrary.Others = {
+AqwamMachineAndDeepLearningLibrary.Others = {
 	
 	ModelChecker = require(Others.ModelChecker),
 	
@@ -230,4 +230,4 @@ end
 
 checkVersion()
 
-return AqwamRobloxMachineLearningLibrary
+return AqwamMachineAndDeepLearningLibrary

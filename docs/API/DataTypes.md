@@ -97,14 +97,14 @@ Typically contains numbers stored in a (m x c) matrix, where m is the number of 
 ### Examples
 
 ```
-labelVector1 = {
+labelMatrix1 = {
 
   {1, 0.1, 99},
   {1, 2, 3}
 
 }
 
-labelVector2 = {
+labelMatrix2 = {
 
   {-1, 12},
   {1, 12},
@@ -112,7 +112,7 @@ labelVector2 = {
 
 }
 
-labelVector3 = {
+labelMatrix3 = {
 
   {1, 0, 0, 0, 0},
   {0, 0, 0, 1, 0},

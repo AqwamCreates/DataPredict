@@ -183,6 +183,8 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 			return 
 
 		end
+
+		if (#actionProbabilityVectorHistory ~= #oldActionProbabilityVectorHistory) then error("The number of updates does not equal to the number of old updates!") end
 		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewProximalPolicyOptimizationModel.discountFactor)
 

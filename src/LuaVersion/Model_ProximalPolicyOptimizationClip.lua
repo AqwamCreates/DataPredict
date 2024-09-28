@@ -186,10 +186,12 @@ function ProximalPolicyOptimizationClipModel.new(clipRatio, discountFactor)
 
 			table.clear(rewardValueHistory)
 			
-			return 
+			return nil
 				
 		end
 		
+		if (#actionProbabilityVectorHistory ~= #oldActionProbabilityVectorHistory) then error("The number of updates does not equal to the number of old updates!") end
+
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewProximalPolicyOptimizationClipModel.discountFactor)
 
 		local historyLength = #criticValueHistory

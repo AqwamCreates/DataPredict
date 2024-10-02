@@ -60,7 +60,9 @@ You can discourage the AI from exploring by making the internal reward value to 
 
 ```lua
 
- local internalReward = -RandomNetworkDistillation:generate(environmentFeatureVector)[1][1]
+local rewardVector = RandomNetworkDistillation:generate(environmentFeatureVector)
+
+ local internalReward = -rewardVector[1][1]
 
 ```
 

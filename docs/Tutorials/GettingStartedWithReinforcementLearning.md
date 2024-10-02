@@ -74,9 +74,9 @@ local classesList = {1, 2}
 
 local NeuralNetwork = DataPredict.Models.NeuralNetwork.new() -- Create the NeuralNetwork first.
 
-NeuralNetwork:addLayer(4, false)
+NeuralNetwork:addLayer(4, false, "None")
 
-NeuralNetwork:addLayer(2, false)
+NeuralNetwork:addLayer(2, false, "LeakyReLU")
 
 NeuralNetwork:setClassesList(classesList)
 

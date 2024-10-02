@@ -194,7 +194,7 @@ NeuralNetwork:setLayerProperty(layerNumber: integer, property: string, value: an
 
 ### Parameters:
 
-* layerNumber: The layer that you wish to change properties on.
+* layerNumber: The layer to change its properties.
 
 * property: The property to be changed. The options available are:
 
@@ -222,7 +222,7 @@ NeuralNetwork:getLayerProperty(layerNumber: integer, property: string): any
 
 ### Parameters:
 
-* layerNumber: The layer that you wish to change properties on.
+* layerNumber: The layer to retrieve its properties.
 
 * property: The property to be changed. The options available are:
 

@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - NeuralNetwork
 
-NeuralNetwork is a supervised machine learning model that predicts any positive numbers of discrete values.
+NeuralNetwork is a supervised machine learning model that predicts any positive numbers of discrete or continuous values.
 
 ## Stored Model Parameters
 

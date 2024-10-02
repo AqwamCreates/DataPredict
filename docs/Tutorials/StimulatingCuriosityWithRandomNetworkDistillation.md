@@ -18,9 +18,9 @@ Under here, this is how you integrate your reinforcement learning algorithms wit
 
 local NeuralNetwork = DataPredict.Models.NeuralNetwork.new()
 
-NeuralNetwork:addLayer(10, true, "LeakyReLU")
+NeuralNetwork:addLayer(10, true, "None")
 
-NeuralNetwork:addLayer(4, true, "Sigmoid")
+NeuralNetwork:addLayer(4, true, "LeakyReLU")
 
 -- Initializing our RandomNetworkDistillation.
 

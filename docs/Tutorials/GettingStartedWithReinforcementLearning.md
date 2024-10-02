@@ -70,7 +70,7 @@ Below we will show you the difference between the two above. But first, let's de
 
 ```lua
 
-local classesList = {1, 2}
+local ClassesList = {1, 2}
 
 local NeuralNetwork = DataPredict.Models.NeuralNetwork.new() -- Create the NeuralNetwork first.
 
@@ -78,7 +78,7 @@ NeuralNetwork:addLayer(4, false, "None")
 
 NeuralNetwork:addLayer(2, false, "LeakyReLU")
 
-NeuralNetwork:setClassesList(classesList)
+NeuralNetwork:setClassesList(ClassesList)
 
 local DeepQLearning = DataPredict.Models.DeepQLearning.new() -- Then create the DeepQLearning.
 

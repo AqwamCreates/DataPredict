@@ -62,7 +62,9 @@ You can discourage the AI from exploring by making the internal reward value to 
 
 local rewardVector = RandomNetworkDistillation:generate(environmentFeatureVector)
 
- local internalReward = -rewardVector[1][1]
+local internalReward = rewardVector[1][1]
+
+local negativeInternalReward = -internalReward
 
 ```
 

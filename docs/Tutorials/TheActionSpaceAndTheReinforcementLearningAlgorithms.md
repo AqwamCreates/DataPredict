@@ -24,7 +24,7 @@ Continuous action space, on the other hand, are where the AI could choose differ
 
 * Robotic hand movements: Finger 1 rotation, finger 2 rotation, finger 3 rotation
 
-As you can see, you can set the values for each of the actions. More than one action can be performed at the same time.
+As you can see, you can get the values for each of the actions. More than one action can be performed at the same time.
 
 # Choosing The Correct Algorithm For A Given Action Space
 

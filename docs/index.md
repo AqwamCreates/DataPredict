@@ -55,6 +55,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Using Neural Networks Part 2](Tutorials/UsingNeuralNetworksPart2.md)
 
+[General Guide For Neural Networks Settings](Tutorials/GeneralGuideForNeuralNetworksSettings.md)
+
 ### Learning AIs
 
 [Getting Started With Reinforcement Learning](Tutorials/GettingStartedWithReinforcementLearning.md)

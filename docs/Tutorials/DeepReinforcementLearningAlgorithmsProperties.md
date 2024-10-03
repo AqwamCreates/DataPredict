@@ -24,7 +24,7 @@
    - **Disadvantages**: Can struggle with stability and may overestimate Q-values.
 
 2. **Double Deep Q Learning (Randomly Chosen Network)**:
-   - **Characteristics**: Mitigates overestimation by randomly choosing one of two sets of parameters for updates.
+   - **Characteristics**: Mitigates overestimation by randomly choosing one of two sets of model parameters for updates.
    - **Advantages**: Reduces bias from the greedy policy during action selection.
    - **Disadvantages**: Still sensitive to hyperparameter tuning.
 

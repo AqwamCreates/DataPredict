@@ -33,11 +33,13 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Installation For Roblox](Tutorials/InstallationForRoblox.md)
 
-### The Basics
+### The Basics - Level 1
 
 [Creating Our First Model](Tutorials/CreatingOurFirstModel.md)
 
 [Saving And Loading Model Parameters](Tutorials/SavingAndLoadingModelParameters.md)
+
+## The Basics - Level 2
 
 [Using Optimizers](Tutorials/UsingOptimizers.md)
 

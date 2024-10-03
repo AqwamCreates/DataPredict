@@ -88,13 +88,12 @@
     - **Advantages**: Helps prevent large policy updates that can destabilize learning.
     - **Disadvantages**: Requires careful parameter tuning for optimal performance.
 
-15. **REINFORCE**:
-    - **Characteristics**: A Monte Carlo method optimizing the policy based on complete returns.
-    - **Advantages**: Straightforward implementation for policy optimization.
-    - **Disadvantages**: High variance in updates can lead to slow convergence.
-
-16. **Vanilla Policy Gradient**:
+15. **Vanilla Policy Gradient**:
     - **Characteristics**: Estimates policy gradients using both actor and critic.
     - **Advantages**: More stable than REINFORCE due to variance reduction from the critic.
     - **Disadvantages**: Still suffers from high variance in gradient estimates.
 
+16. **REINFORCE**:
+    - **Characteristics**: A Monte Carlo method optimizing the policy based on complete returns.
+    - **Advantages**: Straightforward implementation for policy optimization.
+    - **Disadvantages**: High variance in updates can lead to slow convergence.

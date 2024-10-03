@@ -39,7 +39,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Saving And Loading Model Parameters](Tutorials/SavingAndLoadingModelParameters.md)
 
-## The Basics - Level 2
+### The Basics - Level 2
 
 [Using Optimizers](Tutorials/UsingOptimizers.md)
 

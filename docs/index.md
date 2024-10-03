@@ -69,6 +69,14 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [The Action Space And The Reinforcement Learning Algorithms](Tutorials/TheActionSpaceAndTheReinforcementLearningAlgorithms.md)
 
+## Example Codes
+
+## Learning AIs
+
+[Self-Learning Sword-Fighting AIs - Version 8](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/tree/main/Self-Learning%20Sword-Fighting%20AIs%20Version%208) (Uses Release Version 1.19)
+
+[Simple Environment](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/tree/main/How%20To%20Create%20Neural%20Networks%20With%20Reinforcement%20Learning%20For%20Roblox)
+
 ## The API
 
 ### API Reference

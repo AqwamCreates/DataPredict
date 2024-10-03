@@ -23,12 +23,12 @@
    - **Advantages**: Simple to implement; effective for discrete action spaces.
    - **Disadvantages**: Can struggle with stability and may overestimate Q-values.
 
-2. **Double Deep Q Learning (Randomly Chosen Network)**:
+2. **Double Deep Q Learning V1 (Randomly Chosen Network)**:
    - **Characteristics**: Mitigates overestimation by randomly choosing one of two sets of model parameters for updates.
    - **Advantages**: Reduces bias from the greedy policy during action selection.
    - **Disadvantages**: Still sensitive to hyperparameter tuning.
 
-3. **Double Deep Q Learning (Target Network)**:
+3. **Double Deep Q Learning V2 (Target Network)**:
    - **Characteristics**: Uses a separate target network for stable Q-value updates.
    - **Advantages**: Further reduces overestimation bias and improves training stability.
    - **Disadvantages**: More complex due to the need for synchronization of networks.
@@ -38,12 +38,12 @@
    - **Advantages**: Suitable for environments with varying action rewards.
    - **Disadvantages**: Performance can degrade with insufficient exploration.
 
-5. **Double Deep State-Action-Reward-State-Action (Randomly Chosen Network)**:
+5. **Double Deep State-Action-Reward-State-Action V1 (Randomly Chosen Network)**:
    - **Characteristics**: Similar to the double DQ learning method but applied to the State-Action-Reward-State-Action framework.
    - **Advantages**: Helps address overestimation in policy evaluation.
    - **Disadvantages**: Increased complexity in choosing which parameters to update.
 
-6. **Double Deep State-Action-Reward-State-Action (Target Network)**:
+6. **Double Deep State-Action-Reward-State-Action V2 (Target Network)**:
    - **Characteristics**: Incorporates a target network to stabilize training.
    - **Advantages**: Offers improved performance by decoupling the Q-value updates.
    - **Disadvantages**: Requires additional resources to maintain the target network.
@@ -53,12 +53,12 @@
    - **Advantages**: More stable than traditional Q-learning methods.
    - **Disadvantages**: Sensitive to the choice of exploration strategies.
 
-8. **Double Deep Expected State-Action-Reward-State-Action (Randomly Chosen Network)**:
+8. **Double Deep Expected State-Action-Reward-State-Action V1 (Randomly Chosen Network)**:
    - **Characteristics**: Enhances expected State-Action-Reward-State-Action by mitigating overestimation bias through random selection of parameters.
    - **Advantages**: Reduces variance in Q-value estimates.
    - **Disadvantages**: May not always provide optimal exploration.
 
-9. **Double Deep Expected State-Action-Reward-State-Action (Target Network)**:
+9. **Double Deep Expected State-Action-Reward-State-Action V2 (Target Network)**:
    - **Characteristics**: Utilizes a target network to improve stability and performance.
    - **Advantages**: Significantly enhances the stability of Q-value updates.
    - **Disadvantages**: Increases computational complexity.

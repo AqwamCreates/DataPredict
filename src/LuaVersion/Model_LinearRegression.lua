@@ -65,12 +65,10 @@ function LinearRegressionModel:calculateCost(hypothesisVector, labelVector, numb
 	local costVector = lossFunctionList[self.lossFunction](hypothesisVector, labelVector) 
 
 	local totalCost = AqwamMatrixLibrary:sum(costVector)
+	
+	local Regularizer = self.Regularizer
 
-	if (self.Regularizer) then
-
-		totalCost = self.Regularizer:calculateRegularizer(self.ModelParameters)
-
-	end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateRegularization(self.ModelParameters) end
 
 	local averageCost = totalCost / numberOfData
 
@@ -114,7 +112,7 @@ function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, num
 
 	if (self.Regularizer) then
 
-		local regularizationDerivatives = self.Regularizer:calculateRegularizerDerivatives(self.ModelParameters)
+		local regularizationDerivatives = self.Regularizer:calculateRegularizationDerivatives(self.ModelParameters)
 
 		costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
 

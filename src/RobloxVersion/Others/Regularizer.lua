@@ -142,7 +142,11 @@ function Regularizer:calculateRegularization(ModelParameters)
 	
 	local regularizationValue
 	
-	if (self.regularizationMode == "L1") or (self.regularizationMode == "Lasso") then
+	local lambda =  self.lambda
+
+	local regularizationMode = self.regularizationMode
+	
+	if (regularizationMode == "L1") or (regularizationMode == "Lasso") then
 		
 		AbsoluteModelParameters = AqwamMatrixLibrary:applyFunction(math.abs, ModelParameters)
 		
@@ -150,9 +154,9 @@ function Regularizer:calculateRegularization(ModelParameters)
 		
 		SumAbsoluteModelParameters = AqwamMatrixLibrary:sum(AbsoluteModelParameters)
 		
-		regularizationValue = self.lambda * SumAbsoluteModelParameters
+		regularizationValue = lambda * SumAbsoluteModelParameters
 		
-	elseif (self.regularizationMode == "L2") or (self.regularizationMode == "Ridge") then
+	elseif (regularizationMode == "L2") or (regularizationMode == "Ridge") then
 		
 		SquaredModelParameters = AqwamMatrixLibrary:power(ModelParameters, 2)
 		
@@ -160,9 +164,9 @@ function Regularizer:calculateRegularization(ModelParameters)
 		
 		SumSquaredModelParameters = AqwamMatrixLibrary:sum(SquaredModelParameters)
 		
-		regularizationValue = self.lambda * SumSquaredModelParameters
+		regularizationValue = lambda * SumSquaredModelParameters
 		
-	elseif (self.regularizationMode == "L1+L2") or (self.regularizationMode == "ElasticNet") then
+	elseif (regularizationMode == "L1+L2") or (regularizationMode == "ElasticNet") then
 		
 		SquaredModelParameters = AqwamMatrixLibrary:power(ModelParameters, 2)
 		
@@ -174,9 +178,9 @@ function Regularizer:calculateRegularization(ModelParameters)
 		
 		SumAbsoluteModelParameters = AqwamMatrixLibrary:sum(AbsoluteModelParameters)
 		
-		local regularizationValuePart1 = self.lambda * SumSquaredModelParameters
+		local regularizationValuePart1 = lambda * SumSquaredModelParameters
 		
-		local regularizationValuePart2 = self.lambda * SumAbsoluteModelParameters
+		local regularizationValuePart2 = lambda * SumAbsoluteModelParameters
 		
 		regularizationValue = regularizationValuePart1 + regularizationValuePart2
 		

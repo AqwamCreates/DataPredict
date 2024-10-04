@@ -16,7 +16,7 @@
 
 [RandomNetworkDistillation](Others/RandomNetworkDistillation.md)
 
-[Regularization](Others/Regularization.md)
+[Regularizer](Others/Regularizer.md)
 
 [OneVsAll](Others/OneVsAll.md)
 

@@ -28,17 +28,17 @@ MeanShiftModel.__index = MeanShiftModel
 
 setmetatable(MeanShiftModel, BaseModel)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local defaultMaximumNumberOfIterations = 500
-
-local defaultBandwidth = 100
+local defaultMaxNumberOfIterations = 500
 
 local defaultDistanceFunction = "Euclidean"
 
-local defaultKernelFunction = "Gaussian"
+local defaultStopWhenModelParametersDoesNotChange = true
 
-local defaultLambda = 50
+local defaultBandwidth = math.huge
+
+local defaultBandwidthStep = 100
 
 local distanceFunctionList = {
 
@@ -96,24 +96,6 @@ local distanceFunctionList = {
 
 }
 
-local kernelFunctionList = {
-
-	["Gaussian"] = function(x, kernelParameters)
-		
-		return math.exp(-0.5 * math.pow(x, 2)) / math.sqrt(2 * math.pi)
-
-	end,
-	
-	["Flat"] = function(x, kernelParameters)
-		
-		local lambda = kernelParameters.lambda or defaultLambda
-		
-		return ((x <= lambda) and 1) or 0
-
-	end
-
-}
-
 local function calculateDistance(vector1, vector2, distanceFunction)
 	
 	return distanceFunctionList[distanceFunction](vector1, vector2) 
@@ -154,7 +136,21 @@ local function assignToCluster(distanceMatrix) -- Number of columns -> number of
 	
 end
 
-local function createDistanceMatrix(featureMatrix, modelParameters, distanceFunction)
+local function checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClusterNumber, cluster)
+	
+	if (dataPointClusterNumber == cluster) then
+		
+		return 1
+		
+	else
+		
+		return 0
+		
+	end
+	
+end
+
+local function createDistanceMatrix(modelParameters, featureMatrix, distanceFunction)
 
 	local numberOfData = #featureMatrix
 
@@ -176,51 +172,23 @@ local function createDistanceMatrix(featureMatrix, modelParameters, distanceFunc
 
 end
 
-local function createClusterAssignmentMatrix(distanceMatrix) -- contains values of 0 and 1, where 0 is "does not belong to this cluster"
-
-	local numberOfData = #distanceMatrix -- Number of rows
-
-	local numberOfClusters = #distanceMatrix[1]
-
-	local clusterAssignmentMatrix = AqwamMatrixLibrary:createMatrix(#distanceMatrix, #distanceMatrix[1])
-
-	local dataPointClusterNumber
-
-	for dataIndex = 1, numberOfData, 1 do
-
-		local distanceVector = {distanceMatrix[dataIndex]}
-
-		local _, vectorIndexArray = AqwamMatrixLibrary:findMinimumValue(distanceVector)
-
-		if (vectorIndexArray == nil) then continue end
-
-		local clusterNumber = vectorIndexArray[2]
-
-		clusterAssignmentMatrix[dataIndex][clusterNumber] = 1
-
-	end
-
-	return clusterAssignmentMatrix
-
-end
-
-local function calculateCost(featureMatrix, modelParameters, distanceFunction)
+local function calculateCost(modelParameters, featureMatrix, distanceFunction)
 	
 	local cost = 0
 	
 	for i = 1, #featureMatrix do
 		
-		local minimumDistance = math.huge
+		local minDistance = math.huge
 		
 		for j = 1, #modelParameters do
 			
 			local distance = calculateDistance({featureMatrix[i]}, {modelParameters[j]}, distanceFunction)
 		
-			minimumDistance = math.min(minimumDistance, distance)
+			minDistance = math.min(minDistance, distance)
 			
 		end
 		
-		cost = cost + minimumDistance
+		cost = cost + minDistance
 		
 	end
 	
@@ -250,91 +218,109 @@ local function findEqualRowIndex(matrix1, matrix2)
 	
 end
 
-local function createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidth, distanceFunction, kernelFunction, kernelParameters)
+local function removeDuplicateRows(ModelParameters)
 	
-	local numberOfData = #featureMatrix
+	local UniqueModelParameters = {}
 	
-	local numberOfClusters = #ModelParameters
-	
-	local selectedKernelFunction = kernelFunctionList[kernelFunction]
-	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, ModelParameters, distanceFunction)
-
-	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
-	
-	local sumKernelMatrix = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
-	
-	local sumMultipliedKernelMatrix = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
-	
-	for dataIndex, featureVector in ipairs(featureMatrix) do
+	for i = 1, #ModelParameters, 1 do
 		
-		for clusterIndex, clusterVector in ipairs(ModelParameters) do
-			
-			if (clusterAssignmentMatrix[dataIndex][clusterIndex] ~= 1) then continue end
-			
-			local featureVector = {featureVector}
-			
-			local kernelInput = distanceMatrix[dataIndex][clusterIndex] / bandwidth
-			
-			local squaredKernelInput = math.pow(kernelInput, 2)
-			
-			local kernelVector = selectedKernelFunction(squaredKernelInput, kernelParameters)
-			
-			local multipliedKernelVector = AqwamMatrixLibrary:multiply(kernelVector, featureVector)
-			
-			local sumKernelVector = {sumKernelMatrix[clusterIndex]}
-			
-			local sumMultipliedKernelVector = {sumMultipliedKernelMatrix[clusterIndex]}
-			
-			sumKernelVector = AqwamMatrixLibrary:add(sumKernelVector, kernelVector) 
-			
-			sumMultipliedKernelVector = AqwamMatrixLibrary:add(sumMultipliedKernelVector, multipliedKernelVector)
+		local index = findEqualRowIndex(UniqueModelParameters, {ModelParameters[i]})
+		
+		if (index == nil) then table.insert(UniqueModelParameters, ModelParameters[i]) end
+		
+	end
+	
+	return UniqueModelParameters
+	
+end
 
-			sumKernelMatrix[clusterIndex] = sumKernelVector[1]
+local function mergeCentroids(ModelParameters, featureMatrix, bandwidth, weights, distanceFunction)
+	
+	local bandwidthStep = #weights
+	
+	local NewModelParameters = {}
+	
+	for i = 1, #ModelParameters, 1 do
+		
+		local inBandwidth = {}
+		
+		local centroid = {ModelParameters[i]}
+		
+		for j = 1, #featureMatrix, 1 do
 			
-			sumMultipliedKernelMatrix[clusterIndex] = sumMultipliedKernelVector[1]
+			local featureVector = {featureMatrix[j]}
+			
+			local distance = calculateDistance(featureVector, centroid, distanceFunction)
+			
+			if (bandwidthStep <= 0) then
+				
+				if (distance <= bandwidth) then table.insert(inBandwidth, featureVector[1]) end
+				
+			else
+				
+				if (distance == 0) then distance = 0.00000001 end
+				
+				local weightIndex = math.ceil(distance/bandwidth)
+				
+				if (weightIndex > bandwidthStep) then weightIndex = bandwidthStep end
+				
+				local multiplyFactor = math.pow(weights[weightIndex], 2)
+				
+				local newCentroid = AqwamMatrixLibrary:multiply(featureVector, multiplyFactor)
+				
+				table.insert(inBandwidth, newCentroid[1]) 
+				
+			end
+			
+		end
+		
+		if (#inBandwidth > 0) then
+			
+			local verticalSum = AqwamMatrixLibrary:verticalSum(inBandwidth)
+
+			local numberOfData = #inBandwidth
+
+			local newCentroid = AqwamMatrixLibrary:divide(verticalSum, numberOfData)
+
+			table.insert(NewModelParameters, newCentroid[1])
 			
 		end
 		
 	end
 	
-	local weightedMeanMatrix = AqwamMatrixLibrary:divide(sumMultipliedKernelMatrix, sumKernelMatrix)
+	NewModelParameters = removeDuplicateRows(NewModelParameters)
 	
-	return weightedMeanMatrix
+	return NewModelParameters
 	
 end
 
-function MeanShiftModel.new(maximumNumberOfIterations, bandwidth, distanceFunction, kernelFunction, kernelParameters)
+function MeanShiftModel.new(maxNumberOfIterations, bandwidth, bandwidthStep, distanceFunction)
 	
 	local NewMeanShiftModel = BaseModel.new()
 	
 	setmetatable(NewMeanShiftModel, MeanShiftModel)
 	
-	NewMeanShiftModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	NewMeanShiftModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+
+	NewMeanShiftModel.distanceFunction = distanceFunction or defaultDistanceFunction
 
 	NewMeanShiftModel.bandwidth = bandwidth or defaultBandwidth
 	
-	NewMeanShiftModel.distanceFunction = distanceFunction or defaultDistanceFunction
-	
-	NewMeanShiftModel.kernelFunction = kernelFunction or defaultKernelFunction
-	
-	NewMeanShiftModel.kernelParameters = kernelParameters or {}
+	NewMeanShiftModel.bandwidthStep = bandwidthStep or defaultBandwidthStep
 	
 	return NewMeanShiftModel
 	
 end
 
-function MeanShiftModel:setParameters(maximumNumberOfIterations, bandwidth, distanceFunction, kernelFunction, kernelParameters)
+function MeanShiftModel:setParameters(maxNumberOfIterations, bandwidth, bandwidthStep, distanceFunction)
 	
-	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
+	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+
+	self.distanceFunction = distanceFunction or self.distanceFunction
 
 	self.bandwidth = bandwidth or self.bandwidth
 	
-	self.distanceFunction = distanceFunction or self.distanceFunction
-	
-	self.kernelFunction = kernelFunction or self.kernelFunction
-	
-	self.kernelParameters = kernelParameters or self.kernelParameters
+	self.bandwidthStep = bandwidthStep or self.bandwidthStep
 	
 end
 
@@ -352,22 +338,30 @@ function MeanShiftModel:train(featureMatrix)
 	
 	local numberOfIterations = 0
 	
-	local maximumNumberOfIterations = self.maximumNumberOfIterations
-	
-	local bandwidth = self.bandwidth
-	
-	local distanceFunction = self.distanceFunction
-	
-	local kernelFunction = self.kernelFunction
-	
-	local kernelParameters = self.kernelParameters
-	
-	local ModelParameters = self.ModelParameters
+	if (self.ModelParameters) then
 		
-	if (not ModelParameters) then
+		if (#featureMatrix[1] ~= #self.ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
 		
-		ModelParameters = featureMatrix
+		self.ModelParameters  = AqwamMatrixLibrary:verticalConcatenate(self.ModelParameters, featureMatrix)
 		
+	else
+		
+		self.ModelParameters = featureMatrix
+		
+	end
+	
+	if (self.bandwidth <= 0) then
+		
+		local verticalMean = AqwamMatrixLibrary:verticalMean(featureMatrix)
+		
+		local zeroMatrix = AqwamMatrixLibrary:createMatrix(1, #featureMatrix[1])
+		
+		local distance = calculateDistance(verticalMean, zeroMatrix, self.distanceFunction)
+		
+		self.bandwidth = distance / self.bandwidthStep
+		
+		for i = 1, self.bandwidthStep, 1 do table.insert(weights, i) end
+
 	end
 	
 	repeat
@@ -378,7 +372,7 @@ function MeanShiftModel:train(featureMatrix)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			return calculateCost(featureMatrix, ModelParameters, distanceFunction)
+			return calculateCost(self.ModelParameters, featureMatrix, self.distanceFunction)
 			
 		end)
 		
@@ -390,13 +384,9 @@ function MeanShiftModel:train(featureMatrix)
 			
 		end
 
-		local weightedMeanMatrix = createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidth, distanceFunction, kernelFunction, kernelParameters)
+		self.ModelParameters = mergeCentroids(self.ModelParameters, featureMatrix, self.bandwidth, weights, self.distanceFunction)
 		
-		ModelParameters = AqwamMatrixLibrary:subtract(ModelParameters, weightedMeanMatrix)
-		
-		self.ModelParameters = ModelParameters
-		
-	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

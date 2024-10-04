@@ -300,9 +300,9 @@ function OneVsAll:train(featureMatrix, labelVector)
 	
 	local isOutputPrinted = self.isOutputPrinted
 	
-	local costArray = {}
-	
 	local numberOfIterations = 0
+	
+	local costArray = {}
 	
 	local modelCostArray
 	
@@ -320,7 +320,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 
 		end
 		
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 		
 		table.insert(costArray, totalCost)
 		

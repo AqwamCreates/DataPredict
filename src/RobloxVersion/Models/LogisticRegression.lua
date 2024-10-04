@@ -107,12 +107,10 @@ function LogisticRegressionModel:calculateCost(hypothesisVector, labelVector, nu
 	local costVector = AqwamMatrixLibrary:applyFunction(lossFunctionList[self.sigmoidFunction], hypothesisVector, labelVector)
 
 	local totalCost = AqwamMatrixLibrary:sum(costVector)
+	
+	local Regularizer = self.Regularizer
 
-	if (self.Regularizer) then
-
-		totalCost = self.Regularizer:calculateRegularizer(self.ModelParameters)
-
-	end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateRegularization(self.ModelParameters) end
 
 	local averageCost = totalCost / numberOfData
 

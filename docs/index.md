@@ -43,7 +43,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Using Optimizers](Tutorials/UsingOptimizers.md)
 
-[Using Regularizer](Tutorials/UsingRegularizer.md)
+[Using Regularizers](Tutorials/UsingRegularizers.md)
 
 [Using Gradient Descent Modifiers](Tutorials/UsingGradientDescentModifiers.md)
 

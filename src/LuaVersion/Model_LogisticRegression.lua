@@ -28,6 +28,8 @@ LogisticRegressionModel.__index = LogisticRegressionModel
 
 setmetatable(LogisticRegressionModel, GradientMethodBaseModel)
 
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
 local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
@@ -37,17 +39,17 @@ local defaultSigmoidFunction = "Sigmoid"
 local sigmoidFunctionList = {
 
 	["Sigmoid"] = function (z) return 1/(1 + math.exp(-1 * z)) end,
-	
+
 	["Tanh"] = function (z) return math.tanh(z) end
 
 }
 
 local lossFunctionList = {
-	
+
 	["Sigmoid"] = function (h, y) return -(y * math.log(h) + (1 - y) * math.log(1 - h)) end,
-	
+
 	["Tanh"] = function (h, y) return ((h - y)^2) / 2 end
-	
+
 }
 
 local derivativeLossFunctionList = {
@@ -59,7 +61,7 @@ local derivativeLossFunctionList = {
 }
 
 local cutOffFunctionList = {
-	
+
 	["Sigmoid"] = function (x) 
 
 		if (x >= 0.5) then 
@@ -73,7 +75,7 @@ local cutOffFunctionList = {
 		end 
 
 	end,
-	
+
 	["Tanh"] = function (x) 
 
 		if (x > 0) then 
@@ -81,17 +83,17 @@ local cutOffFunctionList = {
 			return 1
 
 		elseif (x < 0) then
-			
+
 			return -1
-			
+
 		else
-			
+
 			return 0
 
 		end 
 
 	end
-	
+
 }
 
 function LogisticRegressionModel:calculateCost(hypothesisVector, labelVector, numberOfData)
@@ -100,9 +102,9 @@ function LogisticRegressionModel:calculateCost(hypothesisVector, labelVector, nu
 
 	local totalCost = AqwamMatrixLibrary:sum(costVector)
 
-	if (self.Regularization) then
+	if (self.Regularizer) then
 
-		totalCost = self.Regularization:calculateRegularization(self.ModelParameters)
+		totalCost = self.Regularizer:calculateRegularizer(self.ModelParameters)
 
 	end
 
@@ -121,7 +123,7 @@ function LogisticRegressionModel:calculateHypothesisVector(featureMatrix, saveFe
 		self.featureMatrix = featureMatrix
 
 	end
-	
+
 	if (type(zVector) == "number") then zVector = {{zVector}} end
 
 	local hypothesisVector = AqwamMatrixLibrary:applyFunction(sigmoidFunctionList[self.sigmoidFunction], zVector)
@@ -131,15 +133,15 @@ function LogisticRegressionModel:calculateHypothesisVector(featureMatrix, saveFe
 end
 
 function LogisticRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
-	
+
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 
 	local featureMatrix = self.featureMatrix
 
 	if (featureMatrix == nil) then error("Feature matrix not found.") end
-	
+
 	local costFunctionDerivativeMatrix = AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(featureMatrix), lossMatrix)
-	
+
 	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrix end
 
 	return costFunctionDerivativeMatrix
@@ -147,17 +149,17 @@ function LogisticRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatri
 end
 
 function LogisticRegressionModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
-	
-	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
-	
-	if (self.Regularization) then
 
-		local regularizationDerivatives = self.Regularization:calculateRegularizationDerivatives(self.ModelParameters)
+	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
+
+	if (self.Regularizer) then
+
+		local regularizationDerivatives = self.Regularizer:calculateRegularizerDerivatives(self.ModelParameters)
 
 		costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
 
 	end
-	
+
 	costFunctionDerivativeMatrix = AqwamMatrixLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
 
 	if (self.Optimizer) then 
@@ -179,7 +181,7 @@ end
 function LogisticRegressionModel:update(lossMatrix, clearFeatureMatrix)
 
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
-	
+
 	local numberOfData = #lossMatrix
 
 	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
@@ -189,7 +191,7 @@ function LogisticRegressionModel:update(lossMatrix, clearFeatureMatrix)
 end
 
 function LogisticRegressionModel.new(maximumNumberOfIterations, learningRate, sigmoidFunction)
-	
+
 	local NewLogisticRegressionModel = GradientMethodBaseModel.new()
 
 	setmetatable(NewLogisticRegressionModel, LogisticRegressionModel)
@@ -199,13 +201,13 @@ function LogisticRegressionModel.new(maximumNumberOfIterations, learningRate, si
 	NewLogisticRegressionModel.learningRate = learningRate or defaultLearningRate
 
 	NewLogisticRegressionModel.sigmoidFunction = sigmoidFunction or defaultSigmoidFunction
-	
+
 	NewLogisticRegressionModel.Optimizer = nil
-	
-	NewLogisticRegressionModel.Regularization = nil
-	
+
+	NewLogisticRegressionModel.Regularizer = nil
+
 	return NewLogisticRegressionModel
-	
+
 end
 
 function LogisticRegressionModel:setParameters(maximumNumberOfIterations, learningRate, sigmoidFunction)
@@ -224,28 +226,28 @@ function LogisticRegressionModel:setOptimizer(Optimizer)
 
 end
 
-function LogisticRegressionModel:setRegularization(Regularization)
+function LogisticRegressionModel:setRegularizer(Regularizer)
 
-	self.Regularization = Regularization
+	self.Regularizer = Regularizer
 
 end
 
 function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 	local cost
-	
+
 	local costArray = {}
-	
+
 	local numberOfIterations = 0
-	
+
 	local numberOfData = #featureMatrix
-	
+
 	local derivativeLossFunctionToApply = derivativeLossFunctionList[self.sigmoidFunction] 
-	
-	local Regularization = self.Regularization
-	
+
+	local Regularizer = self.Regularizer
+
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
-	
+
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 
 	if (self.ModelParameters) then
@@ -257,9 +259,9 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		self.ModelParameters = self:initializeMatrixBasedOnMode(#featureMatrix[1], 1)
 
 	end
-	
+
 	repeat
-		
+
 		numberOfIterations += 1
 
 		self:iterationWait()
@@ -283,27 +285,27 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		local lossVector = AqwamMatrixLibrary:applyFunction(derivativeLossFunctionToApply, hypothesisVector, labelVector)
 
 		self:update(lossVector, true, false)
-		
+
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
-	
+
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
-	
+
 	if (self.Optimizer) and (self.autoResetOptimizers) then self.Optimizer:reset() end
-	
+
 	return costArray
-	
+
 end
 
 function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
-	
+
 	local outputVector = self:calculateHypothesisVector(featureMatrix, false)
-	
+
 	if (returnOriginalOutput == true) then return outputVector end
-	
+
 	local cutOffFunction = cutOffFunctionList[self.sigmoidFunction]
-	
+
 	local predictedLabelVector = AqwamMatrixLibrary:applyFunction(cutOffFunction, outputVector)
-	
+
 	return predictedLabelVector, outputVector
 
 end

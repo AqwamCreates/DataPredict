@@ -158,7 +158,7 @@ function LogisticRegressionModel:gradientDescent(costFunctionDerivativeMatrix, n
 
 	if (self.Regularizer) then
 
-		local regularizationDerivatives = self.Regularizer:calculateRegularizerDerivatives(self.ModelParameters)
+		local regularizationDerivatives = self.Regularizer:calculateRegularizationDerivatives(self.ModelParameters)
 
 		costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
 

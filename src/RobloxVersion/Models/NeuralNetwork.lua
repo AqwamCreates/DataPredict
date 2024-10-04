@@ -1719,8 +1719,8 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maxActivationLength) .. "-|-" ..
 		string.rep("-", maxLearningRateLength) .. "-|-" ..
 		string.rep("-", maxOptimizerLength) .. "-|-" ..
-		string.rep("-", maxRegularizerLength) .. "-|-".. 
-		string.rep("-", maxDropoutRateLength) .. "-|".. 
+		string.rep("-", maxRegularizerLength) .. "-|-"..
+		string.rep("-", maxDropoutRateLength) .. "-|"..
 		"\n\n"
 
 	print(stringToPrint)

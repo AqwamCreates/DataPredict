@@ -28,19 +28,19 @@ OneVsAll = {}
 
 OneVsAll.__index = OneVsAll
 
-local defaultMaxNumberOfIterations = 500
+local defaultMaximumNumberOfIterations = 500
 
 local defaultTotalTargetCostUpperBound = 0
 
 local defaultTotalTargetCostLowerBound = 0
 
-function OneVsAll.new(maxNumberOfIterations, useNegativeOneBinaryLabel)
+function OneVsAll.new(maximumNumberOfIterations, useNegativeOneBinaryLabel)
 	
 	local NewOneVsAll = {}
 	
 	setmetatable(NewOneVsAll, OneVsAll)
 	
-	NewOneVsAll.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewOneVsAll.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
 	
 	NewOneVsAll.useNegativeOneBinaryLabel = useNegativeOneBinaryLabel or false
 	
@@ -82,9 +82,9 @@ function OneVsAll:checkIfModelsSet()
 	
 end
 
-function OneVsAll:setParameters(maxNumberOfIterations, useNegativeOneBinaryLabel)
+function OneVsAll:setParameters(maximumNumberOfIterations, useNegativeOneBinaryLabel)
 	
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
+	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
 	
 	self.useNegativeOneBinaryLabel = self:getBooleanOrDefaultOption(useNegativeOneBinaryLabel, self.useNegativeOneBinaryLabel)
 	
@@ -124,11 +124,11 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 
 	local OptimizerObject
 	
-	local isNameAdded = (type(optimizerName) == "string")
+	local isNameAdded = (typeof(optimizerName) == "string")
 	
 	local SelectedOptimizer
 	
-	if isNameAdded then SelectedOptimizer = require("Optimizer_" .. optimizerName) end
+	if isNameAdded then SelectedOptimizer = require(Optimizers[optimizerName]) end
 	
 	local success = pcall(function()
 		
@@ -138,7 +138,7 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 	
 	if (success == false) then 
 		
-		warn("The model do not have setOptimizer() function. No optimizer objects have been added.") 
+		warn("The model does not have setOptimizer() function. No optimizer have been added.") 
 		
 		return nil
 		
@@ -158,29 +158,21 @@ function OneVsAll:setOptimizer(optimizerName, ...)
 	
 end
 
-function OneVsAll:setRegularization(lambda, regularizationMode, hasBias)
+function OneVsAll:setRegularizer(lambda, regularizationMode, hasBias)
 	
 	self:checkIfModelsSet()
 	
-	local RegularizationObject
+	local RegularizerObject
 
-	if lambda or regularizationMode or hasBias then
-		
-		RegularizationObject = Regularization.new(lambda, regularizationMode, hasBias)
-	
-	else
-		
-		RegularizationObject = nil
-		
-	end
+	if (lambda) or (regularizationMode) or (hasBias) then RegularizerObject = Regularizer.new(lambda, regularizationMode, hasBias) end
 	
 	local success = pcall(function()
 		
-		for _, Model in ipairs(self.ModelArray) do Model:setRegularization(RegularizationObject) end
+		for _, Model in ipairs(self.ModelArray) do Model:setRegularizer(RegularizerObject) end
 		
 	end)
 	
-	if (success == false) then warn("The model do not have setRegularization() function. No regularization objects have been added.") end
+	if (success == false) then warn("The model does not have setRegularizer() function. No regularizer have been added.") end
 	
 end
 
@@ -298,6 +290,16 @@ function OneVsAll:train(featureMatrix, labelVector)
 
 	end
 	
+	local ModelArray = self.ModelArray
+	
+	local targetTotalCostLowerBound = self.targetTotalCostLowerBound
+	
+	local targetTotalCostUpperBound = self.targetTotalCostUpperBound
+	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
+	
+	local isOutputPrinted = self.isOutputPrinted
+	
 	local costArray = {}
 	
 	local numberOfIterations = 0
@@ -308,13 +310,13 @@ function OneVsAll:train(featureMatrix, labelVector)
 		
 		local totalCost = 0
 		
-		for m, Model in ipairs(self.ModelArray) do
+		for m, Model in ipairs(ModelArray) do
 			
 			local binaryLabelVector = binaryLabelVectorTable[m]
 
 			modelCostArray = Model:train(featureMatrix, binaryLabelVector)
 
-			totalCost += modelCostArray[#modelCostArray]
+			totalCost = totalCost + modelCostArray[#modelCostArray]
 
 		end
 		
@@ -322,9 +324,9 @@ function OneVsAll:train(featureMatrix, labelVector)
 		
 		table.insert(costArray, totalCost)
 		
-		if (self.isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost) end
+		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost) end
 		
-	until (numberOfIterations >= self.maxNumberOfIterations) or ((totalCost >= self.targetTotalCostLowerBound) and (totalCost <= self.targetTotalCostUpperBound)) or self:checkIfConverged(totalCost)
+	until (numberOfIterations >= maximumNumberOfIterations) or ((totalCost >= targetTotalCostLowerBound) and (totalCost <= targetTotalCostUpperBound)) or self:checkIfConverged(totalCost)
 	
 	return costArray
 	

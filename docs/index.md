@@ -43,11 +43,11 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Using Optimizers](Tutorials/UsingOptimizers.md)
 
+[Using Regularizer](Tutorials/UsingRegularizer.md)
+
 [Using Gradient Descent Modifiers](Tutorials/UsingGradientDescentModifiers.md)
 
 [Using Model Checker](Tutorials/UsingModelChecker.md)
-
-[Using Regularization](Tutorials/UsingRegularization.md)
 
 [Distributed Training](Tutorials/DistributedTraining.md)
 

@@ -160,9 +160,11 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 	
 	local currentFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
 	
-	local discriminatorInputVector = AqwamMatrixLibrary:createMatrix(1, #ClassesList, 1)
+	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 	
-	local currentEpisode = 1
+	discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
+	
+	local discriminatorInputVector = AqwamMatrixLibrary:createMatrix(1, discriminatorInputNumberOfFeatures, 1)
 	
 	for episode = 1, #previousFeatureMatrixTable, 1 do
 		
@@ -183,6 +185,13 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 			local currentFeatureVector = {currentFeatureSubMatrix[step]}
 
 			local agentActionVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
+			
+			if (discriminatorInputHasBias) then
+				
+				table.insert(agentActionVector[1], 1)
+				table.insert(expertActionVector[1], 1)
+				
+			end
 
 			local discriminatorAgentActionValue = DiscriminatorModel:predict(agentActionVector, true)[1][1]
 
@@ -200,7 +209,7 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 
 			DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
 
-			if (isOutputPrinted) then print("Episode: " .. currentEpisode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
+			if (isOutputPrinted) then print("Episode: " .. episode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
 
 		end
 		
@@ -233,8 +242,12 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 	local expertActionStandardDeviationTable = breakMatrixToMultipleSmallerMatrices(expertActionStandardDeviationMatrix, numberOfStepsPerEpisode)
 
 	local currentFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
+	
+	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 
-	local discriminatorInputVector = AqwamMatrixLibrary:createMatrix(1, #ClassesList, 1)
+	discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
+
+	local discriminatorInputVector = AqwamMatrixLibrary:createMatrix(1, discriminatorInputNumberOfFeatures, 1)
 
 	local currentEpisode = 1
 
@@ -261,10 +274,24 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 			local currentFeatureVector = {currentFeatureSubMatrix[step]}
 
 			local agentActionVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
+			
+			if (discriminatorInputHasBias) then
+
+				table.insert(agentActionVector[1], 1)
+				table.insert(expertActionMeanVector[1], 1)
+
+			end
 
 			local discriminatorAgentActionValue = DiscriminatorModel:predict(agentActionVector, true)[1][1]
 
 			local discriminatorExpertActionValue = DiscriminatorModel:predict(expertActionMeanVector, true)[1][1]
+			
+			if (discriminatorInputHasBias) then
+
+				table.remove(agentActionVector[1], 1)
+				table.remove(expertActionMeanVector[1], 1)
+
+			end
 
 			local discriminatorLoss = -(math.log(discriminatorAgentActionValue) + math.log(1 - discriminatorExpertActionValue))
 

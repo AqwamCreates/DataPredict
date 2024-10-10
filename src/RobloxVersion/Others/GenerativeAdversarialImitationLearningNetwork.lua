@@ -32,7 +32,7 @@ GenerativeAdversarialNetworkModel.__index = GenerativeAdversarialNetworkModel
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local defaultNumberOfStepsPerEpisode = 500
+local defaultNumberOfStepsPerEpisode = 300
 
 local function chooseIndexWithHighestValue(vector)
 	
@@ -94,7 +94,7 @@ function GenerativeAdversarialNetworkModel.new(numberOfStepsPerEpisode)
 	
 	setmetatable(NewGenerativeAdversarialNetworkModel, GenerativeAdversarialNetworkModel)
 	
-	NewGenerativeAdversarialNetworkModel.maximumNumberOfIterations = numberOfStepsPerEpisode or defaultNumberOfStepsPerEpisode
+	NewGenerativeAdversarialNetworkModel.numberOfStepsPerEpisode = numberOfStepsPerEpisode or defaultNumberOfStepsPerEpisode
 	
 	NewGenerativeAdversarialNetworkModel.isOutputPrinted = true
 	

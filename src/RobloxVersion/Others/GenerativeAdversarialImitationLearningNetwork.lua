@@ -290,9 +290,9 @@ function GenerativeAdversarialNetworkModel:evaluate(featureMatrix)
 	
 end
 
-function GenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix)
+function GenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix, returnOriginalOutput)
 	
-	return self.ReinforcementLearningModel:predict(noiseFeatureMatrix, true)
+	return self.ReinforcementLearningModel:predict(noiseFeatureMatrix, returnOriginalOutput)
 	
 end
 

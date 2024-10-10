@@ -210,7 +210,7 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 	
 end
 
-function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeatureMatrix, expertActionMeanMatrix, expertActionMeanStandardDeviationMatrix, currentFeatureMatrix)
+function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, currentFeatureMatrix)
 
 	local DiscriminatorModel = self.DiscriminatorModel
 
@@ -230,7 +230,7 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 
 	local expertActionMeanMatrixTable = breakMatrixToMultipleSmallerMatrices(expertActionMeanMatrix, numberOfStepsPerEpisode)
 	
-	local expertActionMeanStandardDeviationTable = breakMatrixToMultipleSmallerMatrices(expertActionMeanMatrix, numberOfStepsPerEpisode)
+	local expertActionStandardDeviationTable = breakMatrixToMultipleSmallerMatrices(expertActionStandardDeviationMatrix, numberOfStepsPerEpisode)
 
 	local currentFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
 
@@ -244,7 +244,7 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 
 		local expertActionMeanSubMatrix = expertActionMeanMatrixTable[episode]
 		
-		local expertActionStandardDeviationSubMatrix = expertActionMeanStandardDeviationTable[episode]
+		local expertActionStandardDeviationSubMatrix = expertActionStandardDeviationTable[episode]
 
 		local currentFeatureSubMatrix = currentFeatureMatrixTable[episode]
 

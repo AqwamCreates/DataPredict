@@ -94,7 +94,7 @@ function GenerativeAdversarialNetworkModel.new(numberOfStepsPerEpisode)
 	
 	setmetatable(NewGenerativeAdversarialNetworkModel, GenerativeAdversarialNetworkModel)
 	
-	NewGenerativeAdversarialNetworkModel.maximumNumberOfIterations = numberOfStepsPerEpisode or defaultNumberOfStepsPerEpisode
+	NewGenerativeAdversarialNetworkModel.numberOfStepsPerEpisode = numberOfStepsPerEpisode or defaultNumberOfStepsPerEpisode
 	
 	NewGenerativeAdversarialNetworkModel.isOutputPrinted = true
 	

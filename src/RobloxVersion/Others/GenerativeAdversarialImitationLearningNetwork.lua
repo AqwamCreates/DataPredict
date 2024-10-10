@@ -160,7 +160,7 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 	
 	local currentFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
 	
-	local discriminatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, #ClassesList, 1)
+	local discriminatorInputVector = AqwamMatrixLibrary:createMatrix(1, #ClassesList, 1)
 	
 	local currentEpisode = 1
 	
@@ -196,7 +196,7 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 
 			ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, action, discriminatorLoss, currentFeatureVector)
 
-			DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
+			DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 
 			DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
 
@@ -234,7 +234,7 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 
 	local currentFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
 
-	local discriminatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, #ClassesList, 1)
+	local discriminatorInputVector = AqwamMatrixLibrary:createMatrix(1, #ClassesList, 1)
 
 	local currentEpisode = 1
 
@@ -270,7 +270,7 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 
 			ReinforcementLearningModel:diagonalGaussianUpdate(previousFeatureVector, expertActionMeanVector, expertActionStandardDeviationVector, discriminatorLoss, currentFeatureVector)
 
-			DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
+			DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 
 			DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
 

@@ -188,20 +188,21 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 
 			local agentActionVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 			
-			local concatenatedAgentStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, agentActionVector)
-			
 			local concatenatedExpertStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, expertActionVector)
-			
+
+			local concatenatedAgentStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, agentActionVector)
+
 			if (discriminatorInputHasBias) then
-				
-				table.insert(concatenatedAgentStateActionVector[1], 1)
+
 				table.insert(concatenatedExpertStateActionVector[1], 1)
 				
+				table.insert(concatenatedAgentStateActionVector[1], 1)
+
 			end
 
-			local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
-
 			local discriminatorExpertActionValue = DiscriminatorModel:predict(concatenatedExpertStateActionVector, true)[1][1]
+
+			local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
 			
 			local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 
@@ -285,20 +286,22 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 
 			local agentActionMeanVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 			
+			local concatenatedExpertStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, expertActionMeanVector)
+			
 			local concatenatedAgentStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, agentActionMeanVector)
 
-			local concatenatedExpertStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, expertActionMeanVector)
-
 			if (discriminatorInputHasBias) then
-
-				table.insert(concatenatedAgentStateActionVector[1], 1)
+				
 				table.insert(concatenatedExpertStateActionVector[1], 1)
+				
+				table.insert(concatenatedAgentStateActionVector[1], 1)
+				
 
 			end
+			
+			local discriminatorExpertActionValue = DiscriminatorModel:predict(concatenatedExpertStateActionVector, true)[1][1]
 
 			local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
-
-			local discriminatorExpertActionValue = DiscriminatorModel:predict(concatenatedExpertStateActionVector, true)[1][1]
 
 			local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 

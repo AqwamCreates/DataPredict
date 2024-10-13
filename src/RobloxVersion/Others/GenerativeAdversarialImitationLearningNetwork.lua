@@ -1,386 +1,345 @@
-local ServerScriptService = game:GetService("ServerScriptService")
+--[[
 
-local DataPredict = require(ServerScriptService.AqwamMachineAndDeepLearningLibrary)
+	--------------------------------------------------------------------
 
-local MatrixL =  require(ServerScriptService.AqwamMatrixLibrary)
+	Aqwam's Machine And Deep Learning Library (DataPredict)
 
-local ReinforcementLearningQuickSetup = DataPredict.QuickSetups.CategoricalPolicy.new(10, 1, "Sample")
-
-ReinforcementLearningQuickSetup:setEpsilonValueScheduler(DataPredict.ValueSchedulers.TimeDecay.new(0.85))
-
-ReinforcementLearningQuickSetup:setPrintOutput(false)
-
-local maxRewardArrayLength = 100
-
-local maxCurrentArrayLength = 100
-
-local isRewardedArray = {}
-
-local currentAccuracyArray = {}
-
-local classesList = {1, 2, 3, 4}
-
-local ExperienceReplay = DataPredict.ExperienceReplays.PrioritizedExperienceReplay.new(10, 15, 20)
-
-
-
-ReinforcementLearningQuickSetup:setClassesList(classesList)
-
-local function buildDiscriminator()
+	Author: Aqwam Harish Aiman
 	
-	local NN = DataPredict.Models.NeuralNetwork.new()
+	Email: aqwam.harish.aiman@gmail.com
 	
-	NN:addLayer(4, true, "None", 0.00001)
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
-	NN:addLayer(7, true, "Tanh", 0.00001)
-
-	NN:addLayer(1, false, "Sigmoid")
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
 	
-	return NN
-	
-end
-
-local function buildModel()
-	
-	--local ExperienceReplay = DataPredict.ExperienceReplays.PrioritizedExperienceReplay.new(5, 10)
-
-	local Model = DataPredict.Models.NeuralNetwork.new(1)
-	
-	ExperienceReplay:setModel(Model)
-
-	Model:addLayer(2, true, "ELU", 0.0001)
-	
-	Model:addLayer(7, true, "ELU", 0.0001)
-
-	Model:addLayer(4, false, "StableSoftmax", 0.0001)
-	
-	Model:setClassesList(classesList)
-	
-	local RLModel = DataPredict.Models.DeepDoubleQLearningV1.new()
-	
-	RLModel:setModel(Model)
-	
-	return RLModel
-
-end
-
-local function buildModel2()
-
-	local ACModel = DataPredict.Models.ProximalPolicyOptimization.new()
-	
-	--ACModel:setExperienceReplay(DataPredict.ExperienceReplays.UniformExperienceReplay.new())
-
-	--ACModel:setExperienceReplay(DataPredict.ExperienceReplays.UniformExperienceReplay.new(3, 10))
-
-	--ACModel:setPrintReinforcementOutput(false)
-
-	local AModel = DataPredict.Models.NeuralNetwork.new(1)
-
-	AModel:setPrintOutput(false)
-
-	AModel:addLayer(2, true)
-
-	AModel:addLayer(4, false, "Tanh", 0.0001)
-	
-	AModel:setClassesList(classesList)
-
-	local CModel = DataPredict.Models.NeuralNetwork.new(1)
-
-	CModel:setPrintOutput(false)
-
-	CModel:addLayer(2, true)
-
-	CModel:addLayer(1, false, "Tanh", 0.0001)
-
-	ACModel:setActorModel(AModel)
-	
-	ACModel:setCriticModel(CModel)
-	
-	--ACModel:setClassesList(classesList)
-
-	return ACModel
-
-end
-
-local function buildModel3()
-	
-	local NeuralNetwork = DataPredict.Models.NeuralNetwork
-	
-	local ACModel = DataPredict.Models.AsynchronousAdvantageActorCritic.new(0.01, nil, 0, 1, 1)
-	
-	--ACModel:setExperienceReplay(DataPredict.ExperienceReplays.UniformExperienceReplay.new(3, 10))
-	
-	ACModel:setClassesList({1, 2, 3, 4})
-	
-	--ACModel:setPrintReinforcementOutput(false)
-	
-	local AModel = NeuralNetwork.new(1, 0.01)
-	
-	AModel:setClassesList({1, 2, 3, 4})
-	
-	AModel:addLayer(2, true, "Tanh")
-	
-	AModel:addLayer(4, false, "StableSoftmax")
-	
-	local CModel = NeuralNetwork.new(1, 0.01)
-
-	CModel:addLayer(2, true, "Tanh")
-
-	CModel:addLayer(1, false, "None")
-	
-	ACModel:addActorCriticModel(AModel, CModel) --, DataPredict.ExperienceReplays.UniformExperienceReplay.new(3, 10))
-	
-	local AModel2 = NeuralNetwork.new(1, 0.01)
-
-	AModel2:setClassesList({1, 2, 3, 4})
-
-	AModel2:addLayer(2, true, "Tanh")
-
-	AModel2:addLayer(4, false, "StableSoftmax")
-
-	local CModel2 = NeuralNetwork.new(1, 0.01)
-
-	CModel2:addLayer(2, true, "Tanh")
-
-	CModel2:addLayer(1, false, "None")
-
-	ACModel:addActorCriticModel(AModel2, CModel2) --, DataPredict.ExperienceReplays.UniformExperienceReplay.new(3, 10))
-	
-	ACModel:start()
-
-	return ACModel
-	
-end
-
-local function buildModel4()
-
-	local DuelingQLearningModel = DataPredict.Models.DeepDoubleDuelingQLearningV2.new()
-
-	--ACModel:setExperienceReplay(DataPredict.ExperienceReplays.UniformExperienceReplay.new(3, 10))
-
-	--ACModel:setPrintReinforcementOutput(false)
-	
-	local SModel = DataPredict.Models.NeuralNetwork.new(1, 0.01)
-	
-	SModel:addLayer(2, true, "ELU")
-
-	SModel:addLayer(3, true, "ELU")
-
-	SModel:addLayer(4, false, "ELU")
-
-	local AModel = DataPredict.Models.NeuralNetwork.new(1, 0.01)
-
-	AModel:setClassesList({1, 2, 3, 4})
-
-	AModel:setPrintOutput(false)
-
-	AModel:addLayer(4, true, "ELU")
-	
-	AModel:addLayer(3, true, "ELU")
-
-	AModel:addLayer(4, false, "StableSoftmax")
-
-	local ValueModel = DataPredict.Models.NeuralNetwork.new(1, 0.01)
-
-	ValueModel:setPrintOutput(false)
-
-	ValueModel:addLayer(4, true, "ELU")
-	
-	AModel:addLayer(3, true, "ELU")
-
-	ValueModel:addLayer(1, false, "None")
-	
-	ValueModel:generateLayers()
-	
-	DuelingQLearningModel:setSharedModel(SModel)
-
-	DuelingQLearningModel:setAdvantageModel(AModel)
-
-	DuelingQLearningModel:setValueModel(ValueModel)
-	
-	task.wait(1)
-
-	return DuelingQLearningModel
-
-end
-
-local function buildModel5()
-
-	local ACModel = DataPredict.AqwamCustomModels.DeepConfidenceQLearning.new()
-
-	--ACModel:setExperienceReplay(DataPredict.ExperienceReplays.UniformExperienceReplay.new())
-
-	--ACModel:setExperienceReplay(DataPredict.ExperienceReplays.UniformExperienceReplay.new(3, 10))
-
-	--ACModel:setPrintReinforcementOutput(false)
-
-	local AModel = DataPredict.Models.NeuralNetwork.new(1)
-
-	AModel:setPrintOutput(false)
-
-	AModel:addLayer(2, true)
-
-	AModel:addLayer(4, false, "Tanh", 0.0001)
-
-	AModel:setClassesList(classesList)
-
-	local CModel = DataPredict.Models.NeuralNetwork.new(1)
-
-	CModel:setPrintOutput(false)
-
-	CModel:addLayer(4, false)
-
-	CModel:addLayer(1, false, "Tanh", 0.1)
-
-	ACModel:setActorModel(AModel)
-
-	ACModel:setConfidenceModel(CModel)
-
-	--ACModel:setClassesList(classesList)
-
-	return ACModel
-
-end
-
-local function createExpertActionMatrix(environmentFeatureMatrix, predictedLabel)
-	
-	local numberOfData = #environmentFeatureMatrix
-	
-	local expertActionMatrix = MatrixL:createMatrix(numberOfData, 4, 0)
-	
-	for i = 1, numberOfData, 1 do
+	--------------------------------------------------------------------
 		
-		local firstValue = environmentFeatureMatrix[i][2]
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
+GenerativeAdversarialNetworkModel = {}
+
+GenerativeAdversarialNetworkModel.__index = GenerativeAdversarialNetworkModel
+
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+
+local defaultNumberOfStepsPerEpisode = 300
+
+local function chooseIndexWithHighestValue(vector)
+	
+	vector = vector[1]
+	
+	local highestValue = -math.huge
+	
+	local highestIndex
+	
+	for i, value in ipairs(vector) do
 		
-		local secondValue = environmentFeatureMatrix[i][3]
-		
-		if (firstValue >= 0) and (secondValue >= 0) then --  positive + positive = 1
-
-			expertActionMatrix[i][1] = 1
-
-		elseif (firstValue >= 0) and (secondValue < 0) then --  positive + negative = 2
-
-			expertActionMatrix[i][2] = 1
-
-		elseif (firstValue < 0) and (secondValue >= 0) then --  negative + positive = 3
-
-			expertActionMatrix[i][3] = 1
-
-		elseif (firstValue < 0) and (secondValue < 0) then --  negative + negative = 4
-
-			expertActionMatrix[i][4] = 1
-
+		if (value > highestValue) then
+			
+			highestValue = value
+			
+			highestIndex = i
+			
 		end
 		
 	end
-
-	return expertActionMatrix
-
+	
+	return highestIndex
+	
 end
 
-local function generateEnvironmentFeatureMatrix(numberOfData)
+local function breakMatrixToMultipleSmallerMatrices(matrix, batchSize)
 
-	local featureMatrix1 = MatrixL:createRandomUniformMatrix(numberOfData, 3)
+	local numberOfBatches = math.ceil(#matrix/batchSize)
 
-	local featureMatrix2 = MatrixL:createRandomUniformMatrix(numberOfData, 3)
+	local matrixBatchesTable = {}
 
-	local environmentFeatureMatrix = MatrixL:subtract(featureMatrix1, featureMatrix2)
-	
-	for i = 1, numberOfData, 1 do
-		
-		environmentFeatureMatrix[i][1] = 1 -- 1 at first column for bias.
-		
+	local batchPositions = {}
+
+	local batchFeatureMatrix
+
+	local batchLabelVector 
+
+	for batch = 1, numberOfBatches, 1 do
+
+		local startIndex = (batch - 1) * batchSize + 1
+
+		local endIndex = math.min(batch * batchSize, #matrix)
+
+		local batchFeatureMatrix = {}
+
+		for i = startIndex, endIndex do table.insert(batchFeatureMatrix, matrix[i]) end
+
+		table.insert(matrixBatchesTable, batchFeatureMatrix)
+
 	end
 
-	return environmentFeatureMatrix
+	return matrixBatchesTable
 
 end
 
-local function countTrueBooleansInBooleanArray(booleanArray)
+function GenerativeAdversarialNetworkModel.new(numberOfStepsPerEpisode)
+	
+	local NewGenerativeAdversarialNetworkModel = {}
+	
+	setmetatable(NewGenerativeAdversarialNetworkModel, GenerativeAdversarialNetworkModel)
+	
+	NewGenerativeAdversarialNetworkModel.numberOfStepsPerEpisode = numberOfStepsPerEpisode or defaultNumberOfStepsPerEpisode
+	
+	NewGenerativeAdversarialNetworkModel.isOutputPrinted = true
+	
+	NewGenerativeAdversarialNetworkModel.ReinforcementLearningModel = nil
+	
+	NewGenerativeAdversarialNetworkModel.DiscriminatorModel = nil
+	
+	NewGenerativeAdversarialNetworkModel.ClassesList = {}
+	
+	return NewGenerativeAdversarialNetworkModel
+	
+end
 
-	local numberOfTrueBooleans = 0
+function GenerativeAdversarialNetworkModel:setParameters(numberOfStepsPerEpisode)
+	
+	self.numberOfStepsPerEpisode = numberOfStepsPerEpisode or self.numberOfStepsPerEpisode
+	
+end
 
-	for i, boolean in ipairs(booleanArray) do
+function GenerativeAdversarialNetworkModel:setDiscriminatorModel(DiscriminatorModel)
+	
+	self.DiscriminatorModel = DiscriminatorModel
+	
+end
 
-		if (boolean == true) then
+function GenerativeAdversarialNetworkModel:setReinforcementLearningModel(ReinforcementLearningModel)
+	
+	self.ReinforcementLearningModel = ReinforcementLearningModel
+	
+end
 
-			numberOfTrueBooleans += 1
+function GenerativeAdversarialNetworkModel:setPrintOutput(option)
+
+	self.isOutputPrinted = option
+
+end
+
+function GenerativeAdversarialNetworkModel:setClassesList(ClassesList)
+	
+	self.ClassesList = ClassesList
+	
+end
+
+function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatrix, expertActionMatrix, currentFeatureMatrix)
+	
+	local DiscriminatorModel = self.DiscriminatorModel
+	
+	local ReinforcementLearningModel = self.ReinforcementLearningModel
+	
+	if (not DiscriminatorModel) then error("No discriminator neural network.") end
+	
+	if (not ReinforcementLearningModel) then error("No reinforcement learning neural network.") end
+	
+	local numberOfStepsPerEpisode = self.numberOfStepsPerEpisode
+	
+	local isOutputPrinted = self.isOutputPrinted
+	
+	local ClassesList = self.ClassesList
+	
+	local previousFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
+	
+	local expertActionMatrixTable = breakMatrixToMultipleSmallerMatrices(expertActionMatrix, numberOfStepsPerEpisode)
+	
+	local currentFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
+	
+	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
+	
+	discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
+	
+	local discriminatorInputVector = AqwamMatrixLibrary:createMatrix(1, discriminatorInputNumberOfFeatures, 1)
+	
+	for episode = 1, #previousFeatureMatrixTable, 1 do
+		
+		local previousFeatureSubMatrix = previousFeatureMatrixTable[episode]
+		
+		local expertActionSubMatrix = expertActionMatrixTable[episode]
+		
+		local currentFeatureSubMatrix = currentFeatureMatrixTable[episode]
+		
+		for step = 1, numberOfStepsPerEpisode, 1 do
+
+			task.wait()
+			
+			local previousFeatureVector = {previousFeatureSubMatrix[step]}
+			
+			local expertActionVector = {expertActionSubMatrix[step]}
+			
+			local currentFeatureVector = {currentFeatureSubMatrix[step]}
+
+			local agentActionVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
+			
+			local concatenatedAgentStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(currentFeatureVector, agentActionVector)
+
+			local concatenatedExpertStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(currentFeatureVector, expertActionVector)
+
+			if (discriminatorInputHasBias) then
+
+				table.insert(concatenatedAgentStateActionVector[1], 1)
+				table.insert(concatenatedExpertStateActionVector[1], 1)
+
+			end
+
+			local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
+
+			local discriminatorExpertActionValue = DiscriminatorModel:predict(concatenatedExpertStateActionVector, true)[1][1]
+			
+			local discriminatorLoss = math.log(discriminatorAgentActionValue) + math.log(1 - discriminatorExpertActionValue)
+
+			local actionIndex = chooseIndexWithHighestValue(expertActionVector)
+
+			local action = ClassesList[actionIndex]
+
+			ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, action, discriminatorLoss, currentFeatureVector)
+
+			DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
+
+			DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
+
+			if (isOutputPrinted) then print("Episode: " .. episode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
 
 		end
-
-	end
-
-	return numberOfTrueBooleans
-
-end
-
-local function removeRewards()
-
-	local currentAccuracy
-
-	local currentAverageAccuracy
-
-	if (#isRewardedArray > maxRewardArrayLength) then
-
-		table.remove(isRewardedArray, 1)
-
-	end
-
-end
-
-local function getTotalReward()
-	
-	local totalReward = 0
-	
-	for _, reward in isRewardedArray do
 		
-		totalReward += reward
+		ReinforcementLearningModel:episodeUpdate()
 		
 	end
 	
-	return totalReward
-	
 end
 
-local function startEnvironment()
+function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, currentFeatureMatrix)
 
-	local reward = 0
-	local defaultReward = 1
-	local defaultPunishment = -0.01
-	local predictedLabel
-	local isRewarded
-	local totalReward = 0 -- Initialize total reward for the episode
-	local steps = 0 -- Initialize steps counter for the episode
-	local maxSteps = 100
-	
-	local discriminator = buildDiscriminator()
-	
-	local model = buildModel()
-	
-	local GAIL = DataPredict.Others.GenerativeAdversarialImitationLearningNetwork.new(1)
-	
-	GAIL:setDiscriminatorModel(discriminator)
-	
-	GAIL:setReinforcementLearningModel(model)
-	
-	GAIL:setClassesList({1, 2, 3, 4})
-	
-	local previousEnvironmentMatrix = generateEnvironmentFeatureMatrix(10)
+	local DiscriminatorModel = self.DiscriminatorModel
 
-	local environmentFeatureMatrix
+	local ReinforcementLearningModel = self.ReinforcementLearningModel
 
-	while true do
+	if (not DiscriminatorModel) then error("No discriminator neural network.") end
+
+	if (not ReinforcementLearningModel) then error("No reinforcement learning neural network.") end
+
+	local numberOfStepsPerEpisode = self.numberOfStepsPerEpisode
+
+	local isOutputPrinted = self.isOutputPrinted
+
+	local ClassesList = self.ClassesList
+
+	local previousFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
+
+	local expertActionMeanMatrixTable = breakMatrixToMultipleSmallerMatrices(expertActionMeanMatrix, numberOfStepsPerEpisode)
+	
+	local expertActionStandardDeviationTable = breakMatrixToMultipleSmallerMatrices(expertActionStandardDeviationMatrix, numberOfStepsPerEpisode)
+
+	local currentFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
+	
+	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
+
+	discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
+
+	local discriminatorInputVector = AqwamMatrixLibrary:createMatrix(1, discriminatorInputNumberOfFeatures, 1)
+
+	local currentEpisode = 1
+
+	for episode = 1, #previousFeatureMatrixTable, 1 do
+
+		local previousFeatureSubMatrix = previousFeatureMatrixTable[episode]
+
+		local expertActionMeanSubMatrix = expertActionMeanMatrixTable[episode]
 		
-		environmentFeatureMatrix = generateEnvironmentFeatureMatrix(10)
+		local expertActionStandardDeviationSubMatrix = expertActionStandardDeviationTable[episode]
+
+		local currentFeatureSubMatrix = currentFeatureMatrixTable[episode]
+
+		for step = 1, numberOfStepsPerEpisode, 1 do
+
+			task.wait()
+
+			local previousFeatureVector = {previousFeatureSubMatrix[step]}
+
+			local expertActionMeanVector = {expertActionMeanSubMatrix[step]}
+			
+			local expertActionStandardDeviationVector = {expertActionStandardDeviationSubMatrix[step]}
+
+			local currentFeatureVector = {currentFeatureSubMatrix[step]}
+
+			local agentActionMeanVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
+			
+			local concatenatedAgentStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(currentFeatureVector, agentActionMeanVector)
+			
+			local concatenatedExpertStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(currentFeatureVector, expertActionMeanVector)
+			
+			if (discriminatorInputHasBias) then
+
+				table.insert(concatenatedAgentStateActionVector[1], 1)
+				table.insert(concatenatedExpertStateActionVector[1], 1)
+
+			end
+
+			local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
+
+			local discriminatorExpertActionValue = DiscriminatorModel:predict(concatenatedExpertStateActionVector, true)[1][1]
+
+			local discriminatorLoss = math.log(discriminatorAgentActionValue) + math.log(1 - discriminatorExpertActionValue)
+
+			ReinforcementLearningModel:diagonalGaussianUpdate(previousFeatureVector, expertActionMeanVector, expertActionStandardDeviationVector, discriminatorLoss, currentFeatureVector)
+
+			DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
+
+			DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
+
+			if (isOutputPrinted) then print("Episode: " .. currentEpisode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
+
+		end
 		
-		local expertActionMatrix = createExpertActionMatrix(environmentFeatureMatrix)
-		
-		GAIL:categoricalTrain(previousEnvironmentMatrix, expertActionMatrix, environmentFeatureMatrix)
-		
-		previousEnvironmentMatrix = environmentFeatureMatrix
+		ReinforcementLearningModel:episodeUpdate()
 
 	end
 
 end
 
-startEnvironment()
+function GenerativeAdversarialNetworkModel:evaluate(featureMatrix)
+	
+	return self.DiscriminatorModel:predict(featureMatrix, true)
+	
+end
+
+function GenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix, returnOriginalOutput)
+	
+	return self.ReinforcementLearningModel:predict(noiseFeatureMatrix, returnOriginalOutput)
+	
+end
+
+function GenerativeAdversarialNetworkModel:getDiscriminatorModel()
+
+	return self.DiscriminatorModel
+
+end
+
+function GenerativeAdversarialNetworkModel:getReinforcementLearningModel()
+
+	return self.ReinforcementLearningModel
+
+end
+
+function GenerativeAdversarialNetworkModel:getClassesList()
+
+	return self.ClassesList
+
+end
+
+return GenerativeAdversarialNetworkModel

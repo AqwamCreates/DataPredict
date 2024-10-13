@@ -75,7 +75,7 @@ GenerativeAdversarialNetwork:setDiscriminatorModel(DiscriminatorModel: Model)
 Gets the Generator from the model. 
 
 ```
-WassersteinGenerativeAdversarialNetwork:getGeneratorModel(): Model
+GenerativeAdversarialNetwork:getGeneratorModel(): Model
 ```
 
 #### Returns:
@@ -87,7 +87,7 @@ WassersteinGenerativeAdversarialNetwork:getGeneratorModel(): Model
 Gets the Discriminator from the model. 
 
 ```
-WassersteinGenerativeAdversarialNetwork:getDiscriminatorModel(): Model
+GenerativeAdversarialNetwork:getDiscriminatorModel(): Model
 ```
 
 #### Returns:

@@ -295,7 +295,6 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 				table.insert(concatenatedExpertStateActionVector[1], 1)
 				
 				table.insert(concatenatedAgentStateActionVector[1], 1)
-				
 
 			end
 			

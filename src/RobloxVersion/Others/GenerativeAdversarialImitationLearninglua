@@ -26,9 +26,9 @@
 
 --]]
 
-GenerativeAdversarialNetworkModel = {}
+GenerativeAdversarialImitationLearning = {}
 
-GenerativeAdversarialNetworkModel.__index = GenerativeAdversarialNetworkModel
+GenerativeAdversarialImitationLearning.__index = GenerativeAdversarialImitationLearning
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
@@ -88,57 +88,57 @@ local function breakMatrixToMultipleSmallerMatrices(matrix, batchSize)
 
 end
 
-function GenerativeAdversarialNetworkModel.new(numberOfStepsPerEpisode)
+function GenerativeAdversarialImitationLearning.new(numberOfStepsPerEpisode)
 	
-	local NewGenerativeAdversarialNetworkModel = {}
+	local NewGenerativeAdversarialImitationLearning = {}
 	
-	setmetatable(NewGenerativeAdversarialNetworkModel, GenerativeAdversarialNetworkModel)
+	setmetatable(NewGenerativeAdversarialImitationLearning, GenerativeAdversarialImitationLearning)
 	
-	NewGenerativeAdversarialNetworkModel.numberOfStepsPerEpisode = numberOfStepsPerEpisode or defaultNumberOfStepsPerEpisode
+	NewGenerativeAdversarialImitationLearning.numberOfStepsPerEpisode = numberOfStepsPerEpisode or defaultNumberOfStepsPerEpisode
 	
-	NewGenerativeAdversarialNetworkModel.isOutputPrinted = true
+	NewGenerativeAdversarialImitationLearning.isOutputPrinted = true
 	
-	NewGenerativeAdversarialNetworkModel.ReinforcementLearningModel = nil
+	NewGenerativeAdversarialImitationLearning.ReinforcementLearningModel = nil
 	
-	NewGenerativeAdversarialNetworkModel.DiscriminatorModel = nil
+	NewGenerativeAdversarialImitationLearning.DiscriminatorModel = nil
 	
-	NewGenerativeAdversarialNetworkModel.ClassesList = {}
+	NewGenerativeAdversarialImitationLearning.ClassesList = {}
 	
-	return NewGenerativeAdversarialNetworkModel
+	return NewGenerativeAdversarialImitationLearning
 	
 end
 
-function GenerativeAdversarialNetworkModel:setParameters(numberOfStepsPerEpisode)
+function GenerativeAdversarialImitationLearning:setParameters(numberOfStepsPerEpisode)
 	
 	self.numberOfStepsPerEpisode = numberOfStepsPerEpisode or self.numberOfStepsPerEpisode
 	
 end
 
-function GenerativeAdversarialNetworkModel:setDiscriminatorModel(DiscriminatorModel)
+function GenerativeAdversarialImitationLearning:setDiscriminatorModel(DiscriminatorModel)
 	
 	self.DiscriminatorModel = DiscriminatorModel
 	
 end
 
-function GenerativeAdversarialNetworkModel:setReinforcementLearningModel(ReinforcementLearningModel)
+function GenerativeAdversarialImitationLearning:setReinforcementLearningModel(ReinforcementLearningModel)
 	
 	self.ReinforcementLearningModel = ReinforcementLearningModel
 	
 end
 
-function GenerativeAdversarialNetworkModel:setPrintOutput(option)
+function GenerativeAdversarialImitationLearning:setPrintOutput(option)
 
 	self.isOutputPrinted = option
 
 end
 
-function GenerativeAdversarialNetworkModel:setClassesList(ClassesList)
+function GenerativeAdversarialImitationLearning:setClassesList(ClassesList)
 	
 	self.ClassesList = ClassesList
 	
 end
 
-function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatrix, expertActionMatrix, currentFeatureMatrix)
+function GenerativeAdversarialImitationLearning:categoricalTrain(previousFeatureMatrix, expertActionMatrix, currentFeatureMatrix)
 	
 	local DiscriminatorModel = self.DiscriminatorModel
 	
@@ -228,7 +228,7 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 	
 end
 
-function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, currentFeatureMatrix)
+function GenerativeAdversarialImitationLearning:diagonalGaussianTrain(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, currentFeatureMatrix)
 
 	local DiscriminatorModel = self.DiscriminatorModel
 
@@ -320,34 +320,34 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 
 end
 
-function GenerativeAdversarialNetworkModel:evaluate(featureMatrix)
+function GenerativeAdversarialImitationLearning:evaluate(featureMatrix)
 	
 	return self.DiscriminatorModel:predict(featureMatrix, true)
 	
 end
 
-function GenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix, returnOriginalOutput)
+function GenerativeAdversarialImitationLearning:generate(noiseFeatureMatrix, returnOriginalOutput)
 	
 	return self.ReinforcementLearningModel:predict(noiseFeatureMatrix, returnOriginalOutput)
 	
 end
 
-function GenerativeAdversarialNetworkModel:getDiscriminatorModel()
+function GenerativeAdversarialImitationLearning:getDiscriminatorModel()
 
 	return self.DiscriminatorModel
 
 end
 
-function GenerativeAdversarialNetworkModel:getReinforcementLearningModel()
+function GenerativeAdversarialImitationLearning:getReinforcementLearningModel()
 
 	return self.ReinforcementLearningModel
 
 end
 
-function GenerativeAdversarialNetworkModel:getClassesList()
+function GenerativeAdversarialImitationLearning:getClassesList()
 
 	return self.ClassesList
 
 end
 
-return GenerativeAdversarialNetworkModel
+return GenerativeAdversarialImitationLearning

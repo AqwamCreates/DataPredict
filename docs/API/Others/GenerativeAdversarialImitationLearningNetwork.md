@@ -160,7 +160,7 @@ GenerativeAdversarialImitationLearning:generate(featureMatrix: matrix, returnOri
 
 * actionVector: The vector containing the actions with the highest values.
 
-- OR -
+-OR-
 
 * actionMatrix: The matrix containing all the action values.
 

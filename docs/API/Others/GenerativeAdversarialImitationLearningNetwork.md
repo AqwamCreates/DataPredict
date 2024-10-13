@@ -1,10 +1,10 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - GenerativeAdversarialImitationLearningNetwork (GAIL)
+# [API Reference](../../API.md) - [Others](../Others.md) - GenerativeAdversarialImitationLearning (GAIL)
 
-GenerativeAdversarialImitationLearningNetwork uses two neural networks to generate new contents from noise.
+GenerativeAdversarialImitationLearning uses two neural networks to generate new contents from noise.
 
 ## Notes
 
-* The ReinforcementLearning and Discriminator models must be created separately. Then use setReinforcementLearningModel() and setDiscriminatorModel() to put it inside the GenerativeAdversarialNetwork model.
+* The ReinforcementLearning and Discriminator models must be created separately. Then use setReinforcementLearningModel() and setDiscriminatorModel() to put it inside the GenerativeAdversarialImitationLearning model.
 
 * ReinforcementLearning and Discriminator models must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 
@@ -21,7 +21,7 @@ GenerativeAdversarialImitationLearningNetwork uses two neural networks to genera
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-GenerativeAdversarialNetwork.new(numberOfStepsPerEpisode: number): ModelObject
+GenerativeAdversarialImitationLearning.new(numberOfStepsPerEpisode: number): ModelObject
 ```
 
 #### Parameters:
@@ -39,7 +39,7 @@ GenerativeAdversarialNetwork.new(numberOfStepsPerEpisode: number): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-GenerativeAdversarialNetwork:setParameters(numberOfStepsPerEpisode: number)
+GenerativeAdversarialImitationLearning:setParameters(numberOfStepsPerEpisode: number)
 ```
 
 #### Parameters:
@@ -51,7 +51,7 @@ GenerativeAdversarialNetwork:setParameters(numberOfStepsPerEpisode: number)
 Sets the ReinforcementLearning into the model. 
 
 ```
-GenerativeAdversarialNetwork:setReinforcementLearningModel(ReinforcementLearningModel: Model)
+GenerativeAdversarialImitationLearning:setReinforcementLearningModel(ReinforcementLearningModel: Model)
 ```
 
 #### Parameters:
@@ -63,7 +63,7 @@ GenerativeAdversarialNetwork:setReinforcementLearningModel(ReinforcementLearning
 Sets the Discriminator into the model. 
 
 ```
-GenerativeAdversarialNetwork:setDiscriminatorModel(DiscriminatorModel: Model)
+GenerativeAdversarialImitationLearning:setDiscriminatorModel(DiscriminatorModel: Model)
 ```
 
 #### Parameters:
@@ -75,7 +75,7 @@ GenerativeAdversarialNetwork:setDiscriminatorModel(DiscriminatorModel: Model)
 Gets the ReinforcementLearning from the model. 
 
 ```
-GenerativeAdversarialNetwork:getReinforcementLearningModel(): Model
+GenerativeAdversarialImitationLearning:getReinforcementLearningModel(): Model
 ```
 
 #### Returns:
@@ -87,7 +87,7 @@ GenerativeAdversarialNetwork:getReinforcementLearningModel(): Model
 Gets the Discriminator from the model. 
 
 ```
-GenerativeAdversarialNetwork:getDiscriminatorModel(): Model
+GenerativeAdversarialImitationLearning:getDiscriminatorModel(): Model
 ```
 
 #### Returns:
@@ -99,7 +99,7 @@ GenerativeAdversarialNetwork:getDiscriminatorModel(): Model
 Categorically trains the model.
 
 ```
-GenerativeAdversarialNetwork:categoricalTrain(previousFeatureMatrix: matrix, expertActionMatrix: matrix, currentFeatureMatrix: matrix)
+GenerativeAdversarialImitationLearning:categoricalTrain(previousFeatureMatrix: matrix, expertActionMatrix: matrix, currentFeatureMatrix: matrix)
 ```
 
 #### Parameters:
@@ -115,7 +115,7 @@ GenerativeAdversarialNetwork:categoricalTrain(previousFeatureMatrix: matrix, exp
 Diagonally Gaussian trains the model.
 
 ```
-GenerativeAdversarialNetwork:categoricalTrain(previousFeatureMatrix: matrix, expertActionMeanMatrix: matrix, expertStandardDeviationMatrix: matrix,currentFeatureMatrix: matrix)
+GenerativeAdversarialImitationLearning:diagonalGaussianTrain(previousFeatureMatrix: matrix, expertActionMeanMatrix: matrix, expertStandardDeviationMatrix: matrix,currentFeatureMatrix: matrix)
 ```
 
 #### Parameters:
@@ -133,7 +133,7 @@ GenerativeAdversarialNetwork:categoricalTrain(previousFeatureMatrix: matrix, exp
 Generates the output from Discriminator.
 
 ```
-GenerativeAdversarialNetwork:evaluate(featureMatrix: matrix): matrix
+GenerativeAdversarialImitationLearning:evaluate(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
@@ -149,7 +149,7 @@ GenerativeAdversarialNetwork:evaluate(featureMatrix: matrix): matrix
 Generates the output from Generator.
 
 ```
-GenerativeAdversarialNetwork:generate(featureMatrix: matrix, returnOriginalOutput: boolean): matrix 
+GenerativeAdversarialImitationLearning:generate(featureMatrix: matrix, returnOriginalOutput: boolean): matrix 
 ```
 
 #### Parameters:

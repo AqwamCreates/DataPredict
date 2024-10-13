@@ -204,6 +204,8 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 			local actionIndex = chooseIndexWithHighestValue(expertActionVector)
 
 			local action = ClassesList[actionIndex]
+			
+			if (not action) then error("Missing action at index " .. actionIndex .. ".") end
 
 			ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, action, discriminatorLoss, currentFeatureVector)
 

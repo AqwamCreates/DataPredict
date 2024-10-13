@@ -162,7 +162,7 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 	
 	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 	
-	if (discriminatorInputNumberOfFeatures ~= (#expertActionMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
+	if (discriminatorInputNumberOfFeatures ~= (#expertActionMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions!") end
 	
 	discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 	
@@ -210,7 +210,7 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 
 			local action = ClassesList[actionIndex]
 			
-			if (not action) then error("Missing action at index " .. actionIndex .. ".") end
+			if (not action) then error("Missing action at index " .. actionIndex .. "!") end
 
 			ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, action, discriminatorLoss, currentFeatureVector)
 
@@ -254,7 +254,7 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 	
 	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 	
-	if (discriminatorInputNumberOfFeatures ~= (#expertActionMeanMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
+	if (discriminatorInputNumberOfFeatures ~= (#expertActionMeanMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions!") end
 
 	discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 

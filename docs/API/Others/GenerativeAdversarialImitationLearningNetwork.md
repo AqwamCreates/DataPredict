@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - GenerativeAdversarialImitationLearning (GAIL)
 
-GenerativeAdversarialImitationLearning uses two neural networks to generate new contents from noise.
+GenerativeAdversarialImitationLearning allows an agent to learn from experts' trajectories.
 
 ## Notes
 

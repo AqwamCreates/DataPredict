@@ -144,9 +144,9 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 	
 	local ReinforcementLearningModel = self.ReinforcementLearningModel
 	
-	if (not DiscriminatorModel) then error("No discriminator neural network.") end
+	if (not DiscriminatorModel) then error("No discriminator neural network!") end
 	
-	if (not ReinforcementLearningModel) then error("No reinforcement learning neural network.") end
+	if (not ReinforcementLearningModel) then error("No reinforcement learning neural network!") end
 	
 	local numberOfStepsPerEpisode = self.numberOfStepsPerEpisode
 	
@@ -161,6 +161,8 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 	local currentFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
 	
 	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
+	
+	if (discriminatorInputNumberOfFeatures ~= (#expertActionMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
 	
 	discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 	
@@ -186,28 +188,35 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 
 			local agentActionVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 			
+			local concatenatedExpertStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, expertActionVector)
+
+			local concatenatedAgentStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, agentActionVector)
+
 			if (discriminatorInputHasBias) then
+
+				table.insert(concatenatedExpertStateActionVector[1], 1)
 				
-				table.insert(agentActionVector[1], 1)
-				table.insert(expertActionVector[1], 1)
-				
+				table.insert(concatenatedAgentStateActionVector[1], 1)
+
 			end
 
-			local discriminatorAgentActionValue = DiscriminatorModel:predict(agentActionVector, true)[1][1]
+			local discriminatorExpertActionValue = DiscriminatorModel:predict(concatenatedExpertStateActionVector, true)[1][1]
 
-			local discriminatorExpertActionValue = DiscriminatorModel:predict(expertActionVector, true)[1][1]
-
-			local discriminatorLoss = -(math.log(discriminatorAgentActionValue) + math.log(1 - discriminatorExpertActionValue))
+			local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
+			
+			local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 
 			local actionIndex = chooseIndexWithHighestValue(expertActionVector)
 
 			local action = ClassesList[actionIndex]
+			
+			if (not action) then error("Missing action at index " .. actionIndex .. ".") end
 
 			ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, action, discriminatorLoss, currentFeatureVector)
 
 			DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 
-			DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
+			DiscriminatorModel:backwardPropagate(-discriminatorLoss, true)
 
 			if (isOutputPrinted) then print("Episode: " .. episode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
 
@@ -225,9 +234,9 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 
 	local ReinforcementLearningModel = self.ReinforcementLearningModel
 
-	if (not DiscriminatorModel) then error("No discriminator neural network.") end
+	if (not DiscriminatorModel) then error("No discriminator neural network!") end
 
-	if (not ReinforcementLearningModel) then error("No reinforcement learning neural network.") end
+	if (not ReinforcementLearningModel) then error("No reinforcement learning neural network!") end
 
 	local numberOfStepsPerEpisode = self.numberOfStepsPerEpisode
 
@@ -244,6 +253,8 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 	local currentFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
 	
 	local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
+	
+	if (discriminatorInputNumberOfFeatures ~= (#expertActionMeanMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
 
 	discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 
@@ -273,33 +284,32 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 
 			local currentFeatureVector = {currentFeatureSubMatrix[step]}
 
-			local agentActionVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
+			local agentActionMeanVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 			
-			if (discriminatorInputHasBias) then
+			local concatenatedExpertStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, expertActionMeanVector)
+			
+			local concatenatedAgentStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, agentActionMeanVector)
 
-				table.insert(agentActionVector[1], 1)
-				table.insert(expertActionMeanVector[1], 1)
+			if (discriminatorInputHasBias) then
+				
+				table.insert(concatenatedExpertStateActionVector[1], 1)
+				
+				table.insert(concatenatedAgentStateActionVector[1], 1)
+				
 
 			end
-
-			local discriminatorAgentActionValue = DiscriminatorModel:predict(agentActionVector, true)[1][1]
-
-			local discriminatorExpertActionValue = DiscriminatorModel:predict(expertActionMeanVector, true)[1][1]
 			
-			if (discriminatorInputHasBias) then
+			local discriminatorExpertActionValue = DiscriminatorModel:predict(concatenatedExpertStateActionVector, true)[1][1]
 
-				table.remove(agentActionVector[1], 1)
-				table.remove(expertActionMeanVector[1], 1)
+			local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
 
-			end
-
-			local discriminatorLoss = -(math.log(discriminatorAgentActionValue) + math.log(1 - discriminatorExpertActionValue))
+			local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 
 			ReinforcementLearningModel:diagonalGaussianUpdate(previousFeatureVector, expertActionMeanVector, expertActionStandardDeviationVector, discriminatorLoss, currentFeatureVector)
 
 			DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 
-			DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
+			DiscriminatorModel:backwardPropagate(-discriminatorLoss, true)
 
 			if (isOutputPrinted) then print("Episode: " .. currentEpisode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
 

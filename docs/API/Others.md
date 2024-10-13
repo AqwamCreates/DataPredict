@@ -16,6 +16,8 @@
 
 [RandomNetworkDistillation](Others/RandomNetworkDistillation.md)
 
+[GenerativeAdversarialImitationLearning](Others/GenerativeAdversarialImitationLearning.md)
+
 [Regularizer](Others/Regularizer.md)
 
 [OneVsAll](Others/OneVsAll.md)

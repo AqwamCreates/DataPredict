@@ -100,7 +100,7 @@ ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureV
 
 #### Parameters:
 
-* previousFeatiureVector: The previous state of the environment.
+* previousFeatureVector: The previous state of the environment.
 
 * action: The action selected.
 
@@ -118,7 +118,7 @@ ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector: fea
 
 #### Parameters:
 
-* previousFeatiureVector: The previous state of the environment.
+* previousFeatureVector: The previous state of the environment.
 
 * actionMeanVector: The vector containing mean values for all actions.
 

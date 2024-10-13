@@ -203,7 +203,7 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 
 			local discriminatorExpertActionValue = DiscriminatorModel:predict(concatenatedExpertStateActionVector, true)[1][1]
 			
-			local discriminatorLoss = math.log(discriminatorAgentActionValue) + math.log(1 - discriminatorExpertActionValue)
+			local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 
 			local actionIndex = chooseIndexWithHighestValue(expertActionVector)
 
@@ -300,7 +300,7 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 
 			local discriminatorExpertActionValue = DiscriminatorModel:predict(concatenatedExpertStateActionVector, true)[1][1]
 
-			local discriminatorLoss = math.log(discriminatorAgentActionValue) + math.log(1 - discriminatorExpertActionValue)
+			local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 
 			ReinforcementLearningModel:diagonalGaussianUpdate(previousFeatureVector, expertActionMeanVector, expertActionStandardDeviationVector, discriminatorLoss, currentFeatureVector)
 

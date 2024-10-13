@@ -188,9 +188,9 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 
 			local agentActionVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 			
-			local concatenatedAgentStateActionVector = AqwamMatrixLibrary:concatenate(previousFeatureVector, agentActionVector)
+			local concatenatedAgentStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, agentActionVector)
 			
-			local concatenatedExpertStateActionVector = AqwamMatrixLibrary:concatenate(previousFeatureVector, expertActionVector)
+			local concatenatedExpertStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, expertActionVector)
 			
 			if (discriminatorInputHasBias) then
 				
@@ -215,7 +215,7 @@ function GenerativeAdversarialNetworkModel:categoricalTrain(previousFeatureMatri
 
 			DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 
-			DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
+			DiscriminatorModel:backwardPropagate(-discriminatorLoss, true)
 
 			if (isOutputPrinted) then print("Episode: " .. episode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
 
@@ -285,9 +285,9 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 
 			local agentActionMeanVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 			
-			local concatenatedAgentStateActionVector = AqwamMatrixLibrary:concatenate(previousFeatureVector, agentActionMeanVector)
+			local concatenatedAgentStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, agentActionMeanVector)
 
-			local concatenatedExpertStateActionVector = AqwamMatrixLibrary:concatenate(previousFeatureVector, expertActionMeanVector)
+			local concatenatedExpertStateActionVector = AqwamMatrixLibrary:horizontalConcatenate(previousFeatureVector, expertActionMeanVector)
 
 			if (discriminatorInputHasBias) then
 
@@ -306,7 +306,7 @@ function GenerativeAdversarialNetworkModel:diagonalGaussianTrain(previousFeature
 
 			DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 
-			DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
+			DiscriminatorModel:backwardPropagate(-discriminatorLoss, true)
 
 			if (isOutputPrinted) then print("Episode: " .. currentEpisode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
 

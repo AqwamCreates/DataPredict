@@ -18,7 +18,7 @@
 
 [GenerativeAdversarialImitationLearning](Others/GenerativeAdversarialImitationLearning.md)
 
-[WassersteinGenerativeAdversarialImitationLearning](WassersteinGenerativeAdversarialImitationLearning.md)
+[WassersteinGenerativeAdversarialImitationLearning](Others/WassersteinGenerativeAdversarialImitationLearning.md)
 
 [Regularizer](Others/Regularizer.md)
 

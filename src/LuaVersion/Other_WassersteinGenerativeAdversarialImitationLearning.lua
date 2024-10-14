@@ -132,6 +132,12 @@ function WassersteinGenerativeAdversarialImitationLearning:setPrintOutput(option
 
 end
 
+function WassersteinGenerativeAdversarialImitationLearning:setClassesList(ClassesList)
+
+	self.ClassesList = ClassesList
+
+end
+
 function WassersteinGenerativeAdversarialImitationLearning:categoricalTrain(previousFeatureMatrix, expertActionMatrix, currentFeatureMatrix)
 	
 	local DiscriminatorModel = self.DiscriminatorModel
@@ -146,7 +152,7 @@ function WassersteinGenerativeAdversarialImitationLearning:categoricalTrain(prev
 	
 	local isOutputPrinted = self.isOutputPrinted
 	
-	local ClassesList = ReinforcementLearningModel.ClassesList
+	local ClassesList = self.ClassesList
 	
 	local previousFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
 	
@@ -333,6 +339,12 @@ end
 function WassersteinGenerativeAdversarialImitationLearning:getReinforcementLearningModel()
 
 	return self.ReinforcementLearningModel
+
+end
+
+function WassersteinGenerativeAdversarialImitationLearning:getClassesList()
+
+	return self.ClassesList
 
 end
 

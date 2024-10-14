@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - WassersteinGenerativeAdversarialImitationLearning (GAIL)
+# [API Reference](../../API.md) - [Others](../Others.md) - WassersteinGenerativeAdversarialImitationLearning (W-GAIL)
 
 WassersteinGenerativeAdversarialImitationLearning allows an agent to learn from experts' trajectories.
 

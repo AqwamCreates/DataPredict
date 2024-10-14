@@ -191,8 +191,12 @@ AqwamMachineAndDeepLearningLibrary.Others = {
 	GradientDescentModifier =  require(Others.GradientDescentModifier),
 	
 	RandomNetworkDistillation = require(Others.RandomNetworkDistillation),
+
+	GenerativeAdversarialImitationLearning = require(Others.GenerativeAdversarialImitationLearning),
 	
-	Regularization = require(Others.Regularization),
+	WassersteinGenerativeAdversarialImitationLearning = require(Others.WassersteinGenerativeAdversarialImitationLearning),
+	
+	Regularizer = require(Others.Regularizer),
 	
 	StringSplitter = require(Others.StringSplitter),
 	

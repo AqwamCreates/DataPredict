@@ -26,9 +26,9 @@
 
 --]]
 
-WassersteinGenerativeAdversarialImitationLearning = {}
+GenerativeAdversarialImitationLearning = {}
 
-WassersteinGenerativeAdversarialImitationLearning.__index = WassersteinGenerativeAdversarialImitationLearning
+GenerativeAdversarialImitationLearning.__index = GenerativeAdversarialImitationLearning
 
 local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
@@ -88,51 +88,57 @@ local function breakMatrixToMultipleSmallerMatrices(matrix, batchSize)
 
 end
 
-function WassersteinGenerativeAdversarialImitationLearning.new(numberOfStepsPerEpisode)
+function GenerativeAdversarialImitationLearning.new(numberOfStepsPerEpisode)
 	
-	local NewWassersteinGenerativeAdversarialImitationLearning = {}
+	local NewGenerativeAdversarialImitationLearning = {}
 	
-	setmetatable(NewWassersteinGenerativeAdversarialImitationLearning, NewWassersteinGenerativeAdversarialImitationLearning)
+	setmetatable(NewGenerativeAdversarialImitationLearning, GenerativeAdversarialImitationLearning)
 	
-	NewWassersteinGenerativeAdversarialImitationLearning.numberOfStepsPerEpisode = numberOfStepsPerEpisode or defaultNumberOfStepsPerEpisode
+	NewGenerativeAdversarialImitationLearning.numberOfStepsPerEpisode = numberOfStepsPerEpisode or defaultNumberOfStepsPerEpisode
 	
-	NewWassersteinGenerativeAdversarialImitationLearning.isOutputPrinted = true
+	NewGenerativeAdversarialImitationLearning.isOutputPrinted = true
 	
-	NewWassersteinGenerativeAdversarialImitationLearning.ReinforcementLearningModel = nil
+	NewGenerativeAdversarialImitationLearning.ReinforcementLearningModel = nil
 	
-	NewWassersteinGenerativeAdversarialImitationLearning.DiscriminatorModel = nil
+	NewGenerativeAdversarialImitationLearning.DiscriminatorModel = nil
 	
-	NewWassersteinGenerativeAdversarialImitationLearning.ClassesList = {}
+	NewGenerativeAdversarialImitationLearning.ClassesList = {}
 	
-	return NewWassersteinGenerativeAdversarialImitationLearning
+	return NewGenerativeAdversarialImitationLearning
 	
 end
 
-function WassersteinGenerativeAdversarialImitationLearning:setParameters(numberOfStepsPerEpisode)
+function GenerativeAdversarialImitationLearning:setParameters(numberOfStepsPerEpisode)
 	
 	self.numberOfStepsPerEpisode = numberOfStepsPerEpisode or self.numberOfStepsPerEpisode
 	
 end
 
-function WassersteinGenerativeAdversarialImitationLearning:setDiscriminatorModel(DiscriminatorModel)
+function GenerativeAdversarialImitationLearning:setDiscriminatorModel(DiscriminatorModel)
 	
 	self.DiscriminatorModel = DiscriminatorModel
 	
 end
 
-function WassersteinGenerativeAdversarialImitationLearning:setReinforcementLearningModel(ReinforcementLearningModel)
+function GenerativeAdversarialImitationLearning:setReinforcementLearningModel(ReinforcementLearningModel)
 	
 	self.ReinforcementLearningModel = ReinforcementLearningModel
 	
 end
 
-function WassersteinGenerativeAdversarialImitationLearning:setPrintOutput(option)
+function GenerativeAdversarialImitationLearning:setPrintOutput(option)
 
 	self.isOutputPrinted = option
 
 end
 
-function WassersteinGenerativeAdversarialImitationLearning:categoricalTrain(previousFeatureMatrix, expertActionMatrix, currentFeatureMatrix)
+function GenerativeAdversarialImitationLearning:setClassesList(ClassesList)
+
+	self.ClassesList = ClassesList
+
+end
+
+function GenerativeAdversarialImitationLearning:categoricalTrain(previousFeatureMatrix, expertActionMatrix, currentFeatureMatrix)
 	
 	local DiscriminatorModel = self.DiscriminatorModel
 	
@@ -146,7 +152,7 @@ function WassersteinGenerativeAdversarialImitationLearning:categoricalTrain(prev
 	
 	local isOutputPrinted = self.isOutputPrinted
 	
-	local ClassesList = ReinforcementLearningModel.ClassesList
+	local ClassesList = self.ClassesList
 	
 	local previousFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
 	
@@ -198,7 +204,7 @@ function WassersteinGenerativeAdversarialImitationLearning:categoricalTrain(prev
 
 			local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
 			
-			local discriminatorLoss = discriminatorExpertActionValue - discriminatorAgentActionValue
+			local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 
 			local actionIndex = chooseIndexWithHighestValue(expertActionVector)
 
@@ -210,7 +216,7 @@ function WassersteinGenerativeAdversarialImitationLearning:categoricalTrain(prev
 
 			DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 
-			DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
+			DiscriminatorModel:backwardPropagate(-discriminatorLoss, true)
 
 			if (isOutputPrinted) then print("Episode: " .. episode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
 
@@ -222,7 +228,7 @@ function WassersteinGenerativeAdversarialImitationLearning:categoricalTrain(prev
 	
 end
 
-function WassersteinGenerativeAdversarialImitationLearning:diagonalGaussianTrain(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, currentFeatureMatrix)
+function GenerativeAdversarialImitationLearning:diagonalGaussianTrain(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, currentFeatureMatrix)
 
 	local DiscriminatorModel = self.DiscriminatorModel
 
@@ -294,13 +300,13 @@ function WassersteinGenerativeAdversarialImitationLearning:diagonalGaussianTrain
 
 			local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
 
-			local discriminatorLoss = discriminatorExpertActionValue - discriminatorAgentActionValue
+			local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 
 			ReinforcementLearningModel:diagonalGaussianUpdate(previousFeatureVector, expertActionMeanVector, expertActionStandardDeviationVector, discriminatorLoss, currentFeatureVector)
 
 			DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 
-			DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
+			DiscriminatorModel:backwardPropagate(-discriminatorLoss, true)
 
 			if (isOutputPrinted) then print("Episode: " .. currentEpisode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
 
@@ -312,28 +318,34 @@ function WassersteinGenerativeAdversarialImitationLearning:diagonalGaussianTrain
 
 end
 
-function WassersteinGenerativeAdversarialImitationLearning:evaluate(featureMatrix)
+function GenerativeAdversarialImitationLearning:evaluate(featureMatrix)
 	
 	return self.DiscriminatorModel:predict(featureMatrix, true)
 	
 end
 
-function WassersteinGenerativeAdversarialImitationLearning:generate(noiseFeatureMatrix, returnOriginalOutput)
+function GenerativeAdversarialImitationLearning:generate(noiseFeatureMatrix, returnOriginalOutput)
 	
 	return self.ReinforcementLearningModel:predict(noiseFeatureMatrix, returnOriginalOutput)
 	
 end
 
-function WassersteinGenerativeAdversarialImitationLearning:getDiscriminatorModel()
+function GenerativeAdversarialImitationLearning:getDiscriminatorModel()
 
 	return self.DiscriminatorModel
 
 end
 
-function WassersteinGenerativeAdversarialImitationLearning:getReinforcementLearningModel()
+function GenerativeAdversarialImitationLearning:getReinforcementLearningModel()
 
 	return self.ReinforcementLearningModel
 
 end
 
-return WassersteinGenerativeAdversarialImitationLearning
+function GenerativeAdversarialImitationLearning:getClassesList()
+
+	return self.ClassesList
+
+end
+
+return GenerativeAdversarialImitationLearning

@@ -92,7 +92,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(numberOfStepsPerE
 	
 	local NewWassersteinGenerativeAdversarialImitationLearning = {}
 	
-	setmetatable(NewWassersteinGenerativeAdversarialImitationLearning, NewWassersteinGenerativeAdversarialImitationLearning)
+	setmetatable(NewWassersteinGenerativeAdversarialImitationLearning, WassersteinGenerativeAdversarialImitationLearning)
 	
 	NewWassersteinGenerativeAdversarialImitationLearning.numberOfStepsPerEpisode = numberOfStepsPerEpisode or defaultNumberOfStepsPerEpisode
 	

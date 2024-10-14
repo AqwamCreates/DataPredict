@@ -94,6 +94,26 @@ WassersteinGenerativeAdversarialImitationLearning:getDiscriminatorModel(): Model
 
 * DiscriminatorModel: The model used for discriminating real and fake contents.
 
+### setClassesList()
+
+```
+OneVsAll:setClassesList(ClassesList: [])
+```
+
+#### Parameters:
+
+* ClassesList: A list of classes. The index of the list relates to which model belong to. For example, {3, 1} means that the output for 3 is at first model, and the output for 1 is at second model.
+
+### getClassesList()
+
+```
+OneVsAll:getClassesList(): []
+```
+
+#### Returns:
+
+* ClassesList: A list of classes. The index of the list relates to which model belong to. For example, {3, 1} means that the output for 3 is at first model, and the output for 1 is at second model.
+
 ### categoricalTrain()
 
 Categorically trains the model.

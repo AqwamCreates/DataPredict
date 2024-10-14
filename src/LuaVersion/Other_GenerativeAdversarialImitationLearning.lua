@@ -30,7 +30,7 @@ GenerativeAdversarialImitationLearning = {}
 
 GenerativeAdversarialImitationLearning.__index = GenerativeAdversarialImitationLearning
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
 local defaultNumberOfStepsPerEpisode = 300
 

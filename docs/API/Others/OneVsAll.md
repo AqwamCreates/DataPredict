@@ -66,12 +66,12 @@ OneVsAll:setOptimizer(optimizerName: string, ...)
 
 * ...: The parameters to be provided to the optimizer. 
 
-### setRegularization()
+### setRegularizer()
 
-Sets the optimizer and its parameters. Leaving it empty will clear the optimizer.
+Sets the regularizer and its parameters. Leaving it empty will clear the optimizer.
 
 ```
-OneVsAll:setRegularization(lambda: number, regularizationMode: string, hasBias: boolean)
+OneVsAll:setRegularizer(lambda: number, regularizationMode: string, hasBias: boolean)
 ```
 
 #### Parameters:

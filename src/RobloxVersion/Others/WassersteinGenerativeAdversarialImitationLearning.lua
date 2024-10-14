@@ -153,8 +153,6 @@ function WassersteinGenerativeAdversarialImitationLearning:categoricalTrain(prev
 	local isOutputPrinted = self.isOutputPrinted
 	
 	local ClassesList = self.ClassesList
-
-	if (not ClassesList) then error("Classes list is empty!") end
 	
 	local previousFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
 	

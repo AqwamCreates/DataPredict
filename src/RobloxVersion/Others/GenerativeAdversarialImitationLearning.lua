@@ -132,12 +132,6 @@ function GenerativeAdversarialImitationLearning:setPrintOutput(option)
 
 end
 
-function GenerativeAdversarialImitationLearning:setClassesList(ClassesList)
-	
-	self.ClassesList = ClassesList
-	
-end
-
 function GenerativeAdversarialImitationLearning:categoricalTrain(previousFeatureMatrix, expertActionMatrix, currentFeatureMatrix)
 	
 	local DiscriminatorModel = self.DiscriminatorModel
@@ -152,7 +146,7 @@ function GenerativeAdversarialImitationLearning:categoricalTrain(previousFeature
 	
 	local isOutputPrinted = self.isOutputPrinted
 	
-	local ClassesList = self.ClassesList
+	local ClassesList = ReinforcementLearningModel.ClassesList
 	
 	local previousFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
 	
@@ -241,8 +235,6 @@ function GenerativeAdversarialImitationLearning:diagonalGaussianTrain(previousFe
 	local numberOfStepsPerEpisode = self.numberOfStepsPerEpisode
 
 	local isOutputPrinted = self.isOutputPrinted
-
-	local ClassesList = self.ClassesList
 
 	local previousFeatureMatrixTable = breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
 
@@ -341,12 +333,6 @@ end
 function GenerativeAdversarialImitationLearning:getReinforcementLearningModel()
 
 	return self.ReinforcementLearningModel
-
-end
-
-function GenerativeAdversarialImitationLearning:getClassesList()
-
-	return self.ClassesList
 
 end
 

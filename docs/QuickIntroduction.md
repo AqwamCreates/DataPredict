@@ -12,7 +12,7 @@ Machine learning is a way for computers to predict information based on the data
 
 ## What is deep learning?
 
-It is a more advanced version of machine learning. The training techniques are significantly improved and models are more complex compared to machine learning.
+It is a more advanced version of machine learning, but mainly covers the neural network models. The training techniques are significantly improved and models are more complex compared to machine learning.
 
 ## Use Cases:
 

@@ -63,7 +63,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Getting Started With Reinforcement Learning](Tutorials/GettingStartedWithReinforcementLearning.md)
 
-[Choosing The Most Effective Environment Inputs](Tutorials/ChoosingTheMostEffectiveEnvironmentInputs.md.md)
+[Choosing The Most Effective Environment Inputs](Tutorials/ChoosingTheMostEffectiveEnvironmentInputs.md)
 
 ### Learning AIs - Level 2
 

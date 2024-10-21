@@ -190,7 +190,7 @@ function VanillaPolicyGradientModel.new(discountFactor)
 
 		ActorModel:backwardPropagate(sumActorLossVector, true)
 		
-		CriticModel:backwardPropagate(-sumCriticLoss, true)
+		CriticModel:backwardPropagate(sumCriticLoss, true)
 
 		table.clear(criticValueHistory)
 		

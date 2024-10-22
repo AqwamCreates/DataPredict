@@ -65,15 +65,15 @@
    - **Advantages**: Significantly enhances the stability of Q-value updates.
    - **Disadvantages**: Increases computational complexity.
 
-10. **Vanilla Policy Gradient**:
-    - **Characteristics**: Estimates policy gradients using both actor and critic.
-    - **Advantages**: More stable than REINFORCE due to variance reduction from the critic.
-    - **Disadvantages**: Still suffers from high variance in gradient estimates.
-
-11. **REINFORCE**:
+10. **REINFORCE**:
     - **Characteristics**: A Monte Carlo method optimizing the policy based on complete returns.
     - **Advantages**: Straightforward implementation for policy optimization.
     - **Disadvantages**: High variance in updates can lead to slow convergence.
+
+11. **Vanilla Policy Gradient**:
+    - **Characteristics**: Estimates policy gradients using both actor and critic.
+    - **Advantages**: More stable than REINFORCE due to variance reduction from the critic.
+    - **Disadvantages**: Still suffers from high variance in gradient estimates.
 
 12. **Actor-Critic**:
     - **Characteristics**: Combines value function approximation with policy optimization.

@@ -146,7 +146,7 @@ DeepQLearningQuickSetup:setModel(DeepQLearning)
 
 DeepQLearningQuickSetup:setClassesList(classesList)
 
-local environmentFeatureVector = {{0, 0, 0, 0}}
+local environmentFeatureVector = {{0, 0, 0, 0, 0}}
 
 local action = 1
 

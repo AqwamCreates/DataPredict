@@ -110,7 +110,7 @@ while true do
 
   for step = 1, 1000, 1 do
 
-    local environmentVector = fetchEnvironmentVector(previousEnvironmentVector, action)
+    local environmentVector = fetchEnvironmentFeatureVector(previousEnvironmentVector, action)
 
     action = DeepQLearning:predict(environmentVector)[1][1]
 
@@ -152,7 +152,7 @@ local action = 1
 
 while true do
 
-  environmentFeatureVector = fetchEnvironmentVector(environmentFeatureVector, action)
+  environmentFeatureVector = fetchEnvironmentFeatureVector(environmentFeatureVector, action)
 
   local reward = getReward(environmentFeatureVector, action)
 

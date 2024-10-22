@@ -74,11 +74,11 @@ Using large input values will slow down the neural networks' learning speed. It 
 
 You may use any kind of normalization techniques, including:
 
-* Min-Max Scaling: Scales the data to a fixed range, typically [0, 1].
+* Minimum-Maximum Scaling
 
-* Standardization (Z-score Normalization): Transforms the data to have a mean of 0 and a standard deviation of 1.
+* Standardization (Z-score Normalization)
 
-* Batch Normalization: Applies normalization across mini-batches during training, helping stabilize learning in deep networks.
+* Batch Normalization
 
 ## Conclusion
 

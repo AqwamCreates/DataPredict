@@ -82,7 +82,7 @@ You may use any kind of normalization techniques, including:
 
 ## Conclusion
 
-So you have to keep these two in mind:
+So you have to keep these three in mind:
 
 * Relative Magnitude Over Magnitude
 

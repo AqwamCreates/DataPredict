@@ -88,7 +88,17 @@ DeepQLearning:setModel(NeuralNetwork) -- Then put the NeuralNetwork inside DeepQ
 
 ## Classic Setup
 
-All the reinforcement learning models have two important functions: update() and episodeUpdate(). Below, I will show a code sample using these functions.
+All the reinforcement learning models have two important functions: 
+
+* update()
+
+  * categoricalUpdate() is for discrete action spaces.
+
+  * diagonalGaussianUpdate() is for continuous action spaces.
+
+* episodeUpdate()
+
+Below, I will show a code sample using these functions.
 
 ```lua
 

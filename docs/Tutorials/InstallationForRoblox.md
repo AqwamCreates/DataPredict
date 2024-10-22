@@ -9,6 +9,8 @@ To start, we must first link our machine/deep learning library with our matrix l
 | Release (ModuleScript)      | [DataPredict (Release Version 1.21)](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.21.rbxm)           |                                                                                                                      |
 | Unstable (ModuleScript)     | [Aqwam's Machine And Deep Learning Library](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/AqwamMachineAndDeepLearningLibrary.rbxm)               | [Aqwam's Matrix Library](https://github.com/AqwamCreates/MatrixL/blob/main/src/RobloxVersion/AqwamMatrixLibrary.lua) |
 
+You can read the Terms And Conditions for the MatirxL Library [here](https://github.com/AqwamCreates/MatrixL/blob/main/docs/TermsAndConditions.md).
+
 To download the files from GitHub, you must click on the download button highlighted in the red box.
 
 ![Github File Download Screenshot](https://github.com/AqwamCreates/DataPredict/assets/67371914/b921d568-81b9-4f47-8a96-e0ab0316a4fe)

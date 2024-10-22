@@ -74,7 +74,7 @@ local ClassesList = {1, 2}
 
 local NeuralNetwork = DataPredict.Models.NeuralNetwork.new() -- Create the NeuralNetwork first.
 
-NeuralNetwork:addLayer(4, false, "None")
+NeuralNetwork:addLayer(4, true, "None")
 
 NeuralNetwork:addLayer(2, false, "LeakyReLU")
 
@@ -94,7 +94,7 @@ All the reinforcement learning models have two important functions: update() and
 
 while true do
 
-  local previousEnvironmentFeatureVector = {{0, 0, 0, 0}} -- We must keep track our previous feature vector.
+  local previousEnvironmentFeatureVector = {{0, 0, 0, 0, 0}} -- We must keep track our previous feature vector.
 
   local action = 1
 

@@ -4,7 +4,7 @@ It is a class for handling the merging of model parameters.
 
 ## Notes
 
-* "weightedAverage" and "best" does not work with models that do not store tables of matrices or matrix. It also does not work for models with sequential output. For example:
+* "WeightedAverage" and "Best" does not work with models that do not store tables of matrices or matrix. It also does not work for models with sequential output. For example:
 
   *  DBSCAN and AffinityPropagation models. (Contains non-matrices)
 

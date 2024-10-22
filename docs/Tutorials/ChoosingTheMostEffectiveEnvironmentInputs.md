@@ -74,9 +74,9 @@ Using large input values will slow down the neural networks' learning speed. It 
 
 You may use any kind of normalization techniques, including:
 
-* Minimum-Maximum Scaling
+* Z-score Normalization (Standardization)
 
-* Standardization (Z-score Normalization)
+* Minimum-Maximum Scaling
 
 * Batch Normalization
 

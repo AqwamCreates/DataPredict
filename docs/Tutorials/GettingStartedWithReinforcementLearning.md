@@ -92,9 +92,9 @@ All the reinforcement learning models have two important functions:
 
 * update()
 
-  * categoricalUpdate() is for discrete action spaces.
+  * categoricalUpdate() is for discrete action spaces
 
-  * diagonalGaussianUpdate() is for continuous action spaces.
+  * diagonalGaussianUpdate() is for continuous action spaces
 
 * episodeUpdate()
 

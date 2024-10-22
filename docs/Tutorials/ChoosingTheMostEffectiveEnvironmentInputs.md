@@ -70,7 +70,7 @@ Using redundant values will cause the learning to slow down as the neural networ
 
 ## Normalization
 
-Using large input values will slow down the neural networks' learning speed. It is recommended to normalize your input values so that you can have faster learning speed.
+Using large input values will slow down the neural network' learning speed. It is recommended to normalize your input values so that you can train your neural network faster.
 
 You may use any kind of normalization techniques, including:
 

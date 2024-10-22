@@ -142,7 +142,7 @@ NeuralNetworkModel:addLayer(2, true)
 
 NeuralNetworkModel:addLayer(3, true, "Tanh", nil, nil, Reg1)
 
-NeuralNetworkModel:addLayer(2, false, "StableSoftmax", Reg2)
+NeuralNetworkModel:addLayer(2, false, "StableSoftmax", nil, Reg2)
 
 -- Same regularization object for each layers.
 

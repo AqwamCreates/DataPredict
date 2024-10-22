@@ -38,8 +38,6 @@ NeuralNetwork:setClassesList({1, 2, 3, 4, 5, 6})
 
 -- As you can see the initial set up is the same as calling the train(). However, the difference can be seen at the code below.
 
-NeuralNetwork:generateLayers() -- Only call this when any these functions are not used: createLayers() or setModelParameters().
-
 local predictedMatrix = NeuralNetwork:forwardPropagate(dataMatrix, true)
 
 local lossMatrix = MatrixL:subtract(predictedMatrix, labelMatrix)

@@ -11,13 +11,13 @@
 | Deep Expected State-Action-Reward-State-Action                                     | 1                         | Temporal Difference               | On-Policy              | Yes          | No           | No              | Yes                   | No                      |
 | Double Deep Expected State-Action-Reward-State-Action V1 (Randomly Chosen Network) | 1 (2 Model Parameters)    | Temporal Difference               | On-Policy              | Yes          | No           | No              | Yes                   | No                      |
 | Double Deep Expected State-Action-Reward-State-Action V2 (Target Network)          | 1 (2 Model Parameters)    | Temporal Difference               | On-Policy              | Yes          | No           | No              | Yes                   | No                      |
+| REINFORCE                                                                          | 1                         | Both                              | On-Policy              | No           | Yes          | Yes             | Yes                   | Yes                     |
+| Vanilla Policy Gradient                                                            | 2 (Actor + Critic)        | Both                              | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
 | Actor-Critic                                                                       | 2 (Actor + Critic)        | Both                              | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
 | Advantage Actor-Critic                                                             | 2 (Actor + Critic)        | Both                              | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
 | Asynchronous Advantage Actor-Critic                                                | 2 (Actor + Critic)        | Both                              | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
 | Proximal Policy Optimization                                                       | 2 (Actor + Critic)        | Both                              | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
 | Proximal Policy Optimization with Clipped Objective                                | 2 (Actor + Critic)        | Both                              | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
-| Vanilla Policy Gradient                                                            | 2 (Actor + Critic)        | Both                              | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
-| REINFORCE                                                                          | 1                         | Both                              | On-Policy              | No           | Yes          | Yes             | Yes                   | Yes                     |
 
 ## Additional Notes:
 1. **Deep Q Learning**:
@@ -65,37 +65,37 @@
    - **Advantages**: Significantly enhances the stability of Q-value updates.
    - **Disadvantages**: Increases computational complexity.
 
-10. **Actor-Critic**:
-    - **Characteristics**: Combines value function approximation with policy optimization.
-    - **Advantages**: Provides more stable learning through actor and critic interaction.
-    - **Disadvantages**: Requires careful tuning to balance actor and critic updates.
-
-11. **Advantage Actor-Critic**:
-    - **Characteristics**: Uses advantages to improve the learning signal for the actor.
-    - **Advantages**: Reduces variance in the policy gradient estimates.
-    - **Disadvantages**: Accurate advantage estimation can be challenging.
-
-12. **Asynchronous Advantage Actor-Critic**:
-    - **Characteristics**: Employs multiple agents in parallel to speed up training.
-    - **Advantages**: Faster convergence due to diverse exploration.
-    - **Disadvantages**: Increased implementation complexity.
-
-13. **Proximal Policy Optimization**:
-    - **Characteristics**: Clipped objective function to ensure stable policy updates.
-    - **Advantages**: Balances exploration and exploitation effectively.
-    - **Disadvantages**: Sensitive to the clipping range and other hyperparameters.
-
-14. **Proximal Policy Optimization with Clipped Objective**:
-    - **Characteristics**: An extension of PPO focused on stability.
-    - **Advantages**: Helps prevent large policy updates that can destabilize learning.
-    - **Disadvantages**: Requires careful parameter tuning for optimal performance.
-
-15. **Vanilla Policy Gradient**:
+10. **Vanilla Policy Gradient**:
     - **Characteristics**: Estimates policy gradients using both actor and critic.
     - **Advantages**: More stable than REINFORCE due to variance reduction from the critic.
     - **Disadvantages**: Still suffers from high variance in gradient estimates.
 
-16. **REINFORCE**:
+11. **REINFORCE**:
     - **Characteristics**: A Monte Carlo method optimizing the policy based on complete returns.
     - **Advantages**: Straightforward implementation for policy optimization.
     - **Disadvantages**: High variance in updates can lead to slow convergence.
+
+12. **Actor-Critic**:
+    - **Characteristics**: Combines value function approximation with policy optimization.
+    - **Advantages**: Provides more stable learning through actor and critic interaction.
+    - **Disadvantages**: Requires careful tuning to balance actor and critic updates.
+
+13. **Advantage Actor-Critic**:
+    - **Characteristics**: Uses advantages to improve the learning signal for the actor.
+    - **Advantages**: Reduces variance in the policy gradient estimates.
+    - **Disadvantages**: Accurate advantage estimation can be challenging.
+
+14. **Asynchronous Advantage Actor-Critic**:
+    - **Characteristics**: Employs multiple agents in parallel to speed up training.
+    - **Advantages**: Faster convergence due to diverse exploration.
+    - **Disadvantages**: Increased implementation complexity.
+
+15. **Proximal Policy Optimization**:
+    - **Characteristics**: Clipped objective function to ensure stable policy updates.
+    - **Advantages**: Balances exploration and exploitation effectively.
+    - **Disadvantages**: Sensitive to the clipping range and other hyperparameters.
+
+16. **Proximal Policy Optimization with Clipped Objective**:
+    - **Characteristics**: An extension of PPO focused on stability.
+    - **Advantages**: Helps prevent large policy updates that can destabilize learning.
+    - **Disadvantages**: Requires careful parameter tuning for optimal performance.

@@ -51,7 +51,9 @@ These two values can effect our neural networks very differently. Below, I will 
 Directional equivalents means that the values provides the same information in terms of direction. For example, let's say if we have these three values:
 
 * distanceX
+
 * distanceZ
+
 * rotationY
 
 These can be represented as:
@@ -66,12 +68,27 @@ Because rotationY contains those two values, distanceX and distanceZ can be remo
 
 Using redundant values will cause the learning to slow down as the neural network will have to find the connection between these values that already exists.
 
+## Normalization
+
+Using large input values will slow down the neural networks' learning speed. It is recommended to normalize your input values so that you can have faster learning speed.
+
+You may use any kind of normalization techniques, including:
+
+* Min-Max Scaling: Scales the data to a fixed range, typically [0, 1].
+
+* Standardization (Z-score Normalization): Transforms the data to have a mean of 0 and a standard deviation of 1.
+
+* Batch Normalization: Applies normalization across mini-batches during training, helping stabilize learning in deep networks.
+
 ## Conclusion
 
 So you have to keep these two in mind:
 
 * Relative Magnitude Over Magnitude
+
 * Directional Equivalents
+
+* Normalization
 
 Once you master those two, you can start seeing your AI learn much more faster.
 

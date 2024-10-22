@@ -1,3 +1,5 @@
+# Deep Reinforcement Learning Algorithms Properties
+
 | Algorithm                                                                          | Number Of Neural Networks | Temporal Difference / Monte-Carlo | On-Policy / Off-Policy | Q-Values     | V-Values     | Policy-Gradient | Discrete Action Space | Continuous Action Space |
 |------------------------------------------------------------------------------------|---------------------------|-----------------------------------|------------------------|--------------|--------------|-----------------|-----------------------|-------------------------|
 | Deep Q Learning                                                                    | 1                         | Temporal Difference               | Off-Policy             | Yes          | No           | No              | Yes                   | No                      |
@@ -17,7 +19,7 @@
 | Vanilla Policy Gradient                                                            | 2 (Actor + Critic)        | Monte Carlo                       | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
 | REINFORCE                                                                          | 1                         | Monte Carlo                       | On-Policy              | No           | Yes          | Yes             | Yes                   | Yes                     |
 
-### Additional Notes:
+## Additional Notes:
 1. **Deep Q Learning**:
    - **Characteristics**: Uses a neural network to approximate Q-values.
    - **Advantages**: Simple to implement; effective for discrete action spaces.

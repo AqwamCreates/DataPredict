@@ -90,6 +90,6 @@ So you have to keep these three in mind:
 
 * Normalization
 
-Once you master those two, you can start seeing your AI learn much more faster.
+Once you master those three, you can start seeing your AI learn much more faster.
 
 That's all for today!

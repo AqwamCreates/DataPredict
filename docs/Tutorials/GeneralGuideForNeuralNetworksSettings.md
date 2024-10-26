@@ -50,7 +50,7 @@ How we initialize our weights can affect how fast the model can learn. For examp
 
 * Having all weight values falls either on positive side or negative side only: If the global optimum is on the opposite side, the model have to move all its weights from one side to another as opposed to changing some weights.
 
-* Having all weight values that falls between 1 and 0 ( or -1). This allows the weight values to start at the center of dimensional space and hence shorter distance to travel to global optimum (most of the time).
+* Having all weight values that falls between 1 and 0 (or -1). This allows the weight values to start at the center of dimensional space and hence shorter distance to travel to global optimum (most of the time).
 
 ## Regularization
 

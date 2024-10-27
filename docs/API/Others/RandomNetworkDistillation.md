@@ -68,7 +68,7 @@ RandomNetworkDistillation:getTargetModelParameters(doNotDeepCopy: boolean): Mode
 
 ### getPredictorModelParameters()
 
-Gets the target model parameters from the network.
+Gets the predictor model parameters from the network.
 
 ```
 RandomNetworkDistillation:getPredictorModelParameters(doNotDeepCopy: boolean): ModelParameters
@@ -84,7 +84,7 @@ RandomNetworkDistillation:getPredictorModelParameters(doNotDeepCopy: boolean): M
 
 ### setTargetModelParameters()
 
-Set the model parameters to the network
+Set the target model parameters to the network
 
 ```
 RandomNetworkDistillation:setTargetModelParameters(TargetModelParameters: ModelParameters, doNotDeepCopy: boolean)
@@ -98,7 +98,7 @@ RandomNetworkDistillation:setTargetModelParameters(TargetModelParameters: ModelP
 
 ### setPredictorModelParameters()
 
-Set the model parameters to the network
+Set the predictor model parameters to the network
 
 ```
 RandomNetworkDistillation:setPredictorModelParameters(PredictorModelParameters: ModelParameters, doNotDeepCopy: boolean)

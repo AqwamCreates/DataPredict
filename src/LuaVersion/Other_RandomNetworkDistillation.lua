@@ -168,10 +168,10 @@ function RandomNetworkDistillation:generate(featureMatrix)
 
 	Model:forwardPropagate(featureMatrix, true)
 	Model:backwardPropagate(errorMatrix, true)
-	
-	self.PredictorModelParameters = PredictorModelParameters
 
 	self.TargetModelParameters = TargetModelParameters
+	
+	self.PredictorModelParameters = PredictorModelParameters
 	
 	return generatedMatrix
 	

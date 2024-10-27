@@ -147,7 +147,7 @@ ffunction RandomNetworkDistillation:generate(featureMatrix)
 
 	self.TargetModelParameters = TargetModelParameters
 	
-	self.PredictorModelParameters = PredictorModelParameters
+	self.PredictorModelParameters = Model:getModelParameters(true)
 	
 	return generatedMatrix
 	

@@ -100,7 +100,7 @@ function RandomNetworkDistillation:getModel(Model)
 	
 end
 
-function RandomNetworkDistillation:generate(featureVector)
+ffunction RandomNetworkDistillation:generate(featureMatrix)
 	
 	local Model = self.Model
 	
@@ -120,7 +120,7 @@ function RandomNetworkDistillation:generate(featureVector)
 	
 	Model:setModelParameters(TargetModelParameters, true)
 	
-	local targetVector = Model:predict(featureVector, true)
+	local targetMatrix = Model:predict(featureMatrix, true)
 	
 	if (not PredictorModelParameters) then
 
@@ -132,24 +132,24 @@ function RandomNetworkDistillation:generate(featureVector)
 	
 	Model:setModelParameters(PredictorModelParameters, true)
 
-	local predictorVector = Model:predict(featureVector, true)
+	local predictorMatrix = Model:predict(featureMatrix, true)
 	
-	local errorVector = AqwamMatrixLibrary:subtract(predictorVector, targetVector)
+	local errorMatrix = AqwamMatrixLibrary:subtract(predictorMatrix, targetMatrix)
 	
-	local squaredErrorVector = AqwamMatrixLibrary:power(errorVector, 2)
+	local squaredErrorMatrix = AqwamMatrixLibrary:power(errorMatrix, 2)
 	
-	local sumSquaredErrorVector = AqwamMatrixLibrary:horizontalSum(squaredErrorVector)
+	local sumSquaredErrorMatrix = AqwamMatrixLibrary:horizontalSum(squaredErrorMatrix)
 	
-	local generatedVector = AqwamMatrixLibrary:power(sumSquaredErrorVector, 0.5)
+	local generatedMatrix = AqwamMatrixLibrary:power(sumSquaredErrorMatrix, 0.5)
 
-	Model:forwardPropagate(featureVector, true)
-	Model:backwardPropagate(errorVector, true)
+	Model:forwardPropagate(featureMatrix, true)
+	Model:backwardPropagate(errorMatrix, true)
 	
 	self.PredictorModelParameters = PredictorModelParameters
 
 	self.TargetModelParameters = TargetModelParameters
 	
-	return generatedVector
+	return generatedMatrix
 	
 end
 

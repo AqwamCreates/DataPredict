@@ -609,6 +609,8 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 	local costFunctionDerivativeMatrixTable = {}
 
 	local errorMatrixTable = {}
+	
+	local numberOfData = #lossMatrix
 
 	local ModelParameters = self.ModelParameters
 
@@ -621,36 +623,34 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 	local activationFunctionTable = self.activationFunctionTable
 
 	local hasBiasNeuronTable = self.hasBiasNeuronTable
+	
+	local activationFunctionName = activationFunctionTable[numberOfLayers]
 
-	local zLayerMatrix
-
-	local layerCostMatrix = lossMatrix
-
-	local numberOfData = #lossMatrix
+	local derivativeFunction = derivativeList[activationFunctionName]
 
 	if (forwardPropagateTable == nil) then error("Table not found for forward propagation.") end
 
 	if (zTable == nil) then error("Table not found for z matrix.") end
+	
+	local derivativeMatrix = derivativeFunction(forwardPropagateTable[numberOfLayers], zTable[numberOfLayers])
+
+	local layerCostMatrix = AqwamMatrixLibrary:multiply(lossMatrix, derivativeMatrix)
 
 	table.insert(errorMatrixTable, layerCostMatrix)
 
 	for layerNumber = (numberOfLayers - 1), 2, -1 do
 
-		local activationFunctionName = activationFunctionTable[layerNumber]
+		activationFunctionName = activationFunctionTable[layerNumber]
 
-		local derivativeFunction = derivativeList[activationFunctionName]
-
-		local layerMatrix = ModelParameters[layerNumber]
-
-		local hasBiasNeuron = hasBiasNeuronTable[layerNumber]
+		derivativeFunction = derivativeList[activationFunctionName]
 
 		local hasBiasNeuronOnNextLayer = hasBiasNeuronTable[layerNumber + 1]
 
-		local layerMatrix = AqwamMatrixLibrary:transpose(layerMatrix)
+		local layerMatrix = AqwamMatrixLibrary:transpose(ModelParameters[layerNumber])
 
 		local partialErrorMatrix = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
-		local derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
+		derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
 
 		if (hasBiasNeuronOnNextLayer == 1) then -- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
 
@@ -682,7 +682,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 
 	end
 
-	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrixTable  end
+	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrixTable end
 
 	return costFunctionDerivativeMatrixTable
 
@@ -1297,22 +1297,6 @@ function NeuralNetworkModel:processLabelVector(labelVector)
 	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(labelVector)
 
 	return logisticMatrix
-
-end
-
-function NeuralNetworkModel:calculateCostFunctionDerivatives(lossMatrix)
-
-	if type(lossMatrix) == "number" then lossMatrix = {{lossMatrix}} end
-
-	local numberOfData = #lossMatrix
-
-	local errorMatrixTable = self:calculateErrorMatrix(lossMatrix, self.forwardPropagateTable, self.zTable)
-
-	local deltaTable = self:calculateDelta(self.forwardPropagateTable, errorMatrixTable)
-
-	local costFunctionDerivativesTable = self:calculateCostFunctionDerivatives(deltaTable, numberOfData)
-
-	return costFunctionDerivativesTable
 
 end
 

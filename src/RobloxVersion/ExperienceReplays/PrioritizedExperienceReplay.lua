@@ -170,7 +170,7 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBuf
 			
 		end
 
-		local sizeArray = AqwamMatrixLibrary:getSize(replayBufferArray[1][1])
+		local sizeArray = AqwamMatrixLibrary:getDimensionSizeArray(replayBufferArray[1][1])
 
 		local inputMatrix = AqwamMatrixLibrary:createMatrix(sizeArray[1], sizeArray[2], 1)
 

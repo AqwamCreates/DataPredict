@@ -17,11 +17,11 @@ Aqwam's Machine And Deep Learning Library (Aqwam-MDLL)
 
 Author: Aqwam Harish Aiman
 	
-YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
-	
-LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
-
 Email: aqwam.harish.aiman@gmail.com
+
+LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 --------------------------------------------------------------------
 

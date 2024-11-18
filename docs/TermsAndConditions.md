@@ -65,7 +65,7 @@ The Library is provided "AS IS" and without warranty of any kind. Licensor shall
 
 * Once the Licensor have agreed that the Library have been removed, the User may remove the credits or source information in all publications or presentations that uses the Library.
 
-## Compensatory Damages for Cheating and Exploiting, Cheat and Exploit Distribution, Anti-Cheat and Anti-Cheat Evasion, Anti-Cheat and Anti-Exploit Evasion Distribution
+## Compensatory Damages for Cheating and Exploiting, Cheat and Exploit Distribution, Anti-Cheat and Anti-Exploit Evasion, Anti-Cheat and Anti-Exploit Evasion Distribution
 
 In the event that the User uses the Library for cheating and exploiting, cheat and exploit development, cheat and exploit distribution, anti-cheat and anti-exploit evasion, or anti-cheat and anti-exploit evasion distribution, and such actions result in damages to the Licensor, the User shall be liable for compensatory damages. These damages may include, but are not limited to, the following:
 

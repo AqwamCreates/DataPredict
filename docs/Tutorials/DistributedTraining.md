@@ -103,7 +103,7 @@ DistributedModelParameters:setModelParametersMerger(ModelParametersMerger)
 
 LinearRegression1:setAreGradientsSaved(false) -- We don't need to save the gradients because we're directly using the model parameters.
 
-LinearRegression1:setParameters(500) -- We will set the number of the iterations to 500 for this tutorial.
+LinearRegression1:setParameters(500) -- We will set the maximum number of the iterations to 500 for this tutorial.
 
 -- Then we train our model.
 

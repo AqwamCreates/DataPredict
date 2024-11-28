@@ -88,6 +88,18 @@ DistributedModelParameters:getCurrentTotalNumberOfChildModelUpdatesToUpdateMainM
 
 * getCurrentTotalNumberOfChildModelUpdatesToUpdateMainModel: The current total number of reinforcements from all child models.
 
+### start()
+
+Creates a new thread for real-time gradient descent / ascent.
+
+```
+DistributedModelParameters:start(): coroutine
+```
+
+#### Returns:
+
+* modelParameterChangeCoroutine: A coroutine that handles the modification of the model parameters.
+
 ### reset()
 
 Reset the main model's stored values (excluding the parameters).

@@ -14,7 +14,7 @@ CategoricalPolicy.new(numberOfReinforcementsPerEpisode: integer, epsilon: number
 
 #### Parameters:
 
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
+* numberOfReinforcementsPerEpisode: The number of reinforcements to be considered as a single episode.
 
 * epsilon: The higher the value, the more likely it focuses on exploration over exploitation. The value must be set between 0 and 1. Exploration means choosing a random action to try to get better overall average performance, while exploiting means choosing an action that has the potential to increase the performance.
 

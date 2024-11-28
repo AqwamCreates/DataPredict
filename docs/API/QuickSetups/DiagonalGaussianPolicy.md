@@ -14,7 +14,7 @@ DiagonalGaussianPolicy.new(numberOfReinforcementsPerEpisode: integer): DiagonalG
 
 #### Parameters:
 
-* numberOfReinforcementsPerEpisode: The number of reinforcements to decay the epsilon value.
+* numberOfReinforcementsPerEpisode: The number of reinforcements to be considered as a single episode.
 
 #### Returns:
 

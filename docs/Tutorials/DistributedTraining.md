@@ -109,11 +109,15 @@ DistributedModelParameters:setMainModelParameters(ModelParameters1)
 
 LinearRegression1:setAreGradientsSaved(false) -- We don't need to save the gradients because we're directly using the model parameters.
 
-LinearRegression1:setParameters(500) -- We need to set the number of iterations to certain values so the cost values converges.
+-- Then we train our model first.
 
--- We then need to add the models to DistributedModelParameters.
+LinearRegression1:train(featureMatrix, labelVector)
 
-DistributedModelParameters:addModel(LinearRegression1)
+-- We then need to add the model parameters to DistributedModelParameters.
+
+local ModelParameters1 = DistributedModelParameters:getMainModelParameters(ModelParameters1)
+
+DistributedModelParameters:addModelParameters(ModelParameters1)
 
 -- Once set, we can start training our models individually and update the model parameters in DistributedModelParameters object.
 

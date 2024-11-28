@@ -1,2 +1,13 @@
 remote_theme: just-the-docs/just-the-docs
 color_scheme: dark
+
+---
+title: DataPredict
+nav_order: 1
+---
+
+---
+title: API Reference
+parent: DataPredict
+nav_order: 1
+---

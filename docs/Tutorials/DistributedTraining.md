@@ -98,33 +98,24 @@ local ModelParametersMerger = DataPredict.Models.ModelParametersMerger.new()
 
 DistributedModelParameters:setModelParametersMerger(ModelParametersMerger)
 
--- Then we need a model parameters from a model and send it to the DistributedModelParameters object.
-
-local ModelParameters1 = LinearRegression1:getModelParameters()
-
-DistributedModelParameters:setMainModelParameters(ModelParameters1)
-
 -- For this to work, we need to change some parameters for the LinearRegression objects.
 -- I will only set parameters for one model, so let's assume I also did this to other models.
 
 LinearRegression1:setAreGradientsSaved(false) -- We don't need to save the gradients because we're directly using the model parameters.
 
--- Then we train our model first.
+LinearRegression1:setParameters(500) -- We will set the number of the iterations to 500 for this tutorial.
+
+-- Then we train our model.
 
 LinearRegression1:train(featureMatrix, labelVector)
 
--- We then need to add the model parameters to DistributedModelParameters.
+-- We then need to add the trained model parameters to DistributedModelParameters.
 
-local ModelParameters1 = DistributedModelParameters:getMainModelParameters(ModelParameters1)
+local TrainedModelParameters1 = DistributedModelParameters:getMainModelParameters()
 
-DistributedModelParameters:addModelParameters(ModelParameters1)
+DistributedModelParameters:addModelParameters(TrainedModelParameters1)
 
--- Once set, we can start training our models individually and update the model parameters in DistributedModelParameters object.
-
-DistributedModelParameters:train(featureMatrix1, labelVector1, 1) -- The third parameter indicates which model you want to train.
-
--- The train() or reinforce() functions from DistributedModelParameters will update the main model parameters 
--- in DistributedModelParameters object when the number of train() or reinforce() function calls reaches certain limits.
+-- The addModelParameters() from DistributedModelParameters will update the main model parameters 
 -- Once updated, you can call DistributedGradients' getMainModelParameters() to update the LinearRegression's model parameters.
 
 local UpdatedModelParameters = DistributedModelParameters:getMainModelParameters()

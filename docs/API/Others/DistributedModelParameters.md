@@ -38,7 +38,7 @@ DistributedModelParameters:setParameters(totalNumberOfChildModelUpdatesToUpdateM
 
 * totalNumberOfChildModelUpdatesToUpdateMainModel: The required total number of reinforce() and train() function calls from all child models to update the main model.
 
-### addModel()
+### addModelParameters()
 
 ```
 DistributedModelParameters:addModelParameters(ModelParameters: Matrix/TableOfMatrices)

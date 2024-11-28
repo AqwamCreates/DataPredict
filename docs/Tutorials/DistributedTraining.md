@@ -111,7 +111,7 @@ LinearRegression1:train(featureMatrix, labelVector)
 
 -- We then need to add the trained model parameters to DistributedModelParameters.
 
-local TrainedModelParameters1 = DistributedModelParameters:getMainModelParameters()
+local TrainedModelParameters1 = DistributedModelParameters:getModelParameters()
 
 DistributedModelParameters:addModelParameters(TrainedModelParameters1)
 

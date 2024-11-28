@@ -38,7 +38,7 @@ function DistributedModelParameters.new(totalNumberOfChildModelUpdatesToUpdateMa
 	
 	NewDistributedModelParameters.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = 0
 	
-	NewDistributedModelParameters.ModelArray = {}
+	NewDistributedModelParameters.ModelParametersArray = {}
 	
 	NewDistributedModelParameters.isDistributedLearningRunning = false
 	
@@ -54,51 +54,19 @@ function DistributedModelParameters:setParameters(totalNumberOfChildModelUpdates
 	
 end
 
-function DistributedModelParameters:addModel(Model)
+function DistributedModelParameters:addModelParameters(ModelParameters)
 	
-	if not Model then error("Model is empty!") end
+	if not ModelParameters then error("No model parameters!") end
+	
+	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel + 1
 
-	table.insert(self.ModelArray, Model)
+	table.insert(self.ModelParametersArray, ModelParameters)
 	
 end
 
 function DistributedModelParameters:setModelParametersMerger(ModelParametersMerger)
 	
 	self.ModelParametersMerger = ModelParametersMerger or self.ModelParametersMerger
-	
-end
-
-function DistributedModelParameters:train(featureVector, labelVector, modelNumber)
-
-	local Model = self.ModelArray[modelNumber]
-
-	if (not Model) then error("No model!") end
-	
-	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel + 1
-
-	return Model:train(featureVector, labelVector)
-
-end
-
-function DistributedModelParameters:predict(featureVector, returnOriginalOutput, modelNumber)
-
-	local Model = self.ModelArray[modelNumber]
-
-	if not Model then error("No model!") end
-
-	return Model:predict(featureVector, returnOriginalOutput)
-
-end
-
-function DistributedModelParameters:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput, modelNumber)
-	
-	local Model = self.ModelArray[modelNumber]
-	
-	if (not Model) then error("No model!") end
-	
-	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel + 1
-	
-	return Model:reinforce(currentFeatureVector, rewardValue, returnOriginalOutput)
 	
 end
 
@@ -126,35 +94,41 @@ function DistributedModelParameters:start()
 	
 	self.isDistributedLearningRunning = true
 	
-	local trainCoroutine = coroutine.create(function()
+	local modelParameterChangeCoroutine = coroutine.create(function()
+		
+		local ModelParametersArray = self.ModelParametersArray
 
 		repeat
 			
 			task.wait()
 			
-			if (self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel < self.totalNumberOfChildModelUpdatesToUpdateMainModel) then continue end
-			
-			self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = 0
+			local totalNumberOfChildModelUpdatesToUpdateMainModel = self.totalNumberOfChildModelUpdatesToUpdateMainModel
 			
 			if (self.ModelParametersMerger == nil) then warn("No model parameters merger!") continue end
 			
-			local ModelParametersArray = {}
+			if (self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel < totalNumberOfChildModelUpdatesToUpdateMainModel) then continue end
 			
-			for _, Model in ipairs(self.ModelArray) do table.insert(ModelParametersArray, Model:getModelParameters()) end
+			self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = 0
 			
-			local MainModelParameters = self.ModelParametersMerger:merge(table.unpack(ModelParametersArray))
+			local CurrentModelParametersArray = {}
 			
-			for _, Model in ipairs(self.ModelArray) do Model:setModelParameters(MainModelParameters) end
+			for i = 1, totalNumberOfChildModelUpdatesToUpdateMainModel, 1 do
+				
+				table.insert(CurrentModelParametersArray, ModelParametersArray[i])
+				
+				table.remove(ModelParametersArray, i)
+				
+			end
 			
-			self.MainModelParameters = MainModelParameters
+			self.MainModelParameters = self.ModelParametersMerger:merge(CurrentModelParametersArray)
 
 		until (self.isDistributedLearningRunning == false)
 
 	end)
 
-	coroutine.resume(trainCoroutine)
+	coroutine.resume(modelParameterChangeCoroutine)
 
-	return trainCoroutine
+	return modelParameterChangeCoroutine
 		
 end
 

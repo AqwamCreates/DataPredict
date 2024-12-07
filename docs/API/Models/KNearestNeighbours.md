@@ -1,7 +1,5 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - KNearestNeighbours (KNN)
 
-LinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses iterative calculations to find the best model parameters.
-
 ## Stored Model Parameters
 
 Contains a table of matrices.  

@@ -20,8 +20,6 @@
 
 --]]
 
-local ModelParametersMerger = require("Other_ModelParametersMerger")
-
 DistributedModelParameters = {}
 
 DistributedModelParameters.__index = DistributedModelParameters

@@ -26,8 +26,6 @@
 
 --]]
 
-local ModelParametersMerger = require(script.Parent.Parent.Others.ModelParametersMerger)
-
 DistributedModelParameters = {}
 
 DistributedModelParameters.__index = DistributedModelParameters

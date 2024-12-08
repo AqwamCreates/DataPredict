@@ -104,7 +104,7 @@ function AsynchronousAdvantageActorCriticModel.new(learningRate, numberOfReinfor
 
 	NewAsynchronousAdvantageActorCriticModel.CriticMainModelParameters = nil
 
-	NewAsynchronousAdvantageActorCriticModel.IsModelRunning = false
+	NewAsynchronousAdvantageActorCriticModel.isModelRunning = false
 
 	return NewAsynchronousAdvantageActorCriticModel
 
@@ -552,9 +552,9 @@ end
 
 function AsynchronousAdvantageActorCriticModel:start()
 
-	if (self.IsModelRunning == true) then error("The model is already running!") end
+	if (self.isModelRunning == true) then error("The model is already running!") end
 
-	self.IsModelRunning = true
+	self.isModelRunning = true
 
 	local trainCoroutine = coroutine.create(function()
 
@@ -624,7 +624,7 @@ function AsynchronousAdvantageActorCriticModel:start()
 
 			self.CriticMainModelParameters = CriticMainModelParameters
 
-		until (self.IsModelRunning == false)
+		until (self.isModelRunning == false)
 
 	end)
 
@@ -636,7 +636,7 @@ end
 
 function AsynchronousAdvantageActorCriticModel:stop()
 
-	self.IsModelRunning = false
+	self.isModelRunning = false
 
 end
 

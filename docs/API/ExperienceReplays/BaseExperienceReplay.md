@@ -27,7 +27,7 @@ BaseExperienceReplay.new(batchSize: number, numberOfRunsToUpdate: number, maxBuf
 Change the parameters of a base experience replay object.
 
 ```
-BaseExperienceReplay:setParametersbatchSize: number, numberOfRunsToUpdate: number, maxBufferSize: number)
+BaseExperienceReplay:setParameters(batchSize: number, numberOfRunsToUpdate: number, maxBufferSize: number)
 ```
 
 #### Parameters:

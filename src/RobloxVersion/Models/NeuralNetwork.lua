@@ -89,95 +89,29 @@ local layerPropertyValueTypeCheckingFunctionList = {
 
 }
 
+local elementWiseActivationFunctionList = {
+	
+	["Sigmoid"] = function(z) return 1/(1 + math.exp(-1 * z)) end,
+	
+	["Tanh"] = function (z) return math.tanh(z) end,
+	
+	["ReLU"] = function (z) return math.max(0, z) end,
+	
+	["LeakyReLU"] = function (z) return math.max((0.01 * z), z) end,
+	
+	["ELU"] = function (z) return if (z > 0) then z else (0.01 * (math.exp(z) - 1)) end,
+	
+	["Gaussian"] = function (z) return math.exp(-math.pow(z, 2)) end,
+	
+	["SiLU"] = function (z) return z / (1 + math.exp(-z)) end,
+	
+	["Mish"] = function (z) return z * math.tanh(math.log(1 + math.exp(z))) end,
+	
+	["BinaryStep"] = function (z) return ((z > 0) and 1) or 0 end
+	
+}
+
 local activationFunctionList = {
-
-	["Sigmoid"] = function (zMatrix) 
-
-		local sigmoidFunction = function(z) return 1/(1 + math.exp(-1 * z)) end
-
-		local aMatrix = AqwamMatrixLibrary:applyFunction(sigmoidFunction, zMatrix)
-
-		return aMatrix
-
-	end,
-
-	["Tanh"] = function (zMatrix) 
-
-		local aMatrix = AqwamMatrixLibrary:applyFunction(math.tanh, zMatrix)
-
-		return aMatrix
-
-	end,
-
-	["ReLU"] = function (zMatrix) 
-
-		local ReLUFunction = function (z) return math.max(0, z) end
-
-		local aMatrix = AqwamMatrixLibrary:applyFunction(ReLUFunction, zMatrix)
-
-		return aMatrix
-
-	end,
-
-	["LeakyReLU"] = function (zMatrix) 
-
-		local LeakyReLU = function (z) return math.max((0.01 * z), z) end
-
-		local aMatrix = AqwamMatrixLibrary:applyFunction(LeakyReLU, zMatrix)
-
-		return aMatrix
-
-	end,
-
-	["ELU"] = function (zMatrix) 
-
-		local ELUFunction = function (z) return if (z > 0) then z else (0.01 * (math.exp(z) - 1)) end
-
-		local aMatrix = AqwamMatrixLibrary:applyFunction(ELUFunction, zMatrix)
-
-		return aMatrix
-
-	end,
-
-	["Gaussian"] = function (zMatrix)
-
-		local GaussianFunction = function (z) return math.exp(-math.pow(z, 2)) end
-
-		local aMatrix = AqwamMatrixLibrary:applyFunction(GaussianFunction, zMatrix)
-
-		return aMatrix
-
-	end,
-
-	["SiLU"] = function (zMatrix)
-
-		local SiLUFunction = function (z) return z / (1 + math.exp(-z)) end
-
-		local aMatrix = AqwamMatrixLibrary:applyFunction(SiLUFunction, zMatrix)
-
-		return aMatrix
-
-	end,
-
-	["Mish"] = function (zMatrix)
-
-		local MishFunction = function (z) return z * math.tanh(math.log(1 + math.exp(z))) end
-
-		local aMatrix = AqwamMatrixLibrary:applyFunction(MishFunction, zMatrix)
-
-		return aMatrix
-
-	end,
-
-	["BinaryStep"] = function (aMatrix, zMatrix)
-
-		local BinaryStepFunction = function (z) return ((z > 0) and 1) or 0 end
-
-		local aMatrix = AqwamMatrixLibrary:applyFunction(BinaryStepFunction, zMatrix)
-
-		return aMatrix
-
-	end,
 
 	["Softmax"] = function (zMatrix) -- apparently roblox doesn't really handle very small values such as math.exp(-1000), so I added a more stable computation exp(a) / exp(b) -> exp (a - b)
 
@@ -221,7 +155,23 @@ local activationFunctionList = {
 
 }
 
-local derivativeList = {
+local elementWiseActivationFunctionDerivativeList = {
+	
+	["ReLU"] = function (z) if (z > 0) then return 1 else return 0 end end,
+	
+	["LeakyReLU"] = function (z) if (z > 0) then return 1 else return 0.01 end end,
+	
+	["ELU"] = function (z) if (z > 0) then return 1 else return 0.01 * math.exp(z) end end,
+	
+	["Gaussian"] = function (z) return -2 * z * math.exp(-math.pow(z, 2)) end,
+	
+	["SiLU"] = function (z) return (1 + math.exp(-z) + (z * math.exp(-z))) / (1 + math.exp(-z))^2 end,
+	
+	["Mish"] = function (z) return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2) end
+	
+}
+
+local activationFunctionDerivativeList = {
 
 	["Sigmoid"] = function (aMatrix, zMatrix) 
 
@@ -238,71 +188,6 @@ local derivativeList = {
 		local tanhDerivativeFunction = function (a) return (1 - math.pow(a, 2)) end
 
 		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(tanhDerivativeFunction, aMatrix)
-
-		return derivativeMatrix
-
-	end,
-
-	["ReLU"] = function (aMatrix, zMatrix)
-
-		local ReLUDerivativeFunction = function (z) if (z > 0) then return 1 else return 0 end end
-
-		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(ReLUDerivativeFunction, zMatrix)
-
-		return derivativeMatrix
-
-	end,
-
-	["LeakyReLU"] = function (aMatrix, zMatrix)
-
-		local LeakyReLUDerivativeFunction = function (z) if (z > 0) then return 1 else return 0.01 end end
-
-		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(LeakyReLUDerivativeFunction, zMatrix)
-
-		return derivativeMatrix
-
-	end,
-
-	["ELU"] = function (aMatrix, zMatrix)
-
-		local ELUDerivativeFunction = function (z) if (z > 0) then return 1 else return 0.01 * math.exp(z) end end
-
-		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(ELUDerivativeFunction, zMatrix)
-
-		return derivativeMatrix
-
-
-	end,
-
-	["Gaussian"] = function (aMatrix, zMatrix)
-
-		local GaussianDerivativeFunction = function (z) return -2 * z * math.exp(-math.pow(z, 2)) end
-
-		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(GaussianDerivativeFunction, zMatrix)
-
-		return derivativeMatrix
-
-	end,
-
-	["SiLU"] = function (aMatrix, zMatrix)
-
-		local SiLUDerivativeFunction = function (z) return (1 + math.exp(-z) + (z * math.exp(-z))) / (1 + math.exp(-z))^2 end
-
-		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(SiLUDerivativeFunction, zMatrix)
-
-		return derivativeMatrix
-
-	end,
-
-	["Mish"] = function (aMatrix, zMatrix)
-
-		local MishDerivativeFunction = function (z) 
-
-			return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2)
-
-		end
-
-		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(MishDerivativeFunction, zMatrix)
 
 		return derivativeMatrix
 
@@ -541,14 +426,26 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 	local forwardPropagateTable = {}
 
 	local zTable = {}
-
+	
+	local activationFunctionName = activationFunctionTable[1]
+	
+	local elementWiseActivationFunction = elementWiseActivationFunctionList[activationFunctionName]
+	
 	local layerZMatrix = featureMatrix
 
 	local inputMatrix = featureMatrix
 
 	local numberOfData = #featureMatrix
+	
+	if (elementWiseActivationFunction) then
 
-	inputMatrix = activationFunctionList[activationFunctionTable[1]](layerZMatrix)
+		inputMatrix = AqwamMatrixLibrary:applyFunction(elementWiseActivationFunction, layerZMatrix)
+
+	else
+
+		inputMatrix = activationFunctionList[activationFunctionName](layerZMatrix)
+
+	end
 
 	inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuronTable[1], dropoutRateTable[1], doNotDropoutNeurons)
 
@@ -565,14 +462,22 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 		local activationFunctionName = activationFunctionTable[layerNumber + 1]
 
 		local dropoutRate = dropoutRateTable[layerNumber + 1]
-
-		local activationFunction = activationFunctionList[activationFunctionName]
+		
+		local elementWiseActivationFunction = elementWiseActivationFunctionList[activationFunctionName]
 
 		layerZMatrix = AqwamMatrixLibrary:dotProduct(inputMatrix, weightMatrix)
 
 		if (typeof(layerZMatrix) == "number") then layerZMatrix = {{layerZMatrix}} end
+		
+		if (elementWiseActivationFunction) then
 
-		inputMatrix = activationFunction(layerZMatrix)
+			inputMatrix = AqwamMatrixLibrary:applyFunction(elementWiseActivationFunction, layerZMatrix)
+
+		else
+
+			inputMatrix = activationFunctionList[activationFunctionName](layerZMatrix)
+
+		end
 
 		if (hasBiasNeuron == 1) then
 
@@ -603,6 +508,14 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 end
 
 function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatrix)
+	
+	local forwardPropagateTable = self.forwardPropagateTable
+
+	local zTable = self.zTable
+	
+	if (forwardPropagateTable == nil) then error("Table not found for forward propagation.") end
+
+	if (zTable == nil) then error("Table not found for z matrix.") end
 
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 
@@ -614,10 +527,6 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 
 	local ModelParameters = self.ModelParameters
 
-	local forwardPropagateTable = self.forwardPropagateTable
-
-	local zTable = self.zTable
-
 	local numberOfLayers = #self.numberOfNeuronsTable
 
 	local activationFunctionTable = self.activationFunctionTable
@@ -625,14 +534,24 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 	local hasBiasNeuronTable = self.hasBiasNeuronTable
 	
 	local activationFunctionName = activationFunctionTable[numberOfLayers]
-
-	local derivativeFunction = derivativeList[activationFunctionName]
-
-	if (forwardPropagateTable == nil) then error("Table not found for forward propagation.") end
-
-	if (zTable == nil) then error("Table not found for z matrix.") end
 	
-	local derivativeMatrix = derivativeFunction(forwardPropagateTable[numberOfLayers], zTable[numberOfLayers])
+	local elementWiseActivationFunctionDerivative = elementWiseActivationFunctionDerivativeList[activationFunctionName]
+	
+	local lastActivationMatrix = forwardPropagateTable[numberOfLayers]
+	
+	local lastZMatrix = zTable[numberOfLayers]
+	
+	local derivativeMatrix
+	
+	if (elementWiseActivationFunctionDerivative) then
+		
+		derivativeMatrix = AqwamMatrixLibrary:applyFunction(elementWiseActivationFunctionDerivative, lastZMatrix)
+		
+	else
+		
+		derivativeMatrix = activationFunctionDerivativeList[activationFunctionName](lastActivationMatrix, lastZMatrix)
+		
+	end
 
 	local layerCostMatrix = AqwamMatrixLibrary:multiply(lossMatrix, derivativeMatrix)
 
@@ -642,15 +561,29 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 
 		activationFunctionName = activationFunctionTable[layerNumber]
 
-		derivativeFunction = derivativeList[activationFunctionName]
-
 		local hasBiasNeuronOnNextLayer = hasBiasNeuronTable[layerNumber + 1]
 
 		local layerMatrix = AqwamMatrixLibrary:transpose(ModelParameters[layerNumber])
 
 		local partialErrorMatrix = AqwamMatrixLibrary:dotProduct(layerCostMatrix, layerMatrix)
+		
+		local elementWiseActivationFunctionDerivative = elementWiseActivationFunctionDerivativeList[activationFunctionName]
 
-		derivativeMatrix = derivativeFunction(forwardPropagateTable[layerNumber], zTable[layerNumber])
+		local currentAxtivationMatrix = forwardPropagateTable[layerNumber]
+
+		local currentZMatrix = zTable[layerNumber]
+
+		local derivativeMatrix
+
+		if (elementWiseActivationFunctionDerivative) then
+
+			derivativeMatrix = AqwamMatrixLibrary:applyFunction(elementWiseActivationFunctionDerivative, lastZMatrix)
+
+		else
+
+			derivativeMatrix = activationFunctionDerivativeList[activationFunctionName](currentAxtivationMatrix, currentZMatrix)
+
+		end
 
 		if (hasBiasNeuronOnNextLayer == 1) then -- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
 

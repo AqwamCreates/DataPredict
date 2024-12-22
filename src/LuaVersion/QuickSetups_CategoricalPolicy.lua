@@ -276,7 +276,7 @@ function CategoricalPolicyQuickSetup:reinforce(currentFeatureVector, rewardValue
 
 		ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
-			return Model:update(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
+			return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
 		end)
 

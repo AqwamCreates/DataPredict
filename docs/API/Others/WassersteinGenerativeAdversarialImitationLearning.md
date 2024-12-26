@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - WassersteinGenerativeAdversarialImitationLearning (WGAIL)
 
-WassersteinGenerativeAdversarialImitationLearning allows an agent to learn from experts' trajectories.
+WassersteinGenerativeAdversarialImitationLearning allows an agent to learn from expert's trajectories.
 
 ## Notes
 

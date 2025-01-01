@@ -12,8 +12,6 @@ By using or possessing any copies of this library or its assets (including the i
 
 If you suspect any license violations, including those involving your own company, you could be eligible for a bounty reward of up to 50% of the value of the violating company, depending on the ease of prosecution and the strength of the evidence provided. Additionally, the license requires that any commercial use must publicly open-source the code base interacting with the library’s code, ensuring that it is accessible for review. This helps protect employees from liability, as violations are typically enforced against the company itself, not individual workers. However, the reward is based on the severity of the violation and the ability to prove damages, and may not reflect the full financial impact or value of the company.
 
-If you suspect any license violations, including those involving your own company, you could be eligible for a bounty reward of up to 50% of the violating company's value.
-
 ![DataPredictIconSmall](https://github.com/AqwamCreates/DataPredict/assets/67371914/1122cce4-747b-4054-88f0-2685414b0d73)
 
 | Version | Current Version Number |

@@ -1,5 +1,7 @@
 # DataPredict
 
+![DataPredict Icon](icons/DataPredictIcon.png)
+
 --------------------------------------------------------------------
 
 ## THIS IS A SOURCE AVAILABLE CODE! NOT OPEN SOURCE! 

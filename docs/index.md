@@ -10,7 +10,7 @@ By using or possessing any copies of this library or its assets (including the i
 
 * Plus some more stuff...
 
-If you suspect any license violations, including those involving your own company/group, you may be eligible for a bounty reward of up to a maximum of 50% of the value of the violating company/group, depending on the ease of prosecution and the strength of the evidence. The license requires that any commercial use of the library must publicly release the code that interacts with it, making the relevant code accessible for review. This ensures compliance and protects individuals from personal liability, as violations are typically pursued against the company/group, not individuals. If you're unsure whether the license is being violated, please contact me directly for confirmation, rather than relying solely on the company’s or the group's statements. The reward is based on the severity of the violation and the ability to prove damages, but it may not reflect the full financial impact or value of the company/group.
+For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms and Conditions Violation Bounty Reward Information](docs/TermsAndConditionsViolationBountyRewardInformation.md).
 
 ![DataPredictIconSmall](https://github.com/AqwamCreates/DataPredict/assets/67371914/1122cce4-747b-4054-88f0-2685414b0d73)
 

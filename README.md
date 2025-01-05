@@ -30,3 +30,5 @@ YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 View the documentation here: https://aqwamcreates.github.io/DataPredict/
 
 By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms and Conditions](docs/TermsAndConditions.md).
+
+For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms and Conditions Violation Bounty Reward Information](docs/TermsAndConditionsViolationBountyRewardInformation.md).

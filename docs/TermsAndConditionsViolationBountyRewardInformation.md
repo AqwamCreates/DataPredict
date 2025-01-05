@@ -106,7 +106,7 @@ The individual responsible for the false accusation or defamation will be requir
 
 * Criminal liability for false accusations or defamation, with penalties including fines, legal costs, and compensatory damages for the harmed parties.
 
-* Damages for false accusations: Any company or individual falsely accused will be entitled to compensation for damages, including reputational harm, business losses, and legal fees.
+* Damages for false accusations: Any company or individual falsely accused will be entitled to compensation for damages by the reporting parties, including reputational harm, business losses, and legal fees.
 
 ## Example
 

@@ -54,8 +54,6 @@ If you suspect that any license violations, including those involving your own c
 
 ## False Accusations, Defamation, and Criminal Liability
 
-False Accusations and Defamation:
-
 * Any individual or entity making false accusations or engaging in defamation against a company/group or individual under this License will be subject to criminal prosecution under applicable criminal law, including but not limited to laws surrounding defamation, libel, and slander.
 
 * If it is determined that a violation report was made with malicious intent, fabrication, or false information, the reporting party may face criminal penalties, including fines or imprisonment, as prescribed by the relevant laws.

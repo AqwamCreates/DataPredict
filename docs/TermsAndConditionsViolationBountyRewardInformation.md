@@ -112,4 +112,4 @@ The individual responsible for the false accusation or defamation will be requir
 
 If a CEO of Company X approves the decision to use your library commercially without releasing the interacting code, and someone reports this violation with sufficient evidence, the person reporting the violation could receive a larger bounty reward (up to 50% of the company's value), given the systemic nature of the violation at the executive level.
 
-Conversely, if a project manager or developer fails to release the interacting code but it is seen as an isolated error rather than a systemic decision, the reward would be smaller (perhaps 25-30%) based on the role and responsibility involved.
+Conversely, if a project manager or developer fails to release the interacting code but it is seen as an isolated error rather than a systemic decision, the reward would be smaller (around 25-30%) based on the role and responsibility involved.

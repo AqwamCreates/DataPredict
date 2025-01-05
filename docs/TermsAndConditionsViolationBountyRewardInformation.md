@@ -44,7 +44,7 @@ If you suspect that any license violations, including those involving your own c
       
       * Project Manager / Senior Developer: Lower reward, but still significant depending on the evidence of the violation (e.g., 25-30% of the value).
   
-  * Lower-Level Employees: If the violation is traced back to a lower-level employee or is seen as an isolated mistake, the reward may be lower (e.g., 10-15% of the value) based on the fact that the violation was not part of a larger, coordinated action by higher management. However, if the violation is notified to the higher level decision makers by the Licensor and these violations are not addressed by them, then it will be counted as a violation made by higher-level decision makers.
+  * Lower-Level Employees: If the violation is traced back to a lower-level employee or is seen as an isolated mistake, the reward may be lower (e.g., 10-15% of the value) based on the fact that the violation was not part of a larger, coordinated action by higher management. However, if the violation is notified to the higher level decision makers by the Licensor and these violations are not addressed by them, then it will be counted as a violation made by the higher-level decision makers.
 
 * Protection from Personal Liability:
   

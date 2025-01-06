@@ -26,7 +26,7 @@ If you suspect that any license violations, including those involving your own c
 
 * Guidelines for Evaluation:
   
-  * Severity of the Violation: This is assessed based on how serious the breach is in relation to the terms of the license. For example, willfully ignoring the release of interacting code or failing to properly attribute your library might warrant a higher reward compared to more minor violations.
+  * Severity of the Violation: This is assessed based on how serious the breach is in relation to the terms of the license. For example, willfully ignoring the release of interacting code or failing to properly attribute the library might warrant a higher reward compared to more minor violations.
   
   * Evidence Strength: The bounty is only applicable if you provide clear, substantial evidence of the violation. A mere suspicion without solid proof may not qualify for a bounty.
   

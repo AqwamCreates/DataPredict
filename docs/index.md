@@ -2,7 +2,7 @@
 
 By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms and Conditions](TermsAndConditions.md). In short:
 
-* Public attribution is required when using this library. 
+* Public attribution is required when using this library.
 
 * A separate agreement is needed for commercial use (both internally and externally). This applies to companies (or individuals, if none) whose combined revenue (including from subsidiaries or related entities) exceeds $3,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
 

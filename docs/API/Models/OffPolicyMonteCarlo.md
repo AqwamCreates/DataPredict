@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - OffPolicyMonteCarlo
 
-OffPolicyMonteCarlo is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+OffPolicyMonteCarloControl is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Constructors
 

@@ -569,7 +569,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 		
 		local elementWiseActivationFunctionDerivative = elementWiseActivationFunctionDerivativeList[activationFunctionName]
 
-		local currentAxtivationMatrix = forwardPropagateTable[layerNumber]
+		local currentActivationMatrix = forwardPropagateTable[layerNumber]
 
 		local currentZMatrix = zTable[layerNumber]
 
@@ -577,11 +577,11 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 
 		if (elementWiseActivationFunctionDerivative) then
 
-			derivativeMatrix = AqwamMatrixLibrary:applyFunction(elementWiseActivationFunctionDerivative, lastZMatrix)
+			derivativeMatrix = AqwamMatrixLibrary:applyFunction(elementWiseActivationFunctionDerivative, currentZMatrix)
 
 		else
 
-			derivativeMatrix = activationFunctionDerivativeList[activationFunctionName](currentAxtivationMatrix, currentZMatrix)
+			derivativeMatrix = activationFunctionDerivativeList[activationFunctionName](currentActivationMatrix, currentZMatrix)
 
 		end
 

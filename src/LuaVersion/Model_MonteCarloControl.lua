@@ -36,24 +36,6 @@ MonteCarloControlModel.__index = MonteCarloControlModel
 
 setmetatable(MonteCarloControlModel, ReinforcementLearningBaseModel)
 
-local function calculateProbability(vector)
-
-	local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(vector)
-
-	local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
-
-	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, squaredZScoreVector)
-
-	local probabilityVectorPart2 = AqwamMatrixLibrary:exponent(probabilityVectorPart1)
-
-	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
-
-	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
-
-	return probabilityVector
-
-end
-
 local function calculateRewardToGo(rewardValueHistory, discountFactor)
 
 	local rewardToGoArray = {}
@@ -78,17 +60,15 @@ function MonteCarloControlModel.new(discountFactor)
 	
 	setmetatable(NewMonteCarloControlModel, MonteCarloControlModel)
 	
-	local actionProbabilityVectorHistory = {}
+	local actionVectorHistory = {}
 	
 	local rewardValueHistory = {}
 	
 	NewMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
 		local actionVector = NewMonteCarloControlModel.Model:forwardPropagate(previousFeatureVector)
-		
-		local actionProbabilityVector = calculateProbability(actionVector)
 
-		table.insert(actionProbabilityVectorHistory, actionProbabilityVector)
+		table.insert(actionVectorHistory, actionVector)
 		
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -116,7 +96,7 @@ function MonteCarloControlModel.new(discountFactor)
 
 		local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
 
-		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
+		table.insert(actionVectorHistory, logActionProbabilityVector)
 
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -128,9 +108,9 @@ function MonteCarloControlModel.new(discountFactor)
 		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewMonteCarloControlModel.discountFactor)
 		
-		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, #actionProbabilityVectorHistory[1], 0)
+		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, #actionVectorHistory[1], 0)
 		
-		for h, actionProbabilityVector in ipairs(actionProbabilityVectorHistory) do
+		for h, actionProbabilityVector in ipairs(actionVectorHistory) do
 			
 			local lossVector = AqwamMatrixLibrary:subtract(rewardToGoArray[h], actionProbabilityVector)
 
@@ -148,7 +128,7 @@ function MonteCarloControlModel.new(discountFactor)
 
 		Model:backwardPropagate(meanLossVector, true)
 		
-		table.clear(actionProbabilityVectorHistory)
+		table.clear(actionVectorHistory)
 		
 		table.clear(rewardValueHistory)
 		
@@ -156,7 +136,7 @@ function MonteCarloControlModel.new(discountFactor)
 	
 	NewMonteCarloControlModel:setResetFunction(function()
 
-		table.clear(actionProbabilityVectorHistory)
+		table.clear(actionVectorHistory)
 		
 		table.clear(rewardValueHistory)
 		

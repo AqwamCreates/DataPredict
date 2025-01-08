@@ -158,19 +158,13 @@ function OffPolicyMonteCarloModel.new(targetPolicyFunction, discountFactor)
 		
 		local targetPolicyFunction = targetPolicyFunctionList[NewOffPolicyMonteCarloModel.targetPolicyFunction]
 		
+		local discountFactor = NewOffPolicyMonteCarloModel.discountFactor
+		
 		local numberOfActions = #actionVectorHistory[1]
 		
 		local cVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, 0) 
 		
-		local numeratorActionVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, 0)
-		
-		local denominatorActionVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, 0)
-		
 		local weightVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, 1)
-		
-		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, 0)
-		
-		local discountFactor = NewOffPolicyMonteCarloModel.discountFactor
 		
 		local discountedReward = 0
 		

@@ -110,9 +110,9 @@ function MonteCarloControlModel.new(discountFactor)
 		
 		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, #actionVectorHistory[1], 0)
 		
-		for h, actionProbabilityVector in ipairs(actionVectorHistory) do
+		for h, actionVector in ipairs(actionVectorHistory) do
 			
-			local lossVector = AqwamMatrixLibrary:subtract(rewardToGoArray[h], actionProbabilityVector)
+			local lossVector = AqwamMatrixLibrary:subtract(rewardToGoArray[h], actionVector)
 
 			sumLossVector = AqwamMatrixLibrary:add(sumLossVector, lossVector)
 			

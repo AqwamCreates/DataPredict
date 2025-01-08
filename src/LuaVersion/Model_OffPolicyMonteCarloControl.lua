@@ -26,15 +26,15 @@
 
 --]]
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require("AqwamMatrixLibraryLink")
 
 local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
 
-OffPolicyMonteCarloModel = {}
+OffPolicyMonteCarloControlModel = {}
 
-OffPolicyMonteCarloModel.__index = OffPolicyMonteCarloModel
+OffPolicyMonteCarloControlModel.__index = OffPolicyMonteCarloControlModel
 
-setmetatable(OffPolicyMonteCarloModel, ReinforcementLearningBaseModel)
+setmetatable(OffPolicyMonteCarloControlModel, ReinforcementLearningBaseModel)
 
 local defaultTargetPolicyFunction = "StableSoftmax"
 
@@ -96,13 +96,13 @@ local targetPolicyFunctionList = {
 	
 }
 
-function OffPolicyMonteCarloModel.new(targetPolicyFunction, discountFactor)
+function OffPolicyMonteCarloControlModel.new(targetPolicyFunction, discountFactor)
 
-	local NewOffPolicyMonteCarloModel = ReinforcementLearningBaseModel.new(discountFactor)
+	local NewOffPolicyMonteCarloControlModel = ReinforcementLearningBaseModel.new(discountFactor)
 	
-	setmetatable(NewOffPolicyMonteCarloModel, OffPolicyMonteCarloModel)
+	setmetatable(NewOffPolicyMonteCarloControlModel, OffPolicyMonteCarloControlModel)
 	
-	NewOffPolicyMonteCarloModel.targetPolicyFunction = targetPolicyFunction or defaultTargetPolicyFunction
+	NewOffPolicyMonteCarloControlModel.targetPolicyFunction = targetPolicyFunction or defaultTargetPolicyFunction
 	
 	local featureVectorHistory = {}
 	
@@ -110,9 +110,9 @@ function OffPolicyMonteCarloModel.new(targetPolicyFunction, discountFactor)
 	
 	local rewardValueHistory = {}
 	
-	NewOffPolicyMonteCarloModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 
-		local actionVector = NewOffPolicyMonteCarloModel.Model:forwardPropagate(previousFeatureVector)
+		local actionVector = NewOffPolicyMonteCarloControlModel.Model:forwardPropagate(previousFeatureVector)
 		
 		table.insert(featureVectorHistory, previousFeatureVector)
 
@@ -122,7 +122,7 @@ function OffPolicyMonteCarloModel.new(targetPolicyFunction, discountFactor)
 
 	end)
 	
-	NewOffPolicyMonteCarloModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
+	NewOffPolicyMonteCarloControlModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
 
 		local randomNormalVector = AqwamMatrixLibrary:createRandomNormalMatrix(1, #actionMeanVector[1])
 
@@ -152,13 +152,13 @@ function OffPolicyMonteCarloModel.new(targetPolicyFunction, discountFactor)
 
 	end)
 	
-	NewOffPolicyMonteCarloModel:setEpisodeUpdateFunction(function()
+	NewOffPolicyMonteCarloControlModel:setEpisodeUpdateFunction(function()
 		
-		local Model = NewOffPolicyMonteCarloModel.Model
+		local Model = NewOffPolicyMonteCarloControlModel.Model
 		
-		local targetPolicyFunction = targetPolicyFunctionList[NewOffPolicyMonteCarloModel.targetPolicyFunction]
+		local targetPolicyFunction = targetPolicyFunctionList[NewOffPolicyMonteCarloControlModel.targetPolicyFunction]
 		
-		local discountFactor = NewOffPolicyMonteCarloModel.discountFactor
+		local discountFactor = NewOffPolicyMonteCarloControlModel.discountFactor
 		
 		local numberOfActions = #actionVectorHistory[1]
 		
@@ -202,7 +202,7 @@ function OffPolicyMonteCarloModel.new(targetPolicyFunction, discountFactor)
 		
 	end)
 	
-	NewOffPolicyMonteCarloModel:setResetFunction(function()
+	NewOffPolicyMonteCarloControlModel:setResetFunction(function()
 		
 		table.clear(featureVectorHistory)
 
@@ -212,11 +212,11 @@ function OffPolicyMonteCarloModel.new(targetPolicyFunction, discountFactor)
 		
 	end)
 	
-	return NewOffPolicyMonteCarloModel
+	return NewOffPolicyMonteCarloControlModel
 
 end
 
-function OffPolicyMonteCarloModel:setParameters(targetPolicyFunction, discountFactor)
+function OffPolicyMonteCarloControlModel:setParameters(targetPolicyFunction, discountFactor)
 	
 	self.targetPolicyFunction = targetPolicyFunction or self.targetPolicyFunction
 
@@ -224,4 +224,4 @@ function OffPolicyMonteCarloModel:setParameters(targetPolicyFunction, discountFa
 
 end
 
-return OffPolicyMonteCarloModel
+return OffPolicyMonteCarloControlModel

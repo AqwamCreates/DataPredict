@@ -9,7 +9,7 @@ OffPolicyMonteCarlo is a neural network with reinforcement learning capabilities
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-OffPolicyMonteCarlo.new(discountFactor: number): ModelObject
+OffPolicyMonteCarlo.new(behaviourPolicyFunction: string, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -27,10 +27,12 @@ OffPolicyMonteCarlo.new(discountFactor: number): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-OffPolicyMonteCarlo:setParameters(discountFactor: number)
+OffPolicyMonteCarlo:setParameters(behaviourPolicyFunction: string, discountFactor: number)
 ```
 
 #### Parameters:
+
+* behaviourPolicyFunction: 
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 

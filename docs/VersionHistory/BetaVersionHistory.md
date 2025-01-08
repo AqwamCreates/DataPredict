@@ -1,5 +1,9 @@
 # Beta Version
 
+## Version 1.37
+
+[1.37.0](Beta/1-37-0.md) - 8/1/2024
+
 ## Version 1.36
 
 [1.36.0](Beta/1-36-0.md) - 15/10/2024

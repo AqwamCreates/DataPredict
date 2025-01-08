@@ -115,11 +115,11 @@ local activationFunctionList = {
 
 	["Softmax"] = function (zMatrix) -- apparently roblox doesn't really handle very small values such as math.exp(-1000), so I added a more stable computation exp(a) / exp(b) -> exp (a - b)
 
-		local expMatrix = AqwamMatrixLibrary:applyFunction(math.exp, zMatrix)
+		local exponentZMatrix = AqwamMatrixLibrary:applyFunction(math.exp, zMatrix)
 
-		local expSum = AqwamMatrixLibrary:horizontalSum(expMatrix)
+		local exponentZSumMatrix = AqwamMatrixLibrary:horizontalSum(exponentZMatrix)
 
-		local aMatrix = AqwamMatrixLibrary:divide(expMatrix, expSum)
+		local aMatrix = AqwamMatrixLibrary:divide(exponentZMatrix, exponentZSumMatrix)
 
 		return aMatrix
 
@@ -141,11 +141,11 @@ local activationFunctionList = {
 
 		end
 
-		local expMatrix = AqwamMatrixLibrary:applyFunction(math.exp, normalizedZMatrix)
+		local exponentZMatrix = AqwamMatrixLibrary:applyFunction(math.exp, normalizedZMatrix)
 
-		local expSum = AqwamMatrixLibrary:horizontalSum(expMatrix)
+		local exponentZSumMatrix = AqwamMatrixLibrary:horizontalSum(exponentZMatrix)
 
-		local aMatrix = AqwamMatrixLibrary:divide(expMatrix, expSum)
+		local aMatrix = AqwamMatrixLibrary:divide(exponentZMatrix, exponentZSumMatrix)
 
 		return aMatrix
 

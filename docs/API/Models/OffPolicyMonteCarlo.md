@@ -9,10 +9,12 @@ OffPolicyMonteCarlo is a neural network with reinforcement learning capabilities
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-OffPolicyMonteCarloControl.new(behaviourPolicyFunction: string, discountFactor: number): ModelObject
+OffPolicyMonteCarloControl.new(targetPolicyFunction: string, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
+
+* targetPolicyFunction: 
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -27,12 +29,12 @@ OffPolicyMonteCarloControl.new(behaviourPolicyFunction: string, discountFactor: 
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-OffPolicyMonteCarloControl:setParameters(behaviourPolicyFunction: string, discountFactor: number)
+OffPolicyMonteCarloControl:setParameters(targetPolicyFunction: string, discountFactor: number)
 ```
 
 #### Parameters:
 
-* behaviourPolicyFunction: 
+* targetPolicyFunction: 
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
 
@@ -42,6 +44,6 @@ OffPolicyMonteCarloControl:setParameters(behaviourPolicyFunction: string, discou
 
 ## References
 
-* [Off-Policy Monte Carlo Control](http://incompleteideas.net/book/first/ebook/node56.html)
+* [Off-Policy Monte Carlo Control, Page 90](http://incompleteideas.net/book/bookdraft2017nov5.pdf)
 
 * [Forgetting Early Estimates in Monte Carlo Control Methods](https://ev.fe.uni-lj.si/3-2015/Vodopivec.pdf)

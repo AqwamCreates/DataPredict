@@ -122,7 +122,7 @@ function MonteCarloControlModel.new(discountFactor)
 
 		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
 
-		local meanLossVector = AqwamMatrixLibrary:divide(sumLossVector, #rewardValueHistory)
+		local meanLossVector = AqwamMatrixLibrary:divide(sumLossVector, #actionVectorHistory)
 		
 		Model:forwardPropagate(featureVector, true, true)
 

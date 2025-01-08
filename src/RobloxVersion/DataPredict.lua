@@ -90,6 +90,10 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	
 	REINFORCE = require(Models.REINFORCE),
 	
+	MonteCarloControl = require(Models.MonteCarloControl),
+	
+	OffPolicyMonteCarloControl = require(Models.OffPolicyMonteCarloControl),
+	
 	ProximalPolicyOptimization = require(Models.ProximalPolicyOptimization),
 	
 	ProximalPolicyOptimizationClip = require(Models.ProximalPolicyOptimizationClip),

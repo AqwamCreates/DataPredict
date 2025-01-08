@@ -28,7 +28,7 @@
 
 local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
 
-local ReinforcementLearningBaseModel = require("ReinforcementLearningBaseModel")
+local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
 
 MonteCarloControlModel = {}
 

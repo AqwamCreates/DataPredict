@@ -8,7 +8,9 @@ Relative magnitude means that the magnitude is the result from subtracting / div
 
 ```lua
 
-local relativeMagnitude = magnitude1 - magnitude2
+local magnitudeChange = magnitude1 - magnitude2
+
+local magnitudeRatio = magnitude1 / magnitude2
 
 local distance = position1 - position2
 

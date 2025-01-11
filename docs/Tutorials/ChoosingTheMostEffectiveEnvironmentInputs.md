@@ -78,8 +78,6 @@ You may use any kind of normalization techniques, including:
 
 * Minimum-Maximum Scaling
 
-* Batch Normalization
-
 ## Conclusion
 
 So you have to keep these three in mind:

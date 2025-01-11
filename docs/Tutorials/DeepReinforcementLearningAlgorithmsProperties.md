@@ -68,9 +68,9 @@
    - **Disadvantages**: Increases computational complexity.
 
 10. **REINFORCE**:
-    - **Characteristics**: A Monte Carlo method optimizing the policy based on complete returns.
-    - **Advantages**: Straightforward implementation for policy optimization.
-    - **Disadvantages**: High variance in updates can lead to slow convergence.
+   - **Characteristics**: A Monte Carlo method optimizing the policy based on complete returns.
+   - **Advantages**: Straightforward implementation for policy optimization.
+   - **Disadvantages**: High variance in updates can lead to slow convergence.
 
 11. **Monte Carlo Control**
    - **Characteristics**: Uses sample returns to estimate the optimal policy and action-value function without requiring knowledge of the environment dynamics.
@@ -83,31 +83,31 @@
    - **Disadvantages**: Importance sampling weights can lead to high variance in updates.
 
 13. **Vanilla Policy Gradient**:
-    - **Characteristics**: Estimates policy gradients using both actor and critic.
-    - **Advantages**: More stable than REINFORCE due to variance reduction from the critic.
-    - **Disadvantages**: Still suffers from high variance in gradient estimates.
+   - **Characteristics**: Estimates policy gradients using both actor and critic.
+   - **Advantages**: More stable than REINFORCE due to variance reduction from the critic.
+   - **Disadvantages**: Still suffers from high variance in gradient estimates.
 
 14. **Actor-Critic**:
-    - **Characteristics**: Combines value function approximation with policy optimization.
-    - **Advantages**: Provides more stable learning through actor and critic interaction.
-    - **Disadvantages**: Requires careful tuning to balance actor and critic updates.
+   - **Characteristics**: Combines value function approximation with policy optimization.
+   - **Advantages**: Provides more stable learning through actor and critic interaction.
+   - **Disadvantages**: Requires careful tuning to balance actor and critic updates.
 
 15. **Advantage Actor-Critic**:
-    - **Characteristics**: Uses advantages to improve the learning signal for the actor.
-    - **Advantages**: Reduces variance in the policy gradient estimates.
-    - **Disadvantages**: Accurate advantage estimation can be challenging.
+   - **Characteristics**: Uses advantages to improve the learning signal for the actor.
+   - **Advantages**: Reduces variance in the policy gradient estimates.
+   - **Disadvantages**: Accurate advantage estimation can be challenging.
 
 16. **Asynchronous Advantage Actor-Critic**:
-    - **Characteristics**: Employs multiple agents in parallel to speed up training.
-    - **Advantages**: Faster convergence due to diverse exploration.
-    - **Disadvantages**: Increased implementation complexity.
+   - **Characteristics**: Employs multiple agents in parallel to speed up training.
+   - **Advantages**: Faster convergence due to diverse exploration.
+   - **Disadvantages**: Increased implementation complexity.
 
 17. **Proximal Policy Optimization**:
-    - **Characteristics**: Clipped objective function to ensure stable policy updates.
-    - **Advantages**: Balances exploration and exploitation effectively.
-    - **Disadvantages**: Sensitive to the clipping range and other hyperparameters.
+   - **Characteristics**: Clipped objective function to ensure stable policy updates.
+   - **Advantages**: Balances exploration and exploitation effectively.
+   - **Disadvantages**: Sensitive to the clipping range and other hyperparameters.
 
 18. **Proximal Policy Optimization with Clipped Objective**:
-    - **Characteristics**: An extension of PPO focused on stability.
-    - **Advantages**: Helps prevent large policy updates that can destabilize learning.
-    - **Disadvantages**: Requires careful parameter tuning for optimal performance.
+   - **Characteristics**: An extension of PPO focused on stability.
+   - **Advantages**: Helps prevent large policy updates that can destabilize learning.
+   - **Disadvantages**: Requires careful parameter tuning for optimal performance.

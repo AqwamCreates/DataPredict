@@ -43,7 +43,7 @@
    - **Disadvantages**: Performance can degrade with insufficient exploration.
 
 5. **Double Deep State-Action-Reward-State-Action V1 (Randomly Chosen Network)**:
-   - **Characteristics**: Similar to the double DQ learning method but applied to the State-Action-Reward-State-Action framework.
+   - **Characteristics**: Similar to the Double Deep Q-Learning method but applied to the State-Action-Reward-State-Action framework.
    - **Advantages**: Helps address overestimation in policy evaluation.
    - **Disadvantages**: Increased complexity in choosing which parameters to update.
 

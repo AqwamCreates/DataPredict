@@ -383,7 +383,7 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 	
 end
 
-function NaiveBayesModel:calculateFinalProbability(featureVector, probabilitiesVector, meanVector, standardDeviationVector)
+function NaiveBayesModel:calculateFinalProbability(featureVector, meanVector, standardDeviationVector, probabilitiesVector)
 	
 	local finalProbability
 
@@ -463,7 +463,7 @@ function NaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 			
 			local featureVector = {featureMatrix[i]}
 			
-			finalProbabilityMatrix[i][classIndex] = self:calculateFinalProbability(featureVector, probabilitiesVector, meanVector, standardDeviationVector)
+			finalProbabilityMatrix[i][classIndex] = self:calculateFinalProbability(featureVector, meanVector, standardDeviationVector, probabilitiesVector)
 			
 		end
 		

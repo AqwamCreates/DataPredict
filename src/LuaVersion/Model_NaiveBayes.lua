@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -15,6 +17,10 @@
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
 	
 	--------------------------------------------------------------------
 
@@ -48,11 +54,11 @@ local function extractFeatureMatrixFromPosition(featureMatrix, positionList)
 	
 end
 
-local function separateFeatureMatrixByClass(featureMatrix, labelVector, classesList)
+local function separateFeatureMatrixByClass(featureMatrix, labelVector, ClassesList)
 	
 	local classesPositionTable = {}
 	
-	for classIndex, class in ipairs(classesList) do
+	for classIndex, class in ipairs(ClassesList) do
 		
 		classesPositionTable[classIndex] = {}
 		
@@ -72,7 +78,7 @@ local function separateFeatureMatrixByClass(featureMatrix, labelVector, classesL
 	
 	local extractedFeatureMatrix
 	
-	for classIndex, class in ipairs(classesList) do
+	for classIndex, class in ipairs(ClassesList) do
 		
 		extractedFeatureMatrix = extractFeatureMatrixFromPosition(featureMatrix, classesPositionTable[classIndex])
 		
@@ -84,7 +90,7 @@ local function separateFeatureMatrixByClass(featureMatrix, labelVector, classesL
 	
 end
 
-local function calculateGaussianDensity(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
+local function calculateGaussianDensity(useLogProbability, featureVector, meanVector, standardDeviationVector)
 	
 	local logGaussianDensity
 	
@@ -104,7 +110,7 @@ local function calculateGaussianDensity(useLogProbabilities, featureVector, mean
 	
 	local gaussianDensity = AqwamMatrixLibrary:divide(exponentWithTerms, divisor)
 	
-	if (useLogProbabilities) then
+	if (useLogProbability) then
 		
 		logGaussianDensity = AqwamMatrixLibrary:applyFunction(math.log, gaussianDensity)
 		
@@ -154,11 +160,11 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList)
 
 end
 
-local function logLoss(labelVector, predictedProbabilitiesVector)
+local function logLoss(labelVector, predictedProbabilityVector)
 	
 	local loglossFunction = function (y, p) return (y * math.log(p)) + ((1 - y) * math.log(1 - p)) end
 	
-	local logLossVector = AqwamMatrixLibrary:applyFunction(loglossFunction, labelVector, predictedProbabilitiesVector)
+	local logLossVector = AqwamMatrixLibrary:applyFunction(loglossFunction, labelVector, predictedProbabilityVector)
 	
 	local logLossSum = AqwamMatrixLibrary:sum(logLossVector)
 
@@ -168,7 +174,7 @@ local function logLoss(labelVector, predictedProbabilitiesVector)
 	
 end
 
-function NaiveBayesModel.new(useLogProbabilities)
+function NaiveBayesModel.new(useLogProbability)
 	
 	local NewNaiveBayesModel = BaseModel.new()
 	
@@ -176,15 +182,15 @@ function NaiveBayesModel.new(useLogProbabilities)
 	
 	NewNaiveBayesModel.ClassesList = {}
 	
-	NewNaiveBayesModel.useLogProbabilities = BaseModel:getValueOrDefaultValue(useLogProbabilities, false)
+	NewNaiveBayesModel.useLogProbability = BaseModel:getValueOrDefaultValue(useLogProbability, false)
 	
 	return NewNaiveBayesModel
 	
 end
 
-function NaiveBayesModel:setParameters(useLogProbabilities)
+function NaiveBayesModel:setParameters(useLogProbability)
 
-	self.useLogProbabilities = self:getValueOrDefaultValue(useLogProbabilities, self.useLogProbabilities)
+	self.useLogProbability = self:getValueOrDefaultValue(useLogProbability, self.useLogProbability)
 
 end
 
@@ -196,13 +202,13 @@ function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	
 	local standardDeviationVector
 	
-	local probabilitiesVector
+	local probabilityVector
 	
-	local priorProbabilitiesVector
+	local priorProbabilityVector
 	
 	local initialProbability
 	
-	local multipliedProbalitiesVector
+	local multipliedProbabilityVector
 	
 	local probability
 	
@@ -214,11 +220,9 @@ function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	
 	local label
 	
-	local predictedProbabilitiesMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, #self.ClassesList)
+	local predictedProbabilityVector = AqwamMatrixLibrary:createMatrix(#labelVector, #labelVector[1])
 	
-	local predictedProbabilitiesVector = AqwamMatrixLibrary:createMatrix(#labelVector, #labelVector[1])
-	
-	if (self.useLogProbabilities) then
+	if (self.useLogProbability) then
 
 		initialProbability = 0
 
@@ -238,33 +242,33 @@ function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 		standardDeviationVector = {self.ModelParameters[2][classIndex]}
 
-		probabilitiesVector = {self.ModelParameters[3][classIndex]}
+		probabilityVector = {self.ModelParameters[3][classIndex]}
 
-		priorProbabilitiesVector = calculateGaussianDensity(self.useLogProbabilities, featureMatrix, meanVector, standardDeviationVector)
+		priorProbabilityVector = calculateGaussianDensity(self.useLogProbability, featureMatrix, meanVector, standardDeviationVector)
 
-		multipliedProbalitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, priorProbabilitiesVector)
+		multipliedProbabilityVector = AqwamMatrixLibrary:multiply(probabilityVector, priorProbabilityVector)
 		
 		probability = initialProbability
 		
-		for column = 1, #multipliedProbalitiesVector[1], 1 do
+		for column = 1, #multipliedProbabilityVector[1], 1 do
 
-			if (self.useLogProbabilities) then
+			if (self.useLogProbability) then
 
-				probability += multipliedProbalitiesVector[1][column]
+				probability += multipliedProbabilityVector[1][column]
 
 			else
 
-				probability *= multipliedProbalitiesVector[1][column]
+				probability *= multipliedProbabilityVector[1][column]
 
 			end
 
 		end
 		
-		predictedProbabilitiesVector[data][1] = probability
+		predictedProbabilityVector[data][1] = probability
 
 	end
 
-	cost = logLoss(labelVector, predictedProbabilitiesVector)
+	cost = logLoss(labelVector, predictedProbabilityVector)
 	
 	return cost
 	
@@ -317,13 +321,13 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 
 	local standardDeviationVector
 
-	local probabilitiesVector
+	local probabilityVector
 	
 	local meanMatrix
 	
 	local standardDeviationMatrix
 	
-	local probabilitiesMatrix
+	local probabilityMatrix
 	
 	local cost
 	
@@ -333,7 +337,7 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 
 	standardDeviationMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1])
 
-	probabilitiesMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1], 1)
+	probabilityMatrix = AqwamMatrixLibrary:createMatrix(#self.ClassesList, #featureMatrix[1], 1)
 	
 	if (#featureMatrix[1] ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
 	
@@ -349,19 +353,19 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 		
 		standardDeviationMatrix[classIndex] = standardDeviationVector[1]
 		
-		probabilitiesVector = AqwamMatrixLibrary:createMatrix(1, #featureMatrix[1], 1)
+		probabilityVector = AqwamMatrixLibrary:createMatrix(1, #featureMatrix[1], 1)
 		
 		for data = 1, #extractedFeatureMatrix, 1 do
 			
 			featureVector = {extractedFeatureMatrix[data]}
 			
-			gaussianDensityVector = calculateGaussianDensity(self.useLogProbabilities, featureVector, meanVector, standardDeviationVector)
+			gaussianDensityVector = calculateGaussianDensity(self.useLogProbability, featureVector, meanVector, standardDeviationVector)
 			
-			probabilitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, gaussianDensityVector)
+			probabilityVector = AqwamMatrixLibrary:multiply(probabilityVector, gaussianDensityVector)
 			
 		end
 		
-		probabilitiesMatrix[classIndex] = probabilitiesVector[1]
+		probabilityMatrix[classIndex] = probabilityVector[1]
 		
 	end
 	
@@ -371,11 +375,11 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 		
 		standardDeviationMatrix = AqwamMatrixLibrary:divide(AqwamMatrixLibrary:add(self.ModelParameters[2], standardDeviationMatrix), 2) 
 		
-		probabilitiesMatrix = AqwamMatrixLibrary:divide(AqwamMatrixLibrary:add(self.ModelParameters[3], probabilitiesMatrix), 2) 
+		probabilityMatrix = AqwamMatrixLibrary:divide(AqwamMatrixLibrary:add(self.ModelParameters[3], probabilityMatrix), 2) 
 
 	end
 	
-	self.ModelParameters = {meanMatrix, standardDeviationMatrix, probabilitiesMatrix}
+	self.ModelParameters = {meanMatrix, standardDeviationMatrix, probabilityMatrix}
 	
 	cost = self:calculateCost(featureMatrix, labelVector)
 	
@@ -383,25 +387,25 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 	
 end
 
-function NaiveBayesModel:calculateFinalProbability(featureVector, meanVector, standardDeviationVector, probabilitiesVector)
+function NaiveBayesModel:calculateFinalProbability(featureVector, meanVector, standardDeviationVector, probabilityVector)
 	
 	local finalProbability
 
-	local priorProbabilitiesVector = calculateGaussianDensity(self.useLogProbabilities, featureVector, meanVector, standardDeviationVector)
+	local priorProbabilityVector = calculateGaussianDensity(self.useLogProbability, featureVector, meanVector, standardDeviationVector)
 
-	local multipliedProbalitiesVector = AqwamMatrixLibrary:multiply(probabilitiesVector, priorProbabilitiesVector)
+	local multipliedProbabilityVector = AqwamMatrixLibrary:multiply(probabilityVector, priorProbabilityVector)
 
-	if (self.useLogProbabilities) then
+	if (self.useLogProbability) then
 
-		finalProbability = AqwamMatrixLibrary:sum(multipliedProbalitiesVector)
+		finalProbability = AqwamMatrixLibrary:sum(multipliedProbabilityVector)
 
 	else
 
 		finalProbability = 1
 
-		for column = 1, #multipliedProbalitiesVector[1], 1 do
+		for column = 1, #multipliedProbabilityVector[1], 1 do
 
-			finalProbability *= multipliedProbalitiesVector[1][column]
+			finalProbability *= multipliedProbabilityVector[1][column]
 
 		end
 
@@ -415,7 +419,7 @@ function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 	local predictedLabelVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 
-	local highestProbabilitiesVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
+	local highestProbabilityVector = AqwamMatrixLibrary:createMatrix(#outputMatrix, 1)
 
 	local highestProbability
 
@@ -437,11 +441,11 @@ function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 		predictedLabelVector[i][1] = predictedLabel
 
-		highestProbabilitiesVector[i][1] = highestProbability
+		highestProbabilityVector[i][1] = highestProbability
 
 	end
 
-	return predictedLabelVector, highestProbabilitiesVector
+	return predictedLabelVector, highestProbabilityVector
 
 end
 
@@ -457,13 +461,13 @@ function NaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 
 		local standardDeviationVector = {self.ModelParameters[2][classIndex]}
 
-		local probabilitiesVector = {self.ModelParameters[3][classIndex]}
+		local probabilityVector = {self.ModelParameters[3][classIndex]}
 		
 		for i = 1, #featureMatrix, 1 do
 			
 			local featureVector = {featureMatrix[i]}
 			
-			finalProbabilityMatrix[i][classIndex] = self:calculateFinalProbability(featureVector, meanVector, standardDeviationVector, probabilitiesVector)
+			finalProbabilityMatrix[i][classIndex] = self:calculateFinalProbability(featureVector, meanVector, standardDeviationVector, probabilityVector)
 			
 		end
 		

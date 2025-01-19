@@ -157,6 +157,10 @@ local activationFunctionList = {
 
 local elementWiseActivationFunctionDerivativeList = {
 	
+	["Sigmoid"] = function (a) return (a * (1 - a)) end,
+	
+	["Tanh"] = function (a) return (1 - math.pow(a, 2)) end,
+	
 	["ReLU"] = function (z) if (z > 0) then return 1 else return 0 end end,
 	
 	["LeakyReLU"] = function (z) if (z > 0) then return 1 else return 0.01 end end,
@@ -172,26 +176,6 @@ local elementWiseActivationFunctionDerivativeList = {
 }
 
 local activationFunctionDerivativeList = {
-
-	["Sigmoid"] = function (aMatrix, zMatrix) 
-
-		local sigmoidDerivativeFunction = function (a) return (a * (1 - a)) end
-
-		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(sigmoidDerivativeFunction, aMatrix)
-
-		return derivativeMatrix
-
-	end,
-
-	["Tanh"] = function (aMatrix, zMatrix)
-
-		local tanhDerivativeFunction = function (a) return (1 - math.pow(a, 2)) end
-
-		local derivativeMatrix = AqwamMatrixLibrary:applyFunction(tanhDerivativeFunction, aMatrix)
-
-		return derivativeMatrix
-
-	end,
 
 	["BinaryStep"] = function (aMatrix, zMatrix) return AqwamMatrixLibrary:createMatrix(#zMatrix, #zMatrix[1], 0) end,
 

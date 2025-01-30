@@ -49,7 +49,7 @@ User shall not:
 
 * Remove or alter any copyright, trademark, or other proprietary notices or labels contained in the Library;
 
-* Copyright, trademark, or patent any source codes and icons contained in the Library, either individually or as a collection;
+* Copyright, trademark, or patent any source codes or icons contained in the Library, either individually or as a collection;
 
 * Include the icons from the Library in projects that do not utilize the Library;
 

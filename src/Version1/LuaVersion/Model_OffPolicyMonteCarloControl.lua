@@ -121,7 +121,7 @@ function OffPolicyMonteCarloControlModel.new(targetPolicyFunction, discountFacto
 		table.insert(rewardValueHistory, rewardValue)
 
 	end)
-	
+
 	NewOffPolicyMonteCarloControlModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
 
 		local randomNormalVector = AqwamMatrixLibrary:createRandomNormalMatrix(1, #actionMeanVector[1])
@@ -143,8 +143,6 @@ function OffPolicyMonteCarloControlModel.new(targetPolicyFunction, discountFacto
 		local logActionProbabilityVectorPart3 = AqwamMatrixLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
 
 		local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
-		
-		table.insert(featureVectorHistory, previousFeatureVector)
 
 		table.insert(actionVectorHistory, logActionProbabilityVector)
 
@@ -180,7 +178,7 @@ function OffPolicyMonteCarloControlModel.new(targetPolicyFunction, discountFacto
 			
 			local lossVectorPart2 = AqwamMatrixLibrary:subtract(discountedReward, actionVector)
 			
-			local lossVector = AqwamMatrixLibrary:multiply(lossVectorPart1, lossVectorPart1)
+			local lossVector = AqwamMatrixLibrary:multiply(lossVectorPart1, lossVectorPart2)
 			
 			local targetActionVector = targetPolicyFunction(actionVector)
 			

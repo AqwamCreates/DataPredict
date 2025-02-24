@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - DistributedModelParameters
+# [API Reference](../../API.md) - [DistributedTrainingStrategies](../DistributedTrainingStrategies.md) - DistributedModelParameters
 
 DistributedModelParametersCoordinator is a base class for distributed learning. The individual child models will calculate their own model parameters and these will create a new main model parameters using average.
 

@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - DistributedGradientsCoordinator
+# [API Reference](../../API.md) - [DistributedTrainingStrategies](../DistributedTrainingStrategies.md) - DistributedGradientsCoordinator
 
 DistributedGradientsCoordinator is a base class for distributed gradient ascent / descent.
 

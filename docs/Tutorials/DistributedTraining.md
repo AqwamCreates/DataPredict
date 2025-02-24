@@ -4,9 +4,9 @@ Distributed training is a way to train main model parameters from child model pa
 
 There are two types of distributed training classes contained in this library:
 
-* DistributedGradients
+* DistributedGradientsCoordinator
 
-* DistributedModelParameters
+* DistributedModelParametersCoordinator
 
 Below, I will explain what each of these do and show you how to use these classes below. But first, we need to create multiple models and train them first.
 
@@ -42,19 +42,19 @@ For DistributedGradients, the calculated gradients from child model parameters a
     
   * NeuralNetwork
 
-I will show you how to use DistributedGradients in the sample code shown below.
+I will show you how to use DistributedGradientsCoordinator in the sample code shown below.
 
 ```lua
 
--- First, let's initialize our DistributedGradients object here.
+-- First, let's initialize our DistributedGradientsCoordinator object here.
 
-local DistributedGradients = DataPredict.Models.DistributedGradients.new()
+local DistributedGradientsCoordinator = DataPredict.DistributedTrainingStrategies.DistributedGradientsCoordinator.new()
 
 -- Then we need a model parameters from a model and send it to the DistributedGradients object.
 
 local ModelParameters1 = LinearRegression1:getModelParameters()
 
-DistributedGradients:setModelParameters(ModelParameters1)
+DistributedGradientsCoordinator:setModelParameters(ModelParameters1)
 
 -- For this to work, we need to change some parameters for the LinearRegression objects.
 -- I will only set parameters for one model, so let's assume I also did this to other models.
@@ -63,40 +63,40 @@ LinearRegression1:setAreGradientsSaved(true) -- We need to save the gradients fo
 
 LinearRegression1:setParameters(1) -- We also need to make the number of iterations to 1.
 
--- Once set, we can start training our models individually and update the model parameters in DistributedGradients object.
+-- Once set, we can start training our models individually and update the model parameters in DistributedGradientsCoordinator object.
 
 LinearRegression1:train(featureMatrix1, labelVector1)
 
 local Gradients1 = LinearRegression:getGradients()
 
-DistributedGradients:addGradients(Gradients1)
+DistributedGradientsCoordinator:addGradients(Gradients1)
 
--- addGradients() will update the model parameters in DistributedGradients object.
--- Once updated, you can call DistributedGradients' getModelParameters() to update the LinearRegression's model parameters.
+-- addGradients() will update the model parameters in DistributedGradientsCoordinator object.
+-- Once updated, you can call DistributedGradientsCoordinator's getModelParameters() to update the LinearRegression's model parameters.
 
-local UpdatedModelParameters = DistributedGradients:getModelParameters()
+local UpdatedModelParameters = DistributedGradientsCoordinator:getModelParameters()
 
 LinearRegression1:setModelParameters(UpdatedModelParameters)
 
 ```
 
-## DistributedModelParameters
+## DistributedModelParametersCoordinator
 
-For DistributedModelParameters, the child model parameters are combined to create new main model parameters.
+For DistributedModelParametersCoordinator, the child model parameters are combined to create new main model parameters.
 
-Just like the DistributedGradients, I will show you how to use DistributedModelParameters.
+Just like the DistributedGradientsCoordinator, I will show you how to use DistributedModelParametersCoordinator.
 
 ```lua
 
--- First, let's initialize our DistributedModelParameters object here.
+-- First, let's initialize our DistributedModelParametersCoordinator object here.
 
-local DistributedModelParameters = DataPredict.Models.DistributedModelParameters.new()
+local DistributedModelParametersCoordinator = DataPredict.DistributedTrainingStrategies.DistributedModelParametersCoordinator.new()
 
--- Second, we need to initialize our ModelParametersMerger object and put it into the DistributedModelParameters object.
+-- Second, we need to initialize our ModelParametersMerger object and put it into the DistributedModelParametersCoordinator object.
 
 local ModelParametersMerger = DataPredict.Models.ModelParametersMerger.new()
 
-DistributedModelParameters:setModelParametersMerger(ModelParametersMerger)
+DistributedModelParametersCoordinator:setModelParametersMerger(ModelParametersMerger)
 
 -- For this to work, we need to change some parameters for the LinearRegression objects.
 -- I will only set parameters for one model, so let's assume I also did this to other models.
@@ -111,14 +111,14 @@ LinearRegression1:train(featureMatrix, labelVector)
 
 -- We then need to add the trained model parameters to DistributedModelParameters.
 
-local TrainedModelParameters1 = DistributedModelParameters:getModelParameters()
+local TrainedModelParameters1 = DistributedModelParametersCoordinator:getModelParameters()
 
-DistributedModelParameters:addModelParameters(TrainedModelParameters1)
+DistributedModelParametersCoordinator:addModelParameters(TrainedModelParameters1)
 
--- The addModelParameters() from DistributedModelParameters will update the main model parameters 
--- Once updated, you can call DistributedGradients' getMainModelParameters() to update the LinearRegression's model parameters.
+-- The addModelParameters() from DistributedModelParametersCoordinator will update the main model parameters.
+-- Once updated, you can call DistributedModelParametersCoordinator' getMainModelParameters() to update the LinearRegression's model parameters.
 
-local UpdatedModelParameters = DistributedModelParameters:getMainModelParameters()
+local UpdatedModelParameters = DistributedModelParametersCoordinator:getMainModelParameters()
 
 LinearRegression1:setModelParameters(UpdatedModelParameters)
 

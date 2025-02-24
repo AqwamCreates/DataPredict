@@ -24,7 +24,7 @@ NeuralNetwork:addLayer(4, true, "LeakyReLU")
 
 -- Initializing our RandomNetworkDistillation.
 
-local RandomNetworkDistillation = DataPredict.Others.RandomNetworkDistillation.new()
+local RandomNetworkDistillation = DataPredict.ReinforcementLearningStrategies.RandomNetworkDistillation.new()
 
 RandomNetworkDistillation:setModel(NeuralNetwork)
 

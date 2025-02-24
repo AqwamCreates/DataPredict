@@ -47,7 +47,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Using Regularizers](Tutorials/UsingRegularizers.md)
 
-[Using Gradient Descent Modifiers](Tutorials/UsingGradientDescentModifiers.md)
+[Using Training Modifiers](Tutorials/UsingTrainingModifiers.md)
 
 [Using Model Checker](Tutorials/UsingModelChecker.md)
 

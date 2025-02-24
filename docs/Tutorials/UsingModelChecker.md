@@ -5,9 +5,9 @@ It is important for us to check the performance of our model. Hence, in this tut
 First, we need to create a linear regression model and a model checker objects for testing and validation. We will set the second parameter as "regression" for the ModelChecker because the linear regression model falls under the "regrression".
 
 ```lua
-local Model = MDLL.Model.LinearRegression.new()
+local LinearRegression = DataPredict.Model.LinearRegression.new()
 
-local ModelChecker = MDLL.Others.ModelChecker.new(Model, "Regression")
+local ModelChecker = DataPredict.Others.ModelChecker.new({Model = LinearRegression, modelType = "Regression"})
 ```
 
 # Testing

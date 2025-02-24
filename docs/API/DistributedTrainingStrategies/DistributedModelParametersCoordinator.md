@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Others](../Others.md) - DistributedModelParameters
 
-DistributedTraining is a base class for distributed learning. The individual child models will calculate their own model parameters and these will create a new main model parameters using average.
+DistributedModelParametersCoordinator is a base class for distributed learning. The individual child models will calculate their own model parameters and these will create a new main model parameters using average.
 
 ## Notes:
 
@@ -13,7 +13,7 @@ DistributedTraining is a base class for distributed learning. The individual chi
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DistributedModelParameters.new(totalNumberOfChildModelUpdatesToUpdateMainModel: number): DistributedLearningObject
+DistributedModelParametersCoordinator.new(totalNumberOfChildModelUpdatesToUpdateMainModel: number): DistributedLearningObject
 ```
 
 #### Parameters:
@@ -22,7 +22,7 @@ DistributedModelParameters.new(totalNumberOfChildModelUpdatesToUpdateMainModel: 
 
 #### Returns:
 
-* DistributedLearningObject: The generated distributed learning object.
+* DistributedModelParametersCoordinatorObject: The generated distributed model parameters coordinator object.
 
 ## Functions
 
@@ -31,7 +31,7 @@ DistributedModelParameters.new(totalNumberOfChildModelUpdatesToUpdateMainModel: 
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DistributedModelParameters:setParameters(totalNumberOfChildModelUpdatesToUpdateMainModel: number)
+DistributedModelParametersCoordinator:setParameters(totalNumberOfChildModelUpdatesToUpdateMainModel: number)
 ```
 
 #### Parameters:
@@ -41,7 +41,7 @@ DistributedModelParameters:setParameters(totalNumberOfChildModelUpdatesToUpdateM
 ### addModelParameters()
 
 ```
-DistributedModelParameters:addModelParameters(ModelParameters: Matrix/TableOfMatrices)
+DistributedModelParametersCoordinator:addModelParameters(ModelParameters: Matrix/TableOfMatrices)
 ```
 
 #### Parameters:
@@ -53,7 +53,7 @@ DistributedModelParameters:addModelParameters(ModelParameters: Matrix/TableOfMat
 Sets the ModelParametersMerger into the DistributedModelParameters.
 
 ```
-DistributedModelParameters:setModelParametersMerger(ModelParametersMerger: ModelParametersMergerObject)
+DistributedModelParametersCoordinator:setModelParametersMerger(ModelParametersMerger: ModelParametersMergerObject)
 ```
 
 ModelParametersMerger: A ModelParametersMerger object to be used by the DistributedModelParameters object
@@ -61,7 +61,7 @@ ModelParametersMerger: A ModelParametersMerger object to be used by the Distribu
 ### setMainModelParameters()
 
 ```
-DistributedModelParameters:setMainModelParameters(MainModelParameters: any)
+DistributedModelParametersCoordinator:setMainModelParameters(MainModelParameters: any)
 ```
 
 #### Parameters:
@@ -71,7 +71,7 @@ DistributedModelParameters:setMainModelParameters(MainModelParameters: any)
 ### getMainModelParameters()
 
 ```
-DistributedModelParameters:getMainModelParameters(): any
+DistributedModelParametersCoordinator:getMainModelParameters(): any
 ```
 
 #### Returns:
@@ -81,7 +81,7 @@ DistributedModelParameters:getMainModelParameters(): any
 ### getCurrentTotalNumberOfChildModelUpdatesToUpdateMainModel()
 
 ```
-DistributedModelParameters:getCurrentTotalNumberOfChildModelUpdatesToUpdateMainModel(): number
+DistributedModelParametersCoordinator:getCurrentTotalNumberOfChildModelUpdatesToUpdateMainModel(): number
 ```
 
 #### Returns:
@@ -93,7 +93,7 @@ DistributedModelParameters:getCurrentTotalNumberOfChildModelUpdatesToUpdateMainM
 Creates a new thread for real-time gradient descent / ascent.
 
 ```
-DistributedModelParameters:start(): coroutine
+DistributedModelParametersCoordinator:start(): coroutine
 ```
 
 #### Returns:
@@ -105,13 +105,9 @@ DistributedModelParameters:start(): coroutine
 Reset the main model's stored values (excluding the parameters).
 
 ```
-DistributedModelParameters:reset()
+DistributedModelParametersCoordinator:reset()
 ```
 
-### destroy()
+#### Inherited From:
 
-Destroys the model object.
-
-```
-DistributedModelParameters:destroy()
-```
+* [BaseInstance]()

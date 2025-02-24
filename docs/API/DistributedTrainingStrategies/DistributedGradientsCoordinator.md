@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - DistributedGradients
+# [API Reference](../../API.md) - [Others](../Others.md) - DistributedGradientsCoordinator
 
-DistributedGradients is a base class for distributed gradient ascent / descent.
+DistributedGradientsCoordinator is a base class for distributed gradient ascent / descent.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ DistributedGradients is a base class for distributed gradient ascent / descent.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DistributedGradients.new(gradientChangeMode: string): DistributedGradientObject
+DistributedGradientsCoordinator.new(gradientChangeMode: string): DistributedGradientObject
 ```
 
 #### Parameters:
@@ -22,7 +22,7 @@ DistributedGradients.new(gradientChangeMode: string): DistributedGradientObject
 
 #### Returns:
 
-* DistributedLearningObject: The generated distributed learning object.
+* DistributedGradientsCoordinatorObject: The generated distributed gradient training object.
 
 ## Functions
 
@@ -31,7 +31,7 @@ DistributedGradients.new(gradientChangeMode: string): DistributedGradientObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DistributedGradients:setParameters(gradientChangeMode: string)
+DistributedGradientsCoordinator:setParameters(gradientChangeMode: string)
 ```
 
 #### Parameters:
@@ -45,7 +45,7 @@ DistributedGradients:setParameters(gradientChangeMode: string)
 ### addGradients()
 
 ```
-DistributedGradients:addGradients(Gradients: any)
+DistributedGradientsCoordinator:addGradients(Gradients: any)
 ```
 
 #### Parameters:
@@ -55,7 +55,7 @@ DistributedGradients:addGradients(Gradients: any)
 ### setModelParameters()
 
 ```
-DistributedGradients:setMainModelParameters(ModelParameters: any, doNotDeepCopy: boolean)
+DistributedGradientsCoordinator:setMainModelParameters(ModelParameters: any, doNotDeepCopy: boolean)
 ```
 
 #### Parameters:
@@ -67,7 +67,7 @@ DistributedGradients:setMainModelParameters(ModelParameters: any, doNotDeepCopy:
 ### getModelParameters()
 
 ```
-DistributedGradients:getModelParameters(doNotDeepCopy: boolean): any
+DistributedGradientsCoordinator:getModelParameters(doNotDeepCopy: boolean): any
 ```
 
 #### Returns:
@@ -81,7 +81,7 @@ DistributedGradients:getModelParameters(doNotDeepCopy: boolean): any
 Creates a new thread for real-time gradient descent / ascent.
 
 ```
-ModelParameters:start(): coroutine
+DistributedGradientsCoordinator:start(): coroutine
 ```
 
 #### Returns:
@@ -93,7 +93,7 @@ ModelParameters:start(): coroutine
 Stops the threads for real-time training.
 
 ```
-ModelParameters:stop()
+DistributedGradientsCoordinator:stop()
 ```
 
 ### clearGradients()
@@ -101,13 +101,9 @@ ModelParameters:stop()
 Clears the stored gradients inside the DistributedGradients object.
 
 ```
-DistributedGradients:clearGradients()
+DistributedGradientsCoordinator:clearGradients()
 ```
 
-### destroy()
+#### Inherited From:
 
-Destroys the model object.
-
-```
-DistributedGradients:destroy()
-```
+* [BaseInstance]()

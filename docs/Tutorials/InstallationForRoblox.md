@@ -4,12 +4,12 @@ In this library, we can customize many of our models, optimizers and others to f
 
 To start, we must first link our machine/deep learning library with our matrix library. However, you must use "Aqwam's Matrix Library" as every calculations made by our models are based on that matrix library.
 
-| Version                     | Machine And Deep Learning Library (DataPredict)                                                                                                                         | Matrix Library (MatrixL)                                                                                             |
+| Version                     | Machine And Deep Learning Library (DataPredict)                                                                                                                         | Matrix Library (TensorL-2D)                                                                                          |
 |-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| Release (ModuleScript)      | [DataPredict (Release Version 1.22)](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.22.rbxm)           |                                                                                                                      |
-| Unstable (ModuleScript)     | [Aqwam's Machine And Deep Learning Library](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/AqwamMachineAndDeepLearningLibrary.rbxm)               | [Aqwam's Matrix Library](https://github.com/AqwamCreates/MatrixL/blob/main/src/RobloxVersion/AqwamMatrixLibrary.lua) |
+| Release (ModuleScript)      | [DataPredict (Release Version 2.0)](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.0.rbxm)                |                                                                                                                      |
+| Unstable (ModuleScript)     | [Aqwam's Machine And Deep Learning Library](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/AqwamMachineAndDeepLearningLibrary.rbxm)               | [Aqwam's Matrix Library](https://github.com/AqwamCreates/TensorL-2D/blob/main/src/TensorL2D.lua)                     |
 
-You can read the Terms And Conditions for the MatrixL Library [here](https://github.com/AqwamCreates/MatrixL/blob/main/docs/TermsAndConditions.md).
+You can read the Terms And Conditions for the TensorL2D Library [here](https://github.com/AqwamCreates/TensorL-2D/blob/main/docs/TermsAndConditions.md).
 
 To download the files from GitHub, you must click on the download button highlighted in the red box.
 

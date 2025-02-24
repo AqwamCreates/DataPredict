@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - GenerativeAdversarialImitationLearning (GAIL)
+# [API Reference](../../API.md) - [ReinforcementLearningStrategies](../ReinforcementLearningStrategies.md) - GenerativeAdversarialImitationLearning (GAIL)
 
 GenerativeAdversarialImitationLearning allows an agent to learn from expert's trajectories.
 

@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - RandomNetworkDistillation
+# [API Reference](../../API.md) - [ReinforcementLearningStrategies](../ReinforcementLearningStrategies.md) - RandomNetworkDistillation
 
 RandomNetworkDistillation is a neural network for producing internal rewards to encourage exploration. Requires neural network as your model.
 

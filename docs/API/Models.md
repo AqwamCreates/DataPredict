@@ -70,6 +70,8 @@
 
 [GradientMethodBaseModel](Models/GradientMethodBaseModel.md)
 
+[IterativeMethodBaseModel](Models/IterativeMethodBaseModel.md)
+
 [ReinforcementLearningBaseModel](Models/ReinforcementLearningBaseModel.md)
 
 [ReinforcementLearningActorCriticBaseModel](Models/ReinforcementLearningActorCriticBaseModel.md)

@@ -72,7 +72,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
 
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTrace = parameterDictionary.eligibilityTrace
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
@@ -154,17 +154,17 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 		
 		if (lambda ~= 0) then
 
-			local eligibilityTrace = NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTrace
+			local eligibilityTraceMatrix = NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix
 
-			if (not eligibilityTrace) then eligibilityTrace = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
+			if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
 
-			eligibilityTrace = AqwamTensorLibrary:multiply(eligibilityTrace, discountFactor * lambda)
+			eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
 
-			eligibilityTrace[1][actionIndex] = eligibilityTrace[1][actionIndex] + 1
+			eligibilityTraceMatrix[1][actionIndex] = eligibilityTraceMatrix[1][actionIndex] + 1
 
-			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTrace)
+			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTraceMatrix)
 
-			NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTrace = eligibilityTrace
+			NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = eligibilityTraceMatrix
 
 		end
 		
@@ -182,9 +182,17 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 	end)
 	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) end)
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+		
+		NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
+		
+	end)
 
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() end)
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() 
+		
+		NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
+		
+	end)
 
 	return NewDeepDoubleExpectedStateActionRewardStateActionModel
 

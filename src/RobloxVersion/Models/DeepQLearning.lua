@@ -50,7 +50,7 @@ function DeepQLearningModel.new(parameterDictionary)
 	
 	NewDeepQLearningModel.lambda = parameterDictionary.lambda or defaultLambda
 	
-	NewDeepQLearningModel.eligibilityTrace = parameterDictionary.eligibilityTrace 
+	NewDeepQLearningModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
 	
 	NewDeepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
@@ -84,17 +84,17 @@ function DeepQLearningModel.new(parameterDictionary)
 		
 		if (lambda ~= 0) then
 			
-			local eligibilityTrace = NewDeepQLearningModel.eligibilityTrace
+			local eligibilityTraceMatrix = NewDeepQLearningModel.eligibilityTraceMatrix
 			
-			if (not eligibilityTrace) then eligibilityTrace = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
+			if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
 			
-			eligibilityTrace = AqwamTensorLibrary:multiply(eligibilityTrace, discountFactor * lambda)
+			eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
 			
-			eligibilityTrace[1][actionIndex] = eligibilityTrace[1][actionIndex] + 1
+			eligibilityTraceMatrix[1][actionIndex] = eligibilityTraceMatrix[1][actionIndex] + 1
 			
-			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTrace)
+			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTraceMatrix)
 			
-			NewDeepQLearningModel.eligibilityTrace = eligibilityTrace
+			NewDeepQLearningModel.eligibilityTraceMatrix = eligibilityTraceMatrix
 			
 		end
 		
@@ -108,13 +108,13 @@ function DeepQLearningModel.new(parameterDictionary)
 	
 	NewDeepQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		NewDeepQLearningModel.eligibilityTrace = nil
+		NewDeepQLearningModel.eligibilityTraceMatrix = nil
 		
 	end)
 
 	NewDeepQLearningModel:setResetFunction(function()
 		
-		NewDeepQLearningModel.eligibilityTrace = nil
+		NewDeepQLearningModel.eligibilityTraceMatrix = nil
 		
 	end)
 

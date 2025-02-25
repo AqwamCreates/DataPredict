@@ -54,7 +54,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepExpectedStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
 	
-	NewDeepExpectedStateActionRewardStateActionModel.eligibilityTrace = parameterDictionary.eligibilityTrace
+	NewDeepExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
 
 	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
@@ -122,17 +122,17 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		if (lambda ~= 0) then
 
-			local eligibilityTrace = NewDeepExpectedStateActionRewardStateActionModel.eligibilityTrace
+			local eligibilityTraceMatrix = NewDeepExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix
 
-			if (not eligibilityTrace) then eligibilityTrace = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
+			if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
 
-			eligibilityTrace = AqwamTensorLibrary:multiply(eligibilityTrace, discountFactor * lambda)
+			eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
 
-			eligibilityTrace[1][actionIndex] = eligibilityTrace[1][actionIndex] + 1
+			eligibilityTraceMatrix[1][actionIndex] = eligibilityTraceMatrix[1][actionIndex] + 1
 
-			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTrace)
+			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTraceMatrix)
 
-			NewDeepExpectedStateActionRewardStateActionModel.eligibilityTrace = eligibilityTrace
+			NewDeepExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = eligibilityTraceMatrix
 
 		end
 
@@ -146,13 +146,13 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepExpectedStateActionRewardStateActionModel.eligibilityTrace = nil
+		NewDeepExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
 		
 	end)
 
 	NewDeepExpectedStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		NewDeepExpectedStateActionRewardStateActionModel.eligibilityTrace = nil
+		NewDeepExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
 		
 	end)
 

@@ -52,7 +52,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepDoubleStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
 
-	NewDeepDoubleStateActionRewardStateActionModel.eligibilityTrace = parameterDictionary.eligibilityTrace
+	NewDeepDoubleStateActionRewardStateActionModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
 
 	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
@@ -80,13 +80,13 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepDoubleStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepDoubleStateActionRewardStateActionModel.eligibilityTrace = nil
+		NewDeepDoubleStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
 		
 	end)
 
 	NewDeepDoubleStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		NewDeepDoubleStateActionRewardStateActionModel.eligibilityTrace = nil
+		NewDeepDoubleStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
 		
 	end)
 
@@ -148,17 +148,17 @@ function DeepDoubleStateActionRewardStateActionModel:generateTemporalDifferenceE
 
 		local actionIndex = table.find(ClassesList, action)
 
-		local eligibilityTrace = self.eligibilityTrace
+		local eligibilityTraceMatrix = self.eligibilityTraceMatrix
 
-		if (not eligibilityTrace) then eligibilityTrace = AqwamTensorLibrary:createTensor({1, #ClassesList}, 0) end
+		if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor({1, #ClassesList}, 0) end
 
-		eligibilityTrace = AqwamTensorLibrary:multiply(eligibilityTrace, discountFactor * lambda)
+		eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
 
-		eligibilityTrace[1][actionIndex] = eligibilityTrace[1][actionIndex] + 1
+		eligibilityTraceMatrix[1][actionIndex] = eligibilityTraceMatrix[1][actionIndex] + 1
 
-		temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTrace)
+		temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTraceMatrix)
 
-		self.eligibilityTrace = eligibilityTrace
+		self.eligibilityTraceMatrix = eligibilityTraceMatrix
 
 	end
 

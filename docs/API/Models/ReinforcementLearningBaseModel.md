@@ -95,7 +95,7 @@ ReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 Updates the model parameters using categoricalUpdateFunction().
 
 ```
-ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector)
+ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
 ```
 
 #### Parameters:
@@ -106,14 +106,16 @@ ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureV
 
 * rewardValue: The reward gained at current state.
 
-* currentFeatureVector: The currrent state of the environment.
+* currentFeatureVector: The current state of the environment.
+
+* terminalStateValue: A value of 1 indicates that the current state is a terminal state. A value of 0 indicates that the current state is not terminal.
 
 ### diagonalGaussianUpdate()
 
 Updates the model parameters using diagonalGaussianUpdateFunction().
 
 ```
-ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, actionMeanVector: vector, actionStandardDeviationVector, rewardValue: number, currentFeatureVector: featureVector)
+ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, actionMeanVector: vector, actionStandardDeviationVector, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
 ```
 
 #### Parameters:
@@ -126,7 +128,9 @@ ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector: fea
 
 * rewardValue: The reward gained at current state.
 
-* currentFeatureVector: The currrent state of the environment.
+* currentFeatureVector: The current state of the environment.
+
+* terminalStateValue: A value of 1 indicates that the current state is a terminal state. A value of 0 indicates that the current state is not terminal.
 
 ### episodeUpdate()
 

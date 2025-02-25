@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseQuickSetup = require(script.Parent.ReinforcementLearningBaseQuickSetup)
+local ReinforcementLearningBaseQuickSetup = require("QuickSetup_ReinforcementLearningBaseQuickSetup")
 
 CategoricalPolicyQuickSetup = {}
 

@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseExperienceReplay = require(script.Parent.BaseExperienceReplay)
+local BaseExperienceReplay = require("ExperienceReplay_BaseExperienceReplay")
 
 PrioritizedExperienceReplay = {}
 

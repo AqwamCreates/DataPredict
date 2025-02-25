@@ -26,7 +26,7 @@
 
 --]]
 
-local BaseExperienceReplay = require(script.Parent.BaseExperienceReplay)
+local BaseExperienceReplay = require("ExperienceReplay_BaseExperienceReplay")
 
 UniformExperienceReplay = {}
 

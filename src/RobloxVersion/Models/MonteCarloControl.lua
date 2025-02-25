@@ -62,15 +62,13 @@ function MonteCarloControlModel.new(parameterDictionary)
 	
 	NewMonteCarloControlModel:setName("MonteCarloControl")
 	
-	local actionVectorHistory = {}
+	local featureVectorHistory = {}
 	
 	local rewardValueHistory = {}
 	
 	NewMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
-
-		local actionVector = NewMonteCarloControlModel.Model:forwardPropagate(previousFeatureVector)
-
-		table.insert(actionVectorHistory, actionVector)
+		
+		table.insert(featureVectorHistory, previousFeatureVector)
 		
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -82,35 +80,25 @@ function MonteCarloControlModel.new(parameterDictionary)
 		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewMonteCarloControlModel.discountFactor)
 		
-		local sumLossVector = AqwamTensorLibrary:createMatrix(1, #actionVectorHistory[1], 0)
-		
-		for h, actionVector in ipairs(actionVectorHistory) do
+		for h, featureVector in ipairs(featureVectorHistory) do
 			
-			local lossVector = AqwamTensorLibrary:subtract(rewardToGoArray[h], actionVector)
-
-			sumLossVector = AqwamTensorLibrary:add(sumLossVector, lossVector)
+			local averageRewardToGo = rewardToGoArray[h] / h
 			
-		end	
-		
-		local numberOfFeatures = Model:getTotalNumberOfNeurons(1)
+			Model:forwardPropagate(featureVector, true, true)
 
-		local featureVector = AqwamTensorLibrary:createMatrix(1, numberOfFeatures, 1)
-
-		local meanLossVector = AqwamTensorLibrary:divide(sumLossVector, #actionVectorHistory)
+			Model:backwardPropagate(averageRewardToGo, true)
+			
+		end
 		
-		Model:forwardPropagate(featureVector, true, true)
-
-		Model:backwardPropagate(meanLossVector, true)
-		
-		table.clear(actionVectorHistory)
+		table.clear(featureVectorHistory)
 		
 		table.clear(rewardValueHistory)
 		
 	end)
 	
 	NewMonteCarloControlModel:setResetFunction(function()
-
-		table.clear(actionVectorHistory)
+		
+		table.clear(featureVectorHistory)
 		
 		table.clear(rewardValueHistory)
 		

@@ -154,7 +154,7 @@ function OffPolicyMonteCarloControlModel.new(parameterDictionary)
 			
 			local lossVectorPart2 = AqwamTensorLibrary:subtract(discountedReward, actionVector)
 			
-			local lossVector = AqwamTensorLibrary:multiply(lossVectorPart1, lossVectorPart2)
+			local lossVector = AqwamTensorLibrary:multiply(lossVectorPart1, lossVectorPart2, -1)
 			
 			local targetActionVector = targetPolicyFunction(actionVector)
 			

@@ -41,17 +41,17 @@ local defaultLambda = 0
 local function calculateProbability(valueVector)
 
 	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueVector)
-	
+
 	local zValueVector = AqwamTensorLibrary:subtract(valueVector, maximumValue)
-	
+
 	local exponentVector = AqwamTensorLibrary:exponent(zValueVector)
-	
+
 	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
-	
+
 	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
 
 	return probabilityVector
-
+	
 end
 
 local function calculateRewardToGo(rewardHistory, discountFactor)
@@ -146,7 +146,9 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		local logActionProbabilityVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
 
-		local logActionProbabilityVector = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
+		local logActionProbabilityVectorPart4 = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
+		
+		local logActionProbabilityVector = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityVectorPart4)
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 

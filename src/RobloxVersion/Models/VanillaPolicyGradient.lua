@@ -39,13 +39,13 @@ setmetatable(VanillaPolicyGradientModel, ReinforcementLearningActorCriticBaseMod
 local function calculateProbability(valueVector)
 
 	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueVector)
-	
+
 	local zValueVector = AqwamTensorLibrary:subtract(valueVector, maximumValue)
-	
+
 	local exponentVector = AqwamTensorLibrary:exponent(zValueVector)
-	
+
 	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
-	
+
 	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
 
 	return probabilityVector

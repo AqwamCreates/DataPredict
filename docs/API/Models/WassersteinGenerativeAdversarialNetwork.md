@@ -38,70 +38,6 @@ WassersteinGenerativeAdversarialNetwork.new(generatorMaximumNumberOfIterations: 
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-WassersteinGenerativeAdversarialNetwork:setParameters(generatorMaximumNumberOfIterations: number, discriminatorMaximumNumberOfIterations: number, sampleSize: integer)
-```
-
-#### Parameters:
-
-* generatorMaximumNumberOfIterations: The number of times that the generator should be trained.
-
-* discriminatorMaximumNumberOfIterations: The number of times that the discriminator should be trained for each of generator's iteration.
-
-* sampleSize: How many randomly chosen data will be used from the real feature matrix and noise feature matrix on every iteration.
-
-### setGeneratorModel()
-
-Sets the Generator into the model. 
-
-```
-WassersteinGenerativeAdversarialNetwork:setGeneratorModel(GeneratorModel: Model)
-```
-
-#### Parameters:
-
-* GeneratorModel: The model to be used for generating contents out of random noise.
-
-### setDiscriminatorModel()
-
-Sets the Discriminator into the model. 
-
-```
-WassersteinGenerativeAdversarialNetwork:setDiscriminatorModel(DiscriminatorModel: Model)
-```
-
-#### Parameters:
-
-* DiscriminatorModel: The model to be used for discriminating real and fake contents.
-
-### getGeneratorModel()
-
-Gets the Generator from the model. 
-
-```
-WassersteinGenerativeAdversarialNetwork:getGeneratorModel(): Model
-```
-
-#### Returns:
-
-* GeneratorModel: The model used for generating contents out of random noise.
-
-### getDiscriminator()
-
-Gets the Discriminator from the model. 
-
-```
-WassersteinGenerativeAdversarialNetwork:getDiscriminatorModel(): Model
-```
-
-#### Returns:
-
-* DiscriminatorModel: The model used for discriminating real and fake contents.
-
 ### train()
 
 Trains the model.
@@ -147,6 +83,10 @@ WassersteinGenerativeAdversarialNetwork:generate(noiseFeatureMatrix: matrix): ma
 #### Returns:
 
 * outputMatrix: Matrix containing all the output values.
+
+## Inherited From
+
+* [GenerativeAdversarialNetworkBaseModel](GenerativeAdversarialNetworkBaseModel.md)
 
 ## References
 

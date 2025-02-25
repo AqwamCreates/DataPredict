@@ -34,66 +34,6 @@ ConditionalGenerativeAdversarialNetwork.new(maximumNumberOfIterations: number): 
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-ConditionalGenerativeAdversarialNetwork:setParameters(maximumNumberOfIterations: number)
-```
-
-#### Parameters:
-
-* maximumNumberOfIterations: How many times should the model needed to be trained.
-
-### setGeneratorModel()
-
-Sets the Generator into the model. 
-
-```
-ConditionalGenerativeAdversarialNetwork:setGeneratorModel(GeneratorModel: Model)
-```
-
-#### Parameters:
-
-* GeneratorModel: The model to be used for generating contents out of random noise.
-
-### setDiscriminatorModel()
-
-Sets the Discriminator into the model. 
-
-```
-ConditionalGenerativeAdversarialNetwork:setDiscriminatorModel(DiscriminatorModel: Model)
-```
-
-#### Parameters:
-
-* DiscriminatorModel: The model to be used for discriminating real and fake contents.
-
-### getGeneratorModel()
-
-Gets the Generator from the model. 
-
-```
-WassersteinGenerativeAdversarialNetwork:getGeneratorModel(): Model
-```
-
-#### Returns:
-
-* GeneratorModel: The model used for generating contents out of random noise.
-
-### getDiscriminatorModel()
-
-Gets the Discriminator from the model. 
-
-```
-WassersteinGenerativeAdversarialNetwork:getDiscriminatorModel(): Model
-```
-
-#### Returns:
-
-* DiscriminatorModel: The model used for discriminating real and fake contents.
-
 ### train()
 
 Trains the model.
@@ -148,7 +88,7 @@ ConditionalGenerativeAdversarialNetwork:generate(noiseFeatureMatrix: matrix, lab
 
 ## Inherited From
 
-* [GradientMethodBaseModel](GradientMethodBaseModel.md)
+* [GenerativeAdversarialNetworkBaseModel](GenerativeAdversarialNetworkBaseModel.md)
 
 ## References
 

@@ -34,66 +34,6 @@ GenerativeAdversarialNetwork.new(maximumNumberOfIterations: number): ModelObject
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-GenerativeAdversarialNetwork:setParameters(maximumNumberOfIterations: number)
-```
-
-#### Parameters:
-
-* maximumNumberOfIterations: How many times should the model needed to be trained.
-
-### setGeneratorModel()
-
-Sets the Generator into the model. 
-
-```
-GenerativeAdversarialNetwork:setGeneratorModel(GeneratorModel: Model)
-```
-
-#### Parameters:
-
-* Generator: The model to be used for generating contents out of random noise.
-
-### setDiscriminatorModel()
-
-Sets the Discriminator into the model. 
-
-```
-GenerativeAdversarialNetwork:setDiscriminatorModel(DiscriminatorModel: Model)
-```
-
-#### Parameters:
-
-* Discriminator: The model to be used for discriminating real and fake contents.
-
-### getGeneratorModel()
-
-Gets the Generator from the model. 
-
-```
-GenerativeAdversarialNetwork:getGeneratorModel(): Model
-```
-
-#### Returns:
-
-* GeneratorModel: The model used for generating contents out of random noise.
-
-### getDiscriminatorModel()
-
-Gets the Discriminator from the model. 
-
-```
-GenerativeAdversarialNetwork:getDiscriminatorModel(): Model
-```
-
-#### Returns:
-
-* DiscriminatorModel: The model used for discriminating real and fake contents.
-
 ### train()
 
 Trains the model.
@@ -139,6 +79,10 @@ GenerativeAdversarialNetwork:generate(noiseFeatureMatrix: matrix): matrix
 #### Returns:
 
 * outputMatrix: Matrix containing all the output values.
+
+## Inherited From
+
+* [GenerativeAdversarialNetworkBaseModel](GenerativeAdversarialNetworkBaseModel.md)
 
 ## References
 

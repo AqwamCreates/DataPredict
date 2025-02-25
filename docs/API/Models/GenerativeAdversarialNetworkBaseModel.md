@@ -96,6 +96,10 @@ GenerativeAdversarialNetwork:getDiscriminatorModel(): Model
 
 * outputMatrix: Matrix containing all the output values.
 
+## Inherited From
+
+* [IterativeMethodBaseModel](IterativeMethodBaseModel.md.md)
+
 ## References
 
 * [Generative Adversarial Networks](https://arxiv.org/abs/1406.2661)

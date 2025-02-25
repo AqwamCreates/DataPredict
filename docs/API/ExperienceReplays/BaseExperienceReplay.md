@@ -123,3 +123,7 @@ BaseExperienceReplay:setIsTemporalDifferenceErrorRequired(option)
 #### Parameters:
 
 * option: Set whether or not to store temporal difference errors.
+
+## Inherited From
+
+* [BaseInstance](../Cores/BaseInstance.md)

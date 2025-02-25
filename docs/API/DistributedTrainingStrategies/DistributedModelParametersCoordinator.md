@@ -108,6 +108,6 @@ Reset the main model's stored values (excluding the parameters).
 DistributedModelParametersCoordinator:reset()
 ```
 
-### Inherited From
+## Inherited From
 
 * [BaseInstance](../Cores/BaseInstance.md)

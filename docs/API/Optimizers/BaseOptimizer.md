@@ -40,18 +40,6 @@ BaseOptimizer:calculate(learningRate: number, costFunctionDerivatives: matrix): 
 
 * costFunctionDerivatives: The modified cost function derivatives that is to be used by a model.
 
-### getOptimizerName()
-
-Gets the optimizer's name from the base optimizer.
-
-```
-BaseOptimizer:getOptimizerName()
-```
-
-#### Returns:
-
-* optimizerName: The optimizer name that is stored in base optimizer.
-
 ### setCalculateFunction()
 
 Sets a calculate function for the base optimizer.
@@ -86,7 +74,7 @@ BaseOptimizer:getLearningRateScheduler(): ValueSchedulerObject
 
 #### Returns:
 
-# LearningRateValueScheduler: The value scheduler object that was used by the learning rate.
+* LearningRateValueScheduler: The value scheduler object that was used by the learning rate.
 
 ### getOptimizerInternalParameters()
 
@@ -125,3 +113,7 @@ Reset optimizer's stored values (excluding the parameters).
 ```
 BaseOptimizer:reset()
 ```
+
+## Inherited From
+
+* [BaseInstance](../Cores/BaseInstance.md)

@@ -104,6 +104,6 @@ Clears the stored gradients inside the DistributedGradients object.
 DistributedGradientsCoordinator:clearGradients()
 ```
 
-#### Inherited From:
+## Inherited From
 
 * [BaseInstance](../Cores/BaseInstance.md)

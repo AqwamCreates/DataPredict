@@ -26,63 +26,33 @@
 
 --]]
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 local RandomNetworkDistillation = {}
 
 RandomNetworkDistillation.__index = RandomNetworkDistillation
 
-local function deepCopyTable(original, copies)
+setmetatable(RandomNetworkDistillation, BaseInstance)
 
-	copies = copies or {}
-
-	local originalType = type(original)
-
-	local copy
-
-	if (originalType == 'table') then
-
-		if copies[original] then
-
-			copy = copies[original]
-
-		else
-
-			copy = {}
-
-			copies[original] = copy
-
-			for originalKey, originalValue in next, original, nil do
-
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-
-			end
-
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
-
-		end
-
-	else
-
-		copy = original
-
-	end
-
-	return copy
-
-end
-
-function RandomNetworkDistillation.new()
+function RandomNetworkDistillation.new(parameterDictionary)
 	
-	local NewRandomNetworkDistillation = {}
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewRandomNetworkDistillation = BaseInstance.new(parameterDictionary)
 	
 	setmetatable(NewRandomNetworkDistillation, RandomNetworkDistillation)
 	
-	NewRandomNetworkDistillation.Model = nil
+	NewRandomNetworkDistillation:setName("RandomNetworkDistillation")
 	
-	NewRandomNetworkDistillation.TargetModelParameters = nil
+	NewRandomNetworkDistillation:setClassName("RandomNetworkDistillation")
 	
-	NewRandomNetworkDistillation.PredictorModelParameters = nil
+	NewRandomNetworkDistillation.Model = parameterDictionary.Model
+	
+	NewRandomNetworkDistillation.TargetModelParameters = parameterDictionary.TargetModelParameters
+	
+	NewRandomNetworkDistillation.PredictorModelParameters = parameterDictionary.PredictorModelParameters
 	
 	return NewRandomNetworkDistillation
 	
@@ -100,15 +70,15 @@ function RandomNetworkDistillation:getModel(Model)
 	
 end
 
-ffunction RandomNetworkDistillation:generate(featureMatrix)
+function RandomNetworkDistillation:generate(featureMatrix)
 	
 	local Model = self.Model
 	
 	if (not Model) then error("No model!") end
 	
-	local PredictorModelParameters = self.PredictorModelParameters
-	
 	local TargetModelParameters = self.TargetModelParameters
+	
+	local PredictorModelParameters = self.PredictorModelParameters
 	
 	if (not TargetModelParameters) then
 		
@@ -134,21 +104,21 @@ ffunction RandomNetworkDistillation:generate(featureMatrix)
 
 	local predictorMatrix = Model:predict(featureMatrix, true)
 	
-	local errorMatrix = AqwamMatrixLibrary:subtract(predictorMatrix, targetMatrix)
+	local errorMatrix = AqwamTensorLibrary:subtract(predictorMatrix, targetMatrix)
 	
-	local squaredErrorMatrix = AqwamMatrixLibrary:power(errorMatrix, 2)
+	local squaredErrorMatrix = AqwamTensorLibrary:power(errorMatrix, 2)
 	
-	local sumSquaredErrorMatrix = AqwamMatrixLibrary:horizontalSum(squaredErrorMatrix)
+	local sumSquaredErrorMatrix = AqwamTensorLibrary:sum(squaredErrorMatrix, 2)
 	
-	local generatedMatrix = AqwamMatrixLibrary:power(sumSquaredErrorMatrix, 0.5)
+	local generatedMatrix = AqwamTensorLibrary:power(sumSquaredErrorMatrix, 0.5)
 
 	Model:forwardPropagate(featureMatrix, true)
 	Model:backwardPropagate(errorMatrix, true)
-
+	
 	self.TargetModelParameters = TargetModelParameters
 	
 	self.PredictorModelParameters = Model:getModelParameters(true)
-	
+
 	return generatedMatrix
 	
 end
@@ -161,7 +131,7 @@ function RandomNetworkDistillation:getTargetModelParameters(doNotDeepCopy)
 		
 	else
 		
-		return deepCopyTable(self.TargetModelParameters)
+		return self:deepCopyTable(self.TargetModelParameters)
 		
 	end
 	
@@ -175,7 +145,7 @@ function RandomNetworkDistillation:getPredictorModelParameters(doNotDeepCopy)
 
 	else
 
-		return deepCopyTable(self.PredictorModelParameters)
+		return self:deepCopyTable(self.PredictorModelParameters)
 
 	end
 	
@@ -189,7 +159,7 @@ function RandomNetworkDistillation:setTargetModelParameters(TargetModelParameter
 
 	else
 
-		self.TargetModelParameters = deepCopyTable(TargetModelParameters)
+		self.TargetModelParameters = self:deepCopyTable(TargetModelParameters)
 
 	end
 	
@@ -203,7 +173,7 @@ function RandomNetworkDistillation:setPredictorModelParameters(PredictorModelPar
 
 	else
 
-		self.PredictorModelParameters = deepCopyTable(PredictorModelParameters)
+		self.PredictorModelParameters = self:deepCopyTable(PredictorModelParameters)
 
 	end
 

@@ -69,3 +69,7 @@ Clears stored gradients inside the gradient method base model.
 ```
 GradientMethodBaseModel:clearGradients()
 ```
+
+## Inherited From
+
+* [IterativeMethodBaseModel](IterativeMethodBaseModel.md)

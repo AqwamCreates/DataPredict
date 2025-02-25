@@ -130,4 +130,4 @@ AffinityPropagation:predict(featureMatrix: Matrix): Matrix, Matrix
 
 ## Inherited From
 
-* [BaseModel](BaseModel.md)
+* [IterativeMethodBaseModel](IterativeMethodBaseModel.md)

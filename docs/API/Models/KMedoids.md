@@ -100,4 +100,4 @@ KMedoids:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): integer,
 
 ## Inherited From
 
-* [BaseModel](BaseModel.md)
+* [IterativeMethodBaseModel](IterativeMethodBaseModel.md)

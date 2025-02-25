@@ -101,6 +101,7 @@ KMeans:predict(featureMatrix: Matrix): integer, number
 * clusterNumber: The cluster which the data belongs to.
 
 * shortestDistance: The distance between the datapoint and the center of the cluster (centroids).
+
 ## Inherited From
 
-* [BaseModel](BaseModel.md)
+* [IterativeMethodBaseModel](IterativeMethodBaseModel.md)

@@ -112,4 +112,4 @@ AgglomerativeHierarchical:predict(featureMatrix: Matrix): integer, number
 
 ## Inherited From
 
-* [BaseModel](BaseModel.md)
+* [IterativeMethodBaseModel](IterativeMethodBaseModel.md)

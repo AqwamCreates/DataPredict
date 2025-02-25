@@ -111,4 +111,4 @@ SupportVectorMachineOneVsAll:predict(featureMatrix: Matrix, returnOriginalOutput
 
 ## Inherited From
 
-* [BaseModel](BaseModel.md)
+* [IterativeMethodBaseModel](IterativeMethodBaseModel.md)

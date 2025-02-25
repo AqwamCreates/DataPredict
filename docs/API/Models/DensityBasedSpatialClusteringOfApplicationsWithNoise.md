@@ -98,4 +98,4 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise:predict(featureMatrix: Matr
 
 ## Inherited From
 
-* [BaseModel](BaseModel.md)
+* [IterativeMethodBaseModel](IterativeMethodBaseModel.md)

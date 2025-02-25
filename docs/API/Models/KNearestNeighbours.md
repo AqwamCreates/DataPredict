@@ -100,4 +100,4 @@ KNearestNeighbours:predict(featureMatrix: Matrix, returnOriginalOutput: boolean)
 
 ## Inherited From
 
-* [BaseModel](BaseModel.md)
+* [IterativeMethodBaseModel](IterativeMethodBaseModel.md)

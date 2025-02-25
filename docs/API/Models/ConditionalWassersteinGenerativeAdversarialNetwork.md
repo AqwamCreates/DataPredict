@@ -154,6 +154,10 @@ ConditionalWassersteinGenerativeAdversarialNetwork:generate(noiseFeatureMatrix: 
 
 * outputMatrix: Matrix containing all the output values.
 
+## Inherited From
+
+* [GradientMethodBaseModel](GradientMethodBaseModel.md)
+
 ## References
 
 * [ACGAN Architectural Design](https://stephan-osterburg.gitbook.io/coding/coding/ml-dl/tensorfow/chapter-4-conditional-generative-adversarial-network/acgan-architectural-design)

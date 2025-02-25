@@ -26,62 +26,29 @@
 
 --]]
 
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
+
 BaseValueScheduler = {}
 
 BaseValueScheduler.__index = BaseValueScheduler
 
-local function deepCopyTable(original, copies)
+setmetatable(BaseValueScheduler, BaseInstance)
 
-	copies = copies or {}
-
-	local originalType = type(original)
-
-	local copy
-
-	if (originalType == 'table') then
-
-		if copies[original] then
-
-			copy = copies[original]
-
-		else
-
-			copy = {}
-
-			copies[original] = copy
-
-			for originalKey, originalValue in next, original, nil do
-
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-
-			end
-
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
-
-		end
-
-	else
-
-		copy = original
-
-	end
-
-	return copy
-
-end
-
-
-function BaseValueScheduler.new(valueSchedulerName)
+function BaseValueScheduler.new(parameterDictionary)
 	
-	local NewBaseValueScheduler = {}
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewBaseValueScheduler = BaseInstance.new(parameterDictionary)
 	
 	setmetatable(NewBaseValueScheduler, BaseValueScheduler)
 	
-	NewBaseValueScheduler.valueSchedulerName = valueSchedulerName or "Unknown"
+	NewBaseValueScheduler:setName("BaseValueScheduler")
+
+	NewBaseValueScheduler:setClassName("ValueScheduler")
 	
-	NewBaseValueScheduler.calculateFunction = nil
+	NewBaseValueScheduler.calculateFunction = parameterDictionary.calculateFunction
 	
-	NewBaseValueScheduler.valueSchedulerInternalParameters = nil
+	NewBaseValueScheduler.valueSchedulerInternalParameterArray = parameterDictionary.valueSchedulerInternalParameterArray
 	
 	return NewBaseValueScheduler
 	
@@ -99,35 +66,29 @@ function BaseValueScheduler:setCalculateFunction(calculateFunction)
 	
 end
 
-function BaseValueScheduler:getValueSchedulerName()
-	
-	return self.valueSchedulerName
-	
-end
-
-function BaseValueScheduler:getValueSchedulerInternalParameters(doNotDeepCopy)
+function BaseValueScheduler:getValueSchedulerInternalParameterArray(doNotDeepCopy)
 	
 	if (doNotDeepCopy) then
 		
-		return self.valueSchedulerInternalParameters
+		return self.valueSchedulerInternalParameterArray
 		
 	else
 		
-		return deepCopyTable(self.valueSchedulerInternalParameters)
+		return self:deepCopyTable(self.valueSchedulerInternalParameterArray)
 		
 	end
 	
 end
 
-function BaseValueScheduler:setValueSchedulerInternalParameters(valueSchedulerInternalParameters, doNotDeepCopy)
+function BaseValueScheduler:setValueSchedulerInternalParameterArray(valueSchedulerInternalParameterArray, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		self.valueSchedulerInternalParameters = valueSchedulerInternalParameters
+		self.valueSchedulerInternalParameterArray = valueSchedulerInternalParameterArray
 
 	else
 
-		self.valueSchedulerInternalParameters = deepCopyTable(valueSchedulerInternalParameters)
+		self.valueSchedulerInternalParameterArray = self:deepCopyTable(valueSchedulerInternalParameterArray)
 
 	end
 
@@ -135,7 +96,7 @@ end
 
 function BaseValueScheduler:reset()
 
-	self.valueSchedulerInternalParameters = nil
+	self.valueSchedulerInternalParameterArray = nil
 
 end
 

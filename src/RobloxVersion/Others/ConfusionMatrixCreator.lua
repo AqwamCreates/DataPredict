@@ -26,11 +26,15 @@
 
 --]]
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 ConfusionMatrixCreator = {}
 
 ConfusionMatrixCreator.__index = ConfusionMatrixCreator
+
+setmetatable(ConfusionMatrixCreator, BaseInstance)
 
 local function areNumbersOnlyInList(list)
 
@@ -80,41 +84,43 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList)
 
 end
 
-function ConfusionMatrixCreator:checkLabelVectors(trueLabelVector, predictedLabelVector)
+local function checkClassesList(ClassesList, trueLabelVector, predictedLabelVector)
 
-	if (#self.ClassesList == 0) then
+	if (#ClassesList == 0) then
 
-		self.ClassesList = createClassesList(trueLabelVector)
+		ClassesList = createClassesList(trueLabelVector)
 
-		local areNumbersOnly = areNumbersOnlyInList(self.ClassesList)
+		local areNumbersOnly = areNumbersOnlyInList(ClassesList)
 
-		if (areNumbersOnly) then table.sort(self.ClassesList, function(a,b) return a < b end) end
+		if (areNumbersOnly) then table.sort(ClassesList, function(a,b) return a < b end) end
 
 	else
 
-		if checkIfAnyLabelVectorIsNotRecognized(trueLabelVector, self.ClassesList) then error("A value does not exist in the classes list is present in the true label vector.") end
+		if checkIfAnyLabelVectorIsNotRecognized(trueLabelVector, ClassesList) then error("A value does not exist in the classes list is present in the true label vector.") end
 		
-		if checkIfAnyLabelVectorIsNotRecognized(predictedLabelVector, self.ClassesList) then error("A value does not exist in the classes list is present in the predicted label vector.") end
+		if checkIfAnyLabelVectorIsNotRecognized(predictedLabelVector, ClassesList) then error("A value does not exist in the classes list is present in the predicted label vector.") end
 		
 	end
+	
+	return ClassesList
 
 end
 
-function ConfusionMatrixCreator.new(ClassesList)
+function ConfusionMatrixCreator.new(parameterDictionary)
 	
-	local NewConfusionMatrixCreator = {}
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewConfusionMatrixCreator = BaseInstance.new(parameterDictionary)
 	
 	setmetatable(NewConfusionMatrixCreator, ConfusionMatrixCreator)
 	
-	NewConfusionMatrixCreator.ClassesList = ClassesList or {}
+	NewConfusionMatrixCreator:setName("ConfusionMatrixCreator")
+	
+	NewConfusionMatrixCreator:setClassName("ConfusionMatrixCreator")
+	
+	NewConfusionMatrixCreator.ClassesList = parameterDictionary.ClassesList or {}
 	
 	return NewConfusionMatrixCreator
-	
-end
-
-function ConfusionMatrixCreator:setParameters(ClassesList)
-	
-	self.ClassesList = ClassesList or self.ClassesList
 	
 end
 
@@ -124,11 +130,13 @@ function ConfusionMatrixCreator:createConfusionMatrix(trueLabelVector, predicted
 	
 	if (#trueLabelVector[1] ~= 1) or (#predictedLabelVector[1] ~= 1) then error("Both vector must only have one column!") end
 	
-	self:checkLabelVectors(trueLabelVector, predictedLabelVector)
+	local ClassesList = checkClassesList(self.ClassesList, trueLabelVector, predictedLabelVector)
 	
-	local ClassesList = self.ClassesList
+	self.ClassesList = ClassesList
 	
-	local confusionMatrix = AqwamMatrixLibrary:createMatrix(#ClassesList, #ClassesList)
+	local numberOfClasses = #ClassesList
+	
+	local confusionMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfClasses}, 0)
 	
 	local numberOfUnknownClassifications = 0
 	
@@ -168,7 +176,9 @@ function ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector, predictedL
 	
 	local maxClassLabelLengthArray = {}
 	
-	local maxColumnValueLength = 3
+	local indicatorString = "True \\ Predicted"
+	
+	local maxColumnValueLength = string.len(indicatorString)
 
 	for i, classLabel in ipairs(ClassesList) do
 		
@@ -190,7 +200,7 @@ function ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector, predictedL
 		
 	end
 	
-	local text =  "\n\n" .. string.rep(" ", maxColumnValueLength + 3) .. "+"
+	local text =  "\n\n+" .. string.rep("-", maxColumnValueLength + 2) .. "+"
 	
 	for i, classLabel in ipairs(ClassesList) do
 
@@ -204,7 +214,7 @@ function ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector, predictedL
 
 	end
 	
-	text = text .. "\n " .. tostring(" ", maxColumnValueLength - 1) .. "T\\P" .. " |"
+	text = text .. "\n|" .. tostring(" ", maxColumnValueLength - 1) .. indicatorString .. " |"
 	
 	for i, classLabel in ipairs(ClassesList) do
 		

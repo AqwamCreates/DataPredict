@@ -28,171 +28,145 @@
 
 local DataPredictLibrary = script.Parent.Parent
 
+local IterativeMethodBaseModel = require(DataPredictLibrary.Models.IterativeMethodBaseModel)
+
 local Models = DataPredictLibrary.Models
 
 local Optimizers = DataPredictLibrary.Optimizers
 
 local Regularizer = require(DataPredictLibrary.Others.Regularizer)
 
-local AqwamMatrixLibrary = require(DataPredictLibrary.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(DataPredictLibrary.AqwamTensorLibraryLinker.Value)
 
 OneVsAll = {}
 
 OneVsAll.__index = OneVsAll
 
+setmetatable(OneVsAll, IterativeMethodBaseModel)
+
+local defaultModelName = "LogisticRegression"
+
+local defaultNumberOfClasses = 2
+
 local defaultMaximumNumberOfIterations = 500
 
-local defaultTotalTargetCostUpperBound = 0
-
-local defaultTotalTargetCostLowerBound = 0
-
-function OneVsAll.new(maximumNumberOfIterations, useNegativeOneBinaryLabel)
+function OneVsAll.new(parameterDictionary)
 	
-	local NewOneVsAll = {}
+	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	
+	local NewOneVsAll = IterativeMethodBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewOneVsAll, OneVsAll)
 	
-	NewOneVsAll.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	NewOneVsAll:setName("OneVsAll")
 	
-	NewOneVsAll.useNegativeOneBinaryLabel = useNegativeOneBinaryLabel or false
+	NewOneVsAll:setClassName("OneVsAll")
 	
-	NewOneVsAll.IsOutputPrinted = true
+	NewOneVsAll.numberOfClasses = parameterDictionary.numberOfClasses or defaultNumberOfClasses
 	
-	NewOneVsAll.targetTotalCostUpperBound = defaultTotalTargetCostUpperBound
-
-	NewOneVsAll.targetTotalCostLowerBound = defaultTotalTargetCostLowerBound
+	NewOneVsAll.useNegativeOneBinaryLabel = NewOneVsAll:getValueOrDefaultValue(parameterDictionary.useNegativeOneBinaryLabel, false)
 	
-	NewOneVsAll.numberOfIterationsToCheckIfConverged = math.huge
+	NewOneVsAll.ClassesList = parameterDictionary.ClassesList or {}
 	
-	NewOneVsAll.currentNumberOfIterationsToCheckIfConverged = 0
-	
-	NewOneVsAll.currentCostToCheckForConvergence = nil
-	
-	NewOneVsAll.ModelArray = {}
-	
-	NewOneVsAll.OptimizersArray = {}
-	
-	NewOneVsAll.ClassesList = {}
+	NewOneVsAll.ModelArray = parameterDictionary.ModelArray or {}
 	
 	return NewOneVsAll
 	
 end
 
-function OneVsAll:getBooleanOrDefaultOption(boolean, defaultBoolean)
+function OneVsAll:generateModel(parameterDictionary)
+	
+	local modelName = parameterDictionary.modelName
+	
+	if (not modelName) then error("No model name.") end
+	
+	parameterDictionary = parameterDictionary or {}
 
-	if (type(boolean) == "nil") then return defaultBoolean end
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or 1
 
-	return boolean
+	parameterDictionary.isOutputPrinted = self:getValueOrDefaultValue(parameterDictionary.isOutputPrinted, false)
+	
+	local ModelArray = self.ModelArray
+	
+	local SelectedModel = require(Models[modelName])
 
-end
+	for i = 1, self.numberOfClasses, 1 do
 
-function OneVsAll:checkIfModelsSet()
-	
-	local numberOfModels = #self.ModelArray
+		local ModelObject = SelectedModel.new(parameterDictionary)
 
-	if (numberOfModels == 0) then error("No models set!") end
-	
-end
-
-function OneVsAll:setParameters(maximumNumberOfIterations, useNegativeOneBinaryLabel)
-	
-	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
-	
-	self.useNegativeOneBinaryLabel = self:getBooleanOrDefaultOption(useNegativeOneBinaryLabel, self.useNegativeOneBinaryLabel)
-	
-end
-
-function OneVsAll:setModels(modelName, numberOfClasses)
-	
-	local ModelObject
-	
-	local SelectedModel
-	
-	local ModelArray = {}
-	
-	local isNameAdded = (typeof(modelName) == "string")
-	
-	if isNameAdded then SelectedModel = require(Models[modelName]) end
-	
-	for i = 1, numberOfClasses, 1 do
-
-		if (isNameAdded == nil) then continue end
-
-		ModelObject = SelectedModel.new(1)
-			
-		ModelObject:setPrintOutput(false)
-		
 		table.insert(ModelArray, ModelObject)
 
 	end
-	
+
 	self.ModelArray = ModelArray
 	
 end
 
-function OneVsAll:setOptimizer(optimizerName, ...)
+function OneVsAll:setModel(parameterDictionary)
 	
-	self:checkIfModelsSet()
+	local ModelArray = self.ModelArray
+	
+	if (#ModelArray == 0) then 
+		
+		self:generateModel(parameterDictionary) 
+		
+	else
+		
+		for parameterKey, parameterValue in parameterDictionary do
 
-	local OptimizerObject
-	
-	local isNameAdded = (typeof(optimizerName) == "string")
-	
-	local SelectedOptimizer
-	
-	if isNameAdded then SelectedOptimizer = require(Optimizers[optimizerName]) end
-	
-	local success = pcall(function()
-		
-		self.ModelArray[1]:setOptimizer() 
-		
-	end)
-	
-	if (success == false) then 
-		
-		warn("The model does not have setOptimizer() function. No optimizer have been added.") 
-		
-		return nil
-		
-	end
-	
-	for _, Model in ipairs(self.ModelArray) do 
-
-		if SelectedOptimizer then
-
-			OptimizerObject = SelectedOptimizer.new(...)
+			for _, Model in ipairs(ModelArray) do Model[parameterKey] = parameterValue end
 
 		end
-
-		Model:setOptimizer(OptimizerObject) 
-
+		
 	end
 	
 end
 
-function OneVsAll:setRegularizer(lambda, regularizationMode, hasBias)
+function OneVsAll:setOptimizer(parameterDictionary)
 	
-	self:checkIfModelsSet()
+	if (not parameterDictionary) then return end
 	
-	local RegularizerObject
+	if (#self.ModelArray == 0) then error("No model.") end
+	
+	local optimizerName = parameterDictionary.optimizerName
+	
+	if (not optimizerName) then error("No optimizer name.") end
+	
+	local SelectedOptimizer = require(Optimizers[optimizerName])
+		
+	for m, Model in ipairs(self.ModelArray) do 
 
-	if (lambda) or (regularizationMode) or (hasBias) then RegularizerObject = Regularizer.new(lambda, regularizationMode, hasBias) end
-	
-	local success = pcall(function()
+		local success = pcall(function() 
+				
+			local OptimizerObject = SelectedOptimizer.new(parameterDictionary)
+
+			Model:setOptimizer(OptimizerObject)
+				
+		end)
+
+		if (not success) then warn("Model " .. m .. " does not have setOptimizer() function. No optimizer have been set to the model.") end
+
+	end
 		
-		for _, Model in ipairs(self.ModelArray) do Model:setRegularizer(RegularizerObject) end
-		
-	end)
-	
-	if (success == false) then warn("The model does not have setRegularizer() function. No regularizer have been added.") end
-	
 end
 
-function OneVsAll:setModelsSettings(...)
+function OneVsAll:setRegularizer(parameterDictionary)
 	
-	self:checkIfModelsSet()
+	if (not parameterDictionary) then return end
 	
-	for _, Model in ipairs(self.ModelArray) do Model:setParameters(...) end
+	if (#self.ModelArray == 0) then error("No model.") end
+	
+	local RegularizerObject = Regularizer.new(parameterDictionary)
+	
+	for m, Model in ipairs(self.ModelArray) do 
+		
+		local success = pcall(function() Model:setRegularizer(RegularizerObject) end)
+		
+		if (not success) then warn("Model " .. m .. " does not have setRegularizer() function. No regularizer have been set to the model.") end
+	
+	end
 	
 end
 
@@ -245,18 +219,22 @@ local function createClassesList(labelVector)
 end
 
 function OneVsAll:processLabelVector(labelVector)
+	
+	local ClassesList = self.ClassesList
 
-	if (#self.ClassesList == 0) then
+	if (#ClassesList == 0) then
 
-		self.ClassesList = createClassesList(labelVector)
+		ClassesList = createClassesList(labelVector)
 
-		table.sort(self.ClassesList, function(a,b) return a < b end)
+		table.sort(ClassesList, function(a,b) return a < b end)
 
 	else
 
-		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the classes list is present in the label vector") end
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList) then error("A value does not exist in the classes list is present in the label vector") end
 
 	end
+	
+	self.ClassesList = ClassesList
 
 end
 
@@ -264,7 +242,7 @@ local function convertToBinaryLabelVector(labelVector, selectedClass, useNegativ
 
 	local numberOfRows = #labelVector
 
-	local newLabelVector = AqwamMatrixLibrary:createMatrix(numberOfRows, 1)
+	local newLabelVector = AqwamTensorLibrary:createTensor({numberOfRows, 1}, true)
 
 	for row = 1, numberOfRows, 1 do
 
@@ -286,27 +264,29 @@ end
 
 function OneVsAll:train(featureMatrix, labelVector)
 	
-	self:checkIfModelsSet()
+	local ModelArray = self.ModelArray
+	
+	if (#ModelArray == 0) then self:generateModel() end
 	
 	self:processLabelVector(labelVector)
 	
-	if (#self.ModelArray ~= #self.ClassesList) then error("The number of models does not match with number of classes.") end
+	local ClassesList = self.ClassesList
+	
+	if (#ModelArray ~= #ClassesList) then error("The number of models does not match with number of classes.") end
+	
+	local useNegativeOneBinaryLabel = self.useNegativeOneBinaryLabel
 	
 	local binaryLabelVectorTable = {}
 	
-	for i, class in ipairs(self.ClassesList) do
+	for i, class in ipairs(ClassesList) do
 
-		local binaryLabelVector = convertToBinaryLabelVector(labelVector, class, self.useNegativeOneBinaryLabel)
+		local binaryLabelVector = convertToBinaryLabelVector(labelVector, class, useNegativeOneBinaryLabel)
 
 		table.insert(binaryLabelVectorTable, binaryLabelVector)
 
 	end
 	
 	local ModelArray = self.ModelArray
-	
-	local targetTotalCostLowerBound = self.targetTotalCostLowerBound
-	
-	local targetTotalCostUpperBound = self.targetTotalCostUpperBound
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
@@ -336,50 +316,12 @@ function OneVsAll:train(featureMatrix, labelVector)
 		
 		table.insert(costArray, totalCost)
 		
-		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. totalCost) end
-		
-	until (numberOfIterations >= maximumNumberOfIterations) or ((totalCost >= targetTotalCostLowerBound) and (totalCost <= targetTotalCostUpperBound)) or self:checkIfConverged(totalCost)
+		self:printCostAndNumberOfIterations(totalCost, numberOfIterations)
+				
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(totalCost) or self:checkIfConverged(totalCost)
 	
 	return costArray
 	
-end
-
-function OneVsAll:checkIfConverged(cost)
-
-	if (not cost) then return false end
-
-	if (not self.currentCostToCheckForConvergence) then
-
-		self.currentCostToCheckForConvergence = cost
-
-		return false
-
-	end
-
-	if (self.currentCostToCheckForConvergence ~= cost) then
-
-		self.currentNumberOfIterationsToCheckIfConverged = 1
-
-		self.currentCostToCheckForConvergence = cost
-
-		return false
-
-	end
-
-	if (self.currentNumberOfIterationsToCheckIfConverged < self.numberOfIterationsToCheckIfConverged) then
-
-		self.currentNumberOfIterationsToCheckIfConverged += 1
-
-		return false
-
-	end
-
-	self.currentNumberOfIterationsToCheckIfConverged = 1
-
-	self.currentCostToCheckForConvergence = nil
-
-	return true
-
 end
 
 function OneVsAll:getBestPrediction(featureVector)
@@ -394,15 +336,19 @@ function OneVsAll:getBestPrediction(featureVector)
 		
 		if (typeof(allOutputVector) == "number") then allOutputVector = {{allOutputVector}} end
 
-		local value, maximumValueIndex = AqwamMatrixLibrary:findMaximumValue(allOutputVector)
+		local dimensionIndexArray, value = AqwamTensorLibrary:findMaximumValueDimensionIndexArray(allOutputVector)
 
-		if (maximumValueIndex == nil) then continue end
+		if (dimensionIndexArray) then
+			
+			if (value > highestValue) then
+				
+				selectedModelNumber = m
 
-		if (value <= highestValue) then continue end
-		
-		selectedModelNumber = m
-
-		highestValue = value
+				highestValue = value
+				
+			end
+			
+		end
 
 	end
 	
@@ -412,11 +358,13 @@ end
 
 function OneVsAll:predict(featureMatrix)
 	
-	self:checkIfModelsSet()
+	if (#self.ModelArray == 0) then error("No model set.") end
 	
-	local selectedModelNumberVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
+	local numberOfData = #featureMatrix
 	
-	local highestValueVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
+	local selectedModelNumberVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
+	
+	local highestValueVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
 	
 	for i = 1, #featureMatrix, 1 do
 		
@@ -436,7 +384,7 @@ end
 
 function OneVsAll:getModelParametersArray(doNotDeepCopy)
 	
-	self:checkIfModelsSet()
+	if (#self.ModelArray == 0) then error("No model set.") end
 	
 	local ModelParametersArray = {}
 	
@@ -454,7 +402,7 @@ end
 
 function OneVsAll:setModelParametersArray(ModelParametersArray, doNotDeepCopy)
 	
-	self:checkIfModelsSet()
+	if (#self.ModelArray == 0) then error("No model set.") end
 	
 	if (ModelParametersArray == nil) then return nil end
 	
@@ -472,50 +420,10 @@ end
 
 function OneVsAll:clearModelParameters()
 	
-	self:checkIfModelsSet()
+	if (#self.ModelArray == 0) then error("No model set.") end
 	
 	for _, Model in ipairs(self.ModelArray) do Model:clearModelParameters() end
 
-end
-
-function OneVsAll:setPrintOutput(option) 
-
-	self.isOutputPrinted = self:getBooleanOrDefaultOption(option, self.isOutputPrinted)
-
-end
-
-function OneVsAll:setAutoResetOptimizers(option)
-
-	self:checkIfModelsSet()
-
-	for _, Model in ipairs(self.ModelArray) do Model:setAutoResetOptimizers(option) end
-
-end
-
-function OneVsAll:setNumberOfIterationsToCheckIfConverged(numberOfIterations)
-	
-	for _, Model in ipairs(self.ModelArray) do Model:setNumberOfIterationsToCheckIfConverged(numberOfIterations) end
-	
-end
-
-function OneVsAll:setNumberOfIterationsToCheckIfConvergedForOneVsAll(numberOfIterations)
-
-	self.numberOfIterationsToCheckIfConverged = numberOfIterations or self.numberOfIterationsToCheckIfConverged
-
-end
-
-function OneVsAll:setTargetCost(upperBound, lowerBound)
-	
-	for _, Model in ipairs(self.ModelArray) do Model:setTargetCost(upperBound, lowerBound) end
-	
-end
-
-function OneVsAll:setTargetTotalCost(upperBound, lowerBound)
-	
-	self.targetTotalCostUpperBound = upperBound or self.targetTotalCostUpperBound
-	
-	self.targetTotalCostLowerBound = lowerBound or self.targetTotalCostLowerBound
-	
 end
 
 return OneVsAll

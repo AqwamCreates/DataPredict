@@ -1,8 +1,50 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
+
 OnlineLearning = {}
 
 OnlineLearning.__index = OnlineLearning
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+setmetatable(OnlineLearning, BaseInstance)
+
+local defaultBatchSize = 1
+
+local defaultWaitInterval = 0.1
+
+local defaultShowFinalCost = true
+
+local defaultIdleDuration = 30
+
+local defaultShowIdleWarning = true
+
+local defaultShowModelDivergenceWarning = true
 
 local modelDivergedWarningText = "The model diverged! Reverting to previous model parameters! Please repeat the experiment again or change the argument values if this warning occurs often."
 
@@ -10,29 +52,45 @@ local onlineLearningNotActiveText = "Online Learning is not active!"
 
 local onlineLearningActiveText = "Online Learning is already active!"
 
-function OnlineLearning.new(Model, isOutputRequired, batchSize)
-
-	if (Model == nil) then error("Please set a model!") end
-
-	if (isOutputRequired == nil) then error("Please set whether or not the model requires a output!") end
-
-	local NewOnlineLearning = {}
+function OnlineLearning.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewOnlineLearning = BaseInstance.new(parameterDictionary)
 
 	setmetatable(NewOnlineLearning, OnlineLearning)
+	
+	local Model = parameterDictionary.Model
+	
+	local isOutputRequired = parameterDictionary.isOutputRequired
+
+	if (not Model) then error("Please set a model!") end
+
+	if (not isOutputRequired) then error("Please set whether or not the model requires a output!") end
 
 	NewOnlineLearning.Model = Model
+	
+	NewOnlineLearning.isOutputRequired = isOutputRequired or {}
+	
+	NewOnlineLearning.batchSize = parameterDictionary.batchSize or defaultBatchSize
+	
+	NewOnlineLearning.waitInterval = parameterDictionary.waitInterval or defaultWaitInterval
+	
+	NewOnlineLearning.showFinalCost = NewOnlineLearning:getValueOrDefaultValue(parameterDictionary.showFinalCost, defaultShowFinalCost)
+	
+	NewOnlineLearning.idleDuration = parameterDictionary.idleDuration or defaultIdleDuration
+	
+	NewOnlineLearning.showIdleWarning = NewOnlineLearning:getValueOrDefaultValue(parameterDictionary.showIdleWarning, defaultShowIdleWarning)
+	
+	NewOnlineLearning.showModelDivergenceWarning = NewOnlineLearning:getValueOrDefaultValue(parameterDictionary.showModelDivergenceWarning, defaultShowModelDivergenceWarning)
 
-	NewOnlineLearning.InputQueue = {}
+	NewOnlineLearning.inputQueue = parameterDictionary.inputQueue or {}
 
-	NewOnlineLearning.OutputQueue = {}
+	NewOnlineLearning.outputQueue = parameterDictionary.outputQueue or {}
 
-	NewOnlineLearning.CostArrayQueue = {}
+	NewOnlineLearning.costArrayQueue = parameterDictionary.costArrayQueue or {}
 
-	NewOnlineLearning.IsOutputRequired = isOutputRequired
-
-	NewOnlineLearning.IsOnlineLearningRunning = false
-
-	NewOnlineLearning.BatchSize = batchSize or 1
+	NewOnlineLearning.isOnlineLearningRunning = false
 
 	return NewOnlineLearning
 
@@ -40,25 +98,33 @@ end
 
 function OnlineLearning:generateDataset(minimumBatchSize)
 	
+	local isOutputRequired = self.isOutputRequired
+	
+	local inputQueue = self.inputQueue
+
+	local outputQueue = self.outputQueue
+	
 	local input = {}
 	
 	local output = {}
 	
 	for data = 1, minimumBatchSize, 1 do
 
-		table.insert(input, self.InputQueue[1][1])
+		table.insert(input,inputQueue [1][1])
 
-		table.remove(self.InputQueue, 1)
+		table.remove(inputQueue, 1)
 
-		if (self.IsOutputRequired == false) then continue end
+		if (isOutputRequired) then
+			
+			table.insert(output, outputQueue[1][1]) 
 
-		table.insert(output, self.OutputQueue[1][1]) 
-
-		table.remove(self.OutputQueue, 1)
+			table.remove(outputQueue, 1)
+			
+		end
 		
 	end
 	
-	if (self.IsOutputRequired) then
+	if (isOutputRequired) then
 		
 		return input, output
 		
@@ -76,7 +142,7 @@ function OnlineLearning:autoRemoveCostArrayAfterCertainDuration()
 
 		for frame = 1, 70 do task.wait() end -- to allow cost to be fetched. Otherwise it will remove it before it can be fetched!
 
-		table.remove(self.CostArrayQueue, 1)
+		table.remove(self.costArrayQueue, 1)
 
 	end)
 	
@@ -88,23 +154,37 @@ function OnlineLearning:restorePreviousModelParametersIfCostIsInfinity(cost)
 
 		self.Model:setModelParameters(self.PreviousModelParameters)
 
-		warn(modelDivergedWarningText) 
+		if (self.showModelDivergenceWarning) then warn(modelDivergedWarningText) end
 
 	end
 	
 end
 
-function OnlineLearning:start(showFinalCost, showIdleWarning)
+function OnlineLearning:start()
 
-	if (self.IsOnlineLearningRunning == true) then error(onlineLearningActiveText) end
+	if (self.isOnlineLearningRunning) then error(onlineLearningActiveText) end
 
-	self.IsOnlineLearningRunning = true
+	self.isOnlineLearningRunning = true
+	
+	local Model = self.Model
+	
+	local isOutputRequired = self.isOutputRequired
+	
+	local batchSize = self.batchSize
+	
+	local showFinalCost = self.showFinalCost
+	
+	local idleDuration = self.idleDuration
+	
+	local showIdleWarning = self.showIdleWarning
+	
+	local inputQueue = self.inputQueue
+	
+	local outputQueue = self.outputQueue
+	
+	local costArrayQueue = self.costArrayQueue
 
-	if (showFinalCost == nil) then showFinalCost = false end
-
-	if (showIdleWarning == nil) then showIdleWarning = true end
-
-	local waitInterval = 0.1
+	local waitInterval = self.waitInterval
 
 	local waitDuration = 0
 
@@ -124,53 +204,51 @@ function OnlineLearning:start(showFinalCost, showIdleWarning)
 
 			task.wait(waitInterval)
 
-			waitDuration += waitInterval
+			waitDuration = waitDuration + waitInterval
 
-			areBatchesFilled = (#self.InputQueue >= self.BatchSize) and (not self.IsOutputRequired or (#self.OutputQueue >= self.BatchSize))
+			areBatchesFilled = (#inputQueue >= batchSize) and (not isOutputRequired or (#outputQueue >= batchSize))
 
-			if (waitDuration >= 30) and (waitWarningIssued == false) and (showIdleWarning == true) then 
+			if (waitDuration >= idleDuration) and (not waitWarningIssued) and (showIdleWarning) then 
 
-				warn("The online learning model has been idle for more than 30 seconds. Leaving the thread running may use unnecessary resource.") 
+				warn("The online learning model has been idle for more than " .. idleDuration .. " seconds. Leaving the thread running may use unnecessary resource.") 
 
 				waitWarningIssued = true
 				
 				continue
 
-			elseif (areBatchesFilled == false) then continue
+			elseif (not areBatchesFilled) then continue
 
-			elseif (self.IsOnlineLearningRunning == false) then break end
+			elseif (not self.isOnlineLearningRunning) then break end
 
-			self.PreviousModelParameters = self.Model:getModelParameters()
+			self.PreviousModelParameters = Model:getModelParameters()
 			
-			local minimumBatchSize = math.min(self.BatchSize, #self.InputQueue)
+			local minimumBatchSize = math.min(batchSize, #inputQueue)
 			
 			local input, output = self:generateDataset(minimumBatchSize)
 			
-			local costArray = self.Model:train(input, output)
+			local costArray = Model:train(input, output)
 
 			cost = costArray[#costArray]
 			
 			self:restorePreviousModelParametersIfCostIsInfinity(cost)
 
-			table.insert(self.CostArrayQueue, costArray)
+			table.insert(costArrayQueue, costArray)
 
-			if (showFinalCost == true) then print("Final Cost: " .. cost) end
+			if (showFinalCost) then print("Final Cost: " .. cost) end
 			
 			self:autoRemoveCostArrayAfterCertainDuration()
 			
 			waitDuration = 0
 
-		until (self.IsOnlineLearningRunning == false)
+		until (not self.isOnlineLearningRunning)
 
-		self.InputQueue = {}
+		self.inputQueue = {}
 
-		self.OutputQueue = {}
+		self.outputQueue = {}
 
-		self.CostArrayQueue = {}
+		self.costArrayQueue = {}
 		
 		self.PreviousModelParameters = nil
-
-		waitInterval = nil
 
 		waitDuration = nil
 
@@ -192,28 +270,29 @@ end
 
 function OnlineLearning:addInput(input)
 
-	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error(onlineLearningNotActiveText) end
+	if (not self.isOnlineLearningRunning) then error(onlineLearningNotActiveText) end
+	
+	if (type(input) == "number") then input = {{input}} end
 
-	table.insert(self.InputQueue, input)
+	table.insert(self.inputQueue, input)
 
 end
 
 function OnlineLearning:addOutput(output)
 
-	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error(onlineLearningNotActiveText) end
+	if (not self.isOnlineLearningRunning) then error(onlineLearningNotActiveText) end
 	
 	if (type(output) == "number") then output = {{output}} end
 
-	table.insert(self.OutputQueue, output)
+	table.insert(self.outputQueue, output)
 
 end
 
-
 function OnlineLearning:returnCostArray()
 
-	if (self.IsOnlineLearningRunning == nil) or (self.IsOnlineLearningRunning == false) then error(onlineLearningNotActiveText) end
+	if (not self.isOnlineLearningRunning) then error(onlineLearningNotActiveText) end
 
-	return self.CostArrayQueue[1]
+	return self.costArrayQueue[1]
 
 end
 

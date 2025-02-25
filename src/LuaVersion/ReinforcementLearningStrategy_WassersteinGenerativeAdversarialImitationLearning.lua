@@ -36,8 +36,6 @@ WassersteinGenerativeAdversarialImitationLearning.__index = WassersteinGenerativ
 
 setmetatable(WassersteinGenerativeAdversarialImitationLearning, GenerativeAdversarialImitationLearningBaseModel)
 
-
-
 function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictionary)
 	
 	local NewWassersteinGenerativeAdversarialImitationLearning = GenerativeAdversarialImitationLearningBaseModel.new(parameterDictionary)

@@ -134,7 +134,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 			end
 
-			ReinforcementLearningModel:episodeUpdate()
+			ReinforcementLearningModel:episodeUpdate(1)
 
 		end
 		
@@ -237,7 +237,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 			end
 
-			ReinforcementLearningModel:episodeUpdate()
+			ReinforcementLearningModel:episodeUpdate(1)
 
 		end
 		

@@ -134,7 +134,7 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 			end
 
-			ReinforcementLearningModel:episodeUpdate()
+			ReinforcementLearningModel:episodeUpdate(1)
 
 		end
 		
@@ -236,7 +236,7 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 			end
 
-			ReinforcementLearningModel:episodeUpdate()
+			ReinforcementLearningModel:episodeUpdate(1)
 
 		end
 		

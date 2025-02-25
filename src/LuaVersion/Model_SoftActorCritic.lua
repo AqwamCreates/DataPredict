@@ -208,7 +208,7 @@ function SoftActorCriticModel:backwardPropagate(previousFeatureVector, previousL
 
 	local minimumCurrentCriticValue = math.min(table.unpack(currentCriticValueArray))
 	
-	local yValuePart1 = (1 - terminalStateValue)  * (minimumCurrentCriticValue - (alpha * previousLogActionProbabilityValue))
+	local yValuePart1 = (1 - terminalStateValue) * (minimumCurrentCriticValue - (alpha * previousLogActionProbabilityValue))
 
 	local yValue = rewardValue + (self.discountFactor * yValuePart1)
 

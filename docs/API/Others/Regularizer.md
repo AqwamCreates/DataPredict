@@ -51,3 +51,7 @@ Regularizer:getLambda(): number
 #### Returns:
 
 * lambda: The regularization factor.
+
+## Inherited From
+
+* [BaseInstance](../Cores/BaseInstance.md)

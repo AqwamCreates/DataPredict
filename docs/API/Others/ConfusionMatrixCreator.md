@@ -62,4 +62,8 @@ ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector: matrix, predictedLa
 
 #### Returns:
 
-* confusionMatrix: The rows represent actual classes and the columns represent predicted classes. 
+* confusionMatrix: The rows represent actual classes and the columns represent predicted classes.
+
+## Inherited From
+
+* [BaseInstance](../Cores/BaseInstance.md)

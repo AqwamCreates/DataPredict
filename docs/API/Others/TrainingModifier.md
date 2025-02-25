@@ -12,7 +12,7 @@ Modifies the model's batch training to other modes.
 
 ### new()
 
-Creates a new gradient descent modifier object. If any of the arguments are not given, default argument values for that argument will be used.
+Creates a new training modifier object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
 TrainingModifier.new(Model: ModelObject, gradientDescentType: string, batchSize: integer, showOutput: boolean): GradientDescentModifierObject
@@ -20,7 +20,7 @@ TrainingModifier.new(Model: ModelObject, gradientDescentType: string, batchSize:
 
 #### Parameters:
 
-* Model: The model object to modify its gradient descent capabilities.
+* Model: The model object to modify its training capabilities.
 
 * gradientDescentType: The type of gradient descent to be used when train() function is called. Available modes are "Batch", "MiniBatch" and "Stochastic".
 
@@ -33,24 +33,6 @@ TrainingModifier.new(Model: ModelObject, gradientDescentType: string, batchSize:
 * TrainingModifierObject: A training modifier object that uses the model's train(), predict() and reinforce() functions so that it behaves like a regular model.
 
 ## Functions
-
-### setParameters()
-
-Set modifier’s parameters. When any of the arguments are not given, previous argument values for that argument will be used.
-
-```
-TrainingModifier:setParameters(Model: ModelObject, gradientDescentType: string, batchSize: integer, showOutput: boolean)
-```
-
-#### Parameters:
-
-* Model: The model object to modify its gradient descent capabilities.
-
-* gradientDescentType: The type of gradient descent to be used when train() function is called. Available modes are "Batch", "MiniBatch" and "Stochastic".
-
-* batchSize: The batch size to split the featureMatrix and labelVector into multiple parts.
-
-* showOutput: Set whether or not to show the final cost for each epoch (MiniBatch) or data (Stochastic).
 
 ### train()
 
@@ -99,3 +81,7 @@ TrainingModifier:reinforce(currentFeatureVector: Matrix, rewardValue: number, re
 * rewardValue: The reward value added/subtracted from the current state (recommended value between -1 and 1, but can be larger than these values). 
 
 * returnOriginalOutput: Set whether or not to return predicted vector instead of value with highest probability.
+
+## Inherited From
+
+* [BaseInstance](../Cores/BaseInstance.md)

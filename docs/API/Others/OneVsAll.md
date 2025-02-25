@@ -260,3 +260,7 @@ OneVsAll:setPrintOutput(option: boolean)
 #### Parameters:
 
 * option: A boolean value that specifies if the output is printed.
+
+## Inherited From
+
+* [BaseInstance](../Cores/BaseInstance.md)

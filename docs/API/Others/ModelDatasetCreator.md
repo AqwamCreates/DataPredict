@@ -24,11 +24,11 @@ ModelDatasetCreator:setDatasetSplitPercentages(trainDataPercentage: number, vali
 
 #### Parameters:
 
-* trainDataPercentage: The percentage of dataset to be turned to training data. The value must be between 0 and 1.
+* trainDataRatio: The ratio of dataset to be turned to training data. The value must be between 0 and 1.
 
-* validationDataPercentage: The percentage of dataset to be turned to validation data. The value must be between 0 and 1.
+* validationDataRatio: The ratio of dataset to be turned to validation data. The value must be between 0 and 1.
 
-* testDataPercentage: The percentage of dataset to be turned to testing data. The value must be between 0 and 1.
+* testDataRatio: The ratio of dataset to be turned to testing data. The value must be between 0 and 1.
 
 ### setDatasetRandomizationProbability()
 
@@ -79,3 +79,7 @@ ModelDatasetCreator:splitDataset(datasetMatrix): matrix, matrix, matrix
 * validationDatasetMatrix: The dataset for validating models.
 
 * testDatasetMatrix: The dataset for testing models.
+
+## Inherited From
+
+* [BaseInstance](../Cores/BaseInstance.md)

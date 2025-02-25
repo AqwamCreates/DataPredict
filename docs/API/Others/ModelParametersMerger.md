@@ -111,3 +111,7 @@ ModelParametersMerger:setData(featureMatrix: Matrix, labelVector: Matrix)
 * featureMatrix: The matrix that contains all the data.
 
 * labelVector: The matrix that contains data related to feature matrix (optional).
+
+## Inherited From
+
+* [BaseInstance](../Cores/BaseInstance.md)

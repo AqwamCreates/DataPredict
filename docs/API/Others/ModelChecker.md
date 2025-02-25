@@ -101,3 +101,7 @@ ModelChecker:validate(trainFeatureMatrix: Matrix, trainLabelVector: Matrix, vali
 * trainErrorArray: An array containing all the training cost.
 
 * validationErrorArray: An array containing all the validation cost.
+
+## Inherited From
+
+* [BaseInstance](../Cores/BaseInstance.md)

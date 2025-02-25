@@ -84,6 +84,10 @@ OnlineLearning:returnCostArray(): number[]
 
 * costArray: The cost array related to actual value and the predicted value.
 
+## Inherited From
+
+* [BaseInstance](../Cores/BaseInstance.md)
+
 ## Notes:
 
 * Be aware that the model may suffer [concept drift](https://machinelearningmastery.com/gentle-introduction-concept-drift-machine-learning/) from training over long periods of time.

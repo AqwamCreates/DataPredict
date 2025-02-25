@@ -26,17 +26,11 @@
 
 --]]
 
-local DataPredictLibrary = script.Parent.Parent
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-local IterativeMethodBaseModel = require(DataPredictLibrary.Models.IterativeMethodBaseModel)
+local Regularizer = require("Other_Regularizer")
 
-local Models = DataPredictLibrary.Models
-
-local Optimizers = DataPredictLibrary.Optimizers
-
-local Regularizer = require(DataPredictLibrary.Others.Regularizer)
-
-local AqwamTensorLibrary = require(DataPredictLibrary.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 OneVsAll = {}
 
@@ -90,7 +84,7 @@ function OneVsAll:generateModel(parameterDictionary)
 	
 	local ModelArray = self.ModelArray
 	
-	local SelectedModel = require(Models[modelName])
+	local SelectedModel = require("Model_" .. modelName)
 
 	for i = 1, self.numberOfClasses, 1 do
 
@@ -134,7 +128,7 @@ function OneVsAll:setOptimizer(parameterDictionary)
 	
 	if (not optimizerName) then error("No optimizer name.") end
 	
-	local SelectedOptimizer = require(Optimizers[optimizerName])
+	local SelectedOptimizer = require("Optimizer_" .. optimizerName)
 		
 	for m, Model in ipairs(self.ModelArray) do 
 

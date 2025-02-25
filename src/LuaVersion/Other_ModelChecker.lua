@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
+local BaseInstance = require("Core_BaseInstance")
 
 local ModelChecker = {}
 

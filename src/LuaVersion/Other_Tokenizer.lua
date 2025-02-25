@@ -26,7 +26,7 @@
 
 --]]
 
-BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
+local BaseInstance = require("Core_BaseInstance")
 
 Tokenizer = {}
 

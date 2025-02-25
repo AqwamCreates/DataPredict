@@ -26,9 +26,9 @@
 
 --]]
 
-local BaseOptimizer = require(script.Parent.BaseOptimizer)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
 LearningRateTimeDecayOptimizer = {}
 

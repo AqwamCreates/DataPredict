@@ -26,7 +26,7 @@
 
 --]]
 
-local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
+local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
 
 TimeDecayValueScheduler = {}
 

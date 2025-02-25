@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GenerativeAdversarialImitationLearningBaseModel = require(script.Parent.GenerativeAdversarialImitationLearningBaseModel)
+local GenerativeAdversarialImitationLearningBaseModel = require("ReinforcementLearning_GenerativeAdversarialImitationLearningBaseModel")
 
 WassersteinGenerativeAdversarialImitationLearning = {}
 

@@ -126,7 +126,9 @@ function VanillaPolicyGradientModel.new(parameterDictionary)
 
 		local logActionProbabilityVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
 
-		local logActionProbabilityVector = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
+		local logActionProbabilityVectorPart4 = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
+		
+		local logActionProbabilityVector = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityVectorPart4)
 
 		local criticValue = NewVanillaPolicyGradientModel.CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 

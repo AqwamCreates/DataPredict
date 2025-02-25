@@ -26,161 +26,137 @@
 
 --]]
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local ReinforcementLearningBaseQuickSetup = require(script.Parent.ReinforcementLearningBaseQuickSetup)
 
 DiagonalGaussianPolicyQuickSetup = {}
 
 DiagonalGaussianPolicyQuickSetup.__index = DiagonalGaussianPolicyQuickSetup
 
-local defaultNumberOfReinforcementsPerEpisode = 500
+setmetatable(DiagonalGaussianPolicyQuickSetup, ReinforcementLearningBaseQuickSetup)
 
-function DiagonalGaussianPolicyQuickSetup.new(numberOfReinforcementsPerEpisode)
+function DiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 	
-	local NewDiagonalGaussianPolicyQuickSetup = {}
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewDiagonalGaussianPolicyQuickSetup = ReinforcementLearningBaseQuickSetup.new(parameterDictionary)
 	
 	setmetatable(NewDiagonalGaussianPolicyQuickSetup, DiagonalGaussianPolicyQuickSetup)
 	
-	NewDiagonalGaussianPolicyQuickSetup.isOutputPrinted = true
+	NewDiagonalGaussianPolicyQuickSetup:setName("DiagonalGaussianPolicyQuickSetup")
 	
-	NewDiagonalGaussianPolicyQuickSetup.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
+	local actionStandardDeviationVector = parameterDictionary.actionStandardDeviationVector
 	
-	NewDiagonalGaussianPolicyQuickSetup.Model = nil
+	NewDiagonalGaussianPolicyQuickSetup.actionStandardDeviationVector = actionStandardDeviationVector
 	
-	NewDiagonalGaussianPolicyQuickSetup.previousFeatureVector = nil
+	NewDiagonalGaussianPolicyQuickSetup.actionNoiseVector = parameterDictionary.actionNoiseVector
 	
-	NewDiagonalGaussianPolicyQuickSetup.currentNumberOfReinforcements = 0
+	NewDiagonalGaussianPolicyQuickSetup.previousActionMeanVector = parameterDictionary.previousActionMeanVector
 
-	NewDiagonalGaussianPolicyQuickSetup.currentNumberOfEpisodes = 0
+	NewDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector = parameterDictionary.previousActionNoiseVector
 	
-	NewDiagonalGaussianPolicyQuickSetup.updateFunction = nil
-	
-	NewDiagonalGaussianPolicyQuickSetup.episodeUpdateFunction = nil
+	NewDiagonalGaussianPolicyQuickSetup:setReinforceFunction(function(currentFeatureVector, rewardValue)
+		
+		local Model = NewDiagonalGaussianPolicyQuickSetup.Model
+
+		if (not Model) then error("No model!") end
+		
+		local numberOfReinforcementsPerEpisode = NewDiagonalGaussianPolicyQuickSetup.numberOfReinforcementsPerEpisode
+
+		local currentNumberOfReinforcements = NewDiagonalGaussianPolicyQuickSetup.currentNumberOfReinforcements
+
+		local currentNumberOfEpisodes = NewDiagonalGaussianPolicyQuickSetup.currentNumberOfEpisodes
+		
+		local ExperienceReplay = NewDiagonalGaussianPolicyQuickSetup.ExperienceReplay
+
+		local previousFeatureVector = NewDiagonalGaussianPolicyQuickSetup.previousFeatureVector
+
+		local actionMeanVector = Model:predict(currentFeatureVector, true)
+		
+		local actionStandardDeviationVector = NewDiagonalGaussianPolicyQuickSetup.actionStandardDeviationVector
+		
+		local previousActionMeanVector =  NewDiagonalGaussianPolicyQuickSetup.previousActionMeanVector
+
+		local previousActionNoiseVector = NewDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector
+		
+		local actionNoiseVector = NewDiagonalGaussianPolicyQuickSetup.actionNoiseVector
+		
+		local terminalStateValue = 0
+
+		if (not actionNoiseVector) then 
+			
+			local actionVectorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanVector)
+			
+			actionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor(actionVectorDimensionSizeArray) 
+			
+		end
+		
+		local actionVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
+		
+		actionNoiseVector = AqwamTensorLibrary:add(actionNoiseVector, actionMeanVector)
+		
+		local temporalDifferenceError
+		
+		if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then terminalStateValue = 1 end
+
+		if (previousFeatureVector) then
+			
+			local updateFunction = NewDiagonalGaussianPolicyQuickSetup.updateFunction
+
+			currentNumberOfReinforcements = currentNumberOfReinforcements + 1
+
+			temporalDifferenceError = Model:diagonalGaussianUpdate(previousFeatureVector, previousActionMeanVector, actionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+
+			if (updateFunction) then updateFunction() end
+
+		end
+
+		if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then
+
+			local episodeUpdateFunction = NewDiagonalGaussianPolicyQuickSetup.episodeUpdateFunction
+
+			currentNumberOfReinforcements = 0
+
+			currentNumberOfEpisodes = currentNumberOfEpisodes + 1
+
+			Model:episodeUpdate(terminalStateValue)
+
+			if episodeUpdateFunction then episodeUpdateFunction() end
+
+		end
+		
+		if (ExperienceReplay) and (previousFeatureVector) then
+
+			ExperienceReplay:addExperience(previousFeatureVector, previousActionMeanVector, actionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+
+			ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
+
+			ExperienceReplay:run(function(storedPreviousFeatureVector, storedActionMeanVector, storedActionStandardDeviationVector, storedActionNoiseVector, storedRewardValue, storedCurrentFeatureVector, storeTerminalStateValue)
+
+				return Model:diagonalGaussianUpdate(storedPreviousFeatureVector, storedActionMeanVector, storedActionStandardDeviationVector, storedActionNoiseVector, storedRewardValue, storedCurrentFeatureVector, storeTerminalStateValue)
+
+			end)
+
+		end
+
+		NewDiagonalGaussianPolicyQuickSetup.currentNumberOfReinforcements = currentNumberOfReinforcements
+
+		NewDiagonalGaussianPolicyQuickSetup.currentNumberOfEpisodes = currentNumberOfEpisodes
+
+		NewDiagonalGaussianPolicyQuickSetup.previousFeatureVector = currentFeatureVector
+		
+		NewDiagonalGaussianPolicyQuickSetup.previousActionMeanVector = actionMeanVector
+		
+		NewDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector = actionNoiseVector
+		
+		if (NewDiagonalGaussianPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
+		
+		return actionVector
+		
+	end)
 	
 	return NewDiagonalGaussianPolicyQuickSetup
-	
-end
-
-function DiagonalGaussianPolicyQuickSetup:setParameters(numberOfReinforcementsPerEpisode)
-	
-	self.numberOfReinforcementsPerEpisode = numberOfReinforcementsPerEpisode or self.numberOfReinforcementsPerEpisode
-	
-end
-
-function DiagonalGaussianPolicyQuickSetup:extendUpdateFunction(updateFunction)
-
-	self.updateFunction = updateFunction
-
-end
-
-function DiagonalGaussianPolicyQuickSetup:extendEpisodeUpdateFunction(episodeUpdateFunction)
-
-	self.episodeUpdateFunction = episodeUpdateFunction
-
-end
-
-local function getBooleanOrDefaultOption(boolean, defaultBoolean)
-
-	if (type(boolean) == "nil") then return defaultBoolean end
-
-	return boolean
-
-end
-
-function DiagonalGaussianPolicyQuickSetup:setPrintOutput(option)
-
-	self.isOutputPrinted = getBooleanOrDefaultOption(option, self.isOutputPrinted)
-
-end
-
-function DiagonalGaussianPolicyQuickSetup:reinforce(currentFeatureVector, actionStandardDeviationVector, rewardValue)
-
-	if (self.Model == nil) then error("No model!") end
-	
-	local currentNumberOfReinforcements = self.currentNumberOfReinforcements
-	
-	local currentNumberOfEpisodes = self.currentNumberOfEpisodes
-	
-	local previousFeatureVector = self.previousFeatureVector
-	
-	local Model = self.Model
-	
-	local updateFunction = self.updateFunction
-	
-	local randomProbability = Random.new():NextNumber()
-	
-	local actionMeanVector = Model:predict(currentFeatureVector, true)
-
-	if (previousFeatureVector) then
-		
-		currentNumberOfReinforcements = currentNumberOfReinforcements + 1
-
-		Model:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
-		
-		if (updateFunction) then updateFunction() end
-
-	end
-
-	if (currentNumberOfReinforcements >= self.numberOfReinforcementsPerEpisode) then
-		
-		local episodeUpdateFunction = self.episodeUpdateFunction
-		
-		currentNumberOfReinforcements = 0
-		
-		currentNumberOfEpisodes = currentNumberOfEpisodes + 1
-
-		Model:episodeUpdate()
-		
-		if episodeUpdateFunction then episodeUpdateFunction() end
-
-	end
-	
-	self.currentNumberOfReinforcements = currentNumberOfReinforcements
-	
-	self.currentNumberOfEpisodes = currentNumberOfEpisodes
-	
-	self.previousFeatureVector = currentFeatureVector
-
-	if (self.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
-
-	return actionMeanVector
-
-end
-
-function DiagonalGaussianPolicyQuickSetup:setModel(Model)
-
-	self.Model = Model
-
-end
-
-function DiagonalGaussianPolicyQuickSetup:getCurrentNumberOfEpisodes()
-
-	return self.currentNumberOfEpisodes
-
-end
-
-function DiagonalGaussianPolicyQuickSetup:getCurrentNumberOfReinforcements()
-
-	return self.currentNumberOfReinforcements
-
-end
-
-function DiagonalGaussianPolicyQuickSetup:getModel()
-	
-	return self.Model
-	
-end
-
-function DiagonalGaussianPolicyQuickSetup:reset()
-	
-	self.currentNumberOfReinforcements = 0
-
-	self.currentNumberOfEpisodes = 0
-
-	self.previousFeatureVector = nil
-	
-	local Model = self.Model
-	
-	if (Model) then Model:reset() end
 	
 end
 

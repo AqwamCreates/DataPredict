@@ -110,6 +110,10 @@ RandomNetworkDistillation:setPredictorModelParameters(PredictorModelParameters: 
 
 * doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
+## Inherited From
+
+* [BaseInstance](../Cores/BaseInstance.md)
+
 ## References
 
 * [Random Network Distillation: A New Take on Curiosity-Driven Learning By Thomas Simonini](https://blog.dataiku.com/random-network-distillation-a-new-take-on-curiosity-driven-learning)

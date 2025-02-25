@@ -184,6 +184,10 @@ GenerativeAdversarialImitationLearning:generate(featureMatrix: matrix, returnOri
 
 * actionMatrix: The matrix containing all the action values.
 
+## Inherited From
+
+* [BaseInstance](GenerativeAdversarialImitationLearningBaseModel.md)
+
 ## References
 
 * [Generative Adversarial Imitation Learning](https://arxiv.org/abs/1606.03476)

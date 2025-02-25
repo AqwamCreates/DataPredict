@@ -99,3 +99,7 @@ Reset valueScheduler's stored values (excluding the parameters).
 ```
 BaseValueScheduler:reset()
 ```
+
+## Inherited From
+
+* [BaseInstance](../Cores/BaseInstance.md)

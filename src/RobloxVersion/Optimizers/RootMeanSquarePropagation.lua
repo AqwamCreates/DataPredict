@@ -1,6 +1,34 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Deep Learning Library (DataPredict Neural)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 RootMeanSquarePropagationOptimizer = {}
 
@@ -12,43 +40,47 @@ local defaultBetaValue = 0.1
 
 local defaultEpsilonValue = 1 * math.pow(10, -7)
 
-function RootMeanSquarePropagationOptimizer.new(beta, epsilon)
+function RootMeanSquarePropagationOptimizer.new(parameterDictionary)
 	
-	local NewRootMeanSquarePropagationOptimizer = BaseOptimizer.new("RootMeanSquarePropagation")
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewRootMeanSquarePropagationOptimizer = BaseOptimizer.new(parameterDictionary)
 	
 	setmetatable(NewRootMeanSquarePropagationOptimizer, RootMeanSquarePropagationOptimizer)
 	
-	NewRootMeanSquarePropagationOptimizer.beta = beta or defaultBetaValue
+	NewRootMeanSquarePropagationOptimizer:setName("RootMeanSquarePropagation")
 	
-	NewRootMeanSquarePropagationOptimizer.epsilon = epsilon or defaultEpsilonValue
+	NewRootMeanSquarePropagationOptimizer.beta = parameterDictionary.beta or defaultBetaValue
+	
+	NewRootMeanSquarePropagationOptimizer.epsilon = parameterDictionary.epsilon or defaultEpsilonValue
 	
 	--------------------------------------------------------------------------------
 	
-	NewRootMeanSquarePropagationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
+	NewRootMeanSquarePropagationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
 		
-		local previousVelocity = NewRootMeanSquarePropagationOptimizer.optimizerInternalParameters or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousVelocity = NewRootMeanSquarePropagationOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
 		
 		local beta = NewRootMeanSquarePropagationOptimizer.beta
 
-		local squaredCostFunctionDerivatives = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
+		local squaredCostFunctionDerivativeTensor = AqwamTensorLibrary:power(costFunctionDerivativeTensor, 2)
 
-		local vPart1 = AqwamMatrixLibrary:multiply(beta, previousVelocity)
+		local vTensorPart1 = AqwamTensorLibrary:multiply(beta, previousVelocity)
 
-		local vPart2 = AqwamMatrixLibrary:multiply((1 - beta), squaredCostFunctionDerivatives)
+		local vTensorPart2 = AqwamTensorLibrary:multiply((1 - beta), squaredCostFunctionDerivativeTensor)
 
-		local velocity = AqwamMatrixLibrary:add(vPart1, vPart2)
+		local velocityTensor = AqwamTensorLibrary:add(vTensorPart1, vTensorPart2)
 
-		local velocityNonZeroDivisor = AqwamMatrixLibrary:add(velocity, NewRootMeanSquarePropagationOptimizer.epsilon)
+		local velocityNonZeroDivisorTensor = AqwamTensorLibrary:add(velocityTensor, NewRootMeanSquarePropagationOptimizer.epsilon)
 
-		local squaredRootVelocityMatrix = AqwamMatrixLibrary:power(velocityNonZeroDivisor, 0.5)
+		local squaredRootVelocityTensor = AqwamTensorLibrary:power(velocityNonZeroDivisorTensor, 0.5)
 
-		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, squaredRootVelocityMatrix)
+		local costFunctionDerivativeTensorPart1 = AqwamTensorLibrary:divide(costFunctionDerivativeTensor, squaredRootVelocityTensor)
 
-		local costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
+		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeTensorPart1)
 
-		NewRootMeanSquarePropagationOptimizer.optimizerInternalParameters = velocity
+		NewRootMeanSquarePropagationOptimizer.optimizerInternalParameterArray = {velocityTensor}
 
-		return costFunctionDerivatives
+		return costFunctionDerivativeTensor
 		
 	end)
 	

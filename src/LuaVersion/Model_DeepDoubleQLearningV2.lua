@@ -72,7 +72,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	
 	NewDeepDoubleQLearningModel.lambda = parameterDictionary.lambda or defaultLambda
 
-	NewDeepDoubleQLearningModel.eligibilityTrace = parameterDictionary.eligibilityTrace 
+	NewDeepDoubleQLearningModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix 
 
 	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
@@ -116,17 +116,17 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 		
 		if (lambda ~= 0) then
 
-			local eligibilityTrace = NewDeepDoubleQLearningModel.eligibilityTrace
+			local eligibilityTraceMatrix = NewDeepDoubleQLearningModel.eligibilityTraceMatrix
 
-			if (not eligibilityTrace) then eligibilityTrace = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
+			if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
 
-			eligibilityTrace = AqwamTensorLibrary:multiply(eligibilityTrace, discountFactor * lambda)
+			eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
 
-			eligibilityTrace[1][actionIndex] = eligibilityTrace[1][actionIndex] + 1
+			eligibilityTraceMatrix[1][actionIndex] = eligibilityTraceMatrix[1][actionIndex] + 1
 
-			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTrace)
+			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTraceMatrix)
 
-			NewDeepDoubleQLearningModel.eligibilityTrace = eligibilityTrace
+			NewDeepDoubleQLearningModel.eligibilityTraceMatrix = eligibilityTraceMatrix
 
 		end
 
@@ -146,13 +146,13 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	
 	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepDoubleQLearningModel.eligibilityTrace = nil
+		NewDeepDoubleQLearningModel.eligibilityTraceMatrix = nil
 		
 	end)
 
 	NewDeepDoubleQLearningModel:setResetFunction(function() 
 		
-		NewDeepDoubleQLearningModel.eligibilityTrace = nil
+		NewDeepDoubleQLearningModel.eligibilityTraceMatrix = nil
 		
 	end)
 	

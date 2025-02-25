@@ -52,7 +52,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 	
 	NewDeepClippedDoubleQLearningModel.lambda = parameterDictionary.lambda or defaultLambda
 
-	NewDeepClippedDoubleQLearningModel.eligibilityTrace = parameterDictionary.eligibilityTrace 
+	NewDeepClippedDoubleQLearningModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix 
 	
 	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
@@ -82,7 +82,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 		
 		local outputDimensionSizeArray = {1, numberOfClasses}
 		
-		local eligibilityTrace = NewDeepClippedDoubleQLearningModel.eligibilityTrace
+		local eligibilityTraceMatrix = NewDeepClippedDoubleQLearningModel.eligibilityTraceMatrix
 		
 		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
 		
@@ -90,13 +90,13 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 		
 		if (NewDeepClippedDoubleQLearningModel.lambda ~= 0) then
 
-			if (not eligibilityTrace) then eligibilityTrace = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
+			if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
 
-			eligibilityTrace = AqwamTensorLibrary:multiply(eligibilityTrace, NewDeepClippedDoubleQLearningModel.discountFactor * NewDeepClippedDoubleQLearningModel.lambda)
+			eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, NewDeepClippedDoubleQLearningModel.discountFactor * NewDeepClippedDoubleQLearningModel.lambda)
 
-			eligibilityTrace[1][actionIndex] = eligibilityTrace[1][actionIndex] + 1
+			eligibilityTraceMatrix[1][actionIndex] = eligibilityTraceMatrix[1][actionIndex] + 1
 			
-			NewDeepClippedDoubleQLearningModel.eligibilityTrace = eligibilityTrace
+			NewDeepClippedDoubleQLearningModel.eligibilityTraceMatrix = eligibilityTraceMatrix
 
 		end
 
@@ -114,7 +114,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 			lossVector[1][actionIndex] = temporalDifferenceError
 			
-			if (NewDeepClippedDoubleQLearningModel.lambda ~= 0) then lossVector = AqwamTensorLibrary:multiply(lossVector, eligibilityTrace) end
+			if (NewDeepClippedDoubleQLearningModel.lambda ~= 0) then lossVector = AqwamTensorLibrary:multiply(lossVector, eligibilityTraceMatrix) end
 			
 			Model:backwardPropagate(temporalDifferenceErrorVector, true)
 
@@ -126,13 +126,13 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 	
 	NewDeepClippedDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepClippedDoubleQLearningModel.eligibilityTrace = nil
+		NewDeepClippedDoubleQLearningModel.eligibilityTraceMatrix = nil
 		
 	end)
 
 	NewDeepClippedDoubleQLearningModel:setResetFunction(function() 
 		
-		NewDeepClippedDoubleQLearningModel.eligibilityTrace = nil
+		NewDeepClippedDoubleQLearningModel.eligibilityTraceMatrix = nil
 		
 	end)
 

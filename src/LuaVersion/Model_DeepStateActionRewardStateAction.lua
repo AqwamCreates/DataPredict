@@ -50,7 +50,7 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
 	
-	NewDeepStateActionRewardStateActionModel.eligibilityTrace = parameterDictionary.eligibilityTrace
+	NewDeepStateActionRewardStateActionModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
 
 	NewDeepStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
@@ -76,17 +76,17 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 			
 			local actionIndex = table.find(ClassesList, action)
 
-			local eligibilityTrace = NewDeepStateActionRewardStateActionModel.eligibilityTrace
+			local eligibilityTraceMatrix = NewDeepStateActionRewardStateActionModel.eligibilityTraceMatrix
 
-			if (not eligibilityTrace) then eligibilityTrace = AqwamTensorLibrary:createTensor({1, #ClassesList}, 0) end
+			if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor({1, #ClassesList}, 0) end
 
-			eligibilityTrace = AqwamTensorLibrary:multiply(eligibilityTrace, discountFactor * lambda)
+			eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
 
-			eligibilityTrace[1][actionIndex] = eligibilityTrace[1][actionIndex] + 1
+			eligibilityTraceMatrix[1][actionIndex] = eligibilityTraceMatrix[1][actionIndex] + 1
 
-			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTrace)
+			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTraceMatrix)
 
-			NewDeepStateActionRewardStateActionModel.eligibilityTrace = eligibilityTrace
+			NewDeepStateActionRewardStateActionModel.eligibilityTraceMatrix = eligibilityTraceMatrix
 
 		end
 		
@@ -100,13 +100,13 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepStateActionRewardStateActionModel.eligibilityTrace = nil
+		NewDeepStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
 		
 	end)
 	
 	NewDeepStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		NewDeepStateActionRewardStateActionModel.eligibilityTrace = nil
+		NewDeepStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
 		
 	end)
 

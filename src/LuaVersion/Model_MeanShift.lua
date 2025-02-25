@@ -26,15 +26,15 @@
 
 --]]
 
-local BaseModel = require("Model_BaseModel")
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 MeanShiftModel = {}
 
 MeanShiftModel.__index = MeanShiftModel
 
-setmetatable(MeanShiftModel, BaseModel)
+setmetatable(MeanShiftModel, IterativeMethodBaseModel)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -50,11 +50,11 @@ local distanceFunctionList = {
 
 	["Manhattan"] = function (x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		part1 = AqwamMatrixLibrary:applyFunction(math.abs, part1)
+		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
 
-		local distance = AqwamMatrixLibrary:sum(part1)
+		local distance = AqwamTensorLibrary:sum(part1)
 
 		return distance 
 
@@ -62,11 +62,11 @@ local distanceFunctionList = {
 
 	["Euclidean"] = function (x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		local part2 = AqwamMatrixLibrary:power(part1, 2)
+		local part2 = AqwamTensorLibrary:power(part1, 2)
 
-		local part3 = AqwamMatrixLibrary:sum(part2)
+		local part3 = AqwamTensorLibrary:sum(part2)
 
 		local distance = math.sqrt(part3)
 
@@ -76,17 +76,17 @@ local distanceFunctionList = {
 	
 	["Cosine"] = function(x1, x2)
 
-		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
+		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
 
-		local x1MagnitudePart1 = AqwamMatrixLibrary:power(x1, 2)
+		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
 
-		local x1MagnitudePart2 = AqwamMatrixLibrary:sum(x1MagnitudePart1)
+		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
 
 		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
 
-		local x2MagnitudePart1 = AqwamMatrixLibrary:power(x2, 2)
+		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
 
-		local x2MagnitudePart2 = AqwamMatrixLibrary:sum(x2MagnitudePart1)
+		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
 
 		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
 
@@ -128,9 +128,11 @@ end
 
 local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
 	
-	local clusterNumberVector = AqwamMatrixLibrary:createMatrix(#distanceMatrix, 1)
+	local numberOfData = #distanceMatrix
 	
-	local clusterDistanceVector = AqwamMatrixLibrary:createMatrix(#distanceMatrix, 1) 
+	local clusterNumberVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
+	
+	local clusterDistanceVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0) 
 	
 	for dataIndex, distanceVector in ipairs(distanceMatrix) do
 		
@@ -166,7 +168,7 @@ local function createDistanceMatrix(featureMatrix, modelParameters, distanceFunc
 
 	local numberOfClusters = #modelParameters
 
-	local distanceMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfClusters)
+	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters}, 0)
 
 	for datasetIndex = 1, #featureMatrix, 1 do
 
@@ -188,7 +190,7 @@ local function createClusterAssignmentMatrix(distanceMatrix) -- contains values 
 
 	local numberOfClusters = #distanceMatrix[1]
 
-	local clusterAssignmentMatrix = AqwamMatrixLibrary:createMatrix(#distanceMatrix, #distanceMatrix[1])
+	local clusterAssignmentMatrix = AqwamTensorLibrary:createTensor({#distanceMatrix, #distanceMatrix[1]}, 0)
 
 	local dataPointClusterNumber
 
@@ -196,7 +198,7 @@ local function createClusterAssignmentMatrix(distanceMatrix) -- contains values 
 
 		local distanceVector = {distanceMatrix[dataIndex]}
 
-		local _, vectorIndexArray = AqwamMatrixLibrary:findMinimumValue(distanceVector)
+		local vectorIndexArray = AqwamTensorLibrary:findMinimumValueDimensionIndexArray(distanceVector)
 
 		if (vectorIndexArray == nil) then continue end
 
@@ -242,7 +244,7 @@ local function findEqualRowIndex(matrix1, matrix2)
 		
 		local matrixInTable = {matrix1[i]}
 		
-		if AqwamMatrixLibrary:areMatricesEqual(matrixInTable, matrix2) then
+		if AqwamTensorLibrary:areMatricesEqual(matrixInTable, matrix2) then
 			
 			index = i
 			
@@ -268,9 +270,9 @@ local function createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidt
 
 	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 	
-	local sumKernelMatrix = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
+	local sumKernelMatrix = AqwamTensorLibrary:createTensor({#ModelParameters, #ModelParameters[1]})
 	
-	local sumMultipliedKernelMatrix = AqwamMatrixLibrary:createMatrix(#ModelParameters, #ModelParameters[1])
+	local sumMultipliedKernelMatrix = AqwamTensorLibrary:createTensor({#ModelParameters, #ModelParameters[1]})
 	
 	for dataIndex, featureVector in ipairs(featureMatrix) do
 		
@@ -286,15 +288,15 @@ local function createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidt
 			
 			local kernelVector = selectedKernelFunction(squaredKernelInput, kernelParameters)
 			
-			local multipliedKernelVector = AqwamMatrixLibrary:multiply(kernelVector, featureVector)
+			local multipliedKernelVector = AqwamTensorLibrary:multiply(kernelVector, featureVector)
 			
 			local sumKernelVector = {sumKernelMatrix[clusterIndex]}
 			
 			local sumMultipliedKernelVector = {sumMultipliedKernelMatrix[clusterIndex]}
 			
-			sumKernelVector = AqwamMatrixLibrary:add(sumKernelVector, kernelVector) 
+			sumKernelVector = AqwamTensorLibrary:add(sumKernelVector, kernelVector) 
 			
-			sumMultipliedKernelVector = AqwamMatrixLibrary:add(sumMultipliedKernelVector, multipliedKernelVector)
+			sumMultipliedKernelVector = AqwamTensorLibrary:add(sumMultipliedKernelVector, multipliedKernelVector)
 
 			sumKernelMatrix[clusterIndex] = sumKernelVector[1]
 			
@@ -304,43 +306,33 @@ local function createWeightedMeanMatrix(featureMatrix, ModelParameters, bandwidt
 		
 	end
 	
-	local weightedMeanMatrix = AqwamMatrixLibrary:divide(sumMultipliedKernelMatrix, sumKernelMatrix)
+	local weightedMeanMatrix = AqwamTensorLibrary:divide(sumMultipliedKernelMatrix, sumKernelMatrix)
 	
 	return weightedMeanMatrix
 	
 end
 
-function MeanShiftModel.new(maximumNumberOfIterations, bandwidth, distanceFunction, kernelFunction, kernelParameters)
+function MeanShiftModel.new(parameterDictionary)
 	
-	local NewMeanShiftModel = BaseModel.new()
+	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	
+	local NewMeanShiftModel = IterativeMethodBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewMeanShiftModel, MeanShiftModel)
 	
-	NewMeanShiftModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	NewMeanShiftModel:setName("MeanShift")
 
-	NewMeanShiftModel.bandwidth = bandwidth or defaultBandwidth
+	NewMeanShiftModel.bandwidth = parameterDictionary.bandwidth or defaultBandwidth
 	
-	NewMeanShiftModel.distanceFunction = distanceFunction or defaultDistanceFunction
+	NewMeanShiftModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 	
-	NewMeanShiftModel.kernelFunction = kernelFunction or defaultKernelFunction
+	NewMeanShiftModel.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
 	
-	NewMeanShiftModel.kernelParameters = kernelParameters or {}
+	NewMeanShiftModel.kernelParameters = parameterDictionary.kernelParameters or {}
 	
 	return NewMeanShiftModel
-	
-end
-
-function MeanShiftModel:setParameters(maximumNumberOfIterations, bandwidth, distanceFunction, kernelFunction, kernelParameters)
-	
-	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
-
-	self.bandwidth = bandwidth or self.bandwidth
-	
-	self.distanceFunction = distanceFunction or self.distanceFunction
-	
-	self.kernelFunction = kernelFunction or self.kernelFunction
-	
-	self.kernelParameters = kernelParameters or self.kernelParameters
 	
 end
 
@@ -392,7 +384,7 @@ function MeanShiftModel:train(featureMatrix)
 			
 			table.insert(costArray, cost)
 			
-			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 			
 		end
 		
@@ -412,7 +404,7 @@ function MeanShiftModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local distanceMatrix = createDistanceMatrix(self.ModelParameters, featureMatrix, self.distanceFunction)
 	
-	if (returnOriginalOutput == true) then return distanceMatrix end
+	if (returnOriginalOutput) then return distanceMatrix end
 
 	local clusterNumberVector, clusterDistanceVector = assignToCluster(distanceMatrix)
 	

@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,18 +19,22 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local BaseModel = require("Model_BaseModel")
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 KMedoidsModel = {}
 
 KMedoidsModel.__index = KMedoidsModel
 
-setmetatable(KMedoidsModel, BaseModel)
+setmetatable(KMedoidsModel, IterativeMethodBaseModel)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaximumNumberOfIterations = math.huge
 
@@ -42,11 +48,11 @@ local distanceFunctionList = {
 
 	["Manhattan"] = function (x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		part1 = AqwamMatrixLibrary:applyFunction(math.abs, part1)
+		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
 
-		local distance = AqwamMatrixLibrary:sum(part1)
+		local distance = AqwamTensorLibrary:sum(part1)
 
 		return distance 
 
@@ -54,11 +60,11 @@ local distanceFunctionList = {
 
 	["Euclidean"] = function (x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		local part2 = AqwamMatrixLibrary:power(part1, 2)
+		local part2 = AqwamTensorLibrary:power(part1, 2)
 
-		local part3 = AqwamMatrixLibrary:sum(part2)
+		local part3 = AqwamTensorLibrary:sum(part2)
 
 		local distance = math.sqrt(part3)
 
@@ -68,17 +74,17 @@ local distanceFunctionList = {
 	
 	["Cosine"] = function(x1, x2)
 
-		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
+		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
 
-		local x1MagnitudePart1 = AqwamMatrixLibrary:power(x1, 2)
+		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
 
-		local x1MagnitudePart2 = AqwamMatrixLibrary:sum(x1MagnitudePart1)
+		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
 
 		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
 
-		local x2MagnitudePart1 = AqwamMatrixLibrary:power(x2, 2)
+		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
 
-		local x2MagnitudePart2 = AqwamMatrixLibrary:sum(x2MagnitudePart1)
+		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
 
 		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
 
@@ -102,9 +108,11 @@ end
 
 local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
 	
-	local clusterNumberVector = AqwamMatrixLibrary:createMatrix(#distanceMatrix, 1)
+	local numberOfData = #distanceMatrix
+	
+	local clusterNumberVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
 
-	local clusterDistanceVector = AqwamMatrixLibrary:createMatrix(#distanceMatrix, 1) 
+	local clusterDistanceVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0) 
 
 	for dataIndex, distanceVector in ipairs(distanceMatrix) do
 
@@ -154,7 +162,7 @@ local function createDistanceMatrix(modelParameters, featureMatrix, distanceFunc
 
 	local numberOfClusters = #modelParameters
 
-	local distanceMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfClusters)
+	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters})
 
 	for datasetIndex = 1, #featureMatrix, 1 do
 
@@ -270,7 +278,7 @@ local function createClusterAssignmentMatrix(distanceMatrix) -- contains values 
 
 	local numberOfClusters = #distanceMatrix[1]
 
-	local clusterAssignmentMatrix = AqwamMatrixLibrary:createMatrix(#distanceMatrix, #distanceMatrix[1])
+	local clusterAssignmentMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters})
 
 	local dataPointClusterNumber
 
@@ -278,7 +286,7 @@ local function createClusterAssignmentMatrix(distanceMatrix) -- contains values 
 
 		local distanceVector = {distanceMatrix[dataIndex]}
 
-		local _, vectorIndexArray = AqwamMatrixLibrary:findMinimumValue(distanceVector)
+		local vectorIndexArray = AqwamTensorLibrary:findMinimumValueDimensionIndexArray(distanceVector)
 
 		if (vectorIndexArray == nil) then continue end
 
@@ -298,9 +306,9 @@ local function calculateCost(modelParameters, featureMatrix, distanceFunction)
 	
 	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 	
-	local costMatrix = AqwamMatrixLibrary:multiply(distanceMatrix, clusterAssignmentMatrix)
+	local costMatrix = AqwamTensorLibrary:multiply(distanceMatrix, clusterAssignmentMatrix)
 	
-	local cost = AqwamMatrixLibrary:sum(costMatrix)
+	local cost = AqwamTensorLibrary:sum(costMatrix)
 	
 	return cost
 	
@@ -325,33 +333,25 @@ local function initializeCentroids(featureMatrix, numberOfClusters, distanceFunc
 end
 
 
-function KMedoidsModel.new(maximumNumberOfIterations, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
+function KMedoidsModel.new(parameterDictionary)
 	
-	local NewKMedoidsModel = BaseModel.new()
+	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	
+	local NewKMedoidsModel = IterativeMethodBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewKMedoidsModel, KMedoidsModel)
 	
-	NewKMedoidsModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	NewKMedoidsModel:setName("KMedoids")
 	
-	NewKMedoidsModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
+	NewKMedoidsModel.numberOfClusters = parameterDictionary.numberOfClusters or defaultNumberOfClusters
 
-	NewKMedoidsModel.distanceFunction = distanceFunction or defaultDistanceFunction
+	NewKMedoidsModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 
-	NewKMedoidsModel.setTheCentroidsDistanceFarthest = BaseModel:getValueOrDefaultValue(setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
+	NewKMedoidsModel.setTheCentroidsDistanceFarthest = NewKMedoidsModel:getValueOrDefaultValue(parameterDictionary.setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
 	
 	return NewKMedoidsModel
-	
-end
-
-function KMedoidsModel:setParameters(maximumNumberOfIterations, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
-	
-	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
-	
-	self.numberOfClusters = numberOfClusters or self.numberOfClusters
-
-	self.distanceFunction = distanceFunction or self.distanceFunction
-
-	self.setTheCentroidsDistanceFarthest = self:getValueOrDefaultValue(setTheCentroidsDistanceFarthest, self.setTheCentroidsDistanceFarthest)
 	
 end
 
@@ -421,7 +421,7 @@ function KMedoidsModel:train(featureMatrix)
 
 				table.insert(costArray, currentCost)
 
-				self:printCostAndNumberOfIterations(currentCost, numberOfIterations)
+				self:printNumberOfIterationsAndCost(numberOfIterations, currentCost)
 
 				if (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
 

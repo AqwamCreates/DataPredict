@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,10 +19,14 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local BaseModel = require("Model_GradientMethodBaseModel")
+local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
 LinearRegressionModel = {}
 
@@ -28,7 +34,7 @@ LinearRegressionModel.__index = LinearRegressionModel
 
 setmetatable(LinearRegressionModel, GradientMethodBaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -40,19 +46,19 @@ local lossFunctionList = {
 
 	["L1"] = function (x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		return AqwamMatrixLibrary:applyFunction(math.abs, part1) 
+		return AqwamTensorLibrary:applyFunction(math.abs, part1) 
 
 	end,
 
 	["L2"] = function (x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		local part2 = AqwamMatrixLibrary:power(part1, 2) 
+		local part2 = AqwamTensorLibrary:power(part1, 2) 
 
-		return AqwamMatrixLibrary:divide(part2, 2)
+		return AqwamTensorLibrary:divide(part2, 2)
 
 	end,
 
@@ -64,7 +70,7 @@ function LinearRegressionModel:calculateCost(hypothesisVector, labelVector, numb
 
 	local costVector = lossFunctionList[self.lossFunction](hypothesisVector, labelVector) 
 
-	local totalCost = AqwamMatrixLibrary:sum(costVector)
+	local totalCost = AqwamTensorLibrary:sum(costVector)
 	
 	local Regularizer = self.Regularizer
 
@@ -78,7 +84,7 @@ end
 
 function LinearRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 
-	local hypothesisVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
 	if (saveFeatureMatrix) then 
 
@@ -98,7 +104,7 @@ function LinearRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
 
 	if (featureMatrix == nil) then error("Feature matrix not found.") end
 
-	local costFunctionDerivativeMatrix = AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(featureMatrix), lossMatrix)
+	local costFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossMatrix)
 
 	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrix end
 
@@ -114,11 +120,11 @@ function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, num
 
 		local regularizationDerivatives = self.Regularizer:calculateRegularizationDerivatives(self.ModelParameters)
 
-		costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
+		costFunctionDerivativeMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
 
 	end
 
-	costFunctionDerivativeMatrix = AqwamMatrixLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
+	costFunctionDerivativeMatrix = AqwamTensorLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
 
 	if (self.Optimizer) then 
 
@@ -126,11 +132,11 @@ function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, num
 
 	else
 
-		costFunctionDerivativeMatrix = AqwamMatrixLibrary:multiply(self.learningRate, costFunctionDerivativeMatrix)
+		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(self.learningRate, costFunctionDerivativeMatrix)
 
 	end
 
-	local newModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivativeMatrix)
+	local newModelParameters = AqwamTensorLibrary:subtract(self.ModelParameters, costFunctionDerivativeMatrix)
 
 	return newModelParameters
 
@@ -150,33 +156,27 @@ function LinearRegressionModel:update(lossMatrix, clearFeatureMatrix, doNotUpdat
 
 end
 
-function LinearRegressionModel.new(maximumNumberOfIterations, learningRate, lossFunction)
+function LinearRegressionModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewLinearRegressionModel = GradientMethodBaseModel.new()
+	local NewLinearRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
 
 	setmetatable(NewLinearRegressionModel, LinearRegressionModel)
+	
+	NewLinearRegressionModel:setName("LinearRegression")
 
-	NewLinearRegressionModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	NewLinearRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 
-	NewLinearRegressionModel.learningRate = learningRate or defaultLearningRate
+	NewLinearRegressionModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
 
-	NewLinearRegressionModel.lossFunction = lossFunction or defaultLossFunction
+	NewLinearRegressionModel.Optimizer = parameterDictionary.Optimizer
 
-	NewLinearRegressionModel.Optimizer = nil
-
-	NewLinearRegressionModel.Regularizer = nil
+	NewLinearRegressionModel.Regularizer = parameterDictionary.Regularizer
 
 	return NewLinearRegressionModel
-
-end
-
-function LinearRegressionModel:setParameters(maximumNumberOfIterations, learningRate, lossFunction)
-
-	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
-
-	self.learningRate = learningRate or self.learningRate
-
-	self.lossFunction = lossFunction or self.lossFunction
 
 end
 
@@ -216,13 +216,13 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 	else
 
-		self.ModelParameters = self:initializeMatrixBasedOnMode(#featureMatrix[1], 1)
+		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
 
 	end
 
 	repeat
 
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 
 		self:iterationWait()
 
@@ -238,11 +238,11 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 			table.insert(costArray, cost)
 
-			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 
 		end
 
-		local lossVector = AqwamMatrixLibrary:subtract(hypothesisVector, labelVector)
+		local lossVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
 
 		self:update(lossVector, true, false)
 
@@ -258,7 +258,7 @@ end
 
 function LinearRegressionModel:predict(featureMatrix)
 
-	local predictedVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
 	if (type(predictedVector) == "number") then predictedVector = {{predictedVector}} end
 

@@ -2,9 +2,11 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine And Deep Learning Library (DataPredict)
+	Aqwam's Deep Learning Library (DataPredict Neural)
 
 	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
 	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
@@ -14,7 +16,11 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
 	
 	--------------------------------------------------------------------
 
@@ -22,7 +28,7 @@
 
 local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 LearningRateTimeDecayOptimizer = {}
 
@@ -32,45 +38,39 @@ setmetatable(LearningRateTimeDecayOptimizer, BaseOptimizer)
 
 local defaultDecayRate = 0.5
 
-function LearningRateTimeDecayOptimizer.new(decayRate)
+local defaultTimeStepToDecay = 100
+
+function LearningRateTimeDecayOptimizer.new(parameterDictionary)
 	
-	local NewLearningRateTimeDecayOptimizer = BaseOptimizer.new("LearningRateDecay")
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewLearningRateTimeDecayOptimizer = BaseOptimizer.new(parameterDictionary)
 	
 	setmetatable(NewLearningRateTimeDecayOptimizer, LearningRateTimeDecayOptimizer)
 	
-	NewLearningRateTimeDecayOptimizer.decayRate = decayRate or defaultDecayRate
+	NewLearningRateTimeDecayOptimizer:setName("LearningRateDecay")
+	
+	NewLearningRateTimeDecayOptimizer.decayRate = parameterDictionary.decayRate or defaultDecayRate
+	
+	NewLearningRateTimeDecayOptimizer.timeStepToDecay = parameterDictionary.timeStepToDecay or defaultTimeStepToDecay
 	
 	--------------------------------------------------------------------------------
 	
-	NewLearningRateTimeDecayOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
+	NewLearningRateTimeDecayOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
 		
-		local currentLearningRate
+		local currentLearningRate = NewLearningRateTimeDecayOptimizer.optimizerInternalParameterArray[1] or learningRate
 
-		local currentTimeStep
+		local currentTimeStep = NewLearningRateTimeDecayOptimizer.optimizerInternalParameterArray[2] or 0
 
-		local optimizerInternalParameters = NewLearningRateTimeDecayOptimizer.optimizerInternalParameters
-
-		if (optimizerInternalParameters) then
-
-			currentLearningRate = optimizerInternalParameters[1]
-
-			currentTimeStep = optimizerInternalParameters[2]
-
-		end
-		
-		currentLearningRate = currentLearningRate or learningRate
-
-		currentTimeStep = currentTimeStep or 0
-
-		currentTimeStep = currentTimeStep + 1
+		currentTimeStep += 1
 			
-		currentLearningRate = currentLearningRate * NewLearningRateTimeDecayOptimizer.decayRate
+		currentLearningRate = currentLearningRate / (NewLearningRateTimeDecayOptimizer.decayRate * currentTimeStep)
 		
-		costFunctionDerivatives = AqwamMatrixLibrary:multiply(currentLearningRate, costFunctionDerivatives)
+		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(currentLearningRate, costFunctionDerivativeTensor)
 		
-		NewLearningRateTimeDecayOptimizer.optimizerInternalParameters = {currentLearningRate, currentTimeStep}
+		NewLearningRateTimeDecayOptimizer.optimizerInternalParameterArray = {currentLearningRate, currentTimeStep}
 
-		return costFunctionDerivatives
+		return costFunctionDerivativeTensor
 		
 	end)
 	
@@ -81,6 +81,12 @@ end
 function LearningRateTimeDecayOptimizer:setDecayRate(decayRate)
 	
 	self.decayRate = decayRate
+	
+end
+
+function LearningRateTimeDecayOptimizer:setTimeStepToDecay(timeStepToDecay)
+	
+	self.timeStepToDecay = timeStepToDecay
 	
 end
 

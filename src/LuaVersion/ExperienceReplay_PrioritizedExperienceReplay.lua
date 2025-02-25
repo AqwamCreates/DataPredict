@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,12 +19,16 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local BaseExperienceReplay = require("Model_BaseExperienceReplay")
+local BaseExperienceReplay = require(script.Parent.BaseExperienceReplay)
 
 PrioritizedExperienceReplay = {}
 
@@ -40,27 +46,27 @@ local defaultEpsilon = math.pow(10, -4)
 
 local aggregrateFunctionList = {
 	
-	["Maximum"] = function (vector) 
+	["Maximum"] = function (valueVector) 
 		
-		return AqwamMatrixLibrary:findMaximumValue(vector) 
-		
-	end,
-	
-	["Minimum"] = function (vector) 
-
-		return AqwamMatrixLibrary:findMinimumValue(vector) 
-
-	end,
-	
-	["Sum"] = function (vector) 
-		
-		return AqwamMatrixLibrary:sum(vector) 
+		return AqwamTensorLibrary:findMaximumValue(valueVector) 
 		
 	end,
 	
-	["Average"] = function (vector) 
+	["Minimum"] = function (valueVector) 
 
-		return AqwamMatrixLibrary:sum(vector) / #vector[1] 
+		return AqwamTensorLibrary:findMinimumValue(valueVector) 
+
+	end,
+	
+	["Sum"] = function (valueVector) 
+		
+		return AqwamTensorLibrary:sum(valueVector) 
+		
+	end,
+	
+	["Average"] = function (valueVector) 
+
+		return AqwamTensorLibrary:sum(valueVector) / #valueVector[1] 
 
 	end,
 	
@@ -86,25 +92,29 @@ local function sample(probabilityArray)
 	
 end
 
-function PrioritizedExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize, alpha, beta, aggregateFunction, epsilon)
+function PrioritizedExperienceReplay.new(parameterDictionary)
 	
-	local NewPrioritizedExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize)
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewPrioritizedExperienceReplay = BaseExperienceReplay.new(parameterDictionary)
 	
 	setmetatable(NewPrioritizedExperienceReplay, PrioritizedExperienceReplay)
 	
-	NewPrioritizedExperienceReplay.alpha = alpha or defaultAlpha
+	NewPrioritizedExperienceReplay:setName("PrioritizedExperienceReplay")
 	
-	NewPrioritizedExperienceReplay.beta = beta or defaultBeta
+	NewPrioritizedExperienceReplay.alpha = parameterDictionary.alpha or defaultAlpha
 	
-	NewPrioritizedExperienceReplay.aggregateFunction = aggregateFunction or defaultAggregateFunction
+	NewPrioritizedExperienceReplay.beta = parameterDictionary.beta or defaultBeta
 	
-	NewPrioritizedExperienceReplay.epsilon = epsilon or defaultEpsilon
+	NewPrioritizedExperienceReplay.aggregateFunction = parameterDictionary.aggregateFunction or defaultAggregateFunction
 	
-	NewPrioritizedExperienceReplay.Model = nil
+	NewPrioritizedExperienceReplay.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
-	NewPrioritizedExperienceReplay.priorityArray = {} -- Store priorities
+	NewPrioritizedExperienceReplay.Model = parameterDictionary.Model
 	
-	NewPrioritizedExperienceReplay.weightArray = {}
+	NewPrioritizedExperienceReplay.priorityArray = parameterDictionary.priorityArray or {}
+	
+	NewPrioritizedExperienceReplay.weightArray = parameterDictionary.weightArray or {}
 	
 	NewPrioritizedExperienceReplay:setIsTemporalDifferenceErrorRequired(true)
 	
@@ -192,9 +202,9 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBuf
 			
 		end
 
-		local sizeArray = AqwamMatrixLibrary:getDimensionSizeArray(replayBufferArray[1][1])
+		local sizeArray = AqwamTensorLibrary:getDimensionSizeArray(replayBufferArray[1][1])
 
-		local inputMatrix = AqwamMatrixLibrary:createMatrix(sizeArray[1], sizeArray[2], 1)
+		local inputMatrix = AqwamTensorLibrary:createTensor(sizeArray, 1)
 
 		local sumLossMatrix
 		
@@ -220,11 +230,11 @@ function PrioritizedExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBuf
 
 			local outputMatrix = Model:forwardPropagate(replayBufferArray[i][1], false)
 
-			local lossMatrix = AqwamMatrixLibrary:multiply(outputMatrix, temporalDifferenceErrorValueOrVector, importanceSamplingWeight)
+			local lossMatrix = AqwamTensorLibrary:multiply(outputMatrix, temporalDifferenceErrorValueOrVector, importanceSamplingWeight)
 
 			if (sumLossMatrix) then
 
-				sumLossMatrix = AqwamMatrixLibrary:add(sumLossMatrix, lossMatrix)
+				sumLossMatrix = AqwamTensorLibrary:add(sumLossMatrix, lossMatrix)
 
 			else
 
@@ -247,24 +257,6 @@ end
 function PrioritizedExperienceReplay:setModel(Model)
 	
 	self.Model = Model or self.Model
-	
-end
-
-function PrioritizedExperienceReplay:setParameters(batchSize, numberOfRunsToUpdate, maxBufferSize, alpha, beta, aggregateFunction, epsilon)
-	
-	self.batchSize = batchSize or self.batchSize
-
-	self.numberOfRunsToUpdate = numberOfRunsToUpdate or self.numberOfRunsToUpdate
-
-	self.maxBufferSize = maxBufferSize or self.maxBufferSize
-	
-	self.alpha = alpha or self.alpha
-
-	self.beta = beta or self.beta
-
-	self.aggregateFunction = aggregateFunction or self.aggregateFunction
-	
-	self.epsilon = epsilon or self.epsilon
 	
 end
 

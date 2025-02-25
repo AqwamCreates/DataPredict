@@ -26,7 +26,7 @@
 
 --]]
 
-local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
+local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
 
 TimeDecayValueScheduler = {}
 
@@ -36,13 +36,17 @@ setmetatable(TimeDecayValueScheduler, BaseValueScheduler)
 
 local defaultDecayRate = 0.5
 
-function TimeDecayValueScheduler.new(decayRate)
+function TimeDecayValueScheduler.new(parameterDictionary)
 	
-	local NewTimeDecayValueScheduler = BaseValueScheduler.new("TimeDecay")
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewTimeDecayValueScheduler = BaseValueScheduler.new()
 	
 	setmetatable(NewTimeDecayValueScheduler, TimeDecayValueScheduler)
 	
-	NewTimeDecayValueScheduler.decayRate = decayRate or defaultDecayRate
+	NewTimeDecayValueScheduler:setName("TimeDecay")
+	
+	NewTimeDecayValueScheduler.decayRate = parameterDictionary.decayRate or defaultDecayRate
 	
 	--------------------------------------------------------------------------------
 	
@@ -52,13 +56,13 @@ function TimeDecayValueScheduler.new(decayRate)
 
 		local currentTimeStep
 
-		local valueSchedulerInternalParameters = NewTimeDecayValueScheduler.valueSchedulerInternalParameters
+		local valueSchedulerInternalParameterArray = NewTimeDecayValueScheduler.valueSchedulerInternalParameterArray
 
-		if (valueSchedulerInternalParameters) then
+		if (valueSchedulerInternalParameterArray) then
 
-			currentValue = valueSchedulerInternalParameters[1]
+			currentValue = valueSchedulerInternalParameterArray[1]
 
-			currentTimeStep = valueSchedulerInternalParameters[2]
+			currentTimeStep = valueSchedulerInternalParameterArray[2]
 
 		end
 		
@@ -70,7 +74,7 @@ function TimeDecayValueScheduler.new(decayRate)
 			
 		currentValue = currentValue * NewTimeDecayValueScheduler.decayRate
 		
-		NewTimeDecayValueScheduler.valueSchedulerInternalParameters = {currentValue, currentTimeStep}
+		NewTimeDecayValueScheduler.valueSchedulerInternalParameterArray = {currentValue, currentTimeStep}
 
 		return currentValue
 		

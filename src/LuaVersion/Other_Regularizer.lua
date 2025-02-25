@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,26 +19,26 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 Regularizer = {}
 
 Regularizer.__index = Regularizer
 
+setmetatable(Regularizer, BaseInstance)
+
 local defaultRegularizationMode = "L2"
 
 local defaultLambda = 0.01
-
-local function getBooleanOrDefaultOption(boolean, defaultBoolean)
-	
-	if (type(boolean) == "nil") then return defaultBoolean end
-
-	return boolean
-	
-end
 
 local function makeLambdaAtBiasZero(regularizationDerivatives)
 	
@@ -50,29 +52,25 @@ local function makeLambdaAtBiasZero(regularizationDerivatives)
 	
 end
 
-function Regularizer.new(lambda, regularizationMode, hasBias)
+function Regularizer.new(parameterDictionary)
 	
-	local NewRegularizer = {}
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewRegularizer = BaseInstance.new(parameterDictionary)
 	
 	setmetatable(NewRegularizer, Regularizer)
 	
-	NewRegularizer.lambda = lambda or defaultLambda
+	NewRegularizer:setName("Regularizer")
 	
-	NewRegularizer.regularizationMode = regularizationMode or defaultRegularizationMode
+	NewRegularizer:setClassName("Regularizer")
 	
-	NewRegularizer.hasBias = getBooleanOrDefaultOption(hasBias, false)
+	NewRegularizer.lambda = parameterDictionary.lambda or defaultLambda
+	
+	NewRegularizer.regularizationMode = parameterDictionary.regularizationMode or defaultRegularizationMode
+	
+	NewRegularizer.hasBias = NewRegularizer:getValueOrDefaultValue(parameterDictionary.hasBias, false)
 	
 	return NewRegularizer
-	
-end
-
-function Regularizer:setParameters(lambda, regularizationMode, hasBias)
-	
-	self.lambda = lambda or self.lambda
-	
-	self.regularizationMode = regularizationMode or self.regularizationMode
-	
-	self.hasBias = getBooleanOrDefaultOption(hasBias, self.hasBias)
 	
 end
 
@@ -94,23 +92,23 @@ function Regularizer:calculateRegularizationDerivatives(ModelParameters)
 	
 	if (regularizationMode == "L1") or (regularizationMode == "Lasso") then
 		
-		ModelParametersSign = AqwamMatrixLibrary:applyFunction(math.sign, ModelParameters)
+		ModelParametersSign = AqwamTensorLibrary:applyFunction(math.sign, ModelParameters)
 		
-		regularizationDerivatives = AqwamMatrixLibrary:multiply(ModelParametersSign, lambda, ModelParameters)
+		regularizationDerivatives = AqwamTensorLibrary:multiply(ModelParametersSign, lambda, ModelParameters)
 	
 	elseif (regularizationMode == "L2") or (regularizationMode == "Ridge") then
 		
-		regularizationDerivatives = AqwamMatrixLibrary:multiply((2 * lambda), ModelParameters)
+		regularizationDerivatives = AqwamTensorLibrary:multiply((2 * lambda), ModelParameters)
 		
 	elseif (regularizationMode == "L1+L2") or (regularizationMode == "ElasticNet") then
 		
-		ModelParametersSign = AqwamMatrixLibrary:applyFunction(math.sign, ModelParameters)
+		ModelParametersSign = AqwamTensorLibrary:applyFunction(math.sign, ModelParameters)
 		
-		local regularizationDerivativesPart1 = AqwamMatrixLibrary:multiply(lambda, ModelParametersSign)
+		local regularizationDerivativesPart1 = AqwamTensorLibrary:multiply(lambda, ModelParametersSign)
 		
-		local regularizationDerivativesPart2 = AqwamMatrixLibrary:multiply((2 * lambda), ModelParameters)
+		local regularizationDerivativesPart2 = AqwamTensorLibrary:multiply((2 * lambda), ModelParameters)
 		
-		regularizationDerivatives = AqwamMatrixLibrary:add(regularizationDerivativesPart1, regularizationDerivativesPart2)
+		regularizationDerivatives = AqwamTensorLibrary:add(regularizationDerivativesPart1, regularizationDerivativesPart2)
 
 	else
 
@@ -142,35 +140,35 @@ function Regularizer:calculateRegularization(ModelParameters)
 	
 	if (regularizationMode == "L1") or (regularizationMode == "Lasso") then
 		
-		AbsoluteModelParameters = AqwamMatrixLibrary:applyFunction(math.abs, ModelParameters)
+		AbsoluteModelParameters = AqwamTensorLibrary:applyFunction(math.abs, ModelParameters)
 		
 		if (self.hasBias) then AbsoluteModelParameters = makeLambdaAtBiasZero(AbsoluteModelParameters) end
 		
-		SumAbsoluteModelParameters = AqwamMatrixLibrary:sum(AbsoluteModelParameters)
+		SumAbsoluteModelParameters = AqwamTensorLibrary:sum(AbsoluteModelParameters)
 		
 		regularizationValue = lambda * SumAbsoluteModelParameters
 		
 	elseif (regularizationMode == "L2") or (regularizationMode == "Ridge") then
 		
-		SquaredModelParameters = AqwamMatrixLibrary:power(ModelParameters, 2)
+		SquaredModelParameters = AqwamTensorLibrary:power(ModelParameters, 2)
 		
 		if (self.hasBias) then SquaredModelParameters = makeLambdaAtBiasZero(SquaredModelParameters) end
 		
-		SumSquaredModelParameters = AqwamMatrixLibrary:sum(SquaredModelParameters)
+		SumSquaredModelParameters = AqwamTensorLibrary:sum(SquaredModelParameters)
 		
 		regularizationValue = lambda * SumSquaredModelParameters
 		
 	elseif (regularizationMode == "L1+L2") or (regularizationMode == "ElasticNet") then
 		
-		SquaredModelParameters = AqwamMatrixLibrary:power(ModelParameters, 2)
+		SquaredModelParameters = AqwamTensorLibrary:power(ModelParameters, 2)
 		
 		if (self.hasBias) then SquaredModelParameters = makeLambdaAtBiasZero(SquaredModelParameters) end
 		
-		SumSquaredModelParameters = AqwamMatrixLibrary:sum(SquaredModelParameters)
+		SumSquaredModelParameters = AqwamTensorLibrary:sum(SquaredModelParameters)
 		
-		AbsoluteModelParameters = AqwamMatrixLibrary:applyFunction(math.abs, ModelParameters)
+		AbsoluteModelParameters = AqwamTensorLibrary:applyFunction(math.abs, ModelParameters)
 		
-		SumAbsoluteModelParameters = AqwamMatrixLibrary:sum(AbsoluteModelParameters)
+		SumAbsoluteModelParameters = AqwamTensorLibrary:sum(AbsoluteModelParameters)
 		
 		local regularizationValuePart1 = lambda * SumSquaredModelParameters
 		

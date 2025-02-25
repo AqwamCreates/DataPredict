@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,54 +19,46 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local GradientDescentModifier = {}
+local BaseIntstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-GradientDescentModifier.__index = GradientDescentModifier
+local TrainingModifier = {}
 
-local defaultGradientDescentType = "Stochastic"
+TrainingModifier.__index = TrainingModifier
+
+setmetatable(TrainingModifier, BaseIntstance)
+
+local defaultTrainingMode = "Stochastic"
 
 local defaultBatchSize = 2
 
-local defaultShowOutput = true
+local defaultIsOutputPrinted = true
 
-local function getBooleanOrDefaultOption(boolean, defaultBoolean)
+function TrainingModifier.new(parameterDictionary)
+	
+	local NewTrainingModifier = BaseIntstance.new(parameterDictionary)
+	
+	setmetatable(NewTrainingModifier, TrainingModifier)
+	
+	NewTrainingModifier:setName("TrainingModifier")
+	
+	NewTrainingModifier:setClassName("TrainingModifier")
+	
+	NewTrainingModifier.trainingMode = parameterDictionary.trainingMode or defaultTrainingMode
 
-	if (type(boolean) == "nil") then return defaultBoolean end
-
-	return boolean
-
-end
-
-function GradientDescentModifier.new(Model, gradientDescentType, batchSize, showOutput)
+	NewTrainingModifier.batchSize = parameterDictionary.batchSize or defaultBatchSize
 	
-	local NewGradientDescentModifier = {}
+	NewTrainingModifier.isOutputPrinted = NewTrainingModifier:getValueOrDefaultValue(parameterDictionary.isOutputPrinted, defaultIsOutputPrinted)
 	
-	setmetatable(NewGradientDescentModifier, GradientDescentModifier)
+	NewTrainingModifier.Model = parameterDictionary.Model
 	
-	NewGradientDescentModifier.Model = Model
-	
-	NewGradientDescentModifier.gradientDescentType = gradientDescentType or defaultGradientDescentType
-	
-	NewGradientDescentModifier.batchSize = batchSize or defaultBatchSize
-	
-	NewGradientDescentModifier.showOutput = getBooleanOrDefaultOption(showOutput, defaultShowOutput)
-	
-	return NewGradientDescentModifier
-	
-end
-
-function GradientDescentModifier:setParameters(Model, gradientDescentType, batchSize, showOutput)
-	
-	self.Model = Model or self.Model
-
-	self.gradientDescentType = gradientDescentType or self.gradientDescentType 
-
-	self.batchSize = batchSize or self.batchSize
-	
-	self.showOutput = getBooleanOrDefaultOption(showOutput, self.showOutput)
+	return NewTrainingModifier
 	
 end
 
@@ -98,15 +92,17 @@ local function breakMatrixToMultipleSmallerMatrices(matrix, batchSize)
 	
 end
 
-function GradientDescentModifier:startBatchGradientDescent(...)
+function TrainingModifier:batchTrain(...)
 	
 	return self.Model:train(...)
 	
 end
 
-function GradientDescentModifier:startMiniBatchGradientDescent(...)
+function TrainingModifier:miniBatchTrain(...)
 	
-	if (self.batchSize < 0) then error("Batch size cannot be negative!") end
+	local batchSize = self.batchSize
+	
+	if (batchSize < 0) then error("Batch size cannot be negative!") end
 	
 	local matrixArray = {...}
 	
@@ -120,15 +116,15 @@ function GradientDescentModifier:startMiniBatchGradientDescent(...)
 
 	end
 	
-	if (self.batchSize > numberOfData) then error("Batch size is greater than the number of data!") end
+	if (batchSize > numberOfData) then error("Batch size is greater than the number of data!") end
 	
-	local numberOfBatches = math.ceil(numberOfData/self.batchSize)
+	local numberOfBatches = math.ceil(numberOfData / batchSize)
 	
 	local miniBatchMatrixArray = {}
 	
 	for matrixIndex = 1, numberOfMatrices, 1 do
 		
-		local matrices = breakMatrixToMultipleSmallerMatrices(matrixArray[matrixIndex], self.batchSize)
+		local matrices = breakMatrixToMultipleSmallerMatrices(matrixArray[matrixIndex], batchSize)
 		
 		table.insert(miniBatchMatrixArray, matrices)
 		
@@ -152,7 +148,7 @@ function GradientDescentModifier:startMiniBatchGradientDescent(...)
 		
 		table.insert(costArray, costArray)
 		
-		if (self.showOutput) then print("Epoch: " .. currentBatchNumber .. "\t\t\tFinal cost: " .. cost) end
+		if (self.isOutputPrinted) then print("Epoch: " .. currentBatchNumber .. "\t\t\tFinal cost: " .. cost) end
 		
 	end
 	
@@ -160,7 +156,7 @@ function GradientDescentModifier:startMiniBatchGradientDescent(...)
 
 end
 
-function GradientDescentModifier:startStochasticGradientDescent(...)
+function TrainingModifier:stochasticTrain(...)
 	
 	local matrixArray = {...}
 
@@ -192,7 +188,7 @@ function GradientDescentModifier:startStochasticGradientDescent(...)
 		
 		table.insert(costArray, cost)
 		
-		if (self.showOutput) then print("Data number: " .. dataIndex .. "\t\tFinal cost: " .. cost) end
+		if (self.isOutputPrinted) then print("Data number: " .. dataIndex .. "\t\tFinal cost: " .. cost) end
 		
 	end
 	
@@ -200,38 +196,52 @@ function GradientDescentModifier:startStochasticGradientDescent(...)
 
 end
 
-function GradientDescentModifier:train(...)
+function TrainingModifier:train(...)
 	
-	if (self.gradientDescentType == "Batch") then
+	local trainingMode = self.trainingMode
+	
+	if (trainingMode == "Batch") then
 		
-		return self:startBatchGradientDescent(...)
+		return self:batchTrain(...)
 		
-	elseif (self.gradientDescentType == "MiniBatch") then
+	elseif (trainingMode == "MiniBatch") then
 		
-		return self:startMiniBatchGradientDescent(...)
+		return self:miniBatchTrain(...)
 		
-	elseif (self.gradientDescentType == "Stochastic") then
+	elseif (trainingMode == "Stochastic") then
 		
-		return self:startStochasticGradientDescent(...)
+		return self:stochasticTrain(...)
 		
 	else
 		
-		error("The selected gradient descent algorithm type cannot be found.")
+		error("The selected gradient descent method cannot be found.")
 		
 	end
 	
 end
 
-function GradientDescentModifier:predict(...)
+function TrainingModifier:predict(...)
 	
 	return self.Model:predict(...)
 	
 end
 
-function GradientDescentModifier:reinforce(...)
+function TrainingModifier:reinforce(...)
 	
 	return self.Model:reinforce(...)
 	
 end
 
-return GradientDescentModifier
+function TrainingModifier:setModel(Model)
+	
+	self.Model = Model
+	
+end
+
+function TrainingModifier:getModel()
+
+	return self.Model
+
+end
+
+return TrainingModifier

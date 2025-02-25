@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,34 +19,44 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local BaseModel = require("Model_BaseModel")
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 GradientMethodBaseModel = {}
 
 GradientMethodBaseModel.__index = GradientMethodBaseModel
 
-setmetatable(GradientMethodBaseModel, BaseModel)
+setmetatable(GradientMethodBaseModel, IterativeMethodBaseModel)
 
-function GradientMethodBaseModel.new()
+function GradientMethodBaseModel.new(parameterDictionary)
 	
-	local NewGradientMethodBaseModel = BaseModel.new()
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewGradientMethodBaseModel = IterativeMethodBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewGradientMethodBaseModel, GradientMethodBaseModel)
 	
-	NewGradientMethodBaseModel.autoResetOptimizers = true
+	NewGradientMethodBaseModel:setName("GradientMethodBaseModel")
+
+	NewGradientMethodBaseModel:setClassName("GradientMethodModel")
 	
-	NewGradientMethodBaseModel.areGradientsSaved = false
+	NewGradientMethodBaseModel.autoResetOptimizers = NewGradientMethodBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetOptimizers, true)
 	
-	NewGradientMethodBaseModel.Gradients = nil
+	NewGradientMethodBaseModel.areGradientsSaved = NewGradientMethodBaseModel:getValueOrDefaultValue(parameterDictionary.areGradientsSaved, false)
+	
+	NewGradientMethodBaseModel.Gradients = NewGradientMethodBaseModel:getValueOrDefaultValue(parameterDictionary.Gradients, nil)
 	
 	return NewGradientMethodBaseModel
 	
 end
 
-function BaseModel:setAutoResetOptimizers(option)
+function GradientMethodBaseModel:setAutoResetOptimizers(option)
 
 	self.autoResetOptimizers = self:getValueOrDefaultValue(option, self.autoResetOptimizers)
 

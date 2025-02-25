@@ -25,218 +25,41 @@
 	--------------------------------------------------------------------
 
 --]]
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
+
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 BaseModel = {}
 
 BaseModel.__index = BaseModel
 
-local function deepCopyTable(original, copies)
-	
-	copies = copies or {}
-	
-	local originalType = type(original)
-	
-	local copy
-	
-	if (originalType == 'table') then
-		
-		if copies[original] then
-			
-			copy = copies[original]
-			
-		else
-			
-			copy = {}
-			
-			copies[original] = copy
-			
-			for originalKey, originalValue in next, original, nil do
-				
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-				
-			end
-			
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
-			
-		end
-		
-	else
-		
-		copy = original
-		
-	end
-	
-	return copy
-	
-end
+setmetatable(BaseModel, BaseInstance)
 
-function BaseModel.new()
+function BaseModel.new(parameterDictionary)
 	
-	local NewBaseModel = {}
+	parameterDictionary = parameterDictionary or {}
 	
+	local NewBaseModel = BaseInstance.new(parameterDictionary)
+
 	setmetatable(NewBaseModel, BaseModel)
-	
-	NewBaseModel.isOutputPrinted = true
 
-	NewBaseModel.ModelParameters = nil
-	
-	NewBaseModel.modelParametersInitializationMode = "RandomUniformNegativeAndPositive"
-	
-	NewBaseModel.numberOfIterationsPerCostCalculation = 1
-	
-	NewBaseModel.minimumModelParametersInitializationValue = nil
+	NewBaseModel:setName("BaseModel")
 
-	NewBaseModel.maximumModelParametersInitializationValue = nil
+	NewBaseModel:setClassName("Model")
 	
-	NewBaseModel.iterationWaitDuration = nil
+	NewBaseModel.isOutputPrinted = NewBaseModel:getValueOrDefaultValue(parameterDictionary.isOutputPrinted, true)
+
+	NewBaseModel.ModelParameters = NewBaseModel:getValueOrDefaultValue(parameterDictionary.ModelParameters, nil)
 	
-	NewBaseModel.dataWaitDuration = nil
+	NewBaseModel.modelParametersInitializationMode = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersInitializationMode, "RandomUniformNegativeAndPositive") 
+
+	NewBaseModel.maximumModelParametersInitializationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.maximumModelParametersInitializationValue, nil)
 	
-	NewBaseModel.sequenceWaitDuration = nil
-	
-	NewBaseModel.targetCostUpperBound = 0
-	
-	NewBaseModel.targetCostLowerBound = 0
-	
-	NewBaseModel.currentCostToCheckForConvergence = nil
-	
-	NewBaseModel.currentNumberOfIterationsToCheckIfConverged = 1
-	
-	NewBaseModel.numberOfIterationsToCheckIfConverged = math.huge
+	NewBaseModel.minimumModelParametersInitializationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.minimumModelParametersInitializationValue, nil)
 
 	return NewBaseModel
 	
-end
-
-function BaseModel:deepCopyTable(original)
-	
-	return deepCopyTable(original)
-	
-end
-
-function BaseModel:setNumberOfIterationsToCheckIfConverged(numberOfIterations)
-	
-	self.numberOfIterationsToCheckIfConverged = numberOfIterations or self.numberOfIterationsToCheckIfConverged
-	
-end
-
-function BaseModel:checkIfConverged(cost)
-	
-	if (not cost) then return false end
-	
-	if (not self.currentCostToCheckForConvergence) then
-		
-		self.currentCostToCheckForConvergence = cost
-		
-		return false
-		
-	end
-	
-	if (self.currentCostToCheckForConvergence ~= cost) then
-		
-		self.currentNumberOfIterationsToCheckIfConverged = 1
-		
-		self.currentCostToCheckForConvergence = cost
-
-		return false
-		
-	end
-	
-	if (self.currentNumberOfIterationsToCheckIfConverged < self.numberOfIterationsToCheckIfConverged) then
-		
-		self.currentNumberOfIterationsToCheckIfConverged += 1
-		
-		return false
-		
-	end
-	
-	self.currentNumberOfIterationsToCheckIfConverged = 1
-	
-	self.currentCostToCheckForConvergence = nil
-	
-	return true
-	
-end
-
-function BaseModel:setTargetCost(upperBound, lowerBound)
-
-	self.targetCostUpperBound = upperBound or self.targetCostUpperBound
-	
-	self.targetCostLowerBound = lowerBound or self.targetCostLowerBound
-
-end
-
-function BaseModel:checkIfTargetCostReached(cost)
-	
-	if (not cost) then return false end
-	
-	return (cost >= self.targetCostLowerBound) and (cost <= self.targetCostUpperBound)
-	
-end
-
-function BaseModel:calculateCostWhenRequired(currentNumberOfIteration, costFunction)
-	
-	if ((currentNumberOfIteration % self.numberOfIterationsPerCostCalculation) == 0) then 
-		
-		return costFunction()
-		
-	else
-		
-		return nil
-		
-	end
-	
-end
-
-function BaseModel:setNumberOfIterationsPerCostCalculation(numberOfIterationsPerCostCalculation)
-	
-	self.numberOfIterationsPerCostCalculation = self:getValueOrDefaultValue(numberOfIterationsPerCostCalculation, self.numberOfIterationsPerCostCalculation)
-	
-end
-
-function BaseModel:setWaitDurations(iterationWaitDuration, dataWaitDuration, sequenceWaitDuration)
-	
-	self.iterationWaitDuration = iterationWaitDuration
-
-	self.dataWaitDuration = dataWaitDuration
-
-	self.sequenceWaitDuration = sequenceWaitDuration
-	
-end
-
-function BaseModel:baseModelWait(waitDuration)
-	
-	if (type(waitDuration) == "nil") or (waitDuration == false) then return nil end
-	
-	if (type(waitDuration) == "number") then
-		
-		task.wait(waitDuration)
-		
-	else
-		
-		task.wait()
-		
-	end
-	
-end
-
-function BaseModel:iterationWait()
-	
-	self:baseModelWait(self.iterationWaitDuration)
-	
-end
-
-function BaseModel:dataWait()
-
-	self:baseModelWait(self.dataWaitDuration)
-
-end
-
-function BaseModel:sequenceWait()
-
-	self:baseModelWait(self.sequenceWaitDuration)
-
 end
 
 function BaseModel:getModelParameters(doNotDeepCopy)
@@ -247,7 +70,7 @@ function BaseModel:getModelParameters(doNotDeepCopy)
 		
 	else
 		
-		return deepCopyTable(self.ModelParameters)
+		return self:deepCopyTable(self.ModelParameters)
 		
 	end
 	
@@ -261,7 +84,7 @@ function BaseModel:setModelParameters(ModelParameters, doNotDeepCopy)
 		
 	elseif ModelParameters and not doNotDeepCopy then
 		
-		self.ModelParameters = deepCopyTable(ModelParameters) 
+		self.ModelParameters = self:deepCopyTable(ModelParameters) 
 		
 	end
 	
@@ -271,20 +94,6 @@ function BaseModel:clearModelParameters()
 	
 	self.ModelParameters = nil
 	
-end
-
-function BaseModel:printCostAndNumberOfIterations(cost, numberOfIteration)
-	
-	if self.isOutputPrinted then print("Iteration: " .. numberOfIteration .. "\t\tCost: " .. cost) end
-
-end
-
-function BaseModel:getValueOrDefaultValue(value, defaultValue)
-
-	if (type(value) == "nil") then return defaultValue end
-
-	return value
-
 end
 
 function BaseModel:setPrintOutput(option) 
@@ -303,77 +112,83 @@ function BaseModel:setModelParametersInitializationMode(initializationMode, mini
 	
 end
 
-function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, numberOfRowsToIgnore, numberOfColumnsToIgnore) -- Some of the row/column might not be considered as an input variables/neurons. Hence, it should be ignored by subtracting from original rows and columns with the number of non-input variables/neurons.
+function BaseModel:initializeMatrixBasedOnMode(dimensionSizeArray, dimensionSizeToIgnoreArray) -- Some of the row/column might not be considered as an input variables/neurons. Hence, it should be ignored by subtracting from original rows and columns with the number of non-input variables/neurons.
 	
-	numberOfRowsToIgnore = numberOfRowsToIgnore or 0
+	if (not dimensionSizeArray) then error("No dimension size array for weight initialization!") end
 	
-	numberOfColumnsToIgnore = numberOfColumnsToIgnore or 0
+	dimensionSizeToIgnoreArray = dimensionSizeToIgnoreArray or {}
+
+	local numberOfRowsToIgnore = dimensionSizeToIgnoreArray[1] or 0
 	
-	local adjustedNumberOfRows = numberOfRows - numberOfRowsToIgnore
+	local numberOfColumnsToIgnore = dimensionSizeToIgnoreArray[2] or 0
 	
-	local adjustedNumberOfColumns = numberOfColumns - numberOfColumnsToIgnore
+	local adjustedNumberOfRows = dimensionSizeArray[1] - numberOfRowsToIgnore
+	
+	local adjustedNumberOfColumns = dimensionSizeArray[2] - numberOfColumnsToIgnore
+	
+	local numberOfDimensions = #dimensionSizeArray
 	
 	local initializationMode = self.modelParametersInitializationMode
-	
+
 	if (initializationMode == "Zero") then
-		
-		return AqwamMatrixLibrary:createMatrix(numberOfRows, numberOfColumns, 0)
-	
+
+		return AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+
 	elseif (initializationMode == "Random") then
-		
-		return AqwamMatrixLibrary:createRandomMatrix(numberOfRows, numberOfColumns, self.minimumModelParametersInitializationValue, self.maximumModelParametersInitializationValue)
-		
+
+		return AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray, self.minimumModelParametersInitializationValue, self.maximumModelParametersInitializationValue)
+
 	elseif (initializationMode == "RandomNormal") then
 
-		return AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-		
+		return AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray, self.modelParametersMean, self.modelParametersStandardDeviation)
+
 	elseif (initializationMode == "RandomUniformPositive") then
 
-		return AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		return AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
 
 	elseif (initializationMode == "RandomUniformNegative") then
 
-		local randomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local randomUniformTensor = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
 
-		return AqwamMatrixLibrary:multiply(randomUniform, -1)
+		return AqwamTensorLibrary:multiply(randomUniformTensor, -1)
 
 	elseif (initializationMode == "RandomUniformNegativeAndPositive") then
 
-		local randomUniform1 = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local randomUniformTensor1 = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
 
-		local randomUniform2 = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local randomUniformTensor2 = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
 
-		return AqwamMatrixLibrary:subtract(randomUniform1, randomUniform2)
-		
+		return AqwamTensorLibrary:subtract(randomUniformTensor1, randomUniformTensor2)
+
 	elseif (initializationMode == "HeNormal") then
-		
+
 		local variancePart1 = 2 / adjustedNumberOfRows
-		
+
 		local variancePart = math.sqrt(variancePart1)
-		
-		local randomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
-		
-		return AqwamMatrixLibrary:multiply(variancePart, randomNormal)
-		
+
+		local randomNormalTensor = AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray)
+
+		return AqwamTensorLibrary:multiply(variancePart, randomNormalTensor)
+
 	elseif (initializationMode == "HeUniform") then
 
 		local variancePart1 = 6 / adjustedNumberOfRows
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local randomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local randomUniformTensor = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
 
-		return AqwamMatrixLibrary:multiply(variancePart, randomUniform) 
-		
+		return AqwamTensorLibrary:multiply(variancePart, randomUniformTensor) 
+
 	elseif (initializationMode == "XavierNormal") then
 
 		local variancePart1 = 2 / (adjustedNumberOfRows + adjustedNumberOfColumns)
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local randomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		local randomNormalTensor = AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray)
 
-		return AqwamMatrixLibrary:multiply(variancePart, randomNormal) 
+		return AqwamTensorLibrary:multiply(variancePart, randomNormalTensor) 
 
 	elseif (initializationMode == "XavierUniform") then
 
@@ -381,49 +196,39 @@ function BaseModel:initializeMatrixBasedOnMode(numberOfRows, numberOfColumns, nu
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local randomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local randomUniformTensor = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
 
-		return AqwamMatrixLibrary:multiply(variancePart, randomUniform)
-		
+		return AqwamTensorLibrary:multiply(variancePart, randomUniformTensor)
+
 	elseif (initializationMode == "LeCunNormal") then
 
 		local variancePart1 = 1 / adjustedNumberOfRows
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local randomNormal = AqwamMatrixLibrary:createRandomNormalMatrix(numberOfRows, numberOfColumns)
+		local randomNormalTensor = AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray)
 
-		return AqwamMatrixLibrary:multiply(variancePart, randomNormal) 
-		
+		return AqwamTensorLibrary:multiply(variancePart, randomNormalTensor) 
+
 	elseif (initializationMode == "LeCunUniform") then
 
 		local variancePart1 = 3 / adjustedNumberOfRows
 
 		local variancePart = math.sqrt(variancePart1)
 
-		local randomUniform = AqwamMatrixLibrary:createRandomUniformMatrix(numberOfRows, numberOfColumns)
+		local randomUniformTensor = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
 
-		return AqwamMatrixLibrary:multiply(variancePart, randomUniform) 
-		
+		return AqwamTensorLibrary:multiply(variancePart, randomUniformTensor) 
+
 	elseif (initializationMode == "None") then
 
 		return nil
 
 	else
 
-		error("Invalid model parameters initialization mode!")
-		
-	end
-	
-end
+		error("Invalid weight initialization mode.")
 
-function BaseModel:destroy()
-	
-	setmetatable(self, nil)
-	
-	table.clear(self)
-	
-	self = nil
+	end
 	
 end
 

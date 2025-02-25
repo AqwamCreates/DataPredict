@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,52 +19,60 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 local ModelParametersMerger = {}
 
 ModelParametersMerger.__index = ModelParametersMerger
 
-local defaultMergeType = "Average"
+setmetatable(ModelParametersMerger, BaseInstance)
 
-function ModelParametersMerger.new(Model, modelType, mergeType)
+local defaultSplitMode = "Accuracy"
 
-	local NewModelParametersMerger = {}
+local defaultMergeMode = "Average"
+
+function ModelParametersMerger.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+
+	local NewModelParametersMerger = BaseInstance.new(parameterDictionary)
 
 	setmetatable(NewModelParametersMerger, ModelParametersMerger)
-
-	NewModelParametersMerger.Model = Model
-
-	NewModelParametersMerger.modelType = modelType
-
-	NewModelParametersMerger.mergeType = mergeType or defaultMergeType
-
-	NewModelParametersMerger.featureMatrix = nil
-
-	NewModelParametersMerger.labelVector = nil
 	
-	NewModelParametersMerger.customSplitPercentage = {}
+	NewModelParametersMerger:setName("ModelParametersMerger")
+	
+	NewModelParametersMerger:setClassName("ModelParametersMerger")
+
+	NewModelParametersMerger.Model = parameterDictionary.Model
+
+	NewModelParametersMerger.modelType = parameterDictionary.modelType
+	
+	ModelParametersMerger.splitMode = parameterDictionary.splitMode or defaultSplitMode
+
+	NewModelParametersMerger.mergeMode = parameterDictionary.mergeMode or defaultMergeMode
+
+	NewModelParametersMerger.featureMatrix = parameterDictionary.featureMatrix
+
+	NewModelParametersMerger.labelVector = parameterDictionary.labelVector
+	
+	NewModelParametersMerger.splitAmountArray = parameterDictionary.splitAmountArray
 
 	return NewModelParametersMerger
 
 end
 
-function ModelParametersMerger:setParameters(Model, modelType, mergeType)
-
-	self.Model = Model or self.Model
-
-	self.modelType = modelType or self.modelType
-
-	self.mergeType = mergeType or self.mergeType
-
-end
-
-function ModelParametersMerger:setCustomSplitPercentageArray(splitPercentageArray)
+function ModelParametersMerger:setCustomSplitAmountArray(splitAmountArray)
 	
-	self.customSplitPercentage = splitPercentageArray or self.customSplitPercentage
+	self.splitAmountArray = splitAmountArray or self.splitAmountArray
 	
 end
 
@@ -118,7 +128,7 @@ local function generateModelParametersTableWithMatricesOfZeroValues(ModelParamet
 
 		local numberOfColumns = #matrix[1]
 
-		local newMatrix = AqwamMatrixLibrary:createMatrix(numberOfRows, numberOfColumns)
+		local newMatrix = AqwamTensorLibrary:createTensor({numberOfRows, numberOfColumns})
 
 		table.insert(NewModelParameters, newMatrix)
 
@@ -132,7 +142,7 @@ local function calculateTotalFromArray(array)
 
 	local total = 0
 
-	for i, value in ipairs(array) do total += value end
+	for i, value in ipairs(array) do total = total + value end
 
 	return total
 
@@ -166,46 +176,6 @@ local function convertValueArrayToPercentageArray(array)
 
 end
 
-local function calculateScaledModelParametersTable(ModelParametersArray, percentageArray)
-
-	local NewModelParameters = generateModelParametersTableWithMatricesOfZeroValues(ModelParametersArray[1])
-
-	for i, ModelParameters in ipairs(ModelParametersArray) do
-
-		for j, matrix in ipairs(ModelParameters) do
-
-			local calculatedMatrix = AqwamMatrixLibrary:multiply(matrix, percentageArray[i])
-
-			NewModelParameters[j] = AqwamMatrixLibrary:add(NewModelParameters[j], calculatedMatrix)
-
-		end
-
-	end
-
-	return NewModelParameters
-
-end
-
-local function calculateScaledModelParameters(ModelParametersArray, percentageArray)
-
-	local FirstModelParameters = ModelParametersArray[1]
-
-	local NewModelParameters = AqwamMatrixLibrary:createMatrix(#FirstModelParameters, #FirstModelParameters[1])
-
-	for j, percentage in ipairs(percentageArray) do
-
-		local matrix = ModelParametersArray[j]
-
-		local calculatedMatrix = AqwamMatrixLibrary:multiply(matrix, percentage)
-
-		NewModelParameters = AqwamMatrixLibrary:add(NewModelParameters, calculatedMatrix)
-
-	end
-
-	return NewModelParameters
-
-end
-
 local function generateErrorArrayForRegression(Model, ModelParametersArray, featureMatrix, labelVector)
 
 	local errorArray = {}
@@ -216,11 +186,11 @@ local function generateErrorArrayForRegression(Model, ModelParametersArray, feat
 
 		local predictVector = Model:predict(featureMatrix)
 
-		local errorVector = AqwamMatrixLibrary:subtract(labelVector, predictVector)
+		local errorVector = AqwamTensorLibrary:subtract(labelVector, predictVector)
 
-		local absoluteErrorVector = AqwamMatrixLibrary:applyFunction(math.abs, errorVector)
+		local absoluteErrorVector = AqwamTensorLibrary:applyFunction(math.abs, errorVector)
 
-		local errorValue = AqwamMatrixLibrary:sum(absoluteErrorVector)
+		local errorValue = AqwamTensorLibrary:sum(absoluteErrorVector)
 
 		table.insert(errorArray, errorValue)
 
@@ -240,7 +210,7 @@ local function generateErrorArrayForClustering(Model, ModelParametersArray, feat
 
 		local _, distanceVector = Model:predict(featureMatrix)
 
-		local errorValue = AqwamMatrixLibrary:sum(distanceVector)
+		local errorValue = AqwamTensorLibrary:sum(distanceVector)
 
 		table.insert(errorArray, errorValue)
 
@@ -308,7 +278,7 @@ local function checkIfAllValuesAreZeroesInArray(array)
 
 		array = (accuracyPercentage == 0)
 
-		if (allZeroes == false) then break end
+		if (not allZeroes) then break end
 
 	end
 
@@ -316,11 +286,11 @@ local function checkIfAllValuesAreZeroesInArray(array)
 
 end
 
-local function generateAccuracyForEachModel(Model, modelType, mergeType, ModelParametersArray, featureMatrix, labelVector)
+local function generateAccuracyArray(Model, modelType, ModelParametersArray, featureMatrix, labelVector)
 	
-	if (Model == nil) then error("No model!") end
+	if (not Model) then error("No model!") end
 	
-	if (modelType == nil) then error("No model type!") end
+	if (not modelType) then error("No model type!") end
 	
 	local accuracyArray
 	
@@ -372,53 +342,53 @@ local function getIndexOfHighestAccuracy(accuracyArray)
 	
 end
 
-local function getSplitPercentageArray(mergeType, accuracyArray)
+local function getSplitAmountArrayFromAccuracyArray(splitMode, accuracyArray)
 	
-	local percentageSplitArray
+	local splitAmountArray
 	
 	local numberOfModelParameters = #accuracyArray
 	
-	if (mergeType == "Average") then
+	if (splitMode == "Best") then
 		
-		percentageSplitArray = {}
-	
-	elseif (mergeType == "WeightedAverage") then
-
-		percentageSplitArray = convertValueArrayToPercentageArray(accuracyArray)
-		
-	elseif (mergeType == "WeightedAverageEqual") then
-		
-		local average = 1 / numberOfModelParameters
-		
-		percentageSplitArray = table.create(numberOfModelParameters, average)
-
-	elseif (mergeType == "Best") then
-
 		local areAllZeroes = checkIfAllValuesAreZeroesInArray(accuracyArray)
-		
+
 		local bestModelParametersIndex
 
 		if (areAllZeroes == true) then 
-			
+
 			bestModelParametersIndex = Random.new():NextInteger(1, numberOfModelParameters)
-			
+
 		else
-			
+
 			bestModelParametersIndex = getIndexOfHighestAccuracy(accuracyArray)
 
 		end
+
+		splitAmountArray = table.create(numberOfModelParameters, 0)
+
+		splitAmountArray[bestModelParametersIndex] = 1
 		
-		percentageSplitArray = table.create(numberOfModelParameters, 0)
+	elseif (splitMode == "Ratio") then
+		
+		splitAmountArray = convertValueArrayToPercentageArray(accuracyArray)
+		
+	elseif (splitMode == "Equal") then
+		
+		local average = 1 / numberOfModelParameters
 
-		percentageSplitArray[bestModelParametersIndex] = 1
-
+		splitAmountArray = table.create(numberOfModelParameters, average)
+		
+	elseif (splitMode == "Ignore") then
+		
+		splitAmountArray = {}
+		
 	else
 
-		error("Invalid merge type!")
-
+		error("Invalid split mode.")
+		
 	end
 	
-	return percentageSplitArray
+	return splitAmountArray
 	
 end
 
@@ -426,7 +396,7 @@ local function applyFunctionToEachMatricesInModelParameters(functionToApply, Mod
 
 	for k, matrix in ipairs(ModelParameters) do
 
-		ModelParameters[k] =  AqwamMatrixLibrary:applyFunction(functionToApply, matrix)
+		ModelParameters[k] =  AqwamTensorLibrary:applyFunction(functionToApply, matrix)
 
 	end
 
@@ -434,25 +404,97 @@ local function applyFunctionToEachMatricesInModelParameters(functionToApply, Mod
 
 end
 
-local function applyFunctionToModelParameters(functionToApply, ModelParametersArray)
+local function calculateWeightedAverageModelParametersTable(ModelParametersArray, splitAmountArray)
+	
+	local totalSplitAmount = calculateTotalFromArray(splitAmountArray)
 
-	local NewModelParameters = generateModelParametersTableWithMatricesOfZeroValues(ModelParametersArray[1])
+	local NewModelParametersTable = generateModelParametersTableWithMatricesOfZeroValues(ModelParametersArray[1])
 
-	for i, ModelParameters in ipairs(ModelParametersArray) do
+	for i, ModelParametersTable in ipairs(ModelParametersArray) do
 
-		for j, matrix in ipairs(ModelParameters) do
+		for j, matrix in ipairs(ModelParametersTable) do
 
-			NewModelParameters[j] = AqwamMatrixLibrary:applyFunction(functionToApply, NewModelParameters[j], matrix)
+			local calculatedMatrix = AqwamTensorLibrary:multiply(splitAmountArray[i], matrix)
+
+			NewModelParametersTable[j] = AqwamTensorLibrary:add(NewModelParametersTable[j], calculatedMatrix)
 
 		end
 
 	end
+	
+	for i, matrix in ipairs(NewModelParametersTable) do
+		
+		NewModelParametersTable[i] = AqwamTensorLibrary:divide(NewModelParametersTable[i], totalSplitAmount)
+		
+	end
+
+	return NewModelParametersTable
+
+end
+
+local function calculateWeightedAverageModelParameters(ModelParametersArray, splitAmountArray)
+	
+	local totalSplitAmount = calculateTotalFromArray(splitAmountArray)
+
+	local FirstModelParameters = ModelParametersArray[1]
+
+	local NewModelParameters = AqwamTensorLibrary:createTensor({#FirstModelParameters, #FirstModelParameters[1]})
+
+	for j, splitAmount in ipairs(splitAmountArray) do
+
+		local matrix = ModelParametersArray[j]
+
+		local calculatedMatrix = AqwamTensorLibrary:multiply(splitAmount, matrix)
+
+		NewModelParameters = AqwamTensorLibrary:add(NewModelParameters, calculatedMatrix)
+
+	end
+	
+	NewModelParameters = AqwamTensorLibrary:divide(NewModelParameters, totalSplitAmount)
 
 	return NewModelParameters
 
 end
 
-local function mergeModelParameters(mergeType, ModelParametersArray, percentageSplitArray)
+local function calculateAverageModelParametersTable(ModelParametersArray)
+	
+	local NewModelParametersTable = generateModelParametersTableWithMatricesOfZeroValues(ModelParametersArray[1])
+	
+	local numberOfModelParameters = #ModelParametersArray
+	
+	for i, ModelParametersTable in ipairs(ModelParametersArray) do
+
+		for j, matrix in ipairs(ModelParametersTable) do
+
+			NewModelParametersTable[j] = AqwamTensorLibrary:add(NewModelParametersTable[j], matrix)
+
+		end
+
+	end
+	
+	for i, matrix in ipairs(NewModelParametersTable) do
+
+		NewModelParametersTable[i] = AqwamTensorLibrary:divide(NewModelParametersTable[i], numberOfModelParameters)
+
+	end
+	
+	return NewModelParametersTable
+	
+end
+
+local function createAverageModelParameters(ModelParametersArray)
+
+	local NewModelParameters = AqwamTensorLibrary:add(table.unpack(ModelParametersArray))
+	
+	local numberOfModelParameters = #ModelParametersArray
+
+	NewModelParameters = AqwamTensorLibrary:divide(NewModelParameters, numberOfModelParameters)
+
+	return NewModelParameters
+
+end
+
+local function mergeModelParameters(mergeMode, ModelParametersArray, splitAmountArray)
 	
 	local NewModelParameters
 	
@@ -460,29 +502,25 @@ local function mergeModelParameters(mergeType, ModelParametersArray, percentageS
 	
 	local isTableOfMatrices = checkIfIsTableOfMatrices(ModelParametersArray[1])
 	
-	if (isTableOfMatrices) and (mergeType ~= "Average") then
+	if (isTableOfMatrices) and (mergeMode == "WeightedAverage") then
 
-		NewModelParameters = calculateScaledModelParametersTable(ModelParametersArray, percentageSplitArray)
+		NewModelParameters = calculateWeightedAverageModelParametersTable(ModelParametersArray, splitAmountArray)
 
-	elseif (isTableOfMatrices == false) and (mergeType ~= "Average") then
+	elseif (not isTableOfMatrices) and (mergeMode == "WeightedAverage") then
 
-		NewModelParameters = calculateScaledModelParameters(ModelParametersArray, percentageSplitArray)
+		NewModelParameters = calculateWeightedAverageModelParameters(ModelParametersArray, splitAmountArray)
 		
-	elseif (isTableOfMatrices) and (mergeType == "Average") then
+	elseif (isTableOfMatrices)  and (mergeMode == "Average") then
 		
-		local averageFunction = function(x) return (x / numberOfModelParameters) end
-
-		local addFunction = function(x, y) return (x + y) end
-
-		NewModelParameters = applyFunctionToModelParameters(addFunction, ModelParametersArray)
-
-		NewModelParameters = applyFunctionToEachMatricesInModelParameters(averageFunction, NewModelParameters)
-
-	elseif (isTableOfMatrices == false) and (mergeType == "Average") then
-
-		NewModelParameters = AqwamMatrixLibrary:add(table.unpack(ModelParametersArray))
-
-		NewModelParameters = AqwamMatrixLibrary:divide(NewModelParameters, numberOfModelParameters)
+		NewModelParameters = calculateAverageModelParametersTable(ModelParametersArray)
+		
+	elseif (not isTableOfMatrices) and (mergeMode == "Average") then
+		
+		NewModelParameters = createAverageModelParameters(ModelParametersArray)
+		
+	else
+		
+		error("Invalid merge mode.")
 
 	end
 	
@@ -494,33 +532,23 @@ function ModelParametersMerger:merge(...)
 	
 	local ModelParametersArray = {...}
 
-	local Model = self.Model
-
-	local modelType = self.modelType
-
-	local mergeType = self.mergeType
-
-	local featureMatrix = self.featureMatrix
-
-	local labelVector = self.labelVector
-
-	if (#ModelParametersArray <= 0) then error("No model parameters set!") end
-
-	local percentageSplitArray
-
-	if (mergeType == "Custom") then
-
-		percentageSplitArray = self.customSplitPercentage
-
-	elseif (mergeType ~= "Average") then
+	if (#ModelParametersArray <= 0) then error("No model parameters set.") end
+	
+	local splitAmountArray = self.splitAmountArray
+	
+	if (not splitAmountArray) then
 		
-		local accuracyArray = generateAccuracyForEachModel(Model, modelType, mergeType, ModelParametersArray, featureMatrix, labelVector) 
+		local accuracyArray = generateAccuracyArray(self.Model, self.modelType, ModelParametersArray, self.featureMatrix, self.labelVector) 
 
-		percentageSplitArray = getSplitPercentageArray(mergeType, accuracyArray)
-
+		splitAmountArray = getSplitAmountArrayFromAccuracyArray(self.splitMode, accuracyArray)
+		
+	else
+		
+		warn("Using the existing split amount array.")
+		
 	end
-
-	local NewModelParameters = mergeModelParameters(mergeType, ModelParametersArray, percentageSplitArray)
+	
+	local NewModelParameters = mergeModelParameters(self.mergeMode, ModelParametersArray, splitAmountArray)
 
 	return NewModelParameters
 

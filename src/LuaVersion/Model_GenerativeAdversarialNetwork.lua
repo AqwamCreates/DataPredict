@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,57 +19,39 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
+
+local AqwamTensorLibraryLinker = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local GenerativeAdversarialNetworkBaseModel = require(script.Parent.GenerativeAdversarialNetworkBaseModel)
 
 GenerativeAdversarialNetworkModel = {}
 
 GenerativeAdversarialNetworkModel.__index = GenerativeAdversarialNetworkModel
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+setmetatable(GenerativeAdversarialNetworkModel, GenerativeAdversarialNetworkBaseModel)
 
-local defaultMaximumNumberOfIterations = 500
-
-function GenerativeAdversarialNetworkModel.new(maximumNumberOfIterations)
+function GenerativeAdversarialNetworkModel.new(parameterDictionary)
 	
-	local NewGenerativeAdversarialNetworkModel = {}
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewGenerativeAdversarialNetworkModel = GenerativeAdversarialNetworkBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewGenerativeAdversarialNetworkModel, GenerativeAdversarialNetworkModel)
 	
-	NewGenerativeAdversarialNetworkModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	NewGenerativeAdversarialNetworkModel:setName("GenerativeAdversarialNetwork")
 	
-	NewGenerativeAdversarialNetworkModel.isOutputPrinted = true
+	NewGenerativeAdversarialNetworkModel.GeneratorModel = parameterDictionary.GeneratorModel
 	
-	NewGenerativeAdversarialNetworkModel.GeneratorModel = nil
-	
-	NewGenerativeAdversarialNetworkModel.DiscriminatorModel = nil
+	NewGenerativeAdversarialNetworkModel.DiscriminatorModel = parameterDictionary.GeneratorModel
 	
 	return NewGenerativeAdversarialNetworkModel
 	
-end
-
-function GenerativeAdversarialNetworkModel:setParameters(maximumNumberOfIterations)
-	
-	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
-	
-end
-
-function GenerativeAdversarialNetworkModel:setDiscriminatorModel(DiscriminatorModel)
-	
-	self.DiscriminatorModel = DiscriminatorModel
-	
-end
-
-function GenerativeAdversarialNetworkModel:setGeneratorModel(GeneratorModel)
-	
-	self.GeneratorModel = GeneratorModel
-	
-end
-
-function GenerativeAdversarialNetworkModel:setPrintOutput(option)
-
-	self.isOutputPrinted = option
-
 end
 
 function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeatureMatrix)
@@ -110,19 +94,21 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 	
 	if (#realFeatureMatrix[1] ~= discriminatorInputNumberOfFeatures) then error("The number of columns in real feature matrix must contain the same number as the number of neurons in discriminator's input layer.") end
 
-	local discriminatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, discriminatorInputNumberOfFeatures, 1)
+	local discriminatorInputMatrix = AqwamTensorLibraryLinker:createTensor({1, discriminatorInputNumberOfFeatures}, 1)
 
-	local generatorInputMatrix = AqwamMatrixLibrary:createMatrix(1, generatorInputNumberOfFeatures, 1)
+	local generatorInputMatrix = AqwamTensorLibraryLinker:createTensor({1, generatorInputNumberOfFeatures}, 1)
 	
 	local functionToApplyToDiscriminator = function (discriminatorRealLabel, discriminatorGeneratedLabel) return -(math.log(discriminatorRealLabel) + math.log(1 - discriminatorGeneratedLabel)) end
 	
 	local functionToApplyToGenerator = function (discriminatorGeneratedLabel) return math.log(1 - discriminatorGeneratedLabel) end
 	
-	local numberOfIterations = 0
-	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local isOutputPrinted = self.isOutputPrinted
+	
+	local numberOfIterations = 0
+	
+	local meanDiscriminatorLossValue = 0
 
 	repeat
 		
@@ -134,15 +120,15 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 		
 		local discriminatorRealLabelMatrix = DiscriminatorModel:predict(realFeatureMatrix, true)
 		
-		local discriminatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToDiscriminator, discriminatorRealLabelMatrix, discriminatorGeneratedLabelMatrix)
+		local discriminatorLossMatrix = AqwamTensorLibraryLinker:applyFunction(functionToApplyToDiscriminator, discriminatorRealLabelMatrix, discriminatorGeneratedLabelMatrix)
 		
-		local generatorLossMatrix = AqwamMatrixLibrary:applyFunction(functionToApplyToGenerator, discriminatorGeneratedLabelMatrix)
+		local generatorLossMatrix = AqwamTensorLibraryLinker:applyFunction(functionToApplyToGenerator, discriminatorGeneratedLabelMatrix)
 		
-		local meanDiscriminatorLossMatrix = AqwamMatrixLibrary:verticalMean(discriminatorLossMatrix)
+		local meanDiscriminatorLossMatrix = AqwamTensorLibraryLinker:mean(discriminatorLossMatrix, 1)
 		
-		local meanGeneratorLossMatrix = AqwamMatrixLibrary:verticalMean(generatorLossMatrix)
+		local meanGeneratorLossMatrix = AqwamTensorLibraryLinker:mean(generatorLossMatrix, 1)
 		
-		meanGeneratorLossMatrix = AqwamMatrixLibrary:createMatrix(1, generatorOutputNumberOfFeatures, meanGeneratorLossMatrix[1][1])
+		meanGeneratorLossMatrix = AqwamTensorLibraryLinker:createTensor({1, generatorOutputNumberOfFeatures}, meanGeneratorLossMatrix[1][1])
 		
 		DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
 		
@@ -154,34 +140,32 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 		
 		numberOfIterations = numberOfIterations + 1
 		
-		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. meanDiscriminatorLossMatrix[1][1]) end
+		meanDiscriminatorLossValue =  meanDiscriminatorLossMatrix[1][1]
 		
-	until (numberOfIterations >= maximumNumberOfIterations)
+		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. meanDiscriminatorLossValue) end
+		
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(meanDiscriminatorLossValue) or self:checkIfConverged(meanDiscriminatorLossValue) 
 	
 end
 
 function GenerativeAdversarialNetworkModel:evaluate(featureMatrix)
 	
-	return self.DiscriminatorModel:predict(featureMatrix, true)
+	local DiscriminatorModel = self.DiscriminatorModel
+	
+	if (not DiscriminatorModel) then error("No discriminator neural network.") end
+	
+	return DiscriminatorModel:predict(featureMatrix, true)
 	
 end
 
 function GenerativeAdversarialNetworkModel:generate(noiseFeatureMatrix)
 	
-	return self.GeneratorModel:predict(noiseFeatureMatrix, true)
+	local GeneratorModel =  self.GeneratorModel
 	
-end
-
-function GenerativeAdversarialNetworkModel:getDiscriminatorModel()
-
-	return self.DiscriminatorModel
-
-end
-
-function GenerativeAdversarialNetworkModel:getGeneratorModel()
-
-	return self.GeneratorModel
-
+	if (not GeneratorModel) then error("No generator neural network.") end
+	
+	return GeneratorModel:predict(noiseFeatureMatrix, true)
+	
 end
 
 return GenerativeAdversarialNetworkModel

@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,18 +19,26 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
+
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 ModelDatasetCreator = {}
 
 ModelDatasetCreator.__index = ModelDatasetCreator
 
-local defaultTrainDataPercentage = 0.7
+setmetatable(ModelDatasetCreator, BaseInstance)
 
-local defaultValidationDataPercentage = 0
+local defaultTrainDataRatio = 0.7
 
-local defaultTestDataPercentage = 0.3
+local defaultValidationDataRatio = 0
+
+local defaultTestDataRatio = 0.3
 
 local defaultIsDatasetRandomized = false
 
@@ -108,31 +118,37 @@ local function checkNumberOfData(featureMatrix, labelVectorOrMatrix)
 	
 end
 
-function ModelDatasetCreator.new()
+function ModelDatasetCreator.new(parameterDictionary)
 	
-	local NewModelDatasetCreator = {}
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewModelDatasetCreator = BaseInstance.new(parameterDictionary)
 
 	setmetatable(NewModelDatasetCreator, ModelDatasetCreator)
 	
-	NewModelDatasetCreator.trainDataPercentage = defaultTrainDataPercentage
+	NewModelDatasetCreator:setName("ModelDatasetCreator")
+
+	NewModelDatasetCreator:setClassName("ModelDatasetCreator")
 	
-	NewModelDatasetCreator.validationDataPercentage = defaultValidationDataPercentage
+	NewModelDatasetCreator.trainDataRatio = parameterDictionary.trainDataRatio or defaultTrainDataRatio
 	
-	NewModelDatasetCreator.testDataPercentage = defaultTestDataPercentage
+	NewModelDatasetCreator.validationDataRatio = parameterDictionary.validationDataRatio or defaultValidationDataRatio
 	
-	NewModelDatasetCreator.datasetRandomizationProbability = defaultDatasetRandomizationProbability
+	NewModelDatasetCreator.testDataRatio = parameterDictionary.testDataRatio or defaultTestDataRatio
+	
+	NewModelDatasetCreator.datasetRandomizationProbability = parameterDictionary.datasetRandomizationProbability or defaultDatasetRandomizationProbability
 	
 	return NewModelDatasetCreator
 	
 end
 
-function ModelDatasetCreator:setDatasetSplitPercentages(trainDataPercentage, validationDataPercentage, testDataPercentage)
+function ModelDatasetCreator:setDatasetSplitPercentages(trainDataRatio, validationDataRatio, testDataPercentage)
 	
-	self.trainDataPercentage = trainDataPercentage or self.trainDataPercentage
+	self.trainDataRatio = trainDataRatio or self.trainDataRatio
 
-	self.validationDataPercentage = validationDataPercentage or self.validationDataPercentage
+	self.validationDataRatio = validationDataRatio or self.validationDataRatio
 
-	self.testDataPercentage = testDataPercentage or self.testDataPercentage
+	self.testDataRatio = testDataPercentage or self.testDataRatio
 	
 end
 
@@ -186,11 +202,11 @@ function ModelDatasetCreator:splitDataset(datasetMatrix)
 	
 	local datasetCopy = deepCopyTable(datasetMatrix)
 	
-	local numberOfTrainData = math.floor(self.trainDataPercentage * numberOfData)
+	local numberOfTrainData = math.floor(self.trainDataRatio * numberOfData)
 	
-	local numberOfValidationData = math.floor(self.validationDataPercentage * numberOfData)
+	local numberOfValidationData = math.floor(self.validationDataRatio * numberOfData)
 	
-	local numberOfTestData = math.floor(self.testDataPercentage * numberOfData)
+	local numberOfTestData = math.floor(self.testDataRatio * numberOfData)
 	
 	local trainDataMaxValue = numberOfTrainData
 	

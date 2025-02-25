@@ -26,7 +26,7 @@
 
 --]]
 
-local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
+local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
 
 StepDecayValueScheduler = {}
 
@@ -38,15 +38,19 @@ local defaultDecayRate = 0.5
 
 local defaultTimeStepToDecay = 100
 
-function StepDecayValueScheduler.new(decayRate, timeStepToDecay)
+function StepDecayValueScheduler.new(parameterDictionary)
 	
-	local NewStepDecayValueScheduler = BaseValueScheduler.new("StepDecay")
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewStepDecayValueScheduler = BaseValueScheduler.new()
 	
 	setmetatable(NewStepDecayValueScheduler, StepDecayValueScheduler)
 	
-	NewStepDecayValueScheduler.decayRate = decayRate or defaultDecayRate
+	NewStepDecayValueScheduler:setName("StepDecay")
 	
-	NewStepDecayValueScheduler.timeStepToDecay = timeStepToDecay or defaultTimeStepToDecay
+	NewStepDecayValueScheduler.decayRate = parameterDictionary.decayRate or defaultDecayRate
+	
+	NewStepDecayValueScheduler.timeStepToDecay = parameterDictionary.timeStepToDecay or defaultTimeStepToDecay
 	
 	--------------------------------------------------------------------------------
 	
@@ -56,13 +60,13 @@ function StepDecayValueScheduler.new(decayRate, timeStepToDecay)
 		
 		local currentTimeStep
 		
-		local valueSchedulerInternalParameters = NewStepDecayValueScheduler.valueSchedulerInternalParameters
+		local valueSchedulerInternalParameterArray = NewStepDecayValueScheduler.valueSchedulerInternalParameterArray
 		
-		if (valueSchedulerInternalParameters) then
+		if (valueSchedulerInternalParameterArray) then
 			
-			currentValue = valueSchedulerInternalParameters[1]
+			currentValue = valueSchedulerInternalParameterArray[1]
 			
-			currentTimeStep = valueSchedulerInternalParameters[2]
+			currentTimeStep = valueSchedulerInternalParameterArray[2]
 			
 		end
 		
@@ -74,7 +78,7 @@ function StepDecayValueScheduler.new(decayRate, timeStepToDecay)
 		
 		if ((currentTimeStep % NewStepDecayValueScheduler.timeStepToDecay) == 0) then currentValue = currentValue * NewStepDecayValueScheduler.decayRate end
 		
-		NewStepDecayValueScheduler.valueSchedulerInternalParameters = {currentValue, currentTimeStep}
+		NewStepDecayValueScheduler.valueSchedulerInternalParameterArray = {currentValue, currentTimeStep}
 
 		return currentValue
 		

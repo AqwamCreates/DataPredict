@@ -2,9 +2,11 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine And Deep Learning Library (DataPredict)
+	Aqwam's Deep Learning Library (DataPredict Neural)
 
 	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
 	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
@@ -14,15 +16,19 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
 	
 	--------------------------------------------------------------------
 
 --]]
 
-local BaseOptimizer = require("Optimizer_BaseOptimizer")
+local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 AdaptiveGradientOptimizer = {}
 
@@ -30,31 +36,33 @@ AdaptiveGradientOptimizer.__index = AdaptiveGradientOptimizer
 
 setmetatable(AdaptiveGradientOptimizer, BaseOptimizer)
 
-function AdaptiveGradientOptimizer.new()
+function AdaptiveGradientOptimizer.new(parameterDictionary)
 	
-	local NewAdaptiveGradientOptimizer = BaseOptimizer.new("AdaptiveGradient")
+	local NewAdaptiveGradientOptimizer = BaseOptimizer.new(parameterDictionary)
 	
 	setmetatable(NewAdaptiveGradientOptimizer, AdaptiveGradientOptimizer)
 	
+	NewAdaptiveGradientOptimizer:setName("AdaptiveGradient")
+	
 	--------------------------------------------------------------------------------
 	
-	NewAdaptiveGradientOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
+	NewAdaptiveGradientOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
 		
-		local previousSumOfGradientSquaredMatrix = NewAdaptiveGradientOptimizer.optimizerInternalParameters or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousSumOfGradientSquaredTensor = NewAdaptiveGradientOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
 
-		local gradientSquaredMatrix = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
+		local gradientSquaredTensor = AqwamTensorLibrary:power(costFunctionDerivativeTensor, 2)
 
-		local currentSumOfGradientSquaredMatrix = AqwamMatrixLibrary:add(previousSumOfGradientSquaredMatrix, gradientSquaredMatrix)
+		local currentSumOfGradientSquaredTensor = AqwamTensorLibrary:add(previousSumOfGradientSquaredTensor, gradientSquaredTensor)
 
-		local squareRootSumOfGradientSquared = AqwamMatrixLibrary:power(currentSumOfGradientSquaredMatrix, 0.5)
+		local squareRootSumOfGradientSquaredTensor = AqwamTensorLibrary:power(currentSumOfGradientSquaredTensor, 0.5)
 
-		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, squareRootSumOfGradientSquared)
+		local costFunctionDerivativeTensorPart1 = AqwamTensorLibrary:divide(costFunctionDerivativeTensor, squareRootSumOfGradientSquaredTensor)
 
-		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
+		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeTensorPart1)
 
-		NewAdaptiveGradientOptimizer.optimizerInternalParameters = currentSumOfGradientSquaredMatrix
+		NewAdaptiveGradientOptimizer.optimizerInternalParameterArray = {currentSumOfGradientSquaredTensor}
 
-		return costFunctionDerivatives
+		return costFunctionDerivativeTensor
 		
 	end)
 	

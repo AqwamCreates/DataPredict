@@ -2,9 +2,11 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine And Deep Learning Library (DataPredict)
+	Aqwam's Deep Learning Library (DataPredict Neural)
 
 	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
 	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
@@ -14,15 +16,19 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
 	
 	--------------------------------------------------------------------
 
 --]]
 
-local BaseOptimizer = require("Optimizer_BaseOptimizer")
+local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 AdaptiveMomentEstimationMaximumOptimizer = {}
 
@@ -36,69 +42,59 @@ local defaultBeta2 = 0.999
 
 local defaultEpsilon = 1 * math.pow(10, -7)
 
-function AdaptiveMomentEstimationMaximumOptimizer.new(beta1, beta2, epsilon)
+function AdaptiveMomentEstimationMaximumOptimizer.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 
-	local NewAdaptiveMomentEstimationMaximumOptimizer = BaseOptimizer.new("AdaptiveMomentEstimationMaximum")
+	local NewAdaptiveMomentEstimationMaximumOptimizer = BaseOptimizer.new(parameterDictionary)
 
 	setmetatable(NewAdaptiveMomentEstimationMaximumOptimizer, AdaptiveMomentEstimationMaximumOptimizer)
+	
+	NewAdaptiveMomentEstimationMaximumOptimizer:setName("AdaptiveMomentEstimationMaximum")
 
-	NewAdaptiveMomentEstimationMaximumOptimizer.beta1 = beta1 or defaultBeta1
+	NewAdaptiveMomentEstimationMaximumOptimizer.beta1 = parameterDictionary.beta1 or defaultBeta1
 	
-	NewAdaptiveMomentEstimationMaximumOptimizer.beta2 = beta2 or defaultBeta2
+	NewAdaptiveMomentEstimationMaximumOptimizer.beta2 = parameterDictionary.beta2 or defaultBeta2
 	
-	NewAdaptiveMomentEstimationMaximumOptimizer.epsilon = epsilon or defaultEpsilon
+	NewAdaptiveMomentEstimationMaximumOptimizer.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
 	--------------------------------------------------------------------------------
 	
-	NewAdaptiveMomentEstimationMaximumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
+	NewAdaptiveMomentEstimationMaximumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
 
-		local moment
+		local momentTensor = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
 
-		local exponentWeight
-		
-		local optimizerInternalParameters = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameters
-		
-		if (optimizerInternalParameters) then
-			
-			moment = optimizerInternalParameters[1]
-			
-			exponentWeight = optimizerInternalParameters[2]
-			
-		end
-		
-		moment = moment or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
-		
-		exponentWeight = exponentWeight or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local exponentWeightTensor = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
 		
 		local beta1 = NewAdaptiveMomentEstimationMaximumOptimizer.beta1
 		
 		local beta2 = NewAdaptiveMomentEstimationMaximumOptimizer.beta2
 
-		local momentPart1 = AqwamMatrixLibrary:multiply(beta1, moment)
+		local momentTensorPart1 = AqwamTensorLibrary:multiply(beta1, momentTensor)
 
-		local momentPart2 = AqwamMatrixLibrary:multiply((1 - beta1), costFunctionDerivatives)
+		local momentTensorPart2 = AqwamTensorLibrary:multiply((1 - beta1), costFunctionDerivativeTensor)
 
-		moment = AqwamMatrixLibrary:add(momentPart1, momentPart2)
+		momentTensor = AqwamTensorLibrary:add(momentTensorPart1, momentTensorPart2)
 
-		local exponentWeightPart1 = AqwamMatrixLibrary:multiply(beta2, exponentWeight)
+		local exponentWeightTensorPart1 = AqwamTensorLibrary:multiply(beta2, exponentWeightTensor)
 
-		local exponentWeightPart2 = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
+		local exponentWeightTensorPart2 = AqwamTensorLibrary:applyFunction(math.abs, costFunctionDerivativeTensor)
 
-		exponentWeight = AqwamMatrixLibrary:applyFunction(math.max, exponentWeightPart1, exponentWeightPart2)
+		exponentWeightTensor = AqwamTensorLibrary:applyFunction(math.max, exponentWeightTensorPart1, exponentWeightTensorPart2)
 
-		local divisorPart1 = 1 - math.pow(beta1, 2)
+		local divisorTensorPart1 = 1 - math.pow(beta1, 2)
 
-		local divisorPart2 = AqwamMatrixLibrary:add(exponentWeight, NewAdaptiveMomentEstimationMaximumOptimizer.epsilon)
+		local divisorTensorPart2 = AqwamTensorLibrary:add(exponentWeightTensor, NewAdaptiveMomentEstimationMaximumOptimizer.epsilon)
 
-		local divisor = AqwamMatrixLibrary:multiply(divisorPart1, divisorPart2)
+		local divisorTensor = AqwamTensorLibrary:multiply(divisorTensorPart1, divisorTensorPart2)
 
-		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(moment, divisor)
+		local costFunctionDerivativeTensorPart1 = AqwamTensorLibrary:divide(momentTensor, divisorTensor)
 
-		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
+		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeTensorPart1)
 		
-		NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameters = {moment, exponentWeight}
+		NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray = {momentTensor, exponentWeightTensor}
 
-		return costFunctionDerivatives
+		return costFunctionDerivativeTensor
 
 	end)
 

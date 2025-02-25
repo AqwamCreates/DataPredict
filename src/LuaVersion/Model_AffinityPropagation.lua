@@ -1,12 +1,40 @@
-local BaseModel = require("Model_BaseModel")
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 local AffinityPropagationModel = {}
 
 AffinityPropagationModel.__index = AffinityPropagationModel
 
-setmetatable(AffinityPropagationModel, BaseModel)
+setmetatable(AffinityPropagationModel, IterativeMethodBaseModel)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaxNumberOfIterations = 500
 
@@ -20,11 +48,11 @@ local distanceFunctionList = {
 
 	["Manhattan"] = function (x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		part1 = AqwamMatrixLibrary:applyFunction(math.abs, part1)
+		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
 
-		local distance = AqwamMatrixLibrary:sum(part1)
+		local distance = AqwamTensorLibrary:sum(part1)
 
 		return distance 
 
@@ -32,11 +60,11 @@ local distanceFunctionList = {
 
 	["Euclidean"] = function (x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		local part2 = AqwamMatrixLibrary:power(part1, 2)
+		local part2 = AqwamTensorLibrary:power(part1, 2)
 
-		local part3 = AqwamMatrixLibrary:sum(part2)
+		local part3 = AqwamTensorLibrary:sum(part2)
 
 		local distance = math.sqrt(part3)
 
@@ -46,17 +74,17 @@ local distanceFunctionList = {
 	
 	["Cosine"] = function(x1, x2)
 
-		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
+		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
 
-		local x1MagnitudePart1 = AqwamMatrixLibrary:power(x1, 2)
+		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
 
-		local x1MagnitudePart2 = AqwamMatrixLibrary:sum(x1MagnitudePart1)
+		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
 
 		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
 
-		local x2MagnitudePart1 = AqwamMatrixLibrary:power(x2, 2)
+		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
 
-		local x2MagnitudePart2 = AqwamMatrixLibrary:sum(x2MagnitudePart1)
+		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
 
 		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
 
@@ -84,7 +112,7 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
 	local numberOfData2 = #matrix2
 
-	local distanceMatrix = AqwamMatrixLibrary:createMatrix(numberOfData1, numberOfData2)
+	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData1, numberOfData2})
 
 	for i = 1, numberOfData1, 1 do
 
@@ -294,7 +322,7 @@ end
 
 local function assignClusters(responsibilityMatrix, availibilityMatrix)
 	
-	local calculatedValuesMatrix = AqwamMatrixLibrary:add(responsibilityMatrix, availibilityMatrix)
+	local calculatedValuesMatrix = AqwamTensorLibrary:add(responsibilityMatrix, availibilityMatrix)
 	
 	local clusterNumberArray = {}
 	
@@ -302,7 +330,7 @@ local function assignClusters(responsibilityMatrix, availibilityMatrix)
 		
 		local calculatedValuesVector = {calculatedValuesMatrix[i]}
 		
-		local _, clusterIndexArray = AqwamMatrixLibrary:findMaximumValue(calculatedValuesVector)
+		local clusterIndexArray = AqwamTensorLibrary:findMaximumValueDimensionIndexArray(calculatedValuesVector)
 
 		if (clusterIndexArray == nil) then continue end
 
@@ -316,38 +344,28 @@ local function assignClusters(responsibilityMatrix, availibilityMatrix)
 
 end
 
-function AffinityPropagationModel.new(maxNumberOfIterations, distanceFunction, preferenceType, damping, preferenceValueArray)
+function AffinityPropagationModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaxNumberOfIterations
 
-	local NewAffinityPropagationModel = BaseModel.new()
+	local NewAffinityPropagationModel = IterativeMethodBaseModel.new(parameterDictionary)
 
 	setmetatable(NewAffinityPropagationModel, AffinityPropagationModel)
+	
+	NewAffinityPropagationModel:setName("AffinityPropagation")
 
-	NewAffinityPropagationModel.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewAffinityPropagationModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 	
-	NewAffinityPropagationModel.distanceFunction = distanceFunction or defaultDistanceFunction
-	
-	NewAffinityPropagationModel.preferenceType = preferenceType or defaultPreferenceType
+	NewAffinityPropagationModel.preferenceType = parameterDictionary.preferenceType or defaultPreferenceType
 
-	NewAffinityPropagationModel.damping = damping or defaultDamping
+	NewAffinityPropagationModel.damping = parameterDictionary.damping or defaultDamping
 	
-	NewAffinityPropagationModel.preferenceValueArray = preferenceValueArray
+	NewAffinityPropagationModel.preferenceValueArray = parameterDictionary.preferenceValueArray
 
 	return NewAffinityPropagationModel
 
-end
-
-function AffinityPropagationModel:setParameters(maxNumberOfIterations, distanceFunction, preferenceType, damping, preferenceValueArray)
-
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-	
-	self.distanceFunction = distanceFunction or self.distanceFunction
-	
-	self.preferenceType = preferenceType or self.preferenceType
-
-	self.damping = damping or self.damping
-	
-	self.preferenceValueArray = preferenceValueArray or self.preferenceValueArray
-	
 end
 
 function AffinityPropagationModel:train(featureMatrix)
@@ -372,6 +390,8 @@ function AffinityPropagationModel:train(featureMatrix)
 	
 	local ModelParameters = self.ModelParameters
 	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
+	
 	if (ModelParameters) then
 		
 		responsibilityMatrix = ModelParameters[3]
@@ -382,11 +402,11 @@ function AffinityPropagationModel:train(featureMatrix)
 	
 	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, self.distanceFunction)
 	
-	local similarityMatrix = AqwamMatrixLibrary:multiply(-1, distanceMatrix)
+	local similarityMatrix = AqwamTensorLibrary:multiply(-1, distanceMatrix)
 	
-	responsibilityMatrix = responsibilityMatrix or AqwamMatrixLibrary:createMatrix(numberOfData, numberOfData)
+	responsibilityMatrix = responsibilityMatrix or AqwamTensorLibrary:createTensor({numberOfData, numberOfData})
 	
-	availabilityMatrix = availabilityMatrix or AqwamMatrixLibrary:createMatrix(numberOfData, numberOfData)
+	availabilityMatrix = availabilityMatrix or AqwamTensorLibrary:createTensor({numberOfData, numberOfData})
 
 	similarityMatrix = setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, self.preferenceType, self.preferenceValueArray)
 
@@ -412,11 +432,11 @@ function AffinityPropagationModel:train(featureMatrix)
 			
 			table.insert(costArray, cost)
 
-			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 			
 		end
 		
-	until (numberOfIterations >= self.maxNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 
@@ -427,10 +447,12 @@ function AffinityPropagationModel:train(featureMatrix)
 end
 
 function AffinityPropagationModel:predict(featureMatrix)
-
-	local maxSimilarityVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
 	
-	local predictedClusterVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
+	local numberOfData = #featureMatrix
+
+	local maxSimilarityVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
+	
+	local predictedClusterVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
 	
 	local storedFeatureMatrix, clusterNumberArray = table.unpack(self.ModelParameters)
 	
@@ -440,7 +462,7 @@ function AffinityPropagationModel:predict(featureMatrix)
 		
 		local distanceVector = {distanceMatrix[i]}
 		
-		local _, index = AqwamMatrixLibrary:findMinimumValue(distanceVector)
+		local index = AqwamTensorLibrary:findMinimumValueDimensionIndexArray(distanceVector)
 		
 		if (index == nil) then continue end
 		

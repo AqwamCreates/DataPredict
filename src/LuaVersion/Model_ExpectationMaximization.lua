@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,18 +19,22 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local BaseModel = require("Model_BaseModel")
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 local ExpectationMaximizationModel = {}
 
 ExpectationMaximizationModel.__index = ExpectationMaximizationModel
 
-setmetatable(ExpectationMaximizationModel, BaseModel)
+setmetatable(ExpectationMaximizationModel, IterativeMethodBaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaximumNumberOfIterations = 10
 
@@ -38,25 +44,25 @@ local defaultEpsilon = math.pow(10, -9)
 
 local function gaussian(featureVector, meanVector, varianceVector, epsilon)
 	
-	local exponentStep1 = AqwamMatrixLibrary:subtract(featureVector, meanVector)
+	local exponentStep1 = AqwamTensorLibrary:subtract(featureVector, meanVector)
 
-	local exponentStep2 = AqwamMatrixLibrary:power(exponentStep1, 2)
+	local exponentStep2 = AqwamTensorLibrary:power(exponentStep1, 2)
 	
-	local exponentStep3 = AqwamMatrixLibrary:multiply(varianceVector, 2)
+	local exponentStep3 = AqwamTensorLibrary:multiply(varianceVector, 2)
 
-	local exponentStep4 = AqwamMatrixLibrary:divide(exponentStep2, exponentStep3)
+	local exponentStep4 = AqwamTensorLibrary:divide(exponentStep2, exponentStep3)
 
-	local exponentStep5 = AqwamMatrixLibrary:multiply(-0.5, exponentStep4)
+	local exponentStep5 = AqwamTensorLibrary:multiply(-0.5, exponentStep4)
 
-	local exponentWithTerms = AqwamMatrixLibrary:exponent(exponentStep5)
+	local exponentWithTerms = AqwamTensorLibrary:exponent(exponentStep5)
 	
-	local standardDeviationVector = AqwamMatrixLibrary:power(varianceVector, 0.5)
+	local standardDeviationVector = AqwamTensorLibrary:power(varianceVector, 0.5)
 
-	local divisorPart1 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+	local divisorPart1 = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
 	
-	local divisor = AqwamMatrixLibrary:add(divisorPart1, epsilon)
+	local divisor = AqwamTensorLibrary:add(divisorPart1, epsilon)
 
-	local gaussianDensity = AqwamMatrixLibrary:divide(exponentWithTerms, divisor)
+	local gaussianDensity = AqwamTensorLibrary:divide(exponentWithTerms, divisor)
 	
 	return gaussianDensity
 
@@ -66,7 +72,7 @@ local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, vari
 	
 	local numberOfClusters = #meanMatrix
 	
-	local probabilitiesMatrix = AqwamMatrixLibrary:createMatrix(#featureMatrix, numberOfClusters)
+	local probabilitiesMatrix = AqwamTensorLibrary:createTensor({#featureMatrix, numberOfClusters}, 0)
 	
 	for i = 1, #featureMatrix, 1 do
 
@@ -96,11 +102,11 @@ end
 
 function ExpectationMaximizationModel:initializeParameters(numberOfClusters, numberOfFeatures)
 
-	local piMatrix = self:initializeMatrixBasedOnMode(numberOfClusters, 1)
+	local piMatrix = self:initializeMatrixBasedOnMode({numberOfClusters, 1})
 
-	local meanMatrix = self:initializeMatrixBasedOnMode(numberOfClusters, numberOfFeatures)
+	local meanMatrix = self:initializeMatrixBasedOnMode({numberOfClusters, numberOfFeatures})
 
-	local varianceMatrix = self:initializeMatrixBasedOnMode(numberOfClusters, numberOfFeatures)
+	local varianceMatrix = self:initializeMatrixBasedOnMode({numberOfClusters, numberOfFeatures})
 
 	return piMatrix, meanMatrix, varianceMatrix
 	
@@ -112,9 +118,9 @@ local function expectationStep(featureMatrix, numberOfClusters, piMatrix, meanMa
 	
 	local responsibilitiesMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon) -- number of data x number of columns
 	
-	local responsibilitiesSumVector = AqwamMatrixLibrary:verticalSum(responsibilitiesMatrix)
+	local responsibilitiesSumVector = AqwamTensorLibrary:sum(responsibilitiesMatrix, 1)
 	
-	local normalizedResponsibilitiesMatrix = AqwamMatrixLibrary:divide(responsibilitiesMatrix, responsibilitiesSumVector)
+	local normalizedResponsibilitiesMatrix = AqwamTensorLibrary:divide(responsibilitiesMatrix, responsibilitiesSumVector)
 	
 	return normalizedResponsibilitiesMatrix
 	
@@ -128,37 +134,37 @@ local function maximizationStep(featureMatrix, responsibilitiesMatrix, numberOfC
 
 	local numberOfFeatures = #featureMatrix[1]
 
-	local piMatrix = AqwamMatrixLibrary:verticalSum(responsibilitiesMatrix)
+	local piMatrix = AqwamTensorLibrary:sum(responsibilitiesMatrix, 1)
 
-	piMatrix = AqwamMatrixLibrary:divide(piMatrix, numberOfData)
+	piMatrix = AqwamTensorLibrary:divide(piMatrix, numberOfData)
 
-	piMatrix = AqwamMatrixLibrary:transpose(piMatrix)
+	piMatrix = AqwamTensorLibrary:transpose(piMatrix)
 
-	local responsibilitiesMatrixTransposed = AqwamMatrixLibrary:transpose(responsibilitiesMatrix) -- clusters x data
+	local responsibilitiesMatrixTransposed = AqwamTensorLibrary:transpose(responsibilitiesMatrix) -- clusters x data
 
-	local sumWeight = AqwamMatrixLibrary:horizontalSum(responsibilitiesMatrixTransposed) -- clusters x 1
+	local sumWeight = AqwamTensorLibrary:sum(responsibilitiesMatrixTransposed, 2) -- clusters x 1
 
-	local sumWeightX = AqwamMatrixLibrary:dotProduct(responsibilitiesMatrixTransposed, featureMatrix) -- clusters x features
+	local sumWeightX = AqwamTensorLibrary:dotProduct(responsibilitiesMatrixTransposed, featureMatrix) -- clusters x features
 
-	local meanMatrix = AqwamMatrixLibrary:divide(sumWeightX, sumWeight) -- clusters x features
+	local meanMatrix = AqwamTensorLibrary:divide(sumWeightX, sumWeight) -- clusters x features
 
-	local varianceMatrix = AqwamMatrixLibrary:createMatrix(numberOfClusters, numberOfFeatures)
+	local varianceMatrix = AqwamTensorLibrary:createTensor({numberOfClusters, numberOfFeatures}, 0)
 
 	for i = 1, numberOfClusters, 1 do
 
 		local meanVector = {meanMatrix[i]}
 
-		local thisStandardDeviationMatrix = AqwamMatrixLibrary:subtract(featureMatrix, meanVector)
+		local thisStandardDeviationMatrix = AqwamTensorLibrary:subtract(featureMatrix, meanVector)
 
-		local thisVariationMatrix = AqwamMatrixLibrary:power(thisStandardDeviationMatrix, 2)
+		local thisVariationMatrix = AqwamTensorLibrary:power(thisStandardDeviationMatrix, 2)
 
-		local thisSumVariationMatrix = AqwamMatrixLibrary:verticalSum(thisVariationMatrix)
+		local thisSumVariationMatrix = AqwamTensorLibrary:sum(thisVariationMatrix, 1)
 
 		varianceMatrix[i] = thisSumVariationMatrix[1]
 
 	end
 
-	varianceMatrix = AqwamMatrixLibrary:divide(varianceMatrix, sumWeight)
+	varianceMatrix = AqwamTensorLibrary:divide(varianceMatrix, sumWeight)
 
 	return piMatrix, meanMatrix, varianceMatrix
 
@@ -176,9 +182,9 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
-	local likelihood = AqwamMatrixLibrary:logarithm(gaussianMatrix)
+	local likelihood = AqwamTensorLibrary:logarithm(gaussianMatrix)
 
-	local sumLikelihood = AqwamMatrixLibrary:sum(likelihood)
+	local sumLikelihood = AqwamTensorLibrary:sum(likelihood)
 	
 	local numberOfData = #featureMatrix
 	
@@ -222,29 +228,23 @@ function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, e
 	
 end
 
-function ExpectationMaximizationModel.new(maximumNumberOfIterations, numberOfClusters, epsilon)
+function ExpectationMaximizationModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewExpectationMaximizationModel = BaseModel.new()
+	local NewExpectationMaximizationModel = IterativeMethodBaseModel.new(parameterDictionary)
 
 	setmetatable(NewExpectationMaximizationModel, ExpectationMaximizationModel)
 	
-	NewExpectationMaximizationModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	NewExpectationMaximizationModel:setName("ExpectationMaximization")
+	
+	NewExpectationMaximizationModel.numberOfClusters = parameterDictionary.numberOfClusters or defaultNumberOfClusters
 
-	NewExpectationMaximizationModel.numberOfClusters = numberOfClusters or defaultNumberOfClusters
-
-	NewExpectationMaximizationModel.epsilon = epsilon or defaultEpsilon
+	NewExpectationMaximizationModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
 	return NewExpectationMaximizationModel
-end
-
-function ExpectationMaximizationModel:setParameters(maximumNumberOfIterations, numberOfClusters, epsilon)
-	
-	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
-
-	self.numberOfClusters = numberOfClusters or self.numberOfClusters
-
-	self.epsilon = epsilon or self.epsilon
-
 end
 
 function ExpectationMaximizationModel:train(featureMatrix)
@@ -272,6 +272,8 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	local sumLogLikelihood
 	
 	local numberOfFeatures = #featureMatrix[1]
+	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
 	if (self.ModelParameters) then
 
@@ -305,9 +307,9 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			logLikelihood = AqwamMatrixLibrary:applyFunction(math.log, gaussianMatrix)
+			logLikelihood = AqwamTensorLibrary:applyFunction(math.log, gaussianMatrix)
 
-			sumLogLikelihood = AqwamMatrixLibrary:sum(logLikelihood)
+			sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihood)
 
 			table.insert(logLikelihoodArray, sumLogLikelihood)
 
@@ -327,13 +329,13 @@ function ExpectationMaximizationModel:train(featureMatrix)
 			
 			table.insert(costArray, cost)
 
-			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 			
 			if (cost ~= cost) then error("Too much variance in the data! Please change the argument values.") end
 
 		end
 
-	until (numberOfIterations >= self.maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	self.ModelParameters = {piMatrix, meanMatrix, varianceMatrix}
 
@@ -343,15 +345,17 @@ end
 
 function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutput)
 	
+	local numberOfFeatures = #featureMatrix
+	
 	local piMatrix, meanMatrix, varianceMatrix = table.unpack(self.ModelParameters)
 
 	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
 	
 	if (returnOriginalOutput == true) then return gaussianMatrix end
 	
-	local selectedClustersVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
+	local selectedClustersVector = AqwamTensorLibrary:createTensor({numberOfFeatures, 1})
 
-	local probabilityVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
+	local probabilityVector = AqwamTensorLibrary:createTensor({numberOfFeatures, 1})
 	
 	for dataIndex, gausssianVector in ipairs(gaussianMatrix) do
 		
@@ -361,11 +365,13 @@ function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutpu
 		
 		for clusterNumber, weight in ipairs(gausssianVector) do
 			
-			if (weight < highestWeight) then continue end
+			if (weight > highestWeight) then
 				
-			selectedCluster = clusterNumber
+				selectedCluster = clusterNumber
+
+				highestWeight = weight
 				
-			highestWeight = weight
+			end
 				
 		end
 		

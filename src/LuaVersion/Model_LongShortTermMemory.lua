@@ -1,4 +1,4 @@
-local BaseModel = require("Model_BaseModel")
+local BaseModel = require(script.Parent.BaseModel)
 
 LongShortTermMemoryModel = {}
 
@@ -6,7 +6,7 @@ LongShortTermMemoryModel.__index = LongShortTermMemoryModel
 
 setmetatable(LongShortTermMemoryModel, BaseModel)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
 local defaultMaxNumberOfIterations = 500
 
@@ -502,7 +502,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 			
 			table.insert(tokenOutputSequenceLogisticMatrices, yt)
 			
-			totalNumberOfTokens = totalNumberOfTokens + 1
+			totalNumberOfTokens += 1
 
 		end
 
@@ -516,7 +516,7 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 		
 		self:iterationWait()
 		
-		numberOfIterations = numberOfIterations + 1
+		numberOfIterations += 1
 		
 		local cost = 0
 		
@@ -740,13 +740,13 @@ function LongShortTermMemoryModel:train(tableOfTokenInputSequenceArray, tableOfT
 
 				partialCost = AqwamMatrixLibrary:sum(dWy)
 
-				cost = cost + partialCost
+				cost += partialCost
 				
 			end
 			
 		end
 		
-		cost = cost / totalNumberOfTokens
+		cost /= totalNumberOfTokens
 		
 		dWy = AqwamMatrixLibrary:extractColumns(dWy, 1, self.hiddenSize)
 

@@ -2,9 +2,11 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine And Deep Learning Library (DataPredict)
+	Aqwam's Deep Learning Library (DataPredict Neural)
 
 	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
 	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
@@ -14,15 +16,19 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
 	
 	--------------------------------------------------------------------
 
 --]]
 
-local BaseOptimizer = require("Optimizer_BaseOptimizer")
+local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 AdaptiveGradientDeltaOptimizer = {}
 
@@ -34,43 +40,47 @@ local defaultDecayRate = 0.9
 
 local defaultEpsilon = 1 * math.pow(10, -7)
 
-function AdaptiveGradientDeltaOptimizer.new(decayRate, epsilon)
+function AdaptiveGradientDeltaOptimizer.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 
-	local NewAdaptiveGradientDeltaOptimizer = BaseOptimizer.new("AdaptiveGradientDelta")
+	local NewAdaptiveGradientDeltaOptimizer = BaseOptimizer.new(parameterDictionary)
 
 	setmetatable(NewAdaptiveGradientDeltaOptimizer, AdaptiveGradientDeltaOptimizer)
 	
-	NewAdaptiveGradientDeltaOptimizer.decayRate = decayRate or defaultDecayRate
+	NewAdaptiveGradientDeltaOptimizer:setName("AdaptiveGradientDelta")
 	
-	NewAdaptiveGradientDeltaOptimizer.epsilon = epsilon or defaultEpsilon
+	NewAdaptiveGradientDeltaOptimizer.decayRate = parameterDictionary.decayRate or defaultDecayRate
+	
+	NewAdaptiveGradientDeltaOptimizer.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
 	--------------------------------------------------------------------------------
 	
-	NewAdaptiveGradientDeltaOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
+	NewAdaptiveGradientDeltaOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
 		
-		local previousRunningGradientSquaredMatrix = NewAdaptiveGradientDeltaOptimizer.optimizerInternalParameters or AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1])
+		local previousRunningGradientSquaredTensor = NewAdaptiveGradientDeltaOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
 		
 		local decayRate = NewAdaptiveGradientDeltaOptimizer.decayRate
 
-		local gradientSquaredMatrix = AqwamMatrixLibrary:power(costFunctionDerivatives, 2)
+		local gradientSquaredTensor = AqwamTensorLibrary:power(costFunctionDerivativeTensor, 2)
 
-		local runningDeltaMatrixPart1 = AqwamMatrixLibrary:multiply(decayRate, previousRunningGradientSquaredMatrix)
+		local runningDeltaTensorPart1 = AqwamTensorLibrary:multiply(decayRate, previousRunningGradientSquaredTensor)
 
-		local runningDeltaMatrixPart2 = AqwamMatrixLibrary:multiply((1 - decayRate), gradientSquaredMatrix)
+		local runningDeltaTensorPart2 = AqwamTensorLibrary:multiply((1 - decayRate), gradientSquaredTensor)
 
-		local currentRunningGradientSquaredMatrix =  AqwamMatrixLibrary:add(runningDeltaMatrixPart1, runningDeltaMatrixPart2)
+		local currentRunningGradientSquaredTensor =  AqwamTensorLibrary:add(runningDeltaTensorPart1, runningDeltaTensorPart2)
 
-		local rootMeanSquarePart1 = AqwamMatrixLibrary:add(currentRunningGradientSquaredMatrix, NewAdaptiveGradientDeltaOptimizer.epsilon)
+		local rootMeanSquareTensorPart1 = AqwamTensorLibrary:add(currentRunningGradientSquaredTensor, NewAdaptiveGradientDeltaOptimizer.epsilon)
 
-		local rootMeanSquare = AqwamMatrixLibrary:applyFunction(math.sqrt, rootMeanSquarePart1)
+		local rootMeanSquareTensor = AqwamTensorLibrary:applyFunction(math.sqrt, rootMeanSquareTensorPart1)
 
-		local costFunctionDerivativesPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, rootMeanSquare)
+		local costFunctionDerivativesPart1 = AqwamTensorLibrary:divide(costFunctionDerivativeTensor, rootMeanSquareTensor)
 
-		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativesPart1)
+		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativesPart1)
 
-		NewAdaptiveGradientDeltaOptimizer.optimizerInternalParameters = currentRunningGradientSquaredMatrix
+		NewAdaptiveGradientDeltaOptimizer.optimizerInternalParameterArray = {currentRunningGradientSquaredTensor}
 
-		return costFunctionDerivatives
+		return costFunctionDerivativeTensor
 		
 	end)
 

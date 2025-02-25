@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine And Deep Learning Library (DataPredict)
+	Aqwam's Deep Learning Library (DataPredict Neural)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -26,130 +26,91 @@
 
 --]]
 
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
+
 BaseOptimizer = {}
 
 BaseOptimizer.__index = BaseOptimizer
 
-local function deepCopyTable(original, copies)
+setmetatable(BaseOptimizer, BaseInstance)
 
-	copies = copies or {}
-
-	local originalType = type(original)
-
-	local copy
-
-	if (originalType == 'table') then
-
-		if copies[original] then
-
-			copy = copies[original]
-
-		else
-
-			copy = {}
-
-			copies[original] = copy
-
-			for originalKey, originalValue in next, original, nil do
-
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-
-			end
-
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
-
-		end
-
-	else
-
-		copy = original
-
-	end
-
-	return copy
-
-end
-
-
-function BaseOptimizer.new(optimizerName)
+function BaseOptimizer.new(parameterDictionary)
 	
-	local NewBaseOptimizer = {}
-	
+	parameterDictionary = parameterDictionary or {}
+
+	local NewBaseOptimizer = BaseInstance.new(parameterDictionary)
+
 	setmetatable(NewBaseOptimizer, BaseOptimizer)
-	
-	NewBaseOptimizer.optimizerName = optimizerName or "Unknown"
 
-	NewBaseOptimizer.LearningRateValueScheduler = nil
+	NewBaseOptimizer:setName("BaseOptimizer")
+
+	NewBaseOptimizer:setClassName("Optimizer")
 	
+	NewBaseOptimizer.LearningRateValueScheduler = parameterDictionary.LearningRateValueScheduler
+
 	NewBaseOptimizer.calculateFunction = nil
-	
-	NewBaseOptimizer.optimizerInternalParameters = nil
-	
+
+	NewBaseOptimizer.optimizerInternalParameterArray = {}
+
 	return NewBaseOptimizer
-	
+
 end
 
-function BaseOptimizer:calculate(learningRate, costFunctionDerivatives)
-	
+function BaseOptimizer:calculate(learningRate, costFunctionDerivativeTensor)
+
 	local calculateFunction = self.calculateFunction
-	
+
 	local LearningRateValueScheduler = self.LearningRateValueScheduler
-	
+
 	if (not calculateFunction) then error("No calculate function for the optimizer!") end
-	
+
 	if LearningRateValueScheduler then learningRate = LearningRateValueScheduler:calculate(learningRate) end
-	
-	return self.calculateFunction(learningRate, costFunctionDerivatives)
-	
+
+	return self.calculateFunction(learningRate, costFunctionDerivativeTensor)
+
 end
 
 function BaseOptimizer:setCalculateFunction(calculateFunction)
-	
+
 	self.calculateFunction = calculateFunction
-	
+
 end
 
 function BaseOptimizer:setLearningRateValueScheduler(LearningRateValueScheduler)
-	
+
 	self.LearningRateValueScheduler = LearningRateValueScheduler
-	
-end
 
-function BaseOptimizer:getOptimizerName()
-	
-	return self.optimizerName
-	
-end
-
-function BaseOptimizer:getOptimizerInternalParameters(doNotDeepCopy)
-	
-	if (doNotDeepCopy) then
-		
-		return self.optimizerInternalParameters
-		
-	else
-		
-		return deepCopyTable(self.optimizerInternalParameters)
-		
-	end
-	
 end
 
 function BaseOptimizer:getLearningRateValueScheduler()
-	
+
 	return self.LearningRateValueScheduler
-	
+
 end
 
-function BaseOptimizer:setOptimizerInternalParameters(optimizerInternalParameters, doNotDeepCopy)
+function BaseOptimizer:getOptimizerInternalParameterArray(doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		self.optimizerInternalParameters = optimizerInternalParameters
+		return self.optimizerInternalParameterArray
 
 	else
 
-		self.optimizerInternalParameters = deepCopyTable(optimizerInternalParameters)
+		return self:deepCopyTable(self.optimizerInternalParameterArray)
+
+	end
+
+end
+
+function BaseOptimizer:setOptimizerInternalParameterArray(optimizerInternalParameterArray, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.optimizerInternalParameterArray = optimizerInternalParameterArray
+
+	else
+
+		self.optimizerInternalParameterArray = self:deepCopyTable(optimizerInternalParameterArray)
 
 	end
 
@@ -157,7 +118,7 @@ end
 
 function BaseOptimizer:reset()
 
-	self.optimizerInternalParameters = nil
+	self.optimizerInternalParameterArray = {}
 
 end
 

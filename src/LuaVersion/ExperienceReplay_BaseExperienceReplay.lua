@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,12 +19,20 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
+
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 BaseExperienceReplay = {}
 
 BaseExperienceReplay.__index = BaseExperienceReplay
+
+setmetatable(BaseExperienceReplay, BaseInstance)
 
 local defaultBatchSize = 32
 
@@ -30,25 +40,33 @@ local defaultMaxBufferSize = 100
 
 local defaultNumberOfRunsToUpdate = 1
 
-function BaseExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize)
+local defaultNumberOfRuns = 0
+
+function BaseExperienceReplay.new(parameterDictionary)
 	
-	local NewBaseExperienceReplay = {}
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewBaseExperienceReplay = BaseInstance.new(parameterDictionary)
 	
 	setmetatable(NewBaseExperienceReplay, BaseExperienceReplay)
+	
+	NewBaseExperienceReplay:setName("ExperienceReplay")
+	
+	NewBaseExperienceReplay:setName("BaseExperienceReplay")
 
-	NewBaseExperienceReplay.batchSize = batchSize or defaultBatchSize
+	NewBaseExperienceReplay.batchSize = parameterDictionary.batchSize or defaultBatchSize
 
-	NewBaseExperienceReplay.numberOfRunsToUpdate = numberOfRunsToUpdate or defaultNumberOfRunsToUpdate
+	NewBaseExperienceReplay.numberOfRunsToUpdate = parameterDictionary.numberOfRunsToUpdate or defaultNumberOfRunsToUpdate
 
-	NewBaseExperienceReplay.maxBufferSize = maxBufferSize or defaultMaxBufferSize
+	NewBaseExperienceReplay.maxBufferSize = parameterDictionary.maxBufferSize or defaultMaxBufferSize
 	
-	NewBaseExperienceReplay.numberOfRuns = 0
+	NewBaseExperienceReplay.numberOfRuns = parameterDictionary.numberOfRuns or defaultNumberOfRuns
 	
-	NewBaseExperienceReplay.replayBufferArray = {}
+	NewBaseExperienceReplay.replayBufferArray = parameterDictionary.replayBufferArray or {}
 	
-	NewBaseExperienceReplay.temporalDifferenceErrorArray = {}
+	NewBaseExperienceReplay.temporalDifferenceErrorArray = parameterDictionary.temporalDifferenceErrorArray or {}
 	
-	NewBaseExperienceReplay.isTemporalDifferenceErrorRequired = false
+	NewBaseExperienceReplay.isTemporalDifferenceErrorRequired = NewBaseExperienceReplay:getValueOrDefaultValue(parameterDictionary.isTemporalDifferenceErrorRequired, false) 
 	
 	return NewBaseExperienceReplay
 	
@@ -114,15 +132,15 @@ function BaseExperienceReplay:extendAddExperienceFunction(addExperienceFunction)
 	
 end
 
-function BaseExperienceReplay:addExperience(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function BaseExperienceReplay:addExperience(...)
 	
-	local experience = {previousFeatureVector, action, rewardValue, currentFeatureVector}
+	local experience = {...}
 
 	table.insert(self.replayBufferArray, experience)
 	
 	local addExperienceFunction = self.addExperienceFunction
 	
-	if (addExperienceFunction) then addExperienceFunction(previousFeatureVector, action, rewardValue, currentFeatureVector) end
+	if (addExperienceFunction) then addExperienceFunction(...) end
 
 	self:removeFirstValueFromArrayIfExceedsBufferSize(self.replayBufferArray)
 	

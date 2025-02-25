@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,10 +19,14 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local BaseModel = require("Model_BaseModel")
+local BaseModel = require(script.Parent.BaseModel)
 
 KNearestNeighbours = {}
 
@@ -28,7 +34,7 @@ KNearestNeighbours.__index = KNearestNeighbours
 
 setmetatable(KNearestNeighbours, BaseModel)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultKValue = 3
 
@@ -38,11 +44,11 @@ local distanceFunctionList = {
 
 	["Manhattan"] = function(x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		part1 = AqwamMatrixLibrary:applyFunction(math.abs, part1)
+		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
 
-		local distance = AqwamMatrixLibrary:sum(part1)
+		local distance = AqwamTensorLibrary:sum(part1)
 
 		return distance 
 
@@ -50,11 +56,11 @@ local distanceFunctionList = {
 
 	["Euclidean"] = function(x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		local part2 = AqwamMatrixLibrary:power(part1, 2)
+		local part2 = AqwamTensorLibrary:power(part1, 2)
 
-		local part3 = AqwamMatrixLibrary:sum(part2)
+		local part3 = AqwamTensorLibrary:sum(part2)
 
 		local distance = math.sqrt(part3)
 
@@ -64,17 +70,17 @@ local distanceFunctionList = {
 	
 	["Cosine"] = function(x1, x2)
 
-		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
+		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
 		
-		local x1MagnitudePart1 = AqwamMatrixLibrary:power(x1, 2)
+		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
 		
-		local x1MagnitudePart2 = AqwamMatrixLibrary:sum(x1MagnitudePart1)
+		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
 		
 		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
 		
-		local x2MagnitudePart1 = AqwamMatrixLibrary:power(x2, 2)
+		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
 
-		local x2MagnitudePart2 = AqwamMatrixLibrary:sum(x2MagnitudePart1)
+		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
 
 		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
 
@@ -96,7 +102,7 @@ local function createDistanceMatrix(featureMatrix, storedFeatureMatrix, distance
 
 	local numberOfStoredData = #storedFeatureMatrix
 
-	local distanceMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfStoredData)
+	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfStoredData}, 0)
 
 	local calculateDistance = distanceFunctionList[distanceFunction]
 
@@ -225,9 +231,7 @@ end
 
 local function mergeSort(distanceVector, labelVector, startingValue, endValue)
 	
-	if startingValue >= endValue then
-		return
-	end
+	if (startingValue >= endValue) then return end
 
 	local mid = math.floor(startingValue + (endValue - startingValue) / 2)
 	
@@ -282,25 +286,19 @@ local function getMajorityClass(sortedLabelVectorLowestToHighest, kValue)
 	
 end
 
-function KNearestNeighbours.new(kValue, distanceFunction)
+function KNearestNeighbours.new(parameterDictionary)
 	
-	local newKNearestNeighbours = {}
+	parameterDictionary = parameterDictionary or {}
+	
+	local newKNearestNeighbours = BaseModel.new(parameterDictionary)
 	
 	setmetatable(newKNearestNeighbours, KNearestNeighbours)
 	
-	newKNearestNeighbours.kValue = kValue or defaultKValue
+	newKNearestNeighbours.kValue = parameterDictionary.kValue or defaultKValue
 	
-	newKNearestNeighbours.distanceFunction = distanceFunction or defaultDistanceFunction
+	newKNearestNeighbours.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 	
 	return newKNearestNeighbours
-	
-end
-
-function KNearestNeighbours:setParameters(kValue, distanceFunction)
-	
-	self.kValue = kValue or self.kValue
-
-	self.distanceFunction = distanceFunction or self.distanceFunction
 	
 end
 
@@ -308,15 +306,17 @@ function KNearestNeighbours:train(featureMatrix, labelVector)
 	
 	if (#featureMatrix ~= #labelVector) then error("The number of data in feature matrix and the label vector are not the same!") end
 	
-	if self.ModelParameters then
+	local ModelParameters = self.ModelParameters
+	
+	if ModelParameters then
 		
-		local storedFeatureMatrix = self.ModelParameters[1]
+		local storedFeatureMatrix = ModelParameters[1]
 		
-		local storedLabelVector = self.ModelParameters[2]
+		local storedLabelVector = ModelParameters[2]
 		
-		featureMatrix = AqwamMatrixLibrary:verticalConcatenate(featureMatrix, storedFeatureMatrix)
+		featureMatrix = AqwamTensorLibrary:concatenate(featureMatrix, storedFeatureMatrix, 1)
 		
-		labelVector = AqwamMatrixLibrary:verticalConcatenate(labelVector, storedLabelVector)
+		labelVector = AqwamTensorLibrary:concatenate(labelVector, storedLabelVector, 1)
 		
 	end
 	
@@ -328,7 +328,7 @@ end
 
 function KNearestNeighbours:predict(featureMatrix, returnOriginalOutput)
 	
-	if (#self.ModelParameters == 0) then error("No model parameters!") end
+	if (not self.ModelParameters) then error("No model parameters.") end
 	
 	local storedFeatureMatrix = self.ModelParameters[1]
 	
@@ -340,13 +340,11 @@ function KNearestNeighbours:predict(featureMatrix, returnOriginalOutput)
 	
 	local distanceMatrix = createDistanceMatrix(featureMatrix, storedFeatureMatrix, distanceFunction)
 	
-	if returnOriginalOutput then return distanceMatrix end
+	if (returnOriginalOutput) then return distanceMatrix end
 	
 	local predictedLabelVector = {}
 	
 	for i = 1, #featureMatrix, 1 do
-		
-		self:dataWait()
 		
 		local distanceVector = {deepCopyTable(distanceMatrix[i])}
 			

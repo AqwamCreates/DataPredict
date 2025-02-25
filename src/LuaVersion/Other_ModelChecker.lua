@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,28 +19,36 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 local ModelChecker = {}
 
 ModelChecker.__index = ModelChecker
 
-local defaultMaxNumberOfIterations = 100
+setmetatable(ModelChecker, BaseInstance)
 
-local defaultMaxGeneralizationError = math.huge
+local defaultMaximumNumberOfIterations = 100
+
+local defaultMaximumGeneralizationError = math.huge
 
 local function calculateError(predictedLabelMatrix, trueLabelMatrix, numberOfData)
 	
-	local errorMatrix = AqwamMatrixLibrary:subtract(predictedLabelMatrix, trueLabelMatrix)
+	local errorMatrix = AqwamTensorLibrary:subtract(predictedLabelMatrix, trueLabelMatrix)
 
-	errorMatrix = AqwamMatrixLibrary:power(errorMatrix, 2)
+	errorMatrix = AqwamTensorLibrary:power(errorMatrix, 2)
 
-	local errorVector = AqwamMatrixLibrary:horizontalSum(errorMatrix)
+	local errorVector = AqwamTensorLibrary:sum(errorMatrix, 2)
 
-	local totalError = AqwamMatrixLibrary:sum(errorVector)
+	local totalError = AqwamTensorLibrary:sum(errorVector)
 	
 	local calculatedError = totalError/(2 * numberOfData)
 	
@@ -46,31 +56,23 @@ local function calculateError(predictedLabelMatrix, trueLabelMatrix, numberOfDat
 	
 end
 
-function ModelChecker.new(modelType, maxNumberOfIterations, maxGeneralizationError)
+function ModelChecker.new(parameterDictionary)
 	
-	local NewModelChecker = {}
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewModelChecker = BaseInstance.new(parameterDictionary)
 	
 	setmetatable(NewModelChecker, ModelChecker)
 	
-	NewModelChecker.modelType = modelType
+	NewModelChecker.modelType = parameterDictionary.modelType
 	
-	NewModelChecker.maxNumberOfIterations = maxNumberOfIterations or defaultMaxNumberOfIterations
+	NewModelChecker.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 	
-	NewModelChecker.maxGeneralizationError = maxGeneralizationError or defaultMaxGeneralizationError
+	NewModelChecker.maximumGeneralizationError = parameterDictionary.maximumGeneralizationError or defaultMaximumGeneralizationError
 	
-	NewModelChecker.Model = nil
+	NewModelChecker.Model = parameterDictionary.Model
 	
 	return NewModelChecker
-	
-end
-
-function ModelChecker:setParameters(modelType, maxNumberOfIterations, maxGeneralizationError)
-	
-	self.modelType = modelType or self.modelType
-
-	self.maxNumberOfIterations = maxNumberOfIterations or self.maxNumberOfIterations
-	
-	self.maxGeneralizationError = maxGeneralizationError or self.maxGeneralizationError
 	
 end
 
@@ -100,7 +102,7 @@ function ModelChecker:convertLabelVectorToLogisticMatrix(labelVector)
 
 	end
 
-	local logisticMatrix = AqwamMatrixLibrary:createMatrix(#labelVector, #self.ClassesList)
+	local logisticMatrix = AqwamTensorLibrary:createTensor({#labelVector, #self.ClassesList}, 0)
 
 	local label
 
@@ -232,9 +234,9 @@ function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVecto
 
 		table.insert(trainErrorArray, trainError)
 
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 
-	until (numberOfIterations >= self.maxNumberOfIterations) or (generalizationError >= self.maxGeneralizationError)
+	until (numberOfIterations >= self.maximumNumberOfIterations) or (generalizationError >= self.maximumGeneralizationError)
 
 	return trainErrorArray, validationErrorArray
 
@@ -288,9 +290,9 @@ function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, v
 
 		table.insert(validationErrorArray, validationError)
 
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 		
-	until (numberOfIterations >= self.maxNumberOfIterations) or (generalizationError >= self.maxGeneralizationError)
+	until (numberOfIterations >= self.maximumNumberOfIterations) or (generalizationError >= self.maximumGeneralizationError)
 	
 	return trainErrorArray, validationErrorArray
 	
@@ -305,8 +307,6 @@ function ModelChecker:test(testFeatureMatrix, testLabelVector)
 	local predictedLabelMatrix
 	
 	local modelType = self.modelType
-	
-	if (modelType == nil) then error("No model type!") end
 
 	if (modelType == "Regression") then
 

@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,18 +19,24 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
 
-local ReinforcementLearningDeepDuelingQLearningBaseModel = require("Model_ReinforcementLearningDeepDuelingQLearningBaseModel")
+local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
-DeepDoubleDuelingQLearning = {}
+DeepDoubleExpectedStateActionRewardStateActionModel = {}
 
-DeepDoubleDuelingQLearning.__index = DeepDoubleDuelingQLearning
+DeepDoubleExpectedStateActionRewardStateActionModel.__index = DeepDoubleExpectedStateActionRewardStateActionModel
 
-setmetatable(DeepDoubleDuelingQLearning, ReinforcementLearningDeepDuelingQLearningBaseModel)
+setmetatable(DeepDoubleExpectedStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
+
+local defaultEpsilon = 0.5
 
 local function deepCopyTable(original, copies)
 
@@ -70,21 +78,19 @@ local function deepCopyTable(original, copies)
 
 end
 
-function DeepDoubleDuelingQLearning.new(discountFactor)
+function DeepDoubleExpectedStateActionRewardStateActionModel.new(epsilon, discountFactor)
 
-	local NewDeepDuelingQLearning = ReinforcementLearningDeepDuelingQLearningBaseModel.new(discountFactor)
+	local NewDeepDoubleExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(discountFactor)
+	
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = epsilon or defaultEpsilon
+	
+	setmetatable(NewDeepDoubleExpectedStateActionRewardStateActionModel, DeepDoubleExpectedStateActionRewardStateActionModel)
 
-	setmetatable(NewDeepDuelingQLearning, DeepDoubleDuelingQLearning)
-	
-	NewDeepDuelingQLearning.AdvantageModelParametersArray = {}
-	
-	NewDeepDuelingQLearning.ValueModelParametersArray = {}
-	
-	NewDeepDuelingQLearning:setUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.ModelParametersArray = {}
+
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
 		
-		local AdvantageModel = NewDeepDuelingQLearning.AdvantageModel
-
-		local ValueModel = NewDeepDuelingQLearning.ValueModel
+		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model
 
 		local randomProbability = Random.new():NextNumber()
 
@@ -94,234 +100,182 @@ function DeepDoubleDuelingQLearning.new(discountFactor)
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		NewDeepDuelingQLearning:loadAdvantageModelParametersFromAdvantageModelParametersArray(selectedModelNumberForTargetVector)
+		local lossVector, temporalDifferenceError = NewDeepDoubleExpectedStateActionRewardStateActionModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 
-		NewDeepDuelingQLearning:loadValueModelParametersFromValueModelParametersArray(selectedModelNumberForTargetVector)
+		Model:forwardPropagate(previousFeatureVector, true)
 
-		local qLossVector, vLoss = NewDeepDuelingQLearning:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		Model:backwardPropagate(lossVector, true)
 
-		AdvantageModel:forwardPropagate(previousFeatureVector, true)
-
-		AdvantageModel:backwardPropagate(qLossVector, true)
-
-		ValueModel:forwardPropagate(previousFeatureVector, true)
-
-		ValueModel:backwardPropagate(vLoss, true)
-
-		return vLoss
+		NewDeepDoubleExpectedStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-	end)
+		return temporalDifferenceError
 
-	return NewDeepDuelingQLearning
+	end)
+	
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function() end)
+
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() end)
+
+	return NewDeepDoubleExpectedStateActionRewardStateActionModel
 
 end
 
-function DeepDoubleDuelingQLearning:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+function DeepDoubleExpectedStateActionRewardStateActionModel:setParameters(epsilon, discountFactor)
+
+	self.epsilon = epsilon or self.epsilon
+
+	self.discountFactor = discountFactor or self.discountFactor
+
+end
+
+function DeepDoubleExpectedStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(index)
+
+	self.ModelParametersArray[index] = self.Model:getModelParameters()
+
+end
+
+function DeepDoubleExpectedStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(index)
 	
-	self:loadAdvantageModelParametersFromAdvantageModelParametersArray(selectedModelNumberForUpdate)
+	local Model = self.Model
 
-	self:loadValueModelParametersFromValueModelParametersArray(selectedModelNumberForUpdate)
+	local FirstModelParameters = self.ModelParametersArray[1]
 
-	local previousQValue, previousVValue = self:forwardPropagate(previousFeatureVector)
+	local SecondModelParameters = self.ModelParametersArray[2]
+
+	if (FirstModelParameters == nil) and (SecondModelParameters == nil) then
+
+		Model:generateLayers()
+
+		self:saveModelParametersFromModelParametersArray(1)
+
+		self:saveModelParametersFromModelParametersArray(2)
+
+	end
+
+	local CurrentModelParameters = self.ModelParametersArray[index]
+
+	Model:setModelParameters(CurrentModelParameters, true)
+
+end
+
+function DeepDoubleExpectedStateActionRewardStateActionModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 	
-	self:loadAdvantageModelParametersFromAdvantageModelParametersArray(selectedModelNumberForTargetVector)
+	local Model = self.Model
 
-	self:loadValueModelParametersFromValueModelParametersArray(selectedModelNumberForTargetVector)
+	local expectedQValue = 0
 
-	local currentQValueVector, currentVValue = self:forwardPropagate(currentFeatureVector)
+	local numberOfGreedyActions = 0
+	
+	local ClassesList = Model:getClassesList()
 
-	local ClassesList = self.AdvantageModel:getClassesList()
+	local numberOfActions = #ClassesList
 
 	local actionIndex = table.find(ClassesList, action)
-
-	local maxCurrentQValue = currentQValueVector[1][actionIndex]
-
-	local expectedQValue = rewardValue + (self.discountFactor * maxCurrentQValue)
-
-	local qLossVector = AqwamMatrixLibrary:subtract(expectedQValue, previousQValue)
-
-	local vLoss = currentVValue - previousVValue
-
-	return qLossVector, vLoss
 	
-end
+	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 
-function DeepDoubleDuelingQLearning:saveAdvantageModelParametersFromAdvantageModelParametersArray(index)
-
-	self.AdvantageModelParametersArray[index] = self.AdvantageModel:getModelParameters()
-
-end
-
-function DeepDoubleDuelingQLearning:saveValueModelParametersFromValueModelParametersArray(index)
-
-	self.ValueModelParametersArray[index] = self.ValueModel:getModelParameters()
-
-end
-
-function DeepDoubleDuelingQLearning:loadAdvantageModelParametersFromAdvantageModelParametersArray(index)
-
-	local AdvantageModel = self.AdvantageModel
-
-	local FirstModelParameters = self.AdvantageModelParametersArray[1]
-
-	local SecondModelParameters = self.AdvantageModelParametersArray[2]
-
-	if (FirstModelParameters == nil) and (SecondModelParameters == nil) then
-
-		AdvantageModel:generateLayers()
-
-		self:saveAdvantageModelParametersFromAdvantageModelParametersArray(1)
-
-		self:saveAdvantageModelParametersFromAdvantageModelParametersArray(2)
-
-	end
-
-	local CurrentModelParameters = self.AdvantageModelParametersArray[index]
-
-	AdvantageModel:setModelParameters(CurrentModelParameters, true)
-
-end
-
-function DeepDoubleDuelingQLearning:loadValueModelParametersFromValueModelParametersArray(index)
-
-	local ValueModel = self.ValueModel
-
-	local FirstModelParameters = self.ValueModelParametersArray[1]
-
-	local SecondModelParameters = self.ValueModelParametersArray[2]
-
-	if (FirstModelParameters == nil) and (SecondModelParameters == nil) then
-
-		ValueModel:generateLayers()
-
-		self:saveValueModelParametersFromValueModelParametersArray(1)
-
-		self:saveValueModelParametersFromValueModelParametersArray(2)
-
-	end
-
-	local CurrentModelParameters = self.ValueModelParametersArray[index]
-
-	ValueModel:setModelParameters(CurrentModelParameters, true)
-
-end
-
-function DeepDoubleDuelingQLearning:predict(featureVector, returnOriginalOutput)
-
-	return self.AdvantageModel:predict(featureVector, returnOriginalOutput)
-
-end
-
-function DeepDoubleDuelingQLearning:setAdvantageModelParameters1(AdvantageModelParameters1, doNotDeepCopy)
+	local previousVector = Model:predict(previousFeatureVector, true)
 	
-	if (doNotDeepCopy) then
-		
-		self.AdvantageModelParametersArray[1] = deepCopyTable(AdvantageModelParameters1)
-		
-	else
-		
-		self.AdvantageModelParametersArray[1] = AdvantageModelParameters1
-		
-	end
+	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-end
+	local targetVector = Model:predict(currentFeatureVector, true)
 
-function DeepDoubleDuelingQLearning:setAdvantageModelParameters2(AdvantageModelParameters2, doNotDeepCopy)
+	local maxQValue = targetVector[1][actionIndex]
 
-	if (doNotDeepCopy) then
+	for i = 1, numberOfActions, 1 do
 
-		self.AdvantageModelParametersArray[2] = deepCopyTable(AdvantageModelParameters2)
+		if (targetVector[1][i] ~= maxQValue) then continue end
 
-	else
-
-		self.AdvantageModelParametersArray[2] = AdvantageModelParameters2
+		numberOfGreedyActions = numberOfGreedyActions + 1
 
 	end
 
-end
+	local nonGreedyActionProbability = self.epsilon / numberOfActions
 
-function DeepDoubleDuelingQLearning:setValueModelParameters1(ValueModelParameters1, doNotDeepCopy)
+	local greedyActionProbability = ((1 - self.epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
 
-	if (doNotDeepCopy) then
+	for i, qValue in ipairs(targetVector[1]) do
 
-		self.ValueModelParametersArray[1] = deepCopyTable(ValueModelParameters1)
+		if (qValue == maxQValue) then
 
-	else
+			expectedQValue = expectedQValue + (qValue * greedyActionProbability)
 
-		self.ValueModelParametersArray[1] = ValueModelParameters1
+		else
 
-	end
+			expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
 
-end
-
-function DeepDoubleDuelingQLearning:setValueModelParameters2(ValueModelParameters2, doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		self.ValueModelParametersArray[2] = deepCopyTable(ValueModelParameters2)
-
-	else
-
-		self.ValueModelParametersArray[2] = ValueModelParameters2
+		end
 
 	end
 
-end
-
-function DeepDoubleDuelingQLearning:getAdvantageModelParameters1(doNotDeepCopy)
+	local targetValue = rewardValue + (self.discountFactor * expectedQValue)
 	
-	if (doNotDeepCopy) then
-		
-		return self.AdvantageModelParametersArray[1]
-		
-	else
-		
-		return deepCopyTable(self.AdvantageModelParametersArray[1])
-		
-	end
+	local lastValue = previousVector[1][actionIndex]
+
+	local temporalDifferenceError = targetValue - lastValue
+
+	local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, 0)
+
+	lossVector[1][actionIndex] = temporalDifferenceError
+
+	return lossVector, temporalDifferenceError
 
 end
 
-function DeepDoubleDuelingQLearning:getAdvantageModelParameters2(doNotDeepCopy)
+function DeepDoubleExpectedStateActionRewardStateActionModel:setModelParameters1(ModelParameters1, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		return self.AdvantageModelParametersArray[2]
+		self.ModelParametersArray[1] = ModelParameters1
 
 	else
 
-		return deepCopyTable(self.AdvantageModelParametersArray[2])
-
-	end
-
-end
-
-function DeepDoubleDuelingQLearning:getValueModelParameters1(doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		return self.ValueModelParametersArray[1]
-
-	else
-
-		return deepCopyTable(self.ValueModelParametersArray[1])
+		self.ModelParametersArray[1] = deepCopyTable(ModelParameters1)
 
 	end
 
 end
 
-function DeepDoubleDuelingQLearning:getValueModelParameters2(doNotDeepCopy)
+function DeepDoubleExpectedStateActionRewardStateActionModel:setModelParameters2(ModelParameters2, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		return self.ValueModelParametersArray[2]
+		self.ModelParametersArray[2] = ModelParameters2
 
 	else
 
-		return deepCopyTable(self.ValueModelParametersArray[2])
+		self.ModelParametersArray[2] = deepCopyTable(ModelParameters2)
 
 	end
 
 end
 
-return DeepDoubleDuelingQLearning
+function DeepDoubleExpectedStateActionRewardStateActionModel:getModelParameters1(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.ModelParametersArray[1]
+
+	else
+
+		return deepCopyTable(self.ModelParametersArray[1])
+
+	end
+
+end
+
+function DeepDoubleExpectedStateActionRewardStateActionModel:getModelParameters2(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.ModelParametersArray[2]
+
+	else
+
+		return deepCopyTable(self.ModelParametersArray[2])
+
+	end
+
+end
+
+return DeepDoubleExpectedStateActionRewardStateActionModel

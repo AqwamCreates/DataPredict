@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,12 +19,16 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
+local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
 DeepExpectedStateActionRewardStateActionModel = {}
 
@@ -32,17 +38,33 @@ setmetatable(DeepExpectedStateActionRewardStateActionModel, ReinforcementLearnin
 
 local defaultEpsilon = 0.5
 
-function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFactor)
+local defaultLambda = 0
 
-	local NewDeepExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(discountFactor)
+function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+
+	local NewDeepExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(parameterDictionary)
 
 	setmetatable(NewDeepExpectedStateActionRewardStateActionModel, DeepExpectedStateActionRewardStateActionModel)
 	
-	NewDeepExpectedStateActionRewardStateActionModel.epsilon = epsilon or defaultEpsilon
+	NewDeepExpectedStateActionRewardStateActionModel:setName("DeepExpectedStateActionRewardStateAction")
+	
+	NewDeepExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	
+	NewDeepExpectedStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
+	
+	NewDeepExpectedStateActionRewardStateActionModel.eligibilityTrace = parameterDictionary.eligibilityTrace
 
-	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 		local Model = NewDeepExpectedStateActionRewardStateActionModel.Model
+		
+		local discountFactor = NewDeepExpectedStateActionRewardStateActionModel.discountFactor
+		
+		local epsilon = NewDeepExpectedStateActionRewardStateActionModel.epsilon
+		
+		local lambda = NewDeepExpectedStateActionRewardStateActionModel.lambda
 
 		local expectedQValue = 0
 
@@ -50,7 +72,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFact
 		
 		local ClassesList = Model:getClassesList()
 
-		local numberOfActions = #ClassesList
+		local numberOfClasses = #ClassesList
 
 		local actionIndex = table.find(ClassesList, action)
 		
@@ -60,7 +82,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFact
 		
 		local maxQValue = targetVector[1][actionIndex]
 
-		for i = 1, numberOfActions, 1 do
+		for i = 1, numberOfClasses, 1 do
 
 			if (targetVector[1][i] ~= maxQValue) then continue end
 
@@ -68,9 +90,9 @@ function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFact
 
 		end
 
-		local nonGreedyActionProbability = NewDeepExpectedStateActionRewardStateActionModel.epsilon / numberOfActions
+		local nonGreedyActionProbability = epsilon / numberOfClasses
 
-		local greedyActionProbability = ((1 - NewDeepExpectedStateActionRewardStateActionModel.epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
+		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
 
 		for _, qValue in ipairs(targetVector[1]) do
 
@@ -86,37 +108,55 @@ function DeepExpectedStateActionRewardStateActionModel.new(epsilon, discountFact
 
 		end
 		
-		local targetValue = rewardValue + (NewDeepExpectedStateActionRewardStateActionModel.discountFactor * expectedQValue)
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
 
 		local lastValue = previousVector[1][actionIndex]
 
 		local temporalDifferenceError = targetValue - lastValue
-
-		local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfActions, 0)
 		
-		lossVector[1][actionIndex] = temporalDifferenceError
+		local outputDimensionSizeArray = {1, numberOfClasses}
+
+		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+		
+		temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
+		
+		if (lambda ~= 0) then
+
+			local eligibilityTrace = NewDeepExpectedStateActionRewardStateActionModel.eligibilityTrace
+
+			if (not eligibilityTrace) then eligibilityTrace = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
+
+			eligibilityTrace = AqwamTensorLibrary:multiply(eligibilityTrace, discountFactor * lambda)
+
+			eligibilityTrace[1][actionIndex] = eligibilityTrace[1][actionIndex] + 1
+
+			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTrace)
+
+			NewDeepExpectedStateActionRewardStateActionModel.eligibilityTrace = eligibilityTrace
+
+		end
 
 		Model:forwardPropagate(previousFeatureVector, true, true)
 		
-		Model:backwardPropagate(lossVector, true)
+		Model:backwardPropagate(temporalDifferenceErrorVector, true)
 		
-		return temporalDifferenceError
+		return temporalDifferenceErrorVector
 
 	end)
 	
-	NewDeepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function() end)
+	NewDeepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+		
+		NewDeepExpectedStateActionRewardStateActionModel.eligibilityTrace = nil
+		
+	end)
 
-	NewDeepExpectedStateActionRewardStateActionModel:setResetFunction(function() end)
+	NewDeepExpectedStateActionRewardStateActionModel:setResetFunction(function() 
+		
+		NewDeepExpectedStateActionRewardStateActionModel.eligibilityTrace = nil
+		
+	end)
 
 	return NewDeepExpectedStateActionRewardStateActionModel
-
-end
-
-function DeepExpectedStateActionRewardStateActionModel:setParameters(epsilon, discountFactor)
-
-	self.epsilon = epsilon or self.epsilon
-
-	self.discountFactor = discountFactor or self.discountFactor
 
 end
 

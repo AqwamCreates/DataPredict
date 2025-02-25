@@ -2,9 +2,11 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine And Deep Learning Library (DataPredict)
+	Aqwam's Deep Learning Library (DataPredict Neural)
 
 	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
 	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
@@ -14,15 +16,19 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
 	
 	--------------------------------------------------------------------
 
 --]]
 
-local BaseOptimizer = require("Optimizer_BaseOptimizer")
+local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 GravityOptimizer = {}
 
@@ -54,75 +60,67 @@ local function calculateGaussianDensity(mean, standardDeviation)
 
 end
 
-function GravityOptimizer.new(initialStepSize, movingAverage)
+function GravityOptimizer.new(parameterDictionary)
 	
-	local NewGravityOptimizer = BaseOptimizer.new("Gravity")
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewGravityOptimizer = BaseOptimizer.new(parameterDictionary)
 	
 	setmetatable(NewGravityOptimizer, GravityOptimizer)
 	
-	NewGravityOptimizer.initialStepSize = initialStepSize or defaultInitialStepSize
+	NewGravityOptimizer:setName("Gravity")
 	
-	NewGravityOptimizer.movingAverage = movingAverage or defaultMovingAverage
+	NewGravityOptimizer.initialStepSize = parameterDictionary.initialStepSize or defaultInitialStepSize
+	
+	NewGravityOptimizer.movingAverage = parameterDictionary.movingAverage or defaultMovingAverage
 	
 	--------------------------------------------------------------------------------
 	
-	NewGravityOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivatives)
+	NewGravityOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
 		
-		local previousVelocity
+		local previousVelocityTensor = NewGravityOptimizer.optimizerInternalParameterArray[1]
 		
-		local currentTimeStep
+		local currentTimeStep = NewGravityOptimizer.optimizerInternalParameterArray[2] or 0
 		
-		local optimizerInternalParameters = NewGravityOptimizer.optimizerInternalParameters
+		currentTimeStep += 1
 		
-		if (optimizerInternalParameters) then
-			
-			previousVelocity = optimizerInternalParameters[1]
-			
-			currentTimeStep = optimizerInternalParameters[2]
-			
-		end
-		
-		currentTimeStep = currentTimeStep or 0
-		
-		currentTimeStep = currentTimeStep + 1
-		
-		if (previousVelocity == nil) then
+		if (previousVelocityTensor == nil) then
 
 			local standardDeviation = NewGravityOptimizer.initialStepSize / learningRate
 
 			local gaussianDensity = calculateGaussianDensity(0, standardDeviation)
 
-			previousVelocity = AqwamMatrixLibrary:createMatrix(#costFunctionDerivatives, #costFunctionDerivatives[1], gaussianDensity)
+			previousVelocityTensor = AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), gaussianDensity)
 
 		end
 
 		local meanMovingAverage = ((NewGravityOptimizer.movingAverage * currentTimeStep) + 1) / (currentTimeStep + 2)
 
-		local absoluteM = AqwamMatrixLibrary:applyFunction(math.abs, costFunctionDerivatives)
+		local absoluteMTensor = AqwamTensorLibrary:applyFunction(math.abs, costFunctionDerivativeTensor)
 
-		local maxM = AqwamMatrixLibrary:findMaximumValue(absoluteM)
+		local maxMTensor = AqwamTensorLibrary:findMaximumValue(absoluteMTensor)
 
-		local m = AqwamMatrixLibrary:divide(1, maxM)
+		local mTensor = AqwamTensorLibrary:divide(1, maxMTensor)
 
-		local weirdLPart1 = AqwamMatrixLibrary:divide(costFunctionDerivatives, m)
+		local weirdLTensorPart1 = AqwamTensorLibrary:divide(costFunctionDerivativeTensor, mTensor)
 
-		local weirdLPart2 = AqwamMatrixLibrary:power(weirdLPart1, 2)
+		local weirdLTensorPart2 = AqwamTensorLibrary:power(weirdLTensorPart1, 2)
 
-		local weirdLPart3 = AqwamMatrixLibrary:add(1, weirdLPart2)
+		local weirdLTensorPart3 = AqwamTensorLibrary:add(1, weirdLTensorPart2)
 
-		local weirdL = AqwamMatrixLibrary:divide(costFunctionDerivatives, weirdLPart3)
+		local weirdLTensor = AqwamTensorLibrary:divide(costFunctionDerivativeTensor, weirdLTensorPart3)
 
-		local velocityPart1 = AqwamMatrixLibrary:multiply(meanMovingAverage, previousVelocity)
+		local velocityTensorPart1 = AqwamTensorLibrary:multiply(meanMovingAverage, previousVelocityTensor)
 
-		local velocityPart2 = AqwamMatrixLibrary:multiply((1 - meanMovingAverage), weirdL)
+		local velocityTensorPart2 = AqwamTensorLibrary:multiply((1 - meanMovingAverage), weirdLTensor)
 
-		local velocity = AqwamMatrixLibrary:add(velocityPart1, velocityPart2)
+		local velocityTensor = AqwamTensorLibrary:add(velocityTensorPart1, velocityTensorPart2)
 
-		costFunctionDerivatives = AqwamMatrixLibrary:multiply(learningRate, velocity) 
+		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, velocityTensor) 
 
-		NewGravityOptimizer.optimizerInternalParameters = {velocity, currentTimeStep}
+		NewGravityOptimizer.optimizerInternalParameterArray = {velocityTensor, currentTimeStep}
 
-		return costFunctionDerivatives
+		return costFunctionDerivativeTensor
 		
 	end)
 	

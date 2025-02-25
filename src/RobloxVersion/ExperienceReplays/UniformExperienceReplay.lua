@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local BaseExperienceReplay = require(script.Parent.BaseExperienceReplay)
 
 UniformExperienceReplay = {}
@@ -28,43 +56,23 @@ local function sample(replayBufferArray, batchSize)
 	
 end
 
-function UniformExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize)
+function UniformExperienceReplay.new(parameterDictionary)
 	
-	local NewUniformExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize)
+	local NewUniformExperienceReplay = BaseExperienceReplay.new(parameterDictionary)
 	
 	setmetatable(NewUniformExperienceReplay, UniformExperienceReplay)
+	
+	NewUniformExperienceReplay:setName("UniformExperienceReplay")
 	
 	NewUniformExperienceReplay:setRunFunction(function(updateFunction)
 		
 		local experienceReplayBatchArray = sample(NewUniformExperienceReplay.replayBufferArray, NewUniformExperienceReplay.batchSize)
 
-		for _, experience in ipairs(experienceReplayBatchArray) do -- (s1, a, r, s2)
-
-			local previousFeatureVector = experience[1]
-
-			local action = experience[2]
-
-			local rewardValue = experience[3]
-
-			local currentFeatureVector = experience[4]
-
-			updateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector)
-
-		end
+		for _, experience in ipairs(experienceReplayBatchArray) do updateFunction(table.unpack(experience)) end
 		
 	end)
 	
 	return NewUniformExperienceReplay
-	
-end
-
-function UniformExperienceReplay:setParameters(batchSize, numberOfRunsToUpdate, maxBufferSize)
-	
-	self.batchSize = batchSize or self.batchSize
-
-	self.numberOfRunsToUpdate = numberOfRunsToUpdate or self.numberOfRunsToUpdate
-
-	self.maxBufferSize = maxBufferSize or self.maxBufferSize
 	
 end
 

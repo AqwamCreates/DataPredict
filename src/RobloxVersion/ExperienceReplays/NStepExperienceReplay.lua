@@ -1,3 +1,31 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
 local BaseExperienceReplay = require(script.Parent.BaseExperienceReplay)
 
 NStepExperienceReplay = {}
@@ -28,13 +56,17 @@ local function sample(replayBufferArray, batchSize)
 
 end
 
-function NStepExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize, nStep)
+function NStepExperienceReplay.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 
-	local NewNStepExperienceReplay = BaseExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSize)
+	local NewNStepExperienceReplay = BaseExperienceReplay.new(parameterDictionary)
 
 	setmetatable(NewNStepExperienceReplay, NStepExperienceReplay)
+	
+	NewNStepExperienceReplay:setName("NStepExperienceReplay")
 
-	NewNStepExperienceReplay.nStep = nStep or defaultNStep
+	NewNStepExperienceReplay.nStep = parameterDictionary.nStep or defaultNStep
 
 	NewNStepExperienceReplay:setRunFunction(function(updateFunction)
 		
@@ -48,35 +80,15 @@ function NStepExperienceReplay.new(batchSize, numberOfRunsToUpdate, maxBufferSiz
 		
 		local replayBufferBatchArraySize = #replayBufferBatchArray
 		
-		local nStepReward = 0
-		
 		local nStep = math.min(NewNStepExperienceReplay.nStep, replayBufferBatchArraySize)
+		
+		local finalBatchArrayIndex = (replayBufferBatchArraySize - nStep) + 1
 
-		for i = replayBufferBatchArraySize, (replayBufferBatchArraySize - nStep), -1 do
-			
-			local experience = replayBufferBatchArray[i] 
-
-			nStepReward = nStepReward + experience[3]
-			
-			updateFunction(experience[1], experience[2], nStepReward, experience[4])
-			
-		end
+		for i = replayBufferBatchArraySize, finalBatchArrayIndex, -1 do updateFunction(table.unpack(replayBufferBatchArray[i])) end
 
 	end)
 
 	return NewNStepExperienceReplay
-
-end
-
-function NStepExperienceReplay:setParameters(batchSize, numberOfRunsToUpdate, maxBufferSize, nStep)
-
-	self.batchSize = batchSize or self.batchSize
-
-	self.numberOfRunsToUpdate = numberOfRunsToUpdate or self.numberOfRunsToUpdate
-
-	self.maxBufferSize = maxBufferSize or self.maxBufferSize
-
-	self.nStep = nStep or self.nStep
 
 end
 

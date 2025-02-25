@@ -34,18 +34,6 @@ WassersteinGenerativeAdversarialImitationLearning.new(numberOfStepsPerEpisode: n
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-WassersteinGenerativeAdversarialImitationLearning:setParameters(numberOfStepsPerEpisode: number)
-```
-
-#### Parameters:
-
-* numberOfStepsPerEpisode: How many steps are needed for it to be considered as a single episode.
-
 ### setReinforcementLearningModel()
 
 Sets the ReinforcementLearning into the model. 

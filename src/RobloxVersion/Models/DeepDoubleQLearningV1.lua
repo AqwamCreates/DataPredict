@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
@@ -36,55 +36,25 @@ DeepDoubleQLearningModel.__index = DeepDoubleQLearningModel
 
 setmetatable(DeepDoubleQLearningModel, ReinforcementLearningBaseModel)
 
-local function deepCopyTable(original, copies)
+local defaultLambda = 0
 
-	copies = copies or {}
+function DeepDoubleQLearningModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 
-	local originalType = type(original)
-
-	local copy
-
-	if (originalType == 'table') then
-
-		if copies[original] then
-
-			copy = copies[original]
-
-		else
-
-			copy = {}
-
-			copies[original] = copy
-
-			for originalKey, originalValue in next, original, nil do
-
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-
-			end
-
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
-
-		end
-
-	else
-
-		copy = original
-
-	end
-
-	return copy
-
-end
-
-function DeepDoubleQLearningModel.new(discountFactor)
-
-	local NewDeepDoubleQLearningModel = ReinforcementLearningBaseModel.new(discountFactor)
+	local NewDeepDoubleQLearningModel = ReinforcementLearningBaseModel.new(parameterDictionary)
 
 	setmetatable(NewDeepDoubleQLearningModel, DeepDoubleQLearningModel)
 	
-	NewDeepDoubleQLearningModel.ModelParametersArray = {}
+	NewDeepDoubleQLearningModel:setName("DeepDoubleQLearningV1")
 	
-	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepDoubleQLearningModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
+	
+	NewDeepDoubleQLearningModel.lambda = parameterDictionary.lambda or defaultLambda
+
+	NewDeepDoubleQLearningModel.eligibilityTrace = parameterDictionary.eligibilityTrace 
+	
+	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 		local Model = NewDeepDoubleQLearningModel.Model
 		
@@ -96,11 +66,11 @@ function DeepDoubleQLearningModel.new(discountFactor)
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local lossVector, temporalDifferenceError = NewDeepDoubleQLearningModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		local temporalDifferenceErrorVector, temporalDifferenceError = NewDeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 
 		Model:forwardPropagate(previousFeatureVector, true, true)
 		
-		Model:backwardPropagate(lossVector, true)
+		Model:backwardPropagate(temporalDifferenceErrorVector, true)
 
 		NewDeepDoubleQLearningModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
@@ -108,17 +78,19 @@ function DeepDoubleQLearningModel.new(discountFactor)
 		
 	end)
 	
-	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function() end)
+	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+		
+		NewDeepDoubleQLearningModel.eligibilityTrace = nil
+		
+	end)
 	
-	NewDeepDoubleQLearningModel:setResetFunction(function() end)
+	NewDeepDoubleQLearningModel:setResetFunction(function() 
+		
+		NewDeepDoubleQLearningModel.eligibilityTrace = nil
+		
+	end)
 
 	return NewDeepDoubleQLearningModel
-
-end
-
-function DeepDoubleQLearningModel:setParameters(discountFactor)
-
-	self.discountFactor = discountFactor or self.discountFactor
 
 end
 
@@ -148,9 +120,13 @@ function DeepDoubleQLearningModel:loadModelParametersFromModelParametersArray(in
 	
 end
 
-function DeepDoubleQLearningModel:generateLossVector(previousFeatureVector, action, rewardValue, currentFeatureVector, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+function DeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 	
 	local Model = self.Model
+	
+	local discountFactor = self.discountFactor
+	
+	local lambda = self.lambda
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
@@ -160,7 +136,7 @@ function DeepDoubleQLearningModel:generateLossVector(previousFeatureVector, acti
 
 	local _, maxQValue = Model:predict(currentFeatureVector)
 
-	local targetValue = rewardValue + (self.discountFactor * maxQValue[1][1])
+	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 	
 	local ClassesList = Model:getClassesList()
 	
@@ -171,12 +147,30 @@ function DeepDoubleQLearningModel:generateLossVector(previousFeatureVector, acti
 	local lastValue = previousVector[1][actionIndex]
 	
 	local temporalDifferenceError = targetValue - lastValue
-		
-	local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses, 0)
-
-	lossVector[1][actionIndex] = temporalDifferenceError
 	
-	return lossVector, temporalDifferenceError
+	local outputDimensionSizeArray = {1, numberOfClasses}
+		
+	local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+
+	temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
+	
+	if (lambda ~= 0) then
+
+		local eligibilityTrace = self.eligibilityTrace
+
+		if (not eligibilityTrace) then eligibilityTrace = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
+
+		eligibilityTrace = AqwamTensorLibrary:multiply(eligibilityTrace, discountFactor * lambda)
+
+		eligibilityTrace[1][actionIndex] = eligibilityTrace[1][actionIndex] + 1
+
+		temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTrace)
+
+		self.eligibilityTrace = eligibilityTrace
+
+	end
+	
+	return temporalDifferenceErrorVector, temporalDifferenceError
 	
 end
 
@@ -188,7 +182,7 @@ function DeepDoubleQLearningModel:setModelParameters1(ModelParameters1, doNotDee
 		
 	else
 		
-		self.ModelParametersArray[1] = deepCopyTable(ModelParameters1)
+		self.ModelParametersArray[1] = self:deepCopyTable(ModelParameters1)
 		
 	end
 
@@ -202,7 +196,7 @@ function DeepDoubleQLearningModel:setModelParameters2(ModelParameters2, doNotDee
 
 	else
 
-		self.ModelParametersArray[2] = deepCopyTable(ModelParameters2)
+		self.ModelParametersArray[2] = self:deepCopyTable(ModelParameters2)
 
 	end
 
@@ -216,7 +210,7 @@ function DeepDoubleQLearningModel:getModelParameters1(doNotDeepCopy)
 		
 	else
 		
-		return deepCopyTable(self.ModelParametersArray[1])
+		return self:deepCopyTable(self.ModelParametersArray[1])
 		
 	end
 
@@ -230,7 +224,7 @@ function DeepDoubleQLearningModel:getModelParameters2(doNotDeepCopy)
 
 	else
 
-		return deepCopyTable(self.ModelParametersArray[2])
+		return self:deepCopyTable(self.ModelParametersArray[2])
 
 	end
 

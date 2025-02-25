@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
@@ -36,7 +36,9 @@ DeepDoubleStateActionRewardStateActionModel.__index = DeepDoubleStateActionRewar
 
 setmetatable(DeepDoubleStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
 
-local defaultAveragingRate = 0.01
+local defaultAveragingRate = 0.995
+
+local defaultLambda = 0
 
 local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
 
@@ -44,11 +46,11 @@ local function rateAverageModelParameters(averagingRate, TargetModelParameters, 
 
 	for layer = 1, #TargetModelParameters, 1 do
 
-		local TargetModelParametersPart = AqwamMatrixLibrary:multiply(averagingRate, TargetModelParameters[layer])
+		local TargetModelParametersPart = AqwamTensorLibrary:multiply(averagingRate, TargetModelParameters[layer])
 
-		local PrimaryModelParametersPart = AqwamMatrixLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
+		local PrimaryModelParametersPart = AqwamTensorLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
 
-		TargetModelParameters[layer] = AqwamMatrixLibrary:add(TargetModelParametersPart, PrimaryModelParametersPart)
+		TargetModelParameters[layer] = AqwamTensorLibrary:add(TargetModelParametersPart, PrimaryModelParametersPart)
 
 	end
 
@@ -56,17 +58,29 @@ local function rateAverageModelParameters(averagingRate, TargetModelParameters, 
 
 end
 
-function DeepDoubleStateActionRewardStateActionModel.new(averagingRate, discountFactor)
+function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 
-	local NewDeepDoubleStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(discountFactor)
+	local NewDeepDoubleStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(parameterDictionary)
 
 	setmetatable(NewDeepDoubleStateActionRewardStateActionModel, DeepDoubleStateActionRewardStateActionModel)
+	
+	NewDeepDoubleStateActionRewardStateActionModel:setName("DeepDoubleStateActionRewardStateActionV2")
 
-	NewDeepDoubleStateActionRewardStateActionModel.averagingRate = averagingRate or defaultAveragingRate
+	NewDeepDoubleStateActionRewardStateActionModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
+	
+	NewDeepDoubleStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
 
-	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepDoubleStateActionRewardStateActionModel.eligibilityTrace = parameterDictionary.eligibilityTrace
+
+	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 		local Model = NewDeepDoubleStateActionRewardStateActionModel.Model
+		
+		local discountFactor = NewDeepDoubleStateActionRewardStateActionModel.discountFactor
+
+		local lambda = NewDeepDoubleStateActionRewardStateActionModel.lambda
 		
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
@@ -80,17 +94,37 @@ function DeepDoubleStateActionRewardStateActionModel.new(averagingRate, discount
 		
 		local qVector = Model:forwardPropagate(currentFeatureVector, true)
 
-		local discountedQVector = AqwamMatrixLibrary:multiply(NewDeepDoubleStateActionRewardStateActionModel.discountFactor, qVector)
+		local discountedQVector = AqwamTensorLibrary:multiply(discountFactor, qVector, (1 - terminalStateValue))
 
-		local targetVector = AqwamMatrixLibrary:add(rewardValue, discountedQVector)
+		local targetVector = AqwamTensorLibrary:add(rewardValue, discountedQVector)
 
 		local previousQVector = Model:forwardPropagate(previousFeatureVector)
 
-		local temporalDifferenceVector = AqwamMatrixLibrary:subtract(targetVector, previousQVector)
+		local temporalDifferenceErrorVector = AqwamTensorLibrary:subtract(targetVector, previousQVector)
+		
+		if (lambda ~= 0) then
+
+			local ClassesList = Model:getClassesList()
+
+			local actionIndex = table.find(ClassesList, action)
+
+			local eligibilityTrace = NewDeepDoubleStateActionRewardStateActionModel.eligibilityTrace
+
+			if (not eligibilityTrace) then eligibilityTrace = AqwamTensorLibrary:createTensor({1, #ClassesList}, 0) end
+
+			eligibilityTrace = AqwamTensorLibrary:multiply(eligibilityTrace, discountFactor * lambda)
+
+			eligibilityTrace[1][actionIndex] = eligibilityTrace[1][actionIndex] + 1
+
+			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTrace)
+
+			NewDeepDoubleStateActionRewardStateActionModel.eligibilityTrace = eligibilityTrace
+
+		end
 
 		Model:forwardPropagate(previousFeatureVector, true, true)
 
-		Model:backwardPropagate(temporalDifferenceVector, true)
+		Model:backwardPropagate(temporalDifferenceErrorVector, true)
 		
 		local TargetModelParameters = Model:getModelParameters(true)
 
@@ -98,23 +132,23 @@ function DeepDoubleStateActionRewardStateActionModel.new(averagingRate, discount
 
 		Model:setModelParameters(TargetModelParameters, true)
 		
-		return temporalDifferenceVector
+		return temporalDifferenceErrorVector
 
 	end)
 	
-	NewDeepDoubleStateActionRewardStateActionModel:setEpisodeUpdateFunction(function() end)
+	NewDeepDoubleStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+		
+		NewDeepDoubleStateActionRewardStateActionModel.eligibilityTrace = nil
+		
+	end)
 
-	NewDeepDoubleStateActionRewardStateActionModel:setResetFunction(function() end)
+	NewDeepDoubleStateActionRewardStateActionModel:setResetFunction(function()
+		
+		NewDeepDoubleStateActionRewardStateActionModel.eligibilityTrace = nil
+		
+	end)
 
 	return NewDeepDoubleStateActionRewardStateActionModel
-
-end
-
-function DeepDoubleStateActionRewardStateActionModel:setParameters(averagingRate, discountFactor)
-
-	self.discountFactor = discountFactor or self.discountFactor
-
-	self.averagingRate = averagingRate or self.averagingRate
 
 end
 

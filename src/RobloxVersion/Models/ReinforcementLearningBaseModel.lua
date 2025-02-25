@@ -26,27 +26,45 @@
 
 --]]
 
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
+
 ReinforcementLearningBaseModel = {}
 
 ReinforcementLearningBaseModel.__index = ReinforcementLearningBaseModel
 
+setmetatable(ReinforcementLearningBaseModel, BaseInstance)
+
 local defaultDiscountFactor = 0.95
 
-function ReinforcementLearningBaseModel.new(discountFactor)
+function ReinforcementLearningBaseModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 	
 	local NewReinforcementLearningBaseModel = {}
 	
 	setmetatable(NewReinforcementLearningBaseModel, ReinforcementLearningBaseModel)
 	
-	NewReinforcementLearningBaseModel.discountFactor = discountFactor or defaultDiscountFactor
+	NewReinforcementLearningBaseModel:setName("ReinforcementLearningBaseModel")
+
+	NewReinforcementLearningBaseModel:setClassName("ReinforcementLearningModel")
+	
+	NewReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
+	
+	NewReinforcementLearningBaseModel.Model = parameterDictionary.Model
 	
 	return NewReinforcementLearningBaseModel
 	
 end
 
-function ReinforcementLearningBaseModel:setParameters(discountFactor)
+function ReinforcementLearningBaseModel:setDiscountFactor(discountFactor)
+	
+	self.discountFactor = discountFactor
+	
+end
 
-	self.discountFactor =  discountFactor or self.discountFactor
+function ReinforcementLearningBaseModel:getDiscountFactor()
+	
+	return self.discountFactor
 	
 end
 
@@ -68,6 +86,12 @@ function ReinforcementLearningBaseModel:predict(featureVector, returnOriginalOut
 
 end
 
+function ReinforcementLearningBaseModel:getClassesList()
+	
+	return self.Model:getClassesList()
+	
+end
+
 function ReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
 
 	self.categoricalUpdateFunction = categoricalUpdateFunction
@@ -80,33 +104,35 @@ function ReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagon
 	
 end
 
-function ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 	
 	local categoricalUpdateFunction = self.categoricalUpdateFunction
 	
 	if (categoricalUpdateFunction) then
 		
-		return categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		return categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 	else
 		
-		error("The categorical update function is not implemented!")
+		error("The categorical update function is not implemented.")
 		
 	end
 
 end
 
-function ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
+function ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
 	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
 
 	if (diagonalGaussianUpdateFunction) then
+		
+		if (not actionStandardDeviationVector) then error("No action standard deviation vector.") end
 
-		return diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
+		return diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
 	else
 
-		error("The diagonal Gaussian update function is not implemented!")
+		error("The diagonal Gaussian update function is not implemented.")
 
 	end
 
@@ -118,17 +144,17 @@ function ReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFu
 
 end
 
-function ReinforcementLearningBaseModel:episodeUpdate()
+function ReinforcementLearningBaseModel:episodeUpdate(terminalStateValue)
 
 	local episodeUpdateFunction = self.episodeUpdateFunction
 	
 	if (episodeUpdateFunction) then
 		
-		return episodeUpdateFunction()
+		return episodeUpdateFunction(terminalStateValue)
 		
 	else
 		
-		error("The episode update function is not implemented!")
+		error("The episode update function is not implemented.")
 		
 	end
 
@@ -150,19 +176,9 @@ function ReinforcementLearningBaseModel:reset()
 		
 	else
 		
-		error("The reset function is not implemented!")
+		error("The reset function is not implemented.")
 		
 	end
-
-end
-
-function ReinforcementLearningBaseModel:destroy()
-
-	setmetatable(self, nil)
-
-	table.clear(self)
-
-	self = nil
 
 end
 

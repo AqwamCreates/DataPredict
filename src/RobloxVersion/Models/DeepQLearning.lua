@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
@@ -36,19 +36,33 @@ DeepQLearningModel.__index = DeepQLearningModel
 
 setmetatable(DeepQLearningModel, ReinforcementLearningBaseModel)
 
-function DeepQLearningModel.new(discountFactor)
+local defaultLambda = 0
 
-	local NewDeepQLearningModel = ReinforcementLearningBaseModel.new(discountFactor)
+function DeepQLearningModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+
+	local NewDeepQLearningModel = ReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewDeepQLearningModel, DeepQLearningModel)
 	
-	NewDeepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepQLearningModel:setName("DeepQLearning")
+	
+	NewDeepQLearningModel.lambda = parameterDictionary.lambda or defaultLambda
+	
+	NewDeepQLearningModel.eligibilityTrace = parameterDictionary.eligibilityTrace 
+	
+	NewDeepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 		local Model = NewDeepQLearningModel.Model
+		
+		local discountFactor = NewDeepQLearningModel.discountFactor
+		
+		local lambda = NewDeepQLearningModel.lambda
 
 		local _, maxQValue = Model:predict(currentFeatureVector)
 
-		local targetValue = rewardValue + (NewDeepQLearningModel.discountFactor * maxQValue[1][1])
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 		
 		local ClassesList = Model:getClassesList()
 
@@ -61,30 +75,50 @@ function DeepQLearningModel.new(discountFactor)
 		local lastValue = previousVector[1][actionIndex]
 
 		local temporalDifferenceError = targetValue - lastValue
+		
+		local outputDimensionSizeArray = {1, numberOfClasses}
 
-		local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses, 0)
+		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
-		lossVector[1][actionIndex] = temporalDifferenceError
+		temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
+		
+		if (lambda ~= 0) then
+			
+			local eligibilityTrace = NewDeepQLearningModel.eligibilityTrace
+			
+			if (not eligibilityTrace) then eligibilityTrace = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
+			
+			eligibilityTrace = AqwamTensorLibrary:multiply(eligibilityTrace, discountFactor * lambda)
+			
+			eligibilityTrace[1][actionIndex] = eligibilityTrace[1][actionIndex] + 1
+			
+			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTrace)
+			
+			NewDeepQLearningModel.eligibilityTrace = eligibilityTrace
+			
+		end
 		
 		Model:forwardPropagate(previousFeatureVector, true, true)
 
-		Model:backwardPropagate(lossVector, true)
+		Model:backwardPropagate(temporalDifferenceErrorVector, true)
 		
-		return temporalDifferenceError
+		return temporalDifferenceErrorVector
 
 	end)
 	
-	NewDeepQLearningModel:setEpisodeUpdateFunction(function() end)
+	NewDeepQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
+		
+		NewDeepQLearningModel.eligibilityTrace = nil
+		
+	end)
 
-	NewDeepQLearningModel:setResetFunction(function() end)
+	NewDeepQLearningModel:setResetFunction(function()
+		
+		NewDeepQLearningModel.eligibilityTrace = nil
+		
+	end)
 
 	return NewDeepQLearningModel
-
-end
-
-function DeepQLearningModel:setParameters(discountFactor)
-
-	self.discountFactor = discountFactor or self.discountFactor
 
 end
 

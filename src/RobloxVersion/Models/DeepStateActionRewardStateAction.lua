@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
@@ -36,37 +36,79 @@ DeepStateActionRewardStateActionModel.__index = DeepStateActionRewardStateAction
 
 setmetatable(DeepStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
 
-function DeepStateActionRewardStateActionModel.new(discountFactor)
+local defaultLambda = 0
 
-	local NewDeepStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(discountFactor)
+function DeepStateActionRewardStateActionModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+
+	local NewDeepStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(parameterDictionary)
 
 	setmetatable(NewDeepStateActionRewardStateActionModel, DeepStateActionRewardStateActionModel)
+	
+	NewDeepStateActionRewardStateActionModel:setName("DeepStateActionRewardStateAction")
+	
+	NewDeepStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
+	
+	NewDeepStateActionRewardStateActionModel.eligibilityTrace = parameterDictionary.eligibilityTrace
 
-	NewDeepStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 		local Model = NewDeepStateActionRewardStateActionModel.Model
+		
+		local discountFactor = NewDeepStateActionRewardStateActionModel.discountFactor
+		
+		local lambda = NewDeepStateActionRewardStateActionModel.lambda
 
 		local qVector = Model:forwardPropagate(currentFeatureVector)
 
-		local discountedQVector = AqwamMatrixLibrary:multiply(NewDeepStateActionRewardStateActionModel.discountFactor, qVector)
+		local discountedQVector = AqwamTensorLibrary:multiply(discountFactor, qVector, (1 - terminalStateValue))
 
-		local targetVector = AqwamMatrixLibrary:add(rewardValue, discountedQVector)
+		local targetQVector = AqwamTensorLibrary:add(rewardValue, discountedQVector)
 
 		local previousQVector = Model:forwardPropagate(previousFeatureVector)
 
-		local temporalDifferenceVector = AqwamMatrixLibrary:subtract(targetVector, previousQVector)
+		local temporalDifferenceErrorVector = AqwamTensorLibrary:subtract(targetQVector, previousQVector)
+		
+		if (lambda ~= 0) then
+			
+			local ClassesList = Model:getClassesList()
+			
+			local actionIndex = table.find(ClassesList, action)
+
+			local eligibilityTrace = NewDeepStateActionRewardStateActionModel.eligibilityTrace
+
+			if (not eligibilityTrace) then eligibilityTrace = AqwamTensorLibrary:createTensor({1, #ClassesList}, 0) end
+
+			eligibilityTrace = AqwamTensorLibrary:multiply(eligibilityTrace, discountFactor * lambda)
+
+			eligibilityTrace[1][actionIndex] = eligibilityTrace[1][actionIndex] + 1
+
+			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTrace)
+
+			NewDeepStateActionRewardStateActionModel.eligibilityTrace = eligibilityTrace
+
+		end
 		
 		Model:forwardPropagate(previousFeatureVector, true, true)
 
-		Model:backwardPropagate(temporalDifferenceVector, true)
+		Model:backwardPropagate(temporalDifferenceErrorVector, true)
 		
-		return temporalDifferenceVector
+		return temporalDifferenceErrorVector
 
 	end)
 	
-	NewDeepStateActionRewardStateActionModel:setEpisodeUpdateFunction(function() end)
+	NewDeepStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+		
+		NewDeepStateActionRewardStateActionModel.eligibilityTrace = nil
+		
+	end)
 	
-	NewDeepStateActionRewardStateActionModel:setResetFunction(function() end)
+	NewDeepStateActionRewardStateActionModel:setResetFunction(function() 
+		
+		NewDeepStateActionRewardStateActionModel.eligibilityTrace = nil
+		
+	end)
 
 	return NewDeepStateActionRewardStateActionModel
 

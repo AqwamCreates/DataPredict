@@ -26,15 +26,15 @@
 
 --]]
 
-local BaseModel = require(script.Parent.BaseModel)
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 SupportVectorMachineModel = {}
 
 SupportVectorMachineModel.__index = SupportVectorMachineModel
 
-setmetatable(SupportVectorMachineModel, BaseModel)
+setmetatable(SupportVectorMachineModel, IterativeMethodBaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -52,15 +52,21 @@ local defaultSigma = 1
 
 local defaultR = 0
 
+local seperatorFunction = function (x) 
+
+	return ((x > 0) and 1) or ((x < 0) and -1) or 0
+
+end
+
 local distanceFunctionList = {
 
 	["Manhattan"] = function (x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		part1 = AqwamMatrixLibrary:applyFunction(math.abs, part1)
+		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
 
-		local distance = AqwamMatrixLibrary:sum(part1)
+		local distance = AqwamTensorLibrary:sum(part1)
 
 		return distance 
 
@@ -68,11 +74,11 @@ local distanceFunctionList = {
 
 	["Euclidean"] = function (x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		local part2 = AqwamMatrixLibrary:power(part1, 2)
+		local part2 = AqwamTensorLibrary:power(part1, 2)
 
-		local part3 = AqwamMatrixLibrary:sum(part2)
+		local part3 = AqwamTensorLibrary:sum(part2)
 
 		local distance = math.sqrt(part3)
 
@@ -82,17 +88,17 @@ local distanceFunctionList = {
 	
 	["Cosine"] = function(x1, x2)
 
-		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
+		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
 
-		local x1MagnitudePart1 = AqwamMatrixLibrary:power(x1, 2)
+		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
 
-		local x1MagnitudePart2 = AqwamMatrixLibrary:sum(x1MagnitudePart1)
+		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
 
 		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
 
-		local x2MagnitudePart1 = AqwamMatrixLibrary:power(x2, 2)
+		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
 
-		local x2MagnitudePart2 = AqwamMatrixLibrary:sum(x2MagnitudePart1)
+		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
 
 		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
 
@@ -114,7 +120,7 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
 	local numberOfData2 = #matrix2
 
-	local distanceMatrix = AqwamMatrixLibrary:createMatrix(numberOfData1, numberOfData2)
+	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData1, numberOfData2})
 	
 	local distanceFunctionToApply = distanceFunctionList[distanceFunction]
 
@@ -148,11 +154,11 @@ local mappingList = {
 		
 		local r = kernelParameters.r or defaultR
 		
-		local scaledFeatureMatrix = AqwamMatrixLibrary:multiply(featureMatrix, gamma)
+		local scaledFeatureMatrix = AqwamTensorLibrary:multiply(featureMatrix, gamma)
 		
-		local addedFeatureMatrix = AqwamMatrixLibrary:add(scaledFeatureMatrix, r)
+		local addedFeatureMatrix = AqwamTensorLibrary:add(scaledFeatureMatrix, r)
 
-		return AqwamMatrixLibrary:power(addedFeatureMatrix, degree)
+		return AqwamTensorLibrary:power(addedFeatureMatrix, degree)
 
 	end,
 
@@ -160,15 +166,15 @@ local mappingList = {
 		
 		local sigma = kernelParameters.sigma or defaultSigma
 
-		local squaredFeatureMatrix = AqwamMatrixLibrary:power(featureMatrix, 2)
+		local squaredFeatureMatrix = AqwamTensorLibrary:power(featureMatrix, 2)
 
-		local squaredSigmaVector = AqwamMatrixLibrary:power(sigma, 2)
+		local squaredSigmaVector = AqwamTensorLibrary:power(sigma, 2)
 
-		local multipliedSquaredSigmaVector = AqwamMatrixLibrary:multiply(-2, squaredSigmaVector)
+		local multipliedSquaredSigmaVector = AqwamTensorLibrary:multiply(-2, squaredSigmaVector)
 
-		local zMatrix = AqwamMatrixLibrary:divide(squaredFeatureMatrix, multipliedSquaredSigmaVector)
+		local zMatrix = AqwamTensorLibrary:divide(squaredFeatureMatrix, multipliedSquaredSigmaVector)
 
-		return AqwamMatrixLibrary:applyFunction(math.exp, zMatrix)
+		return AqwamTensorLibrary:applyFunction(math.exp, zMatrix)
 
 	end,
 	
@@ -178,11 +184,11 @@ local mappingList = {
 
 		local r = kernelParameters.r or defaultR
 		
-		local kernelMappingMatrixPart1 = AqwamMatrixLibrary:multiply(gamma, featureMatrix)
+		local kernelMappingMatrixPart1 = AqwamTensorLibrary:multiply(gamma, featureMatrix)
 
-		local kernelMappingMatrixPart2 = AqwamMatrixLibrary:add(kernelMappingMatrixPart1, r)
+		local kernelMappingMatrixPart2 = AqwamTensorLibrary:add(kernelMappingMatrixPart1, r)
 
-		local kernelMappingMatrix = AqwamMatrixLibrary:applyFunction(math.tanh, kernelMappingMatrixPart2)
+		local kernelMappingMatrix = AqwamTensorLibrary:applyFunction(math.tanh, kernelMappingMatrixPart2)
 		
 		return kernelMappingMatrix
 
@@ -190,11 +196,11 @@ local mappingList = {
 	
 	["Cosine"] = function(featureMatrix, kernelParameters)
 		
-		local zeroMatrix = AqwamMatrixLibrary:createMatrix(1, #featureMatrix[1])
+		local zeroMatrix = AqwamTensorLibrary:createTensor({1, #featureMatrix[1]}, 0)
 
 		local distanceMatrix = createDistanceMatrix(featureMatrix, zeroMatrix, "Euclidean")
 
-		local kernelMappingMatrix = AqwamMatrixLibrary:divide(featureMatrix, distanceMatrix)
+		local kernelMappingMatrix = AqwamTensorLibrary:divide(featureMatrix, distanceMatrix)
 
 		return kernelMappingMatrix
 
@@ -206,7 +212,7 @@ local kernelFunctionList = {
 
 	["Linear"] = function(featureMatrix)
 
-		local kernelMatrix = AqwamMatrixLibrary:dotProduct(featureMatrix, AqwamMatrixLibrary:transpose(featureMatrix))
+		local kernelMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, AqwamTensorLibrary:transpose(featureMatrix))
 
 		return kernelMatrix
 
@@ -220,13 +226,13 @@ local kernelFunctionList = {
 
 		local r = kernelParameters.r or defaultR
 
-		local dotProductedFeatureMatrix = AqwamMatrixLibrary:dotProduct(featureMatrix, AqwamMatrixLibrary:transpose(featureMatrix))
+		local dotProductedFeatureMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, AqwamTensorLibrary:transpose(featureMatrix))
 
-		local scaledDotProductedFeatureMatrix = AqwamMatrixLibrary:multiply(dotProductedFeatureMatrix, gamma)
+		local scaledDotProductedFeatureMatrix = AqwamTensorLibrary:multiply(dotProductedFeatureMatrix, gamma)
 
-		local addedFeatureMatrix = AqwamMatrixLibrary:add(scaledDotProductedFeatureMatrix, r)
+		local addedFeatureMatrix = AqwamTensorLibrary:add(scaledDotProductedFeatureMatrix, r)
 
-		local kernelMatrix = AqwamMatrixLibrary:power(addedFeatureMatrix, degree)
+		local kernelMatrix = AqwamTensorLibrary:power(addedFeatureMatrix, degree)
 
 		return kernelMatrix
 
@@ -238,15 +244,15 @@ local kernelFunctionList = {
 
 		local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, "Euclidean")
 
-		local squaredDistanceMatrix = AqwamMatrixLibrary:power(distanceMatrix, 2)
+		local squaredDistanceMatrix = AqwamTensorLibrary:power(distanceMatrix, 2)
 
-		local sigmaSquaredVector = AqwamMatrixLibrary:power(sigma, 2)
+		local sigmaSquaredVector = AqwamTensorLibrary:power(sigma, 2)
 
-		local multipliedSigmaSquaredVector = AqwamMatrixLibrary:multiply(-2, sigmaSquaredVector)
+		local multipliedSigmaSquaredVector = AqwamTensorLibrary:multiply(-2, sigmaSquaredVector)
 
-		local zMatrix = AqwamMatrixLibrary:divide(squaredDistanceMatrix, multipliedSigmaSquaredVector)
+		local zMatrix = AqwamTensorLibrary:divide(squaredDistanceMatrix, multipliedSigmaSquaredVector)
 
-		local kernelMatrix = AqwamMatrixLibrary:applyFunction(math.exp, zMatrix)
+		local kernelMatrix = AqwamTensorLibrary:applyFunction(math.exp, zMatrix)
 
 		return kernelMatrix
 
@@ -258,13 +264,13 @@ local kernelFunctionList = {
 
 		local r = kernelParameters.r or defaultR
 
-		local dotProductedFeatureMatrix = AqwamMatrixLibrary:dotProduct(featureMatrix, AqwamMatrixLibrary:transpose(featureMatrix))
+		local dotProductedFeatureMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, AqwamTensorLibrary:transpose(featureMatrix))
 
-		local kernelMatrixPart1 = AqwamMatrixLibrary:multiply(gamma, dotProductedFeatureMatrix)
+		local kernelMatrixPart1 = AqwamTensorLibrary:multiply(gamma, dotProductedFeatureMatrix)
 
-		local kernelMatrixPart2 = AqwamMatrixLibrary:add(kernelMatrixPart1, r)
+		local kernelMatrixPart2 = AqwamTensorLibrary:add(kernelMatrixPart1, r)
 
-		local kernelMatrix = AqwamMatrixLibrary:applyFunction(math.tanh, kernelMatrixPart2)
+		local kernelMatrix = AqwamTensorLibrary:applyFunction(math.tanh, kernelMatrixPart2)
 
 		return kernelMatrix
 
@@ -272,13 +278,13 @@ local kernelFunctionList = {
 
 	["Cosine"] = function(featureMatrix, kernelParameters)
 		
-		local zeroMatrix = AqwamMatrixLibrary:createMatrix(1, #featureMatrix[1])
+		local zeroMatrix = AqwamTensorLibrary:createTensor({1, #featureMatrix[1]}, 0)
 
 		local distanceMatrix = createDistanceMatrix(featureMatrix, zeroMatrix, "Euclidean")
 
-		local kernelMappingMatrix = AqwamMatrixLibrary:divide(featureMatrix, distanceMatrix)
+		local kernelMappingMatrix = AqwamTensorLibrary:divide(featureMatrix, distanceMatrix)
 		
-		local kernelMatrix = AqwamMatrixLibrary:dotProduct(kernelMappingMatrix, AqwamMatrixLibrary:transpose(kernelMappingMatrix))
+		local kernelMatrix = AqwamTensorLibrary:dotProduct(kernelMappingMatrix, AqwamTensorLibrary:transpose(kernelMappingMatrix))
 
 		return kernelMatrix
 
@@ -290,37 +296,37 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 	
 	-- The dotProduct() only takes two arguments here to reduce computational time
 	
-	local predictedVector = AqwamMatrixLibrary:dotProduct(individualKernelMatrix, modelParameters)
+	local predictedVector = AqwamTensorLibrary:dotProduct(individualKernelMatrix, modelParameters)
 	
-	local costVector = AqwamMatrixLibrary:subtract(predictedVector, labelVector)
+	local costVector = AqwamTensorLibrary:subtract(predictedVector, labelVector)
 	
-	costVector = AqwamMatrixLibrary:multiply(-cValue, costVector)
+	costVector = AqwamTensorLibrary:multiply(-cValue, costVector)
 	
-	local transposedCostVector = AqwamMatrixLibrary:transpose(costVector)
+	local transposedCostVector = AqwamTensorLibrary:transpose(costVector)
 	
-	local transposedLabelVector = AqwamMatrixLibrary:transpose(labelVector)
+	local transposedLabelVector = AqwamTensorLibrary:transpose(labelVector)
 	
-	local costPart1 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix)
+	local costPart1 = AqwamTensorLibrary:dotProduct(transposedCostVector, kernelMatrix)
 	
-	costPart1 = AqwamMatrixLibrary:dotProduct(costPart1, kernelMatrix)
+	costPart1 = AqwamTensorLibrary:dotProduct(costPart1, kernelMatrix)
 	
-	costPart1 = AqwamMatrixLibrary:dotProduct(costPart1, costVector)
+	costPart1 = AqwamTensorLibrary:dotProduct(costPart1, costVector)
 	
-	costPart1 /= 2
+	costPart1 = costPart1 / 2
 	
-	local costPart2 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix)
+	local costPart2 = AqwamTensorLibrary:dotProduct(transposedCostVector, kernelMatrix)
 	
-	costPart2 = AqwamMatrixLibrary:dotProduct(costPart2, labelVector)
+	costPart2 = AqwamTensorLibrary:dotProduct(costPart2, labelVector)
 	
-	local costPart3 = AqwamMatrixLibrary:dotProduct(transposedLabelVector, labelVector)
+	local costPart3 = AqwamTensorLibrary:dotProduct(transposedLabelVector, labelVector)
 	
-	costPart3 /= 2
+	costPart3 = costPart3 / 2
 	
-	local costPart4 = AqwamMatrixLibrary:dotProduct(transposedCostVector, kernelMatrix)
+	local costPart4 = AqwamTensorLibrary:dotProduct(transposedCostVector, kernelMatrix)
 	
-	costPart4 = AqwamMatrixLibrary:dotProduct(costPart4, costVector)
+	costPart4 = AqwamTensorLibrary:dotProduct(costPart4, costVector)
 	
-	costPart4 /= (2 * cValue)
+	costPart4 = costPart4 / (2 * cValue)
 	
 	local cost = costPart1 - costPart2 + costPart3 + costPart4
 	
@@ -330,47 +336,39 @@ end
 
 local function calculateModelParameters(modelParameters, individualkernelMatrix, labelVector, cValue)
 
-	local predictionVector = AqwamMatrixLibrary:dotProduct(individualkernelMatrix, modelParameters) -- m x 1
+	local predictionVector = AqwamTensorLibrary:dotProduct(individualkernelMatrix, modelParameters) -- m x 1
 	
-	local errorVector = AqwamMatrixLibrary:subtract(predictionVector, labelVector) -- m x 1
+	local errorVector = AqwamTensorLibrary:subtract(predictionVector, labelVector) -- m x 1
 	
-	local transposedKernelMatrix = AqwamMatrixLibrary:transpose(individualkernelMatrix)
+	local transposedKernelMatrix = AqwamTensorLibrary:transpose(individualkernelMatrix)
 	
-	local dotProductErrorVector = AqwamMatrixLibrary:dotProduct(transposedKernelMatrix, errorVector) -- n x m, m x 1
+	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedKernelMatrix, errorVector) -- n x m, m x 1
 	
-	local NewModelParameters = AqwamMatrixLibrary:multiply(-cValue, dotProductErrorVector)
+	local NewModelParameters = AqwamTensorLibrary:multiply(-cValue, dotProductErrorVector)
 
 	return NewModelParameters
 
 end
 
-function SupportVectorMachineModel.new(maximumNumberOfIterations, cValue, kernelFunction, kernelParameters)
+function SupportVectorMachineModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewSupportVectorMachine = BaseModel.new()
+	local NewSupportVectorMachine = IterativeMethodBaseModel.new(parameterDictionary)
 
 	setmetatable(NewSupportVectorMachine, SupportVectorMachineModel)
+	
+	NewSupportVectorMachine:setName("SupportVectorMachine")
+	
+	NewSupportVectorMachine.cValue = parameterDictionary.cValue or defaultCvalue
 
-	NewSupportVectorMachine.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	NewSupportVectorMachine.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
 
-	NewSupportVectorMachine.cValue = cValue or defaultCvalue
-
-	NewSupportVectorMachine.kernelFunction = kernelFunction or defaultKernelFunction
-
-	NewSupportVectorMachine.kernelParameters = kernelParameters or {}
+	NewSupportVectorMachine.kernelParameters = parameterDictionary.kernelParameters or {}
 
 	return NewSupportVectorMachine
-end
-
-function SupportVectorMachineModel:setParameters(maximumNumberOfIterations, cValue, kernelFunction, kernelParameters)
-
-	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
-
-	self.cValue = cValue or self.cValue
-
-	self.kernelFunction = kernelFunction or self.kernelFunction
-
-	self.kernelParameters = kernelParameters or self.kernelParameters
-
 end
 
 function SupportVectorMachineModel:setCValue(cValue)
@@ -397,7 +395,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 	else
 
-		self.ModelParameters = self:initializeMatrixBasedOnMode(#featureMatrix[1], 1)
+		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
 
 	end
 
@@ -406,6 +404,8 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	local costArray = {}
 
 	local numberOfIterations = 0
+	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
 	local costFunctionDerivatives
 
@@ -415,7 +415,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	
 	repeat
 		
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 
 		self:iterationWait()
 		
@@ -429,13 +429,13 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 			
 			table.insert(costArray, cost)
 
-			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 			
 		end
 
 		self.ModelParameters = calculateModelParameters(self.ModelParameters, mappedFeatureMatrix, labelVector, self.cValue)
 
-	until (numberOfIterations == self.maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	if (cost == math.huge) then
 
@@ -451,19 +451,13 @@ function SupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
 
 	local mappedFeatureMatrix = mappingList[self.kernelFunction](featureMatrix, self.kernelParameters)
 
-	local originalPredictedVector = AqwamMatrixLibrary:dotProduct(mappedFeatureMatrix, self.ModelParameters)
+	local originalPredictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, self.ModelParameters)
 
 	if (typeof(originalPredictedVector) == "number") then originalPredictedVector = {{originalPredictedVector}} end
 
-	if (returnOriginalOutput == true) then return originalPredictedVector end
+	if (returnOriginalOutput) then return originalPredictedVector end
 
-	local seperatorFunction = function (x) 
-		
-		return ((x > 0) and 1) or ((x < 0) and -1) or 0
-		
-	end
-
-	local predictedVector = AqwamMatrixLibrary:applyFunction(seperatorFunction, originalPredictedVector)
+	local predictedVector = AqwamTensorLibrary:applyFunction(seperatorFunction, originalPredictedVector)
 
 	return predictedVector
 

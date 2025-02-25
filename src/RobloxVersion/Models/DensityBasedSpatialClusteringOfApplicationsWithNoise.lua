@@ -1,12 +1,40 @@
-local BaseModel = require(script.Parent.BaseModel)
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine And Deep Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 DensityBasedSpatialClusteringOfApplicationsWithNoiseModel = {}
 
 DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.__index = DensityBasedSpatialClusteringOfApplicationsWithNoiseModel
 
-setmetatable(DensityBasedSpatialClusteringOfApplicationsWithNoiseModel, BaseModel)
+setmetatable(DensityBasedSpatialClusteringOfApplicationsWithNoiseModel, IterativeMethodBaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMinimumNumberOfPoints = 2
 
@@ -18,9 +46,9 @@ local distanceFunctionList = {
 
 	["Manhattan"] = function (x1, x2)
 		
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 		
-		local part2 = AqwamMatrixLibrary:sum(part1)
+		local part2 = AqwamTensorLibrary:sum(part1)
 		
 		local distance = math.abs(part2)
 		
@@ -30,11 +58,11 @@ local distanceFunctionList = {
 
 	["Euclidean"] = function (x1, x2)
 		
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 		
-		local part2 = AqwamMatrixLibrary:power(part1, 2)
+		local part2 = AqwamTensorLibrary:power(part1, 2)
 		
-		local part3 = AqwamMatrixLibrary:sum(part2)
+		local part3 = AqwamTensorLibrary:sum(part2)
 		
 		local distance = math.sqrt(part3)
 		
@@ -44,17 +72,17 @@ local distanceFunctionList = {
 	
 	["Cosine"] = function(x1, x2)
 
-		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
+		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
 
-		local x1MagnitudePart1 = AqwamMatrixLibrary:power(x1, 2)
+		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
 
-		local x1MagnitudePart2 = AqwamMatrixLibrary:sum(x1MagnitudePart1)
+		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
 
 		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
 
-		local x2MagnitudePart1 = AqwamMatrixLibrary:power(x2, 2)
+		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
 
-		local x2MagnitudePart2 = AqwamMatrixLibrary:sum(x2MagnitudePart1)
+		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
 
 		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
 
@@ -186,30 +214,23 @@ local function calculateCost(featureMatrix, clusters, distanceFunction)
 	
 end
 
-
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.new(epsilon, minimumNumberOfPoints, distanceFunction)
+function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.new(parameterDictionary)
 	
-	local NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel = BaseModel.new()
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel = IterativeMethodBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel, DensityBasedSpatialClusteringOfApplicationsWithNoiseModel)
 	
-	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.minimumNumberOfPoints = minimumNumberOfPoints or defaultMinimumNumberOfPoints
+	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel:setName("DensityBasedSpatialClusteringOfApplicationsWithNoise")
 	
-	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.epsilon = epsilon or defaultEpsilon
+	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.minimumNumberOfPoints = parameterDictionary.minimumNumberOfPoints or defaultMinimumNumberOfPoints
+	
+	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
-	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.distanceFunction = distanceFunction or defaultDistanceFunction
+	NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 	
 	return NewDensityBasedSpatialClusteringOfApplicationsWithNoiseModel
-	
-end
-
-function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:setParameters(epsilon, minimumNumberOfPoints, distanceFunction)
-	
-	self.minimumNumberOfPoints = minimumNumberOfPoints or defaultMinimumNumberOfPoints
-
-	self.epsilon = epsilon or defaultEpsilon
-
-	self.distanceFunction = distanceFunction or defaultDistanceFunction
 	
 end
 
@@ -221,7 +242,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 
 		if (#storedFeatureMatrix[1] ~= #featureMatrix[1]) then error("The previous and current feature matrices do not have the same number of features.") end 
 
-		featureMatrix = AqwamMatrixLibrary:verticalConcatenate(featureMatrix, storedFeatureMatrix)
+		featureMatrix = AqwamTensorLibrary:concatenate(featureMatrix, storedFeatureMatrix, 1)
 
 	end
 	
@@ -263,7 +284,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 				
 			else
 				
-				neighbouringCorePointNumber  = #clusters + 1
+				neighbouringCorePointNumber = #clusters + 1
 				
 				expandCluster(currentCorePointNumber, neighbors, neighbouringCorePointNumber, clusters, hasVisitedCorePointNumberArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunction)
 				
@@ -281,7 +302,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 			
 			table.insert(costArray, cost)
 
-			self:printCostAndNumberOfIterations(cost, currentCorePointNumber)
+			self:printNumberOfIterationsAndCost(currentCorePointNumber, cost)
 
 			if self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
 			
@@ -299,9 +320,11 @@ end
 
 function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featureMatrix)
 	
-	local shortestDistanceVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
+	local numberOfData = #featureMatrix
+	
+	local shortestDistanceVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
 
-	local closestClusterVector = AqwamMatrixLibrary:createMatrix(#featureMatrix, 1)
+	local closestClusterVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
 	
 	local storedFeatureVector, cluster = table.unpack(self.ModelParameters)
 	

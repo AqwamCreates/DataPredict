@@ -34,7 +34,7 @@ LogisticRegressionModel.__index = LogisticRegressionModel
 
 setmetatable(LogisticRegressionModel, GradientMethodBaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -194,33 +194,27 @@ function LogisticRegressionModel:update(lossMatrix, clearFeatureMatrix)
 
 end
 
-function LogisticRegressionModel.new(maximumNumberOfIterations, learningRate, sigmoidFunction)
+function LogisticRegressionModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewLogisticRegressionModel = GradientMethodBaseModel.new()
+	local NewLogisticRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
 
 	setmetatable(NewLogisticRegressionModel, LogisticRegressionModel)
+	
+	NewLogisticRegressionModel:setName("LogisticRegression")
 
-	NewLogisticRegressionModel.maximumNumberOfIterations = maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	NewLogisticRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 
-	NewLogisticRegressionModel.learningRate = learningRate or defaultLearningRate
+	NewLogisticRegressionModel.sigmoidFunction = parameterDictionary.sigmoidFunction or defaultSigmoidFunction
 
-	NewLogisticRegressionModel.sigmoidFunction = sigmoidFunction or defaultSigmoidFunction
+	NewLogisticRegressionModel.Optimizer = parameterDictionary.Optimizer
 
-	NewLogisticRegressionModel.Optimizer = nil
-
-	NewLogisticRegressionModel.Regularizer = nil
+	NewLogisticRegressionModel.Regularizer = parameterDictionary.Regularizer
 
 	return NewLogisticRegressionModel
-
-end
-
-function LogisticRegressionModel:setParameters(maximumNumberOfIterations, learningRate, sigmoidFunction)
-
-	self.maximumNumberOfIterations = maximumNumberOfIterations or self.maximumNumberOfIterations
-
-	self.learningRate = learningRate or self.learningRate
-
-	self.sigmoidFunction = sigmoidFunction or self.sigmoidFunction
 
 end
 
@@ -260,13 +254,13 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 	else
 
-		self.ModelParameters = self:initializeMatrixBasedOnMode(#featureMatrix[1], 1)
+		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
 
 	end
 
 	repeat
 
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 
 		self:iterationWait()
 
@@ -282,7 +276,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 			table.insert(costArray, cost)
 
-			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 
 		end
 
@@ -304,7 +298,7 @@ function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
 
 	local outputVector = self:calculateHypothesisVector(featureMatrix, false)
 
-	if (returnOriginalOutput == true) then return outputVector end
+	if (returnOriginalOutput) then return outputVector end
 
 	local cutOffFunction = cutOffFunctionList[self.sigmoidFunction]
 

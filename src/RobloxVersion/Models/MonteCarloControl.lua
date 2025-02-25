@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
@@ -54,17 +54,19 @@ local function calculateRewardToGo(rewardValueHistory, discountFactor)
 
 end
 
-function MonteCarloControlModel.new(discountFactor)
+function MonteCarloControlModel.new(parameterDictionary)
 
-	local NewMonteCarloControlModel = ReinforcementLearningBaseModel.new(discountFactor)
+	local NewMonteCarloControlModel = ReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewMonteCarloControlModel, MonteCarloControlModel)
+	
+	NewMonteCarloControlModel:setName("MonteCarloControl")
 	
 	local actionVectorHistory = {}
 	
 	local rewardValueHistory = {}
 	
-	NewMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
 		local actionVector = NewMonteCarloControlModel.Model:forwardPropagate(previousFeatureVector)
 
@@ -74,55 +76,27 @@ function MonteCarloControlModel.new(discountFactor)
 
 	end)
 	
-	NewMonteCarloControlModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
-
-		local randomNormalVector = AqwamMatrixLibrary:createRandomNormalMatrix(1, #actionMeanVector[1])
-
-		local actionVectorPart1 = AqwamMatrixLibrary:multiply(actionStandardDeviationVector, randomNormalVector)
-
-		local actionVector = AqwamMatrixLibrary:add(actionMeanVector, actionVectorPart1)
-
-		local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(actionVector, actionMeanVector)
-
-		local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, actionStandardDeviationVector)
-
-		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
-
-		local logActionProbabilityVectorPart1 = AqwamMatrixLibrary:logarithm(actionStandardDeviationVector)
-
-		local logActionProbabilityVectorPart2 = AqwamMatrixLibrary:multiply(2, logActionProbabilityVectorPart1)
-
-		local logActionProbabilityVectorPart3 = AqwamMatrixLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
-
-		local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
-
-		table.insert(actionVectorHistory, logActionProbabilityVector)
-
-		table.insert(rewardValueHistory, rewardValue)
-
-	end)
-	
-	NewMonteCarloControlModel:setEpisodeUpdateFunction(function()
+	NewMonteCarloControlModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
 		local Model = NewMonteCarloControlModel.Model
 		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewMonteCarloControlModel.discountFactor)
 		
-		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, #actionVectorHistory[1], 0)
+		local sumLossVector = AqwamTensorLibrary:createMatrix(1, #actionVectorHistory[1], 0)
 		
 		for h, actionVector in ipairs(actionVectorHistory) do
 			
-			local lossVector = AqwamMatrixLibrary:subtract(rewardToGoArray[h], actionVector)
+			local lossVector = AqwamTensorLibrary:subtract(rewardToGoArray[h], actionVector)
 
-			sumLossVector = AqwamMatrixLibrary:add(sumLossVector, lossVector)
+			sumLossVector = AqwamTensorLibrary:add(sumLossVector, lossVector)
 			
 		end	
 		
 		local numberOfFeatures = Model:getTotalNumberOfNeurons(1)
 
-		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+		local featureVector = AqwamTensorLibrary:createMatrix(1, numberOfFeatures, 1)
 
-		local meanLossVector = AqwamMatrixLibrary:divide(sumLossVector, #actionVectorHistory)
+		local meanLossVector = AqwamTensorLibrary:divide(sumLossVector, #actionVectorHistory)
 		
 		Model:forwardPropagate(featureVector, true, true)
 
@@ -143,12 +117,6 @@ function MonteCarloControlModel.new(discountFactor)
 	end)
 	
 	return NewMonteCarloControlModel
-
-end
-
-function MonteCarloControlModel:setParameters(discountFactor)
-
-	self.discountFactor = discountFactor or self.discountFactor
 
 end
 

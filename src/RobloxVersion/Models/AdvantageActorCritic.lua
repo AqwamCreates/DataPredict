@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
 
@@ -36,35 +36,43 @@ AdvantageActorCriticModel.__index = AdvantageActorCriticModel
 
 setmetatable(AdvantageActorCriticModel, ReinforcementLearningActorCriticBaseModel)
 
-local function calculateProbability(vector)
+local defaultLambda = 0
 
-	local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(vector)
+local function calculateProbability(valueVector)
 
-	local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+	local zScoreVector, standardDeviationVector = AqwamTensorLibrary:zScoreNormalization(valueVector, 2)
 
-	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, squaredZScoreVector)
+	local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
 
-	local probabilityVectorPart2 = AqwamMatrixLibrary:exponent(probabilityVectorPart1)
+	local probabilityVectorPart1 = AqwamTensorLibrary:multiply(-0.5, squaredZScoreVector)
 
-	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+	local probabilityVectorPart2 = AqwamTensorLibrary:exponent(probabilityVectorPart1)
 
-	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
+	local probabilityVectorPart3 = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+
+	local probabilityVector = AqwamTensorLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
 
 	return probabilityVector
 
 end
 
-function AdvantageActorCriticModel.new(discountFactor)
+function AdvantageActorCriticModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 
-	local NewAdvantageActorCriticModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
+	local NewAdvantageActorCriticModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewAdvantageActorCriticModel, AdvantageActorCriticModel)
+	
+	NewAdvantageActorCriticModel:setName("AdvantageActorCritic")
+	
+	NewAdvantageActorCriticModel.lambda = parameterDictionary.lambda or defaultLambda
 	
 	local advantageValueHistory = {}
 
 	local actionProbabilityVectorHistory = {}
 	
-	NewAdvantageActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewAdvantageActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 		local CriticModel = NewAdvantageActorCriticModel.CriticModel
 		
@@ -76,9 +84,9 @@ function AdvantageActorCriticModel.new(discountFactor)
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 		
-		local advantageValue = rewardValue + (NewAdvantageActorCriticModel.discountFactor * currentCriticValue) - previousCriticValue
+		local advantageValue = rewardValue + (NewAdvantageActorCriticModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
 
-		local logActionProbabilityVector = AqwamMatrixLibrary:logarithm(actionProbabilityVector)
+		local logActionProbabilityVector = AqwamTensorLibrary:logarithm(actionProbabilityVector)
 		
 		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
@@ -88,35 +96,35 @@ function AdvantageActorCriticModel.new(discountFactor)
 
 	end)
 	
-	NewAdvantageActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
+	NewAdvantageActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
+		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
+		
 		local CriticModel = NewAdvantageActorCriticModel.CriticModel
 
-		local randomNormalVector = AqwamMatrixLibrary:createRandomNormalMatrix(1, #actionMeanVector[1])
+		local actionVectorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
 
-		local actionVectorPart1 = AqwamMatrixLibrary:multiply(actionStandardDeviationVector, randomNormalVector)
+		local actionVector = AqwamTensorLibrary:add(actionMeanVector, actionVectorPart1)
 
-		local actionVector = AqwamMatrixLibrary:add(actionMeanVector, actionVectorPart1)
+		local zScoreVectorPart1 = AqwamTensorLibrary:subtract(actionVector, actionMeanVector)
 
-		local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(actionVector, actionMeanVector)
+		local zScoreVector = AqwamTensorLibrary:divide(zScoreVectorPart1, actionStandardDeviationVector)
 
-		local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, actionStandardDeviationVector)
+		local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
 
-		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+		local logActionProbabilityVectorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationVector)
 
-		local logActionProbabilityVectorPart1 = AqwamMatrixLibrary:logarithm(actionStandardDeviationVector)
+		local logActionProbabilityVectorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityVectorPart1)
 
-		local logActionProbabilityVectorPart2 = AqwamMatrixLibrary:multiply(2, logActionProbabilityVectorPart1)
+		local logActionProbabilityVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
 
-		local logActionProbabilityVectorPart3 = AqwamMatrixLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
-
-		local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
+		local logActionProbabilityVector = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
 		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
-		local advantageValue = rewardValue + (NewAdvantageActorCriticModel.discountFactor * currentCriticValue) - previousCriticValue
+		local advantageValue = rewardValue + (NewAdvantageActorCriticModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
 		
 		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
@@ -126,24 +134,42 @@ function AdvantageActorCriticModel.new(discountFactor)
 
 	end)
 
-	NewAdvantageActorCriticModel:setEpisodeUpdateFunction(function()
+	NewAdvantageActorCriticModel:setEpisodeUpdateFunction(function(terminalStateValue)
 
-		local historyLength = #advantageValueHistory
+		local sumActorLossVector = AqwamTensorLibrary:createTensor({1, #actionProbabilityVectorHistory[1]}, 0)
+		
+		local lambda = NewAdvantageActorCriticModel.lambda
+		
+		if (lambda ~= 0) then
+			
+			local generalizedAdvantageEstimationValue = 0
 
-		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #actionProbabilityVectorHistory[1], 0)
+			local generalizedAdvantageEstimationHistory = {}
+			
+			local discountFactor = NewAdvantageActorCriticModel.discountFactor
+			
+			for t = #advantageValueHistory, 1, -1 do
+				
+				generalizedAdvantageEstimationValue = advantageValueHistory[t] + (discountFactor * lambda * generalizedAdvantageEstimationValue)
+				
+				table.insert(generalizedAdvantageEstimationHistory, 1, generalizedAdvantageEstimationValue) -- Insert at the beginning to maintain order
 
+			end
+			
+			advantageValueHistory = generalizedAdvantageEstimationHistory
+			
+		end
+		
 		local sumCriticLoss = 0
-
-		for h = 1, historyLength, 1 do
-
-			local advantageValue = advantageValueHistory[h]
-
-			local actorLossVector = AqwamMatrixLibrary:multiply(actionProbabilityVectorHistory[h], advantageValue)
+		
+		for h, advantageValue in ipairs(advantageValueHistory) do
+			
+			local actorLossVector = AqwamTensorLibrary:multiply(actionProbabilityVectorHistory[h], advantageValue)
 
 			sumCriticLoss = sumCriticLoss + advantageValue
-			
-			sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
 
+			sumActorLossVector = AqwamTensorLibrary:add(sumActorLossVector, actorLossVector)
+			
 		end
 		
 		local ActorModel = NewAdvantageActorCriticModel.ActorModel
@@ -152,9 +178,9 @@ function AdvantageActorCriticModel.new(discountFactor)
 
 		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
 
-		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+		local featureVector = AqwamTensorLibrary:createTensor({1, numberOfFeatures}, 1)
 		
-		sumActorLossVector = AqwamMatrixLibrary:unaryMinus(sumActorLossVector)
+		sumActorLossVector = AqwamTensorLibrary:unaryMinus(sumActorLossVector)
 
 		ActorModel:forwardPropagate(featureVector, true, true)
 		
@@ -162,7 +188,7 @@ function AdvantageActorCriticModel.new(discountFactor)
 
 		ActorModel:backwardPropagate(sumActorLossVector, true)
 		
-		CriticModel:backwardPropagate(-sumCriticLoss, true)
+		CriticModel:backwardPropagate(sumCriticLoss, true)
 		
 		table.clear(actionProbabilityVectorHistory)
 

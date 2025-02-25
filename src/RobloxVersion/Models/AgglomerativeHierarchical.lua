@@ -26,15 +26,15 @@
 
 --]]
 
-local BaseModel = require(script.Parent.BaseModel)
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 AgglomerativeHierarchicalModel = {}
 
 AgglomerativeHierarchicalModel.__index = AgglomerativeHierarchicalModel
 
-setmetatable(AgglomerativeHierarchicalModel, BaseModel)
+setmetatable(AgglomerativeHierarchicalModel, IterativeMethodBaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultNumberOfCentroids = 1
 
@@ -48,11 +48,11 @@ local distanceFunctionList = {
 
 	["Manhattan"] = function (x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		part1 = AqwamMatrixLibrary:applyFunction(math.abs, part1)
+		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
 
-		local distance = AqwamMatrixLibrary:sum(part1)
+		local distance = AqwamTensorLibrary:sum(part1)
 
 		return distance 
 
@@ -60,11 +60,11 @@ local distanceFunctionList = {
 
 	["Euclidean"] = function (x1, x2)
 
-		local part1 = AqwamMatrixLibrary:subtract(x1, x2)
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
 
-		local part2 = AqwamMatrixLibrary:power(part1, 2)
+		local part2 = AqwamTensorLibrary:power(part1, 2)
 
-		local part3 = AqwamMatrixLibrary:sum(part2)
+		local part3 = AqwamTensorLibrary:sum(part2)
 
 		local distance = math.sqrt(part3)
 
@@ -74,17 +74,17 @@ local distanceFunctionList = {
 	
 	["Cosine"] = function(x1, x2)
 
-		local dotProductedX = AqwamMatrixLibrary:dotProduct(x1, AqwamMatrixLibrary:transpose(x2))
+		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
 
-		local x1MagnitudePart1 = AqwamMatrixLibrary:power(x1, 2)
+		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
 
-		local x1MagnitudePart2 = AqwamMatrixLibrary:sum(x1MagnitudePart1)
+		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
 
 		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
 
-		local x2MagnitudePart1 = AqwamMatrixLibrary:power(x2, 2)
+		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
 
-		local x2MagnitudePart2 = AqwamMatrixLibrary:sum(x2MagnitudePart1)
+		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
 
 		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
 
@@ -110,7 +110,7 @@ local function createCentroidDistanceMatrix(centroids, distanceFunction)
 
 	local numberOfData = #centroids
 
-	local distanceMatrix = AqwamMatrixLibrary:createMatrix(numberOfData, numberOfData)
+	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfData}, 0)
 
 	for i = 1, numberOfData, 1 do
 
@@ -184,7 +184,7 @@ local function applyFunctionToFirstRowAndColumnOfDistanceMatrix(functionToApply,
 
 		newCentroidDistanceMatrix[1][newColumnIndex] = distance
 
-		newColumnIndex += 1
+		newColumnIndex = newColumnIndex + 1
 
 	end
 
@@ -196,7 +196,7 @@ local function applyFunctionToFirstRowAndColumnOfDistanceMatrix(functionToApply,
 
 		newCentroidDistanceMatrix[newRowIndex][1] = distance
 
-		newRowIndex += 1
+		newRowIndex = newRowIndex + 1
 
 	end
 
@@ -316,27 +316,29 @@ local function updateDistanceMatrix(linkageFunction, centroids, centroidDistance
 
 end
 
-local function createNewcentroids(centroids, centroidIndex1Combine, centroidIndex2ToCombine)
-
-	local newcentroids = {}
+local function createNewCentroids(centroids, centroidIndex1Combine, centroidIndex2ToCombine)
 
 	local centroid1 = {centroids[centroidIndex1Combine]}
 
 	local centroid2 = {centroids[centroidIndex2ToCombine]}
 
-	local combinedCentroid = AqwamMatrixLibrary:add(centroid1, centroid2)
+	local combinedCentroid = AqwamTensorLibrary:add(centroid1, centroid2)
 
-	local centroidToBeAdded = AqwamMatrixLibrary:divide(combinedCentroid, 2)
+	local centroidToBeAdded = AqwamTensorLibrary:divide(combinedCentroid, 2)
+	
+	local isIndex1SmallerThanIndex2 = (centroidIndex1Combine < centroidIndex2ToCombine)
+	
+	local firstCentroidIndexToBeRemoved = (isIndex1SmallerThanIndex2 and centroidIndex2ToCombine) or centroidIndex1Combine
+	
+	local secondCentroidIndexToBeRemoved = (isIndex1SmallerThanIndex2 and centroidIndex1Combine) or centroidIndex2ToCombine
+	
+	table.remove(centroids, firstCentroidIndexToBeRemoved)
+	
+	table.remove(centroids, secondCentroidIndexToBeRemoved)
 
-	table.insert(newcentroids, centroidToBeAdded[1])
+	table.insert(centroids, centroidToBeAdded[1])
 
-	for i = 1, #centroids, 1 do
-
-		if (i ~= centroidIndex1Combine) and (i ~= centroidIndex2ToCombine) then table.insert(newcentroids, centroids[i]) end
-
-	end
-
-	return newcentroids
+	return centroids
 
 end
 
@@ -360,7 +362,7 @@ local function calculateCost(centroids, featureMatrix, distanceFunction)
 
 		end
 
-		cost += minimumDistance
+		cost = cost + minimumDistance
 
 	end
 
@@ -368,29 +370,83 @@ local function calculateCost(centroids, featureMatrix, distanceFunction)
 
 end
 
-function AgglomerativeHierarchicalModel.new(numberOfCentroids, distanceFunction, linkageFunction)
+local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
-	local NewAgglomerativeHierarchicalModel = BaseModel.new()
+	local numberOfData1 = #matrix1
 
-	setmetatable(NewAgglomerativeHierarchicalModel, AgglomerativeHierarchicalModel)
+	local numberOfData2 = #matrix2
 
-	NewAgglomerativeHierarchicalModel.distanceFunction = distanceFunction or defaultDistanceFunction
+	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData1, numberOfData2})
 
-	NewAgglomerativeHierarchicalModel.linkageFunction = linkageFunction or defaultLinkageFunction
+	local calculateDistance = distanceFunctionList[distanceFunction]
 
-	NewAgglomerativeHierarchicalModel.numberOfCentroids = numberOfCentroids or defaultNumberOfCentroids
+	for matrix1Index = 1, numberOfData1, 1 do
 
-	return NewAgglomerativeHierarchicalModel
+		for matrix2Index = 1, numberOfData2, 1 do
+
+			distanceMatrix[matrix1Index][matrix2Index] = calculateDistance({matrix1[matrix1Index]}, {matrix2[matrix2Index]})
+
+		end
+
+	end
+
+	return distanceMatrix
 
 end
 
-function AgglomerativeHierarchicalModel:setParameters(numberOfCentroids, distanceFunction, linkageFunction)
+local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
 
-	self.distanceFunction = distanceFunction or self.distanceFunction
+	local numberOfDistances = #distanceMatrix
 
-	self.linkageFunction = linkageFunction or self.linkageFunction
+	local clusterNumberVector = AqwamTensorLibrary:createTensor({numberOfDistances, 1})
 
-	self.numberOfCentroids = numberOfCentroids or self.numberOfCentroids
+	local clusterDistanceVector = AqwamTensorLibrary:createTensor({numberOfDistances, 1}) 
+
+	for dataIndex, distanceVector in ipairs(distanceMatrix) do
+
+		local closestClusterNumber
+
+		local shortestDistance = math.huge
+
+		for i, distance in ipairs(distanceVector) do
+
+			if (distance < shortestDistance) then
+
+				closestClusterNumber = i
+
+				shortestDistance = distance
+
+			end
+
+		end
+
+		clusterNumberVector[dataIndex][1] = closestClusterNumber
+
+		clusterDistanceVector[dataIndex][1] = shortestDistance
+
+	end
+
+	return clusterNumberVector, clusterDistanceVector
+
+end
+
+function AgglomerativeHierarchicalModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+
+	local NewAgglomerativeHierarchicalModel = IterativeMethodBaseModel.new(parameterDictionary)
+
+	setmetatable(NewAgglomerativeHierarchicalModel, AgglomerativeHierarchicalModel)
+	
+	NewAgglomerativeHierarchicalModel:setName("AgglomerativeHierarchical")
+
+	NewAgglomerativeHierarchicalModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
+
+	NewAgglomerativeHierarchicalModel.linkageFunction = parameterDictionary.linkageFunction or defaultLinkageFunction
+
+	NewAgglomerativeHierarchicalModel.numberOfClusters = parameterDictionary.numberOfClusters or defaultNumberOfCentroids
+
+	return NewAgglomerativeHierarchicalModel
 
 end
 
@@ -416,29 +472,33 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 	local areModelParametersEqual = false
 
-	local centroids = AqwamMatrixLibrary:copy(featureMatrix)
-
-	local newcentroid
+	local centroids = AqwamTensorLibrary:copy(featureMatrix)
+	
+	local numberOfClusters = self.numberOfClusters
+	
+	local distanceFunction = self.distanceFunction
+	
+	local linkageFunction = self.linkageFunction
 
 	if self.ModelParameters then
 
 		if (#featureMatrix[1] ~= #self.ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
 
-		centroids = AqwamMatrixLibrary:verticalConcatenate(centroids, self.ModelParameters)
+		centroids = AqwamTensorLibrary:concatenate(centroids, self.ModelParameters, 1)
 
 	end
 
-	centroidDistanceMatrix = createCentroidDistanceMatrix(centroids, self.distanceFunction)
+	centroidDistanceMatrix = createCentroidDistanceMatrix(centroids, distanceFunction)
 
 	repeat
 		
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 
 		self:iterationWait()
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			return calculateCost(centroids, featureMatrix, self.distanceFunction)
+			return calculateCost(centroids, featureMatrix, distanceFunction)
 			
 		end)
 		
@@ -446,19 +506,19 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 			
 			table.insert(costArray, cost)
 
-			self:printCostAndNumberOfIterations(cost, numberOfIterations)
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 			
 		end
 
 		centroidIndex1, centroidIndex2 = findClosestCentroids(centroidDistanceMatrix)
+		
+		centroids = createNewCentroids(centroids, centroidIndex1, centroidIndex2)
 
-		centroids = createNewcentroids(centroids, centroidIndex1, centroidIndex2)
-
-		centroidDistanceMatrix = updateDistanceMatrix(self.linkageFunction, centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
+		centroidDistanceMatrix = updateDistanceMatrix(linkageFunction, centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
 		self.ModelParameters = centroids
 
-	until (#centroids == self.numberOfcentroids) or (#centroids == 1) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (#centroids == numberOfClusters) or (#centroids == 1) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	self.ModelParameters = centroids
 
@@ -466,7 +526,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 end
 
-function AgglomerativeHierarchicalModel:predict(featureMatrix)
+function AgglomerativeHierarchicalModel:predict(featureMatrix, returnOriginalOutput)
 
 	local distance
 
@@ -475,24 +535,16 @@ function AgglomerativeHierarchicalModel:predict(featureMatrix)
 	local centroidVector
 
 	local minimumDistance = math.huge
+	
+	local distanceMatrix
+	
+	local distanceMatrix = createDistanceMatrix(featureMatrix, self.ModelParameters, self.distanceFunction)
 
-	for i, centroid in ipairs(self.ModelParameters) do
+	if (returnOriginalOutput) then return distanceMatrix end
 
-		centroidVector = {centroid}
+	local clusterNumberVector, clusterDistanceVector = assignToCluster(distanceMatrix)
 
-		distance = calculateDistance(featureMatrix, centroidVector, self.distanceFunction)
-
-		if (distance < minimumDistance) then
-
-			minimumDistance = distance
-
-			closestcentroid = i
-
-		end
-
-	end
-
-	return closestcentroid, minimumDistance
+	return clusterNumberVector, clusterDistanceVector
 
 end
 

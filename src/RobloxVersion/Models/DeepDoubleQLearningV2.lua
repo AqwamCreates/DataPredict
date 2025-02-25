@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
@@ -36,7 +36,9 @@ DeepDoubleQLearningModel.__index = DeepDoubleQLearningModel
 
 setmetatable(DeepDoubleQLearningModel, ReinforcementLearningBaseModel)
 
-local defaultAveragingRate = 0.01
+local defaultAveragingRate = 0.995
+
+local defaultLambda = 0
 
 local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
 
@@ -44,11 +46,11 @@ local function rateAverageModelParameters(averagingRate, TargetModelParameters, 
 
 	for layer = 1, #TargetModelParameters, 1 do
 
-		local TargetModelParametersPart = AqwamMatrixLibrary:multiply(averagingRate, TargetModelParameters[layer])
+		local TargetModelParametersPart = AqwamTensorLibrary:multiply(averagingRate, TargetModelParameters[layer])
 
-		local PrimaryModelParametersPart = AqwamMatrixLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
+		local PrimaryModelParametersPart = AqwamTensorLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
 
-		TargetModelParameters[layer] = AqwamMatrixLibrary:add(TargetModelParametersPart, PrimaryModelParametersPart)
+		TargetModelParameters[layer] = AqwamTensorLibrary:add(TargetModelParametersPart, PrimaryModelParametersPart)
 
 	end
 
@@ -56,17 +58,29 @@ local function rateAverageModelParameters(averagingRate, TargetModelParameters, 
 
 end
 
-function DeepDoubleQLearningModel.new(averagingRate, discountFactor)
+function DeepDoubleQLearningModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 
-	local NewDeepDoubleQLearningModel = ReinforcementLearningBaseModel.new(discountFactor)
+	local NewDeepDoubleQLearningModel = ReinforcementLearningBaseModel.new(parameterDictionary)
 
 	setmetatable(NewDeepDoubleQLearningModel, DeepDoubleQLearningModel)
 	
-	NewDeepDoubleQLearningModel.averagingRate = averagingRate or defaultAveragingRate
+	NewDeepDoubleQLearningModel:setName("DeepDoubleQLearningV2")
+	
+	NewDeepDoubleQLearningModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
+	
+	NewDeepDoubleQLearningModel.lambda = parameterDictionary.lambda or defaultLambda
 
-	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewDeepDoubleQLearningModel.eligibilityTrace = parameterDictionary.eligibilityTrace 
+
+	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 		local Model = NewDeepDoubleQLearningModel.Model
+		
+		local discountFactor = NewDeepDoubleQLearningModel.discountFactor
+		
+		local lambda = NewDeepDoubleQLearningModel.lambda
 		
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
@@ -80,7 +94,7 @@ function DeepDoubleQLearningModel.new(averagingRate, discountFactor)
 
 		local _, maxQValue = Model:predict(currentFeatureVector)
 
-		local targetValue = rewardValue + (NewDeepDoubleQLearningModel.discountFactor * maxQValue[1][1])
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 
 		local previousVector = Model:forwardPropagate(previousFeatureVector)
 		
@@ -93,14 +107,32 @@ function DeepDoubleQLearningModel.new(averagingRate, discountFactor)
 		local temporalDifferenceError = targetValue - lastValue
 		
 		local numberOfClasses = #ClassesList
+		
+		local outputDimensionSizeArray = {1, numberOfClasses}
 
-		local lossVector = AqwamMatrixLibrary:createMatrix(1, numberOfClasses)
+		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
-		lossVector[1][actionIndex] = temporalDifferenceError
+		temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
+		
+		if (lambda ~= 0) then
+
+			local eligibilityTrace = NewDeepDoubleQLearningModel.eligibilityTrace
+
+			if (not eligibilityTrace) then eligibilityTrace = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
+
+			eligibilityTrace = AqwamTensorLibrary:multiply(eligibilityTrace, discountFactor * lambda)
+
+			eligibilityTrace[1][actionIndex] = eligibilityTrace[1][actionIndex] + 1
+
+			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTrace)
+
+			NewDeepDoubleQLearningModel.eligibilityTrace = eligibilityTrace
+
+		end
 
 		Model:forwardPropagate(previousFeatureVector, true, true)
 
-		Model:backwardPropagate(lossVector, true)
+		Model:backwardPropagate(temporalDifferenceErrorVector, true)
 
 		local TargetModelParameters = Model:getModelParameters(true)
 
@@ -108,23 +140,23 @@ function DeepDoubleQLearningModel.new(averagingRate, discountFactor)
 
 		Model:setModelParameters(TargetModelParameters, true)
 		
-		return temporalDifferenceError
+		return temporalDifferenceErrorVector
 
 	end)
 	
-	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function() end)
+	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+		
+		NewDeepDoubleQLearningModel.eligibilityTrace = nil
+		
+	end)
 
-	NewDeepDoubleQLearningModel:setResetFunction(function() end)
+	NewDeepDoubleQLearningModel:setResetFunction(function() 
+		
+		NewDeepDoubleQLearningModel.eligibilityTrace = nil
+		
+	end)
 	
 	return NewDeepDoubleQLearningModel
-
-end
-
-function DeepDoubleQLearningModel:setParameters(averagingRate, discountFactor)
-
-	self.discountFactor = discountFactor or self.discountFactor
-	
-	self.averagingRate = averagingRate or self.averagingRate
 
 end
 

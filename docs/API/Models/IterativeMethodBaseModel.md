@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - BaseModel
+# [API Reference](../../API.md) - [Models](../Models.md) - IterativeMethodBaseModel
 
 The base model for all machine and deep learning models.
 

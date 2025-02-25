@@ -1,10 +1,10 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - ProximalPolicyOptimizationClip (PPO-Clip)
+# [API Reference](../../API.md) - [Models](../Models.md) - SoftActorCritic
 
-ProximalPolicyOptimizationClip is a base class for reinforcement learning.
+SoftActorCritic is a base class for reinforcement learning.
 
 ## Notes
 
-* The Actor and Critic models must be created separately. Then use setActorModel() and setCriticModel() to put it inside the AdvantageActorCritic model.
+* The Actor and Critic models must be created separately. Then use setActorModel() and setCriticModel() to put it inside the ActorCritic model.
 
 * Actor and Critic models must be a part of NeuralNetwork model. If you decide to use linear regression or logistic regression, then it must be constructed using NeuralNetwork model. 
 
@@ -17,14 +17,14 @@ ProximalPolicyOptimizationClip is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ProximalPolicyOptimizationClip.new(clipRatio: number, discountFactor: number): ModelObject
+SoftActorCritic.new(alpha: number, averagingRate: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
 
-* clipRatio: A value that controls how far the new policy can get far from old policy. The value must be set between 0 and 1. [Default: 0.3]
+* alpha: Entropy regularization coefficient. The higher the value, the more the model explores. Generally the value is set between 0 and 1. [Default: 0.1]
 
-* lambda: At 0, the model acts like the Temporal Difference algorithm. At 1, the model acts as Monte Carlo algorithm. Between 0 and 1, the model acts as both. [Default: 0]
+* averagingRate: The higher the value, the faster the weights changes. The value must be set between 0 and 1. [Default: 0.995]
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
 
@@ -38,4 +38,4 @@ ProximalPolicyOptimizationClip.new(clipRatio: number, discountFactor: number): M
 
 ## References
 
-* [Proximal Policy Optimization By OpenAI](https://spinningup.openai.com/en/latest/algorithms/ppo.html)
+* [Soft Actor Critic By OpenAI](https://spinningup.openai.com/en/latest/algorithms/sac.html)

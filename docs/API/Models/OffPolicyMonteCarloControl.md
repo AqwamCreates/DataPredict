@@ -22,7 +22,7 @@ OffPolicyMonteCarloControl.new(targetPolicyFunction: string, discountFactor: num
 
 	* StableSoftmax: The more stable option of Softmax (Default)
 
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
 
 #### Returns:
 

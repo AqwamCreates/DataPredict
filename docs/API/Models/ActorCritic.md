@@ -22,7 +22,7 @@ ActorCritic.new(discountFactor: number): ModelObject
 
 #### Parameters:
 
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
 
 #### Returns:
 

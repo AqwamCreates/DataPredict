@@ -106,4 +106,4 @@ DistributedGradientsCoordinator:clearGradients()
 
 #### Inherited From:
 
-* [BaseInstance]()
+* [BaseInstance](../Cores/BaseInstance.md)

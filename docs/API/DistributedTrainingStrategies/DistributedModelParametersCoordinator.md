@@ -100,7 +100,7 @@ DistributedModelParametersCoordinator:start(): coroutine
 
 * modelParameterChangeCoroutine: A coroutine that handles the modification of the model parameters.
 
-### reset()
+#### reset()
 
 Reset the main model's stored values (excluding the parameters).
 
@@ -108,6 +108,6 @@ Reset the main model's stored values (excluding the parameters).
 DistributedModelParametersCoordinator:reset()
 ```
 
-#### Inherited From:
+### Inherited From
 
-* [BaseInstance]()
+* [BaseInstance](../Cores/BaseInstance.md)

@@ -94,43 +94,6 @@ Clears the model parameters contained inside base model.
 BaseModel:clearModelParameters()
 ```
 
-### setNumberOfIterationsPerCostCalculation()
-
-Set the number of iterations needed to calculate the costs. This is to save computational time.
-
-```
-BaseModel:setModelParameters(numberOfIterationsPerCostCalculation: number)
-```
-
-#### Parameters
-
-* numberOfIterationsPerCostCalculation: The number of iterations for each cost calculation.
-
-### setNumberOfIterationsToCheckIfConverged()
-
-Set the number of iterations needed to confirm convergence.
-
-```
-BaseModel:setNumberOfIterationsToCheckIfConverged(numberOfIterations: number)
-```
-
-#### Parameters
-
-* numberOfIterations: The number of iterations for confirming convergence.
-
-### setTargetCost()
-
-Set the upper bound and lower bounds of the target cost.
-```
-BaseModel:setTargetCost(upperBound: number, lowerBound: number)
-```
-
-#### Parameters
-
-* upperBound: The upper bound of target cost.
-
-* lowerBound: The lower bound of target cost.
-
 ### setPrintOutput()
 
 Set if the model prints output.
@@ -142,21 +105,3 @@ BaseModel:setPrintOutput(option: boolean)
 #### Parameters:
 
 * option: A boolean value that specifies if the output is printed.
-
-### setWaitDurations()
-
-Set wait durations inside the models to avoid exhausting script running time.
-
-```
-BaseModel:setWaitDurations(iterationWaitDuration: number, dataWaitDuration: number, sequenceWaitDuration: number)
-```
-
-#### Parameters:
-
-* iterationWaitDuration: The wait duration between the iterations.
-
-* dataWaitDuration: The wait duration between the data calculations.
-
-* sequenceWaitDuration: The wait duration between the token sequence.
-
-

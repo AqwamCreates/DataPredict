@@ -44,7 +44,7 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 	
 	NewGenerativeAdversarialImitationLearning:setName("GenerativeAdversarialImitationLearning")
 	
-	NewGenerativeAdversarialImitationLearning:setCategoricalTrainFunction(function(previousFeatureMatrix, expertActionMatrix, currentFeatureMatrix)
+	NewGenerativeAdversarialImitationLearning:setCategoricalTrainFunction(function(previousFeatureMatrix, expertActionMatrix, currentFeatureMatrix, terminalStateMatrix)
 		
 		local DiscriminatorModel = NewGenerativeAdversarialImitationLearning.DiscriminatorModel
 
@@ -65,6 +65,8 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 		local expertActionMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertActionMatrix, numberOfStepsPerEpisode)
 
 		local currentFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
+		
+		local terminalStateMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(terminalStateMatrix, numberOfStepsPerEpisode)
 
 		local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 
@@ -81,6 +83,8 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 			local expertActionSubMatrix = expertActionMatrixTable[episode]
 
 			local currentFeatureSubMatrix = currentFeatureMatrixTable[episode]
+			
+			local terminalStateSubMatrix = terminalStateMatrixTable[episode]
 
 			for step = 1, numberOfStepsPerEpisode, 1 do
 
@@ -91,6 +95,8 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 				local expertActionVector = {expertActionSubMatrix[step]}
 
 				local currentFeatureVector = {currentFeatureSubMatrix[step]}
+				
+				local terminalStateValue = terminalStateSubMatrix[step][1]
 
 				local agentActionVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 
@@ -118,7 +124,7 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 				if (not action) then error("Missing action at index " .. actionIndex .. "!") end
 
-				ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, action, discriminatorLoss, currentFeatureVector)
+				ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, action, discriminatorLoss, currentFeatureVector, terminalStateValue)
 
 				DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 
@@ -134,7 +140,7 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 		
 	end)
 	
-	NewGenerativeAdversarialImitationLearning:setDiagonalGaussianTrainFunction(function(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, expertActionNoiseMatrix, currentFeatureMatrix)
+	NewGenerativeAdversarialImitationLearning:setDiagonalGaussianTrainFunction(function(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, expertActionNoiseMatrix, currentFeatureMatrix, terminalStateMatrix)
 		
 		local DiscriminatorModel = NewGenerativeAdversarialImitationLearning.DiscriminatorModel
 
@@ -157,6 +163,8 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 		local expertActionNoiseTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertActionNoiseMatrix, numberOfStepsPerEpisode)
 
 		local currentFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
+		
+		local terminalStateMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(terminalStateMatrix, numberOfStepsPerEpisode)
 
 		local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 
@@ -179,6 +187,8 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 			local expertActionNoiseSubMatrix = expertActionNoiseTable[episode]
 
 			local currentFeatureSubMatrix = currentFeatureMatrixTable[episode]
+			
+			local terminalStateSubMatrix = terminalStateMatrixTable[episode]
 
 			for step = 1, numberOfStepsPerEpisode, 1 do
 
@@ -193,6 +203,8 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 				local expertActionNoiseVector = {expertActionNoiseSubMatrix[step]}
 
 				local currentFeatureVector = {currentFeatureSubMatrix[step]}
+				
+				local terminalStateValue = terminalStateSubMatrix[step][1]
 
 				local agentActionMeanVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 
@@ -214,7 +226,7 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 				local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 
-				ReinforcementLearningModel:diagonalGaussianUpdate(previousFeatureVector, expertActionMeanVector, expertActionStandardDeviationVector, expertActionNoiseVector, discriminatorLoss, currentFeatureVector)
+				ReinforcementLearningModel:diagonalGaussianUpdate(previousFeatureVector, expertActionMeanVector, expertActionStandardDeviationVector, expertActionNoiseVector, discriminatorLoss, currentFeatureVector, terminalStateValue)
 
 				DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 

@@ -42,17 +42,15 @@ local defaultLambda = 0
 
 local function calculateProbability(valueVector)
 
-	local zScoreVector, standardDeviationVector = AqwamTensorLibrary:zScoreNormalization(valueVector, 2)
-
-	local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
-
-	local probabilityVectorPart1 = AqwamTensorLibrary:multiply(-0.5, squaredZScoreVector)
-
-	local probabilityVectorPart2 = AqwamTensorLibrary:exponent(probabilityVectorPart1)
-
-	local probabilityVectorPart3 = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
-
-	local probabilityVector = AqwamTensorLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
+	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueVector)
+	
+	local zValueVector = AqwamTensorLibrary:subtract(valueVector, maximumValue)
+	
+	local exponentVector = AqwamTensorLibrary:exponent(zValueVector)
+	
+	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
+	
+	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
 
 	return probabilityVector
 

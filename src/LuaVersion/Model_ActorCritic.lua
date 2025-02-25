@@ -38,17 +38,15 @@ setmetatable(ActorCriticModel, ReinforcementLearningActorCriticBaseModel)
 
 local function calculateProbability(valueVector)
 	
-	local zScoreVector, standardDeviationVector = AqwamTensorLibrary:zScoreNormalization(valueVector, 2)
+	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueVector)
 	
-	local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
+	local zValueVector = AqwamTensorLibrary:subtract(valueVector, maximumValue)
 	
-	local probabilityVectorPart1 = AqwamTensorLibrary:multiply(-0.5, squaredZScoreVector)
+	local exponentVector = AqwamTensorLibrary:exponent(zValueVector)
 	
-	local probabilityVectorPart2 = AqwamTensorLibrary:exponent(probabilityVectorPart1)
+	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
 	
-	local probabilityVectorPart3 = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
-	
-	local probabilityVector = AqwamTensorLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
+	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
 
 	return probabilityVector
 

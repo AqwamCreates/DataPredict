@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - GradientDescentModifier
+# [API Reference](../../API.md) - [Others](../Others.md) - TrainingModifier
 
-Modifies the model's batch gradient descent to other modes.
+Modifies the model's batch training to other modes.
 
 ## Notes
 
@@ -15,7 +15,7 @@ Modifies the model's batch gradient descent to other modes.
 Creates a new gradient descent modifier object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-GradientDescentModifier.new(Model: ModelObject, gradientDescentType: string, batchSize: integer, showOutput: boolean): GradientDescentModifierObject
+TrainingModifier.new(Model: ModelObject, gradientDescentType: string, batchSize: integer, showOutput: boolean): GradientDescentModifierObject
 ```
 
 #### Parameters:
@@ -24,13 +24,13 @@ GradientDescentModifier.new(Model: ModelObject, gradientDescentType: string, bat
 
 * gradientDescentType: The type of gradient descent to be used when train() function is called. Available modes are "Batch", "MiniBatch" and "Stochastic".
 
-* batchSize: The batch size to split the featureMatirx and labelVector into multiple parts.
+* batchSize: The batch size to split the featureMatrix and labelVector into multiple parts.
 
 * showOutput: Set whether or not to show the final cost for each epoch (MiniBatch) or data (Stochastic).
 
 #### Returns:
 
-* GradientDescentModifierObject: A gradient descent modifier object that uses the model's train() and predict() functions so that it behaves like a regular model.
+* TrainingModifierObject: A training modifier object that uses the model's train(), predict() and reinforce() functions so that it behaves like a regular model.
 
 ## Functions
 
@@ -39,7 +39,7 @@ GradientDescentModifier.new(Model: ModelObject, gradientDescentType: string, bat
 Set modifier’s parameters. When any of the arguments are not given, previous argument values for that argument will be used.
 
 ```
-GradientDescentModifier:setParameters(Model: ModelObject, gradientDescentType: string, batchSize: integer, showOutput: boolean)
+TrainingModifier:setParameters(Model: ModelObject, gradientDescentType: string, batchSize: integer, showOutput: boolean)
 ```
 
 #### Parameters:
@@ -48,7 +48,7 @@ GradientDescentModifier:setParameters(Model: ModelObject, gradientDescentType: s
 
 * gradientDescentType: The type of gradient descent to be used when train() function is called. Available modes are "Batch", "MiniBatch" and "Stochastic".
 
-* batchSize: The batch size to split the featureMatirx and labelVector into multiple parts.
+* batchSize: The batch size to split the featureMatrix and labelVector into multiple parts.
 
 * showOutput: Set whether or not to show the final cost for each epoch (MiniBatch) or data (Stochastic).
 
@@ -57,7 +57,7 @@ GradientDescentModifier:setParameters(Model: ModelObject, gradientDescentType: s
 Trains the machine/deep learning model under specific gradient descent mode.
 
 ```
-GradientDescentModifier:train(...): number[]
+TrainingModifier:train(...): number[]
 ```
 
 #### Parameters:
@@ -73,7 +73,7 @@ GradientDescentModifier:train(...): number[]
 Predict the values for given data.
 
 ```
-GradientDescentModifier:predict(...): ...
+TrainingModifier:predict(...): ...
 ```
 
 #### Parameters:
@@ -89,7 +89,7 @@ GradientDescentModifier:predict(...): ...
 Reward or punish model based on the current state of the environment.
 
 ```
-ActorCritic:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
+TrainingModifier:reinforce(currentFeatureVector: Matrix, rewardValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
 ```
 
 #### Parameters:

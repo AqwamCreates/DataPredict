@@ -101,9 +101,13 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [DataPredict Library](https://github.com/AqwamCreates/DataPredict)
 
+[TensorL-2D Library](https://github.com/AqwamCreates/TensorL-2D)
+
 [MatrixL Library](https://github.com/AqwamCreates/MatrixL)
 
 ### Other Documentations
+
+[Aqwam's TensorL-2D Library](https://aqwamcreates.github.io/TensorL-2D/)
 
 [Aqwam's Matrix Library](https://aqwamcreates.github.io/MatrixL/)
 

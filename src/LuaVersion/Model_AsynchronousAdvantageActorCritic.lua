@@ -26,9 +26,7 @@
 
 --]]
 
-local DataPredict = script.Parent.Parent
-
-local AqwamMatrixLibrary = require(DataPredict.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 AsynchronousAdvantageActorCriticModel = {}
 

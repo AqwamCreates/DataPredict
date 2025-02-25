@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,10 +19,14 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
 
@@ -30,19 +36,19 @@ REINFORCEModel.__index = REINFORCEModel
 
 setmetatable(REINFORCEModel, ReinforcementLearningBaseModel)
 
-local function calculateProbability(vector)
+local function calculateProbability(valueVector)
 
-	local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(vector)
+	local zScoreVector, standardDeviationVector = AqwamTensorLibrary:zScoreNormalization(valueVector, 2)
 
-	local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+	local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
 
-	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, squaredZScoreVector)
+	local probabilityVectorPart1 = AqwamTensorLibrary:multiply(-0.5, squaredZScoreVector)
 
-	local probabilityVectorPart2 = AqwamMatrixLibrary:exponent(probabilityVectorPart1)
+	local probabilityVectorPart2 = AqwamTensorLibrary:exponent(probabilityVectorPart1)
 
-	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+	local probabilityVectorPart3 = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
 
-	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
+	local probabilityVector = AqwamTensorLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
 
 	return probabilityVector
 
@@ -66,23 +72,29 @@ local function calculateRewardToGo(rewardValueHistory, discountFactor)
 
 end
 
-function REINFORCEModel.new(discountFactor)
+function REINFORCEModel.new(parameterDictionary)
 
-	local NewREINFORCEModel = ReinforcementLearningBaseModel.new(discountFactor)
+	local NewREINFORCEModel = ReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewREINFORCEModel, REINFORCEModel)
+	
+	NewREINFORCEModel:setName("REINFORCE")
+	
+	local featureVectorArray = {}
 	
 	local actionProbabilityVectorHistory = {}
 	
 	local rewardValueHistory = {}
 	
-	NewREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
 		local actionVector = NewREINFORCEModel.Model:forwardPropagate(previousFeatureVector)
 		
 		local actionProbabilityVector = calculateProbability(actionVector)
 		
-		local logActionProbabilityVector = AqwamMatrixLibrary:logarithm(actionProbabilityVector)
+		local logActionProbabilityVector = AqwamTensorLibrary:logarithm(actionProbabilityVector)
+		
+		table.insert(featureVectorArray, previousFeatureVector)
 
 		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 		
@@ -90,27 +102,29 @@ function REINFORCEModel.new(discountFactor)
 
 	end)
 	
-	NewREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
+	NewREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+		
+		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
 
-		local randomNormalVector = AqwamMatrixLibrary:createRandomNormalMatrix(1, #actionMeanVector[1])
+		local actionVectorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
 
-		local actionVectorPart1 = AqwamMatrixLibrary:multiply(actionStandardDeviationVector, randomNormalVector)
+		local actionVector = AqwamTensorLibrary:add(actionMeanVector, actionVectorPart1)
 
-		local actionVector = AqwamMatrixLibrary:add(actionMeanVector, actionVectorPart1)
+		local zScoreVectorPart1 = AqwamTensorLibrary:subtract(actionVector, actionMeanVector)
 
-		local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(actionVector, actionMeanVector)
+		local zScoreVector = AqwamTensorLibrary:divide(zScoreVectorPart1, actionStandardDeviationVector)
 
-		local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, actionStandardDeviationVector)
+		local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
 
-		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+		local logActionProbabilityVectorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationVector)
 
-		local logActionProbabilityVectorPart1 = AqwamMatrixLibrary:logarithm(actionStandardDeviationVector)
+		local logActionProbabilityVectorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityVectorPart1)
 
-		local logActionProbabilityVectorPart2 = AqwamMatrixLibrary:multiply(2, logActionProbabilityVectorPart1)
+		local logActionProbabilityVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
 
-		local logActionProbabilityVectorPart3 = AqwamMatrixLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
-
-		local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
+		local logActionProbabilityVector = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
+		
+		table.insert(featureVectorArray, previousFeatureVector)
 
 		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
@@ -118,32 +132,26 @@ function REINFORCEModel.new(discountFactor)
 
 	end)
 	
-	NewREINFORCEModel:setEpisodeUpdateFunction(function()
+	NewREINFORCEModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
 		local Model = NewREINFORCEModel.Model
 		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
 		
-		local sumLossVector = AqwamMatrixLibrary:createMatrix(1, #actionProbabilityVectorHistory[1], 0)
-		
 		for h, actionProbabilityVector in ipairs(actionProbabilityVectorHistory) do
 			
-			local lossVector = AqwamMatrixLibrary:multiply(actionProbabilityVector, rewardToGoArray[h])
-
-			sumLossVector = AqwamMatrixLibrary:add(sumLossVector, lossVector)
+			local lossVector = AqwamTensorLibrary:multiply(actionProbabilityVector, rewardToGoArray[h])
 			
-		end	
-		
-		local numberOfFeatures = Model:getTotalNumberOfNeurons(1)
+			lossVector = AqwamTensorLibrary:unaryMinus(lossVector)
+			
+			Model:forwardPropagate(featureVectorArray[h], true, true)
 
-		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
-
-		sumLossVector = AqwamMatrixLibrary:unaryMinus(sumLossVector)
+			Model:backwardPropagate(lossVector, true)
+			
+		end
 		
-		Model:forwardPropagate(featureVector, true, true)
+		table.clear(featureVectorArray)
 
-		Model:backwardPropagate(sumLossVector, true)
-		
 		table.clear(actionProbabilityVectorHistory)
 		
 		table.clear(rewardValueHistory)
@@ -151,6 +159,8 @@ function REINFORCEModel.new(discountFactor)
 	end)
 	
 	NewREINFORCEModel:setResetFunction(function()
+		
+		table.clear(featureVectorArray)
 
 		table.clear(actionProbabilityVectorHistory)
 		
@@ -159,12 +169,6 @@ function REINFORCEModel.new(discountFactor)
 	end)
 	
 	return NewREINFORCEModel
-
-end
-
-function REINFORCEModel:setParameters(discountFactor)
-
-	self.discountFactor = discountFactor or self.discountFactor
 
 end
 

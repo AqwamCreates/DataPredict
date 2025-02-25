@@ -26,7 +26,7 @@
 
 --]]
 
-local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 GradientMethodBaseModel = {}
 

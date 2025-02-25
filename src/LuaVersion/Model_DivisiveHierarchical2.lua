@@ -1,4 +1,4 @@
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 DivisiveHierarchicalModel = {}
 
@@ -6,7 +6,7 @@ DivisiveHierarchicalModel.__index = DivisiveHierarchicalModel
 
 setmetatable(DivisiveHierarchicalModel, BaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local defaultMaxNumberOfIterations = 500
 

@@ -26,7 +26,7 @@
 
 --]]
 
-local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 MeanShiftModel = {}
 
@@ -34,7 +34,7 @@ MeanShiftModel.__index = MeanShiftModel
 
 setmetatable(MeanShiftModel, IterativeMethodBaseModel)
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local defaultMaximumNumberOfIterations = 500
 

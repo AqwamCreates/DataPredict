@@ -26,7 +26,7 @@
 
 --]]
 
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 KNearestNeighbours = {}
 
@@ -34,7 +34,7 @@ KNearestNeighbours.__index = KNearestNeighbours
 
 setmetatable(KNearestNeighbours, BaseModel)
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local defaultKValue = 3
 

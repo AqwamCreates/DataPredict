@@ -26,28 +26,48 @@
 
 --]]
 
+local BaseInstance = require("Core_BaseInstance")
+
 ReinforcementLearningActorCriticBaseModel = {}
 
 ReinforcementLearningActorCriticBaseModel.__index = ReinforcementLearningActorCriticBaseModel
 
+setmetatable(ReinforcementLearningActorCriticBaseModel, BaseInstance)
+
 local defaultDiscountFactor = 0.95
 
-function ReinforcementLearningActorCriticBaseModel.new(discountFactor)
+function ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 	
 	local NewReinforcementLearningActorCriticBaseModel = {}
 	
 	setmetatable(NewReinforcementLearningActorCriticBaseModel, ReinforcementLearningActorCriticBaseModel)
 	
-	NewReinforcementLearningActorCriticBaseModel.discountFactor = discountFactor or defaultDiscountFactor
+	NewReinforcementLearningActorCriticBaseModel:setName("ReinforcementLearningActorCriticBaseModel")
+
+	NewReinforcementLearningActorCriticBaseModel:setClassName("ReinforcementLearningActorCriticModel")
+
+	NewReinforcementLearningActorCriticBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
+
+	NewReinforcementLearningActorCriticBaseModel.ActorModel = parameterDictionary.ActorModel
+	
+	NewReinforcementLearningActorCriticBaseModel.CriticModel = parameterDictionary.CriticModel
 	
 	return NewReinforcementLearningActorCriticBaseModel
 	
 end
 
-function ReinforcementLearningActorCriticBaseModel:setParameters(discountFactor)
+function ReinforcementLearningActorCriticBaseModel:setDiscountFactor(discountFactor)
 
-	self.discountFactor =  discountFactor or self.discountFactor
-	
+	self.discountFactor = discountFactor
+
+end
+
+function ReinforcementLearningActorCriticBaseModel:getDiscountFactor()
+
+	return self.discountFactor
+
 end
 
 function ReinforcementLearningActorCriticBaseModel:setActorModel(ActorModel)
@@ -80,6 +100,12 @@ function ReinforcementLearningActorCriticBaseModel:predict(featureVector, return
 	
 end
 
+function ReinforcementLearningActorCriticBaseModel:getClassesList()
+
+	return self.ActorModel:getClassesList()
+
+end
+
 function ReinforcementLearningActorCriticBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
 
 	self.categoricalUpdateFunction = categoricalUpdateFunction
@@ -92,13 +118,13 @@ function ReinforcementLearningActorCriticBaseModel:setDiagonalGaussianUpdateFunc
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector)
+function ReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
 	local categoricalUpdateFunction = self.categoricalUpdateFunction
 
 	if (categoricalUpdateFunction) then
 
-		return categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector)
+		return categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
 	else
 
@@ -108,13 +134,15 @@ function ReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFea
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
+function ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
 	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
 
 	if (diagonalGaussianUpdateFunction) then
+		
+		if (not actionStandardDeviationVector) then error("No action standard deviation vector.") end
 
-		return diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
+		return diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
 	else
 
@@ -130,13 +158,13 @@ function ReinforcementLearningActorCriticBaseModel:setEpisodeUpdateFunction(epis
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:episodeUpdate()
+function ReinforcementLearningActorCriticBaseModel:episodeUpdate(terminalStateValue)
 
 	local episodeUpdateFunction = self.episodeUpdateFunction
 
 	if (episodeUpdateFunction) then
 
-		return episodeUpdateFunction()
+		return episodeUpdateFunction(terminalStateValue)
 
 	else
 

@@ -6,6 +6,8 @@
 
 	Author: Aqwam Harish Aiman
 	
+	Email: aqwam.harish.aiman@gmail.com
+	
 	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
 	
 	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
@@ -17,10 +19,14 @@
 	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
 
 --]]
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local ReinforcementLearningActorCriticBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
 
@@ -30,19 +36,21 @@ ProximalPolicyOptimizationModel.__index = ProximalPolicyOptimizationModel
 
 setmetatable(ProximalPolicyOptimizationModel, ReinforcementLearningActorCriticBaseModel)
 
-local function calculateProbability(vector)
+local defaultLambda = 0
 
-	local zScoreVector, standardDeviationVector = AqwamMatrixLibrary:horizontalZScoreNormalization(vector)
+local function calculateProbability(valueVector)
 
-	local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+	local zScoreVector, standardDeviationVector = AqwamTensorLibrary:zScoreNormalization(valueVector, 2)
 
-	local probabilityVectorPart1 = AqwamMatrixLibrary:multiply(-0.5, squaredZScoreVector)
+	local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
 
-	local probabilityVectorPart2 = AqwamMatrixLibrary:exponent(probabilityVectorPart1)
+	local probabilityVectorPart1 = AqwamTensorLibrary:multiply(-0.5, squaredZScoreVector)
 
-	local probabilityVectorPart3 = AqwamMatrixLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+	local probabilityVectorPart2 = AqwamTensorLibrary:exponent(probabilityVectorPart1)
 
-	local probabilityVector = AqwamMatrixLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
+	local probabilityVectorPart3 = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+
+	local probabilityVector = AqwamTensorLibrary:divide(probabilityVectorPart2, probabilityVectorPart3)
 
 	return probabilityVector
 
@@ -66,11 +74,17 @@ local function calculateRewardToGo(rewardHistory, discountFactor)
 
 end
 
-function ProximalPolicyOptimizationModel.new(discountFactor)
+function ProximalPolicyOptimizationModel.new(parameterDictionary)
 	
-	local NewProximalPolicyOptimizationModel = ReinforcementLearningActorCriticBaseModel.new(discountFactor)
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewProximalPolicyOptimizationModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewProximalPolicyOptimizationModel, ProximalPolicyOptimizationModel)
+	
+	NewProximalPolicyOptimizationModel:setName("ProximalPolicyOptimization")
+	
+	NewProximalPolicyOptimizationModel.lambda = parameterDictionary.lambda or defaultLambda
 	
 	local rewardValueHistory = {}
 	
@@ -84,7 +98,7 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 	
 	local oldAdvantageValueHistory = {}
 	
-	NewProximalPolicyOptimizationModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector)
+	NewProximalPolicyOptimizationModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
 		
@@ -96,9 +110,9 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
-		local advantageValue = rewardValue + (NewProximalPolicyOptimizationModel.discountFactor * currentCriticValue) - previousCriticValue
+		local advantageValue = rewardValue + (NewProximalPolicyOptimizationModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
 
-		local logActionProbabilityVector = AqwamMatrixLibrary:logarithm(actionProbabilityVector)
+		local logActionProbabilityVector = AqwamTensorLibrary:logarithm(actionProbabilityVector)
 		
 		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
@@ -112,35 +126,35 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 		
 	end)
 	
-	NewProximalPolicyOptimizationModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, rewardValue, currentFeatureVector)
+	NewProximalPolicyOptimizationModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
+		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
+		
 		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
 
-		local randomNormalVector = AqwamMatrixLibrary:createRandomNormalMatrix(1, #actionMeanVector[1])
+		local actionVectorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
 
-		local actionVectorPart1 = AqwamMatrixLibrary:multiply(actionStandardDeviationVector, randomNormalVector)
+		local actionVector = AqwamTensorLibrary:add(actionMeanVector, actionVectorPart1)
 
-		local actionVector = AqwamMatrixLibrary:add(actionMeanVector, actionVectorPart1)
+		local zScoreVectorPart1 = AqwamTensorLibrary:subtract(actionVector, actionMeanVector)
 
-		local zScoreVectorPart1 = AqwamMatrixLibrary:subtract(actionVector, actionMeanVector)
+		local zScoreVector = AqwamTensorLibrary:divide(zScoreVectorPart1, actionStandardDeviationVector)
 
-		local zScoreVector = AqwamMatrixLibrary:divide(zScoreVectorPart1, actionStandardDeviationVector)
+		local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
 
-		local squaredZScoreVector = AqwamMatrixLibrary:power(zScoreVector, 2)
+		local logActionProbabilityVectorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationVector)
 
-		local logActionProbabilityVectorPart1 = AqwamMatrixLibrary:logarithm(actionStandardDeviationVector)
+		local logActionProbabilityVectorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityVectorPart1)
 
-		local logActionProbabilityVectorPart2 = AqwamMatrixLibrary:multiply(2, logActionProbabilityVectorPart1)
+		local logActionProbabilityVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
 
-		local logActionProbabilityVectorPart3 = AqwamMatrixLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
-
-		local logActionProbabilityVector = AqwamMatrixLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
+		local logActionProbabilityVector = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
 		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
-		local advantageValue = rewardValue + (NewProximalPolicyOptimizationModel.discountFactor * currentCriticValue) - previousCriticValue
+		local advantageValue = rewardValue + (NewProximalPolicyOptimizationModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
 		
 		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
@@ -154,11 +168,29 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 
 	end)
 	
-	NewProximalPolicyOptimizationModel:setEpisodeUpdateFunction(function()
+	NewProximalPolicyOptimizationModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local ActorModel = NewProximalPolicyOptimizationModel.ActorModel
+		local discountFactor = NewProximalPolicyOptimizationModel.discountFactor
+		
+		local lambda = NewProximalPolicyOptimizationModel.lambda
+	
+		if (lambda ~= 0) then
 
-		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
+			local generalizedAdvantageEstimationValue = 0
+
+			local generalizedAdvantageEstimationHistory = {}
+
+			for t = #advantageValueHistory, 1, -1 do
+
+				generalizedAdvantageEstimationValue = advantageValueHistory[t] + (discountFactor * lambda * generalizedAdvantageEstimationValue)
+
+				table.insert(generalizedAdvantageEstimationHistory, 1, generalizedAdvantageEstimationValue) -- Insert at the beginning to maintain order
+
+			end
+
+			advantageValueHistory = generalizedAdvantageEstimationHistory
+
+		end
 		
 		if (#oldActionProbabilityVectorHistory == 0) then 
 
@@ -177,38 +209,42 @@ function ProximalPolicyOptimizationModel.new(discountFactor)
 			return nil
 
 		end
-
+		
 		if (#actionProbabilityVectorHistory ~= #oldActionProbabilityVectorHistory) then error("The number of updates does not equal to the number of old updates!") end
 		
-		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewProximalPolicyOptimizationModel.discountFactor)
+		local ActorModel = NewProximalPolicyOptimizationModel.ActorModel
+
+		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
+		
+		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, discountFactor)
 
 		local historyLength = #criticValueHistory
 		
-		local sumActorLossVector = AqwamMatrixLibrary:createMatrix(1, #actionProbabilityVectorHistory[1], 0)
+		local sumActorLossVector = AqwamTensorLibrary:createTensor({1, #actionProbabilityVectorHistory[1]}, 0)
 		
 		local sumCriticLoss = 0
 
 		for h = 1, historyLength, 1 do
 
-			local ratioVector = AqwamMatrixLibrary:divide(actionProbabilityVectorHistory[h], oldActionProbabilityVectorHistory[h])
+			local ratioVector = AqwamTensorLibrary:divide(actionProbabilityVectorHistory[h], oldActionProbabilityVectorHistory[h])
 
-			local actorLossVector = AqwamMatrixLibrary:multiply(ratioVector, oldAdvantageValueHistory[h])
+			local actorLossVector = AqwamTensorLibrary:multiply(ratioVector, oldAdvantageValueHistory[h])
 
 			local criticLoss = criticValueHistory[h] - rewardToGoArray[h]
 
-			sumActorLossVector = AqwamMatrixLibrary:add(sumActorLossVector, actorLossVector)
+			sumActorLossVector = AqwamTensorLibrary:add(sumActorLossVector, actorLossVector)
 
 			sumCriticLoss = sumCriticLoss + criticLoss
 
 		end
 		
-		sumActorLossVector = AqwamMatrixLibrary:divide(sumActorLossVector, -historyLength)
+		sumActorLossVector = AqwamTensorLibrary:divide(sumActorLossVector, -historyLength)
 		
 		sumCriticLoss = sumCriticLoss / historyLength
 
 		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
 
-		local featureVector = AqwamMatrixLibrary:createMatrix(1, numberOfFeatures, 1)
+		local featureVector = AqwamTensorLibrary:createTensor({1, numberOfFeatures}, 1)
 
 		ActorModel:forwardPropagate(featureVector, true, true)
 		

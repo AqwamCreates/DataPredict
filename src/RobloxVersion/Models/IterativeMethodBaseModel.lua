@@ -28,8 +28,6 @@
 
 local BaseModel = require(script.Parent.BaseModel)
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
-
 IterativeBaseModel = {}
 
 IterativeBaseModel.__index = IterativeBaseModel

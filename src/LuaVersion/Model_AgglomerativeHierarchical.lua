@@ -26,7 +26,7 @@
 
 --]]
 
-local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 AgglomerativeHierarchicalModel = {}
 
@@ -34,7 +34,7 @@ AgglomerativeHierarchicalModel.__index = AgglomerativeHierarchicalModel
 
 setmetatable(AgglomerativeHierarchicalModel, IterativeMethodBaseModel)
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local defaultNumberOfCentroids = 1
 

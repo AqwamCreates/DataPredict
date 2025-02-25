@@ -26,7 +26,7 @@
 
 --]]
 
-local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 DensityBasedSpatialClusteringOfApplicationsWithNoiseModel = {}
 
@@ -34,7 +34,7 @@ DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.__index = DensityBased
 
 setmetatable(DensityBasedSpatialClusteringOfApplicationsWithNoiseModel, IterativeMethodBaseModel)
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local defaultMinimumNumberOfPoints = 2
 

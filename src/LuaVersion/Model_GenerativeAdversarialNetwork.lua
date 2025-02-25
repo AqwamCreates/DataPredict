@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibraryLinker = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GenerativeAdversarialNetworkBaseModel = require(script.Parent.GenerativeAdversarialNetworkBaseModel)
+local GenerativeAdversarialNetworkBaseModel = require("Model_GenerativeAdversarialNetworkBaseModel")
 
 GenerativeAdversarialNetworkModel = {}
 

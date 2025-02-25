@@ -1,4 +1,4 @@
-local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 GridModel = {}
 
@@ -6,7 +6,7 @@ GridModel.__index = GridModel
 
 setmetatable(GridModel, GradientMethodBaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamMatrixLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 function GridModel.new()
 	

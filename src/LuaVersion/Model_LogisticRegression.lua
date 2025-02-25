@@ -26,7 +26,7 @@
 
 --]]
 
-local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 LogisticRegressionModel = {}
 
@@ -34,7 +34,7 @@ LogisticRegressionModel.__index = LogisticRegressionModel
 
 setmetatable(LogisticRegressionModel, GradientMethodBaseModel)
 
-local AqwamMatrixLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local defaultMaximumNumberOfIterations = 500
 

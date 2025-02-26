@@ -57,6 +57,10 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 		local Model = NewDeepClippedDoubleQLearningModel.Model
+		
+		local discountFactor = NewDeepClippedDoubleQLearningModel.discountFactor
+		
+		local lambda = NewDeepClippedDoubleQLearningModel.lambda
 
 		local maxQValueArray = {}
 
@@ -72,7 +76,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 		local maxQValue = math.min(table.unpack(maxQValueArray))
 
-		local targetValue = rewardValue + (NewDeepClippedDoubleQLearningModel.discountFactor * (1 - terminalStateValue) * maxQValue)
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue)
 		
 		local ClassesList = Model:getClassesList()
 
@@ -90,11 +94,11 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 		
 		temporalDifferenceErrorVector[1][2] = targetValue - maxQValueArray[2]
 		
-		if (NewDeepClippedDoubleQLearningModel.lambda ~= 0) then
+		if (lambda ~= 0) then
 
 			if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
 
-			eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, NewDeepClippedDoubleQLearningModel.discountFactor * NewDeepClippedDoubleQLearningModel.lambda)
+			eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
 
 			eligibilityTraceMatrix[1][actionIndex] = eligibilityTraceMatrix[1][actionIndex] + 1
 			

@@ -118,7 +118,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 			
 			temporalDifferenceErrorVector[1][i] = temporalDifferenceError
 			
-			if (NewDeepClippedDoubleQLearningModel.lambda ~= 0) then lossVector = AqwamTensorLibrary:multiply(lossVector, eligibilityTraceMatrix) end
+			if (lambda ~= 0) then lossVector = AqwamTensorLibrary:multiply(lossVector, eligibilityTraceMatrix) end
 			
 			Model:backwardPropagate(lossVector, true)
 

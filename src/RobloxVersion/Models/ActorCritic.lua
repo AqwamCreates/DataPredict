@@ -84,8 +84,6 @@ function ActorCriticModel.new(parameterDictionary)
 	
 	local rewardValueHistory = {}
 	
-	local terminalStateValueHistory = {}
-	
 	NewActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 		local CriticModel = NewActorCriticModel.CriticModel

@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
+local ReinforcementLearningBaseModel = require("ReinforcementLearningBaseModel")
 
 DeepClippedDoubleQLearningModel = {}
 
@@ -89,8 +89,6 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 		local numberOfClasses = #ClassesList
 		
 		local outputDimensionSizeArray = {1, numberOfClasses}
-		
-		
 		
 		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor({1, 2})
 		

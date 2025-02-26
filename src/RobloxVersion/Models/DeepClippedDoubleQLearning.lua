@@ -90,8 +90,6 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 		
 		local outputDimensionSizeArray = {1, numberOfClasses}
 		
-		
-		
 		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor({1, 2})
 		
 		if (lambda ~= 0) then

@@ -196,14 +196,4 @@ function ReinforcementLearningActorCriticBaseModel:reset()
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:destroy()
-
-	setmetatable(self, nil)
-
-	table.clear(self)
-
-	self = nil
-
-end
-
 return ReinforcementLearningActorCriticBaseModel

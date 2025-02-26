@@ -61,12 +61,16 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 		local discountFactor = NewDeepClippedDoubleQLearningModel.discountFactor
 		
 		local lambda = NewDeepClippedDoubleQLearningModel.lambda
+		
+		local ModelParametersArray = NewDeepClippedDoubleQLearningModel.ModelParametersArray
+		
+		local eligibilityTraceMatrix = NewDeepClippedDoubleQLearningModel.eligibilityTraceMatrix
 
 		local maxQValueArray = {}
 
 		for i = 1, 2, 1 do
 
-			Model:setModelParameters(NewDeepClippedDoubleQLearningModel.ModelParametersArray[i], true)
+			Model:setModelParameters(ModelParametersArray[i], true)
 
 			local _, maxQValue = Model:predict(currentFeatureVector)
 
@@ -86,7 +90,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 		
 		local outputDimensionSizeArray = {1, numberOfClasses}
 		
-		local eligibilityTraceMatrix = NewDeepClippedDoubleQLearningModel.eligibilityTraceMatrix
+		
 		
 		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor({1, 2})
 		
@@ -104,7 +108,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 		for i = 1, 2, 1 do
 
-			Model:setModelParameters(NewDeepClippedDoubleQLearningModel.ModelParametersArray[i], true)
+			Model:setModelParameters(ModelParametersArray[i], true)
 
 			local previousVector = Model:forwardPropagate(previousFeatureVector, true)
 

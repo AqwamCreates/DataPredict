@@ -202,7 +202,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDif
 
 		temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTraceMatrix)
 
-		self.eligibilityTrace = eligibilityTraceMatrix
+		self.eligibilityTraceMatrix = eligibilityTraceMatrix
 
 	end
 

@@ -84,9 +84,11 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 		
 		local eligibilityTraceMatrix = NewDeepClippedDoubleQLearningModel.eligibilityTraceMatrix
 		
-		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
+		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor({1, 2})
+	
+		temporalDifferenceErrorVector[1][1] = targetValue - maxQValueArray[1]
 		
-		temporalDifferenceErrorVector[1][actionIndex] = ((targetValue - maxQValueArray[1]) + (targetValue - maxQValueArray[2])) / 2
+		temporalDifferenceErrorVector[1][2] = targetValue - maxQValueArray[2]
 		
 		if (NewDeepClippedDoubleQLearningModel.lambda ~= 0) then
 
@@ -116,7 +118,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 			
 			if (NewDeepClippedDoubleQLearningModel.lambda ~= 0) then lossVector = AqwamTensorLibrary:multiply(lossVector, eligibilityTraceMatrix) end
 			
-			Model:backwardPropagate(temporalDifferenceErrorVector, true)
+			Model:backwardPropagate(lossVector, true)
 
 		end
 		

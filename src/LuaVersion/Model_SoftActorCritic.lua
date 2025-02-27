@@ -138,7 +138,7 @@ function SoftActorCriticModel.new(parameterDictionary)
 	
 	NewSoftActorCritic:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 		
-		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
+		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor({1, #actionMeanVector[1]}) end
 		
 		local currentActionMeanVector = NewSoftActorCritic.ActorModel:forwardPropagate(currentFeatureVector, true)
 		

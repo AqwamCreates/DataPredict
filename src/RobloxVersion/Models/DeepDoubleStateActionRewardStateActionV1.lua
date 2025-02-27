@@ -134,11 +134,11 @@ function DeepDoubleStateActionRewardStateActionModel:generateTemporalDifferenceE
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-	local targetVector = Model:forwardPropagate(currentFeatureVector)
+	local qVector = Model:forwardPropagate(currentFeatureVector)
 
-	local qVector = AqwamTensorLibrary:multiply(discountFactor, targetVector, (1 - terminalStateValue))
+	local discountedQVector = AqwamTensorLibrary:multiply(discountFactor, qVector, (1 - terminalStateValue))
 
-	local targetVector = AqwamTensorLibrary:add(rewardValue, qVector)
+	local targetVector = AqwamTensorLibrary:add(rewardValue, discountedQVector)
 	
 	local temporalDifferenceErrorVector = AqwamTensorLibrary:subtract(targetVector, previousVector)
 	

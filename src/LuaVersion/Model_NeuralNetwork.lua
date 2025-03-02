@@ -113,7 +113,7 @@ local elementWiseActivationFunctionList = {
 
 local activationFunctionList = {
 
-	["Softmax"] = function (zMatrix) -- apparently roblox doesn't really handle very small values such as math.exp(-1000), so I added a more sarray computation exp(a) / exp(b) -> exp (a - b)
+	["Softmax"] = function (zMatrix)
 
 		local exponentZMatrix = AqwamTensorLibrary:applyFunction(math.exp, zMatrix)
 

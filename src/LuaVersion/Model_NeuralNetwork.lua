@@ -915,9 +915,9 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 	for layer = 1, numberOfLayers, 1 do
 
-		self.activationFunctionTable[layer] = activationFunction
+		self.activationFunctionTable[layer] = ((layer == 1) and "None") or activationFunction
 
-		self.learningRateTable[layer] = learningRate
+		self.learningRateTable[layer] = ((layer == 1) and 0) or learningRate
 
 		self.dropoutRateTable[layer] = dropoutRate
 
@@ -937,9 +937,11 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 	
 	local numberOfNeuronsTable = self.numberOfNeuronsTable
 	
-	local isFirstLayer = (#numberOfNeuronsTable == 1)
+	local isFirstLayer = (#numberOfNeuronsTable == 0)
 	
-	if (not activationFunction) then activationFunction = "None" end
+	if (isFirstLayer) and (not activationFunction) then activationFunction = "None" end
+	
+	if (isFirstLayer) and (not learningRate) then learningRate = 0 end
 
 	layerPropertyValueTypeCheckingFunctionList["NumberOfNeurons"](numberOfNeurons)
 
@@ -1535,8 +1537,20 @@ function NeuralNetworkModel:showDetails()
 	local maxDropoutRateLength = string.len("Dropout Rate")
 
 	local hasBias
+	
+	local optimizerName = "None"
+
+	local regularizerName = "None"
 
 	for i = 1, #self.numberOfNeuronsTable do
+		
+		local Optimizer = self.OptimizerTable[i]
+
+		local Regularizer = self.RegularizerTable[i]
+
+		if (type(Optimizer) == "table") then optimizerName = Optimizer:getName() end
+
+		if (type(Regularizer) == "table") then regularizerName = Regularizer:getName() end
 
 		maxLayerLength = math.max(maxLayerLength, string.len(tostring(i)))
 
@@ -1550,9 +1564,9 @@ function NeuralNetworkModel:showDetails()
 
 		maxLearningRateLength = math.max(maxLearningRateLength, string.len(tostring(self.learningRateTable[i])))
 
-		maxOptimizerLength = math.max(maxOptimizerLength, string.len("false"))
+		maxOptimizerLength = math.max(maxOptimizerLength, string.len(optimizerName))
 
-		maxRegularizerLength = math.max(maxRegularizerLength, string.len("false"))
+		maxRegularizerLength = math.max(maxRegularizerLength, string.len(regularizerName))
 
 		maxDropoutRateLength = math.max(maxDropoutRateLength, string.len(tostring(self.dropoutRateTable[i])))
 
@@ -1597,26 +1611,38 @@ function NeuralNetworkModel:showDetails()
 
 	-- Print the layer details
 	for i = 1, #self.numberOfNeuronsTable do
+		
+		local optimizerName = "None"
+		
+		local regularizerName = "None"
 
-		local layer = "| " .. string.format("%-" .. maxLayerLength .. "s", i) .. " "
+		local layerText = "| " .. string.format("%-" .. maxLayerLength .. "s", i) .. " "
 
-		local neurons = "| " .. string.format("%-" .. maxNeuronsLength .. "s", self.numberOfNeuronsTable[i]) .. " "
+		local numberOfNeuronsText = "| " .. string.format("%-" .. maxNeuronsLength .. "s", self.numberOfNeuronsTable[i]) .. " "
 
 		hasBias = (self.hasBiasNeuronTable[i] == 1)
 
-		local bias = "| " .. string.format("%-" .. maxBiasLength .. "s", tostring(hasBias)) .. " "
+		local biasText = "| " .. string.format("%-" .. maxBiasLength .. "s", tostring(hasBias)) .. " "
 
-		local activation = "| " .. string.format("%-" .. maxActivationLength .. "s", self.activationFunctionTable[i]) .. " "
+		local activationFunctionText = "| " .. string.format("%-" .. maxActivationLength .. "s", self.activationFunctionTable[i]) .. " "
 
-		local learningRate = "| " .. string.format("%-" .. maxLearningRateLength .. "s", self.learningRateTable[i]) .. " "
+		local learningRateText = "| " .. string.format("%-" .. maxLearningRateLength .. "s", self.learningRateTable[i]) .. " "
+		
+		local Optimizer = self.OptimizerTable[i]
+		
+		local Regularizer = self.RegularizerTable[i]
+		
+		if (type(Optimizer) == "table") then optimizerName = Optimizer:getName() end
 
-		local optimizer = "| " .. string.format("%-" .. maxOptimizerLength .. "s", self.OptimizerTable[i] and "true" or "false") .. " "
+		if (type(Regularizer) == "table") then regularizerName = Regularizer:getName() end
 
-		local regularization = "| " .. string.format("%-" .. maxRegularizerLength .. "s", self.RegularizerTable[i] and "true" or "false") .. " "
+		local optimizerText = "| " .. string.format("%-" .. maxOptimizerLength .. "s", optimizerName) .. " "
 
-		local dropoutRate = "| " .. string.format("%-" .. maxDropoutRateLength .. "s", self.dropoutRateTable[i]) .. " |"
+		local regularizerText = "| " .. string.format("%-" .. maxRegularizerLength .. "s",  regularizerName) .. " "
 
-		local stringPart = layer .. neurons .. bias .. activation .. learningRate .. optimizer .. regularization .. dropoutRate .. "\n"
+		local dropoutRateText = "| " .. string.format("%-" .. maxDropoutRateLength .. "s", self.dropoutRateTable[i]) .. " |"
+
+		local stringPart = layerText .. numberOfNeuronsText .. biasText .. activationFunctionText .. learningRateText .. optimizerText .. regularizerText .. dropoutRateText .. "\n"
 
 		stringToPrint ..= stringPart
 

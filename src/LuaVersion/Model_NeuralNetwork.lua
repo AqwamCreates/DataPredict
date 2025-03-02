@@ -934,6 +934,12 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 end
 
 function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularizer, dropoutRate)
+	
+	local numberOfNeuronsTable = self.numberOfNeuronsTable
+	
+	local isFirstLayer = (#numberOfNeuronsTable == 1)
+	
+	if (not activationFunction) then activationFunction = "None" end
 
 	layerPropertyValueTypeCheckingFunctionList["NumberOfNeurons"](numberOfNeurons)
 
@@ -955,7 +961,7 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 
 	dropoutRate = dropoutRate or defaultDropoutRate
 
-	table.insert(self.numberOfNeuronsTable, numberOfNeurons)
+	table.insert(numberOfNeuronsTable, numberOfNeurons)
 
 	table.insert(self.hasBiasNeuronTable, hasBiasNeuron)
 

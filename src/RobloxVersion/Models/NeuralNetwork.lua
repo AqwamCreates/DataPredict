@@ -90,30 +90,30 @@ local layerPropertyValueTypeCheckingFunctionList = {
 }
 
 local elementWiseActivationFunctionList = {
-	
+
 	["Sigmoid"] = function(z) return 1/(1 + math.exp(-1 * z)) end,
-	
+
 	["Tanh"] = function (z) return math.tanh(z) end,
-	
+
 	["ReLU"] = function (z) return math.max(0, z) end,
-	
+
 	["LeakyReLU"] = function (z) return math.max((0.01 * z), z) end,
-	
+
 	["ELU"] = function (z) return if (z > 0) then z else (0.01 * (math.exp(z) - 1)) end,
-	
+
 	["Gaussian"] = function (z) return math.exp(-math.pow(z, 2)) end,
-	
+
 	["SiLU"] = function (z) return z / (1 + math.exp(-z)) end,
-	
+
 	["Mish"] = function (z) return z * math.tanh(math.log(1 + math.exp(z))) end,
-	
+
 	["BinaryStep"] = function (z) return ((z > 0) and 1) or 0 end
-	
+
 }
 
 local activationFunctionList = {
 
-	["Softmax"] = function (zMatrix) -- apparently roblox doesn't really handle very small values such as math.exp(-1000), so I added a more stable computation exp(a) / exp(b) -> exp (a - b)
+	["Softmax"] = function (zMatrix) -- apparently roblox doesn't really handle very small values such as math.exp(-1000), so I added a more sarray computation exp(a) / exp(b) -> exp (a - b)
 
 		local exponentZMatrix = AqwamTensorLibrary:applyFunction(math.exp, zMatrix)
 
@@ -156,23 +156,23 @@ local activationFunctionList = {
 }
 
 local elementWiseActivationFunctionDerivativeList = {
-	
+
 	["Sigmoid"] = function (a) return (a * (1 - a)) end,
-	
+
 	["Tanh"] = function (a) return (1 - math.pow(a, 2)) end,
-	
+
 	["ReLU"] = function (z) if (z > 0) then return 1 else return 0 end end,
-	
+
 	["LeakyReLU"] = function (z) if (z > 0) then return 1 else return 0.01 end end,
-	
+
 	["ELU"] = function (z) if (z > 0) then return 1 else return 0.01 * math.exp(z) end end,
-	
+
 	["Gaussian"] = function (z) return -2 * z * math.exp(-math.pow(z, 2)) end,
-	
+
 	["SiLU"] = function (z) return (1 + math.exp(-z) + (z * math.exp(-z))) / (1 + math.exp(-z))^2 end,
-	
+
 	["Mish"] = function (z) return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2) end
-	
+
 }
 
 local activationFunctionDerivativeList = {
@@ -301,9 +301,9 @@ function NeuralNetworkModel:getActivationLayerAtFinalLayer()
 
 	local finalLayerActivationFunctionName
 
-	for layerNumber = #self.activationFunctionTable, 1, -1 do
+	for layerNumber = #self.activationFunctionArray, 1, -1 do
 
-		finalLayerActivationFunctionName = self.activationFunctionTable[layerNumber]
+		finalLayerActivationFunctionName = self.activationFunctionArray[layerNumber]
 
 		if (finalLayerActivationFunctionName ~= "None") then break end
 
@@ -338,7 +338,7 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 		incorrectLabelValue = 0
 
 	end
-	
+
 	local numberOfData = #labelVector
 
 	local logisticMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfNeuronsAtFinalLayer}, incorrectLabelValue)
@@ -395,34 +395,34 @@ local function dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNot
 
 end
 
-function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDropoutNeurons)
+function NeuralNetworkModel:forwardPropagate(featureMatrix, saveArrays, doNotDropoutNeurons)
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
 	local ModelParameters = self.ModelParameters
 
-	local numberOfLayers = #self.numberOfNeuronsTable
+	local numberOfLayers = #self.numberOfNeuronsArray
 
-	local hasBiasNeuronTable = self.hasBiasNeuronTable
+	local hasBiasNeuronArray = self.hasBiasNeuronArray
 
-	local activationFunctionTable = self.activationFunctionTable
+	local activationFunctionArray = self.activationFunctionArray
 
-	local dropoutRateTable = self.dropoutRateTable
+	local dropoutRateArray = self.dropoutRateArray
 
-	local forwardPropagateTable = {}
+	local forwardPropagateArray = {}
 
-	local zTable = {}
-	
-	local activationFunctionName = activationFunctionTable[1]
-	
+	local zArray = {}
+
+	local activationFunctionName = activationFunctionArray[1]
+
 	local elementWiseActivationFunction = elementWiseActivationFunctionList[activationFunctionName]
-	
+
 	local layerZMatrix = featureMatrix
 
 	local inputMatrix = featureMatrix
 
 	local numberOfData = #featureMatrix
-	
+
 	if (elementWiseActivationFunction) then
 
 		inputMatrix = AqwamTensorLibrary:applyFunction(elementWiseActivationFunction, layerZMatrix)
@@ -433,28 +433,28 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 
 	end
 
-	inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuronTable[1], dropoutRateTable[1], doNotDropoutNeurons)
+	inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuronArray[1], dropoutRateArray[1], doNotDropoutNeurons)
 
-	table.insert(zTable, inputMatrix)
+	table.insert(zArray, inputMatrix)
 
-	table.insert(forwardPropagateTable, inputMatrix) -- don't remove this! otherwise the code won't work!
+	table.insert(forwardPropagateArray, inputMatrix) -- don't remove this! otherwise the code won't work!
 
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
 		local weightMatrix = ModelParameters[layerNumber]
 
-		local hasBiasNeuron = hasBiasNeuronTable[layerNumber + 1]
+		local hasBiasNeuron = hasBiasNeuronArray[layerNumber + 1]
 
-		local activationFunctionName = activationFunctionTable[layerNumber + 1]
+		local activationFunctionName = activationFunctionArray[layerNumber + 1]
 
-		local dropoutRate = dropoutRateTable[layerNumber + 1]
-		
+		local dropoutRate = dropoutRateArray[layerNumber + 1]
+
 		local elementWiseActivationFunction = elementWiseActivationFunctionList[activationFunctionName]
 
 		layerZMatrix = AqwamTensorLibrary:dotProduct(inputMatrix, weightMatrix)
 
 		if (typeof(layerZMatrix) == "number") then layerZMatrix = {{layerZMatrix}} end
-		
+
 		if (elementWiseActivationFunction) then
 
 			inputMatrix = AqwamTensorLibrary:applyFunction(elementWiseActivationFunction, layerZMatrix)
@@ -473,91 +473,91 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveTables, doNotDro
 
 		inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNotDropoutNeurons)
 
-		table.insert(zTable, layerZMatrix)
+		table.insert(zArray, layerZMatrix)
 
-		table.insert(forwardPropagateTable, inputMatrix)
+		table.insert(forwardPropagateArray, inputMatrix)
 
 		self:sequenceWait()
 
 	end
 
-	if saveTables then
+	if saveArrays then
 
-		self.forwardPropagateTable = forwardPropagateTable
+		self.forwardPropagateArray = forwardPropagateArray
 
-		self.zTable = zTable
+		self.zArray = zArray
 
 	end
 
-	return inputMatrix, forwardPropagateTable, zTable
+	return inputMatrix, forwardPropagateArray, zArray
 
 end
 
-function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatrix)
-	
-	local forwardPropagateTable = self.forwardPropagateTable
+function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixArray(lossMatrix)
 
-	local zTable = self.zTable
-	
-	if (forwardPropagateTable == nil) then error("Table not found for forward propagation.") end
+	local forwardPropagateArray = self.forwardPropagateArray
 
-	if (zTable == nil) then error("Table not found for z matrix.") end
+	local zArray = self.zArray
+
+	if (forwardPropagateArray == nil) then error("Array not found for forward propagation.") end
+
+	if (zArray == nil) then error("Array not found for z matrix.") end
 
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 
-	local costFunctionDerivativeMatrixTable = {}
+	local costFunctionDerivativeMatrixArray = {}
 
-	local errorMatrixTable = {}
-	
+	local errorMatrixArray = {}
+
 	local numberOfData = #lossMatrix
 
 	local ModelParameters = self.ModelParameters
 
-	local numberOfLayers = #self.numberOfNeuronsTable
+	local numberOfLayers = #self.numberOfNeuronsArray
 
-	local activationFunctionTable = self.activationFunctionTable
+	local activationFunctionArray = self.activationFunctionArray
 
-	local hasBiasNeuronTable = self.hasBiasNeuronTable
-	
-	local activationFunctionName = activationFunctionTable[numberOfLayers]
-	
+	local hasBiasNeuronArray = self.hasBiasNeuronArray
+
+	local activationFunctionName = activationFunctionArray[numberOfLayers]
+
 	local elementWiseActivationFunctionDerivative = elementWiseActivationFunctionDerivativeList[activationFunctionName]
-	
-	local lastActivationMatrix = forwardPropagateTable[numberOfLayers]
-	
-	local lastZMatrix = zTable[numberOfLayers]
-	
+
+	local lastActivationMatrix = forwardPropagateArray[numberOfLayers]
+
+	local lastZMatrix = zArray[numberOfLayers]
+
 	local derivativeMatrix
-	
+
 	if (elementWiseActivationFunctionDerivative) then
-		
+
 		derivativeMatrix = AqwamTensorLibrary:applyFunction(elementWiseActivationFunctionDerivative, lastZMatrix)
-		
+
 	else
-		
+
 		derivativeMatrix = activationFunctionDerivativeList[activationFunctionName](lastActivationMatrix, lastZMatrix)
-		
+
 	end
 
 	local layerCostMatrix = AqwamTensorLibrary:multiply(lossMatrix, derivativeMatrix)
 
-	table.insert(errorMatrixTable, layerCostMatrix)
+	table.insert(errorMatrixArray, layerCostMatrix)
 
 	for layerNumber = (numberOfLayers - 1), 2, -1 do
 
-		activationFunctionName = activationFunctionTable[layerNumber]
+		activationFunctionName = activationFunctionArray[layerNumber]
 
-		local hasBiasNeuronOnNextLayer = hasBiasNeuronTable[layerNumber + 1]
+		local hasBiasNeuronOnNextLayer = hasBiasNeuronArray[layerNumber + 1]
 
 		local layerMatrix = AqwamTensorLibrary:transpose(ModelParameters[layerNumber])
 
 		local partialErrorMatrix = AqwamTensorLibrary:dotProduct(layerCostMatrix, layerMatrix)
-		
+
 		local elementWiseActivationFunctionDerivative = elementWiseActivationFunctionDerivativeList[activationFunctionName]
 
-		local currentActivationMatrix = forwardPropagateTable[layerNumber]
+		local currentActivationMatrix = forwardPropagateArray[layerNumber]
 
-		local currentZMatrix = zTable[layerNumber]
+		local currentZMatrix = zArray[layerNumber]
 
 		local derivativeMatrix
 
@@ -579,7 +579,7 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 
 		layerCostMatrix = AqwamTensorLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 
-		table.insert(errorMatrixTable, 1, layerCostMatrix)
+		table.insert(errorMatrixArray, 1, layerCostMatrix)
 
 		self:sequenceWait()
 
@@ -587,53 +587,53 @@ function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixTable(lossMatri
 
 	for layer = 1, (numberOfLayers - 1), 1 do
 
-		local activationLayerMatrix = AqwamTensorLibrary:transpose(forwardPropagateTable[layer])
+		local activationLayerMatrix = AqwamTensorLibrary:transpose(forwardPropagateArray[layer])
 
-		local errorMatrix = errorMatrixTable[layer]
+		local errorMatrix = errorMatrixArray[layer]
 
 		local costFunctionDerivatives = AqwamTensorLibrary:dotProduct(activationLayerMatrix, errorMatrix)
 
 		if (type(costFunctionDerivatives) == "number") then costFunctionDerivatives = {{costFunctionDerivatives}} end
 
-		table.insert(costFunctionDerivativeMatrixTable, costFunctionDerivatives)
+		table.insert(costFunctionDerivativeMatrixArray, costFunctionDerivatives)
 
 		self:sequenceWait()
 
 	end
 
-	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrixTable end
+	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrixArray end
 
-	return costFunctionDerivativeMatrixTable
+	return costFunctionDerivativeMatrixArray
 
 end
 
-function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, numberOfData)
+function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, numberOfData)
 
 	local NewModelParameters = {}
 
-	local numberOfLayers = #self.numberOfNeuronsTable
+	local numberOfLayers = #self.numberOfNeuronsArray
 
-	local learningRateTable = self.learningRateTable
+	local learningRateArray = self.learningRateArray
 
-	local OptimizerTable = self.OptimizerTable
+	local OptimizerArray = self.OptimizerArray
 
-	local RegularizerTable = self.RegularizerTable
+	local RegularizerArray = self.RegularizerArray
 
-	local hasBiasNeuronTable = self.hasBiasNeuronTable
+	local hasBiasNeuronArray = self.hasBiasNeuronArray
 
 	local ModelParameters = self.ModelParameters
 
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
-		local learningRate = learningRateTable[layerNumber + 1]
+		local learningRate = learningRateArray[layerNumber + 1]
 
-		local Regularizer = RegularizerTable[layerNumber + 1]
+		local Regularizer = RegularizerArray[layerNumber + 1]
 
-		local Optimizer = OptimizerTable[layerNumber + 1]
+		local Optimizer = OptimizerArray[layerNumber + 1]
 
-		local costFunctionDerivativeMatrix = costFunctionDerivativeMatrixTable[layerNumber]
+		local costFunctionDerivativeMatrix = costFunctionDerivativeMatrixArray[layerNumber]
 
-		local hasBiasNeuronOnNextLayer = hasBiasNeuronTable[layerNumber + 1]
+		local hasBiasNeuronOnNextLayer = hasBiasNeuronArray[layerNumber + 1]
 
 		if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
 
@@ -675,21 +675,21 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixTable, n
 
 end
 
-function NeuralNetworkModel:backwardPropagate(lossMatrix, clearTables)
+function NeuralNetworkModel:backwardPropagate(lossMatrix, clearArrays)
 
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 
 	local numberOfData = #lossMatrix
 
-	local costFunctionDerivativeMatrixTable = self:calculateCostFunctionDerivativeMatrixTable(lossMatrix)
+	local costFunctionDerivativeMatrixArray = self:calculateCostFunctionDerivativeMatrixArray(lossMatrix)
 
-	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrixTable, numberOfData)
+	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrixArray, numberOfData)
 
-	if (clearTables) then
+	if (clearArrays) then
 
-		self.forwardPropagateTable = nil
+		self.forwardPropagateArray = nil
 
-		self.zTable = nil
+		self.zArray = nil
 
 	end
 
@@ -703,15 +703,15 @@ function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix, numb
 
 	local totalCost = AqwamTensorLibrary:sum(squaredSubtractedMatrix)
 
-	local numberOfLayers = #self.numberOfNeuronsTable
+	local numberOfLayers = #self.numberOfNeuronsArray
 
-	local RegularizerTable = self.RegularizerTable
+	local RegularizerArray = self.RegularizerArray
 
 	local ModelParameters = self.ModelParameters
 
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
-		local Regularizer = RegularizerTable[layerNumber + 1]
+		local Regularizer = RegularizerArray[layerNumber + 1]
 
 		if (Regularizer ~=  0) then totalCost = totalCost + Regularizer:calculateRegularization(ModelParameters[layerNumber]) end
 
@@ -752,10 +752,10 @@ function NeuralNetworkModel:fetchHighestValueInVector(outputVector)
 end
 
 function NeuralNetworkModel:getLabelFromOutputMatrix(outputMatrix)
-	
+
 	local numberOfData = #outputMatrix
 
-	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsTable[#self.numberOfNeuronsTable]
+	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsArray[#self.numberOfNeuronsArray]
 
 	local predictedLabelVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
 
@@ -808,32 +808,32 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
 end
 
 function NeuralNetworkModel.new(parameterDictionary)
-	
+
 	parameterDictionary = parameterDictionary or {}
-	
+
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
 	local NewNeuralNetworkModel = GradientMethodBaseModel.new(parameterDictionary)
 
 	setmetatable(NewNeuralNetworkModel, NeuralNetworkModel)
-	
+
 	NewNeuralNetworkModel:setName("NeuralNetwork")
-	
+
 	NewNeuralNetworkModel.ClassesList = parameterDictionary.ClassesList or {}
 
-	NewNeuralNetworkModel.numberOfNeuronsTable = parameterDictionary.numberOfNeuronsTable or {}
+	NewNeuralNetworkModel.numberOfNeuronsArray = parameterDictionary.numberOfNeuronsArray or {}
 
-	NewNeuralNetworkModel.RegularizerTable = parameterDictionary.RegularizerTable or {}
+	NewNeuralNetworkModel.RegularizerArray = parameterDictionary.RegularizerArray or {}
 
-	NewNeuralNetworkModel.OptimizerTable = parameterDictionary.OptimizerTable or {}
+	NewNeuralNetworkModel.OptimizerArray = parameterDictionary.OptimizerArray or {}
 
-	NewNeuralNetworkModel.hasBiasNeuronTable = parameterDictionary.hasBiasNeuronTable or{}
+	NewNeuralNetworkModel.hasBiasNeuronArray = parameterDictionary.hasBiasNeuronArray or{}
 
-	NewNeuralNetworkModel.learningRateTable = parameterDictionary.learningRateTable or {}
+	NewNeuralNetworkModel.learningRateArray = parameterDictionary.learningRateArray or {}
 
-	NewNeuralNetworkModel.activationFunctionTable = parameterDictionary.activationFunctionTable or {}
+	NewNeuralNetworkModel.activationFunctionArray = parameterDictionary.activationFunctionArray or {}
 
-	NewNeuralNetworkModel.dropoutRateTable = parameterDictionary.dropoutRateTable or {}
+	NewNeuralNetworkModel.dropoutRateArray = parameterDictionary.dropoutRateArray or {}
 
 	return NewNeuralNetworkModel
 
@@ -841,11 +841,11 @@ end
 
 function NeuralNetworkModel:generateLayers()
 
-	local layersArray = self.numberOfNeuronsTable
+	local layersArray = self.numberOfNeuronsArray
 
 	local numberOfLayers = #layersArray
 
-	if (#self.numberOfNeuronsTable == 1) then error("There is only one layer!") end
+	if (#self.numberOfNeuronsArray == 1) then error("There is only one layer!") end
 
 	local ModelParameters = {}
 
@@ -853,11 +853,11 @@ function NeuralNetworkModel:generateLayers()
 
 		local numberOfCurrentLayerNeurons = layersArray[layer]
 
-		if (self.hasBiasNeuronTable[layer] == 1) then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
+		if (self.hasBiasNeuronArray[layer] == 1) then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
 
 		local numberOfNextLayerNeurons = layersArray[layer + 1]
 
-		local hasBiasNeuronOnNextLayer = self.hasBiasNeuronTable[layer + 1] 
+		local hasBiasNeuronOnNextLayer = self.hasBiasNeuronArray[layer + 1] 
 
 		if (hasBiasNeuronOnNextLayer == 1) then numberOfNextLayerNeurons += 1 end
 
@@ -897,35 +897,35 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 	self.ModelParameters = nil
 
-	self.numberOfNeuronsTable = numberOfNeuronsArray
+	self.numberOfNeuronsArray = numberOfNeuronsArray
 
-	self.hasBiasNeuronTable = {}
+	self.hasBiasNeuronArray = {}
 
-	self.learningRateTable = {}
+	self.learningRateArray = {}
 
-	self.activationFunctionTable = {}
+	self.activationFunctionArray = {}
 
-	self.dropoutRateTable = {}
+	self.dropoutRateArray = {}
 
-	self.OptimizerTable = {}
+	self.OptimizerArray = {}
 
-	self.RegularizerTable = {}
+	self.RegularizerArray = {}
 
-	local numberOfLayers = #self.numberOfNeuronsTable
+	local numberOfLayers = #self.numberOfNeuronsArray
 
 	for layer = 1, numberOfLayers, 1 do
 
-		self.activationFunctionTable[layer] = ((layer == 1) and "None") or activationFunction
+		self.activationFunctionArray[layer] = ((layer == 1) and "None") or activationFunction
 
-		self.learningRateTable[layer] = ((layer == 1) and 0) or learningRate
+		self.learningRateArray[layer] = ((layer == 1) and 0) or learningRate
 
-		self.dropoutRateTable[layer] = dropoutRate
+		self.dropoutRateArray[layer] = dropoutRate
 
-		self.hasBiasNeuronTable[layer] = ((layer == numberOfLayers) and 0) or 1
+		self.hasBiasNeuronArray[layer] = ((layer == numberOfLayers) and 0) or 1
 
-		self.OptimizerTable[layer] = OptimizerArray[layer] or 0
+		self.OptimizerArray[layer] = OptimizerArray[layer] or 0
 
-		self.RegularizerTable[layer] = RegularizerArray[layer] or 0
+		self.RegularizerArray[layer] = RegularizerArray[layer] or 0
 
 	end
 
@@ -934,13 +934,13 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 end
 
 function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularizer, dropoutRate)
-	
-	local numberOfNeuronsTable = self.numberOfNeuronsTable
-	
-	local isFirstLayer = (#numberOfNeuronsTable == 0)
-	
+
+	local numberOfNeuronsArray = self.numberOfNeuronsArray
+
+	local isFirstLayer = (#numberOfNeuronsArray == 0)
+
 	if (isFirstLayer) and (not activationFunction) then activationFunction = "None" end
-	
+
 	if (isFirstLayer) and (not learningRate) then learningRate = 0 end
 
 	layerPropertyValueTypeCheckingFunctionList["NumberOfNeurons"](numberOfNeurons)
@@ -963,19 +963,19 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 
 	dropoutRate = dropoutRate or defaultDropoutRate
 
-	table.insert(numberOfNeuronsTable, numberOfNeurons)
+	table.insert(numberOfNeuronsArray, numberOfNeurons)
 
-	table.insert(self.hasBiasNeuronTable, hasBiasNeuron)
+	table.insert(self.hasBiasNeuronArray, hasBiasNeuron)
 
-	table.insert(self.activationFunctionTable, activationFunction)
+	table.insert(self.activationFunctionArray, activationFunction)
 
-	table.insert(self.learningRateTable, learningRate)
+	table.insert(self.learningRateArray, learningRate)
 
-	table.insert(self.OptimizerTable, Optimizer or 0)
+	table.insert(self.OptimizerArray, Optimizer or 0)
 
-	table.insert(self.RegularizerTable, Regularizer or 0)
+	table.insert(self.RegularizerArray, Regularizer or 0)
 
-	table.insert(self.dropoutRateTable, dropoutRate)
+	table.insert(self.dropoutRateArray, dropoutRate)
 
 end
 
@@ -985,7 +985,7 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 		error("The layer number can't be less than or equal to zero!") 
 
-	elseif (layerNumber > #self.numberOfNeuronsTable)  then
+	elseif (layerNumber > #self.numberOfNeuronsArray)  then
 
 		error("The layer number exceeds the number of layers!") 
 
@@ -999,29 +999,29 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 	layerPropertyValueTypeCheckingFunctionList["DropoutRate"](dropoutRate)
 
-	hasBiasNeuron = self:getValueOrDefaultValue(hasBiasNeuron,  self.hasBiasNeuronTable[layerNumber])
+	hasBiasNeuron = self:getValueOrDefaultValue(hasBiasNeuron,  self.hasBiasNeuronArray[layerNumber])
 
 	hasBiasNeuron = (hasBiasNeuron and 1) or 0
 
-	Regularizer = self:getValueOrDefaultValue(Regularizer,  self.RegularizerTable[layerNumber])
+	Regularizer = self:getValueOrDefaultValue(Regularizer,  self.RegularizerArray[layerNumber])
 
 	Regularizer = Regularizer or 0
 
-	Optimizer = self:getValueOrDefaultValue(Optimizer,  self.OptimizerTable[layerNumber])
+	Optimizer = self:getValueOrDefaultValue(Optimizer,  self.OptimizerArray[layerNumber])
 
 	Optimizer = Optimizer or 0
 
-	self.hasBiasNeuronTable[layerNumber] = hasBiasNeuron
+	self.hasBiasNeuronArray[layerNumber] = hasBiasNeuron
 
-	self.activationFunctionTable[layerNumber] = activationFunction or self.activationFunctionTable[layerNumber] 
+	self.activationFunctionArray[layerNumber] = activationFunction or self.activationFunctionArray[layerNumber] 
 
-	self.learningRateTable[layerNumber] = activationFunction or self.learningRateTable[layerNumber] 
+	self.learningRateArray[layerNumber] = activationFunction or self.learningRateArray[layerNumber] 
 
-	self.OptimizerTable[layerNumber] = Optimizer
+	self.OptimizerArray[layerNumber] = Optimizer
 
-	self.RegularizerTable[layerNumber] = Regularizer
+	self.RegularizerArray[layerNumber] = Regularizer
 
-	self.dropoutRateTable[layerNumber] = dropoutRate or self.dropoutRateTable[layerNumber]
+	self.dropoutRateArray[layerNumber] = dropoutRate or self.dropoutRateArray[layerNumber]
 
 end
 
@@ -1031,7 +1031,7 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 
 		error("The layer number can't be less than or equal to zero!") 
 
-	elseif (layerNumber > #self.numberOfNeuronsTable)  then
+	elseif (layerNumber > #self.numberOfNeuronsArray)  then
 
 		error("The layer number exceeds the number of layers!") 
 
@@ -1041,45 +1041,45 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 
 		layerPropertyValueTypeCheckingFunctionList["HasBias"](value)
 
-		local hasBiasNeuron = self:getValueOrDefaultValue(value,  self.hasBiasNeuronTable[layerNumber])
+		local hasBiasNeuron = self:getValueOrDefaultValue(value,  self.hasBiasNeuronArray[layerNumber])
 
 		hasBiasNeuron = (hasBiasNeuron and 1) or 0
 
-		self.hasBiasNeuronTable[layerNumber] = hasBiasNeuron
+		self.hasBiasNeuronArray[layerNumber] = hasBiasNeuron
 
 	elseif (property == "ActivationFunction") then
 
 		layerPropertyValueTypeCheckingFunctionList["ActivationFunction"](value)
 
-		self.activationFunctionTable[layerNumber] = value or self.activationFunctionTable[layerNumber]
+		self.activationFunctionArray[layerNumber] = value or self.activationFunctionArray[layerNumber]
 
 	elseif (property == "LearningRate") then
 
 		layerPropertyValueTypeCheckingFunctionList["LearningRate"](value)
 
-		self.learningRateTable[layerNumber] = value or self.learningRateTable[layerNumber]
+		self.learningRateArray[layerNumber] = value or self.learningRateArray[layerNumber]
 
 	elseif (property == "Optimizer") then
 
-		value = self:getValueOrDefaultValue(value, self.OptimizerTable[layerNumber])
+		value = self:getValueOrDefaultValue(value, self.OptimizerArray[layerNumber])
 
 		value = value or 0
 
-		self.OptimizerTable[layerNumber] = value
+		self.OptimizerArray[layerNumber] = value
 
 	elseif (property == "Regularizer") then
 
-		value = self:getValueOrDefaultValue(value, self.OptimizerTable[layerNumber])
+		value = self:getValueOrDefaultValue(value, self.OptimizerArray[layerNumber])
 
 		value = value or 0
 
-		self.RegularizerTable[layerNumber] = value or 0
+		self.RegularizerArray[layerNumber] = value or 0
 
 	elseif (property == "DropoutRate") then
 
 		layerPropertyValueTypeCheckingFunctionList["DropoutRate"](value)
 
-		self.dropoutRateTable[layerNumber] = value or self.dropoutRateTable[layerNumber]
+		self.dropoutRateArray[layerNumber] = value or self.dropoutRateArray[layerNumber]
 
 	else
 
@@ -1095,7 +1095,7 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 
 		error("The layer number can't be less than or equal to zero!") 
 
-	elseif (layerNumber > #self.numberOfNeuronsTable)  then
+	elseif (layerNumber > #self.numberOfNeuronsArray)  then
 
 		error("The layer number exceeds the number of layers!") 
 
@@ -1103,19 +1103,19 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 
 	if (property == "HasBias") then
 
-		return (self.hasBiasNeuronTable[layerNumber] == 1)
+		return (self.hasBiasNeuronArray[layerNumber] == 1)
 
 	elseif (property == "ActivationFunction") then
 
-		return self.activationFunctionTable[layerNumber]
+		return self.activationFunctionArray[layerNumber]
 
 	elseif (property == "LearningRate") then
 
-		return self.learningRateTable[layerNumber]
+		return self.learningRateArray[layerNumber]
 
 	elseif (property == "Optimizer") then
 
-		local Optimizer = self.OptimizerTable[layerNumber]
+		local Optimizer = self.OptimizerArray[layerNumber]
 
 		if (Optimizer ~= 0) then
 
@@ -1129,7 +1129,7 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 
 	elseif (property == "Regularizer") then
 
-		local Regularizer = self.RegularizerTable[layerNumber]
+		local Regularizer = self.RegularizerArray[layerNumber]
 
 		if (Regularizer ~= 0) then
 
@@ -1143,7 +1143,7 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 
 	elseif (property == "DropoutRate") then
 
-		return self.dropoutRateTable[layerNumber]
+		return self.dropoutRateArray[layerNumber]
 
 	else
 
@@ -1161,13 +1161,13 @@ function NeuralNetworkModel:getLayer(layerNumber)
 
 		error("The layer number can't be less than or equal to zero!") 
 
-	elseif (layerNumber > #self.numberOfNeuronsTable) then
+	elseif (layerNumber > #self.numberOfNeuronsArray) then
 
 		error("The layer number exceeds the number of layers!") 
 
 	end 
 
-	local Optimizer = self.OptimizerTable[layerNumber]
+	local Optimizer = self.OptimizerArray[layerNumber]
 
 	if (Optimizer == 0) then
 
@@ -1175,7 +1175,7 @@ function NeuralNetworkModel:getLayer(layerNumber)
 
 	end
 
-	local Regularizer = self.RegularizerTable[layerNumber]
+	local Regularizer = self.RegularizerArray[layerNumber]
 
 	if (Regularizer == 0) then
 
@@ -1183,13 +1183,13 @@ function NeuralNetworkModel:getLayer(layerNumber)
 
 	end
 
-	return self.numberOfNeuronsTable[layerNumber], (self.hasBiasNeuronTable[layerNumber] == 1), self.activationFunctionTable[layerNumber], self.learningRateTable[layerNumber], Optimizer, Regularizer, self.dropoutRateTable[layerNumber]
+	return self.numberOfNeuronsArray[layerNumber], (self.hasBiasNeuronArray[layerNumber] == 1), self.activationFunctionArray[layerNumber], self.learningRateArray[layerNumber], Optimizer, Regularizer, self.dropoutRateArray[layerNumber]
 
 end
 
 function NeuralNetworkModel:getTotalNumberOfNeurons(layerNumber)
 
-	return self.numberOfNeuronsTable[layerNumber] + self.hasBiasNeuronTable[layerNumber]
+	return self.numberOfNeuronsArray[layerNumber] + self.hasBiasNeuronArray[layerNumber]
 
 end
 
@@ -1259,13 +1259,13 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 
 	end
 
-	local numberOfLayers = #self.numberOfNeuronsTable -- DON'T FORGET THAT IT DOES NOT INCLUDE BIAS!
+	local numberOfLayers = #self.numberOfNeuronsArray -- DON'T FORGET THAT IT DOES NOT INCLUDE BIAS!
 
 	if (layerNumber > numberOfLayers) then error("Layer number exceeds this model's number of layers.") end
 
-	local hasBiasNeuronValue = self.hasBiasNeuronTable[layerNumber]
+	local hasBiasNeuronValue = self.hasBiasNeuronArray[layerNumber]
 
-	local numberOfNeurons = self.numberOfNeuronsTable[layerNumber] + hasBiasNeuronValue
+	local numberOfNeurons = self.numberOfNeuronsArray[layerNumber] + hasBiasNeuronValue
 
 	local currentWeightMatrix
 	local nextWeightMatrix
@@ -1397,7 +1397,7 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 
 	end
 
-	self.numberOfNeuronsTable[layerNumber] += size
+	self.numberOfNeuronsArray[layerNumber] += size
 
 end
 
@@ -1407,13 +1407,13 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	local numberOfFeatures = #featureMatrix[1]
 
-	local numberOfNeuronsAtInputLayer = self.numberOfNeuronsTable[1] + self.hasBiasNeuronTable[1]
+	local numberOfNeuronsAtInputLayer = self.numberOfNeuronsArray[1] + self.hasBiasNeuronArray[1]
 
 	if (numberOfNeuronsAtInputLayer ~= numberOfFeatures) then error("Input layer has " .. numberOfNeuronsAtInputLayer .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features!") end
 
 	if (#featureMatrix ~= #labelVector) then error("Number of rows of feature matrix and the label vector is not the same!") end
 
-	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsTable[#self.numberOfNeuronsTable]
+	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsArray[#self.numberOfNeuronsArray]
 
 	local numberOfIterations = 0
 
@@ -1421,7 +1421,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	local costArray = {}
 
-	local deltaTable
+	local deltaArray
 
 	local RegularizerDerivatives
 
@@ -1477,7 +1477,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	if (self.autoResetOptimizers) then
 
-		for i, Optimizer in ipairs(self.OptimizerTable) do
+		for i, Optimizer in ipairs(self.OptimizerArray) do
 
 			if (Optimizer ~= 0) then Optimizer:reset() end
 
@@ -1491,7 +1491,7 @@ end
 
 function NeuralNetworkModel:reset()
 
-	for i, Optimizer in ipairs(self.OptimizerTable) do
+	for i, Optimizer in ipairs(self.OptimizerArray) do
 
 		if (Optimizer ~= 0) then Optimizer:reset() end
 
@@ -1537,16 +1537,16 @@ function NeuralNetworkModel:showDetails()
 	local maxDropoutRateLength = string.len("Dropout Rate")
 
 	local hasBias
-	
+
 	local optimizerName = "None"
 
 	local regularizerName = "None"
 
-	for i = 1, #self.numberOfNeuronsTable do
-		
-		local Optimizer = self.OptimizerTable[i]
+	for i = 1, #self.numberOfNeuronsArray do
 
-		local Regularizer = self.RegularizerTable[i]
+		local Optimizer = self.OptimizerArray[i]
+
+		local Regularizer = self.RegularizerArray[i]
 
 		if (type(Optimizer) == "table") then optimizerName = Optimizer:getName() end
 
@@ -1554,25 +1554,25 @@ function NeuralNetworkModel:showDetails()
 
 		maxLayerLength = math.max(maxLayerLength, string.len(tostring(i)))
 
-		maxNeuronsLength = math.max(maxNeuronsLength, string.len(tostring(self.numberOfNeuronsTable[i])))
+		maxNeuronsLength = math.max(maxNeuronsLength, string.len(tostring(self.numberOfNeuronsArray[i])))
 
-		hasBias = (self.hasBiasNeuronTable[i] == 1)
+		hasBias = (self.hasBiasNeuronArray[i] == 1)
 
 		maxBiasLength = math.max(maxBiasLength, string.len(tostring(hasBias)))
 
-		maxActivationLength = math.max(maxActivationLength, string.len(self.activationFunctionTable[i]))
+		maxActivationLength = math.max(maxActivationLength, string.len(self.activationFunctionArray[i]))
 
-		maxLearningRateLength = math.max(maxLearningRateLength, string.len(tostring(self.learningRateTable[i])))
+		maxLearningRateLength = math.max(maxLearningRateLength, string.len(tostring(self.learningRateArray[i])))
 
 		maxOptimizerLength = math.max(maxOptimizerLength, string.len(optimizerName))
 
 		maxRegularizerLength = math.max(maxRegularizerLength, string.len(regularizerName))
 
-		maxDropoutRateLength = math.max(maxDropoutRateLength, string.len(tostring(self.dropoutRateTable[i])))
+		maxDropoutRateLength = math.max(maxDropoutRateLength, string.len(tostring(self.dropoutRateArray[i])))
 
 	end
 
-	-- Print the table header
+	-- Print the array header
 
 	local stringToPrint = ""
 
@@ -1610,28 +1610,28 @@ function NeuralNetworkModel:showDetails()
 		"\n"
 
 	-- Print the layer details
-	for i = 1, #self.numberOfNeuronsTable do
-		
+	for i = 1, #self.numberOfNeuronsArray do
+
 		local optimizerName = "None"
-		
+
 		local regularizerName = "None"
 
 		local layerText = "| " .. string.format("%-" .. maxLayerLength .. "s", i) .. " "
 
-		local numberOfNeuronsText = "| " .. string.format("%-" .. maxNeuronsLength .. "s", self.numberOfNeuronsTable[i]) .. " "
+		local numberOfNeuronsText = "| " .. string.format("%-" .. maxNeuronsLength .. "s", self.numberOfNeuronsArray[i]) .. " "
 
-		hasBias = (self.hasBiasNeuronTable[i] == 1)
+		hasBias = (self.hasBiasNeuronArray[i] == 1)
 
 		local biasText = "| " .. string.format("%-" .. maxBiasLength .. "s", tostring(hasBias)) .. " "
 
-		local activationFunctionText = "| " .. string.format("%-" .. maxActivationLength .. "s", self.activationFunctionTable[i]) .. " "
+		local activationFunctionText = "| " .. string.format("%-" .. maxActivationLength .. "s", self.activationFunctionArray[i]) .. " "
 
-		local learningRateText = "| " .. string.format("%-" .. maxLearningRateLength .. "s", self.learningRateTable[i]) .. " "
-		
-		local Optimizer = self.OptimizerTable[i]
-		
-		local Regularizer = self.RegularizerTable[i]
-		
+		local learningRateText = "| " .. string.format("%-" .. maxLearningRateLength .. "s", self.learningRateArray[i]) .. " "
+
+		local Optimizer = self.OptimizerArray[i]
+
+		local Regularizer = self.RegularizerArray[i]
+
 		if (type(Optimizer) == "table") then optimizerName = Optimizer:getName() end
 
 		if (type(Regularizer) == "table") then regularizerName = Regularizer:getName() end
@@ -1640,7 +1640,7 @@ function NeuralNetworkModel:showDetails()
 
 		local regularizerText = "| " .. string.format("%-" .. maxRegularizerLength .. "s",  regularizerName) .. " "
 
-		local dropoutRateText = "| " .. string.format("%-" .. maxDropoutRateLength .. "s", self.dropoutRateTable[i]) .. " |"
+		local dropoutRateText = "| " .. string.format("%-" .. maxDropoutRateLength .. "s", self.dropoutRateArray[i]) .. " |"
 
 		local stringPart = layerText .. numberOfNeuronsText .. biasText .. activationFunctionText .. learningRateText .. optimizerText .. regularizerText .. dropoutRateText .. "\n"
 
@@ -1664,7 +1664,7 @@ end
 
 function NeuralNetworkModel:getNumberOfLayers()
 
-	return #self.numberOfNeuronsTable
+	return #self.numberOfNeuronsArray
 
 end
 

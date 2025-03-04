@@ -129,10 +129,12 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 			NewDeepDoubleQLearningModel.eligibilityTraceMatrix = eligibilityTraceMatrix
 
 		end
+		
+		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
 
 		Model:forwardPropagate(previousFeatureVector, true, true)
 
-		Model:backwardPropagate(temporalDifferenceErrorVector, true)
+		Model:backwardPropagate(negatedTemporalDifferenceErrorVector, true)
 
 		local TargetModelParameters = Model:getModelParameters(true)
 

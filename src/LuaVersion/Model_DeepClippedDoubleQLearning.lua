@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require("ReinforcementLearningBaseModel")
+local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
 
 DeepClippedDoubleQLearningModel = {}
 
@@ -122,7 +122,9 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 			
 			if (lambda ~= 0) then lossVector = AqwamTensorLibrary:multiply(lossVector, eligibilityTraceMatrix) end
 			
-			Model:backwardPropagate(lossVector, true)
+			local negatedLossVector = AqwamTensorLibrary:unaryMinus(lossVector) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
+			
+			Model:backwardPropagate(negatedLossVector, true)
 
 		end
 		

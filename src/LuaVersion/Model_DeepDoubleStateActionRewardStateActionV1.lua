@@ -67,10 +67,12 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
 		local temporalDifferenceErrorVector = NewDeepDoubleStateActionRewardStateActionModel:generateTemporalDifferenceErrorVector(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
-
+		
+		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
+		
 		Model:forwardPropagate(previousFeatureVector, true, true)
 		
-		Model:backwardPropagate(temporalDifferenceErrorVector, true)
+		Model:backwardPropagate(negatedTemporalDifferenceErrorVector, true)
 
 		NewDeepDoubleStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		

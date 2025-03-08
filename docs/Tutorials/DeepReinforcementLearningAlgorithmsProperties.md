@@ -1,6 +1,6 @@
 # Deep Reinforcement Learning Algorithms Properties
 
-| Algorithm                                                                          | Number Of Neural Networks | Temporal Difference / Monte-Carlo | On-Policy / Off-Policy | Q-Values     | V-Values     | Policy-Gradient | Discrete Action Space | Continuous Action Space |
+| Algorithm                                                                          | Number Of Neural Networks | Temporal Difference / Monte-Carlo | On-Policy / Off-Policy | Q-Values     | V-Values     | Policy Gradient | Discrete Action Space | Continuous Action Space |
 |------------------------------------------------------------------------------------|---------------------------|-----------------------------------|------------------------|--------------|--------------|-----------------|-----------------------|-------------------------|
 | Deep Q Learning                                                                    | 1                         | Temporal Difference               | Off-Policy             | Yes          | No           | No              | Yes                   | No                      |
 | Double Deep Q Learning V1 (Randomly Chosen Network)                                | 1 (2 Model Parameters)    | Temporal Difference               | Off-Policy             | Yes          | No           | No              | Yes                   | No                      |
@@ -11,17 +11,21 @@
 | Deep Expected State-Action-Reward-State-Action                                     | 1                         | Temporal Difference               | On-Policy              | Yes          | No           | No              | Yes                   | No                      |
 | Double Deep Expected State-Action-Reward-State-Action V1 (Randomly Chosen Network) | 1 (2 Model Parameters)    | Temporal Difference               | On-Policy              | Yes          | No           | No              | Yes                   | No                      |
 | Double Deep Expected State-Action-Reward-State-Action V2 (Target Network)          | 1 (2 Model Parameters)    | Temporal Difference               | On-Policy              | Yes          | No           | No              | Yes                   | No                      |
+| MonteCarloControl                                                                  | 1                         | Both                              | On-Policy              | Yes          | No           | No              | Yes                   | No                      |
+| OffPolicyMonteCarloControl                                                         | 1                         | Both                              | Off-Policy             | Yes          | No           | No              | Yes                   | No                      |
 | REINFORCE                                                                          | 1                         | Both                              | On-Policy              | No           | Yes          | Yes             | Yes                   | Yes                     |
-| MonteCarloControl                                                                  | 1                         | Both                              | On-Policy              | Yes          | No           | No              | Yes                   | Yes                     |
-| OffPolicyMonteCarloControl                                                         | 1                         | Both                              | Off-Policy             | Yes          | No           | No              | Yes                   | Yes                     |
 | Vanilla Policy Gradient                                                            | 2 (Actor + Critic)        | Both                              | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
 | Actor-Critic                                                                       | 2 (Actor + Critic)        | Both                              | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
 | Advantage Actor-Critic                                                             | 2 (Actor + Critic)        | Both                              | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
 | Asynchronous Advantage Actor-Critic                                                | 2 (Actor + Critic)        | Both                              | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
 | Proximal Policy Optimization                                                       | 2 (Actor + Critic)        | Both                              | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
 | Proximal Policy Optimization with Clipped Objective                                | 2 (Actor + Critic)        | Both                              | On-Policy              | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
+| Soft Actor Critic                                                                  | 2 (Actor + Critic)        | Temporal Difference               | Off-Policy             | Yes (Actor)  | Yes (Critic) | Yes             | Yes                   | Yes                     |
+| Deep Deterministic Policy Gradient                                                 | 2 (Actor + Critic)        | Temporal Difference               | Off-Policy             | Yes (Actor)  | Yes (Critic) | Yes             | No                    | Yes                     |
+| Twin Delayed Deep Deterministic Policy Gradient                                    | 2 (Actor + Critic)        | Temporal Difference               | Off-Policy             | Yes (Actor)  | Yes (Critic) | Yes             | No                    | Yes                     |
 
 ## Additional Notes:
+
 1. **Deep Q Learning**:
    - **Characteristics**: Uses a neural network to approximate Q-values.
    - **Advantages**: Simple to implement; effective for discrete action spaces.

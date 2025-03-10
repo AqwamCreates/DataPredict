@@ -162,7 +162,7 @@ function OffPolicyMonteCarloControlModel.new(parameterDictionary)
 			
 			weightVector = AqwamTensorLibrary:multiply(weightVector, actionRatioVector)
 			
-			Model:forwardPropagate(featureVectorHistory[h], true, true)
+			Model:forwardPropagate(featureVectorHistory[h], true)
 			
 			Model:backwardPropagate(lossVector, true)
 			

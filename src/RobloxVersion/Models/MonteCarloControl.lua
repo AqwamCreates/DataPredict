@@ -84,7 +84,7 @@ function MonteCarloControlModel.new(parameterDictionary)
 			
 			local averageRewardToGo = rewardToGoArray[h] / h
 			
-			Model:forwardPropagate(featureVector, true, true)
+			Model:forwardPropagate(featureVector, true)
 
 			Model:backwardPropagate(averageRewardToGo, true)
 			

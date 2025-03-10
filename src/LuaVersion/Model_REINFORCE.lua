@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
+local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
 
 REINFORCEModel = {}
 
@@ -39,13 +39,13 @@ setmetatable(REINFORCEModel, ReinforcementLearningBaseModel)
 local function calculateProbability(valueVector)
 
 	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueVector)
-	
+
 	local zValueVector = AqwamTensorLibrary:subtract(valueVector, maximumValue)
-	
+
 	local exponentVector = AqwamTensorLibrary:exponent(zValueVector)
-	
+
 	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
-	
+
 	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
 
 	return probabilityVector
@@ -102,7 +102,7 @@ function REINFORCEModel.new(parameterDictionary)
 	
 	NewREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 		
-		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor({1, #actionMeanVector[1]}) end
+		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
 
 		local actionVectorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
 
@@ -144,7 +144,7 @@ function REINFORCEModel.new(parameterDictionary)
 			
 			lossVector = AqwamTensorLibrary:unaryMinus(lossVector)
 			
-			Model:forwardPropagate(featureVectorArray[h], true, true)
+			Model:forwardPropagate(featureVectorArray[h], true)
 
 			Model:backwardPropagate(lossVector, true)
 			

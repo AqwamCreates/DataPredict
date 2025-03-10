@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
+local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
 
 OffPolicyMonteCarloControlModel = {}
 
@@ -162,7 +162,7 @@ function OffPolicyMonteCarloControlModel.new(parameterDictionary)
 			
 			weightVector = AqwamTensorLibrary:multiply(weightVector, actionRatioVector)
 			
-			Model:forwardPropagate(featureVectorHistory[h], true, true)
+			Model:forwardPropagate(featureVectorHistory[h], true)
 			
 			Model:backwardPropagate(lossVector, true)
 			

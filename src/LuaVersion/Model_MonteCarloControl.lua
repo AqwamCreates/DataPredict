@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamMatrixLibrary = require("AqwamMatrixLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
+local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
 
 MonteCarloControlModel = {}
 
@@ -84,7 +84,7 @@ function MonteCarloControlModel.new(parameterDictionary)
 			
 			local averageRewardToGo = rewardToGoArray[h] / h
 			
-			Model:forwardPropagate(featureVector, true, true)
+			Model:forwardPropagate(featureVector, true)
 
 			Model:backwardPropagate(averageRewardToGo, true)
 			

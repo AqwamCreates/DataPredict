@@ -37,15 +37,15 @@ ActorCriticModel.__index = ActorCriticModel
 setmetatable(ActorCriticModel, ReinforcementLearningActorCriticBaseModel)
 
 local function calculateProbability(valueVector)
-	
+
 	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueVector)
-	
+
 	local zValueVector = AqwamTensorLibrary:subtract(valueVector, maximumValue)
-	
+
 	local exponentVector = AqwamTensorLibrary:exponent(zValueVector)
-	
+
 	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
-	
+
 	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
 
 	return probabilityVector
@@ -71,133 +71,127 @@ local function calculateRewardToGo(rewardHistory, discountFactor)
 end
 
 function ActorCriticModel.new(parameterDictionary)
-	
+
 	local NewActorCriticModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
-	
+
 	setmetatable(NewActorCriticModel, ActorCriticModel)
-	
+
 	NewActorCriticModel:setName("ActorCritic")
-	
+
+	local featureVectorHistory = {}
+
 	local actionProbabilityVectorHistory = {}
-	
-	local criticValueHistory = {}
-	
+
 	local rewardValueHistory = {}
-	
+
+	local criticValueHistory = {}
+
 	NewActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
-		
-		local CriticModel = NewActorCriticModel.CriticModel
 
 		local actionVector = NewActorCriticModel.ActorModel:forwardPropagate(previousFeatureVector, true)
 
+		local criticValue = NewActorCriticModel.CriticModel:forwardPropagate(previousFeatureVector)[1][1]
+
 		local actionProbabilityVector = calculateProbability(actionVector)
 
-		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
-
-		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
-
 		local logActionProbabilityVector = AqwamTensorLibrary:logarithm(actionProbabilityVector)
-		
-		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
-		table.insert(criticValueHistory, previousCriticValue)
+		table.insert(featureVectorHistory, previousFeatureVector)
+
+		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
 		table.insert(rewardValueHistory, rewardValue)
-		
-	end)
-	
-	NewActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
-		
-		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor({1, #actionMeanVector[1]}) end
-		
-		local actionVectorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
-		
-		local actionVector = AqwamTensorLibrary:add(actionMeanVector, actionVectorPart1)
-		
-		local zScoreVectorPart1 = AqwamTensorLibrary:subtract(actionVector, actionMeanVector)
-		
-		local zScoreVector = AqwamTensorLibrary:divide(zScoreVectorPart1, actionStandardDeviationVector)
-		
-		local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
-		
-		local logActionProbabilityVectorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationVector)
-		
-		local logActionProbabilityVectorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityVectorPart1)
-		
-		local logActionProbabilityVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
-		
-		local logActionProbabilityVectorPart4 = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
-		
-		local logActionProbabilityVector = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityVectorPart4)
-
-		local criticValue = NewActorCriticModel.CriticModel:forwardPropagate(previousFeatureVector)[1][1]
-		
-		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
 		table.insert(criticValueHistory, criticValue)
 
+	end)
+
+	NewActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+
+		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
+
+		local actionVectorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
+
+		local actionVector = AqwamTensorLibrary:add(actionMeanVector, actionVectorPart1)
+
+		local zScoreVectorPart1 = AqwamTensorLibrary:subtract(actionVector, actionMeanVector)
+
+		local zScoreVector = AqwamTensorLibrary:divide(zScoreVectorPart1, actionStandardDeviationVector)
+
+		local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
+
+		local logActionProbabilityVectorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationVector)
+
+		local logActionProbabilityVectorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityVectorPart1)
+
+		local logActionProbabilityVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
+
+		local logActionProbabilityVectorPart4 = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
+
+		local logActionProbabilityVector = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityVectorPart4)
+
+		local criticValue = NewActorCriticModel.CriticModel:forwardPropagate(previousFeatureVector)[1][1]
+
+		table.insert(featureVectorHistory, previousFeatureVector)
+
+		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
+
 		table.insert(rewardValueHistory, rewardValue)
 
-	end)
-	
-	NewActorCriticModel:setEpisodeUpdateFunction(function(terminalStateValue)
-		
-		local rewardToGoHistory = calculateRewardToGo(rewardValueHistory, NewActorCriticModel.discountFactor)
+		table.insert(criticValueHistory, criticValue)
 
-		local sumCriticLoss = 0
-		
-		local sumActorLossVector = AqwamTensorLibrary:createTensor({1, #actionProbabilityVectorHistory[1]}, 0)
-		
-		for h, actionVector in ipairs(actionProbabilityVectorHistory) do
-			
-			local criticLoss = rewardToGoHistory[h] - criticValueHistory[h]
-			
-			local actorLossVector = AqwamTensorLibrary:multiply(actionVector, criticLoss)
-			
-			sumActorLossVector = AqwamTensorLibrary:add(sumActorLossVector, actorLossVector)
-			
-			sumCriticLoss = sumCriticLoss + criticLoss
-			
-		end
-		
+	end)
+
+	NewActorCriticModel:setEpisodeUpdateFunction(function(terminalStateValue)
+
 		local ActorModel = NewActorCriticModel.ActorModel
 
 		local CriticModel = NewActorCriticModel.CriticModel
-		
-		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
 
-		local featureVector = AqwamTensorLibrary:createTensor({1, numberOfFeatures}, 1)
-		
-		sumActorLossVector = AqwamTensorLibrary:unaryMinus(sumActorLossVector)
-		
-		ActorModel:forwardPropagate(featureVector, true, true)
+		local rewardToGoHistory = calculateRewardToGo(rewardValueHistory, NewActorCriticModel.discountFactor)
 
-		CriticModel:forwardPropagate(featureVector, true, true)
-		
-		ActorModel:backwardPropagate(sumActorLossVector, true)
+		for h, featureVector in ipairs(featureVectorHistory) do
 
-		CriticModel:backwardPropagate(sumCriticLoss, true)
+			local criticLoss = rewardToGoHistory[h] - criticValueHistory[h]
+
+			local actorLossVector = AqwamTensorLibrary:multiply(actionProbabilityVectorHistory[h], criticLoss)
+
+			actorLossVector = AqwamTensorLibrary:unaryMinus(actorLossVector)
+
+			CriticModel:forwardPropagate(featureVector, true)
+
+			ActorModel:forwardPropagate(featureVector, true)
+
+			CriticModel:backwardPropagate(criticLoss, true)
+
+			ActorModel:backwardPropagate(actorLossVector, true)
+
+		end
+
+		table.clear(featureVectorHistory)
 
 		table.clear(actionProbabilityVectorHistory)
 
+		table.clear(rewardValueHistory)
+
 		table.clear(criticValueHistory)
 
-		table.clear(rewardValueHistory)
-		
 	end)
-	
+
 	NewActorCriticModel:setResetFunction(function()
-		
+
+		table.clear(featureVectorHistory)
+
 		table.clear(actionProbabilityVectorHistory)
+
+		table.clear(rewardValueHistory)
 
 		table.clear(criticValueHistory)
 
-		table.clear(rewardValueHistory)
-		
 	end)
-	
+
 	return NewActorCriticModel
-	
+
 end
 
 return ActorCriticModel

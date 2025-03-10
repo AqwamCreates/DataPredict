@@ -38,17 +38,17 @@ setmetatable(VanillaPolicyGradientModel, ReinforcementLearningActorCriticBaseMod
 
 local function calculateProbability(valueVector)
 
-	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueVector)
-	
-	local zValueVector = AqwamTensorLibrary:subtract(valueVector, maximumValue)
-	
-	local exponentVector = AqwamTensorLibrary:exponent(zValueVector)
-	
-	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
-	
-	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
+	local highestActionValue = AqwamTensorLibrary:findMaximumValue(valueVector)
 
-	return probabilityVector
+	local subtractedZVector = AqwamTensorLibrary:subtract(valueVector, highestActionValue)
+
+	local exponentActionVector = AqwamTensorLibrary:applyFunction(math.exp, subtractedZVector)
+
+	local exponentActionSumVector = AqwamTensorLibrary:sum(exponentActionVector, 2)
+
+	local targetActionVector = AqwamTensorLibrary:divide(exponentActionVector, exponentActionSumVector)
+
+	return targetActionVector
 
 end
 
@@ -71,24 +71,26 @@ local function calculateRewardToGo(rewardHistory, discountFactor)
 end
 
 function VanillaPolicyGradientModel.new(parameterDictionary)
-	
+
 	local NewVanillaPolicyGradientModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewVanillaPolicyGradientModel, VanillaPolicyGradientModel)
-	
+
 	NewVanillaPolicyGradientModel:setName("VanillaPolicyGradient")
-	
+
+	local featureVectorHistory = {}
+
 	local actionProbabilityVectorHistory = {}
-	
-	local criticValueHistory = {}
 
 	local rewardValueHistory = {}
+
+	local advantageValueHistory = {}
 
 	NewVanillaPolicyGradientModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 
-		local actionVector = NewVanillaPolicyGradientModel.ActorModel:forwardPropagate(previousFeatureVector, true)
+		local actionVector = NewVanillaPolicyGradientModel.ActorModel:forwardPropagate(previousFeatureVector)
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 
@@ -96,19 +98,29 @@ function VanillaPolicyGradientModel.new(parameterDictionary)
 
 		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
+		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
+
 		local logActionProbabilityVector = AqwamTensorLibrary:logarithm(actionProbabilityVector)
+
+		local actorLossVector = AqwamTensorLibrary:multiply(logActionProbabilityVector, advantageValue)
+
+		table.insert(featureVectorHistory, previousFeatureVector)
 
 		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
-		table.insert(criticValueHistory, previousCriticValue)
-
 		table.insert(rewardValueHistory, rewardValue)
 
-	end)
-	
-	NewVanillaPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+		table.insert(advantageValueHistory, advantageValue)
 
-		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor({1, #actionMeanVector[1]}) end
+		return advantageValue
+
+	end)
+
+	NewVanillaPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+		
+		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
+
+		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 
 		local actionVectorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
 
@@ -126,82 +138,76 @@ function VanillaPolicyGradientModel.new(parameterDictionary)
 
 		local logActionProbabilityVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
 
-		local logActionProbabilityVectorPart4 = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
-		
-		local logActionProbabilityVector = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityVectorPart4)
+		local logActionProbabilityVector = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
 
-		local criticValue = NewVanillaPolicyGradientModel.CriticModel:forwardPropagate(previousFeatureVector)[1][1]
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
+
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
+
+		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
+
+		local actorLossVector = AqwamTensorLibrary:multiply(logActionProbabilityVector, advantageValue)
+
+		table.insert(featureVectorHistory, previousFeatureVector)
 
 		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
 
-		table.insert(criticValueHistory, criticValue)
-
 		table.insert(rewardValueHistory, rewardValue)
+
+		table.insert(advantageValueHistory, advantageValue)
+
+		return advantageValue
 
 	end)
 
 	NewVanillaPolicyGradientModel:setEpisodeUpdateFunction(function(terminalStateValue)
-		
-		local historyLength = #rewardValueHistory
-		
-		local rewardToGoHistory = calculateRewardToGo(rewardValueHistory, NewVanillaPolicyGradientModel.discountFactor)
-		
-		local sumActorLossVector = AqwamTensorLibrary:createTensor({1, #actionProbabilityVectorHistory[1]}, 0)
-		
-		local sumCriticLoss = 0
-		
-		for h, actionVector in ipairs(actionProbabilityVectorHistory) do
 
-			local criticLoss = rewardToGoHistory[h] - criticValueHistory[h]
-
-			local actorLossVector = AqwamTensorLibrary:multiply(actionVector, criticLoss)
-
-			sumActorLossVector = AqwamTensorLibrary:add(sumActorLossVector, actorLossVector)
-
-			sumCriticLoss = sumCriticLoss + criticLoss
-
-		end
-		
-		sumCriticLoss = sumCriticLoss / historyLength
-		
 		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
 
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 
-		local numberOfFeatures = ActorModel:getTotalNumberOfNeurons(1)
+		for h, featureVector in ipairs(featureVectorHistory) do
 
-		local featureVector = AqwamTensorLibrary:createTensor({1, numberOfFeatures}, 1)
-		
-		sumActorLossVector = AqwamTensorLibrary:unaryMinus(sumActorLossVector)
+			local advantageValue = advantageValueHistory[h]
 
-		ActorModel:forwardPropagate(featureVector, true, true)
-		
-		CriticModel:forwardPropagate(featureVector, true, true)
+			local actorLossVector = AqwamTensorLibrary:multiply(actionProbabilityVectorHistory[h], advantageValue)
 
-		ActorModel:backwardPropagate(sumActorLossVector, true)
-		
-		CriticModel:backwardPropagate(sumCriticLoss, true)
-		
+			actorLossVector = AqwamTensorLibrary:unaryMinus(actorLossVector)
+
+			CriticModel:forwardPropagate(featureVector, true)
+
+			ActorModel:forwardPropagate(featureVector, true)
+
+			CriticModel:backwardPropagate(advantageValue, true)
+
+			ActorModel:backwardPropagate(actorLossVector, true)
+
+		end
+
+		table.clear(featureVectorHistory)
+
 		table.clear(actionProbabilityVectorHistory)
 
-		table.clear(criticValueHistory)
-
 		table.clear(rewardValueHistory)
+
+		table.clear(advantageValueHistory)
 
 	end)
 
 	NewVanillaPolicyGradientModel:setResetFunction(function()
-		
+
+		table.clear(featureVectorHistory)
+
 		table.clear(actionProbabilityVectorHistory)
 
-		table.clear(criticValueHistory)
-		
 		table.clear(rewardValueHistory)
 
+		table.clear(advantageValueHistory)
+
 	end)
-	
+
 	return NewVanillaPolicyGradientModel
-	
+
 end
 
 return VanillaPolicyGradientModel

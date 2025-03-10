@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require("Model_AqwamTensorLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require("ReinforcementLearningBaseModel")
+local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
 
 DeepStateActionRewardStateActionModel = {}
 
@@ -92,7 +92,7 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
 		
-		Model:forwardPropagate(previousFeatureVector, true, true)
+		Model:forwardPropagate(previousFeatureVector, true)
 
 		Model:backwardPropagate(negatedTemporalDifferenceErrorVector, true)
 		

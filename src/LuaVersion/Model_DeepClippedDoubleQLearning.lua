@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
+local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
 
 DeepClippedDoubleQLearningModel = {}
 

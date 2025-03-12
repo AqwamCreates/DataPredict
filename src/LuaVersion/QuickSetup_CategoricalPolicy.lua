@@ -72,7 +72,7 @@ local function calculateProbability(valueVector, temperature)
 
 	local zValueVector = AqwamTensorLibrary:subtract(valueVector, maximumValue)
 	
-	local temperatureZValueVector = AqwamTensorLibrary:divide(valueVector, temperature)
+	local temperatureZValueVector = AqwamTensorLibrary:divide(zValueVector, temperature)
 
 	local exponentVector = AqwamTensorLibrary:exponent(temperatureZValueVector)
 

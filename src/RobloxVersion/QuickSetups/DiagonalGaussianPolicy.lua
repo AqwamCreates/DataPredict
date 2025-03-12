@@ -139,6 +139,8 @@ function DiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 			end)
 
 		end
+		
+		NewDiagonalGaussianPolicyQuickSetup.totalNumberOfReinforcements = NewDiagonalGaussianPolicyQuickSetup.totalNumberOfReinforcements + 1
 
 		NewDiagonalGaussianPolicyQuickSetup.currentNumberOfReinforcements = currentNumberOfReinforcements
 

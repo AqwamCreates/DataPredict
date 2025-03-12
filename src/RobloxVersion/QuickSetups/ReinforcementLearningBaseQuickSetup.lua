@@ -40,6 +40,8 @@ local defaultEpsilon = 0
 
 local defaultIsOutputPrinted = true
 
+local defaultTotalNumberOfReinforcements = 0
+
 local defaultCurrentNumberOfReinforcements = 0
 
 local defaultCurrentNumberOfEpisodes = 0
@@ -69,6 +71,8 @@ function ReinforcementLearningBaseQuickSetup.new(parameterDictionary)
 	NewReinforcementLearningBaseQuickSetup.ExperienceReplay = parameterDictionary.ExperienceReplay
 
 	NewReinforcementLearningBaseQuickSetup.EpsilonValueScheduler = parameterDictionary.EpsilonValueScheduler
+	
+	NewReinforcementLearningBaseQuickSetup.totalNumberOfReinforcements = parameterDictionary.totalNumberOfReinforcements or defaultTotalNumberOfReinforcements
 
 	NewReinforcementLearningBaseQuickSetup.currentNumberOfReinforcements = parameterDictionary.currentNumberOfReinforcements or defaultCurrentNumberOfReinforcements
 

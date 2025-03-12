@@ -154,7 +154,7 @@ function OffPolicyMonteCarloControlModel.new(parameterDictionary)
 			
 			local lossVectorPart2 = AqwamTensorLibrary:subtract(discountedReward, actionVector)
 			
-			local lossVector = AqwamTensorLibrary:multiply(lossVectorPart1, lossVectorPart2, -1)
+			local lossVector = AqwamTensorLibrary:multiply(lossVectorPart1, lossVectorPart2, -1) -- The original non-deep off-policy Monte-Carlo Control version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the loss vector by multiplying it with -1 to make the neural network to perform gradient ascent.
 			
 			local targetActionVector = targetPolicyFunction(actionVector)
 			

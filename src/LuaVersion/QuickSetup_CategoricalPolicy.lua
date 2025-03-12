@@ -42,8 +42,6 @@ local defaultTemperature = 1
 
 local defaultCValue = 1
 
-local defaultZeroDenominatorReplacement = math.pow(10, -6)
-
 local function selectIndexWithHighestValue(valueVector)
 	
 	local selectedIndex = 1
@@ -150,7 +148,7 @@ function CategoricalPolicyQuickSetup:selectAction(actionVector)
 		
 		local selectedActionCountVector = self.selectedActionCountVector
 		
-		if (not selectedActionCountVector) then selectedActionCountVector = {table.create(#actionVector[1], self.zeroDenominatorReplacement)} end
+		if (not selectedActionCountVector) then selectedActionCountVector = {table.create(#actionVector[1], 0)} end
 		
 		local actionUpperConfidenceBoundVector = calculateUpperConfidenceBound(actionVector, self.cValue, self.totalNumberOfReinforcements, selectedActionCountVector)
 		
@@ -185,8 +183,6 @@ function CategoricalPolicyQuickSetup.new(parameterDictionary)
 	NewCategoricalPolicyQuickSetup.temperature = parameterDictionary.temperature or defaultTemperature
 	
 	NewCategoricalPolicyQuickSetup.cValue = parameterDictionary.cValue or defaultCValue
-	
-	NewCategoricalPolicyQuickSetup.zeroDenominatorReplacement = parameterDictionary.zeroDenominatorReplacement or defaultZeroDenominatorReplacement
 	
 	NewCategoricalPolicyQuickSetup.previousAction = parameterDictionary.previousAction
 	

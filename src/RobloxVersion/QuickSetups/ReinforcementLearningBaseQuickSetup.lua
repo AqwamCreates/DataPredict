@@ -64,7 +64,7 @@ function ReinforcementLearningBaseQuickSetup.new(parameterDictionary)
 
 	NewReinforcementLearningBaseQuickSetup.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
-	NewReinforcementLearningBaseQuickSetup.currentEpsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewReinforcementLearningBaseQuickSetup.currentEpsilon = parameterDictionary.currentEpsilon or parameterDictionary.epsilon or defaultEpsilon
 
 	NewReinforcementLearningBaseQuickSetup.Model = parameterDictionary.Model
 

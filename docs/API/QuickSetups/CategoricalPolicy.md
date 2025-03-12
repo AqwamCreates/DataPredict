@@ -22,7 +22,9 @@ CategoricalPolicy.new(numberOfReinforcementsPerEpisode: integer, epsilon: number
 
   * Maximum (Default)
 
-  * Sample
+  * SoftmaxSampling / BoltzmannSampling
+
+  * UpperConfidenceBound
 
 #### Returns:
 
@@ -48,7 +50,9 @@ CategoricalPolicy:setParameters(numberOfReinforcementsPerEpisode: integer, epsil
 
   * Maximum
 
-  * Sample
+  * SoftmaxSampling / BoltzmannSampling
+
+  * UpperConfidenceBound
 
 ### setModel()
 

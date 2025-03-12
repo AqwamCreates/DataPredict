@@ -148,11 +148,11 @@ local mappingList = {
 
 	["Polynomial"] = function(featureMatrix, kernelParameters)
 		
-		local degree = kernelParameters.degree or defaultDegree
+		local degree = kernelParameters.degree
 		
-		local gamma = kernelParameters.gamma or defaultGamma
+		local gamma = kernelParameters.gamma
 		
-		local r = kernelParameters.r or defaultR
+		local r = kernelParameters.r
 		
 		local scaledFeatureMatrix = AqwamTensorLibrary:multiply(featureMatrix, gamma)
 		
@@ -164,7 +164,7 @@ local mappingList = {
 
 	["RadialBasisFunction"] = function(featureMatrix, kernelParameters)
 		
-		local sigma = kernelParameters.sigma or defaultSigma
+		local sigma = kernelParameters.sigma
 
 		local squaredFeatureMatrix = AqwamTensorLibrary:power(featureMatrix, 2)
 
@@ -180,9 +180,9 @@ local mappingList = {
 	
 	["Sigmoid"] = function(featureMatrix, kernelParameters)
 
-		local gamma = kernelParameters.gamma or defaultGamma
+		local gamma = kernelParameters.gamma
 
-		local r = kernelParameters.r or defaultR
+		local r = kernelParameters.r
 		
 		local kernelMappingMatrixPart1 = AqwamTensorLibrary:multiply(gamma, featureMatrix)
 
@@ -220,11 +220,11 @@ local kernelFunctionList = {
 
 	["Polynomial"] = function(featureMatrix, kernelParameters)
 
-		local degree = kernelParameters.degree or defaultDegree
+		local degree = kernelParameters.degree
 
-		local gamma = kernelParameters.gamma or defaultGamma
+		local gamma = kernelParameters.gamma
 
-		local r = kernelParameters.r or defaultR
+		local r = kernelParameters.r
 
 		local dotProductedFeatureMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, AqwamTensorLibrary:transpose(featureMatrix))
 
@@ -240,7 +240,7 @@ local kernelFunctionList = {
 
 	["RadialBasisFunction"] = function(featureMatrix, kernelParameters)
 
-		local sigma = kernelParameters.sigma or defaultSigma
+		local sigma = kernelParameters.sigma
 
 		local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, "Euclidean")
 
@@ -260,9 +260,9 @@ local kernelFunctionList = {
 
 	["Sigmoid"] = function(featureMatrix, kernelParameters)
 
-		local gamma = kernelParameters.gamma or defaultGamma
+		local gamma = kernelParameters.gamma
 
-		local r = kernelParameters.r or defaultR
+		local r = kernelParameters.r
 
 		local dotProductedFeatureMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, AqwamTensorLibrary:transpose(featureMatrix))
 
@@ -366,7 +366,17 @@ function SupportVectorMachineModel.new(parameterDictionary)
 
 	NewSupportVectorMachine.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
 
-	NewSupportVectorMachine.kernelParameters = parameterDictionary.kernelParameters or {}
+	NewSupportVectorMachine.kernelParameters = {
+		
+		degree = parameterDictionary.degree or defaultDegree,
+		
+		gamma = parameterDictionary.gamma or defaultGamma,
+		
+		sigma = parameterDictionary.sigma or defaultSigma,
+		
+		r = parameterDictionary.r or defaultR
+	
+	}
 
 	return NewSupportVectorMachine
 end

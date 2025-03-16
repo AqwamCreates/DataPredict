@@ -38,6 +38,8 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local defaultMaximumNumberOfIterations = 500
 
+local defaultNumberOfClusters = 0
+
 local defaultBandwidth = 100
 
 local defaultDistanceFunction = "Euclidean"
@@ -323,6 +325,8 @@ function MeanShiftModel.new(parameterDictionary)
 	setmetatable(NewMeanShiftModel, MeanShiftModel)
 	
 	NewMeanShiftModel:setName("MeanShift")
+	
+	NewMeanShiftModel.numberOfClusters = parameterDictionary.numberOfClusters or defaultNumberOfClusters
 
 	NewMeanShiftModel.bandwidth = parameterDictionary.bandwidth or defaultBandwidth
 	
@@ -351,6 +355,8 @@ function MeanShiftModel:train(featureMatrix)
 	local numberOfIterations = 0
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
+	
+	local numberOfClusters = self.numberOfClusters
 	
 	local bandwidth = self.bandwidth
 	
@@ -392,7 +398,7 @@ function MeanShiftModel:train(featureMatrix)
 		
 		self.ModelParameters = ModelParameters
 		
-	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == maximumNumberOfIterations) or (#ModelParameters == numberOfClusters) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

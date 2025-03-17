@@ -28,11 +28,11 @@
 
 local BaseModel = require("Model_BaseModel")
 
-NaiveBayesModel = {}
+GaussianNaiveBayesModel = {}
 
-NaiveBayesModel.__index = NaiveBayesModel
+GaussianNaiveBayesModel.__index = GaussianNaiveBayesModel
 
-setmetatable(NaiveBayesModel, BaseModel)
+setmetatable(GaussianNaiveBayesModel, BaseModel)
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
@@ -204,23 +204,23 @@ local function calculateFinalProbability(featureVector, meanVector, standardDevi
 
 end
 
-function NaiveBayesModel.new(parameterDictionary)
+function GaussianNaiveBayesModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewNaiveBayesModel = BaseModel.new(parameterDictionary)
+	local NewGaussianNaiveBayesModel = BaseModel.new(parameterDictionary)
 
-	setmetatable(NewNaiveBayesModel, NaiveBayesModel)
+	setmetatable(NewGaussianNaiveBayesModel, GaussianNaiveBayesModel)
 
-	NewNaiveBayesModel.ClassesList = parameterDictionary.ClassesList or {}
+	NewGaussianNaiveBayesModel.ClassesList = parameterDictionary.ClassesList or {}
 
-	NewNaiveBayesModel.useLogProbabilities = BaseModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, false)
+	NewGaussianNaiveBayesModel.useLogProbabilities = BaseModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, false)
 
-	return NewNaiveBayesModel
+	return NewGaussianNaiveBayesModel
 
 end
 
-function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
+function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local cost
 	
@@ -320,7 +320,7 @@ local function areNumbersOnlyInList(list)
 
 end
 
-function NaiveBayesModel:processLabelVector(labelVector)
+function GaussianNaiveBayesModel:processLabelVector(labelVector)
 
 	if (#self.ClassesList == 0) then
 
@@ -339,7 +339,7 @@ function NaiveBayesModel:processLabelVector(labelVector)
 end
 
 
-function NaiveBayesModel:train(featureMatrix, labelVector)
+function GaussianNaiveBayesModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 
@@ -407,7 +407,7 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 
 end
 
-function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
+function GaussianNaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 	local numberOfData = #outputMatrix
 
@@ -443,7 +443,7 @@ function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function NaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
+function GaussianNaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 
 	local finalProbabilityVector
 
@@ -481,16 +481,16 @@ function NaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 
 end
 
-function NaiveBayesModel:getClassesList()
+function GaussianNaiveBayesModel:getClassesList()
 
 	return self.ClassesList
 
 end
 
-function NaiveBayesModel:setClassesList(ClassesList)
+function GaussianNaiveBayesModel:setClassesList(ClassesList)
 
 	self.ClassesList = ClassesList
 
 end
 
-return NaiveBayesModel
+return GaussianNaiveBayesModel

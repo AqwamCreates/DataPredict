@@ -234,13 +234,7 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local likelihoodVector
 
-	local multipliedProbalitiesVector
-
 	local probability
-
-	local highestProbability
-
-	local predictedClass
 
 	local classIndex
 
@@ -366,12 +360,12 @@ function GaussianNaiveBayesModel:train(featureMatrix, labelVector)
 	local numberOfFeatures = #featureMatrix[1]
 
 	local extractedFeatureMatricesTable = separateFeatureMatrixByClass(featureMatrix, labelVector, ClassesList)
-	
-	local priorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, 1})
 
 	local meanMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
 
 	local standardDeviationMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
+	
+	local priorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, 1})
 
 	for classIndex, classValue in ipairs(ClassesList) do
 

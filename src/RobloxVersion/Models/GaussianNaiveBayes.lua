@@ -174,7 +174,7 @@ local function logLoss(labelVector, predictedProbabilitiesVector)
 
 end
 
-local function calculateFinalProbability(featureVector, meanVector, standardDeviationVector, priorProbabilityVector, useLogProbabilities)
+local function calculateFinalProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityVector)
 
 	local finalProbability
 
@@ -463,7 +463,7 @@ function GaussianNaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 
 			local featureVector = {featureMatrix[i]}
 
-			finalProbabilityMatrix[i][classIndex] = calculateFinalProbability(featureVector, meanVector, standardDeviationVector, priorProbabilityVector, useLogProbabilities)
+			finalProbabilityMatrix[i][classIndex] = calculateFinalProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityVector)
 
 		end
 

@@ -332,7 +332,7 @@ function NaiveBayesModel:processLabelVector(labelVector)
 
 	else
 
-		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector") end
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector.") end
 
 	end
 
@@ -341,7 +341,7 @@ end
 
 function NaiveBayesModel:train(featureMatrix, labelVector)
 
-	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
+	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 
 	self:processLabelVector(labelVector)
 	
@@ -372,8 +372,6 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 	local meanMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
 
 	local standardDeviationMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
-
-	if (#featureMatrix[1] ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
 
 	for classIndex, classValue in ipairs(ClassesList) do
 

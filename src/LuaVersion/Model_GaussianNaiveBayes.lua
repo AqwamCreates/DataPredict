@@ -28,11 +28,11 @@
 
 local BaseModel = require("Model_BaseModel")
 
-NaiveBayesModel = {}
+GaussianNaiveBayes = {}
 
-NaiveBayesModel.__index = NaiveBayesModel
+GaussianNaiveBayes.__index = GaussianNaiveBayes
 
-setmetatable(NaiveBayesModel, BaseModel)
+setmetatable(GaussianNaiveBayes, BaseModel)
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
@@ -160,7 +160,7 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList)
 
 end
 
-local function logLoss(labelVector, predictedProbabilitiesVector)
+local function calculateLogLoss(labelVector, predictedProbabilitiesVector)
 	
 	local loglossFunction = function (y, p) return (y * math.log(p)) + ((1 - y) * math.log(1 - p)) end
 	
@@ -174,23 +174,23 @@ local function logLoss(labelVector, predictedProbabilitiesVector)
 	
 end
 
-function NaiveBayesModel.new(parameterDictionary)
+function GaussianNaiveBayes.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewNaiveBayesModel = BaseModel.new(parameterDictionary)
+	local NewGaussianNaiveBayes = BaseModel.new(parameterDictionary)
 	
-	setmetatable(NewNaiveBayesModel, NaiveBayesModel)
+	setmetatable(NewGaussianNaiveBayes, GaussianNaiveBayes)
 	
-	NewNaiveBayesModel.ClassesList = parameterDictionary.ClassesList or {}
+	NewGaussianNaiveBayes.ClassesList = parameterDictionary.ClassesList or {}
 	
-	NewNaiveBayesModel.useLogProbabilities = BaseModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, false)
+	NewGaussianNaiveBayes.useLogProbabilities = BaseModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, false)
 	
-	return NewNaiveBayesModel
+	return NewGaussianNaiveBayes
 	
 end
 
-function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
+function GaussianNaiveBayes:calculateCost(featureMatrix, labelVector)
 	
 	local cost
 	
@@ -272,7 +272,7 @@ function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	end
 
-	cost = logLoss(labelVector, predictedProbabilitiesVector)
+	cost = calculateLogLoss(labelVector, predictedProbabilitiesVector)
 	
 	return {cost}
 	
@@ -290,7 +290,7 @@ local function areNumbersOnlyInList(list)
 
 end
 
-function NaiveBayesModel:processLabelVector(labelVector)
+function GaussianNaiveBayes:processLabelVector(labelVector)
 
 	if (#self.ClassesList == 0) then
 
@@ -309,7 +309,7 @@ function NaiveBayesModel:processLabelVector(labelVector)
 end
 
 	
-function NaiveBayesModel:train(featureMatrix, labelVector)
+function GaussianNaiveBayes:train(featureMatrix, labelVector)
 	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 	
@@ -393,7 +393,7 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 	
 end
 
-function NaiveBayesModel:calculateFinalProbability(featureVector, meanVector, standardDeviationVector, probabilitiesVector)
+function GaussianNaiveBayes:calculateFinalProbability(featureVector, meanVector, standardDeviationVector, probabilitiesVector)
 	
 	local finalProbability
 
@@ -421,7 +421,7 @@ function NaiveBayesModel:calculateFinalProbability(featureVector, meanVector, st
 	
 end
 
-function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
+function GaussianNaiveBayes:getLabelFromOutputMatrix(outputMatrix)
 	
 	local numberOfData = #outputMatrix
 
@@ -457,7 +457,7 @@ function NaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function NaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
+function GaussianNaiveBayes:predict(featureMatrix, returnOriginalOutput)
 	
 	local finalProbabilityVector
 	
@@ -493,16 +493,16 @@ function NaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 	
 end
 
-function NaiveBayesModel:getClassesList()
+function GaussianNaiveBayes:getClassesList()
 
 	return self.ClassesList
 
 end
 
-function NaiveBayesModel:setClassesList(ClassesList)
+function GaussianNaiveBayes:setClassesList(ClassesList)
 
 	self.ClassesList = ClassesList
 
 end
 
-return NaiveBayesModel
+return GaussianNaiveBayes

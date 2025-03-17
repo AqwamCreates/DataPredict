@@ -26,7 +26,7 @@
 
 --]]
 
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 NaiveBayesModel = {}
 
@@ -34,7 +34,7 @@ NaiveBayesModel.__index = NaiveBayesModel
 
 setmetatable(NaiveBayesModel, BaseModel)
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("Model_AqwamTensorLibrary")
 
 local function extractFeatureMatrixFromPosition(featureMatrix, positionList)
 	
@@ -194,6 +194,8 @@ function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	
 	local cost
 	
+	local featureVector
+	
 	local meanVector
 	
 	local standardDeviationVector
@@ -234,6 +236,8 @@ function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	
 	for data = 1, #featureMatrix, 1 do
 		
+		featureVector = {featureMatrix[data]}
+		
 		label = labelVector[data][1]
 		
 		classIndex = table.find(self.ClassesList, label)
@@ -244,7 +248,7 @@ function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 		probabilitiesVector = {self.ModelParameters[3][classIndex]}
 
-		priorProbabilitiesVector = calculateGaussianDensity(self.useLogProbabilities, featureMatrix, meanVector, standardDeviationVector)
+		priorProbabilitiesVector = calculateGaussianDensity(self.useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 
 		multipliedProbalitiesVector = AqwamTensorLibrary:multiply(probabilitiesVector, priorProbabilitiesVector)
 		
@@ -270,7 +274,7 @@ function NaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	cost = logLoss(labelVector, predictedProbabilitiesVector)
 	
-	return cost
+	return {cost}
 	
 end
 

@@ -90,7 +90,7 @@ local function separateFeatureMatrixByClass(featureMatrix, labelVector, classesL
 
 end
 
-local function calculateGaussianDensity(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
+local function calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 
 	local logGaussianDensity
 
@@ -178,7 +178,7 @@ local function calculateFinalProbability(featureVector, meanVector, standardDevi
 
 	local finalProbability
 
-	local priorProbabilitiesVector = calculateGaussianDensity(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
+	local priorProbabilitiesVector = calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 
 	if (useLogProbabilities) then
 
@@ -264,7 +264,7 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 		priorProbabilityVector = {self.ModelParameters[3][classIndex]}
 
-		likelihoodVector = calculateGaussianDensity(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
+		likelihoodVector = calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 
 		probability = initialProbability
 

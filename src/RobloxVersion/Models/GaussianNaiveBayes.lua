@@ -315,7 +315,7 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 	
 	self:processLabelVector(labelVector)
 	
-	local gaussianDensityVector
+	local priorProbabilitiesVector
 
 	local extractedFeatureMatrix
 
@@ -326,12 +326,6 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 	local standardDeviationVector
 
 	local probabilitiesVector
-	
-	local meanMatrix
-	
-	local standardDeviationMatrix
-	
-	local probabilitiesMatrix
 	
 	local cost
 	
@@ -345,11 +339,11 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 	
 	local extractedFeatureMatricesTable = separateFeatureMatrixByClass(featureMatrix, labelVector, ClassesList)
 	
-	meanMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
+	local meanMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
 
-	standardDeviationMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
+	local standardDeviationMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
 
-	probabilitiesMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 1)
+	local probabilitiesMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 1)
 	
 	if (#featureMatrix[1] ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
 	
@@ -371,9 +365,9 @@ function NaiveBayesModel:train(featureMatrix, labelVector)
 			
 			featureVector = {extractedFeatureMatrix[data]}
 			
-			gaussianDensityVector = calculateGaussianDensity(self.useLogProbabilities, featureVector, meanVector, standardDeviationVector)
+			priorProbabilitiesVector = calculateGaussianDensity(self.useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 			
-			probabilitiesVector = AqwamTensorLibrary:multiply(probabilitiesVector, gaussianDensityVector)
+			probabilitiesVector = AqwamTensorLibrary:multiply(probabilitiesVector, priorProbabilitiesVector)
 			
 		end
 		

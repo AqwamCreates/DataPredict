@@ -350,10 +350,10 @@ function MultinomialNaiveBayesModel:train(featureMatrix, labelVector)
 	local numberOfFeatures = #featureMatrix[1]
 
 	local extractedFeatureMatricesTable = separateFeatureMatrixByClass(featureMatrix, labelVector, ClassesList)
+	
+	local featureProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
 
 	local priorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, 1})
-
-	local featureProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
 
 	for classIndex, classValue in ipairs(ClassesList) do
 

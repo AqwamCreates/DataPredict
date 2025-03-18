@@ -147,6 +147,12 @@ local function calculateBernoulliProbability(useLogProbabilities, featureVector,
 	local functionToApply = function(featureValue, featureProbabilityValue) return (featureProbabilityValue * math.pow((1 - featureProbabilityValue), (1 - featureValue))) end
 
 	local bernoulliProbabilityVector = AqwamTensorLibrary:applyFunction(functionToApply, featureVector, featureProbabilityVector)
+	
+	if (useLogProbabilities) then
+
+		bernoulliProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, bernoulliProbabilityVector)
+
+	end
 
 	for column = 1, #bernoulliProbabilityVector[1], 1 do
 
@@ -312,10 +318,10 @@ function BernoulliNaiveBayesModel:train(featureMatrix, labelVector)
 	local numberOfFeatures = #featureMatrix[1]
 
 	local extractedFeatureMatricesTable = separateFeatureMatrixByClass(featureMatrix, labelVector, ClassesList)
+	
+	local featureProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
 
 	local priorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, 1})
-
-	local featureProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
 
 	for classIndex, classValue in ipairs(ClassesList) do
 

@@ -28,11 +28,11 @@
 
 local BaseModel = require("Model_BaseModel")
 
-MultinomialNaiveBayesModel = {}
+ComplementNaiveBayesModel = {}
 
-MultinomialNaiveBayesModel.__index = MultinomialNaiveBayesModel
+ComplementNaiveBayesModel.__index = ComplementNaiveBayesModel
 
-setmetatable(MultinomialNaiveBayesModel, BaseModel)
+setmetatable(ComplementNaiveBayesModel, BaseModel)
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
@@ -140,71 +140,43 @@ local function logLoss(labelVector, predictedProbabilitiesVector)
 
 end
 
-local function factorial(n)
-	
-	if (n > 1) then
-		
-		return factorial(n - 1)
-		
-	else
-		
-		return 1
-		
-	end
-	
-end
+local function calculateComplementProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector)
 
-local function calculateMultinomialProbability(useLogProbabilities, featureVector, featureProbabilityVector)
+	local complementProbability = (useLogProbabilities and 0) or 1
 
-	local multinomialProbabilityPart1 = (useLogProbabilities and 0) or 1
+	local functionToApply = function(featureValue, complementFeatureProbabilityValue) return math.pow(complementFeatureProbabilityValue, featureValue) end
+
+	local complementProbabilityVector = AqwamTensorLibrary:applyFunction(functionToApply, featureVector, complementFeatureProbabilityVector)
 	
 	if (useLogProbabilities) then
 		
-		featureProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, featureProbabilityVector)
+		complementProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, complementProbabilityVector)
 		
 	end
 
-	for column = 1, #featureProbabilityVector[1], 1 do
+	for column = 1, #complementProbabilityVector[1], 1 do
 
 		if (useLogProbabilities) then
 
-			multinomialProbabilityPart1 = multinomialProbabilityPart1 + featureProbabilityVector[1][column]
+			complementProbability = complementProbability + complementProbabilityVector[1][column]
 
 		else
 
-			multinomialProbabilityPart1 = multinomialProbabilityPart1 * featureProbabilityVector[1][column]
+			complementProbability = complementProbability * complementProbabilityVector[1][column]
 
 		end
 
 	end
-	
-	local totalFeatureCount = AqwamTensorLibrary:sum(featureVector)
-	
-	local factorialSumFeatureCount = factorial(totalFeatureCount)
-	
-	local factorialFeatureVector = AqwamTensorLibrary:applyFunction(factorial, featureVector)
-	
-	local multipliedFactorialFeatureValue = 1
-	
-	for column = 1, #factorialFeatureVector[1], 1 do
-		
-		multipliedFactorialFeatureValue = multipliedFactorialFeatureValue * factorialFeatureVector[1][column]
-		
-	end
-	
-	local multinomialProbabilityPart2 = factorialSumFeatureCount / multipliedFactorialFeatureValue
-	
-	local multinomialProbability = multinomialProbabilityPart1 * multinomialProbabilityPart2
 
-	return multinomialProbability
+	return complementProbability
 
 end
 
-local function calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
+local function calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityVector)
 
 	local posteriorProbability
 
-	local likelihoodProbability = calculateMultinomialProbability(useLogProbabilities, featureVector, featureProbabilityVector)
+	local likelihoodProbability = calculateComplementProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector)
 
 	if (useLogProbabilities) then
 
@@ -220,31 +192,31 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 
 end
 
-function MultinomialNaiveBayesModel.new(parameterDictionary)
+function ComplementNaiveBayesModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewMultinomialNaiveBayesModel = BaseModel.new(parameterDictionary)
+	local NewComplementNaiveBayesModel = BaseModel.new(parameterDictionary)
 
-	setmetatable(NewMultinomialNaiveBayesModel, MultinomialNaiveBayesModel)
+	setmetatable(NewComplementNaiveBayesModel, ComplementNaiveBayesModel)
 	
-	NewMultinomialNaiveBayesModel:setName("MultinomialNaiveBayes")
+	NewComplementNaiveBayesModel:setName("BernoulliNaiveBayes")
 
-	NewMultinomialNaiveBayesModel.ClassesList = parameterDictionary.ClassesList or {}
+	NewComplementNaiveBayesModel.ClassesList = parameterDictionary.ClassesList or {}
 
-	NewMultinomialNaiveBayesModel.useLogProbabilities = BaseModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, false)
+	NewComplementNaiveBayesModel.useLogProbabilities = BaseModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, false)
 
-	return NewMultinomialNaiveBayesModel
+	return NewComplementNaiveBayesModel
 
 end
 
-function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
+function ComplementNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local cost
 
 	local featureVector
 
-	local featureProbabilityVector
+	local complementFeatureProbabilityVector
 
 	local priorProbabilityVector
 
@@ -276,11 +248,11 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 		classIndex = table.find(self.ClassesList, label)
 
-		featureProbabilityVector = {self.ModelParameters[1][classIndex]}
+		complementFeatureProbabilityVector = {self.ModelParameters[1][classIndex]}
 
 		priorProbabilityVector = {self.ModelParameters[2][classIndex]}
 
-		posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
+		posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityVector)
 
 	end
 
@@ -302,7 +274,7 @@ local function areNumbersOnlyInList(list)
 
 end
 
-function MultinomialNaiveBayesModel:processLabelVector(labelVector)
+function ComplementNaiveBayesModel:processLabelVector(labelVector)
 
 	if (#self.ClassesList == 0) then
 
@@ -321,7 +293,7 @@ function MultinomialNaiveBayesModel:processLabelVector(labelVector)
 end
 
 
-function MultinomialNaiveBayesModel:train(featureMatrix, labelVector)
+function ComplementNaiveBayesModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 
@@ -330,14 +302,20 @@ function MultinomialNaiveBayesModel:train(featureMatrix, labelVector)
 	local cost
 
 	local extractedFeatureMatrix
-
-	local featureProbabilityVector
+	
+	local extractedComplementFeatureMatrix
+	
+	local sumExtractedComplementFeatureVector
+	
+	local totalSumExtractedComplementFeatureVector
+	
+	local complementFeatureProbabilityVector
 
 	local numberOfSubData
 	
-	local featureCountVector
+	local numberOfComplementSubData
 	
-	local sumFeatureCount
+	local totalNumberOfComplementSubData
 
 	local ModelParameters = self.ModelParameters
 
@@ -351,7 +329,7 @@ function MultinomialNaiveBayesModel:train(featureMatrix, labelVector)
 
 	local extractedFeatureMatricesTable = separateFeatureMatrixByClass(featureMatrix, labelVector, ClassesList)
 	
-	local featureProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
+	local complementFeatureProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
 
 	local priorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, 1})
 
@@ -361,13 +339,45 @@ function MultinomialNaiveBayesModel:train(featureMatrix, labelVector)
 
 		numberOfSubData = #extractedFeatureMatrix
 		
-		featureCountVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
-
-		sumFeatureCount = AqwamTensorLibrary:sum(extractedFeatureMatrix)
+		totalSumExtractedComplementFeatureVector = nil
 		
-		featureProbabilityVector = AqwamTensorLibrary:divide(featureCountVector, sumFeatureCount)
-
-		featureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
+		totalNumberOfComplementSubData = 0
+		
+		for complementClassIndex, complementClassValue in ipairs(ClassesList) do
+			
+			print(complementClassIndex)
+			
+			if (complementClassIndex ~= classIndex) then
+				
+				extractedComplementFeatureMatrix = extractedFeatureMatricesTable[complementClassIndex]
+				
+				numberOfComplementSubData = #extractedComplementFeatureMatrix
+				
+				totalNumberOfComplementSubData = totalNumberOfComplementSubData + numberOfComplementSubData
+				
+				sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
+				
+				AqwamTensorLibrary:printTensor(sumExtractedComplementFeatureVector)
+				
+				AqwamTensorLibrary:printTensor(extractedComplementFeatureMatrix)
+				
+				if (totalSumExtractedComplementFeatureVector) then
+					
+					totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:add(totalSumExtractedComplementFeatureVector, sumExtractedComplementFeatureVector)
+					
+				else
+					
+					totalSumExtractedComplementFeatureVector = sumExtractedComplementFeatureVector
+					
+				end
+				
+			end
+			
+		end
+		
+		complementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, totalNumberOfComplementSubData)
+		
+		complementFeatureProbabilityMatrix[classIndex] = complementFeatureProbabilityVector[1]
 
 		priorProbabilityMatrix[classIndex] = {(numberOfSubData / numberOfData)}
 
@@ -375,13 +385,13 @@ function MultinomialNaiveBayesModel:train(featureMatrix, labelVector)
 
 	if (ModelParameters) then
 
-		featureProbabilityMatrix = AqwamTensorLibrary:divide(AqwamTensorLibrary:add(ModelParameters[1], featureProbabilityMatrix), 2) 
+		complementFeatureProbabilityMatrix = AqwamTensorLibrary:divide(AqwamTensorLibrary:add(ModelParameters[1], complementFeatureProbabilityMatrix), 2) 
 
 		priorProbabilityMatrix = AqwamTensorLibrary:divide(AqwamTensorLibrary:add(ModelParameters[2], priorProbabilityMatrix), 2) 
 
 	end
 
-	self.ModelParameters = {featureProbabilityMatrix, priorProbabilityMatrix}
+	self.ModelParameters = {complementFeatureProbabilityMatrix, priorProbabilityMatrix}
 
 	cost = self:calculateCost(featureMatrix, labelVector)
 
@@ -389,7 +399,7 @@ function MultinomialNaiveBayesModel:train(featureMatrix, labelVector)
 
 end
 
-function MultinomialNaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
+function ComplementNaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 	local numberOfData = #outputMatrix
 
@@ -409,7 +419,7 @@ function MultinomialNaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 		outputVector = {outputMatrix[i]}
 
-		classIndexArray, highestProbability = AqwamTensorLibrary:findMaximumValueDimensionIndexArray(outputMatrix)
+		classIndexArray, highestProbability = AqwamTensorLibrary:findMinimumValueDimensionIndexArray(outputMatrix)
 
 		if (classIndexArray == nil) then continue end
 
@@ -425,7 +435,7 @@ function MultinomialNaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function MultinomialNaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
+function ComplementNaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 
 	local finalProbabilityVector
 
@@ -441,7 +451,7 @@ function MultinomialNaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 
 	for classIndex, classValue in ipairs(ClassesList) do
 
-		local featureProbabilityVector = {ModelParameters[1][classIndex]}
+		local complementFeatureProbabilityVector = {ModelParameters[1][classIndex]}
 
 		local priorProbabilityVector = {ModelParameters[2][classIndex]}
 
@@ -449,7 +459,7 @@ function MultinomialNaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 
 			local featureVector = {featureMatrix[i]}
 
-			posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
+			posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityVector)
 
 		end
 
@@ -461,16 +471,16 @@ function MultinomialNaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 
 end
 
-function MultinomialNaiveBayesModel:getClassesList()
+function ComplementNaiveBayesModel:getClassesList()
 
 	return self.ClassesList
 
 end
 
-function MultinomialNaiveBayesModel:setClassesList(ClassesList)
+function ComplementNaiveBayesModel:setClassesList(ClassesList)
 
 	self.ClassesList = ClassesList
 
 end
 
-return MultinomialNaiveBayesModel
+return ComplementNaiveBayesModel

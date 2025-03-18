@@ -178,11 +178,11 @@ local function calculateFinalProbability(useLogProbabilities, featureVector, mea
 
 	local finalProbability
 
-	local priorProbabilitiesVector = calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
+	local likelihoodProbabilityVector = calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 
 	if (useLogProbabilities) then
 
-		finalProbability = AqwamTensorLibrary:sum(priorProbabilitiesVector)
+		finalProbability = AqwamTensorLibrary:sum(likelihoodProbabilityVector)
 
 		finalProbability = finalProbability + priorProbabilityVector[1][1]
 
@@ -190,9 +190,9 @@ local function calculateFinalProbability(useLogProbabilities, featureVector, mea
 
 		finalProbability = 1
 
-		for column = 1, #priorProbabilitiesVector[1], 1 do
+		for column = 1, #likelihoodProbabilityVector[1], 1 do
 
-			finalProbability = finalProbability * priorProbabilitiesVector[1][column]
+			finalProbability = finalProbability * likelihoodProbabilityVector[1][column]
 
 		end
 
@@ -232,7 +232,7 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local priorProbabilityVector
 
-	local likelihoodVector
+	local likelihoodProbabilityVector
 
 	local probability
 
@@ -264,19 +264,19 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 		priorProbabilityVector = {self.ModelParameters[3][classIndex]}
 
-		likelihoodVector = calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
+		likelihoodProbabilityVector = calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 
 		probability = initialProbability
 
-		for column = 1, #likelihoodVector[1], 1 do
+		for column = 1, #likelihoodProbabilityVector[1], 1 do
 
 			if (useLogProbabilities) then
 
-				probability = probability + likelihoodVector[1][column]
+				probability = probability + likelihoodProbabilityVector[1][column]
 
 			else
 
-				probability = probability * likelihoodVector[1][column]
+				probability = probability * likelihoodProbabilityVector[1][column]
 
 			end
 

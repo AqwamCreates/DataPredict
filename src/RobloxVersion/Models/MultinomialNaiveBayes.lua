@@ -227,6 +227,8 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 	local NewMultinomialNaiveBayesModel = BaseModel.new(parameterDictionary)
 
 	setmetatable(NewMultinomialNaiveBayesModel, MultinomialNaiveBayesModel)
+	
+	NewMultinomialNaiveBayesModel:setName("MultinomialNaiveBayes")
 
 	NewMultinomialNaiveBayesModel.ClassesList = parameterDictionary.ClassesList or {}
 

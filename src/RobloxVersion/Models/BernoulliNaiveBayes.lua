@@ -193,6 +193,8 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 	local NewBernoulliNaiveBayes = BaseModel.new(parameterDictionary)
 
 	setmetatable(NewBernoulliNaiveBayes, BernoulliNaiveBayesModel)
+	
+	NewBernoulliNaiveBayes:setName("BernoulliNaiveBayes")
 
 	NewBernoulliNaiveBayes.ClassesList = parameterDictionary.ClassesList or {}
 

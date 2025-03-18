@@ -205,6 +205,8 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 	local NewGaussianNaiveBayesModel = BaseModel.new(parameterDictionary)
 
 	setmetatable(NewGaussianNaiveBayesModel, GaussianNaiveBayesModel)
+	
+	NewGaussianNaiveBayesModel:setName("GaussianNaiveBayes")
 
 	NewGaussianNaiveBayesModel.ClassesList = parameterDictionary.ClassesList or {}
 

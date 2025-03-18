@@ -345,8 +345,6 @@ function ComplementNaiveBayesModel:train(featureMatrix, labelVector)
 		
 		for complementClassIndex, complementClassValue in ipairs(ClassesList) do
 			
-			print(complementClassIndex)
-			
 			if (complementClassIndex ~= classIndex) then
 				
 				extractedComplementFeatureMatrix = extractedFeatureMatricesTable[complementClassIndex]
@@ -356,10 +354,6 @@ function ComplementNaiveBayesModel:train(featureMatrix, labelVector)
 				totalNumberOfComplementSubData = totalNumberOfComplementSubData + numberOfComplementSubData
 				
 				sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
-				
-				AqwamTensorLibrary:printTensor(sumExtractedComplementFeatureVector)
-				
-				AqwamTensorLibrary:printTensor(extractedComplementFeatureMatrix)
 				
 				if (totalSumExtractedComplementFeatureVector) then
 					

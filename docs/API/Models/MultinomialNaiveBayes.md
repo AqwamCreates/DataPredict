@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - MultinomialNaiveBayes
 
-NaiveBayes is an supervised machine learning model that predicts which classes that the input belongs to using probability.
+MultinomialNaiveBayes is an supervised machine learning model that predicts which classes that the input belongs to using probability.
 
 ## Stored Model Parameters
 

@@ -239,8 +239,6 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	local numberOfData = #labelVector
 	
 	local useLogProbabilities = self.useLogProbabilities
-	
-	local predictedProbabilitiesMatrix = AqwamTensorLibrary:createTensor({numberOfData, #self.ClassesList})
 
 	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, #labelVector[1]})
 

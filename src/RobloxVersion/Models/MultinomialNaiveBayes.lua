@@ -266,8 +266,6 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local initialProbability = (useLogProbabilities and 0) or 1
 
-	local predictedProbabilitiesMatrix = AqwamTensorLibrary:createTensor({numberOfData, #self.ClassesList})
-
 	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, #labelVector[1]})
 
 	for data = 1, #featureMatrix, 1 do

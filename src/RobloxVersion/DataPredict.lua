@@ -36,6 +36,8 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	
 	BernoulliNaiveBayes = require(Models.BernoulliNaiveBayes),
 	
+	ComplementNaiveBayes = require(Models.ComplementNaiveBayes),
+	
 	KMeans = require(Models.KMeans),
 	
 	ExpectationMaximization = require(Models.ExpectationMaximization),

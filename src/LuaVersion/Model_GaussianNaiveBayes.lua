@@ -92,33 +92,33 @@ end
 
 local function calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 
-	local logGaussianProbability
+	local logGaussianProbabilityVector
 
-	local exponentStep1 = AqwamTensorLibrary:subtract(featureVector, meanVector)
+	local exponentStep1Vector = AqwamTensorLibrary:subtract(featureVector, meanVector)
 
-	local exponentStep2 = AqwamTensorLibrary:power(exponentStep1, 2)
+	local exponentStep2Vector = AqwamTensorLibrary:power(exponentStep1Vector, 2)
 
-	local exponentPart3 = AqwamTensorLibrary:power(standardDeviationVector, 2)
+	local exponentPart3Vector = AqwamTensorLibrary:power(standardDeviationVector, 2)
 
-	local exponentStep4 = AqwamTensorLibrary:divide(exponentStep2, exponentPart3)
+	local exponentStep4Vector = AqwamTensorLibrary:divide(exponentStep2Vector, exponentPart3Vector)
 
-	local exponentStep5 = AqwamTensorLibrary:multiply(-0.5, exponentStep4)
+	local exponentStep5Vector = AqwamTensorLibrary:multiply(-0.5, exponentStep4Vector)
 
-	local exponentWithTerms = AqwamTensorLibrary:applyFunction(math.exp, exponentStep5)
+	local exponentWithTermsVector = AqwamTensorLibrary:applyFunction(math.exp, exponentStep5Vector)
 
-	local divisor = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+	local divisorVector = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
 
-	local gaussianProbability = AqwamTensorLibrary:divide(exponentWithTerms, divisor)
+	local gaussianProbabilityVector = AqwamTensorLibrary:divide(exponentWithTermsVector, divisorVector)
 
 	if (useLogProbabilities) then
 
-		logGaussianProbability = AqwamTensorLibrary:applyFunction(math.log, gaussianProbability)
+		logGaussianProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, gaussianProbabilityVector)
 
-		return logGaussianProbability	
+		return logGaussianProbabilityVector	
 
 	else
 
-		return gaussianProbability
+		return gaussianProbabilityVector
 
 	end
 

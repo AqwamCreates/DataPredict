@@ -92,7 +92,7 @@ end
 
 local function calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 
-	local logGaussianDensity
+	local logGaussianProbability
 
 	local exponentStep1 = AqwamTensorLibrary:subtract(featureVector, meanVector)
 
@@ -108,17 +108,17 @@ local function calculateGaussianProbability(useLogProbabilities, featureVector, 
 
 	local divisor = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
 
-	local gaussianDensity = AqwamTensorLibrary:divide(exponentWithTerms, divisor)
+	local gaussianProbability = AqwamTensorLibrary:divide(exponentWithTerms, divisor)
 
 	if (useLogProbabilities) then
 
-		logGaussianDensity = AqwamTensorLibrary:applyFunction(math.log, gaussianDensity)
+		logGaussianProbability = AqwamTensorLibrary:applyFunction(math.log, gaussianProbability)
 
-		return logGaussianDensity	
+		return logGaussianProbability	
 
 	else
 
-		return gaussianDensity
+		return gaussianProbability
 
 	end
 

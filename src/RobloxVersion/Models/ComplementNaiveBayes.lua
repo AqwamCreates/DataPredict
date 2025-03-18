@@ -200,7 +200,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 	setmetatable(NewComplementNaiveBayesModel, ComplementNaiveBayesModel)
 	
-	NewComplementNaiveBayesModel:setName("BernoulliNaiveBayes")
+	NewComplementNaiveBayesModel:setName("ComplementNaiveBayes")
 
 	NewComplementNaiveBayesModel.ClassesList = parameterDictionary.ClassesList or {}
 

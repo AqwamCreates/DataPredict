@@ -4,7 +4,7 @@
 
 | Version                 | Number Of Models | Number Of Optimizers | Number Of Others | Number Of Reinforcement Learning Strategies | Number Of Experience Replays | Number Of Value Schedulers | Distributed Training Strategies | Number Of Quick Setups | Backward Incompatible Changes |
 |-------------------------|------------------|----------------------|------------------|---------------------------------------------|------------------------------|----------------------------|---------------------------------|------------------------|-------------------------------|
-| [2.1](Release/2-1.md)   | 42               | 11                   | 10               | 3                                           | 3                            | 2                          | 2                               | 2                      | Yes                           |
+| [2.1](Release/2-1.md)   | 43               | 11                   | 10               | 3                                           | 3                            | 2                          | 2                               | 2                      | Yes                           |
 | [2.0](Release/2-0.md)   | 40               | 11                   | 10               | 3                                           | 3                            | 2                          | 2                               | 2                      | Yes                           |
 
 ## Version 1.0

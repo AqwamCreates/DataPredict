@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - NaiveBayes
+# [API Reference](../../API.md) - [Models](../Models.md) - MultinomialNaiveBayes
 
 NaiveBayes is an supervised machine learning model that predicts which classes that the input belongs to using probability.
 
@@ -6,11 +6,9 @@ NaiveBayes is an supervised machine learning model that predicts which classes t
 
 Contains a table of matrices.  
 
-* ModelParameters[1]: meanMatrix. The columns are the features.
+* ModelParameters[1]: featureProbabilityMatrix. The columns are the features.
 
-* ModelParameters[2]: standardDeviationMatrix. The columns are the features.
-
-* ModelParameters[3]: probabilitiesMatrix. The columns are the features.
+* ModelParameters[2]: priorProbabilityMatrix. The columns are the features.
 
 ## Constructors
 
@@ -19,7 +17,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-NaiveBayes.new(useLogProbabilities: boolean): ModelObject
+MultinomialNaiveBayes.new(useLogProbabilities: boolean): ModelObject
 ```
 
 #### Parameters:
@@ -37,7 +35,7 @@ NaiveBayes.new(useLogProbabilities: boolean): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-NaiveBayes:setParameters(useLogProbabilities: boolean)
+MultinomialNaiveBayes:setParameters(useLogProbabilities: boolean)
 ```
 
 #### Parameters:
@@ -49,7 +47,7 @@ NaiveBayes:setParameters(useLogProbabilities: boolean)
 Train the model.
 
 ```
-NaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
+MultinomialNaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
 ```
 
 #### Parameters:
@@ -67,7 +65,7 @@ NaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-NaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+MultinomialNaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
@@ -89,7 +87,7 @@ NaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix
 ### getClassesList()
 
 ```
-NaiveBayes:getClassesList(): []
+MultinomialNaiveBayes:getClassesList(): []
 ```
 
 #### Returns:
@@ -99,7 +97,7 @@ NaiveBayes:getClassesList(): []
 ### setClassesList()
 
 ```
-NaiveBayes:setClassesList(ClassesList: [])
+MultinomialNaiveBayes:setClassesList(ClassesList: [])
 ```
 
 #### Parameters:
@@ -109,7 +107,3 @@ NaiveBayes:setClassesList(ClassesList: [])
 ## Inherited From
 
 * [BaseModel](BaseModel.md)
-
-## Notes
-
-* Untested. May give wrong model. Use at your own risk. (I am new at understanding this model)

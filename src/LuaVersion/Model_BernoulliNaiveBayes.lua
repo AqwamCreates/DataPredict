@@ -90,28 +90,6 @@ local function separateFeatureMatrixByClass(featureMatrix, labelVector, classesL
 
 end
 
-local function calculateBernoulliProbability(useLogProbabilities, featureVector, featureProbabilityVector)
-	
-	local logBernoulliProbabilityVector
-	
-	local functionToApply = function(featureValue, featureProbabilityValue) return (featureProbabilityValue * math.pow((1 - featureProbabilityValue), (1 - featureValue))) end
-	
-	local bernoulliProbabilityVector = AqwamTensorLibrary:applyFunction(functionToApply, featureVector, featureProbabilityVector)
-	
-	if (useLogProbabilities) then
-		
-		logBernoulliProbabilityVector =  AqwamTensorLibrary:applyFunction(math.log, bernoulliProbabilityVector)
-		
-		return logBernoulliProbabilityVector
-		
-	else
-		
-		return bernoulliProbabilityVector
-		
-	end
-	
-end
-
 local function createClassesList(labelVector)
 
 	local ClassesList = {}
@@ -162,33 +140,49 @@ local function logLoss(labelVector, predictedProbabilitiesVector)
 
 end
 
-local function calculateFinalProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
+local function calculateBernoulliProbability(useLogProbabilities, featureVector, featureProbabilityVector)
 
-	local finalProbability
+	local bernoulliProbability = (useLogProbabilities and 0) or 1
 
-	local likelihoodProbabilityVector = calculateBernoulliProbability(useLogProbabilities, featureVector, featureProbabilityVector)
+	local functionToApply = function(featureValue, featureProbabilityValue) return (featureProbabilityValue * math.pow((1 - featureProbabilityValue), (1 - featureValue))) end
 
-	if (useLogProbabilities) then
+	local bernoulliProbabilityVector = AqwamTensorLibrary:applyFunction(functionToApply, featureVector, featureProbabilityVector)
 
-		finalProbability = AqwamTensorLibrary:sum(likelihoodProbabilityVector)
+	for column = 1, #bernoulliProbabilityVector[1], 1 do
 
-		finalProbability = finalProbability + priorProbabilityVector[1][1]
+		if (useLogProbabilities) then
 
-	else
+			bernoulliProbability = bernoulliProbability + bernoulliProbabilityVector[1][column]
 
-		finalProbability = 1
+		else
 
-		for column = 1, #likelihoodProbabilityVector[1], 1 do
-
-			finalProbability = finalProbability * likelihoodProbabilityVector[1][column]
+			bernoulliProbability = bernoulliProbability * bernoulliProbabilityVector[1][column]
 
 		end
 
-		finalProbability = finalProbability * priorProbabilityVector[1][1]
+	end
+
+	return bernoulliProbability
+
+end
+
+local function calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
+
+	local posteriorProbability
+
+	local likelihoodProbability = calculateBernoulliProbability(useLogProbabilities, featureVector, featureProbabilityVector)
+
+	if (useLogProbabilities) then
+
+		posteriorProbability = likelihoodProbability + priorProbabilityVector[1][1]
+
+	else
+
+		posteriorProbability = likelihoodProbability * priorProbabilityVector[1][1]
 
 	end
 
-	return finalProbability
+	return posteriorProbability
 
 end
 
@@ -218,7 +212,7 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local priorProbabilityVector
 
-	local likelihoodProbabilityVector
+	local posteriorProbability
 
 	local probability
 
@@ -238,7 +232,7 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local predictedProbabilitiesMatrix = AqwamTensorLibrary:createTensor({numberOfData, #self.ClassesList})
 
-	local predictedProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, #labelVector[1]})
+	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, #labelVector[1]})
 
 	for data = 1, #featureMatrix, 1 do
 
@@ -252,39 +246,11 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 		priorProbabilityVector = {self.ModelParameters[2][classIndex]}
 
-		likelihoodProbabilityVector = calculateBernoulliProbability(useLogProbabilities, featureVector, featureProbabilityVector)
-
-		probability = initialProbability
-
-		for column = 1, #likelihoodProbabilityVector[1], 1 do
-
-			if (useLogProbabilities) then
-
-				probability = probability + likelihoodProbabilityVector[1][column]
-
-			else
-
-				probability = probability * likelihoodProbabilityVector[1][column]
-
-			end
-
-		end
-
-		if (useLogProbabilities) then
-
-			probability = probability + priorProbabilityVector[1][1]
-
-		else
-
-			probability = probability * priorProbabilityVector[1][1]
-
-		end
-
-		predictedProbabilityVector[data][1] = probability
+		posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
 
 	end
 
-	cost = logLoss(labelVector, predictedProbabilityVector)
+	cost = logLoss(labelVector, posteriorProbabilityVector)
 
 	return cost
 
@@ -429,7 +395,7 @@ function BernoulliNaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 
 	local ModelParameters = self.ModelParameters
 
-	local finalProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, #ClassesList}, 0)
+	local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, #ClassesList}, 0)
 
 	for classIndex, classValue in ipairs(ClassesList) do
 
@@ -441,15 +407,15 @@ function BernoulliNaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 
 			local featureVector = {featureMatrix[i]}
 
-			finalProbabilityMatrix[i][classIndex] = calculateFinalProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
+			posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
 
 		end
 
 	end
 
-	if (returnOriginalOutput) then return finalProbabilityMatrix end
+	if (returnOriginalOutput) then return posteriorProbabilityMatrix end
 
-	return self:getLabelFromOutputMatrix(finalProbabilityMatrix)
+	return self:getLabelFromOutputMatrix(posteriorProbabilityMatrix)
 
 end
 

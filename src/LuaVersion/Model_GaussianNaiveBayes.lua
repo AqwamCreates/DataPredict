@@ -90,40 +90,6 @@ local function separateFeatureMatrixByClass(featureMatrix, labelVector, classesL
 
 end
 
-local function calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
-
-	local logGaussianProbabilityVector
-
-	local exponentStep1Vector = AqwamTensorLibrary:subtract(featureVector, meanVector)
-
-	local exponentStep2Vector = AqwamTensorLibrary:power(exponentStep1Vector, 2)
-
-	local exponentPart3Vector = AqwamTensorLibrary:power(standardDeviationVector, 2)
-
-	local exponentStep4Vector = AqwamTensorLibrary:divide(exponentStep2Vector, exponentPart3Vector)
-
-	local exponentStep5Vector = AqwamTensorLibrary:multiply(-0.5, exponentStep4Vector)
-
-	local exponentWithTermsVector = AqwamTensorLibrary:applyFunction(math.exp, exponentStep5Vector)
-
-	local divisorVector = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
-
-	local gaussianProbabilityVector = AqwamTensorLibrary:divide(exponentWithTermsVector, divisorVector)
-
-	if (useLogProbabilities) then
-
-		logGaussianProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, gaussianProbabilityVector)
-
-		return logGaussianProbabilityVector	
-
-	else
-
-		return gaussianProbabilityVector
-
-	end
-
-end
-
 local function createClassesList(labelVector)
 
 	local ClassesList = {}
@@ -174,33 +140,61 @@ local function logLoss(labelVector, predictedProbabilitiesVector)
 
 end
 
-local function calculateFinalProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityVector)
+local function calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 
-	local finalProbability
+	local gaussianProbability = (useLogProbabilities and 0) or 1
 
-	local likelihoodProbabilityVector = calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
+	local exponentStep1Vector = AqwamTensorLibrary:subtract(featureVector, meanVector)
 
-	if (useLogProbabilities) then
+	local exponentStep2Vector = AqwamTensorLibrary:power(exponentStep1Vector, 2)
 
-		finalProbability = AqwamTensorLibrary:sum(likelihoodProbabilityVector)
+	local exponentPart3Vector = AqwamTensorLibrary:power(standardDeviationVector, 2)
 
-		finalProbability = finalProbability + priorProbabilityVector[1][1]
+	local exponentStep4Vector = AqwamTensorLibrary:divide(exponentStep2Vector, exponentPart3Vector)
 
-	else
+	local exponentStep5Vector = AqwamTensorLibrary:multiply(-0.5, exponentStep4Vector)
 
-		finalProbability = 1
+	local exponentWithTermsVector = AqwamTensorLibrary:applyFunction(math.exp, exponentStep5Vector)
 
-		for column = 1, #likelihoodProbabilityVector[1], 1 do
+	local divisorVector = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
 
-			finalProbability = finalProbability * likelihoodProbabilityVector[1][column]
+	local gaussianProbabilityVector = AqwamTensorLibrary:divide(exponentWithTermsVector, divisorVector)
+
+	for column = 1, #gaussianProbabilityVector[1], 1 do
+
+		if (useLogProbabilities) then
+
+			gaussianProbability = gaussianProbability + gaussianProbabilityVector[1][column]
+
+		else
+
+			gaussianProbability = gaussianProbability * gaussianProbabilityVector[1][column]
 
 		end
 
-		finalProbability = finalProbability * priorProbabilityVector[1][1]
+	end
+
+	return gaussianProbability
+
+end
+
+local function calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityVector)
+
+	local posteriorProbability
+
+	local likelihoodProbability = calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
+
+	if (useLogProbabilities) then
+
+		posteriorProbability = likelihoodProbability + priorProbabilityVector[1][1]
+
+	else
+
+		posteriorProbability = likelihoodProbability * priorProbabilityVector[1][1]
 
 	end
 
-	return finalProbability
+	return posteriorProbability
 
 end
 
@@ -232,7 +226,7 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local priorProbabilityVector
 
-	local likelihoodProbabilityVector
+	local posteriorProbability
 
 	local probability
 
@@ -244,11 +238,9 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	
 	local useLogProbabilities = self.useLogProbabilities
 	
-	local initialProbability = (useLogProbabilities and 0) or 1
-
 	local predictedProbabilitiesMatrix = AqwamTensorLibrary:createTensor({numberOfData, #self.ClassesList})
 
-	local predictedProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, #labelVector[1]})
+	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, #labelVector[1]})
 
 	for data = 1, #featureMatrix, 1 do
 		
@@ -264,39 +256,11 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 		priorProbabilityVector = {self.ModelParameters[3][classIndex]}
 
-		likelihoodProbabilityVector = calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
-
-		probability = initialProbability
-
-		for column = 1, #likelihoodProbabilityVector[1], 1 do
-
-			if (useLogProbabilities) then
-
-				probability = probability + likelihoodProbabilityVector[1][column]
-
-			else
-
-				probability = probability * likelihoodProbabilityVector[1][column]
-
-			end
-
-		end
-		
-		if (useLogProbabilities) then
-			
-			probability = probability + priorProbabilityVector[1][1]
-			
-		else
-			
-			probability = probability * priorProbabilityVector[1][1]
-			
-		end
-
-		predictedProbabilityVector[data][1] = probability
+		posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityVector)
 
 	end
 
-	cost = logLoss(labelVector, predictedProbabilityVector)
+	cost = logLoss(labelVector, posteriorProbabilityVector)
 
 	return cost
 
@@ -449,7 +413,7 @@ function GaussianNaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 
 	local ModelParameters = self.ModelParameters
 
-	local finalProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, #ClassesList}, 0)
+	local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, #ClassesList}, 0)
 
 	for classIndex, classValue in ipairs(ClassesList) do
 
@@ -463,15 +427,15 @@ function GaussianNaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
 
 			local featureVector = {featureMatrix[i]}
 
-			finalProbabilityMatrix[i][classIndex] = calculateFinalProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityVector)
+			posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityVector)
 
 		end
 
 	end
 
-	if (returnOriginalOutput) then return finalProbabilityMatrix end
+	if (returnOriginalOutput) then return posteriorProbabilityMatrix end
 
-	return self:getLabelFromOutputMatrix(finalProbabilityMatrix)
+	return self:getLabelFromOutputMatrix(posteriorProbabilityMatrix)
 
 end
 

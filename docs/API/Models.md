@@ -17,6 +17,7 @@
 | [GaussianNaiveBayes](Models/GaussianNaiveBayes.md)                                                               | None                   | Text Classification                                                         |
 | [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md)                                                         | None                   | Text Classification                                                         |
 | [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)                                                             | None                   | Text Classification                                                         |
+| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)                                                           | None                   | Text Classification With Imbalanced Classes Count                           |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                |
 
 ## Clustering

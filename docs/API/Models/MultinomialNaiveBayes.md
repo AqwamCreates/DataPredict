@@ -4,7 +4,7 @@ MultinomialNaiveBayes is an supervised machine learning model that predicts whic
 
 ## Stored Model Parameters
 
-Contains a table of matrices.  
+Contains a table of matrices.
 
 * ModelParameters[1]: featureProbabilityMatrix. The columns are the features.
 

@@ -1,16 +1,14 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - GaussianNaiveBayes
+# [API Reference](../../API.md) - [Models](../Models.md) - ComplementNaiveBayes
 
-GaussianNaiveBayes is an supervised machine learning model that predicts which classes that the input belongs to using probability.
+ComplementNaiveBayes is an supervised machine learning model that predicts which classes that the input belongs to using probability.
 
 ## Stored Model Parameters
 
 Contains a table of matrices.
 
-* ModelParameters[1]: meanMatrix. The columns are the features.
+* ModelParameters[1]: complementFeatureProbabilityMatrix. The columns are the features.
 
-* ModelParameters[2]: standardDeviationMatrix. The columns are the features.
-
-* ModelParameters[3]: priorProbabilityMatrix. The columns are the features.
+* ModelParameters[2]: priorProbabilityMatrix. The columns are the features.
 
 ## Constructors
 
@@ -19,7 +17,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-GaussianNaiveBayes.new(useLogProbabilities: boolean): ModelObject
+ComplementNaiveBayes.new(useLogProbabilities: boolean): ModelObject
 ```
 
 #### Parameters:
@@ -37,7 +35,7 @@ GaussianNaiveBayes.new(useLogProbabilities: boolean): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-GaussianNaiveBayes:setParameters(useLogProbabilities: boolean)
+ComplementNaiveBayes:setParameters(useLogProbabilities: boolean)
 ```
 
 #### Parameters:
@@ -49,7 +47,7 @@ GaussianNaiveBayes:setParameters(useLogProbabilities: boolean)
 Train the model.
 
 ```
-GaussianNaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
+ComplementNaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
 ```
 
 #### Parameters:
@@ -67,7 +65,7 @@ GaussianNaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-GaussianNaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+ComplementNaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
@@ -89,7 +87,7 @@ GaussianNaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput: boolean)
 ### getClassesList()
 
 ```
-GaussianNaiveBayes:getClassesList(): []
+ComplementNaiveBayes:getClassesList(): []
 ```
 
 #### Returns:
@@ -99,7 +97,7 @@ GaussianNaiveBayes:getClassesList(): []
 ### setClassesList()
 
 ```
-GaussianNaiveBayes:setClassesList(ClassesList: [])
+ComplementNaiveBayes:setClassesList(ClassesList: [])
 ```
 
 #### Parameters:

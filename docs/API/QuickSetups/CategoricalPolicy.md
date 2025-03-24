@@ -26,6 +26,8 @@ CategoricalPolicy.new(numberOfReinforcementsPerEpisode: integer, epsilon: number
 
   * UpperConfidenceBound
 
+* temperature: Controls the exploration and exploitation tradeoff. The higher the temperature, the more likely the model will do exploration. Only applicable when "SoftmaxSampling" or "BoltzmannSampling" is used.
+
 #### Returns:
 
 * ModelObject: The generated model object.

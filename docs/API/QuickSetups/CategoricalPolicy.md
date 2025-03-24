@@ -9,7 +9,7 @@ CategoricalPolicy is a base class for setuping up reinforcement learning functio
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-CategoricalPolicy.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, actionSelectionFunction: string): CategoricalPolicyObject
+CategoricalPolicy.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, actionSelectionFunction: string, temperature: number): CategoricalPolicyObject
 ```
 
 #### Parameters:

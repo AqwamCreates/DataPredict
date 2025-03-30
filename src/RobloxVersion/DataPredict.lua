@@ -22,6 +22,8 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	
 	NormalLinearRegression = require(Models.NormalLinearRegression),
 	
+	SupportVectorRegression = require(Models.SupportVectorRegression),
+	
 	LogisticRegression = require(Models.LogisticRegression),
 	
 	NeuralNetwork = require(Models.NeuralNetwork),

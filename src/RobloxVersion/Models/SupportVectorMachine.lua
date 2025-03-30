@@ -334,15 +334,15 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 
 end
 
-local function calculateModelParameters(modelParameters, individualkernelMatrix, labelVector, cValue)
+local function calculateModelParameters(modelParameters, individualKernelMatrix, labelVector, cValue)
 
-	local predictionVector = AqwamTensorLibrary:dotProduct(individualkernelMatrix, modelParameters) -- m x 1
+	local predictionVector = AqwamTensorLibrary:dotProduct(individualKernelMatrix, modelParameters) -- m x 1
 
 	local errorVector = AqwamTensorLibrary:subtract(predictionVector, labelVector) -- m x 1
 
-	local transposedKernelMatrix = AqwamTensorLibrary:transpose(individualkernelMatrix)
+	local transposedIndividualKernelMatrix = AqwamTensorLibrary:transpose(individualKernelMatrix)
 
-	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedKernelMatrix, errorVector) -- n x m, m x 1
+	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedIndividualKernelMatrix, errorVector) -- n x m, m x 1
 
 	local NewModelParameters = AqwamTensorLibrary:multiply(-cValue, dotProductErrorVector)
 

@@ -300,9 +300,9 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 
 	local errorVector = AqwamTensorLibrary:subtract(predictedVector, labelVector)
 	
-	local positiveSlackVariableVector = AqwamTensorLibrary:applyFunction(function(x) return math.max(0, x - epsilon) end, errorVector) -- ξ
+	local positiveSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, errorValue - epsilon) end, errorVector) -- ξ
 
-	local negativeSlackVariableVector = AqwamTensorLibrary:applyFunction(function(x) return math.max(0, -x - epsilon) end, errorVector) -- ξ*
+	local negativeSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, -errorValue - epsilon) end, errorVector) -- ξ*
 
 	local costVector = AqwamTensorLibrary:add(positiveSlackVariableVector, negativeSlackVariableVector)
 
@@ -340,21 +340,21 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 
 end
 
-local function calculateModelParameters(modelParameters, individualkernelMatrix, labelVector, cValue, epsilon)
+local function calculateModelParameters(modelParameters, individualKernelMatrix, labelVector, cValue, epsilon)
 
-	local predictionVector = AqwamTensorLibrary:dotProduct(individualkernelMatrix, modelParameters) -- m x 1
+	local predictionVector = AqwamTensorLibrary:dotProduct(individualKernelMatrix, modelParameters) -- m x 1
 
 	local errorVector = AqwamTensorLibrary:subtract(predictionVector, labelVector) -- m x 1
 	
-	local positiveSlackVariableVector = AqwamTensorLibrary:applyFunction(function(x) return math.max(0, x - epsilon) end, errorVector) -- ξ
-	
-	local negativeSlackVariableVector = AqwamTensorLibrary:applyFunction(function(x) return math.max(0, -x - epsilon) end, errorVector) -- ξ*
+	local positiveSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, errorValue - epsilon) end, errorVector) -- ξ
+
+	local negativeSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, -errorValue - epsilon) end, errorVector) -- ξ*
 	
 	local slackVariableVector = AqwamTensorLibrary:add(positiveSlackVariableVector, negativeSlackVariableVector)
 	
-	local transposedKernelMatrix = AqwamTensorLibrary:transpose(individualkernelMatrix)
+	local transposedIndividualKernelMatrix = AqwamTensorLibrary:transpose(individualKernelMatrix)
 
-	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedKernelMatrix, slackVariableVector) -- n x m, m x 1
+	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedIndividualKernelMatrix, slackVariableVector) -- n x m, m x 1
 
 	local NewModelParameters = AqwamTensorLibrary:multiply(-cValue, dotProductErrorVector)
 

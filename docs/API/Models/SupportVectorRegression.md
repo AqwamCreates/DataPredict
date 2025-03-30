@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - SupportVectorMachine
+# [API Reference](../../API.md) - [Models](../Models.md) - SupportVectorRegression
 
-SupportVectorMachine is a supervised machine learning model that predicts values of -1 and 1 only.
+SupportVectorRegression is a supervised machine learning model that predicts values of -1 and 1 only.
 
 ## Stored Model Parameters
 
@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-SupportVectorMachine.new(maximumNumberOfIterations: integer, cValue: number, kernelFunction: string, kernelParameters: table): ModelObject
+SupportVectorRegression.new(maximumNumberOfIterations: integer, cValue: number, epsilon: number, kernelFunction: string, kernelParameters: table): ModelObject
 ```
 
 #### Parameters:
@@ -23,6 +23,8 @@ SupportVectorMachine.new(maximumNumberOfIterations: integer, cValue: number, ker
 * maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
+
+* epsilon: How far the datapoint should be so that it does not contribute to the error calculation. Higher the value the further the datapoint can be so that it does not contribute to the error calculations.
 
 * kernelFunction: The kernel function to be used to train the model. Available options are:
   
@@ -49,7 +51,7 @@ SupportVectorMachine.new(maximumNumberOfIterations: integer, cValue: number, ker
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-SupportVectorMachine:setParameters(maximumNumberOfIterations: integer, cValue: number, kernelFunction: string, kernelParameters: table)
+SupportVectorRegression:setParameters(maximumNumberOfIterations: integer, cValue: number, epsilon: number, kernelFunction: string, kernelParameters: table)
 ```
 
 #### Parameters:
@@ -57,6 +59,8 @@ SupportVectorMachine:setParameters(maximumNumberOfIterations: integer, cValue: n
 * maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
+
+* epsilon: How far the datapoint should be so that it does not contribute to the error calculation. Higher the value the further the datapoint can be so that it does not contribute to the error calculations.
 
 * kernelFunction: The kernel function to be used to train the model. Available options are:
   
@@ -77,7 +81,7 @@ SupportVectorMachine:setParameters(maximumNumberOfIterations: integer, cValue: n
 Set how hard the margin should be.
 
 ```
-SupportVectorMachine:setCValue(cValue: number)
+SupportVectorRegression:setCValue(cValue: number)
 ```
 
 #### Parameters:
@@ -89,7 +93,7 @@ SupportVectorMachine:setCValue(cValue: number)
 Train the model.
 
 ```
-SupportVectorMachine:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+SupportVectorRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 #### Parameters:
 
@@ -106,7 +110,7 @@ SupportVectorMachine:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 Predict the values for given data.
 
 ```
-SupportVectorMachine:predict(featureMatrix: Matrix, returnOriginalOutput): Matrix -OR- Matrix
+SupportVectorRegression:predict(featureMatrix: Matrix, returnOriginalOutput): Matrix -OR- Matrix
 ```
 
 #### Parameters:

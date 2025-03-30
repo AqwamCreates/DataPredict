@@ -38,8 +38,6 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local defaultMaximumNumberOfIterations = 500
 
-local defaultLearningRate = 0.01
-
 local defaultCvalue = 1
 
 local defaultKernelFunction = "Linear"

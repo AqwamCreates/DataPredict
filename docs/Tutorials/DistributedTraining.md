@@ -61,7 +61,7 @@ DistributedGradientsCoordinator:setModelParameters(ModelParameters1)
 
 LinearRegression1:setAreGradientsSaved(true) -- We need to save the gradients for every iterations, so we set this true.
 
-LinearRegression1:setParameters(1) -- We also need to make the number of iterations to 1.
+LinearRegression1:setParameters({maximumNumberOfIterations = 1}) -- We also need to make the number of iterations to 1.
 
 -- Once set, we can start training our models individually and update the model parameters in DistributedGradientsCoordinator object.
 
@@ -103,7 +103,7 @@ DistributedModelParametersCoordinator:setModelParametersMerger(ModelParametersMe
 
 LinearRegression1:setAreGradientsSaved(false) -- We don't need to save the gradients because we're directly using the model parameters.
 
-LinearRegression1:setParameters(500) -- We will set the maximum number of the iterations to 500 for this tutorial.
+LinearRegression1:setParameters({maximumNumberOfIterations = 500}) -- We will set the maximum number of the iterations to 500 for this tutorial.
 
 -- Then we train our model.
 

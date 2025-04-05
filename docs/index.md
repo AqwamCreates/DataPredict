@@ -65,7 +65,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Getting Started With Reinforcement Learning](Tutorials/GettingStartedWithReinforcementLearning.md)
 
-[Stimulating Curiosity With Random Network Distillation](Tutorials/StimulatingCuriosityWithRandomNetworkDistillation.md)
+[Simulating Curiosity With Random Network Distillation](Tutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
 
 [Choosing The Most Effective Environment Inputs](Tutorials/ChoosingTheMostEffectiveEnvironmentInputs.md)
 

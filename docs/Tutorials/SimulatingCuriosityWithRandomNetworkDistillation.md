@@ -28,27 +28,11 @@ local RandomNetworkDistillation = DataPredict.ReinforcementLearningStrategies.Ra
 
 RandomNetworkDistillation:setModel(NeuralNetwork)
 
--- Initializing our ReinforcementLearningQuickSetup.
-
-local QLearningNeuralNetworkQuickSetup = DataPredict.QuickSetups.CategoricalPolicy.new()
-
-QLearningNeuralNetworkQuickSetup:setModel(QLearningNeuralNetwork)
-
-QLearningNeuralNetworkQuickSetup:setClassesList({1, 2, 3, 4})
-
 -- Creating a simple function when receiving environment vector received.
 
-local function onEnvironmentFeatureVectorReceived(environmentFeatureVector)
+local rewardVector = RandomNetworkDistillation:generate(environmentFeatureVector)
 
-  local rewardVector = RandomNetworkDistillation:generate(environmentFeatureVector)
-
-  local internalReward = rewardVector[1][1]
-
-  local action = QLearningNeuralNetworkQuickSetup:reinforce(environmentFeatureVector, internalReward)
-
-  return action
-
-end
+local internalReward = rewardVector[1][1]
 
 ```
 

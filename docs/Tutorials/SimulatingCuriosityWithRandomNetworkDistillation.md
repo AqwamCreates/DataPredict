@@ -28,7 +28,7 @@ local RandomNetworkDistillation = DataPredict.ReinforcementLearningStrategies.Ra
 
 RandomNetworkDistillation:setModel(NeuralNetwork)
 
--- Call the generate() function to generate an internal reward factor.
+-- Call the generate() function to generate an internal reward vector.
 
 local internalRewardVector = RandomNetworkDistillation:generate(environmentFeatureVector)
 

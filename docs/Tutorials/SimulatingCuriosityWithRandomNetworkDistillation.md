@@ -30,7 +30,7 @@ RandomNetworkDistillation:setModel(NeuralNetwork)
 
 -- Creating a simple function when receiving environment vector received.
 
-local rewardVector = RandomNetworkDistillation:generate(environmentFeatureVector)
+local internalRewardVector = RandomNetworkDistillation:generate(environmentFeatureVector)
 
 local internalReward = rewardVector[1][1]
 
@@ -44,7 +44,7 @@ You can discourage the AI from exploring by making the internal reward value to 
 
 ```lua
 
-local rewardVector = RandomNetworkDistillation:generate(environmentFeatureVector)
+local internalRewardVector = RandomNetworkDistillation:generate(environmentFeatureVector)
 
 local internalReward = rewardVector[1][1]
 

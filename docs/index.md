@@ -71,9 +71,9 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### Learning AIs - Level 2
 
-[Deep Reinforcement Learning Algorithms Properties](Tutorials/DeepReinforcementLearningAlgorithmsProperties.md)
-
 [The Action Space And The Reinforcement Learning Algorithms](Tutorials/TheActionSpaceAndTheReinforcementLearningAlgorithms.md)
+
+[Deep Reinforcement Learning Algorithms Properties](Tutorials/DeepReinforcementLearningAlgorithmsProperties.md)
 
 ## Example Codes
 

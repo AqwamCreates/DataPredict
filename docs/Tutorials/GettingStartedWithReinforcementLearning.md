@@ -110,13 +110,13 @@ while true do
 
   for step = 1, 1000, 1 do
 
-    local environmentVector = fetchEnvironmentFeatureVector(previousEnvironmentVector, action)
+    local currentEnvironmentFeatureVector = fetchEnvironmentFeatureVector(previousEnvironmentFeatureVector, action)
 
-    action = DeepQLearning:predict(environmentVector)[1][1]
+    action = DeepQLearning:predict(currentEnvironmentFeatureVector)[1][1]
 
-    local reward = getReward(environmentVector)
+    local reward = getReward(currentEnvironmentFeatureVector)
 
-    DeepQLearning:categoricalUpdate(previousEnvironmentVector, reward, action, environmentVector) -- update() is called whenever a step is made.
+    DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, reward, action, currentEnvironmentFeatureVector, 0) -- update() is called whenever a step is made. The value of zero indicates that the current environment
 
     previousEnvironmentFeatureVector = environmentVector
 
@@ -126,7 +126,7 @@ while true do
 
   end
 
-  QLearningNeuralNetwork:episodeUpdate() -- episodeUpdate() is used whenever an episode ends. An episode is the total number of steps that determines when the model should stop training.
+  QLearningNeuralNetwork:episodeUpdate(1) -- episodeUpdate() is used whenever an episode ends. An episode is the total number of steps that determines when the model should stop training.
 
 end
 

@@ -174,4 +174,4 @@ These only cover the basics. You can find more information here:
 
 * [Deep SARSA](../API/Models/DeepStateActionRewardStateAction.md)
 
-* [Deep Expected SARSA](../API/Models/DeepExpectedStateActionRewardStateAction.md) 
+* [Deep Expected SARSA](../API/Models/DeepExpectedStateActionRewardStateAction.md)

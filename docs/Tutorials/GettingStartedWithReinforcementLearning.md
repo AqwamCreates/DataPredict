@@ -116,7 +116,7 @@ while true do
 
     local reward = getReward(currentEnvironmentFeatureVector)
 
-    DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, reward, action, currentEnvironmentFeatureVector, 0) -- update() is called whenever a step is made. The value of zero indicates that the current environment
+    DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, reward, action, currentEnvironmentFeatureVector, 0) -- update() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
 
     previousEnvironmentFeatureVector = environmentVector
 
@@ -126,7 +126,7 @@ while true do
 
   end
 
-  QLearningNeuralNetwork:episodeUpdate(1) -- episodeUpdate() is used whenever an episode ends. An episode is the total number of steps that determines when the model should stop training.
+  QLearningNeuralNetwork:episodeUpdate(1) -- episodeUpdate() is used whenever an episode ends. An episode is the total number of steps that determines when the model should stop training. The value of one indicates that the current environment feature vector is a terminal state.
 
 end
 

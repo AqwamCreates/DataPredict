@@ -1,4 +1,4 @@
-# Getting Started With Reinforcement Learning
+# Getting Started With Deep Reinforcement Learning
 
 ## Requirements
 

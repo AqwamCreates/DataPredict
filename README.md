@@ -1,4 +1,4 @@
-# DataPredict
+# DataPredict™
 
 ![DataPredict Icon](icons/DataPredictIcon.png)
 

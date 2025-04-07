@@ -98,11 +98,13 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 		
 		local currentQValue = CriticModel:forwardPropagate(previousCriticActionInputVector, true)[1][1]
 
-		local temporalDifferenceError = (currentQValue - yValue)
+		local negatedtemporalDifferenceError = (currentQValue - yValue)
+		
+		local temporalDifferenceError = -negatedtemporalDifferenceError
 		
 		ActorModel:forwardPropagate(previousFeatureVector, true)
 
-		ActorModel:backwardPropagate(-temporalDifferenceError, true)
+		ActorModel:backwardPropagate(negatedtemporalDifferenceError, true)
 		
 		local previousCriticActionMeanInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, actionMeanVector, 2)
 		

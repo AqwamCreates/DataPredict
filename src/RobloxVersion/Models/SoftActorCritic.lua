@@ -224,9 +224,9 @@ function SoftActorCriticModel:backwardPropagate(previousFeatureVector, previousL
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector, true)[1][1] 
 
-		local criticLoss = yValue - previousCriticValue
+		local criticLoss = previousCriticValue - yValue
 
-		temporalDifferenceErrorVector[1][i] = criticLoss
+		temporalDifferenceErrorVector[1][i] = -criticLoss -- We perform gradient descent here, so the critic loss is negated so that it can be used as temporal difference value.
 		
 		previousCriticValueArray[i] = previousCriticValue
 

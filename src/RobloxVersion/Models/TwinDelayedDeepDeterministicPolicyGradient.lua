@@ -166,8 +166,6 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 		
 		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor({1, 2}, 0)
 
-		local previousCriticValueArray = {}
-		
 		local previousCriticActionMeanInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, actionMeanVector, 2)
 		
 		for i = 1, 2, 1 do 
@@ -176,11 +174,9 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 			local previousCriticValue = CriticModel:forwardPropagate(previousCriticActionMeanInputVector, true)[1][1] 
 
-			local criticLoss = yValue - previousCriticValue
+			local criticLoss = previousCriticValue - yValue
 
-			temporalDifferenceErrorVector[1][i] = criticLoss
-
-			previousCriticValueArray[i] = previousCriticValue
+			temporalDifferenceErrorVector[1][i] = -criticLoss -- We perform gradient descent here, so the critic loss is negated so that it can be used as temporal difference value.
 
 			CriticModel:backwardPropagate(criticLoss, true)
 

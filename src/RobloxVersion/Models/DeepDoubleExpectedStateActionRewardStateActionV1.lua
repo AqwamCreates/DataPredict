@@ -105,20 +105,20 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:saveModelParameters
 end
 
 function DeepDoubleExpectedStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(index)
-	
+
 	local Model = self.Model
 
-	if (not self.ModelParametersArray[1]) and (not self.ModelParametersArray[2]) then
+	local ModelParametersArray = self.ModelParametersArray
+
+	if (not ModelParametersArray[index]) then
 
 		Model:generateLayers()
 
-		self:saveModelParametersFromModelParametersArray(1)
-
-		self:saveModelParametersFromModelParametersArray(2)
+		self:saveModelParametersFromModelParametersArray(index)
 
 	end
 
-	local CurrentModelParameters = self.ModelParametersArray[index]
+	local CurrentModelParameters = ModelParametersArray[index]
 
 	Model:setModelParameters(CurrentModelParameters, true)
 

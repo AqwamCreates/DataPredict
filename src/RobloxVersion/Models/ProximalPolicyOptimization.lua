@@ -180,11 +180,11 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		ActorModel:setModelParameters(NewProximalPolicyOptimizationModel.OldActorModelParameters, true)
 
-		local oldPolicyActionVector = ActorModel:forwardPropagate(previousFeatureVector)
+		local oldPolicyActionMeanVector = ActorModel:forwardPropagate(previousFeatureVector)
 
 		NewProximalPolicyOptimizationModel.OldActorModelParameters = ActorModel:getModelParameters(true)
 
-		local oldPolicyActionProbabilityVector = calculateDiagonalGaussianProbability(oldPolicyActionVector, actionStandardDeviationVector, actionNoiseVector)
+		local oldPolicyActionProbabilityVector = calculateDiagonalGaussianProbability(oldPolicyActionMeanVector, actionStandardDeviationVector, actionNoiseVector)
 
 		local currentPolicyActionProbabilityVector = calculateDiagonalGaussianProbability(actionMeanVector, actionStandardDeviationVector, actionNoiseVector)
 

@@ -118,11 +118,13 @@ function SoftActorCriticModel.new(parameterDictionary)
 	
 	NewSoftActorCritic:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
+		local ActorModel = NewSoftActorCritic.ActorModel
+		
 		local CriticModel = NewSoftActorCritic.CriticModel
 
-		local previousActionVector = NewSoftActorCritic.ActorModel:forwardPropagate(previousFeatureVector, true)
+		local previousActionVector = ActorModel:forwardPropagate(previousFeatureVector, true)
 		
-		local currentActionVector = NewSoftActorCritic.ActorModel:forwardPropagate(currentFeatureVector, true)
+		local currentActionVector = ActorModel:forwardPropagate(currentFeatureVector, true)
 
 		local previousActionProbabilityVector = calculateProbability(previousActionVector)
 		

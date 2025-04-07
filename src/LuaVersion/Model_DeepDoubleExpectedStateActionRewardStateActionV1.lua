@@ -28,37 +28,35 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
+local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
 
-DeepDoubleExpectedStateActionRewardStateActionModel = {}
+DeepDoubleStateActionRewardStateActionModel = {}
 
-DeepDoubleExpectedStateActionRewardStateActionModel.__index = DeepDoubleExpectedStateActionRewardStateActionModel
+DeepDoubleStateActionRewardStateActionModel.__index = DeepDoubleStateActionRewardStateActionModel
 
-setmetatable(DeepDoubleExpectedStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
-
-local defaultEpsilon = 0.5
+setmetatable(DeepDoubleStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
 
 local defaultLambda = 0
 
-function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictionary)
-
-	local NewDeepDoubleExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(parameterDictionary)
+function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	
-	setmetatable(NewDeepDoubleExpectedStateActionRewardStateActionModel, DeepDoubleExpectedStateActionRewardStateActionModel)
+	parameterDictionary = parameterDictionary or {}
+
+	local NewDeepDoubleStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(parameterDictionary)
+
+	setmetatable(NewDeepDoubleStateActionRewardStateActionModel, DeepDoubleStateActionRewardStateActionModel)
 	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setName("DeepExpectedStateActionRewardStateActionV1")
+	NewDeepDoubleStateActionRewardStateActionModel:setName("DeepDoubleStateActionRewardStateActionV1")
 
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
+	NewDeepDoubleStateActionRewardStateActionModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
 	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewDeepDoubleStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
 
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
+	NewDeepDoubleStateActionRewardStateActionModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
 
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
-
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
-		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model
+		local Model = NewDeepDoubleStateActionRewardStateActionModel.Model
 
 		local randomProbability = math.random()
 
@@ -68,135 +66,95 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceErrorVector, temporalDifferenceError = NewDeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceErrorVector(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		local temporalDifferenceErrorVector = NewDeepDoubleStateActionRewardStateActionModel:generateTemporalDifferenceErrorVector(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 		
-		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
+		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
+		
+		NewDeepDoubleStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
 		Model:forwardPropagate(previousFeatureVector, true)
-
+		
 		Model:backwardPropagate(negatedTemporalDifferenceErrorVector, true)
 
-		NewDeepDoubleExpectedStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+		NewDeepDoubleStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		return temporalDifferenceError
+		return temporalDifferenceErrorVector
 
 	end)
 	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewDeepDoubleStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
-		
-	end)
-
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() 
-		
-		NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
+		NewDeepDoubleStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
 		
 	end)
 
-	return NewDeepDoubleExpectedStateActionRewardStateActionModel
+	NewDeepDoubleStateActionRewardStateActionModel:setResetFunction(function() 
+		
+		NewDeepDoubleStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
+		
+	end)
+
+	return NewDeepDoubleStateActionRewardStateActionModel
 
 end
 
-function DeepDoubleExpectedStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(index)
+function DeepDoubleStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(index)
 
 	self.ModelParametersArray[index] = self.Model:getModelParameters()
 
 end
 
-function DeepDoubleExpectedStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(index)
-	
+function DeepDoubleStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(index)
+
 	local Model = self.Model
 
-	if (not self.ModelParametersArray[1]) and (not self.ModelParametersArray[2]) then
+	local ModelParametersArray = self.ModelParametersArray
+
+	if (not ModelParametersArray[index]) then
 
 		Model:generateLayers()
 
-		self:saveModelParametersFromModelParametersArray(1)
-
-		self:saveModelParametersFromModelParametersArray(2)
+		self:saveModelParametersFromModelParametersArray(index)
 
 	end
 
-	local CurrentModelParameters = self.ModelParametersArray[index]
+	local CurrentModelParameters = ModelParametersArray[index]
 
 	Model:setModelParameters(CurrentModelParameters, true)
 
 end
 
-function DeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceErrorVector(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+function DeepDoubleStateActionRewardStateActionModel:generateTemporalDifferenceErrorVector(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 	
 	local Model = self.Model
 	
 	local discountFactor = self.discountFactor
 	
-	local epsilon = self.epsilon
-	
 	local lambda = self.lambda
-
-	local expectedQValue = 0
-
-	local numberOfGreedyActions = 0
-	
-	local ClassesList = Model:getClassesList()
-
-	local numberOfClasses = #ClassesList
-
-	local actionIndex = table.find(ClassesList, action)
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
-
+	
 	local previousVector = Model:forwardPropagate(previousFeatureVector)
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-	local targetVector = Model:forwardPropagate(currentFeatureVector)
+	local qVector = Model:forwardPropagate(currentFeatureVector)
 
-	local maxQValue = targetVector[1][actionIndex]
+	local discountedQVector = AqwamTensorLibrary:multiply(discountFactor, qVector, (1 - terminalStateValue))
 
-	for i = 1, numberOfClasses, 1 do
-
-		if (targetVector[1][i] ~= maxQValue) then continue end
-
-		numberOfGreedyActions = numberOfGreedyActions + 1
-
-	end
-
-	local nonGreedyActionProbability = epsilon / numberOfClasses
-
-	local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
-
-	for _, qValue in ipairs(targetVector[1]) do
-
-		if (qValue == maxQValue) then
-
-			expectedQValue = expectedQValue + (qValue * greedyActionProbability)
-
-		else
-
-			expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
-
-		end
-
-	end
-
-	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
+	local targetVector = AqwamTensorLibrary:add(rewardValue, discountedQVector)
 	
-	local lastValue = previousVector[1][actionIndex]
-
-	local temporalDifferenceError = targetValue - lastValue
-	
-	local outputDimensionSizeArray = {1, numberOfClasses}
-
-	local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
-	
-	temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
+	local temporalDifferenceErrorVector = AqwamTensorLibrary:subtract(targetVector, previousVector)
 	
 	if (lambda ~= 0) then
 
+		local ClassesList = Model:getClassesList()
+
+		local actionIndex = table.find(ClassesList, action)
+
 		local eligibilityTraceMatrix = self.eligibilityTraceMatrix
 
-		if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
+		if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor({1, #ClassesList}, 0) end
 
 		eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
 
@@ -208,11 +166,11 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDif
 
 	end
 
-	return temporalDifferenceErrorVector, temporalDifferenceError
+	return temporalDifferenceErrorVector
 
 end
 
-function DeepDoubleExpectedStateActionRewardStateActionModel:setModelParameters1(ModelParameters1, doNotDeepCopy)
+function DeepDoubleStateActionRewardStateActionModel:setModelParameters1(ModelParameters1, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
@@ -226,7 +184,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:setModelParameters1
 
 end
 
-function DeepDoubleExpectedStateActionRewardStateActionModel:setModelParameters2(ModelParameters2, doNotDeepCopy)
+function DeepDoubleStateActionRewardStateActionModel:setModelParameters2(ModelParameters2, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
@@ -240,7 +198,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:setModelParameters2
 
 end
 
-function DeepDoubleExpectedStateActionRewardStateActionModel:getModelParameters1(doNotDeepCopy)
+function DeepDoubleStateActionRewardStateActionModel:getModelParameters1(doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
@@ -254,7 +212,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:getModelParameters1
 
 end
 
-function DeepDoubleExpectedStateActionRewardStateActionModel:getModelParameters2(doNotDeepCopy)
+function DeepDoubleStateActionRewardStateActionModel:getModelParameters2(doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
@@ -268,4 +226,4 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:getModelParameters2
 
 end
 
-return DeepDoubleExpectedStateActionRewardStateActionModel
+return DeepDoubleStateActionRewardStateActionModel

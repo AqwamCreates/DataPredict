@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
+local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
 
 DeepDoubleStateActionRewardStateActionModel = {}
 
@@ -70,6 +70,8 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
 		
+		NewDeepDoubleStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+		
 		Model:forwardPropagate(previousFeatureVector, true)
 		
 		Model:backwardPropagate(negatedTemporalDifferenceErrorVector, true)
@@ -103,20 +105,20 @@ function DeepDoubleStateActionRewardStateActionModel:saveModelParametersFromMode
 end
 
 function DeepDoubleStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(index)
-	
+
 	local Model = self.Model
 
-	if (not self.ModelParametersArray[1]) and (not self.ModelParametersArray[2]) then
+	local ModelParametersArray = self.ModelParametersArray
+
+	if (not ModelParametersArray[index]) then
 
 		Model:generateLayers()
 
-		self:saveModelParametersFromModelParametersArray(1)
-
-		self:saveModelParametersFromModelParametersArray(2)
+		self:saveModelParametersFromModelParametersArray(index)
 
 	end
 
-	local CurrentModelParameters = self.ModelParametersArray[index]
+	local CurrentModelParameters = ModelParametersArray[index]
 
 	Model:setModelParameters(CurrentModelParameters, true)
 

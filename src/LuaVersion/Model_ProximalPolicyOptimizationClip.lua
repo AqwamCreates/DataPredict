@@ -252,7 +252,7 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		local upperClipRatioValue = 1 + clipRatio
 		
-		local ratioModifierFunction = function(ratioValue) -- This is for the gradient of Proximal Policy Optimization clipped loss.
+		local ratioValueModifierFunction = function(ratioValue) -- This is for the gradient of Proximal Policy Optimization clipped loss.
 
 			return ((ratioValue >= lowerClipRatioValue) and (ratioValue <= upperClipRatioValue) and ratioValue) or 0
 
@@ -260,7 +260,7 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		for h, featureVector in ipairs(featureVectorHistory) do
 
-			local ratioActionProbabilityVector = AqwamTensorLibrary:applyFunction(ratioModifierFunction, ratioActionProbabiltyVectorHistory[h])
+			local ratioActionProbabilityVector = AqwamTensorLibrary:applyFunction(ratioValueModifierFunction, ratioActionProbabiltyVectorHistory[h])
 
 			local advantageValue = advantageValueHistory[h]
 

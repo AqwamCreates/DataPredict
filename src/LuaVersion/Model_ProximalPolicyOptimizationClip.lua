@@ -262,9 +262,7 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 			local ratioActionProbabilityVector = AqwamTensorLibrary:applyFunction(ratioValueModifierFunction, ratioActionProbabiltyVectorHistory[h])
 
-			local advantageValue = advantageValueHistory[h]
-
-			local actorLossVector = AqwamTensorLibrary:multiply(advantageValue, ratioActionProbabilityVector)
+			local actorLossVector = AqwamTensorLibrary:multiply(advantageValueHistory[h], ratioActionProbabilityVector)
 
 			local criticLoss = criticValueHistory[h] - rewardToGoArray[h]
 

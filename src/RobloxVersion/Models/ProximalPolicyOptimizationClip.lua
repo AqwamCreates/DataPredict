@@ -126,14 +126,6 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 	local advantageValueHistory = {}
 
-	local clipFunction = function(value) 
-
-		local clipRatio = NewProximalPolicyOptimizationClipModel.clipRatio 
-
-		return math.clamp(value, 1 - clipRatio, 1 + clipRatio) 
-
-	end
-
 	NewProximalPolicyOptimizationClipModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
 		local ActorModel = NewProximalPolicyOptimizationClipModel.ActorModel
@@ -253,20 +245,26 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 		NewProximalPolicyOptimizationClipModel.OldActorModelParameters = NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters
 
 		ActorModel:setModelParameters(NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters, true)
+		
+		local clipRatio = NewProximalPolicyOptimizationClipModel.clipRatio 
+
+		local lowerClipRatioValue = 1 - clipRatio
+
+		local upperClipRatioValue = 1 + clipRatio
+		
+		local ratioModifierFunction = function(ratioValue) -- This is for the gradient of Proximal Policy Optimization clipped loss.
+
+			return ((ratioValue >= lowerClipRatioValue) and (ratioValue <= upperClipRatioValue) and ratioValue) or 0
+
+		end
 
 		for h, featureVector in ipairs(featureVectorHistory) do
 
-			local ratioActionProbabilityVector = ratioActionProbabiltyVectorHistory[h]
+			local ratioActionProbabilityVector = AqwamTensorLibrary:applyFunction(ratioModifierFunction, ratioActionProbabiltyVectorHistory[h])
 
 			local advantageValue = advantageValueHistory[h]
 
-			local actorLossVectorPart1 = AqwamTensorLibrary:multiply(ratioActionProbabilityVector, advantageValue)
-
-			local clippedRatioVector = AqwamTensorLibrary:applyFunction(clipFunction, ratioActionProbabilityVector)
-
-			local actorLossVectorPart2 = AqwamTensorLibrary:multiply(clippedRatioVector, advantageValue)
-
-			local actorLossVector = AqwamTensorLibrary:applyFunction(math.min, actorLossVectorPart1, actorLossVectorPart2)
+			local actorLossVector = AqwamTensorLibrary:multiply(advantageValue, ratioActionProbabilityVector)
 
 			local criticLoss = criticValueHistory[h] - rewardToGoArray[h]
 

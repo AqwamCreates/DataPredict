@@ -34,9 +34,9 @@ StepDecayValueScheduler.__index = StepDecayValueScheduler
 
 setmetatable(StepDecayValueScheduler, BaseValueScheduler)
 
-local defaultDecayRate = 0.5
-
 local defaultTimeStepToDecay = 100
+
+local defaultDecayRate = 0.5
 
 function StepDecayValueScheduler.new(parameterDictionary)
 	
@@ -47,10 +47,10 @@ function StepDecayValueScheduler.new(parameterDictionary)
 	setmetatable(NewStepDecayValueScheduler, StepDecayValueScheduler)
 	
 	NewStepDecayValueScheduler:setName("StepDecay")
+
+	NewStepDecayValueScheduler.timeStepToDecay = parameterDictionary.timeStepToDecay or defaultTimeStepToDecay
 	
 	NewStepDecayValueScheduler.decayRate = parameterDictionary.decayRate or defaultDecayRate
-	
-	NewStepDecayValueScheduler.timeStepToDecay = parameterDictionary.timeStepToDecay or defaultTimeStepToDecay
 	
 	--------------------------------------------------------------------------------
 	

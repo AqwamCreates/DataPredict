@@ -7,14 +7,14 @@
 Creates a new optimizer object. If there are no parameters given for that particular argument, then that argument will use default value.
 
 ```
-StepDecay.new(decayRate: number, timeStepToDecay: integer): ValueSchedulerObject
+StepDecay.new(timeStepToDecay: integer, decayRate: number): ValueSchedulerObject
 ```
 
 #### Parameters:
 
-* decayRate: The decay rate for value.
-
 * timeStepToDecay: The number of time steps to decay the value.
+
+* decayRate: The decay rate for value.
 
 #### Returns:
 

@@ -26,72 +26,64 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
-
 local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
-LearningRateStepDecayOptimizer = {}
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-LearningRateStepDecayOptimizer.__index = LearningRateStepDecayOptimizer
+LearningRateTimeDecayOptimizer = {}
 
-setmetatable(LearningRateStepDecayOptimizer, BaseOptimizer)
+LearningRateTimeDecayOptimizer.__index = LearningRateTimeDecayOptimizer
+
+setmetatable(LearningRateTimeDecayOptimizer, BaseOptimizer)
 
 local defaultDecayRate = 0.5
 
-local defaultTimeStepToDecay = 100
-
-function LearningRateStepDecayOptimizer.new(parameterDictionary)
+function LearningRateTimeDecayOptimizer.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewLearningRateStepDecayOptimizer = BaseOptimizer.new(parameterDictionary)
+	local NewLearningRateTimeDecayOptimizer = BaseOptimizer.new(parameterDictionary)
 	
-	setmetatable(NewLearningRateStepDecayOptimizer, LearningRateStepDecayOptimizer)
+	setmetatable(NewLearningRateTimeDecayOptimizer, LearningRateTimeDecayOptimizer)
 	
-	NewLearningRateStepDecayOptimizer:setName("LearningRateStepDecay")
+	NewLearningRateTimeDecayOptimizer:setName("LearningRateDecay")
 	
-	NewLearningRateStepDecayOptimizer.decayRate = parameterDictionary.decayRate or defaultDecayRate
-	
-	NewLearningRateStepDecayOptimizer.timeStepToDecay = parameterDictionary.timeStepToDecay or defaultTimeStepToDecay
+	NewLearningRateTimeDecayOptimizer.decayRate = parameterDictionary.decayRate or defaultDecayRate
 	
 	--------------------------------------------------------------------------------
 	
-	NewLearningRateStepDecayOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
+	NewLearningRateTimeDecayOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
 		
-		local currentLearningRate = NewLearningRateStepDecayOptimizer.optimizerInternalParameterArray[1] or learningRate
-		
-		local currentTimeStep = NewLearningRateStepDecayOptimizer.optimizerInternalParameterArray[2] or 0
+		local currentLearningRate = NewLearningRateTimeDecayOptimizer.optimizerInternalParameterArray[1] or learningRate
+
+		local currentTimeStep = NewLearningRateTimeDecayOptimizer.optimizerInternalParameterArray[2] or 0
 
 		currentTimeStep += 1
-		
-		if ((currentTimeStep % NewLearningRateStepDecayOptimizer.timeStepToDecay) == 0) then
 			
-			currentLearningRate *= NewLearningRateStepDecayOptimizer.decayRate
-			
-		end
+		currentLearningRate = currentLearningRate / (NewLearningRateTimeDecayOptimizer.decayRate * currentTimeStep)
 		
 		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(currentLearningRate, costFunctionDerivativeTensor)
 		
-		NewLearningRateStepDecayOptimizer.optimizerInternalParameterArray = {currentLearningRate, currentTimeStep}
+		NewLearningRateTimeDecayOptimizer.optimizerInternalParameterArray = {currentLearningRate, currentTimeStep}
 
 		return costFunctionDerivativeTensor
 		
 	end)
 	
-	return NewLearningRateStepDecayOptimizer
+	return NewLearningRateTimeDecayOptimizer
 	
 end
 
-function LearningRateStepDecayOptimizer:setDecayRate(decayRate)
+function LearningRateTimeDecayOptimizer:setDecayRate(decayRate)
 	
 	self.decayRate = decayRate
 	
 end
 
-function LearningRateStepDecayOptimizer:setTimeStepToDecay(timeStepToDecay)
+function LearningRateTimeDecayOptimizer:setTimeStepToDecay(timeStepToDecay)
 	
 	self.timeStepToDecay = timeStepToDecay
 	
 end
 
-return LearningRateStepDecayOptimizer
+return LearningRateTimeDecayOptimizer

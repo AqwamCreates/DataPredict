@@ -34,9 +34,9 @@ MeanShift.new(maximumNumberOfIterations: integer, bandwidth: number, distanceFun
 
 * kernelFunction: The function used to kernelize the distance between the data points and the centroids. Available options are:
 
- * Gaussian (Default)
+  * Gaussian (Default)
 
- * Linear
+  * Linear
 
 #### Returns:
 
@@ -70,9 +70,9 @@ MeanShift:setParameters(maximumNumberOfIterations: integer, bandwidth: number, d
 
 * kernelFunction: The function used to kernelize the distance between the data points and the centroids. Available options are:
 
- * Gaussian (Default)
+  * Gaussian (Default)
 
- * Linear
+  * Linear
 
 ### train()
 

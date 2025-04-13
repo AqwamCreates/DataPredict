@@ -38,8 +38,6 @@ setmetatable(LearningRateTimeDecayOptimizer, BaseOptimizer)
 
 local defaultDecayRate = 0.5
 
-local defaultTimeStepToDecay = 100
-
 function LearningRateTimeDecayOptimizer.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -51,8 +49,6 @@ function LearningRateTimeDecayOptimizer.new(parameterDictionary)
 	NewLearningRateTimeDecayOptimizer:setName("LearningRateDecay")
 	
 	NewLearningRateTimeDecayOptimizer.decayRate = parameterDictionary.decayRate or defaultDecayRate
-	
-	NewLearningRateTimeDecayOptimizer.timeStepToDecay = parameterDictionary.timeStepToDecay or defaultTimeStepToDecay
 	
 	--------------------------------------------------------------------------------
 	

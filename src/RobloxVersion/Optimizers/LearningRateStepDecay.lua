@@ -36,9 +36,9 @@ LearningRateStepDecayOptimizer.__index = LearningRateStepDecayOptimizer
 
 setmetatable(LearningRateStepDecayOptimizer, BaseOptimizer)
 
-local defaultDecayRate = 0.5
-
 local defaultTimeStepToDecay = 100
+
+local defaultDecayRate = 0.5
 
 function LearningRateStepDecayOptimizer.new(parameterDictionary)
 	
@@ -50,9 +50,9 @@ function LearningRateStepDecayOptimizer.new(parameterDictionary)
 	
 	NewLearningRateStepDecayOptimizer:setName("LearningRateStepDecay")
 	
-	NewLearningRateStepDecayOptimizer.decayRate = parameterDictionary.decayRate or defaultDecayRate
-	
 	NewLearningRateStepDecayOptimizer.timeStepToDecay = parameterDictionary.timeStepToDecay or defaultTimeStepToDecay
+	
+	NewLearningRateStepDecayOptimizer.decayRate = parameterDictionary.decayRate or defaultDecayRate
 	
 	--------------------------------------------------------------------------------
 	

@@ -62,7 +62,7 @@ BaseOptimizer:setLearningRateScheduler(LearningRateValueScheduler: ValueSchedule
 
 #### Parameters:
 
-# LearningRateValueScheduler: The value scheduler object to be used by the learning rate.
+* LearningRateValueScheduler: The value scheduler object to be used by the learning rate.
 
 ### getLearningRateValueScheduler()
 

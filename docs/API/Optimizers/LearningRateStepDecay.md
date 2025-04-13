@@ -12,9 +12,9 @@ LearningRateStepDecay.new(decayRate: number, timeStepToDecay: integer): Optimize
 
 #### Parameters:
 
-* decayRate: The decay rate for learning rate.
-
 * timeStepToDecay: The number of time steps to decay the learning rate.
+
+* decayRate: The decay rate for learning rate.
 
 #### Returns:
 

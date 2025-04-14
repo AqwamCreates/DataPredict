@@ -134,7 +134,7 @@ function BaseModel:initializeMatrixBasedOnMode(dimensionSizeArray, dimensionSize
 
 		return AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
 
-	elseif (initializationMode == "Random") then
+	elseif (initializationMode == "RandomUniform") then
 
 		return AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray, self.minimumModelParametersInitializationValue, self.maximumModelParametersInitializationValue)
 

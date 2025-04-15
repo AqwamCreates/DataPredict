@@ -10,6 +10,8 @@ By using or possessing any copies of this library or its assets (including the i
 
 * Plus some more stuff...
 
+* Once you pass the commercial use threshold and want to license it, expect to pay for 0.5% to 2% of your project's generated revenue, provided that it uses this library.
+
 For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms and Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 
 ![DataPredictIconSmall](https://github.com/AqwamCreates/DataPredict/assets/67371914/1122cce4-747b-4054-88f0-2685414b0d73)

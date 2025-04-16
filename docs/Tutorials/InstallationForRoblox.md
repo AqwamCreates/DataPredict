@@ -4,10 +4,10 @@ In this library, we can customize many of our models, optimizers and others to f
 
 To start, we must first link our machine/deep learning library with our matrix library. However, you must use "Aqwam's Matrix Library" as every calculations made by our models are based on that matrix library.
 
-| Version  | Machine And Deep Learning Library (DataPredict)                                                                                                           | 2D Tensor Library (TensorL-2D)                                                                      |
-|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
-| Release  | [DataPredict (Release Version 2.2)](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.2.rbxm)  |                                                                                                     |
-| Unstable | [Aqwam's Machine And Deep Learning Library](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/AqwamMachineAndDeepLearningLibrary.rbxm) | [Aqwam's 2D Tensor Library](https://github.com/AqwamCreates/TensorL-2D/blob/main/src/TensorL2D.lua) |
+| Version | Machine And Deep Learning Library (DataPredict)                                                                                                           | 2D Tensor Library (TensorL-2D)                                                                      |
+|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| Release | [DataPredict (Release Version 2.2)](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.2.rbxm)  |                                                                                                     |
+| Bata    | [Aqwam's Machine And Deep Learning Library](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/AqwamMachineAndDeepLearningLibrary.rbxm) | [Aqwam's 2D Tensor Library](https://github.com/AqwamCreates/TensorL-2D/blob/main/src/TensorL2D.lua) |
 
 You can read the Terms And Conditions for the TensorL2D Library [here](https://github.com/AqwamCreates/TensorL-2D/blob/main/docs/TermsAndConditions.md).
 

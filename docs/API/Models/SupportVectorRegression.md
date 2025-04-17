@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - SupportVectorRegression
 
-SupportVectorRegression is a supervised machine learning model that predicts values of -1 and 1 only.
+SupportVectorRegression is a supervised machine learning model that predicts values from given inputs.
 
 ## Stored Model Parameters
 

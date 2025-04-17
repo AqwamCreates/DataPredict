@@ -24,7 +24,7 @@ SupportVectorRegression.new(maximumNumberOfIterations: integer, cValue: number, 
 
 * cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
 
-* epsilon: How far the datapoint should be so that it does not contribute to the error calculation. Higher the value the further the datapoint can be so that it does not contribute to the error calculations.
+* epsilon: How far the datapoint should be so that it does not contribute to the error calculation. Higher the value, the further the datapoint can be so that it does not contribute to the error calculations.
 
 * kernelFunction: The kernel function to be used to train the model. Available options are:
   
@@ -60,7 +60,7 @@ SupportVectorRegression:setParameters(maximumNumberOfIterations: integer, cValue
 
 * cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
 
-* epsilon: How far the datapoint should be so that it does not contribute to the error calculation. Higher the value the further the datapoint can be so that it does not contribute to the error calculations.
+* epsilon: How far the datapoint should be so that it does not contribute to the error calculation. Higher the value, the further the datapoint can be so that it does not contribute to the error calculations.
 
 * kernelFunction: The kernel function to be used to train the model. Available options are:
   

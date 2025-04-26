@@ -10,16 +10,16 @@
 
 ## Classification
 
-| Model                                                                                                            | Alternate Names        | Use Cases                                                                   |
-|------------------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------|
-| [KNearestNeighbours](Models/KNearestNeighbours.md)                                                               | KNN                    | Item Recommendation, Similar Player Matchmaking                             |
-| [LogisticRegression](Models/LogisticRegression.md)                                                               | Perceptron             | Purchase Likelihood Estimation, Player Confidence Prediction                |
-| [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | SVM                    | Hacking Detection, Anomaly Detection                                        |
-| [GaussianNaiveBayes](Models/GaussianNaiveBayes.md)                                                               | None                   | Text Classification                                                         |
-| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md)                                                         | None                   | Text Classification                                                         |
-| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)                                                             | None                   | Text Classification                                                         |
-| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)                                                           | None                   | Text Classification With Imbalanced Classes Count                           |
-| [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                |
+| Model                                                                                                            | Alternate Names        | Use Cases                                                                                 |
+|------------------------------------------------------------------------------------------------------------------|------------------------|-------------------------------------------------------------------------------------------|
+| [KNearestNeighbours](Models/KNearestNeighbours.md)                                                               | KNN                    | Item Recommendation, Similar Player Matchmaking                                           |
+| [LogisticRegression](Models/LogisticRegression.md)                                                               | Perceptron             | Purchase Likelihood Estimation, Player Confidence Prediction                              |
+| [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | SVM                    | Hacking Detection, Anomaly Detection                                                      |
+| [GaussianNaiveBayes](Models/GaussianNaiveBayes.md)                                                               | None                   | Player Behavior Categorization (e.g., Cautious Vs. Aggressive), Fast State Classification |
+| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md)                                                         | None                   | Inventory Action Prediction, Strategy Profiling Based on Item Usage                       |
+| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)                                                             | None                   | Binary Action Prediction (e.g., Jump Or Not), Quick Decision Filters                      |
+| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)                                                           | None                   | Imbalanced Decision Prediction (e.g., Rare Choices, Niche Paths)                          |
+| [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                              |
 
 ## Clustering
 

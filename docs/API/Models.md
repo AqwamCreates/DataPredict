@@ -2,10 +2,10 @@
 
 ## Regression
 
-| Model                                                                                       | Alternate Names | Use Cases                                     |
-|---------------------------------------------------------------------------------------------|-----------------|-----------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md)                                              | None            | Price Prediction, Time To Level Up Prediction |
-| [NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended)                | None            | Same As Above                                 |
+| Model                                                                                      | Alternate Names | Use Cases                                     |
+|--------------------------------------------------------------------------------------------|-----------------|-----------------------------------------------|
+| [LinearRegression](Models/LinearRegression.md)                                             | None            | Price Prediction, Time To Level Up Prediction |
+| [NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended)               | None            | Same As Above                                 |
 | [SupportVectorRegression](Models/SupportVectorRegression.md) (May Need Further Refinement) | SVR             | Same As Above                                 |
 
 ## Classification

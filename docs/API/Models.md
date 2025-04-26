@@ -26,7 +26,7 @@
 | Model                                                                                                                  | Alternate Names | Use Cases                                                            |
 |------------------------------------------------------------------------------------------------------------------------|-----------------|----------------------------------------------------------------------|
 | [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | None            | Player Grouping                                                      |
-| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | Similarity Grouping                                                  |
+| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | Enemy Difficulty Generation                                          |
 | [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | Density Grouping                                                     |
 | [MeanShift](Models/MeanShift.md)                                                                                       | None            | Boss Spawn Location Searct Based On Player Locations                 |
 | [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | Hacking Detection, Anomaly Detection                                 |

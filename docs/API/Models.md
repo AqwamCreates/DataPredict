@@ -12,8 +12,8 @@
 
 | Model                                                                                                            | Alternate Names        | Use Cases                                                                   |
 |------------------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------|
-| [KNearestNeighbours](Models/KNearestNeighbours.md)                                                               | KNN                    | Recommendation System                                                       |
-| [LogisticRegression](Models/LogisticRegression.md)                                                               | Perceptron             | Sales Prediction, Confidence Prediction                                     |
+| [KNearestNeighbours](Models/KNearestNeighbours.md)                                                               | KNN                    | Item Recommendation, Similar Player Matchmaking                             |
+| [LogisticRegression](Models/LogisticRegression.md)                                                               | Perceptron             | Purchase Likelihood Estimation, Player Confidence Prediction                |
 | [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | SVM                    | Hacking Detection, Anomaly Detection                                        |
 | [GaussianNaiveBayes](Models/GaussianNaiveBayes.md)                                                               | None                   | Text Classification                                                         |
 | [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md)                                                         | None                   | Text Classification                                                         |
@@ -23,15 +23,15 @@
 
 ## Clustering
 
-| Model                                                                                                                  | Alternate Names | Use Cases                             |
-|------------------------------------------------------------------------------------------------------------------------|-----------------|---------------------------------------|
-| [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | None            | Player Grouping                       |
-| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | Similarity Grouping                   |
-| [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | Density Grouping                      |
-| [MeanShift](Models/MeanShift.md)                                                                                       | None            | Center Of Data Search                 |
-| [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | Hacking Detection, Anomaly Detection  |
-| [KMeans](Models/KMeans.md)                                                                                             | None            | Market Segmentation, General Grouping |
-| [KMedoids](Models/KMedoids.md)                                                                                         | None            | Same as K-Means                       |
+| Model                                                                                                                  | Alternate Names | Use Cases                                                            |
+|------------------------------------------------------------------------------------------------------------------------|-----------------|----------------------------------------------------------------------|
+| [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | None            | Player Grouping                                                      |
+| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | Similarity Grouping                                                  |
+| [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | Density Grouping                                                     |
+| [MeanShift](Models/MeanShift.md)                                                                                       | None            | Boss Spawn Location Searct Based On Player Locations                 |
+| [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | Hacking Detection, Anomaly Detection                                 |
+| [KMeans](Models/KMeans.md)                                                                                             | None            | Maximizing Area-of-Effect Abilities, Predictive Target Grouping      |
+| [KMedoids](Models/KMedoids.md)                                                                                         | None            | Player Grouping Based On Player Locations With Leader Identification |
 
 ## Deep Reinforcement Learning
 

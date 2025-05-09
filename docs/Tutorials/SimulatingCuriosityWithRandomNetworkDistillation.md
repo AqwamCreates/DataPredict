@@ -20,7 +20,7 @@ local NeuralNetwork = DataPredict.Models.NeuralNetwork.new()
 
 NeuralNetwork:addLayer(10, true, "None")
 
-NeuralNetwork:addLayer(1, true, "LeakyReLU")
+NeuralNetwork:addLayer(1, false, "LeakyReLU")
 
 -- Initializing our RandomNetworkDistillation.
 

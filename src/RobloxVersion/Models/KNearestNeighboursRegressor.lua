@@ -287,6 +287,8 @@ function KNearestNeighboursRegressor.new(parameterDictionary)
 	local NewKNearestNeighboursRegressor = BaseModel.new(parameterDictionary)
 
 	setmetatable(NewKNearestNeighboursRegressor, KNearestNeighboursRegressor)
+	
+	NewKNearestNeighboursRegressor:setName("KNearestNeighboursRegressor")
 
 	NewKNearestNeighboursRegressor.kValue = parameterDictionary.kValue or defaultKValue
 

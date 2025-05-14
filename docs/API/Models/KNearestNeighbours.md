@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - KNearestNeighbours (KNN)
+# [API Reference](../../API.md) - [Models](../Models.md) - KNearestNeighboursClassifier (KNN-C)
 
 ## Stored Model Parameters
 
@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-KNearestNeighbours.new(kValue: integer, distanceFunction: string): ModelObject
+KNearestNeighboursClassifier.new(kValue: integer, distanceFunction: string, use, useWeightedDistance: boolean): ModelObject
 ```
 
 #### Parameters:
@@ -30,6 +30,8 @@ KNearestNeighbours.new(kValue: integer, distanceFunction: string): ModelObject
 
   * Cosine
 
+* useWeightedDistance: Set whether or not to use distance as a factor for prediction.
+
 #### Returns:
 
 * ModelObject: The generated model object.
@@ -41,7 +43,7 @@ KNearestNeighbours.new(kValue: integer, distanceFunction: string): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-KNearestNeighbours:setParameters(kValue: integer, distanceFunction: string)
+KNearestNeighboursClassifier:setParameters(kValue: integer, distanceFunction: string, useWeightedDistance: boolean)
 ```
 
 #### Parameters:
@@ -61,7 +63,7 @@ KNearestNeighbours:setParameters(kValue: integer, distanceFunction: string)
 Train the model.
 
 ```
-KNearestNeighbours:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+KNearestNeighboursClassifier:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 
 #### Parameters:
@@ -79,7 +81,7 @@ KNearestNeighbours:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 Predict the values for given data.
 
 ```
-KNearestNeighbours:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+KNearestNeighboursClassifier:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters
@@ -100,4 +102,4 @@ KNearestNeighbours:predict(featureMatrix: Matrix, returnOriginalOutput: boolean)
 
 ## Inherited From
 
-* [IterativeMethodBaseModel](IterativeMethodBaseModel.md)
+* [BaseModel](BaseModel.md)

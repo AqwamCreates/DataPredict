@@ -24,13 +24,15 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	
 	SupportVectorRegression = require(Models.SupportVectorRegression),
 	
+	KNearestNeighboursRegressor = require(Models.KNearestNeighboursRegressor),
+	
 	LogisticRegression = require(Models.LogisticRegression),
 	
 	NeuralNetwork = require(Models.NeuralNetwork),
 	
 	SupportVectorMachine = require(Models.SupportVectorMachine),
 	
-	KNearestNeighbours = require(Models.KNearestNeighbours),
+	KNearestNeighboursClassifier = require(Models.KNearestNeighboursClassifier),
 	
 	GaussianNaiveBayes = require(Models.GaussianNaiveBayes),
 	

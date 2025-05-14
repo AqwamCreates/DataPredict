@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - KNearestNeighboursClassifier (KNN-C)
+# [API Reference](../../API.md) - [Models](../Models.md) - KNearestNeighboursRegressor (KNN-R)
 
 ## Stored Model Parameters
 
@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-KNearestNeighboursClassifier.new(kValue: integer, distanceFunction: string, use, useWeightedDistance: boolean): ModelObject
+KNearestNeighboursRegressor.new(kValue: integer, distanceFunction: string, use, useWeightedDistance: boolean): ModelObject
 ```
 
 #### Parameters:
@@ -43,7 +43,7 @@ KNearestNeighboursClassifier.new(kValue: integer, distanceFunction: string, use,
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-KNearestNeighboursClassifier:setParameters(kValue: integer, distanceFunction: string, useWeightedDistance: boolean)
+KNearestNeighboursRegressor:setParameters(kValue: integer, distanceFunction: string, useWeightedDistance: boolean)
 ```
 
 #### Parameters:
@@ -63,7 +63,7 @@ KNearestNeighboursClassifier:setParameters(kValue: integer, distanceFunction: st
 Train the model.
 
 ```
-KNearestNeighboursClassifier:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+KNearestNeighboursRegressor:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 
 #### Parameters:
@@ -81,7 +81,7 @@ KNearestNeighboursClassifier:train(featureMatrix: Matrix, labelVector: Matrix): 
 Predict the values for given data.
 
 ```
-KNearestNeighboursClassifier:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+KNearestNeighboursRegressor:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters

@@ -7,12 +7,13 @@
 | [LinearRegression](Models/LinearRegression.md)                                             | None            | Price Prediction, Time To Level Up Prediction |
 | [NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended)               | None            | Same As Above                                 |
 | [SupportVectorRegression](Models/SupportVectorRegression.md) (May Need Further Refinement) | SVR             | Same As Above                                 |
+| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | Same As Above                                 |
 
 ## Classification
 
 | Model                                                                                                            | Alternate Names        | Use Cases                                                                                 |
 |------------------------------------------------------------------------------------------------------------------|------------------------|-------------------------------------------------------------------------------------------|
-| [KNearestNeighbours](Models/KNearestNeighbours.md)                                                               | KNN                    | Item Recommendation, Similar Player Matchmaking                                           |
+| [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)                                           | KNN-C                  | Item Recommendation, Similar Player Matchmaking                                           |
 | [LogisticRegression](Models/LogisticRegression.md)                                                               | Perceptron             | Purchase Likelihood Estimation, Player Confidence Prediction                              |
 | [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | SVM                    | Hacking Detection, Anomaly Detection                                                      |
 | [GaussianNaiveBayes](Models/GaussianNaiveBayes.md)                                                               | None                   | Player Behavior Categorization (e.g., Cautious Vs. Aggressive), Fast State Classification |

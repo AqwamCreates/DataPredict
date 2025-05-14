@@ -90,7 +90,7 @@ The individual responsible for the false accusation or defamation will be requir
 
 * Bounty Restrictions: Any reward for reporting a violation is contingent upon the truthfulness and validity of the accusation. If the report is determined to be false or misleading, the individual will forfeit any claim to the reward and may be legally liable for any damages caused by the false claim.
 
-## Summary Of Key Points
+## Summary
 
 * Maximum reward: Up to 50% of the value of the violating company/group.
 

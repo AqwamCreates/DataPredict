@@ -300,7 +300,7 @@ end
 
 function KNearestNeighboursRegressor:train(featureMatrix, labelVector)
 
-	if (#featureMatrix ~= #labelVector) then error("The number of data in feature matrix and the label vector are not the same!") end
+	if (#featureMatrix ~= #labelVector) then error("The number of data in feature matrix and the label vector are not the same.") end
 
 	local ModelParameters = self.ModelParameters
 

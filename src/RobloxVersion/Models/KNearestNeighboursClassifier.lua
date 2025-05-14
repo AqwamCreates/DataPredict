@@ -296,6 +296,8 @@ function KNearestNeighboursClassifier.new(parameterDictionary)
 	local NewKNearestNeighboursClassifier = BaseModel.new(parameterDictionary)
 
 	setmetatable(NewKNearestNeighboursClassifier, KNearestNeighboursClassifier)
+	
+	NewKNearestNeighboursClassifier:setName("KNearestNeighboursClassifier")
 
 	NewKNearestNeighboursClassifier.kValue = parameterDictionary.kValue or defaultKValue
 

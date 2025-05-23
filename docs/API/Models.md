@@ -29,7 +29,7 @@
 | [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | None            | Player Grouping                                                      |
 | [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | Enemy Difficulty Generation                                          |
 | [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | Density Grouping                                                     |
-| [MeanShift](Models/MeanShift.md)                                                                                       | None            | Boss Spawn Location Searct Based On Player Locations                 |
+| [MeanShift](Models/MeanShift.md)                                                                                       | None            | Boss Spawn Location Search Based On Player Locations                 |
 | [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | Hacking Detection, Anomaly Detection                                 |
 | [KMeans](Models/KMeans.md)                                                                                             | None            | Maximizing Area-of-Effect Abilities, Predictive Target Grouping      |
 | [KMedoids](Models/KMedoids.md)                                                                                         | None            | Player Grouping Based On Player Locations With Leader Identification |

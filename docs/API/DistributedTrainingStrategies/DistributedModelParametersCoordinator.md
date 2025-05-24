@@ -100,7 +100,15 @@ DistributedModelParametersCoordinator:start(): coroutine
 
 * modelParameterChangeCoroutine: A coroutine that handles the modification of the model parameters.
 
-#### reset()
+### stop()
+
+Stops the threads for real-time gradient descent / ascent.
+
+```
+DistributedModelParametersCoordinator:stop()
+```
+
+### reset()
 
 Reset the main model's stored values (excluding the parameters).
 

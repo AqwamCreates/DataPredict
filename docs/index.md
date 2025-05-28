@@ -10,7 +10,9 @@ By using or possessing any copies of this library or its assets (including the i
 
 * Plus some more stuff...
 
-Once you pass the commercial use threshold and want to license it, expect to pay for 2% of your project's generated revenue, provided that it uses this library. This library and its documentation took 4000+ hours to build by a solo developer, which is equivalent to 200K+ USD in monetary value.
+Once you pass the commercial use threshold and want to license it, expect to pay for 2% of your project's generated revenue, provided that it uses this library. 
+
+This library and its documentation took 4000+ hours to build by a solo developer, which is equivalent to 200K+ USD in monetary value.
 
 For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 

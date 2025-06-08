@@ -61,7 +61,7 @@ User shall not:
 
 * Use the Library in any manner that violates any applicable laws or regulations.
 
-* Should the User violates the prohibited actions as stated above, the User must pay monetary compensation. No other forms of compensation will be accepted.
+Should the User violates the prohibited actions as stated above, the User must pay monetary compensation. No other forms of compensation will be accepted.
 
 ## Liability
 

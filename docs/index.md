@@ -12,7 +12,7 @@ By using or possessing any copies of this library or its assets (including the i
 
 Once you pass the commercial use threshold and want to license it, expect to pay for 2% of your project's generated revenue, provided that it uses this library.
 
-This library was developed solo over more than 2 years (4000+ hours), which would exceed $200,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build all the models in this library. To all indie devs who just starting their business, feel free to use it without burning away your money!
+This library was developed solo over more than 2 years (4000+ hours), which would exceed $200,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build and test all the models in this library. To all indie devs who just starting their business, feel free to use it without burning away your money!
 
 For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 

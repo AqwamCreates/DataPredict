@@ -10,7 +10,7 @@ By using or possessing any copies of this library or its assets (including the i
 
 * Plus some more stuff...
 
-Once you pass the commercial use threshold and want to license it, expect to pay for 2% of your project's generated revenue, provided that it uses this library. 
+Once you pass the commercial use threshold and want to license it, expect to pay for 2% of your project's generated revenue, provided that it uses this library. Additionally, it requires near PhD-level knowledge to build all the models in this library.
 
 This library was developed solo over more than 2 years (4000+ hours), which would exceed $200,000 USD in industry costs.
 

@@ -110,7 +110,7 @@ SupportVectorRegression:train(featureMatrix: Matrix, labelVector: Matrix): numbe
 Predict the values for given data.
 
 ```
-SupportVectorRegression:predict(featureMatrix: Matrix, returnOriginalOutput): Matrix -OR- Matrix
+SupportVectorRegression:predict(featureMatrix: Matrix): Matrix
 ```
 
 #### Parameters:
@@ -120,10 +120,6 @@ SupportVectorRegression:predict(featureMatrix: Matrix, returnOriginalOutput): Ma
 #### Returns:
 
 * predictedVector: A vector that is predicted by the model.
-
--OR-
-
-* originalPredictedVector: A vector that contains the original predicted values.
 
 ## Inherited From
 

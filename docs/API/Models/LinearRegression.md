@@ -65,12 +65,12 @@ LinearRegression:setOptimizer(Optimizer: OptimizerObject)
 Set a regularization for the model by inputting the optimizer object.
 
 ```
-LinearRegression:setRegularization(Regularization: RegularizationObject)
+LinearRegression:setRegularizer(Regularizer: RegularizerObject)
 ```
 
 #### Parameters:
 
-* Regularization: The regularization to be used.
+* setRegularizer: The regularizer to be used.
 
 ### train()
 

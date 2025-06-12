@@ -22,7 +22,7 @@ LogisticRegression.new(maximumNumberOfIterations: integer, learningRate: number,
 
 * maximumNumberOfIterations: How many times should the model needed to be trained.
 
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+* learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
 * sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "Sigmoid".
 

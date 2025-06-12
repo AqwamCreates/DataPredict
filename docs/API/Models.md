@@ -19,7 +19,7 @@
 | [GaussianNaiveBayes](Models/GaussianNaiveBayes.md)                                                               | None                   | Player Behavior Categorization (e.g., Cautious Vs. Aggressive), Fast State Classification |
 | [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md)                                                         | None                   | Inventory Action Prediction, Strategy Profiling Based on Item Usage                       |
 | [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)                                                             | None                   | Binary Action Prediction (e.g., Jump Or Not), Quick Decision Filters                      |
-| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)                                                           | None                   | Imbalanced Decision Prediction (e.g., Rare Choices, Niche Paths)                          |
+| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)                                                           | None                   | Imbalanced Class Prediction (e.g., Rare Choices, Niche Paths)                             |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                              |
 
 ## Clustering

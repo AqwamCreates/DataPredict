@@ -24,24 +24,6 @@ DeepDoubleStateActionRewardStateAction.new(averagingRate: number, lambda: number
 
 * ModelObject: The generated model object.
 
-## Functions
-
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-DeepDoubleStateActionRewardStateAction:setParameters(averagingRate: number, lambda: number, discountFactor: number)
-```
-
-#### Parameters:
-
-* averagingRate: The higher the value, the faster the weights changes. The value must be set between 0 and 1.
-
-* lambda: At 0, the model acts like the Temporal Difference algorithm. At 1, the model acts as Monte Carlo algorithm. Between 0 and 1, the model acts as both.
-
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
-
 ## Inherited From
 
 * [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)

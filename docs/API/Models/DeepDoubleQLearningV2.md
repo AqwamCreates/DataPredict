@@ -11,7 +11,7 @@ It uses Hasselt et al. (2015) version, where it uses target and primary neural n
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepDoubleQLearning.new(averagingRate: number, discountFactor: number): ModelObject
+DeepDoubleQLearning.new(averagingRate: number, lambda: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:

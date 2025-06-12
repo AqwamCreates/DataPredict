@@ -24,18 +24,6 @@ DeepDoubleStateActionRewardStateAction.new(discountFactor: number): ModelObject
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-DeepDoubleStateActionRewardStateAction:setParameters(discountFactor: number)
-```
-
-#### Parameters:
-
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
-
 ### setModelParameters1()
 
 Sets model parameters to be used by the model.

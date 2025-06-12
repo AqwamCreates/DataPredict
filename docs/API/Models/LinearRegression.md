@@ -60,7 +60,7 @@ LinearRegression:setOptimizer(Optimizer: OptimizerObject)
 
 * Optimizer: The optimizer object to be used.
 
-### setRegularization()
+### setRegularizer()
 
 Set a regularization for the model by inputting the optimizer object.
 

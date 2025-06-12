@@ -123,7 +123,7 @@ SupportVectorRegression:predict(featureMatrix: Matrix): Matrix
 
 ## Inherited From
 
-* [BaseModel](BaseModel.md)
+* [IterativeMethodBaseModel](IterativeMethodBaseModel.md)
 
 ## References
 

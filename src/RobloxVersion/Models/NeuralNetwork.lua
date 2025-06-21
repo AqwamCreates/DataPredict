@@ -1499,7 +1499,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsArray[#self.numberOfNeuronsArray]
 	
-	local LostFunctionToApply = lossFunctionList[self.costFunction]
+	local LossFunctionToApply = lossFunctionList[self.costFunction]
 
 	local numberOfIterations = 0
 
@@ -1551,7 +1551,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		end
 
-		local lossMatrix = LostFunctionToApply(activatedOutputsMatrix, logisticMatrix)
+		local lossMatrix = LossFunctionToApply(activatedOutputsMatrix, logisticMatrix)
 
 		self:update(lossMatrix, true)
 

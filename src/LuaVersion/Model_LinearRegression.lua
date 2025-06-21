@@ -40,7 +40,7 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.3
 
-local defaultLossFunction = "L2"
+local defaultCostFunction = "L2"
 
 local lossFunctionList = {
 
@@ -64,11 +64,11 @@ local lossFunctionList = {
 
 }
 
-function LinearRegressionModel:calculateCost(hypothesisVector, labelVector, numberOfData)
+function LinearRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 
-	local costVector = lossFunctionList[self.lossFunction](hypothesisVector, labelVector) 
+	local costVector = lossFunctionList[self.costFunction](hypothesisVector, labelVector) 
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
 	
@@ -76,7 +76,7 @@ function LinearRegressionModel:calculateCost(hypothesisVector, labelVector, numb
 
 	if (Regularizer) then totalCost = totalCost + Regularizer:calculateRegularization(self.ModelParameters) end
 
-	local averageCost = totalCost / numberOfData
+	local averageCost = totalCost / #labelVector
 
 	return averageCost
 
@@ -168,7 +168,7 @@ function LinearRegressionModel.new(parameterDictionary)
 
 	NewLinearRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 
-	NewLinearRegressionModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
+	NewLinearRegressionModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
 
 	NewLinearRegressionModel.Optimizer = parameterDictionary.Optimizer
 
@@ -228,7 +228,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisVector, labelVector, numberOfData)
+			return self:calculateCost(hypothesisVector, labelVector)
 
 		end)
 

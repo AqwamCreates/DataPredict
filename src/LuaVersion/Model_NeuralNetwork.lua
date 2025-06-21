@@ -36,6 +36,8 @@ setmetatable(NeuralNetworkModel, GradientMethodBaseModel)
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
+local defaultCostFunction = "MeanSquaredError"
+
 local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
@@ -87,6 +89,60 @@ local layerPropertyValueTypeCheckingFunctionList = {
 	end,
 
 
+}
+
+local costFunctionList = {
+	
+	["MeanSquaredError"] = function(generatedLabelMatrix, labelMatrix)
+		
+		local functionToApply = function (generatedLabelValue, labelValue) return math.pow((generatedLabelValue - labelValue), 2) end
+
+		local squaredErrorTensor = AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
+
+		local sumSquaredErrorValue = AqwamTensorLibrary:sum(squaredErrorTensor)
+		
+		sumSquaredErrorValue = sumSquaredErrorValue / 2
+
+		return sumSquaredErrorValue
+		
+	end,
+	
+	["MeanAbsoluteError"] = function(generatedLabelMatrix, labelMatrix)
+
+		local functionToApply = function (generatedLabelValue, labelValue) return math.abs(generatedLabelValue - labelValue) end
+
+		local absoluteErrorTensor = AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
+
+		local sumAbsoluteErrorValue = AqwamTensorLibrary:sum(absoluteErrorTensor)
+
+		return sumAbsoluteErrorValue
+
+	end,
+	
+	["BinaryCrossEntropy"] = function(generatedLabelMatrix, labelMatrix)
+
+		local functionToApply = function (generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue) + (1 - labelValue) * math.log(1 - generatedLabelValue)) end
+
+		local binaryCrossEntropyTensor = AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
+
+		local sumBinaryCrossEntropyValue = AqwamTensorLibrary:sum(binaryCrossEntropyTensor)
+
+		return sumBinaryCrossEntropyValue
+
+	end,
+	
+	["CategoricalCrossEntropy"] = function(generatedLabelMatrix, labelMatrix)
+
+		local functionToApply = function (generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue)) end
+
+		local categoricalCrossEntropyTensor = AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
+
+		local sumCategoricalCrossEntropyValue = AqwamTensorLibrary:sum(categoricalCrossEntropyTensor)
+
+		return sumCategoricalCrossEntropyValue
+
+	end,
+	
 }
 
 local elementWiseActivationFunctionList = {
@@ -153,6 +209,36 @@ local activationFunctionList = {
 
 	["None"] = function (zMatrix) return zMatrix end,
 
+}
+
+local lossFunctionList = {
+	
+	["MeanSquaredError"] = function(generatedLabelMatrix, labelMatrix)
+
+		return AqwamTensorLibrary:subtract(generatedLabelMatrix, labelMatrix)
+
+	end,
+
+	["MeanAbsoluteError"] = function(generatedLabelMatrix, labelMatrix)
+
+		return AqwamTensorLibrary:subtract(generatedLabelMatrix, labelMatrix)
+
+	end,
+
+	["BinaryCrossEntropy"] = function(generatedLabelMatrix, labelMatrix)
+
+		local functionToApply = function (generatedLabelValue, labelValue) return ((generatedLabelValue - labelValue) / (generatedLabelValue * (1 - generatedLabelValue))) end
+
+		return AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
+
+	end,
+
+	["CategoricalCrossEntropy"] = function(generatedLabelMatrix, labelMatrix)
+
+		return AqwamTensorLibrary:subtract(generatedLabelMatrix, labelMatrix)
+
+	end,
+	
 }
 
 local elementWiseActivationFunctionDerivativeList = {
@@ -695,19 +781,17 @@ function NeuralNetworkModel:update(lossMatrix, clearAllArrays)
 
 end
 
-function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix, numberOfData)
-
-	local subtractedMatrix = AqwamTensorLibrary:subtract(allOutputsMatrix, logisticMatrix)
-
-	local squaredSubtractedMatrix = AqwamTensorLibrary:power(subtractedMatrix, 2)
-
-	local totalCost = AqwamTensorLibrary:sum(squaredSubtractedMatrix)
-
+function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix)
+	
 	local numberOfLayers = #self.numberOfNeuronsArray
 
 	local RegularizerArray = self.RegularizerArray
 
 	local ModelParameters = self.ModelParameters
+	
+	local CostFunctionToApply = costFunctionList[self.costFunction]
+
+	local totalCost = CostFunctionToApply(allOutputsMatrix, logisticMatrix)
 
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
@@ -717,7 +801,7 @@ function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix, numb
 
 	end
 
-	local cost = totalCost / numberOfData
+	local cost = totalCost / #logisticMatrix
 
 	return cost
 
@@ -818,6 +902,8 @@ function NeuralNetworkModel.new(parameterDictionary)
 	setmetatable(NewNeuralNetworkModel, NeuralNetworkModel)
 
 	NewNeuralNetworkModel:setName("NeuralNetwork")
+	
+	NewNeuralNetworkModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
 
 	NewNeuralNetworkModel.ClassesList = parameterDictionary.ClassesList or {}
 
@@ -827,7 +913,7 @@ function NeuralNetworkModel.new(parameterDictionary)
 
 	NewNeuralNetworkModel.OptimizerArray = parameterDictionary.OptimizerArray or {}
 
-	NewNeuralNetworkModel.hasBiasNeuronArray = parameterDictionary.hasBiasNeuronArray or{}
+	NewNeuralNetworkModel.hasBiasNeuronArray = parameterDictionary.hasBiasNeuronArray or {}
 
 	NewNeuralNetworkModel.learningRateArray = parameterDictionary.learningRateArray or {}
 
@@ -1403,8 +1489,6 @@ end
 
 function NeuralNetworkModel:train(featureMatrix, labelVector)
 
-	local numberOfData = #featureMatrix
-
 	local numberOfFeatures = #featureMatrix[1]
 
 	local numberOfNeuronsAtInputLayer = self.numberOfNeuronsArray[1] + self.hasBiasNeuronArray[1]
@@ -1414,6 +1498,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	if (#featureMatrix ~= #labelVector) then error("Number of rows of feature matrix and the label vector is not the same!") end
 
 	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsArray[#self.numberOfNeuronsArray]
+	
+	local LostFunctionToApply = lossFunctionList[self.costFunction]
 
 	local numberOfIterations = 0
 
@@ -1445,7 +1531,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	repeat
 
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 
 		self:iterationWait()
 
@@ -1453,7 +1539,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(activatedOutputsMatrix, logisticMatrix, numberOfData)
+			return self:calculateCost(activatedOutputsMatrix, logisticMatrix)
 
 		end)
 
@@ -1465,9 +1551,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		end
 
-		local lossMatrix = AqwamTensorLibrary:subtract(activatedOutputsMatrix, logisticMatrix)
-
-		lossMatrix = AqwamTensorLibrary:divide(lossMatrix, numberOfData)
+		local lossMatrix = LostFunctionToApply(activatedOutputsMatrix, logisticMatrix)
 
 		self:update(lossMatrix, true)
 

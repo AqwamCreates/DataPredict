@@ -26,7 +26,7 @@
 
 --]]
 
-local GradientMethodBaseModel = require("Gradient_GradientMethodBaseModel")
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 NeuralNetworkModel = {}
 
@@ -395,7 +395,7 @@ local function dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNot
 
 end
 
-function NeuralNetworkModel:forwardPropagate(featureMatrix, saveArrays, doNotDropoutNeurons)
+function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNotDropoutNeurons)
 
 	if (self.ModelParameters == nil) then self:generateLayers() end
 
@@ -481,7 +481,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveArrays, doNotDro
 
 	end
 
-	if saveArrays then
+	if (saveAllArrays) then
 
 		self.forwardPropagateArray = forwardPropagateArray
 

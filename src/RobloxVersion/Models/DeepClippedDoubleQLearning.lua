@@ -126,7 +126,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 			
 			local negatedLossVector = AqwamTensorLibrary:unaryMinus(lossVector) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
 			
-			Model:backwardPropagate(negatedLossVector, true)
+			Model:update(negatedLossVector, true)
 			
 			ModelParametersArray[i] = Model:getModelParameters(true)
 

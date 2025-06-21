@@ -199,7 +199,7 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:train(realFeatu
 
 			DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
 
-			DiscriminatorModel:backwardPropagate(discriminatorLossMatrix, true)
+			DiscriminatorModel:update(discriminatorLossMatrix, true)
 
 			discriminatorMaximumNumberOfIterations = discriminatorMaximumNumberOfIterations + 1
 			
@@ -225,7 +225,7 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:train(realFeatu
 
 		GeneratorModel:forwardPropagate(generatorInputMatrix, true)
 
-		GeneratorModel:backwardPropagate(meanGeneratorLossVector, true)
+		GeneratorModel:update(meanGeneratorLossVector, true)
 		
 		generatorNumberOfIterations = generatorNumberOfIterations + 1
 		

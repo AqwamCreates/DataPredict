@@ -132,11 +132,11 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 		
 		DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
 		
-		DiscriminatorModel:backwardPropagate(meanDiscriminatorLossMatrix, true)
+		DiscriminatorModel:update(meanDiscriminatorLossMatrix, true)
 		
 		GeneratorModel:forwardPropagate(generatorInputMatrix, true)
 		
-		GeneratorModel:backwardPropagate(meanGeneratorLossMatrix, true)
+		GeneratorModel:update(meanGeneratorLossMatrix, true)
 		
 		numberOfIterations = numberOfIterations + 1
 		

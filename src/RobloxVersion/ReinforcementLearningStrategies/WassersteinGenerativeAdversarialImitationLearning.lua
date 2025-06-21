@@ -231,7 +231,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 
-				DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
+				DiscriminatorModel:update(discriminatorLoss, true)
 
 				if (isOutputPrinted) then print("Episode: " .. currentEpisode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
 

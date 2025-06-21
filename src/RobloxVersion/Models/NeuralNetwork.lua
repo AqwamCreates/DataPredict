@@ -493,7 +493,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveArrays, doNotDro
 
 end
 
-function NeuralNetworkModel:calculateCostFunctionDerivativeMatrixArray(lossMatrix)
+function NeuralNetworkModel:backwardPropagate(lossMatrix)
 
 	local forwardPropagateArray = self.forwardPropagateArray
 
@@ -670,22 +670,22 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 		table.insert(NewModelParameters, newWeightMatrix)
 
 	end
-
-	return NewModelParameters
+	
+	self.ModelParameters = NewModelParameters
 
 end
 
-function NeuralNetworkModel:backwardPropagate(lossMatrix, clearArrays)
+function NeuralNetworkModel:update(lossMatrix, clearAllArrays)
 
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 
 	local numberOfData = #lossMatrix
 
-	local costFunctionDerivativeMatrixArray = self:calculateCostFunctionDerivativeMatrixArray(lossMatrix)
+	local costFunctionDerivativeMatrixArray = self:backwardPropagate(lossMatrix)
 
-	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrixArray, numberOfData)
+	self:gradientDescent(costFunctionDerivativeMatrixArray, numberOfData)
 
-	if (clearArrays) then
+	if (clearAllArrays) then
 
 		self.forwardPropagateArray = nil
 

@@ -172,7 +172,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 		
 		Model:forwardPropagate(previousFeatureVector, true)
 
-		Model:backwardPropagate(negatedTemporalDifferenceErrorVector, true)
+		Model:update(negatedTemporalDifferenceErrorVector, true)
 
 		local TargetModelParameters = Model:getModelParameters(true)
 

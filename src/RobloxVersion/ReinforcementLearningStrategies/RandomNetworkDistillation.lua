@@ -113,7 +113,8 @@ function RandomNetworkDistillation:generate(featureMatrix)
 	local generatedMatrix = AqwamTensorLibrary:power(sumSquaredErrorMatrix, 0.5)
 
 	Model:forwardPropagate(featureMatrix, true)
-	Model:backwardPropagate(errorMatrix, true)
+
+	Model:update(errorMatrix, true)
 	
 	self.TargetModelParameters = TargetModelParameters
 	

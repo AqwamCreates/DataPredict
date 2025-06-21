@@ -180,9 +180,9 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 			ActorModel:forwardPropagate(featureVector, true)
 
-			CriticModel:backwardPropagate(advantageValue, true)
+			CriticModel:update(advantageValue, true)
 
-			ActorModel:backwardPropagate(actorLossVector, true)
+			ActorModel:update(actorLossVector, true)
 
 		end
 

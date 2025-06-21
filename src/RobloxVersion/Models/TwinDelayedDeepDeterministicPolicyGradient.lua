@@ -178,7 +178,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 			temporalDifferenceErrorVector[1][i] = -criticLoss -- We perform gradient descent here, so the critic loss is negated so that it can be used as temporal difference value.
 
-			CriticModel:backwardPropagate(criticLoss, true)
+			CriticModel:update(criticLoss, true)
 
 			CriticModelParametersArray[i] = CriticModel:getModelParameters(true)
 
@@ -200,7 +200,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 			ActorModel:forwardPropagate(previousFeatureVector, true)
 
-			ActorModel:backwardPropagate(-currentQValue, true)
+			ActorModel:update(-currentQValue, true)
 
 			for i = 1, 2, 1 do TargetCriticModelParametersArray[i] = rateAverageModelParameters(averagingRate, TargetCriticModelParametersArray[i], CriticModelParametersArray[i]) end
 			

@@ -162,9 +162,9 @@ function ActorCriticModel.new(parameterDictionary)
 
 			ActorModel:forwardPropagate(featureVector, true)
 
-			CriticModel:backwardPropagate(criticLoss, true)
+			CriticModel:update(criticLoss, true)
 
-			ActorModel:backwardPropagate(actorLossVector, true)
+			ActorModel:update(actorLossVector, true)
 
 		end
 

@@ -134,7 +134,7 @@ function SoftActorCriticModel.new(parameterDictionary)
 		
 		local currentLogActionProbabilityVector = AqwamTensorLibrary:logarithm(currentActionProbabilityVector)
 		
-		return NewSoftActorCritic:backwardPropagate(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+		return NewSoftActorCritic:update(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 	end)
 	
@@ -152,7 +152,7 @@ function SoftActorCriticModel.new(parameterDictionary)
 		
 		local currentLogActionProbabilityVector = calculateLogActionProbabilityVector(currentActionMeanVector, actionStandardDeviationVector, currentActionNoiseVector)
 		
-		return NewSoftActorCritic:backwardPropagate(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, nil, rewardValue, currentFeatureVector, terminalStateValue)
+		return NewSoftActorCritic:update(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, nil, rewardValue, currentFeatureVector, terminalStateValue)
 		
 	end)
 	
@@ -164,7 +164,7 @@ function SoftActorCriticModel.new(parameterDictionary)
 	
 end
 
-function SoftActorCriticModel:backwardPropagate(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+function SoftActorCriticModel:update(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 	
 	local CriticModelParametersArray = self.CriticModelParametersArray
 	
@@ -230,7 +230,7 @@ function SoftActorCriticModel:backwardPropagate(previousFeatureVector, previousL
 		
 		previousCriticValueArray[i] = previousCriticValue
 
-		CriticModel:backwardPropagate(criticLoss, true)
+		CriticModel:update(criticLoss, true)
 		
 		local TargetModelParameters = CriticModel:getModelParameters(true)
 		
@@ -248,7 +248,7 @@ function SoftActorCriticModel:backwardPropagate(previousFeatureVector, previousL
 
 	ActorModel:forwardPropagate(previousFeatureVector, true)
 
-	ActorModel:backwardPropagate(actorLossVector, true)
+	ActorModel:update(actorLossVector, true)
 	
 	return temporalDifferenceErrorVector
 	

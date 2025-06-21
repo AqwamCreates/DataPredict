@@ -146,7 +146,7 @@ function REINFORCEModel.new(parameterDictionary)
 			
 			Model:forwardPropagate(featureVectorArray[h], true)
 
-			Model:backwardPropagate(lossVector, true)
+			Model:update(lossVector, true)
 			
 		end
 		

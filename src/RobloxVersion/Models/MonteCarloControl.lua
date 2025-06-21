@@ -86,7 +86,7 @@ function MonteCarloControlModel.new(parameterDictionary)
 			
 			Model:forwardPropagate(featureVector, true)
 
-			Model:backwardPropagate(averageRewardToGo, true)
+			Model:update(averageRewardToGo, true)
 			
 		end
 		

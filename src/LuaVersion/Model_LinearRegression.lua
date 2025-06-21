@@ -136,13 +136,11 @@ function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, num
 
 	end
 
-	local newModelParameters = AqwamTensorLibrary:subtract(self.ModelParameters, costFunctionDerivativeMatrix)
-
-	return newModelParameters
+	self.ModelParameters = AqwamTensorLibrary:subtract(self.ModelParameters, costFunctionDerivativeMatrix)
 
 end
 
-function LinearRegressionModel:update(lossMatrix, clearFeatureMatrix, doNotUpdateModelParameters)
+function LinearRegressionModel:update(lossMatrix, clearFeatureMatrix)
 
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 
@@ -150,7 +148,7 @@ function LinearRegressionModel:update(lossMatrix, clearFeatureMatrix, doNotUpdat
 
 	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
 
-	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+	self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
 
 	if (clearFeatureMatrix) then self.featureMatrix = nil end
 
@@ -244,7 +242,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 		local lossVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
 
-		self:update(lossVector, true, false)
+		self:update(lossVector, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

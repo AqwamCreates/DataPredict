@@ -246,7 +246,7 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 
 		Model:forwardPropagate(inputMatrix, true)
 
-		Model:backwardPropagate(sumLossMatrix, true)
+		Model:update(sumLossMatrix, true)
 		
 	end)
 	

@@ -34,7 +34,7 @@ LogisticRegressionModel.__index = LogisticRegressionModel
 
 setmetatable(LogisticRegressionModel, GradientMethodBaseModel)
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamMatrixLibrary = require("AqwamTensorLibrary")
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -166,7 +166,7 @@ function LogisticRegressionModel:gradientDescent(costFunctionDerivativeMatrix, n
 
 	costFunctionDerivativeMatrix = AqwamMatrixLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
 
-	if (self.Optimizer) then 
+	if (self.Optimizer) then
 
 		costFunctionDerivativeMatrix = self.Optimizer:calculate(self.learningRate, costFunctionDerivativeMatrix) 
 
@@ -176,9 +176,7 @@ function LogisticRegressionModel:gradientDescent(costFunctionDerivativeMatrix, n
 
 	end
 
-	local newModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivativeMatrix)
-
-	return newModelParameters
+	self.ModelParameters = AqwamMatrixLibrary:subtract(self.ModelParameters, costFunctionDerivativeMatrix)
 
 end
 
@@ -190,7 +188,9 @@ function LogisticRegressionModel:update(lossMatrix, clearFeatureMatrix)
 
 	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
 
-	self.ModelParameters = self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+	self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+	
+	if (clearFeatureMatrix) then self.featureMatrix = nil end
 
 end
 

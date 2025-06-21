@@ -100,8 +100,6 @@ local costFunctionList = {
 		local squaredErrorTensor = AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
 
 		local sumSquaredErrorValue = AqwamTensorLibrary:sum(squaredErrorTensor)
-		
-		sumSquaredErrorValue = sumSquaredErrorValue / 2
 
 		return sumSquaredErrorValue
 		
@@ -215,7 +213,9 @@ local lossFunctionList = {
 	
 	["MeanSquaredError"] = function(generatedLabelMatrix, labelMatrix)
 
-		return AqwamTensorLibrary:subtract(generatedLabelMatrix, labelMatrix)
+		local lossTensor = AqwamTensorLibrary:subtract(generatedLabelMatrix, labelMatrix)
+
+		return AqwamTensorLibrary:multiply(2, lossTensor)
 
 	end,
 

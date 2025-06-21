@@ -19,12 +19,22 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-NeuralNetwork.new(maximumNumberOfIterations: integer): ModelObject
+NeuralNetwork.new(maximumNumberOfIterations: integer, costFunction: string): ModelObject
 ```
 
 #### Parameters:
 
-* maximumNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained. [Default: 500]
+
+* costFunction: The function to calculate the cost of each training. Available options are:
+
+	* MeanSquaredError (Default)
+
+	* MeanAbsoluteError
+
+	* BinaryCrossEntropy
+
+	* CategoricalCrossEntropy
 
 #### Returns:
 
@@ -37,12 +47,22 @@ NeuralNetwork.new(maximumNumberOfIterations: integer): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-NeuralNetwork:setParameters(maximumNumberOfIterations: integer)
+NeuralNetwork:setParameters(maximumNumberOfIterations: integer, costFunction: string)
 ```
 
 #### Parameters:
 
 * maximumNumberOfIterations: How many times should the model needed to be trained.
+
+* costFunction: The function to calculate the cost of each training. Available options are:
+
+	* MeanSquaredError (Default)
+
+	* MeanAbsoluteError
+
+	* BinaryCrossEntropy
+
+	* CategoricalCrossEntropy
 
 ### addLayer()
 

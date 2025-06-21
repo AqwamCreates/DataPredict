@@ -74,7 +74,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		Model:forwardPropagate(previousFeatureVector, true)
 		
-		Model:backwardPropagate(negatedTemporalDifferenceErrorVector, true)
+		Model:update(negatedTemporalDifferenceErrorVector, true)
 
 		NewDeepDoubleStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		

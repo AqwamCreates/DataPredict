@@ -162,7 +162,7 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 
 			DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
 
-			DiscriminatorModel:backwardPropagate(discriminatorLossMatrix, true)
+			DiscriminatorModel:update(discriminatorLossMatrix, true)
 
 			discriminatorNumberOfIterations = discriminatorNumberOfIterations + 1
 			

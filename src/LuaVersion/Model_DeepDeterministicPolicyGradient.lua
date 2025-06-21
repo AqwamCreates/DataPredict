@@ -104,13 +104,13 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 		
 		ActorModel:forwardPropagate(previousFeatureVector, true)
 
-		ActorModel:backwardPropagate(negatedtemporalDifferenceError, true)
+		ActorModel:update(negatedtemporalDifferenceError, true)
 		
 		local previousCriticActionMeanInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, actionMeanVector, 2)
 		
 		CriticModel:forwardPropagate(previousCriticActionMeanInputVector, true)
 		
-		CriticModel:backwardPropagate(temporalDifferenceError, true)
+		CriticModel:update(temporalDifferenceError, true)
 		
 		local TargetActorModelParameters = ActorModel:getModelParameters(true)
 		

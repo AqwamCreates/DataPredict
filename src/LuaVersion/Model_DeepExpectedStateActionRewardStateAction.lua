@@ -140,7 +140,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 
 		Model:forwardPropagate(previousFeatureVector, true)
 		
-		Model:backwardPropagate(negatedTemporalDifferenceErrorVector, true)
+		Model:update(negatedTemporalDifferenceErrorVector, true)
 		
 		return temporalDifferenceErrorVector
 

@@ -164,7 +164,7 @@ function OffPolicyMonteCarloControlModel.new(parameterDictionary)
 			
 			Model:forwardPropagate(featureVectorHistory[h], true)
 			
-			Model:backwardPropagate(lossVector, true)
+			Model:update(lossVector, true)
 			
 		end
 		

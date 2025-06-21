@@ -260,9 +260,9 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 			CriticModel:forwardPropagate(featureVector, true)
 
-			ActorModel:backwardPropagate(actorLossVector, true)
+			ActorModel:update(actorLossVector, true)
 
-			CriticModel:backwardPropagate(criticLoss, true)
+			CriticModel:update(criticLoss, true)
 
 		end
 

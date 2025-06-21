@@ -1469,7 +1469,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		lossMatrix = AqwamTensorLibrary:divide(lossMatrix, numberOfData)
 
-		self:backwardPropagate(lossMatrix, true)
+		self:update(lossMatrix, true)
 
 	until (numberOfIterations == self.maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

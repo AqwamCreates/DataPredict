@@ -324,14 +324,14 @@ NeuralNetwork:setClassesList(ClassesList: [])
 ### forwardPropagate()
 
 ```
-NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean, doNotDropoutNeurons: boolean): predictedLabelMatrix, forwardPropagateTable, zTable
+NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveAllArrays: boolean, doNotDropoutNeurons: boolean): predictedLabelMatrix, forwardPropagateTable, zTable
 ```
 
 ### Parameters:
 
 * featureMatrix: Matrix containing all data.
 
-* saveTables: Set whether or not the forward propagation table and z table is stored in the model.
+* saveAllArrays: Set whether or not the forward propagation array and z array is stored in the model.
 
 * doNotDropoutNeurons: Set whether or not to dropout neurons during forward propagation.
 
@@ -343,17 +343,17 @@ NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveTables: boolean, doNot
 
 * zTable: A table containing matrices that was produced by each neuron.
 
-### backwardPropagate()
+### update()
 
 ```
-NeuralNetwork:backwardPropagate(lossMatrix: Matrix, clearTables: boolean): []
+NeuralNetwork:update(lossMatrix: Matrix, clearAllArrays: boolean): []
 ```
 
 ### Parameters:
 
 * lossMatrix: Matrix containing the loss.
 
-* clearTables: Set whether or not to clear forward propagation table and z table is stored in the model after backpropagation is done.
+* clearAllArrays: Set whether or not to clear forward propagation array and z array is stored in the model after backpropagation is done.
 
 ### Returns:
 

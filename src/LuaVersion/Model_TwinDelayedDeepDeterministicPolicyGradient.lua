@@ -200,7 +200,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 			ActorModel:forwardPropagate(previousFeatureVector, true)
 
-			ActorModel:backwardPropagate(-currentQValue, true)
+			ActorModel:update(-currentQValue, true)
 
 			for i = 1, 2, 1 do TargetCriticModelParametersArray[i] = rateAverageModelParameters(averagingRate, TargetCriticModelParametersArray[i], CriticModelParametersArray[i]) end
 			

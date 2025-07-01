@@ -1,5 +1,7 @@
 # Welcome to Aqwam's DataPredict™ Library!
 
+This library was developed solo over more than 2 years (4000+ hours), which would exceed $200,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build and test all the models in this library. To all indie devs who just starting their business, feel free to use it without burning away your money!
+
 By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md). In short:
 
 * Public attribution is required when using this library.
@@ -11,8 +13,6 @@ By using or possessing any copies of this library or its assets (including the i
 * Plus some more stuff...
 
 Once you pass the commercial use threshold and want to license it, expect to pay for 2% of your project's generated revenue, provided that it uses this library. All the money will be used for future research and improvements that will be released to the public.
-
-This library was developed solo over more than 2 years (4000+ hours), which would exceed $200,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build and test all the models in this library. To all indie devs who just starting their business, feel free to use it without burning away your money!
 
 For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 

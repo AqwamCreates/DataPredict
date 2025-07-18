@@ -17,7 +17,7 @@ ProximalPolicyOptimizationClip is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ProximalPolicyOptimizationClip.new(clipRatio: number, discountFactor: number): ModelObject
+ProximalPolicyOptimizationClip.new(clipRatio: number, lambda: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:

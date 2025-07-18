@@ -56,9 +56,9 @@
 | [VanillaPolicyGradient](Models/VanillaPolicyGradient.md)                                                                         | VPG                                       | Baseline-Based Self-Learning Player AIs                                     |
 | [ProximalPolicyOptimization](Models/ProximalPolicyOptimization.md)                                                               | PPO                                       | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs      |
 | [ProximalPolicyOptimizationClip](Models/ProximalPolicyOptimizationClip.md)                                                       | PPO-Clip                                  | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs      |
-| [SoftActorCritic](Models/SoftActorCritic.md)                                                                                     | SAC                                       | Self-Driving Cars, Planes, Spiders                                          |
-| [DeepDeterministicPolicyGradient](Models/DeepDeterministicPolicyGradient.md)                                                     | DDPG                                      | Self-Driving Cars, Planes, Spiders                                          |
-| [TwinDelayedDeepDeterministicPolicyGradient](Models/TwinDelayedDeepDeterministicPolicyGradient.md)                               | TD3                                       | Self-Driving Cars, Planes, Spiders                                          |
+| [SoftActorCritic](Models/SoftActorCritic.md)                                                                                     | SAC                                       | Self-Driving Vehicles AIs                                                   |
+| [DeepDeterministicPolicyGradient](Models/DeepDeterministicPolicyGradient.md)                                                     | DDPG                                      | Self-Driving Vehicles AIs                                                   |
+| [TwinDelayedDeepDeterministicPolicyGradient](Models/TwinDelayedDeepDeterministicPolicyGradient.md)                               | TD3                                       | Self-Driving Vehicles AIs                                                   |
 
 ## Generative
 

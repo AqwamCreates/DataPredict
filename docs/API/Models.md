@@ -2,12 +2,12 @@
 
 ## Regression
 
-| Model                                                                                      | Alternate Names | Use Cases                                     |
-|--------------------------------------------------------------------------------------------|-----------------|-----------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md)                                             | None            | Price Prediction, Time To Level Up Prediction |
-| [NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended)               | None            | Same As Above                                 |
-| [SupportVectorRegression](Models/SupportVectorRegression.md) (May Need Further Refinement) | SVR             | Same As Above                                 |
-| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | Same As Above                                 |
+| Model                                                                                      | Alternate Names | Use Cases                                            |
+|--------------------------------------------------------------------------------------------|-----------------|------------------------------------------------------|
+| [LinearRegression](Models/LinearRegression.md)                                             | None            | General Price And Time To Level Up Prediction        |
+| [NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended)               | None            | Final Solution Price And Time To Level Up Prediction |
+| [SupportVectorRegression](Models/SupportVectorRegression.md) (May Need Further Refinement) | SVR             | Constrained Price And Time To Level Up Prediction    |
+| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | Memory-Based Price And Time To Level Up Prediction   |
 
 ## Classification
 

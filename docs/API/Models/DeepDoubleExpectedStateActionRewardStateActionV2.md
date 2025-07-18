@@ -9,7 +9,7 @@ DeepDoubleExpectedStateActionRewardStateActionV2 is a neural network with reinfo
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepDoubleExpectedStateActionRewardStateAction.new(epsilon: number, averagingRate: number, discountFactor: number): ModelObject
+DeepDoubleExpectedStateActionRewardStateAction.new(epsilon: number, averagingRate: number, lambda: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:

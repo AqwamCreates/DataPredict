@@ -9,7 +9,7 @@ DeepStateActionRewardStateAction is a neural network with reinforcement learning
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepStateActionRewardStateAction.new(discountFactor: number): ModelObject
+DeepStateActionRewardStateAction.new(lambda: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:

@@ -17,7 +17,7 @@ ProximalPolicyOptimization is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ProximalPolicyOptimization.new(discountFactor: number): ModelObject
+ProximalPolicyOptimization.new(lambda: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:

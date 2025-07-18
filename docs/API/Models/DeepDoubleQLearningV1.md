@@ -11,7 +11,7 @@ It uses Hasselt et al. (2010) version, where a single neural network is selected
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepDoubleQLearning.new(discountFactor: number): ModelObject
+DeepDoubleQLearning.new(lambda: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:

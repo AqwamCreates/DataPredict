@@ -9,7 +9,7 @@ DeepQLearning is a neural network with reinforcement learning capabilities. It c
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepQLearning.new(discountFactor: number): ModelObject
+DeepQLearning.new(lambda: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:

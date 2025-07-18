@@ -9,7 +9,7 @@ DeepExpectedStateActionRewardStateAction is a neural network with reinforcement 
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepExpectedStateActionRewardStateAction.new(epsilon: number, discountFactor: number): ModelObject
+DeepExpectedStateActionRewardStateAction.new(epsilon: number, lambda: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:

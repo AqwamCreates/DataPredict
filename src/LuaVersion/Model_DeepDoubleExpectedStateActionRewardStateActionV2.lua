@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
+local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
 
 DeepDoubleExpectedStateActionRewardStateActionModel = {}
 
@@ -110,14 +110,16 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		local targetVector = Model:forwardPropagate(currentFeatureVector)
 		
-		local maxQValue = targetVector[1][actionIndex]
+		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
+		
+		local unwrappedTargetVector = targetVector[1]
 
 		for i = 1, numberOfClasses, 1 do
 
-			if (targetVector[1][i] ~= maxQValue) then
-				
+			if (unwrappedTargetVector[i] == maxQValue) then
+
 				numberOfGreedyActions = numberOfGreedyActions + 1
-				
+
 			end
 
 		end
@@ -126,7 +128,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
 
-		for _, qValue in ipairs(targetVector[1]) do
+		for _, qValue in ipairs(unwrappedTargetVector) do
 
 			if (qValue == maxQValue) then
 
@@ -172,7 +174,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 		
 		Model:forwardPropagate(previousFeatureVector, true)
 
-		Model:backwardPropagate(negatedTemporalDifferenceErrorVector, true)
+		Model:update(negatedTemporalDifferenceErrorVector, true)
 
 		local TargetModelParameters = Model:getModelParameters(true)
 

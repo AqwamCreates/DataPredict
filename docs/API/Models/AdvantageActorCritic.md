@@ -17,7 +17,7 @@ AdvantageActorCritic is a base class for reinforcement learning.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-AdvantageActorCritic.new(discountFactor: number): ModelObject
+AdvantageActorCritic.new(lambda: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:

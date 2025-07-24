@@ -118,7 +118,7 @@ while true do
 
     DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, reward, action, currentEnvironmentFeatureVector, 0) -- update() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
 
-    previousEnvironmentFeatureVector = environmentVector
+    previousEnvironmentFeatureVector = currentEnvironmentFeatureTensor
 
     local hasGameEnded = checkIfGameHasEnded(environmentVector)
 

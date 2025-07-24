@@ -66,7 +66,7 @@ local targetPolicyFunctionList = {
 
 	end,
 
-	["Softmax"] = function (actionVector) -- apparently roblox doesn't really handle very small values such as math.exp(-1000), so I added a more stable computation exp(a) / exp(b) -> exp (a - b)
+	["Softmax"] = function (actionVector) -- Apparently Lua doesn't really handle very small values such as math.exp(-1000), so I added a more stable computation exp(a) / exp(b) -> exp (a - b).
 
 		local exponentActionVector = AqwamTensorLibrary:applyFunction(math.exp, actionVector)
 

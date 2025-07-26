@@ -19,16 +19,16 @@ TwinDelayedDeepDeterministicPolicyGradient is a base class for reinforcement lea
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TwinDelayedDeepDeterministicPolicyGradient.new(averagingRate: number, noiseClippingFactor: number, policyDelayAmount: number, discountFactor: number): ModelObject
+TwinDelayedDeepDeterministicPolicyGradient.new(noiseClippingFactor: number, policyDelayAmount: number, averagingRate: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
 
-* averagingRate: The higher the value, the faster the weights changes. The value must be set between 0 and 1. [Default: 0.995]
-
 * noiseClippingFactor: The amount of noise that is allowed in the action noise tensor. [Default: 0.5]
 
 * policyDelayAmount: How many times should the actor model wait before updating based on the number of update function calls. [Default: 3]
+
+* averagingRate: The higher the value, the faster the weights changes. The value must be set between 0 and 1. [Default: 0.995]
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
 

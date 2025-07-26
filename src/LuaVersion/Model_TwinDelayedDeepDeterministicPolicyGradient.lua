@@ -70,11 +70,11 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 	
 	NewTwinDelayedDeepDeterministicPolicyGradient:setName("TwinDelayedDeepDeterministicPolicyGradient")
 	
-	NewTwinDelayedDeepDeterministicPolicyGradient.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
-	
 	NewTwinDelayedDeepDeterministicPolicyGradient.noiseClippingFactor = parameterDictionary.noiseClippingFactor or defaultNoiseClippingFactor
-	
+
 	NewTwinDelayedDeepDeterministicPolicyGradient.policyDelayAmount = parameterDictionary.policyDelayAmount or defaultPolicyDelayAmount
+	
+	NewTwinDelayedDeepDeterministicPolicyGradient.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 	
 	NewTwinDelayedDeepDeterministicPolicyGradient.CriticModelParametersArray = parameterDictionary.CriticModelParametersArray or {}
 	
@@ -122,7 +122,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 			
 			if (lowestActionValue ~= lowestActionValue) or (highestActionValue ~= highestActionValue) then
 				
-				error("Received Nan values.")
+				error("Received nan values.")
 			
 			elseif (lowestActionValue < highestActionValue) then
 				

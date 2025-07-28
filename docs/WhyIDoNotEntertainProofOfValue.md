@@ -2,7 +2,7 @@
 
 Alright everyone. Ever since DataPredict ecosystem product exploded, I have seen an increase in "proof of value" requests in my direct messages. 
 
-Frankly, I really don't want to deal with such requests as they tend to eat up my development and contracting time despite the DataPredict ecosystem gives people value at plain sight.
+Frankly, I do not want to deal with such requests. They tend to eat up my development for DataPredict and contracting time for my clients despite the DataPredict ecosystem gives people value at plain sight.
 
 Now, let's go over how the DataPredict ecosystem already provides value.
 

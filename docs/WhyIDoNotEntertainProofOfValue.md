@@ -40,7 +40,7 @@ You can experiment freely and even run A/B tests using DataPredict in a separate
 
 * Most games don’t earn massive revenue
 
-* Game developers tend to be price sensitive
+* Game developers tend to be budget-conscious
 
 Hence, I want the game developers to try out the DataPredict ecosystem without making them going bankrupt.
 

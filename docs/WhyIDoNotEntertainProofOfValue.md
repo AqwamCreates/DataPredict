@@ -32,7 +32,7 @@ That alone saves you:
 
 And you get free support and a fully documented, production-ready ML, DL and RL stack for Roblox.
 
-## Free Experimentation Without Financial Commitment
+## Free Experimentation Without The Financial Commitment
 
 You don’t need to take a gamble.
 
@@ -52,7 +52,7 @@ I have shown many ways on how the DataPredict ecosystem is already valuable in t
 
 * Volume-based pricing
 
-* Free experimentation without financial commitment
+* Free experimentation without the financial commitment
 
 If you’re still not convinced, DataPredict ecosystem probably isn’t for you. And that’s okay.
 

@@ -1,4 +1,4 @@
-# Why I Do Not Entertain Proof Of Value
+# Why I Do Not Entertain "Proof Of Value" Requests
 
 Alright everyone. Ever since DataPredict ecosystem product exploded, I have seen an increase in "proof of value" requests in my direct messages. 
 

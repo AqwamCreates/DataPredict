@@ -6,13 +6,13 @@ By using or possessing any copies of this library or its assets (including the i
 
 * Public attribution is required when using this library.
 
-* A separate agreement is needed for commercial use (both internally and externally). This applies to companies (or individuals, if none) whose combined revenue (including from subsidiaries or related entities) exceeds $3,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
+* A separate agreement is needed for commercial use (both internally and externally). This applies to companies (or individuals, if none) whose combined revenue (including from subsidiaries or related entities) exceeds $10,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
 
 * If you or your company is applicable to the above statement and do not want a separate agreement, then you are required to follow the "Commercial Use Conditions" in Terms And Conditions.
 
 * Plus some more stuff...
 
-Once you pass the commercial use threshold and want to license it, expect to pay for 2% of your project's generated revenue, provided that it uses this library. That 2% also includes DataPredict™ Neural and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
+Once you pass the commercial use threshold and want to license it, expect to pay for (gross revenue * (8 log / log(gross revenue))), provided that it uses this library. That fee also includes DataPredict™ Neural and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
 
 Thanks to the early adopters, I managed to to fund my Master research thesis (that may be published soon) on how to speed up reinforcement learning training by 10 times from the baseline methods. It is already implemented in the DataPredict™ and DataPredict™ Neural libraries!
 

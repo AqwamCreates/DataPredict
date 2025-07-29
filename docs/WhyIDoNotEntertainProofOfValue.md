@@ -44,13 +44,21 @@ You can experiment freely and even run A/B tests using DataPredict in a separate
 
 Hence, I want the game developers to try out the DataPredict ecosystem without making them going bankrupt.
 
+## Free Support
+
+Given the amount of publicity that the DataPredict ecosystem has acquired, it is fair that people would be using this for research. As such, I would immediately handle all bug fixes and inquires relating to the DataPredict ecosystem for free.
+
+Some platforms don't do this, so you will be getting extra value for free.
+
 ## Value Is Also Dependent On How You Use It
 
-One of the most biggest annoyances are regarding to "proving" value is that it is highly dependent on how the users uses DataPredict.
+Here’s the honest truth: Even the best tools won’t perform if you don’t know how to use them.
 
-If you can't use the tools properly, you are guaranteed not to get 100% of the value. This is true for game engines like Roblox Studio, Unity, and Unreal Engine.
+That includes Roblox Studio, Unity, Unreal, and even DataPredict.
 
-I have created value in terms of lowering development costs and time. However, just like the game engines, they are not guaranteed to bring you revenue.
+If you misuse it, don’t expect 100% value. That’s not a “problem” with the tool — it’s a skill and application issue.
+
+What I have delivered is a massive reduction in dev time, cost, and barrier to entry. Whether you turn that into revenue? That’s up to you.
 
 ## Conclusion
 

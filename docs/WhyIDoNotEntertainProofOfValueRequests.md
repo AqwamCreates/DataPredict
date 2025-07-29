@@ -16,6 +16,8 @@ However, with DataPredict, I have removed a lot of unnecessary costs for you as 
 
 The passion of mines doesn't pay the bills though, so I should be charging on how much people rely on it.
 
+The DataPredict ecosystem took me 3 years to develop as a solo developer. I went borderline full time on it and even worked on it during weekends.
+
 ## Volume-Based Pricing
 
 Instead of charging enterprise-level prices, I went for a volume-based model.

@@ -46,11 +46,11 @@ Hence, I want the game developers to try out the DataPredict ecosystem without m
 
 ## Value Is Also Dependent On How You Use It
 
-One of the most biggest annoyances are regarding to "proving" value is that it is highly dependent on how the user.
+One of the most biggest annoyances are regarding to "proving" value is that it is highly dependent on how the users uses DataPredict.
 
-If you can't use the tools properly, you are guaranteed not to get 100% of the value. This is true for Roblox Studio, Unity, and Unreal Engine.
+If you can't use the tools properly, you are guaranteed not to get 100% of the value. This is true for game engines like Roblox Studio, Unity, and Unreal Engine.
 
-I have created value in terms of lowering development costs and time. Now it is your turn to extract money from using the DataPredict Ecosystem.
+I have created value in terms of lowering development costs and time. However, just like the game engines, they are not guaranteed to bring you revenue.
 
 ## Conclusion
 

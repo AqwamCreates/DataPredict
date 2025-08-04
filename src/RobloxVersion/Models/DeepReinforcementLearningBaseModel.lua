@@ -28,83 +28,83 @@
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-ReinforcementLearningBaseModel = {}
+DeepReinforcementLearningBaseModel = {}
 
-ReinforcementLearningBaseModel.__index = ReinforcementLearningBaseModel
+DeepReinforcementLearningBaseModel.__index = DeepReinforcementLearningBaseModel
 
-setmetatable(ReinforcementLearningBaseModel, BaseInstance)
+setmetatable(DeepReinforcementLearningBaseModel, BaseInstance)
 
 local defaultDiscountFactor = 0.95
 
-function ReinforcementLearningBaseModel.new(parameterDictionary)
+function DeepReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewReinforcementLearningBaseModel = {}
+	local NewDeepReinforcementLearningBaseModel = {}
 	
-	setmetatable(NewReinforcementLearningBaseModel, ReinforcementLearningBaseModel)
+	setmetatable(NewDeepReinforcementLearningBaseModel, DeepReinforcementLearningBaseModel)
 	
-	NewReinforcementLearningBaseModel:setName("ReinforcementLearningBaseModel")
+	NewDeepReinforcementLearningBaseModel:setName("DeepReinforcementLearningBaseModel")
 
-	NewReinforcementLearningBaseModel:setClassName("ReinforcementLearningModel")
+	NewDeepReinforcementLearningBaseModel:setClassName("DeepReinforcementLearningModel")
 	
-	NewReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
+	NewDeepReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
 	
-	NewReinforcementLearningBaseModel.Model = parameterDictionary.Model
+	NewDeepReinforcementLearningBaseModel.Model = parameterDictionary.Model
 	
-	return NewReinforcementLearningBaseModel
+	return NewDeepReinforcementLearningBaseModel
 	
 end
 
-function ReinforcementLearningBaseModel:setDiscountFactor(discountFactor)
+function DeepReinforcementLearningBaseModel:setDiscountFactor(discountFactor)
 	
 	self.discountFactor = discountFactor
 	
 end
 
-function ReinforcementLearningBaseModel:getDiscountFactor()
+function DeepReinforcementLearningBaseModel:getDiscountFactor()
 	
 	return self.discountFactor
 	
 end
 
-function ReinforcementLearningBaseModel:setModel(Model)
+function DeepReinforcementLearningBaseModel:setModel(Model)
 	
 	self.Model = Model
 	
 end
 
-function ReinforcementLearningBaseModel:getModel()
+function DeepReinforcementLearningBaseModel:getModel()
 
 	return self.Model
 
 end
 
-function ReinforcementLearningBaseModel:predict(featureVector, returnOriginalOutput)
+function DeepReinforcementLearningBaseModel:predict(featureVector, returnOriginalOutput)
 
 	return self.Model:predict(featureVector, returnOriginalOutput)
 
 end
 
-function ReinforcementLearningBaseModel:getClassesList()
+function DeepReinforcementLearningBaseModel:getClassesList()
 	
 	return self.Model:getClassesList()
 	
 end
 
-function ReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
+function DeepReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
 
 	self.categoricalUpdateFunction = categoricalUpdateFunction
 
 end
 
-function ReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
+function DeepReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
 	
 	self.diagonalGaussianUpdateFunction = diagonalGaussianUpdateFunction
 	
 end
 
-function ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+function DeepReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 	
 	local categoricalUpdateFunction = self.categoricalUpdateFunction
 	
@@ -120,7 +120,7 @@ function ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector,
 
 end
 
-function ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+function DeepReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
 	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
 
@@ -138,13 +138,13 @@ function ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVe
 
 end
 
-function ReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
+function DeepReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 
 	self.episodeUpdateFunction = episodeUpdateFunction
 
 end
 
-function ReinforcementLearningBaseModel:episodeUpdate(terminalStateValue)
+function DeepReinforcementLearningBaseModel:episodeUpdate(terminalStateValue)
 
 	local episodeUpdateFunction = self.episodeUpdateFunction
 	
@@ -160,13 +160,13 @@ function ReinforcementLearningBaseModel:episodeUpdate(terminalStateValue)
 
 end
 
-function ReinforcementLearningBaseModel:setResetFunction(resetFunction)
+function DeepReinforcementLearningBaseModel:setResetFunction(resetFunction)
 
 	self.resetFunction = resetFunction
 
 end
 
-function ReinforcementLearningBaseModel:reset()
+function DeepReinforcementLearningBaseModel:reset()
 	
 	local resetFunction = self.resetFunction
 
@@ -182,4 +182,4 @@ function ReinforcementLearningBaseModel:reset()
 
 end
 
-return ReinforcementLearningBaseModel
+return DeepReinforcementLearningBaseModel

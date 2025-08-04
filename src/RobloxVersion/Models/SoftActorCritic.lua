@@ -28,33 +28,17 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
+local DeepReinforcementLearningActorCriticBaseModel = require(script.Parent.DeepReinforcementLearningActorCriticBaseModel)
 
 SoftActorCriticModel = {}
 
 SoftActorCriticModel.__index = SoftActorCriticModel
 
-setmetatable(SoftActorCriticModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(SoftActorCriticModel, DeepReinforcementLearningActorCriticBaseModel)
 
 local defaultAlpha = 0.1
 
 local defaultAveragingRate = 0.995
-
-local function calculateProbability(valueVector)
-	
-	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueVector)
-	
-	local zValueVector = AqwamTensorLibrary:subtract(valueVector, maximumValue)
-	
-	local exponentVector = AqwamTensorLibrary:exponent(zValueVector)
-	
-	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
-	
-	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
-
-	return probabilityVector
-
-end
 
 local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
 
@@ -74,37 +58,53 @@ local function rateAverageModelParameters(averagingRate, TargetModelParameters, 
 
 end
 
-local function calculateLogActionProbabilityVector(actionMeanVector, actionStandardDeviationVector, actionNoiseVector)
-	
-	local actionVectorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
+local function calculateCategoricalProbability(valueTensor)
 
-	local actionVector = AqwamTensorLibrary:add(actionMeanVector, actionVectorPart1)
+	local highestActionValue = AqwamTensorLibrary:findMaximumValue(valueTensor)
 
-	local zScoreVectorPart1 = AqwamTensorLibrary:subtract(actionVector, actionMeanVector)
+	local subtractedZTensor = AqwamTensorLibrary:subtract(valueTensor, highestActionValue)
 
-	local zScoreVector = AqwamTensorLibrary:divide(zScoreVectorPart1, actionStandardDeviationVector)
+	local exponentActionTensor = AqwamTensorLibrary:applyFunction(math.exp, subtractedZTensor)
 
-	local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
+	local exponentActionSumTensor = AqwamTensorLibrary:sum(exponentActionTensor, 2)
 
-	local logActionProbabilityVectorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationVector)
+	local targetActionTensor = AqwamTensorLibrary:divide(exponentActionTensor, exponentActionSumTensor)
 
-	local logActionProbabilityVectorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityVectorPart1)
+	return targetActionTensor
 
-	local logActionProbabilityVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
+end
 
-	local logActionProbabilityVectorPart4 = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
-	
-	local logActionProbabilityVector = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityVectorPart4)
-	
-	return logActionProbabilityVector
-	
+local function calculateDiagonalGaussianProbability(actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor)
+
+	local actionTensorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
+
+	local actionTensor = AqwamTensorLibrary:add(actionMeanTensor, actionTensorPart1)
+
+	local zScoreTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, actionMeanTensor)
+
+	local zScoreTensor = AqwamTensorLibrary:divide(zScoreTensorPart1, actionStandardDeviationTensor)
+
+	local squaredZScoreTensor = AqwamTensorLibrary:power(zScoreTensor, 2)
+
+	local logActionProbabilityTensorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationTensor)
+
+	local logActionProbabilityTensorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityTensorPart1)
+
+	local logActionProbabilityTensorPart3 = AqwamTensorLibrary:add(squaredZScoreTensor, logActionProbabilityTensorPart2)
+
+	local logActionProbabilityTensorPart4 = AqwamTensorLibrary:add(logActionProbabilityTensorPart3, math.log(2 * math.pi))
+
+	local logActionProbabilityTensor = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityTensorPart4)
+
+	return logActionProbabilityTensor
+
 end
 
 function SoftActorCriticModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewSoftActorCritic = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewSoftActorCritic = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewSoftActorCritic, SoftActorCriticModel)
 	
@@ -126,9 +126,9 @@ function SoftActorCriticModel.new(parameterDictionary)
 		
 		local currentActionVector = ActorModel:forwardPropagate(currentFeatureVector, true)
 
-		local previousActionProbabilityVector = calculateProbability(previousActionVector)
+		local previousActionProbabilityVector = calculateCategoricalProbability(previousActionVector)
 		
-		local currentActionProbabilityVector = calculateProbability(currentActionVector)
+		local currentActionProbabilityVector = calculateCategoricalProbability(currentActionVector)
 
 		local previousLogActionProbabilityVector = AqwamTensorLibrary:logarithm(previousActionProbabilityVector)
 		
@@ -148,9 +148,9 @@ function SoftActorCriticModel.new(parameterDictionary)
 		
 		local currentActionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
 		
-		local previousLogActionProbabilityVector = calculateLogActionProbabilityVector(actionMeanVector, actionStandardDeviationVector, actionNoiseVector)
+		local previousLogActionProbabilityVector = calculateDiagonalGaussianProbability(actionMeanVector, actionStandardDeviationVector, actionNoiseVector)
 		
-		local currentLogActionProbabilityVector = calculateLogActionProbabilityVector(currentActionMeanVector, actionStandardDeviationVector, currentActionNoiseVector)
+		local currentLogActionProbabilityVector = calculateDiagonalGaussianProbability(currentActionMeanVector, actionStandardDeviationVector, currentActionNoiseVector)
 		
 		return NewSoftActorCritic:update(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, nil, rewardValue, currentFeatureVector, terminalStateValue)
 		

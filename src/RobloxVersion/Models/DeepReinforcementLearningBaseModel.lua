@@ -86,7 +86,7 @@ function DeepReinforcementLearningBaseModel:predict(featureVector, returnOrigina
 
 end
 
-function DeepReinforcementLearningBaseModel:getClassesList()
+function DeepReinforcementLearningBaseModel:getActionsList()
 	
 	return self.Model:getClassesList()
 	

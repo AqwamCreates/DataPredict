@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
+local DeepReinforcementLearningActorCriticBaseModel = require(script.Parent.DeepReinforcementLearningActorCriticBaseModel)
 
 VanillaPolicyGradientModel = {}
 
 VanillaPolicyGradientModel.__index = VanillaPolicyGradientModel
 
-setmetatable(VanillaPolicyGradientModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(VanillaPolicyGradientModel, DeepReinforcementLearningActorCriticBaseModel)
 
 local function calculateProbability(valueVector)
 
@@ -72,7 +72,7 @@ end
 
 function VanillaPolicyGradientModel.new(parameterDictionary)
 
-	local NewVanillaPolicyGradientModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewVanillaPolicyGradientModel = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewVanillaPolicyGradientModel, VanillaPolicyGradientModel)
 

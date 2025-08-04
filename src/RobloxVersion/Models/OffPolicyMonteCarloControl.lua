@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
+local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
 
-OffPolicyMonteCarloControlModel = {}
+DeepOffPolicyMonteCarloControlModel = {}
 
-OffPolicyMonteCarloControlModel.__index = OffPolicyMonteCarloControlModel
+DeepOffPolicyMonteCarloControlModel.__index = DeepOffPolicyMonteCarloControlModel
 
-setmetatable(OffPolicyMonteCarloControlModel, ReinforcementLearningBaseModel)
+setmetatable(DeepOffPolicyMonteCarloControlModel, DeepReinforcementLearningBaseModel)
 
 local defaultTargetPolicyFunction = "StableSoftmax"
 
@@ -96,15 +96,15 @@ local targetPolicyFunctionList = {
 
 }
 
-function OffPolicyMonteCarloControlModel.new(parameterDictionary)
+function DeepOffPolicyMonteCarloControlModel.new(parameterDictionary)
 
-	local NewOffPolicyMonteCarloControlModel = ReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewDeepOffPolicyMonteCarloControlModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 
-	setmetatable(NewOffPolicyMonteCarloControlModel, OffPolicyMonteCarloControlModel)
+	setmetatable(NewDeepOffPolicyMonteCarloControlModel, DeepOffPolicyMonteCarloControlModel)
 
-	NewOffPolicyMonteCarloControlModel:setName("OffPolicyMonteCarloControl")
+	NewDeepOffPolicyMonteCarloControlModel:setName("DeepOffPolicyMonteCarloControl")
 
-	NewOffPolicyMonteCarloControlModel.targetPolicyFunction = parameterDictionary.targetPolicyFunction or defaultTargetPolicyFunction
+	NewDeepOffPolicyMonteCarloControlModel.targetPolicyFunction = parameterDictionary.targetPolicyFunction or defaultTargetPolicyFunction
 
 	local featureVectorHistory = {}
 
@@ -112,9 +112,9 @@ function OffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 	local rewardValueHistory = {}
 
-	NewOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewDeepOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
-		local actionVector = NewOffPolicyMonteCarloControlModel.Model:forwardPropagate(previousFeatureVector)
+		local actionVector = NewDeepOffPolicyMonteCarloControlModel.Model:forwardPropagate(previousFeatureVector)
 
 		table.insert(featureVectorHistory, previousFeatureVector)
 
@@ -124,13 +124,13 @@ function OffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 	end)
 
-	NewOffPolicyMonteCarloControlModel:setEpisodeUpdateFunction(function(terminalStateValue)
+	NewDeepOffPolicyMonteCarloControlModel:setEpisodeUpdateFunction(function(terminalStateValue)
 
-		local Model = NewOffPolicyMonteCarloControlModel.Model
+		local Model = NewDeepOffPolicyMonteCarloControlModel.Model
 
-		local targetPolicyFunction = targetPolicyFunctionList[NewOffPolicyMonteCarloControlModel.targetPolicyFunction]
+		local targetPolicyFunction = targetPolicyFunctionList[NewDeepOffPolicyMonteCarloControlModel.targetPolicyFunction]
 
-		local discountFactor = NewOffPolicyMonteCarloControlModel.discountFactor
+		local discountFactor = NewDeepOffPolicyMonteCarloControlModel.discountFactor
 
 		local numberOfActions = #actionVectorHistory[1]
 
@@ -176,7 +176,7 @@ function OffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 	end)
 
-	NewOffPolicyMonteCarloControlModel:setResetFunction(function()
+	NewDeepOffPolicyMonteCarloControlModel:setResetFunction(function()
 
 		table.clear(featureVectorHistory)
 
@@ -186,8 +186,8 @@ function OffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 	end)
 
-	return NewOffPolicyMonteCarloControlModel
+	return NewDeepOffPolicyMonteCarloControlModel
 
 end
 
-return OffPolicyMonteCarloControlModel
+return DeepOffPolicyMonteCarloControlModel

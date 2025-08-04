@@ -210,7 +210,7 @@ function CategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local previousAction =  NewCategoricalPolicyQuickSetup.previousAction
 
-		local ClassesList = Model:getClassesList()
+		local ActionsList = Model:getActionsList()
 
 		local randomProbability = Random.new():NextNumber()
 
@@ -228,7 +228,7 @@ function CategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		if (randomProbability < currentEpsilon) then
 
-			actionIndex = Random.new():NextInteger(1, #ClassesList)
+			actionIndex = Random.new():NextInteger(1, #ActionsList)
 
 		else
 
@@ -236,7 +236,7 @@ function CategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		end
 
-		action = ClassesList[actionIndex]
+		action = ActionsList[actionIndex]
 
 		actionValue = actionVector[1][actionIndex]
 		

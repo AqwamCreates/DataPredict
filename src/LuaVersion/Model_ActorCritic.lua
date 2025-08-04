@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningActorCriticBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
+local DeepReinforcementLearningActorCriticBaseModel = require("Model_DeepReinforcementLearningActorCriticBaseModel")
 
 ActorCriticModel = {}
 
 ActorCriticModel.__index = ActorCriticModel
 
-setmetatable(ActorCriticModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(ActorCriticModel, DeepReinforcementLearningActorCriticBaseModel)
 
 local function calculateProbability(valueVector)
 
@@ -72,7 +72,7 @@ end
 
 function ActorCriticModel.new(parameterDictionary)
 
-	local NewActorCriticModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewActorCriticModel = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewActorCriticModel, ActorCriticModel)
 
@@ -164,7 +164,7 @@ function ActorCriticModel.new(parameterDictionary)
 
 			CriticModel:update(criticLoss, true)
 
-			ActorModel:backwardPropagate(actorLossVector, true)
+			ActorModel:update(actorLossVector, true)
 
 		end
 

@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - OffPolicyMonteCarloControl
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepOffPolicyMonteCarloControl
 
-OffPolicyMonteCarloControl is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+DeepOffPolicyMonteCarloControl is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ OffPolicyMonteCarloControl is a neural network with reinforcement learning capab
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-OffPolicyMonteCarloControl.new(targetPolicyFunction: string, discountFactor: number): ModelObject
+DeepOffPolicyMonteCarloControl.new(targetPolicyFunction: string, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -35,7 +35,7 @@ OffPolicyMonteCarloControl.new(targetPolicyFunction: string, discountFactor: num
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-OffPolicyMonteCarloControl:setParameters(targetPolicyFunction: string, discountFactor: number)
+DeepOffPolicyMonteCarloControl:setParameters(targetPolicyFunction: string, discountFactor: number)
 ```
 
 #### Parameters:
@@ -52,7 +52,7 @@ OffPolicyMonteCarloControl:setParameters(targetPolicyFunction: string, discountF
 
 ## Inherited From
 
-* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
+* [DeepReinforcementLearningBaseModel](DeepReinforcementLearningBaseModel.md)
 
 ## References
 

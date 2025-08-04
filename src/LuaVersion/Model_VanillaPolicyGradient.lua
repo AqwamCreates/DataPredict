@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningActorCriticBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
+local DeepReinforcementLearningActorCriticBaseModel = require("Model_DeepReinforcementLearningActorCriticBaseModel")
 
 VanillaPolicyGradientModel = {}
 
 VanillaPolicyGradientModel.__index = VanillaPolicyGradientModel
 
-setmetatable(VanillaPolicyGradientModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(VanillaPolicyGradientModel, DeepReinforcementLearningActorCriticBaseModel)
 
 local function calculateProbability(valueVector)
 
@@ -72,7 +72,7 @@ end
 
 function VanillaPolicyGradientModel.new(parameterDictionary)
 
-	local NewVanillaPolicyGradientModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewVanillaPolicyGradientModel = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewVanillaPolicyGradientModel, VanillaPolicyGradientModel)
 
@@ -180,7 +180,7 @@ function VanillaPolicyGradientModel.new(parameterDictionary)
 
 			CriticModel:update(advantageValue, true)
 
-			ActorModel:backwardPropagate(actorLossVector, true)
+			ActorModel:update(actorLossVector, true)
 
 		end
 

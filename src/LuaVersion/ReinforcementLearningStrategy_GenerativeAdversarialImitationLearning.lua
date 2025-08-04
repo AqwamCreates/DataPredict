@@ -58,7 +58,7 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 		local isOutputPrinted = NewGenerativeAdversarialImitationLearning.isOutputPrinted
 
-		local ClassesList = ReinforcementLearningModel:getClassesList()
+		local ActionsList = ReinforcementLearningModel:getActionsList()
 
 		local previousFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
 
@@ -120,7 +120,7 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 				local actionIndex = NewGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertActionVector)
 
-				local action = ClassesList[actionIndex]
+				local action = ActionsList[actionIndex]
 
 				if (not action) then error("Missing action at index " .. actionIndex .. "!") end
 

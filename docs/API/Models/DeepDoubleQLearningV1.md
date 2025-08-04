@@ -88,7 +88,7 @@ DeepDoubleQLearning:getModelParameters2(doNotDeepCopy: boolean): ModelParameters
 
 ## Inherited From
 
-* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
+* [DeepReinforcementLearningBaseModel](DeepReinforcementLearningBaseModel.md)
 
 ## References
 

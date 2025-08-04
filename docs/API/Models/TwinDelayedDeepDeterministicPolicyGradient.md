@@ -38,7 +38,7 @@ TwinDelayedDeepDeterministicPolicyGradient.new(noiseClippingFactor: number, poli
 
 ## Inherited From
 
-* [ReinforcementLearningActorCriticBaseModel](ReinforcementLearningActorCriticBaseModel.md)
+* [DeepReinforcementLearningActorCriticBaseModel](DeepReinforcementLearningActorCriticBaseModel.md)
 
 ## References
 

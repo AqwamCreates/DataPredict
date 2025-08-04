@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - MonteCarloControl
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepMonteCarloControl
 
-MonteCarloControl is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+DeepMonteCarloControl is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ MonteCarloControl is a neural network with reinforcement learning capabilities. 
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-MonteCarloControl.new(discountFactor: number): ModelObject
+DeepMonteCarloControl.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -27,7 +27,7 @@ MonteCarloControl.new(discountFactor: number): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-MonteCarloControl:setParameters(discountFactor: number)
+DeepMonteCarloControl:setParameters(discountFactor: number)
 ```
 
 #### Parameters:

@@ -34,7 +34,7 @@ ProximalPolicyOptimizationClip.new(clipRatio: number, lambda: number, discountFa
 
 ## Inherited From
 
-* [ReinforcementLearningActorCriticBaseModel](ReinforcementLearningActorCriticBaseModel.md)
+* [DeepReinforcementLearningActorCriticBaseModel](DeepReinforcementLearningActorCriticBaseModel.md)
 
 ## References
 

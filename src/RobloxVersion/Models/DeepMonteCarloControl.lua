@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine And Deep Learning Library (DataPredict)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -108,4 +108,4 @@ function DeepMonteCarloControlModel.new(parameterDictionary)
 
 end
 
-return NewDeepMonteCarloControlModel
+return DeepMonteCarloControlModel

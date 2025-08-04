@@ -104,9 +104,9 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	
 	DeepDoubleExpectedStateActionRewardStateActionV2 = require(Models.DeepDoubleExpectedStateActionRewardStateActionV2),
 	
-	MonteCarloControl = require(Models.MonteCarloControl),
+	DeepMonteCarloControl = require(Models.DeepMonteCarloControl),
 
-	OffPolicyMonteCarloControl = require(Models.OffPolicyMonteCarloControl),
+	DeepOffPolicyMonteCarloControl = require(Models.DeepOffPolicyMonteCarloControl),
 	
 	REINFORCE = require(Models.REINFORCE),
 	
@@ -133,7 +133,7 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	WassersteinGenerativeAdversarialNetwork = require(Models.WassersteinGenerativeAdversarialNetwork),
 
 	ConditionalWassersteinGenerativeAdversarialNetwork = require(Models.ConditionalWassersteinGenerativeAdversarialNetwork),
-	
+
 }
 
 AqwamMachineAndDeepLearningLibrary.Optimizers = {

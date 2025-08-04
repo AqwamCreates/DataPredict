@@ -30,7 +30,7 @@ DeepDoubleExpectedStateActionRewardStateAction.new(epsilon: number, averagingRat
 
 ## Inherited From
 
-* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
+* [DeepReinforcementLearningBaseModel](DeepReinforcementLearningBaseModel.md)
 
 ## References
 

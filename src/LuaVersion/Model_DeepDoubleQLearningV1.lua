@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
+local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
 DeepDoubleQLearningModel = {}
 
 DeepDoubleQLearningModel.__index = DeepDoubleQLearningModel
 
-setmetatable(DeepDoubleQLearningModel, ReinforcementLearningBaseModel)
+setmetatable(DeepDoubleQLearningModel, DeepReinforcementLearningBaseModel)
 
 local defaultLambda = 0
 
@@ -42,7 +42,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewDeepDoubleQLearningModel = ReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewDeepDoubleQLearningModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 
 	setmetatable(NewDeepDoubleQLearningModel, DeepDoubleQLearningModel)
 	

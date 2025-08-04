@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
+local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
 
 DeepDoubleQLearningModel = {}
 
 DeepDoubleQLearningModel.__index = DeepDoubleQLearningModel
 
-setmetatable(DeepDoubleQLearningModel, ReinforcementLearningBaseModel)
+setmetatable(DeepDoubleQLearningModel, DeepReinforcementLearningBaseModel)
 
 local defaultAveragingRate = 0.995
 
@@ -62,7 +62,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewDeepDoubleQLearningModel = ReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewDeepDoubleQLearningModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 
 	setmetatable(NewDeepDoubleQLearningModel, DeepDoubleQLearningModel)
 	

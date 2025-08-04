@@ -38,7 +38,7 @@ DeepStateActionRewardStateAction:setParameters(discountFactor: number)
 
 ## Inherited From
 
-* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
+* [DeepReinforcementLearningBaseModel](DeepReinforcementLearningBaseModel.md)
 
 ## References
 

@@ -114,6 +114,8 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 		
 		local actionIndex = table.find(resultVector, maximumValue)
 		
+		if (not actionIndex) then error("Action does not exist in the actions list.") end
+		
 		resultArray[i] = ActionsList[actionIndex]
 		
 	end

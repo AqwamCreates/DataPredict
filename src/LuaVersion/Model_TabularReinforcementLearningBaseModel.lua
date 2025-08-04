@@ -124,12 +124,6 @@ function TabularReinforcementLearningBaseModel:setCategoricalUpdateFunction(cate
 
 end
 
-function TabularReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
-	
-	self.diagonalGaussianUpdateFunction = diagonalGaussianUpdateFunction
-	
-end
-
 function TabularReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 	
 	local categoricalUpdateFunction = self.categoricalUpdateFunction

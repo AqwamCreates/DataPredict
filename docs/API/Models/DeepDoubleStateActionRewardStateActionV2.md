@@ -26,7 +26,7 @@ DeepDoubleStateActionRewardStateAction.new(averagingRate: number, lambda: number
 
 ## Inherited From
 
-* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
+* [DeepReinforcementLearningBaseModel](DeepReinforcementLearningBaseModel.md)
 
 ## References
 

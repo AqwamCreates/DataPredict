@@ -26,7 +26,7 @@ DeepExpectedStateActionRewardStateAction.new(epsilon: number, lambda: number, di
 
 ## Inherited From
 
-* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
+* [DeepReinforcementLearningBaseModel](DeepReinforcementLearningBaseModel.md)
 
 ## References
 

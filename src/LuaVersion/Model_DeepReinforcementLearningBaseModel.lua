@@ -26,7 +26,7 @@
 
 --]]
 
-local BaseInstance = require("Cores_BaseInstance")
+local BaseInstance = require("Core_BaseInstance")
 
 DeepReinforcementLearningBaseModel = {}
 
@@ -86,7 +86,7 @@ function DeepReinforcementLearningBaseModel:predict(featureVector, returnOrigina
 
 end
 
-function DeepReinforcementLearningBaseModel:getClassesList()
+function DeepReinforcementLearningBaseModel:getActionsList()
 	
 	return self.Model:getClassesList()
 	

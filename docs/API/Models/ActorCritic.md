@@ -44,7 +44,7 @@ ActorCritic:setParameters(discountFactor: number)
 
 ## Inherited From
 
-* [ReinforcementLearningActorCriticBaseModel](ReinforcementLearningActorCriticBaseModel.md)
+* [DeepReinforcementLearningActorCriticBaseModel](DeepReinforcementLearningActorCriticBaseModel.md)
 
 ## References
 

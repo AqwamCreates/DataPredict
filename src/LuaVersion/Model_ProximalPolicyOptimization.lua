@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningActorCriticBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
+local DeepReinforcementLearningActorCriticBaseModel = require("Model_DeepReinforcementLearningActorCriticBaseModel")
 
 ProximalPolicyOptimizationModel = {}
 
 ProximalPolicyOptimizationModel.__index = ProximalPolicyOptimizationModel
 
-setmetatable(ProximalPolicyOptimizationModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(ProximalPolicyOptimizationModel, DeepReinforcementLearningActorCriticBaseModel)
 
 local defaultClipRatio = 0.3
 
@@ -102,7 +102,7 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewProximalPolicyOptimizationModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewProximalPolicyOptimizationModel = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewProximalPolicyOptimizationModel, ProximalPolicyOptimizationModel)
 

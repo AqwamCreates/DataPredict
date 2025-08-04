@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
+local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
-MonteCarloControlModel = {}
+DeepMonteCarloControlModel = {}
 
-MonteCarloControlModel.__index = MonteCarloControlModel
+DeepMonteCarloControlModel.__index = DeepMonteCarloControlModel
 
-setmetatable(MonteCarloControlModel, ReinforcementLearningBaseModel)
+setmetatable(DeepMonteCarloControlModel, DeepReinforcementLearningBaseModel)
 
 local function calculateRewardToGo(rewardValueHistory, discountFactor)
 
@@ -54,19 +54,19 @@ local function calculateRewardToGo(rewardValueHistory, discountFactor)
 
 end
 
-function MonteCarloControlModel.new(parameterDictionary)
+function DeepMonteCarloControlModel.new(parameterDictionary)
 
-	local NewMonteCarloControlModel = ReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewDeepMonteCarloControlModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 	
-	setmetatable(NewMonteCarloControlModel, MonteCarloControlModel)
+	setmetatable(NewDeepMonteCarloControlModel, DeepMonteCarloControlModel)
 	
-	NewMonteCarloControlModel:setName("MonteCarloControl")
+	NewDeepMonteCarloControlModel:setName("DeepMonteCarloControl")
 	
 	local featureVectorHistory = {}
 	
 	local rewardValueHistory = {}
 	
-	NewMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewDeepMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 		table.insert(featureVectorHistory, previousFeatureVector)
 		
@@ -74,11 +74,11 @@ function MonteCarloControlModel.new(parameterDictionary)
 
 	end)
 	
-	NewMonteCarloControlModel:setEpisodeUpdateFunction(function(terminalStateValue)
+	NewDeepMonteCarloControlModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local Model = NewMonteCarloControlModel.Model
+		local Model = NewDeepMonteCarloControlModel.Model
 		
-		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewMonteCarloControlModel.discountFactor)
+		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewDeepMonteCarloControlModel.discountFactor)
 		
 		for h, featureVector in ipairs(featureVectorHistory) do
 			
@@ -96,7 +96,7 @@ function MonteCarloControlModel.new(parameterDictionary)
 		
 	end)
 	
-	NewMonteCarloControlModel:setResetFunction(function()
+	NewDeepMonteCarloControlModel:setResetFunction(function()
 		
 		table.clear(featureVectorHistory)
 		
@@ -104,8 +104,8 @@ function MonteCarloControlModel.new(parameterDictionary)
 		
 	end)
 	
-	return NewMonteCarloControlModel
+	return NewDeepMonteCarloControlModel
 
 end
 
-return MonteCarloControlModel
+return NewDeepMonteCarloControlModel

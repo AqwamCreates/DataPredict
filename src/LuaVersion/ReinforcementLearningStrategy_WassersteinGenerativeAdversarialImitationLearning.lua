@@ -58,7 +58,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 		local isOutputPrinted = NewWassersteinGenerativeAdversarialImitationLearning.isOutputPrinted
 
-		local ClassesList = ReinforcementLearningModel:getClassesList()
+		local ActionsList = ReinforcementLearningModel:getActionsList()
 
 		local previousFeatureMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
 
@@ -120,7 +120,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				local actionIndex = NewWassersteinGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertActionVector)
 
-				local action = ClassesList[actionIndex]
+				local action = ActionsList[actionIndex]
 
 				if (not action) then error("Missing action at index " .. actionIndex .. "!") end
 

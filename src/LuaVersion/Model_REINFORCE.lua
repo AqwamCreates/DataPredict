@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
+local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
 REINFORCEModel = {}
 
 REINFORCEModel.__index = REINFORCEModel
 
-setmetatable(REINFORCEModel, ReinforcementLearningBaseModel)
+setmetatable(REINFORCEModel, DeepReinforcementLearningBaseModel)
 
 local function calculateProbability(valueVector)
 
@@ -72,7 +72,7 @@ end
 
 function REINFORCEModel.new(parameterDictionary)
 
-	local NewREINFORCEModel = ReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewREINFORCEModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewREINFORCEModel, REINFORCEModel)
 	

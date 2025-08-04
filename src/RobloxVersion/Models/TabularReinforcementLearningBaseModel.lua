@@ -84,25 +84,53 @@ function TabularReinforcementLearningBaseModel:getModelParameters(doNotDeepCopyT
 
 end
 
-function TabularReinforcementLearningBaseModel:predict(state, returnOriginalOutput)
+function TabularReinforcementLearningBaseModel:predict(stateArray, returnOriginalOutput)
 	
 	local resultTensor = {}
 	
+	local StatesList = self.StatesList
 	
+	local ActionsList = self.ActionsList
+	
+	local ModelParameters = self.ModelParameters
+	
+	for i, state in ipairs(stateArray) do
+		
+		local stateIndex = table.find(StatesList, state)
+		
+		if (not stateIndex) then error("State does not exist in the states list.") end
+		
+		resultTensor[i] = ModelParameters[stateIndex]
+		
+	end
+	
+	if (returnOriginalOutput) then return resultTensor end
+	
+	local resultArray = {}
+	
+	for i, resultVector in ipairs(resultTensor) do
+		
+		local maximumValue = math.max(table.unpack(resultVector))
+		
+		local actionIndex = table.find(resultVector, maximumValue)
+		
+		resultArray[i] = ActionsList[actionIndex]
+		
+	end
 
-	return self.Model:predict(state, returnOriginalOutput)
+	return resultArray
 
 end
 
-function TabularReinforcementLearningBaseModel:setStatesList()
-	
-	return self.StatesList
-	
-end
-
-function TabularReinforcementLearningBaseModel:getStatesList(StatesList)
+function TabularReinforcementLearningBaseModel:setStatesList(StatesList)
 	
 	self.StatesList = StatesList
+	
+end
+
+function TabularReinforcementLearningBaseModel:getStatesList()
+	
+	return self.StatesList
 	
 end
 

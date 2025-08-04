@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
+local DeepReinforcementLearningActorCriticBaseModel = require(script.Parent.DeepReinforcementLearningActorCriticBaseModel)
 
 AdvantageActorCriticModel = {}
 
 AdvantageActorCriticModel.__index = AdvantageActorCriticModel
 
-setmetatable(AdvantageActorCriticModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(AdvantageActorCriticModel, DeepReinforcementLearningActorCriticBaseModel)
 
 local defaultLambda = 0
 
@@ -58,7 +58,7 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewAdvantageActorCriticModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewAdvantageActorCriticModel = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewAdvantageActorCriticModel, AdvantageActorCriticModel)
 

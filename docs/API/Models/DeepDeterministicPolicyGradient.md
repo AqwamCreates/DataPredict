@@ -34,7 +34,7 @@ DeepDeterministicPolicyGradient.new(averagingRate: number, discountFactor: numbe
 
 ## Inherited From
 
-* [ReinforcementLearningActorCriticBaseModel](ReinforcementLearningActorCriticBaseModel.md)
+* [DeepReinforcementLearningActorCriticBaseModel](DeepReinforcementLearningActorCriticBaseModel.md)
 
 ## References
 

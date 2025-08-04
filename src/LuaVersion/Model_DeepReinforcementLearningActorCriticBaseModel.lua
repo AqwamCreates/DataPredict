@@ -100,7 +100,7 @@ function DeepReinforcementLearningActorCriticBaseModel:predict(featureVector, re
 	
 end
 
-function DeepReinforcementLearningActorCriticBaseModel:getClassesList()
+function DeepReinforcementLearningActorCriticBaseModel:getActionsList()
 
 	return self.ActorModel:getClassesList()
 

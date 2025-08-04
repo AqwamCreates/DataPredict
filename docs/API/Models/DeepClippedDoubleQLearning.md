@@ -76,7 +76,7 @@ DeepClippedDoubleQLearning:getModelParameters2(): ModelParameters
 
 ## Inherited From
 
-* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
+* [DeepReinforcementLearningBaseModel](DeepReinforcementLearningBaseModel.md)
 
 ## References
 

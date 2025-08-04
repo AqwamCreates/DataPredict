@@ -26,7 +26,7 @@
 
 --]]
 
-local BaseInstance = require("Cores_BaseInstance")
+local BaseInstance = require("Core_BaseInstance")
 
 DeepReinforcementLearningActorCriticBaseModel = {}
 

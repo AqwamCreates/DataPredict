@@ -78,8 +78,8 @@
 | [TabularQLearning](Models/TabularQLearning.md)                                           | Q-Learning      | Best Self-Learning Grid AIs     |
 | [TabularStateActionRewardState](Models/TabularStateActionRewardState.md)                 | SARSA           | Safe Self-Learning Grid AIs     |
 | [TabularExpectedStateActionRewardState](Models/TabularExpectedStateActionRewardState.md) | Expected SARSA  | Balanced Self-Learning Grid AIs |
-| [TabularMonteCarlo](Models/TabularMonteCarlo.md)                                         | MC              | Online Self-Learning Grid AIs   |
-| [TabularOffPolicyMonteCarlo](Models/TabularOffPolicyMonteCarlo.md)                       | Off-Policy MC   | Offline Self-Learning Grid AIs  |
+| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                           | MC              | Online Self-Learning Grid AIs   |
+| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)         | Off-Policy MC   | Offline Self-Learning Grid AIs  |
 
 ## Generative
 

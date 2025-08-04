@@ -1,5 +1,16 @@
 # [API Reference](../API.md) - Models
 
+| Model Type                     | Count |
+|--------------------------------|-------|
+| Regression                     | 4     |
+| Classification                 | 8     |
+| Clustering                     | 7     |
+| Deep Reinforcement Learning    | 21    |
+| Tabular Reinforcement Learning | 5     |
+| Generative                     | 4     |
+| Total                          | 49    |
+
+
 ## Regression
 
 | Model                                                                                      | Alternate Names | Use Cases                                            |

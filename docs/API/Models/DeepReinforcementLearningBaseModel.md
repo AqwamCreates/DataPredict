@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - ReinforcementLearningBaseModel
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepReinforcementLearningBaseModel
 
-ReinforcementLearningBaseModel is a base class for reinforcement learning neural network models.
+DeepReinforcementLearningBaseModel is a base class for reinforcement learning neural network models.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ ReinforcementLearningBaseModel is a base class for reinforcement learning neural
 Creates a new base model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ReinforcementLearningBaseModel.new(discountFactor: number): ModelObject
+DeepReinforcementLearningBaseModel.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -27,7 +27,7 @@ ReinforcementLearningBaseModel.new(discountFactor: number): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ReinforcementLearningBaseModel:setParameters(discountFactor: number)
+DeepReinforcementLearningBaseModel:setParameters(discountFactor: number)
 ```
 
 ### setModel()
@@ -35,7 +35,7 @@ ReinforcementLearningBaseModel:setParameters(discountFactor: number)
 Sets the model.
 
 ```
-ReinforcementLearningBaseModel:setModel(Model: ModelObject)
+DeepReinforcementLearningBaseModel:setModel(Model: ModelObject)
 ```
 
 #### Parameters:
@@ -47,7 +47,7 @@ ReinforcementLearningBaseModel:setModel(Model: ModelObject)
 Gets the model.
 
 ```
-ReinforcementLearningBaseModel:getModel(): ModelObject
+DeepReinforcementLearningBaseModel:getModel(): ModelObject
 ```
 
 #### Returns:
@@ -59,7 +59,7 @@ ReinforcementLearningBaseModel:getModel(): ModelObject
 Sets the model's categorical policy update function.
 
 ```
-ReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
+DeepReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
 ```
 
 #### Parameters:
@@ -71,7 +71,7 @@ ReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUpdateFun
 Sets the model's diagonal Gausian policy update function.
 
 ```
-ReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
+DeepReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
 ```
 
 #### Parameters:
@@ -83,7 +83,7 @@ ReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussia
 Sets the model's episode update function.
 
 ```
-ReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
+DeepReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 ```
 
 #### Parameters:
@@ -95,7 +95,7 @@ ReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 Updates the model parameters using categoricalUpdateFunction().
 
 ```
-ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
+DeepReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
 ```
 
 #### Parameters:
@@ -115,7 +115,7 @@ ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureV
 Updates the model parameters using diagonalGaussianUpdateFunction().
 
 ```
-ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, actionMeanVector: vector, actionStandardDeviationVector, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
+DeepReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, actionMeanVector: vector, actionStandardDeviationVector, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
 ```
 
 #### Parameters:
@@ -137,7 +137,7 @@ ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector: fea
 Updates the model parameters using episodeUpdateFunction().
 
 ```
-ReinforcementLearningBaseModel:episodeUpdate()
+DeepReinforcementLearningBaseModel:episodeUpdate()
 ```
 
 ### setResetFunction()
@@ -145,7 +145,7 @@ ReinforcementLearningBaseModel:episodeUpdate()
 Sets a new function on reset alongside with the current reset() function. 
 
 ```
-ReinforcementLearningBaseModel:setResetFunction(resetFunction)
+DeepReinforcementLearningBaseModel:setResetFunction(resetFunction)
 ```
 
 #### Parameters:
@@ -157,5 +157,5 @@ ReinforcementLearningBaseModel:setResetFunction(resetFunction)
 Reset model's stored values (excluding the parameters).
 
 ```
-ReinforcementLearningBaseModel:reset()
+DeepReinforcementLearningBaseModel:reset()
 ```

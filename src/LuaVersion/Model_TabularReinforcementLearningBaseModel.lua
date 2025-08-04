@@ -26,7 +26,7 @@
 
 --]]
 
-local BaseInstance = require("Core_BaseInstance")
+local BaseInstance = require("Cores_BaseInstance")
 
 TabularReinforcementLearningBaseModel = {}
 
@@ -113,6 +113,8 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 		local maximumValue = math.max(table.unpack(resultVector))
 		
 		local actionIndex = table.find(resultVector, maximumValue)
+		
+		if (not actionIndex) then error("Action does not exist in the actions list.") end
 		
 		resultArray[i] = ActionsList[actionIndex]
 		

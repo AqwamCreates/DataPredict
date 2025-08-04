@@ -48,7 +48,7 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 
 	NewDeepReinforcementLearningBaseModel:setClassName("TabularReinforcementLearningModel")
 	
-	NewDeepReinforcementLearningBaseModel.StatesList = parameterDictionary.ActionsList or {}
+	NewDeepReinforcementLearningBaseModel.StatesList = parameterDictionary.StatesList or {}
 	
 	NewDeepReinforcementLearningBaseModel.ActionsList = parameterDictionary.ActionsList or {}
 	

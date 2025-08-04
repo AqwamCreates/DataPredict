@@ -32,7 +32,7 @@ ProximalPolicyOptimization.new(lambda: number, discountFactor: number): ModelObj
 
 ## Inherited From
 
-* [ReinforcementLearningActorCriticBaseModel](ReinforcementLearningActorCriticBaseModel.md)
+* [DeepReinforcementLearningActorCriticBaseModel](DeepReinforcementLearningActorCriticBaseModel.md)
 
 ## References
 

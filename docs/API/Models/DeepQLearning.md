@@ -24,7 +24,7 @@ DeepQLearning.new(lambda: number, discountFactor: number): ModelObject
 
 ## Inherited From
 
-* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
+* [DeepReinforcementLearningBaseModel](DeepReinforcementLearningBaseModel.md)
 
 ## References
 

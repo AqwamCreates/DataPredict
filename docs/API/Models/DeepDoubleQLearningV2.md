@@ -46,7 +46,7 @@ DeepDoubleQLearning:setParameters(averagingRate: number, lambda: number, discoun
 
 ## Inherited From
 
-* [ReinforcementLearningBaseModel](ReinforcementLearningBaseModel.md)
+* [DeepReinforcementLearningBaseModel](DeepReinforcementLearningBaseModel.md)
 
 ## References
 

@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
+local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
 
 DeepClippedDoubleQLearningModel = {}
 
 DeepClippedDoubleQLearningModel.__index = DeepClippedDoubleQLearningModel
 
-setmetatable(DeepClippedDoubleQLearningModel, ReinforcementLearningBaseModel)
+setmetatable(DeepClippedDoubleQLearningModel, DeepReinforcementLearningBaseModel)
 
 local defaultLambda = 0
 
@@ -42,7 +42,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewDeepClippedDoubleQLearningModel = ReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewDeepClippedDoubleQLearningModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewDeepClippedDoubleQLearningModel, DeepClippedDoubleQLearningModel)
 	

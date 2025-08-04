@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseModel = require("Model_ReinforcementLearningBaseModel")
+local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
 DeepExpectedStateActionRewardStateActionModel = {}
 
 DeepExpectedStateActionRewardStateActionModel.__index = DeepExpectedStateActionRewardStateActionModel
 
-setmetatable(DeepExpectedStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
+setmetatable(DeepExpectedStateActionRewardStateActionModel, DeepReinforcementLearningBaseModel)
 
 local defaultEpsilon = 0.5
 
@@ -44,7 +44,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewDeepExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewDeepExpectedStateActionRewardStateActionModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 
 	setmetatable(NewDeepExpectedStateActionRewardStateActionModel, DeepExpectedStateActionRewardStateActionModel)
 	

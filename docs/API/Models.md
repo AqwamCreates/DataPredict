@@ -48,8 +48,8 @@
 | [DeepExpectedStateActionRewardStateAction](Models/DeepExpectedStateActionRewardStateAction.md)                                   | Deep Expected SARSA                       | Balanced Self-Learning Player AIs, Balanced Recommendation Systems          |
 | [DeepDoubleExpectedStateActionRewardStateActionV1](Models/DeepDoubleExpectedStateActionRewardStateActionV1.md)                   | Double Deep Expected SARSA                | Balanced Self-Learning Player AIs, Balanced Recommendation Systems          |
 | [DeepDoubleExpectedStateActionRewardStateActionV2](Models/DeepDoubleExpectedStateActionRewardStateActionV2.md)                   | Double Deep Expected SARSA                | Balanced Self-Learning Player AIs, Balanced Recommendation Systems          |
-| [DeepMonteCarloControl](Models/DeepMonteCarloControl.md) (May Need Further Refinement)                                                   | None                                      | Online Self-Learning Player AIs                                             |
-| [DeepOffPolicyMonteCarloControl](Models/DeepOffPolicyMonteCarloControl.md)                                                               | None                                      | Offline Self-Learning Player AIs                                            |
+| [DeepMonteCarloControl](Models/DeepMonteCarloControl.md) (May Need Further Refinement)                                           | None                                      | Online Self-Learning Player AIs                                             |
+| [DeepOffPolicyMonteCarloControl](Models/DeepOffPolicyMonteCarloControl.md)                                                       | None                                      | Offline Self-Learning Player AIs                                            |
 | [REINFORCE](Models/REINFORCE.md)                                                                                                 | None                                      | Reward-Based Self-Learning Player AIs                                       |
 | [VanillaPolicyGradient](Models/VanillaPolicyGradient.md)                                                                         | VPG                                       | Baseline-Based Self-Learning Player AIs                                     |
 | [ActorCritic](Models/ActorCritic.md)                                                                                             | AC                                        | Critic-Based Self-Learning Player AIs                                       |
@@ -59,6 +59,16 @@
 | [SoftActorCritic](Models/SoftActorCritic.md)                                                                                     | SAC                                       | Self-Learning Vehicle AIs                                                   |
 | [DeepDeterministicPolicyGradient](Models/DeepDeterministicPolicyGradient.md)                                                     | DDPG                                      | Self-Learning Vehicle AIs                                                   |
 | [TwinDelayedDeepDeterministicPolicyGradient](Models/TwinDelayedDeepDeterministicPolicyGradient.md)                               | TD3                                       | Self-Learning Vehicle AIs                                                   |
+
+## Tabular Reinforcement Learning
+
+| Model                                                                                    | Alternate Names | Use Cases                       |
+|------------------------------------------------------------------------------------------|-----------------|---------------------------------|
+| [TabularQLearning](Models/TabularQLearning.md)                                           | Q-Learning      | Best Self-Learning Grid AIs     |
+| [TabularStateActionRewardState](Models/TabularStateActionRewardState.md)                 | SARSA           | Safe Self-Learning Grid AIs     |
+| [TabularExpectedStateActionRewardState](Models/TabularExpectedStateActionRewardState.md) | Expected SARSA  | Balanced Self-Learning Grid AIs |
+| [TabularMonteCarlo](Models/TabularMonteCarlo.md)                                         | MC              | Online Self-Learning Grid AIs   |
+| [TabularOffPolicyMonteCarlo](Models/TabularOffPolicyMonteCarlo.md)                       | Off-Policy MC   | Offline Self-Learning Grid AIs  |
 
 ## Generative
 
@@ -80,3 +90,5 @@
 [DeepReinforcementLearningBaseModel](Models/DeepReinforcementLearningBaseModel.md)
 
 [DeepReinforcementLearningActorCriticBaseModel](Models/DeepReinforcementLearningActorCriticBaseModel.md)
+
+[TabularReinforcementLearningActorCriticBaseModel](Models/TabularReinforcementLearningActorCriticBaseModel.md)

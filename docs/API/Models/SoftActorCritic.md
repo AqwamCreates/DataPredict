@@ -34,7 +34,7 @@ SoftActorCritic.new(alpha: number, averagingRate: number, discountFactor: number
 
 ## Inherited From
 
-* [ReinforcementLearningActorCriticBaseModel](ReinforcementLearningActorCriticBaseModel.md)
+* [DeepReinforcementLearningActorCriticBaseModel](DeepReinforcementLearningActorCriticBaseModel.md)
 
 ## References
 

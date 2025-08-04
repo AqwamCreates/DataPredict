@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - ReinforcementLearningActorCriticBaseModel
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepReinforcementLearningActorCriticBaseModel
 
-ReinforcementLearningActorCriticBaseModel is a base class for reinforcement learning neural network models.
+DeepReinforcementLearningActorCriticBaseModel is a base class for reinforcement learning neural network models.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ ReinforcementLearningActorCriticBaseModel is a base class for reinforcement lear
 Creates a new base model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ReinforcementLearningActorCriticBaseModel.new(discountFactor: number): ModelObject
+DeepReinforcementLearningActorCriticBaseModel.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -27,7 +27,7 @@ ReinforcementLearningActorCriticBaseModel.new(discountFactor: number): ModelObje
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ReinforcementLearningActorCriticBaseModel:setParameters(discountFactor: number)
+DeepReinforcementLearningActorCriticBaseModel:setParameters(discountFactor: number)
 ```
 
 #### Parameters:
@@ -39,7 +39,7 @@ ReinforcementLearningActorCriticBaseModel:setParameters(discountFactor: number)
 Sets the actor model. The outputs of the actor model is required to be in normal distribution format.
 
 ```
-ReinforcementLearningActorCriticBaseModel:setActorModel(Model: ModelObject)
+DeepReinforcementLearningActorCriticBaseModel:setActorModel(Model: ModelObject)
 ```
 
 #### Parameters:
@@ -51,7 +51,7 @@ ReinforcementLearningActorCriticBaseModel:setActorModel(Model: ModelObject)
 Sets the critic model.
 
 ```
-ReinforcementLearningActorCriticBaseModel:setCriticModel(Model: ModelObject)
+DeepReinforcementLearningActorCriticBaseModel:setCriticModel(Model: ModelObject)
 ```
 
 #### Parameters:
@@ -63,7 +63,7 @@ ReinforcementLearningActorCriticBaseModel:setCriticModel(Model: ModelObject)
 Gets the actor model.
 
 ```
-ReinforcementLearningActorCriticBaseModel:getActorModel(): ModelObject
+DeepReinforcementLearningActorCriticBaseModel:getActorModel(): ModelObject
 ```
 
 #### Returns:
@@ -75,7 +75,7 @@ ReinforcementLearningActorCriticBaseModel:getActorModel(): ModelObject
 Gets the critic model.
 
 ```
-ReinforcementLearningActorCriticBaseModel:getCriticModel(): ModelObject
+DeepReinforcementLearningActorCriticBaseModel:getCriticModel(): ModelObject
 ```
 
 #### Returns:
@@ -87,7 +87,7 @@ ReinforcementLearningActorCriticBaseModel:getCriticModel(): ModelObject
 Sets the model's categorical policy update function.
 
 ```
-ReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
+DeepReinforcementLearningActorCriticBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
 ```
 
 #### Parameters:
@@ -99,7 +99,7 @@ ReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUpdateFun
 Sets the model's diagonal Gausian policy update function.
 
 ```
-ReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
+DeepReinforcementLearningActorCriticBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
 ```
 
 #### Parameters:
@@ -111,7 +111,7 @@ ReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussia
 Sets the model's episode update function.
 
 ```
-ReinforcementLearningActorCriticBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
+DeepReinforcementLearningActorCriticBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 ```
 
 #### Parameters:
@@ -123,7 +123,7 @@ ReinforcementLearningActorCriticBaseModel:setEpisodeUpdateFunction(episodeUpdate
 Updates the model parameters using categoricalUpdateFunction().
 
 ```
-ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
+DeepReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
 ```
 
 #### Parameters:
@@ -143,7 +143,7 @@ ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureV
 Updates the model parameters using diagonalGaussianUpdateFunction().
 
 ```
-ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, actionMeanVector: vector, actionStandardDeviationVector, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
+DeepReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, actionMeanVector: vector, actionStandardDeviationVector, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
 ```
 
 #### Parameters:
@@ -165,7 +165,7 @@ ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeature
 Updates the model parameters using episodeUpdateFunction().
 
 ```
-ReinforcementLearningActorCriticBaseModel:episodeUpdate()
+DeepReinforcementLearningActorCriticBaseModel:episodeUpdate()
 ```
 
 ### setResetFunction()
@@ -173,7 +173,7 @@ ReinforcementLearningActorCriticBaseModel:episodeUpdate()
 Sets a new function on reset alongside with the current reset() function. 
 
 ```
-ReinforcementLearningActorCriticBaseModel:setResetFunction(resetFunction)
+DeepReinforcementLearningActorCriticBaseModel:setResetFunction(resetFunction)
 ```
 
 #### Parameters:
@@ -185,5 +185,5 @@ ReinforcementLearningActorCriticBaseModel:setResetFunction(resetFunction)
 Reset model's stored values (excluding the parameters).
 
 ```
-ReinforcementLearningActorCriticBaseModel:reset()
+DeepReinforcementLearningActorCriticBaseModel:reset()
 ```

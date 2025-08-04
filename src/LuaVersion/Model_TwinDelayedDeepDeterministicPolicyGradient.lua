@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningActorCriticBaseModel = require("Model_ReinforcementLearningActorCriticBaseModel")
+local DeepReinforcementLearningActorCriticBaseModel = require("Model_DeepReinforcementLearningActorCriticBaseModel")
 
 TwinDelayedDeepDeterministicPolicyGradientModel = {}
 
 TwinDelayedDeepDeterministicPolicyGradientModel.__index = TwinDelayedDeepDeterministicPolicyGradientModel
 
-setmetatable(TwinDelayedDeepDeterministicPolicyGradientModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(TwinDelayedDeepDeterministicPolicyGradientModel, DeepReinforcementLearningActorCriticBaseModel)
 
 local defaultAveragingRate = 0.995
 
@@ -64,7 +64,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewTwinDelayedDeepDeterministicPolicyGradient = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewTwinDelayedDeepDeterministicPolicyGradient = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewTwinDelayedDeepDeterministicPolicyGradient, TwinDelayedDeepDeterministicPolicyGradientModel)
 	

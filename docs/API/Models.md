@@ -77,6 +77,6 @@
 
 [IterativeMethodBaseModel](Models/IterativeMethodBaseModel.md)
 
-[ReinforcementLearningBaseModel](Models/ReinforcementLearningBaseModel.md)
+[DeepReinforcementLearningBaseModel](Models/DeepReinforcementLearningBaseModel.md)
 
-[ReinforcementLearningActorCriticBaseModel](Models/ReinforcementLearningActorCriticBaseModel.md)
+[DeepReinforcementLearningActorCriticBaseModel](Models/DeepReinforcementLearningActorCriticBaseModel.md)

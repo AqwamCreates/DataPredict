@@ -105,39 +105,39 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### Want To Create Your Own Models, Optimizers And More?
 
-[API Design](APIDesign.md)
+* [API Design](APIDesign.md)
 
 ## Links
 
-[Download Links](DownloadLinks.md)
+* [Download Links](DownloadLinks.md)
 
 ### Repository
 
-[DataPredict Library](https://github.com/AqwamCreates/DataPredict)
+* [DataPredict Library](https://github.com/AqwamCreates/DataPredict)
 
-[DataPredict Neural Library](https://github.com/AqwamCreates/DataPredict-Neural)
+* [DataPredict Neural Library](https://github.com/AqwamCreates/DataPredict-Neural)
 
-[DataPredict Axon Library](https://github.com/AqwamCreates/DataPredict-Axon)
+* [DataPredict Axon Library](https://github.com/AqwamCreates/DataPredict-Axon)
 
-[TensorL-2D Library](https://github.com/AqwamCreates/TensorL-2D)
+* [TensorL-2D Library](https://github.com/AqwamCreates/TensorL-2D)
 
-[MatrixL Library](https://github.com/AqwamCreates/MatrixL)
+* [MatrixL Library](https://github.com/AqwamCreates/MatrixL)
 
-[TensorL Library](https://github.com/AqwamCreates/TensorL)
+* [TensorL Library](https://github.com/AqwamCreates/TensorL)
 
 ### Other Documentations
 
-[Aqwam's TensorL-2D Library](https://aqwamcreates.github.io/TensorL-2D/)
+* [Aqwam's TensorL-2D Library](https://aqwamcreates.github.io/TensorL-2D/)
 
-[Aqwam's Matrix Library](https://aqwamcreates.github.io/MatrixL/)
+* [Aqwam's Matrix Library](https://aqwamcreates.github.io/MatrixL/)
 
 ## Version History
 
-[Release](VersionHistory/ReleaseVersionHistory.md)
+* [Release](VersionHistory/ReleaseVersionHistory.md)
 
-[Beta](VersionHistory/BetaVersionHistory.md)
+* [Beta](VersionHistory/BetaVersionHistory.md)
 
-[All](VersionHistory/AllVersionsHistory.md)
+* [All](VersionHistory/AllVersionsHistory.md)
 
 ## Fun Facts About The DataPredict's Icon
 

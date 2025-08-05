@@ -12,7 +12,7 @@ Currently, you need these to produce the model:
 
 Before we train our model, we will first need to construct a regression model as shown below.
 
-```
+```lua
 
 local DataPredict = require(DataPredict)
 
@@ -53,7 +53,7 @@ local initialJoinTime = os.time()
 
 If you want to add more data instead of relying on the initial data point, you actually can and this will improve the prediction accuracy. But keep in mind that this means you have to store more data. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
 
-```lua
+```
 
 local initialPlayerDataVector = {}
   

@@ -106,9 +106,9 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 	
 	if (returnOriginalOutput) then return resultTensor end
 	
-	local resultArray = {}
+	local outputVector = {}
 	
-	local maximumValueArray = {}
+	local maximumValueVector = {}
 	
 	for i, resultVector in ipairs(resultTensor) do
 		
@@ -120,13 +120,13 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 		
 		if (not action) then error("Action for action index " .. actionIndex ..  "  does not exist in the actions list.") end
 		
-		resultArray[i] = action
+		outputVector[i] = {action}
 		
-		maximumValueArray[i] = maximumValue
+		maximumValueVector[i] = {maximumValue}
 		
 	end
 
-	return resultArray, maximumValueArray
+	return outputVector, maximumValueVector
 
 end
 

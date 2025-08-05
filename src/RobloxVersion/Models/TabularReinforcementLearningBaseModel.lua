@@ -124,6 +124,8 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 	
 	local resultArray = {}
 	
+	local maximumValueArray = {}
+	
 	for i, resultVector in ipairs(resultTensor) do
 		
 		local maximumValue = math.max(table.unpack(resultVector))
@@ -136,9 +138,11 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 		
 		resultArray[i] = action
 		
+		maximumValueArray[i] = maximumValue
+		
 	end
 
-	return resultArray
+	return resultArray, maximumValueArray
 
 end
 

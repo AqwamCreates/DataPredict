@@ -114,7 +114,7 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 		
 		local stateIndex = table.find(StatesList, state)
 		
-		if (not stateIndex) then error("State does not exist in the states list.") end
+		if (not stateIndex) then error("State \"" .. state ..  "\" does not exist in the states list.") end
 		
 		resultTensor[i] = ModelParameters[stateIndex]
 		
@@ -130,9 +130,11 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 		
 		local actionIndex = table.find(resultVector, maximumValue)
 		
-		if (not actionIndex) then error("Action does not exist in the actions list.") end
+		local action = ActionsList[actionIndex] 
 		
-		resultArray[i] = ActionsList[actionIndex]
+		if (not action) then error("Action for action index " .. actionIndex ..  "  does not exist in the actions list.") end
+		
+		resultArray[i] = action
 		
 	end
 

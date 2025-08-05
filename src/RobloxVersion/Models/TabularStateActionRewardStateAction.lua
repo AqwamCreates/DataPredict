@@ -52,15 +52,15 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewTabularStateActionRewardStateActionModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
 	
-	NewTabularStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousState, action, rewardValue, currentState, terminalStateValue)
+	NewTabularStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 		
 		local discountFactor = NewTabularStateActionRewardStateActionModel.discountFactor
 		
 		local lambda = NewTabularStateActionRewardStateActionModel.lambda
 		
-		local previousQVector = NewTabularStateActionRewardStateActionModel:predict(previousState, true)
+		local previousQVector = NewTabularStateActionRewardStateActionModel:predict(previousStateValue, true)
 
-		local currentQVector = NewTabularStateActionRewardStateActionModel:predict(currentState, true)
+		local currentQVector = NewTabularStateActionRewardStateActionModel:predict(currentStateValue, true)
 
 		local discountedQVector = AqwamTensorLibrary:multiply(discountFactor, currentQVector, (1 - terminalStateValue))
 
@@ -72,7 +72,7 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		local ModelParameters = NewTabularStateActionRewardStateActionModel.ModelParameters
 		
-		local stateIndex = table.find(StatesList, previousState)
+		local stateIndex = table.find(StatesList, previousStateValue)
 
 		local temporalDifferenceErrorVector = AqwamTensorLibrary:subtract(targetVector, previousQVector)
 		

@@ -52,13 +52,13 @@ function TabularQLearningModel.new(parameterDictionary)
 	
 	NewTabularQLearning.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
 	
-	NewTabularQLearning:setCategoricalUpdateFunction(function(previousState, action, rewardValue, currentState, terminalStateValue)
+	NewTabularQLearning:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 		
 		local discountFactor = NewTabularQLearning.discountFactor
 		
 		local lambda = NewTabularQLearning.lambda
 
-		local _, maxQValue = NewTabularQLearning:predict(currentState)
+		local _, maxQValue = NewTabularQLearning:predict(currentStateValue)
 
 		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 		
@@ -68,7 +68,7 @@ function TabularQLearningModel.new(parameterDictionary)
 		
 		local ModelParameters = NewTabularQLearning.ModelParameters
 		
-		local stateIndex = table.find(StatesList, previousState)
+		local stateIndex = table.find(StatesList, previousStateValue)
 
 		local actionIndex = table.find(ActionsList, action)
 

@@ -26,15 +26,13 @@
 
 --]]
 
-local BaseInstance = require("Core_BaseInstance")
+local BaseInstance = require("Cores_BaseInstance")
 
 TabularReinforcementLearningBaseModel = {}
 
 TabularReinforcementLearningBaseModel.__index = TabularReinforcementLearningBaseModel
 
 setmetatable(TabularReinforcementLearningBaseModel, BaseInstance)
-
-local defaultLearningRate = 0.1
 
 local defaultDiscountFactor = 0.95
 
@@ -54,26 +52,12 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	NewDeepReinforcementLearningBaseModel.ActionsList = parameterDictionary.ActionsList or {}
 	
-	NewDeepReinforcementLearningBaseModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
-	
 	NewDeepReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
 	
 	NewDeepReinforcementLearningBaseModel.ModelParameters = parameterDictionary.ModelParameters
 	
 	return NewDeepReinforcementLearningBaseModel
 	
-end
-
-function TabularReinforcementLearningBaseModel:setLearningRate(learningRate)
-
-	self.learningRate = learningRate
-
-end
-
-function TabularReinforcementLearningBaseModel:getLearningRate()
-
-	return self.learningRate
-
 end
 
 function TabularReinforcementLearningBaseModel:setDiscountFactor(discountFactor)
@@ -124,6 +108,8 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 	
 	local resultArray = {}
 	
+	local maximumValueArray = {}
+	
 	for i, resultVector in ipairs(resultTensor) do
 		
 		local maximumValue = math.max(table.unpack(resultVector))
@@ -136,9 +122,11 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 		
 		resultArray[i] = action
 		
+		maximumValueArray[i] = maximumValue
+		
 	end
 
-	return resultArray
+	return resultArray, maximumValueArray
 
 end
 

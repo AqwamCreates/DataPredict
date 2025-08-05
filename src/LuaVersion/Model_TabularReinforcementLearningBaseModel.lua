@@ -72,7 +72,7 @@ function TabularReinforcementLearningBaseModel:getDiscountFactor()
 	
 end
 
-function TabularReinforcementLearningBaseModel:predict(stateArray, returnOriginalOutput)
+function TabularReinforcementLearningBaseModel:predict(stateVector, returnOriginalOutput)
 	
 	local resultTensor = {}
 	
@@ -90,7 +90,9 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 		
 	end
 	
-	for i, state in ipairs(stateArray) do
+	for i, wrappedState in ipairs(stateVector) do
+		
+		local state = wrappedState[1]
 		
 		local stateIndex = table.find(StatesList, state)
 		

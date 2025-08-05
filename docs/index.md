@@ -61,7 +61,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 * [Distributed Training](Tutorials/DistributedTraining.md)
 
-### Predictive AIs (Sample Codes) (Will Be Added Soon)
+### Predictive AIs
 
 * [Creating Time To Leave Prediction Model](Tutorials/CreatingTimeToLeavePredictionModel.md)
 

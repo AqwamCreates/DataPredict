@@ -40,14 +40,6 @@ local initialJoinTime = os.time()
 
 ```
 
-Additionally, if a model has been trained as this player is a returning player, load the model parameters from Roblox's Datastores
-
-```lua
-
-Regression:getModelParameters(ModelParameters)
-
-```
-
 If you want to add more data instead of relying on the initial data point, you can! But keep in mind that this means you have to store more data. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
 
 ```lua
@@ -88,11 +80,15 @@ This should give you a model that predicts a rough estimate when they'll leave.
 
 Then, you must save the model parameters to Roblox's DataStores for future use.
 
+```lua
 
+local ModelParameters = Regression:getModelParameters()
 
-## Upon Player In-Game
+```
 
-There are two cases in here:
+## Model Parameters Loading 
+
+In here, we will use our model parameters so that it can be used to predict "time to leave". There are two cases in here:
 
 1. Player is a first-time player.
 
@@ -108,4 +104,50 @@ We have a multiple way to handle this issue.
 
 * We take from other player's existing model parameters and load it into our models.
 
-### Case 1: Player A First-Time Player
+### Case 2: Player A Returning Player
+
+Under this case, you can continue using the existing model parameters that was saved in Roblox's Datastores.
+
+```lua
+
+Regression:getModelParameters(ModelParameters)
+
+```
+
+## Prediction Handling
+
+In other to produce predictions from our model, we must perform this operation:
+
+```lua
+
+local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
+
+local predictedLabelVector = Regression:predict(currentPlayerDataVector)
+
+```
+
+Once you receive the predicted label vector, you can grab the pure number output by doing this:
+
+```
+
+local timeToLeavePrediction = predictedLabelVector[1][1]
+
+```
+
+We can do this for every 10 seconds and use this to extend the players' playtime by doing something like this:
+
+```
+
+if (timeToLeavePrediction <= 60) then -- Can be changed instead of less than 1 minute (or 60 seconds).
+
+--- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
+
+end
+
+```
+
+## Conclusion
+
+This tutorial showed you on how to create "time to leave" prediction model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!
+
+That's all for today and see you later!

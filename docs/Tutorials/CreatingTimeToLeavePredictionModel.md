@@ -16,7 +16,7 @@ Before we train our model, we will first need to construct a regression model as
 
 local DataPredict = require(DataPredict)
 
-local Regression = DataPredict.Models.LinearRegression.new({learningRate = 0.1}) -- Ensure that the learningRate is not too high or too low.
+local Regression = DataPredict.Models.LinearRegression.new({learningRate = 0.3}) -- Ensure that the learningRate is not too high or too low.
 
 ```
 
@@ -42,9 +42,31 @@ local initialJoinTime = os.time()
 
 Additionally, if a model has been trained as this player is a returning player, load the model parameters from Roblox's Datastores
 
-```
+```lua
 
 Regression:getModelParameters(ModelParameters)
+
+```
+
+If you want to add more data instead of relying on the initial data point, you can! But keep in mind that this means you have to store more data. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
+
+```lua
+
+local initialPlayerDataVector = {}
+
+local recordedTimeArray = {}
+
+initialPlayerDataVector[1] = {1, numberOfCurrencyAmount1, numberOfItemsAmount1, timePlayedInCurrentSession1, timePlayedInAllSessions1, healthAmount1}
+
+recordedTimeArray[1] = os.time()
+
+initialPlayerDataVector[2] = {1, numberOfCurrencyAmount2, numberOfItemsAmount2, timePlayedInCurrentSession2, timePlayedInAllSessions2, healthAmount2}
+
+recordedTimeArray[2] = os.time()
+
+initialPlayerDataVector[3] = {1, numberOfCurrencyAmount3, numberOfItemsAmount3, timePlayedInCurrentSession3, timePlayedInAllSessions3, healthAmount3}
+
+recordedTimeArray[3] = os.time()
 
 ```
 
@@ -52,7 +74,7 @@ Regression:getModelParameters(ModelParameters)
 
 By the time the player leaves, it is time for us to train the model. But first, we need to calculate the difference.
 
-```
+```lua
 
 local timeToLeave = initialJoinTime - os.time()
 
@@ -63,3 +85,27 @@ local costArray = Regression:train(initialPlayerDataVector, wrappedTimeToLeave)
 ```
 
 This should give you a model that predicts a rough estimate when they'll leave.
+
+Then, you must save the model parameters to Roblox's DataStores for future use.
+
+
+
+## Upon Player In-Game
+
+There are two cases in here:
+
+1. Player is a first-time player.
+
+2. Player is a returning player.
+
+### Case 1: Player A First-Time Player
+
+Under this case, this is a new player that plays the game for the first time. In this case, we do not know how this player would act.
+
+We have a multiple way to handle this issue.
+
+* We create a "global" model that trains from every players, and then make a deep copy of the model parameters and load it into our models.
+
+* We take from other player's existing model parameters and load it into our models.
+
+### Case 1: Player A First-Time Player

@@ -1,4 +1,4 @@
-# Creating Time To Leave Prediction Model
+# Creating Time-To-Leave Prediction Model
 
 Hello guys! Today, I will be showing you on how to create a retention-based model that could predict when the player will leave.
 

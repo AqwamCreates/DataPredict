@@ -71,7 +71,7 @@
 | [DeepDeterministicPolicyGradient](Models/DeepDeterministicPolicyGradient.md)                                                     | DDPG                                      | Self-Learning Vehicle AIs                                                   |
 | [TwinDelayedDeepDeterministicPolicyGradient](Models/TwinDelayedDeepDeterministicPolicyGradient.md)                               | TD3                                       | Self-Learning Vehicle AIs                                                   |
 
-## Tabular Reinforcement Learning
+## Tabular Reinforcement Learning (To Be Coming Soon)
 
 | Model                                                                                    | Alternate Names | Use Cases                       |
 |------------------------------------------------------------------------------------------|-----------------|---------------------------------|

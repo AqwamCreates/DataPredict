@@ -26,13 +26,13 @@
 
 --]]
 
-local BaseInstance = require("Core_BaseInstance")
+local BaseModel = require("Model_BaseModel")
 
 TabularReinforcementLearningBaseModel = {}
 
 TabularReinforcementLearningBaseModel.__index = TabularReinforcementLearningBaseModel
 
-setmetatable(TabularReinforcementLearningBaseModel, BaseInstance)
+setmetatable(TabularReinforcementLearningBaseModel, BaseModel)
 
 local defaultDiscountFactor = 0.95
 

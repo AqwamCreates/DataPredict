@@ -41,7 +41,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### Installation
 
-[Installation For Roblox](Tutorials/InstallationForRoblox.md)
+* [Installation For Roblox](Tutorials/InstallationForRoblox.md)
 
 ### The Basics - Level 1
 

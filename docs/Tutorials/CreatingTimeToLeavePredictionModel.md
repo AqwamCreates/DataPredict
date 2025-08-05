@@ -45,20 +45,20 @@ If you want to add more data instead of relying on the initial data point, you c
 ```lua
 
 local initialPlayerDataVector = {}
-
+  
 local recordedTimeArray = {}
+  
+local snapshotIndex = 1
+  
+local function snapshotData()
+  
+  initialPlayerDataVector[snapshotIndex] = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
+  
+  recordedTimeArray[snapshotIndex] = os.time()
+  
+  snapshotIndex = snapshotIndex + 1
 
-initialPlayerDataVector[1] = {1, numberOfCurrencyAmount1, numberOfItemsAmount1, timePlayedInCurrentSession1, timePlayedInAllSessions1, healthAmount1}
-
-recordedTimeArray[1] = os.time()
-
-initialPlayerDataVector[2] = {1, numberOfCurrencyAmount2, numberOfItemsAmount2, timePlayedInCurrentSession2, timePlayedInAllSessions2, healthAmount2}
-
-recordedTimeArray[2] = os.time()
-
-initialPlayerDataVector[3] = {1, numberOfCurrencyAmount3, numberOfItemsAmount3, timePlayedInCurrentSession3, timePlayedInAllSessions3, healthAmount3}
-
-recordedTimeArray[3] = os.time()
+end
 
 ```
 
@@ -68,7 +68,7 @@ By the time the player leaves, it is time for us to train the model. But first, 
 
 ```lua
 
-local timeToLeave = initialJoinTime - os.time()
+local timeToLeave = os.time() - initialJoinTime
 
 local wrappedTimeToLeave = {{timeToLeave}} -- Need to wrap this as our models can only accept matrices.
 
@@ -128,7 +128,7 @@ local predictedLabelVector = Regression:predict(currentPlayerDataVector)
 
 Once you receive the predicted label vector, you can grab the pure number output by doing this:
 
-```
+```lua
 
 local timeToLeavePrediction = predictedLabelVector[1][1]
 
@@ -136,7 +136,7 @@ local timeToLeavePrediction = predictedLabelVector[1][1]
 
 We can do this for every 10 seconds and use this to extend the players' playtime by doing something like this:
 
-```
+```lua
 
 if (timeToLeavePrediction <= 60) then -- Can be changed instead of less than 1 minute (or 60 seconds).
 

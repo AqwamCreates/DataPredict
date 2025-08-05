@@ -73,13 +73,13 @@
 
 ## Tabular Reinforcement Learning (To Be Coming Soon)
 
-| Model                                                                                    | Alternate Names | Use Cases                       |
-|------------------------------------------------------------------------------------------|-----------------|---------------------------------|
-| [TabularQLearning](Models/TabularQLearning.md)                                           | Q-Learning      | Best Self-Learning Grid AIs     |
-| [TabularStateActionRewardState](Models/TabularStateActionRewardState.md)                 | SARSA           | Safe Self-Learning Grid AIs     |
-| [TabularExpectedStateActionRewardState](Models/TabularExpectedStateActionRewardState.md) | Expected SARSA  | Balanced Self-Learning Grid AIs |
-| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                           | MC              | Online Self-Learning Grid AIs   |
-| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)         | Off-Policy MC   | Offline Self-Learning Grid AIs  |
+| Model                                                                                          | Alternate Names | Use Cases                       |
+|------------------------------------------------------------------------------------------------|-----------------|---------------------------------|
+| [TabularQLearning](Models/TabularQLearning.md)                                                 | Q-Learning      | Best Self-Learning Grid AIs     |
+| [TabularStateActionRewardState](Models/TabularStateActionRewardStateAction.md)                 | SARSA           | Safe Self-Learning Grid AIs     |
+| [TabularExpectedStateActionRewardState](Models/TabularExpectedStateActionRewardStateAction.md) | Expected SARSA  | Balanced Self-Learning Grid AIs |
+| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                 | MC              | Online Self-Learning Grid AIs   |
+| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)               | Off-Policy MC   | Offline Self-Learning Grid AIs  |
 
 ## Generative
 

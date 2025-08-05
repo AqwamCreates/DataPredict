@@ -72,18 +72,6 @@ function TabularReinforcementLearningBaseModel:getDiscountFactor()
 	
 end
 
-function TabularReinforcementLearningBaseModel:setModelParameters(ModelParameters,doNotDeepCopyTable)
-	
-	self.ModelParameters = self:deepCopyTable(ModelParameters, doNotDeepCopyTable)
-	
-end
-
-function TabularReinforcementLearningBaseModel:getModelParameters(doNotDeepCopyTable)
-
-	return self:deepCopyTable(self.ModelParameters, doNotDeepCopyTable)
-
-end
-
 function TabularReinforcementLearningBaseModel:predict(stateArray, returnOriginalOutput)
 	
 	local resultTensor = {}
@@ -93,6 +81,14 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 	local ActionsList = self.ActionsList
 	
 	local ModelParameters = self.ModelParameters
+	
+	if (not ModelParameters) then
+		
+		ModelParameters = self:initializeMatrixBasedOnMode({#StatesList, #ActionsList})
+		
+		self.ModelParameters = ModelParameters
+		
+	end
 	
 	for i, state in ipairs(stateArray) do
 		
@@ -161,6 +157,12 @@ function TabularReinforcementLearningBaseModel:setCategoricalUpdateFunction(cate
 end
 
 function TabularReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+
+	if (not self.ModelParameters) then
+
+		self.ModelParameters = self:initializeMatrixBasedOnMode({#self.StatesList, #self.ActionsList})
+
+	end
 	
 	local categoricalUpdateFunction = self.categoricalUpdateFunction
 	
@@ -183,6 +185,12 @@ function TabularReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeU
 end
 
 function TabularReinforcementLearningBaseModel:episodeUpdate(terminalStateValue)
+	
+	if (not self.ModelParameters) then
+
+		self.ModelParameters = self:initializeMatrixBasedOnMode({#self.StatesList, #self.ActionsList})
+
+	end
 
 	local episodeUpdateFunction = self.episodeUpdateFunction
 	

@@ -106,17 +106,17 @@ function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 	NewTabularOffPolicyMonteCarloControlModel.targetPolicyFunction = parameterDictionary.targetPolicyFunction or defaultTargetPolicyFunction
 
-	local stateHistory = {}
+	local stateValueHistory = {}
 
 	local actionVectorHistory = {}
 
 	local rewardValueHistory = {}
 
-	NewTabularOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousState, action, rewardValue, currentState, terminalStateValue)
+	NewTabularOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 
-		local actionVector = NewTabularOffPolicyMonteCarloControlModel:predict({{previousState}}, true)
+		local actionVector = NewTabularOffPolicyMonteCarloControlModel:predict({{previousStateValue}}, true)
 
-		table.insert(stateHistory, previousState)
+		table.insert(stateValueHistory, previousStateValue)
 
 		table.insert(actionVectorHistory, actionVector)
 
@@ -168,13 +168,13 @@ function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 			weightVector = AqwamTensorLibrary:multiply(weightVector, actionRatioVector)
 			
-			local stateIndex = table.find(StatesList, stateHistory[h])
+			local stateIndex = table.find(StatesList, stateValueHistory[h])
 			
 			ModelParameters[stateIndex] = AqwamTensorLibrary:add({ModelParameters[stateIndex]}, lossVector)[1]
 
 		end
 
-		table.clear(stateHistory)
+		table.clear(stateValueHistory)
 
 		table.clear(actionVectorHistory)
 
@@ -184,7 +184,7 @@ function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 	NewTabularOffPolicyMonteCarloControlModel:setResetFunction(function()
 
-		table.clear(stateHistory)
+		table.clear(stateValueHistory)
 
 		table.clear(actionVectorHistory)
 

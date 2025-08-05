@@ -62,13 +62,17 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 	
 	NewTabularMonteCarloControlModel:setName("TabularMonteCarloControl")
 	
-	local stateHistory = {}
+	local stateValueHistory = {}
+	
+	local actionHistory = {}
 	
 	local rewardValueHistory = {}
 	
 	NewTabularMonteCarloControlModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 		
-		table.insert(stateHistory, previousStateValue)
+		table.insert(stateValueHistory, previousStateValue)
+		
+		table.insert(actionHistory, action)
 		
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -76,21 +80,51 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 	
 	NewTabularMonteCarloControlModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local Model = NewTabularMonteCarloControlModel.Model
-		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewTabularMonteCarloControlModel.discountFactor)
 		
-		for h, state in ipairs(stateHistory) do
+		local StatesList = NewTabularMonteCarloControlModel:getStatesList()
+		
+		local ActionsList = NewTabularMonteCarloControlModel:getActionsList()
+		
+		local ModelParameters = NewTabularMonteCarloControlModel.ModelParameters
+		
+		local numberOfStates = #StatesList
+		
+		local numberOfActions = #ActionsList
+		
+		local returnsMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfActions}, 0)
+		
+		local countMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfActions}, 0)
+		
+		for h, state in ipairs(stateValueHistory) do
 			
-			local averageRewardToGo = rewardToGoArray[h] / h
+			local action = actionHistory[h]
 			
-			Model:forwardPropagate(featureVector, true)
-
-			Model:update(averageRewardToGo, true)
+			local averageRewardToGo = rewardToGoArray[h]
+			
+			local stateIndex = table.find(StatesList, state)
+			
+			local actionIndex = table.find(ActionsList, state)
+			
+			returnsMatrix[stateIndex][actionIndex] = returnsMatrix[stateIndex][actionIndex] + averageRewardToGo
+			
+			countMatrix[stateIndex][actionIndex] = countMatrix[stateIndex][actionIndex] + 1
 			
 		end
 		
-		table.clear(stateHistory)
+		for stateIndex, _ in ipairs(StatesList) do
+			
+			for actionIndex, _ in ipairs(ActionsList) do
+				
+				ModelParameters[stateIndex][actionIndex] = returnsMatrix[stateIndex][actionIndex] / countMatrix[stateIndex][actionIndex]
+				
+			end
+			
+		end
+		
+		table.clear(stateValueHistory)
+		
+		table.clear(actionHistory)
 		
 		table.clear(rewardValueHistory)
 		
@@ -98,7 +132,9 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 	
 	NewTabularMonteCarloControlModel:setResetFunction(function()
 		
-		table.clear(stateHistory)
+		table.clear(stateValueHistory)
+		
+		table.clear(actionHistory)
 		
 		table.clear(rewardValueHistory)
 		

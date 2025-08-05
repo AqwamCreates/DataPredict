@@ -30,6 +30,8 @@ local AqwamMachineAndDeepLearningLibrary = {}
 
 local Models = script.Models
 
+local Regularizers = script.Regularizers
+
 local Optimizers = script.Optimizers
 
 local ValueSchedulers = script.ValueSchedulers
@@ -126,6 +128,8 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	
 	TwinDelayedDeepDeterministicPolicyGradient = require(Models.TwinDelayedDeepDeterministicPolicyGradient),
 	
+	TabularQLearning = require(Models.TabularQLearning),
+	
 	GenerativeAdversarialNetwork = require(Models.GenerativeAdversarialNetwork),
 	
 	ConditionalGenerativeAdversarialNetwork = require(Models.ConditionalGenerativeAdversarialNetwork),
@@ -134,6 +138,16 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 
 	ConditionalWassersteinGenerativeAdversarialNetwork = require(Models.ConditionalWassersteinGenerativeAdversarialNetwork),
 
+}
+
+AqwamMachineAndDeepLearningLibrary.Regularizers = {
+	
+	ElasticNet = require(Regularizers.ElasticNet),
+	
+	Lasso = require(Regularizers.Lasso),
+	
+	Ridge = require(Regularizers.Ridge),
+	
 }
 
 AqwamMachineAndDeepLearningLibrary.Optimizers = {

@@ -63,9 +63,9 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### Predictive AIs
 
-* [Creating Time To Leave Prediction Model](Tutorials/CreatingTimeToLeavePredictionModel.md)
+* [Creating Time-To-Leave Prediction Model](Tutorials/CreatingTimeToLeavePredictionModel.md)
 
-* [Creating Probability To Leave Prediction Model](Tutorials/CreatingProbabilityToLeavePredictionModel.md)
+* [Creating Probability-To-Leave Prediction Model](Tutorials/CreatingProbabilityToLeavePredictionModel.md)
 
 ### The Neural Networks
 

@@ -62,13 +62,13 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 	
 	NewTabularMonteCarloControlModel:setName("TabularMonteCarloControl")
 	
-	local featureVectorHistory = {}
+	local stateHistory = {}
 	
 	local rewardValueHistory = {}
 	
 	NewTabularMonteCarloControlModel:setCategoricalUpdateFunction(function(previousState, action, rewardValue, currentState, terminalStateValue)
 		
-		table.insert(featureVectorHistory, previousState)
+		table.insert(stateHistory, previousState)
 		
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -80,7 +80,7 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewTabularMonteCarloControlModel.discountFactor)
 		
-		for h, featureVector in ipairs(featureVectorHistory) do
+		for h, featureVector in ipairs(stateHistory) do
 			
 			local averageRewardToGo = rewardToGoArray[h] / h
 			
@@ -90,7 +90,7 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 			
 		end
 		
-		table.clear(featureVectorHistory)
+		table.clear(stateHistory)
 		
 		table.clear(rewardValueHistory)
 		
@@ -98,7 +98,7 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 	
 	NewTabularMonteCarloControlModel:setResetFunction(function()
 		
-		table.clear(featureVectorHistory)
+		table.clear(stateHistory)
 		
 		table.clear(rewardValueHistory)
 		

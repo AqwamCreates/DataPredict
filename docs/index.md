@@ -61,6 +61,12 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 [Distributed Training](Tutorials/DistributedTraining.md)
 
+### Predictive AIs (Sample Codes) (Will Be Added Soon)
+
+* [Creating Time To Leave Prediction Model](Tutorials/CreatingTimeToLeavePredictionModel.md)
+
+* [Creating Probability To Leave Prediction Model](Tutorials/CreatingProbabilityToLeavePredictionModel.md)
+
 ### The Neural Networks
 
 [Using Neural Networks Part 1](Tutorials/UsingNeuralNetworksPart1.md)

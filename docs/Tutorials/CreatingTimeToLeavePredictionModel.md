@@ -36,8 +36,9 @@ Below, we will show you how to create this:
 
 -- We're just adding 1 here to add "bias".
 
-local initialPlayerDataVector = {{1,
+local initialPlayerDataVector = {{
 
+  1,
   numberOfCurrencyAmount,
   numberOfItemsAmount,
   timePlayedInCurrentSession,
@@ -62,8 +63,9 @@ local snapshotIndex = 1
   
 local function snapshotData()
   
-  initialPlayerDataVector[snapshotIndex] = {{1,
+  initialPlayerDataVector[snapshotIndex] = {{
 
+    1,
     numberOfCurrencyAmount,
     numberOfItemsAmount,
     timePlayedInCurrentSession,

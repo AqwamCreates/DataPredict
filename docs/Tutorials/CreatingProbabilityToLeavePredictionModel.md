@@ -106,7 +106,7 @@ Once you have chosen to scale your values, we must do this:
 
 local wrappedProbabilityToLeave = {{probabilityToLeave}} -- Need to wrap this as our models can only accept matrices.
 
-local costArray = Classification:train(initialPlayerDataVector, wrappedTimeToLeave)
+local costArray = Classification:train(initialPlayerDataVector, wrappedProbabilityToLeave)
 
 ```
 

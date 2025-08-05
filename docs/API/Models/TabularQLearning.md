@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DeepQLearning (Deep Q Network)
+# [API Reference](../../API.md) - [Models](../Models.md) - TabularQLearning (Tabular Q Learning)
 
-DeepQLearning is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+TabularQLearning is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ DeepQLearning is a neural network with reinforcement learning capabilities. It c
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepQLearning.new(lambda: number, discountFactor: number): ModelObject
+TabularQLearning.new(lambda: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -24,7 +24,7 @@ DeepQLearning.new(lambda: number, discountFactor: number): ModelObject
 
 ## Inherited From
 
-* [DeepReinforcementLearningBaseModel](DeepReinforcementLearningBaseModel.md)
+* [TabularReinforcementLearningBaseModel](TabularReinforcementLearningBaseModel.md)
 
 ## References
 

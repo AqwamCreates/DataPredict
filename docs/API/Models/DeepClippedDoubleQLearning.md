@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DeepClippedDoubleQLearning (Clipped Double Deep Q-Learning)
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepClippedDoubleQLearning (Clipped Deep Double Q-Learning)
 
 DeepClippedDoubleQLearning is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 

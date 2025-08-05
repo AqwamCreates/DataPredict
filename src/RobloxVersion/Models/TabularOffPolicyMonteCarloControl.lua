@@ -170,7 +170,7 @@ function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 			
 			local stateIndex = table.find(StatesList, stateHistory[h])
 			
-			ModelParameters[stateIndex] = AqwamTensorLibrary:add(ModelParameters[stateIndex], lossVector)[1]
+			ModelParameters[stateIndex] = AqwamTensorLibrary:add({ModelParameters[stateIndex]}, lossVector)[1]
 
 		end
 

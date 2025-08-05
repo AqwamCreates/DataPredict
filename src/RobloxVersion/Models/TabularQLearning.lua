@@ -36,6 +36,8 @@ TabularQLearningModel.__index = TabularQLearningModel
 
 setmetatable(TabularQLearningModel, TabularReinforcementLearningBaseModel)
 
+local defaultLearningRate = 0.1
+
 local defaultLambda = 0
 
 function TabularQLearningModel.new(parameterDictionary)
@@ -47,6 +49,8 @@ function TabularQLearningModel.new(parameterDictionary)
 	setmetatable(NewTabularQLearning, TabularQLearningModel)
 	
 	NewTabularQLearning:setName("TabularQLearning")
+	
+	NewTabularQLearning.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
 	NewTabularQLearning.lambda = parameterDictionary.lambda or defaultLambda
 	
@@ -60,7 +64,7 @@ function TabularQLearningModel.new(parameterDictionary)
 
 		local _, maxQValue = NewTabularQLearning:predict(currentStateValue)
 
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1])
 		
 		local StatesList = NewTabularQLearning:getStatesList()
 		

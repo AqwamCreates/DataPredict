@@ -1,10 +1,10 @@
-# Creating Probability To Leave Prediction Model
+# Creating Probability-To-Leave Prediction Model
 
 Hello guys! Today, I will be showing you on how to create a retention-based model that could predict the likelihood that the players will leave.
 
 Currently, you need these to produce the model:
 
-* Any classification models
+* Any classification model
 
 * A player data that is stored in matrix
 

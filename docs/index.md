@@ -45,21 +45,21 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### The Basics - Level 1
 
-[Creating Our First Model](Tutorials/CreatingOurFirstModel.md)
+* [Creating Our First Model](Tutorials/CreatingOurFirstModel.md)
 
-[Saving And Loading Model Parameters](Tutorials/SavingAndLoadingModelParameters.md)
+* [Saving And Loading Model Parameters](Tutorials/SavingAndLoadingModelParameters.md)
 
 ### The Basics - Level 2
 
-[Using Optimizers](Tutorials/UsingOptimizers.md)
+* [Using Optimizers](Tutorials/UsingOptimizers.md)
 
-[Using Regularizers](Tutorials/UsingRegularizers.md)
+* [Using Regularizers](Tutorials/UsingRegularizers.md)
 
-[Using Training Modifiers](Tutorials/UsingTrainingModifiers.md)
+* [Using Training Modifiers](Tutorials/UsingTrainingModifiers.md)
 
-[Using Model Checker](Tutorials/UsingModelChecker.md)
+* [Using Model Checker](Tutorials/UsingModelChecker.md)
 
-[Distributed Training](Tutorials/DistributedTraining.md)
+* [Distributed Training](Tutorials/DistributedTraining.md)
 
 ### Predictive AIs (Sample Codes) (Will Be Added Soon)
 
@@ -69,25 +69,25 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### The Neural Networks
 
-[Using Neural Networks Part 1](Tutorials/UsingNeuralNetworksPart1.md)
+* [Using Neural Networks Part 1](Tutorials/UsingNeuralNetworksPart1.md)
 
-[Using Neural Networks Part 2](Tutorials/UsingNeuralNetworksPart2.md)
+* [Using Neural Networks Part 2](Tutorials/UsingNeuralNetworksPart2.md)
 
-[General Guide For Neural Networks Settings](Tutorials/GeneralGuideForNeuralNetworksSettings.md)
+* [General Guide For Neural Networks Settings](Tutorials/GeneralGuideForNeuralNetworksSettings.md)
 
 ### Learning AIs - Level 1
 
-[Getting Started With Deep Reinforcement Learning](Tutorials/GettingStartedWithDeepReinforcementLearning.md)
+* [Getting Started With Deep Reinforcement Learning](Tutorials/GettingStartedWithDeepReinforcementLearning.md)
 
-[Choosing The Most Effective Environment Inputs](Tutorials/ChoosingTheMostEffectiveEnvironmentInputs.md)
+* [Choosing The Most Effective Environment Inputs](Tutorials/ChoosingTheMostEffectiveEnvironmentInputs.md)
 
-[Simulating Curiosity With Random Network Distillation](Tutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
+* [Simulating Curiosity With Random Network Distillation](Tutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
 
 ### Learning AIs - Level 2
 
-[The Action Space And The Reinforcement Learning Algorithms](Tutorials/TheActionSpaceAndTheReinforcementLearningAlgorithms.md)
+* [The Action Space And The Reinforcement Learning Algorithms](Tutorials/TheActionSpaceAndTheReinforcementLearningAlgorithms.md)
 
-[Deep Reinforcement Learning Algorithms Properties](Tutorials/DeepReinforcementLearningAlgorithmsProperties.md)
+* [Deep Reinforcement Learning Algorithms Properties](Tutorials/DeepReinforcementLearningAlgorithmsProperties.md)
 
 ## Example Codes
 

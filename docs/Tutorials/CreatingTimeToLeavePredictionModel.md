@@ -4,7 +4,7 @@ Hello guys! Today, I will be showing you on how to create a retention-based mode
 
 Currently, you need these to produce the model:
 
-* Any regression models
+* Any regression model
 
 * A player data that is stored in matrix
 

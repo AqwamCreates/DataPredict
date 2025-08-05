@@ -98,7 +98,7 @@ local targetPolicyFunctionList = {
 
 function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 
-	local NewTabularOffPolicyMonteCarloControlModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewTabularOffPolicyMonteCarloControlModel = TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 	setmetatable(NewTabularOffPolicyMonteCarloControlModel, TabularOffPolicyMonteCarloControlModel)
 

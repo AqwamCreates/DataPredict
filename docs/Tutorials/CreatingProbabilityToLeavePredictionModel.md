@@ -12,7 +12,7 @@ Currently, you need these to produce the model:
 
 Before we train our model, we will first need to construct a regression model as shown below.
 
-```lua
+```
 
 local DataPredict = require(DataPredict)
 
@@ -32,7 +32,7 @@ In here, what you need to do is:
 
 Below, we will show you how to create this:
 
-```lua
+```
 
 -- We're just adding 1 here to add "bias".
 

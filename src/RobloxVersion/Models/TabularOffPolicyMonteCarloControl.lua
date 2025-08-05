@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
+local TabularReinforcementLearningBaseModel = require(script.Parent.TabularReinforcementLearningBaseModel)
 
 TabularOffPolicyMonteCarloControlModel = {}
 
 TabularOffPolicyMonteCarloControlModel.__index = TabularOffPolicyMonteCarloControlModel
 
-setmetatable(TabularOffPolicyMonteCarloControlModel, DeepReinforcementLearningBaseModel)
+setmetatable(TabularOffPolicyMonteCarloControlModel, TabularReinforcementLearningBaseModel)
 
 local defaultTargetPolicyFunction = "StableSoftmax"
 

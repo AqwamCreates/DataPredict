@@ -98,7 +98,7 @@ Currently, there are two ways to scale the probability.
 
 2. Sigmoid scaling
 
-### Way 1: Pure Scaling
+### Method 1: Pure Scaling
 
 ```lua
 
@@ -108,7 +108,7 @@ local probabilityToLeave = 1 - (1 / timeElapsed)
 
 ```
 
-### Way 2: Sigmoid Scaling
+### Method 2: Sigmoid Scaling
 
 ```lua
 

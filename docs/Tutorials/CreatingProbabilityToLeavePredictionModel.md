@@ -94,7 +94,7 @@ local probabilityToLeave = 1 - (1 / timeElapsed)
 
 ```lua
 
-local probabilityToLeave = 1 - math.exp(-timeElapsed)
+local probabilityToLeave = 1 - math.exp(-timeElapsed / scaleFactor) -- Large scaleFactor means slower growth.
 
 ```
 

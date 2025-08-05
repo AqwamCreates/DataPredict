@@ -96,7 +96,7 @@ local probabilityToLeave = 1 - (1 / timeElapsed)
 
 -- Large scaleFactor means slower growth. scaleFactor should be based on empirical average session length.
 
-local probabilityToLeave = 1 - (1 + math.exp(-timeElapsed / scaleFactor))
+local probabilityToLeave = 1 - math.exp(-timeElapsed / scaleFactor)
 
 ```
 

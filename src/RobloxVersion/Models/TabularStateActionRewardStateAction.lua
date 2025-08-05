@@ -46,7 +46,7 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	setmetatable(NewTabularStateActionRewardStateActionModel, TabularStateActionRewardStateActionModel)
 	
-	NewTabularStateActionRewardStateActionModel:setName("TabularStateActionRewardStateActionModel")
+	NewTabularStateActionRewardStateActionModel:setName("TabularStateActionRewardStateAction")
 	
 	NewTabularStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
 	

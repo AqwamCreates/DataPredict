@@ -16,7 +16,9 @@ Before we train our model, we will first need to construct a regression model as
 
 local DataPredict = require(DataPredict)
 
-local Regression = DataPredict.Models.LinearRegression.new({learningRate = 0.3}) -- Ensure that the learningRate is not too high or too low.
+-- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" issues.
+
+local Regression = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```
 
@@ -40,7 +42,7 @@ local initialJoinTime = os.time()
 
 ```
 
-If you want to add more data instead of relying on the initial data point, you can! But keep in mind that this means you have to store more data. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
+If you want to add more data instead of relying on the initial data point, you actually can and this will improve the prediction accuracy. But keep in mind that this means you have to store more data. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
 
 ```lua
 

@@ -32,6 +32,8 @@ Below, we will show you how to create this:
 
 ```lua
 
+-- We're just adding 1 here to add "bias".
+
 local initialPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
 local initialJoinTime = os.time()

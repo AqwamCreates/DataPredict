@@ -68,7 +68,7 @@ end
 
 By the time the player leaves, it is time for us to train the model. But first, we need to calculate the difference.
 
-```
+```lua
 
 local timeElapsed = os.time() - initialJoinTime
 

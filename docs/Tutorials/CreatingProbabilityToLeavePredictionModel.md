@@ -68,11 +68,41 @@ end
 
 By the time the player leaves, it is time for us to train the model. But first, we need to calculate the difference.
 
+```
+
+local timeElapsed = os.time() - initialJoinTime
+
+```
+
+Currently, there are two ways to scale the probability.
+
+1. Pure scaling
+
+2. Sigmoid scaling
+
+### Way 1: Pure Scaling
+
 ```lua
 
-local probabilityToLeave = 1 - (1 / (os.time() - initialJoinTime))
+timeElapsed = math.max(timeElapsed, 0.01) -- To avoid division by zero that could lead to "inf" values.
 
-local wrappedProbabilityToLeave = {{timeToLeave}} -- Need to wrap this as our models can only accept matrices.
+local probabilityToLeave = 1 - (1 / timeElapsed)
+
+```
+
+### Way 2: Sigmoid Scaling
+
+```lua
+
+local probabilityToLeave = 1 - math.exp(-timeElapsed)
+
+```
+
+Once you have chosen to scale your values, we must do this:
+
+```lua
+
+local wrappedProbabilityToLeave = {{probabilityToLeave}} -- Need to wrap this as our models can only accept matrices.
 
 local costArray = Classification:train(initialPlayerDataVector, wrappedTimeToLeave)
 

@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseRegularizer = require(script.Parent.BaseRegularizer)
+local BaseRegularizer = require("Regularizer_BaseRegularizer")
 
 ElasticNet = {}
 

@@ -104,7 +104,7 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 			
 			local stateIndex = table.find(StatesList, state)
 			
-			local actionIndex = table.find(ActionsList, state)
+			local actionIndex = table.find(ActionsList, action)
 			
 			returnsMatrix[stateIndex][actionIndex] = returnsMatrix[stateIndex][actionIndex] + averageRewardToGo
 			
@@ -116,7 +116,13 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 			
 			for actionIndex, _ in ipairs(ActionsList) do
 				
-				ModelParameters[stateIndex][actionIndex] = returnsMatrix[stateIndex][actionIndex] / countMatrix[stateIndex][actionIndex]
+				local count = countMatrix[stateIndex][actionIndex]
+				
+				if (count ~= 0) then
+					
+					ModelParameters[stateIndex][actionIndex] = returnsMatrix[stateIndex][actionIndex] / count
+					
+				end
 				
 			end
 			

@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - DeepMonteCarloControl
+# [API Reference](../../API.md) - [Models](../Models.md) - TabularMonteCarloControl
 
-DeepMonteCarloControl is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+TabularMonteCarloControl is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ DeepMonteCarloControl is a neural network with reinforcement learning capabiliti
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepMonteCarloControl.new(discountFactor: number): ModelObject
+TabularMonteCarloControl.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -27,7 +27,7 @@ DeepMonteCarloControl.new(discountFactor: number): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DeepMonteCarloControl:setParameters(discountFactor: number)
+TabularMonteCarloControl:setParameters(discountFactor: number)
 ```
 
 #### Parameters:
@@ -36,7 +36,7 @@ DeepMonteCarloControl:setParameters(discountFactor: number)
 
 ## Inherited From
 
-* [DeepReinforcementLearningBaseModel](DeepReinforcementLearningBaseModel.md)
+* [TabularReinforcementLearningBaseModel](TabularReinforcementLearningBaseModel.md)
 
 ## References
 

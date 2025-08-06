@@ -36,6 +36,8 @@ TabularStateActionRewardStateActionModel.__index = TabularStateActionRewardState
 
 setmetatable(TabularStateActionRewardStateActionModel, TabularReinforcementLearningBaseModel)
 
+local defaultLearningRate = 0.1
+
 local defaultLambda = 0
 
 function TabularStateActionRewardStateActionModel.new(parameterDictionary)
@@ -48,6 +50,8 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewTabularStateActionRewardStateActionModel:setName("TabularStateActionRewardStateAction")
 	
+	NewTabularStateActionRewardStateActionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	
 	NewTabularStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
 	
 	NewTabularStateActionRewardStateActionModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
@@ -58,9 +62,9 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		local lambda = NewTabularStateActionRewardStateActionModel.lambda
 		
-		local previousQVector = NewTabularStateActionRewardStateActionModel:predict(previousStateValue, true)
+		local previousQVector = NewTabularStateActionRewardStateActionModel:predict({{previousStateValue}}, true)
 
-		local currentQVector = NewTabularStateActionRewardStateActionModel:predict(currentStateValue, true)
+		local currentQVector = NewTabularStateActionRewardStateActionModel:predict({{currentStateValue}}, true)
 
 		local discountedQVector = AqwamTensorLibrary:multiply(discountFactor, currentQVector, (1 - terminalStateValue))
 

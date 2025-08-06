@@ -97,8 +97,10 @@ local targetPolicyFunctionList = {
 }
 
 function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 
-	local NewTabularOffPolicyMonteCarloControlModel = TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
+	local NewTabularOffPolicyMonteCarloControlModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
 
 	setmetatable(NewTabularOffPolicyMonteCarloControlModel, TabularOffPolicyMonteCarloControlModel)
 
@@ -126,11 +128,15 @@ function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 	NewTabularOffPolicyMonteCarloControlModel:setEpisodeUpdateFunction(function(terminalStateValue)
 
-		local Model = NewTabularOffPolicyMonteCarloControlModel.Model
-
 		local targetPolicyFunction = targetPolicyFunctionList[NewTabularOffPolicyMonteCarloControlModel.targetPolicyFunction]
 
 		local discountFactor = NewTabularOffPolicyMonteCarloControlModel.discountFactor
+		
+		local StatesList = NewTabularOffPolicyMonteCarloControlModel:getStatesList()
+
+		local ActionsList = NewTabularOffPolicyMonteCarloControlModel:getActionsList()
+
+		local ModelParameters = NewTabularOffPolicyMonteCarloControlModel.ModelParameters
 
 		local numberOfActions = #actionVectorHistory[1]
 
@@ -141,12 +147,6 @@ function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 		local weightVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 1)
 
 		local discountedReward = 0
-		
-		local StatesList = NewTabularOffPolicyMonteCarloControlModel:getStatesList()
-		
-		local ActionsList = NewTabularOffPolicyMonteCarloControlModel:getActionsList()
-		
-		local ModelParameters = NewTabularOffPolicyMonteCarloControlModel.ModelParameters
 		
 		for h = #actionVectorHistory, 1, -1 do
 

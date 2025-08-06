@@ -61,16 +61,16 @@ function TabularQLearningModel.new(parameterDictionary)
 		local discountFactor = NewTabularQLearning.discountFactor
 		
 		local lambda = NewTabularQLearning.lambda
-
-		local _, maxQValue = NewTabularQLearning:predict(currentStateValue)
-
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1])
 		
 		local StatesList = NewTabularQLearning:getStatesList()
-		
+
 		local ActionsList = NewTabularQLearning:getActionsList()
-		
+
 		local ModelParameters = NewTabularQLearning.ModelParameters
+
+		local _, maxQValue = NewTabularQLearning:predict({{currentStateValue}})
+
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 

@@ -326,7 +326,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 		
 		table.insert(costArray, totalCost)
 		
-		self:printCostAndNumberOfIterations(totalCost, numberOfIterations)
+		self:printNumberOfIterationsAndCost(totalCost, numberOfIterations)
 				
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(totalCost) or self:checkIfConverged(totalCost)
 	

@@ -34,7 +34,7 @@ local Models = DataPredictLibrary.Models
 
 local Optimizers = DataPredictLibrary.Optimizers
 
-local Regularizer = require(DataPredictLibrary.Others.Regularizer)
+local Regularizers = require(DataPredictLibrary.Regularizers)
 
 local AqwamTensorLibrary = require(DataPredictLibrary.AqwamTensorLibraryLinker.Value)
 
@@ -128,7 +128,9 @@ function OneVsAll:setOptimizer(parameterDictionary)
 	
 	if (not parameterDictionary) then return end
 	
-	if (#self.ModelArray == 0) then error("No model.") end
+	local ModelArray = self.ModelArray
+	
+	if (#ModelArray == 0) then error("No model.") end
 	
 	local optimizerName = parameterDictionary.optimizerName
 	
@@ -136,7 +138,7 @@ function OneVsAll:setOptimizer(parameterDictionary)
 	
 	local SelectedOptimizer = require(Optimizers[optimizerName])
 		
-	for m, Model in ipairs(self.ModelArray) do 
+	for m, Model in ipairs(ModelArray) do 
 
 		local success = pcall(function() 
 				
@@ -156,11 +158,19 @@ function OneVsAll:setRegularizer(parameterDictionary)
 	
 	if (not parameterDictionary) then return end
 	
-	if (#self.ModelArray == 0) then error("No model.") end
+	local ModelArray = self.ModelArray
 	
-	local RegularizerObject = Regularizer.new(parameterDictionary)
+	if (#ModelArray == 0) then error("No model.") end
 	
-	for m, Model in ipairs(self.ModelArray) do 
+	local regularizerName = parameterDictionary.regularizerName
+	
+	if (not regularizerName) then error("No regularizer name.") end
+	
+	local SelectedRegularizer = require(Regularizers[regularizerName])
+	
+	local RegularizerObject = SelectedRegularizer.new(parameterDictionary)
+	
+	for m, Model in ipairs(ModelArray) do 
 		
 		local success = pcall(function() Model:setRegularizer(RegularizerObject) end)
 		

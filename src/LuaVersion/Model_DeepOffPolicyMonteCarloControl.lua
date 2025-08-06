@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
+local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
 DeepOffPolicyMonteCarloControlModel = {}
 
@@ -97,6 +97,8 @@ local targetPolicyFunctionList = {
 }
 
 function DeepOffPolicyMonteCarloControlModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 
 	local NewDeepOffPolicyMonteCarloControlModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 

@@ -180,9 +180,9 @@ function OneVsAll:setRegularizer(parameterDictionary)
 	
 end
 
-function OneVsAll:setClassesList(classesList)
+function OneVsAll:setClassesList(ClassesList)
 
-	self.ClassesList = classesList
+	self.ClassesList = ClassesList
 
 end
 

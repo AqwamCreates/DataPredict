@@ -129,6 +129,14 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	TwinDelayedDeepDeterministicPolicyGradient = require(Models.TwinDelayedDeepDeterministicPolicyGradient),
 	
 	TabularQLearning = require(Models.TabularQLearning),
+
+	TabularStateActionRewardStateAction = require(Models.TabularStateActionRewardStateAction),
+	
+	TabularExpectedStateActionRewardStateAction = require(Models.TabularExpectedStateActionRewardStateAction),
+	
+	TabularMonteCarloControl = require(Models.TabularMonteCarloControl),
+	
+	TabularOffPolicyMonteCarloControl = require(Models.TabularOffPolicyMonteCarloControl),
 	
 	GenerativeAdversarialNetwork = require(Models.GenerativeAdversarialNetwork),
 	
@@ -219,8 +227,6 @@ AqwamMachineAndDeepLearningLibrary.DistributedTrainingStrategies = {
 }
 
 AqwamMachineAndDeepLearningLibrary.Others = {
-	
-	Regularizer = require(Others.Regularizer),
 	
 	TrainingModifier = require(Others.TrainingModifier),
 	

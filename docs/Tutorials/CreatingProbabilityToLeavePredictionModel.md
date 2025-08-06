@@ -32,7 +32,7 @@ In here, what you need to do is:
 
 Below, we will show you how to create this:
 
-```
+```lua
 
 -- We're just adding 1 here to add "bias".
 
@@ -53,7 +53,7 @@ local initialJoinTime = os.time()
 
 If you want to add more data instead of relying on the initial data point, you actually can and this will improve the prediction accuracy. But keep in mind that this means you have to store more data. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
 
-```
+```lua
 
 local initialPlayerDataVector = {}
   
@@ -98,7 +98,7 @@ Currently, there are two ways to scale the probability.
 
 2. Sigmoid scaling
 
-### Way 1: Pure Scaling
+### Method 1: Pure Scaling
 
 ```lua
 
@@ -108,7 +108,7 @@ local probabilityToLeave = 1 - (1 / timeElapsed)
 
 ```
 
-### Way 2: Sigmoid Scaling
+### Method 2: Sigmoid Scaling
 
 ```lua
 

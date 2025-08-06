@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local TabularReinforcementLearningBaseModel = require(script.Parent.TabularReinforcementLearningBaseModel)
+local TabularReinforcementLearningBaseModel = require("Model_TabularReinforcementLearningBaseModel")
 
 TabularStateActionRewardStateActionModel = {}
 

@@ -97,6 +97,8 @@ local targetPolicyFunctionList = {
 }
 
 function DeepOffPolicyMonteCarloControlModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 
 	local NewDeepOffPolicyMonteCarloControlModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 

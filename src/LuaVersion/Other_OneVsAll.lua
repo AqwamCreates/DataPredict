@@ -26,9 +26,15 @@
 
 --]]
 
+local DataPredictLibrary = script.Parent.Parent
+
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-local Regularizer = require("Other_Regularizer")
+local Models = DataPredictLibrary.Models
+
+local Optimizers = DataPredictLibrary.Optimizers
+
+local Regularizers = DataPredictLibrary.Regularizers
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
@@ -84,7 +90,7 @@ function OneVsAll:generateModel(parameterDictionary)
 	
 	local ModelArray = self.ModelArray
 	
-	local SelectedModel = require("Model_" .. modelName)
+	local SelectedModel = require(Models[modelName])
 
 	for i = 1, self.numberOfClasses, 1 do
 
@@ -122,15 +128,17 @@ function OneVsAll:setOptimizer(parameterDictionary)
 	
 	if (not parameterDictionary) then return end
 	
-	if (#self.ModelArray == 0) then error("No model.") end
+	local ModelArray = self.ModelArray
+	
+	if (#ModelArray == 0) then error("No model.") end
 	
 	local optimizerName = parameterDictionary.optimizerName
 	
 	if (not optimizerName) then error("No optimizer name.") end
 	
-	local SelectedOptimizer = require("Optimizer_" .. optimizerName)
+	local SelectedOptimizer = require(Optimizers[optimizerName])
 		
-	for m, Model in ipairs(self.ModelArray) do 
+	for m, Model in ipairs(ModelArray) do 
 
 		local success = pcall(function() 
 				
@@ -150,11 +158,19 @@ function OneVsAll:setRegularizer(parameterDictionary)
 	
 	if (not parameterDictionary) then return end
 	
-	if (#self.ModelArray == 0) then error("No model.") end
+	local ModelArray = self.ModelArray
 	
-	local RegularizerObject = Regularizer.new(parameterDictionary)
+	if (#ModelArray == 0) then error("No model.") end
 	
-	for m, Model in ipairs(self.ModelArray) do 
+	local regularizerName = parameterDictionary.regularizerName
+	
+	if (not regularizerName) then error("No regularizer name.") end
+	
+	local SelectedRegularizer = require(Regularizers[regularizerName])
+	
+	local RegularizerObject = SelectedRegularizer.new(parameterDictionary)
+	
+	for m, Model in ipairs(ModelArray) do 
 		
 		local success = pcall(function() Model:setRegularizer(RegularizerObject) end)
 		
@@ -164,9 +180,9 @@ function OneVsAll:setRegularizer(parameterDictionary)
 	
 end
 
-function OneVsAll:setClassesList(classesList)
+function OneVsAll:setClassesList(ClassesList)
 
-	self.ClassesList = classesList
+	self.ClassesList = ClassesList
 
 end
 

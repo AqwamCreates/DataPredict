@@ -26,15 +26,13 @@
 
 --]]
 
-local BaseInstance = require("Core_BaseInstance")
+local BaseModel = require("Model_BaseModel")
 
 TabularReinforcementLearningBaseModel = {}
 
 TabularReinforcementLearningBaseModel.__index = TabularReinforcementLearningBaseModel
 
-setmetatable(TabularReinforcementLearningBaseModel, BaseInstance)
-
-local defaultLearningRate = 0.1
+setmetatable(TabularReinforcementLearningBaseModel, BaseModel)
 
 local defaultDiscountFactor = 0.95
 
@@ -42,7 +40,7 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewDeepReinforcementLearningBaseModel = {}
+	local NewDeepReinforcementLearningBaseModel = BaseModel.new(parameterDictionary)
 	
 	setmetatable(NewDeepReinforcementLearningBaseModel, TabularReinforcementLearningBaseModel)
 	
@@ -54,26 +52,12 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	NewDeepReinforcementLearningBaseModel.ActionsList = parameterDictionary.ActionsList or {}
 	
-	NewDeepReinforcementLearningBaseModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
-	
 	NewDeepReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
 	
 	NewDeepReinforcementLearningBaseModel.ModelParameters = parameterDictionary.ModelParameters
 	
 	return NewDeepReinforcementLearningBaseModel
 	
-end
-
-function TabularReinforcementLearningBaseModel:setLearningRate(learningRate)
-
-	self.learningRate = learningRate
-
-end
-
-function TabularReinforcementLearningBaseModel:getLearningRate()
-
-	return self.learningRate
-
 end
 
 function TabularReinforcementLearningBaseModel:setDiscountFactor(discountFactor)
@@ -88,19 +72,7 @@ function TabularReinforcementLearningBaseModel:getDiscountFactor()
 	
 end
 
-function TabularReinforcementLearningBaseModel:setModelParameters(ModelParameters,doNotDeepCopyTable)
-	
-	self.ModelParameters = self:deepCopyTable(ModelParameters, doNotDeepCopyTable)
-	
-end
-
-function TabularReinforcementLearningBaseModel:getModelParameters(doNotDeepCopyTable)
-
-	return self:deepCopyTable(self.ModelParameters, doNotDeepCopyTable)
-
-end
-
-function TabularReinforcementLearningBaseModel:predict(stateArray, returnOriginalOutput)
+function TabularReinforcementLearningBaseModel:predict(stateVector, returnOriginalOutput)
 	
 	local resultTensor = {}
 	
@@ -110,11 +82,21 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 	
 	local ModelParameters = self.ModelParameters
 	
-	for i, state in ipairs(stateArray) do
+	if (not ModelParameters) then
+		
+		ModelParameters = self:initializeMatrixBasedOnMode({#StatesList, #ActionsList})
+		
+		self.ModelParameters = ModelParameters
+		
+	end
+	
+	for i, wrappedState in ipairs(stateVector) do
+		
+		local state = wrappedState[1]
 		
 		local stateIndex = table.find(StatesList, state)
 		
-		if (not stateIndex) then error("State does not exist in the states list.") end
+		if (not stateIndex) then error("State \"" .. state ..  "\" does not exist in the states list.") end
 		
 		resultTensor[i] = ModelParameters[stateIndex]
 		
@@ -122,7 +104,9 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 	
 	if (returnOriginalOutput) then return resultTensor end
 	
-	local resultArray = {}
+	local outputVector = {}
+	
+	local maximumValueVector = {}
 	
 	for i, resultVector in ipairs(resultTensor) do
 		
@@ -130,13 +114,17 @@ function TabularReinforcementLearningBaseModel:predict(stateArray, returnOrigina
 		
 		local actionIndex = table.find(resultVector, maximumValue)
 		
-		if (not actionIndex) then error("Action does not exist in the actions list.") end
+		local action = ActionsList[actionIndex] 
 		
-		resultArray[i] = ActionsList[actionIndex]
+		if (not action) then error("Action for action index " .. actionIndex ..  "  does not exist in the actions list.") end
+		
+		outputVector[i] = {action}
+		
+		maximumValueVector[i] = {maximumValue}
 		
 	end
 
-	return resultArray
+	return outputVector, maximumValueVector
 
 end
 
@@ -171,6 +159,12 @@ function TabularReinforcementLearningBaseModel:setCategoricalUpdateFunction(cate
 end
 
 function TabularReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+
+	if (not self.ModelParameters) then
+
+		self.ModelParameters = self:initializeMatrixBasedOnMode({#self.StatesList, #self.ActionsList})
+
+	end
 	
 	local categoricalUpdateFunction = self.categoricalUpdateFunction
 	
@@ -193,6 +187,12 @@ function TabularReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeU
 end
 
 function TabularReinforcementLearningBaseModel:episodeUpdate(terminalStateValue)
+	
+	if (not self.ModelParameters) then
+
+		self.ModelParameters = self:initializeMatrixBasedOnMode({#self.StatesList, #self.ActionsList})
+
+	end
 
 	local episodeUpdateFunction = self.episodeUpdateFunction
 	

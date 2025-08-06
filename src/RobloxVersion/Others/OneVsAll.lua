@@ -34,7 +34,7 @@ local Models = DataPredictLibrary.Models
 
 local Optimizers = DataPredictLibrary.Optimizers
 
-local Regularizers = require(DataPredictLibrary.Regularizers)
+local Regularizers = DataPredictLibrary.Regularizers
 
 local AqwamTensorLibrary = require(DataPredictLibrary.AqwamTensorLibraryLinker.Value)
 

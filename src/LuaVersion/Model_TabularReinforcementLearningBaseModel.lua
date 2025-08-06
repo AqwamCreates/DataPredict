@@ -40,7 +40,7 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewDeepReinforcementLearningBaseModel = {}
+	local NewDeepReinforcementLearningBaseModel = BaseModel.new(parameterDictionary)
 	
 	setmetatable(NewDeepReinforcementLearningBaseModel, TabularReinforcementLearningBaseModel)
 	

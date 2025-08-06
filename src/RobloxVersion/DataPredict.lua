@@ -228,8 +228,6 @@ AqwamMachineAndDeepLearningLibrary.DistributedTrainingStrategies = {
 
 AqwamMachineAndDeepLearningLibrary.Others = {
 	
-	Regularizer = require(Others.Regularizer),
-	
 	TrainingModifier = require(Others.TrainingModifier),
 	
 	ModelParametersMerger = require(Others.ModelParametersMerger),

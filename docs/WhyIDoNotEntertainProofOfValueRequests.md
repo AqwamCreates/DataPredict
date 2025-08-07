@@ -8,7 +8,7 @@ Now, let's go over how the DataPredict ecosystem already provides value.
 
 ## No Huge Development Costs Or Time
 
-When creating libraries that are similar to DataPredict, it generally requires more than 4 people that are already experience in the machine learning (ML), deep learning (DL) and reinforcement learning (RL) fields.
+When creating libraries that are similar to DataPredict, it generally requires more than 3 people that are already experience in the machine learning (ML), deep learning (DL) and reinforcement learning (RL) fields.
 
 Now, everyone knows that more experience means more higher salary. This can be made worse if you decide to build such libraries in-house as they can take more than a year to develop.
 

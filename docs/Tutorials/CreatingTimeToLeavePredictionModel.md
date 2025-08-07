@@ -36,16 +36,16 @@ Below, we will show you how to create this:
 
 -- We're just adding 1 here to add "bias".
 
- initialPlayerDataMatrix[snapshotIndex] = {
-
-    1,
-    numberOfCurrencyAmount,
-    numberOfItemsAmount,
-    timePlayedInCurrentSession,
-    timePlayedInAllSessions,
-    healthAmount
-
-  }
+local initialPlayerDataVector = {
+    {
+        1,
+        numberOfCurrencyAmount,
+        numberOfItemsAmount,
+        timePlayedInCurrentSession,
+        timePlayedInAllSessions,
+        healthAmount
+    }
+}
 
 local initialJoinTime = os.time()
 
@@ -55,7 +55,7 @@ If you want to add more data instead of relying on the initial data point, you a
 
 ```lua
 
-local initialPlayerDataVector = {}
+local initialPlayerDataMatrix = {}
   
 local recordedTimeArray = {}
   

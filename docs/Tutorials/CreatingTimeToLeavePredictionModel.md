@@ -36,16 +36,16 @@ Below, we will show you how to create this:
 
 -- We're just adding 1 here to add "bias".
 
-local initialPlayerDataVector = {
-  {
+ initialPlayerDataVector[snapshotIndex] = {
+
     1,
     numberOfCurrencyAmount,
     numberOfItemsAmount,
     timePlayedInCurrentSession,
     timePlayedInAllSessions,
     healthAmount
+
   }
-}
 
 local initialJoinTime = os.time()
 

@@ -150,7 +150,7 @@ In here, we will use our model parameters so that it can be used to predict "tim
 
 Under this case, this is a new player that plays the game for the first time. In this case, we do not know how this player would act.
 
-We have a multiple way to handle this issue.
+We have a multiple way to handle this issue:
 
 * We create a "global" model that trains from every players, and then make a deep copy of the model parameters and load it into our models.
 

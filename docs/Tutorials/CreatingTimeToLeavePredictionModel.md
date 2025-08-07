@@ -36,7 +36,7 @@ Below, we will show you how to create this:
 
 -- We're just adding 1 here to add "bias".
 
- initialPlayerDataVector[snapshotIndex] = {
+ initialPlayerDataMatrix[snapshotIndex] = {
 
     1,
     numberOfCurrencyAmount,
@@ -63,15 +63,15 @@ local snapshotIndex = 1
   
 local function snapshotData()
   
-  initialPlayerDataVector[snapshotIndex] = {
-    {
-      1,
-      numberOfCurrencyAmount,
-      numberOfItemsAmount,
-      timePlayedInCurrentSession,
-      timePlayedInAllSessions,
-      healthAmount
-    }
+ initialPlayerDataMatrix[snapshotIndex] = {
+
+    1,
+    numberOfCurrencyAmount,
+    numberOfItemsAmount,
+    timePlayedInCurrentSession,
+    timePlayedInAllSessions,
+    healthAmount
+
   }
   
   recordedTimeArray[snapshotIndex] = os.time()

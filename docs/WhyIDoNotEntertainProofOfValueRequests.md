@@ -52,7 +52,7 @@ Given the amount of publicity that the DataPredict ecosystem has acquired, it is
 
 Some platforms don't do this, so you will be getting extra value for free.
 
-I prefer my DataPredict ecosystem to be production-grade and research-grade. Not toy libraries that doesn't scale. As such high quality will be mantained at all costs and at all times. This also includes catching up with the latest research and implement them into the DataPredict ecosystem.
+I prefer my DataPredict ecosystem to be production-grade and research-grade. Not toy libraries that doesn't scale. As such, high quality will be mantained at all costs and at all times. This also includes catching up with the latest research and implement them into the DataPredict ecosystem.
 
 ## Value Is Also Dependent On How You Use It
 

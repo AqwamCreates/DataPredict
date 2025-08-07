@@ -12,9 +12,11 @@ By using or possessing any copies of this library or its assets (including the i
 
 * Plus some more stuff...
 
-Once you pass the commercial use threshold and want to license it, expect to pay for (gross revenue * (0.06 / log10(gross revenue))) every month, provided that it uses this library. In other words, it starts at around 2% of gross revenue and that percentage decreases as your project earns more. That fee also includes DataPredict™ Neural and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public. You can download and see the full commercial licensing agreement [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredict%20Libraries%20Licensing%20Agreement.docx).
+Once you pass the commercial use threshold and want to license it, expect to pay for (gross revenue * (0.06 / log10(gross revenue))) every month, provided that it uses this library. In other words, it starts at around 2% of gross revenue and that percentage decreases as your project earns more. That fee also includes DataPredict™ Neural and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
 
 Thanks to the early adopters, I managed to to fund my Master research thesis (that may be published soon) on how to speed up reinforcement learning training by 10 times from the baseline methods. It is already implemented in the DataPredict™ and DataPredict™ Neural libraries!
+
+You can download and read the full commercial licensing agreement [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredict%20Libraries%20Licensing%20Agreement.docx).
 
 I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
 

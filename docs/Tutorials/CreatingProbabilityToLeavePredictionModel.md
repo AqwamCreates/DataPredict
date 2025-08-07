@@ -64,17 +64,17 @@ local snapshotIndex = 1
 local function snapshotData()
   
   initialPlayerDataVector[snapshotIndex] = {
-    {
-        1,
-        numberOfCurrencyAmount,
-        numberOfItemsAmount,
-        timePlayedInCurrentSession,
-        timePlayedInAllSessions,
-        healthAmount
-    }
+
+    1,
+    numberOfCurrencyAmount,
+    numberOfItemsAmount,
+    timePlayedInCurrentSession,
+    timePlayedInAllSessions,
+    healthAmount
+
   }
   
-  recordedTimeArray[snapshotIndex] = os.time()
+  recordedTimeArray[snapshotIndex] = {os.time()}
   
   snapshotIndex = snapshotIndex + 1
 

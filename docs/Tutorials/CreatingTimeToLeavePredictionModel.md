@@ -36,16 +36,16 @@ Below, we will show you how to create this:
 
 -- We're just adding 1 here to add "bias".
 
-local initialPlayerDataVector = {{
-
-  1,
-  numberOfCurrencyAmount,
-  numberOfItemsAmount,
-  timePlayedInCurrentSession,
-  timePlayedInAllSessions,
-  healthAmount
-
-}}
+local initialPlayerDataVector = {
+    {
+        1,
+        numberOfCurrencyAmount,
+        numberOfItemsAmount,
+        timePlayedInCurrentSession,
+        timePlayedInAllSessions,
+        healthAmount
+    }
+}
 
 local initialJoinTime = os.time()
 
@@ -55,7 +55,7 @@ If you want to add more data instead of relying on the initial data point, you a
 
 ```lua
 
-local initialPlayerDataVector = {}
+local initialPlayerDataMatrix = {}
   
 local recordedTimeArray = {}
   
@@ -63,7 +63,7 @@ local snapshotIndex = 1
   
 local function snapshotData()
   
-  initialPlayerDataVector[snapshotIndex] = {{
+ initialPlayerDataMatrix[snapshotIndex] = {
 
     1,
     numberOfCurrencyAmount,
@@ -72,7 +72,7 @@ local function snapshotData()
     timePlayedInAllSessions,
     healthAmount
 
-  }}
+  }
   
   recordedTimeArray[snapshotIndex] = os.time()
   
@@ -110,21 +110,21 @@ local ModelParameters = Regression:getModelParameters()
 
 In here, we will use our model parameters so that it can be used to predict "time to leave". There are two cases in here:
 
-1. Player is a first-time player.
+1. The player is a first-time player.
 
-2. Player is a returning player.
+2. The player is a returning player.
 
-### Case 1: Player A First-Time Player
+### Case 1: The Player Is A First-Time Player
 
 Under this case, this is a new player that plays the game for the first time. In this case, we do not know how this player would act.
 
-We have a multiple way to handle this issue.
+We have a multiple way to handle this issue:
 
 * We create a "global" model that trains from every players, and then make a deep copy of the model parameters and load it into our models.
 
 * We take from other player's existing model parameters and load it into our models.
 
-### Case 2: Player A Returning Player
+### Case 2: The Player Is A Returning Player
 
 Under this case, you can continue using the existing model parameters that was saved in Roblox's Datastores.
 

@@ -36,16 +36,16 @@ Below, we will show you how to create this:
 
 -- We're just adding 1 here to add "bias".
 
-local initialPlayerDataVector = {{
-
-  1,
-  numberOfCurrencyAmount,
-  numberOfItemsAmount,
-  timePlayedInCurrentSession,
-  timePlayedInAllSessions,
-  healthAmount
-
-}}
+local initialPlayerDataVector = {
+  {
+    1,
+    numberOfCurrencyAmount,
+    numberOfItemsAmount,
+    timePlayedInCurrentSession,
+    timePlayedInAllSessions,
+    healthAmount
+  }
+}
 
 local initialJoinTime = os.time()
 
@@ -63,16 +63,18 @@ local snapshotIndex = 1
   
 local function snapshotData()
   
-  initialPlayerDataVector[snapshotIndex] = {{
+  initialPlayerDataVector[snapshotIndex] = {
+    {
 
-    1,
-    numberOfCurrencyAmount,
-    numberOfItemsAmount,
-    timePlayedInCurrentSession,
-    timePlayedInAllSessions,
-    healthAmount
+      1,
+      numberOfCurrencyAmount,
+      numberOfItemsAmount,
+      timePlayedInCurrentSession,
+      timePlayedInAllSessions,
+      healthAmount
 
-  }}
+    }
+  }
   
   recordedTimeArray[snapshotIndex] = os.time()
   

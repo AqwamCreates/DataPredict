@@ -110,11 +110,11 @@ local ModelParameters = Regression:getModelParameters()
 
 In here, we will use our model parameters so that it can be used to predict "time to leave". There are two cases in here:
 
-1. Player is a first-time player.
+1. The player is a first-time player.
 
-2. Player is a returning player.
+2. The player is a returning player.
 
-### Case 1: Player A First-Time Player
+### Case 1: The Player Is A First-Time Player
 
 Under this case, this is a new player that plays the game for the first time. In this case, we do not know how this player would act.
 
@@ -124,7 +124,7 @@ We have a multiple way to handle this issue.
 
 * We take from other player's existing model parameters and load it into our models.
 
-### Case 2: Player A Returning Player
+### Case 2: The Player Is A Returning Player
 
 Under this case, you can continue using the existing model parameters that was saved in Roblox's Datastores.
 

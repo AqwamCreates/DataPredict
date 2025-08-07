@@ -74,7 +74,7 @@ local function snapshotData()
 
   }
   
-  recordedTimeArray[snapshotIndex] = {os.time()}
+  recordedTimeArray[snapshotIndex] = os.time()
   
   snapshotIndex = snapshotIndex + 1
 

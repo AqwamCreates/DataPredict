@@ -66,11 +66,11 @@ local function snapshotData()
   initialPlayerDataVector[snapshotIndex] = {
     {
         1,
-      numberOfCurrencyAmount,
-      numberOfItemsAmount,
-      timePlayedInCurrentSession,
-      timePlayedInAllSessions,
-      healthAmount
+        numberOfCurrencyAmount,
+        numberOfItemsAmount,
+        timePlayedInCurrentSession,
+        timePlayedInAllSessions,
+        healthAmount
     }
   }
   

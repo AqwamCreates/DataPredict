@@ -38,14 +38,12 @@ Below, we will show you how to create this:
 
 local initialPlayerDataVector = {
   {
-
     1,
     numberOfCurrencyAmount,
     numberOfItemsAmount,
     timePlayedInCurrentSession,
     timePlayedInAllSessions,
     healthAmount
-
   }
 }
 
@@ -67,14 +65,12 @@ local function snapshotData()
   
   initialPlayerDataVector[snapshotIndex] = {
     {
-
       1,
       numberOfCurrencyAmount,
       numberOfItemsAmount,
       timePlayedInCurrentSession,
       timePlayedInAllSessions,
       healthAmount
-
     }
   }
   

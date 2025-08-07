@@ -55,7 +55,7 @@ If you want to add more data instead of relying on the initial data point, you a
 
 ```lua
 
-local initialPlayerDataVector = {}
+local initialPlayerDataMatrix = {}
   
 local recordedTimeArray = {}
   
@@ -63,7 +63,7 @@ local snapshotIndex = 1
   
 local function snapshotData()
   
-  initialPlayerDataVector[snapshotIndex] = {
+ initialPlayerDataMatrix[snapshotIndex] = {
 
     1,
     numberOfCurrencyAmount,

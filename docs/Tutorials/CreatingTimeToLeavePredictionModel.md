@@ -90,7 +90,11 @@ By the time the player leaves, it is time for us to train the model. But first, 
 
 local timeToLeave = os.time() - initialJoinTime
 
-local wrappedTimeToLeave = {{timeToLeave}} -- Need to wrap this as our models can only accept matrices.
+local wrappedTimeToLeave = {
+
+    {timeToLeave}
+
+} -- Need to wrap this as our models can only accept matrices.
 
 local costArray = Regression:train(initialPlayerDataVector, wrappedTimeToLeave)
 

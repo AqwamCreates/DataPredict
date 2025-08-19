@@ -6,7 +6,7 @@ By using or possessing any copies of this library or its assets (including the i
 
 * Public attribution is required when using this library.
 
-* A separate agreement is needed for commercial use (both internally and externally). This applies to companies (or individuals, if none) whose combined revenue (including from subsidiaries or related entities) exceeds $3,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
+* A separate agreement is needed for commercial use (both internally and externally). This applies to companies (or individuals, if none) whose combined revenue (including from subsidiaries or related entities) exceeds $300 within 30 days (not per 30 days) or those engaged in business-to-business activities.
 
 * If you or your company is applicable to the above statement and do not want a separate agreement, then you are required to follow the "Commercial Use Conditions" in Terms And Conditions.
 

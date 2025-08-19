@@ -154,7 +154,7 @@ We have a multiple way to handle this issue:
 
 * We create a "global" model that trains from every players, and then make a deep copy of the model parameters and load it into our models.
 
-* We take from other player's existing model parameters and load it into our models.
+* We take from other players' existing model parameters and load it into our models.
 
 ### Case 2: The Player Is A Returning Player
 

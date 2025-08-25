@@ -36,7 +36,7 @@ DutchTrace.__index = DutchTrace
 
 setmetatable(DutchTrace, BaseEligibilityTrace)
 
-local defaultAlpha = 0.8
+local defaultAlpha = 0.5
 
 function DutchTrace.new(parameterDictionary)
 	

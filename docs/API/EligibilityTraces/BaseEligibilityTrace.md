@@ -26,7 +26,7 @@ BaseEligibilityTrace.new({lambda: number}): EligibilityTraceObject
 
 ```
 
-BaseEligibilityTrace:calculate(temporalDifferenceErrorVector: tensor, actionIndex: number, discountFactor: number)
+BaseEligibilityTrace:increment(temporalDifferenceErrorVector: tensor, actionIndex: number, discountFactor: number)
 
 ```
 
@@ -38,6 +38,18 @@ BaseEligibilityTrace:calculate(temporalDifferenceErrorVector: tensor, actionInde
 
 * discountFactor: The discount factor to be used to modify the eligibility traces.
 
+### increment()
+
+```
+
+BaseEligibilityTrace:calculate(temporalDifferenceErrorVector: tensor): tensor
+
+```
+
+#### Parameters:
+
+* temporalDifferenceErrorVector: A temporal difference error vector.
+
 #### Returns:
 
 * temporalDifferenceErrorVector: A temporal difference error vector.
@@ -46,13 +58,13 @@ BaseEligibilityTrace:calculate(temporalDifferenceErrorVector: tensor, actionInde
 
 ```
 
-BaseEligibilityTrace:setCalculateFunction(calculateFunction: function)
+BaseEligibilityTrace:setIncrementFunction(IncrementFunction: function)
 
 ```
 
 #### Parameters:
 
-* calculateFunction: The calculate function to be set.
+* IncrementFunction: The increment function to be set.
 
 ### setLambda()
 

@@ -20,6 +20,6 @@ AccumulatingTrace.new({lambda: number}): EligibilityTraceObject
 
 * EligibilityTraceObject: The generated eligibility trace object.
 
-## Inherited From:
+## Inherited From
 
 [BaseEligibilityTrace](BaseEligibilityTrace.md)

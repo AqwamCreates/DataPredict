@@ -1,6 +1,6 @@
 # [API Reference](../API.md) - EligibilityTraces
 
-[AccumulatingTrace](EligibilityTraces/AccumulatingTraces.md)
+[AccumulatingTrace](EligibilityTraces/AccumulatingTrace.md)
 
 [ReplacingTrace](EligibilityTraces/ReplacingTrace.md)
 

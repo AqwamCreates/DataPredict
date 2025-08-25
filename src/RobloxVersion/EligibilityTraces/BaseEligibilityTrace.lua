@@ -60,7 +60,13 @@ end
 
 function BaseEligibilityTrace:calculate(temporalDifferenceErrorVector, actionIndex, discountFactor)
 	
-	if (self.CalculateFunction) then return self.CalculateFunction(temporalDifferenceErrorVector, actionIndex, discountFactor) end
+	local eligibilityTraceMatrix = BaseEligibilityTrace.eligibilityTraceMatrix
+
+	if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor({1, #temporalDifferenceErrorVector[1]}, 0) end
+	
+	if (self.CalculateFunction) then return self.CalculateFunction(eligibilityTraceMatrix, actionIndex, discountFactor) end
+	
+	temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTraceMatrix)
 	
 end
 

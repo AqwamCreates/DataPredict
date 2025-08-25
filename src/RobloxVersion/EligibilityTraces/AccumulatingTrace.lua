@@ -44,7 +44,7 @@ function AccumulatingTrace.new(parameterDictionary)
 	
 	NewAccumulatingTrace:setName("AccumulatingTrace")
 	
-	NewAccumulatingTrace:setCalculateFunction(function(eligibilityTraceMatrix, actionIndex)
+	NewAccumulatingTrace:setIncrementFunction(function(eligibilityTraceMatrix, actionIndex)
 
 		eligibilityTraceMatrix[1][actionIndex] = eligibilityTraceMatrix[1][actionIndex] + 1
 		

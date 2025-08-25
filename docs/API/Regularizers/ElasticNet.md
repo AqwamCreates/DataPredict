@@ -19,3 +19,7 @@ ElasticNet.new({lambda: number}): RegularizerObject
 #### Returns:
 
 * Regularizer: The generated regularizer object.
+
+## Inherited From
+
+[BaseRegularizer](BaseRegularizer.md)

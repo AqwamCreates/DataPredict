@@ -14,7 +14,7 @@ BaseEligibilityTrace.new({lambda: number}): RegularizerObject
 
 #### Parameters:
 
-* lambda: The regularization factor. Recommended values are between 0 to 1.
+* lambda: lambda: At 0, the model acts like the Temporal Difference algorithm. At 1, the model acts as Monte Carlo algorithm. Between 0 and 1, the model acts as both. [Default: 0]
 
 #### Returns:
 

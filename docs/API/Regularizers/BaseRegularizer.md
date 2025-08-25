@@ -32,11 +32,11 @@ BaseRegularizer:calculate(weightTensor: tensor)
 
 #### Parameters:
 
-* weightTensor: A tensor from weight block object.
+* weightTensor: A tensor from the weight block object.
 
-#### Returns:
+#### Parameters:
 
-* weightTensor: A tensor from weight block object.
+* weightTensor: A tensor for the weight block object.
 
 ### setCalculateFunction()
 

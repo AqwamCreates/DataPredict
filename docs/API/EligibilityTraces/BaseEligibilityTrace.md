@@ -8,7 +8,7 @@ Creates a new eligibility trace object. If any of the arguments are not given, d
 
 ```
 
-BaseEligibilityTrace.new({lambda: number}): RegularizerObject
+BaseEligibilityTrace.new({lambda: number}): EligibilityTraceObject
 
 ```
 
@@ -18,7 +18,7 @@ BaseEligibilityTrace.new({lambda: number}): RegularizerObject
 
 #### Returns:
 
-* EligibilityTrace: The generated eligibility trace object.
+* EligibilityTraceObject: The generated eligibility trace object.
 
 ## Functions
 

@@ -10,7 +10,11 @@
 
 [Optimizers](API/Optimizers.md)
 
+[Regularizers](API/Regularizers.md)
+
 [ExperienceReplays](API/ExperienceReplays.md)
+
+[EligibilityTraces](API/EligibilityTraces.md)
 
 [DistributedTrainingStrategies](API/DistributedTrainingStrategies.md)
 

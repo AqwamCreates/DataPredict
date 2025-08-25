@@ -21,3 +21,7 @@ DutchTrace.new({lambda: number, alpha: number}): EligibilityTraceObject
 #### Returns:
 
 * EligibilityTraceObject: The generated eligibility trace object.
+
+## Inherited From
+
+[BaseEligibilityTrace](BaseEligibilityTrace.md)

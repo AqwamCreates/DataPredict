@@ -58,7 +58,7 @@ function BaseEligibilityTrace.new(parameterDictionary)
 	
 end
 
-function BaseEligibilityTrace:increment(actionIndex, discountFactor, dimensionSizeArray)
+function BaseEligibilityTrace:increment(actionIndex, discountFactor, dimensionSizeArray) -- This function is needed because we have double version of reinforcement learning algorithms require separate application of (temporalDifferenceErrorVector * eligibilityTraceMatrix).
 	
 	local eligibilityTraceMatrix = self.eligibilityTraceMatrix or AqwamTensorLibrary:createTensor(dimensionSizeArray, 0) 
 

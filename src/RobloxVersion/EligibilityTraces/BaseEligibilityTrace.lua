@@ -58,25 +58,35 @@ function BaseEligibilityTrace.new(parameterDictionary)
 	
 end
 
-function BaseEligibilityTrace:calculate(temporalDifferenceErrorVector, actionIndex, discountFactor)
+function BaseEligibilityTrace:increment(temporalDifferenceErrorVector, actionIndex, discountFactor)
 	
 	local eligibilityTraceMatrix = self.eligibilityTraceMatrix
-
-	if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor({1, #temporalDifferenceErrorVector[1]}, 0) end
 	
+	if (not eligibilityTraceMatrix) then 
+		
+		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(temporalDifferenceErrorVector)
+		
+		eligibilityTraceMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0) 
+		
+	end
+
 	eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * self.lambda)
 	
-	if (self.CalculateFunction) then eligibilityTraceMatrix = self.CalculateFunction(eligibilityTraceMatrix, actionIndex) end
+	local IncrementFunction = self.IncrementFunction
 	
-	self.eligibilityTraceMatrix = eligibilityTraceMatrix
-	
-	return AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTraceMatrix)
+	if (IncrementFunction) then self.eligibilityTraceMatrix = IncrementFunction(eligibilityTraceMatrix, actionIndex) end
 	
 end
 
-function BaseEligibilityTrace:setCalculateFunction(CalculateFunction)
+function BaseEligibilityTrace:calculate(temporalDifferenceErrorVector)
 	
-	self.CalculateFunction = CalculateFunction
+	return AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, self.eligibilityTraceMatrix)
+	
+end
+
+function BaseEligibilityTrace:setIncrementFunction(IncrementFunction)
+	
+	self.IncrementFunction = IncrementFunction
 	
 end
 

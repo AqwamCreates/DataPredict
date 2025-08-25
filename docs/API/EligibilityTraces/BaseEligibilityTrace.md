@@ -22,7 +22,7 @@ BaseEligibilityTrace.new({lambda: number}): EligibilityTraceObject
 
 ## Functions
 
-### calculate()
+### increment()
 
 ```
 
@@ -38,7 +38,7 @@ BaseEligibilityTrace:increment(temporalDifferenceErrorVector: tensor, actionInde
 
 * discountFactor: The discount factor to be used to modify the eligibility traces.
 
-### increment()
+### calculate()
 
 ```
 

@@ -40,6 +40,8 @@ local defaultAlpha = 0.5
 
 function DutchTrace.new(parameterDictionary)
 	
+	parameterDictionary = parameterDictionary or {}
+	
 	local NewDutchTrace = BaseEligibilityTrace.new(parameterDictionary)
 	
 	setmetatable(NewDutchTrace, DutchTrace)

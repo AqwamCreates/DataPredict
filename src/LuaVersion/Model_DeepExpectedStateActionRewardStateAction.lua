@@ -38,8 +38,6 @@ setmetatable(DeepExpectedStateActionRewardStateActionModel, DeepReinforcementLea
 
 local defaultEpsilon = 0.5
 
-local defaultLambda = 0
-
 function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -52,9 +50,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
-	NewDeepExpectedStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
-	
-	NewDeepExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
+	NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
@@ -64,7 +60,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		local epsilon = NewDeepExpectedStateActionRewardStateActionModel.epsilon
 		
-		local lambda = NewDeepExpectedStateActionRewardStateActionModel.lambda
+		local EligibilityTrace = NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace
 
 		local expectedQValue = 0
 
@@ -124,19 +120,11 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
 		
-		if (lambda ~= 0) then
+		if (EligibilityTrace) then
 
-			local eligibilityTraceMatrix = NewDeepExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix
+			EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
 
-			if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
-
-			eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
-
-			eligibilityTraceMatrix[1][actionIndex] = eligibilityTraceMatrix[1][actionIndex] + 1
-
-			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTraceMatrix)
-
-			NewDeepExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = eligibilityTraceMatrix
+			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
 
 		end
 		
@@ -152,13 +140,13 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
+		NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
 		
 	end)
 
 	NewDeepExpectedStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		NewDeepExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
+		NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
 		
 	end)
 

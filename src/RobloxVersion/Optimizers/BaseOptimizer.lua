@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -48,7 +48,7 @@ function BaseOptimizer.new(parameterDictionary)
 	
 	NewBaseOptimizer.LearningRateValueScheduler = parameterDictionary.LearningRateValueScheduler
 
-	NewBaseOptimizer.calculateFunction = nil
+	NewBaseOptimizer.CalculateFunction = nil
 
 	NewBaseOptimizer.optimizerInternalParameterArray = {}
 
@@ -58,21 +58,21 @@ end
 
 function BaseOptimizer:calculate(learningRate, costFunctionDerivativeTensor)
 
-	local calculateFunction = self.calculateFunction
+	local CalculateFunction = self.CalculateFunction
 
 	local LearningRateValueScheduler = self.LearningRateValueScheduler
 
-	if (not calculateFunction) then error("No calculate function for the optimizer!") end
+	if (not CalculateFunction) then error("No calculate function for the optimizer!") end
 
 	if LearningRateValueScheduler then learningRate = LearningRateValueScheduler:calculate(learningRate) end
 
-	return self.calculateFunction(learningRate, costFunctionDerivativeTensor)
+	return self.CalculateFunction(learningRate, costFunctionDerivativeTensor)
 
 end
 
-function BaseOptimizer:setCalculateFunction(calculateFunction)
+function BaseOptimizer:setCalculateFunction(CalculateFunction)
 
-	self.calculateFunction = calculateFunction
+	self.CalculateFunction = CalculateFunction
 
 end
 

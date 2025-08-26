@@ -38,8 +38,6 @@ setmetatable(DeepDoubleExpectedStateActionRewardStateActionModel, DeepReinforcem
 
 local defaultEpsilon = 0.5
 
-local defaultLambda = 0
-
 function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 
 	local NewDeepDoubleExpectedStateActionRewardStateActionModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
@@ -52,9 +50,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
-
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
@@ -84,13 +80,13 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
+		NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
 		
 	end)
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
+		NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
 		
 	end)
 
@@ -132,7 +128,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDif
 	
 	local epsilon = self.epsilon
 	
-	local lambda = self.lambda
+	local EligibilityTrace = self.EligibilityTrace
 
 	local expectedQValue = 0
 
@@ -196,19 +192,11 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDif
 	
 	temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
 	
-	if (lambda ~= 0) then
+	if (EligibilityTrace) then
 
-		local eligibilityTraceMatrix = self.eligibilityTraceMatrix
+		EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
 
-		if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
-
-		eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
-
-		eligibilityTraceMatrix[1][actionIndex] = eligibilityTraceMatrix[1][actionIndex] + 1
-
-		temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTraceMatrix)
-
-		self.eligibilityTraceMatrix = eligibilityTraceMatrix
+		temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
 
 	end
 

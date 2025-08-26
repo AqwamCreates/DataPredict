@@ -69,8 +69,6 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	NewDeepDoubleQLearningModel:setName("DeepDoubleQLearningV2")
 	
 	NewDeepDoubleQLearningModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
-	
-	NewDeepDoubleQLearningModel.lambda = parameterDictionary.lambda or defaultLambda
 
 	NewDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 

@@ -40,6 +40,8 @@ local ExperienceReplays = script.ExperienceReplays
 
 local QuickSetups = script.QuickSetups
 
+local EligibilityTraces = script.EligibilityTraces
+
 local ReinforcementLearningStrategies = script.ReinforcementLearningStrategies
 
 local DistributedTrainingStrategies = script.DistributedTrainingStrategies
@@ -206,6 +208,16 @@ AqwamMachineAndDeepLearningLibrary.QuickSetups = {
 
 	DiagonalGaussianPolicy = require(QuickSetups.DiagonalGaussianPolicy)
 
+}
+
+AqwamMachineAndDeepLearningLibrary.EligibilityTraces = {
+	
+	AccumulatingTrace = require(EligibilityTraces.AccumulatingTrace),
+	
+	ReplacingTrace = require(EligibilityTraces.ReplacingTrace),
+	
+	DutchTrace = require(EligibilityTraces.DutchTrace),
+	
 }
 
 AqwamMachineAndDeepLearningLibrary.ReinforcementLearningStrategies = {

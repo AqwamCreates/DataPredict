@@ -36,8 +36,6 @@ DeepQLearningModel.__index = DeepQLearningModel
 
 setmetatable(DeepQLearningModel, DeepReinforcementLearningBaseModel)
 
-local defaultLambda = 0
-
 function DeepQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}

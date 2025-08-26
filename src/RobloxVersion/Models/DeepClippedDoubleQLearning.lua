@@ -110,7 +110,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 			
 			temporalDifferenceErrorVector[1][i] = temporalDifferenceError
 			
-			if (EligibilityTrace) then lossVector = EligibilityTrace:increment(lossVector) end
+			if (EligibilityTrace) then lossVector = EligibilityTrace:calculate(lossVector) end
 			
 			local negatedLossVector = AqwamTensorLibrary:unaryMinus(lossVector) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
 			

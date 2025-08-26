@@ -11,14 +11,14 @@ It uses Hasselt et al. (2010) version, where a single neural network is selected
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepDoubleStateActionRewardStateAction.new(lambda: number, discountFactor: number): ModelObject
+DeepDoubleStateActionRewardStateAction.new(discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
 ```
 
 #### Parameters:
 
-* lambda: At 0, the model acts like the Temporal Difference algorithm. At 1, the model acts as Monte Carlo algorithm. Between 0 and 1, the model acts as both. [Default: 0]
-
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+
+* EligibilityTrace: The eligibility trace object to keep track of credit assignments of state-action pairs.
 
 #### Returns:
 

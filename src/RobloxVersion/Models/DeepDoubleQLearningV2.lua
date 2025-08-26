@@ -38,8 +38,6 @@ setmetatable(DeepDoubleQLearningModel, DeepReinforcementLearningBaseModel)
 
 local defaultAveragingRate = 0.995
 
-local defaultLambda = 0
-
 local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
 
 	local averagingRateComplement = 1 - averagingRate

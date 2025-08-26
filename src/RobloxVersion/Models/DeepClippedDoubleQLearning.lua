@@ -36,8 +36,6 @@ DeepClippedDoubleQLearningModel.__index = DeepClippedDoubleQLearningModel
 
 setmetatable(DeepClippedDoubleQLearningModel, DeepReinforcementLearningBaseModel)
 
-local defaultLambda = 0
-
 function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}

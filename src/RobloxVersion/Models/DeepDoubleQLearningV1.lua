@@ -49,10 +49,8 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	NewDeepDoubleQLearningModel:setName("DeepDoubleQLearningV1")
 	
 	NewDeepDoubleQLearningModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
-	
-	NewDeepDoubleQLearningModel.lambda = parameterDictionary.lambda or defaultLambda
 
-	NewDeepDoubleQLearningModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix 
+	NewDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
 	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
@@ -84,13 +82,13 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	
 	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepDoubleQLearningModel.eligibilityTraceMatrix = nil
+		NewDeepDoubleQLearningModel.EligibilityTrace:reset()
 		
 	end)
 	
 	NewDeepDoubleQLearningModel:setResetFunction(function() 
 		
-		NewDeepDoubleQLearningModel.eligibilityTraceMatrix = nil
+		NewDeepDoubleQLearningModel.EligibilityTrace:reset()
 		
 	end)
 
@@ -130,7 +128,7 @@ function DeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previous
 	
 	local discountFactor = self.discountFactor
 	
-	local lambda = self.lambda
+	local EligibilityTrace = self.EligibilityTrace
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
@@ -158,19 +156,11 @@ function DeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previous
 
 	temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
 	
-	if (lambda ~= 0) then
+	if (EligibilityTrace) then
 
-		local eligibilityTraceMatrix = self.eligibilityTraceMatrix
-
-		if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
-
-		eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
-
-		eligibilityTraceMatrix[1][actionIndex] = eligibilityTraceMatrix[1][actionIndex] + 1
-
-		temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTraceMatrix)
-
-		self.eligibilityTraceMatrix = eligibilityTraceMatrix
+		EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
+		
+		temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
 
 	end
 	

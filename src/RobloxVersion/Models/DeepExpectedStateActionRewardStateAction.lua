@@ -38,8 +38,6 @@ setmetatable(DeepExpectedStateActionRewardStateActionModel, DeepReinforcementLea
 
 local defaultEpsilon = 0.5
 
-local defaultLambda = 0
-
 function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -51,8 +49,6 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	NewDeepExpectedStateActionRewardStateActionModel:setName("DeepExpectedStateActionRewardStateAction")
 	
 	NewDeepExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
-	
-	NewDeepExpectedStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
 	
 	NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 

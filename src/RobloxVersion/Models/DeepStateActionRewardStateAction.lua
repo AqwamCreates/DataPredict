@@ -36,8 +36,6 @@ DeepStateActionRewardStateActionModel.__index = DeepStateActionRewardStateAction
 
 setmetatable(DeepStateActionRewardStateActionModel, DeepReinforcementLearningBaseModel)
 
-local defaultLambda = 0
-
 function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}

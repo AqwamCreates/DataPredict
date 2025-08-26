@@ -55,11 +55,12 @@ function BaseRegularizer.new(parameterDictionary)
 end
 
 function BaseRegularizer:calculate(weightTensor)
-	
-	if (self.CalculateFunction) then return self.CalculateFunction(weightTensor) end
-	
-end
 
+	local CalculateFunction = self.CalculateFunction
+
+	if (CalculateFunction) then return CalculateFunction(weightTensor) end
+
+end
 function BaseRegularizer:setCalculateFunction(CalculateFunction)
 	
 	self.CalculateFunction = CalculateFunction

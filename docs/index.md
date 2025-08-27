@@ -39,6 +39,16 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 To know what this library is all about from scratch, let's have a look at the quick introduction [here](QuickIntroduction.md).
 
+## The API
+
+### API Reference
+
+* [API Reference](API.md)
+
+### Want To Create Your Own Models, Optimizers And More?
+
+* [API Design](APIDesign.md)
+
 ## Tutorials
 
 ### Installation
@@ -98,16 +108,6 @@ To know what this library is all about from scratch, let's have a look at the qu
 * [Simple Environment](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/tree/main/How%20To%20Create%20Neural%20Networks%20With%20Reinforcement%20Learning%20For%20Roblox)
 
 * [Self-Learning Sword-Fighting AIs - Version 9](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/tree/main/Self-Learning%20Sword-Fighting%20AIs%20Version%209)
-
-## The API
-
-### API Reference
-
-* [API Reference](API.md)
-
-### Want To Create Your Own Models, Optimizers And More?
-
-* [API Design](APIDesign.md)
 
 ## Links
 

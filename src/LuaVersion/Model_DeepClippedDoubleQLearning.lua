@@ -46,19 +46,19 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 	
 	NewDeepClippedDoubleQLearningModel:setName("DeepClippedDoubleQLearning")
 
-	NewDeepClippedDoubleQLearningModel.ModelParametersArray = {}
-
 	NewDeepClippedDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewDeepClippedDoubleQLearningModel.ModelParametersArray = {}
 	
 	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 		local Model = NewDeepClippedDoubleQLearningModel.Model
 		
 		local discountFactor = NewDeepClippedDoubleQLearningModel.discountFactor
+
+		local EligibilityTrace = NewDeepClippedDoubleQLearningModel.EligibilityTrace
 		
 		local ModelParametersArray = NewDeepClippedDoubleQLearningModel.ModelParametersArray
-		
-		local EligibilityTrace = NewDeepClippedDoubleQLearningModel.EligibilityTrace
 
 		local maxQValueArray = {}
 

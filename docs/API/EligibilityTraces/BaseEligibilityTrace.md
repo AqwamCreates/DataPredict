@@ -26,17 +26,17 @@ BaseEligibilityTrace.new({lambda: number}): EligibilityTraceObject
 
 ```
 
-BaseEligibilityTrace:increment(temporalDifferenceErrorVector: tensor, actionIndex: number, discountFactor: number)
+BaseEligibilityTrace:increment(actionIndex: number, discountFactor: number, dimensionSizeArray: {number})
 
 ```
 
 #### Parameters:
 
-* temporalDifferenceErrorVector: A temporal difference error vector.
-
 * actionIndex: The action index to be incremented.
 
-* discountFactor: The discount factor to be used to modify the eligibility traces.
+* discountFactor: The discount factor to be used to modify the eligibility trace.
+
+* dimensionSizeArray: The dimension size array for generating the eligibility trace.
 
 ### calculate()
 

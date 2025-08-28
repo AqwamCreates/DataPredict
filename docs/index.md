@@ -41,13 +41,11 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## The API
 
-### API Reference
+### API
 
 * [API Reference](API.md)
 
-### Want To Create Your Own Models, Optimizers And More?
-
-* [API Design](APIDesign.md)
+* [API Design](APIDesign.md) - For Creating Your Own Models, Optimizers And More!
 
 ## Tutorials
 

@@ -22,7 +22,7 @@ The DataPredict ecosystem took me a total of 3 years as a solo developer. I went
 
 Instead of charging enterprise-level prices, I went for a volume-based model.
 
-Because I’m a solo developer, I can afford to keep the licensing lightweight and scalable, where I use 2% revenue share that only kicks in when your game earns revenue. No upfront costs. No hidden fees. No per-seat charges.
+Because I’m a solo developer, I can afford to keep the licensing lightweight and scalable, where I use 1% revenue share that only kicks in when your game earns revenue. No upfront costs. No hidden fees. No per-seat charges.
 
 That alone saves you:
 

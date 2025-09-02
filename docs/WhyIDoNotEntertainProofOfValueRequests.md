@@ -62,7 +62,7 @@ That includes Roblox Studio, Unity, Unreal, and even DataPredict.
 
 If you misuse it, don’t expect 100% value. That’s not a “problem” with the tool — it’s a skill and application issue.
 
-What I have delivered is a massive reduction in dev time, cost, and barrier to entry. Whether you turn that into revenue? That’s up to you.
+What I have delivered is a massive reduction in development time, cost, and barrier to entry. Whether you turn that into revenue? That’s up to you.
 
 ## Conclusion
 

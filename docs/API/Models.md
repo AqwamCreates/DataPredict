@@ -102,4 +102,4 @@
 
 [DeepReinforcementLearningActorCriticBaseModel](Models/DeepReinforcementLearningActorCriticBaseModel.md)
 
-[TabularReinforcementLearningActorCriticBaseModel](Models/TabularReinforcementLearningActorCriticBaseModel.md)
+[TabularReinforcementLearningBaseModel](Models/TabularReinforcementLearningBaseModel.md)

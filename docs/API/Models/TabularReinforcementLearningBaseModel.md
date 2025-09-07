@@ -44,18 +44,6 @@ TabularReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUp
 
 * categoricalUpdateFunction: The function to run when categoricalUpdate() is called.
 
-### setDiagonalGaussianUpdateFunction()
-
-Sets the model's diagonal Gausian policy update function.
-
-```
-DeepReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
-```
-
-#### Parameters:
-
-* diagonalGaussianUpdateFunction: The function to run when diagonalGaussianUpdate() is called.
-
 ### setEpisodeUpdateFunction()
 
 Sets the model's episode update function.

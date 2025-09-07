@@ -115,3 +115,7 @@ Reset model's stored values (excluding the parameters).
 ```
 TabularReinforcementLearningBaseModel:reset()
 ```
+
+## Inherited From
+
+* [BaseModel](BaseModel.md)

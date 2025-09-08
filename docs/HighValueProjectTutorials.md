@@ -1,4 +1,4 @@
-# High Value Project Tutorials
+# High-Value Project Tutorials
 
 ## Retention
 

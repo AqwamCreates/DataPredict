@@ -22,7 +22,7 @@ The DataPredict ecosystem took me a total of 3 years as a solo developer. I went
 
 Instead of charging enterprise-level prices, I went for a volume-based model.
 
-Because I’m a solo developer, I can afford to keep the licensing lightweight and scalable, where I use 2% revenue share that only kicks in when your game earns revenue. No upfront costs. No hidden fees. No per-seat charges.
+Because I’m a solo developer, I can afford to keep the licensing lightweight and scalable, where I use 1% revenue share that only kicks in when your game earns revenue. No upfront costs. No hidden fees. No per-seat charges.
 
 That alone saves you:
 
@@ -62,7 +62,7 @@ That includes Roblox Studio, Unity, Unreal, and even DataPredict.
 
 If you misuse it, don’t expect 100% value. That’s not a “problem” with the tool — it’s a skill and application issue.
 
-What I have delivered is a massive reduction in dev time, cost, and barrier to entry. Whether you turn that into revenue? That’s up to you.
+What I have delivered is a massive reduction in development time, cost, and barrier to entry. Whether you turn that into revenue? That’s up to you.
 
 ## Conclusion
 

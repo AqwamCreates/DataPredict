@@ -45,10 +45,10 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	setmetatable(NewDeepDoubleQLearningModel, DeepDoubleQLearningModel)
 	
 	NewDeepDoubleQLearningModel:setName("DeepDoubleQLearningV1")
-	
-	NewDeepDoubleQLearningModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
 
 	NewDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewDeepDoubleQLearningModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
 	
 	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		

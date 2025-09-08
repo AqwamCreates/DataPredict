@@ -45,13 +45,13 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 	setmetatable(NewDeepDoubleExpectedStateActionRewardStateActionModel, DeepDoubleExpectedStateActionRewardStateActionModel)
 	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setName("DeepExpectedStateActionRewardStateActionV1")
-
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
 	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
+	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
 		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model

@@ -39,57 +39,21 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 To know what this library is all about from scratch, let's have a look at the quick introduction [here](QuickIntroduction.md).
 
+## The API
+
+* [API Reference](API.md)
+
+* [API Design](APIDesign.md) - For Creating Your Own Models, Optimizers And More!
+
 ## Tutorials
 
-### Installation
-
-* [Installation For Roblox](Tutorials/InstallationForRoblox.md)
-
-### The Basics - Level 1
-
-* [Creating Our First Model](Tutorials/CreatingOurFirstModel.md)
-
-* [Saving And Loading Model Parameters](Tutorials/SavingAndLoadingModelParameters.md)
-
-### The Basics - Level 2
-
-* [Using Optimizers](Tutorials/UsingOptimizers.md)
-
-* [Using Regularizers](Tutorials/UsingRegularizers.md)
-
-* [Using Training Modifiers](Tutorials/UsingTrainingModifiers.md)
-
-* [Using Model Checker](Tutorials/UsingModelChecker.md)
-
-* [Distributed Training](Tutorials/DistributedTraining.md)
+* [Basic Tutorials](BasicTutorials.md)
 
 ### Predictive AIs
 
 * [Creating Time-To-Leave Prediction Model](Tutorials/CreatingTimeToLeavePredictionModel.md)
 
 * [Creating Probability-To-Leave Prediction Model](Tutorials/CreatingProbabilityToLeavePredictionModel.md)
-
-### The Neural Networks
-
-* [Using Neural Networks Part 1](Tutorials/UsingNeuralNetworksPart1.md)
-
-* [Using Neural Networks Part 2](Tutorials/UsingNeuralNetworksPart2.md)
-
-* [General Guide For Neural Networks Settings](Tutorials/GeneralGuideForNeuralNetworksSettings.md)
-
-### Learning AIs - Level 1
-
-* [Getting Started With Deep Reinforcement Learning](Tutorials/GettingStartedWithDeepReinforcementLearning.md)
-
-* [Choosing The Most Effective Environment Inputs](Tutorials/ChoosingTheMostEffectiveEnvironmentInputs.md)
-
-* [Simulating Curiosity With Random Network Distillation](Tutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
-
-### Learning AIs - Level 2
-
-* [The Action Space And The Reinforcement Learning Algorithms](Tutorials/TheActionSpaceAndTheReinforcementLearningAlgorithms.md)
-
-* [Deep Reinforcement Learning Algorithms Properties](Tutorials/DeepReinforcementLearningAlgorithmsProperties.md)
 
 ## Example Codes
 
@@ -98,16 +62,6 @@ To know what this library is all about from scratch, let's have a look at the qu
 * [Simple Environment](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/tree/main/How%20To%20Create%20Neural%20Networks%20With%20Reinforcement%20Learning%20For%20Roblox)
 
 * [Self-Learning Sword-Fighting AIs - Version 9](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/tree/main/Self-Learning%20Sword-Fighting%20AIs%20Version%209)
-
-## The API
-
-### API Reference
-
-* [API Reference](API.md)
-
-### Want To Create Your Own Models, Optimizers And More?
-
-* [API Design](APIDesign.md)
 
 ## Links
 

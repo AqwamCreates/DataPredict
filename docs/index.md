@@ -51,12 +51,6 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 * [High Value Project Tutorials](HighValueProjectTutorials.md)
 
-### Predictive AIs
-
-* [Creating Time-To-Leave Prediction Model](Tutorials/CreatingTimeToLeavePredictionModel.md)
-
-* [Creating Probability-To-Leave Prediction Model](Tutorials/CreatingProbabilityToLeavePredictionModel.md)
-
 ## Example Codes
 
 ### Learning AIs

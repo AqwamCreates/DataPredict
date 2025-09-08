@@ -2,6 +2,6 @@
 
 ## Retention
 
-* [Creating Time-To-Leave Prediction Model](Tutorials/CreatingTimeToLeavePredictionModel.md)
+* [Creating Time-To-Leave Prediction Model](HighValueProjectTutorials/CreatingTimeToLeavePredictionModel.md)
 
-* [Creating Probability-To-Leave Prediction Model](Tutorials/CreatingProbabilityToLeavePredictionModel.md)
+* [Creating Probability-To-Leave Prediction Model](HighValueProjectTutorials/CreatingProbabilityToLeavePredictionModel.md)

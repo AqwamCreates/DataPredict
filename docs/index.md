@@ -49,7 +49,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 * [Basic Tutorials](BasicTutorials.md)
 
-* [High Value Project Tutorials](HighValueProjectTutorials.md) - Monetization, Retention And More!
+* [High-Value Project Tutorials](HighValueProjectTutorials.md) - Monetization, Retention And More!
 
 ## Example Codes
 

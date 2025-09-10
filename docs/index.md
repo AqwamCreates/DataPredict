@@ -81,8 +81,6 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### Other Documentations
 
-* [Aqwam's TensorL-2D Library](https://aqwamcreates.github.io/TensorL-2D/)
-
 * [Aqwam's Matrix Library](https://aqwamcreates.github.io/MatrixL/)
 
 ## Version History

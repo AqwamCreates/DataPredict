@@ -14,9 +14,9 @@ The list of items shown below are likely to be implemented due to their mainstre
 
 * Sequential K-Means
 
- * It is an online version of K-Means that allows it to construct clusters from individual datapoints.
+  * It is an online version of K-Means that allows it to construct clusters from individual datapoints.
 
- * Many use cases that includes real-time recommendation system, real-time targetting system, enemy difficulty search through player data and so on.
+  * Many use cases that includes real-time recommendation system, real-time targetting system, enemy difficulty search through player data and so on.
 
 ## Nice-To-Have
 

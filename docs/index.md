@@ -45,6 +45,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 * [API Design](APIDesign.md) - For Creating Your Own Models, Optimizers And More!
 
+* [Roadmap](Roadmap.md)
+
 ## Tutorials
 
 * [Basic Tutorials](BasicTutorials.md)

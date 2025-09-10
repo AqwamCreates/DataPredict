@@ -10,7 +10,7 @@ The list of items shown below are likely to be implemented due to their mainstre
 
   * The research literature on the online variants of these algorithms are lacking, and so we are waiting for more papers to come out.
 
-  * Additionally, we lack experience in developing decision trees and boosting algorithms and this may take a long time to be implemented.
+  * Additionally, we lack experience in developing decision trees and boosting algorithms, which may result in long development times of these algorithms.
 
 ## Nice-To-Have
 

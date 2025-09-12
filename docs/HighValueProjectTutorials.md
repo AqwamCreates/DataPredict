@@ -43,3 +43,11 @@
 ## Targeting Systems
 
 * Creating Cluster-Based Targeting System
+
+  * Find the center of players based on number of clusters.
+
+## Priority Systems
+
+* Creating Probability-Based Priority System
+
+* Creating Regression-Based Priority System

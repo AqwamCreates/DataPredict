@@ -8,6 +8,8 @@ Note: This documentation is still under construction. There will be links that g
 
   * Map Coverage -> The more the player is engaged, the more the player explores.
 
+  * Variety Of Items Collected -> The more the player is engaged, the more player collect different items.
+
 * Intepreting Local And Global Optima In Game Design
 
   * Local Optima -> The best solution for anyting related to the current game session.

@@ -53,6 +53,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 * [High-Value Project Tutorials](HighValueProjectTutorials.md) - Monetization, Retention And More!
 
+* [Game Design Meets Machine Learning](GameDesignMeetsMachineLearning.md)
+
 ## Example Codes
 
 ### Learning AIs

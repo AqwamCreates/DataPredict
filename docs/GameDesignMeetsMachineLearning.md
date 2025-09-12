@@ -20,7 +20,7 @@ Note: This documentation is still under construction. There will be links that g
 
   * Reward Maximization -> Use "measurement of fun" metric as rewards and combine it with reinforcement learning models.
  
-  * Predictive -> Use regression and classification models.
+  * Prediction -> Use regression and classification models.
  
   * Best Middle Values -> Use clustering models.
 

@@ -398,7 +398,7 @@ function SequentialKMeansModel:train(featureMatrix)
 
 			end) 
 
-			if cost then
+			if (cost) then
 
 				table.insert(costArray, cost)
 

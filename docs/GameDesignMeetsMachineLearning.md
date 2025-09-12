@@ -18,7 +18,7 @@ Note: This documentation is still under construction. There will be links that g
 
 * What's Your Goal?
 
-  * Reward Maximization -> Use "measurement of fun" metric as rewards and combine it with reinforcement learning models.
+  * Reward Maximization -> Use "measurement of fun" metrics as rewards and combine it with reinforcement learning models.
  
   * Prediction -> Use regression and classification models.
  

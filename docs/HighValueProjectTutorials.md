@@ -56,7 +56,7 @@
 
 ## Targeting Systems
 
-* [Creating Cluster-Based Targeting Model](CreatingClusterBasedTargetingModel.md)
+* [Creating Cluster-Based Targeting Model](HighValueProjectTutorials/CreatingClusterBasedTargetingModel.md)
 
   * Find the center of players based on number of clusters.
 

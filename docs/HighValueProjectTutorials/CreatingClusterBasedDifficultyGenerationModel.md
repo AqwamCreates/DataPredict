@@ -10,7 +10,7 @@ For best results, please use:
 
 ## Initializing The Clustering Model
 
-Before we can produce ourselves a difficulty generation model, we first need to construct K-Means model, which is shown below. Ensure that the distance function is not "CosineDistance".
+Before we can produce ourselves a difficulty generation model, we first need to construct a model, which is shown below. Ensure that the distance function is not "CosineDistance".
 
 ```lua
 
@@ -36,7 +36,7 @@ local playerCombatDataMatrix = {
 
 ## Getting The Center Of Clusters
 
-Once you collected the players' combat data, you must call K-Means' train() function. This will generate the center of clusters to the K-Means' model parameters.
+Once you collected the players' combat data, you must call K-Means' train() function. This will generate the center of clusters to the model parameters.
 
 ```lua
 

@@ -6,7 +6,9 @@ KMeans is an unsupervised machine learning model that predicts which cluster tha
 
 Contains a matrix.  
 
-* ModelParameters[I][J]: Value of matrix at row I and column J. The rows represent the clusters. The columns represent the features.
+* ModelParameters[1][I][J]: Value of matrix at row I and column J. The rows represent the clusters. The columns represent the features.
+
+* ModelParameters[2][I][J]: Value of matrix at row I and column J. The rows represent the clusters. The column demonstrate number of datapoints assigned to that particular cluster.
 
 ## Constructors
 

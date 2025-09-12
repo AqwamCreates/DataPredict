@@ -26,6 +26,6 @@ Note: This documentation is still under construction. There will be links that g
 
 * Game Environment Data Is Far More Cleaner Than Real World Data
 
- * Noise usually comes from overlapping interations.
-
- * Your Global Optimum might be a real Global Optimum.
+  * Noise usually comes from overlapping interations.
+ 
+  * Your Global Optimum might be a real Global Optimum.

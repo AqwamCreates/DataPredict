@@ -12,12 +12,6 @@ The list of items shown below are likely to be implemented due to their mainstre
 
   * Additionally, we lack experience in developing decision trees and boosting algorithms, which may result in long development times of these algorithms.
 
-* Sequential K-Means
-
-  * It is an online version of K-Means that allows it to construct clusters from individual datapoints.
-
-  * Many use cases that includes real-time recommendation system, real-time targetting system, enemy difficulty search through player data and so on.
-
 * Incremental DBSCAN
 
    * It is an online version of DBSCAN that allows it to construct clusters from individual datapoints.

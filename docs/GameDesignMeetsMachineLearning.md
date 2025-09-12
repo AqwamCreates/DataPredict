@@ -23,3 +23,9 @@ Note: This documentation is still under construction. There will be links that g
   * Predictive -> Use regression and classification models.
  
   * Best Middle Values -> Use clustering models.
+
+* Game Environment Data Is Far More Cleaner Than Real World Data
+
+ * Noise usually comes from overlapping interations.
+
+ * Your Global Optimum might be a real Global Optimum.

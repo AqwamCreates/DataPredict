@@ -30,7 +30,7 @@
 
   * Uses players' data to generate the best enemies' data.
 
-# Quality Assurance
+## Quality Assurance
 
 * Creating Reward-Maximization-Based AI Player Bug Hunter
 

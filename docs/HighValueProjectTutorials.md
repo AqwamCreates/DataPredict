@@ -14,6 +14,20 @@
 
 * Creating Classification-Based Recommendation System
 
+## AI Players
+
+* Creating Data-Based AI Players
+
+  * Uses real players' data so that the AI players mimic real players.
+ 
+  * Matches with real players' general performance.
+
+* Creating Reward-Based AI Players
+
+  * Allows the creation of AI players that maximizes positive rewards.
+ 
+  * May outcompete real players.
+
 ## Adaptive Difficulty Systems
 
 * Creating Success-Based Adaptive Difficulty System

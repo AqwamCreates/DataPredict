@@ -43,7 +43,7 @@
 | [MeanShift](Models/MeanShift.md)                                                                                       | None            | Boss Spawn Location Search Based On Player Locations                 |
 | [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | Hacking Detection, Anomaly Detection                                 |
 | [KMeans](Models/KMeans.md)                                                                                             | None            | Maximizing Area-of-Effect Abilities, Predictive Target Grouping      |
-| [SequentialKMeans](Models/SequentialKMeans.md)                                                                         | None            | Real-Time Target Grouping                                            |
+| [SequentialKMeans](Models/SequentialKMeans.md)                                                                         | Online K-Means  | Real-Time Target Grouping                                            |
 | [KMedoids](Models/KMedoids.md)                                                                                         | None            | Player Grouping Based On Player Locations With Leader Identification |
 
 ## Deep Reinforcement Learning

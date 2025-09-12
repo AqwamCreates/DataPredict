@@ -36,7 +36,7 @@ local playerLocationDataMatrix = {
 
 ## Getting The Center Of Clusters
 
-Once you collected the players' location data, you must call K-Means' train() function. This will generate the center of clusters to the K-Means' ModelParameters
+Once you collected the players' location data, you must call K-Means' train() function. This will generate the center of clusters to the K-Means' model parameters.
 
 ```lua
 
@@ -74,7 +74,7 @@ end
 
 ## Resetting Our Targetting System
 
-By default, when you reuse the machine learning models from DataPredict, it will interact with the existing ModelParameters. As such, we need to reset the ModelParameters by calling the setModelParameters() function and set it to "nil".
+By default, when you reuse the machine learning models from DataPredict, it will interact with the existing model parameters. As such, we need to reset the model parameters by calling the setModelParameters() function and set it to "nil".
 
 ```lua
 

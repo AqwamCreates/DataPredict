@@ -40,7 +40,7 @@
 
   * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "this enemy is not interesting to the player" or "this enemy is too hard for the player to kill".
 
-* Creating Cluster-Based Difficulty Difficulty System
+* Creating Cluster-Based Difficulty System
 
   * Uses players' data to generate the best enemies' data.
 

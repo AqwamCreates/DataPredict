@@ -20,6 +20,6 @@
 
 * Creating Cluster-Based Difficulty Difficulty System
 
-## Targetting Systems
+## Targeting Systems
 
-* Creating Cluster-Based Targetting Systen
+* Creating Cluster-Based Targeting System

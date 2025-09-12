@@ -22,7 +22,7 @@
  
   * Matches with real players' general performance.
 
-* Creating Reward-Based AI Players
+* Creating Reward-Maximization-Based AI Players
 
   * Allows the creation of AI players that maximizes positive rewards.
  

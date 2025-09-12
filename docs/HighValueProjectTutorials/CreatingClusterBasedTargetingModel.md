@@ -74,7 +74,7 @@ end
 
 ## Resetting Our Targetting System
 
-By default, when you reuse the machine learning models from DataPredict, it will interact with existing ModelParameters. As such, we need to reset the ModelParameters by calling the setModelParameters() function and set it to "nil".
+By default, when you reuse the machine learning models from DataPredict, it will interact with the existing ModelParameters. As such, we need to reset the ModelParameters by calling the setModelParameters() function and set it to "nil".
 
 ```lua
 

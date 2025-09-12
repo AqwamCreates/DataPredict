@@ -34,7 +34,7 @@
 
   * Encodes positive label for every successful kills and associate it with current enemy's data.
 
-* Creating Reward-Maximization-Based Difficulty Generation System
+* Creating Reward-Maximization-Based Difficulty Generation Model
 
   * Everytime an enemy is killed, the positive reward tells the model to "make more enemies similar to this". 
 

@@ -29,3 +29,5 @@ Note: This documentation is still under construction. There will be links that g
   * Noise usually comes from overlapping interations.
  
   * Your Global Optimum might be a real Global Optimum.
+ 
+  * Game environment states are just a series of physics calculations. Your model may acidentally associate certain things with certain states!

@@ -13,3 +13,9 @@
 * Creating Reward-Maximization-Based Recommendation System
 
 * Creating Classification-Based Recommendation System
+
+## Adaptive Difficulty Systems
+
+* Creating Reward-Maximization-Based Adaptive Difficulty System
+
+* Creating Centroid-Based Difficulty Difficulty System

@@ -34,11 +34,11 @@
 
 * Creating Reward-Maximization-Based AI Player Bug Hunter
 
- * For a given "normal" data, the AI player is rewarded based on how far the difference of the collected data compared to current data.
+  * For a given "normal" data, the AI player is rewarded based on how far the difference of the collected data compared to current data.
 
 * Creating Exploration-Based AI Player Bug Hunter
 
- * The AI player will maximize actions that allows it to explore the game. 
+  * The AI player will maximize actions that allows it to explore the game. 
 
 ## Targeting Systems
 

@@ -320,13 +320,11 @@ function SequentialKMeansModel:train(featureMatrix)
 	
 	local distanceFunction = self.distanceFunction
 	
-	local numberOfDataPointVector = AqwamTensorLibrary:createTensor(numberOfClusters, 1)
-	
 	local ModelParameters = self.ModelParameters or {}
 	
 	local centroidMatrix = ModelParameters[1]
 	
-	local numberOfPointVector = ModelParameters[2]
+	local numberOfDataPointVector = ModelParameters[2]
 	
 	local cost
 	

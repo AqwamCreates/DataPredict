@@ -27,7 +27,7 @@ local playerLocationDataMatrix = {
   {player3LocationX, player3LocationY, player3LocationZ},
   {player4LocationX, player4LocationY, player4LocationZ},
   {player5LocationX, player5LocationY, player5LocationZ},
-  {player6LocationX, player6LocationY, player7LocationZ},
+  {player6LocationX, player6LocationY, player6LocationZ},
   {player7LocationX, player7LocationY, player7LocationZ},
 
 }

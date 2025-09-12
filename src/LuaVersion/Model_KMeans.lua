@@ -388,13 +388,15 @@ function KMeansModel:train(featureMatrix)
 	
 	local ModelParameters = self.ModelParameters
 	
+	local distanceFunction = self.distanceFunction
+	
 	if (ModelParameters) then
 		
-		if (#featureMatrix[1] ~= #self.ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
+		if (#featureMatrix[1] ~= #ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
 		
 	else
 		
-		ModelParameters = self:initializeCentroids(featureMatrix, self.numberOfClusters, self.distanceFunction, self.setInitialClustersOnDataPoints, self.setTheCentroidsDistanceFarthest)
+		ModelParameters = self:initializeCentroids(featureMatrix, self.numberOfClusters, distanceFunction, self.setInitialClustersOnDataPoints, self.setTheCentroidsDistanceFarthest)
 		
 	end
 	
@@ -404,7 +406,7 @@ function KMeansModel:train(featureMatrix)
 		
 		self:iterationWait()
 		
-		local distanceMatrix = createDistanceMatrix(featureMatrix, ModelParameters, self.distanceFunction)
+		local distanceMatrix = createDistanceMatrix(featureMatrix, ModelParameters, distanceFunction)
 
 		local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 

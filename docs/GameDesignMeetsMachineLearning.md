@@ -15,3 +15,11 @@ Note: This documentation is still under construction. There will be links that g
   * Local Optima -> The best solution for anyting related to the current game session.
  
   * Global Optima -> The best solution for all game sessions.
+
+* What's Your Goal?
+
+ * Reward Maximization -> Use "measurement of fun" metric as rewards and combine it with reinforcement learning.
+
+ * Predictive -> Use regression and classification models.
+
+ * Best Middle Values -> Use clustering models.

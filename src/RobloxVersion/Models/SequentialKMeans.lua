@@ -346,9 +346,9 @@ function SequentialKMeansModel:train(featureMatrix)
 		
 		self:iterationWait()
 		
-		if (numberOfIterations > 1) then
+		if (maximumNumberOfIterations > 1) then
 
-			numberOfDataPointVector = AqwamTensorLibrary:createTensor(numberOfClusters, 1)
+			numberOfDataPointVector = AqwamTensorLibrary:createTensor({numberOfClusters, 1}, 0)
 
 		end
 		

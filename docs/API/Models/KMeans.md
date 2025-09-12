@@ -105,7 +105,3 @@ KMeans:predict(featureMatrix: Matrix): integer, number
 ## Inherited From
 
 * [IterativeMethodBaseModel](IterativeMethodBaseModel.md)
-
-## References
-
-* [Sequential K-Means](https://www.cs.princeton.edu/courses/archive/fall08/cos436/Duda/C/sk_means.htm)

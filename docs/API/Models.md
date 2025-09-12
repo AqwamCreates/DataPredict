@@ -4,11 +4,11 @@
 |--------------------------------|-------|
 | Regression                     | 4     |
 | Classification                 | 8     |
-| Clustering                     | 7     |
+| Clustering                     | 8     |
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 5     |
 | Generative                     | 4     |
-| Total                          | 49    |
+| Total                          | 50    |
 
 
 ## Regression

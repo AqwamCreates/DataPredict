@@ -4,12 +4,12 @@ Note: This documentation is still under construction. There will be links that g
 
 * Measurement Of Fun
 
-  * Session Length
+  * Session Length -> The more the player is engaged, the longer the player stays.
 
-  * Map Coverage
+  * Map Coverage -> The more the player is engaged, the more the player explores.
 
 * Intepreting Local And Global Optima In Game Design
 
-  * Local Optima -> Good Solution For Anything Related To Current Game Session
+  * Local Optima -> Good Solution For Anything Related To Current Game Session.
  
-  * Global -> Good Solution For Global Game Session
+  * Global Optima -> Good Solution For All Game Sessions.

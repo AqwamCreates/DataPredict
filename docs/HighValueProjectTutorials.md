@@ -16,9 +16,19 @@
 
 ## Adaptive Difficulty Systems
 
+* Creating Success-Based Adaptive Difficulty System
+
+  * Encodes positive label for every successful kills and associate it with current enemy's data.
+
 * Creating Reward-Maximization-Based Adaptive Difficulty System
 
+  * Everytime an enemy is killed, it tells the model to "make more like this". 
+
+  * If the player ignores or doesn't kill, it tells the model that "not interesting to the player" or "this is too hard".
+
 * Creating Cluster-Based Difficulty Difficulty System
+
+  * Uses players' data to generate the best enemies' data.
 
 ## Targeting Systems
 

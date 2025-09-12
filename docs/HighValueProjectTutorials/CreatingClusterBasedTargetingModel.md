@@ -2,7 +2,11 @@
 
 Hi guys! In this tutorial, we will demonstrate on how to create cluster-based targeting model for your weapon systems.
 
-For best results, please use K-Means or sequantial K-Means.
+For best results, please use:
+
+* K-Means or sequantial K-Means if you want to manually set number of clusters.
+
+* MeanShift if you want more dynamic number of clusters. (Trickier to set up)
 
 ## Initializing The Clustering Model
 

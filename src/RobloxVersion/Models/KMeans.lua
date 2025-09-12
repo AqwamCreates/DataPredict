@@ -84,13 +84,13 @@ local distanceFunctionList = {
 
 		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
 
-		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
+		local x1Magnitude = math.sqrt(x1MagnitudePart2)
 
 		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
 
 		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
 
-		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
+		local x2Magnitude = math.sqrt(x2MagnitudePart2)
 
 		local normX = x1Magnitude * x2Magnitude
 

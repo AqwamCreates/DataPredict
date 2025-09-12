@@ -31,3 +31,10 @@ Note: This documentation is still under construction. There will be links that g
   * Your Global Optimum might be a real Global Optimum.
  
   * Game environment states are just a series of physics calculations. Your model may accidentally associate certain things with certain states!
+
+* Model Calculation Speed Vs The Game Engine
+
+  * Per Frame (Physics/Render) -> Model must be fast. Ideally use single datapoints or online models here.
+
+  * Per Interval -> Model calculation time must not exceed the interval. Ideally use mini-batch data here.
+  

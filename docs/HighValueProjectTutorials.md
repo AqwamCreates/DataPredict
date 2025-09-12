@@ -22,7 +22,7 @@
 
 * Creating Reward-Maximization-Based Adaptive Difficulty System
 
-  * Everytime an enemy is killed, the positive reward tells the model to "make more like this". 
+  * Everytime an enemy is killed, the positive reward tells the model to "make more enemies similar to this". 
 
   * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "not interesting to the player" or "this is too hard for the player to kill".
 

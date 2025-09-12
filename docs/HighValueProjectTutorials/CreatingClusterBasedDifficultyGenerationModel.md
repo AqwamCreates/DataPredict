@@ -1,6 +1,6 @@
 # Creating Cluster-Based Difficulty Generation Model
 
-Hi guys! In this tutorial, we will demonstrate on how to create cluster-based difficulty generation model so that the enemies are not too easy or too hard for everyone.
+Hi guys! In this tutorial, we will demonstrate on how to create cluster-based difficulty generation model so that the enemies are not too easy or too hard for everyone in PvE modes.
 
 For best results, please use:
 

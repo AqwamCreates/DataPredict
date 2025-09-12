@@ -10,6 +10,6 @@ Note: This documentation is still under construction. There will be links that g
 
 * Intepreting Local And Global Optima In Game Design
 
-  * Local Optima -> Good Solution For Anything Related To Current Game Session.
+  * Local Optima -> The best solution for anyting related to the current game session.
  
-  * Global Optima -> Good Solution For All Game Sessions.
+  * Global Optima -> The best solution for all game sessions.

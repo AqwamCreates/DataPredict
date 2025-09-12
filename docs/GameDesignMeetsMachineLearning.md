@@ -8,7 +8,9 @@ Note: This documentation is still under construction. There will be links that g
 
   * Map Coverage -> The more the player is engaged, the more the player explores.
 
-  * Variety Of Items Collected -> The more the player is engaged, the more player collect different items.
+  * Variety Of Items Collected -> The more the player is engaged, the more the player collect different items.
+
+  * Amount Of Resources Spent -> The more the player is engaged, the more the player spends on resources.
 
 * Intepreting Local And Global Optima In Game Design
 

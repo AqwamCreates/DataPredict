@@ -30,17 +30,17 @@
 
 ## Adaptive Difficulty Systems
 
-* Creating Success-Based Adaptive Difficulty Model
+* Creating Success-Based Difficulty Generation Model
 
   * Encodes positive label for every successful kills and associate it with current enemy's data.
 
-* Creating Reward-Maximization-Based Adaptive Difficulty System
+* Creating Reward-Maximization-Based Difficulty Generation System
 
   * Everytime an enemy is killed, the positive reward tells the model to "make more enemies similar to this". 
 
   * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "this enemy is not interesting to the player" or "this enemy is too hard for the player to kill".
 
-* [Creating Cluster-Based Difficulty Model](HighValueProjectTutorials/CreatingClusterBasedDifficultyModel.md)
+* [Creating Cluster-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingClusterBasedDifficultyGenerationModel.md)
 
   * Uses players' data to generate the best enemies' data.
 

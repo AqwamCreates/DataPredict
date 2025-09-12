@@ -56,7 +56,7 @@
 
 ## Targeting Systems
 
-* Creating Cluster-Based Targeting System
+* [Creating Cluster-Based Targeting System](CreatingClusterBasedTargetingSystem.md)
 
   * Find the center of players based on number of clusters.
 

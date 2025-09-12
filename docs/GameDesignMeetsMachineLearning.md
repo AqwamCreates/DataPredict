@@ -37,4 +37,3 @@ Note: This documentation is still under construction. There will be links that g
   * Per Frame (Physics/Render) -> Model must be fast. Ideally use single datapoints or online models here.
 
   * Per Interval -> Model calculation time must not exceed the interval. Ideally use mini-batch data here.
-  

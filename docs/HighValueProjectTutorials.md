@@ -18,4 +18,8 @@
 
 * Creating Reward-Maximization-Based Adaptive Difficulty System
 
-* Creating Centroid-Based Difficulty Difficulty System
+* Creating Cluster-Based Difficulty Difficulty System
+
+## Targetting Systems
+
+* Creating Cluster-Based Targetting Systen

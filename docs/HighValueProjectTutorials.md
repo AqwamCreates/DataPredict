@@ -24,7 +24,7 @@
 
   * Everytime an enemy is killed, the positive reward tells the model to "make more enemies similar to this". 
 
-  * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "not interesting to the player" or "this is too hard for the player to kill".
+  * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "this enemy is not interesting to the player" or "this enemy is too hard for the player to kill".
 
 * Creating Cluster-Based Difficulty Difficulty System
 

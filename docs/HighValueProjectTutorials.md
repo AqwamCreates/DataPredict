@@ -30,6 +30,16 @@
 
   * Uses players' data to generate the best enemies' data.
 
+# Quality Assurance
+
+* Creating Reward-Maximization-Based AI Player Bug Hunter
+
+ * For a given "normal" data, the AI player is rewarded based on how far the difference of the collected data compared to current data.
+
+* Creating Exploration-Based AI Player Bug Hunter
+
+ * The AI player will maximize actions that allows it to explore the game. 
+
 ## Targeting Systems
 
 * Creating Cluster-Based Targeting System

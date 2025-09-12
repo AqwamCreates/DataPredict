@@ -6,11 +6,11 @@ For best results, please use K-Means or sequantial K-Means.
 
 ## Initializing The Clustering Model
 
-Before we can produce ourselves a targeting model, we first need to construct K-Means model, which is shown below.
+Before we can produce ourselves a targeting model, we first need to construct K-Means model, which is shown below. Ensure that the distance function is not "CosineDistance".
 
 ```lua
 
-local TargetingModel = DataPredict.Models.KMeans.new({numberOfClusters = 3}) -- For this tutorial, we will assume that we have three missiles, so only three locations it can land.
+local TargetingModel = DataPredict.Models.KMeans.new({numberOfClusters = 3, distanceFunction = "Euclidean"}) -- For this tutorial, we will assume that we have three missiles, so only three locations it can land.
 
 ```
 

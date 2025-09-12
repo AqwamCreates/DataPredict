@@ -6,10 +6,10 @@
 
 * [Creating Probability-To-Leave Prediction Model](HighValueProjectTutorials/CreatingProbabilityToLeavePredictionModel.md)
 
-## Recommender Systems
+## Recommendation Systems
 
 * Creating Similarity-Based Recommendation System
 
-* Creating Recommendation System With Reward Maximization
+* Creating Reward-Maximization-Based Recommendation System
 
 * Creating Classification-Based Recommendation System

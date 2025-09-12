@@ -76,7 +76,7 @@ end
 
 By default, when you reuse the machine learning models from DataPredict, it will interact with existing ModelParameters. As such, we need to reset the ModelParameters by calling the setModelParameters() function and set it to "nil".
 
-```
+```lua
 
 TargetingModel:setModelParameters(nil)
 

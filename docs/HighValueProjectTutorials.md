@@ -30,7 +30,7 @@
 
 ## Adaptive Difficulty Systems
 
-* Creating Success-Based Adaptive Difficulty System
+* Creating Success-Based Adaptive Difficulty Model
 
   * Encodes positive label for every successful kills and associate it with current enemy's data.
 
@@ -40,7 +40,7 @@
 
   * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "this enemy is not interesting to the player" or "this enemy is too hard for the player to kill".
 
-* Creating Cluster-Based Difficulty System
+* [Creating Cluster-Based Difficulty Model](HighValueProjectTutorials/CreatingClusterBasedDifficultyModel.md)
 
   * Uses players' data to generate the best enemies' data.
 

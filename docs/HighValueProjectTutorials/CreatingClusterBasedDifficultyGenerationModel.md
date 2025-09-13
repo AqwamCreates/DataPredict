@@ -72,7 +72,7 @@ for clusterIndex, unwrappedClusterVector in ipairs(ModelParameters) do
 
   local enemyCashReward =  playerBaseCashAmount / 3
 
-  summonEnemy(enemyHealth, enemyDamage, enemyCashReward)
+  spawnEnemy(enemyHealth, enemyDamage, enemyCashReward)
 
 end
 

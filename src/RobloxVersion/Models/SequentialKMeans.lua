@@ -340,7 +340,7 @@ function SequentialKMeansModel:train(featureMatrix)
 	
 	repeat
 		
-		cost = 0
+		cost = math.huge
 		
 		numberOfIterations = numberOfIterations + 1
 		

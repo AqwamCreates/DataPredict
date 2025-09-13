@@ -88,7 +88,7 @@ local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, vari
 
 			local probabilitiesVector = gaussian(featureVector, meanVector, varianceVector, epsilon)
 
-			for i, probability in ipairs(probabilitiesVector[1]) do weight *= probability end
+			for i, probability in ipairs(probabilitiesVector[1]) do weight = weight * probability end
 
 			probabilitiesMatrix[i][j] = weight
 

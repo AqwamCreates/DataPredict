@@ -1,6 +1,6 @@
 # Why I Do Not Entertain "Proof Of Value" Requests
 
-Alright everyone. Ever since DataPredict ecosystem product exploded, I have seen an increase in "proof of value" requests in my direct messages. 
+Alright everyone. Ever since DataPredict ecosystem exploded, I have seen an increase in "proof of value" requests in my direct messages. 
 
 Frankly, I do not want to deal with such requests. They tend to eat up my development for DataPredict and contracting time for my clients despite the DataPredict ecosystem shows obvious value.
 
@@ -60,7 +60,7 @@ Here’s the honest truth: Even the best tools won’t perform if you don’t kn
 
 That includes Roblox Studio, Unity, Unreal, and even DataPredict.
 
-If you misuse it, don’t expect 100% value. That’s not a “problem” with the tool — it’s a skill and application issue.
+If you misuse it, don’t expect 100% value. That’s not a “problem” with the tool. It is a skill and application issue.
 
 What I have delivered is a massive reduction in development time, cost, and barrier to entry. Whether you turn that into revenue? That’s up to you.
 

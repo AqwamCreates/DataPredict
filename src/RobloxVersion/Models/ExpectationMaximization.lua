@@ -274,22 +274,30 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	local numberOfFeatures = #featureMatrix[1]
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
+	
+	local numberOfClusters = self.numberOfClusters
+	
+	local epsilon = self.epsilon
+	
+	local ModelParameters = self.ModelParameters
 
-	if (self.ModelParameters) then
+	if (ModelParameters) then
 
-		piMatrix, meanMatrix, varianceMatrix = table.unpack(self.ModelParameters)
+		piMatrix, meanMatrix, varianceMatrix = table.unpack(ModelParameters)
 
 		if (#featureMatrix[1] ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
 		
 	else
 		
-		if (self.numberOfClusters == math.huge) then
+		if (numberOfClusters == math.huge) then
 			
-			self.numberOfClusters = self:fetchBestNumberOfClusters(featureMatrix, self.epsilon)
+			numberOfClusters = self:fetchBestNumberOfClusters(featureMatrix, epsilon)
+			
+			self.numberOfClusters = numberOfClusters
 			
 		end
 		
-		piMatrix, meanMatrix, varianceMatrix = self:initializeParameters(self.numberOfClusters, numberOfFeatures) 
+		piMatrix, meanMatrix, varianceMatrix = self:initializeParameters(numberOfClusters, numberOfFeatures) 
 
 	end
 
@@ -299,11 +307,11 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		self:iterationWait()
 
-		responsibilities = expectationStep(featureMatrix, self.numberOfClusters, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
+		responsibilities = expectationStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
 
-		piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilities, self.numberOfClusters)
+		piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilities, numberOfClusters)
 		
-		gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
+		gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			

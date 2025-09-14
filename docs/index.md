@@ -12,9 +12,13 @@ By using or possessing any copies of this library or its assets (including the i
 
 * Plus some more stuff...
 
-Once you pass the commercial use threshold and want to license it, expect to pay for (gross revenue * (0.0365 / log2(gross revenue))) every month, provided that it uses this library. In other words, it starts at around 1% of gross revenue and that percentage decreases as your project earns more. Additionally, because machine learning tries to find the best solution for you as it trains, you are likely (but not guaranteed) to have your revenue increase over this cost!
+Once you pass this commercial use threshold and want to license it, keep this in mind:
 
-That fee also includes DataPredict™ Neural and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
+* Expect to pay for (gross revenue * (0.0365 / log2(gross revenue))) every month, provided that it uses this library. In other words, it starts at around 1% of gross revenue and that percentage decreases as your project earns more. 
+
+* Additionally, because machine learning tries to find the best solution for you as it trains, you are likely (but not guaranteed) to have your revenue increase over this cost!
+
+* That fee also includes DataPredict™ Neural and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
 
 Thanks to the early adopters, I managed to to fund my Master research thesis (that may be published soon) on how to speed up reinforcement learning training by 10 times from the baseline methods. It is already implemented in the DataPredict™ and DataPredict™ Neural libraries!
 

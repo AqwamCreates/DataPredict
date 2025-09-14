@@ -8,7 +8,7 @@ For best results, please use:
 
 * Support Vector Machine Or Any Other Regression Models
 
-## Initializing The Clustering Model
+## Initializing The Model
 
 Before we can produce ourselves a difficulty generation model, we first need to construct a model, which is shown below. Ensure that the distance function is not "CosineDistance".
 

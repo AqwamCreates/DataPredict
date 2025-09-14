@@ -53,7 +53,7 @@ Also, we would like you to be careful about limited time quest and item spawn ev
 
 ## Constructing Our Model
 
-Before we start collecting our data, we first build our model so it will not be confusing later on.
+Before we start training our model, we first build our model.
 
 ### Constructing Our Neural Network
 

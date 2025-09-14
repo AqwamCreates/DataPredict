@@ -8,4 +8,8 @@ For this tutorial, we need multiple things to build our model, this includes:
 
 * Categorical Policy Quick Setup
 
-#
+## Constructing Our Model
+
+Before we start collecting our data, we first build our model so it will not be confusing later on.
+
+### 

@@ -1,6 +1,6 @@
-# Creating Regression-Based Difficulty Generation Model
+# Creating Regression-Based Enemy Data Generation Model
 
-Hi guys! In this tutorial, we will demonstrate on how to create regression-based difficulty generation model so that the enemies are personalized to each players.
+Hi guys! In this tutorial, we will demonstrate on how to create regression-based enemy data generation model so that the enemies are personalized to each players.
 
 For best results, please use:
 

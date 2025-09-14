@@ -186,7 +186,7 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 
 	local sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihood)
 	
-	local k = (numberOfClusters - 1) + numberOfClusters * numberOfFeatures * 2
+	local k = (numberOfClusters - 1) + (numberOfClusters * numberOfFeatures * 2)
 	
 	local bayesianInformationCriterion = (k * math.log(numberOfData)) - (2 * sumLogLikelihood)
 	

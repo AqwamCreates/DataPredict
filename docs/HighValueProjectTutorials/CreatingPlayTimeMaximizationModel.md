@@ -138,7 +138,7 @@ local event = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
 In order to assign the reward to that event is selected, we must first deploy the chosen event and observe if the player stayed for that action/event.
 
-Below, it shows an example code for this:
+Below, it shows an example code for this.
 
 ```lua
 
@@ -160,6 +160,32 @@ local function start(eventName)
     local deployEvent = eventFunctionList[eventName]
 
     if (deployEvent) then deployEvent() end
+
+end
+
+local function run(Player)
+
+local isPlayerInServer = true
+
+local rewardValue = 0
+
+local playerDataVector
+
+    while true do
+    
+        event = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+
+        start(eventName)
+
+        task.wait(60)
+
+        playerDataVector = getPlayerDataVector(Player)
+
+        isPlayerInServer = checkIfPlayerIsInServer(Player)
+        
+        rewardValue = (isPlayerInServer and 10) or -50
+
+    end
 
 end
 

@@ -94,7 +94,7 @@ local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, 0) -- Making sur
 
 ```
 
-However, this require setting the model's parameters to these settings temporarily so that it can be biased to "0" at start up as shwon below.
+However, this require setting the model's parameters to these settings temporarily so that it can be biased to "0" at start up as shown below.
 
 ```lua
 

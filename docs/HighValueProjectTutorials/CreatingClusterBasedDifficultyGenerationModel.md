@@ -52,7 +52,7 @@ local ModelParameters = DifficultyGenerationModel:getModelParameters()
 
 ```
 
-## Generating Difficulty Using The Center Of Clusters
+## Generating The Difficulty Using The Center Of Clusters
 
 Since we have three clusters, we can expect three rows for our matrix. As such we can process our game logic here.
 

@@ -68,7 +68,9 @@ However, this require setting the Neural Network's parameters to these settings 
 
 ```lua
 
-local NeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1000, learningRate = 0.3})
+NeuralNetwork.maximumNumberOfIterations = 1000
+
+NeuralNetwork.learningRate = 0.3
 
 ```
 

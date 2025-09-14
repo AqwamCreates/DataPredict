@@ -60,7 +60,7 @@ DifficultyGenerationModel:train(playerCombatDataMatrix, defeatedEnemyCombatDataM
 
 ```lua
 
-local generatedEnemyCombatDataVector = DifficultyGenerationModel:predict(playerCombatDataMVector, true)
+local generatedEnemyCombatDataVector = DifficultyGenerationModel:predict(playerCombatDataMVector, true) -- Since neural network defaults to classification, you must set returnOriginalOutput to "true" so that it becomes a regression model.
 
 local generatedEnemyMaximumHealth = generatedEnemyCombatDataVector[1][1]
 

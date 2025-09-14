@@ -62,11 +62,13 @@ DifficultyGenerationModel:train(playerCombatDataMatrix, defeatedEnemyCombatDataM
 
 local generatedEnemyCombatDataVector = DifficultyGenerationModel:predict(playerCombatDataMVector, true) -- Since neural network defaults to classification, you must set returnOriginalOutput to "true" so that it becomes a regression model.
 
-local generatedEnemyMaximumHealth = generatedEnemyCombatDataVector[1][1]
+local unwrappedGeneratedEnemyCombatDataVector = generatedEnemyCombatDataVector[1]
 
-local generatedEnemyMaximumDamage = generatedEnemyCombatDataVector[1][2]
+local generatedEnemyMaximumHealth = unwrappedGeneratedEnemyCombatDataVector[1]
 
-local generatedEnemyCashAmount = generatedEnemyCombatDataVector[1][3]
+local generatedEnemyMaximumDamage = unwrappedGeneratedEnemyCombatDataVector[2]
+
+local generatedEnemyCashAmount = unwrappedGeneratedEnemyCombatDataVector[3]
 
 ```
 

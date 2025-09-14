@@ -299,7 +299,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 	repeat
 		
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 		
 		self:iterationWait()
 

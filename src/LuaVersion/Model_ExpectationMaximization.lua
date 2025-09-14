@@ -263,7 +263,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	
 	local numberOfIterations = 0
 
-	local logLikelihood
+	local logLikelihoodMatrix
 	
 	local sumLogLikelihood
 	
@@ -311,9 +311,9 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			logLikelihood = AqwamTensorLibrary:applyFunction(math.log, gaussianMatrix)
+			logLikelihoodMatrix = AqwamTensorLibrary:applyFunction(math.log, gaussianMatrix)
 
-			sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihood)
+			sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihoodMatrix)
 
 			table.insert(logLikelihoodArray, sumLogLikelihood)
 

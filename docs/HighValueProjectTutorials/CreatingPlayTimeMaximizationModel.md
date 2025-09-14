@@ -130,7 +130,7 @@ This is because reinforce() function is responsible for producing prediction and
 
 -- Here, you notice that there is a reward value being inserted here. Generally, when you first call this, the reward value should be zero.
 
-local event = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+local eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
 ```
 
@@ -157,9 +157,7 @@ local eventFunctionList = {
 
 local function start(eventName)
 
-    local deployEvent = eventFunctionList[eventName]
-
-    if (deployEvent) then deployEvent() end
+    
 
 end
 
@@ -171,9 +169,15 @@ local function run(Player)
     
     local playerDataVector
 
+    local deployEventFunction
+
     while true do
     
-        event = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+        eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+
+        deployEventFunction = eventFunctionList[eventName]
+
+        if (deployEventFunction) then deployEvent() end
 
         start(eventName)
 

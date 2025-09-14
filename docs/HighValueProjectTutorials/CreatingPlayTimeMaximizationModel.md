@@ -52,7 +52,7 @@ local ClassesList = {
 
 Also, we would like you to be careful about limited time quest and item spawn events as the model will might learn to give it often. As such, it is important to give the model negative rewards inversely proportional to the duration between the two limited time events.
 
-If you're concerned about that the model may produce wrong result heavily upon start up, then you can use a randomized dataset to heavily skew the prediction to the "NoEvent" class. Then use this randomized dataset to pretrain the Neural Network before doing any real-time training and prediction.
+If you're concerned about that the model may produce wrong result heavily upon first start up, then you can use a randomized dataset to heavily skew the prediction to the "NoEvent" class. Then use this randomized dataset to pretrain the Neural Network before doing any real-time training and prediction.
 
 ```lua
 

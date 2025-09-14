@@ -107,6 +107,40 @@ This is because reinforce() function is responsible for producing prediction and
 
 -- Here, you notice that there is a reward value being inserted here. Generally, when you first call this, the reward value should be zero.
 
-local actionVector = PlayTimeMaximizationModel:reinforce(initialPlayerDataVector, rewardValue)
+local action = PlayTimeMaximizationModel:reinforce(initialPlayerDataVector, rewardValue)
+
+```
+
+## Model Parameters Loading 
+
+In here, we will use our model parameters so that it can be used to load out models. There are two cases in here:
+
+1. The player is a first-time player.
+
+2. The player is a returning player.
+
+### Case 1: The Player Is A First-Time Player
+
+Under this case, this is a new player that plays the game for the first time. In this case, we do not know how this player would act.
+
+We have a multiple way to handle this issue:
+
+* We create a "global" model that trains from every player, and then make a deep copy of the model parameters and load it into our models.
+
+* We take from other players' existing model parameters and load it into our models.
+
+### Case 2: The Player Is A Returning Player
+
+Under this case, you can continue using the existing model parameters that was saved in Roblox's Datastores.
+
+```lua
+
+-- Notice that we must get it from the Neural Network model.
+
+ModelParameters = NeuralNetwork:getModelParameters()
+
+-- Notice that we must set it to the Neural Network model too.
+
+NeuralNetwork:setModelParameters(ModelParameters)
 
 ```

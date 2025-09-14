@@ -283,7 +283,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 		piMatrix, meanMatrix, varianceMatrix = table.unpack(ModelParameters)
 
-		if (#featureMatrix[1] ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
+		if (numberOfFeatures ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
 		
 	else
 		

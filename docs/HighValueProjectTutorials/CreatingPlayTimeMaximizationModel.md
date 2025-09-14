@@ -165,11 +165,11 @@ end
 
 local function run(Player)
 
-local isPlayerInServer = true
-
-local rewardValue = 0
-
-local playerDataVector
+    local isPlayerInServer = true
+    
+    local rewardValue = 0
+    
+    local playerDataVector
 
     while true do
     

@@ -167,7 +167,7 @@ local function run(Player)
     
     local rewardValue = 0
     
-    local playerDataVector
+    local playerDataVector = getPlayerDataVector(Player)
 
     local deployEventFunction
 

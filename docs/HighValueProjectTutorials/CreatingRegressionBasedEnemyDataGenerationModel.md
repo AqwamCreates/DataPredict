@@ -74,7 +74,7 @@ local generatedEnemyCashAmount = unwrappedGeneratedEnemyCombatDataVector[3]
 
 ## Model Parameters Loading 
 
-In here, we will use our model parameters so that it can be used to load out models. There are two cases in here:
+In here, we will use our model parameters so that it can be used to load out models. There are three cases in here:
 
 1. The player is a first-time player.
 

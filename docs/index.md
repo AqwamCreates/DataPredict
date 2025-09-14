@@ -39,14 +39,6 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 To know what this library is all about from scratch, let's have a look at the quick introduction [here](QuickIntroduction.md).
 
-## The API
-
-* [API Reference](API.md)
-
-* [API Design](APIDesign.md) - For Creating Your Own Models, Optimizers And More!
-
-* [Roadmap](Roadmap.md)
-
 ## Tutorials
 
 * [Basic Tutorials](BasicTutorials.md)
@@ -54,6 +46,14 @@ To know what this library is all about from scratch, let's have a look at the qu
 * [High-Value Project Tutorials](HighValueProjectTutorials.md) - Monetization, Retention And More!
 
 * [Game Design Meets Machine Learning](GameDesignMeetsMachineLearning.md)
+
+## The API
+
+* [API Reference](API.md)
+
+* [API Design](APIDesign.md) - For Creating Your Own Models, Optimizers And More!
+
+* [Roadmap](Roadmap.md)
 
 ## Example Codes
 

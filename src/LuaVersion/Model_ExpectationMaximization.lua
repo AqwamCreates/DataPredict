@@ -112,8 +112,6 @@ end
 
 local function expectationStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
-	local numberOfData = #featureMatrix
-	
 	local responsibilityMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon) -- number of data x number of columns
 	
 	local responsibilitySumVector = AqwamTensorLibrary:sum(responsibilityMatrix, 1)

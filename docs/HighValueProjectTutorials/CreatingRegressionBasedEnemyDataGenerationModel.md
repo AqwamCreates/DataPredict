@@ -14,7 +14,7 @@ Before we can produce ourselves a difficulty generation model, we first need to 
 
 ```lua
 
-local DifficultyGenerationModel = DataPredict.Models.NeuralNetwork.new() -- Set the maximumNumberOfIterations to 1 if you want the incremental version.
+local EnemyDataGenerationModel = DataPredict.Models.NeuralNetwork.new() -- Set the maximumNumberOfIterations to 1 if you want the incremental version.
 
 DifficultyGenerationModel:addLayer(2, true) -- This is specific to neural networks only.
 
@@ -36,7 +36,7 @@ local playerCombatDataMatrix = {
 
 }
 
-local defeatedEnemyCombatDataMatrix = {
+local defeatedEnemyDataMatrix = {
 
   {1, enemy1MaximumHealth, enemy1MaximumDamage, enemy1CashAmount},
   {1, enemy2MaximumHealth, enemy2MaximumDamage, enemy2CashAmount},
@@ -52,7 +52,7 @@ Once you collected the players' combat data, you must call model's train() funct
 
 ```lua
 
-DifficultyGenerationModel:train(playerCombatDataMatrix, defeatedEnemyCombatDataMatrix)
+EnemyDataGenerationModel:train(playerCombatDataMatrix, defeatedEnemyDataMatrix)
 
 ```
 
@@ -60,15 +60,15 @@ DifficultyGenerationModel:train(playerCombatDataMatrix, defeatedEnemyCombatDataM
 
 ```lua
 
-local generatedEnemyCombatDataVector = DifficultyGenerationModel:predict(playerCombatDataMVector, true) -- Since neural network defaults to classification, you must set returnOriginalOutput to "true" so that it becomes a regression model.
+local generatedEnemyDataVector = EnemyDataGenerationModel:predict(playerCombatDataMVector, true) -- Since neural network defaults to classification, you must set returnOriginalOutput to "true" so that it becomes a regression model.
 
-local unwrappedGeneratedEnemyCombatDataVector = generatedEnemyCombatDataVector[1]
+local unwrappedGeneratedEnemyDataVector = generatedEnemyDataVector[1]
 
-local generatedEnemyMaximumHealth = unwrappedGeneratedEnemyCombatDataVector[1]
+local generatedEnemyMaximumHealth = unwrappedGeneratedEnemyDataVector[1]
 
-local generatedEnemyMaximumDamage = unwrappedGeneratedEnemyCombatDataVector[2]
+local generatedEnemyMaximumDamage = unwrappedGeneratedEnemyDataVector[2]
 
-local generatedEnemyCashAmount = unwrappedGeneratedEnemyCombatDataVector[3]
+local generatedEnemyCashAmount = unwrappedGeneratedEnemyDataVector[3]
 
 ```
 
@@ -98,25 +98,13 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
---[[ 
-
-We first need to get our Neural Network model. If you only kept the quick setup and discarded the rest, don't worry!
-
-We can just do getModel() twice to get our Neural Network model.
-
---]]
-
-local DeepReinforcementLearningModel =  PlayTimeMaximizationModel:getModel()
-
-local NeuralNetwork = DeepReinforcementLearningModel:getModel()
-
 -- Notice that we must get it from the Neural Network model.
 
-ModelParameters = NeuralNetwork:getModelParameters()
+ModelParameters = EnemyDataGenerationModel:getModelParameters()
 
 -- Notice that we must set it to the Neural Network model too.
 
-NeuralNetwork:setModelParameters(ModelParameters)
+EnemyDataGenerationModel:setModelParameters(ModelParameters)
 
 ```
 

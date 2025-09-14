@@ -14,7 +14,7 @@ Before we can produce ourselves a difficulty generation model, we first need to 
 
 ```lua
 
-local DifficultyGenerationModel = DataPredict.Models.NeuralNetwork.new({}) -- For this tutorial, we will assume that we will generate one type of enemy.
+local DifficultyGenerationModel = DataPredict.Models.NeuralNetwork.new() -- For this tutorial, we will assume that we will generate one type of enemy.
 
 DifficultyGenerationModel:addLayer(2, true)
 

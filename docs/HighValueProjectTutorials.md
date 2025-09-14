@@ -42,11 +42,11 @@
 
 * [Creating Regression-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingRegressionBasedEnemyDataGenerationModel.md)
 
-  * Everytime a player kills an enemy, both player's combat data and enemy's combat data is used to train the model.
+  * Everytime a player kills an enemy, both player's combat data and enemy's data is used to train the model.
 
 * [Creating Cluster-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingClusterBasedEnemyDataGenerationModel.md)
 
-  * Uses players' combat data to generate the center of enemies' combat data.
+  * Uses players' combat data to generate the center of enemies' data.
 
 ## Quality Assurance
 

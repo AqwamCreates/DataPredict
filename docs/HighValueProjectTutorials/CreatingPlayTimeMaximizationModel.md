@@ -135,6 +135,18 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
+--[[ 
+
+We first need to get our Neural Network model. If you only kept the quick setup and discarded the rest, don't worry!
+
+We can just do getModel() twice to get our Neural Network model.
+
+--]
+
+local DeepReinforcementLearningModel =  PlayTimeMaximizationModel:getModel()
+
+local NeuralNetwork = DeepReinforcementLearningModel:getModel()
+
 -- Notice that we must get it from the Neural Network model.
 
 ModelParameters = NeuralNetwork:getModelParameters()

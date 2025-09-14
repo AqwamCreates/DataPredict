@@ -10,7 +10,7 @@ For this tutorial, we need multiple things to build our model, this includes:
 
 ## Designing Our Feature Vector And Classes List
 
-Before we start creating our model, we first need to visualize on how we will design our data and what actions the model could take to extend our players' playtime.
+Before we start creating our model, we first need to visualize on how we will design our data and what actions the model could take to extend our players' play time.
 
 ### FeatureVector
 

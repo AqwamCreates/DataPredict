@@ -80,6 +80,8 @@ In here, we will use our model parameters so that it can be used to load out mod
 
 2. The player is a returning player.
 
+3. Every Player Uses The Same Global Model.
+
 ### Case 1: The Player Is A First-Time Player
 
 Under this case, this is a new player that plays the game for the first time. In this case, we do not know how this player would act.

@@ -82,3 +82,17 @@ local DeepReinforcementLearningModel = DataPredict.Model.DeepStateActionRewardSt
 DeepReinforcementLearningModel:setModel(NeuralNetwork)
 
 ```
+
+### Constructing Our Categorical Policy Quick Setup Model
+
+This part makes it easier for us to set up our model, but it is not strictly necessary. However, I do recommend you to use them as they contain built-in functions for handing training and predictions.
+
+```lua
+
+local PlayTimeMaximizationModel = DataPredict.QuickSetups.CategoricalPolicy.new()
+
+-- Inserting our Deep Reinforcement Learning Model here.
+
+PlayTimeMaximizationModel:setModel(DeepReinforcementLearningModel)
+
+```

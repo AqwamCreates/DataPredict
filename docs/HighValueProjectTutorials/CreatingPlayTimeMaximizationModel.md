@@ -134,6 +134,10 @@ local action = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue
 
 ```
 
+## Rewarding Our Model
+
+
+
 ## Model Parameters Loading 
 
 In here, we will use our model parameters so that it can be used to load out models. There are three cases in here:

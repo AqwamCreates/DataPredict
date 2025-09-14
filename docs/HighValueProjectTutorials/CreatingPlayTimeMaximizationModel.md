@@ -39,12 +39,12 @@ local ClassesList = {
 
   "NoEvent",
   "ResourceMultiplierEvent",
-  "BossSpawnEvent",
   "QuestEvent",
   "ItemSpawnEvent",
+  "BossSpawnEvent",
   "LimitedTimeQuestEvent",
   "LimitedTimeItemSpawnEvent",
-
+  "LimitedTimeBossSpawnEvent",
 }
 
 ```

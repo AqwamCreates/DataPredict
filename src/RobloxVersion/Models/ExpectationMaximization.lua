@@ -316,10 +316,12 @@ function ExpectationMaximizationModel:train(featureMatrix)
 			sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihoodMatrix)
 
 			table.insert(logLikelihoodArray, sumLogLikelihood)
+			
+			local logLikelihoodArrayLength = #logLikelihoodArray
 
-			if (#logLikelihoodArray > 1) then
+			if (logLikelihoodArrayLength > 1) then
 
-				cost = sumLogLikelihood - logLikelihoodArray[#logLikelihoodArray - 1] 
+				cost = sumLogLikelihood - logLikelihoodArray[logLikelihoodArrayLength - 1] 
 
 			else
 

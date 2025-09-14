@@ -40,7 +40,7 @@
 
   * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "this enemy is not interesting to the player" or "this enemy is too hard for the player to kill".
 
-* [Creating Regression-Based Difficulty Generation Model](CreatingRegressionBasedDifficultyGenerationModel.md)
+* [Creating Regression-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingRegressionBasedDifficultyGenerationModel.md)
 
   * Everytime the player kills an enemy, both player's data and enemy's data is used to train the model.
 

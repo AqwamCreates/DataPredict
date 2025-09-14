@@ -142,7 +142,7 @@ Below, it shows an example code for this.
 
 ```lua
 
-local eventFunctionList = {
+local eventFunctionDictionary = {
 
   ["NoEvent"] = nil,
   ["ResourceMultiplierEvent"] = resourceMultiplierEvent,
@@ -154,12 +154,6 @@ local eventFunctionList = {
   ["LimitedTimeBossSpawnEvent"] = limitedTimeBossSpawnEvent,
 
 }
-
-local function start(eventName)
-
-    
-
-end
 
 local function run(Player)
 
@@ -175,7 +169,7 @@ local function run(Player)
     
         eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
-        deployEventFunction = eventFunctionList[eventName]
+        deployEventFunction = eventFunctionDictionary[eventName]
 
         if (deployEventFunction) then deployEventFunction() end
 

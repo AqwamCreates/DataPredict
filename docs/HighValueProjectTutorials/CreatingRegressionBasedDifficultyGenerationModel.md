@@ -16,7 +16,7 @@ Before we can produce ourselves a difficulty generation model, we first need to 
 
 local DifficultyGenerationModel = DataPredict.Models.NeuralNetwork.new({}) -- For this tutorial, we will assume that we will generate one type of enemy.
 
-DifficultyGenerationModel:addLayer(3, true)
+DifficultyGenerationModel:addLayer(2, true)
 
 DifficultyGenerationModel:addLayer(3, false)
 
@@ -24,21 +24,23 @@ DifficultyGenerationModel:addLayer(3, false)
 
 ## Collecting The Players' Combat Data
 
-In order to find the center of the clusters, we first need all the players' combat data and put them into a matrix.
+In order to find the center of the clusters, we first need all the players' combat data and defeated enemy's combat data into separate matrices. Ensure that the rows matches the player-enemy pairs.
 
 ```lua
 
 local playerCombatDataMatrix = {
 
-  {1, player1MaximumHealth, player1MaximumDamage, player1CashAmount},
-  {1, player2MaximumHealth, player2MaximumDamage, player2CashAmount},
-  {1, player3MaximumHealth, player3MaximumDamage, player3CashAmount},
+  {1, player1MaximumHealth, player1MaximumDamage},
+  {1, player2MaximumHealth, player2MaximumDamage},
+  {1, player3MaximumHealth, player3MaximumDamage},
 
 }
 
 local defeatedEnemyCombatDataMatrix = {
 
-  
+  {1, enemy1MaximumHealth, enemy1MaximumDamage, enemy1CashAmount},
+  {1, enemy2MaximumHealth, enemy2MaximumDamage, enemy2CashAmount},
+  {1, enemy3MaximumHealth, enemy3MaximumDamage, enemy3CashAmount},
 
 }
 
@@ -46,7 +48,7 @@ local defeatedEnemyCombatDataMatrix = {
 
 ## Training The Model
 
-Once you collected the players' combat data, you must call K-Means' train() function. This will generate the center of clusters to the model parameters.
+Once you collected the players' combat data, you must call model's train() function. This will generate the model parameters.
 
 ```lua
 
@@ -54,49 +56,12 @@ DifficultyGenerationModel:train(playerCombatDataMatrix, defeatedEnemyCombatDataM
 
 ```
 
-Once train() is called, call the getModelParameters() function to get the center of cluster location data.
+## Generating The Difficulty
 
 ```lua
 
-local ModelParameters = DifficultyGenerationModel:getModelParameters()
-
-```
-
-## Generating Difficulty Using The Center Of Clusters
-
-Since we have three clusters, we can expect three rows for our matrix. As such we can process our game logic here.
-
-```lua
-
-for clusterIndex, unwrappedClusterVector in ipairs(ModelParameters) do
-
-  local playerBaseHealth = unwrappedClusterVector[1]
-  
-  local playerBaseDamage = unwrappedClusterVector[2]
-  
-  local playerBaseCashAmount = unwrappedClusterVector[3]
-
-  local enemyHealth = playerBaseHealth * 0.5
-
-  local enemyDamage = playerDamage * 0.1
-
-  local enemyCashReward =  playerBaseCashAmount / 3
-
-  spawnEnemy(enemyHealth, enemyDamage, enemyCashReward)
-
-end
-
-```
-
-## Resetting Our Difficulty Generation System
-
-By default, when you reuse the machine learning models from DataPredict, it will interact with the existing model parameters. As such, we need to reset the model parameters by calling the setModelParameters() function and set it to "nil".
-
-```lua
-
-DifficultyGenerationModel:setModelParameters(nil)
+local generatedEnemyCombatDataVector = DifficultyGenerationModel:predict(playerCombatDataMVector, true)
 
 ```
 
 That's all for today!
-

@@ -140,7 +140,7 @@ In here, we will use our model parameters so that it can be used to load out mod
 
 2. The player is a returning player.
 
-3. Every Player Uses The Same Global Model.
+3. Every player uses the same global model.
 
 ### Case 1: The Player Is A First-Time Player
 

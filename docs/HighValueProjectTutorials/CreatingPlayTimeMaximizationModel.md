@@ -177,9 +177,9 @@ local function run(Player)
 
         deployEventFunction = eventFunctionList[eventName]
 
-        if (deployEventFunction) then deployEvent() end
+        if (deployEventFunction) then deployEventFunction() end
 
-        start(eventName)
+        deployEventFunction()
 
         task.wait(60)
 

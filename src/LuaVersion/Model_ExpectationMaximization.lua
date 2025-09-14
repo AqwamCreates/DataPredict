@@ -128,19 +128,19 @@ end
 
 -- This function updates the model parameters based on the responsibility matrix
 
-local function maximizationStep(featureMatrix, responsibilitiesMatrix, numberOfClusters) -- data x features, data x clusters
+local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters) -- data x features, data x clusters
 
 	local numberOfData = #featureMatrix
 
 	local numberOfFeatures = #featureMatrix[1]
 
-	local piMatrix = AqwamTensorLibrary:sum(responsibilitiesMatrix, 1)
+	local piMatrix = AqwamTensorLibrary:sum(responsibilityMatrix, 1)
 
 	piMatrix = AqwamTensorLibrary:divide(piMatrix, numberOfData)
 
 	piMatrix = AqwamTensorLibrary:transpose(piMatrix)
 
-	local responsibilitiesMatrixTransposed = AqwamTensorLibrary:transpose(responsibilitiesMatrix) -- clusters x data
+	local responsibilitiesMatrixTransposed = AqwamTensorLibrary:transpose(responsibilityMatrix) -- clusters x data
 
 	local sumWeight = AqwamTensorLibrary:sum(responsibilitiesMatrixTransposed, 2) -- clusters x 1
 
@@ -176,9 +176,9 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	local piMatrix, meanMatrix, varianceMatrix = self:initializeParameters(numberOfClusters, numberOfFeatures)
 	
-	local responsibilities = expectationStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
+	local responsibilityMatrix = expectationStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
-	local piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilities, numberOfClusters)
+	local piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters)
 	
 	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
@@ -255,7 +255,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	
 	local varianceMatrix
 	
-	local responsibilities
+	local responsibilityMatrix
 	
 	local gaussianMatrix
 
@@ -307,9 +307,9 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		self:iterationWait()
 
-		responsibilities = expectationStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
+		responsibilityMatrix = expectationStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
 
-		piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilities, numberOfClusters)
+		piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters)
 		
 		gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 		

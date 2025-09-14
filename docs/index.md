@@ -20,7 +20,7 @@ Once you pass this commercial use threshold and want to license it, keep this in
 
 * You're not licensing convenience; you're licensing a higher probability of increased revenue.
 
-* Think of it this way: you’re not losing 1% of your revenue; you’re investing 1% to unlock the other 30% you might be leaving on the table.
+* Think of it this way: you’re not losing 1% of your revenue; you’re investing 1% to unlock the other 30% you might be leaving on the table. If you're lucky, you might get 300%.
 
 * That fee also includes DataPredict™ Neural and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
 

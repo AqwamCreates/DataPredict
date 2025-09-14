@@ -47,14 +47,12 @@ local function gaussian(featureVector, meanVector, varianceVector, epsilon)
 	local exponentStep1 = AqwamTensorLibrary:subtract(featureVector, meanVector)
 
 	local exponentStep2 = AqwamTensorLibrary:power(exponentStep1, 2)
-	
-	local exponentStep3 = AqwamTensorLibrary:multiply(varianceVector, 2)
 
-	local exponentStep4 = AqwamTensorLibrary:divide(exponentStep2, exponentStep3)
+	local exponentStep3 = AqwamTensorLibrary:divide(exponentStep2, varianceVector)
 
-	local exponentStep5 = AqwamTensorLibrary:multiply(-0.5, exponentStep4)
+	local exponentStep4 = AqwamTensorLibrary:multiply(-0.5, exponentStep3)
 
-	local exponentWithTerms = AqwamTensorLibrary:exponent(exponentStep5)
+	local exponentWithTerms = AqwamTensorLibrary:exponent(exponentStep4)
 	
 	local standardDeviationVector = AqwamTensorLibrary:power(varianceVector, 0.5)
 
@@ -116,13 +114,13 @@ local function expectationStep(featureMatrix, numberOfClusters, piMatrix, meanMa
 	
 	local numberOfData = #featureMatrix
 	
-	local responsibilitiesMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon) -- number of data x number of columns
+	local responsibilityMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon) -- number of data x number of columns
 	
-	local responsibilitiesSumVector = AqwamTensorLibrary:sum(responsibilitiesMatrix, 1)
+	local responsibilitySumVector = AqwamTensorLibrary:sum(responsibilityMatrix, 1)
 	
-	local normalizedResponsibilitiesMatrix = AqwamTensorLibrary:divide(responsibilitiesMatrix, responsibilitiesSumVector)
+	local normalizedResponsibilityMatrix = AqwamTensorLibrary:divide(responsibilityMatrix, responsibilitySumVector)
 	
-	return normalizedResponsibilitiesMatrix
+	return normalizedResponsibilityMatrix
 	
 end
 
@@ -182,15 +180,15 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
-	local likelihood = AqwamTensorLibrary:logarithm(gaussianMatrix)
+	local logLikelihood = AqwamTensorLibrary:logarithm(gaussianMatrix)
 
-	local sumLikelihood = AqwamTensorLibrary:sum(likelihood)
+	local sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihood)
 	
 	local numberOfData = #featureMatrix
 	
-	local numberOfFeatures = numberOfClusters * #featureMatrix[1]
+	local k = (numberOfClusters - 1) + numberOfClusters * numberOfFeatures * 2
 	
-	local bayesianInformationCriterion = (-2 * sumLikelihood) + (math.log(numberOfData) * numberOfFeatures)
+	local bayesianInformationCriterion = (k * math.log(numberOfData)) - (2 * sumLogLikelihood)
 	
 	return bayesianInformationCriterion
 	

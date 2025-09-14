@@ -6,7 +6,7 @@ For best results, please use:
 
 * Neural Networks
 
-* Support Vector Machine Or Any Other Regression Models
+* Support Vector Regression Or Any Other Regression Models
 
 ## Initializing The Model
 

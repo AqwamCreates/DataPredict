@@ -64,9 +64,9 @@ local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, "NoEvent")
 
 ```
 
-However, this require temporarily setting the Neural Network's maximumNumberOfIterations parameters to these settings so that it can be biased to "NoEvent" at start up.
+However, this require setting the Neural Network's parameters to these settings temporarily so that it can be biased to "NoEvent" at start up.
 
-```
+```lua
 
 local NeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1000, learningRate = 0.3})
 

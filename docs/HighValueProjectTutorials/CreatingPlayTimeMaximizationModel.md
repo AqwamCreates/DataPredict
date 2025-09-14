@@ -45,6 +45,7 @@ local ClassesList = {
   "LimitedTimeQuestEvent",
   "LimitedTimeItemSpawnEvent",
   "LimitedTimeBossSpawnEvent",
+
 }
 
 ```

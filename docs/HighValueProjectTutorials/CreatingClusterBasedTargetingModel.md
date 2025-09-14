@@ -40,7 +40,7 @@ local playerLocationDataMatrix = {
 
 ## Getting The Center Of Clusters
 
-Once you collected the players' location data, you must call K-Means' train() function. This will generate the center of clusters to the model parameters.
+Once you collected the players' location data, you must call model's train() function. This will generate the center of clusters to the model parameters.
 
 ```lua
 

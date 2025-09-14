@@ -61,6 +61,8 @@ Before we start training our model, we first build our model.
 
 local NeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
+NeuralNetwork:setClassesList(ClassesList)
+
 NeuralNetwork:addLayer(5, true) -- Five features and one bias.
 
 NeuralNetwork:addLayer(#ClassesList, false) -- No bias.

@@ -157,13 +157,13 @@ local eventFunctionDictionary = {
 
 local function run(Player)
 
-    local isPlayerInServer = true
-    
-    local rewardValue = 0
-    
     local playerDataVector = getPlayerDataVector(Player)
 
+    local rewardValue = 0
+
     local deployEventFunction
+
+    local isPlayerInServer
 
     while true do
     

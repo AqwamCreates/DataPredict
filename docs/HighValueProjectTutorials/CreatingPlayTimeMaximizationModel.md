@@ -141,7 +141,7 @@ We first need to get our Neural Network model. If you only kept the quick setup 
 
 We can just do getModel() twice to get our Neural Network model.
 
---]
+--]]
 
 local DeepReinforcementLearningModel =  PlayTimeMaximizationModel:getModel()
 

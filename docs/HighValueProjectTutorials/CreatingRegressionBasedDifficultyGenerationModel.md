@@ -62,6 +62,12 @@ DifficultyGenerationModel:train(playerCombatDataMatrix, defeatedEnemyCombatDataM
 
 local generatedEnemyCombatDataVector = DifficultyGenerationModel:predict(playerCombatDataMVector, true)
 
+local generatedEnemyMaximumHealth = generatedEnemyCombatDataVector[1][1]
+
+local generatedEnemyMaximumDamage = generatedEnemyCombatDataVector[1][2]
+
+local generatedEnemyCashAmount = generatedEnemyCombatDataVector[1][3]
+
 ```
 
 That's all for today!

@@ -173,8 +173,6 @@ local function run(Player)
 
         if (deployEventFunction) then deployEventFunction() end
 
-        deployEventFunction()
-
         task.wait(60)
 
         playerDataVector = getPlayerDataVector(Player)

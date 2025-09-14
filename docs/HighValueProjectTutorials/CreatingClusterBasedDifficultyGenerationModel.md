@@ -36,7 +36,7 @@ local playerCombatDataMatrix = {
 
 ## Getting The Center Of Clusters
 
-Once you collected the players' combat data, you must call K-Means' train() function. This will generate the center of clusters to the model parameters.
+Once you collected the players' combat data, you must call model's train() function. This will generate the center of clusters to the model parameters.
 
 ```lua
 

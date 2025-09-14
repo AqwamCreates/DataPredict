@@ -6,7 +6,7 @@
 
 * [Creating Probability-To-Leave Prediction Model](HighValueProjectTutorials/CreatingProbabilityToLeavePredictionModel.md)
 
-* Creating Reward-Maximization-Based Event Model
+* [Creating Reward-Maximization-Based Event Model](CreatingRewardMaximizationBasedEventModel.md)
 
   * The model chooses actions or events that maximizes play time.
 

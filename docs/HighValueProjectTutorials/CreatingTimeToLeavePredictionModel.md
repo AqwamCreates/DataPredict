@@ -134,7 +134,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-Regression:getModelParameters(ModelParameters)
+Regression:setModelParameters(ModelParameters)
 
 ```
 

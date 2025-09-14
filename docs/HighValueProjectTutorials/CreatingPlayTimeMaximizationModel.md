@@ -66,3 +66,17 @@ NeuralNetwork:addLayer(5, true) -- Five features and one bias.
 NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
 
 ```
+
+### Constructing Our Deep Reinforcement Learning Model
+
+```lua
+
+-- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA
+
+local DeepReinforcementLearningModel = DataPredict.Model.DeepStateActionRewardStateAction.new()
+
+-- Inserting our Neural Network here.
+
+DeepReinforcementLearningModel:setModel(NeuralNetwork)
+
+```

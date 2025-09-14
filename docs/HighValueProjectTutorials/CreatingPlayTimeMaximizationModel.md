@@ -157,3 +157,11 @@ ModelParameters = NeuralNetwork:getModelParameters()
 NeuralNetwork:setModelParameters(ModelParameters)
 
 ```
+
+### Case 3: Every Player Uses The Same Global Model
+
+Under this case, the procedure is the same to case 2 except that you need to:
+
+* Load model parameters upon server start.
+
+* Perform auto-save with the optional ability of merging with saved model parameters from other servers.

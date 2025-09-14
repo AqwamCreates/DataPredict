@@ -42,7 +42,7 @@
 
 * [Creating Regression-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingRegressionBasedDifficultyGenerationModel.md)
 
-  * Everytime the player kills an enemy, both player's data and enemy's data is used to train the model.
+  * Everytime a player kills an enemy, both player's data and enemy's data is used to train the model.
 
 * [Creating Cluster-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingClusterBasedDifficultyGenerationModel.md)
 

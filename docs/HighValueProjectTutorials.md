@@ -46,7 +46,7 @@
 
 * [Creating Cluster-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingClusterBasedDifficultyGenerationModel.md)
 
-  * Uses players' data to generate the best enemies' data.
+  * Uses players' data to generate the center of enemies' data.
 
 ## Quality Assurance
 

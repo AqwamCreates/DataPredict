@@ -70,7 +70,7 @@ local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, vari
 	
 	local numberOfClusters = #meanMatrix
 	
-	local probabilitiesMatrix = AqwamTensorLibrary:createTensor({#featureMatrix, numberOfClusters}, 0)
+	local probabilityMatrix = AqwamTensorLibrary:createTensor({#featureMatrix, numberOfClusters}, 0)
 	
 	for i = 1, #featureMatrix, 1 do
 
@@ -88,13 +88,13 @@ local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, vari
 
 			for i, probability in ipairs(probabilitiesVector[1]) do weight = weight * probability end
 
-			probabilitiesMatrix[i][j] = weight
+			probabilityMatrix[i][j] = weight
 
 		end
 
 	end
 	
-	return probabilitiesMatrix
+	return probabilityMatrix
 	
 end
 

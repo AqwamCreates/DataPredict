@@ -24,7 +24,7 @@ DifficultyGenerationModel:addLayer(3, false)
 
 ## Collecting The Players' Combat Data
 
-In order to find the center of the clusters, we first need all the players' combat data and defeated enemy's combat data into separate matrices. Ensure that the rows matches the player-enemy pairs.
+Before we can train our models, we first need all the players' combat data and defeated enemy's combat data into separate matrices. Ensure that the rows matches the player-enemy pairs.
 
 ```lua
 

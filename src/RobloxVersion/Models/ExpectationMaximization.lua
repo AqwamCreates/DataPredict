@@ -180,15 +180,15 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
-	local likelihood = AqwamTensorLibrary:logarithm(gaussianMatrix)
+	local logLikelihood = AqwamTensorLibrary:logarithm(gaussianMatrix)
 
-	local sumLikelihood = AqwamTensorLibrary:sum(likelihood)
+	local sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihood)
 	
 	local numberOfData = #featureMatrix
 	
-	local numberOfFeatures = numberOfClusters * #featureMatrix[1]
+	local k = (numberOfClusters - 1) + numberOfClusters * numberOfFeatures * 2
 	
-	local bayesianInformationCriterion = (-2 * sumLikelihood) + (math.log(numberOfData) * numberOfFeatures)
+	local bayesianInformationCriterion = (k * math.log(numberOfData)) - (2 * sumLogLikelihood)
 	
 	return bayesianInformationCriterion
 	

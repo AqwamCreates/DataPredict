@@ -16,6 +16,10 @@ Before we can produce ourselves a difficulty generation model, we first need to 
 
 local DifficultyGenerationModel = DataPredict.Models.NeuralNetwork.new({}) -- For this tutorial, we will assume that we will generate one type of enemy.
 
+DifficultyGenerationModel:addLayer(3, true)
+
+DifficultyGenerationModel:addLayer(3, false)
+
 ```
 
 ## Collecting The Players' Combat Data
@@ -26,21 +30,27 @@ In order to find the center of the clusters, we first need all the players' comb
 
 local playerCombatDataMatrix = {
 
-  {player1MaximumHealth, player1MaximumDamage, player1CashAmount},
-  {player2MaximumHealth, player2MaximumDamage, player2CashAmount},
-  {player3MaximumHealth, player3MaximumDamage, player3CashAmount},
+  {1, player1MaximumHealth, player1MaximumDamage, player1CashAmount},
+  {1, player2MaximumHealth, player2MaximumDamage, player2CashAmount},
+  {1, player3MaximumHealth, player3MaximumDamage, player3CashAmount},
+
+}
+
+local defeatedEnemyCombatDataMatrix = {
+
+  
 
 }
 
 ```
 
-## Getting The Center Of Clusters
+## Training The Model
 
 Once you collected the players' combat data, you must call K-Means' train() function. This will generate the center of clusters to the model parameters.
 
 ```lua
 
-DifficultyGenerationModel:train(playerCombatDataMatrix)
+DifficultyGenerationModel:train(playerCombatDataMatrix, defeatedEnemyCombatDataMatrix)
 
 ```
 

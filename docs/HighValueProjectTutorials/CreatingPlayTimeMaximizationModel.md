@@ -136,11 +136,13 @@ local action = PlayTimeMaximizationModel:reinforce(initialPlayerDataVector, rewa
 
 ## Model Parameters Loading 
 
-In here, we will use our model parameters so that it can be used to load out models. There are two cases in here:
+In here, we will use our model parameters so that it can be used to load out models. There are three cases in here:
 
 1. The player is a first-time player.
 
 2. The player is a returning player.
+
+3. Every player uses the same global model.
 
 ### Case 1: The Player Is A First-Time Player
 

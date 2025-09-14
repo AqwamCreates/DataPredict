@@ -53,7 +53,7 @@ Also, we would like you to be careful about limited time quest and item spawn ev
 
 ## Constructing Our Model
 
-Before we start training our model, we first build our model.
+Before we start training our model, we first need to build our model. We have split this to multiple subsections to make it easy to follow through.
 
 ### Constructing Our Neural Network
 
@@ -94,5 +94,19 @@ local PlayTimeMaximizationModel = DataPredict.QuickSetups.CategoricalPolicy.new(
 -- Inserting our Deep Reinforcement Learning Model here.
 
 PlayTimeMaximizationModel:setModel(DeepReinforcementLearningModel)
+
+```
+
+## Training And Prediction
+
+Because the way we have designed our Categorical Policy Quick Setup, you can immediately train while producing predictions for your player by calling reinforce() function.
+
+This is because reinforce() function is responsible for producing prediction and perform pre-calculations at the same time as that is required to train our models.
+
+```lua
+
+-- Here, you notice that there is a reward value being inserted here. Generally, when you first call this, the reward value should be zero.
+
+local actionVector = PlayTimeMaximizationModel:reinforce(initialPlayerDataVector, rewardValue)
 
 ```

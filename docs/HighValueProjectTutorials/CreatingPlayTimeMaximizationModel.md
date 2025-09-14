@@ -73,7 +73,7 @@ NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
 
 ```lua
 
--- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA
+-- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
 
 local DeepReinforcementLearningModel = DataPredict.Model.DeepStateActionRewardStateAction.new()
 

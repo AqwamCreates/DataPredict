@@ -18,7 +18,7 @@ Before we start creating our model, we first need to visualize on how we will de
 
 -- We have five features with one "bias".
 
-local initialPlayerDataVector = {
+local playerDataVector = {
     {
         1,
         numberOfCurrencyAmount,
@@ -130,7 +130,7 @@ This is because reinforce() function is responsible for producing prediction and
 
 -- Here, you notice that there is a reward value being inserted here. Generally, when you first call this, the reward value should be zero.
 
-local action = PlayTimeMaximizationModel:reinforce(initialPlayerDataVector, rewardValue)
+local action = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
 ```
 

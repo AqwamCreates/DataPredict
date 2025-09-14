@@ -16,7 +16,7 @@ Once you pass this commercial use threshold and want to license it, keep this in
 
 * Expect to pay for (gross revenue * (0.0365 / log2(gross revenue))) every month, provided that it uses this library. In other words, it starts at around 1% of gross revenue and that percentage decreases as your project earns more. 
 
-* Additionally, because machine learning models tries to find the best solution for you as they train, you are likely (but not guaranteed) to have your revenue increase over this cost!
+* Because machine learning models try to find the best solution for you during training, you are likely (but not guaranteed) to increase your revenue over this cost.
 
 * That fee also includes DataPredict™ Neural and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
 

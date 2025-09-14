@@ -110,7 +110,7 @@ function ExpectationMaximizationModel:initializeParameters(numberOfClusters, num
 	
 end
 
-local function expectationStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
+local function expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
 	local responsibilityMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon) -- number of data x number of columns
 	
@@ -174,7 +174,7 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	local piMatrix, meanMatrix, varianceMatrix = self:initializeParameters(numberOfClusters, numberOfFeatures)
 	
-	local responsibilityMatrix = expectationStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
+	local responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
 	local piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters)
 	
@@ -303,7 +303,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		self:iterationWait()
 
-		responsibilityMatrix = expectationStep(featureMatrix, numberOfClusters, piMatrix, meanMatrix, varianceMatrix, epsilon)
+		responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 
 		piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters)
 		

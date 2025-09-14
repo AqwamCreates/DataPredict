@@ -18,7 +18,7 @@ Once you pass this commercial use threshold and want to license it, keep this in
 
 * Because machine, deep and reinforcement learning models try to find the best solution for you during training, you are likely (but not guaranteed) to increase your revenue over this cost.
 
-* You're not licensing convenience; you're licensing increased probability of getting higher revenue.
+* You're not licensing convenience; you're licensing a higher probability of increased revenue.
 
 * That fee also includes DataPredict™ Neural and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
 

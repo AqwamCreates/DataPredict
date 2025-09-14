@@ -14,7 +14,7 @@ Before we can produce ourselves a difficulty generation model, we first need to 
 
 ```lua
 
-local DifficultyGenerationModel = DataPredict.Models.KMeans.new({numberOfClusters = 1, distanceFunction = "Euclidean"}) -- For this tutorial, we will assume that we will generate one type of enemy.
+local EnemyDataGenerationModel = DataPredict.Models.KMeans.new({numberOfClusters = 1, distanceFunction = "Euclidean"}) -- For this tutorial, we will assume that we will generate one type of enemy.
 
 ```
 
@@ -40,7 +40,7 @@ Once you collected the players' combat data, you must call model's train() funct
 
 ```lua
 
-DifficultyGenerationModel:train(playerCombatDataMatrix)
+EnemyDataGenerationModel:train(playerCombatDataMatrix)
 
 ```
 
@@ -48,7 +48,7 @@ Once train() is called, call the getModelParameters() function to get the center
 
 ```lua
 
-local ModelParameters = DifficultyGenerationModel:getModelParameters()
+local ModelParameters = EnemyDataGenerationModel:getModelParameters()
 
 ```
 

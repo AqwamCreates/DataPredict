@@ -170,6 +170,8 @@ end
 
 function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
 	
+	local numberOfData = #featureMatrix
+	
 	local numberOfFeatures = #featureMatrix[1]
 	
 	local piMatrix, meanMatrix, varianceMatrix = self:initializeParameters(numberOfClusters, numberOfFeatures)
@@ -183,8 +185,6 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	local logLikelihood = AqwamTensorLibrary:logarithm(gaussianMatrix)
 
 	local sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihood)
-	
-	local numberOfData = #featureMatrix
 	
 	local k = (numberOfClusters - 1) + numberOfClusters * numberOfFeatures * 2
 	

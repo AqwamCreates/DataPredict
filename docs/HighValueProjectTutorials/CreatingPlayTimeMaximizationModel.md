@@ -178,10 +178,10 @@ local function run(Player)
         if (deployEventFunction) then deployEventFunction() end
 
         task.wait(60)
-
-        isPlayerInServer = checkIfPlayerIsInServer(Player)
         
         rewardValue = (isPlayerInServer and 10) or -50
+
+        isPlayerInServer = checkIfPlayerIsInServer(Player)
 
     end
 

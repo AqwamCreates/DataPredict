@@ -161,6 +161,8 @@ local function run(Player)
 
     local rewardValue = 0
 
+    local eventName
+
     local deployEventFunction
 
     local isPlayerInServer

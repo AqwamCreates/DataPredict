@@ -44,7 +44,7 @@ local defeatedEnemyDataVector = {
 
 ```
 
-If you're concerned about that the model may produce wrong result heavily upon first start up, then you can use a randomized dataset to heavily skew the prediction to the "NoEvent" class. Then use this randomized dataset to pretrain the Neural Network before doing any real-time training and prediction. Below, we will show you how it is done.
+If you're concerned about that the model may produce wrong result heavily upon first start up, then you can use a randomized dataset to heavily skew the prediction. Then use this randomized dataset to pretrain the actor Neural Network before doing any real-time training and prediction. Below, we will show you how it is done.
 
 ```lua
 
@@ -52,7 +52,7 @@ local numberOfData = 100
 
 local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias")
 
-local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, "NoEvent")
+local labelDataMatrix = TensorL:createTensor({numberOfData, 3}, 100)
 
 ```
 
@@ -120,7 +120,7 @@ EnemyDataGenerationModel:setModel(DeepReinforcementLearningModel)
 
 ## Training And Prediction
 
-Because the way we have designed our Categorical Policy Quick Setup, you can immediately train while producing predictions for your player by calling reinforce() function.
+Because the way we have designed our Diagonal Gaussian Policy Quick Setup, you can immediately train while producing predictions for your player by calling reinforce() function.
 
 This is because reinforce() function is responsible for producing prediction and perform pre-calculations at the same time as that is required to train our models.
 

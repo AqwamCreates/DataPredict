@@ -38,9 +38,9 @@ local playerCombatDataMatrix = {
 
 local defeatedEnemyDataMatrix = {
 
-  {1, enemy1MaximumHealth, enemy1MaximumDamage, enemy1CashAmount},
-  {1, enemy2MaximumHealth, enemy2MaximumDamage, enemy2CashAmount},
-  {1, enemy3MaximumHealth, enemy3MaximumDamage, enemy3CashAmount},
+  {enemy1MaximumHealth, enemy1MaximumDamage, enemy1CashAmount},
+  {enemy2MaximumHealth, enemy2MaximumDamage, enemy2CashAmount},
+  {enemy3MaximumHealth, enemy3MaximumDamage, enemy3CashAmount},
 
 }
 

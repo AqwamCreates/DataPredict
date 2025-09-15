@@ -34,12 +34,6 @@
 
 ## Adaptive Difficulty Systems
 
-* Creating Reward-Maximization-Based Difficulty Generation Model
-
-  * Everytime an enemy is killed, the positive reward tells the model to "make more enemies similar to this". 
-
-  * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "this enemy is not interesting to the player" or "this enemy is too hard for the player to kill".
-
 * [Creating Regression-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingRegressionBasedEnemyDataGenerationModel.md)
 
   * Everytime a player kills an enemy, both player's combat data and enemy's data are used to train the model.
@@ -47,6 +41,12 @@
 * [Creating Cluster-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingClusterBasedEnemyDataGenerationModel.md)
 
   * Uses players' combat data to generate the center of enemies' data.
+
+* [Creating Reward-Maximization-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedDifficultyGenerationModel.md) (Under Construction)
+
+  * Everytime an enemy is killed, the positive reward tells the model to "make more enemies similar to this". 
+
+  * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "this enemy is not interesting to the player" or "this enemy is too hard for the player to kill".
 
 ## Quality Assurance
 

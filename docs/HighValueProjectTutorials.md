@@ -12,17 +12,17 @@
 
 ## Binary Recommendation Systems
 
-* Creating Classification-Based Recommendation System
+* Creating Classification-Based Recommendation Model
 
-* Creating Reward-Maximization-Based Binary Recommendation System
+* Creating Reward-Maximization-Based Binary Recommendation Model
 
 ## Regression Recommendation System
 
-* Creating Similarity-Based Recommendation System
+* Creating Similarity-Based Recommendation Model
 
-* Creating Regression-Based Recommendation System
+* [Creating Regression-Based Recommendation Model](HighValueProjectTutorials/CreatingRegressionBasedRecommendationModel.md)
 
-* Creating Reward-Maximization-Based Regression Recommendation System
+* Creating Reward-Maximization-Based Regression Recommendation Model
 
 ## AI Players
 

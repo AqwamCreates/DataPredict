@@ -162,25 +162,49 @@ Below, it shows an example code for this.
 
 local function run(Player)
 
-    local playerDataVector = getPlayerDataVector(Player)
-
     local isPlayerInServer = true
 
     local rewardValue = 0
 
-    local generatedEnemyDataVector 
+        local playerDataVector
+
+    local generatedEnemyDataVector
+
+    local unwrappedGeneratedEnemyDataVector
+
+    local generatedEnemyMaximumHealth
+
+    local generatedEnemyMaximumDamage
+
+    local generatedEnemyCashAmount
+
+    local Enemy
+
+    local isEnemyKilledByPlayer
 
     while isPlayerInServer do
+
+        playerDataVector = getPlayerDataVector(Player)
     
-        generatedEnemyDataVector  = EnemyDataGenerationModel:reinforce(playerDataVector, rewardValue)
+        generatedEnemyDataVector = EnemyDataGenerationModel:reinforce(playerDataVector, rewardValue)
+
+        unwrappedGeneratedEnemyDataVector = generatedEnemyDataVector[1]
+
+        generatedEnemyMaximumHealth = unwrappedGeneratedEnemyDataVector[1]
+
+        generatedEnemyMaximumDamage = unwrappedGeneratedEnemyDataVector[2]
+
+        generatedEnemyCashAmount = unwrappedGeneratedEnemyDataVector[3]
+
+        Enemy = spawnEnemy(generatedEnemyMaximumHealth, generatedEnemyMaximumDamage, generatedEnemyCashAmount)
 
         task.wait(60)
 
-        playerDataVector = getPlayerDataVector(Player)
-
-        isPlayerInServer = checkIfPlayerIsInServer(Player)
+        isEnemyKilledByPlayer = checkIfEnemyIsKilledByPlayer()
         
-        rewardValue = (isPlayerInServer and 10) or -50
+        rewardValue = (isEnemyKilledByPlayer and 10) or -50
+
+         isPlayerInServer = checkIfPlayerIsInServer(Player)
 
     end
 

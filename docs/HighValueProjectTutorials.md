@@ -10,13 +10,19 @@
 
   * The model chooses actions or events that maximizes play time.
 
-## Recommendation Systems
+## Binary Recommendation Systems
+
+* Creating Classification-Based Recommendation System
+
+* Creating Reward-Maximization-Based Binary Recommendation System
+
+## Regression Recommendation System
 
 * Creating Similarity-Based Recommendation System
 
-* Creating Reward-Maximization-Based Recommendation System
+* Creating Regression-Based Recommendation System
 
-* Creating Classification-Based Recommendation System
+* Creating Reward-Maximization-Based Regression Recommendation System
 
 ## AI Players
 

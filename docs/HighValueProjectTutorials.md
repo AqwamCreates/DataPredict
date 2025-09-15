@@ -20,7 +20,7 @@
 
 * Creating Similarity-Based Recommendation Model
 
-* [Creating Regression-Based Recommendation Model](HighValueProjectTutorials/CreatingRegressionBasedRecommendationModel.md)
+* [Creating Regression-Based Recommendation Model](HighValueProjectTutorials/CreatingRegressionBasedRecommendationModel.md) (Under Construction)
 
 * Creating Reward-Maximization-Based Regression Recommendation Model
 

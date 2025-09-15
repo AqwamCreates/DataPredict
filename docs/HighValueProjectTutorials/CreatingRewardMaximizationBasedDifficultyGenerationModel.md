@@ -31,25 +31,18 @@ local playerDataVector = {
 
 ```
 
-### labelDataVector
+### defeatedEnemyDataVector
 
 ```lua
 
-local labelDataVector = {
-    {
-        1,
-        numberOfCurrencyAmount,
-        numberOfItemsAmount,
-        timePlayedInCurrentSession,
-        timePlayedInAllSessions,
-        healthAmount
-    }
+local defeatedEnemyDataVector = {
+
+  {enemyMaximumHealth, enemyMaximumDamage, enemyCashAmount},
+
 }
 
 
 ```
-
-Also, we would like you to be careful about limited time quest and item spawn events as the model will might learn to give it often. As such, it is important to give the model negative rewards inversely proportional to the duration between the two limited time events.
 
 If you're concerned about that the model may produce wrong result heavily upon first start up, then you can use a randomized dataset to heavily skew the prediction to the "NoEvent" class. Then use this randomized dataset to pretrain the Neural Network before doing any real-time training and prediction. Below, we will show you how it is done.
 
@@ -81,13 +74,11 @@ Before we start training our model, we first need to build our model. We have sp
 
 ```lua 
 
-local NeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
+local ActorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-NeuralNetwork:setClassesList(ClassesList)
+ActorNeuralNetwork:addLayer(5, true) -- Five features and one bias.
 
-NeuralNetwork:addLayer(5, true) -- Five features and one bias.
-
-NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
+ActorNeuralNetwork:addLayer(3, false) --Three enemy features and no bias.
 
 ```
 
@@ -97,25 +88,27 @@ NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
 
 -- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
 
-local DeepReinforcementLearningModel = DataPredict.Model.DeepStateActionRewardStateAction.new()
+local DeepReinforcementLearningModel = DataPredict.Model.SoftActorCritic.new()
 
--- Inserting our Neural Network here.
+-- Inserting our actor and critic Neural Networks here.
 
-DeepReinforcementLearningModel:setModel(NeuralNetwork)
+DeepReinforcementLearningModel:setActorModel(ActorNeuralNetwork)
+
+DeepReinforcementLearningModel:setCriticModel(CriticNeuralNetwork)
 
 ```
 
-### Constructing Our Categorical Policy Quick Setup Model
+### Constructing Our Diagonal Gaussian Policy Quick Setup Model
 
 This part makes it easier for us to set up our model, but it is not strictly necessary. However, I do recommend you to use them as they contain built-in functions for handing training and predictions.
 
 ```lua
 
-local PlayTimeMaximizationModel = DataPredict.QuickSetups.CategoricalPolicy.new()
+local EnemyDataGenerationModel = DataPredict.QuickSetups.DiagonalGaussianPolicy.new()
 
 -- Inserting our Deep Reinforcement Learning Model here.
 
-PlayTimeMaximizationModel:setModel(DeepReinforcementLearningModel)
+EnemyDataGenerationModel:setModel(DeepReinforcementLearningModel)
 
 ```
 
@@ -166,7 +159,7 @@ local function run(Player)
 
     while true do
     
-        eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+        eventName = EnemyDataGenerationModel:reinforce(playerDataVector, rewardValue)
 
         deployEventFunction = eventFunctionDictionary[eventName]
 
@@ -220,17 +213,21 @@ We can just do getModel() twice to get our Neural Network model.
 
 --]]
 
-local DeepReinforcementLearningModel =  PlayTimeMaximizationModel:getModel()
+local DeepReinforcementLearningModel =  EnemyDataGenerationModel:getModel()
 
-local NeuralNetwork = DeepReinforcementLearningModel:getModel()
+local ActorNeuralNetwork = DeepReinforcementLearningModel:getActorModel()
 
--- Notice that we must get it from the Neural Network model.
+-- Notice that we must get it from the actor and critic Neural Network model.
 
-ModelParameters = NeuralNetwork:getModelParameters()
+ActorModelParameters = ActorNeuralNetwork:getModelParameters()
 
--- Notice that we must set it to the Neural Network model too.
+CriticModelParameters = CriticNeuralNetwork:getModelParameters()
 
-NeuralNetwork:setModelParameters(ModelParameters)
+-- Notice that we must set it to the actor and critic Neural Network model too.
+
+ActorNeuralNetwork:setModelParameters(ActorModelParameters)
+
+CriticNeuralNetwork:setModelParameters(CriticModelParameters)
 
 ```
 

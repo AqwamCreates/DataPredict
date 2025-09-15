@@ -184,26 +184,6 @@ local predictedLabelVector = Regression:predict(currentPlayerDataVector)
 
 ```
 
-Once you receive the predicted label vector, you can grab the pure number output by doing this:
-
-```lua
-
-local timeToLeavePrediction = predictedLabelVector[1][1]
-
-```
-
-We can do this for every 10 seconds and use this to extend the players' playtime by doing something like this:
-
-```lua
-
-if (timeToLeavePrediction <= 60) then -- Can be changed instead of less than 60 seconds.
-
---- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
-
-end
-
-```
-
 ## Conclusion
 
 This tutorial showed you on how to create "time to leave" prediction model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!

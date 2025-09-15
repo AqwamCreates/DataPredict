@@ -36,11 +36,9 @@ local playerDataVector = {
 ```lua
 
 local defeatedEnemyDataVector = {
-  {
-    enemyMaximumHealth,
-    enemyMaximumDamage,
-    enemyCashAmount
-    }
+
+  {enemyMaximumHealth, enemyMaximumDamage, enemyCashAmount}
+
 }
 
 

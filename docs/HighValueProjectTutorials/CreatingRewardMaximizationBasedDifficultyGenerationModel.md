@@ -60,9 +60,9 @@ However, this require setting the Neural Network's parameters to these settings 
 
 ```lua
 
-NeuralNetwork.maximumNumberOfIterations = 1000
+ActorNeuralNetwork.maximumNumberOfIterations = 1000
 
-NeuralNetwork.learningRate = 0.3
+ActorNeuralNetwork.learningRate = 0.3
 
 ```
 
@@ -79,6 +79,12 @@ local ActorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfI
 ActorNeuralNetwork:addLayer(5, true) -- Five features and one bias.
 
 ActorNeuralNetwork:addLayer(3, false) --Three enemy features and no bias.
+
+local CriticNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
+
+CriticNeuralNetwork:addLayer(5, true) -- Five features and one bias.
+
+CriticNeuralNetwork:addLayer(1, false) -- Critic only outputs 1 value.
 
 ```
 

@@ -166,13 +166,11 @@ local function run(Player)
 
     local rewardValue = 0
 
-    local deployEventFunction
-
-    local isPlayerInServer
+    local generatedEnemyDataVector 
 
     while true do
     
-        eventName = EnemyDataGenerationModel:reinforce(playerDataVector, rewardValue)
+        generatedEnemyDataVector  = EnemyDataGenerationModel:reinforce(playerDataVector, rewardValue)
 
         deployEventFunction = eventFunctionDictionary[eventName]
 

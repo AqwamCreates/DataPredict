@@ -136,7 +136,7 @@ local eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardVa
 
 ## Rewarding Our Model
 
-In order to assign the reward to that event is selected, we must first deploy the chosen event and observe if the player stayed for that action/event.
+In order to assign the reward to that event is selected, we must first deploy the chosen event and observe if the player stayed for that event.
 
 Below, it shows an example code for this.
 

@@ -52,7 +52,7 @@ local numberOfData = 100
 
 local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias")
 
-local labelDataMatrix = TensorL:createTensor({numberOfData, 3}, 100)
+local labelDataMatrix = TensorL:createTensor({numberOfData, 3}, 100) -- Three enemy features.
 
 ```
 
@@ -78,7 +78,7 @@ local ActorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfI
 
 ActorNeuralNetwork:addLayer(5, true) -- Five features and one bias.
 
-ActorNeuralNetwork:addLayer(3, false) --Three enemy features and no bias.
+ActorNeuralNetwork:addLayer(3, false) -- Three enemy features and no bias.
 
 local CriticNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 

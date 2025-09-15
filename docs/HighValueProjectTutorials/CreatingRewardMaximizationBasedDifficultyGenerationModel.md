@@ -200,7 +200,7 @@ local function run(Player)
 
         task.wait(60)
 
-        isEnemyKilledByPlayer = checkIfEnemyIsKilledByPlayer()
+        isEnemyKilledByPlayer = checkIfEnemyIsKilledByPlayer(Enemy, Player)
         
         rewardValue = (isEnemyKilledByPlayer and 10) or -50
 

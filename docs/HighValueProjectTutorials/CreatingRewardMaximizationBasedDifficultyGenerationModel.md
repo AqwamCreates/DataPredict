@@ -166,7 +166,7 @@ local function run(Player)
 
     local rewardValue = 0
 
-        local playerDataVector
+    local playerDataVector
 
     local generatedEnemyDataVector
 
@@ -204,7 +204,7 @@ local function run(Player)
         
         rewardValue = (isEnemyKilledByPlayer and 10) or -50
 
-         isPlayerInServer = checkIfPlayerIsInServer(Player)
+        isPlayerInServer = checkIfPlayerIsInServer(Player)
 
     end
 

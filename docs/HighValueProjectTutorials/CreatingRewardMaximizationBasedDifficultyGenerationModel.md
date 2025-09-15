@@ -56,7 +56,7 @@ local labelDataMatrix = TensorL:createTensor({numberOfData, 3}, 100)
 
 ```
 
-However, this require setting the Neural Network's parameters to these settings temporarily so that it can be biased to "NoEvent" at start up as shown below.
+However, this require setting the actor Neural Network's parameters to these settings temporarily so that it can be biased at start up as shown below.
 
 ```lua
 

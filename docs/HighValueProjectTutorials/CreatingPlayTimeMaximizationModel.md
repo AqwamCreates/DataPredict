@@ -159,13 +159,13 @@ local function run(Player)
 
     local playerDataVector = getPlayerDataVector(Player)
 
+    local isPlayerInServer = true
+
     local rewardValue = 0
 
     local eventName
 
     local deployEventFunction
-
-    local isPlayerInServer
 
     while isPlayerInServer do
     

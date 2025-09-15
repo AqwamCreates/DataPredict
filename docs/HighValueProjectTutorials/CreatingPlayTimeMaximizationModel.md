@@ -167,7 +167,7 @@ local function run(Player)
 
     local isPlayerInServer
 
-    while true do
+    while Player do
     
         eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 

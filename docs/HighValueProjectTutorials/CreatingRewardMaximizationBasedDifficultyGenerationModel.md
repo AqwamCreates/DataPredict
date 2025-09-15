@@ -164,17 +164,15 @@ local function run(Player)
 
     local playerDataVector = getPlayerDataVector(Player)
 
+    local isPlayerInServer = true
+
     local rewardValue = 0
 
     local generatedEnemyDataVector 
 
-    while true do
+    while isPlayerInServer do
     
         generatedEnemyDataVector  = EnemyDataGenerationModel:reinforce(playerDataVector, rewardValue)
-
-        deployEventFunction = eventFunctionDictionary[eventName]
-
-        if (deployEventFunction) then deployEventFunction() end
 
         task.wait(60)
 

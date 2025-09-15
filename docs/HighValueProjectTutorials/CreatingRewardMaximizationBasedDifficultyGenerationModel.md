@@ -114,7 +114,7 @@ This part makes it easier for us to set up our model, but it is not strictly nec
 
 The vector below controls how far the enemy feature value should be generated.
 
-Let's say our model decides to make 100 maximum health as our base. 
+Let's say our model decides to make 100 maximum health as our base value for enemy. 
 
 A standard deviation of 10 would make the model generate an enemy with the maximum health between 90 and 110.
 

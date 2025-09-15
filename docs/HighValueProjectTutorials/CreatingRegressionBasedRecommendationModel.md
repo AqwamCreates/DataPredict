@@ -1,10 +1,12 @@
 # Creating Regression-Based Recommendation Model
 
-Hello guys! Today, I will be showing you on how to create a retention-based model that could predict the likelihood that the players will leave.
+# Creating Time-To-Leave Prediction Model
+
+Hello guys! Today, I will be showing you on how to create a retention-based model that could predict when the player will leave.
 
 Currently, you need these to produce the model:
 
-* Any classification model
+* Any regression model
 
 * A player data that is stored in matrix
 
@@ -18,7 +20,7 @@ local DataPredict = require(DataPredict)
 
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local Classification = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local Regression = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```
 
@@ -82,7 +84,7 @@ end
 
 ```
 
-If you're concerned about that the model may produce wrong result heavily upon first start up, then you can use a randomized dataset to heavily skew the prediction to the "0" probability value. Then use this randomized dataset to pretrain the model before doing any real-time training and prediction. Below, we will show you how it is done.
+If you're concerned about that the model may produce wrong result heavily upon first start up, then you can use a randomized dataset to heavily skew the prediction to very high time-to-leave value. Then use this randomized dataset to pretrain the model before doing any real-time training and prediction. Below, we will show you how it is done.
 
 ```lua
 
@@ -90,17 +92,17 @@ local numberOfData = 100
 
 local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias")
 
-local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, 0) -- Making sure that at all values, it predicts zero probability of leaving.
+local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, 9999) -- Making sure that at all values, it predicts very high time-to-leave value. Do not use math.huge here.
 
 ```
 
-However, this require setting the model's parameters to these settings temporarily so that it can be biased to "0" at start up as shown below.
+However, this require setting the model's parameters to these settings temporarily so that it can be biased to very high time-to-leave value at start up as shown below.
 
 ```lua
 
-LogisticRegression.maximumNumberOfIterations = 100
+LinearRegression.maximumNumberOfIterations = 100
 
-LogisticRegression.learningRate = 0.3
+LinearRegression.learningRate = 0.3
 
 ```
 
@@ -110,47 +112,15 @@ By the time the player leaves, it is time for us to train the model. But first, 
 
 ```lua
 
-local timeElapsed = os.time() - initialJoinTime
+local timeToLeave = os.time() - initialJoinTime
 
-```
+local wrappedTimeToLeave = {
 
-Currently, there are two ways to scale the probability.
-
-1. Pure scaling
-
-2. Sigmoid scaling
-
-### Method 1: Pure Scaling
-
-```lua
-
-timeElapsed = math.max(timeElapsed, 0.01) -- To avoid division by zero that could lead to "inf" values.
-
-local probabilityToLeave = 1 - (1 / timeElapsed)
-
-```
-
-### Method 2: Sigmoid Scaling
-
-```lua
-
--- Large scaleFactor means slower growth. scaleFactor should be based on empirical average session length.
-
-local probabilityToLeave = 1 - math.exp(-timeElapsed / scaleFactor)
-
-```
-
-Once you have chosen to scale your values, we must do this:
-
-```lua
-
-local wrappedProbabilityToLeave = {
-
-    {probabilityToLeave}
+    {timeToLeave}
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = Classification:train(initialPlayerDataVector, wrappedProbabilityToLeave)
+local costArray = Regression:train(initialPlayerDataVector, wrappedTimeToLeave)
 
 ```
 
@@ -160,7 +130,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = Classification:getModelParameters()
+local ModelParameters = Regression:getModelParameters()
 
 ```
 
@@ -190,7 +160,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-Classification:setModelParameters(ModelParameters)
+Regression:setModelParameters(ModelParameters)
 
 ```
 
@@ -210,7 +180,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
-local predictedLabelVector = Classification:predict(currentPlayerDataVector)
+local predictedLabelVector = Regression:predict(currentPlayerDataVector)
 
 ```
 
@@ -226,7 +196,7 @@ We can do this for every 10 seconds and use this to extend the players' playtime
 
 ```lua
 
-if (probabilityToLeavePrediction >= 0.97) then -- Can be changed instead of less than 1 minute (or 60 seconds).
+if (timeToLeavePrediction <= 60) then -- Can be changed instead of less than 60 seconds.
 
 --- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
 
@@ -236,6 +206,6 @@ end
 
 ## Conclusion
 
-This tutorial showed you on how to create "probability to leave" prediction model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!
+This tutorial showed you on how to create "time to leave" prediction model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!
 
 That's all for today and see you later!

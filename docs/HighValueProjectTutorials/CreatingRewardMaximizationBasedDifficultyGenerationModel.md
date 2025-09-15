@@ -110,7 +110,27 @@ This part makes it easier for us to set up our model, but it is not strictly nec
 
 ```lua
 
-local EnemyDataGenerationModel = DataPredict.QuickSetups.DiagonalGaussianPolicy.new()
+--[[
+
+The vector below controls how far the enemy feature value should be generated.
+
+Let's say our model decides to make 100 maximum health as our base. 
+
+A standard deviation of 10 would make the model generate an enemy with the maximum health between 90 and 110.
+
+--]]
+
+local actionStandardDeviationVector = {
+    {
+        enemyMaximumHealthStandardDeviation,
+        enemyMaximumDamageStandardDeviation,
+        enemyCashAmountStandardDeviation,
+    }
+}
+
+-- Next, we'll insert actionStandardDeviationVector to our quick setup constructor.
+
+local EnemyDataGenerationModel = DataPredict.QuickSetups.DiagonalGaussianPolicy.new({actionStandardDeviationVector = actionStandardDeviationVector})
 
 -- Inserting our Deep Reinforcement Learning Model here.
 

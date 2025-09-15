@@ -42,7 +42,7 @@
 
   * Uses players' combat data to generate the center of enemies' data.
 
-* [Creating Reward-Maximization-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedDifficultyGenerationModel.md) (Under Construction)
+* [Creating Reward-Maximization-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedDifficultyGenerationModel.md)
 
   * Everytime an enemy is killed, the positive reward tells the model to "make more enemies similar to this". 
 

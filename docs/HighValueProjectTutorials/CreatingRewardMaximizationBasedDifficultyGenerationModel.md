@@ -223,6 +223,8 @@ local DeepReinforcementLearningModel =  EnemyDataGenerationModel:getModel()
 
 local ActorNeuralNetwork = DeepReinforcementLearningModel:getActorModel()
 
+local CriticNeuralNetwork = DeepReinforcementLearningModel:getCriticModel()
+
 -- Notice that we must get it from the actor and critic Neural Network models.
 
 ActorModelParameters = ActorNeuralNetwork:getModelParameters()

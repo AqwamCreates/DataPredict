@@ -128,7 +128,7 @@ This is because reinforce() function is responsible for producing prediction and
 
 -- Here, you notice that there is a reward value being inserted here. Generally, when you first call this, the reward value should be zero.
 
-local eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+local generatedEnemyDataVector = EnemyDataGenerationModel:reinforce(playerDataVector, rewardValue)
 
 ```
 
@@ -139,19 +139,6 @@ In order to assign the reward to that event is selected, we must first deploy th
 Below, it shows an example code for this.
 
 ```lua
-
-local eventFunctionDictionary = {
-
-  ["NoEvent"] = nil,
-  ["ResourceMultiplierEvent"] = resourceMultiplierEvent,
-  ["QuestEvent"] = questEvent,
-  ["ItemSpawnEvent"] = itemSpawnEvent,
-  ["BossSpawnEvent"] = bossSpawnEvent,
-  ["LimitedTimeQuestEvent"] = limitedTimeQuestEvent,
-  ["LimitedTimeItemSpawnEvent"] = limitedTimeItemSpawnEvent,
-  ["LimitedTimeBossSpawnEvent"] = limitedTimeBossSpawnEvent,
-
-}
 
 local function run(Player)
 

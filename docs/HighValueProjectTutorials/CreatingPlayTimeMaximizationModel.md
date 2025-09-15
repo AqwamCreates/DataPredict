@@ -157,17 +157,19 @@ local eventFunctionDictionary = {
 
 local function run(Player)
 
-    local playerDataVector = getPlayerDataVector(Player)
-
     local isPlayerInServer = true
 
     local rewardValue = 0
+
+    local playerDataVector
 
     local eventName
 
     local deployEventFunction
 
     while isPlayerInServer do
+
+         playerDataVector = getPlayerDataVector(Player)
     
         eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
@@ -176,8 +178,6 @@ local function run(Player)
         if (deployEventFunction) then deployEventFunction() end
 
         task.wait(60)
-
-        playerDataVector = getPlayerDataVector(Player)
 
         isPlayerInServer = checkIfPlayerIsInServer(Player)
         

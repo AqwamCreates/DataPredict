@@ -22,13 +22,9 @@ local Regression = DataPredict.Models.LogisticRegression.new({maximumNumberOfIte
 
 ```
 
-## Feature Vector Design
+## Designing Our Feature Vector And Classes List
 
-In here, what you need to do is:
-
-* Store the player data and purchased item data as two separate vector of numbers.
-
-Below, we will show you how to create this:
+Before we start creating our model, we first need to visualize on how we will design our data to increase the likelihood of players purchasing an item.
 
 ```lua
 

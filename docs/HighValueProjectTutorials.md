@@ -60,13 +60,13 @@ Before you engage in implementing machine, deep and reinforcement learning model
 
 * Creating Reward-Maximization-Based Reactionary AI Players
 
-  * Same as reward maximization -based AI players.
+  * Same as reward maximization-based AI players.
  
   * The only difference is that you give counter attacks to players' potential attacks.
 
   * Best for mixing reinforcement learning with game designers' control.
 
-  * Breaks mathematical theoretical guarantees, hence risky to use.
+  * Breaks mathematical theoretical guarantees due to inteference from game designers' control instead of model's own actions. Therefore, it is risky to use.
 
 ## Adaptive Difficulty Systems
 

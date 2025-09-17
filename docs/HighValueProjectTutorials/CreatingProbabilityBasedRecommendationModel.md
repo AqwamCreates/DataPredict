@@ -4,7 +4,7 @@ Hello guys! Today, I will be showing you on how to create a probability-based mo
 
 Currently, you need these to produce the model:
 
-* Logictic regression / One-output-layer neural network model
+* Logictic regression / One-sigmoid-output-layer neural network model
 
 * A player data that is stored in matrix
 
@@ -42,7 +42,7 @@ local itemDataVector = {
 
 ## Constructing Our Model
 
-Before we start training our model, we first need to build our model. We have split this to multiple subsections to make it easy to follow through.
+Before we start training our model, we first need to build our model.
 
 ```lua
 

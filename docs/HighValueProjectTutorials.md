@@ -8,11 +8,7 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
 * [Creating Time-To-Leave Prediction Model](HighValueProjectTutorials/CreatingTimeToLeavePredictionModel.md)
 
-   * Highly exploitable if the player accumulates long session times over many sessions and then suddenly decreases the session times gradually if rewards are involved.
-
 * [Creating Probability-To-Leave Prediction Model](HighValueProjectTutorials/CreatingProbabilityToLeavePredictionModel.md)
-
-   * Highly exploitable if the player accumulates long session times over many sessions and then suddenly decreases the session times gradually if rewards are involved.
 
 * [Creating Left-Too-Early Detection Model](HighValueProjectTutorials/CreatingLeftTooEarlyDetectionModel.md)
 

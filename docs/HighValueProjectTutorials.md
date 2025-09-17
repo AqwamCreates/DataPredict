@@ -84,6 +84,10 @@
 
   * Limited to one target at a time.
 
+## Anti-Cheats
+
+* Creating Anomaly Detection Model
+
 ## AI Players
 
 * Creating Data-Based AI Players

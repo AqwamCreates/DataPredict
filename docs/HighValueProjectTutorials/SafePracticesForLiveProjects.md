@@ -33,8 +33,8 @@ local function filterOutDefectiveData(dataMatrix)
           break
 
       end
-    
-    end
+
+end
 
 local filteredDataMatrix = {}
 

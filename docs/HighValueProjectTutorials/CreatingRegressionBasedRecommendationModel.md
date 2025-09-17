@@ -1,7 +1,5 @@
 # Creating Regression-Based Recommendation Model
 
-# Creating Time-To-Leave Prediction Model
-
 Hello guys! Today, I will be showing you on how to create a retention-based model that could predict when the player will leave.
 
 Currently, you need these to produce the model:
@@ -50,59 +48,6 @@ local initialPlayerDataVector = {
 }
 
 local initialJoinTime = os.time()
-
-```
-
-If you want to add more data instead of relying on the initial data point, you actually can and this will improve the prediction accuracy. But keep in mind that this means you have to store more data. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
-
-```lua
-
-local initialPlayerDataMatrix = {}
-  
-local recordedTimeArray = {}
-  
-local snapshotIndex = 1
-  
-local function snapshotData()
-  
- initialPlayerDataMatrix[snapshotIndex] = {
-
-    1,
-    numberOfCurrencyAmount,
-    numberOfItemsAmount,
-    timePlayedInCurrentSession,
-    timePlayedInAllSessions,
-    healthAmount
-
-  }
-  
-  recordedTimeArray[snapshotIndex] = os.time()
-  
-  snapshotIndex = snapshotIndex + 1
-
-end
-
-```
-
-If you're concerned about that the model may produce wrong result heavily upon first start up, then you can use a randomized dataset to heavily skew the prediction to very high time-to-leave value. Then use this randomized dataset to pretrain the model before doing any real-time training and prediction. Below, we will show you how it is done.
-
-```lua
-
-local numberOfData = 100
-
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias")
-
-local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, 9999) -- Making sure that at all values, it predicts very high time-to-leave value. Do not use math.huge here.
-
-```
-
-However, this require setting the model's parameters to these settings temporarily so that it can be biased to very high time-to-leave value at start up as shown below.
-
-```lua
-
-LinearRegression.maximumNumberOfIterations = 100
-
-LinearRegression.learningRate = 0.3
 
 ```
 

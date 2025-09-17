@@ -6,7 +6,7 @@
 
 * The content of this page and its links is licensed under [Terms And Conditions](TermsAndConditions.md).
 
-  * Therefore, making derivatives of this page and its links is explicitly not allowed.
+  * Therefore, making copies or derivatives of this page and its links are not allowed.
 
 ## Retention Systems
 

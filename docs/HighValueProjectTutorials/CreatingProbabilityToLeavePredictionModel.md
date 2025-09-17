@@ -18,7 +18,7 @@ local DataPredict = require(DataPredict)
 
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local Classification = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local LeavePredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```
 
@@ -98,9 +98,9 @@ However, this require setting the model's parameters to these settings temporari
 
 ```lua
 
-LogisticRegression.maximumNumberOfIterations = 100
+LeavePredictionModel.maximumNumberOfIterations = 100
 
-LogisticRegression.learningRate = 0.3
+LeavePredictionModel.learningRate = 0.3
 
 ```
 
@@ -150,7 +150,7 @@ local wrappedProbabilityToLeave = {
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = Classification:train(playerDataVector, wrappedProbabilityToLeave)
+local costArray = LeavePredictionModel:train(playerDataVector, wrappedProbabilityToLeave)
 
 ```
 
@@ -160,7 +160,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = Classification:getModelParameters()
+local ModelParameters = LeavePredictionModel:getModelParameters()
 
 ```
 
@@ -190,7 +190,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-Classification:setModelParameters(ModelParameters)
+LeavePredictionModel:setModelParameters(ModelParameters)
 
 ```
 

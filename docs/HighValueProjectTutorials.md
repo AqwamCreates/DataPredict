@@ -34,9 +34,9 @@
 
 * Creating Similarity-Based Recommendation Model
 
-* Creating Reward-Maximization-Based Regression Recommendation Model
+* [Creating Reward-Maximization-Based Regression Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedRegressionRecommendationModel.md)
 
-  * Limited to one recommendation.
+  * Limited to one recommendation at a time.
 
   * Have higher monetization potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
 

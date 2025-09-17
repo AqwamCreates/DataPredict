@@ -74,13 +74,13 @@ local hasPlayerPurchasedTheItemVector -- We will reserve this for now for readib
 
 local currentPlayerData = getPlayerDataVector()
 
-local function insertItemBasedOnProbability(itemName, probability, itemDataVector)
+local function insertItemBasedOnProbability(itemName, itemProbability, itemDataVector)
 
     if (#itemToShowDictionary == 0) then
 
         table.insert(itemArray, itemName)
 
-        table.insert(itemToShowProbabilityArray, probability)
+        table.insert(itemToShowProbabilityArray, itemProbability)
 
          table.insert(itemDataMatrix, itemDataVector[1])
 
@@ -90,7 +90,7 @@ local function insertItemBasedOnProbability(itemName, probability, itemDataVecto
 
     for i, itemToShowProbability in ipairs(itemToShowProbabilityArray)
 
-        if (itemToShowProbability >= itemToShowProbability) then continue end end
+        if (itemProbability <= itemToShowProbability) then continue end end
 
         table.insert(itemArray, i, itemName)
 

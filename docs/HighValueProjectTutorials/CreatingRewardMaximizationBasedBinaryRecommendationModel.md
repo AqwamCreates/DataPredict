@@ -96,31 +96,29 @@ The code shown below demonstrate on how to generate the recommendation by the ti
 
 ```lua
 
-local itemToShowArray = {}
+local function showRecommendations(itemName, itemDataVector, reward, action)
 
-local itemDataMatrix = {}
+    local currentPlayerData = getPlayerDataVector()
 
-local hasPlayerPurchasedTheItemVector -- We will reserve this for now for readability.
+    local playerItemDataPairVector = TensorL:concatenate(playerDataVector, itemDataVector, reward)
 
-local currentPlayerData = getPlayerDataVector()
+     -- Forces the model's action to the selected one to make sure the model updates properly.
 
-for itemName, itemDataVector in pairs(itemDictionary)
+    if (not action) then RecommendationModel.previousAction = action end
 
-    local playerItemDataPairVector = TensorL:concatenate(playerDataVector, itemDataVector, 2)
+    local action = RecommendationModel:reinforce(playerItemDataPairVector, 0)
 
-    local action = RecommendationModel:reinforce(playerItemDataPairVector)
+    if (action == "Recommend") then
 
-    if (action == "DoNotRecommend") then continue end
+        recommendItem(itemName)
 
-    table.insert(itemToShowArray, itemName)
+    else
 
-    table.insert(itemDataMatrix, itemDataVector[1])
+        recommendARandomItemThatIsNot(itemName)
+
+    end
 
 end
-
--- We need this to train our model even if the player does not perform the purchase. Every data counts!
-
-hasPlayerPurchasedTheItemVector = TensorL:createTensor({#itemToShowDictionary, 1}) 
 
 ```
 
@@ -128,13 +126,11 @@ hasPlayerPurchasedTheItemVector = TensorL:createTensor({#itemToShowDictionary, 1
 
 ```lua
 
-local function onItemPurchase(itemName)
+local function onItemPurchase(itemName, itemDataVector)
 
-    local index = table.find(sortedItemToShowArray, itemName)
+     local reward = 50
 
-    if (not index) then return end
-
-    hasPlayerPurchasedTheItemVector[index][1] = 1
+    showRecommendations(itemName, itemDataVector, reward, "Recommend")
 
 end
 
@@ -144,23 +140,17 @@ end
 
 ```lua
 
-local function onShopGUIClose()
+local function onShopGUIClose(lastShownItemName, lastItemDataVector)
 
-    local costArray = RecommendationModel:train(itemDataMatrix, hasPlayerPurchasedTheItemVector)
+    local reward = -50
+
+   showRecommendations(lastShownItemName, lastItemDataVector, reward, "DoNotRecommend")
 
 end
 
 ```
 
 This should give you a model that predicts a rough estimate on what they will likely to buy.
-
-Then, you must save the model parameters to Roblox's DataStores for future use.
-
-```lua
-
-local ModelParameters = RecommendationModel:getModelParameters()
-
-```
 
 ## Model Parameters Loading 
 

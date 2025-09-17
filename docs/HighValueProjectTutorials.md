@@ -4,7 +4,7 @@
 
 * Before you engage in integrating machine, deep and reinforcement learning models into live projects, I recommend you to have a look at safe practices [here](HighValueProjectTutorials/SafePracticesForLiveProjects.md).
 
-* The content of this page and its links is licensed under the DataPredict™ library's [Terms And Conditions](TermsAndConditions.md).
+* The content of this page and its links are licensed under the DataPredict™ library's [Terms And Conditions](TermsAndConditions.md).
 
   * Therefore, creating or redistributing copies or derivatives of this page and its links' contents are not allowed.
 

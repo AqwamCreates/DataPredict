@@ -82,7 +82,7 @@ for itemName, itemDataVector in pairs(itemDictionary)
 
     local playerItemDataPairVector = TensorL:concatenate(playerDataVector, itemDataVector, 2)
 
-    local generatedLabelVector = RecommendationModel:predict(playerItemDataPairVector, true)
+    local generatedLabelVector = RecommendationModel:predict(playerItemDataPairVector)
 
     local label = generatedLabelVector[1][1]
 

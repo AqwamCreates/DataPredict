@@ -14,7 +14,7 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
    * Inverse of probability-to-leave model by detecting outliers.
 
-   * Highly exploitable if the player accumulates long session times over many sessions and then suddenly gradually decreases the session time to earn rewards.
+   * Highly exploitable if the player accumulates long session times over many sessions and then suddenly decreases the session times gradually if rewards are involved.
 
 * [Creating Play Time Maximization Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationModel.md)
 

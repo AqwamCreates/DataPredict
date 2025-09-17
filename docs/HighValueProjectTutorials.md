@@ -6,7 +6,7 @@
 
 * The content of this page and its links is licensed under the DataPredict™ library's [Terms And Conditions](TermsAndConditions.md).
 
-  * Therefore, making copies or derivatives of this page and its links' contents are not allowed.
+  * Therefore, creating or redistributing copies or derivatives of this page and its links' contents are not allowed.
 
   * Commercial use is not allowed.
 

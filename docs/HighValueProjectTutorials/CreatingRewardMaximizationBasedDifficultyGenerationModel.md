@@ -172,7 +172,25 @@ local function trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVe
 
     local EnemyHumanoid = spawnEnemy(generatedEnemyMaximumHealth, generatedEnemyMaximumDamage, generatedEnemyCashAmount)
 
+    local isEnemyStillAlive = true
+
     local enemyDeathConnection
+
+    task.defer(function()
+
+        task.wait(60)
+
+        if (not isEnemyStillAlive) then return end
+
+        enemyDeathConnection:Disconnect()
+
+        generatedEnemyDataVector = EnemyDataGenerationModel:reinforce(playerDataVector, -50)
+
+        if (not checkIfPlayerIsInServer(Player)) then return end
+
+        spawnEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVector)
+
+    )
 
     enemyDeathConnection = EnemyHumanoid.Died:Connect(function()
 

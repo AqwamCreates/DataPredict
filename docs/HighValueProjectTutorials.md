@@ -16,7 +16,7 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
   * Have higher play time potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
 
-* Creating Left-Too-Early-Detection Model (I forgot the implementation.)
+* Creating Left-Too-Early-Detection Model (I forgot the implementation, but it is one-class SVM with RBF kernel. The kernel accepts input of -infinity to infinity, but outputs 0 to 1)
 
     * Highly exploitable if the player accumulates long session time over many sessions and then suddenly gradually decreases the session time to earn rewards.
 

@@ -18,11 +18,11 @@
 
 ## Regression Recommendation System
 
-* Creating Similarity-Based Recommendation Model
-
 * [Creating Probability-Based Recommendation Model](HighValueProjectTutorials/CreatingProbabilityBasedRecommendationModel.md)
 
 * Creating Reward-Maximization-Based Regression Recommendation Model
+
+* Creating Similarity-Based Recommendation Model
 
 ## AI Players
 

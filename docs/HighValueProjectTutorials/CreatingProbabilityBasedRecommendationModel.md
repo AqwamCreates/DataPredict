@@ -36,8 +36,6 @@ local itemDataVector = {
     }
 }
 
-local playerItemDataPairVector = TensorL:concatenate(playerDataVector, itemDataVector, 2)
-
 ```
 
 ## Constructing Our Model
@@ -50,11 +48,49 @@ local DataPredict = require(DataPredict)
 
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local Regression = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local RecommendationModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```
 
-## Upon Player Leave
+## Upon Player Opening Shop GUI
+
+The code shown below demonstrate on how to generate the recommendation by the time the player opens the GUI.
+
+```
+
+local itemArray = {}
+
+local itemToShowProbabilityArray = {}
+
+local currentPlayerData = getPlayerDataVector()
+
+local function insertItemBasedOnProbability(itemName, probability)
+
+    if (#itemToShowDictionary == 0) then
+
+        table.insert(itemArray, itemName)
+
+        table.insert(itemToShowProbabilityArray, probability)
+
+        return
+
+    end
+
+end
+
+for itemName, itemDataVector in pairs(itemDictionary)
+
+    local playerItemDataPairVector = TensorL:concatenate(playerDataVector, itemDataVector, 2)
+
+    local probabilityVector = RecommendationModel:predict(playerItemDataPairVector)
+
+    local probabilityValue = probabilityVector[1][1]
+
+    insertItemBasedOnProbability(itemName, probability)
+
+end
+
+```
 
 By the time the player leaves, it is time for us to train the model. But first, we need to calculate the difference.
 
@@ -68,7 +104,7 @@ local wrappedTimeToLeave = {
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = Regression:train(initialPlayerDataVector, wrappedTimeToLeave)
+local costArray = RecommendationModel:train(initialPlayerDataVector, wrappedTimeToLeave)
 
 ```
 
@@ -78,7 +114,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = Regression:getModelParameters()
+local ModelParameters = RecommendationModel:getModelParameters()
 
 ```
 
@@ -108,7 +144,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-Regression:setModelParameters(ModelParameters)
+RecommendationModel:setModelParameters(ModelParameters)
 
 ```
 
@@ -119,16 +155,6 @@ Under this case, the procedure is the same to case 2 except that you need to:
 * Load model parameters upon server start.
 
 * Perform auto-save with the optional ability of merging with saved model parameters from other servers.
-
-## Prediction Handling
-
-In other to produce predictions from our model, we must perform this operation:
-
-```lua
-
-local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
-
-local predictedLabelVector = Regression:predict(currentPlayerDataVector)
 
 ```
 

@@ -68,7 +68,9 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
   * Might be the most terrible idea out of this list. However, I will not stop game designers from making their games look "smart".
 
-    * You're basically doing a lot of exploration before it can hit a single player. Once that particular location is marked as "getting reward", it will might overfocus on it.
+    * The model will likely do a lot of exploration before it can hit a single player. Once that particular location is marked as "reward location", the model will might overfocus on it.
+
+    * The upside is that if your map has terrains and structures, the model may will learn to corner and "trap" players to certain locations.
 
 ## AI Players
 

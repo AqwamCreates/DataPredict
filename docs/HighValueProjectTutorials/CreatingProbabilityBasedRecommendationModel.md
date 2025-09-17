@@ -90,7 +90,7 @@ local function insertItemBasedOnProbability(itemName, playerItemDataPairVector, 
 
     for i, itemToShowProbability in ipairs(sortedItemToShowProbabilityArray)
 
-        if (itemProbability <= itemToShowProbability) then continue end end
+        if (itemProbability <= itemToShowProbability) then continue end
 
         table.insert(sortedItemToShowArray, i, itemName)
 

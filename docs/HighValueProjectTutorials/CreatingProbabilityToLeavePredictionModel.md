@@ -210,7 +210,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
-local predictedLabelVector = Classification:predict(currentPlayerDataVector)
+local predictedLabelVector = LeavePredictionModel:predict(currentPlayerDataVector)
 
 ```
 

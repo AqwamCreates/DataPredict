@@ -10,15 +10,15 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
 * [Creating Probability-To-Leave Prediction Model](HighValueProjectTutorials/CreatingProbabilityToLeavePredictionModel.md)
 
+* [Creating Left-Too-Early-Detection Model](HighValueProjectTutorials/CreatingLeftTooEarlyDetectionModel.md)
+
+    * Highly exploitable if the player accumulates long session time over many sessions and then suddenly gradually decreases the session time to earn rewards.
+
 * [Creating Play Time Maximization Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationModel.md)
 
   * The model chooses actions or events that maximizes play time.
 
-  * Have higher play time potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
-
-* [Creating Left-Too-Early-Detection Model](HighValueProjectTutorials/CreatingLeftTooEarlyDetectionModel.md) (Under Construction)
-
-    * Highly exploitable if the player accumulates long session time over many sessions and then suddenly gradually decreases the session time to earn rewards.
+  * Have higher play time potential due to its ability to exploit and explore than the other three methods, but tend to be risky to use.
 
 ## Regression Recommendation System
 

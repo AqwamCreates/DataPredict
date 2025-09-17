@@ -34,7 +34,6 @@ local itemDataVector = {
     {
         costAmount,
         rarityValue,
-        durationBetweenFirstServerJoinAndThisItemPurchase,
     }
 }
 
@@ -54,7 +53,7 @@ local RecommendationModel = DataPredict.Models.NeuralNetwork.new({maximumNumberO
 
 RecommendationModel:setClassesList({"Recommend", "DoNotRecommend"})
 
-RecommendationModel:addLayer(6, true) -- Six features and one bias.
+RecommendationModel:addLayer(8, true) -- Six player data features, two item data features and one bias.
 
 RecommendationModel:addLayer(#ClassesList, false) -- No bias.
 

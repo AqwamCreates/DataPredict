@@ -10,17 +10,17 @@
 
   * The model chooses actions or events that maximizes play time.
 
-  * Riskier than the other two methods, but allows higher play time potential due to its ability to exploit and explore.
+  * Have higher play time potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
 
 ## Regression Recommendation System
 
 * [Creating Probability-Based Recommendation Model](HighValueProjectTutorials/CreatingProbabilityBasedRecommendationModel.md)
 
+* Creating Similarity-Based Recommendation Model
+
 * Creating Reward-Maximization-Based Regression Recommendation Model
 
-  * Riskier than probability-based model, but allows higher monetization potential due to its ability to exploit and explore.
-
-* Creating Similarity-Based Recommendation Model
+  * Have higher monetization potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
 
 ## Binary Recommendation Systems
 
@@ -64,7 +64,7 @@
 
   * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "this enemy is not interesting to the player" or "this enemy is too hard for the player to kill".
 
-  * Riskier than the other two methods, but allows higher play time potential due to its ability to exploit and explore.
+  * Have higher play time potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
 
 ## Quality Assurance
 

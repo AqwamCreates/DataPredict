@@ -200,6 +200,6 @@ Under this case, the procedure is the same to case 2 except that you need to:
 
 ## Conclusion
 
-This tutorial showed you on how to create item recommendation model that allows you to increase the likelihood the player will purchase the item. All you need is some data, some models and a bit of practice to get this right!
+This tutorial showed you on how to create item recommendation model that allows you to increase the likelihood the player will purchase an item. All you need is some data, some models and a bit of practice to get this right!
 
 That's all for today and see you later!

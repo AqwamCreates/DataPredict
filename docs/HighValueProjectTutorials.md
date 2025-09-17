@@ -20,7 +20,7 @@
 
 ## Binary Recommendation Systems
 
-* Creating Classification-Based Recommendation Model
+* [Creating Classification-Based Recommendation Model](HighValueProjectTutorials/CreatingClassificationBasedRecommendationModel.md)
 
 * Creating Reward-Maximization-Based Binary Recommendation Model
 

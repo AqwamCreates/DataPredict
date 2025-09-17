@@ -54,25 +54,35 @@ local RecommendationModel = DataPredict.Models.LogisticRegression.new({maximumNu
 
 ```
 
-## Upon Player Opening Shop GUI
+## Prediction And Training
+
+In here, let's assume that we have a shop GUI that the player can interact with. Since the prediction and training are closely related in terms of code, I will be splitting the process in different subsections.
+
+### Upon Player Opening Shop GUI
 
 The code shown below demonstrate on how to generate the recommendation by the time the player opens the GUI.
 
 ```lua
 
-local itemArray = {}
+local sortedItemToShowArray = {}
 
-local itemToShowProbabilityArray = {}
+local sortedItemToShowProbabilityArray = {}
+
+local itemDataMatrix = {}
+
+local hasPlayerPurchasedTheItemVector -- We will reserve this for now for readibility
 
 local currentPlayerData = getPlayerDataVector()
 
-local function insertItemBasedOnProbability(itemName, probability)
+local function insertItemBasedOnProbability(itemName, probability, itemDataVector)
 
     if (#itemToShowDictionary == 0) then
 
         table.insert(itemArray, itemName)
 
         table.insert(itemToShowProbabilityArray, probability)
+
+         table.insert(itemDataMatrix, itemDataVector[1])
 
         return
 
@@ -85,6 +95,8 @@ local function insertItemBasedOnProbability(itemName, probability)
         table.insert(itemArray, i, itemName)
 
         table.insert(itemToShowProbabilityArray, i, probability)
+
+          table.insert(itemDataMatrix, 1, itemDataVector[1])
 
         break
 
@@ -104,11 +116,37 @@ for itemName, itemDataVector in pairs(itemDictionary)
 
 end
 
+-- We need this to train our model even if the player does not perform the purchase. Every data counts!
+
+hasPlayerPurchasedTheItemVector = TensorL:createTensor({#itemToShowDictionary, 1}) 
+
 ```
 
-## Upon Player Closing Shop GUI
+### UponItemPurchase
+
+```
+
+local function onItemPurchase(itemName)
+
+    local index = table.find(sortedItemToShowArray, itemName)
+
+    if (not index) then return end
+
+    hasPlayerPurchasedTheItemVector[index][1] = 1
+
+end
+
+```
+
+### Upon Player Closing Shop GUI
 
 ```lua
+
+local function onShopGUIClose()
+
+    RecommendationModel:train(itemDataMatrix, hasPlayerPurchasedTheItemVector)
+
+end
 
 ```
 

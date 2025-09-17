@@ -18,6 +18,8 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
 * Creating Left-To-Early-Detection (I forgot the implementation.)
 
+    * THighly exploitable if the player accumulates long session time over many sessions and then suddenly gradually decreases the session time to earn rewards.
+
 ## Regression Recommendation System
 
 * [Creating Probability-Based Recommendation Model](HighValueProjectTutorials/CreatingProbabilityBasedRecommendationModel.md)

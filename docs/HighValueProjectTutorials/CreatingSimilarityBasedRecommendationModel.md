@@ -4,7 +4,7 @@ Hello guys! Today, I will be showing you on how to create a similarity-based mod
 
 Currently, you need these to produce the model:
 
-* Logictic regression / One-sigmoid-output-layer neural network model
+* K-Nearest Neighbours Regressors
 
 * A player data that is stored in matrix
 
@@ -50,7 +50,7 @@ local DataPredict = require(DataPredict)
 
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local RecommendationModel = DataPredict.Models.KNearestNeighboursRegressor.new({useWeightedDistance = true})
+local RecommendationModel = DataPredict.Models.KNearestNeighboursRegressor.new({useWeightedDistance = true, distanceFunction = "CosineDistance"})
 
 ```
 

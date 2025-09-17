@@ -68,7 +68,7 @@ local sortedItemToShowArray = {}
 
 local sortedItemToShowProbabilityArray = {}
 
-local itemDataMatrix = {}
+local sortedItemDataMatrix = {}
 
 local hasPlayerPurchasedTheItemVector -- We will reserve this for now for readability.
 
@@ -78,25 +78,25 @@ local function insertItemBasedOnProbability(itemName, playerItemDataPairVector, 
 
     if (#itemToShowDictionary == 0) then
 
-        table.insert(itemArray, itemName)
+        table.insert(sortedItemToShowArray, itemName)
 
-        table.insert(itemToShowProbabilityArray, itemProbability)
+        table.insert(sortedItemToShowProbabilityArray, itemProbability)
 
-        table.insert(itemDataMatrix, playerItemDataPairVector[i])
+        table.insert(sortedItemDataMatrix, playerItemDataPairVector[1])
 
         return
 
     end
 
-    for i, itemToShowProbability in ipairs(itemToShowProbabilityArray)
+    for i, itemToShowProbability in ipairs(sortedItemToShowProbabilityArray)
 
         if (itemProbability <= itemToShowProbability) then continue end end
 
-        table.insert(itemArray, i, itemName)
+        table.insert(sortedItemToShowArray, i, itemName)
 
         table.insert(itemToShowProbabilityArray, i, probability)
 
-        table.insert(itemDataMatrix, 1, itemDataVector[1])
+        table.insert(sortedItemDataMatrix, 1, itemDataVector[1])
 
         break
 

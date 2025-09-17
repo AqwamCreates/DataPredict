@@ -2,13 +2,13 @@
 
 ## Retention Systems
 
-* [Creating Time-To-Leave Prediction Model](HighValueProjectTutorials/CreatingTimeToLeavePredictionModel.md)
-
-* [Creating Probability-To-Leave Prediction Model](HighValueProjectTutorials/CreatingProbabilityToLeavePredictionModel.md)
-
 * [Creating Play Time Maximization Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationModel.md)
 
   * The model chooses actions or events that maximizes play time.
+
+* [Creating Time-To-Leave Prediction Model](HighValueProjectTutorials/CreatingTimeToLeavePredictionModel.md)
+
+* [Creating Probability-To-Leave Prediction Model](HighValueProjectTutorials/CreatingProbabilityToLeavePredictionModel.md)
 
 ## Regression Recommendation System
 

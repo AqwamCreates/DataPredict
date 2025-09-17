@@ -88,15 +88,15 @@ local function insertItemBasedOnSimilarityScore(itemName, playerItemDataPairVect
 
     end
 
-    for i, itemToShowProbability in ipairs(itemToShowProbabilityArray)
+    for i, sortedItemToShowSimilarityScore in ipairs(sortedItemToShowSimilarityScoreArray)
 
-        if (itemProbability <= itemToShowProbability) then continue end end
+        if (itemSimilarityScore <= itemToShowSimilarityScore) then continue end end
 
         table.insert(itemArray, i, itemName)
 
         table.insert(sortedItemToShowSimilarityScoreArray, i, probability)
 
-          table.insert(itemDataMatrix, 1, playerItemDataPairVector[i])
+        table.insert(itemDataMatrix, 1, playerItemDataPairVector[i])
 
         break
 

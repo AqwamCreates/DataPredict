@@ -190,7 +190,7 @@ local function trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVe
 
         spawnEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVector)
 
-    )
+    end)
 
     enemyDeathConnection = EnemyHumanoid.Died:Connect(function()
 

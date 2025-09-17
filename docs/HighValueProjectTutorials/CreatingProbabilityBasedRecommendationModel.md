@@ -34,7 +34,6 @@ local itemDataVector = {
     {
         costAmount,
         rarityValue,
-        durationBetweenFirstServerJoinAndThisItemPurchase,
     }
 }
 

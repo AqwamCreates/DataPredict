@@ -8,7 +8,7 @@ Currently, you need these to produce the model:
 
 * A player data that is stored in matrix
 
-## Designing Our Feature Vector And Classes List
+## Designing Our Feature Vector
 
 Before we start creating our model, we first need to visualize on how we will design our data to increase the likelihood of players purchasing an item.
 
@@ -29,13 +29,14 @@ local playerDataVector = {
 }
 
 local itemDataVector = {
-
     {
         costAmount,
         rarityValue,
         durationBetweenFirstServerJoinAndThisItemPurchase,
     }
-} 
+}
+
+local playerItemDataPairVector = TensorL:concatenate(playerDataVector, itemDataVector, 2)
 
 ```
 

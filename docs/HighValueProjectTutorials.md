@@ -6,7 +6,7 @@
 
 * The content of this page and its links is licensed under [Terms And Conditions](TermsAndConditions.md).
 
-  * Therefore, making copies or derivatives of this page and its links are not allowed.
+  * Therefore, making copies or derivatives of this page and its links' contents are not allowed.
 
   * Commercial use is not allowed.
 

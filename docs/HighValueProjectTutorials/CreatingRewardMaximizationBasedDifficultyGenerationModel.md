@@ -176,9 +176,7 @@ local function trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVe
 
     local enemyDeathConnection
 
-    task.defer(function()
-
-        task.wait(60)
+    task.delay(60, function()
 
         if (not isEnemyStillAlive) then return end
 

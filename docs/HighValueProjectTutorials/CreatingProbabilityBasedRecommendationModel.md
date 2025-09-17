@@ -108,7 +108,7 @@ for itemName, itemDataVector in pairs(itemDictionary)
 
     local playerItemDataPairVector = TensorL:concatenate(playerDataVector, itemDataVector, 2)
 
-    local probabilityVector = RecommendationModel:predict(playerItemDataPairVector)
+    local probabilityVector = RecommendationModel:predict(playerItemDataPairVector, true)
 
     local probabilityValue = probabilityVector[1][1]
 

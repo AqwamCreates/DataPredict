@@ -38,6 +38,12 @@
  
   * May outcompete real players.
 
+* Creating Reaction Prediction AI Players
+
+  * Same as data-based AI players.
+ 
+  * The only difference is that you give counter attacks to players' potential attacks.
+
 ## Adaptive Difficulty Systems
 
 * [Creating Regression-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingRegressionBasedEnemyDataGenerationModel.md)
@@ -62,7 +68,7 @@
 
 * Creating Curiosity-Based AI Bug Hunter
 
-  * The AI will maximize actions that allows it to explore the game. 
+  * The AI will maximize actions that allows it to explore the game.
 
 ## Targeting Systems
 

@@ -56,7 +56,7 @@ local RecommendationModel = DataPredict.Models.LogisticRegression.new({maximumNu
 
 The code shown below demonstrate on how to generate the recommendation by the time the player opens the GUI.
 
-```
+```lua
 
 local itemArray = {}
 
@@ -76,6 +76,18 @@ local function insertItemBasedOnProbability(itemName, probability)
 
     end
 
+    for i, itemToShowProbability in ipairs(itemToShowProbabilityArray)
+
+        if (itemToShowProbability >= itemToShowProbability) then cpntinue end end
+
+        table.insert(itemArray, i, itemName)
+
+        table.insert(itemToShowProbabilityArray, i, probability)
+
+        break
+
+    end
+
 end
 
 for itemName, itemDataVector in pairs(itemDictionary)
@@ -92,23 +104,13 @@ end
 
 ```
 
-By the time the player leaves, it is time for us to train the model. But first, we need to calculate the difference.
+By the time the player leave the shop GUI, we will train our model.
 
 ```lua
 
-local timeToLeave = os.time() - initialJoinTime
-
-local wrappedTimeToLeave = {
-
-    {timeToLeave}
-
-} -- Need to wrap this as our models can only accept matrices.
-
-local costArray = RecommendationModel:train(initialPlayerDataVector, wrappedTimeToLeave)
-
 ```
 
-This should give you a model that predicts a rough estimate when they'll leave.
+This should give you a model that predicts a rough estimate on what they will likely to buy.
 
 Then, you must save the model parameters to Roblox's DataStores for future use.
 

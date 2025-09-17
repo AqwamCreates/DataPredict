@@ -90,7 +90,7 @@ local function insertItemBasedOnSimilarityScore(itemName, playerItemDataPairVect
 
     for i, sortedItemToShowSimilarityScore in ipairs(sortedItemToShowSimilarityScoreArray)
 
-        if (itemSimilarityScore <= itemToShowSimilarityScore) then continue end end
+        if (itemSimilarityScore <= itemToShowSimilarityScore) then continue end
 
         table.insert(sortedItemToShowArray, i, itemName)
 

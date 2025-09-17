@@ -20,8 +20,6 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
     * Highly exploitable if the player accumulates long session time over many sessions and then suddenly gradually decreases the session time to earn rewards.
 
-    * The kernel accepts input of -infinity to infinity, but outputs 0 to 1.
-
 ## Regression Recommendation System
 
 * [Creating Probability-Based Recommendation Model](HighValueProjectTutorials/CreatingProbabilityBasedRecommendationModel.md)

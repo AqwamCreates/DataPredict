@@ -246,7 +246,7 @@ We can just do getModel() twice to get our Neural Network model.
 
 --]]
 
-local DeepReinforcementLearningModel =  EnemyDataGenerationModel:getModel()
+local DeepReinforcementLearningModel = EnemyDataGenerationModel:getModel()
 
 local ActorNeuralNetwork = DeepReinforcementLearningModel:getActorModel()
 

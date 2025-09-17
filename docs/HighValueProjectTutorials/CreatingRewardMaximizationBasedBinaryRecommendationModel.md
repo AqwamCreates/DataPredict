@@ -51,7 +51,7 @@ local NeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterat
 
 NeuralNetwork:setClassesList(ClassesList)
 
-NeuralNetwork:addLayer(6, true) -- Six features and one bias.
+NeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
 
 NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
 

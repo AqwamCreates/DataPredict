@@ -56,6 +56,8 @@ Before you engage in implementing machine, deep and reinforcement learning model
  
   * The only difference is that you give counter attacks to players' potential attacks.
 
+  * Best for mixing machine learning with game designers' control.
+
 ## Adaptive Difficulty Systems
 
 * [Creating Regression-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingRegressionBasedEnemyDataGenerationModel.md)

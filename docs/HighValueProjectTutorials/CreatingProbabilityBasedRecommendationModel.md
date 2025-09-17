@@ -144,7 +144,7 @@ end
 
 local function onShopGUIClose()
 
-    RecommendationModel:train(itemDataMatrix, hasPlayerPurchasedTheItemVector)
+    local costArray = RecommendationModel:train(itemDataMatrix, hasPlayerPurchasedTheItemVector)
 
 end
 

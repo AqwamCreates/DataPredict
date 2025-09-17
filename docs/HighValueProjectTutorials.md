@@ -28,7 +28,7 @@
 
   * Have higher play time potential due to its ability to exploit and explore than the other three methods, but tend to be risky to use.
 
-## Regression Recommendation System
+## Regression Recommendation Systems
 
 * [Creating Probability-Based Recommendation Model](HighValueProjectTutorials/CreatingProbabilityBasedRecommendationModel.md)
 

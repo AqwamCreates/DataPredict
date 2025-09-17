@@ -16,7 +16,7 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
   * Have higher play time potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
 
-* [Creating Left-Too-Early-Detection Model](CreatingLeftTooEarlyDetectionModel.md) (Under Construction)
+* [Creating Left-Too-Early-Detection Model](HighValueProjectTutorials/CreatingLeftTooEarlyDetectionModel.md) (Under Construction)
 
     * Highly exploitable if the player accumulates long session time over many sessions and then suddenly gradually decreases the session time to earn rewards.
 

@@ -64,9 +64,7 @@ The code shown below demonstrate on how to generate the recommendation by the ti
 
 ```lua
 
-local sortedItemToShowArray = {}
-
-local sortedItemToShowProbabilityArray = {}
+local itemToShowArray = {}
 
 local itemDataMatrix = {}
 
@@ -74,45 +72,13 @@ local hasPlayerPurchasedTheItemVector -- We will reserve this for now for readib
 
 local currentPlayerData = getPlayerDataVector()
 
-local function insertItemBasedOnProbability(itemName, itemProbability, itemDataVector)
-
-    if (#itemToShowDictionary == 0) then
-
-        table.insert(itemArray, itemName)
-
-        table.insert(itemToShowProbabilityArray, itemProbability)
-
-         table.insert(itemDataMatrix, itemDataVector[1])
-
-        return
-
-    end
-
-    for i, itemToShowProbability in ipairs(itemToShowProbabilityArray)
-
-        if (itemProbability <= itemToShowProbability) then continue end end
-
-        table.insert(itemArray, i, itemName)
-
-        table.insert(itemToShowProbabilityArray, i, probability)
-
-          table.insert(itemDataMatrix, 1, itemDataVector[1])
-
-        break
-
-    end
-
-end
-
 for itemName, itemDataVector in pairs(itemDictionary)
 
     local playerItemDataPairVector = TensorL:concatenate(playerDataVector, itemDataVector, 2)
 
-    local probabilityVector = RecommendationModel:predict(playerItemDataPairVector)
+    local generatedLabelVector = RecommendationModel:predict(playerItemDataPairVector, true)
 
-    local probabilityValue = probabilityVector[1][1]
-
-    insertItemBasedOnProbability(itemName, probability)
+    local label = generatedLabelVector[1][1]
 
 end
 

@@ -40,7 +40,7 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
 * [Creating Reward-Maximization-Based Binary Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedBinaryRecommendationModel.md)
 
-  * Limited to one recommendation.
+  * Limited to one recommendation at a time.
 
   * Have higher monetization potential due to its ability to exploit and explore than the classification-based model, but tend to be risky to use.
 

@@ -40,6 +40,24 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
   * Have higher monetization potential due to its ability to exploit and explore than the classification-based model, but tend to be risky to use.
 
+## Adaptive Difficulty Systems
+
+* [Creating Regression-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingRegressionBasedEnemyDataGenerationModel.md)
+
+  * Everytime a player kills an enemy, both player's combat data and enemy's data are used to train the model.
+
+* [Creating Cluster-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingClusterBasedEnemyDataGenerationModel.md)
+
+  * Uses players' combat data to generate the center of enemies' data.
+
+* [Creating Reward-Maximization-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedDifficultyGenerationModel.md)
+
+  * Everytime an enemy is killed, the positive reward tells the model to "make more enemies similar to this". 
+
+  * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "this enemy is not interesting to the player" or "this enemy is too hard for the player to kill".
+
+  * Have higher play time potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
+
 ## AI Players
 
 * Creating Data-Based AI Players
@@ -73,24 +91,6 @@ Before you engage in integrating machine, deep and reinforcement learning models
   * Best for mixing reinforcement learning with game designers' control.
 
   * Breaks mathematical theoretical guarantees due to inteference from game designers' control instead of model's own actions. Therefore, it is risky to use.
-
-## Adaptive Difficulty Systems
-
-* [Creating Regression-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingRegressionBasedEnemyDataGenerationModel.md)
-
-  * Everytime a player kills an enemy, both player's combat data and enemy's data are used to train the model.
-
-* [Creating Cluster-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingClusterBasedEnemyDataGenerationModel.md)
-
-  * Uses players' combat data to generate the center of enemies' data.
-
-* [Creating Reward-Maximization-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedDifficultyGenerationModel.md)
-
-  * Everytime an enemy is killed, the positive reward tells the model to "make more enemies similar to this". 
-
-  * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "this enemy is not interesting to the player" or "this enemy is too hard for the player to kill".
-
-  * Have higher play time potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
 
 ## Quality Assurance
 

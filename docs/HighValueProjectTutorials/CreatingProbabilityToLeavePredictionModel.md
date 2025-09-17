@@ -36,7 +36,7 @@ Below, we will show you how to create this:
 
 -- We're just adding 1 here to add "bias".
 
-local initialPlayerDataVector = {
+local playerDataVector = {
     {
         1,
         numberOfCurrencyAmount,
@@ -55,7 +55,7 @@ If you want to add more data instead of relying on the initial data point, you a
 
 ```lua
 
-local initialPlayerDataMatrix = {}
+local playerDataMatrix = {}
   
 local recordedTimeArray = {}
   
@@ -63,7 +63,7 @@ local snapshotIndex = 1
   
 local function snapshotData()
   
- initialPlayerDataMatrix[snapshotIndex] = {
+ playerDataMatrix[snapshotIndex] = {
 
     1,
     numberOfCurrencyAmount,
@@ -150,7 +150,7 @@ local wrappedProbabilityToLeave = {
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = Classification:train(initialPlayerDataVector, wrappedProbabilityToLeave)
+local costArray = Classification:train(playerDataVector, wrappedProbabilityToLeave)
 
 ```
 

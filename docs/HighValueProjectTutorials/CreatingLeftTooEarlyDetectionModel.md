@@ -220,15 +220,15 @@ Once you receive the predicted label vector, you can grab the pure number output
 
 ```lua
 
-local timeToLeavePrediction = predictedLabelVector[1][1]
+local leftToEarlyProbability = (1 - predictedLabelVector[1][1])
 
 ```
 
-We can do this for every 10 seconds and use this to extend the players' playtime by doing something like this:
+So for the current session, you can determine what to do for the next session.
 
 ```lua
 
-if (probabilityToLeavePrediction >= 0.97) then -- Can be changed instead of less than 1 minute (or 60 seconds).
+if (leftToEarlyProbability >= 0.97) then -- Can be changed instead of less than 1 minute (or 60 seconds).
 
 --- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
 

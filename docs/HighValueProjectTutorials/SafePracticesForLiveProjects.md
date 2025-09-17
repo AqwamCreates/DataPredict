@@ -62,10 +62,10 @@ while true do
 
   -- If the final cost value is not any of them, we can safely break out from this loop
 
-    if (checkIfIsAcceptableValue(finalCostValue)) then continue end
+    if (checkIfIsAcceptableValue(finalCostValue)) then
 
         canUseModel = true
-
+    
         break
 
     end

@@ -228,9 +228,9 @@ So for the current session, you can determine what to do for the next session.
 
 ```lua
 
-if (leftToEarlyProbability >= 0.97) then -- Can be changed instead of less than 1 minute (or 60 seconds).
+if (leftToEarlyProbability >= 0.97) then -- Can be changed instead of 0.97.
 
---- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
+--- Do a logic here to extend the play time for the next session. For example, bonus currency multiplier duration or random event.
 
 end
 

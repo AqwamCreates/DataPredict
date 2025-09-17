@@ -1,12 +1,14 @@
 # Creating Probability-Based Recommendation Model
 
-Hello guys! Today, I will be showing you on how to create a retention-based model that could predict when the player will leave.
+Hello guys! Today, I will be showing you on how to create a probability-based model that could predict the likelihood that the player will buy the item.
 
 Currently, you need these to produce the model:
 
-* Any regression model
+* Logictic regression model
 
 * A player data that is stored in matrix
+
+* An item data that is stored in matrix
 
 ## Designing Our Feature Vector
 

@@ -74,7 +74,7 @@ local hasPlayerPurchasedTheItemVector -- We will reserve this for now for readab
 
 local currentPlayerData = getPlayerDataVector()
 
-local function insertItemBasedOnSimilarityScore(itemName, itemDataVector, itemSimilarityScore)
+local function insertItemBasedOnSimilarityScore(itemName, playerItemDataPairVector, itemSimilarityScore)
 
     if (#itemToShowDictionary == 0) then
 
@@ -96,7 +96,7 @@ local function insertItemBasedOnSimilarityScore(itemName, itemDataVector, itemSi
 
         table.insert(sortedItemToShowSimilarityScoreArray, i, probability)
 
-          table.insert(itemDataMatrix, 1, itemDataVector[1])
+          table.insert(itemDataMatrix, 1, playerItemDataPairVector[i])
 
         break
 
@@ -112,7 +112,7 @@ for itemName, itemDataVector in pairs(itemDictionary)
 
     local probabilityValue = probabilityVector[1][1]
 
-    insertItemBasedOnProbability(itemName, itemDataVector, probability)
+    insertItemBasedOnProbability(itemName, playerItemDataPairVector, probability)
 
 end
 

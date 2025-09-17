@@ -68,7 +68,7 @@ while true do
 
     break
 
-end
+    end
 
   -- Otherwise, restore immediately.
 

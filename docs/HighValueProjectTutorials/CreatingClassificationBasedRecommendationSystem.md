@@ -4,7 +4,7 @@ Hello guys! Today, I will be showing you on how to create a probability-based mo
 
 Currently, you need these to produce the model:
 
-* Logictic regression / One-sigmoid-output-layer neural network model
+* A neural network model
 
 * A player data that is stored in matrix
 
@@ -52,6 +52,8 @@ local DataPredict = require(DataPredict)
 
 local RecommendationModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
+RecommendationModel:setClassesList({"Recommend", "DoNotRecommend"})
+
 ```
 
 ## Prediction And Training
@@ -79,6 +81,12 @@ for itemName, itemDataVector in pairs(itemDictionary)
     local generatedLabelVector = RecommendationModel:predict(playerItemDataPairVector, true)
 
     local label = generatedLabelVector[1][1]
+
+    if (label == "DoNotRecommend" then continue end
+
+    table.insert(itemToShowArray, itemName)
+
+    table.insert(itemDataMatrix, itemDataVector[1])
 
 end
 

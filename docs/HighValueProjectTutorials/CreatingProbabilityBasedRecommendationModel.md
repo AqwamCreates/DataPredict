@@ -82,7 +82,7 @@ local function insertItemBasedOnProbability(itemName, itemProbability, itemDataV
 
         table.insert(itemToShowProbabilityArray, itemProbability)
 
-         table.insert(itemDataMatrix, itemDataVector[1])
+        table.insert(itemDataMatrix, itemDataVector[1])
 
         return
 

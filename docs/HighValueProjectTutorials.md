@@ -36,7 +36,7 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
 * [Creating Classification-Based Recommendation Model](HighValueProjectTutorials/CreatingClassificationBasedRecommendationModel.md)
 
-* [Creating Reward-Maximization-Based Binary Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedBinaryRecommendationModel.md)
+* [Creating Reward-Maximization-Based Binary Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedBinaryRecommendationModel.md) (Unfinished)
 
   * Have higher monetization potential due to its ability to exploit and explore than the classification-based model, but tend to be risky to use.
 

@@ -10,7 +10,7 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
 * [Creating Probability-To-Leave Prediction Model](HighValueProjectTutorials/CreatingProbabilityToLeavePredictionModel.md)
 
-* [Creating Left-Too-Early-Detection Model](HighValueProjectTutorials/CreatingLeftTooEarlyDetectionModel.md)
+* [Creating Left-Too-Early Detection Model](HighValueProjectTutorials/CreatingLeftTooEarlyDetectionModel.md)
 
    * Inverse of probability-to-leave model by detecting outliers.
 

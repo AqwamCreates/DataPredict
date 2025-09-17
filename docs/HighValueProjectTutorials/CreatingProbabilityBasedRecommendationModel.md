@@ -106,7 +106,7 @@ end
 
 ```
 
-By the time the player leave the shop GUI, we will train our model.
+## Upon Player Closing Shop GUI
 
 ```lua
 

@@ -28,7 +28,7 @@
 
 * Creating Reward-Maximization-Based Binary Recommendation Model
 
-  * Have higher monetization potential due to its ability to exploit and explore than the classification-based, but tend to be risky to use.
+  * Have higher monetization potential due to its ability to exploit and explore than the classification-based model, but tend to be risky to use.
 
 ## AI Players
 

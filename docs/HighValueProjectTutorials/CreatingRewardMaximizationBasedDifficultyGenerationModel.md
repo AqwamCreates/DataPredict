@@ -170,7 +170,7 @@ local function trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVe
 
     local generatedEnemyCashAmount = unwrappedGeneratedEnemyDataVector[3]
 
-    local EnemyHumanoid = spawnEnemy(generatedEnemyMaximumHealth, generatedEnemyMaximumDamage, generatedEnemyCashAmount)
+    local Enemy = spawnEnemy(generatedEnemyMaximumHealth, generatedEnemyMaximumDamage, generatedEnemyCashAmount)
 
     local isEnemyStillAlive = true
 
@@ -184,6 +184,8 @@ local function trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVe
 
         enemyDeathConnection:Disconnect()
 
+        Enemy:destroy(0
+
         generatedEnemyDataVector = EnemyDataGenerationModel:reinforce(playerDataVector, -50)
 
         if (not checkIfPlayerIsInServer(Player)) then return end
@@ -192,7 +194,7 @@ local function trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVe
 
     end)
 
-    enemyDeathConnection = EnemyHumanoid.Died:Connect(function()
+    enemyDeathConnection = Enemy.Humanoid.Died:Connect(function()
 
         enemyDeathConnection:Disconnect()
 
@@ -206,7 +208,7 @@ local function trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVe
 
         if (not checkIfPlayerIsInServer(Player)) then return end
 
-        spawnEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVector)
+        trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVector)
 
     end)
 

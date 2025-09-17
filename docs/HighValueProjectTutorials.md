@@ -26,7 +26,7 @@
 
   * The model chooses actions or events that maximizes play time.
 
-  * Have higher play time potential due to its ability to exploit and explore than the other three methods, but tend to be risky to use.
+  * Have higher play time potential due to its ability to exploit and explore than the other three models, but tend to be risky to use.
 
 ## Regression Recommendation Systems
 
@@ -40,7 +40,7 @@
 
   * Limited to one recommendation at a time.
 
-  * Have higher monetization potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
+  * Have higher monetization potential due to its ability to exploit and explore than the other two models, but tend to be risky to use.
 
 ## Binary Recommendation Systems
 
@@ -68,7 +68,7 @@
 
   * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "this enemy is not interesting to the player" or "this enemy is too hard for the player to kill".
 
-  * Have higher play time potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
+  * Have higher play time potential due to its ability to exploit and explore than the other two models, but tend to be risky to use.
 
 ## Targeting Systems
 

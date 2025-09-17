@@ -122,9 +122,9 @@ hasPlayerPurchasedTheItemVector = TensorL:createTensor({#itemToShowDictionary, 1
 
 ```
 
-### UponItemPurchase
+### Upon Item Purchase
 
-```
+```lua
 
 local function onItemPurchase(itemName)
 

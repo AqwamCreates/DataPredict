@@ -70,7 +70,7 @@ local sortedItemToShowProbabilityArray = {}
 
 local itemDataMatrix = {}
 
-local hasPlayerPurchasedTheItemVector -- We will reserve this for now for readibility
+local hasPlayerPurchasedTheItemVector -- We will reserve this for now for readability.
 
 local currentPlayerData = getPlayerDataVector()
 

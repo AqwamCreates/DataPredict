@@ -54,6 +54,10 @@ local RecommendationModel = DataPredict.Models.LogisticRegression.new({maximumNu
 
 RecommendationModel:setClassesList({"Recommend", "DoNotRecommend"})
 
+RecommendationModel:addLayer(6, true) -- Six features and one bias.
+
+RecommendationModel:addLayer(#ClassesList, false) -- No bias.
+
 ```
 
 ## Prediction And Training

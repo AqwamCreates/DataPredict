@@ -30,6 +30,8 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
 * Creating Reward-Maximization-Based Regression Recommendation Model
 
+  * Limited to one recommendation.
+
   * Have higher monetization potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
 
 ## Binary Recommendation Systems
@@ -37,6 +39,8 @@ Before you engage in integrating machine, deep and reinforcement learning models
 * [Creating Classification-Based Recommendation Model](HighValueProjectTutorials/CreatingClassificationBasedRecommendationModel.md)
 
 * [Creating Reward-Maximization-Based Binary Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedBinaryRecommendationModel.md) (Unfinished)
+
+  * Limited to one recommendation.
 
   * Have higher monetization potential due to its ability to exploit and explore than the classification-based model, but tend to be risky to use.
 

@@ -188,7 +188,25 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-local costArray = RecommendationModel:setModelParameters(ModelParameters)
+--[[ 
+
+We first need to get our Neural Network model. If you only kept the quick setup and discarded the rest, don't worry!
+
+We can just do getModel() twice to get our Neural Network model.
+
+--]]
+
+local DeepReinforcementLearningModel = RecommendationModel:getModel()
+
+local NeuralNetwork = DeepReinforcementLearningModel:getModel()
+
+-- Notice that we must get it from the Neural Network model.
+
+ModelParameters = NeuralNetwork:getModelParameters()
+
+-- Notice that we must set it to the Neural Network model too.
+
+NeuralNetwork:setModelParameters(ModelParameters)
 
 ```
 

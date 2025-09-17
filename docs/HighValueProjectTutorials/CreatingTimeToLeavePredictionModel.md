@@ -18,7 +18,7 @@ local DataPredict = require(DataPredict)
 
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local Regression = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local LeavePredictionModel = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```
 
@@ -98,9 +98,9 @@ However, this require setting the model's parameters to these settings temporari
 
 ```lua
 
-LinearRegression.maximumNumberOfIterations = 100
+LeavePredictionModel.maximumNumberOfIterations = 100
 
-LinearRegression.learningRate = 0.3
+LeavePredictionModel.learningRate = 0.3
 
 ```
 
@@ -118,7 +118,7 @@ local wrappedTimeToLeave = {
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = Regression:train(playerDataVector, wrappedTimeToLeave)
+local costArray = LeavePredictionModel:train(playerDataVector, wrappedTimeToLeave)
 
 ```
 
@@ -128,7 +128,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = Regression:getModelParameters()
+local ModelParameters = LeavePredictionModel:getModelParameters()
 
 ```
 
@@ -158,7 +158,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-Regression:setModelParameters(ModelParameters)
+LeavePredictionModel:setModelParameters(ModelParameters)
 
 ```
 
@@ -178,7 +178,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
-local predictedLabelVector = Regression:predict(currentPlayerDataVector)
+local predictedLabelVector = LeavePredictionModel:predict(currentPlayerDataVector)
 
 ```
 

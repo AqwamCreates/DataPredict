@@ -30,7 +30,7 @@ local function filterOutDefectiveData(dataMatrix)
 
           table.insert(rowToDeleteArray, i)
 
-            break
+          break
 
       end
     

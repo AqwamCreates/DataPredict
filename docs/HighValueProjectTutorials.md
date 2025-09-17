@@ -8,7 +8,7 @@
 
   * Therefore, making copies or derivatives of this page and its links are not allowed.
 
-  * Commercial use are not allowed.
+  * Commercial use is not allowed.
 
 ## Retention Systems
 

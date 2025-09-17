@@ -94,7 +94,7 @@ local function insertItemBasedOnProbability(itemName, playerItemDataPairVector, 
 
         table.insert(sortedItemToShowArray, i, itemName)
 
-        table.insert(itemToShowProbabilityArray, i, probability)
+        table.insert(sortedItemToShowProbabilityArray, i, probability)
 
         table.insert(sortedItemDataMatrix, 1, itemDataVector[1])
 
@@ -144,7 +144,7 @@ end
 
 local function onShopGUIClose()
 
-    local costArray = RecommendationModel:train(itemDataMatrix, hasPlayerPurchasedTheItemVector)
+    local costArray = RecommendationModel:train(sortedItemDataMatrix, hasPlayerPurchasedTheItemVector)
 
 end
 

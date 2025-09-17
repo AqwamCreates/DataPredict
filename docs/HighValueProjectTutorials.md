@@ -38,7 +38,7 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
 * [Creating Classification-Based Recommendation Model](HighValueProjectTutorials/CreatingClassificationBasedRecommendationModel.md)
 
-* [Creating Reward-Maximization-Based Binary Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedBinaryRecommendationModel.md) (Unfinished)
+* [Creating Reward-Maximization-Based Binary Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedBinaryRecommendationModel.md)
 
   * Limited to one recommendation.
 

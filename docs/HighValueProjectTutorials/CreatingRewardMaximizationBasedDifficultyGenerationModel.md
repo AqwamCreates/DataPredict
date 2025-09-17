@@ -184,7 +184,7 @@ local function trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVe
 
         enemyDeathConnection:Disconnect()
 
-        Enemy:destroy(0
+        if Enemy then Enemy:destroy() end
 
         generatedEnemyDataVector = EnemyDataGenerationModel:reinforce(playerDataVector, -50)
 
@@ -197,6 +197,8 @@ local function trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVe
     enemyDeathConnection = Enemy.Humanoid.Died:Connect(function()
 
         enemyDeathConnection:Disconnect()
+
+          if Enemy then Enemy:destroy() end
 
         local isEnemyKilledByPlayer = checkIfEnemyIsKilledByPlayer(Enemy, Player)
         

@@ -58,6 +58,12 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
   * Have higher play time potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
 
+## Targeting Systems
+
+* [Creating Cluster-Based Targeting Model](HighValueProjectTutorials/CreatingClusterBasedTargetingModel.md)
+
+  * Find the center of players based on number of clusters.
+
 ## AI Players
 
 * Creating Data-Based AI Players
@@ -101,12 +107,6 @@ Before you engage in integrating machine, deep and reinforcement learning models
 * Creating Curiosity-Based AI Bug Hunter
 
   * The AI will maximize actions that allows it to explore the game.
-
-## Targeting Systems
-
-* [Creating Cluster-Based Targeting Model](HighValueProjectTutorials/CreatingClusterBasedTargetingModel.md)
-
-  * Find the center of players based on number of clusters.
 
 ## Priority Systems
 

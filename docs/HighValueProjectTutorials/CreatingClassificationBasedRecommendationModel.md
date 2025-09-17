@@ -50,7 +50,7 @@ local DataPredict = require(DataPredict)
 
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local RecommendationModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local RecommendationModel = DataPredict.Models.NeuralNetwork.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 RecommendationModel:setClassesList({"Recommend", "DoNotRecommend"})
 
@@ -86,7 +86,7 @@ for itemName, itemDataVector in pairs(itemDictionary)
 
     local label = generatedLabelVector[1][1]
 
-    if (label == "DoNotRecommend" then continue end
+    if (label == "DoNotRecommend") then continue end
 
     table.insert(itemToShowArray, itemName)
 

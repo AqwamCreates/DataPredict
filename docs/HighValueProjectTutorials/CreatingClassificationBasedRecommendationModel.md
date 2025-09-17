@@ -164,7 +164,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-local costArray = RecommendationModel:setModelParameters(ModelParameters)
+RecommendationModel:setModelParameters(ModelParameters)
 
 ```
 

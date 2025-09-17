@@ -8,7 +8,9 @@ Under this section, the code shown below demonstrates on how you detect defectiv
 
 -- Before you train or update anything, ensure that you keep the original model parameters.
 
-local ModelParameters = Model:getModelParameters(false) -- Ensure that we want the model to do "deep copy" of the model parameters.
+ -- Ensure that we want the model to do "deep copy" of the model parameters.
+
+local ModelParameters = Model:getModelParameters(false)
 
 local canUseModel = false -- This flag is used to ensure that the model is not performing prediction elsewhere.
 
@@ -72,7 +74,9 @@ while true do
 
   -- Otherwise, restore immediately.
 
-  Model:setModelParameters(false) -- Ensure that we want the model to do "deep copy" of the model parameters.
+ -- Ensure that we want the model to do "deep copy" of the model parameters.
+
+  Model:setModelParameters(false)
 
   -- You may need to scan the data for issues.
 

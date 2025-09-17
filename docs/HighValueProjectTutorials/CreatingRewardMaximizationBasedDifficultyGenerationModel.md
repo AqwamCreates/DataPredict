@@ -202,7 +202,7 @@ local function createEnemyDataGenerator(Player, DeepReinforcementLearningModel)
 
     EnemyDataGenerationModel:setModel(DeepReinforcementLearningModel) 
     
-    local generatedEnemyDataVector = EnemyDataGenerationModel:reinforce(playerDataVector, rewardValue)
+    local generatedEnemyDataVector = EnemyDataGenerationModel:reinforce(playerDataVector, 0) -- The reward value is zero because we just spawned our first enemy.
 
     trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVector)
 

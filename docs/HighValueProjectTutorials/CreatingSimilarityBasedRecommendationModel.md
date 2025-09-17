@@ -66,7 +66,7 @@ The code shown below demonstrate on how to generate the recommendation by the ti
 
 local sortedItemToShowArray = {}
 
-local sortedItemToShowProbabilityArray = {}
+local sortedItemToShowSimilarityScoreArray = {}
 
 local itemDataMatrix = {}
 
@@ -80,7 +80,7 @@ local function insertItemBasedOnSimilarityScore(itemName, itemDataVector, itemSi
 
         table.insert(itemArray, itemName)
 
-        table.insert(itemToShowProbabilityArray, itemSimilarityScore)
+        table.insert(sortedItemToShowSimilarityScoreArray, itemSimilarityScore)
 
         table.insert(itemDataMatrix, itemDataVector[1])
 
@@ -94,7 +94,7 @@ local function insertItemBasedOnSimilarityScore(itemName, itemDataVector, itemSi
 
         table.insert(itemArray, i, itemName)
 
-        table.insert(itemToShowProbabilityArray, i, probability)
+        table.insert(sortedItemToShowSimilarityScoreArray, i, probability)
 
           table.insert(itemDataMatrix, 1, itemDataVector[1])
 
@@ -112,7 +112,7 @@ for itemName, itemDataVector in pairs(itemDictionary)
 
     local probabilityValue = probabilityVector[1][1]
 
-    insertItemBasedOnProbability(itemName, probability)
+    insertItemBasedOnProbability(itemName, itemDataVector, probability)
 
 end
 
@@ -203,4 +203,3 @@ Under this case, the procedure is the same to case 2 except that you need to:
 This tutorial showed you on how to create item recommendation model that allows you to increase the likelihood the player will purchase an item. All you need is some data, some models and a bit of practice to get this right!
 
 That's all for today and see you later!
-

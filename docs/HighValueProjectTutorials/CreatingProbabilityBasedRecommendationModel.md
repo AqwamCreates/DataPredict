@@ -74,7 +74,7 @@ local hasPlayerPurchasedTheItemVector -- We will reserve this for now for readab
 
 local currentPlayerData = getPlayerDataVector()
 
-local function insertItemBasedOnProbability(itemName, itemProbability, itemDataVector)
+local function insertItemBasedOnProbability(itemName, itemDataVector, itemProbability)
 
     if (#itemToShowDictionary == 0) then
 
@@ -96,7 +96,7 @@ local function insertItemBasedOnProbability(itemName, itemProbability, itemDataV
 
         table.insert(itemToShowProbabilityArray, i, probability)
 
-          table.insert(itemDataMatrix, 1, itemDataVector[1])
+        table.insert(itemDataMatrix, 1, itemDataVector[1])
 
         break
 
@@ -112,7 +112,7 @@ for itemName, itemDataVector in pairs(itemDictionary)
 
     local probabilityValue = probabilityVector[1][1]
 
-    insertItemBasedOnProbability(itemName, probability)
+    insertItemBasedOnProbability(itemName, itemDataVector, probability)
 
 end
 

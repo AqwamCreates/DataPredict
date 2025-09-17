@@ -34,7 +34,7 @@
 
 * Creating Similarity-Based Recommendation Model
 
-* [Creating Reward-Maximization-Based Regression Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedRegressionRecommendationModel.md)
+* [Creating Reward-Maximization-Based Regression Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedRegressionRecommendationModel.md) (Incomplete)
 
   * Limited to one recommendation at a time.
 

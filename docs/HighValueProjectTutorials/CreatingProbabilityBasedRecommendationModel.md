@@ -22,7 +22,7 @@ local Regression = DataPredict.Models.LogisticRegression.new({maximumNumberOfIte
 
 ```
 
-## Upon Player Item Purchase
+## Feature Vector Design
 
 In here, what you need to do is:
 

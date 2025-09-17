@@ -88,7 +88,7 @@ for itemName, itemDataVector in pairs(itemDictionary)
 
     local label = generatedLabelVector[1][1]
 
-    if (label == "DoNotRecommend" then continue end
+    if (label == "DoNotRecommend") then continue end
 
     table.insert(itemToShowArray, itemName)
 

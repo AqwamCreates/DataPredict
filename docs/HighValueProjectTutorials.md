@@ -64,6 +64,10 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
   * Find the center of players based on number of clusters.
 
+* Creating Reward-Maximization-Based Targeting Model
+
+  * Might be the most terrible idea out of this list. However, I will not stop game designers from making them look smart.
+
 ## AI Players
 
 * Creating Data-Based AI Players

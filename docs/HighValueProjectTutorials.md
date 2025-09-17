@@ -76,6 +76,8 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
     * The upside is that if your map has terrains and structures, the model may learn to corner and "trap" players to certain locations for easy "kills".
 
+  * Limited to one target at a time.
+
 ## AI Players
 
 * Creating Data-Based AI Players

@@ -68,6 +68,8 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
   * Might be the most terrible idea out of this list. However, I will not stop game designers from making them look smart.
 
+    * You're basically doing a lot of exploration before it can hit a single player. Once that particular location is marked as "getting reward", it will might overfocus on it.
+
 ## AI Players
 
 * Creating Data-Based AI Players

@@ -160,7 +160,29 @@ Below, it shows an example code for this. However, do note that we are recreatin
 
 ```lua
 
-local function trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVector)
+local function checkPlayerEnemy(EnemyDataGenerationModel, Enemy, Player, spawnEnemyFunction)
+
+    if Enemy then Enemy:destroy() end
+
+    local isEnemyInRange = checkIfEnemyIsInRange(Player, Enemy)
+
+    local isEnemyKilledByPlayer = checkIfEnemyIsKilledByPlayer(Enemy, Player)
+
+    -- We set the reward to zero here because the enemy is too far to interact with the player.
+
+    local rewardValue = (isEnemyKilledByPlayer and 10) or ((not isEnemyInRange) and 0) or -50
+
+    local playerDataVector = getPlayerDataVector(Player)
+
+    generatedEnemyDataVector = EnemyDataGenerationModel:reinforce(playerDataVector, rewardValue)
+
+    if (not checkIfPlayerIsInServer(Player)) then return end
+
+    spawnEnemyFunction(Player, EnemyDataGenerationModel, generatedEnemyDataVector)
+
+end
+
+local function spawnEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVector)
 
     local unwrappedGeneratedEnemyDataVector = generatedEnemyDataVector[1]
 
@@ -182,19 +204,7 @@ local function trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVe
 
         enemyDeathConnection:Disconnect()
 
-        if Enemy then Enemy:destroy() end
-
-        local isEnemyInRange = checkIfEnemyIsInRange(Player, Enemy)
-
-        -- We set to zero here since the enemy is too far to interact with the player.
-
-        local reward = (isEnemyInRange and -50) or 0
-
-        generatedEnemyDataVector = EnemyDataGenerationModel:reinforce(playerDataVector, reward)
-
-        if (not checkIfPlayerIsInServer(Player)) then return end
-
-        spawnEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVector)
+        checkPlayerEnemy(EnemyDataGenerationModel, Enemy, Player, spawnEnemy)
 
     end)
 
@@ -202,21 +212,7 @@ local function trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVe
 
         enemyDeathConnection:Disconnect()
 
-        if Enemy then Enemy:destroy() end
-
-        local isEnemyInRange = checkIfEnemyIsInRange(Player, Enemy)
-
-        local isEnemyKilledByPlayer = checkIfEnemyIsKilledByPlayer(Enemy, Player)
-        
-        local rewardValue = (isEnemyKilledByPlayer and 10) or ((not isEnemyInRange) and 0) or -50
-
-        local playerDataVector = getPlayerDataVector(Player)
-
-        generatedEnemyDataVector = EnemyDataGenerationModel:reinforce(playerDataVector, rewardValue)
-
-        if (not checkIfPlayerIsInServer(Player)) then return end
-
-        trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVector)
+       checkPlayerEnemy(EnemyDataGenerationModel, Enemy, Player, spawnEnemy)
 
     end)
 

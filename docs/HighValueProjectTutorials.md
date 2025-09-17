@@ -16,6 +16,8 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
   * Have higher play time potential due to its ability to exploit and explore than the other two methods, but tend to be risky to use.
 
+* [Creating Left-To-Early-Detection Model](CreatingLeftToEarlyDetectionModel.md)
+
 ## Regression Recommendation System
 
 * [Creating Probability-Based Recommendation Model](HighValueProjectTutorials/CreatingProbabilityBasedRecommendationModel.md)

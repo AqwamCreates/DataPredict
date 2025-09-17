@@ -156,55 +156,63 @@ local generatedEnemyDataVector = EnemyDataGenerationModel:reinforce(playerDataVe
 
 In order to assign the reward to that event is selected, we must first deploy the chosen event and observe if the player stayed for that action/event.
 
-Below, it shows an example code for this.
+Below, it shows an example code for this. However, do note that we are recreating the models again so that we have a single enemy per model.
 
 ```lua
 
-local function run(Player)
+local function trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVector)
 
-    local isPlayerInServer = true
+    local unwrappedGeneratedEnemyDataVector = generatedEnemyDataVector[1]
 
-    local rewardValue = 0
+    local generatedEnemyMaximumHealth = unwrappedGeneratedEnemyDataVector[1]
 
-    local playerDataVector
+    local generatedEnemyMaximumDamage = unwrappedGeneratedEnemyDataVector[2]
 
-    local generatedEnemyDataVector
+    local generatedEnemyCashAmount = unwrappedGeneratedEnemyDataVector[3]
 
-    local unwrappedGeneratedEnemyDataVector
+    local EnemyHumanoid = spawnEnemy(generatedEnemyMaximumHealth, generatedEnemyMaximumDamage, generatedEnemyCashAmount)
 
-    local generatedEnemyMaximumHealth
+    local enemyDeathConnection
 
-    local generatedEnemyMaximumDamage
+    enemyDeathConnection = EnemyHumanoid.Died:Connect(function()
 
-    local generatedEnemyCashAmount
+        enemyDeathConnection:Disconnect()
 
-    local Enemy
+        local isEnemyKilledByPlayer = checkIfEnemyIsKilledByPlayer(Enemy, Player)
+        
+        local rewardValue = (isEnemyKilledByPlayer and 10) or -50
 
-    local isEnemyKilledByPlayer
+        local playerDataVector = getPlayerDataVector(Player)
 
-    while isPlayerInServer do
-
-        playerDataVector = getPlayerDataVector(Player)
-    
         generatedEnemyDataVector = EnemyDataGenerationModel:reinforce(playerDataVector, rewardValue)
 
-        unwrappedGeneratedEnemyDataVector = generatedEnemyDataVector[1]
+        if (not checkIfPlayerIsInServer(Player)) then return end
 
-        generatedEnemyMaximumHealth = unwrappedGeneratedEnemyDataVector[1]
+        spawnEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVector)
 
-        generatedEnemyMaximumDamage = unwrappedGeneratedEnemyDataVector[2]
+    end)
 
-        generatedEnemyCashAmount = unwrappedGeneratedEnemyDataVector[3]
+end
 
-        Enemy = spawnEnemy(generatedEnemyMaximumHealth, generatedEnemyMaximumDamage, generatedEnemyCashAmount)
+local function createEnemyDataGenerator(Player, DeepReinforcementLearningModel)
 
-        task.wait(60)
+   local EnemyDataGenerationModel = DataPredict.QuickSetups.DiagonalGaussianPolicy.new({actionStandardDeviationVector = actionStandardDeviationVector})
 
-        isEnemyKilledByPlayer = checkIfEnemyIsKilledByPlayer(Enemy, Player)
-        
-        rewardValue = (isEnemyKilledByPlayer and 10) or -50
+    -- Notice that we cannot share the DiagonalGaussianPolicy quick setup, but can share DeepReinforcementLearningModel by the quick setup. 
 
-        isPlayerInServer = checkIfPlayerIsInServer(Player)
+    EnemyDataGenerationModel:setModel(DeepReinforcementLearningModel) 
+    
+    local generatedEnemyDataVector = EnemyDataGenerationModel:reinforce(playerDataVector, rewardValue)
+
+    trackEnemy(Player, EnemyDataGenerationModel, generatedEnemyDataVector)
+
+end
+
+local function run(Player)
+
+    for i = 1, 30, 1 do
+
+        createEnemyDataGenerator(Player)
 
     end
 

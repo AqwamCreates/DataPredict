@@ -18,17 +18,15 @@ local DataPredict = require(DataPredict)
 
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local Regression = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local Regression = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```
 
-## Upon Player Join
+## Upon Player Item Purchase
 
 In here, what you need to do is:
 
-* Store initial player data as a vector of numbers.
-
-* Store the initial time that the player joined.
+* Store the player data and purchased item data as two separate vector of numbers.
 
 Below, we will show you how to create this:
 
@@ -36,18 +34,26 @@ Below, we will show you how to create this:
 
 -- We're just adding 1 here to add "bias".
 
-local initialPlayerDataVector = {
+local playerDataVector = {
     {
         1,
         numberOfCurrencyAmount,
         numberOfItemsAmount,
         timePlayedInCurrentSession,
         timePlayedInAllSessions,
-        healthAmount
+        currentHealthAmount,
+        currentDamageAmount
     }
 }
 
-local initialJoinTime = os.time()
+local itemDataVector = {
+
+    {
+        costAmount,
+        rarityValue,
+        durationBetweenFirstServerJoinAndThisItemPurchase,
+    }
+} 
 
 ```
 

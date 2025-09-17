@@ -100,7 +100,7 @@ local itemToShowArray = {}
 
 local itemDataMatrix = {}
 
-local hasPlayerPurchasedTheItemVector -- We will reserve this for now for readibility
+local hasPlayerPurchasedTheItemVector -- We will reserve this for now for readability.
 
 local currentPlayerData = getPlayerDataVector()
 
@@ -108,11 +108,9 @@ for itemName, itemDataVector in pairs(itemDictionary)
 
     local playerItemDataPairVector = TensorL:concatenate(playerDataVector, itemDataVector, 2)
 
-    local generatedLabelVector = RecommendationModel:reinforce(playerItemDataPairVector, true)
+    local action = RecommendationModel:reinforce(playerItemDataPairVector)
 
-    local label = generatedLabelVector[1][1]
-
-    if (label == "DoNotRecommend") then continue end
+    if (action == "DoNotRecommend") then continue end
 
     table.insert(itemToShowArray, itemName)
 

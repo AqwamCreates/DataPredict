@@ -1,6 +1,6 @@
 # High-Value Project Tutorials
 
-## Disclaimer
+### Disclaimer
 
 Before you engage in implementing machine, deep and reinforcement learning models into live projects, I recommend you to have a look at safe practices [here](HighValueProjectTutorials/SafePracticesForLiveProjects).
 

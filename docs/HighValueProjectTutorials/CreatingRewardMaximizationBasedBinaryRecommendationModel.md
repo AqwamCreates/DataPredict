@@ -120,6 +120,16 @@ local function showRecommendations(itemName, itemDataVector, reward, action)
 
 end
 
+local function onShopGUIOpen()
+
+    local randomItemName, randomDataVector = getRandomItem()
+
+    local reward = 0
+
+   showRecommendations(randomItemName, randomDataVector, reward)
+
+end
+
 ```
 
 ### Upon Item Purchase

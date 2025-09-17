@@ -70,7 +70,7 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
     * The model will likely do a lot of exploration before it can hit a single player. Once that particular location is marked as "reward location", the model will might overfocus on it.
 
-    * The upside is that if your map has terrains and structures, the model may will learn to corner and "trap" players to certain locations.
+    * The upside is that if your map has terrains and structures, the model may learn to corner and "trap" players to certain locations for easy "kills".
 
 ## AI Players
 

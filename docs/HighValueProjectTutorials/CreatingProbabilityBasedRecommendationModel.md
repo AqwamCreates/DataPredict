@@ -80,7 +80,7 @@ local function insertItemBasedOnProbability(itemName, probability)
 
     for i, itemToShowProbability in ipairs(itemToShowProbabilityArray)
 
-        if (itemToShowProbability >= itemToShowProbability) then cpntinue end end
+        if (itemToShowProbability >= itemToShowProbability) then continue end end
 
         table.insert(itemArray, i, itemName)
 

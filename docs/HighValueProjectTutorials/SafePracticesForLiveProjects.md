@@ -12,7 +12,7 @@ local ModelParameters = Model:getModelParameters(false) -- Ensure that we want t
 
 local canUseModel = false -- This flag is used to ensure that the model is not performing prediction elsewhere.
 
-local function isAcceptableValue(value)
+local function checkIfIsAcceptableValue(value)
 
     return (value == value) and (value ~= math.huge) and (value ~= -math.huge) and (type(value) == number)
 
@@ -26,7 +26,7 @@ local function filterOutDefectiveData(dataMatrix)
 
       for j, value in ipairs(dataVector) do
 
-          if (isAcceptableValue(value)) then continue end
+          if (checkIfIsAcceptableValue(value)) then continue end
 
           table.insert(rowToDeleteArray, i)
 
@@ -62,11 +62,11 @@ while true do
 
   -- If the final cost value is not any of them, we can safely break out from this loop
 
-    if (isAcceptableValue(finalCostValue)) then continue end
+    if (checkIfIsAcceptableValue(finalCostValue)) then continue end
 
         canUseModel = true
 
-    break
+        break
 
     end
 

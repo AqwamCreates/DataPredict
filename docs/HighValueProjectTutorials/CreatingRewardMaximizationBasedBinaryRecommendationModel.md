@@ -42,23 +42,47 @@ local itemDataVector = {
 
 ```
 
-## Constructing Our Model
+Before we start training our model, we first need to build our model. We have split this to multiple subsections to make it easy to follow through.
 
-Before we start training our model, we first need to build our model.
+### Constructing Our Neural Network
+
+```lua 
+
+local NeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
+
+NeuralNetwork:setClassesList(ClassesList)
+
+NeuralNetwork:addLayer(5, true) -- Five features and one bias.
+
+NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
+
+```
+
+### Constructing Our Deep Reinforcement Learning Model
 
 ```lua
 
-local DataPredict = require(DataPredict)
+-- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
 
--- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
+local DeepReinforcementLearningModel = DataPredict.Model.DeepStateActionRewardStateAction.new()
 
-local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+-- Inserting our Neural Network here.
 
-NeuralNetwork:setClassesList({"Recommend", "DoNotRecommend"})
+DeepReinforcementLearningModel:setModel(NeuralNetwork)
 
-NeuralNetwork:addLayer(6, true) -- Six features and one bias.
+```
 
-NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
+### Constructing Our Categorical Policy Quick Setup Model
+
+This part makes it easier for us to set up our model, but it is not strictly necessary. However, I do recommend you to use them as they contain built-in functions for handing training and predictions.
+
+```lua
+
+local RecommendationModel = DataPredict.QuickSetups.CategoricalPolicy.new()
+
+-- Inserting our Deep Reinforcement Learning Model here.
+
+RecommendationModel:setModel(DeepReinforcementLearningModel)
 
 ```
 
@@ -84,7 +108,7 @@ for itemName, itemDataVector in pairs(itemDictionary)
 
     local playerItemDataPairVector = TensorL:concatenate(playerDataVector, itemDataVector, 2)
 
-    local generatedLabelVector = RecommendationModel:predict(playerItemDataPairVector, true)
+    local generatedLabelVector = RecommendationModel:reinforce(playerItemDataPairVector, true)
 
     local label = generatedLabelVector[1][1]
 

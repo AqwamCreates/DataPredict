@@ -8,6 +8,8 @@
 
   * Therefore, making copies or derivatives of this page and its links are not allowed.
 
+  * Commercial use are not allowed.
+
 ## Retention Systems
 
 * [Creating Time-To-Leave Prediction Model](HighValueProjectTutorials/CreatingTimeToLeavePredictionModel.md)

@@ -34,9 +34,9 @@ local function filterOutDefectiveData(dataMatrix)
 
       end
 
-end
+    end
 
-local filteredDataMatrix = {}
+  local filteredDataMatrix = {}
 
   for i = #dataMatrix, 1, -1 do
 

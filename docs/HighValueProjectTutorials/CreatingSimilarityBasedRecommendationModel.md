@@ -68,7 +68,7 @@ local sortedItemToShowArray = {}
 
 local sortedItemToShowSimilarityScoreArray = {}
 
-local itemDataMatrix = {}
+local sortedItemDataMatrix = {}
 
 local hasPlayerPurchasedTheItemVector -- We will reserve this for now for readability.
 
@@ -82,7 +82,7 @@ local function insertItemBasedOnSimilarityScore(itemName, playerItemDataPairVect
 
         table.insert(sortedItemToShowSimilarityScoreArray, itemSimilarityScore)
 
-        table.insert(itemDataMatrix, itemDataVector[1])
+        table.insert(sortedItemDataMatrix, itemDataVector[1])
 
         return
 
@@ -92,11 +92,11 @@ local function insertItemBasedOnSimilarityScore(itemName, playerItemDataPairVect
 
         if (itemSimilarityScore <= itemToShowSimilarityScore) then continue end end
 
-        table.insert(itemArray, i, itemName)
+        table.insert(sortedItemToShowArray, i, itemName)
 
         table.insert(sortedItemToShowSimilarityScoreArray, i, probability)
 
-        table.insert(itemDataMatrix, 1, playerItemDataPairVector[i])
+        table.insert(sortedItemDataMatrix, 1, playerItemDataPairVector[1])
 
         break
 
@@ -144,7 +144,7 @@ end
 
 local function onShopGUIClose()
 
-    local costArray = RecommendationModel:train(itemDataMatrix, hasPlayerPurchasedTheItemVector)
+    local costArray = RecommendationModel:train(sortedItemDataMatrix, hasPlayerPurchasedTheItemVector)
 
 end
 

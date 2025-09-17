@@ -44,6 +44,8 @@
  
   * May outcompete real players.
 
+  * May exploit bugs and glitches.
+
 * Creating Reactionary AI Players
 
   * Same as data-based AI players.

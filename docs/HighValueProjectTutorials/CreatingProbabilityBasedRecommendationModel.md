@@ -8,20 +8,6 @@ Currently, you need these to produce the model:
 
 * A player data that is stored in matrix
 
-## Setting Up
-
-Before we train our model, we will first need to construct a regression model as shown below.
-
-```lua
-
-local DataPredict = require(DataPredict)
-
--- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
-
-local Regression = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
-
-```
-
 ## Designing Our Feature Vector And Classes List
 
 Before we start creating our model, we first need to visualize on how we will design our data to increase the likelihood of players purchasing an item.
@@ -50,6 +36,20 @@ local itemDataVector = {
         durationBetweenFirstServerJoinAndThisItemPurchase,
     }
 } 
+
+```
+
+## Constructing Our Model
+
+Before we start training our model, we first need to build our model. We have split this to multiple subsections to make it easy to follow through.
+
+```lua
+
+local DataPredict = require(DataPredict)
+
+-- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
+
+local Regression = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```
 

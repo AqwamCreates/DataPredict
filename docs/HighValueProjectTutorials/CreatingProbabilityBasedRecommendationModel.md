@@ -160,8 +160,6 @@ Under this case, the procedure is the same to case 2 except that you need to:
 
 * Perform auto-save with the optional ability of merging with saved model parameters from other servers.
 
-```
-
 ## Conclusion
 
 This tutorial showed you on how to create "time to leave" prediction model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!

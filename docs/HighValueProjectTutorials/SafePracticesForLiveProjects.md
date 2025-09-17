@@ -8,7 +8,7 @@ Under this section, the code shown below demonstrates on how you detect defectiv
 
 -- Before you train or update anything, ensure that you keep the original model parameters.
 
- -- Ensure that we want the model to do "deep copy" of the model parameters.
+-- Ensure that we want the model to do "deep copy" of the model parameters.
 
 local ModelParameters = Model:getModelParameters(false)
 

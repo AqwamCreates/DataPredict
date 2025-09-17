@@ -12,7 +12,9 @@ Before you engage in integrating machine, deep and reinforcement learning models
 
 * [Creating Left-Too-Early-Detection Model](HighValueProjectTutorials/CreatingLeftTooEarlyDetectionModel.md)
 
-    * Highly exploitable if the player accumulates long session time over many sessions and then suddenly gradually decreases the session time to earn rewards.
+   * Inverse of probability-to-leave model by detecting outliers.
+
+   * Highly exploitable if the player accumulates long session time over many sessions and then suddenly gradually decreases the session time to earn rewards.
 
 * [Creating Play Time Maximization Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationModel.md)
 

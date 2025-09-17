@@ -2,7 +2,11 @@
 
 ### Disclaimer
 
-Before you engage in integrating machine, deep and reinforcement learning models into live projects, I recommend you to have a look at safe practices [here](HighValueProjectTutorials/SafePracticesForLiveProjects.md).
+* Before you engage in integrating machine, deep and reinforcement learning models into live projects, I recommend you to have a look at safe practices [here](HighValueProjectTutorials/SafePracticesForLiveProjects.md).
+
+* The content of this page and its links is licensed under [Terms And Conditions](TermsAndConditions.md)
+
+  * Therefore, making derivatives of this page and its links is explicitly not allowed.
 
 ## Retention Systems
 

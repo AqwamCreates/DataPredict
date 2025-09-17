@@ -38,7 +38,7 @@
  
   * May outcompete real players.
 
-* Creating Reaction Prediction AI Players
+* Creating Reactionary AI Players
 
   * Same as data-based AI players.
  

@@ -52,7 +52,7 @@ local NeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterat
 
 NeuralNetwork:setClassesList(ClassesList)
 
-NeuralNetwork:addLayer(5, true) -- Five features and one bias.
+NeuralNetwork:addLayer(6, true) -- Six features and one bias.
 
 NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
 

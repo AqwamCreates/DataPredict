@@ -34,6 +34,8 @@
 
 * [Creating Similarity-Based Recommendation Model](HighValueProjectTutorials/CreatingSimilarityBasedRecommendationModel.md)
 
+  * Memory-based model. May eat up storage space.
+
 * [Creating Reward-Maximization-Based Regression Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedRegressionRecommendationModel.md) (Incomplete)
 
   * Limited to one recommendation at a time.

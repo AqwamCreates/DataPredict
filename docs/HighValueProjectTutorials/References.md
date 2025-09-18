@@ -4,7 +4,7 @@
 
 * Investigating The Performance Of Model-Free Deep Reinforcement Learning In Roblox Ecosystem (Master Research Thesis) (Thesis done. Waiting for publication.)
 
-* Impact Of Lua-Native Retention Machine Learning On Metaverse Experience On Roblox Ecosystem (Research Article)
+* Impact Of Lua-Native Retention Machine Learning Models On Metaverse Experience On Roblox Ecosystem (Research Article)
 
 * DataPredict - A General Machine, Deep, Reinforcement Learning Library For Lua-Native Games. (Research Article)
 

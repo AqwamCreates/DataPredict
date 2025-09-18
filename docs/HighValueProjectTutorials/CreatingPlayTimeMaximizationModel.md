@@ -179,7 +179,9 @@ local function run(Player)
         if (deployEventFunction) then deployEventFunction() end
 
         task.wait(60)
-        
+
+        -- Player leaving the game is more of a "rarer" event, hence very negative value.
+
         rewardValue = (isPlayerInServer and 10) or -50
 
         isPlayerInServer = checkIfPlayerIsInServer(Player)

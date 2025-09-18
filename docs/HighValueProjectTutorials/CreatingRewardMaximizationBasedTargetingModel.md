@@ -18,7 +18,7 @@ Before we start creating our model, we first need to visualize on how we will de
 
 -- We have five features with one "bias".
 
-local allPlayerLocationDataVector = {
+local playerLocationDataVector = {
     {
         1,
         player1LocationX,
@@ -167,7 +167,7 @@ local function run()
 
     local rewardValue = 0
 
-    local playerDataVector
+    local playerLocationDataVector
 
     local actionName
 
@@ -175,9 +175,9 @@ local function run()
 
     local heartbeatConnection = Runservice.Heartbeat:Connect(function()
 
-        playerDataVector = getPlayerDataVector(Player)
+        playerLocationDataVector = getPlayerLocationDataVector(Player)
     
-        actionName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+        actionName = PlayTimeMaximizationModel:reinforce(playerLocationDataVector, rewardValue)
 
         actionFunction = actionFunctionDictionary[eventName]
 

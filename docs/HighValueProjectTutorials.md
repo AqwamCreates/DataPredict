@@ -94,13 +94,13 @@
 
 * Creating Reward-Maximization-Based Targeting Model
 
-  * Might be the most terrible idea out of this list. However, I will not stop game designers from making their games look "smart".
-
-    * The model will likely do a lot of exploration before it can hit a single player. Once that particular location is marked as "reward location", the model will might overfocus on it.
-
   * If your map has terrains and structures, the model may learn to corner and "trap" players to certain locations for easy "kills" or "targets".
 
   * Limited to one target at a time.
+
+  * Might be the most terrible idea out of this list. However, I will not stop game designers from making their games look "smart".
+
+    * The model will likely do a lot of exploration before it can hit a single player. Once that particular location is marked as "reward location", the model will might overfocus on it.
 
 ## AI Players
 

@@ -141,7 +141,7 @@ local function showRecommendations(itemName, itemDataVector, reward, previousAct
 
     else
 
-        recommendARandomItemThatIsNot(itemName)
+        recommendARandomItemExceptFor(itemName)
 
     end
 

@@ -51,13 +51,13 @@ Before we start training our model, we first need to build our model. We have sp
 
 local ActorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-ActorNeuralNetwork:addLayer(5, true) -- Five features and one bias.
+ActorNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
 
 ActorNeuralNetwork:addLayer(3, false) -- Three enemy features and no bias.
 
 local CriticNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-CriticNeuralNetwork:addLayer(5, true) -- Five features and one bias.
+CriticNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
 
 CriticNeuralNetwork:addLayer(1, false) -- Critic only outputs 1 value.
 

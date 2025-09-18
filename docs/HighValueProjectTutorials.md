@@ -36,7 +36,7 @@
 
   * Memory-based model. May eat up storage space.
 
-* [Creating Reward-Maximization-Based Regression Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedRegressionRecommendationModel.md) (Incomplete)
+* [Creating Reward-Maximization-Based Regression Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedRegressionRecommendationModel.md)
 
   * Limited to one recommendation at a time.
 

@@ -244,4 +244,16 @@ function TrainingModifier:getModel()
 
 end
 
+function TrainingModifier:getModelParameters(...)
+
+	return self.Model:getModelParameters(...)
+
+end
+
+function TrainingModifier:setModelParameters(...)
+
+	self.Model:setModelParameters(...)
+
+end
+
 return TrainingModifier

@@ -20,8 +20,6 @@
 
 ### Machine Learning Based
 
-* [Towards Adaptive Deep Reinforcement Game Balancing*](https://www.scitepress.org/Papers/2019/73954/73954.pdf) (Conference Paper)
-
 * [Predicting Player Churn of a Free-to-Play Mobile Video Game Using Supervised Machine Learning](https://www.mdpi.com/2076-3417/12/6/2795) (Research Paper)
 
 * [Predicting Player Churn in the Gaming Industry: A Machine Learning Framework for Enhanced Retention Strategies](https://ph04.tci-thaijo.org/index.php/JCST/article/view/7494) (Research Article)
@@ -45,6 +43,8 @@
 ## Adaptive Difficulty System
 
 ### Reinforcement Learning Based
+
+* [Towards Adaptive Deep Reinforcement Game Balancing*](https://www.scitepress.org/Papers/2019/73954/73954.pdf) (Conference Paper)
 
 * [Investigating Reinforcement Learning for Dynamic Difficulty Adjustment](https://dl.acm.org/doi/10.1145/3631085.3631229) (Conference Paper)
 

@@ -40,6 +40,12 @@
 
 * [Personalized game design for improved user retention and monetization in freemium games](https://www.sciencedirect.com/science/article/abs/pii/S0167811625000060) (Journal Paper)
 
+## Recommendation System
+
+### Machine Learning Based
+
+* [Review of Clustering-Based Recommender Systems](https://arxiv.org/pdf/2109.12839)
+
 ## Adaptive Difficulty System
 
 ### Reinforcement Learning Based

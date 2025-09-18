@@ -12,7 +12,7 @@
 
 * For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 
-* References can be found [here](HighValueProjectTutorials/References.md)
+* References that validates the use cases can be found [here](HighValueProjectTutorials/References.md)
 
 ## Retention Systems
 

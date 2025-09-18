@@ -46,7 +46,7 @@
 
 * [Continuous Reinforcement Learning-based
 Dynamic Difficulty Adjustment in a Visual
-Working Memory Game](https://arxiv.org/pdf/2308.12726)
+Working Memory Game](https://arxiv.org/pdf/2308.12726) (Research Paper)
 
 ### General
 

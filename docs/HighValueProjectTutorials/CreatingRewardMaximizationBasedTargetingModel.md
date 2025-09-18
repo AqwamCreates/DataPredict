@@ -173,11 +173,9 @@ local function run()
 
         if (actionFunction) then actionFunction() end
 
-        -- Player leaving the game is more of a "rarer" and "extremely undesirable" event, therefore a very large negative value is used.
+        -- Calculate the reward based on certain arbitary criteria like how many players it just killed.
 
-        rewardValue = (isPlayerInServer and 20) or -100
-
-        isPlayerInServer = checkIfPlayerIsInServer(Player)
+        rewardValue = getRewardValue()
 
     end)
 

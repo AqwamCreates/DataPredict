@@ -54,6 +54,10 @@
 
 ## Adaptive Difficulty System
 
+### Machine Learning Based
+
+* [AI for dynamic difficulty adjustment in games](https://www.researchgate.net/publication/228889029_AI_for_dynamic_difficulty_adjustment_in_games)
+
 ### Reinforcement Learning Based
 
 * [Towards Adaptive Deep Reinforcement Game Balancing*](https://www.scitepress.org/Papers/2019/73954/73954.pdf) (Conference Paper)

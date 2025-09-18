@@ -173,7 +173,7 @@ local function run()
 
         if (actionFunction) then actionFunction() end
 
-        -- Calculate the reward based on certain arbitary criteria like how many players it just killed.
+        -- Calculate the reward based on certain arbitary criteria like how many players it just killed and how fast the players are killed.
 
         rewardValue = getRewardValue()
 

@@ -8,6 +8,8 @@
 
 [ModelParametersMerger](Others/ModelParametersMerger.md)
 
+[ModelParametersSafeguardWrapper](Others/ModelParametersSafeguardWrapper.md)
+
 [TrainingModifier](Others/TrainingModifier.md)
 
 [Regularizer](Others/Regularizer.md)

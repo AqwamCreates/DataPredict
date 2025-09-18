@@ -41,21 +41,25 @@ local itemDataVector = {
 
 ```
 
+## Constructing Our Model
+
 Before we start training our model, we first need to build our model. We have split this to multiple subsections to make it easy to follow through.
 
 ### Constructing Our Neural Network
 
 ```lua 
 
-local NeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
+local ActorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-local ClassesList = {"Recommend", "DoNotRecommend"}
+ActorNeuralNetwork:addLayer(5, true) -- Five features and one bias.
 
-NeuralNetwork:setClassesList(ClassesList)
+ActorNeuralNetwork:addLayer(3, false) -- Three enemy features and no bias.
 
-NeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
+local CriticNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
+CriticNeuralNetwork:addLayer(5, true) -- Five features and one bias.
+
+CriticNeuralNetwork:addLayer(1, false) -- Critic only outputs 1 value.
 
 ```
 
@@ -65,21 +69,43 @@ NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
 
 -- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
 
-local DeepReinforcementLearningModel = DataPredict.Model.DeepStateActionRewardStateAction.new()
+local DeepReinforcementLearningModel = DataPredict.Model.SoftActorCritic.new()
 
--- Inserting our Neural Network here.
+-- Inserting our actor and critic Neural Networks here.
 
-DeepReinforcementLearningModel:setModel(NeuralNetwork)
+DeepReinforcementLearningModel:setActorModel(ActorNeuralNetwork)
+
+DeepReinforcementLearningModel:setCriticModel(CriticNeuralNetwork)
 
 ```
 
-### Constructing Our Categorical Policy Quick Setup Model
+### Constructing Our Diagonal Gaussian Policy Quick Setup Model
 
 This part makes it easier for us to set up our model, but it is not strictly necessary. However, I do recommend you to use them as they contain built-in functions for handing training and predictions.
 
 ```lua
 
-local RecommendationModel = DataPredict.QuickSetups.CategoricalPolicy.new()
+--[[
+
+The vector below controls how far the enemy feature value should be generated.
+
+Let's say our model decides to make 100 maximum health as our base value for enemy. 
+
+A standard deviation of 10 would make the model generate an enemy with the maximum health between 90 and 110.
+
+--]]
+
+local actionStandardDeviationVector = {
+    {
+        enemyMaximumHealthStandardDeviation,
+        enemyMaximumDamageStandardDeviation,
+        enemyCashAmountStandardDeviation,
+    }
+}
+
+-- Next, we'll insert actionStandardDeviationVector to our quick setup constructor.
+
+local RecommendationModel = DataPredict.QuickSetups.DiagonalGaussianPolicy.new({actionStandardDeviationVector = actionStandardDeviationVector})
 
 -- Inserting our Deep Reinforcement Learning Model here.
 

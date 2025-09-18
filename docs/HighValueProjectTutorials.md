@@ -98,7 +98,7 @@
 
     * The model will likely do a lot of exploration before it can hit a single player. Once that particular location is marked as "reward location", the model will might overfocus on it.
 
-    * The upside is that if your map has terrains and structures, the model may learn to corner and "trap" players to certain locations for easy "kills".
+  * If your map has terrains and structures, the model may learn to corner and "trap" players to certain locations for easy "kills" or "targets".
 
   * Limited to one target at a time.
 

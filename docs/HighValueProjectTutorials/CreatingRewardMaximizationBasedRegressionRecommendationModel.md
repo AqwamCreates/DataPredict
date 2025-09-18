@@ -6,7 +6,7 @@ Currently, you need these to produce the model:
 
 * A neural network model
 
-* A reinforcement learning model (Deep-Q-Learning or Deep SARSA)
+* A soft actor-critic model
 
 * A player data that is stored in matrix
 

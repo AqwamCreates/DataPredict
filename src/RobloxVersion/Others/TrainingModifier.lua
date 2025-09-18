@@ -232,6 +232,12 @@ function TrainingModifier:reinforce(...)
 	
 end
 
+function TrainingModifier:update(...)
+
+	return self.Model:update(...)
+
+end
+
 function TrainingModifier:setModel(Model)
 	
 	self.Model = Model

@@ -24,16 +24,18 @@
 
 * [Churn prediction of mobile and online casual games using play log data](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0180735)
 
-### Reinforcement learning Based
-
-* [MAS4Games: A Reinforced Learning-Based Multi-agent System to Improve Player Retention in Virtual Reality Video Games](https://link.springer.com/chapter/10.1007/978-3-031-49368-3_7) (Conference Paper)
-
-  * Mainly covers dynamic difficulty adjustments, which is already covered in "High-Value Project Tutorials".
+### Reinforcement Learning Based
  
 * [Analyzing and Modeling User Retention Dynamics in a Free-to-Play Game: A Markovian Approach](https://www.diva-portal.org/smash/record.jsf?pid=diva2%3A1897554&dswid=-183) (Master Thesis)
+
+### General
 
 * [Personalized game design for improved user retention and monetization in freemium games](https://www.sciencedirect.com/science/article/abs/pii/S0167811625000060) (Journal Paper)
 
 ## Adaptive Difficulty System
 
 * [Personalized Game Design for Improved User Retention and Monetization in Freemium Mobile Games](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4653319) (Research Paper)
+
+### Reinforcement Learning Based
+
+* [MAS4Games: A Reinforced Learning-Based Multi-agent System to Improve Player Retention in Virtual Reality Video Games](https://link.springer.com/chapter/10.1007/978-3-031-49368-3_7) (Conference Paper)

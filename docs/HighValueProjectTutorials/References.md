@@ -46,10 +46,14 @@
 
 * [MAS4Games: A Reinforced Learning-Based Multi-agent System to Improve Player Retention in Virtual Reality Video Games](https://link.springer.com/chapter/10.1007/978-3-031-49368-3_7) (Conference Paper)
 
-* [Continuous Reinforcement Learning-based
-Dynamic Difficulty Adjustment in a Visual
-Working Memory Game](https://arxiv.org/pdf/2308.12726) (Research Paper)
+* [Continuous Reinforcement Learning-based Dynamic Difficulty Adjustment in a Visual Working Memory Game](https://arxiv.org/pdf/2308.12726) (Research Paper)
 
 ### General
 
 * [Personalized Game Design for Improved User Retention and Monetization in Freemium Mobile Games](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4653319) (Research Paper)
+
+## Targeting Systems
+
+### Machine Learning Based
+
+[Clustering for Multi-Target Tracking](https://www.diva-portal.org/smash/get/diva2:1167508/FULLTEXT01.pdf) (Master Thesis)

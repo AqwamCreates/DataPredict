@@ -91,3 +91,7 @@ Note: It is tough to find game-related recommendation systems. However, I still 
 ### Machine Learning Based
 
 [Clustering for Multi-Target Tracking](https://www.diva-portal.org/smash/get/diva2:1167508/FULLTEXT01.pdf) (Master Thesis)
+
+### Reinforcement Learning Based
+
+[Target Search and Navigation in Heterogeneous Robot Systems with Deep Reinforcement Learning](https://arxiv.org/pdf/2308.00331) (Research Paper)

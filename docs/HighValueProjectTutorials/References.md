@@ -20,6 +20,8 @@
 
 ### Machine Learning Based
 
+* [Predicting Player Churn of a Free-to-Play Mobile Video Game Using Supervised Machine Learning](https://www.mdpi.com/2076-3417/12/6/2795) (Research Paper)
+
 * [Predicting Player Churn in the Gaming Industry: A Machine Learning Framework for Enhanced Retention Strategies](https://ph04.tci-thaijo.org/index.php/JCST/article/view/7494) (Research Article)
 
 * [Retention Prediction in the Gaming Industry: Fuzzy Machine Learning Approach](https://link.springer.com/chapter/10.1007/978-3-031-08782-0_9) (Conference Paper)

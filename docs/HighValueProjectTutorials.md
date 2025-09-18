@@ -70,6 +70,8 @@
 
 * [Creating Classification-Based Recommendation Model](HighValueProjectTutorials/CreatingClassificationBasedRecommendationModel.md)
 
+  * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if multiple recommendations are made.
+
 * [Creating Reward-Maximization-Based Binary Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedBinaryRecommendationModel.md)
 
   * Limited to one recommendation at a time.

@@ -118,7 +118,7 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Reward-Maximization-Based Targeting Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedTargetingModel.md) (Incomplete)
+* [Creating Reward-Maximization-Based Targeting Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedTargetingModel.md)
 
   * If your map has terrains and structures, the model may learn to corner and "trap" players to certain locations for easy "kills" or "targets".
 

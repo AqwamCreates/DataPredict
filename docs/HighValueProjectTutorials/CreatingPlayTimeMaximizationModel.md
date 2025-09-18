@@ -166,7 +166,7 @@ local function run(Player)
 
     local eventName
 
-    local deployEventFunction
+    local eventFunction
 
     while isPlayerInServer do
 
@@ -174,9 +174,9 @@ local function run(Player)
     
         eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
-        deployEventFunction = eventFunctionDictionary[eventName]
+        eventFunction = eventFunctionDictionary[eventName]
 
-        if (deployEventFunction) then deployEventFunction() end
+        if (eventFunction) then eventFunction() end
 
         task.wait(30)
 

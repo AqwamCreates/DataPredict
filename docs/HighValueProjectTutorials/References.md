@@ -2,9 +2,11 @@
 
 ## Aqwam's (DataPredict's Creator) Papers
 
-* Investigating The Performance Of Model-Free Deep Reinforcement Learning In Roblox Ecosystem (Master Research Thesis)
+* Investigating The Performance Of Model-Free Deep Reinforcement Learning In Roblox Ecosystem (Master Research Thesis) (Thesis done. Waiting for publication.)
 
-* 
+* Impact Of Lua-Native Retention Machine Learning On Metaverse Experience On Roblox Ecosystem (Research Article)
+
+* DataPredict - A General Machine, Deep, Reinforcement Learning Library For Lua-Native Games. (Research Article)
 
 ## Retention
 
@@ -24,6 +26,6 @@
 
   * Mainly covers dynamic difficulty adjustments, which is already covered in "High-Value Project Tutorials".
  
-* [Analyzing and Modeling User Retention Dynamics in a Free-to-Play Game: A Markovian Approach](https://www.diva-portal.org/smash/record.jsf?pid=diva2%3A1897554&dswid=-183) 
+* [Analyzing and Modeling User Retention Dynamics in a Free-to-Play Game: A Markovian Approach](https://www.diva-portal.org/smash/record.jsf?pid=diva2%3A1897554&dswid=-183) (Master Thesis)
 
 * [Personalized game design for improved user retention and monetization in freemium games](https://www.sciencedirect.com/science/article/abs/pii/S0167811625000060) (Journal)

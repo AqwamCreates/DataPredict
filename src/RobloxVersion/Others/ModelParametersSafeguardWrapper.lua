@@ -90,26 +90,26 @@ function ModelParametersSafeguardWrapper:train(...)
 	
 end
 
-function ModelParametersSafeguardWrapper:predict(...)
-	
-	return self.Model:predict(...)
-	
-end
-
 function ModelParametersSafeguardWrapper:update(...)
-	
+
 	self.canUseModel = false
 
 	local Model = self.Model
 
 	local OriginalModelParameters = Model:getModelParameters()
-	
+
 	while true do
-		
+
 		Model:update(...)
-		
+
 	end
 
+end
+
+function ModelParametersSafeguardWrapper:predict(...)
+	
+	return self.Model:predict(...)
+	
 end
 
 function ModelParametersSafeguardWrapper:setModel(Model)

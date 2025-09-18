@@ -48,6 +48,8 @@
 
 * [Cold-Start Recommendation System Using K-Nearest Neighbor and Decision Tree in Movie Rating Prediction](https://www.researchgate.net/publication/378177376_Cold-Start_Recommendation_System_Using_K-Nearest_Neighbor_and_Decision_Tree_in_Movie_Rating_Prediction) (Bachelor Thesis)
 
+* [Sub-clustering based recommendation system for stroke patient: Identification of a specific drug class for a given patient](https://www.sciencedirect.com/science/article/abs/pii/S0010482524002014) (Research Paper)
+
 ## Adaptive Difficulty System
 
 ### Reinforcement Learning Based

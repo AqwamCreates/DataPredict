@@ -46,6 +46,8 @@
 
 * [Review of Clustering-Based Recommender Systems](https://arxiv.org/pdf/2109.12839) (Review Paper)
 
+* [Cold-Start Recommendation System Using K-Nearest Neighbor and Decision Tree in Movie Rating Prediction](https://www.researchgate.net/publication/378177376_Cold-Start_Recommendation_System_Using_K-Nearest_Neighbor_and_Decision_Tree_in_Movie_Rating_Prediction) (Bachelor Thesis)
+
 ## Adaptive Difficulty System
 
 ### Reinforcement Learning Based

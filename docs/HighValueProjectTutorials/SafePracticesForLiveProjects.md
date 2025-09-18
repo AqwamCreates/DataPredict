@@ -16,7 +16,7 @@ local canUseModel = false -- This flag is used to ensure that the model is not p
 
 local function checkIfIsAcceptableValue(value)
 
-    return (value == value) and (value ~= math.huge) and (value ~= -math.huge) and (type(value) == number)
+    return (value == value) and (value ~= math.huge) and (value ~= -math.huge) and (type(value) == "number")
 
 end
 

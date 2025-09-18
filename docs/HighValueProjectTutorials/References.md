@@ -14,7 +14,7 @@
 
 * DataPredict - A General Machine, Deep, Reinforcement Learning Library For Lua-Native Games (Research Article) (Secondary Priority)
 
-  * Again, not really my idea, but my clients recommend me to do it for the same reason as above.
+  * Again, not really my idea, but my clients recommend me to do it for the same reason as above. Same slow progress reasoning as above.
 
 ## Retention
 

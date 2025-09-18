@@ -49,6 +49,8 @@ Before we start training our model, we first need to build our model. We have sp
 
 local NeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
+local ClassesList = {"Recommend", "DoNotRecommend"}
+
 NeuralNetwork:setClassesList(ClassesList)
 
 NeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.

@@ -42,6 +42,8 @@ local ClassesList = {
   "Down",
   "Left",
   "Right",
+  "Lower",
+  "Lift",
   "Mark",
 
 }
@@ -147,9 +149,9 @@ local actionFunctionDictionary = {
   ["Down"] = down,
   ["Left"] = left,
   ["Right"] = right,
+  ["Lower"] = lower,
+  ["Lift"] = lift,
   ["Mark"] = mark,
-  ["LimitedTimeItemSpawnEvent"] = limitedTimeItemSpawnEvent,
-  ["LimitedTimeBossSpawnEvent"] = limitedTimeBossSpawnEvent,
 
 }
 
@@ -173,7 +175,7 @@ local function run()
 
         if (actionFunction) then actionFunction() end
 
-        -- Calculate the reward based on certain arbitary criteria like how many players it just killed and how fast the players are killed.
+        -- Calculate the reward based on certain arbitary criteria like how many players it just killed or how fast the players are killed.
 
         rewardValue = getRewardValue()
 

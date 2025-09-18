@@ -220,16 +220,16 @@ function TrainingModifier:train(...)
 	
 end
 
-function TrainingModifier:predict(...)
-	
-	return self.Model:predict(...)
-	
-end
-
 function TrainingModifier:update(...)
 
 	return self.Model:update(...)
 
+end
+
+function TrainingModifier:predict(...)
+	
+	return self.Model:predict(...)
+	
 end
 
 function TrainingModifier:setModel(Model)

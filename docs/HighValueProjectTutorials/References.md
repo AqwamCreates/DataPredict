@@ -56,7 +56,9 @@
 
 ### Machine Learning Based
 
-* [AI for dynamic difficulty adjustment in games](https://www.researchgate.net/publication/228889029_AI_for_dynamic_difficulty_adjustment_in_games)
+* [A Dynamic Difficulty Adjustment Algorithm With Generic Player Behavior Classification Unity Plugin In Single Player Games](https://dl.acm.org/doi/10.1145/3631085.3631286) (Research Paper)
+
+* [AI for dynamic difficulty adjustment in games](https://www.researchgate.net/publication/228889029_AI_for_dynamic_difficulty_adjustment_in_games) (Research Paper)
 
 ### Reinforcement Learning Based
 

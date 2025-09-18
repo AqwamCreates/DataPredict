@@ -223,17 +223,23 @@ We can just do getModel() twice to get our Neural Network model.
 
 --]]
 
-local DeepReinforcementLearningModel = RecommendationModel:getModel()
+local DeepReinforcementLearningModel = EnemyDataGenerationModel:getModel()
 
-local NeuralNetwork = DeepReinforcementLearningModel:getModel()
+local ActorNeuralNetwork = DeepReinforcementLearningModel:getActorModel()
 
--- Notice that we must get it from the Neural Network model.
+local CriticNeuralNetwork = DeepReinforcementLearningModel:getCriticModel()
 
-ModelParameters = NeuralNetwork:getModelParameters()
+-- Notice that we must get it from the actor and critic Neural Network models.
 
--- Notice that we must set it to the Neural Network model too.
+ActorModelParameters = ActorNeuralNetwork:getModelParameters()
 
-NeuralNetwork:setModelParameters(ModelParameters)
+CriticModelParameters = CriticNeuralNetwork:getModelParameters()
+
+-- Notice that we must set it to the actor and critic Neural Network models too.
+
+ActorNeuralNetwork:setModelParameters(ActorModelParameters)
+
+CriticNeuralNetwork:setModelParameters(CriticModelParameters)
 
 ```
 

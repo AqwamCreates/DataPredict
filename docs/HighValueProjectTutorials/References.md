@@ -8,7 +8,7 @@
 
   * Anonymized data to protect my clients' interests.
 
-  * Covers revenue and play time impact.
+  * Covers revenue, play time and player-returning-power.
 
   * Not really my idea, but my clients recommend me to do it so that they have a "scientific paper" to show off. Might take a while since I am focused on taking care of my brother plus my master research thesis.
 

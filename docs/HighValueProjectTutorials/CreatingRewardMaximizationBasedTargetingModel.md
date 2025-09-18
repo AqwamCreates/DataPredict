@@ -128,7 +128,7 @@ This is because reinforce() function is responsible for producing prediction and
 
 -- Here, you notice that there is a reward value being inserted here. Generally, when you first call this, the reward value should be zero.
 
-local eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+local actionName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
 ```
 
@@ -155,8 +155,6 @@ local actionFunctionDictionary = {
 
 local function run()
 
-    local isPlayerInServer = true
-
     local rewardValue = 0
 
     local playerDataVector
@@ -167,7 +165,7 @@ local function run()
 
     local heartbeatConnection = Runservice.Heartbeat:Connect(function()
 
-         playerDataVector = getPlayerDataVector(Player)
+        playerDataVector = getPlayerDataVector(Player)
     
         actionName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 

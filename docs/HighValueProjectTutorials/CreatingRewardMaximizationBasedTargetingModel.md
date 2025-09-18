@@ -140,7 +140,7 @@ Below, it shows an example code for this.
 
 ```lua
 
-local eventFunctionDictionary = {
+local actionFunctionDictionary = {
 
   ["NoEvent"] = nil,
   ["ResourceMultiplierEvent"] = resourceMultiplierEvent,
@@ -153,7 +153,7 @@ local eventFunctionDictionary = {
 
 }
 
-local function run(Player)
+local function run()
 
     local isPlayerInServer = true
 
@@ -161,21 +161,19 @@ local function run(Player)
 
     local playerDataVector
 
-    local eventName
+    local actionName
 
-    local deployEventFunction
+    local actionFunction
 
-    while isPlayerInServer do
+    local heartbeatConnection = Runservice.Heartbeat:Connect(function()
 
          playerDataVector = getPlayerDataVector(Player)
     
-        eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+        actionName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
-        deployEventFunction = eventFunctionDictionary[eventName]
+        actionFunction = actionFunctionDictionary[eventName]
 
-        if (deployEventFunction) then deployEventFunction() end
-
-        task.wait(30)
+        if (actionFunction) then actionFunction() end
 
         -- Player leaving the game is more of a "rarer" and "extremely undesirable" event, therefore a very large negative value is used.
 
@@ -183,7 +181,7 @@ local function run(Player)
 
         isPlayerInServer = checkIfPlayerIsInServer(Player)
 
-    end
+    end)
 
 end
 

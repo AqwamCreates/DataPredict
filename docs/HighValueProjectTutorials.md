@@ -2,7 +2,7 @@
 
 ### Disclaimer
 
-* References that validates the use cases can be found [here](HighValueProjectTutorials/References.md). It includes also includes my papers.
+* References that validates the use cases can be found [here](HighValueProjectTutorials/References.md). It also includes my papers.
 
 * Before you engage in integrating machine, deep and reinforcement learning models into live projects, I recommend you to have a look at safe practices [here](HighValueProjectTutorials/SafePracticesForLiveProjects.md).
 

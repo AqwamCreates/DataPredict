@@ -92,7 +92,7 @@
 
   * Find the center of players based on number of clusters.
 
-* [Creating Reward-Maximization-Based Targeting Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedTargetingModel.md)
+* [Creating Reward-Maximization-Based Targeting Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedTargetingModel.md) (Incomplete)
 
   * If your map has terrains and structures, the model may learn to corner and "trap" players to certain locations for easy "kills" or "targets".
 

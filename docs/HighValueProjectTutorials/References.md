@@ -44,7 +44,7 @@
 
 ### Machine Learning Based
 
-* [Review of Clustering-Based Recommender Systems](https://arxiv.org/pdf/2109.12839)
+* [Review of Clustering-Based Recommender Systems](https://arxiv.org/pdf/2109.12839) (Review Paper)
 
 ## Adaptive Difficulty System
 

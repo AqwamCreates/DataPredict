@@ -18,14 +18,18 @@ Before we start creating our model, we first need to visualize on how we will de
 
 -- We have five features with one "bias".
 
-local playerDataVector = {
+local allPlayerLocationDataVector = {
     {
         1,
-        numberOfCurrencyAmount,
-        numberOfItemsAmount,
-        timePlayedInCurrentSession,
-        timePlayedInAllSessions,
-        healthAmount
+        player1LocationX,
+        player1LocationY,
+        player1LocationZ,
+        player2LocationX,
+        player2LocationY,
+        player2LocationZ,
+        player3LocationX,
+        player3LocationY,
+        player3LocationZ,
     }
 }
 

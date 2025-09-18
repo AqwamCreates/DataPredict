@@ -42,6 +42,8 @@
 
 ## Recommendation System
 
+Note: It is tough to find game-related recommendation systems. However, I still used them to understand data collection and what item attributes to use when recommending an item.
+
 ### Machine Learning Based
 
 * [Review of Clustering-Based Recommender Systems](https://arxiv.org/pdf/2109.12839) (Review Paper)
@@ -51,6 +53,10 @@
 * [Sub-clustering based recommendation system for stroke patient: Identification of a specific drug class for a given patient](https://www.sciencedirect.com/science/article/abs/pii/S0010482524002014) (Research Paper)
 
 * [Performance Evaluation on E-Commerce Recommender System based on KNN, SVD, CoClustering and Ensemble Approaches](https://journals.mmupress.com/index.php/jiwe/article/view/1113) (Journal Paper)
+
+### General
+
+* [Game Recommendation System](https://www.researchgate.net/publication/376543652_Game_Recommendation_System) (Research Paper)
 
 ## Adaptive Difficulty System
 

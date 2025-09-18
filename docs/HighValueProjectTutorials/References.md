@@ -4,9 +4,9 @@
 
 * Investigating The Performance Of Model-Free Deep Reinforcement Learning In Roblox Ecosystem (Master Research Thesis) (Thesis done. Waiting for publication.)
 
-* Impact Of Lua-Native Retention Machine Learning Models On Metaverse Experience On Roblox Ecosystem (Research Article)
+* Impact Of Lua-Native Retention Machine Learning Models On Metaverse Experiences On Roblox Ecosystem (Research Article)
 
-* DataPredict - A General Machine, Deep, Reinforcement Learning Library For Lua-Native Games. (Research Article)
+* DataPredict - A General Machine, Deep, Reinforcement Learning Library For Lua-Native Games (Research Article)
 
 ## Retention
 
@@ -28,4 +28,8 @@
  
 * [Analyzing and Modeling User Retention Dynamics in a Free-to-Play Game: A Markovian Approach](https://www.diva-portal.org/smash/record.jsf?pid=diva2%3A1897554&dswid=-183) (Master Thesis)
 
-* [Personalized game design for improved user retention and monetization in freemium games](https://www.sciencedirect.com/science/article/abs/pii/S0167811625000060) (Journal)
+* [Personalized game design for improved user retention and monetization in freemium games](https://www.sciencedirect.com/science/article/abs/pii/S0167811625000060) (Journal Paper)
+
+## Adaptive Difficulty System
+
+* [Personalized Game Design for Improved User Retention and Monetization in Freemium Mobile Games](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4653319) (Research Paper)

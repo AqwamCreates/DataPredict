@@ -8,7 +8,7 @@
 
   * Therefore, creating or redistributing copies or derivatives of this page and its links' contents are not allowed.
 
-  * Commercial use is also not allowed without a license.
+  * Commercial use is also not allowed without a license (except certain conditions).
 
 * For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 

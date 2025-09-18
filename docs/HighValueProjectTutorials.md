@@ -92,7 +92,7 @@
 
   * Find the center of players based on number of clusters.
 
-* Creating Reward-Maximization-Based Targeting Model
+* [Creating Reward-Maximization-Based Targeting Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedTargetingModel.md)
 
   * If your map has terrains and structures, the model may learn to corner and "trap" players to certain locations for easy "kills" or "targets".
 
@@ -128,7 +128,7 @@
 
 * Creating Reward-Maximization-Based Reactionary AI Players
 
-  * Same as reward maximization-based AI players.
+  * Same as reward-maximization-based AI players.
  
   * The only difference is that you give counter attacks to players' potential attacks.
 

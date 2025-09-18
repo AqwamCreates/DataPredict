@@ -51,9 +51,9 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Tutorials
 
-* [Basic Tutorials](BasicTutorials.md)
-
 * [High-Value Project Tutorials](HighValueProjectTutorials.md) - Monetization, Retention And More!
+
+* [Basic Tutorials](BasicTutorials.md)
 
 * [Game Design Meets Machine Learning](GameDesignMeetsMachineLearning.md)
 

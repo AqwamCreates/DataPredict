@@ -62,7 +62,13 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias")
+local numberOfPlayers = 3
+
+local numberOfDirections = 3
+
+local numberOfFeatures = (numberOfPlayers * numberOfDirections) + 1 -- Includes one bias
+
+local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, numberOfFeatures}, -100, 100) -- 100 random data with 6 features (including one "bias")
 
 local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, "None")
 

@@ -16,17 +16,25 @@
 
 * [Creating Time-To-Leave Prediction Model](HighValueProjectTutorials/CreatingTimeToLeavePredictionModel.md)
 
+  * No need to add new content; the model can use existing content to optimize your game.
+
 * [Creating Probability-To-Leave Prediction Model](HighValueProjectTutorials/CreatingProbabilityToLeavePredictionModel.md)
+
+  * No need to add new content; the model can use existing content to optimize your game.
 
 * [Creating Left-Too-Early Detection Model](HighValueProjectTutorials/CreatingLeftTooEarlyDetectionModel.md)
 
    * Inverse of probability-to-leave model by detecting outliers.
+
+  * No need to add new content; the model can use existing content to optimize your game.
 
    * Highly exploitable if the player accumulates long session times over many sessions before suddenly decrease the session times gradually if rewards are involved.
 
 * [Creating Play Time Maximization Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationModel.md)
 
   * The model chooses actions or events that maximizes play time.
+
+  * No need to add new content; the model can use existing content to optimize your game.
 
   * Have higher play time potential due to its ability to exploit and explore than the other three models, but tend to be risky to use.
 
@@ -60,15 +68,21 @@
 
   * Every time a player kills an enemy, both player's combat data and enemy's data are used to train the model.
 
+  * No need to add new content; the model can use existing content to optimize your game.
+
 * [Creating Cluster-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingClusterBasedEnemyDataGenerationModel.md)
 
   * Uses players' combat data to generate the center of enemies' data.
+
+  * No need to add new content; the model can use existing content to optimize your game.
 
 * [Creating Reward-Maximization-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedDifficultyGenerationModel.md)
 
   * Every time an enemy is killed, the positive reward tells the model to "make more enemies similar to this". 
 
   * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "this enemy is not interesting to the player" or "this enemy is too hard for the player to kill".
+
+  * No need to add new content; the model can use existing content to optimize your game.
 
   * Have higher play time potential due to its ability to exploit and explore than the other two models, but tend to be risky to use.
 

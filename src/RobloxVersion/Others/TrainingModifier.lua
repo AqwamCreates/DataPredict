@@ -226,6 +226,12 @@ function TrainingModifier:predict(...)
 	
 end
 
+function TrainingModifier:reinforce(...)
+	
+	return self.Model:reinforce(...)
+	
+end
+
 function TrainingModifier:update(...)
 
 	return self.Model:update(...)
@@ -241,6 +247,18 @@ end
 function TrainingModifier:getModel()
 
 	return self.Model
+
+end
+
+function TrainingModifier:getModelParameters(...)
+
+	return self.Model:getModelParameters(...)
+
+end
+
+function TrainingModifier:setModelParameters(...)
+
+	self.Model:setModelParameters(...)
 
 end
 

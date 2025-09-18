@@ -74,6 +74,8 @@
 
 ### General
 
+* [Fuzzy Logic-Based Dynamic Difficulty Adjustment for Adaptive Game Environments](https://www.mdpi.com/2079-9292/14/1/146) (Conference Paper)
+
 * [Personalized Game Design for Improved User Retention and Monetization in Freemium Mobile Games](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4653319) (Research Paper)
 
 * [Exploring Dynamic Difficulty Adjustment Methods for Video Games](https://www.mdpi.com/2813-2084/3/2/12) (Conference Paper)

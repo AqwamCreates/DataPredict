@@ -20,7 +20,9 @@
 
 * [Enhancing Customer Retention in Online Games Using Customer Lifetime Value](https://norma.ncirl.ie/8711) (Master Thesis)
 
-* [Early churn prediction with personalized targeting in mobile social games](Early churn prediction with personalized targeting in mobile social games) (Conference Paper)
+* [Early churn prediction with personalized targeting in mobile social games](https://www.sciencedirect.com/science/article/abs/pii/S0957417417303044) (Conference Paper)
+
+* [Churn prediction of mobile and online casual games using play log data](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0180735)
 
 ### Reinforcement learning Based
 

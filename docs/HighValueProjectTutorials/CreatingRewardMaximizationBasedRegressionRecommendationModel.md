@@ -96,11 +96,9 @@ A standard deviation of 10 would make the model generate an enemy with the maxim
 --]]
 
 local actionStandardDeviationVector = {
-    {
-        enemyMaximumHealthStandardDeviation,
-        enemyMaximumDamageStandardDeviation,
-        enemyCashAmountStandardDeviation,
-    }
+
+    {probabilityStandardDeviation}
+
 }
 
 -- Next, we'll insert actionStandardDeviationVector to our quick setup constructor.
@@ -123,7 +121,7 @@ The code shown below demonstrate on how to generate the recommendation by the ti
 
 ```lua
 
-local function showRecommendations(itemName, itemDataVector, reward, previousActionMeanValue)
+local function showRecommendations(itemName, itemDataVector, rewardValue, previousActionMeanValue)
 
     local currentPlayerData = getPlayerDataVector()
 
@@ -133,7 +131,7 @@ local function showRecommendations(itemName, itemDataVector, reward, previousAct
 
     if (previousActionMeanValue) then RecommendationModel.previousActionMeanVector = {{previousActionMeanValue}} end
 
-    local action = RecommendationModel:reinforce(playerItemDataPairVector, 0)
+    local action = RecommendationModel:reinforce(playerItemDataPairVector, rewardValue)
 
     if (action == "Recommend") then
 
@@ -151,9 +149,9 @@ local function onShopGUIOpen()
 
     local randomItemName, randomDataVector = getRandomItem()
 
-    local reward = 0
+    local rewardValue = 0
 
-   showRecommendations(randomItemName, randomDataVector, reward)
+   showRecommendations(randomItemName, randomDataVector, rewardValue)
 
 end
 
@@ -165,9 +163,9 @@ end
 
 local function onItemPurchase(itemName, itemDataVector)
 
-     local reward = 50
+     local rewardValue = 50
 
-    showRecommendations(itemName, itemDataVector, reward, 1)
+    showRecommendations(itemName, itemDataVector, rewardValue, 1)
 
 end
 
@@ -179,9 +177,9 @@ end
 
 local function onShopGUIClose(lastShownItemName, lastItemDataVector)
 
-    local reward = -50
+    local rewardValue = -50
 
-   showRecommendations(lastShownItemName, lastItemDataVector, reward, -1)
+   showRecommendations(lastShownItemName, lastItemDataVector, rewardValue, -1)
 
 end
 

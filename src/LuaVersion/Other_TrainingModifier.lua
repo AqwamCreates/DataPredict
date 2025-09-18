@@ -26,7 +26,7 @@
 
 --]]
 
-local BaseInstance = require("Core_BaseInstance")
+local BaseIntstance = require("Core_BaseInstance")
 
 local TrainingModifier = {}
 
@@ -230,6 +230,12 @@ function TrainingModifier:reinforce(...)
 	
 	return self.Model:reinforce(...)
 	
+end
+
+function TrainingModifier:update(...)
+
+	return self.Model:update(...)
+
 end
 
 function TrainingModifier:setModel(Model)

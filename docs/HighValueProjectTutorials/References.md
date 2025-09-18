@@ -1,5 +1,11 @@
 # References
 
+## Aqwam's (DataPredict's Creator) Papers
+
+* Investigating The Performance Of Model-Free Deep Reinforcement Learning In Roblox Ecosystem (Master Research Thesis)
+
+* 
+
 ## Retention
 
 ### Machine Learning Based
@@ -14,9 +20,10 @@
 
 ### Reinforcement learning Based
 
-* [MAS4Games: A Reinforced Learning-Based Multi-agent System to Improve Player Retention in Virtual Reality Video Games](https://link.springer.com/chapter/10.1007/978-3-031-49368-3_7)
+* [MAS4Games: A Reinforced Learning-Based Multi-agent System to Improve Player Retention in Virtual Reality Video Games](https://link.springer.com/chapter/10.1007/978-3-031-49368-3_7) (Conference Paper)
 
   * Mainly covers dynamic difficulty adjustments, which is already covered in "High-Value Project Tutorials".
  
-* [Analyzing and Modeling User Retention Dynamics in a Free-to-Play Game: A Markovian Approach](https://www.diva-portal.org/smash/record.jsf?pid=diva2%3A1897554&dswid=-183)
-* 
+* [Analyzing and Modeling User Retention Dynamics in a Free-to-Play Game: A Markovian Approach](https://www.diva-portal.org/smash/record.jsf?pid=diva2%3A1897554&dswid=-183) 
+
+* [Personalized game design for improved user retention and monetization in freemium games](https://www.sciencedirect.com/science/article/abs/pii/S0167811625000060) (Journal)

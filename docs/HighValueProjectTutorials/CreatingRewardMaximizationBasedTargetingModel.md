@@ -142,12 +142,12 @@ Below, it shows an example code for this.
 
 local actionFunctionDictionary = {
 
-  ["NoEvent"] = nil,
-  ["ResourceMultiplierEvent"] = resourceMultiplierEvent,
-  ["QuestEvent"] = questEvent,
-  ["ItemSpawnEvent"] = itemSpawnEvent,
-  ["BossSpawnEvent"] = bossSpawnEvent,
-  ["LimitedTimeQuestEvent"] = limitedTimeQuestEvent,
+  ["None"] = nil,
+  ["Up"] = up,
+  ["Down"] = down,
+  ["Left"] = left,
+  ["Right"] = right,
+  ["Mark"] = mark,
   ["LimitedTimeItemSpawnEvent"] = limitedTimeItemSpawnEvent,
   ["LimitedTimeBossSpawnEvent"] = limitedTimeBossSpawnEvent,
 

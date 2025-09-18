@@ -124,6 +124,18 @@ function ModelParametersSafeguardWrapper:getModel()
 
 end
 
+function ModelParametersSafeguardWrapper:getModelParameters(...)
+
+	return self.Model:getModelParameters(...)
+
+end
+
+function ModelParametersSafeguardWrapper:setModelParameters(...)
+
+	self.Model:setModelParameters(...)
+
+end
+
 function ModelParametersSafeguardWrapper:getCanUseModel()
 	
 	return self.canUseModel

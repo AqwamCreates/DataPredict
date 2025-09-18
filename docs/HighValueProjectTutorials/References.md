@@ -6,7 +6,7 @@
 
 * Impact Of Lua-Native Retention Machine Learning Models On Metaverse Experiences On Roblox Ecosystem (Research Article)
 
-  * Anonymized Data To Protect My Clients' Interests.
+  * Anonymized data to protect my clients' interests.
 
 * DataPredict - A General Machine, Deep, Reinforcement Learning Library For Lua-Native Games (Research Article)
 

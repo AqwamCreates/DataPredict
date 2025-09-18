@@ -38,6 +38,7 @@ local playerDataVector = {
 local ClassesList = {
 
   "NoEvent",
+  "FreeGiftEvent",
   "ResourceMultiplierEvent",
   "QuestEvent",
   "ItemSpawnEvent",

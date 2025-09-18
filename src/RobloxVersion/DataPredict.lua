@@ -245,6 +245,8 @@ AqwamMachineAndDeepLearningLibrary.Others = {
 	TrainingModifier = require(Others.TrainingModifier),
 	
 	ModelParametersMerger = require(Others.ModelParametersMerger),
+	
+	ModelParametersSafeguardWrapper = require(Others.ModelParametersSafeguardWrapper),
 
 	ModelDatasetCreator = require(Others.ModelDatasetCreator),
 

@@ -18,9 +18,13 @@
 
   * No need to add new content; the model can use existing content to optimize your game.
 
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * [Creating Probability-To-Leave Prediction Model](HighValueProjectTutorials/CreatingProbabilityToLeavePredictionModel.md)
 
   * No need to add new content; the model can use existing content to optimize your game.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
 * [Creating Left-Too-Early Detection Model](HighValueProjectTutorials/CreatingLeftTooEarlyDetectionModel.md)
 
@@ -30,6 +34,8 @@
 
    * Highly exploitable if the player accumulates long session times over many sessions before suddenly decrease the session times gradually if rewards are involved.
 
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * [Creating Play Time Maximization Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationModel.md)
 
   * The model chooses actions or events that maximizes play time.
@@ -38,19 +44,27 @@
 
   * Have higher play time potential due to its ability to exploit and explore than the other three models, but tend to be risky to use.
 
+  * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if custom events are associated with the model's output.
+
 ## Regression Recommendation Systems
 
 * [Creating Probability-Based Recommendation Model](HighValueProjectTutorials/CreatingProbabilityBasedRecommendationModel.md)
 
+  * Minimal implementation takes a minimum of 2 hours using DataPredict™.
+
 * [Creating Similarity-Based Recommendation Model](HighValueProjectTutorials/CreatingSimilarityBasedRecommendationModel.md)
 
   * Memory-based model. May eat up storage space.
+
+  * Minimal implementation takes a minimum of 2 hours using DataPredict™.
 
 * [Creating Reward-Maximization-Based Regression Recommendation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedRegressionRecommendationModel.md)
 
   * Limited to one recommendation at a time.
 
   * Have higher monetization potential due to its ability to exploit and explore than the other two models, but tend to be risky to use.
+
+  * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if multiple recommendations are made.
 
 ## Binary Recommendation Systems
 
@@ -62,6 +76,8 @@
 
   * Have higher monetization potential due to its ability to exploit and explore than the classification-based model, but tend to be risky to use.
 
+  * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if multiple recommendations are made.
+
 ## Adaptive Difficulty Systems
 
 * [Creating Regression-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingRegressionBasedEnemyDataGenerationModel.md)
@@ -70,11 +86,15 @@
 
   * No need to add new content; the model can use existing content to optimize your game.
 
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * [Creating Cluster-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingClusterBasedEnemyDataGenerationModel.md)
 
   * Uses players' combat data to generate the center of enemies' data.
 
   * No need to add new content; the model can use existing content to optimize your game.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
 * [Creating Reward-Maximization-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedDifficultyGenerationModel.md)
 
@@ -86,11 +106,15 @@
 
   * Have higher play time potential due to its ability to exploit and explore than the other two models, but tend to be risky to use.
 
+  * Minimal implementation takes a minimum of 2 hours using DataPredict™.
+
 ## Targeting Systems
 
 * [Creating Cluster-Based Targeting Model](HighValueProjectTutorials/CreatingClusterBasedTargetingModel.md)
 
   * Find the center of players based on number of clusters.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
 * [Creating Reward-Maximization-Based Targeting Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedTargetingModel.md) (Incomplete)
 
@@ -101,6 +125,8 @@
   * Might be the most terrible idea out of this list. However, I will not stop game designers from making their games look "smart".
 
     * The model will likely do a lot of exploration before it can hit a single player. Once that particular location is marked as "reward location", the model will might overfocus on it.
+
+  * Minimal implementation takes a minimum of 2 hours using DataPredict™.
 
 ## AI Players
 

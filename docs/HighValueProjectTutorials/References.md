@@ -50,6 +50,8 @@
 
 * [Sub-clustering based recommendation system for stroke patient: Identification of a specific drug class for a given patient](https://www.sciencedirect.com/science/article/abs/pii/S0010482524002014) (Research Paper)
 
+* [Performance Evaluation on E-Commerce Recommender System based on KNN, SVD, CoClustering and Ensemble Approaches](https://journals.mmupress.com/index.php/jiwe/article/view/1113) (Journal Paper)
+
 ## Adaptive Difficulty System
 
 ### Reinforcement Learning Based

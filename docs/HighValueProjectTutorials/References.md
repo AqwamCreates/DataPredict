@@ -56,7 +56,7 @@
 
 * [Personalized Game Design for Improved User Retention and Monetization in Freemium Mobile Games](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4653319) (Research Paper)
 
-* [Exploring Dynamic Difficulty Adjustment Methods for Video Games](https://www.mdpi.com/2813-2084/3/2/12)
+* [Exploring Dynamic Difficulty Adjustment Methods for Video Games](https://www.mdpi.com/2813-2084/3/2/12) (Conference Paper)
 
 ## Targeting Systems
 

@@ -167,7 +167,7 @@ local function onItemPurchase(itemName, itemDataVector)
 
      local reward = 50
 
-    showRecommendations(itemName, itemDataVector, reward, "Recommend")
+    showRecommendations(itemName, itemDataVector, reward, 1)
 
 end
 
@@ -181,7 +181,7 @@ local function onShopGUIClose(lastShownItemName, lastItemDataVector)
 
     local reward = -50
 
-   showRecommendations(lastShownItemName, lastItemDataVector, reward, "DoNotRecommend")
+   showRecommendations(lastShownItemName, lastItemDataVector, reward, -1)
 
 end
 

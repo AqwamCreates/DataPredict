@@ -44,6 +44,8 @@
 
 ### Reinforcement Learning Based
 
+* [Investigating Reinforcement Learning for Dynamic Difficulty Adjustment](https://dl.acm.org/doi/10.1145/3631085.3631229) (Conference Paper)
+
 * [Dynamic difficulty adjustment using deep reinforcement learning: A review](https://www.researchgate.net/publication/383664462_Dynamic_difficulty_adjustment_using_deep_reinforcement_learning_A_review) (Review Paper)
 
 * [MAS4Games: A Reinforced Learning-Based Multi-agent System to Improve Player Retention in Virtual Reality Video Games](https://link.springer.com/chapter/10.1007/978-3-031-49368-3_7) (Conference Paper)

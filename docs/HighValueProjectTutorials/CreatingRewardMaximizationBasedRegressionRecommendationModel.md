@@ -131,9 +131,11 @@ local function showRecommendations(itemName, itemDataVector, rewardValue, previo
 
     if (previousActionMeanValue) then RecommendationModel.previousActionMeanVector = {{previousActionMeanValue}} end
 
-    local action = RecommendationModel:reinforce(playerItemDataPairVector, rewardValue)
+    local actionMeanVector = RecommendationModel:reinforce(playerItemDataPairVector, rewardValue)
 
-    if (action == "Recommend") then
+    local actionMeanValue = actionMeanVector[1][1]
+
+    if (actionMeanValue >= 0) then
 
         recommendItem(itemName)
 

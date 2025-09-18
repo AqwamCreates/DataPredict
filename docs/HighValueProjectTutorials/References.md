@@ -34,8 +34,10 @@
 
 ## Adaptive Difficulty System
 
-* [Personalized Game Design for Improved User Retention and Monetization in Freemium Mobile Games](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4653319) (Research Paper)
-
 ### Reinforcement Learning Based
 
 * [MAS4Games: A Reinforced Learning-Based Multi-agent System to Improve Player Retention in Virtual Reality Video Games](https://link.springer.com/chapter/10.1007/978-3-031-49368-3_7) (Conference Paper)
+
+### General
+
+* [Personalized Game Design for Improved User Retention and Monetization in Freemium Mobile Games](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4653319) (Research Paper)

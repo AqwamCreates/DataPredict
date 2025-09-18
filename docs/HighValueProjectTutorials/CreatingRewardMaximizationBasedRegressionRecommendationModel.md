@@ -1,4 +1,4 @@
-# Creating Reward-Maximization-Based Binary Recommendation Model
+# Creating Reward-Maximization-Based Regression Recommendation Model
 
 Hello guys! Today, I will be showing you on how to create a reward-maximization-based model that could predict the likelihood that the player will buy the item.
 

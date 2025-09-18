@@ -95,7 +95,7 @@ The code shown below demonstrate on how to generate the recommendation by the ti
 
 ```lua
 
-local function showRecommendations(itemName, itemDataVector, reward, previousAction)
+local function showRecommendations(itemName, itemDataVector, rewardValue, previousAction)
 
     local currentPlayerData = getPlayerDataVector()
 
@@ -105,7 +105,7 @@ local function showRecommendations(itemName, itemDataVector, reward, previousAct
 
     if (not previousAction) then RecommendationModel.previousAction = previousAction end
 
-    local action = RecommendationModel:reinforce(playerItemDataPairVector, 0)
+    local action = RecommendationModel:reinforce(playerItemDataPairVector, rewardValue)
 
     if (action == "Recommend") then
 
@@ -123,9 +123,9 @@ local function onShopGUIOpen()
 
     local randomItemName, randomDataVector = getRandomItem()
 
-    local reward = 0
+    local rewardValue = 0
 
-   showRecommendations(randomItemName, randomDataVector, reward)
+   showRecommendations(randomItemName, randomDataVector, rewardValue)
 
 end
 
@@ -137,9 +137,9 @@ end
 
 local function onItemPurchase(itemName, itemDataVector)
 
-     local reward = 50
+     local rewardValue = 50
 
-    showRecommendations(itemName, itemDataVector, reward, "Recommend")
+    showRecommendations(itemName, itemDataVector, reward, "rewardValue")
 
 end
 
@@ -151,9 +151,9 @@ end
 
 local function onShopGUIClose(lastShownItemName, lastItemDataVector)
 
-    local reward = -50
+    local rewardValue = -50
 
-   showRecommendations(lastShownItemName, lastItemDataVector, reward, "DoNotRecommend")
+   showRecommendations(lastShownItemName, lastItemDataVector, rewardValue, "DoNotRecommend")
 
 end
 

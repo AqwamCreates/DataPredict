@@ -123,7 +123,7 @@ The code shown below demonstrate on how to generate the recommendation by the ti
 
 ```lua
 
-local function showRecommendations(itemName, itemDataVector, reward, action)
+local function showRecommendations(itemName, itemDataVector, reward, previousActionMeanValue)
 
     local currentPlayerData = getPlayerDataVector()
 
@@ -131,7 +131,7 @@ local function showRecommendations(itemName, itemDataVector, reward, action)
 
      -- Forces the model's action to the selected one to make sure the model updates properly.
 
-    if (action) then RecommendationModel.previousAction = action end
+    if (previousActionMeanValue) then RecommendationModel.previousActionMeanVector = {{previousActionMeanValue}} end
 
     local action = RecommendationModel:reinforce(playerItemDataPairVector, 0)
 

@@ -86,10 +86,6 @@
 
   * Limited to one target at a time.
 
-## Anti-Cheats
-
-* Creating Anomaly Detection Model
-
 ## AI Players
 
 * Creating Data-Based AI Players
@@ -139,3 +135,7 @@
 * Creating Probability-Based Priority System
 
 * Creating Regression-Based Priority System
+
+## Anti-Cheats
+
+* Creating Anomaly Detection Model

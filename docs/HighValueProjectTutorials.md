@@ -122,7 +122,7 @@
 
   * If your map has terrains and structures, the model may learn to corner and "trap" players to certain locations for easy "kills" or "targets".
 
-  * Limited to one target at a time.
+  * Limited to one target at a time, but can take in multiple player locations.
 
   * Might be the most terrible idea out of this list. However, I will not stop game designers from making their games look "smart".
 

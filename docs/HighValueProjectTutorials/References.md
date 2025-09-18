@@ -10,6 +10,8 @@
 
 * DataPredict - A General Machine, Deep, Reinforcement Learning Library For Lua-Native Games (Research Article)
 
+  * Not really my idea, but my clients recommend me to do it so that they have a "scientific paper" to show off.
+
 ## Retention
 
 ### Machine Learning Based

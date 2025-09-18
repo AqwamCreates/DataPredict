@@ -4,7 +4,7 @@
 
 * Investigating The Performance Of Model-Free Deep Reinforcement Learning In Roblox Ecosystem (Master Research Thesis) (Thesis done. Translation to Malay is needed for my university's requirements.)
 
-* Impact Of Lua-Native Retention Machine Learning Models On Metaverse Experiences On Roblox Ecosystem (Research Article) (Secondary Priority)
+* Impact Of Lua-Native Machine Learning Retention Models On Metaverse Experiences On Roblox Ecosystem (Research Article) (Secondary Priority)
 
   * Anonymized data to protect my clients' interests.
 

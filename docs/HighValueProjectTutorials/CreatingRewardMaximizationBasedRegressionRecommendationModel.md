@@ -53,7 +53,7 @@ local ActorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfI
 
 ActorNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
 
-ActorNeuralNetwork:addLayer(3, false) -- Three enemy features and no bias.
+ActorNeuralNetwork:addLayer(1, false) -- We're outputing a single value.
 
 local CriticNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 

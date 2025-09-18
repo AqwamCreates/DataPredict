@@ -51,7 +51,9 @@ local DataPredict = require(DataPredict)
 
 local RecommendationModel = DataPredict.Models.NeuralNetwork.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
-RecommendationModel:setClassesList({"Recommend", "DoNotRecommend"})
+local ClassesList = {"Recommend", "DoNotRecommend"}
+
+RecommendationModel:setClassesList(ClassesList)
 
 RecommendationModel:addLayer(8, true) -- Six player data features, two item data features and one bias.
 

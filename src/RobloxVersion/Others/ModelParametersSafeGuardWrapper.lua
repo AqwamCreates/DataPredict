@@ -28,11 +28,11 @@
 
 local BaseIntstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-local ModelParametersSafeGuardWrapper = {}
+local ModelParametersSafeguardWrapper = {}
 
-ModelParametersSafeGuardWrapper.__index = ModelParametersSafeGuardWrapper
+ModelParametersSafeguardWrapper.__index = ModelParametersSafeguardWrapper
 
-setmetatable(ModelParametersSafeGuardWrapper, BaseIntstance)
+setmetatable(ModelParametersSafeguardWrapper, BaseIntstance)
 
 local function checkIfIsAcceptableValue(value)
 
@@ -40,25 +40,25 @@ local function checkIfIsAcceptableValue(value)
 
 end
 
-function ModelParametersSafeGuardWrapper.new(parameterDictionary)
+function ModelParametersSafeguardWrapper.new(parameterDictionary)
 	
-	local NewModelParametersSafeGuardWrapper = BaseIntstance.new(parameterDictionary)
+	local NewModelParametersSafeguardWrapper = BaseIntstance.new(parameterDictionary)
 	
-	setmetatable(NewModelParametersSafeGuardWrapper, ModelParametersSafeGuardWrapper)
+	setmetatable(NewModelParametersSafeguardWrapper, ModelParametersSafeguardWrapper)
 	
-	NewModelParametersSafeGuardWrapper:setName("ModelParametersSafeGuardWrapper")
+	NewModelParametersSafeguardWrapper:setName("ModelParametersSafeguardWrapper")
 	
-	NewModelParametersSafeGuardWrapper:setClassName("ModelParametersSafeGuardWrapper")
+	NewModelParametersSafeguardWrapper:setClassName("ModelParametersSafeguardWrapper")
 	
-	NewModelParametersSafeGuardWrapper.Model = parameterDictionary.Model
+	NewModelParametersSafeguardWrapper.Model = parameterDictionary.Model
 	
-	NewModelParametersSafeGuardWrapper.canUseModel = true
+	NewModelParametersSafeguardWrapper.canUseModel = true
 	
-	return NewModelParametersSafeGuardWrapper
+	return NewModelParametersSafeguardWrapper
 	
 end
 
-function ModelParametersSafeGuardWrapper:train(...)
+function ModelParametersSafeguardWrapper:train(...)
 	
 	self.canUseModel = false
 	
@@ -90,13 +90,13 @@ function ModelParametersSafeGuardWrapper:train(...)
 	
 end
 
-function ModelParametersSafeGuardWrapper:predict(...)
+function ModelParametersSafeguardWrapper:predict(...)
 	
 	return self.Model:predict(...)
 	
 end
 
-function ModelParametersSafeGuardWrapper:update(...)
+function ModelParametersSafeguardWrapper:update(...)
 	
 	self.canUseModel = false
 
@@ -112,22 +112,22 @@ function ModelParametersSafeGuardWrapper:update(...)
 
 end
 
-function ModelParametersSafeGuardWrapper:setModel(Model)
+function ModelParametersSafeguardWrapper:setModel(Model)
 	
 	self.Model = Model
 	
 end
 
-function ModelParametersSafeGuardWrapper:getModel()
+function ModelParametersSafeguardWrapper:getModel()
 
 	return self.Model
 
 end
 
-function ModelParametersSafeGuardWrapper:getCanUseModel()
+function ModelParametersSafeguardWrapper:getCanUseModel()
 	
 	return self.canUseModel
 	
 end
 
-return ModelParametersSafeGuardWrapper
+return ModelParametersSafeguardWrapper

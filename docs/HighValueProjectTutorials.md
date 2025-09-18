@@ -2,6 +2,8 @@
 
 ### Disclaimer
 
+* References that validates the use cases can be found [here](HighValueProjectTutorials/References.md)
+
 * Before you engage in integrating machine, deep and reinforcement learning models into live projects, I recommend you to have a look at safe practices [here](HighValueProjectTutorials/SafePracticesForLiveProjects.md).
 
 * The content of this page and its links are licensed under the DataPredict™ library's [Terms And Conditions](TermsAndConditions.md). This includes the codes shown in the links below.
@@ -11,8 +13,6 @@
   * Commercial use is also not allowed without a license (except certain conditions).
 
 * For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
-
-* References that validates the use cases can be found [here](HighValueProjectTutorials/References.md)
 
 ## Retention Systems
 

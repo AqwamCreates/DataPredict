@@ -54,6 +54,10 @@ Note: It is tough to find game-related recommendation systems. However, I still 
 
 * [Performance Evaluation on E-Commerce Recommender System based on KNN, SVD, CoClustering and Ensemble Approaches](https://journals.mmupress.com/index.php/jiwe/article/view/1113) (Journal Paper)
 
+### Reinforcement learning Based
+
+* [Reinforcement learning based recommender systems: A survey](https://arxiv.org/abs/2101.06286) (Survey Paper)
+
 ### General
 
 * [Game Recommendation System](https://www.researchgate.net/publication/376543652_Game_Recommendation_System) (Research Paper)

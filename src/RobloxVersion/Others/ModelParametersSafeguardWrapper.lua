@@ -124,7 +124,7 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(functionToRun) 
 
 		end
 		
-	until (isAcceptable)
+	until (isAcceptable) or (ignoreUpdateOnDefect)
 	
 	self.canUseModel = true
 	

@@ -70,6 +70,38 @@ local function checkIfModelParametersAreAcceptable(ModelParameters)
 	
 end
 
+local function filterOutDefectiveData(dataMatrix)
+
+	local rowToDeleteArray = {}
+
+	for i, dataVector in ipairs(dataMatrix) do
+
+		for j, value in ipairs(dataVector) do
+
+			if (checkIfIsAcceptableValue(value)) then continue end
+
+			table.insert(rowToDeleteArray, i)
+
+			break
+
+		end
+
+	end
+
+	local filteredDataMatrix = {}
+
+	for i = #dataMatrix, 1, -1 do
+
+		if (table.find(rowToDeleteArray, i)) then continue end
+
+		table.insert(filteredDataMatrix, dataMatrix[i])
+
+	end
+
+	return filteredDataMatrix
+
+end
+
 function ModelParametersSafeguardWrapper.new(parameterDictionary)
 	
 	local NewModelParametersSafeguardWrapper = BaseIntstance.new(parameterDictionary)

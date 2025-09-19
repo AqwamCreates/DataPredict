@@ -36,7 +36,7 @@ setmetatable(ModelParametersSafeguardWrapper, BaseIntstance)
 
 local defaultIgnoreUpdateOnDefect = false
 
-local defaultRemoveDefectiveDataOnUpdate = true
+local defaultRemoveDefectiveDataOnDefect = true
 
 local defaultStoreDefectiveUpdateInformation = false
 
@@ -84,7 +84,7 @@ function ModelParametersSafeguardWrapper.new(parameterDictionary)
 	
 	NewModelParametersSafeguardWrapper.ignoreUpdateOnDefect = NewModelParametersSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.ignoreUpdateOnDefect, defaultIgnoreUpdateOnDefect)
 	
-	NewModelParametersSafeguardWrapper.removeDefectiveDataOnUpdate = NewModelParametersSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.removeDefectiveDataOnUpdate, defaultRemoveDefectiveDataOnUpdate)
+	NewModelParametersSafeguardWrapper.removeDefectiveDataOnDefect = NewModelParametersSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.removeDefectiveDataOnDefect, defaultRemoveDefectiveDataOnDefect)
 	
 	NewModelParametersSafeguardWrapper.storeDefectiveUpdateInformation = NewModelParametersSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.storeDefectiveUpdateInformation, defaultStoreDefectiveUpdateInformation)
 	
@@ -104,7 +104,7 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, func
 
 	local ignoreUpdateOnDefect = self.ignoreUpdateOnDefect
 
-	local removeDefectiveDataOnUpdate = self.removeDefectiveDataOnUpdate
+	local removeDefectiveDataOnDefect = self.removeDefectiveDataOnDefect
 
 	local storeDefectiveUpdateInformation = self.storeDefectiveUpdateInformation
 	

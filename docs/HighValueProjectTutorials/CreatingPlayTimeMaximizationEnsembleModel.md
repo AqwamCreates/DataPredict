@@ -20,4 +20,34 @@
 ## Code
 
 ```lua
+
+local function getPlayerDataVector(Player)
+
+  return {
+    {
+        1,
+        numberOfCurrencyAmount,
+        numberOfItemsAmount,
+        timePlayedInCurrentSession,
+        timePlayedInAllSessions,
+        healthAmount
+    }
+}
+
+end
+
+local PlayTimeMaximziationModelClassesList = {
+
+  "NoEvent",
+  "FreeGiftEvent",
+  "ResourceMultiplierEvent",
+  "QuestEvent",
+  "ItemSpawnEvent",
+  "BossSpawnEvent",
+  "LimitedTimeQuestEvent",
+  "LimitedTimeItemSpawnEvent",
+  "LimitedTimeBossSpawnEvent",
+
+}
+
 ```

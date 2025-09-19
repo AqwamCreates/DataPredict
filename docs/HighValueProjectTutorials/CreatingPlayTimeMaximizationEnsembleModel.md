@@ -40,7 +40,7 @@ local function getPlayerDataVector(Player)
 
 end
 
-local PlayTimeMaximziationModelClassesList = {
+local PlayTimeMaximizationModelClassesList = {
 
   "NoEvent",
   "FreeGiftEvent",

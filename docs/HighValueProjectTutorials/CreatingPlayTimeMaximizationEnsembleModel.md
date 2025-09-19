@@ -60,9 +60,9 @@ local PlayTimeMaximizationModelClassesList = {
 
 ```lua
 
-local TimeToLeavePredictionModel = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 100, learningRate = 0.3})
+local TimeToLeavePredictionModel = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 10, learningRate = 0.3})
 
-local ProbabilityToLeavePredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 100, learningRate = 0.3})
+local ProbabilityToLeavePredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 10, learningRate = 0.3})
 
 -- The code shown below checks if we already have trained the models previously.
 

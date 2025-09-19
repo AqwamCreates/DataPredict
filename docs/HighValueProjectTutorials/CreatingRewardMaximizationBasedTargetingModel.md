@@ -72,7 +72,7 @@ local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, "None")
 
 ```
 
-However, this require setting the Neural Network's parameters to these settings temporarily so that it can be biased to "NoEvent" at start up as shown below.
+However, this require setting the Neural Network's parameters to these settings temporarily so that it can be biased to "None" at start up as shown below.
 
 ```lua
 

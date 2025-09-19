@@ -38,7 +38,7 @@ local defaultIgnoreUpdateOnDefect = false
 
 local defaultRemoveDefectiveDataOnUpdate = true
 
-local defaultStoreDefectiveData = false
+local defaultStoreDefectiveDataInformation = false
 
 local function checkIfIsAcceptableValue(value)
 
@@ -86,9 +86,11 @@ function ModelParametersSafeguardWrapper.new(parameterDictionary)
 	
 	NewModelParametersSafeguardWrapper.removeDefectiveDataOnUpdate = parameterDictionary.removeDefectiveDataOnUpdate or defaultRemoveDefectiveDataOnUpdate
 	
-	NewModelParametersSafeguardWrapper.storeDefectiveData = parameterDictionary.storeDefectiveData or defaultStoreDefectiveData
+	NewModelParametersSafeguardWrapper.storeDefectiveDataInformation = parameterDictionary.storeDefectiveDataInformation or defaultStoreDefectiveDataInformation
 	
 	NewModelParametersSafeguardWrapper.canUseModel = true
+	
+	NewModelParametersSafeguardWrapper.defectiveDataInformationDictionary = {}
 	
 	return NewModelParametersSafeguardWrapper
 	

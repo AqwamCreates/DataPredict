@@ -42,7 +42,7 @@ local function filterOutDefectiveData(dataMatrix)
 
   for i = #dataMatrix, 1, -1 do
 
-    if (table.find(rowToDeleteArray, i) then continue end
+    if (table.find(rowToDeleteArray, i)) then continue end
 
     table.insert(filteredDataMatrix, dataMatrix[i])
   

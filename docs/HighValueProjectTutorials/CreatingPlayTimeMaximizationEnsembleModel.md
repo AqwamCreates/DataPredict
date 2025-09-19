@@ -162,4 +162,30 @@ TimeToLeavePredictionModel:train(playerDataMatrix, timeToLeaveVector)
 
 ProbabilityToLeavePredictionModel:train(playerDataMatrix, probabilityToLeaveVector)
 
+-- Just getting our model parameters to save them
+
+TimeToLeavePredictionModelParameters = TimeToLeavePredictionModel:getModelParameters(true)
+
+ProbabilityToLeavePredictionModelParameters = ProbabilityToLeavePredictionModel:getModelParameters(true)
+
+--[[ 
+
+We then need to get our Neural Network model from the "Play Time Maximization Model". If you only kept the quick setup and discarded the rest, don't worry!
+
+We can just do getModel() twice to get our Neural Network model.
+
+--]]
+
+local DeepReinforcementLearningModel =  PlayTimeMaximizationModel:getModel()
+
+local NeuralNetwork = DeepReinforcementLearningModel:getModel()
+
+-- Notice that we must get it from the Neural Network model.
+
+ModelParameters = NeuralNetwork:getModelParameters()
+
+-- Notice that we must set it to the Neural Network model too.
+
+NeuralNetwork:setModelParameters(ModelParameters)
+
 ```

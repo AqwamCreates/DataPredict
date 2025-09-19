@@ -133,3 +133,25 @@ end
 ```
 
 ### While Player On Server
+
+### On Player Leave
+
+```lua
+
+local timeToLeaveVector = {}
+
+local probabilityToLeaveVector = {}
+
+for i = 1, snapshotIndex, 1 do
+
+  local timeToLeave = os.time() - initialJoinTime
+
+  -- To ensure that this does not result in negative probabilityToLeave value.
+
+  local clampedTimeToLeave = math.max(timeToLeave, 1)
+
+  local probabilityToLeave = 1 - (1 / clampedTimeToLeave)
+
+end
+
+```

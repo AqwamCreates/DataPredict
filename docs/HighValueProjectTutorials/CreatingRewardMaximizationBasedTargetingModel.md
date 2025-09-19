@@ -42,12 +42,12 @@ local playerLocationDataVector = {
 local ClassesList = {
 
   "None",
-  "Up",
-  "Down",
+  "Forward",
+  "Backward",
   "Left",
   "Right",
-  "Lower",
-  "Lift",
+  "Up",
+  "Down",
   "Mark",
 
 }
@@ -153,12 +153,12 @@ Below, it shows an example code for this.
 local actionFunctionDictionary = {
 
   ["None"] = nil,
-  ["Up"] = up,
-  ["Down"] = down,
+  ["Forward"] = up,
+  ["Backward"] = down,
   ["Left"] = left,
   ["Right"] = right,
-  ["Lower"] = lower,
-  ["Lift"] = lift,
+  ["Up"] = up,
+  ["Down"] = down,
   ["Mark"] = mark,
 
 }

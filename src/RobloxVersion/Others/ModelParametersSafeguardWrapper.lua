@@ -34,10 +34,40 @@ ModelParametersSafeguardWrapper.__index = ModelParametersSafeguardWrapper
 
 setmetatable(ModelParametersSafeguardWrapper, BaseIntstance)
 
+local defaultIgnoreUpdateOnDefect = false
+
+local defaultRemoveDefectiveDataOnUpdate = true
+
+local defaultStoreDefectiveData = false
+
 local function checkIfIsAcceptableValue(value)
 
 	return (value == value) and (value ~= math.huge) and (value ~= -math.huge) and (type(value) == "number")
 
+end
+
+local function checkIfModelParametersAreAcceptable(ModelParameters)
+	
+	local isAcceptable = true
+	
+	if (type(ModelParameters) == "table") then
+		
+		for _, value in ModelParameters do
+			
+			isAcceptable = checkIfModelParametersAreAcceptable(ModelParameters)
+			
+			if (not isAcceptable) then return false end
+			
+		end
+		
+	else
+		
+		isAcceptable = checkIfIsAcceptableValue(ModelParameters)
+		
+	end
+	
+	return isAcceptable
+	
 end
 
 function ModelParametersSafeguardWrapper.new(parameterDictionary)
@@ -52,58 +82,98 @@ function ModelParametersSafeguardWrapper.new(parameterDictionary)
 	
 	NewModelParametersSafeguardWrapper.Model = parameterDictionary.Model
 	
+	NewModelParametersSafeguardWrapper.ignoreUpdateOnDefect = parameterDictionary.ignoreUpdateOnDefect or defaultIgnoreUpdateOnDefect
+	
+	NewModelParametersSafeguardWrapper.removeDefectiveDataOnUpdate = parameterDictionary.removeDefectiveDataOnUpdate or defaultRemoveDefectiveDataOnUpdate
+	
+	NewModelParametersSafeguardWrapper.storeDefectiveData = parameterDictionary.storeDefectiveData or defaultStoreDefectiveData
+	
 	NewModelParametersSafeguardWrapper.canUseModel = true
 	
 	return NewModelParametersSafeguardWrapper
 	
 end
 
-function ModelParametersSafeguardWrapper:train(...)
+function ModelParametersSafeguardWrapper:runSandboxedEnvironment(functionToRun) -- For modularity sake.
 	
 	self.canUseModel = false
-	
+
 	local Model = self.Model
-	
+
+	local ignoreUpdateOnDefect = self.ignoreUpdateOnDefect
+
+	local removeDefectiveDataOnUpdate = self.removeDefectiveDataOnUpdate
+
+	local storeDefectiveData = self.storeDefectiveData
+
 	local OriginalModelParameters = Model:getModelParameters()
 	
-	local costArray
+	local isAcceptable
+	
+	local valueArray
 	
 	while true do
 		
-		costArray = Model:train(...)
-		
-		local finalCostValue = costArray[#costArray]
-		
-		if (checkIfIsAcceptableValue(finalCostValue)) then
+		isAcceptable, valueArray = functionToRun(Model)
+
+		if (isAcceptable) then
 
 			self.canUseModel = true
 
 			break
 
 		end
-		
+
 		Model:setModelParameters(OriginalModelParameters)
-		
+
+		if (ignoreUpdateOnDefect) then break end
+
 	end
 	
-	return costArray
+	if (valueArray) then return table.unpack(valueArray) end
+	
+end
+
+function ModelParametersSafeguardWrapper:train(...)
+	
+	local valueArray = {...}
+	
+	local costArray
+	
+	local finalCostValue
+	
+	local isAcceptableValue
+	
+	self:runSandboxedEnvironment(function(Model)
+		
+		costArray = Model:train(table.unpack(valueArray))
+
+		finalCostValue = costArray[#costArray]
+		
+		isAcceptableValue = checkIfIsAcceptableValue(finalCostValue)
+		
+		return isAcceptableValue, {costArray}
+		
+	end)
 	
 end
 
 function ModelParametersSafeguardWrapper:update(...)
+	
+	local valueArray = {...}
+	
+	local UpdatedModelParameters
 
-	self.canUseModel = false
+	self:runSandboxedEnvironment(function(Model)
 
-	local Model = self.Model
+		Model:update(table.unpack(valueArray))
+		
+		UpdatedModelParameters = Model:getModelParameters()
 
-	local OriginalModelParameters = Model:getModelParameters()
+		return checkIfModelParametersAreAcceptable(UpdatedModelParameters)
 
-	while true do
-
-		Model:update(...)
-
-	end
-
+	end)
+	
 end
 
 function ModelParametersSafeguardWrapper:predict(...)

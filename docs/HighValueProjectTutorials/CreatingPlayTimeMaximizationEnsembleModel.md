@@ -132,7 +132,84 @@ end
 
 ```
 
-### While Player On Server
+### On Player Join
+
+```
+
+local eventFunctionDictionary = {
+
+  ["NoEvent"] = nil,
+  ["ResourceMultiplierEvent"] = resourceMultiplierEvent,
+  ["QuestEvent"] = questEvent,
+  ["ItemSpawnEvent"] = itemSpawnEvent,
+  ["BossSpawnEvent"] = bossSpawnEvent,
+  ["LimitedTimeQuestEvent"] = limitedTimeQuestEvent,
+  ["LimitedTimeItemSpawnEvent"] = limitedTimeItemSpawnEvent,
+  ["LimitedTimeBossSpawnEvent"] = limitedTimeBossSpawnEvent,
+
+}
+
+local function run(Player)
+
+    local isPlayerInServer = true
+
+    local rewardValue = 0
+
+    local playerDataArray
+
+    local playerDataVector
+
+    local predictedTimeToLeave
+
+    local predictedProbabilityToLeave
+
+    local eventName
+
+    local eventFunction
+
+    local activatePlayTimeMaximization
+
+    while isPlayerInServer do
+
+        playerDataArray = getPlayerDataArray(Player)
+
+        snapshotData(playerDataArray)
+
+        playerDataVector = {playerDataArray}
+
+        predictedTimeToLeave = TimeToLeavePredictionModel:predict(playerDataArray)[1][1]
+
+        predictedProbabilityToLeave = ProbabilityToLeavePredictionModel:predict(playerDataArray)[1][1]
+
+        activatePlayTimeMaximization = (predictedProbabilityToLeave >= 0.5)
+
+        if (activatePlayTimeMaximization) then
+
+          eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+
+          eventFunction = eventFunctionDictionary[eventName]
+
+          if (eventFunction) then eventFunction() end
+
+        end
+
+        task.wait(predictedTimeToLeave)
+
+        -- Player leaving the game is more of a "rarer" and "extremely undesirable" event, therefore a very large negative value is used.
+
+        isPlayerInServer = checkIfPlayerIsInServer(Player)
+
+        if (activatePlayTimeMaximization) then
+
+          rewardValue = (isPlayerInServer and 20) or -100
+
+        end
+
+    end
+
+end
+
+```
 
 ### On Player Leave
 

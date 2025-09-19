@@ -108,27 +108,23 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(functionToRun) 
 
 	local OriginalModelParameters = Model:getModelParameters()
 	
-	local isAcceptable
+	local isAcceptable = false
 	
 	local valueArray
 	
-	while true do
+	repeat
 		
 		isAcceptable, valueArray = functionToRun(Model)
 
-		if (isAcceptable) then
+		if (not isAcceptable) then
 
-			self.canUseModel = true
-
-			break
+			Model:setModelParameters(OriginalModelParameters)
 
 		end
-
-		Model:setModelParameters(OriginalModelParameters)
-
-		if (ignoreUpdateOnDefect) then break end
-
-	end
+		
+	until (isAcceptable)
+	
+	self.canUseModel = true
 	
 	if (valueArray) then return table.unpack(valueArray) end
 	

@@ -47,7 +47,7 @@ local playerDataVector = {
     }
 }
 
-local initialJoinTime = os.time()
+local recordedTime = os.time()
 
 ```
 
@@ -110,7 +110,7 @@ By the time the player leaves, it is time for us to train the model. But first, 
 
 ```lua
 
-local timeToLeave = os.time() - initialJoinTime
+local timeToLeave = os.time() - recordedTime
 
 local wrappedTimeToLeave = {
 

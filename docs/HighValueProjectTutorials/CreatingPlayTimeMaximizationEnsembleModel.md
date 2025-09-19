@@ -103,3 +103,34 @@ local PlayTimeMaximizationModel = DataPredict.QuickSetups.CategoricalPolicy.new(
 PlayTimeMaximizationModel:setModel(DeepReinforcementLearningModel)
 
 ```
+
+### Player Data Collection
+
+```lua
+
+local playerDataMatrix = {}
+  
+local recordedTimeArray = {}
+  
+local snapshotIndex = 1
+  
+local function snapshotData()
+  
+ playerDataMatrix[snapshotIndex] = {
+
+    1,
+    numberOfCurrencyAmount,
+    numberOfItemsAmount,
+    timePlayedInCurrentSession,
+    timePlayedInAllSessions,
+    healthAmount
+
+  }
+  
+  recordedTimeArray[snapshotIndex] = os.time()
+  
+  snapshotIndex = snapshotIndex + 1
+
+end
+
+```

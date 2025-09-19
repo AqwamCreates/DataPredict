@@ -154,7 +154,7 @@ for i = 1, snapshotIndex, 1 do
 
   timeToLeaveVector[i] = {timeToLeave}
 
-  probabilityToLeaveVector[i] = {clampedTimeToLeave}
+  probabilityToLeaveVector[i] = {probabilityToLeave}
 
 end
 

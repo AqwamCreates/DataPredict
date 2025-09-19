@@ -66,6 +66,36 @@ TrainingModifier:predict(...): ...
 
 ...: The outputs are the same to the original model's predict() function.
 
+### getModelParameters()
+
+Gets the model parameters from the base model.
+
+```
+TrainingModifier:getModelParameters(doNotDeepCopy: boolean): ModelParameters
+```
+
+#### Parameters
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
+#### Returns
+
+* ModelParameters: A matrix/table containing model parameters fetched from the base model.
+
+### setModelParameters()
+
+Set the model parameters to the base model.
+
+```
+TrainingModifier:setModelParameters(ModelParameters: ModelParameters, doNotDeepCopy: boolean)
+```
+
+#### Parameters
+
+* ModelParameters: A matrix/table containing model parameters to be given to the base model.
+
+* doNotDeepCopy: Set whether or not to deep copy the model parameters.
+
 ## Inherited From
 
 * [BaseInstance](../Cores/BaseInstance.md)

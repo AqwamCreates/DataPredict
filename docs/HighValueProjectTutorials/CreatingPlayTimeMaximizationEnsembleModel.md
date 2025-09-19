@@ -19,6 +19,8 @@
 
 ## Code
 
+### Feature Vector And Classes List Design
+
 ```lua
 
 local function getPlayerDataVector(Player)
@@ -51,5 +53,15 @@ local PlayTimeMaximziationModelClassesList = {
   "LimitedTimeBossSpawnEvent",
 
 }
+
+```
+
+### Creating Time-To-Leave And Probability-To-Leave Prediction Models
+
+```
+
+local TimeToLeavePredictionModel = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+
+local ProbabilityoLeavePredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```

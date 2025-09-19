@@ -34,7 +34,7 @@ local function getPlayerDataVector(Player)
         timePlayedInAllSessions,
         healthAmount
     }
-}
+  }
 
 end
 

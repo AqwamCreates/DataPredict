@@ -60,9 +60,9 @@ local PlayTimeMaximizationModelClassesList = {
 
 ```lua
 
-local TimeToLeavePredictionModel = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local TimeToLeavePredictionModel = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 100, learningRate = 0.3})
 
-local ProbabilityToLeavePredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local ProbabilityToLeavePredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 100, learningRate = 0.3})
 
 -- The code shown below checks if we already have trained the models previously.
 
@@ -144,14 +144,22 @@ local probabilityToLeaveVector = {}
 
 for i = 1, snapshotIndex, 1 do
 
-  local timeToLeave = os.time() - initialJoinTime
+  local timeToLeave = os.time() - recordedTime[i]
 
-  -- To ensure that this does not result in negative probabilityToLeave value.
+  -- To ensure that this does not result in negative probabilityToLeave value if we're using sigmoid function for our logistic regression.
 
   local clampedTimeToLeave = math.max(timeToLeave, 1)
 
   local probabilityToLeave = 1 - (1 / clampedTimeToLeave)
 
+  timeToLeaveVector[i] = {timeToLeave}
+
+  probabilityToLeaveVector[i] = {clampedTimeToLeave}
+
 end
+
+TimeToLeavePredictionModel:train(playerDataMatrix, timeToLeaveVector)
+
+ProbabilityToLeavePredictionModel:train(playerDataMatrix, probabilityToLeaveVector)
 
 ```

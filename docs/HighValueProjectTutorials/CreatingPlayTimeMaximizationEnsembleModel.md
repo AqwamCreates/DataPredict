@@ -65,3 +65,45 @@ local TimeToLeavePredictionModel = DataPredict.Models.LinearRegression.new({maxi
 local ProbabilityToLeavePredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```
+
+### Constructing Our Neural Network
+
+```lua 
+
+local NeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
+
+NeuralNetwork:setClassesList(ClassesList)
+
+NeuralNetwork:addLayer(5, true) -- Five features and one bias.
+
+NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
+
+```
+
+### Constructing Our Deep Reinforcement Learning Model
+
+```lua
+
+-- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
+
+local DeepReinforcementLearningModel = DataPredict.Model.DeepStateActionRewardStateAction.new()
+
+-- Inserting our Neural Network here.
+
+DeepReinforcementLearningModel:setModel(NeuralNetwork)
+
+```
+
+### Constructing Our Categorical Policy Quick Setup Model
+
+This part makes it easier for us to set up our model, but it is not strictly necessary. However, I do recommend you to use them as they contain built-in functions for handing training and predictions.
+
+```lua
+
+local PlayTimeMaximizationModel = DataPredict.QuickSetups.CategoricalPolicy.new()
+
+-- Inserting our Deep Reinforcement Learning Model here.
+
+PlayTimeMaximizationModel:setModel(DeepReinforcementLearningModel)
+
+```

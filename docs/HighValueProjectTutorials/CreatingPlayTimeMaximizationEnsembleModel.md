@@ -23,6 +23,8 @@
 
 local function getPlayerDataVector(Player)
 
+-- We have five features with one "bias".
+
   return {
     {
         1,

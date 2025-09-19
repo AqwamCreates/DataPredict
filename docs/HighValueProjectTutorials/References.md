@@ -2,7 +2,7 @@
 
 ## Aqwam's (DataPredict's Creator) Papers
 
-* Investigating The Performance Of Model-Free Deep Reinforcement Learning In Roblox Ecosystem (Master Research Thesis) (Thesis done. Translation to Malay is needed for my university's requirements.)
+* Investigating The Performance Of Model-Free Deep Reinforcement Learning In Roblox Ecosystem (Master Research Thesis) (Thesis done. Translation to Malay is needed to meet my university's requirements.)
 
 * Impact Of Lua-Native Machine Learning Retention Models On Metaverse Experiences On Roblox Ecosystem (Research Paper) (Secondary Priority)
 

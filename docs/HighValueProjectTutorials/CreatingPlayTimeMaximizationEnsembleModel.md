@@ -64,6 +64,12 @@ local TimeToLeavePredictionModel = DataPredict.Models.LinearRegression.new({maxi
 
 local ProbabilityToLeavePredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
+-- The code shown below checks if we already have trained the models previously.
+
+if (TimeToLeavePredictionModelParameters) then TimeToLeavePredictionModel:setModelParameters(TimeToLeavePredictionModelParameters) end
+
+if (ProbabilityToLeavePredictionModelParameters) then ProbabilityToLeavePredictionModel:setModelParameters(ProbabilityToLeavePredictionModelParameters) end
+
 ```
 
 ### Constructing Play Time Maximization Model
@@ -77,6 +83,10 @@ NeuralNetwork:setClassesList(ClassesList)
 NeuralNetwork:addLayer(5, true) -- Five features and one bias.
 
 NeuralNetwork:addLayer(#PlayTimeMaximizationModelClassesList, false) -- No bias.
+
+-- This code shown below checks if we already have trained the models previously.
+
+if (PlayTimeMaximizationModelParameters) then NeuralNetwork:setModelParameters(PlayTimeMaximizationModelParameters) end
 
 -- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
 

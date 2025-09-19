@@ -12,7 +12,7 @@
 
   * Not really my idea, but my clients recommend me to do it so that they have a "scientific paper" to show off. Might take a while since I am focused on taking care of my brother plus my master research thesis.
 
-* DataPredict - A General Machine, Deep, Reinforcement Learning Library For Lua-Native Games (Research Article) (Secondary Priority)
+* DataPredict: A General Machine, Deep, Reinforcement Learning Library For Lua-Native Games (Research Article) (Secondary Priority)
 
   * Again, not really my idea, but the researchers using DataPredict recommend me to do it to make it easy to cite to their papers. Same slow progress reasoning as above.
 

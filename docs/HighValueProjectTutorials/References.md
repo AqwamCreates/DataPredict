@@ -16,7 +16,7 @@
 
   * Again, not really my idea, but the researchers using DataPredict recommend me to do it to make it easy to cite to their papers. Same slow progress reasoning as above.
 
-  * [Incomplete draft version here](References/DataPredict.md)
+  * Incomplete draft version can be found [here](References/DataPredict.md).
 
 ## Retention
 

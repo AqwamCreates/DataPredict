@@ -4,7 +4,7 @@
 
 * References that validates the use cases can be found [here](HighValueProjectTutorials/References.md). It also includes my papers.
 
-* For ensemble systems, you can have a look [here](HighValueProjectTutorials/EnsembleSystems.md).
+* For ensemble systems, you can have a look [here](HighValueProjectTutorials/EnsembleSystemsProjectTutorials.md).
 
 * Before you engage in integrating machine, deep and reinforcement learning models into live projects, I recommend you to have a look at safe practices [here](HighValueProjectTutorials/SafePracticesForLiveProjects.md).
 

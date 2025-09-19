@@ -52,13 +52,15 @@
 
 * [Creating Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationEnsembleModel.md)
 
-  * Uses a combination of
+  * Uses a combination of:
  
     * Time-To-Leave Prediction Model
    
     * Probability-To-Leave Prediction Model
    
     * Play Time Maximization Model
+
+  * Minimal implementation takes a minimum of 4 hours using DataPredict™.
 
 ## Regression Recommendation Systems
 

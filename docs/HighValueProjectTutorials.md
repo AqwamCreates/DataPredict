@@ -48,7 +48,7 @@
 
   * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if custom events are associated with the model's output.
 
-* [Creating Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationEnsembleModel.md) (Incomplete)
+* [Creating Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationEnsembleModel.md)
 
   * Uses a combination of:
  

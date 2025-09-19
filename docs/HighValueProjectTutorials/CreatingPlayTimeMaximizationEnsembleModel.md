@@ -113,19 +113,16 @@ local playerDataMatrix = {}
 local recordedTimeArray = {}
   
 local snapshotIndex = 1
-  
-local function snapshotData()
-  
- playerDataMatrix[snapshotIndex] = {
 
-    1,
-    numberOfCurrencyAmount,
-    numberOfItemsAmount,
-    timePlayedInCurrentSession,
-    timePlayedInAllSessions,
-    healthAmount
+local function getPlayerDataArray()
 
-  }
+  return {1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}
+
+end
+  
+local function snapshotData(playerDataArray)
+  
+ playerDataMatrix[snapshotIndex] = playerDataArray
   
   recordedTimeArray[snapshotIndex] = os.time()
   
@@ -134,3 +131,5 @@ local function snapshotData()
 end
 
 ```
+
+### While Player On Server

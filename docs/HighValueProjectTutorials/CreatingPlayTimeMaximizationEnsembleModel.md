@@ -76,7 +76,7 @@ NeuralNetwork:setClassesList(ClassesList)
 
 NeuralNetwork:addLayer(5, true) -- Five features and one bias.
 
-NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
+NeuralNetwork:addLayer(#PlayTimeMaximizationModelClassesList, false) -- No bias.
 
 -- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
 

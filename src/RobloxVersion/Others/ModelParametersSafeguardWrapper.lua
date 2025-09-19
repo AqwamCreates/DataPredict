@@ -78,11 +78,13 @@ local function filterOutDefectiveData(dataMatrix)
 
 		for j, value in ipairs(dataVector) do
 
-			if (checkIfIsAcceptableValue(value)) then continue end
+			if (not checkIfIsAcceptableValue(value)) then
+				
+				table.insert(rowToDeleteArray, i)
 
-			table.insert(rowToDeleteArray, i)
-
-			break
+				break
+				
+			end
 
 		end
 

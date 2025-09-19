@@ -184,8 +184,4 @@ local NeuralNetwork = DeepReinforcementLearningModel:getModel()
 
 ModelParameters = NeuralNetwork:getModelParameters()
 
--- Notice that we must set it to the Neural Network model too.
-
-NeuralNetwork:setModelParameters(ModelParameters)
-
 ```

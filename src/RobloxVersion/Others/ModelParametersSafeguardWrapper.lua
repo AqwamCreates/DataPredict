@@ -96,7 +96,7 @@ function ModelParametersSafeguardWrapper.new(parameterDictionary)
 	
 end
 
-function ModelParametersSafeguardWrapper:runSandboxedEnvironment(functionToRun) -- For modularity sake.
+function ModelParametersSafeguardWrapper:runSandboxedEnvironment(functionToRun)
 	
 	self.canUseModel = false
 

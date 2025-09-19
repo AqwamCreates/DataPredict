@@ -60,6 +60,8 @@ Note: It is tough to find game-related recommendation systems. However, I still 
 
 * [Reinforcement learning based recommender systems: A survey](https://arxiv.org/abs/2101.06286) (Survey Paper)
 
+* [A reinforcement learning recommender system using bi-clustering and Markov Decision Process](https://www.sciencedirect.com/science/article/pii/S0957417423020432) (Research Paper)
+
 ### General
 
 * [Game Recommendation System](https://www.researchgate.net/publication/376543652_Game_Recommendation_System) (Research Paper)

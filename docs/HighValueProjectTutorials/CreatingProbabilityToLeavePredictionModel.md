@@ -110,7 +110,7 @@ By the time the player leaves, it is time for us to train the model. But first, 
 
 ```lua
 
-local timeElapsed = os.time() - initialJoinTime
+local timeToLeave = os.time() - initialJoinTime
 
 ```
 
@@ -124,9 +124,9 @@ Currently, there are two ways to scale the probability.
 
 ```lua
 
-timeElapsed = math.max(timeElapsed, 0.01) -- To avoid division by zero that could lead to "inf" values.
+timeToLeave = math.max(timeToLeave, 0.01) -- To avoid division by zero that could lead to "inf" values.
 
-local probabilityToLeave = 1 - (1 / timeElapsed)
+local probabilityToLeave = 1 - (1 / timeToLeave)
 
 ```
 
@@ -136,7 +136,7 @@ local probabilityToLeave = 1 - (1 / timeElapsed)
 
 -- Large scaleFactor means slower growth. scaleFactor should be based on empirical average session length.
 
-local probabilityToLeave = 1 - math.exp(-timeElapsed / scaleFactor)
+local probabilityToLeave = 1 - math.exp(-timeToLeave / scaleFactor)
 
 ```
 

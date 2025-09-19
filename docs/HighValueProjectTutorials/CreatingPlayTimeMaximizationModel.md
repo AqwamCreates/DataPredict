@@ -180,11 +180,11 @@ local function run(Player)
 
         task.wait(30)
 
+        isPlayerInServer = checkIfPlayerIsInServer(Player)
+
         -- Player leaving the game is more of a "rarer" and "extremely undesirable" event, therefore a very large negative value is used.
 
         rewardValue = (isPlayerInServer and 20) or -100
-
-        isPlayerInServer = checkIfPlayerIsInServer(Player)
 
     end
 

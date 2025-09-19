@@ -38,7 +38,7 @@ local defaultIgnoreUpdateOnDefect = false
 
 local defaultRemoveDefectiveDataOnUpdate = true
 
-local defaultStoreDefectiveDataInformation = false
+local defaultStoreDefectiveUpdateInformation = false
 
 local function checkIfIsAcceptableValue(value)
 
@@ -86,17 +86,17 @@ function ModelParametersSafeguardWrapper.new(parameterDictionary)
 	
 	NewModelParametersSafeguardWrapper.removeDefectiveDataOnUpdate = NewModelParametersSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.removeDefectiveDataOnUpdate, defaultRemoveDefectiveDataOnUpdate)
 	
-	NewModelParametersSafeguardWrapper.storeDefectiveDataInformation = NewModelParametersSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.storeDefectiveDataInformation, defaultStoreDefectiveDataInformation)
+	NewModelParametersSafeguardWrapper.storeDefectiveUpdateInformation = NewModelParametersSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.storeDefectiveUpdateInformation, defaultStoreDefectiveUpdateInformation)
 	
 	NewModelParametersSafeguardWrapper.canUseModel = true
 	
-	NewModelParametersSafeguardWrapper.defectiveDataInformationDictionary = {}
+	NewModelParametersSafeguardWrapper.defectiveUpdateInformationDictionary = {}
 	
 	return NewModelParametersSafeguardWrapper
 	
 end
 
-function ModelParametersSafeguardWrapper:runSandboxedEnvironment(functionToRun)
+function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, functionToRun)
 	
 	self.canUseModel = false
 
@@ -106,13 +106,17 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(functionToRun)
 
 	local removeDefectiveDataOnUpdate = self.removeDefectiveDataOnUpdate
 
-	local storeDefectiveData = self.storeDefectiveData
+	local storeDefectiveUpdateInformation = self.storeDefectiveUpdateInformation
+	
+	local defectiveUpdateInformationDictionary = self.defectiveUpdateInformationDictionary
 
 	local OriginalModelParameters = Model:getModelParameters()
 	
 	local isAcceptable = false
 	
 	local valueArray
+	
+	local currentTimeString
 	
 	repeat
 		
@@ -121,6 +125,14 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(functionToRun)
 		if (not isAcceptable) then
 
 			Model:setModelParameters(OriginalModelParameters)
+			
+			if (storeDefectiveUpdateInformation) then
+				
+				currentTimeString = tostring(os.time())
+				
+				defectiveUpdateInformationDictionary[currentTimeString] = eventName
+				
+			end
 
 		end
 		
@@ -142,7 +154,7 @@ function ModelParametersSafeguardWrapper:train(...)
 	
 	local isAcceptableValue
 	
-	self:runSandboxedEnvironment(function(Model)
+	self:runSandboxedEnvironment("train", function(Model)
 		
 		costArray = Model:train(table.unpack(valueArray))
 
@@ -162,7 +174,7 @@ function ModelParametersSafeguardWrapper:update(...)
 	
 	local UpdatedModelParameters
 
-	self:runSandboxedEnvironment(function(Model)
+	self:runSandboxedEnvironment("update", function(Model)
 
 		Model:update(table.unpack(valueArray))
 		

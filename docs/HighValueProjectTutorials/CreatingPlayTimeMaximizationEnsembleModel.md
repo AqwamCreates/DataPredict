@@ -181,7 +181,7 @@ local function run(Player)
 
         predictedProbabilityToLeave = ProbabilityToLeavePredictionModel:predict(playerDataArray)[1][1]
 
-        activatePlayTimeMaximization = (predictedProbabilityToLeave >= 0.5)
+        activatePlayTimeMaximization = (predictedProbabilityToLeave >= 0.5) or (predictedTimeToLeave <= 5)
 
         if (activatePlayTimeMaximization) then
 

@@ -106,7 +106,7 @@ Note: It is tough to find game-related recommendation systems. However, I still 
 
 * [Deep Reinforcement Learning for UAV Target Search and Continuous Tracking in Complex Environments with Gaussian Process Regression and Prior Policy Embedding](https://www.mdpi.com/2079-9292/14/7/1330) (Research Paper)
 
-### Anti Cheats
+## Anti Cheats
 
 ### Machine Learning Based
 

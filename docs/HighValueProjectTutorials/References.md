@@ -110,4 +110,4 @@ Note: It is tough to find game-related recommendation systems. However, I still 
 
 ### Machine Learning Based
 
-[One-Class Classification: Taxonomy of Study and Review of Techniques](https://arxiv.org/pdf/1312.0049)
+[One-Class Classification: Taxonomy of Study and Review of Techniques](https://arxiv.org/pdf/1312.0049) (Review Paper)

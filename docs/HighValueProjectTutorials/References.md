@@ -98,16 +98,16 @@ Note: It is tough to find game-related recommendation systems. However, I still 
 
 ### Machine Learning Based
 
-[Clustering for Multi-Target Tracking](https://www.diva-portal.org/smash/get/diva2:1167508/FULLTEXT01.pdf) (Master Thesis)
+* [Clustering for Multi-Target Tracking](https://www.diva-portal.org/smash/get/diva2:1167508/FULLTEXT01.pdf) (Master Thesis)
 
 ### Reinforcement Learning Based
 
-[Target Search and Navigation in Heterogeneous Robot Systems with Deep Reinforcement Learning](https://arxiv.org/pdf/2308.00331) (Research Paper)
+* [Target Search and Navigation in Heterogeneous Robot Systems with Deep Reinforcement Learning](https://arxiv.org/pdf/2308.00331) (Research Paper)
 
-[Deep Reinforcement Learning for UAV Target Search and Continuous Tracking in Complex Environments with Gaussian Process Regression and Prior Policy Embedding](https://www.mdpi.com/2079-9292/14/7/1330) (Research Paper)
+* [Deep Reinforcement Learning for UAV Target Search and Continuous Tracking in Complex Environments with Gaussian Process Regression and Prior Policy Embedding](https://www.mdpi.com/2079-9292/14/7/1330) (Research Paper)
 
 ### Anti Cheats
 
 ### Machine Learning Based
 
-[One-Class Classification: Taxonomy of Study and Review of Techniques](https://arxiv.org/pdf/1312.0049) (Review Paper)
+* [One-Class Classification: Taxonomy of Study and Review of Techniques](https://arxiv.org/pdf/1312.0049) (Review Paper)

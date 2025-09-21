@@ -26,7 +26,7 @@
 
 --]]
 
-local IterativeMethodBaseModel = require("IterativeMethodBaseModel")
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 KMeansModel = {}
 
@@ -476,7 +476,7 @@ function KMeansModel:train(featureMatrix)
 	
 	local distanceMatrix
 	
-	local selectedKMeansFunction
+	local kMeansFunction
 
 	if (mode == "Hybrid") then -- This must be always above the centroid initialization check. Otherwise it will think this is second training round despite it being the first one!
 
@@ -484,9 +484,9 @@ function KMeansModel:train(featureMatrix)
 
 	end
 	
-	selectedKMeansFunction = kMeansFunctionList[mode]
+	kMeansFunction = kMeansFunctionList[mode]
 
-	if (not selectedKMeansFunction) then error("Unknown mode.") end
+	if (not kMeansFunction) then error("Unknown mode.") end
 	
 	if (mode == "Sequential") then maximumNumberOfIterations = 1 end
 	
@@ -508,7 +508,7 @@ function KMeansModel:train(featureMatrix)
 		
 		distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunction)
 
-		centroidMatrix, clusterAssignmentMatrix = selectedKMeansFunction(featureMatrix, centroidMatrix, distanceMatrix, numberOfDataPointVector)
+		centroidMatrix, clusterAssignmentMatrix = kMeansFunction(featureMatrix, centroidMatrix, distanceMatrix, numberOfDataPointVector)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 

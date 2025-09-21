@@ -8,9 +8,9 @@
 
 * Since DataPredict is written in native Lua, you can have extra compute per player by loading the model on players' Roblox client.
 
-  * Phone users: Likely have 4 GB - 8 GB RAM.
+  * Phone users: Likely have 4 GB - 8 GB RAM. Variable CPU.
  
-  * PC users: Likely have 8 GB - 16 GB RAM.
+  * PC users: Likely have 8 GB - 16 GB RAM. Variable CPU.
 
 * Before you engage in integrating machine, deep and reinforcement learning models into live projects, I recommend you to have a look at safe practices [here](HighValueProjectTutorials/SafePracticesForLiveProjects.md).
 

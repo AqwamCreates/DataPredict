@@ -138,7 +138,7 @@ This is because reinforce() function is responsible for producing prediction and
 
 -- Here, you notice that there is a reward value being inserted here. Generally, when you first call this, the reward value should be zero.
 
-local actionName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+local actionName = TargettingModel:reinforce(playerDistanceDifferenceDataVector, rewardValue)
 
 ```
 
@@ -177,7 +177,7 @@ local function run()
 
         playerDistanceDifferenceDataVector = getPlayerDistanceDifferenceDataVector(Player)
     
-        actionName = PlayTimeMaximizationModel:reinforce(playerDistanceDifferenceDataVector, rewardValue)
+        actionName = TargettingModel:reinforce(playerDistanceDifferenceDataVector, rewardValue)
 
         actionFunction = actionFunctionDictionary[eventName]
 

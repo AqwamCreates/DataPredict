@@ -76,8 +76,6 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	
 	KMeans = require(Models.KMeans),
 	
-	SequentialKMeans = require(Models.SequentialKMeans),
-	
 	ExpectationMaximization = require(Models.ExpectationMaximization),
 	
 	AgglomerativeHierarchical = require(Models.AgglomerativeHierarchical),

@@ -390,19 +390,13 @@ local function batchKMeans(featureMatrix, centroidMatrix, distanceFunction)
 	
 end
 
-local function sequentialKMeans(featureMatrix, centroidMatrix, distanceFunction)
+local function sequentialKMeans(featureMatrix, centroidMatrix, distanceFunction, numberOfDataPointVector)
+	
+	local numberOfData = #featureMatrix
 	
 	local numberOfClusters = #centroidMatrix
 	
-	local dimensionSizeArray = {#featureMatrix, numberOfClusters}
-	
-	local clusterAssignmentMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0) -- data x clusters
-	
-	if (maximumNumberOfIterations > 1) then
-
-		numberOfDataPointVector = AqwamTensorLibrary:createTensor({numberOfClusters, 1}, 0)
-
-	end
+	local clusterAssignmentMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters}, 0) -- data x clusters
 	
 	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunction)
 	
@@ -470,6 +464,8 @@ function KMeansModel:train(featureMatrix)
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
+	local numberOfClusters = self.numberOfClusters
+	
 	local distanceFunction = self.distanceFunction
 	
 	local mode = self.mode
@@ -488,17 +484,15 @@ function KMeansModel:train(featureMatrix)
 
 	if (mode == "Hybrid") then -- This must be always above the centroid initialization check. Otherwise it will think this is second training round despite it being the first one!
 
-		local selectedKMeansMode = (centroidMatrix and "Sequential") or "Batch"
-
-		selectedKMeansFunction = kMeansFunctionList[selectedKMeansMode]
-
-	else
-
-		selectedKMeansFunction = kMeansFunctionList[mode]
+		mode = (centroidMatrix and "Sequential") or "Batch"		
 
 	end
+	
+	selectedKMeansFunction = kMeansFunctionList[mode]
 
 	if (not selectedKMeansFunction) then error("Unknown mode.") end
+	
+	if (mode == "Sequential") then maximumNumberOfIterations = 1 end
 	
 	if (centroidMatrix) then
 		
@@ -506,7 +500,7 @@ function KMeansModel:train(featureMatrix)
 		
 	else
 		
-		centroidMatrix = self:initializeCentroids(featureMatrix, self.numberOfClusters, distanceFunction, self.setInitialClustersOnDataPoints, self.setTheCentroidsDistanceFarthest)
+		centroidMatrix = self:initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, self.setInitialClustersOnDataPoints, self.setTheCentroidsDistanceFarthest)
 		
 	end
 	
@@ -516,7 +510,7 @@ function KMeansModel:train(featureMatrix)
 		
 		self:iterationWait()
 
-		centroidMatrix, clusterAssignmentMatrix, distanceMatrix = selectedKMeansFunction(featureMatrix, centroidMatrix, distanceFunction)
+		centroidMatrix, clusterAssignmentMatrix, distanceMatrix = selectedKMeansFunction(featureMatrix, centroidMatrix, distanceFunction, numberOfDataPointVector)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 

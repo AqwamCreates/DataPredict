@@ -26,7 +26,7 @@
 
 --]]
 
-local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
+local IterativeMethodBaseModel = require("IterativeMethodBaseModel")
 
 KMeansModel = {}
 
@@ -488,7 +488,13 @@ function KMeansModel:train(featureMatrix)
 
 	if (not kMeansFunction) then error("Unknown mode.") end
 	
-	if (mode == "Sequential") then maximumNumberOfIterations = 1 end
+	if (mode == "Sequential") then
+		
+		numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClusters, 1}, 0)
+		
+		maximumNumberOfIterations = 1 
+		
+	end
 	
 	if (centroidMatrix) then
 		

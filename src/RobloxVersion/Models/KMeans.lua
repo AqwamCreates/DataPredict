@@ -378,7 +378,7 @@ function KMeansModel:initializeCentroids(featureMatrix, numberOfClusters, distan
 	
 end
 
-local function batchKMeans(featureMatrix, centroidMatrix, distanceMatrix)
+local function batchKMeans(centroidMatrix, distanceMatrix)
 
 	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix) -- data x clusters
 	
@@ -388,7 +388,7 @@ local function batchKMeans(featureMatrix, centroidMatrix, distanceMatrix)
 	
 end
 
-local function sequentialKMeans(featureMatrix, centroidMatrix, distanceMatrix, numberOfDataPointVector)
+local function sequentialKMeans(centroidMatrix, distanceMatrix, featureMatrix, numberOfDataPointVector)
 	
 	local numberOfData = #featureMatrix
 	
@@ -508,7 +508,7 @@ function KMeansModel:train(featureMatrix)
 		
 		distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunction)
 
-		centroidMatrix, clusterAssignmentMatrix = kMeansFunction(featureMatrix, centroidMatrix, distanceMatrix, numberOfDataPointVector)
+		centroidMatrix, clusterAssignmentMatrix = kMeansFunction(centroidMatrix, distanceMatrix, featureMatrix, numberOfDataPointVector)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 

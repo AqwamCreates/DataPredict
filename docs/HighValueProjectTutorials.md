@@ -6,7 +6,7 @@
 
 * The "minimal implementation time" assumes that a junior machine learning engineer is handling the implementation.
 
-* Since DataPredict is written in native Lua, you can have extra compute per player alonmgside a single server by loading the models on players' Roblox client.
+* Since DataPredict is written in native Lua, you can have extra compute per player alongside a single Roblox server by loading the models on players' Roblox client.
 
   * Phone users: Likely have 4 GB - 8 GB RAM. Variable CPU.
  

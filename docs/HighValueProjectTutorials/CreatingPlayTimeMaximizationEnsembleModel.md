@@ -7,11 +7,11 @@
 | Probability-To-Leave Prediction Model | Play Time Maximization Model |
 | Time-To-Leave Prediction Model        |                              |
 
-* Should the probability-to-leave be greater than 50% or less than 5 seconds, it activates the "Play Time Maximization Model". For the latter metric, even if the "Probability-To-Leave Prediction Model" says the player is unlikely to leave, we still have a chance that the player will leave in near term within a short period of time and the effects of leaving is permanent.
+* Should the probability-to-leave be greater than 50% or "time-to-leave" is less than 5 seconds, it activates the "Play Time Maximization Model". For the latter metric, even if the "Probability-To-Leave Prediction Model" says the player is unlikely to leave, we still have a chance that the player will leave in near term within a short period of time and the effects of player leaving is generally permanent.
 
 * Once "Play Time Maximization Model" chooses an event that it thinks it will increase play time, it will wait for the event's outcome based on "time-to-leave" value before receiving the rewards and update it.
 
-* Unlike using "Play Time Maximization Model" by itself, introducing "probability-to-leave" value as a trigger allows a more controlled exploration for "Play Time Maximization Model" as the lower "probability-to-leave" value gets ignored. As a result, a more risky intervention is only applied when players are likely to leave.
+* Unlike using "Play Time Maximization Model" by itself, introducing "probability-to-leave" value as a trigger allows a more controlled exploration for "Play Time Maximization Model" as the low "probability-to-leave" value and high "time-to-leave" gets ignored. As a result, a more risky intervention is only applied when players are likely to leave.
 
 * The first-layer model provides a strong signal about player state. Feeding that state into the final layer means the "Play Time Maximization Model" learns in contextually meaningful situations, which improves its long-term performance.
 

@@ -58,6 +58,8 @@
    
     * Play Time Maximization Model
 
+  * Less risky than the original "Play Time Maximization Model", but takes more time to implement.
+
   * Minimal implementation takes a minimum of 4 hours using DataPredict™.
 
 ## Regression Recommendation Systems

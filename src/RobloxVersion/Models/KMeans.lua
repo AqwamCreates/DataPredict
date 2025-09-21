@@ -28,19 +28,21 @@
 
 local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
-SequentialKMeansModel = {}
+KMeansModel = {}
 
-SequentialKMeansModel.__index = SequentialKMeansModel
+KMeansModel.__index = KMeansModel
 
-setmetatable(SequentialKMeansModel, IterativeMethodBaseModel)
+setmetatable(KMeansModel, IterativeMethodBaseModel)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local defaultMaximumNumberOfIterations = 1
+local defaultMaximumNumberOfIterations = 500
 
 local defaultNumberOfClusters = 2
 
 local defaultDistanceFunction = "Euclidean"
+
+local defaultMode = "Hybrid"
 
 local defaultStopWhenModelParametersDoesNotChange = false
 
@@ -137,6 +139,20 @@ local function assignToCluster(distanceMatrix) -- Number of columns -> number of
 	end
 
 	return clusterNumberVector, clusterDistanceVector
+	
+end
+
+local function checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClusterNumber, cluster)
+	
+	if (dataPointClusterNumber == cluster) then
+		
+		return 1
+		
+	else
+		
+		return 0
+		
+	end
 	
 end
 
@@ -258,31 +274,89 @@ local function chooseRandomCentroids(featureMatrix, numberOfClusters)
 
 end
 
-function SequentialKMeansModel.new(parameterDictionary)
+local function createClusterAssignmentMatrix(distanceMatrix) -- contains values of 0 and 1, where 0 is "does not belong to this cluster"
+	
+	local numberOfData = #distanceMatrix -- Number of rows
+	
+	local numberOfClusters = #distanceMatrix[1]
+	
+	local clusterAssignmentMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters})
+	
+	local dataPointClusterNumber
+	
+	for dataIndex = 1, numberOfData, 1 do
+		
+		local distanceVector = {distanceMatrix[dataIndex]}
+		
+		local vectorIndexArray, _ = AqwamTensorLibrary:findMinimumValueDimensionIndexArray(distanceVector)
+		
+		if (vectorIndexArray == nil) then continue end
+		
+		local clusterNumber = vectorIndexArray[2]
+		
+		clusterAssignmentMatrix[dataIndex][clusterNumber] = 1
+		
+	end
+	
+	return clusterAssignmentMatrix
+	
+end
+
+local function calculateCost(distanceMatrix, clusterAssignmentMatrix)
+	
+	local costMatrix = AqwamTensorLibrary:multiply(distanceMatrix, clusterAssignmentMatrix)
+	
+	local cost = AqwamTensorLibrary:sum(costMatrix)
+	
+	return cost
+	
+end
+
+local function calculateMean(clusterAssignmentMatrix, modelParameters)
+	
+	local sumOfAssignedCentroidVector = AqwamTensorLibrary:sum(clusterAssignmentMatrix, 1) -- since row is the number of data in clusterAssignmentMatrix, then we vertical sum it
+	
+	local newModelParameters = AqwamTensorLibrary:createTensor({#modelParameters, #modelParameters[1]})
+	
+	for cluster = 1, #modelParameters, 1 do
+		
+		sumOfAssignedCentroidVector[1][cluster] = math.max(1, sumOfAssignedCentroidVector[1][cluster])
+		
+		newModelParameters[cluster] = AqwamTensorLibrary:divide({modelParameters[cluster]}, sumOfAssignedCentroidVector[1][cluster])[1]
+		
+	end
+	
+	return newModelParameters
+	
+end
+
+function KMeansModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 	
-	local NewSequentialKMeansModel = IterativeMethodBaseModel.new(parameterDictionary)
+	local NewKMeansModel = IterativeMethodBaseModel.new(parameterDictionary)
 	
-	setmetatable(NewSequentialKMeansModel, SequentialKMeansModel)
+	setmetatable(NewKMeansModel, KMeansModel)
 	
-	NewSequentialKMeansModel:setName("SequentialKMeans")
+	NewKMeansModel:setName("KMeans")
 
-	NewSequentialKMeansModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
-
-	NewSequentialKMeansModel.numberOfClusters = parameterDictionary.numberOfClusters or defaultNumberOfClusters
-
-	NewSequentialKMeansModel.setInitialCentroidsOnDataPoints =  NewSequentialKMeansModel:getValueOrDefaultValue(parameterDictionary.setInitialCentroidsOnDataPoints, defaultSetInitialCentroidsOnDataPoints)
+	NewKMeansModel.numberOfClusters = parameterDictionary.numberOfClusters or defaultNumberOfClusters
 	
-	NewSequentialKMeansModel.setTheCentroidsDistanceFarthest = NewSequentialKMeansModel:getValueOrDefaultValue(parameterDictionary.setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
+	NewKMeansModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
+
+	NewKMeansModel.mode = parameterDictionary.mode or defaultMode
+
+	NewKMeansModel.setInitialCentroidsOnDataPoints =  NewKMeansModel:getValueOrDefaultValue(parameterDictionary.setInitialCentroidsOnDataPoints, defaultSetInitialCentroidsOnDataPoints)
 	
-	return NewSequentialKMeansModel
+	NewKMeansModel.setTheCentroidsDistanceFarthest = NewKMeansModel:getValueOrDefaultValue(parameterDictionary.setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
+	
+	return NewKMeansModel
 	
 end
 
-function SequentialKMeansModel:initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest)
+function KMeansModel:initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest)
 	
 	local ModelParameters
 	
@@ -304,7 +378,97 @@ function SequentialKMeansModel:initializeCentroids(featureMatrix, numberOfCluste
 	
 end
 
-function SequentialKMeansModel:train(featureMatrix)
+local function batchKMeans(featureMatrix, centroidMatrix, distanceFunction)
+	
+	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunction)
+
+	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix) -- data x clusters
+	
+	cost = self:calculateCostWhenRequired(numberOfIterations, function()
+
+		return calculateCost(distanceMatrix, clusterAssignmentMatrix)
+
+	end) 
+	
+	centroidMatrix = calculateMean(clusterAssignmentMatrix, centroidMatrix)
+	
+	numberOfDataPointVector = AqwamTensorLibrary:sum(clusterAssignmentMatrix, 2)
+	
+	numberOfDataPointVector = AqwamTensorLibrary:transpose(numberOfDataPointVector)
+	
+	return centroidMatrix, numberOfDataPointVector
+	
+end
+
+local function sequentialKMeans(featureMatrix, centroidMatrix, distanceFunction)
+	
+	local numberOfClusters = #centroidMatrix
+	
+	if (maximumNumberOfIterations > 1) then
+
+		numberOfDataPointVector = AqwamTensorLibrary:createTensor({numberOfClusters, 1}, 0)
+
+	end
+	
+	for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
+
+		local featureVector = {unwrappedFeatureVector}
+
+		local distanceVector = createDistanceMatrix(featureVector, centroidMatrix, distanceFunction)
+
+		local minimumDistance = math.huge
+
+		local clusterIndexWithMinimumDistance
+
+		for clusterIndex = 1, numberOfClusters, 1 do
+
+			local distance = distanceVector[1][clusterIndex]
+
+			if (distance < minimumDistance) then
+
+				minimumDistance = distance
+
+				clusterIndexWithMinimumDistance = clusterIndex
+
+			end
+
+		end
+
+		local numberOfDataPoints = numberOfDataPointVector[clusterIndexWithMinimumDistance][1] + 1
+
+		local centroidVector = {centroidMatrix[clusterIndexWithMinimumDistance]}
+
+		local centroidChangeVectorPart1 = AqwamTensorLibrary:subtract(featureVector, centroidVector)
+
+		local centroidChangeVector = AqwamTensorLibrary:multiply((1 / numberOfDataPoints), centroidChangeVectorPart1)
+
+		local newCentroidVector = AqwamTensorLibrary:add(centroidVector, centroidChangeVector)
+
+		numberOfDataPointVector[clusterIndexWithMinimumDistance][1] = numberOfDataPoints
+
+		centroidMatrix[clusterIndexWithMinimumDistance] = newCentroidVector[1]
+
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
+
+			return cost + minimumDistance
+
+		end) 
+
+	end
+	
+	return centroidMatrix
+	
+end
+
+local kMeansFunctionList = {
+	
+	["Batch"] = batchKMeans,
+	
+	["Sequential"] = sequentialKMeans,
+	
+}
+
+function KMeansModel:train(featureMatrix)
 	
 	local areModelParametersEqual
 	
@@ -316,17 +480,31 @@ function SequentialKMeansModel:train(featureMatrix)
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
-	local numberOfClusters = self.numberOfClusters
-	
 	local distanceFunction = self.distanceFunction
 	
+	local mode = self.mode
+	
 	local ModelParameters = self.ModelParameters or {}
-	
+
 	local centroidMatrix = ModelParameters[1]
-	
+
 	local numberOfDataPointVector = ModelParameters[2]
 	
-	local cost
+	local selectedKMeansFunction
+
+	if (mode == "Hybrid") then -- This must be always above the centroid initialization check. Otherwise it will think this is second training round despite it being the first one!
+
+		local selectedKMeansMode = (centroidMatrix and "Sequential") or "Batch"
+
+		selectedKMeansFunction = kMeansFunctionList[selectedKMeansMode]
+
+	else
+
+		selectedKMeansFunction = kMeansFunctionList[mode]
+
+	end
+
+	if (not selectedKMeansFunction) then error("Unknown mode.") end
 	
 	if (centroidMatrix) then
 		
@@ -334,95 +512,39 @@ function SequentialKMeansModel:train(featureMatrix)
 		
 	else
 		
-		centroidMatrix = self:initializeCentroids(featureMatrix, numberOfClusters, self.distanceFunction, self.setInitialClustersOnDataPoints, self.setTheCentroidsDistanceFarthest)
+		centroidMatrix = self:initializeCentroids(featureMatrix, self.numberOfClusters, distanceFunction, self.setInitialClustersOnDataPoints, self.setTheCentroidsDistanceFarthest)
 		
 	end
 	
 	repeat
 		
-		cost = 0
-		
 		numberOfIterations = numberOfIterations + 1
 		
 		self:iterationWait()
 		
-		if (maximumNumberOfIterations > 1) then
-
-			numberOfDataPointVector = AqwamTensorLibrary:createTensor({numberOfClusters, 1}, 0)
-
+		if cost then
+			
+			table.insert(costArray, cost)
+			
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+			
 		end
+
 		
-		for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
-			
-			local featureVector = {unwrappedFeatureVector}
-			
-			local distanceVector = createDistanceMatrix(featureVector, centroidMatrix, distanceFunction)
-			
-			local minimumDistance = math.huge
-			
-			local clusterIndexWithMinimumDistance
-			
-			for clusterIndex = 1, numberOfClusters, 1 do
-				
-				local distance = distanceVector[1][clusterIndex]
-				
-				if (distance < minimumDistance) then
-					
-					minimumDistance = distance
-					
-					clusterIndexWithMinimumDistance = clusterIndex
-					
-				end
-				
-			end
-			
-			local numberOfDataPoints = numberOfDataPointVector[clusterIndexWithMinimumDistance][1] + 1
-			
-			local centroidVector = {centroidMatrix[clusterIndexWithMinimumDistance]}
-			
-			local centroidChangeVectorPart1 = AqwamTensorLibrary:subtract(featureVector, centroidVector)
-			
-			local centroidChangeVector = AqwamTensorLibrary:multiply((1 / numberOfDataPoints), centroidChangeVectorPart1)
-			
-			local newCentroidVector = AqwamTensorLibrary:add(centroidVector, centroidChangeVector)
-			
-			numberOfDataPointVector[clusterIndexWithMinimumDistance][1] = numberOfDataPoints
-			
-			centroidMatrix[clusterIndexWithMinimumDistance] = newCentroidVector[1]
-			
-			cost = self:calculateCostWhenRequired(numberOfIterations, function()
-
-				return cost + minimumDistance
-
-			end) 
-
-			if (cost) then
-
-				table.insert(costArray, cost)
-
-				self:printNumberOfIterationsAndCost(numberOfIterations, cost)
-
-			end
-
-			if (self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)) then break end
-			
-		end
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	
-	self.ModelParameters = {centroidMatrix, numberOfDataPointVector}
+	self.ModelParameters = ModelParameters
 	
 	return costArray
 	
 end
 
-function SequentialKMeansModel:predict(featureMatrix, returnOriginalOutput)
+function KMeansModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local centroidMatrix = self.ModelParameters[1]
-	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, self.distanceFunction)
+	local distanceMatrix = createDistanceMatrix(featureMatrix, self.ModelParameters, self.distanceFunction)
 	
 	if (returnOriginalOutput) then return distanceMatrix end
 
@@ -432,4 +554,4 @@ function SequentialKMeansModel:predict(featureMatrix, returnOriginalOutput)
 	
 end
 
-return SequentialKMeansModel
+return KMeansModel

@@ -534,7 +534,7 @@ function KMeansModel:train(featureMatrix)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	
-	numberOfDataPointVector = AqwamTensorLibrary:sum(clusterAssignmentMatrix, 2) -- 1 x clusters
+	numberOfDataPointVector = AqwamTensorLibrary:sum(clusterAssignmentMatrix, 1) -- 1 x clusters
 
 	numberOfDataPointVector = AqwamTensorLibrary:transpose(numberOfDataPointVector) -- clusters x 1
 	

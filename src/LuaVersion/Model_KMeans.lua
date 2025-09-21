@@ -26,7 +26,7 @@
 
 --]]
 
-local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
+local IterativeMethodBaseModel = require("IterativeMethodBaseModel")
 
 KMeansModel = {}
 
@@ -508,7 +508,7 @@ function KMeansModel:train(featureMatrix)
 		
 		distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunction)
 
-		centroidMatrix, clusterAssignmentMatrix, distanceMatrix = selectedKMeansFunction(featureMatrix, centroidMatrix, distanceMatrix, numberOfDataPointVector)
+		centroidMatrix, clusterAssignmentMatrix = selectedKMeansFunction(featureMatrix, centroidMatrix, distanceMatrix, numberOfDataPointVector)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 

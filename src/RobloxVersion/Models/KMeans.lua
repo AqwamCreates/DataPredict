@@ -479,8 +479,8 @@ function KMeansModel:train(featureMatrix)
 	local kMeansFunction
 
 	if (mode == "Hybrid") then -- This must be always above the centroid initialization check. Otherwise it will think this is second training round despite it being the first one!
-
-		mode = (centroidMatrix and "Sequential") or "Batch"		
+		
+		mode = (centroidMatrix and numberOfDataPointVector and "Sequential") or "Batch"		
 
 	end
 	

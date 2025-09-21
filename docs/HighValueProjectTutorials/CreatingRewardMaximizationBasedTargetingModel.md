@@ -177,7 +177,7 @@ local function run()
 
         playerDistanceDifferenceDataVector = getPlayerDistanceDifferenceDataVector(Player)
     
-        actionName = PlayTimeMaximizationModel:reinforce(playerLocationDataVector, rewardValue)
+        actionName = PlayTimeMaximizationModel:reinforce(playerDistanceDifferenceDataVector, rewardValue)
 
         actionFunction = actionFunctionDictionary[eventName]
 

@@ -518,7 +518,7 @@ function KMeansModel:train(featureMatrix)
 
 		end)
 		
-		if cost then
+		if (cost) then
 
 			table.insert(costArray, cost)
 
@@ -542,7 +542,9 @@ end
 
 function KMeansModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, self.ModelParameters, self.distanceFunction)
+	local centroidMatrix = self.ModelParameters[1]
+	
+	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, self.distanceFunction)
 	
 	if (returnOriginalOutput) then return distanceMatrix end
 

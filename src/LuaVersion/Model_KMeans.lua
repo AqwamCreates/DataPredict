@@ -26,7 +26,7 @@
 
 --]]
 
-local IterativeMethodBaseModel = require"Model_IterativeMethodBaseModel")
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 KMeansModel = {}
 
@@ -378,27 +378,23 @@ function KMeansModel:initializeCentroids(featureMatrix, numberOfClusters, distan
 	
 end
 
-local function batchKMeans(featureMatrix, centroidMatrix, distanceFunction)
-	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunction)
+local function batchKMeans(featureMatrix, centroidMatrix, distanceMatrix)
 
 	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix) -- data x clusters
 	
 	centroidMatrix = calculateMean(clusterAssignmentMatrix, centroidMatrix)
 	
-	return centroidMatrix, clusterAssignmentMatrix, distanceMatrix
+	return centroidMatrix, clusterAssignmentMatrix
 	
 end
 
-local function sequentialKMeans(featureMatrix, centroidMatrix, distanceFunction, numberOfDataPointVector)
+local function sequentialKMeans(featureMatrix, centroidMatrix, distanceMatrix, numberOfDataPointVector)
 	
 	local numberOfData = #featureMatrix
 	
 	local numberOfClusters = #centroidMatrix
 	
 	local clusterAssignmentMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters}, 0) -- data x clusters
-	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunction)
 	
 	for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
 
@@ -440,7 +436,7 @@ local function sequentialKMeans(featureMatrix, centroidMatrix, distanceFunction,
 
 	end
 	
-	return centroidMatrix, clusterAssignmentMatrix, distanceMatrix
+	return centroidMatrix, clusterAssignmentMatrix
 	
 end
 
@@ -509,8 +505,10 @@ function KMeansModel:train(featureMatrix)
 		numberOfIterations = numberOfIterations + 1
 		
 		self:iterationWait()
+		
+		distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunction)
 
-		centroidMatrix, clusterAssignmentMatrix, distanceMatrix = selectedKMeansFunction(featureMatrix, centroidMatrix, distanceFunction, numberOfDataPointVector)
+		centroidMatrix, clusterAssignmentMatrix, distanceMatrix = selectedKMeansFunction(featureMatrix, centroidMatrix, distanceMatrix, numberOfDataPointVector)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 

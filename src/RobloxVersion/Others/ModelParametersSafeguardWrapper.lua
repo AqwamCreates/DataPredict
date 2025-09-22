@@ -44,16 +44,20 @@ local defaultStoreDefectiveUpdateInformation = false
 
 local defaultMaximumAcceptableCostMultiplier = 1
 
-local function getMaximumAcceptableCost(featureMatrix, labelMatrix)
+local function getMaximumAcceptableCost(featureMatrix, labelMatrix, ClassesList)
 	
 	local absoluteFeatureMatrix = AqwamTensorLibrary:applyFunction(math.abs, featureMatrix)
 	
 	local sum = AqwamTensorLibrary:sum(absoluteFeatureMatrix)
 	
-	if (labelMatrix) then
+	if (labelMatrix) and (ClassesList) then
+		
+		sum = sum + #labelMatrix
+		
+	elseif (labelMatrix) and (not ClassesList) then
 		
 		local absoluteLabelMatrix = AqwamTensorLibrary:applyFunction(math.abs, labelMatrix)
-		
+
 		sum = sum + AqwamTensorLibrary:sum(absoluteLabelMatrix)
 		
 	end

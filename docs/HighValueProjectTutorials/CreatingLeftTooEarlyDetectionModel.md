@@ -217,7 +217,7 @@ Once you receive the predicted label vector, you can grab the pure number output
 
 ```lua
 
-local stayProbability = predictedLabelVector[1][1]
+local predictedToStayProbability = predictedLabelVector[1][1]
 
 ```
 

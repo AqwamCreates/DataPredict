@@ -62,6 +62,8 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	
 	NeuralNetwork = require(Models.NeuralNetwork),
 	
+	OneClassSupportVectorMachine = require(Models.OneClassSupportVectorMachine),
+	
 	SupportVectorMachine = require(Models.SupportVectorMachine),
 	
 	KNearestNeighboursClassifier = require(Models.KNearestNeighboursClassifier),

@@ -48,7 +48,7 @@
 
 * [Creating Labelless Left-Too-Early Detection Model](HighValueProjectTutorials/CreatingLabellessLeftTooEarlyDetectionModel.md)
 
-  * Same as "Left-Too-Early Detection Model", but it does not require manual tracking of label data.
+  * Same as "Left-Too-Early Detection Model", but it does not require manual tracking of label data, which makes it less accurate.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
@@ -61,6 +61,12 @@
   * Have higher play time potential due to its ability to exploit and explore than the other four models, but tend to be risky to use.
 
   * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if custom events are associated with the model's output.
+
+* [Creating Engagement Milestone Detection Model](HighValueProjectTutorials/CreatingEngagementMilestoneDetectionModel.md) (Incomplete)
+
+  * Same as "Left-Too-Early Detection Model", except the final logic is changed, where the model periodically check if players are playing much more longer or more engaged than usual.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
 * [Creating Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationEnsembleModel.md)
 

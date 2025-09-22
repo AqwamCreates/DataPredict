@@ -4,7 +4,7 @@
 
     * ~1% of gross revenue per month for projects using DataPredict™. The percentage decreases as gross revenue increases.
 
-   * For metaverse-building companies, you can pitch your codes using the DataPredict like:
+   * For metaverse-building companies, you can pitch your codes using DataPredict™ like:
  
       * “Directly use DataPredict as-is, supported by original research.”
 
@@ -12,7 +12,7 @@
     
     * 3% of gross revenue per month for projects using DataPredict™.
     
-    * For metaverse-building companies, you can pitch your codes using the DataPredict like:
+    * For metaverse-building companies, you can pitch your codes using the DataPredict™ like:
 
       * “We took DataPredict, customized it, integrated it thoroughly, and provide full support.”
      

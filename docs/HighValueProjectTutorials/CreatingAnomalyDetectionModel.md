@@ -1,4 +1,4 @@
-# Creating Similarity-Based Recommendation Model
+# Creating Anomaly Detection Model
 
 Hello guys! Today, I will be showing you on how to create a similarity-based model that could predict the likelihood that the player will buy the item.
 

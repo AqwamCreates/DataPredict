@@ -86,9 +86,9 @@ However, this require setting the model's parameters to these settings temporari
 
 ```lua
 
-LeavePredictionModel.maximumNumberOfIterations = 100
+LeftToEarlyPredictionModel.maximumNumberOfIterations = 100
 
-LeavePredictionModel.learningRate = 0.3
+LeftToEarlyPredictionModel.learningRate = 0.3
 
 ```
 

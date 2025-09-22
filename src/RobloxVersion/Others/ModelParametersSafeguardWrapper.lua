@@ -42,7 +42,7 @@ local defaultStoreDefectiveUpdateInformation = false
 
 local function checkIfIsAcceptableValue(value)
 
-	return (value == value) and (value ~= math.huge) and (value ~= -math.huge) and (type(value) == "number")
+	return (value == value) and (value ~= math.huge) and (value ~= -math.huge)
 
 end
 
@@ -70,37 +70,75 @@ local function checkIfModelParametersAreAcceptable(ModelParameters)
 	
 end
 
-local function filterOutDefectiveData(dataMatrix)
+local function filterOutDefectiveData(featureMatrix, labelMatrix)
+	
+	local numberOfData = #featureMatrix
 
 	local rowToDeleteArray = {}
+	
+	local numberOfClasses
+	
+	if (labelMatrix) then
+		
+		numberOfClasses = #labelMatrix[1]
+		
+	end
+	
+	for i, featureVector in ipairs(featureMatrix) do
+		
+		local isAcceptableData = true
 
-	for i, dataVector in ipairs(dataMatrix) do
+		for f, featureValue in ipairs(featureVector) do
 
-		for j, value in ipairs(dataVector) do
-
-			if (not checkIfIsAcceptableValue(value)) then
+			if (not checkIfIsAcceptableValue(featureValue)) then
 				
 				table.insert(rowToDeleteArray, i)
+				
+				isAcceptableData = false
 
 				break
 				
 			end
 
 		end
+		
+		if (not isAcceptableData) then break end
+		
+		local labelVector = labelMatrix[i]
+		
+		for l = 1, numberOfClasses, 1 do
+			
+			if (not checkIfIsAcceptableValue(labelVector[l])) then
+
+				table.insert(rowToDeleteArray, i)
+				
+				isAcceptableData = false
+
+				break
+
+			end
+			
+		end
 
 	end
 
-	local filteredDataMatrix = {}
+	local filteredFeatureMatrix = {}
+	
+	local filteredLabelMatrix = {}
 
-	for i = #dataMatrix, 1, -1 do
+	for i = 1, numberOfData, -1 do
 
-		if (table.find(rowToDeleteArray, i)) then continue end
-
-		table.insert(filteredDataMatrix, dataMatrix[i])
+		if (not table.find(rowToDeleteArray, i)) then
+			
+			table.insert(filteredFeatureMatrix, featureMatrix[i])
+			
+			if (labelMatrix) then table.insert(filteredFeatureMatrix, labelMatrix[i]) end
+			
+		end
 
 	end
 
-	return filteredDataMatrix
+	return filteredFeatureMatrix, filteredLabelMatrix
 
 end
 
@@ -130,7 +168,7 @@ function ModelParametersSafeguardWrapper.new(parameterDictionary)
 	
 end
 
-function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, functionToRun)
+function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, valueArray, functionToRun)
 	
 	self.canUseModel = false
 
@@ -146,6 +184,8 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, func
 
 	local OriginalModelParameters = Model:getModelParameters()
 	
+	local internalValueArray = valueArray
+	
 	local isAcceptable = false
 	
 	local valueArray
@@ -154,7 +194,7 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, func
 	
 	repeat
 		
-		isAcceptable, valueArray = functionToRun(Model)
+		isAcceptable, valueArray = functionToRun(Model, internalValueArray)
 
 		if (not isAcceptable) then
 
@@ -165,6 +205,14 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, func
 				currentTimeString = tostring(os.time())
 				
 				defectiveUpdateInformationDictionary[currentTimeString] = eventName
+				
+			end
+			
+			if (removeDefectiveDataOnDefect) then
+				
+				local newInternalValueArray = {}
+				
+				newInternalValueArray[i] = 
 				
 			end
 
@@ -188,9 +236,9 @@ function ModelParametersSafeguardWrapper:train(...)
 	
 	local isAcceptableValue
 	
-	self:runSandboxedEnvironment("train", function(Model)
+	self:runSandboxedEnvironment("train", valueArray, function(Model, internalValueArray)
 		
-		costArray = Model:train(table.unpack(valueArray))
+		costArray = Model:train(table.unpack(internalValueArray))
 
 		finalCostValue = costArray[#costArray]
 		
@@ -208,9 +256,9 @@ function ModelParametersSafeguardWrapper:update(...)
 	
 	local UpdatedModelParameters
 
-	self:runSandboxedEnvironment("update", function(Model)
+	self:runSandboxedEnvironment("update", valueArray, function(Model, internalValueArray)
 
-		Model:update(table.unpack(valueArray))
+		Model:update(table.unpack(internalValueArray))
 		
 		UpdatedModelParameters = Model:getModelParameters()
 

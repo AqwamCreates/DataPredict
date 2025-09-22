@@ -72,7 +72,7 @@
    
     * Creating Left-Too-Early Detection Model
 
-  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+  * Minimal implementation takes a minimum of 4 hours using DataPredict™.
 
 * [Creating Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationEnsembleModel.md)
 

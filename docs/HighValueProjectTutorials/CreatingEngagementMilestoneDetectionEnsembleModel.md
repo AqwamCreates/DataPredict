@@ -195,11 +195,7 @@ for i = 1, snapshotIndex, 1 do
 
   local timeToLeave = os.time() - recordedTime[i]
 
-  -- To ensure that this does not result in negative probabilityToLeave value if we're using sigmoid function for our logistic regression.
-
-  local clampedTimeToLeave = math.max(timeToLeave, 1)
-
-  local probabilityToLeave = 1 / clampedTimeToLeave
+  local probabilityToLeave = 1 / timeToLeave
 
   timeToLeaveVector[i] = {timeToLeave}
 

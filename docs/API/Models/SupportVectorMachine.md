@@ -36,8 +36,6 @@ SupportVectorMachine.new(maximumNumberOfIterations: integer, cValue: number, ker
 
   *  Cosine
 
-* kernelParameters: A table containg the required parameters 
-
 #### Returns:
 
 * ModelObject: The generated model object.

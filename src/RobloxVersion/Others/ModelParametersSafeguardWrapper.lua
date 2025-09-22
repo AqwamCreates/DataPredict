@@ -102,7 +102,7 @@ local function removeDefectiveData(featureMatrix, labelMatrix) -- If even a sing
 
 		end
 		
-		if (labelMatrix) then
+		if (labelMatrix) and (isAcceptableData) then
 			
 			local labelVector = labelMatrix[i]
 

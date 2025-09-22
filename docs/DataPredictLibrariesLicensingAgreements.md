@@ -17,3 +17,11 @@
       * “We took DataPredict's research papers, build our own version and iterate it.”
      
       * "We build the whole machine learning library from scratch and build the whole system with it."
+
+* [Perpetual Internal Use Version]() (Incomplete)
+
+   * 50k USD upfront fee.
+ 
+   * Limited to the current latest version of DataPredict, DataPredict Neural and DataPredict Axon libraries.
+ 
+   * Derivatives are allowed as long as it is not copied off from DataPredict's future updates. 

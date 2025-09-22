@@ -42,7 +42,7 @@ local defaultStoreDefectiveUpdateInformation = false
 
 local function checkIfIsAcceptableValue(value)
 
-	return (value == value) and (value ~= math.huge) and (value ~= -math.huge)
+	return (value == value) and (value ~= math.huge) and (value ~= -math.huge) and (type(value) == "number")
 
 end
 
@@ -52,7 +52,7 @@ local function checkIfModelParametersAreAcceptable(ModelParameters)
 	
 	if (type(ModelParameters) == "table") then
 		
-		for _, value in ModelParameters do
+		for _, value in ipairs(ModelParameters) do
 			
 			isAcceptable = checkIfModelParametersAreAcceptable(value)
 			

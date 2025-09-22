@@ -434,10 +434,10 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
 
 	local kernelMatrix = kernelFunctionList[kernelFunction](featureMatrix, kernelParameters)
-
-	local numberOfIterations = 0
 	
 	local nNormal = math.floor(beta * numberOfData)
+	
+	local numberOfIterations = 0
 
 	local costArray = {}
 

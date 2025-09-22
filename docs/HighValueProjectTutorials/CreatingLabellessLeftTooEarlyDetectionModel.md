@@ -30,8 +30,6 @@ In here, what you need to do is:
 
 * Store initial player data as a vector of numbers.
 
-* Store the initial time that the player joined.
-
 Below, we will show you how to create this:
 
 ```lua

@@ -30,11 +30,11 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-local ModelParametersSafeguardWrapper = {}
+local ModelSafeguardWrapper = {}
 
-ModelParametersSafeguardWrapper.__index = ModelParametersSafeguardWrapper
+ModelSafeguardWrapper.__index = ModelSafeguardWrapper
 
-setmetatable(ModelParametersSafeguardWrapper, BaseInstance)
+setmetatable(ModelSafeguardWrapper, BaseInstance)
 
 local defaultIgnoreUpdateOnDefect = false
 
@@ -204,35 +204,35 @@ local function removeDefectiveData(featureMatrix, labelMatrix, ClassesList) -- I
 
 end
 
-function ModelParametersSafeguardWrapper.new(parameterDictionary)
+function ModelSafeguardWrapper.new(parameterDictionary)
 	
-	local NewModelParametersSafeguardWrapper = BaseInstance.new(parameterDictionary)
+	local NewModelSafeguardWrapper = BaseInstance.new(parameterDictionary)
 	
-	setmetatable(NewModelParametersSafeguardWrapper, ModelParametersSafeguardWrapper)
+	setmetatable(NewModelSafeguardWrapper, ModelSafeguardWrapper)
 	
-	NewModelParametersSafeguardWrapper:setName("ModelParametersSafeguardWrapper")
+	NewModelSafeguardWrapper:setName("ModelSafeguardWrapper")
 	
-	NewModelParametersSafeguardWrapper:setClassName("ModelParametersSafeguardWrapper")
+	NewModelSafeguardWrapper:setClassName("ModelSafeguardWrapper")
 	
-	NewModelParametersSafeguardWrapper.Model = parameterDictionary.Model
+	NewModelSafeguardWrapper.Model = parameterDictionary.Model
 	
-	NewModelParametersSafeguardWrapper.ignoreUpdateOnDefect = NewModelParametersSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.ignoreUpdateOnDefect, defaultIgnoreUpdateOnDefect)
+	NewModelSafeguardWrapper.ignoreUpdateOnDefect = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.ignoreUpdateOnDefect, defaultIgnoreUpdateOnDefect)
 	
-	NewModelParametersSafeguardWrapper.removeDefectiveDataOnDefect = NewModelParametersSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.removeDefectiveDataOnDefect, defaultRemoveDefectiveDataOnDefect)
+	NewModelSafeguardWrapper.removeDefectiveDataOnDefect = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.removeDefectiveDataOnDefect, defaultRemoveDefectiveDataOnDefect)
 	
-	NewModelParametersSafeguardWrapper.storeDefectiveUpdateInformation = NewModelParametersSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.storeDefectiveUpdateInformation, defaultStoreDefectiveUpdateInformation)
+	NewModelSafeguardWrapper.storeDefectiveUpdateInformation = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.storeDefectiveUpdateInformation, defaultStoreDefectiveUpdateInformation)
 	
-	NewModelParametersSafeguardWrapper.maximumAcceptableCostMultiplier = NewModelParametersSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.maximumAcceptableCostMultiplier, defaultMaximumAcceptableCostMultiplier)
+	NewModelSafeguardWrapper.maximumAcceptableCostMultiplier = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.maximumAcceptableCostMultiplier, defaultMaximumAcceptableCostMultiplier)
 	
-	NewModelParametersSafeguardWrapper.canUseModel = true
+	NewModelSafeguardWrapper.canUseModel = true
 	
-	NewModelParametersSafeguardWrapper.defectiveUpdateInformationDictionary = {}
+	NewModelSafeguardWrapper.defectiveUpdateInformationDictionary = {}
 	
-	return NewModelParametersSafeguardWrapper
+	return NewModelSafeguardWrapper
 	
 end
 
-function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, functionToRun, removeDefectFunction)
+function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, functionToRun, removeDefectFunction)
 	
 	self.canUseModel = false
 
@@ -296,7 +296,7 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, func
 	
 end
 
-function ModelParametersSafeguardWrapper:train(featureMatrix, labelMatrix)
+function ModelSafeguardWrapper:train(featureMatrix, labelMatrix)
 	
 	local costArray
 	
@@ -332,7 +332,7 @@ function ModelParametersSafeguardWrapper:train(featureMatrix, labelMatrix)
 	
 end
 
-function ModelParametersSafeguardWrapper:update(...)
+function ModelSafeguardWrapper:update(...)
 	
 	local valueArray = {...}
 	
@@ -350,40 +350,40 @@ function ModelParametersSafeguardWrapper:update(...)
 	
 end
 
-function ModelParametersSafeguardWrapper:predict(...)
+function ModelSafeguardWrapper:predict(...)
 	
 	return self.Model:predict(...)
 	
 end
 
-function ModelParametersSafeguardWrapper:setModel(Model)
+function ModelSafeguardWrapper:setModel(Model)
 	
 	self.Model = Model
 	
 end
 
-function ModelParametersSafeguardWrapper:getModel()
+function ModelSafeguardWrapper:getModel()
 
 	return self.Model
 
 end
 
-function ModelParametersSafeguardWrapper:getModelParameters(...)
+function ModelSafeguardWrapper:getModelParameters(...)
 
 	return self.Model:getModelParameters(...)
 
 end
 
-function ModelParametersSafeguardWrapper:setModelParameters(...)
+function ModelSafeguardWrapper:setModelParameters(...)
 
 	self.Model:setModelParameters(...)
 
 end
 
-function ModelParametersSafeguardWrapper:getCanUseModel()
+function ModelSafeguardWrapper:getCanUseModel()
 	
 	return self.canUseModel
 	
 end
 
-return ModelParametersSafeguardWrapper
+return ModelSafeguardWrapper

@@ -36,7 +36,7 @@ OneClassSupportVectorMachine.new(maximumNumberOfIterations: integer, cValue: num
 
   *  Cosine
 
-* beta
+* beta: Fraction of samples treated as normal during each training iteration (between 0 and 1). The higher the value, the more it will try to include all the datapoints. [Default: 0.9]
 
 #### Returns:
 
@@ -69,6 +69,8 @@ OneClassSupportVectorMachine:setParameters(maximumNumberOfIterations: integer, c
   *  Sigmoid
 
   *  Cosine
+
+* beta: Fraction of samples treated as normal during each training iteration (between 0 and 1). The higher the value, the more it will try to include all the datapoints. [Default: 0.9]
 
 ### setCValue()
 

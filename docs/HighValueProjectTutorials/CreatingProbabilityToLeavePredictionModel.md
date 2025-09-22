@@ -124,19 +124,7 @@ Currently, there are two ways to scale the probability.
 
 ```lua
 
---[[
-
-    To avoid division by zero that could lead to "inf" values.
-
-    Plus the logistic regression takes sigmoid function as default, and so it outputs between 0 and 1.
-
-    Hence, we cannot have timeToLeave be decimal values less than 1 since this would result in negative probabilityToLeave values.
-
---]]
-
-timeToLeave = math.max(timeToLeave, 1)
-
-local probabilityToLeave = 1 - (1 / timeToLeave)
+local probabilityToLeave = 1 / timeToLeave
 
 ```
 
@@ -146,7 +134,7 @@ local probabilityToLeave = 1 - (1 / timeToLeave)
 
 -- Large scaleFactor means slower growth. scaleFactor should be based on empirical average session length.
 
-local probabilityToLeave = 1 - math.exp(-timeToLeave / scaleFactor)
+local probabilityToLeave = math.exp(-timeToLeave / scaleFactor)
 
 ```
 

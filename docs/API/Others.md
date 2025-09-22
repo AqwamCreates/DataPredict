@@ -8,7 +8,7 @@
 
 [ModelParametersMerger](Others/ModelParametersMerger.md)
 
-[ModelParametersSafeguardWrapper](Others/ModelParametersSafeguardWrapper.md)
+[ModelSafeguardWrapper](Others/ModelSafeguardWrapper.md)
 
 [TrainingModifier](Others/TrainingModifier.md)
 

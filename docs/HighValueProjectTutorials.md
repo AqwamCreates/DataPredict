@@ -58,7 +58,7 @@
 
   * No need to add new content; the model can use existing content to optimize your games.
 
-  * Have higher play time potential due to its ability to exploit and explore than the other three models, but tend to be risky to use.
+  * Have higher play time potential due to its ability to exploit and explore than the other four models, but tend to be risky to use.
 
   * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if custom events are associated with the model's output.
 

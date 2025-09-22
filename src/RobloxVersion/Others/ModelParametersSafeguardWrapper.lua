@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 local ModelParametersSafeguardWrapper = {}
@@ -40,13 +42,47 @@ local defaultRemoveDefectiveDataOnDefect = true
 
 local defaultStoreDefectiveUpdateInformation = false
 
-local function checkIfIsAcceptableValue(value)
+local function getMaximumAcceptableCost(featureMatrix, labelMatrix)
+	
+	local absoluteFeatureMatrix = AqwamTensorLibrary:applyFunction(math.abs, featureMatrix)
+	
+	local sum = AqwamTensorLibrary:sum(absoluteFeatureMatrix)
+	
+	if (labelMatrix) then
+		
+		local absoluteLabelMatrix = AqwamTensorLibrary:applyFunction(math.abs, labelMatrix)
+		
+		sum = sum + AqwamTensorLibrary:sum(absoluteLabelMatrix)
+		
+	end
+	
+	return (sum * 3)
+	
+end
 
-	return (value == value) and (value ~= math.huge) and (value ~= -math.huge) and (type(value) == "number")
+local function checkIfIsAcceptableValue(value, minimumValue, maximumValue)
+	
+	local isValidValue = (value == value) and (value ~= math.huge) and (value ~= -math.huge) and (type(value) == "number")
+	
+	if (not isValidValue) then return false end
+	
+	if (minimumValue) then
+		
+		if (value < minimumValue) then return false end
+		
+	end
+	
+	if (maximumValue) then
+
+		if (value > maximumValue) then return false end
+
+	end
+
+	return true
 
 end
 
-local function checkIfModelParametersAreAcceptable(ModelParameters)
+local function checkIfModelParametersAreAcceptable(ModelParameters, minimumValue, maximumValue)
 	
 	local isAcceptable = true
 	
@@ -62,7 +98,7 @@ local function checkIfModelParametersAreAcceptable(ModelParameters)
 		
 	else
 		
-		isAcceptable = checkIfIsAcceptableValue(ModelParameters)
+		isAcceptable = checkIfIsAcceptableValue(ModelParameters, minimumValue, maximumValue)
 		
 	end
 	
@@ -70,7 +106,7 @@ local function checkIfModelParametersAreAcceptable(ModelParameters)
 	
 end
 
-local function removeDefectiveData(featureMatrix, labelMatrix) -- If even a single column contains a defective value, remove the whole row.
+local function removeDefectiveData(featureMatrix, labelMatrix, ClassesList) -- If even a single column contains a defective value, remove the whole row.
 	
 	local numberOfData = #featureMatrix
 
@@ -105,19 +141,35 @@ local function removeDefectiveData(featureMatrix, labelMatrix) -- If even a sing
 		if (labelMatrix) and (isAcceptableData) then
 			
 			local labelVector = labelMatrix[i]
-
-			for l = 1, numberOfClasses, 1 do
-
-				if (not checkIfIsAcceptableValue(labelVector[l])) then
-
+			
+			if (ClassesList) then
+				
+				if (not table.find(ClassesList, labelVector[1])) then
+					
 					rowToDeleteArray[i] = true
 
 					isAcceptableData = false
-
+					
 					break
+					
+				end
+				
+			else
+				
+				for l = 1, numberOfClasses, 1 do
+
+					if (not checkIfIsAcceptableValue(labelVector[l])) then
+
+						rowToDeleteArray[i] = true
+
+						isAcceptableData = false
+
+						break
+
+					end
 
 				end
-
+				
 			end
 			
 		end
@@ -126,20 +178,22 @@ local function removeDefectiveData(featureMatrix, labelMatrix) -- If even a sing
 
 	local filteredFeatureMatrix = {}
 	
-	local filteredLabelMatrix = {}
+	local filteredLabelMatrix
+	
+	if (labelMatrix) then filteredLabelMatrix = {} end
 
 	for i = 1, numberOfData, 1 do
 
 		if (not rowToDeleteArray[i]) then
-			
+
 			table.insert(filteredFeatureMatrix, featureMatrix[i])
-			
+
 			if (labelMatrix) then table.insert(filteredLabelMatrix, labelMatrix[i]) end
-			
+
 		end
 
 	end
-
+	
 	return filteredFeatureMatrix, filteredLabelMatrix
 
 end
@@ -242,19 +296,25 @@ function ModelParametersSafeguardWrapper:train(featureMatrix, labelMatrix)
 	
 	local isAcceptableValue
 	
+	local maximumAcceptableCost
+	
+	local ClassesList = self.Model.ClassesList
+	
 	self:runSandboxedEnvironment("train", function(Model)
 		
 		costArray = Model:train(featureMatrix, labelMatrix)
+		
+		maximumAcceptableCost = getMaximumAcceptableCost(featureMatrix, labelMatrix)
 
 		finalCostValue = costArray[#costArray]
 		
-		isAcceptableValue = checkIfIsAcceptableValue(finalCostValue)
+		isAcceptableValue = checkIfIsAcceptableValue(finalCostValue, -maximumAcceptableCost, maximumAcceptableCost)
 		
 		return isAcceptableValue, {costArray}
 		
 	end, function()
 		
-		featureMatrix, labelMatrix = removeDefectiveData(featureMatrix, labelMatrix)
+		featureMatrix, labelMatrix = removeDefectiveData(featureMatrix, labelMatrix, ClassesList)
 		
 	end)
 	

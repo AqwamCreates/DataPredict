@@ -213,3 +213,5 @@
 ## Anti-Cheats
 
 * [Creating Anomaly Detection Model](HighValueProjectTutorials/CreatingAnomalyDetectionModel.md)
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.

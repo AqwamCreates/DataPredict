@@ -186,15 +186,17 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, func
 
 	local OriginalModelParameters = Model:getModelParameters()
 	
-	local isAcceptable, valueArray
+	local isAcceptable = false
 	
-	local isSucessful = pcall(function()
+	local valueArray
+	
+	local isSuccessful = pcall(function()
 		
 		isAcceptable, valueArray = functionToRun(Model)
 		
 	end)
 	
-	if (isAcceptable) then
+	if (isAcceptable) and (isSuccessful) then
 		
 		self.canUseModel = true
 		
@@ -255,6 +257,8 @@ function ModelParametersSafeguardWrapper:train(featureMatrix, labelMatrix)
 		featureMatrix, labelMatrix = removeDefectiveData(featureMatrix, labelMatrix)
 		
 	end)
+	
+	return costArray
 	
 end
 

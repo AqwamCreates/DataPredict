@@ -10,7 +10,7 @@ Currently, you need these to produce the model:
 
 ## Setting Up
 
-Before we train our model, we will first need to construct a regression model as shown below.
+Before we train our model, we will first need to construct a classification model as shown below.
 
 ```lua
 

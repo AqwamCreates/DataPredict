@@ -20,7 +20,7 @@ local DataPredict = require(DataPredict)
 
 -- Additionally, you must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
 
-local AnomalyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, learningRate = 0.3, kernelFunction = "RadialBasisFunction"})
+local AnomalyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction"})
 
 ```
 
@@ -40,6 +40,7 @@ local function snapshotData()
 
     healthAmount,
     damageAmount,
+    hitStreakAmount,
 
   }
   
@@ -55,7 +56,7 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 2}, -100, 100) -- 100 random data with 2 features.
+local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 3}, -100, 100) -- 100 random data with 2 features.
 
 ```
 
@@ -133,7 +134,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 ```lua
 
-local currentPlayerDataVector = {{healthAmount, damageAmount}}
+local currentPlayerDataVector = {{healthAmount, damageAmount, hitStreakAmount}}
 
 local predictedLabelVector = AnomalyPredictionModel:predict(currentPlayerDataVector)
 

@@ -20,31 +20,17 @@ local DataPredict = require(DataPredict)
 
 -- Additionally, you must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
 
-local LeftToEarlyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction"})
+-- Lastly, set your beta value to 1. This tells the model that all the data belongs the positive class (the time that the player is currently in session).
+
+local LeftToEarlyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction", beta = 1})
 
 ```
 
 ## Upon Player Join
 
-In here, what you need to do is to store initial player data as a vector of numbers.
+In here, what you need to do is to store player data as a vector of numbers throughout the session.
 
 Below, we will show you how to create this:
-
-```lua
-
-local playerDataVector = {
-    {
-        numberOfCurrencyAmount,
-        numberOfItemsAmount,
-        timePlayedInCurrentSession,
-        timePlayedInAllSessions,
-        healthAmount
-    }
-}
-
-```
-
-If you want to add more data instead of relying on the initial data point, you actually can and this will improve the prediction accuracy. But keep in mind that this means you have to store more data. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
 
 ```lua
 

@@ -165,11 +165,11 @@ local function run(Player)
 
           playerDataVectorWithoutBias = {playerDataArrayWithoutBias}
 
-          stayProbability = LeftToEarlyPredictionModel:predict(playerDataVectorWithoutBias)[1][1]
+          leaveProbability = LeftToEarlyPredictionModel:predict(playerDataVectorWithoutBias)[1][1]
 
           -- Let's reward the player for staying much more longer than our models' predictions.
 
-          if (stayProbability <= 0.1) then givePlayerReward(Player) end 
+          if (leaveProbability >= 0.97) then givePlayerReward(Player) end 
 
         end
 
@@ -187,8 +187,6 @@ end
 
 ```lua
 
-local probabilityToStayVector = {}
-
 local timeToLeaveVector = {}
 
 local probabilityToLeaveVector = {}
@@ -203,10 +201,6 @@ for i = 1, snapshotIndex, 1 do
 
   local probabilityToLeave = 1 / clampedTimeToLeave
 
-  local probabilityToStay = 1 - probabilityToLeave
-
-  probabilityToStayVector[i] = {probabilityToStay}
-
   timeToLeaveVector[i] = {timeToLeave}
 
   probabilityToLeaveVector[i] = {probabilityToLeave}
@@ -217,7 +211,7 @@ TimeToLeavePredictionModel:train(playerDataMatrix, timeToLeaveVector)
 
 ProbabilityToLeavePredictionModel:train(playerDataMatrix, probabilityToLeaveVector)
 
-LeftToEarlyPredictionModel:train(playerDataMatrix, probabilityStayVector)
+LeftToEarlyPredictionModel:train(playerDataMatrix, probabilityToLeaveVector)
 
 -- Just getting our model parameters to save them
 

@@ -70,8 +70,6 @@ OneClassSupportVectorMachine:setParameters(maximumNumberOfIterations: integer, c
 
   *  Cosine
 
-* kernelParameters: A table containg the required parameters 
-
 ### setCValue()
 
 Set how hard the margin should be.

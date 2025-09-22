@@ -140,7 +140,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 ```lua
 
-local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
+local currentPlayerDataVector = {{numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
 local predictedLabelVector = LeftToEarlyPredictionModel:predict(currentPlayerDataVector)
 

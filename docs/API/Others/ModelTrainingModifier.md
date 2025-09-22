@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - TrainingModifier
+# [API Reference](../../API.md) - [Others](../Others.md) - ModelTrainingModifier
 
 Modifies the model's batch training to other modes.
 
@@ -12,10 +12,10 @@ Modifies the model's batch training to other modes.
 
 ### new()
 
-Creates a new training modifier object. If any of the arguments are not given, default argument values for that argument will be used.
+Creates a new model training modifier object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-TrainingModifier.new(Model: ModelObject, gradientDescentType: string, batchSize: integer, showOutput: boolean): GradientDescentModifierObject
+ModelTrainingModifier.new(Model: ModelObject, gradientDescentType: string, batchSize: integer, showOutput: boolean): GradientDescentModifierObject
 ```
 
 #### Parameters:
@@ -30,7 +30,7 @@ TrainingModifier.new(Model: ModelObject, gradientDescentType: string, batchSize:
 
 #### Returns:
 
-* TrainingModifierObject: A training modifier object that uses the model's train(), predict() and reinforce() functions so that it behaves like a regular model.
+* ModelTrainingModifierObject: A model training modifier object that uses the model's train(), predict() and reinforce() functions so that it behaves like a regular model.
 
 ## Functions
 
@@ -39,7 +39,7 @@ TrainingModifier.new(Model: ModelObject, gradientDescentType: string, batchSize:
 Trains the machine/deep learning model under specific gradient descent mode.
 
 ```
-TrainingModifier:train(...): number[]
+ModelTrainingModifier:train(...): number[]
 ```
 
 #### Parameters:
@@ -55,7 +55,7 @@ TrainingModifier:train(...): number[]
 Predict the values for given data.
 
 ```
-TrainingModifier:predict(...): ...
+ModelTrainingModifier:predict(...): ...
 ```
 
 #### Parameters:
@@ -71,7 +71,7 @@ TrainingModifier:predict(...): ...
 Gets the model parameters from the base model.
 
 ```
-TrainingModifier:getModelParameters(doNotDeepCopy: boolean): ModelParameters
+ModelTrainingModifier:getModelParameters(doNotDeepCopy: boolean): ModelParameters
 ```
 
 #### Parameters
@@ -87,7 +87,7 @@ TrainingModifier:getModelParameters(doNotDeepCopy: boolean): ModelParameters
 Set the model parameters to the base model.
 
 ```
-TrainingModifier:setModelParameters(ModelParameters: ModelParameters, doNotDeepCopy: boolean)
+ModelTrainingModifier:setModelParameters(ModelParameters: ModelParameters, doNotDeepCopy: boolean)
 ```
 
 #### Parameters

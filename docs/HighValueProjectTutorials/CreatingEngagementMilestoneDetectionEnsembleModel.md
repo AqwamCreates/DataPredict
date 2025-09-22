@@ -201,9 +201,9 @@ for i = 1, snapshotIndex, 1 do
 
   local clampedTimeToLeave = math.max(timeToLeave, 1)
 
-  local probabilityToStay = 1 / clampedTimeToLeave
+  local probabilityToLeave = 1 / clampedTimeToLeave
 
-  local probabilityToLeave = 1 - probabilityToStay
+  local probabilityToStay = 1 - probabilityToLeave
 
   probabilityToStayVector[i] = {probabilityToStay}
 

@@ -74,7 +74,7 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 5 features.
+local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 2}, -100, 100) -- 100 random data with 2 features.
 
 ```
 
@@ -152,7 +152,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 ```lua
 
-local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
+local currentPlayerDataVector = {{healthAmount, damageAmount}}
 
 local predictedLabelVector = AnomalyPredictionModel:predict(currentPlayerDataVector)
 
@@ -180,6 +180,6 @@ end
 
 ## Conclusion
 
-This tutorial showed you on how to create "probability to leave" prediction model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!
+This tutorial showed you on how to create anomaly detection model that allows you to mark unusual activities. All you need is some data, some models and a bit of practice to get this right!
 
 That's all for today and see you later!

@@ -26,26 +26,7 @@ local AnomalyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.n
 
 ## Upon Player Join
 
-In here, what you need to do is:
-
-* Store initial player data as a vector of numbers.
-
-Below, we will show you how to create this:
-
-```lua
-
--- We're just adding 1 here to add "bias".
-
-local playerDataVector = {
-    {
-        healthAmount,
-        damageAmount
-    }
-}
-
-```
-
-If you want to add more data instead of relying on the initial data point, you actually can and this will improve the prediction accuracy. But keep in mind that this means you have to store more data. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
+In here, what you need to do is to store player data as a vector of numbers throughout the player's game session.
 
 ```lua
 

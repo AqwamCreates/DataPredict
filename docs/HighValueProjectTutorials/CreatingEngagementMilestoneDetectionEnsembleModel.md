@@ -146,7 +146,7 @@ end
 
 ```lua
 
-local probabilityStayVector = {}
+local probabilityToStayVector = {}
 
 local timeToLeaveVector = {}
 
@@ -164,7 +164,7 @@ for i = 1, snapshotIndex, 1 do
 
   local probabilityToLeave = 1 - probabilityToStay
 
-  probabilityStayVector[i] = {probabilityToStay}
+  probabilityToStayVector[i] = {probabilityToStay}
 
   timeToLeaveVector[i] = {timeToLeave}
 

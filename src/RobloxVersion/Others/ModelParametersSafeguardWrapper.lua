@@ -42,6 +42,8 @@ local defaultRemoveDefectiveDataOnDefect = true
 
 local defaultStoreDefectiveUpdateInformation = false
 
+local defaultMaximumAcceptableCostMultiplier = 1
+
 local function getMaximumAcceptableCost(featureMatrix, labelMatrix)
 	
 	local absoluteFeatureMatrix = AqwamTensorLibrary:applyFunction(math.abs, featureMatrix)
@@ -56,7 +58,7 @@ local function getMaximumAcceptableCost(featureMatrix, labelMatrix)
 		
 	end
 	
-	return (sum * 3)
+	return sum
 	
 end
 
@@ -216,6 +218,8 @@ function ModelParametersSafeguardWrapper.new(parameterDictionary)
 	
 	NewModelParametersSafeguardWrapper.storeDefectiveUpdateInformation = NewModelParametersSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.storeDefectiveUpdateInformation, defaultStoreDefectiveUpdateInformation)
 	
+	NewModelParametersSafeguardWrapper.maximumAcceptableCostMultiplier = NewModelParametersSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.maximumAcceptableCostMultiplier, defaultMaximumAcceptableCostMultiplier)
+	
 	NewModelParametersSafeguardWrapper.canUseModel = true
 	
 	NewModelParametersSafeguardWrapper.defectiveUpdateInformationDictionary = {}
@@ -300,11 +304,13 @@ function ModelParametersSafeguardWrapper:train(featureMatrix, labelMatrix)
 	
 	local ClassesList = self.Model.ClassesList
 	
+	local maximumAcceptableCostMultiplier = self.maximumAcceptableCostMultiplier
+	
 	self:runSandboxedEnvironment("train", function(Model)
 		
 		costArray = Model:train(featureMatrix, labelMatrix)
 		
-		maximumAcceptableCost = getMaximumAcceptableCost(featureMatrix, labelMatrix)
+		maximumAcceptableCost = maximumAcceptableCostMultiplier * getMaximumAcceptableCost(featureMatrix, labelMatrix)
 
 		finalCostValue = costArray[#costArray]
 		

@@ -32,6 +32,7 @@ local function getPlayerDataVectors(Player)
   }
 
   local playerDataVectorWithoutBias = {
+
     {
         numberOfCurrencyAmount,
         numberOfItemsAmount,

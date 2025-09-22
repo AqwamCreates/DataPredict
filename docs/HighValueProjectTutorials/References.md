@@ -22,7 +22,7 @@
 
   * Not started yet because we're lacking indie game data.
  
-  * Let met know if you want to be a part of this.
+  * Let me know if you want to be a part of this.
 
 ## Retention
 

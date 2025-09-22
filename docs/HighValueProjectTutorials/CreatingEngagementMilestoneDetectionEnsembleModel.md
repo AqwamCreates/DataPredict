@@ -1,4 +1,4 @@
-# Creating Engagement Milestone Detection Model
+# Creating Engagement Milestone Detection Ensemble Model
 
 ## High-Level Explanation
 

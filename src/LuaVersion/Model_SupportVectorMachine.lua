@@ -394,10 +394,12 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	end
 	
 	local numberOfFeatures = #featureMatrix[1]
+	
+	local ModelParameters = self.ModelParameters
 
-	if (self.ModelParameters) then
+	if (ModelParameters) then
 
-		if (numberOfFeatures ~= #self.ModelParameters) then
+		if (numberOfFeatures ~= #ModelParameters) then
 
 			error("The number of features is not the same as the model parameters!")
 
@@ -405,7 +407,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 	else
 
-		self.ModelParameters = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
+		ModelParameters = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
 
 	end
 	
@@ -435,7 +437,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			return calculateCost(self.ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, cValue)
+			return calculateCost(ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, cValue)
 			
 		end)
 
@@ -447,7 +449,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 			
 		end
 
-		self.ModelParameters = calculateModelParameters(self.ModelParameters, mappedFeatureMatrix, labelVector, cValue)
+		ModelParameters = calculateModelParameters(ModelParameters, mappedFeatureMatrix, labelVector, cValue)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
@@ -456,6 +458,8 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 		warn("The model diverged! Please repeat the experiment or change the argument values.")
 
 	end
+	
+	self.ModelParameters = ModelParameters
 
 	return costArray
 

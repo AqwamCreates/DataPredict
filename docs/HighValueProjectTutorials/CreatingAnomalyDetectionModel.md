@@ -38,7 +38,7 @@ local function snapshotData()
   
  playerDataMatrix[snapshotIndex] = {
 
-    healthAmount,
+    healthChangeAmount,
     damageAmount,
     hitStreakAmount,
 
@@ -134,7 +134,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 ```lua
 
-local currentPlayerDataVector = {{healthAmount, damageAmount, hitStreakAmount}}
+local currentPlayerDataVector = {{healthChangeAmount, damageAmount, hitStreakAmount}}
 
 local predictedLabelVector = AnomalyPredictionModel:predict(currentPlayerDataVector)
 

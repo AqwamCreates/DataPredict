@@ -25,3 +25,5 @@
    * Limited to the current latest version of DataPredict, DataPredict Neural and DataPredict Axon libraries.
  
    * Derivatives are allowed as long as it is not copied off from DataPredict's future updates. 
+
+   * Redistribution to third-parties is not allowed.

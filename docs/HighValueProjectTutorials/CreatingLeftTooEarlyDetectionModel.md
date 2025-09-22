@@ -152,7 +152,7 @@ local wrappedProbabilityToLeave = {
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = LeavePredictionModel:train(playerDataVector, wrappedProbabilityToLeave)
+local costArray = LeftToEarlyPredictionModel:train(playerDataVector, wrappedProbabilityToLeave)
 
 ```
 

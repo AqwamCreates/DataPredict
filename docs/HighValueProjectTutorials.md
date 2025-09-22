@@ -46,6 +46,12 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
+* [Creating Labelless Left-Too-Early Detection Model](HighValueProjectTutorials/CreatingLabellessLeftTooEarlyDetectionModel.md)
+
+  * Same as "Left-Too-Early Detection Model", but it does not require manual tracking of label data.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * [Creating Play Time Maximization Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationModel.md)
 
   * The model chooses actions or events that maximizes play time.

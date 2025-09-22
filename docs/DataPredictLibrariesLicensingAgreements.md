@@ -20,7 +20,7 @@
 
 * [Perpetual Internal Use Version]() (Incomplete)
 
-   * 50K USD upfront fee.
+   * 70K USD upfront fee.
  
    * Limited to the current latest version of DataPredict, DataPredict Neural and DataPredict Axon libraries.
  

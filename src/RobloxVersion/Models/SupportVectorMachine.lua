@@ -415,6 +415,8 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	
 	local kernelParameters = self.kernelParameters
 	
+	local cValue = self.cValue
+	
 	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
 	
 	local kernelMatrix = kernelFunctionList[kernelFunction](featureMatrix, kernelParameters)
@@ -433,11 +435,11 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			return calculateCost(self.ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, self.cValue)
+			return calculateCost(self.ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, cValue)
 			
 		end)
 
-		if cost then
+		if (cost) then
 			
 			table.insert(costArray, cost)
 
@@ -445,7 +447,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 			
 		end
 
-		self.ModelParameters = calculateModelParameters(self.ModelParameters, mappedFeatureMatrix, labelVector, self.cValue)
+		self.ModelParameters = calculateModelParameters(self.ModelParameters, mappedFeatureMatrix, labelVector, cValue)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

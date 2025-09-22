@@ -50,7 +50,7 @@ local TimeToLeavePredictionModel = DataPredict.Models.LinearRegression.new({maxi
 
 local ProbabilityToLeavePredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01})
 
-local LeftTooEarlyDetectionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 100, beta = 1, kernelFunction = "RadialBasisFunction"})
+local LeftToEarlyPredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 100, beta = 1, kernelFunction = "RadialBasisFunction"})
 
 -- The code shown below checks if we already have trained the models previously.
 
@@ -58,7 +58,7 @@ if (TimeToLeavePredictionModelParameters) then TimeToLeavePredictionModel:setMod
 
 if (ProbabilityToLeavePredictionModelParameters) then ProbabilityToLeavePredictionModel:setModelParameters(ProbabilityToLeavePredictionModelParameters) end
 
-if (LeftTooEarlyDetectionModelParameters) then LeftTooEarlyDetectionModel:setModelParameters(LeftTooEarlyDetectionModelParameters) end
+if (LeftToEarlyPredictionModelParameters) then LeftToEarlyPredictionModel:setModelParameters(LeftToEarlyPredictionModelParameters) end
 
 ```
 
@@ -186,7 +186,7 @@ TimeToLeavePredictionModel:train(playerDataMatrix, timeToLeaveVector)
 
 ProbabilityToLeavePredictionModel:train(playerDataMatrix, probabilityToLeaveVector)
 
-LeftTooEarlyDetectionModelParameters:train(playerDataMatrix, probabilityToLeaveVector)
+LeftToEarlyPredictionModel:train(playerDataMatrix, probabilityToLeaveVector)
 
 -- Just getting our model parameters to save them
 
@@ -194,6 +194,6 @@ TimeToLeavePredictionModelParameters = TimeToLeavePredictionModel:getModelParame
 
 ProbabilityToLeavePredictionModelParameters = ProbabilityToLeavePredictionModel:getModelParameters(true)
 
-LeftTooEarlyDetectionModelParameters = LeftTooEarlyDetectionModel:getModelParameters(true)
+LeftToEarlyPredictionModelParameters = LeftToEarlyPredictionModel:getModelParameters(true)
 
 ```

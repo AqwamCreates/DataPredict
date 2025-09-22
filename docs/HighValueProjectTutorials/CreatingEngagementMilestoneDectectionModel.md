@@ -104,11 +104,9 @@ local function run(Player)
 
     local predictedProbabilityToLeave
 
-    local eventName
+    local activateLeftToEarlyPredictionModel
 
-    local eventFunction
-
-    local activatePlayTimeMaximization
+    local stayProbability
 
     while isPlayerInServer do
 
@@ -118,17 +116,15 @@ local function run(Player)
 
         playerDataVector = {playerDataArray}
 
-        predictedTimeToLeave = TimeToLeavePredictionModel:predict(playerDataArray)[1][1]
+        predictedTimeToLeave = TimeToLeavePredictionModel:predict(playerDataVector)[1][1]
 
-        predictedProbabilityToLeave = ProbabilityToLeavePredictionModel:predict(playerDataArray)[1][1]
+        predictedProbabilityToLeave = ProbabilityToLeavePredictionModel:predict(playerDataVector)[1][1]
 
-        activatePlayTimeMaximization = (predictedProbabilityToLeave >= 0.5) or (predictedTimeToLeave <= 5)
+        activateLeftToEarlyPredictionModel = (predictedProbabilityToLeave >= 0.5) or (predictedTimeToLeave <= 5)
 
-        if (activatePlayTimeMaximization) then
+        if (activateLeftToEarlyPredictionModel) then
 
-          eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
-
-          eventFunction = eventFunctionDictionary[eventName]
+          stayProbability =  LeftToEarlyPredictionModel:predict(playerDataVector)[1][1]
 
         end
 

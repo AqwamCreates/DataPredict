@@ -74,6 +74,8 @@
    
     * Creating Left-Too-Early Detection Model
 
+  * The model periodically checks if the player is playing much more longer or more engaged than usual.
+
   * Minimal implementation takes a minimum of 4 hours using DataPredict™.
 
 * [Creating Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationEnsembleModel.md)

@@ -42,7 +42,7 @@ local defaultStoreDefectiveUpdateInformation = false
 
 local function checkIfIsAcceptableValue(value)
 
-	return (value == value) and (value ~= math.huge) and (value ~= -math.huge)
+	return (value == value) and (value ~= math.huge) and (value ~= -math.huge) and (type(value) == "number")
 
 end
 
@@ -52,7 +52,7 @@ local function checkIfModelParametersAreAcceptable(ModelParameters)
 	
 	if (type(ModelParameters) == "table") then
 		
-		for _, value in ModelParameters do
+		for _, value in ipairs(ModelParameters) do
 			
 			isAcceptable = checkIfModelParametersAreAcceptable(value)
 			
@@ -186,9 +186,17 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, func
 
 	local OriginalModelParameters = Model:getModelParameters()
 	
-	local isAcceptable, valueArray = functionToRun(Model)
+	local isAcceptable = false
 	
-	if (isAcceptable) then
+	local valueArray
+	
+	local isSuccessful = pcall(function()
+		
+		isAcceptable, valueArray = functionToRun(Model)
+		
+	end)
+	
+	if (isAcceptable) and (isSuccessful) then
 		
 		self.canUseModel = true
 		
@@ -220,7 +228,7 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, func
 
 	end
 	
-	isAcceptable, valueArray = functionToRun(Model)
+	isAcceptable, valueArray = functionToRun(Model) -- Once defective data is removed, run the function again to use the model with the updated data.
 	
 	return table.unpack(valueArray or {})
 	
@@ -249,6 +257,8 @@ function ModelParametersSafeguardWrapper:train(featureMatrix, labelMatrix)
 		featureMatrix, labelMatrix = removeDefectiveData(featureMatrix, labelMatrix)
 		
 	end)
+	
+	return costArray or {}
 	
 end
 

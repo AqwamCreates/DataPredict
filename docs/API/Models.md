@@ -8,7 +8,7 @@
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 5     |
 | Generative                     | 4     |
-| Total                          | 50    |
+| Total                          | 49    |
 
 
 ## Regression

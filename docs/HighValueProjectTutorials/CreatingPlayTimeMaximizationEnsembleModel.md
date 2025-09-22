@@ -163,11 +163,11 @@ local function run(Player)
 
     local predictedProbabilityToLeave
 
+    local activatePlayTimeMaximization
+
     local eventName
 
     local eventFunction
-
-    local activatePlayTimeMaximization
 
     while isPlayerInServer do
 

@@ -14,7 +14,7 @@
 
 * Impact Of Lua-Native Machine Learning Retention Models On Indie Games On Roblox Ecosystem (Research Paper) (Secondary Priority)
 
-  * Not started yet because we're lacking indie data.
+  * Not started yet because we're lacking indie game data.
  
   * Let met know if you want to be a part of this.
 

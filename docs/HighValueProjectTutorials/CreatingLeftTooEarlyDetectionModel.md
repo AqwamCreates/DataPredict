@@ -125,7 +125,7 @@ Currently, there are two ways to scale the probability.
 
 timeElapsed = math.max(timeElapsed, 0.01) -- To avoid division by zero that could lead to "inf" values.
 
-local probabilityToLeave = 1 - (1 / timeElapsed)
+local probabilityToStay = (1 / timeElapsed)
 
 ```
 
@@ -135,7 +135,7 @@ local probabilityToLeave = 1 - (1 / timeElapsed)
 
 -- Large scaleFactor means slower growth. scaleFactor should be based on empirical average session length.
 
-local probabilityToLeave = 1 - math.exp(-timeElapsed / scaleFactor)
+local probabilityToStay = math.exp(-timeElapsed / scaleFactor)
 
 ```
 
@@ -143,13 +143,13 @@ Once you have chosen to scale your values, we must do this:
 
 ```lua
 
-local wrappedProbabilityToLeave = {
+local wrappedProbabilityToStay = {
 
-    {probabilityToLeave}
+    {probabilityToStay}
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = LeftToEarlyPredictionModel:train(playerDataVector, wrappedProbabilityToLeave)
+local costArray = LeftToEarlyPredictionModel:train(playerDataVector, wrappedProbabilityToStay)
 
 ```
 

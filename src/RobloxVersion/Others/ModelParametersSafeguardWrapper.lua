@@ -258,7 +258,7 @@ function ModelParametersSafeguardWrapper:train(featureMatrix, labelMatrix)
 		
 	end)
 	
-	return costArray
+	return costArray or {}
 	
 end
 

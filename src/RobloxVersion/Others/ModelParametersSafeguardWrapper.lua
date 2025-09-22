@@ -220,7 +220,7 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, func
 
 	end
 	
-	isAcceptable, valueArray = functionToRun(Model)
+	isAcceptable, valueArray = functionToRun(Model) -- Once defective data is removed, run the function again to use the model with the updated data.
 	
 	return table.unpack(valueArray or {})
 	

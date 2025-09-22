@@ -1,5 +1,5 @@
 # DataPredict Libraries Licensing Agreements
 
-* [Standard Version](DataPredictLibrariesLicensingAgreements/DataPredict Libraries Licensing Agreement.docx)
+* [Standard Version]([DataPredictLibrariesLicensingAgreements/DataPredict Libraries Licensing Agreement.docx)](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement.docx)
 
-* [White-Label Version](DataPredictLibrariesLicensingAgreements/DataPredict Libraries Licensing Agreement - White Label.docx)
+* [White-Label Version]([DataPredictLibrariesLicensingAgreements/DataPredict Libraries Licensing Agreement - White Label.docx](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement%20-%20White%20Label.docx))

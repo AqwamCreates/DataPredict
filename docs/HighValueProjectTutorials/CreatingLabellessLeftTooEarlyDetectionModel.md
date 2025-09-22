@@ -34,11 +34,8 @@ Below, we will show you how to create this:
 
 ```lua
 
--- We're just adding 1 here to add "bias".
-
 local playerDataVector = {
     {
-        1,
         numberOfCurrencyAmount,
         numberOfItemsAmount,
         timePlayedInCurrentSession,
@@ -61,7 +58,6 @@ local function snapshotData()
   
  playerDataMatrix[snapshotIndex] = {
 
-    1,
     numberOfCurrencyAmount,
     numberOfItemsAmount,
     timePlayedInCurrentSession,
@@ -82,7 +78,7 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias")
+local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 5 features.
 
 ```
 

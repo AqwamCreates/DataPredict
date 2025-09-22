@@ -10,7 +10,7 @@ Currently, you need these to produce the model:
 
 ## Setting Up
 
-Before we train our model, we will first need to construct a regression model as shown below.
+Before we train our model, we will first need to construct a classification model as shown below.
 
 ```lua
 
@@ -170,7 +170,7 @@ Once you receive the predicted label vector, you can grab the pure number output
 
 ```lua
 
-local leftToEarlyProbability = (1 - predictedLabelVector[1][1])
+local anomalyProbability= (1 - predictedLabelVector[1][1])
 
 ```
 
@@ -178,7 +178,7 @@ So for the current session, you can determine what to do for the next session.
 
 ```lua
 
-if (leftToEarlyProbability >= 0.97) then -- Can be changed instead of 0.97.
+if (anomalyProbability >= 0.97) then -- Can be changed instead of 0.97.
 
 --- Do a logic here to extend the play time for the next session. For example, bonus currency multiplier duration or random event.
 

@@ -12,17 +12,17 @@
 
   * Not really my idea, but my clients recommend me to do it so that they have a "scientific paper" to pitch to their clients. Might take a while since I am focused on taking care of my brother plus my master research thesis.
 
-* Impact Of Lua-Native Machine Learning Retention Models On Indie Games On Roblox Ecosystem (Research Paper) (Secondary Priority)
-
-  * Not started yet because we're lacking indie game data.
- 
-  * Let met know if you want to be a part of this.
-
 * DataPredict: A General Machine, Deep, Reinforcement Learning Library For Lua-Native Games (Research Paper) (Secondary Priority)
 
   * Again, not really my idea, but the researchers using DataPredict recommend me to do it to make it easy to cite to their papers. Same slow progress reasoning as above.
 
   * Incomplete draft version can be found [here](References/DataPredict.docx).
+
+* Impact Of Lua-Native Machine Learning Retention Models On Indie Games On Roblox Ecosystem (Research Paper) (Tertiary Priority)
+
+  * Not started yet because we're lacking indie game data.
+ 
+  * Let met know if you want to be a part of this.
 
 ## Retention
 

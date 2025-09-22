@@ -26,13 +26,13 @@
 
 * [Creating Time-To-Leave Prediction Model](HighValueProjectTutorials/CreatingTimeToLeavePredictionModel.md)
 
-  * No need to add new content; the model can use existing content to optimize your game.
+  * No need to add new content; the model can use existing content to optimize your games.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
 * [Creating Probability-To-Leave Prediction Model](HighValueProjectTutorials/CreatingProbabilityToLeavePredictionModel.md)
 
-  * No need to add new content; the model can use existing content to optimize your game.
+  * No need to add new content; the model can use existing content to optimize your games.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
@@ -40,7 +40,7 @@
 
    * Inverse of probability-to-leave model by detecting outliers.
 
-  * No need to add new content; the model can use existing content to optimize your game.
+  * No need to add new content; the model can use existing content to optimize your games.
 
    * Highly exploitable if the player accumulates long session times over many sessions before suddenly decrease the session times gradually if rewards are involved.
 
@@ -56,7 +56,7 @@
 
   * The model chooses actions or events that maximizes play time.
 
-  * No need to add new content; the model can use existing content to optimize your game.
+  * No need to add new content; the model can use existing content to optimize your games.
 
   * Have higher play time potential due to its ability to exploit and explore than the other three models, but tend to be risky to use.
 
@@ -116,7 +116,7 @@
 
   * Every time a player kills an enemy, both player's combat data and enemy's data are used to train the model.
 
-  * No need to add new content; the model can use existing content to optimize your game.
+  * No need to add new content; the model can use existing content to optimize your games.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
@@ -124,7 +124,7 @@
 
   * Uses players' combat data to generate the center of enemies' data.
 
-  * No need to add new content; the model can use existing content to optimize your game.
+  * No need to add new content; the model can use existing content to optimize your games.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
@@ -134,7 +134,7 @@
 
   * If the player ignores or doesn't kill the enemy, the negative reward tells the model that "this enemy is not interesting to the player" or "this enemy is too hard for the player to kill".
 
-  * No need to add new content; the model can use existing content to optimize your game.
+  * No need to add new content; the model can use existing content to optimize your games.
 
   * Have higher play time potential due to its ability to exploit and explore than the other two models, but tend to be risky to use.
 

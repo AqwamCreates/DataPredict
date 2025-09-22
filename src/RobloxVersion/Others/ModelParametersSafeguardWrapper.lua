@@ -150,6 +150,8 @@ local function removeDefectiveData(featureMatrix, labelMatrix, ClassesList) -- I
 
 					isAcceptableData = false
 					
+					break
+					
 				end
 				
 			else

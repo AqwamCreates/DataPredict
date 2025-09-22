@@ -1,13 +1,13 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - ModelParametersSafeguardWrapper
+# [API Reference](../../API.md) - [Others](../Others.md) - ModelSafeguardWrapper
 
 ## Constructors
 
 ### new()
 
-Creates a new training modifier object. If any of the arguments are not given, default argument values for that argument will be used.
+Creates a new safeguard wrapper object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-ModelParametersSafeguardWrapper.new(Model: ModelObject, gradientDescentType: string, batchSize: integer, showOutput: boolean): GradientDescentModifierObject
+ModelSafeguardWrapper.new(Model: ModelObject): ModelSafeguardWrapperObject
 ```
 
 #### Parameters:
@@ -25,7 +25,7 @@ ModelParametersSafeguardWrapper.new(Model: ModelObject, gradientDescentType: str
 Trains the machine/deep learning model under specific gradient descent mode.
 
 ```
-ModelParametersSafeguardWrapper:train(...): number[]
+ModelSafeguardWrapper:train(...): number[]
 ```
 
 #### Parameters:
@@ -41,7 +41,7 @@ ModelParametersSafeguardWrapper:train(...): number[]
 Predict the values for given data.
 
 ```
-ModelParametersSafeguardWrapper:predict(...): ...
+ModelSafeguardWrapper:predict(...): ...
 ```
 
 #### Parameters:
@@ -57,7 +57,7 @@ ModelParametersSafeguardWrapper:predict(...): ...
 Gets the model parameters from the base model.
 
 ```
-ModelParametersSafeguardWrapper:getModelParameters(doNotDeepCopy: boolean): ModelParameters
+ModelSafeguardWrapper:getModelParameters(doNotDeepCopy: boolean): ModelParameters
 ```
 
 #### Parameters
@@ -73,7 +73,7 @@ ModelParametersSafeguardWrapper:getModelParameters(doNotDeepCopy: boolean): Mode
 Set the model parameters to the base model.
 
 ```
-ModelParametersSafeguardWrapper:setModelParameters(ModelParameters: ModelParameters, doNotDeepCopy: boolean)
+ModelSafeguardWrapper:setModelParameters(ModelParameters: ModelParameters, doNotDeepCopy: boolean)
 ```
 
 #### Parameters

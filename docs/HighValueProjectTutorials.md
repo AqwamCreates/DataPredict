@@ -212,4 +212,4 @@
 
 ## Anti-Cheats
 
-* Creating Anomaly Detection Model
+* [Creating Anomaly Detection Model](HighValueProjectTutorials/CreatingAnomalyDetectionModel.md)

@@ -121,11 +121,11 @@ Currently, there are two ways to scale the probability.
 
 ### Method 1: Pure Scaling
 
+### Method 1: Pure Scaling
+
 ```lua
 
-timeElapsed = math.max(timeElapsed, 0.01) -- To avoid division by zero that could lead to "inf" values.
-
-local probabilityToStay = (1 / timeElapsed)
+local probabilityToLeave = 1 / timeToLeave
 
 ```
 
@@ -135,7 +135,7 @@ local probabilityToStay = (1 / timeElapsed)
 
 -- Large scaleFactor means slower growth. scaleFactor should be based on empirical average session length.
 
-local probabilityToStay = math.exp(-timeElapsed / scaleFactor)
+local probabilityToLeave = math.exp(-timeToLeave / scaleFactor)
 
 ```
 
@@ -143,13 +143,13 @@ Once you have chosen to scale your values, we must do this:
 
 ```lua
 
-local wrappedProbabilityToStay = {
+local wrappedProbabilityToLeave = {
 
-    {probabilityToStay}
+    {probabilityToLeave}
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = LeftToEarlyPredictionModel:train(playerDataVector, wrappedProbabilityToStay)
+local costArray = LeftToEarlyPredictionModel:train(playerDataVector, wrappedProbabilityToLeave)
 
 ```
 
@@ -217,15 +217,15 @@ Once you receive the predicted label vector, you can grab the pure number output
 
 ```lua
 
-local predictedToStayProbability = predictedLabelVector[1][1]
+local predictedProbabilityToLeave = predictedLabelVector[1][1]
 
 ```
 
-So for the current session, you can determine what to do for the next session. Notice how high "stay proability" is high, but the player has already left. This contradiction means that the model didn't expect the player left too soon.
+So for the current session, you can determine what to do for the next session. Notice when "predictedProbabilityToLeave" is low, but the player has already left. This contradiction means that the model didn't expect the player left too soon.
 
 ```lua
 
-if (stayProbability >= 0.97) then -- Can be changed instead of 0.97.
+if (predictedProbabilityToLeave <= 0.1) then -- Can be changed instead of 0.97.
 
 --- Do a logic here to extend the play time for the next session. For example, bonus currency multiplier duration or random event.
 

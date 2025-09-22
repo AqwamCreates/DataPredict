@@ -186,7 +186,13 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, func
 
 	local OriginalModelParameters = Model:getModelParameters()
 	
-	local isAcceptable, valueArray = functionToRun(Model)
+	local isAcceptable, valueArray
+	
+	local isSucessful = pcall(function()
+		
+		isAcceptable, valueArray = functionToRun(Model)
+		
+	end)
 	
 	if (isAcceptable) then
 		

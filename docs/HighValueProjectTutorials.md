@@ -62,9 +62,15 @@
 
   * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if custom events are associated with the model's output.
 
-* [Creating Engagement Milestone Detection Model](HighValueProjectTutorials/CreatingEngagementMilestoneDetectionModel.md) (Incomplete)
+* [Creating Engagement Milestone Detection Ensemble Model](HighValueProjectTutorials/CreatingEngagementMilestoneDetectionEnsembleModel.md) (Incomplete)
 
-  * Same as "Left-Too-Early Detection Model", except the final logic is changed, where the model periodically check if players are playing much more longer or more engaged than usual.
+  * Uses a combination of:
+ 
+    * Time-To-Leave Prediction Model
+   
+    * Probability-To-Leave Prediction Model
+   
+    * Creating Left-Too-Early Detection Model
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 

@@ -3,12 +3,12 @@
 | Model Type                     | Count |
 |--------------------------------|-------|
 | Regression                     | 4     |
-| Classification                 | 8     |
+| Classification                 | 9     |
 | Clustering                     | 7     |
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 5     |
 | Generative                     | 4     |
-| Total                          | 49    |
+| Total                          | 50    |
 
 
 ## Regression

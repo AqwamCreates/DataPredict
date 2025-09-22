@@ -13,15 +13,14 @@
 
 ## Code
 
-### Feature Vector And Classes List Design
+### Feature Vector
 
 ```lua
 
-local function getPlayerDataVector(Player)
+local function getPlayerDataVectors(Player)
 
-  -- We have five features with one "bias".
+  local playerDataVectorWithBias = {
 
-  return {
     {
         1,
         numberOfCurrencyAmount,
@@ -31,6 +30,18 @@ local function getPlayerDataVector(Player)
         healthAmount
     }
   }
+
+  local playerDataVectorWithoutBias = {
+    {
+        numberOfCurrencyAmount,
+        numberOfItemsAmount,
+        timePlayedInCurrentSession,
+        timePlayedInAllSessions,
+        healthAmount
+    }
+  }
+
+  return playerDataVectorWithBias, playerDataVectorWithoutBias
 
 end
 
@@ -62,21 +73,44 @@ if (LeftToEarlyPredictionModelParameters) then LeftToEarlyPredictionModel:setMod
 
 ```lua
 
-local playerDataMatrix = {}
-  
+local playerDataMatrixWithBias = {}
+
+local playerDataMatrixWithoutBias = {}
+
 local recordedTimeArray = {}
   
 local snapshotIndex = 1
 
-local function getPlayerDataArray()
+local function getPlayerDataArrays()
 
-  return {1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}
+   local playerDataArrayWithBias = {
+
+      1,
+      numberOfCurrencyAmount,
+      numberOfItemsAmount,
+      timePlayedInCurrentSession,
+      timePlayedInAllSessions,
+      healthAmount
+
+  }
+
+  local playerDataArrayWithoutBias = {
+
+      numberOfCurrencyAmount,
+      numberOfItemsAmount,
+      timePlayedInCurrentSession,
+      timePlayedInAllSessions,
+      healthAmount
+
+  }
+
+  return playerDataVectorWithBias, playerDataVectorWithoutBias
 
 end
   
 local function snapshotData(playerDataArray)
-  
- playerDataMatrix[snapshotIndex] = playerDataArray
+
+  playerDataMatrixWithBias[snapshotIndex], playerDataMatrixWithoutBias[snapshotIndex] = getPlayerDataArrays()
   
   recordedTimeArray[snapshotIndex] = os.time()
   
@@ -96,9 +130,13 @@ local function run(Player)
 
     local rewardValue = 0
 
-    local playerDataArray
+    local playerDataArrayWithBias
 
-    local playerDataVector
+    local playerDataArrayWithoutBias
+
+    local playerDataVectorWithBias
+
+    local playerDataVectorWithoutBias
 
     local predictedTimeToLeave
 
@@ -110,21 +148,23 @@ local function run(Player)
 
     while isPlayerInServer do
 
-        playerDataArray = getPlayerDataArray(Player)
+        playerDataArrayWithBias, playerDataArrayWithoutBias = getPlayerDataArrays()
 
         snapshotData(playerDataArray)
 
-        playerDataVector = {playerDataArray}
+        playerDataVectorWithBias = {playerDataArrayWithBias}
 
-        predictedTimeToLeave = TimeToLeavePredictionModel:predict(playerDataVector)[1][1]
+        predictedTimeToLeave = TimeToLeavePredictionModel:predict(playerDataVectorWithBias)[1][1]
 
-        predictedProbabilityToLeave = ProbabilityToLeavePredictionModel:predict(playerDataVector)[1][1]
+        predictedProbabilityToLeave = ProbabilityToLeavePredictionModel:predict(playerDataVectorWithBias)[1][1]
 
         activateLeftToEarlyPredictionModel = (predictedProbabilityToLeave >= 0.5) or (predictedTimeToLeave <= 5)
 
         if (activateLeftToEarlyPredictionModel) then
 
-          stayProbability =  LeftToEarlyPredictionModel:predict(playerDataVector)[1][1]
+          playerDataVectorWithoutBias = {playerDataArrayWithoutBias}
+
+          stayProbability = LeftToEarlyPredictionModel:predict(playerDataVectorWithoutBias)[1][1]
 
           -- Let's reward the player for staying much more longer than our models' predictions.
 

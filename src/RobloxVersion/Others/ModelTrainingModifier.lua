@@ -28,11 +28,11 @@
 
 local BaseIntstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-local TrainingModifier = {}
+local ModelTrainingModifier = {}
 
-TrainingModifier.__index = TrainingModifier
+ModelTrainingModifier.__index = ModelTrainingModifier
 
-setmetatable(TrainingModifier, BaseIntstance)
+setmetatable(ModelTrainingModifier, BaseIntstance)
 
 local defaultTrainingMode = "Stochastic"
 
@@ -40,25 +40,25 @@ local defaultBatchSize = 2
 
 local defaultIsOutputPrinted = true
 
-function TrainingModifier.new(parameterDictionary)
+function ModelTrainingModifier.new(parameterDictionary)
 	
-	local NewTrainingModifier = BaseIntstance.new(parameterDictionary)
+	local NewModelTrainingModifier = BaseIntstance.new(parameterDictionary)
 	
-	setmetatable(NewTrainingModifier, TrainingModifier)
+	setmetatable(NewModelTrainingModifier, ModelTrainingModifier)
 	
-	NewTrainingModifier:setName("TrainingModifier")
+	NewModelTrainingModifier:setName("ModelTrainingModifier")
 	
-	NewTrainingModifier:setClassName("TrainingModifier")
+	NewModelTrainingModifier:setClassName("ModelTrainingModifier")
 	
-	NewTrainingModifier.trainingMode = parameterDictionary.trainingMode or defaultTrainingMode
+	NewModelTrainingModifier.trainingMode = parameterDictionary.trainingMode or defaultTrainingMode
 
-	NewTrainingModifier.batchSize = parameterDictionary.batchSize or defaultBatchSize
+	NewModelTrainingModifier.batchSize = parameterDictionary.batchSize or defaultBatchSize
 	
-	NewTrainingModifier.isOutputPrinted = NewTrainingModifier:getValueOrDefaultValue(parameterDictionary.isOutputPrinted, defaultIsOutputPrinted)
+	NewModelTrainingModifier.isOutputPrinted = NewModelTrainingModifier:getValueOrDefaultValue(parameterDictionary.isOutputPrinted, defaultIsOutputPrinted)
 	
-	NewTrainingModifier.Model = parameterDictionary.Model
+	NewModelTrainingModifier.Model = parameterDictionary.Model
 	
-	return NewTrainingModifier
+	return NewModelTrainingModifier
 	
 end
 
@@ -92,13 +92,13 @@ local function breakMatrixToMultipleSmallerMatrices(matrix, batchSize)
 	
 end
 
-function TrainingModifier:batchTrain(...)
+function ModelTrainingModifier:batchTrain(...)
 	
 	return self.Model:train(...)
 	
 end
 
-function TrainingModifier:miniBatchTrain(...)
+function ModelTrainingModifier:miniBatchTrain(...)
 	
 	local batchSize = self.batchSize
 	
@@ -156,7 +156,7 @@ function TrainingModifier:miniBatchTrain(...)
 
 end
 
-function TrainingModifier:stochasticTrain(...)
+function ModelTrainingModifier:stochasticTrain(...)
 	
 	local matrixArray = {...}
 
@@ -196,7 +196,7 @@ function TrainingModifier:stochasticTrain(...)
 
 end
 
-function TrainingModifier:train(...)
+function ModelTrainingModifier:train(...)
 	
 	local trainingMode = self.trainingMode
 	
@@ -220,40 +220,40 @@ function TrainingModifier:train(...)
 	
 end
 
-function TrainingModifier:update(...)
+function ModelTrainingModifier:update(...)
 
 	return self.Model:update(...)
 
 end
 
-function TrainingModifier:predict(...)
+function ModelTrainingModifier:predict(...)
 	
 	return self.Model:predict(...)
 	
 end
 
-function TrainingModifier:setModel(Model)
+function ModelTrainingModifier:setModel(Model)
 	
 	self.Model = Model
 	
 end
 
-function TrainingModifier:getModel()
+function ModelTrainingModifier:getModel()
 
 	return self.Model
 
 end
 
-function TrainingModifier:getModelParameters(...)
+function ModelTrainingModifier:getModelParameters(...)
 
 	return self.Model:getModelParameters(...)
 
 end
 
-function TrainingModifier:setModelParameters(...)
+function ModelTrainingModifier:setModelParameters(...)
 
 	self.Model:setModelParameters(...)
 
 end
 
-return TrainingModifier
+return ModelTrainingModifier

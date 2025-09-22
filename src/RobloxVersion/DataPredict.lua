@@ -242,11 +242,11 @@ AqwamMachineAndDeepLearningLibrary.DistributedTrainingStrategies = {
 
 AqwamMachineAndDeepLearningLibrary.Others = {
 	
-	TrainingModifier = require(Others.TrainingModifier),
+	ModelTrainingModifier = require(Others.ModelTrainingModifier),
+	
+	ModelSafeguardWrapper = require(Others.ModelSafeguardWrapper),
 	
 	ModelParametersMerger = require(Others.ModelParametersMerger),
-	
-	ModelParametersSafeguardWrapper = require(Others.ModelParametersSafeguardWrapper),
 
 	ModelDatasetCreator = require(Others.ModelDatasetCreator),
 

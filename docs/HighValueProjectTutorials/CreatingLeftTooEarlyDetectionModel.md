@@ -20,7 +20,7 @@ local DataPredict = require(DataPredict)
 
 -- Additionally, you must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
 
-local LeftToEarlyPredictionModel = DataPredict.Models.SupportVectorMachine.new({maximumNumberOfIterations = 1, learningRate = 0.3, kernelFunction = "RadialBasisFunction"})
+local LeftToEarlyPredictionModel = DataPredict.Models.SupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction"})
 
 ```
 

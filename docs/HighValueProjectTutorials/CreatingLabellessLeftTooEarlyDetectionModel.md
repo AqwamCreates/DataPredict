@@ -26,9 +26,7 @@ local LeftToEarlyPredictionModel = DataPredict.Models.OneClassSupportVectorMachi
 
 ## Upon Player Join
 
-In here, what you need to do is:
-
-* Store initial player data as a vector of numbers.
+In here, what you need to do is to store initial player data as a vector of numbers.
 
 Below, we will show you how to create this:
 

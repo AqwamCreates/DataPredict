@@ -26,7 +26,7 @@
 
 --]]
 
-local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
+local IterativeMethodBaseModel = require("Model_terativeMethodBaseModel")
 
 SupportVectorMachineModel = {}
 
@@ -334,7 +334,7 @@ end
 
 local function calculateModelParameters(modelParameters, individualKernelMatrix, labelVector, cValue)
 
-	local predictionVector = AqwamTensorLibrary:dotProduct(individualkernelMatrix, modelParameters) -- m x 1
+	local predictionVector = AqwamTensorLibrary:dotProduct(individualKernelMatrix, modelParameters) -- m x 1
 	
 	local errorVector = AqwamTensorLibrary:subtract(predictionVector, labelVector) -- m x 1
 	
@@ -406,20 +406,22 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
 
 	end
-
-	local cost
-
-	local costArray = {}
-
-	local numberOfIterations = 0
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
-	local costFunctionDerivatives
-
-	local mappedFeatureMatrix = mappingList[self.kernelFunction](featureMatrix, self.kernelParameters)
+	local kernelFunction = self.kernelFunction
 	
-	local kernelMatrix = kernelFunctionList[self.kernelFunction](featureMatrix, self.kernelParameters)
+	local kernelParameters = self.kernelParameters
+	
+	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
+	
+	local kernelMatrix = kernelFunctionList[kernelFunction](featureMatrix, kernelParameters)
+
+	local numberOfIterations = 0
+	
+	local costArray = {}
+	
+	local cost
 	
 	repeat
 		

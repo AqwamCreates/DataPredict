@@ -10,7 +10,7 @@
 
 [ModelSafeguardWrapper](Others/ModelSafeguardWrapper.md)
 
-[TrainingModifier](Others/TrainingModifier.md)
+[ModelTrainingModifier](Others/ModelTrainingModifier.md)
 
 [Regularizer](Others/Regularizer.md)
 

@@ -70,7 +70,7 @@ local function checkIfModelParametersAreAcceptable(ModelParameters)
 	
 end
 
-local function filterOutDefectiveData(featureMatrix, labelMatrix)
+local function removeDefectiveData(featureMatrix, labelMatrix)
 	
 	local numberOfData = #featureMatrix
 
@@ -168,7 +168,7 @@ function ModelParametersSafeguardWrapper.new(parameterDictionary)
 	
 end
 
-function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, valueArray, functionToRun)
+function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, functionToRun, removeDefectFunction)
 	
 	self.canUseModel = false
 
@@ -184,51 +184,43 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, valu
 
 	local OriginalModelParameters = Model:getModelParameters()
 	
-	local internalValueArray = valueArray
+	local isAcceptable, valueArray = functionToRun(Model)
 	
-	local isAcceptable = false
-	
-	local valueArray
-	
-	local currentTimeString
-	
-	repeat
+	if (isAcceptable) then
 		
-		isAcceptable, valueArray = functionToRun(Model, internalValueArray)
-
-		if (not isAcceptable) then
-
-			Model:setModelParameters(OriginalModelParameters)
-			
-			if (storeDefectiveUpdateInformation) then
-				
-				currentTimeString = tostring(os.time())
-				
-				defectiveUpdateInformationDictionary[currentTimeString] = eventName
-				
-			end
-			
-			if (removeDefectiveDataOnDefect) then
-				
-				local newInternalValueArray = {}
-				
-				newInternalValueArray[i] = 
-				
-			end
-
-		end
+		self.canUseModel = true
 		
-	until (isAcceptable) or (ignoreUpdateOnDefect)
+		if (valueArray) then return table.unpack(valueArray) end
+		
+	end
 	
-	self.canUseModel = true
+	if (storeDefectiveUpdateInformation) then
+
+		local currentTimeString = tostring(os.time())
+
+		defectiveUpdateInformationDictionary[currentTimeString] = eventName
+
+	end
 	
-	if (valueArray) then return table.unpack(valueArray) end
+	Model:setModelParameters(OriginalModelParameters)
+
+	if (ignoreUpdateOnDefect) then 
+
+		self.canUseModel = true
+
+		return table.unpack(valueArray) 
+
+	end
+
+	if (removeDefectiveDataOnDefect) then
+
+		removeDefectFunction()
+
+	end
 	
 end
 
-function ModelParametersSafeguardWrapper:train(...)
-	
-	local valueArray = {...}
+function ModelParametersSafeguardWrapper:train(featureMatrix, labelMatrix)
 	
 	local costArray
 	
@@ -236,15 +228,19 @@ function ModelParametersSafeguardWrapper:train(...)
 	
 	local isAcceptableValue
 	
-	self:runSandboxedEnvironment("train", valueArray, function(Model, internalValueArray)
+	self:runSandboxedEnvironment("train", function(Model)
 		
-		costArray = Model:train(table.unpack(internalValueArray))
+		costArray = Model:train(featureMatrix, labelMatrix)
 
 		finalCostValue = costArray[#costArray]
 		
 		isAcceptableValue = checkIfIsAcceptableValue(finalCostValue)
 		
 		return isAcceptableValue, {costArray}
+		
+	end, function()
+		
+		featureMatrix, labelMatrix = removeDefectiveData(featureMatrix, labelMatrix)
 		
 	end)
 	
@@ -256,14 +252,18 @@ function ModelParametersSafeguardWrapper:update(...)
 	
 	local UpdatedModelParameters
 
-	self:runSandboxedEnvironment("update", valueArray, function(Model, internalValueArray)
+	self:runSandboxedEnvironment("update", function(Model)
 
-		Model:update(table.unpack(internalValueArray))
+		Model:update(table.unpack(valueArray))
 		
 		UpdatedModelParameters = Model:getModelParameters()
 
 		return checkIfModelParametersAreAcceptable(UpdatedModelParameters)
 
+	end, function()
+		
+		
+		
 	end)
 	
 end

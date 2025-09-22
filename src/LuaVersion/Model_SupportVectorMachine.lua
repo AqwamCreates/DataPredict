@@ -26,7 +26,7 @@
 
 --]]
 
-local IterativeMethodBaseModel = require("Model_terativeMethodBaseModel")
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 SupportVectorMachineModel = {}
 
@@ -392,10 +392,12 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 		error("The feature matrix and the label vector do not contain the same number of rows!")
 
 	end
+	
+	local numberOfFeatures = #featureMatrix[1]
 
 	if (self.ModelParameters) then
 
-		if (#featureMatrix[1] ~= #self.ModelParameters) then
+		if (numberOfFeatures ~= #self.ModelParameters) then
 
 			error("The number of features is not the same as the model parameters!")
 
@@ -403,7 +405,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 	else
 
-		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+		self.ModelParameters = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
 
 	end
 	

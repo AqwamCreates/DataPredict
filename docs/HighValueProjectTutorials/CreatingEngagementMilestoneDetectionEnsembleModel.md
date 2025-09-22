@@ -55,7 +55,7 @@ local TimeToLeavePredictionModel = DataPredict.Models.LinearRegression.new({maxi
 
 local ProbabilityToLeavePredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01})
 
-local LeftToEarlyPredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 100, beta = 1, kernelFunction = "RadialBasisFunction"})
+local LeftToEarlyPredictionModel = DataPredict.Models.SupportVectorMachine.new({maximumNumberOfIterations = 100, beta = 1, kernelFunction = "RadialBasisFunction"})
 
 -- The code shown below checks if we already have trained the models previously.
 

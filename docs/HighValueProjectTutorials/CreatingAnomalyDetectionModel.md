@@ -20,7 +20,7 @@ local DataPredict = require(DataPredict)
 
 -- Additionally, you must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
 
-local LeftToEarlyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, learningRate = 0.3, kernelFunction = "RadialBasisFunction"})
+local AnomalyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, learningRate = 0.3, kernelFunction = "RadialBasisFunction"})
 
 ```
 
@@ -38,10 +38,6 @@ Below, we will show you how to create this:
 
 local playerDataVector = {
     {
-        1,
-        numberOfCurrencyAmount,
-        numberOfItemsAmount,
-        timePlayedInCurrentSession,
         timePlayedInAllSessions,
         healthAmount
     }
@@ -102,7 +98,7 @@ By the time the player leaves, it is time for us to train the model.
 
 ```lua
 
-local costArray = LeftToEarlyPredictionModel:train(playerDataVector)
+local costArray = AnomalyPredictionModel:train(playerDataVector)
 
 ```
 
@@ -112,7 +108,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = LeftToEarlyPredictionModel:getModelParameters()
+local ModelParameters = AnomalyPredictionModel:getModelParameters()
 
 ```
 
@@ -142,7 +138,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-LeftToEarlyPredictionModel:setModelParameters(ModelParameters)
+AnomalyPredictionModel:setModelParameters(ModelParameters)
 
 ```
 
@@ -162,7 +158,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
-local predictedLabelVector = LeftToEarlyPredictionModel:predict(currentPlayerDataVector)
+local predictedLabelVector = AnomalyPredictionModel:predict(currentPlayerDataVector)
 
 ```
 
@@ -170,7 +166,7 @@ Once you receive the predicted label vector, you can grab the pure number output
 
 ```lua
 
-local anomalyProbability= (1 - predictedLabelVector[1][1])
+local anomalyProbability = (1 - predictedLabelVector[1][1])
 
 ```
 

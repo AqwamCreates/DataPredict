@@ -1,18 +1,36 @@
 # Creating Anomaly Detection Model
 
-Hello guys! Today, I will be showing you on how to create a similarity-based model that could predict the likelihood that the player will buy the item.
+Hello guys! Today, I will be showing you on how to create a retention-based model that could predict the likelihood that the players will leave.
 
 Currently, you need these to produce the model:
 
-* K-Nearest Neighbours Regressor
+* One Class Support Vector Machine (Not Support Vector Machine)
 
 * A player data that is stored in matrix
 
-* An item data that is stored in matrix
+## Setting Up
 
-## Designing Our Feature Vector
+Before we train our model, we will first need to construct a regression model as shown below.
 
-Before we start creating our model, we first need to visualize on how we will design our data to increase the likelihood of players purchasing an item.
+```lua
+
+local DataPredict = require(DataPredict)
+
+-- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
+
+-- Additionally, you must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
+
+local LeftToEarlyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, learningRate = 0.3, kernelFunction = "RadialBasisFunction"})
+
+```
+
+## Upon Player Join
+
+In here, what you need to do is:
+
+* Store initial player data as a vector of numbers.
+
+Below, we will show you how to create this:
 
 ```lua
 
@@ -25,138 +43,76 @@ local playerDataVector = {
         numberOfItemsAmount,
         timePlayedInCurrentSession,
         timePlayedInAllSessions,
-        currentHealthAmount,
-        currentDamageAmount
-    }
-}
-
-local itemDataVector = {
-    {
-        costAmount,
-        rarityValue,
-        durationBetweenFirstServerJoinAndThisItemPurchase,
+        healthAmount
     }
 }
 
 ```
 
-## Constructing Our Model
-
-Before we start training our model, we first need to build our model.
+If you want to add more data instead of relying on the initial data point, you actually can and this will improve the prediction accuracy. But keep in mind that this means you have to store more data. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
 
 ```lua
 
-local DataPredict = require(DataPredict)
+local playerDataMatrix = {}
+  
+local snapshotIndex = 1
+  
+local function snapshotData()
+  
+ playerDataMatrix[snapshotIndex] = {
 
--- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
+    1,
+    numberOfCurrencyAmount,
+    numberOfItemsAmount,
+    timePlayedInCurrentSession,
+    timePlayedInAllSessions,
+    healthAmount
 
-local RecommendationModel = DataPredict.Models.KNearestNeighboursRegressor.new({useWeightedDistance = true, distanceFunction = "CosineDistance"})
-
-```
-
-## Prediction And Training
-
-In here, let's assume that we have a shop GUI that the player can interact with. Since the prediction and training are closely related in terms of code, I will be splitting the process in different subsections.
-
-### Upon Player Opening Shop GUI
-
-The code shown below demonstrate on how to generate the recommendation by the time the player opens the GUI.
-
-```lua
-
-local sortedItemToShowArray = {}
-
-local sortedItemToShowSimilarityScoreArray = {}
-
-local sortedItemDataMatrix = {}
-
-local hasPlayerPurchasedTheItemVector -- We will reserve this for now for readability.
-
-local currentPlayerData = getPlayerDataVector()
-
-local function insertItemBasedOnSimilarityScore(itemName, playerItemDataPairVector, itemSimilarityScore)
-
-    if (#itemToShowDictionary == 0) then
-
-        table.insert(itemArray, itemName)
-
-        table.insert(sortedItemToShowSimilarityScoreArray, itemSimilarityScore)
-
-        table.insert(sortedItemDataMatrix, itemDataVector[1])
-
-        return
-
-    end
-
-    for i, sortedItemToShowSimilarityScore in ipairs(sortedItemToShowSimilarityScoreArray)
-
-        if (itemSimilarityScore <= itemToShowSimilarityScore) then continue end
-
-        table.insert(sortedItemToShowArray, i, itemName)
-
-        table.insert(sortedItemToShowSimilarityScoreArray, i, probability)
-
-        table.insert(sortedItemDataMatrix, 1, playerItemDataPairVector[1])
-
-        break
-
-    end
-
-end
-
-for itemName, itemDataVector in pairs(itemDictionary)
-
-    local playerItemDataPairVector = TensorL:concatenate(playerDataVector, itemDataVector, 2)
-
-    local probabilityVector = RecommendationModel:predict(playerItemDataPairVector, true)
-
-    local probabilityValue = probabilityVector[1][1]
-
-    insertItemBasedOnProbability(itemName, playerItemDataPairVector, probability)
-
-end
-
--- We need this to train our model even if the player does not perform the purchase. Every data counts!
-
-hasPlayerPurchasedTheItemVector = TensorL:createTensor({#itemToShowDictionary, 1}) 
-
-```
-
-### Upon Item Purchase
-
-```lua
-
-local function onItemPurchase(itemName)
-
-    local index = table.find(sortedItemToShowArray, itemName)
-
-    if (not index) then return end
-
-    hasPlayerPurchasedTheItemVector[index][1] = 1
+  }
+  
+  snapshotIndex = snapshotIndex + 1
 
 end
 
 ```
 
-### Upon Player Closing Shop GUI
+If you're concerned about that the model may produce wrong result heavily upon first start up, then you can use a randomized dataset to heavily skew the prediction to the "0" probability value. Then use this randomized dataset to pretrain the model before doing any real-time training and prediction. Below, we will show you how it is done.
 
 ```lua
 
-local function onShopGUIClose()
+local numberOfData = 100
 
-    local costArray = RecommendationModel:train(sortedItemDataMatrix, hasPlayerPurchasedTheItemVector)
-
-end
+local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias")
 
 ```
 
-This should give you a model that predicts a rough estimate on what they will likely to buy.
+However, this require setting the model's parameters to these settings temporarily so that it can be biased to "0" at start up as shown below.
+
+```lua
+
+LeavePredictionModel.maximumNumberOfIterations = 100
+
+LeavePredictionModel.learningRate = 0.3
+
+```
+
+## Upon Player Leave
+
+By the time the player leaves, it is time for us to train the model.
+
+```lua
+
+local costArray = LeftToEarlyPredictionModel:train(playerDataVector)
+
+```
+
+This should give you a model that predicts a rough estimate when they'll leave.
 
 Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = RecommendationModel:getModelParameters()
+local ModelParameters = LeftToEarlyPredictionModel:getModelParameters()
 
 ```
 
@@ -186,7 +142,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-RecommendationModel:setModelParameters(ModelParameters)
+LeftToEarlyPredictionModel:setModelParameters(ModelParameters)
 
 ```
 
@@ -198,8 +154,40 @@ Under this case, the procedure is the same to case 2 except that you need to:
 
 * Perform auto-save with the optional ability of merging with saved model parameters from other servers.
 
+## Prediction Handling
+
+In other to produce predictions from our model, we must perform this operation:
+
+```lua
+
+local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
+
+local predictedLabelVector = LeftToEarlyPredictionModel:predict(currentPlayerDataVector)
+
+```
+
+Once you receive the predicted label vector, you can grab the pure number output by doing this:
+
+```lua
+
+local leftToEarlyProbability = (1 - predictedLabelVector[1][1])
+
+```
+
+So for the current session, you can determine what to do for the next session.
+
+```lua
+
+if (leftToEarlyProbability >= 0.97) then -- Can be changed instead of 0.97.
+
+--- Do a logic here to extend the play time for the next session. For example, bonus currency multiplier duration or random event.
+
+end
+
+```
+
 ## Conclusion
 
-This tutorial showed you on how to create item recommendation model that allows you to increase the likelihood the player will purchase an item. All you need is some data, some models and a bit of practice to get this right!
+This tutorial showed you on how to create "probability to leave" prediction model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!
 
 That's all for today and see you later!

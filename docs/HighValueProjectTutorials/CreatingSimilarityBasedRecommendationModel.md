@@ -4,7 +4,7 @@ Hello guys! Today, I will be showing you on how to create a similarity-based mod
 
 Currently, you need these to produce the model:
 
-* K-Nearest Neighbours Regressors
+* K-Nearest Neighbours Regressor
 
 * A player data that is stored in matrix
 

@@ -14,6 +14,6 @@
     
     * For metaverse-building companies, you can pitch your codes using the DataPredict™ like:
 
-      * “We took DataPredict, customized it, integrated it thoroughly, and provide full support.”
+      * “We took DataPredict's research papers, build our own version and iterate it.”
      
       * "We build the whole machine learning library from scratch and build the whole system with it."

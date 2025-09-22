@@ -162,7 +162,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = LeavePredictionModel:getModelParameters()
+local ModelParameters = LeftToEarlyPredictionModel:getModelParameters()
 
 ```
 

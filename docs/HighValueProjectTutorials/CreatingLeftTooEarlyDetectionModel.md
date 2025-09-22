@@ -121,11 +121,9 @@ Currently, there are two ways to scale the probability.
 
 ### Method 1: Pure Scaling
 
-### Method 1: Pure Scaling
-
 ```lua
 
-local probabilityToLeave = 1 / timeToLeave
+local probabilityToStay = 1 - (1 / timeToLeave)
 
 ```
 
@@ -135,7 +133,7 @@ local probabilityToLeave = 1 / timeToLeave
 
 -- Large scaleFactor means slower growth. scaleFactor should be based on empirical average session length.
 
-local probabilityToLeave = math.exp(-timeToLeave / scaleFactor)
+local probabilityToStay = 1 - math.exp(-timeToLeave / scaleFactor)
 
 ```
 
@@ -143,13 +141,13 @@ Once you have chosen to scale your values, we must do this:
 
 ```lua
 
-local wrappedProbabilityToLeave = {
+local wrappedProbabilityToStaye = {
 
-    {probabilityToLeave}
+    {probabilityToStay}
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = LeftToEarlyPredictionModel:train(playerDataVector, wrappedProbabilityToLeave)
+local costArray = LeftToEarlyPredictionModel:train(playerDataVector, wrappedProbabilityToStaye)
 
 ```
 
@@ -217,15 +215,15 @@ Once you receive the predicted label vector, you can grab the pure number output
 
 ```lua
 
-local predictedProbabilityToLeave = predictedLabelVector[1][1]
+local predictedProbabilityToStay = predictedLabelVector[1][1]
 
 ```
 
-So for the current session, you can determine what to do for the next session. Notice when "predictedProbabilityToLeave" is low, but the player has already left. This contradiction means that the model didn't expect the player left too soon.
+So for the current session, you can determine what to do for the next session. Notice when "predictedProbabilityToStay" is high, but the player has already left. This contradiction means that the model didn't expect the player left too soon.
 
 ```lua
 
-if (predictedProbabilityToLeave <= 0.1) then -- Can be changed instead of 0.97.
+if (predictedProbabilityToStay >= 0.97) then -- Can be changed instead of 0.97.
 
 --- Do a logic here to extend the play time for the next session. For example, bonus currency multiplier duration or random event.
 

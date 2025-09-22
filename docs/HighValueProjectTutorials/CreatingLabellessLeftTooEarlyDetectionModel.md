@@ -154,7 +154,7 @@ local stayProbability = predictedLabelVector[1][1]
 
 ```
 
-So for the current session, you can determine what to do for the next session.
+So for the current session, you can determine what to do for the next session. Notice how both high "stay proability" is high, but the player has already left. This contradiction means the model didn't expect the player left too soon.
 
 ```lua
 

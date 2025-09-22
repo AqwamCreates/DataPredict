@@ -141,13 +141,13 @@ Once you have chosen to scale your values, we must do this:
 
 ```lua
 
-local wrappedProbabilityToStaye = {
+local wrappedProbabilityToStay = {
 
     {probabilityToStay}
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = LeftToEarlyPredictionModel:train(playerDataVector, wrappedProbabilityToStaye)
+local costArray = LeftToEarlyPredictionModel:train(playerDataVector, wrappedProbabilityToStay)
 
 ```
 

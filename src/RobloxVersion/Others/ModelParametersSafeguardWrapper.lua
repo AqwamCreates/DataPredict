@@ -26,13 +26,13 @@
 
 --]]
 
-local BaseIntstance = require(script.Parent.Parent.Cores.BaseInstance)
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 local ModelParametersSafeguardWrapper = {}
 
 ModelParametersSafeguardWrapper.__index = ModelParametersSafeguardWrapper
 
-setmetatable(ModelParametersSafeguardWrapper, BaseIntstance)
+setmetatable(ModelParametersSafeguardWrapper, BaseInstance)
 
 local defaultIgnoreUpdateOnDefect = false
 
@@ -54,7 +54,7 @@ local function checkIfModelParametersAreAcceptable(ModelParameters)
 		
 		for _, value in ModelParameters do
 			
-			isAcceptable = checkIfModelParametersAreAcceptable(ModelParameters)
+			isAcceptable = checkIfModelParametersAreAcceptable(value)
 			
 			if (not isAcceptable) then return false end
 			
@@ -70,7 +70,7 @@ local function checkIfModelParametersAreAcceptable(ModelParameters)
 	
 end
 
-local function removeDefectiveData(featureMatrix, labelMatrix)
+local function removeDefectiveData(featureMatrix, labelMatrix) -- If even a single column contains a defective value, remove the whole row.
 	
 	local numberOfData = #featureMatrix
 
@@ -92,7 +92,7 @@ local function removeDefectiveData(featureMatrix, labelMatrix)
 
 			if (not checkIfIsAcceptableValue(featureValue)) then
 				
-				table.insert(rowToDeleteArray, i)
+				rowToDeleteArray[i] = true
 				
 				isAcceptableData = false
 
@@ -102,37 +102,39 @@ local function removeDefectiveData(featureMatrix, labelMatrix)
 
 		end
 		
-		if (not isAcceptableData) then break end
-		
-		local labelVector = labelMatrix[i]
-		
-		for l = 1, numberOfClasses, 1 do
+		if (labelMatrix) then
 			
-			if (not checkIfIsAcceptableValue(labelVector[l])) then
+			local labelVector = labelMatrix[i]
 
-				table.insert(rowToDeleteArray, i)
-				
-				isAcceptableData = false
+			for l = 1, numberOfClasses, 1 do
 
-				break
+				if (not checkIfIsAcceptableValue(labelVector[l])) then
+
+					rowToDeleteArray[i] = true
+
+					isAcceptableData = false
+
+					break
+
+				end
 
 			end
 			
 		end
-
+		
 	end
 
 	local filteredFeatureMatrix = {}
 	
 	local filteredLabelMatrix = {}
 
-	for i = 1, numberOfData, -1 do
+	for i = 1, numberOfData, 1 do
 
-		if (not table.find(rowToDeleteArray, i)) then
+		if (not rowToDeleteArray[i]) then
 			
 			table.insert(filteredFeatureMatrix, featureMatrix[i])
 			
-			if (labelMatrix) then table.insert(filteredFeatureMatrix, labelMatrix[i]) end
+			if (labelMatrix) then table.insert(filteredLabelMatrix, labelMatrix[i]) end
 			
 		end
 
@@ -144,7 +146,7 @@ end
 
 function ModelParametersSafeguardWrapper.new(parameterDictionary)
 	
-	local NewModelParametersSafeguardWrapper = BaseIntstance.new(parameterDictionary)
+	local NewModelParametersSafeguardWrapper = BaseInstance.new(parameterDictionary)
 	
 	setmetatable(NewModelParametersSafeguardWrapper, ModelParametersSafeguardWrapper)
 	
@@ -190,7 +192,7 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, func
 		
 		self.canUseModel = true
 		
-		if (valueArray) then return table.unpack(valueArray) end
+		return table.unpack(valueArray or {})
 		
 	end
 	
@@ -208,15 +210,19 @@ function ModelParametersSafeguardWrapper:runSandboxedEnvironment(eventName, func
 
 		self.canUseModel = true
 
-		return table.unpack(valueArray) 
+		return table.unpack(valueArray or {}) 
 
 	end
 
-	if (removeDefectiveDataOnDefect) then
+	if (removeDefectiveDataOnDefect) and (removeDefectFunction) then
 
 		removeDefectFunction()
 
 	end
+	
+	isAcceptable, valueArray = functionToRun(Model)
+	
+	return table.unpack(valueArray or {})
 	
 end
 
@@ -260,10 +266,6 @@ function ModelParametersSafeguardWrapper:update(...)
 
 		return checkIfModelParametersAreAcceptable(UpdatedModelParameters)
 
-	end, function()
-		
-		
-		
 	end)
 	
 end

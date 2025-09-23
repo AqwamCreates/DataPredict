@@ -451,7 +451,7 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 	
 	local sortedIndexArray
 	
-	local isLessThanNormal
+	local isLessThanOrEqualToNormal
 	
 	local etaValueToSet
 	
@@ -495,9 +495,9 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 		
 		for i, sortedIndex in ipairs(sortedIndexArray) do
 			
-			isLessThanNormal = (i < nNormal)
+			isLessThanOrEqualToNormal = (i <= nNormal)
 			
-			etaValueToSet = (isLessThanNormal and 1) or 0
+			etaValueToSet = (isLessThanOrEqualToNormal and 1) or 0
 			
 			etaUnwrappedVector = etaMatrix[sortedIndex]
 			

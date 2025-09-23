@@ -64,9 +64,9 @@ Multiple Cases can be done here.
 
 * Case 2: Weighted Generation
 
- * For a given set of generated enemy data values, the model outputs a probability that can be used to modify the generated enemy data.
+  * For a given set of generated enemy data values, the model outputs a probability that can be used to modify the generated enemy data.
 
- * General formula: generatedValue = bestValue * probabilityFromSupportVectorMachine. Hence, bestValue = generatedValue / probabilityFromSupportVectorMachine.
+  * General formula: generatedValue = bestValue * probabilityFromSupportVectorMachine. Hence, bestValue = generatedValue / probabilityFromSupportVectorMachine.
 
 ```lua
 

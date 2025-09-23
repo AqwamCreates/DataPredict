@@ -45,9 +45,9 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	setmetatable(NewDeepDoubleStateActionRewardStateActionModel, DeepDoubleStateActionRewardStateActionModel)
 	
 	NewDeepDoubleStateActionRewardStateActionModel:setName("DeepDoubleStateActionRewardStateActionV1")
-
-	NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
+	NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+
 	NewDeepDoubleStateActionRewardStateActionModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
 
 	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
@@ -80,13 +80,17 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepDoubleStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
 	NewDeepDoubleStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 

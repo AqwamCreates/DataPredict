@@ -78,7 +78,9 @@ local function onEnemyKilled(Enemy, Player)
 
   local enemyData = getEnemyData(Enemy)
 
-  local playerCombatDataAndEnemyDataMatrix = TensorL:concatenate(playerCombatDataMatrix, enemyDataMatrix, 2)
+  local playerCombatDataAndEnemyDataVector = TensorL:concatenate(playerCombatDataMatrix, enemyDataMatrix, 2)
+
+  table.insert(playerCombatDataAndEnemyDataMatrix, playerCombatDataAndEnemyDataVector[1])
 
 end
 

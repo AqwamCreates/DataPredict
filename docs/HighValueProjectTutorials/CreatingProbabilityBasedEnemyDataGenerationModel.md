@@ -20,11 +20,19 @@ In order to find the center of the clusters, we first need all the players' comb
 
 ```lua
 
+-- Techincally, the player combat data information is not quite necessary unless these values changes a lot or you're using it as part of enemy data generation.
+
 local playerCombatDataMatrix = {
 
   {player1MaximumHealth, player1MaximumDamage, player1CashAmount},
   {player2MaximumHealth, player2MaximumDamage, player2CashAmount},
   {player3MaximumHealth, player3MaximumDamage, player3CashAmount},
+
+}
+
+local enemyData = {
+
+
 
 }
 

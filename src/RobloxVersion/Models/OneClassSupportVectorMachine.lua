@@ -430,6 +430,8 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 	local beta = self.beta
 	
 	local etaMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfFeatures}, 1)
+	
+	local zeroLabelVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
 
 	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
 
@@ -451,7 +453,7 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 	
 	local sortedIndexArray
 	
-	local isLessThanNormal
+	local isLessThanOrEqualToNormal
 	
 	local etaValueToSet
 	
@@ -485,7 +487,7 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 		
 		slackVector = AqwamTensorLibrary:subtract(labelVector, predictedVector)
 		
-		slackVector = AqwamTensorLibrary:applyFunction(math.max, {{0}}, slackVector)
+		slackVector = AqwamTensorLibrary:applyFunction(math.max, zeroLabelVector, slackVector)
 		
 		sortedIndexArray = {}
 		
@@ -495,9 +497,9 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 		
 		for i, sortedIndex in ipairs(sortedIndexArray) do
 			
-			isLessThanNormal = (i < nNormal)
+			isLessThanOrEqualToNormal = (i <= nNormal)
 			
-			etaValueToSet = (isLessThanNormal and 1) or 0
+			etaValueToSet = (isLessThanOrEqualToNormal and 1) or 0
 			
 			etaUnwrappedVector = etaMatrix[sortedIndex]
 			

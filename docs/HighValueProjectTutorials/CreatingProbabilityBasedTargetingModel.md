@@ -74,11 +74,11 @@ for i, unwrappedPlayerLocationDataVector in ipairs(playerLocationDataMatrix) do
 
   local probabilityOfHitting = TargetingModel:predict({unwrappedPlayerLocationDataVector})[1][1]
 
-  -- [[
+  --[[
 
    This is just the tutorial's custom logic where if the model targets a low probability area, the more it will launch missiles there.
 
-   You can put your own game logic here.
+   You can put your own game logic here, but we're giving you ideas here.
 
   --]]
 

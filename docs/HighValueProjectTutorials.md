@@ -4,7 +4,7 @@
 
 * References that validates the use cases can be found [here](HighValueProjectTutorials/References.md). It also includes my papers.
 
-* The "minimal implementation time" assumes that a junior machine learning engineer is handling the implementation.
+* The "minimal implementation time" assumes that a junior gameplay machine learning engineer is handling the implementation.
 
 * Since DataPredict is written in native Lua, you can have extra compute per player alongside a single Roblox server by loading the models on players' Roblox client.
 

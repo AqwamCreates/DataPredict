@@ -4,13 +4,13 @@ Hi guys! In this tutorial, we will demonstrate on how to create cluster-based ta
 
 ## Initializing The One Class Support Vector Machine Model
 
-Before we can produce ourselves a targeting model, we first need to construct a model, which is shown below. Ensure that the distance function is not "CosineDistance".
+Before we can produce ourselves a targeting model, we first need to construct a model, which is shown below. Ensure that the kernel function is "RadialBasisFunction".
 
 ```lua
 
- -- For this tutorial, we will assume that we want to hit 90% of the players.
+ -- For this tutorial, we will assume that we want to hit 90% of the players. So, our beta must set to 0.9
 
-local TargetingModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 10, kernelFunction = "RadialBasisFunction"})
+local TargetingModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 10, kernelFunction = "RadialBasisFunction", beta = 0.9})
 
 ```
 

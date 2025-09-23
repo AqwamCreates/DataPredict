@@ -1,6 +1,6 @@
 # Creating Probability-Based Targeting Model
 
-Hi guys! In this tutorial, we will demonstrate on how to create cluster-based targeting model for your weapon systems.
+Hi guys! In this tutorial, we will demonstrate on how to create probability-based targeting model for your weapon systems.
 
 ## Initializing The One Class Support Vector Machine Model
 
@@ -54,17 +54,21 @@ local ModelParameters = TargetingModel:getModelParameters()
 
 ## Interacting With The Center Of Clusters
 
-Since we have three clusters, we can expect three rows for our matrix. As such we can process our game logic here.
+We then use the same player data to determine if you want to shoot at it.
 
 ```lua
 
-for clusterIndex, unwrappedClusterVector in ipairs(ModelParameters) do
+for i, unwrappedPlayerLocationDataVector in ipairs(playerLocationDataMatrix)
 
-  local x = unwrappedClusterVector[1]
+  local probabilityValue = TargetingModel:predict({unwrappedPlayerLocationDataVector})[1][1]
+
+  if (math.random() < probabilityValue) then continue end
+
+  local x = unwrappedPlayerLocationDataVector[1]
   
-  local y = unwrappedClusterVector[2]
+  local y = unwrappedPlayerLocationDataVector[2]
   
-  local z = unwrappedClusterVector[3]
+  local z = unwrappedPlayerLocationDataVector[3]
 
   landMissileAt(x, y, z)
 

@@ -72,9 +72,19 @@ Currently, we have two case on determining the target location:
 
 for i, unwrappedPlayerLocationDataVector in ipairs(playerLocationDataMatrix) do
 
-  local probabilityValue = TargetingModel:predict({unwrappedPlayerLocationDataVector})[1][1]
+  local probabilityOfHitting = TargetingModel:predict({unwrappedPlayerLocationDataVector})[1][1]
 
-  if (math.random() < probabilityValue) then continue end
+  -- [[
+
+   This is just the tutorial's custom logic where if the model targets a low probability area, the more it will launch missiles there.
+
+   You can put your own game logic here.
+
+  --]]
+
+  local probabilityOfNotHitting = 1 - probabilityOfHitting
+
+  if (probabilityOfNotHitting > math.random()) then continue end
 
   local x = unwrappedPlayerLocationDataVector[1]
   

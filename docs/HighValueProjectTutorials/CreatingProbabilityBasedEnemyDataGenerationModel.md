@@ -56,9 +56,27 @@ EnemyDataGenerationModel:train(playerCombatDataAndEnemyDataMatrix)
 
 ## Generating The Enemy Data
 
+Multiple Cases can be done here.
+
+* Case 1: Binary Generation.
+
+  * For a given set of generated enemy data values, the model determines the probability that the player will interact with it. This is then used to spawn or reject the enemy with the generated data values.
+
+* Case 2: Weighted Generation
+
+ * For a given set of generated enemy data values, the model outputs a probability that can be used to modify the generated enemy data.
+
+ * General formula: generatedValue = bestValue * probabilityFromSupportVectorMachine. Hence, bestValue = generatedValue / probabilityFromSupportVectorMachine.
+
 ```lua
 
 local activeEnemyDataArray = {}
+
+```
+
+## Upon Player Interaction With Enemy.
+
+```
 
 --[[
 

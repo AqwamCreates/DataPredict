@@ -146,7 +146,7 @@
 
 * [Creating Probability-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingProbabilityBasedEnemyDataGenerationModel.md)
 
-  * Uses players' combat data paired with enemies' data to predict likelihood that the player will engage with the enemy if spawned.
+  * Uses players' combat data (optional) paired with enemies' data to predict likelihood that the player will engage with the enemy if spawned.
 
   * No need to add new content; the model can use existing content to optimize your games.
 

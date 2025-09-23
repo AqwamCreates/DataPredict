@@ -56,7 +56,7 @@ EnemyDataGenerationModel:train(playerCombatDataAndEnemyDataMatrix)
 
 ## Generating The Enemy Data
 
-Multiple Cases can be done here.
+Multiple cases can be done here.
 
 * Case 1: Binary Generation.
 
@@ -70,15 +70,89 @@ Multiple Cases can be done here.
  
   * Once bestValue is calculated, spawn an enemy with this best value data.
 
+But first, let initialize an array so that we can control how many enemies we should generate.
+
 ```lua
 
 local activeEnemyDataArray = {}
+
+local maximumNumberOfEnemies = 10
+
+```
+
+### Case 1: Binary Generation.
+
+```lua
+
+local playerCombatDataVector
+
+local enemyDataVector
+
+local playerCombatDataAndEnemyDataVector
+
+local probabilityForPlayerToInteract
+
+local isAcceptable = false
+
+while true do
+
+  if (#activeEnemyDataArray >= maximumNumberOfEnemies) then continue end
+
+  repeat
+
+    playerCombatDataVector = getPlayerDataVector()
+
+    enemyDataVector = generateEnemyDataVector()
+
+    playerCombatDataAndEnemyDataVector = TensorL:concatenate(playerCombatDataVector, enemyDataVector, 2)
+
+    probabilityForPlayerToInteract = EnemyDataGenerationModel:predict(playerCombatDataAndEnemyDataVector)
+
+    isAcceptable = (probabilityForPlayerToInteract >= 0.5)
+
+  until isAcceptable
+
+  summonEnemy(enemyDataVector)
+
+end
+
+```
+
+### Case 2: Weighted Generation.
+
+```lua
+
+local playerCombatDataVector
+
+local enemyDataVector
+
+local playerCombatDataAndEnemyDataVector
+
+local probabilityForPlayerToInteract
+
+while true do
+
+  if (#activeEnemyDataArray >= maximumNumberOfEnemies) then continue end
+
+ playerCombatDataVector = getPlayerDataVector()
+
+ enemyDataVector = generateEnemyDataVector()
+
+ playerCombatDataAndEnemyDataVector = TensorL:concatenate(playerCombatDataVector, enemyDataVector, 2)
+
+ probabilityForPlayerToInteract = EnemyDataGenerationModel:predict(playerCombatDataAndEnemyDataVector)
+
+ enemyDataVector = TensorL:divide(enemyDataVector, probabilityForPlayerToInteract)
+
+ summonEnemy(enemyDataVector)
+
+end
 
 ```
 
 ## Upon Player Interaction With Enemy.
 
-```
+```lua
 
 --[[
 
@@ -101,6 +175,8 @@ local function onEnemyKilled(Enemy, Player)
   local playerCombatDataAndEnemyDataVector = TensorL:concatenate(playerCombatDataVector, enemyDataVector, 2)
 
   table.insert(playerCombatDataAndEnemyDataMatrix, playerCombatDataAndEnemyDataVector[1])
+
+  removeEnemyDataFromActiveEnemyDataArray(Enemy)
 
 end
 

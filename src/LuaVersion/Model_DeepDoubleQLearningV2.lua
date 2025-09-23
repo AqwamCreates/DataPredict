@@ -136,13 +136,17 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	
 	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepDoubleQLearningModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepDoubleQLearningModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
 	NewDeepDoubleQLearningModel:setResetFunction(function() 
 		
-		NewDeepDoubleQLearningModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepDoubleQLearningModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 	

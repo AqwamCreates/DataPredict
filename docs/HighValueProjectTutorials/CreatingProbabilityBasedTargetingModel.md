@@ -60,7 +60,7 @@ Currently, we have two case on determining the target location:
 
   * Great for performing inaccurate but likely to hit a player. 
 
-  * Can target empty areas to increase innacuracy, but still likely to hit a player. 
+  * Can target empty areas to increase inaccuracy, but still likely to hit a player. 
 
 * Case 2: Support Vector Centers
 
@@ -104,7 +104,7 @@ landMissileAt(x, y, z)
 
 ```
 
-## Resetting Our Targetting System
+## Resetting Our Targeting System
 
 By default, when you reuse the machine learning models from DataPredict, it will interact with the existing model parameters. As such, we need to reset the model parameters by calling the setModelParameters() function and set it to "nil".
 

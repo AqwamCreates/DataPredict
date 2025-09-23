@@ -74,9 +74,9 @@ local playerCombatDataAndEnemyDataMatrix = {}
 
 local function onEnemyKilled(Enemy, Player)
 
-  local playerCombatData = getPlayerCombatData(playerCombatData)
+  local playerCombatData = getPlayerCombatData(Player)
 
-  local enemyData = getEnemyData(enemyData)
+  local enemyData = getEnemyData(Enemy)
 
   local playerCombatDataAndEnemyDataMatrix = TensorL:concatenate(playerCombatDataMatrix, enemyDataMatrix, 2)
 

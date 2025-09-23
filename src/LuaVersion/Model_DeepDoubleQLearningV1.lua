@@ -45,7 +45,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	setmetatable(NewDeepDoubleQLearningModel, DeepDoubleQLearningModel)
 	
 	NewDeepDoubleQLearningModel:setName("DeepDoubleQLearningV1")
-
+	
 	NewDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
 	NewDeepDoubleQLearningModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
@@ -80,13 +80,17 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	
 	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepDoubleQLearningModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepDoubleQLearningModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 	
 	NewDeepDoubleQLearningModel:setResetFunction(function() 
 		
-		NewDeepDoubleQLearningModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepDoubleQLearningModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 

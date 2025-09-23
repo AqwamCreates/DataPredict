@@ -106,7 +106,7 @@ while true do
 
     playerCombatDataAndEnemyDataVector = TensorL:concatenate(playerCombatDataVector, enemyDataVector, 2)
 
-    probabilityForPlayerToInteract = EnemyDataGenerationModel:predict(playerCombatDataAndEnemyDataVector)
+    probabilityForPlayerToInteract = EnemyDataGenerationModel:predict(playerCombatDataAndEnemyDataVector)[1][1]
 
     isAcceptable = (probabilityForPlayerToInteract >= 0.5)
 
@@ -140,7 +140,7 @@ while true do
 
  playerCombatDataAndEnemyDataVector = TensorL:concatenate(playerCombatDataVector, enemyDataVector, 2)
 
- probabilityForPlayerToInteract = EnemyDataGenerationModel:predict(playerCombatDataAndEnemyDataVector)
+ probabilityForPlayerToInteract = EnemyDataGenerationModel:predict(playerCombatDataAndEnemyDataVector)[1][1]
 
  enemyDataVector = TensorL:divide(enemyDataVector, probabilityForPlayerToInteract)
 

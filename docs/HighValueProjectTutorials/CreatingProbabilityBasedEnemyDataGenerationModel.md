@@ -32,7 +32,9 @@ local playerCombatDataMatrix = {
 
 local enemyData = {
 
-
+  {enemy1MaximumHealth, enemy1MaximumDamage, enemy1CashAmount},
+  {enemy2MaximumHealth, enemy2MaximumDamage, enemy2CashAmount},
+  {enemy3MaximumHealth, enemy3MaximumDamage, enemy3CashAmount},
 
 }
 

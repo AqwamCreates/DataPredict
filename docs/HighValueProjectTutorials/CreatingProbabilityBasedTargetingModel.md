@@ -92,13 +92,11 @@ end
 
 local ModelParameters = TargetingModel:getModelParameters()
 
-local unwrappedModelParameters = ModelParameters[1]
-
-local x = unwrappedModelParameters[1]
+local x = ModelParameters[1][1]
   
-local y = unwrappedModelParameters[2]
+local y = ModelParameters[2][1]
   
-local z = unwrappedModelParameters[3]
+local z = ModelParameters[3][1]
 
 landMissileAt(x, y, z)
 

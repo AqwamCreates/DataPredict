@@ -162,11 +162,15 @@
 
   * Find the center of players based on number of clusters.
 
+  * Can perform precise targeting.
+
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
 * [Creating Probability-Based Targeting Model](HighValueProjectTutorials/CreatingProbabilityBasedTargetingModel.md)
 
   * Find the center of players by finding the area with high player density.
+
+  * Can perform both precise targeting as well as innacurate, but likely to hit targeting.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 

@@ -28,11 +28,11 @@
 
 local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
-OneClassSupportVectorMachineModel = {}
+SupportVectorRegressionModel = {}
 
-OneClassSupportVectorMachineModel.__index = OneClassSupportVectorMachineModel
+SupportVectorRegressionModel.__index = SupportVectorRegressionModel
 
-setmetatable(OneClassSupportVectorMachineModel, IterativeMethodBaseModel)
+setmetatable(SupportVectorRegressionModel, IterativeMethodBaseModel)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
@@ -40,7 +40,7 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultCvalue = 1
 
-local defaultBeta = 0.9
+local defaultEpsilon = 1
 
 local defaultKernelFunction = "Linear"
 
@@ -85,7 +85,7 @@ local distanceFunctionList = {
 		return distance 
 
 	end,
-	
+
 	["Cosine"] = function(x1, x2)
 
 		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
@@ -121,7 +121,7 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 	local numberOfData2 = #matrix2
 
 	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData1, numberOfData2})
-	
+
 	local distanceFunctionToApply = distanceFunctionList[distanceFunction]
 
 	for i = 1, numberOfData1, 1 do
@@ -147,15 +147,15 @@ local mappingList = {
 	end,
 
 	["Polynomial"] = function(featureMatrix, kernelParameters)
-		
+
 		local degree = kernelParameters.degree
-		
+
 		local gamma = kernelParameters.gamma
-		
+
 		local r = kernelParameters.r
-		
+
 		local scaledFeatureMatrix = AqwamTensorLibrary:multiply(featureMatrix, gamma)
-		
+
 		local addedFeatureMatrix = AqwamTensorLibrary:add(scaledFeatureMatrix, r)
 
 		return AqwamTensorLibrary:power(addedFeatureMatrix, degree)
@@ -163,7 +163,7 @@ local mappingList = {
 	end,
 
 	["RadialBasisFunction"] = function(featureMatrix, kernelParameters)
-		
+
 		local sigma = kernelParameters.sigma
 
 		local squaredFeatureMatrix = AqwamTensorLibrary:power(featureMatrix, 2)
@@ -177,25 +177,25 @@ local mappingList = {
 		return AqwamTensorLibrary:applyFunction(math.exp, zMatrix)
 
 	end,
-	
+
 	["Sigmoid"] = function(featureMatrix, kernelParameters)
 
 		local gamma = kernelParameters.gamma
 
 		local r = kernelParameters.r
-		
+
 		local kernelMappingMatrixPart1 = AqwamTensorLibrary:multiply(gamma, featureMatrix)
 
 		local kernelMappingMatrixPart2 = AqwamTensorLibrary:add(kernelMappingMatrixPart1, r)
 
 		local kernelMappingMatrix = AqwamTensorLibrary:applyFunction(math.tanh, kernelMappingMatrixPart2)
-		
+
 		return kernelMappingMatrix
 
 	end,
-	
+
 	["Cosine"] = function(featureMatrix, kernelParameters)
-		
+
 		local zeroMatrix = AqwamTensorLibrary:createTensor({1, #featureMatrix[1]}, 0)
 
 		local distanceMatrix = createDistanceMatrix(featureMatrix, zeroMatrix, "Euclidean")
@@ -277,13 +277,13 @@ local kernelFunctionList = {
 	end,
 
 	["Cosine"] = function(featureMatrix, kernelParameters)
-		
+
 		local zeroMatrix = AqwamTensorLibrary:createTensor({1, #featureMatrix[1]}, 0)
 
 		local distanceMatrix = createDistanceMatrix(featureMatrix, zeroMatrix, "Euclidean")
 
 		local kernelMappingMatrix = AqwamTensorLibrary:divide(featureMatrix, distanceMatrix)
-		
+
 		local kernelMatrix = AqwamTensorLibrary:dotProduct(kernelMappingMatrix, AqwamTensorLibrary:transpose(kernelMappingMatrix))
 
 		return kernelMatrix
@@ -292,122 +292,126 @@ local kernelFunctionList = {
 
 }
 
-local function calculateCost(modelParameters, individualKernelMatrix, kernelMatrix, labelVector, cValue)
-	
+local function calculateCost(modelParameters, individualKernelMatrix, kernelMatrix, labelVector, cValue, epsilon)
+
 	-- The dotProduct() only takes two arguments here to reduce computational time
-	
+
 	local predictedVector = AqwamTensorLibrary:dotProduct(individualKernelMatrix, modelParameters)
+
+	local errorVector = AqwamTensorLibrary:subtract(predictedVector, labelVector)
 	
-	local costVector = AqwamTensorLibrary:subtract(predictedVector, labelVector)
-	
+	local positiveSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, errorValue - epsilon) end, errorVector)
+
+	local negativeSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, -errorValue - epsilon) end, errorVector)
+
+	local costVector = AqwamTensorLibrary:add(positiveSlackVariableVector, negativeSlackVariableVector)
+
 	costVector = AqwamTensorLibrary:multiply(-cValue, costVector)
-	
+
 	local transposedCostVector = AqwamTensorLibrary:transpose(costVector)
-	
+
 	local transposedLabelVector = AqwamTensorLibrary:transpose(labelVector)
-	
+
 	local costPart1 = AqwamTensorLibrary:dotProduct(transposedCostVector, kernelMatrix)
-	
+
 	costPart1 = AqwamTensorLibrary:dotProduct(costPart1, kernelMatrix)
-	
+
 	costPart1 = AqwamTensorLibrary:dotProduct(costPart1, costVector)
-	
+
 	costPart1 = costPart1 / 2
-	
+
 	local costPart2 = AqwamTensorLibrary:dotProduct(transposedCostVector, kernelMatrix)
-	
+
 	costPart2 = AqwamTensorLibrary:dotProduct(costPart2, labelVector)
-	
+
 	local costPart3 = AqwamTensorLibrary:dotProduct(transposedLabelVector, labelVector)
-	
+
 	costPart3 = costPart3 / 2
-	
+
 	local costPart4 = AqwamTensorLibrary:dotProduct(transposedCostVector, kernelMatrix)
-	
+
 	costPart4 = AqwamTensorLibrary:dotProduct(costPart4, costVector)
-	
+
 	costPart4 = costPart4 / (2 * cValue)
-	
+
 	local cost = costPart1 - costPart2 + costPart3 + costPart4
-	
+
 	return cost
 
 end
 
-local function calculateModelParameters(modelParameters, individualKernelMatrix, labelVector, cValue)
+local function calculateModelParameters(modelParameters, individualKernelMatrix, labelVector, cValue, epsilon)
 
 	local predictionVector = AqwamTensorLibrary:dotProduct(individualKernelMatrix, modelParameters) -- m x 1
-	
+
 	local errorVector = AqwamTensorLibrary:subtract(predictionVector, labelVector) -- m x 1
 	
+	local positiveSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, errorValue - epsilon) end, errorVector)
+
+	local negativeSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, -errorValue - epsilon) end, errorVector)
+	
+	local slackVariableVector = AqwamTensorLibrary:add(positiveSlackVariableVector, negativeSlackVariableVector)
+	
 	local transposedIndividualKernelMatrix = AqwamTensorLibrary:transpose(individualKernelMatrix)
-	
-	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedIndividualKernelMatrix, errorVector) -- n x m, m x 1
-	
+
+	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedIndividualKernelMatrix, slackVariableVector) -- n x m, m x 1
+
 	local NewModelParameters = AqwamTensorLibrary:multiply(-cValue, dotProductErrorVector)
 
 	return NewModelParameters
 
 end
 
-function OneClassSupportVectorMachineModel.new(parameterDictionary)
-	
+function SupportVectorRegressionModel.new(parameterDictionary)
+
 	parameterDictionary = parameterDictionary or {}
-	
+
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewSupportVectorMachine = IterativeMethodBaseModel.new(parameterDictionary)
+	local NewSupportVectorRegression = IterativeMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewSupportVectorMachine, OneClassSupportVectorMachineModel)
-	
-	NewSupportVectorMachine:setName("SupportVectorMachine")
-	
-	NewSupportVectorMachine.cValue = parameterDictionary.cValue or defaultCvalue
-	
-	NewSupportVectorMachine.beta = parameterDictionary.beta or defaultBeta
+	setmetatable(NewSupportVectorRegression, SupportVectorRegressionModel)
 
-	NewSupportVectorMachine.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
+	NewSupportVectorRegression:setName("SupportVectorRegression")
 
-	NewSupportVectorMachine.kernelParameters = {
-		
+	NewSupportVectorRegression.cValue = parameterDictionary.cValue or defaultCvalue
+	
+	NewSupportVectorRegression.epsilon = parameterDictionary.epsilon or defaultEpsilon
+
+	NewSupportVectorRegression.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
+
+	NewSupportVectorRegression.kernelParameters = {
+
 		degree = parameterDictionary.degree or defaultDegree,
-		
+
 		gamma = parameterDictionary.gamma or defaultGamma,
-		
+
 		sigma = parameterDictionary.sigma or defaultSigma,
-		
+
 		r = parameterDictionary.r or defaultR
-	
+
 	}
 
-	return NewSupportVectorMachine
+	return NewSupportVectorRegression
 end
 
-function OneClassSupportVectorMachineModel:setCValue(cValue)
+function SupportVectorRegressionModel:setCValue(cValue)
 
 	self.cValue = cValue or self.cValue
 
 end
 
-function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
-	
-	local numberOfData = #featureMatrix
-	
-	labelVector = labelVector or AqwamTensorLibrary:createTensor({numberOfData, 1}, 1)
+function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
-	if (numberOfData ~= #labelVector) then
+	if (#featureMatrix ~= #labelVector) then
 
 		error("The feature matrix and the label vector do not contain the same number of rows!")
 
 	end
-	
-	local numberOfFeatures = #featureMatrix[1]
-	
-	local ModelParameters = self.ModelParameters
 
-	if (ModelParameters) then
+	if (self.ModelParameters) then
 
-		if (numberOfFeatures ~= #ModelParameters) then
+		if (#featureMatrix[1] ~= #self.ModelParameters) then
 
 			error("The number of features is not the same as the model parameters!")
 
@@ -415,101 +419,45 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 
 	else
 
-		ModelParameters = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
+		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
 
 	end
 
-	local maximumNumberOfIterations = self.maximumNumberOfIterations
-
-	local kernelFunction = self.kernelFunction
-
-	local kernelParameters = self.kernelParameters
-	
-	local cValue = self.cValue
-	
-	local beta = self.beta
-	
-	local etaMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfFeatures}, 1)
-	
-	local zeroLabelVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
-
-	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
-
-	local kernelMatrix = kernelFunctionList[kernelFunction](featureMatrix, kernelParameters)
-	
-	local nNormal = math.floor(beta * numberOfData)
-	
-	local numberOfIterations = 0
+	local cost
 
 	local costArray = {}
 
-	local cost
-	
-	local weightedKernelMatrix
-	
-	local predictedVector
-	
-	local slackVector
-	
-	local sortedIndexArray
-	
-	local isLessThanOrEqualToNormal
-	
-	local etaValueToSet
-	
-	local etaUnwrappedVector
-	
+	local numberOfIterations = 0
+
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
+
+	local costFunctionDerivatives
+
+	local mappedFeatureMatrix = mappingList[self.kernelFunction](featureMatrix, self.kernelParameters)
+
+	local kernelMatrix = kernelFunctionList[self.kernelFunction](featureMatrix, self.kernelParameters)
+
 	repeat
-		
+
 		numberOfIterations = numberOfIterations + 1
 
 		self:iterationWait()
-		
+
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
-			
-			return calculateCost(ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, cValue)
-			
+
+			return calculateCost(self.ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, self.cValue, self.epsilon)
+
 		end)
 
 		if cost then
-			
+
 			table.insert(costArray, cost)
 
 			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
-			
-		end
-		
-		weightedKernelMatrix = AqwamTensorLibrary:multiply(mappedFeatureMatrix, etaMatrix)
 
-		ModelParameters = calculateModelParameters(ModelParameters, weightedKernelMatrix, labelVector, cValue)
-		
-		predictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
-		
-		slackVector = AqwamTensorLibrary:subtract(labelVector, predictedVector)
-		
-		slackVector = AqwamTensorLibrary:applyFunction(math.max, zeroLabelVector, slackVector)
-		
-		sortedIndexArray = {}
-		
-		for i = 1, numberOfData, 1 do sortedIndexArray[i] = i end
-		
-		table.sort(sortedIndexArray, function(a, b) return slackVector[a][1] < slackVector[b][1] end)
-		
-		for i, sortedIndex in ipairs(sortedIndexArray) do
-			
-			isLessThanOrEqualToNormal = (i <= nNormal)
-			
-			etaValueToSet = (isLessThanOrEqualToNormal and 1) or 0
-			
-			etaUnwrappedVector = etaMatrix[sortedIndex]
-			
-			for j = 1, numberOfFeatures, 1 do
-				
-				etaUnwrappedVector[j] = etaValueToSet
-				
-			end
-			
 		end
+
+		self.ModelParameters = calculateModelParameters(self.ModelParameters, mappedFeatureMatrix, labelVector, self.cValue, self.epsilon)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
@@ -518,27 +466,21 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 		warn("The model diverged! Please repeat the experiment or change the argument values.")
 
 	end
-	
-	self.ModelParameters = ModelParameters
 
 	return costArray
 
 end
 
-function OneClassSupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
+function SupportVectorRegressionModel:predict(featureMatrix)
 
 	local mappedFeatureMatrix = mappingList[self.kernelFunction](featureMatrix, self.kernelParameters)
 
-	local originalPredictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, self.ModelParameters)
+	local predictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, self.ModelParameters)
 
-	if (typeof(originalPredictedVector) == "number") then originalPredictedVector = {{originalPredictedVector}} end
-
-	if (returnOriginalOutput) then return originalPredictedVector end
-
-	local predictedVector = AqwamTensorLibrary:applyFunction(seperatorFunction, originalPredictedVector)
+	if (typeof(predictedVector) == "number") then predictedVector = {{predictedVector}} end
 
 	return predictedVector
 
 end
 
-return OneClassSupportVectorMachineModel
+return SupportVectorRegressionModel

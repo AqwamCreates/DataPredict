@@ -70,7 +70,7 @@ Currently, we have two case on determining the target location:
 
 ```lua
 
-for i, unwrappedPlayerLocationDataVector in ipairs(playerLocationDataMatrix)
+for i, unwrappedPlayerLocationDataVector in ipairs(playerLocationDataMatrix) do
 
   local probabilityValue = TargetingModel:predict({unwrappedPlayerLocationDataVector})[1][1]
 

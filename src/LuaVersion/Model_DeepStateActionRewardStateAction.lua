@@ -90,13 +90,17 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepStateActionRewardStateActionModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 	
 	NewDeepStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		NewDeepStateActionRewardStateActionModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 

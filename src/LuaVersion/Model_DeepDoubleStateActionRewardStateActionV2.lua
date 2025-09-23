@@ -30,11 +30,13 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
-DeepDoubleStateActionRewardStateActionModel = {}
+DeepDoubleExpectedStateActionRewardStateActionModel = {}
 
-DeepDoubleStateActionRewardStateActionModel.__index = DeepDoubleStateActionRewardStateActionModel
+DeepDoubleExpectedStateActionRewardStateActionModel.__index = DeepDoubleExpectedStateActionRewardStateActionModel
 
-setmetatable(DeepDoubleStateActionRewardStateActionModel, DeepReinforcementLearningBaseModel)
+setmetatable(DeepDoubleExpectedStateActionRewardStateActionModel, DeepReinforcementLearningBaseModel)
+
+local defaultEpsilon = 0.5
 
 local defaultAveragingRate = 0.995
 
@@ -56,90 +58,140 @@ local function rateAverageModelParameters(averagingRate, TargetModelParameters, 
 
 end
 
-function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
+function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictionary)
+
+	local NewDeepDoubleExpectedStateActionRewardStateActionModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
+
+	setmetatable(NewDeepDoubleExpectedStateActionRewardStateActionModel, DeepDoubleExpectedStateActionRewardStateActionModel)
 	
-	parameterDictionary = parameterDictionary or {}
-
-	local NewDeepDoubleStateActionRewardStateActionModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
-
-	setmetatable(NewDeepDoubleStateActionRewardStateActionModel, DeepDoubleStateActionRewardStateActionModel)
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
-	NewDeepDoubleStateActionRewardStateActionModel:setName("DeepDoubleStateActionRewardStateActionV2")
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
+	
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewDeepDoubleStateActionRewardStateActionModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
-
-	NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
-
-	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 		
-		local Model = NewDeepDoubleStateActionRewardStateActionModel.Model
+		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model
 		
-		local discountFactor = NewDeepDoubleStateActionRewardStateActionModel.discountFactor
-
-		local EligibilityTrace = NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
+		local discountFactor = NewDeepDoubleExpectedStateActionRewardStateActionModel.discountFactor
+		
+		local epsilon = NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon
+		
+		local averagingRate = NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate
+		
+		local EligibilityTrace = NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 		
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
-		if (PrimaryModelParameters) then 
+		if (not PrimaryModelParameters) then 
 			
 			Model:generateLayers()
 			
 			PrimaryModelParameters = Model:getModelParameters(true)
 			
 		end
+
+		local expectedQValue = 0
+
+		local numberOfGreedyActions = 0
 		
-		local qVector = Model:forwardPropagate(currentFeatureVector, true)
+		local ClassesList = Model:getClassesList()
 
-		local discountedQVector = AqwamTensorLibrary:multiply(discountFactor, qVector, (1 - terminalStateValue))
+		local numberOfClasses = #ClassesList
 
-		local targetVector = AqwamTensorLibrary:add(rewardValue, discountedQVector)
+		local actionIndex = table.find(ClassesList, action)
 
-		local previousQVector = Model:forwardPropagate(previousFeatureVector)
+		local previousVector = Model:forwardPropagate(previousFeatureVector)
 
-		local temporalDifferenceErrorVector = AqwamTensorLibrary:subtract(targetVector, previousQVector)
+		local targetVector = Model:forwardPropagate(currentFeatureVector)
+		
+		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
+		
+		local unwrappedTargetVector = targetVector[1]
+
+		for i = 1, numberOfClasses, 1 do
+
+			if (unwrappedTargetVector[i] == maxQValue) then
+
+				numberOfGreedyActions = numberOfGreedyActions + 1
+
+			end
+
+		end
+
+		local nonGreedyActionProbability = epsilon / numberOfClasses
+
+		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
+
+		for _, qValue in ipairs(unwrappedTargetVector) do
+
+			if (qValue == maxQValue) then
+
+				expectedQValue = expectedQValue + (qValue * greedyActionProbability)
+
+			else
+
+				expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
+
+			end
+
+		end
+
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
+
+		local lastValue = previousVector[1][actionIndex]
+
+		local temporalDifferenceError = targetValue - lastValue
+		
+		local outputDimensionSizeArray = {1, numberOfClasses}
+
+		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+
+		temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
 		
 		if (EligibilityTrace) then
 
-			local ClassesList = Model:getClassesList()
-
-			local actionIndex = table.find(ClassesList, action)
-
-			EligibilityTrace:increment(actionIndex, discountFactor, {1, #ClassesList})
+			EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
 
 			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
 
 		end
 		
-		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
-
+		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
+		
 		Model:forwardPropagate(previousFeatureVector, true)
 
 		Model:update(negatedTemporalDifferenceErrorVector, true)
-		
+
 		local TargetModelParameters = Model:getModelParameters(true)
 
-		TargetModelParameters = rateAverageModelParameters(NewDeepDoubleStateActionRewardStateActionModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
+		TargetModelParameters = rateAverageModelParameters(NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
 
 		Model:setModelParameters(TargetModelParameters, true)
 		
-		return temporalDifferenceErrorVector
+		return temporalDifferenceError
 
 	end)
 	
-	NewDeepDoubleStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	NewDeepDoubleStateActionRewardStateActionModel:setResetFunction(function()
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	return NewDeepDoubleStateActionRewardStateActionModel
+	return NewDeepDoubleExpectedStateActionRewardStateActionModel
 
 end
 
-return DeepDoubleStateActionRewardStateActionModel
+return DeepDoubleExpectedStateActionRewardStateActionModel

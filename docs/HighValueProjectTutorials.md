@@ -144,6 +144,14 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
+* [Creating Probability-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingProbabilityBasedEnemyDataGenerationModel.md) (Incomplete)
+
+  * Uses players' combat data paired with enemies' data to predict likelihood that the player will engage with the enemy if spawned.
+
+  * No need to add new content; the model can use existing content to optimize your games.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * [Creating Reward-Maximization-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedDifficultyGenerationModel.md)
 
   * Every time an enemy is killed, the positive reward tells the model to "make more enemies similar to this". 

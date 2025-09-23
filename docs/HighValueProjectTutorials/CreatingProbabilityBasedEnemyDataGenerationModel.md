@@ -66,7 +66,7 @@ Multiple cases can be done here.
 
   * For a given set of generated enemy data values, the model outputs a probability that can be used to modify the generated enemy data.
 
-  * General formula: bestValue = generatedValue * probabilityToInteractFromSupportVectorMachine.
+  * General formula: generatedValue = bestValue * probabilityToInteractFromSupportVectorMachine. Hence, bestValue = generatedValue / probabilityToInteractFromSupportVectorMachine.
  
   * Once bestValue is calculated, spawn an enemy with this best value data.
 
@@ -142,7 +142,7 @@ while true do
 
  probabilityForPlayerToInteract = EnemyDataGenerationModel:predict(playerCombatDataAndEnemyDataVector)[1][1]
 
- enemyDataVector = TensorL:multiply(enemyDataVector, probabilityForPlayerToInteract)
+ enemyDataVector = TensorL:divide(enemyDataVector, probabilityForPlayerToInteract)
 
  summonEnemy(enemyDataVector)
 

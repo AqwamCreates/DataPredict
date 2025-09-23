@@ -82,9 +82,9 @@ for i, unwrappedPlayerLocationDataVector in ipairs(playerLocationDataMatrix) do
 
   --]]
 
-  local probabilityOfNotHitting = 1 - probabilityOfHitting
+  local probabilityOfMissing = 1 - probabilityOfHitting
 
-  if (probabilityOfNotHitting > math.random()) then continue end
+  if (probabilityOfMissing <= math.random()) then continue end
 
   local x = unwrappedPlayerLocationDataVector[1]
   

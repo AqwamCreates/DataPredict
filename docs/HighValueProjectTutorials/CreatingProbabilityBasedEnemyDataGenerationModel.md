@@ -56,25 +56,29 @@ EnemyDataGenerationModel:train(playerCombatDataAndEnemyDataMatrix)
 
 ## Generating The Enemy Data
 
-Since we have three clusters, we can expect three rows for our matrix. As such we can process our game logic here.
-
 ```lua
 
-for clusterIndex, unwrappedClusterVector in ipairs(ModelParameters) do
+local activeEnemyDataArray = {}
 
-  local playerBaseHealth = unwrappedClusterVector[1]
-  
-  local playerBaseDamage = unwrappedClusterVector[2]
-  
-  local playerBaseCashAmount = unwrappedClusterVector[3]
+--[[
 
-  local enemyHealth = playerBaseHealth * 0.5
+You can keep all the data or periodically clear it upon model training.
 
-  local enemyDamage = playerDamage * 0.1
+I recommend the latter because it makes sure we don't include old data that might not be relevant to the current session.
 
-  local enemyCashReward =  playerBaseCashAmount / 3
+Additionally, using the whole data is computationally expensive and may impact players' gameplay experience.
 
-  spawnEnemy(enemyHealth, enemyDamage, enemyCashReward)
+--]]
+
+local playerCombatDataAndEnemyDataMatrix = {}
+
+local function onEnemyKilled(Enemy, Player)
+
+  local playerCombatData = getPlayerCombatData(playerCombatData)
+
+  local enemyData = getEnemyData(enemyData)
+
+  local playerCombatDataAndEnemyDataMatrix = TensorL:concatenate(playerCombatDataMatrix, enemyDataMatrix, 2)
 
 end
 

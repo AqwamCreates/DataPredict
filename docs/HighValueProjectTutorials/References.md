@@ -40,6 +40,8 @@
 
 * [Churn prediction of mobile and online casual games using play log data](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0180735) (Research Paper)
 
+* [Predicting Online Gaming Behaviour Using Machine Learning Techniques](https://www.researchgate.net/publication/383100879_Predicting_Online_Gaming_Behaviour_Using_Machine_Learning_Techniques) (Journal Paper)
+
 ### Reinforcement Learning Based
  
 * [Analyzing and Modeling User Retention Dynamics in a Free-to-Play Game: A Markovian Approach](https://www.diva-portal.org/smash/record.jsf?pid=diva2%3A1897554&dswid=-183) (Master Thesis)

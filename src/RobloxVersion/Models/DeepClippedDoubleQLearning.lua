@@ -45,9 +45,9 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 	setmetatable(NewDeepClippedDoubleQLearningModel, DeepClippedDoubleQLearningModel)
 	
 	NewDeepClippedDoubleQLearningModel:setName("DeepClippedDoubleQLearning")
-
-	NewDeepClippedDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
+	NewDeepClippedDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+
 	NewDeepClippedDoubleQLearningModel.ModelParametersArray = {}
 	
 	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
@@ -55,7 +55,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 		local Model = NewDeepClippedDoubleQLearningModel.Model
 		
 		local discountFactor = NewDeepClippedDoubleQLearningModel.discountFactor
-
+		
 		local EligibilityTrace = NewDeepClippedDoubleQLearningModel.EligibilityTrace
 		
 		local ModelParametersArray = NewDeepClippedDoubleQLearningModel.ModelParametersArray
@@ -124,15 +124,19 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 	end)
 	
-	NewDeepClippedDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewDeepClippedDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		NewDeepClippedDoubleQLearningModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepClippedDoubleQLearningModel.EligibilityTrace
+		
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
 	NewDeepClippedDoubleQLearningModel:setResetFunction(function() 
 		
-		NewDeepClippedDoubleQLearningModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepClippedDoubleQLearningModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 

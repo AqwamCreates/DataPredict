@@ -60,7 +60,7 @@ Currently, we have two case on determining the target location:
 
   * Great for performing inaccurate but likely to hit a player. 
 
-  * Can target empty areas to simulate a probabilistic strike pattern, but is still likely to hit a player near the learned area.
+  * Can target empty areas to create a probabilistic strike pattern, but is still likely to hit a player near the learned area.
 
 * Case 2: Support Vector Centers
 

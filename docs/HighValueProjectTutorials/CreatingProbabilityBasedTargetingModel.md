@@ -58,7 +58,7 @@ Currently, we have two case on determining the target location:
 
 * Case 1: Probability
 
-  * Great for performing innacurate but likely to hit a player. 
+  * Great for performing inaccurate but likely to hit a player. 
 
 * Case 2: Center Values
 

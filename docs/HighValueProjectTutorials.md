@@ -164,6 +164,12 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
+* [Creating Probability-Based Targeting Model](HighValueProjectTutorials/CreatingProbabilityBasedTargetingModel.md)
+
+  * Find the center of players by finding the area with high player density.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * [Creating Reward-Maximization-Based Targeting Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedTargetingModel.md)
 
   * If your map has terrains and structures, the model may learn to corner and "trap" players to certain locations for easy "kills" or "targets".

@@ -28,17 +28,19 @@
 
 local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
-SupportVectorMachineModel = {}
+OneClassSupportVectorMachineModel = {}
 
-SupportVectorMachineModel.__index = SupportVectorMachineModel
+OneClassSupportVectorMachineModel.__index = OneClassSupportVectorMachineModel
 
-setmetatable(SupportVectorMachineModel, IterativeMethodBaseModel)
+setmetatable(OneClassSupportVectorMachineModel, IterativeMethodBaseModel)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaximumNumberOfIterations = 500
 
 local defaultCvalue = 1
+
+local defaultBeta = 0.9
 
 local defaultKernelFunction = "Linear"
 
@@ -348,7 +350,7 @@ local function calculateModelParameters(modelParameters, individualKernelMatrix,
 
 end
 
-function SupportVectorMachineModel.new(parameterDictionary)
+function OneClassSupportVectorMachineModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
@@ -356,11 +358,13 @@ function SupportVectorMachineModel.new(parameterDictionary)
 
 	local NewSupportVectorMachine = IterativeMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewSupportVectorMachine, SupportVectorMachineModel)
+	setmetatable(NewSupportVectorMachine, OneClassSupportVectorMachineModel)
 	
 	NewSupportVectorMachine:setName("SupportVectorMachine")
 	
 	NewSupportVectorMachine.cValue = parameterDictionary.cValue or defaultCvalue
+	
+	NewSupportVectorMachine.beta = parameterDictionary.beta or defaultBeta
 
 	NewSupportVectorMachine.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
 
@@ -379,15 +383,19 @@ function SupportVectorMachineModel.new(parameterDictionary)
 	return NewSupportVectorMachine
 end
 
-function SupportVectorMachineModel:setCValue(cValue)
+function OneClassSupportVectorMachineModel:setCValue(cValue)
 
 	self.cValue = cValue or self.cValue
 
 end
 
-function SupportVectorMachineModel:train(featureMatrix, labelVector)
+function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
+	
+	local numberOfData = #featureMatrix
+	
+	labelVector = labelVector or AqwamTensorLibrary:createTensor({numberOfData, 1}, 1)
 
-	if (#featureMatrix ~= #labelVector) then
+	if (numberOfData ~= #labelVector) then
 
 		error("The feature matrix and the label vector do not contain the same number of rows!")
 
@@ -410,24 +418,44 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 		ModelParameters = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
 
 	end
-	
+
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
 	local kernelFunction = self.kernelFunction
-	
+
 	local kernelParameters = self.kernelParameters
 	
 	local cValue = self.cValue
 	
-	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
+	local beta = self.beta
 	
-	local kernelMatrix = kernelFunctionList[kernelFunction](featureMatrix, kernelParameters)
+	local etaMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfFeatures}, 1)
 
+	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
+
+	local kernelMatrix = kernelFunctionList[kernelFunction](featureMatrix, kernelParameters)
+	
+	local nNormal = math.floor(beta * numberOfData)
+	
 	local numberOfIterations = 0
-	
+
 	local costArray = {}
-	
+
 	local cost
+	
+	local weightedKernelMatrix
+	
+	local predictedVector
+	
+	local slackVector
+	
+	local sortedIndexArray
+	
+	local isLessThanOrEqualToNormal
+	
+	local etaValueToSet
+	
+	local etaUnwrappedVector
 	
 	repeat
 		
@@ -441,15 +469,45 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 			
 		end)
 
-		if (cost) then
+		if cost then
 			
 			table.insert(costArray, cost)
 
 			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 			
 		end
+		
+		weightedKernelMatrix = AqwamTensorLibrary:multiply(mappedFeatureMatrix, etaMatrix)
 
-		ModelParameters = calculateModelParameters(ModelParameters, mappedFeatureMatrix, labelVector, cValue)
+		ModelParameters = calculateModelParameters(ModelParameters, weightedKernelMatrix, labelVector, cValue)
+		
+		predictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
+		
+		slackVector = AqwamTensorLibrary:subtract(labelVector, predictedVector)
+		
+		slackVector = AqwamTensorLibrary:applyFunction(math.max, {{0}}, slackVector)
+		
+		sortedIndexArray = {}
+		
+		for i = 1, numberOfData, 1 do sortedIndexArray[i] = i end
+		
+		table.sort(sortedIndexArray, function(a, b) return slackVector[a][1] < slackVector[b][1] end)
+		
+		for i, sortedIndex in ipairs(sortedIndexArray) do
+			
+			isLessThanOrEqualToNormal = (i <= nNormal)
+			
+			etaValueToSet = (isLessThanOrEqualToNormal and 1) or 0
+			
+			etaUnwrappedVector = etaMatrix[sortedIndex]
+			
+			for j = 1, numberOfFeatures, 1 do
+				
+				etaUnwrappedVector[j] = etaValueToSet
+				
+			end
+			
+		end
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
@@ -465,7 +523,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 end
 
-function SupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
+function OneClassSupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
 
 	local mappedFeatureMatrix = mappingList[self.kernelFunction](featureMatrix, self.kernelParameters)
 
@@ -481,4 +539,4 @@ function SupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
 
 end
 
-return SupportVectorMachineModel
+return OneClassSupportVectorMachineModel

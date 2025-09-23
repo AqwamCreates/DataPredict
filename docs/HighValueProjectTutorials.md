@@ -162,7 +162,7 @@
 
   * Find the center of players based on number of clusters.
 
-  * Best suited for precise targeting.
+  * Best suited for precise targeting to multiple areas.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 

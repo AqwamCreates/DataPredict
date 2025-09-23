@@ -430,6 +430,8 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 	local beta = self.beta
 	
 	local etaMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfFeatures}, 1)
+	
+	local zeroLabelVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
 
 	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
 
@@ -485,7 +487,7 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 		
 		slackVector = AqwamTensorLibrary:subtract(labelVector, predictedVector)
 		
-		slackVector = AqwamTensorLibrary:applyFunction(math.max, {{0}}, slackVector)
+		slackVector = AqwamTensorLibrary:applyFunction(math.max, zeroLabelVector, slackVector)
 		
 		sortedIndexArray = {}
 		

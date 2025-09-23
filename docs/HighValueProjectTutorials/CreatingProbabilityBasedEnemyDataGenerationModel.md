@@ -44,7 +44,7 @@ local playerCombatDataAndEnemyDataMatrix = TensorL:concatenate(playerCombatDataM
 
 ```
 
-## Getting The Center Of Clusters
+## Training Our Models
 
 Once you created the feature matrix, you must call model's train() function. This will generate the model parameters.
 
@@ -54,7 +54,7 @@ EnemyDataGenerationModel:train(playerCombatDataAndEnemyDataMatrix)
 
 ```
 
-## Generating The Enemy Data Using The Center Of Clusters
+## Generating The Enemy Data
 
 Since we have three clusters, we can expect three rows for our matrix. As such we can process our game logic here.
 

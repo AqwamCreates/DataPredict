@@ -140,13 +140,17 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
 	NewDeepExpectedStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 

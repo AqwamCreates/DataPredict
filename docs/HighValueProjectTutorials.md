@@ -148,7 +148,7 @@
 
   * Uses players' combat data (optional) paired with enemies' data to predict likelihood that the player will engage with the enemy if spawned.
 
-  * Uses "Generative One Class Support Vector Machine", which is an unconventional generative method that probably don't exist in research literature.
+  * Uses "Generative One Class Support Vector Machine", which is an unconventional generative method that probably don't exist in the research literature.
 
   * No need to add new content; the model can use existing content to optimize your games.
 

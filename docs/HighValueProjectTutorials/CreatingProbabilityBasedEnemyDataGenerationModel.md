@@ -96,7 +96,7 @@ local isAcceptable = false
 
 while true do
 
-  if (#activeEnemyDataArray >= maximumNumberOfEnemies) then continue end
+  if (#activeEnemyDataArray > maximumNumberOfEnemies) then continue end
 
   repeat
 
@@ -132,7 +132,7 @@ local probabilityForPlayerToInteract
 
 while true do
 
-  if (#activeEnemyDataArray >= maximumNumberOfEnemies) then continue end
+  if (#activeEnemyDataArray > maximumNumberOfEnemies) then continue end
 
  playerCombatDataVector = getPlayerDataVector()
 

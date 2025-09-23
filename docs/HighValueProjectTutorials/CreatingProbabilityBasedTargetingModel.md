@@ -58,7 +58,11 @@ Currently, we have two case on determining the target location:
 
 * Case 1: Probability
 
+  * Great for performing innacurate but likely to hit a player. 
+
 * Case 2: Center Values
+
+  * Great for maximum number of hits.
 
 ### Case 1: Probability
 
@@ -86,8 +90,17 @@ end
 
 ```lua
 
-local 
+local ModelParameters = TargetingModel:getModelParameters()
 
+local unwrappedModelParameters = ModelParameters[1]
+
+local x = unwrappedModelParameters[1]
+  
+local y = unwrappedModelParameters[2]
+  
+local z = unwrappedModelParameters[3]
+
+landMissileAt(x, y, z)
 
 ```
 

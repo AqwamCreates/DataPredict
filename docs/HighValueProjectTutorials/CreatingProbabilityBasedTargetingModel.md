@@ -60,7 +60,9 @@ Currently, we have two case on determining the target location:
 
   * Great for performing inaccurate but likely to hit a player. 
 
-* Case 2: Center Values
+  * Can target empty areas to increase innacuracy, but still likely to hit a player. 
+
+* Case 2: Support Vector Centers
 
   * Great for maximum number of hits.
 
@@ -86,7 +88,7 @@ end
 
 ```
 
-### Case 2: Center Values
+### Case 2: Support Vector Centers
 
 ```lua
 

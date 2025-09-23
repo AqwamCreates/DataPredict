@@ -8,7 +8,7 @@ Before we can produce ourselves a targeting model, we first need to construct a 
 
 ```lua
 
- -- For this tutorial, we will assume that we want to hit 90% of the players. So, our beta must set to 0.9
+ -- For this tutorial, we will assume that we want to hit 90% of the players. So, our beta must set to 0.9.
 
 local TargetingModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 10, kernelFunction = "RadialBasisFunction", beta = 0.9})
 

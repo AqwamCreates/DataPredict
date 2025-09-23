@@ -52,9 +52,15 @@ local ModelParameters = TargetingModel:getModelParameters()
 
 ```
 
-## Interacting With The Center Of Clusters
+## Interacting With The Players' Location
 
-We then use the same player data to determine if you want to shoot at it.
+Currently, we have two case on determining the target location:
+
+* Case 1: Probability
+
+* Case 2: Center Values
+
+### Case 1: Probability
 
 ```lua
 
@@ -73,6 +79,15 @@ for i, unwrappedPlayerLocationDataVector in ipairs(playerLocationDataMatrix)
   landMissileAt(x, y, z)
 
 end
+
+```
+
+### Case 2: Center Values
+
+```lua
+
+local 
+
 
 ```
 

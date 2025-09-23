@@ -144,7 +144,7 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Probability-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingProbabilityBasedEnemyDataGenerationModel.md) (Incomplete)
+* [Creating Probability-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingProbabilityBasedEnemyDataGenerationModel.md)
 
   * Uses players' combat data paired with enemies' data to predict likelihood that the player will engage with the enemy if spawned.
 

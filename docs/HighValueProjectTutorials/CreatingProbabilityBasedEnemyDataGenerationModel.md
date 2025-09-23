@@ -10,7 +10,9 @@ Before we can produce ourselves a difficulty generation model, we first need to 
 
 ```lua
 
-local EnemyDataGenerationModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumnumberOfIterations = 100, kernelFunction = "RadialBasisFunction", beta = 0.9})
+ -- For this tutorial, we will assume that the player intentionally killed 90% of the enemies.
+
+local EnemyDataGenerationModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 100, kernelFunction = "RadialBasisFunction", beta = 0.9})
 
 ```
 

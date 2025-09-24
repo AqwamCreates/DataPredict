@@ -45,10 +45,10 @@ function Ridge.new(parameterDictionary)
 	NewRidge:setName("Ridge")
 	
 	NewRidge:setCalculateCostFunction(function(ModelParameters)
+		
+		ModelParameters = NewRidge:adjustModelParameters(ModelParameters)
 
 		local squaredModelParameters = AqwamTensorLibrary:power(ModelParameters, 2)
-
-		if (NewRidge.hasBias) then squaredModelParameters = NewRidge:makeLambdaAtBiasZero(squaredModelParameters) end
 
 		local sumSquaredModelParameters = AqwamTensorLibrary:sum(squaredModelParameters)
 

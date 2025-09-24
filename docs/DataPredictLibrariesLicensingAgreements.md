@@ -18,7 +18,7 @@
      
       * "We build the whole machine learning library from scratch and build the whole system with it."
 
-* [Perpetual Internal Use Version]() (Incomplete And Requires Analysis)
+* [Perpetual Internal Use Version]() (Incomplete And Requires Further Analysis)
 
    * 70K USD upfront fee. Price may increase due to keeping up with overall DataPredict's development costs.
  

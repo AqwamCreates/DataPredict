@@ -727,7 +727,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 
 		if (Regularizer ~= 0) then
 
-			local regularizationDerivativeMatrix = Regularizer:calculateRegularizationDerivatives(weightMatrix)
+			local regularizationDerivativeMatrix = Regularizer:calculate(weightMatrix)
 
 			costFunctionDerivativeMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, regularizationDerivativeMatrix)
 
@@ -797,7 +797,7 @@ function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix)
 
 		local Regularizer = RegularizerArray[layerNumber + 1]
 
-		if (Regularizer ~=  0) then totalCost = totalCost + Regularizer:calculateRegularization(ModelParameters[layerNumber]) end
+		if (Regularizer ~=  0) then totalCost = totalCost + Regularizer:calculateCost(ModelParameters[layerNumber]) end
 
 	end
 

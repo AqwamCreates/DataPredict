@@ -58,6 +58,8 @@ function Lasso.new(parameterDictionary)
 	
 	NewLasso:setCalculateFunction(function(ModelParameters)
 		
+		ModelParameters = NewLasso:adjustModelParameters(ModelParameters)
+		
 		local signMatrix = AqwamTensorLibrary:applyFunction(math.sign, ModelParameters)
 		
 		return AqwamTensorLibrary:multiply(signMatrix, NewLasso.lambda, ModelParameters)

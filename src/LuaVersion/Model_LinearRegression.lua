@@ -74,7 +74,7 @@ function LinearRegressionModel:calculateCost(hypothesisVector, labelVector)
 	
 	local Regularizer = self.Regularizer
 
-	if (Regularizer) then totalCost = totalCost + Regularizer:calculateRegularization(self.ModelParameters) end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateLoss(self.ModelParameters) end
 
 	local averageCost = totalCost / #labelVector
 
@@ -115,10 +115,18 @@ end
 function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
 
 	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
+	
+	local ModelParameters = self.ModelParameters
+	
+	local Regularizer = self.Regularizer
+	
+	local Optimizer = self.Optimizer
+	
+	local learningRate = self.learningRate
 
-	if (self.Regularizer) then
+	if (Regularizer) then
 
-		local regularizationDerivatives = self.Regularizer:calculateRegularizationDerivatives(self.ModelParameters)
+		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
 
 		costFunctionDerivativeMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
 
@@ -126,17 +134,17 @@ function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, num
 
 	costFunctionDerivativeMatrix = AqwamTensorLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
 
-	if (self.Optimizer) then 
+	if (Optimizer) then 
 
-		costFunctionDerivativeMatrix = self.Optimizer:calculate(self.learningRate, costFunctionDerivativeMatrix) 
+		costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix) 
 
 	else
 
-		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(self.learningRate, costFunctionDerivativeMatrix)
+		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrix)
 
 	end
 
-	self.ModelParameters = AqwamTensorLibrary:subtract(self.ModelParameters, costFunctionDerivativeMatrix)
+	self.ModelParameters = AqwamTensorLibrary:subtract(ModelParameters, costFunctionDerivativeMatrix)
 
 end
 
@@ -199,18 +207,20 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	local numberOfIterations = 0
 
 	local numberOfData = #featureMatrix
+	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
 	local lossFunction = self.lossFunction
+	
+	local Optimizer = self.Optimizer
 
-	local Regularizer = self.Regularizer
-
-	local maximumNumberOfIterations = self.maximumNumberOfIterations
+	local ModelParameters = self.ModelParameters
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 
-	if (self.ModelParameters) then
+	if (ModelParameters) then
 
-		if (#featureMatrix[1] ~= #self.ModelParameters) then error("The number of features are not the same as the model parameters!") end
+		if (#featureMatrix[1] ~= #ModelParameters) then error("The number of features are not the same as the model parameters!") end
 
 	else
 
@@ -248,7 +258,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values") end
 
-	if (self.Optimizer) and (self.autoResetOptimizers) then self.Optimizer:reset() end
+	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
 
 	return costArray
 

@@ -68,6 +68,8 @@ function ElasticNet.new(parameterDictionary)
 	
 	NewElasticNet:setCalculateFunction(function(ModelParameters)
 		
+		ModelParameters = NewElasticNet:adjustModelParameters(ModelParameters)
+		
 		local lambda = NewElasticNet.lambda
 		
 		local signMatrix = AqwamTensorLibrary:applyFunction(math.sign, ModelParameters)

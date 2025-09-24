@@ -17,7 +17,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-KMeans.new(maximumNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean): ModelObject
+KMeans.new(maximumNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, mode: string, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean): ModelObject
 ```
 
 #### Parameters:
@@ -34,6 +34,14 @@ KMeans.new(maximumNumberOfIterations: integer, numberOfClusters: integer, distan
  
   *  Cosine
 
+* mode: The mode that the model will use to train its model parameters:
+
+  * Hybrid (Default)
+ 
+  * Batch
+ 
+  * Sequential
+
 * setInitialClustersOnDataPoints: Set whether or not the model to create centroids on any data points.
 
 * setTheCentroidsDistanceFarthest: Set whether or not the model to create centroids that are furthest from each other. This can only take effect if the "setInitialClustersOnDataPoints" is set to true.
@@ -49,7 +57,7 @@ KMeans.new(maximumNumberOfIterations: integer, numberOfClusters: integer, distan
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-KMeans:setParameters(maximumNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean)
+KMeans:setParameters(maximumNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, mode: string, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean)
 ```
 
 #### Parameters:
@@ -65,6 +73,14 @@ KMeans:setParameters(maximumNumberOfIterations: integer, numberOfClusters: integ
   *  Manhattan
  
   *  Cosine
+
+* mode: The mode that the model will use to train its model parameters:
+
+  * Hybrid (Default)
+ 
+  * Batch
+ 
+  * Sequential
 
 * setInitialClustersOnDataPoints: Set whether or not the model to create centroids on any data points.
 

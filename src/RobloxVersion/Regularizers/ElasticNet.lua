@@ -48,9 +48,9 @@ function ElasticNet.new(parameterDictionary)
 		
 		local lambda = NewElasticNet.lambda
 		
+		ModelParameters = NewElasticNet:adjustModelParameters(ModelParameters)
+		
 		local SquaredModelParameters = AqwamTensorLibrary:power(ModelParameters, 2)
-
-		if (NewElasticNet.hasBias) then SquaredModelParameters = NewElasticNet:makeLambdaAtBiasZero(SquaredModelParameters) end
 
 		local sumSquaredModelParameters = AqwamTensorLibrary:sum(SquaredModelParameters)
 

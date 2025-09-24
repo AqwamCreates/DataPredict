@@ -36,6 +36,8 @@ setmetatable(BaseRegularizer, BaseInstance)
 
 local defaultLambda = 0.01
 
+local defaultHasBias = false
+
 function BaseRegularizer.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -49,6 +51,8 @@ function BaseRegularizer.new(parameterDictionary)
 	NewBaseRegularizer:getClassName("Regularizer")
 	
 	NewBaseRegularizer.lambda = parameterDictionary.lambda or defaultLambda
+	
+	NewBaseRegularizer.hasBias = NewBaseRegularizer:getValueOrDefaultValue(parameterDictionary.hasBias, defaultHasBias)
 	
 	return NewBaseRegularizer
 	

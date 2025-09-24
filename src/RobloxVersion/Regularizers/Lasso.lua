@@ -45,10 +45,10 @@ function Lasso.new(parameterDictionary)
 	NewLasso:setName("Lasso")
 	
 	NewLasso:setCalculateCostFunction(function(ModelParameters)
+		
+		ModelParameters = NewLasso:adjustModelParameters(ModelParameters)
 
 		local absoluteModelParameters = AqwamTensorLibrary:applyFunction(math.abs, ModelParameters)
-
-		if (NewLasso.hasBias) then absoluteModelParameters = NewLasso:makeLambdaAtBiasZero(absoluteModelParameters) end
 
 		local sumAbsoluteModelParameters = AqwamTensorLibrary:sum(absoluteModelParameters)
 

@@ -26,4 +26,4 @@
  
    * Derivatives are allowed as long as it is not copied off from DataPredict's future updates. 
 
-   * Redistribution to third-parties is not allowed, even if it is used for your clients' projects.
+   * Redistribution of the original or its derivatives to third-parties is not allowed, including your clients' projects.

@@ -74,7 +74,7 @@ function LinearRegressionModel:calculateCost(hypothesisVector, labelVector)
 	
 	local Regularizer = self.Regularizer
 
-	if (Regularizer) then totalCost = totalCost + Regularizer:calculateLoss(self.ModelParameters) end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
 
 	local averageCost = totalCost / #labelVector
 

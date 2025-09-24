@@ -58,6 +58,8 @@ function Ridge.new(parameterDictionary)
 	
 	NewRidge:setCalculateFunction(function(ModelParameters)
 		
+		ModelParameters = NewRidge:adjustModelParameters(ModelParameters)
+		
 		return AqwamTensorLibrary:multiply(2, NewRidge.lambda, ModelParameters)
 		
 	end)

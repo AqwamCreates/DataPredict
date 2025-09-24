@@ -44,13 +44,37 @@ function ElasticNet.new(parameterDictionary)
 	
 	NewElasticNet:setName("ElasticNet")
 	
+	NewElasticNet:setCalculateCostFunction(function(ModelParameters)
+		
+		local lambda = NewElasticNet.lambda
+		
+		local SquaredModelParameters = AqwamTensorLibrary:power(ModelParameters, 2)
+
+		if (NewElasticNet.hasBias) then SquaredModelParameters = NewElasticNet:makeLambdaAtBiasZero(SquaredModelParameters) end
+
+		local sumSquaredModelParameters = AqwamTensorLibrary:sum(SquaredModelParameters)
+
+		local absoluteModelParameters = AqwamTensorLibrary:applyFunction(math.abs, ModelParameters)
+
+		local sumAbsoluteModelParameters = AqwamTensorLibrary:sum(absoluteModelParameters)
+
+		local regularizationValuePart1 = lambda * sumSquaredModelParameters
+
+		local regularizationValuePart2 = lambda * sumAbsoluteModelParameters
+
+		return regularizationValuePart1 + regularizationValuePart2
+		
+	end)
+	
 	NewElasticNet:setCalculateFunction(function(ModelParameters)
+		
+		local lambda = NewElasticNet.lambda
 		
 		local signMatrix = AqwamTensorLibrary:applyFunction(math.sign, ModelParameters)
 
-		local regularizationMatrixPart1 = AqwamTensorLibrary:multiply(NewElasticNet.lambda, signMatrix)
+		local regularizationMatrixPart1 = AqwamTensorLibrary:multiply(lambda, signMatrix)
 
-		local regularizationMatrixPart2 = AqwamTensorLibrary:multiply(2, NewElasticNet.lambda, ModelParameters)
+		local regularizationMatrixPart2 = AqwamTensorLibrary:multiply(2, lambda, ModelParameters)
 
 		return AqwamTensorLibrary:add(regularizationMatrixPart1, regularizationMatrixPart2)
 		

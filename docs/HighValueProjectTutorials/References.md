@@ -74,7 +74,7 @@ Note: It is tough to find game-related recommendation systems. However, I still 
 
 * [Game Recommendation System](https://www.researchgate.net/publication/376543652_Game_Recommendation_System) (Research Paper)
 
-## ynamic Difficulty Adjustment System
+## Dynamic Difficulty Adjustment System
 
 ### Machine Learning Based
 

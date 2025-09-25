@@ -56,7 +56,7 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 3}, -100, 100) -- 100 random data with 2 features.
+local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 3}, -100, 100) -- 100 random data with 3 features.
 
 ```
 

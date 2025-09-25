@@ -126,7 +126,7 @@
 
   * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if multiple recommendations are made.
 
-## Adaptive Difficulty Systems
+## Dynamic Difficulty Adjustment Systems
 
 * [Creating Regression-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingRegressionBasedEnemyDataGenerationModel.md)
 

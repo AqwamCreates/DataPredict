@@ -56,7 +56,7 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 3}, -100, 100) -- 100 random data with 2 features.
+local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 3}, -100, 100) -- 100 random data with 3 features.
 
 ```
 
@@ -154,7 +154,7 @@ So for the current session, you can determine what to do for the next session.
 
 if (isNormalProbability <= 0.03) then -- Can be changed instead of 0.03.
 
---- Do a logic here to extend the play time for the next session. For example, bonus currency multiplier duration or random event.
+--- Do a logic here to deal with the player with the anomaly.
 
 end
 

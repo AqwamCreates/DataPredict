@@ -199,7 +199,7 @@ local function run(Player)
 
         if (activatePlayTimeMaximization) then
 
-          -- Player leaving the game is more of a "rarer" and "extremely undesirable" event, therefore a very large negative value is used.\
+          -- Player leaving the game is more of a "rarer" and "extremely undesirable" event, therefore a very large negative value is used.
 
           rewardValue = (isPlayerInServer and 20) or -100
 

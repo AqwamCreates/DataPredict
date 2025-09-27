@@ -334,7 +334,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 
 		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
 		
-		local meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector = gaussianNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
+		local meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector = gaussianNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)
 		
 		meanMatrix = AqwamTensorLibrary:applyFunction(math.log, meanMatrix)
 		

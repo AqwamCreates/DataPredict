@@ -34,6 +34,8 @@ GaussianNaiveBayesModel.__index = GaussianNaiveBayesModel
 
 setmetatable(GaussianNaiveBayesModel, NaiveBayesBaseModel)
 
+local defaultMode = "Hybrid"
+
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local function calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
@@ -148,6 +150,82 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 end
 
+local function batchGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
+	
+	local numberOfClasses = #extractedFeatureMatrixTable
+	
+	local meanMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
+
+	local standardDeviationMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
+
+	local priorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, 1})
+	
+	local extractedFeatureMatrix
+	
+	local standardDeviationVector
+	
+	local meanVector
+	
+	local numberOfSubData
+	
+	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+		
+		numberOfSubData = #extractedFeatureMatrix
+
+		standardDeviationVector, _, meanVector = AqwamTensorLibrary:standardDeviation(extractedFeatureMatrix, 1)
+
+		meanMatrix[classIndex] = meanVector[1]
+
+		standardDeviationMatrix[classIndex] = standardDeviationVector[1]
+
+		priorProbabilityMatrix[classIndex] = {(numberOfSubData / numberOfData)}
+		
+	end
+	
+	return meanMatrix, standardDeviationMatrix, priorProbabilityMatrix
+	
+end
+
+local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)
+	
+	local extractedFeatureMatrix
+	
+	local numberOfSubData
+	
+	local sumMatrix = AqwamTensorLibrary:multiply(meanMatrix, numberOfDataPointVector)
+	
+	local varianceVector = AqwamTensorLibrary:power(standardDeviationMatrix, 2)
+	
+	local sumSquaredValueMinusMeanVector =  AqwamTensorLibrary:multiply(standardDeviationMatrix, numberOfDataPointVector)
+	
+	local totalNumberOfDatapoint = AqwamTensorLibrary:sum(numberOfDataPointVector)
+	
+	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+		
+		numberOfSubData = (#extractedFeatureMatrix + numberOfDataPointVector[classIndex][1])
+
+		standardDeviationVector, _, meanVector = AqwamTensorLibrary:standardDeviation(extractedFeatureMatrix, 1)
+
+		meanMatrix[classIndex] = meanVector[1]
+
+		standardDeviationMatrix[classIndex] = standardDeviationVector[1]
+
+		priorProbabilityMatrix[classIndex] = {(numberOfSubData / totalNumberOfDatapoint)}
+		
+	end
+	
+	return meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector
+	
+end
+
+local gaussianNaiveBayesFunctionList = {
+	
+	["Batch"] = batchGaussianNaiveBayes,
+	
+	["Sequential"] = sequentialGaussianNaiveBayes,
+	
+}
+
 function GaussianNaiveBayesModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
@@ -158,65 +236,49 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 	
 	NewGaussianNaiveBayesModel:setName("GaussianNaiveBayes")
 	
+	NewGaussianNaiveBayesModel.mode = parameterDictionary.mode or defaultMode
+	
 	NewGaussianNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
 		
-		local cost
+		local mode = NewGaussianNaiveBayesModel.mode
+		
+		local ModelParameters = NewGaussianNaiveBayesModel.ModelParameters or {}
+		
+		local meanMatrix = ModelParameters[1]
+		
+		local standardDeviationMatrix = ModelParameters[2]
+		
+		local priorProbabilityMatrix = ModelParameters[3]
+		
+		local numberOfDataPointVector = ModelParameters[4]
 
-		local extractedFeatureMatrix
+		if (mode == "Hybrid") then -- This must be always above the centroid initialization check. Otherwise it will think this is second training round despite it being the first one!
 
-		local meanVector
+			mode = (meanMatrix and standardDeviationMatrix and priorProbabilityMatrix and numberOfDataPointVector and "Sequential") or "Batch"		
 
-		local standardDeviationVector
+		end
 
-		local numberOfSubData
+		local gaussianNaiveBayesFunction = gaussianNaiveBayesFunctionList[mode]
 
-		local ModelParameters = NewGaussianNaiveBayesModel.ModelParameters
-
-		local ClassesList = NewGaussianNaiveBayesModel.ClassesList
-
-		local numberOfClasses = #ClassesList
+		if (not gaussianNaiveBayesFunction) then error("Unknown mode.") end
 
 		local numberOfData = #featureMatrix
 
 		local numberOfFeatures = #featureMatrix[1]
 
-		local extractedFeatureMatricesTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
+		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
+		
+		local meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector = gaussianNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
+		
+		meanMatrix = AqwamTensorLibrary:applyFunction(math.log, meanMatrix)
+		
+		standardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.log, standardDeviationMatrix)
+		
+		priorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityMatrix)
 
-		local meanMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
+		NewGaussianNaiveBayesModel.ModelParameters = {meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector}
 
-		local standardDeviationMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
-
-		local priorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, 1})
-
-		for classIndex, classValue in ipairs(ClassesList) do
-
-			extractedFeatureMatrix = extractedFeatureMatricesTable[classIndex]
-
-			numberOfSubData = #extractedFeatureMatrix
-
-			standardDeviationVector, _, meanVector = AqwamTensorLibrary:standardDeviation(extractedFeatureMatrix, 1)
-
-			meanMatrix[classIndex] = meanVector[1]
-
-			standardDeviationMatrix[classIndex] = standardDeviationVector[1]
-
-			priorProbabilityMatrix[classIndex] = {(numberOfSubData / numberOfData)}
-
-		end
-
-		if (ModelParameters) then
-
-			meanMatrix = AqwamTensorLibrary:divide(AqwamTensorLibrary:add(ModelParameters[1], meanMatrix), 2) 
-
-			standardDeviationMatrix = AqwamTensorLibrary:divide(AqwamTensorLibrary:add(ModelParameters[2], standardDeviationMatrix), 2) 
-
-			priorProbabilityMatrix = AqwamTensorLibrary:divide(AqwamTensorLibrary:add(ModelParameters[3], priorProbabilityMatrix), 2) 
-
-		end
-
-		NewGaussianNaiveBayesModel.ModelParameters = {meanMatrix, standardDeviationMatrix, priorProbabilityMatrix}
-
-		cost = NewGaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
+		local cost = NewGaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 		return {cost}
 		

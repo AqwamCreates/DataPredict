@@ -54,15 +54,15 @@ DiscriminatorNeuralNetwork:addLayer(1, false) -- Critic only outputs 1 value.
 
 ```lua
 
--- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
+-- You can use CGAN here. However, for more "stable" model, stick with CWGAN.
 
-local DiversityModel = DataPredict.Model.ConditionalWassersteinGenerativeAdversarialNetwork.new()
+local EnemyDataGenerationModel = DataPredict.Model.ConditionalWassersteinGenerativeAdversarialNetwork.new()
 
 -- Inserting our generator and discriminator Neural Networks here.
 
-DiversityModel:setGeneratorModel(GeneratorNeuralNetwork)
+EnemyDataGenerationModel:setGeneratorModel(GeneratorNeuralNetwork)
 
-DiversityModel:setCriticModel(DiscriminatorNeuralNetwork)
+EnemyDataGenerationModel:setCriticModel(DiscriminatorNeuralNetwork)
 
 ```
 
@@ -72,7 +72,7 @@ Once you created the feature matrix, you must call model's train() function. Thi
 
 ```lua
 
-EnemyDataGenerationModel:train(playerCombatDataAndEnemyDataMatrix)
+EnemyDataGenerationModel:train(enemyDataMatrix, noiseDataMatrix, playerCombatDataMatrix)
 
 ```
 

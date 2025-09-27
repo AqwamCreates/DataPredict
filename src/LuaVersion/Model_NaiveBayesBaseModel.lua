@@ -264,9 +264,15 @@ function NaiveBayesBaseModel:setPredictFunction(predictFunction)
 
 end
 
-function NaiveBayesBaseModel:generate(labelVector)
+function NaiveBayesBaseModel:generate(labelVector, noiseMatrix)
 	
-	return self.generateFunction(labelVector)
+	if (noiseMatrix) then
+		
+		if (#labelVector ~= #noiseMatrix) then error("The label vector and the label matrix does not contain the same number of rows.") end
+		
+	end
+	
+	return self.generateFunction(labelVector, noiseMatrix)
 	
 end
 

@@ -12,6 +12,8 @@ Contains a table of matrices.
 
 * ModelParameters[3]: priorProbabilityMatrix. The columns are the features.
 
+* ModelParameters[4]: numberOfDataPointVector.
+
 ## Constructors
 
 ### new()

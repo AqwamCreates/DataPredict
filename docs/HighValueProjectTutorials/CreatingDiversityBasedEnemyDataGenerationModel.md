@@ -28,19 +28,41 @@ local enemyDataMatrix = {
 
 ```
 
-## Initializing The Diversity Model
+## Constructing Our Model
 
-Before we can produce ourselves a difficulty generation model, we first need to construct multiple models:
+Before we start training our model, we first need to build our model. We have split this to multiple subsections to make it easy to follow through.
 
-1. Generative Neural Network
+### Constructing Our Neural Network
 
-2. 
+```lua 
+
+local ActorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
+
+ActorNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
+
+ActorNeuralNetwork:addLayer(1, false) -- We're outputing a single value.
+
+local CriticNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
+
+CriticNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
+
+CriticNeuralNetwork:addLayer(1, false) -- Critic only outputs 1 value.
+
+```
+
+### Constructing Our Deep Reinforcement Learning Model
 
 ```lua
 
- -- For this tutorial, we will assume that the player intentionally killed 90% of the enemies.
+-- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
 
-local EnemyDataGenerationModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 100, kernelFunction = "RadialBasisFunction", beta = 0.9})
+local DeepReinforcementLearningModel = DataPredict.Model.SoftActorCritic.new()
+
+-- Inserting our actor and critic Neural Networks here.
+
+DeepReinforcementLearningModel:setActorModel(ActorNeuralNetwork)
+
+DeepReinforcementLearningModel:setCriticModel(CriticNeuralNetwork)
 
 ```
 

@@ -182,7 +182,7 @@ local function batchGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData
 
 		priorProbabilityMatrix[classIndex] = {(numberOfSubData / numberOfData)}
 		
-		numberOfDataPointVector[classIndex][1] = numberOfSubData
+		numberOfDataPointVector[classIndex]= {numberOfSubData}
 		
 	end
 	

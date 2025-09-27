@@ -329,6 +329,26 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		local gaussianNaiveBayesFunction = gaussianNaiveBayesFunctionList[mode]
 
 		if (not gaussianNaiveBayesFunction) then error("Unknown mode.") end
+		
+		if (mode == "Sequential") then
+			
+			local numberOfFeatures = #featureMatrix[1]
+			
+			local numberOfClasses = #NewGaussianNaiveBayesModel.ClassesList
+			
+			local zeroValue = (useLogProbabilities and 1) or 0
+			
+			local oneValue = (useLogProbabilities and math.exp(1)) or 1
+			
+			meanMatrix = meanMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
+			
+			standardDeviationMatrix = standardDeviationMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
+			
+			priorProbabilityMatrix = priorProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
+			
+			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, zeroValue)
+			
+		end
 
 		local numberOfData = #featureMatrix
 

@@ -36,6 +36,8 @@ NaiveBayesBaseModel.__index = NaiveBayesBaseModel
 
 setmetatable(NaiveBayesBaseModel, BaseModel)
 
+local defaultUseLogProbabilities = false
+
 local function areNumbersOnlyInList(list)
 
 	for i, value in ipairs(list) do
@@ -116,7 +118,7 @@ function NaiveBayesBaseModel.new(parameterDictionary)
 	
 	NewBaseModel.ClassesList = parameterDictionary.ClassesList or {}
 	
-	NewBaseModel.useLogProbabilities = BaseModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, false)
+	NewBaseModel.useLogProbabilities = BaseModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
 	return NewBaseModel
 	

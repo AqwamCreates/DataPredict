@@ -336,13 +336,17 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 			
 			local numberOfClasses = #NewGaussianNaiveBayesModel.ClassesList
 			
-			meanMatrix = meanMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfClasses}, 0)
+			local zeroValue = (useLogProbabilities and 1) or 0
 			
-			standardDeviationMatrix = standardDeviationMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfClasses}, 0)
+			local oneValue = (useLogProbabilities and math.exp(1)) or 1
 			
-			priorProbabilityMatrix = priorProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfClasses}, 1)
+			meanMatrix = meanMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
 			
-			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
+			standardDeviationMatrix = standardDeviationMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
+			
+			priorProbabilityMatrix = priorProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, oneValue)
+			
+			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, zeroValue)
 			
 		end
 

@@ -64,7 +64,7 @@ local EnemyDataGenerationModel = DataPredict.Model.ConditionalWassersteinGenerat
 
 EnemyDataGenerationModel:setGeneratorModel(GeneratorNeuralNetwork)
 
-EnemyDataGenerationModel:setCriticModel(DiscriminatorNeuralNetwork)
+EnemyDataGenerationModel:setDiscriminatorModel(DiscriminatorNeuralNetwork)
 
 ```
 

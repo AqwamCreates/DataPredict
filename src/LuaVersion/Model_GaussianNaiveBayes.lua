@@ -26,119 +26,17 @@
 
 --]]
 
-local BaseModel = require("Model_BaseModel")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
+
+local NaiveBayesBaseModel = require("Model_NaiveBayesBaseModel")
 
 GaussianNaiveBayesModel = {}
 
 GaussianNaiveBayesModel.__index = GaussianNaiveBayesModel
 
-setmetatable(GaussianNaiveBayesModel, BaseModel)
+setmetatable(GaussianNaiveBayesModel, NaiveBayesBaseModel)
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
-
-local function extractFeatureMatrixFromPosition(featureMatrix, positionList)
-
-	local extractedFeatureMatrix = {}
-
-	for i = 1, #featureMatrix, 1 do
-
-		if table.find(positionList, i) then
-
-			table.insert(extractedFeatureMatrix, featureMatrix[i])
-
-		end	
-
-	end
-
-	return extractedFeatureMatrix
-
-end
-
-local function separateFeatureMatrixByClass(featureMatrix, labelVector, classesList)
-
-	local classesPositionTable = {}
-
-	for classIndex, class in ipairs(classesList) do
-
-		classesPositionTable[classIndex] = {}
-
-		for i = 1, #labelVector, 1 do
-
-			if (labelVector[i][1] == class) then
-
-				table.insert(classesPositionTable[classIndex], i)
-
-			end
-
-		end
-
-	end
-
-	local extractedFeatureMatricesTable = {}
-
-	local extractedFeatureMatrix
-
-	for classIndex, class in ipairs(classesList) do
-
-		extractedFeatureMatrix = extractFeatureMatrixFromPosition(featureMatrix, classesPositionTable[classIndex])
-
-		table.insert(extractedFeatureMatricesTable, extractedFeatureMatrix)
-
-	end
-
-	return extractedFeatureMatricesTable
-
-end
-
-local function createClassesList(labelVector)
-
-	local ClassesList = {}
-
-	local value
-
-	for i = 1, #labelVector, 1 do
-
-		value = labelVector[i][1]
-
-		if not table.find(ClassesList, value) then
-
-			table.insert(ClassesList, value)
-
-		end
-
-	end
-
-	return ClassesList
-
-end
-
-local function checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList)
-
-	for i = 1, #labelVector, 1 do
-
-		if table.find(ClassesList, labelVector[i][1]) then continue end
-
-		return true
-
-	end
-
-	return false
-
-end
-
-local function logLoss(labelVector, predictedProbabilitiesVector)
-
-	local loglossFunction = function (y, p) return (y * math.log(p)) + ((1 - y) * math.log(1 - p)) end
-
-	local logLossVector = AqwamTensorLibrary:applyFunction(loglossFunction, labelVector, predictedProbabilitiesVector)
-
-	local logLossSum = AqwamTensorLibrary:sum(logLossVector)
-
-	local logLoss = -logLossSum / #labelVector
-
-	return logLoss
-
-end
+local defaultMode = "Hybrid"
 
 local function calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 
@@ -198,28 +96,10 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 
 end
 
-function GaussianNaiveBayesModel.new(parameterDictionary)
-
-	parameterDictionary = parameterDictionary or {}
-
-	local NewGaussianNaiveBayesModel = BaseModel.new(parameterDictionary)
-
-	setmetatable(NewGaussianNaiveBayesModel, GaussianNaiveBayesModel)
-	
-	NewGaussianNaiveBayesModel:setName("GaussianNaiveBayes")
-
-	NewGaussianNaiveBayesModel.ClassesList = parameterDictionary.ClassesList or {}
-
-	NewGaussianNaiveBayesModel.useLogProbabilities = BaseModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, false)
-
-	return NewGaussianNaiveBayesModel
-
-end
-
 function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local cost
-	
+
 	local featureVector
 
 	local meanVector
@@ -237,103 +117,60 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	local label
 
 	local numberOfData = #labelVector
-	
+
 	local useLogProbabilities = self.useLogProbabilities
+	
+	local ModelParameters = self.ModelParameters
+	
+	local ClassesList = self.ClassesList
 
 	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, #labelVector[1]})
-
-	for data = 1, #featureMatrix, 1 do
+	
+	for data, unwrappedFeatureVector in ipairs(featureMatrix) do
 		
-		featureVector = {labelVector[data]}
+		featureVector = {unwrappedFeatureVector}
 
 		label = labelVector[data][1]
 
-		classIndex = table.find(self.ClassesList, label)
+		classIndex = table.find(ClassesList, label)
 
-		meanVector = {self.ModelParameters[1][classIndex]}
+		meanVector = {ModelParameters[1][classIndex]}
 
-		standardDeviationVector = {self.ModelParameters[2][classIndex]}
+		standardDeviationVector = {ModelParameters[2][classIndex]}
 
-		priorProbabilityVector = {self.ModelParameters[3][classIndex]}
+		priorProbabilityVector = {ModelParameters[3][classIndex]}
 
 		posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityVector)
-
+		
 	end
 
-	cost = logLoss(labelVector, posteriorProbabilityVector)
+	cost = self:logLoss(labelVector, posteriorProbabilityVector)
 
 	return cost
 
 end
 
-local function areNumbersOnlyInList(list)
-
-	for i, value in ipairs(list) do
-
-		if (typeof(value) ~= "number") then return false end
-
-	end
-
-	return true
-
-end
-
-function GaussianNaiveBayesModel:processLabelVector(labelVector)
-
-	if (#self.ClassesList == 0) then
-
-		self.ClassesList = createClassesList(labelVector)
-
-		local areNumbersOnly = areNumbersOnlyInList(self.ClassesList)
-
-		if (areNumbersOnly) then table.sort(self.ClassesList, function(a,b) return a < b end) end
-
-	else
-
-		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector.") end
-
-	end
-
-end
-
-
-function GaussianNaiveBayesModel:train(featureMatrix, labelVector)
-
-	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
-
-	self:processLabelVector(labelVector)
+local function batchGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData)
 	
-	local cost
+	local numberOfClasses = #extractedFeatureMatrixTable
+	
+	local meanMatrix = {}
 
+	local standardDeviationMatrix = {}
+
+	local priorProbabilityMatrix = {}
+	
+	local numberOfDataPointVector = {}
+	
 	local extractedFeatureMatrix
-
-	local meanVector
-
+	
 	local standardDeviationVector
 	
+	local meanVector
+	
 	local numberOfSubData
-
-	local ModelParameters = self.ModelParameters
-
-	local ClassesList = self.ClassesList
-
-	local numberOfClasses = #ClassesList
 	
-	local numberOfData = #featureMatrix
-
-	local numberOfFeatures = #featureMatrix[1]
-
-	local extractedFeatureMatricesTable = separateFeatureMatrixByClass(featureMatrix, labelVector, ClassesList)
-
-	local meanMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
-
-	local standardDeviationMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
-	
-	local priorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, 1})
-
-	for classIndex, classValue in ipairs(ClassesList) do
-
-		extractedFeatureMatrix = extractedFeatureMatricesTable[classIndex]
+	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 		
 		numberOfSubData = #extractedFeatureMatrix
 
@@ -344,110 +181,276 @@ function GaussianNaiveBayesModel:train(featureMatrix, labelVector)
 		standardDeviationMatrix[classIndex] = standardDeviationVector[1]
 
 		priorProbabilityMatrix[classIndex] = {(numberOfSubData / numberOfData)}
-
+		
+		numberOfDataPointVector[classIndex]= {numberOfSubData}
+		
 	end
-
-	if (ModelParameters) then
-
-		meanMatrix = AqwamTensorLibrary:divide(AqwamTensorLibrary:add(ModelParameters[1], meanMatrix), 2) 
-
-		standardDeviationMatrix = AqwamTensorLibrary:divide(AqwamTensorLibrary:add(ModelParameters[2], standardDeviationMatrix), 2) 
-
-		priorProbabilityMatrix = AqwamTensorLibrary:divide(AqwamTensorLibrary:add(ModelParameters[3], priorProbabilityMatrix), 2) 
-
-	end
-
-	self.ModelParameters = {meanMatrix, standardDeviationMatrix, priorProbabilityMatrix}
-
-	cost = self:calculateCost(featureMatrix, labelVector)
-
-	return {cost}
-
-end
-
-function GaussianNaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
-
-	local numberOfData = #outputMatrix
-
-	local predictedLabelVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
-
-	local highestProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
-
-	local highestProbability
-
-	local outputVector
-
-	local classIndexArray
-
-	local predictedLabel
-
-	for i = 1, #outputMatrix, 1 do
-
-		outputVector = {outputMatrix[i]}
-
-		classIndexArray, highestProbability = AqwamTensorLibrary:findMaximumValueDimensionIndexArray(outputMatrix)
-
-		if (classIndexArray == nil) then continue end
-
-		predictedLabel = self.ClassesList[classIndexArray[2]]
-
-		predictedLabelVector[i][1] = predictedLabel
-
-		highestProbabilityVector[i][1] = highestProbability
-
-	end
-
-	return predictedLabelVector, highestProbabilityVector
-
-end
-
-function GaussianNaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
-
-	local finalProbabilityVector
-
-	local numberOfData = #featureMatrix
-
-	local ClassesList = self.ClassesList
 	
-	local useLogProbabilities = self.useLogProbabilities
+	return meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector
+	
+end
 
-	local ModelParameters = self.ModelParameters
+local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)
+	
+	local extractedFeatureMatrix
+	
+	local numberOfOldSubData
+	
+	local numberOfSubData
+	
+	local subSumVector
+	
+	local sumVector
+	
+	local oldMeanVector
+	
+	local newMeanVector
+	
+	local featureMatrixMinusMeanMatrix
 
-	local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, #ClassesList}, 0)
+	local featureMatrixMinusNewMeanMatrix
 
-	for classIndex, classValue in ipairs(ClassesList) do
+	local multipliedAdjustedFeatureMatrix
 
-		local meanVector = {ModelParameters[1][classIndex]}
+	local subMultipliedVarianceVector
 
-		local standardDeviationVector = {ModelParameters[2][classIndex]}
+	local multipliedVarianceVector
 
-		local priorProbabilityVector = {ModelParameters[3][classIndex]}
+	local newVarianceVector
+	
+	local newStandardDeviationVector
+	
+	local sumMatrix = AqwamTensorLibrary:multiply(meanMatrix, numberOfDataPointVector)
+	
+	local varianceMatrix = AqwamTensorLibrary:power(standardDeviationMatrix, 2)
+	
+	local multipliedVarianceMatrix = AqwamTensorLibrary:multiply(varianceMatrix, numberOfDataPointVector)
+	
+	local totalNumberOfDataPoint = AqwamTensorLibrary:sum(numberOfDataPointVector)
+	
+	local newMeanMatrix = {}
+	
+	local newStandardDeviationVector = {}
+	
+	local newPriorProbabilityMatrix = {}
+	
+	local newNumberOfDataPointVector = {}
 
-		for i = 1, numberOfData, 1 do
+	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+		
+		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
+		
+		numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
+		
+		subSumVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
+		
+		sumVector = {sumMatrix[classIndex]}
+		
+		sumVector = AqwamTensorLibrary:add(sumVector, subSumVector)
+		
+		oldMeanVector = {meanMatrix[classIndex]}
+		
+		newMeanVector = AqwamTensorLibrary:divide(sumVector, numberOfSubData)
+		
+		-- Welford's algorithm for calculating new variance.
+		
+		featureMatrixMinusMeanMatrix = AqwamTensorLibrary:subtract(extractedFeatureMatrix, oldMeanVector)
+		
+		featureMatrixMinusNewMeanMatrix = AqwamTensorLibrary:subtract(extractedFeatureMatrix, newMeanVector)
+		
+		multipliedAdjustedFeatureMatrix = AqwamTensorLibrary:multiply(featureMatrixMinusMeanMatrix, featureMatrixMinusNewMeanMatrix)
+		
+		subMultipliedVarianceVector = AqwamTensorLibrary:sum(multipliedAdjustedFeatureMatrix, 1)
+		
+		multipliedVarianceVector = AqwamTensorLibrary:add({multipliedVarianceMatrix[classIndex]}, subMultipliedVarianceVector)
+		
+		newVarianceVector = AqwamTensorLibrary:divide(multipliedVarianceVector, numberOfSubData)
+		
+		-- End of Welford's algorithm.
+		
+		newStandardDeviationVector = AqwamTensorLibrary:power(newVarianceVector, 0.5)
+		
+		newMeanMatrix[classIndex] = newMeanVector[1]
 
-			local featureVector = {featureMatrix[i]}
+		newStandardDeviationVector[classIndex] = newStandardDeviationVector[1]
 
-			posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityVector)
+		newPriorProbabilityMatrix[classIndex] = {(numberOfSubData / totalNumberOfDataPoint)}
+		
+		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
+		
+	end
+	
+	return newMeanMatrix, newStandardDeviationVector, newPriorProbabilityMatrix, newNumberOfDataPointVector
+	
+end
+
+local gaussianNaiveBayesFunctionList = {
+	
+	["Batch"] = batchGaussianNaiveBayes,
+	
+	["Sequential"] = sequentialGaussianNaiveBayes,
+	
+}
+
+function GaussianNaiveBayesModel.new(parameterDictionary)
+
+	parameterDictionary = parameterDictionary or {}
+
+	local NewGaussianNaiveBayesModel = NaiveBayesBaseModel.new(parameterDictionary)
+
+	setmetatable(NewGaussianNaiveBayesModel, GaussianNaiveBayesModel)
+	
+	NewGaussianNaiveBayesModel:setName("GaussianNaiveBayes")
+	
+	NewGaussianNaiveBayesModel.mode = parameterDictionary.mode or defaultMode
+	
+	NewGaussianNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
+		
+		local mode = NewGaussianNaiveBayesModel.mode
+		
+		local useLogProbabilities = NewGaussianNaiveBayesModel.useLogProbabilities
+		
+		local ModelParameters = NewGaussianNaiveBayesModel.ModelParameters or {}
+		
+		local meanMatrix = ModelParameters[1]
+		
+		local standardDeviationMatrix = ModelParameters[2]
+		
+		local priorProbabilityMatrix = ModelParameters[3]
+		
+		local numberOfDataPointVector = ModelParameters[4]
+
+		if (mode == "Hybrid") then
+
+			mode = (meanMatrix and standardDeviationMatrix and priorProbabilityMatrix and numberOfDataPointVector and "Sequential") or "Batch"		
 
 		end
 
-	end
+		local gaussianNaiveBayesFunction = gaussianNaiveBayesFunctionList[mode]
 
-	if (returnOriginalOutput) then return posteriorProbabilityMatrix end
+		if (not gaussianNaiveBayesFunction) then error("Unknown mode.") end
 
-	return self:getLabelFromOutputMatrix(posteriorProbabilityMatrix)
+		local numberOfData = #featureMatrix
 
-end
+		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
+		
+		if (useLogProbabilities) then
+			
+			if (meanMatrix) then meanMatrix = AqwamTensorLibrary:applyFunction(math.exp, meanMatrix) end
+			
+			if (standardDeviationMatrix) then standardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.exp, standardDeviationMatrix) end
+			
+			if (priorProbabilityMatrix) then priorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityMatrix) end
+			
+		end
+		
+		meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector = gaussianNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)
+		
+		if (useLogProbabilities) then
+			
+			meanMatrix = AqwamTensorLibrary:applyFunction(math.log, meanMatrix)
 
-function GaussianNaiveBayesModel:getClassesList()
+			standardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.log, standardDeviationMatrix)
 
-	return self.ClassesList
+			priorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityMatrix)
+			
+		end
 
-end
+		NewGaussianNaiveBayesModel.ModelParameters = {meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector}
 
-function GaussianNaiveBayesModel:setClassesList(ClassesList)
+		local cost = NewGaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
-	self.ClassesList = ClassesList
+		return {cost}
+		
+	end)
+	
+	NewGaussianNaiveBayesModel:setPredictFunction(function(featureMatrix, returnOriginalOutput)
+		
+		local finalProbabilityVector
+
+		local numberOfData = #featureMatrix
+
+		local ClassesList = NewGaussianNaiveBayesModel.ClassesList
+
+		local useLogProbabilities = NewGaussianNaiveBayesModel.useLogProbabilities
+
+		local ModelParameters = NewGaussianNaiveBayesModel.ModelParameters
+
+		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, #ClassesList}, 0)
+
+		for classIndex, classValue in ipairs(ClassesList) do
+
+			local meanVector = {ModelParameters[1][classIndex]}
+
+			local standardDeviationVector = {ModelParameters[2][classIndex]}
+
+			local priorProbabilityVector = {ModelParameters[3][classIndex]}
+
+			for i = 1, numberOfData, 1 do
+
+				local featureVector = {featureMatrix[i]}
+
+				posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityVector)
+
+			end
+
+		end
+
+		if (returnOriginalOutput) then return posteriorProbabilityMatrix end
+
+		return NewGaussianNaiveBayesModel:getLabelFromOutputMatrix(posteriorProbabilityMatrix)
+		
+	end)
+	
+	NewGaussianNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
+		
+		local ClassesList = NewGaussianNaiveBayesModel.ClassesList
+		
+		local useLogProbabilities = NewGaussianNaiveBayesModel.useLogProbabilities
+		
+		local ModelParameters = NewGaussianNaiveBayesModel.ModelParameters
+		
+		local selectedMeanMatrix = {}
+		
+		local selectedStandardDeviationMatrix = {}
+		
+		for data, unwrappedLabelVector in ipairs(labelVector) do
+			
+			local label = unwrappedLabelVector[1]
+			
+			local classIndex = table.find(ClassesList, label)
+			
+			if (classIndex) then
+				
+				selectedMeanMatrix[data] = ModelParameters[1][classIndex]
+				
+				selectedStandardDeviationMatrix[data] = ModelParameters[2][classIndex]
+				
+			end
+			
+		end
+		
+		if (useLogProbabilities) then
+
+			selectedMeanMatrix = AqwamTensorLibrary:applyFunction(math.exp, selectedMeanMatrix)
+
+			selectedStandardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.exp, selectedStandardDeviationMatrix)
+
+		end
+		
+		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(selectedMeanMatrix)
+		
+		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray)
+		
+		local generatedFeatureMatrixPart1 = AqwamTensorLibrary:multiply(selectedStandardDeviationMatrix, noiseMatrix)
+		
+		local generatedFeatureMatrix = AqwamTensorLibrary:add(selectedMeanMatrix, generatedFeatureMatrixPart1)
+		
+		return generatedFeatureMatrix
+		
+	end)
+
+	return NewGaussianNaiveBayesModel
 
 end
 

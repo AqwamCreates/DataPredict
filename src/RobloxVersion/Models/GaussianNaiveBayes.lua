@@ -160,6 +160,8 @@ local function batchGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData
 
 	local priorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, 1})
 	
+	local numberOfDataPointVector = AqwamTensorLibrary:createTensor({numberOfClasses, 1})
+	
 	local extractedFeatureMatrix
 	
 	local standardDeviationVector
@@ -180,9 +182,11 @@ local function batchGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData
 
 		priorProbabilityMatrix[classIndex] = {(numberOfSubData / numberOfData)}
 		
+		numberOfDataPointVector[classIndex][1] = numberOfSubData
+		
 	end
 	
-	return meanMatrix, standardDeviationMatrix, priorProbabilityMatrix
+	return meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector
 	
 end
 
@@ -190,33 +194,91 @@ local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberO
 	
 	local extractedFeatureMatrix
 	
+	local numberOfOldSubData
+	
 	local numberOfSubData
+	
+	local subSumVector
+	
+	local sumVector
+	
+	local oldMeanVector
+	
+	local newMeanVector
+	
+	local featureMatrixMinusMeanMatrix
+
+	local featureMatrixMinusNewMeanMatrix
+
+	local multipliedAdjustedFeatureMatrix
+
+	local subMultipliedVarianceVector
+
+	local multipliedVarianceVector
+
+	local newVarianceVector
+	
+	local newStandardDeviationVector
 	
 	local sumMatrix = AqwamTensorLibrary:multiply(meanMatrix, numberOfDataPointVector)
 	
-	local varianceVector = AqwamTensorLibrary:power(standardDeviationMatrix, 2)
+	local varianceMatrix = AqwamTensorLibrary:power(standardDeviationMatrix, 2)
 	
-	local sumSquaredValueMinusMeanVector =  AqwamTensorLibrary:multiply(standardDeviationMatrix, numberOfDataPointVector)
+	local multipliedVarianceMatrix = AqwamTensorLibrary:multiply(varianceMatrix, numberOfDataPointVector)
 	
-	local totalNumberOfDatapoint = AqwamTensorLibrary:sum(numberOfDataPointVector)
+	local totalNumberOfDataPoint = AqwamTensorLibrary:sum(numberOfDataPointVector)
 	
+	local newMeanMatrix = {}
+	
+	local newStandardDeviationVector = {}
+	
+	local newPriorProbabilityMatrix = {}
+	
+	local newNumberOfDataPointVector = {}
+
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 		
-		numberOfSubData = (#extractedFeatureMatrix + numberOfDataPointVector[classIndex][1])
-
-		standardDeviationVector, _, meanVector = AqwamTensorLibrary:standardDeviation(extractedFeatureMatrix, 1)
-
-		meanMatrix[classIndex] = meanVector[1]
-
-		standardDeviationMatrix[classIndex] = standardDeviationVector[1]
-
-		priorProbabilityMatrix[classIndex] = {(numberOfSubData / totalNumberOfDatapoint)}
+		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
 		
-		numberOfDataPointVector[classIndex][1] = numberOfSubData
+		numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
+		
+		subSumVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
+		
+		sumVector = {sumMatrix[classIndex]}
+		
+		sumVector = AqwamTensorLibrary:add(sumVector, subSumVector)
+		
+		oldMeanVector = {meanMatrix[classIndex]}
+		
+		newMeanVector = AqwamTensorLibrary:divide(sumVector, numberOfSubData)
+		
+		-- Welford's algorithm for calculating new variance.
+		
+		featureMatrixMinusMeanMatrix = AqwamTensorLibrary:subtract(extractedFeatureMatrix, oldMeanVector)
+		
+		featureMatrixMinusNewMeanMatrix = AqwamTensorLibrary:subtract(extractedFeatureMatrix, newMeanVector)
+		
+		multipliedAdjustedFeatureMatrix = AqwamTensorLibrary:multiply(featureMatrixMinusMeanMatrix, featureMatrixMinusNewMeanMatrix)
+		
+		subMultipliedVarianceVector = AqwamTensorLibrary:sum(multipliedAdjustedFeatureMatrix, 1)
+		
+		multipliedVarianceVector = AqwamTensorLibrary:add({multipliedVarianceMatrix[classIndex]}, subMultipliedVarianceVector)
+		
+		newVarianceVector = AqwamTensorLibrary:divide(multipliedVarianceVector, numberOfSubData)
+		
+		newStandardDeviationVector = AqwamTensorLibrary:power(newVarianceVector, 0.5)
+		
+		newMeanMatrix[classIndex] = newMeanVector[1]
+
+		newStandardDeviationVector[classIndex] = newStandardDeviationVector[1]
+
+		newPriorProbabilityMatrix[classIndex] = {(numberOfSubData / totalNumberOfDataPoint)}
+		
+		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 		
 	end
 	
-	return meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector
+	return newMeanMatrix, newStandardDeviationVector, newPriorProbabilityMatrix, newNumberOfDataPointVector
 	
 end
 
@@ -324,7 +386,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		
 	end)
 	
-	NewGaussianNaiveBayesModel:setGenerateFunction(function(labelVector)
+	NewGaussianNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
 		
 		local ClassesList = NewGaussianNaiveBayesModel.ClassesList
 		
@@ -362,7 +424,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		
 		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(selectedMeanMatrix)
 		
-		local noiseMatrix = AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray)
+		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray)
 		
 		local generatedFeatureMatrixPart1 = AqwamTensorLibrary:multiply(selectedStandardDeviationMatrix, noiseMatrix)
 		

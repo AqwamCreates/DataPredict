@@ -292,19 +292,17 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 			
 		end
 		
+		if (useLogProbabilities) then
+
+			selectedMeanMatrix = AqwamTensorLibrary:applyFunction(math.exp, selectedMeanMatrix)
+
+			selectedStandardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.exp, selectedStandardDeviationMatrix)
+
+		end
+		
 		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(selectedMeanMatrix)
 		
 		local noiseMatrix = AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray)
-		
-		local generatedFeatureMatrixPart1
-		
-		if (useLogProbabilities) then
-			
-			selectedMeanMatrix = AqwamTensorLibrary:applyFunction(math.exp, selectedMeanMatrix)
-			
-			selectedStandardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.exp, selectedStandardDeviationMatrix)
-			
-		end
 		
 		local generatedFeatureMatrixPart1 = AqwamTensorLibrary:multiply(selectedStandardDeviationMatrix, noiseMatrix)
 		

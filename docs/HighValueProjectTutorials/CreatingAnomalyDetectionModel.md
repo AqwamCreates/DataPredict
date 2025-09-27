@@ -4,13 +4,19 @@ Hello guys! Today, I will be showing you on how to create a retention-based mode
 
 Currently, you need these to produce the model:
 
-* One Class Support Vector Machine (Not Support Vector Machine)
+* One Class Support Vector Machine (Not Support Vector Machine) or Expectation Maximization approach
 
 * A player data that is stored in matrix
 
 ## Setting Up
 
-Before we train our model, we will first need to construct a classification model as shown below.
+Before we train our model, we will first need to construct a model, in which we have two approaches:
+
+* Approach 1: One Class Support Vector Machine (Classification)
+
+* Approach 2: Expectation-Maximization (Clustering)
+
+### Approach 1: One Class Support Vector Machine
 
 ```lua
 
@@ -21,6 +27,18 @@ local DataPredict = require(DataPredict)
 -- Additionally, you must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
 
 local AnomalyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction"})
+
+```
+
+### Approach 2: Expectation-Maximization
+
+```lua
+
+local DataPredict = require(DataPredict)
+
+-- You must set numberOfClusters to 1.
+
+local AnomalyPredictionModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 1})
 
 ```
 

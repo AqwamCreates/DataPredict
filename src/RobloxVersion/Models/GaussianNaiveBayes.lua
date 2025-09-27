@@ -346,11 +346,15 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		
 		meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector = gaussianNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)
 		
-		meanMatrix = AqwamTensorLibrary:applyFunction(math.log, meanMatrix)
-		
-		standardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.log, standardDeviationMatrix)
-		
-		priorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityMatrix)
+		if (useLogProbabilities) then
+			
+			meanMatrix = AqwamTensorLibrary:applyFunction(math.log, meanMatrix)
+
+			standardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.log, standardDeviationMatrix)
+
+			priorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityMatrix)
+			
+		end
 
 		NewGaussianNaiveBayesModel.ModelParameters = {meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector}
 

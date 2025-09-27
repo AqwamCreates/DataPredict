@@ -102,7 +102,7 @@ local maximumNumberOfEnemies = 10
 
 ```
 
-### Case 1: Binary Generation.
+### Case 1: Binary Generation
 
 ```lua
 
@@ -140,7 +140,7 @@ end
 
 ```
 
-### Case 2: Weighted Generation.
+### Case 2: Weighted Generation
 
 ```lua
 

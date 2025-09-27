@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
 local NaiveBayesBaseModel = require(script.Parent.NaiveBayesBaseModel)
 
 GaussianNaiveBayesModel = {}
@@ -35,8 +37,6 @@ GaussianNaiveBayesModel.__index = GaussianNaiveBayesModel
 setmetatable(GaussianNaiveBayesModel, NaiveBayesBaseModel)
 
 local defaultMode = "Hybrid"
-
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local function calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 

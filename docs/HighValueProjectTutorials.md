@@ -154,9 +154,19 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Diversity-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingDiversityBasedEnemyDataGenerationModel.md) (Incomplete)
+* [Creating Unconditional-Diversity-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingUnconditionalDiversityBasedEnemyDataGenerationModel.md) (Incomplete)
 
-  * Uses players' combat data for input and enemies' data as output. The generated enemy data is then used against the discriminator to see if the player will interact with it.
+  * Uses enemies' data as generator's output. The generated enemy data is then used against the discriminator to see if the player will interact with it.
+ 
+    * Think of the discriminator as "fake player" and the discriminator will see the real enemy data that the player has interacted with.
+
+  * No need to add new content; the model can use existing content to optimize your games.
+
+  * Minimal implementation takes a minimum of 1 hour using DataPredict™.
+
+* [Creating Conditional-Diversity-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingConditionalDiversityBasedEnemyDataGenerationModel.md) (Incomplete)
+
+  * Uses players' combat data for generator's input and enemies' data as ogenerator's output. The generated enemy data is then used against the discriminator to see if the player will interact with it.
  
     * Think of the discriminator as "fake player" and the discriminator will see the real enemy data that the player has interacted with.
 

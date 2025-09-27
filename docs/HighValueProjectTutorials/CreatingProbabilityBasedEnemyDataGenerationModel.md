@@ -80,6 +80,32 @@ local maximumNumberOfEnemies = 10
 
 ```
 
+Optionally, we can also generate enemy data vector based on the model parameters.
+
+```lua
+
+local function generateEnemyDataVector()
+
+ local ModelParameters = EnemyDataGenerationModel:getModelParameters()
+
+ local enemyMaximumHealth = ModelParameters[1][1]
+
+ local enemyMaximumDamage = ModelParameters[2][1]
+
+ local enemyCashAmount = ModelParameters[3][1]
+
+ local enemyMaximumHealthRandomNoise = math.random() - math.random()
+
+ local enemyMaximumDamageRandomNoise = math.random() - math.random()
+
+ local enemyCashAmountRandomNoise = math.random() - math.random()
+
+ return {{enemyMaximumHealth * enemyMaximumHealthRandomNoise, enemyMaximumDamage * enemyMaximumHealthRandomNoise, enemyCashAmount * enemyCashAmountRandomNoise}}
+
+end
+
+```
+
 ### Case 1: Binary Generation.
 
 ```lua

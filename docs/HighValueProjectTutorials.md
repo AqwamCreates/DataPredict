@@ -162,6 +162,8 @@
 
   * No need to add new content; the model can use existing content to optimize your games.
 
+  * More risky than the non-diverse models, but gives more variation in enemy data generation.
+
   * Minimal implementation takes a minimum of 1 hour using DataPredict™.
 
 * [Creating Conditional-Diversity-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingConditionalDiversityBasedEnemyDataGenerationModel.md)
@@ -171,6 +173,8 @@
     * Think of the discriminator as "fake player" and the discriminator will see the real enemy data that the player has interacted with.
 
   * No need to add new content; the model can use existing content to optimize your games.
+
+  * More risky than the non-diverse models, but gives more variation in enemy data generation.
 
   * Minimal implementation takes a minimum of 2 hour using DataPredict™.
 

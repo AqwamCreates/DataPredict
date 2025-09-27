@@ -36,17 +36,17 @@ Before we start training our model, we first need to build our model. We have sp
 
 ```lua 
 
-local ActorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
+local GeneratorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-ActorNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
+GeneratorNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
 
-ActorNeuralNetwork:addLayer(1, false) -- We're outputing a single value.
+GeneratorNeuralNetwork:addLayer(1, false) -- We're outputing a single value.
 
-local CriticNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
+local DiscriminatorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-CriticNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
+DiscriminatorNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
 
-CriticNeuralNetwork:addLayer(1, false) -- Critic only outputs 1 value.
+DiscriminatorNeuralNetwork:addLayer(1, false) -- Critic only outputs 1 value.
 
 ```
 
@@ -56,13 +56,13 @@ CriticNeuralNetwork:addLayer(1, false) -- Critic only outputs 1 value.
 
 -- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
 
-local DeepReinforcementLearningModel = DataPredict.Model.SoftActorCritic.new()
+local DiversityModel = DataPredict.Model.ConditionalWassersteinGenerativeAdversarialNetwork.new()
 
--- Inserting our actor and critic Neural Networks here.
+-- Inserting our generator and discriminator Neural Networks here.
 
-DeepReinforcementLearningModel:setActorModel(ActorNeuralNetwork)
+DiversityModel:setGeneratorModel(GeneratorNeuralNetwork)
 
-DeepReinforcementLearningModel:setCriticModel(CriticNeuralNetwork)
+DiversityModel:setCriticModel(DiscriminatorNeuralNetwork)
 
 ```
 

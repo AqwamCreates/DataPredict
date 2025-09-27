@@ -336,9 +336,9 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 			
 			local numberOfClasses = #NewGaussianNaiveBayesModel.ClassesList
 			
-			local zeroValue = (useLogProbabilities and 1) or 0
+			local zeroValue = (useLogProbabilities and math.huge) or 0
 			
-			local oneValue = (useLogProbabilities and math.exp(1)) or 1
+			local oneValue = (useLogProbabilities and 0) or 1
 			
 			meanMatrix = meanMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
 			

@@ -346,7 +346,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 			
 			priorProbabilityMatrix = priorProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
 			
-			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, zeroValue)
+			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
 			
 		end
 

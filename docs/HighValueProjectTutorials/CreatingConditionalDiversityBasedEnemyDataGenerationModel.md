@@ -8,7 +8,14 @@ Before we can train and generate our models, we first need to design our feature
 
 ```lua
 
--- Techincally, the player combat data information is not quite necessary unless these values changes a lot or you're using it as part of enemy data generation.
+
+--[[
+
+Techincally, the player combat data information is not quite necessary unless these values changes a lot or you're using it as part of enemy data generation.
+
+Otherwise, Unconditional-Diversity-Based Enemy Data Generation Model is more suited here.
+
+--]]
 
 local playerCombatDataMatrix = {
 

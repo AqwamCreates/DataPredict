@@ -16,11 +16,13 @@ Otherwise, "Unconditional-Diversity-Based Enemy Data Generation Model" is more s
 
 --]]
 
+-- A row of 1 is added here for "bias".
+
 local playerCombatDataMatrix = {
 
-  {player1MaximumHealth, player1MaximumDamage, player1CashAmount},
-  {player2MaximumHealth, player2MaximumDamage, player2CashAmount},
-  {player3MaximumHealth, player3MaximumDamage, player3CashAmount},
+  {1, player1MaximumHealth, player1MaximumDamage, player1CashAmount},
+  {1, player2MaximumHealth, player2MaximumDamage, player2CashAmount},
+  {1, player3MaximumHealth, player3MaximumDamage, player3CashAmount},
 
 }
 

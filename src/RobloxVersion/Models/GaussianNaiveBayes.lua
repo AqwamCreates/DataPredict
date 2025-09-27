@@ -252,7 +252,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		
 		local numberOfDataPointVector = ModelParameters[4]
 
-		if (mode == "Hybrid") then -- This must be always above the centroid initialization check. Otherwise it will think this is second training round despite it being the first one!
+		if (mode == "Hybrid") then
 
 			mode = (meanMatrix and standardDeviationMatrix and priorProbabilityMatrix and numberOfDataPointVector and "Sequential") or "Batch"		
 

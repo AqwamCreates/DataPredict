@@ -1,4 +1,4 @@
-# Creating Diversity-Based Enemy Data Generation Model
+# Creating Conditional-Diversity-Based Enemy Data Generation Model
 
 Hi guys! In this tutorial, we will demonstrate on how to create diversity-based enemy data generation model so that the enemies are not too easy or too hard for everyone in PvE modes.
 

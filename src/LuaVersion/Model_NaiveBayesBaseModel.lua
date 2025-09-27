@@ -146,7 +146,7 @@ function NaiveBayesBaseModel:separateFeatureMatrixByClass(featureMatrix, labelVe
 
 	end
 
-	local extractedFeatureMatricesTable = {}
+	local extractedFeatureMatrixTable = {}
 
 	local extractedFeatureMatrix
 
@@ -154,11 +154,11 @@ function NaiveBayesBaseModel:separateFeatureMatrixByClass(featureMatrix, labelVe
 
 		extractedFeatureMatrix = extractFeatureMatrixFromPosition(featureMatrix, classesPositionTable[classIndex])
 
-		table.insert(extractedFeatureMatricesTable, extractedFeatureMatrix)
+		table.insert(extractedFeatureMatrixTable, extractedFeatureMatrix)
 
 	end
 
-	return extractedFeatureMatricesTable
+	return extractedFeatureMatrixTable
 
 end
 

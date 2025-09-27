@@ -308,6 +308,8 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		
 		local mode = NewGaussianNaiveBayesModel.mode
 		
+		local useLogProbabilities = NewGaussianNaiveBayesModel.useLogProbabilities
+		
 		local ModelParameters = NewGaussianNaiveBayesModel.ModelParameters or {}
 		
 		local meanMatrix = ModelParameters[1]
@@ -332,7 +334,17 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 
 		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
 		
-		local meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector = gaussianNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)
+		if (useLogProbabilities) then
+			
+			if (meanMatrix) then meanMatrix = AqwamTensorLibrary:applyFunction(math.exp, meanMatrix) end
+			
+			if (standardDeviationMatrix) then standardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.exp, standardDeviationMatrix) end
+			
+			if (priorProbabilityMatrix) then standardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityMatrix) end
+			
+		end
+		
+		meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector = gaussianNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)
 		
 		meanMatrix = AqwamTensorLibrary:applyFunction(math.log, meanMatrix)
 		

@@ -4,7 +4,7 @@ Hi guys! In this tutorial, we will demonstrate on how to create cluster-based en
 
 For best results, please use:
 
-* K-Means or Sequential K-Means if you want to manually set the number of clusters.
+* K-Means or Agglomerative Hierarchical if you want to manually set the number of clusters.
 
 * MeanShift if you want the model to set the number of clusters. (Trickier to set up)
 

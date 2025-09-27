@@ -272,8 +272,6 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		
 		local selectedStandardDeviationMatrix = {}
 		
-		local selectedPriorProbabilityMatrix = {}
-		
 		for data, unwrappedLabelVector in ipairs(labelVector) do
 			
 			local label = unwrappedLabelVector[1]
@@ -285,8 +283,6 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 				selectedMeanMatrix[data] = ModelParameters[1][classIndex]
 				
 				selectedStandardDeviationMatrix[data] = ModelParameters[2][classIndex]
-				
-				selectedPriorProbabilityMatrix[data] = ModelParameters[3][classIndex]
 				
 			end
 			

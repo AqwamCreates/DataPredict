@@ -26,6 +26,8 @@ local enemyDataMatrix = {
 
 }
 
+local noiseMatrix = TensorL:createRandomUniformTensor({3, 1}) -- Single point of variation.
+
 ```
 
 ## Constructing Our Model
@@ -38,15 +40,15 @@ Before we start training our model, we first need to build our model. We have sp
 
 local GeneratorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-GeneratorNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
+GeneratorNeuralNetwork:addLayer(4, true) -- Three player data features, one noise feature and one bias.
 
-GeneratorNeuralNetwork:addLayer(1, false) -- We're outputing a single value.
+GeneratorNeuralNetwork:addLayer(3, false) -- We're outputing three enemy data features and is without bias.
 
 local DiscriminatorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-DiscriminatorNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
+DiscriminatorNeuralNetwork:addLayer(6, true) -- Three player data features, three enemy features and one bias.
 
-DiscriminatorNeuralNetwork:addLayer(1, false) -- Critic only outputs 1 value.
+DiscriminatorNeuralNetwork:addLayer(1, false) -- Discriminator only outputs 1 value.
 
 ```
 

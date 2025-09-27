@@ -154,6 +154,16 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
+* [Creating Diversity-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingDiversityBasedEnemyDataGenerationModel.md) (Incomplete)
+
+  * Uses players' combat data for input and enemies' data as output. The generated enemy data is then used against the discriminator to see if the player will interact with it.
+ 
+    * Think of the discriminator as "fake player" and the discriminator will see the real enemy data that the player has interacted with.
+
+  * No need to add new content; the model can use existing content to optimize your games.
+
+  * Minimal implementation takes a minimum of 2 hour using DataPredict™.
+
 * [Creating Reward-Maximization-Based Difficulty Generation Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedDifficultyGenerationModel.md)
 
   * Every time an enemy is killed, the positive reward tells the model to "make more enemies similar to this". 

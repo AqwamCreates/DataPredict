@@ -106,6 +106,8 @@ local maximumNumberOfEnemies = 10
 
 ```lua
 
+local noiseVector
+
 local playerCombatDataVector
 
 local enemyDataVector
@@ -122,13 +124,13 @@ while true do
 
   repeat
 
+    noiseVector = {{math.random()}}
+
     playerCombatDataVector = getPlayerDataVector()
 
-    enemyDataVector = generateEnemyDataVector()
+    enemyDataVector = EnemyDataGenerationModel:generate(noiseVector, playerCombatDataVector)
 
-    playerCombatDataAndEnemyDataVector = TensorL:concatenate(playerCombatDataVector, enemyDataVector, 2)
-
-    probabilityForPlayerToInteract = EnemyDataGenerationModel:predict(playerCombatDataAndEnemyDataVector)[1][1]
+    probabilityForPlayerToInteract = EnemyDataGenerationModel:evaluate(enemyDataVector)[1][1]
 
     isAcceptable = (probabilityForPlayerToInteract >= 0.5)
 
@@ -144,6 +146,8 @@ end
 
 ```lua
 
+local noiseVector
+
 local playerCombatDataVector
 
 local enemyDataVector
@@ -156,17 +160,17 @@ while true do
 
   if (#activeEnemyDataArray > maximumNumberOfEnemies) then continue end
 
- playerCombatDataVector = getPlayerDataVector()
+  noiseVector = {{math.random()}}
 
- enemyDataVector = generateEnemyDataVector()
+  playerCombatDataVector = getPlayerDataVector()
 
- playerCombatDataAndEnemyDataVector = TensorL:concatenate(playerCombatDataVector, enemyDataVector, 2)
+  enemyDataVector = EnemyDataGenerationModel:generate(noiseVector, playerCombatDataVector)
 
- probabilityForPlayerToInteract = EnemyDataGenerationModel:predict(playerCombatDataAndEnemyDataVector)[1][1]
+  probabilityForPlayerToInteract = EnemyDataGenerationModel:evaluate(enemyDataVector)[1][1]
 
- enemyDataVector = TensorL:divide(enemyDataVector, probabilityForPlayerToInteract)
+  enemyDataVector = TensorL:divide(enemyDataVector, probabilityForPlayerToInteract)
 
- summonEnemy(enemyDataVector)
+  summonEnemy(enemyDataVector)
 
 end
 
@@ -186,7 +190,9 @@ Additionally, using the whole data is computationally expensive and may impact p
 
 --]]
 
-local playerCombatDataAndEnemyDataMatrix = {}
+local playerCombatDataMatrix = {}
+
+local playerEnemyDataMatrix = {}
 
 local function onEnemyKilled(Enemy, Player)
 
@@ -194,9 +200,9 @@ local function onEnemyKilled(Enemy, Player)
 
   local enemyDataVector = getEnemyDataVector(Enemy)
 
-  local playerCombatDataAndEnemyDataVector = TensorL:concatenate(playerCombatDataVector, enemyDataVector, 2)
+  table.insert(playerCombatDataMatrix, playerCombatDataAndEnemyDataVector[1])
 
-  table.insert(playerCombatDataAndEnemyDataMatrix, playerCombatDataAndEnemyDataVector[1])
+  table.insert(playerEnemyDataMatrix, enemyDataVector[1])
 
   removeEnemyDataFromActiveEnemyDataArray(Enemy)
 

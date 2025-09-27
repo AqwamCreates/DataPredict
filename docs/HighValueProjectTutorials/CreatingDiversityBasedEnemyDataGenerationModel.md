@@ -1,6 +1,6 @@
 # Creating Diversity-Based Enemy Data Generation Model
 
-Hi guys! In this tutorial, we will demonstrate on how to create probability-based enemy data generation model so that the enemies are not too easy or too hard for everyone in PvE modes.
+Hi guys! In this tutorial, we will demonstrate on how to create diversity-based enemy data generation model so that the enemies are not too easy or too hard for everyone in PvE modes.
 
 For best results, you must use one class support vector machine.
 
@@ -39,8 +39,6 @@ local enemyDataMatrix = {
   {enemy3MaximumHealth, enemy3MaximumDamage, enemy3CashAmount},
 
 }
-
-local playerCombatDataAndEnemyDataMatrix = TensorL:concatenate(playerCombatDataMatrix, enemyDataMatrix, 2)
 
 ```
 

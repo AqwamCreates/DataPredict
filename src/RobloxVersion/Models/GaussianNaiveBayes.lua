@@ -212,6 +212,8 @@ local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberO
 
 		priorProbabilityMatrix[classIndex] = {(numberOfSubData / totalNumberOfDatapoint)}
 		
+		numberOfDataPointVector[classIndex][1] = numberOfSubData
+		
 	end
 	
 	return meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector

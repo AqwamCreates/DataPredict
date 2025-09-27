@@ -475,8 +475,6 @@ function KMeansModel:train(featureMatrix)
 	local clusterAssignmentMatrix
 	
 	local distanceMatrix
-	
-	local kMeansFunction
 
 	if (mode == "Hybrid") then -- This must be always above the centroid initialization check. Otherwise it will think this is second training round despite it being the first one!
 		
@@ -484,7 +482,7 @@ function KMeansModel:train(featureMatrix)
 
 	end
 	
-	kMeansFunction = kMeansFunctionList[mode]
+	local kMeansFunction = kMeansFunctionList[mode]
 
 	if (not kMeansFunction) then error("Unknown mode.") end
 	

@@ -150,17 +150,17 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 end
 
-local function batchGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
+local function batchGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData)
 	
 	local numberOfClasses = #extractedFeatureMatrixTable
 	
-	local meanMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
+	local meanMatrix = {}
 
-	local standardDeviationMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
+	local standardDeviationMatrix = {}
 
-	local priorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, 1})
+	local priorProbabilityMatrix = {}
 	
-	local numberOfDataPointVector = AqwamTensorLibrary:createTensor({numberOfClasses, 1})
+	local numberOfDataPointVector = {}
 	
 	local extractedFeatureMatrix
 	
@@ -190,7 +190,7 @@ local function batchGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData
 	
 end
 
-local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)
+local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)
 	
 	local extractedFeatureMatrix
 	
@@ -334,7 +334,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 
 		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
 		
-		local meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector = gaussianNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)
+		local meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector = gaussianNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)
 		
 		meanMatrix = AqwamTensorLibrary:applyFunction(math.log, meanMatrix)
 		

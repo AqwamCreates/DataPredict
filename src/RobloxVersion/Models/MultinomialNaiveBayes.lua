@@ -287,6 +287,24 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 		local multinomialBayesFunction = multinomialBayesFunctionList[mode]
 
 		if (not multinomialBayesFunction) then error("Unknown mode.") end
+		
+		if (mode == "Sequential") then
+
+			local numberOfFeatures = #featureMatrix[1]
+
+			local numberOfClasses = #NewMultinomialNaiveBayesModel.ClassesList
+
+			local zeroValue = (useLogProbabilities and math.huge) or 0
+
+			local oneValue = (useLogProbabilities and 0) or 1
+
+			featureProbabilityMatrix = featureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
+
+			priorProbabilityMatrix = priorProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
+
+			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
+
+		end
 
 		local numberOfData = #featureMatrix
 

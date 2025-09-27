@@ -2,20 +2,6 @@
 
 Hi guys! In this tutorial, we will demonstrate on how to create diversity-based enemy data generation model so that the enemies are not too easy or too hard for everyone in PvE modes.
 
-For best results, you must use one class support vector machine.
-
-## Initializing The Probability Model
-
-Before we can produce ourselves a difficulty generation model, we first need to construct a model, which is shown below. Ensure that the kernel function is "RadialBasisFunction".
-
-```lua
-
- -- For this tutorial, we will assume that the player intentionally killed 90% of the enemies.
-
-local EnemyDataGenerationModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 100, kernelFunction = "RadialBasisFunction", beta = 0.9})
-
-```
-
 ## Designing The Feature Matrix
 
 Before we can train and generate our models, we first need to design our featureMatrix.
@@ -39,6 +25,22 @@ local enemyDataMatrix = {
   {enemy3MaximumHealth, enemy3MaximumDamage, enemy3CashAmount},
 
 }
+
+```
+
+## Initializing The Diversity Model
+
+Before we can produce ourselves a difficulty generation model, we first need to construct multiple models:
+
+1. Generative Neural Network
+
+2. 
+
+```lua
+
+ -- For this tutorial, we will assume that the player intentionally killed 90% of the enemies.
+
+local EnemyDataGenerationModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 100, kernelFunction = "RadialBasisFunction", beta = 0.9})
 
 ```
 

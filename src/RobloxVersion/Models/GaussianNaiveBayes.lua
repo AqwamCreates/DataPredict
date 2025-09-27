@@ -330,8 +330,6 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 
 		local numberOfData = #featureMatrix
 
-		local numberOfFeatures = #featureMatrix[1]
-
 		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
 		
 		local meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector = gaussianNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)

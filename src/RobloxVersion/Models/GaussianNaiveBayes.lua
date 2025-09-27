@@ -340,7 +340,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 			
 			if (standardDeviationMatrix) then standardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.exp, standardDeviationMatrix) end
 			
-			if (priorProbabilityMatrix) then standardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityMatrix) end
+			if (priorProbabilityMatrix) then priorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityMatrix) end
 			
 		end
 		

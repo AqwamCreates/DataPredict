@@ -266,6 +266,8 @@ local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberO
 		
 		newVarianceVector = AqwamTensorLibrary:divide(multipliedVarianceVector, numberOfSubData)
 		
+		-- End of Welford's algorithm.
+		
 		newStandardDeviationVector = AqwamTensorLibrary:power(newVarianceVector, 0.5)
 		
 		newMeanMatrix[classIndex] = newMeanVector[1]

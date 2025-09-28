@@ -333,20 +333,24 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		local useLogProbabilities = NewBernoulliNaiveBayes.useLogProbabilities
 
 		local ModelParameters = NewBernoulliNaiveBayes.ModelParameters
+		
+		local featureProbabilityMatrix = ModelParameters[1]
+		
+		local priorProbabilityVector = ModelParameters[2]
 
 		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, #ClassesList}, 0)
 
 		for classIndex, classValue in ipairs(ClassesList) do
 
-			local featureProbabilityVector = {ModelParameters[1][classIndex]}
+			local featureProbabilityVector = {featureProbabilityMatrix[classIndex]}
 
-			local priorProbabilityVector = {ModelParameters[2][classIndex]}
+			local priorProbabilityValue = {priorProbabilityVector[classIndex]}
 
 			for i = 1, numberOfData, 1 do
 
 				local featureVector = {featureMatrix[i]}
 
-				posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
+				posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityValue)
 
 			end
 
@@ -358,15 +362,23 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		
 	end)
 	
-	NewBernoulliNaiveBayes:setGenerateFunction(function(labelVector)
+	NewBernoulliNaiveBayes:setGenerateFunction(function(labelVector, noiseMatrix)
+
+		if (noiseMatrix) then
+
+			if (#labelVector ~= #noiseMatrix) then error("The label vector and the noise matrix does not contain the same number of rows.") end
+
+		end
 
 		local ClassesList = NewBernoulliNaiveBayes.ClassesList
 
+		local useLogProbabilities = NewBernoulliNaiveBayes.useLogProbabilities
+
 		local ModelParameters = NewBernoulliNaiveBayes.ModelParameters
 
-		local selectedFeatureProbabilityMatrix = {}
+		local selectedMeanMatrix = {}
 
-		local selectedPriorProbabilityMatrix = {}
+		local selectedStandardDeviationMatrix = {}
 
 		for data, unwrappedLabelVector in ipairs(labelVector) do
 
@@ -376,17 +388,25 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 			if (classIndex) then
 
-				selectedFeatureProbabilityMatrix[data] = ModelParameters[1][classIndex]
+				selectedMeanMatrix[data] = ModelParameters[1][classIndex]
 
-				selectedPriorProbabilityMatrix[data] = ModelParameters[2][classIndex]
+				selectedStandardDeviationMatrix[data] = ModelParameters[2][classIndex]
 
 			end
 
 		end
 
-		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(selectedFeatureProbabilityMatrix)
+		if (useLogProbabilities) then
 
-		local noiseMatrix = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
+			selectedMeanMatrix = AqwamTensorLibrary:applyFunction(math.exp, selectedMeanMatrix)
+
+			selectedStandardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.exp, selectedStandardDeviationMatrix)
+
+		end
+
+		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(selectedMeanMatrix)
+
+		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray)
 
 		local generatedFeatureMatrixPart1 = AqwamTensorLibrary:multiply(selectedStandardDeviationMatrix, noiseMatrix)
 

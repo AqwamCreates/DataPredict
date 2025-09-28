@@ -428,14 +428,18 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 		local useLogProbabilities = NewMultinomialNaiveBayesModel.useLogProbabilities
 
 		local ModelParameters = NewMultinomialNaiveBayesModel.ModelParameters
+		
+		local featureProbabilityMatrix = ModelParameters[1]
+		
+		local priorProbabilityMatrix = ModelParameters[2]
 
 		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, #ClassesList}, 0)
 
 		for classIndex, classValue in ipairs(ClassesList) do
 
-			local featureProbabilityVector = {ModelParameters[1][classIndex]}
+			local featureProbabilityVector = {featureProbabilityMatrix[classIndex]}
 
-			local priorProbabilityVector = {ModelParameters[2][classIndex]}
+			local priorProbabilityVector = {priorProbabilityMatrix[classIndex]}
 
 			for i = 1, numberOfData, 1 do
 

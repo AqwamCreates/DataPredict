@@ -172,6 +172,8 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 
 	local priorProbabilityVector = {}
 	
+	local numberOfDataPointVector = {}
+	
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 
 		numberOfSubData = #extractedFeatureMatrix
@@ -209,10 +211,12 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 		complementFeatureProbabilityMatrix[classIndex] = complementFeatureProbabilityVector[1]
 
 		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
-
+		
+		numberOfDataPointVector[classIndex] = {numberOfSubData}
+		
 	end
 	
-	return complementFeatureProbabilityMatrix, priorProbabilityVector
+	return complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector
 	
 end
 

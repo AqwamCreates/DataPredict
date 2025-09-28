@@ -262,13 +262,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		if (not complementNaiveBayesFunction) then error("Unknown mode.") end
 
-		local ClassesList = NewComplementNaiveBayesModel.ClassesList
-
-		local numberOfClasses = #ClassesList
-
 		local numberOfData = #featureMatrix
-
-		local numberOfFeatures = #featureMatrix[1]
 		
 		local extractedFeatureMatrixTable = NewComplementNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
 		

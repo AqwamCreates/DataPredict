@@ -382,8 +382,6 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		
 		local numberOfFeatures = #featureProbabilityMatrix[1]
 		
-		local binaryProbabilityFunction = function(noiseProbability, featureProbability) return ((noiseProbability < featureProbability) and 1) or 0 end
-		
 		local selectedFeatureProbabiltyMatrix = {}
 
 		local generatedFeatureMatrix = {}
@@ -407,6 +405,8 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		end
 		
 		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures})
+		
+		local binaryProbabilityFunction = function(noiseProbability, featureProbability) return ((noiseProbability < featureProbability) and 1) or 0 end
 		
 		local generatedFeatureMatrix = AqwamTensorLibrary:applyFunction(binaryProbabilityFunction, noiseMatrix, selectedFeatureProbabiltyMatrix)
 

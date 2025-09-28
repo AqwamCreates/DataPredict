@@ -106,4 +106,4 @@ MultinomialNaiveBayes:setClassesList(ClassesList: [])
 
 ## Inherited From
 
-* [BaseModel](BaseModel.md)
+* [NaiveBayesBaseModel](NaiveBayesBaseModel.md)

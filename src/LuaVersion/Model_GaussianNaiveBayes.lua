@@ -98,6 +98,24 @@ end
 
 function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
+	local useLogProbabilities = self.useLogProbabilities
+	
+	local ClassesList = self.ClassesList
+	
+	local ModelParameters = self.ModelParameters
+	
+	local meanMatrix = ModelParameters[1]
+
+	local standardDeviationMatrix = ModelParameters[2]
+
+	local priorProbabilityVector = ModelParameters[3]
+	
+	local numberOfData = #labelVector
+	
+	local numberOfClasses = #ClassesList
+
+	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses})
+	
 	local cost
 
 	local featureVector
@@ -106,7 +124,7 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local standardDeviationVector
 
-	local priorProbabilityVector
+	local priorProbabilityValue
 
 	local posteriorProbability
 
@@ -115,16 +133,6 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	local classIndex
 
 	local label
-
-	local numberOfData = #labelVector
-
-	local useLogProbabilities = self.useLogProbabilities
-	
-	local ModelParameters = self.ModelParameters
-	
-	local ClassesList = self.ClassesList
-
-	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, #labelVector[1]})
 	
 	for data, unwrappedFeatureVector in ipairs(featureMatrix) do
 		
@@ -134,13 +142,13 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 		classIndex = table.find(ClassesList, label)
 
-		meanVector = {ModelParameters[1][classIndex]}
+		meanVector = {meanMatrix[classIndex]}
 
-		standardDeviationVector = {ModelParameters[2][classIndex]}
+		standardDeviationVector = {standardDeviationMatrix[classIndex]}
 
-		priorProbabilityVector = {ModelParameters[3][classIndex]}
+		priorProbabilityValue = {priorProbabilityVector[classIndex]}
 
-		posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityVector)
+		posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityValue)
 		
 	end
 

@@ -40,15 +40,29 @@ local defaultMode = "Hybrid"
 
 local function factorial(n)
 	
-	if (n > 1) then
+	local value = 1
+	
+	for i = 2, n, 1 do
 		
-		return factorial(n - 1)
-		
-	else
-		
-		return 1
+		value = value * i
 		
 	end
+	
+	return value
+	
+end
+
+local function logFactorial(n)
+	
+	local value = 0
+
+	for i = 2, n, 1 do
+
+		value = value + math.log(i)
+
+	end
+	
+	return value
 	
 end
 
@@ -94,34 +108,44 @@ local function calculateMultinomialProbability(useLogProbabilities, featureVecto
 	end
 
 	for column = 1, #featureProbabilityVector[1], 1 do
-
+		
 		if (useLogProbabilities) then
-
-			multinomialProbabilityPart1 = multinomialProbabilityPart1 + featureProbabilityVector[1][column]
-
+			
+			multinomialProbabilityPart1 = multinomialProbabilityPart1 + featureVector[1][column] * featureProbabilityVector[1][column]
+			
 		else
-
-			multinomialProbabilityPart1 = multinomialProbabilityPart1 * featureProbabilityVector[1][column]
-
+			
+			multinomialProbabilityPart1 = multinomialProbabilityPart1 * (featureProbabilityVector[1][column] ^ featureVector[1][column])
+			
 		end
-
+		
 	end
 	
 	local totalFeatureCount = AqwamTensorLibrary:sum(featureVector)
 	
-	local factorialSumFeatureCount = factorial(totalFeatureCount)
+	local logFactorialSumFeatureCount = logFactorial(totalFeatureCount)
 	
-	local factorialFeatureVector = AqwamTensorLibrary:applyFunction(factorial, featureVector)
+	local logFactorialFeatureVector = AqwamTensorLibrary:applyFunction(logFactorial, featureVector)
 	
-	local multipliedFactorialFeatureValue = 1
+	local sumLogFactorialFeatureValue = 0
 	
-	for column = 1, #factorialFeatureVector[1], 1 do
+	for column = 1, #logFactorialFeatureVector[1], 1 do
 		
-		multipliedFactorialFeatureValue = multipliedFactorialFeatureValue * factorialFeatureVector[1][column]
+		sumLogFactorialFeatureValue = sumLogFactorialFeatureValue + logFactorialFeatureVector[1][column]
 		
 	end
 	
-	local multinomialProbabilityPart2 = factorialSumFeatureCount / multipliedFactorialFeatureValue
+	local multinomialProbabilityPart2
+	
+	if (useLogProbabilities) then
+		
+		multinomialProbabilityPart2 = logFactorialSumFeatureCount - sumLogFactorialFeatureValue
+		
+	else
+		
+		multinomialProbabilityPart2 = math.exp(logFactorialSumFeatureCount - sumLogFactorialFeatureValue)
+		
+	end
 	
 	local multinomialProbability = multinomialProbabilityPart1 * multinomialProbabilityPart2
 

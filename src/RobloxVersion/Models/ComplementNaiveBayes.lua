@@ -218,7 +218,7 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 	
 end
 
-local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
 	
 	
 	
@@ -252,7 +252,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		local ModelParameters = NewComplementNaiveBayesModel.ModelParameters or {}
 
-		local featureProbabilityMatrix = ModelParameters[1]
+		local complementFeatureProbabilityMatrix = ModelParameters[1]
 
 		local priorProbabilityVector = ModelParameters[2]
 
@@ -260,7 +260,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		if (mode == "Hybrid") then
 
-			mode = (featureProbabilityMatrix and priorProbabilityVector and numberOfDataPointVector and "Sequential") or "Batch"		
+			mode = (complementFeatureProbabilityMatrix and priorProbabilityVector and numberOfDataPointVector and "Sequential") or "Batch"		
 
 		end
 		
@@ -282,7 +282,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 			local oneValue = (useLogProbabilities and 0) or 1
 
-			featureProbabilityMatrix = featureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
+			complementFeatureProbabilityMatrix = complementFeatureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
 
 			priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
 
@@ -292,23 +292,23 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 		if (useLogProbabilities) then
 
-			if (featureProbabilityMatrix) then featureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, featureProbabilityMatrix) end
+			if (complementFeatureProbabilityMatrix) then complementFeatureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, complementFeatureProbabilityMatrix) end
 
 			if (priorProbabilityVector) then priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityVector) end
 
 		end
 		
-		featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector = complementNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+		complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector = complementNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
 		
 		if (useLogProbabilities) then
 
-			featureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, featureProbabilityMatrix)
+			complementFeatureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, complementFeatureProbabilityMatrix)
 
 			priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityVector)
 
 		end
 
-		NewComplementNaiveBayesModel.ModelParameters = {featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector}
+		NewComplementNaiveBayesModel.ModelParameters = {complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector}
 
 		local cost = NewComplementNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 

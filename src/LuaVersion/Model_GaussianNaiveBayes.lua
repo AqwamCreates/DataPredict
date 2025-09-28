@@ -426,7 +426,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		
 		if (noiseMatrix) then
 
-			if (#labelVector ~= #noiseMatrix) then error("The label vector and the label matrix does not contain the same number of rows.") end
+			if (#labelVector ~= #noiseMatrix) then error("The label vector and the noise matrix does not contain the same number of rows.") end
 
 		end
 		

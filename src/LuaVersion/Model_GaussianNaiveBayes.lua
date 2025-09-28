@@ -112,7 +112,7 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	
 	local numberOfData = #labelVector
 
-	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
+	local posteriorProbabilityVector = {}
 
 	local featureVector
 
@@ -121,6 +121,8 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	local standardDeviationVector
 
 	local priorProbabilityValue
+	
+	local posteriorProbabilityValue
 
 	local classIndex
 
@@ -142,9 +144,15 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 			priorProbabilityValue = {priorProbabilityVector[classIndex]}
 
-			posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityValue)
+			posteriorProbabilityValue = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityValue)
+			
+		else
+			
+			posteriorProbabilityValue = 0
 			
 		end
+		
+		posteriorProbabilityVector[data] = {posteriorProbabilityValue}
 		
 	end
 

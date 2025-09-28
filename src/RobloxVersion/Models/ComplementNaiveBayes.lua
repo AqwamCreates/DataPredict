@@ -354,9 +354,61 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 	end)
 	
-	NewComplementNaiveBayesModel:setGenerateFunction(function(labelVector)
+	NewComplementNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
 		
+		local numberOfData = #labelVector
 		
+		if (noiseMatrix) then
+
+			if (numberOfData ~= #noiseMatrix) then error("The label vector and the total noise matrix does not contain the same number of rows.") end
+
+		end
+		
+		local ClassesList = NewComplementNaiveBayesModel.ClassesList
+		
+		local useLogProbabilities = NewComplementNaiveBayesModel.useLogProbabilities
+		
+		local ModelParameters = NewComplementNaiveBayesModel.ModelParameters
+		
+		local complementFeatureProbabilityMatrix = ModelParameters[1]
+		
+		local numberOfFeatures = #complementFeatureProbabilityMatrix[1]
+		
+		local selectedComplementFeatureProbabiltyMatrix = {}
+		
+		if (useLogProbabilities) then
+			
+			complementFeatureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, complementFeatureProbabilityMatrix)
+			
+		end
+		
+		for data, unwrappedLabelVector in ipairs(labelVector) do
+
+			local label = unwrappedLabelVector[1]
+
+			local classIndex = table.find(ClassesList, label)
+
+			if (classIndex) then
+
+				selectedComplementFeatureProbabiltyMatrix[data] = complementFeatureProbabilityMatrix[classIndex]
+
+			else
+
+				selectedComplementFeatureProbabiltyMatrix[data] = table.create(numberOfFeatures, 0)
+
+			end
+
+		end
+		
+		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures})
+		
+		local selectedFeatureProbabiltyMatrix = AqwamTensorLibrary:applyFunction(function(p) return 1 - p end, selectedComplementFeatureProbabiltyMatrix)
+
+		local binaryProbabilityFunction = function(noiseProbability, featureProbability) return ((noiseProbability < featureProbability) and 1) or 0 end
+		
+		local generatedFeatureMatrix = AqwamTensorLibrary:applyFunction(binaryProbabilityFunction, noiseMatrix, selectedFeatureProbabiltyMatrix)
+
+		return generatedFeatureMatrix
 		
 	end)
 

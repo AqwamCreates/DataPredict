@@ -479,7 +479,7 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 			
 			local classIndex = table.find(ClassesList, label)
 			
-			if classIndex then
+			if (classIndex) then
 				
 				local featureProbabiltyArray = featureProbabiltyMatrix[classIndex]
 				

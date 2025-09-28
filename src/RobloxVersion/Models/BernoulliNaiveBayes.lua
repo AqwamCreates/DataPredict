@@ -388,6 +388,12 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 		local generatedFeatureMatrix = {}
 		
+		if (useLogProbabilities) then
+
+			featureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, featureProbabilityMatrix)
+
+		end
+		
 		for data, unwrappedLabelVector in ipairs(labelVector) do
 
 			local label = unwrappedLabelVector[1]

@@ -218,7 +218,7 @@ local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, number
 
 		newFeatureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
 
-		newNumberOfDataPointVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
+		newPriorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
 
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 

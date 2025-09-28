@@ -174,6 +174,24 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 end
 
 function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
+	
+	local useLogProbabilities = self.useLogProbabilities
+
+	local ClassesList = self.ClassesList
+
+	local ModelParameters = self.ModelParameters
+	
+	local featureProbabilityMatrix = ModelParameters[1]
+
+	local priorProbabilityVector = ModelParameters[2]
+	
+	local numberOfData = #labelVector
+	
+	local numberOfClasses = #ClassesList
+
+	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses})
+	
+	local initialProbability = (useLogProbabilities and 0) or 1
 
 	local cost
 
@@ -181,7 +199,7 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local featureProbabilityVector
 
-	local priorProbabilityVector
+	local priorProbabilityValue
 
 	local posteriorProbability
 
@@ -195,18 +213,6 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local label
 
-	local numberOfData = #labelVector
-
-	local useLogProbabilities = self.useLogProbabilities
-
-	local ModelParameters = self.ModelParameters
-
-	local ClassesList = self.ClassesList
-
-	local initialProbability = (useLogProbabilities and 0) or 1
-
-	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, #labelVector[1]})
-
 	for data, unwrappedFeatureVector in ipairs(featureMatrix) do
 
 		featureVector = {unwrappedFeatureVector}
@@ -215,11 +221,11 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 		classIndex = table.find(ClassesList, label)
 
-		featureProbabilityVector = {ModelParameters[1][classIndex]}
+		featureProbabilityVector = {featureProbabilityMatrix[classIndex]}
 
-		priorProbabilityVector = {ModelParameters[2][classIndex]}
+		priorProbabilityValue = {priorProbabilityVector[classIndex]}
 
-		posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
+		posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityValue)
 
 	end
 

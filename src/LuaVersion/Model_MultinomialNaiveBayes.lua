@@ -473,6 +473,8 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 		
 		local featureProbabiltyMatrix = ModelParameters[1]
 		
+		local numberOfFeatures = #featureProbabiltyMatrix[1]
+		
 		local generatedFeatureMatrix = {}
 		
 		totalCountVector = totalCountVector or AqwamTensorLibrary:createTensor({numberOfData, 1}, 1)
@@ -490,6 +492,10 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 				local totalCount = totalCountVector[data][1]
 				
 				generatedFeatureMatrix[data] = sampleMultinomial(featureProbabiltyArray, totalCount)
+				
+			else
+				
+				generatedFeatureMatrix[data] = table.create(numberOfFeatures, 0)
 				
 			end
 			

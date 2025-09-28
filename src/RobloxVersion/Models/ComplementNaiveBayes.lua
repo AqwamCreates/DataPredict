@@ -354,7 +354,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 	end)
 	
-	NewComplementNaiveBayesModel:setGenerateFunction(function(labelVector, returnOriginalOutput)
+	NewComplementNaiveBayesModel:setGenerateFunction(function(labelVector)
 		
 		
 		

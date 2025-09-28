@@ -472,6 +472,8 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 		end
 
 		local ClassesList = NewMultinomialNaiveBayesModel.ClassesList
+		
+		local useLogProbabilities = NewMultinomialNaiveBayesModel.useLogProbabilities
 
 		local ModelParameters = NewMultinomialNaiveBayesModel.ModelParameters
 		
@@ -480,6 +482,12 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 		local numberOfFeatures = #featureProbabiltyMatrix[1]
 		
 		local generatedFeatureMatrix = {}
+		
+		if (useLogProbabilities) then
+
+			featureProbabiltyMatrix = AqwamTensorLibrary:applyFunction(math.exp, featureProbabiltyMatrix)
+
+		end
 		
 		totalCountVector = totalCountVector or AqwamTensorLibrary:createTensor({numberOfData, 1}, 1)
 

@@ -184,8 +184,6 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	local featureProbabilityMatrix = ModelParameters[1]
 
 	local priorProbabilityVector = ModelParameters[2]
-	
-	local numberOfData = #featureMatrix
 
 	local posteriorProbabilityVector = {}
 

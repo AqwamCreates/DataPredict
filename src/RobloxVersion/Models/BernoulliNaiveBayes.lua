@@ -326,8 +326,6 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 	
 	NewBernoulliNaiveBayes:setPredictFunction(function(featureMatrix, returnOriginalOutput)
 
-		local numberOfData = #featureMatrix
-
 		local ClassesList = NewBernoulliNaiveBayes.ClassesList
 
 		local useLogProbabilities = NewBernoulliNaiveBayes.useLogProbabilities
@@ -337,8 +335,12 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		local featureProbabilityMatrix = ModelParameters[1]
 		
 		local priorProbabilityVector = ModelParameters[2]
+		
+		local numberOfData = #featureMatrix
+		
+		local numberOfClasses = #ClassesList
 
-		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, #ClassesList}, 0)
+		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
 
 		for classIndex, classValue in ipairs(ClassesList) do
 

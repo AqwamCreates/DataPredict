@@ -91,38 +91,30 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 end
 
 function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
+	
+	local useLogProbabilities = self.useLogProbabilities
 
-	local cost
+	local ClassesList = self.ClassesList
+
+	local ModelParameters = self.ModelParameters
+	
+	local featureProbabilityMatrix = ModelParameters[1]
+
+	local priorProbabilityVector = ModelParameters[2]
+
+	local posteriorProbabilityVector = {}
 
 	local featureVector
 
 	local featureProbabilityVector
 
-	local priorProbabilityVector
-
-	local posteriorProbability
-
-	local probability
-
-	local highestProbability
-
-	local predictedClass
+	local priorProbabilityValue
+	
+	local posteriorProbabilityValue
 
 	local classIndex
 
 	local label
-
-	local numberOfData = #labelVector
-
-	local useLogProbabilities = self.useLogProbabilities
-
-	local ModelParameters = self.ModelParameters
-
-	local ClassesList = self.ClassesList
-
-	local initialProbability = (useLogProbabilities and 0) or 1
-
-	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, #labelVector[1]})
 
 	for data, unwrappedFeatureVector in ipairs(featureMatrix) do
 
@@ -131,16 +123,26 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 		label = labelVector[data][1]
 
 		classIndex = table.find(ClassesList, label)
+		
+		if (classIndex) then
+			
+			featureProbabilityVector = {featureProbabilityMatrix[classIndex]}
 
-		featureProbabilityVector = {ModelParameters[1][classIndex]}
+			priorProbabilityValue = {priorProbabilityVector[classIndex]}
+			
+			posteriorProbabilityValue = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityValue)
+			
+		else
+			
+			posteriorProbabilityValue = 0
+			
+		end
 
-		priorProbabilityVector = {ModelParameters[2][classIndex]}
-
-		posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
+		posteriorProbabilityVector[data] = {posteriorProbabilityValue}
 
 	end
 
-	cost = self:logLoss(labelVector, posteriorProbabilityVector)
+	local cost = self:logLoss(labelVector, posteriorProbabilityVector)
 
 	return cost
 

@@ -95,6 +95,8 @@
 
 [BaseModel](Models/BaseModel.md)
 
+[NaiveBayesBaseModel](Models/NaiveBayesBaseModel.md)
+
 [GradientMethodBaseModel](Models/GradientMethodBaseModel.md)
 
 [IterativeMethodBaseModel](Models/IterativeMethodBaseModel.md)

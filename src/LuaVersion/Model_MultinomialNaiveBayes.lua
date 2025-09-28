@@ -325,7 +325,7 @@ local function sequentialMultinomialNaiveBayes(extractedFeatureMatrixTable, numb
 	
 end
 
-local multinomialBayesFunctionList = {
+local multinomialNaiveBayesFunctionList = {
 	
 	["Batch"] = batchMultinomialNaiveBayes,
 	
@@ -367,9 +367,9 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
-		local multinomialBayesFunction = multinomialBayesFunctionList[mode]
+		local multinomialNaiveBayesFunction = multinomialNaiveBayesFunctionList[mode]
 
-		if (not multinomialBayesFunction) then error("Unknown mode.") end
+		if (not multinomialNaiveBayesFunction) then error("Unknown mode.") end
 		
 		if (mode == "Sequential") then
 
@@ -401,7 +401,7 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
-		featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector = multinomialBayesFunction(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
+		featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector = multinomialNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
 		
 		if (useLogProbabilities) then
 

@@ -186,10 +186,8 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	local priorProbabilityVector = ModelParameters[2]
 	
 	local numberOfData = #labelVector
-	
-	local numberOfClasses = #ClassesList
 
-	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses})
+	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
 	
 	local initialProbability = (useLogProbabilities and 0) or 1
 
@@ -220,12 +218,16 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 		label = labelVector[data][1]
 
 		classIndex = table.find(ClassesList, label)
+		
+		if (classIndex) then
+			
+			featureProbabilityVector = {featureProbabilityMatrix[classIndex]}
 
-		featureProbabilityVector = {featureProbabilityMatrix[classIndex]}
+			priorProbabilityValue = {priorProbabilityVector[classIndex]}
 
-		priorProbabilityValue = {priorProbabilityVector[classIndex]}
-
-		posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityValue)
+			posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityValue)
+			
+		end
 
 	end
 

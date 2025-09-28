@@ -52,6 +52,37 @@ local function factorial(n)
 	
 end
 
+local function sampleMultinomial(probabilityArray, totalCount)
+	
+	local numberOfProbabilities = #probabilityArray
+	
+	local remainingCount = totalCount
+	
+	local featureArray = {}
+	
+	for i, p in ipairs(probabilityArray) do
+		
+		local count = math.floor(p * totalCount + 0.5)
+		
+		featureArray[i] = count
+		
+		remainingCount = remainingCount - count
+		
+	end
+
+	while (remainingCount > 0) do
+		
+		local idx = math.random(1, numberOfProbabilities)
+		
+		featureArray[idx] = featureArray[idx] + 1
+		
+		remainingCount = remainingCount - 1
+		
+	end
+	
+	return featureArray
+end
+
 local function calculateMultinomialProbability(useLogProbabilities, featureVector, featureProbabilityVector)
 
 	local multinomialProbabilityPart1 = (useLogProbabilities and 0) or 1
@@ -178,7 +209,9 @@ local function batchMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfD
 	
 	local featureProbabilityMatrix = {}
 
-	local priorProbabilityMatrix = {}
+	local priorProbabilityVector = {}
+	
+	local featureCountMatrix = {}
 
 	local numberOfDataPointVector = {}
 
@@ -204,43 +237,67 @@ local function batchMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfD
 
 		featureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
 
-		priorProbabilityMatrix[classIndex] = {(numberOfSubData / numberOfData)}
+		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
+		
+		featureCountMatrix[classIndex] = featureCountVector[1]
 		
 		numberOfDataPointVector[classIndex] = {numberOfSubData}
 		
 	end
 	
-	return featureProbabilityMatrix, priorProbabilityMatrix, numberOfDataPointVector
+	return featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector
 	
 end
 
-local function sequentialMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityMatrix, numberOfDataPointVector)
+local function sequentialMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
 	
 	local newFeatureProbabilityMatrix = {}
 	
-	local newPriorProbabilityMatrix = {}
+	local newPriorProbabilityVector = {}
+	
+	local newFeatureCountMatrix = {}
 	
 	local newNumberOfDataPointVector = {}
+	
+	local featureCountVector
+	
+	local oldFeatureCountVector
+	
+	local totalFeatureCountVector
+	
+	local sumFeatureCount
 	
 	local numberOfOldSubData
 	
 	local numberOfSubData
 	
-	local totalNumberOfDataPoint = AqwamTensorLibrary:sum(numberOfDataPointVector)
+	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
 	
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+		
+		featureCountVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
+		
+		oldFeatureCountVector = {featureCountMatrix[classIndex]}
+		
+		totalFeatureCountVector = AqwamTensorLibrary:add(oldFeatureCountVector, featureCountVector)
+		
+		sumFeatureCount = AqwamTensorLibrary:sum(totalFeatureCountVector)
+		
+		newFeatureProbabilityMatrix[classIndex] = AqwamTensorLibrary:divide(totalFeatureCountVector, sumFeatureCount)[1]
 		
 		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
 
 		numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
 		
-		newPriorProbabilityMatrix[classIndex] = {(numberOfSubData / totalNumberOfDataPoint)}
+		newPriorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
+		
+		newFeatureCountMatrix[classIndex] = totalFeatureCountVector[1]
 
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 		
 	end
 	
-	return newFeatureProbabilityMatrix, newPriorProbabilityMatrix, newNumberOfDataPointVector
+	return newFeatureProbabilityMatrix, newPriorProbabilityVector, newFeatureCountMatrix, newNumberOfDataPointVector
 	
 end
 
@@ -274,13 +331,15 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 		local featureProbabilityMatrix = ModelParameters[1]
 
-		local priorProbabilityMatrix = ModelParameters[2]
+		local priorProbabilityVector = ModelParameters[2]
 		
-		local numberOfDataPointVector = ModelParameters[3]
+		local featureCountMatrix = ModelParameters[3]
+		
+		local numberOfDataPointVector = ModelParameters[4]
 
 		if (mode == "Hybrid") then
 
-			mode = (featureProbabilityMatrix and priorProbabilityMatrix and numberOfDataPointVector and "Sequential") or "Batch"		
+			mode = (featureProbabilityMatrix and priorProbabilityVector and featureCountMatrix and numberOfDataPointVector and "Sequential") or "Batch"		
 
 		end
 		
@@ -300,7 +359,7 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 			featureProbabilityMatrix = featureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
 
-			priorProbabilityMatrix = priorProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
+			priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
 
 			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
 
@@ -314,21 +373,21 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 			if (featureProbabilityMatrix) then featureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, featureProbabilityMatrix) end
 
-			if (priorProbabilityMatrix) then priorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityMatrix) end
+			if (priorProbabilityVector) then priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityVector) end
 
 		end
 		
-		featureProbabilityMatrix, priorProbabilityMatrix, numberOfDataPointVector = multinomialBayesFunction(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityMatrix, numberOfDataPointVector)
+		featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector = multinomialBayesFunction(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
 		
 		if (useLogProbabilities) then
 
 			featureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, featureProbabilityMatrix)
 
-			priorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityMatrix)
+			priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityVector)
 
 		end
 
-		NewMultinomialNaiveBayesModel.ModelParameters = {featureProbabilityMatrix, priorProbabilityMatrix, numberOfDataPointVector}
+		NewMultinomialNaiveBayesModel.ModelParameters = {featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector}
 
 		local cost = NewMultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
@@ -372,39 +431,37 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 		
 	end)
 	
-	NewMultinomialNaiveBayesModel:setGenerateFunction(function(labelVector)
+	NewMultinomialNaiveBayesModel:setGenerateFunction(function(labelVector, totalCountVector)
+		
+		if (totalCountVector) then
+
+			if (#labelVector ~= #totalCountVector) then error("The label vector and the total count vector does not contain the same number of rows.") end
+
+		end
 
 		local ClassesList = NewMultinomialNaiveBayesModel.ClassesList
 
 		local ModelParameters = NewMultinomialNaiveBayesModel.ModelParameters
-
-		local selectedFeatureProbabilityMatrix = {}
-
-		local selectedPriorProbabilityMatrix = {}
+		
+		local generatedFeatureMatrix = {}
 
 		for data, unwrappedLabelVector in ipairs(labelVector) do
-
+			
 			local label = unwrappedLabelVector[1]
-
+			
 			local classIndex = table.find(ClassesList, label)
-
-			if (classIndex) then
-
-				selectedFeatureProbabilityMatrix[data] = ModelParameters[1][classIndex]
-
-				selectedPriorProbabilityMatrix[data] = ModelParameters[2][classIndex]
-
+			
+			if classIndex then
+				
+				local featureProbabiltyArray = ModelParameters[1][classIndex]
+				
+				local totalCount = totalCountVector[classIndex][1]
+				
+				generatedFeatureMatrix[data] = sampleMultinomial(featureProbabiltyArray, totalCount)
+				
 			end
-
+			
 		end
-
-		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(selectedFeatureProbabilityMatrix)
-
-		local noiseMatrix = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
-
-		local generatedFeatureMatrixPart1 = AqwamTensorLibrary:multiply(selectedStandardDeviationMatrix, noiseMatrix)
-
-		local generatedFeatureMatrix = AqwamTensorLibrary:add(selectedMeanMatrix, generatedFeatureMatrixPart1)
 
 		return generatedFeatureMatrix
 

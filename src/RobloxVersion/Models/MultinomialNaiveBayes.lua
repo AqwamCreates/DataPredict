@@ -455,7 +455,7 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 				
 				local featureProbabiltyArray = ModelParameters[1][classIndex]
 				
-				local totalCount = totalCountVector[classIndex][1]
+				local totalCount = totalCountVector[data][1]
 				
 				generatedFeatureMatrix[data] = sampleMultinomial(featureProbabiltyArray, totalCount)
 				

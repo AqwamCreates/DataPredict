@@ -376,7 +376,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 		local numberOfFeatures = #complementFeatureProbabilityMatrix[1]
 		
-		local selectedComplementFeatureProbabiltyMatrix = {}
+		local selectedComplementFeatureProbabilityMatrix = {}
 		
 		if (useLogProbabilities) then
 			
@@ -392,11 +392,11 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 			if (classIndex) then
 
-				selectedComplementFeatureProbabiltyMatrix[data] = complementFeatureProbabilityMatrix[classIndex]
+				selectedComplementFeatureProbabilityMatrix[data] = complementFeatureProbabilityMatrix[classIndex]
 
 			else
 
-				selectedComplementFeatureProbabiltyMatrix[data] = table.create(numberOfFeatures, 0)
+				selectedComplementFeatureProbabilityMatrix[data] = table.create(numberOfFeatures, 0)
 
 			end
 
@@ -404,7 +404,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures})
 		
-		local selectedFeatureProbabiltyMatrix = AqwamTensorLibrary:subtract(1, selectedComplementFeatureProbabiltyMatrix)
+		local selectedFeatureProbabiltyMatrix = AqwamTensorLibrary:subtract(1, selectedComplementFeatureProbabilityMatrix)
 
 		local binaryProbabilityFunction = function(noiseProbability, featureProbability) return ((noiseProbability < featureProbability) and 1) or 0 end
 		

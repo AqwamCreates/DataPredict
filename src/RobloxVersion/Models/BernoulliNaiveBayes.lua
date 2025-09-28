@@ -323,8 +323,6 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 	end)
 	
 	NewBernoulliNaiveBayes:setPredictFunction(function(featureMatrix, returnOriginalOutput)
-		
-		local finalProbabilityVector
 
 		local numberOfData = #featureMatrix
 
@@ -375,11 +373,15 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		local useLogProbabilities = NewBernoulliNaiveBayes.useLogProbabilities
 
 		local ModelParameters = NewBernoulliNaiveBayes.ModelParameters
+		
+		local featureProbabilityMatrix = ModelParameters[1]
+		
+		local numberOfFeatures = #featureProbabilityMatrix[1]
+		
+		local binaryProbabilityFunction = function(probability) return ((math.random() < probability) and 1) or 0 end
 
-		local selectedMeanMatrix = {}
-
-		local selectedStandardDeviationMatrix = {}
-
+		local generatedFeatureMatrix = {}
+		
 		for data, unwrappedLabelVector in ipairs(labelVector) do
 
 			local label = unwrappedLabelVector[1]
@@ -387,30 +389,24 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 			local classIndex = table.find(ClassesList, label)
 
 			if (classIndex) then
+				
+				local probabilityArray = featureProbabilityMatrix[classIndex]
 
-				selectedMeanMatrix[data] = ModelParameters[1][classIndex]
+				generatedFeatureMatrix[data] = {}
 
-				selectedStandardDeviationMatrix[data] = ModelParameters[2][classIndex]
+				for feature, probability in ipairs(probabilityArray) do
+					
+					generatedFeatureMatrix[data][feature] = binaryProbabilityFunction(probability)
+					
+				end
+				
+			else
+				
+				generatedFeatureMatrix[data] = table.create(numberOfFeatures, 0)
 
 			end
 
 		end
-
-		if (useLogProbabilities) then
-
-			selectedMeanMatrix = AqwamTensorLibrary:applyFunction(math.exp, selectedMeanMatrix)
-
-			selectedStandardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.exp, selectedStandardDeviationMatrix)
-
-		end
-
-		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(selectedMeanMatrix)
-
-		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray)
-
-		local generatedFeatureMatrixPart1 = AqwamTensorLibrary:multiply(selectedStandardDeviationMatrix, noiseMatrix)
-
-		local generatedFeatureMatrix = AqwamTensorLibrary:add(selectedMeanMatrix, generatedFeatureMatrixPart1)
 
 		return generatedFeatureMatrix
 

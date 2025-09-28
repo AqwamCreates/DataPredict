@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local NaiveBayesBaseModel = require("Model_NaiveBayesBaseModel")
+local NaiveBayesBaseModel = require("Model_NaiveBayesBaseModel')
 
 BernoulliNaiveBayesModel = {}
 
@@ -385,8 +385,6 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		local numberOfFeatures = #featureProbabilityMatrix[1]
 		
 		local selectedFeatureProbabiltyMatrix = {}
-
-		local generatedFeatureMatrix = {}
 		
 		if (useLogProbabilities) then
 

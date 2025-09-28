@@ -423,8 +423,6 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 	
 	NewMultinomialNaiveBayesModel:setPredictFunction(function(featureMatrix, returnOriginalOutput)
 
-		local numberOfData = #featureMatrix
-
 		local ClassesList = NewMultinomialNaiveBayesModel.ClassesList
 
 		local useLogProbabilities = NewMultinomialNaiveBayesModel.useLogProbabilities
@@ -434,8 +432,12 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 		local featureProbabilityMatrix = ModelParameters[1]
 		
 		local priorProbabilityMatrix = ModelParameters[2]
+		
+		local numberOfData = #featureMatrix
+		
+		local numberOfClasses = #ClassesList
 
-		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, #ClassesList}, 0)
+		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
 
 		for classIndex, classValue in ipairs(ClassesList) do
 

@@ -184,11 +184,11 @@ local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, number
 
 	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
 
-	local featureProbabilityMatrix = {}
+	local newFeatureProbabilityMatrix = {}
 
-	local priorProbabilityVector = {}
+	local newPriorProbabilityVector = {}
 
-	local numberOfDataPointVector = {}
+	local newNumberOfDataPointVector = {}
 	
 	local numberOfOldSubData
 
@@ -216,15 +216,15 @@ local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, number
 
 		featureProbabilityVector = AqwamTensorLibrary:mean(sumVector, 1)
 
-		featureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
+		newFeatureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
 
-		priorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
+		newNumberOfDataPointVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
 
-		numberOfDataPointVector[classIndex] = {numberOfSubData}
+		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 
 	end
 
-	return featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector
+	return newFeatureProbabilityMatrix, newNumberOfDataPointVector, newNumberOfDataPointVector
 
 end
 

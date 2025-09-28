@@ -150,7 +150,11 @@ end
 
 local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData)
 	
-	local cost
+	local complementFeatureProbabilityMatrix = {}
+
+	local priorProbabilityVector = {}
+
+	local numberOfDataPointVector = {}
 
 	local extractedFeatureMatrix
 
@@ -168,12 +172,6 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 
 	local totalNumberOfComplementSubData
 
-	local complementFeatureProbabilityMatrix = {}
-
-	local priorProbabilityVector = {}
-	
-	local numberOfDataPointVector = {}
-	
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 
 		numberOfSubData = #extractedFeatureMatrix
@@ -220,9 +218,17 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 	
 end
 
+local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData)
+	
+	
+	
+end
+
 local complementNaiveBayesFunctionList = {
 	
-	["Batch"] = batchComplementNaiveBayes
+	["Batch"] = batchComplementNaiveBayes,
+	
+	["Sequential"] = sequentialComplementNaiveBayes,
 	
 }
 

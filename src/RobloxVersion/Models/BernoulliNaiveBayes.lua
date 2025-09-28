@@ -214,7 +214,7 @@ local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, number
 
 		sumVector = AqwamTensorLibrary:add(sumVector, subSumVector)
 
-		featureProbabilityVector = AqwamTensorLibrary:mean(sumVector, 1)
+		featureProbabilityVector = AqwamTensorLibrary:divide(sumVector, numberOfSubData)
 
 		newFeatureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
 

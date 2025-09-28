@@ -353,6 +353,12 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		return NewComplementNaiveBayesModel:getLabelFromOutputMatrix(posteriorProbabilityMatrix)
 		
 	end)
+	
+	NewComplementNaiveBayesModel:setGenerateFunction(function(labelVector, returnOriginalOutput)
+		
+		
+		
+	end)
 
 	return NewComplementNaiveBayesModel
 

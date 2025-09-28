@@ -477,15 +477,15 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 		local ModelParameters = NewMultinomialNaiveBayesModel.ModelParameters
 		
-		local featureProbabiltyMatrix = ModelParameters[1]
+		local featureProbabilityMatrix = ModelParameters[1]
 		
-		local numberOfFeatures = #featureProbabiltyMatrix[1]
+		local numberOfFeatures = #featureProbabilityMatrix[1]
 		
 		local generatedFeatureMatrix = {}
 		
 		if (useLogProbabilities) then
 
-			featureProbabiltyMatrix = AqwamTensorLibrary:applyFunction(math.exp, featureProbabiltyMatrix)
+			featureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, featureProbabilityMatrix)
 
 		end
 		
@@ -499,11 +499,11 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 			
 			if (classIndex) then
 				
-				local featureProbabiltyArray = featureProbabiltyMatrix[classIndex]
+				local featureProbabilityArray = featureProbabilityMatrix[classIndex]
 				
 				local totalCount = totalCountVector[data][1]
 				
-				generatedFeatureMatrix[data] = sampleMultinomial(featureProbabiltyArray, totalCount)
+				generatedFeatureMatrix[data] = sampleMultinomial(featureProbabilityArray, totalCount)
 				
 			else
 				

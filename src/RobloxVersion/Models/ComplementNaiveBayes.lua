@@ -247,7 +247,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 	NewComplementNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
 		
 		local mode = NewComplementNaiveBayesModel.mode
-
+		
 		local useLogProbabilities = NewComplementNaiveBayesModel.useLogProbabilities
 
 		local ModelParameters = NewComplementNaiveBayesModel.ModelParameters or {}
@@ -272,7 +272,33 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 		local extractedFeatureMatrixTable = NewComplementNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
 		
+		if (mode == "Sequential") then
+
+			local numberOfFeatures = #featureMatrix[1]
+
+			local numberOfClasses = #NewComplementNaiveBayesModel.ClassesList
+
+			local zeroValue = (useLogProbabilities and math.huge) or 0
+
+			local oneValue = (useLogProbabilities and 0) or 1
+
+			featureProbabilityMatrix = featureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
+
+			priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
+
+			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
+
+		end
+		
 		featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector = complementNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+		
+		if (useLogProbabilities) then
+
+			featureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, featureProbabilityMatrix)
+
+			priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityVector)
+
+		end
 
 		NewComplementNaiveBayesModel.ModelParameters = {featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector}
 
@@ -283,8 +309,6 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 	end)
 	
 	NewComplementNaiveBayesModel:setPredictFunction(function(featureMatrix, returnOriginalOutput)
-		
-		local finalProbabilityVector
 
 		local numberOfData = #featureMatrix
 

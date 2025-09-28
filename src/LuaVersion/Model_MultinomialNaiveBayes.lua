@@ -189,21 +189,11 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
 
-	local cost
-
 	local featureVector
 
 	local featureProbabilityVector
 
 	local priorProbabilityValue
-
-	local posteriorProbability
-
-	local probability
-
-	local highestProbability
-
-	local predictedClass
 
 	local classIndex
 
@@ -229,7 +219,7 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	end
 
-	cost = self:logLoss(labelVector, posteriorProbabilityVector)
+	local cost = self:logLoss(labelVector, posteriorProbabilityVector)
 
 	return cost
 

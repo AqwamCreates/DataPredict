@@ -158,7 +158,7 @@ local function batchGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData
 
 	local standardDeviationMatrix = {}
 
-	local priorProbabilityMatrix = {}
+	local priorProbabilityVector = {}
 	
 	local numberOfDataPointVector = {}
 	
@@ -180,17 +180,17 @@ local function batchGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData
 
 		standardDeviationMatrix[classIndex] = standardDeviationVector[1]
 
-		priorProbabilityMatrix[classIndex] = {(numberOfSubData / numberOfData)}
+		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
 		
-		numberOfDataPointVector[classIndex]= {numberOfSubData}
+		numberOfDataPointVector[classIndex] = {numberOfSubData}
 		
 	end
 	
-	return meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector
+	return meanMatrix, standardDeviationMatrix, priorProbabilityVector, numberOfDataPointVector
 	
 end
 
-local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)
+local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityVector, numberOfDataPointVector)
 	
 	local extractedFeatureMatrix
 	
@@ -232,7 +232,7 @@ local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberO
 	
 	local newStandardDeviationVector = {}
 	
-	local newPriorProbabilityMatrix = {}
+	local newPriorProbabilityVector = {}
 	
 	local newNumberOfDataPointVector = {}
 
@@ -274,13 +274,13 @@ local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberO
 
 		newStandardDeviationVector[classIndex] = newStandardDeviationVector[1]
 
-		newPriorProbabilityMatrix[classIndex] = {(numberOfSubData / totalNumberOfDataPoint)}
+		newPriorProbabilityVector[classIndex] = {(numberOfSubData / totalNumberOfDataPoint)}
 		
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 		
 	end
 	
-	return newMeanMatrix, newStandardDeviationVector, newPriorProbabilityMatrix, newNumberOfDataPointVector
+	return newMeanMatrix, newStandardDeviationVector, newPriorProbabilityVector, newNumberOfDataPointVector
 	
 end
 
@@ -316,13 +316,13 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		
 		local standardDeviationMatrix = ModelParameters[2]
 		
-		local priorProbabilityMatrix = ModelParameters[3]
+		local priorProbabilityVector = ModelParameters[3]
 		
 		local numberOfDataPointVector = ModelParameters[4]
 
 		if (mode == "Hybrid") then
 
-			mode = (meanMatrix and standardDeviationMatrix and priorProbabilityMatrix and numberOfDataPointVector and "Sequential") or "Batch"		
+			mode = (meanMatrix and standardDeviationMatrix and priorProbabilityVector and numberOfDataPointVector and "Sequential") or "Batch"		
 
 		end
 
@@ -344,7 +344,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 			
 			standardDeviationMatrix = standardDeviationMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
 			
-			priorProbabilityMatrix = priorProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
+			priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
 			
 			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
 			
@@ -360,11 +360,11 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 			
 			if (standardDeviationMatrix) then standardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.exp, standardDeviationMatrix) end
 			
-			if (priorProbabilityMatrix) then priorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityMatrix) end
+			if (priorProbabilityVector) then priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityVector) end
 			
 		end
 		
-		meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector = gaussianNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector)
+		meanMatrix, standardDeviationMatrix, priorProbabilityVector, numberOfDataPointVector = gaussianNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityVector, numberOfDataPointVector)
 		
 		if (useLogProbabilities) then
 			
@@ -372,11 +372,11 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 
 			standardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.log, standardDeviationMatrix)
 
-			priorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityMatrix)
+			priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityVector)
 			
 		end
 
-		NewGaussianNaiveBayesModel.ModelParameters = {meanMatrix, standardDeviationMatrix, priorProbabilityMatrix, numberOfDataPointVector}
+		NewGaussianNaiveBayesModel.ModelParameters = {meanMatrix, standardDeviationMatrix, priorProbabilityVector, numberOfDataPointVector}
 
 		local cost = NewGaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 

@@ -97,6 +97,10 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	local ClassesList = self.ClassesList
 
 	local ModelParameters = self.ModelParameters
+	
+	local featureProbabilityMatrix = ModelParameters[1]
+
+	local priorProbabilityVector = ModelParameters[2]
 
 	local posteriorProbabilityVector = {}
 
@@ -104,7 +108,7 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local featureProbabilityVector
 
-	local priorProbabilityVector
+	local priorProbabilityValue
 	
 	local posteriorProbabilityValue
 
@@ -122,11 +126,11 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 		
 		if (classIndex) then
 			
-			featureProbabilityVector = {ModelParameters[1][classIndex]}
+			featureProbabilityVector = {featureProbabilityMatrix[classIndex]}
 
-			priorProbabilityVector = {ModelParameters[2][classIndex]}
+			priorProbabilityValue = {priorProbabilityVector[classIndex]}
 			
-			posteriorProbabilityValue = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
+			posteriorProbabilityValue = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityValue)
 			
 		else
 			

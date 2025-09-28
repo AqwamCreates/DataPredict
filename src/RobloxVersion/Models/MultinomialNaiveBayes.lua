@@ -457,9 +457,11 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 	
 	NewMultinomialNaiveBayesModel:setGenerateFunction(function(labelVector, totalCountVector)
 		
+		local numberOfData = #labelVector
+		
 		if (totalCountVector) then
 
-			if (#labelVector ~= #totalCountVector) then error("The label vector and the total count vector does not contain the same number of rows.") end
+			if (numberOfData ~= #totalCountVector) then error("The label vector and the total count vector does not contain the same number of rows.") end
 
 		end
 
@@ -468,6 +470,8 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 		local ModelParameters = NewMultinomialNaiveBayesModel.ModelParameters
 		
 		local generatedFeatureMatrix = {}
+		
+		totalCountVector = totalCountVector or AqwamTensorLibrary:createTensor({numberOfData, 1}, 1)
 
 		for data, unwrappedLabelVector in ipairs(labelVector) do
 			

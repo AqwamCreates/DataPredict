@@ -218,7 +218,7 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 	
 end
 
-local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData)
+local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
 	
 	
 	

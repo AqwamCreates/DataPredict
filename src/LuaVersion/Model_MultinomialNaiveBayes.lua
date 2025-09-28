@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require("Model_BaseModel")
+local NaiveBayesBaseModel = require("Model_NaiveBayesBaseModel")
 
 MultinomialNaiveBayesModel = {}
 
 MultinomialNaiveBayesModel.__index = MultinomialNaiveBayesModel
 
-setmetatable(MultinomialNaiveBayesModel, BaseModel)
+setmetatable(MultinomialNaiveBayesModel, NaiveBayesBaseModel)
 
 local defaultMode = "Hybrid"
 
@@ -337,7 +337,7 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewMultinomialNaiveBayesModel = BaseModel.new(parameterDictionary)
+	local NewMultinomialNaiveBayesModel = NaiveBayesBaseModel.new(parameterDictionary)
 
 	setmetatable(NewMultinomialNaiveBayesModel, MultinomialNaiveBayesModel)
 	

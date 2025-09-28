@@ -420,8 +420,6 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 	end)
 	
 	NewMultinomialNaiveBayesModel:setPredictFunction(function(featureMatrix, returnOriginalOutput)
-		
-		local finalProbabilityVector
 
 		local numberOfData = #featureMatrix
 

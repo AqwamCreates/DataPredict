@@ -402,7 +402,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures})
 		
-		local selectedFeatureProbabiltyMatrix = AqwamTensorLibrary:applyFunction(function(p) return 1 - p end, selectedComplementFeatureProbabiltyMatrix)
+		local selectedFeatureProbabiltyMatrix = AqwamTensorLibrary:subtract(1, selectedComplementFeatureProbabiltyMatrix)
 
 		local binaryProbabilityFunction = function(noiseProbability, featureProbability) return ((noiseProbability < featureProbability) and 1) or 0 end
 		

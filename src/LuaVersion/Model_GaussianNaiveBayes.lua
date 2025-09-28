@@ -436,6 +436,10 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		
 		local ModelParameters = NewGaussianNaiveBayesModel.ModelParameters
 		
+		local meanMatrix = ModelParameters[1]
+		
+		local standardDeviationMatrix = ModelParameters[2]
+		
 		local selectedMeanMatrix = {}
 		
 		local selectedStandardDeviationMatrix = {}
@@ -448,9 +452,9 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 			
 			if (classIndex) then
 				
-				selectedMeanMatrix[data] = ModelParameters[1][classIndex]
+				selectedMeanMatrix[data] = meanMatrix[classIndex]
 				
-				selectedStandardDeviationMatrix[data] = ModelParameters[2][classIndex]
+				selectedStandardDeviationMatrix[data] = standardDeviationMatrix[classIndex]
 				
 			end
 			

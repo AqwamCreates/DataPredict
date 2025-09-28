@@ -126,7 +126,7 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	for data, unwrappedFeatureVector in ipairs(featureMatrix) do
 
-		featureVector = {labelVector[data]}
+		featureVector = {unwrappedFeatureVector}
 
 		label = labelVector[data][1]
 
@@ -224,7 +224,7 @@ local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, number
 
 	end
 
-	return newFeatureProbabilityMatrix, newNumberOfDataPointVector, newNumberOfDataPointVector
+	return newFeatureProbabilityMatrix, newPriorProbabilityVector, newNumberOfDataPointVector
 
 end
 

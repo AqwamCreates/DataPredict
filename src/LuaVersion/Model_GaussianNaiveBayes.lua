@@ -424,6 +424,12 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 	
 	NewGaussianNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
 		
+		if (noiseMatrix) then
+
+			if (#labelVector ~= #noiseMatrix) then error("The label vector and the label matrix does not contain the same number of rows.") end
+
+		end
+		
 		local ClassesList = NewGaussianNaiveBayesModel.ClassesList
 		
 		local useLogProbabilities = NewGaussianNaiveBayesModel.useLogProbabilities

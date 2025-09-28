@@ -395,22 +395,28 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		local useLogProbabilities = NewGaussianNaiveBayesModel.useLogProbabilities
 
 		local ModelParameters = NewGaussianNaiveBayesModel.ModelParameters
+		
+		local meanMatrix = ModelParameters[1]
+
+		local standardDeviationMatrix = ModelParameters[2]
+		
+		local priorProbabilityVector = ModelParameters[3]
 
 		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, #ClassesList}, 0)
 
 		for classIndex, classValue in ipairs(ClassesList) do
 
-			local meanVector = {ModelParameters[1][classIndex]}
+			local meanVector = {meanMatrix[classIndex]}
 
-			local standardDeviationVector = {ModelParameters[2][classIndex]}
+			local standardDeviationVector = {standardDeviationMatrix[classIndex]}
 
-			local priorProbabilityVector = {ModelParameters[3][classIndex]}
+			local priorProbabilityValue = {priorProbabilityVector[classIndex]}
 
 			for i = 1, numberOfData, 1 do
 
 				local featureVector = {featureMatrix[i]}
 
-				posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityVector)
+				posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityValue)
 
 			end
 

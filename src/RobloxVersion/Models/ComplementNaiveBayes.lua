@@ -290,6 +290,14 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
+		if (useLogProbabilities) then
+
+			if (featureProbabilityMatrix) then featureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, featureProbabilityMatrix) end
+
+			if (priorProbabilityVector) then priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityVector) end
+
+		end
+		
 		featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector = complementNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
 		
 		if (useLogProbabilities) then

@@ -226,7 +226,7 @@ local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberO
 	
 	local multipliedVarianceMatrix = AqwamTensorLibrary:multiply(varianceMatrix, numberOfDataPointVector)
 	
-	local totalNumberOfDataPoint = AqwamTensorLibrary:sum(numberOfDataPointVector)
+	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
 	
 	local newMeanMatrix = {}
 	
@@ -274,7 +274,7 @@ local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberO
 
 		newStandardDeviationVector[classIndex] = newStandardDeviationVector[1]
 
-		newPriorProbabilityVector[classIndex] = {(numberOfSubData / totalNumberOfDataPoint)}
+		newPriorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
 		
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 		

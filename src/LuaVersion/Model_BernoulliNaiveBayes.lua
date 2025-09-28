@@ -361,10 +361,12 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 	end)
 	
 	NewBernoulliNaiveBayes:setGenerateFunction(function(labelVector, noiseMatrix)
+		
+		local numberOfData = #labelVector
 
 		if (noiseMatrix) then
 
-			if (#labelVector ~= #noiseMatrix) then error("The label vector and the noise matrix does not contain the same number of rows.") end
+			if (numberOfData ~= #noiseMatrix) then error("The label vector and the noise matrix does not contain the same number of rows.") end
 
 		end
 
@@ -378,7 +380,9 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		
 		local numberOfFeatures = #featureProbabilityMatrix[1]
 		
-		local binaryProbabilityFunction = function(probability) return ((math.random() < probability) and 1) or 0 end
+		local binaryProbabilityFunction = function(noiseProbability, featureProbability) return ((noiseProbability < featureProbability) and 1) or 0 end
+		
+		local selectedFeatureProbabiltyMatrix = {}
 
 		local generatedFeatureMatrix = {}
 		
@@ -390,23 +394,19 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 			if (classIndex) then
 				
-				local probabilityArray = featureProbabilityMatrix[classIndex]
-
-				generatedFeatureMatrix[data] = {}
-
-				for feature, probability in ipairs(probabilityArray) do
-					
-					generatedFeatureMatrix[data][feature] = binaryProbabilityFunction(probability)
-					
-				end
+				selectedFeatureProbabiltyMatrix[data] = featureProbabilityMatrix[classIndex]
 				
 			else
 				
-				generatedFeatureMatrix[data] = table.create(numberOfFeatures, 0)
+				selectedFeatureProbabiltyMatrix[data] = table.create(numberOfFeatures, 0)
 
 			end
 
 		end
+		
+		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures})
+		
+		local generatedFeatureMatrix = AqwamTensorLibrary:applyFunction(binaryProbabilityFunction, noiseMatrix, selectedFeatureProbabiltyMatrix)
 
 		return generatedFeatureMatrix
 

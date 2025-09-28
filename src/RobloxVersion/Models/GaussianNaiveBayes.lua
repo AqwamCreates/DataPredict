@@ -109,8 +109,6 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	local standardDeviationMatrix = ModelParameters[2]
 
 	local priorProbabilityVector = ModelParameters[3]
-	
-	local numberOfData = #labelVector
 
 	local posteriorProbabilityVector = {}
 

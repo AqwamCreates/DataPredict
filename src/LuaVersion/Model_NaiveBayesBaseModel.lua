@@ -259,7 +259,6 @@ function NaiveBayesBaseModel:predict(featureMatrix, returnOriginalOutput)
 
 end
 
-
 function NaiveBayesBaseModel:setPredictFunction(predictFunction)
 
 	self.predictFunction = predictFunction

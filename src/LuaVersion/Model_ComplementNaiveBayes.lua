@@ -26,119 +26,17 @@
 
 --]]
 
-local BaseModel = require("Model_BaseModel")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
+
+local NaiveBayesBaseModel = require("Model_NaiveBayesBaseModel")
 
 ComplementNaiveBayesModel = {}
 
 ComplementNaiveBayesModel.__index = ComplementNaiveBayesModel
 
-setmetatable(ComplementNaiveBayesModel, BaseModel)
+setmetatable(ComplementNaiveBayesModel, NaiveBayesBaseModel)
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
-
-local function extractFeatureMatrixFromPosition(featureMatrix, positionList)
-
-	local extractedFeatureMatrix = {}
-
-	for i = 1, #featureMatrix, 1 do
-
-		if table.find(positionList, i) then
-
-			table.insert(extractedFeatureMatrix, featureMatrix[i])
-
-		end	
-
-	end
-
-	return extractedFeatureMatrix
-
-end
-
-local function separateFeatureMatrixByClass(featureMatrix, labelVector, classesList)
-
-	local classesPositionTable = {}
-
-	for classIndex, class in ipairs(classesList) do
-
-		classesPositionTable[classIndex] = {}
-
-		for i = 1, #labelVector, 1 do
-
-			if (labelVector[i][1] == class) then
-
-				table.insert(classesPositionTable[classIndex], i)
-
-			end
-
-		end
-
-	end
-
-	local extractedFeatureMatricesTable = {}
-
-	local extractedFeatureMatrix
-
-	for classIndex, class in ipairs(classesList) do
-
-		extractedFeatureMatrix = extractFeatureMatrixFromPosition(featureMatrix, classesPositionTable[classIndex])
-
-		table.insert(extractedFeatureMatricesTable, extractedFeatureMatrix)
-
-	end
-
-	return extractedFeatureMatricesTable
-
-end
-
-local function createClassesList(labelVector)
-
-	local ClassesList = {}
-
-	local value
-
-	for i = 1, #labelVector, 1 do
-
-		value = labelVector[i][1]
-
-		if not table.find(ClassesList, value) then
-
-			table.insert(ClassesList, value)
-
-		end
-
-	end
-
-	return ClassesList
-
-end
-
-local function checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList)
-
-	for i = 1, #labelVector, 1 do
-
-		if table.find(ClassesList, labelVector[i][1]) then continue end
-
-		return true
-
-	end
-
-	return false
-
-end
-
-local function logLoss(labelVector, predictedProbabilitiesVector)
-
-	local loglossFunction = function (y, p) return (y * math.log(p)) + ((1 - y) * math.log(1 - p)) end
-
-	local logLossVector = AqwamTensorLibrary:applyFunction(loglossFunction, labelVector, predictedProbabilitiesVector)
-
-	local logLossSum = AqwamTensorLibrary:sum(logLossVector)
-
-	local logLoss = -logLossSum / #labelVector
-
-	return logLoss
-
-end
+local defaultMode = "Hybrid"
 
 local function calculateComplementProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector)
 
@@ -192,288 +90,405 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 
 end
 
-function ComplementNaiveBayesModel.new(parameterDictionary)
-
-	parameterDictionary = parameterDictionary or {}
-
-	local NewComplementNaiveBayesModel = BaseModel.new(parameterDictionary)
-
-	setmetatable(NewComplementNaiveBayesModel, ComplementNaiveBayesModel)
-	
-	NewComplementNaiveBayesModel:setName("ComplementNaiveBayes")
-
-	NewComplementNaiveBayesModel.ClassesList = parameterDictionary.ClassesList or {}
-
-	NewComplementNaiveBayesModel.useLogProbabilities = BaseModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, false)
-
-	return NewComplementNaiveBayesModel
-
-end
-
 function ComplementNaiveBayesModel:calculateCost(featureMatrix, labelVector)
+	
+	local useLogProbabilities = self.useLogProbabilities
 
-	local cost
+	local ClassesList = self.ClassesList
+	
+	local ModelParameters = self.ModelParameters
+
+	local complementFeatureProbabilityMatrix = ModelParameters[1]
+
+	local priorProbabilityVector = ModelParameters[2]
+
+	local posteriorProbabilityVector = {}
 
 	local featureVector
 
 	local complementFeatureProbabilityVector
 
-	local priorProbabilityVector
+	local priorProbabilityValue
 
-	local posteriorProbability
-
-	local probability
-
-	local highestProbability
-
-	local predictedClass
+	local posteriorProbabilityValue
 
 	local classIndex
 
 	local label
 
-	local numberOfData = #labelVector
+	for data, unwrappedFeatureVector in ipairs(featureMatrix) do
 
-	local useLogProbabilities = self.useLogProbabilities
-
-	local initialProbability = (useLogProbabilities and 0) or 1
-
-	local posteriorProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, #labelVector[1]})
-
-	for data = 1, #featureMatrix, 1 do
-
-		featureVector = {labelVector[data]}
+		featureVector = {unwrappedFeatureVector}
 
 		label = labelVector[data][1]
 
-		classIndex = table.find(self.ClassesList, label)
+		classIndex = table.find(ClassesList, label)
+		
+		if (classIndex) then
+			
+			complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[classIndex]}
 
-		complementFeatureProbabilityVector = {self.ModelParameters[1][classIndex]}
+			priorProbabilityValue = {priorProbabilityVector[classIndex]}
+			
+			posteriorProbabilityValue = calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityValue)
+			
+		else
+			
+			posteriorProbabilityValue = 0
+			
+		end
 
-		priorProbabilityVector = {self.ModelParameters[2][classIndex]}
-
-		posteriorProbabilityVector[data][1] = calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityVector)
+		posteriorProbabilityVector[data] = {posteriorProbabilityValue}
 
 	end
 
-	cost = logLoss(labelVector, posteriorProbabilityVector)
+	local cost = self:logLoss(labelVector, posteriorProbabilityVector)
 
 	return cost
 
 end
 
-local function areNumbersOnlyInList(list)
+local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData)
+	
+	local complementFeatureProbabilityMatrix = {}
 
-	for i, value in ipairs(list) do
+	local priorProbabilityVector = {}
 
-		if (typeof(value) ~= "number") then return false end
-
-	end
-
-	return true
-
-end
-
-function ComplementNaiveBayesModel:processLabelVector(labelVector)
-
-	if (#self.ClassesList == 0) then
-
-		self.ClassesList = createClassesList(labelVector)
-
-		local areNumbersOnly = areNumbersOnlyInList(self.ClassesList)
-
-		if (areNumbersOnly) then table.sort(self.ClassesList, function(a,b) return a < b end) end
-
-	else
-
-		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector.") end
-
-	end
-
-end
-
-
-function ComplementNaiveBayesModel:train(featureMatrix, labelVector)
-
-	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
-
-	self:processLabelVector(labelVector)
-
-	local cost
+	local numberOfDataPointVector = {}
 
 	local extractedFeatureMatrix
-	
+
 	local extractedComplementFeatureMatrix
-	
+
 	local sumExtractedComplementFeatureVector
-	
+
 	local totalSumExtractedComplementFeatureVector
-	
+
 	local complementFeatureProbabilityVector
 
 	local numberOfSubData
+
+	local numberOfComplementSubData
+
+	local totalNumberOfComplementSubData
+
+	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+
+		numberOfSubData = #extractedFeatureMatrix
+
+		totalSumExtractedComplementFeatureVector = nil
+
+		totalNumberOfComplementSubData = 0
+		
+		for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+			
+			if (complementClassIndex ~= classIndex) then
+
+				numberOfComplementSubData = #extractedComplementFeatureMatrix
+
+				totalNumberOfComplementSubData = totalNumberOfComplementSubData + numberOfComplementSubData
+
+				sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
+
+				if (totalSumExtractedComplementFeatureVector) then
+
+					totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:add(totalSumExtractedComplementFeatureVector, sumExtractedComplementFeatureVector)
+
+				else
+
+					totalSumExtractedComplementFeatureVector = sumExtractedComplementFeatureVector
+
+				end
+
+			end
+			
+		end
+
+		complementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, totalNumberOfComplementSubData)
+
+		complementFeatureProbabilityMatrix[classIndex] = complementFeatureProbabilityVector[1]
+
+		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
+		
+		numberOfDataPointVector[classIndex] = {numberOfSubData}
+		
+	end
+	
+	return complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector
+	
+end
+
+local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+	
+	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
+	
+	local newComplementFeatureProbabilityMatrix = {}
+	
+	local newPriorProbabilityVector = {}
+	
+	local newNumberOfDataPointVector = {}
+	
+	local numberOfOldSubData
+
+	local numberOfSubData
+	
+	local totalNumberOfComplementSubData
+	
+	local complementFeatureProbabilityVector
+	
+	local totalSumExtractedComplementFeatureVector
 	
 	local numberOfComplementSubData
 	
-	local totalNumberOfComplementSubData
-
-	local ModelParameters = self.ModelParameters
-
-	local ClassesList = self.ClassesList
-
-	local numberOfClasses = #ClassesList
-
-	local numberOfData = #featureMatrix
-
-	local numberOfFeatures = #featureMatrix[1]
-
-	local extractedFeatureMatricesTable = separateFeatureMatrixByClass(featureMatrix, labelVector, ClassesList)
+	local sumExtractedComplementFeatureVector
 	
-	local complementFeatureProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
+	local newComplementFeatureProbabilityVector
+	
+	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 
-	local priorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, 1})
+		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
 
-	for classIndex, classValue in ipairs(ClassesList) do
+		numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
 
-		extractedFeatureMatrix = extractedFeatureMatricesTable[classIndex]
-
-		numberOfSubData = #extractedFeatureMatrix
-		
-		totalSumExtractedComplementFeatureVector = nil
+		extractedFeatureMatrix = extractedFeatureMatrixTable[classIndex]
 		
 		totalNumberOfComplementSubData = 0
 		
-		for complementClassIndex, complementClassValue in ipairs(ClassesList) do
-			
+		for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+
 			if (complementClassIndex ~= classIndex) then
 				
-				extractedComplementFeatureMatrix = extractedFeatureMatricesTable[complementClassIndex]
-				
-				numberOfComplementSubData = #extractedComplementFeatureMatrix
-				
-				totalNumberOfComplementSubData = totalNumberOfComplementSubData + numberOfComplementSubData
-				
-				sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
-				
-				if (totalSumExtractedComplementFeatureVector) then
-					
-					totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:add(totalSumExtractedComplementFeatureVector, sumExtractedComplementFeatureVector)
-					
-				else
-					
-					totalSumExtractedComplementFeatureVector = sumExtractedComplementFeatureVector
-					
-				end
+				totalNumberOfComplementSubData = totalNumberOfComplementSubData + numberOfDataPointVector[complementClassIndex][1]
 				
 			end
 			
 		end
 		
-		complementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, totalNumberOfComplementSubData)
+		complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[classIndex]}
 		
-		complementFeatureProbabilityMatrix[classIndex] = complementFeatureProbabilityVector[1]
+		totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:multiply(complementFeatureProbabilityVector, totalNumberOfComplementSubData)
+		
+		for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 
-		priorProbabilityMatrix[classIndex] = {(numberOfSubData / numberOfData)}
+			if (complementClassIndex ~= classIndex) then
+
+				numberOfComplementSubData = #extractedComplementFeatureMatrix
+
+				totalNumberOfComplementSubData = totalNumberOfComplementSubData + numberOfComplementSubData
+
+				sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
+
+				totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:add(totalSumExtractedComplementFeatureVector, sumExtractedComplementFeatureVector)
+
+			end
+
+		end
+		
+		newComplementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, totalNumberOfComplementSubData)
+
+		newComplementFeatureProbabilityMatrix[classIndex] = newComplementFeatureProbabilityVector[1]
+
+		newPriorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
+
+		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 
 	end
-
-	if (ModelParameters) then
-
-		complementFeatureProbabilityMatrix = AqwamTensorLibrary:divide(AqwamTensorLibrary:add(ModelParameters[1], complementFeatureProbabilityMatrix), 2) 
-
-		priorProbabilityMatrix = AqwamTensorLibrary:divide(AqwamTensorLibrary:add(ModelParameters[2], priorProbabilityMatrix), 2) 
-
-	end
-
-	self.ModelParameters = {complementFeatureProbabilityMatrix, priorProbabilityMatrix}
-
-	cost = self:calculateCost(featureMatrix, labelVector)
-
-	return {cost}
-
+	
+	return newComplementFeatureProbabilityMatrix, newPriorProbabilityVector, newNumberOfDataPointVector
+	
 end
 
-function ComplementNaiveBayesModel:getLabelFromOutputMatrix(outputMatrix)
+local complementNaiveBayesFunctionList = {
+	
+	["Batch"] = batchComplementNaiveBayes,
+	
+	["Sequential"] = sequentialComplementNaiveBayes,
+	
+}
 
-	local numberOfData = #outputMatrix
+function ComplementNaiveBayesModel.new(parameterDictionary)
 
-	local predictedLabelVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
+	parameterDictionary = parameterDictionary or {}
 
-	local highestProbabilityVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
+	local NewComplementNaiveBayesModel = NaiveBayesBaseModel.new(parameterDictionary)
 
-	local highestProbability
+	setmetatable(NewComplementNaiveBayesModel, ComplementNaiveBayesModel)
+	
+	NewComplementNaiveBayesModel:setName("ComplementNaiveBayes")
+	
+	NewComplementNaiveBayesModel.mode = parameterDictionary.mode or defaultMode
+	
+	NewComplementNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
+		
+		local mode = NewComplementNaiveBayesModel.mode
+		
+		local useLogProbabilities = NewComplementNaiveBayesModel.useLogProbabilities
 
-	local outputVector
+		local ModelParameters = NewComplementNaiveBayesModel.ModelParameters or {}
 
-	local classIndexArray
+		local complementFeatureProbabilityMatrix = ModelParameters[1]
 
-	local predictedLabel
+		local priorProbabilityVector = ModelParameters[2]
 
-	for i = 1, #outputMatrix, 1 do
+		local numberOfDataPointVector = ModelParameters[3]
 
-		outputVector = {outputMatrix[i]}
+		if (mode == "Hybrid") then
 
-		classIndexArray, highestProbability = AqwamTensorLibrary:findMinimumValueDimensionIndexArray(outputMatrix)
+			mode = (complementFeatureProbabilityMatrix and priorProbabilityVector and numberOfDataPointVector and "Sequential") or "Batch"		
 
-		if (classIndexArray == nil) then continue end
+		end
+		
+		local complementNaiveBayesFunction = complementNaiveBayesFunctionList[mode]
 
-		predictedLabel = self.ClassesList[classIndexArray[2]]
+		if (not complementNaiveBayesFunction) then error("Unknown mode.") end
 
-		predictedLabelVector[i][1] = predictedLabel
+		local numberOfData = #featureMatrix
+		
+		local extractedFeatureMatrixTable = NewComplementNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
+		
+		if (mode == "Sequential") then
 
-		highestProbabilityVector[i][1] = highestProbability
+			local numberOfFeatures = #featureMatrix[1]
 
-	end
+			local numberOfClasses = #NewComplementNaiveBayesModel.ClassesList
 
-	return predictedLabelVector, highestProbabilityVector
+			local zeroValue = (useLogProbabilities and math.huge) or 0
 
-end
+			local oneValue = (useLogProbabilities and 0) or 1
 
-function ComplementNaiveBayesModel:predict(featureMatrix, returnOriginalOutput)
+			complementFeatureProbabilityMatrix = complementFeatureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
 
-	local finalProbabilityVector
+			priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
 
-	local numberOfData = #featureMatrix
+			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
 
-	local ClassesList = self.ClassesList
+		end
+		
+		if (useLogProbabilities) then
 
-	local useLogProbabilities = self.useLogProbabilities
+			if (complementFeatureProbabilityMatrix) then complementFeatureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, complementFeatureProbabilityMatrix) end
 
-	local ModelParameters = self.ModelParameters
+			if (priorProbabilityVector) then priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityVector) end
 
-	local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, #ClassesList}, 0)
+		end
+		
+		complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector = complementNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+		
+		if (useLogProbabilities) then
 
-	for classIndex, classValue in ipairs(ClassesList) do
+			complementFeatureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, complementFeatureProbabilityMatrix)
 
-		local complementFeatureProbabilityVector = {ModelParameters[1][classIndex]}
-
-		local priorProbabilityVector = {ModelParameters[2][classIndex]}
-
-		for i = 1, numberOfData, 1 do
-
-			local featureVector = {featureMatrix[i]}
-
-			posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityVector)
+			priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityVector)
 
 		end
 
-	end
+		NewComplementNaiveBayesModel.ModelParameters = {complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector}
 
-	if (returnOriginalOutput) then return posteriorProbabilityMatrix end
+		local cost = NewComplementNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
-	return self:getLabelFromOutputMatrix(posteriorProbabilityMatrix)
+		return {cost}
+		
+	end)
+	
+	NewComplementNaiveBayesModel:setPredictFunction(function(featureMatrix, returnOriginalOutput)
 
-end
+		local ClassesList = NewComplementNaiveBayesModel.ClassesList
 
-function ComplementNaiveBayesModel:getClassesList()
+		local useLogProbabilities = NewComplementNaiveBayesModel.useLogProbabilities
 
-	return self.ClassesList
+		local ModelParameters = NewComplementNaiveBayesModel.ModelParameters
+		
+		local complementFeatureProbabilityMatrix = ModelParameters[1]
+		
+		local priorProbabilityVector = ModelParameters[2]
+		
+		local numberOfData = #featureMatrix
+		
+		local numberOfClasses = #ClassesList
 
-end
+		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
 
-function ComplementNaiveBayesModel:setClassesList(ClassesList)
+		for classIndex, classValue in ipairs(ClassesList) do
 
-	self.ClassesList = ClassesList
+			local complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[classIndex]}
+
+			local priorProbabilityValue = {priorProbabilityVector[classIndex]}
+
+			for i = 1, numberOfData, 1 do
+
+				local featureVector = {featureMatrix[i]}
+
+				posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityValue)
+
+			end
+
+		end
+
+		if (returnOriginalOutput) then return posteriorProbabilityMatrix end
+
+		return NewComplementNaiveBayesModel:getLabelFromOutputMatrix(posteriorProbabilityMatrix)
+		
+	end)
+	
+	NewComplementNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
+		
+		local numberOfData = #labelVector
+		
+		if (noiseMatrix) then
+
+			if (numberOfData ~= #noiseMatrix) then error("The label vector and the total noise matrix does not contain the same number of rows.") end
+
+		end
+		
+		local ClassesList = NewComplementNaiveBayesModel.ClassesList
+		
+		local useLogProbabilities = NewComplementNaiveBayesModel.useLogProbabilities
+		
+		local ModelParameters = NewComplementNaiveBayesModel.ModelParameters
+		
+		local complementFeatureProbabilityMatrix = ModelParameters[1]
+		
+		local numberOfFeatures = #complementFeatureProbabilityMatrix[1]
+		
+		local selectedComplementFeatureProbabilityMatrix = {}
+		
+		if (useLogProbabilities) then
+			
+			complementFeatureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, complementFeatureProbabilityMatrix)
+			
+		end
+		
+		for data, unwrappedLabelVector in ipairs(labelVector) do
+
+			local label = unwrappedLabelVector[1]
+
+			local classIndex = table.find(ClassesList, label)
+
+			if (classIndex) then
+
+				selectedComplementFeatureProbabilityMatrix[data] = complementFeatureProbabilityMatrix[classIndex]
+
+			else
+
+				selectedComplementFeatureProbabilityMatrix[data] = table.create(numberOfFeatures, 0)
+
+			end
+
+		end
+		
+		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures})
+		
+		local selectedFeatureProbabiltyMatrix = AqwamTensorLibrary:subtract(1, selectedComplementFeatureProbabilityMatrix)
+
+		local binaryProbabilityFunction = function(noiseProbability, featureProbability) return ((noiseProbability < featureProbability) and 1) or 0 end
+		
+		local generatedFeatureMatrix = AqwamTensorLibrary:applyFunction(binaryProbabilityFunction, noiseMatrix, selectedFeatureProbabiltyMatrix)
+
+		return generatedFeatureMatrix
+		
+	end)
+
+	return NewComplementNaiveBayesModel
 
 end
 

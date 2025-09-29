@@ -321,7 +321,7 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 
 	end
 	
-	return newComplementFeatureProbabilityMatrix, newPriorProbabilityVector, numberOfFeatureCountVector, newNumberOfDataPointVector
+	return newComplementFeatureProbabilityMatrix, newPriorProbabilityVector, newNumberOfFeatureCountVector, newNumberOfDataPointVector
 	
 end
 
@@ -401,7 +401,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
-		complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector = complementNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+		complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector = complementNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
 		
 		if (useLogProbabilities) then
 

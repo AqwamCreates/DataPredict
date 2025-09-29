@@ -38,6 +38,37 @@ setmetatable(ComplementNaiveBayesModel, NaiveBayesBaseModel)
 
 local defaultMode = "Hybrid"
 
+local function sampleMultinomial(probabilityArray, totalCount)
+
+	local numberOfProbabilities = #probabilityArray
+
+	local remainingCount = totalCount
+
+	local featureArray = {}
+
+	for i, p in ipairs(probabilityArray) do
+
+		local count = math.floor(p * totalCount + 0.5)
+
+		featureArray[i] = count
+
+		remainingCount = remainingCount - count
+
+	end
+
+	while (remainingCount > 0) do
+
+		local idx = math.random(1, numberOfProbabilities)
+
+		featureArray[idx] = featureArray[idx] + 1
+
+		remainingCount = remainingCount - 1
+
+	end
+
+	return featureArray
+end
+
 local function calculateComplementProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector)
 
 	local complementProbability = (useLogProbabilities and 0) or 1
@@ -430,13 +461,13 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 	end)
 	
-	NewComplementNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
+	NewComplementNaiveBayesModel:setGenerateFunction(function(labelVector, totalCountVector)
 		
 		local numberOfData = #labelVector
 		
-		if (noiseMatrix) then
+		if (totalCountVector) then
 
-			if (numberOfData ~= #noiseMatrix) then error("The label vector and the total noise matrix does not contain the same number of rows.") end
+			if (numberOfData ~= #totalCountVector) then error("The label vector and the total count does not contain the same number of rows.") end
 
 		end
 		
@@ -450,13 +481,17 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 		local numberOfFeatures = #complementFeatureProbabilityMatrix[1]
 		
-		local selectedComplementFeatureProbabilityMatrix = {}
+		local generatedFeatureMatrix = {}
 		
 		if (useLogProbabilities) then
 			
 			complementFeatureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, complementFeatureProbabilityMatrix)
 			
 		end
+		
+		totalCountVector = totalCountVector or AqwamTensorLibrary:createTensor({numberOfData, 1}, 1)
+		
+		local featureProbabiltyMatrix = AqwamTensorLibrary:subtract(1, complementFeatureProbabilityMatrix)
 		
 		for data, unwrappedLabelVector in ipairs(labelVector) do
 
@@ -466,23 +501,19 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 			if (classIndex) then
 
-				selectedComplementFeatureProbabilityMatrix[data] = complementFeatureProbabilityMatrix[classIndex]
+				local featureProbabilityArray = featureProbabiltyMatrix[classIndex]
+
+				local totalCount = totalCountVector[data][1]
+
+				generatedFeatureMatrix[data] = sampleMultinomial(featureProbabilityArray, totalCount)
 
 			else
 
-				selectedComplementFeatureProbabilityMatrix[data] = table.create(numberOfFeatures, 0)
+				generatedFeatureMatrix[data] = table.create(numberOfFeatures, 0)
 
 			end
 
 		end
-		
-		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures})
-		
-		local selectedFeatureProbabiltyMatrix = AqwamTensorLibrary:subtract(1, selectedComplementFeatureProbabilityMatrix)
-
-		local binaryProbabilityFunction = function(noiseProbability, featureProbability) return ((noiseProbability < featureProbability) and 1) or 0 end
-		
-		local generatedFeatureMatrix = AqwamTensorLibrary:applyFunction(binaryProbabilityFunction, noiseMatrix, selectedFeatureProbabiltyMatrix)
 
 		return generatedFeatureMatrix
 		

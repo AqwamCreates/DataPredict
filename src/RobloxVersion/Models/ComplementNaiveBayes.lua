@@ -232,6 +232,18 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 
 	local numberOfSubData
 	
+	local totalNumberOfComplementSubData
+	
+	local complementFeatureProbabilityVector
+	
+	local totalSumExtractedComplementFeatureVector
+	
+	local numberOfComplementSubData
+	
+	local sumExtractedComplementFeatureVector
+	
+	local newComplementFeatureProbabilityVector
+	
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 
 		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
@@ -240,7 +252,41 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 
 		extractedFeatureMatrix = extractedFeatureMatrixTable[classIndex]
 		
+		totalNumberOfComplementSubData = 0
 		
+		for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+
+			if (complementClassIndex ~= classIndex) then
+				
+				totalNumberOfComplementSubData = totalNumberOfComplementSubData + numberOfDataPointVector[complementClassIndex][1]
+				
+			end
+			
+		end
+		
+		complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[classIndex]}
+		
+		totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:multiply(complementFeatureProbabilityVector, totalNumberOfComplementSubData)
+		
+		for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+
+			if (complementClassIndex ~= classIndex) then
+
+				numberOfComplementSubData = #extractedComplementFeatureMatrix
+
+				totalNumberOfComplementSubData = totalNumberOfComplementSubData + numberOfComplementSubData
+
+				sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
+
+				totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:add(totalSumExtractedComplementFeatureVector, sumExtractedComplementFeatureVector)
+
+			end
+
+		end
+		
+		newComplementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, totalNumberOfComplementSubData)
+
+		newComplementFeatureProbabilityMatrix[classIndex] = newComplementFeatureProbabilityVector[1]
 
 		newPriorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
 

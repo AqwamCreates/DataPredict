@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local NaiveBayesBaseModel = require("Model_NaiveBayesBaseModel")
+local NaiveBayesBaseModel = require("NaiveBayesBaseModel")
 
 ComplementNaiveBayesModel = {}
 
@@ -184,6 +184,8 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 	local complementFeatureProbabilityMatrix = {}
 
 	local priorProbabilityVector = {}
+	
+	local numberOfFeatureCountVector = {}
 
 	local numberOfDataPointVector = {}
 
@@ -196,6 +198,8 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 	local totalSumExtractedComplementFeatureVector
 
 	local complementFeatureProbabilityVector
+	
+	local numberOfFeatureCount
 
 	local numberOfSubData
 
@@ -234,22 +238,26 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 			end
 			
 		end
+		
+		numberOfFeatureCount = AqwamTensorLibrary:sum(totalSumExtractedComplementFeatureVector)
 
-		complementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, totalNumberOfComplementSubData)
+		complementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, numberOfFeatureCount)
 
 		complementFeatureProbabilityMatrix[classIndex] = complementFeatureProbabilityVector[1]
 
 		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
 		
+		numberOfFeatureCountVector[classIndex] = {numberOfFeatureCount}
+		
 		numberOfDataPointVector[classIndex] = {numberOfSubData}
 		
 	end
 	
-	return complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector
+	return complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector
 	
 end
 
-local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
 	
 	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
 	
@@ -257,7 +265,13 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 	
 	local newPriorProbabilityVector = {}
 	
+	local newNumberOfFeatureCountVector = {}
+	
 	local newNumberOfDataPointVector = {}
+	
+	local numberOfOldFeatureCount
+	
+	local numberOfFeatureCount
 	
 	local numberOfOldSubData
 
@@ -281,23 +295,11 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 
 		numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
 
-		extractedFeatureMatrix = extractedFeatureMatrixTable[classIndex]
-		
-		totalNumberOfComplementSubData = 0
-		
-		for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
-
-			if (complementClassIndex ~= classIndex) then
-				
-				totalNumberOfComplementSubData = totalNumberOfComplementSubData + numberOfDataPointVector[complementClassIndex][1]
-				
-			end
-			
-		end
+		numberOfOldFeatureCount = numberOfFeatureCountVector[classIndex][1]
 		
 		complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[classIndex]}
 		
-		totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:multiply(complementFeatureProbabilityVector, totalNumberOfComplementSubData)
+		totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:multiply(complementFeatureProbabilityVector, numberOfOldFeatureCount)
 		
 		for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 
@@ -315,17 +317,21 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 
 		end
 		
-		newComplementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, totalNumberOfComplementSubData)
+		numberOfFeatureCount = numberOfOldFeatureCount + AqwamTensorLibrary:sum(totalSumExtractedComplementFeatureVector)
+		
+		newComplementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, numberOfFeatureCount)
 
 		newComplementFeatureProbabilityMatrix[classIndex] = newComplementFeatureProbabilityVector[1]
 
 		newPriorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
+		
+		newNumberOfFeatureCountVector[classIndex] = numberOfFeatureCount
 
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 
 	end
 	
-	return newComplementFeatureProbabilityMatrix, newPriorProbabilityVector, newNumberOfDataPointVector
+	return newComplementFeatureProbabilityMatrix, newPriorProbabilityVector, numberOfFeatureCountVector, newNumberOfDataPointVector
 	
 end
 
@@ -360,12 +366,14 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		local complementFeatureProbabilityMatrix = ModelParameters[1]
 
 		local priorProbabilityVector = ModelParameters[2]
+		
+		local numberOfFeatureCountVector = ModelParameters[3]
 
-		local numberOfDataPointVector = ModelParameters[3]
+		local numberOfDataPointVector = ModelParameters[4]
 
 		if (mode == "Hybrid") then
 
-			mode = (complementFeatureProbabilityMatrix and priorProbabilityVector and numberOfDataPointVector and "Sequential") or "Batch"		
+			mode = (complementFeatureProbabilityMatrix and priorProbabilityVector and numberOfFeatureCountVector and numberOfDataPointVector and "Sequential") or "Batch"		
 
 		end
 		
@@ -413,7 +421,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		end
 
-		NewComplementNaiveBayesModel.ModelParameters = {complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector}
+		NewComplementNaiveBayesModel.ModelParameters = {complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector}
 
 		local cost = NewComplementNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 

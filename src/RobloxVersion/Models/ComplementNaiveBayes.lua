@@ -499,7 +499,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 		totalCountVector = totalCountVector or AqwamTensorLibrary:createTensor({numberOfData, 1}, 1)
 		
-		local featureProbabiltyMatrix = AqwamTensorLibrary:subtract(1, complementFeatureProbabilityMatrix)
+		local featureProbabilityMatrix = AqwamTensorLibrary:subtract(1, complementFeatureProbabilityMatrix)
 		
 		for data, unwrappedLabelVector in ipairs(labelVector) do
 
@@ -509,7 +509,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 			if (classIndex) then
 
-				local featureProbabilityArray = featureProbabiltyMatrix[classIndex]
+				local featureProbabilityArray = featureProbabilityMatrix[classIndex]
 
 				local totalCount = totalCountVector[data][1]
 

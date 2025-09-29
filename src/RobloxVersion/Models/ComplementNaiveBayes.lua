@@ -38,6 +38,37 @@ setmetatable(ComplementNaiveBayesModel, NaiveBayesBaseModel)
 
 local defaultMode = "Hybrid"
 
+local function sampleMultinomial(probabilityArray, totalCount)
+
+	local numberOfProbabilities = #probabilityArray
+
+	local remainingCount = totalCount
+
+	local featureArray = {}
+
+	for i, p in ipairs(probabilityArray) do
+
+		local count = math.floor(p * totalCount + 0.5)
+
+		featureArray[i] = count
+
+		remainingCount = remainingCount - count
+
+	end
+
+	while (remainingCount > 0) do
+
+		local idx = math.random(1, numberOfProbabilities)
+
+		featureArray[idx] = featureArray[idx] + 1
+
+		remainingCount = remainingCount - 1
+
+	end
+
+	return featureArray
+end
+
 local function calculateComplementProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector)
 
 	local complementProbability = (useLogProbabilities and 0) or 1
@@ -153,6 +184,8 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 	local complementFeatureProbabilityMatrix = {}
 
 	local priorProbabilityVector = {}
+	
+	local numberOfFeatureCountVector = {}
 
 	local numberOfDataPointVector = {}
 
@@ -165,6 +198,8 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 	local totalSumExtractedComplementFeatureVector
 
 	local complementFeatureProbabilityVector
+	
+	local numberOfFeatureCount
 
 	local numberOfSubData
 
@@ -203,22 +238,26 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 			end
 			
 		end
+		
+		numberOfFeatureCount = AqwamTensorLibrary:sum(totalSumExtractedComplementFeatureVector)
 
-		complementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, totalNumberOfComplementSubData)
+		complementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, numberOfFeatureCount)
 
 		complementFeatureProbabilityMatrix[classIndex] = complementFeatureProbabilityVector[1]
 
 		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
 		
+		numberOfFeatureCountVector[classIndex] = {numberOfFeatureCount}
+		
 		numberOfDataPointVector[classIndex] = {numberOfSubData}
 		
 	end
 	
-	return complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector
+	return complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector
 	
 end
 
-local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
 	
 	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
 	
@@ -226,7 +265,13 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 	
 	local newPriorProbabilityVector = {}
 	
+	local newNumberOfFeatureCountVector = {}
+	
 	local newNumberOfDataPointVector = {}
+	
+	local numberOfOldFeatureCount
+	
+	local numberOfFeatureCount
 	
 	local numberOfOldSubData
 
@@ -250,23 +295,11 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 
 		numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
 
-		extractedFeatureMatrix = extractedFeatureMatrixTable[classIndex]
-		
-		totalNumberOfComplementSubData = 0
-		
-		for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
-
-			if (complementClassIndex ~= classIndex) then
-				
-				totalNumberOfComplementSubData = totalNumberOfComplementSubData + numberOfDataPointVector[complementClassIndex][1]
-				
-			end
-			
-		end
+		numberOfOldFeatureCount = numberOfFeatureCountVector[classIndex][1]
 		
 		complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[classIndex]}
 		
-		totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:multiply(complementFeatureProbabilityVector, totalNumberOfComplementSubData)
+		totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:multiply(complementFeatureProbabilityVector, numberOfOldFeatureCount)
 		
 		for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 
@@ -284,17 +317,21 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 
 		end
 		
-		newComplementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, totalNumberOfComplementSubData)
+		numberOfFeatureCount = numberOfOldFeatureCount + AqwamTensorLibrary:sum(totalSumExtractedComplementFeatureVector)
+		
+		newComplementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, numberOfFeatureCount)
 
 		newComplementFeatureProbabilityMatrix[classIndex] = newComplementFeatureProbabilityVector[1]
 
 		newPriorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
+		
+		newNumberOfFeatureCountVector[classIndex] = numberOfFeatureCount
 
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 
 	end
 	
-	return newComplementFeatureProbabilityMatrix, newPriorProbabilityVector, newNumberOfDataPointVector
+	return newComplementFeatureProbabilityMatrix, newPriorProbabilityVector, numberOfFeatureCountVector, newNumberOfDataPointVector
 	
 end
 
@@ -329,12 +366,14 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		local complementFeatureProbabilityMatrix = ModelParameters[1]
 
 		local priorProbabilityVector = ModelParameters[2]
+		
+		local numberOfFeatureCountVector = ModelParameters[3]
 
-		local numberOfDataPointVector = ModelParameters[3]
+		local numberOfDataPointVector = ModelParameters[4]
 
 		if (mode == "Hybrid") then
 
-			mode = (complementFeatureProbabilityMatrix and priorProbabilityVector and numberOfDataPointVector and "Sequential") or "Batch"		
+			mode = (complementFeatureProbabilityMatrix and priorProbabilityVector and numberOfFeatureCountVector and numberOfDataPointVector and "Sequential") or "Batch"		
 
 		end
 		
@@ -382,7 +421,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		end
 
-		NewComplementNaiveBayesModel.ModelParameters = {complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector}
+		NewComplementNaiveBayesModel.ModelParameters = {complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector}
 
 		local cost = NewComplementNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
@@ -430,13 +469,13 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 	end)
 	
-	NewComplementNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
+	NewComplementNaiveBayesModel:setGenerateFunction(function(labelVector, totalCountVector)
 		
 		local numberOfData = #labelVector
 		
-		if (noiseMatrix) then
+		if (totalCountVector) then
 
-			if (numberOfData ~= #noiseMatrix) then error("The label vector and the total noise matrix does not contain the same number of rows.") end
+			if (numberOfData ~= #totalCountVector) then error("The label vector and the total count does not contain the same number of rows.") end
 
 		end
 		
@@ -450,13 +489,17 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 		local numberOfFeatures = #complementFeatureProbabilityMatrix[1]
 		
-		local selectedComplementFeatureProbabilityMatrix = {}
+		local generatedFeatureMatrix = {}
 		
 		if (useLogProbabilities) then
 			
 			complementFeatureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, complementFeatureProbabilityMatrix)
 			
 		end
+		
+		totalCountVector = totalCountVector or AqwamTensorLibrary:createTensor({numberOfData, 1}, 1)
+		
+		local featureProbabiltyMatrix = AqwamTensorLibrary:subtract(1, complementFeatureProbabilityMatrix)
 		
 		for data, unwrappedLabelVector in ipairs(labelVector) do
 
@@ -466,23 +509,19 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 			if (classIndex) then
 
-				selectedComplementFeatureProbabilityMatrix[data] = complementFeatureProbabilityMatrix[classIndex]
+				local featureProbabilityArray = featureProbabiltyMatrix[classIndex]
+
+				local totalCount = totalCountVector[data][1]
+
+				generatedFeatureMatrix[data] = sampleMultinomial(featureProbabilityArray, totalCount)
 
 			else
 
-				selectedComplementFeatureProbabilityMatrix[data] = table.create(numberOfFeatures, 0)
+				generatedFeatureMatrix[data] = table.create(numberOfFeatures, 0)
 
 			end
 
 		end
-		
-		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures})
-		
-		local selectedFeatureProbabiltyMatrix = AqwamTensorLibrary:subtract(1, selectedComplementFeatureProbabilityMatrix)
-
-		local binaryProbabilityFunction = function(noiseProbability, featureProbability) return ((noiseProbability < featureProbability) and 1) or 0 end
-		
-		local generatedFeatureMatrix = AqwamTensorLibrary:applyFunction(binaryProbabilityFunction, noiseMatrix, selectedFeatureProbabiltyMatrix)
 
 		return generatedFeatureMatrix
 		

@@ -315,7 +315,7 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 
 		newPriorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
 		
-		newNumberOfFeatureCountVector[classIndex] = numberOfFeatureCount
+		newNumberOfFeatureCountVector[classIndex] = {numberOfFeatureCount}
 
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 
@@ -401,7 +401,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
-		complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector = complementNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+		complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector = complementNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
 		
 		if (useLogProbabilities) then
 

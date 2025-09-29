@@ -307,7 +307,7 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 
 		end
 		
-		numberOfFeatureCount = numberOfOldFeatureCount + AqwamTensorLibrary:sum(totalSumExtractedComplementFeatureVector)
+		numberOfFeatureCount = AqwamTensorLibrary:sum(totalSumExtractedComplementFeatureVector)
 		
 		newComplementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, numberOfFeatureCount)
 

@@ -205,23 +205,17 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 
 	local numberOfComplementSubData
 
-	local totalNumberOfComplementSubData
-
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 
 		numberOfSubData = #extractedFeatureMatrix
 
 		totalSumExtractedComplementFeatureVector = nil
-
-		totalNumberOfComplementSubData = 0
 		
 		for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 			
 			if (complementClassIndex ~= classIndex) then
 
 				numberOfComplementSubData = #extractedComplementFeatureMatrix
-
-				totalNumberOfComplementSubData = totalNumberOfComplementSubData + numberOfComplementSubData
 
 				sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
 
@@ -277,8 +271,6 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 
 	local numberOfSubData
 	
-	local totalNumberOfComplementSubData
-	
 	local complementFeatureProbabilityVector
 	
 	local totalSumExtractedComplementFeatureVector
@@ -306,8 +298,6 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 			if (complementClassIndex ~= classIndex) then
 
 				numberOfComplementSubData = #extractedComplementFeatureMatrix
-
-				totalNumberOfComplementSubData = totalNumberOfComplementSubData + numberOfComplementSubData
 
 				sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
 

@@ -224,6 +224,12 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 		posteriorProbabilityVector[data] = {posteriorProbabilityValue}
 
 	end
+	
+	if (useLogProbabilities) then
+
+		posteriorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, posteriorProbabilityVector)
+
+	end
 
 	local cost = self:logLoss(labelVector, posteriorProbabilityVector)
 

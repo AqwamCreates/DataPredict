@@ -154,7 +154,9 @@ function NaiveBayesBaseModel:separateFeatureMatrixByClass(featureMatrix, labelVe
 
 		extractedFeatureMatrix = extractFeatureMatrixFromPosition(featureMatrix, classesPositionTable[classIndex])
 		
-		if (#extractedFeatureMatrix > 0) then extractedFeatureMatrixTable[classIndex] = extractedFeatureMatrix end
+		if (#extractedFeatureMatrix <= 0) then extractedFeatureMatrix = true end
+		
+		extractedFeatureMatrixTable[classIndex] = extractedFeatureMatrix
 
 	end
 

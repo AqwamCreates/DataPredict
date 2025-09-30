@@ -149,16 +149,24 @@ function NaiveBayesBaseModel:separateFeatureMatrixByClass(featureMatrix, labelVe
 	local extractedFeatureMatrixTable = {}
 
 	local extractedFeatureMatrix
+	
+	local numberOfFeatures
 
 	for classIndex, class in ipairs(ClassesList) do
 
 		extractedFeatureMatrix = extractFeatureMatrixFromPosition(featureMatrix, classesPositionTable[classIndex])
 
 		table.insert(extractedFeatureMatrixTable, extractedFeatureMatrix)
+		
+		if (not numberOfFeatures) then
+			
+			if (#extractedFeatureMatrix >= 1) then numberOfFeatures = #extractedFeatureMatrix[1] end
+			
+		end
 
 	end
 
-	return extractedFeatureMatrixTable
+	return extractedFeatureMatrixTable, numberOfFeatures
 
 end
 

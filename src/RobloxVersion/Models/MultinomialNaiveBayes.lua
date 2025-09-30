@@ -279,8 +279,6 @@ local function sequentialMultinomialNaiveBayes(extractedFeatureMatrixTable, numb
 	
 	local newFeatureProbabilityMatrix = {}
 	
-	local newPriorProbabilityVector = {}
-	
 	local newFeatureCountMatrix = {}
 	
 	local newNumberOfDataPointVector = {}
@@ -315,13 +313,13 @@ local function sequentialMultinomialNaiveBayes(extractedFeatureMatrixTable, numb
 
 		numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
 		
-		newPriorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
-		
 		newFeatureCountMatrix[classIndex] = totalFeatureCountVector[1]
 
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 		
 	end
+	
+	local newPriorProbabilityVector = AqwamTensorLibrary:divide(newNumberOfDataPointVector, newTotalNumberOfDataPoint)
 	
 	return newFeatureProbabilityMatrix, newPriorProbabilityVector, newFeatureCountMatrix, newNumberOfDataPointVector
 	

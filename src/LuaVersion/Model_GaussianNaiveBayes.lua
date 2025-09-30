@@ -188,7 +188,7 @@ local function batchGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData
 	
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 		
-		if (extractedFeatureMatrix) then
+		if (type(extractedFeatureMatrix) == "table") then
 			
 			numberOfSubData = #extractedFeatureMatrix
 
@@ -266,7 +266,7 @@ local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberO
 		
 		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
 		
-		if (extractedFeatureMatrix) then
+		if (type(extractedFeatureMatrix) == "table") then
 			
 			numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
 

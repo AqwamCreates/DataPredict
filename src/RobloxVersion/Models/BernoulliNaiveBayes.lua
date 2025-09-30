@@ -148,7 +148,7 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 end
 
-local function batchBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfData)
+local function batchBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
 	
 	local featureProbabilityMatrix = {}
 
@@ -161,14 +161,22 @@ local function batchBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfDat
 	local featureProbabilityVector
 
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+		
+		if (extractedFeatureMatrix) then
+			
+			numberOfSubData = #extractedFeatureMatrix
 
-		extractedFeatureMatrix = extractedFeatureMatrixTable[classIndex]
+			featureProbabilityVector = AqwamTensorLibrary:mean(extractedFeatureMatrix, 1)
 
-		numberOfSubData = #extractedFeatureMatrix
-
-		featureProbabilityVector = AqwamTensorLibrary:mean(extractedFeatureMatrix, 1)
-
-		featureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
+			featureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
+			
+		else
+			
+			numberOfSubData = 0
+			
+			featureProbabilityMatrix[classIndex] = table.create(numberOfFeatures, 0)
+			
+		end
 
 		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
 		
@@ -180,7 +188,7 @@ local function batchBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfDat
 	
 end
 
-local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
 	
 	local sumMatrix = AqwamTensorLibrary:multiply(featureProbabilityMatrix, numberOfDataPointVector)
 
@@ -196,28 +204,36 @@ local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, number
 	
 	local subSumVector
 	
-	local sumVector 
+	local sumVector
 
 	local featureProbabilityVector
 
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 		
 		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
-
-		numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
-
-		extractedFeatureMatrix = extractedFeatureMatrixTable[classIndex]
 		
-		subSumVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
+		if (extractedFeatureMatrix) then
+			
+			numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
+			
+			subSumVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
 
-		sumVector = {sumMatrix[classIndex]}
+			sumVector = {sumMatrix[classIndex]}
 
-		sumVector = AqwamTensorLibrary:add(sumVector, subSumVector)
+			sumVector = AqwamTensorLibrary:add(sumVector, subSumVector)
 
-		featureProbabilityVector = AqwamTensorLibrary:divide(sumVector, numberOfSubData)
-
-		newFeatureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
-
+			featureProbabilityVector = AqwamTensorLibrary:divide(sumVector, numberOfSubData)
+			
+			newFeatureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
+			
+		else
+			
+			numberOfSubData = numberOfOldSubData
+			
+			newFeatureProbabilityMatrix[classIndex] = featureProbabilityMatrix[classIndex]
+			
+		end
+		
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 
 	end
@@ -280,8 +296,6 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 		if (mode == "Sequential") then
 
-			local numberOfFeatures = #featureMatrix[1]
-
 			local numberOfClasses = #NewBernoulliNaiveBayes.ClassesList
 
 			local zeroValue = (useLogProbabilities and math.huge) or 0
@@ -304,7 +318,7 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
-		featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector = bernoulliNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+		featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector = bernoulliNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
 		
 		if (useLogProbabilities) then
 

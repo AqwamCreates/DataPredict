@@ -153,8 +153,8 @@ function NaiveBayesBaseModel:separateFeatureMatrixByClass(featureMatrix, labelVe
 	for classIndex, class in ipairs(ClassesList) do
 
 		extractedFeatureMatrix = extractFeatureMatrixFromPosition(featureMatrix, classesPositionTable[classIndex])
-
-		table.insert(extractedFeatureMatrixTable, extractedFeatureMatrix)
+		
+		if (#extractedFeatureMatrix > 0) then extractedFeatureMatrixTable[classIndex] = extractedFeatureMatrix end
 
 	end
 

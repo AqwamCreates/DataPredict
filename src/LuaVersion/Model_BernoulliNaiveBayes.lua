@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local NaiveBayesBaseModel = require("Model_NaiveBayesBaseModel')
+local NaiveBayesBaseModel = require("Model_NaiveBayesBaseModel")
 
 BernoulliNaiveBayesModel = {}
 
@@ -188,8 +188,6 @@ local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, number
 
 	local newFeatureProbabilityMatrix = {}
 
-	local newPriorProbabilityVector = {}
-
 	local newNumberOfDataPointVector = {}
 	
 	local numberOfOldSubData
@@ -220,11 +218,11 @@ local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, number
 
 		newFeatureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
 
-		newPriorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
-
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 
 	end
+	
+	local newPriorProbabilityVector = AqwamTensorLibrary:divide(newNumberOfDataPointVector, newTotalNumberOfDataPoint)
 
 	return newFeatureProbabilityMatrix, newPriorProbabilityVector, newNumberOfDataPointVector
 

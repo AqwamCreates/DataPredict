@@ -214,8 +214,6 @@ local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberO
 
 	local newStandardDeviationVector = {}
 
-	local newPriorProbabilityVector = {}
-
 	local newNumberOfDataPointVector = {}
 	
 	local extractedFeatureMatrix
@@ -284,11 +282,11 @@ local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberO
 
 		newStandardDeviationVector[classIndex] = newStandardDeviationVector[1]
 
-		newPriorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
-		
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 		
 	end
+	
+	local newPriorProbabilityVector = AqwamTensorLibrary:divide(newNumberOfDataPointVector, newTotalNumberOfDataPoint)
 	
 	return newMeanMatrix, newStandardDeviationVector, newPriorProbabilityVector, newNumberOfDataPointVector
 	

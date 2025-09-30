@@ -32,6 +32,7 @@
 | [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md)                                                         | None                   | Inventory Action Prediction, Strategy Profiling Based on Item Usage                      |
 | [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)                                                             | None                   | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                      |
 | [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)                                                           | None                   | Imbalanced Class Prediction (e.g. Rare Choices, Niche Paths)                             |
+| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md)                                                         | None                   | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)       |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                             |
 
 ## Clustering

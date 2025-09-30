@@ -168,7 +168,7 @@ local function batchBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfDat
 
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 		
-		if (extractedFeatureMatrix) then
+		if (type(extractedFeatureMatrix) == "table") then
 			
 			numberOfSubData = #extractedFeatureMatrix
 
@@ -218,7 +218,7 @@ local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, number
 		
 		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
 		
-		if (extractedFeatureMatrix) then
+		if (type(extractedFeatureMatrix) == "table") then
 			
 			numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
 			

@@ -257,7 +257,7 @@ local function batchMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfD
 	
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 
-		if (extractedFeatureMatrix) then
+		if (type(extractedFeatureMatrix) == "table") then
 			
 			numberOfSubData = #extractedFeatureMatrix
 
@@ -317,7 +317,7 @@ local function sequentialMultinomialNaiveBayes(extractedFeatureMatrixTable, numb
 		
 		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
 		
-		if (extractedFeatureMatrix) then
+		if (type(extractedFeatureMatrix) == "table") then
 			
 			numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
 			

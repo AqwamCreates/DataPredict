@@ -213,7 +213,7 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 		
-		if (extractedFeatureMatrix) then
+		if (type(extractedFeatureMatrix) == "table") then
 			
 			numberOfSubData = #extractedFeatureMatrix
 
@@ -301,7 +301,7 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 
 		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
 		
-		if (extractedFeatureMatrix) then
+		if (type(extractedFeatureMatrix) == "table") then
 			
 			numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
 

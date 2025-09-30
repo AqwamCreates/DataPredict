@@ -262,21 +262,21 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewBernoulliNaiveBayes = NaiveBayesBaseModel.new(parameterDictionary)
+	local NewBernoulliNaiveBayesModel = NaiveBayesBaseModel.new(parameterDictionary)
 
-	setmetatable(NewBernoulliNaiveBayes, BernoulliNaiveBayesModel)
+	setmetatable(NewBernoulliNaiveBayesModel, BernoulliNaiveBayesModel)
 	
-	NewBernoulliNaiveBayes:setName("BernoulliNaiveBayes")
+	NewBernoulliNaiveBayesModel:setName("BernoulliNaiveBayes")
 	
-	NewBernoulliNaiveBayes.mode = parameterDictionary.mode or defaultMode
+	NewBernoulliNaiveBayesModel.mode = parameterDictionary.mode or defaultMode
 	
-	NewBernoulliNaiveBayes:setTrainFunction(function(featureMatrix, labelVector)
+	NewBernoulliNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
 		
-		local mode = NewBernoulliNaiveBayes.mode
+		local mode = NewBernoulliNaiveBayesModel.mode
 
-		local useLogProbabilities = NewBernoulliNaiveBayes.useLogProbabilities
+		local useLogProbabilities = NewBernoulliNaiveBayesModel.useLogProbabilities
 
-		local ModelParameters = NewBernoulliNaiveBayes.ModelParameters or {}
+		local ModelParameters = NewBernoulliNaiveBayesModel.ModelParameters or {}
 
 		local featureProbabilityMatrix = ModelParameters[1]
 
@@ -298,11 +298,11 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 		local numberOfFeatures = #featureMatrix[1]
 
-		local extractedFeatureMatrixTable = NewBernoulliNaiveBayes:separateFeatureMatrixByClass(featureMatrix, labelVector)
+		local extractedFeatureMatrixTable = NewBernoulliNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
 
 		if (mode == "Sequential") then
 
-			local numberOfClasses = #NewBernoulliNaiveBayes.ClassesList
+			local numberOfClasses = #NewBernoulliNaiveBayesModel.ClassesList
 
 			local zeroValue = (useLogProbabilities and math.huge) or 0
 
@@ -334,21 +334,21 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 		end
 
-		NewBernoulliNaiveBayes.ModelParameters = {featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector}
+		NewBernoulliNaiveBayesModel.ModelParameters = {featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector}
 
-		local cost = NewBernoulliNaiveBayes:calculateCost(featureMatrix, labelVector)
+		local cost = NewBernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 		return {cost}
 		
 	end)
 	
-	NewBernoulliNaiveBayes:setPredictFunction(function(featureMatrix, returnOriginalOutput)
+	NewBernoulliNaiveBayesModel:setPredictFunction(function(featureMatrix, returnOriginalOutput)
 
-		local ClassesList = NewBernoulliNaiveBayes.ClassesList
+		local ClassesList = NewBernoulliNaiveBayesModel.ClassesList
 
-		local useLogProbabilities = NewBernoulliNaiveBayes.useLogProbabilities
+		local useLogProbabilities = NewBernoulliNaiveBayesModel.useLogProbabilities
 
-		local ModelParameters = NewBernoulliNaiveBayes.ModelParameters
+		local ModelParameters = NewBernoulliNaiveBayesModel.ModelParameters
 		
 		local featureProbabilityMatrix = ModelParameters[1]
 		
@@ -378,11 +378,11 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 		if (returnOriginalOutput) then return posteriorProbabilityMatrix end
 
-		return NewBernoulliNaiveBayes:getLabelFromOutputMatrix(posteriorProbabilityMatrix)
+		return NewBernoulliNaiveBayesModel:getLabelFromOutputMatrix(posteriorProbabilityMatrix)
 		
 	end)
 	
-	NewBernoulliNaiveBayes:setGenerateFunction(function(labelVector, noiseMatrix)
+	NewBernoulliNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
 		
 		local numberOfData = #labelVector
 
@@ -392,11 +392,11 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 		end
 
-		local ClassesList = NewBernoulliNaiveBayes.ClassesList
+		local ClassesList = NewBernoulliNaiveBayesModel.ClassesList
 
-		local useLogProbabilities = NewBernoulliNaiveBayes.useLogProbabilities
+		local useLogProbabilities = NewBernoulliNaiveBayesModel.useLogProbabilities
 
-		local ModelParameters = NewBernoulliNaiveBayes.ModelParameters
+		local ModelParameters = NewBernoulliNaiveBayesModel.ModelParameters
 		
 		local featureProbabilityMatrix = ModelParameters[1]
 		
@@ -438,7 +438,7 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 	end)
 
-	return NewBernoulliNaiveBayes
+	return NewBernoulliNaiveBayesModel
 
 end
 

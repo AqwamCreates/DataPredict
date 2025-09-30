@@ -45,7 +45,7 @@ local function calculateBernoulliProbability(useLogProbabilities, featureVector,
 	local functionToApply = function(featureValue, featureProbabilityValue) return (featureProbabilityValue * math.pow((1 - featureProbabilityValue), (1 - featureValue))) end
 
 	local bernoulliProbabilityVector = AqwamTensorLibrary:applyFunction(functionToApply, featureVector, featureProbabilityVector)
-
+	
 	if (useLogProbabilities) then
 
 		bernoulliProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, bernoulliProbabilityVector)
@@ -91,13 +91,13 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 end
 
 function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
-
+	
 	local useLogProbabilities = self.useLogProbabilities
 
 	local ClassesList = self.ClassesList
 
 	local ModelParameters = self.ModelParameters
-
+	
 	local featureProbabilityMatrix = ModelParameters[1]
 
 	local priorProbabilityVector = ModelParameters[2]
@@ -109,7 +109,7 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	local featureProbabilityVector
 
 	local priorProbabilityValue
-
+	
 	local posteriorProbabilityValue
 
 	local classIndex
@@ -123,29 +123,29 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 		label = labelVector[data][1]
 
 		classIndex = table.find(ClassesList, label)
-
+		
 		if (classIndex) then
-
+			
 			featureProbabilityVector = {featureProbabilityMatrix[classIndex]}
 
 			priorProbabilityValue = {priorProbabilityVector[classIndex]}
-
+			
 			posteriorProbabilityValue = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityValue)
-
+			
 		else
-
+			
 			posteriorProbabilityValue = 0
-
+			
 		end
 
 		posteriorProbabilityVector[data] = {posteriorProbabilityValue}
 
 	end
-
+	
 	if (useLogProbabilities) then
-
+		
 		posteriorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, posteriorProbabilityVector)
-
+		
 	end
 
 	local cost = self:logLoss(labelVector, posteriorProbabilityVector)
@@ -155,47 +155,47 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 end
 
 local function batchBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
-
+	
 	local featureProbabilityMatrix = {}
 
 	local priorProbabilityVector = {}
-
+	
 	local numberOfDataPointVector = {}
-
+	
 	local numberOfSubData
-
+	
 	local featureProbabilityVector
 
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
-
+		
 		if (extractedFeatureMatrix) then
-
+			
 			numberOfSubData = #extractedFeatureMatrix
 
 			featureProbabilityVector = AqwamTensorLibrary:mean(extractedFeatureMatrix, 1)
 
 			featureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
-
+			
 		else
-
+			
 			numberOfSubData = 0
-
+			
 			featureProbabilityMatrix[classIndex] = table.create(numberOfFeatures, 0)
-
+			
 		end
 
 		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
-
+		
 		numberOfDataPointVector[classIndex] = {numberOfSubData}
 
 	end
-
+	
 	return featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector
-
+	
 end
 
 local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
-
+	
 	local sumMatrix = AqwamTensorLibrary:multiply(featureProbabilityMatrix, numberOfDataPointVector)
 
 	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
@@ -203,25 +203,25 @@ local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, number
 	local newFeatureProbabilityMatrix = {}
 
 	local newNumberOfDataPointVector = {}
-
+	
 	local numberOfOldSubData
 
 	local numberOfSubData
-
+	
 	local subSumVector
-
+	
 	local sumVector
 
 	local featureProbabilityVector
 
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
-
+		
 		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
-
+		
 		if (extractedFeatureMatrix) then
-
+			
 			numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
-
+			
 			subSumVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
 
 			sumVector = {sumMatrix[classIndex]}
@@ -229,21 +229,21 @@ local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, number
 			sumVector = AqwamTensorLibrary:add(sumVector, subSumVector)
 
 			featureProbabilityVector = AqwamTensorLibrary:divide(sumVector, numberOfSubData)
-
+			
 			newFeatureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
-
+			
 		else
-
+			
 			numberOfSubData = numberOfOldSubData
-
+			
 			newFeatureProbabilityMatrix[classIndex] = featureProbabilityMatrix[classIndex]
-
+			
 		end
-
+		
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 
 	end
-
+	
 	local newPriorProbabilityVector = AqwamTensorLibrary:divide(newNumberOfDataPointVector, newTotalNumberOfDataPoint)
 
 	return newFeatureProbabilityMatrix, newPriorProbabilityVector, newNumberOfDataPointVector
@@ -251,11 +251,11 @@ local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, number
 end
 
 local bernoulliNaiveBayesFunctionList = {
-
+	
 	["Batch"] = batchBernoulliNaiveBayes,
-
+	
 	["Sequential"] = sequentialBernoulliNaiveBayes,
-
+	
 }
 
 function BernoulliNaiveBayesModel.new(parameterDictionary)
@@ -265,13 +265,13 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 	local NewBernoulliNaiveBayesModel = NaiveBayesBaseModel.new(parameterDictionary)
 
 	setmetatable(NewBernoulliNaiveBayesModel, BernoulliNaiveBayesModel)
-
+	
 	NewBernoulliNaiveBayesModel:setName("BernoulliNaiveBayes")
-
+	
 	NewBernoulliNaiveBayesModel.mode = parameterDictionary.mode or defaultMode
-
+	
 	NewBernoulliNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
-
+		
 		local mode = NewBernoulliNaiveBayesModel.mode
 
 		local useLogProbabilities = NewBernoulliNaiveBayesModel.useLogProbabilities
@@ -289,7 +289,7 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 			mode = (featureProbabilityMatrix and priorProbabilityVector and numberOfDataPointVector and "Sequential") or "Batch"		
 
 		end
-
+		
 		local bernoulliNaiveBayesFunction = bernoulliNaiveBayesFunctionList[mode]
 
 		if (not bernoulliNaiveBayesFunction) then error("Unknown mode.") end
@@ -315,7 +315,7 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
 
 		end
-
+		
 		if (useLogProbabilities) then
 
 			if (featureProbabilityMatrix) then featureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, featureProbabilityMatrix) end
@@ -323,9 +323,9 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 			if (priorProbabilityVector) then priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityVector) end
 
 		end
-
+		
 		featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector = bernoulliNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
-
+		
 		if (useLogProbabilities) then
 
 			featureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, featureProbabilityMatrix)
@@ -339,9 +339,9 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		local cost = NewBernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 		return {cost}
-
+		
 	end)
-
+	
 	NewBernoulliNaiveBayesModel:setPredictFunction(function(featureMatrix, returnOriginalOutput)
 
 		local ClassesList = NewBernoulliNaiveBayesModel.ClassesList
@@ -349,13 +349,13 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		local useLogProbabilities = NewBernoulliNaiveBayesModel.useLogProbabilities
 
 		local ModelParameters = NewBernoulliNaiveBayesModel.ModelParameters
-
+		
 		local featureProbabilityMatrix = ModelParameters[1]
-
+		
 		local priorProbabilityVector = ModelParameters[2]
-
+		
 		local numberOfData = #featureMatrix
-
+		
 		local numberOfClasses = #ClassesList
 
 		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
@@ -379,11 +379,11 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		if (returnOriginalOutput) then return posteriorProbabilityMatrix end
 
 		return NewBernoulliNaiveBayesModel:getLabelFromOutputMatrix(posteriorProbabilityMatrix)
-
+		
 	end)
-
+	
 	NewBernoulliNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
-
+		
 		local numberOfData = #labelVector
 
 		if (noiseMatrix) then
@@ -397,19 +397,19 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		local useLogProbabilities = NewBernoulliNaiveBayesModel.useLogProbabilities
 
 		local ModelParameters = NewBernoulliNaiveBayesModel.ModelParameters
-
+		
 		local featureProbabilityMatrix = ModelParameters[1]
-
+		
 		local numberOfFeatures = #featureProbabilityMatrix[1]
-
+		
 		local selectedFeatureProbabiltyMatrix = {}
-
+		
 		if (useLogProbabilities) then
 
 			featureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, featureProbabilityMatrix)
 
 		end
-
+		
 		for data, unwrappedLabelVector in ipairs(labelVector) do
 
 			local label = unwrappedLabelVector[1]
@@ -417,21 +417,21 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 			local classIndex = table.find(ClassesList, label)
 
 			if (classIndex) then
-
+				
 				selectedFeatureProbabiltyMatrix[data] = featureProbabilityMatrix[classIndex]
-
+				
 			else
-
+				
 				selectedFeatureProbabiltyMatrix[data] = table.create(numberOfFeatures, 0)
 
 			end
 
 		end
-
+		
 		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures})
-
+		
 		local binaryProbabilityFunction = function(noiseProbability, featureProbability) return ((noiseProbability < featureProbability) and 1) or 0 end
-
+		
 		local generatedFeatureMatrix = AqwamTensorLibrary:applyFunction(binaryProbabilityFunction, noiseMatrix, selectedFeatureProbabiltyMatrix)
 
 		return generatedFeatureMatrix

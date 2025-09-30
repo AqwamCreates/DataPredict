@@ -179,7 +179,7 @@ function ComplementNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 end
 
-local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData)
+local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
 	
 	local complementFeatureProbabilityMatrix = {}
 
@@ -206,42 +206,54 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 	local numberOfComplementSubData
 
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
-
-		numberOfSubData = #extractedFeatureMatrix
-
-		totalSumExtractedComplementFeatureVector = nil
 		
-		for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+		if (extractedFeatureMatrix) then
 			
-			if (complementClassIndex ~= classIndex) then
+			numberOfSubData = #extractedFeatureMatrix
 
-				numberOfComplementSubData = #extractedComplementFeatureMatrix
+			totalSumExtractedComplementFeatureVector = nil
 
-				sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
+			for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 
-				if (totalSumExtractedComplementFeatureVector) then
+				if (complementClassIndex ~= classIndex) then
 
-					totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:add(totalSumExtractedComplementFeatureVector, sumExtractedComplementFeatureVector)
+					numberOfComplementSubData = #extractedComplementFeatureMatrix
 
-				else
+					sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
 
-					totalSumExtractedComplementFeatureVector = sumExtractedComplementFeatureVector
+					if (totalSumExtractedComplementFeatureVector) then
+
+						totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:add(totalSumExtractedComplementFeatureVector, sumExtractedComplementFeatureVector)
+
+					else
+
+						totalSumExtractedComplementFeatureVector = sumExtractedComplementFeatureVector
+
+					end
 
 				end
 
 			end
+
+			numberOfFeatureCount = AqwamTensorLibrary:sum(totalSumExtractedComplementFeatureVector)
+
+			complementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, numberOfFeatureCount)
+
+			complementFeatureProbabilityMatrix[classIndex] = complementFeatureProbabilityVector[1]
+			
+		else
+
+			numberOfSubData = 0
+			
+			numberOfFeatureCount = 0
+			
+			complementFeatureProbabilityMatrix[classIndex] = table.create(numberOfFeatures, 0)
 			
 		end
 		
-		numberOfFeatureCount = AqwamTensorLibrary:sum(totalSumExtractedComplementFeatureVector)
-
-		complementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, numberOfFeatureCount)
-
-		complementFeatureProbabilityMatrix[classIndex] = complementFeatureProbabilityVector[1]
+		numberOfFeatureCountVector[classIndex] = {numberOfFeatureCount}
 
 		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
-		
-		numberOfFeatureCountVector[classIndex] = {numberOfFeatureCount}
 		
 		numberOfDataPointVector[classIndex] = {numberOfSubData}
 		
@@ -251,7 +263,7 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 	
 end
 
-local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
+local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
 	
 	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
 	
@@ -282,36 +294,48 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 
 		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
-
-		numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
-
-		numberOfOldFeatureCount = numberOfFeatureCountVector[classIndex][1]
 		
-		complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[classIndex]}
-		
-		totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:multiply(complementFeatureProbabilityVector, numberOfOldFeatureCount)
-		
-		for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+		if (extractedFeatureMatrix) then
+			
+			numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
 
-			if (complementClassIndex ~= classIndex) then
+			numberOfOldFeatureCount = numberOfFeatureCountVector[classIndex][1]
 
-				numberOfComplementSubData = #extractedComplementFeatureMatrix
+			complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[classIndex]}
 
-				sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
+			totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:multiply(complementFeatureProbabilityVector, numberOfOldFeatureCount)
 
-				totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:add(totalSumExtractedComplementFeatureVector, sumExtractedComplementFeatureVector)
+			for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+
+				if (complementClassIndex ~= classIndex) then
+
+					numberOfComplementSubData = #extractedComplementFeatureMatrix
+
+					sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
+
+					totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:add(totalSumExtractedComplementFeatureVector, sumExtractedComplementFeatureVector)
+
+				end
 
 			end
 
-		end
-		
-		numberOfFeatureCount = AqwamTensorLibrary:sum(totalSumExtractedComplementFeatureVector)
-		
-		newComplementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, numberOfFeatureCount)
+			numberOfFeatureCount = AqwamTensorLibrary:sum(totalSumExtractedComplementFeatureVector)
 
-		newComplementFeatureProbabilityMatrix[classIndex] = newComplementFeatureProbabilityVector[1]
-		
-		newNumberOfFeatureCountVector[classIndex] = {numberOfFeatureCount}
+			newComplementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, numberOfFeatureCount)
+
+			newComplementFeatureProbabilityMatrix[classIndex] = newComplementFeatureProbabilityVector[1]
+			
+			newNumberOfFeatureCountVector[classIndex] = {numberOfFeatureCount}
+			
+		else
+			
+			numberOfSubData = numberOfOldSubData
+			
+			newComplementFeatureProbabilityMatrix[classIndex] = complementFeatureProbabilityMatrix[classIndex]
+			
+			newNumberOfFeatureCountVector[classIndex] = {numberOfOldFeatureCount}
+			
+		end
 
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 
@@ -371,11 +395,11 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		local numberOfData = #featureMatrix
 		
+		local numberOfFeatures = #featureMatrix[1]
+		
 		local extractedFeatureMatrixTable = NewComplementNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
 		
 		if (mode == "Sequential") then
-
-			local numberOfFeatures = #featureMatrix[1]
 
 			local numberOfClasses = #NewComplementNaiveBayesModel.ClassesList
 
@@ -399,7 +423,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
-		complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector = complementNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
+		complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector = complementNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
 		
 		if (useLogProbabilities) then
 

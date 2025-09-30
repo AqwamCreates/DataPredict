@@ -257,8 +257,6 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 	
 	local newComplementFeatureProbabilityMatrix = {}
 	
-	local newPriorProbabilityVector = {}
-	
 	local newNumberOfFeatureCountVector = {}
 	
 	local newNumberOfDataPointVector = {}
@@ -312,14 +310,14 @@ local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numbe
 		newComplementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, numberOfFeatureCount)
 
 		newComplementFeatureProbabilityMatrix[classIndex] = newComplementFeatureProbabilityVector[1]
-
-		newPriorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
 		
 		newNumberOfFeatureCountVector[classIndex] = {numberOfFeatureCount}
 
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 
 	end
+	
+	local newPriorProbabilityVector = AqwamTensorLibrary:divide(newNumberOfDataPointVector, newTotalNumberOfDataPoint)
 	
 	return newComplementFeatureProbabilityMatrix, newPriorProbabilityVector, newNumberOfFeatureCountVector, newNumberOfDataPointVector
 	

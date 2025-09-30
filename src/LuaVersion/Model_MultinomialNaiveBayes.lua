@@ -231,7 +231,7 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 end
 
-local function batchMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfData)
+local function batchMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
 	
 	local featureProbabilityMatrix = {}
 
@@ -251,21 +251,31 @@ local function batchMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfD
 	
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 
-		extractedFeatureMatrix = extractedFeatureMatrixTable[classIndex]
+		if (extractedFeatureMatrix) then
+			
+			numberOfSubData = #extractedFeatureMatrix
 
-		numberOfSubData = #extractedFeatureMatrix
+			featureCountVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
 
-		featureCountVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
+			sumFeatureCount = AqwamTensorLibrary:sum(extractedFeatureMatrix)
 
-		sumFeatureCount = AqwamTensorLibrary:sum(extractedFeatureMatrix)
+			featureProbabilityVector = AqwamTensorLibrary:divide(featureCountVector, sumFeatureCount)
 
-		featureProbabilityVector = AqwamTensorLibrary:divide(featureCountVector, sumFeatureCount)
+			featureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
 
-		featureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
-
-		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
+			featureCountMatrix[classIndex] = featureCountVector[1]
+			
+		else
+			
+			numberOfSubData = 0
+			
+			featureProbabilityMatrix[classIndex] = table.create(numberOfFeatures, 0)
+			
+			featureCountMatrix[classIndex] = table.create(numberOfFeatures, 0)
+			
+		end
 		
-		featureCountMatrix[classIndex] = featureCountVector[1]
+		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
 		
 		numberOfDataPointVector[classIndex] = {numberOfSubData}
 		
@@ -275,11 +285,9 @@ local function batchMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfD
 	
 end
 
-local function sequentialMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
+local function sequentialMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
 	
 	local newFeatureProbabilityMatrix = {}
-	
-	local newPriorProbabilityVector = {}
 	
 	local newFeatureCountMatrix = {}
 	
@@ -301,27 +309,37 @@ local function sequentialMultinomialNaiveBayes(extractedFeatureMatrixTable, numb
 	
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 		
-		featureCountVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
-		
-		oldFeatureCountVector = {featureCountMatrix[classIndex]}
-		
-		totalFeatureCountVector = AqwamTensorLibrary:add(oldFeatureCountVector, featureCountVector)
-		
-		sumFeatureCount = AqwamTensorLibrary:sum(totalFeatureCountVector)
-		
-		newFeatureProbabilityMatrix[classIndex] = AqwamTensorLibrary:divide(totalFeatureCountVector, sumFeatureCount)[1]
-		
 		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
+		
+		if (extractedFeatureMatrix) then
+			
+			numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
+			
+			featureCountVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
 
-		numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
-		
-		newPriorProbabilityVector[classIndex] = {(numberOfSubData / newTotalNumberOfDataPoint)}
-		
-		newFeatureCountMatrix[classIndex] = totalFeatureCountVector[1]
+			oldFeatureCountVector = {featureCountMatrix[classIndex]}
+
+			totalFeatureCountVector = AqwamTensorLibrary:add(oldFeatureCountVector, featureCountVector)
+
+			sumFeatureCount = AqwamTensorLibrary:sum(totalFeatureCountVector)
+
+			newFeatureProbabilityMatrix[classIndex] = AqwamTensorLibrary:divide(totalFeatureCountVector, sumFeatureCount)[1]
+
+			newFeatureCountMatrix[classIndex] = totalFeatureCountVector[1]
+			
+		else
+			
+			numberOfSubData = numberOfOldSubData
+			
+			newFeatureProbabilityMatrix[classIndex] = featureProbabilityMatrix[classIndex]
+			
+		end
 
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 		
 	end
+	
+	local newPriorProbabilityVector = AqwamTensorLibrary:divide(newNumberOfDataPointVector, newTotalNumberOfDataPoint)
 	
 	return newFeatureProbabilityMatrix, newPriorProbabilityVector, newFeatureCountMatrix, newNumberOfDataPointVector
 	
@@ -372,10 +390,14 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 		local multinomialNaiveBayesFunction = multinomialNaiveBayesFunctionList[mode]
 
 		if (not multinomialNaiveBayesFunction) then error("Unknown mode.") end
+
+		local numberOfData = #featureMatrix
+		
+		local numberOfFeatures = #featureMatrix[1]
+
+		local extractedFeatureMatrixTable = NewMultinomialNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
 		
 		if (mode == "Sequential") then
-
-			local numberOfFeatures = #featureMatrix[1]
 
 			local numberOfClasses = #NewMultinomialNaiveBayesModel.ClassesList
 
@@ -390,10 +412,6 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
 
 		end
-
-		local numberOfData = #featureMatrix
-
-		local extractedFeatureMatrixTable = NewMultinomialNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
 		
 		if (useLogProbabilities) then
 
@@ -403,7 +421,7 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
-		featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector = multinomialNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
+		featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector = multinomialNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
 		
 		if (useLogProbabilities) then
 

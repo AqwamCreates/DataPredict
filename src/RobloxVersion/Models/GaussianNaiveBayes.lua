@@ -361,8 +361,10 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		local numberOfData = #featureMatrix
 		
 		local numberOfFeatures = #featureMatrix[1]
+		
+		local logisticMatrix = NewGaussianNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
 
-		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
+		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
 		if (mode == "Sequential") then
 
@@ -406,7 +408,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 
 		NewGaussianNaiveBayesModel.ModelParameters = {meanMatrix, standardDeviationMatrix, priorProbabilityVector, numberOfDataPointVector}
 
-		local cost = NewGaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
+		local cost = NewGaussianNaiveBayesModel:calculateCost(featureMatrix, logisticMatrix)
 
 		return {cost}
 		

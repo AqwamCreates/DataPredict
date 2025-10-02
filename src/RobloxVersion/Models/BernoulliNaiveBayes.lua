@@ -70,7 +70,7 @@ local function calculateBernoulliProbability(useLogProbabilities, featureVector,
 
 end
 
-local function calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
+local function calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityValue)
 
 	local posteriorProbability
 
@@ -78,11 +78,11 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 
 	if (useLogProbabilities) then
 
-		posteriorProbability = likelihoodProbability + priorProbabilityVector[1][1]
+		posteriorProbability = likelihoodProbability + priorProbabilityValue
 
 	else
 
-		posteriorProbability = likelihoodProbability * priorProbabilityVector[1][1]
+		posteriorProbability = likelihoodProbability * priorProbabilityValue
 
 	end
 
@@ -90,7 +90,7 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 
 end
 
-function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
+function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelMatrix)
 	
 	local useLogProbabilities = self.useLogProbabilities
 
@@ -104,51 +104,41 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local posteriorProbabilityVector = {}
 
+	local numberOfData = #featureMatrix
+
+	local numberOfClasses = #ClassesList
+
+	local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
+
 	local featureVector
 
 	local featureProbabilityVector
 
 	local priorProbabilityValue
-	
-	local posteriorProbabilityValue
-
-	local classIndex
-
-	local label
 
 	for data, unwrappedFeatureVector in ipairs(featureMatrix) do
 
 		featureVector = {unwrappedFeatureVector}
 
-		label = labelVector[data][1]
+		for class = 1, numberOfClasses, 1 do
 
-		classIndex = table.find(ClassesList, label)
-		
-		if (classIndex) then
-			
-			featureProbabilityVector = {featureProbabilityMatrix[classIndex]}
+			featureProbabilityVector = {featureProbabilityMatrix[class]}
 
-			priorProbabilityValue = {priorProbabilityVector[classIndex]}
-			
-			posteriorProbabilityValue = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityValue)
-			
-		else
-			
-			posteriorProbabilityValue = 0
-			
+			priorProbabilityValue = priorProbabilityVector[class][1]
+
+			posteriorProbabilityMatrix[data][class] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityValue)
+
 		end
 
-		posteriorProbabilityVector[data] = {posteriorProbabilityValue}
-
 	end
-	
+
 	if (useLogProbabilities) then
-		
-		posteriorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, posteriorProbabilityVector)
-		
+
+		posteriorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, posteriorProbabilityMatrix)
+
 	end
 
-	local cost = self:logLoss(labelVector, posteriorProbabilityVector)
+	local cost = self:categoricalCrossEntropy(labelMatrix, posteriorProbabilityMatrix)
 
 	return cost
 
@@ -297,8 +287,10 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		local numberOfData = #featureMatrix
 
 		local numberOfFeatures = #featureMatrix[1]
+		
+		local logisticMatrix = NewBernoulliNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
 
-		local extractedFeatureMatrixTable = NewBernoulliNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
+		local extractedFeatureMatrixTable = NewBernoulliNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 
 		if (mode == "Sequential") then
 
@@ -336,7 +328,7 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 		NewBernoulliNaiveBayesModel.ModelParameters = {featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector}
 
-		local cost = NewBernoulliNaiveBayesModel:calculateCost(featureMatrix, labelVector)
+		local cost = NewBernoulliNaiveBayesModel:calculateCost(featureMatrix, logisticMatrix)
 
 		return {cost}
 		
@@ -364,7 +356,7 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 			local featureProbabilityVector = {featureProbabilityMatrix[classIndex]}
 
-			local priorProbabilityValue = {priorProbabilityVector[classIndex]}
+			local priorProbabilityValue = priorProbabilityVector[classIndex][1]
 
 			for i = 1, numberOfData, 1 do
 

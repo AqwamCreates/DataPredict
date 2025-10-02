@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
+
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 NeuralNetworkModel = {}
@@ -33,8 +35,6 @@ NeuralNetworkModel = {}
 NeuralNetworkModel.__index = NeuralNetworkModel
 
 setmetatable(NeuralNetworkModel, GradientMethodBaseModel)
-
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local defaultCostFunction = "MeanSquaredError"
 
@@ -400,10 +400,14 @@ function NeuralNetworkModel:getActivationLayerAtFinalLayer()
 end
 
 function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
+	
+	local ModelParameters = self.ModelParameters
 
-	local numberOfNeuronsAtFinalLayer = #self.ModelParameters[#self.ModelParameters][1]
+	local ClassesList = self.ClassesList
+	
+	local numberOfNeuronsAtFinalLayer = #ModelParameters[#ModelParameters][1]
 
-	if (numberOfNeuronsAtFinalLayer ~= #self.ClassesList) then error("The number of classes are not equal to number of neurons. Please adjust your last layer using setLayers() function.") end
+	if (numberOfNeuronsAtFinalLayer ~= #ClassesList) then error("The number of classes are not equal to number of neurons. Please adjust your last layer using setLayers() function.") end
 
 	if (typeof(labelVector) == "number") then
 
@@ -437,9 +441,13 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 		label = labelVector[data][1]
 
-		labelPosition = table.find(self.ClassesList, label)
-
-		logisticMatrix[data][labelPosition] = 1
+		labelPosition = table.find(ClassesList, label)
+		
+		if (labelPosition) then
+			
+			logisticMatrix[data][labelPosition] = 1
+			
+		end
 
 	end
 

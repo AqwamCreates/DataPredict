@@ -124,40 +124,22 @@ function NaiveBayesBaseModel.new(parameterDictionary)
 	
 end
 
-function NaiveBayesBaseModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
+function NaiveBayesBaseModel:separateFeatureMatrixByClass(featureMatrix, labelMatrix)
 	
 	local ClassesList = self.ClassesList
-
-	local classesPositionTable = {}
-
-	for classIndex, class in ipairs(ClassesList) do
-
-		classesPositionTable[classIndex] = {}
-
-		for i = 1, #labelVector, 1 do
-
-			if (labelVector[i][1] == class) then
-
-				table.insert(classesPositionTable[classIndex], i)
-
-			end
-
-		end
-
-	end
-
+	
 	local extractedFeatureMatrixTable = {}
-
-	local extractedFeatureMatrix
-
-	for classIndex, class in ipairs(ClassesList) do
-
-		extractedFeatureMatrix = extractFeatureMatrixFromPosition(featureMatrix, classesPositionTable[classIndex])
+	
+	for i = 1, #ClassesList, 1 do extractedFeatureMatrixTable[i] = {} end
+	
+	for i, labelTable in ipairs(labelMatrix) do
 		
-		if (#extractedFeatureMatrix <= 0) then extractedFeatureMatrix = true end
+		for j, labelValue in ipairs(labelTable) do
+			
+			if (labelValue > 0) then table.insert(extractedFeatureMatrixTable[j], featureMatrix[i]) end
+			
+		end
 		
-		extractedFeatureMatrixTable[classIndex] = extractedFeatureMatrix
-
 	end
 
 	return extractedFeatureMatrixTable

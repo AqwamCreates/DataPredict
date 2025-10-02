@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local NaiveBayesBaseModel = require("Model_NaiveBayesBaseModel")
+local NaiveBayesBaseModel = require(s"Model_NaiveBayesBaseModel")
 
 GaussianNaiveBayesModel = {}
 

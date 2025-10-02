@@ -226,9 +226,9 @@ end
 
 function NaiveBayesBaseModel:calculateCost(labelMatrix, generatedLabelMatrix)
 	
-	local functionToApply = function (generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue)) end
+	local functionToApply = function (labelValue, generatedLabelValue) return -(labelValue * math.log(generatedLabelValue)) end
 
-	local categoricalCrossEntropyTensor = AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
+	local categoricalCrossEntropyTensor = AqwamTensorLibrary:applyFunction(functionToApply, labelMatrix, generatedLabelMatrix)
 
 	local sumCategoricalCrossEntropyValue = AqwamTensorLibrary:sum(categoricalCrossEntropyTensor)
 

@@ -1657,12 +1657,19 @@ function NeuralNetworkModel:showDetails()
 	
 	-- Calculate the maximum length for each column
 	local maxLayerLength = string.len("Layer")
+	
 	local maxNeuronsLength = string.len("Number Of Neurons")
+	
 	local maxBiasLength = string.len("Has Bias Neuron")
+	
 	local maxActivationLength = string.len("Activation Function")
+	
 	local maxLearningRateLength = string.len("Learning Rate")
+	
 	local maxOptimizerLength = string.len("Optimizer Added")
+	
 	local maxRegularizerLength = string.len("Regularizer Added")
+	
 	local maxDropoutRateLength = string.len("Dropout Rate")
 
 	local hasBias
@@ -1722,8 +1729,8 @@ function NeuralNetworkModel:showDetails()
 		string.format("%-" .. maxBiasLength .. "s", "Has Bias Neuron") .. " | " ..
 		string.format("%-" .. maxActivationLength .. "s", "Activation Function") .. " | " ..
 		string.format("%-" .. maxLearningRateLength .. "s", "Learning Rate") .. " | " ..
-		string.format("%-" .. maxOptimizerLength .. "s", "Optimizer Added") .. " | " ..
-		string.format("%-" .. maxRegularizerLength .. "s", "Regularizer Added") .. " | " .. 
+		string.format("%-" .. maxOptimizerLength .. "s", "Optimizer Name") .. " | " ..
+		string.format("%-" .. maxRegularizerLength .. "s", "Regularizer Name") .. " | " .. 
 		string.format("%-" .. maxDropoutRateLength .. "s", "Dropout Rate") .. " |" .. 
 		"\n"
 
@@ -1761,9 +1768,25 @@ function NeuralNetworkModel:showDetails()
 
 		local Regularizer = RegularizerArray[i]
 
-		if (type(Optimizer) == "table") then optimizerName = Optimizer:getName() end
+		if (type(Optimizer) == "table") then 
+			
+			optimizerName = Optimizer:getName() 
+			
+		else
+			
+			regularizerName = "None"
+			
+		end
 
-		if (type(Regularizer) == "table") then regularizerName = Regularizer:getName() end
+		if (type(Regularizer) == "table") then 
+			
+			regularizerName = Regularizer:getName() 
+			
+		else
+			
+			regularizerName = "None"
+			
+		end
 
 		local optimizerText = "| " .. string.format("%-" .. maxOptimizerLength .. "s", optimizerName) .. " "
 

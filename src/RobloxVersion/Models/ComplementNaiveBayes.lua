@@ -101,7 +101,7 @@ local function calculateComplementProbability(useLogProbabilities, featureVector
 
 end
 
-local function calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityVector)
+local function calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityValue)
 
 	local posteriorProbability
 
@@ -109,11 +109,11 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 
 	if (useLogProbabilities) then
 
-		posteriorProbability = likelihoodProbability + priorProbabilityVector[1][1]
+		posteriorProbability = likelihoodProbability + priorProbabilityValue
 
 	else
 
-		posteriorProbability = likelihoodProbability * priorProbabilityVector[1][1]
+		posteriorProbability = likelihoodProbability * priorProbabilityValue
 
 	end
 
@@ -121,7 +121,7 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 
 end
 
-function ComplementNaiveBayesModel:calculateCost(featureMatrix, labelVector)
+function ComplementNaiveBayesModel:calculateCost(featureMatrix, logisticMatrix)
 	
 	local useLogProbabilities = self.useLogProbabilities
 
@@ -132,54 +132,42 @@ function ComplementNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 	local complementFeatureProbabilityMatrix = ModelParameters[1]
 
 	local priorProbabilityVector = ModelParameters[2]
+	
+	local numberOfData = #featureMatrix
+	
+	local numberOfClasses = #ClassesList
 
-	local posteriorProbabilityVector = {}
-
+	local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
+	
 	local featureVector
 
 	local complementFeatureProbabilityVector
 
 	local priorProbabilityValue
 
-	local posteriorProbabilityValue
-
-	local classIndex
-
-	local label
-
 	for data, unwrappedFeatureVector in ipairs(featureMatrix) do
 
 		featureVector = {unwrappedFeatureVector}
-
-		label = labelVector[data][1]
-
-		classIndex = table.find(ClassesList, label)
 		
-		if (classIndex) then
+		for class = 1, numberOfClasses, 1 do
 			
-			complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[classIndex]}
+			complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[class]}
 
-			priorProbabilityValue = {priorProbabilityVector[classIndex]}
+			priorProbabilityValue = priorProbabilityVector[class][1]
 			
-			posteriorProbabilityValue = calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityValue)
-			
-		else
-			
-			posteriorProbabilityValue = 0
+			posteriorProbabilityMatrix[data][class] = calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityValue)
 			
 		end
-
-		posteriorProbabilityVector[data] = {posteriorProbabilityValue}
 
 	end
 	
 	if (useLogProbabilities) then
 
-		posteriorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, posteriorProbabilityVector)
+		posteriorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, posteriorProbabilityMatrix)
 		
 	end
 
-	local cost = self:logLoss(labelVector, posteriorProbabilityVector)
+	local cost = self:categoricalCrossEntropy(logisticMatrix, posteriorProbabilityMatrix)
 
 	return cost
 
@@ -403,7 +391,9 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 		local numberOfFeatures = #featureMatrix[1]
 		
-		local extractedFeatureMatrixTable = NewComplementNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
+		local logisticMatrix = NewComplementNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
+		
+		local extractedFeatureMatrixTable = NewComplementNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
 		if (mode == "Sequential") then
 
@@ -441,7 +431,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		NewComplementNaiveBayesModel.ModelParameters = {complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector}
 
-		local cost = NewComplementNaiveBayesModel:calculateCost(featureMatrix, labelVector)
+		local cost = NewComplementNaiveBayesModel:calculateCost(featureMatrix, logisticMatrix)
 
 		return {cost}
 		
@@ -469,7 +459,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 			local complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[classIndex]}
 
-			local priorProbabilityValue = {priorProbabilityVector[classIndex]}
+			local priorProbabilityValue = priorProbabilityVector[classIndex][1]
 
 			for i = 1, numberOfData, 1 do
 

@@ -384,12 +384,14 @@ local function createClassesList(labelVector)
 end
 
 function NeuralNetworkModel:getActivationLayerAtFinalLayer()
+	
+	local activationFunctionArray = self.activationFunctionArray
 
 	local finalLayerActivationFunctionName
+	
+	for layerNumber = #activationFunctionArray, 1, -1 do
 
-	for layerNumber = #self.activationFunctionArray, 1, -1 do
-
-		finalLayerActivationFunctionName = self.activationFunctionArray[layerNumber]
+		finalLayerActivationFunctionName = activationFunctionArray[layerNumber]
 
 		if (finalLayerActivationFunctionName ~= "None") then break end
 
@@ -846,8 +848,10 @@ end
 function NeuralNetworkModel:getLabelFromOutputMatrix(outputMatrix)
 
 	local numberOfData = #outputMatrix
+	
+	local numberOfNeuronsArray = self.numberOfNeuronsArray
 
-	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsArray[#self.numberOfNeuronsArray]
+	local numberOfNeuronsAtFinalLayer = numberOfNeuronsArray[#numberOfNeuronsArray]
 
 	local predictedLabelVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
 
@@ -934,24 +938,26 @@ function NeuralNetworkModel.new(parameterDictionary)
 end
 
 function NeuralNetworkModel:generateLayers()
+	
+	local numberOfNeuronsArray = self.numberOfNeuronsArray
 
-	local layersArray = self.numberOfNeuronsArray
+	local numberOfLayers = #numberOfNeuronsArray
 
-	local numberOfLayers = #layersArray
-
-	if (#self.numberOfNeuronsArray == 1) then error("There is only one layer!") end
+	if (numberOfLayers == 1) then error("There is only one layer!") end
 
 	local ModelParameters = {}
+	
+	local hasBiasNeuronArray = self.hasBiasNeuronArray
 
 	for layer = 1, (numberOfLayers - 1), 1 do
 
-		local numberOfCurrentLayerNeurons = layersArray[layer]
+		local numberOfCurrentLayerNeurons = numberOfNeuronsArray[layer]
 
-		if (self.hasBiasNeuronArray[layer] == 1) then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
+		if (hasBiasNeuronArray[layer] == 1) then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
 
-		local numberOfNextLayerNeurons = layersArray[layer + 1]
+		local numberOfNextLayerNeurons = numberOfNeuronsArray[layer + 1]
 
-		local hasBiasNeuronOnNextLayer = self.hasBiasNeuronArray[layer + 1] 
+		local hasBiasNeuronOnNextLayer = hasBiasNeuronArray[layer + 1] 
 
 		if (hasBiasNeuronOnNextLayer == 1) then numberOfNextLayerNeurons += 1 end
 
@@ -991,37 +997,49 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 	self.ModelParameters = nil
 
-	self.numberOfNeuronsArray = numberOfNeuronsArray
+	local numberOfNeuronsArray = numberOfNeuronsArray
 
-	self.hasBiasNeuronArray = {}
+	local hasBiasNeuronArray = {}
 
-	self.learningRateArray = {}
+	local learningRateArray = {}
 
-	self.activationFunctionArray = {}
+	local activationFunctionArray = {}
+	
+	local OptimizerArray = {}
 
-	self.dropoutRateArray = {}
+	local RegularizerArray = {}
 
-	self.OptimizerArray = {}
+	local dropoutRateArray = {}
 
-	self.RegularizerArray = {}
-
-	local numberOfLayers = #self.numberOfNeuronsArray
+	local numberOfLayers = #numberOfNeuronsArray
 
 	for layer = 1, numberOfLayers, 1 do
+		
+		hasBiasNeuronArray[layer] = ((layer == numberOfLayers) and 0) or 1
+		
+		learningRateArray[layer] = ((layer == 1) and 0) or learningRate
 
-		self.activationFunctionArray[layer] = ((layer == 1) and "None") or activationFunction
+		activationFunctionArray[layer] = ((layer == 1) and "None") or activationFunction
 
-		self.learningRateArray[layer] = ((layer == 1) and 0) or learningRate
+		OptimizerArray[layer] = OptimizerArray[layer] or 0
 
-		self.dropoutRateArray[layer] = dropoutRate
-
-		self.hasBiasNeuronArray[layer] = ((layer == numberOfLayers) and 0) or 1
-
-		self.OptimizerArray[layer] = OptimizerArray[layer] or 0
-
-		self.RegularizerArray[layer] = RegularizerArray[layer] or 0
+		RegularizerArray[layer] = RegularizerArray[layer] or 0
+		
+		dropoutRateArray[layer] = dropoutRate
 
 	end
+	
+	self.hasBiasNeuronArray = hasBiasNeuronArray
+
+	self.learningRateArray = learningRateArray
+
+	self.activationFunctionArray = activationFunctionArray
+
+	self.OptimizerArray = OptimizerArray
+
+	self.RegularizerArray = RegularizerArray
+	
+	self.dropoutRateArray = dropoutRateArray
 
 	self:generateLayers()
 
@@ -1343,10 +1361,12 @@ local function mergeLayers(numberOfNeurons, initialNeuronIndex, currentWeightMat
 end
 
 function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, size)
+	
+	local ModelParameters = self.ModelParameters
 
-	if (self.ModelParameters == nil) then error("No Model Parameters!") end
+	if (ModelParameters == nil) then error("No Model Parameters!") end
 
-	if (#self.ModelParameters == 0) then 
+	if (#ModelParameters == 0) then 
 
 		self.ModelParameters = nil
 		error("No Model Parameters!") 
@@ -1366,17 +1386,17 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 
 	if (layerNumber == numberOfLayers) then
 
-		currentWeightMatrix = self.ModelParameters[numberOfLayers - 1]
+		currentWeightMatrix = ModelParameters[numberOfLayers - 1]
 
 	elseif (layerNumber > 1) and (layerNumber < numberOfLayers) then
 
-		currentWeightMatrix = self.ModelParameters[layerNumber - 1]
-		nextWeightMatrix = self.ModelParameters[layerNumber]
+		currentWeightMatrix = ModelParameters[layerNumber - 1]
+		nextWeightMatrix = ModelParameters[layerNumber]
 
 	else
 
-		currentWeightMatrix = self.ModelParameters[1]
-		nextWeightMatrix = self.ModelParameters[2]
+		currentWeightMatrix = ModelParameters[1]
+		nextWeightMatrix = ModelParameters[2]
 
 	end
 
@@ -1477,17 +1497,17 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 
 	if (layerNumber == numberOfLayers) then
 
-		self.ModelParameters[numberOfLayers - 1] = newCurrentWeightMatrix
+		ModelParameters[numberOfLayers - 1] = newCurrentWeightMatrix
 
 	elseif (layerNumber > 1) and (layerNumber < numberOfLayers) then
 
-		self.ModelParameters[layerNumber - 1] = newCurrentWeightMatrix
-		self.ModelParameters[layerNumber] = newNextWeightMatrix
+		ModelParameters[layerNumber - 1] = newCurrentWeightMatrix
+		ModelParameters[layerNumber] = newNextWeightMatrix
 
 	else
 
-		self.ModelParameters[1] = newCurrentWeightMatrix
-		self.ModelParameters[2] = newNextWeightMatrix
+		ModelParameters[1] = newCurrentWeightMatrix
+		ModelParameters[2] = newNextWeightMatrix
 
 	end
 
@@ -1498,14 +1518,16 @@ end
 function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	local numberOfFeatures = #featureMatrix[1]
+	
+	local numberOfNeuronsArray = self.numberOfNeuronsArray
 
-	local numberOfNeuronsAtInputLayer = self.numberOfNeuronsArray[1] + self.hasBiasNeuronArray[1]
+	local numberOfNeuronsAtInputLayer = numberOfNeuronsArray[1] + numberOfNeuronsArray[1]
 
 	if (numberOfNeuronsAtInputLayer ~= numberOfFeatures) then error("Input layer has " .. numberOfNeuronsAtInputLayer .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features!") end
 
 	if (#featureMatrix ~= #labelVector) then error("Number of rows of feature matrix and the label vector is not the same!") end
-
-	local numberOfNeuronsAtFinalLayer = self.numberOfNeuronsArray[#self.numberOfNeuronsArray]
+	
+	local numberOfNeuronsAtFinalLayer = numberOfNeuronsArray[#numberOfNeuronsArray]
 	
 	local LossFunctionToApply = lossFunctionList[self.costFunction]
 
@@ -1618,6 +1640,21 @@ function NeuralNetworkModel:setClassesList(classesList)
 end
 
 function NeuralNetworkModel:showDetails()
+	
+	local numberOfNeuronsArray = self.numberOfNeuronsArray
+	
+	local hasBiasNeuronArray = self.hasBiasNeuronArray
+	
+	local activationFunctionArray = self.activationFunctionArray
+	
+	local learningRateArray = self.learningRateArray
+	
+	local OptimizerArray = self.OptimizerArray
+	
+	local RegularizerArray = self.RegularizerArray
+	
+	local dropoutRateArray = self.dropoutRateArray
+	
 	-- Calculate the maximum length for each column
 	local maxLayerLength = string.len("Layer")
 	local maxNeuronsLength = string.len("Number Of Neurons")
@@ -1634,11 +1671,11 @@ function NeuralNetworkModel:showDetails()
 
 	local regularizerName = "None"
 
-	for i = 1, #self.numberOfNeuronsArray do
+	for i = 1, #numberOfNeuronsArray, 1 do
 
-		local Optimizer = self.OptimizerArray[i]
+		local Optimizer = OptimizerArray[i]
 
-		local Regularizer = self.RegularizerArray[i]
+		local Regularizer = RegularizerArray[i]
 
 		if (type(Optimizer) == "table") then optimizerName = Optimizer:getName() end
 
@@ -1646,21 +1683,21 @@ function NeuralNetworkModel:showDetails()
 
 		maxLayerLength = math.max(maxLayerLength, string.len(tostring(i)))
 
-		maxNeuronsLength = math.max(maxNeuronsLength, string.len(tostring(self.numberOfNeuronsArray[i])))
+		maxNeuronsLength = math.max(maxNeuronsLength, string.len(tostring(numberOfNeuronsArray[i])))
 
-		hasBias = (self.hasBiasNeuronArray[i] == 1)
+		hasBias = (hasBiasNeuronArray[i] == 1)
 
 		maxBiasLength = math.max(maxBiasLength, string.len(tostring(hasBias)))
 
-		maxActivationLength = math.max(maxActivationLength, string.len(self.activationFunctionArray[i]))
+		maxActivationLength = math.max(maxActivationLength, string.len(activationFunctionArray[i]))
 
-		maxLearningRateLength = math.max(maxLearningRateLength, string.len(tostring(self.learningRateArray[i])))
+		maxLearningRateLength = math.max(maxLearningRateLength, string.len(tostring(learningRateArray[i])))
 
 		maxOptimizerLength = math.max(maxOptimizerLength, string.len(optimizerName))
 
 		maxRegularizerLength = math.max(maxRegularizerLength, string.len(regularizerName))
 
-		maxDropoutRateLength = math.max(maxDropoutRateLength, string.len(tostring(self.dropoutRateArray[i])))
+		maxDropoutRateLength = math.max(maxDropoutRateLength, string.len(tostring(dropoutRateArray[i])))
 
 	end
 
@@ -1702,7 +1739,7 @@ function NeuralNetworkModel:showDetails()
 		"\n"
 
 	-- Print the layer details
-	for i = 1, #self.numberOfNeuronsArray do
+	for i = 1, #numberOfNeuronsArray, 1 do
 
 		local optimizerName = "None"
 
@@ -1710,19 +1747,19 @@ function NeuralNetworkModel:showDetails()
 
 		local layerText = "| " .. string.format("%-" .. maxLayerLength .. "s", i) .. " "
 
-		local numberOfNeuronsText = "| " .. string.format("%-" .. maxNeuronsLength .. "s", self.numberOfNeuronsArray[i]) .. " "
+		local numberOfNeuronsText = "| " .. string.format("%-" .. maxNeuronsLength .. "s", numberOfNeuronsArray[i]) .. " "
 
-		hasBias = (self.hasBiasNeuronArray[i] == 1)
+		hasBias = (hasBiasNeuronArray[i] == 1)
 
 		local biasText = "| " .. string.format("%-" .. maxBiasLength .. "s", tostring(hasBias)) .. " "
 
-		local activationFunctionText = "| " .. string.format("%-" .. maxActivationLength .. "s", self.activationFunctionArray[i]) .. " "
+		local activationFunctionText = "| " .. string.format("%-" .. maxActivationLength .. "s", activationFunctionArray[i]) .. " "
 
-		local learningRateText = "| " .. string.format("%-" .. maxLearningRateLength .. "s", self.learningRateArray[i]) .. " "
+		local learningRateText = "| " .. string.format("%-" .. maxLearningRateLength .. "s", learningRateArray[i]) .. " "
 
-		local Optimizer = self.OptimizerArray[i]
+		local Optimizer = OptimizerArray[i]
 
-		local Regularizer = self.RegularizerArray[i]
+		local Regularizer = RegularizerArray[i]
 
 		if (type(Optimizer) == "table") then optimizerName = Optimizer:getName() end
 
@@ -1732,7 +1769,7 @@ function NeuralNetworkModel:showDetails()
 
 		local regularizerText = "| " .. string.format("%-" .. maxRegularizerLength .. "s",  regularizerName) .. " "
 
-		local dropoutRateText = "| " .. string.format("%-" .. maxDropoutRateLength .. "s", self.dropoutRateArray[i]) .. " |"
+		local dropoutRateText = "| " .. string.format("%-" .. maxDropoutRateLength .. "s", dropoutRateArray[i]) .. " |"
 
 		local stringPart = layerText .. numberOfNeuronsText .. biasText .. activationFunctionText .. learningRateText .. optimizerText .. regularizerText .. dropoutRateText .. "\n"
 

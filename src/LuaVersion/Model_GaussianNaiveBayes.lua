@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local NaiveBayesBaseModel = require(s"Model_NaiveBayesBaseModel")
+local NaiveBayesBaseModel = require("Model_NaiveBayesBaseModel")
 
 GaussianNaiveBayesModel = {}
 
@@ -438,7 +438,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 
 			local standardDeviationVector = {standardDeviationMatrix[classIndex]}
 
-			local priorProbabilityValue = {priorProbabilityVector[classIndex]}
+			local priorProbabilityValue = priorProbabilityVector[classIndex]
 
 			for i = 1, numberOfData, 1 do
 

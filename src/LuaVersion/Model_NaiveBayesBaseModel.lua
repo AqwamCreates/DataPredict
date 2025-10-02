@@ -186,6 +186,44 @@ function NaiveBayesBaseModel:processLabelVector(labelVector)
 
 end
 
+function NaiveBayesBaseModel:convertLabelVectorToLogisticMatrix(labelVector)
+
+	if (typeof(labelVector) == "number") then
+
+		labelVector = {{labelVector}}
+
+	end
+
+	local incorrectLabelValue
+
+	local numberOfData = #labelVector
+	
+	local ClassesList = self.ClassesList
+
+	local logisticMatrix = AqwamTensorLibrary:createTensor({numberOfData, #ClassesList}, 0)
+
+	local label
+
+	local labelPosition
+
+	for data = 1, numberOfData, 1 do
+
+		label = labelVector[data][1]
+		
+		labelPosition = table.find(ClassesList, label)
+		
+		if (labelPosition) then
+			
+			logisticMatrix[data][labelPosition] = 1
+			
+		end
+
+	end
+
+	return logisticMatrix
+
+end
+
 function NaiveBayesBaseModel:getLabelFromOutputMatrix(outputMatrix)
 	
 	local ClassesList = self.ClassesList
@@ -210,13 +248,15 @@ function NaiveBayesBaseModel:getLabelFromOutputMatrix(outputMatrix)
 
 		classIndexArray, highestProbability = AqwamTensorLibrary:findMaximumValueDimensionIndexArray(outputMatrix)
 
-		if (classIndexArray == nil) then continue end
+		if (classIndexArray) then
+			
+			predictedLabel = ClassesList[classIndexArray[2]]
 
-		predictedLabel = ClassesList[classIndexArray[2]]
+			predictedLabelVector[i][1] = predictedLabel
 
-		predictedLabelVector[i][1] = predictedLabel
-
-		highestProbabilityVector[i][1] = highestProbability
+			highestProbabilityVector[i][1] = highestProbability
+			
+		end
 
 	end
 

@@ -224,18 +224,16 @@ function NaiveBayesBaseModel:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function NaiveBayesBaseModel:logLoss(labelVector, predictedProbabilitiesVector)
+function NaiveBayesBaseModel:calculateCost(labelMatrix, generatedLabelMatrix)
+	
+	local functionToApply = function (labelValue, generatedLabelValue) return -(labelValue * math.log(generatedLabelValue)) end
 
-	local loglossFunction = function (y, p) return (y * math.log(p)) + ((1 - y) * math.log(1 - p)) end
+	local categoricalCrossEntropyTensor = AqwamTensorLibrary:applyFunction(functionToApply, labelMatrix, generatedLabelMatrix)
 
-	local logLossVector = AqwamTensorLibrary:applyFunction(loglossFunction, labelVector, predictedProbabilitiesVector)
+	local sumCategoricalCrossEntropyValue = AqwamTensorLibrary:sum(categoricalCrossEntropyTensor)
 
-	local logLossSum = AqwamTensorLibrary:sum(logLossVector)
-
-	local logLoss = -logLossSum / #labelVector
-
-	return logLoss
-
+	return sumCategoricalCrossEntropyValue
+	
 end
 
 function NaiveBayesBaseModel:train(featureMatrix, labelVector)

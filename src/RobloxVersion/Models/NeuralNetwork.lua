@@ -1181,7 +1181,7 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 
 	elseif (property == "Regularizer") then
 
-		value = self:getValueOrDefaultValue(value, self.OptimizerArray[layerNumber])
+		value = self:getValueOrDefaultValue(value, self.RegularizerArray[layerNumber])
 
 		value = value or 0
 
@@ -1318,18 +1318,22 @@ local function areNumbersOnlyInList(list)
 end
 
 function NeuralNetworkModel:processLabelVector(labelVector)
+	
+	local ClassesList = self.ClassesList
 
-	if (#self.ClassesList == 0) then
+	if (#ClassesList == 0) then
 
-		self.ClassesList = createClassesList(labelVector)
+		ClassesList = createClassesList(labelVector)
 
-		local areNumbersOnly = areNumbersOnlyInList(self.ClassesList)
+		local areNumbersOnly = areNumbersOnlyInList(ClassesList)
 
-		if (areNumbersOnly) then table.sort(self.ClassesList, function(a,b) return a < b end) end
+		if (areNumbersOnly) then table.sort(ClassesList, function(a,b) return a < b end) end
+		
+		self.ClassesList = ClassesList
 
 	else
 
-		if checkIfAnyLabelVectorIsNotRecognized(labelVector, self.ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector.") end
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector.") end
 
 	end
 
@@ -1372,14 +1376,18 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 		error("No Model Parameters!") 
 
 	end
+	
+	local numberOfNeuronsArray = self.numberOfNeuronsArray
+	
+	local hasBiasNeuronArray = self.hasBiasNeuronArray
 
-	local numberOfLayers = #self.numberOfNeuronsArray -- DON'T FORGET THAT IT DOES NOT INCLUDE BIAS!
+	local numberOfLayers = #numberOfNeuronsArray -- DON'T FORGET THAT IT DOES NOT INCLUDE BIAS!
 
 	if (layerNumber > numberOfLayers) then error("Layer number exceeds this model's number of layers.") end
 
-	local hasBiasNeuronValue = self.hasBiasNeuronArray[layerNumber]
+	local hasBiasNeuronValue = hasBiasNeuronArray[layerNumber]
 
-	local numberOfNeurons = self.numberOfNeuronsArray[layerNumber] + hasBiasNeuronValue
+	local numberOfNeurons = numberOfNeuronsArray[layerNumber] + hasBiasNeuronValue
 
 	local currentWeightMatrix
 	local nextWeightMatrix

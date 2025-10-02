@@ -264,7 +264,7 @@ function NaiveBayesBaseModel:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-function NaiveBayesBaseModel:calculateCost(labelMatrix, generatedLabelMatrix)
+function NaiveBayesBaseModel:categoricalCrossEntropy(labelMatrix, generatedLabelMatrix)
 	
 	local functionToApply = function (labelValue, generatedLabelValue) return -(labelValue * math.log(generatedLabelValue)) end
 

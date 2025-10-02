@@ -153,7 +153,7 @@ local function calculateMultinomialProbability(useLogProbabilities, featureVecto
 
 end
 
-local function calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
+local function calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, featureProbabilityValue)
 
 	local posteriorProbability
 
@@ -161,11 +161,11 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 
 	if (useLogProbabilities) then
 
-		posteriorProbability = likelihoodProbability + priorProbabilityVector[1][1]
+		posteriorProbability = likelihoodProbability + featureProbabilityValue
 
 	else
 
-		posteriorProbability = likelihoodProbability * priorProbabilityVector[1][1]
+		posteriorProbability = likelihoodProbability * featureProbabilityValue
 
 	end
 
@@ -173,7 +173,7 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 
 end
 
-function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
+function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelMatrix)
 	
 	local useLogProbabilities = self.useLogProbabilities
 
@@ -185,53 +185,41 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local priorProbabilityVector = ModelParameters[2]
 
-	local posteriorProbabilityVector = {}
+	local numberOfData = #featureMatrix
+
+	local numberOfClasses = #ClassesList
+
+	local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
 
 	local featureVector
 
 	local featureProbabilityVector
 
 	local priorProbabilityValue
-	
-	local posteriorProbabilityValue
-
-	local classIndex
-
-	local label
 
 	for data, unwrappedFeatureVector in ipairs(featureMatrix) do
 
 		featureVector = {unwrappedFeatureVector}
 
-		label = labelVector[data][1]
+		for class = 1, numberOfClasses, 1 do
 
-		classIndex = table.find(ClassesList, label)
-		
-		if (classIndex) then
-			
-			featureProbabilityVector = {featureProbabilityMatrix[classIndex]}
+			featureProbabilityVector = {featureProbabilityMatrix[class]}
 
-			priorProbabilityValue = {priorProbabilityVector[classIndex]}
-			
-			posteriorProbabilityValue = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityValue)
-			
-		else
-			
-			posteriorProbabilityValue = 0
+			priorProbabilityValue = priorProbabilityVector[class][1]
+
+			posteriorProbabilityMatrix[data][class] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityValue)
 
 		end
-		
-		posteriorProbabilityVector[data] = {posteriorProbabilityValue}
 
 	end
-	
+
 	if (useLogProbabilities) then
 
-		posteriorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, posteriorProbabilityVector)
+		posteriorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, posteriorProbabilityMatrix)
 
 	end
 
-	local cost = self:logLoss(labelVector, posteriorProbabilityVector)
+	local cost = self:categoricalCrossEntropy(labelMatrix, posteriorProbabilityMatrix)
 
 	return cost
 
@@ -400,8 +388,10 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 		local numberOfData = #featureMatrix
 		
 		local numberOfFeatures = #featureMatrix[1]
+		
+		local logisticMatrix = NewMultinomialNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
 
-		local extractedFeatureMatrixTable = NewMultinomialNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, labelVector)
+		local extractedFeatureMatrixTable = NewMultinomialNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
 		if (mode == "Sequential") then
 
@@ -439,7 +429,7 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 		NewMultinomialNaiveBayesModel.ModelParameters = {featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector}
 
-		local cost = NewMultinomialNaiveBayesModel:calculateCost(featureMatrix, labelVector)
+		local cost = NewMultinomialNaiveBayesModel:calculateCost(featureMatrix, logisticMatrix)
 
 		return {cost}
 		
@@ -467,13 +457,13 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 			local featureProbabilityVector = {featureProbabilityMatrix[classIndex]}
 
-			local priorProbabilityVector = {priorProbabilityMatrix[classIndex]}
+			local priorProbabilityValue = priorProbabilityMatrix[classIndex][1]
 
 			for i = 1, numberOfData, 1 do
 
 				local featureVector = {featureMatrix[i]}
 
-				posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityVector)
+				posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, featureProbabilityVector, priorProbabilityValue)
 
 			end
 

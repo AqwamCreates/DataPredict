@@ -96,7 +96,7 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 
 end
 
-function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
+function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelMatrix)
 
 	local useLogProbabilities = self.useLogProbabilities
 	
@@ -147,10 +147,8 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 		posteriorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, posteriorProbabilityMatrix)
 
 	end
-	
-	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(labelVector)
 
-	local cost = self:categoricalCrossEntropy(logisticMatrix, posteriorProbabilityMatrix)
+	local cost = self:categoricalCrossEntropy(labelMatrix, posteriorProbabilityMatrix)
 
 	return cost
 

@@ -76,7 +76,7 @@ local function calculateGaussianProbability(useLogProbabilities, featureVector, 
 
 end
 
-local function calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityVector)
+local function calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityValue)
 
 	local posteriorProbability
 
@@ -84,11 +84,11 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 
 	if (useLogProbabilities) then
 
-		posteriorProbability = likelihoodProbability + priorProbabilityVector[1][1]
+		posteriorProbability = likelihoodProbability + priorProbabilityValue
 
 	else
 
-		posteriorProbability = likelihoodProbability * priorProbabilityVector[1][1]
+		posteriorProbability = likelihoodProbability * priorProbabilityValue
 
 	end
 
@@ -110,7 +110,13 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local priorProbabilityVector = ModelParameters[3]
 
-	local posteriorProbabilityVector = {}
+	local numberOfData = #featureMatrix
+
+	local numberOfClasses = #ClassesList
+
+	local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
+	
+	local numberOfClasses = #ClassesList
 
 	local featureVector
 
@@ -120,47 +126,33 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelVector)
 
 	local priorProbabilityValue
 	
-	local posteriorProbabilityValue
-
-	local classIndex
-
-	local label
-	
 	for data, unwrappedFeatureVector in ipairs(featureMatrix) do
-		
+
 		featureVector = {unwrappedFeatureVector}
 
-		label = labelVector[data][1]
+		for class = 1, numberOfClasses, 1 do
 
-		classIndex = table.find(ClassesList, label)
-		
-		if (classIndex) then
-			
-			meanVector = {meanMatrix[classIndex]}
+			meanVector = {meanMatrix[class]}
 
-			standardDeviationVector = {standardDeviationMatrix[classIndex]}
+			standardDeviationVector = {standardDeviationMatrix[class]}
 
-			priorProbabilityValue = {priorProbabilityVector[classIndex]}
+			priorProbabilityValue = priorProbabilityVector[class][1]
 
-			posteriorProbabilityValue = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityValue)
-			
-		else
-			
-			posteriorProbabilityValue = 0
-			
+			posteriorProbabilityMatrix[data][class] = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityValue)
+
 		end
-		
-		posteriorProbabilityVector[data] = {posteriorProbabilityValue}
-		
+
 	end
 	
 	if (useLogProbabilities) then
 
-		posteriorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, posteriorProbabilityVector)
+		posteriorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, posteriorProbabilityMatrix)
 
 	end
+	
+	local logisticMatrix = self:convertLabelVectorToLogisticMatrix(labelVector)
 
-	local cost = self:logLoss(labelVector, posteriorProbabilityVector)
+	local cost = self:categoricalCrossEntropy(logisticMatrix, posteriorProbabilityMatrix)
 
 	return cost
 

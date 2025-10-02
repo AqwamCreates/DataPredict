@@ -438,7 +438,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 
 			local standardDeviationVector = {standardDeviationMatrix[classIndex]}
 
-			local priorProbabilityValue = priorProbabilityVector[classIndex]
+			local priorProbabilityValue = priorProbabilityVector[classIndex][1]
 
 			for i = 1, numberOfData, 1 do
 

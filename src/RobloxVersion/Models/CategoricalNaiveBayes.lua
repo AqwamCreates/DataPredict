@@ -38,6 +38,34 @@ setmetatable(CategoricalNaiveBayesModel, NaiveBayesBaseModel)
 
 local defaultMode = "Hybrid"
 
+local function applyFunctionToDictionaryArrayArray(functionToApply, dictionaryArrayArray)
+	
+	local newDictionaryArrayArray = {}
+	
+	for classIndex, featureDictionaryArray in ipairs(dictionaryArrayArray) do
+		
+		local newFeatureDictionaryArray = {}
+		
+		for featureIndex, featureDictionary in ipairs(featureDictionaryArray) do
+			
+			local newFeatureDictionary = {}
+			
+			for key, value in pairs(featureDictionary) do
+				
+				newFeatureDictionary[key] = functionToApply(value)
+				
+			end
+			newFeatureDictionaryArray[featureIndex] = newFeatureDictionary
+			
+		end
+		
+		newDictionaryArrayArray[classIndex] = newFeatureDictionaryArray
+		
+	end
+	
+	return newDictionaryArrayArray
+end
+
 local function calculateCategoricalProbability(useLogProbabilities, featureTable, featureProbabilityDictionaryArray)
 	
 	local probabilityInitialization = (useLogProbabilities and 0) or 1
@@ -332,7 +360,7 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 		if (useLogProbabilities) then
 
-			if (featureProbabilityDictionaryArrayArray) then featureProbabilityDictionaryArrayArray = AqwamTensorLibrary:applyFunction(math.exp, featureProbabilityDictionaryArrayArray) end
+			if (featureProbabilityDictionaryArrayArray) then featureProbabilityDictionaryArrayArray = applyFunctionToDictionaryArrayArray(math.exp, featureProbabilityDictionaryArrayArray) end
 
 			if (priorProbabilityVector) then priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityVector) end
 
@@ -342,7 +370,7 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 		if (useLogProbabilities) then
 
-			featureProbabilityDictionaryArrayArray = AqwamTensorLibrary:applyFunction(math.log, featureProbabilityDictionaryArrayArray)
+			featureProbabilityDictionaryArrayArray = applyFunctionToDictionaryArrayArray(math.log, featureProbabilityDictionaryArrayArray)
 
 			priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityVector)
 
@@ -414,11 +442,11 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 		local generatedFeatureMatrix = {}
 
-		--if (useLogProbabilities) then
+		if (useLogProbabilities) then
 
-			--featureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, featureProbabilityMatrix)
+			featureProbabilityDictionaryArrayArray = applyFunctionToDictionaryArrayArray(math.exp, featureProbabilityDictionaryArrayArray)
 
-		--end
+		end
 
 		for data, unwrappedLabelVector in ipairs(labelVector) do
 

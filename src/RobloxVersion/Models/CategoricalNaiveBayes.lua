@@ -290,11 +290,11 @@ local function sequentialCategoricalNaiveBayes(extractedFeatureMatrixTable, numb
 
 			for featureProbabilityIndex = 1, numberOfFeatures, 1 do newFeatureProbabilityDictionaryArray[featureProbabilityIndex] = {} end
 
-			for featureColumn, featureDictionary in ipairs(newFeatureDictionaryArray) do
+			for featureColumn, newFeatureDictionary in ipairs(newFeatureDictionaryArray) do
 
 				local newFeatureProbabilityDictionary = {} 
 
-				for featureKey, featureValue in pairs(featureDictionary) do
+				for featureKey, featureValue in pairs(newFeatureDictionary) do
 
 					newFeatureProbabilityDictionary[featureKey] = featureValue / numberOfSubData
 

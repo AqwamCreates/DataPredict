@@ -10,21 +10,13 @@ Before we can train and generate our models, we first need to design our feature
 
 --[[
 
-Techincally, the player combat data information is not quite necessary unless these values changes a lot or you're using it as part of enemy data generation.
+Techincally, the player combat data information can be used here if the values changes a lot or you're using it as part of enemy data generation.
 
-Otherwise, "Unconditional-Diversity-Based Enemy Data Generation Model" is more suited here.
+However, that requires "Conditional-Diversity-Based Enemy Data Generation Model".
 
 --]]
 
 -- A row of 1 is added here for "bias".
-
-local playerCombatDataMatrix = {
-
-  {1, player1MaximumHealth, player1MaximumDamage, player1CashAmount},
-  {1, player2MaximumHealth, player2MaximumDamage, player2CashAmount},
-  {1, player3MaximumHealth, player3MaximumDamage, player3CashAmount},
-
-}
 
 local enemyDataMatrix = {
 
@@ -82,7 +74,7 @@ Once you created the feature matrix, you must call model's train() function. Thi
 
 ```lua
 
-EnemyDataGenerationModel:train(enemyDataMatrix, noiseDataMatrix, playerCombatDataMatrix)
+EnemyDataGenerationModel:train(enemyDataMatrix, noiseDataMatrix)
 
 ```
 
@@ -136,9 +128,7 @@ while true do
 
     noiseVector = {{math.random()}}
 
-    playerCombatDataVector = getPlayerDataVector()
-
-    enemyDataVector = EnemyDataGenerationModel:generate(noiseVector, playerCombatDataVector)
+    enemyDataVector = EnemyDataGenerationModel:generate(noiseVector)
 
     probabilityForPlayerToInteract = EnemyDataGenerationModel:evaluate(enemyDataVector)[1][1]
 
@@ -172,9 +162,7 @@ while true do
 
   noiseVector = {{math.random()}}
 
-  playerCombatDataVector = getPlayerDataVector()
-
-  enemyDataVector = EnemyDataGenerationModel:generate(noiseVector, playerCombatDataVector)
+  enemyDataVector = EnemyDataGenerationModel:generate(noiseVector)
 
   probabilityForPlayerToInteract = EnemyDataGenerationModel:evaluate(enemyDataVector)[1][1]
 
@@ -200,17 +188,11 @@ Additionally, using the whole data is computationally expensive and may impact p
 
 --]]
 
-local playerCombatDataMatrix = {}
-
 local playerEnemyDataMatrix = {}
 
 local function onEnemyKilled(Enemy, Player)
 
-  local playerCombatDataVector = getPlayerCombatDataVector(Player)
-
   local enemyDataVector = getEnemyDataVector(Enemy)
-
-  table.insert(playerCombatDataMatrix, playerCombatDataAndEnemyDataVector[1])
 
   table.insert(playerEnemyDataMatrix, enemyDataVector[1])
 

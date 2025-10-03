@@ -235,10 +235,10 @@ local function batchCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOfD
 end
 
 local function sequentialCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector)
-
+	
+	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
+	
 	local newFeatureProbabilityDictionaryArrayArray = {}
-
-	local newPriorProbabilityVector = {}
 
 	local newNumberOfDataPointVector = {}
 	
@@ -290,11 +290,11 @@ local function sequentialCategoricalNaiveBayes(extractedFeatureMatrixTable, numb
 
 			for featureProbabilityIndex = 1, numberOfFeatures, 1 do newFeatureProbabilityDictionaryArray[featureProbabilityIndex] = {} end
 
-			for featureColumn, featureDictionary in ipairs(newFeatureDictionaryArray) do
+			for featureColumn, newFeatureDictionary in ipairs(newFeatureDictionaryArray) do
 
 				local newFeatureProbabilityDictionary = {} 
 
-				for featureKey, featureValue in pairs(featureDictionary) do
+				for featureKey, featureValue in pairs(newFeatureDictionary) do
 
 					newFeatureProbabilityDictionary[featureKey] = featureValue / numberOfSubData
 
@@ -314,11 +314,11 @@ local function sequentialCategoricalNaiveBayes(extractedFeatureMatrixTable, numb
 
 		end
 
-		newPriorProbabilityVector[classIndex] = {numberOfSubData / numberOfData}
-
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 
 	end
+	
+	local newPriorProbabilityVector = AqwamTensorLibrary:divide(newNumberOfDataPointVector, newTotalNumberOfDataPoint)
 
 	return newFeatureProbabilityDictionaryArrayArray, newPriorProbabilityVector, newNumberOfDataPointVector
 
@@ -460,9 +460,15 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 	end)
 
-	NewCategoricalNaiveBayesModel:setGenerateFunction(function(labelVector)
+	NewCategoricalNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
 
 		local numberOfData = #labelVector
+		
+		if (noiseMatrix) then
+
+			if (numberOfData ~= #noiseMatrix) then error("The label vector and the noise matrix does not contain the same number of rows.") end
+
+		end
 
 		local ClassesList = NewCategoricalNaiveBayesModel.ClassesList
 
@@ -475,6 +481,8 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 		local numberOfFeatures = #featureProbabilityDictionaryArrayArray[1]
 
 		local generatedFeatureMatrix = {}
+		
+		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures})
 
 		if (useLogProbabilities) then
 
@@ -500,7 +508,7 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 					-- Sample from categorical distribution.
 					
-					local randomProbability = math.random()
+					local randomProbability = noiseMatrix[data][featureIndex]
 					
 					local cumulativeProbability = 0
 					

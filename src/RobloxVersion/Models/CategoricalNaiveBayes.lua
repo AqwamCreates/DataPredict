@@ -383,8 +383,26 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 			local zeroValue = (useLogProbabilities and math.huge) or 0
 
 			local oneValue = (useLogProbabilities and 0) or 1
-
-			featureProbabilityDictionaryArrayArray = featureProbabilityDictionaryArrayArray or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
+			
+			if (not featureProbabilityDictionaryArrayArray) then
+				
+				featureProbabilityDictionaryArrayArray = {}
+				
+				for class = 1, numberOfClasses, 1 do
+					
+					local featureDictionaryArray = {}
+					
+					for feature = 1, numberOfFeatures, 1 do
+						
+						featureDictionaryArray[numberOfFeatures] = {}
+						
+					end
+					
+					featureProbabilityDictionaryArrayArray[class] = featureDictionaryArray
+					
+				end
+				
+			end
 
 			priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
 

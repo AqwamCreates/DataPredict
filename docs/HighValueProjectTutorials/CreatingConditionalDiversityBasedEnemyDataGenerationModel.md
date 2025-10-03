@@ -210,7 +210,7 @@ local function onEnemyKilled(Enemy, Player)
 
   local enemyDataVector = getEnemyDataVector(Enemy)
 
-  table.insert(playerCombatDataMatrix, playerCombatDataAndEnemyDataVector[1])
+  table.insert(playerCombatDataMatrix, playerCombatDataVector[1])
 
   table.insert(playerEnemyDataMatrix, enemyDataVector[1])
 

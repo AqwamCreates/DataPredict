@@ -40,13 +40,13 @@ Before we start training our model, we first need to build our model. We have sp
 
 local GeneratorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-GeneratorNeuralNetwork:addLayer(4, true) -- Three player data features, one noise feature and one bias.
+GeneratorNeuralNetwork:addLayer(1, true) -- One noise feature and one bias.
 
 GeneratorNeuralNetwork:addLayer(3, false) -- We're outputing three enemy data features and is without bias.
 
 local DiscriminatorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-DiscriminatorNeuralNetwork:addLayer(6, true) -- Three player data features, three enemy features and one bias.
+DiscriminatorNeuralNetwork:addLayer(3, true) -- Three enemy features and one bias.
 
 DiscriminatorNeuralNetwork:addLayer(1, false) -- Discriminator only outputs 1 value.
 

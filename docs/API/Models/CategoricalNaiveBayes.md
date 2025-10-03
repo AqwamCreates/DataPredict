@@ -6,7 +6,7 @@ CategoricalNaiveBayes is an supervised machine learning model that predicts whic
 
 Contains a table of matrices.
 
-* ModelParameters[1]: featureProbabilityDictionaryArrayArray.
+* ModelParameters[1][classIndex][featureIndex][featureDictionaryKey]: featureProbabilityDictionaryArrayArray.
 
 * ModelParameters[2]: priorProbabilityMatrix. The columns are the features.
 

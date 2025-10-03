@@ -444,9 +444,9 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 					
 					local chosenValue
 
-					for value, probability in pairs(featureProbabilityDictionary) do
+					for value, featureProbability in pairs(featureProbabilityDictionary) do
 						
-						cumulativeProbability = cumulativeProbability + probability
+						cumulativeProbability = cumulativeProbability + featureProbability
 						
 						if (randomProbability <= cumulativeProbability) then
 							

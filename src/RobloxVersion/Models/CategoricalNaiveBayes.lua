@@ -460,9 +460,15 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 	end)
 
-	NewCategoricalNaiveBayesModel:setGenerateFunction(function(labelVector)
+	NewCategoricalNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
 
 		local numberOfData = #labelVector
+		
+		if (noiseMatrix) then
+
+			if (numberOfData ~= #noiseMatrix) then error("The label vector and the noise matrix does not contain the same number of rows.") end
+
+		end
 
 		local ClassesList = NewCategoricalNaiveBayesModel.ClassesList
 
@@ -475,6 +481,8 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 		local numberOfFeatures = #featureProbabilityDictionaryArrayArray[1]
 
 		local generatedFeatureMatrix = {}
+		
+		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures})
 
 		if (useLogProbabilities) then
 
@@ -500,7 +508,7 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 					-- Sample from categorical distribution.
 					
-					local randomProbability = math.random()
+					local randomProbability = noiseMatrix[data][featureIndex]
 					
 					local cumulativeProbability = 0
 					

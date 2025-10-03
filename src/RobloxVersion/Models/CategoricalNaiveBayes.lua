@@ -234,63 +234,97 @@ local function batchCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOfD
 	
 end
 
-local function sequentialCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+local function sequentialCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector)
 
-	local sumMatrix = AqwamTensorLibrary:multiply(featureProbabilityMatrix, numberOfDataPointVector)
+	local newFeatureProbabilityDictionaryArrayArray = {}
 
-	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
-
-	local newFeatureProbabilityMatrix = {}
+	local newPriorProbabilityVector = {}
 
 	local newNumberOfDataPointVector = {}
-
+	
+	local featureProbabilityDictionaryArray
+	
 	local numberOfOldSubData
 
 	local numberOfSubData
-
-	local subSumVector
-
-	local sumVector
-
-	local featureProbabilityVector
+	
+	local newFeatureDictionaryArray
+	
+	local newFeatureDictionary
 
 	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
-
+		
 		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
+		
+		featureProbabilityDictionaryArray = featureProbabilityDictionaryArrayArray[classIndex]
+
+		newFeatureDictionaryArray = {}
+		
+		for featureColumn, featureDictionary in ipairs(featureProbabilityDictionaryArray) do
+			
+			newFeatureDictionary = {}
+
+			for featureKey, featureValue in pairs(featureDictionary) do newFeatureDictionary[featureKey] = featureValue * numberOfOldSubData end
+			
+			newFeatureDictionaryArray[featureColumn] = newFeatureDictionary
+			
+		end
 
 		if (type(extractedFeatureMatrix) == "table") then
 
 			numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
 
-			subSumVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
+			for _, unwrappedFeatureVector in ipairs(extractedFeatureMatrix) do
 
-			sumVector = {sumMatrix[classIndex]}
+				for featureIndex, featureValue in ipairs(unwrappedFeatureVector) do
 
-			sumVector = AqwamTensorLibrary:add(sumVector, subSumVector)
+					local featureDictionary = newFeatureDictionaryArray[featureIndex]
 
-			featureProbabilityVector = AqwamTensorLibrary:divide(sumVector, numberOfSubData)
+					featureDictionary[featureValue] = (featureDictionary[featureValue] or 0) + 1
 
-			newFeatureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
+				end
+
+			end
+			
+			local featureProbabilityDictionaryArray = {}
+
+			for featureProbabilityIndex = 1, numberOfFeatures, 1 do featureProbabilityDictionaryArray[featureProbabilityIndex] = {} end
+
+			for featureColumn, featureDictionary in ipairs(newFeatureDictionaryArray) do
+
+				local newFeatureProbabilityDictionaryArrayArray = {} 
+
+				for featureKey, featureValue in pairs(featureDictionary) do
+
+					newFeatureProbabilityDictionaryArrayArray[featureKey] = featureValue / numberOfSubData
+
+				end
+
+				newFeatureProbabilityDictionaryArrayArray[featureColumn] = newFeatureDictionary
+
+			end
 
 		else
 
 			numberOfSubData = numberOfOldSubData
-
-			newFeatureProbabilityMatrix[classIndex] = featureProbabilityMatrix[classIndex]
+			
+			newFeatureDictionaryArray = featureProbabilityDictionaryArrayArray[classIndex]
 
 		end
 
+		newPriorProbabilityVector[classIndex] = {numberOfSubData / numberOfData}
+
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
+
+		newFeatureProbabilityDictionaryArrayArray[classIndex] = featureProbabilityDictionaryArray
 
 	end
 
-	local newPriorProbabilityVector = AqwamTensorLibrary:divide(newNumberOfDataPointVector, newTotalNumberOfDataPoint)
-
-	return newFeatureProbabilityMatrix, newPriorProbabilityVector, newNumberOfDataPointVector
+	return newFeatureProbabilityDictionaryArrayArray, newPriorProbabilityVector, newNumberOfDataPointVector
 
 end
 
-local bernoulliNaiveBayesFunctionList = {
+local CategoricalNaiveBayesFunctionList = {
 
 	["Batch"] = batchCategoricalNaiveBayes,
 
@@ -330,9 +364,9 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 		end
 
-		local bernoulliNaiveBayesFunction = bernoulliNaiveBayesFunctionList[mode]
+		local categoricalNaiveBayesFunction = CategoricalNaiveBayesFunctionList[mode]
 
-		if (not bernoulliNaiveBayesFunction) then error("Unknown mode.") end
+		if (not categoricalNaiveBayesFunction) then error("Unknown mode.") end
 
 		local numberOfData = #featureMatrix
 
@@ -366,7 +400,7 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 		end
 
-		featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector = bernoulliNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector)
+		featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector = categoricalNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector)
 
 		if (useLogProbabilities) then
 

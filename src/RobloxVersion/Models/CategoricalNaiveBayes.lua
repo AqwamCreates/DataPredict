@@ -398,15 +398,9 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 	end)
 
-	NewCategoricalNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
+	NewCategoricalNaiveBayesModel:setGenerateFunction(function(labelVector)
 
 		local numberOfData = #labelVector
-
-		if (noiseMatrix) then
-
-			if (numberOfData ~= #noiseMatrix) then error("The label vector and the noise matrix does not contain the same number of rows.") end
-
-		end
 
 		local ClassesList = NewCategoricalNaiveBayesModel.ClassesList
 
@@ -442,7 +436,7 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 				for featureIndex, featureProbabilityDictionary in ipairs(featureProbabilityDictionaryArray) do
 
-					-- Sample from categorical distribution
+					-- Sample from categorical distribution.
 					
 					local randomProbability = math.random()
 					

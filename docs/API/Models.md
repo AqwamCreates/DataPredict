@@ -28,12 +28,12 @@
 | [LogisticRegression](Models/LogisticRegression.md)                                                               | Perceptron             | Purchase Likelihood Estimation, Player Churn Prediction, Confidence Prediction           |
 | [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | SVM                    | Hacking Detection, Anomaly Detection                                                     |
 | [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md)                                           | OC-SVM                 | Hacking Detection, Anomaly Detection (Using Single Class Data)                           |
-| [GaussianNaiveBayes](Models/GaussianNaiveBayes.md) (Better In Generation)                                        | None                   | Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
-| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md) (Better In Generation)                                  | None                   | Inventory Action Prediction, Strategy Profiling Based on Item Usage                      |
-| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md) (Better In Generation)                                      | None                   | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                      |
-| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md) (Better In Generation)                                    | None                   | Imbalanced Class Prediction (e.g. Rare Choices, Niche Paths)                             |
-| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md) (Better In Generation)                                  | None                   | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)       |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                             |
+| [GaussianNaiveBayes](Models/GaussianNaiveBayes.md) (Stonger As Generative Model)                                 | None                   | Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
+| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md) (Stonger As Generative Model)                           | None                   | Inventory Action Prediction, Strategy Profiling Based on Item Usage                      |
+| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md) (Stonger As Generative Model)                               | None                   | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                      |
+| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md) (Stonger As Generative Model)                             | None                   | Imbalanced Class Prediction (e.g. Rare Choices, Niche Paths)                             |
+| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md) (Stonger As Generative Model)                           | None                   | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)       |
 
 ## Clustering
 

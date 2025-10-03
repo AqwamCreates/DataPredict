@@ -126,7 +126,7 @@ while true do
 
   repeat
 
-    noiseVector = {{math.random()}}
+    noiseVector = {{1, math.random()}}
 
     enemyDataVector = EnemyDataGenerationModel:generate(noiseVector)
 
@@ -160,7 +160,7 @@ while true do
 
   if (#activeEnemyDataArray > maximumNumberOfEnemies) then continue end
 
-  noiseVector = {{math.random()}}
+  noiseVector = {{1, math.random()}}
 
   enemyDataVector = EnemyDataGenerationModel:generate(noiseVector)
 

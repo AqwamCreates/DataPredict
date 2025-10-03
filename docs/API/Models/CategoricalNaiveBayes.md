@@ -6,7 +6,7 @@ ComplementNaiveBayes is an supervised machine learning model that predicts which
 
 Contains a table of matrices.
 
-* ModelParameters[1]: complementFeatureProbabilityMatrix. The columns are the features.
+* ModelParameters[1]: featureProbabilityDictionaryArrayArray.
 
 * ModelParameters[2]: priorProbabilityMatrix. The columns are the features.
 

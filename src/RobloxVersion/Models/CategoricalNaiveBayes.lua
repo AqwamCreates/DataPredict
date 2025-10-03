@@ -235,10 +235,10 @@ local function batchCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOfD
 end
 
 local function sequentialCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector)
-
+	
+	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
+	
 	local newFeatureProbabilityDictionaryArrayArray = {}
-
-	local newPriorProbabilityVector = {}
 
 	local newNumberOfDataPointVector = {}
 	
@@ -314,11 +314,11 @@ local function sequentialCategoricalNaiveBayes(extractedFeatureMatrixTable, numb
 
 		end
 
-		newPriorProbabilityVector[classIndex] = {numberOfSubData / numberOfData}
-
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 
 	end
+	
+	local newPriorProbabilityVector = AqwamTensorLibrary:divide(newNumberOfDataPointVector, newTotalNumberOfDataPoint)
 
 	return newFeatureProbabilityDictionaryArrayArray, newPriorProbabilityVector, newNumberOfDataPointVector
 

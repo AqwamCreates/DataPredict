@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseInstance = require("Cores_BaseInstance")
+local BaseInstance = require("Core_BaseInstance")
 
 local ModelTrainingModifier = require("Other_ModelTrainingModifier")
 
@@ -280,7 +280,7 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 	
 	local isSuccessful = pcall(function()
 		
-		isAcceptable, valueArray = functionToRun(Model)
+		isAcceptable, valueArray = functionToRun()
 		
 	end)
 	
@@ -334,7 +334,7 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 				
 				isSuccessful = pcall(function()
 
-					isAcceptable, valueArray = functionToRun(Model)
+					isAcceptable, valueArray = functionToRun()
 
 				end)
 

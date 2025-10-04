@@ -28,9 +28,9 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseInstance = require("Cores_BaseInstance")
+local BaseInstance = require("Core_BaseInstance")
 
-local ModelTrainingModifier = require("Other_ModelTrainingModifier")
+local ModelTrainingModifier = require("Others_ModelTrainingModifier")
 
 local ModelSafeguardWrapper = {}
 
@@ -288,7 +288,7 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 		
 	end)
 	
-	if (isAcceptable) and (isSuccessful) then
+	if (isSuccessful) and (isAcceptable) then
 		
 		self.canUseModel = true
 		
@@ -332,7 +332,7 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 			
 			if (onDefectFunctionToRun) then 
 				
-				onDefectFunctionToRun() 
+				onDefectFunctionToRun()
 				
 				Model:setModelParameters(OriginalModelParameters)
 				
@@ -342,7 +342,7 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 
 				end)
 
-				if (isAcceptable) and (isSuccessful) then
+				if (isSuccessful) and (isAcceptable) then
 
 					self.canUseModel = true
 

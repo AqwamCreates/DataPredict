@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseInstance = require("Core_BaseInstance")
 
-local ModelTrainingModifier = require("Others_ModelTrainingModifier")
+local ModelTrainingModifier = require("Other_ModelTrainingModifier")
 
 local ModelSafeguardWrapper = {}
 
@@ -242,6 +242,8 @@ function ModelSafeguardWrapper.new(parameterDictionary)
 	
 	local Model = parameterDictionary.Model
 	
+	local isOutputPrinted = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.isOutputPrinted, Model.isOutputPrinted)
+	
 	NewModelSafeguardWrapper.Model = Model
 	
 	NewModelSafeguardWrapper.ignoreUpdateOnDefect = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.ignoreUpdateOnDefect, defaultIgnoreUpdateOnDefect)
@@ -256,7 +258,7 @@ function ModelSafeguardWrapper.new(parameterDictionary)
 	
 	NewModelSafeguardWrapper.maximumAcceptableCostMultiplier = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.maximumAcceptableCostMultiplier, defaultMaximumAcceptableCostMultiplier)
 	
-	NewModelSafeguardWrapper.ModifiedModel = parameterDictionary.ModifiedModel or ModelTrainingModifier.new({Model = Model, trainingMode = "Stochastic"})
+	NewModelSafeguardWrapper.ModifiedModel = parameterDictionary.ModifiedModel or ModelTrainingModifier.new({Model = Model, trainingMode = "Stochastic", isOutputPrinted = isOutputPrinted})
 	
 	NewModelSafeguardWrapper.canUseModel = true
 	

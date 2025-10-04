@@ -302,15 +302,13 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 	
 	Model:setModelParameters(OriginalModelParameters)
 
-	if (ignoreUpdateOnDefect) then 
+	if (ignoreUpdateOnDefect) or ((not ignoreUpdateOnDefect) and (not onDefectFunctionToRunDictionary)) then 
 
 		self.canUseModel = true
 
 		return table.unpack(valueArray or {}) 
 
 	end
-	
-	if (not onDefectFunctionToRunDictionary) then return end
 	
 	local onDefectSettingArray = {self.removeDefectiveDataOnDefect,  self.replaceValuesOnDefect, self.modifyModelOnDefect}
 

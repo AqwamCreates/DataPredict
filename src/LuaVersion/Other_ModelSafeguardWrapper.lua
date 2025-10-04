@@ -398,7 +398,11 @@ function ModelSafeguardWrapper:train(featureMatrix, labelMatrix)
 		
 		["modifyModelFunction"] = function()
 			
-			Model = self.ModifiedModel
+			local ModifiedModel = self.ModifiedModel
+			
+			if (not ModifiedModel) then return end
+			
+			Model = ModifiedModel
 			
 		end,
 		

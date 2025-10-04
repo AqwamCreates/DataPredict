@@ -1528,14 +1528,18 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	local numberOfFeatures = #featureMatrix[1]
 	
 	local numberOfNeuronsArray = self.numberOfNeuronsArray
+	
+	local hasBiasNeuronArray = self.hasBiasNeuronArray
 
-	local numberOfNeuronsAtInputLayer = numberOfNeuronsArray[1] + numberOfNeuronsArray[1]
+	local numberOfNeuronsAtInputLayer = numberOfNeuronsArray[1] + hasBiasNeuronArray[1]
 
 	if (numberOfNeuronsAtInputLayer ~= numberOfFeatures) then error("Input layer has " .. numberOfNeuronsAtInputLayer .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features!") end
 
 	if (#featureMatrix ~= #labelVector) then error("Number of rows of feature matrix and the label vector is not the same!") end
 	
-	local numberOfNeuronsAtFinalLayer = numberOfNeuronsArray[#numberOfNeuronsArray]
+	local numberOfLayers = #numberOfNeuronsArray
+	
+	local numberOfNeuronsAtFinalLayer = numberOfNeuronsArray[numberOfLayers] + hasBiasNeuronArray[numberOfLayers]
 	
 	local LossFunctionToApply = lossFunctionList[self.costFunction]
 

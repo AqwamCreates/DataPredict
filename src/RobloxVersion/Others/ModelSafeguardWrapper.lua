@@ -288,7 +288,7 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 		
 	end)
 	
-	if (isAcceptable) and (isSuccessful) then
+	if (isSuccessful) and (isAcceptable) then
 		
 		self.canUseModel = true
 		
@@ -332,7 +332,7 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 			
 			if (onDefectFunctionToRun) then 
 				
-				onDefectFunctionToRun() 
+				onDefectFunctionToRun()
 				
 				Model:setModelParameters(OriginalModelParameters)
 				
@@ -342,7 +342,7 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 
 				end)
 
-				if (isAcceptable) and (isSuccessful) then
+				if (isSuccessful) and (isAcceptable) then
 
 					self.canUseModel = true
 

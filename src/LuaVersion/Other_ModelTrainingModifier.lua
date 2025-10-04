@@ -132,6 +132,10 @@ function ModelTrainingModifier:miniBatchTrain(...)
 	
 	local costArray = {}
 	
+	local Model = self.Model
+	
+	local isOutputPrinted = self.isOutputPrinted
+	
 	for currentBatchNumber = 1, numberOfBatches, 1 do
 		
 		local currentMatrixBatchArray = {}
@@ -142,13 +146,13 @@ function ModelTrainingModifier:miniBatchTrain(...)
 			
 		end
 
-		local miniBatchCostArray = self.Model:train(table.unpack(currentMatrixBatchArray))
+		local miniBatchCostArray = Model:train(table.unpack(currentMatrixBatchArray))
 		
 		local cost = miniBatchCostArray[#miniBatchCostArray]
 		
-		table.insert(costArray, costArray)
+		table.insert(costArray, cost)
 		
-		if (self.isOutputPrinted) then print("Epoch: " .. currentBatchNumber .. "\t\t\tFinal cost: " .. cost) end
+		if (isOutputPrinted) then print("Batch: " .. currentBatchNumber .. "\t\t\tFinal cost: " .. cost) end
 		
 	end
 	
@@ -172,6 +176,14 @@ function ModelTrainingModifier:stochasticTrain(...)
 	
 	local costArray = {}
 	
+	local Model = self.Model
+	
+	local isOutputPrinted = self.isOutputPrinted
+	
+	local originalMaximumNumberOfIterations = Model.maximumNumberOfIterations
+	
+	Model.maximumNumberOfIterations = 1
+	
 	for dataIndex = 1, numberOfData, 1 do
 		
 		local currentMatrixBatchArray = {}
@@ -182,15 +194,17 @@ function ModelTrainingModifier:stochasticTrain(...)
 			
 		end
 		
-		local stochasticCostArray = self.Model:train(table.unpack(currentMatrixBatchArray))
+		local stochasticCostArray = Model:train(table.unpack(currentMatrixBatchArray))
 		
 		local cost = stochasticCostArray[#stochasticCostArray]
 		
 		table.insert(costArray, cost)
 		
-		if (self.isOutputPrinted) then print("Data number: " .. dataIndex .. "\t\tFinal cost: " .. cost) end
+		if (isOutputPrinted) then print("Data number: " .. dataIndex .. "\t\tFinal cost: " .. cost) end
 		
 	end
+	
+	Model.maximumNumberOfIterations = originalMaximumNumberOfIterations
 	
 	return costArray
 

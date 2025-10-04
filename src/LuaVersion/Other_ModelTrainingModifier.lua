@@ -132,6 +132,8 @@ function ModelTrainingModifier:miniBatchTrain(...)
 	
 	local costArray = {}
 	
+	local Model = self.Model
+	
 	for currentBatchNumber = 1, numberOfBatches, 1 do
 		
 		local currentMatrixBatchArray = {}
@@ -142,7 +144,7 @@ function ModelTrainingModifier:miniBatchTrain(...)
 			
 		end
 
-		local miniBatchCostArray = self.Model:train(table.unpack(currentMatrixBatchArray))
+		local miniBatchCostArray = Model:train(table.unpack(currentMatrixBatchArray))
 		
 		local cost = miniBatchCostArray[#miniBatchCostArray]
 		
@@ -172,6 +174,8 @@ function ModelTrainingModifier:stochasticTrain(...)
 	
 	local costArray = {}
 	
+	local Model = self.Model
+	
 	for dataIndex = 1, numberOfData, 1 do
 		
 		local currentMatrixBatchArray = {}
@@ -182,7 +186,7 @@ function ModelTrainingModifier:stochasticTrain(...)
 			
 		end
 		
-		local stochasticCostArray = self.Model:train(table.unpack(currentMatrixBatchArray))
+		local stochasticCostArray = Model:train(table.unpack(currentMatrixBatchArray))
 		
 		local cost = stochasticCostArray[#stochasticCostArray]
 		

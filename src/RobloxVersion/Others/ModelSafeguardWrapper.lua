@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
+local ModelTrainingModifier = require(script.Parent.ModelTrainingModifier)
+
 local ModelSafeguardWrapper = {}
 
 ModelSafeguardWrapper.__index = ModelSafeguardWrapper
@@ -40,9 +42,33 @@ local defaultIgnoreUpdateOnDefect = false
 
 local defaultRemoveDefectiveDataOnDefect = true
 
+local defaultReplaceValuesOnDefect = true
+
+local defaultModifyModelOnDefect = true
+
 local defaultStoreDefectiveUpdateInformation = false
 
 local defaultMaximumAcceptableCostMultiplier = 1
+
+local function checkIfAllAreNumbers(matrix)
+	
+	local numberOfRows = #matrix
+	
+	local numberOfColumns = #matrix[1]
+	
+	for row = 1, numberOfRows, 1 do
+		
+		for column = 1, numberOfColumns, 1 do
+			
+			if (type(matrix[row][column]) ~= "number") then return false end
+			
+		end
+		
+	end
+	
+	return true
+	
+end
 
 local function getMaximumAcceptableCost(featureMatrix, labelMatrix, ClassesList)
 	
@@ -220,6 +246,10 @@ function ModelSafeguardWrapper.new(parameterDictionary)
 	
 	NewModelSafeguardWrapper.removeDefectiveDataOnDefect = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.removeDefectiveDataOnDefect, defaultRemoveDefectiveDataOnDefect)
 	
+	NewModelSafeguardWrapper.replaceValuesOnDefect = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.replaceValuesOnDefect, defaultReplaceValuesOnDefect)
+	
+	NewModelSafeguardWrapper.modifyModelOnDefect = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.modifyModelOnDefect, defaultModifyModelOnDefect)
+	
 	NewModelSafeguardWrapper.storeDefectiveUpdateInformation = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.storeDefectiveUpdateInformation, defaultStoreDefectiveUpdateInformation)
 	
 	NewModelSafeguardWrapper.maximumAcceptableCostMultiplier = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.maximumAcceptableCostMultiplier, defaultMaximumAcceptableCostMultiplier)
@@ -232,15 +262,11 @@ function ModelSafeguardWrapper.new(parameterDictionary)
 	
 end
 
-function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, functionToRun, removeDefectFunction)
+function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functionToRun, onDefectFunctionToRunDictionary)
 	
 	self.canUseModel = false
 
-	local Model = self.Model
-
 	local ignoreUpdateOnDefect = self.ignoreUpdateOnDefect
-
-	local removeDefectiveDataOnDefect = self.removeDefectiveDataOnDefect
 
 	local storeDefectiveUpdateInformation = self.storeDefectiveUpdateInformation
 	
@@ -283,20 +309,66 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, functionToRun,
 		return table.unpack(valueArray or {}) 
 
 	end
+	
+	if (not onDefectFunctionToRunDictionary) then return end
+	
+	local onDefectSettingArray = {self.removeDefectiveDataOnDefect,  self.replaceValuesOnDefect, self.modifyModelOnDefect}
 
-	if (removeDefectiveDataOnDefect) and (removeDefectFunction) then
+	local onDefectFunctionNameArray = {"removeDefectFunction", "replaceValueFunction", "modifyModelFunction"}
+	
+	local onDefectFunctionName
 
-		removeDefectFunction()
+	local onDefectFunctionToRun
+	
+	for i, value in ipairs(onDefectSettingArray) do
+		
+		if (value) then
+			
+			onDefectFunctionName = onDefectFunctionNameArray[i]
+			
+			onDefectFunctionToRun = onDefectFunctionToRunDictionary[onDefectFunctionName]
+			
+			if (onDefectFunctionToRun) then 
+				
+				onDefectFunctionToRun() 
+				
+				isSuccessful = pcall(function()
 
+					isAcceptable, valueArray = functionToRun(Model) -- Once defective data is removed, run the function again to use the model with the updated data.
+
+				end)
+
+				if (isAcceptable) and (isSuccessful) then
+
+					self.canUseModel = true
+
+					return table.unpack(valueArray or {})
+					
+				else
+					
+					Model:setModelParameters(OriginalModelParameters)
+
+				end
+				
+			end
+			
+		end
+		
 	end
 	
-	isAcceptable, valueArray = functionToRun(Model) -- Once defective data is removed, run the function again to use the model with the updated data.
+	self.canUseModel = true
 	
 	return table.unpack(valueArray or {})
 	
 end
 
 function ModelSafeguardWrapper:train(featureMatrix, labelMatrix)
+	
+	local Model = self.Model
+
+	local ClassesList = Model.ClassesList
+	
+	local maximumAcceptableCostMultiplier = self.maximumAcceptableCostMultiplier
 	
 	local costArray
 	
@@ -306,11 +378,31 @@ function ModelSafeguardWrapper:train(featureMatrix, labelMatrix)
 	
 	local maximumAcceptableCost
 	
-	local ClassesList = self.Model.ClassesList
+	local onDefectFunctionToRunDictionary = {
+		
+		["removeDefectFunction"] = function()
+			
+			featureMatrix, labelMatrix = removeDefectiveData(featureMatrix, labelMatrix, ClassesList)
+			
+		end,
+		
+		["replaceValueFunction"] = function()
+			
+			if (not checkIfAllAreNumbers(featureMatrix)) then return end
+
+			featureMatrix = AqwamTensorLibrary:zScoreNormalization(featureMatrix, 2)
+			
+		end,
+		
+		["modifyModelFunction"] = function()
+			
+			Model = ModelTrainingModifier.new({Model = Model, trainingMode = "Stochastic"})
+			
+		end,
+		
+	}
 	
-	local maximumAcceptableCostMultiplier = self.maximumAcceptableCostMultiplier
-	
-	self:runSandboxedEnvironment("train", function(Model)
+	self:runSandboxedEnvironment("train", Model, function()
 		
 		costArray = Model:train(featureMatrix, labelMatrix)
 		
@@ -322,11 +414,7 @@ function ModelSafeguardWrapper:train(featureMatrix, labelMatrix)
 		
 		return isAcceptableValue, {costArray}
 		
-	end, function()
-		
-		featureMatrix, labelMatrix = removeDefectiveData(featureMatrix, labelMatrix, ClassesList)
-		
-	end)
+	end, onDefectFunctionToRunDictionary)
 	
 	return costArray or {}
 	
@@ -334,11 +422,13 @@ end
 
 function ModelSafeguardWrapper:update(...)
 	
+	local Model = self.Model
+	
 	local valueArray = {...}
 	
 	local UpdatedModelParameters
 
-	self:runSandboxedEnvironment("update", function(Model)
+	self:runSandboxedEnvironment("update", Model, function()
 
 		Model:update(table.unpack(valueArray))
 		

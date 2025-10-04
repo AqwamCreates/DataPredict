@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseInstance = require("Core_BaseInstance")
+local BaseInstance = require("Cores_BaseInstance")
 
 local ModelTrainingModifier = require("Other_ModelTrainingModifier")
 
@@ -240,7 +240,9 @@ function ModelSafeguardWrapper.new(parameterDictionary)
 	
 	NewModelSafeguardWrapper:setClassName("ModelSafeguardWrapper")
 	
-	NewModelSafeguardWrapper.Model = parameterDictionary.Model
+	local Model = parameterDictionary.Model
+	
+	NewModelSafeguardWrapper.Model = Model
 	
 	NewModelSafeguardWrapper.ignoreUpdateOnDefect = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.ignoreUpdateOnDefect, defaultIgnoreUpdateOnDefect)
 	
@@ -253,6 +255,8 @@ function ModelSafeguardWrapper.new(parameterDictionary)
 	NewModelSafeguardWrapper.storeDefectiveUpdateInformation = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.storeDefectiveUpdateInformation, defaultStoreDefectiveUpdateInformation)
 	
 	NewModelSafeguardWrapper.maximumAcceptableCostMultiplier = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.maximumAcceptableCostMultiplier, defaultMaximumAcceptableCostMultiplier)
+	
+	NewModelSafeguardWrapper.ModifiedModel = parameterDictionary.ModifiedModel or ModelTrainingModifier.new({Model = Model, trainingMode = "Stochastic"})
 	
 	NewModelSafeguardWrapper.canUseModel = true
 	
@@ -394,7 +398,7 @@ function ModelSafeguardWrapper:train(featureMatrix, labelMatrix)
 		
 		["modifyModelFunction"] = function()
 			
-			Model = ModelTrainingModifier.new({Model = Model, trainingMode = "Stochastic"})
+			Model = self.ModifiedModel
 			
 		end,
 		

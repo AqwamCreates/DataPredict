@@ -2,7 +2,25 @@
 
 ## Before You Train Or Update Your Model Parameters, Save!
 
-Under this section, the code shown below demonstrates on how you detect defective model parameters before you can produce prediction and perform a rollback.
+Under this section, the code shown below demonstrates on how you detect defective model parameters before you can produce prediction and perform a rollback. We will show you two methods of doing this:
+
+* Method 1: Using ModelSafeguardWrapper
+
+* Method 2: Using Manual
+
+### Method 1: Using ModelSafeguardWrapper
+
+ModelSafeguardWrapper contains useful modifications that automatically restores old model parameters upon detecting problematic cost value and removal of defective data. Below, we will show you how to create this object.
+
+```lua
+
+local SafeguardedModel = DataPredict.Others.ModelSafeguardWrapper.new({Model = Model})
+
+local costArray = SafeguardedModel:train(featureMatrix, labelVector) -- You can now call train() with the added advantage of model parameters rollback.
+
+```
+
+### Method 2: Using Manual
 
 ```lua
 

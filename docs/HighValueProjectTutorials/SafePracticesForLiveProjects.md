@@ -18,6 +18,8 @@ local SafeguardedModel = DataPredict.Others.ModelSafeguardWrapper.new({Model = M
 
 local costArray = SafeguardedModel:train(featureMatrix, labelVector) -- You can now call train() with the added advantage of model parameters rollback.
 
+local predictedLabelVector = SafeguardedModel:predict(featureMatrix) -- You can also use predict() as usual without grabbing the original model.
+
 ```
 
 ### Method 2: Using Manual

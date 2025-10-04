@@ -334,7 +334,7 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 				
 				isSuccessful = pcall(function()
 
-					isAcceptable, valueArray = functionToRun(Model) -- Once defective data is removed, run the function again to use the model with the updated data.
+					isAcceptable, valueArray = functionToRun(Model)
 
 				end)
 

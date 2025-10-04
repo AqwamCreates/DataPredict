@@ -280,7 +280,7 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 	
 	local isSuccessful = pcall(function()
 		
-		isAcceptable, valueArray = functionToRun(Model)
+		isAcceptable, valueArray = functionToRun()
 		
 	end)
 	
@@ -334,7 +334,7 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 				
 				isSuccessful = pcall(function()
 
-					isAcceptable, valueArray = functionToRun(Model)
+					isAcceptable, valueArray = functionToRun()
 
 				end)
 

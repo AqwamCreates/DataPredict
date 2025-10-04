@@ -330,6 +330,8 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 				
 				onDefectFunctionToRun() 
 				
+				Model:setModelParameters(OriginalModelParameters)
+				
 				isSuccessful = pcall(function()
 
 					isAcceptable, valueArray = functionToRun(Model) -- Once defective data is removed, run the function again to use the model with the updated data.
@@ -341,10 +343,6 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 					self.canUseModel = true
 
 					return table.unpack(valueArray or {})
-					
-				else
-					
-					Model:setModelParameters(OriginalModelParameters)
 
 				end
 				
@@ -353,6 +351,8 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 		end
 		
 	end
+	
+	Model:setModelParameters(OriginalModelParameters)
 	
 	self.canUseModel = true
 	

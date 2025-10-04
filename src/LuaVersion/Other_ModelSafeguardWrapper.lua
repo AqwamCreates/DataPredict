@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseInstance = require("Cores_BaseInstance")
 
-local ModelTrainingModifier = require("Others_ModelTrainingModifier")
+local ModelTrainingModifier = require("Other_ModelTrainingModifier")
 
 local ModelSafeguardWrapper = {}
 

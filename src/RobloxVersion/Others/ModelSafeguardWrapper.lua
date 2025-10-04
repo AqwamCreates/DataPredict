@@ -256,7 +256,7 @@ function ModelSafeguardWrapper.new(parameterDictionary)
 	
 	NewModelSafeguardWrapper.maximumAcceptableCostMultiplier = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.maximumAcceptableCostMultiplier, defaultMaximumAcceptableCostMultiplier)
 	
-	NewModelSafeguardWrapper.ModifiedModel = parameterDictionary.ModifiedModel or NewModelSafeguardWrapper.Model.ModelTrainingModifier.new({Model = Model, trainingMode = "Stochastic"})
+	NewModelSafeguardWrapper.ModifiedModel = parameterDictionary.ModifiedModel or ModelTrainingModifier.new({Model = Model, trainingMode = "Stochastic"})
 	
 	NewModelSafeguardWrapper.canUseModel = true
 	

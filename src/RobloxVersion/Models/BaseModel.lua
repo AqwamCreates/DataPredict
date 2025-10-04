@@ -64,7 +64,7 @@ end
 
 function BaseModel:getModelParameters(doNotDeepCopy)
 	
-	if doNotDeepCopy then
+	if (doNotDeepCopy) then
 		
 		return self.ModelParameters
 		
@@ -78,11 +78,11 @@ end
 
 function BaseModel:setModelParameters(ModelParameters, doNotDeepCopy)
 	
-	if ModelParameters and doNotDeepCopy then
+	if (doNotDeepCopy) then
 		
 		self.ModelParameters = ModelParameters
 		
-	elseif ModelParameters and not doNotDeepCopy then
+	else
 		
 		self.ModelParameters = self:deepCopyTable(ModelParameters) 
 		

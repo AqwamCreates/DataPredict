@@ -2,12 +2,6 @@
 
 Hello guys! Today, I will be showing you on how to create a retention-based model that could predict unusual player behavior that often correlates with churn or suspicious actions.
 
-Currently, you need these to produce the model:
-
-* One Class Support Vector Machine (Not Support Vector Machine) or Expectation Maximization approach
-
-* A player data that is stored in matrix
-
 ## Setting Up
 
 Before we train our model, we will first need to construct a model, in which we have two approaches:
@@ -15,7 +9,7 @@ Before we train our model, we will first need to construct a model, in which we 
 | Approach | Model                            | Properties                     | Notes                                                                                                                                         |
 | -------- | -------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1        | Gaussian Naive Bayes             | Incremental, Generative        | Not commonly used in anomaly detection; fast, can be updated with partial data, requries features are independent (rare in real player data). |
-| 2        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based  | Good for anomaly detection; cannot be updated once trained, heavier to run, best with RadialBasisFunction kernel.                             |
+| 2        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based  | Good for anomaly detection; cannot be updated once trained, heavier to run, best with best with "radial basis function" kernel.               |
 | 3        | Expectation-Maximization         | Non-Incremental, Probabilistic | Good for anomaly detection; cannot be updated once trained, can produce multiple "normal" clusters (e.g. different player playstyles).        |
 
 ### Approach 1: Gaussian Naive Bayes

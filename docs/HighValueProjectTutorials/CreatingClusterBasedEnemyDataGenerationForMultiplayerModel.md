@@ -1,4 +1,4 @@
-# Creating Cluster-Based Enemy Data Generation Model
+# Creating Cluster-Based Enemy Data Generation For Multiplayer Model
 
 Hi guys! In this tutorial, we will demonstrate on how to create cluster-based enemy data generation model so that the enemies are not too easy or too hard for everyone in PvE modes.
 

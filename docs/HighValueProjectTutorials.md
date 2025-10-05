@@ -136,9 +136,17 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Cluster-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingClusterBasedEnemyDataGenerationModel.md)
+* [Creating Cluster-Based Enemy Data Generation Multiplayer Model](HighValueProjectTutorials/CreatingClusterBasedEnemyDataGenerationForMultiplayerModel.md)
 
-  * Uses players' combat data to generate the center of enemies' data.
+  * Uses players' combat data to generate the center of enemies' data that is suited for most players.
+
+  * No need to add new content; the model can use existing content to optimize your games.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
+* [Creating Cluster-Based Enemy Data Generation Singleplayer Model](HighValueProjectTutorials/CreatingClusterBasedEnemyDataGenerationForSingleplayerModel.md)
+
+  * Uses defeated enemies' data to generate the center of enemies' data that is personal to a single player.
 
   * No need to add new content; the model can use existing content to optimize your games.
 

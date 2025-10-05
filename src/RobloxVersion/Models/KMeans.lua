@@ -163,14 +163,12 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 	local numberOfData2 = #matrix2
 
 	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData1, numberOfData2})
-	
-	local calculateDistance = distanceFunctionList[distanceFunction]
 
 	for matrix1Index = 1, numberOfData1, 1 do
 
 		for matrix2Index = 1, numberOfData2, 1 do
 
-			distanceMatrix[matrix1Index][matrix2Index] = calculateDistance({matrix1[matrix1Index]}, {matrix2[matrix2Index]})
+			distanceMatrix[matrix1Index][matrix2Index] = distanceFunction({matrix1[matrix1Index]}, {matrix2[matrix2Index]})
 
 		end
 
@@ -290,11 +288,13 @@ local function createClusterAssignmentMatrix(distanceMatrix) -- contains values 
 		
 		local vectorIndexArray, _ = AqwamTensorLibrary:findMinimumValueDimensionIndexArray(distanceVector)
 		
-		if (vectorIndexArray == nil) then continue end
-		
-		local clusterNumber = vectorIndexArray[2]
-		
-		clusterAssignmentMatrix[dataIndex][clusterNumber] = 1
+		if (vectorIndexArray) then
+			
+			local clusterNumber = vectorIndexArray[2]
+
+			clusterAssignmentMatrix[dataIndex][clusterNumber] = 1
+			
+		end
 		
 	end
 	
@@ -486,6 +486,10 @@ function KMeansModel:train(featureMatrix)
 
 	if (not kMeansFunction) then error("Unknown mode.") end
 	
+	local distanceFunctionToApply = distanceFunctionList[distanceFunction]
+
+	if (not distanceFunctionToApply) then error("Unknown distance function.") end
+	
 	if (mode == "Sequential") then
 		
 		numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClusters, 1}, 0)
@@ -500,7 +504,7 @@ function KMeansModel:train(featureMatrix)
 		
 	else
 		
-		centroidMatrix = self:initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, self.setInitialClustersOnDataPoints, self.setTheCentroidsDistanceFarthest)
+		centroidMatrix = self:initializeCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply, self.setInitialClustersOnDataPoints, self.setTheCentroidsDistanceFarthest)
 		
 	end
 	
@@ -510,7 +514,7 @@ function KMeansModel:train(featureMatrix)
 		
 		self:iterationWait()
 		
-		distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunction)
+		distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
 
 		centroidMatrix, clusterAssignmentMatrix = kMeansFunction(centroidMatrix, distanceMatrix, featureMatrix, numberOfDataPointVector)
 		
@@ -544,9 +548,11 @@ end
 
 function KMeansModel:predict(featureMatrix, returnOriginalOutput)
 	
+	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
+	
 	local centroidMatrix = self.ModelParameters[1]
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, self.distanceFunction)
+	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
 	
 	if (returnOriginalOutput) then return distanceMatrix end
 

@@ -42,7 +42,7 @@ local AnomalyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.n
 
 local DataPredict = require(DataPredict)
 
--- Number of clusters are highly dependent on how may playstyles you have. However, as a starting point, we recommend with 1 cluster.
+-- Number of clusters are highly dependent on how may playstyles you have. However, we recommend with 1 cluster as a starting point.
 
 local AnomalyPredictionModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 1})
 

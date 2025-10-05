@@ -396,9 +396,9 @@ function MeanShiftModel.new(parameterDictionary)
 	
 	local kernelParameters = {
 		
-		["bandwidth"] = bandwidth,
+		bandwidth = bandwidth,
 		
-		["lambda"] = parameterDictionary.kernelParameters or defaultLambda,
+		lambda = parameterDictionary.lambda or defaultLambda,
 		
 	}
 	

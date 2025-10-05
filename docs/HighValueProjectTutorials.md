@@ -154,7 +154,7 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Unconditional-Diversity-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingUnconditionalDiversityBasedEnemyDataGenerationModel.md) (Incomplete)
+* [Creating Unconditional-Diversity-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingUnconditionalDiversityBasedEnemyDataGenerationModel.md)
 
   * Uses enemies' data as generator's output. The generated enemy data is then used against the discriminator to see if the player will interact with it.
  

@@ -499,7 +499,7 @@ function MeanShiftModel:train(featureMatrix)
 			
 		end
 		
-	until (numberOfIterations == maximumNumberOfIterations) or (#centroidMatrix == numberOfClusters) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == maximumNumberOfIterations) or (#centroidMatrix <= numberOfClusters) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

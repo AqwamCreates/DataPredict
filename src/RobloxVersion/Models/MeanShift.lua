@@ -248,18 +248,14 @@ local function findEqualRowIndex(matrix1, matrix2)
 	
 end
 
-local function batchMeanShift(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunction, kernelParameters)
-	
-	local sumKernelMatrix = AqwamTensorLibrary:createTensor({#centroidMatrix, #centroidMatrix[1]})
-	
-	local sumMultipliedKernelMatrix = AqwamTensorLibrary:createTensor({#centroidMatrix, #centroidMatrix[1]})
+local function calculateSumKernelMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunction, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
 	
 	for dataIndex, featureVector in ipairs(featureMatrix) do
-		
+
 		for clusterIndex, clusterVector in ipairs(centroidMatrix) do
-			
+
 			if (clusterAssignmentMatrix[dataIndex][clusterIndex] == 1) then
-				
+
 				local featureVector = {featureVector}
 
 				local kernelInput = distanceMatrix[dataIndex][clusterIndex] / bandwidth
@@ -281,84 +277,16 @@ local function batchMeanShift(featureMatrix, centroidMatrix, clusterAssignmentMa
 				sumKernelMatrix[clusterIndex] = sumKernelVector[1]
 
 				sumMultipliedKernelMatrix[clusterIndex] = sumMultipliedKernelVector[1]
-				
+
 			end
-			
+
 		end
-		
+
 	end
 	
-	centroidMatrix = AqwamTensorLibrary:divide(sumMultipliedKernelMatrix, sumKernelMatrix)
-	
-	return centroidMatrix, sumKernelMatrix
+	return sumKernelMatrix, sumMultipliedKernelMatrix
 	
 end
-
-local function sequentialMeanShift(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunction, kernelParameters, sumKernelMatrix)
-	
-	local sumMultipliedKernelMatrix = AqwamTensorLibrary:createTensor({#centroidMatrix, #centroidMatrix[1]})
-	
-	for dataIndex, featureVector in ipairs(featureMatrix) do
-
-		for clusterIndex, clusterVector in ipairs(centroidMatrix) do
-
-			if (clusterAssignmentMatrix[dataIndex][clusterIndex] == 1) then
-
-				local featureVector = {featureVector}
-
-				local kernelInput = distanceMatrix[dataIndex][clusterIndex] / bandwidth
-
-				local squaredKernelInput = math.pow(kernelInput, 2)
-
-				local kernelVector = kernelFunction(squaredKernelInput, kernelParameters)
-
-				local sumKernelVector = {sumKernelMatrix[clusterIndex]}
-
-				sumKernelVector = AqwamTensorLibrary:add(sumKernelVector, kernelVector) 
-
-				sumKernelMatrix[clusterIndex] = sumKernelVector[1]
-
-			end
-
-		end
-
-	end
-	
-	for dataIndex, featureVector in ipairs(featureMatrix) do
-
-		for clusterIndex, clusterVector in ipairs(centroidMatrix) do
-
-			if (clusterAssignmentMatrix[dataIndex][clusterIndex] == 1) then
-
-				local featureVector = {featureVector}
-				
-				local sumKernelVector = {sumKernelMatrix[clusterIndex]}
-
-				local sumMultipliedKernelVector = {sumMultipliedKernelMatrix[clusterIndex]}
-
-				sumMultipliedKernelVector = AqwamTensorLibrary:add(sumMultipliedKernelVector, featureVector)
-
-				sumMultipliedKernelMatrix[clusterIndex] = sumMultipliedKernelVector[1]
-
-			end
-
-		end
-
-	end
-	
-	centroidMatrix = AqwamTensorLibrary:divide(sumMultipliedKernelMatrix, sumKernelMatrix)
-	
-	return centroidMatrix, sumKernelMatrix
-	
-end
-
-local meanShiftFunctionList = {
-	
-	["Batch"] = batchMeanShift,
-	
-	["Sequential"] = sequentialMeanShift,
-	
-}
 
 function MeanShiftModel.new(parameterDictionary)
 	
@@ -410,15 +338,13 @@ function MeanShiftModel:train(featureMatrix)
 	
 	local sumKernelMatrix = ModelParameters[2]
 	
+	local sumMultipliedKernelMatrix = ModelParameters[3]
+	
 	if (mode == "Hybrid") then
 
-		mode = (centroidMatrix and sumKernelMatrix and "Sequential") or "Batch"		
+		mode = (centroidMatrix and sumKernelMatrix and sumMultipliedKernelMatrix and "Sequential") or "Batch"		
 
 	end
-
-	local meanShiftFunction = meanShiftFunctionList[mode]
-
-	if (not meanShiftFunction) then error("Unknown mode.") end
 	
 	local distanceFunctionToApply = distanceFunctionList[distanceFunction]
 
@@ -428,10 +354,6 @@ function MeanShiftModel:train(featureMatrix)
 	
 	if (not kernelFunctionToApply) then error("Unknown kernel function.") end
 	
-	local numberOfData = #featureMatrix
-	
-	local numberOfFeatures = #featureMatrix[1]
-
 	local costArray = {}
 
 	local numberOfIterations = 0
@@ -442,15 +364,23 @@ function MeanShiftModel:train(featureMatrix)
 	
 	local cost
 	
-	-- Noise is added to the feature matrix to ensure that the model's cost doesn't equal to zero before it converges.
-	
-	centroidMatrix = centroidMatrix or AqwamTensorLibrary:add(featureMatrix, AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures}))
-	
-	if (mode == "Sequential") then
+	if (mode == "Batch") then
+		
+		local numberOfData = #featureMatrix
+		
+		local numberOfFeatures = #featureMatrix[1]
+
+		-- Noise is added to the feature matrix to ensure that the model's cost doesn't equal to zero before it converges.
+		
+		centroidMatrix = centroidMatrix or AqwamTensorLibrary:add(featureMatrix, AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures}))
 		
 		local numberOfCentroids = #centroidMatrix
 		
-		sumKernelMatrix = sumKernelMatrix or AqwamTensorLibrary:createTensor({numberOfCentroids, numberOfFeatures})
+		local centroidDimensionSizeArray = {numberOfCentroids, numberOfFeatures}
+		
+		sumKernelMatrix = sumKernelMatrix or AqwamTensorLibrary:createTensor(centroidDimensionSizeArray)
+		
+		sumMultipliedKernelMatrix = sumMultipliedKernelMatrix or AqwamTensorLibrary:createTensor(centroidDimensionSizeArray)
 		
 	end
 
@@ -464,8 +394,10 @@ function MeanShiftModel:train(featureMatrix)
 		
 		clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 		
-		centroidMatrix, sumKernelMatrix = meanShiftFunction(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunctionToApply, kernelParameters, sumKernelMatrix)
-
+		sumKernelMatrix, sumMultipliedKernelMatrix = calculateSumKernelMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunctionToApply, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
+		
+		centroidMatrix = AqwamTensorLibrary:divide(sumMultipliedKernelMatrix, sumKernelMatrix)
+		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
 			return calculateCost(distanceMatrix, clusterAssignmentMatrix)
@@ -484,7 +416,7 @@ function MeanShiftModel:train(featureMatrix)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	
-	self.ModelParameters = {centroidMatrix, sumKernelMatrix}
+	self.ModelParameters = {centroidMatrix, sumKernelMatrix, sumMultipliedKernelMatrix}
 	
 	return costArray
 	

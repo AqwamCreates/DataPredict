@@ -2,25 +2,37 @@
 
 Hello guys! Today, I will be showing you on how to create a retention-based model that could predict the likelihood that the players will leave.
 
-Currently, you need these to produce the model:
-
-* One Class Support Vector Machine (Not Support Vector Machine)
-
-* A player data that is stored in matrix
-
 ## Setting Up
 
-Before we train our model, we will first need to construct a classification model as shown below.
+Before we train our model, we will first need to construct a model. Currently we have two approaches:
+
+* Approach 1: Gausian Naive Bayes (Can Be Incremental. Requires Features To Be Independent To Each Other.)
+
+  * Feature independence is not guaranteed with players' data.
+
+* Approach 2: One-Class Support Vector Machine (Non-Incremental.)
+
+## Approach 1
 
 ```lua
 
 local DataPredict = require(DataPredict)
 
--- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
+-- There's no parameters to set up here.
 
--- Additionally, you must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
+local LeftToEarlyPredictionModel = DataPredict.Models.GaussianNaiveBayes.new()
 
--- Lastly, set your beta value to 1. This tells the model that all the data belongs the positive class (the time that the player is currently in session).
+```
+
+## Approach 2
+
+```lua
+
+local DataPredict = require(DataPredict)
+
+-- You must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
+
+-- Additionally, set your beta value to 1. This tells the model that all the data belongs the positive class (the time that the player is currently in session).
 
 local LeftToEarlyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction", beta = 1})
 

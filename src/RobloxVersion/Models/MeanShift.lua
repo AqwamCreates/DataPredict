@@ -38,7 +38,7 @@ setmetatable(MeanShiftModel, IterativeMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
-local defaultNumberOfClusters = 0
+local defaultNumberOfClusters = 1
 
 local defaultBandwidth = 100
 
@@ -340,12 +340,6 @@ function MeanShiftModel:train(featureMatrix)
 	
 	local sumMultipliedKernelMatrix = ModelParameters[3]
 	
-	if (mode == "Hybrid") then
-
-		mode = (centroidMatrix and sumKernelMatrix and sumMultipliedKernelMatrix and "Sequential") or "Batch"		
-
-	end
-	
 	local distanceFunctionToApply = distanceFunctionList[distanceFunction]
 
 	if (not distanceFunctionToApply) then error("Unknown distance function.") end
@@ -354,35 +348,27 @@ function MeanShiftModel:train(featureMatrix)
 	
 	if (not kernelFunctionToApply) then error("Unknown kernel function.") end
 	
+	local numberOfData = #featureMatrix
+
+	local numberOfFeatures = #featureMatrix[1]
+
+	local centroidDimensionSizeArray = {numberOfClusters, numberOfFeatures}
+	
 	local costArray = {}
 
 	local numberOfIterations = 0
-	
-	local distanceMatrix
-	
-	local clusterAssignmentMatrix 
-	
-	local cost
-	
-	if (mode == "Batch") then
-		
-		local numberOfData = #featureMatrix
-		
-		local numberOfFeatures = #featureMatrix[1]
 
-		-- Noise is added to the feature matrix to ensure that the model's cost doesn't equal to zero before it converges.
-		
-		centroidMatrix = centroidMatrix or AqwamTensorLibrary:add(featureMatrix, AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures}))
-		
-		local numberOfCentroids = #centroidMatrix
-		
-		local centroidDimensionSizeArray = {numberOfCentroids, numberOfFeatures}
-		
-		sumKernelMatrix = sumKernelMatrix or AqwamTensorLibrary:createTensor(centroidDimensionSizeArray)
-		
-		sumMultipliedKernelMatrix = sumMultipliedKernelMatrix or AqwamTensorLibrary:createTensor(centroidDimensionSizeArray)
-		
-	end
+	local distanceMatrix
+
+	local clusterAssignmentMatrix 
+
+	local cost
+
+	centroidMatrix = centroidMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfClusters, numberOfFeatures})
+
+	sumKernelMatrix = sumKernelMatrix or AqwamTensorLibrary:createTensor(centroidDimensionSizeArray)
+
+	sumMultipliedKernelMatrix = sumMultipliedKernelMatrix or AqwamTensorLibrary:createTensor(centroidDimensionSizeArray)
 
 	repeat
 		
@@ -412,7 +398,7 @@ function MeanShiftModel:train(featureMatrix)
 			
 		end
 		
-	until (numberOfIterations == maximumNumberOfIterations) or (#ModelParameters == numberOfClusters) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

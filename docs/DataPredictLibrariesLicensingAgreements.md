@@ -23,7 +23,9 @@
    * 70K USD upfront fee. Price may increase due to keeping up with overall DataPredict's development costs.
  
    * Limited to the current latest version of DataPredict, DataPredict Neural and DataPredict Axon libraries.
- 
+
+   * Only entitled to bug fixes to the current latest version, not upgrades to future versions. 
+
    * Derivatives are allowed as long as it is not copied off from DataPredict's future updates. 
 
    * Redistribution of the original or its derivatives to third-parties is not allowed, including your clients' projects.

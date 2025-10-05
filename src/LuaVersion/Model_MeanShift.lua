@@ -340,6 +340,12 @@ function MeanShiftModel:train(featureMatrix)
 	
 	local sumMultipliedKernelMatrix = ModelParameters[3]
 	
+	if (mode == "Hybrid") then
+
+		mode = (centroidMatrix and sumKernelMatrix and sumMultipliedKernelMatrix and "Sequential") or "Batch"		
+
+	end
+
 	local distanceFunctionToApply = distanceFunctionList[distanceFunction]
 
 	if (not distanceFunctionToApply) then error("Unknown distance function.") end

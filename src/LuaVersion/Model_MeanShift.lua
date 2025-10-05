@@ -326,19 +326,18 @@ local function mergeCentroids(centroidMatrix, bandwidth, distanceFunction, sumKe
 	
 	local numberOfFeatures = #centroidMatrix[1]
 
-	for i, mergeList in ipairs(centroidMergeArrayArray) do
+	for i, mergeArray in ipairs(centroidMergeArrayArray) do
 		
 		if (not mergedFlagArray[i]) then
 			
 			local combinedIndices = {i}
 			
-			for _, j in ipairs(mergeList) do
+			for _, j in ipairs(mergeArray) do
 				
 				if (not mergedFlagArray[j]) then table.insert(combinedIndices, j) end
 				
 			end
 
-			-- Compute new centroid using kernel-weighted sum
 			local newSumKernelVector = AqwamTensorLibrary:createTensor({1, numberOfFeatures}, 0)
 			
 			local newSumMultipliedKernelVector = AqwamTensorLibrary:createTensor({1, numberOfFeatures}, 0)

@@ -318,9 +318,16 @@ local function batchMeanShift(featureMatrix, centroidMatrix, bandwidth, distance
 	
 end
 
+local function sequentialMeanShift(featureMatrix, centroidMatrix, bandwidth, distanceFunction, kernelFunction, kernelParameters, sumKernelMatrix)
+	
+	
+end
+
 local meanShiftFunctionList = {
 	
 	["Batch"] = batchMeanShift,
+	
+	["Sequential"] = sequentialMeanShift,
 	
 }
 

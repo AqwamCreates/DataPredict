@@ -370,7 +370,7 @@ function MeanShiftModel:train(featureMatrix)
 
 	local cost
 	
-	-- This is batched and not sequential mode. So, we need to reset the whole thing to get fresh model parameters.
+	-- This is batch and not sequential mode. So, we need to reset the whole thing to get fresh model parameters.
 	
 	if (mode == "Batch") then 
 

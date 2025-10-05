@@ -38,9 +38,9 @@ setmetatable(MeanShiftModel, IterativeMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
-local defaultNumberOfClusters = 1
+local defaultNumberOfClusters = 0
 
-local defaultBandwidth = 100
+local defaultBandwidth = 10
 
 local defaultMode = "Hybrid"
 
@@ -248,7 +248,7 @@ local function findEqualRowIndex(matrix1, matrix2)
 	
 end
 
-local function calculateSumKernelMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunction, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
+local function calculateCentroidAndSumKernelMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunction, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
 	
 	for dataIndex, featureVector in ipairs(featureMatrix) do
 
@@ -284,7 +284,88 @@ local function calculateSumKernelMatrices(featureMatrix, centroidMatrix, cluster
 
 	end
 	
-	return sumKernelMatrix, sumMultipliedKernelMatrix
+	local centroidMatrix = AqwamTensorLibrary:divide(sumMultipliedKernelMatrix, sumKernelMatrix)
+	
+	return centroidMatrix, sumKernelMatrix, sumMultipliedKernelMatrix
+	
+end
+
+local function mergeCentroids(centroidMatrix, bandwidth, distanceFunction, sumKernelMatrix, sumMultipliedKernelMatrix)
+	
+	local distanceMatrix = createDistanceMatrix(centroidMatrix, centroidMatrix, distanceFunction)
+
+	local centroidMergeArrayArray = {}
+	
+	local centroidMergeArray
+	
+	local needToBeMerged
+	
+	for primaryCentroidIndex, distanceVector in ipairs(distanceMatrix) do
+		
+		centroidMergeArray = {} 
+		
+		for secondaryCentroidIndex, distance in ipairs(distanceVector) do
+			
+			needToBeMerged = (primaryCentroidIndex ~= secondaryCentroidIndex) and (distance <= bandwidth)
+			
+			if (needToBeMerged) then table.insert(centroidMergeArray, secondaryCentroidIndex) end
+			
+		end
+		
+		centroidMergeArrayArray[primaryCentroidIndex] = centroidMergeArray
+		
+	end
+	
+	local mergedFlagArray = {}
+	
+	local newCentroidMatrix = {}
+	
+	local newSumKernelMatrix = {}
+	
+	local newSumMultipliedKernelMatrix = {}
+	
+	local numberOfFeatures = #centroidMatrix[1]
+
+	for i, mergeList in ipairs(centroidMergeArrayArray) do
+		
+		if (not mergedFlagArray[i]) then
+			
+			local combinedIndices = {i}
+			
+			for _, j in ipairs(mergeList) do
+				
+				if (not mergedFlagArray[j]) then table.insert(combinedIndices, j) end
+				
+			end
+
+			-- Compute new centroid using kernel-weighted sum
+			local newSumKernelVector = AqwamTensorLibrary:createTensor({1, numberOfFeatures}, 0)
+			
+			local newSumMultipliedKernelVector = AqwamTensorLibrary:createTensor({1, numberOfFeatures}, 0)
+
+			for _, idx in ipairs(combinedIndices) do
+				
+				newSumKernelVector = AqwamTensorLibrary:add(newSumKernelVector, {sumKernelMatrix[idx]})
+				
+				newSumMultipliedKernelVector = AqwamTensorLibrary:add(newSumMultipliedKernelVector, {sumMultipliedKernelMatrix[idx]})
+				
+				mergedFlagArray[idx] = true
+				
+			end
+
+			local newCentroidVector = AqwamTensorLibrary:divide(newSumMultipliedKernelVector, newSumKernelVector)
+			
+			table.insert(newCentroidMatrix, newCentroidVector[1])
+			
+			table.insert(newSumKernelMatrix, newSumKernelVector[1])
+			
+			table.insert(newSumMultipliedKernelMatrix, newSumMultipliedKernelVector[1])
+			
+		end
+		
+	end
+
+	return newCentroidMatrix, newSumKernelMatrix, newSumMultipliedKernelMatrix
 	
 end
 
@@ -357,12 +438,12 @@ function MeanShiftModel:train(featureMatrix)
 	local numberOfData = #featureMatrix
 
 	local numberOfFeatures = #featureMatrix[1]
-
-	local centroidDimensionSizeArray = {numberOfClusters, numberOfFeatures}
 	
 	local costArray = {}
 
 	local numberOfIterations = 0
+	
+	local centroidDimensionSizeArray
 
 	local distanceMatrix
 
@@ -382,7 +463,9 @@ function MeanShiftModel:train(featureMatrix)
 
 	end
 
-	centroidMatrix = centroidMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfClusters, numberOfFeatures})
+	centroidMatrix = centroidMatrix or featureMatrix
+	
+	centroidDimensionSizeArray = {#centroidMatrix, numberOfFeatures}
 
 	sumKernelMatrix = sumKernelMatrix or AqwamTensorLibrary:createTensor(centroidDimensionSizeArray)
 
@@ -398,9 +481,9 @@ function MeanShiftModel:train(featureMatrix)
 		
 		clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 		
-		sumKernelMatrix, sumMultipliedKernelMatrix = calculateSumKernelMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunctionToApply, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
+		centroidMatrix, sumKernelMatrix, sumMultipliedKernelMatrix = calculateCentroidAndSumKernelMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunctionToApply, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
 		
-		centroidMatrix = AqwamTensorLibrary:divide(sumMultipliedKernelMatrix, sumKernelMatrix)
+		centroidMatrix, sumKernelMatrix, sumMultipliedKernelMatrix = mergeCentroids(centroidMatrix, bandwidth, distanceFunctionToApply, sumKernelMatrix, sumMultipliedKernelMatrix)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
@@ -416,7 +499,7 @@ function MeanShiftModel:train(featureMatrix)
 			
 		end
 		
-	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == maximumNumberOfIterations) or (#centroidMatrix == numberOfClusters) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	

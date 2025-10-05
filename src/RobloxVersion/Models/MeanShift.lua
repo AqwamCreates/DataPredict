@@ -248,7 +248,7 @@ local function findEqualRowIndex(matrix1, matrix2)
 	
 end
 
-local function calculateSumKernelMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunction, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
+local function calculateCentroidAndSumKernelMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunction, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
 	
 	for dataIndex, featureVector in ipairs(featureMatrix) do
 
@@ -284,7 +284,9 @@ local function calculateSumKernelMatrices(featureMatrix, centroidMatrix, cluster
 
 	end
 	
-	return sumKernelMatrix, sumMultipliedKernelMatrix
+	local centroidMatrix = AqwamTensorLibrary:divide(sumMultipliedKernelMatrix, sumKernelMatrix)
+	
+	return centroidMatrix, sumKernelMatrix, sumMultipliedKernelMatrix
 	
 end
 
@@ -479,9 +481,7 @@ function MeanShiftModel:train(featureMatrix)
 		
 		clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 		
-		sumKernelMatrix, sumMultipliedKernelMatrix = calculateSumKernelMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunctionToApply, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
-		
-		centroidMatrix = AqwamTensorLibrary:divide(sumMultipliedKernelMatrix, sumKernelMatrix)
+		centroidMatrix, sumKernelMatrix, sumMultipliedKernelMatrix = calculateCentroidAndSumKernelMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunctionToApply, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
 		
 		centroidMatrix, sumKernelMatrix, sumMultipliedKernelMatrix = mergeCentroids(centroidMatrix, bandwidth, distanceFunctionToApply, sumKernelMatrix, sumMultipliedKernelMatrix)
 		

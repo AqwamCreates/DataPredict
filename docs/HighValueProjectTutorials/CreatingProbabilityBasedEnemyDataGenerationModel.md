@@ -62,7 +62,7 @@ Multiple cases can be done here.
 
   * For a given set of generated enemy data values, the model determines the probability that the player will interact with it. This is then used to spawn or reject the enemy with the generated data values.
 
-* Case 2: Weighted Generation
+* Case 2: Weighted Generation (Not Recommended)
 
   * For a given set of generated enemy data values, the model outputs a probability that can be used to modify the generated enemy data.
 

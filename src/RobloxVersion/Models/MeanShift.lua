@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 MeanShiftModel = {}
 
@@ -396,9 +396,9 @@ function MeanShiftModel.new(parameterDictionary)
 	
 	local kernelParameters = {
 		
-		["bandwidth"] = bandwidth,
+		bandwidth = bandwidth,
 		
-		["lambda"] = parameterDictionary.kernelParameters or defaultLambda,
+		lambda = parameterDictionary.lambda or defaultLambda,
 		
 	}
 	

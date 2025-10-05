@@ -138,7 +138,7 @@
 
 * [Creating Cluster-Based Enemy Data Generation Multiplayer Model](HighValueProjectTutorials/CreatingClusterBasedEnemyDataGenerationForMultiplayerModel.md)
 
-  * Uses players' combat data to generate the center of enemies' data that is suited for most players.
+  * Uses players' combat data to generate the center of enemies' data, creating difficulty suited for the majority of players in a session.
 
   * No need to add new content; the model can use existing content to optimize your games.
 
@@ -146,7 +146,7 @@
 
 * [Creating Cluster-Based Enemy Data Generation Singleplayer Model](HighValueProjectTutorials/CreatingClusterBasedEnemyDataGenerationForSingleplayerModel.md)
 
-  * Uses defeated enemies' data to generate the center of enemies' data that is personal to a single player.
+  * Uses a single player's defeated enemies' data to generate the center of enemies' data, creating difficulty personal to that player.
 
   * No need to add new content; the model can use existing content to optimize your games.
 

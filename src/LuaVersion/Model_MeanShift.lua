@@ -384,6 +384,14 @@ function MeanShiftModel.new(parameterDictionary)
 	
 	local bandwidth = parameterDictionary.bandwidth or defaultBandwidth
 	
+	local kernelParameters = {
+
+		bandwidth = bandwidth,
+
+		lambda = parameterDictionary.lambda or defaultLambda,
+
+	}
+	
 	NewMeanShiftModel.numberOfClusters = parameterDictionary.numberOfClusters or defaultNumberOfClusters
 
 	NewMeanShiftModel.bandwidth = bandwidth
@@ -393,14 +401,6 @@ function MeanShiftModel.new(parameterDictionary)
 	NewMeanShiftModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 	
 	NewMeanShiftModel.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
-	
-	local kernelParameters = {
-		
-		bandwidth = bandwidth,
-		
-		lambda = parameterDictionary.lambda or defaultLambda,
-		
-	}
 	
 	NewMeanShiftModel.kernelParameters = kernelParameters
 	

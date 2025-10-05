@@ -48,7 +48,9 @@ Once train() is called, call the getModelParameters() function to get the center
 
 ```lua
 
-local ModelParameters = EnemyDataGenerationModel:getModelParameters()
+local centerOfEnemyDataMatrix = EnemyDataGenerationModel:getModelParameters()
+
+centerOfEnemyDataMatrix = centerOfEnemyDataMatrix[1] -- This is a must if you're using K-Means instead of Meanshift because K-Means stores the ModelParameters as a table of matrices.
 
 ```
 
@@ -58,13 +60,13 @@ Since we have three clusters, we can expect three rows for our matrix. As such w
 
 ```lua
 
-for clusterIndex, unwrappedClusterVector in ipairs(ModelParameters) do
+for clusterIndex, unwrappedCenterOfDataVector in ipairs(centerOfEnemyDataMatrix) do
 
-  local playerBaseHealth = unwrappedClusterVector[1]
+  local playerBaseHealth = unwrappedCenterOfDataVector[1]
   
-  local playerBaseDamage = unwrappedClusterVector[2]
+  local playerBaseDamage = unwrappedCenterOfDataVector[2]
   
-  local playerBaseCashAmount = unwrappedClusterVector[3]
+  local playerBaseCashAmount = unwrappedCenterOfDataVector[3]
 
   local enemyHealth = playerBaseHealth * 0.5
 

@@ -9,7 +9,7 @@ Before we train our model, we will first need to construct a model. Currently we
 | Approach | Model                            | Properties                    | Notes                                                                                                                                          |
 | -------- | -------------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1        | Gaussian Naive Bayes             | Incremental, Generative       | Not commonly used for anomaly detection; fast, can be updated with partial data, requires features are independent (rare in real player data). |
-| 2        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based | Good for anomaly detection; cannot be updated once trained, heavier to run, best with RadialBasisFunction kernel.                              |
+| 2        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based | Good for anomaly detection; cannot be updated once trained, heavier to run, best with "radial basis function" kernel.                          |
 
 ## Approach 1
 

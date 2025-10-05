@@ -48,9 +48,9 @@ Once train() is called, call the getModelParameters() function to get the center
 
 ```lua
 
-local centerOfEnemyDataMatrix = EnemyDataGenerationModel:getModelParameters()
+local centerOfPlayerDataMatrix = EnemyDataGenerationModel:getModelParameters()
 
-centerOfEnemyDataMatrix = centerOfEnemyDataMatrix[1] -- This is a must if you're using K-Means instead of Meanshift because K-Means stores the ModelParameters as a table of matrices.
+centerOfPlayerDataMatrix = centerOfPlayerDataMatrix[1] -- This is a must if you're using K-Means instead of Meanshift because K-Means stores the ModelParameters as a table of matrices.
 
 ```
 

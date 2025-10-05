@@ -363,6 +363,18 @@ function MeanShiftModel:train(featureMatrix)
 	local clusterAssignmentMatrix 
 
 	local cost
+	
+	-- This is batched and not sequential mode. So, we need to reset the whole thing to get fresh model parameters.
+	
+	if (mode == "Batch") then 
+
+		centroidMatrix = nil
+		
+		sumKernelMatrix = nil
+		
+		sumMultipliedKernelMatrix = nil
+
+	end
 
 	centroidMatrix = centroidMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfClusters, numberOfFeatures})
 

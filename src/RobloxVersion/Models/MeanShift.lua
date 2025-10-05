@@ -461,8 +461,10 @@ function MeanShiftModel:train(featureMatrix)
 		sumMultipliedKernelMatrix = nil
 
 	end
+	
+	-- The noise is added to the feature matrix is because we want to avoid the cost to be zero at the first iteration.
 
-	centroidMatrix = centroidMatrix or featureMatrix
+	centroidMatrix = centroidMatrix or AqwamTensorLibrary:add(featureMatrix, AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures}), -1e-16, 1e-16)
 	
 	centroidDimensionSizeArray = {#centroidMatrix, numberOfFeatures}
 

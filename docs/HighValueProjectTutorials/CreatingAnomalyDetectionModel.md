@@ -12,7 +12,7 @@ Currently, you need these to produce the model:
 
 Before we train our model, we will first need to construct a model, in which we have two approaches:
 
-* Approach 1: Gaussian Naive Bayes (Can Be Incremental)
+* Approach 1: Gaussian Naive Bayes (Generally Not Commonly Used In Anomaly Detection. Can Be Incremental)
 
 * Approach 2: One Class Support Vector Machine (Requires Batch Training + Non-Incremental)
 

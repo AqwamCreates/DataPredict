@@ -12,25 +12,37 @@ Currently, you need these to produce the model:
 
 Before we train our model, we will first need to construct a model, in which we have two approaches:
 
-* Approach 1: One Class Support Vector Machine (Classification)
+* Approach 1: Gaussian Naive Bayes (Can Be Incremental)
 
-* Approach 2: Expectation-Maximization (Clustering)
+* Approach 2: One Class Support Vector Machine (Requires Batch Training + Non Incremental)
 
-### Approach 1: One Class Support Vector Machine
+* Approach 3: Expectation-Maximization (Requires Batch Training + Non Incremental)
+
+### Approach 1: Gaussian Naive Bayes
 
 ```lua
 
 local DataPredict = require(DataPredict)
 
--- For incremental training purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
+-- There's literally nothing to set here.
 
--- Additionally, you must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
+local AnomalyPredictionModel = DataPredict.Models.GaussianNaiveBayes.new()
+
+```
+
+### Approach 2: One Class Support Vector Machine
+
+```lua
+
+local DataPredict = require(DataPredict)
+
+-- You must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
 
 local AnomalyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction"})
 
 ```
 
-### Approach 2: Expectation-Maximization
+### Approach 3: Expectation-Maximization
 
 ```lua
 

@@ -4,7 +4,7 @@ Hello guys! Today, I will be showing you on how to create a retention-based mode
 
 ## Setting Up
 
-Before we train our model, we will first need to construct a model, in which we have two approaches:
+Before we train our model, we will first need to construct a model, in which we have three approaches:
 
 | Approach | Model                            | Properties                     | Notes                                                                                                                                         |
 | -------- | -------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |

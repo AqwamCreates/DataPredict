@@ -94,11 +94,11 @@ local function generateEnemyDataVector()
 
  local enemyCashAmount = ModelParameters[3][1]
 
- local enemyMaximumHealthRandomNoise = math.random() - math.random()
+ local enemyMaximumHealthRandomNoise = math.random()
 
- local enemyMaximumDamageRandomNoise = math.random() - math.random()
+ local enemyMaximumDamageRandomNoise = math.random()
 
- local enemyCashAmountRandomNoise = math.random() - math.random()
+ local enemyCashAmountRandomNoise = math.random()
 
  return {{enemyMaximumHealth * enemyMaximumHealthRandomNoise, enemyMaximumDamage * enemyMaximumHealthRandomNoise, enemyCashAmount * enemyCashAmountRandomNoise}}
 

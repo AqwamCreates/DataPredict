@@ -168,7 +168,7 @@
 
 * [Creating Conditional-Diversity-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingConditionalDiversityBasedEnemyDataGenerationModel.md)
 
-  * Uses players' combat data for generator's input and enemies' data as ogenerator's output. The generated enemy data is then used against the discriminator to see if the player will interact with it.
+  * Uses players' combat data for generator's input and enemies' data as generator's output. The generated enemy data is then used against the discriminator to see if the player will interact with it.
  
     * Think of the discriminator as "fake player" and the discriminator will see the real enemy data that the player has interacted with.
 

@@ -110,15 +110,17 @@ local kernelFunctionList = {
 
 	["Gaussian"] = function(x, kernelParameters)
 		
-		return math.exp(-0.5 * math.pow(x, 2)) / math.sqrt(2 * math.pi)
+		local denominator = 2 * math.pow(kernelParameters.bandwidth, 2)
+		
+		local zValue = -(x / denominator)
+		
+		return math.exp(zValue)
 
 	end,
 	
 	["Flat"] = function(x, kernelParameters)
 		
-		local lambda = kernelParameters.lambda or defaultLambda
-		
-		return ((x <= lambda) and 1) or 0
+		return ((x <= kernelParameters.lambda) and 1) or 0
 
 	end
 
@@ -380,9 +382,11 @@ function MeanShiftModel.new(parameterDictionary)
 	
 	NewMeanShiftModel:setName("MeanShift")
 	
+	local bandwidth = parameterDictionary.bandwidth or defaultBandwidth
+	
 	NewMeanShiftModel.numberOfClusters = parameterDictionary.numberOfClusters or defaultNumberOfClusters
 
-	NewMeanShiftModel.bandwidth = parameterDictionary.bandwidth or defaultBandwidth
+	NewMeanShiftModel.bandwidth = bandwidth
 	
 	NewMeanShiftModel.mode = parameterDictionary.mode or defaultMode
 	
@@ -390,7 +394,15 @@ function MeanShiftModel.new(parameterDictionary)
 	
 	NewMeanShiftModel.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
 	
-	NewMeanShiftModel.kernelParameters = parameterDictionary.kernelParameters or {}
+	local kernelParameters = {
+		
+		["bandwidth"] = bandwidth,
+		
+		["lambda"] = parameterDictionary.kernelParameters or defaultLambda,
+		
+	}
+	
+	NewMeanShiftModel.kernelParameters = kernelParameters
 	
 	return NewMeanShiftModel
 	

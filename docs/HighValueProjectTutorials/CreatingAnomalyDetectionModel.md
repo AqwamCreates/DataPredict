@@ -12,11 +12,11 @@ Currently, you need these to produce the model:
 
 Before we train our model, we will first need to construct a model, in which we have two approaches:
 
-* Approach 1: Gaussian Naive Bayes (Generally Not Commonly Used In Anomaly Detection. Can Be Incremental)
-
-* Approach 2: One Class Support Vector Machine (Requires Batch Training + Non-Incremental)
-
-* Approach 3: Expectation-Maximization (Requires Batch Training + Non-Incremental)
+| Approach | Model                            | Properties                    | Notes                                                                                                           |
+| -------- | -------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 1        | Gaussian Naive Bayes             | Incremental, Generative       | Fast, can be updated with partial data, but assumes features are independent (rare in real player data).        |
+| 2        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based | Good for anomaly detection; requires retraining, heavier to run, best with RadialBasisFunction kernel.          |
+| 3        | Expectation-Maximization         | Non-Incremental               | Good for anomaly detection; requires retraining, heavier to run, can produce multiple normal clusters.          |
 
 ### Approach 1: Gaussian Naive Bayes
 

@@ -8,7 +8,7 @@ Before we train our model, we will first need to construct a model. Currently we
 
 | Approach | Model                            | Properties                    | Notes                                                                                                           |
 | -------- | -------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| 1        | Gaussian Naive Bayes             | Incremental, Generative       | Lightweight, can be updated with partial data, but assumes features are independent (rare in real player data). |
+| 1        | Gaussian Naive Bayes             | Incremental, Generative       | Fast, can be updated with partial data, but assumes features are independent (rare in real player data).        |
 | 2        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based | Good for anomaly detection; requires retraining, heavier to run, best with RadialBasisFunction kernel.          |
 
 ## Approach 1

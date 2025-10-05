@@ -434,7 +434,7 @@ function MeanShiftModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local centroidMatrix = ModelParameters[1]
 	
-	local distanceMatrix = createDistanceMatrix(centroidMatrix, featureMatrix, distanceFunctionToApply)
+	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
 	
 	if (returnOriginalOutput) then return distanceMatrix end
 

@@ -24,7 +24,7 @@ Before we train our model, we will first need to construct a model, in which we 
 
 local DataPredict = require(DataPredict)
 
--- There's literally nothing to set here.
+-- There are no parameters to set here.
 
 local AnomalyPredictionModel = DataPredict.Models.GaussianNaiveBayes.new()
 

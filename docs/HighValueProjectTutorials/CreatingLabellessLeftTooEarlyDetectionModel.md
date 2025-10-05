@@ -6,10 +6,10 @@ Hello guys! Today, I will be showing you on how to create a retention-based mode
 
 Before we train our model, we will first need to construct a model. Currently we have two approaches:
 
-| Approach | Model                            | Properties                    | Notes                                                                                                           |
-| -------- | -------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| 1        | Gaussian Naive Bayes             | Incremental, Generative       | Fast, can be updated with partial data, but assumes features are independent (rare in real player data).        |
-| 2        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based | Good for anomaly detection; requires retraining, heavier to run, best with RadialBasisFunction kernel.          |
+| Approach | Model                            | Properties                    | Notes                                                                                                              | 
+| -------- | -------------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| 1        | Gaussian Naive Bayes             | Incremental, Generative       | Fast, can be updated with partial data, but assumes features are independent (rare in real player data).          |
+| 2        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based | Good for anomaly detection; cannot be updated once trained, heavier to run, best with RadialBasisFunction kernel. |
 
 ## Approach 1
 

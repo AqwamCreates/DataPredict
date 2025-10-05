@@ -1,6 +1,6 @@
 # Creating Anomaly Detection Model
 
-Hello guys! Today, I will be showing you on how to create a retention-based model that could predict unusual player behavior that often correlates with churn or suspicious actions
+Hello guys! Today, I will be showing you on how to create a retention-based model that could predict unusual player behavior that often correlates with churn or suspicious actions.
 
 Currently, you need these to produce the model:
 

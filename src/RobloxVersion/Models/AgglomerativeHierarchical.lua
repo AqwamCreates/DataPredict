@@ -484,27 +484,27 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 		self:iterationWait()
 		
+		centroidIndex1, centroidIndex2 = findClosestCentroids(centroidDistanceMatrix)
+
+		centroidMatrix = mergeCentroids(centroidMatrix, centroidIndex1, centroidIndex2)
+
+		centroidDistanceMatrix = linkageFunctionToApply(centroidMatrix, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
+
+		numberOfCentroids = #centroidMatrix
+		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
 			return calculateCost(featureMatrix, centroidMatrix, distanceFunctionToApply)
 			
 		end)
 		
-		if cost then
+		if (cost) then
 			
 			table.insert(costArray, cost)
 
 			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 			
 		end
-
-		centroidIndex1, centroidIndex2 = findClosestCentroids(centroidDistanceMatrix)
-		
-		centroidMatrix = mergeCentroids(centroidMatrix, centroidIndex1, centroidIndex2)
-
-		centroidDistanceMatrix = linkageFunctionToApply(centroidMatrix, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
-		
-		numberOfCentroids = #centroidMatrix
 
 	until (numberOfCentroids == numberOfClusters) or (numberOfCentroids == 1) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

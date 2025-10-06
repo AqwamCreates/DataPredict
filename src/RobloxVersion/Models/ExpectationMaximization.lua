@@ -100,22 +100,6 @@ local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, vari
 	
 end
 
-function ExpectationMaximizationModel:initializeParameters(numberOfClusters, numberOfFeatures)
-
-	local piMatrix = self:initializeMatrixBasedOnMode({numberOfClusters, 1})
-
-	local meanMatrix = self:initializeMatrixBasedOnMode({numberOfClusters, numberOfFeatures})
-
-	local varianceMatrix = self:initializeMatrixBasedOnMode({numberOfClusters, numberOfFeatures})
-	
-	local sumWeightMatrix = self:initializeMatrixBasedOnMode({numberOfClusters, numberOfFeatures})
-	
-	local sumWeightXMatrix = self:initializeMatrixBasedOnMode({numberOfClusters, numberOfFeatures})
-
-	return piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix
-	
-end
-
 local function expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
 	local responsibilityMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon) -- number of data x number of columns
@@ -277,37 +261,41 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 	local epsilon = self.epsilon
 
-	local ModelParameters = self.ModelParameters
+	local ModelParameters = self.ModelParameters or {}
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
-	local piMatrix
+	local piMatrix = ModelParameters[1]
 
-	local meanMatrix
+	local meanMatrix = ModelParameters[2]
 
-	local varianceMatrix
+	local varianceMatrix = ModelParameters[3]
 	
-	local sumWeightMatrix
+	local sumWeightMatrix = ModelParameters[4]
 	
-	local sumWeightXMatrix
+	local sumWeightXMatrix = ModelParameters[5]
 	
-	if (ModelParameters) then
-
-		piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = table.unpack(ModelParameters)
-
-		if (numberOfFeatures ~= #meanMatrix[1]) then error("The number of features of feature matrix are not the same as the model parameters!") end
-
-	else
-
-		if (numberOfClusters == math.huge) then
-
-			numberOfClusters = self:fetchBestNumberOfClusters(featureMatrix, epsilon)
-
-		end
-
-		piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeParameters(numberOfClusters, numberOfFeatures) 
-
+	if (mode == "Hybrid") then
+		
+		mode = (piMatrix and meanMatrix and varianceMatrix and sumWeightMatrix and sumWeightXMatrix and "Online") or "Offline"		
+		
 	end
+	
+	if (mode == "Offline") then
+		
+		piMatrix = nil
+		
+		meanMatrix = nil
+		
+		varianceMatrix = nil
+		
+		sumWeightMatrix = nil
+		
+		sumWeightXMatrix = nil
+		
+	end
+	
+	local centroidMatrixDimensionSizeArray = {numberOfClusters, numberOfFeatures}
 	
 	local logLikelihoodArray = {}
 	
@@ -324,6 +312,22 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	local sumLogLikelihood
 	
 	local cost
+	
+	if (not piMatrix) or (not meanMatrix) or (not varianceMatrix) or (not sumWeightMatrix) or (not sumWeightXMatrix) then
+		
+		if (numberOfClusters == math.huge) then numberOfClusters = self:fetchBestNumberOfClusters(featureMatrix, epsilon) end
+		
+	end
+	
+	piMatrix = piMatrix or self:initializeMatrixBasedOnMode({numberOfClusters, 1})
+
+	meanMatrix = meanMatrix or self:initializeMatrixBasedOnMode(centroidMatrixDimensionSizeArray)
+
+	varianceMatrix = varianceMatrix or self:initializeMatrixBasedOnMode(centroidMatrixDimensionSizeArray)
+
+	sumWeightMatrix = sumWeightMatrix or AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
+
+	sumWeightXMatrix = sumWeightXMatrix or AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
 
 	repeat
 		

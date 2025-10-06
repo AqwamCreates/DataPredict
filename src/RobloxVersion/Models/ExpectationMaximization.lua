@@ -42,13 +42,15 @@ local defaultNumberOfClusters = math.huge
 
 local defaultMode = "Hybrid"
 
-local defaultEpsilon = math.pow(10, -16)
+local defaultUseLogProbabilities = false
 
 local defaultSetInitialCentroidsOnDataPoints = true
 
 local defaultSetTheCentroidsDistanceFarthest = true
 
 local defaultDistanceFunction = "Euclidean"
+
+local defaultEpsilon = 1e-16
 
 local distanceFunctionList = {
 
@@ -130,11 +132,13 @@ local function gaussian(featureVector, meanVector, varianceVector, epsilon)
 
 end
 
-local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
+local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
 	
 	local numberOfClusters = #meanMatrix
 	
-	local probabilityMatrix = AqwamTensorLibrary:createTensor({#featureMatrix, numberOfClusters}, 0)
+	local initialValue = (useLogProbabilities and 0) or 1
+	
+	local probabilityMatrix = AqwamTensorLibrary:createTensor({#featureMatrix, numberOfClusters}, initialValue)
 	
 	for i = 1, #featureMatrix, 1 do
 
@@ -143,6 +147,8 @@ local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, vari
 		for j = 1, numberOfClusters, 1 do
 
 			local weight = piMatrix[j][1]
+			
+			if (useLogProbabilities) then weight = math.log(weight + epsilon) end
 
 			local meanVector = {meanMatrix[j]}
 
@@ -150,7 +156,21 @@ local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, vari
 
 			local probabilitiesVector = gaussian(featureVector, meanVector, varianceVector, epsilon)
 
-			for i, probability in ipairs(probabilitiesVector[1]) do weight = weight * probability end
+			for i, probability in ipairs(probabilitiesVector[1]) do
+				
+				
+				
+				if (useLogProbabilities) then
+					
+					weight = weight + math.log(probability + epsilon)
+					
+				else
+					
+					weight = weight * probability 
+					
+				end
+				
+			end
 
 			probabilityMatrix[i][j] = weight
 
@@ -162,9 +182,9 @@ local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, vari
 	
 end
 
-local function expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
+local function expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
 	
-	local responsibilityMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon) -- number of data x number of columns
+	local responsibilityMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon) -- number of data x number of columns
 	
 	local responsibilitySumVector = AqwamTensorLibrary:sum(responsibilityMatrix, 1)
 	
@@ -399,7 +419,7 @@ function ExpectationMaximizationModel:initializeMatrices(featureMatrix, numberOf
 	
 end
 
-function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
+function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMatrix, numberOfClusters, useLogProbabilities, epsilon)
 	
 	local numberOfData = #featureMatrix
 	
@@ -407,13 +427,23 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	local piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
 	
-	local responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
+	local responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
 	
 	piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
 	
-	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
+	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
 	
 	local logLikelihood = AqwamTensorLibrary:logarithm(gaussianMatrix)
+	
+	if (useLogProbabilities) then
+		
+		logLikelihood = AqwamTensorLibrary:logarithm(gaussianMatrix)
+		
+	else
+		
+		logLikelihood = gaussianMatrix
+		
+	end
 
 	local sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihood)
 	
@@ -425,7 +455,7 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 end
 
-function ExpectationMaximizationModel:getBestMatrices(featureMatrix, epsilon)
+function ExpectationMaximizationModel:getBestMatrices(featureMatrix, useLogProbabilities, epsilon)
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
@@ -459,7 +489,7 @@ function ExpectationMaximizationModel:getBestMatrices(featureMatrix, epsilon)
 
 	while true do
 		
-		bayesianInformationCriterion, piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
+		bayesianInformationCriterion, piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBayesianInformationCriterion(featureMatrix, numberOfClusters, useLogProbabilities, epsilon)
 
 		if (bayesianInformationCriterion < bestBayesianInformationCriterion) then
 			
@@ -506,14 +536,16 @@ function ExpectationMaximizationModel.new(parameterDictionary)
 	NewExpectationMaximizationModel.numberOfClusters = parameterDictionary.numberOfClusters or defaultNumberOfClusters
 	
 	NewExpectationMaximizationModel.mode = parameterDictionary.mode or defaultMode
-
-	NewExpectationMaximizationModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	
+	NewExpectationMaximizationModel.useLogProbabilities = NewExpectationMaximizationModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 	
 	NewExpectationMaximizationModel.setInitialCentroidsOnDataPoints =  NewExpectationMaximizationModel:getValueOrDefaultValue(parameterDictionary.setInitialCentroidsOnDataPoints, defaultSetInitialCentroidsOnDataPoints)
 
 	NewExpectationMaximizationModel.setTheCentroidsDistanceFarthest = NewExpectationMaximizationModel:getValueOrDefaultValue(parameterDictionary.setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
 	
 	NewExpectationMaximizationModel.distanceFunction = NewExpectationMaximizationModel:getValueOrDefaultValue(parameterDictionary.distanceFunction, defaultDistanceFunction)
+	
+	NewExpectationMaximizationModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
 	return NewExpectationMaximizationModel
 end
@@ -525,6 +557,8 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	local numberOfClusters = self.numberOfClusters
 	
 	local mode = self.mode
+	
+	local useLogProbabilities = false -- Do not bother doing this for training. It will result in the responsibilityMatrix to have nan and inf values.
 
 	local epsilon = self.epsilon
 
@@ -578,7 +612,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		if (numberOfClusters == math.huge) then 
 			
-			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBestMatrices(featureMatrix, epsilon)
+			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBestMatrices(featureMatrix, useLogProbabilities, epsilon)
 			
 		else
 			
@@ -596,11 +630,11 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		self:iterationWait()
 
-		responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
+		responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
 
 		piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
 		
-		gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
+		gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
@@ -640,7 +674,7 @@ function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutpu
 	
 	local piMatrix, meanMatrix, varianceMatrix = table.unpack(self.ModelParameters)
 
-	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
+	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, self.useLogProbabilities, self.epsilon)
 	
 	if (returnOriginalOutput) then return gaussianMatrix end
 	

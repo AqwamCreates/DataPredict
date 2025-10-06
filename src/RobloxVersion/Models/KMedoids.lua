@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
 local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 KMedoidsModel = {}
@@ -33,8 +35,6 @@ KMedoidsModel = {}
 KMedoidsModel.__index = KMedoidsModel
 
 setmetatable(KMedoidsModel, IterativeMethodBaseModel)
-
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaximumNumberOfIterations = math.huge
 

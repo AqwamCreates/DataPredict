@@ -250,7 +250,7 @@ local function findEqualRowIndex(matrix1, matrix2)
 	
 end
 
-local function calculateCentroidAndSumKernelMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunction, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
+local function calculateMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunction, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
 	
 	for dataIndex, featureVector in ipairs(featureMatrix) do
 
@@ -492,7 +492,7 @@ function MeanShiftModel:train(featureMatrix)
 		
 		clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 		
-		centroidMatrix, sumKernelMatrix, sumMultipliedKernelMatrix = calculateCentroidAndSumKernelMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunctionToApply, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
+		centroidMatrix, sumKernelMatrix, sumMultipliedKernelMatrix = calculateMatrices(featureMatrix, centroidMatrix, clusterAssignmentMatrix, distanceMatrix, bandwidth, kernelFunctionToApply, kernelParameters, sumKernelMatrix, sumMultipliedKernelMatrix)
 		
 		centroidMatrix, sumKernelMatrix, sumMultipliedKernelMatrix = mergeCentroids(centroidMatrix, bandwidth, distanceFunctionToApply, sumKernelMatrix, sumMultipliedKernelMatrix)
 		

@@ -22,7 +22,7 @@ ModelTrainingModifier.new(Model: ModelObject, gradientDescentType: string, batch
 
 * Model: The model object to modify its training capabilities.
 
-* gradientDescentType: The type of gradient descent to be used when train() function is called. Available modes are "Batch", "MiniBatch" and "Stochastic".
+* mode: The type of gradient descent to be used when train() function is called. Available modes are "Batch", "MiniBatch" and "Stochastic".
 
 * batchSize: The batch size to split the featureMatrix and labelVector into multiple parts.
 

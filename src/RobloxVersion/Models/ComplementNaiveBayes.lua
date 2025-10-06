@@ -173,7 +173,7 @@ function ComplementNaiveBayesModel:calculateCost(featureMatrix, logisticMatrix)
 
 end
 
-local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
+local function offlineComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
 	
 	local complementFeatureProbabilityMatrix = {}
 
@@ -257,7 +257,7 @@ local function batchComplementNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 	
 end
 
-local function sequentialComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
+local function onlineComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
 	
 	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
 	
@@ -343,9 +343,9 @@ end
 
 local complementNaiveBayesFunctionList = {
 	
-	["Batch"] = batchComplementNaiveBayes,
+	["Offline"] = offlineComplementNaiveBayes,
 	
-	["Sequential"] = sequentialComplementNaiveBayes,
+	["Online"] = onlineComplementNaiveBayes,
 	
 }
 
@@ -379,7 +379,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		if (mode == "Hybrid") then
 
-			mode = (complementFeatureProbabilityMatrix and priorProbabilityVector and numberOfFeatureCountVector and numberOfDataPointVector and "Sequential") or "Batch"		
+			mode = (complementFeatureProbabilityMatrix and priorProbabilityVector and numberOfFeatureCountVector and numberOfDataPointVector and "Online") or "Offline"		
 
 		end
 		
@@ -395,7 +395,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 		local extractedFeatureMatrixTable = NewComplementNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
-		if (mode == "Sequential") then
+		if (mode == "Online") then
 
 			local numberOfClasses = #NewComplementNaiveBayesModel.ClassesList
 

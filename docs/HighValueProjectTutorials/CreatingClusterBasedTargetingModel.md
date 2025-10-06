@@ -12,9 +12,11 @@ For best results, please use:
 
   * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.
 
-* MeanShift (Trickier to set up)
+* MeanShift
 
   * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.
+ 
+  * Trickier to set up.
 
 ## Initializing The Clustering Model
 
@@ -62,7 +64,7 @@ Once train() is called, call the getModelParameters() function to get the center
 
 local centroidMatrix = TargetingModel:getModelParameters()
 
-centroidMatrix = centroidMatrix[1] -- You must perform this line if it is KMeans or MeanShift model.
+centroidMatrix = centroidMatrix[1] -- This is a must if you're using K-Means or Meanshift because they store the ModelParameters as a table of matrices.
 
 ```
 

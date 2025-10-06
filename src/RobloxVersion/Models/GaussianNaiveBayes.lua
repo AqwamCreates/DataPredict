@@ -154,7 +154,7 @@ function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelMatrix)
 
 end
 
-local function batchGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
+local function offlineGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
 	
 	local numberOfClasses = #extractedFeatureMatrixTable
 	
@@ -206,7 +206,7 @@ local function batchGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData
 	
 end
 
-local function sequentialGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, meanMatrix, standardDeviationMatrix, priorProbabilityVector, numberOfDataPointVector)
+local function onlineGaussianNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, meanMatrix, standardDeviationMatrix, priorProbabilityVector, numberOfDataPointVector)
 	
 	local sumMatrix = AqwamTensorLibrary:multiply(meanMatrix, numberOfDataPointVector)
 
@@ -312,9 +312,9 @@ end
 
 local gaussianNaiveBayesFunctionList = {
 	
-	["Batch"] = batchGaussianNaiveBayes,
+	["Offline"] = offlineGaussianNaiveBayes,
 	
-	["Sequential"] = sequentialGaussianNaiveBayes,
+	["Online"] = onlineGaussianNaiveBayes,
 	
 }
 
@@ -348,7 +348,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 
 		if (mode == "Hybrid") then
 
-			mode = (meanMatrix and standardDeviationMatrix and priorProbabilityVector and numberOfDataPointVector and "Sequential") or "Batch"		
+			mode = (meanMatrix and standardDeviationMatrix and priorProbabilityVector and numberOfDataPointVector and "Online") or "Offline"		
 
 		end
 
@@ -364,7 +364,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 
 		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
-		if (mode == "Sequential") then
+		if (mode == "Online") then
 
 			local numberOfClasses = #NewGaussianNaiveBayesModel.ClassesList
 

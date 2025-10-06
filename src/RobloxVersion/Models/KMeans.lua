@@ -177,27 +177,28 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 end
 
 local function chooseFarthestCentroidFromDatasetDistanceMatrix(distanceMatrix, blacklistedDataIndexArray)
-	
+
 	local dataIndex
 
 	local maxDistance = -math.huge
 
 	for row = 1, #distanceMatrix, 1 do
 
-		if table.find(blacklistedDataIndexArray, row) then continue end
+		if (not table.find(blacklistedDataIndexArray, row)) then
 
-		local totalDistance = 0
+			local totalDistance = 0
 
-		for column = 1, #distanceMatrix[1], 1 do
+			for column = 1, #distanceMatrix[1], 1 do totalDistance = totalDistance + distanceMatrix[row][column] end
 
-			totalDistance = totalDistance + distanceMatrix[row][column]
+			if (totalDistance > maxDistance) then
+
+				maxDistance = totalDistance
+
+				dataIndex = row
+
+			end
 
 		end
-
-		if (totalDistance < maxDistance) then continue end
-
-		maxDistance = totalDistance
-		dataIndex = row
 
 	end
 

@@ -4,9 +4,17 @@ Hi guys! In this tutorial, we will demonstrate on how to create cluster-based ta
 
 For best results, please use:
 
-* K-Means or Agglomerative Hierarchical if you want to manually set the number of clusters.
+* K-Means
 
-* MeanShift if you want the model to set the number of clusters. (Trickier to set up)
+  * This model sets up X number of clusters and finds the center of data.
+
+* Agglomerative Hierarchical
+
+  * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.
+
+* MeanShift (Trickier to set up)
+
+  * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.
 
 ## Initializing The Clustering Model
 
@@ -52,7 +60,9 @@ Once train() is called, call the getModelParameters() function to get the center
 
 ```lua
 
-local ModelParameters = TargetingModel:getModelParameters()
+local centroidMatrix = TargetingModel:getModelParameters()
+
+centroidMatrix = centroidMatrix[1] -- You must perform this line if it is KMeans or MeanShift model.
 
 ```
 

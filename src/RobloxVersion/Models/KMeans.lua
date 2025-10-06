@@ -48,7 +48,7 @@ local defaultStopWhenModelParametersDoesNotChange = false
 
 local defaultSetInitialCentroidsOnDataPoints = true
 
-local defaultSetTheCentroidsDistanceFarthest = false
+local defaultSetTheCentroidsDistanceFarthest = true
 
 local distanceFunctionList = {
 

@@ -104,3 +104,7 @@ ExpectationMaximization:predict(featureMatrix: Matrix): integer, number
 ## Inherited From
 
 * [IterativeMethodBaseModel](IterativeMethodBaseModel.md)
+
+## References
+
+[Online EM for Unsupervised Models](https://cs.stanford.edu/~pliang/papers/online-naacl2009.pdf)

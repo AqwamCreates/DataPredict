@@ -281,11 +281,11 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 	end
 	
-	local numberOfIterations = 0
-	
 	local logLikelihoodArray = {}
 	
 	local costArray = {}
+	
+	local numberOfIterations = 0
 	
 	local responsibilityMatrix
 	

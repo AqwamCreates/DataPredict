@@ -42,7 +42,7 @@ local defaultNumberOfClusters = math.huge
 
 local defaultMode = "Hybrid"
 
-local defaultEpsilon = math.pow(10, -9)
+local defaultEpsilon = math.pow(10, -16)
 
 local function gaussian(featureVector, meanVector, varianceVector, epsilon)
 	
@@ -160,9 +160,11 @@ local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClu
 
 end
 
-local function calculateCost(gaussianMatrix)
+local function calculateCost(gaussianMatrix, epsilon)
 	
-	local logLikelihoodMatrix = AqwamTensorLibrary:applyFunction(math.log, gaussianMatrix)
+	local clampedGaussianMatrix = AqwamTensorLibrary:applyFunction(math.max, gaussianMatrix, {{epsilon}})
+	
+	local logLikelihoodMatrix = AqwamTensorLibrary:applyFunction(math.log, clampedGaussianMatrix)
 
 	local sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihoodMatrix)
 	
@@ -391,7 +393,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			return calculateCost(gaussianMatrix)
+			return calculateCost(gaussianMatrix, epsilon)
 			
 		end)
 		

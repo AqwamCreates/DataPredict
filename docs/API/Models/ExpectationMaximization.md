@@ -35,7 +35,7 @@ ExpectationMaximization.new(maximumNumberOfIterations: integer, numberOfClusters
  
   * Offline
 
-* useLogProbabilities: Controls whether or not to convert probabilities using the logarithm function for numerical stability [Default: false].
+* useLogProbabilities: Controls whether or not to convert probabilities using the logarithm function for numerical stability [Default: False].
 
 * distanceFunction: The distance function to be used to initialize the centroids. Available options are:
 

@@ -173,91 +173,7 @@ function ComplementNaiveBayesModel:calculateCost(featureMatrix, logisticMatrix)
 
 end
 
-local function offlineComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
-	
-	local complementFeatureProbabilityMatrix = {}
-
-	local priorProbabilityVector = {}
-	
-	local numberOfFeatureCountVector = {}
-
-	local numberOfDataPointVector = {}
-
-	local extractedFeatureMatrix
-
-	local extractedComplementFeatureMatrix
-
-	local sumExtractedComplementFeatureVector
-
-	local totalSumExtractedComplementFeatureVector
-
-	local complementFeatureProbabilityVector
-	
-	local numberOfFeatureCount
-
-	local numberOfSubData
-
-	local numberOfComplementSubData
-
-	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
-		
-		if (type(extractedFeatureMatrix) == "table") then
-			
-			numberOfSubData = #extractedFeatureMatrix
-
-			totalSumExtractedComplementFeatureVector = nil
-
-			for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
-
-				if (complementClassIndex ~= classIndex) then
-
-					numberOfComplementSubData = #extractedComplementFeatureMatrix
-
-					sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
-
-					if (totalSumExtractedComplementFeatureVector) then
-
-						totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:add(totalSumExtractedComplementFeatureVector, sumExtractedComplementFeatureVector)
-
-					else
-
-						totalSumExtractedComplementFeatureVector = sumExtractedComplementFeatureVector
-
-					end
-
-				end
-
-			end
-
-			numberOfFeatureCount = AqwamTensorLibrary:sum(totalSumExtractedComplementFeatureVector)
-
-			complementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, numberOfFeatureCount)
-
-			complementFeatureProbabilityMatrix[classIndex] = complementFeatureProbabilityVector[1]
-			
-		else
-
-			numberOfSubData = 0
-			
-			numberOfFeatureCount = 0
-			
-			complementFeatureProbabilityMatrix[classIndex] = table.create(numberOfFeatures, 0)
-			
-		end
-		
-		numberOfFeatureCountVector[classIndex] = {numberOfFeatureCount}
-
-		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
-		
-		numberOfDataPointVector[classIndex] = {numberOfSubData}
-		
-	end
-	
-	return complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector
-	
-end
-
-local function onlineComplementNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
+local function calculateMatrices(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
 	
 	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
 	
@@ -341,14 +257,6 @@ local function onlineComplementNaiveBayes(extractedFeatureMatrixTable, numberOfD
 	
 end
 
-local complementNaiveBayesFunctionList = {
-	
-	["Offline"] = offlineComplementNaiveBayes,
-	
-	["Online"] = onlineComplementNaiveBayes,
-	
-}
-
 function ComplementNaiveBayesModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
@@ -382,10 +290,6 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 			mode = (complementFeatureProbabilityMatrix and priorProbabilityVector and numberOfFeatureCountVector and numberOfDataPointVector and "Online") or "Offline"		
 
 		end
-		
-		local complementNaiveBayesFunction = complementNaiveBayesFunctionList[mode]
-
-		if (not complementNaiveBayesFunction) then error("Unknown mode.") end
 
 		local numberOfData = #featureMatrix
 		
@@ -395,21 +299,33 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		
 		local extractedFeatureMatrixTable = NewComplementNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
-		if (mode == "Online") then
+		if (mode == "Offline") then
 
-			local numberOfClasses = #NewComplementNaiveBayesModel.ClassesList
-
-			local zeroValue = (useLogProbabilities and math.huge) or 0
-
-			local oneValue = (useLogProbabilities and 0) or 1
-
-			complementFeatureProbabilityMatrix = complementFeatureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
-
-			priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
-
-			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
+			complementFeatureProbabilityMatrix = nil
+			
+			priorProbabilityVector = nil
+			
+			numberOfFeatureCountVector = nil
+			
+			numberOfDataPointVector = nil
 
 		end
+		
+		local numberOfClasses = #NewComplementNaiveBayesModel.ClassesList
+
+		local zeroValue = (useLogProbabilities and math.huge) or 0
+
+		local oneValue = (useLogProbabilities and 0) or 1
+		
+		local classVectorDimensionSizeArray = {numberOfClasses, 1}
+
+		complementFeatureProbabilityMatrix = complementFeatureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
+
+		priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, oneValue)
+		
+		numberOfFeatureCountVector = numberOfFeatureCountVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
+
+		numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
 		
 		if (useLogProbabilities) then
 
@@ -419,7 +335,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
-		complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector = complementNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
+		complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector = calculateMatrices(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
 		
 		if (useLogProbabilities) then
 

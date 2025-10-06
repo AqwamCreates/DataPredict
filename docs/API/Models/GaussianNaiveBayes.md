@@ -26,6 +26,8 @@ GaussianNaiveBayes.new(useLogProbabilities: boolean, mode: string): ModelObject
 
 #### Parameters:
 
+* useLogProbabilities: Convert the probabilities to larger values using log function.
+
 * mode: Controls the mode of the model. Available options are:
 
   * Hybrid (Default)
@@ -33,8 +35,6 @@ GaussianNaiveBayes.new(useLogProbabilities: boolean, mode: string): ModelObject
   * Online
  
   * Offline
-
-* useLogProbabilities: Convert the probabilities to larger values using log function.
 
 #### Returns:
 

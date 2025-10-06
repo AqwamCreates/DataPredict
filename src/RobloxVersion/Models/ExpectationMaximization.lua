@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
 local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 local ExpectationMaximizationModel = {}
@@ -33,8 +35,6 @@ local ExpectationMaximizationModel = {}
 ExpectationMaximizationModel.__index = ExpectationMaximizationModel
 
 setmetatable(ExpectationMaximizationModel, IterativeMethodBaseModel)
-
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaximumNumberOfIterations = 10
 

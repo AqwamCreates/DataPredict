@@ -225,61 +225,7 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelMatrix)
 
 end
 
-local function offlineMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
-	
-	local featureProbabilityMatrix = {}
-
-	local priorProbabilityVector = {}
-	
-	local featureCountMatrix = {}
-
-	local numberOfDataPointVector = {}
-
-	local featureProbabilityVector
-
-	local numberOfSubData
-
-	local featureCountVector
-
-	local sumFeatureCount
-	
-	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
-
-		if (type(extractedFeatureMatrix) == "table") then
-			
-			numberOfSubData = #extractedFeatureMatrix
-
-			featureCountVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
-
-			sumFeatureCount = AqwamTensorLibrary:sum(extractedFeatureMatrix)
-
-			featureProbabilityVector = AqwamTensorLibrary:divide(featureCountVector, sumFeatureCount)
-
-			featureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
-
-			featureCountMatrix[classIndex] = featureCountVector[1]
-			
-		else
-			
-			numberOfSubData = 0
-			
-			featureProbabilityMatrix[classIndex] = table.create(numberOfFeatures, 0)
-			
-			featureCountMatrix[classIndex] = table.create(numberOfFeatures, 0)
-			
-		end
-		
-		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
-		
-		numberOfDataPointVector[classIndex] = {numberOfSubData}
-		
-	end
-	
-	return featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector
-	
-end
-
-local function onlineMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
+local function calculateMatrices(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
 	
 	local newFeatureProbabilityMatrix = {}
 	
@@ -339,14 +285,6 @@ local function onlineMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOf
 	
 end
 
-local multinomialNaiveBayesFunctionList = {
-	
-	["Offline"] = offlineMultinomialNaiveBayes,
-	
-	["Online"] = onlineMultinomialNaiveBayes,
-	
-}
-
 function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
@@ -380,10 +318,6 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 			mode = (featureProbabilityMatrix and priorProbabilityVector and featureCountMatrix and numberOfDataPointVector and "Online") or "Offline"		
 
 		end
-		
-		local multinomialNaiveBayesFunction = multinomialNaiveBayesFunctionList[mode]
-
-		if (not multinomialNaiveBayesFunction) then error("Unknown mode.") end
 
 		local numberOfData = #featureMatrix
 		
@@ -393,21 +327,33 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 		local extractedFeatureMatrixTable = NewMultinomialNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
-		if (mode == "Online") then
+		if (mode == "Offline") then
 
-			local numberOfClasses = #NewMultinomialNaiveBayesModel.ClassesList
-
-			local zeroValue = (useLogProbabilities and math.huge) or 0
-
-			local oneValue = (useLogProbabilities and 0) or 1
-
-			featureProbabilityMatrix = featureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
-
-			priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
-
-			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
+			featureProbabilityMatrix = nil
+			
+			priorProbabilityVector = nil
+			
+			featureCountMatrix = nil
+			
+			numberOfDataPointVector = nil
 
 		end
+		
+		local numberOfClasses = #NewMultinomialNaiveBayesModel.ClassesList
+
+		local zeroValue = (useLogProbabilities and math.huge) or 0
+
+		local oneValue = (useLogProbabilities and 0) or 1
+		
+		local classVectorDimensionSizeArray = {numberOfClasses, 1}
+
+		featureProbabilityMatrix = featureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
+
+		priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, oneValue)
+		
+		featureCountMatrix = featureCountMatrix or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, oneValue)
+
+		numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
 		
 		if (useLogProbabilities) then
 
@@ -417,7 +363,7 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
-		featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector = multinomialNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
+		featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector = calculateMatrices(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
 		
 		if (useLogProbabilities) then
 

@@ -577,8 +577,6 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	
 	local gaussianMatrix
 	
-	local normalizationDenominator
-	
 	local cost
 	
 	if (not piMatrix) or (not meanMatrix) or (not varianceMatrix) or (not sumWeightMatrix) or (not sumWeightXMatrix) then
@@ -629,7 +627,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	
 	-- We're just normalizing here to so that the sumWeightMatrix and sumWeightMatrix values doesn't go so big to the point of numerical overflow.
 	
-	normalizationDenominator = AqwamTensorLibrary:sum(sumWeightMatrix)
+	local normalizationDenominator = AqwamTensorLibrary:sum(sumWeightMatrix)
 
 	sumWeightMatrix = AqwamTensorLibrary:divide(sumWeightMatrix, normalizationDenominator)
 

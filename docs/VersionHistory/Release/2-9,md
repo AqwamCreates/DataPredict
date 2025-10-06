@@ -1,0 +1,39 @@
+# Release Version 2.9
+
+## Models
+
+* MeanShift now accepts table of matrices instead of a single matrix.
+
+* ExpectationMaximization now have "mode" and "distanceFunction" parameters in its constructor.
+
+* Fixed some bugs and optimized these models:
+
+  * AgglomerativeHierarchical
+ 
+  * ExpecationMaximization
+
+  * KMeans
+ 
+  * KMedoids
+ 
+  * MeanShift
+
+* Removed redundant codes from these models:
+
+  * KMeans
+ 
+  * KMedoids
+ 
+  * MeanShift
+
+  * ExpecationMaximization
+
+  * GaussianNaiveBayes
+ 
+  * MultinomialNaiveBayes
+ 
+  * BernoulliNaiveBayes
+ 
+  * ComplementNaiveBayes
+ 
+  * CategoricalNaiveBayes

@@ -60,7 +60,7 @@ Once train() is called, call the getModelParameters() function to get the center
 
 local centerOfPlayerDataMatrix = EnemyDataGenerationModel:getModelParameters()
 
-centerOfPlayerDataMatrix = centerOfPlayerDataMatrix[1] -- This is a must if you're using K-Means instead of Meanshift because K-Means stores the ModelParameters as a table of matrices.
+centerOfPlayerDataMatrix = centerOfPlayerDataMatrix[1] -- This is a must if you're using K-Means or Meanshift because they store the ModelParameters as a table of matrices.
 
 ```
 

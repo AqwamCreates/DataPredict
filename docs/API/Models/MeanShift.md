@@ -22,7 +22,7 @@ MeanShift.new(maximumNumberOfIterations: integer, bandwidth: number, mode: strin
 
 * maximumNumberOfIterations: How many times should the model needed to be trained.
 
-* bandwidth: The size of the area around each data point.
+* bandwidth: The maximum distance in order to merge with other centroids (center of clusters).
 
 * mode: Controls the mode of the model. Available options are:
 

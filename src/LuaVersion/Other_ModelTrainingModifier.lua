@@ -34,7 +34,7 @@ ModelTrainingModifier.__index = ModelTrainingModifier
 
 setmetatable(ModelTrainingModifier, BaseIntstance)
 
-local defaultTrainingMode = "Stochastic"
+local defaultMode = "Stochastic"
 
 local defaultBatchSize = 2
 
@@ -50,7 +50,7 @@ function ModelTrainingModifier.new(parameterDictionary)
 	
 	NewModelTrainingModifier:setClassName("ModelTrainingModifier")
 	
-	NewModelTrainingModifier.trainingMode = parameterDictionary.trainingMode or defaultTrainingMode
+	NewModelTrainingModifier.mode = parameterDictionary.mode or defaultMode
 
 	NewModelTrainingModifier.batchSize = parameterDictionary.batchSize or defaultBatchSize
 	
@@ -212,7 +212,7 @@ end
 
 function ModelTrainingModifier:train(...)
 	
-	local trainingMode = self.trainingMode
+	local trainingMode = self.mode
 	
 	if (trainingMode == "Batch") then
 		

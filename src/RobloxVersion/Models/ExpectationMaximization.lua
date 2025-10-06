@@ -164,15 +164,19 @@ function ExpectationMaximizationModel:initializeMatrices(numberOfClusters, numbe
 	
 	local centroidMatrixDimensionSizeArray = {numberOfClusters, numberOfFeatures}
 	
-	local piMatrix = AqwamTensorLibrary:createRandomNormalTensor({numberOfClusters, 1})
+	local piMatrix = AqwamTensorLibrary:createRandomUniformTensor({numberOfClusters, 1})
+	
+	local sumPi = AqwamTensorLibrary:sum(piMatrix)
 
 	local meanMatrix = self:initializeMatrixBasedOnMode(centroidMatrixDimensionSizeArray)
 
-	local varianceMatrix = AqwamTensorLibrary:createRandomNormalTensor(centroidMatrixDimensionSizeArray)
+	local varianceMatrix = AqwamTensorLibrary:createRandomUniformTensor(centroidMatrixDimensionSizeArray)
 
 	local sumWeightMatrix = AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
 
 	local sumWeightXMatrix = AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
+	
+	piMatrix = AqwamTensorLibrary:divide(piMatrix, sumPi)
 	
 	return piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix
 	

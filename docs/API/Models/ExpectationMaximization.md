@@ -107,4 +107,4 @@ ExpectationMaximization:predict(featureMatrix: Matrix): integer, number
 
 ## References
 
-[Online EM for Unsupervised Models](https://cs.stanford.edu/~pliang/papers/online-naacl2009.pdf)
+* [Online EM for Unsupervised Models](https://cs.stanford.edu/~pliang/papers/online-naacl2009.pdf)

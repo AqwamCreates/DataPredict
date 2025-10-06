@@ -144,47 +144,7 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelMatrix)
 
 end
 
-local function offlineBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
-	
-	local featureProbabilityMatrix = {}
-
-	local priorProbabilityVector = {}
-	
-	local numberOfDataPointVector = {}
-	
-	local numberOfSubData
-	
-	local featureProbabilityVector
-
-	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
-		
-		if (type(extractedFeatureMatrix) == "table") then
-			
-			numberOfSubData = #extractedFeatureMatrix
-
-			featureProbabilityVector = AqwamTensorLibrary:mean(extractedFeatureMatrix, 1)
-
-			featureProbabilityMatrix[classIndex] = featureProbabilityVector[1]
-			
-		else
-			
-			numberOfSubData = 0
-			
-			featureProbabilityMatrix[classIndex] = table.create(numberOfFeatures, 0)
-			
-		end
-
-		priorProbabilityVector[classIndex] = {(numberOfSubData / numberOfData)}
-		
-		numberOfDataPointVector[classIndex] = {numberOfSubData}
-
-	end
-	
-	return featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector
-	
-end
-
-local function onlineBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+local function calculateMatrices(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
 	
 	local sumMatrix = AqwamTensorLibrary:multiply(featureProbabilityMatrix, numberOfDataPointVector)
 
@@ -240,14 +200,6 @@ local function onlineBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfDa
 
 end
 
-local bernoulliNaiveBayesFunctionList = {
-	
-	["Offline"] = offlineBernoulliNaiveBayes,
-	
-	["Online"] = onlineBernoulliNaiveBayes,
-	
-}
-
 function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
@@ -279,10 +231,6 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 			mode = (featureProbabilityMatrix and priorProbabilityVector and numberOfDataPointVector and "Online") or "Offline"		
 
 		end
-		
-		local bernoulliNaiveBayesFunction = bernoulliNaiveBayesFunctionList[mode]
-
-		if (not bernoulliNaiveBayesFunction) then error("Unknown mode.") end
 
 		local numberOfData = #featureMatrix
 
@@ -292,21 +240,29 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 		local extractedFeatureMatrixTable = NewBernoulliNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 
-		if (mode == "Online") then
+		if (mode == "Offline") then
 
-			local numberOfClasses = #NewBernoulliNaiveBayesModel.ClassesList
-
-			local zeroValue = (useLogProbabilities and math.huge) or 0
-
-			local oneValue = (useLogProbabilities and 0) or 1
-
-			featureProbabilityMatrix = featureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
-
-			priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
-
-			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
+			featureProbabilityMatrix = nil
+			
+			priorProbabilityVector = nil
+			
+			numberOfDataPointVector = nil
 
 		end
+		
+		local numberOfClasses = #NewBernoulliNaiveBayesModel.ClassesList
+
+		local zeroValue = (useLogProbabilities and math.huge) or 0
+
+		local oneValue = (useLogProbabilities and 0) or 1
+
+		local classVectorDimensionSizeArray = {numberOfClasses, 1}
+
+		featureProbabilityMatrix = featureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
+
+		priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, oneValue)
+
+		numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
 		
 		if (useLogProbabilities) then
 
@@ -316,7 +272,7 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
-		featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector = bernoulliNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+		featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector = calculateMatrices(extractedFeatureMatrixTable, numberOfData, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
 		
 		if (useLogProbabilities) then
 

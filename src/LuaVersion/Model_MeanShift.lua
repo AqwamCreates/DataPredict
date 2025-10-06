@@ -434,7 +434,7 @@ function MeanShiftModel:train(featureMatrix)
 	
 	if (mode == "Hybrid") then
 
-		mode = (centroidMatrix and sumKernelMatrix and sumMultipliedKernelMatrix and "Sequential") or "Batch"		
+		mode = (centroidMatrix and sumKernelMatrix and sumMultipliedKernelMatrix and "Online") or "Offline"		
 
 	end
 
@@ -462,9 +462,7 @@ function MeanShiftModel:train(featureMatrix)
 
 	local cost
 	
-	-- This is batch and not sequential mode. So, we need to reset the whole model to get fresh model parameters.
-	
-	if (mode == "Batch") then 
+	if (mode == "Offline") then 
 
 		centroidMatrix = nil
 		

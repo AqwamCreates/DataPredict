@@ -355,7 +355,9 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		if (numberOfClusters == math.huge) then 
 			
-			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBestMatrices(featureMatrix, epsilon) 
+			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBestMatrices(featureMatrix, epsilon)
+			
+			numberOfClusters = #piMatrix
 			
 		else
 			

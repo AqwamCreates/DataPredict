@@ -290,14 +290,6 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 			mode = (complementFeatureProbabilityMatrix and priorProbabilityVector and numberOfFeatureCountVector and numberOfDataPointVector and "Online") or "Offline"		
 
 		end
-
-		local numberOfData = #featureMatrix
-		
-		local numberOfFeatures = #featureMatrix[1]
-		
-		local logisticMatrix = NewComplementNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
-		
-		local extractedFeatureMatrixTable = NewComplementNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
 		if (mode == "Offline") then
 
@@ -311,6 +303,10 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
+		local numberOfData = #featureMatrix
+
+		local numberOfFeatures = #featureMatrix[1]
+		
 		local numberOfClasses = #NewComplementNaiveBayesModel.ClassesList
 
 		local zeroValue = (useLogProbabilities and math.huge) or 0
@@ -318,6 +314,10 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		local oneValue = (useLogProbabilities and 0) or 1
 		
 		local classVectorDimensionSizeArray = {numberOfClasses, 1}
+		
+		local logisticMatrix = NewComplementNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
+
+		local extractedFeatureMatrixTable = NewComplementNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 
 		complementFeatureProbabilityMatrix = complementFeatureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
 

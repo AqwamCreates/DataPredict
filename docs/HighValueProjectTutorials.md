@@ -136,6 +136,16 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
+* [Creating Probability-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingProbabilityBasedEnemyDataGenerationModel.md)
+
+  * Uses players' combat data (optional) paired with enemies' data to predict likelihood that the player will engage with the enemy if spawned.
+
+  * Uses "Generative One Class Support Vector Machine", which is an unconventional generative method that probably don't exist in the research literature.
+
+  * No need to add new content; the model can use existing content to optimize your games.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * [Creating Cluster-Based Enemy Data Generation Multiplayer Model](HighValueProjectTutorials/CreatingClusterBasedEnemyDataGenerationForMultiplayerModel.md)
 
   * Uses players' combat data to generate the center of enemies' data, creating difficulty suited for the majority of players in a session.
@@ -147,16 +157,6 @@
 * [Creating Cluster-Based Enemy Data Generation Singleplayer Model](HighValueProjectTutorials/CreatingClusterBasedEnemyDataGenerationForSingleplayerModel.md)
 
   * Uses a single player's defeated enemies' data to generate the center of enemies' data, creating difficulty personal to that player.
-
-  * No need to add new content; the model can use existing content to optimize your games.
-
-  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
-
-* [Creating Probability-Based Enemy Data Generation Model](HighValueProjectTutorials/CreatingProbabilityBasedEnemyDataGenerationModel.md)
-
-  * Uses players' combat data (optional) paired with enemies' data to predict likelihood that the player will engage with the enemy if spawned.
-
-  * Uses "Generative One Class Support Vector Machine", which is an unconventional generative method that probably don't exist in the research literature.
 
   * No need to add new content; the model can use existing content to optimize your games.
 

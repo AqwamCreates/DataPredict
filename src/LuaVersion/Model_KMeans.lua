@@ -356,19 +356,19 @@ end
 
 function KMeansModel:initializeCentroids(featureMatrix, numberOfClusters, distanceFunction)
 	
-	local setInitialClustersOnDataPoints = self.setInitialClustersOnDataPoints
+	local setInitialCentroidsOnDataPoints = self.setInitialCentroidsOnDataPoints
 	
 	local setTheCentroidsDistanceFarthest = self.setTheCentroidsDistanceFarthest
 	
-	if (setInitialClustersOnDataPoints) and (numberOfClusters == 1) then
+	if (setInitialCentroidsOnDataPoints) and (numberOfClusters == 1) then
 		
 		return AqwamTensorLibrary:mean(featureMatrix, 1)
 	
-	elseif (setInitialClustersOnDataPoints) and (setTheCentroidsDistanceFarthest) then
+	elseif (setInitialCentroidsOnDataPoints) and (setTheCentroidsDistanceFarthest) then
 
 		return chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
 
-	elseif (setInitialClustersOnDataPoints) and (not setTheCentroidsDistanceFarthest) then
+	elseif (setInitialCentroidsOnDataPoints) and (not setTheCentroidsDistanceFarthest) then
 
 		return chooseRandomCentroids(featureMatrix, numberOfClusters)
 

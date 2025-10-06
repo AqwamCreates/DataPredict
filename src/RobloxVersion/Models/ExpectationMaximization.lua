@@ -185,6 +185,10 @@ local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClu
 	piMatrix = AqwamTensorLibrary:divide(piMatrix, numberOfData)
 
 	piMatrix = AqwamTensorLibrary:transpose(piMatrix)
+	
+	local piSum = AqwamTensorLibrary:sum(piMatrix)
+	
+	piMatrix = AqwamTensorLibrary:divide(piMatrix, piSum)
 
 	local responsibilitiesMatrixTransposed = AqwamTensorLibrary:transpose(responsibilityMatrix) -- clusters x data
 	
@@ -573,6 +577,8 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	
 	local gaussianMatrix
 	
+	local normalizationDenominator
+	
 	local cost
 	
 	if (not piMatrix) or (not meanMatrix) or (not varianceMatrix) or (not sumWeightMatrix) or (not sumWeightXMatrix) then
@@ -621,13 +627,13 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	
-	-- We're just normalizing here to s0 that the sumWeightMatrix and sumWeightMatrix values doesn't go so big to the point of numerical overflow.
+	-- We're just normalizing here to so that the sumWeightMatrix and sumWeightMatrix values doesn't go so big to the point of numerical overflow.
 	
-	local denominator = AqwamTensorLibrary:sum(sumWeightMatrix)
-	
-	sumWeightMatrix = AqwamTensorLibrary:divide(sumWeightMatrix, denominator)
-	
-	sumWeightXMatrix = AqwamTensorLibrary:divide(sumWeightXMatrix, denominator)
+	normalizationDenominator = AqwamTensorLibrary:sum(sumWeightMatrix)
+
+	sumWeightMatrix = AqwamTensorLibrary:divide(sumWeightMatrix, normalizationDenominator)
+
+	sumWeightXMatrix = AqwamTensorLibrary:divide(sumWeightXMatrix, normalizationDenominator)
 	
 	self.ModelParameters = {piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix}
 

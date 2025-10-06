@@ -178,25 +178,29 @@ local function applyFunctionToFirstRowAndColumnOfDistanceMatrix(functionToApply,
 
 	for column = 1, numberOfcentroids, 1 do
 
-		if (column == centroidIndex1) or (column == centroidIndex2) then continue end
+		if (column ~= centroidIndex1) and (column ~= centroidIndex2) then
+			
+			local distance = functionToApply(centroidDistanceMatrix[centroidIndex1][column],  centroidDistanceMatrix[centroidIndex2][column])
 
-		local distance = functionToApply(centroidDistanceMatrix[centroidIndex1][column],  centroidDistanceMatrix[centroidIndex2][column])
+			newCentroidDistanceMatrix[1][newColumnIndex] = distance
 
-		newCentroidDistanceMatrix[1][newColumnIndex] = distance
-
-		newColumnIndex = newColumnIndex + 1
-
+			newColumnIndex = newColumnIndex + 1
+			
+		end
+		
 	end
 
 	for row = 1, numberOfcentroids, 1 do
 
-		if (row == centroidIndex1) or (row == centroidIndex2) then continue end
+		if (row ~= centroidIndex1) and (row ~= centroidIndex2) then
+			
+			local distance = functionToApply(centroidDistanceMatrix[row][centroidIndex1],  centroidDistanceMatrix[row][centroidIndex2])
 
-		local distance = functionToApply(centroidDistanceMatrix[row][centroidIndex1],  centroidDistanceMatrix[row][centroidIndex2])
+			newCentroidDistanceMatrix[newRowIndex][1] = distance
 
-		newCentroidDistanceMatrix[newRowIndex][1] = distance
-
-		newRowIndex = newRowIndex + 1
+			newRowIndex = newRowIndex + 1
+			
+		end
 
 	end
 
@@ -290,31 +294,17 @@ local function findClosestCentroids(centroidDistanceMatrix)
 
 end
 
-local function updateDistanceMatrix(linkageFunction, centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
-
-	if (linkageFunction == "Minimum") then
-
-		return minimumLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
-
-	elseif (linkageFunction == "Maximum") then
-
-		return maximumLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
-
-	elseif (linkageFunction == "GroupAverage") then
-
-		return groupAverageLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
-
-	elseif (linkageFunction == "Ward") then
-
-		return wardLinkage(centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
-
-	else
-
-		error("Invalid linkage function!")
-
-	end
-
-end
+local linkageFunctionList = {
+	
+	Minimum = minimumLinkage,
+	
+	Maximum = maximumLinkage,
+	
+	GroupAverage = groupAverageLinkage,
+	
+	Ward = wardLinkage,
+	
+}
 
 local function createNewCentroids(centroids, centroidIndex1Combine, centroidIndex2ToCombine)
 
@@ -460,6 +450,10 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 	
 	local ModelParameters = self.ModelParameters
 	
+	local linkageFunctionToApply = linkageFunctionList[linkageFunction]
+	
+	if (not linkageFunctionToApply) then error("Unknown linkage function") end
+	
 	local centroidMatrix = AqwamTensorLibrary:copy(featureMatrix)
 	
 	local costArray = {}
@@ -473,6 +467,8 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 	local centroidIndex1
 
 	local centroidIndex2
+	
+	local numberOfCentroids
 
 	if (ModelParameters) then
 
@@ -508,9 +504,11 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		
 		centroidMatrix = createNewCentroids(centroidMatrix, centroidIndex1, centroidIndex2)
 
-		centroidDistanceMatrix = updateDistanceMatrix(linkageFunction, centroidMatrix, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
+		centroidDistanceMatrix = linkageFunctionToApply(centroidMatrix, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
+		
+		numberOfCentroids = #centroidMatrix
 
-	until (#centroidMatrix == numberOfClusters) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfCentroids == numberOfClusters) or (numberOfCentroids == 1) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	self.ModelParameters = centroidMatrix
 

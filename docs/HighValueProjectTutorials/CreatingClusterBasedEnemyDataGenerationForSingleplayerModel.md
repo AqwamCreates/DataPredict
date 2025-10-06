@@ -12,7 +12,7 @@ For best results, please use:
 
   * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.
 
-* MeanShift (Trickier to set up)
+* MeanShift
 
   * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.
  

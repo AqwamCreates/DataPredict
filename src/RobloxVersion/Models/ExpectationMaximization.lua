@@ -174,6 +174,8 @@ function ExpectationMaximizationModel:initializeMatrices(numberOfClusters, numbe
 
 	local sumWeightXMatrix = AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
 	
+	return piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix
+	
 end
 
 function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)

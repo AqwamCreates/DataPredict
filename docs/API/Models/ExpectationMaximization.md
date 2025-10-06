@@ -19,7 +19,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ExpectationMaximization.new(maximumNumberOfIterations: integer, numberOfClusters: integer, epsilon: number): ModelObject
+ExpectationMaximization.new(maximumNumberOfIterations: integer, numberOfClusters: integer, mode: string, epsilon: number, distanceFunction: string): ModelObject
 ```
 #### Parameters
 
@@ -27,7 +27,23 @@ ExpectationMaximization.new(maximumNumberOfIterations: integer, numberOfClusters
 
 * numberOfClusters: Number of clusters for model to train and predict on. When using default or set to math.huge(), it will find the best number of clusters using Bayesian information criterion.
 
+* mode: Controls the mode of the model. Available options are:
+
+  * Hybrid (Default)
+ 
+  * Online
+ 
+  * Offline
+
 * epsilon: The value to ensure that Gaussian calculation doesn't reach infinity.
+
+* distanceFunction: The distance function to be used to initialize the centroids. Available options are:
+
+  * Euclidean (Default)
+ 
+  * Manhattan
+ 
+  * Cosine
 
 #### Returns:
 

@@ -314,21 +314,17 @@ local function calculateCost(modelParameters, featureMatrix, distanceFunction)
 	
 end
 
-local function initializeCentroids(featureMatrix, numberOfClusters, setTheCentroidsDistanceFarthest, distanceFunction)
+local function initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
 
-	local ModelParameters
+	if (setTheCentroidsDistanceFarthest) then
 
-	if setTheCentroidsDistanceFarthest then
-
-		ModelParameters = chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
+		return chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
 
 	else
 
-		ModelParameters = chooseRandomCentroids(featureMatrix, numberOfClusters)
+		return chooseRandomCentroids(featureMatrix, numberOfClusters)
 
 	end
-
-	return ModelParameters
 
 end
 
@@ -389,7 +385,7 @@ function KMedoidsModel:train(featureMatrix)
 		
 	else
 		
-		ModelParameters = initializeCentroids(featureMatrix, numberOfClusters, setTheCentroidsDistanceFarthest, distanceFunctionToApply)
+		ModelParameters = initializeCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply, setTheCentroidsDistanceFarthest)
 		
 		currentCost = math.huge
 		

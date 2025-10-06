@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-MeanShift.new(maximumNumberOfIterations: integer, bandwidth: number, distanceFunction: string, kernelFunction: string, kernelParameters: table): ModelObject
+MeanShift.new(maximumNumberOfIterations: integer, bandwidth: number, mode: string, distanceFunction: string, kernelFunction: string, kernelParameters: table): ModelObject
 ```
 
 #### Parameters:
@@ -23,6 +23,14 @@ MeanShift.new(maximumNumberOfIterations: integer, bandwidth: number, distanceFun
 * maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * bandwidth: The size of the area around each data point.
+
+* mode: Controls the mode of the model. Available options are:
+
+  * Hybrid (Default)
+ 
+  * Online
+ 
+  * Offline
 
 * distanceFunction: The function to calculate the distance between the data points and the centroids. Available options are:
 

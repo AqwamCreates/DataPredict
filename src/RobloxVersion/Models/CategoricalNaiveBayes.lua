@@ -166,7 +166,7 @@ function CategoricalNaiveBayesModel:calculateCost(featureMatrix, labelMatrix)
 
 end
 
-local function batchCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
+local function offlineCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
 
 	local featureProbabilityDictionaryArrayArray = {}
 	
@@ -234,7 +234,7 @@ local function batchCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOfD
 	
 end
 
-local function sequentialCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector)
+local function onlineCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector)
 	
 	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
 	
@@ -326,9 +326,9 @@ end
 
 local CategoricalNaiveBayesFunctionList = {
 
-	["Batch"] = batchCategoricalNaiveBayes,
+	["Offline"] = offlineCategoricalNaiveBayes,
 
-	["Sequential"] = sequentialCategoricalNaiveBayes,
+	["Online"] = onlineCategoricalNaiveBayes,
 
 }
 
@@ -360,7 +360,7 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 		if (mode == "Hybrid") then
 
-			mode = (featureProbabilityDictionaryArrayArray and priorProbabilityVector and numberOfDataPointVector and "Sequential") or "Batch"		
+			mode = (featureProbabilityDictionaryArrayArray and priorProbabilityVector and numberOfDataPointVector and "Online") or "Offline"		
 
 		end
 
@@ -376,7 +376,7 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 		local extractedFeatureMatrixTable = NewCategoricalNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 
-		if (mode == "Sequential") then
+		if (mode == "Online") then
 
 			local numberOfClasses = #NewCategoricalNaiveBayesModel.ClassesList
 

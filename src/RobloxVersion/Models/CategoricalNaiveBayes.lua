@@ -290,8 +290,6 @@ local function calculateMatrices(extractedFeatureMatrixTable, numberOfData, numb
 			
 			local newFeatureProbabilityDictionaryArray = {}
 
-			for featureProbabilityIndex = 1, numberOfFeatures, 1 do newFeatureProbabilityDictionaryArray[featureProbabilityIndex] = {} end
-
 			for featureColumn, newFeatureDictionary in ipairs(newFeatureDictionaryArray) do
 
 				local newFeatureProbabilityDictionary = {} 

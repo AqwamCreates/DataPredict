@@ -168,7 +168,7 @@ local function createDistanceMatrix(modelParameters, featureMatrix, distanceFunc
 
 		for cluster = 1, #modelParameters, 1 do
 
-			distanceMatrix[datasetIndex][cluster] = calculateDistance({featureMatrix[datasetIndex]}, {modelParameters[cluster]} , distanceFunction)
+			distanceMatrix[datasetIndex][cluster] = distanceFunction({featureMatrix[datasetIndex]}, {modelParameters[cluster]})
 
 		end
 
@@ -314,7 +314,7 @@ local function calculateCost(modelParameters, featureMatrix, distanceFunction)
 	
 end
 
-local function initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
+local function initializeCentroids(featureMatrix, numberOfClusters, setTheCentroidsDistanceFarthest, distanceFunction)
 
 	local ModelParameters
 
@@ -377,15 +377,19 @@ function KMedoidsModel:train(featureMatrix)
 	
 	local ModelParameters = self.ModelParameters
 	
+	local distanceFunctionToApply = distanceFunctionList[distanceFunction]
+	
+	if (not distanceFunctionToApply) then error("Unknown distance function.") end
+	
 	if (ModelParameters) then
 		
 		if (#featureMatrix[1] ~= #ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
 		
-		currentCost = calculateCost(ModelParameters, featureMatrix, distanceFunction)
+		currentCost = calculateCost(ModelParameters, featureMatrix, distanceFunctionToApply)
 		
 	else
 		
-		ModelParameters = initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
+		ModelParameters = initializeCentroids(featureMatrix, numberOfClusters, setTheCentroidsDistanceFarthest, distanceFunctionToApply)
 		
 		currentCost = math.huge
 		
@@ -407,7 +411,7 @@ function KMedoidsModel:train(featureMatrix)
 
 				ModelParameters[medoid] = featureMatrix[row]
 
-				currentCost = calculateCost(ModelParameters, featureMatrix, distanceFunction)
+				currentCost = calculateCost(ModelParameters, featureMatrix, distanceFunctionToApply)
 
 				if (currentCost > previousCost) then
 
@@ -443,7 +447,11 @@ end
 
 function KMedoidsModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local distanceMatrix = createDistanceMatrix(self.ModelParameters, featureMatrix, self.distanceFunction)
+	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
+	
+	local ModelParameters = self.ModelParameters
+	
+	local distanceMatrix = createDistanceMatrix(ModelParameters, featureMatrix, distanceFunctionToApply)
 	
 	if (returnOriginalOutput == true) then return distanceMatrix end
 

@@ -242,11 +242,7 @@ local function chooseFarthestCentroidFromDatasetDistanceMatrix(distanceMatrix, b
 			
 			local totalDistance = 0
 
-			for column = 1, #distanceMatrix[1], 1 do
-
-				totalDistance = totalDistance + distanceMatrix[row][column]
-
-			end
+			for column = 1, #distanceMatrix[1], 1 do totalDistance = totalDistance + distanceMatrix[row][column] end
 			
 			if (totalDistance > maxDistance) then
 				

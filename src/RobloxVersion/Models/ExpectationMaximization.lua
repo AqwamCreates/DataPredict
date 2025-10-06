@@ -245,57 +245,57 @@ end
 
 function ExpectationMaximizationModel:train(featureMatrix)
 	
-	local piMatrix
-	
-	local meanMatrix
-	
-	local varianceMatrix
-	
-	local responsibilityMatrix
-	
-	local gaussianMatrix
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
-	local costArray = {}
-	
-	local logLikelihoodArray = {}
-	
-	local cost
-	
-	local numberOfIterations = 0
+	local numberOfClusters = self.numberOfClusters
 
-	local logLikelihoodMatrix
-	
-	local sumLogLikelihood
+	local epsilon = self.epsilon
+
+	local ModelParameters = self.ModelParameters
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
-	local maximumNumberOfIterations = self.maximumNumberOfIterations
-	
-	local numberOfClusters = self.numberOfClusters
-	
-	local epsilon = self.epsilon
-	
-	local ModelParameters = self.ModelParameters
+	local piMatrix
 
+	local meanMatrix
+
+	local varianceMatrix
+	
 	if (ModelParameters) then
 
 		piMatrix, meanMatrix, varianceMatrix = table.unpack(ModelParameters)
 
 		if (numberOfFeatures ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
-		
+
 	else
-		
+
 		if (numberOfClusters == math.huge) then
-			
+
 			numberOfClusters = self:fetchBestNumberOfClusters(featureMatrix, epsilon)
-			
+
 			self.numberOfClusters = numberOfClusters
-			
+
 		end
-		
+
 		piMatrix, meanMatrix, varianceMatrix = self:initializeParameters(numberOfClusters, numberOfFeatures) 
 
 	end
+	
+	local numberOfIterations = 0
+	
+	local logLikelihoodArray = {}
+	
+	local costArray = {}
+	
+	local responsibilityMatrix
+	
+	local gaussianMatrix
+
+	local logLikelihoodMatrix
+
+	local sumLogLikelihood
+	
+	local cost
 
 	repeat
 		
@@ -336,12 +336,12 @@ function ExpectationMaximizationModel:train(featureMatrix)
 			table.insert(costArray, cost)
 
 			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
-			
-			if (cost ~= cost) then error("Too much variance in the data! Please change the argument values.") end
 
 		end
 
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	
+	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 
 	self.ModelParameters = {piMatrix, meanMatrix, varianceMatrix}
 
@@ -357,7 +357,7 @@ function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutpu
 
 	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
 	
-	if (returnOriginalOutput == true) then return gaussianMatrix end
+	if (returnOriginalOutput) then return gaussianMatrix end
 	
 	local selectedClustersVector = AqwamTensorLibrary:createTensor({numberOfFeatures, 1})
 

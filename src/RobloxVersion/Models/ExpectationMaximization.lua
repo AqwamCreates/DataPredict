@@ -174,11 +174,7 @@ local function expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatr
 	
 end
 
-local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix) -- data x features, data x clusters, clusters x 1, clusters x features 
-
-	local numberOfData = #featureMatrix
-
-	local numberOfFeatures = #featureMatrix[1]
+local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix) -- data x features, data x clusters, clusters x 1, clusters x features
 
 	local piMatrix = AqwamTensorLibrary:sum(responsibilityMatrix, 1)
 	
@@ -200,7 +196,7 @@ local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClu
 
 	local meanMatrix = AqwamTensorLibrary:divide(sumWeightXMatrix, sumWeightMatrix) -- clusters x features
 
-	local varianceMatrix = AqwamTensorLibrary:createTensor({numberOfClusters, numberOfFeatures}, 0)
+	local varianceMatrix = AqwamTensorLibrary:createTensor({numberOfClusters, #featureMatrix[1]}, 0)
 
 	for i = 1, numberOfClusters, 1 do
 

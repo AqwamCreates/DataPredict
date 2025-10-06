@@ -6,12 +6,25 @@ Hello guys! Today, I will be showing you on how to create a retention-based mode
 
 Before we train our model, we will first need to construct a model. Currently we have two approaches:
 
-| Approach | Model                            | Properties                    | Notes                                                                                                                                          |
-| -------- | -------------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1        | Gaussian Naive Bayes             | Incremental, Generative       | Not commonly used for anomaly detection; fast, can be updated with partial data, requires features are independent (rare in real player data). |
-| 2        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based | Good for anomaly detection; cannot be updated once trained, heavier to run, best with "radial basis function" kernel.                          |
+| Approach | Model                            | Properties                     | Notes                                                                                                                                         |
+| -------- | -------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1        | Expectation-Maximization         | Incremental, Probabilistic | Good for anomaly detection; cannot be updated once trained, can produce multiple "normal" clusters (e.g. different player playstyles).        |
+| 2        | Gaussian Naive Bayes             | Incremental, Generative        | Not commonly used in anomaly detection; fast, can be updated with partial data, requries features are independent (rare in real player data). |
+| 3        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based  | Good for anomaly detection; cannot be updated once trained, heavier to run, best with best with "radial basis function" kernel.               |
 
-## Approach 1
+## Approach 1: Expectation-Maximization
+
+```lua
+
+local DataPredict = require(DataPredict)
+
+-- We need to set the number of clusters to 1.
+
+local LeftToEarlyPredictionModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 1})
+
+```
+
+## Approach 2: Gaussian Naive Bayes
 
 ```lua
 
@@ -23,7 +36,7 @@ local LeftToEarlyPredictionModel = DataPredict.Models.GaussianNaiveBayes.new()
 
 ```
 
-## Approach 2
+## Approach 3: One-Class Support Vector Machine
 
 ```lua
 

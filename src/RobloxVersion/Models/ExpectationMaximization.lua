@@ -212,9 +212,9 @@ function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, e
 	
 	local bestNumberOfClusters = numberOfClusters
 	
-	local sumWeightMatrix = AqwamTensorLibrary:createTensor({1, 1})
+	local sumWeightMatrix = AqwamTensorLibrary:createTensor({numberOfClusters, 1})
 	
-	local sumWeightXMatrix = AqwamTensorLibrary:createTensor({1, numberOfFeatures})
+	local sumWeightXMatrix = AqwamTensorLibrary:createTensor({numberOfClusters, numberOfFeatures})
 	
 	local bayesianInformationCriterion
 

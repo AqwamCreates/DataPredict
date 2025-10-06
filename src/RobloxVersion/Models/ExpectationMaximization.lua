@@ -350,15 +350,15 @@ end
 
 function ExpectationMaximizationModel:initializeCentroids(featureMatrix, numberOfClusters)
 	
-	local setInitialClustersOnDataPoints = self.setInitialClustersOnDataPoints
+	local setInitialCentroidsOnDataPoints = self.setInitialCentroidsOnDataPoints
 	
 	local setTheCentroidsDistanceFarthest = self.setTheCentroidsDistanceFarthest
 	
-	if (setInitialClustersOnDataPoints) and (numberOfClusters == 1) then
+	if (setInitialCentroidsOnDataPoints) and (numberOfClusters == 1) then
 
 		return AqwamTensorLibrary:mean(featureMatrix, 1)
 
-	elseif (setInitialClustersOnDataPoints) and (setTheCentroidsDistanceFarthest) then
+	elseif (setInitialCentroidsOnDataPoints) and (setTheCentroidsDistanceFarthest) then
 		
 		local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
 		
@@ -366,7 +366,7 @@ function ExpectationMaximizationModel:initializeCentroids(featureMatrix, numberO
 
 		return chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply)
 
-	elseif (setInitialClustersOnDataPoints) and (not setTheCentroidsDistanceFarthest) then
+	elseif (setInitialCentroidsOnDataPoints) and (not setTheCentroidsDistanceFarthest) then
 
 		return chooseRandomCentroids(featureMatrix, numberOfClusters)
 

@@ -144,7 +144,7 @@ function BernoulliNaiveBayesModel:calculateCost(featureMatrix, labelMatrix)
 
 end
 
-local function batchBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
+local function offlineBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
 	
 	local featureProbabilityMatrix = {}
 
@@ -184,7 +184,7 @@ local function batchBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfDat
 	
 end
 
-local function sequentialBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
+local function onlineBernoulliNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, numberOfDataPointVector)
 	
 	local sumMatrix = AqwamTensorLibrary:multiply(featureProbabilityMatrix, numberOfDataPointVector)
 
@@ -242,9 +242,9 @@ end
 
 local bernoulliNaiveBayesFunctionList = {
 	
-	["Batch"] = batchBernoulliNaiveBayes,
+	["Offline"] = offlineBernoulliNaiveBayes,
 	
-	["Sequential"] = sequentialBernoulliNaiveBayes,
+	["Online"] = onlineBernoulliNaiveBayes,
 	
 }
 
@@ -276,7 +276,7 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 		if (mode == "Hybrid") then
 
-			mode = (featureProbabilityMatrix and priorProbabilityVector and numberOfDataPointVector and "Sequential") or "Batch"		
+			mode = (featureProbabilityMatrix and priorProbabilityVector and numberOfDataPointVector and "Online") or "Offline"		
 
 		end
 		
@@ -292,7 +292,7 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 		local extractedFeatureMatrixTable = NewBernoulliNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 
-		if (mode == "Sequential") then
+		if (mode == "Online") then
 
 			local numberOfClasses = #NewBernoulliNaiveBayesModel.ClassesList
 

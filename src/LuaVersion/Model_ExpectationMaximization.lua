@@ -185,6 +185,10 @@ local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClu
 	piMatrix = AqwamTensorLibrary:divide(piMatrix, numberOfData)
 
 	piMatrix = AqwamTensorLibrary:transpose(piMatrix)
+	
+	local piSum = AqwamTensorLibrary:sum(piMatrix)
+	
+	piMatrix = AqwamTensorLibrary:divide(piMatrix, piSum)
 
 	local responsibilitiesMatrixTransposed = AqwamTensorLibrary:transpose(responsibilityMatrix) -- clusters x data
 	
@@ -620,7 +624,15 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	
+	-- We're just normalizing here to so that the sumWeightMatrix and sumWeightMatrix values doesn't go so big to the point of numerical overflow.
+	
+	local normalizationDenominator = AqwamTensorLibrary:sum(sumWeightMatrix)
 
+	sumWeightMatrix = AqwamTensorLibrary:divide(sumWeightMatrix, normalizationDenominator)
+
+	sumWeightXMatrix = AqwamTensorLibrary:divide(sumWeightXMatrix, normalizationDenominator)
+	
 	self.ModelParameters = {piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix}
 
 	return costArray

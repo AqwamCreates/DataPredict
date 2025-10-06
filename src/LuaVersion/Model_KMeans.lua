@@ -354,7 +354,11 @@ function KMeansModel.new(parameterDictionary)
 	
 end
 
-function KMeansModel:initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, setInitialClustersOnDataPoints, setTheCentroidsDistanceFarthest)
+function KMeansModel:initializeCentroids(featureMatrix, numberOfClusters, distanceFunction)
+	
+	local setInitialClustersOnDataPoints = self.setInitialClustersOnDataPoints
+	
+	local setTheCentroidsDistanceFarthest = self.setTheCentroidsDistanceFarthest
 	
 	if (setInitialClustersOnDataPoints) and (numberOfClusters == 1) then
 		
@@ -502,7 +506,7 @@ function KMeansModel:train(featureMatrix)
 		
 	else
 		
-		centroidMatrix = self:initializeCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply, self.setInitialClustersOnDataPoints, self.setTheCentroidsDistanceFarthest)
+		centroidMatrix = self:initializeCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply)
 		
 	end
 	

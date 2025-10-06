@@ -100,15 +100,9 @@ local distanceFunctionList = {
 
 }
 
-local function calculateDistance(vector1, vector2, distanceFunction)
+local function createCentroidDistanceMatrix(centroidMatrix, distanceFunction)
 
-	return distanceFunctionList[distanceFunction](vector1, vector2) 
-
-end
-
-local function createCentroidDistanceMatrix(centroids, distanceFunction)
-
-	local numberOfData = #centroids
+	local numberOfData = #centroidMatrix
 
 	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfData}, 0)
 
@@ -118,8 +112,8 @@ local function createCentroidDistanceMatrix(centroids, distanceFunction)
 
 			if (i ~= j) then -- Necessary, because for some reason math.pow(0, 2) gives 1 instead of zero. So skip this step when same centroids.
 
-				distanceMatrix[i][j] = calculateDistance({centroids[i]}, {centroids[j]} , distanceFunction)
-
+				distanceMatrix[i][j] = distanceFunction({centroidMatrix[i]}, {centroidMatrix[j]})
+				
 			end
 
 		end
@@ -289,7 +283,7 @@ local function findClosestCentroids(centroidDistanceMatrix)
 		end
 
 	end
-
+	
 	return centroidIndex1, centroidIndex2
 
 end
@@ -306,7 +300,7 @@ local linkageFunctionList = {
 	
 }
 
-local function createNewCentroids(centroids, centroidIndex1Combine, centroidIndex2ToCombine)
+local function mergeCentroids(centroids, centroidIndex1Combine, centroidIndex2ToCombine)
 
 	local centroid1 = {centroids[centroidIndex1Combine]}
 
@@ -332,28 +326,28 @@ local function createNewCentroids(centroids, centroidIndex1Combine, centroidInde
 
 end
 
-local function calculateCost(centroids, featureMatrix, distanceFunction)
+local function calculateCost(featureMatrix, centroidMatrix, distanceFunction)
 
 	local cost = 0
-
-	for i = 1, #featureMatrix, 1 do
-
-		local featureVector = {featureMatrix[i]}
+	
+	for _, unwrappedfeatureVector in ipairs(featureMatrix) do
+		
+		local featureVector = {unwrappedfeatureVector}
 
 		local minimumDistance = math.huge
+		
+		for _, unwrappedCentroidVector in ipairs(centroidMatrix) do
+			
+			local centroidVector = {unwrappedCentroidVector}
 
-		for j = 1, #centroids, 1 do
-
-			local centroid = {centroids[j]}
-
-			local distance = calculateDistance(featureVector, centroid, distanceFunction)
-
+			local distance = distanceFunction(featureVector, centroidVector)
+			
 			minimumDistance = math.min(minimumDistance, distance)
-
+			
 		end
-
+		
 		cost = cost + minimumDistance
-
+		
 	end
 
 	return cost
@@ -452,7 +446,11 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 	
 	local linkageFunctionToApply = linkageFunctionList[linkageFunction]
 	
-	if (not linkageFunctionToApply) then error("Unknown linkage function") end
+	if (not linkageFunctionToApply) then error("Unknown linkage function.") end
+	
+	local distanceFunctionToApply = distanceFunctionList[distanceFunction]
+	
+	if (not distanceFunctionToApply) then error("Unknown distance function.") end
 	
 	local centroidMatrix = AqwamTensorLibrary:copy(featureMatrix)
 	
@@ -478,7 +476,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 	end
 
-	centroidDistanceMatrix = createCentroidDistanceMatrix(centroidMatrix, distanceFunction)
+	centroidDistanceMatrix = createCentroidDistanceMatrix(centroidMatrix, distanceFunctionToApply)
 
 	repeat
 		
@@ -488,7 +486,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			return calculateCost(centroidMatrix, featureMatrix, distanceFunction)
+			return calculateCost(featureMatrix, centroidMatrix, distanceFunctionToApply)
 			
 		end)
 		
@@ -502,7 +500,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 		centroidIndex1, centroidIndex2 = findClosestCentroids(centroidDistanceMatrix)
 		
-		centroidMatrix = createNewCentroids(centroidMatrix, centroidIndex1, centroidIndex2)
+		centroidMatrix = mergeCentroids(centroidMatrix, centroidIndex1, centroidIndex2)
 
 		centroidDistanceMatrix = linkageFunctionToApply(centroidMatrix, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 		

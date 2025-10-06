@@ -508,7 +508,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		
 		numberOfCentroids = #centroidMatrix
 
-	until (numberOfCentroids == numberOfClusters) or (numberOfCentroids == 1) self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfCentroids == numberOfClusters) or (numberOfCentroids == 1) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	self.ModelParameters = centroidMatrix
 

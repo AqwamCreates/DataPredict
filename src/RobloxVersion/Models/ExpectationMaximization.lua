@@ -40,6 +40,8 @@ local defaultMaximumNumberOfIterations = 10
 
 local defaultNumberOfClusters = math.huge
 
+local defaultMode = "Hybrid"
+
 local defaultEpsilon = math.pow(10, -9)
 
 local function gaussian(featureVector, meanVector, varianceVector, epsilon)
@@ -105,8 +107,12 @@ function ExpectationMaximizationModel:initializeParameters(numberOfClusters, num
 	local meanMatrix = self:initializeMatrixBasedOnMode({numberOfClusters, numberOfFeatures})
 
 	local varianceMatrix = self:initializeMatrixBasedOnMode({numberOfClusters, numberOfFeatures})
+	
+	local sumWeightMatrix = self:initializeMatrixBasedOnMode({numberOfClusters, numberOfFeatures})
+	
+	local sumWeightXMatrix = self:initializeMatrixBasedOnMode({numberOfClusters, numberOfFeatures})
 
-	return piMatrix, meanMatrix, varianceMatrix
+	return piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix
 	
 end
 
@@ -124,7 +130,7 @@ end
 
 -- This function updates the model parameters based on the responsibility matrix
 
-local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters) -- data x features, data x clusters
+local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix) -- data x features, data x clusters, clusters x 1, clusters x features 
 
 	local numberOfData = #featureMatrix
 
@@ -137,12 +143,16 @@ local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClu
 	piMatrix = AqwamTensorLibrary:transpose(piMatrix)
 
 	local responsibilitiesMatrixTransposed = AqwamTensorLibrary:transpose(responsibilityMatrix) -- clusters x data
+	
+	local subSumWeightMatrix = AqwamTensorLibrary:sum(responsibilitiesMatrixTransposed, 2) -- clusters x 1
+	
+	local subSumWeightXMatrix = AqwamTensorLibrary:dotProduct(responsibilitiesMatrixTransposed, featureMatrix) -- clusters x features
+	
+	sumWeightMatrix = AqwamTensorLibrary:add(sumWeightMatrix, subSumWeightMatrix) -- clusters x 1
 
-	local sumWeight = AqwamTensorLibrary:sum(responsibilitiesMatrixTransposed, 2) -- clusters x 1
+	sumWeightXMatrix = AqwamTensorLibrary:add(sumWeightXMatrix, subSumWeightXMatrix) -- clusters x features
 
-	local sumWeightX = AqwamTensorLibrary:dotProduct(responsibilitiesMatrixTransposed, featureMatrix) -- clusters x features
-
-	local meanMatrix = AqwamTensorLibrary:divide(sumWeightX, sumWeight) -- clusters x features
+	local meanMatrix = AqwamTensorLibrary:divide(sumWeightXMatrix, sumWeightMatrix) -- clusters x features
 
 	local varianceMatrix = AqwamTensorLibrary:createTensor({numberOfClusters, numberOfFeatures}, 0)
 
@@ -160,13 +170,13 @@ local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClu
 
 	end
 
-	varianceMatrix = AqwamTensorLibrary:divide(varianceMatrix, sumWeight)
+	varianceMatrix = AqwamTensorLibrary:divide(varianceMatrix, sumWeightMatrix)
 
-	return piMatrix, meanMatrix, varianceMatrix
+	return piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix
 
 end
 
-function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
+function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon, sumWeightMatrix, sumWeightXMatrix)
 	
 	local numberOfData = #featureMatrix
 	
@@ -176,7 +186,7 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	local responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
-	local piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters)
+	local piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
 	
 	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
@@ -194,15 +204,23 @@ end
 
 function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, epsilon)
 	
-	local numberOfClusters = 2
+	local numberOfFeatures = #featureMatrix[1]
+	
+	local numberOfClusters = 1
 	
 	local bestBayesianInformationCriterion = math.huge
 	
 	local bestNumberOfClusters = numberOfClusters
+	
+	local sumWeightMatrix = AqwamTensorLibrary:createTensor({1, 1})
+	
+	local sumWeightXMatrix = AqwamTensorLibrary:createTensor({1, numberOfFeatures})
+	
+	local bayesianInformationCriterion
 
 	while true do
 		
-		local bayesianInformationCriterion = self:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
+		bayesianInformationCriterion = self:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon, sumWeightMatrix, sumWeightXMatrix)
 
 		if (bayesianInformationCriterion < bestBayesianInformationCriterion) then
 			
@@ -217,6 +235,10 @@ function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, e
 		end
 
 		numberOfClusters = numberOfClusters + 1
+		
+		sumWeightMatrix[numberOfClusters] = {0}
+		
+		sumWeightXMatrix[numberOfClusters] = table.create(numberOfFeatures, 0)
 		
 	end
 
@@ -237,6 +259,8 @@ function ExpectationMaximizationModel.new(parameterDictionary)
 	NewExpectationMaximizationModel:setName("ExpectationMaximization")
 	
 	NewExpectationMaximizationModel.numberOfClusters = parameterDictionary.numberOfClusters or defaultNumberOfClusters
+	
+	NewExpectationMaximizationModel.mode = parameterDictionary.mode or defaultMode
 
 	NewExpectationMaximizationModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
@@ -248,6 +272,8 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
 	local numberOfClusters = self.numberOfClusters
+	
+	local mode = self.mode
 
 	local epsilon = self.epsilon
 
@@ -261,11 +287,15 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 	local varianceMatrix
 	
+	local sumWeightMatrix
+	
+	local sumWeightXMatrix
+	
 	if (ModelParameters) then
 
-		piMatrix, meanMatrix, varianceMatrix = table.unpack(ModelParameters)
+		piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = table.unpack(ModelParameters)
 
-		if (numberOfFeatures ~= #meanMatrix[1]) then error("The number of features are not the same as the model parameters!") end
+		if (numberOfFeatures ~= #meanMatrix[1]) then error("The number of features of feature matrix are not the same as the model parameters!") end
 
 	else
 
@@ -273,11 +303,9 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 			numberOfClusters = self:fetchBestNumberOfClusters(featureMatrix, epsilon)
 
-			self.numberOfClusters = numberOfClusters
-
 		end
 
-		piMatrix, meanMatrix, varianceMatrix = self:initializeParameters(numberOfClusters, numberOfFeatures) 
+		piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeParameters(numberOfClusters, numberOfFeatures) 
 
 	end
 	
@@ -305,7 +333,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 		responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 
-		piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters)
+		piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
 		
 		gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 		
@@ -343,7 +371,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 
-	self.ModelParameters = {piMatrix, meanMatrix, varianceMatrix}
+	self.ModelParameters = {piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix}
 
 	return costArray
 

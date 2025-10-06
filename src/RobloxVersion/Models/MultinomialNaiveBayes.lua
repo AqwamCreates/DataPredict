@@ -225,7 +225,7 @@ function MultinomialNaiveBayesModel:calculateCost(featureMatrix, labelMatrix)
 
 end
 
-local function batchMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
+local function offlineMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures)
 	
 	local featureProbabilityMatrix = {}
 
@@ -279,7 +279,7 @@ local function batchMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfD
 	
 end
 
-local function sequentialMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
+local function onlineMultinomialNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector)
 	
 	local newFeatureProbabilityMatrix = {}
 	
@@ -341,9 +341,9 @@ end
 
 local multinomialNaiveBayesFunctionList = {
 	
-	["Batch"] = batchMultinomialNaiveBayes,
+	["Offline"] = offlineMultinomialNaiveBayes,
 	
-	["Sequential"] = sequentialMultinomialNaiveBayes,
+	["Online"] = onlineMultinomialNaiveBayes,
 	
 }
 
@@ -377,7 +377,7 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 		if (mode == "Hybrid") then
 
-			mode = (featureProbabilityMatrix and priorProbabilityVector and featureCountMatrix and numberOfDataPointVector and "Sequential") or "Batch"		
+			mode = (featureProbabilityMatrix and priorProbabilityVector and featureCountMatrix and numberOfDataPointVector and "Online") or "Offline"		
 
 		end
 		
@@ -393,7 +393,7 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 		local extractedFeatureMatrixTable = NewMultinomialNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
-		if (mode == "Sequential") then
+		if (mode == "Online") then
 
 			local numberOfClasses = #NewMultinomialNaiveBayesModel.ClassesList
 

@@ -620,7 +620,15 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
-
+	
+	-- We're just normalizing here to s0 that the sumWeightMatrix and sumWeightMatrix values doesn't go so big to the point of numerical overflow.
+	
+	local denominator = AqwamTensorLibrary:sum(sumWeightMatrix)
+	
+	sumWeightMatrix = AqwamTensorLibrary:divide(sumWeightMatrix, denominator)
+	
+	sumWeightXMatrix = AqwamTensorLibrary:divide(sumWeightXMatrix, denominator)
+	
 	self.ModelParameters = {piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix}
 
 	return costArray

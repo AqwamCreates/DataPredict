@@ -209,7 +209,7 @@ end
 
 local function chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
 	
-	local modelParameters = {}
+	local centroidMatrix = {}
 	
 	local dataIndexArray = {}
 	
@@ -229,11 +229,11 @@ local function chooseFarthestCentroids(featureMatrix, numberOfClusters, distance
 		
 		dataIndex = dataIndexArray[row]
 		
-		table.insert(modelParameters, featureMatrix[dataIndex])
+		table.insert(centroidMatrix, featureMatrix[dataIndex])
 		
 	end
 	
-	return modelParameters
+	return centroidMatrix
 	
 end
 

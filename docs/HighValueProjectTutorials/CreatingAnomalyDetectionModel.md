@@ -9,8 +9,9 @@ Before we train our model, we will first need to construct a model, in which we 
 | Approach | Model                            | Properties                     | Notes                                                                                                                                         |
 | -------- | -------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1        | Gaussian Naive Bayes             | Incremental, Generative        | Not commonly used in anomaly detection; fast, can be updated with partial data, requries features are independent (rare in real player data). |
-| 2        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based  | Good for anomaly detection; cannot be updated once trained, heavier to run, best with best with "radial basis function" kernel.               |
-| 3        | Expectation-Maximization         | Non-Incremental, Probabilistic | Good for anomaly detection; cannot be updated once trained, can produce multiple "normal" clusters (e.g. different player playstyles).        |
+| 2        | Expectation-Maximization         | Incremental, Probabilistic | Good for anomaly detection; cannot be updated once trained, can produce multiple "normal" clusters (e.g. different player playstyles).        |
+| 3        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based  | Good for anomaly detection; cannot be updated once trained, heavier to run, best with best with "radial basis function" kernel.               |
+
 
 ### Approach 1: Gaussian Naive Bayes
 
@@ -24,19 +25,7 @@ local AnomalyPredictionModel = DataPredict.Models.GaussianNaiveBayes.new()
 
 ```
 
-### Approach 2: One Class Support Vector Machine
-
-```lua
-
-local DataPredict = require(DataPredict)
-
--- You must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
-
-local AnomalyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction"})
-
-```
-
-### Approach 3: Expectation-Maximization
+### Approach 2: Expectation-Maximization
 
 ```lua
 
@@ -45,6 +34,18 @@ local DataPredict = require(DataPredict)
 -- Number of clusters are highly dependent on how may playstyles you have. However, we recommend with 1 cluster as a starting point.
 
 local AnomalyPredictionModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 1})
+
+```
+
+### Approach 1: One Class Support Vector Machine
+
+```lua
+
+local DataPredict = require(DataPredict)
+
+-- You must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
+
+local AnomalyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction"})
 
 ```
 

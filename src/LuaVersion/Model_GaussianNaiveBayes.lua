@@ -291,14 +291,6 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 			mode = (meanMatrix and standardDeviationMatrix and priorProbabilityVector and numberOfDataPointVector and "Online") or "Offline"		
 
 		end
-
-		local numberOfData = #featureMatrix
-		
-		local numberOfFeatures = #featureMatrix[1]
-		
-		local logisticMatrix = NewGaussianNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
-
-		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
 		if (mode == "Offline") then
 
@@ -312,6 +304,10 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
+		local numberOfData = #featureMatrix
+
+		local numberOfFeatures = #featureMatrix[1]
+		
 		local numberOfClasses = #NewGaussianNaiveBayesModel.ClassesList
 
 		local zeroValue = (useLogProbabilities and math.huge) or 0
@@ -321,6 +317,10 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		local classMatrixDimensionSizeArray = {numberOfClasses, numberOfFeatures}
 		
 		local classVectorDimensionSizeArray = {numberOfClasses, 1}
+		
+		local logisticMatrix = NewGaussianNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
+
+		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 
 		meanMatrix = meanMatrix or AqwamTensorLibrary:createTensor(classMatrixDimensionSizeArray, zeroValue)
 

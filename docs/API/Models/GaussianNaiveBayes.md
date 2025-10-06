@@ -21,10 +21,18 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-GaussianNaiveBayes.new(useLogProbabilities: boolean): ModelObject
+GaussianNaiveBayes.new(useLogProbabilities: boolean, mode: string): ModelObject
 ```
 
 #### Parameters:
+
+* mode: Controls the mode of the model. Available options are:
+
+  * Hybrid (Default)
+ 
+  * Online
+ 
+  * Offline
 
 * useLogProbabilities: Convert the probabilities to larger values using log function.
 

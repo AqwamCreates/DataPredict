@@ -181,12 +181,10 @@ local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClu
 	local numberOfFeatures = #featureMatrix[1]
 
 	local piMatrix = AqwamTensorLibrary:sum(responsibilityMatrix, 1)
-
-	piMatrix = AqwamTensorLibrary:divide(piMatrix, numberOfData)
-
-	piMatrix = AqwamTensorLibrary:transpose(piMatrix)
 	
 	local piSum = AqwamTensorLibrary:sum(piMatrix)
+
+	piMatrix = AqwamTensorLibrary:transpose(piMatrix)
 	
 	piMatrix = AqwamTensorLibrary:divide(piMatrix, piSum)
 

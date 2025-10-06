@@ -42,7 +42,7 @@ local defaultNumberOfClusters = 2
 
 local defaultDistanceFunction = "Manhattan"
 
-local defaultSetTheCentroidsDistanceFarthest = false
+local defaultSetTheCentroidsDistanceFarthest = true
 
 local distanceFunctionList = {
 

@@ -234,7 +234,7 @@ local function offlineCategoricalNaiveBayes(extractedFeatureMatrixTable, numberO
 	
 end
 
-local function onlineCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector)
+local function calculateMatrices(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector)
 	
 	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
 	
@@ -278,10 +278,12 @@ local function onlineCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOf
 
 				for featureIndex, featureValue in ipairs(unwrappedFeatureVector) do
 
-					local featureDictionary = newFeatureDictionaryArray[featureIndex]
+					newFeatureDictionary = newFeatureDictionaryArray[featureIndex] or {}
 
-					featureDictionary[featureValue] = (featureDictionary[featureValue] or 0) + 1
-
+					newFeatureDictionary[featureValue] = (newFeatureDictionary[featureValue] or 0) + 1
+					
+					newFeatureDictionaryArray[featureIndex] = newFeatureDictionary
+					
 				end
 
 			end
@@ -324,14 +326,6 @@ local function onlineCategoricalNaiveBayes(extractedFeatureMatrixTable, numberOf
 
 end
 
-local CategoricalNaiveBayesFunctionList = {
-
-	["Offline"] = offlineCategoricalNaiveBayes,
-
-	["Online"] = onlineCategoricalNaiveBayes,
-
-}
-
 function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
@@ -364,51 +358,53 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 		end
 
-		local categoricalNaiveBayesFunction = CategoricalNaiveBayesFunctionList[mode]
+		if (mode == "Offline") then
+			
+			featureProbabilityDictionaryArrayArray = nil
 
-		if (not categoricalNaiveBayesFunction) then error("Unknown mode.") end
+			priorProbabilityVector = nil
+			
+			numberOfDataPointVector = nil
 
+		end
+		
 		local numberOfData = #featureMatrix
 
 		local numberOfFeatures = #featureMatrix[1]
 		
+		local numberOfClasses = #NewCategoricalNaiveBayesModel.ClassesList
+
+		local zeroValue = (useLogProbabilities and math.huge) or 0
+
+		local oneValue = (useLogProbabilities and 0) or 1
+		
 		local logisticMatrix = NewCategoricalNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 		local extractedFeatureMatrixTable = NewCategoricalNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
+		
+		if (not featureProbabilityDictionaryArrayArray) then
 
-		if (mode == "Online") then
+			featureProbabilityDictionaryArrayArray = {}
 
-			local numberOfClasses = #NewCategoricalNaiveBayesModel.ClassesList
+			for class = 1, numberOfClasses, 1 do
 
-			local zeroValue = (useLogProbabilities and math.huge) or 0
+				local featureDictionaryArray = {}
 
-			local oneValue = (useLogProbabilities and 0) or 1
-			
-			if (not featureProbabilityDictionaryArrayArray) then
-				
-				featureProbabilityDictionaryArrayArray = {}
-				
-				for class = 1, numberOfClasses, 1 do
-					
-					local featureDictionaryArray = {}
-					
-					for feature = 1, numberOfFeatures, 1 do
-						
-						featureDictionaryArray[numberOfFeatures] = {}
-						
-					end
-					
-					featureProbabilityDictionaryArrayArray[class] = featureDictionaryArray
-					
+				for feature = 1, numberOfFeatures, 1 do
+
+					featureDictionaryArray[numberOfFeatures] = {}
+
 				end
-				
+
+				featureProbabilityDictionaryArrayArray[class] = featureDictionaryArray
+
 			end
 
-			priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
-
-			numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
-
 		end
+
+		priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
+
+		numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
 
 		if (useLogProbabilities) then
 
@@ -418,7 +414,7 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 		end
 
-		featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector = categoricalNaiveBayesFunction(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector)
+		featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector = calculateMatrices(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector)
 
 		if (useLogProbabilities) then
 

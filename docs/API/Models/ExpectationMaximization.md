@@ -108,3 +108,5 @@ ExpectationMaximization:predict(featureMatrix: Matrix): integer, number
 ## References
 
 * [Online EM for Unsupervised Models](https://cs.stanford.edu/~pliang/papers/online-naacl2009.pdf)
+
+* [On the Global Convergence of (Fast) Incremental Expectation Maximization Methods](https://arxiv.org/pdf/1910.12521)

@@ -190,6 +190,8 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
 	
+	AqwamTensorLibrary:printTensor(piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix) -- All nans...
+	
 	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
 	local logLikelihood = AqwamTensorLibrary:logarithm(gaussianMatrix)
@@ -208,7 +210,7 @@ function ExpectationMaximizationModel:getBestMatrices(featureMatrix, epsilon)
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
-	local numberOfClusters = 1
+	local numberOfClusters = 2
 	
 	local bestBayesianInformationCriterion = math.huge
 	

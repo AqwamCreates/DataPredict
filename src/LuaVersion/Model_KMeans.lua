@@ -44,8 +44,6 @@ local defaultDistanceFunction = "Euclidean"
 
 local defaultMode = "Hybrid"
 
-local defaultStopWhenModelParametersDoesNotChange = false
-
 local defaultSetInitialCentroidsOnDataPoints = true
 
 local defaultSetTheCentroidsDistanceFarthest = true

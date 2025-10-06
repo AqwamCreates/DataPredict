@@ -160,17 +160,33 @@ local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClu
 
 end
 
-function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon, sumWeightMatrix, sumWeightXMatrix)
+function ExpectationMaximizationModel:initializeMatrices(numberOfClusters, numberOfFeatures)
+	
+	local centroidMatrixDimensionSizeArray = {numberOfClusters, numberOfFeatures}
+	
+	local piMatrix = self:initializeMatrixBasedOnMode({numberOfClusters, 1})
+
+	local meanMatrix = self:initializeMatrixBasedOnMode(centroidMatrixDimensionSizeArray)
+
+	local varianceMatrix = self:initializeMatrixBasedOnMode(centroidMatrixDimensionSizeArray)
+
+	local sumWeightMatrix = AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
+
+	local sumWeightXMatrix = AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
+	
+end
+
+function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
 	
 	local numberOfData = #featureMatrix
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
-	local piMatrix, meanMatrix, varianceMatrix = self:initializeParameters(numberOfClusters, numberOfFeatures)
+	local piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(numberOfClusters, numberOfFeatures)
 	
 	local responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
-	local piMatrix, meanMatrix, varianceMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
+	piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
 	
 	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
@@ -182,11 +198,11 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	local bayesianInformationCriterion = (k * math.log(numberOfData)) - (2 * sumLogLikelihood)
 	
-	return bayesianInformationCriterion
+	return bayesianInformationCriterion, piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix
 	
 end
 
-function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, epsilon)
+function ExpectationMaximizationModel:getBestMatrices(featureMatrix, epsilon)
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
@@ -196,21 +212,47 @@ function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, e
 	
 	local bestNumberOfClusters = numberOfClusters
 	
-	local sumWeightMatrix = AqwamTensorLibrary:createTensor({numberOfClusters, 1})
-	
-	local sumWeightXMatrix = AqwamTensorLibrary:createTensor({numberOfClusters, numberOfFeatures})
-	
 	local bayesianInformationCriterion
+	
+	local piMatrix
+	
+	local meanMatrix
+	
+	local varianceMatrix
+	
+	local sumWeightMatrix
+	
+	local sumWeightXMatrix
+	
+	local bestPiMatrix
+
+	local bestMeanMatrix
+
+	local bestVarianceMatrix
+
+	local bestSumWeightMatrix
+
+	local bestSumWeightXMatrix
 
 	while true do
 		
-		bayesianInformationCriterion = self:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon, sumWeightMatrix, sumWeightXMatrix)
+		bayesianInformationCriterion, piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
 
 		if (bayesianInformationCriterion < bestBayesianInformationCriterion) then
 			
 			bestBayesianInformationCriterion = bayesianInformationCriterion
 			
 			bestNumberOfClusters = numberOfClusters
+			
+			bestPiMatrix = piMatrix
+			
+			bestMeanMatrix = meanMatrix
+			
+			bestVarianceMatrix = varianceMatrix
+			
+			bestSumWeightMatrix = sumWeightMatrix
+			
+			bestSumWeightXMatrix = sumWeightXMatrix
 			
 		else
 			
@@ -220,13 +262,9 @@ function ExpectationMaximizationModel:fetchBestNumberOfClusters(featureMatrix, e
 
 		numberOfClusters = numberOfClusters + 1
 		
-		sumWeightMatrix[numberOfClusters] = {0}
-		
-		sumWeightXMatrix[numberOfClusters] = table.create(numberOfFeatures, 0)
-		
 	end
 
-	return bestNumberOfClusters
+	return bestPiMatrix, bestMeanMatrix, bestVarianceMatrix, bestSumWeightMatrix, bestSumWeightXMatrix
 	
 end
 
@@ -295,8 +333,6 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 	end
 	
-	local centroidMatrixDimensionSizeArray = {numberOfClusters, numberOfFeatures}
-	
 	local logLikelihoodArray = {}
 	
 	local costArray = {}
@@ -315,19 +351,17 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	
 	if (not piMatrix) or (not meanMatrix) or (not varianceMatrix) or (not sumWeightMatrix) or (not sumWeightXMatrix) then
 		
-		if (numberOfClusters == math.huge) then numberOfClusters = self:fetchBestNumberOfClusters(featureMatrix, epsilon) end
+		if (numberOfClusters == math.huge) then 
+			
+			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBestMatrices(featureMatrix, epsilon) 
+			
+		else
+			
+			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(numberOfClusters, numberOfFeatures)
+			
+		end
 		
 	end
-	
-	piMatrix = piMatrix or self:initializeMatrixBasedOnMode({numberOfClusters, 1})
-
-	meanMatrix = meanMatrix or self:initializeMatrixBasedOnMode(centroidMatrixDimensionSizeArray)
-
-	varianceMatrix = varianceMatrix or self:initializeMatrixBasedOnMode(centroidMatrixDimensionSizeArray)
-
-	sumWeightMatrix = sumWeightMatrix or AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
-
-	sumWeightXMatrix = sumWeightXMatrix or AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
 
 	repeat
 		

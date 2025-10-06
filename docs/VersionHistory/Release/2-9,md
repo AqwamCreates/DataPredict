@@ -20,13 +20,13 @@
 
 * Removed redundant codes from these models:
 
+  * ExpecationMaximization
+
   * KMeans
  
   * KMedoids
  
   * MeanShift
-
-  * ExpecationMaximization
 
   * GaussianNaiveBayes
  

@@ -160,6 +160,16 @@ local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClu
 
 end
 
+local function calculateCost(gaussianMatrix)
+	
+	local logLikelihoodMatrix = AqwamTensorLibrary:applyFunction(math.log, gaussianMatrix)
+
+	local sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihoodMatrix)
+	
+	return -sumLogLikelihood
+	
+end
+
 function ExpectationMaximizationModel:initializeMatrices(numberOfClusters, numberOfFeatures)
 	
 	local centroidMatrixDimensionSizeArray = {numberOfClusters, numberOfFeatures}
@@ -212,7 +222,7 @@ function ExpectationMaximizationModel:getBestMatrices(featureMatrix, epsilon)
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
-	local numberOfClusters = 2
+	local numberOfClusters = 1
 	
 	local bestBayesianInformationCriterion = math.huge
 	
@@ -348,10 +358,6 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	local responsibilityMatrix
 	
 	local gaussianMatrix
-
-	local logLikelihoodMatrix
-
-	local sumLogLikelihood
 	
 	local cost
 	
@@ -361,8 +367,6 @@ function ExpectationMaximizationModel:train(featureMatrix)
 			
 			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBestMatrices(featureMatrix, epsilon)
 			
-			numberOfClusters = #piMatrix
-			
 		else
 			
 			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(numberOfClusters, numberOfFeatures)
@@ -370,7 +374,9 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		end
 		
 	end
-
+	
+	numberOfClusters = #piMatrix -- This should be outside because nothing is replacing infinite number of clusters when it is given as a parameter after the first training.
+	
 	repeat
 		
 		numberOfIterations = numberOfIterations + 1
@@ -385,23 +391,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			logLikelihoodMatrix = AqwamTensorLibrary:applyFunction(math.log, gaussianMatrix)
-
-			sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihoodMatrix)
-
-			table.insert(logLikelihoodArray, sumLogLikelihood)
-			
-			local logLikelihoodArrayLength = #logLikelihoodArray
-
-			if (logLikelihoodArrayLength > 1) then
-
-				cost = sumLogLikelihood - logLikelihoodArray[logLikelihoodArrayLength - 1] 
-
-			else
-
-				cost = -sumLogLikelihood
-
-			end
+			return calculateCost(gaussianMatrix)
 			
 		end)
 		

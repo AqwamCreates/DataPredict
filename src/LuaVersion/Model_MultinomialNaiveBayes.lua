@@ -319,14 +319,6 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 		end
 
-		local numberOfData = #featureMatrix
-		
-		local numberOfFeatures = #featureMatrix[1]
-		
-		local logisticMatrix = NewMultinomialNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
-
-		local extractedFeatureMatrixTable = NewMultinomialNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
-		
 		if (mode == "Offline") then
 
 			featureProbabilityMatrix = nil
@@ -339,6 +331,10 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 
 		end
 		
+		local numberOfData = #featureMatrix
+
+		local numberOfFeatures = #featureMatrix[1]
+		
 		local numberOfClasses = #NewMultinomialNaiveBayesModel.ClassesList
 
 		local zeroValue = (useLogProbabilities and math.huge) or 0
@@ -346,6 +342,10 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 		local oneValue = (useLogProbabilities and 0) or 1
 		
 		local classVectorDimensionSizeArray = {numberOfClasses, 1}
+		
+		local logisticMatrix = NewMultinomialNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
+
+		local extractedFeatureMatrixTable = NewMultinomialNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 
 		featureProbabilityMatrix = featureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
 

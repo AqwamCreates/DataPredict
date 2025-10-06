@@ -44,6 +44,68 @@ local defaultMode = "Hybrid"
 
 local defaultEpsilon = math.pow(10, -16)
 
+local defaultSetInitialCentroidsOnDataPoints = true
+
+local defaultSetTheCentroidsDistanceFarthest = true
+
+local defaultDistanceFunction = "Euclidean"
+
+local distanceFunctionList = {
+
+	["Manhattan"] = function (x1, x2)
+
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
+
+		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
+
+		local distance = AqwamTensorLibrary:sum(part1)
+
+		return distance 
+
+	end,
+
+	["Euclidean"] = function (x1, x2)
+
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
+
+		local part2 = AqwamTensorLibrary:power(part1, 2)
+
+		local part3 = AqwamTensorLibrary:sum(part2)
+
+		local distance = math.sqrt(part3)
+
+		return distance 
+
+	end,
+
+	["Cosine"] = function(x1, x2)
+
+		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
+
+		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
+
+		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
+
+		local x1Magnitude = math.sqrt(x1MagnitudePart2)
+
+		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
+
+		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
+
+		local x2Magnitude = math.sqrt(x2MagnitudePart2)
+
+		local normX = x1Magnitude * x2Magnitude
+
+		local similarity = dotProductedX / normX
+
+		local cosineDistance = 1 - similarity
+
+		return cosineDistance
+
+	end,
+
+}
+
 local function gaussian(featureVector, meanVector, varianceVector, epsilon)
 	
 	local exponentStep1 = AqwamTensorLibrary:subtract(featureVector, meanVector)
@@ -112,8 +174,6 @@ local function expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatr
 	
 end
 
--- This function updates the model parameters based on the responsibility matrix
-
 local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix) -- data x features, data x clusters, clusters x 1, clusters x features 
 
 	local numberOfData = #featureMatrix
@@ -172,7 +232,153 @@ local function calculateCost(gaussianMatrix, epsilon)
 	
 end
 
-function ExpectationMaximizationModel:initializeMatrices(numberOfClusters, numberOfFeatures)
+local function chooseFarthestCentroidFromDatasetDistanceMatrix(distanceMatrix, blacklistedDataIndexArray)
+
+	local dataIndex
+
+	local maxDistance = -math.huge
+
+	for row = 1, #distanceMatrix, 1 do
+
+		if table.find(blacklistedDataIndexArray, row) then continue end
+
+		local totalDistance = 0
+
+		for column = 1, #distanceMatrix[1], 1 do
+
+			totalDistance = totalDistance + distanceMatrix[row][column]
+
+		end
+
+		if (totalDistance < maxDistance) then continue end
+
+		maxDistance = totalDistance
+		dataIndex = row
+
+	end
+
+	return dataIndex
+
+end
+
+local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
+
+	local numberOfData1 = #matrix1
+
+	local numberOfData2 = #matrix2
+
+	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData1, numberOfData2})
+
+	for matrix1Index = 1, numberOfData1, 1 do
+
+		for matrix2Index = 1, numberOfData2, 1 do
+
+			distanceMatrix[matrix1Index][matrix2Index] = distanceFunction({matrix1[matrix1Index]}, {matrix2[matrix2Index]})
+
+		end
+
+	end
+
+	return distanceMatrix
+
+end
+
+local function chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
+
+	local centroidMatrix = {}
+
+	local dataIndexArray = {}
+
+	local dataIndex
+
+	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, distanceFunction)
+
+	repeat
+
+		dataIndex = chooseFarthestCentroidFromDatasetDistanceMatrix(distanceMatrix, dataIndexArray)
+
+		table.insert(dataIndexArray, dataIndex)
+
+	until (#dataIndexArray == numberOfClusters)
+
+	for row = 1, numberOfClusters, 1 do
+
+		dataIndex = dataIndexArray[row]
+
+		table.insert(centroidMatrix, featureMatrix[dataIndex])
+
+	end
+
+	return centroidMatrix
+
+end
+
+local function chooseRandomCentroids(featureMatrix, numberOfClusters)
+
+	local modelParameters = {}
+
+	local numberOfRows = #featureMatrix
+
+	local randomRow
+
+	local selectedRows = {}
+
+	local hasANewRandomRowChosen
+
+	for cluster = 1, numberOfClusters, 1 do
+
+		repeat
+
+			randomRow = Random.new():NextInteger(1, numberOfRows)
+
+			hasANewRandomRowChosen = not (table.find(selectedRows, randomRow))
+
+			if hasANewRandomRowChosen then
+
+				table.insert(selectedRows, randomRow)
+				modelParameters[cluster] = featureMatrix[randomRow]
+
+			end
+
+		until hasANewRandomRowChosen
+
+	end
+
+	return modelParameters
+
+end
+
+function ExpectationMaximizationModel:initializeCentroids(featureMatrix, numberOfClusters)
+	
+	local setInitialCentroidsOnDataPoints = self.setInitialCentroidsOnDataPoints
+	
+	local setTheCentroidsDistanceFarthest = self.setTheCentroidsDistanceFarthest
+	
+	if (setInitialCentroidsOnDataPoints) and (numberOfClusters == 1) then
+
+		return AqwamTensorLibrary:mean(featureMatrix, 1)
+
+	elseif (setInitialCentroidsOnDataPoints) and (setTheCentroidsDistanceFarthest) then
+		
+		local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
+		
+		if (not distanceFunctionToApply) then error("Unknown distance function.") end
+
+		return chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply)
+
+	elseif (setInitialCentroidsOnDataPoints) and (not setTheCentroidsDistanceFarthest) then
+
+		return chooseRandomCentroids(featureMatrix, numberOfClusters)
+
+	else
+
+		return self:initializeMatrixBasedOnMode({numberOfClusters, #featureMatrix[1]})
+
+	end
+
+end
+
+function ExpectationMaximizationModel:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
 	
 	local centroidMatrixDimensionSizeArray = {numberOfClusters, numberOfFeatures}
 	
@@ -180,7 +386,7 @@ function ExpectationMaximizationModel:initializeMatrices(numberOfClusters, numbe
 	
 	local sumPi = AqwamTensorLibrary:sum(piMatrix)
 
-	local meanMatrix = self:initializeMatrixBasedOnMode(centroidMatrixDimensionSizeArray)
+	local meanMatrix = self:initializeCentroids(featureMatrix, numberOfClusters)
 
 	local varianceMatrix = AqwamTensorLibrary:createRandomUniformTensor(centroidMatrixDimensionSizeArray, 0, 1)
 
@@ -200,7 +406,7 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
-	local piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(numberOfClusters, numberOfFeatures)
+	local piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
 	
 	local responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
 	
@@ -304,6 +510,12 @@ function ExpectationMaximizationModel.new(parameterDictionary)
 
 	NewExpectationMaximizationModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
+	NewExpectationMaximizationModel.setInitialCentroidsOnDataPoints =  NewExpectationMaximizationModel:getValueOrDefaultValue(parameterDictionary.setInitialCentroidsOnDataPoints, defaultSetInitialCentroidsOnDataPoints)
+
+	NewExpectationMaximizationModel.setTheCentroidsDistanceFarthest = NewExpectationMaximizationModel:getValueOrDefaultValue(parameterDictionary.setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
+	
+	NewExpectationMaximizationModel.distanceFunction = NewExpectationMaximizationModel:getValueOrDefaultValue(parameterDictionary.distanceFunction, defaultDistanceFunction)
+	
 	return NewExpectationMaximizationModel
 end
 
@@ -371,7 +583,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 			
 		else
 			
-			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(numberOfClusters, numberOfFeatures)
+			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
 			
 		end
 		

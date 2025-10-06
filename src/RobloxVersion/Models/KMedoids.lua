@@ -38,11 +38,11 @@ setmetatable(KMedoidsModel, IterativeMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = math.huge
 
-local defaultNumberOfClusters = 2
+local defaultNumberOfClusters = 1
 
 local defaultDistanceFunction = "Manhattan"
 
-local defaultSetTheCentroidsDistanceFarthest = false
+local defaultSetTheCentroidsDistanceFarthest = true
 
 local distanceFunctionList = {
 

@@ -50,13 +50,13 @@ function ModelTrainingModifier.new(parameterDictionary)
 	
 	NewModelTrainingModifier:setClassName("ModelTrainingModifier")
 	
+	NewModelTrainingModifier.Model = parameterDictionary.Model
+	
 	NewModelTrainingModifier.mode = parameterDictionary.mode or defaultMode
 
 	NewModelTrainingModifier.batchSize = parameterDictionary.batchSize or defaultBatchSize
 	
 	NewModelTrainingModifier.isOutputPrinted = NewModelTrainingModifier:getValueOrDefaultValue(parameterDictionary.isOutputPrinted, defaultIsOutputPrinted)
-	
-	NewModelTrainingModifier.Model = parameterDictionary.Model
 	
 	return NewModelTrainingModifier
 	

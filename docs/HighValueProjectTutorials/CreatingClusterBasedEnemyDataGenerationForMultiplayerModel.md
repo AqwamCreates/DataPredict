@@ -4,9 +4,19 @@ Hi guys! In this tutorial, we will demonstrate on how to create cluster-based en
 
 For best results, please use:
 
-* K-Means or Agglomerative Hierarchical if you want to manually set the number of clusters.
+* K-Means
 
-* MeanShift if you want the model to set the number of clusters. (Trickier to set up)
+  * This model sets up X number of clusters and finds the center of data.
+
+* Agglomerative Hierarchical
+
+  * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.
+
+* MeanShift
+
+  * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.
+ 
+  * Trickier to set up.
 
 ## Initializing The Clustering Model
 

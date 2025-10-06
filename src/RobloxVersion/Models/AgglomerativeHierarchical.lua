@@ -451,18 +451,22 @@ function AgglomerativeHierarchicalModel.new(parameterDictionary)
 end
 
 function AgglomerativeHierarchicalModel:train(featureMatrix)
+	
+	local numberOfClusters = self.numberOfClusters
 
-	local centroidIndex1
+	local distanceFunction = self.distanceFunction
 
-	local centroidIndex2
-
-	local minimumDistance
+	local linkageFunction = self.linkageFunction
+	
+	local ModelParameters = self.ModelParameters
+	
+	local centroidMatrix = AqwamTensorLibrary:copy(featureMatrix)
+	
+	local costArray = {}
 
 	local numberOfIterations = 0
 
 	local cost = 0
-
-	local costArray = {}
 
 	local centroidDistanceMatrix
 
@@ -470,25 +474,15 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 	local centroidIndex2
 
-	local areModelParametersEqual = false
+	if (ModelParameters) then
 
-	local centroids = AqwamTensorLibrary:copy(featureMatrix)
-	
-	local numberOfClusters = self.numberOfClusters
-	
-	local distanceFunction = self.distanceFunction
-	
-	local linkageFunction = self.linkageFunction
+		if (#centroidMatrix[1] ~= #ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
 
-	if self.ModelParameters then
-
-		if (#featureMatrix[1] ~= #self.ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
-
-		centroids = AqwamTensorLibrary:concatenate(centroids, self.ModelParameters, 1)
+		centroidMatrix = AqwamTensorLibrary:concatenate(centroidMatrix, ModelParameters, 1)
 
 	end
 
-	centroidDistanceMatrix = createCentroidDistanceMatrix(centroids, distanceFunction)
+	centroidDistanceMatrix = createCentroidDistanceMatrix(centroidMatrix, distanceFunction)
 
 	repeat
 		
@@ -498,7 +492,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			return calculateCost(centroids, featureMatrix, distanceFunction)
+			return calculateCost(centroidMatrix, featureMatrix, distanceFunction)
 			
 		end)
 		
@@ -512,31 +506,19 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 		centroidIndex1, centroidIndex2 = findClosestCentroids(centroidDistanceMatrix)
 		
-		centroids = createNewCentroids(centroids, centroidIndex1, centroidIndex2)
+		centroidMatrix = createNewCentroids(centroidMatrix, centroidIndex1, centroidIndex2)
 
-		centroidDistanceMatrix = updateDistanceMatrix(linkageFunction, centroids, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
+		centroidDistanceMatrix = updateDistanceMatrix(linkageFunction, centroidMatrix, centroidDistanceMatrix, centroidIndex1, centroidIndex2)
 
-		self.ModelParameters = centroids
+	until (#centroidMatrix == numberOfClusters) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
-	until (#centroids == numberOfClusters) or (#centroids == 1) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
-
-	self.ModelParameters = centroids
+	self.ModelParameters = centroidMatrix
 
 	return costArray
 
 end
 
 function AgglomerativeHierarchicalModel:predict(featureMatrix, returnOriginalOutput)
-
-	local distance
-
-	local closestcentroid
-
-	local centroidVector
-
-	local minimumDistance = math.huge
-	
-	local distanceMatrix
 	
 	local distanceMatrix = createDistanceMatrix(featureMatrix, self.ModelParameters, self.distanceFunction)
 

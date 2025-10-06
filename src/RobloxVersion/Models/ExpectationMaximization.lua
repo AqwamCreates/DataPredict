@@ -170,7 +170,7 @@ function ExpectationMaximizationModel:initializeMatrices(numberOfClusters, numbe
 
 	local meanMatrix = self:initializeMatrixBasedOnMode(centroidMatrixDimensionSizeArray)
 
-	local varianceMatrix = AqwamTensorLibrary:createRandomUniformTensor(centroidMatrixDimensionSizeArray)
+	local varianceMatrix = AqwamTensorLibrary:createRandomUniformTensor(centroidMatrixDimensionSizeArray, 0, 1)
 
 	local sumWeightMatrix = AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
 

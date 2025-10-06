@@ -362,13 +362,11 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
 	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData1, numberOfData2})
 
-	local calculateDistance = distanceFunctionList[distanceFunction]
-
 	for matrix1Index = 1, numberOfData1, 1 do
 
 		for matrix2Index = 1, numberOfData2, 1 do
 
-			distanceMatrix[matrix1Index][matrix2Index] = calculateDistance({matrix1[matrix1Index]}, {matrix2[matrix2Index]})
+			distanceMatrix[matrix1Index][matrix2Index] = distanceFunction({matrix1[matrix1Index]}, {matrix2[matrix2Index]})
 
 		end
 
@@ -516,7 +514,11 @@ end
 
 function AgglomerativeHierarchicalModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, self.ModelParameters, self.distanceFunction)
+	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
+	
+	local ModelParameters = self.ModelParameters
+	
+	local distanceMatrix = createDistanceMatrix(featureMatrix, ModelParameters, distanceFunctionToApply)
 
 	if (returnOriginalOutput) then return distanceMatrix end
 

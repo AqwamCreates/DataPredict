@@ -38,7 +38,7 @@ setmetatable(KMeansModel, IterativeMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
-local defaultNumberOfClusters = 2
+local defaultNumberOfClusters = 1
 
 local defaultDistanceFunction = "Euclidean"
 

@@ -16,10 +16,6 @@ The list of items shown below are likely to be implemented due to their mainstre
 
    * It is an online version of DBSCAN that allows it to construct clusters from individual datapoints.
 
-* Online EM
-
-   * It is an online version of EM that allows it to construct clusters from individual datapoints.
-
 ## Nice-To-Have
 
 The list of items shown below may not necessarily be implemented in the future. However, they could be prioritized with external demand, collaboration, or funding.

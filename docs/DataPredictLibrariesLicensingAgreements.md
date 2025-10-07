@@ -26,7 +26,7 @@
  
    * Limited to the current latest version of DataPredict, DataPredict Neural and DataPredict Axon libraries.
 
-   * Only entitled to bug fixes to the current latest version, not upgrades to future versions. 
+   * Only entitled to bug fixes to the current latest version, not upgrades to the future versions. 
 
    * Derivatives are allowed as long as it is not copied off from DataPredict's future updates. 
 

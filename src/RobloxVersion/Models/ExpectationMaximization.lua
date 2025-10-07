@@ -210,11 +210,11 @@ local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClu
 	
 	local subSumWeightXMatrix = AqwamTensorLibrary:dotProduct(responsibilitiesMatrixTransposed, featureMatrix) -- clusters x features
 	
-	sumWeightMatrix = AqwamTensorLibrary:add(sumWeightMatrix, subSumWeightMatrix) -- clusters x 1
+	local newSumWeightMatrix = AqwamTensorLibrary:add(sumWeightMatrix, subSumWeightMatrix) -- clusters x 1
 
-	sumWeightXMatrix = AqwamTensorLibrary:add(sumWeightXMatrix, subSumWeightXMatrix) -- clusters x features
+	local newSumWeightXMatrix = AqwamTensorLibrary:add(sumWeightXMatrix, subSumWeightXMatrix) -- clusters x features
 
-	local meanMatrix = AqwamTensorLibrary:divide(sumWeightXMatrix, sumWeightMatrix) -- clusters x features
+	local meanMatrix = AqwamTensorLibrary:divide(newSumWeightXMatrix, newSumWeightMatrix) -- clusters x features
 
 	local varianceMatrix = AqwamTensorLibrary:createTensor({numberOfClusters, #featureMatrix[1]}, 0)
 
@@ -232,9 +232,9 @@ local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClu
 
 	end
 
-	varianceMatrix = AqwamTensorLibrary:divide(varianceMatrix, sumWeightMatrix)
+	varianceMatrix = AqwamTensorLibrary:divide(varianceMatrix, newSumWeightMatrix)
 
-	return piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix
+	return piMatrix, meanMatrix, varianceMatrix, subSumWeightMatrix, subSumWeightXMatrix
 
 end
 
@@ -608,6 +608,10 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	
 	local cost
 	
+	local subSumWeightMatrix
+	
+	local subSumWeightXMatrix
+	
 	if (not piMatrix) or (not meanMatrix) or (not varianceMatrix) or (not sumWeightMatrix) or (not sumWeightXMatrix) then
 		
 		if (numberOfClusters == math.huge) then 
@@ -632,7 +636,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 		responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
 
-		piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
+		piMatrix, meanMatrix, varianceMatrix, subSumWeightMatrix, subSumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
 		
 		gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
 		
@@ -653,6 +657,10 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	
+	sumWeightMatrix = AqwamTensorLibrary:add(sumWeightMatrix, subSumWeightMatrix)
+	
+	sumWeightXMatrix = AqwamTensorLibrary:add(sumWeightXMatrix, subSumWeightXMatrix)
 	
 	-- We're just normalizing here to so that the sumWeightMatrix and sumWeightMatrix values doesn't go so big to the point of numerical overflow.
 	

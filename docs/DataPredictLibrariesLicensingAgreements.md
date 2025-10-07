@@ -1,4 +1,4 @@
-# DataPredict Libraries Licensing Agreements
+# DataPredict™ Libraries Licensing Agreements
 
 * [Standard Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement.docx)
 
@@ -8,7 +8,7 @@
  
       * “Directly use DataPredict as-is, supported by original research.”
 
-   * Requires disclosure of DataPredict to the public.
+   * Requires disclosure of DataPredict™ to the public.
 
    * Includes access to future updates and fixes.
 

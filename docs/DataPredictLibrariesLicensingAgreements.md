@@ -10,6 +10,8 @@
 
    * Requires disclosure of DataPredict to the public.
 
+   * Includes access to future updates and fixes.
+
 * [White-Label Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement%20-%20White%20Label.docx)
     
     * 5% of gross revenue per month for projects using DataPredict™.
@@ -19,6 +21,8 @@
       * “We took DataPredict's research papers, build our own version and iterate it.”
      
       * "We build the whole machine learning library from scratch and build the whole system with it."
+
+   * Includes access to future updates and fixes.
 
 * [Perpetual Internal Use Version]() (Incomplete And Requires Further Analysis)
 

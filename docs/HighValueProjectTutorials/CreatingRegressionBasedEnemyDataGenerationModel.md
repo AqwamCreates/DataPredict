@@ -16,9 +16,9 @@ Before we can produce ourselves a difficulty generation model, we first need to 
 
 local EnemyDataGenerationModel = DataPredict.Models.NeuralNetwork.new() -- Set the maximumNumberOfIterations to 1 if you want the incremental version.
 
-DifficultyGenerationModel:addLayer(2, true) -- This is specific to neural networks only.
+EnemyDataGenerationModel:addLayer(2, true) -- This is specific to neural networks only.
 
-DifficultyGenerationModel:addLayer(3, false)
+EnemyDataGenerationModel:addLayer(3, false)
 
 ```
 

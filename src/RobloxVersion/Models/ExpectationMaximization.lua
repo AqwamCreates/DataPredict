@@ -658,6 +658,8 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	
+	-- Storing the final subSumWeightMatrix and subSumWeightXMatrix to "freeze" them for future model training.
+	
 	sumWeightMatrix = AqwamTensorLibrary:add(sumWeightMatrix, subSumWeightMatrix)
 	
 	sumWeightXMatrix = AqwamTensorLibrary:add(sumWeightXMatrix, subSumWeightXMatrix)

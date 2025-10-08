@@ -200,7 +200,7 @@
 
 ## Targeting Systems
 
-* [Creating Distance-Based Clustering Targeting Model](HighValueProjectTutorials/CreatingDistanceBasedClusteringTargetingModel.md)
+* [Creating Distance-Minimization-Based Clustering Targeting Model](HighValueProjectTutorials/CreatingDistanceMinimizationBasedClusteringTargetingModel.md)
 
   * Find the center of players based on number of clusters.
 

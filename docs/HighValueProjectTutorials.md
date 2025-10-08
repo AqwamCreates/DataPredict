@@ -200,7 +200,7 @@
 
 ## Targeting Systems
 
-* [Creating Cluster-Based Targeting Model](HighValueProjectTutorials/CreatingClusterBasedTargetingModel.md)
+* [Creating Distance-Based Clustering Targeting Model](HighValueProjectTutorials/CreatingDistanceBasedClusteringTargetingModel.md)
 
   * Find the center of players based on number of clusters.
 
@@ -208,7 +208,7 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Probability-Maximization-Based Targeting Model](HighValueProjectTutorials/CreatingProbabilityMaximizationBasedTargetingModel.md)
+* [Creating Probability-Maximization-Based Clustering Targeting Model](HighValueProjectTutorials/CreatingProbabilityMaximizationBasedClusteringTargetingModel.md)
 
   * Produces clusters that maximizes the likelihood of being hit.
 

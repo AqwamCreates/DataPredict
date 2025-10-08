@@ -320,7 +320,7 @@ function NearestCentroid:train(featureMatrix, labelVector)
 	
 	local sumMatrix = AqwamTensorLibrary:multiply(centroidMatrix, numberOfDataPointVector)
 	
-	local extractedFeatureMatrixTable = NearestCentroid:separateFeatureMatrixByClass(featureMatrix, labelMatrix)
+	local extractedFeatureMatrixTable = self:separateFeatureMatrixByClass(featureMatrix, labelMatrix)
 
 	for clusterIndex, featureMatrix in ipairs(extractedFeatureMatrixTable) do
 		

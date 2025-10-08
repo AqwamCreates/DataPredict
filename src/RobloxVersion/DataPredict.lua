@@ -52,6 +52,8 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 
 	LinearRegression = require(Models.LinearRegression),
 	
+	PassiveAggressiveRegressor = require(Models.PassiveAggressiveRegressor),
+	
 	NormalLinearRegression = require(Models.NormalLinearRegression),
 	
 	SupportVectorRegression = require(Models.SupportVectorRegression),
@@ -59,6 +61,8 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	KNearestNeighboursRegressor = require(Models.KNearestNeighboursRegressor),
 	
 	LogisticRegression = require(Models.LogisticRegression),
+	
+	PassiveAggressiveClassifier = require(Models.PassiveAggressiveClassifier),
 	
 	NeuralNetwork = require(Models.NeuralNetwork),
 	

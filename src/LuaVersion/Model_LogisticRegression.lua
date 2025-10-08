@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamMatrixLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
@@ -104,9 +104,9 @@ local cutOffFunctionList = {
 
 function LogisticRegressionModel:calculateCost(hypothesisVector, labelVector)
 
-	local costVector = AqwamMatrixLibrary:applyFunction(lossFunctionList[self.sigmoidFunction], hypothesisVector, labelVector)
+	local costVector = AqwamTensorLibrary:applyFunction(lossFunctionList[self.sigmoidFunction], hypothesisVector, labelVector)
 
-	local totalCost = AqwamMatrixLibrary:sum(costVector)
+	local totalCost = AqwamTensorLibrary:sum(costVector)
 	
 	local Regularizer = self.Regularizer
 
@@ -120,7 +120,7 @@ end
 
 function LogisticRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 
-	local zVector = AqwamMatrixLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	local zVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
 	if (saveFeatureMatrix) then 
 
@@ -130,7 +130,7 @@ function LogisticRegressionModel:calculateHypothesisVector(featureMatrix, saveFe
 
 	if (type(zVector) == "number") then zVector = {{zVector}} end
 
-	local hypothesisVector = AqwamMatrixLibrary:applyFunction(sigmoidFunctionList[self.sigmoidFunction], zVector)
+	local hypothesisVector = AqwamTensorLibrary:applyFunction(sigmoidFunctionList[self.sigmoidFunction], zVector)
 
 	return hypothesisVector
 
@@ -144,7 +144,7 @@ function LogisticRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatri
 
 	if (featureMatrix == nil) then error("Feature matrix not found.") end
 
-	local costFunctionDerivativeMatrix = AqwamMatrixLibrary:dotProduct(AqwamMatrixLibrary:transpose(featureMatrix), lossMatrix)
+	local costFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossMatrix)
 
 	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrix end
 
@@ -168,11 +168,11 @@ function LogisticRegressionModel:gradientDescent(costFunctionDerivativeMatrix, n
 
 		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
 
-		costFunctionDerivativeMatrix = AqwamMatrixLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
+		costFunctionDerivativeMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
 
 	end
 
-	costFunctionDerivativeMatrix = AqwamMatrixLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
+	costFunctionDerivativeMatrix = AqwamTensorLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
 
 	if (Optimizer) then
 
@@ -180,11 +180,11 @@ function LogisticRegressionModel:gradientDescent(costFunctionDerivativeMatrix, n
 
 	else
 
-		costFunctionDerivativeMatrix = AqwamMatrixLibrary:multiply(learningRate, costFunctionDerivativeMatrix)
+		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrix)
 
 	end
 
-	self.ModelParameters = AqwamMatrixLibrary:subtract(ModelParameters, costFunctionDerivativeMatrix)
+	self.ModelParameters = AqwamTensorLibrary:subtract(ModelParameters, costFunctionDerivativeMatrix)
 
 end
 
@@ -292,7 +292,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 		end
 
-		local lossVector = AqwamMatrixLibrary:applyFunction(derivativeLossFunctionToApply, hypothesisVector, labelVector)
+		local lossVector = AqwamTensorLibrary:applyFunction(derivativeLossFunctionToApply, hypothesisVector, labelVector)
 
 		self:update(lossVector, true, false)
 
@@ -314,7 +314,7 @@ function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
 
 	local cutOffFunction = cutOffFunctionList[self.sigmoidFunction]
 
-	local predictedLabelVector = AqwamMatrixLibrary:applyFunction(cutOffFunction, outputVector)
+	local predictedLabelVector = AqwamTensorLibrary:applyFunction(cutOffFunction, outputVector)
 
 	return predictedLabelVector, outputVector
 

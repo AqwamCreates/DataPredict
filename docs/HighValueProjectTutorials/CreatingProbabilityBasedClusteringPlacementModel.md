@@ -8,7 +8,7 @@ For best results, please use Expectation-Maximization model.
 
 ```lua
 
-local TargetingModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 3}) -- For this tutorial, we will assume that we have three missiles, so only three locations it can land.
+local PlacementModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 3}) -- For this tutorial, we will assume that we have three missiles, so only three locations it can land.
 
 ```
 
@@ -38,7 +38,7 @@ Once you collected the players' location data, you must call model's train() fun
 
 ```lua
 
-TargetingModel:train(playerLocationDataMatrix)
+PlacementModel:train(playerLocationDataMatrix)
 
 ```
 
@@ -46,9 +46,9 @@ Once train() is called, call the getModelParameters() function to get the center
 
 ```lua
 
-local centroidMatrix = TargetingModel:getModelParameters()
+local centroidMatrix = PlacementModel:getModelParameters()
 
-centroidMatrix = centroidMatrix[1] -- This is a must if you're using ExpectationMaximization because it stores the ModelParameters as a table of matrices.
+centroidMatrix = centroidMatrix[1]
 
 ```
 
@@ -78,31 +78,7 @@ By default, when you reuse the machine learning models from DataPredict, it will
 
 ```lua
 
-TargetingModel:setModelParameters(nil)
-
-```
-
-## Dual Approach
-
-In this approach, we use Fuzzy C-Means to speed up the ExpectationMaximization-Maximization model training. Because Fuzzy C-Means have lighter computations, you can perform more number of iterations per game frame.
-
-```lua
-
-local FuzzyInitializer = DataPredict.Models.FuzzyCMeans.new({numberOfClusters = 3, maximumNumberOfIterations = 500})
-
-local EMRefiner = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 3, maximumNumberOfIterations = 30})
-
-FuzzyInitializer:train(playerLocationDataMatrix)
-
-local meanMatrix = FuzzyInitializer:getModelParameters()
-
-local EMModelParameters = {nil, meanMatrix}
-
-EMRefiner:setModelParameters(EMModelParameters)
-
-EMRefiner:train(playerLocationDataMatrix)
-
-local finalCentroidMatrix = EMRefiner:getModelParameters()[2] -- The final center locations.
+PlacementModel:setModelParameters(nil)
 
 ```
 

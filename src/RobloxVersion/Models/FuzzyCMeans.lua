@@ -285,9 +285,9 @@ end
 
 local function calculateMean(clusterAssignmentMatrix, centroidMatrix, fuzziness, featureMatrix)
 	
-	local numberOfData = #clusterAssignmentMatrix
+	local numberOfData = #featureMatrix
 
-	local numberOfCentroids = #clusterAssignmentMatrix
+	local numberOfCentroids = #centroidMatrix
 
 	local numberOfFeatures = #centroidMatrix[1]
 
@@ -303,13 +303,13 @@ local function calculateMean(clusterAssignmentMatrix, centroidMatrix, fuzziness,
 		
 		for dataIndex, unwrappedDataVector in ipairs(featureMatrix) do
 			
-			local inverseDistance = clusterAssignmentMatrix[dataIndex][cluster]^fuzziness
+			local membershipValue = clusterAssignmentMatrix[dataIndex][cluster]^fuzziness
 			
-			local multipliedInverseDistance = AqwamTensorLibrary:multiply({unwrappedDataVector}, inverseDistance)
+			local multipliedMembershipValue = AqwamTensorLibrary:multiply({unwrappedDataVector}, membershipValue)
 			
-			numeratorVector = AqwamTensorLibrary:add(numeratorVector, multipliedInverseDistance)
+			numeratorVector = AqwamTensorLibrary:add(numeratorVector, multipliedMembershipValue)
 			
-			denominator = denominator + inverseDistance
+			denominator = denominator + multipliedMembershipValue
 			
 		end
 		
@@ -377,11 +377,44 @@ function FuzzyCMeansModel:initializeCentroids(featureMatrix, numberOfClusters, d
 	
 end
 
-local function batchFuzzyCMeans(centroidMatrix, distanceMatrix, fuzziness)
-
-	local clusterAssignmentMatrix = AqwamTensorLibrary:divide(1, distanceMatrix) -- data x clusters
+local function calculateMembershipMatrix(distanceMatrix, fuzziness)
 	
-	centroidMatrix = calculateMean(clusterAssignmentMatrix, centroidMatrix, fuzziness)
+	local numberOfData = #distanceMatrix
+	
+	local numberOfClusters = #distanceMatrix[1]
+	
+	local membershipMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters}, 0)
+	
+	local ratioPowerConstant = 2 / (fuzziness - 1)
+	
+	for dataIndex, unwrappedDistanceVector in ipairs(distanceMatrix) do
+		
+		for j = 1, numberOfClusters do
+
+			local denominator = 0
+
+			for k = 1, numberOfClusters do
+
+				local ratio = unwrappedDistanceVector[j] / unwrappedDistanceVector[k]
+
+				denominator = denominator + (ratio ^ ratioPowerConstant)
+
+			end
+
+			membershipMatrix[dataIndex][j] = 1 / denominator
+
+		end
+		
+	end
+
+	return membershipMatrix
+end
+
+local function batchFuzzyCMeans(centroidMatrix, distanceMatrix, fuzziness, featureMatrix)
+
+	local clusterAssignmentMatrix = calculateMembershipMatrix(distanceMatrix, fuzziness)
+	
+	centroidMatrix = calculateMean(clusterAssignmentMatrix, centroidMatrix, fuzziness, featureMatrix)
 	
 	return centroidMatrix, clusterAssignmentMatrix
 	
@@ -479,7 +512,7 @@ function FuzzyCMeansModel:train(featureMatrix)
 
 	if (mode == "Hybrid") then -- This must be always above the centroid initialization check. Otherwise it will think this is second training round despite it being the first one!
 		
-		mode = (centroidMatrix and numberOfDataPointVector and "Sequential") or "Batch"		
+		mode = (centroidMatrix and numberOfDataPointVector and "Sequential") or "Batch"
 
 	end
 	

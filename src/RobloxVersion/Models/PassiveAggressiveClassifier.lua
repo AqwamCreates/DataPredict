@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
 PassiveAggressiveClassifierModel = {}
@@ -33,8 +35,6 @@ PassiveAggressiveClassifierModel = {}
 PassiveAggressiveClassifierModel.__index = PassiveAggressiveClassifierModel
 
 setmetatable(PassiveAggressiveClassifierModel, GradientMethodBaseModel)
-
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaximumNumberOfIterations = math.huge
 

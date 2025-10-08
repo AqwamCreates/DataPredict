@@ -457,14 +457,6 @@ local kMeansFunctionList = {
 
 function KMeansModel:train(featureMatrix)
 	
-	local areModelParametersEqual
-	
-	local cost
-	
-	local costArray = {}
-	
-	local numberOfIterations = 0
-	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local numberOfClusters = self.numberOfClusters
@@ -514,6 +506,12 @@ function KMeansModel:train(featureMatrix)
 		centroidMatrix = self:initializeCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply)
 		
 	end
+
+	local numberOfIterations = 0
+	
+	local costArray = {}
+	
+	local cost
 	
 	repeat
 		

@@ -132,7 +132,7 @@ local function gaussian(featureVector, meanVector, varianceVector, epsilon)
 
 end
 
-local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
+local function calculateGaussianMatrix(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
 	
 	local numberOfClusters = #meanMatrix
 	
@@ -158,8 +158,6 @@ local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, vari
 
 			for i, probability in ipairs(probabilitiesVector[1]) do
 				
-				
-				
 				if (useLogProbabilities) then
 					
 					weight = weight + math.log(probability + epsilon)
@@ -182,9 +180,9 @@ local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, vari
 	
 end
 
-local function expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
+local function expectationStep(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
 	
-	local responsibilityMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon) -- number of data x number of columns
+	local responsibilityMatrix = calculateGaussianMatrix(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon) -- number of data x number of columns
 	
 	local responsibilitySumVector = AqwamTensorLibrary:sum(responsibilityMatrix, 1)
 	
@@ -234,7 +232,7 @@ local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClu
 
 	varianceMatrix = AqwamTensorLibrary:divide(varianceMatrix, newSumWeightMatrix)
 
-	return piMatrix, meanMatrix, varianceMatrix, subSumWeightMatrix, subSumWeightXMatrix
+	return meanMatrix, varianceMatrix, piMatrix, subSumWeightMatrix, subSumWeightXMatrix
 
 end
 
@@ -400,14 +398,14 @@ end
 function ExpectationMaximizationModel:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
 	
 	local centroidMatrixDimensionSizeArray = {numberOfClusters, numberOfFeatures}
-	
-	local piMatrix = AqwamTensorLibrary:createRandomUniformTensor({numberOfClusters, 1})
-	
-	local sumPi = AqwamTensorLibrary:sum(piMatrix)
 
 	local meanMatrix = self:initializeCentroids(featureMatrix, numberOfClusters)
 
 	local varianceMatrix = AqwamTensorLibrary:createRandomUniformTensor(centroidMatrixDimensionSizeArray, 0, 1)
+	
+	local piMatrix = AqwamTensorLibrary:createRandomUniformTensor({numberOfClusters, 1})
+
+	local sumPi = AqwamTensorLibrary:sum(piMatrix)
 
 	local sumWeightMatrix = AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
 
@@ -415,7 +413,7 @@ function ExpectationMaximizationModel:initializeMatrices(featureMatrix, numberOf
 	
 	piMatrix = AqwamTensorLibrary:divide(piMatrix, sumPi)
 	
-	return piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix
+	return meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix
 	
 end
 
@@ -425,13 +423,13 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
-	local piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
+	local meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
 	
-	local responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
+	local responsibilityMatrix = expectationStep(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
 	
-	piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
+	meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
 	
-	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
+	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
 	
 	local logLikelihood = AqwamTensorLibrary:logarithm(gaussianMatrix)
 	
@@ -451,7 +449,7 @@ function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMat
 	
 	local bayesianInformationCriterion = (k * math.log(numberOfData)) - (2 * sumLogLikelihood)
 	
-	return bayesianInformationCriterion, piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix
+	return bayesianInformationCriterion, meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix
 	
 end
 
@@ -467,21 +465,21 @@ function ExpectationMaximizationModel:getBestMatrices(featureMatrix, useLogProba
 	
 	local bayesianInformationCriterion
 	
-	local piMatrix
-	
 	local meanMatrix
 	
 	local varianceMatrix
 	
+	local piMatrix
+	
 	local sumWeightMatrix
 	
 	local sumWeightXMatrix
-	
-	local bestPiMatrix
 
 	local bestMeanMatrix
 
 	local bestVarianceMatrix
+	
+	local bestPiMatrix
 
 	local bestSumWeightMatrix
 
@@ -489,7 +487,7 @@ function ExpectationMaximizationModel:getBestMatrices(featureMatrix, useLogProba
 
 	while true do
 		
-		bayesianInformationCriterion, piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBayesianInformationCriterion(featureMatrix, numberOfClusters, useLogProbabilities, epsilon)
+		bayesianInformationCriterion, meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBayesianInformationCriterion(featureMatrix, numberOfClusters, useLogProbabilities, epsilon)
 
 		if (bayesianInformationCriterion < bestBayesianInformationCriterion) then
 			
@@ -497,9 +495,9 @@ function ExpectationMaximizationModel:getBestMatrices(featureMatrix, useLogProba
 			
 			bestNumberOfClusters = numberOfClusters
 			
-			bestPiMatrix = piMatrix
-			
 			bestMeanMatrix = meanMatrix
+			
+			bestPiMatrix = piMatrix
 			
 			bestVarianceMatrix = varianceMatrix
 			
@@ -517,7 +515,7 @@ function ExpectationMaximizationModel:getBestMatrices(featureMatrix, useLogProba
 		
 	end
 
-	return bestPiMatrix, bestMeanMatrix, bestVarianceMatrix, bestSumWeightMatrix, bestSumWeightXMatrix
+	return bestMeanMatrix, bestVarianceMatrix, bestPiMatrix, bestSumWeightMatrix, bestSumWeightXMatrix
 	
 end
 
@@ -565,12 +563,12 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	local ModelParameters = self.ModelParameters or {}
 	
 	local numberOfFeatures = #featureMatrix[1]
+
+	local meanMatrix = ModelParameters[1]
+
+	local varianceMatrix = ModelParameters[2]
 	
-	local piMatrix = ModelParameters[1]
-
-	local meanMatrix = ModelParameters[2]
-
-	local varianceMatrix = ModelParameters[3]
+	local piMatrix = ModelParameters[3]
 	
 	local sumWeightMatrix = ModelParameters[4]
 	
@@ -578,17 +576,17 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	
 	if (mode == "Hybrid") then
 		
-		mode = (piMatrix and meanMatrix and varianceMatrix and sumWeightMatrix and sumWeightXMatrix and "Online") or "Offline"		
+		mode = (meanMatrix and varianceMatrix and piMatrix and sumWeightMatrix and sumWeightXMatrix and "Online") or "Offline"		
 		
 	end
 	
 	if (mode == "Offline") then
 		
-		piMatrix = nil
-		
 		meanMatrix = nil
 		
 		varianceMatrix = nil
+		
+		piMatrix = nil
 		
 		sumWeightMatrix = nil
 		
@@ -612,15 +610,15 @@ function ExpectationMaximizationModel:train(featureMatrix)
 	
 	local subSumWeightXMatrix
 	
-	if (not piMatrix) or (not meanMatrix) or (not varianceMatrix) or (not sumWeightMatrix) or (not sumWeightXMatrix) then
+	if (not meanMatrix) or (not varianceMatrix) or (not piMatrix) or (not sumWeightMatrix) or (not sumWeightXMatrix) then
 		
 		if (numberOfClusters == math.huge) then 
 			
-			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBestMatrices(featureMatrix, useLogProbabilities, epsilon)
+			meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBestMatrices(featureMatrix, useLogProbabilities, epsilon)
 			
 		else
 			
-			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
+			meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
 			
 		end
 		
@@ -634,11 +632,11 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		
 		self:iterationWait()
 
-		responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
+		responsibilityMatrix = expectationStep(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
 
-		piMatrix, meanMatrix, varianceMatrix, subSumWeightMatrix, subSumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
+		meanMatrix, varianceMatrix, piMatrix, subSumWeightMatrix, subSumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
 		
-		gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, useLogProbabilities, epsilon)
+		gaussianMatrix = calculateGaussianMatrix(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
@@ -672,7 +670,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 	sumWeightXMatrix = AqwamTensorLibrary:divide(sumWeightXMatrix, normalizationDenominator)
 	
-	self.ModelParameters = {piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix}
+	self.ModelParameters = {meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix}
 
 	return costArray
 
@@ -682,9 +680,9 @@ function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutpu
 	
 	local numberOfFeatures = #featureMatrix
 	
-	local piMatrix, meanMatrix, varianceMatrix = table.unpack(self.ModelParameters)
+	local meanMatrix, varianceMatrix, piMatrix = table.unpack(self.ModelParameters)
 
-	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, self.useLogProbabilities, self.epsilon)
+	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, meanMatrix, varianceMatrix, piMatrix, self.useLogProbabilities, self.epsilon)
 	
 	if (returnOriginalOutput) then return gaussianMatrix end
 	

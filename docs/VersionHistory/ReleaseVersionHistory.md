@@ -4,6 +4,7 @@
 
 | Version                 | Number Of Models | Number Of Optimizers | Number Of Others | Number Of Reinforcement Learning Strategies | Number Of Experience Replays | Number Of Value Schedulers | Distributed Training Strategies | Number Of Quick Setups | Backward Incompatible Changes |
 |-------------------------|------------------|----------------------|------------------|---------------------------------------------|------------------------------|----------------------------|---------------------------------|------------------------|-------------------------------|
+| [2.10](Release/2-10.md) | 53               | 11                   | 10               | 3                                           | 3                            | 2                          | 2                               | 2                      | Yes                           |
 | [2.9](Release/2-9.md)   | 51               | 11                   | 10               | 3                                           | 3                            | 2                          | 2                               | 2                      | Yes                           |
 | [2.8](Release/2-8.md)   | 51               | 11                   | 10               | 3                                           | 3                            | 2                          | 2                               | 2                      | No                            |
 | [2.7](Release/2-7.md)   | 50               | 11                   | 10               | 3                                           | 3                            | 2                          | 2                               | 2                      | Yes                           |
@@ -42,4 +43,3 @@
 | [1.2](Release/1-2.md)   | 20               | 8                    | 8                | 0                            | 0                          | 0                      | No                            |
 | [1.1](Release/1-1.md)   | 21               | 8                    | 6                | 0                            | 0                          | 0                      | No                            |
 | [1.0](Release/1-0.md)   | 18               | 8                    | 6                | 0                            | 0                          | 0                      | No                            |
-

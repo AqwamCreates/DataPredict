@@ -12,7 +12,7 @@ For best results, please use:
 
   * This model sets up X number of clusters and finds the center of data.
 
-  * Slower than Fuzzy C-Means
+  * Slower than Fuzzy C-Means.
 
 ## Initializing The Clustering Model
 

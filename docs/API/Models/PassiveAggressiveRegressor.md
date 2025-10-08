@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-PassiveAggressiveRegressor.new(maximumNumberOfIterations: integer, variant: string, cValue: number): ModelObject
+PassiveAggressiveRegressor.new(maximumNumberOfIterations: integer, variant: string, epsilon: number, cValue: number): ModelObject
 ```
 
 #### Parameters:
@@ -29,6 +29,8 @@ PassiveAggressiveRegressor.new(maximumNumberOfIterations: integer, variant: stri
     * 1
  
     * 2
+
+* epsilon: Controls the epsilon-insensitive margin. Higher values make the model less sensitive to small deviations. [Default: 0]
 
 * cValue: The aggressiveness parameter used in some Passive-Aggressive variants (1 and 2). Higher values allow larger updates per misclassified example, while lower values limit the update magnitude. [Default: 1]
 

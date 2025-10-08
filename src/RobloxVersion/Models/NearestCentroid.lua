@@ -30,11 +30,11 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseModel = require(script.Parent.BaseModel)
 
-NearestCentroid = {}
+NearestCentroidModel = {}
 
-NearestCentroid.__index = NearestCentroid
+NearestCentroidModel.__index = NearestCentroidModel
 
-setmetatable(NearestCentroid, BaseModel)
+setmetatable(NearestCentroidModel, BaseModel)
 
 local defaultDistanceFunction = "Euclidean"
 
@@ -182,7 +182,7 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList)
 
 end
 
-function NearestCentroid:processLabelVector(labelVector)
+function NearestCentroidModel:processLabelVector(labelVector)
 
 	local ClassesList = self.ClassesList
 
@@ -204,7 +204,7 @@ function NearestCentroid:processLabelVector(labelVector)
 
 end
 
-function NearestCentroid:convertLabelVectorToLogisticMatrix(labelVector)
+function NearestCentroidModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 	if (typeof(labelVector) == "number") then
 
@@ -242,7 +242,7 @@ function NearestCentroid:convertLabelVectorToLogisticMatrix(labelVector)
 
 end
 
-function NearestCentroid:separateFeatureMatrixByClass(featureMatrix, labelMatrix)
+function NearestCentroidModel:separateFeatureMatrixByClass(featureMatrix, labelMatrix)
 
 	local ClassesList = self.ClassesList
 
@@ -264,25 +264,25 @@ function NearestCentroid:separateFeatureMatrixByClass(featureMatrix, labelMatrix
 
 end
 
-function NearestCentroid.new(parameterDictionary)
+function NearestCentroidModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewNearestCentroid = BaseModel.new(parameterDictionary)
+	local NewNearestCentroidModel = BaseModel.new(parameterDictionary)
 
-	setmetatable(NewNearestCentroid, NearestCentroid)
+	setmetatable(NewNearestCentroidModel, NearestCentroidModel)
 	
-	NewNearestCentroid:setName("NearestCentroid")
+	NewNearestCentroidModel:setName("NearestCentroid")
 
-	NewNearestCentroid.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
+	NewNearestCentroidModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 	
-	NewNearestCentroid.ClassesList = parameterDictionary.ClassesList or {}
+	NewNearestCentroidModel.ClassesList = parameterDictionary.ClassesList or {}
 
-	return NewNearestCentroid
+	return NewNearestCentroidModel
 
 end
 
-function NearestCentroid:train(featureMatrix, labelVector)
+function NearestCentroidModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The number of data in feature matrix and the label vector are not the same.") end
 	
@@ -338,7 +338,7 @@ function NearestCentroid:train(featureMatrix, labelVector)
 
 end
 
-function NearestCentroid:predict(featureMatrix, returnOriginalOutput)
+function NearestCentroidModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local ModelParameters = self.ModelParameters
 
@@ -384,4 +384,4 @@ function NearestCentroid:predict(featureMatrix, returnOriginalOutput)
 
 end
 
-return NearestCentroid
+return NearestCentroidModel

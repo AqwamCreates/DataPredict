@@ -162,7 +162,7 @@ function NaiveBayesBaseModel:processLabelVector(labelVector)
 
 	else
 
-		if checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector.") end
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList) then error("A value does not exist in the model\'s classes list is present in the label vector.") end
 
 	end
 

@@ -6,9 +6,7 @@ FuzzyCMeans is an unsupervised machine learning model that predicts which cluste
 
 Contains a matrix.  
 
-* ModelParameters[1][I][J]: Value of matrix at row I and column J. The rows represent the clusters. The columns represent the features.
-
-* ModelParameters[2][I][1]: Value of matrix at row I. The rows represent the number of data points associated with each clusters.
+* ModelParameters[I][J]: Value of matrix at row I and column J. The rows represent the clusters. The columns represent the features.
 
 ## Constructors
 

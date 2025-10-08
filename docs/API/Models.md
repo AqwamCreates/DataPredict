@@ -8,7 +8,7 @@
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 5     |
 | Generative                     | 4     |
-| Total                          | 51    |
+| Total                          | 52    |
 
 ## Regression
 
@@ -38,13 +38,14 @@
 
 | Model                                                                                                                  | Alternate Names | Use Cases                                                            |
 |------------------------------------------------------------------------------------------------------------------------|-----------------|----------------------------------------------------------------------|
-| [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | None            | Player Grouping                                                      |
-| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | Enemy Difficulty Generation                                          |
-| [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | Density Grouping                                                     |
-| [MeanShift](Models/MeanShift.md)                                                                                       | None            | Boss Spawn Location Search Based On Player Locations                 |
-| [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | Hacking Detection, Anomaly Detection                                 |
 | [KMeans](Models/KMeans.md)                                                                                             | None            | Maximizing Area-of-Effect Abilities, Target Grouping                 |
+| [FuzzyCMeans](Models/FuzzyCMeans.md)                                                                                   | None            | Overlapping Area-of-Effect Abilities, Overlapping Target Grouping    |
 | [KMedoids](Models/KMedoids.md)                                                                                         | None            | Player Grouping Based On Player Locations With Leader Identification |
+| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | Enemy Difficulty Generation                                          |
+| [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | Hacking Detection, Anomaly Detection                                 |
+| [MeanShift](Models/MeanShift.md)                                                                                       | None            | Boss Spawn Location Search Based On Player Locations                 |
+| [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | None            | Player Grouping                                                      |
+| [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | Density Grouping                                                     |
 
 ## Deep Reinforcement Learning
 

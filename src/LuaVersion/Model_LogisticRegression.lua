@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamMatrixLibrary = require("AqwamTensorLibrary")
+
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 LogisticRegressionModel = {}
@@ -33,8 +35,6 @@ LogisticRegressionModel = {}
 LogisticRegressionModel.__index = LogisticRegressionModel
 
 setmetatable(LogisticRegressionModel, GradientMethodBaseModel)
-
-local AqwamMatrixLibrary = require("AqwamTensorLibrary")
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -260,9 +260,9 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 
-	if (self.ModelParameters) then
+	if (ModelParameters) then
 
-		if (#featureMatrix[1] ~= #self.ModelParameters) then error("The number of features are not the same as the model parameters!") end
+		if (#featureMatrix[1] ~= #ModelParameters) then error("The number of features are not the same as the model parameters!") end
 
 	else
 

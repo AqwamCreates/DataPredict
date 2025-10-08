@@ -6,7 +6,7 @@ Contains a table of matrices.
 
 * ModelParameters[1]: meanMatrix
 
-* ModelParameters[2]: numberOfDataPointsVector
+* ModelParameters[2]: numberOfDataPointVector
 
 ## Constructors
 
@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-NearestCentroid.new(distanceFunction: string, use, useWeightedDistance: boolean, kValue: integer): ModelObject
+NearestCentroid.new(distanceFunction: string, use, useWeightedDistance: boolean: ModelObject
 ```
 
 #### Parameters:
@@ -29,8 +29,6 @@ NearestCentroid.new(distanceFunction: string, use, useWeightedDistance: boolean,
   * Cosine
 
 * useWeightedDistance: Set whether or not to use distance as a factor for prediction.
-
-* kValue: The number of closest data points taken into consideration for majority voting to determine the class of a given data point.
 
 #### Returns:
 

@@ -1,4 +1,4 @@
-# Creating Cluster-Based Targeting Model
+# Creating Distance-Based Clustering Targeting Model
 
 Hi guys! In this tutorial, we will demonstrate on how to create cluster-based targeting model for your weapon systems.
 

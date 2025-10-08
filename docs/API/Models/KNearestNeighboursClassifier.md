@@ -38,26 +38,6 @@ KNearestNeighboursClassifier.new(kValue: integer, distanceFunction: string, use,
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-KNearestNeighboursClassifier:setParameters(kValue: integer, distanceFunction: string, useWeightedDistance: boolean)
-```
-
-#### Parameters:
-
-* kValue: The number of closest data points taken into consideration for majority voting to determine the class of a given data point.
-
-* distanceFunction: The distance function to be used to measure the similarity between two data points. Available options are:
-
-  * Euclidean
-
-  * Manhattan
-
-  * Cosine
-
 ### train()
 
 Train the model.

@@ -75,3 +75,7 @@ PassiveAggressiveRegressor:predict(featureMatrix: Matrix): Matrix
 ## Inherited From
 
 * [IterativeMethodBaseModel](IterativeMethodBaseModel.md)
+
+## References
+
+[Online Passive-Aggressive Algorithms](https://jmlr.csail.mit.edu/papers/volume7/crammer06a/crammer06a.pdf)

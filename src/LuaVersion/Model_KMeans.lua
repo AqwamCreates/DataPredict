@@ -470,10 +470,6 @@ function KMeansModel:train(featureMatrix)
 	local centroidMatrix = ModelParameters[1]
 
 	local numberOfDataPointVector = ModelParameters[2]
-	
-	local clusterAssignmentMatrix
-	
-	local distanceMatrix
 
 	if (mode == "Hybrid") then -- This must be always above the centroid initialization check. Otherwise it will think this is second training round despite it being the first one!
 		
@@ -510,6 +506,10 @@ function KMeansModel:train(featureMatrix)
 	local numberOfIterations = 0
 	
 	local costArray = {}
+	
+	local clusterAssignmentMatrix
+
+	local distanceMatrix
 	
 	local cost
 	

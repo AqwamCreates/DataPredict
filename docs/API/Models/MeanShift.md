@@ -110,7 +110,7 @@ Meanshift:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix,
 
 * featureMatrix: Matrix containing data.
 
-* returnOriginalOutput: Set whether or not to return distance matrix instead of clusterNumberVector and closestDistanceVector. 
+* returnOriginalOutput: Set whether or not to return distance matrix instead of clusterNumberVector and closestDistanceVector.
 
 #### Returns:
 

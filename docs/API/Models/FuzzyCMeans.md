@@ -38,9 +38,9 @@ FuzzyCMeans.new(maximumNumberOfIterations: integer, numberOfClusters: integer, f
 
   * Hybrid (Default)
  
-  * Batch
+  * Offline
  
-  * Sequential
+  * Online
 
 * setInitialClustersOnDataPoints: Set whether or not the model to create centroids on any data points.
 

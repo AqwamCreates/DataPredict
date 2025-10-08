@@ -36,11 +36,7 @@ NearestCentroid.__index = NearestCentroid
 
 setmetatable(NearestCentroid, BaseModel)
 
-local defaultKValue = 3
-
 local defaultDistanceFunction = "Euclidean"
-
-local defaultUseWeightedDistance = false
 
 local distanceFunctionList = {
 
@@ -278,11 +274,7 @@ function NearestCentroid.new(parameterDictionary)
 	
 	NewNearestCentroid:setName("NearestCentroid")
 
-	NewNearestCentroid.kValue = parameterDictionary.kValue or defaultKValue
-
 	NewNearestCentroid.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
-
-	NewNearestCentroid.useWeightedDistance = NewNearestCentroid:getValueOrDefaultValue(parameterDictionary.useWeightedDistance, defaultUseWeightedDistance)
 	
 	NewNearestCentroid.ClassesList = parameterDictionary.ClassesList or {}
 
@@ -354,13 +346,7 @@ function NearestCentroid:predict(featureMatrix, returnOriginalOutput)
 
 	local centroidMatrix = ModelParameters[1]
 
-	local kValue = self.kValue
-
-	local distanceFunction = self.distanceFunction
-
-	local useWeightedDistance = self.useWeightedDistance
-
-	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunction)
+	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, self.distanceFunction)
 
 	if (returnOriginalOutput) then return distanceMatrix end
 	

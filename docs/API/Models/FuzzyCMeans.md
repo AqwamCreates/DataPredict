@@ -106,4 +106,4 @@ KMeans:predict(featureMatrix: Matrix, returnMode: string/boolean/nil): Matrix, M
 
 ## References
 
-[Sequential k-Means Clustering](https://www.cs.princeton.edu/courses/archive/fall08/cos436/Duda/C/sk_means.htm)
+* [The fuzzy c-means clustering algorithm](https://www.sciencedirect.com/science/article/abs/pii/0098300484900207)

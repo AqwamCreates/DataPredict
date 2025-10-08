@@ -296,6 +296,6 @@
 
 * [Creating Probability-Based Clustering Placement Model](HighValueProjectTutorials/CreatingProbabilityBasedClusteringPlacementModel.md)
 
-  * Identifies areas of low player/item densities for spawning players/items.
+  * Identifies areas of low player / item densities for spawning players / items.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.

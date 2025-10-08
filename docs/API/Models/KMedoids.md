@@ -40,30 +40,6 @@ KMedoids.new(maximumNumberOfIterations: integer, numberOfClusters: integer, dist
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-KMedoids:setParameters(maximumNumberOfIterations: integer, numberOfClusters: integer, distanceFunction: string, setTheCentroidsDistanceFarthest: boolean)
-```
-
-#### Parameters:
-
-* maximumNumberOfIterations: How many times should the model needed to be trained.
-
-* numberOfClusters: Number of clusters for model to train and predict on.
-
-* distanceFunction: The function that the model will use to train. distanceFunction available are:
-  
-  *  Euclidean
-    
-  *  Manhattan
- 
-  *  Cosine
-
-* setTheCentroidsDistanceFarthest: Set whether or not the model to create centroids that are furthest from each other.
-
 ### train()
 
 Train the model.
@@ -92,7 +68,7 @@ KMedoids:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, 
 
 * featureMatrix: Matrix containing data.
 
-* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability.
+* returnOriginalOutput: Set whether or not to return distance matrix instead of clusterNumberVector and closestDistanceVector.
 
 #### Returns:
 

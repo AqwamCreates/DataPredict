@@ -282,9 +282,9 @@
 
 ## Priority Systems
 
-* Creating Probability-Based Priority System
+* Creating Probability-Based Priority Model
 
-* Creating Regression-Based Priority System
+* Creating Regression-Based Priority Model
 
 ## Anti-Cheat Systems
 

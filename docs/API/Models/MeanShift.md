@@ -103,18 +103,24 @@ MeanShift:train(featureMatrix: Matrix)
 Predict which clusters does it belong to for a given data.
 
 ```
-MeanShift:predict(featureMatrix: Matrix): integer, number
+Meanshift:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
 * featureMatrix: Matrix containing data.
 
+* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability.
+
 #### Returns:
 
-* clusterNumber: The cluster which the data belongs to.
+* clusterNumberVector: A vector containing which cluster that the data belongs to.
 
-* shortestDistance: The distance between the datapoint and the center of the cluster (centroids).
+* closestDistanceVector: A vector containing the closest distance between the datapoint and the center of the cluster (centroids).
+
+-OR-
+
+* distanceMatrix: A matrix containing data-cluster pair distance.
 
 ## Inherited From
 

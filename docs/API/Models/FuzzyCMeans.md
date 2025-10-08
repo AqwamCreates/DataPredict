@@ -82,7 +82,7 @@ KMeans:predict(featureMatrix: Matrix, returnMode: string/boolean/nil): Matrix, M
 
 * featureMatrix: Matrix containing data.
 
-* returnMode: Set whether or not to return predicted matrix instead of value with highest probability. Available options are:
+* returnMode: Set whether or not to return predicted matrix instead of value with lowest distance. Available options are:
 
   * nil (Default)
 

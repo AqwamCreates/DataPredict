@@ -42,22 +42,10 @@ local defaultVariant = "0"
 
 local defaultCValue = 1
 
-local function cutOffFunction(value)
-	
-	if (value > 0) then
-		
-		return 1
-		
-	elseif (value < 0) then
-		
-		return -1
-		
-	else
-		
-		return 0
-		
-	end
-	
+local cutOffFunction = function (x) 
+
+	return ((x > 0) and 1) or ((x < 0) and -1) or 0
+
 end
 
 local tauFunctionList = {

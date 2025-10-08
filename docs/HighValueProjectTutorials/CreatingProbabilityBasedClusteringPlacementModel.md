@@ -58,7 +58,7 @@ Since we have three clusters, we can expect three rows for our matrix. As such w
 
 ```lua
 
-local function placePlayer(Player)
+local function placePlayerAtARandomLocation(Player)
 
   local meanMatrix = ModelParameters[1]
   
@@ -78,7 +78,7 @@ local function placePlayer(Player)
 
   local z = randomUnwrappedMeanVector[3] + (math.random() * randomUnwrappedVarianceVector[3])
 
-  movePlayer(Player, x, y, z)
+  placePlayer(Player, x, y, z)
 
 end
 

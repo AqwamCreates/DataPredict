@@ -20,7 +20,7 @@ PassiveAggressiveClasifier.new(maximumNumberOfIterations: integer, variant: "str
 
 #### Parameters:
 
-* maximumNumberOfIterations: How many times should the model needed to be trained.
+* maximumNumberOfIterations: How many times should the model needed to be trained. [Default: math.huge]
 
 * variant: Controls which PassiveAggressiveClasifier variant to use. Available options are:
 

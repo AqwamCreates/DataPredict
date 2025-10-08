@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - FuzzyCMeans
 
-FuzzyCMeans is an unsupervised machine learning model that predicts which cluster that the input belongs to using distance.
+FuzzyCMeans is an unsupervised machine learning model that predicts which cluster that the input belongs to using weighted distance.
 
 ## Stored Model Parameters
 

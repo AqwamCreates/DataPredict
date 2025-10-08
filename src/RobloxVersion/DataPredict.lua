@@ -66,6 +66,8 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	
 	SupportVectorMachine = require(Models.SupportVectorMachine),
 	
+	NearestCentroid = require(Models.NearestCentroid),
+	
 	KNearestNeighboursClassifier = require(Models.KNearestNeighboursClassifier),
 	
 	GaussianNaiveBayes = require(Models.GaussianNaiveBayes),

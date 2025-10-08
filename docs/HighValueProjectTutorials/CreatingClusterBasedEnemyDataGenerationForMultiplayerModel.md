@@ -22,6 +22,12 @@ For best results, please use:
  
   * Trickier to set up.
 
+* Expectation-Maximization
+
+  * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.
+ 
+  * Slow convergence, but extremely likely to find what the player wants.
+
 ## Initializing The Clustering Model
 
 Before we can produce ourselves a difficulty generation model, we first need to construct a model, which is shown below. Ensure that the distance function is not "CosineDistance".
@@ -64,7 +70,7 @@ Once train() is called, call the getModelParameters() function to get the center
 
 local centerOfPlayerDataMatrix = EnemyDataGenerationModel:getModelParameters()
 
-centerOfPlayerDataMatrix = centerOfPlayerDataMatrix[1] -- This is a must if you're using K-Means instead of Meanshift because K-Means stores the ModelParameters as a table of matrices.
+centerOfPlayerDataMatrix = centerOfPlayerDataMatrix[1] -- This is a must if you're using K-Means, Meanshift or Expectation-Maximization because these models stores the ModelParameters as a table of matrices.
 
 ```
 

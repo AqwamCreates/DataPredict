@@ -6,9 +6,9 @@ For best results, please use:
 
 * Fuzzy C-Means
 
- * Faster to converge than Fuzzy C-Means.
+  * Faster to converge than Expectation-Maximization.
 
- * Does not capture the spread of items.
+  * Does not capture the spread of items.
 
 * Expectation-Maximization
 

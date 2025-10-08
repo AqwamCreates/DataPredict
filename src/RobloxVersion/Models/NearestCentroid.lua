@@ -380,7 +380,7 @@ function NearestCentroid:predict(featureMatrix, returnOriginalOutput)
 				
 				minimumDistance = distance
 				
-				nearestClassIndex = nearestClassIndex
+				nearestClassIndex = classIndex
 				
 			end
 			

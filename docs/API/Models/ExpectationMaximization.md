@@ -53,22 +53,6 @@ ExpectationMaximization.new(maximumNumberOfIterations: integer, numberOfClusters
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used. 
-
-```
-ExpectationMaximization:setParameters(maximumNumberOfIterations: integer, numberOfClusters: integer, epsilon: number)
-```
-
-#### Parameters
-
-* maximumNumberOfIterations: The maximum number of iterations. 
-
-* numberOfClusters: Number of clusters for model to train and predict on. When using default or set to math.huge(), it will find the best number of clusters using Bayesian information criterion.
-
-* epsilon: The value to ensure that Gaussian calculation doesn't reach infinity.
-
 ### train()
 
 Train the model.
@@ -90,18 +74,24 @@ ExpectationMaximization:train(featureMatrix: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-ExpectationMaximization:predict(featureMatrix: Matrix): integer, number
+ExpectationMaximization:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
 * featureMatrix: Matrix containing data.
 
+* returnOriginalOutput: Set whether or not to return probabilityMatrix matrix instead of clusterNumberVector and closestDistanceVector.
+
 #### Returns:
 
-* clusterNumber: The cluster which the data belongs to.
+* clusterNumberVector: A vector containing the cluster that the data belongs to.
 
 * highestProbabilityVector: The probability (n x 1) matrix of the datapoint belongs to that particular cluster.
+
+-OR-
+
+
 
 ## Inherited From
 

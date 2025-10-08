@@ -91,7 +91,7 @@ ExpectationMaximization:predict(featureMatrix: Matrix, returnOriginalOutput: boo
 
 -OR-
 
-
+probabilityMatrix: A matrix containing data-cluster pair probability.
 
 ## Inherited From
 

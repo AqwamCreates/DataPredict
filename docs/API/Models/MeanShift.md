@@ -4,7 +4,7 @@ MeanShift is a an unsupervised machine learning model that finds cluster centers
 
 ## Stored Model Parameters
 
-Contains a matrix.  
+Contains a table of matrices.
 
 * ModelParameters[I][J]: Value of matrix at row I and column J. The rows represent the clusters. The columns represent the features.
 

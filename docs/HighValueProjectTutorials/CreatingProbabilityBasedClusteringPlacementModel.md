@@ -1,32 +1,14 @@
 # Creating Probability-Based Clustering Placement Model
 
-Hi guys! In this tutorial, we will demonstrate on how to create cluster-based targeting model for your weapon systems.
+Hi guys! In this tutorial, we will demonstrate on how to create cluster-based placement model.
 
-For best results, please use:
-
-* Fuzzy C-Means
-
-  * Faster to converge than Expectation-Maximization.
-
-  * Provides soft cluster memberships (players can influence multiple clusters).
-
-  * Does not capture the spread of items.
-
-* Expectation-Maximization
-
-  * Captures the spread of items.
-
-  * Produces probabilistic cluster assignments.
-
-  * Slower to converge than Fuzzy C-Means.
+For best results, please use Expectation-Maximization model.
 
 ## Initializing The Clustering Model
 
-Before we can produce ourselves a targeting model, we first need to construct a model, which is shown below. Ensure that the distance function is not "CosineDistance".
-
 ```lua
 
-local TargetingModel = DataPredict.Models.FuzzyCMeans.new({numberOfClusters = 3}) -- For this tutorial, we will assume that we have three missiles, so only three locations it can land.
+local TargetingModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 3}) -- For this tutorial, we will assume that we have three missiles, so only three locations it can land.
 
 ```
 

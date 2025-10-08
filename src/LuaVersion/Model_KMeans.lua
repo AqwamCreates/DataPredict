@@ -311,21 +311,25 @@ local function calculateCost(distanceMatrix, clusterAssignmentMatrix)
 	
 end
 
-local function calculateMean(clusterAssignmentMatrix, modelParameters)
+local function calculateMean(clusterAssignmentMatrix, centroidMatrix)
+	
+	local numberOfCentroids = #clusterAssignmentMatrix
+	
+	local numberOfFeatures = #centroidMatrix[1]
 	
 	local sumOfAssignedCentroidVector = AqwamTensorLibrary:sum(clusterAssignmentMatrix, 1) -- since row is the number of data in clusterAssignmentMatrix, then we vertical sum it
 	
-	local newModelParameters = AqwamTensorLibrary:createTensor({#modelParameters, #modelParameters[1]})
+	local newCentroidMatrix = AqwamTensorLibrary:createTensor({numberOfCentroids, numberOfFeatures})
 	
-	for cluster = 1, #modelParameters, 1 do
+	for cluster = 1, numberOfCentroids, 1 do
 		
 		sumOfAssignedCentroidVector[1][cluster] = math.max(1, sumOfAssignedCentroidVector[1][cluster])
 		
-		newModelParameters[cluster] = AqwamTensorLibrary:divide({modelParameters[cluster]}, sumOfAssignedCentroidVector[1][cluster])[1]
+		newCentroidMatrix[cluster] = AqwamTensorLibrary:divide({centroidMatrix[cluster]}, sumOfAssignedCentroidVector[1][cluster])[1]
 		
 	end
 	
-	return newModelParameters
+	return newCentroidMatrix
 	
 end
 

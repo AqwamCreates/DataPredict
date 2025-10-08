@@ -50,6 +50,8 @@ local defaultSetInitialCentroidsOnDataPoints = true
 
 local defaultSetTheCentroidsDistanceFarthest = true
 
+local defaultEpsilon = 1e-16
+
 local distanceFunctionList = {
 
 	["Manhattan"] = function (x1, x2)
@@ -307,6 +309,8 @@ function FuzzyCMeansModel.new(parameterDictionary)
 	
 	NewFuzzyCMeansModel.setTheCentroidsDistanceFarthest = NewFuzzyCMeansModel:getValueOrDefaultValue(parameterDictionary.setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
 	
+	NewFuzzyCMeansModel.epsilon = NewFuzzyCMeansModel:getValueOrDefaultValue(parameterDictionary.epsilon, defaultEpsilon)
+	
 	return NewFuzzyCMeansModel
 	
 end
@@ -337,7 +341,7 @@ function FuzzyCMeansModel:initializeCentroids(featureMatrix, numberOfClusters, d
 	
 end
 
-local function calculateMembershipMatrix(distanceMatrix, fuzziness)
+local function calculateMembershipMatrix(distanceMatrix, fuzziness, epsilon)
 	
 	local numberOfData = #distanceMatrix
 	
@@ -349,19 +353,27 @@ local function calculateMembershipMatrix(distanceMatrix, fuzziness)
 	
 	for dataIndex, unwrappedDistanceVector in ipairs(distanceMatrix) do
 		
-		for j = 1, numberOfClusters do
+		for i = 1, numberOfClusters do
 
 			local denominator = 0
+			
+			local distanceI = unwrappedDistanceVector[i]
 
-			for k = 1, numberOfClusters do
-
-				local ratio = unwrappedDistanceVector[j] / unwrappedDistanceVector[k]
-
-				denominator = denominator + (ratio ^ ratioPowerConstant)
+			for j = 1, numberOfClusters do
+				
+				local distanceJ = unwrappedDistanceVector[j]
+				
+				if (distanceJ ~= 0) then
+					
+					local ratio = distanceI / distanceJ
+					
+					denominator = denominator + (ratio ^ ratioPowerConstant)
+					
+				end
 
 			end
 
-			membershipMatrix[dataIndex][j] = 1 / denominator
+			membershipMatrix[dataIndex][i] = 1 / (denominator + epsilon)
 
 		end
 		
@@ -370,7 +382,7 @@ local function calculateMembershipMatrix(distanceMatrix, fuzziness)
 	return membershipMatrix
 end
 
-local function calculateMean(featureMatrix, centroidMatrix, clusterMembershipMatrix, fuzziness)
+local function calculateMean(featureMatrix, centroidMatrix, clusterMembershipMatrix, fuzziness, epsilon)
 
 	local numberOfData = #featureMatrix
 
@@ -399,10 +411,8 @@ local function calculateMean(featureMatrix, centroidMatrix, clusterMembershipMat
 			denominator = denominator + membershipValue
 
 		end
-		
-		denominator = math.max(denominator, 1)
 
-		local newCentroidVector = AqwamTensorLibrary:divide(numeratorVector, denominator)
+		local newCentroidVector = AqwamTensorLibrary:divide(numeratorVector, (denominator + epsilon))
 
 		newCentroidMatrix[cluster] = newCentroidVector[1]
 
@@ -412,11 +422,11 @@ local function calculateMean(featureMatrix, centroidMatrix, clusterMembershipMat
 
 end
 
-local function calculateMatrices(featureMatrix, centroidMatrix, distanceMatrix, fuzziness)
+local function calculateMatrices(featureMatrix, centroidMatrix, distanceMatrix, fuzziness, epsilon)
 
-	local clusterMembershipMatrix = calculateMembershipMatrix(distanceMatrix, fuzziness)
+	local clusterMembershipMatrix = calculateMembershipMatrix(distanceMatrix, fuzziness, epsilon)
 	
-	centroidMatrix = calculateMean(featureMatrix, centroidMatrix, clusterMembershipMatrix, fuzziness)
+	centroidMatrix = calculateMean(featureMatrix, centroidMatrix, clusterMembershipMatrix, fuzziness, epsilon)
 	
 	return centroidMatrix, clusterMembershipMatrix
 	
@@ -433,6 +443,8 @@ function FuzzyCMeansModel:train(featureMatrix)
 	local distanceFunction = self.distanceFunction
 	
 	local mode = self.mode
+	
+	local epsilon = self.epsilon
 	
 	local centroidMatrix = self.ModelParameters
 	
@@ -476,7 +488,7 @@ function FuzzyCMeansModel:train(featureMatrix)
 		
 		distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
 
-		centroidMatrix, clusterMembershipMatrix = calculateMatrices(featureMatrix, centroidMatrix, distanceMatrix, fuzziness)
+		centroidMatrix, clusterMembershipMatrix = calculateMatrices(featureMatrix, centroidMatrix, distanceMatrix, fuzziness, epsilon)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
@@ -522,7 +534,7 @@ function FuzzyCMeansModel:predict(featureMatrix, returnMode)
 		
 		elseif (returnMode == "Membership") then
 			
-			return calculateMembershipMatrix(distanceMatrix, self.fuzziness)
+			return calculateMembershipMatrix(distanceMatrix, self.fuzziness, self.epsilon)
 			
 		else
 			

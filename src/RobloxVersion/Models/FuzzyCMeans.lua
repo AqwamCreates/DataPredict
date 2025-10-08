@@ -273,54 +273,14 @@ local function chooseRandomCentroids(featureMatrix, numberOfClusters)
 
 end
 
-local function calculateCost(distanceMatrix, clusterAssignmentMatrix)
+local function calculateCost(distanceMatrix, clusterMembershipMatrix)
 	
-	local costMatrix = AqwamTensorLibrary:multiply(distanceMatrix, clusterAssignmentMatrix)
+	local costMatrix = AqwamTensorLibrary:multiply(distanceMatrix, clusterMembershipMatrix)
 	
 	local cost = AqwamTensorLibrary:sum(costMatrix)
 	
 	return cost
 	
-end
-
-local function calculateMean(clusterAssignmentMatrix, centroidMatrix, fuzziness, featureMatrix)
-	
-	local numberOfData = #featureMatrix
-
-	local numberOfCentroids = #centroidMatrix
-
-	local numberOfFeatures = #centroidMatrix[1]
-
-	local sumOfAssignedCentroidVector = AqwamTensorLibrary:sum(clusterAssignmentMatrix, 1) -- since row is the number of data in clusterAssignmentMatrix, then we vertical sum it
-
-	local newCentroidMatrix = AqwamTensorLibrary:createTensor({numberOfCentroids, numberOfFeatures})
-
-	for cluster = 1, numberOfCentroids, 1 do
-		
-		local numeratorVector = AqwamTensorLibrary:createTensor({1, numberOfFeatures}, 0)
-		
-		local denominator = 0
-		
-		for dataIndex, unwrappedDataVector in ipairs(featureMatrix) do
-			
-			local membershipValue = clusterAssignmentMatrix[dataIndex][cluster]^fuzziness
-			
-			local multipliedMembershipValue = AqwamTensorLibrary:multiply({unwrappedDataVector}, membershipValue)
-			
-			numeratorVector = AqwamTensorLibrary:add(numeratorVector, multipliedMembershipValue)
-			
-			denominator = denominator + multipliedMembershipValue
-			
-		end
-		
-		local newCentroidVector = AqwamTensorLibrary:divide(numeratorVector, denominator)
-
-		newCentroidMatrix[cluster] = newCentroidVector[1]
-
-	end
-
-	return newCentroidMatrix
-
 end
 
 function FuzzyCMeansModel.new(parameterDictionary)
@@ -410,85 +370,59 @@ local function calculateMembershipMatrix(distanceMatrix, fuzziness)
 	return membershipMatrix
 end
 
-local function batchFuzzyCMeans(centroidMatrix, distanceMatrix, fuzziness, featureMatrix)
+local function calculateMean(featureMatrix, centroidMatrix, clusterMembershipMatrix, fuzziness)
 
-	local clusterAssignmentMatrix = calculateMembershipMatrix(distanceMatrix, fuzziness)
-	
-	centroidMatrix = calculateMean(clusterAssignmentMatrix, centroidMatrix, fuzziness, featureMatrix)
-	
-	return centroidMatrix, clusterAssignmentMatrix
-	
-end
-
-local function sequentialFuzzyCMeans(centroidMatrix, distanceMatrix, fuzziness, featureMatrix, numberOfDataPointVector)
-	
 	local numberOfData = #featureMatrix
-	
-	local numberOfClusters = #centroidMatrix
-	
-	local clusterAssignmentMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters}, 0) -- data x clusters
-	
-	for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
 
-		local featureVector = {unwrappedFeatureVector}
+	local numberOfCentroids = #centroidMatrix
 
-		local minimumDistance = math.huge
+	local numberOfFeatures = #centroidMatrix[1]
 
-		local clusterIndexWithMinimumDistance
+	local sumOfAssignedCentroidVector = AqwamTensorLibrary:sum(clusterMembershipMatrix, 1) -- since row is the number of data in clusterAssignmentMatrix, then we vertical sum it
 
-		for clusterIndex = 1, numberOfClusters, 1 do
+	local newCentroidMatrix = AqwamTensorLibrary:createTensor({numberOfCentroids, numberOfFeatures})
 
-			local distance = distanceMatrix[dataIndex][clusterIndex]
+	for cluster = 1, numberOfCentroids, 1 do
 
-			if (distance < minimumDistance) then
+		local numeratorVector = AqwamTensorLibrary:createTensor({1, numberOfFeatures}, 0)
 
-				minimumDistance = distance
+		local denominator = 0
 
-				clusterIndexWithMinimumDistance = clusterIndex
+		for dataIndex, unwrappedDataVector in ipairs(featureMatrix) do
 
-			end
+			local membershipValue = clusterMembershipMatrix[dataIndex][cluster]^fuzziness
+
+			local multipliedMembershipValue = AqwamTensorLibrary:multiply({unwrappedDataVector}, membershipValue)
+
+			numeratorVector = AqwamTensorLibrary:add(numeratorVector, multipliedMembershipValue)
+
+			denominator = denominator + membershipValue
 
 		end
-
-		local numberOfDataPoints = numberOfDataPointVector[clusterIndexWithMinimumDistance][1] + 1
-
-		local centroidVector = {centroidMatrix[clusterIndexWithMinimumDistance]}
-
-		local centroidChangeVectorPart1 = AqwamTensorLibrary:subtract(featureVector, centroidVector)
-
-		local centroidChangeVector = AqwamTensorLibrary:multiply((1 / numberOfDataPoints), centroidChangeVectorPart1)
-
-		local newCentroidVector = AqwamTensorLibrary:add(centroidVector, centroidChangeVector)
-
-		numberOfDataPointVector[clusterIndexWithMinimumDistance][1] = numberOfDataPoints
-
-		centroidMatrix[clusterIndexWithMinimumDistance] = newCentroidVector[1]
 		
-		clusterAssignmentMatrix[dataIndex][clusterIndexWithMinimumDistance] = 1
+		denominator = math.max(denominator, 1)
+
+		local newCentroidVector = AqwamTensorLibrary:divide(numeratorVector, denominator)
+
+		newCentroidMatrix[cluster] = newCentroidVector[1]
 
 	end
+
+	return newCentroidMatrix
+
+end
+
+local function calculateMatrices(featureMatrix, centroidMatrix, distanceMatrix, fuzziness)
+
+	local clusterMembershipMatrix = calculateMembershipMatrix(distanceMatrix, fuzziness)
 	
-	return centroidMatrix, clusterAssignmentMatrix
+	centroidMatrix = calculateMean(featureMatrix, centroidMatrix, clusterMembershipMatrix, fuzziness)
+	
+	return centroidMatrix, clusterMembershipMatrix
 	
 end
 
-local FuzzyCMeansFunctionList = {
-	
-	["Batch"] = batchFuzzyCMeans,
-	
-	["Sequential"] = sequentialFuzzyCMeans,
-	
-}
-
 function FuzzyCMeansModel:train(featureMatrix)
-	
-	local areModelParametersEqual
-	
-	local cost
-	
-	local costArray = {}
-	
-	local numberOfIterations = 0
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
@@ -500,37 +434,23 @@ function FuzzyCMeansModel:train(featureMatrix)
 	
 	local mode = self.mode
 	
-	local ModelParameters = self.ModelParameters or {}
-
-	local centroidMatrix = ModelParameters[1]
-
-	local numberOfDataPointVector = ModelParameters[2]
+	local centroidMatrix = self.ModelParameters
 	
-	local clusterAssignmentMatrix
+	local clusterMembershipMatrix
 	
 	local distanceMatrix
 
 	if (mode == "Hybrid") then -- This must be always above the centroid initialization check. Otherwise it will think this is second training round despite it being the first one!
 		
-		mode = (centroidMatrix and numberOfDataPointVector and "Sequential") or "Batch"
+		mode = (centroidMatrix and "Online") or "Offline"
 
 	end
-	
-	local FuzzyCMeansFunction = FuzzyCMeansFunctionList[mode]
-
-	if (not FuzzyCMeansFunction) then error("Unknown mode.") end
 	
 	local distanceFunctionToApply = distanceFunctionList[distanceFunction]
 
 	if (not distanceFunctionToApply) then error("Unknown distance function.") end
 	
-	if (mode == "Sequential") then
-		
-		numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClusters, 1}, 0)
-		
-		maximumNumberOfIterations = 1 
-		
-	end
+	if (mode == "Offline") then centroidMatrix = nil end
 	
 	if (centroidMatrix) then
 		
@@ -541,6 +461,12 @@ function FuzzyCMeansModel:train(featureMatrix)
 		centroidMatrix = self:initializeCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply)
 		
 	end
+
+	local numberOfIterations = 0
+	
+	local costArray = {}
+	
+	local cost
 	
 	repeat
 		
@@ -550,11 +476,11 @@ function FuzzyCMeansModel:train(featureMatrix)
 		
 		distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
 
-		centroidMatrix, clusterAssignmentMatrix = FuzzyCMeansFunction(centroidMatrix, distanceMatrix, fuzziness, featureMatrix, numberOfDataPointVector)
+		centroidMatrix, clusterMembershipMatrix = calculateMatrices(featureMatrix, centroidMatrix, distanceMatrix, fuzziness)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return calculateCost(distanceMatrix, clusterAssignmentMatrix)
+			return calculateCost(distanceMatrix, clusterMembershipMatrix)
 
 		end)
 		
@@ -570,11 +496,7 @@ function FuzzyCMeansModel:train(featureMatrix)
 	
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 	
-	numberOfDataPointVector = AqwamTensorLibrary:sum(clusterAssignmentMatrix, 1) -- 1 x clusters
-
-	numberOfDataPointVector = AqwamTensorLibrary:transpose(numberOfDataPointVector) -- clusters x 1
-	
-	self.ModelParameters = {centroidMatrix, numberOfDataPointVector}
+	self.ModelParameters = centroidMatrix
 	
 	return costArray
 	
@@ -584,7 +506,7 @@ function FuzzyCMeansModel:predict(featureMatrix, returnMode)
 	
 	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
 	
-	local centroidMatrix = self.ModelParameters[1]
+	local centroidMatrix = self.ModelParameters
 	
 	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
 	

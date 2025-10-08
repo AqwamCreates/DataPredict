@@ -324,15 +324,19 @@ function NearestCentroid:train(featureMatrix, labelVector)
 
 	for clusterIndex, featureMatrix in ipairs(extractedFeatureMatrixTable) do
 		
-		local sumVector = {sumMatrix[clusterIndex]}
-		
-		local subSumVector = AqwamTensorLibrary:sum(featureMatrix, 1)
-		
-		sumVector = AqwamTensorLibrary:add(sumVector, subSumVector)
-		
-		sumMatrix[clusterIndex] = sumVector[1]
-		
-		numberOfDataPointVector[clusterIndex][1] = numberOfDataPointVector[clusterIndex][1] + #featureMatrix
+		if (featureMatrix) then
+			
+			local sumVector = {sumMatrix[clusterIndex]}
+
+			local subSumVector = AqwamTensorLibrary:sum(featureMatrix, 1)
+
+			sumVector = AqwamTensorLibrary:add(sumVector, subSumVector)
+
+			sumMatrix[clusterIndex] = sumVector[1]
+
+			numberOfDataPointVector[clusterIndex][1] = numberOfDataPointVector[clusterIndex][1] + #featureMatrix
+			
+		end
 		
 	end
 	

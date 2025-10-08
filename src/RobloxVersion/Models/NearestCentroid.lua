@@ -355,12 +355,12 @@ function NearestCentroid:predict(featureMatrix, returnOriginalOutput)
 	local distanceFunction = self.distanceFunction
 
 	local useWeightedDistance = self.useWeightedDistance
-	
-	local ClassesList = self.ClassesList
 
 	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunction)
 
 	if (returnOriginalOutput) then return distanceMatrix end
+	
+	local ClassesList = self.ClassesList
 
 	local predictedLabelVector = {}
 	

@@ -351,10 +351,6 @@ function NearestCentroid:predict(featureMatrix, returnOriginalOutput)
 	if (returnOriginalOutput) then return distanceMatrix end
 	
 	local ClassesList = self.ClassesList
-	
-	local numberOfData = #featureMatrix
-	
-	local numberOfClasses = #ClassesList
 
 	local predictedLabelVector = {}
 	

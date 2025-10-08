@@ -22,13 +22,11 @@ NearestCentroid.new(distanceFunction: string, use, useWeightedDistance: boolean:
 
 * distanceFunction: The distance function to be used to measure the similarity between two data points. Available options are:
 
-  * Euclidean
+  * Euclidean (Default)
 
   * Manhattan
 
   * Cosine
-
-* useWeightedDistance: Set whether or not to use distance as a factor for prediction.
 
 #### Returns:
 

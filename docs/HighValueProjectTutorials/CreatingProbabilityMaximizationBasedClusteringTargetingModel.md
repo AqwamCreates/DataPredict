@@ -4,19 +4,13 @@ Hi guys! In this tutorial, we will demonstrate on how to create cluster-based ta
 
 For best results, please use:
 
-* K-Means
+* FuzzyCMeans
 
   * This model sets up X number of clusters and finds the center of data.
 
-* Agglomerative Hierarchical
+* ExpectationMaximization
 
-  * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.
-
-* MeanShift
-
-  * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.
- 
-  * Trickier to set up.
+  * This model sets up X number of clusters and finds the center of data.
 
 ## Initializing The Clustering Model
 
@@ -24,7 +18,7 @@ Before we can produce ourselves a targeting model, we first need to construct a 
 
 ```lua
 
-local TargetingModel = DataPredict.Models.KMeans.new({numberOfClusters = 3, distanceFunction = "Euclidean"}) -- For this tutorial, we will assume that we have three missiles, so only three locations it can land.
+local TargetingModel = DataPredict.Models.FuzzyCMeans.new({numberOfClusters = 3, distanceFunction = "Euclidean"}) -- For this tutorial, we will assume that we have three missiles, so only three locations it can land.
 
 ```
 
@@ -64,7 +58,7 @@ Once train() is called, call the getModelParameters() function to get the center
 
 local centroidMatrix = TargetingModel:getModelParameters()
 
-centroidMatrix = centroidMatrix[1] -- This is a must if you're using K-Means or Meanshift because they store the ModelParameters as a table of matrices.
+centroidMatrix = centroidMatrix[2] -- This is a must if you're using ExpectationMaximization because it stores the ModelParameters as a table of matrices.
 
 ```
 

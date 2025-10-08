@@ -85,14 +85,24 @@ KMedoids:train(featureMatrix: Matrix)
 Predict which clusters does it belong to for a given data.
 
 ```
-KMedoids:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): integer, number -OR- matrix
+KMedoids:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
 * featureMatrix: Matrix containing data.
 
-* returnOriginalOutput:
+* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability.
+
+#### Returns:
+
+* clusterNumberVector: A vector containing which cluster that the data belongs to.
+
+* closestDistanceVector: A vector containing the closest distance between the datapoint and the center of the cluster (centroids).
+
+-OR-
+
+* distanceMatrix: A matrix containing data-cluster pair distance.
 
 #### Returns:
 

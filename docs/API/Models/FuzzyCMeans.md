@@ -75,22 +75,30 @@ FuzzyCMeans:train(featureMatrix: Matrix)
 Predict which clusters does it belong to for a given data.
 
 ```
-FuzzyCMeans:predict(featureMatrix: Matrix, returnMode: string/boolean/nil): integer, number -OR- matrix
+KMeans:predict(featureMatrix: Matrix, returnMode: string/boolean/nil): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
 * featureMatrix: Matrix containing data.
 
-* returnMode: Controls what to t
+* returnMode: Set whether or not to return predicted matrix instead of value with highest probability. Available options are:
+
+  * nil (Default)
+
+  * Distance (Can be set using "true" boolean)
+ 
+  * Membership
 
 #### Returns:
 
-* clusterNumber: The cluster which the data belongs to.
+* clusterNumberVector: A vector containing which cluster that the data belongs to.
 
-* shortestDistance: The distance between the datapoint and the center of the cluster (centroids).
+* closestDistanceVector: A vector containing the closest distance between the datapoint and the center of the cluster (centroids).
 
 -OR-
+
+* distanceMatrix: A matrix containing data-cluster pair distance.
 
 ## Inherited From
 

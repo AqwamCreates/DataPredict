@@ -8,6 +8,10 @@ For best results, please use:
 
   * This model sets up X number of clusters and finds the center of data.
 
+* Fuzzy C-Means
+
+  * This model sets up X number of clusters and finds the center of data.
+
 * Agglomerative Hierarchical
 
   * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.

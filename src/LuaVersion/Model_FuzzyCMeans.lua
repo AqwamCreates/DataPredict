@@ -447,10 +447,6 @@ function FuzzyCMeansModel:train(featureMatrix)
 	local epsilon = self.epsilon
 	
 	local centroidMatrix = self.ModelParameters
-	
-	local clusterMembershipMatrix
-	
-	local distanceMatrix
 
 	if (mode == "Hybrid") then -- This must be always above the centroid initialization check. Otherwise it will think this is second training round despite it being the first one!
 		
@@ -477,6 +473,10 @@ function FuzzyCMeansModel:train(featureMatrix)
 	local numberOfIterations = 0
 	
 	local costArray = {}
+	
+	local clusterMembershipMatrix
+
+	local distanceMatrix
 	
 	local cost
 	

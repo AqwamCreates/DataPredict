@@ -365,34 +365,36 @@ function NearestCentroid:predict(featureMatrix, returnOriginalOutput)
 	if (returnOriginalOutput) then return distanceMatrix end
 	
 	local ClassesList = self.ClassesList
+	
+	local numberOfData = #featureMatrix
+	
+	local numberOfClasses = #ClassesList
 
 	local predictedLabelVector = {}
 	
 	local distanceVector = {}
-
-	for i = 1, #featureMatrix do
+	
+	for dataIndex, unwrappedDistanceVector in ipairs(distanceMatrix) do
 		
 		local minimumDistance = math.huge
-		
-		local nearestClassIndex
 
-		for classIndex, centroid in pairs(centroidMatrix) do
-			
-			local distance = distanceFunction({featureMatrix[i]}, {centroid})
+		local nearestClassIndex
+		
+		for classIndex, distance in ipairs(unwrappedDistanceVector) do
 			
 			if (distance < minimumDistance) then
-				
+
 				minimumDistance = distance
-				
+
 				nearestClassIndex = classIndex
-				
-			end
+
+			end			
 			
 		end
-
-		predictedLabelVector[i] = {ClassesList[nearestClassIndex]}
 		
-		distanceVector[i] = {minimumDistance}
+		predictedLabelVector[dataIndex] = {ClassesList[nearestClassIndex]}
+
+		distanceVector[dataIndex] = {minimumDistance}
 		
 	end
 

@@ -6,13 +6,15 @@ For best results, please use:
 
 * Fuzzy C-Means
 
-  * This model sets up X number of clusters and finds the center of data.
+ * Faster to converge than Fuzzy C-Means.
 
-* Expectation Maximization
+ * Does not capture the spread of items.
 
-  * This model sets up X number of clusters and finds the center of data.
+* Expectation-Maximization
 
-  * Slower than Fuzzy C-Means.
+  * Captures the spread of items.
+
+  * Slower to converge than Fuzzy C-Means.
 
 ## Initializing The Clustering Model
 

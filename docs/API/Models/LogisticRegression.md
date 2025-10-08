@@ -32,22 +32,6 @@ LogisticRegression.new(maximumNumberOfIterations: integer, learningRate: number,
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-LogisticRegression:setParameters(maximumNumberOfIterations: integer, learningRate: number, sigmoidFunction: string)
-```
-
-#### Parameters:
-
-* maximumNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "Sigmoid".
-
 ### setOptimizer()
 
 Set optimizer for the model by inputting the optimizer object.

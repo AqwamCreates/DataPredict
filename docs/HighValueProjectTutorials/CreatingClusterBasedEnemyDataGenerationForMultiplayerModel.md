@@ -24,7 +24,7 @@ For best results, please use:
 
 * Expectation-Maximization
 
-  * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.
+  * This model sets up X number of clusters and finds the center of data.
  
   * Slow convergence, but extremely likely to find what the player wants.
 

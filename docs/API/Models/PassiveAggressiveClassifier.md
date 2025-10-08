@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - PassiveAggressiveClasifier
+# [API Reference](../../API.md) - [Models](../Models.md) - PassiveAggressiveClassifier
 
 PassiveAggressiveClasifier is a supervised machine learning model that predicts binary values (+1 and -1). It uses iterative calculations to find the best model parameters.
 
@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-PassiveAggressiveClasifier.new(maximumNumberOfIterations: integer, variant: string, cValue: number): ModelObject
+PassiveAggressiveClassifier.new(maximumNumberOfIterations: integer, variant: string, cValue: number): ModelObject
 ```
 
 #### Parameters:
@@ -43,7 +43,7 @@ PassiveAggressiveClasifier.new(maximumNumberOfIterations: integer, variant: stri
 Train the model.
 
 ```
-PassiveAggressiveClasifier:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+PassiveAggressiveClassifier:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 
 #### Parameters:

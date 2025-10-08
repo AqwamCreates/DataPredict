@@ -80,6 +80,8 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	
 	KMeans = require(Models.KMeans),
 	
+	FuzzyCMeans = require(Models.FuzzyCMeans),
+	
 	ExpectationMaximization = require(Models.ExpectationMaximization),
 	
 	AgglomerativeHierarchical = require(Models.AgglomerativeHierarchical),

@@ -580,7 +580,7 @@ function FuzzyCMeansModel:train(featureMatrix)
 	
 end
 
-function FuzzyCMeansModel:predict(featureMatrix, returnOriginalOutput)
+function FuzzyCMeansModel:predict(featureMatrix, returnMode)
 	
 	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
 	
@@ -588,8 +588,28 @@ function FuzzyCMeansModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
 	
-	if (returnOriginalOutput) then return distanceMatrix end
-
+	local returnType = type(returnMode)
+	
+	if (returnType ~= "nil") then
+		
+		local isBoolean = (returnType == "boolean")
+		
+		if (returnMode == "Distance") or (isBoolean and returnMode) then
+			
+			return distanceMatrix
+		
+		elseif (returnMode == "Membership") then
+			
+			return calculateMembershipMatrix(distanceMatrix, self.fuzziness)
+			
+		else
+			
+			error("Unknown return mode value.")
+			
+		end
+		
+	end
+	
 	local clusterNumberVector, clusterDistanceVector = assignToCluster(distanceMatrix)
 
 	return clusterNumberVector, clusterDistanceVector

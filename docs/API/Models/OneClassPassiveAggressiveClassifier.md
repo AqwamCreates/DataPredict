@@ -63,14 +63,20 @@ OneClassPassiveAggressiveClassifier:train(featureMatrix: Matrix, labelVector: Ma
 Predict the values for given data.
 
 ```
-OneClassPassiveAggressiveClassifier:predict(featureMatrix: Matrix): Matrix
+OneClassPassiveAggressiveClassifier:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
 * featureMatrix: Matrix containing data.
 
+* returnOriginalOutput: Set whether or not to return original output.
+
 #### Returns:
+
+* predictedLabelVector: A vector containing the classes that is predicted by the model.
+
+-OR-
 
 * predictedValueVector: A vector containing the values that is predicted by the model.
 

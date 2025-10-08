@@ -8,7 +8,9 @@ For best results, please use Expectation-Maximization model.
 
 ```lua
 
-local PlacementModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 3}) -- For this tutorial, we will assume that we have three missiles, so only three locations it can land.
+ -- For this tutorial, we will let the model decide how many clusters it will produce based on player / item spread.
+
+local PlacementModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = math.huge})
 
 ```
 

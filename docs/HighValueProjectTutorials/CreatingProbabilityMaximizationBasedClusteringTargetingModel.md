@@ -22,7 +22,7 @@ For best results, please use:
 
 ## Initializing The Clustering Model
 
-Before we can produce ourselves a targeting model, we first need to construct a model, which is shown below. Ensure that the distance function is not "CosineDistance".
+Before we can produce ourselves a targeting model, we first need to construct a model, which is shown below. Ensure that the distance function is not "CosineDistance" if you were to use Fuzzy C-Means.
 
 ```lua
 

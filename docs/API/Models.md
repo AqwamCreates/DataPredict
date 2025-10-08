@@ -23,6 +23,7 @@
 
 | Model                                                                                                            | Alternate Names        | Use Cases                                                                                |
 |------------------------------------------------------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------|
+| [KNearestCentroid](Models/KNearestCentroid.md)                                                                   | KNC                    | Fast Grouping Or Quick Decision Making                                                   |
 | [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)                                           | KNN-C                  | Item Recommendation, Similar Player Matchmaking                                          |
 | [LogisticRegression](Models/LogisticRegression.md)                                                               | Perceptron             | Purchase Likelihood Estimation, Player Churn Prediction, Confidence Prediction           |
 | [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | SVM                    | Hacking Detection, Anomaly Detection                                                     |

@@ -17,7 +17,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-FuzzyCMeans.new(maximumNumberOfIterations: integer, numberOfClusters: integer, fuzziness: number, distanceFunction: string, mode: string, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean): ModelObject
+FuzzyCMeans.new(maximumNumberOfIterations: integer, numberOfClusters: integer, fuzziness: number, distanceFunction: string, mode: string, setInitialClustersOnDataPoints: boolean, setTheCentroidsDistanceFarthest: boolean, epsilon: number): ModelObject
 ```
 
 #### Parameters:
@@ -47,6 +47,8 @@ FuzzyCMeans.new(maximumNumberOfIterations: integer, numberOfClusters: integer, f
 * setInitialClustersOnDataPoints: Set whether or not the model to create centroids on any data points.
 
 * setTheCentroidsDistanceFarthest: Set whether or not the model to create centroids that are furthest from each other. This can only take effect if the "setInitialClustersOnDataPoints" is set to true.
+
+* epsilon: The value to ensure that denominator calculation doesn't reach infinity.
 
 #### Returns:
 

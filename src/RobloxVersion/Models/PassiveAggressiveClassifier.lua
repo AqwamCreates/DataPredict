@@ -38,7 +38,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local defaultMaximumNumberOfIterations = math.huge
 
-local defaultVariant = 0
+local defaultVariant = "0"
 
 local defaultCValue = 1
 
@@ -61,27 +61,27 @@ local function cutOffFunction(value)
 end
 
 local tauFunctionList = {
-	
-	[1] = function(lossValue, dotProductFeatureVectorValue, cValue)
-		
+
+	["0"] = function(lossValue, dotProductFeatureVectorValue, cValue)
+
 		return (lossValue / dotProductFeatureVectorValue)
-		
+
 	end,
-	
-	[2] = function(lossValue, dotProductFeatureVectorValue, cValue)
+
+	["1"] = function(lossValue, dotProductFeatureVectorValue, cValue)
 
 		return math.min(cValue, (lossValue / dotProductFeatureVectorValue))
 
 	end,
-	
-	[3] = function(lossValue, dotProductFeatureVectorValue, cValue)
-		
+
+	["2"] = function(lossValue, dotProductFeatureVectorValue, cValue)
+
 		local denominatorValuePart1 = 1 / (2 * cValue)
 
 		return (lossValue / (dotProductFeatureVectorValue + denominatorValuePart1))
 
 	end,
-	
+
 }
 
 function PassiveAggressiveClassifierModel.new(parameterDictionary)

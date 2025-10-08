@@ -130,6 +130,8 @@ function PassiveAggressiveClassifierModel:train(featureMatrix, labelVector)
 	
 	local costArray = {}
 	
+	local totalLoss = 0
+	
 	local featureVector
 	
 	local labelValue
@@ -168,9 +170,11 @@ function PassiveAggressiveClassifierModel:train(featureMatrix, labelVector)
 		
 		ModelParameters = AqwamTensorLibrary:add(ModelParameters, weightChangeVector)
 		
+		totalLoss = totalLoss + lossValue
+		
 		cost = self:calculateCostWhenRequired(dataIndex, function()
 
-			return lossValue
+			return (totalLoss / dataIndex)
 
 		end)
 
@@ -201,6 +205,8 @@ function PassiveAggressiveClassifierModel:predict(featureMatrix, returnOriginalO
 	if (not ModelParameters) then error("No model parameters.") end
 	
 	local outputVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
+	
+	if (type(outputVector) ~= "table") then outputVector = {{outputVector}} end
 
 	if (returnOriginalOutput) then return outputVector end
 

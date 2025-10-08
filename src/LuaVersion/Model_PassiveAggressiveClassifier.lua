@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 PassiveAggressiveClassifierModel = {}
 
 PassiveAggressiveClassifierModel.__index = PassiveAggressiveClassifierModel
 
-setmetatable(PassiveAggressiveClassifierModel, GradientMethodBaseModel)
+setmetatable(PassiveAggressiveClassifierModel, IterativeMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = math.huge
 
@@ -90,7 +90,7 @@ function PassiveAggressiveClassifierModel.new(parameterDictionary)
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewPassiveAggressiveClassifierModel = GradientMethodBaseModel.new(parameterDictionary)
+	local NewPassiveAggressiveClassifierModel = IterativeMethodBaseModel.new(parameterDictionary)
 
 	setmetatable(NewPassiveAggressiveClassifierModel, PassiveAggressiveClassifierModel)
 	

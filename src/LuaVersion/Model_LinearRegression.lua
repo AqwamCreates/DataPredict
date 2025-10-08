@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
+
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 LinearRegressionModel = {}
@@ -33,8 +35,6 @@ LinearRegressionModel = {}
 LinearRegressionModel.__index = LinearRegressionModel
 
 setmetatable(LinearRegressionModel, GradientMethodBaseModel)
-
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local defaultMaximumNumberOfIterations = 500
 

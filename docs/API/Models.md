@@ -2,29 +2,33 @@
 
 | Model Type                     | Count |
 |--------------------------------|-------|
-| Regression                     | 4     |
-| Classification                 | 10    |
+| Regression                     | 5     |
+| Classification                 | 13    |
 | Clustering                     | 8     |
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 5     |
 | Generative                     | 4     |
-| Total                          | 53    |
+| Total                          | 57    |
 
 ## Regression
 
-| Model                                                                                      | Alternate Names | Use Cases                                            |
-|--------------------------------------------------------------------------------------------|-----------------|------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md)                                             | None            | General Price And Time To Level Up Prediction        |
-| [NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended)               | None            | Final Solution Price And Time To Level Up Prediction |
-| [SupportVectorRegression](Models/SupportVectorRegression.md) (May Need Further Refinement) | SVR             | Constrained Price And Time To Level Up Prediction    |
-| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | Memory-Based Price And Time To Level Up Prediction   |
+| Model                                                                                      | Alternate Names | Use Cases                                              |
+|--------------------------------------------------------------------------------------------|-----------------|--------------------------------------------------------|
+| [LinearRegression](Models/LinearRegression.md)                                             | None            | General Price And Time To Level Up Prediction          |
+| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | Fast Constrained Price And Time To Level Up Prediction |
+| [SupportVectorRegression](Models/SupportVectorRegression.md) (May Need Further Refinement) | SVR             | Constrained Price And Time To Level Up Prediction      |
+| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | Memory-Based Price And Time To Level Up Prediction     |
+| [NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended)               | None            | Final Solution Price And Time To Level Up Prediction   |
 
 ## Classification
 
 | Model                                                                                                            | Alternate Names        | Use Cases                                                                                |
 |------------------------------------------------------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------|
-| [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)                                           | KNN-C                  | Item Recommendation, Similar Player Matchmaking                                          |
 | [LogisticRegression](Models/LogisticRegression.md)                                                               | Perceptron             | Purchase Likelihood Estimation, Player Churn Prediction, Confidence Prediction           |
+| [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                                             | PA-C                   | Fast Purchase Likelihood Estimation, Player Churn Prediction, Confidence Prediction      |
+| [OneClassPassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                                     | OC-PA-C                | Fast Purchase Likelihood Estimation, Player Churn Prediction, Confidence Prediction      |
+| [NearestCentroid](Models/NearestCentroid.md)                                                                     | NC                     | Fast Grouping Or Quick Decision Making                                                   |
+| [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)                                           | KNN-C                  | Item Recommendation, Similar Player Matchmaking                                          |
 | [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | SVM                    | Hacking Detection, Anomaly Detection                                                     |
 | [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md)                                           | OC-SVM                 | Hacking Detection, Anomaly Detection (Using Single Class Data)                           |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                             |

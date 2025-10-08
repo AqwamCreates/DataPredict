@@ -889,13 +889,11 @@ function NeuralNetworkModel:getLabelFromOutputMatrix(outputMatrix)
 
 end
 
-local function checkIfAnyLabelVectorIsNotRecognized(labelVector, classesList)
+local function checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList)
 
 	for i = 1, #labelVector, 1 do
 
-		if table.find(classesList, labelVector[i][1]) then continue end
-
-		return true
+		if (not table.find(ClassesList, labelVector[i][1])) then return true end
 
 	end
 

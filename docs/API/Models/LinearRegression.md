@@ -32,22 +32,6 @@ LinearRegression.new(maximumNumberOfIterations: integer, learningRate: number, c
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-LinearRegression:setParameters(maximumNumberOfIterations: integer, learningRate: number, costFunction: string)
-```
-
-#### Parameters:
-
-* maximumNumberOfIterations: How many times should the model needed to be trained.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* costFunction: The function to calculate the cost of each training. Available options are "L1" and "L2".
-
 ### setOptimizer()
 
 Set optimizer for the model by inputting the optimizer object.

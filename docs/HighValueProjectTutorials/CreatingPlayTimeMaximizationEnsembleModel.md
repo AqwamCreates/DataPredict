@@ -122,7 +122,7 @@ end
   
 local function snapshotData(playerDataArray)
   
- playerDataMatrix[snapshotIndex] = getPlayerDataArray()
+  playerDataMatrix[snapshotIndex] = getPlayerDataArray()
   
   recordedTimeArray[snapshotIndex] = os.time()
   

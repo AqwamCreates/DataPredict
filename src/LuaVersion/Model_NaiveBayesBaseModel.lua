@@ -94,9 +94,7 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList)
 
 	for i = 1, #labelVector, 1 do
 
-		if table.find(ClassesList, labelVector[i][1]) then continue end
-
-		return true
+		if (not table.find(ClassesList, labelVector[i][1])) then return true end
 
 	end
 
@@ -162,7 +160,7 @@ function NaiveBayesBaseModel:processLabelVector(labelVector)
 
 	else
 
-		if checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList) then error("A value does not exist in the neural network\'s classes list is present in the label vector.") end
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList) then error("A value does not exist in the model\'s classes list is present in the label vector.") end
 
 	end
 

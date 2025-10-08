@@ -1,12 +1,12 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - KNearestNeighboursRegressor (KNN-R)
+# [API Reference](../../API.md) - [Models](../Models.md) - NearestCentroid
 
 ## Stored Model Parameters
 
 Contains a table of matrices.  
 
-* ModelParameters[1]: Feature Matrix
+* ModelParameters[1]: meanMatrix
 
-* ModelParameters[2]: Label Vector / Label Matrix
+* ModelParameters[2]: numberOfDataPointVector
 
 ## Constructors
 
@@ -15,22 +15,18 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-KNearestNeighboursRegressor.new(kValue: integer, distanceFunction: string, use, useWeightedDistance: boolean): ModelObject
+NearestCentroid.new(distanceFunction: string, use, useWeightedDistance: boolean: ModelObject
 ```
 
 #### Parameters:
 
-* kValue: The number of closest data points taken into consideration for majority voting to determine the class of a given data point.
-
 * distanceFunction: The distance function to be used to measure the similarity between two data points. Available options are:
 
-  * Euclidean
+  * Euclidean (Default)
 
   * Manhattan
 
   * Cosine
-
-* useWeightedDistance: Set whether or not to use distance as a factor for prediction.
 
 #### Returns:
 
@@ -43,7 +39,7 @@ KNearestNeighboursRegressor.new(kValue: integer, distanceFunction: string, use, 
 Train the model.
 
 ```
-KNearestNeighboursRegressor:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+NearestCentroid:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 
 #### Parameters:
@@ -61,7 +57,7 @@ KNearestNeighboursRegressor:train(featureMatrix: Matrix, labelVector: Matrix): n
 Predict the values for given data.
 
 ```
-KNearestNeighboursRegressor:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+NearestCentroid:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters
@@ -73,6 +69,8 @@ KNearestNeighboursRegressor:predict(featureMatrix: Matrix, returnOriginalOutput:
 #### Returns:
 
 * predictedlabelVector: A vector tcontaining predicted labels generated from the model.
+
+* valueVector: A vector that contains the values of predicted labels.
 
 -OR-
 

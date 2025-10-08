@@ -8,11 +8,15 @@ For best results, please use:
 
   * Faster to converge than Expectation-Maximization.
 
+  * Provides soft cluster memberships (players can influence multiple clusters).
+
   * Does not capture the spread of items.
 
 * Expectation-Maximization
 
   * Captures the spread of items.
+
+  * Produces probabilistic cluster assignments.
 
   * Slower to converge than Fuzzy C-Means.
 

@@ -10,6 +10,8 @@ For best results, please use Expectation-Maximization model.
 
  -- For this tutorial, we will let the model decide how many clusters it will produce based on player / item spread.
 
+-- Note, we're setting math.huge here, but that doesn't mean we will begin producing an infinity amount of clusters! It will start at 1 until it finds a suitable number of clusters.
+
 local PlacementModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = math.huge})
 
 ```

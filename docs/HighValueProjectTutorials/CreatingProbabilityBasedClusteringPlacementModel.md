@@ -58,21 +58,33 @@ Since we have three clusters, we can expect three rows for our matrix. As such w
 
 ```lua
 
-for clusterIndex, unwrappedClusterVector in ipairs(ModelParameters) do
+local function placePlayer(Player)
 
-  local x = unwrappedClusterVector[1]
+  local meanMatrix = ModelParameters[1]
   
-  local y = unwrappedClusterVector[2]
+  local varianceMatrix = ModelParameters[2]
   
-  local z = unwrappedClusterVector[3]
+  local numberOfClusters = #meanMatrix
+  
+  local randomClusterIndex = math.random(1, numberOfClusters)
 
-  landMissileAt(x, y, z)
+  local randomUnwrappedMeanVector = meanMatrix[randomClusterIndex]
+
+  local randomUnwrappedVarianceVector = varianceMatrix[randomClusterIndex]
+
+  local x = randomUnwrappedMeanVector[1] + (math.random() * randomUnwrappedVarianceVector[1])
+
+  local y = randomUnwrappedMeanVector[2] + (math.random() * randomUnwrappedVarianceVector[2])
+
+  local z = randomUnwrappedMeanVector[3] + (math.random() * randomUnwrappedVarianceVector[3])
+
+  movePlayer(Player, x, y, z)
 
 end
 
 ```
 
-## Resetting Our Targeting System
+## Resetting Our Placement System
 
 By default, when you reuse the machine learning models from DataPredict, it will interact with the existing model parameters. As such, we need to reset the model parameters by calling the setModelParameters() function and set it to "nil".
 

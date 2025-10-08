@@ -158,7 +158,7 @@ function PassiveAggressiveRegressorModel:train(featureMatrix, labelVector)
 
 		tau = tauFunction(lossValue, dotProductFeatureVectorValue, cValue)
 
-		weightChangeVector = AqwamTensorLibrary:multiply((tau * differenceValue), transposedFeatureVector)
+		weightChangeVector = AqwamTensorLibrary:multiply((tau * math.sign(differenceValue)), transposedFeatureVector)
 
 		ModelParameters = AqwamTensorLibrary:add(ModelParameters, weightChangeVector)
 

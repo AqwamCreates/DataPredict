@@ -64,6 +64,8 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 	
 	PassiveAggressiveClassifier = require(Models.PassiveAggressiveClassifier),
 	
+	OneClassPassiveAggressiveClassifier = require(Models.OneClassPassiveAggressiveClassifier),
+	
 	NeuralNetwork = require(Models.NeuralNetwork),
 	
 	OneClassSupportVectorMachine = require(Models.OneClassSupportVectorMachine),

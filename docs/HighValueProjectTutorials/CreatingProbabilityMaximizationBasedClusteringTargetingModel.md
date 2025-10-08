@@ -4,13 +4,15 @@ Hi guys! In this tutorial, we will demonstrate on how to create cluster-based ta
 
 For best results, please use:
 
-* FuzzyCMeans
+* Fuzzy C-Means
 
   * This model sets up X number of clusters and finds the center of data.
 
-* ExpectationMaximization
+* Expectation Maximization
 
   * This model sets up X number of clusters and finds the center of data.
+
+  * Slower than Fuzzy C-Means
 
 ## Initializing The Clustering Model
 
@@ -18,7 +20,7 @@ Before we can produce ourselves a targeting model, we first need to construct a 
 
 ```lua
 
-local TargetingModel = DataPredict.Models.FuzzyCMeans.new({numberOfClusters = 3, distanceFunction = "Euclidean"}) -- For this tutorial, we will assume that we have three missiles, so only three locations it can land.
+local TargetingModel = DataPredict.Models.FuzzyCMeans.new({numberOfClusters = 3}) -- For this tutorial, we will assume that we have three missiles, so only three locations it can land.
 
 ```
 

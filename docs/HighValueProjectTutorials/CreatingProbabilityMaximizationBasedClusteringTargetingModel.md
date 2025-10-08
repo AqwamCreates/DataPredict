@@ -102,25 +102,25 @@ TargetingModel:setModelParameters(nil)
 
 ## Dual Approach
 
-In this approach, we use Fuzzy C-Means to speed up the Expecation-Maximization model training. Because Fuzzy C-Means have lighter computations, you can perform more number of iterations per game frame.
+In this approach, we use Fuzzy C-Means to speed up the ExpectationMaximization-Maximization model training. Because Fuzzy C-Means have lighter computations, you can perform more number of iterations per game frame.
 
 ```lua
 
-local FastTargetingModel = DataPredict.Models.FuzzyCMeans.new({numberOfClusters = 3, maximumNumberOfIterations = 500})
+local FuzzyInitializer = DataPredict.Models.FuzzyCMeans.new({numberOfClusters = 3, maximumNumberOfIterations = 500})
 
-local SlowTargetingModel = DataPredict.Models.ExpecationMaximization.new({numberOfClusters = 3, maximumNumberOfIterations = 30})
+local EMRefiner = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 3, maximumNumberOfIterations = 30})
 
-FastTargetingModel:train(playerLocationDataMatrix)
+FuzzyInitializer:train(playerLocationDataMatrix)
 
-local meanMatrix = FastTargetingModel:getModelParameters()
+local meanMatrix = FuzzyInitializer:getModelParameters()
 
-local SlowModelParameters = {nil, meanMatrix}
+local EMModelParameters = {nil, meanMatrix}
 
-FastTargetingModel:setModelParameters(SlowModelParameters)
+EMRefiner:setModelParameters(EMModelParameters)
 
-FastTargetingModel:train(playerLocationDataMatrix)
+EMRefiner:train(playerLocationDataMatrix)
 
-local finalCentroidMatrix = TargetingModel:getModelParameters()[2] -- The final center locations.
+local finalCentroidMatrix = EMRefiner:getModelParameters()[2] -- The final center locations.
 
 ```
 

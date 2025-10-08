@@ -30,7 +30,7 @@ PassiveAggressiveClasifier.new(maximumNumberOfIterations: integer, variant: stri
  
     * 2
 
-* cValue:
+* cValue: The aggressiveness parameter used in some Passive-Aggressive variants (1 and 2). Higher values allow larger updates per misclassified example, while lower values limit the update magnitude. [Default: 1]
 
 #### Returns:
 

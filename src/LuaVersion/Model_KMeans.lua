@@ -313,7 +313,7 @@ end
 
 local function calculateMean(clusterAssignmentMatrix, centroidMatrix)
 	
-	local numberOfCentroids = #clusterAssignmentMatrix
+	local numberOfCentroids = #centroidMatrix
 	
 	local numberOfFeatures = #centroidMatrix[1]
 	

@@ -208,11 +208,19 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
+* [Creating Probability-Maximization-Based Targeting Model](HighValueProjectTutorials/CreatingProbabilityMaximizationBasedTargetingModel.md)
+
+  * Produces clusters that maximizes the likelihood of being hit.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * [Creating Probability-Based Targeting Model](HighValueProjectTutorials/CreatingProbabilityBasedTargetingModel.md)
 
   * Find the center of players by finding the area with high player density.
 
   * Can perform both precise and intentionally inaccurate, yet likely-to-hit targeting.
+
+  * Only one cluster.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 

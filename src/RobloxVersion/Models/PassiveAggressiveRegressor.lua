@@ -188,7 +188,7 @@ function PassiveAggressiveRegressorModel:train(featureMatrix, labelVector)
 
 			table.insert(costArray, cost)
 
-			self:printNumberOfIterationsAndCost(numberOfData, cost)
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 
 		end
 		

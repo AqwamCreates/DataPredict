@@ -16,7 +16,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
   * Contains all the deep reinforcement learning and generative algorithms listed here.
 
-  * Includes convolutional, pooling, dropout and activation layers.
+  * Includes convolutional, pooling, embedding, dropout and activation layers.
 
 ### Note
 

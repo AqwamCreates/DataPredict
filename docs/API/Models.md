@@ -24,7 +24,7 @@ Currently, these algorithms lack online learning capabilities. We're still looki
 
 This means DataPredict™ has ~90% (50 out of 57) models with online learning capabilities.
 
-By default, most models would perform offline / batch training on first train, but then switches to online / sequential / incremental after the first train.
+By default, most models would perform offline / batch training on the first train, but then switches to online / sequential / incremental after the first train.
 
 ## Regression
 

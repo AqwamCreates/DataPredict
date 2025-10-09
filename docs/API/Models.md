@@ -22,7 +22,7 @@ Currently, these algorithms lack online learning capabilities. We're still looki
 | Classification | SupportVectorMachine, OneClassSupportVectorMachine                                  |
 | Clustering     | KMedoids, AffinityPropagation, DensityBasedSpatialClusteringOfApplicationsWithNoise |
 
-This means the DataPredict™ is ~87.7% (50 out of 57) online learning capable.
+This means DataPredict™ has ~87.7% (50 out of 57) models that are capable of online learning.
 
 ## Regression
 

@@ -22,9 +22,9 @@ Currently, these algorithms lack online learning capabilities. We're still looki
 | Classification | SupportVectorMachine, OneClassSupportVectorMachine                                  |
 | Clustering     | KMedoids, AffinityPropagation, DensityBasedSpatialClusteringOfApplicationsWithNoise |
 
-* This means DataPredict™ has ~87.7% (50 out of 57) models have online learning capabilities.
+This means DataPredict™ has ~87.7% (50 out of 57) models have online learning capabilities.
 
-* By default, most models would perform offline / batch training on first train, but then switches to online / sequential / incremental after the first train.
+By default, most models would perform offline / batch training on first train, but then switches to online / sequential / incremental after the first train.
 
 ## Regression
 

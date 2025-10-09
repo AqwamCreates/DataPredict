@@ -12,7 +12,7 @@
 
 ### Note
 
-Currently, these algorithms lack online capabilities. We're still looking into it.
+Currently, these algorithms lack online learning capabilities. We're still looking into it.
 
 | Model Type     | Model Names                                                                         |
 |----------------|-------------------------------------------------------------------------------------|
@@ -20,7 +20,7 @@ Currently, these algorithms lack online capabilities. We're still looking into i
 | Classification | SupportVectorMachine, OneClassSupportVectorMachine                                  |
 | Clustering     | KMedoids, AffinityPropagation, DensityBasedSpatialClusteringOfApplicationsWithNoise |
 
-This means the DataPredict™ is 87.7% (50 out of 57) "online learning" capable.
+This means the DataPredict™ is ~87.7% (50 out of 57) online learning capable.
 
 ## Regression
 

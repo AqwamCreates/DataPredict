@@ -28,13 +28,13 @@ By default, most models would perform offline / batch training on the first trai
 
 ## Regression
 
-| Model                                                                                      | Alternate Names | Use Cases                                                              |
-|--------------------------------------------------------------------------------------------|-----------------|------------------------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)                        | None            | General Time-To-Leave Prediction And In-Game Price Generation          |
-| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | Fast Constrained Time-To-Leave Prediction And In-Game Price Generation |
-| [SupportVectorRegression](Models/SupportVectorRegression.md)                               | SVR             | Constrained Time-To-Leave Prediction And In-Game Price Generation      |
-| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | Memory-Based Time-To-Leave Prediction And In-Game Price Generation     |
-| [NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended)               | None            | Final Solution Time-To-Leave Prediction And In-Game Price Generation   |
+| Model                                                                                      | Alternate Names | Use Cases                                                                       |
+|--------------------------------------------------------------------------------------------|-----------------|---------------------------------------------------------------------------------|
+| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)                        | None            | General Time-To-Leave Prediction And In-Game Currency Price Generation          |
+| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation |
+| [SupportVectorRegression](Models/SupportVectorRegression.md)                               | SVR             | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation      |
+| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation     |
+| [NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended)               | None            | Final Solution Time-To-Leave Prediction And In-Game Currency Price Generation   |
 
 ## Classification
 

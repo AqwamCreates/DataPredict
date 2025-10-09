@@ -69,9 +69,11 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### Learning AIs
 
-* [Simple Environment](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/tree/main/How%20To%20Create%20Neural%20Networks%20With%20Reinforcement%20Learning%20For%20Roblox)
+* [Self-Learning Sword-Fighting AIs [Version 9]](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/blob/main/Self-Learning%20Sword-Fighting%20AIs/Reinforcement%20Learning%20Sword%20Fighting%20Version%209.rbxl) (Uses Release Version 2.10)
 
-* [Self-Learning Sword-Fighting AIs - Version 9](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/tree/main/Self-Learning%20Sword-Fighting%20AIs%20Version%209)
+* [Self-Learning Pathfinding AIs](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/blob/main/Self-Learning%20Pathfinding%20AIs/Reinforcement%20Learning%20Pathfinding%20AIs.rbxl)
+
+* [Simple Environment](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/tree/main/How%20To%20Create%20Neural%20Networks%20With%20Reinforcement%20Learning%20For%20Roblox)
 
 ## Links
 

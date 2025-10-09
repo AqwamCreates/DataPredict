@@ -12,6 +12,8 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Generative                     | 4     |
 | Total                          | 57    |
 
+For strong deep learning applications, have a look at [DataPredict™ Neural](https://aqwamcreates.github.io/DataPredict-Neural) (object-oriented) and [DataPredict™ Axon](https://aqwamcreates.github.io/DataPredict-Axon) (function-oriented).
+
 ### Note
 
 Currently, these algorithms lack online learning capabilities. We're still looking into it.
@@ -25,8 +27,6 @@ Currently, these algorithms lack online learning capabilities. We're still looki
 This means DataPredict™ has ~90% (50 out of 57) models with online learning capabilities.
 
 By default, most models would perform offline / batch training on the first train, but then switches to online / sequential / incremental after the first train.
-
-For strong deep learning applications, have a look at [DataPredict™ Neural](https://aqwamcreates.github.io/DataPredict-Neural) (object-oriented) and [DataPredict™ Axon](https://aqwamcreates.github.io/DataPredict-Axon) (function-oriented).
 
 ## Regression
 

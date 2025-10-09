@@ -14,7 +14,7 @@
 
 | Model                                                                                      | Alternate Names | Use Cases                                              |
 |--------------------------------------------------------------------------------------------|-----------------|--------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md)                                             | None            | General Price And Time To Level Up Prediction          |
+| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)                        | None            | General Price And Time To Level Up Prediction          |
 | [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | Fast Constrained Price And Time To Level Up Prediction |
 | [SupportVectorRegression](Models/SupportVectorRegression.md) (May Need Further Refinement) | SVR             | Constrained Price And Time To Level Up Prediction      |
 | [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | Memory-Based Price And Time To Level Up Prediction     |
@@ -24,14 +24,14 @@
 
 | Model                                                                                                            | Alternate Names        | Use Cases                                                                                |
 |------------------------------------------------------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------|
-| [LogisticRegression](Models/LogisticRegression.md)                                                               | Perceptron             | Purchase Likelihood Estimation, Player Churn Prediction, Confidence Prediction           |
+| [LogisticRegression](Models/LogisticRegression.md) (Beginner Algorithm)                                          | Perceptron             | Purchase Likelihood Estimation, Player Churn Prediction, Confidence Prediction           |
 | [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                                             | PA-C                   | Fast Purchase Likelihood Estimation, Player Churn Prediction, Confidence Prediction      |
 | [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md)                             | OC-PA-C                | Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                      |
 | [NearestCentroid](Models/NearestCentroid.md)                                                                     | NC                     | Fast Grouping Or Quick Decision Making                                                   |
 | [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)                                           | KNN-C                  | Item Recommendation, Similar Player Matchmaking                                          |
 | [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | SVM                    | Hacking Detection, Anomaly Detection                                                     |
 | [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md)                                           | OC-SVM                 | Hacking Detection, Anomaly Detection (Using Single Class Data)                           |
-| [NeuralNetwork](Models/NeuralNetwork.md)                                                                         | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                             |
+| [NeuralNetwork](Models/NeuralNetwork.md) (Beginner Algorithm)                                                    | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                             |
 | [GaussianNaiveBayes](Models/GaussianNaiveBayes.md) (Stonger As Generative Model)                                 | None                   | Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
 | [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md) (Stonger As Generative Model)                           | None                   | Inventory Action Prediction, Strategy Profiling Based on Item Usage                      |
 | [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md) (Stonger As Generative Model)                               | None                   | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                      |
@@ -42,7 +42,7 @@
 
 | Model                                                                                                                  | Alternate Names | Use Cases                                                            |
 |------------------------------------------------------------------------------------------------------------------------|-----------------|----------------------------------------------------------------------|
-| [KMeans](Models/KMeans.md)                                                                                             | None            | Maximizing Area-of-Effect Abilities, Target Grouping                 |
+| [KMeans](Models/KMeans.md) (Beginner Algorithm)                                                                        | None            | Maximizing Area-of-Effect Abilities, Target Grouping                 |
 | [FuzzyCMeans](Models/FuzzyCMeans.md)                                                                                   | None            | Overlapping Area-of-Effect Abilities, Overlapping Target Grouping    |
 | [KMedoids](Models/KMedoids.md)                                                                                         | None            | Player Grouping Based On Player Locations With Leader Identification |
 | [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | Enemy Difficulty Generation                                          |

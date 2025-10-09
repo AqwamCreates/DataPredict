@@ -14,6 +14,10 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 For strong deep learning applications, have a look at [DataPredict™ Neural](https://aqwamcreates.github.io/DataPredict-Neural) (object-oriented) and [DataPredict™ Axon](https://aqwamcreates.github.io/DataPredict-Axon) (function-oriented) instead.
 
+  * Contains all the deep reinforcement learning and generative algorithms listed here.
+
+  * Includes convolutional, pooling, dropout and activation layers.
+
 ### Note
 
 Currently, these algorithms lack online learning capabilities. We're still looking into it.

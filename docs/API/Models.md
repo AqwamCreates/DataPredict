@@ -1,6 +1,6 @@
 # [API Reference](../API.md) - Models
 
-If you wonder what are the most high-value use cases that helps with retention and revenue generation with this DataPredict™, you can view them [here](../HighValueTutorialProjects.md)
+If you wonder what are the most high-value use cases that helps with retention and revenue generation with this DataPredict™, you can view them [here](../HighValueTutorialProjects.md)!
 
 | Model Type                     | Count |
 |--------------------------------|-------|

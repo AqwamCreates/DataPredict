@@ -136,7 +136,7 @@ function OneClassPassiveAggressiveClassifierModel:train(featureMatrix, labelVect
 	
 	local numberOfIterations = 0
 
-	local totalLoss = 0
+	local totalLoss
 
 	local featureVector
 

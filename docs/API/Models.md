@@ -10,6 +10,18 @@
 | Generative                     | 4     |
 | Total                          | 57    |
 
+### Note
+
+Currently, these algorithms lack online capabilities. We're still looking into it.
+
+| Model Type     | Model Names                                                                         |
+|----------------|-------------------------------------------------------------------------------------|
+| Regression     | NormalLinearRegression, SupportVectorRegression                                     |
+| Classification | SupportVectorMachine, OneClassSupportVectorMachine                                  |
+| Clustering     | KMedoids, AffinityPropagation, DensityBasedSpatialClusteringOfApplicationsWithNoise |
+
+This means the DataPredict™ is 87.7% (50 out of 57) online-capable.
+
 ## Regression
 
 | Model                                                                                      | Alternate Names | Use Cases                                              |

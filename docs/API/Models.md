@@ -28,19 +28,19 @@ By default, most models would perform offline / batch training on the first trai
 
 ## Regression
 
-| Model                                                                                      | Alternate Names | Use Cases                                              |
-|--------------------------------------------------------------------------------------------|-----------------|--------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)                        | None            | General Price And Time To Level Up Prediction          |
-| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | Fast Constrained Price And Time To Level Up Prediction |
-| [SupportVectorRegression](Models/SupportVectorRegression.md)                               | SVR             | Constrained Price And Time To Level Up Prediction      |
-| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | Memory-Based Price And Time To Level Up Prediction     |
-| [NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended)               | None            | Final Solution Price And Time To Level Up Prediction   |
+| Model                                                                                      | Alternate Names | Use Cases                                                              |
+|--------------------------------------------------------------------------------------------|-----------------|------------------------------------------------------------------------|
+| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)                        | None            | General Time-To-Leave Prediction And In-Game Price Generation          |
+| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | Fast Constrained Time-To-Leave Prediction And In-Game Price Generation |
+| [SupportVectorRegression](Models/SupportVectorRegression.md)                               | SVR             | Constrained Time-To-Leave Prediction And In-Game Price Generation      |
+| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | Memory-Based Time-To-Leave Prediction And In-Game Price Generation     |
+| [NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended)               | None            | Final Solution Time-To-Leave Prediction And In-Game Price Generation   |
 
 ## Classification
 
 | Model                                                                                                            | Alternate Names        | Use Cases                                                                                |
 |------------------------------------------------------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------|
-| [LogisticRegression](Models/LogisticRegression.md) (Beginner Algorithm)                                          | Perceptron             | Purchase Likelihood Estimation, Player Churn Prediction, Confidence Prediction           |
+| [LogisticRegression](Models/LogisticRegression.md) (Beginner Algorithm)                                          | Perceptron             | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction          |
 | [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                                             | PA-C                   | Fast Purchase Likelihood Estimation, Player Churn Prediction, Confidence Prediction      |
 | [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md)                             | OC-PA-C                | Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                      |
 | [NearestCentroid](Models/NearestCentroid.md)                                                                     | NC                     | Fast Grouping Or Quick Decision Making                                                   |

@@ -26,6 +26,8 @@ This means DataPredict™ has ~90% (50 out of 57) models with online learning ca
 
 By default, most models would perform offline / batch training on the first train, but then switches to online / sequential / incremental after the first train.
 
+For strong deep learning applications, have a look at [DataPredict™ Neural](https://aqwamcreates.github.io/DataPredict-Neural) (object-oriented) and [DataPredict™ Axon](https://aqwamcreates.github.io/DataPredict-Axon) (function-oriented).
+
 ## Regression
 
 | Model                                                                                      | Alternate Names | Use Cases                                                                       |

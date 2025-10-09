@@ -36,7 +36,7 @@ PassiveAggressiveRegressorModel.__index = PassiveAggressiveRegressorModel
 
 setmetatable(PassiveAggressiveRegressorModel, IterativeMethodBaseModel)
 
-local defaultMaximumNumberOfIterations = math.huge
+local defaultMaximumNumberOfIterations = 500
 
 local defaultVariant = "0"
 
@@ -91,10 +91,12 @@ function PassiveAggressiveRegressorModel.new(parameterDictionary)
 end
 
 function PassiveAggressiveRegressorModel:train(featureMatrix, labelVector)
+	
+	local numberOfData = #featureMatrix
 
+	if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
+	
 	local ModelParameters = self.ModelParameters
-
-	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 
 	if (ModelParameters) then
 
@@ -117,8 +119,10 @@ function PassiveAggressiveRegressorModel:train(featureMatrix, labelVector)
 	local cValue = self.cValue
 
 	local costArray = {}
+	
+	local numberOfIterations = 0
 
-	local totalLoss = 0
+	local totalLoss
 
 	local featureVector
 
@@ -139,48 +143,56 @@ function PassiveAggressiveRegressorModel:train(featureMatrix, labelVector)
 	local weightChangeVector
 
 	local cost
-
-	for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
-
-		featureVector = {unwrappedFeatureVector}
-
-		labelValue = labelVector[dataIndex][1]
-
-		predictedLabelValue = AqwamTensorLibrary:dotProduct(featureVector, ModelParameters)
-
-		transposedFeatureVector = AqwamTensorLibrary:transpose(featureVector)
-
-		dotProductFeatureVectorValue = AqwamTensorLibrary:dotProduct(featureVector, transposedFeatureVector)
+	
+	repeat
 		
-		differenceValue = labelValue - predictedLabelValue
+		numberOfIterations = numberOfIterations + 1
 
-		lossValue = math.max(0, (math.abs(differenceValue) - epsilon))
+		self:iterationWait()
 
-		tau = tauFunction(lossValue, dotProductFeatureVectorValue, cValue)
+		totalLoss = 0
+		
+		for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
 
-		weightChangeVector = AqwamTensorLibrary:multiply((tau * math.sign(differenceValue)), transposedFeatureVector)
+			featureVector = {unwrappedFeatureVector}
 
-		ModelParameters = AqwamTensorLibrary:add(ModelParameters, weightChangeVector)
+			labelValue = labelVector[dataIndex][1]
 
-		totalLoss = totalLoss + lossValue
+			predictedLabelValue = AqwamTensorLibrary:dotProduct(featureVector, ModelParameters)
 
-		cost = self:calculateCostWhenRequired(dataIndex, function()
+			transposedFeatureVector = AqwamTensorLibrary:transpose(featureVector)
 
-			return (totalLoss / dataIndex)
+			dotProductFeatureVectorValue = AqwamTensorLibrary:dotProduct(featureVector, transposedFeatureVector)
+
+			differenceValue = labelValue - predictedLabelValue
+
+			lossValue = math.max(0, (math.abs(differenceValue) - epsilon))
+
+			tau = tauFunction(lossValue, dotProductFeatureVectorValue, cValue)
+
+			weightChangeVector = AqwamTensorLibrary:multiply((tau * math.sign(differenceValue)), transposedFeatureVector)
+
+			ModelParameters = AqwamTensorLibrary:add(ModelParameters, weightChangeVector)
+
+			totalLoss = totalLoss + lossValue
+
+		end
+		
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
+
+			return (totalLoss / numberOfData)
 
 		end)
-
+		
 		if (cost) then 
 
 			table.insert(costArray, cost)
 
-			self:printNumberOfIterationsAndCost(dataIndex, cost)
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 
 		end
-
-		if (dataIndex >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
-
-	end
+		
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
 	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
 

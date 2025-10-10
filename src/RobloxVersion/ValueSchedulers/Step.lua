@@ -34,7 +34,7 @@ StepValueScheduler.__index = StepValueScheduler
 
 setmetatable(StepValueScheduler, BaseValueScheduler)
 
-local defaultTimeStepToDecay = 100
+local defaultTimeValue = 100
 
 local defaultDecayRate = 0.5
 
@@ -48,7 +48,7 @@ function StepValueScheduler.new(parameterDictionary)
 	
 	NewStepValueScheduler:setName("Step")
 	
-	NewStepValueScheduler.timeValueToDecay = parameterDictionary.timeValueToDecay or defaultTimeStepToDecay
+	NewStepValueScheduler.timeValue = parameterDictionary.timeValue or defaultTimeValue
 	
 	NewStepValueScheduler.decayRate = parameterDictionary.decayRate or defaultDecayRate
 	
@@ -56,7 +56,7 @@ function StepValueScheduler.new(parameterDictionary)
 	
 	NewStepValueScheduler:setCalculateFunction(function(value, timeValue)
 
-		return (value * math.pow(NewStepValueScheduler.decayRate, (math.floor(timeValue / NewStepValueScheduler.timeValueToDecay))))
+		return (value * math.pow(NewStepValueScheduler.decayRate, (math.floor(timeValue / NewStepValueScheduler.timeValue))))
 		
 	end)
 	
@@ -64,15 +64,15 @@ function StepValueScheduler.new(parameterDictionary)
 	
 end
 
+function StepValueScheduler:setTimeValue(timeValue)
+
+	self.timeValue = timeValue
+
+end
+
 function StepValueScheduler:setDecayRate(decayRate)
 	
 	self.decayRate = decayRate
-	
-end
-
-function StepValueScheduler:setTimeValueToDecay(timeValueToDecay)
-	
-	self.timeValueToDecay = timeValueToDecay
 	
 end
 

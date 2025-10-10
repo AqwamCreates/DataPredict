@@ -42,11 +42,11 @@
 
   * Measures how likely a player is to interact with generated content, like enemies or events.
   
-  * Can reject low-likelihood content to ensure high engagement.
+  * Can reject low-likelihood content to maximize high engagement.
 
   * Can be combined with generative and reward-maximization-based models for optimized retention and interaction.
 
-   * No need to add new content; the model can use existing content to optimize your games.
+  * No need to add new content; the model can use existing content to optimize your games.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 

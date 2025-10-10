@@ -26,8 +26,6 @@
 
 --]]
 
-local Regularizers = DataPredictLibrary.Regularizers
-
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
@@ -289,8 +287,6 @@ function OneVsAll:train(featureMatrix, labelVector)
 		table.insert(binaryLabelVectorTable, binaryLabelVector)
 
 	end
-	
-	local ModelArray = self.ModelArray
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	

@@ -58,15 +58,11 @@ end
 
 function BaseOptimizer:calculate(learningRate, costFunctionDerivativeTensor)
 
-	local calculateFunction = self.calculateFunction
-
 	local LearningRateValueScheduler = self.LearningRateValueScheduler
-
-	if (not calculateFunction) then error("No calculate function for the optimizer!") end
 
 	if LearningRateValueScheduler then learningRate = LearningRateValueScheduler:calculate(learningRate) end
 
-	return calculateFunction(learningRate, costFunctionDerivativeTensor)
+	return self.calculateFunction(learningRate, costFunctionDerivativeTensor)
 
 end
 

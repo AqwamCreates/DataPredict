@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
+
 local BaseInstance = require("Core_BaseInstance")
 
 BaseValueScheduler = {}
@@ -54,9 +56,13 @@ function BaseValueScheduler.new(parameterDictionary)
 	
 end
 
-function BaseValueScheduler:calculate(epsilon)
+function BaseValueScheduler:calculate(valueToSchedule, valueToScale)
 	
-	if (self.calculateFunction) then return self.calculateFunction(epsilon) end
+	valueToSchedule = self.calculateFunction(valueToSchedule) 
+	
+	if (not valueToScale) then return valueToSchedule end
+	
+	return AqwamTensorLibrary:multiply(valueToSchedule, valueToScale)
 	
 end
 

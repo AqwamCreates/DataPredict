@@ -36,14 +36,19 @@ Below, we will show you how to create this:
 
 -- We're just adding 1 here to add "bias".
 
-local playerDataVector = {
+local playerContextDataVector = {
     {
         1,
         numberOfCurrencyAmount,
         numberOfItemsAmount,
         timePlayedInCurrentSession,
         timePlayedInAllSessions,
-        healthAmount
+        healthAmount,
+
+        enemyMaximumHealthAmount,
+        enemyMaximumDamageAmount,
+        enemyCurrencyAmount,
+
     }
 }
 
@@ -70,7 +75,11 @@ local function snapshotData()
     numberOfItemsAmount,
     timePlayedInCurrentSession,
     timePlayedInAllSessions,
-    healthAmount
+    healthAmount,
+
+    enemyMaximumHealthAmount,
+    enemyMaximumDamageAmount,
+    enemyCurrencyAmount,
 
   }
   
@@ -88,7 +97,7 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerContextDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias").
+local randomPlayerContextDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 9}, -100, 100) -- 100 random data with 9 features (including one "bias").
 
 local labelContextDataMatrix = TensorL:createTensor({numberOfData, 1}, 1) -- Making sure that at all values, it predicts 100% probability of interacting.
 
@@ -206,7 +215,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 ```lua
 
-local currentPlayerContextDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
+local currentPlayerContextDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount, enemyMaximumHealthAmount, enemyMaximumDamageAmount, enemyCurrencyAmount}}
 
 local predictedLabelVector = InteractionPredictionModel:predict(currentPlayerContextDataVector)
 
@@ -224,9 +233,11 @@ We can do this for every 10 seconds and use this to extend the players' playtime
 
 ```lua
 
+local playerDataVector = getPlayerContextDataVector()
+
 local enemyDataVector = generateEnemyDataVector()
 
-local currentPlayerContextDataVector = getPlayerContextDataVector()
+local currentPlayerContextDataVector = TensorL:concatenate(playerDataVector, enemyDataVector, 1)
 
 local predictedLabelVector = InteractionPredictionModel:predict(currentPlayerContextDataVector)
 

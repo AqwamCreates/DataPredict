@@ -60,7 +60,7 @@ function BaseOptimizer:calculate(learningRate, costFunctionDerivativeTensor, wei
 
 	local LearningRateValueScheduler = self.LearningRateValueScheduler
 
-	if LearningRateValueScheduler then learningRate = LearningRateValueScheduler:calculate(learningRate) end
+	if (LearningRateValueScheduler) then learningRate = LearningRateValueScheduler:calculate(learningRate) end
 
 	return self.calculateFunction(learningRate, costFunctionDerivativeTensor, weightTensor)
 

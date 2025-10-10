@@ -108,7 +108,7 @@ In this approach, we use Fuzzy C-Means to speed up the ExpectationMaximization-M
 
 local FuzzyInitializer = DataPredict.Models.FuzzyCMeans.new({numberOfClusters = 3, maximumNumberOfIterations = 500})
 
-local EMRefiner = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 3, maximumNumberOfIterations = 30})
+local EMRefiner = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 3, maximumNumberOfIterations = 30, mode = "Online"})
 
 FuzzyInitializer:train(playerLocationDataMatrix)
 

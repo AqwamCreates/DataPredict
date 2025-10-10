@@ -34,7 +34,7 @@ ConstantValueScheduler.__index = ConstantValueScheduler
 
 setmetatable(ConstantValueScheduler, BaseValueScheduler)
 
-local defaultTimeValueToDecay = 1
+local defaultTimeValue = 1
 
 local defaultDecayRate = 0.5
 
@@ -48,7 +48,7 @@ function ConstantValueScheduler.new(parameterDictionary)
 	
 	NewConstantValueScheduler:setName("Constant")
 	
-	NewConstantValueScheduler.timeValueToDecay = parameterDictionary.timeValueToDecay or defaultTimeValueToDecay
+	NewConstantValueScheduler.timeValue = parameterDictionary.timeValue or defaultTimeValue
 	
 	NewConstantValueScheduler.decayRate = parameterDictionary.decayRate or defaultDecayRate
 	
@@ -56,7 +56,7 @@ function ConstantValueScheduler.new(parameterDictionary)
 	
 	NewConstantValueScheduler:setCalculateFunction(function(value, timeValue)
 		
-		if (timeValue <= NewConstantValueScheduler.timeValueToDecay) then return value end
+		if (timeValue <= NewConstantValueScheduler.timeValue) then return value end
 
 		return (value * NewConstantValueScheduler.decayRate)
 		
@@ -66,9 +66,9 @@ function ConstantValueScheduler.new(parameterDictionary)
 	
 end
 
-function ConstantValueScheduler:setTimeValueToDecay(timeValueToDecay)
+function ConstantValueScheduler:setTimeValue(timeValue)
 
-	self.timeValueToDecay = timeValueToDecay
+	self.timeValue = timeValue
 
 end
 

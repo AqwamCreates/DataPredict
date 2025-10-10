@@ -50,7 +50,7 @@ function BaseValueScheduler.new(parameterDictionary)
 	
 	NewBaseValueScheduler.calculateFunction = parameterDictionary.calculateFunction
 	
-	NewBaseValueScheduler.valueSchedulerInternalParameterArray = parameterDictionary.valueSchedulerInternalParameterArray
+	NewBaseValueScheduler.timeValue = 0
 	
 	return NewBaseValueScheduler
 	
@@ -58,7 +58,13 @@ end
 
 function BaseValueScheduler:calculate(valueToSchedule, valueToScale)
 	
-	valueToSchedule = self.calculateFunction(valueToSchedule) 
+	local timeValue = self.timeValue
+	
+	timeValue = timeValue + 1
+	
+	self.timeValue = timeValue
+	
+	valueToSchedule = self.calculateFunction(valueToSchedule, timeValue)
 	
 	if (not valueToScale) then return valueToSchedule end
 	
@@ -72,37 +78,9 @@ function BaseValueScheduler:setCalculateFunction(calculateFunction)
 	
 end
 
-function BaseValueScheduler:getValueSchedulerInternalParameterArray(doNotDeepCopy)
-	
-	if (doNotDeepCopy) then
-		
-		return self.valueSchedulerInternalParameterArray
-		
-	else
-		
-		return self:deepCopyTable(self.valueSchedulerInternalParameterArray)
-		
-	end
-	
-end
-
-function BaseValueScheduler:setValueSchedulerInternalParameterArray(valueSchedulerInternalParameterArray, doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		self.valueSchedulerInternalParameterArray = valueSchedulerInternalParameterArray
-
-	else
-
-		self.valueSchedulerInternalParameterArray = self:deepCopyTable(valueSchedulerInternalParameterArray)
-
-	end
-
-end
-
 function BaseValueScheduler:reset()
 
-	self.valueSchedulerInternalParameterArray = nil
+	self.timeValue = 0
 
 end
 

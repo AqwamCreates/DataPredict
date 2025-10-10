@@ -18,6 +18,8 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
   * Includes convolutional, pooling, embedding, dropout and activation layers.
 
+  * Uses reverse-mode automatic differentiation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
+
 ### Note
 
 Currently, these algorithms lack online learning capabilities. We're still looking into it.

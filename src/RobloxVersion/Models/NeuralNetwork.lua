@@ -747,7 +747,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 
 		if (Optimizer ~= 0) then
 
-			costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix)
+			costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix, weightMatrix)
 
 		else
 

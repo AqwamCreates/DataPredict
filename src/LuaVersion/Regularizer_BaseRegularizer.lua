@@ -36,7 +36,7 @@ setmetatable(BaseRegularizer, BaseInstance)
 
 local defaultLambda = 0.01
 
-local defaultHasBias = false
+local defaultHasBias = "Automatic"
 
 function BaseRegularizer.new(parameterDictionary)
 	
@@ -58,11 +58,27 @@ function BaseRegularizer.new(parameterDictionary)
 	
 end
 
-function BaseRegularizer:makeLambdaAtBiasZero(ModelParameters)
+function BaseRegularizer:adjustModelParameters(ModelParameters)
+	
+	local hasBias = self.hasBias
+	
+	if (not hasBias) then return ModelParameters end
+	
+	local firstRowModelParameters = ModelParameters[1]
+	
+	if (hasBias == "Automatic") then
+		
+		for i, value in ipairs(firstRowModelParameters) do
+			
+			if (value ~= 1) then return ModelParameters end
+			
+		end
+		
+	end
 	
 	local NewModelParameters = self:deepCopyTable(ModelParameters)
 	
-	local firstRowModelParameters = NewModelParameters[1]
+	firstRowModelParameters = NewModelParameters[1]
 	
 	for i, _ in ipairs(firstRowModelParameters) do
 		
@@ -76,29 +92,25 @@ end
 
 function BaseRegularizer:calculateCost(ModelParameters)
 	
-	local CalculateCostFunction = self.CalculateCostFunction
-	
-	if (CalculateCostFunction) then return CalculateCostFunction(ModelParameters) end
+	return self.calculateCostFunction(ModelParameters)
 	
 end
 
-function BaseRegularizer:setCalculateCostFunction(CalculateCostFunction)
+function BaseRegularizer:setCalculateCostFunction(calculateCostFunction)
 
-	self.CalculateCostFunction = CalculateCostFunction
+	self.calculateCostFunction = calculateCostFunction
 
 end
 
 function BaseRegularizer:calculate(ModelParameters)
 
-	local CalculateFunction = self.CalculateFunction
-
-	if (CalculateFunction) then return CalculateFunction(ModelParameters) end
+	return self.calculateFunction(ModelParameters)
 
 end
 
-function BaseRegularizer:setCalculateFunction(CalculateFunction)
+function BaseRegularizer:setCalculateFunction(calculateFunction)
 	
-	self.CalculateFunction = CalculateFunction
+	self.calculateFunction = calculateFunction
 	
 end
 

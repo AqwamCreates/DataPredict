@@ -48,7 +48,7 @@ function BaseOptimizer.new(parameterDictionary)
 	
 	NewBaseOptimizer.LearningRateValueScheduler = parameterDictionary.LearningRateValueScheduler
 
-	NewBaseOptimizer.CalculateFunction = nil
+	NewBaseOptimizer.calculateFunction = nil
 
 	NewBaseOptimizer.optimizerInternalParameterArray = {}
 
@@ -58,21 +58,21 @@ end
 
 function BaseOptimizer:calculate(learningRate, costFunctionDerivativeTensor)
 
-	local CalculateFunction = self.CalculateFunction
+	local calculateFunction = self.calculateFunction
 
 	local LearningRateValueScheduler = self.LearningRateValueScheduler
 
-	if (not CalculateFunction) then error("No calculate function for the optimizer!") end
+	if (not calculateFunction) then error("No calculate function for the optimizer!") end
 
 	if LearningRateValueScheduler then learningRate = LearningRateValueScheduler:calculate(learningRate) end
 
-	return self.CalculateFunction(learningRate, costFunctionDerivativeTensor)
+	return calculateFunction(learningRate, costFunctionDerivativeTensor)
 
 end
 
-function BaseOptimizer:setCalculateFunction(CalculateFunction)
+function BaseOptimizer:setCalculateFunction(calculateFunction)
 
-	self.CalculateFunction = CalculateFunction
+	self.calculateFunction = calculateFunction
 
 end
 

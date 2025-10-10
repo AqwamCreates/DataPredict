@@ -64,9 +64,7 @@ function BaseEligibilityTrace:increment(actionIndex, discountFactor, dimensionSi
 
 	eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * self.lambda)
 	
-	local incrementFunction = self.incrementFunction
-	
-	if (incrementFunction) then self.eligibilityTraceMatrix = incrementFunction(eligibilityTraceMatrix, actionIndex) end
+	self.eligibilityTraceMatrix = self.incrementFunction(eligibilityTraceMatrix, actionIndex)
 	
 end
 

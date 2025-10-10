@@ -26,6 +26,8 @@
 
 --]]
 
+local Regularizers = DataPredictLibrary.Regularizers
+
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
@@ -56,8 +58,6 @@ function OneVsAll.new(parameterDictionary)
 	
 	NewOneVsAll:setClassName("OneVsAll")
 	
-	NewOneVsAll.numberOfClasses = parameterDictionary.numberOfClasses or defaultNumberOfClasses
-	
 	NewOneVsAll.useNegativeOneBinaryLabel = NewOneVsAll:getValueOrDefaultValue(parameterDictionary.useNegativeOneBinaryLabel, false)
 	
 	NewOneVsAll.ClassesList = parameterDictionary.ClassesList or {}
@@ -83,8 +83,10 @@ function OneVsAll:generateModel(parameterDictionary)
 	local ModelArray = self.ModelArray
 	
 	local SelectedModel = require(Models[modelName])
+	
+	local numberOfClasses = #self.ClassesList
 
-	for i = 1, self.numberOfClasses, 1 do
+	for i = 1, numberOfClasses, 1 do
 
 		local ModelObject = SelectedModel.new(parameterDictionary)
 
@@ -388,11 +390,13 @@ end
 
 function OneVsAll:getModelParametersArray(doNotDeepCopy)
 	
-	if (#self.ModelArray == 0) then error("No model set.") end
+	local ModelArray = self.ModelArray
+	
+	if (#ModelArray == 0) then error("No model set.") end
 	
 	local ModelParametersArray = {}
 	
-	for _, Model in ipairs(self.ModelArray) do 
+	for _, Model in ipairs(ModelArray) do 
 		
 		local ModelParameters = Model:getModelParameters(doNotDeepCopy)
 		
@@ -406,13 +410,15 @@ end
 
 function OneVsAll:setModelParametersArray(ModelParametersArray, doNotDeepCopy)
 	
-	if (#self.ModelArray == 0) then error("No model set.") end
+	local ModelArray = self.ModelArray
+	
+	if (#ModelArray == 0) then error("No model set.") end
 	
 	if (ModelParametersArray == nil) then return nil end
 	
-	if (#ModelParametersArray ~= #self.ModelArray) then error("The number of model parameters does not match with the number of models!") end
+	if (#ModelParametersArray ~= #ModelArray) then error("The number of model parameters does not match with the number of models!") end
 	
-	for m, Model in ipairs(self.ModelArray) do 
+	for m, Model in ipairs(ModelArray) do 
 		
 		local ModelParameters = ModelParametersArray[m]
 
@@ -424,9 +430,11 @@ end
 
 function OneVsAll:clearModelParameters()
 	
-	if (#self.ModelArray == 0) then error("No model set.") end
+	local ModelArray = self.ModelArray
 	
-	for _, Model in ipairs(self.ModelArray) do Model:clearModelParameters() end
+	if (#ModelArray == 0) then error("No model set.") end
+	
+	for _, Model in ipairs(ModelArray) do Model:clearModelParameters() end
 
 end
 

@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseInstance = require("Model_BaseInstance")
+local BaseInstance = require("Core_BaseInstance")
 
 BaseEligibilityTrace = {}
 

@@ -176,7 +176,7 @@ function LogisticRegressionModel:gradientDescent(costFunctionDerivativeMatrix, n
 
 	if (Optimizer) then
 
-		costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix) 
+		costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix, ModelParameters) 
 
 	else
 

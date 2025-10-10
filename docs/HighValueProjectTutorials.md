@@ -38,7 +38,7 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Probability-To-Interact Prediction Model](HighValueProjectTutorials/CreatingProbabilityToInteractPredictionModel.md) (Incomplete)
+* [Creating Probability-To-Interact Prediction Model](HighValueProjectTutorials/CreatingProbabilityToInteractPredictionModel.md)
 
   * Measures how likely a player is to interact with generated content, like enemies or events.
   

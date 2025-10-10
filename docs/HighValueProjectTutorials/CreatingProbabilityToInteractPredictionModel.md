@@ -216,7 +216,7 @@ Once you receive the predicted label vector, you can grab the pure number output
 
 ```lua
 
-local timeToLeavePrediction = predictedLabelVector[1][1]
+local probabilityToInteract = predictedLabelVector[1][1]
 
 ```
 
@@ -242,6 +242,6 @@ end
 
 ## Conclusion
 
-This tutorial showed you on how to create "probability to leave" prediction model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!
+This tutorial showed you on how to create "probability to interact" prediction model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!
 
 That's all for today and see you later!

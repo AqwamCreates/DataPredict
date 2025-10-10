@@ -46,13 +46,15 @@
 
   * Can be combined with generative and reward-maximization-based models for optimized retention and interaction.
 
+   * No need to add new content; the model can use existing content to optimize your games.
+
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
 * [Creating Left-Too-Early Detection Model](HighValueProjectTutorials/CreatingLeftTooEarlyDetectionModel.md)
 
    * Inverse of probability-to-leave model by detecting outliers.
 
-  * No need to add new content; the model can use existing content to optimize your games.
+   * No need to add new content; the model can use existing content to optimize your games.
 
    * Highly exploitable if the player accumulates long session times over many sessions before suddenly decrease the session times gradually if rewards are involved.
 

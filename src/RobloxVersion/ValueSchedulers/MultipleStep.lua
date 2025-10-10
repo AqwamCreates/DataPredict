@@ -46,13 +46,13 @@ function MultipleStepValueScheduler.new(parameterDictionary)
 	
 	NewMultipleStepValueScheduler:setName("MultipleStep")
 	
-	local timeValueToDecayArray = parameterDictionary.timeValueToDecayArray
+	local timeValueArray = parameterDictionary.timeValueArray
 	
-	if (not timeValueToDecayArray) then error("No time value to decay array.") end
+	if (not timeValueArray) then error("No time value array.") end
 	
-	if (#timeValueToDecayArray <= 0) then error("No time value to decay.") end
+	if (#timeValueArray <= 0) then error("No time value.") end
 	
-	NewMultipleStepValueScheduler.timeValueToDecayArray = timeValueToDecayArray
+	NewMultipleStepValueScheduler.timeValueArray = timeValueArray
 	
 	NewMultipleStepValueScheduler.decayRate = parameterDictionary.decayRate or defaultDecayRate
 	
@@ -62,9 +62,9 @@ function MultipleStepValueScheduler.new(parameterDictionary)
 		
 		local decayCount = 0
 		
-		for i, timeStepToDecay in ipairs(NewMultipleStepValueScheduler.timeValueToDecayArray) do
+		for i, timeValueMilestone in ipairs(NewMultipleStepValueScheduler.timeValueArray) do
 			
-			if (timeValue <= timeStepToDecay) then break end
+			if (timeValue <= timeValueMilestone) then break end
 				
 			decayCount = decayCount + 1
 			
@@ -78,9 +78,9 @@ function MultipleStepValueScheduler.new(parameterDictionary)
 	
 end
 
-function MultipleStepValueScheduler:setTimeValueToDecayArray(timeValueToDecayArray)
+function MultipleStepValueScheduler:setTimeValueArray(timeValueArray)
 
-	self.timeValueToDecayArray = timeValueToDecayArray
+	self.timeValueArray = timeValueArray
 
 end
 

@@ -26,14 +26,6 @@
 
 --]]
 
-local DataPredictLibrary = script.Parent.Parent
-
-local Models = DataPredictLibrary.Models
-
-local Optimizers = DataPredictLibrary.Optimizers
-
-local Regularizers = DataPredictLibrary.Regularizers
-
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")

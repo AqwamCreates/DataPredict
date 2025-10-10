@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseInstance = require("Core_BaseInstance")
+local BaseInstance = require("Model_BaseInstance")
 
 BaseEligibilityTrace = {}
 
@@ -64,9 +64,9 @@ function BaseEligibilityTrace:increment(actionIndex, discountFactor, dimensionSi
 
 	eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * self.lambda)
 	
-	local IncrementFunction = self.IncrementFunction
+	local incrementFunction = self.incrementFunction
 	
-	if (IncrementFunction) then self.eligibilityTraceMatrix = IncrementFunction(eligibilityTraceMatrix, actionIndex) end
+	if (incrementFunction) then self.eligibilityTraceMatrix = incrementFunction(eligibilityTraceMatrix, actionIndex) end
 	
 end
 
@@ -76,9 +76,9 @@ function BaseEligibilityTrace:calculate(temporalDifferenceErrorVector)
 	
 end
 
-function BaseEligibilityTrace:setIncrementFunction(IncrementFunction)
+function BaseEligibilityTrace:setIncrementFunction(incrementFunction)
 	
-	self.IncrementFunction = IncrementFunction
+	self.incrementFunction = incrementFunction
 	
 end
 

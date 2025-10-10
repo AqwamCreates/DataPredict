@@ -76,17 +76,11 @@ function SequentialValueScheduler.new(parameterDictionary)
 		
 		for i, ValueScheduler in ipairs(ValueSchedulerArray) do
 			
-			if (timeValue <= timeValueArray[i]) then
-
-				return ValueScheduler:calculate(value, timeValue)
-
-			elseif (i == #ValueSchedulerArray) then
-
-				return ValueScheduler:calculate(value, timeValue) 
-
-			end
+			if (timeValue <= timeValueArray[i]) then return ValueScheduler:calculate(value, timeValue) end
 			
 		end
+
+		return ValueSchedulerArray[#ValueSchedulerArray]:calculate(value, timeValue) 
 		
 	end)
 	

@@ -92,29 +92,29 @@ end
 
 function BaseRegularizer:calculateCost(ModelParameters)
 	
-	local CalculateCostFunction = self.CalculateCostFunction
+	local calculateCostFunction = self.calculateCostFunction
 	
-	if (CalculateCostFunction) then return CalculateCostFunction(ModelParameters) end
+	if (calculateCostFunction) then return calculateCostFunction(ModelParameters) end
 	
 end
 
-function BaseRegularizer:setCalculateCostFunction(CalculateCostFunction)
+function BaseRegularizer:setCalculateCostFunction(calculateCostFunction)
 
-	self.CalculateCostFunction = CalculateCostFunction
+	self.calculateCostFunction = calculateCostFunction
 
 end
 
 function BaseRegularizer:calculate(ModelParameters)
 
-	local CalculateFunction = self.CalculateFunction
+	local calculateFunction = self.calculateFunction
 
-	if (CalculateFunction) then return CalculateFunction(ModelParameters) end
+	if (calculateFunction) then return calculateFunction(ModelParameters) end
 
 end
 
-function BaseRegularizer:setCalculateFunction(CalculateFunction)
+function BaseRegularizer:setCalculateFunction(calculateFunction)
 	
-	self.CalculateFunction = CalculateFunction
+	self.calculateFunction = calculateFunction
 	
 end
 

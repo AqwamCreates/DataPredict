@@ -237,7 +237,7 @@ local playerDataVector = getPlayerContextDataVector()
 
 local enemyDataVector = generateEnemyDataVector()
 
-local currentPlayerContextDataVector = TensorL:concatenate(playerDataVector, enemyDataVector, 1)
+local currentPlayerContextDataVector = TensorL:concatenate(playerDataVector, enemyDataVector, 2)
 
 local predictedLabelVector = InteractionPredictionModel:predict(currentPlayerContextDataVector)
 

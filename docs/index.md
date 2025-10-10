@@ -36,6 +36,7 @@ For information regarding potential license violations and eligibility for a bou
 
 | Version | Current Version Number |
 |---------|------------------------|
+| Gold    | 1.0 (23 January 2026)  |
 | Release | 2.10                   |
 | Beta    | 2.10.0                 |          
 
@@ -98,6 +99,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 * [Aqwam's Matrix Library](https://aqwamcreates.github.io/MatrixL/)
 
 ## Version History
+
+* [Production / Gold](VersionHistory/ProductionVersionHistory.md)
 
 * [Release](VersionHistory/ReleaseVersionHistory.md)
 

@@ -78,15 +78,15 @@ function MultipleStepValueScheduler.new(parameterDictionary)
 	
 end
 
+function MultipleStepValueScheduler:setTimeValueToDecayArray(timeValueToDecayArray)
+
+	self.timeValueToDecayArray = timeValueToDecayArray
+
+end
+
 function MultipleStepValueScheduler:setDecayRate(decayRate)
 	
 	self.decayRate = decayRate
-	
-end
-
-function MultipleStepValueScheduler:setTimeValueToDecayArray(timeValueToDecayArray)
-	
-	self.timeValueToDecayArray = timeValueToDecayArray
 	
 end
 

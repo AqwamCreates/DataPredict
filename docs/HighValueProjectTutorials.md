@@ -26,6 +26,16 @@
 
 ## Retention Systems
 
+* [Creating Player Interaction Likelihood Model](HighValueProjectTutorials/CreatingPlayerInteractionLikelihoodModel.md) (Incomplete)
+
+  * Measures how likely a player is to interact with generated content, like enemies or events.
+  
+  * Can reject low-likelihood content to ensure high engagement.
+
+  * Can be combined with generative and reward-maximization-based models for optimized retention and interaction.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * [Creating Time-To-Leave Prediction Model](HighValueProjectTutorials/CreatingTimeToLeavePredictionModel.md)
 
   * No need to add new content; the model can use existing content to optimize your games.

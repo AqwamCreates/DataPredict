@@ -72,10 +72,16 @@ function CosineAnnealingValueScheduler.new(parameterDictionary)
 	
 end
 
-function CosineAnnealingValueScheduler:setDecayRate(decayRate)
+function CosineAnnealingValueScheduler:setMaximumTimeValue(maximumTimeValue)
 	
-	self.decayRate = decayRate
+	self.maximumTimeValue = maximumTimeValue
 	
+end
+
+function CosineAnnealingValueScheduler:setMinimumValue(minimumValue)
+
+	self.minimumValue = minimumValue
+
 end
 
 return CosineAnnealingValueScheduler

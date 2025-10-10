@@ -18,7 +18,7 @@ local DataPredict = require(DataPredict)
 
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local InteractPredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local InteractionPredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```
 
@@ -98,9 +98,9 @@ However, this require setting the model's parameters to these settings temporari
 
 ```lua
 
-InteractPredictionModel.maximumNumberOfIterations = 100
+InteractionPredictionModel.maximumNumberOfIterations = 100
 
-InteractPredictionModel.learningRate = 0.3
+InteractionPredictionModel.learningRate = 0.3
 
 ```
 
@@ -148,7 +148,7 @@ local wrappedProbabilityToInteract = {
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = InteractPredictionModel:train(playerContextDataVector, wrappedProbabilityToInteract)
+local costArray = InteractionPredictionModel:train(playerContextDataVector, wrappedProbabilityToInteract)
 
 ```
 
@@ -158,7 +158,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = InteractPredictionModel:getModelParameters()
+local ModelParameters = InteractionPredictionModel:getModelParameters()
 
 ```
 
@@ -208,7 +208,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 local currentPlayerContextDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
-local predictedLabelVector = InteractPredictionModel:predict(currentPlayerContextDataVector)
+local predictedLabelVector = InteractionPredictionModel:predict(currentPlayerContextDataVector)
 
 ```
 
@@ -228,7 +228,9 @@ local enemyDataVector = generateEnemyDataVector()
 
 local currentPlayerContextDataVector = getPlayerContextDataVector()
 
-local predictedLabelVector = InteractPredictionModel:predict(currentPlayerContextDataVector)
+local predictedLabelVector = InteractionPredictionModel:predict(currentPlayerContextDataVector)
+
+local probabilityToInteract = predictedLabelVector[1][1]
 
 if (probabilityToInteract >= 0.7) then
 

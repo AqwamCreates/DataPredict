@@ -298,9 +298,15 @@ function OneVsAll:train(featureMatrix, labelVector)
 	
 	local modelCostArray
 	
+	local totalCost
+	
+	local cost
+	
 	repeat
 		
-		local totalCost = 0
+		numberOfIterations = numberOfIterations + 1
+		
+		totalCost = 0
 		
 		for m, Model in ipairs(ModelArray) do
 			
@@ -312,11 +318,15 @@ function OneVsAll:train(featureMatrix, labelVector)
 
 		end
 		
-		numberOfIterations = numberOfIterations + 1
+		cost = self:calculateCostWhenRequired(numberOfIterations, function() return totalCost end)
 		
-		table.insert(costArray, totalCost)
-		
-		self:printNumberOfIterationsAndCost(totalCost, numberOfIterations)
+		if (cost) then
+
+			table.insert(costArray, cost)
+
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+
+		end
 				
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(totalCost) or self:checkIfConverged(totalCost)
 	

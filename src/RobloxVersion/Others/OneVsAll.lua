@@ -28,8 +28,6 @@
 
 local DataPredictLibrary = script.Parent.Parent
 
-local IterativeMethodBaseModel = require(DataPredictLibrary.Models.IterativeMethodBaseModel)
-
 local Models = DataPredictLibrary.Models
 
 local Optimizers = DataPredictLibrary.Optimizers
@@ -37,6 +35,8 @@ local Optimizers = DataPredictLibrary.Optimizers
 local Regularizers = DataPredictLibrary.Regularizers
 
 local AqwamTensorLibrary = require(DataPredictLibrary.AqwamTensorLibraryLinker.Value)
+
+local IterativeMethodBaseModel = require(Models.IterativeMethodBaseModel)
 
 OneVsAll = {}
 
@@ -370,6 +370,8 @@ function OneVsAll:predict(featureMatrix)
 	
 	if (#self.ModelArray == 0) then error("No model set.") end
 	
+	local ClassesList = self.ClassesList
+	
 	local numberOfData = #featureMatrix
 	
 	local selectedModelNumberVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
@@ -382,7 +384,7 @@ function OneVsAll:predict(featureMatrix)
 		
 		local selectedModelNumber, highestValue = self:getBestPrediction(featureVector)
 		
-		selectedModelNumberVector[i][1] = self.ClassesList[selectedModelNumber]
+		selectedModelNumberVector[i][1] = ClassesList[selectedModelNumber]
 		
 		highestValueVector[i][1] = highestValue
 		

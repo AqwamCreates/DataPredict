@@ -136,7 +136,7 @@ function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, num
 
 	if (Optimizer) then 
 
-		costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix) 
+		costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix, ModelParameters) 
 
 	else
 

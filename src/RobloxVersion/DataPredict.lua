@@ -192,17 +192,29 @@ AqwamMachineAndDeepLearningLibrary.Optimizers = {
 
 	Gravity = require(Optimizers.Gravity),
 
-	LearningRateStepDecay = require(Optimizers.LearningRateStepDecay),
-
-	LearningRateTimeDecay = require(Optimizers.LearningRateTimeDecay),
-
 }
 
 AqwamMachineAndDeepLearningLibrary.ValueSchedulers = {
+	
+	Chained = require(ValueSchedulers.Chained),
+	
+	Constant = require(ValueSchedulers.Constant),
+	
+	CosineAnnealing = require(ValueSchedulers.CosineAnnealing),
+	
+	Exponential = require(ValueSchedulers.Exponential),
+	
+	Linear = require(ValueSchedulers.Linear),
+	
+	MultipleStep = require(ValueSchedulers.MultipleStep),
+	
+	Multiplicative = require(ValueSchedulers.Multiplicative),
+	
+	Polynomial = require(ValueSchedulers.Polynomial),
+	
+	Sequential = require(ValueSchedulers.Sequential),
 
-	TimeDecay = require(ValueSchedulers.TimeDecay),
-
-	StepDecay = require(ValueSchedulers.StepDecay)
+	Step = require(ValueSchedulers.Step),
 
 }
 

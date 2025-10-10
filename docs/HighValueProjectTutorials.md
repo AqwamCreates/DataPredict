@@ -18,7 +18,7 @@
 
   * Therefore, creating or redistributing copies or derivatives of this page and its links' contents are not allowed.
 
-  * Commercial use is also not allowed without a license (except certain conditions).
+  * Commercial use is also not allowed without a license (except in certain conditions).
 
 * You can download and read the full list of commercial licensing agreements [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
 

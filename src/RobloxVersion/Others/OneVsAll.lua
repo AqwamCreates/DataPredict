@@ -64,8 +64,6 @@ function OneVsAll.new(parameterDictionary)
 	
 	NewOneVsAll:setClassName("OneVsAll")
 	
-	NewOneVsAll.numberOfClasses = parameterDictionary.numberOfClasses or defaultNumberOfClasses
-	
 	NewOneVsAll.useNegativeOneBinaryLabel = NewOneVsAll:getValueOrDefaultValue(parameterDictionary.useNegativeOneBinaryLabel, false)
 	
 	NewOneVsAll.ClassesList = parameterDictionary.ClassesList or {}
@@ -91,8 +89,10 @@ function OneVsAll:generateModel(parameterDictionary)
 	local ModelArray = self.ModelArray
 	
 	local SelectedModel = require(Models[modelName])
+	
+	local numberOfClasses = #self.ClassesList
 
-	for i = 1, self.numberOfClasses, 1 do
+	for i = 1, numberOfClasses, 1 do
 
 		local ModelObject = SelectedModel.new(parameterDictionary)
 
@@ -296,8 +296,6 @@ function OneVsAll:train(featureMatrix, labelVector)
 
 	end
 	
-	local ModelArray = self.ModelArray
-	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local isOutputPrinted = self.isOutputPrinted
@@ -308,9 +306,15 @@ function OneVsAll:train(featureMatrix, labelVector)
 	
 	local modelCostArray
 	
+	local totalCost
+	
+	local cost
+	
 	repeat
 		
-		local totalCost = 0
+		numberOfIterations = numberOfIterations + 1
+		
+		totalCost = 0
 		
 		for m, Model in ipairs(ModelArray) do
 			
@@ -322,11 +326,15 @@ function OneVsAll:train(featureMatrix, labelVector)
 
 		end
 		
-		numberOfIterations = numberOfIterations + 1
+		cost = self:calculateCostWhenRequired(numberOfIterations, function() return totalCost end)
 		
-		table.insert(costArray, totalCost)
-		
-		self:printNumberOfIterationsAndCost(totalCost, numberOfIterations)
+		if (cost) then
+
+			table.insert(costArray, cost)
+
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+
+		end
 				
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(totalCost) or self:checkIfConverged(totalCost)
 	
@@ -396,11 +404,13 @@ end
 
 function OneVsAll:getModelParametersArray(doNotDeepCopy)
 	
-	if (#self.ModelArray == 0) then error("No model set.") end
+	local ModelArray = self.ModelArray
+	
+	if (#ModelArray == 0) then error("No model set.") end
 	
 	local ModelParametersArray = {}
 	
-	for _, Model in ipairs(self.ModelArray) do 
+	for _, Model in ipairs(ModelArray) do 
 		
 		local ModelParameters = Model:getModelParameters(doNotDeepCopy)
 		
@@ -414,13 +424,15 @@ end
 
 function OneVsAll:setModelParametersArray(ModelParametersArray, doNotDeepCopy)
 	
-	if (#self.ModelArray == 0) then error("No model set.") end
+	local ModelArray = self.ModelArray
+	
+	if (#ModelArray == 0) then error("No model set.") end
 	
 	if (ModelParametersArray == nil) then return nil end
 	
-	if (#ModelParametersArray ~= #self.ModelArray) then error("The number of model parameters does not match with the number of models!") end
+	if (#ModelParametersArray ~= #ModelArray) then error("The number of model parameters does not match with the number of models!") end
 	
-	for m, Model in ipairs(self.ModelArray) do 
+	for m, Model in ipairs(ModelArray) do 
 		
 		local ModelParameters = ModelParametersArray[m]
 
@@ -432,9 +444,11 @@ end
 
 function OneVsAll:clearModelParameters()
 	
-	if (#self.ModelArray == 0) then error("No model set.") end
+	local ModelArray = self.ModelArray
 	
-	for _, Model in ipairs(self.ModelArray) do Model:clearModelParameters() end
+	if (#ModelArray == 0) then error("No model set.") end
+	
+	for _, Model in ipairs(ModelArray) do Model:clearModelParameters() end
 
 end
 

@@ -55,7 +55,7 @@ If you want to add more data instead of relying on the initial data point, you a
 
 ```lua
 
-local playerDataMatrix = {}
+local playerContextDataMatrix = {}
   
 local recordedTimeArray = {}
   
@@ -63,7 +63,7 @@ local snapshotIndex = 1
   
 local function snapshotData()
   
- playerDataMatrix[snapshotIndex] = {
+ playerContextDataMatrix[snapshotIndex] = {
 
     1,
     numberOfCurrencyAmount,
@@ -88,9 +88,9 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias").
+local randomPlayerContextDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias").
 
-local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, 1) -- Making sure that at all values, it predicts 100% probability of interacting.
+local labelContextDataMatrix = TensorL:createTensor({numberOfData, 1}, 1) -- Making sure that at all values, it predicts 100% probability of interacting.
 
 ```
 
@@ -110,7 +110,7 @@ By the time the player leaves, it is time for us to train the model. But first, 
 
 ```lua
 
-local timeToLeave = os.time() - recordedTime
+local durationOfNoInteraction = os.time() - recordedTime
 
 ```
 
@@ -124,7 +124,7 @@ Currently, there are two ways to scale the probability.
 
 ```lua
 
-local probabilityToLeave = 1 / timeToLeave
+local probabilityToInteract = 1 / durationOfNoInteraction
 
 ```
 
@@ -134,7 +134,7 @@ local probabilityToLeave = 1 / timeToLeave
 
 -- Large scaleFactor means slower growth. scaleFactor should be based on empirical average session length.
 
-local probabilityToLeave = math.exp(-timeToLeave / scaleFactor)
+local probabilityToInteract = math.exp(-durationOfNoInteraction / scaleFactor)
 
 ```
 
@@ -142,13 +142,13 @@ Once you have chosen to scale your values, we must do this:
 
 ```lua
 
-local wrappedProbabilityToLeave = {
+local wrappedProbabilityToInteract = {
 
-    {probabilityToLeave}
+    {probabilityToInteract}
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = InteractPredictionModel:train(playerDataVector, wrappedProbabilityToLeave)
+local costArray = InteractPredictionModel:train(playerContextDataVector, wrappedProbabilityToInteract)
 
 ```
 
@@ -206,9 +206,9 @@ In other to produce predictions from our model, we must perform this operation:
 
 ```lua
 
-local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
+local currentPlayerContextDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
-local predictedLabelVector = InteractPredictionModel:predict(currentPlayerDataVector)
+local predictedLabelVector = InteractPredictionModel:predict(currentPlayerContextDataVector)
 
 ```
 
@@ -224,9 +224,15 @@ We can do this for every 10 seconds and use this to extend the players' playtime
 
 ```lua
 
-if (probabilityToLeavePrediction >= 0.97) then  -- Can be changed instead of 0.97.
+local enemyDataVector = generateEnemyDataVector()
 
---- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
+local currentPlayerContextDataVector = getPlayerContextDataVector()
+
+local predictedLabelVector = InteractPredictionModel:predict(currentPlayerContextDataVector)
+
+if (probabilityToInteract >= 0.7) then
+
+    spawnEnemy(enemyDataVector)
 
 end
 

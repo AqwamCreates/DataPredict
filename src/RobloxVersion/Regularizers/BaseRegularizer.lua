@@ -92,9 +92,7 @@ end
 
 function BaseRegularizer:calculateCost(ModelParameters)
 	
-	local calculateCostFunction = self.calculateCostFunction
-	
-	if (calculateCostFunction) then return calculateCostFunction(ModelParameters) end
+	return self.calculateCostFunction(ModelParameters)
 	
 end
 
@@ -106,9 +104,7 @@ end
 
 function BaseRegularizer:calculate(ModelParameters)
 
-	local calculateFunction = self.calculateFunction
-
-	if (calculateFunction) then return calculateFunction(ModelParameters) end
+	return self.calculateFunction(ModelParameters)
 
 end
 

@@ -28,42 +28,42 @@
 
 local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
 
-InverseTimeDecayValueScheduler = {}
+InverseTimeValueScheduler = {}
 
-InverseTimeDecayValueScheduler.__index = InverseTimeDecayValueScheduler
+InverseTimeValueScheduler.__index = InverseTimeValueScheduler
 
-setmetatable(InverseTimeDecayValueScheduler, BaseValueScheduler)
+setmetatable(InverseTimeValueScheduler, BaseValueScheduler)
 
 local defaultDecayRate = 0.5
 
-function InverseTimeDecayValueScheduler.new(parameterDictionary)
+function InverseTimeValueScheduler.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewInverseTimeDecayValueScheduler = BaseValueScheduler.new(parameterDictionary)
+	local NewInverseTimeValueScheduler = BaseValueScheduler.new(parameterDictionary)
 	
-	setmetatable(NewInverseTimeDecayValueScheduler, InverseTimeDecayValueScheduler)
+	setmetatable(NewInverseTimeValueScheduler, InverseTimeValueScheduler)
 	
-	NewInverseTimeDecayValueScheduler:setName("InverseTimeDecay")
+	NewInverseTimeValueScheduler:setName("InverseTime")
 	
-	NewInverseTimeDecayValueScheduler.decayRate = parameterDictionary.decayRate or defaultDecayRate
+	NewInverseTimeValueScheduler.decayRate = parameterDictionary.decayRate or defaultDecayRate
 	
 	--------------------------------------------------------------------------------
 	
-	NewInverseTimeDecayValueScheduler:setCalculateFunction(function(value, timeValue)
+	NewInverseTimeValueScheduler:setCalculateFunction(function(value, timeValue)
 
-		return (value / (1 + (NewInverseTimeDecayValueScheduler.decayRate * timeValue)))
+		return (value / (1 + (NewInverseTimeValueScheduler.decayRate * timeValue)))
 		
 	end)
 	
-	return NewInverseTimeDecayValueScheduler
+	return NewInverseTimeValueScheduler
 	
 end
 
-function InverseTimeDecayValueScheduler:setDecayRate(decayRate)
+function InverseTimeValueScheduler:setDecayRate(decayRate)
 	
 	self.decayRate = decayRate
 	
 end
 
-return InverseTimeDecayValueScheduler
+return InverseTimeValueScheduler

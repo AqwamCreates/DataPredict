@@ -579,17 +579,19 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 
 	local activationFunctionName = activationFunctionArray[1]
 
-	local elementWiseActivationFunction = elementWiseActivationFunctionList[activationFunctionName]
+	local activationFunction = elementWiseActivationFunctionList[activationFunctionName]
 
 	local zMatrix = featureMatrix
 
 	local inputMatrix = featureMatrix
 
 	local numberOfData = #featureMatrix
+	
+	local hasBiasNeuron = hasBiasNeuronArray[1]
 
-	if (elementWiseActivationFunction) then
+	if (activationFunction) then
 
-		inputMatrix = AqwamTensorLibrary:applyFunction(elementWiseActivationFunction, zMatrix)
+		inputMatrix = AqwamTensorLibrary:applyFunction(activationFunction, zMatrix)
 
 	else
 
@@ -597,7 +599,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 
 	end
 
-	inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuronArray[1], dropoutRateArray[1], doNotDropoutNeurons)
+	inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRateArray[1], doNotDropoutNeurons)
 	
 	zMatrixArray[1] = inputMatrix
 	
@@ -609,7 +611,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 		
 		local nextLayerNumber = layerNumber + 1
 
-		local hasBiasNeuron = hasBiasNeuronArray[layerNumber + 1]
+		hasBiasNeuron = hasBiasNeuronArray[layerNumber + 1]
 
 		zMatrix = AqwamTensorLibrary:dotProduct(inputMatrix, weightMatrix)
 
@@ -737,19 +739,7 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 
 	local lastActivationMatrix = forwardPropagateArray[numberOfLayers]
 
-	local lastZMatrix = zMatrixArray[numberOfLayers]
-
-	local derivativeMatrix
-
-	if (elementWiseActivationFunctionDerivative) then
-
-		derivativeMatrix = AqwamTensorLibrary:applyFunction(elementWiseActivationFunctionDerivative, lastZMatrix)
-
-	else
-
-		derivativeMatrix = activationFunctionDerivativeList[activationFunctionName](lastActivationMatrix, lastZMatrix)
-
-	end
+	local derivativeMatrix = deriveLayer(forwardPropagateArray[numberOfLayers], zMatrixArray[numberOfLayers], 0, activationFunctionName)
 
 	local layerCostMatrix = AqwamTensorLibrary:multiply(lossMatrix, derivativeMatrix)
 	

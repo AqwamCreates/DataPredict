@@ -48,6 +48,8 @@ local defaultModelName = "LogisticRegression"
 
 local defaultMaximumNumberOfIterations = 500
 
+local defaultUseNegativeOneBinaryLabel = false
+
 function OneVsAll.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -64,7 +66,7 @@ function OneVsAll.new(parameterDictionary)
 	
 	NewOneVsAll.modelName = parameterDictionary.modelName or defaultModelName
 	
-	NewOneVsAll.useNegativeOneBinaryLabel = NewOneVsAll:getValueOrDefaultValue(parameterDictionary.useNegativeOneBinaryLabel, false)
+	NewOneVsAll.useNegativeOneBinaryLabel = NewOneVsAll:getValueOrDefaultValue(parameterDictionary.useNegativeOneBinaryLabel, defaultUseNegativeOneBinaryLabel)
 	
 	NewOneVsAll.ClassesList = parameterDictionary.ClassesList or {}
 	

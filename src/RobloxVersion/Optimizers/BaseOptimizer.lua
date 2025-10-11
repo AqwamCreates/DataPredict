@@ -26,18 +26,6 @@
 
 --]]
 
---[[
-
-	Apparently, some of the optimizers requires subtraction operations to be done on the weights itself like AdamW, RAdam and NAdam.
-	
-	However, we literally designed the optimizers to output the cost derivatives of these weights. The 
-	gradient descent and ascent are performed at model level and not optimizer level.
-	
-	Though the upside is that this design allows us to use ValueSchedulers as Optimizers. It also lowers the maintenance 
-	cost of this library because we don't have to implement the gradient descent and ascent in every single optimizer.
-
---]]
-
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 BaseOptimizer = {}

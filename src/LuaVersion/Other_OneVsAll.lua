@@ -34,7 +34,7 @@ local Optimizers = DataPredictLibrary.Optimizers
 
 local Regularizers = DataPredictLibrary.Regularizers
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require(D"AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
@@ -348,7 +348,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 	
 end
 
-local function getHighestValue(featureVector, ModelArray)
+local function getModelNumberWithHighestValue(featureVector, ModelArray)
 	
 	local selectedModelNumber = 0
 
@@ -390,7 +390,7 @@ function OneVsAll:predict(featureMatrix)
 		
 		local featureVector = {featureMatrix[i]}
 		
-		local selectedModelNumber, highestValue = getHighestValue(featureVector, ModelArray)
+		local selectedModelNumber, highestValue = getModelNumberWithHighestValue(featureVector, ModelArray)
 		
 		selectedModelNumberVector[i][1] = ClassesList[selectedModelNumber]
 		
@@ -406,7 +406,7 @@ function OneVsAll:getModelParametersArray(doNotDeepCopy)
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model set.") end
+	if (#ModelArray == 0) then error("No model.") end
 	
 	local ModelParametersArray = {}
 	

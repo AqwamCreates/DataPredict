@@ -348,30 +348,22 @@ function OneVsAll:train(featureMatrix, labelVector)
 	
 end
 
-function OneVsAll:getBestPrediction(featureVector)
+local function getHighestValue(featureVector, ModelArray)
 	
 	local selectedModelNumber = 0
-	
+
 	local highestValue = -math.huge
-	
-	for m, Model in ipairs(self.ModelArray) do 
 
-		local allOutputVector = Model:predict(featureVector, true)
-		
-		if (typeof(allOutputVector) == "number") then allOutputVector = {{allOutputVector}} end
+	for m, Model in ipairs(ModelArray) do 
 
-		local dimensionIndexArray, value = AqwamTensorLibrary:findMaximumValueDimensionIndexArray(allOutputVector)
+		local value = Model:predict(featureVector, true)
 
-		if (dimensionIndexArray) then
-			
-			if (value > highestValue) then
-				
-				selectedModelNumber = m
+		if (value > highestValue) then
 
-				highestValue = value
-				
-			end
-			
+			selectedModelNumber = m
+
+			highestValue = value
+
 		end
 
 	end
@@ -382,7 +374,9 @@ end
 
 function OneVsAll:predict(featureMatrix)
 	
-	if (#self.ModelArray == 0) then error("No model set.") end
+	local ModelArray = self.ModelArray
+	
+	if (#ModelArray == 0) then error("No model set.") end
 	
 	local ClassesList = self.ClassesList
 	
@@ -396,7 +390,7 @@ function OneVsAll:predict(featureMatrix)
 		
 		local featureVector = {featureMatrix[i]}
 		
-		local selectedModelNumber, highestValue = self:getBestPrediction(featureVector)
+		local selectedModelNumber, highestValue = getHighestValue(featureVector, ModelArray)
 		
 		selectedModelNumberVector[i][1] = ClassesList[selectedModelNumber]
 		

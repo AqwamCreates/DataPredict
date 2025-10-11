@@ -284,9 +284,9 @@ end
 
 function OneVsAll:train(featureMatrix, labelVector)
 	
-	local ModelArray = self.ModelArray
-
 	local ClassesList = self.ClassesList
+	
+	local ModelArray = self.ModelArray
 	
 	if (#ClassesList == 0) then ClassesList = self:processLabelVector(labelVector) end
 	

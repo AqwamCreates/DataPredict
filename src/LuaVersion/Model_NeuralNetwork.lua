@@ -490,8 +490,10 @@ local function activateLayer(layerZMatrix, hasBiasNeuron, activationFunctionName
 		end
 
 		if (hasBiasNeuron == 1) then
-
-			for data = 1, numberOfData, 1 do activatationLayerMatrix[data][1] = 1 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
+			
+			-- Because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
+			
+			for data = 1, numberOfData, 1 do activatationLayerMatrix[data][1] = 1 end
 
 		end
 
@@ -523,7 +525,9 @@ local function activateLayer(layerZMatrix, hasBiasNeuron, activationFunctionName
 
 end
 
-local function dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNotDropoutNeurons) -- Don't bother using the applyFunction from AqwamMatrixLibrary. Otherwise, you cannot apply dropout at the same index for both z matrix and activation matrix.
+-- Don't bother using the applyFunction from AqwamMatrixLibrary. Otherwise, you cannot apply dropout at the same index for both z matrix and activation matrix.
+
+local function dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNotDropoutNeurons)
 
 	if (doNotDropoutNeurons) or (dropoutRate == 0) then return inputMatrix end
 

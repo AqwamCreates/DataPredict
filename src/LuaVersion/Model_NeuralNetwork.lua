@@ -457,43 +457,39 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 end
 
-local function activateLayer(layerZMatrix, hasBiasNeuron, activationFunctionName)
+local function activateLayer(zMatrix, hasBiasNeuron, activationFunctionName)
 
 	-- Going for optimization where we remove redundant activation function calculation for bias values.
 
-	local numberOfData = #layerZMatrix
+	local numberOfData = #zMatrix
 
-	local numberOfFeatures = #layerZMatrix[1]
+	local numberOfFeatures = #zMatrix[1]
+	
+	local startingFeatureIndex = (1 + hasBiasNeuron)
 	
 	local activationFunction = elementWiseActivationFunctionList[activationFunctionName] 
 
-	local activatationLayerMatrix = {}
+	local activationMatrix = {}
 
-	local unwrappedInputVector
+	local unwrappedActivationVector
 
 	if (activationFunction) then
 
-		for dataIndex, unwrappedLayerZVector in ipairs(layerZMatrix) do
+		for dataIndex, unwrappedLayerZVector in ipairs(zMatrix) do
 
-			unwrappedInputVector = {}
+			unwrappedActivationVector = {}
+			
+			-- Because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
 
-			if (hasBiasNeuron == 1) then unwrappedInputVector[1] = 1 end
+			if (hasBiasNeuron == 1) then unwrappedActivationVector[1] = 1 end
 
-			for featureIndex = (1 + hasBiasNeuron), numberOfFeatures, 1 do
+			for featureIndex = startingFeatureIndex, numberOfFeatures, 1 do
 
-				unwrappedInputVector[featureIndex] = activationFunction(unwrappedLayerZVector[featureIndex])
+				unwrappedActivationVector[featureIndex] = activationFunction(unwrappedLayerZVector[featureIndex])
 
 			end
 
-			activatationLayerMatrix[dataIndex] = unwrappedInputVector
-
-		end
-
-		if (hasBiasNeuron == 1) then
-			
-			-- Because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
-			
-			for data = 1, numberOfData, 1 do activatationLayerMatrix[data][1] = 1 end
+			activationMatrix[dataIndex] = unwrappedActivationVector
 
 		end
 
@@ -501,27 +497,29 @@ local function activateLayer(layerZMatrix, hasBiasNeuron, activationFunctionName
 		
 		activationFunction = activationFunctionList[activationFunctionName]
 
-		for dataIndex, unwrappedLayerZVector in ipairs(layerZMatrix) do
+		for dataIndex, unwrappedLayerZVector in ipairs(zMatrix) do
 
-			unwrappedInputVector = {}
+			unwrappedActivationVector = {}
 
-			for featureIndex = (1 + hasBiasNeuron), numberOfFeatures, 1 do
+			for featureIndex = startingFeatureIndex, numberOfFeatures, 1 do
 
-				unwrappedInputVector[featureIndex - hasBiasNeuron] = unwrappedLayerZVector[featureIndex]
+				unwrappedActivationVector[featureIndex - hasBiasNeuron] = unwrappedLayerZVector[featureIndex]
 
 			end
 
-			unwrappedInputVector = activationFunction({unwrappedLayerZVector})[1]
+			unwrappedActivationVector = activationFunction({unwrappedLayerZVector})[1]
+			
+			-- Because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
 
-			if (hasBiasNeuron == 1) then table.insert(unwrappedInputVector, 1) end
+			if (hasBiasNeuron == 1) then table.insert(unwrappedActivationVector, 1, 1) end
 
-			activatationLayerMatrix[dataIndex] = unwrappedInputVector
+			activationMatrix[dataIndex] = unwrappedActivationVector
 
 		end
 
 	end
 
-	return activatationLayerMatrix
+	return activationMatrix
 
 end
 
@@ -600,10 +598,10 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 	end
 
 	inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuronArray[1], dropoutRateArray[1], doNotDropoutNeurons)
-
-	table.insert(zMatrixArray, inputMatrix)
-
-	table.insert(forwardPropagateArray, inputMatrix) -- don't remove this! otherwise the code won't work!
+	
+	zMatrixArray[1] = inputMatrix
+	
+	forwardPropagateArray[1] = inputMatrix -- Don't remove this! otherwise the code won't work!
 
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
@@ -620,10 +618,10 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 		inputMatrix = activateLayer(zMatrix, hasBiasNeuron, activationFunctionArray[nextLayerNumber])
 
 		inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRateArray[nextLayerNumber], doNotDropoutNeurons)
-
-		table.insert(zMatrixArray, zMatrix)
-
-		table.insert(forwardPropagateArray, inputMatrix)
+		
+		zMatrixArray[nextLayerNumber] = zMatrix
+		
+		forwardPropagateArray[nextLayerNumber] = inputMatrix
 
 		self:sequenceWait()
 
@@ -638,6 +636,72 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 	end
 
 	return inputMatrix, forwardPropagateArray, zMatrixArray
+
+end
+
+local function deriveLayer(activationMatrix, zMatrix, hasBiasNeuronOnNextLayer, activationFunctionName)
+
+	-- Going for optimization where we remove redundant activation function calculation for bias values.
+
+	local numberOfData = #zMatrix
+
+	local numberOfFeatures = #zMatrix[1]
+	
+	local startingFeatureIndex = (1 + hasBiasNeuronOnNextLayer)
+
+	local activationFunctionDerivativeFunction = elementWiseActivationFunctionList[activationFunctionName] 
+
+	local derivativeMatrix = {}
+
+	local unwrappedDerivativeVector
+
+	if (activationFunctionDerivativeFunction) then
+
+		for dataIndex, unwrappedLayerZVector in ipairs(zMatrix) do
+
+			unwrappedDerivativeVector = {}
+			
+			-- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
+
+			if (hasBiasNeuronOnNextLayer == 1) then unwrappedDerivativeVector[1] = 0 end
+
+			for featureIndex = startingFeatureIndex, numberOfFeatures, 1 do
+
+				unwrappedDerivativeVector[featureIndex] = activationFunctionDerivativeFunction(unwrappedLayerZVector[featureIndex])
+
+			end
+
+			derivativeMatrix[dataIndex] = unwrappedDerivativeVector
+
+		end
+
+	else
+
+		activationFunctionDerivativeFunction = activationFunctionDerivativeList[activationFunctionName]
+
+		for dataIndex, unwrappedLayerZVector in ipairs(zMatrix) do
+
+			unwrappedDerivativeVector = {}
+
+			for featureIndex = startingFeatureIndex, numberOfFeatures, 1 do
+
+				unwrappedDerivativeVector[featureIndex - hasBiasNeuronOnNextLayer] = unwrappedLayerZVector[featureIndex]
+
+			end
+
+			unwrappedDerivativeVector = activationFunctionDerivativeFunction({activationMatrix[dataIndex]}, {unwrappedLayerZVector})[1]
+			
+			-- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
+
+			if (hasBiasNeuronOnNextLayer == 1) then table.insert(unwrappedDerivativeVector, 1, 0) end
+
+			derivativeMatrix[dataIndex] = unwrappedDerivativeVector
+
+		end
+
+	end
+
+	return derivativeMatrix
 
 end
 
@@ -688,42 +752,18 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 	end
 
 	local layerCostMatrix = AqwamTensorLibrary:multiply(lossMatrix, derivativeMatrix)
-
-	table.insert(errorMatrixArray, layerCostMatrix)
+	
+	errorMatrixArray[1] = layerCostMatrix
 
 	for layerNumber = (numberOfLayers - 1), 2, -1 do
 
 		activationFunctionName = activationFunctionArray[layerNumber]
 
-		local hasBiasNeuronOnNextLayer = hasBiasNeuronArray[layerNumber + 1]
-
 		local layerMatrix = AqwamTensorLibrary:transpose(ModelParameters[layerNumber])
 
 		local partialErrorMatrix = AqwamTensorLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
-		local elementWiseActivationFunctionDerivative = elementWiseActivationFunctionDerivativeList[activationFunctionName]
-
-		local currentActivationMatrix = forwardPropagateArray[layerNumber]
-
-		local currentZMatrix = zMatrixArray[layerNumber]
-
-		local derivativeMatrix
-
-		if (elementWiseActivationFunctionDerivative) then
-
-			derivativeMatrix = AqwamTensorLibrary:applyFunction(elementWiseActivationFunctionDerivative, currentZMatrix)
-
-		else
-
-			derivativeMatrix = activationFunctionDerivativeList[activationFunctionName](currentActivationMatrix, currentZMatrix)
-
-		end
-
-		if (hasBiasNeuronOnNextLayer == 1) then -- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
-
-			for i = 1, #derivativeMatrix, 1 do derivativeMatrix[i][1] = 0 end
-
-		end
+		local derivativeMatrix = deriveLayer(forwardPropagateArray[layerNumber], zMatrixArray[layerNumber], hasBiasNeuronArray[layerNumber + 1], activationFunctionName)
 
 		layerCostMatrix = AqwamTensorLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 
@@ -742,8 +782,8 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 		local costFunctionDerivatives = AqwamTensorLibrary:dotProduct(activationLayerMatrix, errorMatrix)
 
 		if (type(costFunctionDerivatives) == "number") then costFunctionDerivatives = {{costFunctionDerivatives}} end
-
-		table.insert(costFunctionDerivativeMatrixArray, costFunctionDerivatives)
+		
+		costFunctionDerivativeMatrixArray[layer] = costFunctionDerivatives
 
 		self:sequenceWait()
 
@@ -757,8 +797,6 @@ end
 
 function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, numberOfData)
 
-	local NewModelParameters = {}
-
 	local numberOfLayers = #self.numberOfNeuronsArray
 
 	local learningRateArray = self.learningRateArray
@@ -770,6 +808,8 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 	local hasBiasNeuronArray = self.hasBiasNeuronArray
 
 	local ModelParameters = self.ModelParameters
+	
+	local NewModelParameters = {}
 
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
@@ -814,8 +854,8 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 			for i = 1, #newWeightMatrix, 1 do newWeightMatrix[i][1] = 0 end
 
 		end
-
-		table.insert(NewModelParameters, newWeightMatrix)
+		
+		NewModelParameters[layerNumber] = newWeightMatrix
 
 	end
 	

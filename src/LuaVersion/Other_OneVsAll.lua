@@ -180,7 +180,7 @@ function OneVsAll:setRegularizer(parameterDictionary)
 		
 		local success = pcall(function() Model:setRegularizer(RegularizerObject) end)
 		
-		if (not success) then warn("The model for \"" .. ClassesList[m] .. "\" class does not have setOptimizer() function. No optimizer have been set to the model.") end
+		if (not success) then warn("The model for \"" .. ClassesList[m] .. "\" class does not have setRegularizer() function. No optimizer have been set to the model.") end
 	
 	end
 	

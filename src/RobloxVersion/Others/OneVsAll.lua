@@ -406,7 +406,7 @@ function OneVsAll:getModelParametersArray(doNotDeepCopy)
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model set.") end
+	if (#ModelArray == 0) then error("No model.") end
 	
 	local ModelParametersArray = {}
 	

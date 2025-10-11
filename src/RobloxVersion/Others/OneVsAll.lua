@@ -102,6 +102,8 @@ function OneVsAll:generateModel(parameterDictionary)
 
 	self.ModelArray = ModelArray
 	
+	return ModelArray
+	
 end
 
 function OneVsAll:setModel(parameterDictionary)
@@ -136,8 +138,10 @@ function OneVsAll:setOptimizer(parameterDictionary)
 	
 	if (not optimizerName) then error("No optimizer name.") end
 	
+	local ClassesList = self.ClassesList
+	
 	local SelectedOptimizer = require(Optimizers[optimizerName])
-		
+	
 	for m, Model in ipairs(ModelArray) do 
 
 		local success = pcall(function() 
@@ -148,7 +152,7 @@ function OneVsAll:setOptimizer(parameterDictionary)
 				
 		end)
 
-		if (not success) then warn("Model " .. m .. " does not have setOptimizer() function. No optimizer have been set to the model.") end
+		if (not success) then warn("The model for \"" .. ClassesList[m] .. "\" class does not have setOptimizer() function. No optimizer have been set to the model.") end
 
 	end
 		
@@ -166,6 +170,8 @@ function OneVsAll:setRegularizer(parameterDictionary)
 	
 	if (not regularizerName) then error("No regularizer name.") end
 	
+	local ClassesList = self.ClassesList
+	
 	local SelectedRegularizer = require(Regularizers[regularizerName])
 	
 	local RegularizerObject = SelectedRegularizer.new(parameterDictionary)
@@ -174,7 +180,7 @@ function OneVsAll:setRegularizer(parameterDictionary)
 		
 		local success = pcall(function() Model:setRegularizer(RegularizerObject) end)
 		
-		if (not success) then warn("Model " .. m .. " does not have setRegularizer() function. No regularizer have been set to the model.") end
+		if (not success) then warn("The model for \"" .. ClassesList[m] .. "\" class does not have setOptimizer() function. No optimizer have been set to the model.") end
 	
 	end
 	
@@ -276,7 +282,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then self:generateModel() end
+	if (#ModelArray == 0) then ModelArray = self:generateModel() end
 	
 	self:processLabelVector(labelVector)
 	

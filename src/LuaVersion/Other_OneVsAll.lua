@@ -34,9 +34,9 @@ local Optimizers = DataPredictLibrary.Optimizers
 
 local Regularizers = DataPredictLibrary.Regularizers
 
-local AqwamTensorLibrary = require(D"AqwamTensorLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
+local IterativeMethodBaseModel = require("Models_IterativeMethodBaseModel")
 
 OneVsAll = {}
 
@@ -356,7 +356,7 @@ local function getModelNumberWithHighestValue(featureVector, ModelArray)
 
 	for m, Model in ipairs(ModelArray) do 
 
-		local value = Model:predict(featureVector, true)
+		local value = Model:predict(featureVector, true)[1][1]
 
 		if (value > highestValue) then
 

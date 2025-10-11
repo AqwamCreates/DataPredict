@@ -256,22 +256,24 @@ end
 
 local function convertToBinaryLabelVector(labelVector, selectedClass, useNegativeOneBinaryLabel)
 
-	local numberOfRows = #labelVector
-
-	local newLabelVector = AqwamTensorLibrary:createTensor({numberOfRows, 1}, true)
-
-	for row = 1, numberOfRows, 1 do
-
-		if (labelVector[row][1] == selectedClass) then
-
-			newLabelVector[row][1] = 1
-
+	local newLabelVector = {}
+	
+	local labelValue
+	
+	for i, unwrappedLabelTable in ipairs(labelVector) do
+		
+		if (unwrappedLabelTable[1] == selectedClass) then
+			
+			labelValue = 1
+			
 		else
-
-			newLabelVector[row][1] = (useNegativeOneBinaryLabel and -1) or 0
-
+			
+			labelValue = (useNegativeOneBinaryLabel and -1) or 0
+			
 		end
-
+		
+		newLabelVector[i] = {labelValue}
+		
 	end
 
 	return newLabelVector

@@ -490,8 +490,10 @@ local function activateLayer(layerZMatrix, hasBiasNeuron, activationFunctionName
 		end
 
 		if (hasBiasNeuron == 1) then
-
-			for data = 1, numberOfData, 1 do activatationLayerMatrix[data][1] = 1 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
+			
+			-- Because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
+			
+			for data = 1, numberOfData, 1 do activatationLayerMatrix[data][1] = 1 end
 
 		end
 
@@ -523,7 +525,9 @@ local function activateLayer(layerZMatrix, hasBiasNeuron, activationFunctionName
 
 end
 
-local function dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNotDropoutNeurons) -- Don't bother using the applyFunction from AqwamMatrixLibrary. Otherwise, you cannot apply dropout at the same index for both z matrix and activation matrix.
+-- Don't bother using the applyFunction from AqwamMatrixLibrary. Otherwise, you cannot apply dropout at the same index for both z matrix and activation matrix.
+
+local function dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNotDropoutNeurons)
 
 	if (doNotDropoutNeurons) or (dropoutRate == 0) then return inputMatrix end
 
@@ -534,23 +538,23 @@ local function dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNot
 	local nonDropoutRate = 1 - dropoutRate
 
 	local scaleFactor = (1 / nonDropoutRate)
-
-	for data = 1, numberOfData, 1 do
-
-		for neuron = (hasBiasNeuron + 1), numberOfFeatures, 1 do -- Dropout are not applied to bias, so we skip them.
-
+	
+	for dataIndex, unwrappedDataVector in ipairs(inputMatrix) do
+		
+		for featureIndex, value in ipairs(unwrappedDataVector) do
+			
 			if (math.random() > nonDropoutRate) then
 
-				inputMatrix[data][neuron] = 0
+				unwrappedDataVector[featureIndex] = 0
 
 			else
 
-				inputMatrix[data][neuron] = inputMatrix[data][neuron] * scaleFactor
+				unwrappedDataVector[featureIndex] = value * scaleFactor
 
 			end
-
+			
 		end
-
+		
 	end
 
 	return inputMatrix

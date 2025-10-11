@@ -176,21 +176,29 @@ AqwamMachineAndDeepLearningLibrary.Regularizers = {
 
 AqwamMachineAndDeepLearningLibrary.Optimizers = {
 
-	RootMeanSquarePropagation = require(Optimizers.RootMeanSquarePropagation),
-
-	Momentum = require(Optimizers.Momentum),
-
+	AdaptiveDelta = require(Optimizers.AdaptiveDelta),
+	
+	AdaptiveFactor = require(Optimizers.AdaptiveFactor),
+	
 	AdaptiveGradient = require(Optimizers.AdaptiveGradient),
-
-	AdaptiveGradientDelta = require(Optimizers.AdaptiveGradientDelta),
 
 	AdaptiveMomentEstimation = require(Optimizers.AdaptiveMomentEstimation),
 
 	AdaptiveMomentEstimationMaximum = require(Optimizers.AdaptiveMomentEstimationMaximum),
+	
+	AdaptiveMomentEstimationWeightDecay = require(Optimizers.AdaptiveMomentEstimationWeightDecay),
+	
+	Gravity = require(Optimizers.Gravity),
+	
+	Momentum = require(Optimizers.Momentum),
 
 	NesterovAcceleratedAdaptiveMomentEstimation = require(Optimizers.NesterovAcceleratedAdaptiveMomentEstimation),
-
-	Gravity = require(Optimizers.Gravity),
+	
+	RectifiedAdaptiveMomentEstimation = require(Optimizers.RectifiedAdaptiveMomentEstimation),
+	
+	ResilientBackwardPropagation = require(Optimizers.ResilientBackwardPropagation),
+	
+	RootMeanSquarePropagation = require(Optimizers.RootMeanSquarePropagation),
 
 }
 
@@ -203,6 +211,10 @@ AqwamMachineAndDeepLearningLibrary.ValueSchedulers = {
 	CosineAnnealing = require(ValueSchedulers.CosineAnnealing),
 	
 	Exponential = require(ValueSchedulers.Exponential),
+	
+	InverseSquareRoot = require(ValueSchedulers.InverseSquareRoot),
+	
+	InverseTime = require(ValueSchedulers.InverseTime),
 	
 	Linear = require(ValueSchedulers.Linear),
 	
@@ -277,6 +289,8 @@ AqwamMachineAndDeepLearningLibrary.Others = {
 	ModelChecker = require(Others.ModelChecker),
 	
 	OneVsAll = require(Others.OneVsAll),
+	
+	OneVsOne = require(Others.OneVsOne),
 	
 	ConfusionMatrixCreator = require(Others.ConfusionMatrixCreator),
 	

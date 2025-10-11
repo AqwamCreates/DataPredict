@@ -46,8 +46,6 @@ setmetatable(OneVsAll, IterativeMethodBaseModel)
 
 local defaultModelName = "LogisticRegression"
 
-local defaultNumberOfClasses = 2
-
 local defaultMaximumNumberOfIterations = 500
 
 function OneVsAll.new(parameterDictionary)

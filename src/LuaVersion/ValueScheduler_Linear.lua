@@ -65,7 +65,7 @@ function LinearValueScheduler.new(parameterDictionary)
 		local endFactor = NewLinearValueScheduler.endFactor
 		
 		if (timeValue >= otherTimeValue) then return (value * endFactor) end
-				
+		
 		local startFactor = NewLinearValueScheduler.startFactor
 		
 		local factor = startFactor + ((endFactor - startFactor) * (timeValue / otherTimeValue))

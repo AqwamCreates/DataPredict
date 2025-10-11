@@ -538,23 +538,23 @@ local function dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNot
 	local nonDropoutRate = 1 - dropoutRate
 
 	local scaleFactor = (1 / nonDropoutRate)
-
-	for data = 1, numberOfData, 1 do
-
-		for neuron = (hasBiasNeuron + 1), numberOfFeatures, 1 do -- Dropout are not applied to bias, so we skip them.
-
+	
+	for dataIndex, unwrappedDataVector in ipairs(inputMatrix) do
+		
+		for featureIndex, value in ipairs(unwrappedDataVector) do
+			
 			if (math.random() > nonDropoutRate) then
 
-				inputMatrix[data][neuron] = 0
+				unwrappedDataVector[featureIndex] = 0
 
 			else
 
-				inputMatrix[data][neuron] = inputMatrix[data][neuron] * scaleFactor
+				unwrappedDataVector[featureIndex] = value * scaleFactor
 
 			end
-
+			
 		end
-
+		
 	end
 
 	return inputMatrix

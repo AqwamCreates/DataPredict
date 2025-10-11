@@ -348,7 +348,7 @@ function OneVsAll:train(featureMatrix, labelVector)
 	
 end
 
-local function getHighestValue(featureVector, ModelArray)
+local function getModelNumberWithHighestValue(featureVector, ModelArray)
 	
 	local selectedModelNumber = 0
 
@@ -390,7 +390,7 @@ function OneVsAll:predict(featureMatrix)
 		
 		local featureVector = {featureMatrix[i]}
 		
-		local selectedModelNumber, highestValue = getHighestValue(featureVector, ModelArray)
+		local selectedModelNumber, highestValue = getModelNumberWithHighestValue(featureVector, ModelArray)
 		
 		selectedModelNumberVector[i][1] = ClassesList[selectedModelNumber]
 		

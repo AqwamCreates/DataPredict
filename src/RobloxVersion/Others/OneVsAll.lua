@@ -251,6 +251,8 @@ function OneVsAll:processLabelVector(labelVector)
 	end
 	
 	self.ClassesList = ClassesList
+	
+	return ClassesList
 
 end
 
@@ -283,12 +285,12 @@ end
 function OneVsAll:train(featureMatrix, labelVector)
 	
 	local ModelArray = self.ModelArray
+
+	local ClassesList = self.ClassesList
+	
+	if (#ClassesList == 0) then ClassesList = self:processLabelVector(labelVector) end
 	
 	if (#ModelArray == 0) then ModelArray = self:generateModel() end
-	
-	self:processLabelVector(labelVector)
-	
-	local ClassesList = self.ClassesList
 	
 	if (#ModelArray ~= #ClassesList) then error("The number of models does not match with number of classes.") end
 	

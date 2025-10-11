@@ -64,6 +64,8 @@ function OneVsAll.new(parameterDictionary)
 	
 	NewOneVsAll:setClassName("OneVsAll")
 	
+	NewOneVsAll.modelName = parameterDictionary.modelName or defaultModelName
+	
 	NewOneVsAll.useNegativeOneBinaryLabel = NewOneVsAll:getValueOrDefaultValue(parameterDictionary.useNegativeOneBinaryLabel, false)
 	
 	NewOneVsAll.ClassesList = parameterDictionary.ClassesList or {}
@@ -76,27 +78,21 @@ end
 
 function OneVsAll:generateModel(parameterDictionary)
 	
-	local modelName = parameterDictionary.modelName
-	
-	if (not modelName) then error("No model name.") end
-	
 	parameterDictionary = parameterDictionary or {}
 
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or 1
 
 	parameterDictionary.isOutputPrinted = self:getValueOrDefaultValue(parameterDictionary.isOutputPrinted, false)
 	
-	local ModelArray = self.ModelArray
-	
-	local SelectedModel = require(Models[modelName])
+	local SelectedModel = require(Models[self.modelName])
 	
 	local numberOfClasses = #self.ClassesList
+	
+	local ModelArray = {}
 
 	for i = 1, numberOfClasses, 1 do
-
-		local ModelObject = SelectedModel.new(parameterDictionary)
-
-		table.insert(ModelArray, ModelObject)
+		
+		ModelArray[i] = SelectedModel.new(parameterDictionary)
 
 	end
 

@@ -16,8 +16,4 @@
 
 [RootMeanSquarePropagation](Optimizers/RootMeanSquarePropagation.md)
 
-[LearningRateStepDecay](Optimizers/LearningRateStepDecay.md)
-
-[LearningRateTimeDecay](Optimizers/LearningRateTimeDecay.md)
-
 [BaseOptimizer](Optimizers/BaseOptimizer.md)

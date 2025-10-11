@@ -438,7 +438,7 @@ function OneVsAll:setModelParametersArray(ModelParametersArray, doNotDeepCopy)
 	
 	if (#ModelArray == 0) then error("No model set.") end
 	
-	if (ModelParametersArray == nil) then return nil end
+	if (not ModelParametersArray) then return end
 	
 	if (#ModelParametersArray ~= #ModelArray) then error("The number of model parameters does not match with the number of models!") end
 	

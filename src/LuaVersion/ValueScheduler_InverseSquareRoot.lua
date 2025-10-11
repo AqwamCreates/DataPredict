@@ -28,32 +28,32 @@
 
 local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
 
-InverseTimeDecayValueScheduler = {}
+InverseSquareRootValueScheduler = {}
 
-InverseTimeDecayValueScheduler.__index = InverseTimeDecayValueScheduler
+InverseSquareRootValueScheduler.__index = InverseSquareRootValueScheduler
 
-setmetatable(InverseTimeDecayValueScheduler, BaseValueScheduler)
+setmetatable(InverseSquareRootValueScheduler, BaseValueScheduler)
 
-function InverseTimeDecayValueScheduler.new(parameterDictionary)
+function InverseSquareRootValueScheduler.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewInverseTimeDecayValueScheduler = BaseValueScheduler.new(parameterDictionary)
+	local NewInverseSquareRootValueScheduler = BaseValueScheduler.new(parameterDictionary)
 	
-	setmetatable(NewInverseTimeDecayValueScheduler, InverseTimeDecayValueScheduler)
+	setmetatable(NewInverseSquareRootValueScheduler, InverseSquareRootValueScheduler)
 	
-	NewInverseTimeDecayValueScheduler:setName("InverseTimeDecay")
+	NewInverseSquareRootValueScheduler:setName("InverseSquareRoot")
 	
 	--------------------------------------------------------------------------------
 	
-	NewInverseTimeDecayValueScheduler:setCalculateFunction(function(value, timeValue)
+	NewInverseSquareRootValueScheduler:setCalculateFunction(function(value, timeValue)
 
 		return (value / math.pow(timeValue, 0.5))
 		
 	end)
 	
-	return NewInverseTimeDecayValueScheduler
+	return NewInverseSquareRootValueScheduler
 	
 end
 
-return InverseTimeDecayValueScheduler
+return InverseSquareRootValueScheduler

@@ -459,7 +459,7 @@ end
 
 local function activateLayer(layerZMatrix, hasBiasNeuron, activationFunctionName)
 
-	-- Going for micro-optimization where we remove redundant activation function calculation for bias values.
+	-- Going for optimization where we remove redundant activation function calculation for bias values.
 
 	local numberOfData = #layerZMatrix
 

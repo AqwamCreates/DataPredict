@@ -212,6 +212,6 @@
 
 [1.3.0](Beta/1-3-0.md)
 
-# Version 1.2
+# Version 1.0 - 1.2
 
 Started somewhere in January 2023.

@@ -457,6 +457,72 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 end
 
+local function activateLayer(layerZMatrix, hasBiasNeuron, activationFunctionName)
+
+	-- Going for optimization where we remove redundant activation function calculation for bias values.
+
+	local numberOfData = #layerZMatrix
+
+	local numberOfFeatures = #layerZMatrix[1]
+	
+	local activationFunction = elementWiseActivationFunctionList[activationFunctionName] 
+
+	local activatationLayerMatrix = {}
+
+	local unwrappedInputVector
+
+	if (activationFunction) then
+
+		for dataIndex, unwrappedLayerZVector in ipairs(layerZMatrix) do
+
+			unwrappedInputVector = {}
+
+			if (hasBiasNeuron == 1) then unwrappedInputVector[1] = 1 end
+
+			for featureIndex = (1 + hasBiasNeuron), numberOfFeatures, 1 do
+
+				unwrappedInputVector[featureIndex] = activationFunction(unwrappedLayerZVector[featureIndex])
+
+			end
+
+			activatationLayerMatrix[dataIndex] = unwrappedInputVector
+
+		end
+
+		if (hasBiasNeuron == 1) then
+
+			for data = 1, numberOfData, 1 do activatationLayerMatrix[data][1] = 1 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
+
+		end
+
+	else
+		
+		activationFunction = activationFunctionList[activationFunctionName]
+
+		for dataIndex, unwrappedLayerZVector in ipairs(layerZMatrix) do
+
+			unwrappedInputVector = {}
+
+			for featureIndex = (1 + hasBiasNeuron), numberOfFeatures, 1 do
+
+				unwrappedInputVector[featureIndex - hasBiasNeuron] = unwrappedLayerZVector[featureIndex]
+
+			end
+
+			unwrappedInputVector = activationFunction({unwrappedLayerZVector})[1]
+
+			if (hasBiasNeuron == 1) then table.insert(unwrappedInputVector, 1) end
+
+			activatationLayerMatrix[dataIndex] = unwrappedInputVector
+
+		end
+
+	end
+
+	return activatationLayerMatrix
+
+end
+
 local function dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNotDropoutNeurons) -- Don't bother using the applyFunction from AqwamMatrixLibrary. Otherwise, you cannot apply dropout at the same index for both z matrix and activation matrix.
 
 	if (doNotDropoutNeurons) or (dropoutRate == 0) then return inputMatrix end
@@ -538,36 +604,18 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
 		local weightMatrix = ModelParameters[layerNumber]
+		
+		local nextLayerNumber = layerNumber + 1
 
 		local hasBiasNeuron = hasBiasNeuronArray[layerNumber + 1]
-
-		local activationFunctionName = activationFunctionArray[layerNumber + 1]
-
-		local dropoutRate = dropoutRateArray[layerNumber + 1]
-
-		local elementWiseActivationFunction = elementWiseActivationFunctionList[activationFunctionName]
 
 		layerZMatrix = AqwamTensorLibrary:dotProduct(inputMatrix, weightMatrix)
 
 		if (typeof(layerZMatrix) == "number") then layerZMatrix = {{layerZMatrix}} end
+		
+		inputMatrix = activateLayer(layerZMatrix, hasBiasNeuron, activationFunctionArray[nextLayerNumber])
 
-		if (elementWiseActivationFunction) then
-
-			inputMatrix = AqwamTensorLibrary:applyFunction(elementWiseActivationFunction, layerZMatrix)
-
-		else
-
-			inputMatrix = activationFunctionList[activationFunctionName](layerZMatrix)
-
-		end
-
-		if (hasBiasNeuron == 1) then
-
-			for data = 1, numberOfData, 1 do inputMatrix[data][1] = 1 end -- because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
-
-		end
-
-		inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNotDropoutNeurons)
+		inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRateArray[nextLayerNumber], doNotDropoutNeurons)
 
 		table.insert(zArray, layerZMatrix)
 

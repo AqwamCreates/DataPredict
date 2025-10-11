@@ -562,10 +562,10 @@ local function dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRate, doNot
 end
 
 function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNotDropoutNeurons)
-
-	if (self.ModelParameters == nil) then self:generateLayers() end
-
+	
 	local ModelParameters = self.ModelParameters
+
+	if (not ModelParameters) then ModelParameters = self:generateLayers() end
 
 	local numberOfLayers = #self.numberOfNeuronsArray
 
@@ -577,13 +577,13 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 
 	local forwardPropagateArray = {}
 
-	local zArray = {}
+	local zMatrixArray = {}
 
 	local activationFunctionName = activationFunctionArray[1]
 
 	local elementWiseActivationFunction = elementWiseActivationFunctionList[activationFunctionName]
 
-	local layerZMatrix = featureMatrix
+	local zMatrix = featureMatrix
 
 	local inputMatrix = featureMatrix
 
@@ -591,17 +591,17 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 
 	if (elementWiseActivationFunction) then
 
-		inputMatrix = AqwamTensorLibrary:applyFunction(elementWiseActivationFunction, layerZMatrix)
+		inputMatrix = AqwamTensorLibrary:applyFunction(elementWiseActivationFunction, zMatrix)
 
 	else
 
-		inputMatrix = activationFunctionList[activationFunctionName](layerZMatrix)
+		inputMatrix = activationFunctionList[activationFunctionName](zMatrix)
 
 	end
 
 	inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuronArray[1], dropoutRateArray[1], doNotDropoutNeurons)
 
-	table.insert(zArray, inputMatrix)
+	table.insert(zMatrixArray, inputMatrix)
 
 	table.insert(forwardPropagateArray, inputMatrix) -- don't remove this! otherwise the code won't work!
 
@@ -613,15 +613,15 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 
 		local hasBiasNeuron = hasBiasNeuronArray[layerNumber + 1]
 
-		layerZMatrix = AqwamTensorLibrary:dotProduct(inputMatrix, weightMatrix)
+		zMatrix = AqwamTensorLibrary:dotProduct(inputMatrix, weightMatrix)
 
-		if (typeof(layerZMatrix) == "number") then layerZMatrix = {{layerZMatrix}} end
+		if (typeof(zMatrix) == "number") then zMatrix = {{zMatrix}} end
 		
-		inputMatrix = activateLayer(layerZMatrix, hasBiasNeuron, activationFunctionArray[nextLayerNumber])
+		inputMatrix = activateLayer(zMatrix, hasBiasNeuron, activationFunctionArray[nextLayerNumber])
 
 		inputMatrix = dropoutInputMatrix(inputMatrix, hasBiasNeuron, dropoutRateArray[nextLayerNumber], doNotDropoutNeurons)
 
-		table.insert(zArray, layerZMatrix)
+		table.insert(zMatrixArray, zMatrix)
 
 		table.insert(forwardPropagateArray, inputMatrix)
 
@@ -633,11 +633,11 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 
 		self.forwardPropagateArray = forwardPropagateArray
 
-		self.zArray = zArray
+		self.zMatrixArray = zMatrixArray
 
 	end
 
-	return inputMatrix, forwardPropagateArray, zArray
+	return inputMatrix, forwardPropagateArray, zMatrixArray
 
 end
 
@@ -645,11 +645,11 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 
 	local forwardPropagateArray = self.forwardPropagateArray
 
-	local zArray = self.zArray
+	local zMatrixArray = self.zMatrixArray
 
-	if (forwardPropagateArray == nil) then error("Array not found for forward propagation.") end
+	if (not forwardPropagateArray) then error("Array not found for forward propagation.") end
 
-	if (zArray == nil) then error("Array not found for z matrix.") end
+	if (not zMatrixArray) then error("Array not found for z matrix.") end
 
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 
@@ -673,7 +673,7 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 
 	local lastActivationMatrix = forwardPropagateArray[numberOfLayers]
 
-	local lastZMatrix = zArray[numberOfLayers]
+	local lastZMatrix = zMatrixArray[numberOfLayers]
 
 	local derivativeMatrix
 
@@ -705,7 +705,7 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 
 		local currentActivationMatrix = forwardPropagateArray[layerNumber]
 
-		local currentZMatrix = zArray[layerNumber]
+		local currentZMatrix = zMatrixArray[layerNumber]
 
 		local derivativeMatrix
 
@@ -837,7 +837,7 @@ function NeuralNetworkModel:update(lossMatrix, clearAllArrays)
 
 		self.forwardPropagateArray = nil
 
-		self.zArray = nil
+		self.zMatrixArray = nil
 
 	end
 
@@ -1018,6 +1018,8 @@ function NeuralNetworkModel:generateLayers()
 	end
 
 	self.ModelParameters = ModelParameters
+	
+	return ModelParameters
 
 end
 
@@ -1418,7 +1420,7 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 	
 	local ModelParameters = self.ModelParameters
 
-	if (ModelParameters == nil) then error("No Model Parameters!") end
+	if (not ModelParameters) then error("No Model Parameters!") end
 
 	if (#ModelParameters == 0) then 
 

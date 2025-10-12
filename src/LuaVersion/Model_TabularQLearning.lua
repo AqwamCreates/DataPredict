@@ -36,8 +36,6 @@ TabularQLearningModel.__index = TabularQLearningModel
 
 setmetatable(TabularQLearningModel, TabularReinforcementLearningBaseModel)
 
-local defaultLearningRate = 0.1
-
 function TabularQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -47,8 +45,6 @@ function TabularQLearningModel.new(parameterDictionary)
 	setmetatable(NewTabularQLearning, TabularQLearningModel)
 	
 	NewTabularQLearning:setName("TabularQLearning")
-	
-	NewTabularQLearning.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
 	NewTabularQLearning.EligibilityTrace = parameterDictionary.EligibilityTrace
 	

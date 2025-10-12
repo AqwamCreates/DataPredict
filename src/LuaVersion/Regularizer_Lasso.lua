@@ -44,25 +44,25 @@ function Lasso.new(parameterDictionary)
 	
 	NewLasso:setName("Lasso")
 	
-	NewLasso:setCalculateCostFunction(function(ModelParameters)
+	NewLasso:setCalculateCostFunction(function(weightMatrix)
 		
-		ModelParameters = NewLasso:adjustModelParameters(ModelParameters)
+		weightMatrix = NewLasso:adjustWeightMatrix(weightMatrix)
 
-		local absoluteModelParameters = AqwamTensorLibrary:applyFunction(math.abs, ModelParameters)
+		local absoluteWeightMatrix = AqwamTensorLibrary:applyFunction(math.abs, weightMatrix)
 
-		local sumAbsoluteModelParameters = AqwamTensorLibrary:sum(absoluteModelParameters)
+		local sumAbsoluteWeightMatrix = AqwamTensorLibrary:sum(absoluteWeightMatrix)
 
-		return NewLasso.lambda * sumAbsoluteModelParameters
+		return (NewLasso.lambda * sumAbsoluteWeightMatrix)
 
 	end)
 	
-	NewLasso:setCalculateFunction(function(ModelParameters)
+	NewLasso:setCalculateFunction(function(weightMatrix)
 		
-		ModelParameters = NewLasso:adjustModelParameters(ModelParameters)
+		weightMatrix = NewLasso:adjustWeightMatrix(weightMatrix)
 		
-		local signMatrix = AqwamTensorLibrary:applyFunction(math.sign, ModelParameters)
+		local signMatrix = AqwamTensorLibrary:applyFunction(math.sign, weightMatrix)
 		
-		return AqwamTensorLibrary:multiply(signMatrix, NewLasso.lambda, ModelParameters)
+		return AqwamTensorLibrary:multiply(signMatrix, NewLasso.lambda, weightMatrix)
 		
 	end)
 	

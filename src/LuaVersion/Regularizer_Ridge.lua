@@ -44,23 +44,23 @@ function Ridge.new(parameterDictionary)
 	
 	NewRidge:setName("Ridge")
 	
-	NewRidge:setCalculateCostFunction(function(ModelParameters)
+	NewRidge:setCalculateCostFunction(function(weightMatrix)
 		
-		ModelParameters = NewRidge:adjustModelParameters(ModelParameters)
+		weightMatrix = NewRidge:adjustWeightMatrix(weightMatrix)
 
-		local squaredModelParameters = AqwamTensorLibrary:power(ModelParameters, 2)
+		local squaredWeightMatrix = AqwamTensorLibrary:power(weightMatrix, 2)
 
-		local sumSquaredModelParameters = AqwamTensorLibrary:sum(squaredModelParameters)
+		local sumSquaredWeightMatrix = AqwamTensorLibrary:sum(squaredWeightMatrix)
 
-		return NewRidge.lambda * sumSquaredModelParameters
+		return (NewRidge.lambda * sumSquaredWeightMatrix)
 
 	end)
 	
-	NewRidge:setCalculateFunction(function(ModelParameters)
+	NewRidge:setCalculateFunction(function(weightMatrix)
 		
-		ModelParameters = NewRidge:adjustModelParameters(ModelParameters)
+		weightMatrix = NewRidge:adjustWeightMatrix(weightMatrix)
 		
-		return AqwamTensorLibrary:multiply(2, NewRidge.lambda, ModelParameters)
+		return AqwamTensorLibrary:multiply(2, NewRidge.lambda, weightMatrix)
 		
 	end)
 	

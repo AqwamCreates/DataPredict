@@ -84,7 +84,7 @@ function GravityOptimizer.new(parameterDictionary)
 		
 		currentTimeStep += 1
 		
-		if (previousVelocityTensor == nil) then
+		if (not previousVelocityTensor) then
 
 			local standardDeviation = NewGravityOptimizer.initialStepSize / learningRate
 

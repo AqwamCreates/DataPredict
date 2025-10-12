@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -26,9 +26,9 @@
 
 --]]
 
-local BaseOptimizer = require(script.Parent.BaseOptimizer)
-
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
 MomentumOptimizer = {}
 
@@ -37,6 +37,8 @@ MomentumOptimizer.__index = MomentumOptimizer
 setmetatable(MomentumOptimizer, BaseOptimizer)
 
 local defaultDecayRate = 0.1
+
+local defaultWeightDecayRate = 0
 
 function MomentumOptimizer.new(parameterDictionary)
 	
@@ -50,23 +52,37 @@ function MomentumOptimizer.new(parameterDictionary)
 	
 	NewMomentumOptimizer.decayRate = parameterDictionary.decayRate or defaultDecayRate
 	
+	NewMomentumOptimizer.weightDecayRate = NewMomentumOptimizer.weightDecayRate or defaultWeightDecayRate
+	
 	--------------------------------------------------------------------------------
 	
-	NewMomentumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
+	NewMomentumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeMatrix, weightMatrix)
 		
-		local previousVelocityTensor = NewMomentumOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
-
-		local velocityTensorPart1 = AqwamTensorLibrary:multiply(NewMomentumOptimizer.decayRate, previousVelocityTensor)
-
-		local velocityTensorPart2 = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeTensor)
-
-		local velocityTensor = AqwamTensorLibrary:add(velocityTensorPart1, velocityTensorPart2)
-
-		costFunctionDerivativeTensor = velocityTensor
+		local previousVelocityMatrix = NewMomentumOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
 		
-		NewMomentumOptimizer.optimizerInternalParameterArray = {velocityTensor}
+		local weightDecayRate = NewMomentumOptimizer.weightDecayRate
 
-		return costFunctionDerivativeTensor
+		local gradientMatrix = costFunctionDerivativeMatrix
+
+		if (weightDecayRate ~= 0) then
+
+			local decayedWeightMatrix = AqwamTensorLibrary:multiply(weightDecayRate, weightMatrix)
+
+			gradientMatrix = AqwamTensorLibrary:add(gradientMatrix, decayedWeightMatrix)
+
+		end
+		
+		local velocityMatrixPart1 = AqwamTensorLibrary:multiply(NewMomentumOptimizer.decayRate, previousVelocityMatrix)
+
+		local velocityMatrixPart2 = AqwamTensorLibrary:multiply(learningRate, gradientMatrix)
+
+		local velocityMatrix = AqwamTensorLibrary:add(velocityMatrixPart1, velocityMatrixPart2)
+
+		costFunctionDerivativeMatrix = velocityMatrix
+		
+		NewMomentumOptimizer.optimizerInternalParameterArray = {velocityMatrix}
+
+		return costFunctionDerivativeMatrix
 		
 	end)
 	
@@ -78,6 +94,12 @@ function MomentumOptimizer:setDecayRate(decayRate)
 	
 	self.decayRate = decayRate
 	
+end
+
+function MomentumOptimizer:setWeightDecayRate(weightDecayRate)
+
+	self.weightDecayRate = weightDecayRate
+
 end
 
 return MomentumOptimizer

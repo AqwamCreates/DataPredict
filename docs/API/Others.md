@@ -17,7 +17,3 @@
 [OneVsAll](Others/OneVsAll.md)
 
 [OnlineLearning](Others/OnlineLearning.md)
-
-[StringSplitter](Others/StringSplitter.md)
-
-[Tokenizer](Others/Tokenizer.md)

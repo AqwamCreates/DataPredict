@@ -16,7 +16,7 @@ The list of items shown below are likely to be implemented due to their mainstre
 
   * It is an online version of DBSCAN that allows it to construct clusters from individual datapoints.
 
-* Double Version Of Tabular Reinforcement Learning.
+* Double Version Of Tabular Reinforcement Learning Algorithms.
 
   * This includes:
   

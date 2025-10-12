@@ -60,10 +60,6 @@ function TabularQLearningModel.new(parameterDictionary)
 
 		local ActionsList = NewTabularQLearning:getActionsList()
 
-		local numberOfStates = #StatesList
-
-		local numberOfActions = #ActionsList
-
 		local _, maxQValue = NewTabularQLearning:predict({{currentStateValue}})
 
 		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
@@ -76,19 +72,27 @@ function TabularQLearningModel.new(parameterDictionary)
 
 		local temporalDifferenceError = targetValue - lastValue
 		
-		local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfActions}, 0)
-		
-		temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
-		
 		if (EligibilityTrace) then
+			
+			local numberOfStates = #StatesList
 
-			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, {numberOfStates, numberOfActions})
+			local numberOfActions = #ActionsList
+			
+			local dimensionSizeArray = {numberOfStates, numberOfActions}
+			
+			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+			
+			temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
+
+			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
 
 			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
+			
+			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
 
 		end
 		
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularQLearning.learningRate * temporalDifferenceErrorMatrix[stateIndex][actionIndex])
+		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularQLearning.learningRate * temporalDifferenceError)
 		
 		return temporalDifferenceError
 

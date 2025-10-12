@@ -48,7 +48,7 @@ function BaseEligibilityTrace.new(parameterDictionary)
 	
 	NewBaseEligibilityTrace:setName("BaseEligibilityTrace")
 	
-	NewBaseEligibilityTrace:getClassName("EligibilityTrace")
+	NewBaseEligibilityTrace:setClassName("EligibilityTrace")
 	
 	NewBaseEligibilityTrace.lambda = parameterDictionary.lambda or defaultLambda
 	

@@ -40,6 +40,8 @@ local defaultInitialStepSize = 0.01
 
 local defaultMovingAverage = 0.9
 
+local defaultWeightDecayRate = 0
+
 local function calculateGaussianDensity(mean, standardDeviation)
 
 	local exponentStep1 = math.pow(mean, 2)
@@ -74,53 +76,67 @@ function GravityOptimizer.new(parameterDictionary)
 	
 	NewGravityOptimizer.movingAverage = parameterDictionary.movingAverage or defaultMovingAverage
 	
+	NewGravityOptimizer.weightDecayRate = parameterDictionary.weightDecayRate or defaultWeightDecayRate
+	
 	--------------------------------------------------------------------------------
 	
-	NewGravityOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
+	NewGravityOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeMatrix, weightMatrix)
 		
-		local previousVelocityTensor = NewGravityOptimizer.optimizerInternalParameterArray[1]
+		local previousVelocityMatrix = NewGravityOptimizer.optimizerInternalParameterArray[1]
 		
-		local currentTimeStep = NewGravityOptimizer.optimizerInternalParameterArray[2] or 0
+		local timeValue = NewGravityOptimizer.optimizerInternalParameterArray[2] or 1
 		
-		currentTimeStep += 1
+		local weightDecayRate = NewGravityOptimizer.weightDecayRate
 		
-		if (not previousVelocityTensor) then
+		if (not previousVelocityMatrix) then
 
 			local standardDeviation = NewGravityOptimizer.initialStepSize / learningRate
 
 			local gaussianDensity = calculateGaussianDensity(0, standardDeviation)
 
-			previousVelocityTensor = AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), gaussianDensity)
+			previousVelocityMatrix = AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), gaussianDensity)
+
+		end
+		
+		local gradientMatrix = costFunctionDerivativeMatrix
+		
+		if (weightDecayRate ~= 0) then
+
+			local decayedWeightMatrix = AqwamTensorLibrary:multiply(weightDecayRate, weightMatrix)
+
+			gradientMatrix = AqwamTensorLibrary:add(gradientMatrix, decayedWeightMatrix)
 
 		end
 
-		local meanMovingAverage = ((NewGravityOptimizer.movingAverage * currentTimeStep) + 1) / (currentTimeStep + 2)
+		local meanMovingAverage = ((NewGravityOptimizer.movingAverage * timeValue) + 1) / (timeValue + 2)
 
-		local absoluteMTensor = AqwamTensorLibrary:applyFunction(math.abs, costFunctionDerivativeTensor)
+		local absoluteGradientMatrix = AqwamTensorLibrary:applyFunction(math.abs, gradientMatrix)
 
-		local maxMTensor = AqwamTensorLibrary:findMaximumValue(absoluteMTensor)
+		local maxGradientValue = AqwamTensorLibrary:findMaximumValue(absoluteGradientMatrix)
 
-		local mTensor = AqwamTensorLibrary:divide(1, maxMTensor)
+		local mMatrix = AqwamTensorLibrary:divide(1, maxGradientValue)
 
-		local weirdLTensorPart1 = AqwamTensorLibrary:divide(costFunctionDerivativeTensor, mTensor)
+		local weirdLMatrixPart1 = AqwamTensorLibrary:divide(gradientMatrix, mMatrix)
 
-		local weirdLTensorPart2 = AqwamTensorLibrary:power(weirdLTensorPart1, 2)
+		local weirdLMatrixPart2 = AqwamTensorLibrary:power(weirdLMatrixPart1, 2)
 
-		local weirdLTensorPart3 = AqwamTensorLibrary:add(1, weirdLTensorPart2)
+		local weirdLMatrixPart3 = AqwamTensorLibrary:add(1, weirdLMatrixPart2)
 
-		local weirdLTensor = AqwamTensorLibrary:divide(costFunctionDerivativeTensor, weirdLTensorPart3)
+		local weirdLMatrix = AqwamTensorLibrary:divide(gradientMatrix, weirdLMatrixPart3)
 
-		local velocityTensorPart1 = AqwamTensorLibrary:multiply(meanMovingAverage, previousVelocityTensor)
+		local velocityMatrixPart1 = AqwamTensorLibrary:multiply(meanMovingAverage, previousVelocityMatrix)
 
-		local velocityTensorPart2 = AqwamTensorLibrary:multiply((1 - meanMovingAverage), weirdLTensor)
+		local velocityMatrixPart2 = AqwamTensorLibrary:multiply((1 - meanMovingAverage), weirdLMatrix)
 
-		local velocityTensor = AqwamTensorLibrary:add(velocityTensorPart1, velocityTensorPart2)
+		local velocityMatrix = AqwamTensorLibrary:add(velocityMatrixPart1, velocityMatrixPart2)
 
-		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, velocityTensor) 
+		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, velocityMatrix)
+		
+		timeValue = timeValue + 1
 
-		NewGravityOptimizer.optimizerInternalParameterArray = {velocityTensor, currentTimeStep}
+		NewGravityOptimizer.optimizerInternalParameterArray = {velocityMatrix, timeValue}
 
-		return costFunctionDerivativeTensor
+		return costFunctionDerivativeMatrix
 		
 	end)
 	
@@ -137,6 +153,12 @@ end
 function GravityOptimizer:setMovingAverage(movingAverage)
 
 	self.movingAverage = movingAverage
+
+end
+
+function GravityOptimizer:setWeightDecayRate(weightDecayRate)
+
+	self.weightDecayRate = weightDecayRate
 
 end
 

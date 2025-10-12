@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseOptimizer = require(script.Parent.BaseOptimizer)
+local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
 AdaptiveMomentEstimationMaximumOptimizer = {}
 

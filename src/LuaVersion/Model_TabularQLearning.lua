@@ -53,16 +53,16 @@ function TabularQLearningModel.new(parameterDictionary)
 		local discountFactor = NewTabularQLearning.discountFactor
 		
 		local EligibilityTrace = NewTabularQLearning.EligibilityTrace
+
+		local ModelParameters = NewTabularQLearning.ModelParameters
 		
 		local StatesList = NewTabularQLearning:getStatesList()
 
 		local ActionsList = NewTabularQLearning:getActionsList()
-		
-		local numberOfStates = #StatesList
-		
-		local numberOfActions = #ActionsList
 
-		local ModelParameters = NewTabularQLearning.ModelParameters
+		local numberOfStates = #StatesList
+
+		local numberOfActions = #ActionsList
 
 		local _, maxQValue = NewTabularQLearning:predict({{currentStateValue}})
 

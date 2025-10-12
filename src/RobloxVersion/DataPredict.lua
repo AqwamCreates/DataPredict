@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamMachineAndDeepLearningLibrary = {}
+local AqwamMachineDeepAndReinforcementLearningLibrary = {}
 
 local Models = script.Models
 
@@ -48,7 +48,7 @@ local DistributedTrainingStrategies = script.DistributedTrainingStrategies
 
 local Others = script.Others
 
-AqwamMachineAndDeepLearningLibrary.Models = {
+AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -164,7 +164,7 @@ AqwamMachineAndDeepLearningLibrary.Models = {
 
 }
 
-AqwamMachineAndDeepLearningLibrary.Regularizers = {
+AqwamMachineDeepAndReinforcementLearningLibrary.Regularizers = {
 	
 	ElasticNet = require(Regularizers.ElasticNet),
 	
@@ -174,7 +174,7 @@ AqwamMachineAndDeepLearningLibrary.Regularizers = {
 	
 }
 
-AqwamMachineAndDeepLearningLibrary.Optimizers = {
+AqwamMachineDeepAndReinforcementLearningLibrary.Optimizers = {
 
 	AdaptiveDelta = require(Optimizers.AdaptiveDelta),
 	
@@ -202,7 +202,7 @@ AqwamMachineAndDeepLearningLibrary.Optimizers = {
 
 }
 
-AqwamMachineAndDeepLearningLibrary.ValueSchedulers = {
+AqwamMachineDeepAndReinforcementLearningLibrary.ValueSchedulers = {
 	
 	Chained = require(ValueSchedulers.Chained),
 	
@@ -230,7 +230,7 @@ AqwamMachineAndDeepLearningLibrary.ValueSchedulers = {
 
 }
 
-AqwamMachineAndDeepLearningLibrary.ExperienceReplays = {
+AqwamMachineDeepAndReinforcementLearningLibrary.ExperienceReplays = {
 
 	UniformExperienceReplay = require(ExperienceReplays.UniformExperienceReplay),
 
@@ -240,7 +240,7 @@ AqwamMachineAndDeepLearningLibrary.ExperienceReplays = {
 
 }
 
-AqwamMachineAndDeepLearningLibrary.QuickSetups = {
+AqwamMachineDeepAndReinforcementLearningLibrary.QuickSetups = {
 
 	CategoricalPolicy = require(QuickSetups.CategoricalPolicy),
 
@@ -248,7 +248,7 @@ AqwamMachineAndDeepLearningLibrary.QuickSetups = {
 
 }
 
-AqwamMachineAndDeepLearningLibrary.EligibilityTraces = {
+AqwamMachineDeepAndReinforcementLearningLibrary.EligibilityTraces = {
 	
 	AccumulatingTrace = require(EligibilityTraces.AccumulatingTrace),
 	
@@ -258,7 +258,7 @@ AqwamMachineAndDeepLearningLibrary.EligibilityTraces = {
 	
 }
 
-AqwamMachineAndDeepLearningLibrary.ReinforcementLearningStrategies = {
+AqwamMachineDeepAndReinforcementLearningLibrary.ReinforcementLearningStrategies = {
 	
 	RandomNetworkDistillation = require(ReinforcementLearningStrategies.RandomNetworkDistillation),
 	
@@ -268,7 +268,7 @@ AqwamMachineAndDeepLearningLibrary.ReinforcementLearningStrategies = {
 	
 }
 
-AqwamMachineAndDeepLearningLibrary.DistributedTrainingStrategies = {
+AqwamMachineDeepAndReinforcementLearningLibrary.DistributedTrainingStrategies = {
 	
 	DistributedGradientsCoordinator = require(DistributedTrainingStrategies.DistributedGradientsCoordinator),
 
@@ -276,7 +276,7 @@ AqwamMachineAndDeepLearningLibrary.DistributedTrainingStrategies = {
 	
 }
 
-AqwamMachineAndDeepLearningLibrary.Others = {
+AqwamMachineDeepAndReinforcementLearningLibrary.Others = {
 	
 	ModelTrainingModifier = require(Others.ModelTrainingModifier),
 	
@@ -298,4 +298,4 @@ AqwamMachineAndDeepLearningLibrary.Others = {
 
 }
 
-return AqwamMachineAndDeepLearningLibrary
+return AqwamMachineDeepAndReinforcementLearningLibrary

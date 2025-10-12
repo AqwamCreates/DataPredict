@@ -26,11 +26,13 @@ BaseEligibilityTrace.new({lambda: number}): EligibilityTraceObject
 
 ```
 
-BaseEligibilityTrace:increment(actionIndex: number, discountFactor: number, dimensionSizeArray: {number})
+BaseEligibilityTrace:increment(stateIndex, actionIndex: number, discountFactor: number, dimensionSizeArray: {number})
 
 ```
 
 #### Parameters:
+
+* stateIndex: The state index to be incremented.
 
 * actionIndex: The action index to be incremented.
 

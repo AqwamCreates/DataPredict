@@ -38,6 +38,8 @@ setmetatable(BaseEligibilityTrace, BaseInstance)
 
 local defaultLambda = 0.5
 
+local defaultMode = "StateAction"
+
 function BaseEligibilityTrace.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -52,6 +54,8 @@ function BaseEligibilityTrace.new(parameterDictionary)
 	
 	NewBaseEligibilityTrace.lambda = parameterDictionary.lambda or defaultLambda
 	
+	NewBaseEligibilityTrace.mode = parameterDictionary.mode or defaultMode
+	
 	NewBaseEligibilityTrace.eligibilityTraceMatrix = nil
 	
 	return NewBaseEligibilityTrace
@@ -60,7 +64,33 @@ end
 
 function BaseEligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray) -- This function is needed because we have double version of reinforcement learning algorithms require separate application of (temporalDifferenceErrorVector * eligibilityTraceMatrix).
 	
-	local eligibilityTraceMatrix = self.eligibilityTraceMatrix or AqwamTensorLibrary:createTensor(dimensionSizeArray, 0) 
+	local eligibilityTraceMatrix = self.eligibilityTraceMatrix
+	
+	if (not eligibilityTraceMatrix) then
+		
+		local mode = self.mode
+		
+		local selectedDimensionSizeArray
+		
+		if (mode == "StateAction") then
+			
+			selectedDimensionSizeArray = dimensionSizeArray
+			
+		elseif (mode == "State") then
+			
+			actionIndex = 1
+			
+			selectedDimensionSizeArray = {dimensionSizeArray[1], 1}
+			
+		else
+			
+			error("Unknown mode.")
+			
+		end
+		
+		eligibilityTraceMatrix = AqwamTensorLibrary:createTensor(selectedDimensionSizeArray, 0)
+		
+	end
 
 	eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * self.lambda)
 	

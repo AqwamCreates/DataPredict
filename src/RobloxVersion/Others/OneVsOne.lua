@@ -637,9 +637,9 @@ function OneVsOne:setModelParametersArray(ModelParametersArray, doNotDeepCopy)
 	
 	if (#ModelParametersArray ~= #ModelArray) then error("The number of model parameters does not match with the number of models!") end
 	
-	for m, Model in pairs(ModelArray) do 
+	for classArray, Model in pairs(ModelArray) do 
 		
-		local ModelParameters = ModelParametersArray[m]
+		local ModelParameters = ModelParametersArray[classArray]
 
 		Model:setModelParameters(ModelParameters, doNotDeepCopy)
 

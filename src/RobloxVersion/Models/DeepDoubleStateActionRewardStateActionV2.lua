@@ -104,7 +104,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 			local actionIndex = table.find(ClassesList, action)
 
-			EligibilityTrace:increment(actionIndex, discountFactor, {1, #ClassesList})
+			EligibilityTrace:increment(1, actionIndex, discountFactor, {1, #ClassesList})
 
 			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
 

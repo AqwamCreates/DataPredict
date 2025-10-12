@@ -356,7 +356,7 @@ local function getModelNumberWithHighestValue(featureVector, ModelArray)
 
 	for m, Model in ipairs(ModelArray) do 
 
-		local value = Model:predict(featureVector, true)
+		local value = Model:predict(featureVector, true)[1][1]
 
 		if (value > highestValue) then
 

@@ -36,7 +36,6 @@ For information regarding potential license violations and eligibility for a bou
 
 | Version | Current Version Number |
 |---------|------------------------|
-| Gold    | 1.0 (23 January 2026)  |
 | Release | 2.11                   |
 | Beta    | 2.11.0                 |          
 

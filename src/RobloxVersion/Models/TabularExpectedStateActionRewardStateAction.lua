@@ -38,8 +38,6 @@ setmetatable(TabularExpectedStateActionRewardStateActionModel, TabularReinforcem
 
 local defaultEpsilon = 0.5
 
-local defaultLambda = 0
-
 function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}

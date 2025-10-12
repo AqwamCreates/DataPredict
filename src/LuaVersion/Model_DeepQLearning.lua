@@ -80,7 +80,7 @@ function DeepQLearningModel.new(parameterDictionary)
 		
 		if (EligibilityTrace) then
 
-			EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
+			EligibilityTrace:increment(1, actionIndex, discountFactor, outputDimensionSizeArray)
 
 			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
 

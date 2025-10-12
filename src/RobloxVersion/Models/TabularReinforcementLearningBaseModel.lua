@@ -34,6 +34,8 @@ TabularReinforcementLearningBaseModel.__index = TabularReinforcementLearningBase
 
 setmetatable(TabularReinforcementLearningBaseModel, BaseModel)
 
+local defaultLearningRate = 0.1
+
 local defaultDiscountFactor = 0.95
 
 function TabularReinforcementLearningBaseModel.new(parameterDictionary)
@@ -51,6 +53,8 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	NewDeepReinforcementLearningBaseModel.StatesList = parameterDictionary.StatesList or {}
 	
 	NewDeepReinforcementLearningBaseModel.ActionsList = parameterDictionary.ActionsList or {}
+	
+	NewDeepReinforcementLearningBaseModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
 	NewDeepReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
 	

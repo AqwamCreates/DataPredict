@@ -58,41 +58,41 @@ function BaseRegularizer.new(parameterDictionary)
 	
 end
 
-function BaseRegularizer:adjustModelParameters(ModelParameters)
+function BaseRegularizer:adjustWeightMatrix(weightMatrix)
 	
 	local hasBias = self.hasBias
 	
-	if (not hasBias) then return ModelParameters end
+	if (not hasBias) then return weightMatrix end
 	
-	local firstRowModelParameters = ModelParameters[1]
+	local firstRowWeightMatrix = weightMatrix[1]
 	
 	if (hasBias == "Automatic") then
 		
-		for i, value in ipairs(firstRowModelParameters) do
+		for i, value in ipairs(firstRowWeightMatrix) do
 			
-			if (value ~= 1) then return ModelParameters end
+			if (value ~= 1) then return weightMatrix end
 			
 		end
 		
 	end
 	
-	local NewModelParameters = self:deepCopyTable(ModelParameters)
+	local newWeightMatrix = self:deepCopyTable(weightMatrix)
 	
-	firstRowModelParameters = NewModelParameters[1]
+	firstRowWeightMatrix = newWeightMatrix[1]
 	
-	for i, _ in ipairs(firstRowModelParameters) do
+	for i, _ in ipairs(firstRowWeightMatrix) do
 		
-		firstRowModelParameters[i] = 0
+		firstRowWeightMatrix[i] = 0
 		
 	end
 
-	return NewModelParameters
+	return newWeightMatrix
 
 end
 
-function BaseRegularizer:calculateCost(ModelParameters)
+function BaseRegularizer:calculateCost(weightMatrix)
 	
-	return self.calculateCostFunction(ModelParameters)
+	return self.calculateCostFunction(weightMatrix)
 	
 end
 
@@ -102,9 +102,9 @@ function BaseRegularizer:setCalculateCostFunction(calculateCostFunction)
 
 end
 
-function BaseRegularizer:calculate(ModelParameters)
+function BaseRegularizer:calculate(weightMatrix)
 
-	return self.calculateFunction(ModelParameters)
+	return self.calculateFunction(weightMatrix)
 
 end
 

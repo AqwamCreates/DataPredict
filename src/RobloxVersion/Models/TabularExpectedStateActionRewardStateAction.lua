@@ -125,12 +125,14 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 		if (EligibilityTrace) then
 			
 			local numberOfStates = #StatesList
+			
+			local dimensionSizeArray = {numberOfStates, numberOfActions}
 
-			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfActions}, 0)
+			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
 
 			temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
 
-			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, {numberOfStates, numberOfActions})
+			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
 
 			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
 

@@ -28,74 +28,32 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
+local BaseEligibilityTrace = require(script.Parent.BaseEligibilityTrace)
 
-BaseEligibilityTrace = {}
+ReplacingTrace = {}
 
-BaseEligibilityTrace.__index = BaseEligibilityTrace
+ReplacingTrace.__index = ReplacingTrace
 
-setmetatable(BaseEligibilityTrace, BaseInstance)
+setmetatable(ReplacingTrace, BaseEligibilityTrace)
 
-local defaultLambda = 0.5
-
-function BaseEligibilityTrace.new(parameterDictionary)
+function ReplacingTrace.new(parameterDictionary)
 	
-	parameterDictionary = parameterDictionary or {}
+	local NewReplacingTrace = BaseEligibilityTrace.new(parameterDictionary)
 	
-	local NewBaseEligibilityTrace = BaseInstance.new()
+	setmetatable(NewReplacingTrace, ReplacingTrace)
 	
-	setmetatable(NewBaseEligibilityTrace, BaseEligibilityTrace)
+	NewReplacingTrace:setName("ReplacingTrace")
 	
-	NewBaseEligibilityTrace:setName("BaseEligibilityTrace")
+	NewReplacingTrace:setIncrementFunction(function(eligibilityTraceMatrix, stateIndex, actionIndex)
+		
+		eligibilityTraceMatrix[stateIndex][actionIndex] = 1
+		
+		return eligibilityTraceMatrix
+		
+	end)
 	
-	NewBaseEligibilityTrace:getClassName("EligibilityTrace")
-	
-	NewBaseEligibilityTrace.lambda = parameterDictionary.lambda or defaultLambda
-	
-	NewBaseEligibilityTrace.eligibilityTraceMatrix = nil
-	
-	return NewBaseEligibilityTrace
+	return NewReplacingTrace
 	
 end
 
-function BaseEligibilityTrace:increment(actionIndex, discountFactor, dimensionSizeArray) -- This function is needed because we have double version of reinforcement learning algorithms require separate application of (temporalDifferenceErrorVector * eligibilityTraceMatrix).
-	
-	local eligibilityTraceMatrix = self.eligibilityTraceMatrix or AqwamTensorLibrary:createTensor(dimensionSizeArray, 0) 
-
-	eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * self.lambda)
-	
-	self.eligibilityTraceMatrix = self.incrementFunction(eligibilityTraceMatrix, actionIndex)
-	
-end
-
-function BaseEligibilityTrace:calculate(temporalDifferenceErrorVector)
-	
-	return AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, self.eligibilityTraceMatrix)
-	
-end
-
-function BaseEligibilityTrace:setIncrementFunction(incrementFunction)
-	
-	self.incrementFunction = incrementFunction
-	
-end
-
-function BaseEligibilityTrace:getLambda()
-	
-	return self.lambda
-	
-end
-
-function BaseEligibilityTrace:setLambda(lambda)
-
-	self.lambda = lambda
-
-end
-
-function BaseEligibilityTrace:reset()
-	
-	self.eligibilityTraceMatrix = nil
-	
-end
-
-return BaseEligibilityTrace
+return ReplacingTrace

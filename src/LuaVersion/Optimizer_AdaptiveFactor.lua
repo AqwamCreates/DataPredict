@@ -98,9 +98,9 @@ function AdaptiveFactorOptimizer.new(parameterDictionary)
 		
 		local squaredGradientMatrix = AqwamTensorLibrary:power(gradientMatrix, 2)
 		
-		local oneRowMatrix = AqwamTensorLibrary:createMatrix({dimensionSizeArray[1], 1}, 1)
+		local oneRowMatrix = AqwamTensorLibrary:createTensor({dimensionSizeArray[1], 1}, 1)
 		
-		local oneColumnMatrix = AqwamTensorLibrary:createMatrix({dimensionSizeArray[2], 1}, 1)
+		local oneColumnMatrix = AqwamTensorLibrary:createTensor({dimensionSizeArray[2], 1}, 1)
 		
 		local transposedOneRowMatrix = AqwamTensorLibrary:transpose(oneRowMatrix)
 		

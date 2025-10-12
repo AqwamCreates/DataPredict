@@ -48,7 +48,7 @@ function BaseRegularizer.new(parameterDictionary)
 	
 	NewBaseRegularizer:setName("BaseRegularizer")
 	
-	NewBaseRegularizer:getClassName("Regularizer")
+	NewBaseRegularizer:setClassName("Regularizer")
 	
 	NewBaseRegularizer.lambda = parameterDictionary.lambda or defaultLambda
 	

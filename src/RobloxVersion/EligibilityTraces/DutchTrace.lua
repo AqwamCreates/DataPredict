@@ -50,9 +50,9 @@ function DutchTrace.new(parameterDictionary)
 	
 	NewDutchTrace.alpha = parameterDictionary.alpha or defaultAlpha
 	
-	NewDutchTrace:setIncrementFunction(function(eligibilityTraceMatrix, actionIndex)
+	NewDutchTrace:setIncrementFunction(function(eligibilityTraceMatrix, stateIndex, actionIndex)
 
-		eligibilityTraceMatrix[1][actionIndex] = ((1 - NewDutchTrace.alpha) * eligibilityTraceMatrix[1][actionIndex]) + 1
+		eligibilityTraceMatrix[stateIndex][actionIndex] = ((1 - NewDutchTrace.alpha) * eligibilityTraceMatrix[stateIndex][actionIndex]) + 1
 		
 		return eligibilityTraceMatrix
 		

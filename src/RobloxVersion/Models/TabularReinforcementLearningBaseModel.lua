@@ -50,13 +50,13 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 
 	NewDeepReinforcementLearningBaseModel:setClassName("TabularReinforcementLearningModel")
 	
+	NewDeepReinforcementLearningBaseModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+
+	NewDeepReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
+	
 	NewDeepReinforcementLearningBaseModel.StatesList = parameterDictionary.StatesList or {}
 	
 	NewDeepReinforcementLearningBaseModel.ActionsList = parameterDictionary.ActionsList or {}
-	
-	NewDeepReinforcementLearningBaseModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
-	
-	NewDeepReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
 	
 	NewDeepReinforcementLearningBaseModel.ModelParameters = parameterDictionary.ModelParameters
 	

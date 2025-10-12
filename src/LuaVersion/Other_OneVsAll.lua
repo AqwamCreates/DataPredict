@@ -34,9 +34,11 @@ local Optimizers = DataPredictLibrary.Optimizers
 
 local Regularizers = DataPredictLibrary.Regularizers
 
+local ValueSchedulers = DataPredictLibrary.ValueSchedulers
+
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local IterativeMethodBaseModel = require("Models_IterativeMethodBaseModel")
+local IterativeMethodBaseModel = require(M"Model_IterativeMethodBaseModel")
 
 OneVsAll = {}
 
@@ -128,7 +130,7 @@ function OneVsAll:setOptimizer(parameterDictionary)
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model.") end
+	if (#ModelArray == 0) then ModelArray = self:generateModel() end
 	
 	local optimizerName = parameterDictionary.optimizerName
 	
@@ -136,11 +138,19 @@ function OneVsAll:setOptimizer(parameterDictionary)
 	
 	local ClassesList = self.ClassesList
 	
-	local SelectedOptimizer = require(Optimizers[optimizerName])
+	local SelectedOptimizer = require(Optimizers[optimizerName] or ValueSchedulers[optimizerName])
+	
+	local valueSchedulerName = parameterDictionary.valueSchedulerName
+	
+	local SelectedValueScheduler
+
+	if (valueSchedulerName) then SelectedValueScheduler = require(ValueSchedulers[valueSchedulerName]) end
 	
 	for m, Model in ipairs(ModelArray) do 
 
-		local success = pcall(function() 
+		local success = pcall(function()
+			
+			if (SelectedValueScheduler) then parameterDictionary.LearningRateValueScheduler = SelectedValueScheduler.new(parameterDictionary) end
 				
 			local OptimizerObject = SelectedOptimizer.new(parameterDictionary)
 
@@ -160,7 +170,7 @@ function OneVsAll:setRegularizer(parameterDictionary)
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model.") end
+	if (#ModelArray == 0) then ModelArray = self:generateModel() end
 	
 	local regularizerName = parameterDictionary.regularizerName
 	
@@ -376,7 +386,7 @@ function OneVsAll:predict(featureMatrix)
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model set.") end
+	if (#ModelArray == 0) then ModelArray = self:generateModel() end
 	
 	local ClassesList = self.ClassesList
 	
@@ -406,7 +416,7 @@ function OneVsAll:getModelParametersArray(doNotDeepCopy)
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model.") end
+	if (#ModelArray == 0) then ModelArray = self:generateModel() end
 	
 	local ModelParametersArray = {}
 	
@@ -426,7 +436,7 @@ function OneVsAll:setModelParametersArray(ModelParametersArray, doNotDeepCopy)
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model set.") end
+	if (#ModelArray == 0) then ModelArray = self:generateModel() end
 	
 	if (not ModelParametersArray) then return end
 	
@@ -446,7 +456,7 @@ function OneVsAll:clearModelParameters()
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model set.") end
+	if (#ModelArray == 0) then ModelArray = self:generateModel() end
 	
 	for _, Model in ipairs(ModelArray) do Model:clearModelParameters() end
 

@@ -38,7 +38,7 @@ local ValueSchedulers = DataPredictLibrary.ValueSchedulers
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local IterativeMethodBaseModel = require(M"Model_IterativeMethodBaseModel")
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 OneVsAll = {}
 

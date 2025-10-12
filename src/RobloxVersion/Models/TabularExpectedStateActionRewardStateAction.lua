@@ -138,7 +138,7 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 
 		end
 
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularExpectedStateActionRewardStateActionModel.learningRate * temporalDifferenceErrorMatrix[stateIndex][actionIndex])
+		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularExpectedStateActionRewardStateActionModel.learningRate * temporalDifferenceError)
 		
 		return temporalDifferenceError
 

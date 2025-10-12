@@ -36,10 +36,6 @@ TabularStateActionRewardStateActionModel.__index = TabularStateActionRewardState
 
 setmetatable(TabularStateActionRewardStateActionModel, TabularReinforcementLearningBaseModel)
 
-local defaultLearningRate = 0.1
-
-local defaultLambda = 0
-
 function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -50,17 +46,17 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewTabularStateActionRewardStateActionModel:setName("TabularStateActionRewardStateAction")
 	
-	NewTabularStateActionRewardStateActionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
-	
-	NewTabularStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
-	
-	NewTabularStateActionRewardStateActionModel.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
+	NewTabularStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
 	NewTabularStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 		
 		local discountFactor = NewTabularStateActionRewardStateActionModel.discountFactor
 		
-		local lambda = NewTabularStateActionRewardStateActionModel.lambda
+		local EligibilityTrace = NewTabularStateActionRewardStateActionModel.EligibilityTrace
+		
+		local ModelParameters = NewTabularStateActionRewardStateActionModel.ModelParameters
+		
+		local StatesList = NewTabularStateActionRewardStateActionModel:getStatesList()
 		
 		local previousQVector = NewTabularStateActionRewardStateActionModel:predict({{previousStateValue}}, true)
 
@@ -70,34 +66,32 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local targetVector = AqwamTensorLibrary:add(rewardValue, discountedQVector)
 		
-		local StatesList = NewTabularStateActionRewardStateActionModel:getStatesList()
-		
-		local ActionsList = NewTabularStateActionRewardStateActionModel:getActionsList()
-		
-		local ModelParameters = NewTabularStateActionRewardStateActionModel.ModelParameters
-		
 		local stateIndex = table.find(StatesList, previousStateValue)
 
 		local temporalDifferenceErrorVector = AqwamTensorLibrary:subtract(targetVector, previousQVector)
 		
-		if (lambda ~= 0) then
+		if (EligibilityTrace) then
+			
+			local ActionsList = NewTabularStateActionRewardStateActionModel:getActionsList()
+
+			local numberOfStates = #StatesList
+			
+			local numberOfActions = #ActionsList
 			
 			local actionIndex = table.find(ActionsList, action)
-			
-			local eligibilityTraceMatrix = NewTabularStateActionRewardStateActionModel.eligibilityTraceMatrix
-			
-			if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor({#StatesList, #ActionsList}, 0) end
-			
-			eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
-			
-			local eligibilityTraceValue = eligibilityTraceMatrix[stateIndex][actionIndex] + 1
-			
-			eligibilityTraceMatrix[stateIndex][actionIndex] = eligibilityTraceValue
 
-			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(temporalDifferenceErrorVector, eligibilityTraceMatrix)
-			
-			NewTabularStateActionRewardStateActionModel.eligibilityTraceMatrix = eligibilityTraceMatrix
-			
+			local dimensionSizeArray = {numberOfStates, numberOfActions}
+
+			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+
+			temporalDifferenceErrorMatrix[stateIndex] = temporalDifferenceErrorVector[1]
+
+			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
+
+			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
+
+			temporalDifferenceErrorVector = {temporalDifferenceErrorMatrix[stateIndex]}
+
 		end
 		
 		local modifiedTemporalDifferenceErrorVector = AqwamTensorLibrary:multiply(NewTabularStateActionRewardStateActionModel.learningRate, temporalDifferenceErrorVector)
@@ -110,13 +104,17 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewTabularStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		NewTabularStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
+		local EligibilityTrace = NewTabularStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
 	NewTabularStateActionRewardStateActionModel:setResetFunction(function()
 		
-		NewTabularStateActionRewardStateActionModel.eligibilityTraceMatrix = nil
+		local EligibilityTrace = NewTabularStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 

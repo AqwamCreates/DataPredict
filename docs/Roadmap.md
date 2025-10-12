@@ -14,7 +14,27 @@ The list of items shown below are likely to be implemented due to their mainstre
 
 * Incremental DBSCAN
 
-   * It is an online version of DBSCAN that allows it to construct clusters from individual datapoints.
+  * It is an online version of DBSCAN that allows it to construct clusters from individual datapoints.
+
+* Double Version Of Tabular Reinforcement Learning.
+
+  * This includes:
+  
+    * TabularDoubleQLearningV1
+    
+    * TabularDoubleQLearningV2
+      
+    * TabularClippedDoubleQLearning
+  
+    * TabularDoubleStateActionRewardStateActionV1
+   
+    * TabularDoubleStateActionRewardStateActionV2
+    
+    * TabularDoubleExpectedStateActionRewardStateActionV1
+    
+    * TabularDoubleExpectedStateActionRewardStateActionV2
+
+  * My head doesn't want to let this go.
 
 ## Nice-To-Have
 

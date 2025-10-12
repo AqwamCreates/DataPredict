@@ -9,7 +9,7 @@ In order for us to use the optimizers, we need to create an optimizer object. In
 So first, lets initialize a new Adagrad optimizer object.
 
 ```lua
-local Adagrad = MDLL.Optimizers.AdaptiveGradient
+local Adagrad = DataPredict.Optimizers.AdaptiveGradient
 
 local AdagradOptimizer = Adagrad.new()
 ```
@@ -25,5 +25,9 @@ LogisticRegressionModel:setOptimizer(AdagradOptimizer)
 ```
 
 Then, we can now train with our optimizer included. Do note that not all models uses optimizers, so please check the API reference if this option is available or not.
+
+# ValueShedulers Can Be Optimizers Too!
+
+Because the way we designed the value schedulers to be similar to optimizers, we can adjust the model's learning rates without the need for the optimizer themselves.
 
 That's all for now!

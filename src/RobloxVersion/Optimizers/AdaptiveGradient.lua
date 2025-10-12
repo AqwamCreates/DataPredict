@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -26,9 +26,9 @@
 
 --]]
 
-local BaseOptimizer = require(script.Parent.BaseOptimizer)
-
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
 AdaptiveGradientOptimizer = {}
 
@@ -36,7 +36,11 @@ AdaptiveGradientOptimizer.__index = AdaptiveGradientOptimizer
 
 setmetatable(AdaptiveGradientOptimizer, BaseOptimizer)
 
+local defaultWeightDecayRate = 0
+
 function AdaptiveGradientOptimizer.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 	
 	local NewAdaptiveGradientOptimizer = BaseOptimizer.new(parameterDictionary)
 	
@@ -44,30 +48,50 @@ function AdaptiveGradientOptimizer.new(parameterDictionary)
 	
 	NewAdaptiveGradientOptimizer:setName("AdaptiveGradient")
 	
+	NewAdaptiveGradientOptimizer.weightDecayRate = NewAdaptiveGradientOptimizer.weightDecayRate or defaultWeightDecayRate
+	
 	--------------------------------------------------------------------------------
 	
-	NewAdaptiveGradientOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
+	NewAdaptiveGradientOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeMatrix, weightMatrix)
 		
-		local previousSumOfGradientSquaredTensor = NewAdaptiveGradientOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
+		local previousSumOfGradientSquaredMatrix = NewAdaptiveGradientOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
+		
+		local weightDecayRate = NewAdaptiveGradientOptimizer.weightDecayRate
+		
+		local gradientMatrix = costFunctionDerivativeMatrix
+		
+		if (weightDecayRate ~= 0) then
 
-		local gradientSquaredTensor = AqwamTensorLibrary:power(costFunctionDerivativeTensor, 2)
+			local decayedWeightMatrix = AqwamTensorLibrary:multiply(weightDecayRate, weightMatrix)
 
-		local currentSumOfGradientSquaredTensor = AqwamTensorLibrary:add(previousSumOfGradientSquaredTensor, gradientSquaredTensor)
+			gradientMatrix = AqwamTensorLibrary:add(gradientMatrix, decayedWeightMatrix)
 
-		local squareRootSumOfGradientSquaredTensor = AqwamTensorLibrary:power(currentSumOfGradientSquaredTensor, 0.5)
+		end
+		
+		local gradientSquaredMatrix = AqwamTensorLibrary:power(gradientMatrix, 2)
 
-		local costFunctionDerivativeTensorPart1 = AqwamTensorLibrary:divide(costFunctionDerivativeTensor, squareRootSumOfGradientSquaredTensor)
+		local currentSumOfGradientSquaredMatrix = AqwamTensorLibrary:add(previousSumOfGradientSquaredMatrix, gradientSquaredMatrix)
 
-		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeTensorPart1)
+		local squareRootSumOfGradientSquaredMatrix = AqwamTensorLibrary:applyFunction(math.sqrt, currentSumOfGradientSquaredMatrix)
 
-		NewAdaptiveGradientOptimizer.optimizerInternalParameterArray = {currentSumOfGradientSquaredTensor}
+		local costFunctionDerivativeMatrixPart1 = AqwamTensorLibrary:divide(gradientMatrix, squareRootSumOfGradientSquaredMatrix)
 
-		return costFunctionDerivativeTensor
+		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrixPart1)
+
+		NewAdaptiveGradientOptimizer.optimizerInternalParameterArray = {currentSumOfGradientSquaredMatrix}
+
+		return costFunctionDerivativeMatrix
 		
 	end)
 	
 	return NewAdaptiveGradientOptimizer
 	
+end
+
+function AdaptiveGradientOptimizer:setWeightDecayRate(weightDecayRate)
+
+	self.weightDecayRate = weightDecayRate
+
 end
 
 return AdaptiveGradientOptimizer

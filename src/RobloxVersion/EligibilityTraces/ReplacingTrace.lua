@@ -44,9 +44,9 @@ function ReplacingTrace.new(parameterDictionary)
 	
 	NewReplacingTrace:setName("ReplacingTrace")
 	
-	NewReplacingTrace:setIncrementFunction(function(eligibilityTraceMatrix, actionIndex)
+	NewReplacingTrace:setIncrementFunction(function(eligibilityTraceMatrix, stateIndex, actionIndex)
 		
-		eligibilityTraceMatrix[1][actionIndex] = 1
+		eligibilityTraceMatrix[stateIndex][actionIndex] = 1
 		
 		return eligibilityTraceMatrix
 		

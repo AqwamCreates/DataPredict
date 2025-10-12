@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -26,9 +26,9 @@
 
 --]]
 
-local BaseOptimizer = require(script.Parent.BaseOptimizer)
-
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
 GravityOptimizer = {}
 
@@ -84,7 +84,7 @@ function GravityOptimizer.new(parameterDictionary)
 		
 		currentTimeStep += 1
 		
-		if (previousVelocityTensor == nil) then
+		if (not previousVelocityTensor) then
 
 			local standardDeviation = NewGravityOptimizer.initialStepSize / learningRate
 

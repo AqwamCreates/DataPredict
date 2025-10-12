@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Optimizers](../Optimizers.md) - AdaptiveGradientDelta (AdaDelta)
+# [API Reference](../../API.md) - [Optimizers](../Optimizers.md) - AdaptiveDelta (AdaDelta)
 
 ## Constructors
 
@@ -7,7 +7,7 @@
 Creates a new optimizer object.
 
 ```
-AdaptiveGradientDelta.new(decayRate: number, epsilon: number): OptimizerObject
+AdaptiveDelta.new(decayRate: number, epsilon: number): OptimizerObject
 ```
 
 #### Parameters:
@@ -25,7 +25,7 @@ AdaptiveGradientDelta.new(decayRate: number, epsilon: number): OptimizerObject
 ### setDecayRate()
 
 ```
-AdaptiveGradientDelta:setDecayRate(decayRate: number)
+AdaptiveDelta:setDecayRate(decayRate: number)
 ```
 
 #### Parameters:
@@ -35,7 +35,7 @@ AdaptiveGradientDelta:setDecayRate(decayRate: number)
 ### setEpsilon()
 
 ```
-AdaptiveGradientDelta:setEpsilon(epsilon: number)
+AdaptiveDelta:setEpsilon(epsilon: number)
 ```
 
 #### Parameters:
@@ -47,7 +47,7 @@ AdaptiveGradientDelta:setEpsilon(epsilon: number)
 Reset optimizer's stored values (excluding the parameters).
 
 ```
-AdaptiveGradientDelta:reset()
+AdaptiveDelta:reset()
 ```
 
 ## Inherited From

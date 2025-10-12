@@ -128,7 +128,7 @@ function OneVsAll:setOptimizer(parameterDictionary)
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model.") end
+	if (#ModelArray == 0) then ModelArray = self:generateModel() end
 	
 	local optimizerName = parameterDictionary.optimizerName
 	
@@ -160,7 +160,7 @@ function OneVsAll:setRegularizer(parameterDictionary)
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model.") end
+	if (#ModelArray == 0) then ModelArray = self:generateModel() end
 	
 	local regularizerName = parameterDictionary.regularizerName
 	
@@ -376,7 +376,7 @@ function OneVsAll:predict(featureMatrix)
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model set.") end
+	if (#ModelArray == 0) then ModelArray = self:generateModel() end
 	
 	local ClassesList = self.ClassesList
 	
@@ -406,7 +406,7 @@ function OneVsAll:getModelParametersArray(doNotDeepCopy)
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model.") end
+	if (#ModelArray == 0) then ModelArray = self:generateModel() end
 	
 	local ModelParametersArray = {}
 	
@@ -426,7 +426,7 @@ function OneVsAll:setModelParametersArray(ModelParametersArray, doNotDeepCopy)
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model set.") end
+	if (#ModelArray == 0) then ModelArray = self:generateModel() end
 	
 	if (not ModelParametersArray) then return end
 	
@@ -446,7 +446,7 @@ function OneVsAll:clearModelParameters()
 	
 	local ModelArray = self.ModelArray
 	
-	if (#ModelArray == 0) then error("No model set.") end
+	if (#ModelArray == 0) then ModelArray = self:generateModel() end
 	
 	for _, Model in ipairs(ModelArray) do Model:clearModelParameters() end
 

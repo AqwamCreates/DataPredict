@@ -291,14 +291,10 @@ AqwamMachineAndDeepLearningLibrary.Others = {
 	OneVsAll = require(Others.OneVsAll),
 	
 	OneVsOne = require(Others.OneVsOne),
-	
-	ConfusionMatrixCreator = require(Others.ConfusionMatrixCreator),
-	
-	Tokenizer = require(Others.Tokenizer),
-	
-	StringSplitter = require(Others.StringSplitter),
 
 	OnlineLearning = require(Others.OnlineLearning),
+	
+	ConfusionMatrixCreator = require(Others.ConfusionMatrixCreator),
 
 }
 

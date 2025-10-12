@@ -68,8 +68,6 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 
 		local ActionsList = NewTabularExpectedStateActionRewardStateActionModel:getActionsList()
 		
-		local numberOfStates = #StatesList
-		
 		local numberOfActions = #ActionsList
 
 		local expectedQValue = 0
@@ -124,15 +122,19 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 
 		local temporalDifferenceError = targetValue - lastValue
 		
-		local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfActions}, 0)
-
-		temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
-
 		if (EligibilityTrace) then
+			
+			local numberOfStates = #StatesList
+
+			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfActions}, 0)
+
+			temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
 
 			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, {numberOfStates, numberOfActions})
 
 			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
+
+			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
 
 		end
 

@@ -44,39 +44,39 @@ function ElasticNet.new(parameterDictionary)
 	
 	NewElasticNet:setName("ElasticNet")
 	
-	NewElasticNet:setCalculateCostFunction(function(ModelParameters)
+	NewElasticNet:setCalculateCostFunction(function(weightMatrix)
 		
 		local lambda = NewElasticNet.lambda
 		
-		ModelParameters = NewElasticNet:adjustModelParameters(ModelParameters)
+		weightMatrix = NewElasticNet:adjustWeightMatrix(weightMatrix)
 		
-		local SquaredModelParameters = AqwamTensorLibrary:power(ModelParameters, 2)
+		local SquaredWeightMatrix = AqwamTensorLibrary:power(weightMatrix, 2)
 
-		local sumSquaredModelParameters = AqwamTensorLibrary:sum(SquaredModelParameters)
+		local sumSquaredWeightMatrix = AqwamTensorLibrary:sum(SquaredWeightMatrix)
 
-		local absoluteModelParameters = AqwamTensorLibrary:applyFunction(math.abs, ModelParameters)
+		local absoluteWeightMatrix = AqwamTensorLibrary:applyFunction(math.abs, weightMatrix)
 
-		local sumAbsoluteModelParameters = AqwamTensorLibrary:sum(absoluteModelParameters)
+		local sumAbsoluteWeightMatrix = AqwamTensorLibrary:sum(absoluteWeightMatrix)
 
-		local regularizationValuePart1 = lambda * sumSquaredModelParameters
+		local regularizationValuePart1 = lambda * sumSquaredWeightMatrix
 
-		local regularizationValuePart2 = lambda * sumAbsoluteModelParameters
+		local regularizationValuePart2 = lambda * sumAbsoluteWeightMatrix
 
-		return regularizationValuePart1 + regularizationValuePart2
+		return (regularizationValuePart1 + regularizationValuePart2)
 		
 	end)
 	
-	NewElasticNet:setCalculateFunction(function(ModelParameters)
+	NewElasticNet:setCalculateFunction(function(weightMatrix)
 		
-		ModelParameters = NewElasticNet:adjustModelParameters(ModelParameters)
+		weightMatrix = NewElasticNet:adjustWeightMatrix(weightMatrix)
 		
 		local lambda = NewElasticNet.lambda
 		
-		local signMatrix = AqwamTensorLibrary:applyFunction(math.sign, ModelParameters)
+		local signMatrix = AqwamTensorLibrary:applyFunction(math.sign, weightMatrix)
 
 		local regularizationMatrixPart1 = AqwamTensorLibrary:multiply(lambda, signMatrix)
 
-		local regularizationMatrixPart2 = AqwamTensorLibrary:multiply(2, lambda, ModelParameters)
+		local regularizationMatrixPart2 = AqwamTensorLibrary:multiply(2, lambda, weightMatrix)
 
 		return AqwamTensorLibrary:add(regularizationMatrixPart1, regularizationMatrixPart2)
 		

@@ -1,12 +1,16 @@
 # [API Reference](../API.md) - Optimizers
 
-[AdaptiveGradient](Optimizers/AdaptiveGradient.md) - a.k.a Adagrad
+[AdaptiveDelta](Optimizers/AdaptiveDelta.md) - a.k.a AdaDelta
 
-[AdaptiveGradientDelta](Optimizers/AdaptiveGradientDelta.md) - a.k.a AdaDelta
+[AdaptiveFactor](Optimizers/AdaptiveFactor.md) - a.k.a AdaFactor
+
+[AdaptiveGradient](Optimizers/AdaptiveGradient.md) - a.k.a Adagrad
 
 [AdaptiveMomentEstimation](Optimizers/AdaptiveMomentEstimation.md) - a.k.a Adam
 
 [AdaptiveMomentEstimationMaximum](Optimizers/AdaptiveMomentEstimationMaximum.md) - a.k.a AdaMax
+
+[AdaptiveMomentEstimationWeightDecay](Optimizers/AdaptiveMomentEstimationWeightDecay.md) - a.k.a AdamW
 
 [Gravity](Optimizers/Gravity.md)
 
@@ -14,6 +18,10 @@
 
 [NesterovAcceleratedAdaptiveMomentEstimation](Optimizers/NesterovAcceleratedAdaptiveMomentEstimation.md) - a.k.a NAdam
 
-[RootMeanSquarePropagation](Optimizers/RootMeanSquarePropagation.md)
+[RectifiedAdaptiveMomentEstimation](Optimizers/RectifiedAdaptiveMomentEstimation.md) - a.k.a RAdam
+
+[ResilientBackwardPropagation](Optimizers/ResilientBackwardPropagation.md) - a.k.a RProp
+
+[RootMeanSquarePropagation](Optimizers/RootMeanSquarePropagation.md) - a.k.a RMSProp
 
 [BaseOptimizer](Optimizers/BaseOptimizer.md)

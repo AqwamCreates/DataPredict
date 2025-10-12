@@ -34,6 +34,8 @@ local Optimizers = DataPredictLibrary.Optimizers
 
 local Regularizers = DataPredictLibrary.Regularizers
 
+local ValueSchedulers = DataPredictLibrary.ValueSchedulers
+
 local AqwamTensorLibrary = require(DataPredictLibrary.AqwamTensorLibraryLinker.Value)
 
 local IterativeMethodBaseModel = require(Models.IterativeMethodBaseModel)
@@ -136,11 +138,19 @@ function OneVsAll:setOptimizer(parameterDictionary)
 	
 	local ClassesList = self.ClassesList
 	
-	local SelectedOptimizer = require(Optimizers[optimizerName])
+	local SelectedOptimizer = require(Optimizers[optimizerName] or ValueSchedulers[optimizerName])
+	
+	local valueSchedulerName = parameterDictionary.valueSchedulerName
+	
+	local SelectedValueScheduler
+
+	if (valueSchedulerName) then SelectedValueScheduler = require(ValueSchedulers[valueSchedulerName]) end
 	
 	for m, Model in ipairs(ModelArray) do 
 
-		local success = pcall(function() 
+		local success = pcall(function()
+			
+			if (SelectedValueScheduler) then parameterDictionary.LearningRateValueScheduler = SelectedValueScheduler.new(parameterDictionary) end
 				
 			local OptimizerObject = SelectedOptimizer.new(parameterDictionary)
 

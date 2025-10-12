@@ -38,8 +38,6 @@ setmetatable(TabularQLearningModel, TabularReinforcementLearningBaseModel)
 
 local defaultLearningRate = 0.1
 
-local defaultLambda = 0
-
 function TabularQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -52,19 +50,21 @@ function TabularQLearningModel.new(parameterDictionary)
 	
 	NewTabularQLearning.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
-	NewTabularQLearning.lambda = parameterDictionary.lambda or defaultLambda
-	
-	NewTabularQLearning.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
+	NewTabularQLearning.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
 	NewTabularQLearning:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 		
 		local discountFactor = NewTabularQLearning.discountFactor
 		
-		local lambda = NewTabularQLearning.lambda
+		local EligibilityTrace = NewTabularQLearning.EligibilityTrace
 		
 		local StatesList = NewTabularQLearning:getStatesList()
 
 		local ActionsList = NewTabularQLearning:getActionsList()
+		
+		local numberOfStates = #StatesList
+		
+		local numberOfActions = #ActionsList
 
 		local ModelParameters = NewTabularQLearning.ModelParameters
 
@@ -80,25 +80,19 @@ function TabularQLearningModel.new(parameterDictionary)
 
 		local temporalDifferenceError = targetValue - lastValue
 		
-		if (lambda ~= 0) then
-			
-			local eligibilityTraceMatrix = NewTabularQLearning.eligibilityTraceMatrix
-			
-			if (not eligibilityTraceMatrix) then eligibilityTraceMatrix = AqwamTensorLibrary:createTensor({#StatesList, #ActionsList}, 0) end
-			
-			eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
-			
-			local eligibilityTraceValue = eligibilityTraceMatrix[stateIndex][actionIndex] + 1
-			
-			eligibilityTraceMatrix[stateIndex][actionIndex] = eligibilityTraceValue
-			
-			temporalDifferenceError = temporalDifferenceError * eligibilityTraceValue
-			
-			NewTabularQLearning.eligibilityTraceMatrix = eligibilityTraceMatrix
-			
+		local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfActions}, 0)
+		
+		temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
+		
+		if (EligibilityTrace) then
+
+			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, {numberOfStates, numberOfActions})
+
+			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
+
 		end
 		
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularQLearning.learningRate * temporalDifferenceError)
+		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularQLearning.learningRate * temporalDifferenceErrorMatrix[stateIndex][actionIndex])
 		
 		return temporalDifferenceError
 
@@ -106,13 +100,17 @@ function TabularQLearningModel.new(parameterDictionary)
 	
 	NewTabularQLearning:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		NewTabularQLearning.eligibilityTraceMatrix = nil
+		local EligibilityTrace = NewTabularQLearning.EligibilityTrace
+		
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
 	NewTabularQLearning:setResetFunction(function()
 		
-		NewTabularQLearning.eligibilityTraceMatrix = nil
+		local EligibilityTrace = NewTabularQLearning.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 

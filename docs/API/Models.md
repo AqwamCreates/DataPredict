@@ -8,9 +8,9 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Classification                 | 13    |
 | Clustering                     | 8     |
 | Deep Reinforcement Learning    | 21    |
-| Tabular Reinforcement Learning | 5     |
+| Tabular Reinforcement Learning | 12    |
 | Generative                     | 4     |
-| Total                          | 57    |
+| Total                          | 63    |
 
 For strong deep learning applications, have a look at [DataPredict™ Neural](https://aqwamcreates.github.io/DataPredict-Neural) (object-oriented) and [DataPredict™ Axon](https://aqwamcreates.github.io/DataPredict-Axon) (function-oriented) instead.
 
@@ -103,13 +103,20 @@ By default, most models would perform offline / batch training on the first trai
 
 ## Tabular Reinforcement Learning
 
-| Model                                                                                                        | Alternate Names | Use Cases                       |
-|--------------------------------------------------------------------------------------------------------------|-----------------|---------------------------------|
-| [TabularQLearning](Models/TabularQLearning.md)                                                               | Q-Learning      | Best Self-Learning Grid AIs     |
-| [TabularStateActionRewardState](Models/TabularStateActionRewardStateAction.md) (May Need Further Refinement) | SARSA           | Safe Self-Learning Grid AIs     |
-| [TabularExpectedStateActionRewardState](Models/TabularExpectedStateActionRewardStateAction.md)               | Expected SARSA  | Balanced Self-Learning Grid AIs |
-| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md) (May Need Further Refinement)                 | MC              | Online Self-Learning Grid AIs   |
-| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                             | Off-Policy MC   | Offline Self-Learning Grid AIs  |
+| Model                                                                                                                  | Alternate Names           | Use Cases                       |
+|------------------------------------------------------------------------------------------------------------------------|---------------------------|---------------------------------|
+| [TabularQLearning](Models/TabularQLearning.md)                                                                         | Q-Learning                | Best Self-Learning Grid AIs     |
+| [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                         | Double Q-Learning (2010)  | Best Self-Learning Grid AIs     |
+| [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                         | Double Q-Learning (2015)  | Best Self-Learning Grid AIs     |
+| [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                               | Clipped Double Q-Learning | Best Self-Learning Grid AIs     |
+| [TabularStateActionRewardState](Models/TabularStateActionRewardStateAction.md) (May Need Further Refinement)           | SARSA                     | Safe Self-Learning Grid AIs     |
+| [TabularDoubleStateActionRewardStateV1](Models/TabularDoubleStateActionRewardStateV1.md) (May Need Further Refinement) | Double SARSA              | Safe Self-Learning Grid AIs     |
+| [TabularDoubleStateActionRewardStateV2](Models/TabularDoubleStateActionRewardStateV2.md) (May Need Further Refinement) | Double SARSA              | Safe Self-Learning Grid AIs     |
+| [TabularExpectedStateActionRewardState](Models/TabularExpectedStateActionRewardStateAction.md)                         | Expected SARSA            | Balanced Self-Learning Grid AIs |
+| [TabularDoubleExpectedStateActionRewardStateV1](Models/TabularDoubleExpectedStateActionRewardStateV1.md)               | Expected SARSA            | Balanced Self-Learning Grid AIs |
+| [TabularDoubleExpectedStateActionRewardStateV2](Models/TabularDoubleExpectedStateActionRewardStateV2.md)               | Expected SARSA            | Balanced Self-Learning Grid AIs |
+| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md) (May Need Further Refinement)                           | MC                        | Online Self-Learning Grid AIs   |
+| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                       | Off-Policy MC             | Offline Self-Learning Grid AIs  |
 
 ## Generative
 

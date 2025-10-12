@@ -30,46 +30,36 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
-RootMeanSquarePropagationOptimizer = {}
+AdaptiveGradientOptimizer = {}
 
-RootMeanSquarePropagationOptimizer.__index = RootMeanSquarePropagationOptimizer
+AdaptiveGradientOptimizer.__index = AdaptiveGradientOptimizer
 
-setmetatable(RootMeanSquarePropagationOptimizer, BaseOptimizer)
-
-local defaultBeta = 0.1
+setmetatable(AdaptiveGradientOptimizer, BaseOptimizer)
 
 local defaultWeightDecayRate = 0
 
-local defaultEpsilonValue = 1e-16
-
-function RootMeanSquarePropagationOptimizer.new(parameterDictionary)
+function AdaptiveGradientOptimizer.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewRootMeanSquarePropagationOptimizer = BaseOptimizer.new(parameterDictionary)
+	local NewAdaptiveGradientOptimizer = BaseOptimizer.new(parameterDictionary)
 	
-	setmetatable(NewRootMeanSquarePropagationOptimizer, RootMeanSquarePropagationOptimizer)
+	setmetatable(NewAdaptiveGradientOptimizer, AdaptiveGradientOptimizer)
 	
-	NewRootMeanSquarePropagationOptimizer:setName("RootMeanSquarePropagation")
+	NewAdaptiveGradientOptimizer:setName("AdaptiveGradient")
 	
-	NewRootMeanSquarePropagationOptimizer.beta = parameterDictionary.beta or defaultBeta
-	
-	NewRootMeanSquarePropagationOptimizer.weightDecayRate = NewRootMeanSquarePropagationOptimizer.weightDecayRate or defaultWeightDecayRate
-	
-	NewRootMeanSquarePropagationOptimizer.epsilon = parameterDictionary.epsilon or defaultEpsilonValue
+	NewAdaptiveGradientOptimizer.weightDecayRate = NewAdaptiveGradientOptimizer.weightDecayRate or defaultWeightDecayRate
 	
 	--------------------------------------------------------------------------------
 	
-	NewRootMeanSquarePropagationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeMatrix, weightMatrix)
+	NewAdaptiveGradientOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeMatrix, weightMatrix)
 		
-		local previousVelocity = NewRootMeanSquarePropagationOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
+		local previousSumOfGradientSquaredMatrix = NewAdaptiveGradientOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
 		
-		local beta = NewRootMeanSquarePropagationOptimizer.beta
-		
-		local weightDecayRate = NewRootMeanSquarePropagationOptimizer.weightDecayRate
+		local weightDecayRate = NewAdaptiveGradientOptimizer.weightDecayRate
 		
 		local gradientMatrix = costFunctionDerivativeMatrix
-
+		
 		if (weightDecayRate ~= 0) then
 
 			local decayedWeightMatrix = AqwamTensorLibrary:multiply(weightDecayRate, weightMatrix)
@@ -77,49 +67,31 @@ function RootMeanSquarePropagationOptimizer.new(parameterDictionary)
 			gradientMatrix = AqwamTensorLibrary:add(gradientMatrix, decayedWeightMatrix)
 
 		end
+		
+		local gradientSquaredMatrix = AqwamTensorLibrary:power(gradientMatrix, 2)
 
-		local squaredCostFunctionDerivativeMatrix = AqwamTensorLibrary:power(gradientMatrix, 2)
+		local currentSumOfGradientSquaredMatrix = AqwamTensorLibrary:add(previousSumOfGradientSquaredMatrix, gradientSquaredMatrix)
 
-		local vMatrixPart1 = AqwamTensorLibrary:multiply(beta, previousVelocity)
+		local squareRootSumOfGradientSquaredMatrix = AqwamTensorLibrary:applyFunction(math.sqrt, currentSumOfGradientSquaredMatrix)
 
-		local vMatrixPart2 = AqwamTensorLibrary:multiply((1 - beta), squaredCostFunctionDerivativeMatrix)
-
-		local velocityMatrix = AqwamTensorLibrary:add(vMatrixPart1, vMatrixPart2)
-
-		local velocityNonZeroDivisorMatrix = AqwamTensorLibrary:add(velocityMatrix, NewRootMeanSquarePropagationOptimizer.epsilon)
-
-		local squaredRootVelocityMatrix = AqwamTensorLibrary:applyFunction(math.sqrt, velocityNonZeroDivisorMatrix)
-
-		local costFunctionDerivativeMatrixPart1 = AqwamTensorLibrary:divide(gradientMatrix, squaredRootVelocityMatrix)
+		local costFunctionDerivativeMatrixPart1 = AqwamTensorLibrary:divide(gradientMatrix, squareRootSumOfGradientSquaredMatrix)
 
 		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrixPart1)
 
-		NewRootMeanSquarePropagationOptimizer.optimizerInternalParameterArray = {velocityMatrix}
+		NewAdaptiveGradientOptimizer.optimizerInternalParameterArray = {currentSumOfGradientSquaredMatrix}
 
 		return costFunctionDerivativeMatrix
 		
 	end)
 	
-	return NewRootMeanSquarePropagationOptimizer
+	return NewAdaptiveGradientOptimizer
 	
 end
 
-function RootMeanSquarePropagationOptimizer:setBeta(beta)
-	
-	self.beta = beta
-	
-end
-
-function RootMeanSquarePropagationOptimizer:setWeightDecayRate(weightDecayRate)
+function AdaptiveGradientOptimizer:setWeightDecayRate(weightDecayRate)
 
 	self.weightDecayRate = weightDecayRate
 
 end
 
-function RootMeanSquarePropagationOptimizer:setEpsilon(epsilon)
-
-	self.epsilon = epsilon
-
-end
-
-return RootMeanSquarePropagationOptimizer
+return AdaptiveGradientOptimizer

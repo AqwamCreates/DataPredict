@@ -26,7 +26,7 @@
 
 --]]
 
-local BaseModel = require("Core_BaseModel")
+local BaseModel = require("Model_BaseModel")
 
 TabularReinforcementLearningBaseModel = {}
 

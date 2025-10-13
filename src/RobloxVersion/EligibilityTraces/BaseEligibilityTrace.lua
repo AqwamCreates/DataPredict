@@ -68,7 +68,15 @@ function BaseEligibilityTrace:increment(stateIndex, actionIndex, discountFactor,
 	
 	local eligibilityTraceMatrix = self.eligibilityTraceMatrix
 	
-	if (mode == "State") then actionIndex = 1 end
+	if (mode == "State") then 
+		
+		actionIndex = 1
+		
+	elseif (mode == "Action") then
+		
+		stateIndex = 1
+		
+	end
 	
 	if (not eligibilityTraceMatrix) then
 		
@@ -81,6 +89,10 @@ function BaseEligibilityTrace:increment(stateIndex, actionIndex, discountFactor,
 		elseif (mode == "State") then
 			
 			selectedDimensionSizeArray = {dimensionSizeArray[1], 1}
+			
+		elseif (mode == "Action") then
+			
+			selectedDimensionSizeArray = {1, dimensionSizeArray[2]}
 			
 		else
 			

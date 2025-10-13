@@ -72,6 +72,16 @@
 
   * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if custom events are associated with the model's output.
 
+* [Creating Simple Play Time Maximization Model](HighValueProjectTutorials/)
+
+  * Uses discrete values (e.g. "focus", "run" and "attack") to maximize play time.
+
+  * No need to add new content; the model can use existing content to optimize your games.
+
+  * It functionally acts similarly to the non-simple version, but more safer and more limited in expressive power.
+
+  * Minimal implementation takes a minimum of 1 hour using DataPredict™, especially if custom events are associated with the model's output.
+
 * [Creating Engagement Milestone Detection Ensemble Model](HighValueProjectTutorials/CreatingEngagementMilestoneDetectionEnsembleModel.md)
 
   * Uses a combination of:

@@ -120,35 +120,13 @@ end
 
 function DeepReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
-	local categoricalUpdateFunction = self.categoricalUpdateFunction
-
-	if (categoricalUpdateFunction) then
-
-		return categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
-
-	else
-
-		error("The categorical update function is not implemented!")
-
-	end
+	return self.categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
 end
 
 function DeepReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
-	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
-
-	if (diagonalGaussianUpdateFunction) then
-		
-		if (not actionStandardDeviationVector) then error("No action standard deviation vector.") end
-
-		return diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
-
-	else
-
-		error("The diagonal Gaussian update function is not implemented!")
-
-	end
+	return self.diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
 end
 
@@ -160,17 +138,7 @@ end
 
 function DeepReinforcementLearningActorCriticBaseModel:episodeUpdate(terminalStateValue)
 
-	local episodeUpdateFunction = self.episodeUpdateFunction
-
-	if (episodeUpdateFunction) then
-
-		return episodeUpdateFunction(terminalStateValue)
-
-	else
-
-		error("The episode update function is not implemented!")
-
-	end
+	return self.episodeUpdateFunction(terminalStateValue)
 
 end
 
@@ -182,17 +150,7 @@ end
 
 function DeepReinforcementLearningActorCriticBaseModel:reset()
 
-	local resetFunction = self.resetFunction
-
-	if (resetFunction) then 
-
-		return resetFunction() 
-
-	else
-
-		error("The reset function is not implemented!")
-
-	end
+	return self.resetFunction() 
 
 end
 

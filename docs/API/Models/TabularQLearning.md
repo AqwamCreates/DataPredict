@@ -18,7 +18,7 @@ TabularQLearning.new(learningRate: number, discountFactor: number, EligibilityTr
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
 
-* EligibilityTrace:
+* EligibilityTrace: The eligibility trace object to keep track of credit assignments of state-action pairs.
 
 #### Returns:
 

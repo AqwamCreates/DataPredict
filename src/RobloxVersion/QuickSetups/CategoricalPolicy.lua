@@ -50,7 +50,7 @@ local function selectIndexWithHighestValue(valueVector)
 	
 	for index, value in ipairs(valueVector[1]) do
 
-		if (highestValue > value) then
+		if (value > highestValue) then
 
 			highestValue = value
 
@@ -64,13 +64,27 @@ local function selectIndexWithHighestValue(valueVector)
 	
 end
 
-local function calculateProbability(valueVector, temperature)
+local function calculateStableProbability(valueVector, temperature)
 
 	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueVector)
 
 	local zValueVector = AqwamTensorLibrary:subtract(valueVector, maximumValue)
 	
 	local temperatureZValueVector = AqwamTensorLibrary:divide(zValueVector, temperature)
+
+	local exponentVector = AqwamTensorLibrary:exponent(temperatureZValueVector)
+
+	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
+
+	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
+
+	return probabilityVector
+
+end
+
+local function calculateProbability(valueVector, temperature)
+
+	local temperatureZValueVector = AqwamTensorLibrary:divide(valueVector, temperature)
 
 	local exponentVector = AqwamTensorLibrary:exponent(temperatureZValueVector)
 
@@ -138,10 +152,16 @@ function CategoricalPolicyQuickSetup:selectAction(actionVector)
 		
 		actionIndex = selectIndexWithHighestValue(actionVector)
 	
+	elseif (actionSelectionFunction == "StableSoftmaxSampling") or (actionSelectionFunction == "StableBoltzmannSampling") then
+		
+		local stableActionProbabilityVector = calculateStableProbability(actionVector, self.temperature)
+		
+		actionIndex = sample(stableActionProbabilityVector)
+		
 	elseif (actionSelectionFunction == "SoftmaxSampling") or (actionSelectionFunction == "BoltzmannSampling") then
-		
+
 		local actionProbabilityVector = calculateProbability(actionVector, self.temperature)
-		
+
 		actionIndex = sample(actionProbabilityVector)
 		
 	elseif (actionSelectionFunction == "UpperConfidenceBound") then

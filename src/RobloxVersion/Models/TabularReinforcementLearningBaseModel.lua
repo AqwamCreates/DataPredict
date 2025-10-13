@@ -54,6 +54,8 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 
 	NewDeepReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
 	
+	NewDeepReinforcementLearningBaseModel.Optimizer = parameterDictionary.Optimizer
+	
 	NewDeepReinforcementLearningBaseModel.StatesList = parameterDictionary.StatesList or {}
 	
 	NewDeepReinforcementLearningBaseModel.ActionsList = parameterDictionary.ActionsList or {}
@@ -62,6 +64,18 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	return NewDeepReinforcementLearningBaseModel
 	
+end
+
+function TabularReinforcementLearningBaseModel:setLearningRate(learningRate)
+
+	self.learningRate = learningRate
+
+end
+
+function TabularReinforcementLearningBaseModel:getLearningRate()
+
+	return self.learningRate
+
 end
 
 function TabularReinforcementLearningBaseModel:setDiscountFactor(discountFactor)
@@ -74,6 +88,18 @@ function TabularReinforcementLearningBaseModel:getDiscountFactor()
 	
 	return self.discountFactor
 	
+end
+
+function TabularReinforcementLearningBaseModel:setOptimizer(Optimizer)
+
+	self.Optimizer = Optimizer
+
+end
+
+function TabularReinforcementLearningBaseModel:getOptimizer()
+
+	return self.Optimizer
+
 end
 
 function TabularReinforcementLearningBaseModel:predict(stateVector, returnOriginalOutput)

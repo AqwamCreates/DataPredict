@@ -8,13 +8,21 @@ Creates a new eligibility trace object. If any of the arguments are not given, d
 
 ```
 
-AccumulatingTrace.new({lambda: number}): EligibilityTraceObject
+AccumulatingTrace.new({lambda: number, mode: "string"}): EligibilityTraceObject
 
 ```
 
 #### Parameters:
 
-* lambda: lambda: At 0, the model acts like the Temporal Difference algorithm. At 1, the model acts as Monte Carlo algorithm. Between 0 and 1, the model acts as both. [Default: 0.5]
+* lambda: At 0, the model acts like the Temporal Difference algorithm. At 1, the model acts as Monte Carlo algorithm. Between 0 and 1, the model acts as both. [Default: 0]
+
+* mode: Controls whether or not to use E(s,a), E(s) or E(a) formulation for creating eligibility trace matrix. Available options are:
+
+  * StateAction (Default)
+
+  * State
+
+  * Action
 
 #### Returns:
 

@@ -62,7 +62,9 @@ function AdaptiveDeltaOptimizer.new(parameterDictionary)
 	
 	NewAdaptiveDeltaOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeMatrix, weightMatrix)
 		
-		local previousRunningGradientSquaredMatrix = NewAdaptiveDeltaOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
+		local optimizerInternalParameterArray = NewAdaptiveDeltaOptimizer.optimizerInternalParameterArray or {}
+		
+		local previousRunningGradientSquaredMatrix = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
 		
 		local decayRate = NewAdaptiveDeltaOptimizer.decayRate
 		

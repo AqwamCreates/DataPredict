@@ -66,10 +66,6 @@ function TabularClippedDoubleQLearningModel.new(parameterDictionary)
 		
 		local ActionsList = NewTabularClippedDoubleQLearningModel:getActionsList()
 		
-		local numberOfStates = #StatesList
-		
-		local numberOfActions = #ActionsList
-		
 		local previousStateValueVector = {{previousStateValue}}
 
 		local maxQValueArray = {}
@@ -94,13 +90,17 @@ function TabularClippedDoubleQLearningModel.new(parameterDictionary)
 
 		local actionIndex = table.find(ActionsList, action)
 
-		local dimensionSizeArray = {numberOfStates, numberOfActions}
-
 		local temporalDifferenceErrorArray = {}
 		
 		local temporalDifferenceErrorMatrix
 
 		if (EligibilityTrace) then 
+			
+			local numberOfStates = #StatesList
+
+			local numberOfActions = #ActionsList
+			
+			local dimensionSizeArray = {numberOfStates, numberOfActions}
 			
 			temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
 			

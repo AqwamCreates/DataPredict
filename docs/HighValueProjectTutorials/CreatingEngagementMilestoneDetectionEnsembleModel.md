@@ -224,3 +224,5 @@ ProbabilityToLeavePredictionModelParameters = ProbabilityToLeavePredictionModel:
 LeftToEarlyPredictionModelParameters = LeftToEarlyPredictionModel:getModelParameters(true)
 
 ```
+
+That's all for today! See you later!

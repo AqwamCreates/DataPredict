@@ -58,7 +58,9 @@ function MomentumOptimizer.new(parameterDictionary)
 	
 	NewMomentumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeMatrix, weightMatrix)
 		
-		local previousVelocityMatrix = NewMomentumOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
+		local optimizerInternalParameterArray = NewMomentumOptimizer.optimizerInternalParameterArray or {}
+		
+		local previousVelocityMatrix = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
 		
 		local weightDecayRate = NewMomentumOptimizer.weightDecayRate
 

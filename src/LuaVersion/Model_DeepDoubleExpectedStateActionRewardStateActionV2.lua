@@ -36,9 +36,9 @@ DeepDoubleExpectedStateActionRewardStateActionModel.__index = DeepDoubleExpected
 
 setmetatable(DeepDoubleExpectedStateActionRewardStateActionModel, DeepReinforcementLearningBaseModel)
 
-local defaultEpsilon = 0.5
+local defaultAveragingRate = 0.01
 
-local defaultAveragingRate = 0.995
+local defaultEpsilon = 0.5
 
 local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
 
@@ -46,11 +46,11 @@ local function rateAverageModelParameters(averagingRate, TargetModelParameters, 
 
 	for layer = 1, #TargetModelParameters, 1 do
 
-		local TargetModelParametersPart = AqwamTensorLibrary:multiply(averagingRate, TargetModelParameters[layer])
+		local PrimaryModelParametersPart = AqwamTensorLibrary:multiply(averagingRate, PrimaryModelParameters[layer])
+		
+		local TargetModelParametersPart = AqwamTensorLibrary:multiply(averagingRateComplement, TargetModelParameters[layer])
 
-		local PrimaryModelParametersPart = AqwamTensorLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
-
-		TargetModelParameters[layer] = AqwamTensorLibrary:add(TargetModelParametersPart, PrimaryModelParametersPart)
+		TargetModelParameters[layer] = AqwamTensorLibrary:add(PrimaryModelParametersPart, TargetModelParametersPart)
 
 	end
 
@@ -64,9 +64,9 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 	setmetatable(NewDeepDoubleExpectedStateActionRewardStateActionModel, DeepDoubleExpectedStateActionRewardStateActionModel)
 	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
-	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
+	
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 

@@ -194,6 +194,10 @@ function CategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		if (not Model) then error("No model.") end
 		
+		local isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
+		
+		if (isOriginalValueNotAVector) then currentFeatureVector = {{currentFeatureVector}} end
+		
 		local numberOfReinforcementsPerEpisode = NewCategoricalPolicyQuickSetup.numberOfReinforcementsPerEpisode
 
 		local currentNumberOfReinforcements = NewCategoricalPolicyQuickSetup.currentNumberOfReinforcements
@@ -225,6 +229,8 @@ function CategoricalPolicyQuickSetup.new(parameterDictionary)
 		local actionValue
 
 		local temporalDifferenceError
+		
+		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
 		if (randomProbability < currentEpsilon) then
 
@@ -267,27 +273,31 @@ function CategoricalPolicyQuickSetup.new(parameterDictionary)
 			if episodeUpdateFunction then episodeUpdateFunction() end
 
 		end
+		
+		if (previousFeatureVector) then
+			
+			if (ExperienceReplay) then
 
-		if (ExperienceReplay) and (previousFeatureVector) then
+				ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector)
 
-			ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector)
+				ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
 
-			ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
+				ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
-			ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
+					return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
 
-				return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector)
+				end)
 
-			end)
+			end
+			
+			if (EpsilonValueScheduler) then
 
-		end
+				currentEpsilon = EpsilonValueScheduler:calculate(currentEpsilon)
 
-		if (EpsilonValueScheduler) and (previousFeatureVector) then
+				NewCategoricalPolicyQuickSetup.currentEpsilon = currentEpsilon
 
-			currentEpsilon = EpsilonValueScheduler:calculate(currentEpsilon)
-
-			NewCategoricalPolicyQuickSetup.currentEpsilon = currentEpsilon
-
+			end
+			
 		end
 		
 		NewCategoricalPolicyQuickSetup.totalNumberOfReinforcements = NewCategoricalPolicyQuickSetup.totalNumberOfReinforcements + 1

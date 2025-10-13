@@ -192,22 +192,6 @@ function TabularReinforcementLearningBaseModel:categoricalUpdate(previousStateVa
 
 	if (not self.ModelParameters) then self.ModelParameters = self:initializeMatrixBasedOnMode({#self.StatesList, #self.ActionsList}) end
 	
-	local isPreviousStateValueTable = true
-	
-	local isCurrentStateValueTable = true
-	
-	while isPreviousStateValueTable or isCurrentStateValueTable do
-		
-		isPreviousStateValueTable = (type(previousStateValue) == "table")
-		
-		isCurrentStateValueTable = (type(currentStateValue) == "table")
-		
-		if (isPreviousStateValueTable) then previousStateValue = previousStateValue[1] end
-		
-		if (isCurrentStateValueTable) then currentStateValue = currentStateValue[1] end
-		
-	end
-	
 	self.categoricalUpdateFunction(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 
 end

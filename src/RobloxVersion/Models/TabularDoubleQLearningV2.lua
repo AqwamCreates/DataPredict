@@ -30,21 +30,21 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local TabularReinforcementLearningBaseModel = require(script.Parent.TabularReinforcementLearningBaseModel)
 
-TabularDoubleQLearningV2Model = {}
+TabularDoubleQLearningModel = {}
 
-TabularDoubleQLearningV2Model.__index = TabularDoubleQLearningV2Model
+TabularDoubleQLearningModel.__index = TabularDoubleQLearningModel
 
-setmetatable(TabularDoubleQLearningV2Model, TabularReinforcementLearningBaseModel)
+setmetatable(TabularDoubleQLearningModel, TabularReinforcementLearningBaseModel)
 
 local defaultAveragingRate = 0.01
 
-function TabularDoubleQLearningV2Model.new(parameterDictionary)
+function TabularDoubleQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
 	local NewTabularDoubleQLearningModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
-	setmetatable(NewTabularDoubleQLearningModel, TabularDoubleQLearningV2Model)
+	setmetatable(NewTabularDoubleQLearningModel, TabularDoubleQLearningModel)
 	
 	NewTabularDoubleQLearningModel:setName("TabularDoubleQLearningV2")
 	
@@ -130,4 +130,4 @@ function TabularDoubleQLearningV2Model.new(parameterDictionary)
 
 end
 
-return TabularDoubleQLearningV2Model
+return TabularDoubleQLearningModel

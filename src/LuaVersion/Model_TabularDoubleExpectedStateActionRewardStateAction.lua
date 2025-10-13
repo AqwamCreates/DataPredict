@@ -60,11 +60,15 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 		
 		local averagingRate = NewTabularDoubleExpectedStateActionRewardStateActionModel.averagingRate
 		
+		local learningRate = NewTabularDoubleExpectedStateActionRewardStateActionModel.learningRate
+		
 		local discountFactor = NewTabularDoubleExpectedStateActionRewardStateActionModel.discountFactor
 		
 		local epsilon = NewTabularDoubleExpectedStateActionRewardStateActionModel.epsilon
 		
 		local EligibilityTrace = NewTabularDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
+		
+		local Optimizer = NewTabularDoubleExpectedStateActionRewardStateActionModel.Optimizer
 		
 		local ModelParameters = NewTabularDoubleExpectedStateActionRewardStateActionModel.ModelParameters
 		
@@ -145,10 +149,24 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
 
 		end
+		
+		local gradientValue = temporalDifferenceError
+
+		if (Optimizer) then
+
+			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
+
+			gradientValue = gradientValue[1][1]
+
+		else
+
+			gradientValue = learningRate * gradientValue
+
+		end
 
 		local weightValue = ModelParameters[stateIndex][actionIndex]
 
-		local newWeightValue = weightValue + (NewTabularDoubleExpectedStateActionRewardStateActionModel.learningRate * temporalDifferenceError)
+		local newWeightValue = weightValue + gradientValue
 
 		ModelParameters[stateIndex][actionIndex] = (averagingRate * weightValue) + (averagingRateComplement * newWeightValue)
 		

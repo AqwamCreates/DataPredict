@@ -80,21 +80,27 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 	
 	NewTabularMonteCarloControlModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewTabularMonteCarloControlModel.discountFactor)
+		local learningRate = NewTabularMonteCarloControlModel.learningRate
+		
+		local ModelParameters = NewTabularMonteCarloControlModel.ModelParameters
 		
 		local StatesList = NewTabularMonteCarloControlModel:getStatesList()
 		
 		local ActionsList = NewTabularMonteCarloControlModel:getActionsList()
 		
-		local ModelParameters = NewTabularMonteCarloControlModel.ModelParameters
-		
 		local numberOfStates = #StatesList
 		
 		local numberOfActions = #ActionsList
 		
-		local returnsMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfActions}, 0)
+		local dimensionSizeArray = {numberOfStates, numberOfActions}
 		
-		local countMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfActions}, 0)
+		local returnMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+		
+		local countMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+		
+		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewTabularMonteCarloControlModel.discountFactor)
+		
+		local complementLearningRate = 1 - learningRate
 		
 		for h, state in ipairs(stateValueHistory) do
 			
@@ -106,22 +112,22 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 			
 			local actionIndex = table.find(ActionsList, action)
 			
-			returnsMatrix[stateIndex][actionIndex] = returnsMatrix[stateIndex][actionIndex] + averageRewardToGo
+			returnMatrix[stateIndex][actionIndex] = returnMatrix[stateIndex][actionIndex] + averageRewardToGo
 			
 			countMatrix[stateIndex][actionIndex] = countMatrix[stateIndex][actionIndex] + 1
 			
 		end
 		
-		for stateIndex, _ in ipairs(StatesList) do
+		for stateIndex, unwrappedReturnsVector in ipairs(returnMatrix) do
 			
-			for actionIndex, _ in ipairs(ActionsList) do
+			for actionIndex, returnValue in ipairs(unwrappedReturnsVector) do
 				
 				local count = countMatrix[stateIndex][actionIndex]
-				
+
 				if (count ~= 0) then
-					
-					ModelParameters[stateIndex][actionIndex] = returnsMatrix[stateIndex][actionIndex] / count
-					
+
+					ModelParameters[stateIndex][actionIndex] = (complementLearningRate * ModelParameters[stateIndex][actionIndex]) + (learningRate * (returnValue / count))
+
 				end
 				
 			end

@@ -77,29 +77,29 @@ By default, most models would perform offline / batch training on the first trai
 
 ## Deep Reinforcement Learning
 
-| Model                                                                                                                            | Alternate Names                           | Use Cases                                                                   |
-|----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|-----------------------------------------------------------------------------|
-| [DeepQLearning](Models/DeepQLearning.md)                                                                                         | Deep Q Network                            | Best Self-Learning Player AIs, Best Recommendation Systems                  |
-| [DeepDoubleQLearningV1](Models/DeepDoubleQLearningV1.md)                                                                         | Double Deep Q Network (2010)              | Best Self-Learning Player AIs, Best Recommendation Systems                  |
-| [DeepDoubleQLearningV2](Models/DeepDoubleQLearningV2.md)                                                                         | Double Deep Q Network (2015)              | Best Self-Learning Player AIs, Best Recommendation Systems                  |
-| [DeepClippedDoubleQLearning](Models/DeepClippedDoubleQLearning.md)                                                               | Clipped Deep Double Q Network             | Best Self-Learning Player AIs, Best Recommendation Systems                  |
-| [DeepStateActionRewardStateAction](Models/DeepStateActionRewardStateAction.md)                                                   | Deep SARSA                                | Safe Self-Learning Player AIs, Safe Recommendation Systems                  |
-| [DeepDoubleStateActionRewardStateActionV1](Models/DeepDoubleStateActionRewardStateActionV1.md)                                   | Double Deep SARSA                         | Safe Self-Learning Player AIs, Safe Recommendation Systems                  |
-| [DeepDoubleStateActionRewardStateActionV2](Models/DeepDoubleStateActionRewardStateActionV2.md)                                   | Double Deep SARSA                         | Safe Self-Learning Player AIs, Safe Recommendation Systems                  |
-| [DeepExpectedStateActionRewardStateAction](Models/DeepExpectedStateActionRewardStateAction.md)                                   | Deep Expected SARSA                       | Balanced Self-Learning Player AIs, Balanced Recommendation Systems          |
-| [DeepDoubleExpectedStateActionRewardStateActionV1](Models/DeepDoubleExpectedStateActionRewardStateActionV1.md)                   | Double Deep Expected SARSA                | Balanced Self-Learning Player AIs, Balanced Recommendation Systems          |
-| [DeepDoubleExpectedStateActionRewardStateActionV2](Models/DeepDoubleExpectedStateActionRewardStateActionV2.md)                   | Double Deep Expected SARSA                | Balanced Self-Learning Player AIs, Balanced Recommendation Systems          |
-| [DeepMonteCarloControl](Models/DeepMonteCarloControl.md) (May Need Further Refinement)                                           | None                                      | Online Self-Learning Player AIs                                             |
-| [DeepOffPolicyMonteCarloControl](Models/DeepOffPolicyMonteCarloControl.md)                                                       | None                                      | Offline Self-Learning Player AIs                                            |
-| [REINFORCE](Models/REINFORCE.md)                                                                                                 | None                                      | Reward-Based Self-Learning Player AIs                                       |
-| [VanillaPolicyGradient](Models/VanillaPolicyGradient.md) (May Need Further Refinement)                                           | VPG                                       | Baseline-Based Self-Learning Player AIs                                     |
-| [ActorCritic](Models/ActorCritic.md)                                                                                             | AC                                        | Critic-Based Self-Learning Player AIs                                       |
-| [AdvantageActorCritic](Models/AdvantageActorCritic.md)                                                                           | A2C                                       | Advantage-Based Self-Learning Player AIs                                    |
-| [ProximalPolicyOptimization](Models/ProximalPolicyOptimization.md)                                                               | PPO                                       | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs      |
-| [ProximalPolicyOptimizationClip](Models/ProximalPolicyOptimizationClip.md)                                                       | PPO-Clip                                  | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs      |
-| [SoftActorCritic](Models/SoftActorCritic.md)                                                                                     | SAC                                       | Self-Learning Vehicle AIs                                                   |
-| [DeepDeterministicPolicyGradient](Models/DeepDeterministicPolicyGradient.md)                                                     | DDPG                                      | Self-Learning Vehicle AIs                                                   |
-| [TwinDelayedDeepDeterministicPolicyGradient](Models/TwinDelayedDeepDeterministicPolicyGradient.md)                               | TD3                                       | Self-Learning Vehicle AIs                                                   |
+| Model                                                                                                                            | Alternate Names                           | Use Cases                                                              |
+|----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|------------------------------------------------------------------------|
+| [DeepQLearning](Models/DeepQLearning.md)                                                                                         | Deep Q Network                            | Best Self-Learning Player AIs, Best Recommendation Systems             |
+| [DeepDoubleQLearningV1](Models/DeepDoubleQLearningV1.md)                                                                         | Double Deep Q Network (2010)              | Best Self-Learning Player AIs, Best Recommendation Systems             |
+| [DeepDoubleQLearningV2](Models/DeepDoubleQLearningV2.md)                                                                         | Double Deep Q Network (2015)              | Best Self-Learning Player AIs, Best Recommendation Systems             |
+| [DeepClippedDoubleQLearning](Models/DeepClippedDoubleQLearning.md)                                                               | Clipped Deep Double Q Network             | Best Self-Learning Player AIs, Best Recommendation Systems             |
+| [DeepStateActionRewardStateAction](Models/DeepStateActionRewardStateAction.md)                                                   | Deep SARSA                                | Safe Self-Learning Player AIs, Safe Recommendation Systems             |
+| [DeepDoubleStateActionRewardStateActionV1](Models/DeepDoubleStateActionRewardStateActionV1.md)                                   | Double Deep SARSA                         | Safe Self-Learning Player AIs, Safe Recommendation Systems             |
+| [DeepDoubleStateActionRewardStateActionV2](Models/DeepDoubleStateActionRewardStateActionV2.md)                                   | Double Deep SARSA                         | Safe Self-Learning Player AIs, Safe Recommendation Systems             |
+| [DeepExpectedStateActionRewardStateAction](Models/DeepExpectedStateActionRewardStateAction.md)                                   | Deep Expected SARSA                       | Balanced Self-Learning Player AIs, Balanced Recommendation Systems     |
+| [DeepDoubleExpectedStateActionRewardStateActionV1](Models/DeepDoubleExpectedStateActionRewardStateActionV1.md)                   | Double Deep Expected SARSA                | Balanced Self-Learning Player AIs, Balanced Recommendation Systems     |
+| [DeepDoubleExpectedStateActionRewardStateActionV2](Models/DeepDoubleExpectedStateActionRewardStateActionV2.md)                   | Double Deep Expected SARSA                | Balanced Self-Learning Player AIs, Balanced Recommendation Systems     |
+| [DeepMonteCarloControl](Models/DeepMonteCarloControl.md) (May Need Further Refinement)                                           | None                                      | Online Self-Learning Player AIs                                        |
+| [DeepOffPolicyMonteCarloControl](Models/DeepOffPolicyMonteCarloControl.md)                                                       | None                                      | Offline Self-Learning Player AIs                                       |
+| [REINFORCE](Models/REINFORCE.md)                                                                                                 | None                                      | Reward-Based Self-Learning Player AIs                                  |
+| [VanillaPolicyGradient](Models/VanillaPolicyGradient.md) (May Need Further Refinement)                                           | VPG                                       | Baseline-Based Self-Learning Player AIs                                |
+| [ActorCritic](Models/ActorCritic.md)                                                                                             | AC                                        | Critic-Based Self-Learning Player AIs                                  |
+| [AdvantageActorCritic](Models/AdvantageActorCritic.md)                                                                           | A2C                                       | Advantage-Based Self-Learning Player AIs                               |
+| [ProximalPolicyOptimization](Models/ProximalPolicyOptimization.md)                                                               | PPO                                       | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs |
+| [ProximalPolicyOptimizationClip](Models/ProximalPolicyOptimizationClip.md)                                                       | PPO-Clip                                  | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs |
+| [SoftActorCritic](Models/SoftActorCritic.md)                                                                                     | SAC                                       | Self-Learning Vehicle AIs                                              |
+| [DeepDeterministicPolicyGradient](Models/DeepDeterministicPolicyGradient.md)                                                     | DDPG                                      | Self-Learning Vehicle AIs                                              |
+| [TwinDelayedDeepDeterministicPolicyGradient](Models/TwinDelayedDeepDeterministicPolicyGradient.md)                               | TD3                                       | Self-Learning Vehicle AIs                                              |
 
 ## Tabular Reinforcement Learning
 
@@ -120,12 +120,12 @@ By default, most models would perform offline / batch training on the first trai
 
 ## Generative
 
-| Model                                                                                                                  | Alternate Names | Use Cases                             |
-|------------------------------------------------------------------------------------------------------------------------|-----------------|---------------------------------------|
-| [GenerativeAdversarialNetwork](Models/GenerativeAdversarialNetwork.md)                                                 | GAN             | Enemy Data Generation                 |
-| [ConditionalGenerativeAdversarialNetwork](Models/ConditionalGenerativeAdversarialNetwork.md)                           | CGAN            | Same As GAN, But Can Assign Classes   |
-| [WassersteinGenerativeAdversarialNetwork](Models/WassersteinGenerativeAdversarialNetwork.md)                           | WGAN            | Same As GAN, But More Stable          |
-| [ConditionalWassersteinGenerativeAdversarialNetwork](Models/ConditionalWassersteinGenerativeAdversarialNetwork.md)     | CWGAN           | Combination Of Both CGAN And WGAN     |
+| Model                                                                                                              | Alternate Names | Use Cases                                |
+|--------------------------------------------------------------------------------------------------------------------|-----------------|------------------------------------------|
+| [GenerativeAdversarialNetwork](Models/GenerativeAdversarialNetwork.md)                                             | GAN             | Enemy Data Generation                    |
+| [ConditionalGenerativeAdversarialNetwork](Models/ConditionalGenerativeAdversarialNetwork.md)                       | CGAN            | Conditional Enemy Data Generation        |
+| [WassersteinGenerativeAdversarialNetwork](Models/WassersteinGenerativeAdversarialNetwork.md)                       | WGAN            | Stable Enemy Data Generation             |
+| [ConditionalWassersteinGenerativeAdversarialNetwork](Models/ConditionalWassersteinGenerativeAdversarialNetwork.md) | CWGAN           | Stable Conditional Enemy Data Generation |
 
 ## BaseModels
 

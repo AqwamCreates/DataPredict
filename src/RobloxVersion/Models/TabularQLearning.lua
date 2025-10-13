@@ -40,27 +40,27 @@ function TabularQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewTabularQLearning = TabularReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewTabularQLearningModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
-	setmetatable(NewTabularQLearning, TabularQLearningModel)
+	setmetatable(NewTabularQLearningModel, TabularQLearningModel)
 	
-	NewTabularQLearning:setName("TabularQLearning")
+	NewTabularQLearningModel:setName("TabularQLearning")
 	
-	NewTabularQLearning.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewTabularQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
-	NewTabularQLearning:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 		
-		local discountFactor = NewTabularQLearning.discountFactor
+		local discountFactor = NewTabularQLearningModel.discountFactor
 		
-		local EligibilityTrace = NewTabularQLearning.EligibilityTrace
+		local EligibilityTrace = NewTabularQLearningModel.EligibilityTrace
 
-		local ModelParameters = NewTabularQLearning.ModelParameters
+		local ModelParameters = NewTabularQLearningModel.ModelParameters
 		
-		local StatesList = NewTabularQLearning:getStatesList()
+		local StatesList = NewTabularQLearningModel:getStatesList()
 
-		local ActionsList = NewTabularQLearning:getActionsList()
+		local ActionsList = NewTabularQLearningModel:getActionsList()
 
-		local _, maxQValue = NewTabularQLearning:predict({{currentStateValue}})
+		local _, maxQValue = NewTabularQLearningModel:predict({{currentStateValue}})
 
 		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 		
@@ -98,23 +98,23 @@ function TabularQLearningModel.new(parameterDictionary)
 
 	end)
 	
-	NewTabularQLearning:setEpisodeUpdateFunction(function(terminalStateValue)
+	NewTabularQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local EligibilityTrace = NewTabularQLearning.EligibilityTrace
+		local EligibilityTrace = NewTabularQLearningModel.EligibilityTrace
 		
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	NewTabularQLearning:setResetFunction(function()
+	NewTabularQLearningModel:setResetFunction(function()
 		
-		local EligibilityTrace = NewTabularQLearning.EligibilityTrace
+		local EligibilityTrace = NewTabularQLearningModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	return NewTabularQLearning
+	return NewTabularQLearningModel
 
 end
 

@@ -134,8 +134,6 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 						
 						gradientValue = Optimizer:calculate(learningRate, gradientValue)
 						
-						if (type(gradientValue) == "table") then gradientValue = gradientValue[1][1] end
-						
 					else
 						
 						gradientValue = learningRate * gradientValue

@@ -133,6 +133,8 @@ function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 		local learningRate = NewTabularOffPolicyMonteCarloControlModel.learningRate
 
 		local discountFactor = NewTabularOffPolicyMonteCarloControlModel.discountFactor
+		
+		local Optimizer = NewTabularOffPolicyMonteCarloControlModel.Optimizer
 
 		local ModelParameters = NewTabularOffPolicyMonteCarloControlModel.ModelParameters
 		
@@ -172,7 +174,15 @@ function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 			
 			local stateIndex = table.find(StatesList, stateValueHistory[h])
 			
-			lossVector = AqwamTensorLibrary:multiply(learningRate, lossVector)
+			if (Optimizer) then
+
+				lossVector = Optimizer:calculate(learningRate, lossVector)
+
+			else
+
+				lossVector = AqwamTensorLibrary:multiply(learningRate, lossVector)
+
+			end
 			
 			ModelParameters[stateIndex] = AqwamTensorLibrary:add({ModelParameters[stateIndex]}, lossVector)[1]
 

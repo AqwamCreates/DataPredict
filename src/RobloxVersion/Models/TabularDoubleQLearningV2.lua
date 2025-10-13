@@ -56,9 +56,13 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 		
 		local averagingRate = NewTabularDoubleQLearningModel.averagingRate
 		
+		local learningRate = NewTabularDoubleQLearningModel.learningRate
+		
 		local discountFactor = NewTabularDoubleQLearningModel.discountFactor
 		
 		local EligibilityTrace = NewTabularDoubleQLearningModel.EligibilityTrace
+		
+		local Optimizer = NewTabularDoubleQLearningModel.Optimizer
 
 		local ModelParameters = NewTabularDoubleQLearningModel.ModelParameters
 		
@@ -100,9 +104,23 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 
 		end
 		
+		local gradientValue = temporalDifferenceError
+
+		if (Optimizer) then
+
+			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
+
+			gradientValue = gradientValue[1][1]
+
+		else
+
+			gradientValue = learningRate * gradientValue
+
+		end
+		
 		local weightValue = ModelParameters[stateIndex][actionIndex]
 		
-		local newWeightValue = weightValue + (NewTabularDoubleQLearningModel.learningRate * temporalDifferenceError)
+		local newWeightValue = weightValue + gradientValue
 		
 		ModelParameters[stateIndex][actionIndex] = (averagingRate * weightValue) + (averagingRateComplement * newWeightValue)
 		

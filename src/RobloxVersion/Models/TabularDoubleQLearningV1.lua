@@ -52,6 +52,10 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 	
 	NewTabularDoubleQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 		
+		local learningRate = NewTabularDoubleQLearningModel.learningRate
+		
+		local Optimizer = NewTabularDoubleQLearningModel.Optimizer
+		
 		local randomProbability = math.random()
 
 		local updateSecondModel = (randomProbability >= 0.5)
@@ -66,7 +70,21 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 		
 		local ModelParameters = NewTabularDoubleQLearningModel.ModelParameters
 		
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularDoubleQLearningModel.learningRate * temporalDifferenceError)
+		local gradientValue = temporalDifferenceError
+
+		if (Optimizer) then
+
+			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
+
+			gradientValue = gradientValue[1][1]
+
+		else
+
+			gradientValue = learningRate * gradientValue
+
+		end
+		
+		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + gradientValue
 		
 		NewTabularDoubleQLearningModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		

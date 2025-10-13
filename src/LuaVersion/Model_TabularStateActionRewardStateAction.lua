@@ -94,9 +94,9 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 
 		end
 		
-		local modifiedTemporalDifferenceErrorVector = AqwamTensorLibrary:multiply(NewTabularStateActionRewardStateActionModel.learningRate, temporalDifferenceErrorVector)
+		local multipliedTemporalDifferenceErrorVector = AqwamTensorLibrary:multiply(NewTabularStateActionRewardStateActionModel.learningRate, temporalDifferenceErrorVector)
 		
-		ModelParameters[stateIndex] = AqwamTensorLibrary:add({ModelParameters[stateIndex]}, modifiedTemporalDifferenceErrorVector)[1]
+		ModelParameters[stateIndex] = AqwamTensorLibrary:add({ModelParameters[stateIndex]}, multipliedTemporalDifferenceErrorVector)[1]
 		
 		return temporalDifferenceErrorVector
 

@@ -70,11 +70,13 @@ function RectifiedAdaptiveMomentEstimationOptimizer.new(parameterDictionary)
 	
 	NewRectifiedAdaptiveMomentEstimationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeMatrix, weightMatrix)
 		
-		local previousMomentumMatrix = NewRectifiedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
-
-		local previousVelocityMatrix = NewRectifiedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
+		local optimizerInternalParameterArray = NewRectifiedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray or {}
 		
-		local timeValue = NewRectifiedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray[3] or 1
+		local previousMomentumMatrix = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
+
+		local previousVelocityMatrix = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
+		
+		local timeValue = optimizerInternalParameterArray[3] or 1
 		
 		local beta1 = NewRectifiedAdaptiveMomentEstimationOptimizer.beta1
 

@@ -145,6 +145,8 @@ function TabularClippedDoubleQLearningModel.new(parameterDictionary)
 			local ModelParameters = NewTabularClippedDoubleQLearningModel:getModelParameters(true)
 
 			ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + gradientValue
+			
+			temporalDifferenceErrorArray[i] = temporalDifferenceError
 
 		end
 		

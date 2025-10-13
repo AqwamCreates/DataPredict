@@ -30,45 +30,53 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local TabularReinforcementLearningBaseModel = require(script.Parent.TabularReinforcementLearningBaseModel)
 
-TabularExpectedStateActionRewardStateActionModel = {}
+TabularDoubleExpectedStateActionRewardStateActionModel = {}
 
-TabularExpectedStateActionRewardStateActionModel.__index = TabularExpectedStateActionRewardStateActionModel
+TabularDoubleExpectedStateActionRewardStateActionModel.__index = TabularDoubleExpectedStateActionRewardStateActionModel
 
-setmetatable(TabularExpectedStateActionRewardStateActionModel, TabularReinforcementLearningBaseModel)
+setmetatable(TabularDoubleExpectedStateActionRewardStateActionModel, TabularReinforcementLearningBaseModel)
+
+local defaultAveragingRate = 0.01
 
 local defaultEpsilon = 0.5
 
-function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionary)
+function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewTabularExpectedStateActionRewardStateActionModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewTabularDoubleExpectedStateActionRewardStateActionModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
 
-	setmetatable(NewTabularExpectedStateActionRewardStateActionModel, TabularExpectedStateActionRewardStateActionModel)
+	setmetatable(NewTabularDoubleExpectedStateActionRewardStateActionModel, TabularDoubleExpectedStateActionRewardStateActionModel)
 	
-	NewTabularExpectedStateActionRewardStateActionModel:setName("TabularExpectedStateActionRewardStateAction")
+	NewTabularDoubleExpectedStateActionRewardStateActionModel:setName("TabularDoubleExpectedStateActionRewardStateActionV2")
 	
-	NewTabularExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewTabularDoubleExpectedStateActionRewardStateActionModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 	
-	NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewTabularDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	
+	NewTabularDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewTabularExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 		
-		local learningRate = NewTabularExpectedStateActionRewardStateActionModel.learningRate
+		local averagingRate = NewTabularDoubleExpectedStateActionRewardStateActionModel.averagingRate
 		
-		local discountFactor = NewTabularExpectedStateActionRewardStateActionModel.discountFactor
+		local learningRate = NewTabularDoubleExpectedStateActionRewardStateActionModel.learningRate
 		
-		local epsilon = NewTabularExpectedStateActionRewardStateActionModel.epsilon
+		local discountFactor = NewTabularDoubleExpectedStateActionRewardStateActionModel.discountFactor
 		
-		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
+		local epsilon = NewTabularDoubleExpectedStateActionRewardStateActionModel.epsilon
 		
-		local Optimizer = NewTabularExpectedStateActionRewardStateActionModel.Optimizer
+		local EligibilityTrace = NewTabularDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 		
-		local ModelParameters = NewTabularExpectedStateActionRewardStateActionModel.ModelParameters
+		local Optimizer = NewTabularDoubleExpectedStateActionRewardStateActionModel.Optimizer
 		
-		local StatesList = NewTabularExpectedStateActionRewardStateActionModel:getStatesList()
+		local ModelParameters = NewTabularDoubleExpectedStateActionRewardStateActionModel.ModelParameters
+		
+		local StatesList = NewTabularDoubleExpectedStateActionRewardStateActionModel:getStatesList()
 
-		local ActionsList = NewTabularExpectedStateActionRewardStateActionModel:getActionsList()
+		local ActionsList = NewTabularDoubleExpectedStateActionRewardStateActionModel:getActionsList()
+		
+		local averagingRateComplement = 1 - averagingRate
 		
 		local numberOfActions = #ActionsList
 
@@ -78,9 +86,9 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 
 		local actionIndex = table.find(ActionsList, action)
 		
-		local previousVector = NewTabularExpectedStateActionRewardStateActionModel:predict({{previousStateValue}}, true)
+		local previousVector = NewTabularDoubleExpectedStateActionRewardStateActionModel:predict({{previousStateValue}}, true)
 		
-		local targetVector = NewTabularExpectedStateActionRewardStateActionModel:predict({{currentStateValue}}, true)
+		local targetVector = NewTabularDoubleExpectedStateActionRewardStateActionModel:predict({{currentStateValue}}, true)
 		
 		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
 		
@@ -156,30 +164,34 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 
 		end
 
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + gradientValue
+		local weightValue = ModelParameters[stateIndex][actionIndex]
+
+		local newWeightValue = weightValue + gradientValue
+
+		ModelParameters[stateIndex][actionIndex] = (averagingRate * weightValue) + (averagingRateComplement * newWeightValue)
 		
 		return temporalDifferenceError
 
 	end)
 	
-	NewTabularExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewTabularDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
+		local EligibilityTrace = NewTabularDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	NewTabularExpectedStateActionRewardStateActionModel:setResetFunction(function() 
+	NewTabularDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
+		local EligibilityTrace = NewTabularDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	return NewTabularExpectedStateActionRewardStateActionModel
+	return NewTabularDoubleExpectedStateActionRewardStateActionModel
 
 end
 
-return TabularExpectedStateActionRewardStateActionModel
+return TabularDoubleExpectedStateActionRewardStateActionModel

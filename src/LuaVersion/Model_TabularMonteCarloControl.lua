@@ -82,6 +82,8 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 		
 		local learningRate = NewTabularMonteCarloControlModel.learningRate
 		
+		local Optimizer = NewTabularMonteCarloControlModel.Optimizer
+		
 		local ModelParameters = NewTabularMonteCarloControlModel.ModelParameters
 		
 		local StatesList = NewTabularMonteCarloControlModel:getStatesList()
@@ -125,8 +127,20 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 				local count = countMatrix[stateIndex][actionIndex]
 
 				if (count ~= 0) then
+					
+					local gradientValue = (returnValue / count)
+					
+					if (Optimizer) then
+						
+						gradientValue = Optimizer:calculate(learningRate, gradientValue)
+						
+					else
+						
+						gradientValue = learningRate * gradientValue
+						
+					end
 
-					ModelParameters[stateIndex][actionIndex] = (learningRateComplement * ModelParameters[stateIndex][actionIndex]) + (learningRate * (returnValue / count))
+					ModelParameters[stateIndex][actionIndex] = (learningRateComplement * ModelParameters[stateIndex][actionIndex]) + gradientValue
 
 				end
 				

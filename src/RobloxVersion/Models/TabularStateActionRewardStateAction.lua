@@ -50,9 +50,13 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewTabularStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 		
+		local learningRate = NewTabularStateActionRewardStateActionModel.learningRate
+		
 		local discountFactor = NewTabularStateActionRewardStateActionModel.discountFactor
 		
 		local EligibilityTrace = NewTabularStateActionRewardStateActionModel.EligibilityTrace
+		
+		local Optimizer = NewTabularStateActionRewardStateActionModel.Optimizer
 		
 		local ModelParameters = NewTabularStateActionRewardStateActionModel.ModelParameters
 		
@@ -94,9 +98,19 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 
 		end
 		
-		local multipliedTemporalDifferenceErrorVector = AqwamTensorLibrary:multiply(NewTabularStateActionRewardStateActionModel.learningRate, temporalDifferenceErrorVector)
+		local gradientTensor = temporalDifferenceErrorVector
 		
-		ModelParameters[stateIndex] = AqwamTensorLibrary:add({ModelParameters[stateIndex]}, multipliedTemporalDifferenceErrorVector)[1]
+		if (Optimizer) then
+
+			gradientTensor = Optimizer:calculate(learningRate, gradientTensor)
+
+		else
+
+			gradientTensor = AqwamTensorLibrary:multiply(learningRate, gradientTensor)
+
+		end
+		
+		ModelParameters[stateIndex] = AqwamTensorLibrary:add({ModelParameters[stateIndex]}, gradientTensor)[1]
 		
 		return temporalDifferenceErrorVector
 

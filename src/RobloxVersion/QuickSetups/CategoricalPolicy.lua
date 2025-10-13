@@ -196,7 +196,7 @@ function CategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
 		
-		if (isOriginalValueNotAVector)  then currentFeatureVector = {{currentFeatureVector}} end
+		if (isOriginalValueNotAVector) then currentFeatureVector = {{currentFeatureVector}} end
 		
 		local numberOfReinforcementsPerEpisode = NewCategoricalPolicyQuickSetup.numberOfReinforcementsPerEpisode
 

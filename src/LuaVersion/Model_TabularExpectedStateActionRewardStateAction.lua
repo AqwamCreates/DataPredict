@@ -38,8 +38,6 @@ setmetatable(TabularExpectedStateActionRewardStateActionModel, TabularReinforcem
 
 local defaultEpsilon = 0.5
 
-local defaultLambda = 0
-
 function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -56,11 +54,15 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 
 	NewTabularExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 		
+		local learningRate = NewTabularExpectedStateActionRewardStateActionModel.learningRate
+		
 		local discountFactor = NewTabularExpectedStateActionRewardStateActionModel.discountFactor
 		
 		local epsilon = NewTabularExpectedStateActionRewardStateActionModel.epsilon
 		
 		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
+		
+		local Optimizer = NewTabularExpectedStateActionRewardStateActionModel.Optimizer
 		
 		local ModelParameters = NewTabularExpectedStateActionRewardStateActionModel.ModelParameters
 		
@@ -139,8 +141,22 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
 
 		end
+		
+		local gradientValue = temporalDifferenceError
 
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularExpectedStateActionRewardStateActionModel.learningRate * temporalDifferenceError)
+		if (Optimizer) then
+
+			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
+
+			gradientValue = gradientValue[1][1]
+
+		else
+
+			gradientValue = learningRate * gradientValue
+
+		end
+
+		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + gradientValue
 		
 		return temporalDifferenceError
 

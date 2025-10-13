@@ -16,7 +16,7 @@ DutchTrace.new(lambda: number, alpha: string, mode: string): EligibilityTraceObj
 
 * lambda: At 0, the model acts like the Temporal Difference algorithm. At 1, the model acts as Monte Carlo algorithm. Between 0 and 1, the model acts as both. [Default: 0]
 
-* alpha: [Default: 0.5]
+* alpha: The speed at which the model learns. Recommended that the value is set between 0 to 1. [Default: 0.5]
 
 * mode: Controls whether or not to use E(s,a), E(s) or E(a) formulation for creating eligibility trace matrix. Available options are:
 

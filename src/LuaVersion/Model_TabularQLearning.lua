@@ -92,7 +92,7 @@ function TabularQLearningModel.new(parameterDictionary)
 
 		end
 		
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularQLearning.learningRate * temporalDifferenceError)
+		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularQLearningModel.learningRate * temporalDifferenceError)
 		
 		return temporalDifferenceError
 

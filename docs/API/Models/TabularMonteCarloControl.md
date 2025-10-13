@@ -9,7 +9,7 @@ TabularMonteCarloControl is a state-action grid with reinforcement learning capa
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularMonteCarloControl.new(learningRate: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
+TabularMonteCarloControl.new(learningRate: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:

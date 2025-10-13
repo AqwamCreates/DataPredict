@@ -22,7 +22,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ### Note
 
-* Currently, DataPredict™ has ~90% (56 out of 63) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / sequential / incremental after the first train.
+* Currently, DataPredict™ has ~90% (56 out of 63) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 

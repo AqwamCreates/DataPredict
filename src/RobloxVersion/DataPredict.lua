@@ -52,9 +52,9 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 
 	LinearRegression = require(Models.LinearRegression),
 	
-	PassiveAggressiveRegressor = require(Models.PassiveAggressiveRegressor),
-	
 	NormalLinearRegression = require(Models.NormalLinearRegression),
+	
+	PassiveAggressiveRegressor = require(Models.PassiveAggressiveRegressor),
 	
 	SupportVectorRegression = require(Models.SupportVectorRegression),
 	
@@ -145,10 +145,24 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	TwinDelayedDeepDeterministicPolicyGradient = require(Models.TwinDelayedDeepDeterministicPolicyGradient),
 	
 	TabularQLearning = require(Models.TabularQLearning),
+	
+	TabularClippedDoubleQLearning = require(Models.TabularClippedDoubleQLearning),
+	
+	TabularDoubleQLearningV1 = require(Models.TabularDoubleQLearningV1),
+	
+	TabularDoubleQLearningV2 = require(Models.TabularDoubleQLearningV2),
 
 	TabularStateActionRewardStateAction = require(Models.TabularStateActionRewardStateAction),
 	
+	--TabularStateActionRewardStateActionV1 = require(Models.TabularDoubleStateActionRewardStateActionV2),
+
+	TabularDoubleStateActionRewardStateActionV2 = require(Models.TabularDoubleStateActionRewardStateActionV2),
+	
 	TabularExpectedStateActionRewardStateAction = require(Models.TabularExpectedStateActionRewardStateAction),
+	
+	--TabularDoubleExpectedStateActionRewardStateActionV1 = require(Models.TabularDoubleExpectedStateActionRewardStateActionV1),
+
+	TabularDoubleExpectedStateActionRewardStateActionV2 = require(Models.TabularDoubleExpectedStateActionRewardStateActionV2),
 	
 	TabularMonteCarloControl = require(Models.TabularMonteCarloControl),
 	

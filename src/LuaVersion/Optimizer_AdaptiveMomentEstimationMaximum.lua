@@ -65,12 +65,14 @@ function AdaptiveMomentEstimationMaximumOptimizer.new(parameterDictionary)
 	--------------------------------------------------------------------------------
 	
 	NewAdaptiveMomentEstimationMaximumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeMatrix, weightMatrix)
-
-		local momentMatrix = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
-
-		local exponentWeightMatrix = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
 		
-		local timeValue = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray[3] or 1
+		local optimizerInternalParameterArray = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray or {}
+
+		local momentMatrix = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
+
+		local exponentWeightMatrix = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
+		
+		local timeValue = optimizerInternalParameterArray[3] or 1
 		
 		local beta1 = NewAdaptiveMomentEstimationMaximumOptimizer.beta1
 		

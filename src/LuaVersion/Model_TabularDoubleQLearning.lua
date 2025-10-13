@@ -30,37 +30,45 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local TabularReinforcementLearningBaseModel = require("Model_TabularReinforcementLearningBaseModel")
 
-TabularQLearningModel = {}
+TabularDoubleQLearningModel = {}
 
-TabularQLearningModel.__index = TabularQLearningModel
+TabularDoubleQLearningModel.__index = TabularDoubleQLearningModel
 
-setmetatable(TabularQLearningModel, TabularReinforcementLearningBaseModel)
+setmetatable(TabularDoubleQLearningModel, TabularReinforcementLearningBaseModel)
 
-function TabularQLearningModel.new(parameterDictionary)
+local defaultAveragingRate = 0.01
+
+function TabularDoubleQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewTabularQLearningModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewTabularDoubleQLearningModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
-	setmetatable(NewTabularQLearningModel, TabularQLearningModel)
+	setmetatable(NewTabularDoubleQLearningModel, TabularDoubleQLearningModel)
 	
-	NewTabularQLearningModel:setName("TabularQLearning")
+	NewTabularDoubleQLearningModel:setName("TabularDoubleQLearningV2")
 	
-	NewTabularQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewTabularDoubleQLearningModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 	
-	NewTabularQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewTabularDoubleQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 		
-		local discountFactor = NewTabularQLearningModel.discountFactor
+		local averagingRate = NewTabularDoubleQLearningModel.averagingRate
 		
-		local EligibilityTrace = NewTabularQLearningModel.EligibilityTrace
-
-		local ModelParameters = NewTabularQLearningModel.ModelParameters
+		local discountFactor = NewTabularDoubleQLearningModel.discountFactor
 		
-		local StatesList = NewTabularQLearningModel:getStatesList()
+		local EligibilityTrace = NewTabularDoubleQLearningModel.EligibilityTrace
 
-		local ActionsList = NewTabularQLearningModel:getActionsList()
+		local ModelParameters = NewTabularDoubleQLearningModel.ModelParameters
+		
+		local StatesList = NewTabularDoubleQLearningModel:getStatesList()
 
-		local _, maxQValue = NewTabularQLearningModel:predict({{currentStateValue}})
+		local ActionsList = NewTabularDoubleQLearningModel:getActionsList()
+		
+		local averagingRateComplement = 1 - averagingRate
+
+		local _, maxQValue = NewTabularDoubleQLearningModel:predict({{currentStateValue}})
 
 		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 		
@@ -92,30 +100,34 @@ function TabularQLearningModel.new(parameterDictionary)
 
 		end
 		
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularQLearningModel.learningRate * temporalDifferenceError)
+		local weightValue = ModelParameters[stateIndex][actionIndex]
+		
+		local newWeightValue = weightValue + (NewTabularDoubleQLearningModel.learningRate * temporalDifferenceError)
+		
+		ModelParameters[stateIndex][actionIndex] = (averagingRate * weightValue) + (averagingRateComplement * newWeightValue)
 		
 		return temporalDifferenceError
 
 	end)
 	
-	NewTabularQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
+	NewTabularDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local EligibilityTrace = NewTabularQLearningModel.EligibilityTrace
+		local EligibilityTrace = NewTabularDoubleQLearningModel.EligibilityTrace
 		
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	NewTabularQLearningModel:setResetFunction(function()
+	NewTabularDoubleQLearningModel:setResetFunction(function()
 		
-		local EligibilityTrace = NewTabularQLearningModel.EligibilityTrace
+		local EligibilityTrace = NewTabularDoubleQLearningModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	return NewTabularQLearningModel
+	return NewTabularDoubleQLearningModel
 
 end
 
-return TabularQLearningModel
+return TabularDoubleQLearningModel

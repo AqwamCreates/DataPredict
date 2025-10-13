@@ -194,6 +194,10 @@ function CategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		if (not Model) then error("No model.") end
 		
+		local isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
+		
+		if (isOriginalValueNotAVector)  then currentFeatureVector = {{currentFeatureVector}} end
+		
 		local numberOfReinforcementsPerEpisode = NewCategoricalPolicyQuickSetup.numberOfReinforcementsPerEpisode
 
 		local currentNumberOfReinforcements = NewCategoricalPolicyQuickSetup.currentNumberOfReinforcements
@@ -225,6 +229,8 @@ function CategoricalPolicyQuickSetup.new(parameterDictionary)
 		local actionValue
 
 		local temporalDifferenceError
+		
+		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
 		if (randomProbability < currentEpsilon) then
 

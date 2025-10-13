@@ -30,138 +30,92 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local TabularReinforcementLearningBaseModel = require("Model_TabularReinforcementLearningBaseModel")
 
-TabularExpectedStateActionRewardStateActionModel = {}
+TabularQLearningModel = {}
 
-TabularExpectedStateActionRewardStateActionModel.__index = TabularExpectedStateActionRewardStateActionModel
+TabularQLearningModel.__index = TabularQLearningModel
 
-setmetatable(TabularExpectedStateActionRewardStateActionModel, TabularReinforcementLearningBaseModel)
+setmetatable(TabularQLearningModel, TabularReinforcementLearningBaseModel)
 
-local defaultEpsilon = 0.5
-
-function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionary)
+function TabularQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewTabularExpectedStateActionRewardStateActionModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
-
-	setmetatable(NewTabularExpectedStateActionRewardStateActionModel, TabularExpectedStateActionRewardStateActionModel)
+	local NewTabularQLearningModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
-	NewTabularExpectedStateActionRewardStateActionModel:setName("TabularExpectedStateActionRewardStateAction")
+	setmetatable(NewTabularQLearningModel, TabularQLearningModel)
 	
-	NewTabularExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewTabularQLearningModel:setName("TabularQLearning")
 	
-	NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewTabularQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewTabularQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+		
+		local discountFactor = NewTabularQLearningModel.discountFactor
+		
+		local EligibilityTrace = NewTabularQLearningModel.EligibilityTrace
 
-	NewTabularExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+		local ModelParameters = NewTabularQLearningModel.ModelParameters
 		
-		local discountFactor = NewTabularExpectedStateActionRewardStateActionModel.discountFactor
-		
-		local epsilon = NewTabularExpectedStateActionRewardStateActionModel.epsilon
-		
-		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
-		
-		local ModelParameters = NewTabularExpectedStateActionRewardStateActionModel.ModelParameters
-		
-		local StatesList = NewTabularExpectedStateActionRewardStateActionModel:getStatesList()
+		local StatesList = NewTabularQLearningModel:getStatesList()
 
-		local ActionsList = NewTabularExpectedStateActionRewardStateActionModel:getActionsList()
-		
-		local numberOfActions = #ActionsList
+		local ActionsList = NewTabularQLearningModel:getActionsList()
 
-		local expectedQValue = 0
+		local _, maxQValue = NewTabularQLearningModel:predict({{currentStateValue}})
 
-		local numberOfGreedyActions = 0
-
-		local actionIndex = table.find(ActionsList, action)
-		
-		local previousVector = NewTabularExpectedStateActionRewardStateActionModel:predict({{previousStateValue}}, true)
-		
-		local targetVector = NewTabularExpectedStateActionRewardStateActionModel:predict({{currentStateValue}}, true)
-		
-		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
-		
+
 		local actionIndex = table.find(ActionsList, action)
 
-		local unwrappedTargetVector = targetVector[1]
-
-		for i = 1, numberOfActions, 1 do
-
-			if (unwrappedTargetVector[i] == maxQValue) then
-
-				numberOfGreedyActions = numberOfGreedyActions + 1
-
-			end
-
-		end
-
-		local nonGreedyActionProbability = epsilon / numberOfActions
-
-		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
-
-		for _, qValue in ipairs(unwrappedTargetVector) do
-
-			if (qValue == maxQValue) then
-
-				expectedQValue = expectedQValue + (qValue * greedyActionProbability)
-
-			else
-
-				expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
-
-			end
-
-		end
-		
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
-
-		local lastValue = previousVector[1][actionIndex]
+		local lastValue = ModelParameters[stateIndex][actionIndex]
 
 		local temporalDifferenceError = targetValue - lastValue
 		
 		if (EligibilityTrace) then
 			
 			local numberOfStates = #StatesList
+
+			local numberOfActions = #ActionsList
 			
 			local dimensionSizeArray = {numberOfStates, numberOfActions}
-
+			
 			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
-
+			
 			temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
 
 			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
 
 			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
-
+			
 			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
 
 		end
-
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularExpectedStateActionRewardStateActionModel.learningRate * temporalDifferenceError)
+		
+		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularQLearning.learningRate * temporalDifferenceError)
 		
 		return temporalDifferenceError
 
 	end)
 	
-	NewTabularExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewTabularQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
+		local EligibilityTrace = NewTabularQLearningModel.EligibilityTrace
+		
+		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+	end)
+
+	NewTabularQLearningModel:setResetFunction(function()
+		
+		local EligibilityTrace = NewTabularQLearningModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	NewTabularExpectedStateActionRewardStateActionModel:setResetFunction(function() 
-		
-		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-	end)
-
-	return NewTabularExpectedStateActionRewardStateActionModel
+	return NewTabularQLearningModel
 
 end
 
-return TabularExpectedStateActionRewardStateActionModel
+return TabularQLearningModel

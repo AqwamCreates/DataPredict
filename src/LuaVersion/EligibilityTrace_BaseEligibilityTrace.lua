@@ -64,11 +64,13 @@ end
 
 function BaseEligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray) -- This function is needed because we have double version of reinforcement learning algorithms require separate application of (temporalDifferenceErrorVector * eligibilityTraceMatrix).
 	
+	local mode = self.mode
+	
 	local eligibilityTraceMatrix = self.eligibilityTraceMatrix
 	
+	if (mode == "State") then actionIndex = 1 end
+	
 	if (not eligibilityTraceMatrix) then
-		
-		local mode = self.mode
 		
 		local selectedDimensionSizeArray
 		
@@ -77,8 +79,6 @@ function BaseEligibilityTrace:increment(stateIndex, actionIndex, discountFactor,
 			selectedDimensionSizeArray = dimensionSizeArray
 			
 		elseif (mode == "State") then
-			
-			actionIndex = 1
 			
 			selectedDimensionSizeArray = {dimensionSizeArray[1], 1}
 			

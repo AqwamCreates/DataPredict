@@ -164,23 +164,9 @@ end
 
 function TabularReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
-	if (not self.ModelParameters) then
-
-		self.ModelParameters = self:initializeMatrixBasedOnMode({#self.StatesList, #self.ActionsList})
-
-	end
+	if (not self.ModelParameters) then self.ModelParameters = self:initializeMatrixBasedOnMode({#self.StatesList, #self.ActionsList}) end
 	
-	local categoricalUpdateFunction = self.categoricalUpdateFunction
-	
-	if (categoricalUpdateFunction) then
-		
-		return categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
-		
-	else
-		
-		error("The categorical update function is not implemented.")
-		
-	end
+	self.categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
 end
 
@@ -192,23 +178,9 @@ end
 
 function TabularReinforcementLearningBaseModel:episodeUpdate(terminalStateValue)
 	
-	if (not self.ModelParameters) then
+	if (not self.ModelParameters) then self.ModelParameters = self:initializeMatrixBasedOnMode({#self.StatesList, #self.ActionsList}) end
 
-		self.ModelParameters = self:initializeMatrixBasedOnMode({#self.StatesList, #self.ActionsList})
-
-	end
-
-	local episodeUpdateFunction = self.episodeUpdateFunction
-	
-	if (episodeUpdateFunction) then
-		
-		return episodeUpdateFunction(terminalStateValue)
-		
-	else
-		
-		error("The episode update function is not implemented.")
-		
-	end
+	return self.episodeUpdateFunction(terminalStateValue)
 
 end
 
@@ -220,17 +192,7 @@ end
 
 function TabularReinforcementLearningBaseModel:reset()
 	
-	local resetFunction = self.resetFunction
-
-	if (resetFunction) then 
-		
-		return resetFunction() 
-		
-	else
-		
-		error("The reset function is not implemented.")
-		
-	end
+	self.resetFunction()
 
 end
 

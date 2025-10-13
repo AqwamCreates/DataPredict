@@ -56,9 +56,13 @@ function TabularDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		local averagingRate = NewTabularDoubleStateActionRewardStateActionModel.averagingRate
 		
+		local learningRate = NewTabularDoubleStateActionRewardStateActionModel.learningRate
+		
 		local discountFactor = NewTabularDoubleStateActionRewardStateActionModel.discountFactor
 		
 		local EligibilityTrace = NewTabularDoubleStateActionRewardStateActionModel.EligibilityTrace
+		
+		local Optimizer = NewTabularDoubleStateActionRewardStateActionModel.Optimizer
 		
 		local ModelParameters = NewTabularDoubleStateActionRewardStateActionModel.ModelParameters
 		
@@ -102,11 +106,21 @@ function TabularDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 		end
 		
+		local gradientTensor = temporalDifferenceErrorVector
+		
+		if (Optimizer) then
+			
+			gradientTensor = Optimizer:calculate(learningRate, gradientTensor)
+			
+		else
+			
+			gradientTensor = AqwamTensorLibrary:multiply(learningRate, gradientTensor)
+			
+		end
+		
 		local weightVector = {ModelParameters[stateIndex]}
 		
-		local multipliedTemporalDifferenceErrorVector = AqwamTensorLibrary:multiply(NewTabularDoubleStateActionRewardStateActionModel.learningRate, temporalDifferenceErrorVector)
-		
-		local targetVector = AqwamTensorLibrary:add(weightVector, multipliedTemporalDifferenceErrorVector)
+		local targetVector = AqwamTensorLibrary:add(weightVector, gradientTensor)
 		
 		local multipliedPrimaryVector = AqwamTensorLibrary:multiply(averagingRate, weightVector)
 		

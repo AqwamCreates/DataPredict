@@ -36,7 +36,7 @@ TabularDoubleQLearningV2Model.__index = TabularDoubleQLearningV2Model
 
 setmetatable(TabularDoubleQLearningV2Model, TabularReinforcementLearningBaseModel)
 
-local defaultAveragingRate = 0.995
+local defaultAveragingRate = 0.01
 
 function TabularDoubleQLearningV2Model.new(parameterDictionary)
 	
@@ -102,11 +102,9 @@ function TabularDoubleQLearningV2Model.new(parameterDictionary)
 		
 		local weightValue = ModelParameters[stateIndex][actionIndex]
 		
-		local targetWeightValue = weightValue + (NewTabularDoubleQLearningV2.learningRate * temporalDifferenceError)
+		local newWeightValue = weightValue + (NewTabularDoubleQLearningV2.learningRate * temporalDifferenceError)
 		
-		local primaryWeightValue = averagingRateComplement * weightValue
-		
-		ModelParameters[stateIndex][actionIndex] = targetWeightValue + primaryWeightValue
+		ModelParameters[stateIndex][actionIndex] = (averagingRate * weightValue) + (averagingRateComplement * newWeightValue)
 		
 		return temporalDifferenceError
 

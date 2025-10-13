@@ -22,15 +22,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ### Note
 
-Currently, these algorithms lack online learning capabilities. We're still looking into it.
-
-| Model Type     | Model Names                                                                         |
-|----------------|-------------------------------------------------------------------------------------|
-| Regression     | NormalLinearRegression, SupportVectorRegression                                     |
-| Classification | SupportVectorMachine, OneClassSupportVectorMachine                                  |
-| Clustering     | KMedoids, AffinityPropagation, DensityBasedSpatialClusteringOfApplicationsWithNoise |
-
-This means DataPredict™ has ~90% (56 out of 63) models with online learning capabilities.
+Currently, DataPredict™ has ~90% (56 out of 63) models with online learning capabilities.
 
 By default, most models would perform offline / batch training on the first train, but then switches to online / sequential / incremental after the first train.
 
@@ -40,40 +32,40 @@ By default, most models would perform offline / batch training on the first trai
 |--------------------------------------------------------------------------------------------|-----------------|---------------------------------------------------------------------------------|
 | [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)                        | None            | General Time-To-Leave Prediction And In-Game Currency Price Generation          |
 | [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation |
-| [SupportVectorRegression](Models/SupportVectorRegression.md)                               | SVR             | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation      |
+| [SupportVectorRegression](Models/SupportVectorRegression.md) (Offline Only)                | SVR             | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation      |
 | [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation     |
 | [NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended)               | None            | Final Solution Time-To-Leave Prediction And In-Game Currency Price Generation   |
 
 ## Classification
 
-| Model                                                                                                            | Alternate Names        | Use Cases                                                                                |
-|------------------------------------------------------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------|
-| [LogisticRegression](Models/LogisticRegression.md) (Beginner Algorithm)                                          | Perceptron             | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction          |
-| [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                                             | PA-C                   | Fast Purchase Likelihood Estimation, Decision Making                                     |
-| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md)                             | OC-PA-C                | Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                      |
-| [NearestCentroid](Models/NearestCentroid.md)                                                                     | NC                     | Fast Grouping Or Quick Decision Making                                                   |
-| [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)                                           | KNN-C                  | Item Recommendation, Similar Player Matchmaking                                          |
-| [SupportVectorMachine](Models/SupportVectorMachine.md)                                                           | SVM                    | Hacking Detection, Anomaly Detection                                                     |
-| [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md)                                           | OC-SVM                 | Hacking Detection, Anomaly Detection (Using Single Class Data)                           |
-| [NeuralNetwork](Models/NeuralNetwork.md) (Beginner Algorithm)                                                    | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                             |
-| [GaussianNaiveBayes](Models/GaussianNaiveBayes.md) (Stonger As Generative Model)                                 | None                   | Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
-| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md) (Stonger As Generative Model)                           | None                   | Inventory Action Prediction, Strategy Profiling Based on Item Usage                      |
-| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md) (Stonger As Generative Model)                               | None                   | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                      |
-| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md) (Stonger As Generative Model)                             | None                   | Imbalanced Class Prediction (e.g. Rare Choices, Niche Paths)                             |
-| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md) (Stonger As Generative Model)                           | None                   | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)       |
+| Model                                                                                  | Alternate Names        | Use Cases                                                                                |
+|----------------------------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------|
+| [LogisticRegression](Models/LogisticRegression.md) (Beginner Algorithm)                | Perceptron             | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction          |
+| [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                   | PA-C                   | Fast Purchase Likelihood Estimation, Decision Making                                     |
+| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md)   | OC-PA-C                | Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                      |
+| [NearestCentroid](Models/NearestCentroid.md)                                           | NC                     | Fast Grouping Or Quick Decision Making                                                   |
+| [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)                 | KNN-C                  | Item Recommendation, Similar Player Matchmaking                                          |
+| [SupportVectorMachine](Models/SupportVectorMachine.md) (Offline Only)                  | SVM                    | Hacking Detection, Anomaly Detection                                                     |
+| [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md) (Offline Only)  | OC-SVM                 | Hacking Detection, Anomaly Detection (Using Single Class Data)                           |
+| [NeuralNetwork](Models/NeuralNetwork.md) (Beginner Algorithm)                          | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                             |
+| [GaussianNaiveBayes](Models/GaussianNaiveBayes.md) (Stonger As Generative Model)       | None                   | Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
+| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md) (Stonger As Generative Model) | None                   | Inventory Action Prediction, Strategy Profiling Based on Item Usage                      |
+| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md) (Stonger As Generative Model)     | None                   | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                      |
+| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md) (Stonger As Generative Model)   | None                   | Imbalanced Class Prediction (e.g. Rare Choices, Niche Paths)                             |
+| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md) (Stonger As Generative Model) | None                   | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)       |
 
 ## Clustering
 
-| Model                                                                                                                  | Alternate Names | Use Cases                                                            |
-|------------------------------------------------------------------------------------------------------------------------|-----------------|----------------------------------------------------------------------|
-| [KMeans](Models/KMeans.md) (Beginner Algorithm)                                                                        | None            | Maximizing Area-of-Effect Abilities, Target Grouping                 |
-| [FuzzyCMeans](Models/FuzzyCMeans.md)                                                                                   | None            | Overlapping Area-of-Effect Abilities, Overlapping Target Grouping    |
-| [KMedoids](Models/KMedoids.md)                                                                                         | None            | Player Grouping Based On Player Locations With Leader Identification |
-| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | Enemy Difficulty Generation                                          |
-| [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | Hacking Detection, Anomaly Detection                                 |
-| [MeanShift](Models/MeanShift.md)                                                                                       | None            | Boss Spawn Location Search Based On Player Locations                 |
-| [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | None            | Player Grouping                                                      |
-| [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | Density Grouping                                                     |
+| Model                                                                                                                                 | Alternate Names | Use Cases                                                            |
+|---------------------------------------------------------------------------------------------------------------------------------------|-----------------|----------------------------------------------------------------------|
+| [KMeans](Models/KMeans.md) (Beginner Algorithm)                                                                                       | None            | Maximizing Area-of-Effect Abilities, Target Grouping                 |
+| [FuzzyCMeans](Models/FuzzyCMeans.md)                                                                                                  | None            | Overlapping Area-of-Effect Abilities, Overlapping Target Grouping    |
+| [KMedoids](Models/KMedoids.md)                                                                                                        | None            | Player Grouping Based On Player Locations With Leader Identification |
+| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                                      | None            | Enemy Difficulty Generation                                          |
+| [ExpectationMaximization](Models/ExpectationMaximization.md)                                                                          | EM              | Hacking Detection, Anomaly Detection                                 |
+| [MeanShift](Models/MeanShift.md)                                                                                                      | None            | Boss Spawn Location Search Based On Player Locations                 |
+| [AffinityPropagation](Models/AffinityPropagation.md) (Offline Only)                                                                   | None            | Player Grouping                                                      |
+| [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) (Offline Only) | DBSCAN          | Density Grouping                                                     |
 
 ## Deep Reinforcement Learning
 

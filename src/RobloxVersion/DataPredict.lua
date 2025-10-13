@@ -154,13 +154,13 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 
 	TabularStateActionRewardStateAction = require(Models.TabularStateActionRewardStateAction),
 	
-	--TabularStateActionRewardStateActionV1 = require(Models.TabularDoubleStateActionRewardStateActionV2),
+	TabularDoubleStateActionRewardStateActionV1 = require(Models.TabularDoubleStateActionRewardStateActionV1),
 
 	TabularDoubleStateActionRewardStateActionV2 = require(Models.TabularDoubleStateActionRewardStateActionV2),
 	
 	TabularExpectedStateActionRewardStateAction = require(Models.TabularExpectedStateActionRewardStateAction),
 	
-	--TabularDoubleExpectedStateActionRewardStateActionV1 = require(Models.TabularDoubleExpectedStateActionRewardStateActionV1),
+	TabularDoubleExpectedStateActionRewardStateActionV1 = require(Models.TabularDoubleExpectedStateActionRewardStateActionV1),
 
 	TabularDoubleExpectedStateActionRewardStateActionV2 = require(Models.TabularDoubleExpectedStateActionRewardStateActionV2),
 	

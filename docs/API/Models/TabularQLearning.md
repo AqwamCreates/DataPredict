@@ -14,9 +14,11 @@ TabularQLearning.new(learningRate: number, discountFactor: number, EligibilityTr
 
 #### Parameters:
 
-* learningRate: 
+* learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
+
+* EligibilityTrace:
 
 #### Returns:
 

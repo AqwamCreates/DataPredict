@@ -99,8 +99,10 @@ end
 local function sample(probabilityVector)
 
 	local totalProbability = 0
+	
+	local unwrappedProbabilityVector = probabilityVector[1]
 
-	for _, probability in ipairs(probabilityVector[1]) do
+	for _, probability in ipairs(unwrappedProbabilityVector) do
 
 		totalProbability = totalProbability + probability
 
@@ -110,21 +112,15 @@ local function sample(probabilityVector)
 
 	local cumulativeProbability = 0
 
-	local selectedIndex = 1
-
-	for i, probability in ipairs(probabilityVector[1]) do
+	for index, probability in ipairs(unwrappedProbabilityVector) do
 
 		cumulativeProbability = cumulativeProbability + probability
 
-		if (randomValue > cumulativeProbability) then continue end
-
-		selectedIndex = i
-
-		break
+		if (randomValue <= cumulativeProbability) then return index end
 
 	end
 
-	return selectedIndex
+	return unwrappedProbabilityVector[#unwrappedProbabilityVector]
 
 end
 

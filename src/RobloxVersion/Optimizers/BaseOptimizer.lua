@@ -50,7 +50,7 @@ function BaseOptimizer.new(parameterDictionary)
 
 	NewBaseOptimizer.calculateFunction = nil
 
-	NewBaseOptimizer.optimizerInternalParameterArray = {}
+	NewBaseOptimizer.optimizerInternalParameterArray = nil
 
 	return NewBaseOptimizer
 
@@ -116,7 +116,7 @@ end
 
 function BaseOptimizer:reset()
 
-	self.optimizerInternalParameterArray = {}
+	self.optimizerInternalParameterArray = nil
 
 end
 

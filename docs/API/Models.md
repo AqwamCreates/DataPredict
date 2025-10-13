@@ -115,7 +115,7 @@ By default, most models would perform offline / batch training on the first trai
 | [TabularExpectedStateActionRewardState](Models/TabularExpectedStateActionRewardStateAction.md)                         | Expected SARSA            | Balanced Self-Learning Grid AIs |
 | [TabularDoubleExpectedStateActionRewardStateV1](Models/TabularDoubleExpectedStateActionRewardStateV1.md)               | Expected SARSA            | Balanced Self-Learning Grid AIs |
 | [TabularDoubleExpectedStateActionRewardStateV2](Models/TabularDoubleExpectedStateActionRewardStateV2.md)               | Expected SARSA            | Balanced Self-Learning Grid AIs |
-| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md) (May Need Further Refinement)                           | MC                        | Online Self-Learning Grid AIs   |
+| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                         | MC                        | Online Self-Learning Grid AIs   |
 | [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                       | Off-Policy MC             | Offline Self-Learning Grid AIs  |
 
 ## Generative

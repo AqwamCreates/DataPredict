@@ -82,9 +82,11 @@ function GravityOptimizer.new(parameterDictionary)
 	
 	NewGravityOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeMatrix, weightMatrix)
 		
-		local previousVelocityMatrix = NewGravityOptimizer.optimizerInternalParameterArray[1]
+		local optimizerInternalParameterArray = NewGravityOptimizer.optimizerInternalParameterArray or {}
 		
-		local timeValue = NewGravityOptimizer.optimizerInternalParameterArray[2] or 1
+		local previousVelocityMatrix = optimizerInternalParameterArray[1]
+		
+		local timeValue = optimizerInternalParameterArray[2] or 1
 		
 		local weightDecayRate = NewGravityOptimizer.weightDecayRate
 		

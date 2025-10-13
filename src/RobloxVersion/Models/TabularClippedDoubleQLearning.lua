@@ -44,7 +44,7 @@ function TabularClippedDoubleQLearningModel.new(parameterDictionary)
 	
 	setmetatable(NewTabularClippedDoubleQLearningModel, TabularClippedDoubleQLearningModel)
 	
-	NewTabularClippedDoubleQLearningModel:setName("TabularClippedDoubleQLearningV2")
+	NewTabularClippedDoubleQLearningModel:setName("TabularClippedDoubleQLearning")
 	
 	NewTabularClippedDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	

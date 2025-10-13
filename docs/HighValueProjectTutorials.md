@@ -72,7 +72,7 @@
 
   * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if custom events are associated with the model's output.
 
-* [Creating Simple Play Time Maximization Model](HighValueProjectTutorials/)
+* [Creating Simple Play Time Maximization Model](HighValueProjectTutorials/CreatingSimplePlayTimeMaximizationModel.md) (Incomplete)
 
   * Uses discrete values (e.g. "focus", "run" and "attack") to maximize play time.
 

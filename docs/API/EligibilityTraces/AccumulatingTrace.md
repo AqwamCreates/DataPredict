@@ -8,7 +8,7 @@ Creates a new eligibility trace object. If any of the arguments are not given, d
 
 ```
 
-AccumulatingTrace.new({lambda: number, mode: string}): EligibilityTraceObject
+AccumulatingTrace.new(lambda: number, mode: string): EligibilityTraceObject
 
 ```
 

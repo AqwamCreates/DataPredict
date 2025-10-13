@@ -152,17 +152,7 @@ end
 
 function DeepReinforcementLearningActorCriticBaseModel:reset()
 
-	local resetFunction = self.resetFunction
-
-	if (resetFunction) then 
-
-		return resetFunction() 
-
-	else
-
-		error("The reset function is not implemented!")
-
-	end
+	return self.resetFunction() 
 
 end
 

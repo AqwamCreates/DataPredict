@@ -105,8 +105,8 @@ By default, most models would perform offline / batch training on the first trai
 | [TabularDoubleStateActionRewardStateV1](Models/TabularDoubleStateActionRewardStateV1.md) (May Need Further Refinement) | Double SARSA              | Safe Self-Learning Grid AIs     |
 | [TabularDoubleStateActionRewardStateV2](Models/TabularDoubleStateActionRewardStateV2.md) (May Need Further Refinement) | Double SARSA              | Safe Self-Learning Grid AIs     |
 | [TabularExpectedStateActionRewardState](Models/TabularExpectedStateActionRewardStateAction.md)                         | Expected SARSA            | Balanced Self-Learning Grid AIs |
-| [TabularDoubleExpectedStateActionRewardStateV1](Models/TabularDoubleExpectedStateActionRewardStateV1.md)               | Expected SARSA            | Balanced Self-Learning Grid AIs |
-| [TabularDoubleExpectedStateActionRewardStateV2](Models/TabularDoubleExpectedStateActionRewardStateV2.md)               | Expected SARSA            | Balanced Self-Learning Grid AIs |
+| [TabularDoubleExpectedStateActionRewardStateV1](Models/TabularDoubleExpectedStateActionRewardStateV1.md)               | Double Expected SARSA     | Balanced Self-Learning Grid AIs |
+| [TabularDoubleExpectedStateActionRewardStateV2](Models/TabularDoubleExpectedStateActionRewardStateV2.md)               | Double Expected SARSA     | Balanced Self-Learning Grid AIs |
 | [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                         | MC                        | Online Self-Learning Grid AIs   |
 | [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                       | Off-Policy MC             | Offline Self-Learning Grid AIs  |
 

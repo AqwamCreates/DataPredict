@@ -106,35 +106,15 @@ end
 
 function DeepReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 	
-	local categoricalUpdateFunction = self.categoricalUpdateFunction
-	
-	if (categoricalUpdateFunction) then
-		
-		return categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
-		
-	else
-		
-		error("The categorical update function is not implemented.")
-		
-	end
+	return self.categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
 end
 
 function DeepReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+	
+	if (not actionStandardDeviationVector) then error("No action standard deviation vector.") end
 
-	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
-
-	if (diagonalGaussianUpdateFunction) then
-		
-		if (not actionStandardDeviationVector) then error("No action standard deviation vector.") end
-
-		return diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
-
-	else
-
-		error("The diagonal Gaussian update function is not implemented.")
-
-	end
+	return self.diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
 end
 
@@ -146,17 +126,7 @@ end
 
 function DeepReinforcementLearningBaseModel:episodeUpdate(terminalStateValue)
 
-	local episodeUpdateFunction = self.episodeUpdateFunction
-	
-	if (episodeUpdateFunction) then
-		
-		return episodeUpdateFunction(terminalStateValue)
-		
-	else
-		
-		error("The episode update function is not implemented.")
-		
-	end
+	return self.episodeUpdateFunction(terminalStateValue)
 
 end
 
@@ -168,17 +138,7 @@ end
 
 function DeepReinforcementLearningBaseModel:reset()
 	
-	local resetFunction = self.resetFunction
-
-	if (resetFunction) then 
-		
-		return resetFunction() 
-		
-	else
-		
-		error("The reset function is not implemented.")
-		
-	end
+	self.resetFunction() 
 
 end
 

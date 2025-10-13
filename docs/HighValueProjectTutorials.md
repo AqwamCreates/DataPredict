@@ -18,8 +18,8 @@
 
   * Therefore, creating or redistributing copies or derivatives of this page and its links' contents are not allowed.
 
-  * Commercial use is also not allowed without a license (except in certain conditions).
-
+  * Limited commercial use unless you purchase a separate license from me.
+  
 * You can download and read the full list of commercial licensing agreements [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
 
 * For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).

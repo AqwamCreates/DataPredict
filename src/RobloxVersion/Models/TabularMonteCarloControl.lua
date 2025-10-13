@@ -100,7 +100,7 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewTabularMonteCarloControlModel.discountFactor)
 		
-		local complementLearningRate = 1 - learningRate
+		local learningRateComplement = 1 - learningRate
 		
 		for h, state in ipairs(stateValueHistory) do
 			
@@ -126,7 +126,7 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 
 				if (count ~= 0) then
 
-					ModelParameters[stateIndex][actionIndex] = (complementLearningRate * ModelParameters[stateIndex][actionIndex]) + (learningRate * (returnValue / count))
+					ModelParameters[stateIndex][actionIndex] = (learningRateComplement * ModelParameters[stateIndex][actionIndex]) + (learningRate * (returnValue / count))
 
 				end
 				

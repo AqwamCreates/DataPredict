@@ -92,7 +92,7 @@
 
   * When the simple model chooses to "consult" the deep model, the deep model will generate actions instead of the simple model.
 
-  * Less risky than the original "Deep Play Time Maximization Model", but takes more time to implement.
+  * Less risky and learns faster than the original "Deep Play Time Maximization Model", but takes more time to implement.
 
   * Minimal implementation takes a minimum of 3 hours using DataPredict™.
 

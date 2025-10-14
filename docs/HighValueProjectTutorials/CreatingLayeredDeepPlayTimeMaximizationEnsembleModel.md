@@ -76,7 +76,7 @@ if (ProbabilityToLeavePredictionModelParameters) then ProbabilityToLeavePredicti
 
 ```lua 
 
-local NeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
+local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
 NeuralNetwork:setClassesList(ClassesList)
 

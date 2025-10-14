@@ -1,4 +1,4 @@
-# High-Value Project Tutorials - Beat The Retention! Not The Algorithm!
+# High-Value Project Tutorials - Beat The Retention! Not The Algorithm! Keep Players, Grow Your Game, Forget Competitors!
 
 ### Disclaimer
 

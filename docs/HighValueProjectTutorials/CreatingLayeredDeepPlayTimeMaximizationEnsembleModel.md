@@ -2,10 +2,10 @@
 
 ## High-Level Explanation
 
-| First Layer                           | Final Layer                  |
-|---------------------------------------|------------------------------|
-| Probability-To-Leave Prediction Model | Play Time Maximization Model |
-| Time-To-Leave Prediction Model        |                              |
+| First Layer                           | Final Layer                       |
+|---------------------------------------|-----------------------------------|
+| Probability-To-Leave Prediction Model | Deep Play Time Maximization Model |
+| Time-To-Leave Prediction Model        |                                   |
 
 * Should the probability-to-leave be greater than 50% or "time-to-leave" is less than 5 seconds, it activates the "Play Time Maximization Model". For the latter metric, even if the "Probability-To-Leave Prediction Model" says the player is unlikely to leave, we still have a chance that the player will leave in near term within a short period of time and the effects of player leaving is generally permanent.
 

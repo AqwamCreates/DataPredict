@@ -66,7 +66,7 @@ local ActionsList = {
     However, because our model isn't that complex, it is better to use the model that choses
     the best actions like Tabular Q-learning.
 
-    We can then further improve it by using eligibility traces to keep track on what actions is to
+    We can then further improve its performance by using eligibility traces to keep track on what actions is to
     be "blamed" for causing the player to reach next state.
 
     Feeling bold as well? Let's add optimizers to the mix reserved for speeding up neural network learning, but I over engineered

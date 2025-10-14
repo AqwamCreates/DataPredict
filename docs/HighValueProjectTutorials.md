@@ -74,7 +74,7 @@
 
 * [Creating Simple Play Time Maximization Model](HighValueProjectTutorials/CreatingSimplePlayTimeMaximizationModel.md) (Incomplete)
 
-  * Uses discrete values (e.g. "focus", "run" and "attack") to maximize play time.
+  * Uses discrete input values (e.g. "focus", "run" and "attack") to maximize play time.
 
   * No need to add new content; the model can use existing content to optimize your games.
 

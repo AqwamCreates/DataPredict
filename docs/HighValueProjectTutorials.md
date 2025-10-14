@@ -82,7 +82,21 @@
 
   * Minimal implementation takes a minimum of 1 hour using DataPredict™, especially if custom events are associated with the model's output.
 
-* [Creating Deep Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingDeepPlayTimeMaximizationEnsembleModel.md)
+* [Creating Junior-Senior Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingJuniorSeniorPlayTimeMaximizationEnsembleModel.md) (Incomplete)
+
+  * Uses a combination of:
+ 
+    * Simple Play Time Maximization Model
+   
+    * Deep Play Time Maximization Model
+
+  * When the simple model chooses to "consult" the deep model, the deep model will generate actions instead of the simple model.
+
+  * Less risky than the original "Deep Play Time Maximization Model", but takes more time to implement.
+
+  * Minimal implementation takes a minimum of 3 hours using DataPredict™.
+
+* [Creating Layered Deep Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingLayeredDeepPlayTimeMaximizationEnsembleModel.md)
 
   * Uses a combination of:
  
@@ -90,9 +104,9 @@
    
     * Probability-To-Leave Prediction Model
    
-    * Play Time Maximization Model
+    * Deep Play Time Maximization Model
 
-  * Less risky than the original "Play Time Maximization Model", but takes more time to implement.
+  * Less risky than the original "Deep Play Time Maximization Model", but takes more time to implement.
 
   * Minimal implementation takes a minimum of 4 hours using DataPredict™.
 

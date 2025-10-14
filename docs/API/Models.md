@@ -42,21 +42,21 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Classification
 
-| Model                                                                                  | Alternate Names        | Use Cases                                                                                |
-|----------------------------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------|
-| [LogisticRegression](Models/LogisticRegression.md) (Beginner Algorithm)                | Perceptron             | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction          |
-| [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                   | PA-C                   | Fast Purchase Likelihood Estimation, Decision Making                                     |
-| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md)   | OC-PA-C                | Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                      |
-| [NearestCentroid](Models/NearestCentroid.md)                                           | NC                     | Fast Grouping Or Quick Decision Making                                                   |
-| [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)                 | KNN-C                  | Item Recommendation, Similar Player Matchmaking                                          |
-| [SupportVectorMachine](Models/SupportVectorMachine.md) (Offline Only)                  | SVM                    | Hacking Detection, Anomaly Detection                                                     |
-| [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md) (Offline Only)  | OC-SVM                 | Hacking Detection, Anomaly Detection (Using Single Class Data)                           |
-| [NeuralNetwork](Models/NeuralNetwork.md) (Beginner Algorithm)                          | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                             |
-| [GaussianNaiveBayes](Models/GaussianNaiveBayes.md) (Stonger As Generative Model)       | None                   | Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
-| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md) (Stonger As Generative Model) | None                   | Inventory Action Prediction, Strategy Profiling Based on Item Usage                      |
-| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md) (Stonger As Generative Model)     | None                   | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                      |
-| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md) (Stonger As Generative Model)   | None                   | Imbalanced Class Prediction (e.g. Rare Choices, Niche Paths)                             |
-| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md) (Stonger As Generative Model) | None                   | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)       |
+| Model                                                                                  | Alternate Names        | Use Cases                                                                                                       |
+|----------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------|
+| [LogisticRegression](Models/LogisticRegression.md) (Beginner Algorithm)                | Perceptron             | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction                                 |
+| [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                   | PA-C                   | Fast Purchase Likelihood Estimation, Decision Making                                                            |
+| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md)   | OC-PA-C                | Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                                             |
+| [NearestCentroid](Models/NearestCentroid.md)                                           | NC                     | Fast Grouping Or Quick Decision Making                                                                          |
+| [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)                 | KNN-C                  | Item Recommendation, Similar Player Matchmaking                                                                 |
+| [SupportVectorMachine](Models/SupportVectorMachine.md) (Offline Only)                  | SVM                    | Hacking Detection, Anomaly Detection                                                                            |
+| [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md) (Offline Only)  | OC-SVM                 | Hacking Detection, Anomaly Detection (Using Single Class Data)                                                  |
+| [NeuralNetwork](Models/NeuralNetwork.md) (Beginner Algorithm)                          | Multi-Layer Perceptron | Decision-Making, Player Behaviour Prediction                                                                    |
+| [GaussianNaiveBayes](Models/GaussianNaiveBayes.md) (Stonger As Generative Model)       | None                   | Enemy Data Generation, Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
+| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md) (Stonger As Generative Model) | None                   | Summoning Next Enemy Type, Inventory Action Prediction, Strategy Profiling Based on Item Usage                  |
+| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md) (Stonger As Generative Model)     | None                   | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                                             |
+| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md) (Stonger As Generative Model)   | None                   | Imbalanced Class Prediction (e.g. Rare Choices, Niche Paths)                                                    |
+| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md) (Stonger As Generative Model) | None                   | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)                              |
 
 ## Clustering
 

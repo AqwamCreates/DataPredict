@@ -83,7 +83,7 @@ Before we start training our model, we first need to build our model. We have sp
 
 ```lua 
 
-local NeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
+local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
 NeuralNetwork:setClassesList(ClassesList)
 
@@ -97,9 +97,18 @@ NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
 
 ```lua
 
--- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
+--[[
 
-local DeepReinforcementLearningModel = DataPredict.Model.DeepStateActionRewardStateAction.new()
+    You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
+
+    Because the model is complex due to using neural networks, I recommend using eligibility traces
+    to keep track on what actions is to be "blamed" for causing the player to leave / reach next state.
+    
+--]]
+
+local EligibilityTrace = DataPredict.EligibilityTraces.AccumulatingTrace.new()
+
+local DeepReinforcementLearningModel = DataPredict.Models.DeepStateActionRewardStateAction.new({EligibilityTrace = EligibilityTrace})
 
 -- Inserting our Neural Network here.
 

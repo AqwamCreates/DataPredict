@@ -58,13 +58,32 @@ local ActionsList = {
 
 ```lua
 
--- You can use Tabular SARSA here for safer learning.
 
--- However, because our model isn't that complex, it is better to use the model that choses the best actions like Tabular Q-learning.
+--[[
 
--- We can then further improve it by using eligibility traces to keep track on what actions is to be "blamed" for reaching the next player state.
+    You can use Tabular SARSA here for safer learning.
+
+    However, because our model isn't that complex, it is better to use the model that choses
+    the best actions like Tabular Q-learning.
+
+    We can then further improve it by using eligibility traces to keep track on what actions is to
+    be "blamed" for causing the player to reach next state.
+
+    Feeling bold as well? Let's add optimizers to the mix reserved for speeding up neural network learning, but I over engineered
+    the tabular reinforcement learning models so that these can use optimizers. 
+
+--]]
 
 local EligibilityTrace = DataPredict.EligibilityTrace.AccumulatingTrace.new()
+
+--[[
+
+    Got plenty of optimizers here, but AdaptiveMomentEstimation (Adam) is always
+    the best performing on in deep reinforcement learning research.
+
+--]]
+
+local Optimizer = DataPredict.
 
 local TabularReinforcementLearningModel = DataPredict.Model.TabularQLearning.new({StatesList = StatesList, ActionsList = ActionsList, EligibilityTrace = EligibilityTrace})
 

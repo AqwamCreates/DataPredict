@@ -51,33 +51,15 @@ local ActionsList = {
 
 ## Constructing Our Model
 
-Before we start training our model, we first need to build our model. We have split this to multiple subsections to make it easy to follow through.
-
-### Constructing Our Neural Network
-
-```lua 
-
-local NeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
-
-NeuralNetwork:setClassesList(ClassesList)
-
-NeuralNetwork:addLayer(5, true) -- Five features and one bias.
-
-NeuralNetwork:addLayer(#ClassesList, false) -- No bias.
-
-```
-
-### Constructing Our Deep Reinforcement Learning Model
+### Constructing Our Tabular Reinforcement Learning Model
 
 ```lua
 
--- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
+-- You can use Tabular SARSA here for safer learning. However, because our model isn't that complex, it is better to 
 
-local DeepReinforcementLearningModel = DataPredict.Model.DeepStateActionRewardStateAction.new()
+local EligibilityTrace = DataPredict.EligibilityTrace.AccumulatingTrace.new()
 
--- Inserting our Neural Network here.
-
-DeepReinforcementLearningModel:setModel(NeuralNetwork)
+local TabularReinforcementLearningModel = DataPredict.Model.TabularQLearning.new({StatesList = StatesList, ActionsList = ActionsList, EligibilityTrace = EligibilityTrace})
 
 ```
 
@@ -91,7 +73,7 @@ local PlayTimeMaximizationModel = DataPredict.QuickSetups.CategoricalPolicy.new(
 
 -- Inserting our Deep Reinforcement Learning Model here.
 
-PlayTimeMaximizationModel:setModel(DeepReinforcementLearningModel)
+PlayTimeMaximizationModel:setModel(TabularReinforcementLearningModel)
 
 ```
 
@@ -136,7 +118,7 @@ local function run(Player)
 
     local rewardValue = 0
 
-    local playerDataVector
+    local playerState
 
     local eventName
 
@@ -144,9 +126,9 @@ local function run(Player)
 
     while isPlayerInServer do
 
-         playerDataVector = getPlayerDataVector(Player)
+        playerState = getPlayerState(Player)
     
-        eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+        eventName = PlayTimeMaximizationModel:reinforce(playerState, rewardValue)
 
         eventFunction = eventFunctionDictionary[eventName]
 
@@ -194,23 +176,9 @@ Under this case, you can continue using the existing model parameters that was s
 
 --[[ 
 
-We first need to get our Neural Network model. If you only kept the quick setup and discarded the rest, don't worry!
+ModelParameters = PlayTimeMaximizationModel:getModelParameters()
 
-We can just do getModel() twice to get our Neural Network model.
-
---]]
-
-local DeepReinforcementLearningModel =  PlayTimeMaximizationModel:getModel()
-
-local NeuralNetwork = DeepReinforcementLearningModel:getModel()
-
--- Notice that we must get it from the Neural Network model.
-
-ModelParameters = NeuralNetwork:getModelParameters()
-
--- Notice that we must set it to the Neural Network model too.
-
-NeuralNetwork:setModelParameters(ModelParameters)
+PlayTimeMaximizationModel:setModelParameters(ModelParameters)
 
 ```
 

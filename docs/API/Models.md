@@ -28,7 +28,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 * No dimensionality reduction algorithms due to not being suitable for game-related use cases. They tend to be computationally expensive and are only useful when a full dataset is collected. This can be offset by choosing proper features and remove the unnecessary ones.
 
-* Going "Gold" upon my birthday at 23 January 2026.
+* Going "Gold" upon my birthday at 23 January 2026. Probably.
 
 ## Regression
 

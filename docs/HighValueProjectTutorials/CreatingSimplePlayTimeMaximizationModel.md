@@ -18,10 +18,13 @@ Before we start creating our model, we first need to visualize on how we will de
 
 local StatesList = {
 
+    "PlayerAwayFromKeyboard",
     "PlayerIdle".
     "PlayerRewarded",
-    "PlayerActive"
-    "PlayerAwayFromKeyboard",
+    "PlayerPickingUpItem",
+    "PlayerActiveForQuest"
+    "PlayerActiveAgainstEnemy"
+    "PlayerActiveAgainstEnemyBoss"
     "PlayerLeft"
     "PlayerLostConnection"
 
@@ -55,7 +58,11 @@ local ActionsList = {
 
 ```lua
 
--- You can use Tabular SARSA here for safer learning. However, because our model isn't that complex, it is better to 
+-- You can use Tabular SARSA here for safer learning.
+
+-- However, because our model isn't that complex, it is better to use the model that choses the best actions like Tabular Q-learning.
+
+-- We can then further improve it by using eligibility traces to keep track on what actions is to be "blamed" for reaching the next player state.
 
 local EligibilityTrace = DataPredict.EligibilityTrace.AccumulatingTrace.new()
 

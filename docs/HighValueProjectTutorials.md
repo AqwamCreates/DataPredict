@@ -1,4 +1,4 @@
-# High-Value Project Tutorials - Beat The Retention!
+# High-Value Project Tutorials - Beat The Retention! Not The Algorithm!
 
 ### Disclaimer
 

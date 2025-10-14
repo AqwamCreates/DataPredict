@@ -2,9 +2,7 @@
 
 For this tutorial, we need multiple things to build our model, this includes:
 
-* Neural Network Model
-
-* A Reinforcement Learning Model (Deep Q-Learning or Deep SARSA)
+* Tabular Reinforcement Learning Model (Tabular Q-Learning or Tabular SARSA)
 
 * Categorical Policy Quick Setup
 
@@ -12,30 +10,30 @@ For this tutorial, we need multiple things to build our model, this includes:
 
 Before we start creating our model, we first need to visualize on how we will design our data and what actions the model could take to extend our players' play time.
 
-### FeatureVector
+### StatesList
 
 ```lua
 
 -- We have five features with one "bias".
 
-local playerDataVector = {
-    {
-        1,
-        numberOfCurrencyAmount,
-        numberOfItemsAmount,
-        timePlayedInCurrentSession,
-        timePlayedInAllSessions,
-        healthAmount
-    }
+local StatesList = {
+
+    "PlayerIdle".
+    "PlayerRewarded",
+    "PlayerActive"
+    "PlayerAwayFromKeyboard",
+    "PlayerLeft"
+    "PlayerLostConnection"
+
 }
 
 ```
 
-### ClassesList
+### ActionsList
 
 ```lua
 
-local ClassesList = {
+local ActionsList = {
 
   "NoEvent",
   "FreeGiftEvent",
@@ -48,30 +46,6 @@ local ClassesList = {
   "LimitedTimeBossSpawnEvent",
 
 }
-
-```
-
-Also, we would like you to be careful about limited time quest and item spawn events as the model will might learn to give it often. As such, it is important to give the model negative rewards inversely proportional to the duration between the two limited time events.
-
-If you're concerned about that the model may produce wrong result heavily upon first start up, then you can use a randomized dataset to heavily skew the prediction to the "NoEvent" class. Then use this randomized dataset to pretrain the Neural Network before doing any real-time training and prediction. Below, we will show you how it is done.
-
-```lua
-
-local numberOfData = 100
-
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias")
-
-local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, "NoEvent")
-
-```
-
-However, this require setting the Neural Network's parameters to these settings temporarily so that it can be biased to "NoEvent" at start up as shown below.
-
-```lua
-
-NeuralNetwork.maximumNumberOfIterations = 1000
-
-NeuralNetwork.learningRate = 0.3
 
 ```
 

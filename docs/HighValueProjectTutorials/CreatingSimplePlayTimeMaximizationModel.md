@@ -83,9 +83,16 @@ local EligibilityTrace = DataPredict.EligibilityTrace.AccumulatingTrace.new()
 
 --]]
 
-local Optimizer = DataPredict.
+local Optimizer = DataPredict.Optimizer.AdaptiveMomentEstimation.new()
 
-local TabularReinforcementLearningModel = DataPredict.Model.TabularQLearning.new({StatesList = StatesList, ActionsList = ActionsList, EligibilityTrace = EligibilityTrace})
+local TabularReinforcementLearningModel = DataPredict.Model.TabularQLearning.new({
+
+    StatesList = StatesList,
+    ActionsList = ActionsList,
+    EligibilityTrace = EligibilityTrace,
+    Optimizer = Optimizer
+
+})
 
 ```
 

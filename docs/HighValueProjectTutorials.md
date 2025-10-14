@@ -62,7 +62,7 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Play Time Maximization Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationModel.md)
+* [Creating Deep Play Time Maximization Model](HighValueProjectTutorials/CreatingDeepPlayTimeMaximizationModel.md)
 
   * The model chooses actions or events that maximizes play time.
 
@@ -72,13 +72,13 @@
 
   * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if custom events are associated with the model's output.
 
-* [Creating Simple Play Time Maximization Model](HighValueProjectTutorials/CreatingSimplePlayTimeMaximizationModel.md) (Incomplete)
+* [Creating Simple Play Time Maximization Model](HighValueProjectTutorials/CreatingSimplePlayTimeMaximizationModel.md)
 
   * Uses discrete input values (e.g. "focus", "run" and "attack") to maximize play time.
 
   * No need to add new content; the model can use existing content to optimize your games.
 
-  * It functionally acts similarly to the non-simple version, but more safer and more limited in expressive power.
+  * More safer and faster to learn but more limited in expressive power compared to the deep version.
 
   * Minimal implementation takes a minimum of 1 hour using DataPredict™, especially if custom events are associated with the model's output.
 
@@ -96,7 +96,7 @@
 
   * Minimal implementation takes a minimum of 4 hours using DataPredict™.
 
-* [Creating Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingPlayTimeMaximizationEnsembleModel.md)
+* [Creating Deep Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingDeepPlayTimeMaximizationEnsembleModel.md)
 
   * Uses a combination of:
  

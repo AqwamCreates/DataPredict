@@ -1,6 +1,6 @@
 # High-Value Project Tutorials
 
-## Beat The Retention!
+### Beat The Retention!
 
 ### Disclaimer
 

@@ -103,7 +103,7 @@ local function showRecommendations(itemName, itemDataVector, rewardValue, previo
 
      -- Forces the model's action to the selected one to make sure the model updates properly.
 
-    if (not previousAction) then RecommendationModel.previousAction = previousAction end
+    RecommendationModel.previousAction = previousAction
 
     local action = RecommendationModel:reinforce(playerItemDataPairVector, rewardValue)
 

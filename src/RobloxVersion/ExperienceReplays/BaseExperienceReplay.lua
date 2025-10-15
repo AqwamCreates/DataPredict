@@ -36,7 +36,7 @@ setmetatable(BaseExperienceReplay, BaseInstance)
 
 local defaultBatchSize = 32
 
-local defaultMaxBufferSize = 100
+local defaultMaximumBufferSize = 100
 
 local defaultNumberOfRunsToUpdate = 1
 
@@ -60,7 +60,7 @@ function BaseExperienceReplay.new(parameterDictionary)
 
 	NewBaseExperienceReplay.numberOfRunsToUpdate = parameterDictionary.numberOfRunsToUpdate or defaultNumberOfRunsToUpdate
 
-	NewBaseExperienceReplay.maxBufferSize = parameterDictionary.maxBufferSize or defaultMaxBufferSize
+	NewBaseExperienceReplay.maximumBufferSize = parameterDictionary.maximumBufferSize or defaultMaximumBufferSize
 	
 	NewBaseExperienceReplay.numberOfRuns = parameterDictionary.numberOfRuns or defaultNumberOfRuns
 	

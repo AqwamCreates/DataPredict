@@ -112,8 +112,6 @@ function AdaptiveMomentEstimationMaximumOptimizer.new(parameterDictionary)
 
 		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrixPart1)
 		
-		timeValue = timeValue + 1
-		
 		NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray = {momentMatrix, exponentWeightMatrix, timeValue}
 
 		return costFunctionDerivativeMatrix

@@ -52,7 +52,7 @@ function BaseValueScheduler.new(parameterDictionary)
 	
 	NewBaseValueScheduler.calculateFunction = parameterDictionary.calculateFunction
 	
-	NewBaseValueScheduler.timeValue = NewBaseValueScheduler.timeValue or defaultValue
+	NewBaseValueScheduler.timeValue = parameterDictionary.timeValue or defaultValue
 	
 	return NewBaseValueScheduler
 	

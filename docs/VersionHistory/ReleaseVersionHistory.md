@@ -1,4 +1,4 @@
-# Release Version
+# DataPredict™ Release Version
 
 ## Version 2.0
 

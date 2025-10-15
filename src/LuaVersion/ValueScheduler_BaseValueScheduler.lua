@@ -36,6 +36,8 @@ BaseValueScheduler.__index = BaseValueScheduler
 
 setmetatable(BaseValueScheduler, BaseInstance)
 
+local defaultValue = 0
+
 function BaseValueScheduler.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -50,7 +52,7 @@ function BaseValueScheduler.new(parameterDictionary)
 	
 	NewBaseValueScheduler.calculateFunction = parameterDictionary.calculateFunction
 	
-	NewBaseValueScheduler.timeValue = 0
+	NewBaseValueScheduler.timeValue = NewBaseValueScheduler.timeValue or defaultValue
 	
 	return NewBaseValueScheduler
 	

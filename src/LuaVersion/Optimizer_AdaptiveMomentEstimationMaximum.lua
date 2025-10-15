@@ -30,132 +30,120 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
-AdaptiveMomentEstimationWeightDecayOptimizer = {}
+AdaptiveMomentEstimationMaximumOptimizer = {}
 
-AdaptiveMomentEstimationWeightDecayOptimizer.__index = AdaptiveMomentEstimationWeightDecayOptimizer
+AdaptiveMomentEstimationMaximumOptimizer.__index = AdaptiveMomentEstimationMaximumOptimizer
 
-setmetatable(AdaptiveMomentEstimationWeightDecayOptimizer, BaseOptimizer)
-
-local defaultAlpha = 0.001
+setmetatable(AdaptiveMomentEstimationMaximumOptimizer, BaseOptimizer)
 
 local defaultBeta1 = 0.9
 
 local defaultBeta2 = 0.999
 
-local defaultWeightDecayRate = 0.01
+local defaultWeightDecayRate = 0
 
 local defaultEpsilon = 1e-16
 
-function AdaptiveMomentEstimationWeightDecayOptimizer.new(parameterDictionary)
+function AdaptiveMomentEstimationMaximumOptimizer.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewAdaptiveMomentEstimationWeightDecayOptimizer = BaseOptimizer.new(parameterDictionary)
+	local NewAdaptiveMomentEstimationMaximumOptimizer = BaseOptimizer.new(parameterDictionary)
+
+	setmetatable(NewAdaptiveMomentEstimationMaximumOptimizer, AdaptiveMomentEstimationMaximumOptimizer)
 	
-	NewAdaptiveMomentEstimationWeightDecayOptimizer:setName("AdaptiveMomentEstimationWeightDecay")
+	NewAdaptiveMomentEstimationMaximumOptimizer:setName("AdaptiveMomentEstimationMaximum")
+
+	NewAdaptiveMomentEstimationMaximumOptimizer.beta1 = parameterDictionary.beta1 or defaultBeta1
 	
-	setmetatable(NewAdaptiveMomentEstimationWeightDecayOptimizer, AdaptiveMomentEstimationWeightDecayOptimizer)
+	NewAdaptiveMomentEstimationMaximumOptimizer.beta2 = parameterDictionary.beta2 or defaultBeta2
 	
-	NewAdaptiveMomentEstimationWeightDecayOptimizer.alpha = parameterDictionary.alpha or defaultBeta1
+	NewAdaptiveMomentEstimationMaximumOptimizer.weightDecayRate = parameterDictionary.weightDecayRate or defaultWeightDecayRate
 	
-	NewAdaptiveMomentEstimationWeightDecayOptimizer.beta1 = parameterDictionary.beta1 or defaultBeta1
-	
-	NewAdaptiveMomentEstimationWeightDecayOptimizer.beta2 = parameterDictionary.beta2 or defaultBeta2
-	
-	NewAdaptiveMomentEstimationWeightDecayOptimizer.weightDecayRate = parameterDictionary.weightDecayRate or defaultWeightDecayRate
-	
-	NewAdaptiveMomentEstimationWeightDecayOptimizer.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewAdaptiveMomentEstimationMaximumOptimizer.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
 	--------------------------------------------------------------------------------
 	
-	NewAdaptiveMomentEstimationWeightDecayOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeMatrix, weightMatrix)
+	NewAdaptiveMomentEstimationMaximumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeMatrix, weightMatrix)
 		
-		local optimizerInternalParameterArray = NewAdaptiveMomentEstimationWeightDecayOptimizer.optimizerInternalParameterArray or {}
+		local optimizerInternalParameterArray = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray or {}
+
+		local momentMatrix = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
+
+		local exponentWeightMatrix = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
 		
-		local previousMomentumMatrix = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
-
-		local previousVelocityMatrix = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
+		local timeValue = (optimizerInternalParameterArray[3] or 0) + 1
 		
-		local timeValue = optimizerInternalParameterArray[3] or 1
+		local beta1 = NewAdaptiveMomentEstimationMaximumOptimizer.beta1
 		
-		local beta1 = NewAdaptiveMomentEstimationWeightDecayOptimizer.beta1
-
-		local beta2 = NewAdaptiveMomentEstimationWeightDecayOptimizer.beta2
-
-		local decayedWeightMatrix = AqwamTensorLibrary:multiply(NewAdaptiveMomentEstimationWeightDecayOptimizer.weightDecayRate, weightMatrix)
-
-		local gradientMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, decayedWeightMatrix)
+		local beta2 = NewAdaptiveMomentEstimationMaximumOptimizer.beta2
 		
-		local momentumMatrixPart1 = AqwamTensorLibrary:multiply(beta1, previousMomentumMatrix)
-
-		local momentumMatrixPart2 = AqwamTensorLibrary:multiply((1 - beta1), gradientMatrix)
-
-		local momentumMatrix = AqwamTensorLibrary:add(momentumMatrixPart1, momentumMatrixPart2)
-
-		local squaredGradientDerivativeMatrix = AqwamTensorLibrary:power(gradientMatrix, 2)
-
-		local velocityMatrixPart1 = AqwamTensorLibrary:multiply(beta2, previousVelocityMatrix)
-
-		local velocityMatrixPart2 = AqwamTensorLibrary:multiply((1 - beta2), squaredGradientDerivativeMatrix)
-
-		local velocityMatrix = AqwamTensorLibrary:add(velocityMatrixPart1, velocityMatrixPart2)
-
-		local meanMomentumMatrix = AqwamTensorLibrary:divide(momentumMatrix, (1 - math.pow(beta1, timeValue)))
-
-		local meanVelocityMatrix = AqwamTensorLibrary:divide(velocityMatrix, (1 - math.pow(beta2, timeValue)))
-
-		local squareRootedDivisor = AqwamTensorLibrary:applyFunction(math.sqrt, meanVelocityMatrix)
-
-		local finalDivisorMatrix = AqwamTensorLibrary:add(squareRootedDivisor, NewAdaptiveMomentEstimationWeightDecayOptimizer.epsilon)
+		local weightDecayRate = NewAdaptiveMomentEstimationMaximumOptimizer.weightDecayRate
 		
-		local costFunctionDerivativeMatrixPart1 = AqwamTensorLibrary:multiply(NewAdaptiveMomentEstimationWeightDecayOptimizer.alpha, meanMomentumMatrix)
+		local gradientMatrix = costFunctionDerivativeMatrix
+		
+		if (weightDecayRate ~= 0) then
+			
+			local decayedWeightMatrix = AqwamTensorLibrary:multiply(weightDecayRate, weightMatrix)
+			
+			gradientMatrix = AqwamTensorLibrary:add(gradientMatrix, decayedWeightMatrix)
+			
+		end
 
-		local costFunctionDerivativeMatrixPart2 = AqwamTensorLibrary:divide(costFunctionDerivativeMatrixPart1, finalDivisorMatrix)
-		
-		local costFunctionDerivativeMatrixPart3 = AqwamTensorLibrary:add(costFunctionDerivativeMatrixPart2, decayedWeightMatrix)
+		local momentMatrixPart1 = AqwamTensorLibrary:multiply(beta1, momentMatrix)
 
-		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrixPart3)
+		local momentMatrixPart2 = AqwamTensorLibrary:multiply((1 - beta1), gradientMatrix)
+
+		momentMatrix = AqwamTensorLibrary:add(momentMatrixPart1, momentMatrixPart2)
+
+		local exponentWeightMatrixPart1 = AqwamTensorLibrary:multiply(beta2, exponentWeightMatrix)
+
+		local exponentWeightMatrixPart2 = AqwamTensorLibrary:applyFunction(math.abs, gradientMatrix)
+
+		exponentWeightMatrix = AqwamTensorLibrary:applyFunction(math.max, exponentWeightMatrixPart1, exponentWeightMatrixPart2)
+
+		local divisorMatrixPart1 = 1 - math.pow(beta1, timeValue)
+
+		local divisorMatrixPart2 = AqwamTensorLibrary:add(exponentWeightMatrix, NewAdaptiveMomentEstimationMaximumOptimizer.epsilon)
+
+		local divisorMatrix = AqwamTensorLibrary:multiply(divisorMatrixPart1, divisorMatrixPart2)
+
+		local costFunctionDerivativeMatrixPart1 = AqwamTensorLibrary:divide(momentMatrix, divisorMatrix)
+
+		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrixPart1)
 		
-		timeValue = timeValue + 1
-		
-		NewAdaptiveMomentEstimationWeightDecayOptimizer.optimizerInternalParameterArray = {momentumMatrix, velocityMatrix, timeValue}
+		NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray = {momentMatrix, exponentWeightMatrix, timeValue}
 
 		return costFunctionDerivativeMatrix
-		
+
 	end)
 
-	return NewAdaptiveMomentEstimationWeightDecayOptimizer
+	return NewAdaptiveMomentEstimationMaximumOptimizer
 
 end
 
-function AdaptiveMomentEstimationWeightDecayOptimizer:setAlpha(alpha)
-
-	self.alpha = alpha
-
-end
-
-function AdaptiveMomentEstimationWeightDecayOptimizer:setBeta1(beta1)
+function AdaptiveMomentEstimationMaximumOptimizer:setBeta1(beta1)
 	
 	self.beta1 = beta1
 	
 end
 
-function AdaptiveMomentEstimationWeightDecayOptimizer:setBeta2(beta2)
+function AdaptiveMomentEstimationMaximumOptimizer:setBeta2(beta2)
 		
 	self.beta2 = beta2
 	
 end
 
-function AdaptiveMomentEstimationWeightDecayOptimizer:setWeightDecayRate(weightDecayRate)
+function AdaptiveMomentEstimationMaximumOptimizer:setWeightDecayRate(weightDecayRate)
 
 	self.weightDecayRate = weightDecayRate
 
 end
 
-function AdaptiveMomentEstimationWeightDecayOptimizer:setEpsilon(epsilon)
+function AdaptiveMomentEstimationMaximumOptimizer:setEpsilon(epsilon)
 
 	self.epsilon = epsilon
 
 end
 
-return AdaptiveMomentEstimationWeightDecayOptimizer
+return AdaptiveMomentEstimationMaximumOptimizer

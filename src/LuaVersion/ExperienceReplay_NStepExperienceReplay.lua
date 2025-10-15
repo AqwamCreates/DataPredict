@@ -70,8 +70,6 @@ function NStepExperienceReplay.new(parameterDictionary)
 
 	NewNStepExperienceReplay:setRunFunction(function(updateFunction)
 		
-		local discountFactor = NewNStepExperienceReplay.discountFactor
-		
 		local replayBufferArray = NewNStepExperienceReplay.replayBufferArray
 
 		local replayBufferBatchArray = sample(replayBufferArray, NewNStepExperienceReplay.batchSize)

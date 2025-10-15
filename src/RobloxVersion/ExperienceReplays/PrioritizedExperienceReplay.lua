@@ -128,9 +128,11 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 		
 		for i, priority in ipairs(priorityArray) do
 			
-			if (priority <= maxPriority) then continue end
-			
-			maxPriority = priority
+			if (priority > maxPriority) then
+				
+				maxPriority = priority
+				
+			end
 			
 		end
 		

@@ -1,4 +1,4 @@
-# Beta Version
+# DataPredict™ Beta Version
 
 ## Version 2.11
 

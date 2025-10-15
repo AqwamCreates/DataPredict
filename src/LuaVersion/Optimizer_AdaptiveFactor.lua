@@ -78,7 +78,7 @@ function AdaptiveFactorOptimizer.new(parameterDictionary)
 		
 		local secondMomentColumnFactorMatrix = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
 		
-		local timeValue = optimizerInternalParameterArray[3] or 1
+		local timeValue = (optimizerInternalParameterArray[3] or 0) + 1
 		
 		local beta2DecayRate = NewAdaptiveFactorOptimizer.beta2DecayRate
 		
@@ -157,8 +157,6 @@ function AdaptiveFactorOptimizer.new(parameterDictionary)
 		local finalUMatrix = AqwamTensorLibrary:divide(uMatrix, AqwamTensorLibrary:applyFunction(math.max, dividedRootMeanSquaredUMatrix, {{1}}))
 		
 		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, finalUMatrix)
-		
-		timeValue = timeValue + 1
 
 		NewAdaptiveFactorOptimizer.optimizerInternalParameterArray = {secondMomentRowFactorMatrix, secondMomentColumnFactorMatrix, timeValue}
 

@@ -42,6 +42,8 @@ local defaultNumberOfRunsToUpdate = 1
 
 local defaultNumberOfRuns = 0
 
+local defaultIsTemporalDifferenceErrorRequired = false
+
 function BaseExperienceReplay.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -66,7 +68,7 @@ function BaseExperienceReplay.new(parameterDictionary)
 	
 	NewBaseExperienceReplay.temporalDifferenceErrorArray = parameterDictionary.temporalDifferenceErrorArray or {}
 	
-	NewBaseExperienceReplay.isTemporalDifferenceErrorRequired = NewBaseExperienceReplay:getValueOrDefaultValue(parameterDictionary.isTemporalDifferenceErrorRequired, false) 
+	NewBaseExperienceReplay.isTemporalDifferenceErrorRequired = NewBaseExperienceReplay:getValueOrDefaultValue(parameterDictionary.isTemporalDifferenceErrorRequired, defaultIsTemporalDifferenceErrorRequired) 
 	
 	return NewBaseExperienceReplay
 	
@@ -109,15 +111,17 @@ function BaseExperienceReplay:setRunFunction(runFunction)
 end
 
 function BaseExperienceReplay:run(updateFunction)
-	
-	self.numberOfRuns += 1
-	
-	if (self.numberOfRuns < self.numberOfRunsToUpdate) then return nil end
-	
+
+	local numberOfRuns = self.numberOfRuns + 1
+
+	self.numberOfRuns = numberOfRuns
+
+	if (numberOfRuns < self.numberOfRunsToUpdate) then return nil end
+
 	self.numberOfRuns = 0
-	
+
 	self.runFunction(updateFunction)
-	
+
 end
 
 function BaseExperienceReplay:removeFirstValueFromArrayIfExceedsBufferSize(targetArray)
@@ -135,14 +139,16 @@ end
 function BaseExperienceReplay:addExperience(...)
 	
 	local experience = {...}
+	
+	local replayBufferArray = self.replayBufferArray
 
-	table.insert(self.replayBufferArray, experience)
+	table.insert(replayBufferArray, experience)
 	
 	local addExperienceFunction = self.addExperienceFunction
 	
 	if (addExperienceFunction) then addExperienceFunction(...) end
 
-	self:removeFirstValueFromArrayIfExceedsBufferSize(self.replayBufferArray)
+	self:removeFirstValueFromArrayIfExceedsBufferSize(replayBufferArray)
 	
 end
 
@@ -154,15 +160,17 @@ end
 
 function BaseExperienceReplay:addTemporalDifferenceError(temporalDifferenceErrorVectorOrValue)
 	
-	if (not self.isTemporalDifferenceErrorRequired) then return nil end
+	if (not self.isTemporalDifferenceErrorRequired) then return end
 	
-	table.insert(self.temporalDifferenceErrorArray, temporalDifferenceErrorVectorOrValue)
+	local temporalDifferenceErrorArray = self.temporalDifferenceErrorArray
+	
+	table.insert(temporalDifferenceErrorArray, temporalDifferenceErrorVectorOrValue)
 	
 	local addTemporalDifferenceErrorFunction = self.addTemporalDifferenceErrorFunction
 	
 	if (addTemporalDifferenceErrorFunction) then addTemporalDifferenceErrorFunction(temporalDifferenceErrorVectorOrValue) end
 	
-	self:removeFirstValueFromArrayIfExceedsBufferSize(self.temporalDifferenceErrorArray)
+	self:removeFirstValueFromArrayIfExceedsBufferSize(temporalDifferenceErrorArray)
 	
 end
 

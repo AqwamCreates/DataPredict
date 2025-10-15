@@ -86,7 +86,7 @@ function GravityOptimizer.new(parameterDictionary)
 		
 		local previousVelocityMatrix = optimizerInternalParameterArray[1]
 		
-		local timeValue = optimizerInternalParameterArray[2] or 1
+		local timeValue = (optimizerInternalParameterArray[2] or 0) + 1
 		
 		local weightDecayRate = NewGravityOptimizer.weightDecayRate
 		
@@ -133,8 +133,6 @@ function GravityOptimizer.new(parameterDictionary)
 		local velocityMatrix = AqwamTensorLibrary:add(velocityMatrixPart1, velocityMatrixPart2)
 
 		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, velocityMatrix)
-		
-		timeValue = timeValue + 1
 
 		NewGravityOptimizer.optimizerInternalParameterArray = {velocityMatrix, timeValue}
 

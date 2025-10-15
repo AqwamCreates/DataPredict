@@ -120,7 +120,7 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 	
 	NewPrioritizedExperienceReplay:extendAddExperienceFunction(function()
 		
-		local maxPriority = 1
+		local maximumPriority = 1
 		
 		local priorityArray = NewPrioritizedExperienceReplay.priorityArray
 		
@@ -128,15 +128,15 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 		
 		for i, priority in ipairs(priorityArray) do
 			
-			if (priority > maxPriority) then
+			if (priority > maximumPriority) then
 				
-				maxPriority = priority
+				maximumPriority = priority
 				
 			end
 			
 		end
 		
-		table.insert(priorityArray, maxPriority)
+		table.insert(priorityArray, maximumPriority)
 		
 		table.insert(weightArray, 0)
 		

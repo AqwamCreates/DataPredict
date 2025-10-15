@@ -68,15 +68,15 @@ function AdaptiveFactorOptimizer.new(parameterDictionary)
 	
 	--------------------------------------------------------------------------------
 	
-	NewAdaptiveFactorOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeMatrix, weightMatrix)
+	NewAdaptiveFactorOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor, weightTensor)
 		
-		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix)
+		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor)
 		
 		local optimizerInternalParameterArray = NewAdaptiveFactorOptimizer.optimizerInternalParameterArray or {}
 		
-		local secondMomentRowFactorMatrix = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+		local secondMomentRowFactorTensor = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
 		
-		local secondMomentColumnFactorMatrix = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+		local secondMomentColumnFactorTensor = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
 		
 		local timeValue = (optimizerInternalParameterArray[3] or 0) + 1
 		
@@ -88,79 +88,79 @@ function AdaptiveFactorOptimizer.new(parameterDictionary)
 		
 		local oneMinusBeta2 = 1 - beta2
 		
-		local gradientMatrix = costFunctionDerivativeMatrix
+		local gradientTensor = costFunctionDerivativeTensor
 		
 		if (weightDecayRate ~= 0) then
 
-			local decayedWeightMatrix = AqwamTensorLibrary:multiply(weightDecayRate, weightMatrix)
+			local decayedWeightTensor = AqwamTensorLibrary:multiply(weightDecayRate, weightTensor)
 
-			gradientMatrix = AqwamTensorLibrary:add(gradientMatrix, decayedWeightMatrix)
+			gradientTensor = AqwamTensorLibrary:add(gradientTensor, decayedWeightTensor)
 
 		end
 		
-		local squaredGradientMatrix = AqwamTensorLibrary:power(gradientMatrix, 2)
+		local squaredGradientTensor = AqwamTensorLibrary:power(gradientTensor, 2)
 		
-		local oneRowMatrix = AqwamTensorLibrary:createTensor({dimensionSizeArray[1], 1}, 1)
+		local oneRowTensor = AqwamTensorLibrary:createTensor({dimensionSizeArray[1], 1}, 1)
 		
-		local oneColumnMatrix = AqwamTensorLibrary:createTensor({dimensionSizeArray[2], 1}, 1)
+		local oneColumnTensor = AqwamTensorLibrary:createTensor({dimensionSizeArray[2], 1}, 1)
 		
-		local transposedOneRowMatrix = AqwamTensorLibrary:transpose(oneRowMatrix)
+		local transposedOneRowTensor = AqwamTensorLibrary:transpose(oneRowTensor, {1, 2})
 		
-		local transposedOneColumnMatrix = AqwamTensorLibrary:transpose(oneColumnMatrix)
+		local transposedOneColumnTensor = AqwamTensorLibrary:transpose(oneColumnTensor, {1, 2})
 		
-		local dotProductOnMatrix = AqwamTensorLibrary:dotProduct(oneRowMatrix, transposedOneColumnMatrix)
+		local dotProductOnTensor = AqwamTensorLibrary:dotProduct(oneRowTensor, transposedOneColumnTensor)
 		
-		local epsilonMultiplyDotProductOnMatrix = AqwamTensorLibrary:multiply(NewAdaptiveFactorOptimizer.epsilon1, dotProductOnMatrix)
+		local epsilonMultiplyDotProductOnTensor = AqwamTensorLibrary:multiply(NewAdaptiveFactorOptimizer.epsilon1, dotProductOnTensor)
 		
-		local squaredGradientAddEpsilonMultiplyDotProductOnMatrix = AqwamTensorLibrary:add(squaredGradientMatrix, epsilonMultiplyDotProductOnMatrix)
+		local squaredGradientAddEpsilonMultiplyDotProductOnTensor = AqwamTensorLibrary:add(squaredGradientTensor, epsilonMultiplyDotProductOnTensor)
 		
-		local secondMomentRowFactorMatrixPart1 = AqwamTensorLibrary:multiply(beta2, secondMomentRowFactorMatrix)
+		local secondMomentRowFactorTensorPart1 = AqwamTensorLibrary:multiply(beta2, secondMomentRowFactorTensor)
 		
-		local secondMomentRowFactorMatrixPart2 = AqwamTensorLibrary:multiply(oneMinusBeta2, squaredGradientAddEpsilonMultiplyDotProductOnMatrix)
+		local secondMomentRowFactorTensorPart2 = AqwamTensorLibrary:multiply(oneMinusBeta2, squaredGradientAddEpsilonMultiplyDotProductOnTensor)
 		
-		local secondMomentRowFactorMatrixPart3 = AqwamTensorLibrary:dotProduct(secondMomentRowFactorMatrixPart2, oneColumnMatrix)
+		local secondMomentRowFactorTensorPart3 = AqwamTensorLibrary:dotProduct(secondMomentRowFactorTensorPart2, oneColumnTensor)
 		
-		secondMomentRowFactorMatrix = AqwamTensorLibrary:add(secondMomentRowFactorMatrixPart1, secondMomentRowFactorMatrixPart3)
+		secondMomentRowFactorTensor = AqwamTensorLibrary:add(secondMomentRowFactorTensorPart1, secondMomentRowFactorTensorPart3)
 		
-		local secondMomentColumnFactorMatrixPart1 = AqwamTensorLibrary:multiply(beta2, secondMomentColumnFactorMatrix)
+		local secondMomentColumnFactorTensorPart1 = AqwamTensorLibrary:multiply(beta2, secondMomentColumnFactorTensor)
 		
-		local secondMomentColumnFactorMatrixPart2 = AqwamTensorLibrary:dotProduct(transposedOneRowMatrix, squaredGradientAddEpsilonMultiplyDotProductOnMatrix)
+		local secondMomentColumnFactorTensorPart2 = AqwamTensorLibrary:dotProduct(transposedOneRowTensor, squaredGradientAddEpsilonMultiplyDotProductOnTensor)
 		
-		local secondMomentColumnFactorMatrixPart3 = AqwamTensorLibrary:multiply(oneMinusBeta2, secondMomentRowFactorMatrixPart2)
+		local secondMomentColumnFactorTensorPart3 = AqwamTensorLibrary:multiply(oneMinusBeta2, secondMomentRowFactorTensorPart2)
 		
-		secondMomentColumnFactorMatrix = AqwamTensorLibrary:add(secondMomentColumnFactorMatrixPart1, secondMomentColumnFactorMatrixPart3)
+		secondMomentColumnFactorTensor = AqwamTensorLibrary:add(secondMomentColumnFactorTensorPart1, secondMomentColumnFactorTensorPart3)
 		
-		local velocityMatrixPart1 = AqwamTensorLibrary:multiply(secondMomentRowFactorMatrix, secondMomentColumnFactorMatrix)
+		local velocityTensorPart1 = AqwamTensorLibrary:multiply(secondMomentRowFactorTensor, secondMomentColumnFactorTensor)
 		
-		local velocityMatrixPart2 = AqwamTensorLibrary:dotProduct(transposedOneRowMatrix, secondMomentRowFactorMatrix)
+		local velocityTensorPart2 = AqwamTensorLibrary:dotProduct(transposedOneRowTensor, secondMomentRowFactorTensor)
 		
-		local velocityMatrix = AqwamTensorLibrary:divide(velocityMatrixPart1, velocityMatrixPart2)
+		local velocityTensor = AqwamTensorLibrary:divide(velocityTensorPart1, velocityTensorPart2)
 		
-		local uMatrix = AqwamTensorLibrary:divide(gradientMatrix, AqwamTensorLibrary:applyFunction(math.sqrt, velocityMatrix))
+		local uTensor = AqwamTensorLibrary:divide(gradientTensor, AqwamTensorLibrary:applyFunction(math.sqrt, velocityTensor))
 		
-		local squareRootVelocityMatrix = AqwamTensorLibrary:applyFunction(math.sqrt, velocityMatrix)
+		local squareRootVelocityTensor = AqwamTensorLibrary:applyFunction(math.sqrt, velocityTensor)
 		
-		local dividedRootMeanSquaredXMatrix = AqwamTensorLibrary:divide(uMatrix, weightMatrix)
+		local dividedRootMeanSquaredXTensor = AqwamTensorLibrary:divide(uTensor, weightTensor)
 		
 		local momentum = math.min(learningRate, (1 / math.sqrt(timeValue)))
 		
-		local alpha = AqwamTensorLibrary:applyFunction(math.max, {{NewAdaptiveFactorOptimizer.epsilon2}}, dividedRootMeanSquaredXMatrix)
+		local alpha = AqwamTensorLibrary:applyFunction(math.max, {{NewAdaptiveFactorOptimizer.epsilon2}}, dividedRootMeanSquaredXTensor)
 		
 		alpha = AqwamTensorLibrary:multiply(alpha, momentum)
 		
-		local rootMeanSquaredUMatrixPart1 = AqwamTensorLibrary:divide(gradientMatrix, squareRootVelocityMatrix)
+		local rootMeanSquaredUTensorPart1 = AqwamTensorLibrary:divide(gradientTensor, squareRootVelocityTensor)
 		
-		local rootMeanSquaredUMatrix = AqwamTensorLibrary:unaryMinus(rootMeanSquaredUMatrixPart1)
+		local rootMeanSquaredUTensor = AqwamTensorLibrary:unaryMinus(rootMeanSquaredUTensorPart1)
 		
-		local dividedRootMeanSquaredUMatrix = AqwamTensorLibrary:divide(rootMeanSquaredUMatrix, NewAdaptiveFactorOptimizer.clipValue)
+		local dividedRootMeanSquaredUTensor = AqwamTensorLibrary:divide(rootMeanSquaredUTensor, NewAdaptiveFactorOptimizer.clipValue)
 		
-		local finalUMatrix = AqwamTensorLibrary:divide(uMatrix, AqwamTensorLibrary:applyFunction(math.max, dividedRootMeanSquaredUMatrix, {{1}}))
+		local finalUTensor = AqwamTensorLibrary:divide(uTensor, AqwamTensorLibrary:applyFunction(math.max, dividedRootMeanSquaredUTensor, {{1}}))
 		
-		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, finalUMatrix)
+		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, finalUTensor)
 
-		NewAdaptiveFactorOptimizer.optimizerInternalParameterArray = {secondMomentRowFactorMatrix, secondMomentColumnFactorMatrix, timeValue}
+		NewAdaptiveFactorOptimizer.optimizerInternalParameterArray = {secondMomentRowFactorTensor, secondMomentColumnFactorTensor, timeValue}
 
-		return costFunctionDerivativeMatrix
+		return costFunctionDerivativeTensor
 		
 	end)
 

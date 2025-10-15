@@ -138,8 +138,6 @@ function RectifiedAdaptiveMomentEstimationOptimizer.new(parameterDictionary)
 			
 		end
 		
-		timeValue = timeValue + 1
-		
 		NewRectifiedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray = {momentumMatrix, velocityMatrix, timeValue}
 
 		return costFunctionDerivativeMatrix

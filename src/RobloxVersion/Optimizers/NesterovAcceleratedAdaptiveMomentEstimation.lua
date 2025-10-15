@@ -72,7 +72,7 @@ function NesterovAcceleratedAdaptiveMomentEstimationOptimizer.new(parameterDicti
 
 		local previousNMatrix = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
 		
-		local timeValue = optimizerInternalParameterArray[3] or 1
+		local timeValue = (optimizerInternalParameterArray[3] or 0) + 1
 		
 		local beta1 = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.beta1
 		
@@ -127,8 +127,6 @@ function NesterovAcceleratedAdaptiveMomentEstimationOptimizer.new(parameterDicti
 		local costFunctionDerivativeMatrixPart1 = AqwamTensorLibrary:divide(finalMMatrix, finalDivisor)
 
 		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrixPart1)
-		
-		timeValue = timeValue + 1
 		
 		NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray = {mMatrix, nMatrix, timeValue}
 

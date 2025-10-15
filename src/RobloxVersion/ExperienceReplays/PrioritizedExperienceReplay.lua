@@ -42,7 +42,7 @@ local defaultBeta = 0.4
 
 local defaultAggregateFunction = "Maximum"
 
-local defaultEpsilon = math.pow(10, -4)
+local defaultEpsilon = 1e-16
 
 local aggregrateFunctionList = {
 	

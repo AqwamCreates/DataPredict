@@ -116,7 +116,7 @@ function BaseExperienceReplay:run(updateFunction)
 
 	self.numberOfRuns = numberOfRuns
 
-	if (numberOfRuns < self.numberOfRunsToUpdate) then return nil end
+	if (numberOfRuns < self.numberOfRunsToUpdate) then return end
 
 	self.numberOfRuns = 0
 

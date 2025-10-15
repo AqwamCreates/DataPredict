@@ -40,7 +40,7 @@ local defaultBeta = 0.1
 
 local defaultWeightDecayRate = 0
 
-local defaultEpsilonValue = 1e-16
+local defaultEpsilon = 1e-16
 
 function RootMeanSquarePropagationOptimizer.new(parameterDictionary)
 	
@@ -56,7 +56,7 @@ function RootMeanSquarePropagationOptimizer.new(parameterDictionary)
 	
 	NewRootMeanSquarePropagationOptimizer.weightDecayRate = NewRootMeanSquarePropagationOptimizer.weightDecayRate or defaultWeightDecayRate
 	
-	NewRootMeanSquarePropagationOptimizer.epsilon = parameterDictionary.epsilon or defaultEpsilonValue
+	NewRootMeanSquarePropagationOptimizer.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
 	--------------------------------------------------------------------------------
 	

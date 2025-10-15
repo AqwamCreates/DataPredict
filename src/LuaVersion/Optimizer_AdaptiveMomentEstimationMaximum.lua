@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseOptimizer = require("Model_BaseOptimizer")
+local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
 AdaptiveMomentEstimationWeightDecayOptimizer = {}
 

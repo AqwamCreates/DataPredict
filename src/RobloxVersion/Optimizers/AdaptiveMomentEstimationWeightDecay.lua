@@ -76,7 +76,7 @@ function AdaptiveMomentEstimationWeightDecayOptimizer.new(parameterDictionary)
 
 		local previousVelocityMatrix = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeMatrix), 0)
 		
-		local timeValue = optimizerInternalParameterArray[3] or 1
+		local timeValue = (optimizerInternalParameterArray[3] or 0) + 1
 		
 		local beta1 = NewAdaptiveMomentEstimationWeightDecayOptimizer.beta1
 
@@ -115,8 +115,6 @@ function AdaptiveMomentEstimationWeightDecayOptimizer.new(parameterDictionary)
 		local costFunctionDerivativeMatrixPart3 = AqwamTensorLibrary:add(costFunctionDerivativeMatrixPart2, decayedWeightMatrix)
 
 		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrixPart3)
-		
-		timeValue = timeValue + 1
 		
 		NewAdaptiveMomentEstimationWeightDecayOptimizer.optimizerInternalParameterArray = {momentumMatrix, velocityMatrix, timeValue}
 

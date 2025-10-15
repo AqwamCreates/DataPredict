@@ -56,7 +56,7 @@ function PolynomialValueScheduler.new(parameterDictionary)
 	
 	NewPolynomialValueScheduler:setCalculateFunction(function(value, timeValue)
 
-		return (value * math.pow((1 - (timeValue / NewPolynomialValueScheduler.totalTimeValue)), NewPolynomialValueScheduler.defaultPower))
+		return (value * math.pow((1 - (timeValue / NewPolynomialValueScheduler.totalTimeValue)), NewPolynomialValueScheduler.power))
 		
 	end)
 	

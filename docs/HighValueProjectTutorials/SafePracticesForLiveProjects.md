@@ -1,7 +1,5 @@
 # Safe Practices For Live Projects
 
-## Before You Train Or Update Your Model Parameters, Save!
-
 Under this section, the code shown below demonstrates on how you detect defective model parameters before you can produce prediction and perform a rollback. We will show you two methods of doing this:
 
 * Method 1: Using ModelSafeguardWrapper

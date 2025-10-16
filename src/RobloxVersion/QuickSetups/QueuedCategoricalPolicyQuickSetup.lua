@@ -154,19 +154,29 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		table.remove(outputQueueArray, outputQueueArrayIndex)
 		
+		if (currentNumberOfReinforcements >= NewQueuedCategoricalPolicyQuickSetup.numberOfReinforcementsPerEpisode) then
+			
+			currentNumberOfEpisodes = currentNumberOfEpisodes + 1
+			
+			currentNumberOfReinforcements = 0
+			
+		else
+			
+			currentNumberOfReinforcements = currentNumberOfReinforcements + 1
+			
+		end
+		
 		previousFeatureVector[agentIndex] = currentFeatureVector
 
 		previousActionDictionary[agentIndex] = action
 
-		numberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements + 1
+		numberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
 
 		currentNumberOfEpisodes[agentIndex] = currentNumberOfEpisodes
 
 		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
 		
 		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
-		
-
 		
 		if (NewQueuedCategoricalPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 

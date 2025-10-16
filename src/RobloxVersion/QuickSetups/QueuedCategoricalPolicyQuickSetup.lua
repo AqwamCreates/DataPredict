@@ -162,9 +162,9 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		table.insert(NewQueuedCategoricalPolicyQuickSetup.inputQueueArray, inputArray)
 		
-		local agentIndexQueueOutputArray = parameterDictionary.agentIndexOutputQueueArray
+		local agentIndexQueueOutputArray = NewQueuedCategoricalPolicyQuickSetup.agentIndexOutputQueueArray
 
-		local outputQueueArray = parameterDictionary.outputQueueArray
+		local outputQueueArray = NewQueuedCategoricalPolicyQuickSetup.outputQueueArray
 		
 		local outputQueueArrayIndex
 		

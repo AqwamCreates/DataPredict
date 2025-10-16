@@ -1903,14 +1903,13 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maximumLearningRateLength) .. "-|-" ..
 		string.rep("-", maximumOptimizerLength) .. "-|-" ..
 		string.rep("-", maximumRegularizerLength) .. "-|-"..
-		string.rep("-", maximumDropoutRateLength) .. "-|"..
-		"\n"
+		string.rep("-", maximumDropoutRateLength) .. "-|"
 	
 	if (ClassesList) then
 		
 		if (ClassesList ~= 0) then
 			
-			local availableClassesString = "\nAvailable Classes: \n\n"
+			local availableClassesString = "\n\nAvailable Classes: \n\n"
 			
 			local numberOfClasses = #ClassesList
 			

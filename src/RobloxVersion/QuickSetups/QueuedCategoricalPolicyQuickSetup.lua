@@ -158,7 +158,7 @@ end
 
 function QueuedCategoricalPolicyQuickSetup:start()
 	
-	if (self.isRunning) then error("It is already running.") end
+	if (self.isRunning) then error("It is already active.") end
 	
 	self.isRunning = true
 	
@@ -287,6 +287,8 @@ function QueuedCategoricalPolicyQuickSetup:start()
 end
 
 function QueuedCategoricalPolicyQuickSetup:stop()
+	
+	if (not self.isRunning) then error("It is not active.") end
 	
 	self.isRunning = false
 	

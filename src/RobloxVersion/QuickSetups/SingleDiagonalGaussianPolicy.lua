@@ -76,17 +76,21 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 
 		local previousFeatureVector = NewSingleDiagonalGaussianPolicyQuickSetup.previousFeatureVector
 
-		local actionMeanVector = Model:predict(currentFeatureVector, true)
+		local currentActionMeanVector = Model:predict(currentFeatureVector, true)
 		
 		local actionStandardDeviationVector = NewSingleDiagonalGaussianPolicyQuickSetup.actionStandardDeviationVector
 		
+		local previousActionNoiseVector = NewSingleDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector
+		
 		local previousActionMeanVector =  NewSingleDiagonalGaussianPolicyQuickSetup.previousActionMeanVector
 		
-		local actionVectorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanVector)
+		local actionVectorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(currentActionMeanVector)
 
-		local previousActionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor(actionVectorDimensionSizeArray)
+		local currentActionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor(actionVectorDimensionSizeArray)
 		
-		local actionVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, previousActionNoiseVector)
+		local actionVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, currentActionNoiseVector)
+		
+		actionVector = AqwamTensorLibrary:add(actionVector, currentActionMeanVector)
 		
 		local terminalStateValue = 0
 	
@@ -138,9 +142,9 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 
 		NewSingleDiagonalGaussianPolicyQuickSetup.previousFeatureVector = currentFeatureVector
 		
-		NewSingleDiagonalGaussianPolicyQuickSetup.previousActionMeanVector = actionMeanVector
+		NewSingleDiagonalGaussianPolicyQuickSetup.previousActionMeanVector = currentActionMeanVector
 		
-		NewSingleDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector = previousActionNoiseVector
+		NewSingleDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector = currentActionNoiseVector
 		
 		if (NewSingleDiagonalGaussianPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 		

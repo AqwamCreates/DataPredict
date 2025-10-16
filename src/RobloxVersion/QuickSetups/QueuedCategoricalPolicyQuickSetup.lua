@@ -88,7 +88,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 	
 	NewQueuedCategoricalPolicyQuickSetup.inputQueueArray = parameterDictionary.inputQueueArray or {}
 	
-	NewQueuedCategoricalPolicyQuickSetup.agentIndexQueueOutputArray = parameterDictionary.agentIndexOutputQueueArray or {}
+	NewQueuedCategoricalPolicyQuickSetup.agentIndexOutputQueueArray = parameterDictionary.agentIndexOutputQueueArray or {}
 	
 	NewQueuedCategoricalPolicyQuickSetup.outputQueueArray = parameterDictionary.outputQueueArray or {}
 	

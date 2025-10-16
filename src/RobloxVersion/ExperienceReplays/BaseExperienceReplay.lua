@@ -26,244 +26,156 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-local BaseExperienceReplay = require(script.Parent.BaseExperienceReplay)
+BaseExperienceReplay = {}
 
-PrioritizedExperienceReplay = {}
+BaseExperienceReplay.__index = BaseExperienceReplay
 
-PrioritizedExperienceReplay.__index = PrioritizedExperienceReplay
+setmetatable(BaseExperienceReplay, BaseInstance)
 
-setmetatable(PrioritizedExperienceReplay, BaseExperienceReplay)
+local defaultBatchSize = 32
 
-local defaultAlpha = 0.6
+local defaultMaximumBufferSize = 100
 
-local defaultBeta = 0.4
+local defaultNumberOfRunsToUpdate = 1
 
-local defaultAggregateFunction = "Maximum"
+local defaultNumberOfRuns = 0
 
-local defaultEpsilon = 1e-16
+local defaultIsTemporalDifferenceErrorRequired = false
 
-local aggregrateFunctionList = {
-	
-	["Maximum"] = function (valueVector) 
-		
-		return AqwamTensorLibrary:findMaximumValue(valueVector) 
-		
-	end,
-	
-	["Minimum"] = function (valueVector) 
-
-		return AqwamTensorLibrary:findMinimumValue(valueVector) 
-
-	end,
-	
-	["Sum"] = function (valueVector) 
-		
-		return AqwamTensorLibrary:sum(valueVector) 
-		
-	end,
-	
-	["Average"] = function (valueVector) 
-
-		return AqwamTensorLibrary:sum(valueVector) / #valueVector[1] 
-
-	end,
-	
-}
-
-local function sample(probabilityArray)
-	
-	local sumProbability = 0
-	
-	for i, probability in ipairs(probabilityArray) do
-		
-		sumProbability = sumProbability + probability
-		
-	end
-	
-	local randomProbability = math.random() * sumProbability
-	
-	local cumulativeProbability = 0
-	
-	for index, probability in ipairs(probabilityArray) do
-		
-		cumulativeProbability = cumulativeProbability + probability
-		
-		if (randomProbability <= cumulativeProbability) then return index, probability end
-		
-	end
-	
-	return #probabilityArray, probabilityArray[#probabilityArray] -- fallback
-	
-end
-
-function PrioritizedExperienceReplay.new(parameterDictionary)
+function BaseExperienceReplay.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewPrioritizedExperienceReplay = BaseExperienceReplay.new(parameterDictionary)
+	local NewBaseExperienceReplay = BaseInstance.new(parameterDictionary)
 	
-	setmetatable(NewPrioritizedExperienceReplay, PrioritizedExperienceReplay)
+	setmetatable(NewBaseExperienceReplay, BaseExperienceReplay)
 	
-	NewPrioritizedExperienceReplay:setName("PrioritizedExperienceReplay")
+	NewBaseExperienceReplay:setName("ExperienceReplay")
 	
-	NewPrioritizedExperienceReplay.alpha = parameterDictionary.alpha or defaultAlpha
+	NewBaseExperienceReplay:setName("BaseExperienceReplay")
+
+	NewBaseExperienceReplay.batchSize = parameterDictionary.batchSize or defaultBatchSize
+
+	NewBaseExperienceReplay.numberOfRunsToUpdate = parameterDictionary.numberOfRunsToUpdate or defaultNumberOfRunsToUpdate
+
+	NewBaseExperienceReplay.maximumBufferSize = parameterDictionary.maximumBufferSize or defaultMaximumBufferSize
 	
-	NewPrioritizedExperienceReplay.beta = parameterDictionary.beta or defaultBeta
+	NewBaseExperienceReplay.numberOfRuns = parameterDictionary.numberOfRuns or defaultNumberOfRuns
 	
-	NewPrioritizedExperienceReplay.aggregateFunction = parameterDictionary.aggregateFunction or defaultAggregateFunction
+	NewBaseExperienceReplay.replayBufferArray = parameterDictionary.replayBufferArray or {}
 	
-	NewPrioritizedExperienceReplay.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewBaseExperienceReplay.temporalDifferenceErrorArray = parameterDictionary.temporalDifferenceErrorArray or {}
 	
-	NewPrioritizedExperienceReplay.Model = parameterDictionary.Model
-	
-	NewPrioritizedExperienceReplay.priorityArray = parameterDictionary.priorityArray or {}
-	
-	NewPrioritizedExperienceReplay.weightArray = parameterDictionary.weightArray or {}
-	
-	NewPrioritizedExperienceReplay:extendAddExperienceFunction(function()
-		
-		local maximumPriority = 1
-		
-		local priorityArray = NewPrioritizedExperienceReplay.priorityArray
-		
-		local weightArray = NewPrioritizedExperienceReplay.weightArray
-		
-		for i, priority in ipairs(priorityArray) do
-			
-			if (priority > maximumPriority) then
-				
-				maximumPriority = priority
-				
-			end
-			
-		end
-		
-		table.insert(priorityArray, maximumPriority)
-		
-		table.insert(weightArray, 0)
-		
-		NewPrioritizedExperienceReplay:removeFirstValueFromArrayIfExceedsBufferSize(priorityArray)
-		
-		NewPrioritizedExperienceReplay:removeFirstValueFromArrayIfExceedsBufferSize(weightArray)
-	
-	end)
-	
-	NewPrioritizedExperienceReplay:extendResetFunction(function()
-		
-		table.clear(NewPrioritizedExperienceReplay.priorityArray)
-		
-		table.clear(NewPrioritizedExperienceReplay.weightArray)
-		
-	end)
-	
-	NewPrioritizedExperienceReplay:setRunFunction(function()
-		
-		local Model = NewPrioritizedExperienceReplay.Model
-
-		if (not Model) then error("No Model!") end
-
-		local batchArray = {}
-
-		local alpha = NewPrioritizedExperienceReplay.alpha
-
-		local beta = NewPrioritizedExperienceReplay.beta
-		
-		local epsilon = NewPrioritizedExperienceReplay.epsilon
-
-		local replayBufferArray = NewPrioritizedExperienceReplay.replayBufferArray
-		
-		local temporalDifferenceArray = NewPrioritizedExperienceReplay.temporalDifferenceErrorArray
-		
-		local priorityArray = NewPrioritizedExperienceReplay.priorityArray
-		
-		local weightArray = NewPrioritizedExperienceReplay.weightArray
-
-		local aggregateFunctionToApply = aggregrateFunctionList[NewPrioritizedExperienceReplay.aggregateFunction]
-		
-		local batchSize = NewPrioritizedExperienceReplay.batchSize
-		
-		local replayBufferArraySize = #replayBufferArray
-
-		local lowestNumberOfBatchSize = math.min(batchSize, replayBufferArraySize)		
-		
-		local probabilityArray = {}
-
-		local sumPriorityAlpha = 0
-		
-		for i, priority in ipairs(priorityArray) do
-			
-			local priorityAlpha = math.pow(priority, alpha)
-			
-			probabilityArray[i] = priorityAlpha
-			
-			sumPriorityAlpha = sumPriorityAlpha + priorityAlpha
-			
-		end
-		
-		for i, probability in ipairs(probabilityArray) do
-			
-			probabilityArray[i] = probability / sumPriorityAlpha
-			
-		end
-
-		local sizeArray = AqwamTensorLibrary:getDimensionSizeArray(replayBufferArray[1][1])
-
-		local inputMatrix = AqwamTensorLibrary:createTensor(sizeArray, 1)
-
-		local sumLossMatrix
-		
-		for i = 1, lowestNumberOfBatchSize, 1 do
-			
-			local index, probability = sample(probabilityArray, sumPriorityAlpha)
-			
-			local experience = replayBufferArray[index]
-			
-			local temporalDifferenceErrorValueOrVector = temporalDifferenceArray[index]
-
-			local importanceSamplingWeight = math.pow((lowestNumberOfBatchSize * probability), -beta) / math.max(table.unpack(weightArray), epsilon) 
-			
-			if (type(temporalDifferenceErrorValueOrVector) ~= "number") then
-
-				temporalDifferenceErrorValueOrVector = aggregateFunctionToApply(temporalDifferenceErrorValueOrVector)
-
-			end
-			
-			weightArray[index] = importanceSamplingWeight
-
-			priorityArray[index] = math.abs(temporalDifferenceErrorValueOrVector)
-
-			local outputMatrix = Model:forwardPropagate(replayBufferArray[index][1], false)
-
-			local lossMatrix = AqwamTensorLibrary:multiply(outputMatrix, temporalDifferenceErrorValueOrVector, importanceSamplingWeight)
-
-			if (sumLossMatrix) then
-
-				sumLossMatrix = AqwamTensorLibrary:add(sumLossMatrix, lossMatrix)
-
-			else
-
-				sumLossMatrix = lossMatrix
-
-			end
-
-		end
-
-		Model:forwardPropagate(inputMatrix, true)
-
-		Model:update(sumLossMatrix, true)
-		
-	end)
-	
-	return NewPrioritizedExperienceReplay
+	return NewBaseExperienceReplay
 	
 end
 
-function PrioritizedExperienceReplay:setModel(Model)
+function BaseExperienceReplay:setParameters(batchSize, numberOfRunsToUpdate, maxBufferSize)
 	
-	self.Model = Model or self.Model
+	self.batchSize = batchSize or self.batchSize
+
+	self.numberOfRunsToUpdate = numberOfRunsToUpdate or self.numberOfRunsToUpdate
+
+	self.maxBufferSize = maxBufferSize or self.maxBufferSize
 	
 end
 
-return PrioritizedExperienceReplay
+function BaseExperienceReplay:extendResetFunction(resetFunction)
+	
+	self.resetFunction = resetFunction
+	
+end
+
+function BaseExperienceReplay:reset()
+	
+	self.numberOfRuns = 0
+	
+	table.clear(self.replayBufferArray)
+	
+	table.clear(self.temporalDifferenceErrorArray)
+	
+	local resetFunction = self.resetFunction
+	
+	if resetFunction then resetFunction() end
+	
+end
+
+function BaseExperienceReplay:setRunFunction(runFunction)
+	
+	self.runFunction = runFunction
+	
+end
+
+function BaseExperienceReplay:run(updateFunction)
+
+	local numberOfRuns = self.numberOfRuns + 1
+
+	self.numberOfRuns = numberOfRuns
+
+	if (numberOfRuns < self.numberOfRunsToUpdate) then return end
+
+	self.numberOfRuns = 0
+
+	self.runFunction(updateFunction)
+
+end
+
+function BaseExperienceReplay:removeFirstValueFromArrayIfExceedsBufferSize(targetArray)
+	
+	if (#targetArray > self.maximumBufferSize) then table.remove(targetArray, 1) end
+	
+end
+
+function BaseExperienceReplay:extendAddExperienceFunction(addExperienceFunction)
+	
+	self.addExperienceFunction = addExperienceFunction
+	
+end
+
+function BaseExperienceReplay:addExperience(...)
+	
+	local experience = {...}
+	
+	local replayBufferArray = self.replayBufferArray
+
+	table.insert(replayBufferArray, experience)
+	
+	local addExperienceFunction = self.addExperienceFunction
+	
+	if (addExperienceFunction) then addExperienceFunction(...) end
+
+	self:removeFirstValueFromArrayIfExceedsBufferSize(replayBufferArray)
+	
+end
+
+function BaseExperienceReplay:extendAddTemporalDifferenceErrorFunction(addTemporalDifferenceErrorFunction)
+	
+	self.addTemporalDifferenceErrorFunction = addTemporalDifferenceErrorFunction
+	
+end
+
+function BaseExperienceReplay:addTemporalDifferenceError(temporalDifferenceErrorVectorOrValue)
+
+	if (not self.isTemporalDifferenceErrorRequired) then return end
+	
+	local temporalDifferenceErrorArray = self.temporalDifferenceErrorArray
+
+	table.insert(temporalDifferenceErrorArray, temporalDifferenceErrorVectorOrValue)
+
+	local addTemporalDifferenceErrorFunction = self.addTemporalDifferenceErrorFunction
+
+	if (addTemporalDifferenceErrorFunction) then addTemporalDifferenceErrorFunction(temporalDifferenceErrorVectorOrValue) end
+
+	self:removeFirstValueFromArrayIfExceedsBufferSize(temporalDifferenceErrorArray)
+
+end
+
+function BaseExperienceReplay:setIsTemporalDifferenceErrorRequired(option)
+
+	self.isTemporalDifferenceErrorRequired = option
+
+end
+
+return BaseExperienceReplay

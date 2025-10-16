@@ -157,19 +157,25 @@ function BaseExperienceReplay:extendAddTemporalDifferenceErrorFunction(addTempor
 end
 
 function BaseExperienceReplay:addTemporalDifferenceError(temporalDifferenceErrorVectorOrValue)
-	
-	local addTemporalDifferenceErrorFunction = self.addTemporalDifferenceErrorFunction
-	
-	if (not addTemporalDifferenceErrorFunction) then return end
+
+	if (not self.isTemporalDifferenceErrorRequired) then return end
 	
 	local temporalDifferenceErrorArray = self.temporalDifferenceErrorArray
-	
+
 	table.insert(temporalDifferenceErrorArray, temporalDifferenceErrorVectorOrValue)
-	
+
+	local addTemporalDifferenceErrorFunction = self.addTemporalDifferenceErrorFunction
+
 	if (addTemporalDifferenceErrorFunction) then addTemporalDifferenceErrorFunction(temporalDifferenceErrorVectorOrValue) end
-	
+
 	self:removeFirstValueFromArrayIfExceedsBufferSize(temporalDifferenceErrorArray)
-	
+
+end
+
+function BaseExperienceReplay:setIsTemporalDifferenceErrorRequired(option)
+
+	self.isTemporalDifferenceErrorRequired = option
+
 end
 
 return BaseExperienceReplay

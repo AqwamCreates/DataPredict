@@ -116,9 +116,9 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local selectedActionCountVectorDictionary = NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary
 		
-		local numberOfReinforcementsDictionary = NewQueuedCategoricalPolicyQuickSetup.numberOfReinforcementsDictionary
+		local currentNumberOfReinforcementsDictionary = NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary
 		
-		local numberOfEpisodesDictionary = NewQueuedCategoricalPolicyQuickSetup.numberOfEpisodesDictionary
+		local currentNumberOfEpisodesDictionary = NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary
 		
 		local previousFeatureVector = previousFeatureVectorDictionary[agentIndex]
 		
@@ -174,9 +174,9 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		previousActionDictionary[agentIndex] = action
 
-		numberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
+		currentNumberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
 
-		currentNumberOfEpisodes[agentIndex] = currentNumberOfEpisodes
+		currentNumberOfEpisodesDictionary[agentIndex] = currentNumberOfEpisodes
 
 		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
 		

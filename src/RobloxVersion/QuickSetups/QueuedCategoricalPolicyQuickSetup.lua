@@ -188,7 +188,11 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
 		
-		if (NewQueuedCategoricalPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
+		if (NewQueuedCategoricalPolicyQuickSetup.isOutputPrinted) then 
+			
+			print("Agent index: " .. agentIndex .. "\t\tEpisode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) 
+			
+		end
 
 		if (returnOriginalOutput) then return actionVector end
 

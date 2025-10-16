@@ -81,14 +81,12 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		local actionStandardDeviationVector = NewSingleDiagonalGaussianPolicyQuickSetup.actionStandardDeviationVector
 		
 		local previousActionMeanVector =  NewSingleDiagonalGaussianPolicyQuickSetup.previousActionMeanVector
-
-		local previousActionNoiseVector = NewSingleDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector
 		
 		local actionVectorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanVector)
 
-		local actionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor(actionVectorDimensionSizeArray)
+		local previousActionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor(actionVectorDimensionSizeArray)
 		
-		local actionVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
+		local actionVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, previousActionNoiseVector)
 		
 		local terminalStateValue = 0
 	

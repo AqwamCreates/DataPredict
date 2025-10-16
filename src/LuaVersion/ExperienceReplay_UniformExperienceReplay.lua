@@ -43,10 +43,12 @@ local function sample(replayBufferArray, batchSize)
 	local replayBufferArraySize = #replayBufferArray
 
 	local lowestNumberOfBatchSize = math.min(batchSize, replayBufferArraySize)
+	
+	local RandomObject = Random.new()
 
 	for i = 1, lowestNumberOfBatchSize, 1 do
 
-		local index = Random.new():NextInteger(1, replayBufferArraySize)
+		local index = RandomObject:NextInteger(1, replayBufferArraySize)
 
 		table.insert(batchArray, replayBufferArray[index])
 

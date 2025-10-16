@@ -96,57 +96,15 @@ function ReinforcementLearningBaseQuickSetup:reinforce(...)
 
 end
 
-function ReinforcementLearningBaseQuickSetup:setExperienceReplay(ExperienceReplay)
-
-	self.ExperienceReplay = ExperienceReplay
-
-end
-
 function ReinforcementLearningBaseQuickSetup:setModel(Model)
 
 	self.Model = Model
 
 end
 
-function ReinforcementLearningBaseQuickSetup:setEpsilonValueScheduler(EpsilonValueScheduler)
-
-	self.EpsilonValueScheduler = EpsilonValueScheduler
-
-end
-
-function ReinforcementLearningBaseQuickSetup:getCurrentNumberOfEpisodes()
-
-	return self.currentNumberOfEpisodes
-
-end
-
-function ReinforcementLearningBaseQuickSetup:getCurrentNumberOfReinforcements()
-
-	return self.currentNumberOfReinforcements
-
-end
-
-function ReinforcementLearningBaseQuickSetup:getCurrentEpsilon()
-
-	return self.currentEpsilon
-
-end
-
 function ReinforcementLearningBaseQuickSetup:getModel()
 
 	return self.Model
-
-end
-
-function ReinforcementLearningBaseQuickSetup:getExperienceReplay()
-
-	return self.ExperienceReplay
-
-end
-
-function ReinforcementLearningBaseQuickSetup:getEpsilonValueScheduler()
-
-	return self.EpsilonValueScheduler
 
 end
 

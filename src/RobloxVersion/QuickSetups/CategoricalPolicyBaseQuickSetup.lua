@@ -128,11 +128,11 @@ local function sample(probabilityVector)
 
 end
 
-local function calculateUpperConfidenceBound(actionVector, cValue, totalNumberOfReinforcements, selectedActionCountVector)
+local function calculateUpperConfidenceBound(actionVector, cValue, selectedActionCountVector, currentNumberOfReinforcements)
 	
-	local naturalLogTotalNumberOfReinforcements = math.log(totalNumberOfReinforcements)
+	local naturalLogCurrentNumberOfReinforcements = math.log(currentNumberOfReinforcements)
 	
-	local upperConfidenceBoundVector1 = AqwamTensorLibrary:divide(naturalLogTotalNumberOfReinforcements, selectedActionCountVector)
+	local upperConfidenceBoundVector1 = AqwamTensorLibrary:divide(naturalLogCurrentNumberOfReinforcements, selectedActionCountVector)
 	
 	local upperConfidenceBoundVector2 = AqwamTensorLibrary:multiply(cValue, upperConfidenceBoundVector1)
 	
@@ -142,7 +142,7 @@ local function calculateUpperConfidenceBound(actionVector, cValue, totalNumberOf
 	
 end
 
-function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActionCountVector)
+function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActionCountVector, currentNumberOfReinforcements)
 	
 	local actionSelectionFunction = self.actionSelectionFunction
 	
@@ -178,7 +178,7 @@ function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActi
 		
 	elseif (actionSelectionFunction == "UpperConfidenceBound") then
 		
-		local actionUpperConfidenceBoundVector = calculateUpperConfidenceBound(actionVector, self.cValue, self.currentNumberOfReinforcements, selectedActionCountVector)
+		local actionUpperConfidenceBoundVector = calculateUpperConfidenceBound(actionVector, self.cValue, selectedActionCountVector, currentNumberOfReinforcements)
 		
 		actionIndex = selectIndexWithHighestValue(actionUpperConfidenceBoundVector)
 		

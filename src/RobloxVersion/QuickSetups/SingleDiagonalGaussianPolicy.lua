@@ -140,7 +140,7 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		
 		NewSingleDiagonalGaussianPolicyQuickSetup.previousActionMeanVector = actionMeanVector
 		
-		NewSingleDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector = actionNoiseVector
+		NewSingleDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector = previousActionNoiseVector
 		
 		if (NewSingleDiagonalGaussianPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 		

@@ -126,8 +126,6 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local selectedActionCountVector = selectedActionCountVectorDictionary[selectedActionCountVectorIndex]
 		
-		local selectedActionCountVector = selectedActionCountVectorDictionary[selectedActionCountVectorIndex]
-		
 		local ExperienceReplay = NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
 		
 		local EligibilityTrace = NewQueuedCategoricalPolicyQuickSetup.EligibilityTraceDictionary[eligibilityTraceIndex]
@@ -188,7 +186,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
 		
-		if (NewQueuedCategoricalPolicyQuickSetup.isOutputPrinted) then 
+		if (NewQueuedCategoricalPolicyQuickSetup.isOutputPrinted) then
 			
 			print("Agent index: " .. agentIndex .. "\t\tEpisode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) 
 			

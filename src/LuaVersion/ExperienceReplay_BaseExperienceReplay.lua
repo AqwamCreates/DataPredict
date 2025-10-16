@@ -126,7 +126,7 @@ end
 
 function BaseExperienceReplay:removeFirstValueFromArrayIfExceedsBufferSize(targetArray)
 	
-	if (#targetArray > self.maxBufferSize) then table.remove(targetArray, 1) end
+	if (#targetArray > self.maximumBufferSize) then table.remove(targetArray, 1) end
 	
 end
 

@@ -28,107 +28,85 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local CategoricalPolicyBaseQuickSetup = require(script.Parent.CategoricalPolicyBaseQuickSetup)
+local DiagonalGaussianPolicyBaseQuickSetup = require(script.Parent.DiagonalGaussianPolicyBaseQuickSetup)
 
-QueuedCategoricalPolicyQuickSetup = {}
+QueuedDiagonalGaussianPolicyQuickSetup = {}
 
-QueuedCategoricalPolicyQuickSetup.__index = QueuedCategoricalPolicyQuickSetup
+QueuedDiagonalGaussianPolicyQuickSetup.__index = QueuedDiagonalGaussianPolicyQuickSetup
 
-setmetatable(QueuedCategoricalPolicyQuickSetup, CategoricalPolicyBaseQuickSetup)
+setmetatable(QueuedDiagonalGaussianPolicyQuickSetup, DiagonalGaussianPolicyBaseQuickSetup)
 
 local defaultShareExperienceReplay = false
-
-local defaultShareEligibilityTrace = false
-
-local defaultShareSelectedActionCountVector = false
 
 local defaultShareCurrentNumberOfReinforcements = false
 
 local defaultShareCurrentNumberOfEpisodes = false
 
-function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
+function QueuedDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewQueuedCategoricalPolicyQuickSetup = CategoricalPolicyBaseQuickSetup.new(parameterDictionary)
+	local NewQueuedDiagonalGaussianPolicyQuickSetup = DiagonalGaussianPolicyBaseQuickSetup.new(parameterDictionary)
 	
-	setmetatable(NewQueuedCategoricalPolicyQuickSetup, QueuedCategoricalPolicyQuickSetup)
+	setmetatable(NewQueuedDiagonalGaussianPolicyQuickSetup, QueuedDiagonalGaussianPolicyQuickSetup)
 	
-	NewQueuedCategoricalPolicyQuickSetup:setName("QueuedCategoricalPolicyQuickSetup")
+	NewQueuedDiagonalGaussianPolicyQuickSetup:setName("QueuedDiagonalGaussianPolicyQuickSetup")
 	
 	-- Share toggles
 	
-	NewQueuedCategoricalPolicyQuickSetup.shareExperienceReplay = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareExperienceReplay or defaultShareExperienceReplay)
+	NewQueuedDiagonalGaussianPolicyQuickSetup.shareExperienceReplay = NewQueuedDiagonalGaussianPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareExperienceReplay or defaultShareExperienceReplay)
 	
-	NewQueuedCategoricalPolicyQuickSetup.shareEligibilityTrace = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareEligibilityTrace or defaultShareEligibilityTrace)
+	NewQueuedDiagonalGaussianPolicyQuickSetup.shareCurrentNumberOfReinforcements = NewQueuedDiagonalGaussianPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfReinforcements or defaultShareCurrentNumberOfReinforcements)
 	
-	NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareSelectedActionCountVector or defaultShareSelectedActionCountVector)
-	
-	NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfReinforcements or defaultShareCurrentNumberOfReinforcements)
-	
-	NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfEpisodes = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfEpisodes or defaultShareCurrentNumberOfEpisodes)
+	NewQueuedDiagonalGaussianPolicyQuickSetup.shareCurrentNumberOfEpisodes = NewQueuedDiagonalGaussianPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfEpisodes or defaultShareCurrentNumberOfEpisodes)
 	
 	-- Dictionaries
 
-	NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary = parameterDictionary.ExperienceReplayDictionary or {}
+	NewQueuedDiagonalGaussianPolicyQuickSetup.ExperienceReplayDictionary = parameterDictionary.ExperienceReplayDictionary or {}
 
-	NewQueuedCategoricalPolicyQuickSetup.EligibilityTraceDictionary = parameterDictionary.EligibilityTraceDictionary or {}
+	NewQueuedDiagonalGaussianPolicyQuickSetup.previousFeatureVectorDictionary = parameterDictionary.previousFeatureVectorDictionary or {}
 
-	NewQueuedCategoricalPolicyQuickSetup.previousFeatureVectorDictionary = parameterDictionary.previousFeatureVectorDictionary or {}
-
-	NewQueuedCategoricalPolicyQuickSetup.previousActionDictionary = parameterDictionary.previousActionDictionary or {}
+	NewQueuedDiagonalGaussianPolicyQuickSetup.previousActionDictionary = parameterDictionary.previousActionDictionary or {}
 	
-	NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = parameterDictionary.selectedActionCountVectorDictionary or {}
+	NewQueuedDiagonalGaussianPolicyQuickSetup.currentNumberOfReinforcementsDictionary = parameterDictionary.currentNumberOfReinforcementsDictionary or {}
 	
-	NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary = parameterDictionary.currentNumberOfReinforcementsDictionary or {}
-	
-	NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary = parameterDictionary.currentNumberOfEpisodesDictionary or {}
+	NewQueuedDiagonalGaussianPolicyQuickSetup.currentNumberOfEpisodesDictionary = parameterDictionary.currentNumberOfEpisodesDictionary or {}
 	
 	-- Queues
 	
-	NewQueuedCategoricalPolicyQuickSetup.inputQueueArray = parameterDictionary.inputQueueArray or {}
+	NewQueuedDiagonalGaussianPolicyQuickSetup.inputQueueArray = parameterDictionary.inputQueueArray or {}
 	
-	NewQueuedCategoricalPolicyQuickSetup.agentIndexOutputQueueArray = parameterDictionary.agentIndexOutputQueueArray or {}
+	NewQueuedDiagonalGaussianPolicyQuickSetup.agentIndexOutputQueueArray = parameterDictionary.agentIndexOutputQueueArray or {}
 	
-	NewQueuedCategoricalPolicyQuickSetup.outputQueueArray = parameterDictionary.outputQueueArray or {}
+	NewQueuedDiagonalGaussianPolicyQuickSetup.outputQueueArray = parameterDictionary.outputQueueArray or {}
 	
 	-- Debounce
 	
-	NewQueuedCategoricalPolicyQuickSetup.isRunning = false
+	NewQueuedDiagonalGaussianPolicyQuickSetup.isRunning = false
 	
-	NewQueuedCategoricalPolicyQuickSetup:setReinforceFunction(function(agentIndex, currentFeatureVector, rewardValue, returnOriginalOutput)
+	NewQueuedDiagonalGaussianPolicyQuickSetup:setReinforceFunction(function(agentIndex, currentFeatureVector, rewardValue, returnOriginalOutput)
 		
-		if (not NewQueuedCategoricalPolicyQuickSetup.isRunning) then error("Not currently running.") end
+		if (not NewQueuedDiagonalGaussianPolicyQuickSetup.isRunning) then error("Not currently running.") end
 		
-		local experienceReplayIndex = (NewQueuedCategoricalPolicyQuickSetup.shareExperienceReplay and 1) or agentIndex
+		local experienceReplayIndex = (NewQueuedDiagonalGaussianPolicyQuickSetup.shareExperienceReplay and 1) or agentIndex
 		
-		local eligibilityTraceIndex = (NewQueuedCategoricalPolicyQuickSetup.shareEligibilityTrace and 1) or agentIndex
+		local numberOfReinforcementsIndex = (NewQueuedDiagonalGaussianPolicyQuickSetup.shareCurrentNumberOfReinforcements and 1) or agentIndex
 		
-		local selectedActionCountVectorIndex = (NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector and 1) or agentIndex
+		local numberOfEpisodesIndex = (NewQueuedDiagonalGaussianPolicyQuickSetup.shareCurrentNumberOfEpisodes and 1) or agentIndex
 		
-		local numberOfReinforcementsIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements and 1) or agentIndex
+		local previousFeatureVectorDictionary = NewQueuedDiagonalGaussianPolicyQuickSetup.previousFeatureVectorDictionary
 		
-		local numberOfEpisodesIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfEpisodes and 1) or agentIndex
+		local previousActionDictionary = NewQueuedDiagonalGaussianPolicyQuickSetup.previousActionDictionary
 		
-		local previousFeatureVectorDictionary = NewQueuedCategoricalPolicyQuickSetup.previousFeatureVectorDictionary
+		local currentNumberOfReinforcementsDictionary = NewQueuedDiagonalGaussianPolicyQuickSetup.currentNumberOfReinforcementsDictionary
 		
-		local previousActionDictionary = NewQueuedCategoricalPolicyQuickSetup.previousActionDictionary
-		
-		local selectedActionCountVectorDictionary = NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary
-		
-		local currentNumberOfReinforcementsDictionary = NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary
-		
-		local currentNumberOfEpisodesDictionary = NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary
+		local currentNumberOfEpisodesDictionary = NewQueuedDiagonalGaussianPolicyQuickSetup.currentNumberOfEpisodesDictionary
 		
 		local previousFeatureVector = previousFeatureVectorDictionary[agentIndex]
 		
 		local previousAction = previousActionDictionary[agentIndex]
 		
-		local selectedActionCountVector = selectedActionCountVectorDictionary[selectedActionCountVectorIndex]
-		
-		local ExperienceReplay = NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
-		
-		local EligibilityTrace = NewQueuedCategoricalPolicyQuickSetup.EligibilityTraceDictionary[eligibilityTraceIndex]
+		local ExperienceReplay = NewQueuedDiagonalGaussianPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
 		
 		local currentNumberOfReinforcements = currentNumberOfReinforcementsDictionary[numberOfReinforcementsIndex] or 0
 		
@@ -138,7 +116,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local isEpisodeEnd
 		
-		if (currentNumberOfReinforcements >= NewQueuedCategoricalPolicyQuickSetup.numberOfReinforcementsPerEpisode) then
+		if (currentNumberOfReinforcements >= NewQueuedDiagonalGaussianPolicyQuickSetup.numberOfReinforcementsPerEpisode) then
 			
 			isEpisodeEnd = true
 			
@@ -158,13 +136,13 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		end
 		
-		local inputArray = {agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentNumberOfReinforcements}
+		local inputArray = {agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, currentNumberOfReinforcements}
 		
-		table.insert(NewQueuedCategoricalPolicyQuickSetup.inputQueueArray, inputArray)
+		table.insert(NewQueuedDiagonalGaussianPolicyQuickSetup.inputQueueArray, inputArray)
 		
-		local agentIndexQueueOutputArray = NewQueuedCategoricalPolicyQuickSetup.agentIndexOutputQueueArray
+		local agentIndexQueueOutputArray = NewQueuedDiagonalGaussianPolicyQuickSetup.agentIndexOutputQueueArray
 
-		local outputQueueArray = NewQueuedCategoricalPolicyQuickSetup.outputQueueArray
+		local outputQueueArray = NewQueuedDiagonalGaussianPolicyQuickSetup.outputQueueArray
 		
 		local outputQueueArrayIndex
 		
@@ -190,9 +168,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
 		
-		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
-		
-		if (NewQueuedCategoricalPolicyQuickSetup.isOutputPrinted) then
+		if (NewQueuedDiagonalGaussianPolicyQuickSetup.isOutputPrinted) then
 			
 			print("Agent index: " .. agentIndex .. "\t\tEpisode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) 
 			
@@ -204,11 +180,11 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 	end)
 	
-	return NewQueuedCategoricalPolicyQuickSetup
+	return NewQueuedDiagonalGaussianPolicyQuickSetup
 	
 end
 
-function QueuedCategoricalPolicyQuickSetup:start()
+function QueuedDiagonalGaussianPolicyQuickSetup:start()
 	
 	if (self.isRunning) then error("It is already active.") end
 	
@@ -247,22 +223,12 @@ function QueuedCategoricalPolicyQuickSetup:start()
 		local isEpisodeEnd
 
 		local ExperienceReplay
-
-		local EligibilityTrace
-		
-		local selectedActionCountVector
 		
 		local currentNumberOfReinforcements
 
 		local isOriginalValueNotAVector
 
 		local actionVector
-
-		local actionIndex
-
-		local action
-
-		local actionValue
 
 		local temporalDifferenceError
 
@@ -272,7 +238,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			while (#inputQueueArray == 0) do task.wait() end
 
-			agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentNumberOfReinforcements = table.unpack(inputQueueArray[1])
+			agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, currentNumberOfReinforcements = table.unpack(inputQueueArray[1])
 
 			isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
 
@@ -282,19 +248,11 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			terminalStateValue = 0
 
-			Model.EligibilityTrace = EligibilityTrace
-
 			if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
-
-			actionIndex, selectedActionCountVector = self:selectAction(actionVector, selectedActionCountVector, currentNumberOfReinforcements)
-
-			action = ActionsList[actionIndex]
-
-			actionValue = actionVector[1][actionIndex]
 
 			if (previousFeatureVector) then
 
-				temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+				temporalDifferenceError = Model:DiagonalGaussianUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
 
 				if (updateFunction) then updateFunction(terminalStateValue, agentIndex) end
 
@@ -318,7 +276,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 					ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
 
-						return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+						return Model:DiagonalGaussianUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
 
 					end)
 
@@ -326,7 +284,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			end
 
-			outputArray = {action, actionValue, actionVector, selectedActionCountVector}
+			outputArray = {actionVector}
 
 			table.remove(inputQueueArray, 1)
 
@@ -342,7 +300,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 	
 end
 
-function QueuedCategoricalPolicyQuickSetup:stop()
+function QueuedDiagonalGaussianPolicyQuickSetup:stop()
 	
 	if (not self.isRunning) then error("It is not active.") end
 	
@@ -350,22 +308,18 @@ function QueuedCategoricalPolicyQuickSetup:stop()
 	
 end
 
-function QueuedCategoricalPolicyQuickSetup:reset()
+function QueuedDiagonalGaussianPolicyQuickSetup:reset()
 	
 	self.previousFeatureVectorDictionary = {}
 
 	self.previousActionDictionary = {}
-	
-	self.selectedActionCountVectorDictionary = {}
 
 	self.currentNumberOfReinforcementsDictionary  = {}
 
 	self.currentNumberOfEpisodesDictionary  = {}
 	
 	for _, ExperienceReplay in ipairs(self.ExperienceReplayDictionary) do ExperienceReplay:reset() end
-	
-	for _, EligibilityTrace in ipairs(self.EligibilityTraceDictionary) do EligibilityTrace:reset() end
 		
 end
 
-return QueuedCategoricalPolicyQuickSetup
+return QueuedDiagonalGaussianPolicyQuickSetup

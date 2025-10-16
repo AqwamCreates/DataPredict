@@ -68,8 +68,6 @@ function BaseExperienceReplay.new(parameterDictionary)
 	
 	NewBaseExperienceReplay.temporalDifferenceErrorArray = parameterDictionary.temporalDifferenceErrorArray or {}
 	
-	NewBaseExperienceReplay.isTemporalDifferenceErrorRequired = NewBaseExperienceReplay:getValueOrDefaultValue(parameterDictionary.isTemporalDifferenceErrorRequired, defaultIsTemporalDifferenceErrorRequired) 
-	
 	return NewBaseExperienceReplay
 	
 end
@@ -160,23 +158,17 @@ end
 
 function BaseExperienceReplay:addTemporalDifferenceError(temporalDifferenceErrorVectorOrValue)
 	
-	if (not self.isTemporalDifferenceErrorRequired) then return end
+	local addTemporalDifferenceErrorFunction = self.addTemporalDifferenceErrorFunction
+	
+	if (not addTemporalDifferenceErrorFunction) then return end
 	
 	local temporalDifferenceErrorArray = self.temporalDifferenceErrorArray
 	
 	table.insert(temporalDifferenceErrorArray, temporalDifferenceErrorVectorOrValue)
 	
-	local addTemporalDifferenceErrorFunction = self.addTemporalDifferenceErrorFunction
-	
 	if (addTemporalDifferenceErrorFunction) then addTemporalDifferenceErrorFunction(temporalDifferenceErrorVectorOrValue) end
 	
 	self:removeFirstValueFromArrayIfExceedsBufferSize(temporalDifferenceErrorArray)
-	
-end
-
-function BaseExperienceReplay:setIsTemporalDifferenceErrorRequired(option)
-	
-	self.isTemporalDifferenceErrorRequired = option
 	
 end
 

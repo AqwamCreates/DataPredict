@@ -212,9 +212,11 @@ function CategoricalPolicyBaseQuickSetup.new(parameterDictionary)
 	
 	NewCategoricalPolicyBaseQuickSetup:setClassName("CategoricalPolicyQuickSetup")
 	
+	local epsilon = parameterDictionary.epsilon or defaultEpsilon
+	
 	NewCategoricalPolicyBaseQuickSetup.actionSelectionFunction = parameterDictionary.actionSelectionFunction or defaultActionSelectionFunction
 	
-	NewCategoricalPolicyBaseQuickSetup.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewCategoricalPolicyBaseQuickSetup.epsilon = epsilon or defaultEpsilon
 	
 	NewCategoricalPolicyBaseQuickSetup.temperature = parameterDictionary.temperature or defaultTemperature
 	
@@ -222,7 +224,7 @@ function CategoricalPolicyBaseQuickSetup.new(parameterDictionary)
 	
 	NewCategoricalPolicyBaseQuickSetup.selectedActionCountVector = parameterDictionary.selectedActionCountVector
 	
-	NewCategoricalPolicyBaseQuickSetup.currentEpsilon = parameterDictionary.currentEpsilon
+	NewCategoricalPolicyBaseQuickSetup.currentEpsilon = parameterDictionary.currentEpsilon or epsilon
 	
 	return NewCategoricalPolicyBaseQuickSetup
 	

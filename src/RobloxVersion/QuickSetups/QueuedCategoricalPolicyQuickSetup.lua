@@ -212,7 +212,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 	
 	while(self.isRunning) do
 		
-		agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedActionCountVector, ExperienceReplay, EligibilityTrace, currentNumberOfReinforcements, currentNumberOfEpisodes = table.unpack(informationQueueArray[1])
+		agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedActionCountVector, ExperienceReplay, EligibilityTrace, currentNumberOfReinforcements, currentNumberOfEpisodes = table.unpack(inputQueueArray[1])
 		
 		if (agentIndex) then
 			

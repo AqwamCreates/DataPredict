@@ -210,6 +210,8 @@ function CategoricalPolicyBaseQuickSetup.new(parameterDictionary)
 	
 	setmetatable(NewCategoricalPolicyBaseQuickSetup, CategoricalPolicyBaseQuickSetup)
 	
+	NewCategoricalPolicyBaseQuickSetup:setName("CategoricalPolicyBaseQuickSetup")
+	
 	NewCategoricalPolicyBaseQuickSetup:setClassName("CategoricalPolicyQuickSetup")
 	
 	local epsilon = parameterDictionary.epsilon or defaultEpsilon

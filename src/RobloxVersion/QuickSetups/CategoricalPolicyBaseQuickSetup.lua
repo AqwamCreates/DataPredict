@@ -38,6 +38,8 @@ setmetatable(CategoricalPolicyBaseQuickSetup, ReinforcementLearningBaseQuickSetu
 
 local defaultActionSelectionFunction = "Maximum"
 
+local defaultEpsilon = 0
+
 local defaultTemperature = 1
 
 local defaultCValue = 1
@@ -212,9 +214,15 @@ function CategoricalPolicyBaseQuickSetup.new(parameterDictionary)
 	
 	NewCategoricalPolicyBaseQuickSetup.actionSelectionFunction = parameterDictionary.actionSelectionFunction or defaultActionSelectionFunction
 	
+	NewCategoricalPolicyBaseQuickSetup.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	
 	NewCategoricalPolicyBaseQuickSetup.temperature = parameterDictionary.temperature or defaultTemperature
 	
 	NewCategoricalPolicyBaseQuickSetup.cValue = parameterDictionary.cValue or defaultCValue
+	
+	NewCategoricalPolicyBaseQuickSetup.selectedActionCountVector = parameterDictionary.selectedActionCountVector
+	
+	NewCategoricalPolicyBaseQuickSetup.currentEpsilon = parameterDictionary.currentEpsilon
 	
 	return NewCategoricalPolicyBaseQuickSetup
 	

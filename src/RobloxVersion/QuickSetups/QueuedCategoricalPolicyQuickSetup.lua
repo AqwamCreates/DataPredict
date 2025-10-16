@@ -286,7 +286,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
-			actionIndex, selectedActionCountVector = self:selectAction(actionVector, selectedActionCountVector)
+			actionIndex, selectedActionCountVector = self:selectAction(actionVector, selectedActionCountVector, currentNumberOfReinforcements)
 
 			action = ActionsList[actionIndex]
 

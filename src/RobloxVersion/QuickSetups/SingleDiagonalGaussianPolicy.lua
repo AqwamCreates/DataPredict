@@ -88,9 +88,9 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 
 		local currentActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor(actionVectorDimensionSizeArray, 0, 1)
 		
-		local actionVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, currentActionNoiseVector)
+		local currentScaledActionNoiseVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, currentActionNoiseVector)
 		
-		actionVector = AqwamTensorLibrary:add(actionVector, currentActionMeanVector)
+		local actionVector = AqwamTensorLibrary:add(currentActionMeanVector, currentScaledActionNoiseVector)
 		
 		local terminalStateValue = 0
 	

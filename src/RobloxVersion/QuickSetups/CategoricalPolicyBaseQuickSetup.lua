@@ -194,7 +194,9 @@ function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActi
 	
 	selectedActionCountVector[1][actionIndex] = selectedActionCountVector[1][actionIndex] + 1
 	
-	return actionIndex, selectedActionCountVector
+	self.selectedActionCountVector = selectedActionCountVector
+	
+	return actionIndex
 	
 end
 

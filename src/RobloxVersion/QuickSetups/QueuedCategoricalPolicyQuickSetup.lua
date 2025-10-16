@@ -96,7 +96,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 	
 	NewQueuedCategoricalPolicyQuickSetup.isRunning = false
 	
-	NewQueuedCategoricalPolicyQuickSetup:setReinforceFunction(function(currentFeatureVector, rewardValue, agentIndex, returnOriginalOutput)
+	NewQueuedCategoricalPolicyQuickSetup:setReinforceFunction(function(agentIndex, currentFeatureVector, rewardValue, returnOriginalOutput)
 		
 		if (not NewQueuedCategoricalPolicyQuickSetup.isRunning) then error("Not currently running.") end
 		

@@ -122,7 +122,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		end
 		
-		if (previousFeatureVector) and (ExperienceReplay) then
+		if (ExperienceReplay) and (previousFeatureVector) then
 			
 			ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
 

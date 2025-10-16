@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine And Deep Learning Library (DataPredict)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -62,17 +62,9 @@ function ReinforcementLearningBaseQuickSetup.new(parameterDictionary)
 
 	NewReinforcementLearningBaseQuickSetup.numberOfReinforcementsPerEpisode = parameterDictionary.numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
 
-	NewReinforcementLearningBaseQuickSetup.epsilon = parameterDictionary.epsilon or defaultEpsilon
-
-	NewReinforcementLearningBaseQuickSetup.currentEpsilon = parameterDictionary.currentEpsilon or parameterDictionary.epsilon or defaultEpsilon
-
 	NewReinforcementLearningBaseQuickSetup.Model = parameterDictionary.Model
 
 	NewReinforcementLearningBaseQuickSetup.ExperienceReplay = parameterDictionary.ExperienceReplay
-
-	NewReinforcementLearningBaseQuickSetup.EpsilonValueScheduler = parameterDictionary.EpsilonValueScheduler
-	
-	NewReinforcementLearningBaseQuickSetup.totalNumberOfReinforcements = parameterDictionary.totalNumberOfReinforcements or defaultTotalNumberOfReinforcements
 
 	NewReinforcementLearningBaseQuickSetup.currentNumberOfReinforcements = parameterDictionary.currentNumberOfReinforcements or defaultCurrentNumberOfReinforcements
 

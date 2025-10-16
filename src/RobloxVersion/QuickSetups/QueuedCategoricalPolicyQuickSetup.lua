@@ -136,7 +136,11 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local terminalStateValue 
 		
+		local isEpisodeEnd
+		
 		if (currentNumberOfReinforcements >= NewQueuedCategoricalPolicyQuickSetup.numberOfReinforcementsPerEpisode) then
+			
+			isEpisodeEnd = true
 			
 			terminalStateValue = 1
 
@@ -146,15 +150,17 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		else
 			
+			isEpisodeEnd = false
+			
 			terminalStateValue = 0
 
 			currentNumberOfReinforcements = currentNumberOfReinforcements + 1
 
 		end
 		
-		local informationArray = {agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedActionCountVector, ExperienceReplay, EligibilityTrace}
+		local inputArray = {agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, selectedActionCountVector, ExperienceReplay, EligibilityTrace}
 		
-		table.insert(NewQueuedCategoricalPolicyQuickSetup.inputQueueArray, informationArray)
+		table.insert(NewQueuedCategoricalPolicyQuickSetup.inputQueueArray, inputArray)
 		
 		local agentIndexQueueOutputArray = parameterDictionary.agentIndexOutputQueueArray
 
@@ -170,7 +176,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 			
 		until (outputQueueArrayIndex)
 		
-		local action, actionIndex, actionVector, selectedActionCountVector = table.unpack(outputQueueArray[outputQueueArrayIndex])
+		local action, actionValue, actionVector, selectedActionCountVector = table.unpack(outputQueueArray[outputQueueArrayIndex])
 		
 		table.remove(agentIndexQueueOutputArray, outputQueueArrayIndex)
 		
@@ -194,7 +200,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		if (returnOriginalOutput) then return actionVector end
 
-		return action, actionVector[1][actionIndex]
+		return action, actionValue
 		
 	end)
 	
@@ -226,10 +232,6 @@ function QueuedCategoricalPolicyQuickSetup:start()
 	
 	local agentIndex
 	
-	local ExperienceReplay
-	
-	local EligibilityTrace
-	
 	local previousFeatureVector
 	
 	local previousAction
@@ -241,6 +243,12 @@ function QueuedCategoricalPolicyQuickSetup:start()
 	local terminalStateValue
 	
 	local selectedActionCountVector
+	
+	local ExperienceReplay
+
+	local EligibilityTrace
+	
+	local isEpisodeEnd
 	
 	local isOriginalValueNotAVector
 	
@@ -260,7 +268,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 		
 		while (#inputQueueArray == 0) do task.wait() end
 		
-		agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedActionCountVector, ExperienceReplay, EligibilityTrace, currentNumberOfReinforcements, currentNumberOfEpisodes = table.unpack(inputQueueArray[1])
+		agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, selectedActionCountVector, ExperienceReplay, EligibilityTrace = table.unpack(inputQueueArray[1])
 		
 		isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
 
@@ -280,11 +288,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 		actionValue = actionVector[1][actionIndex]
 
-		if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then terminalStateValue = 1 end
-
 		if (previousFeatureVector) then
-
-			currentNumberOfReinforcements = currentNumberOfReinforcements + 1
 
 			temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
 
@@ -292,11 +296,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 		end
 
-		if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then
-
-			currentNumberOfReinforcements = 0
-
-			currentNumberOfEpisodes = currentNumberOfEpisodes + 1
+		if (isEpisodeEnd) then
 
 			Model:episodeUpdate(terminalStateValue)
 
@@ -322,7 +322,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 		end
 
-		outputArray = {action, actionIndex, actionVector, selectedActionCountVector}
+		outputArray = {action, actionValue, actionVector, selectedActionCountVector}
 
 		table.remove(inputQueueArray, 1)
 

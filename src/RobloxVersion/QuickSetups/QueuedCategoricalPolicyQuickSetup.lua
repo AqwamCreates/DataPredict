@@ -158,7 +158,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		end
 		
-		local inputArray = {agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, selectedActionCountVector, ExperienceReplay, EligibilityTrace}
+		local inputArray = {agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentNumberOfReinforcements}
 		
 		table.insert(NewQueuedCategoricalPolicyQuickSetup.inputQueueArray, inputArray)
 		
@@ -244,13 +244,15 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 		local terminalStateValue
 
-		local selectedActionCountVector
+		local isEpisodeEnd
 
 		local ExperienceReplay
 
 		local EligibilityTrace
-
-		local isEpisodeEnd
+		
+		local selectedActionCountVector
+		
+		local currentNumberOfReinforcements
 
 		local isOriginalValueNotAVector
 
@@ -270,7 +272,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			while (#inputQueueArray == 0) do task.wait() end
 
-			agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, selectedActionCountVector, ExperienceReplay, EligibilityTrace = table.unpack(inputQueueArray[1])
+			agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentNumberOfReinforcements = table.unpack(inputQueueArray[1])
 
 			isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
 

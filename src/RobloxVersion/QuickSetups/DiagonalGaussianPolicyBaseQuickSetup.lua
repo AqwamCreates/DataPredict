@@ -48,10 +48,6 @@ function DiagonalGaussianPolicyBaseQuickSetup.new(parameterDictionary)
 	
 	NewDiagonalGaussianPolicyBaseQuickSetup:setClassName("DiagonalGaussianPolicyQuickSetup")
 	
-	NewDiagonalGaussianPolicyBaseQuickSetup.actionStandardDeviationVector = parameterDictionary.actionStandardDeviationVector
-	
-	NewDiagonalGaussianPolicyBaseQuickSetup.actionNoiseVector = parameterDictionary.actionNoiseVector
-	
 	return NewDiagonalGaussianPolicyBaseQuickSetup
 	
 end

@@ -122,21 +122,17 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		end
 		
-		if (previousFeatureVector) then
+		if (previousFeatureVector) and (ExperienceReplay) then
 			
-			if (ExperienceReplay) then
+			ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
 
-				ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+			ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
 
-				ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
+			ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
 
-				ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+				return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
 
-					return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
-
-				end)
-
-			end
+			end)
 			
 		end
 

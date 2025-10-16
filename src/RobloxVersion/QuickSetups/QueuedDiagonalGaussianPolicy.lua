@@ -26,8 +26,6 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
-
 local DiagonalGaussianPolicyBaseQuickSetup = require(script.Parent.DiagonalGaussianPolicyBaseQuickSetup)
 
 QueuedDiagonalGaussianPolicyQuickSetup = {}

@@ -48,9 +48,7 @@ function DiagonalGaussianPolicyBaseQuickSetup.new(parameterDictionary)
 	
 	NewDiagonalGaussianPolicyBaseQuickSetup:setClassName("DiagonalGaussianPolicyQuickSetup")
 	
-	local actionStandardDeviationVector = parameterDictionary.actionStandardDeviationVector
-	
-	NewDiagonalGaussianPolicyBaseQuickSetup.actionStandardDeviationVector = actionStandardDeviationVector
+	NewDiagonalGaussianPolicyBaseQuickSetup.actionStandardDeviationVector = parameterDictionary.actionStandardDeviationVector
 	
 	NewDiagonalGaussianPolicyBaseQuickSetup.actionNoiseVector = parameterDictionary.actionNoiseVector
 	

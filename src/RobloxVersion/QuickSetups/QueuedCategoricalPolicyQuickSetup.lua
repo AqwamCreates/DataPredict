@@ -167,11 +167,15 @@ function QueuedCategoricalPolicyQuickSetup:start()
 	
 	local isOriginalValueNotAVector
 	
+	local actionVector
+	
 	local actionIndex
 	
 	local action
 	
 	local actionValue
+	
+	local temporalDifferenceError
 	
 	while(self.isRunning) do
 		
@@ -182,20 +186,16 @@ function QueuedCategoricalPolicyQuickSetup:start()
 			isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
 
 			if (isOriginalValueNotAVector) then currentFeatureVector = {{currentFeatureVector}} end
-
-			local previousAction = previousActionArray[agentIndex]
 			
-			local actionVector = Model:predict(currentFeatureVector, true)
+			actionVector = Model:predict(currentFeatureVector, true)
 
-			local terminalStateValue = 0
-
-			local temporalDifferenceError
+			terminalStateValue = 0
 			
 			Model.EligibilityTrace = EligibilityTrace
 
 			if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
-			actionIndex, selectedActionCountVector = self:selectAction(actionVector, selectedActionCountVectorArray[agentIndex])
+			actionIndex, selectedActionCountVector = self:selectAction(actionVector, selectedActionCountVector)
 
 			action = ActionsList[actionIndex]
 

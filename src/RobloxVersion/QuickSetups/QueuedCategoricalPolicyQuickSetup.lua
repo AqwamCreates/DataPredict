@@ -126,9 +126,15 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local selectedActionCountVector = selectedActionCountVectorDictionary[selectedActionCountVectorIndex]
 		
+		local selectedActionCountVector = selectedActionCountVectorDictionary[selectedActionCountVectorIndex]
+		
 		local ExperienceReplay = NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
 		
 		local EligibilityTrace = NewQueuedCategoricalPolicyQuickSetup.EligibilityTraceDictionary[eligibilityTraceIndex]
+		
+		local currentNumberOfReinforcements = currentNumberOfReinforcementsDictionary[numberOfReinforcementsIndex] or 0
+		
+		local currentNumberOfEpisodes = currentNumberOfEpisodesDictionary[numberOfEpisodesIndex] or 1
 		
 		local terminalStateValue 
 		

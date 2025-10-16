@@ -268,7 +268,7 @@ function QueuedDiagonalGaussianPolicyQuickSetup:start()
 			
 			actionVectorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(currentActionMeanVector)
 
-			currentActionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor(actionVectorDimensionSizeArray)
+			currentActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor(actionVectorDimensionSizeArray, 0, 1)
 
 			actionVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, currentActionNoiseVector)
 			

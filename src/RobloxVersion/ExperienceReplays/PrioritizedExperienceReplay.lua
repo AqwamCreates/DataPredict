@@ -44,7 +44,7 @@ local defaultAggregateFunction = "Maximum"
 
 local defaultEpsilon = 1e-16
 
-local aggregrateFunctionList = {
+local aggregateFunctionList = {
 	
 	["Maximum"] = function (valueVector) 
 		
@@ -180,7 +180,7 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 		
 		local weightArray = NewPrioritizedExperienceReplay.weightArray
 
-		local aggregateFunctionToApply = aggregrateFunctionList[NewPrioritizedExperienceReplay.aggregateFunction]
+		local aggregateFunctionToApply = aggregateFunctionList[NewPrioritizedExperienceReplay.aggregateFunction]
 		
 		local batchSize = NewPrioritizedExperienceReplay.batchSize
 		

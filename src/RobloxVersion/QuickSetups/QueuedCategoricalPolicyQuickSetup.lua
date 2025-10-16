@@ -336,6 +336,16 @@ end
 
 function QueuedCategoricalPolicyQuickSetup:reset()
 	
+	self.previousFeatureVectorDictionary = {}
+
+	self.previousActionDictionary = {}
+	
+	self.selectedActionCountVectorDictionary = {}
+
+	self.currentNumberOfReinforcementsDictionary  = {}
+
+	self.currentNumberOfEpisodesDictionary  = {}
+	
 	for _, ExperienceReplay in ipairs(self.ExperienceReplayDictionary) do ExperienceReplay:reset() end
 	
 	for _, EligibilityTrace in ipairs(self.EligibilityTraceDictionary) do EligibilityTrace:reset() end

@@ -36,6 +36,10 @@ SingleDiagonalGaussianPolicyQuickSetup.__index = SingleDiagonalGaussianPolicyQui
 
 setmetatable(SingleDiagonalGaussianPolicyQuickSetup, ReinforcementLearningBaseQuickSetup)
 
+local defaultCurrentNumberOfReinforcements = 0
+
+local defaultCurrentNumberOfEpisodes = 0
+
 function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -50,6 +54,10 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 
 	NewSingleDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector = parameterDictionary.previousActionNoiseVector
 	
+	NewSingleDiagonalGaussianPolicyQuickSetup.currentNumberOfReinforcements = parameterDictionary.currentNumberOfReinforcements or defaultCurrentNumberOfReinforcements
+
+	NewSingleDiagonalGaussianPolicyQuickSetup.currentNumberOfEpisodes = parameterDictionary.currentNumberOfEpisodes or defaultCurrentNumberOfEpisodes
+	
 	NewSingleDiagonalGaussianPolicyQuickSetup:setReinforceFunction(function(currentFeatureVector, rewardValue)
 		
 		local Model = NewSingleDiagonalGaussianPolicyQuickSetup.Model
@@ -58,7 +66,7 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		
 		local numberOfReinforcementsPerEpisode = NewSingleDiagonalGaussianPolicyQuickSetup.numberOfReinforcementsPerEpisode
 
-		local currentNumberOfReinforcements = NewSingleDiagonalGaussianPolicyQuickSetup.currentNumberOfReinforcements
+		local currentNumberOfReinforcements = NewSingleDiagonalGaussianPolicyQuickSetup.currentNumberOfReinforcements + 1
 
 		local currentNumberOfEpisodes = NewSingleDiagonalGaussianPolicyQuickSetup.currentNumberOfEpisodes
 		
@@ -97,8 +105,6 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		if (previousFeatureVector) then
 			
 			local updateFunction = NewSingleDiagonalGaussianPolicyQuickSetup.updateFunction
-
-			currentNumberOfReinforcements = currentNumberOfReinforcements + 1
 
 			temporalDifferenceError = Model:diagonalGaussianUpdate(previousFeatureVector, previousActionMeanVector, actionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 

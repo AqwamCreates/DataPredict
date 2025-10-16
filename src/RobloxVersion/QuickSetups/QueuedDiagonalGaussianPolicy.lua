@@ -252,7 +252,7 @@ function QueuedDiagonalGaussianPolicyQuickSetup:start()
 		
 		local actionNoiseVector
 		
-		local currentScaledActionNoiseVector 
+		local scaledActionNoiseVector 
 		
 		local outputArray = {}
 
@@ -272,9 +272,9 @@ function QueuedDiagonalGaussianPolicyQuickSetup:start()
 
 			actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor(actionVectorDimensionSizeArray, 0, 1)
 			
-			currentScaledActionNoiseVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
+			scaledActionNoiseVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
 
-			actionVector = AqwamTensorLibrary:add(actionMeanVector, currentScaledActionNoiseVector)
+			actionVector = AqwamTensorLibrary:add(actionMeanVector, scaledActionNoiseVector)
 
 			if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 

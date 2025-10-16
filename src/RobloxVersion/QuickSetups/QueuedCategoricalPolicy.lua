@@ -26,8 +26,6 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
-
 local CategoricalPolicyBaseQuickSetup = require(script.Parent.CategoricalPolicyBaseQuickSetup)
 
 QueuedCategoricalPolicyQuickSetup = {}
@@ -308,7 +306,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			end
 
-			if (previousFeatureVector) and (ExperienceReplay) then
+			if (ExperienceReplay) and (previousFeatureVector) then
 
 				ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
 

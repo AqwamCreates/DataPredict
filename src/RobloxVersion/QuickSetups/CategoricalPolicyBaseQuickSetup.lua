@@ -28,344 +28,208 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local CategoricalPolicyBaseQuickSetup = require(script.Parent.CategoricalPolicyBaseQuickSetup)
+local ReinforcementLearningBaseQuickSetup = require(script.Parent.ReinforcementLearningBaseQuickSetup)
 
-QueuedCategoricalPolicyQuickSetup = {}
+CategoricalPolicyBaseQuickSetup = {}
 
-QueuedCategoricalPolicyQuickSetup.__index = QueuedCategoricalPolicyQuickSetup
+CategoricalPolicyBaseQuickSetup.__index = CategoricalPolicyBaseQuickSetup
 
-setmetatable(QueuedCategoricalPolicyQuickSetup, CategoricalPolicyBaseQuickSetup)
+setmetatable(CategoricalPolicyBaseQuickSetup, ReinforcementLearningBaseQuickSetup)
 
-local defaultShareExperienceReplay = false
+local defaultActionSelectionFunction = "Maximum"
 
-local defaultShareEligibilityTrace = false
+local defaultEpsilon = 0
 
-local defaultShareSelectedActionCountVector = false
+local defaultTemperature = 1
 
-local defaultShareCurrentNumberOfReinforcements = false
+local defaultCValue = 1
 
-local defaultShareCurrentNumberOfEpisodes = false
+local RandomObject = Random.new()
 
-function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
+local function selectIndexWithHighestValue(valueVector)
+	
+	local selectedIndex = 1
+	
+	local highestValue = -math.huge
+	
+	for index, value in ipairs(valueVector[1]) do
+
+		if (value > highestValue) then
+
+			highestValue = value
+
+			selectedIndex = index
+
+		end
+
+	end
+	
+	return selectedIndex
+	
+end
+
+local function calculateStableProbability(valueVector, temperature)
+
+	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueVector)
+
+	local zValueVector = AqwamTensorLibrary:subtract(valueVector, maximumValue)
+	
+	local temperatureZValueVector = AqwamTensorLibrary:divide(zValueVector, temperature)
+
+	local exponentVector = AqwamTensorLibrary:exponent(temperatureZValueVector)
+
+	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
+
+	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
+
+	return probabilityVector
+
+end
+
+local function calculateProbability(valueVector, temperature)
+
+	local temperatureZValueVector = AqwamTensorLibrary:divide(valueVector, temperature)
+
+	local exponentVector = AqwamTensorLibrary:exponent(temperatureZValueVector)
+
+	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
+
+	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
+
+	return probabilityVector
+
+end
+
+local function sample(probabilityVector)
+
+	local totalProbability = 0
+	
+	local unwrappedProbabilityVector = probabilityVector[1]
+
+	for _, probability in ipairs(unwrappedProbabilityVector) do
+
+		totalProbability = totalProbability + probability
+
+	end
+
+	local randomValue = math.random() * totalProbability
+
+	local cumulativeProbability = 0
+
+	for index, probability in ipairs(unwrappedProbabilityVector) do
+
+		cumulativeProbability = cumulativeProbability + probability
+
+		if (randomValue <= cumulativeProbability) then return index end
+
+	end
+
+	return unwrappedProbabilityVector[#unwrappedProbabilityVector]
+
+end
+
+local function calculateUpperConfidenceBound(actionVector, cValue, selectedActionCountVector, currentNumberOfReinforcements)
+	
+	local naturalLogCurrentNumberOfReinforcements = math.log(currentNumberOfReinforcements)
+	
+	local upperConfidenceBoundVector1 = AqwamTensorLibrary:divide(naturalLogCurrentNumberOfReinforcements, selectedActionCountVector)
+	
+	local upperConfidenceBoundVector2 = AqwamTensorLibrary:multiply(cValue, upperConfidenceBoundVector1)
+	
+	local upperConfidenceBoundVector = AqwamTensorLibrary:add(actionVector, upperConfidenceBoundVector2)
+	
+	return upperConfidenceBoundVector
+	
+end
+
+function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActionCountVector, currentNumberOfReinforcements)
+	
+	local actionSelectionFunction = self.actionSelectionFunction
+	
+	local currentEpsilon = self.currentEpsilon or self.epsilon
+	
+	local EpsilonValueScheduler = self.EpsilonValueScheduler
+	
+	local randomProbability = RandomObject:NextNumber()
+	
+	local actionIndex
+	
+	if (not selectedActionCountVector) then selectedActionCountVector = {table.create(#actionVector[1], 0)} end
+	
+	if (randomProbability <= currentEpsilon) then
+		
+		actionIndex = RandomObject:NextInteger(1, #actionVector[1])
+	
+	elseif (actionSelectionFunction == "Maximum") then
+		
+		actionIndex = selectIndexWithHighestValue(actionVector)
+	
+	elseif (actionSelectionFunction == "StableSoftmaxSampling") or (actionSelectionFunction == "StableBoltzmannSampling") then
+		
+		local stableActionProbabilityVector = calculateStableProbability(actionVector, self.temperature)
+		
+		actionIndex = sample(stableActionProbabilityVector)
+		
+	elseif (actionSelectionFunction == "SoftmaxSampling") or (actionSelectionFunction == "BoltzmannSampling") then
+
+		local actionProbabilityVector = calculateProbability(actionVector, self.temperature)
+
+		actionIndex = sample(actionProbabilityVector)
+		
+	elseif (actionSelectionFunction == "UpperConfidenceBound") then
+		
+		local actionUpperConfidenceBoundVector = calculateUpperConfidenceBound(actionVector, self.cValue, selectedActionCountVector, currentNumberOfReinforcements)
+		
+		actionIndex = selectIndexWithHighestValue(actionUpperConfidenceBoundVector)
+		
+	else
+		
+		error("Invalid action selection function.")
+		
+	end
+	
+	if (EpsilonValueScheduler) then
+
+		self.currentEpsilon = EpsilonValueScheduler:calculate(currentEpsilon)
+
+	end
+	
+	selectedActionCountVector[1][actionIndex] = selectedActionCountVector[1][actionIndex] + 1
+	
+	return actionIndex, selectedActionCountVector
+	
+end
+
+function CategoricalPolicyBaseQuickSetup.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewQueuedCategoricalPolicyQuickSetup = CategoricalPolicyBaseQuickSetup.new(parameterDictionary)
+	local NewCategoricalPolicyBaseQuickSetup = ReinforcementLearningBaseQuickSetup.new(parameterDictionary)
 	
-	setmetatable(NewQueuedCategoricalPolicyQuickSetup, QueuedCategoricalPolicyQuickSetup)
+	setmetatable(NewCategoricalPolicyBaseQuickSetup, CategoricalPolicyBaseQuickSetup)
 	
-	NewQueuedCategoricalPolicyQuickSetup:setName("QueuedCategoricalPolicyQuickSetup")
+	NewCategoricalPolicyBaseQuickSetup:setName("CategoricalPolicyBaseQuickSetup")
 	
-	-- Share toggles
+	NewCategoricalPolicyBaseQuickSetup:setClassName("CategoricalPolicyQuickSetup")
 	
-	NewQueuedCategoricalPolicyQuickSetup.shareExperienceReplay = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareExperienceReplay or defaultShareExperienceReplay)
+	local epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
-	NewQueuedCategoricalPolicyQuickSetup.shareEligibilityTrace = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareEligibilityTrace or defaultShareEligibilityTrace)
+	NewCategoricalPolicyBaseQuickSetup.actionSelectionFunction = parameterDictionary.actionSelectionFunction or defaultActionSelectionFunction
 	
-	NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareSelectedActionCountVector or defaultShareSelectedActionCountVector)
+	NewCategoricalPolicyBaseQuickSetup.epsilon = epsilon or defaultEpsilon
 	
-	NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfReinforcements or defaultShareCurrentNumberOfReinforcements)
+	NewCategoricalPolicyBaseQuickSetup.temperature = parameterDictionary.temperature or defaultTemperature
 	
-	NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfEpisodes = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfEpisodes or defaultShareCurrentNumberOfEpisodes)
+	NewCategoricalPolicyBaseQuickSetup.cValue = parameterDictionary.cValue or defaultCValue
 	
-	-- Dictionaries
-
-	NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary = parameterDictionary.ExperienceReplayDictionary or {}
-
-	NewQueuedCategoricalPolicyQuickSetup.EligibilityTraceDictionary = parameterDictionary.EligibilityTraceDictionary or {}
-
-	NewQueuedCategoricalPolicyQuickSetup.previousFeatureVectorDictionary = parameterDictionary.previousFeatureVectorDictionary or {}
-
-	NewQueuedCategoricalPolicyQuickSetup.previousActionDictionary = parameterDictionary.previousActionDictionary or {}
+	NewCategoricalPolicyBaseQuickSetup.EpsilonValueScheduler = parameterDictionary.EpsilonValueScheduler
 	
-	NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = parameterDictionary.selectedActionCountVectorDictionary or {}
+	NewCategoricalPolicyBaseQuickSetup.selectedActionCountVector = parameterDictionary.selectedActionCountVector
 	
-	NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary = parameterDictionary.currentNumberOfReinforcementsDictionary or {}
+	NewCategoricalPolicyBaseQuickSetup.currentEpsilon = parameterDictionary.currentEpsilon or epsilon
 	
-	NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary = parameterDictionary.currentNumberOfEpisodesDictionary or {}
-	
-	-- Queues
-	
-	NewQueuedCategoricalPolicyQuickSetup.inputQueueArray = parameterDictionary.inputQueueArray or {}
-	
-	NewQueuedCategoricalPolicyQuickSetup.agentIndexOutputQueueArray = parameterDictionary.agentIndexOutputQueueArray or {}
-	
-	NewQueuedCategoricalPolicyQuickSetup.outputQueueArray = parameterDictionary.outputQueueArray or {}
-	
-	-- Debounce
-	
-	NewQueuedCategoricalPolicyQuickSetup.isRunning = false
-	
-	NewQueuedCategoricalPolicyQuickSetup:setReinforceFunction(function(agentIndex, currentFeatureVector, rewardValue, returnOriginalOutput)
-		
-		if (not NewQueuedCategoricalPolicyQuickSetup.isRunning) then error("Not currently running.") end
-		
-		local experienceReplayIndex = (NewQueuedCategoricalPolicyQuickSetup.shareExperienceReplay and 1) or agentIndex
-		
-		local eligibilityTraceIndex = (NewQueuedCategoricalPolicyQuickSetup.shareEligibilityTrace and 1) or agentIndex
-		
-		local selectedActionCountVectorIndex = (NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector and 1) or agentIndex
-		
-		local numberOfReinforcementsIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements and 1) or agentIndex
-		
-		local numberOfEpisodesIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfEpisodes and 1) or agentIndex
-		
-		local previousFeatureVectorDictionary = NewQueuedCategoricalPolicyQuickSetup.previousFeatureVectorDictionary
-		
-		local previousActionDictionary = NewQueuedCategoricalPolicyQuickSetup.previousActionDictionary
-		
-		local selectedActionCountVectorDictionary = NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary
-		
-		local currentNumberOfReinforcementsDictionary = NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary
-		
-		local currentNumberOfEpisodesDictionary = NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary
-		
-		local previousFeatureVector = previousFeatureVectorDictionary[agentIndex]
-		
-		local previousAction = previousActionDictionary[agentIndex]
-		
-		local selectedActionCountVector = selectedActionCountVectorDictionary[selectedActionCountVectorIndex]
-		
-		local ExperienceReplay = NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
-		
-		local EligibilityTrace = NewQueuedCategoricalPolicyQuickSetup.EligibilityTraceDictionary[eligibilityTraceIndex]
-		
-		local currentNumberOfReinforcements = currentNumberOfReinforcementsDictionary[numberOfReinforcementsIndex] or 0
-		
-		local currentNumberOfEpisodes = currentNumberOfEpisodesDictionary[numberOfEpisodesIndex] or 1
-		
-		local terminalStateValue 
-		
-		local isEpisodeEnd
-		
-		if (currentNumberOfReinforcements >= NewQueuedCategoricalPolicyQuickSetup.numberOfReinforcementsPerEpisode) then
-			
-			isEpisodeEnd = true
-			
-			terminalStateValue = 1
-
-			currentNumberOfEpisodes = currentNumberOfEpisodes + 1
-
-			currentNumberOfReinforcements = 0
-
-		else
-			
-			isEpisodeEnd = false
-			
-			terminalStateValue = 0
-
-			currentNumberOfReinforcements = currentNumberOfReinforcements + 1
-
-		end
-		
-		local inputArray = {agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentNumberOfReinforcements}
-		
-		table.insert(NewQueuedCategoricalPolicyQuickSetup.inputQueueArray, inputArray)
-		
-		local agentIndexQueueOutputArray = NewQueuedCategoricalPolicyQuickSetup.agentIndexOutputQueueArray
-
-		local outputQueueArray = NewQueuedCategoricalPolicyQuickSetup.outputQueueArray
-		
-		local outputQueueArrayIndex
-		
-		repeat
-			
-			task.wait()
-			
-			outputQueueArrayIndex = table.find(agentIndexQueueOutputArray, agentIndex)
-			
-		until (outputQueueArrayIndex)
-		
-		local action, actionValue, actionVector, selectedActionCountVector = table.unpack(outputQueueArray[outputQueueArrayIndex])
-		
-		table.remove(agentIndexQueueOutputArray, outputQueueArrayIndex)
-		
-		table.remove(outputQueueArray, outputQueueArrayIndex)
-
-		previousActionDictionary[agentIndex] = action
-
-		currentNumberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
-
-		currentNumberOfEpisodesDictionary[agentIndex] = currentNumberOfEpisodes
-
-		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
-		
-		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
-		
-		if (NewQueuedCategoricalPolicyQuickSetup.isOutputPrinted) then
-			
-			print("Agent index: " .. agentIndex .. "\t\tEpisode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) 
-			
-		end
-
-		if (returnOriginalOutput) then return actionVector end
-
-		return action, actionValue
-		
-	end)
-	
-	return NewQueuedCategoricalPolicyQuickSetup
+	return NewCategoricalPolicyBaseQuickSetup
 	
 end
 
-function QueuedCategoricalPolicyQuickSetup:start()
-	
-	if (self.isRunning) then error("It is already active.") end
-	
-	local functionToRun = coroutine.create(function()
-		
-		self.isRunning = true
-		
-		local Model = self.Model
-
-		local numberOfReinforcementsPerEpisode = self.numberOfReinforcementsPerEpisode
-
-		local updateFunction = self.updateFunction
-
-		local episodeUpdateFunction = self.episodeUpdateFunction
-
-		local inputQueueArray = self.inputQueueArray
-
-		local agentIndexQueueOutputArray = self.agentIndexOutputQueueArray
-
-		local outputQueueArray = self.outputQueueArray
-
-		local ActionsList = Model:getActionsList()
-
-		local agentIndex
-
-		local previousFeatureVector
-
-		local previousAction
-
-		local rewardValue
-
-		local currentFeatureVector
-
-		local terminalStateValue
-
-		local isEpisodeEnd
-
-		local ExperienceReplay
-
-		local EligibilityTrace
-		
-		local selectedActionCountVector
-		
-		local currentNumberOfReinforcements
-
-		local isOriginalValueNotAVector
-
-		local actionVector
-
-		local actionIndex
-
-		local action
-
-		local actionValue
-
-		local temporalDifferenceError
-
-		local outputArray
-
-		while(self.isRunning) do
-
-			while (#inputQueueArray == 0) do task.wait() end
-
-			agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentNumberOfReinforcements = table.unpack(inputQueueArray[1])
-
-			isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
-
-			if (isOriginalValueNotAVector) then currentFeatureVector = {{currentFeatureVector}} end
-
-			actionVector = Model:predict(currentFeatureVector, true)
-
-			terminalStateValue = 0
-
-			Model.EligibilityTrace = EligibilityTrace
-
-			if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
-
-			actionIndex, selectedActionCountVector = self:selectAction(actionVector, selectedActionCountVector, currentNumberOfReinforcements)
-
-			action = ActionsList[actionIndex]
-
-			actionValue = actionVector[1][actionIndex]
-
-			if (previousFeatureVector) then
-
-				temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
-
-				if (updateFunction) then updateFunction(terminalStateValue, agentIndex) end
-
-			end
-
-			if (isEpisodeEnd) then
-
-				Model:episodeUpdate(terminalStateValue)
-
-				if episodeUpdateFunction then episodeUpdateFunction(terminalStateValue, agentIndex) end
-
-			end
-
-			if (previousFeatureVector) then
-
-				if (ExperienceReplay) then
-
-					ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
-
-					ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
-
-					ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
-
-						return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
-
-					end)
-
-				end
-
-			end
-
-			outputArray = {action, actionValue, actionVector, selectedActionCountVector}
-
-			table.remove(inputQueueArray, 1)
-
-			table.insert(outputQueueArray, outputArray)
-
-			table.insert(agentIndexQueueOutputArray, agentIndex)
-
-		end
-		
-	end)
-	
-	coroutine.resume(functionToRun)
-	
-end
-
-function QueuedCategoricalPolicyQuickSetup:stop()
-	
-	if (not self.isRunning) then error("It is not active.") end
-	
-	self.isRunning = false
-	
-end
-
-function QueuedCategoricalPolicyQuickSetup:reset()
-	
-	self.previousFeatureVectorDictionary = {}
-
-	self.previousActionDictionary = {}
-	
-	self.selectedActionCountVectorDictionary = {}
-
-	self.currentNumberOfReinforcementsDictionary  = {}
-
-	self.currentNumberOfEpisodesDictionary  = {}
-	
-	for _, ExperienceReplay in ipairs(self.ExperienceReplayDictionary) do ExperienceReplay:reset() end
-	
-	for _, EligibilityTrace in ipairs(self.EligibilityTraceDictionary) do EligibilityTrace:reset() end
-		
-end
-
-return QueuedCategoricalPolicyQuickSetup
+return CategoricalPolicyBaseQuickSetup

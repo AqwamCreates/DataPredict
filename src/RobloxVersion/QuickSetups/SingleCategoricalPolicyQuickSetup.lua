@@ -104,7 +104,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 			temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
 
-			if (updateFunction) then updateFunction() end
+			if (updateFunction) then updateFunction(terminalStateValue) end
 
 		end
 
@@ -118,7 +118,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 			Model:episodeUpdate(terminalStateValue)
 
-			if episodeUpdateFunction then episodeUpdateFunction() end
+			if episodeUpdateFunction then episodeUpdateFunction(terminalStateValue) end
 
 		end
 		

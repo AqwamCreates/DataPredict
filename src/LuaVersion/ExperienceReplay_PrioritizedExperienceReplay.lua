@@ -122,6 +122,8 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 	
 	NewPrioritizedExperienceReplay.weightArray = parameterDictionary.weightArray or {}
 	
+	NewPrioritizedExperienceReplay:setIsTemporalDifferenceErrorRequired(true)
+	
 	NewPrioritizedExperienceReplay:extendAddExperienceFunction(function()
 		
 		local maximumPriority = 1

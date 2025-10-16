@@ -230,6 +230,8 @@ function QueuedCategoricalPolicyQuickSetup:start()
 	
 	local currentFeatureVector
 	
+	local terminalStateValue
+	
 	local selectedActionCountVector
 	
 	local isOriginalValueNotAVector

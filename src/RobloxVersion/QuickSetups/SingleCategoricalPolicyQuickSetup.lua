@@ -90,7 +90,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 		
-		local actionIndex, selectedActionCountVector = NewSingleCategoricalPolicyQuickSetup:selectAction(actionVector, NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector)
+		local actionIndex, selectedActionCountVector = NewSingleCategoricalPolicyQuickSetup:selectAction(actionVector, NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector, currentNumberOfReinforcements)
 
 		local action = ActionsList[actionIndex]
 

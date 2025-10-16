@@ -100,13 +100,11 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local selectedActionCountVectorDictionary = NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary
 		
-		local selectedActionCountVector = selectedActionCountVectorDictionary[selectedActionCountVectorIndex]
-		
 		local previousFeatureVector = previousFeatureVectorDictionary[agentIndex]
 		
 		local previousAction = previousActionDictionary[agentIndex]
 		
-		local selectedActionCountVector = selectedActionCountVector[selectedActionCountVectorIndex]
+		local selectedActionCountVector = selectedActionCountVectorDictionary[selectedActionCountVectorIndex]
 		
 		local ExperienceReplay = NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
 		
@@ -292,6 +290,14 @@ function QueuedCategoricalPolicyQuickSetup:stop()
 	
 	self.isRunning = false
 	
+end
+
+function QueuedCategoricalPolicyQuickSetup:reset()
+	
+	for _, ExperienceReplay in ipairs(self.ExperienceReplayDictionary) do ExperienceReplay:reset() end
+	
+	for _, EligibilityTrace in ipairs(self.EligibilityTraceDictionary) do EligibilityTrace:reset() end
+		
 end
 
 return QueuedCategoricalPolicyQuickSetup

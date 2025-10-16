@@ -148,7 +148,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		end
 		
-		local informationArray = {previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedActionCountVector, ExperienceReplay, EligibilityTrace}
+		local informationArray = {agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedActionCountVector, ExperienceReplay, EligibilityTrace}
 		
 		table.insert(NewQueuedCategoricalPolicyQuickSetup.inputQueueArray, informationArray)
 		

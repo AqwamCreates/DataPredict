@@ -66,9 +66,9 @@ function UniformExperienceReplay.new(parameterDictionary)
 	
 	NewUniformExperienceReplay:setRunFunction(function(updateFunction)
 		
-		local experienceReplayBatchArray = sample(NewUniformExperienceReplay.replayBufferArray, NewUniformExperienceReplay.batchSize)
+		local replayBufferBatchArray = sample(NewUniformExperienceReplay.replayBufferArray, NewUniformExperienceReplay.batchSize)
 
-		for _, experience in ipairs(experienceReplayBatchArray) do updateFunction(table.unpack(experience)) end
+		for _, experience in ipairs(replayBufferBatchArray) do updateFunction(table.unpack(experience)) end
 		
 	end)
 	

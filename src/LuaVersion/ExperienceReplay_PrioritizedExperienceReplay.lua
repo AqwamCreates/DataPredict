@@ -86,15 +86,15 @@ local function sample(probabilityArray)
 	
 	local cumulativeProbability = 0
 	
-	for index, probability in ipairs(probabilityArray) do
+	for probabilityIndex, probability in ipairs(probabilityArray) do
 		
 		cumulativeProbability = cumulativeProbability + probability
 		
-		if (randomProbability <= cumulativeProbability) then return index, probability end
+		if (randomProbability <= cumulativeProbability) then return probabilityIndex, probability end
 		
 	end
 	
-	return #probabilityArray, probabilityArray[#probabilityArray] -- fallback
+	return #probabilityArray, probabilityArray[#probabilityArray]
 	
 end
 

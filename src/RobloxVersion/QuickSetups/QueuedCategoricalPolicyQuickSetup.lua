@@ -130,6 +130,24 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local EligibilityTrace = NewQueuedCategoricalPolicyQuickSetup.EligibilityTraceDictionary[eligibilityTraceIndex]
 		
+		local terminalStateValue 
+		
+		if (currentNumberOfReinforcements >= NewQueuedCategoricalPolicyQuickSetup.numberOfReinforcementsPerEpisode) then
+			
+			terminalStateValue = 1
+
+			currentNumberOfEpisodes = currentNumberOfEpisodes + 1
+
+			currentNumberOfReinforcements = 0
+
+		else
+			
+			terminalStateValue = 0
+
+			currentNumberOfReinforcements = currentNumberOfReinforcements + 1
+
+		end
+		
 		local informationArray = {previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedActionCountVector, ExperienceReplay, EligibilityTrace}
 		
 		table.insert(NewQueuedCategoricalPolicyQuickSetup.inputQueueArray, informationArray)
@@ -153,20 +171,6 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		table.remove(agentIndexQueueOutputArray, outputQueueArrayIndex)
 		
 		table.remove(outputQueueArray, outputQueueArrayIndex)
-		
-		if (currentNumberOfReinforcements >= NewQueuedCategoricalPolicyQuickSetup.numberOfReinforcementsPerEpisode) then
-			
-			currentNumberOfEpisodes = currentNumberOfEpisodes + 1
-			
-			currentNumberOfReinforcements = 0
-			
-		else
-			
-			currentNumberOfReinforcements = currentNumberOfReinforcements + 1
-			
-		end
-		
-		previousFeatureVector[agentIndex] = currentFeatureVector
 
 		previousActionDictionary[agentIndex] = action
 

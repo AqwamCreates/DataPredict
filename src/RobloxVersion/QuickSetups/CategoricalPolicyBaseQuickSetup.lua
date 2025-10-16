@@ -224,6 +224,8 @@ function CategoricalPolicyBaseQuickSetup.new(parameterDictionary)
 	
 	NewCategoricalPolicyBaseQuickSetup.cValue = parameterDictionary.cValue or defaultCValue
 	
+	NewCategoricalPolicyBaseQuickSetup.EpsilonValueScheduler = parameterDictionary.EpsilonValueScheduler
+	
 	NewCategoricalPolicyBaseQuickSetup.selectedActionCountVector = parameterDictionary.selectedActionCountVector
 	
 	NewCategoricalPolicyBaseQuickSetup.currentEpsilon = parameterDictionary.currentEpsilon or epsilon

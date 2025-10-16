@@ -1749,22 +1749,24 @@ function NeuralNetworkModel:showDetails()
 	
 	local dropoutRateArray = self.dropoutRateArray
 	
+	local ClassesList = self.ClassesList
+	
 	-- Calculate the maximum length for each column
 	local maxLayerLength = string.len("Layer")
 	
 	local maxNeuronsLength = string.len("Number Of Neurons")
 	
-	local maxBiasLength = string.len("Has Bias Neuron")
+	local maximumBiasLength = string.len("Has Bias Neuron")
 	
-	local maxActivationLength = string.len("Activation Function")
+	local maximumActivationLength = string.len("Activation Function")
 	
-	local maxLearningRateLength = string.len("Learning Rate")
+	local maximumLearningRateLength = string.len("Learning Rate")
 	
-	local maxOptimizerLength = string.len("Optimizer Added")
+	local maximumOptimizerLength = string.len("Optimizer Added")
 	
-	local maxRegularizerLength = string.len("Regularizer Added")
+	local maximumRegularizerLength = string.len("Regularizer Added")
 	
-	local maxDropoutRateLength = string.len("Dropout Rate")
+	local maximumDropoutRateLength = string.len("Dropout Rate")
 
 	local hasBias
 
@@ -1788,17 +1790,17 @@ function NeuralNetworkModel:showDetails()
 
 		hasBias = (hasBiasNeuronArray[i] == 1)
 
-		maxBiasLength = math.max(maxBiasLength, string.len(tostring(hasBias)))
+		maximumBiasLength = math.max(maximumBiasLength, string.len(tostring(hasBias)))
 
-		maxActivationLength = math.max(maxActivationLength, string.len(activationFunctionArray[i]))
+		maximumActivationLength = math.max(maximumActivationLength, string.len(activationFunctionArray[i]))
 
-		maxLearningRateLength = math.max(maxLearningRateLength, string.len(tostring(learningRateArray[i])))
+		maximumLearningRateLength = math.max(maximumLearningRateLength, string.len(tostring(learningRateArray[i])))
 
-		maxOptimizerLength = math.max(maxOptimizerLength, string.len(optimizerName))
+		maximumOptimizerLength = math.max(maximumOptimizerLength, string.len(optimizerName))
 
-		maxRegularizerLength = math.max(maxRegularizerLength, string.len(regularizerName))
+		maximumRegularizerLength = math.max(maximumRegularizerLength, string.len(regularizerName))
 
-		maxDropoutRateLength = math.max(maxDropoutRateLength, string.len(tostring(dropoutRateArray[i])))
+		maximumDropoutRateLength = math.max(maximumDropoutRateLength, string.len(tostring(dropoutRateArray[i])))
 
 	end
 
@@ -1810,33 +1812,33 @@ function NeuralNetworkModel:showDetails()
 
 	stringToPrint ..= "|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
 		string.rep("-", maxNeuronsLength) .. "-|-" ..
-		string.rep("-", maxBiasLength) .. "-|-" ..
-		string.rep("-", maxActivationLength) .. "-|-" ..
-		string.rep("-", maxLearningRateLength) .. "-|-" ..
-		string.rep("-", maxOptimizerLength) .. "-|-" ..
-		string.rep("-", maxRegularizerLength) .. "-|-" .. 
-		string.rep("-", maxDropoutRateLength) .. "-|" .. 
+		string.rep("-", maximumBiasLength) .. "-|-" ..
+		string.rep("-", maximumActivationLength) .. "-|-" ..
+		string.rep("-", maximumLearningRateLength) .. "-|-" ..
+		string.rep("-", maximumOptimizerLength) .. "-|-" ..
+		string.rep("-", maximumRegularizerLength) .. "-|-" .. 
+		string.rep("-", maximumDropoutRateLength) .. "-|" .. 
 		"\n"
 
 	stringToPrint ..= "| " .. string.format("%-" .. maxLayerLength .. "s", "Layer") .. " | " ..
 		string.format("%-" .. maxNeuronsLength .. "s", "Number Of Neurons") .. " | " ..
-		string.format("%-" .. maxBiasLength .. "s", "Has Bias Neuron") .. " | " ..
-		string.format("%-" .. maxActivationLength .. "s", "Activation Function") .. " | " ..
-		string.format("%-" .. maxLearningRateLength .. "s", "Learning Rate") .. " | " ..
-		string.format("%-" .. maxOptimizerLength .. "s", "Optimizer Name") .. " | " ..
-		string.format("%-" .. maxRegularizerLength .. "s", "Regularizer Name") .. " | " .. 
-		string.format("%-" .. maxDropoutRateLength .. "s", "Dropout Rate") .. " |" .. 
+		string.format("%-" .. maximumBiasLength .. "s", "Has Bias Neuron") .. " | " ..
+		string.format("%-" .. maximumActivationLength .. "s", "Activation Function") .. " | " ..
+		string.format("%-" .. maximumLearningRateLength .. "s", "Learning Rate") .. " | " ..
+		string.format("%-" .. maximumOptimizerLength .. "s", "Optimizer Name") .. " | " ..
+		string.format("%-" .. maximumRegularizerLength .. "s", "Regularizer Name") .. " | " .. 
+		string.format("%-" .. maximumDropoutRateLength .. "s", "Dropout Rate") .. " |" .. 
 		"\n"
 
 
 	stringToPrint ..= "|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
 		string.rep("-", maxNeuronsLength) .. "-|-" ..
-		string.rep("-", maxBiasLength) .. "-|-" ..
-		string.rep("-", maxActivationLength) .. "-|-" ..
-		string.rep("-", maxLearningRateLength) .. "-|-" ..
-		string.rep("-", maxOptimizerLength) .. "-|-" ..
-		string.rep("-", maxRegularizerLength) .. "-|-" .. 
-		string.rep("-", maxDropoutRateLength) .. "-|" .. 
+		string.rep("-", maximumBiasLength) .. "-|-" ..
+		string.rep("-", maximumActivationLength) .. "-|-" ..
+		string.rep("-", maximumLearningRateLength) .. "-|-" ..
+		string.rep("-", maximumOptimizerLength) .. "-|-" ..
+		string.rep("-", maximumRegularizerLength) .. "-|-" .. 
+		string.rep("-", maximumDropoutRateLength) .. "-|" .. 
 		"\n"
 
 	-- Print the layer details
@@ -1852,11 +1854,11 @@ function NeuralNetworkModel:showDetails()
 
 		hasBias = (hasBiasNeuronArray[i] == 1)
 
-		local biasText = "| " .. string.format("%-" .. maxBiasLength .. "s", tostring(hasBias)) .. " "
+		local biasText = "| " .. string.format("%-" .. maximumBiasLength .. "s", tostring(hasBias)) .. " "
 
-		local activationFunctionText = "| " .. string.format("%-" .. maxActivationLength .. "s", activationFunctionArray[i]) .. " "
+		local activationFunctionText = "| " .. string.format("%-" .. maximumActivationLength .. "s", activationFunctionArray[i]) .. " "
 
-		local learningRateText = "| " .. string.format("%-" .. maxLearningRateLength .. "s", learningRateArray[i]) .. " "
+		local learningRateText = "| " .. string.format("%-" .. maximumLearningRateLength .. "s", learningRateArray[i]) .. " "
 
 		local Optimizer = OptimizerArray[i]
 
@@ -1882,11 +1884,11 @@ function NeuralNetworkModel:showDetails()
 			
 		end
 
-		local optimizerText = "| " .. string.format("%-" .. maxOptimizerLength .. "s", optimizerName) .. " "
+		local optimizerText = "| " .. string.format("%-" .. maximumOptimizerLength .. "s", optimizerName) .. " "
 
-		local regularizerText = "| " .. string.format("%-" .. maxRegularizerLength .. "s",  regularizerName) .. " "
+		local regularizerText = "| " .. string.format("%-" .. maximumRegularizerLength .. "s",  regularizerName) .. " "
 
-		local dropoutRateText = "| " .. string.format("%-" .. maxDropoutRateLength .. "s", dropoutRateArray[i]) .. " |"
+		local dropoutRateText = "| " .. string.format("%-" .. maximumDropoutRateLength .. "s", dropoutRateArray[i]) .. " |"
 
 		local stringPart = layerText .. numberOfNeuronsText .. biasText .. activationFunctionText .. learningRateText .. optimizerText .. regularizerText .. dropoutRateText .. "\n"
 
@@ -1896,15 +1898,40 @@ function NeuralNetworkModel:showDetails()
 
 	stringToPrint ..= "|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
 		string.rep("-", maxNeuronsLength) .. "-|-" ..
-		string.rep("-", maxBiasLength) .. "-|-" ..
-		string.rep("-", maxActivationLength) .. "-|-" ..
-		string.rep("-", maxLearningRateLength) .. "-|-" ..
-		string.rep("-", maxOptimizerLength) .. "-|-" ..
-		string.rep("-", maxRegularizerLength) .. "-|-"..
-		string.rep("-", maxDropoutRateLength) .. "-|"..
-		"\n\n"
-
-	print(stringToPrint)
+		string.rep("-", maximumBiasLength) .. "-|-" ..
+		string.rep("-", maximumActivationLength) .. "-|-" ..
+		string.rep("-", maximumLearningRateLength) .. "-|-" ..
+		string.rep("-", maximumOptimizerLength) .. "-|-" ..
+		string.rep("-", maximumRegularizerLength) .. "-|-"..
+		string.rep("-", maximumDropoutRateLength) .. "-|"
+	
+	if (ClassesList) then
+		
+		if (ClassesList ~= 0) then
+			
+			local availableClassesString = "\n\nAvailable Classes: \n\n"
+			
+			local numberOfClasses = #ClassesList
+			
+			for i, class in ipairs(ClassesList) do
+				
+				if (type(class) ~= "string") then class = tostring(class) end
+				
+				if (i ~= 1) then availableClassesString = availableClassesString .. " " end
+				
+				availableClassesString = availableClassesString .. class
+				
+				if (i < numberOfClasses) then availableClassesString = availableClassesString .. "," end
+				
+			end
+			
+			stringToPrint = stringToPrint .. availableClassesString
+			
+		end
+		
+	end
+	
+	print(stringToPrint .. "\n")
 
 end
 

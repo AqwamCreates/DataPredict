@@ -84,7 +84,7 @@ function QueuedDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 	
 	NewQueuedDiagonalGaussianPolicyQuickSetup.isRunning = false
 	
-	NewQueuedDiagonalGaussianPolicyQuickSetup:setReinforceFunction(function(agentIndex, currentFeatureVector, rewardValue, returnOriginalOutput)
+	NewQueuedDiagonalGaussianPolicyQuickSetup:setReinforceFunction(function(agentIndex, currentFeatureVector, rewardValue)
 		
 		if (not NewQueuedDiagonalGaussianPolicyQuickSetup.isRunning) then error("Not currently running.") end
 		
@@ -174,9 +174,7 @@ function QueuedDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 			
 		end
 
-		if (returnOriginalOutput) then return actionVector end
-
-		return action, actionValue
+		return actionVector
 		
 	end)
 	
@@ -313,16 +311,12 @@ function QueuedDiagonalGaussianPolicyQuickSetup:reset()
 	self.previousFeatureVectorDictionary = {}
 
 	self.previousActionDictionary = {}
-	
-	self.selectedActionCountVectorDictionary = {}
 
 	self.currentNumberOfReinforcementsDictionary  = {}
 
 	self.currentNumberOfEpisodesDictionary  = {}
 	
 	for _, ExperienceReplay in ipairs(self.ExperienceReplayDictionary) do ExperienceReplay:reset() end
-	
-	for _, EligibilityTrace in ipairs(self.EligibilityTraceDictionary) do EligibilityTrace:reset() end
 		
 end
 

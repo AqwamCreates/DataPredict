@@ -36,6 +36,10 @@ SingleCategoricalPolicyQuickSetup.__index = SingleCategoricalPolicyQuickSetup
 
 setmetatable(SingleCategoricalPolicyQuickSetup, CategoricalPolicyBaseQuickSetup)
 
+local defaultCurrentNumberOfReinforcements = 0
+
+local defaultCurrentNumberOfEpisodes = 0
+
 function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -50,6 +54,10 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 	
 	NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector = parameterDictionary.selectedActionCountVector
 	
+	NewSingleCategoricalPolicyQuickSetup.currentNumberOfReinforcements = parameterDictionary.currentNumberOfReinforcements or defaultCurrentNumberOfReinforcements
+
+	NewSingleCategoricalPolicyQuickSetup.currentNumberOfEpisodes = parameterDictionary.currentNumberOfEpisodes or defaultCurrentNumberOfEpisodes
+	
 	NewSingleCategoricalPolicyQuickSetup:setReinforceFunction(function(currentFeatureVector, rewardValue, returnOriginalOutput)
 		
 		local Model = NewSingleCategoricalPolicyQuickSetup.Model
@@ -62,7 +70,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local numberOfReinforcementsPerEpisode = NewSingleCategoricalPolicyQuickSetup.numberOfReinforcementsPerEpisode
 
-		local currentNumberOfReinforcements = NewSingleCategoricalPolicyQuickSetup.currentNumberOfReinforcements
+		local currentNumberOfReinforcements = NewSingleCategoricalPolicyQuickSetup.currentNumberOfReinforcements + 1
 
 		local currentNumberOfEpisodes = NewSingleCategoricalPolicyQuickSetup.currentNumberOfEpisodes
 		
@@ -93,8 +101,6 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		if (previousFeatureVector) then
 			
 			local updateFunction = NewSingleCategoricalPolicyQuickSetup.updateFunction
-
-			currentNumberOfReinforcements = currentNumberOfReinforcements + 1
 
 			temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
 

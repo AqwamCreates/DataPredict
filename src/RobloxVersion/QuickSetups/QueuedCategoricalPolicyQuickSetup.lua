@@ -166,6 +166,8 @@ function QueuedCategoricalPolicyQuickSetup:start()
 	
 	local isOriginalValueNotAVector
 	
+	local hasPreviousFeatureVector
+	
 	local actionIndex
 	
 	local selectedActionCountVector
@@ -193,6 +195,8 @@ function QueuedCategoricalPolicyQuickSetup:start()
 		selectedActionCountVector = selectedActionCountVector[1]
 		
 		if (agentIndex) then
+			
+			hasPreviousFeatureVector = (type(hasPreviousFeatureVector) == "table") -- To avoide reading the other agents' previous feature vectors.
 			
 			isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
 
@@ -222,7 +226,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then terminalStateValue = 1 end
 
-			if (previousFeatureVector) then
+			if (hasPreviousFeatureVector) then
 
 				currentNumberOfReinforcements = currentNumberOfReinforcements + 1
 
@@ -244,7 +248,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			end
 
-			if (previousFeatureVector) then
+			if (hasPreviousFeatureVector) then
 
 				if (ExperienceReplay) then
 

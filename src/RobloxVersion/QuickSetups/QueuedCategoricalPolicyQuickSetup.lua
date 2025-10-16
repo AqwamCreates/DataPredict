@@ -42,6 +42,10 @@ local defaultShareEligibilityTrace = false
 
 local defaultShareSelectedActionCountVector = false
 
+local defaultShareCurrentNumberOfReinforcements = false
+
+local defaultShareCurrentNumberOfEpisodes = false
+
 function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -54,11 +58,15 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 	
 	-- Share toggles
 	
-	NewQueuedCategoricalPolicyQuickSetup.shareExperienceReplay =  NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareExperienceReplay or defaultShareExperienceReplay)
+	NewQueuedCategoricalPolicyQuickSetup.shareExperienceReplay = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareExperienceReplay or defaultShareExperienceReplay)
 	
-	NewQueuedCategoricalPolicyQuickSetup.shareEligibilityTrace =  NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareEligibilityTrace or defaultShareEligibilityTrace)
+	NewQueuedCategoricalPolicyQuickSetup.shareEligibilityTrace = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareEligibilityTrace or defaultShareEligibilityTrace)
 	
-	NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector =  NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareSelectedActionCountVector or defaultShareSelectedActionCountVector)
+	NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareSelectedActionCountVector or defaultShareSelectedActionCountVector)
+	
+	NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfReinforcements or defaultShareCurrentNumberOfReinforcements)
+	
+	NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfEpisodes = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfEpisodes or defaultShareCurrentNumberOfEpisodes)
 	
 	-- Dictionaries
 
@@ -71,6 +79,10 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 	NewQueuedCategoricalPolicyQuickSetup.previousActionDictionary = parameterDictionary.previousActionDictionary or {}
 	
 	NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = parameterDictionary.selectedActionCountVectorDictionary or {}
+	
+	NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary = parameterDictionary.currentNumberOfReinforcementsDictionary or {}
+	
+	NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary = parameterDictionary.currentNumberOfEpisodesDictionary or {}
 	
 	-- Queues
 	
@@ -94,11 +106,19 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local selectedActionCountVectorIndex = (NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector and 1) or agentIndex
 		
+		local numberOfReinforcementsIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements and 1) or agentIndex
+		
+		local numberOfEpisodesIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfEpisodes and 1) or agentIndex
+		
 		local previousFeatureVectorDictionary = NewQueuedCategoricalPolicyQuickSetup.previousFeatureVectorDictionary
 		
 		local previousActionDictionary = NewQueuedCategoricalPolicyQuickSetup.previousActionDictionary
 		
 		local selectedActionCountVectorDictionary = NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary
+		
+		local numberOfReinforcementsDictionary = NewQueuedCategoricalPolicyQuickSetup.numberOfReinforcementsDictionary
+		
+		local numberOfEpisodesDictionary = NewQueuedCategoricalPolicyQuickSetup.numberOfEpisodesDictionary
 		
 		local previousFeatureVector = previousFeatureVectorDictionary[agentIndex]
 		
@@ -122,6 +142,8 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		repeat
 			
+			task.wait()
+			
 			outputQueueArrayIndex = table.find(agentIndexQueueOutputArray, agentIndex)
 			
 		until (outputQueueArrayIndex)
@@ -131,18 +153,20 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		table.remove(agentIndexQueueOutputArray, outputQueueArrayIndex)
 		
 		table.remove(outputQueueArray, outputQueueArrayIndex)
+		
+		previousFeatureVector[agentIndex] = currentFeatureVector
 
-		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcements = NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcements + 1
+		previousActionDictionary[agentIndex] = action
 
-		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodes = currentNumberOfEpisodes
+		numberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements + 1
+
+		currentNumberOfEpisodes[agentIndex] = currentNumberOfEpisodes
 
 		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
 		
 		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
 		
-		previousFeatureVector[agentIndex] = currentFeatureVector
-		
-		previousActionDictionary[agentIndex] = action
+
 		
 		if (NewQueuedCategoricalPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 

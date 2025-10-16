@@ -82,7 +82,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 		
-		local actionIndex = NewSingleCategoricalPolicyQuickSetup:selectAction(actionVector)
+		local actionIndex, selectedActionCountVector = NewSingleCategoricalPolicyQuickSetup:selectAction(actionVector, NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector)
 
 		local action = ActionsList[actionIndex]
 
@@ -141,6 +141,8 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		NewSingleCategoricalPolicyQuickSetup.previousFeatureVector = currentFeatureVector
 		
 		NewSingleCategoricalPolicyQuickSetup.previousAction = action
+		
+		NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector = selectedActionCountVector
 		
 		if (NewSingleCategoricalPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 

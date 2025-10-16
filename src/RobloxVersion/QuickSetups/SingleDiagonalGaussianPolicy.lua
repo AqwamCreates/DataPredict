@@ -55,8 +55,6 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 	NewSingleDiagonalGaussianPolicyQuickSetup.currentNumberOfEpisodes = parameterDictionary.currentNumberOfEpisodes or defaultCurrentNumberOfEpisodes
 	
 	NewSingleDiagonalGaussianPolicyQuickSetup.actionStandardDeviationVector = parameterDictionary.actionStandardDeviationVector
-
-	NewSingleDiagonalGaussianPolicyQuickSetup.actionNoiseVector = parameterDictionary.actionNoiseVector
 	
 	NewSingleDiagonalGaussianPolicyQuickSetup.previousActionMeanVector = parameterDictionary.previousActionMeanVector
 
@@ -86,22 +84,14 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 
 		local previousActionNoiseVector = NewSingleDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector
 		
-		local actionNoiseVector = NewSingleDiagonalGaussianPolicyQuickSetup.actionNoiseVector
-		
-		local terminalStateValue = 0
+		local actionVectorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanVector)
 
-		if (not actionNoiseVector) then 
-			
-			local actionVectorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanVector)
-			
-			actionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor(actionVectorDimensionSizeArray) 
-			
-		end
+		local actionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor(actionVectorDimensionSizeArray)
 		
 		local actionVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
 		
-		actionNoiseVector = AqwamTensorLibrary:add(actionNoiseVector, actionMeanVector)
-		
+		local terminalStateValue = 0
+	
 		local temporalDifferenceError
 		
 		if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then terminalStateValue = 1 end

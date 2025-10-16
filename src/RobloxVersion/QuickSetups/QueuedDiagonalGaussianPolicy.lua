@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
 local DiagonalGaussianPolicyBaseQuickSetup = require(script.Parent.DiagonalGaussianPolicyBaseQuickSetup)
 
 QueuedDiagonalGaussianPolicyQuickSetup = {}
@@ -160,13 +162,15 @@ function QueuedDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 			
 		until (outputQueueArrayIndex)
 		
-		local actionMeanVector = outputQueueArray[outputQueueArrayIndex]
+		local actionVector, currentActionMeanVector, currentActionNoiseVector = table.unpack(outputQueueArray[outputQueueArrayIndex])
 		
 		table.remove(agentIndexQueueOutputArray, outputQueueArrayIndex)
 		
 		table.remove(outputQueueArray, outputQueueArrayIndex)
 
-		previousActionMeanVectorDictionary[agentIndex] = actionMeanVector
+		previousActionMeanVectorDictionary[agentIndex] = currentActionMeanVector
+		
+		previousActionNoiseVectorDictionary[agentIndex] = currentActionNoiseVector
 
 		currentNumberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
 
@@ -180,7 +184,7 @@ function QueuedDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 			
 		end
 
-		return actionMeanVector
+		return actionVector
 		
 	end)
 	
@@ -239,8 +243,16 @@ function QueuedDiagonalGaussianPolicyQuickSetup:start()
 		local actionMeanVector
 
 		local temporalDifferenceError
-
-		local outputArray
+		
+		local actionVectorDimensionSizeArray
+		
+		local actionVector
+		
+		local currentActionMeanVector
+		
+		local currentActionNoiseVector
+		
+		local outputArray = {}
 
 		while(self.isRunning) do
 
@@ -252,7 +264,15 @@ function QueuedDiagonalGaussianPolicyQuickSetup:start()
 
 			if (isOriginalValueNotAVector) then currentFeatureVector = {{currentFeatureVector}} end
 
-			actionMeanVector = Model:predict(currentFeatureVector, true)
+			currentActionMeanVector = Model:predict(currentFeatureVector, true)
+			
+			actionVectorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(currentActionMeanVector)
+
+			currentActionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor(actionVectorDimensionSizeArray)
+
+			actionVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, currentActionNoiseVector)
+			
+			actionVector = AqwamTensorLibrary:add(actionVector, currentActionMeanVector)
 
 			terminalStateValue = 0
 
@@ -287,10 +307,12 @@ function QueuedDiagonalGaussianPolicyQuickSetup:start()
 				end)
 
 			end
+			
+			outputArray = {actionVector, currentActionMeanVector, currentActionNoiseVector}
 
 			table.remove(inputQueueArray, 1)
 
-			table.insert(outputQueueArray, actionMeanVector)
+			table.insert(outputQueueArray, outputArray)
 
 			table.insert(agentIndexQueueOutputArray, agentIndex)
 

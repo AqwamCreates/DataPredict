@@ -74,21 +74,27 @@ local aggregrateFunctionList = {
 
 local function sample(probabilityArray)
 	
-	local randomProbability = math.random()
+	local sumProbability = 0
+	
+	for i, probability in ipairs(probabilityArray) do
+		
+		sumProbability = sumProbability + probability
+		
+	end
+	
+	local randomProbability = math.random() * sumProbability
 	
 	local cumulativeProbability = 0
 	
-	for i = #probabilityArray, 1, -1 do
-		
-		local probability = probabilityArray[i]
+	for index, probability in ipairs(probabilityArray) do
 		
 		cumulativeProbability = cumulativeProbability + probability
-
-		if (randomProbability >= cumulativeProbability) then continue end
-
-		return i, probability
+		
+		if (randomProbability <= cumulativeProbability) then return index, probability end
 		
 	end
+	
+	return #probabilityArray, probabilityArray[#probabilityArray] -- fallback
 	
 end
 
@@ -115,8 +121,6 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 	NewPrioritizedExperienceReplay.priorityArray = parameterDictionary.priorityArray or {}
 	
 	NewPrioritizedExperienceReplay.weightArray = parameterDictionary.weightArray or {}
-	
-	NewPrioritizedExperienceReplay:setIsTemporalDifferenceErrorRequired(true)
 	
 	NewPrioritizedExperienceReplay:extendAddExperienceFunction(function()
 		
@@ -230,7 +234,7 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 
 			priorityArray[index] = math.abs(temporalDifferenceErrorValueOrVector)
 
-			local outputMatrix = Model:forwardPropagate(replayBufferArray[i][1], false)
+			local outputMatrix = Model:forwardPropagate(replayBufferArray[index][1], false)
 
 			local lossMatrix = AqwamTensorLibrary:multiply(outputMatrix, temporalDifferenceErrorValueOrVector, importanceSamplingWeight)
 

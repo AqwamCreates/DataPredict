@@ -52,10 +52,6 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 	
 	NewQueuedCategoricalPolicyQuickSetup:setName("QueuedCategoricalPolicyQuickSetup")
 	
-	NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayArray = parameterDictionary.ExperienceReplayArray or {}
-	
-	NewQueuedCategoricalPolicyQuickSetup.EligibilityTraceArray = parameterDictionary.EligibilityTraceArray or {}
-	
 	NewQueuedCategoricalPolicyQuickSetup.shareExperienceReplay =  NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareExperienceReplay or defaultShareExperienceReplay)
 	
 	NewQueuedCategoricalPolicyQuickSetup.shareEligibilityTrace =  NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareEligibilityTrace or defaultShareEligibilityTrace)
@@ -63,6 +59,10 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 	NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector =  NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareSelectedActionCountVector or defaultShareSelectedActionCountVector)
 	
 	NewQueuedCategoricalPolicyQuickSetup.agentIndexQueueArray = parameterDictionary.agentIndexQueueArray or {}
+	
+	NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayQueueArray = parameterDictionary.ExperienceReplayQueueArray or {}
+
+	NewQueuedCategoricalPolicyQuickSetup.EligibilityTraceQueueArray = parameterDictionary.EligibilityTraceQueueArray or {}
 	
 	NewQueuedCategoricalPolicyQuickSetup.currentFeatureVectorQueueArray = parameterDictionary.currentFeatureVectorQueueArray or {}
 	
@@ -83,8 +83,6 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		local actionVectorArray = NewQueuedCategoricalPolicyQuickSetup.actionVectorArray
 		
 		table.insert(NewQueuedCategoricalPolicyQuickSetup.currentFeatureVectorQueueArray, currentFeatureVector)
-		
-		table.insert(NewQueuedCategoricalPolicyQuickSetup.agentIndexQueueArray, agentIndex)
 		
 		table.insert(NewQueuedCategoricalPolicyQuickSetup.agentIndexQueueArray, agentIndex)
 		
@@ -123,10 +121,6 @@ function QueuedCategoricalPolicyQuickSetup:start()
 	self.isRunning = true
 	
 	local Model = self.Model
-	
-	local ExperienceReplayArray = self.ExperienceReplayArray
-
-	local EligibilityTraceArray = self.EligibilityTraceArray
 
 	local shareExperienceReplay =  self.shareExperienceReplay
 
@@ -135,6 +129,10 @@ function QueuedCategoricalPolicyQuickSetup:start()
 	local numberOfReinforcementsPerEpisode = self.numberOfReinforcementsPerEpisode
 	
 	local agentIndexQueueArray = self.agentIndexQueueArray
+	
+	local ExperienceReplayQueueArray = self.ExperienceReplayQueueArray
+
+	local EligibilityTraceQueueArray = self.EligibilityTraceQueueArray
 	
 	local currentFeatureVectorQueueArray = self.currentFeatureVectorQueueArray
 
@@ -151,6 +149,10 @@ function QueuedCategoricalPolicyQuickSetup:start()
 	local episodeUpdateFunction = self.episodeUpdateFunction
 	
 	local agentIndex
+	
+	local ExperienceReplay
+	
+	local EligibilityTrace
 	
 	local previousFeatureVector
 	
@@ -176,6 +178,10 @@ function QueuedCategoricalPolicyQuickSetup:start()
 		
 		agentIndex = agentIndexQueueArray[1]
 		
+		ExperienceReplay = ExperienceReplayQueueArray[1]
+		
+		EligibilityTrace = EligibilityTraceQueueArray[1]
+		
 		previousFeatureVector = previousActionArray[1]
 		
 		previousAction = previousActionArray[1]
@@ -196,10 +202,6 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			local currentNumberOfEpisodes = NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodes
 
-			local ExperienceReplay = (shareExperienceReplay and ExperienceReplayArray[1]) or ExperienceReplayArray[agentIndex]
-			
-			local EligibilityTrace = (shareEligibilityTrace and EligibilityTraceArray[1]) or EligibilityTraceArray[agentIndex]
-
 			local previousAction = previousActionArray[agentIndex]
 			
 			local actionVector = Model:predict(currentFeatureVector, true)
@@ -207,6 +209,8 @@ function QueuedCategoricalPolicyQuickSetup:start()
 			local terminalStateValue = 0
 
 			local temporalDifferenceError
+			
+			Model.EligibilityTrace = EligibilityTrace
 
 			if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
@@ -259,6 +263,10 @@ function QueuedCategoricalPolicyQuickSetup:start()
 			end
 			
 			table.remove(agentIndexQueueArray, 1)
+			
+			table.remove(ExperienceReplayQueueArray, 1)
+			
+			table.remove(EligibilityTraceQueueArray, 1)
 			
 			table.remove(previousFeatureVector, 1)
 			

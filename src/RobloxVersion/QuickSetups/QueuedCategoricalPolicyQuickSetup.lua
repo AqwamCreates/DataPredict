@@ -60,7 +60,6 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 	
 	NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector =  NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareSelectedActionCountVector or defaultShareSelectedActionCountVector)
 	
-	
 	-- Dictionaries
 
 	NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary = parameterDictionary.ExperienceReplayDictionary or {}
@@ -71,9 +70,17 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 	NewQueuedCategoricalPolicyQuickSetup.previousActionDictionary = parameterDictionary.previousActionDictionary or {}
 	
+	NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = parameterDictionary.selectedActionCountVectorDictionary or {}
+	
 	-- Queues
 	
-	NewQueuedCategoricalPolicyQuickSetup.informationQueueArray = parameterDictionary.informationQueueArray or {}
+	NewQueuedCategoricalPolicyQuickSetup.inputQueueArray = parameterDictionary.inputQueueArray or {}
+	
+	NewQueuedCategoricalPolicyQuickSetup.agentIndexQueueOutputArray = parameterDictionary.agentIndexOutputQueueArray or {}
+	
+	NewQueuedCategoricalPolicyQuickSetup.outputQueueArray = parameterDictionary.outputQueueArray or {}
+	
+	-- Debounce
 	
 	NewQueuedCategoricalPolicyQuickSetup.isRunning = false
 	
@@ -85,13 +92,21 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local eligibilityTraceIndex = (NewQueuedCategoricalPolicyQuickSetup.shareEligibilityTrace and 1) or agentIndex
 		
-		local shareSelectedActionCountVectorIndex = (NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector and 1) or agentIndex
+		local selectedActionCountVectorIndex = (NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector and 1) or agentIndex
 		
-		local previousFeatureVector = NewQueuedCategoricalPolicyQuickSetup.previousFeatureVectorDictionary[agentIndex]
+		local previousFeatureVectorDictionary = NewQueuedCategoricalPolicyQuickSetup.previousFeatureVectorDictionary
 		
-		local previousAction = NewQueuedCategoricalPolicyQuickSetup.previousActionDictionary[agentIndex]
+		local previousActionDictionary = NewQueuedCategoricalPolicyQuickSetup.previousActionDictionary
 		
-		local selectedActionCountVector = NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVector[shareSelectedActionCountVectorIndex]
+		local selectedActionCountVectorDictionary = NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary
+		
+		local selectedActionCountVector = selectedActionCountVectorDictionary[selectedActionCountVectorIndex]
+		
+		local previousFeatureVector = previousFeatureVectorDictionary[agentIndex]
+		
+		local previousAction = previousActionDictionary[agentIndex]
+		
+		local selectedActionCountVector = selectedActionCountVector[selectedActionCountVectorIndex]
 		
 		local ExperienceReplay = NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
 		
@@ -99,31 +114,43 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local informationArray = {previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedActionCountVector, ExperienceReplay, EligibilityTrace}
 		
-		table.insert(NewQueuedCategoricalPolicyQuickSetup.informationQueueArray, informationArray)
+		table.insert(NewQueuedCategoricalPolicyQuickSetup.inputQueueArray, informationArray)
 		
+		local agentIndexQueueOutputArray = parameterDictionary.agentIndexOutputQueueArray
+
+		local outputQueueArray = parameterDictionary.outputQueueArray
 		
+		local outputQueueArrayIndex
+		
+		repeat
+			
+			outputQueueArrayIndex = table.find(agentIndexQueueOutputArray, agentIndex)
+			
+		until (outputQueueArrayIndex)
+		
+		local action, actionIndex, actionVector, selectedActionCountVector = table.unpack(outputQueueArray[outputQueueArrayIndex])
+		
+		table.remove(agentIndexQueueOutputArray, outputQueueArrayIndex)
+		
+		table.remove(outputQueueArray, outputQueueArrayIndex)
 
 		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcements = NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcements + 1
 
 		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodes = currentNumberOfEpisodes
 
-		NewQueuedCategoricalPolicyQuickSetup.previousFeatureVector = currentFeatureVector
+		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
 		
-		NewQueuedCategoricalPolicyQuickSetup.previousAction = action
-		
-		NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVector = selectedActionCountVector
-		
-		
+		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
 		
 		previousFeatureVector[agentIndex] = currentFeatureVector
 		
-		actionVectorArray[agentIndex] = action
+		previousActionDictionary[agentIndex] = action
 		
 		if (NewQueuedCategoricalPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 
 		if (returnOriginalOutput) then return actionVector end
 
-		return action, actionValue
+		return action, actionVector[1][actionIndex]
 		
 	end)
 	
@@ -145,7 +172,11 @@ function QueuedCategoricalPolicyQuickSetup:start()
 	
 	local episodeUpdateFunction = self.episodeUpdateFunction
 	
-	local informationQueueArray = self.informationQueueArray
+	local inputQueueArray = self.inputQueueArray
+	
+	local agentIndexQueueOutputArray = self.agentIndexOutputQueueArray
+
+	local outputQueueArray = self.outputQueueArray
 	
 	local ActionsList = Model:getActionsList()
 	
@@ -176,6 +207,8 @@ function QueuedCategoricalPolicyQuickSetup:start()
 	local actionValue
 	
 	local temporalDifferenceError
+	
+	local outputArray
 	
 	while(self.isRunning) do
 		
@@ -243,7 +276,13 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			end
 			
-			table.remove(informationQueueArray, 1)
+			outputArray = {action, actionIndex, actionVector, selectedActionCountVector}
+			
+			table.remove(inputQueueArray, 1)
+			
+			table.insert(outputQueueArray, outputArray)
+			
+			table.insert(agentIndexQueueOutputArray, agentIndex)
 			
 		end
 		

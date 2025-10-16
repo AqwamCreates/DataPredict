@@ -278,8 +278,6 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			actionVector = Model:predict(currentFeatureVector, true)
 
-			terminalStateValue = 0
-
 			Model.EligibilityTrace = EligibilityTrace
 
 			if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end

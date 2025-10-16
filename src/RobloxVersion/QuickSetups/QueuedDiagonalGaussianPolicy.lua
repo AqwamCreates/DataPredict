@@ -276,8 +276,6 @@ function QueuedDiagonalGaussianPolicyQuickSetup:start()
 
 			actionVector = AqwamTensorLibrary:add(currentActionMeanVector, currentScaledActionNoiseVector)
 
-			terminalStateValue = 0
-
 			if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
 			if (previousFeatureVector) then

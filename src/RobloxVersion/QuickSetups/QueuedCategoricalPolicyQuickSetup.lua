@@ -212,125 +212,131 @@ function QueuedCategoricalPolicyQuickSetup:start()
 	
 	if (self.isRunning) then error("It is already active.") end
 	
-	self.isRunning = true
-	
-	local Model = self.Model
-	
-	local numberOfReinforcementsPerEpisode = self.numberOfReinforcementsPerEpisode
-	
-	local updateFunction = self.updateFunction
-	
-	local episodeUpdateFunction = self.episodeUpdateFunction
-	
-	local inputQueueArray = self.inputQueueArray
-	
-	local agentIndexQueueOutputArray = self.agentIndexOutputQueueArray
-
-	local outputQueueArray = self.outputQueueArray
-	
-	local ActionsList = Model:getActionsList()
-	
-	local agentIndex
-	
-	local previousFeatureVector
-	
-	local previousAction
-	
-	local rewardValue
-	
-	local currentFeatureVector
-	
-	local terminalStateValue
-	
-	local selectedActionCountVector
-	
-	local ExperienceReplay
-
-	local EligibilityTrace
-	
-	local isEpisodeEnd
-	
-	local isOriginalValueNotAVector
-	
-	local actionVector
-	
-	local actionIndex
-	
-	local action
-	
-	local actionValue
-	
-	local temporalDifferenceError
-	
-	local outputArray
-	
-	while(self.isRunning) do
+	local functionToRun = coroutine.create(function()
 		
-		while (#inputQueueArray == 0) do task.wait() end
+		self.isRunning = true
 		
-		agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, selectedActionCountVector, ExperienceReplay, EligibilityTrace = table.unpack(inputQueueArray[1])
-		
-		isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
+		local Model = self.Model
 
-		if (isOriginalValueNotAVector) then currentFeatureVector = {{currentFeatureVector}} end
+		local numberOfReinforcementsPerEpisode = self.numberOfReinforcementsPerEpisode
 
-		actionVector = Model:predict(currentFeatureVector, true)
+		local updateFunction = self.updateFunction
 
-		terminalStateValue = 0
+		local episodeUpdateFunction = self.episodeUpdateFunction
 
-		Model.EligibilityTrace = EligibilityTrace
+		local inputQueueArray = self.inputQueueArray
 
-		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
+		local agentIndexQueueOutputArray = self.agentIndexOutputQueueArray
 
-		actionIndex, selectedActionCountVector = self:selectAction(actionVector, selectedActionCountVector)
+		local outputQueueArray = self.outputQueueArray
 
-		action = ActionsList[actionIndex]
+		local ActionsList = Model:getActionsList()
 
-		actionValue = actionVector[1][actionIndex]
+		local agentIndex
 
-		if (previousFeatureVector) then
+		local previousFeatureVector
 
-			temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+		local previousAction
 
-			if (updateFunction) then updateFunction(terminalStateValue, agentIndex) end
+		local rewardValue
 
-		end
+		local currentFeatureVector
 
-		if (isEpisodeEnd) then
+		local terminalStateValue
 
-			Model:episodeUpdate(terminalStateValue)
+		local selectedActionCountVector
 
-			if episodeUpdateFunction then episodeUpdateFunction(terminalStateValue, agentIndex) end
+		local ExperienceReplay
 
-		end
+		local EligibilityTrace
 
-		if (previousFeatureVector) then
+		local isEpisodeEnd
 
-			if (ExperienceReplay) then
+		local isOriginalValueNotAVector
 
-				ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+		local actionVector
 
-				ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
+		local actionIndex
 
-				ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+		local action
 
-					return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+		local actionValue
 
-				end)
+		local temporalDifferenceError
+
+		local outputArray
+
+		while(self.isRunning) do
+
+			while (#inputQueueArray == 0) do task.wait() end
+
+			agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, selectedActionCountVector, ExperienceReplay, EligibilityTrace = table.unpack(inputQueueArray[1])
+
+			isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
+
+			if (isOriginalValueNotAVector) then currentFeatureVector = {{currentFeatureVector}} end
+
+			actionVector = Model:predict(currentFeatureVector, true)
+
+			terminalStateValue = 0
+
+			Model.EligibilityTrace = EligibilityTrace
+
+			if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
+
+			actionIndex, selectedActionCountVector = self:selectAction(actionVector, selectedActionCountVector)
+
+			action = ActionsList[actionIndex]
+
+			actionValue = actionVector[1][actionIndex]
+
+			if (previousFeatureVector) then
+
+				temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+
+				if (updateFunction) then updateFunction(terminalStateValue, agentIndex) end
 
 			end
 
+			if (isEpisodeEnd) then
+
+				Model:episodeUpdate(terminalStateValue)
+
+				if episodeUpdateFunction then episodeUpdateFunction(terminalStateValue, agentIndex) end
+
+			end
+
+			if (previousFeatureVector) then
+
+				if (ExperienceReplay) then
+
+					ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+
+					ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
+
+					ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+
+						return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+
+					end)
+
+				end
+
+			end
+
+			outputArray = {action, actionValue, actionVector, selectedActionCountVector}
+
+			table.remove(inputQueueArray, 1)
+
+			table.insert(outputQueueArray, outputArray)
+
+			table.insert(agentIndexQueueOutputArray, agentIndex)
+
 		end
-
-		outputArray = {action, actionValue, actionVector, selectedActionCountVector}
-
-		table.remove(inputQueueArray, 1)
-
-		table.insert(outputQueueArray, outputArray)
-
-		table.insert(agentIndexQueueOutputArray, agentIndex)
 		
-	end
+	end)
+	
+	coroutine.resume(functionToRun)
 	
 end
 

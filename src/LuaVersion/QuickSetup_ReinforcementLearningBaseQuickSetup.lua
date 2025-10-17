@@ -36,15 +36,7 @@ setmetatable(ReinforcementLearningBaseQuickSetup, BaseInstance)
 
 local defaultNumberOfReinforcementsPerEpisode = 500
 
-local defaultEpsilon = 0
-
 local defaultIsOutputPrinted = true
-
-local defaultTotalNumberOfReinforcements = 0
-
-local defaultCurrentNumberOfReinforcements = 0
-
-local defaultCurrentNumberOfEpisodes = 0
 
 function ReinforcementLearningBaseQuickSetup.new(parameterDictionary)
 
@@ -62,29 +54,15 @@ function ReinforcementLearningBaseQuickSetup.new(parameterDictionary)
 
 	NewReinforcementLearningBaseQuickSetup.numberOfReinforcementsPerEpisode = parameterDictionary.numberOfReinforcementsPerEpisode or defaultNumberOfReinforcementsPerEpisode
 
-	NewReinforcementLearningBaseQuickSetup.epsilon = parameterDictionary.epsilon or defaultEpsilon
-
-	NewReinforcementLearningBaseQuickSetup.currentEpsilon = parameterDictionary.currentEpsilon or parameterDictionary.epsilon or defaultEpsilon
-
 	NewReinforcementLearningBaseQuickSetup.Model = parameterDictionary.Model
-
-	NewReinforcementLearningBaseQuickSetup.ExperienceReplay = parameterDictionary.ExperienceReplay
-
-	NewReinforcementLearningBaseQuickSetup.EpsilonValueScheduler = parameterDictionary.EpsilonValueScheduler
-	
-	NewReinforcementLearningBaseQuickSetup.totalNumberOfReinforcements = parameterDictionary.totalNumberOfReinforcements or defaultTotalNumberOfReinforcements
-
-	NewReinforcementLearningBaseQuickSetup.currentNumberOfReinforcements = parameterDictionary.currentNumberOfReinforcements or defaultCurrentNumberOfReinforcements
-
-	NewReinforcementLearningBaseQuickSetup.currentNumberOfEpisodes = parameterDictionary.currentNumberOfEpisodes or defaultCurrentNumberOfEpisodes
 	
 	NewReinforcementLearningBaseQuickSetup.reinforceFunction = parameterDictionary.reinforceFunction
 	
 	NewReinforcementLearningBaseQuickSetup.updateFunction = parameterDictionary.updateFunction
 
-	NewReinforcementLearningBaseQuickSetup.episodeUpdateFunction =  parameterDictionary.episodeUpdateFunction
+	NewReinforcementLearningBaseQuickSetup.episodeUpdateFunction = parameterDictionary.episodeUpdateFunction
 	
-	NewReinforcementLearningBaseQuickSetup.previousFeatureVector = parameterDictionary.previousFeatureVector
+	NewReinforcementLearningBaseQuickSetup.resetFunction = parameterDictionary.resetFunction
 
 	return NewReinforcementLearningBaseQuickSetup
 
@@ -96,13 +74,13 @@ function ReinforcementLearningBaseQuickSetup:setReinforceFunction(reinforceFunct
 	
 end
 
-function ReinforcementLearningBaseQuickSetup:extendUpdateFunction(updateFunction)
+function ReinforcementLearningBaseQuickSetup:setUpdateFunction(updateFunction)
 
 	self.updateFunction = updateFunction
 
 end
 
-function ReinforcementLearningBaseQuickSetup:extendEpisodeUpdateFunction(episodeUpdateFunction)
+function ReinforcementLearningBaseQuickSetup:setEpisodeUpdateFunction(episodeUpdateFunction)
 
 	self.episodeUpdateFunction = episodeUpdateFunction
 
@@ -114,15 +92,21 @@ function ReinforcementLearningBaseQuickSetup:setPrintOutput(option)
 
 end
 
+function ReinforcementLearningBaseQuickSetup:setResetFunction(resetFunction)
+	
+	self.resetFunction = resetFunction
+	
+end
+
 function ReinforcementLearningBaseQuickSetup:reinforce(...)
 	
 	return self.reinforceFunction(...)
 
 end
 
-function ReinforcementLearningBaseQuickSetup:setExperienceReplay(ExperienceReplay)
+function ReinforcementLearningBaseQuickSetup:reset(...)
 
-	self.ExperienceReplay = ExperienceReplay
+	return self.resetFunction(...)
 
 end
 
@@ -132,65 +116,9 @@ function ReinforcementLearningBaseQuickSetup:setModel(Model)
 
 end
 
-function ReinforcementLearningBaseQuickSetup:setEpsilonValueScheduler(EpsilonValueScheduler)
-
-	self.EpsilonValueScheduler = EpsilonValueScheduler
-
-end
-
-function ReinforcementLearningBaseQuickSetup:getCurrentNumberOfEpisodes()
-
-	return self.currentNumberOfEpisodes
-
-end
-
-function ReinforcementLearningBaseQuickSetup:getCurrentNumberOfReinforcements()
-
-	return self.currentNumberOfReinforcements
-
-end
-
-function ReinforcementLearningBaseQuickSetup:getCurrentEpsilon()
-
-	return self.currentEpsilon
-
-end
-
 function ReinforcementLearningBaseQuickSetup:getModel()
 
 	return self.Model
-
-end
-
-function ReinforcementLearningBaseQuickSetup:getExperienceReplay()
-
-	return self.ExperienceReplay
-
-end
-
-function ReinforcementLearningBaseQuickSetup:getEpsilonValueScheduler()
-
-	return self.EpsilonValueScheduler
-
-end
-
-function ReinforcementLearningBaseQuickSetup:reset()
-
-	self.currentNumberOfReinforcements = 0
-
-	self.currentNumberOfEpisodes = 0
-
-	self.previousFeatureVector = nil
-
-	self.currentEpsilon = self.epsilon
-
-	local Model = self.Model
-
-	local ExperienceReplay = self.ExperienceReplay
-
-	if (Model) then Model:reset() end
-
-	if (ExperienceReplay) then ExperienceReplay:reset() end
 
 end
 

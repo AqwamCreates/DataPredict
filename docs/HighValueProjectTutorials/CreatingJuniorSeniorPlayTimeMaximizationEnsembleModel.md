@@ -168,7 +168,7 @@ end
 
 -- The switch here is for how often you want the junior to be reliant on the senior.
 
-local isJuniorShouldBeIndepdendent = true
+local isJuniorShouldBeIndependent = true
 
 local eventFunctionDictionary = {
 
@@ -197,7 +197,11 @@ local function run(Player)
 
     local isSeniorConsulted
 
-    local eventName
+    local juniorEventName
+
+    local seniorEventName
+
+    local finalEventName
 
     local eventFunction
 
@@ -209,25 +213,27 @@ local function run(Player)
 
         playerDataVector = {playerDataArray}
 
-        if (isJuniorShouldBeIndepdendent) and (isSeniorConsulted) then JuniorPlayTimeMaximizationModel.previousAction = eventName end
+        juniorEventName = JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
 
-        eventName = JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
+        seniorEventName = SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
         isSeniorConsulted = (eventName == "ConsultSenior")
 
         if (isSeniorConsulted) then
 
-           eventName = SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+            finalEventName = seniorEventName
+
+            if (isJuniorShouldBeIndependent) then JuniorPlayTimeMaximizationModel.previousAction = seniorEventName end
 
         else
 
-            -- This is because we only use senior when consulted, and hence need to force setting previous action value.
+            finalEventName = juniorEventName
 
-             SeniorPlayTimeMaximizationModel.previousAction = eventName 
+            SeniorPlayTimeMaximizationModel.previousAction = juniorEventName 
 
         end
 
-        eventFunction = eventFunctionDictionary[eventName]
+        eventFunction = eventFunctionDictionary[finalEventName]
 
         if (eventFunction) then eventFunction() end
 
@@ -245,13 +251,9 @@ local function run(Player)
 
     playerDataVector = {playerDataArray}
 
-    if (isJuniorShouldBeIndepdendent) and (isSeniorConsulted) then JuniorPlayTimeMaximizationModel.previousAction = eventName end
+    juniorEventName = JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
 
-    if (not isSeniorConsulted) then SeniorPlayTimeMaximizationModel.previousAction = eventName end
-
-    JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
-
-    SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+    seniorEventName = SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
 end
 

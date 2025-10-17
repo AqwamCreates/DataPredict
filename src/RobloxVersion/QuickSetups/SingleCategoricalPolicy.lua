@@ -82,7 +82,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		local actionVector = Model:predict(currentFeatureVector, true)
 		
-		local isEpisodeEnd = currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode
+		local isEpisodeEnd = (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode)
 		
 		local terminalStateValue = 0
 

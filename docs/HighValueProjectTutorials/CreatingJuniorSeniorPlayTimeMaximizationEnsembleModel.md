@@ -4,9 +4,13 @@
 
 * Our Tabular (Junior) and Deep (Senior) Play Time Maximization Models will gather states and updates at the same time.
 
+* The junior model tends to learn very fast due to its tabular nature. Meanwhile, The senior model will learn complex patterns between states and actions.
+
 * Should the junior chooses "ConsultSenior" action, the senior will have a look at the states more closely and produce a more fine-grained action prediction.
 
 * The junior can choose to be more independent by setting the previous "ConsultSenior" action to whatever the senior's action have chosen.
+
+* Over time, should the junior is set to be independent, the junior will rely on senior less. This is because of no reward is being received through the "ConsultSenior" action and its associated states.
 
 ## Code
 

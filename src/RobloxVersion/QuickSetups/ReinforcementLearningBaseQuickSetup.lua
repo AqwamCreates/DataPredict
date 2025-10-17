@@ -61,6 +61,8 @@ function ReinforcementLearningBaseQuickSetup.new(parameterDictionary)
 	NewReinforcementLearningBaseQuickSetup.updateFunction = parameterDictionary.updateFunction
 
 	NewReinforcementLearningBaseQuickSetup.episodeUpdateFunction = parameterDictionary.episodeUpdateFunction
+	
+	NewReinforcementLearningBaseQuickSetup.resetFunction = parameterDictionary.resetFunction
 
 	return NewReinforcementLearningBaseQuickSetup
 
@@ -90,9 +92,21 @@ function ReinforcementLearningBaseQuickSetup:setPrintOutput(option)
 
 end
 
+function ReinforcementLearningBaseQuickSetup:setResettFunction(resetFunction)
+	
+	self.resetFunction = resetFunction
+	
+end
+
 function ReinforcementLearningBaseQuickSetup:reinforce(...)
 	
 	return self.reinforceFunction(...)
+
+end
+
+function ReinforcementLearningBaseQuickSetup:reset(...)
+
+	return self.reset(...)
 
 end
 

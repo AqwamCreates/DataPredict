@@ -167,6 +167,8 @@ function QueuedDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		table.remove(agentIndexQueueOutputArray, outputQueueArrayIndex)
 		
 		table.remove(outputQueueArray, outputQueueArrayIndex)
+		
+		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
 
 		previousActionMeanVectorDictionary[agentIndex] = currentActionMeanVector
 		
@@ -175,8 +177,6 @@ function QueuedDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		currentNumberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
 
 		currentNumberOfEpisodesDictionary[agentIndex] = currentNumberOfEpisodes
-
-		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
 		
 		if (NewQueuedDiagonalGaussianPolicyQuickSetup.isOutputPrinted) then
 			

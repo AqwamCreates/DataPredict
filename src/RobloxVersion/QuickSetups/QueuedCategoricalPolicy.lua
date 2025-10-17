@@ -180,7 +180,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		end
 		
-		local inputArray = {agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentNumberOfReinforcements}
+		local inputArray = {agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements}
 		
 		table.insert(NewQueuedCategoricalPolicyQuickSetup.inputQueueArray, inputArray)
 		
@@ -198,7 +198,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 			
 		until (outputQueueArrayIndex)
 		
-		local action, actionValue, actionVector, selectedActionCountVector = table.unpack(outputQueueArray[outputQueueArrayIndex])
+		local action, actionValue, actionVector, selectedActionCountVector, currentEpsilon = table.unpack(outputQueueArray[outputQueueArrayIndex])
 		
 		table.remove(agentIndexQueueOutputArray, outputQueueArrayIndex)
 		
@@ -213,6 +213,8 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
 		
 		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
+		
+		currentEpsilonDictionary[currentEpsilonIndex] = currentEpsilon
 		
 		if (NewQueuedCategoricalPolicyQuickSetup.isOutputPrinted) then
 			
@@ -274,6 +276,10 @@ function QueuedCategoricalPolicyQuickSetup:start()
 		
 		local selectedActionCountVector
 		
+		local currentEpsilon
+		
+		local EpsilonValueScheduler
+		
 		local currentNumberOfReinforcements
 
 		local isOriginalValueNotAVector
@@ -294,7 +300,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			while (#inputQueueArray == 0) do task.wait() end
 
-			agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentNumberOfReinforcements = table.unpack(inputQueueArray[1])
+			agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements = table.unpack(inputQueueArray[1])
 
 			isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
 
@@ -306,7 +312,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
-			actionIndex, selectedActionCountVector = self:selectAction(actionVector, selectedActionCountVector, currentNumberOfReinforcements)
+			actionIndex, selectedActionCountVector, currentEpsilon = self:selectAction(actionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
 
 			action = ActionsList[actionIndex]
 
@@ -342,7 +348,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 			end
 
-			outputArray = {action, actionValue, actionVector, selectedActionCountVector}
+			outputArray = {action, actionValue, actionVector, selectedActionCountVector, currentEpsilon}
 
 			table.remove(inputQueueArray, 1)
 

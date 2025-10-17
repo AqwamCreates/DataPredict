@@ -92,11 +92,13 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		
 		local actionVector = AqwamTensorLibrary:add(currentActionMeanVector, currentScaledActionNoiseVector)
 		
+		local isEpisodeEnd = (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode)
+		
 		local terminalStateValue = 0
 	
 		local temporalDifferenceError
 		
-		if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then terminalStateValue = 1 end
+		if (isEpisodeEnd) then terminalStateValue = 1 end
 
 		if (previousFeatureVector) then
 			
@@ -108,7 +110,7 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 
 		end
 
-		if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then
+		if (isEpisodeEnd) then
 
 			local episodeUpdateFunction = NewSingleDiagonalGaussianPolicyQuickSetup.episodeUpdateFunction
 

@@ -92,7 +92,7 @@ function ReinforcementLearningBaseQuickSetup:setPrintOutput(option)
 
 end
 
-function ReinforcementLearningBaseQuickSetup:setResettFunction(resetFunction)
+function ReinforcementLearningBaseQuickSetup:setResetFunction(resetFunction)
 	
 	self.resetFunction = resetFunction
 	

@@ -190,7 +190,7 @@ function ParallelDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		
 	end)
 	
-	NewParallelDiagonalGaussianPolicyQuickSetup:setResetFunction(function(agentIndex, currentFeatureVector, rewardValue)
+	NewParallelDiagonalGaussianPolicyQuickSetup:setResetFunction(function()
 		
 		NewParallelDiagonalGaussianPolicyQuickSetup.previousFeatureVectorDictionary = {}
 

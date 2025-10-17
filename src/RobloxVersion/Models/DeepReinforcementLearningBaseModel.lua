@@ -80,6 +80,18 @@ function DeepReinforcementLearningBaseModel:getModel()
 
 end
 
+function DeepReinforcementLearningBaseModel:setModelParameters(ModelParameters, doNotDeepCopy)
+
+	self.Model:setModelParameters(ModelParameters, doNotDeepCopy)
+
+end
+
+function DeepReinforcementLearningBaseModel:getModelParameters(doNotDeepCopy)
+
+	return self.Model:getModelParameters(doNotDeepCopy)
+
+end
+
 function DeepReinforcementLearningBaseModel:predict(featureVector, returnOriginalOutput)
 
 	return self.Model:predict(featureVector, returnOriginalOutput)

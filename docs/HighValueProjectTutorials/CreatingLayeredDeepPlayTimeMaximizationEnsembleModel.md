@@ -251,11 +251,7 @@ TimeToLeavePredictionModelParameters = TimeToLeavePredictionModel:getModelParame
 
 ProbabilityToLeavePredictionModelParameters = ProbabilityToLeavePredictionModel:getModelParameters(true)
 
---[[ 
-
-We then need to get our Neural Network model from the "Play Time Maximization Model". If you only kept the quick setup and discarded the rest, don't worry!
-
---]]
+-- We then need to get our Neural Network model from the "Play Time Maximization Model". If you only kept the quick setup and discarded the rest, don't worry!
 
 local ModelParameters = PlayTimeMaximizationModel:getModel():getModelParameters()
 

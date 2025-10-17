@@ -10,7 +10,7 @@
 
 * The junior can choose to be more independent by setting the previous "ConsultSenior" action to whatever the senior's action have chosen.
 
-* Over time, should the junior is set to be independent, the junior will rely on senior less. This is because of no reward is being received through the "ConsultSenior" action and its associated states.
+* If the junior is set to be independent, the junior will rely on senior less over time. This is because of no reward is being received through the "ConsultSenior" action and its associated states.
 
 ## Code
 

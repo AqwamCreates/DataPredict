@@ -106,7 +106,7 @@ end
 
 function ReinforcementLearningBaseQuickSetup:reset(...)
 
-	return self.reset(...)
+	return self.resetFunction(...)
 
 end
 

@@ -169,6 +169,8 @@ function ParallelDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 			end)
 
 		end
+		
+		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
 
 		previousActionMeanVectorDictionary[agentIndex] = currentActionMeanVector
 		
@@ -177,8 +179,6 @@ function ParallelDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		currentNumberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
 
 		currentNumberOfEpisodesDictionary[agentIndex] = currentNumberOfEpisodes
-
-		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
 		
 		if (NewParallelDiagonalGaussianPolicyQuickSetup.isOutputPrinted) then
 			

@@ -110,7 +110,7 @@
 
   * Minimal implementation takes a minimum of 4 hours using DataPredict™.
 
-* [Creating Layered Junior-Senior Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingLayeredJuniorSeniorPlayTimeMaximizationEnsembleModel.md) (Incomplete)
+* [Creating Layered Junior-Senior Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingLayeredJuniorSeniorPlayTimeMaximizationEnsembleModel.md)
 
   * Uses a combination of:
  

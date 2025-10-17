@@ -156,6 +156,20 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 	end)
 	
+	NewSingleCategoricalPolicyQuickSetup:setResetFunction(function()
+
+		NewSingleCategoricalPolicyQuickSetup.currentNumberOfReinforcements = 0
+
+		NewSingleCategoricalPolicyQuickSetup.currentNumberOfEpisodes = 1
+
+		NewSingleCategoricalPolicyQuickSetup.previousFeatureVector = nil
+
+		NewSingleCategoricalPolicyQuickSetup.previousAction = nil
+
+		NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector = nil
+
+	end)
+	
 	return NewSingleCategoricalPolicyQuickSetup
 	
 end

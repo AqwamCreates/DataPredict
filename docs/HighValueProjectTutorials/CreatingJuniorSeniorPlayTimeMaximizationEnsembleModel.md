@@ -1,15 +1,12 @@
 # Creating Junior-Senior Play Time Maximization Ensemble Model
 
-# Creating Layered Deep Play Time Maximization Ensemble Model
-
 ## High-Level Explanation
 
-| First Layer                         | Final Layer     |
-|-------------------------------------|-----------------|
-| Deep Play Time Maximization Model   | None            |
-| Simple Play Time Maximization Model |                 |
+* Our Tabular (Junior) and Deep (Senior) Play Time Maximization Models will gather states and updates at the same time.
 
-* Our deep and tabular Play Time Maximization Model
+* Should the junior chooses "ConsultSenior" action, the senior will have a look at the states more closely and produce a more fine-grained action prediction.
+
+* The junior can choose to be more independent by setting the previous "ConsultSenior" action to whatever the senior's action have chosen.
 
 ## Code
 

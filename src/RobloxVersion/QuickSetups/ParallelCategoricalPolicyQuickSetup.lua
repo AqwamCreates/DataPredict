@@ -40,6 +40,10 @@ local defaultShareEligibilityTrace = false
 
 local defaultShareSelectedActionCountVector = false
 
+local defaultShareCurrentEpsilon = true
+
+local defaultShareEpsilonValueScheduler = true
+
 local defaultShareCurrentNumberOfReinforcements = false
 
 local defaultShareCurrentNumberOfEpisodes = false
@@ -62,9 +66,13 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 	
 	NewParallelCategoricalPolicyQuickSetup.shareSelectedActionCountVector = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareSelectedActionCountVector or defaultShareSelectedActionCountVector)
 	
-	NewParallelCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfReinforcements or defaultShareCurrentNumberOfReinforcements)
+	NewParallelCategoricalPolicyQuickSetup.shareCurrentEpsilon = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentEpsilon or defaultShareCurrentEpsilon)
+	
+	NewParallelCategoricalPolicyQuickSetup.shareEpsilonValueScheduler = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentEpsilon or defaultShareEpsilonValueScheduler)
 	
 	NewParallelCategoricalPolicyQuickSetup.shareCurrentNumberOfEpisodes = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfEpisodes or defaultShareCurrentNumberOfEpisodes)
+	
+	NewParallelCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfReinforcements or defaultShareCurrentNumberOfReinforcements)
 	
 	-- Dictionaries
 
@@ -98,6 +106,12 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local selectedActionCountVectorIndex = (NewParallelCategoricalPolicyQuickSetup.shareSelectedActionCountVector and 1) or agentIndex
 		
+		local currentEpsilonIndex = (NewParallelCategoricalPolicyQuickSetup.shareCurrentEpsilon and 1) or agentIndex
+		
+		local epsilonValueSchedulerIndex = (NewParallelCategoricalPolicyQuickSetup.shareEpsilonValueScheduler and 1) or agentIndex
+		
+		local currentEpsilonSchedulerIndex = (NewParallelCategoricalPolicyQuickSetup.shareEpsilonValueScheduler and 1) or agentIndex
+		
 		local numberOfReinforcementsIndex = (NewParallelCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements and 1) or agentIndex
 		
 		local numberOfEpisodesIndex = (NewParallelCategoricalPolicyQuickSetup.shareCurrentNumberOfEpisodes and 1) or agentIndex
@@ -117,6 +131,10 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		local previousAction = previousActionDictionary[agentIndex]
 		
 		local selectedActionCountVector = selectedActionCountVectorDictionary[selectedActionCountVectorIndex]
+		
+		local currentEpsilon = NewParallelCategoricalPolicyQuickSetup.currentEpsilonDictionary[currentEpsilonIndex]
+		
+		local EpsilonValueScheduler = NewParallelCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary[epsilonValueSchedulerIndex]
 		
 		local ExperienceReplay = NewParallelCategoricalPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
 		
@@ -138,7 +156,7 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
-		local actionIndex, selectedActionCountVector = NewParallelCategoricalPolicyQuickSetup:selectAction(actionVector, selectedActionCountVector, currentNumberOfReinforcements)
+		local actionIndex, selectedActionCountVector = NewParallelCategoricalPolicyQuickSetup:selectAction(actionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
 
 		local action = ActionsList[actionIndex]
 
@@ -185,6 +203,8 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		end
 
 		previousActionDictionary[agentIndex] = action
+		
+		currentEpsilonDictionary[actionIndex] = currentEpsilon
 
 		currentNumberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
 

@@ -209,6 +209,8 @@ local function run(Player)
 
     playerDataArray = getPlayerDataArray(Player)
 
+    playerDataVector = {playerDataArray}
+
     PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
 end

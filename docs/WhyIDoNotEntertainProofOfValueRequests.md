@@ -54,6 +54,8 @@ Some platforms don't do this, so you will be getting extra value for free.
 
 I prefer my DataPredict ecosystem to be production-grade and research-grade. Not toy libraries that doesn't scale. As such, high quality will be mantained at all costs and at all times. This also includes catching up with the latest research and implement them into the DataPredict ecosystem.
 
+Additionally, I have provided high-value project tutorials that I learnt from applying ML, DL and RL to my work for free. If play time maximization models, recommendation models and enemy data generation is still not making you see how valuable the whole DataPredict ecosystem is, then perhaps I would recommend you not to use DataPredict at all.
+
 ## Value Is Also Dependent On How You Use It
 
 Here’s the honest truth: Even the best tools won’t perform if you don’t know how to use them.

@@ -2,10 +2,12 @@
 
 ## High-Level Explanation
 
-| First Layer                           | Final Layer                       |
-|---------------------------------------|-----------------------------------|
-| Probability-To-Leave Prediction Model | Deep Play Time Maximization Model |
-| Time-To-Leave Prediction Model        |                                   |
+| First Layer                           | Final Layer                         |
+|---------------------------------------|-------------------------------------|
+| Probability-To-Leave Prediction Model | Deep Play Time Maximization Model   |
+| Time-To-Leave Prediction Model        | Simple Play Time Maximization Model |
+
+### First Layer
 
 * Should the probability-to-leave be greater than 50% or "time-to-leave" is less than 5 seconds, it activates the "Play Time Maximization Model". For the latter metric, even if the "Probability-To-Leave Prediction Model" says the player is unlikely to leave, we still have a chance that the player will leave in near term within a short period of time and the effects of player leaving is generally permanent.
 
@@ -16,6 +18,18 @@
 * The first-layer model provides a strong signal about player state. Feeding that state into the final layer means the "Play Time Maximization Model" learns in contextually meaningful situations, which improves its long-term performance.
 
 * The "Time-To-Leave Prediction Model" is in the same layer as "Probability-To-Leave Prediction Model" because we want it to constantly update on how long the player will stay. If we were to put it between the first and final layer, the updates will be too sparse to predict accurate wait times for "Play Time Maximization Model".
+
+### Final Layer
+
+* Our Tabular (Junior) and Deep (Senior) Play Time Maximization Models will gather states and updates at the same time.
+
+* The junior model tends to learn very fast due to its tabular nature. Meanwhile, The senior model will learn complex patterns between states and actions.
+
+* Should the junior chooses "ConsultSenior" action, the senior will have a look at the states more closely and produce a more fine-grained action prediction.
+
+* The junior can choose to be more independent by setting the previous "ConsultSenior" action to whatever the senior's action have chosen.
+
+* If the junior is set to be independent, the junior will rely on senior less over time. This is because of no reward is being received through the "ConsultSenior" action and its associated states.
 
 ## Code
 

@@ -205,6 +205,10 @@ end
 
 ```lua
 
+-- The switch here is for how often you want the junior to be reliant on the senior.
+
+local isJuniorShouldBeIndependent = true
+
 local eventFunctionDictionary = {
 
   ["NoEvent"] = nil,

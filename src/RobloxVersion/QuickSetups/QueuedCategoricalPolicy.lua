@@ -228,6 +228,24 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 	end)
 	
+	NewQueuedCategoricalPolicyQuickSetup:setResetFunction(function()
+
+		NewQueuedCategoricalPolicyQuickSetup.previousFeatureVectorDictionary = {}
+
+		NewQueuedCategoricalPolicyQuickSetup.previousActionDictionary = {}
+
+		NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = {}
+
+		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary  = {}
+
+		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary  = {}
+
+		for _, ExperienceReplay in ipairs(NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary) do ExperienceReplay:reset() end
+
+		for _, EligibilityTrace in ipairs(NewQueuedCategoricalPolicyQuickSetup.EligibilityTraceDictionary) do EligibilityTrace:reset() end
+
+	end)
+	
 	return NewQueuedCategoricalPolicyQuickSetup
 	
 end
@@ -370,24 +388,6 @@ function QueuedCategoricalPolicyQuickSetup:stop()
 	
 	self.isRunning = false
 	
-end
-
-function QueuedCategoricalPolicyQuickSetup:reset()
-	
-	self.previousFeatureVectorDictionary = {}
-
-	self.previousActionDictionary = {}
-	
-	self.selectedActionCountVectorDictionary = {}
-
-	self.currentNumberOfReinforcementsDictionary  = {}
-
-	self.currentNumberOfEpisodesDictionary  = {}
-	
-	for _, ExperienceReplay in ipairs(self.ExperienceReplayDictionary) do ExperienceReplay:reset() end
-	
-	for _, EligibilityTrace in ipairs(self.EligibilityTraceDictionary) do EligibilityTrace:reset() end
-		
 end
 
 return QueuedCategoricalPolicyQuickSetup

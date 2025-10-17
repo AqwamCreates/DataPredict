@@ -247,9 +247,9 @@ ProbabilityToLeavePredictionModel:train(playerDataMatrix, probabilityToLeaveVect
 
 -- Just getting our model parameters to save them
 
-TimeToLeavePredictionModelParameters = TimeToLeavePredictionModel:getModelParameters(true)
+local TimeToLeavePredictionModelParameters = TimeToLeavePredictionModel:getModelParameters()
 
-ProbabilityToLeavePredictionModelParameters = ProbabilityToLeavePredictionModel:getModelParameters(true)
+local ProbabilityToLeavePredictionModelParameters = ProbabilityToLeavePredictionModel:getModelParameters()
 
 -- We then need to get our Neural Network model from the "Play Time Maximization Model". If you only kept the quick setup and discarded the rest, don't worry!
 

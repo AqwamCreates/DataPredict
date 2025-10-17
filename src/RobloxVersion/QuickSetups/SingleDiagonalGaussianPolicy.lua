@@ -38,7 +38,7 @@ setmetatable(SingleDiagonalGaussianPolicyQuickSetup, ReinforcementLearningBaseQu
 
 local defaultCurrentNumberOfReinforcements = 0
 
-local defaultCurrentNumberOfEpisodes = 0
+local defaultCurrentNumberOfEpisodes = 1
 
 function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 	
@@ -151,6 +151,20 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		if (NewSingleDiagonalGaussianPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 		
 		return actionVector
+		
+	end)
+	
+	NewSingleDiagonalGaussianPolicyQuickSetup:setResetFunction(function()
+		
+		NewSingleDiagonalGaussianPolicyQuickSetup.currentNumberOfReinforcements = 0
+
+		NewSingleDiagonalGaussianPolicyQuickSetup.currentNumberOfEpisodes = 1
+
+		NewSingleDiagonalGaussianPolicyQuickSetup.previousFeatureVector = nil
+
+		NewSingleDiagonalGaussianPolicyQuickSetup.previousActionMeanVector = nil
+
+		NewSingleDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector = nil
 		
 	end)
 	

@@ -129,6 +129,8 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		local ActionsList = Model:getActionsList()
 
 		local actionVector = Model:predict(currentFeatureVector, true)
+		
+		local isEpisodeEnd = (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode)
 
 		local terminalStateValue = 0
 
@@ -142,7 +144,7 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		local actionValue = actionVector[1][actionIndex]
 
-		if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then terminalStateValue = 1 end
+		if (isEpisodeEnd) then terminalStateValue = 1 end
 
 		if (previousFeatureVector) then
 
@@ -154,7 +156,7 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		end
 
-		if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then
+		if (isEpisodeEnd) then
 
 			local episodeUpdateFunction = NewParallelCategoricalPolicyQuickSetup.episodeUpdateFunction
 

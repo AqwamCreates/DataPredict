@@ -86,6 +86,10 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 	
 	NewParallelCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = parameterDictionary.selectedActionCountVectorDictionary or {}
 	
+	NewParallelCategoricalPolicyQuickSetup.currentEpsilonDictionary = parameterDictionary.currentEpsilonDictionary or {}
+	
+	NewParallelCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary = parameterDictionary.EpsilonValueSchedulerDictionary or {}
+	
 	NewParallelCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary = parameterDictionary.currentNumberOfReinforcementsDictionary or {}
 	
 	NewParallelCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary = parameterDictionary.currentNumberOfEpisodesDictionary or {}
@@ -122,6 +126,8 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local selectedActionCountVectorDictionary = NewParallelCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary
 		
+		local currentEpsilonDictionary = NewParallelCategoricalPolicyQuickSetup.currentEpsilonDictionary
+		
 		local currentNumberOfReinforcementsDictionary = NewParallelCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary
 		
 		local currentNumberOfEpisodesDictionary = NewParallelCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary
@@ -132,7 +138,7 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local selectedActionCountVector = selectedActionCountVectorDictionary[selectedActionCountVectorIndex]
 		
-		local currentEpsilon = NewParallelCategoricalPolicyQuickSetup.currentEpsilonDictionary[currentEpsilonIndex]
+		local currentEpsilon = currentEpsilonDictionary[currentEpsilonIndex]
 		
 		local EpsilonValueScheduler = NewParallelCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary[epsilonValueSchedulerIndex]
 		

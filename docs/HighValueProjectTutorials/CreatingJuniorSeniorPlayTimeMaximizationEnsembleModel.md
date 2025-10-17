@@ -92,7 +92,7 @@ local NeuralNetwork = DataPredict.Models.TabularQLearning.new({maximumNumberOfIt
 
 NeuralNetwork:setStatesList(StatesList)
 
-NeuralNetwork:setClassesList(ClassesList)
+NeuralNetwork:setClassesList(JuniorClassesList)
 
 -- This code shown below checks if we already have trained the models previously.
 
@@ -112,11 +112,11 @@ JuniorPlayTimeMaximizationModel:setModel(SimplePlayTimeMaximizationModel)
 
 local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-NeuralNetwork:setClassesList(ClassesList)
+NeuralNetwork:setClassesList(SeniorClassesList)
 
 NeuralNetwork:addLayer(5, true) -- Five features and one bias.
 
-NeuralNetwork:addLayer(#PlayTimeMaximizationModelClassesList, false) -- No bias.
+NeuralNetwork:addLayer(#SeniorClassesList, false) -- No bias.
 
 -- This code shown below checks if we already have trained the models previously.
 

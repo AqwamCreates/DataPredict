@@ -259,8 +259,6 @@ end
 
 -- We then need to get our model parameters. If you only kept the quick setup and discarded the rest, don't worry!
 
---]]
-
 local JuniorModelParameters = JuniorPlayTimeMaximizationModel:getModel():getModelParameters()
 
 local SeniorModelParameters = SeniorPlayTimeMaximizationModel:getModel():getModelParameters()

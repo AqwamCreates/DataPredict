@@ -136,10 +136,6 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 			
 		end
 
-		NewSingleCategoricalPolicyQuickSetup.currentNumberOfReinforcements = currentNumberOfReinforcements
-
-		NewSingleCategoricalPolicyQuickSetup.currentNumberOfEpisodes = currentNumberOfEpisodes
-
 		NewSingleCategoricalPolicyQuickSetup.previousFeatureVector = currentFeatureVector
 		
 		NewSingleCategoricalPolicyQuickSetup.previousAction = action
@@ -147,6 +143,10 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector = selectedActionCountVector
 		
 		NewSingleCategoricalPolicyQuickSetup.currentEpsilon = currentEpsilon
+		
+		NewSingleCategoricalPolicyQuickSetup.currentNumberOfReinforcements = currentNumberOfReinforcements
+
+		NewSingleCategoricalPolicyQuickSetup.currentNumberOfEpisodes = currentNumberOfEpisodes
 		
 		if (NewSingleCategoricalPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 

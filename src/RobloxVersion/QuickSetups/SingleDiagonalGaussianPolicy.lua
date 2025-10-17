@@ -138,15 +138,15 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 
 		end
 
-		NewSingleDiagonalGaussianPolicyQuickSetup.currentNumberOfReinforcements = currentNumberOfReinforcements
-
-		NewSingleDiagonalGaussianPolicyQuickSetup.currentNumberOfEpisodes = currentNumberOfEpisodes
-
 		NewSingleDiagonalGaussianPolicyQuickSetup.previousFeatureVector = currentFeatureVector
 		
 		NewSingleDiagonalGaussianPolicyQuickSetup.previousActionMeanVector = currentActionMeanVector
 		
 		NewSingleDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector = currentActionNoiseVector
+		
+		NewSingleDiagonalGaussianPolicyQuickSetup.currentNumberOfReinforcements = currentNumberOfReinforcements
+
+		NewSingleDiagonalGaussianPolicyQuickSetup.currentNumberOfEpisodes = currentNumberOfEpisodes
 		
 		if (NewSingleDiagonalGaussianPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 		

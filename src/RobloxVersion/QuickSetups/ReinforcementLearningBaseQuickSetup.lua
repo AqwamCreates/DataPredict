@@ -74,13 +74,13 @@ function ReinforcementLearningBaseQuickSetup:setReinforceFunction(reinforceFunct
 	
 end
 
-function ReinforcementLearningBaseQuickSetup:extendUpdateFunction(updateFunction)
+function ReinforcementLearningBaseQuickSetup:setUpdateFunction(updateFunction)
 
 	self.updateFunction = updateFunction
 
 end
 
-function ReinforcementLearningBaseQuickSetup:extendEpisodeUpdateFunction(episodeUpdateFunction)
+function ReinforcementLearningBaseQuickSetup:setEpisodeUpdateFunction(episodeUpdateFunction)
 
 	self.episodeUpdateFunction = episodeUpdateFunction
 

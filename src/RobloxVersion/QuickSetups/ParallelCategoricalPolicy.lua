@@ -207,18 +207,18 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 			end)
 
 		end
+		
+		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
 
 		previousActionDictionary[agentIndex] = action
+		
+		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
 		
 		currentEpsilonDictionary[actionIndex] = currentEpsilon
 
 		currentNumberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
 
 		currentNumberOfEpisodesDictionary[agentIndex] = currentNumberOfEpisodes
-
-		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
-		
-		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
 		
 		if (NewParallelCategoricalPolicyQuickSetup.isOutputPrinted) then
 			
@@ -239,6 +239,10 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		NewParallelCategoricalPolicyQuickSetup.previousActionDictionary = {}
 
 		NewParallelCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = {}
+		
+		NewParallelCategoricalPolicyQuickSetup.currentEpsilonDictionary = {}
+		
+		for _, EpsilonValueScheduler in ipairs(NewParallelCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary) do EpsilonValueScheduler:reset() end
 
 		NewParallelCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary  = {}
 

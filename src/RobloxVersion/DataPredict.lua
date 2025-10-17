@@ -256,9 +256,17 @@ AqwamMachineDeepAndReinforcementLearningLibrary.ExperienceReplays = {
 
 AqwamMachineDeepAndReinforcementLearningLibrary.QuickSetups = {
 
-	CategoricalPolicy = require(QuickSetups.CategoricalPolicy),
+	SingleCategoricalPolicy = require(QuickSetups.SingleCategoricalPolicy),
 
-	DiagonalGaussianPolicy = require(QuickSetups.DiagonalGaussianPolicy)
+	SingleDiagonalGaussianPolicy = require(QuickSetups.SingleDiagonalGaussianPolicy),
+	
+	QueuedCategoricalPolicy = require(QuickSetups.QueuedCategoricalPolicy),
+
+	QueuedDiagonalGaussianPolicy = require(QuickSetups.QueuedDiagonalGaussianPolicy),
+	
+	ParallelCategoricalPolicy = require(QuickSetups.ParallelCategoricalPolicy),
+
+	ParallelDiagonalGaussianPolicy = require(QuickSetups.ParallelDiagonalGaussianPolicy),
 
 }
 

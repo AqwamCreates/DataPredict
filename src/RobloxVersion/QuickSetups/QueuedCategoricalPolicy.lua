@@ -206,15 +206,15 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		previousActionDictionary[agentIndex] = action
 
-		currentNumberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
-
-		currentNumberOfEpisodesDictionary[agentIndex] = currentNumberOfEpisodes
-
 		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
 		
 		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
 		
 		currentEpsilonDictionary[currentEpsilonIndex] = currentEpsilon
+		
+		currentNumberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
+
+		currentNumberOfEpisodesDictionary[agentIndex] = currentNumberOfEpisodes
 		
 		if (NewQueuedCategoricalPolicyQuickSetup.isOutputPrinted) then
 			
@@ -235,6 +235,10 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		NewQueuedCategoricalPolicyQuickSetup.previousActionDictionary = {}
 
 		NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = {}
+
+		NewQueuedCategoricalPolicyQuickSetup.currentEpsilonDictionary = {}
+
+		for _, EpsilonValueScheduler in ipairs(NewQueuedCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary) do EpsilonValueScheduler:reset() end
 
 		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary  = {}
 

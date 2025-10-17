@@ -253,7 +253,7 @@ end
 
 ```lua
 
-We then need to get our model parameters. If you only kept the quick setup and discarded the rest, don't worry!
+-- We then need to get our model parameters. If you only kept the quick setup and discarded the rest, don't worry!
 
 --]]
 

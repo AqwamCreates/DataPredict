@@ -247,7 +247,7 @@ local function run(Player)
 
     if (isJuniorShouldBeIndepdendent) and (isSeniorConsulted) then JuniorPlayTimeMaximizationModel.previousAction = eventName end
 
-    SeniorPlayTimeMaximizationModel.previousAction = eventName 
+    if (not isSeniorConsulted) then SeniorPlayTimeMaximizationModel.previousAction = eventName end
 
     JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
 

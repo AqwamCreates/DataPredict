@@ -82,7 +82,7 @@
 
   * Minimal implementation takes a minimum of 1 hour using DataPredict™, especially if custom events are associated with the model's output.
 
-* [Creating Junior-Senior Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingJuniorSeniorPlayTimeMaximizationEnsembleModel.md) (Incomplete)
+* [Creating Junior-Senior Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingJuniorSeniorPlayTimeMaximizationEnsembleModel.md)
 
   * Uses a combination of:
  

@@ -186,9 +186,9 @@ function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActi
 		
 	end
 	
-	if (EpsilonValueScheduler) then currentEpsilon = EpsilonValueScheduler:calculate(currentEpsilon) end
-	
 	selectedActionCountVector[1][actionIndex] = selectedActionCountVector[1][actionIndex] + 1
+	
+	if (EpsilonValueScheduler) then currentEpsilon = EpsilonValueScheduler:calculate(currentEpsilon) end
 	
 	return actionIndex, selectedActionCountVector, currentEpsilon
 	

@@ -53,7 +53,7 @@ local SeniorClassesList = {
 
 -- This one is for our junior (tabular) model.
 
-local StatesList = {
+local PlayerStatesList = {
 
   "Idle",
   "AwayFromKeyboard",
@@ -90,7 +90,7 @@ table.insert(JuniorClassesList, "ConsultSenior")
 
 local NeuralNetwork = DataPredict.Models.TabularQLearning.new({maximumNumberOfIterations = 1})
 
-NeuralNetwork:setStatesList(StatesList)
+NeuralNetwork:setStatesList(PlayerStatesList)
 
 NeuralNetwork:setClassesList(JuniorClassesList)
 

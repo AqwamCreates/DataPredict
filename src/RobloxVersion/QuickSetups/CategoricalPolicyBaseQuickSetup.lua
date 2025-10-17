@@ -142,19 +142,17 @@ local function calculateUpperConfidenceBound(actionVector, cValue, selectedActio
 	
 end
 
-function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActionCountVector, currentNumberOfReinforcements)
+function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActionCountVector, currentNumberOfReinforcements, currentEpsilon, EpsilonValueScheduler)
 	
 	local actionSelectionFunction = self.actionSelectionFunction
-	
-	local currentEpsilon = self.currentEpsilon or self.epsilon
-	
-	local EpsilonValueScheduler = self.EpsilonValueScheduler
 	
 	local randomProbability = RandomObject:NextNumber()
 	
 	local actionIndex
 	
-	if (not selectedActionCountVector) then selectedActionCountVector = {table.create(#actionVector[1], 0)} end
+	currentEpsilon = currentEpsilon or self.epsilon
+	
+	selectedActionCountVector = selectedActionCountVector or {table.create(#actionVector[1], 0)}
 	
 	if (randomProbability <= currentEpsilon) then
 		
@@ -188,15 +186,11 @@ function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActi
 		
 	end
 	
-	if (EpsilonValueScheduler) then
-
-		self.currentEpsilon = EpsilonValueScheduler:calculate(currentEpsilon)
-
-	end
+	if (EpsilonValueScheduler) then currentEpsilon = EpsilonValueScheduler:calculate(currentEpsilon) end
 	
 	selectedActionCountVector[1][actionIndex] = selectedActionCountVector[1][actionIndex] + 1
 	
-	return actionIndex, selectedActionCountVector
+	return actionIndex, selectedActionCountVector, currentEpsilon
 	
 end
 

@@ -82,6 +82,8 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		local actionVector = Model:predict(currentFeatureVector, true)
 		
+		local isEpisodeEnd = currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode
+		
 		local terminalStateValue = 0
 
 		local temporalDifferenceError
@@ -94,7 +96,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		local actionValue = actionVector[1][actionIndex]
 		
-		if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then terminalStateValue = 1 end
+		if (isEpisodeEnd) then terminalStateValue = 1 end
 
 		if (previousFeatureVector) then
 			
@@ -106,7 +108,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		end
 
-		if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then
+		if (isEpisodeEnd) then
 
 			local episodeUpdateFunction = NewSingleCategoricalPolicyQuickSetup.episodeUpdateFunction
 

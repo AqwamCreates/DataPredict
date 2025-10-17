@@ -110,7 +110,7 @@ function ParallelDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		
 		local ExperienceReplay = NewParallelDiagonalGaussianPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
 		
-		local currentNumberOfReinforcements = currentNumberOfReinforcementsDictionary[numberOfReinforcementsIndex] or 0
+		local currentNumberOfReinforcements = (currentNumberOfReinforcementsDictionary[numberOfReinforcementsIndex] or 0) + 1
 		
 		local currentNumberOfEpisodes = currentNumberOfEpisodesDictionary[numberOfEpisodesIndex] or 1
 		

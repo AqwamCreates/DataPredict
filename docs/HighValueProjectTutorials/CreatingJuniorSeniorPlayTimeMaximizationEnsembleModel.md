@@ -251,9 +251,9 @@ local function run(Player)
 
     playerDataVector = {playerDataArray}
 
-    juniorEventName = JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
+    JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
 
-    seniorEventName = SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+    SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
 end
 

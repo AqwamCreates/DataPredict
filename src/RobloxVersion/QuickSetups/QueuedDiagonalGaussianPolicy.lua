@@ -115,8 +115,8 @@ function QueuedDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		local previousActionNoiseVector = previousActionNoiseVectorDictionary[agentIndex]
 		
 		local ExperienceReplay = NewQueuedDiagonalGaussianPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
-		
-		local currentNumberOfReinforcements = currentNumberOfReinforcementsDictionary[numberOfReinforcementsIndex] or 0
+
+		local currentNumberOfReinforcements = (currentNumberOfReinforcementsDictionary[numberOfReinforcementsIndex] or 0) + 1
 		
 		local currentNumberOfEpisodes = currentNumberOfEpisodesDictionary[numberOfEpisodesIndex] or 1
 		
@@ -139,8 +139,6 @@ function QueuedDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 			isEpisodeEnd = false
 			
 			terminalStateValue = 0
-
-			currentNumberOfReinforcements = currentNumberOfReinforcements + 1
 
 		end
 		

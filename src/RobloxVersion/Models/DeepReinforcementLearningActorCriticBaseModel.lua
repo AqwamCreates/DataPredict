@@ -94,6 +94,24 @@ function DeepReinforcementLearningActorCriticBaseModel:getCriticModel()
 
 end
 
+function DeepReinforcementLearningActorCriticBaseModel:setModelParametersArray(ModelParametersArray, doNotDeepCopy)
+
+	self.ActorModel:setModelParameters(ModelParametersArray[1], doNotDeepCopy)
+	
+	self.CriticModel:setModelParameters(ModelParametersArray[2], doNotDeepCopy)
+
+end
+
+function DeepReinforcementLearningActorCriticBaseModel:getModelParametersArray(doNotDeepCopy)
+	
+	local ActorModelParameters = self.ActorModel:getModelParameters(doNotDeepCopy)
+	
+	local CriticModelParameters = self.CriticModel:getModelParameters(doNotDeepCopy)
+
+	return {ActorModelParameters, CriticModelParameters}
+
+end
+
 function DeepReinforcementLearningActorCriticBaseModel:predict(featureVector, returnOriginalOutput)
 	
 	return self.ActorModel:predict(featureVector, returnOriginalOutput)

@@ -226,6 +226,8 @@ local function run(Player)
 
     local playerDataArray
 
+    local playerState
+
     local playerDataVector
 
     local predictedTimeToLeave
@@ -234,13 +236,21 @@ local function run(Player)
 
     local activatePlayTimeMaximization
 
-    local eventName
+    local isSeniorConsulted
+
+    local juniorEventName
+
+    local seniorEventName
+
+    local finalEventName
 
     local eventFunction
 
     while isPlayerInServer do
 
         playerDataArray = getPlayerDataArray(Player)
+
+        playerState = getPlayerState(Player)
 
         snapshotData(playerDataArray)
 
@@ -254,11 +264,23 @@ local function run(Player)
 
         if (activatePlayTimeMaximization) then
 
-          eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+            juniorEventName = JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
 
-          eventFunction = eventFunctionDictionary[eventName]
+            seniorEventName = SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
-          if (eventFunction) then eventFunction() end
+            isSeniorConsulted = (eventName == "ConsultSenior")
+
+            if (isSeniorConsulted) then
+
+                finalEventName = seniorEventName
+
+                if (isJuniorShouldBeIndependent) then JuniorPlayTimeMaximizationModel.previousAction = seniorEventName end
+
+            else
+
+            finalEventName = juniorEventName
+
+            SeniorPlayTimeMaximizationModel.previousAction = juniorEventName 
 
         end
 
@@ -280,7 +302,14 @@ local function run(Player)
 
     playerDataVector = {playerDataArray}
 
-    PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+    playerState = getPlayerState(Player)
+
+    playerDataVector = {playerDataArray}
+
+    JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
+
+    SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+
 
 end
 
@@ -316,13 +345,13 @@ ProbabilityToLeavePredictionModel:train(playerDataMatrix, probabilityToLeaveVect
 
 -- Just getting our model parameters to save them
 
-TimeToLeavePredictionModelParameters = TimeToLeavePredictionModel:getModelParameters(true)
+local TimeToLeavePredictionModelParameters = TimeToLeavePredictionModel:getModelParameters()
 
-ProbabilityToLeavePredictionModelParameters = ProbabilityToLeavePredictionModel:getModelParameters(true)
+local ProbabilityToLeavePredictionModelParameters = ProbabilityToLeavePredictionModel:getModelParameters()
 
--- We then need to get our Neural Network model from the "Play Time Maximization Model". If you only kept the quick setup and discarded the rest, don't worry!
+local ModelParameters = JuniorPlayTimeMaximizationModel:getModel():getModelParameters()
 
-local ModelParameters = PlayTimeMaximizationModel:getModel():getModelParameters()
+local ModelParameters = SeniorPlayTimeMaximizationModel:getModel():getModelParameters()
 
 ```
 

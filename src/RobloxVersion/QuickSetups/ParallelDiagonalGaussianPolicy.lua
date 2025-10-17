@@ -190,24 +190,24 @@ function ParallelDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		
 	end)
 	
+	NewParallelDiagonalGaussianPolicyQuickSetup:setResetFunction(function(agentIndex, currentFeatureVector, rewardValue)
+		
+		ParallelDiagonalGaussianPolicyQuickSetup.previousFeatureVectorDictionary = {}
+
+		ParallelDiagonalGaussianPolicyQuickSetup.previousActionMeanVectorDictionary = {}
+
+		ParallelDiagonalGaussianPolicyQuickSetup.previousActionNoiseVectorDictionary = {}
+
+		ParallelDiagonalGaussianPolicyQuickSetup.currentNumberOfReinforcementsDictionary  = {}
+
+		ParallelDiagonalGaussianPolicyQuickSetup.currentNumberOfEpisodesDictionary  = {}
+
+		for _, ExperienceReplay in ipairs(ParallelDiagonalGaussianPolicyQuickSetup.ExperienceReplayDictionary) do ExperienceReplay:reset() end
+		
+	end)
+	
 	return NewParallelDiagonalGaussianPolicyQuickSetup
 	
-end
-
-function ParallelDiagonalGaussianPolicyQuickSetup:reset()
-	
-	self.previousFeatureVectorDictionary = {}
-
-	self.previousActionMeanVectorDictionary = {}
-	
-	self.previousActionNoiseVectorDictionary = {}
-
-	self.currentNumberOfReinforcementsDictionary  = {}
-
-	self.currentNumberOfEpisodesDictionary  = {}
-	
-	for _, ExperienceReplay in ipairs(self.ExperienceReplayDictionary) do ExperienceReplay:reset() end
-		
 end
 
 return ParallelDiagonalGaussianPolicyQuickSetup

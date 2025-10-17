@@ -123,7 +123,7 @@ if (ProbabilityToLeavePredictionModelParameters) then ProbabilityToLeavePredicti
 
 --]]
 
-local NeuralNetwork = DataPredict.Models.TabularQLearning.new({maximumNumberOfIterations = 1})
+local TabularReinforcementLearning = DataPredict.Models.TabularQLearning.new({maximumNumberOfIterations = 1})
 
 NeuralNetwork:setStatesList(PlayerStatesList)
 
@@ -137,7 +137,7 @@ local JuniorPlayTimeMaximizationModel = DataPredict.QuickSetups.CategoricalPolic
 
 -- Inserting our Tabular Reinforcement Learning Model here.
 
-JuniorPlayTimeMaximizationModel:setModel(SimplePlayTimeMaximizationModel)
+JuniorPlayTimeMaximizationModel:setModel(TabularReinforcementLearning)
 
 ```
 

@@ -232,26 +232,26 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 	end)
 	
+	NewParallelCategoricalPolicyQuickSetup:setResetFunction(function()
+
+		NewParallelCategoricalPolicyQuickSetup.previousFeatureVectorDictionary = {}
+
+		NewParallelCategoricalPolicyQuickSetup.previousActionDictionary = {}
+
+		NewParallelCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = {}
+
+		NewParallelCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary  = {}
+
+		NewParallelCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary  = {}
+
+		for _, ExperienceReplay in ipairs(NewParallelCategoricalPolicyQuickSetup.ExperienceReplayDictionary) do ExperienceReplay:reset() end
+
+		for _, EligibilityTrace in ipairs(NewParallelCategoricalPolicyQuickSetup.EligibilityTraceDictionary) do EligibilityTrace:reset() end
+
+	end)
+	
 	return NewParallelCategoricalPolicyQuickSetup
 	
-end
-
-function ParallelCategoricalPolicyQuickSetup:reset()
-	
-	self.previousFeatureVectorDictionary = {}
-
-	self.previousActionDictionary = {}
-	
-	self.selectedActionCountVectorDictionary = {}
-
-	self.currentNumberOfReinforcementsDictionary  = {}
-
-	self.currentNumberOfEpisodesDictionary  = {}
-	
-	for _, ExperienceReplay in ipairs(self.ExperienceReplayDictionary) do ExperienceReplay:reset() end
-	
-	for _, EligibilityTrace in ipairs(self.EligibilityTraceDictionary) do EligibilityTrace:reset() end
-		
 end
 
 return ParallelCategoricalPolicyQuickSetup

@@ -36,7 +36,7 @@ setmetatable(SingleCategoricalPolicyQuickSetup, CategoricalPolicyBaseQuickSetup)
 
 local defaultCurrentNumberOfReinforcements = 0
 
-local defaultCurrentNumberOfEpisodes = 0
+local defaultCurrentNumberOfEpisodes = 1
 
 function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 	
@@ -90,7 +90,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 		
-		local actionIndex, selectedActionCountVector = NewSingleCategoricalPolicyQuickSetup:selectAction(actionVector, NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector, currentNumberOfReinforcements)
+		local actionIndex, selectedActionCountVector, currentEpsilon = NewSingleCategoricalPolicyQuickSetup:selectAction(actionVector, NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector, NewSingleCategoricalPolicyQuickSetup.currentEpsilon, NewSingleCategoricalPolicyQuickSetup.EpsilonValueScheduler, currentNumberOfReinforcements)
 
 		local action = ActionsList[actionIndex]
 
@@ -146,12 +146,28 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector = selectedActionCountVector
 		
+		NewSingleCategoricalPolicyQuickSetup.currentEpsilon = currentEpsilon
+		
 		if (NewSingleCategoricalPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 
 		if (returnOriginalOutput) then return actionVector end
 
 		return action, actionValue
 		
+	end)
+	
+	NewSingleCategoricalPolicyQuickSetup:setResetFunction(function()
+
+		NewSingleCategoricalPolicyQuickSetup.currentNumberOfReinforcements = 0
+
+		NewSingleCategoricalPolicyQuickSetup.currentNumberOfEpisodes = 1
+
+		NewSingleCategoricalPolicyQuickSetup.previousFeatureVector = nil
+
+		NewSingleCategoricalPolicyQuickSetup.previousAction = nil
+
+		NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector = nil
+
 	end)
 	
 	return NewSingleCategoricalPolicyQuickSetup

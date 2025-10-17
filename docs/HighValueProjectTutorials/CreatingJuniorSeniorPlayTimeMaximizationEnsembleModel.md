@@ -102,7 +102,7 @@ local JuniorPlayTimeMaximizationModel = DataPredict.QuickSetups.CategoricalPolic
 
 -- Inserting our Tabular Reinforcement Learning Model here.
 
-JuniorPlayTimeMaximizationModel:setModel(SimplePlayTimeMaximizationModel)
+JuniorPlayTimeMaximizationModel:setModel(JuniorPlayTimeMaximizationModel)
 
 ```
 
@@ -134,7 +134,7 @@ local SeniorPlayTimeMaximizationModel = DataPredict.QuickSetups.CategoricalPolic
 
 -- Inserting our Deep Reinforcement Learning Model here.
 
-SeniorPlayTimeMaximizationModel:setModel(DeepReinforcementLearningModel)
+SeniorPlayTimeMaximizationModel:setModel(SeniorReinforcementLearningModel)
 
 ```
 

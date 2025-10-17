@@ -110,6 +110,20 @@
 
   * Minimal implementation takes a minimum of 4 hours using DataPredict™.
 
+* [Creating Layered Junior-Senior Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingLayeredJuniorSeniorPlayTimeMaximizationEnsembleModel.md)
+
+  * Uses a combination of:
+ 
+    * Time-To-Leave Prediction Model
+   
+    * Probability-To-Leave Prediction Model
+
+    * Simple Play Time Maximization Model
+
+    * Deep Play Time Maximization Model
+
+  * Minimal implementation takes a minimum of 6 hours using DataPredict™.
+
 * [Creating Engagement Milestone Detection Ensemble Model](HighValueProjectTutorials/CreatingEngagementMilestoneDetectionEnsembleModel.md)
 
   * Uses a combination of:

@@ -76,7 +76,14 @@ table.insert(JuniorClassesList, "ConsultSenior")
 
 ```lua 
 
--- You can use Tabular SARSA here for safer learning. However, because our model is simple, it should be already be safe
+--[[
+
+  You can use Tabular SARSA here for safer learning. However, because our model is simple, it should be already be safe.
+
+  So, it is better to speed up our learning using Tabular Q-Learning.
+
+--]]
+
 local NeuralNetwork = DataPredict.Models.TabularQLearning.new({maximumNumberOfIterations = 1})
 
 NeuralNetwork:setStatesList(StatesList)

@@ -40,6 +40,10 @@ local defaultShareEligibilityTrace = false
 
 local defaultShareSelectedActionCountVector = false
 
+local defaultShareCurrentEpsilon = true
+
+local defaultShareEpsilonValueScheduler = true
+
 local defaultShareCurrentNumberOfReinforcements = false
 
 local defaultShareCurrentNumberOfEpisodes = false
@@ -55,17 +59,21 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 	NewQueuedCategoricalPolicyQuickSetup:setName("QueuedCategoricalPolicyQuickSetup")
 	
 	-- Share toggles
-	
+
 	NewQueuedCategoricalPolicyQuickSetup.shareExperienceReplay = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareExperienceReplay or defaultShareExperienceReplay)
-	
+
 	NewQueuedCategoricalPolicyQuickSetup.shareEligibilityTrace = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareEligibilityTrace or defaultShareEligibilityTrace)
-	
+
 	NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareSelectedActionCountVector or defaultShareSelectedActionCountVector)
-	
-	NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfReinforcements or defaultShareCurrentNumberOfReinforcements)
-	
+
+	NewQueuedCategoricalPolicyQuickSetup.shareCurrentEpsilon = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentEpsilon or defaultShareCurrentEpsilon)
+
+	NewQueuedCategoricalPolicyQuickSetup.shareEpsilonValueScheduler = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentEpsilon or defaultShareEpsilonValueScheduler)
+
 	NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfEpisodes = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfEpisodes or defaultShareCurrentNumberOfEpisodes)
-	
+
+	NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfReinforcements or defaultShareCurrentNumberOfReinforcements)
+
 	-- Dictionaries
 
 	NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary = parameterDictionary.ExperienceReplayDictionary or {}
@@ -75,11 +83,15 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 	NewQueuedCategoricalPolicyQuickSetup.previousFeatureVectorDictionary = parameterDictionary.previousFeatureVectorDictionary or {}
 
 	NewQueuedCategoricalPolicyQuickSetup.previousActionDictionary = parameterDictionary.previousActionDictionary or {}
-	
+
 	NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = parameterDictionary.selectedActionCountVectorDictionary or {}
-	
+
+	NewQueuedCategoricalPolicyQuickSetup.currentEpsilonDictionary = parameterDictionary.currentEpsilonDictionary or {}
+
+	NewQueuedCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary = parameterDictionary.EpsilonValueSchedulerDictionary or {}
+
 	NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary = parameterDictionary.currentNumberOfReinforcementsDictionary or {}
-	
+
 	NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary = parameterDictionary.currentNumberOfEpisodesDictionary or {}
 	
 	-- Queues
@@ -97,39 +109,51 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 	NewQueuedCategoricalPolicyQuickSetup:setReinforceFunction(function(agentIndex, currentFeatureVector, rewardValue, returnOriginalOutput)
 		
 		if (not NewQueuedCategoricalPolicyQuickSetup.isRunning) then error("Not currently running.") end
-		
+
 		local experienceReplayIndex = (NewQueuedCategoricalPolicyQuickSetup.shareExperienceReplay and 1) or agentIndex
-		
+
 		local eligibilityTraceIndex = (NewQueuedCategoricalPolicyQuickSetup.shareEligibilityTrace and 1) or agentIndex
-		
+
 		local selectedActionCountVectorIndex = (NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector and 1) or agentIndex
-		
+
+		local currentEpsilonIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentEpsilon and 1) or agentIndex
+
+		local epsilonValueSchedulerIndex = (NewQueuedCategoricalPolicyQuickSetup.shareEpsilonValueScheduler and 1) or agentIndex
+
+		local currentEpsilonSchedulerIndex = (NewQueuedCategoricalPolicyQuickSetup.shareEpsilonValueScheduler and 1) or agentIndex
+
 		local numberOfReinforcementsIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements and 1) or agentIndex
-		
+
 		local numberOfEpisodesIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfEpisodes and 1) or agentIndex
-		
+
 		local previousFeatureVectorDictionary = NewQueuedCategoricalPolicyQuickSetup.previousFeatureVectorDictionary
-		
+
 		local previousActionDictionary = NewQueuedCategoricalPolicyQuickSetup.previousActionDictionary
-		
+
 		local selectedActionCountVectorDictionary = NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary
-		
+
+		local currentEpsilonDictionary = NewQueuedCategoricalPolicyQuickSetup.currentEpsilonDictionary
+
 		local currentNumberOfReinforcementsDictionary = NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary
-		
+
 		local currentNumberOfEpisodesDictionary = NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary
-		
+
 		local previousFeatureVector = previousFeatureVectorDictionary[agentIndex]
-		
+
 		local previousAction = previousActionDictionary[agentIndex]
-		
+
 		local selectedActionCountVector = selectedActionCountVectorDictionary[selectedActionCountVectorIndex]
-		
+
+		local currentEpsilon = currentEpsilonDictionary[currentEpsilonIndex]
+
+		local EpsilonValueScheduler = NewQueuedCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary[epsilonValueSchedulerIndex]
+
 		local ExperienceReplay = NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
-		
+
 		local EligibilityTrace = NewQueuedCategoricalPolicyQuickSetup.EligibilityTraceDictionary[eligibilityTraceIndex]
-		
-		local currentNumberOfReinforcements = currentNumberOfReinforcementsDictionary[numberOfReinforcementsIndex] or 0
-		
+
+		local currentNumberOfReinforcements = (currentNumberOfReinforcementsDictionary[numberOfReinforcementsIndex] or 0) + 1
+
 		local currentNumberOfEpisodes = currentNumberOfEpisodesDictionary[numberOfEpisodesIndex] or 1
 		
 		local terminalStateValue 

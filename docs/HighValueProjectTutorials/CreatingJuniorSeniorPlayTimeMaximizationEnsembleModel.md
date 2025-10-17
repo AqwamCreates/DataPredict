@@ -62,6 +62,8 @@ local StatesList = {
   "PerformingQuest",
   "AttackingEnemies",
   "AttackingResourceEntities",
+  "Retreating",
+  "Rewarded",
   "Left",
   "UnknownDisconnect",
 
@@ -199,6 +201,8 @@ local function run(Player)
 
         playerDataVector = {playerDataArray}
 
+        if (isJuniorShouldBeIndepdendent) and (isSeniorConsulted) then JuniorPlayTimeMaximizationModel.previousAction = eventName end
+
         eventName = JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
 
         isSeniorConsulted = (eventName == "ConsultSenior")
@@ -206,6 +210,12 @@ local function run(Player)
         if (isSeniorConsulted) then
 
            eventName = SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+
+        else
+
+            -- This is because we only use senior when consulted, and hence need to force setting previous action value.
+
+             SeniorPlayTimeMaximizationModel.previousAction = eventName 
 
         end
 
@@ -217,23 +227,23 @@ local function run(Player)
 
         isPlayerInServer = checkIfPlayerIsInServer(Player)
 
-        if (activatePlayTimeMaximization) then
-
-          -- Player leaving the game is more of a "rarer" and "extremely undesirable" event, therefore a very large negative value is used.
-
-          rewardValue = (isPlayerInServer and 20) or -100
-
-        end
-
-        if (isJuniorShouldBeIndepdendent) and (isSeniorConsulted) then JuniorPlayTimeMaximizationModel.previousAction = eventName end
-
-        SeniorPlayTimeMaximizationModel.previousAction = eventName -- This is because we only use senior when consulted, and hence need to force setting previous action value.
-
-        JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
-
-        SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+        rewardValue = (isPlayerInServer and 20) or -100
 
     end
+
+    playerState = getPlayerState(Player)
+
+    playerDataArray = getPlayerDataArray(Player)
+
+    playerDataVector = {playerDataArray}
+
+    if (isJuniorShouldBeIndepdendent) and (isSeniorConsulted) then JuniorPlayTimeMaximizationModel.previousAction = eventName end
+
+    SeniorPlayTimeMaximizationModel.previousAction = eventName 
+
+    JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
+
+    SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
 end
 

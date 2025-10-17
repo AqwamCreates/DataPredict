@@ -255,8 +255,6 @@ ProbabilityToLeavePredictionModelParameters = ProbabilityToLeavePredictionModel:
 
 local ModelParameters = PlayTimeMaximizationModel:getModel():getModelParameters()
 
-ModelParameters = NeuralNetwork:getModelParameters()
-
 ```
 
 That's all for today! See you later!

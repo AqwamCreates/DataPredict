@@ -17,22 +17,6 @@
 
 ```lua
 
--- This one is for our junior (tabular) model.
-
-local StatesList = {
-
-  "",
-  "Idle",
-  "Active",
-  "QuestEvent",
-  "ItemSpawnEvent",
-  "BossSpawnEvent",
-  "LimitedTimeQuestEvent",
-  "LeftAfterReward",
-  "Left",
-
-}
-
 -- This one is for our senior (deep) model.
 
 local function getPlayerDataVector(Player)
@@ -52,9 +36,7 @@ local function getPlayerDataVector(Player)
 
 end
 
--- This is for both our senior and junior models.
-
-local PlClassesList = {
+local SeniorClassesList = {
 
   "NoEvent",
   "FreeGiftEvent",
@@ -67,6 +49,27 @@ local PlClassesList = {
   "LimitedTimeBossSpawnEvent",
 
 }
+
+-- This one is for our junior (tabular) model.
+
+local StatesList = {
+
+  "Idle",
+  "AwayFromKeyboard",
+  "Exploring",
+  "GatheringItems",
+  "GoingToQuestLocation",
+  "PerformingQuest",
+  "AttackingEnemies",
+  "AttackingResourceEntities",
+  "Left",
+  "UnknownDisconnect",
+
+}
+
+local JuniorClassesList = table.copy(SeniorClassesList)
+
+table.insert(JuniorClassesList, "ConsultSenior")
 
 ```
 
@@ -153,6 +156,10 @@ end
 
 ```lua
 
+-- The switch here is for how often you want the junior to be reliant on the senior.
+
+local isJuniorShouldBeIndepdendent = true
+
 local eventFunctionDictionary = {
 
   ["NoEvent"] = nil,
@@ -178,6 +185,8 @@ local function run(Player)
 
     local playerDataVector
 
+    local isSeniorConsulted
+
     local eventName
 
     local eventFunction
@@ -188,22 +197,21 @@ local function run(Player)
 
         playerDataArray = getPlayerDataArray(Player)
 
-        snapshotData(playerDataArray)
-
         playerDataVector = {playerDataArray}
 
-        predictedTimeToLeave = TimeToLeavePredictionModel:predict(playerDataArray)[1][1]
+        eventName = JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
 
-        predictedProbabilityToLeave = ProbabilityToLeavePredictionModel:predict(playerDataArray)[1][1]
+        isSeniorConsulted = (eventName == "ConsultSenior")
 
-        activatePlayTimeMaximization = (predictedProbabilityToLeave >= 0.5) or (predictedTimeToLeave <= 5)
+        if (isSeniorConsulted) then
 
-        eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+           eventName = SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+
+        end
 
         eventFunction = eventFunctionDictionary[eventName]
 
         if (eventFunction) then eventFunction() end
-
 
         task.wait(30)
 
@@ -216,6 +224,14 @@ local function run(Player)
           rewardValue = (isPlayerInServer and 20) or -100
 
         end
+
+        if (isJuniorShouldBeIndepdendent) and (isSeniorConsulted) then JuniorPlayTimeMaximizationModel.previousAction = eventName end
+
+        SeniorPlayTimeMaximizationModel.previousAction = eventName -- This is because we only use senior when consulted, and hence need to force setting previous action value.
+
+        JuniorPlayTimeMaximizationModel:reinforce(playerState, rewardValue)
+
+        SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
     end
 
@@ -231,13 +247,9 @@ We then need to get our model parameters. If you only kept the quick setup and d
 
 --]]
 
-local JuniorModelParameters = JuniorPlayTimeMaximizationModel:getModelParameters()
+local JuniorModelParameters = JuniorPlayTimeMaximizationModel:getModel():getModelParameters()
 
-local NeuralNetwork = DeepReinforcementLearningModel:getModel()
-
--- Notice that we must get it from the Neural Network model.
-
-ModelParameters = NeuralNetwork:getModelParameters()
+local SeniorModelParameters = SeniorPlayTimeMaximizationModel:getModel():getModelParameters()
 
 ```
 

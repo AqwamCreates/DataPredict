@@ -142,7 +142,7 @@ local function calculateUpperConfidenceBound(actionVector, cValue, selectedActio
 	
 end
 
-function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActionCountVector, currentNumberOfReinforcements, currentEpsilon, EpsilonValueScheduler)
+function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
 	
 	local actionSelectionFunction = self.actionSelectionFunction
 	

@@ -76,7 +76,7 @@ table.insert(JuniorClassesList, "ConsultSenior")
 
 ```
 
-### Constructing Simple Play Time Maximization Model
+### Constructing Junior Play Time Maximization Model
 
 ```lua 
 
@@ -88,7 +88,7 @@ table.insert(JuniorClassesList, "ConsultSenior")
 
 --]]
 
-local NeuralNetwork = DataPredict.Models.TabularQLearning.new({maximumNumberOfIterations = 1})
+local TabularReinforcementLearning = DataPredict.Models.TabularQLearning.new({maximumNumberOfIterations = 1})
 
 NeuralNetwork:setStatesList(PlayerStatesList)
 
@@ -102,11 +102,11 @@ local JuniorPlayTimeMaximizationModel = DataPredict.QuickSetups.CategoricalPolic
 
 -- Inserting our Tabular Reinforcement Learning Model here.
 
-JuniorPlayTimeMaximizationModel:setModel(JuniorPlayTimeMaximizationModel)
+JuniorPlayTimeMaximizationModel:setModel(TabularReinforcementLearning)
 
 ```
 
-### Constructing Deep Play Time Maximization Model
+### Constructing Senior Play Time Maximization Model
 
 ```lua 
 
@@ -134,7 +134,7 @@ local SeniorPlayTimeMaximizationModel = DataPredict.QuickSetups.CategoricalPolic
 
 -- Inserting our Deep Reinforcement Learning Model here.
 
-SeniorPlayTimeMaximizationModel:setModel(SeniorReinforcementLearningModel)
+SeniorPlayTimeMaximizationModel:setModel(DeepReinforcementLearningModel)
 
 ```
 

@@ -255,15 +255,9 @@ ProbabilityToLeavePredictionModelParameters = ProbabilityToLeavePredictionModel:
 
 We then need to get our Neural Network model from the "Play Time Maximization Model". If you only kept the quick setup and discarded the rest, don't worry!
 
-We can just do getModel() twice to get our Neural Network model.
-
 --]]
 
-local DeepReinforcementLearningModel =  PlayTimeMaximizationModel:getModel()
-
-local NeuralNetwork = DeepReinforcementLearningModel:getModel()
-
--- Notice that we must get it from the Neural Network model.
+local ModelParameters = PlayTimeMaximizationModel:getModel():getModelParameters()
 
 ModelParameters = NeuralNetwork:getModelParameters()
 

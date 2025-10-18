@@ -526,10 +526,20 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 end
 
 function OneClassSupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
+	
+	local ModelParameters = self.ModelParameters
+
+	if (not ModelParameters) then
+
+		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+
+		self.ModelParameters = ModelParameters
+
+	end
 
 	local mappedFeatureMatrix = mappingList[self.kernelFunction](featureMatrix, self.kernelParameters)
 
-	local originalPredictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, self.ModelParameters)
+	local originalPredictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
 
 	if (typeof(originalPredictedVector) == "number") then originalPredictedVector = {{originalPredictedVector}} end
 

@@ -325,12 +325,20 @@ function KNearestNeighboursRegressor:train(featureMatrix, labelVector)
 end
 
 function KNearestNeighboursRegressor:predict(featureMatrix, returnOriginalOutput)
+	
+	local ModelParameters = self.ModelParameters
 
-	if (not self.ModelParameters) then error("No model parameters.") end
+	if (not ModelParameters) then
+		
+		local unknownValue = (returnOriginalOutput and math.huge) or 0
+		
+		return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, unknownValue)
+		
+	end
 
-	local storedFeatureMatrix = self.ModelParameters[1]
+	local storedFeatureMatrix = ModelParameters[1]
 
-	local storedLabelVector = self.ModelParameters[2]
+	local storedLabelVector = ModelParameters[2]
 
 	local kValue = self.kValue
 

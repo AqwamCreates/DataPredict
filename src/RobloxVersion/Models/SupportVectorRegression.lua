@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
 local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 SupportVectorRegressionModel = {}
@@ -33,8 +35,6 @@ SupportVectorRegressionModel = {}
 SupportVectorRegressionModel.__index = SupportVectorRegressionModel
 
 setmetatable(SupportVectorRegressionModel, IterativeMethodBaseModel)
-
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaximumNumberOfIterations = 500
 

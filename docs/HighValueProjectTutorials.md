@@ -96,7 +96,7 @@
 
   * Minimal implementation takes a minimum of 3 hours using DataPredict™.
 
-* [Creating Layered Deep Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingLayeredDeepPlayTimeMaximizationEnsembleModel.md)
+* [Creating Gated Deep Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingGatedDeepPlayTimeMaximizationEnsembleModel.md)
 
   * Uses a combination of:
  
@@ -110,7 +110,7 @@
 
   * Minimal implementation takes a minimum of 4 hours using DataPredict™.
 
-* [Creating Layered Junior-Senior Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingLayeredJuniorSeniorPlayTimeMaximizationEnsembleModel.md)
+* [Creating Gated Junior-Senior Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingGatedJuniorSeniorPlayTimeMaximizationEnsembleModel.md)
 
   * Uses a combination of:
  

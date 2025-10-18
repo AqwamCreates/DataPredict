@@ -1,4 +1,4 @@
-# Creating Layered Junior-Senior Play Time Maximization Ensemble Model
+# Creating Gated Junior-Senior Play Time Maximization Ensemble Model
 
 ## High-Level Explanation
 

@@ -431,11 +431,11 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
-	local costFunctionDerivatives
-
 	local mappedFeatureMatrix = mappingList[self.kernelFunction](featureMatrix, self.kernelParameters)
 
 	local kernelMatrix = kernelFunctionList[self.kernelFunction](featureMatrix, self.kernelParameters)
+	
+	local ModelParameters = self.ModelParameters
 
 	repeat
 
@@ -445,7 +445,7 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return calculateCost(self.ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, self.cValue, self.epsilon)
+			return calculateCost(ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, self.cValue, self.epsilon)
 
 		end)
 
@@ -457,15 +457,19 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
 		end
 
-		self.ModelParameters = calculateModelParameters(self.ModelParameters, mappedFeatureMatrix, labelVector, self.cValue, self.epsilon)
+		ModelParameters = calculateModelParameters(ModelParameters, mappedFeatureMatrix, labelVector, self.cValue, self.epsilon)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
-	if (cost == math.huge) then
+	if (self.isOutputPrinted) then
 
-		warn("The model diverged! Please repeat the experiment or change the argument values.")
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 
 	end
+	
+	self.ModelParameters = ModelParameters
 
 	return costArray
 

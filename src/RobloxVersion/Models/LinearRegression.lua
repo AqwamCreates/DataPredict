@@ -200,23 +200,9 @@ end
 
 function LinearRegressionModel:train(featureMatrix, labelVector)
 
-	local cost
-
-	local costArray = {}
-
-	local numberOfIterations = 0
-
-	local numberOfData = #featureMatrix
-	
-	local maximumNumberOfIterations = self.maximumNumberOfIterations
-
-	local lossFunction = self.lossFunction
-	
-	local Optimizer = self.Optimizer
-
-	local ModelParameters = self.ModelParameters
-
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
+	
+	local ModelParameters = self.ModelParameters
 
 	if (ModelParameters) then
 
@@ -227,6 +213,16 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
 
 	end
+	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
+
+	local Optimizer = self.Optimizer
+
+	local costArray = {}
+
+	local numberOfIterations = 0
+	
+	local cost
 
 	repeat
 

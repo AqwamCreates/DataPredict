@@ -98,6 +98,8 @@ end
 
 function OneClassPassiveAggressiveClassifierModel:train(featureMatrix, labelVector)
 
+	local ModelParameters = self.ModelParameters
+	
 	local numberOfData = #featureMatrix
 	
 	if (labelVector) then
@@ -109,8 +111,6 @@ function OneClassPassiveAggressiveClassifierModel:train(featureMatrix, labelVect
 		labelVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 1)
 		
 	end
-	
-	local ModelParameters = self.ModelParameters
 
 	if (ModelParameters) then
 
@@ -236,7 +236,13 @@ function OneClassPassiveAggressiveClassifierModel:predict(featureMatrix, returnO
 
 	local ModelParameters = self.ModelParameters
 
-	if (not ModelParameters) then error("No model parameters.") end
+	if (not ModelParameters) then
+
+		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+
+		self.ModelParameters = ModelParameters
+
+	end
 
 	local outputVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
 

@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require("AqwamTensorLibraryL")
+
 local BaseModel = require("Model_BaseModel")
 
 NormalLinearRegressionModel = {}
@@ -33,8 +35,6 @@ NormalLinearRegressionModel = {}
 NormalLinearRegressionModel.__index = NormalLinearRegressionModel
 
 setmetatable(NormalLinearRegressionModel, BaseModel)
-
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 function NormalLinearRegressionModel.new(parameterDictionary)
 	
@@ -56,7 +56,7 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 	
 	local inverseDotProduct = AqwamTensorLibrary:inverse(dotProductFeatureMatrix)
 	
-	if (inverseDotProduct == nil) then error("Could not find the model parameters!") end
+	if (not inverseDotProduct) then error("Could not find the model parameters!") end
 	
 	local dotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
 	
@@ -68,7 +68,17 @@ end
 
 function NormalLinearRegressionModel:predict(featureMatrix)
 	
-	return AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	local ModelParameters = self.ModelParameters
+
+	if (not ModelParameters) then
+
+		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+
+		self.ModelParameters = ModelParameters
+
+	end
+	
+	return AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
 	
 end
 

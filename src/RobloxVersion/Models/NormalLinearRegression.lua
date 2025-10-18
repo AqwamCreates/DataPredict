@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
 local BaseModel = require(script.Parent.BaseModel)
 
 NormalLinearRegressionModel = {}
@@ -33,8 +35,6 @@ NormalLinearRegressionModel = {}
 NormalLinearRegressionModel.__index = NormalLinearRegressionModel
 
 setmetatable(NormalLinearRegressionModel, BaseModel)
-
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 function NormalLinearRegressionModel.new(parameterDictionary)
 	

@@ -265,6 +265,215 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 end
 
 function LinearRegressionModel:predict(featureMatrix)
+	
+	local ModelParameters = self.ModelParameters
+	
+	if (not ModelParameters) then
+		
+		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+		
+		self.ModelParameters = ModelParameters
+		
+	end
+
+	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
+
+	if (type(predictedVector) == "number") then predictedVector = {{predictedVector}} end
+
+	return predictedVector
+
+end
+
+return LinearRegressionModel
+	local averageCost = totalCost / #labelVector
+
+	return averageCost
+
+end
+
+function LinearRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+
+	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
+
+	if (saveFeatureMatrix) then 
+
+		self.featureMatrix = featureMatrix
+
+	end
+
+	return hypothesisVector
+
+end
+
+function LinearRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
+
+	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+
+	local featureMatrix = self.featureMatrix
+
+	if (featureMatrix == nil) then error("Feature matrix not found.") end
+
+	local costFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossMatrix)
+
+	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrix end
+
+	return costFunctionDerivativeMatrix
+
+end
+
+function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+
+	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
+	
+	local ModelParameters = self.ModelParameters
+	
+	local Regularizer = self.Regularizer
+	
+	local Optimizer = self.Optimizer
+	
+	local learningRate = self.learningRate
+
+	if (Regularizer) then
+
+		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
+
+		costFunctionDerivativeMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
+
+	end
+
+	costFunctionDerivativeMatrix = AqwamTensorLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
+
+	if (Optimizer) then 
+
+		costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix, ModelParameters) 
+
+	else
+
+		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrix)
+
+	end
+
+	self.ModelParameters = AqwamTensorLibrary:subtract(ModelParameters, costFunctionDerivativeMatrix)
+
+end
+
+function LinearRegressionModel:update(lossMatrix, clearFeatureMatrix)
+
+	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+
+	local numberOfData = #lossMatrix
+
+	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
+
+	self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+
+	if (clearFeatureMatrix) then self.featureMatrix = nil end
+
+end
+
+function LinearRegressionModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
+
+	local NewLinearRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
+
+	setmetatable(NewLinearRegressionModel, LinearRegressionModel)
+	
+	NewLinearRegressionModel:setName("LinearRegression")
+
+	NewLinearRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+
+	NewLinearRegressionModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
+
+	NewLinearRegressionModel.Optimizer = parameterDictionary.Optimizer
+
+	NewLinearRegressionModel.Regularizer = parameterDictionary.Regularizer
+
+	return NewLinearRegressionModel
+
+end
+
+function LinearRegressionModel:setOptimizer(Optimizer)
+
+	self.Optimizer = Optimizer
+
+end
+
+function LinearRegressionModel:setRegularizer(Regularizer)
+
+	self.Regularizer = Regularizer
+
+end
+
+function LinearRegressionModel:train(featureMatrix, labelVector)
+
+	local cost
+
+	local costArray = {}
+
+	local numberOfIterations = 0
+
+	local numberOfData = #featureMatrix
+	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
+
+	local lossFunction = self.lossFunction
+	
+	local Optimizer = self.Optimizer
+
+	local ModelParameters = self.ModelParameters
+
+	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
+
+	if (ModelParameters) then
+
+		if (#featureMatrix[1] ~= #ModelParameters) then error("The number of features are not the same as the model parameters!") end
+
+	else
+
+		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+
+	end
+
+	repeat
+
+		numberOfIterations = numberOfIterations + 1
+
+		self:iterationWait()
+
+		local hypothesisVector = self:calculateHypothesisVector(featureMatrix, true)
+
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
+
+			return self:calculateCost(hypothesisVector, labelVector)
+
+		end)
+
+		if cost then 
+
+			table.insert(costArray, cost)
+
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+
+		end
+
+		local lossVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
+
+		self:update(lossVector, true)
+
+	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+
+	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values") end
+
+	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
+
+	return costArray
+
+end
+
+function LinearRegressionModel:predict(featureMatrix)
 
 	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 

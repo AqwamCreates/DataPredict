@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
 local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 OneClassSupportVectorMachineModel = {}
@@ -33,8 +35,6 @@ OneClassSupportVectorMachineModel = {}
 OneClassSupportVectorMachineModel.__index = OneClassSupportVectorMachineModel
 
 setmetatable(OneClassSupportVectorMachineModel, IterativeMethodBaseModel)
-
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -512,10 +512,12 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 		end
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	
+	if (self.isOutputPrinted) then
 
-	if (cost == math.huge) then
+		if (cost == math.huge) then warn("The model diverged.") end
 
-		warn("The model diverged! Please repeat the experiment or change the argument values.")
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 
 	end
 	

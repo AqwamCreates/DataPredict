@@ -1,4 +1,4 @@
-# Creating Layered Deep Play Time Maximization Ensemble Model
+# Creating Gated Deep Play Time Maximization Ensemble Model
 
 ## High-Level Explanation
 

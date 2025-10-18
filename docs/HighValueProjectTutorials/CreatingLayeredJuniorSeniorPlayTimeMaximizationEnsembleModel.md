@@ -353,9 +353,9 @@ local TimeToLeavePredictionModelParameters = TimeToLeavePredictionModel:getModel
 
 local ProbabilityToLeavePredictionModelParameters = ProbabilityToLeavePredictionModel:getModelParameters()
 
-local ModelParameters = JuniorPlayTimeMaximizationModel:getModel():getModelParameters()
+local JuniorModelParameters = JuniorPlayTimeMaximizationModel:getModel():getModelParameters()
 
-local ModelParameters = SeniorPlayTimeMaximizationModel:getModel():getModelParameters()
+local SeniorModelParameters = SeniorPlayTimeMaximizationModel:getModel():getModelParameters()
 
 ```
 

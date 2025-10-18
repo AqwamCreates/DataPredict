@@ -409,9 +409,13 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
 	end
 
-	if (self.ModelParameters) then
+	local numberOfFeatures = #featureMatrix[1]
 
-		if (#featureMatrix[1] ~= #self.ModelParameters) then
+	local ModelParameters = self.ModelParameters
+
+	if (ModelParameters) then
+
+		if (numberOfFeatures ~= #ModelParameters) then
 
 			error("The number of features is not the same as the model parameters!")
 
@@ -419,15 +423,9 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
 	else
 
-		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+		ModelParameters = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
 
 	end
-
-	local cost
-
-	local costArray = {}
-
-	local numberOfIterations = 0
 
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
@@ -444,6 +442,12 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
 
 	local kernelMatrix = kernelFunctionList[kernelFunction](featureMatrix, kernelParameters)
+
+	local costArray = {}
+
+	local numberOfIterations = 0
+	
+	local cost
 
 	repeat
 

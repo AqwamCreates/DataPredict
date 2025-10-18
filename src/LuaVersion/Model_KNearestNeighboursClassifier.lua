@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
+
 local BaseModel = require("Model_BaseModel")
 
 KNearestNeighboursClassifier = {}
@@ -33,8 +35,6 @@ KNearestNeighboursClassifier = {}
 KNearestNeighboursClassifier.__index = KNearestNeighboursClassifier
 
 setmetatable(KNearestNeighboursClassifier, BaseModel)
-
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local defaultKValue = 3
 
@@ -335,11 +335,21 @@ end
 
 function KNearestNeighboursClassifier:predict(featureMatrix, returnOriginalOutput)
 
-	if (not self.ModelParameters) then error("No model parameters.") end
+	local ModelParameters = self.ModelParameters
+	
+	local numberOfData = #featureMatrix
 
-	local storedFeatureMatrix = self.ModelParameters[1]
+	if (not ModelParameters) then 
 
-	local storedLabelVector = self.ModelParameters[2]
+		local unknownValue = (returnOriginalOutput and math.huge) or nil
+
+		return AqwamTensorLibrary:createTensor({numberOfData, 1}, unknownValue) 
+
+	end
+
+	local storedFeatureMatrix = ModelParameters[1]
+
+	local storedLabelVector = ModelParameters[2]
 
 	local kValue = self.kValue
 
@@ -350,16 +360,18 @@ function KNearestNeighboursClassifier:predict(featureMatrix, returnOriginalOutpu
 	local distanceMatrix = createDistanceMatrix(featureMatrix, storedFeatureMatrix, distanceFunction)
 
 	if (returnOriginalOutput) then return distanceMatrix end
+	
+	local numberOfOtherData = #storedFeatureMatrix
 
 	local predictedLabelVector = {}
 
-	for i = 1, #featureMatrix, 1 do
+	for i = 1, numberOfData, 1 do
 
 		local distanceVector = {deepCopyTable(distanceMatrix[i])}
 
 		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
 
-		mergeSort(distanceVector, sortedLabelVectorLowestToHighest, 1, #distanceVector[1])
+		mergeSort(distanceVector, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
 
 		local majorityClass = getMajorityClass(sortedLabelVectorLowestToHighest, distanceVector, kValue, useWeightedDistance)
 

@@ -346,7 +346,7 @@ function KNearestNeighboursRegressor:predict(featureMatrix, returnOriginalOutput
 
 	if (returnOriginalOutput) then return distanceMatrix end
 	
-	local numberOfOtherData = #distanceMatrix[1]
+	local numberOfOtherData = #storedFeatureMatrix
 
 	local predictedLabelVector = {}
 

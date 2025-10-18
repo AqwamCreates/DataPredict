@@ -56,7 +56,7 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 	
 	local inverseDotProduct = AqwamTensorLibrary:inverse(dotProductFeatureMatrix)
 	
-	if (inverseDotProduct == nil) then error("Could not find the model parameters!") end
+	if (not inverseDotProduct) then error("Could not find the model parameters!") end
 	
 	local dotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
 	

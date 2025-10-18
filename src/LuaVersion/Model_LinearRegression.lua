@@ -265,8 +265,18 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 end
 
 function LinearRegressionModel:predict(featureMatrix)
+	
+	local ModelParameters = self.ModelParameters
+	
+	if (not ModelParameters) then
+		
+		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+		
+		self.ModelParameters = ModelParameters
+		
+	end
 
-	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
 
 	if (type(predictedVector) == "number") then predictedVector = {{predictedVector}} end
 

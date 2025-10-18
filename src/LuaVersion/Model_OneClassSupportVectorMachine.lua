@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
+
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 OneClassSupportVectorMachineModel = {}
@@ -33,8 +35,6 @@ OneClassSupportVectorMachineModel = {}
 OneClassSupportVectorMachineModel.__index = OneClassSupportVectorMachineModel
 
 setmetatable(OneClassSupportVectorMachineModel, IterativeMethodBaseModel)
-
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -512,10 +512,12 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 		end
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	
+	if (self.isOutputPrinted) then
 
-	if (cost == math.huge) then
+		if (cost == math.huge) then warn("The model diverged.") end
 
-		warn("The model diverged! Please repeat the experiment or change the argument values.")
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 
 	end
 	
@@ -526,10 +528,20 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 end
 
 function OneClassSupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
+	
+	local ModelParameters = self.ModelParameters
+
+	if (not ModelParameters) then
+
+		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+
+		self.ModelParameters = ModelParameters
+
+	end
 
 	local mappedFeatureMatrix = mappingList[self.kernelFunction](featureMatrix, self.kernelParameters)
 
-	local originalPredictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, self.ModelParameters)
+	local originalPredictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
 
 	if (typeof(originalPredictedVector) == "number") then originalPredictedVector = {{originalPredictedVector}} end
 

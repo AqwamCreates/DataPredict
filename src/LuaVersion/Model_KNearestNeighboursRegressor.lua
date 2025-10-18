@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require("Model_BaseModel")
+local BaseModel = require(Model_BaseModel")
 
 KNearestNeighboursRegressor = {}
 
@@ -346,7 +346,7 @@ function KNearestNeighboursRegressor:predict(featureMatrix, returnOriginalOutput
 
 	if (returnOriginalOutput) then return distanceMatrix end
 	
-	local numberOfOtherData = #distanceMatrix[1]
+	local numberOfOtherData = #storedFeatureMatrix
 
 	local predictedLabelVector = {}
 

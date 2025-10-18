@@ -342,7 +342,13 @@ function NearestCentroidModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local ModelParameters = self.ModelParameters
 
-	if (not ModelParameters) then error("No model parameters.") end
+	if (not ModelParameters) then 
+		
+		local unknownValue = (returnOriginalOutput and math.huge) or nil
+		
+		return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, unknownValue) 
+		
+	end
 
 	local centroidMatrix = ModelParameters[1]
 

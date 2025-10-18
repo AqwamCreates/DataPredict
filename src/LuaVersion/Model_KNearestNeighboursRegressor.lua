@@ -345,6 +345,8 @@ function KNearestNeighboursRegressor:predict(featureMatrix, returnOriginalOutput
 	local distanceMatrix = createDistanceMatrix(featureMatrix, storedFeatureMatrix, distanceFunction)
 
 	if (returnOriginalOutput) then return distanceMatrix end
+	
+	local numberOfOtherData = #distanceMatrix[1]
 
 	local predictedLabelVector = {}
 
@@ -354,7 +356,7 @@ function KNearestNeighboursRegressor:predict(featureMatrix, returnOriginalOutput
 
 		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
 
-		mergeSort(distanceVector, sortedLabelVectorLowestToHighest, 1, #distanceVector[1])
+		mergeSort(distanceVector, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
 
 		local averageValue = getAverageValue(sortedLabelVectorLowestToHighest, distanceVector, kValue, useWeightedDistance)
 

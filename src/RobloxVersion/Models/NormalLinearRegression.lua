@@ -68,7 +68,17 @@ end
 
 function NormalLinearRegressionModel:predict(featureMatrix)
 	
-	return AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	local ModelParameters = self.ModelParameters
+
+	if (not ModelParameters) then
+
+		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+
+		self.ModelParameters = ModelParameters
+
+	end
+	
+	return AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
 	
 end
 

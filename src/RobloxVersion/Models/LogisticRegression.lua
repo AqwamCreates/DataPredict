@@ -302,7 +302,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		
 		if (cost == math.huge) then warn("The model diverged.") end
 		
-		if (cost ~= cost) then warn("The model produced nan values (not a number).") end
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 		
 	end
 

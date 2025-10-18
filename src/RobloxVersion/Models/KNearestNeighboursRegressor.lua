@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
 local BaseModel = require(script.Parent.BaseModel)
 
 KNearestNeighboursRegressor = {}
@@ -33,8 +35,6 @@ KNearestNeighboursRegressor = {}
 KNearestNeighboursRegressor.__index = KNearestNeighboursRegressor
 
 setmetatable(KNearestNeighboursRegressor, BaseModel)
-
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultKValue = 3
 
@@ -328,13 +328,7 @@ function KNearestNeighboursRegressor:predict(featureMatrix, returnOriginalOutput
 	
 	local ModelParameters = self.ModelParameters
 
-	if (not ModelParameters) then
-		
-		local unknownValue = (returnOriginalOutput and math.huge) or 0
-		
-		return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, unknownValue)
-		
-	end
+	if (not ModelParameters) then return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, math.huge) end
 
 	local storedFeatureMatrix = ModelParameters[1]
 

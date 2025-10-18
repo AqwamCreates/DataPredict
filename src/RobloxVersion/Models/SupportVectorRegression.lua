@@ -472,10 +472,20 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 end
 
 function SupportVectorRegressionModel:predict(featureMatrix)
+	
+	local ModelParameters = self.ModelParameters
+
+	if (not ModelParameters) then
+
+		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+
+		self.ModelParameters = ModelParameters
+
+	end
 
 	local mappedFeatureMatrix = mappingList[self.kernelFunction](featureMatrix, self.kernelParameters)
 
-	local predictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, self.ModelParameters)
+	local predictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
 
 	if (typeof(predictedVector) == "number") then predictedVector = {{predictedVector}} end
 

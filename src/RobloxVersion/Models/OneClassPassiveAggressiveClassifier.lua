@@ -30,17 +30,15 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
-OneClassPassiveAggressiveClassifierModel = {}
+PassiveAggressiveClassifierModel = {}
 
-OneClassPassiveAggressiveClassifierModel.__index = OneClassPassiveAggressiveClassifierModel
+PassiveAggressiveClassifierModel.__index = PassiveAggressiveClassifierModel
 
-setmetatable(OneClassPassiveAggressiveClassifierModel, IterativeMethodBaseModel)
+setmetatable(PassiveAggressiveClassifierModel, IterativeMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
 local defaultVariant = "0"
-
-local defaultEpsilon = 0
 
 local defaultCValue = 1
 
@@ -74,43 +72,33 @@ local tauFunctionList = {
 
 }
 
-function OneClassPassiveAggressiveClassifierModel.new(parameterDictionary)
-
+function PassiveAggressiveClassifierModel.new(parameterDictionary)
+	
 	parameterDictionary = parameterDictionary or {}
-
+	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewOneClassPassiveAggressiveClassifierModel = IterativeMethodBaseModel.new(parameterDictionary)
+	local NewPassiveAggressiveClassifierModel = IterativeMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewOneClassPassiveAggressiveClassifierModel, OneClassPassiveAggressiveClassifierModel)
-
-	NewOneClassPassiveAggressiveClassifierModel:setName("OneClassPassiveAggressiveClassifier")
-
-	NewOneClassPassiveAggressiveClassifierModel.variant = parameterDictionary.variant or defaultVariant
+	setmetatable(NewPassiveAggressiveClassifierModel, PassiveAggressiveClassifierModel)
 	
-	NewOneClassPassiveAggressiveClassifierModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewPassiveAggressiveClassifierModel:setName("PassiveAggressiveClassifier")
+	
+	NewPassiveAggressiveClassifierModel.variant = parameterDictionary.variant or defaultVariant
 
-	NewOneClassPassiveAggressiveClassifierModel.cValue = parameterDictionary.cValue or defaultCValue
+	NewPassiveAggressiveClassifierModel.cValue = parameterDictionary.cValue or defaultCValue
 
-	return NewOneClassPassiveAggressiveClassifierModel
+	return NewPassiveAggressiveClassifierModel
 
 end
 
-function OneClassPassiveAggressiveClassifierModel:train(featureMatrix, labelVector)
+function PassiveAggressiveClassifierModel:train(featureMatrix, labelVector)
 
 	local ModelParameters = self.ModelParameters
 	
 	local numberOfData = #featureMatrix
 	
-	if (labelVector) then
-		
-		if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
-		
-	else
-		
-		labelVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 1)
-		
-	end
+	if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
 
 	if (ModelParameters) then
 
@@ -121,61 +109,49 @@ function OneClassPassiveAggressiveClassifierModel:train(featureMatrix, labelVect
 		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
 
 	end
-
+	
 	local tauFunction = tauFunctionList[self.variant]
-
+	
 	if (not tauFunction) then error("Unknown variant.") end
-
+	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
-	local epsilon = self.epsilon
-
 	local cValue = self.cValue
-
+	
 	local costArray = {}
 	
 	local numberOfIterations = 0
-
+	
 	local totalLoss
-
+	
 	local featureVector
-
+	
 	local labelValue
-
+	
 	local predictedLabelValue
-
+	
 	local lossValue
-
+	
 	local transposedFeatureVector
-
+	
 	local dotProductFeatureVectorValue
 	
-	local labelValueSubtractedByWeightVector
-	
-	local transposedLabelValueSubtractedByWeightVector
-	
-	local dotProductLabelValueSubtractedByWeightVector
-	
-	local differenceValue
-
 	local tau
 	
-	local weightChangeVectorPart1
-
 	local weightChangeVector
-
+	
 	local cost
 	
 	repeat
-
+		
 		numberOfIterations = numberOfIterations + 1
-
+		
 		self:iterationWait()
-
+		
 		totalLoss = 0
 		
 		for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
-			
+
 			featureVector = {unwrappedFeatureVector}
 
 			labelValue = labelVector[dataIndex][1]
@@ -186,34 +162,24 @@ function OneClassPassiveAggressiveClassifierModel:train(featureMatrix, labelVect
 
 			dotProductFeatureVectorValue = AqwamTensorLibrary:dotProduct(featureVector, transposedFeatureVector)
 
-			labelValueSubtractedByWeightVector = AqwamTensorLibrary:subtract(labelValue, ModelParameters)
-
-			transposedLabelValueSubtractedByWeightVector = AqwamTensorLibrary:transpose(labelValueSubtractedByWeightVector)
-
-			dotProductLabelValueSubtractedByWeightVector = AqwamTensorLibrary:dotProduct(transposedLabelValueSubtractedByWeightVector, labelValueSubtractedByWeightVector)
-
-			differenceValue = labelValue - predictedLabelValue
-
-			lossValue = math.max(0, (math.abs(differenceValue) - epsilon))
+			lossValue = math.max(0, 1 - (labelValue * predictedLabelValue))
 
 			tau = tauFunction(lossValue, dotProductFeatureVectorValue, cValue)
 
-			weightChangeVectorPart1 = AqwamTensorLibrary:divide(labelValueSubtractedByWeightVector, dotProductLabelValueSubtractedByWeightVector)
-
-			weightChangeVector = AqwamTensorLibrary:multiply(tau, weightChangeVectorPart1)
+			weightChangeVector = AqwamTensorLibrary:multiply((tau * labelValue), transposedFeatureVector)
 
 			ModelParameters = AqwamTensorLibrary:add(ModelParameters, weightChangeVector)
 
 			totalLoss = totalLoss + lossValue
-			
-		end
 
+		end
+		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
 			return (totalLoss / numberOfData)
 
 		end)
-
+		
 		if (cost) then 
 
 			table.insert(costArray, cost)
@@ -223,19 +189,25 @@ function OneClassPassiveAggressiveClassifierModel:train(featureMatrix, labelVect
 		end
 		
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	
+	if (self.isOutputPrinted) then
 
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+		if (cost == math.huge) then warn("The model diverged.") end
 
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
+	
 	self.ModelParameters = ModelParameters
-
+	
 	return costArray
 
 end
 
-function OneClassPassiveAggressiveClassifierModel:predict(featureMatrix, returnOriginalOutput)
-
+function PassiveAggressiveClassifierModel:predict(featureMatrix, returnOriginalOutput)
+	
 	local ModelParameters = self.ModelParameters
-
+	
 	if (not ModelParameters) then
 
 		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
@@ -243,9 +215,9 @@ function OneClassPassiveAggressiveClassifierModel:predict(featureMatrix, returnO
 		self.ModelParameters = ModelParameters
 
 	end
-
+	
 	local outputVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
-
+	
 	if (type(outputVector) ~= "table") then outputVector = {{outputVector}} end
 
 	if (returnOriginalOutput) then return outputVector end
@@ -256,4 +228,4 @@ function OneClassPassiveAggressiveClassifierModel:predict(featureMatrix, returnO
 
 end
 
-return OneClassPassiveAggressiveClassifierModel
+return PassiveAggressiveClassifierModel

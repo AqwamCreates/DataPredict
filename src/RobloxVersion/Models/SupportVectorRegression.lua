@@ -438,12 +438,12 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 	local kernelFunction = self.kernelFunction
 	
 	local kernelParameters = self.kernelParameters
+	
+	local ModelParameters = self.ModelParameters
 
 	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
 
 	local kernelMatrix = kernelFunctionList[kernelFunction](featureMatrix, kernelParameters)
-	
-	local ModelParameters = self.ModelParameters
 
 	repeat
 

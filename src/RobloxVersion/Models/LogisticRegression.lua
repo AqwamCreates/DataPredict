@@ -308,6 +308,8 @@ end
 
 function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
 
+	if (not self.ModelParameters) then self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1}) end
+
 	local outputVector = self:calculateHypothesisVector(featureMatrix, false)
 
 	if (returnOriginalOutput) then return outputVector end

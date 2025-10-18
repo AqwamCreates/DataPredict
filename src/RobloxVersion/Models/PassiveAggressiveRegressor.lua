@@ -91,12 +91,12 @@ function PassiveAggressiveRegressorModel.new(parameterDictionary)
 end
 
 function PassiveAggressiveRegressorModel:train(featureMatrix, labelVector)
+
+	local ModelParameters = self.ModelParameters
 	
 	local numberOfData = #featureMatrix
 
 	if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
-	
-	local ModelParameters = self.ModelParameters
 
 	if (ModelParameters) then
 
@@ -206,7 +206,13 @@ function PassiveAggressiveRegressorModel:predict(featureMatrix)
 
 	local ModelParameters = self.ModelParameters
 
-	if (not ModelParameters) then error("No model parameters.") end
+	if (not ModelParameters) then
+
+		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+
+		self.ModelParameters = ModelParameters
+
+	end
 
 	local outputVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
 

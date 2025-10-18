@@ -430,10 +430,18 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 	local numberOfIterations = 0
 
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
+	
+	local cValue = self.cValue
+	
+	local epsilon = self.epsilon
+	
+	local kernelFunction = self.kernelFunction
+	
+	local kernelParameters = self.kernelParameters
 
-	local mappedFeatureMatrix = mappingList[self.kernelFunction](featureMatrix, self.kernelParameters)
+	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
 
-	local kernelMatrix = kernelFunctionList[self.kernelFunction](featureMatrix, self.kernelParameters)
+	local kernelMatrix = kernelFunctionList[kernelFunction](featureMatrix, kernelParameters)
 	
 	local ModelParameters = self.ModelParameters
 
@@ -445,7 +453,7 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return calculateCost(ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, self.cValue, self.epsilon)
+			return calculateCost(ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, cValue, epsilon)
 
 		end)
 
@@ -457,7 +465,7 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
 		end
 
-		ModelParameters = calculateModelParameters(ModelParameters, mappedFeatureMatrix, labelVector, self.cValue, self.epsilon)
+		ModelParameters = calculateModelParameters(ModelParameters, mappedFeatureMatrix, labelVector, cValue, epsilon)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

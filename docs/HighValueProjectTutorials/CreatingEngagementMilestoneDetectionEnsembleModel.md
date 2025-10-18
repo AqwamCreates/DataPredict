@@ -199,7 +199,7 @@ for i = 1, snapshotIndex, 1 do
 
   local probabilityToLeave = 1 / timeToLeave
 
-  local probabilityToStay = 1 - probabilityToLeave
+  local probabilityToStay = probabilityToLeave
 
   timeToLeaveVector[i] = {timeToLeave}
 

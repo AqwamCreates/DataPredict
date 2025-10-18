@@ -233,7 +233,7 @@ for i = 1, snapshotIndex, 1 do
 
   local clampedTimeToLeave = math.max(timeToLeave, 1)
 
-  local probabilityToLeave = 1 - (1 / clampedTimeToLeave)
+  local probabilityToLeave = (1 / clampedTimeToLeave)
 
   timeToLeaveVector[i] = {timeToLeave}
 

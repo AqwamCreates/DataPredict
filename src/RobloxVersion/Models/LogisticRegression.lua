@@ -297,8 +297,14 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 		self:update(lossVector, true, false)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
-
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	
+	if (self.isOutputPrinted) then
+		
+		if (cost == math.huge) then warn("The model diverged.") end
+		
+		if (cost ~= cost) then warn("The model produced NaNs (Not a Number).") end
+		
+	end
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
 

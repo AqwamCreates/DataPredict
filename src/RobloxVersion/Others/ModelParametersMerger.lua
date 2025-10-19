@@ -80,7 +80,7 @@ function ModelParametersMerger:setData(featureMatrix, labelVector)
 
 	if (featureMatrix) and (labelVector) then
 
-		if (#featureMatrix ~= #labelVector) then error("Feature matrix and the label vector does not contain the same number of rows!") end
+		if (#featureMatrix ~= #labelVector) then error("Feature matrix and the label vector does not contain the same number of rows.") end
 
 	end
 
@@ -288,9 +288,9 @@ end
 
 local function generateAccuracyArray(Model, modelType, ModelParametersArray, featureMatrix, labelVector)
 	
-	if (not Model) then error("No model!") end
+	if (not Model) then error("No model.") end
 	
-	if (not modelType) then error("No model type!") end
+	if (not modelType) then error("No model type.") end
 	
 	local accuracyArray
 	

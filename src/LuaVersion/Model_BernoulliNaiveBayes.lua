@@ -297,6 +297,28 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		local useLogProbabilities = NewBernoulliNaiveBayesModel.useLogProbabilities
 
 		local ModelParameters = NewBernoulliNaiveBayesModel.ModelParameters
+
+		local numberOfClasses = #ClassesList
+
+		local numberOfData = #featureMatrix
+
+		local posteriorProbabilityMatrixDimensionSizeArray = {numberOfData, numberOfClasses}
+
+		local initialValue = (useLogProbabilities and -math.huge) or 0
+
+		if (not ModelParameters) then
+
+			if (returnOriginalOutput) then return AqwamTensorLibrary:createTensor(posteriorProbabilityMatrixDimensionSizeArray, initialValue) end
+
+			local dimensionSizeArray = {numberOfData, 1}
+
+			local placeHolderLabelVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, nil)
+
+			local placeHolderLabelProbabilityVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, initialValue)
+
+			return placeHolderLabelVector, placeHolderLabelProbabilityVector
+
+		end
 		
 		local featureProbabilityMatrix = ModelParameters[1]
 		
@@ -306,7 +328,7 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		
 		local numberOfClasses = #ClassesList
 
-		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
+		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor(posteriorProbabilityMatrixDimensionSizeArray, initialValue)
 
 		for classIndex, classValue in ipairs(ClassesList) do
 

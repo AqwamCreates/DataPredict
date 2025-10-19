@@ -86,40 +86,50 @@ local function calculateGaussianMatrix(featureMatrix, meanMatrix, varianceMatrix
 	
 	local probabilityMatrix = AqwamTensorLibrary:createTensor({#featureMatrix, numberOfClusters}, initialValue)
 	
-	for i = 1, #featureMatrix, 1 do
-
-		local featureVector = {featureMatrix[i]}
+	local featureVector
+	
+	local weight
+	
+	local meanVector
+	
+	local varianceVector
+	
+	local probabilitiesVector
+	
+	for i, unwrappedFeatureVector in ipairs(featureMatrix) do
+		
+		featureVector = {unwrappedFeatureVector}
 
 		for j = 1, numberOfClusters, 1 do
 
-			local weight = piMatrix[j][1]
-			
+			weight = piMatrix[j][1]
+
 			if (useLogProbabilities) then weight = math.log(weight + epsilon) end
 
-			local meanVector = {meanMatrix[j]}
+			meanVector = {meanMatrix[j]}
 
-			local varianceVector = {varianceMatrix[j]}
+			varianceVector = {varianceMatrix[j]}
 
-			local probabilitiesVector = gaussian(featureVector, meanVector, varianceVector, epsilon)
+			probabilitiesVector = gaussian(featureVector, meanVector, varianceVector, epsilon)
 
 			for i, probability in ipairs(probabilitiesVector[1]) do
-				
+
 				if (useLogProbabilities) then
-					
+
 					weight = weight + math.log(probability + epsilon)
-					
+
 				else
-					
+
 					weight = weight * probability 
-					
+
 				end
-				
+
 			end
 
 			probabilityMatrix[i][j] = weight
 
 		end
-
+		
 	end
 	
 	return probabilityMatrix
@@ -686,13 +696,13 @@ function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutpu
 	
 	local highestWeight
 	
-	for dataIndex, gausssianVector in ipairs(gaussianMatrix) do
+	for dataIndex, unwrappedGausssianVector in ipairs(gaussianMatrix) do
 		
 		selectedCluster = nil
 		
 		highestWeight = initialValue
 		
-		for clusterNumber, weight in ipairs(gausssianVector) do
+		for clusterNumber, weight in ipairs(unwrappedGausssianVector) do
 			
 			if (weight > highestWeight) then
 				

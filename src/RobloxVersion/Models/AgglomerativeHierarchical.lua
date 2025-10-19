@@ -326,7 +326,7 @@ local function mergeCentroids(centroids, centroidIndex1Combine, centroidIndex2To
 
 end
 
-local function calculateCost(featureMatrix, centroidMatrix, distanceFunction)
+local function calculateCost(distanceFunction, featureMatrix, centroidMatrix)
 
 	local cost = 0
 	
@@ -468,13 +468,13 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 
 	if (ModelParameters) then
 
-		if (#centroidMatrix[1] ~= #ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
+		if (#centroidMatrix[1] ~= #ModelParameters[1]) then error("The number of features are not the same as the model parameters.") end
 
 		centroidMatrix = AqwamTensorLibrary:concatenate(centroidMatrix, ModelParameters, 1)
 
 	end
 
-	centroidDistanceMatrix = createCentroidDistanceMatrix(centroidMatrix, distanceFunctionToApply)
+	centroidDistanceMatrix = createCentroidDistanceMatrix(distanceFunctionToApply, centroidMatrix)
 
 	repeat
 		
@@ -492,7 +492,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			
-			return calculateCost(featureMatrix, centroidMatrix, distanceFunctionToApply)
+			return calculateCost(distanceFunctionToApply, featureMatrix, centroidMatrix)
 			
 		end)
 		
@@ -505,6 +505,14 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		end
 
 	until (numberOfCentroids == numberOfClusters) or (numberOfCentroids == 1) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
 
 	self.ModelParameters = centroidMatrix
 
@@ -514,11 +522,23 @@ end
 
 function AgglomerativeHierarchicalModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
-	
 	local ModelParameters = self.ModelParameters
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, ModelParameters, distanceFunctionToApply)
+	if (not ModelParameters) then
+
+		local numberOfData = #featureMatrix
+
+		if (returnOriginalOutput) then AqwamTensorLibrary:createTensor({numberOfData, self.numberOfClusters}, math.huge) end
+
+		local dimensionSizeArray = {numberOfData, 1}
+
+		return AqwamTensorLibrary:createTensor(dimensionSizeArray, nil), AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
+
+	end
+	
+	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
+	
+	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, ModelParameters)
 
 	if (returnOriginalOutput) then return distanceMatrix end
 

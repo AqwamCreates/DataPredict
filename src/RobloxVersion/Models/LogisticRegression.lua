@@ -135,13 +135,13 @@ local function getCutOffFunction(sigmoidFunction)
 
 			local cutOffValue = tonumber(stringCutOffValue)
 
-			local negativeValue = (cutOffValue == 0.5) and 0 or -1
+			local lowerValue = (cutOffValue == 0.5) and 0 or -1
 
 			local cutOffFunction = function(x) 
 
 				if (x > cutOffValue) then return 1 end
 
-				if (x < cutOffValue) then return negativeValue end
+				if (x < cutOffValue) then return lowerValue end
 
 				return 0
 

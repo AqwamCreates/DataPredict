@@ -97,8 +97,6 @@ function OneClassPassiveAggressiveClassifierModel.new(parameterDictionary)
 end
 
 function OneClassPassiveAggressiveClassifierModel:train(featureMatrix, labelVector)
-
-	local ModelParameters = self.ModelParameters
 	
 	local numberOfData = #featureMatrix
 	
@@ -111,6 +109,8 @@ function OneClassPassiveAggressiveClassifierModel:train(featureMatrix, labelVect
 		labelVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 1)
 		
 	end
+	
+	local ModelParameters = self.ModelParameters
 
 	if (ModelParameters) then
 

@@ -252,7 +252,7 @@ function OneVsAll:processLabelVector(labelVector)
 
 	else
 
-		if checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList) then error("A value does not exist in the classes list is present in the label vector") end
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList) then error("A value does not exist in the classes list is present in the label vector.") end
 
 	end
 	

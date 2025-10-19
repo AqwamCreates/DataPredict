@@ -22,20 +22,6 @@ DeepStateActionRewardStateAction.new(discountFactor: number, EligibilityTrace: E
 
 * ModelObject: The generated model object.
 
-## Functions
-
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-DeepStateActionRewardStateAction:setParameters(discountFactor: number)
-```
-
-#### Parameters:
-
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
-
 ## Inherited From
 
 * [DeepReinforcementLearningBaseModel](DeepReinforcementLearningBaseModel.md)

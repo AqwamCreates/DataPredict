@@ -26,9 +26,9 @@
 
 --]]
 
-local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
-
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 BaseModel = {}
 
@@ -114,7 +114,7 @@ end
 
 function BaseModel:initializeMatrixBasedOnMode(dimensionSizeArray, dimensionSizeToIgnoreArray) -- Some of the row/column might not be considered as an input variables/neurons. Hence, it should be ignored by subtracting from original rows and columns with the number of non-input variables/neurons.
 	
-	if (not dimensionSizeArray) then error("No dimension size array for weight initialization!") end
+	if (not dimensionSizeArray) then error("No dimension size array for weight initialization.") end
 	
 	dimensionSizeToIgnoreArray = dimensionSizeToIgnoreArray or {}
 

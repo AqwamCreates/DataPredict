@@ -709,10 +709,8 @@ function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutpu
 			meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBestMatrices(featureMatrix, useLogProbabilities, epsilon)
 
 		else
-			
-			local numberOfFeatures = #featureMatrix[1]
 
-			meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
+			meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(featureMatrix, numberOfClusters, #featureMatrix[1])
 
 		end
 

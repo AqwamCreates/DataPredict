@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - TabularStateActionRewardStateAction (Deep SARSA)
+# [API Reference](../../API.md) - [Models](../Models.md) - TabularStateActionRewardStateAction (Tabular SARSA)
 
 TabularStateActionRewardStateAction is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 

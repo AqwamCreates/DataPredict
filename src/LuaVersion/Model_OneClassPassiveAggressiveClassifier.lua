@@ -251,9 +251,7 @@ function OneClassPassiveAggressiveClassifierModel:predict(featureMatrix, returnO
 	end
 
 	local outputVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
-
-	if (type(outputVector) ~= "table") then outputVector = {{outputVector}} end
-
+	
 	if (returnOriginalOutput) then return outputVector end
 
 	local predictedLabelVector = AqwamTensorLibrary:applyFunction(cutOffFunction, outputVector)

@@ -128,8 +128,6 @@ function LogisticRegressionModel:calculateHypothesisVector(featureMatrix, saveFe
 
 	end
 
-	if (type(zVector) == "number") then zVector = {{zVector}} end
-
 	local hypothesisVector = AqwamTensorLibrary:applyFunction(sigmoidFunctionList[self.sigmoidFunction], zVector)
 
 	return hypothesisVector

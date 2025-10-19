@@ -9,7 +9,7 @@ TabularDoubleStateActionRewardStateActionV2 is a state-action grid with reinforc
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularDoubleStateActionRewardStateActionV2.new(learningRate: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
+TabularDoubleStateActionRewardStateActionV2.new(learningRate: number, discountFactor: number, averagingRate: number, EligibilityTrace: EligibilityTraceObject): ModelObject
 ```
 
 #### Parameters:
@@ -17,6 +17,8 @@ TabularDoubleStateActionRewardStateActionV2.new(learningRate: number, discountFa
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1. [Default: 0.1]
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
+
+* averagingRate: The higher the value, the faster the weights changes. The value must be set between 0 and 1.
 
 * EligibilityTrace: The eligibility trace object to keep track of credit assignments of state-action pairs.
 

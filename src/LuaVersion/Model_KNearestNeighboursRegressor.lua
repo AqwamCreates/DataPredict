@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require(Model_BaseModel")
+local BaseModel = require("Model_BaseModel")
 
 KNearestNeighboursRegressor = {}
 
@@ -306,11 +306,13 @@ function KNearestNeighboursRegressor:train(featureMatrix, labelVector)
 
 	local ModelParameters = self.ModelParameters
 
-	if ModelParameters then
+	if (ModelParameters) then
 
 		local storedFeatureMatrix = ModelParameters[1]
 
 		local storedLabelVector = ModelParameters[2]
+
+		if (#featureMatrix[1] ~= #storedFeatureMatrix[1]) then error("The number of features are not the same as the model parameters.") end
 
 		featureMatrix = AqwamTensorLibrary:concatenate(featureMatrix, storedFeatureMatrix, 1)
 

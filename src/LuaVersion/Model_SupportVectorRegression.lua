@@ -266,7 +266,7 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 
 	costPart1 = costPart1 / 2
 
-	local costPart2 = AqwamTensorLibrary:dotProduct(transposedCostVector, kernelMatrix)
+	local costPart2 = AqwamTensorLibrary:dotProduct(transposedCostVector, kernelMatrix)[1][1]
 
 	costPart2 = AqwamTensorLibrary:dotProduct(costPart2, labelVector)
 

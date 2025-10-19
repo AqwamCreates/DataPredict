@@ -495,7 +495,7 @@ function KMeansModel:train(featureMatrix)
 	
 	if (centroidMatrix) then
 		
-		if (#featureMatrix[1] ~= #centroidMatrix[1]) then error("The number of features are not the same as the model parameters!") end
+		if (#featureMatrix[1] ~= #centroidMatrix[1]) then error("The number of features are not the same as the model parameters.") end
 		
 	else
 		

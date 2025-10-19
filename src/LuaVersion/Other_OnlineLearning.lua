@@ -48,9 +48,9 @@ local defaultShowModelDivergenceWarning = true
 
 local modelDivergedWarningText = "The model diverged! Reverting to previous model parameters! Please repeat the experiment again or change the argument values if this warning occurs often."
 
-local onlineLearningNotActiveText = "Online Learning is not active!"
+local onlineLearningNotActiveText = "Online Learning is not active."
 
-local onlineLearningActiveText = "Online Learning is already active!"
+local onlineLearningActiveText = "Online Learning is already active."
 
 function OnlineLearning.new(parameterDictionary)
 	
@@ -64,9 +64,9 @@ function OnlineLearning.new(parameterDictionary)
 	
 	local isOutputRequired = parameterDictionary.isOutputRequired
 
-	if (not Model) then error("Please set a model!") end
+	if (not Model) then error("Please set a model.") end
 
-	if (not isOutputRequired) then error("Please set whether or not the model requires a output!") end
+	if (not isOutputRequired) then error("Please set whether or not the model requires a output.") end
 
 	NewOnlineLearning.Model = Model
 	

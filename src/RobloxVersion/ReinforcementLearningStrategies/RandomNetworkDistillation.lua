@@ -74,7 +74,7 @@ function RandomNetworkDistillation:generate(featureMatrix)
 	
 	local Model = self.Model
 	
-	if (not Model) then error("No model!") end
+	if (not Model) then error("No model.") end
 	
 	local TargetModelParameters = self.TargetModelParameters
 	

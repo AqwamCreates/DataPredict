@@ -323,10 +323,6 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		local featureProbabilityMatrix = ModelParameters[1]
 		
 		local priorProbabilityVector = ModelParameters[2]
-		
-		local numberOfData = #featureMatrix
-		
-		local numberOfClasses = #ClassesList
 
 		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor(posteriorProbabilityMatrixDimensionSizeArray, initialValue)
 

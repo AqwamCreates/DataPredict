@@ -506,7 +506,13 @@ function FuzzyCMeansModel:train(featureMatrix)
 		
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
 	
 	self.ModelParameters = centroidMatrix
 	
@@ -520,9 +526,17 @@ function FuzzyCMeansModel:predict(featureMatrix, returnMode)
 	
 	local centroidMatrix = self.ModelParameters
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
-	
 	local returnType = type(returnMode)
+	
+	if (not centroidMatrix) then 
+
+		local unknownValue = ((returnType ~= "nil") and math.huge) or nil
+
+		return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, unknownValue) 
+
+	end
+	
+	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
 	
 	if (returnType ~= "nil") then
 		

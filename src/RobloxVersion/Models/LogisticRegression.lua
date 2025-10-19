@@ -137,7 +137,7 @@ local function getCutOffFunction(sigmoidFunction)
 
 				if (x < cutOffValue) then return lowerValue end
 
-				return 0
+				return cutOffValue
 
 			end
 

@@ -361,24 +361,42 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 	end)
 	
 	NewGaussianNaiveBayesModel:setPredictFunction(function(featureMatrix, returnOriginalOutput)
-
+		
 		local ClassesList = NewGaussianNaiveBayesModel.ClassesList
 
 		local useLogProbabilities = NewGaussianNaiveBayesModel.useLogProbabilities
 
 		local ModelParameters = NewGaussianNaiveBayesModel.ModelParameters
 		
+		local numberOfClasses = #ClassesList
+		
+		local numberOfData = #featureMatrix
+		
+		local posteriorProbabilityMatrixDimensionSizeArray = {numberOfData, numberOfClasses}
+		
+		local initialValue = (useLogProbabilities and -math.huge) or 0
+		
+		if (not ModelParameters) then
+
+			if (returnOriginalOutput) then return AqwamTensorLibrary:createTensor(posteriorProbabilityMatrixDimensionSizeArray, initialValue) end
+
+			local dimensionSizeArray = {numberOfData, 1}
+
+			local placeHolderLabelVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, nil)
+
+			local placeHolderLabelProbabilityVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, initialValue)
+
+			return placeHolderLabelVector, placeHolderLabelProbabilityVector
+
+		end
+
 		local meanMatrix = ModelParameters[1]
 
 		local standardDeviationMatrix = ModelParameters[2]
 		
 		local priorProbabilityVector = ModelParameters[3]
 		
-		local numberOfData = #featureMatrix
-		
-		local numberOfClassesList = #ClassesList
-
-		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClassesList}, 0)
+		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor(posteriorProbabilityMatrixDimensionSizeArray, initialValue)
 
 		for classIndex, classValue in ipairs(ClassesList) do
 

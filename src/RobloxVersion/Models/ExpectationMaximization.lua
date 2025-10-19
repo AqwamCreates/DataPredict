@@ -686,13 +686,13 @@ function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutpu
 	
 	local highestWeight
 	
-	for dataIndex, gausssianVector in ipairs(gaussianMatrix) do
+	for dataIndex, unwrappedGausssianVector in ipairs(gaussianMatrix) do
 		
 		selectedCluster = nil
 		
 		highestWeight = initialValue
 		
-		for clusterNumber, weight in ipairs(gausssianVector) do
+		for clusterNumber, weight in ipairs(unwrappedGausssianVector) do
 			
 			if (weight > highestWeight) then
 				

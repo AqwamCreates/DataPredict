@@ -367,8 +367,6 @@ function NearestCentroidModel:predict(featureMatrix, returnOriginalOutput)
 	local distanceMatrix = createDistanceMatrix(self.distanceFunction, featureMatrix, centroidMatrix)
 
 	if (returnOriginalOutput) then return distanceMatrix end
-	
-	
 
 	local predictedLabelVector = {}
 	

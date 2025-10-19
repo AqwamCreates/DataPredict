@@ -100,7 +100,7 @@ local distanceFunctionList = {
 
 }
 
-local function createCentroidDistanceMatrix(centroidMatrix, distanceFunction)
+local function createCentroidDistanceMatrix(distanceFunction, centroidMatrix)
 
 	local numberOfData = #centroidMatrix
 
@@ -354,7 +354,7 @@ local function calculateCost(distanceFunction, featureMatrix, centroidMatrix)
 
 end
 
-local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
+local function createDistanceMatrix(distanceFunction, matrix1, matrix2)
 
 	local numberOfData1 = #matrix1
 

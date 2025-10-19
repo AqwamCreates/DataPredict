@@ -28,7 +28,9 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
+local IterativeMethodBaseModel = require("IterativeMethodBaseModel")
+
+local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
 KMedoidsModel = {}
 
@@ -44,98 +46,6 @@ local defaultDistanceFunction = "Manhattan"
 
 local defaultSetTheCentroidsDistanceFarthest = true
 
-local distanceFunctionList = {
-
-	["Manhattan"] = function (x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
-
-		local distance = AqwamTensorLibrary:sum(part1)
-
-		return distance 
-
-	end,
-
-	["Euclidean"] = function (x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		local part2 = AqwamTensorLibrary:power(part1, 2)
-
-		local part3 = AqwamTensorLibrary:sum(part2)
-
-		local distance = math.sqrt(part3)
-
-		return distance 
-
-	end,
-	
-	["Cosine"] = function(x1, x2)
-
-		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
-
-		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
-
-		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
-
-		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
-
-		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
-
-		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
-
-		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
-
-		local normX = x1Magnitude * x2Magnitude
-
-		local similarity = dotProductedX / normX
-
-		local cosineDistance = 1 - similarity
-
-		return cosineDistance
-
-	end,
-
-}
-
-local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
-	
-	local numberOfData = #distanceMatrix
-	
-	local clusterNumberVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
-
-	local clusterDistanceVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0) 
-
-	for dataIndex, distanceVector in ipairs(distanceMatrix) do
-
-		local closestClusterNumber
-
-		local shortestDistance = math.huge
-
-		for i, distance in ipairs(distanceVector) do
-
-			if (distance < shortestDistance) then
-
-				closestClusterNumber = i
-
-				shortestDistance = distance
-
-			end
-
-		end
-
-		clusterNumberVector[dataIndex][1] = closestClusterNumber
-
-		clusterDistanceVector[dataIndex][1] = shortestDistance
-
-	end
-
-	return clusterNumberVector, clusterDistanceVector
-	
-end
-
 local function checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClusterNumber, cluster)
 	
 	if (dataPointClusterNumber == cluster) then
@@ -150,7 +60,7 @@ local function checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClus
 	
 end
 
-local function createDistanceMatrix(distanceFunction, modelParameters, featureMatrix)
+local function createDistanceMatrix(distanceFunction, featureMatrix, modelParameters)
 
 	local numberOfData = #featureMatrix
 
@@ -295,9 +205,7 @@ local function createClusterAssignmentMatrix(distanceMatrix) -- contains values 
 	
 end
 
-local function calculateCost(distanceFunction, modelParameters, featureMatrix)
-	
-	local distanceMatrix = createDistanceMatrix(distanceFunction, modelParameters, featureMatrix)
+local function calculateCost(distanceMatrix)
 	
 	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 	
@@ -311,7 +219,7 @@ end
 
 local function initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
 
-	if (setTheCentroidsDistanceFarthest) then
+	if (setTheCentroidsDistanceFarthest) and (#featureMatrix >= numberOfClusters) then
 
 		return chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
 
@@ -348,70 +256,88 @@ end
 
 function KMedoidsModel:train(featureMatrix)
 	
-	local previousMedoid
-	
-	local previousCost
-
-	local currentCost
-
-	local costArray = {}
-
-	local numberOfIterations = 0
-	
-	local maximumNumberOfIterations = self.maximumNumberOfIterations
+	local ModelParameters = self.ModelParameters
 	
 	local numberOfClusters = self.numberOfClusters
 	
 	local distanceFunction = self.distanceFunction
 	
-	local setTheCentroidsDistanceFarthest = self.setTheCentroidsDistanceFarthest
-	
-	local ModelParameters = self.ModelParameters
-	
-	local distanceFunctionToApply = distanceFunctionList[distanceFunction]
-	
+	local distanceFunctionToApply = distanceFunctionDictionary[distanceFunction]
+
 	if (not distanceFunctionToApply) then error("Unknown distance function.") end
 	
-	if (ModelParameters) then
+	local medoidMatrix = ModelParameters
+	
+	if (medoidMatrix) then
 		
-		if (#featureMatrix[1] ~= #ModelParameters[1]) then error("The number of features are not the same as the model parameters.") end
-		
-		currentCost = calculateCost(distanceFunctionToApply, ModelParameters, featureMatrix)
+		if (#featureMatrix[1] ~= #medoidMatrix[1]) then error("The number of features are not the same as the model parameters.") end
 		
 	else
 		
-		ModelParameters = initializeCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply, setTheCentroidsDistanceFarthest)
-		
-		currentCost = math.huge
+		medoidMatrix = initializeCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply, self.setTheCentroidsDistanceFarthest)
 		
 	end
+	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
+	
+	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, medoidMatrix)
+	
+	local costArray = {}
+
+	local numberOfIterations = 0
+
+	local previousCost = calculateCost(distanceMatrix)
+	
+	local currentCost
+	
+	local candidateMedoidVector
+	
+	local oldColumnDistanceArray
 	
 	repeat
 		
 		self:iterationWait()
 		
-		for row = 1, #featureMatrix, 1 do
+		for candidateMedoidIndex, unwrappedCandidateMedoidVector in ipairs(featureMatrix) do
 			
 			self:dataWait()
+			
+			candidateMedoidVector = {unwrappedCandidateMedoidVector}
+			
+			for medoidIndex, unwrappedMedoidVector in ipairs(medoidMatrix) do
 
-			for medoid = 1, numberOfClusters, 1 do
-
-				previousCost = currentCost
+				medoidMatrix[medoidIndex] = unwrappedCandidateMedoidVector
 				
-				previousMedoid = ModelParameters[medoid]
+				oldColumnDistanceArray = {}
+				
+				for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
+					
+					oldColumnDistanceArray[dataIndex] = distanceMatrix[dataIndex][medoidIndex]
+					
+					distanceMatrix[dataIndex][medoidIndex] = distanceFunctionToApply({unwrappedFeatureVector}, candidateMedoidVector)
+					
+				end
 
-				ModelParameters[medoid] = featureMatrix[row]
-
-				currentCost = calculateCost(distanceFunctionToApply, ModelParameters, featureMatrix)
+				currentCost = calculateCost(distanceMatrix)
 
 				if (currentCost > previousCost) then
+					
+					for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do 
+						
+						distanceMatrix[dataIndex][medoidIndex] = oldColumnDistanceArray[dataIndex]
+						
+					end
 
-					ModelParameters[medoid] = previousMedoid
+					medoidMatrix[medoidIndex] = unwrappedMedoidVector
 
 					currentCost = previousCost
+					
+				else
+					
+					previousCost = currentCost
 
 				end
-				
+
 				numberOfIterations = numberOfIterations + 1
 
 				table.insert(costArray, currentCost)
@@ -419,11 +345,11 @@ function KMedoidsModel:train(featureMatrix)
 				self:printNumberOfIterationsAndCost(numberOfIterations, currentCost)
 
 				if (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
-
+				
 			end
 
 			if (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
-
+			
 		end
 		
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost)
@@ -436,7 +362,7 @@ function KMedoidsModel:train(featureMatrix)
 
 	end
 	
-	self.ModelParameters = ModelParameters
+	self.ModelParameters = medoidMatrix
 	
 	return costArray
 	
@@ -458,13 +384,41 @@ function KMedoidsModel:predict(featureMatrix, returnOriginalOutput)
 
 	end
 	
-	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
+	local distanceFunctionToApply = distanceFunctionDictionary[self.distanceFunction]
 	
-	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, ModelParameters, featureMatrix)
+	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, ModelParameters)
 	
 	if (returnOriginalOutput) then return distanceMatrix end
 
-	local clusterNumberVector, clusterDistanceVector = assignToCluster(distanceMatrix)
+	local numberOfData = #distanceMatrix
+
+	local clusterNumberVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
+
+	local clusterDistanceVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0) 
+
+	for dataIndex, distanceVector in ipairs(distanceMatrix) do
+
+		local closestClusterNumber
+
+		local shortestDistance = math.huge
+
+		for i, distance in ipairs(distanceVector) do
+
+			if (distance < shortestDistance) then
+
+				closestClusterNumber = i
+
+				shortestDistance = distance
+
+			end
+
+		end
+
+		clusterNumberVector[dataIndex][1] = closestClusterNumber
+
+		clusterDistanceVector[dataIndex][1] = shortestDistance
+
+	end
 
 	return clusterNumberVector, clusterDistanceVector
 	

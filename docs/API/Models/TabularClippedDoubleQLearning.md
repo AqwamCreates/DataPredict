@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - TabularDoubleClippedQLearning
+# [API Reference](../../API.md) - [Models](../Models.md) - TabularClippedDoubleQLearning
 
 TabularDoubleClippedQLearning is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
@@ -9,7 +9,7 @@ TabularDoubleClippedQLearning is a state-action grid with reinforcement learning
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularDoubleClippedQLearning.new(learningRate: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
+TabularClippedDoubleQLearning.new(learningRate: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
 ```
 
 #### Parameters:

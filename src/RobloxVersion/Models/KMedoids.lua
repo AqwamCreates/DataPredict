@@ -374,7 +374,7 @@ function KMedoidsModel:train(featureMatrix)
 	
 	if (ModelParameters) then
 		
-		if (#featureMatrix[1] ~= #ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
+		if (#featureMatrix[1] ~= #ModelParameters[1]) then error("The number of features are not the same as the model parameters.") end
 		
 		currentCost = calculateCost(distanceFunctionToApply, ModelParameters, featureMatrix)
 		

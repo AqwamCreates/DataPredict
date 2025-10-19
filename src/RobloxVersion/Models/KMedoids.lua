@@ -446,11 +446,15 @@ function KMedoidsModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local ModelParameters = self.ModelParameters
 	
-	if (not ModelParameters) then 
+	if (not ModelParameters) then
 
-		local unknownValue = (returnOriginalOutput and math.huge) or nil
+		local numberOfData = #featureMatrix
 
-		return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, unknownValue) 
+		if (returnOriginalOutput) then AqwamTensorLibrary:createTensor({numberOfData, self.numberOfClusters}, math.huge) end
+
+		local dimensionSizeArray = {numberOfData, 1}
+
+		return AqwamTensorLibrary:createTensor(dimensionSizeArray, nil), AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
 
 	end
 	

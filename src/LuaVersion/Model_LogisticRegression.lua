@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require("qwamTensorLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 

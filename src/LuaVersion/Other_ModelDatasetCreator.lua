@@ -110,7 +110,7 @@ local function checkNumberOfData(featureMatrix, labelVectorOrMatrix)
 	
 	if (type(labelVectorOrMatrix) ~= "nil") then
 
-		if (#featureMatrix ~= #labelVectorOrMatrix) then error("The feature matrix and the label vector/matrix do not contain the same number of data.") end
+		if (#featureMatrix ~= #labelVectorOrMatrix) then error("The feature matrix and the label vector / matrix do not contain the same number of data.") end
 
 	end
 	

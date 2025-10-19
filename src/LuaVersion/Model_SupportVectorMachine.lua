@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibrary_")
 
-local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 SupportVectorMachineModel = {}
 
@@ -482,8 +482,6 @@ function SupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
 	local mappedFeatureMatrix = mappingList[self.kernelFunction](featureMatrix, self.kernelParameters)
 
 	local originalPredictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
-
-	if (typeof(originalPredictedVector) == "number") then originalPredictedVector = {{originalPredictedVector}} end
 
 	if (returnOriginalOutput) then return originalPredictedVector end
 

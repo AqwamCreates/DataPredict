@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require("qwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
@@ -48,21 +48,21 @@ local sigmoidFunctionList = {
 
 	["Tanh"] = function (z) return math.tanh(z) end,
 	
-	["Softsign"] = function (z) return z / (1 + math.abs(z)) end,
-
 	["HardSigmoid"] = function (z)
-		
+
 		local x = (z + 1) / 2
-		
+
 		if (x < 0) then return 0 elseif (x > 1) then return 1 else return x end
-		
+
 	end,
+	
+	["SoftSign"] = function (z) return z / (1 + math.abs(z)) end,
+	
+	["ArcTangent"] = function (z) return (2 / math.pi) * math.atan(z) end,
 
 	["Swish"] = function (z) return z / (1 + math.exp(-z)) end,
 
 	["BipolarSigmoid"] = function (z) return 2 / (1 + math.exp(-z)) - 1 end,
-
-	["Arctangent"] = function (z) return (2 / math.pi) * math.atan(z) end
 
 }
 
@@ -72,15 +72,10 @@ local derivativeLossFunctionList = {
 
 	["Tanh"] = function (h, y) return (h - y) * (1 - math.pow(h, 2)) end,
 	
-	["HardSigmoid"] = function (h, y)
-		
-		local gradientValue = ((h <= 0 or h >= 1) and 0) or 0.5
-		
-		return (h - y) * gradientValue
-	end,
+	["HardSigmoid"] = function (h, y) return (h - y) * ((h <= 0 or h >= 1) and 0) or 0.5 end,
 
-	["Softsign"] = function (h, y) return (h - y) *  1 / ((1 + math.abs(h))^2) end,
-
+	["SoftSign"] = function (h, y) return (h - y) *  1 / ((1 + math.abs(h))^2) end,
+	
 	["ArcTangent"] = function (h, y) return (h - y) * (2 / math.pi) * (1 / (1 + h^2)) end,
 
 	["Swish"] = function (h, y)
@@ -103,7 +98,7 @@ local lossFunctionList = {
 	
 	["HardSigmoid"] = function (h, y) return -(y * math.log(h) + (1 - y) * math.log(1 - h)) end,
 
-	["Softsign"] = function (h, y) return ((h - y)^2) / 2 end,
+	["SoftSign"] = function (h, y) return ((h - y)^2) / 2 end,
 
 	["ArcTangent"] = function (h, y) return ((h - y)^2) / 2 end,
 
@@ -117,7 +112,7 @@ local cutOffList = {
 	
 	["0.5"] = {"Sigmoid", "HardSigmoid", "Swish"}, -- 0.5 threshold for [0, 1] functions.
 
-	["0"] = {"Tanh", "Softsign", "ArcTangent", "BipolarSigmoid"}, -- 0 threshold for [-1, 1] functions.
+	["0"] = {"Tanh", "SoftSign", "ArcTangent", "BipolarSigmoid"}, -- 0 threshold for [-1, 1] functions.
 	
 }
 
@@ -147,7 +142,7 @@ local function getCutOffFunction(sigmoidFunction)
 
 	end
 	
-	error("Cut-off function not found for " .. tostring(sigmoidFunction) .. ".")
+	error("Unknown cut-off function.")
 	
 end
 

@@ -26,7 +26,11 @@
 
 --]]
 
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
+
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
+
+local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
 DensityBasedSpatialClusteringOfApplicationsWithNoiseModel = {}
 
@@ -34,165 +38,90 @@ DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.__index = DensityBased
 
 setmetatable(DensityBasedSpatialClusteringOfApplicationsWithNoiseModel, IterativeMethodBaseModel)
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
-
 local defaultMinimumNumberOfPoints = 2
 
 local defaultDistanceFunction = "Manhattan"
 
 local defaultEpsilon = 10
 
-local distanceFunctionList = {
-
-	["Manhattan"] = function (x1, x2)
-		
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-		
-		local part2 = AqwamTensorLibrary:sum(part1)
-		
-		local distance = math.abs(part2)
-		
-		return distance 
-		
-	end,
-
-	["Euclidean"] = function (x1, x2)
-		
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-		
-		local part2 = AqwamTensorLibrary:power(part1, 2)
-		
-		local part3 = AqwamTensorLibrary:sum(part2)
-		
-		local distance = math.sqrt(part3)
-		
-		return distance 
-		
-	end,
-	
-	["Cosine"] = function(x1, x2)
-
-		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
-
-		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
-
-		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
-
-		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
-
-		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
-
-		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
-
-		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
-
-		local normX = x1Magnitude * x2Magnitude
-
-		local similarity = dotProductedX / normX
-
-		local cosineDistance = 1 - similarity
-
-		return cosineDistance
-
-	end,
-
-}
-
-
-local function calculateDistance(vector1, vector2, distanceFunction)
-	
-	return distanceFunctionList[distanceFunction](vector1, vector2) 
-	
-end
-
 
 local function getNeighbors(currentCorePointNumber, featureMatrix, epsilon, distanceFunction)
 	
 	local distance
 	
-	local neighbors = {}
+	local neighborArray = {}
 	
 	for i = 1, #featureMatrix, 1 do
 		
 		if (i ~= currentCorePointNumber) then
 			
-			distance = calculateDistance({featureMatrix[currentCorePointNumber]}, {featureMatrix[i]}, distanceFunction)
+			distance = distanceFunction({featureMatrix[currentCorePointNumber]}, {featureMatrix[i]})
 			
-			if (distance <= epsilon) then
-				
-				neighbors[#neighbors + 1] = i
-				
-			end
+			if (distance <= epsilon) then table.insert(neighborArray, i) end
 			
 		end
 		
 	end
 	
-	return neighbors
+	return neighborArray
 	
 end
 
 local function mergeTables(table1, table2)
 	
-	for i=1, #table2, 1 do
-		
-		table1[#table1+1] = table2[i]
-		
-	end
+	for _, value in ipairs(table2) do table.insert(table1, value) end
 	
 	return table1
 	
 end
 
-local function expandCluster(currentCorePointNumber, neighbors, neighbouringCorePointNumber, clusters, hasVisitedCorePointNumberArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunction)
+local function expandCluster(currentCorePointNumber, neighborArray, neighbouringCorePointNumber, clusterArray, hasVisitedCorePointNumberArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunction)
 	
-	clusters[neighbouringCorePointNumber] = clusters[neighbouringCorePointNumber] or {}
+	clusterArray[neighbouringCorePointNumber] = clusterArray[neighbouringCorePointNumber] or {}
 	
-	clusters[neighbouringCorePointNumber][#clusters[neighbouringCorePointNumber] + 1] = currentCorePointNumber
+	clusterArray[neighbouringCorePointNumber][#clusterArray[neighbouringCorePointNumber] + 1] = currentCorePointNumber
 	
-	for i = 1, #neighbors do
-		
-		local neighbouringPointNumber = neighbors[i]
+	for _, neighbouringPointNumber in ipairs(neighborArray) do
 		
 		if (not hasVisitedCorePointNumberArray[neighbouringPointNumber]) then
-			
+
 			hasVisitedCorePointNumberArray[neighbouringPointNumber] = true
-			
+
 			local qNeighbors = getNeighbors(neighbouringPointNumber, featureMatrix, epsilon, distanceFunction)
-			
+
 			if (#qNeighbors >= minimumNumberOfPoints) then
-				
-				neighbors = mergeTables(neighbors, qNeighbors)
-				
+
+				neighborArray = mergeTables(neighborArray, qNeighbors)
+
 			end
-			
+
 		end
-		
+
 		local isInCluster = false
 		
-		for j = 1, #clusters do
+		for _, cluster in ipairs(clusterArray) do
 			
-			if (clusters[j][neighbouringPointNumber]) then
-				
+			if (cluster[neighbouringPointNumber]) then
+
 				isInCluster = true
-				
+
 				break
-				
+
 			end
 			
 		end
-		
+
 		if (not isInCluster) then
-			
-			clusters[neighbouringCorePointNumber][#clusters[neighbouringCorePointNumber] + 1] = neighbouringPointNumber
-			
+
+			clusterArray[neighbouringCorePointNumber][#clusterArray[neighbouringCorePointNumber] + 1] = neighbouringPointNumber
+
 		end
 		
 	end
 	
 end
 
-local function calculateCost(featureMatrix, clusters, distanceFunction)
+local function calculateCost(distanceFunction, featureMatrix, clusters)
 	
 	local cost = 0
 	
@@ -202,7 +131,7 @@ local function calculateCost(featureMatrix, clusters, distanceFunction)
 				
 			for j = i + 1, #clusterPoints, 1 do
 					
-				cost = cost + calculateDistance({featureMatrix[clusterPoints[i]]}, {featureMatrix[clusterPoints[j]]}, distanceFunction)
+				cost = cost + distanceFunction({featureMatrix[clusterPoints[i]]}, {featureMatrix[clusterPoints[j]]})
 					
 			end
 				
@@ -246,73 +175,81 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 
 	end
 	
-	local cost
+	local distanceFunction = self.distanceFunction
 	
-	local neighbouringCorePointNumber 
+	local distanceFunctionToApply = distanceFunctionDictionary[distanceFunction]
 	
-	local neighbors 
-
-	local costArray = {}
-	
-	local clusters = {}
-	
-	local noiseCorePointNumberArray = {}
-	
-	local hasVisitedCorePointNumberArray = {}
-	
-	local numberOfData = #featureMatrix
+	if (not distanceFunctionToApply) then error("Unknown distance function.") end
 	
 	local minimumNumberOfPoints = self.minimumNumberOfPoints
 
 	local epsilon = self.epsilon
+	
+	local costArray = {}
 
-	local distanceFunction = self.distanceFunction
+	local clusterArray = {}
 
-	for currentCorePointNumber = 1, numberOfData, 1 do
+	local noiseCorePointNumberArray = {}
+
+	local hasVisitedCorePointNumberArray = {}
+	
+	local cost
+	
+	local neighbouringCorePointNumber 
+	
+	local neighborArray
+	
+	for currentCorePointNumber, unwrappedFeatureVector in ipairs(featureMatrix) do
 		
 		self:iterationWait()
-		
+
 		if (not hasVisitedCorePointNumberArray[currentCorePointNumber]) then
-			
+
 			hasVisitedCorePointNumberArray[currentCorePointNumber] = true
-			
-			neighbors = getNeighbors(currentCorePointNumber, featureMatrix, epsilon, distanceFunction)
-			
-			if (#neighbors < self.minimumNumberOfPoints) then
-				
+
+			neighborArray = getNeighbors(currentCorePointNumber, featureMatrix, epsilon, distanceFunctionToApply)
+
+			if (#neighborArray < self.minimumNumberOfPoints) then
+
 				table.insert(noiseCorePointNumberArray, currentCorePointNumber)
-				
+
 			else
-				
-				neighbouringCorePointNumber = #clusters + 1
-				
-				expandCluster(currentCorePointNumber, neighbors, neighbouringCorePointNumber, clusters, hasVisitedCorePointNumberArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunction)
-				
+
+				neighbouringCorePointNumber = #clusterArray + 1
+
+				expandCluster(currentCorePointNumber, neighborArray, neighbouringCorePointNumber, clusterArray, hasVisitedCorePointNumberArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunctionToApply)
+
 			end
-			
+
 		end
-		
+
 		cost = self:calculateCostWhenRequired(currentCorePointNumber, function()
-			
-			return calculateCost(featureMatrix, clusters, distanceFunction)
-			
+
+			return calculateCost(distanceFunctionToApply, featureMatrix, clusterArray)
+
 		end)
-		
+
 		if cost then
-			
+
 			table.insert(costArray, cost)
 
 			self:printNumberOfIterationsAndCost(currentCorePointNumber, cost)
 
 			if self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
-			
+
 		end
 		
 	end
 	
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
 	
-	self.ModelParameters = {featureMatrix, clusters}
+	self.ModelParameters = {featureMatrix, clusterArray}
 	
 	return costArray
 	
@@ -322,40 +259,56 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featu
 	
 	local numberOfData = #featureMatrix
 	
-	local shortestDistanceVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
-
-	local closestClusterVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
+	local dimensionSizeArray = {numberOfData, 1}
 	
-	local storedFeatureVector, cluster = table.unpack(self.ModelParameters)
+	local ModelParameters = self.ModelParameters
 	
-	local distanceFunction = self.distanceFunction
-	
-	for i = 1, #featureMatrix, 1 do
+	if (not ModelParameters) then
 		
-		local closestCluster
-
-		local shortestDistance = math.huge
+		local placeholderClusterVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, nil)
 		
-		local featureVector = {featureMatrix[i]}
+		local placeholderDistanceVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
+		
+		return placeholderClusterVector, placeholderDistanceVector
+		
+	end
+	
+	local distanceFunctionToApply = distanceFunctionDictionary[self.distanceFunction]
+	
+	local shortestDistanceVector = AqwamTensorLibrary:createTensor(dimensionSizeArray)
+
+	local closestClusterVector = AqwamTensorLibrary:createTensor(dimensionSizeArray)
+	
+	local storedFeatureVector, cluster = table.unpack(ModelParameters)
+	
+	local closestCluster
+	
+	local shortestDistance
+	
+	local featureVector
+	
+	for i, unwrappedFeatureVector in ipairs(featureMatrix) do
+		
+		closestCluster = nil
+
+		shortestDistance = math.huge
+
+		featureVector = {unwrappedFeatureVector}
 
 		for clusterNumber, clusterPoints in ipairs(cluster) do
 
 			local distance = 0
+			
+			for j, pointNumber in ipairs(clusterPoints) do
 
-			for j = 1, #clusterPoints, 1 do
-
-				local pointNumber = clusterPoints[j]
-
-				local pointVector = {storedFeatureVector[pointNumber]}
-
-				distance += calculateDistance(featureVector, pointVector, distanceFunction)
-
+				distance = distance + distanceFunctionToApply(featureVector, {storedFeatureVector[pointNumber]})
+				
 			end
 
 			distance = distance / #clusterPoints
 
 			if (distance < shortestDistance) then
-				
+
 				closestCluster = clusterNumber
 
 				shortestDistance = distance
@@ -363,9 +316,9 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featu
 			end
 
 		end
-		
+
 		closestClusterVector[i][1] = closestCluster
-		
+
 		shortestDistanceVector[i][1] = shortestDistance
 		
 	end

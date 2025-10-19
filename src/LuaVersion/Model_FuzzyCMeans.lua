@@ -508,9 +508,9 @@ end
 
 function FuzzyCMeansModel:predict(featureMatrix, returnMode)
 	
-	local centroidMatrix = self.ModelParameters
-	
 	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
+	
+	local centroidMatrix = self.ModelParameters
 	
 	if (not centroidMatrix) then
 

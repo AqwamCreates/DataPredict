@@ -46,15 +46,25 @@ local sigmoidFunctionList = {
 
 	["Sigmoid"] = function (z) return 1/(1 + math.exp(-1 * z)) end,
 
-	["Tanh"] = function (z) return math.tanh(z) end
+	["Tanh"] = function (z) return math.tanh(z) end,
+	
+	["Softsign"] = function (z) return z / (1 + math.abs(z)) end,
 
-}
+	["HardSigmoid"] = function (z)
+		
+		local x = (z + 1) / 2
+		
+		if x < 0 then return 0 elseif x > 1 then return 1 else return x end
+		
+	end,
 
-local lossFunctionList = {
+	["Swish"] = function (z) return z / (1 + math.exp(-z)) end,
 
-	["Sigmoid"] = function (h, y) return -(y * math.log(h) + (1 - y) * math.log(1 - h)) end,
+	["BipolarSigmoid"] = function (z) return 2 / (1 + math.exp(-z)) - 1 end,
 
-	["Tanh"] = function (h, y) return ((h - y)^2) / 2 end
+	["GELU"] = function (z) return 0.5 * z * (1 + math.erf(z / math.sqrt(2))) end,
+
+	["Arctangent"] = function (z) return (2 / math.pi) * math.atan(z) end
 
 }
 
@@ -62,45 +72,90 @@ local derivativeLossFunctionList = {
 
 	["Sigmoid"] = function (h, y) return (h - y) end,
 
-	["Tanh"] = function (h, y) return (h - y) * (1 - math.pow(h, 2)) end
-
-}
-
-local cutOffFunctionList = {
-
-	["Sigmoid"] = function (x) 
-
-		if (x >= 0.5) then 
-
-			return 1
-
-		else 
-
-			return 0 
-
-		end 
-
+	["Tanh"] = function (h, y) return (h - y) * (1 - math.pow(h, 2)) end,
+	
+	["HardSigmoid"] = function (h, y)
+		local grad
+		if h <= 0 or h >= 1 then
+			grad = 0
+		else
+			grad = 0.5
+		end
+		return (h - y) * grad
 	end,
 
-	["Tanh"] = function (x) 
+	["Softsign"] = function (h, y) return (h - y) *  1 / ((1 + math.abs(h))^2) end,
 
-		if (x > 0) then 
+	["ArcTangent"] = function (h, y) return (h - y) * (2 / math.pi) * (1 / (1 + h^2)) end,
 
-			return 1
+	["Swish"] = function (h, y)
+		
+		local sigmoid_h = 1 / (1 + math.exp(-h))
+		
+		return (h - y) * sigmoid_h + h * sigmoid_h * (1 - sigmoid_h)
+		
+	end,
 
-		elseif (x < 0) then
+	["BipolarSigmoid"] = function (h, y) return (h - y) * 0.5 * (1 - h^2) end,
 
-			return -1
-
-		else
-
-			return 0
-
-		end 
-
-	end
 
 }
+
+local lossFunctionList = {
+
+	["Sigmoid"] = function (h, y) return -(y * math.log(h) + (1 - y) * math.log(1 - h)) end,
+
+	["Tanh"] = function (h, y) return ((h - y)^2) / 2 end,
+	
+	["HardSigmoid"] = function (h, y) return -(y * math.log(h + 1e-10) + (1 - y) * math.log(1 - h + 1e-10)) end,
+
+	["Softsign"] = function (h, y) return ((h - y)^2) / 2 end,
+
+	["ArcTangent"] = function (h, y) return ((h - y)^2) / 2 end,
+
+	["Swish"] = function (h, y) return ((h - y)^2) / 2 end,
+
+	["BipolarSigmoid"] = function (h, y) return ((h - y)^2) / 2 end,
+
+}
+
+local cutOffList = {
+	
+	["0.5"] = {"Sigmoid", "HardSigmoid", "Swish"}, -- 0.5 threshold for [0,1] functions
+
+	["0"] = {"Tanh", "Softsign", "ArcTangent", "BipolarSigmoid"}, -- 0 threshold for [-1,1] functions
+	
+}
+
+local function getCutOffFunction(sigmoidFunction)
+	
+	for stringCutOffValue, sigmoidFunctionArray in pairs(cutOffList) do
+
+		if (table.find(sigmoidFunctionArray, sigmoidFunction)) then
+
+			local cutOffValue = tonumber(stringCutOffValue)
+
+			local negativeValue = (cutOffValue == 0.5) and 0 or -1
+
+			local cutOffFunction = function(x) 
+
+				if (x > cutOffValue) then return 1 end
+
+				if (x < cutOffValue) then return negativeValue end
+
+				return 0
+
+			end
+
+			return cutOffFunction
+
+		end
+
+	end
+	
+	error("Cut-off function not found for " .. tostring(sigmoidFunction) .. ".")
+	
+end
 
 function LogisticRegressionModel:calculateCost(hypothesisVector, labelVector)
 
@@ -278,7 +333,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 		end)
 
-		if cost then 
+		if (cost) then 
 
 			table.insert(costArray, cost)
 
@@ -313,8 +368,8 @@ function LogisticRegressionModel:predict(featureMatrix, returnOriginalOutput)
 	local outputVector = self:calculateHypothesisVector(featureMatrix, false)
 
 	if (returnOriginalOutput) then return outputVector end
-
-	local cutOffFunction = cutOffFunctionList[self.sigmoidFunction]
+	
+	local cutOffFunction = getCutOffFunction(self.sigmoidFunction)
 
 	local predictedLabelVector = AqwamTensorLibrary:applyFunction(cutOffFunction, outputVector)
 

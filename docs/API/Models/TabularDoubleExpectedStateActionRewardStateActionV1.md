@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - TabularDoubleExpectedStateActionRewardStateActionV1 (Tabular Expected SARSA)
 
-DeepExpectedStateActionRewardStateAction is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+TabularDoubleExpectedStateActionRewardStateActionV1 is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Constructors
 

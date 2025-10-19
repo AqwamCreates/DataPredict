@@ -64,7 +64,7 @@ end
 
 function DistributedModelParametersCoordinator:addModelParameters(ModelParameters)
 	
-	if (not ModelParameters) then error("No model parameters!") end
+	if (not ModelParameters) then error("No model parameters.") end
 	
 	self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel = self.currentTotalNumberOfChildModelUpdatesToUpdateMainModel + 1
 

@@ -316,7 +316,6 @@ local function run(Player)
 
     SeniorPlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
 
-
 end
 
 ```

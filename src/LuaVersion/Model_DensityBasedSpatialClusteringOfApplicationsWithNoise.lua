@@ -44,7 +44,6 @@ local defaultDistanceFunction = "Manhattan"
 
 local defaultEpsilon = 10
 
-
 local function getNeighbors(currentCorePointNumber, featureMatrix, epsilon, distanceFunction)
 	
 	local distance

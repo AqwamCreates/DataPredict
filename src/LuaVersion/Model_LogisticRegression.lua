@@ -122,11 +122,7 @@ function LogisticRegressionModel:calculateHypothesisVector(featureMatrix, saveFe
 
 	local zVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
-	if (saveFeatureMatrix) then 
-
-		self.featureMatrix = featureMatrix
-
-	end
+	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
 
 	local hypothesisVector = AqwamTensorLibrary:applyFunction(sigmoidFunctionList[self.sigmoidFunction], zVector)
 
@@ -140,7 +136,7 @@ function LogisticRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatri
 
 	local featureMatrix = self.featureMatrix
 
-	if (featureMatrix == nil) then error("Feature matrix not found.") end
+	if (not featureMatrix) then error("Feature matrix not found.") end
 
 	local costFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossMatrix)
 

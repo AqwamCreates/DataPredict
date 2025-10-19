@@ -102,7 +102,7 @@ function OneClassPassiveAggressiveClassifierModel:train(featureMatrix, labelVect
 	
 	if (labelVector) then
 		
-		if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
+		if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 		
 	else
 		
@@ -114,7 +114,7 @@ function OneClassPassiveAggressiveClassifierModel:train(featureMatrix, labelVect
 
 	if (ModelParameters) then
 
-		if (#featureMatrix[1] ~= #ModelParameters) then error("The number of features are not the same as the model parameters!") end
+		if (#featureMatrix[1] ~= #ModelParameters) then error("The number of features are not the same as the model parameters.") end
 
 	else
 

@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
+local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
+
 SupportVectorRegressionModel = {}
 
 SupportVectorRegressionModel.__index = SupportVectorRegressionModel
@@ -58,63 +60,7 @@ local seperatorFunction = function (x)
 
 end
 
-local distanceFunctionList = {
-
-	["Manhattan"] = function (x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
-
-		local distance = AqwamTensorLibrary:sum(part1)
-
-		return distance 
-
-	end,
-
-	["Euclidean"] = function (x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		local part2 = AqwamTensorLibrary:power(part1, 2)
-
-		local part3 = AqwamTensorLibrary:sum(part2)
-
-		local distance = math.sqrt(part3)
-
-		return distance 
-
-	end,
-
-	["Cosine"] = function(x1, x2)
-
-		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
-
-		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
-
-		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
-
-		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
-
-		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
-
-		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
-
-		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
-
-		local normX = x1Magnitude * x2Magnitude
-
-		local similarity = dotProductedX / normX
-
-		local cosineDistance = 1 - similarity
-
-		return cosineDistance
-
-	end,
-
-}
-
-local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
+local function createDistanceMatrix(distanceFunction, matrix1, matrix2)
 
 	local numberOfData1 = #matrix1
 
@@ -122,7 +68,7 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
 	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData1, numberOfData2})
 
-	local distanceFunctionToApply = distanceFunctionList[distanceFunction]
+	local distanceFunctionToApply = distanceFunctionDictionary[distanceFunction]
 
 	for i = 1, numberOfData1, 1 do
 

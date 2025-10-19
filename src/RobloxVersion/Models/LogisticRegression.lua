@@ -107,7 +107,7 @@ local lossFunctionList = {
 
 	["Tanh"] = function (h, y) return ((h - y)^2) / 2 end,
 	
-	["HardSigmoid"] = function (h, y) return -(y * math.log(h + 1e-10) + (1 - y) * math.log(1 - h + 1e-10)) end,
+	["HardSigmoid"] = function (h, y) return -(y * math.log(h) + (1 - y) * math.log(1 - h)) end,
 
 	["Softsign"] = function (h, y) return ((h - y)^2) / 2 end,
 

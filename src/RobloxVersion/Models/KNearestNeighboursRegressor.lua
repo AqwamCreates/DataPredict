@@ -28,51 +28,37 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
+local BaseModel = require(script.Parent.BaseModel)
 
 local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
 
-KMedoidsModel = {}
+KNearestNeighboursRegressor = {}
 
-KMedoidsModel.__index = KMedoidsModel
+KNearestNeighboursRegressor.__index = KNearestNeighboursRegressor
 
-setmetatable(KMedoidsModel, IterativeMethodBaseModel)
+setmetatable(KNearestNeighboursRegressor, BaseModel)
 
-local defaultMaximumNumberOfIterations = math.huge
+local defaultKValue = 3
 
-local defaultNumberOfClusters = 1
+local defaultDistanceFunction = "Euclidean"
 
-local defaultDistanceFunction = "Manhattan"
+local defaultUseWeightedDistance = false
 
-local defaultSetTheCentroidsDistanceFarthest = true
-
-local function checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClusterNumber, cluster)
-	
-	if (dataPointClusterNumber == cluster) then
-		
-		return 1
-		
-	else
-		
-		return 0
-		
-	end
-	
-end
-
-local function createDistanceMatrix(distanceFunction, featureMatrix, modelParameters)
+local function createDistanceMatrix(distanceFunction, featureMatrix, storedFeatureMatrix)
 
 	local numberOfData = #featureMatrix
 
-	local numberOfClusters = #modelParameters
+	local numberOfStoredData = #storedFeatureMatrix
 
-	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters})
+	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfStoredData}, 0)
 
-	for datasetIndex = 1, #featureMatrix, 1 do
+	local calculateDistance = distanceFunctionDictionary[distanceFunction]
 
-		for cluster = 1, #modelParameters, 1 do
+	for datasetIndex = 1, numberOfData, 1 do
 
-			distanceMatrix[datasetIndex][cluster] = distanceFunction({featureMatrix[datasetIndex]}, {modelParameters[cluster]})
+		for storedDatasetIndex = 1, numberOfStoredData, 1 do
+
+			distanceMatrix[datasetIndex][storedDatasetIndex] = calculateDistance({featureMatrix[datasetIndex]}, {storedFeatureMatrix[storedDatasetIndex]})
 
 		end
 
@@ -82,344 +68,253 @@ local function createDistanceMatrix(distanceFunction, featureMatrix, modelParame
 
 end
 
-local function chooseFarthestCentroidFromDatasetDistanceMatrix(distanceMatrix, blacklistedDataIndexArray)
+local function deepCopyTable(original, copies)
 
-	local dataIndex
+	copies = copies or {}
 
-	local maxDistance = -math.huge
+	local originalType = type(original)
 
-	for row = 1, #distanceMatrix, 1 do
+	local copy
 
-		if (not table.find(blacklistedDataIndexArray, row)) then
+	if (originalType == 'table') then
 
-			local totalDistance = 0
+		if copies[original] then
 
-			for column = 1, #distanceMatrix[1], 1 do totalDistance = totalDistance + distanceMatrix[row][column] end
+			copy = copies[original]
 
-			if (totalDistance > maxDistance) then
+		else
 
-				maxDistance = totalDistance
+			copy = {}
 
-				dataIndex = row
+			copies[original] = copy
+
+			for originalKey, originalValue in next, original, nil do
+
+				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
 
 			end
+
+			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
 
 		end
 
-	end
+	else -- number, string, boolean, etc
 
-	return dataIndex
-
-end
-
-local function chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
-	
-	local modelParameters = {}
-	
-	local dataIndexArray = {}
-	
-	local dataIndex
-	
-	local distanceMatrix = createDistanceMatrix(distanceFunction, featureMatrix, featureMatrix)
-	
-	repeat
-		
-		dataIndex = chooseFarthestCentroidFromDatasetDistanceMatrix(distanceMatrix, dataIndexArray)
-		
-		table.insert(dataIndexArray, dataIndex)
-		
-	until (#dataIndexArray == numberOfClusters)
-	
-	for row = 1, numberOfClusters, 1 do
-		
-		dataIndex = dataIndexArray[row]
-		
-		table.insert(modelParameters, featureMatrix[dataIndex])
-		
-	end
-	
-	return modelParameters
-	
-end
-
-local function chooseRandomCentroids(featureMatrix, numberOfClusters)
-
-	local modelParameters = {}
-
-	local numberOfRows = #featureMatrix
-
-	local randomRow
-
-	local selectedRows = {}
-
-	local hasANewRandomRowChosen
-
-	for cluster = 1, numberOfClusters, 1 do
-
-		repeat
-
-			randomRow = Random.new():NextInteger(1, numberOfRows)
-
-			hasANewRandomRowChosen = not (table.find(selectedRows, randomRow))
-
-			if hasANewRandomRowChosen then
-
-				table.insert(selectedRows, randomRow)
-				modelParameters[cluster] = featureMatrix[randomRow]
-
-			end
-
-		until hasANewRandomRowChosen
+		copy = original
 
 	end
 
-	return modelParameters
+	return copy
 
 end
 
-local function createClusterAssignmentMatrix(distanceMatrix) -- contains values of 0 and 1, where 0 is "does not belong to this cluster"
-	
-	local numberOfData = #distanceMatrix -- Number of rows
+local function merge(distanceVector, labelVector, left, mid, right)
 
-	local numberOfClusters = #distanceMatrix[1]
+	local subArrayOne = mid - left + 1
+	local subArrayTwo = right - mid
 
-	local clusterAssignmentMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters})
+	local leftDistanceVector = {}
+	local rightDistanceVector = {}
 
-	local dataPointClusterNumber
+	local leftLabelVector = {}
+	local rightLabelVector = {}
 
-	for dataIndex = 1, numberOfData, 1 do
+	for i = 1, subArrayOne do
 
-		local distanceVector = {distanceMatrix[dataIndex]}
-
-		local vectorIndexArray = AqwamTensorLibrary:findMinimumValueDimensionIndexArray(distanceVector)
-
-		if (vectorIndexArray == nil) then continue end
-
-		local clusterNumber = vectorIndexArray[2]
-
-		clusterAssignmentMatrix[dataIndex][clusterNumber] = 1
+		leftDistanceVector[i] = distanceVector[1][left + i - 1]
+		leftLabelVector[i] = labelVector[left + i - 1][1]
 
 	end
 
-	return clusterAssignmentMatrix
-	
-end
+	for j = 1, subArrayTwo do
 
-local function calculateCost(distanceMatrix)
-	
-	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
-	
-	local costMatrix = AqwamTensorLibrary:multiply(distanceMatrix, clusterAssignmentMatrix)
-	
-	local cost = AqwamTensorLibrary:sum(costMatrix)
-	
-	return cost
-	
-end
+		rightDistanceVector[j] = distanceVector[1][mid + j]
+		rightLabelVector[j] = labelVector[mid + j][1]
 
-local function initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
+	end
 
-	if (setTheCentroidsDistanceFarthest) and (#featureMatrix >= numberOfClusters) then
+	local indexOfSubArrayOne = 1
+	local indexOfSubArrayTwo = 1
+	local indexOfMergedArray = left
 
-		return chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
+	while indexOfSubArrayOne <= subArrayOne and indexOfSubArrayTwo <= subArrayTwo do
 
-	else
+		if leftDistanceVector[indexOfSubArrayOne] <= rightDistanceVector[indexOfSubArrayTwo] then
 
-		return chooseRandomCentroids(featureMatrix, numberOfClusters)
+			distanceVector[1][indexOfMergedArray] = leftDistanceVector[indexOfSubArrayOne]
+			labelVector[indexOfMergedArray][1] = leftLabelVector[indexOfSubArrayOne]
+			indexOfSubArrayOne = indexOfSubArrayOne + 1
+
+		else
+
+			distanceVector[1][indexOfMergedArray] = rightDistanceVector[indexOfSubArrayTwo]
+			labelVector[indexOfMergedArray][1] = rightLabelVector[indexOfSubArrayTwo]
+			indexOfSubArrayTwo = indexOfSubArrayTwo + 1
+
+		end
+
+		indexOfMergedArray = indexOfMergedArray + 1
+
+	end
+
+	while (indexOfSubArrayOne <= subArrayOne) do
+
+		distanceVector[1][indexOfMergedArray] = leftDistanceVector[indexOfSubArrayOne]
+		labelVector[indexOfMergedArray][1] = leftLabelVector[indexOfSubArrayOne]
+		indexOfSubArrayOne = indexOfSubArrayOne + 1
+		indexOfMergedArray = indexOfMergedArray + 1
+
+	end
+
+	while (indexOfSubArrayTwo <= subArrayTwo) do
+
+		distanceVector[1][indexOfMergedArray] = rightDistanceVector[indexOfSubArrayTwo]
+		labelVector[indexOfMergedArray][1] = rightLabelVector[indexOfSubArrayTwo]
+		indexOfSubArrayTwo = indexOfSubArrayTwo + 1
+		indexOfMergedArray = indexOfMergedArray + 1
 
 	end
 
 end
 
+local function mergeSort(distanceVector, labelVector, startingValue, endValue)
 
-function KMedoidsModel.new(parameterDictionary)
-	
+	if (startingValue >= endValue) then return end
+
+	local mid = math.floor(startingValue + (endValue - startingValue) / 2)
+
+	mergeSort(distanceVector, labelVector, startingValue, mid)
+	mergeSort(distanceVector, labelVector, mid + 1, endValue)
+	merge(distanceVector, labelVector, startingValue, mid, endValue)
+
+end
+
+local function getAverageValue(sortedLabelVectorLowestToHighest, distanceVector, kValue, useWeightedDistance)
+
+	local sum = 0
+
+	local totalWeight = 0
+
+	local minimumNumberOfkValue = math.min(#sortedLabelVectorLowestToHighest, kValue)
+
+	for k = 1, minimumNumberOfkValue, 1 do
+
+		local label = sortedLabelVectorLowestToHighest[k][1]
+
+		local distance = distanceVector[1][k]
+
+		local weight
+
+		if (useWeightedDistance) then
+
+			weight = ((distance == 0) and math.huge) or (1 / distance)
+
+		else
+
+			weight = 1
+
+		end
+
+		sum = sum + (label * weight)
+		
+		totalWeight = totalWeight + weight
+
+	end
+
+	local averageValue = sum / totalWeight
+
+	return averageValue
+
+end
+
+function KNearestNeighboursRegressor.new(parameterDictionary)
+
 	parameterDictionary = parameterDictionary or {}
-	
-	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
-	
-	local NewKMedoidsModel = IterativeMethodBaseModel.new(parameterDictionary)
-	
-	setmetatable(NewKMedoidsModel, KMedoidsModel)
-	
-	NewKMedoidsModel:setName("KMedoids")
-	
-	NewKMedoidsModel.numberOfClusters = parameterDictionary.numberOfClusters or defaultNumberOfClusters
 
-	NewKMedoidsModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
+	local NewKNearestNeighboursRegressor = BaseModel.new(parameterDictionary)
 
-	NewKMedoidsModel.setTheCentroidsDistanceFarthest = NewKMedoidsModel:getValueOrDefaultValue(parameterDictionary.setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
+	setmetatable(NewKNearestNeighboursRegressor, KNearestNeighboursRegressor)
 	
-	return NewKMedoidsModel
-	
+	NewKNearestNeighboursRegressor:setName("KNearestNeighboursRegressor")
+
+	NewKNearestNeighboursRegressor.kValue = parameterDictionary.kValue or defaultKValue
+
+	NewKNearestNeighboursRegressor.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
+
+	NewKNearestNeighboursRegressor.useWeightedDistance = NewKNearestNeighboursRegressor:getValueOrDefaultValue(parameterDictionary.useWeightedDistance, defaultUseWeightedDistance)
+
+	return NewKNearestNeighboursRegressor
+
 end
 
-function KMedoidsModel:train(featureMatrix)
+function KNearestNeighboursRegressor:train(featureMatrix, labelVector)
+
+	if (#featureMatrix ~= #labelVector) then error("The number of data in feature matrix and the label vector are not the same.") end
+
+	local ModelParameters = self.ModelParameters
+
+	if (ModelParameters) then
+
+		local storedFeatureMatrix = ModelParameters[1]
+
+		local storedLabelVector = ModelParameters[2]
+
+		if (#featureMatrix[1] ~= #storedFeatureMatrix[1]) then error("The number of features are not the same as the model parameters.") end
+
+		featureMatrix = AqwamTensorLibrary:concatenate(featureMatrix, storedFeatureMatrix, 1)
+
+		labelVector = AqwamTensorLibrary:concatenate(labelVector, storedLabelVector, 1)
+
+	end
+
+	if (self.kValue > #featureMatrix) then warn("Number of data is less than the K value. Please add more data before doing any predictions.") end
+
+	self.ModelParameters = {featureMatrix, labelVector}
+
+end
+
+function KNearestNeighboursRegressor:predict(featureMatrix, returnOriginalOutput)
 	
 	local ModelParameters = self.ModelParameters
 	
-	local numberOfClusters = self.numberOfClusters
-	
+	local numberOfData = #featureMatrix
+
+	if (not ModelParameters) then return AqwamTensorLibrary:createTensor({numberOfData, 1}, math.huge) end
+
+	local storedFeatureMatrix = ModelParameters[1]
+
+	local storedLabelVector = ModelParameters[2]
+
+	local kValue = self.kValue
+
 	local distanceFunction = self.distanceFunction
-	
-	local distanceFunctionToApply = distanceFunctionDictionary[distanceFunction]
 
-	if (not distanceFunctionToApply) then error("Unknown distance function.") end
-	
-	local medoidMatrix = ModelParameters
-	
-	if (medoidMatrix) then
-		
-		if (#featureMatrix[1] ~= #medoidMatrix[1]) then error("The number of features are not the same as the model parameters.") end
-		
-	else
-		
-		medoidMatrix = initializeCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply, self.setTheCentroidsDistanceFarthest)
-		
-	end
-	
-	local maximumNumberOfIterations = self.maximumNumberOfIterations
-	
-	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, medoidMatrix)
-	
-	local oldColumnDistanceArray = {}
-	
-	local costArray = {}
+	local useWeightedDistance = self.useWeightedDistance
 
-	local numberOfIterations = 0
+	local distanceMatrix = createDistanceMatrix(distanceFunction, featureMatrix, storedFeatureMatrix)
 
-	local previousCost = calculateCost(distanceMatrix)
-	
-	local currentCost
-	
-	local candidateMedoidVector
-	
-	repeat
-		
-		self:iterationWait()
-		
-		for candidateMedoidIndex, unwrappedCandidateMedoidVector in ipairs(featureMatrix) do
-			
-			self:dataWait()
-			
-			candidateMedoidVector = {unwrappedCandidateMedoidVector}
-			
-			for medoidIndex, unwrappedMedoidVector in ipairs(medoidMatrix) do
-
-				medoidMatrix[medoidIndex] = unwrappedCandidateMedoidVector
-				
-				for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
-					
-					oldColumnDistanceArray[dataIndex] = distanceMatrix[dataIndex][medoidIndex]
-					
-					distanceMatrix[dataIndex][medoidIndex] = distanceFunctionToApply({unwrappedFeatureVector}, candidateMedoidVector)
-					
-				end
-
-				currentCost = calculateCost(distanceMatrix)
-
-				if (currentCost > previousCost) then
-					
-					for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do 
-						
-						distanceMatrix[dataIndex][medoidIndex] = oldColumnDistanceArray[dataIndex]
-						
-					end
-
-					medoidMatrix[medoidIndex] = unwrappedMedoidVector
-
-					currentCost = previousCost
-					
-				else
-					
-					previousCost = currentCost
-
-				end
-
-				numberOfIterations = numberOfIterations + 1
-
-				table.insert(costArray, currentCost)
-
-				self:printNumberOfIterationsAndCost(numberOfIterations, currentCost)
-
-				if (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
-				
-			end
-
-			if (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
-			
-		end
-		
-	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost)
-	
-	if (self.isOutputPrinted) then
-
-		if (currentCost == math.huge) then warn("The model diverged.") end
-
-		if (currentCost ~= currentCost) then warn("The model produced nan (not a number) values.") end
-
-	end
-	
-	self.ModelParameters = medoidMatrix
-	
-	return costArray
-	
-end
-
-function KMedoidsModel:predict(featureMatrix, returnOriginalOutput)
-	
-	local ModelParameters = self.ModelParameters
-	
-	if (not ModelParameters) then
-
-		local numberOfData = #featureMatrix
-
-		if (returnOriginalOutput) then AqwamTensorLibrary:createTensor({numberOfData, self.numberOfClusters}, math.huge) end
-
-		local dimensionSizeArray = {numberOfData, 1}
-
-		return AqwamTensorLibrary:createTensor(dimensionSizeArray, nil), AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
-
-	end
-	
-	local distanceFunctionToApply = distanceFunctionDictionary[self.distanceFunction]
-	
-	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, ModelParameters)
-	
 	if (returnOriginalOutput) then return distanceMatrix end
+	
+	local numberOfOtherData = #storedFeatureMatrix
 
-	local numberOfData = #distanceMatrix
+	local predictedLabelVector = {}
 
-	local clusterNumberVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0)
+	for i = 1, numberOfData, 1 do
 
-	local clusterDistanceVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, 0) 
+		local distanceVector = {deepCopyTable(distanceMatrix[i])}
 
-	for dataIndex, distanceVector in ipairs(distanceMatrix) do
+		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
 
-		local closestClusterNumber
+		mergeSort(distanceVector, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
 
-		local shortestDistance = math.huge
+		local averageValue = getAverageValue(sortedLabelVectorLowestToHighest, distanceVector, kValue, useWeightedDistance)
 
-		for i, distance in ipairs(distanceVector) do
-
-			if (distance < shortestDistance) then
-
-				closestClusterNumber = i
-
-				shortestDistance = distance
-
-			end
-
-		end
-
-		clusterNumberVector[dataIndex][1] = closestClusterNumber
-
-		clusterDistanceVector[dataIndex][1] = shortestDistance
+		predictedLabelVector[i] = {averageValue}
 
 	end
 
-	return clusterNumberVector, clusterDistanceVector
-	
+	return predictedLabelVector
+
 end
 
-return KMedoidsModel
+return KNearestNeighboursRegressor

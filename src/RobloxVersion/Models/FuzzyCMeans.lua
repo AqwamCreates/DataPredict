@@ -514,13 +514,15 @@ function FuzzyCMeansModel:predict(featureMatrix, returnMode)
 	
 	local isNotNil = (returnType ~= "nil")
 	
-	if (not centroidMatrix) then 
+	if (not centroidMatrix) then
 		
-		local numberOfColumns = (isNotNil and self.numberOfClusters) or 1
+		local numberOfData = #featureMatrix
 		
-		local unknownValue = (isNotNil and math.huge) or nil
+		if (isNotNil) then AqwamTensorLibrary:createTensor({numberOfData, self.numberOfClusters}, math.huge) end
+		
+		local dimensionSizeArray = {numberOfData, 1}
 
-		return AqwamTensorLibrary:createTensor({#featureMatrix, numberOfColumns}, unknownValue) 
+		return AqwamTensorLibrary:createTensor(dimensionSizeArray, nil), AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
 
 	end
 	

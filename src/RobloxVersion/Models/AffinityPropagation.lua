@@ -412,13 +412,17 @@ function AffinityPropagationModel:predict(featureMatrix)
 	
 	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, storedFeatureMatrix)
 	
+	local storedFeatureMatrixRowIndex
+	
+	local index
+	
 	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
 
-		local index = AqwamTensorLibrary:findMinimumValueDimensionIndexArray({unwrappedDistanceVector})
+		index = AqwamTensorLibrary:findMinimumValueDimensionIndexArray({unwrappedDistanceVector})
 
 		if (index) then
 			
-			local storedFeatureMatrixRowIndex = index[2]
+			storedFeatureMatrixRowIndex = index[2]
 
 			predictedClusterVector[i][1] = clusterNumberArray[storedFeatureMatrixRowIndex]
 

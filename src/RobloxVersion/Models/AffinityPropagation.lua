@@ -390,7 +390,7 @@ function AffinityPropagationModel:predict(featureMatrix)
 	
 	local dimensionSizeArray = {#featureMatrix, 1}
 	
-	if (ModelParameters) then
+	if (not ModelParameters) then
 		
 		local placeholderClusterVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
 		

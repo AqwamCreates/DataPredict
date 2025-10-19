@@ -122,7 +122,11 @@ function LogisticRegressionModel:calculateHypothesisVector(featureMatrix, saveFe
 
 	local zVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
-	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
+	if (saveFeatureMatrix) then 
+
+		self.featureMatrix = featureMatrix
+
+	end
 
 	local hypothesisVector = AqwamTensorLibrary:applyFunction(sigmoidFunctionList[self.sigmoidFunction], zVector)
 

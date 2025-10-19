@@ -26,11 +26,11 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
-local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
+local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
 
 local ExpectationMaximizationModel = {}
 
@@ -682,9 +682,9 @@ function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutpu
 
 	local probabilityVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, initialValue)
 	
-	local highestWeight
-	
 	local selectedCluster
+	
+	local highestWeight
 	
 	for dataIndex, gausssianVector in ipairs(gaussianMatrix) do
 		

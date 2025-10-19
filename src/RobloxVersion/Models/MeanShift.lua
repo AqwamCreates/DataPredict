@@ -512,7 +512,13 @@ function MeanShiftModel:train(featureMatrix)
 		
 	until (numberOfIterations == maximumNumberOfIterations) or (#centroidMatrix <= numberOfClusters) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
 	
 	self.ModelParameters = {centroidMatrix, sumKernelMatrix, sumMultipliedKernelMatrix}
 	
@@ -523,10 +529,30 @@ end
 function MeanShiftModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
-	
+
 	local ModelParameters = self.ModelParameters
+
+	local centroidMatrix
+
+	if (not ModelParameters) then
+		
+		local numberOfClusters = self.numberOfClusters
+		
+		local numberOfFeatures = #featureMatrix[1]
+
+		centroidMatrix = self:initializeCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply)
+		
+		local dimensionSizeArray = {numberOfClusters, numberOfFeatures}
+
+		local sumKernelMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray)
+		
+		local sumMultipliedKernelMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray)
+
+		self.ModelParameters = {centroidMatrix, sumKernelMatrix, sumMultipliedKernelMatrix}
+
+	end
 	
-	local centroidMatrix = ModelParameters[1]
+	centroidMatrix = ModelParameters[1]
 	
 	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
 	

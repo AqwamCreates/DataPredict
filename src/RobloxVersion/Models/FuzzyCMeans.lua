@@ -311,7 +311,7 @@ function FuzzyCMeansModel:initializeCentroids(featureMatrix, numberOfClusters, d
 		
 		return AqwamTensorLibrary:mean(featureMatrix, 1)
 	
-	elseif (setInitialCentroidsOnDataPoints) and (setTheCentroidsDistanceFarthest) then
+	elseif (setInitialCentroidsOnDataPoints) and (setTheCentroidsDistanceFarthest) and (#featureMatrix >= numberOfClusters) then
 
 		return chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
 
@@ -508,9 +508,9 @@ end
 
 function FuzzyCMeansModel:predict(featureMatrix, returnMode)
 	
-	local centroidMatrix = self.ModelParameters
-	
 	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
+	
+	local centroidMatrix = self.ModelParameters
 	
 	if (not centroidMatrix) then
 

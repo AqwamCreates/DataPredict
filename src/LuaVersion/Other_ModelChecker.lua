@@ -154,7 +154,7 @@ function ModelChecker:testRegression(testFeatureMatrix, testLabelVector)
 	
 	local Model = self.Model
 
-	if (not Model) then error("No model!") end
+	if (not Model) then error("No model.") end
 
 	local numberOfData = #testFeatureMatrix
 	
@@ -170,7 +170,7 @@ function ModelChecker:validateClassification(trainFeatureMatrix, trainLabelVecto
 	
 	local Model = self.Model
 	
-	if (not Model) then error("No model!") end
+	if (not Model) then error("No model.") end
 
 	local trainError
 
@@ -246,7 +246,7 @@ function ModelChecker:validateRegression(trainFeatureMatrix, trainLabelVector, v
 	
 	local Model = self.Model
 
-	if (not Model) then error("No model!") end
+	if (not Model) then error("No model.") end
 	
 	local trainError
 	
@@ -318,7 +318,7 @@ function ModelChecker:test(testFeatureMatrix, testLabelVector)
 		
 	else
 		
-		error("Invalid model type!")
+		error("Invalid model type.")
 
 	end
 
@@ -344,7 +344,7 @@ function ModelChecker:validate(trainFeatureMatrix, trainLabelVector, validationF
 		
 	else
 		
-		error("Invalid model type!")
+		error("Invalid model type.")
 		
 	end
 	

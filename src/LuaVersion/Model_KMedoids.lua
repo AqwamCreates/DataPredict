@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local IterativeMethodBaseModel = require("Model_terativeMethodBaseModel")
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 KMedoidsModel = {}
 
@@ -100,12 +100,6 @@ local distanceFunctionList = {
 
 }
 
-local function calculateDistance(vector1, vector2, distanceFunction)
-	
-	return distanceFunctionList[distanceFunction](vector1, vector2) 
-	
-end
-
 local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
 	
 	local numberOfData = #distanceMatrix
@@ -156,7 +150,7 @@ local function checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClus
 	
 end
 
-local function createDistanceMatrix(modelParameters, featureMatrix, distanceFunction)
+local function createDistanceMatrix(distanceFunction, modelParameters, featureMatrix)
 
 	local numberOfData = #featureMatrix
 
@@ -216,7 +210,7 @@ local function chooseFarthestCentroids(featureMatrix, numberOfClusters, distance
 	
 	local dataIndex
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, distanceFunction)
+	local distanceMatrix = createDistanceMatrix(distanceFunction, featureMatrix, featureMatrix)
 	
 	repeat
 		
@@ -301,9 +295,9 @@ local function createClusterAssignmentMatrix(distanceMatrix) -- contains values 
 	
 end
 
-local function calculateCost(modelParameters, featureMatrix, distanceFunction)
+local function calculateCost(distanceFunction, modelParameters, featureMatrix)
 	
-	local distanceMatrix = createDistanceMatrix(modelParameters, featureMatrix, distanceFunction)
+	local distanceMatrix = createDistanceMatrix(distanceFunction, modelParameters, featureMatrix)
 	
 	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
 	
@@ -380,9 +374,9 @@ function KMedoidsModel:train(featureMatrix)
 	
 	if (ModelParameters) then
 		
-		if (#featureMatrix[1] ~= #ModelParameters[1]) then error("The number of features are not the same as the model parameters!") end
+		if (#featureMatrix[1] ~= #ModelParameters[1]) then error("The number of features are not the same as the model parameters.") end
 		
-		currentCost = calculateCost(ModelParameters, featureMatrix, distanceFunctionToApply)
+		currentCost = calculateCost(distanceFunctionToApply, ModelParameters, featureMatrix)
 		
 	else
 		
@@ -408,7 +402,7 @@ function KMedoidsModel:train(featureMatrix)
 
 				ModelParameters[medoid] = featureMatrix[row]
 
-				currentCost = calculateCost(ModelParameters, featureMatrix, distanceFunctionToApply)
+				currentCost = calculateCost(distanceFunctionToApply, ModelParameters, featureMatrix)
 
 				if (currentCost > previousCost) then
 
@@ -434,7 +428,13 @@ function KMedoidsModel:train(featureMatrix)
 		
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost)
 	
-	if (currentCost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	if (self.isOutputPrinted) then
+
+		if (currentCost == math.huge) then warn("The model diverged.") end
+
+		if (currentCost ~= currentCost) then warn("The model produced nan (not a number) values.") end
+
+	end
 	
 	self.ModelParameters = ModelParameters
 	
@@ -444,13 +444,21 @@ end
 
 function KMedoidsModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
-	
 	local ModelParameters = self.ModelParameters
 	
-	local distanceMatrix = createDistanceMatrix(ModelParameters, featureMatrix, distanceFunctionToApply)
+	if (not ModelParameters) then 
+
+		local unknownValue = (returnOriginalOutput and math.huge) or nil
+
+		return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, unknownValue) 
+
+	end
 	
-	if (returnOriginalOutput == true) then return distanceMatrix end
+	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
+	
+	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, ModelParameters, featureMatrix)
+	
+	if (returnOriginalOutput) then return distanceMatrix end
 
 	local clusterNumberVector, clusterDistanceVector = assignToCluster(distanceMatrix)
 

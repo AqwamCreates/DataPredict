@@ -280,8 +280,6 @@ function LinearRegressionModel:predict(featureMatrix)
 
 	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
 
-	if (type(predictedVector) == "number") then predictedVector = {{predictedVector}} end
-
 	return predictedVector
 
 end

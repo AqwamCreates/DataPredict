@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
+local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
+
 local ExpectationMaximizationModel = {}
 
 ExpectationMaximizationModel.__index = ExpectationMaximizationModel
@@ -51,62 +53,6 @@ local defaultSetTheCentroidsDistanceFarthest = true
 local defaultDistanceFunction = "Euclidean"
 
 local defaultEpsilon = 1e-16
-
-local distanceFunctionList = {
-
-	["Manhattan"] = function (x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
-
-		local distance = AqwamTensorLibrary:sum(part1)
-
-		return distance 
-
-	end,
-
-	["Euclidean"] = function (x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		local part2 = AqwamTensorLibrary:power(part1, 2)
-
-		local part3 = AqwamTensorLibrary:sum(part2)
-
-		local distance = math.sqrt(part3)
-
-		return distance 
-
-	end,
-
-	["Cosine"] = function(x1, x2)
-
-		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
-
-		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
-
-		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
-
-		local x1Magnitude = math.sqrt(x1MagnitudePart2)
-
-		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
-
-		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
-
-		local x2Magnitude = math.sqrt(x2MagnitudePart2)
-
-		local normX = x1Magnitude * x2Magnitude
-
-		local similarity = dotProductedX / normX
-
-		local cosineDistance = 1 - similarity
-
-		return cosineDistance
-
-	end,
-
-}
 
 local function gaussian(featureVector, meanVector, varianceVector, epsilon)
 	
@@ -377,7 +323,7 @@ function ExpectationMaximizationModel:initializeCentroids(featureMatrix, numberO
 
 	elseif (setInitialCentroidsOnDataPoints) and (setTheCentroidsDistanceFarthest) then
 		
-		local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
+		local distanceFunctionToApply = distanceFunctionDictionary[self.distanceFunction]
 		
 		if (not distanceFunctionToApply) then error("Unknown distance function.") end
 
@@ -726,28 +672,34 @@ function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutpu
 	
 	if (returnOriginalOutput) then return gaussianMatrix end
 	
+	local initialValue = (useLogProbabilities and -math.huge)
+	
 	local numberOfData = #featureMatrix
 	
 	local dimensionSizeArray = {numberOfData, 1}
 	
-	local selectedClustersVector = AqwamTensorLibrary:createTensor(dimensionSizeArray)
+	local selectedClustersVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, initialValue)
 
-	local probabilityVector = AqwamTensorLibrary:createTensor(dimensionSizeArray)
+	local probabilityVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, initialValue)
+	
+	local selectedCluster
+	
+	local highestWeight
 	
 	for dataIndex, gausssianVector in ipairs(gaussianMatrix) do
 		
-		local selectedCluster
+		selectedCluster = nil
 		
-		local highestWeight = -math.huge
+		highestWeight = initialValue
 		
 		for clusterNumber, weight in ipairs(gausssianVector) do
 			
 			if (weight > highestWeight) then
 				
 				selectedCluster = clusterNumber
-
-				highestWeight = weight
 				
+				highestWeight = weight
+
 			end
 				
 		end

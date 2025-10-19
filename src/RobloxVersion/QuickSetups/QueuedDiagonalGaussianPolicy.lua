@@ -115,8 +115,8 @@ function QueuedDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		local previousActionNoiseVector = previousActionNoiseVectorDictionary[agentIndex]
 		
 		local ExperienceReplay = NewQueuedDiagonalGaussianPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
-
-		local currentNumberOfReinforcements = (currentNumberOfReinforcementsDictionary[numberOfReinforcementsIndex] or 0) + 1
+		
+		local currentNumberOfReinforcements = currentNumberOfReinforcementsDictionary[numberOfReinforcementsIndex] or 0
 		
 		local currentNumberOfEpisodes = currentNumberOfEpisodesDictionary[numberOfEpisodesIndex] or 1
 		
@@ -139,6 +139,8 @@ function QueuedDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 			isEpisodeEnd = false
 			
 			terminalStateValue = 0
+
+			currentNumberOfReinforcements = currentNumberOfReinforcements + 1
 
 		end
 		
@@ -186,7 +188,7 @@ function QueuedDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		
 	end)
 	
-	NewQueuedDiagonalGaussianPolicyQuickSetup:setResetFunction(function()
+	NewQueuedDiagonalGaussianPolicyQuickSetup:setResetFunction(function(agentIndex, currentFeatureVector, rewardValue)
 
 		NewQueuedDiagonalGaussianPolicyQuickSetup.previousFeatureVectorDictionary = {}
 
@@ -273,62 +275,66 @@ function QueuedDiagonalGaussianPolicyQuickSetup:start()
 		while(self.isRunning) do
 
 			while (#inputQueueArray == 0) do task.wait() end
-
-			agentIndex, previousFeatureVector, previousActionMeanVector, previousActionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay = table.unpack(inputQueueArray[1])
-
-			isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
-
-			if (isOriginalValueNotAVector) then currentFeatureVector = {{currentFeatureVector}} end
-
-			actionMeanVector = Model:predict(currentFeatureVector, true)
 			
-			actionVectorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanVector)
+			pcall(function()
+				
+				agentIndex, previousFeatureVector, previousActionMeanVector, previousActionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay = table.unpack(inputQueueArray[1])
 
-			actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor(actionVectorDimensionSizeArray, 0, 1)
-			
-			scaledActionNoiseVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
+				isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
 
-			actionVector = AqwamTensorLibrary:add(actionMeanVector, scaledActionNoiseVector)
+				if (isOriginalValueNotAVector) then currentFeatureVector = {{currentFeatureVector}} end
 
-			if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
+				actionMeanVector = Model:predict(currentFeatureVector, true)
 
-			if (previousFeatureVector) then
+				actionVectorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanVector)
 
-				temporalDifferenceError = Model:diagonalGaussianUpdate(previousFeatureVector, previousActionMeanVector, actionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+				actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor(actionVectorDimensionSizeArray, 0, 1)
 
-				if (updateFunction) then updateFunction(terminalStateValue, agentIndex) end
+				scaledActionNoiseVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
 
-			end
+				actionVector = AqwamTensorLibrary:add(actionMeanVector, scaledActionNoiseVector)
 
-			if (isEpisodeEnd) then
+				if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
-				Model:episodeUpdate(terminalStateValue)
+				if (previousFeatureVector) then
 
-				if episodeUpdateFunction then episodeUpdateFunction(terminalStateValue, agentIndex) end
+					temporalDifferenceError = Model:diagonalGaussianUpdate(previousFeatureVector, previousActionMeanVector, actionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
-			end
+					if (updateFunction) then updateFunction(terminalStateValue, agentIndex) end
 
-			if (ExperienceReplay) and (previousFeatureVector) then
+				end
 
-				ExperienceReplay:addExperience(previousFeatureVector, previousActionMeanVector, actionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+				if (isEpisodeEnd) then
 
-				ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
+					Model:episodeUpdate(terminalStateValue)
 
-				ExperienceReplay:run(function(storedPreviousFeatureVector, storedActionMeanVector, storedActionStandardDeviationVector, storedActionNoiseVector, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+					if episodeUpdateFunction then episodeUpdateFunction(terminalStateValue, agentIndex) end
 
-					return Model:diagonalGaussianUpdate(storedPreviousFeatureVector, storedActionMeanVector, storedActionStandardDeviationVector, storedActionNoiseVector, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+				end
 
-				end)
+				if (ExperienceReplay) and (previousFeatureVector) then
 
-			end
-			
-			outputArray = {actionVector, actionMeanVector, actionNoiseVector}
+					ExperienceReplay:addExperience(previousFeatureVector, previousActionMeanVector, actionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+
+					ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
+
+					ExperienceReplay:run(function(storedPreviousFeatureVector, storedActionMeanVector, storedActionStandardDeviationVector, storedActionNoiseVector, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+
+						return Model:diagonalGaussianUpdate(storedPreviousFeatureVector, storedActionMeanVector, storedActionStandardDeviationVector, storedActionNoiseVector, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+
+					end)
+
+				end
+				
+				outputArray = {actionVector, actionMeanVector, actionNoiseVector}
+				
+				table.insert(outputQueueArray, outputArray)
+
+				table.insert(agentIndexQueueOutputArray, agentIndex)
+				
+			end)
 
 			table.remove(inputQueueArray, 1)
-
-			table.insert(outputQueueArray, outputArray)
-
-			table.insert(agentIndexQueueOutputArray, agentIndex)
 
 		end
 		

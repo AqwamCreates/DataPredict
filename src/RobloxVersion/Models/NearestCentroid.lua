@@ -320,7 +320,7 @@ function NearestCentroidModel:predict(featureMatrix, returnOriginalOutput)
 		
 		local numberOfClasses = #ClassesList
 		
-		if (returnOriginalOutput) then AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, math.huge) end
+		if (returnOriginalOutput) then return AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, math.huge) end
 		
 		local dimensionSizeArray = {numberOfData, 1}
 		

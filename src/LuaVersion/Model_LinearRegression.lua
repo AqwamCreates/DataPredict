@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GradientMethodBaseModel = require"Model_GradientMethodBaseModel")
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 LinearRegressionModel = {}
 
@@ -279,8 +279,6 @@ function LinearRegressionModel:predict(featureMatrix)
 	end
 
 	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
-
-	if (type(predictedVector) == "number") then predictedVector = {{predictedVector}} end
 
 	return predictedVector
 

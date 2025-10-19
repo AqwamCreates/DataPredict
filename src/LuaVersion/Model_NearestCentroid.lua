@@ -230,6 +230,8 @@ end
 
 function NearestCentroidModel:train(featureMatrix, labelVector)
 	
+	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
+	
 	local numberOfData = #featureMatrix
 
 	if (numberOfData ~= #labelVector) then error("The number of data in feature matrix and the label vector are not the same.") end

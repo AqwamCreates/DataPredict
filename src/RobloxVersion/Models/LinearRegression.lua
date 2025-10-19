@@ -86,11 +86,7 @@ function LinearRegressionModel:calculateHypothesisVector(featureMatrix, saveFeat
 
 	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
-	if (saveFeatureMatrix) then 
-
-		self.featureMatrix = featureMatrix
-
-	end
+	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
 
 	return hypothesisVector
 
@@ -102,7 +98,7 @@ function LinearRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
 
 	local featureMatrix = self.featureMatrix
 
-	if (featureMatrix == nil) then error("Feature matrix not found.") end
+	if (not featureMatrix) then error("Feature matrix not found.") end
 
 	local costFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossMatrix)
 
@@ -238,7 +234,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 		end)
 
-		if cost then 
+		if (cost) then 
 
 			table.insert(costArray, cost)
 

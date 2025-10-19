@@ -156,11 +156,11 @@ function PassiveAggressiveClassifierModel:train(featureMatrix, labelVector)
 
 			labelValue = labelVector[dataIndex][1]
 
-			predictedLabelValue = AqwamTensorLibrary:dotProduct(featureVector, ModelParameters)
+			predictedLabelValue = AqwamTensorLibrary:dotProduct(featureVector, ModelParameters)[1][1]
 
 			transposedFeatureVector = AqwamTensorLibrary:transpose(featureVector)
 
-			dotProductFeatureVectorValue = AqwamTensorLibrary:dotProduct(featureVector, transposedFeatureVector)
+			dotProductFeatureVectorValue = AqwamTensorLibrary:dotProduct(featureVector, transposedFeatureVector)[1][1]
 
 			lossValue = math.max(0, 1 - (labelValue * predictedLabelValue))
 

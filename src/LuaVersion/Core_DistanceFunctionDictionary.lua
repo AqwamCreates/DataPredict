@@ -1,6 +1,6 @@
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local DistanceFunctionDictionary = {
+local distanceFunctionDictionary = {
 
 	["Manhattan"] = function (x1, x2)
 
@@ -56,4 +56,4 @@ local DistanceFunctionDictionary = {
 
 }
 
-return DistanceFunctionDictionary
+return distanceFunctionDictionary

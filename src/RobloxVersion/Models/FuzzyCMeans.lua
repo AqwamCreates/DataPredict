@@ -512,9 +512,13 @@ function FuzzyCMeansModel:predict(featureMatrix, returnMode)
 	
 	local returnType = type(returnMode)
 	
+	local isNotNil = (returnType ~= "nil")
+	
 	if (not centroidMatrix) then 
-
-		local unknownValue = ((returnType ~= "nil") and math.huge) or nil
+		
+		local numberOfColumns = (isNotNil and self.numberOfClusters) or 1
+		
+		local unknownValue = (isNotNil and math.huge) or nil
 
 		return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, unknownValue) 
 
@@ -524,7 +528,7 @@ function FuzzyCMeansModel:predict(featureMatrix, returnMode)
 	
 	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, centroidMatrix)
 	
-	if (returnType ~= "nil") then
+	if (isNotNil) then
 		
 		local isBoolean = (returnType == "boolean")
 		

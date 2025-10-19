@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseModel = require(script.Parent.BaseModel)
 
+local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
+
 KNearestNeighboursRegressor = {}
 
 KNearestNeighboursRegressor.__index = KNearestNeighboursRegressor
@@ -42,63 +44,7 @@ local defaultDistanceFunction = "Euclidean"
 
 local defaultUseWeightedDistance = false
 
-local distanceFunctionList = {
-
-	["Manhattan"] = function(x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
-
-		local distance = AqwamTensorLibrary:sum(part1)
-
-		return distance 
-
-	end,
-
-	["Euclidean"] = function(x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		local part2 = AqwamTensorLibrary:power(part1, 2)
-
-		local part3 = AqwamTensorLibrary:sum(part2)
-
-		local distance = math.sqrt(part3)
-
-		return distance 
-
-	end,
-
-	["Cosine"] = function(x1, x2)
-
-		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
-
-		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
-
-		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
-
-		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
-
-		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
-
-		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
-
-		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
-
-		local normX = x1Magnitude * x2Magnitude
-
-		local similarity = dotProductedX / normX
-
-		local cosineDistance = 1 - similarity
-
-		return cosineDistance
-
-	end,
-
-}
-
-local function createDistanceMatrix(featureMatrix, storedFeatureMatrix, distanceFunction)
+local function createDistanceMatrix(distanceFunction, featureMatrix, storedFeatureMatrix)
 
 	local numberOfData = #featureMatrix
 
@@ -106,7 +52,7 @@ local function createDistanceMatrix(featureMatrix, storedFeatureMatrix, distance
 
 	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfStoredData}, 0)
 
-	local calculateDistance = distanceFunctionList[distanceFunction]
+	local calculateDistance = distanceFunctionDictionary[distanceFunction]
 
 	for datasetIndex = 1, numberOfData, 1 do
 
@@ -344,7 +290,7 @@ function KNearestNeighboursRegressor:predict(featureMatrix, returnOriginalOutput
 
 	local useWeightedDistance = self.useWeightedDistance
 
-	local distanceMatrix = createDistanceMatrix(featureMatrix, storedFeatureMatrix, distanceFunction)
+	local distanceMatrix = createDistanceMatrix(distanceFunction, featureMatrix, storedFeatureMatrix)
 
 	if (returnOriginalOutput) then return distanceMatrix end
 	

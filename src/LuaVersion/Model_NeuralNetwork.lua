@@ -20,7 +20,7 @@
 	
 	--------------------------------------------------------------------
 	
-	DO NOT REMOVE THIS TEXT!
+	DO NOT REMOVE THIS TEXT.
 	
 	--------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ local layerPropertyValueTypeCheckingFunctionList = {
 
 		local valueType = type(value)
 
-		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for number of neurons!") end 
+		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for number of neurons.") end 
 
 	end,
 
@@ -60,7 +60,7 @@ local layerPropertyValueTypeCheckingFunctionList = {
 
 		local valueType = type(value)
 
-		if (valueType ~= "nil") and (valueType ~= "boolean") then error("Invalid input for has bias!") end 
+		if (valueType ~= "nil") and (valueType ~= "boolean") then error("Invalid input for has bias.") end 
 
 	end,
 
@@ -68,7 +68,7 @@ local layerPropertyValueTypeCheckingFunctionList = {
 
 		local valueType = type(value)
 
-		if (valueType ~= "nil") and (valueType ~= "string") then error("Invalid input for activation function!") end
+		if (valueType ~= "nil") and (valueType ~= "string") then error("Invalid input for activation function.") end
 
 	end,
 
@@ -76,7 +76,7 @@ local layerPropertyValueTypeCheckingFunctionList = {
 
 		local valueType = type(value)
 
-		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for learning rate!") end
+		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for learning rate.") end
 
 	end,
 
@@ -84,7 +84,7 @@ local layerPropertyValueTypeCheckingFunctionList = {
 
 		local valueType = type(value)
 
-		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for dropout rate!") end
+		if (valueType ~= "nil") and (valueType ~= "number") then error("Invalid input for dropout rate.") end
 
 	end,
 
@@ -603,7 +603,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 	
 	zMatrixArray[1] = inputMatrix
 	
-	forwardPropagateArray[1] = inputMatrix -- Don't remove this! otherwise the code won't work!
+	forwardPropagateArray[1] = inputMatrix -- Don't remove this. otherwise the code won't work.
 
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
@@ -1023,7 +1023,7 @@ function NeuralNetworkModel:generateLayers()
 
 	local numberOfLayers = #numberOfNeuronsArray
 
-	if (numberOfLayers == 1) then error("There is only one layer!") end
+	if (numberOfLayers == 1) then error("There is only one layer.") end
 
 	local ModelParameters = {}
 	
@@ -1065,11 +1065,11 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 	RegularizerArray = RegularizerArray or {}
 
-	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function!") end
+	if (activationFunctionType ~= "nil") and (activationFunctionType ~= "string") then error("Invalid input for activation function.") end
 
-	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate!") end
+	if (learningRateType ~= "nil") and (learningRateType ~= "number") then error("Invalid input for learning rate.") end
 
-	if (dropoutRateType ~= "nil") and (dropoutRateType ~= "number") then error("Invalid input for dropout rate!") end
+	if (dropoutRateType ~= "nil") and (dropoutRateType ~= "number") then error("Invalid input for dropout rate.") end
 
 	activationFunction = activationFunction or defaultActivationFunction
 
@@ -1177,11 +1177,11 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 	if (layerNumber <= 0) then 
 
-		error("The layer number can't be less than or equal to zero!") 
+		error("The layer number can't be less than or equal to zero.") 
 
 	elseif (layerNumber > #self.numberOfNeuronsArray)  then
 
-		error("The layer number exceeds the number of layers!") 
+		error("The layer number exceeds the number of layers.") 
 
 	end 
 
@@ -1223,11 +1223,11 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 
 	if (layerNumber <= 0) then 
 
-		error("The layer number can't be less than or equal to zero!") 
+		error("The layer number can't be less than or equal to zero.") 
 
 	elseif (layerNumber > #self.numberOfNeuronsArray)  then
 
-		error("The layer number exceeds the number of layers!") 
+		error("The layer number exceeds the number of layers.") 
 
 	end 
 
@@ -1287,11 +1287,11 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 
 	if (layerNumber <= 0) then 
 
-		error("The layer number can't be less than or equal to zero!") 
+		error("The layer number can't be less than or equal to zero.") 
 
 	elseif (layerNumber > #self.numberOfNeuronsArray)  then
 
-		error("The layer number exceeds the number of layers!") 
+		error("The layer number exceeds the number of layers.") 
 
 	end 
 
@@ -1353,11 +1353,11 @@ function NeuralNetworkModel:getLayer(layerNumber)
 
 	if (layerNumber <= 0) then 
 
-		error("The layer number can't be less than or equal to zero!") 
+		error("The layer number can't be less than or equal to zero.") 
 
 	elseif (layerNumber > #self.numberOfNeuronsArray) then
 
-		error("The layer number exceeds the number of layers!") 
+		error("The layer number exceeds the number of layers.") 
 
 	end 
 
@@ -1450,12 +1450,12 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 	
 	local ModelParameters = self.ModelParameters
 
-	if (not ModelParameters) then error("No Model Parameters!") end
+	if (not ModelParameters) then error("No Model Parameters.") end
 
 	if (#ModelParameters == 0) then 
 
 		self.ModelParameters = nil
-		error("No Model Parameters!") 
+		error("No Model Parameters.") 
 
 	end
 	
@@ -1463,7 +1463,7 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 	
 	local hasBiasNeuronArray = self.hasBiasNeuronArray
 
-	local numberOfLayers = #numberOfNeuronsArray -- DON'T FORGET THAT IT DOES NOT INCLUDE BIAS!
+	local numberOfLayers = #numberOfNeuronsArray -- DON'T FORGET THAT IT DOES NOT INCLUDE BIAS.
 
 	if (layerNumber > numberOfLayers) then error("Layer number exceeds this model's number of layers.") end
 
@@ -1515,15 +1515,15 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 
 	if (size == 0) then
 
-		error("Size is zero!")
+		error("Size is zero.")
 
 	elseif (size < 0) and (numberOfNeurons == 0)  then
 
-		error("No neurons to remove!")
+		error("No neurons to remove.")
 
 	elseif (size < 0) and ((initialNeuronIndex + size) < 0) then
 
-		error("Size is too large!")
+		error("Size is too large.")
 
 	elseif (initialNeuronIndex == 0) and (size > 0) and (hasNextLayer) then
 
@@ -1615,9 +1615,9 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	local numberOfNeuronsAtInputLayer = numberOfNeuronsArray[1] + hasBiasNeuronArray[1]
 
-	if (numberOfNeuronsAtInputLayer ~= numberOfFeatures) then error("Input layer has " .. numberOfNeuronsAtInputLayer .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features!") end
+	if (numberOfNeuronsAtInputLayer ~= numberOfFeatures) then error("Input layer has " .. numberOfNeuronsAtInputLayer .. " neuron(s), but feature matrix has " .. #featureMatrix[1] .. " features.") end
 
-	if (#featureMatrix ~= #labelVector) then error("Number of rows of feature matrix and the label vector is not the same!") end
+	if (#featureMatrix ~= #labelVector) then error("Number of rows of feature matrix and the label vector is not the same.") end
 	
 	local numberOfLayers = #numberOfNeuronsArray
 	
@@ -1647,7 +1647,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	else
 
-		if (#labelVector[1] ~= numberOfNeuronsAtFinalLayer) then error("The number of columns for the label matrix is not equal to number of neurons at final layer!") end
+		if (#labelVector[1] ~= numberOfNeuronsAtFinalLayer) then error("The number of columns for the label matrix is not equal to number of neurons at final layer.") end
 
 		logisticMatrix = labelVector
 
@@ -1681,7 +1681,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	until (numberOfIterations == self.maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	if (cost == math.huge) then warn("The model diverged. Please repeat the experiment again or change the argument values.") end
 
 	if (self.autoResetOptimizers) then
 

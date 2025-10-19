@@ -360,16 +360,40 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		local useLogProbabilities = NewComplementNaiveBayesModel.useLogProbabilities
 
 		local ModelParameters = NewComplementNaiveBayesModel.ModelParameters
+
+		local numberOfClasses = #ClassesList
+
+		local numberOfData = #featureMatrix
+
+		local posteriorProbabilityMatrixDimensionSizeArray = {numberOfData, numberOfClasses}
+
+		local initialValue = (useLogProbabilities and -math.huge) or 0
+
+		if (not ModelParameters) then
+
+			if (returnOriginalOutput) then return AqwamTensorLibrary:createTensor(posteriorProbabilityMatrixDimensionSizeArray, initialValue) end
+
+			local dimensionSizeArray = {numberOfData, 1}
+
+			local placeHolderLabelVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, nil)
+
+			local placeHolderLabelProbabilityVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, initialValue)
+
+			return placeHolderLabelVector, placeHolderLabelProbabilityVector
+
+		end
 		
 		local complementFeatureProbabilityMatrix = ModelParameters[1]
 		
 		local priorProbabilityVector = ModelParameters[2]
-		
-		local numberOfData = #featureMatrix
-		
-		local numberOfClasses = #ClassesList
 
-		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
+		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor(posteriorProbabilityMatrixDimensionSizeArray, initialValue)
+		
+		local complementFeatureProbabilityVector
+		
+		local priorProbabilityValue 
+		
+		local featureVector
 
 		for classIndex, classValue in ipairs(ClassesList) do
 
@@ -379,7 +403,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 			for i = 1, numberOfData, 1 do
 
-				local featureVector = {featureMatrix[i]}
+				featureVector = {featureMatrix[i]}
 
 				posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityValue)
 

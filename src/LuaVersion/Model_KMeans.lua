@@ -559,21 +559,25 @@ end
 
 function KMeansModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local centroidMatrix = self.ModelParameters[1]
+	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
+	
+	local ModelParameters = self.ModelParameters or {}
+	
+	local centroidMatrix = ModelParameters[1]
 	
 	if (not centroidMatrix) then
+		
+		local numberOfClusters = self.numberOfClusters
 
-		local numberOfData = #featureMatrix
+		centroidMatrix = self:initializeCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply)
 
-		if (returnOriginalOutput) then AqwamTensorLibrary:createTensor({numberOfData, self.numberOfClusters}, math.huge) end
-
-		local dimensionSizeArray = {numberOfData, 1}
-
-		return AqwamTensorLibrary:createTensor(dimensionSizeArray, nil), AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
+		ModelParameters[1] = centroidMatrix
+		
+		ModelParameters[2] = AqwamTensorLibrary:createTensor({#featureMatrix, numberOfClusters})
+		
+		self.ModelParameters = ModelParameters
 
 	end
-	
-	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
 	
 	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, centroidMatrix)
 	

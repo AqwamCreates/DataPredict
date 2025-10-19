@@ -144,21 +144,7 @@ local function assignToCluster(distanceMatrix) -- Number of columns -> number of
 	
 end
 
-local function checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClusterNumber, cluster)
-	
-	if (dataPointClusterNumber == cluster) then
-		
-		return 1
-		
-	else
-		
-		return 0
-		
-	end
-	
-end
-
-local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
+local function createDistanceMatrix(distanceFunction, matrix1, matrix2)
 
 	local numberOfData1 = #matrix1
 
@@ -218,7 +204,7 @@ local function chooseFarthestCentroids(featureMatrix, numberOfClusters, distance
 	
 	local dataIndex
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, distanceFunction)
+	local distanceMatrix = createDistanceMatrix(distanceFunction, featureMatrix, featureMatrix)
 	
 	repeat
 		
@@ -486,7 +472,7 @@ function FuzzyCMeansModel:train(featureMatrix)
 		
 		self:iterationWait()
 		
-		distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
+		distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, centroidMatrix)
 
 		centroidMatrix, clusterMembershipMatrix = calculateMatrices(featureMatrix, centroidMatrix, distanceMatrix, fuzziness, epsilon)
 		
@@ -522,8 +508,6 @@ end
 
 function FuzzyCMeansModel:predict(featureMatrix, returnMode)
 	
-	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
-	
 	local centroidMatrix = self.ModelParameters
 	
 	local returnType = type(returnMode)
@@ -536,7 +520,9 @@ function FuzzyCMeansModel:predict(featureMatrix, returnMode)
 
 	end
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
+	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
+	
+	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, centroidMatrix)
 	
 	if (returnType ~= "nil") then
 		

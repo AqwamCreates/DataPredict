@@ -311,7 +311,7 @@ end
 
 local function initializeCentroids(featureMatrix, numberOfClusters, distanceFunction, setTheCentroidsDistanceFarthest)
 
-	if (setTheCentroidsDistanceFarthest) then
+	if (setTheCentroidsDistanceFarthest) and (#featureMatrix >= numberOfClusters) then
 
 		return chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
 

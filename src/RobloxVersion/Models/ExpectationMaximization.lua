@@ -672,7 +672,7 @@ function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutpu
 	
 	if (returnOriginalOutput) then return gaussianMatrix end
 	
-	local initialValue = (useLogProbabilities and -math.huge)
+	local initialValue = (useLogProbabilities and -math.huge) or 0
 	
 	local numberOfData = #featureMatrix
 	

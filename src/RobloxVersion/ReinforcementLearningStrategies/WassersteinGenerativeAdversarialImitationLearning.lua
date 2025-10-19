@@ -50,9 +50,9 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 		local ReinforcementLearningModel = NewWassersteinGenerativeAdversarialImitationLearning.ReinforcementLearningModel
 
-		if (not DiscriminatorModel) then error("No discriminator neural network!") end
+		if (not DiscriminatorModel) then error("No discriminator neural network.") end
 
-		if (not ReinforcementLearningModel) then error("No reinforcement learning neural network!") end
+		if (not ReinforcementLearningModel) then error("No reinforcement learning neural network.") end
 
 		local numberOfStepsPerEpisode = NewWassersteinGenerativeAdversarialImitationLearning.numberOfStepsPerEpisode
 
@@ -70,7 +70,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 		local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 
-		if (discriminatorInputNumberOfFeatures ~= (#expertActionMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions!") end
+		if (discriminatorInputNumberOfFeatures ~= (#expertActionMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
 
 		discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 
@@ -122,7 +122,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				local action = ActionsList[actionIndex]
 
-				if (not action) then error("Missing action at index " .. actionIndex .. "!") end
+				if (not action) then error("Missing action at index " .. actionIndex .. ".") end
 
 				ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, action, discriminatorLoss, currentFeatureVector, terminalStateValue)
 
@@ -147,9 +147,9 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 		local ReinforcementLearningModel = NewWassersteinGenerativeAdversarialImitationLearning.ReinforcementLearningModel
 
-		if (not DiscriminatorModel) then error("No discriminator neural network!") end
+		if (not DiscriminatorModel) then error("No discriminator neural network.") end
 
-		if (not ReinforcementLearningModel) then error("No reinforcement learning neural network!") end
+		if (not ReinforcementLearningModel) then error("No reinforcement learning neural network.") end
 
 		local numberOfStepsPerEpisode = NewWassersteinGenerativeAdversarialImitationLearning.numberOfStepsPerEpisode
 
@@ -169,7 +169,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 		local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 
-		if (discriminatorInputNumberOfFeatures ~= (#expertActionMeanMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions!") end
+		if (discriminatorInputNumberOfFeatures ~= (#expertActionMeanMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
 
 		discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 

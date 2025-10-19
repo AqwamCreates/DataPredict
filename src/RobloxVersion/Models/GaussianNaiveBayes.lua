@@ -28,433 +28,460 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
+local NaiveBayesBaseModel = require(script.Parent.NaiveBayesBaseModel)
 
-local ExpectationMaximizationModel = {}
+GaussianNaiveBayesModel = {}
 
-ExpectationMaximizationModel.__index = ExpectationMaximizationModel
+GaussianNaiveBayesModel.__index = GaussianNaiveBayesModel
 
-setmetatable(ExpectationMaximizationModel, IterativeMethodBaseModel)
-
-local defaultMaximumNumberOfIterations = 10
-
-local defaultNumberOfClusters = math.huge
+setmetatable(GaussianNaiveBayesModel, NaiveBayesBaseModel)
 
 local defaultMode = "Hybrid"
 
-local defaultEpsilon = math.pow(10, -16)
+local function calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 
-local function gaussian(featureVector, meanVector, varianceVector, epsilon)
-	
-	local exponentStep1 = AqwamTensorLibrary:subtract(featureVector, meanVector)
+	local gaussianProbability = (useLogProbabilities and 0) or 1
 
-	local exponentStep2 = AqwamTensorLibrary:power(exponentStep1, 2)
+	local exponentStep1Vector = AqwamTensorLibrary:subtract(featureVector, meanVector)
 
-	local exponentStep3 = AqwamTensorLibrary:divide(exponentStep2, varianceVector)
+	local exponentStep2Vector = AqwamTensorLibrary:power(exponentStep1Vector, 2)
 
-	local exponentStep4 = AqwamTensorLibrary:multiply(-0.5, exponentStep3)
+	local exponentPart3Vector = AqwamTensorLibrary:power(standardDeviationVector, 2)
 
-	local exponentWithTerms = AqwamTensorLibrary:exponent(exponentStep4)
-	
-	local standardDeviationVector = AqwamTensorLibrary:power(varianceVector, 0.5)
+	local exponentStep4Vector = AqwamTensorLibrary:divide(exponentStep2Vector, exponentPart3Vector)
 
-	local divisorPart1 = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
-	
-	local divisor = AqwamTensorLibrary:add(divisorPart1, epsilon)
+	local exponentStep5Vector = AqwamTensorLibrary:multiply(-0.5, exponentStep4Vector)
 
-	local gaussianDensity = AqwamTensorLibrary:divide(exponentWithTerms, divisor)
-	
-	return gaussianDensity
+	local exponentWithTermsVector = AqwamTensorLibrary:applyFunction(math.exp, exponentStep5Vector)
+
+	local divisorVector = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+
+	local gaussianProbabilityVector = AqwamTensorLibrary:divide(exponentWithTermsVector, divisorVector)
+
+	for column = 1, #gaussianProbabilityVector[1], 1 do
+
+		if (useLogProbabilities) then
+
+			gaussianProbability = gaussianProbability + gaussianProbabilityVector[1][column]
+
+		else
+
+			gaussianProbability = gaussianProbability * gaussianProbabilityVector[1][column]
+
+		end
+
+	end
+
+	return gaussianProbability
 
 end
 
-local function calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
+local function calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityValue)
+
+	local posteriorProbability
+
+	local likelihoodProbability = calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
+
+	if (useLogProbabilities) then
+
+		posteriorProbability = likelihoodProbability + priorProbabilityValue
+
+	else
+
+		posteriorProbability = likelihoodProbability * priorProbabilityValue
+
+	end
+
+	return posteriorProbability
+
+end
+
+function GaussianNaiveBayesModel:calculateCost(featureMatrix, labelMatrix)
+
+	local useLogProbabilities = self.useLogProbabilities
 	
-	local numberOfClusters = #meanMatrix
+	local ClassesList = self.ClassesList
 	
-	local probabilityMatrix = AqwamTensorLibrary:createTensor({#featureMatrix, numberOfClusters}, 0)
+	local ModelParameters = self.ModelParameters
 	
-	for i = 1, #featureMatrix, 1 do
+	local meanMatrix = ModelParameters[1]
 
-		local featureVector = {featureMatrix[i]}
+	local standardDeviationMatrix = ModelParameters[2]
 
-		for j = 1, numberOfClusters, 1 do
+	local priorProbabilityVector = ModelParameters[3]
 
-			local weight = piMatrix[j][1]
+	local numberOfData = #featureMatrix
 
-			local meanVector = {meanMatrix[j]}
+	local numberOfClasses = #ClassesList
 
-			local varianceVector = {varianceMatrix[j]}
+	local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
 
-			local probabilitiesVector = gaussian(featureVector, meanVector, varianceVector, epsilon)
+	local featureVector
 
-			for i, probability in ipairs(probabilitiesVector[1]) do weight = weight * probability end
+	local meanVector
 
-			probabilityMatrix[i][j] = weight
+	local standardDeviationVector
+
+	local priorProbabilityValue
+	
+	for data, unwrappedFeatureVector in ipairs(featureMatrix) do
+
+		featureVector = {unwrappedFeatureVector}
+
+		for class = 1, numberOfClasses, 1 do
+
+			meanVector = {meanMatrix[class]}
+
+			standardDeviationVector = {standardDeviationMatrix[class]}
+
+			priorProbabilityValue = priorProbabilityVector[class][1]
+
+			posteriorProbabilityMatrix[data][class] = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityValue)
 
 		end
 
 	end
 	
-	return probabilityMatrix
-	
-end
+	if (useLogProbabilities) then
 
-local function expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
-	
-	local responsibilityMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon) -- number of data x number of columns
-	
-	local responsibilitySumVector = AqwamTensorLibrary:sum(responsibilityMatrix, 1)
-	
-	local normalizedResponsibilityMatrix = AqwamTensorLibrary:divide(responsibilityMatrix, responsibilitySumVector)
-	
-	return normalizedResponsibilityMatrix
-	
-end
-
--- This function updates the model parameters based on the responsibility matrix
-
-local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix) -- data x features, data x clusters, clusters x 1, clusters x features 
-
-	local numberOfData = #featureMatrix
-
-	local numberOfFeatures = #featureMatrix[1]
-
-	local piMatrix = AqwamTensorLibrary:sum(responsibilityMatrix, 1)
-
-	piMatrix = AqwamTensorLibrary:divide(piMatrix, numberOfData)
-
-	piMatrix = AqwamTensorLibrary:transpose(piMatrix)
-
-	local responsibilitiesMatrixTransposed = AqwamTensorLibrary:transpose(responsibilityMatrix) -- clusters x data
-	
-	local subSumWeightMatrix = AqwamTensorLibrary:sum(responsibilitiesMatrixTransposed, 2) -- clusters x 1
-	
-	local subSumWeightXMatrix = AqwamTensorLibrary:dotProduct(responsibilitiesMatrixTransposed, featureMatrix) -- clusters x features
-	
-	sumWeightMatrix = AqwamTensorLibrary:add(sumWeightMatrix, subSumWeightMatrix) -- clusters x 1
-
-	sumWeightXMatrix = AqwamTensorLibrary:add(sumWeightXMatrix, subSumWeightXMatrix) -- clusters x features
-
-	local meanMatrix = AqwamTensorLibrary:divide(sumWeightXMatrix, sumWeightMatrix) -- clusters x features
-
-	local varianceMatrix = AqwamTensorLibrary:createTensor({numberOfClusters, numberOfFeatures}, 0)
-
-	for i = 1, numberOfClusters, 1 do
-
-		local meanVector = {meanMatrix[i]}
-
-		local thisStandardDeviationMatrix = AqwamTensorLibrary:subtract(featureMatrix, meanVector)
-
-		local thisVariationMatrix = AqwamTensorLibrary:power(thisStandardDeviationMatrix, 2)
-
-		local thisSumVariationMatrix = AqwamTensorLibrary:sum(thisVariationMatrix, 1)
-
-		varianceMatrix[i] = thisSumVariationMatrix[1]
+		posteriorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, posteriorProbabilityMatrix)
 
 	end
 
-	varianceMatrix = AqwamTensorLibrary:divide(varianceMatrix, sumWeightMatrix)
+	local cost = self:categoricalCrossEntropy(labelMatrix, posteriorProbabilityMatrix)
 
-	return piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix
+	return cost
 
 end
 
-local function calculateCost(gaussianMatrix, epsilon)
+local function calculateMatrices(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityVector, numberOfDataPointVector)
 	
-	local clampedGaussianMatrix = AqwamTensorLibrary:applyFunction(math.max, gaussianMatrix, {{epsilon}})
-	
-	local logLikelihoodMatrix = AqwamTensorLibrary:applyFunction(math.log, clampedGaussianMatrix)
+	local sumMatrix = AqwamTensorLibrary:multiply(meanMatrix, numberOfDataPointVector)
 
-	local sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihoodMatrix)
-	
-	return -sumLogLikelihood
-	
-end
+	local varianceMatrix = AqwamTensorLibrary:power(standardDeviationMatrix, 2)
 
-function ExpectationMaximizationModel:initializeMatrices(numberOfClusters, numberOfFeatures)
-	
-	local centroidMatrixDimensionSizeArray = {numberOfClusters, numberOfFeatures}
-	
-	local piMatrix = AqwamTensorLibrary:createRandomUniformTensor({numberOfClusters, 1})
-	
-	local sumPi = AqwamTensorLibrary:sum(piMatrix)
+	local multipliedVarianceMatrix = AqwamTensorLibrary:multiply(varianceMatrix, numberOfDataPointVector)
 
-	local meanMatrix = self:initializeMatrixBasedOnMode(centroidMatrixDimensionSizeArray)
+	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
 
-	local varianceMatrix = AqwamTensorLibrary:createRandomUniformTensor(centroidMatrixDimensionSizeArray, 0, 1)
+	local newMeanMatrix = {}
 
-	local sumWeightMatrix = AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
+	local newStandardDeviationVector = {}
 
-	local sumWeightXMatrix = AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
+	local newNumberOfDataPointVector = {}
 	
-	piMatrix = AqwamTensorLibrary:divide(piMatrix, sumPi)
+	local extractedFeatureMatrix
 	
-	return piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix
+	local numberOfOldSubData
 	
-end
+	local numberOfSubData
+	
+	local subSumVector
+	
+	local sumVector
+	
+	local oldMeanVector
+	
+	local newMeanVector
+	
+	local featureMatrixMinusMeanMatrix
 
-function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
-	
-	local numberOfData = #featureMatrix
-	
-	local numberOfFeatures = #featureMatrix[1]
-	
-	local piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(numberOfClusters, numberOfFeatures)
-	
-	local responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
-	
-	piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
-	
-	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
-	
-	local logLikelihood = AqwamTensorLibrary:logarithm(gaussianMatrix)
+	local featureMatrixMinusNewMeanMatrix
 
-	local sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihood)
-	
-	local k = (numberOfClusters - 1) + (numberOfClusters * numberOfFeatures * 2)
-	
-	local bayesianInformationCriterion = (k * math.log(numberOfData)) - (2 * sumLogLikelihood)
-	
-	return bayesianInformationCriterion, piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix
-	
-end
+	local multipliedAdjustedFeatureMatrix
 
-function ExpectationMaximizationModel:getBestMatrices(featureMatrix, epsilon)
-	
-	local numberOfFeatures = #featureMatrix[1]
-	
-	local numberOfClusters = 1
-	
-	local bestBayesianInformationCriterion = math.huge
-	
-	local bestNumberOfClusters = numberOfClusters
-	
-	local bayesianInformationCriterion
-	
-	local piMatrix
-	
-	local meanMatrix
-	
-	local varianceMatrix
-	
-	local sumWeightMatrix
-	
-	local sumWeightXMatrix
-	
-	local bestPiMatrix
+	local subMultipliedVarianceVector
 
-	local bestMeanMatrix
+	local multipliedVarianceVector
 
-	local bestVarianceMatrix
+	local newVarianceVector
+	
+	local newStandardDeviationVector
 
-	local bestSumWeightMatrix
-
-	local bestSumWeightXMatrix
-
-	while true do
+	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
 		
-		bayesianInformationCriterion, piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBayesianInformationCriterion(featureMatrix, numberOfClusters, epsilon)
+		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
+		
+		if (type(extractedFeatureMatrix) == "table") then
+			
+			numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
 
-		if (bayesianInformationCriterion < bestBayesianInformationCriterion) then
+			subSumVector = AqwamTensorLibrary:sum(extractedFeatureMatrix, 1)
+
+			sumVector = {sumMatrix[classIndex]}
+
+			sumVector = AqwamTensorLibrary:add(sumVector, subSumVector)
+
+			oldMeanVector = {meanMatrix[classIndex]}
+
+			newMeanVector = AqwamTensorLibrary:divide(sumVector, numberOfSubData)
+
+			-- Welford's algorithm for calculating new variance.
+
+			featureMatrixMinusMeanMatrix = AqwamTensorLibrary:subtract(extractedFeatureMatrix, oldMeanVector)
+
+			featureMatrixMinusNewMeanMatrix = AqwamTensorLibrary:subtract(extractedFeatureMatrix, newMeanVector)
+
+			multipliedAdjustedFeatureMatrix = AqwamTensorLibrary:multiply(featureMatrixMinusMeanMatrix, featureMatrixMinusNewMeanMatrix)
+
+			subMultipliedVarianceVector = AqwamTensorLibrary:sum(multipliedAdjustedFeatureMatrix, 1)
+
+			multipliedVarianceVector = AqwamTensorLibrary:add({multipliedVarianceMatrix[classIndex]}, subMultipliedVarianceVector)
+
+			newVarianceVector = AqwamTensorLibrary:divide(multipliedVarianceVector, numberOfSubData)
+
+			-- End of Welford's algorithm.
+
+			newStandardDeviationVector = AqwamTensorLibrary:power(newVarianceVector, 0.5)
+
+			newMeanMatrix[classIndex] = newMeanVector[1]
 			
-			bestBayesianInformationCriterion = bayesianInformationCriterion
-			
-			bestNumberOfClusters = numberOfClusters
-			
-			bestPiMatrix = piMatrix
-			
-			bestMeanMatrix = meanMatrix
-			
-			bestVarianceMatrix = varianceMatrix
-			
-			bestSumWeightMatrix = sumWeightMatrix
-			
-			bestSumWeightXMatrix = sumWeightXMatrix
+			newStandardDeviationVector[classIndex] = newStandardDeviationVector[1]
 			
 		else
 			
-			break
+			numberOfSubData = numberOfOldSubData
+			
+			newMeanMatrix[classIndex] = meanMatrix[classIndex]
+
+			newStandardDeviationVector[classIndex] = standardDeviationMatrix[classIndex]
 			
 		end
-
-		numberOfClusters = numberOfClusters + 1
+		
+		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
 		
 	end
-
-	return bestPiMatrix, bestMeanMatrix, bestVarianceMatrix, bestSumWeightMatrix, bestSumWeightXMatrix
+	
+	local newPriorProbabilityVector = AqwamTensorLibrary:divide(newNumberOfDataPointVector, newTotalNumberOfDataPoint)
+	
+	return newMeanMatrix, newStandardDeviationVector, newPriorProbabilityVector, newNumberOfDataPointVector
 	
 end
 
-function ExpectationMaximizationModel.new(parameterDictionary)
-	
+function GaussianNaiveBayesModel.new(parameterDictionary)
+
 	parameterDictionary = parameterDictionary or {}
-	
-	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewExpectationMaximizationModel = IterativeMethodBaseModel.new(parameterDictionary)
+	local NewGaussianNaiveBayesModel = NaiveBayesBaseModel.new(parameterDictionary)
 
-	setmetatable(NewExpectationMaximizationModel, ExpectationMaximizationModel)
+	setmetatable(NewGaussianNaiveBayesModel, GaussianNaiveBayesModel)
 	
-	NewExpectationMaximizationModel:setName("ExpectationMaximization")
+	NewGaussianNaiveBayesModel:setName("GaussianNaiveBayes")
 	
-	NewExpectationMaximizationModel.numberOfClusters = parameterDictionary.numberOfClusters or defaultNumberOfClusters
+	NewGaussianNaiveBayesModel.mode = parameterDictionary.mode or defaultMode
 	
-	NewExpectationMaximizationModel.mode = parameterDictionary.mode or defaultMode
+	NewGaussianNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
+		
+		local mode = NewGaussianNaiveBayesModel.mode
+		
+		local useLogProbabilities = NewGaussianNaiveBayesModel.useLogProbabilities
+		
+		local ModelParameters = NewGaussianNaiveBayesModel.ModelParameters or {}
+		
+		local meanMatrix = ModelParameters[1]
+		
+		local standardDeviationMatrix = ModelParameters[2]
+		
+		local priorProbabilityVector = ModelParameters[3]
+		
+		local numberOfDataPointVector = ModelParameters[4]
 
-	NewExpectationMaximizationModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
-	
-	return NewExpectationMaximizationModel
-end
+		if (mode == "Hybrid") then
 
-function ExpectationMaximizationModel:train(featureMatrix)
-	
-	local maximumNumberOfIterations = self.maximumNumberOfIterations
+			mode = (meanMatrix and standardDeviationMatrix and priorProbabilityVector and numberOfDataPointVector and "Online") or "Offline"		
 
-	local numberOfClusters = self.numberOfClusters
-	
-	local mode = self.mode
+		end
+		
+		if (mode == "Offline") then
 
-	local epsilon = self.epsilon
-
-	local ModelParameters = self.ModelParameters or {}
-	
-	local numberOfFeatures = #featureMatrix[1]
-	
-	local piMatrix = ModelParameters[1]
-
-	local meanMatrix = ModelParameters[2]
-
-	local varianceMatrix = ModelParameters[3]
-	
-	local sumWeightMatrix = ModelParameters[4]
-	
-	local sumWeightXMatrix = ModelParameters[5]
-	
-	if (mode == "Hybrid") then
-		
-		mode = (piMatrix and meanMatrix and varianceMatrix and sumWeightMatrix and sumWeightXMatrix and "Online") or "Offline"		
-		
-	end
-	
-	if (mode == "Offline") then
-		
-		piMatrix = nil
-		
-		meanMatrix = nil
-		
-		varianceMatrix = nil
-		
-		sumWeightMatrix = nil
-		
-		sumWeightXMatrix = nil
-		
-	end
-	
-	local logLikelihoodArray = {}
-	
-	local costArray = {}
-	
-	local numberOfIterations = 0
-	
-	local responsibilityMatrix
-	
-	local gaussianMatrix
-	
-	local cost
-	
-	if (not piMatrix) or (not meanMatrix) or (not varianceMatrix) or (not sumWeightMatrix) or (not sumWeightXMatrix) then
-		
-		if (numberOfClusters == math.huge) then 
+			meanMatrix = nil
 			
-			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBestMatrices(featureMatrix, epsilon)
+			standardDeviationMatrix = nil
 			
-		else
+			priorProbabilityVector = nil
 			
-			piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(numberOfClusters, numberOfFeatures)
+			numberOfDataPointVector = nil
+
+		end
+		
+		local numberOfData = #featureMatrix
+
+		local numberOfFeatures = #featureMatrix[1]
+		
+		local numberOfClasses = #NewGaussianNaiveBayesModel.ClassesList
+
+		local zeroValue = (useLogProbabilities and math.huge) or 0
+
+		local oneValue = (useLogProbabilities and 0) or 1
+		
+		local classMatrixDimensionSizeArray = {numberOfClasses, numberOfFeatures}
+		
+		local classVectorDimensionSizeArray = {numberOfClasses, 1}
+		
+		local logisticMatrix = NewGaussianNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
+
+		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
+
+		meanMatrix = meanMatrix or AqwamTensorLibrary:createTensor(classMatrixDimensionSizeArray, zeroValue)
+
+		standardDeviationMatrix = standardDeviationMatrix or AqwamTensorLibrary:createTensor(classMatrixDimensionSizeArray, zeroValue)
+
+		priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, oneValue)
+
+		numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
+		
+		if (useLogProbabilities) then
+			
+			if (meanMatrix) then meanMatrix = AqwamTensorLibrary:applyFunction(math.exp, meanMatrix) end
+			
+			if (standardDeviationMatrix) then standardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.exp, standardDeviationMatrix) end
+			
+			if (priorProbabilityVector) then priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityVector) end
 			
 		end
 		
-	end
+		meanMatrix, standardDeviationMatrix, priorProbabilityVector, numberOfDataPointVector = calculateMatrices(extractedFeatureMatrixTable, numberOfData, meanMatrix, standardDeviationMatrix, priorProbabilityVector, numberOfDataPointVector)
+		
+		if (useLogProbabilities) then
+			
+			meanMatrix = AqwamTensorLibrary:applyFunction(math.log, meanMatrix)
+
+			standardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.log, standardDeviationMatrix)
+
+			priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityVector)
+			
+		end
+
+		NewGaussianNaiveBayesModel.ModelParameters = {meanMatrix, standardDeviationMatrix, priorProbabilityVector, numberOfDataPointVector}
+
+		local cost = NewGaussianNaiveBayesModel:calculateCost(featureMatrix, logisticMatrix)
+
+		return {cost}
+		
+	end)
 	
-	numberOfClusters = #piMatrix -- This should be outside because nothing is replacing infinite number of clusters when it is given as a parameter after the first training.
-	
-	repeat
+	NewGaussianNaiveBayesModel:setPredictFunction(function(featureMatrix, returnOriginalOutput)
 		
-		numberOfIterations = numberOfIterations + 1
-		
-		self:iterationWait()
+		local ClassesList = NewGaussianNaiveBayesModel.ClassesList
 
-		responsibilityMatrix = expectationStep(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
+		local useLogProbabilities = NewGaussianNaiveBayesModel.useLogProbabilities
 
-		piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
+		local ModelParameters = NewGaussianNaiveBayesModel.ModelParameters
 		
-		gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, epsilon)
+		local numberOfClasses = #ClassesList
 		
-		cost = self:calculateCostWhenRequired(numberOfIterations, function()
-			
-			return calculateCost(gaussianMatrix, epsilon)
-			
-		end)
+		local numberOfData = #featureMatrix
 		
-		if (cost) then
-			
-			table.insert(costArray, cost)
+		local posteriorProbabilityMatrixDimensionSizeArray = {numberOfData, numberOfClasses}
+		
+		local initialValue = (useLogProbabilities and -math.huge) or 0
+		
+		if (not ModelParameters) then
 
-			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+			if (returnOriginalOutput) then return AqwamTensorLibrary:createTensor(posteriorProbabilityMatrixDimensionSizeArray, initialValue) end
+
+			local dimensionSizeArray = {numberOfData, 1}
+
+			local placeHolderLabelVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, nil)
+
+			local placeHolderLabelProbabilityVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, initialValue)
+
+			return placeHolderLabelVector, placeHolderLabelProbabilityVector
 
 		end
 
-	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
-	
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+		local meanMatrix = ModelParameters[1]
 
-	self.ModelParameters = {piMatrix, meanMatrix, varianceMatrix, sumWeightMatrix, sumWeightXMatrix}
-
-	return costArray
-
-end
-
-function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutput)
-	
-	local numberOfFeatures = #featureMatrix
-	
-	local piMatrix, meanMatrix, varianceMatrix = table.unpack(self.ModelParameters)
-
-	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, piMatrix, meanMatrix, varianceMatrix, self.epsilon)
-	
-	if (returnOriginalOutput) then return gaussianMatrix end
-	
-	local selectedClustersVector = AqwamTensorLibrary:createTensor({numberOfFeatures, 1})
-
-	local probabilityVector = AqwamTensorLibrary:createTensor({numberOfFeatures, 1})
-	
-	for dataIndex, gausssianVector in ipairs(gaussianMatrix) do
+		local standardDeviationMatrix = ModelParameters[2]
 		
-		local selectedCluster
+		local priorProbabilityVector = ModelParameters[3]
 		
-		local highestWeight = -math.huge
+		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor(posteriorProbabilityMatrixDimensionSizeArray, initialValue)
+
+		for classIndex, classValue in ipairs(ClassesList) do
+
+			local meanVector = {meanMatrix[classIndex]}
+
+			local standardDeviationVector = {standardDeviationMatrix[classIndex]}
+
+			local priorProbabilityValue = priorProbabilityVector[classIndex][1]
+
+			for i = 1, numberOfData, 1 do
+
+				local featureVector = {featureMatrix[i]}
+
+				posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector, priorProbabilityValue)
+
+			end
+
+		end
+
+		if (returnOriginalOutput) then return posteriorProbabilityMatrix end
+
+		return NewGaussianNaiveBayesModel:getLabelFromOutputMatrix(posteriorProbabilityMatrix)
 		
-		for clusterNumber, weight in ipairs(gausssianVector) do
+	end)
+	
+	NewGaussianNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
+		
+		if (noiseMatrix) then
+
+			if (#labelVector ~= #noiseMatrix) then error("The label vector and the noise matrix does not contain the same number of rows.") end
+
+		end
+		
+		local ClassesList = NewGaussianNaiveBayesModel.ClassesList
+		
+		local useLogProbabilities = NewGaussianNaiveBayesModel.useLogProbabilities
+		
+		local ModelParameters = NewGaussianNaiveBayesModel.ModelParameters
+		
+		local meanMatrix = ModelParameters[1]
+		
+		local standardDeviationMatrix = ModelParameters[2]
+		
+		local selectedMeanMatrix = {}
+		
+		local selectedStandardDeviationMatrix = {}
+		
+		for data, unwrappedLabelVector in ipairs(labelVector) do
 			
-			if (weight > highestWeight) then
+			local label = unwrappedLabelVector[1]
+			
+			local classIndex = table.find(ClassesList, label)
+			
+			if (classIndex) then
 				
-				selectedCluster = clusterNumber
-
-				highestWeight = weight
+				selectedMeanMatrix[data] = meanMatrix[classIndex]
+				
+				selectedStandardDeviationMatrix[data] = standardDeviationMatrix[classIndex]
 				
 			end
-				
+			
 		end
 		
-		selectedClustersVector[dataIndex][1] = selectedCluster
+		if (useLogProbabilities) then
+
+			selectedMeanMatrix = AqwamTensorLibrary:applyFunction(math.exp, selectedMeanMatrix)
+
+			selectedStandardDeviationMatrix = AqwamTensorLibrary:applyFunction(math.exp, selectedStandardDeviationMatrix)
+
+		end
 		
-		probabilityVector[dataIndex][1] = highestWeight
+		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(selectedMeanMatrix)
 		
-	end
-	
-	return selectedClustersVector, probabilityVector
-	
+		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray)
+		
+		local generatedFeatureMatrixPart1 = AqwamTensorLibrary:multiply(selectedStandardDeviationMatrix, noiseMatrix)
+		
+		local generatedFeatureMatrix = AqwamTensorLibrary:add(selectedMeanMatrix, generatedFeatureMatrixPart1)
+		
+		return generatedFeatureMatrix
+		
+	end)
+
+	return NewGaussianNaiveBayesModel
+
 end
 
-return ExpectationMaximizationModel
+return GaussianNaiveBayesModel

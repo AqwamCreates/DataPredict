@@ -654,7 +654,13 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
 	
 	-- Storing the final subSumWeightMatrix and subSumWeightXMatrix to "freeze" them for future model training.
 	
@@ -678,17 +684,57 @@ end
 
 function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local numberOfFeatures = #featureMatrix
+	local useLogProbabilities = self.useLogProbabilities
 	
-	local meanMatrix, varianceMatrix, piMatrix = table.unpack(self.ModelParameters)
+	local epsilon = self.epsilon
+	
+	local ModelParameters = self.ModelParameters
+	
+	local meanMatrix
+	
+	local varianceMatrix
+	
+	local piMatrix
+	
+	if (not ModelParameters) then
 
-	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, meanMatrix, varianceMatrix, piMatrix, self.useLogProbabilities, self.epsilon)
+		local numberOfClusters = self.numberOfClusters
+		
+		local sumWeightMatrix
+
+		local sumWeightXMatrix
+
+		if (numberOfClusters == math.huge) then 
+
+			meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBestMatrices(featureMatrix, useLogProbabilities, epsilon)
+
+		else
+			
+			local numberOfFeatures = #featureMatrix[1]
+
+			meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
+
+		end
+
+		self.ModelParameters = {meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix}
+		
+	else
+		
+		meanMatrix, varianceMatrix, piMatrix = table.unpack(ModelParameters)
+
+	end
+	
+	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
 	
 	if (returnOriginalOutput) then return gaussianMatrix end
 	
-	local selectedClustersVector = AqwamTensorLibrary:createTensor({numberOfFeatures, 1})
+	local numberOfData = #featureMatrix
+	
+	local dimensionSizeArray = {numberOfData, 1}
+	
+	local selectedClustersVector = AqwamTensorLibrary:createTensor(dimensionSizeArray)
 
-	local probabilityVector = AqwamTensorLibrary:createTensor({numberOfFeatures, 1})
+	local probabilityVector = AqwamTensorLibrary:createTensor(dimensionSizeArray)
 	
 	for dataIndex, gausssianVector in ipairs(gaussianMatrix) do
 		

@@ -510,25 +510,21 @@ function FuzzyCMeansModel:predict(featureMatrix, returnMode)
 	
 	local centroidMatrix = self.ModelParameters
 	
-	local returnType = type(returnMode)
-	
-	local isNotNil = (returnType ~= "nil")
+	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
 	
 	if (not centroidMatrix) then
-		
-		local numberOfData = #featureMatrix
-		
-		if (isNotNil) then AqwamTensorLibrary:createTensor({numberOfData, self.numberOfClusters}, math.huge) end
-		
-		local dimensionSizeArray = {numberOfData, 1}
 
-		return AqwamTensorLibrary:createTensor(dimensionSizeArray, nil), AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
+		centroidMatrix = self:initializeCentroids(featureMatrix, self.numberOfClusters, distanceFunctionToApply)
+
+		self.ModelParameters = centroidMatrix
 
 	end
 	
-	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
-	
 	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, centroidMatrix)
+	
+	local returnType = type(returnMode)
+
+	local isNotNil = (returnType ~= "nil")
 	
 	if (isNotNil) then
 		

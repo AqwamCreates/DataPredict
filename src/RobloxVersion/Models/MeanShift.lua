@@ -549,10 +549,12 @@ function MeanShiftModel:predict(featureMatrix, returnOriginalOutput)
 		local sumMultipliedKernelMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray)
 
 		self.ModelParameters = {centroidMatrix, sumKernelMatrix, sumMultipliedKernelMatrix}
+		
+	else
+		
+		centroidMatrix = ModelParameters[1]
 
 	end
-	
-	centroidMatrix = ModelParameters[1]
 	
 	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
 	

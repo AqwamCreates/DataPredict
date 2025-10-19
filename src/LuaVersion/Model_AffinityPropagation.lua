@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require(s"AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
@@ -390,7 +390,7 @@ function AffinityPropagationModel:predict(featureMatrix)
 	
 	local dimensionSizeArray = {#featureMatrix, 1}
 	
-	if (ModelParameters) then
+	if (not ModelParameters) then
 		
 		local placeholderClusterVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
 		

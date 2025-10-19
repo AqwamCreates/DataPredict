@@ -282,9 +282,11 @@ local function run(Player)
 
             else
 
-            finalEventName = juniorEventName
+              finalEventName = juniorEventName
+  
+              SeniorPlayTimeMaximizationModel.previousAction = juniorEventName 
 
-            SeniorPlayTimeMaximizationModel.previousAction = juniorEventName 
+            end
 
         end
 

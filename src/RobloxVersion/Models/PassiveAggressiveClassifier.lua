@@ -217,8 +217,6 @@ function PassiveAggressiveClassifierModel:predict(featureMatrix, returnOriginalO
 	end
 	
 	local outputVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
-	
-	if (type(outputVector) ~= "table") then outputVector = {{outputVector}} end
 
 	if (returnOriginalOutput) then return outputVector end
 

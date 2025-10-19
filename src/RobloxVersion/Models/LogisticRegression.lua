@@ -62,8 +62,6 @@ local sigmoidFunctionList = {
 
 	["BipolarSigmoid"] = function (z) return 2 / (1 + math.exp(-z)) - 1 end,
 
-	["GELU"] = function (z) return 0.5 * z * (1 + math.erf(z / math.sqrt(2))) end,
-
 	["Arctangent"] = function (z) return (2 / math.pi) * math.atan(z) end
 
 }
@@ -75,13 +73,10 @@ local derivativeLossFunctionList = {
 	["Tanh"] = function (h, y) return (h - y) * (1 - math.pow(h, 2)) end,
 	
 	["HardSigmoid"] = function (h, y)
-		local grad
-		if h <= 0 or h >= 1 then
-			grad = 0
-		else
-			grad = 0.5
-		end
-		return (h - y) * grad
+		
+		local gradientValue = ((h <= 0 or h >= 1) and 0) or 0.5
+		
+		return (h - y) * gradientValue
 	end,
 
 	["Softsign"] = function (h, y) return (h - y) *  1 / ((1 + math.abs(h))^2) end,
@@ -90,9 +85,9 @@ local derivativeLossFunctionList = {
 
 	["Swish"] = function (h, y)
 		
-		local sigmoid_h = 1 / (1 + math.exp(-h))
+		local sigmoidValue = 1 / (1 + math.exp(-h))
 		
-		return (h - y) * sigmoid_h + h * sigmoid_h * (1 - sigmoid_h)
+		return (h - y) * sigmoidValue + h * sigmoidValue * (1 - sigmoidValue)
 		
 	end,
 

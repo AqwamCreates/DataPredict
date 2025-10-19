@@ -24,7 +24,23 @@ LogisticRegression.new(maximumNumberOfIterations: integer, learningRate: number,
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
-* sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are "Sigmoid".
+* sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
+
+  * Sigmoid (Default)
+ 
+  * Tanh
+
+  * HardSigmoid
+
+  * SoftSign
+
+  * Swish
+
+  * ArcTangent
+
+  * Swish
+
+  * BipolarSigmoid
 
 #### Returns:
 

@@ -344,7 +344,7 @@ function AffinityPropagationModel:train(featureMatrix)
 
 	repeat
 		
-		numberOfIterations += 1
+		numberOfIterations = numberOfIterations + 1
 		
 		self:iterationWait()
 
@@ -360,7 +360,7 @@ function AffinityPropagationModel:train(featureMatrix)
 			
 		end) 
 		
-		if cost then
+		if (cost) then
 			
 			table.insert(costArray, cost)
 

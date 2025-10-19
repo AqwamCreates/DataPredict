@@ -280,11 +280,11 @@ function KMedoidsModel:train(featureMatrix)
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
+	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, medoidMatrix)
+	
 	local costArray = {}
 
 	local numberOfIterations = 0
-	
-	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, medoidMatrix)
 
 	local previousCost = calculateCost(distanceMatrix)
 	

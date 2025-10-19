@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibrary"
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
@@ -520,7 +520,7 @@ function FuzzyCMeansModel:predict(featureMatrix, returnMode)
 		
 		local unknownValue = (isNotNil and math.huge) or nil
 
-		return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, unknownValue) 
+		return AqwamTensorLibrary:createTensor({#featureMatrix, numberOfColumns}, unknownValue) 
 
 	end
 	

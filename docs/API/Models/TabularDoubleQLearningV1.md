@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - TabularDoubleQLearningV1
 
-TabularDoubleClippedQLearning is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+TabularDoubleQLearningV1 is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Constructors
 

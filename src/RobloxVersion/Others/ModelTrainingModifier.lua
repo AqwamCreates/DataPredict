@@ -102,7 +102,7 @@ function ModelTrainingModifier:miniBatchTrain(...)
 	
 	local batchSize = self.batchSize
 	
-	if (batchSize < 0) then error("Batch size cannot be negative!") end
+	if (batchSize < 0) then error("Batch size cannot be negative.") end
 	
 	local matrixArray = {...}
 	
@@ -112,11 +112,11 @@ function ModelTrainingModifier:miniBatchTrain(...)
 
 	for matrixIndex = 1, numberOfMatrices, 1 do
 
-		if (numberOfData ~= #matrixArray[matrixIndex]) then error("All matrices or vectors must contain same number of data") end
+		if (numberOfData ~= #matrixArray[matrixIndex]) then error("All matrices or vectors must contain same number of data.") end
 
 	end
 	
-	if (batchSize > numberOfData) then error("Batch size is greater than the number of data!") end
+	if (batchSize > numberOfData) then error("Batch size is greater than the number of data.") end
 	
 	local numberOfBatches = math.ceil(numberOfData / batchSize)
 	
@@ -170,7 +170,7 @@ function ModelTrainingModifier:stochasticTrain(...)
 
 	for matrixIndex = 1, numberOfMatrices, 1 do
 
-		if (numberOfData ~= #matrixArray[matrixIndex]) then error("All matrices or vectors must contain same number of data") end
+		if (numberOfData ~= #matrixArray[matrixIndex]) then error("All matrices or vectors must contain same number of data.") end
 
 	end
 	

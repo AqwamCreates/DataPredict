@@ -503,8 +503,6 @@ function SupportVectorRegressionModel:predict(featureMatrix)
 
 	local predictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
 
-	if (typeof(predictedVector) == "number") then predictedVector = {{predictedVector}} end
-
 	return predictedVector
 
 end

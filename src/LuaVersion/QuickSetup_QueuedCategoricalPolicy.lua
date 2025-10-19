@@ -26,7 +26,7 @@
 
 --]]
 
-local CategoricalPolicyBaseQuickSetup = require(script.Parent.CategoricalPolicyBaseQuickSetup)
+local CategoricalPolicyBaseQuickSetup = require("QuickSetup_CategoricalPolicyBaseQuickSetup")
 
 QueuedCategoricalPolicyQuickSetup = {}
 
@@ -321,62 +321,66 @@ function QueuedCategoricalPolicyQuickSetup:start()
 		while(self.isRunning) do
 
 			while (#inputQueueArray == 0) do task.wait() end
+			
+			pcall(function()
+				
+				agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements = table.unpack(inputQueueArray[1])
 
-			agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements = table.unpack(inputQueueArray[1])
+				isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
 
-			isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
+				if (isOriginalValueNotAVector) then currentFeatureVector = {{currentFeatureVector}} end
 
-			if (isOriginalValueNotAVector) then currentFeatureVector = {{currentFeatureVector}} end
+				actionVector = Model:predict(currentFeatureVector, true)
 
-			actionVector = Model:predict(currentFeatureVector, true)
+				Model.EligibilityTrace = EligibilityTrace
 
-			Model.EligibilityTrace = EligibilityTrace
+				if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
-			if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
+				actionIndex, selectedActionCountVector, currentEpsilon = self:selectAction(actionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
 
-			actionIndex, selectedActionCountVector, currentEpsilon = self:selectAction(actionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
+				action = ActionsList[actionIndex]
 
-			action = ActionsList[actionIndex]
+				actionValue = actionVector[1][actionIndex]
 
-			actionValue = actionVector[1][actionIndex]
+				if (previousFeatureVector) then
 
-			if (previousFeatureVector) then
+					temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
 
-				temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+					if (updateFunction) then updateFunction(terminalStateValue, agentIndex) end
 
-				if (updateFunction) then updateFunction(terminalStateValue, agentIndex) end
+				end
 
-			end
+				if (isEpisodeEnd) then
 
-			if (isEpisodeEnd) then
+					Model:episodeUpdate(terminalStateValue)
 
-				Model:episodeUpdate(terminalStateValue)
+					if episodeUpdateFunction then episodeUpdateFunction(terminalStateValue, agentIndex) end
 
-				if episodeUpdateFunction then episodeUpdateFunction(terminalStateValue, agentIndex) end
+				end
 
-			end
+				if (ExperienceReplay) and (previousFeatureVector) then
 
-			if (ExperienceReplay) and (previousFeatureVector) then
+					ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
 
-				ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+					ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
 
-				ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
+					ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
 
-				ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+						return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
 
-					return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+					end)
 
-				end)
+				end
 
-			end
+				outputArray = {action, actionValue, actionVector, selectedActionCountVector, currentEpsilon}
+				
+				table.insert(outputQueueArray, outputArray)
 
-			outputArray = {action, actionValue, actionVector, selectedActionCountVector, currentEpsilon}
+				table.insert(agentIndexQueueOutputArray, agentIndex)
+				
+			end)
 
 			table.remove(inputQueueArray, 1)
-
-			table.insert(outputQueueArray, outputArray)
-
-			table.insert(agentIndexQueueOutputArray, agentIndex)
 
 		end
 		

@@ -64,36 +64,6 @@ local function createDistanceMatrix(distanceFunction, featureMatrix, centroidMat
 
 end
 
-local function createClusterAssignmentMatrix(distanceMatrix) -- contains values of 0 and 1, where 0 is "does not belong to this cluster"
-
-	local numberOfData = #distanceMatrix -- Number of rows
-
-	local numberOfClusters = #distanceMatrix[1]
-
-	local clusterAssignmentMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters})
-
-	local dataPointClusterNumber
-
-	for dataIndex = 1, numberOfData, 1 do
-
-		local distanceVector = {distanceMatrix[dataIndex]}
-
-		local vectorIndexArray, _ = AqwamTensorLibrary:findMinimumValueDimensionIndexArray(distanceVector)
-
-		if (vectorIndexArray) then
-
-			local clusterNumber = vectorIndexArray[2]
-
-			clusterAssignmentMatrix[dataIndex][clusterNumber] = 1
-
-		end
-
-	end
-
-	return clusterAssignmentMatrix
-
-end
-
 local function areNumbersOnlyInList(list)
 
 	for i, value in ipairs(list) do
@@ -316,9 +286,7 @@ function NearestCentroidModel:train(featureMatrix, labelVector)
 	
 	local distanceMatrix = createDistanceMatrix(distanceFunction, featureMatrix, centroidMatrix)
 	
-	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
-	
-	local costMatrix = AqwamTensorLibrary:multiply(distanceMatrix, clusterAssignmentMatrix)
+	local costMatrix = AqwamTensorLibrary:multiply(distanceMatrix, labelMatrix)
 	
 	local cost = AqwamTensorLibrary:sum(costMatrix)
 	

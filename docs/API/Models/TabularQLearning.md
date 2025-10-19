@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - TabularQLearning (Tabular Q Learning)
+# [API Reference](../../API.md) - [Models](../Models.md) - TabularQLearning
 
 TabularQLearning is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 

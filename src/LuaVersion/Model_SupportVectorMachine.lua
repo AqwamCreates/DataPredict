@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary_")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 SupportVectorMachineModel = {}
 

@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - TabularDoubleStateActionRewardStateActionV1 (Tabular Double SARSA)
 
-TabularStateActionRewardStateAction is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+TabularDoubleStateActionRewardStateActionV1 is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ TabularStateActionRewardStateAction is a state-action grid with reinforcement le
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularDoubleStateActionRewardStateAction.new(learningRate: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
+TabularDoubleStateActionRewardStateActionV1.new(learningRate: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
 ```
 
 #### Parameters:

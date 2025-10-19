@@ -543,8 +543,6 @@ function OneClassSupportVectorMachineModel:predict(featureMatrix, returnOriginal
 
 	local originalPredictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
 
-	if (typeof(originalPredictedVector) == "number") then originalPredictedVector = {{originalPredictedVector}} end
-
 	if (returnOriginalOutput) then return originalPredictedVector end
 
 	local predictedVector = AqwamTensorLibrary:applyFunction(seperatorFunction, originalPredictedVector)

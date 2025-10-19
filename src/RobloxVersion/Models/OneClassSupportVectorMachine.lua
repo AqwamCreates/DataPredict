@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
+local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
+
 OneClassSupportVectorMachineModel = {}
 
 OneClassSupportVectorMachineModel.__index = OneClassSupportVectorMachineModel
@@ -58,62 +60,6 @@ local seperatorFunction = function (x)
 
 end
 
-local distanceFunctionList = {
-
-	["Manhattan"] = function (x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
-
-		local distance = AqwamTensorLibrary:sum(part1)
-
-		return distance 
-
-	end,
-
-	["Euclidean"] = function (x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		local part2 = AqwamTensorLibrary:power(part1, 2)
-
-		local part3 = AqwamTensorLibrary:sum(part2)
-
-		local distance = math.sqrt(part3)
-
-		return distance 
-
-	end,
-	
-	["Cosine"] = function(x1, x2)
-
-		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
-
-		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
-
-		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
-
-		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
-
-		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
-
-		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
-
-		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
-
-		local normX = x1Magnitude * x2Magnitude
-
-		local similarity = dotProductedX / normX
-
-		local cosineDistance = 1 - similarity
-
-		return cosineDistance
-
-	end,
-
-}
-
 local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
 	local numberOfData1 = #matrix1
@@ -122,7 +68,7 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
 	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData1, numberOfData2})
 	
-	local distanceFunctionToApply = distanceFunctionList[distanceFunction]
+	local distanceFunctionToApply = distanceFunctionDictionary[distanceFunction]
 
 	for i = 1, numberOfData1, 1 do
 
@@ -147,15 +93,15 @@ local mappingList = {
 	end,
 
 	["Polynomial"] = function(featureMatrix, kernelParameters)
-		
+
 		local degree = kernelParameters.degree
-		
+
 		local gamma = kernelParameters.gamma
-		
+
 		local r = kernelParameters.r
-		
+
 		local scaledFeatureMatrix = AqwamTensorLibrary:multiply(featureMatrix, gamma)
-		
+
 		local addedFeatureMatrix = AqwamTensorLibrary:add(scaledFeatureMatrix, r)
 
 		return AqwamTensorLibrary:power(addedFeatureMatrix, degree)
@@ -163,7 +109,7 @@ local mappingList = {
 	end,
 
 	["RadialBasisFunction"] = function(featureMatrix, kernelParameters)
-		
+
 		local sigma = kernelParameters.sigma
 
 		local squaredFeatureMatrix = AqwamTensorLibrary:power(featureMatrix, 2)
@@ -177,28 +123,28 @@ local mappingList = {
 		return AqwamTensorLibrary:applyFunction(math.exp, zMatrix)
 
 	end,
-	
+
 	["Sigmoid"] = function(featureMatrix, kernelParameters)
 
 		local gamma = kernelParameters.gamma
 
 		local r = kernelParameters.r
-		
+
 		local kernelMappingMatrixPart1 = AqwamTensorLibrary:multiply(gamma, featureMatrix)
 
 		local kernelMappingMatrixPart2 = AqwamTensorLibrary:add(kernelMappingMatrixPart1, r)
 
 		local kernelMappingMatrix = AqwamTensorLibrary:applyFunction(math.tanh, kernelMappingMatrixPart2)
-		
+
 		return kernelMappingMatrix
 
 	end,
-	
+
 	["Cosine"] = function(featureMatrix, kernelParameters)
-		
+
 		local zeroMatrix = AqwamTensorLibrary:createTensor({1, #featureMatrix[1]}, 0)
 
-		local distanceMatrix = createDistanceMatrix(featureMatrix, zeroMatrix, "Euclidean")
+		local distanceMatrix = createDistanceMatrix("Euclidean", featureMatrix, zeroMatrix)
 
 		local kernelMappingMatrix = AqwamTensorLibrary:divide(featureMatrix, distanceMatrix)
 
@@ -242,7 +188,7 @@ local kernelFunctionList = {
 
 		local sigma = kernelParameters.sigma
 
-		local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, "Euclidean")
+		local distanceMatrix = createDistanceMatrix("Euclidean", featureMatrix, featureMatrix)
 
 		local squaredDistanceMatrix = AqwamTensorLibrary:power(distanceMatrix, 2)
 
@@ -277,13 +223,13 @@ local kernelFunctionList = {
 	end,
 
 	["Cosine"] = function(featureMatrix, kernelParameters)
-		
+
 		local zeroMatrix = AqwamTensorLibrary:createTensor({1, #featureMatrix[1]}, 0)
 
-		local distanceMatrix = createDistanceMatrix(featureMatrix, zeroMatrix, "Euclidean")
+		local distanceMatrix = createDistanceMatrix("Euclidean", featureMatrix, zeroMatrix)
 
 		local kernelMappingMatrix = AqwamTensorLibrary:divide(featureMatrix, distanceMatrix)
-		
+
 		local kernelMatrix = AqwamTensorLibrary:dotProduct(kernelMappingMatrix, AqwamTensorLibrary:transpose(kernelMappingMatrix))
 
 		return kernelMatrix
@@ -397,7 +343,7 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 
 	if (numberOfData ~= #labelVector) then
 
-		error("The feature matrix and the label vector do not contain the same number of rows!")
+		error("The feature matrix and the label vector do not contain the same number of rows.")
 
 	end
 	
@@ -409,7 +355,7 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 
 		if (numberOfFeatures ~= #ModelParameters) then
 
-			error("The number of features is not the same as the model parameters!")
+			error("The number of features is not the same as the model parameters.")
 
 		end
 

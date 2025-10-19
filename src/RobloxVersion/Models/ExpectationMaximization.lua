@@ -26,298 +26,692 @@
 
 --]]
 
-local AqwamMachineDeepAndReinforcementLearningLibrary = {}
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local Models = script.Models
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-local Regularizers = script.Regularizers
+local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
-local Optimizers = script.Optimizers
+local ExpectationMaximizationModel = {}
 
-local ValueSchedulers = script.ValueSchedulers
+ExpectationMaximizationModel.__index = ExpectationMaximizationModel
 
-local ExperienceReplays = script.ExperienceReplays
+setmetatable(ExpectationMaximizationModel, IterativeMethodBaseModel)
 
-local QuickSetups = script.QuickSetups
+local defaultMaximumNumberOfIterations = 10
 
-local EligibilityTraces = script.EligibilityTraces
+local defaultNumberOfClusters = math.huge
 
-local ReinforcementLearningStrategies = script.ReinforcementLearningStrategies
+local defaultMode = "Hybrid"
 
-local DistributedTrainingStrategies = script.DistributedTrainingStrategies
+local defaultUseLogProbabilities = false
 
-local Others = script.Others
+local defaultSetInitialCentroidsOnDataPoints = true
 
-AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
+local defaultSetTheCentroidsDistanceFarthest = true
 
-	LinearRegression = require(Models.LinearRegression),
-	
-	NormalLinearRegression = require(Models.NormalLinearRegression),
-	
-	PassiveAggressiveRegressor = require(Models.PassiveAggressiveRegressor),
-	
-	SupportVectorRegression = require(Models.SupportVectorRegression),
-	
-	KNearestNeighboursRegressor = require(Models.KNearestNeighboursRegressor),
-	
-	LogisticRegression = require(Models.LogisticRegression),
-	
-	PassiveAggressiveClassifier = require(Models.PassiveAggressiveClassifier),
-	
-	OneClassPassiveAggressiveClassifier = require(Models.OneClassPassiveAggressiveClassifier),
-	
-	NeuralNetwork = require(Models.NeuralNetwork),
-	
-	OneClassSupportVectorMachine = require(Models.OneClassSupportVectorMachine),
-	
-	SupportVectorMachine = require(Models.SupportVectorMachine),
-	
-	NearestCentroid = require(Models.NearestCentroid),
-	
-	KNearestNeighboursClassifier = require(Models.KNearestNeighboursClassifier),
-	
-	GaussianNaiveBayes = require(Models.GaussianNaiveBayes),
-	
-	MultinomialNaiveBayes = require(Models.MultinomialNaiveBayes),
-	
-	BernoulliNaiveBayes = require(Models.BernoulliNaiveBayes),
-	
-	ComplementNaiveBayes = require(Models.ComplementNaiveBayes),
-	
-	CategoricalNaiveBayes = require(Models.CategoricalNaiveBayes),
-	
-	KMeans = require(Models.KMeans),
-	
-	FuzzyCMeans = require(Models.FuzzyCMeans),
-	
-	ExpectationMaximization = require(Models.ExpectationMaximization),
-	
-	AgglomerativeHierarchical = require(Models.AgglomerativeHierarchical),
-	
-	MeanShift = require(Models.MeanShift),
-	
-	DensityBasedSpatialClusteringOfApplicationsWithNoise = require(Models.DensityBasedSpatialClusteringOfApplicationsWithNoise),
-	
-	KMedoids = require(Models.KMedoids),
-	
-	AffinityPropagation = require(Models.AffinityPropagation),
-	
-	DeepQLearning = require(Models.DeepQLearning),
+local defaultDistanceFunction = "Euclidean"
 
-	DeepDoubleQLearningV1 = require(Models.DeepDoubleQLearningV1),
+local defaultEpsilon = 1e-16
 
-	DeepDoubleQLearningV2 = require(Models.DeepDoubleQLearningV2),
+local function gaussian(featureVector, meanVector, varianceVector, epsilon)
 	
-	DeepClippedDoubleQLearning = require(Models.DeepClippedDoubleQLearning),
-	
-	DeepStateActionRewardStateAction = require(Models.DeepStateActionRewardStateAction),
-	
-	DeepDoubleStateActionRewardStateActionV1 = require(Models.DeepDoubleStateActionRewardStateActionV1),
-	
-	DeepDoubleStateActionRewardStateActionV2 = require(Models.DeepDoubleStateActionRewardStateActionV2),
-	
-	DeepExpectedStateActionRewardStateAction = require(Models.DeepExpectedStateActionRewardStateAction),
-	
-	DeepDoubleExpectedStateActionRewardStateActionV1 = require(Models.DeepDoubleExpectedStateActionRewardStateActionV1),
-	
-	DeepDoubleExpectedStateActionRewardStateActionV2 = require(Models.DeepDoubleExpectedStateActionRewardStateActionV2),
-	
-	DeepMonteCarloControl = require(Models.DeepMonteCarloControl),
+	local exponentStep1 = AqwamTensorLibrary:subtract(featureVector, meanVector)
 
-	DeepOffPolicyMonteCarloControl = require(Models.DeepOffPolicyMonteCarloControl),
-	
-	REINFORCE = require(Models.REINFORCE),
-	
-	VanillaPolicyGradient = require(Models.VanillaPolicyGradient),
-	
-	ActorCritic = require(Models.ActorCritic),
-	
-	SoftActorCritic = require(Models.SoftActorCritic),
-	
-	AdvantageActorCritic = require(Models.AdvantageActorCritic),
-	
-	ProximalPolicyOptimization = require(Models.ProximalPolicyOptimization),
-	
-	ProximalPolicyOptimizationClip = require(Models.ProximalPolicyOptimizationClip),
-	
-	DeepDeterministicPolicyGradient = require(Models.DeepDeterministicPolicyGradient),
-	
-	TwinDelayedDeepDeterministicPolicyGradient = require(Models.TwinDelayedDeepDeterministicPolicyGradient),
-	
-	TabularQLearning = require(Models.TabularQLearning),
-	
-	TabularClippedDoubleQLearning = require(Models.TabularClippedDoubleQLearning),
-	
-	TabularDoubleQLearningV1 = require(Models.TabularDoubleQLearningV1),
-	
-	TabularDoubleQLearningV2 = require(Models.TabularDoubleQLearningV2),
+	local exponentStep2 = AqwamTensorLibrary:power(exponentStep1, 2)
 
-	TabularStateActionRewardStateAction = require(Models.TabularStateActionRewardStateAction),
-	
-	TabularDoubleStateActionRewardStateActionV1 = require(Models.TabularDoubleStateActionRewardStateActionV1),
+	local exponentStep3 = AqwamTensorLibrary:divide(exponentStep2, varianceVector)
 
-	TabularDoubleStateActionRewardStateActionV2 = require(Models.TabularDoubleStateActionRewardStateActionV2),
-	
-	TabularExpectedStateActionRewardStateAction = require(Models.TabularExpectedStateActionRewardStateAction),
-	
-	TabularDoubleExpectedStateActionRewardStateActionV1 = require(Models.TabularDoubleExpectedStateActionRewardStateActionV1),
+	local exponentStep4 = AqwamTensorLibrary:multiply(-0.5, exponentStep3)
 
-	TabularDoubleExpectedStateActionRewardStateActionV2 = require(Models.TabularDoubleExpectedStateActionRewardStateActionV2),
+	local exponentWithTerms = AqwamTensorLibrary:exponent(exponentStep4)
 	
-	TabularMonteCarloControl = require(Models.TabularMonteCarloControl),
-	
-	TabularOffPolicyMonteCarloControl = require(Models.TabularOffPolicyMonteCarloControl),
-	
-	GenerativeAdversarialNetwork = require(Models.GenerativeAdversarialNetwork),
-	
-	ConditionalGenerativeAdversarialNetwork = require(Models.ConditionalGenerativeAdversarialNetwork),
+	local standardDeviationVector = AqwamTensorLibrary:power(varianceVector, 0.5)
 
-	WassersteinGenerativeAdversarialNetwork = require(Models.WassersteinGenerativeAdversarialNetwork),
+	local divisorPart1 = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+	
+	local divisor = AqwamTensorLibrary:add(divisorPart1, epsilon)
 
-	ConditionalWassersteinGenerativeAdversarialNetwork = require(Models.ConditionalWassersteinGenerativeAdversarialNetwork),
+	local gaussianDensity = AqwamTensorLibrary:divide(exponentWithTerms, divisor)
+	
+	return gaussianDensity
 
-}
+end
 
-AqwamMachineDeepAndReinforcementLearningLibrary.Regularizers = {
+local function calculateGaussianMatrix(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
 	
-	ElasticNet = require(Regularizers.ElasticNet),
+	local numberOfClusters = #meanMatrix
 	
-	Lasso = require(Regularizers.Lasso),
+	local initialValue = (useLogProbabilities and 0) or 1
 	
-	Ridge = require(Regularizers.Ridge),
+	local probabilityMatrix = AqwamTensorLibrary:createTensor({#featureMatrix, numberOfClusters}, initialValue)
 	
-}
+	for i = 1, #featureMatrix, 1 do
 
-AqwamMachineDeepAndReinforcementLearningLibrary.Optimizers = {
+		local featureVector = {featureMatrix[i]}
 
-	AdaptiveDelta = require(Optimizers.AdaptiveDelta),
-	
-	AdaptiveFactor = require(Optimizers.AdaptiveFactor),
-	
-	AdaptiveGradient = require(Optimizers.AdaptiveGradient),
+		for j = 1, numberOfClusters, 1 do
 
-	AdaptiveMomentEstimation = require(Optimizers.AdaptiveMomentEstimation),
+			local weight = piMatrix[j][1]
+			
+			if (useLogProbabilities) then weight = math.log(weight + epsilon) end
 
-	AdaptiveMomentEstimationMaximum = require(Optimizers.AdaptiveMomentEstimationMaximum),
-	
-	AdaptiveMomentEstimationWeightDecay = require(Optimizers.AdaptiveMomentEstimationWeightDecay),
-	
-	Gravity = require(Optimizers.Gravity),
-	
-	Momentum = require(Optimizers.Momentum),
+			local meanVector = {meanMatrix[j]}
 
-	NesterovAcceleratedAdaptiveMomentEstimation = require(Optimizers.NesterovAcceleratedAdaptiveMomentEstimation),
-	
-	RectifiedAdaptiveMomentEstimation = require(Optimizers.RectifiedAdaptiveMomentEstimation),
-	
-	ResilientBackwardPropagation = require(Optimizers.ResilientBackwardPropagation),
-	
-	RootMeanSquarePropagation = require(Optimizers.RootMeanSquarePropagation),
+			local varianceVector = {varianceMatrix[j]}
 
-}
+			local probabilitiesVector = gaussian(featureVector, meanVector, varianceVector, epsilon)
 
-AqwamMachineDeepAndReinforcementLearningLibrary.ValueSchedulers = {
-	
-	Chained = require(ValueSchedulers.Chained),
-	
-	Constant = require(ValueSchedulers.Constant),
-	
-	CosineAnnealing = require(ValueSchedulers.CosineAnnealing),
-	
-	Exponential = require(ValueSchedulers.Exponential),
-	
-	InverseSquareRoot = require(ValueSchedulers.InverseSquareRoot),
-	
-	InverseTime = require(ValueSchedulers.InverseTime),
-	
-	Linear = require(ValueSchedulers.Linear),
-	
-	MultipleStep = require(ValueSchedulers.MultipleStep),
-	
-	Multiplicative = require(ValueSchedulers.Multiplicative),
-	
-	Polynomial = require(ValueSchedulers.Polynomial),
-	
-	Sequential = require(ValueSchedulers.Sequential),
+			for i, probability in ipairs(probabilitiesVector[1]) do
+				
+				if (useLogProbabilities) then
+					
+					weight = weight + math.log(probability + epsilon)
+					
+				else
+					
+					weight = weight * probability 
+					
+				end
+				
+			end
 
-	Step = require(ValueSchedulers.Step),
+			probabilityMatrix[i][j] = weight
 
-}
+		end
 
-AqwamMachineDeepAndReinforcementLearningLibrary.ExperienceReplays = {
-
-	UniformExperienceReplay = require(ExperienceReplays.UniformExperienceReplay),
-
-	PrioritizedExperienceReplay = require(ExperienceReplays.PrioritizedExperienceReplay),
-
-	NStepExperienceReplay = require(ExperienceReplays.NStepExperienceReplay),
-
-}
-
-AqwamMachineDeepAndReinforcementLearningLibrary.QuickSetups = {
-
-	SingleCategoricalPolicy = require(QuickSetups.SingleCategoricalPolicy),
-
-	SingleDiagonalGaussianPolicy = require(QuickSetups.SingleDiagonalGaussianPolicy),
+	end
 	
-	QueuedCategoricalPolicy = require(QuickSetups.QueuedCategoricalPolicy),
+	return probabilityMatrix
+	
+end
 
-	QueuedDiagonalGaussianPolicy = require(QuickSetups.QueuedDiagonalGaussianPolicy),
+local function expectationStep(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
 	
-	ParallelCategoricalPolicy = require(QuickSetups.ParallelCategoricalPolicy),
+	local responsibilityMatrix = calculateGaussianMatrix(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon) -- number of data x number of columns
+	
+	local responsibilitySumVector = AqwamTensorLibrary:sum(responsibilityMatrix, 1)
+	
+	local normalizedResponsibilityMatrix = AqwamTensorLibrary:divide(responsibilityMatrix, responsibilitySumVector)
+	
+	return normalizedResponsibilityMatrix
+	
+end
 
-	ParallelDiagonalGaussianPolicy = require(QuickSetups.ParallelDiagonalGaussianPolicy),
+local function maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix) -- data x features, data x clusters, clusters x 1, clusters x features
 
-}
+	local piMatrix = AqwamTensorLibrary:sum(responsibilityMatrix, 1)
+	
+	local piSum = AqwamTensorLibrary:sum(piMatrix)
 
-AqwamMachineDeepAndReinforcementLearningLibrary.EligibilityTraces = {
+	piMatrix = AqwamTensorLibrary:transpose(piMatrix)
 	
-	AccumulatingTrace = require(EligibilityTraces.AccumulatingTrace),
-	
-	ReplacingTrace = require(EligibilityTraces.ReplacingTrace),
-	
-	DutchTrace = require(EligibilityTraces.DutchTrace),
-	
-}
+	piMatrix = AqwamTensorLibrary:divide(piMatrix, piSum)
 
-AqwamMachineDeepAndReinforcementLearningLibrary.ReinforcementLearningStrategies = {
+	local responsibilitiesMatrixTransposed = AqwamTensorLibrary:transpose(responsibilityMatrix) -- clusters x data
 	
-	RandomNetworkDistillation = require(ReinforcementLearningStrategies.RandomNetworkDistillation),
+	local subSumWeightMatrix = AqwamTensorLibrary:sum(responsibilitiesMatrixTransposed, 2) -- clusters x 1
 	
-	GenerativeAdversarialImitationLearning = require(ReinforcementLearningStrategies.GenerativeAdversarialImitationLearning),
+	local subSumWeightXMatrix = AqwamTensorLibrary:dotProduct(responsibilitiesMatrixTransposed, featureMatrix) -- clusters x features
+	
+	local newSumWeightMatrix = AqwamTensorLibrary:add(sumWeightMatrix, subSumWeightMatrix) -- clusters x 1
 
-	WassersteinGenerativeAdversarialImitationLearning = require(ReinforcementLearningStrategies.WassersteinGenerativeAdversarialImitationLearning),
-	
-}
+	local newSumWeightXMatrix = AqwamTensorLibrary:add(sumWeightXMatrix, subSumWeightXMatrix) -- clusters x features
 
-AqwamMachineDeepAndReinforcementLearningLibrary.DistributedTrainingStrategies = {
-	
-	DistributedGradientsCoordinator = require(DistributedTrainingStrategies.DistributedGradientsCoordinator),
+	local meanMatrix = AqwamTensorLibrary:divide(newSumWeightXMatrix, newSumWeightMatrix) -- clusters x features
 
-	DistributedModelParametersCoordinator = require(DistributedTrainingStrategies.DistributedModelParametersCoordinator),
-	
-}
+	local varianceMatrix = AqwamTensorLibrary:createTensor({numberOfClusters, #featureMatrix[1]}, 0)
 
-AqwamMachineDeepAndReinforcementLearningLibrary.Others = {
-	
-	ModelTrainingModifier = require(Others.ModelTrainingModifier),
-	
-	ModelSafeguardWrapper = require(Others.ModelSafeguardWrapper),
-	
-	ModelParametersMerger = require(Others.ModelParametersMerger),
+	for i = 1, numberOfClusters, 1 do
 
-	ModelDatasetCreator = require(Others.ModelDatasetCreator),
+		local meanVector = {meanMatrix[i]}
 
-	ModelChecker = require(Others.ModelChecker),
+		local thisStandardDeviationMatrix = AqwamTensorLibrary:subtract(featureMatrix, meanVector)
+
+		local thisVariationMatrix = AqwamTensorLibrary:power(thisStandardDeviationMatrix, 2)
+
+		local thisSumVariationMatrix = AqwamTensorLibrary:sum(thisVariationMatrix, 1)
+
+		varianceMatrix[i] = thisSumVariationMatrix[1]
+
+	end
+
+	varianceMatrix = AqwamTensorLibrary:divide(varianceMatrix, newSumWeightMatrix)
+
+	return meanMatrix, varianceMatrix, piMatrix, subSumWeightMatrix, subSumWeightXMatrix
+
+end
+
+local function calculateCost(gaussianMatrix, epsilon)
 	
-	OneVsAll = require(Others.OneVsAll),
+	local clampedGaussianMatrix = AqwamTensorLibrary:applyFunction(math.max, gaussianMatrix, {{epsilon}})
 	
-	OneVsOne = require(Others.OneVsOne),
+	local logLikelihoodMatrix = AqwamTensorLibrary:applyFunction(math.log, clampedGaussianMatrix)
 
-	OnlineLearning = require(Others.OnlineLearning),
+	local sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihoodMatrix)
 	
-	ConfusionMatrixCreator = require(Others.ConfusionMatrixCreator),
+	return -sumLogLikelihood
+	
+end
 
-}
+local function chooseFarthestCentroidFromDatasetDistanceMatrix(distanceMatrix, blacklistedDataIndexArray)
 
-return AqwamMachineDeepAndReinforcementLearningLibrary
+	local dataIndex
+
+	local maxDistance = -math.huge
+
+	for row = 1, #distanceMatrix, 1 do
+
+		if (not table.find(blacklistedDataIndexArray, row)) then
+			
+			local totalDistance = 0
+
+			for column = 1, #distanceMatrix[1], 1 do totalDistance = totalDistance + distanceMatrix[row][column] end
+			
+			if (totalDistance > maxDistance) then
+				
+				maxDistance = totalDistance
+				
+				dataIndex = row
+				
+			end
+			
+		end
+
+	end
+
+	return dataIndex
+
+end
+
+local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
+
+	local numberOfData1 = #matrix1
+
+	local numberOfData2 = #matrix2
+
+	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData1, numberOfData2})
+
+	for matrix1Index = 1, numberOfData1, 1 do
+
+		for matrix2Index = 1, numberOfData2, 1 do
+
+			distanceMatrix[matrix1Index][matrix2Index] = distanceFunction({matrix1[matrix1Index]}, {matrix2[matrix2Index]})
+
+		end
+
+	end
+
+	return distanceMatrix
+
+end
+
+local function chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
+
+	local centroidMatrix = {}
+
+	local dataIndexArray = {}
+
+	local dataIndex
+
+	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, distanceFunction)
+
+	repeat
+
+		dataIndex = chooseFarthestCentroidFromDatasetDistanceMatrix(distanceMatrix, dataIndexArray)
+
+		table.insert(dataIndexArray, dataIndex)
+
+	until (#dataIndexArray == numberOfClusters)
+
+	for row = 1, numberOfClusters, 1 do
+
+		dataIndex = dataIndexArray[row]
+
+		table.insert(centroidMatrix, featureMatrix[dataIndex])
+
+	end
+
+	return centroidMatrix
+
+end
+
+local function chooseRandomCentroids(featureMatrix, numberOfClusters)
+
+	local modelParameters = {}
+
+	local numberOfRows = #featureMatrix
+
+	local randomRow
+
+	local selectedRows = {}
+
+	local hasANewRandomRowChosen
+
+	for cluster = 1, numberOfClusters, 1 do
+
+		repeat
+
+			randomRow = Random.new():NextInteger(1, numberOfRows)
+
+			hasANewRandomRowChosen = not (table.find(selectedRows, randomRow))
+
+			if hasANewRandomRowChosen then
+
+				table.insert(selectedRows, randomRow)
+				modelParameters[cluster] = featureMatrix[randomRow]
+
+			end
+
+		until hasANewRandomRowChosen
+
+	end
+
+	return modelParameters
+
+end
+
+function ExpectationMaximizationModel:initializeCentroids(featureMatrix, numberOfClusters)
+	
+	local setInitialCentroidsOnDataPoints = self.setInitialCentroidsOnDataPoints
+	
+	local setTheCentroidsDistanceFarthest = self.setTheCentroidsDistanceFarthest
+	
+	if (setInitialCentroidsOnDataPoints) and (numberOfClusters == 1) then
+
+		return AqwamTensorLibrary:mean(featureMatrix, 1)
+
+	elseif (setInitialCentroidsOnDataPoints) and (setTheCentroidsDistanceFarthest) then
+		
+		local distanceFunctionToApply = distanceFunctionDictionary[self.distanceFunction]
+		
+		if (not distanceFunctionToApply) then error("Unknown distance function.") end
+
+		return chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunctionToApply)
+
+	elseif (setInitialCentroidsOnDataPoints) and (not setTheCentroidsDistanceFarthest) then
+
+		return chooseRandomCentroids(featureMatrix, numberOfClusters)
+
+	else
+
+		return self:initializeMatrixBasedOnMode({numberOfClusters, #featureMatrix[1]})
+
+	end
+
+end
+
+function ExpectationMaximizationModel:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
+	
+	local centroidMatrixDimensionSizeArray = {numberOfClusters, numberOfFeatures}
+
+	local meanMatrix = self:initializeCentroids(featureMatrix, numberOfClusters)
+
+	local varianceMatrix = AqwamTensorLibrary:createRandomUniformTensor(centroidMatrixDimensionSizeArray, 0, 1)
+	
+	local piMatrix = AqwamTensorLibrary:createRandomUniformTensor({numberOfClusters, 1})
+
+	local sumPi = AqwamTensorLibrary:sum(piMatrix)
+
+	local sumWeightMatrix = AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
+
+	local sumWeightXMatrix = AqwamTensorLibrary:createTensor(centroidMatrixDimensionSizeArray)
+	
+	piMatrix = AqwamTensorLibrary:divide(piMatrix, sumPi)
+	
+	return meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix
+	
+end
+
+function ExpectationMaximizationModel:getBayesianInformationCriterion(featureMatrix, numberOfClusters, useLogProbabilities, epsilon)
+	
+	local numberOfData = #featureMatrix
+	
+	local numberOfFeatures = #featureMatrix[1]
+	
+	local meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
+	
+	local responsibilityMatrix = expectationStep(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
+	
+	meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
+	
+	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
+	
+	local logLikelihood = AqwamTensorLibrary:logarithm(gaussianMatrix)
+	
+	if (useLogProbabilities) then
+		
+		logLikelihood = AqwamTensorLibrary:logarithm(gaussianMatrix)
+		
+	else
+		
+		logLikelihood = gaussianMatrix
+		
+	end
+
+	local sumLogLikelihood = AqwamTensorLibrary:sum(logLikelihood)
+	
+	local k = (numberOfClusters - 1) + (numberOfClusters * numberOfFeatures * 2)
+	
+	local bayesianInformationCriterion = (k * math.log(numberOfData)) - (2 * sumLogLikelihood)
+	
+	return bayesianInformationCriterion, meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix
+	
+end
+
+function ExpectationMaximizationModel:getBestMatrices(featureMatrix, useLogProbabilities, epsilon)
+	
+	local numberOfFeatures = #featureMatrix[1]
+	
+	local numberOfClusters = 1
+	
+	local bestBayesianInformationCriterion = math.huge
+	
+	local bestNumberOfClusters = numberOfClusters
+	
+	local bayesianInformationCriterion
+	
+	local meanMatrix
+	
+	local varianceMatrix
+	
+	local piMatrix
+	
+	local sumWeightMatrix
+	
+	local sumWeightXMatrix
+
+	local bestMeanMatrix
+
+	local bestVarianceMatrix
+	
+	local bestPiMatrix
+
+	local bestSumWeightMatrix
+
+	local bestSumWeightXMatrix
+
+	while true do
+		
+		bayesianInformationCriterion, meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBayesianInformationCriterion(featureMatrix, numberOfClusters, useLogProbabilities, epsilon)
+
+		if (bayesianInformationCriterion < bestBayesianInformationCriterion) then
+			
+			bestBayesianInformationCriterion = bayesianInformationCriterion
+			
+			bestNumberOfClusters = numberOfClusters
+			
+			bestMeanMatrix = meanMatrix
+			
+			bestPiMatrix = piMatrix
+			
+			bestVarianceMatrix = varianceMatrix
+			
+			bestSumWeightMatrix = sumWeightMatrix
+			
+			bestSumWeightXMatrix = sumWeightXMatrix
+			
+		else
+			
+			break
+			
+		end
+
+		numberOfClusters = numberOfClusters + 1
+		
+	end
+
+	return bestMeanMatrix, bestVarianceMatrix, bestPiMatrix, bestSumWeightMatrix, bestSumWeightXMatrix
+	
+end
+
+function ExpectationMaximizationModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
+
+	local NewExpectationMaximizationModel = IterativeMethodBaseModel.new(parameterDictionary)
+
+	setmetatable(NewExpectationMaximizationModel, ExpectationMaximizationModel)
+	
+	NewExpectationMaximizationModel:setName("ExpectationMaximization")
+	
+	NewExpectationMaximizationModel.numberOfClusters = parameterDictionary.numberOfClusters or defaultNumberOfClusters
+	
+	NewExpectationMaximizationModel.mode = parameterDictionary.mode or defaultMode
+	
+	NewExpectationMaximizationModel.useLogProbabilities = NewExpectationMaximizationModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
+	
+	NewExpectationMaximizationModel.setInitialCentroidsOnDataPoints =  NewExpectationMaximizationModel:getValueOrDefaultValue(parameterDictionary.setInitialCentroidsOnDataPoints, defaultSetInitialCentroidsOnDataPoints)
+
+	NewExpectationMaximizationModel.setTheCentroidsDistanceFarthest = NewExpectationMaximizationModel:getValueOrDefaultValue(parameterDictionary.setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
+	
+	NewExpectationMaximizationModel.distanceFunction = NewExpectationMaximizationModel:getValueOrDefaultValue(parameterDictionary.distanceFunction, defaultDistanceFunction)
+	
+	NewExpectationMaximizationModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	
+	return NewExpectationMaximizationModel
+end
+
+function ExpectationMaximizationModel:train(featureMatrix)
+	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
+
+	local numberOfClusters = self.numberOfClusters
+	
+	local mode = self.mode
+	
+	local useLogProbabilities = false -- Do not bother doing this for training. It will result in the responsibilityMatrix to have nan and inf values.
+
+	local epsilon = self.epsilon
+
+	local ModelParameters = self.ModelParameters or {}
+	
+	local numberOfFeatures = #featureMatrix[1]
+
+	local meanMatrix = ModelParameters[1]
+
+	local varianceMatrix = ModelParameters[2]
+	
+	local piMatrix = ModelParameters[3]
+	
+	local sumWeightMatrix = ModelParameters[4]
+	
+	local sumWeightXMatrix = ModelParameters[5]
+	
+	if (mode == "Hybrid") then
+		
+		mode = (meanMatrix and varianceMatrix and piMatrix and sumWeightMatrix and sumWeightXMatrix and "Online") or "Offline"		
+		
+	end
+	
+	if (mode == "Offline") then
+		
+		meanMatrix = nil
+		
+		varianceMatrix = nil
+		
+		piMatrix = nil
+		
+		sumWeightMatrix = nil
+		
+		sumWeightXMatrix = nil
+		
+	end
+	
+	local logLikelihoodArray = {}
+	
+	local costArray = {}
+	
+	local numberOfIterations = 0
+	
+	local responsibilityMatrix
+	
+	local gaussianMatrix
+	
+	local cost
+	
+	local subSumWeightMatrix
+	
+	local subSumWeightXMatrix
+	
+	if (not meanMatrix) or (not varianceMatrix) or (not piMatrix) or (not sumWeightMatrix) or (not sumWeightXMatrix) then
+		
+		if (numberOfClusters == math.huge) then 
+			
+			meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBestMatrices(featureMatrix, useLogProbabilities, epsilon)
+			
+		else
+			
+			meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(featureMatrix, numberOfClusters, numberOfFeatures)
+			
+		end
+		
+	end
+	
+	numberOfClusters = #piMatrix -- This should be outside because nothing is replacing infinite number of clusters when it is given as a parameter after the first training.
+	
+	repeat
+		
+		numberOfIterations = numberOfIterations + 1
+		
+		self:iterationWait()
+
+		responsibilityMatrix = expectationStep(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
+
+		meanMatrix, varianceMatrix, piMatrix, subSumWeightMatrix, subSumWeightXMatrix = maximizationStep(featureMatrix, responsibilityMatrix, numberOfClusters, sumWeightMatrix, sumWeightXMatrix)
+		
+		gaussianMatrix = calculateGaussianMatrix(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
+		
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
+			
+			return calculateCost(gaussianMatrix, epsilon)
+			
+		end)
+		
+		if (cost) then
+			
+			table.insert(costArray, cost)
+
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+
+		end
+
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
+	
+	-- Storing the final subSumWeightMatrix and subSumWeightXMatrix to "freeze" them for future model training.
+	
+	sumWeightMatrix = AqwamTensorLibrary:add(sumWeightMatrix, subSumWeightMatrix)
+	
+	sumWeightXMatrix = AqwamTensorLibrary:add(sumWeightXMatrix, subSumWeightXMatrix)
+	
+	-- We're just normalizing here to so that the sumWeightMatrix and sumWeightMatrix values doesn't go so big to the point of numerical overflow.
+	
+	local normalizationDenominator = AqwamTensorLibrary:sum(sumWeightMatrix)
+
+	sumWeightMatrix = AqwamTensorLibrary:divide(sumWeightMatrix, normalizationDenominator)
+
+	sumWeightXMatrix = AqwamTensorLibrary:divide(sumWeightXMatrix, normalizationDenominator)
+	
+	self.ModelParameters = {meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix}
+
+	return costArray
+
+end
+
+function ExpectationMaximizationModel:predict(featureMatrix, returnOriginalOutput)
+	
+	local useLogProbabilities = self.useLogProbabilities
+	
+	local epsilon = self.epsilon
+	
+	local ModelParameters = self.ModelParameters
+	
+	local meanMatrix
+	
+	local varianceMatrix
+	
+	local piMatrix
+	
+	if (not ModelParameters) then
+
+		local numberOfClusters = self.numberOfClusters
+		
+		local sumWeightMatrix
+
+		local sumWeightXMatrix
+
+		if (numberOfClusters == math.huge) then 
+
+			meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:getBestMatrices(featureMatrix, useLogProbabilities, epsilon)
+
+		else
+
+			meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix = self:initializeMatrices(featureMatrix, numberOfClusters, #featureMatrix[1])
+
+		end
+
+		self.ModelParameters = {meanMatrix, varianceMatrix, piMatrix, sumWeightMatrix, sumWeightXMatrix}
+		
+	else
+		
+		meanMatrix, varianceMatrix, piMatrix = table.unpack(ModelParameters)
+
+	end
+	
+	local gaussianMatrix = calculateGaussianMatrix(featureMatrix, meanMatrix, varianceMatrix, piMatrix, useLogProbabilities, epsilon)
+	
+	if (returnOriginalOutput) then return gaussianMatrix end
+	
+	local initialValue = (useLogProbabilities and -math.huge)
+	
+	local numberOfData = #featureMatrix
+	
+	local dimensionSizeArray = {numberOfData, 1}
+	
+	local selectedClustersVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, initialValue)
+
+	local probabilityVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, initialValue)
+	
+	local highestWeight
+	
+	local selectedCluster
+	
+	for dataIndex, gausssianVector in ipairs(gaussianMatrix) do
+		
+		selectedCluster = nil
+		
+		highestWeight = initialValue
+		
+		for clusterNumber, weight in ipairs(gausssianVector) do
+			
+			if (weight > highestWeight) then
+				
+				selectedCluster = clusterNumber
+				
+				highestWeight = weight
+
+			end
+				
+		end
+		
+		selectedClustersVector[dataIndex][1] = selectedCluster
+		
+		probabilityVector[dataIndex][1] = highestWeight
+		
+	end
+	
+	return selectedClustersVector, probabilityVector
+	
+end
+
+return ExpectationMaximizationModel

@@ -54,7 +54,7 @@ local sigmoidFunctionList = {
 		
 		local x = (z + 1) / 2
 		
-		if x < 0 then return 0 elseif x > 1 then return 1 else return x end
+		if (x < 0) then return 0 elseif (x > 1) then return 1 else return x end
 		
 	end,
 
@@ -115,9 +115,9 @@ local lossFunctionList = {
 
 local cutOffList = {
 	
-	["0.5"] = {"Sigmoid", "HardSigmoid", "Swish"}, -- 0.5 threshold for [0,1] functions
+	["0.5"] = {"Sigmoid", "HardSigmoid", "Swish"}, -- 0.5 threshold for [0,1] functions.
 
-	["0"] = {"Tanh", "Softsign", "ArcTangent", "BipolarSigmoid"}, -- 0 threshold for [-1,1] functions
+	["0"] = {"Tanh", "Softsign", "ArcTangent", "BipolarSigmoid"}, -- 0 threshold for [-1,1] functions.
 	
 }
 

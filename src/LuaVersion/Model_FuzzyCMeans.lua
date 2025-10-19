@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require(s"AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
@@ -311,7 +311,7 @@ function FuzzyCMeansModel:initializeCentroids(featureMatrix, numberOfClusters, d
 		
 		return AqwamTensorLibrary:mean(featureMatrix, 1)
 	
-	elseif (setInitialCentroidsOnDataPoints) and (setTheCentroidsDistanceFarthest) then
+	elseif (setInitialCentroidsOnDataPoints) and (setTheCentroidsDistanceFarthest) and (#featureMatrix >= numberOfClusters) then
 
 		return chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
 

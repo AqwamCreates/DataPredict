@@ -93,12 +93,12 @@ function PassiveAggressiveClassifierModel.new(parameterDictionary)
 end
 
 function PassiveAggressiveClassifierModel:train(featureMatrix, labelVector)
-
-	local ModelParameters = self.ModelParameters
 	
 	local numberOfData = #featureMatrix
 	
 	if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
+	
+	local ModelParameters = self.ModelParameters
 
 	if (ModelParameters) then
 
@@ -190,7 +190,13 @@ function PassiveAggressiveClassifierModel:train(featureMatrix, labelVector)
 		
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
 	
 	self.ModelParameters = ModelParameters
 	

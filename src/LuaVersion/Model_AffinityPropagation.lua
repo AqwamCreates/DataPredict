@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require(s"AqwamTensorLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
@@ -406,7 +406,7 @@ function AffinityPropagationModel:predict(featureMatrix)
 	
 	local predictedClusterVector = AqwamTensorLibrary:createTensor(dimensionSizeArray)
 	
-	local storedFeatureMatrix, clusterNumberArray = table.unpack()
+	local storedFeatureMatrix, clusterNumberArray = table.unpack(ModelParameters)
 	
 	local distanceFunctionToApply = distanceFunctionDictionary[self.distanceFunction]
 	

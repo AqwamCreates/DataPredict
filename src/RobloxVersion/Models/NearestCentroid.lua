@@ -341,12 +341,24 @@ end
 function NearestCentroidModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local ModelParameters = self.ModelParameters
+	
+	local ClassesList = self.ClassesList
 
-	if (not ModelParameters) then 
+	if (not ModelParameters) then
 		
-		local unknownValue = (returnOriginalOutput and math.huge) or nil
+		local numberOfData = #featureMatrix
 		
-		return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, unknownValue) 
+		local numberOfClasses = #ClassesList
+		
+		if (returnOriginalOutput) then AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, math.huge) end
+		
+		local dimensionSizeArray = {numberOfData, 1}
+		
+		local placeHolderLabelVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, nil)
+		
+		local placeHolderLabelDistanceVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
+		
+		return placeHolderLabelVector, placeHolderLabelDistanceVector
 		
 	end
 
@@ -356,7 +368,7 @@ function NearestCentroidModel:predict(featureMatrix, returnOriginalOutput)
 
 	if (returnOriginalOutput) then return distanceMatrix end
 	
-	local ClassesList = self.ClassesList
+	
 
 	local predictedLabelVector = {}
 	

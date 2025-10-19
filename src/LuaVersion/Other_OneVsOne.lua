@@ -277,7 +277,7 @@ function OneVsOne:processLabelVector(labelVector)
 
 	else
 
-		if checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList) then error("A value does not exist in the classes list is present in the label vector") end
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList) then error("A value does not exist in the classes list is present in the label vector.") end
 
 	end
 	
@@ -645,7 +645,7 @@ function OneVsOne:setModelParametersArray(ModelParametersArray, doNotDeepCopy)
 	
 	if (ModelParametersArray == nil) then return nil end
 	
-	if (#ModelParametersArray ~= #ModelArray) then error("The number of model parameters does not match with the number of models!") end
+	if (#ModelParametersArray ~= #ModelArray) then error("The number of model parameters does not match with the number of models.") end
 	
 	for classArray, Model in pairs(ModelArray) do 
 		

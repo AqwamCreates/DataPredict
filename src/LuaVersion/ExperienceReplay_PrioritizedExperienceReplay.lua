@@ -164,7 +164,7 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 		
 		local Model = NewPrioritizedExperienceReplay.Model
 
-		if (not Model) then error("No Model!") end
+		if (not Model) then error("No model.") end
 
 		local batchArray = {}
 

@@ -115,9 +115,9 @@ local lossFunctionList = {
 
 local cutOffList = {
 	
-	["0.5"] = {"Sigmoid", "HardSigmoid", "Swish"}, -- 0.5 threshold for [0,1] functions.
+	["0.5"] = {"Sigmoid", "HardSigmoid", "Swish"}, -- 0.5 threshold for [0, 1] functions.
 
-	["0"] = {"Tanh", "Softsign", "ArcTangent", "BipolarSigmoid"}, -- 0 threshold for [-1,1] functions.
+	["0"] = {"Tanh", "Softsign", "ArcTangent", "BipolarSigmoid"}, -- 0 threshold for [-1, 1] functions.
 	
 }
 

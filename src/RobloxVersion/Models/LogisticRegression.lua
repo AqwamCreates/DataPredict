@@ -93,7 +93,6 @@ local derivativeLossFunctionList = {
 
 	["BipolarSigmoid"] = function (h, y) return (h - y) * 0.5 * (1 - h^2) end,
 
-
 }
 
 local lossFunctionList = {

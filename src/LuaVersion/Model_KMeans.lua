@@ -369,7 +369,7 @@ function KMeansModel:initializeCentroids(featureMatrix, numberOfClusters, distan
 		
 		return AqwamTensorLibrary:mean(featureMatrix, 1)
 	
-	elseif (setInitialCentroidsOnDataPoints) and (setTheCentroidsDistanceFarthest) then
+	elseif (setInitialCentroidsOnDataPoints) and (setTheCentroidsDistanceFarthest) and (#featureMatrix >= numberOfClusters) then
 
 		return chooseFarthestCentroids(featureMatrix, numberOfClusters, distanceFunction)
 

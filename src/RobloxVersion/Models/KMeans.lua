@@ -154,7 +154,7 @@ local function checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClus
 	
 end
 
-local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
+local function createDistanceMatrix(distanceFunction, matrix1, matrix2)
 
 	local numberOfData1 = #matrix1
 
@@ -519,7 +519,7 @@ function KMeansModel:train(featureMatrix)
 		
 		self:iterationWait()
 		
-		distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
+		distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, centroidMatrix)
 
 		centroidMatrix, clusterAssignmentMatrix = kMeansFunction(centroidMatrix, distanceMatrix, featureMatrix, numberOfDataPointVector)
 		
@@ -539,7 +539,13 @@ function KMeansModel:train(featureMatrix)
 		
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
 	
 	numberOfDataPointVector = AqwamTensorLibrary:sum(clusterAssignmentMatrix, 1) -- 1 x clusters
 
@@ -553,11 +559,23 @@ end
 
 function KMeansModel:predict(featureMatrix, returnOriginalOutput)
 	
-	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
-	
 	local centroidMatrix = self.ModelParameters[1]
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, distanceFunctionToApply)
+	if (not centroidMatrix) then
+
+		local numberOfData = #featureMatrix
+
+		if (returnOriginalOutput) then AqwamTensorLibrary:createTensor({numberOfData, self.numberOfClusters}, math.huge) end
+
+		local dimensionSizeArray = {numberOfData, 1}
+
+		return AqwamTensorLibrary:createTensor(dimensionSizeArray, nil), AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
+
+	end
+	
+	local distanceFunctionToApply = distanceFunctionList[self.distanceFunction]
+	
+	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, centroidMatrix)
 	
 	if (returnOriginalOutput) then return distanceMatrix end
 

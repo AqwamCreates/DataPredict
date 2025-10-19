@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseModel = require(script.Parent.BaseModel)
 
+local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
+
 NearestCentroidModel = {}
 
 NearestCentroidModel.__index = NearestCentroidModel
@@ -38,83 +40,57 @@ setmetatable(NearestCentroidModel, BaseModel)
 
 local defaultDistanceFunction = "Euclidean"
 
-local distanceFunctionList = {
-
-	["Manhattan"] = function(x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
-
-		local distance = AqwamTensorLibrary:sum(part1)
-
-		return distance 
-
-	end,
-
-	["Euclidean"] = function(x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		local part2 = AqwamTensorLibrary:power(part1, 2)
-
-		local part3 = AqwamTensorLibrary:sum(part2)
-
-		local distance = math.sqrt(part3)
-
-		return distance 
-
-	end,
-
-	["Cosine"] = function(x1, x2)
-
-		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
-
-		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
-
-		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
-
-		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
-
-		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
-
-		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
-
-		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
-
-		local normX = x1Magnitude * x2Magnitude
-
-		local similarity = dotProductedX / normX
-
-		local cosineDistance = 1 - similarity
-
-		return cosineDistance
-
-	end,
-
-}
-
-local function createDistanceMatrix(featureMatrix, storedFeatureMatrix, distanceFunction)
+local function createDistanceMatrix(distanceFunction, featureMatrix, centroidMatrix)
 
 	local numberOfData = #featureMatrix
 
-	local numberOfStoredData = #storedFeatureMatrix
+	local numberOfStoredData = #centroidMatrix
 
 	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfStoredData}, 0)
 
-	local calculateDistance = distanceFunctionList[distanceFunction]
+	local calculateDistance = distanceFunctionDictionary[distanceFunction]
 
 	for datasetIndex = 1, numberOfData, 1 do
 
 		for storedDatasetIndex = 1, numberOfStoredData, 1 do
 
-			distanceMatrix[datasetIndex][storedDatasetIndex] = calculateDistance({featureMatrix[datasetIndex]}, {storedFeatureMatrix[storedDatasetIndex]})
+			distanceMatrix[datasetIndex][storedDatasetIndex] = calculateDistance({featureMatrix[datasetIndex]}, {centroidMatrix[storedDatasetIndex]})
 
 		end
 
 	end
 
 	return distanceMatrix
+
+end
+
+local function createClusterAssignmentMatrix(distanceMatrix) -- contains values of 0 and 1, where 0 is "does not belong to this cluster"
+
+	local numberOfData = #distanceMatrix -- Number of rows
+
+	local numberOfClusters = #distanceMatrix[1]
+
+	local clusterAssignmentMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters})
+
+	local dataPointClusterNumber
+
+	for dataIndex = 1, numberOfData, 1 do
+
+		local distanceVector = {distanceMatrix[dataIndex]}
+
+		local vectorIndexArray, _ = AqwamTensorLibrary:findMinimumValueDimensionIndexArray(distanceVector)
+
+		if (vectorIndexArray) then
+
+			local clusterNumber = vectorIndexArray[2]
+
+			clusterAssignmentMatrix[dataIndex][clusterNumber] = 1
+
+		end
+
+	end
+
+	return clusterAssignmentMatrix
 
 end
 
@@ -283,8 +259,10 @@ function NearestCentroidModel.new(parameterDictionary)
 end
 
 function NearestCentroidModel:train(featureMatrix, labelVector)
+	
+	local numberOfData = #featureMatrix
 
-	if (#featureMatrix ~= #labelVector) then error("The number of data in feature matrix and the label vector are not the same.") end
+	if (numberOfData ~= #labelVector) then error("The number of data in feature matrix and the label vector are not the same.") end
 	
 	self:processLabelVector(labelVector)
 	
@@ -301,6 +279,8 @@ function NearestCentroidModel:train(featureMatrix, labelVector)
 	end
 
 	local numberOfFeatures = #featureMatrix[1]
+	
+	local distanceFunction = self.distanceFunction
 	
 	local numberOfClasses = #self.ClassesList
 	
@@ -333,8 +313,28 @@ function NearestCentroidModel:train(featureMatrix, labelVector)
 	end
 	
 	centroidMatrix = AqwamTensorLibrary:divide(sumMatrix, numberOfDataPointVector)
+	
+	local distanceMatrix = createDistanceMatrix(distanceFunction, featureMatrix, centroidMatrix)
+	
+	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix)
+	
+	local costMatrix = AqwamTensorLibrary:multiply(distanceMatrix, clusterAssignmentMatrix)
+	
+	local cost = AqwamTensorLibrary:sum(costMatrix)
+	
+	cost = cost / numberOfData
+	
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
 
 	self.ModelParameters = {centroidMatrix, numberOfDataPointVector}
+	
+	return {cost}
 
 end
 
@@ -352,7 +352,7 @@ function NearestCentroidModel:predict(featureMatrix, returnOriginalOutput)
 
 	local centroidMatrix = ModelParameters[1]
 
-	local distanceMatrix = createDistanceMatrix(featureMatrix, centroidMatrix, self.distanceFunction)
+	local distanceMatrix = createDistanceMatrix(self.distanceFunction, featureMatrix, centroidMatrix)
 
 	if (returnOriginalOutput) then return distanceMatrix end
 	

@@ -309,26 +309,10 @@ function AffinityPropagationModel.new(parameterDictionary)
 end
 
 function AffinityPropagationModel:train(featureMatrix)
-
-	local numberOfData = #featureMatrix
-	
-	local numberOfIterations = 0
-	
-	local isConverged = false
-	
-	local costArray = {}
-
-	local responsibilityMatrix
-
-	local availabilityMatrix
-
-	local clusterNumberArray
-
-	local cost
 	
 	local damping = self.damping
 	
-	local ModelParameters = self.ModelParameters
+	local ModelParameters = self.ModelParameters or {}
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
@@ -336,21 +320,25 @@ function AffinityPropagationModel:train(featureMatrix)
 	
 	if (not distanceFunctionToApply) then error("Unknown distance function.") end
 	
-	if (ModelParameters) then
-		
-		responsibilityMatrix = ModelParameters[3]
+	local numberOfData = #featureMatrix
+	
+	local dimensionSizeArray = {numberOfData, numberOfData}
+	
+	local responsibilityMatrix = ModelParameters[3] or AqwamTensorLibrary:createTensor(dimensionSizeArray)
 
-		availabilityMatrix = ModelParameters[4]
-		
-	end
+	local availabilityMatrix = ModelParameters[4] or AqwamTensorLibrary:createTensor(dimensionSizeArray)
 	
 	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, featureMatrix)
-	
+
 	local similarityMatrix = AqwamTensorLibrary:multiply(-1, distanceMatrix)
-	
-	responsibilityMatrix = responsibilityMatrix or AqwamTensorLibrary:createTensor({numberOfData, numberOfData})
-	
-	availabilityMatrix = availabilityMatrix or AqwamTensorLibrary:createTensor({numberOfData, numberOfData})
+
+	local numberOfIterations = 0
+
+	local costArray = {}
+
+	local clusterNumberArray
+
+	local cost
 
 	similarityMatrix = setPreferencesToSimilarityMatrix(similarityMatrix, numberOfData, self.preferenceType, self.preferenceValueArray)
 

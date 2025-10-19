@@ -60,7 +60,7 @@ local seperatorFunction = function (x)
 
 end
 
-local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
+local function createDistanceMatrix(distanceFunction, matrix1, matrix2)
 
 	local numberOfData1 = #matrix1
 

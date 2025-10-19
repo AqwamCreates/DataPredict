@@ -333,11 +333,7 @@ end
 
 function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
-	if (#featureMatrix ~= #labelVector) then
-
-		error("The feature matrix and the label vector do not contain the same number of rows!")
-
-	end
+	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector do not contain the same number of rows.") end
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
@@ -345,11 +341,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 	if (ModelParameters) then
 
-		if (numberOfFeatures ~= #ModelParameters) then
-
-			error("The number of features is not the same as the model parameters!")
-
-		end
+		if (numberOfFeatures ~= #ModelParameters) then error("The number of features is not the same as the model parameters.") end
 
 	else
 

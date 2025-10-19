@@ -26,15 +26,17 @@
 
 --]]
 
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
 local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
+
+local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
 
 local AffinityPropagationModel = {}
 
 AffinityPropagationModel.__index = AffinityPropagationModel
 
 setmetatable(AffinityPropagationModel, IterativeMethodBaseModel)
-
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local defaultMaxNumberOfIterations = 500
 
@@ -44,69 +46,7 @@ local defaultDistanceFunction = "Euclidean"
 
 local defaultPreferenceType = "Median"
 
-local distanceFunctionList = {
-
-	["Manhattan"] = function (x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		part1 = AqwamTensorLibrary:applyFunction(math.abs, part1)
-
-		local distance = AqwamTensorLibrary:sum(part1)
-
-		return distance 
-
-	end,
-
-	["Euclidean"] = function (x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		local part2 = AqwamTensorLibrary:power(part1, 2)
-
-		local part3 = AqwamTensorLibrary:sum(part2)
-
-		local distance = math.sqrt(part3)
-
-		return distance 
-
-	end,
-	
-	["Cosine"] = function(x1, x2)
-
-		local dotProductedX = AqwamTensorLibrary:dotProduct(x1, AqwamTensorLibrary:transpose(x2))
-
-		local x1MagnitudePart1 = AqwamTensorLibrary:power(x1, 2)
-
-		local x1MagnitudePart2 = AqwamTensorLibrary:sum(x1MagnitudePart1)
-
-		local x1Magnitude = math.sqrt(x1MagnitudePart2, 2)
-
-		local x2MagnitudePart1 = AqwamTensorLibrary:power(x2, 2)
-
-		local x2MagnitudePart2 = AqwamTensorLibrary:sum(x2MagnitudePart1)
-
-		local x2Magnitude = math.sqrt(x2MagnitudePart2, 2)
-
-		local normX = x1Magnitude * x2Magnitude
-
-		local similarity = dotProductedX / normX
-
-		local cosineDistance = 1 - similarity
-
-		return cosineDistance
-
-	end,
-
-}
-
-local function calculateDistance(vector1, vector2, distanceFunction)
-
-	return distanceFunctionList[distanceFunction](vector1, vector2) 
-
-end
-
-local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
+local function createDistanceMatrix(distanceFunction, matrix1, matrix2)
 
 	local numberOfData1 = #matrix1
 
@@ -118,7 +58,7 @@ local function createDistanceMatrix(matrix1, matrix2, distanceFunction)
 
 		for j = 1, numberOfData2, 1 do
 
-			distanceMatrix[i][j] = calculateDistance({matrix1[i]}, {matrix2[j]}, distanceFunction)
+			distanceMatrix[i][j] = distanceFunction({matrix1[i]}, {matrix2[j]})
 
 		end
 
@@ -392,6 +332,10 @@ function AffinityPropagationModel:train(featureMatrix)
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
+	local distanceFunctionToApply = distanceFunctionDictionary[self.distanceFunction]
+	
+	if (not distanceFunctionToApply) then error("Unknown distance function.") end
+	
 	if (ModelParameters) then
 		
 		responsibilityMatrix = ModelParameters[3]
@@ -400,7 +344,7 @@ function AffinityPropagationModel:train(featureMatrix)
 		
 	end
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, self.distanceFunction)
+	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, featureMatrix)
 	
 	local similarityMatrix = AqwamTensorLibrary:multiply(-1, distanceMatrix)
 	
@@ -438,7 +382,13 @@ function AffinityPropagationModel:train(featureMatrix)
 		
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
-	if (cost == math.huge) then warn("The model diverged! Please repeat the experiment again or change the argument values.") end
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
 
 	self.ModelParameters = {featureMatrix, clusterNumberArray, responsibilityMatrix, availabilityMatrix}
 
@@ -448,33 +398,49 @@ end
 
 function AffinityPropagationModel:predict(featureMatrix)
 	
-	local numberOfData = #featureMatrix
-
-	local maxSimilarityVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
+	local ModelParameters = self.ModelParameters
 	
-	local predictedClusterVector = AqwamTensorLibrary:createTensor({numberOfData, 1})
+	local dimensionSizeArray = {#featureMatrix, 1}
 	
-	local storedFeatureMatrix, clusterNumberArray = table.unpack(self.ModelParameters)
-	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, storedFeatureMatrix, self.distanceFunction)
-	
-	for i = 1, #featureMatrix, 1 do
+	if (ModelParameters) then
 		
-		local distanceVector = {distanceMatrix[i]}
+		local placeholderClusterVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
 		
-		local index = AqwamTensorLibrary:findMinimumValueDimensionIndexArray(distanceVector)
+		local placeholderSimilarityVector = AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
 		
-		if (index == nil) then continue end
-		
-		local storedFeatureMatrixRowIndex = index[2]
-		
-		predictedClusterVector[i][1] = clusterNumberArray[storedFeatureMatrixRowIndex]
-		
-		maxSimilarityVector[i][1] = distanceVector[1][storedFeatureMatrixRowIndex]
+		return placeholderClusterVector, placeholderSimilarityVector
 		
 	end
 	
-	return predictedClusterVector, maxSimilarityVector
+	local storedFeatureMatrix, clusterNumberArray = table.unpack(ModelParameters)
+
+	local maximumSimilarityVector = AqwamTensorLibrary:createTensor(dimensionSizeArray)
+	
+	local predictedClusterVector = AqwamTensorLibrary:createTensor(dimensionSizeArray)
+	
+	local storedFeatureMatrix, clusterNumberArray = table.unpack()
+	
+	local distanceFunctionToApply = distanceFunctionDictionary[self.distanceFunction]
+	
+	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, storedFeatureMatrix)
+	
+	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
+
+		local index = AqwamTensorLibrary:findMinimumValueDimensionIndexArray({unwrappedDistanceVector})
+
+		if (index) then
+			
+			local storedFeatureMatrixRowIndex = index[2]
+
+			predictedClusterVector[i][1] = clusterNumberArray[storedFeatureMatrixRowIndex]
+
+			maximumSimilarityVector[i][1] = unwrappedDistanceVector[storedFeatureMatrixRowIndex]
+			
+		end
+		
+	end
+	
+	return predictedClusterVector, maximumSimilarityVector
 
 end
 

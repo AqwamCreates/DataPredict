@@ -282,13 +282,13 @@ end
 
 function LogisticRegressionModel:train(featureMatrix, labelVector)
 
-	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows!") end
+	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
 	local ModelParameters = self.ModelParameters
 
 	if (ModelParameters) then
 
-		if (#featureMatrix[1] ~= #ModelParameters) then error("The number of features are not the same as the model parameters!") end
+		if (#featureMatrix[1] ~= #ModelParameters) then error("The number of features are not the same as the model parameters.") end
 
 	else
 

@@ -144,7 +144,7 @@ local mappingList = {
 
 		local zeroMatrix = AqwamTensorLibrary:createTensor({1, #featureMatrix[1]}, 0)
 
-		local distanceMatrix = createDistanceMatrix(featureMatrix, zeroMatrix, "Euclidean")
+		local distanceMatrix = createDistanceMatrix("Euclidean", featureMatrix, zeroMatrix)
 
 		local kernelMappingMatrix = AqwamTensorLibrary:divide(featureMatrix, distanceMatrix)
 
@@ -188,7 +188,7 @@ local kernelFunctionList = {
 
 		local sigma = kernelParameters.sigma
 
-		local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, "Euclidean")
+		local distanceMatrix = createDistanceMatrix("Euclidean", featureMatrix, featureMatrix)
 
 		local squaredDistanceMatrix = AqwamTensorLibrary:power(distanceMatrix, 2)
 
@@ -226,7 +226,7 @@ local kernelFunctionList = {
 
 		local zeroMatrix = AqwamTensorLibrary:createTensor({1, #featureMatrix[1]}, 0)
 
-		local distanceMatrix = createDistanceMatrix(featureMatrix, zeroMatrix, "Euclidean")
+		local distanceMatrix = createDistanceMatrix("Euclidean", featureMatrix, zeroMatrix)
 
 		local kernelMappingMatrix = AqwamTensorLibrary:divide(featureMatrix, distanceMatrix)
 

@@ -50,6 +50,8 @@ end
 
 function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 	
+	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
+	
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 	
 	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, transposedFeatureMatrix)

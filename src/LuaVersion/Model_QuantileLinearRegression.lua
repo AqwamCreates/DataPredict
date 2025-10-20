@@ -80,9 +80,9 @@ function QuantileLinearRegressionModel:train(featureMatrix, labelVector)
 
 	local scaledDotProductFeatureMatrix = AqwamTensorLibrary:multiply(dotProductFeatureMatrix, likelihoodPrecision)
 
-	local inverseSN = AqwamTensorLibrary:add(priorPrecisionIdentityMatrix, scaledDotProductFeatureMatrix)
+	local inverseSNMatrix = AqwamTensorLibrary:add(priorPrecisionIdentityMatrix, scaledDotProductFeatureMatrix)
 
-	local posteriorCovarianceMatrix = AqwamTensorLibrary:inverse(inverseSN)
+	local posteriorCovarianceMatrix = AqwamTensorLibrary:inverse(inverseSNMatrix)
 
 	if (not posteriorCovarianceMatrix) then error("Could not invert matrix for posterior.") end
 

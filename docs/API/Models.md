@@ -32,15 +32,15 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Regression
 
-| Model                                                                                                   | Alternate Names | Use Cases                                                                                                 |
-|---------------------------------------------------------------------------------------------------------|-----------------|-----------------------------------------------------------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)                                     | None            | General Time-To-Leave Prediction And In-Game Currency Price Generation                                    |
-| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                                      | PA-R            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                           |
-| [SupportVectorRegression](Models/SupportVectorRegression.md) (Offline Only)                             | SVR             | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                                |
-| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                                    | KNN-R           | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                               |
-| [NormalLinearRegression](Models/NormalLinearRegression.md) (Best For Small Datasets + Offline Only)     | None            | Final Solution Time-To-Leave Prediction And In-Game Currency Price Generation                             |
-| [BayesianLinearRegression](Models/BayesianLinearRegression.md) (Best For Small Datasets + Offline Only) | None            | Final Solution Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
-| [QuantileLinearRegression](Models/QuantileLinearRegression.md) (Best For Small Datasets + Offline Only) | None            | Final Solution Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
+| Model                                                                                                   | Alternate Names | Use Cases                                                                                                |
+|---------------------------------------------------------------------------------------------------------|-----------------|----------------------------------------------------------------------------------------------------------|
+| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)                                     | None            | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
+| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                                      | PA-R            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
+| [SupportVectorRegression](Models/SupportVectorRegression.md) (Offline Only)                             | SVR             | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
+| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                                    | KNN-R           | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
+| [NormalLinearRegression](Models/NormalLinearRegression.md) (Best For Small Datasets + Offline Only)     | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
+| [BayesianLinearRegression](Models/BayesianLinearRegression.md) (Best For Small Datasets + Offline Only) | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
+| [QuantileLinearRegression](Models/QuantileLinearRegression.md) (Best For Small Datasets + Offline Only) | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
 
 ## Classification
 

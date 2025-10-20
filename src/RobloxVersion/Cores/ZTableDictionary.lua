@@ -594,11 +594,15 @@ local zTable = {
 
 }
 
-function zTableDictionary:getZValue(rowRalue, columnValue)
+function zTableDictionary:getZValue(rowValue, columnValue)
 	
-	local zRowString = tostring(math.floor(rowRalue * 10) / 10)
+	local zRowString = string.format("−%.1f", math.floor(rowValue * 10) / 10)
+
+	local zColumnString = string.format("−%.2f", math.floor(columnValue * 100) / 100)
+
+	zRowString = zRowString:gsub("-", "−")
 	
-	local zColumnString = string.format("−%.2d", math.floor(columnValue * 100) / 1)
+	zColumnString = zColumnString:gsub("-", "−")
 	
 	local zValue = zTable[zRowString] and zTable[zRowString][zColumnString]
 	

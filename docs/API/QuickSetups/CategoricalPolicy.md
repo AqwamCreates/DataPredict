@@ -52,6 +52,8 @@ SingleCategoricalPolicy:setParameters(numberOfReinforcementsPerEpisode: integer,
 
   * Maximum
 
+  * StableSoftmaxSampling / StableBoltzmannSampling
+
   * SoftmaxSampling / BoltzmannSampling
 
   * UpperConfidenceBound
@@ -239,7 +241,6 @@ SingleCategoricalPolicy:getCurrentEpsilon(): number
 #### Returns
 
 * currentEpsilon: The current epsilon value stored inside the reinforcement learning quick setup object.
-
 
 ## Inherited From
 

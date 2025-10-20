@@ -102,15 +102,15 @@ function BayesianLinearRegressionModel:train(featureMatrix, labelVector)
 
 	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
 
-	local alphaI = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
+	local priorPrecisionIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
 
-	alphaI = AqwamTensorLibrary:multiply(alphaI, priorPrecision)
+	priorPrecisionIdentityMatrix = AqwamTensorLibrary:multiply(priorPrecisionIdentityMatrix, priorPrecision)
 
-	local betaXTX = AqwamTensorLibrary:multiply(dotProductFeatureMatrix, likelihoodPrecision)
+	local scaledDotProductFeatureMatrix = AqwamTensorLibrary:multiply(dotProductFeatureMatrix, likelihoodPrecision)
 
-	local S_N_inv = AqwamTensorLibrary:add(alphaI, betaXTX)
+	local inverseSN = AqwamTensorLibrary:add(priorPrecisionIdentityMatrix, scaledDotProductFeatureMatrix)
 
-	local posteriorCovarianceMatrix = AqwamTensorLibrary:inverse(S_N_inv)
+	local posteriorCovarianceMatrix = AqwamTensorLibrary:inverse(inverseSN)
 
 	if (not posteriorCovarianceMatrix) then error("Could not invert matrix for posterior.") end
 

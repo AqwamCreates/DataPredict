@@ -622,9 +622,9 @@ function zTableFunction:getStandardNormalInverseCumulativeDistributionFunction(p
 	
 	local clampedProbability = math.clamp(probability, 0.00005, 0.5)
 
-	local closestZ = nil
-	
 	local closestProbabilityDifference = math.huge
+	
+	local closestZValue
 	
 	local rowZValue 
 	
@@ -642,7 +642,7 @@ function zTableFunction:getStandardNormalInverseCumulativeDistributionFunction(p
 				
 				closestProbabilityDifference = cumulativeDistributionFunctionValue
 				
-				closestZ = rowZValue + (tonumber(colStr)/100)
+				closestZValue = rowZValue + (tonumber(colStr)/100)
 				
 			end
 			
@@ -650,7 +650,7 @@ function zTableFunction:getStandardNormalInverseCumulativeDistributionFunction(p
 		
 	end
 
-	return closestZ
+	return closestZValue
 	
 end
 

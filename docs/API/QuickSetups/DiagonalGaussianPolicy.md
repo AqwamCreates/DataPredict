@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [QuickSetups](../QuickSetups.md) - SimpleDiagonalGaussianPolicy
+# [API Reference](../../API.md) - [QuickSetups](../QuickSetups.md) - SingleDiagonalGaussianPolicy
 
-SimpleDiagonalGaussianPolicy is a base class for setuping up reinforcement learning functions.
+SingleDiagonalGaussianPolicy is a base class for setuping up reinforcement learning functions.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ SimpleDiagonalGaussianPolicy is a base class for setuping up reinforcement learn
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-SimpleDiagonalGaussianPolicy.new(numberOfReinforcementsPerEpisode: integer): DiagonalGaussianPolicyObject
+SingleDiagonalGaussianPolicy.new(numberOfReinforcementsPerEpisode: integer): DiagonalGaussianPolicyObject
 ```
 
 #### Parameters:
@@ -27,7 +27,7 @@ SimpleDiagonalGaussianPolicy.new(numberOfReinforcementsPerEpisode: integer): Dia
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-SimpleDiagonalGaussianPolicy:setParameters(numberOfReinforcementsPerEpisode: integer)
+SingleDiagonalGaussianPolicy:setParameters(numberOfReinforcementsPerEpisode: integer)
 ```
 
 #### Parameters:
@@ -37,7 +37,7 @@ SimpleDiagonalGaussianPolicy:setParameters(numberOfReinforcementsPerEpisode: int
 ### setModel()
 
 ```
-SimpleDiagonalGaussianPolicy:setModel(Model: ModelObject)
+SingleDiagonalGaussianPolicy:setModel(Model: ModelObject)
 ```
 
 #### Parameters:
@@ -47,7 +47,7 @@ SimpleDiagonalGaussianPolicy:setModel(Model: ModelObject)
 ### getModel()
 
 ```
-SimpleDiagonalGaussianPolicy:getModel(): ModelObject
+SingleDiagonalGaussianPolicy:getModel(): ModelObject
 ```
 
 #### Returns:
@@ -59,7 +59,7 @@ SimpleDiagonalGaussianPolicy:getModel(): ModelObject
 Sets a new function on update alongside with the current model's update() function. 
 
 ```
-SimpleDiagonalGaussianPolicy:extendUpdateFunction(updateFunction)
+SingleDiagonalGaussianPolicy:extendUpdateFunction(updateFunction)
 ```
 
 #### Parameters:
@@ -71,7 +71,7 @@ SimpleDiagonalGaussianPolicy:extendUpdateFunction(updateFunction)
 Sets a new function on episode update alongside with the current model's episodeUpdate() function. 
 
 ```
-DiagonalGaussianPolicy:extendEpisodeUpdateFunction(episodeUpdateFunction)
+SingleDiagonalGaussianPolicy:extendEpisodeUpdateFunction(episodeUpdateFunction)
 ```
 
 #### Parameters:
@@ -83,7 +83,7 @@ DiagonalGaussianPolicy:extendEpisodeUpdateFunction(episodeUpdateFunction)
 Reward or punish model based on the current state of the environment.
 
 ```
-SimpleDiagonalGaussianPolicy:reinforce(currentFeatureVector: matrix, actionStandardDeviationVector: matrix, rewardValue: number): matrix
+SingleDiagonalGaussianPolicy:reinforce(currentFeatureVector: matrix, actionStandardDeviationVector: matrix, rewardValue: number): matrix
 ```
 
 #### Parameters:
@@ -103,7 +103,7 @@ SimpleDiagonalGaussianPolicy:reinforce(currentFeatureVector: matrix, actionStand
 Resets the current parameters values.
 
 ```
-SimpleDiagonalGaussianPolicy:reset()
+SingleDiagonalGaussianPolicy:reset()
 ```
 
 ### setPrintOutput()
@@ -111,7 +111,7 @@ SimpleDiagonalGaussianPolicy:reset()
 Set whether or not to show the current number of episodes and current epsilon.
 
 ```
-SimpleDiagonalGaussianPolicy:setPrintOutput(option: boolean)
+SingleDiagonalGaussianPolicy:setPrintOutput(option: boolean)
 ```
 
 #### Parameters:
@@ -121,7 +121,7 @@ SimpleDiagonalGaussianPolicy:setPrintOutput(option: boolean)
 ### getCurrentNumberOfEpisodes()
 
 ```
-SimpleDiagonalGaussianPolicy:getCurrentNumberOfEpisodes(): integer
+SingleDiagonalGaussianPolicy:getCurrentNumberOfEpisodes(): integer
 ```
 
 #### Returns
@@ -131,7 +131,7 @@ SimpleDiagonalGaussianPolicy:getCurrentNumberOfEpisodes(): integer
 ### getCurrentNumberOfReinforcements()
 
 ```
-SimpleDiagonalGaussianPolicy:getCurrentNumberOfReinforcements(): integer
+SingleDiagonalGaussianPolicy:getCurrentNumberOfReinforcements(): integer
 ```
 
 #### Returns

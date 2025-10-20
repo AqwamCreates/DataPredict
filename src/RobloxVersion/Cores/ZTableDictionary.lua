@@ -594,7 +594,7 @@ local zTable = {
 
 }
 
-function zTableDictionary:getStandardNormalCDF(zValue)
+function zTableDictionary:getStandardNormalCumulativeDistributionFunction(zValue)
 	
 	local clampedZValue = math.clamp(zValue, -3.9, 0)
 	
@@ -610,9 +610,9 @@ function zTableDictionary:getStandardNormalCDF(zValue)
 	
 	if (not rowTable) then return end
 	
-	local cdfValue = rowTable[columnString]
+	local cumulativeDistributionFunctionValue = rowTable[columnString]
 	
-	return cdfValue
+	return cumulativeDistributionFunctionValue
 	
 end
 

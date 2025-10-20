@@ -1,4 +1,4 @@
-local zTableDictionary = {}
+local zTableFunction = {}
 
 local zTable = {
 
@@ -594,7 +594,7 @@ local zTable = {
 
 }
 
-function zTableDictionary:getStandardNormalCumulativeDistributionFunction(zValue)
+function zTableFunction:getStandardNormalCumulativeDistributionFunction(zValue)
 	
 	local clampedZValue = math.clamp(zValue, -3.9, 0)
 	
@@ -616,4 +616,4 @@ function zTableDictionary:getStandardNormalCumulativeDistributionFunction(zValue
 	
 end
 
-return zTableDictionary
+return zTableFunction

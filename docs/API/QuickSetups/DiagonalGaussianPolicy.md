@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [QuickSetups](../QuickSetups.md) - DiagonalGaussianPolicy
+# [API Reference](../../API.md) - [QuickSetups](../QuickSetups.md) - SimpleDiagonalGaussianPolicy
 
-DiagonalGaussianPolicy is a base class for setuping up reinforcement learning functions.
+SimpleDiagonalGaussianPolicy is a base class for setuping up reinforcement learning functions.
 
 ## Constructors
 
@@ -137,3 +137,7 @@ DiagonalGaussianPolicy:getCurrentNumberOfReinforcements(): integer
 #### Returns
 
 * currentNumberOfReinforcements: The current number of times reinforce() has been called stored inside the reinforcement learning quick setup object.
+
+## Inherited From
+
+* [DiagonalGaussianPolicyBaseQuickSetup](DiagonalGaussianPolicyBaseQuickSetup.md)

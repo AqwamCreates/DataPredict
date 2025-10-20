@@ -32,15 +32,17 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Regression
 
-| Model                                                                                                   | Alternate Names | Use Cases                                                                                                |
-|---------------------------------------------------------------------------------------------------------|-----------------|----------------------------------------------------------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)                                     | None            | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
-| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                                      | PA-R            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
-| [SupportVectorRegression](Models/SupportVectorRegression.md) (Offline Only)                             | SVR             | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
-| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                                    | KNN-R           | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
-| [NormalLinearRegression](Models/NormalLinearRegression.md) (Best For Small Datasets + Offline Only)     | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
-| [BayesianLinearRegression](Models/BayesianLinearRegression.md) (Best For Small Datasets + Offline Only) | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
-| [QuantileLinearRegression](Models/QuantileLinearRegression.md) (Best For Small Datasets + Offline Only) | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
+| Model                                                                                                    | Alternate Names | Use Cases                                                                                                |
+|----------------------------------------------------------------------------------------------------------|-----------------|----------------------------------------------------------------------------------------------------------|
+| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)                                      | None            | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
+| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                                       | PA-R            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
+| [SupportVectorRegression](Models/SupportVectorRegression.md) (Offline Only)                              | SVR             | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
+| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                                     | KNN-R           | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
+| [NormalLinearRegression](Models/NormalLinearRegression.md)* (Best For Small Datasets + Offline Only)     | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
+| [BayesianLinearRegression](Models/BayesianLinearRegression.md)* (Best For Small Datasets + Offline Only) | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
+| [QuantileLinearRegression](Models/QuantileLinearRegression.md)* (Best For Small Datasets + Offline Only) | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
+
+* The "instant train" models assumes that the features have linear relationship with the label values, which is almost certainly not true in game-related settings
 
 ## Classification
 
@@ -55,10 +57,12 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 | [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md) (Offline Only)  | OC-SVM                         | Hacking Detection, Anomaly Detection (Using Single Class Data)                                                  |
 | [NeuralNetwork](Models/NeuralNetwork.md) (Beginner Algorithm)                          | Multi-Layer Perceptron         | Decision-Making, Player Behaviour Prediction                                                                    |
 | [GaussianNaiveBayes](Models/GaussianNaiveBayes.md) (Stonger As Generative Model)       | None                           | Enemy Data Generation, Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
-| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md) (Stonger As Generative Model) | None                           | Summoning Next Enemy Type, Inventory Action Prediction, Strategy Profiling Based on Item Usage                  |
-| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md) (Stonger As Generative Model)     | None                           | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                                             |
-| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md) (Stonger As Generative Model)   | None                           | Imbalanced Class Prediction (e.g. Rare Choices, Niche Paths)                                                    |
-| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md) (Stonger As Generative Model) | None                           | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)                              |
+| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md)*                              | None                           | Summoning Next Enemy Type, Inventory Action Prediction, Strategy Profiling Based on Item Usage                  |
+| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)*                                  | None                           | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                                             |
+| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)*                                | None                           | Imbalanced Class Prediction (e.g. Rare Choices, Niche Paths)                                                    |
+| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md)*                              | None                           | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)                              |
+
+* Naive Bayes assumes that the features are independent to each other, which is almost certainly not true in game-related settings. Additionally, these models are better as generative models, despite being commonly taught as a classifier.
 
 ## Clustering
 

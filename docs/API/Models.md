@@ -42,6 +42,8 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Regression
 
+> 🔵 Sample Efficient 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+
 | Model                                                                | Alternate Names | Suitability | Use Cases                                                                                                |
 |----------------------------------------------------------------------|-----------------|-------------|----------------------------------------------------------------------------------------------------------|
 | [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)  | None            | 🟢 🟡      | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
@@ -55,6 +57,8 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 \* The "instant train" models assumes that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.
 
 ## Classification
+
+> 🔵 Sample Efficient 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                | Alternate Names                | Suitability    | Use Cases                                                                                                      |
 |--------------------------------------------------------------------------------------|--------------------------------|----------------|----------------------------------------------------------------------------------------------------------------|
@@ -76,6 +80,8 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Clustering
 
+> 🔵 Sample Efficient 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+
 | Model                                                                                                                                 | Alternate Names | Use Cases                                                            |
 |---------------------------------------------------------------------------------------------------------------------------------------|-----------------|----------------------------------------------------------------------|
 | [KMeans](Models/KMeans.md) (Beginner Algorithm)                                                                                       | None            | Maximizing Area-of-Effect Abilities, Target Grouping                 |
@@ -88,6 +94,8 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 | [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) (Offline Only) | DBSCAN          | Density Grouping                                                     |
 
 ## Deep Reinforcement Learning
+
+> 🔵 Sample Efficient 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                                          | Alternate Names               | Use Cases                                                                 |
 |----------------------------------------------------------------------------------------------------------------|-------------------------------|---------------------------------------------------------------------------|
@@ -115,6 +123,8 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Tabular Reinforcement Learning
 
+> 🔵 Sample Efficient 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+
 | Model                                                                                                                              | Alternate Names           | Suitability    | Use Cases                       |
 |------------------------------------------------------------------------------------------------------------------------------------|---------------------------|----------------|---------------------------------|
 | [TabularQLearning](Models/TabularQLearning.md)                                                                                     | Q-Learning                | 🔵 🟢         | Best Self-Learning Grid AIs     |
@@ -131,6 +141,8 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 | [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                                   | Off-Policy MC             | 🟢             | Offline Self-Learning Grid AIs  |
 
 ## Generative
+
+> 🔵 Sample Efficient 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                                              | Alternate Names | Suitability    | Use Cases                                |
 |--------------------------------------------------------------------------------------------------------------------|-----------------|----------------| -----------------------------------------|

@@ -56,21 +56,21 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Classification
 
-| Model                                                                                  | Alternate Names                | Use Cases                                                                                                       |
-|----------------------------------------------------------------------------------------|--------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| [LogisticRegression](Models/LogisticRegression.md) (Beginner Algorithm)                | Perceptron, Sigmoid Regression | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction                                 |
-| [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                   | PA-C                           | Fast Purchase Likelihood Estimation, Decision Making                                                            |
-| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md)   | OC-PA-C                        | Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                                             |
-| [NearestCentroid](Models/NearestCentroid.md)                                           | NC                             | Fast Grouping Or Quick Decision Making                                                                          |
-| [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)                 | KNN-C                          | Item Recommendation, Similar Player Matchmaking                                                                 |
-| [SupportVectorMachine](Models/SupportVectorMachine.md) (Offline Only)                  | SVM                            | Hacking Detection, Anomaly Detection                                                                            |
-| [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md) (Offline Only)  | OC-SVM                         | Hacking Detection, Anomaly Detection (Using Single Class Data)                                                  |
-| [NeuralNetwork](Models/NeuralNetwork.md) (Beginner Algorithm)                          | Multi-Layer Perceptron         | Decision-Making, Player Behaviour Prediction                                                                    |
-| [GaussianNaiveBayes](Models/GaussianNaiveBayes.md) (Stonger As Generative Model)       | None                           | Enemy Data Generation, Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
-| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md)*                              | None                           | Summoning Next Enemy Type, Inventory Action Prediction, Strategy Profiling Based on Item Usage                  |
-| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)*                                  | None                           | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                                             |
-| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)*                                | None                           | Imbalanced Class Prediction (e.g. Rare Choices, Niche Paths)                                                    |
-| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md)*                              | None                           | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)                              |
+| Model                                                                                | Alternate Names                | Properties     | Use Cases                                                                                                      |
+|--------------------------------------------------------------------------------------|--------------------------------|----------------|----------------------------------------------------------------------------------------------------------------|
+| [LogisticRegression](Models/LogisticRegression.md) (Beginner Algorithm)              | Perceptron, Sigmoid Regression | 🟢 🟡        | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction                                 |
+| [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                 | PA-C                           | 🟡            | Fast Purchase Likelihood Estimation, Decision Making                                                            |
+| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md) | OC-PA-C                        | 🟡            |Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                                              |
+| [NearestCentroid](Models/NearestCentroid.md)                                         | NC                             | 🟢 🟡        | Fast Grouping Or Quick Decision Making                                                                          |
+| [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)               | KNN-C                          | 🟢 🟡        | Item Recommendation, Similar Player Matchmaking                                                                 |
+| [SupportVectorMachine](Models/SupportVectorMachine.md) (Offline Only)                | SVM                            | 🔵 🟡        | Hacking Detection, Anomaly Detection                                                                            |
+| [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md)               | OC-SVM                         | 🔵 🟡        | Hacking Detection, Anomaly Detection (Using Single Class Data)                                                  |
+| [NeuralNetwork](Models/NeuralNetwork.md)                                             | Multi-Layer Perceptron         | 🟢 🟡        |Decision-Making, Player Behaviour Prediction                                                                     |
+| [GaussianNaiveBayes](Models/GaussianNaiveBayes.md)                                   | None                           | 🔵 🟢 🟡 🔴 | Enemy Data Generation, Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
+| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md)*                            | None                           | 🔵 🟢 🟡 🔴 |Summoning Next Enemy Type, Inventory Action Prediction, Strategy Profiling Based on Item Usage                   |
+| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)*                                | None                           | 🔵 🟢 🟡 🔴 | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                                             |
+| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)*                              | None                           | 🔵 🟢 🟡 🔴 | Imbalanced Class Prediction (e.g. Rare Choices, Niche Paths)                                                    |
+| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md)*                            | None                           | 🔵 🟢 🟡 🔴 | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)                              |
 
 \* Naive Bayes assumes that the features are independent to each other, which is almost certainly not true in game-related settings. Additionally, these models are better as generative models, despite being commonly taught as a classifier.
 
@@ -115,20 +115,20 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Tabular Reinforcement Learning
 
-| Model                                                                                                                              | Alternate Names           | Use Cases                       |
-|------------------------------------------------------------------------------------------------------------------------------------|---------------------------|---------------------------------|
-| [TabularQLearning](Models/TabularQLearning.md)                                                                                     | Q-Learning                | Best Self-Learning Grid AIs     |
-| [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                                     | Double Q-Learning (2010)  | Best Self-Learning Grid AIs     |
-| [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                                     | Double Q-Learning (2015)  | Best Self-Learning Grid AIs     |
-| [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                                           | Clipped Double Q-Learning | Best Self-Learning Grid AIs     |
-| [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md) (May Need Further Refinement)                 | SARSA                     | Safe Self-Learning Grid AIs     |
-| [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md) (May Need Further Refinement) | Double SARSA              | Safe Self-Learning Grid AIs     |
-| [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md) (May Need Further Refinement) | Double SARSA              | Safe Self-Learning Grid AIs     |
-| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                               | Expected SARSA            | Balanced Self-Learning Grid AIs |
-| [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md)               | Double Expected SARSA     | Balanced Self-Learning Grid AIs |
-| [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md)               | Double Expected SARSA     | Balanced Self-Learning Grid AIs |
-| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                                     | MC                        | Online Self-Learning Grid AIs   |
-| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                                   | Off-Policy MC             | Offline Self-Learning Grid AIs  |
+| Model                                                                                                                              | Alternate Names           | Properties     | Use Cases                       |
+|------------------------------------------------------------------------------------------------------------------------------------|---------------------------|----------------|---------------------------------|
+| [TabularQLearning](Models/TabularQLearning.md)                                                                                     | Q-Learning                | 🔵 🟡         | Best Self-Learning Grid AIs     |
+| [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                                     | Double Q-Learning (2010)  | 🔵 🟡         | Best Self-Learning Grid AIs     |
+| [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                                     | Double Q-Learning (2015)  | 🔵 🟡         | Best Self-Learning Grid AIs     |
+| [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                                           | Clipped Double Q-Learning | 🔵 🟡         | Best Self-Learning Grid AIs     |
+| [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md) (May Need Further Refinement)                 | SARSA                     | 🟡             | Safe Self-Learning Grid AIs     |
+| [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md) (May Need Further Refinement) | Double SARSA              | 🟡             | Safe Self-Learning Grid AIs     |
+| [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md) (May Need Further Refinement) | Double SARSA              | 🟡             | Safe Self-Learning Grid AIs     |
+| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                               | Expected SARSA            | 🟡             | Balanced Self-Learning Grid AIs |
+| [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md)               | Double Expected SARSA     | 🟡             | Balanced Self-Learning Grid AIs |
+| [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md)               | Double Expected SARSA     | 🟡             | Balanced Self-Learning Grid AIs |
+| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                                     | MC                        | 🟡             | Online Self-Learning Grid AIs   |
+| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                                   | Off-Policy MC             | 🟡             | Offline Self-Learning Grid AIs  |
 
 ## Generative
 

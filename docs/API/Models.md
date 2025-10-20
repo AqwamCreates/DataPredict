@@ -12,6 +12,16 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Generative                     | 4     |
 | Total                          | 65    |
 
+### Color Coding
+
+🟢 Online – Adaptive/real-time.
+
+🟡 Offline – Retrain required.
+
+🔴 Assumption-Heavy – Linear/independent features.
+
+🔵 Sample Efficient - Require few data to train the model.
+
 For strong deep learning applications, have a look at [DataPredict™ Neural](https://aqwamcreates.github.io/DataPredict-Neural) (object-oriented) and [DataPredict™ Axon](https://aqwamcreates.github.io/DataPredict-Axon) (function-oriented) instead. DataPredict™ is only suitable for general purpose machine, deep and reinforcement learning.
 
   * Contains most of the deep reinforcement learning and generative algorithms listed here.
@@ -32,15 +42,15 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Regression
 
-| Model                                                                                                    | Alternate Names | Use Cases                                                                                                |
-|----------------------------------------------------------------------------------------------------------|-----------------|----------------------------------------------------------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)                                      | None            | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
-| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                                       | PA-R            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
-| [SupportVectorRegression](Models/SupportVectorRegression.md) (Offline Only)                              | SVR             | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
-| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                                     | KNN-R           | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
-| [NormalLinearRegression](Models/NormalLinearRegression.md)* (Best For Small Datasets + Offline Only)     | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
-| [BayesianLinearRegression](Models/BayesianLinearRegression.md)* (Best For Small Datasets + Offline Only) | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
-| [QuantileLinearRegression](Models/QuantileLinearRegression.md)* (Best For Small Datasets + Offline Only) | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
+| Model                                                                | Alternate Names | Properties | Use Cases                                                                                                |
+|----------------------------------------------------------------------|-----------------|------------|----------------------------------------------------------------------------------------------------------|
+| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)  | None            | 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
+| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)   | PA-R            | 🟡         | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
+| [SupportVectorRegression](Models/SupportVectorRegression.md)         | SVR             | 🔵 🟡     |Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
+| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md) | KNN-R           | 🟢 🟡     | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
+| [NormalLinearRegression](Models/NormalLinearRegression.md)*          | None            | 🔵 🟡 🔴 |Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
+| [BayesianLinearRegression](Models/BayesianLinearRegression.md)*      | None            | 🔵 🟡 🔴 |Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
+| [QuantileLinearRegression](Models/QuantileLinearRegression.md)*      | None            | 🔵 🟡 🔴 |Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
 
 \* The "instant train" models assumes that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.
 

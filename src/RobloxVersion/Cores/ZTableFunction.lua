@@ -594,25 +594,59 @@ local zTable = {
 
 }
 
+local cachedRowValueArray = {}
+
+for k in pairs(zTable) do table.insert(cachedRowValueArray, tonumber(k)) end
+
+table.sort(cachedRowValueArray)
+
+local rowStringFormat = "%.1f"
+
+local columnStringFormat = "%.2f"
+
 function zTableFunction:getStandardNormalCumulativeDistributionFunction(zValue)
+	
+	local rowStringFormat = rowStringFormat
+
+	local columnStringFormat = columnStringFormat
+	
+	local stringFormatFunction = string.format
 	
 	local clampedZValue = math.clamp(zValue, -3.9, 0)
 	
 	local rowValue = math.floor(zValue * 10) / 10
 	
-	local columnValue = math.floor((zValue - rowValue) * 100 + 0.5) / 100
-	
-	local rowString = string.format("%.1f", rowValue)
-	
-	local columnString = string.format("-%.2d", math.abs(columnValue * 100))
-	
-	print(rowValue, columnValue)
+	local rowString = stringFormatFunction(rowStringFormat, rowValue)
 	
 	local rowTable = zTable[rowString]
 	
 	if (not rowTable) then return end
 	
-	local cumulativeDistributionFunctionValue = rowTable[columnString]
+	local columnValue = zValue - rowValue
+
+	local columnSign = math.sign(columnValue)
+
+	local absoluteColumnValue = math.abs(columnValue)
+
+	local lowerColumnValue = math.floor(columnValue * 100) / 100
+
+	local upperColumnValue = lowerColumnValue + 0.01
+
+	local lowerColumnString = stringFormatFunction(columnStringFormat, lowerColumnValue)
+
+	local upperColumnString = stringFormatFunction(columnStringFormat, upperColumnValue)
+	
+	local lowerCumulativeDistributionFunctionValue = rowTable[lowerColumnString]
+
+	local upperCumulativeDistributionFunctionValue = rowTable[upperColumnString]
+	
+	if (not lowerCumulativeDistributionFunctionValue) then return upperCumulativeDistributionFunctionValue end
+	
+	if (not upperCumulativeDistributionFunctionValue) then return lowerCumulativeDistributionFunctionValue end
+	
+	local fraction = (absoluteColumnValue - lowerColumnValue) / (upperColumnValue - lowerColumnValue)
+
+	local cumulativeDistributionFunctionValue = lowerCumulativeDistributionFunctionValue + (upperCumulativeDistributionFunctionValue - lowerCumulativeDistributionFunctionValue) * fraction
 	
 	return cumulativeDistributionFunctionValue
 	
@@ -620,29 +654,63 @@ end
 
 function zTableFunction:getStandardNormalInverseCumulativeDistributionFunction(probability)
 	
+	local rowStringFormat = rowStringFormat
+
+	local columnStringFormat = columnStringFormat
+	
+	local stringFormatFunction = string.format
+	
 	local clampedProbability = math.clamp(probability, 0.00005, 0.5)
 
-	local closestProbabilityDifference = math.huge
-	
 	local closestZValue
 	
-	local rowZValue 
+	local rowString
 	
-	local absoluteProbabilityDifference
+	local rowTable
+	
+	local columnValueArray
+	
+	local columnValue1
+	
+	local columnValue2
+	
+	local probabilityValue1
+	
+	local probabilityValue2
+	
+	local fraction
+	
+	local closestZValue
 
-	for rowString, colTable in pairs(zTable) do
+	for _, rowValue in ipairs(cachedRowValueArray) do
 		
-		rowZValue = tonumber(rowString)
+		rowString = stringFormatFunction(rowStringFormat, rowValue)
 		
-		for columnString, cumulativeDistributionFunctionValue in pairs(colTable) do
+		rowTable = zTable[rowString]
+
+		columnValueArray = {}
+		
+		for k in pairs(rowTable) do table.insert(columnValueArray, tonumber(k)) end
+		
+		table.sort(columnValueArray)
+
+		for i = 1, #columnValueArray - 1 do
 			
-			absoluteProbabilityDifference = math.abs(cumulativeDistributionFunctionValue - clampedProbability)
+			columnValue1 = columnValueArray[i]
 			
-			if (absoluteProbabilityDifference < closestProbabilityDifference) then
+			columnValue2 = columnValueArray[i + 1]
+			
+			probabilityValue1 = rowTable[stringFormatFunction(columnStringFormat, columnValue1)]
+			
+			probabilityValue2 = rowTable[stringFormatFunction(columnStringFormat, columnValue2)]
+
+			if (clampedProbability >= probabilityValue1) and (clampedProbability <= probabilityValue2) then
+
+				fraction = (clampedProbability - probabilityValue1) / (probabilityValue2 - probabilityValue1)
 				
-				closestProbabilityDifference = cumulativeDistributionFunctionValue
+				closestZValue = rowValue - (columnValue1 + (fraction * (columnValue2 - columnValue1)))
 				
-				closestZValue = rowZValue + (tonumber(columnString)/100)
+				return closestZValue
 				
 			end
 			

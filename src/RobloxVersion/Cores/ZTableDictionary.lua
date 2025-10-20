@@ -606,6 +606,8 @@ function zTableFunction:getStandardNormalCumulativeDistributionFunction(zValue)
 	
 	local columnString = string.format("−%.2d", math.abs(columnValue * 100))
 	
+	print(rowValue, columnValue)
+	
 	local rowTable = zTable[rowString]
 	
 	if (not rowTable) then return end
@@ -613,6 +615,42 @@ function zTableFunction:getStandardNormalCumulativeDistributionFunction(zValue)
 	local cumulativeDistributionFunctionValue = rowTable[columnString]
 	
 	return cumulativeDistributionFunctionValue
+	
+end
+
+function zTableFunction:getStandardNormalInverseCumulativeDistributionFunction(probability)
+	
+	local clampedProbability = math.clamp(probability, 0.00005, 0.5)
+
+	local closestProbabilityDifference = math.huge
+	
+	local closestZValue
+	
+	local rowZValue 
+	
+	local absoluteProbabilityDifference
+
+	for rowString, colTable in pairs(zTable) do
+		
+		rowZValue = tonumber(rowString)
+		
+		for colStr, cumulativeDistributionFunctionValue in pairs(colTable) do
+			
+			absoluteProbabilityDifference = math.abs(cumulativeDistributionFunctionValue - clampedProbability)
+			
+			if (absoluteProbabilityDifference < closestProbabilityDifference) then
+				
+				closestProbabilityDifference = cumulativeDistributionFunctionValue
+				
+				closestZValue = rowZValue + (tonumber(colStr)/100)
+				
+			end
+			
+		end
+		
+	end
+
+	return closestZValue
 	
 end
 

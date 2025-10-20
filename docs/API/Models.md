@@ -14,13 +14,13 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ### Color Coding
 
+🔵 Sample Efficient - Require few data to train the model.
+
 🟢 Online – Adaptive/real-time.
 
 🟡 Session-Adaptive – Can be retrained each session.
 
 🔴 Assumption-Heavy – Linear/independent features.
-
-🔵 Sample Efficient - Require few data to train the model.
 
 For strong deep learning applications, have a look at [DataPredict™ Neural](https://aqwamcreates.github.io/DataPredict-Neural) (object-oriented) and [DataPredict™ Axon](https://aqwamcreates.github.io/DataPredict-Axon) (function-oriented) instead. DataPredict™ is only suitable for general purpose machine, deep and reinforcement learning.
 
@@ -42,21 +42,21 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Regression
 
-| Model                                                                | Alternate Names | Properties | Use Cases                                                                                                |
-|----------------------------------------------------------------------|-----------------|------------|----------------------------------------------------------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)  | None            | 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
-| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)   | PA-R            | 🟢         | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
-| [SupportVectorRegression](Models/SupportVectorRegression.md)         | SVR             | 🔵 🟡     |Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
-| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md) | KNN-R           | 🟢 🟡     | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
-| [NormalLinearRegression](Models/NormalLinearRegression.md)*          | None            | 🔵 🟡 🔴 |Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
-| [BayesianLinearRegression](Models/BayesianLinearRegression.md)*      | None            | 🔵 🟡 🔴 |Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
-| [QuantileLinearRegression](Models/QuantileLinearRegression.md)*      | None            | 🔵 🟡 🔴 |Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
+| Model                                                                | Alternate Names | Suitability | Use Cases                                                                                                |
+|----------------------------------------------------------------------|-----------------|-------------|----------------------------------------------------------------------------------------------------------|
+| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)  | None            | 🟢 🟡      | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
+| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)   | PA-R            | 🟢          | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
+| [SupportVectorRegression](Models/SupportVectorRegression.md)         | SVR             | 🔵 🟡      | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
+| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md) | KNN-R           | 🟢 🟡      | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                             |
+| [NormalLinearRegression](Models/NormalLinearRegression.md)*          | None            | 🔵 🟡 🔴  | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
+| [BayesianLinearRegression](Models/BayesianLinearRegression.md)*      | None            | 🔵 🟡 🔴  | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
+| [QuantileLinearRegression](Models/QuantileLinearRegression.md)*      | None            | 🔵 🟡 🔴  |Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation         |
 
 \* The "instant train" models assumes that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.
 
 ## Classification
 
-| Model                                                                                | Alternate Names                | Properties     | Use Cases                                                                                                      |
+| Model                                                                                | Alternate Names                | Suitability    | Use Cases                                                                                                      |
 |--------------------------------------------------------------------------------------|--------------------------------|----------------|----------------------------------------------------------------------------------------------------------------|
 | [LogisticRegression](Models/LogisticRegression.md) (Beginner Algorithm)              | Perceptron, Sigmoid Regression | 🟢 🟡        | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction                                 |
 | [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                 | PA-C                           | 🟢            | Fast Purchase Likelihood Estimation, Decision Making                                                            |
@@ -115,7 +115,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Tabular Reinforcement Learning
 
-| Model                                                                                                                              | Alternate Names           | Properties     | Use Cases                       |
+| Model                                                                                                                              | Alternate Names           | Suitability    | Use Cases                       |
 |------------------------------------------------------------------------------------------------------------------------------------|---------------------------|----------------|---------------------------------|
 | [TabularQLearning](Models/TabularQLearning.md)                                                                                     | Q-Learning                | 🔵 🟢         | Best Self-Learning Grid AIs     |
 | [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                                     | Double Q-Learning (2010)  | 🔵 🟢         | Best Self-Learning Grid AIs     |
@@ -132,12 +132,12 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Generative
 
-| Model                                                                                                              | Alternate Names | Use Cases                                |
-|--------------------------------------------------------------------------------------------------------------------|-----------------|------------------------------------------|
-| [GenerativeAdversarialNetwork](Models/GenerativeAdversarialNetwork.md)                                             | GAN             | Enemy Data Generation                    |
-| [ConditionalGenerativeAdversarialNetwork](Models/ConditionalGenerativeAdversarialNetwork.md)                       | CGAN            | Conditional Enemy Data Generation        |
-| [WassersteinGenerativeAdversarialNetwork](Models/WassersteinGenerativeAdversarialNetwork.md)                       | WGAN            | Stable Enemy Data Generation             |
-| [ConditionalWassersteinGenerativeAdversarialNetwork](Models/ConditionalWassersteinGenerativeAdversarialNetwork.md) | CWGAN           | Stable Conditional Enemy Data Generation |
+| Model                                                                                                              | Alternate Names | Suitability    | Use Cases                                |
+|--------------------------------------------------------------------------------------------------------------------|-----------------|----------------| -----------------------------------------|
+| [GenerativeAdversarialNetwork](Models/GenerativeAdversarialNetwork.md)                                             | GAN             | 🟢 🟡         | Enemy Data Generation                    |
+| [ConditionalGenerativeAdversarialNetwork](Models/ConditionalGenerativeAdversarialNetwork.md)                       | CGAN            | 🟢 🟡         | Conditional Enemy Data Generation        |
+| [WassersteinGenerativeAdversarialNetwork](Models/WassersteinGenerativeAdversarialNetwork.md)                       | WGAN            | 🟢 🟡         | Stable Enemy Data Generation             |
+| [ConditionalWassersteinGenerativeAdversarialNetwork](Models/ConditionalWassersteinGenerativeAdversarialNetwork.md) | CWGAN           | 🟢 🟡         | Stable Conditional Enemy Data Generation |
 
 ## BaseModels
 

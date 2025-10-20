@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - TabularDoubleQLearningV2 (Tabular Double Q-Learning)
+# [API Reference](../../API.md) - [Models](../Models.md) - TabularDoubleQLearningV2
 
 TabularDoubleQLearningV2 is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 

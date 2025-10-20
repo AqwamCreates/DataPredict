@@ -4,13 +4,13 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model Type                     | Count |
 |--------------------------------|-------|
-| Regression                     | 6     |
+| Regression                     | 7     |
 | Classification                 | 13    |
 | Clustering                     | 8     |
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 12    |
 | Generative                     | 4     |
-| Total                          | 64    |
+| Total                          | 65    |
 
 For strong deep learning applications, have a look at [DataPredict™ Neural](https://aqwamcreates.github.io/DataPredict-Neural) (object-oriented) and [DataPredict™ Axon](https://aqwamcreates.github.io/DataPredict-Axon) (function-oriented) instead. DataPredict™ is only suitable for general purpose machine, deep and reinforcement learning.
 
@@ -40,6 +40,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 | [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                            | KNN-R           | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                               |
 | [NormalLinearRegression](Models/NormalLinearRegression.md) (Not Recommended + Offline Only)     | None            | Final Solution Time-To-Leave Prediction And In-Game Currency Price Generation                             |
 | [BayesianLinearRegression](Models/BayesianLinearRegression.md) (Not Recommended + Offline Only) | None            | Final Solution Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
+| [QuantileLinearRegression](Models/QuantileLinearRegression.md) (Not Recommended + Offline Only) | None            | Final Solution Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
 
 ## Classification
 

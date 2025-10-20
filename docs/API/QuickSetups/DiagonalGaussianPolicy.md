@@ -9,7 +9,7 @@ SimpleDiagonalGaussianPolicy is a base class for setuping up reinforcement learn
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DiagonalGaussianPolicy.new(numberOfReinforcementsPerEpisode: integer): DiagonalGaussianPolicyObject
+SimpleDiagonalGaussianPolicy.new(numberOfReinforcementsPerEpisode: integer): DiagonalGaussianPolicyObject
 ```
 
 #### Parameters:
@@ -27,7 +27,7 @@ DiagonalGaussianPolicy.new(numberOfReinforcementsPerEpisode: integer): DiagonalG
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DiagonalGaussianPolicy:setParameters(numberOfReinforcementsPerEpisode: integer)
+SimpleDiagonalGaussianPolicy:setParameters(numberOfReinforcementsPerEpisode: integer)
 ```
 
 #### Parameters:
@@ -37,7 +37,7 @@ DiagonalGaussianPolicy:setParameters(numberOfReinforcementsPerEpisode: integer)
 ### setModel()
 
 ```
-DiagonalGaussianPolicy:setModel(Model: ModelObject)
+SimpleDiagonalGaussianPolicy:setModel(Model: ModelObject)
 ```
 
 #### Parameters:
@@ -47,7 +47,7 @@ DiagonalGaussianPolicy:setModel(Model: ModelObject)
 ### getModel()
 
 ```
-DiagonalGaussianPolicy:getModel(): ModelObject
+SimpleDiagonalGaussianPolicy:getModel(): ModelObject
 ```
 
 #### Returns:
@@ -59,7 +59,7 @@ DiagonalGaussianPolicy:getModel(): ModelObject
 Sets a new function on update alongside with the current model's update() function. 
 
 ```
-DiagonalGaussianPolicy:extendUpdateFunction(updateFunction)
+SimpleDiagonalGaussianPolicy:extendUpdateFunction(updateFunction)
 ```
 
 #### Parameters:
@@ -83,7 +83,7 @@ DiagonalGaussianPolicy:extendEpisodeUpdateFunction(episodeUpdateFunction)
 Reward or punish model based on the current state of the environment.
 
 ```
-DiagonalGaussianPolicy:reinforce(currentFeatureVector: matrix, actionStandardDeviationVector: matrix, rewardValue: number): matrix
+SimpleDiagonalGaussianPolicy:reinforce(currentFeatureVector: matrix, actionStandardDeviationVector: matrix, rewardValue: number): matrix
 ```
 
 #### Parameters:
@@ -103,7 +103,7 @@ DiagonalGaussianPolicy:reinforce(currentFeatureVector: matrix, actionStandardDev
 Resets the current parameters values.
 
 ```
-DiagonalGaussianPolicy:reset()
+SimpleDiagonalGaussianPolicy:reset()
 ```
 
 ### setPrintOutput()
@@ -111,7 +111,7 @@ DiagonalGaussianPolicy:reset()
 Set whether or not to show the current number of episodes and current epsilon.
 
 ```
-DiagonalGaussianPolicy:setPrintOutput(option: boolean)
+SimpleDiagonalGaussianPolicy:setPrintOutput(option: boolean)
 ```
 
 #### Parameters:
@@ -121,7 +121,7 @@ DiagonalGaussianPolicy:setPrintOutput(option: boolean)
 ### getCurrentNumberOfEpisodes()
 
 ```
-DiagonalGaussianPolicy:getCurrentNumberOfEpisodes(): integer
+SimpleDiagonalGaussianPolicy:getCurrentNumberOfEpisodes(): integer
 ```
 
 #### Returns
@@ -131,7 +131,7 @@ DiagonalGaussianPolicy:getCurrentNumberOfEpisodes(): integer
 ### getCurrentNumberOfReinforcements()
 
 ```
-DiagonalGaussianPolicy:getCurrentNumberOfReinforcements(): integer
+SimpleDiagonalGaussianPolicy:getCurrentNumberOfReinforcements(): integer
 ```
 
 #### Returns

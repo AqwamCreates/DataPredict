@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [QuickSetups](../QuickSetups.md) - CategoricalPolicy
+# [API Reference](../../API.md) - [QuickSetups](../QuickSetups.md) - SingleCategoricalPolicy
 
-CategoricalPolicy is a base class for setuping up reinforcement learning functions.
+SingleCategoricalPolicy is a base class for setuping up reinforcement learning functions.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ CategoricalPolicy is a base class for setuping up reinforcement learning functio
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-CategoricalPolicy.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, actionSelectionFunction: string, temperature: number): CategoricalPolicyObject
+SingleCategoricalPolicy.new(numberOfReinforcementsPerEpisode: integer, epsilon: number, actionSelectionFunction: string, temperature: number): CategoricalPolicyObject
 ```
 
 #### Parameters:
@@ -39,7 +39,7 @@ CategoricalPolicy.new(numberOfReinforcementsPerEpisode: integer, epsilon: number
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-CategoricalPolicy:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, actionSelectionFunction: string, temperature: number)
+SingleCategoricalPolicy:setParameters(numberOfReinforcementsPerEpisode: integer, epsilon: number, actionSelectionFunction: string, temperature: number)
 ```
 
 #### Parameters:
@@ -61,7 +61,7 @@ CategoricalPolicy:setParameters(numberOfReinforcementsPerEpisode: integer, epsil
 ### setModel()
 
 ```
-CategoricalPolicy:setModel(Model: ModelObject)
+SingleCategoricalPolicy:setModel(Model: ModelObject)
 ```
 
 #### Parameters:
@@ -71,7 +71,7 @@ CategoricalPolicy:setModel(Model: ModelObject)
 ### getModel()
 
 ```
-CategoricalPolicy:getModel(): ModelObject
+SingleCategoricalPolicy:getModel(): ModelObject
 ```
 
 #### Returns:
@@ -81,7 +81,7 @@ CategoricalPolicy:getModel(): ModelObject
 ### setExperienceReplay()
 
 ```
-CategoricalPolicy:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
+SingleCategoricalPolicy:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
 ```
 
 #### Parameters:
@@ -91,7 +91,7 @@ CategoricalPolicy:setExperienceReplay(ExperienceReplay: ExperienceReplayObject)
 ### getExperienceReplay()
 
 ```
-CategoricalPolicy:getExperienceReplay(): ExperienceReplayObject
+SingleCategoricalPolicy:getExperienceReplay(): ExperienceReplayObject
 ```
 
 #### Returns:
@@ -101,7 +101,7 @@ CategoricalPolicy:getExperienceReplay(): ExperienceReplayObject
 ### setEpsilonValueScheduler()
 
 ```
-CategoricalPolicy:setEpsilonValueScheduler(EpsilonValueScheduler: ValueSchedulerObject)
+SingleCategoricalPolicy:setEpsilonValueScheduler(EpsilonValueScheduler: ValueSchedulerObject)
 ```
 
 #### Parameters:
@@ -111,41 +111,41 @@ CategoricalPolicy:setEpsilonValueScheduler(EpsilonValueScheduler: ValueScheduler
 ### getEpsilonValueScheduler()
 
 ```
-CategoricalPolicy:getEpsilonVaueScheduler(): ValueSchedulerObject
+SingleCategoricalPolicy:getEpsilonVaueScheduler(): ValueSchedulerObject
 ```
 
 #### Returns:
 
 * EpsilonValueScheduler: The value scheduler object that was used by the epsilon.
 
-### setClassesList()
+### setActionsList()
 
 ```
-CategoricalPolicy:setClassesList(classesList: [])
+SingleCategoricalPolicy:setActionsList(classesList: {any})
 ```
 
 #### Parameters:
 
-* classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
+* actionsList: A list of actions. The index of the action relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
 
 ### getClassesList()
 
 Gets all the classes stored in the NeuralNetwork model.
 
 ```
-CategoricalPolicy:getClassesList(): []
+SingleCategoricalPolicy:getActionsList(): {any}
 ```
 
 #### Returns:
 
-* classesList: A list of classes. The index of the class relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
+* actionsList: A list of actions. The index of the action relates to which the neuron at output layer belong to. For example, {3, 1} means that the output for 3 is at first neuron, and the output for 1 is at second neuron.
 
 ### extendUpdateFunction()
 
 Sets a new function on update alongside with the current model's update() function. 
 
 ```
-CategoricalPolicy:extendUpdateFunction(updateFunction)
+SingleCategoricalPolicy:extendUpdateFunction(updateFunction)
 ```
 
 #### Parameters:
@@ -195,7 +195,7 @@ CategoricalPolicy:reinforce(currentFeatureVector: Matrix, rewardValue: number, r
 Resets the current parameters values.
 
 ```
-CategoricalPolicy:reset()
+SingleCategoricalPolicy:reset()
 ```
 
 ### setPrintOutput()
@@ -203,7 +203,7 @@ CategoricalPolicy:reset()
 Set whether or not to show the current number of episodes and current epsilon.
 
 ```
-CategoricalPolicy:setPrintOutput(option: boolean)
+SingleCategoricalPolicy:setPrintOutput(option: boolean)
 ```
 
 #### Parameters:
@@ -213,7 +213,7 @@ CategoricalPolicy:setPrintOutput(option: boolean)
 ### getCurrentNumberOfEpisodes()
 
 ```
-CategoricalPolicy:getCurrentNumberOfEpisodes(): integer
+SingleCategoricalPolicy:getCurrentNumberOfEpisodes(): integer
 ```
 
 #### Returns
@@ -223,7 +223,7 @@ CategoricalPolicy:getCurrentNumberOfEpisodes(): integer
 ### getCurrentNumberOfReinforcements()
 
 ```
-CategoricalPolicy:getCurrentNumberOfReinforcements(): integer
+SingleCategoricalPolicy:getCurrentNumberOfReinforcements(): integer
 ```
 
 #### Returns
@@ -233,9 +233,14 @@ CategoricalPolicy:getCurrentNumberOfReinforcements(): integer
 ### getCurrentEpsilon()
 
 ```
-CategoricalPolicy:getCurrentEpsilon(): number
+SingleCategoricalPolicy:getCurrentEpsilon(): number
 ```
 
 #### Returns
 
 * currentEpsilon: The current epsilon value stored inside the reinforcement learning quick setup object.
+
+
+## Inherited From
+
+* [CategoricalPolicyBaseQuickSetup](CategoricalPolicyBaseQuickSetup.md)

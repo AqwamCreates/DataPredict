@@ -42,11 +42,11 @@ local defaultLikelihoodPrecision = 1.0 -- beta
 
 local defaultUseLogProbabilities = false
 
-local function calculateGaussianProbability(useLogProbabilities, threholdVector, meanVector, standardDeviationVector)
+local function calculateGaussianProbability(useLogProbabilities, thresholdVector, meanVector, standardDeviationVector)
 
 	local gaussianProbability = (useLogProbabilities and 0) or 1
 
-	local exponentStep1Vector = AqwamTensorLibrary:subtract(threholdVector, meanVector)
+	local exponentStep1Vector = AqwamTensorLibrary:subtract(thresholdVector, meanVector)
 
 	local exponentStep2Vector = AqwamTensorLibrary:power(exponentStep1Vector, 2)
 

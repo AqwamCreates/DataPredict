@@ -16,7 +16,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 🟢 Online – Adaptive/real-time.
 
-🟡 Offline – Retrain required.
+🟡 Session-Adaptive – Can be retrained each session.
 
 🔴 Assumption-Heavy – Linear/independent features.
 
@@ -45,7 +45,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 | Model                                                                | Alternate Names | Properties | Use Cases                                                                                                |
 |----------------------------------------------------------------------|-----------------|------------|----------------------------------------------------------------------------------------------------------|
 | [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)  | None            | 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
-| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)   | PA-R            | 🟡         | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
+| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)   | PA-R            | 🟢         | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
 | [SupportVectorRegression](Models/SupportVectorRegression.md)         | SVR             | 🔵 🟡     |Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
 | [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md) | KNN-R           | 🟢 🟡     | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
 | [NormalLinearRegression](Models/NormalLinearRegression.md)*          | None            | 🔵 🟡 🔴 |Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
@@ -59,8 +59,8 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 | Model                                                                                | Alternate Names                | Properties     | Use Cases                                                                                                      |
 |--------------------------------------------------------------------------------------|--------------------------------|----------------|----------------------------------------------------------------------------------------------------------------|
 | [LogisticRegression](Models/LogisticRegression.md) (Beginner Algorithm)              | Perceptron, Sigmoid Regression | 🟢 🟡        | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction                                 |
-| [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                 | PA-C                           | 🟡            | Fast Purchase Likelihood Estimation, Decision Making                                                            |
-| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md) | OC-PA-C                        | 🟡            |Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                                              |
+| [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                 | PA-C                           | 🟢            | Fast Purchase Likelihood Estimation, Decision Making                                                            |
+| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md) | OC-PA-C                        | 🟢            |Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                                              |
 | [NearestCentroid](Models/NearestCentroid.md)                                         | NC                             | 🟢 🟡        | Fast Grouping Or Quick Decision Making                                                                          |
 | [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)               | KNN-C                          | 🟢 🟡        | Item Recommendation, Similar Player Matchmaking                                                                 |
 | [SupportVectorMachine](Models/SupportVectorMachine.md) (Offline Only)                | SVM                            | 🔵 🟡        | Hacking Detection, Anomaly Detection                                                                            |
@@ -117,18 +117,18 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 | Model                                                                                                                              | Alternate Names           | Properties     | Use Cases                       |
 |------------------------------------------------------------------------------------------------------------------------------------|---------------------------|----------------|---------------------------------|
-| [TabularQLearning](Models/TabularQLearning.md)                                                                                     | Q-Learning                | 🔵 🟡         | Best Self-Learning Grid AIs     |
-| [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                                     | Double Q-Learning (2010)  | 🔵 🟡         | Best Self-Learning Grid AIs     |
-| [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                                     | Double Q-Learning (2015)  | 🔵 🟡         | Best Self-Learning Grid AIs     |
-| [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                                           | Clipped Double Q-Learning | 🔵 🟡         | Best Self-Learning Grid AIs     |
-| [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md) (May Need Further Refinement)                 | SARSA                     | 🟡             | Safe Self-Learning Grid AIs     |
-| [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md) (May Need Further Refinement) | Double SARSA              | 🟡             | Safe Self-Learning Grid AIs     |
-| [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md) (May Need Further Refinement) | Double SARSA              | 🟡             | Safe Self-Learning Grid AIs     |
-| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                               | Expected SARSA            | 🟡             | Balanced Self-Learning Grid AIs |
-| [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md)               | Double Expected SARSA     | 🟡             | Balanced Self-Learning Grid AIs |
-| [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md)               | Double Expected SARSA     | 🟡             | Balanced Self-Learning Grid AIs |
-| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                                     | MC                        | 🟡             | Online Self-Learning Grid AIs   |
-| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                                   | Off-Policy MC             | 🟡             | Offline Self-Learning Grid AIs  |
+| [TabularQLearning](Models/TabularQLearning.md)                                                                                     | Q-Learning                | 🔵 🟢         | Best Self-Learning Grid AIs     |
+| [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                                     | Double Q-Learning (2010)  | 🔵 🟢         | Best Self-Learning Grid AIs     |
+| [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                                     | Double Q-Learning (2015)  | 🔵 🟢         | Best Self-Learning Grid AIs     |
+| [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                                           | Clipped Double Q-Learning | 🔵 🟢         | Best Self-Learning Grid AIs     |
+| [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md) (May Need Further Refinement)                 | SARSA                     | 🟢             | Safe Self-Learning Grid AIs     |
+| [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md) (May Need Further Refinement) | Double SARSA              | 🟢             | Safe Self-Learning Grid AIs     |
+| [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md) (May Need Further Refinement) | Double SARSA              | 🟢             | Safe Self-Learning Grid AIs     |
+| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                               | Expected SARSA            | 🟢             | Balanced Self-Learning Grid AIs |
+| [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md)               | Double Expected SARSA     | 🟢             | Balanced Self-Learning Grid AIs |
+| [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md)               | Double Expected SARSA     | 🟢             | Balanced Self-Learning Grid AIs |
+| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                                     | MC                        | 🟢             | Online Self-Learning Grid AIs   |
+| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                                   | Off-Policy MC             | 🟢             | Offline Self-Learning Grid AIs  |
 
 ## Generative
 

@@ -1,4 +1,4 @@
-local zTableDictionary = {}
+local zTableFunction = {}
 
 local zTable = {
 
@@ -594,20 +594,26 @@ local zTable = {
 
 }
 
-function zTableDictionary:getZValue(rowValue, columnValue)
+function zTableFunction:getStandardNormalCumulativeDistributionFunction(zValue)
 	
-	local zRowString = string.format("−%.1f", math.floor(rowValue * 10) / 10)
-
-	local zColumnString = string.format("−%.2f", math.floor(columnValue * 100) / 100)
-
-	zRowString = zRowString:gsub("-", "−")
+	local clampedZValue = math.clamp(zValue, -3.9, 0)
 	
-	zColumnString = zColumnString:gsub("-", "−")
+	local rowValue = math.floor(zValue * 10) / 10
 	
-	local zValue = zTable[zRowString] and zTable[zRowString][zColumnString]
+	local columnValue = math.floor((zValue - rowValue) * 100 + 0.5) / 100
 	
-	return zValue
+	local rowString = string.format("%.1f", rowValue)
+	
+	local columnString = string.format("−%.2d", math.abs(columnValue * 100))
+	
+	local rowTable = zTable[rowString]
+	
+	if (not rowTable) then return end
+	
+	local cumulativeDistributionFunctionValue = rowTable[columnString]
+	
+	return cumulativeDistributionFunctionValue
 	
 end
 
-return zTableDictionary
+return zTableFunction

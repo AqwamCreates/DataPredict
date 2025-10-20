@@ -97,8 +97,6 @@ function BayesianLinearRegressionModel:train(featureMatrix, labelVector)
 	local likelihoodPrecision = self.likelihoodPrecision
 
 	local numberOfFeatures = #featureMatrix[1]
-
-	-- Compute posterior covariance: S_N = (alpha * I + beta * X^T X)^-1
 	
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 
@@ -115,8 +113,6 @@ function BayesianLinearRegressionModel:train(featureMatrix, labelVector)
 	local posteriorCovariance = AqwamTensorLibrary:inverse(S_N_inv)
 	
 	if (not posteriorCovariance) then error("Could not invert matrix for posterior.") end
-
-	-- Compute posterior mean: m_N = beta * S_N * X^T * y
 	
 	local dotProductFeatureMatrixLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
 

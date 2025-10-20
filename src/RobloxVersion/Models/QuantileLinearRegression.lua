@@ -61,7 +61,7 @@ function QuantileLinearRegressionModel.new(parameterDictionary)
 end
 
 function QuantileLinearRegressionModel:train(featureMatrix, labelVector)
-	
+
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 
 	local priorPrecision = self.priorPrecision
@@ -69,29 +69,29 @@ function QuantileLinearRegressionModel:train(featureMatrix, labelVector)
 	local likelihoodPrecision = self.likelihoodPrecision
 
 	local numberOfFeatures = #featureMatrix[1]
-	
+
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 
 	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
 
-	local alphaI = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
+	local priorPrecisionIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
 
-	alphaI = AqwamTensorLibrary:multiply(alphaI, priorPrecision)
+	priorPrecisionIdentityMatrix = AqwamTensorLibrary:multiply(priorPrecisionIdentityMatrix, priorPrecision)
 
-	local betaXTX = AqwamTensorLibrary:multiply(dotProductFeatureMatrix, likelihoodPrecision)
+	local scaledDotProductFeatureMatrix = AqwamTensorLibrary:multiply(dotProductFeatureMatrix, likelihoodPrecision)
 
-	local S_N_inv = AqwamTensorLibrary:add(alphaI, betaXTX)
+	local inverseSN = AqwamTensorLibrary:add(priorPrecisionIdentityMatrix, scaledDotProductFeatureMatrix)
 
-	local posteriorCovarianceMatrix = AqwamTensorLibrary:inverse(S_N_inv)
-	
+	local posteriorCovarianceMatrix = AqwamTensorLibrary:inverse(inverseSN)
+
 	if (not posteriorCovarianceMatrix) then error("Could not invert matrix for posterior.") end
-	
+
 	local dotProductFeatureMatrixLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
 
 	local posteriorMeanVectorPart1 = AqwamTensorLibrary:dotProduct(posteriorCovarianceMatrix, dotProductFeatureMatrixLabelVector)
 
 	local posteriorMeanVector = AqwamTensorLibrary:multiply(posteriorMeanVectorPart1, likelihoodPrecision)
-	
+
 	self.ModelParameters = {posteriorMeanVector, posteriorCovarianceMatrix}
 
 end

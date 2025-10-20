@@ -26,11 +26,11 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
-local zTableFunction = require(script.Parent.Parent.Cores.ZTableFunction)
+local zTableFunction = require("Core_ZTableFunction")
 
 QuantileLinearRegressionModel = {}
 

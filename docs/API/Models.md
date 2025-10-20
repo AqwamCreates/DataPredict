@@ -42,7 +42,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 | [BayesianLinearRegression](Models/BayesianLinearRegression.md)* (Best For Small Datasets + Offline Only) | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [QuantileLinearRegression](Models/QuantileLinearRegression.md)* (Best For Small Datasets + Offline Only) | None            | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
 
-* The "instant train" models assumes that the features have linear relationship with the label values, which is almost certainly not true in game-related settings.
+* The "instant train" models assumes that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.
 
 ## Classification
 

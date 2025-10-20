@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 BayesianLinearRegressionModel = {}
 
@@ -96,7 +96,7 @@ function BayesianLinearRegressionModel:train(featureMatrix, labelVector)
 
 	local likelihoodPrecision = self.likelihoodPrecision
 
-	local numberOfFeatures = #featureMatrix[1] -- number of features
+	local numberOfFeatures = #featureMatrix[1]
 
 	-- Compute posterior covariance: S_N = (alpha * I + beta * X^T X)^-1
 	

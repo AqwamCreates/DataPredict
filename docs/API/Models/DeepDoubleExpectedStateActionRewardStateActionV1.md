@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepDoubleExpectedStateActionRewardStateAction.new(epsilon: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
+DeepDoubleExpectedStateActionRewardStateActionV1.new(epsilon: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
 ```
 
 #### Parameters:

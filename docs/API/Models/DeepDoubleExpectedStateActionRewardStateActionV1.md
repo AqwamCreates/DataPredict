@@ -37,7 +37,7 @@ DeepDoubleExpectedStateActionRewardStateActionV1.new(epsilon: number, discountFa
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleExpectedStateActionRewardStateAction:setModelParameters1(ModelParameters1: ModelParameters)
+DeepDoubleExpectedStateActionRewardStateActionV1:setModelParameters1(ModelParameters1: ModelParameters)
 ```
 
 #### Parameters:
@@ -49,7 +49,7 @@ DeepDoubleExpectedStateActionRewardStateAction:setModelParameters1(ModelParamete
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleExpectedStateActionRewardStateAction:setModelParameters1(ModelParameters2: ModelParameters)
+DeepDoubleExpectedStateActionRewardStateActionV1:setModelParameters1(ModelParameters2: ModelParameters)
 ```
 
 #### Parameters:
@@ -61,7 +61,7 @@ DeepDoubleExpectedStateActionRewardStateAction:setModelParameters1(ModelParamete
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleExpectedStateActionRewardStateAction:setModelParameters1(ModelParameters1: ModelParameters, doNotDeepCopy: boolean)
+DeepDoubleExpectedStateActionRewardStateActionV1:setModelParameters1(ModelParameters1: ModelParameters, doNotDeepCopy: boolean)
 ```
 
 #### Parameters:
@@ -75,7 +75,7 @@ DeepDoubleExpectedStateActionRewardStateAction:setModelParameters1(ModelParamete
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleExpectedStateActionRewardStateAction:setModelParameters2(ModelParameters2: ModelParameters, doNotDeepCopy: boolean)
+DeepDoubleExpectedStateActionRewardStateActionV1:setModelParameters2(ModelParameters2: ModelParameters, doNotDeepCopy: boolean)
 ```
 
 #### Parameters:
@@ -84,13 +84,12 @@ DeepDoubleExpectedStateActionRewardStateAction:setModelParameters2(ModelParamete
 
 * doNotDeepCopy: Set whether or not to deep copy the model parameters.
 
-
 ### getModelParameters1()
 
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleExpectedStateActionRewardStateAction:getModelParameters1(doNotDeepCopy: boolean): ModelParameters
+DeepDoubleExpectedStateActionRewardStateActionV1:getModelParameters1(doNotDeepCopy: boolean): ModelParameters
 ```
 
 #### Parameters:
@@ -106,7 +105,7 @@ DeepDoubleExpectedStateActionRewardStateAction:getModelParameters1(doNotDeepCopy
 Sets model parameters to be used by the model.
 
 ```
-DeepDoubleExpectedStateActionRewardStateAction:getModelParameters2(doNotDeepCopy: boolean): ModelParameters
+DeepDoubleExpectedStateActionRewardStateActionV1:getModelParameters2(doNotDeepCopy: boolean): ModelParameters
 ```
 
 #### Parameters:

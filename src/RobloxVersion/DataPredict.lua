@@ -54,6 +54,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	NormalLinearRegression = require(Models.NormalLinearRegression),
 	
+	BayesianLinearRegression = require(Models.BayesianLinearRegression),
+	
 	PassiveAggressiveRegressor = require(Models.PassiveAggressiveRegressor),
 	
 	SupportVectorRegression = require(Models.SupportVectorRegression),

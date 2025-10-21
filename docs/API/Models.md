@@ -167,3 +167,5 @@ If you wonder what are the most high-value use cases that helps with retention a
 [DeepReinforcementLearningActorCriticBaseModel](Models/DeepReinforcementLearningActorCriticBaseModel.md)
 
 [TabularReinforcementLearningBaseModel](Models/TabularReinforcementLearningBaseModel.md)
+
+[GenerativeAdversarialNetworkBaseModel](GenerativeAdversarialNetworkBaseModel.md)

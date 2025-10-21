@@ -14,13 +14,13 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ### Legend
 
-| Colour | Name            | Description                              |
-|--------|-----------------|------------------------------------------|
-| 🔵    | Data Efficient   | Require few data to train the model.    |
-| 🟣    | Noise Resistant  | Can handle randomness or unclean data.  |
-| 🟢    | Online           | Can adapt real-time.                    |
-| 🟡    | Session-Adaptive | Can be retrained each session.          |
-| 🔴    | Assumption-Heavy | Linear / independent features.          |
+| Colour | Name            | Description                             |
+|--------|-----------------|-----------------------------------------|
+| 🔵    | Data Efficient   | Require few data to train the model.   |
+| 🟣    | Noise Resistant  | Can handle randomness / unclean data.  |
+| 🟢    | Online           | Can adapt real-time.                   |
+| 🟡    | Session-Adaptive | Can be retrained each session.         |
+| 🔴    | Assumption-Heavy | Linear / independent features.         |
 
 ### Note
 

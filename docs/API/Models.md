@@ -22,6 +22,8 @@ If you wonder what are the most high-value use cases that helps with retention a
 | 🟡    | Session-Adaptive | Can be retrained each session.          |
 | 🔴    | Assumption-Heavy | Linear / independent features.          |
 
+### Note
+
 For strong deep learning applications, have a look at [DataPredict™ Neural](https://aqwamcreates.github.io/DataPredict-Neural) (object-oriented) and [DataPredict™ Axon](https://aqwamcreates.github.io/DataPredict-Axon) (function-oriented) instead. DataPredict™ is only suitable for general purpose machine, deep and reinforcement learning.
 
   * Contains most of the deep reinforcement learning and generative algorithms listed here.
@@ -29,8 +31,6 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
   * Includes convolutional, pooling, embedding, dropout and activation layers.
 
   * Uses reverse-mode automatic differentiation and lazy differentiation evaluation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
-
-### Note
 
 * Currently, DataPredict™ has ~90% (56 out of 65) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 

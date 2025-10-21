@@ -1,12 +1,14 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - BayesianLinearRegression
 
-NormalLinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses matrix calculations to find the best model parameters.
+BayesianLinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses matrix calculations to find the best model parameters.
 
 ## Stored Model Parameters
 
 Contains a matrix.  
 
-* ModelParameters[I][J]: Value of matrix at row I and column J. The rows are the features.
+* ModelParameters[1][I][J]: posteriorMeanVector. Value of matrix at row I and column J. The rows are the features.
+
+* ModelParameters[2][I][J]: posteriorCovarianceMatrix. Value of matrix at row I and column J. The rows and columns are the features.
 
 ## Constructors
 

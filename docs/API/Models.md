@@ -55,11 +55,11 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [BayesianLinearRegression](Models/BayesianLinearRegression.md)*      | None            | 🔵 🟡 🔴  | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [QuantileLinearRegression](Models/QuantileLinearRegression.md)*      | None            | 🔵 🟡 🔴  |Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation         |
 
-\* The "instant train" models assumes that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.
+\* The "instant train" models have these issues:
 
- * To use these models, your feature matrix need to be the shape of (n x n).
+ * It assumes that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings. Hence, it is recommended to add small independent noise values to each features.
 
- * It also recommended to add small independent noise values to each features.
+ * The feature matrix also need to have shape of (n x n).
 
 ## Classification
 

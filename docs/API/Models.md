@@ -14,9 +14,9 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ### Legend 🔰
 
-| Icon | Name                | Description                             |
-|------|---------------------|-----------------------------------------|
-| 🔰   | Beginner Algorithm | Require few data to train the model.   |
+| Icon | Name                | Description                            |
+|------|---------------------|---------------------------------------|
+| 🔰   | Beginner Algorithm | Commonly taught to beginners.          |
 | 🔵   | Data Efficient     | Require few data to train the model.   |
 | 🟣   | Noise Resistant    | Can handle randomness / unclean data.  |
 | 🟢   | Online             | Can adapt real-time.                   |

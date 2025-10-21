@@ -131,20 +131,20 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy
 
-| Model                                                                                                                              | Alternate Names           | Properties  | Use Cases                       |
-|------------------------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|---------------------------------|
-| [TabularQLearning](Models/TabularQLearning.md)                                                                                     | Q-Learning                | 🔰 🔵 🟢   | Best Self-Learning Grid AIs     |
-| [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                                     | Double Q-Learning (2010)  | 🔵 🟣 🟢   | Best Self-Learning Grid AIs     |
-| [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                                     | Double Q-Learning (2015)  | 🔵 🟣 🟢   | Best Self-Learning Grid AIs     |
-| [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                                           | Clipped Double Q-Learning | 🔵 🟣 🟢   | Best Self-Learning Grid AIs     |
-| [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md) (May Need Further Refinement)                 | SARSA                     | ❗ 🔰 🟢   | Safe Self-Learning Grid AIs     |
-| [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md) (May Need Further Refinement) | Double SARSA              | ❗ 🟢 🟣   | Safe Self-Learning Grid AIs     |
-| [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md) (May Need Further Refinement) | Double SARSA              | ❗ 🟢 🟣   | Safe Self-Learning Grid AIs     |
-| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                               | Expected SARSA            | 🟢          | Balanced Self-Learning Grid AIs |
-| [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md)               | Double Expected SARSA     | 🟢 🟣       | Balanced Self-Learning Grid AIs |
-| [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md)               | Double Expected SARSA     | 🟢 🟣       | Balanced Self-Learning Grid AIs |
-| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                                     | MC                        | 🟢          | Online Self-Learning Grid AIs   |
-| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                                   | Off-Policy MC             | 🟢          | Offline Self-Learning Grid AIs  |
+| Model                                                                                                                | Alternate Names           | Properties  | Use Cases                       |
+|----------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|---------------------------------|
+| [TabularQLearning](Models/TabularQLearning.md)                                                                       | Q-Learning                | 🔰 🔵 🟢   | Best Self-Learning Grid AIs     |
+| [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1                                                           | Double Q-Learning (2010)  | 🔵 🟣 🟢   | Best Self-Learning Grid AIs     |
+| [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                       | Double Q-Learning (2015)  | 🔵 🟣 🟢   | Best Self-Learning Grid AIs     |
+| [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                             | Clipped Double Q-Learning | 🔵 🟣 🟢   | Best Self-Learning Grid AIs     |
+| [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md)                                 | SARSA                     | ❗ 🔰 🟢   | Safe Self-Learning Grid AIs     |
+| [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md)                 | Double SARSA              | ❗ 🟢 🟣   | Safe Self-Learning Grid AIs     |
+| [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md)                 | Double SARSA              | ❗ 🟢 🟣   | Safe Self-Learning Grid AIs     |
+| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                 | Expected SARSA            | 🟢          | Balanced Self-Learning Grid AIs |
+| [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md) | Double Expected SARSA     | 🟢 🟣       | Balanced Self-Learning Grid AIs |
+| [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md) | Double Expected SARSA     | 🟢 🟣       | Balanced Self-Learning Grid AIs |
+| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                       | MC                        | 🟢          | Online Self-Learning Grid AIs   |
+| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                     | Off-Policy MC             | 🟢          | Offline Self-Learning Grid AIs  |
 
 ## Generative
 

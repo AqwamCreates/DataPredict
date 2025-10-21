@@ -12,10 +12,10 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Generative                     | 4     |
 | Total                          | 65    |
 
-### Legend 🔰
+### Legend
 
 | Icon | Name                | Description                            |
-|------|---------------------|---------------------------------------|
+|------|---------------------|----------------------------------------|
 | 🔰   | Beginner Algorithm | Commonly taught to beginners.          |
 | 🔵   | Data Efficient     | Require few data to train the model.   |
 | 🟣   | Noise Resistant    | Can handle randomness / unclean data.  |

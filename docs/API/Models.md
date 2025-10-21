@@ -16,7 +16,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Colour | Name            | Description                           |
 |--------|-----------------|-------------------------------------- |
-| 🔵    | Sample Efficient | Require few data to train the model. |
+| 🔵    | Data Efficient   | Require few data to train the model. |
 | 🟣    | Noise Resistant  |                                      |
 | 🟢    | Online           | Can adapt real-time.                 |
 | 🟡    | Session-Adaptive | Can be retrained each session.       |
@@ -42,7 +42,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Regression
 
-> 🔵 Sample Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                | Alternate Names | Suitability | Use Cases                                                                                                |
 |----------------------------------------------------------------------|-----------------|-------------|----------------------------------------------------------------------------------------------------------|
@@ -58,7 +58,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Classification
 
-> 🔵 Sample Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                | Alternate Names                | Suitability    | Use Cases                                                                                                      |
 |--------------------------------------------------------------------------------------|--------------------------------|----------------|----------------------------------------------------------------------------------------------------------------|
@@ -80,7 +80,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Clustering
 
-> 🔵 Sample Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                                                                 | Alternate Names | Suitability    | Use Cases                                                            |
 |---------------------------------------------------------------------------------------------------------------------------------------|-----------------|----------------|----------------------------------------------------------------------|
@@ -95,7 +95,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Deep Reinforcement Learning
 
-> 🔵 Sample Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                                          | Alternate Names               | Use Cases                                                                 |
 |----------------------------------------------------------------------------------------------------------------|-------------------------------|---------------------------------------------------------------------------|
@@ -123,7 +123,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Tabular Reinforcement Learning
 
-> 🔵 Sample Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                                                              | Alternate Names           | Suitability    | Use Cases                       |
 |------------------------------------------------------------------------------------------------------------------------------------|---------------------------|----------------|---------------------------------|
@@ -142,7 +142,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Generative
 
-> 🔵 Sample Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                                              | Alternate Names | Suitability    | Use Cases                                |
 |--------------------------------------------------------------------------------------------------------------------|-----------------|----------------| -----------------------------------------|

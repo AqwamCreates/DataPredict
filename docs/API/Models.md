@@ -83,16 +83,16 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
-| Model                                                                                                                                 | Alternate Names | Properties     | Use Cases                                                            |
-|---------------------------------------------------------------------------------------------------------------------------------------|-----------------|----------------|----------------------------------------------------------------------|
-| [KMeans](Models/KMeans.md)                                                                                                            | None            | 🔰 🟢 🟡     | Maximizing Area-of-Effect Abilities, Target Grouping                 |
-| [FuzzyCMeans](Models/FuzzyCMeans.md)                                                                                                  | None            | 🟢 🟡         | Overlapping Area-of-Effect Abilities, Overlapping Target Grouping    |
-| [KMedoids](Models/KMedoids.md)                                                                                                        | None            | 🟢 🟡         | Player Grouping Based On Player Locations With Leader Identification |
-| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                                      | None            | 🟢 🟡         | Enemy Data Generation                                                |
-| [ExpectationMaximization](Models/ExpectationMaximization.md)                                                                          | EM              | 🟢 🟡         | Hacking Detection, Anomaly Detection                                 |
-| [MeanShift](Models/MeanShift.md)                                                                                                      | None            | 🟣 🟢 🟡      | Boss Spawn Location Search Based On Player Locations                 |
-| [AffinityPropagation](Models/AffinityPropagation.md) (Offline Only)                                                                   | None            | 🟡             | Player Grouping                                                      |
-| [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) (Offline Only) | DBSCAN          | 🟣 🟡          | Density Grouping                                                     |
+| Model                                                                                                                  | Alternate Names | Properties     | Use Cases                                                            |
+|------------------------------------------------------------------------------------------------------------------------|-----------------|----------------|----------------------------------------------------------------------|
+| [KMeans](Models/KMeans.md)                                                                                             | None            | 🔰 🟢 🟡     | Maximizing Area-of-Effect Abilities, Target Grouping                 |
+| [FuzzyCMeans](Models/FuzzyCMeans.md)                                                                                   | None            | 🟢 🟡         | Overlapping Area-of-Effect Abilities, Overlapping Target Grouping    |
+| [KMedoids](Models/KMedoids.md)                                                                                         | None            | 🟢 🟡         | Player Grouping Based On Player Locations With Leader Identification |
+| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | 🟢 🟡         | Enemy Data Generation                                                |
+| [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | 🟢 🟡         | Hacking Detection, Anomaly Detection                                 |
+| [MeanShift](Models/MeanShift.md)                                                                                       | None            | 🟣 🟢 🟡      | Boss Spawn Location Search Based On Player Locations                 |
+| [AffinityPropagation](Models/AffinityPropagation.md) (Offline Only)                                                    | None            | 🟡             | Player Grouping                                                      |
+| [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | 🟣 🟡          | Density Grouping                                                     |
 
 ## Deep Reinforcement Learning
 

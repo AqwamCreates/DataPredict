@@ -95,7 +95,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | 🟢 🟡         | Enemy Data Generation                                                |
 | [ExpectationMaximization](Models/ExpectationMaximization.md)                                                           | EM              | 🟢 🟡         | Hacking Detection, Anomaly Detection                                 |
 | [MeanShift](Models/MeanShift.md)                                                                                       | None            | 🟣 🟢 🟡      | Boss Spawn Location Search Based On Player Locations                 |
-| [AffinityPropagation](Models/AffinityPropagation.md) (Offline Only)                                                    | None            | 🟡             | Player Grouping                                                      |
+| [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | None            | 🟡             | Player Grouping                                                      |
 | [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | 🟣 🟡          | Density Grouping                                                     |
 
 ## Deep Reinforcement Learning

@@ -47,15 +47,15 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy
 
-| Model                                                                | Alternate Names | Properties     | Use Cases                                                                                                |
-|----------------------------------------------------------------------|-----------------|----------------|----------------------------------------------------------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md)                       | None            | 🔰 🟢 🟡      | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
-| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)   | PA-R            | ⚡ 🟢          | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
-| [SupportVectorRegression](Models/SupportVectorRegression.md)         | SVR             | 💾 ⚡ 🟡      | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
-| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md) | KNN-R           | 🟢 🟡         | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
-| [NormalLinearRegression](Models/NormalLinearRegression.md)*          | None            | 💾 ⚡ 🟡 ⚠️  | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
-| [BayesianLinearRegression](Models/BayesianLinearRegression.md)*      | None            | 💾 ⚡ 🟡 ⚠️  | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
-| [QuantileLinearRegression](Models/QuantileLinearRegression.md)*      | None            | 💾 ⚡ 🟡 ⚠️  |Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation         |
+| Model                                                                | Alternate Names | Properties    | Use Cases                                                                                                |
+|----------------------------------------------------------------------|-----------------|---------------|----------------------------------------------------------------------------------------------------------|
+| [LinearRegression](Models/LinearRegression.md)                       | None            | 🔰 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
+| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)   | PA-R            | ⚡ 🟢        | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
+| [SupportVectorRegression](Models/SupportVectorRegression.md)         | SVR             | 💾 🟡        | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
+| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md) | KNN-R           | 🟢 🟡        | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
+| [NormalLinearRegression](Models/NormalLinearRegression.md)*          | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
+| [BayesianLinearRegression](Models/BayesianLinearRegression.md)*      | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
+| [QuantileLinearRegression](Models/QuantileLinearRegression.md)*      | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
 
 \* The "instant train" models have these issues:
 
@@ -72,10 +72,10 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [LogisticRegression](Models/LogisticRegression.md)                                   | Perceptron, Sigmoid Regression | 🔰 🟢 🟡       | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction                                 |
 | [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                 | PA-C                           | ⚡ 🟢           | Fast Purchase Likelihood Estimation, Decision Making                                                            |
 | [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md) | OC-PA-C                        | ⚡ 🟢           | Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                                             |
-| [NearestCentroid](Models/NearestCentroid.md)                                         | NC                             | 🟢 🟡           | Fast Grouping Or Quick Decision Making                                                                          |
+| [NearestCentroid](Models/NearestCentroid.md)                                         | NC                             | ⚡ 🟢 🟡        | Fast Grouping Or Quick Decision Making                                                                          |
 | [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)               | KNN-C                          | 🟢 🟡           | Item Recommendation, Similar Player Matchmaking                                                                 |
-| [SupportVectorMachine](Models/SupportVectorMachine.md)                               | SVM                            | 💾 ⚡ 🟡        | Hacking Detection, Anomaly Detection                                                                            |
-| [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md)               | OC-SVM                         | 💾 ⚡ 🟡        | Hacking Detection, Anomaly Detection (Using Single Class Data)                                                  |
+| [SupportVectorMachine](Models/SupportVectorMachine.md)                               | SVM                            | 💾 🟡          | Hacking Detection, Anomaly Detection                                                                            |
+| [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md)               | OC-SVM                         | 💾 🟡           | Hacking Detection, Anomaly Detection (Using Single Class Data)                                                  |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                             | Multi-Layer Perceptron         | 🟢 🟡           | Decision-Making, Player Behaviour Prediction                                                                    |
 | [GaussianNaiveBayes](Models/GaussianNaiveBayes.md)                                   | None                           | 💾 ⚡ 🟢 🟡 ⚠️ | Enemy Data Generation, Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
 | [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md)*                            | None                           | 💾 ⚡ 🟢 🟡 ⚠️ |Summoning Next Enemy Type, Inventory Action Prediction, Strategy Profiling Based on Item Usage                   |

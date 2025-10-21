@@ -14,13 +14,13 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ### Legend
 
-| Colour | Name            | Description                           |
-|--------|-----------------|-------------------------------------- |
-| 🔵    | Data Efficient   | Require few data to train the model. |
-| 🟣    | Noise Resistant  |                                      |
-| 🟢    | Online           | Can adapt real-time.                 |
-| 🟡    | Session-Adaptive | Can be retrained each session.       |
-| 🔴    | Assumption-Heavy | Linear / independent features.       |
+| Colour | Name            | Description                              |
+|--------|-----------------|------------------------------------------|
+| 🔵    | Data Efficient   | Require few data to train the model.    |
+| 🟣    | Noise Resistant  | Can handle randomness or unclean data.  |
+| 🟢    | Online           | Can adapt real-time.                    |
+| 🟡    | Session-Adaptive | Can be retrained each session.          |
+| 🔴    | Assumption-Heavy | Linear / independent features.          |
 
 For strong deep learning applications, have a look at [DataPredict™ Neural](https://aqwamcreates.github.io/DataPredict-Neural) (object-oriented) and [DataPredict™ Axon](https://aqwamcreates.github.io/DataPredict-Axon) (function-oriented) instead. DataPredict™ is only suitable for general purpose machine, deep and reinforcement learning.
 
@@ -97,48 +97,48 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 > 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
-| Model                                                                                                          | Alternate Names               | Use Cases                                                                 |
-|----------------------------------------------------------------------------------------------------------------|-------------------------------|---------------------------------------------------------------------------|
-| [DeepQLearning](Models/DeepQLearning.md)                                                                       | Deep Q Network                | Best Self-Learning Player AIs, Best Recommendation Systems                |
-| [DeepDoubleQLearningV1](Models/DeepDoubleQLearningV1.md)                                                       | Double Deep Q Network (2010)  | Stable Best Self-Learning Player AIs, Best Recommendation Systems         |
-| [DeepDoubleQLearningV2](Models/DeepDoubleQLearningV2.md)                                                       | Double Deep Q Network (2015)  | Stable Best Self-Learning Player AIs, Best Recommendation Systems         |
-| [DeepClippedDoubleQLearning](Models/DeepClippedDoubleQLearning.md)                                             | Clipped Deep Double Q Network | Stable Best Self-Learning Player AIs, Best Recommendation Systems         |
-| [DeepStateActionRewardStateAction](Models/DeepStateActionRewardStateAction.md)                                 | Deep SARSA                    | Safe Self-Learning Player AIs, Safe Recommendation Systems                |
-| [DeepDoubleStateActionRewardStateActionV1](Models/DeepDoubleStateActionRewardStateActionV1.md)                 | Double Deep SARSA             | Stable Safe Self-Learning Player AIs, Safe Recommendation Systems         |
-| [DeepDoubleStateActionRewardStateActionV2](Models/DeepDoubleStateActionRewardStateActionV2.md)                 | Double Deep SARSA             | Stable Safe Self-Learning Player AIs, Safe Recommendation Systems         |
-| [DeepExpectedStateActionRewardStateAction](Models/DeepExpectedStateActionRewardStateAction.md)                 | Deep Expected SARSA           | Balanced Self-Learning Player AIs, Balanced Recommendation Systems        |
-| [DeepDoubleExpectedStateActionRewardStateActionV1](Models/DeepDoubleExpectedStateActionRewardStateActionV1.md) | Double Deep Expected SARSA    | Stable Balanced Self-Learning Player AIs, Balanced Recommendation Systems |
-| [DeepDoubleExpectedStateActionRewardStateActionV2](Models/DeepDoubleExpectedStateActionRewardStateActionV2.md) | Double Deep Expected SARSA    | Stable Balanced Self-Learning Player AIs, Balanced Recommendation Systems |
-| [DeepMonteCarloControl](Models/DeepMonteCarloControl.md) (May Need Further Refinement)                         | None                          | Online Self-Learning Player AIs                                           |
-| [DeepOffPolicyMonteCarloControl](Models/DeepOffPolicyMonteCarloControl.md)                                     | None                          | Offline Self-Learning Player AIs                                          |
-| [REINFORCE](Models/REINFORCE.md)                                                                               | None                          | Reward-Based Self-Learning Player AIs                                     |
-| [VanillaPolicyGradient](Models/VanillaPolicyGradient.md) (May Need Further Refinement)                         | VPG                           | Baseline-Based Self-Learning Player AIs                                   |
-| [ActorCritic](Models/ActorCritic.md)                                                                           | AC                            | Critic-Based Self-Learning Player AIs                                     |
-| [AdvantageActorCritic](Models/AdvantageActorCritic.md)                                                         | A2C                           | Advantage-Based Self-Learning Player AIs                                  |
-| [ProximalPolicyOptimization](Models/ProximalPolicyOptimization.md)                                             | PPO                           | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs    |
-| [ProximalPolicyOptimizationClip](Models/ProximalPolicyOptimizationClip.md)                                     | PPO-Clip                      | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs    |
-| [SoftActorCritic](Models/SoftActorCritic.md)                                                                   | SAC                           | Self-Learning Vehicle AIs                                                 |
-| [DeepDeterministicPolicyGradient](Models/DeepDeterministicPolicyGradient.md)                                   | DDPG                          | Self-Learning Vehicle AIs                                                 |
-| [TwinDelayedDeepDeterministicPolicyGradient](Models/TwinDelayedDeepDeterministicPolicyGradient.md)             | TD3                           | Self-Learning Vehicle AIs                                                 |
+| Model                                                                                                          | Alternate Names               | Suitability | Use Cases                                                                 |
+|----------------------------------------------------------------------------------------------------------------|-------------------------------|-------------|---------------------------------------------------------------------------|
+| [DeepQLearning](Models/DeepQLearning.md)                                                                       | Deep Q Network                | 🔵 🟢      | Best Self-Learning Player AIs, Best Recommendation Systems                |
+| [DeepDoubleQLearningV1](Models/DeepDoubleQLearningV1.md)                                                       | Double Deep Q Network (2010)  | 🔵 🟢      | Stable Best Self-Learning Player AIs, Best Recommendation Systems         |
+| [DeepDoubleQLearningV2](Models/DeepDoubleQLearningV2.md)                                                       | Double Deep Q Network (2015)  | 🔵 🟢      | Stable Best Self-Learning Player AIs, Best Recommendation Systems         |
+| [DeepClippedDoubleQLearning](Models/DeepClippedDoubleQLearning.md)                                             | Clipped Deep Double Q Network | 🔵 🟢      | Stable Best Self-Learning Player AIs, Best Recommendation Systems         |
+| [DeepStateActionRewardStateAction](Models/DeepStateActionRewardStateAction.md)                                 | Deep SARSA                    | 🟢          | Safe Self-Learning Player AIs, Safe Recommendation Systems               |
+| [DeepDoubleStateActionRewardStateActionV1](Models/DeepDoubleStateActionRewardStateActionV1.md)                 | Double Deep SARSA             | 🟢         | Stable Safe Self-Learning Player AIs, Safe Recommendation Systems         |
+| [DeepDoubleStateActionRewardStateActionV2](Models/DeepDoubleStateActionRewardStateActionV2.md)                 | Double Deep SARSA             | 🟢         | Stable Safe Self-Learning Player AIs, Safe Recommendation Systems         |
+| [DeepExpectedStateActionRewardStateAction](Models/DeepExpectedStateActionRewardStateAction.md)                 | Deep Expected SARSA           | 🟢         | Balanced Self-Learning Player AIs, Balanced Recommendation Systems        |
+| [DeepDoubleExpectedStateActionRewardStateActionV1](Models/DeepDoubleExpectedStateActionRewardStateActionV1.md) | Double Deep Expected SARSA    | 🟢         | Stable Balanced Self-Learning Player AIs, Balanced Recommendation Systems |
+| [DeepDoubleExpectedStateActionRewardStateActionV2](Models/DeepDoubleExpectedStateActionRewardStateActionV2.md) | Double Deep Expected SARSA    | 🟢         | Stable Balanced Self-Learning Player AIs, Balanced Recommendation Systems |
+| [DeepMonteCarloControl](Models/DeepMonteCarloControl.md) (May Need Further Refinement)                         | None                          | 🟢         | Online Self-Learning Player AIs                                           |
+| [DeepOffPolicyMonteCarloControl](Models/DeepOffPolicyMonteCarloControl.md)                                     | None                          | 🟢         | Offline Self-Learning Player AIs                                          |
+| [REINFORCE](Models/REINFORCE.md)                                                                               | None                          | 🟢         | Reward-Based Self-Learning Player AIs                                     |
+| [VanillaPolicyGradient](Models/VanillaPolicyGradient.md) (May Need Further Refinement)                         | VPG                           | 🟢         | Baseline-Based Self-Learning Player AIs                                   |
+| [ActorCritic](Models/ActorCritic.md)                                                                           | AC                            | 🟢         | Critic-Based Self-Learning Player AIs                                     |
+| [AdvantageActorCritic](Models/AdvantageActorCritic.md)                                                         | A2C                           | 🟢         | Advantage-Based Self-Learning Player AIs                                  |
+| [ProximalPolicyOptimization](Models/ProximalPolicyOptimization.md)                                             | PPO                           | 🟢         | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs    |
+| [ProximalPolicyOptimizationClip](Models/ProximalPolicyOptimizationClip.md)                                     | PPO-Clip                      | 🟢         | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs    |
+| [SoftActorCritic](Models/SoftActorCritic.md)                                                                   | SAC                           | 🔵 🟢      | Self-Learning Vehicle AIs                                                 |
+| [DeepDeterministicPolicyGradient](Models/DeepDeterministicPolicyGradient.md)                                   | DDPG                          | 🟢         | Self-Learning Vehicle AIs                                                 |
+| [TwinDelayedDeepDeterministicPolicyGradient](Models/TwinDelayedDeepDeterministicPolicyGradient.md)             | TD3                           | 🟢         | Self-Learning Vehicle AIs                                                 |
 
 ## Tabular Reinforcement Learning
 
 > 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
-| Model                                                                                                                              | Alternate Names           | Suitability    | Use Cases                       |
-|------------------------------------------------------------------------------------------------------------------------------------|---------------------------|----------------|---------------------------------|
-| [TabularQLearning](Models/TabularQLearning.md)                                                                                     | Q-Learning                | 🔵 🟢         | Best Self-Learning Grid AIs     |
-| [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                                     | Double Q-Learning (2010)  | 🔵 🟢         | Best Self-Learning Grid AIs     |
-| [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                                     | Double Q-Learning (2015)  | 🔵 🟢         | Best Self-Learning Grid AIs     |
-| [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                                           | Clipped Double Q-Learning | 🔵 🟢         | Best Self-Learning Grid AIs     |
-| [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md) (May Need Further Refinement)                 | SARSA                     | 🟢             | Safe Self-Learning Grid AIs     |
-| [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md) (May Need Further Refinement) | Double SARSA              | 🟢             | Safe Self-Learning Grid AIs     |
-| [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md) (May Need Further Refinement) | Double SARSA              | 🟢             | Safe Self-Learning Grid AIs     |
-| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                               | Expected SARSA            | 🟢             | Balanced Self-Learning Grid AIs |
-| [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md)               | Double Expected SARSA     | 🟢             | Balanced Self-Learning Grid AIs |
-| [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md)               | Double Expected SARSA     | 🟢             | Balanced Self-Learning Grid AIs |
-| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                                     | MC                        | 🟢             | Online Self-Learning Grid AIs   |
-| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                                   | Off-Policy MC             | 🟢             | Offline Self-Learning Grid AIs  |
+| Model                                                                                                                              | Alternate Names           | Suitability | Use Cases                       |
+|------------------------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|---------------------------------|
+| [TabularQLearning](Models/TabularQLearning.md)                                                                                     | Q-Learning                | 🔵 🟢      | Best Self-Learning Grid AIs     |
+| [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                                     | Double Q-Learning (2010)  | 🔵 🟢      | Best Self-Learning Grid AIs     |
+| [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                                     | Double Q-Learning (2015)  | 🔵 🟢      | Best Self-Learning Grid AIs     |
+| [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                                           | Clipped Double Q-Learning | 🔵 🟢      | Best Self-Learning Grid AIs     |
+| [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md) (May Need Further Refinement)                 | SARSA                     | 🟢          | Safe Self-Learning Grid AIs     |
+| [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md) (May Need Further Refinement) | Double SARSA              | 🟢          | Safe Self-Learning Grid AIs     |
+| [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md) (May Need Further Refinement) | Double SARSA              | 🟢          | Safe Self-Learning Grid AIs     |
+| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                               | Expected SARSA            | 🟢          | Balanced Self-Learning Grid AIs |
+| [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md)               | Double Expected SARSA     | 🟢          | Balanced Self-Learning Grid AIs |
+| [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md)               | Double Expected SARSA     | 🟢          | Balanced Self-Learning Grid AIs |
+| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                                     | MC                        | 🟢          | Online Self-Learning Grid AIs   |
+| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                                   | Off-Policy MC             | 🟢          | Offline Self-Learning Grid AIs  |
 
 ## Generative
 

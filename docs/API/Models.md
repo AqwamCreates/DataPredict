@@ -44,7 +44,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
-| Model                                                                | Alternate Names | Suitability | Use Cases                                                                                                |
+| Model                                                                | Alternate Names | Properties  | Use Cases                                                                                                |
 |----------------------------------------------------------------------|-----------------|-------------|----------------------------------------------------------------------------------------------------------|
 | [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)  | None            | 🟢 🟡      | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
 | [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)   | PA-R            | 🟢          | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
@@ -60,7 +60,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
-| Model                                                                                | Alternate Names                | Suitability    | Use Cases                                                                                                      |
+| Model                                                                                | Alternate Names                | Properties     | Use Cases                                                                                                      |
 |--------------------------------------------------------------------------------------|--------------------------------|----------------|----------------------------------------------------------------------------------------------------------------|
 | [LogisticRegression](Models/LogisticRegression.md) (Beginner Algorithm)              | Perceptron, Sigmoid Regression | 🟢 🟡        | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction                                 |
 | [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                 | PA-C                           | 🟢            | Fast Purchase Likelihood Estimation, Decision Making                                                            |
@@ -82,7 +82,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
-| Model                                                                                                                                 | Alternate Names | Suitability    | Use Cases                                                            |
+| Model                                                                                                                                 | Alternate Names | Properties     | Use Cases                                                            |
 |---------------------------------------------------------------------------------------------------------------------------------------|-----------------|----------------|----------------------------------------------------------------------|
 | [KMeans](Models/KMeans.md) (Beginner Algorithm)                                                                                       | None            | 🟢 🟡         | Maximizing Area-of-Effect Abilities, Target Grouping                 |
 | [FuzzyCMeans](Models/FuzzyCMeans.md)                                                                                                  | None            | 🟢 🟡         | Overlapping Area-of-Effect Abilities, Overlapping Target Grouping    |
@@ -97,7 +97,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
-| Model                                                                                                          | Alternate Names               | Suitability | Use Cases                                                                 |
+| Model                                                                                                          | Alternate Names               | Properties  | Use Cases                                                                 |
 |----------------------------------------------------------------------------------------------------------------|-------------------------------|-------------|---------------------------------------------------------------------------|
 | [DeepQLearning](Models/DeepQLearning.md)                                                                       | Deep Q Network                | 🔵 🟢      | Best Self-Learning Player AIs, Best Recommendation Systems                |
 | [DeepDoubleQLearningV1](Models/DeepDoubleQLearningV1.md)                                                       | Double Deep Q Network (2010)  | 🔵 🟣 🟢   | Stable Best Self-Learning Player AIs, Best Recommendation Systems         |
@@ -125,7 +125,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
-| Model                                                                                                                              | Alternate Names           | Suitability | Use Cases                       |
+| Model                                                                                                                              | Alternate Names           | Properties  | Use Cases                       |
 |------------------------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|---------------------------------|
 | [TabularQLearning](Models/TabularQLearning.md)                                                                                     | Q-Learning                | 🔵 🟢      | Best Self-Learning Grid AIs     |
 | [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                                     | Double Q-Learning (2010)  | 🔵 🟣 🟢   | Best Self-Learning Grid AIs     |
@@ -137,19 +137,19 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                               | Expected SARSA            | 🟢           | Balanced Self-Learning Grid AIs |
 | [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md)               | Double Expected SARSA     | 🟢 🟣       | Balanced Self-Learning Grid AIs |
 | [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md)               | Double Expected SARSA     | 🟢 🟣       | Balanced Self-Learning Grid AIs |
-| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                                     | MC                        | 🟢          | Online Self-Learning Grid AIs  |
+| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                                     | MC                        | 🟢          | Online Self-Learning Grid AIs   |
 | [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                                   | Off-Policy MC             | 🟢          | Offline Self-Learning Grid AIs  |
 
 ## Generative
 
 > 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
-| Model                                                                                                              | Alternate Names | Suitability    | Use Cases                                |
-|--------------------------------------------------------------------------------------------------------------------|-----------------|----------------| -----------------------------------------|
-| [GenerativeAdversarialNetwork](Models/GenerativeAdversarialNetwork.md)                                             | GAN             | 🟢 🟡         | Enemy Data Generation                    |
-| [ConditionalGenerativeAdversarialNetwork](Models/ConditionalGenerativeAdversarialNetwork.md)                       | CGAN            | 🟢 🟡         | Conditional Enemy Data Generation        |
-| [WassersteinGenerativeAdversarialNetwork](Models/WassersteinGenerativeAdversarialNetwork.md)                       | WGAN            | 🟢 🟡         | Stable Enemy Data Generation             |
-| [ConditionalWassersteinGenerativeAdversarialNetwork](Models/ConditionalWassersteinGenerativeAdversarialNetwork.md) | CWGAN           | 🟢 🟡         | Stable Conditional Enemy Data Generation |
+| Model                                                                                                              | Alternate Names | Properties | Use Cases                                 |
+|--------------------------------------------------------------------------------------------------------------------|-----------------|------------| ------------------------------------------|
+| [GenerativeAdversarialNetwork](Models/GenerativeAdversarialNetwork.md)                                             | GAN             | 🟢 🟡     | Enemy Data Generation                     |
+| [ConditionalGenerativeAdversarialNetwork](Models/ConditionalGenerativeAdversarialNetwork.md)                       | CGAN            | 🟢 🟡     | Conditional Enemy Data Generation         |
+| [WassersteinGenerativeAdversarialNetwork](Models/WassersteinGenerativeAdversarialNetwork.md)                       | WGAN            | 🟢 🟡     | Stable Enemy Data Generation              |
+| [ConditionalWassersteinGenerativeAdversarialNetwork](Models/ConditionalWassersteinGenerativeAdversarialNetwork.md) | CWGAN           | 🟢 🟡      | Stable Conditional Enemy Data Generation |
 
 ## BaseModels
 

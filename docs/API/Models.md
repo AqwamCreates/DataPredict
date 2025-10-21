@@ -12,15 +12,16 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Generative                     | 4     |
 | Total                          | 65    |
 
-### Legend
+### Legend 🔰
 
-| Colour | Name            | Description                             |
-|--------|-----------------|-----------------------------------------|
-| 🔵    | Data Efficient   | Require few data to train the model.   |
-| 🟣    | Noise Resistant  | Can handle randomness / unclean data.  |
-| 🟢    | Online           | Can adapt real-time.                   |
-| 🟡    | Session-Adaptive | Can be retrained each session.         |
-| 🔴    | Assumption-Heavy | Assumes linear / independent features. |
+| Icon | Name                | Description                             |
+|------|---------------------|-----------------------------------------|
+| 🔰   | Beginner Algorithm | Require few data to train the model.   |
+| 🔵   | Data Efficient     | Require few data to train the model.   |
+| 🟣   | Noise Resistant    | Can handle randomness / unclean data.  |
+| 🟢   | Online             | Can adapt real-time.                   |
+| 🟡   | Session-Adaptive   | Can be retrained each session.         |
+| 🔴   | Assumption-Heavy   | Assumes linear / independent features. |
 
 ### Note
 
@@ -46,7 +47,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model                                                                | Alternate Names | Properties  | Use Cases                                                                                                |
 |----------------------------------------------------------------------|-----------------|-------------|----------------------------------------------------------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md) (Beginner Algorithm)  | None            | 🟢 🟡      | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
+| [LinearRegression](Models/LinearRegression.md)                       | None            | 🔰 🟢 🟡   | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
 | [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)   | PA-R            | 🟢          | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
 | [SupportVectorRegression](Models/SupportVectorRegression.md)         | SVR             | 🔵 🟡      | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
 | [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md) | KNN-R           | 🟢 🟡      | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                             |
@@ -62,7 +63,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model                                                                                | Alternate Names                | Properties     | Use Cases                                                                                                      |
 |--------------------------------------------------------------------------------------|--------------------------------|----------------|----------------------------------------------------------------------------------------------------------------|
-| [LogisticRegression](Models/LogisticRegression.md) (Beginner Algorithm)              | Perceptron, Sigmoid Regression | 🟢 🟡        | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction                                 |
+| [LogisticRegression](Models/LogisticRegression.md)                                   | Perceptron, Sigmoid Regression | 🔰 🟢 🟡     | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction                                 |
 | [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                 | PA-C                           | 🟢            | Fast Purchase Likelihood Estimation, Decision Making                                                            |
 | [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md) | OC-PA-C                        | 🟢            |Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                                              |
 | [NearestCentroid](Models/NearestCentroid.md)                                         | NC                             | 🟢 🟡        | Fast Grouping Or Quick Decision Making                                                                          |
@@ -84,7 +85,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model                                                                                                                                 | Alternate Names | Properties     | Use Cases                                                            |
 |---------------------------------------------------------------------------------------------------------------------------------------|-----------------|----------------|----------------------------------------------------------------------|
-| [KMeans](Models/KMeans.md) (Beginner Algorithm)                                                                                       | None            | 🟢 🟡         | Maximizing Area-of-Effect Abilities, Target Grouping                 |
+| [KMeans](Models/KMeans.md)                                                                                                            | None            | 🔰 🟢 🟡     | Maximizing Area-of-Effect Abilities, Target Grouping                 |
 | [FuzzyCMeans](Models/FuzzyCMeans.md)                                                                                                  | None            | 🟢 🟡         | Overlapping Area-of-Effect Abilities, Overlapping Target Grouping    |
 | [KMedoids](Models/KMedoids.md)                                                                                                        | None            | 🟢 🟡         | Player Grouping Based On Player Locations With Leader Identification |
 | [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                                      | None            | 🟢 🟡         | Enemy Data Generation                                                |

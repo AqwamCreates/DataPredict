@@ -59,7 +59,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
  * To use these models, your feature matrix need to be the shape of (n x n).
 
- * It also recommended to add independent and small noise values to each features.
+ * It also recommended to add small independent noise values to each features.
 
 ## Classification
 

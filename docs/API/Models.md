@@ -60,7 +60,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
  * It assumes that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings. Hence, it is recommended to add small independent noise values to each features.
 
- * The feature matrix will also need to have shape of (n x n). This leads to the requirement of (n x 1) label vector.
+ * The feature matrix will also need to have shape of (n x n). This naturally leads to the requirement of (n x 1) label vector.
 
 ## Classification
 

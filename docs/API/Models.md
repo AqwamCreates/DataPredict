@@ -12,17 +12,16 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Generative                     | 4     |
 | Total                          | 65    |
 
-### Color Coding
+### Legent
 
-🔵 Sample Efficient - Require few data to train the model.
+| Colour | Name            | Description                           |
+|--------|-----------------|-------------------------------------- |
+| 🔵    | Sample Efficient | Require few data to train the model. |
+| 🟣    | Noise Resistant  |                                      |
+| 🟢    | Online           | Can adapt real-time.                 |
+| 🟡    | Session-Adaptive | Can be retrained each session.       |
+| 🔴    | Assumption-Heavy | Linear / independent features.       |
 
-🟣 Noise Resistant 
-
-🟢 Online – Adaptive/real-time.
-
-🟡 Session-Adaptive – Can be retrained each session.
-
-🔴 Assumption-Heavy – Linear/independent features.
 
 For strong deep learning applications, have a look at [DataPredict™ Neural](https://aqwamcreates.github.io/DataPredict-Neural) (object-oriented) and [DataPredict™ Axon](https://aqwamcreates.github.io/DataPredict-Axon) (function-oriented) instead. DataPredict™ is only suitable for general purpose machine, deep and reinforcement learning.
 

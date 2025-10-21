@@ -51,7 +51,7 @@ QuantileLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict the value for a given data.
 
 ```
-QuantileLinearRegression:predict(featureMatrix: Matrix, quantileVector: Matrix): Matrix
+QuantileLinearRegression:predict(featureMatrix: Matrix, quantileVector: Matrix): Matrix -OR- Matrix, Matrix
 ```
 
 #### Parameters:
@@ -68,7 +68,7 @@ QuantileLinearRegression:predict(featureMatrix: Matrix, quantileVector: Matrix):
 
 * predictedVector: A vector containing values that are predicted by the model.
 
-* predictedQuantileVector: The probability of the value with the given threshold.
+* predictedQuantileVector:
 
 ## Inherited From
 

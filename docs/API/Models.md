@@ -76,7 +76,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)*                              | None                           | 🔵 🟢 🟡 🔴 | Imbalanced Class Prediction (e.g. Rare Choices, Niche Paths)                                                    |
 | [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md)*                            | None                           | 🔵 🟢 🟡 🔴 | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)                              |
 
-\* Naive Bayes assumes that the features are independent to each other, which is almost certainly not true in game-related settings. Additionally, these models are better as generative models, despite being commonly taught as a classifier.
+\* "Naive Bayes" models assumes that the features are independent to each other, which is almost certainly not true in game-related settings. Additionally, these models are better as generative models, despite being commonly taught as a classifier.
 
 ## Clustering
 

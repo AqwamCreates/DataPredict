@@ -16,6 +16,8 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 🔵 Sample Efficient - Require few data to train the model.
 
+🟣 Noise Resistant 
+
 🟢 Online – Adaptive/real-time.
 
 🟡 Session-Adaptive – Can be retrained each session.
@@ -42,7 +44,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Regression
 
-> 🔵 Sample Efficient 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔵 Sample Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                | Alternate Names | Suitability | Use Cases                                                                                                |
 |----------------------------------------------------------------------|-----------------|-------------|----------------------------------------------------------------------------------------------------------|
@@ -58,7 +60,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Classification
 
-> 🔵 Sample Efficient 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔵 Sample Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                | Alternate Names                | Suitability    | Use Cases                                                                                                      |
 |--------------------------------------------------------------------------------------|--------------------------------|----------------|----------------------------------------------------------------------------------------------------------------|
@@ -80,22 +82,22 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Clustering
 
-> 🔵 Sample Efficient 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔵 Sample Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
-| Model                                                                                                                                 | Alternate Names | Use Cases                                                            |
-|---------------------------------------------------------------------------------------------------------------------------------------|-----------------|----------------------------------------------------------------------|
-| [KMeans](Models/KMeans.md) (Beginner Algorithm)                                                                                       | None            | Maximizing Area-of-Effect Abilities, Target Grouping                 |
-| [FuzzyCMeans](Models/FuzzyCMeans.md)                                                                                                  | None            | Overlapping Area-of-Effect Abilities, Overlapping Target Grouping    |
-| [KMedoids](Models/KMedoids.md)                                                                                                        | None            | Player Grouping Based On Player Locations With Leader Identification |
-| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                                      | None            | Enemy Data Generation                                                |
-| [ExpectationMaximization](Models/ExpectationMaximization.md)                                                                          | EM              | Hacking Detection, Anomaly Detection                                 |
-| [MeanShift](Models/MeanShift.md)                                                                                                      | None            | Boss Spawn Location Search Based On Player Locations                 |
-| [AffinityPropagation](Models/AffinityPropagation.md) (Offline Only)                                                                   | None            | Player Grouping                                                      |
-| [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) (Offline Only) | DBSCAN          | Density Grouping                                                     |
+| Model                                                                                                                                 | Alternate Names | Suitability    | Use Cases                                                            |
+|---------------------------------------------------------------------------------------------------------------------------------------|-----------------|----------------|----------------------------------------------------------------------|
+| [KMeans](Models/KMeans.md) (Beginner Algorithm)                                                                                       | None            | 🟢 🟡         | Maximizing Area-of-Effect Abilities, Target Grouping                 |
+| [FuzzyCMeans](Models/FuzzyCMeans.md)                                                                                                  | None            | 🟢 🟡         | Overlapping Area-of-Effect Abilities, Overlapping Target Grouping    |
+| [KMedoids](Models/KMedoids.md)                                                                                                        | None            | 🟢 🟡         | Player Grouping Based On Player Locations With Leader Identification |
+| [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                                      | None            | 🟢 🟡         | Enemy Data Generation                                                |
+| [ExpectationMaximization](Models/ExpectationMaximization.md)                                                                          | EM              | 🟢 🟡         | Hacking Detection, Anomaly Detection                                 |
+| [MeanShift](Models/MeanShift.md)                                                                                                      | None            | 🟣 🟢 🟡      | Boss Spawn Location Search Based On Player Locations                 |
+| [AffinityPropagation](Models/AffinityPropagation.md) (Offline Only)                                                                   | None            | 🟡             | Player Grouping                                                      |
+| [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) (Offline Only) | DBSCAN          | 🟣 🟡          | Density Grouping                                                     |
 
 ## Deep Reinforcement Learning
 
-> 🔵 Sample Efficient 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔵 Sample Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                                          | Alternate Names               | Use Cases                                                                 |
 |----------------------------------------------------------------------------------------------------------------|-------------------------------|---------------------------------------------------------------------------|
@@ -123,7 +125,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Tabular Reinforcement Learning
 
-> 🔵 Sample Efficient 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔵 Sample Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                                                              | Alternate Names           | Suitability    | Use Cases                       |
 |------------------------------------------------------------------------------------------------------------------------------------|---------------------------|----------------|---------------------------------|
@@ -142,7 +144,7 @@ For strong deep learning applications, have a look at [DataPredict™ Neural](ht
 
 ## Generative
 
-> 🔵 Sample Efficient 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔵 Sample Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                                              | Alternate Names | Suitability    | Use Cases                                |
 |--------------------------------------------------------------------------------------------------------------------|-----------------|----------------| -----------------------------------------|

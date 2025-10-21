@@ -58,7 +58,7 @@ QuantileLinearRegression:predict(featureMatrix: Matrix, quantileVector: Matrix):
 
 * featureMatrix: Matrix containing data.
 
-* quantileVector:
+* quantileVector: A matrix or vector specifying the quantiles to predict for each data point. Must be between 0 and 1.
 
 #### Returns:
 
@@ -68,7 +68,7 @@ QuantileLinearRegression:predict(featureMatrix: Matrix, quantileVector: Matrix):
 
 * predictedVector: A vector containing values that are predicted by the model.
 
-* predictedQuantileVector:
+* predictedQuantileVector: A vector containing the predicted values corresponding to each quantile in quantileVector.
 
 ## Inherited From
 

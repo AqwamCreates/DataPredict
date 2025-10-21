@@ -53,7 +53,7 @@ BayesianLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict the value for a given data.
 
 ```
-BayesianLinearRegression:predict(featureMatrix: Matrix, threholdVector: Matrix): number
+BayesianLinearRegression:predict(featureMatrix: Matrix, threholdVector: Matrix): Matrix -OR- Matrix, Matrix
 ```
 
 #### Parameters:

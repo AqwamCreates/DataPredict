@@ -76,10 +76,10 @@ LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 
 ### predict()
 
-Predict the values for given data.
+Predict the value for a given data.
 
 ```
-LinearRegression:predict(featureMatrix: Matrix): number
+LinearRegression:predict(featureMatrix: Matrix): Matrix
 ```
 
 #### Parameters:
@@ -88,7 +88,7 @@ LinearRegression:predict(featureMatrix: Matrix): number
 
 #### Returns:
 
-* predictedValue: A value that is predicted by the model.
+* predictedVector: A vector containing values that are predicted by the model.
 
 ## Inherited From
 

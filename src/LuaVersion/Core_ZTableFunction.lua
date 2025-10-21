@@ -17,7 +17,6 @@ local zTable = {
 
 	},
 
-
 	["-3.8"] = {
 
 		["-0.00"] = 0.00007,
@@ -660,7 +659,11 @@ function zTableFunction:getStandardNormalInverseCumulativeDistributionFunction(p
 	
 	local stringFormatFunction = string.format
 	
-	local clampedProbability = math.clamp(probability, 0.00005, 0.5)
+	local isFlipped = (probability > 0.5)
+
+	local finalProbability = (isFlipped and (1 - probability)) or probability
+	
+	local clampedProbability = math.clamp(finalProbability, 0.00005, 0.5)
 
 	local closestZValue
 	
@@ -710,13 +713,17 @@ function zTableFunction:getStandardNormalInverseCumulativeDistributionFunction(p
 				
 				closestZValue = rowValue - (columnValue1 + (fraction * (columnValue2 - columnValue1)))
 				
-				return closestZValue
+				break
 				
 			end
 			
 		end
 		
+		if (closestZValue) then break end
+		
 	end
+	
+	if (isFlipped) and (closestZValue) then closestZValue = -closestZValue end
 
 	return closestZValue
 	

@@ -43,7 +43,7 @@ NormalLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict the value for a given data.
 
 ```
-NormalLinearRegression:predict(featureMatrix: Matrix): number
+NormalLinearRegression:predict(featureMatrix: Matrix): Matrix
 ```
 
 #### Parameters:
@@ -52,7 +52,7 @@ NormalLinearRegression:predict(featureMatrix: Matrix): number
 
 #### Returns:
 
-* predictedValue: A value that is predicted by the model.
+* predictedVector: A vector containing values that are predicted by the model.
 
 ## Inherited From
 

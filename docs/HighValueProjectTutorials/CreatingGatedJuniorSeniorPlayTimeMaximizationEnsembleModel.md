@@ -74,18 +74,15 @@ local SeniorClassesList = {
 
 local PlayerStatesList = {
 
-  "Idle",
-  "AwayFromKeyboard",
-  "Exploring",
-  "GatheringItems",
-  "GoingToQuestLocation",
-  "PerformingQuest",
-  "AttackingEnemies",
-  "AttackingResourceEntities",
-  "Retreating",
-  "Rewarded",
-  "Left",
-  "UnknownDisconnect",
+    "PlayerAwayFromKeyboard",
+    "PlayerIdle",
+    "PlayerRewarded",
+    "PlayerPickingUpItem",
+    "PlayerActiveForQuest",
+    "PlayerActiveAgainstEnemy",
+    "PlayerActiveAgainstEnemyBoss",
+    "PlayerLeft",
+    "PlayerLostConnection",
 
 }
 

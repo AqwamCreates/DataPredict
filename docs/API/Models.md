@@ -43,7 +43,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Regression
 
-> 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                | Alternate Names | Properties  | Use Cases                                                                                                |
 |----------------------------------------------------------------------|-----------------|-------------|----------------------------------------------------------------------------------------------------------|
@@ -59,7 +59,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Classification
 
-> 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                | Alternate Names                | Properties     | Use Cases                                                                                                      |
 |--------------------------------------------------------------------------------------|--------------------------------|----------------|----------------------------------------------------------------------------------------------------------------|
@@ -81,7 +81,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Clustering
 
-> 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                                                  | Alternate Names | Properties     | Use Cases                                                            |
 |------------------------------------------------------------------------------------------------------------------------|-----------------|----------------|----------------------------------------------------------------------|
@@ -96,7 +96,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Deep Reinforcement Learning
 
-> 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                                          | Alternate Names               | Properties  | Use Cases                                                                 |
 |----------------------------------------------------------------------------------------------------------------|-------------------------------|-------------|---------------------------------------------------------------------------|
@@ -124,7 +124,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Tabular Reinforcement Learning
 
-> 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                                                              | Alternate Names           | Properties  | Use Cases                       |
 |------------------------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|---------------------------------|
@@ -143,7 +143,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Generative
 
-> 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
+> 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive 🔴 Assumption-Heavy
 
 | Model                                                                                                              | Alternate Names | Properties | Use Cases                                 |
 |--------------------------------------------------------------------------------------------------------------------|-----------------|------------| ------------------------------------------|

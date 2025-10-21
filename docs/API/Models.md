@@ -57,6 +57,10 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 \* The "instant train" models assumes that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.
 
+ * To use these models, your feature matrix need to be the shape of (n x n).
+
+ * It also recommended to add independent and small noise values to each features.
+
 ## Classification
 
 > 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy

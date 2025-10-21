@@ -14,19 +14,17 @@ Before we start creating our model, we first need to visualize on how we will de
 
 ```lua
 
--- We have five features with one "bias".
-
-local StatesList = {
+local PlayerStatesList = {
 
     "PlayerAwayFromKeyboard",
-    "PlayerIdle".
+    "PlayerIdle",
     "PlayerRewarded",
     "PlayerPickingUpItem",
-    "PlayerActiveForQuest"
-    "PlayerActiveAgainstEnemy"
-    "PlayerActiveAgainstEnemyBoss"
-    "PlayerLeft"
-    "PlayerLostConnection"
+    "PlayerActiveForQuest",
+    "PlayerActiveAgainstEnemy",
+    "PlayerActiveAgainstEnemyBoss",
+    "PlayerLeft",
+    "PlayerLostConnection",
 
 }
 

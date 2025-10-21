@@ -20,7 +20,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | 🟣    | Noise Resistant  | Can handle randomness / unclean data.  |
 | 🟢    | Online           | Can adapt real-time.                   |
 | 🟡    | Session-Adaptive | Can be retrained each session.         |
-| 🔴    | Assumption-Heavy | Linear / independent features.         |
+| 🔴    | Assumption-Heavy | Assumes linear / independent features. |
 
 ### Note
 

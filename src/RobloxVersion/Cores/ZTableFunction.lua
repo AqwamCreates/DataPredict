@@ -611,9 +611,13 @@ function zTableFunction:getStandardNormalCumulativeDistributionFunction(zValue)
 	
 	local stringFormatFunction = string.format
 	
-	local clampedZValue = math.clamp(zValue, -3.9, 0)
+	local isPositive = (zValue > 0)
 	
-	local rowValue = math.floor(zValue * 10) / 10
+	local finalZValue = (isPositive and -zValue) or zValue
+	
+	local clampedZValue = math.clamp(finalZValue, -3.9, 0)
+	
+	local rowValue = math.floor(clampedZValue * 10) / 10
 	
 	local rowString = stringFormatFunction(rowStringFormat, rowValue)
 	
@@ -621,9 +625,7 @@ function zTableFunction:getStandardNormalCumulativeDistributionFunction(zValue)
 	
 	if (not rowTable) then return end
 	
-	local columnValue = zValue - rowValue
-
-	local columnSign = math.sign(columnValue)
+	local columnValue = finalZValue - rowValue
 
 	local absoluteColumnValue = math.abs(columnValue)
 
@@ -646,6 +648,8 @@ function zTableFunction:getStandardNormalCumulativeDistributionFunction(zValue)
 	local fraction = (absoluteColumnValue - lowerColumnValue) / (upperColumnValue - lowerColumnValue)
 
 	local cumulativeDistributionFunctionValue = lowerCumulativeDistributionFunctionValue + (upperCumulativeDistributionFunctionValue - lowerCumulativeDistributionFunctionValue) * fraction
+	
+	if (isPositive) then cumulativeDistributionFunctionValue = 1 - cumulativeDistributionFunctionValue end
 	
 	return cumulativeDistributionFunctionValue
 	

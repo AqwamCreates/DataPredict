@@ -128,7 +128,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model                                                                                                                              | Alternate Names           | Properties  | Use Cases                       |
 |------------------------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|---------------------------------|
-| [TabularQLearning](Models/TabularQLearning.md)                                                                                     | Q-Learning                | 🔵 🟢      | Best Self-Learning Grid AIs     |
+| [TabularQLearning](Models/TabularQLearning.md)                                                                                     | Q-Learning                | 🔰 🔵 🟢   | Best Self-Learning Grid AIs     |
 | [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                                     | Double Q-Learning (2010)  | 🔵 🟣 🟢   | Best Self-Learning Grid AIs     |
 | [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                                     | Double Q-Learning (2015)  | 🔵 🟣 🟢   | Best Self-Learning Grid AIs     |
 | [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                                           | Clipped Double Q-Learning | 🔵 🟣 🟢   | Best Self-Learning Grid AIs     |

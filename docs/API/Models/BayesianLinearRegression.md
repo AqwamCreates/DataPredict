@@ -53,7 +53,7 @@ BayesianLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict the value for a given data.
 
 ```
-BayesianLinearRegression:predict(featureMatrix: Matrix, threholdVector): number
+BayesianLinearRegression:predict(featureMatrix: Matrix, threholdVector: Matrix): number
 ```
 
 #### Parameters:
@@ -64,13 +64,13 @@ BayesianLinearRegression:predict(featureMatrix: Matrix, threholdVector): number
 
 #### Returns:
 
-* predictedValue: A value that is predicted by the model.
+* predictedVector: A vector containing values that are predicted by the model.
 
 -- OR --
 
-* predictedValue: A value that is predicted by the model.
+* predictedVector: A vector containing values that are predicted by the model.
 
-* predictedProbabilityValue: The probability of the value with the given threshold.
+* predictedProbabilityVector: A vector contining the probability of the values with the given threshold.
 
 ## Inherited From
 

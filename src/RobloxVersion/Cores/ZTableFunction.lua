@@ -661,7 +661,7 @@ function zTableFunction:getStandardNormalInverseCumulativeDistributionFunction(p
 	
 	local isFlipped = (probability > 0.5)
 
-	local finalProbability = (isFlipped and (1 - probability) or probability)
+	local finalProbability = (isFlipped and (1 - probability)) or probability
 	
 	local clampedProbability = math.clamp(finalProbability, 0.00005, 0.5)
 

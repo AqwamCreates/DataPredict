@@ -134,11 +134,11 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md) (May Need Further Refinement)                 | SARSA                     | 🟢          | Safe Self-Learning Grid AIs     |
 | [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md) (May Need Further Refinement) | Double SARSA              | 🟢 🟣       | Safe Self-Learning Grid AIs     |
 | [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md) (May Need Further Refinement) | Double SARSA              | 🟢 🟣       | Safe Self-Learning Grid AIs     |
-| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                               | Expected SARSA            | 🟢 🟣       | Balanced Self-Learning Grid AIs |
-| [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md)               | Double Expected SARSA     | 🟢          | Balanced Self-Learning Grid AIs |
+| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                               | Expected SARSA            | 🟢           | Balanced Self-Learning Grid AIs |
+| [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md)               | Double Expected SARSA     | 🟢 🟣       | Balanced Self-Learning Grid AIs |
 | [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md)               | Double Expected SARSA     | 🟢 🟣       | Balanced Self-Learning Grid AIs |
-| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                                     | MC                        | 🟢 🟣        | Online Self-Learning Grid AIs  |
-| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                                   | Off-Policy MC             | 🟢 🟣       | Offline Self-Learning Grid AIs  |
+| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                                     | MC                        | 🟢          | Online Self-Learning Grid AIs  |
+| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                                   | Off-Policy MC             | 🟢          | Offline Self-Learning Grid AIs  |
 
 ## Generative
 

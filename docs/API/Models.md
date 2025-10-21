@@ -14,14 +14,15 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ### Legend
 
-| Icon | Name                        | Description                            |
-|------|-----------------------------|----------------------------------------|
-| 🔰   | Beginner Algorithm         | Commonly taught to beginners.          |
-| 🔵   | Data Efficient             | Require few data to train the model.   |
-| 🟣   | Noise Resistant            | Can handle randomness / unclean data.  |
-| 🟢   | Online                     | Can adapt real-time.                   |
-| 🟡   | Session-Adaptive / Offline | Can be retrained each session.         |
-| 🔴   | Assumption-Heavy           | Assumes linear / independent features. |
+| Icon | Name                        | Description                                       |
+|------|-----------------------------|-------------------------------------------------- |
+| ❗   | Implementation Issue       | This model may have some implementation problems. |
+| 🔰   | Beginner Algorithm         | Commonly taught to beginners.                     |
+| 🔵   | Data Efficient             | Require few data to train the model.              |
+| 🟣   | Noise Resistant            | Can handle randomness / unclean data.             |
+| 🟢   | Online                     | Can adapt real-time.                              |
+| 🟡   | Session-Adaptive / Offline | Can be retrained each session.                    |
+| 🔴   | Assumption-Heavy           | Assumes linear / independent features.            |
 
 ### Note
 
@@ -43,7 +44,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Regression
 
-> 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy
+> ❗Implementation Issue 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy
 
 | Model                                                                | Alternate Names | Properties  | Use Cases                                                                                                |
 |----------------------------------------------------------------------|-----------------|-------------|----------------------------------------------------------------------------------------------------------|
@@ -63,7 +64,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Classification
 
-> 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy
+> ❗Implementation Issue 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy
 
 | Model                                                                                | Alternate Names                | Properties     | Use Cases                                                                                                      |
 |--------------------------------------------------------------------------------------|--------------------------------|----------------|----------------------------------------------------------------------------------------------------------------|
@@ -85,7 +86,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Clustering
 
-> 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy
+> ❗Implementation Issue 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy
 
 | Model                                                                                                                  | Alternate Names | Properties     | Use Cases                                                            |
 |------------------------------------------------------------------------------------------------------------------------|-----------------|----------------|----------------------------------------------------------------------|
@@ -100,7 +101,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Deep Reinforcement Learning
 
-> 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy
+> ❗Implementation Issue 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy
 
 | Model                                                                                                          | Alternate Names               | Properties  | Use Cases                                                                 |
 |----------------------------------------------------------------------------------------------------------------|-------------------------------|-------------|---------------------------------------------------------------------------|
@@ -114,10 +115,10 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [DeepExpectedStateActionRewardStateAction](Models/DeepExpectedStateActionRewardStateAction.md)                 | Deep Expected SARSA           | 🟢         | Balanced Self-Learning Player AIs, Balanced Recommendation Systems        |
 | [DeepDoubleExpectedStateActionRewardStateActionV1](Models/DeepDoubleExpectedStateActionRewardStateActionV1.md) | Double Deep Expected SARSA    | 🟢 🟣      | Stable Balanced Self-Learning Player AIs, Balanced Recommendation Systems |
 | [DeepDoubleExpectedStateActionRewardStateActionV2](Models/DeepDoubleExpectedStateActionRewardStateActionV2.md) | Double Deep Expected SARSA    | 🟢 🟣      | Stable Balanced Self-Learning Player AIs, Balanced Recommendation Systems |
-| [DeepMonteCarloControl](Models/DeepMonteCarloControl.md) (May Need Further Refinement)                         | None                          | 🟢         | Online Self-Learning Player AIs                                           |
+| [DeepMonteCarloControl](Models/DeepMonteCarloControl.md)                                                       | None                          | ❗ 🟢      | Online Self-Learning Player AIs                                           |
 | [DeepOffPolicyMonteCarloControl](Models/DeepOffPolicyMonteCarloControl.md)                                     | None                          | 🟢         | Offline Self-Learning Player AIs                                          |
 | [REINFORCE](Models/REINFORCE.md)                                                                               | None                          | 🟢         | Reward-Based Self-Learning Player AIs                                     |
-| [VanillaPolicyGradient](Models/VanillaPolicyGradient.md) (May Need Further Refinement)                         | VPG                           | 🟢         | Baseline-Based Self-Learning Player AIs                                   |
+| [VanillaPolicyGradient](Models/VanillaPolicyGradient.md)                                                       | VPG                           | ❗ 🟢      | Baseline-Based Self-Learning Player AIs                                   |
 | [ActorCritic](Models/ActorCritic.md)                                                                           | AC                            | 🟢         | Critic-Based Self-Learning Player AIs                                     |
 | [AdvantageActorCritic](Models/AdvantageActorCritic.md)                                                         | A2C                           | 🟢         | Advantage-Based Self-Learning Player AIs                                  |
 | [ProximalPolicyOptimization](Models/ProximalPolicyOptimization.md)                                             | PPO                           | 🟢         | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs    |
@@ -128,7 +129,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Tabular Reinforcement Learning
 
-> 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy
+> ❗Implementation Issue 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy
 
 | Model                                                                                                                              | Alternate Names           | Properties  | Use Cases                       |
 |------------------------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|---------------------------------|
@@ -136,10 +137,10 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                                     | Double Q-Learning (2010)  | 🔵 🟣 🟢   | Best Self-Learning Grid AIs     |
 | [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                                     | Double Q-Learning (2015)  | 🔵 🟣 🟢   | Best Self-Learning Grid AIs     |
 | [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                                           | Clipped Double Q-Learning | 🔵 🟣 🟢   | Best Self-Learning Grid AIs     |
-| [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md) (May Need Further Refinement)                 | SARSA                     | 🔰 🟢       | Safe Self-Learning Grid AIs     |
-| [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md) (May Need Further Refinement) | Double SARSA              | 🟢 🟣       | Safe Self-Learning Grid AIs     |
-| [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md) (May Need Further Refinement) | Double SARSA              | 🟢 🟣       | Safe Self-Learning Grid AIs     |
-| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                               | Expected SARSA            | 🟢           | Balanced Self-Learning Grid AIs |
+| [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md) (May Need Further Refinement)                 | SARSA                     | ❗ 🔰 🟢   | Safe Self-Learning Grid AIs     |
+| [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md) (May Need Further Refinement) | Double SARSA              | ❗ 🟢 🟣   | Safe Self-Learning Grid AIs     |
+| [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md) (May Need Further Refinement) | Double SARSA              | ❗ 🟢 🟣   | Safe Self-Learning Grid AIs     |
+| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                               | Expected SARSA            | 🟢          | Balanced Self-Learning Grid AIs |
 | [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md)               | Double Expected SARSA     | 🟢 🟣       | Balanced Self-Learning Grid AIs |
 | [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md)               | Double Expected SARSA     | 🟢 🟣       | Balanced Self-Learning Grid AIs |
 | [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                                     | MC                        | 🟢          | Online Self-Learning Grid AIs   |
@@ -147,14 +148,14 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Generative
 
-> 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy
+> ❗Implementation Issue 🔰 Beginner Algorithm 🔵 Data Efficient 🟣 Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline 🔴 Assumption-Heavy
 
 | Model                                                                                                              | Alternate Names | Properties | Use Cases                                 |
 |--------------------------------------------------------------------------------------------------------------------|-----------------|------------| ------------------------------------------|
 | [GenerativeAdversarialNetwork](Models/GenerativeAdversarialNetwork.md)                                             | GAN             | 🟢 🟡     | Enemy Data Generation                     |
 | [ConditionalGenerativeAdversarialNetwork](Models/ConditionalGenerativeAdversarialNetwork.md)                       | CGAN            | 🟢 🟡     | Conditional Enemy Data Generation         |
 | [WassersteinGenerativeAdversarialNetwork](Models/WassersteinGenerativeAdversarialNetwork.md)                       | WGAN            | 🟢 🟡     | Stable Enemy Data Generation              |
-| [ConditionalWassersteinGenerativeAdversarialNetwork](Models/ConditionalWassersteinGenerativeAdversarialNetwork.md) | CWGAN           | 🟢 🟡      | Stable Conditional Enemy Data Generation |
+| [ConditionalWassersteinGenerativeAdversarialNetwork](Models/ConditionalWassersteinGenerativeAdversarialNetwork.md) | CWGAN           | 🟢 🟡     | Stable Conditional Enemy Data Generation  |
 
 ## BaseModels
 

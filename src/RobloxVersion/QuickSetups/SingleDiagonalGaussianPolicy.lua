@@ -60,6 +60,8 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 
 	NewSingleDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector = parameterDictionary.previousActionNoiseVector
 	
+	NewSingleDiagonalGaussianPolicyQuickSetup.ExperienceReplay = parameterDictionary.ExperienceReplay
+	
 	NewSingleDiagonalGaussianPolicyQuickSetup:setReinforceFunction(function(currentFeatureVector, rewardValue)
 		
 		local Model = NewSingleDiagonalGaussianPolicyQuickSetup.Model

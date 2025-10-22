@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibraryLinker")
 
-local ReinforcementLearningBaseQuickSetup = require(script.Parent.ReinforcementLearningBaseQuickSetup)
+local ReinforcementLearningBaseQuickSetup = require("QuickSetup_ReinforcementLearningBaseQuickSetup")
 
 SingleDiagonalGaussianPolicyQuickSetup = {}
 
@@ -59,6 +59,8 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 	NewSingleDiagonalGaussianPolicyQuickSetup.previousActionMeanVector = parameterDictionary.previousActionMeanVector
 
 	NewSingleDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector = parameterDictionary.previousActionNoiseVector
+	
+	NewSingleDiagonalGaussianPolicyQuickSetup.ExperienceReplay = parameterDictionary.ExperienceReplay
 	
 	NewSingleDiagonalGaussianPolicyQuickSetup:setReinforceFunction(function(currentFeatureVector, rewardValue)
 		

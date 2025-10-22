@@ -36,6 +36,8 @@ NormalLinearRegressionModel.__index = NormalLinearRegressionModel
 
 setmetatable(NormalLinearRegressionModel, BaseModel)
 
+local defaultLambda = 0
+
 function NormalLinearRegressionModel.new(parameterDictionary)
 	
 	local NewNormalLinearRegressionModel = BaseModel.new(parameterDictionary)
@@ -43,6 +45,8 @@ function NormalLinearRegressionModel.new(parameterDictionary)
 	setmetatable(NewNormalLinearRegressionModel, NormalLinearRegressionModel)
 	
 	NewNormalLinearRegressionModel:setName("NormalLinearRegression")
+	
+	NewNormalLinearRegressionModel.lambda = parameterDictionary.lambda or defaultLambda
 	
 	return NewNormalLinearRegressionModel
 	
@@ -52,9 +56,23 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
+	local lambda = self.lambda
+	
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 	
 	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, transposedFeatureMatrix)
+	
+	if (lambda ~= 0) then
+		
+		local numberOfFeatures = #featureMatrix[1]
+		
+		local lambdaIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
+		
+		lambdaIdentityMatrix = AqwamTensorLibrary:multiply(lambdaIdentityMatrix, lambda)
+		
+		dotProductFeatureMatrix = AqwamTensorLibrary:add(dotProductFeatureMatrix, lambdaIdentityMatrix)
+		
+	end
 	
 	local inverseDotProduct = AqwamTensorLibrary:inverse(dotProductFeatureMatrix)
 	

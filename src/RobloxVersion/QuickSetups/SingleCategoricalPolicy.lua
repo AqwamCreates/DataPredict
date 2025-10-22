@@ -56,6 +56,8 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 	NewSingleCategoricalPolicyQuickSetup.currentNumberOfEpisodes = parameterDictionary.currentNumberOfEpisodes or defaultCurrentNumberOfEpisodes
 	
+	NewSingleCategoricalPolicyQuickSetup.ExperienceReplay = parameterDictionary.ExperienceReplay
+	
 	NewSingleCategoricalPolicyQuickSetup:setReinforceFunction(function(currentFeatureVector, rewardValue, returnOriginalOutput)
 		
 		local Model = NewSingleCategoricalPolicyQuickSetup.Model

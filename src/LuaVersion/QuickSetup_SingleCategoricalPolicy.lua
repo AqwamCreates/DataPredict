@@ -26,7 +26,7 @@
 
 --]]
 
-local CategoricalPolicyBaseQuickSetup = require(script.Parent.CategoricalPolicyBaseQuickSetup)
+local CategoricalPolicyBaseQuickSetup = require("QuickSetup_CategoricalPolicyBaseQuickSetup")
 
 SingleCategoricalPolicyQuickSetup = {}
 
@@ -55,6 +55,8 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 	NewSingleCategoricalPolicyQuickSetup.currentNumberOfReinforcements = parameterDictionary.currentNumberOfReinforcements or defaultCurrentNumberOfReinforcements
 
 	NewSingleCategoricalPolicyQuickSetup.currentNumberOfEpisodes = parameterDictionary.currentNumberOfEpisodes or defaultCurrentNumberOfEpisodes
+	
+	NewSingleCategoricalPolicyQuickSetup.ExperienceReplay = parameterDictionary.ExperienceReplay
 	
 	NewSingleCategoricalPolicyQuickSetup:setReinforceFunction(function(currentFeatureVector, rewardValue, returnOriginalOutput)
 		

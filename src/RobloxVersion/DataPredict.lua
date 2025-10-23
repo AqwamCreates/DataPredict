@@ -52,11 +52,13 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 
 	LinearRegression = require(Models.LinearRegression),
 	
+	QuantileLinearRegression = require(Models.QuantileLinearRegression),
+	
 	NormalLinearRegression = require(Models.NormalLinearRegression),
 	
 	BayesianLinearRegression = require(Models.BayesianLinearRegression),
 	
-	QuantileLinearRegression = require(Models.QuantileLinearRegression),
+	BayesianQuantileLinearRegression = require(Models.BayesianQuantileLinearRegression),
 	
 	PassiveAggressiveRegressor = require(Models.PassiveAggressiveRegressor),
 	

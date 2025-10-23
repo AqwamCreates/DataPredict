@@ -6,6 +6,8 @@
 
 > Make Games That Adapts To Players, Not The Other Way Around!
 
+> And Keep The Source Of The Retention And Revenue Out Of Competitors' Sight Too!
+
 ## Disclaimer
 
 * References that validates the use cases can be found [here](HighValueProjectTutorials/References.md). It also includes my papers.

@@ -6,7 +6,7 @@
 
 > Make Games That Adapts To Players, Not The Other Way Around!
 
-> And Keep The Source Of The Retention And Revenue Out Of Competitors' Sight!
+> And Keep The Source Of Retention And Revenue Out Of Competitors' Sight!
 
 ## Disclaimer
 

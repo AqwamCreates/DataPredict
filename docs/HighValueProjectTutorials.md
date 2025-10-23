@@ -33,7 +33,7 @@
 | [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Ensures that the player is likely to interact with the enemies.                                    |
 | [Targeting](HighValueProjectTutorials/TargetingSystems.md)                                       | Maximizes the likelihood of hitting clusters of players.                                           |
 | [AI Players](HighValueProjectTutorials/AIPlayers.md) (Incomplete)                                | Replace players if players aren't enough.                                                          |
-| [Quality Assurance](HighValueProjectTutorials/QualityAssurance.md) (Incomplete)                  | Attempts to break game mechanics.                                                                  |
+| [Quality Assurance](HighValueProjectTutorials/QualityAssurance.md) (Incomplete)                  | Attempts to break game mechanics to find edge cases and exploits.                                  |
 | [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Making sure that the players or items are queued based on their data.                              |
 | [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Handles the separation of unusual players from normal players without changing the game mechanics. |
 | [Placement](HighValueProjectTutorials/PlacementSystems.md)                                       | Finds an empty space to place players or items.                                                    |

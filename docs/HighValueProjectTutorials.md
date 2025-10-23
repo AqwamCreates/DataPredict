@@ -32,14 +32,14 @@
 
 ## Links
 
-| System                                                                                           | Properties                                                                                         |
-|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
-| [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization and leave predictions.                                              |
-| [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                                                          |
-| [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Ensures that the player is likely to interact with the enemies.                                    |
-| [Targeting](HighValueProjectTutorials/TargetingSystems.md)                                       | Maximizes the likelihood of hitting clusters of players.                                           |
-| [AI Players](HighValueProjectTutorials/AIPlayers.md) (Incomplete)                                | Replace players if players aren't enough.                                                          |
-| [Quality Assurance](HighValueProjectTutorials/QualityAssurance.md) (Incomplete)                  | Attempts to break game mechanics to find edge cases and exploits.                                  |
-| [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Making sure that the players or items are queued based on their data.                              |
-| [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Handles the separation of unusual players from normal players without changing the game mechanics. |
-| [Placement](HighValueProjectTutorials/PlacementSystems.md)                                       | Finds an empty space to place players or items.                                                    |
+| System                                                                                           | Properties                                                                                         | Minimal Implementation Time |
+|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|-----------------------------|
+| [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization and leave predictions.                                              | 30 minutes - 6 hours        |
+| [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                                                          | 1 hour - 2 hours            |
+| [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Ensures that the player is likely to interact with the enemies.                                    | 1 hour - 2 hours            |
+| [Targeting](HighValueProjectTutorials/TargetingSystems.md)                                       | Maximizes the likelihood of hitting clusters of players.                                           | 30 minutes - 1 hours        |
+| [AI Players](HighValueProjectTutorials/AIPlayers.md) (Incomplete)                                | Replace players if players aren't enough.                                                          | To be added soon            |
+| [Quality Assurance](HighValueProjectTutorials/QualityAssurance.md) (Incomplete)                  | Attempts to break game mechanics to find edge cases and exploits.                                  | To be added soon            |
+| [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Making sure that the players or items are queued based on their data.                              | To be added soon            |
+| [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Handles the separation of unusual players from normal players without changing the game mechanics. | 30 minutes                  |
+| [Placement](HighValueProjectTutorials/PlacementSystems.md)                                       | Finds an empty space to place players or items.                                                    | 30 minutes                  |

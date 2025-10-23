@@ -1,6 +1,6 @@
 # High-Value Project Tutorials - Beat The Retention! Not The Algorithm! Keep Players, Grow Your Game, Forget Competitors!
 
-### Disclaimer
+## Disclaimer
 
 * References that validates the use cases can be found [here](HighValueProjectTutorials/References.md). It also includes my papers.
 
@@ -26,20 +26,15 @@
 
 ## Links
 
-* [Retention Systems](HighValueProjectTutorials/RetentionSystems.md)
+| System                                                                                           | Properties                                                                                         |
+|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization and leave predictions.                                              |
+| [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                                                          |
+| [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Ensures that the player is likely to interact with the enemies.                                    |
+| [Targeting](HighValueProjectTutorials/TargetingSystems.md)                                       | Maximizes the likelihood of hitting clusters of players.                                           |
+| [AI Players](HighValueProjectTutorials/AIPlayers.md) (Incomplete)                                | Replace players if players aren't enough.                                                          |
+| [Quality Assurance](HighValueProjectTutorials/QualityAssurance.md) (Incomplete)                  | Attempts to break game mechanics.                                                                  |
+| [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Making sure that the players or items are queued based on their data.                              |
+| [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Handles the separation of unusual players from normal players without changing the game mechanics. |
+| [Placement](HighValueProjectTutorials/PlacementSystems.md)                                       | Finds an empty space to place players or items.                                                    |
 
-* [Recommendation Systems](HighValueProjectTutorials/RecommendationSystems.md)
-
-* [Dynamic Difficulty Adjustment Systems](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md)
-
-* [Targeting Systems](HighValueProjectTutorials/TargetingSystems.md)
-
-* [AI Players](HighValueProjectTutorials/AIPlayers.md) (Incomplete)
-
-* [Quality Assurance](HighValueProjectTutorials/QualityAssurance.md) (Incomplete)
-
-* [Priority Systems](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)
-
-* [Anti-Cheat Systems](HighValueProjectTutorials/AntiCheatSystems.md)
-
-* [Placement Systems](HighValueProjectTutorials/PlacementSystems.md)

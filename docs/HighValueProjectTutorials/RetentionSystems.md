@@ -1,18 +1,18 @@
 # Retention Systems
 
-* [Creating Time-To-Leave Prediction Model](HighValueProjectTutorials/CreatingTimeToLeavePredictionModel.md)
+* [Creating Time-To-Leave Prediction Model](RetentionSystems/CreatingTimeToLeavePredictionModel.md)
 
   * No need to add new content; the model can use existing content to optimize your games.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Probability-To-Leave Prediction Model](HighValueProjectTutorials/CreatingProbabilityToLeavePredictionModel.md)
+* [Creating Probability-To-Leave Prediction Model](RetentionSystems/CreatingProbabilityToLeavePredictionModel.md)
 
   * No need to add new content; the model can use existing content to optimize your games.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Probability-To-Interact Prediction Model](HighValueProjectTutorials/CreatingProbabilityToInteractPredictionModel.md)
+* [Creating Probability-To-Interact Prediction Model](RetentionSystems/CreatingProbabilityToInteractPredictionModel.md)
 
   * Can be combined with generative and reward-maximization-based models for optimized retention and interaction.
 
@@ -20,7 +20,7 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Left-Too-Early Detection Model](HighValueProjectTutorials/CreatingLeftTooEarlyDetectionModel.md)
+* [Creating Left-Too-Early Detection Model](RetentionSystems/CreatingLeftTooEarlyDetectionModel.md)
 
    * Inverse of probability-to-leave model by detecting outliers.
 
@@ -30,13 +30,13 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Labelless Left-Too-Early Detection Model](HighValueProjectTutorials/CreatingLabellessLeftTooEarlyDetectionModel.md)
+* [Creating Labelless Left-Too-Early Detection Model](RetentionSystems/CreatingLabellessLeftTooEarlyDetectionModel.md)
 
   * Same as "Left-Too-Early Detection Model", but it does not require manual tracking of label data, which makes it less accurate.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Deep Play Time Maximization Model](HighValueProjectTutorials/CreatingDeepPlayTimeMaximizationModel.md)
+* [Creating Deep Play Time Maximization Model](RetentionSystems/CreatingDeepPlayTimeMaximizationModel.md)
 
   * The model chooses actions or events that maximizes play time.
 
@@ -46,7 +46,7 @@
 
   * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if custom events are associated with the model's output.
 
-* [Creating Simple Play Time Maximization Model](HighValueProjectTutorials/CreatingSimplePlayTimeMaximizationModel.md)
+* [Creating Simple Play Time Maximization Model](RetentionSystems/CreatingSimplePlayTimeMaximizationModel.md)
 
   * Uses discrete input values (e.g. "focus", "run" and "attack") to maximize play time.
 
@@ -56,7 +56,7 @@
 
   * Minimal implementation takes a minimum of 1 hour using DataPredict™, especially if custom events are associated with the model's output.
 
-* [Creating Junior-Senior Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingJuniorSeniorPlayTimeMaximizationEnsembleModel.md)
+* [Creating Junior-Senior Play Time Maximization Ensemble Model](RetentionSystems/CreatingJuniorSeniorPlayTimeMaximizationEnsembleModel.md)
 
   * Uses a combination of:
  
@@ -70,7 +70,7 @@
 
   * Minimal implementation takes a minimum of 3 hours using DataPredict™.
 
-* [Creating Gated Deep Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingGatedDeepPlayTimeMaximizationEnsembleModel.md)
+* [Creating Gated Deep Play Time Maximization Ensemble Model](RetentionSystems/CreatingGatedDeepPlayTimeMaximizationEnsembleModel.md)
 
   * Uses a combination of:
  
@@ -84,7 +84,7 @@
 
   * Minimal implementation takes a minimum of 4 hours using DataPredict™.
 
-* [Creating Gated Junior-Senior Play Time Maximization Ensemble Model](HighValueProjectTutorials/CreatingGatedJuniorSeniorPlayTimeMaximizationEnsembleModel.md)
+* [Creating Gated Junior-Senior Play Time Maximization Ensemble Model](RetentionSystems/CreatingGatedJuniorSeniorPlayTimeMaximizationEnsembleModel.md)
 
   * Uses a combination of:
  
@@ -100,7 +100,7 @@
 
   * Minimal implementation takes a minimum of 6 hours using DataPredict™.
 
-* [Creating Engagement Milestone Detection Ensemble Model](HighValueProjectTutorials/CreatingEngagementMilestoneDetectionEnsembleModel.md)
+* [Creating Engagement Milestone Detection Ensemble Model](RetentionSystems/CreatingEngagementMilestoneDetectionEnsembleModel.md)
 
   * Uses a combination of:
  

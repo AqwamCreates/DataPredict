@@ -1,6 +1,10 @@
 # High-Value Project Tutorials
 
-> Beat The Retention! Not The Algorithm! Keep Players, Grow Your Game, Forget Competitors! Make Games That Adapts To Players, Not The Other Way Around!
+> Beat The Retention! Not The Algorithm! 
+
+> Keep Players, Grow Your Game, Forget Competitors! 
+
+> Make Games That Adapts To Players, Not The Other Way Around!
 
 ## Disclaimer
 
@@ -39,4 +43,3 @@
 | [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Making sure that the players or items are queued based on their data.                              |
 | [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Handles the separation of unusual players from normal players without changing the game mechanics. |
 | [Placement](HighValueProjectTutorials/PlacementSystems.md)                                       | Finds an empty space to place players or items.                                                    |
-

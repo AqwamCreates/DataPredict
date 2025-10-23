@@ -89,7 +89,7 @@ function BayesianLinearRegressionModel.new(parameterDictionary)
 end
 
 function BayesianLinearRegressionModel:train(featureMatrix, labelVector)
-
+	
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 
 	local priorPrecision = self.priorPrecision
@@ -97,44 +97,44 @@ function BayesianLinearRegressionModel:train(featureMatrix, labelVector)
 	local likelihoodPrecision = self.likelihoodPrecision
 
 	local numberOfFeatures = #featureMatrix[1]
-
+	
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 
 	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
 
-	local priorPrecisionIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
+	local alphaI = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
 
-	priorPrecisionIdentityMatrix = AqwamTensorLibrary:multiply(priorPrecisionIdentityMatrix, priorPrecision)
+	alphaI = AqwamTensorLibrary:multiply(alphaI, priorPrecision)
 
-	local scaledDotProductFeatureMatrix = AqwamTensorLibrary:multiply(dotProductFeatureMatrix, likelihoodPrecision)
+	local betaXTX = AqwamTensorLibrary:multiply(dotProductFeatureMatrix, likelihoodPrecision)
 
-	local inverseSNMatrix = AqwamTensorLibrary:add(priorPrecisionIdentityMatrix, scaledDotProductFeatureMatrix)
+	local S_N_inv = AqwamTensorLibrary:add(alphaI, betaXTX)
 
-	local posteriorCovarianceMatrix = AqwamTensorLibrary:inverse(inverseSNMatrix)
-
-	if (not posteriorCovarianceMatrix) then error("Could not invert matrix for posterior.") end
-
+	local posteriorCovariance = AqwamTensorLibrary:inverse(S_N_inv)
+	
+	if (not posteriorCovariance) then error("Could not invert matrix for posterior.") end
+	
 	local dotProductFeatureMatrixLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
 
-	local posteriorMeanVectorPart1 = AqwamTensorLibrary:dotProduct(posteriorCovarianceMatrix, dotProductFeatureMatrixLabelVector)
+	local temporaryMatrix = AqwamTensorLibrary:multiply(posteriorCovariance, dotProductFeatureMatrixLabelVector)
 
-	local posteriorMeanVector = AqwamTensorLibrary:multiply(posteriorMeanVectorPart1, likelihoodPrecision)
+	local posteriorMeanMatrix = AqwamTensorLibrary:multiply(temporaryMatrix, likelihoodPrecision)
 
-	self.ModelParameters = {posteriorMeanVector, posteriorCovarianceMatrix}
+	self.ModelParameters = {posteriorMeanMatrix, posteriorCovariance}
 
 end
 
-function BayesianLinearRegressionModel:predict(featureMatrix, thresholdVector)
+function BayesianLinearRegressionModel:predict(featureMatrix, thresholdMatrix)
 	
-	if (thresholdVector) then
+	if (thresholdMatrix) then
 		
-		if (#featureMatrix ~= #thresholdVector) then error("The feature matrix and the threshold vector does not contain the same number of rows.") end
+		if (#featureMatrix ~= #thresholdMatrix) then error("The feature matrix and the threshold vector does not contain the same number of rows.") end
 		
 	end
 
 	local ModelParameters = self.ModelParameters
 	
-	local posteriorMeanVector
+	local posteriorMeanMatrix
 	
 	local posteriorCovarianceMatrix
 
@@ -142,23 +142,23 @@ function BayesianLinearRegressionModel:predict(featureMatrix, thresholdVector)
 		
 		local dimensionSizeArray = {#featureMatrix[1], 1}
 
-		posteriorMeanVector = self:initializeMatrixBasedOnMode(dimensionSizeArray)
+		posteriorMeanMatrix = self:initializeMatrixBasedOnMode(dimensionSizeArray)
 		
 		posteriorCovarianceMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
 
-		self.ModelParameters = {posteriorMeanVector, posteriorCovarianceMatrix}
+		self.ModelParameters = {posteriorMeanMatrix, posteriorCovarianceMatrix}
 		
 	else
 		
-		posteriorMeanVector = ModelParameters[1]
+		posteriorMeanMatrix = ModelParameters[1]
 
 		posteriorCovarianceMatrix = ModelParameters[2]
 
 	end
 	
-	local predictedMeanVector = AqwamTensorLibrary:dotProduct(featureMatrix, posteriorMeanVector)
+	local predictedMeanVector = AqwamTensorLibrary:dotProduct(featureMatrix, posteriorMeanMatrix)
 
-	if (not thresholdVector) then return predictedMeanVector end
+	if (not thresholdMatrix) then return predictedMeanVector end
 	
 	local likelihoodPrecision = self.likelihoodPrecision
 	
@@ -180,9 +180,9 @@ function BayesianLinearRegressionModel:predict(featureMatrix, thresholdVector)
 	
 	local predictedStandardDeviationVector = AqwamTensorLibrary:applyFunction(math.sqrt, predictedVarianceVector)
 	
-	local probabilityVector = calculateGaussianProbability(self.useLogProbabilities, thresholdVector, predictedMeanVector, predictedStandardDeviationVector)
+	local probabilityMatrix = calculateGaussianProbability(self.useLogProbabilities, thresholdMatrix, predictedMeanVector, predictedStandardDeviationVector)
 
-	return predictedMeanVector, probabilityVector 
+	return predictedMeanVector, probabilityMatrix 
 	
 end
 

@@ -15,8 +15,12 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-NormalLinearRegression.new(): ModelObject
+NormalLinearRegression.new(lambda: number): ModelObject
 ```
+
+#### Parameters:
+
+* lambda: Sets the value for L2 regularization.
 
 #### Returns:
 

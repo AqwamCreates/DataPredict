@@ -1,6 +1,6 @@
 # Targeting Systems
 
-* [Creating Distance-Minimization-Based Clustering Targeting Model](HighValueProjectTutorials/CreatingDistanceMinimizationBasedClusteringTargetingModel.md)
+* [Creating Distance-Minimization-Based Clustering Targeting Model](TargetingSystems/CreatingDistanceMinimizationBasedClusteringTargetingModel.md)
 
   * Find the center of players based on number of clusters.
 
@@ -8,13 +8,13 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Probability-Maximization-Based Clustering Targeting Model](HighValueProjectTutorials/CreatingProbabilityMaximizationBasedClusteringTargetingModel.md)
+* [Creating Probability-Maximization-Based Clustering Targeting Model](TargetingSystems/CreatingProbabilityMaximizationBasedClusteringTargetingModel.md)
 
   * Produces clusters that maximizes the likelihood of being hit.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Probability-Based Targeting Model](HighValueProjectTutorials/CreatingProbabilityBasedTargetingModel.md)
+* [Creating Probability-Based Targeting Model](TargetingSystems/CreatingProbabilityBasedTargetingModel.md)
 
   * Find the center of players by finding the area with high player density.
 
@@ -24,7 +24,7 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Reward-Maximization-Based Targeting Model](HighValueProjectTutorials/CreatingRewardMaximizationBasedTargetingModel.md)
+* [Creating Reward-Maximization-Based Targeting Model](TargetingSystems/CreatingRewardMaximizationBasedTargetingModel.md)
 
   * If your map has terrains and structures, the model may learn to corner and "trap" players to certain locations for easy "kills" or "targets".
 

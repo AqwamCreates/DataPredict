@@ -156,7 +156,7 @@ function BayesianQuantileLinearRegressionModel:predict(featureMatrix, quantileMa
 
 	local numberOfFeatures = #featureMatrix[1]
 
-	local predictedQuantileMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfData}, 0)
+	local predictedQuantileMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfFeatures}, 0)
 	
 	local unwrappedPredictedQuantileVector
 	

@@ -144,7 +144,7 @@ function LinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, num
 
 end
 
-function LinearRegressionModel:update(lossMatrix, clearFeatureMatrix)
+function LinearRegressionModel:update(lossMatrix, clearAllMatrices)
 
 	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
 
@@ -154,7 +154,13 @@ function LinearRegressionModel:update(lossMatrix, clearFeatureMatrix)
 
 	self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
 
-	if (clearFeatureMatrix) then self.featureMatrix = nil end
+	if (clearAllMatrices) then 
+
+		self.featureMatrix = nil 
+
+		self.Gradients = nil
+
+	end
 
 end
 

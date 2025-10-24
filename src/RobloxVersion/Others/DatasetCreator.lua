@@ -142,13 +142,23 @@ function DatasetCreator.new(parameterDictionary)
 	
 end
 
-function DatasetCreator:setDatasetSplitPercentages(trainDataRatio, validationDataRatio, testDataPercentage)
+function DatasetCreator:setDatasetSplitPercentages(trainDataRatio, validationDataRatio, testDataRatio)
 	
-	self.trainDataRatio = trainDataRatio or self.trainDataRatio
+	trainDataRatio = trainDataRatio or self.trainDataRatio
+	
+	validationDataRatio = validationDataRatio or self.validationDataRatio
+	
+	testDataRatio = testDataRatio or self.testDataRatio
+	
+	local ratioSum = trainDataRatio + validationDataRatio + testDataRatio
+	
+	if (ratioSum > 1) then error("The sum of the ratios exceeds 1.") end
+	
+	self.trainDataRatio = trainDataRatio
 
-	self.validationDataRatio = validationDataRatio or self.validationDataRatio
+	self.validationDataRatio = validationDataRatio
 
-	self.testDataRatio = testDataPercentage or self.testDataRatio
+	self.testDataRatio = testDataRatio
 	
 end
 

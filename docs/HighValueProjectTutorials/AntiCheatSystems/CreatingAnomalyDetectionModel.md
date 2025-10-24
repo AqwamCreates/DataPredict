@@ -85,16 +85,6 @@ local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 
 
 ```
 
-However, this require setting the model's parameters to these settings temporarily so that it can be biased to "0" at start up as shown below.
-
-```lua
-
-AnomalyPredictionModel.maximumNumberOfIterations = 100
-
-AnomalyPredictionModel.learningRate = 0.3
-
-```
-
 ## Upon Player Leave
 
 By the time the player leaves, it is time for us to train the model.

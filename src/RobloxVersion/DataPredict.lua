@@ -306,13 +306,13 @@ AqwamMachineDeepAndReinforcementLearningLibrary.DistributedTrainingStrategies = 
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Others = {
 	
+	NormalModelModifier = require(Others.NormalModelModifier),
+	
 	ModelTrainingModifier = require(Others.ModelTrainingModifier),
 	
 	ModelSafeguardWrapper = require(Others.ModelSafeguardWrapper),
 	
 	ModelParametersMerger = require(Others.ModelParametersMerger),
-
-	ModelDatasetCreator = require(Others.ModelDatasetCreator),
 
 	ModelChecker = require(Others.ModelChecker),
 	
@@ -321,6 +321,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Others = {
 	OneVsOne = require(Others.OneVsOne),
 
 	OnlineLearning = require(Others.OnlineLearning),
+	
+	DatasetCreator = require(Others.DatasetCreator),
 	
 	ConfusionMatrixCreator = require(Others.ConfusionMatrixCreator),
 

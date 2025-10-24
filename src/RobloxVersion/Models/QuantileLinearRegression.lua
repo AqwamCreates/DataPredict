@@ -215,8 +215,6 @@ function QuantileLinearRegressionModel:train(featureMatrix, labelVector)
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
 	local Optimizer = self.Optimizer
-	
-	local quantileVector = {quantilesList}
 
 	local costArray = {}
 

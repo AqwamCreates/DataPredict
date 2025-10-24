@@ -26,13 +26,13 @@
 
 --]]
 
-local BaseIntstance = require("Core_BaseInstance")
+local BaseInstance = require("Core_BaseInstance")
 
 local ModelTrainingModifier = {}
 
 ModelTrainingModifier.__index = ModelTrainingModifier
 
-setmetatable(ModelTrainingModifier, BaseIntstance)
+setmetatable(ModelTrainingModifier, BaseInstance)
 
 local defaultMode = "Stochastic"
 
@@ -42,7 +42,7 @@ local defaultIsOutputPrinted = true
 
 function ModelTrainingModifier.new(parameterDictionary)
 	
-	local NewModelTrainingModifier = BaseIntstance.new(parameterDictionary)
+	local NewModelTrainingModifier = BaseInstance.new(parameterDictionary)
 	
 	setmetatable(NewModelTrainingModifier, ModelTrainingModifier)
 	

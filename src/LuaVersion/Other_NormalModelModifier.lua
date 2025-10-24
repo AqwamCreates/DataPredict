@@ -98,7 +98,7 @@ function NormalModelModifier:train(featureMatrix, labelMatrix)
 		
 	end
 	
-	-- This step helps to break colinearity in our feature matrix.
+	-- This step helps to break collinearity in our feature matrix.
 	
 	if (noiseValue ~= 0) then
 		

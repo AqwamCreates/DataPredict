@@ -1,6 +1,6 @@
 # [API Reference](../API.md) - Others
 
-[NormalModelModifier](Others/NormalModelModifier.md)
+[NormalModelModifier](Others/NormalModelModifier.md) (Incomplete)
 
 [ModelChecker](Others/ModelChecker.md)
 
@@ -15,5 +15,7 @@
 [ConfusionMatrixCreator](Others/ConfusionMatrixCreator.md)
 
 [OneVsAll](Others/OneVsAll.md)
+
+[OneVsOne](Others/OneVsOne.md) (Incomplete)
 
 [OnlineLearning](Others/OnlineLearning.md)

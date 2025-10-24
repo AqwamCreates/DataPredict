@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseIntstance = require("Core_BaseInstance")
+local BaseInstance = require("Core_BaseInstance")
 
 local NormalModelModifier = {}
 
 NormalModelModifier.__index = NormalModelModifier
 
-setmetatable(NormalModelModifier, BaseIntstance)
+setmetatable(NormalModelModifier, BaseInstance)
 
 local defaultNoiseValue = 1e-16
 
@@ -42,7 +42,7 @@ function NormalModelModifier.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewNormalModelModifier = BaseIntstance.new(parameterDictionary)
+	local NewNormalModelModifier = BaseInstance.new(parameterDictionary)
 	
 	setmetatable(NewNormalModelModifier, NormalModelModifier)
 	

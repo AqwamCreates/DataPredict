@@ -154,9 +154,9 @@ function BayesianQuantileLinearRegressionModel:predict(featureMatrix, quantileMa
 
 	local predictedStandardDeviationVector = AqwamTensorLibrary:applyFunction(math.sqrt, predictedVarianceVector)
 
-	local numberOfFeatures = #featureMatrix[1]
+	local numberOfQuantiles = #quantileMatrix[1]
 
-	local predictedQuantileMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfFeatures}, 0)
+	local predictedQuantileMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfQuantiles}, 0)
 	
 	local unwrappedPredictedQuantileVector
 	

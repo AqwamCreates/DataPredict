@@ -108,7 +108,7 @@
    
     * Probability-To-Leave Prediction Model
    
-    * Creating Left-Too-Early Detection Model
+    * Left-Too-Early Detection Model
 
   * The model periodically checks if the player is playing much more longer or more engaged than usual.
 

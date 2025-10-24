@@ -51,7 +51,7 @@ BayesianQuantileLinearRegression:train(featureMatrix: Matrix, labelVector: Matri
 Predict the value for a given data.
 
 ```
-BayesianQuantileLinearRegression:predict(featureMatrix: Matrix, quantileVector: Matrix): Matrix -OR- Matrix, Matrix
+BayesianQuantileLinearRegression:predict(featureMatrix: Matrix, quantileMatrix: Matrix): Matrix -OR- Matrix, Matrix
 ```
 
 #### Parameters:
@@ -68,7 +68,7 @@ BayesianQuantileLinearRegression:predict(featureMatrix: Matrix, quantileVector: 
 
 * predictedVector: A vector containing values that are predicted by the model.
 
-* predictedQuantileVector: A vector containing the predicted values corresponding to each quantile in quantileVector.
+* predictedQuantileMatrix: A matrix containing the predicted values corresponding to each quantile in quantileMatrix.
 
 ## Inherited From
 

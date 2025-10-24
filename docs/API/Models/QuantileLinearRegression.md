@@ -93,4 +93,3 @@ QuantileLinearRegression:predict(featureMatrix: Matrix): Matrix
 ## Inherited From
 
 * [GradientMethodBaseModel](GradientMethodBaseModel.md)
-

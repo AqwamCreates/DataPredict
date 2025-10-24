@@ -198,8 +198,6 @@ function QuantileLinearRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
-	local quantilesList = self.quantilesList
-	
 	local ModelParameters = self.ModelParameters
 
 	if (ModelParameters) then
@@ -208,7 +206,7 @@ function QuantileLinearRegressionModel:train(featureMatrix, labelVector)
 
 	else
 
-		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], #quantilesList})
+		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], #self.quantilesList})
 
 	end
 	

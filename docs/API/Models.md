@@ -127,7 +127,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [ProximalPolicyOptimizationClip](Models/ProximalPolicyOptimizationClip.md)                                     | PPO-Clip                      | 🟢         | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs    |
 | [SoftActorCritic](Models/SoftActorCritic.md)                                                                   | SAC                           | 💾 🛡️ 🟢  | Self-Learning Vehicle AIs                                                 |
 | [DeepDeterministicPolicyGradient](Models/DeepDeterministicPolicyGradient.md)                                   | DDPG                          | 🟢         | Self-Learning Vehicle AIs                                                 |
-| [TwinDelayedDeepDeterministicPolicyGradient](Models/TwinDelayedDeepDeterministicPolicyGradient.md)             | TD3                           | 🟢         | Self-Learning Vehicle AIs                                                 |
+| [TwinDelayedDeepDeterministicPolicyGradient](Models/TwinDelayedDeepDeterministicPolicyGradient.md)             | TD3                           | 🟢 🛡️      | Self-Learning Vehicle AIs                                                 |
 
 ## Tabular Reinforcement Learning
 

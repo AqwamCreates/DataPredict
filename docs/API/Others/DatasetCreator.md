@@ -42,7 +42,7 @@ DatasetCreator:setDatasetRandomizationProbability(datasetRandomizationProbabilit
 
 ### randomizeDataset()
 
-Randomizes the each data positions in te dataset 
+Randomizes the each data positions in the dataset.
 
 ```
 DatasetCreator:randomizeDataset(featureMatrix: matrix, labelVectorOrMatrix: matrix): matrix, matrix

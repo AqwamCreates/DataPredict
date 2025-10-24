@@ -28,11 +28,11 @@
 
 local BaseInstance = require("Core_BaseInstance")
 
-ModelDatasetCreator = {}
+DatasetCreator = {}
 
-ModelDatasetCreator.__index = ModelDatasetCreator
+DatasetCreator.__index = DatasetCreator
 
-setmetatable(ModelDatasetCreator, BaseInstance)
+setmetatable(DatasetCreator, BaseInstance)
 
 local defaultTrainDataRatio = 0.7
 
@@ -118,31 +118,31 @@ local function checkNumberOfData(featureMatrix, labelVectorOrMatrix)
 	
 end
 
-function ModelDatasetCreator.new(parameterDictionary)
+function DatasetCreator.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewModelDatasetCreator = BaseInstance.new(parameterDictionary)
+	local NewDatasetCreator = BaseInstance.new(parameterDictionary)
 
-	setmetatable(NewModelDatasetCreator, ModelDatasetCreator)
+	setmetatable(NewDatasetCreator, DatasetCreator)
 	
-	NewModelDatasetCreator:setName("ModelDatasetCreator")
+	NewDatasetCreator:setName("DatasetCreator")
 
-	NewModelDatasetCreator:setClassName("ModelDatasetCreator")
+	NewDatasetCreator:setClassName("DatasetCreator")
 	
-	NewModelDatasetCreator.trainDataRatio = parameterDictionary.trainDataRatio or defaultTrainDataRatio
+	NewDatasetCreator.trainDataRatio = parameterDictionary.trainDataRatio or defaultTrainDataRatio
 	
-	NewModelDatasetCreator.validationDataRatio = parameterDictionary.validationDataRatio or defaultValidationDataRatio
+	NewDatasetCreator.validationDataRatio = parameterDictionary.validationDataRatio or defaultValidationDataRatio
 	
-	NewModelDatasetCreator.testDataRatio = parameterDictionary.testDataRatio or defaultTestDataRatio
+	NewDatasetCreator.testDataRatio = parameterDictionary.testDataRatio or defaultTestDataRatio
 	
-	NewModelDatasetCreator.datasetRandomizationProbability = parameterDictionary.datasetRandomizationProbability or defaultDatasetRandomizationProbability
+	NewDatasetCreator.datasetRandomizationProbability = parameterDictionary.datasetRandomizationProbability or defaultDatasetRandomizationProbability
 	
-	return NewModelDatasetCreator
+	return NewDatasetCreator
 	
 end
 
-function ModelDatasetCreator:setDatasetSplitPercentages(trainDataRatio, validationDataRatio, testDataPercentage)
+function DatasetCreator:setDatasetSplitPercentages(trainDataRatio, validationDataRatio, testDataPercentage)
 	
 	self.trainDataRatio = trainDataRatio or self.trainDataRatio
 
@@ -152,13 +152,13 @@ function ModelDatasetCreator:setDatasetSplitPercentages(trainDataRatio, validati
 	
 end
 
-function ModelDatasetCreator:setDatasetRandomizationProbability(datasetRandomizationProbability)
+function DatasetCreator:setDatasetRandomizationProbability(datasetRandomizationProbability)
 	
 	self.datasetRandomizationProbability = datasetRandomizationProbability or self.datasetRandomizationProbability
 	
 end
 
-function ModelDatasetCreator:randomizeDataset(featureMatrix, labelVectorOrMatrix)
+function DatasetCreator:randomizeDataset(featureMatrix, labelVectorOrMatrix)
 	
 	local numberOfData = checkNumberOfData(featureMatrix, labelVectorOrMatrix)
 	
@@ -196,7 +196,7 @@ function ModelDatasetCreator:randomizeDataset(featureMatrix, labelVectorOrMatrix
 	
 end
 
-function ModelDatasetCreator:splitDataset(datasetMatrix)
+function DatasetCreator:splitDataset(datasetMatrix)
 	
 	local numberOfData = checkNumberOfData(datasetMatrix)
 	
@@ -280,4 +280,4 @@ function ModelDatasetCreator:splitDataset(datasetMatrix)
 	
 end
 
-return ModelDatasetCreator
+return DatasetCreator

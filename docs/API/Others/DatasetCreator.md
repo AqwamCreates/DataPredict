@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Others](../Others.md) - ModelDatasetCreator
+# [API Reference](../../API.md) - [Others](../Others.md) - DatasetCreator
 
 Modifies existing dataset so that it can be used by the models.
 
@@ -9,7 +9,7 @@ Modifies existing dataset so that it can be used by the models.
 Creates a ModelDatasetCreator object.
 
 ```
-ModelDatasetCreator.new(): ModelDatasetCreatorObject
+DatasetCreator.new(): ModelDatasetCreatorObject
 ```
 
 ## Functions
@@ -19,7 +19,7 @@ ModelDatasetCreator.new(): ModelDatasetCreatorObject
 Set the split percentages for training, validation and testing. The current default values are 0.7 for training and 0.3 for testing.
 
 ```
-ModelDatasetCreator:setDatasetSplitPercentages(trainDataPercentage: number, validationDataPercentage: number, testDataPercentage: number)
+DatasetCreator:setDatasetSplitPercentages(trainDataPercentage: number, validationDataPercentage: number, testDataPercentage: number)
 ```
 
 #### Parameters:
@@ -33,7 +33,7 @@ ModelDatasetCreator:setDatasetSplitPercentages(trainDataPercentage: number, vali
 ### setDatasetRandomizationProbability()
 
 ```
-ModelDatasetCreator:setDatasetRandomizationProbability(datasetRandomizationProbability: number)
+DatasetCreator:setDatasetRandomizationProbability(datasetRandomizationProbability: number)
 ```
 
 #### Parameters:
@@ -45,7 +45,7 @@ ModelDatasetCreator:setDatasetRandomizationProbability(datasetRandomizationProba
 Randomizes the each data positions in te dataset 
 
 ```
-ModelDatasetCreator:randomizeDataset(featureMatrix: matrix, labelVectorOrMatrix: matrix): matrix, matrix
+DatasetCreator:randomizeDataset(featureMatrix: matrix, labelVectorOrMatrix: matrix): matrix, matrix
 ```
 
 #### Parameters:
@@ -65,7 +65,7 @@ ModelDatasetCreator:randomizeDataset(featureMatrix: matrix, labelVectorOrMatrix:
 Predict the values for given data.
 
 ```
-ModelDatasetCreator:splitDataset(datasetMatrix): matrix, matrix, matrix
+DatasetCreator:splitDataset(datasetMatrix): matrix, matrix, matrix
 ```
 
 #### Parameters:

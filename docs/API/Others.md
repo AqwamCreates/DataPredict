@@ -1,10 +1,8 @@
 # [API Reference](../API.md) - Others
 
-[ConfusionMatrixCreator](Others/ConfusionMatrixCreator.md)
+[NormalModelModifier](Others/NormalModelModifier.md)
 
 [ModelChecker](Others/ModelChecker.md)
-
-[ModelDatasetCreator](Others/ModelDatasetCreator.md)
 
 [ModelParametersMerger](Others/ModelParametersMerger.md)
 
@@ -12,7 +10,9 @@
 
 [ModelTrainingModifier](Others/ModelTrainingModifier.md)
 
-[Regularizer](Others/Regularizer.md)
+[DatasetCreator](Others/DatasetCreator.md)
+
+[ConfusionMatrixCreator](Others/ConfusionMatrixCreator.md)
 
 [OneVsAll](Others/OneVsAll.md)
 

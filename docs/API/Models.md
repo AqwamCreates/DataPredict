@@ -4,13 +4,13 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model Type                     | Count |
 |--------------------------------|-------|
-| Regression                     | 7     |
+| Regression                     | 8     |
 | Classification                 | 13    |
 | Clustering                     | 8     |
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 12    |
 | Generative                     | 4     |
-| Total                          | 65    |
+| Total                          | 66    |
 
 ### Legend
 

@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - QuantileLinearRegression
+# [API Reference](../../API.md) - [Models](../Models.md) - BayesianQuantileLinearRegression
 
-QuantileLinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses matrix calculations to find the best model parameters.
+BayesianQuantileLinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses matrix calculations to find the best model parameters.
 
 ## Stored Model Parameters
 
@@ -17,7 +17,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-QuantileLinearRegression.new(priorPrecision: number, likelihoodPrecision: number, useLogProbabilities: boolean): ModelObject
+BayesianQuantileLinearRegression.new(priorPrecision: number, likelihoodPrecision: number, useLogProbabilities: boolean): ModelObject
 ```
 
 #### Parameters:
@@ -37,7 +37,7 @@ QuantileLinearRegression.new(priorPrecision: number, likelihoodPrecision: number
 Train the model.
 
 ```
-QuantileLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
+BayesianQuantileLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 ```
 
 #### Parameters:
@@ -51,7 +51,7 @@ QuantileLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict the value for a given data.
 
 ```
-QuantileLinearRegression:predict(featureMatrix: Matrix, quantileVector: Matrix): Matrix -OR- Matrix, Matrix
+BayesianQuantileLinearRegression:predict(featureMatrix: Matrix, quantileVector: Matrix): Matrix -OR- Matrix, Matrix
 ```
 
 #### Parameters:

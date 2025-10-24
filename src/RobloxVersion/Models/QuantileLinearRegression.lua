@@ -28,144 +28,258 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local BaseModel = require(script.Parent.BaseModel)
-
-local zTableFunction = require(script.Parent.Parent.Cores.ZTableFunction)
+local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
 QuantileLinearRegressionModel = {}
 
 QuantileLinearRegressionModel.__index = QuantileLinearRegressionModel
 
-setmetatable(QuantileLinearRegressionModel, BaseModel)
+setmetatable(QuantileLinearRegressionModel, GradientMethodBaseModel)
 
-local defaultPriorPrecision = 1.0 -- alpha
+local defaultMaximumNumberOfIterations = 500
 
-local defaultLikelihoodPrecision = 1.0 -- beta
+local defaultLearningRate = 0.3
+
+local function quantileLoss(hypothesisValue, labelValue, tau)
+	
+	local differenceValue = hypothesisValue - labelValue
+	
+	local multiplierValue = ((differenceValue < 0) and (tau - 1)) or tau
+	
+	local quantileLossValue = differenceValue * multiplierValue
+
+	return quantileLossValue
+	
+end
+
+function QuantileLinearRegressionModel:calculateCost(hypothesisVector, labelVector)
+
+	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
+
+	local costVector = AqwamTensorLibrary:applyFunction(quantileLoss, hypothesisVector, labelVector, {self.quantilesList}) 
+
+	local totalCost = AqwamTensorLibrary:sum(costVector)
+	
+	local Regularizer = self.Regularizer
+
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
+
+	local averageCost = totalCost / #labelVector
+
+	return averageCost
+
+end
+
+function QuantileLinearRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+
+	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
+
+	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
+
+	return hypothesisVector
+
+end
+
+function QuantileLinearRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
+
+	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+
+	local featureMatrix = self.featureMatrix
+
+	if (not featureMatrix) then error("Feature matrix not found.") end
+	
+	local gradientWeightMatrix = AqwamTensorLibrary:applyFunction(function(lossValue, tau) return (lossValue < 0) and (tau - 1) or tau end, lossMatrix, {self.quantilesList})
+
+	local costFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), gradientWeightMatrix)
+
+	if (self.areGradientsSaved) then self.costFunctionDerivativeMatrix = costFunctionDerivativeMatrix end
+
+	return costFunctionDerivativeMatrix
+
+end
+
+function QuantileLinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+
+	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
+	
+	local ModelParameters = self.ModelParameters
+	
+	local Regularizer = self.Regularizer
+	
+	local Optimizer = self.Optimizer
+	
+	local learningRate = self.learningRate
+
+	if (Regularizer) then
+
+		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
+
+		costFunctionDerivativeMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
+
+	end
+
+	costFunctionDerivativeMatrix = AqwamTensorLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
+
+	if (Optimizer) then 
+
+		costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix, ModelParameters) 
+
+	else
+
+		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrix)
+
+	end
+
+	self.ModelParameters = AqwamTensorLibrary:subtract(ModelParameters, costFunctionDerivativeMatrix)
+
+end
+
+function QuantileLinearRegressionModel:update(lossMatrix, clearAllMatrices)
+
+	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+
+	local numberOfData = #lossMatrix
+
+	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
+
+	self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+
+	if (clearAllMatrices) then 
+		
+		self.featureMatrix = nil 
+		
+		self.costFunctionDerivativeMatrix = nil
+		
+	end
+
+end
 
 function QuantileLinearRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewQuantileLinearRegressionModel = BaseModel.new(parameterDictionary)
+	local NewQuantileLinearRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
 
 	setmetatable(NewQuantileLinearRegressionModel, QuantileLinearRegressionModel)
-
+	
 	NewQuantileLinearRegressionModel:setName("QuantileLinearRegression")
+	
+	local quantilesList = parameterDictionary.quantilesList or {}
+	
+	if (#quantilesList == 0) then quantilesList[1] = 0.5 end
 
-	NewQuantileLinearRegressionModel.priorPrecision = parameterDictionary.priorPrecision or defaultPriorPrecision
+	NewQuantileLinearRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 
-	NewQuantileLinearRegressionModel.likelihoodPrecision = parameterDictionary.likelihoodPrecision or defaultLikelihoodPrecision
+	NewQuantileLinearRegressionModel.quantilesList = quantilesList
+
+	NewQuantileLinearRegressionModel.Optimizer = parameterDictionary.Optimizer
+
+	NewQuantileLinearRegressionModel.Regularizer = parameterDictionary.Regularizer
 
 	return NewQuantileLinearRegressionModel
-	
+
+end
+
+function QuantileLinearRegressionModel:setOptimizer(Optimizer)
+
+	self.Optimizer = Optimizer
+
+end
+
+function QuantileLinearRegressionModel:setRegularizer(Regularizer)
+
+	self.Regularizer = Regularizer
+
 end
 
 function QuantileLinearRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
+	
+	local quantilesList = self.quantilesList
+	
+	local ModelParameters = self.ModelParameters
 
-	local priorPrecision = self.priorPrecision
+	if (ModelParameters) then
 
-	local likelihoodPrecision = self.likelihoodPrecision
+		if (#featureMatrix[1] ~= #ModelParameters) then error("The number of features are not the same as the model parameters.") end
 
-	local numberOfFeatures = #featureMatrix[1]
+	else
 
-	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
+		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], #quantilesList})
 
-	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
+	end
+	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
-	local priorPrecisionIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
+	local Optimizer = self.Optimizer
 
-	priorPrecisionIdentityMatrix = AqwamTensorLibrary:multiply(priorPrecisionIdentityMatrix, priorPrecision)
+	local costArray = {}
 
-	local scaledDotProductFeatureMatrix = AqwamTensorLibrary:multiply(dotProductFeatureMatrix, likelihoodPrecision)
+	local numberOfIterations = 0
+	
+	local cost
 
-	local inverseSNMatrix = AqwamTensorLibrary:add(priorPrecisionIdentityMatrix, scaledDotProductFeatureMatrix)
+	repeat
 
-	local posteriorCovarianceMatrix = AqwamTensorLibrary:inverse(inverseSNMatrix)
+		numberOfIterations = numberOfIterations + 1
 
-	if (not posteriorCovarianceMatrix) then error("Could not invert matrix for posterior.") end
+		self:iterationWait()
 
-	local dotProductFeatureMatrixLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
+		local hypothesisVector = self:calculateHypothesisVector(featureMatrix, true)
 
-	local posteriorMeanVectorPart1 = AqwamTensorLibrary:dotProduct(posteriorCovarianceMatrix, dotProductFeatureMatrixLabelVector)
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-	local posteriorMeanVector = AqwamTensorLibrary:multiply(posteriorMeanVectorPart1, likelihoodPrecision)
+			return self:calculateCost(hypothesisVector, labelVector)
 
-	self.ModelParameters = {posteriorMeanVector, posteriorCovarianceMatrix}
+		end)
+
+		if (cost) then 
+
+			table.insert(costArray, cost)
+
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+
+		end
+
+		local lossVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
+
+		self:update(lossVector, true)
+
+	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
+
+	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
+
+	return costArray
 
 end
 
-function QuantileLinearRegressionModel:predict(featureMatrix, quantileVector)
+function QuantileLinearRegressionModel:predict(featureMatrix)
 	
-	if (quantileVector) then
-		
-		if (#featureMatrix ~= #quantileVector) then error("The feature matrix and the quantile vector does not contain the same number of rows.") end
-		
-	end
-
 	local ModelParameters = self.ModelParameters
 	
-	local posteriorMeanVector
-	
-	local posteriorCovarianceMatrix
-
 	if (not ModelParameters) then
 		
-		local dimensionSizeArray = {#featureMatrix[1], 1}
-
-		posteriorMeanVector = self:initializeMatrixBasedOnMode(dimensionSizeArray)
+		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], #self.quantilesList})
 		
-		posteriorCovarianceMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
-
-		self.ModelParameters = {posteriorMeanVector, posteriorCovarianceMatrix}
-		
-	else
-		
-		posteriorMeanVector = ModelParameters[1]
-
-		posteriorCovarianceMatrix = ModelParameters[2]
-
-	end
-	
-	local predictedMeanVector = AqwamTensorLibrary:dotProduct(featureMatrix, posteriorMeanVector)
-
-	if (not quantileVector) then return predictedMeanVector end
-	
-	local likelihoodPrecision = self.likelihoodPrecision
-	
-	local inverseLikelihoodPrecision = 1 / likelihoodPrecision
-	
-	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
-	
-	local predictedVarianceVectorPart1 = AqwamTensorLibrary:dotProduct(featureMatrix, posteriorCovarianceMatrix)
-	
-	local predictedVarianceVectorPart2 = AqwamTensorLibrary:dotProduct(predictedVarianceVectorPart1, transposedFeatureMatrix)
-	
-	local predictedVarianceVector = {}
-	
-	for i, predictedVarianceTable in ipairs(predictedVarianceVectorPart2) do
-		
-		predictedVarianceVector[i] = {predictedVarianceTable[i] + inverseLikelihoodPrecision}
-		
-	end
-	
-	local predictedStandardDeviationVector = AqwamTensorLibrary:applyFunction(math.sqrt, predictedVarianceVector)
-	
-	local predictedQuantileVector = {}
-	
-	local zValue
-	
-	for i, probabilityTable in ipairs(quantileVector) do
-		
-		zValue = zTableFunction:getStandardNormalInverseCumulativeDistributionFunction(probabilityTable[1])
-		
-		predictedQuantileVector[i] = {predictedMeanVector[i][1] + zValue * predictedStandardDeviationVector[i][1]}
+		self.ModelParameters = ModelParameters
 		
 	end
 
-	return predictedMeanVector, predictedQuantileVector 
-	
+	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
+
+	return predictedVector
+
 end
 
 return QuantileLinearRegressionModel

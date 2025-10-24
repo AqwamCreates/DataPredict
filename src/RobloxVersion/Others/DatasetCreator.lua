@@ -180,25 +180,29 @@ function DatasetCreator:randomizeDataset(featureMatrix, labelVectorOrMatrix)
 	
 	for index = 1, numberOfData, 1 do
 		
-		if (datasetRandomizationProbability < math.random()) then continue end
-		
-		local randomIndex = math.random(0, index)
-		
-		randomIndex = math.ceil(randomIndex)
-		
-		local temporaryRandomFeatureVector = randomizedFeatureMatrix[index]
-		
-		table.remove(randomizedFeatureMatrix, index)
-		
-		table.insert(randomizedFeatureMatrix, randomIndex, temporaryRandomFeatureVector)
-		
-		if (type(labelVectorOrMatrix) == "nil") then continue end
-		
-		local temporaryRandomLabelVector = randomizedLabelVectorOrMatrix[index]
+		if (datasetRandomizationProbability < math.random()) then
+			
+			local randomIndex = math.random(0, index)
 
-		table.remove(randomizedLabelVectorOrMatrix, index)
+			randomIndex = math.ceil(randomIndex)
 
-		table.insert(randomizedLabelVectorOrMatrix, randomIndex, temporaryRandomLabelVector)
+			local temporaryRandomFeatureVector = randomizedFeatureMatrix[index]
+
+			table.remove(randomizedFeatureMatrix, index)
+
+			table.insert(randomizedFeatureMatrix, randomIndex, temporaryRandomFeatureVector)
+
+			if (type(labelVectorOrMatrix) == "nil") then 
+				
+				local temporaryRandomLabelVector = randomizedLabelVectorOrMatrix[index]
+
+				table.remove(randomizedLabelVectorOrMatrix, index)
+
+				table.insert(randomizedLabelVectorOrMatrix, randomIndex, temporaryRandomLabelVector)
+				
+			end
+			
+		end
 		
 	end
 	
@@ -207,81 +211,65 @@ function DatasetCreator:randomizeDataset(featureMatrix, labelVectorOrMatrix)
 end
 
 function DatasetCreator:splitDataset(datasetMatrix)
-	
+
 	local numberOfData = checkNumberOfData(datasetMatrix)
 	
 	local datasetCopy = deepCopyTable(datasetMatrix)
-	
+
 	local numberOfTrainData = math.floor(self.trainDataRatio * numberOfData)
 	
 	local numberOfValidationData = math.floor(self.validationDataRatio * numberOfData)
 	
 	local numberOfTestData = math.floor(self.testDataRatio * numberOfData)
+
+	local trainDataMaximumValue = numberOfTrainData
 	
-	local trainDataMaxValue = numberOfTrainData
+	local trainValidationDataMaximumValue = numberOfTrainData + numberOfValidationData
 	
-	local trainValidationDataMaxValue = numberOfTrainData + numberOfValidationData
-	
-	local trainValidationTestDataMaxValue = trainValidationDataMaxValue + numberOfTestData
-	
+	local trainValidationTestDataMaximumValue = trainValidationDataMaximumValue + numberOfTestData
+
 	local trainDatasetMatrix = {}
-
-	local validationDatasetMatrix = {}
-
-	local testDatasetMatrix = {}
 	
+	local validationDatasetMatrix = {}
+	
+	local testDatasetMatrix = {}
+
 	for index = 1, numberOfData, 1 do
-		
-		if (index < numberOfTrainData) then 
-			
+
+		if (index < trainDataMaximumValue) then 
+
 			table.insert(trainDatasetMatrix, datasetCopy[index])
-			continue
-			
-		end
-		
-		if (index < trainValidationDataMaxValue) then 
+
+		elseif (index < trainValidationDataMaximumValue) then
 
 			table.insert(validationDatasetMatrix, datasetCopy[index])
-			continue
 
-		end
-		
-		if (index < trainValidationTestDataMaxValue) then 
+		elseif (index < trainValidationTestDataMaximumValue) then
 
 			table.insert(testDatasetMatrix, datasetCopy[index])
-			continue
 
-		end
-		
-		if (numberOfTrainData > 0) then
-			
+		elseif (numberOfTrainData > 0) then
+
 			table.insert(trainDatasetMatrix, datasetCopy[index])
-			continue
-			
-		end
-		
-		if (numberOfValidationData > 0) then
+
+		elseif (numberOfValidationData > 0) then
 
 			table.insert(validationDatasetMatrix, datasetCopy[index])
-			continue
 
-		end
-		
-		if (numberOfTestData > 0) then
+		elseif (numberOfTestData > 0) then
 
 			table.insert(testDatasetMatrix, datasetCopy[index])
-			continue
 
 		end
-		
+
 	end
 
 	trainDatasetMatrix = returnNilIfTableIsEmpty(trainDatasetMatrix)
-
-	validationDatasetMatrix = returnNilIfTableIsEmpty(validationDatasetMatrix)
-
-	testDatasetMatrix = returnNilIfTableIsEmpty(testDatasetMatrix)
 	
+	validationDatasetMatrix = returnNilIfTableIsEmpty(validationDatasetMatrix)
+	
+	testDatasetMatrix = returnNilIfTableIsEmpty(testDatasetMatrix)
+
 	table.clear(datasetCopy)
 	
 	datasetCopy = nil

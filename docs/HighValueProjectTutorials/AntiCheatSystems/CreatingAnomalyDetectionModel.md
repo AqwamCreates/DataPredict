@@ -18,7 +18,7 @@ Before we train our model, we will first need to construct a model, in which we 
 
 local DataPredict = require(DataPredict)
 
--- Number of clusters are highly dependent on how may playstyles you have. However, we recommend with 1 cluster as a starting point.
+-- Number of clusters are highly dependent on how many playstyles you have. However, we recommend with 1 cluster as a starting point.
 
 local AnomalyPredictionModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 1})
 

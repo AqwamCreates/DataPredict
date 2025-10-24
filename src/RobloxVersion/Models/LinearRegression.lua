@@ -102,7 +102,7 @@ function LinearRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
 
 	local costFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossMatrix)
 
-	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrix end
+	if (self.areGradientsSaved) then self.costFunctionDerivativeMatrix = costFunctionDerivativeMatrix end
 
 	return costFunctionDerivativeMatrix
 
@@ -158,7 +158,7 @@ function LinearRegressionModel:update(lossMatrix, clearAllMatrices)
 
 		self.featureMatrix = nil 
 
-		self.Gradients = nil
+		self.costFunctionDerivativeMatrix = nil
 
 	end
 

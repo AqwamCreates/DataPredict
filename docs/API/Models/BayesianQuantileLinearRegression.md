@@ -17,7 +17,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-BayesianQuantileLinearRegression.new(priorPrecision: number, likelihoodPrecision: number, useLogProbabilities: boolean): ModelObject
+BayesianQuantileLinearRegression.new(priorPrecision: number, likelihoodPrecision: number): ModelObject
 ```
 
 #### Parameters:
@@ -58,7 +58,7 @@ BayesianQuantileLinearRegression:predict(featureMatrix: Matrix, quantileMatrix: 
 
 * featureMatrix: Matrix containing data.
 
-* quantileVector: A matrix or vector specifying the quantiles to predict for each data point. Must be between 0 and 1.
+* quantileMatrix: A matrix or vector specifying the quantiles to predict for each data point. Must be between 0 and 1.
 
 #### Returns:
 

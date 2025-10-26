@@ -12,7 +12,7 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Time-To-Leave Prediction Model](RetentionSystems/CreatingProbabilisiticTimeToLeavePredictionModel.md)
+* [Creating Probabilisitic Time-To-Leave Prediction Model](RetentionSystems/CreatingProbabilisiticTimeToLeavePredictionModel.md)
 
   * Combines both "Time-To-Leave Prediction Model" and "Probability-To-Leave Prediction Model".
 

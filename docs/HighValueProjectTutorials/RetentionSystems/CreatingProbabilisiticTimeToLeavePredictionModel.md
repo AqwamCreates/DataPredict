@@ -176,9 +176,17 @@ In other to produce predictions from our model, we must perform this operation:
 
 local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
--- Set the target time to leave to estimate their probabilities.
-        
-local expectedTimeToLeaveMatrix = {{expectedTimeToLeaveVector1, expectedTimeToLeaveVector2, expectedTimeToLeaveVector3}}
+-- Set the target time to leave to estimate their probabilities. Ensure that we have the current time as well.
+
+local currentTime = os.time()
+
+local expectedTimeToLeave1 = currentTime + 5
+
+local expectedTimeToLeave2 = currentTime + 15
+
+local expectedTimeToLeave3 = currentTime + 30
+
+local expectedTimeToLeaveMatrix = {{expectedTimeToLeave1, expectedTimeToLeave2, expectedTimeToLeave3}}
         
 local meanTimeToLeaveVector, probabilityToLeaveMatrix = LeavePredictionModel:predict(currentPlayerDataVector, expectedTimeToLeaveMatrix)
 

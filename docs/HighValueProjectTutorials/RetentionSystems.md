@@ -12,6 +12,14 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
+* [Creating Time-To-Leave Prediction Model](RetentionSystems/CreatingProbabilisiticTimeToLeavePredictionModel.md)
+
+  * Combines both "Time-To-Leave Prediction Model" and "Probability-To-Leave Prediction Model".
+
+  * No need to add new content; the model can use existing content to optimize your games.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * [Creating Probability-To-Interact Prediction Model](RetentionSystems/CreatingProbabilityToInteractPredictionModel.md)
 
   * Can be combined with generative and reward-maximization-based models for optimized retention and interaction.

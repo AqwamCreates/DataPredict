@@ -16,7 +16,7 @@ Before we train our model, we will first need to construct a regression model as
 
 local DataPredict = require(DataPredict)
 
-local LeavePredictionModel = DataPredict.Models.BayesianinearRegression.new()
+local LeavePredictionModel = DataPredict.Models.BayesianLinearRegression.new()
 
 ```
 

@@ -139,7 +139,7 @@ local function onItemPurchase(itemName, itemDataVector)
 
      local rewardValue = 50
 
-    showRecommendations(itemName, itemDataVector, reward, "rewardValue")
+    showRecommendations(itemName, itemDataVector, reward, "Recommend")
 
 end
 

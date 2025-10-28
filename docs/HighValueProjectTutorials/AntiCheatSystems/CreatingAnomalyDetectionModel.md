@@ -1,6 +1,6 @@
 # Creating Anomaly Detection Model
 
-Hello guys! Today, I will be showing you on how to create a retention-based model that could detect unusual player behavior that often cheating or suspicious actions.
+Hello guys! Today, I will be showing you on how to create a anomaly-detection-based model that could detect unusual player behavior that often cheating or suspicious actions.
 
 ## Setting Up
 
@@ -9,8 +9,9 @@ Before we train our model, we will first need to construct a model, in which we 
 | Approach | Model                            | Properties                     | Notes                                                                                                                                         |
 | -------- | -------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1        | Expectation-Maximization         | Incremental, Probabilistic     | Good for anomaly detection; can be updated with partial data, can produce multiple "normal" clusters (e.g. different player playstyles).      |
-| 2        | Gaussian Naive Bayes             | Incremental, Generative        | Not commonly used in anomaly detection; fast, can be updated with partial data, requries features are independent (rare in real player data). |
-| 3        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based  | Good for anomaly detection; cannot be updated real-time, heavier to run, best with best with "radial basis function" kernel.                  |
+| 2        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based  | Good for anomaly detection; cannot be updated real-time, heavier to run, best with best with "radial basis function" kernel.                  |
+| 3        | Gaussian Naive Bayes             | Incremental, Generative        | Not commonly used in anomaly detection; fast, can be updated with partial data, requries features are independent (rare in real player data). |
+
 
 ### Approach 1: Expectation-Maximization
 
@@ -18,25 +19,13 @@ Before we train our model, we will first need to construct a model, in which we 
 
 local DataPredict = require(DataPredict)
 
--- Number of clusters are highly dependent on how may playstyles you have. However, we recommend with 1 cluster as a starting point.
+-- Number of clusters are highly dependent on how many playstyles you have. However, we recommend with 1 cluster as a starting point.
 
 local AnomalyPredictionModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 1})
 
 ```
 
-### Approach 2: Gaussian Naive Bayes
-
-```lua
-
-local DataPredict = require(DataPredict)
-
--- There are no parameters to set here.
-
-local AnomalyPredictionModel = DataPredict.Models.GaussianNaiveBayes.new()
-
-```
-
-### Approach 3: One Class Support Vector Machine
+### Approach 2: One Class Support Vector Machine
 
 ```lua
 
@@ -45,6 +34,18 @@ local DataPredict = require(DataPredict)
 -- You must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
 
 local AnomalyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction"})
+
+```
+
+### Approach 3: Gaussian Naive Bayes
+
+```lua
+
+local DataPredict = require(DataPredict)
+
+-- There are no parameters to set here.
+
+local AnomalyPredictionModel = DataPredict.Models.GaussianNaiveBayes.new()
 
 ```
 
@@ -81,16 +82,6 @@ If you're concerned about that the model may produce wrong result heavily upon f
 local numberOfData = 100
 
 local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 3}, -100, 100) -- 100 random data with 3 features.
-
-```
-
-However, this require setting the model's parameters to these settings temporarily so that it can be biased to "0" at start up as shown below.
-
-```lua
-
-AnomalyPredictionModel.maximumNumberOfIterations = 100
-
-AnomalyPredictionModel.learningRate = 0.3
 
 ```
 

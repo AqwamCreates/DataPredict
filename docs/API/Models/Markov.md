@@ -7,10 +7,12 @@
 Creates a new base model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-Markov.new(): ModelObject
+Markov.new(learningRate: number, StatesList: {any}, ObservationsList: {any}): ModelObject
 ```
 
 #### Parameters:
+
+* learningRate: The speed at which the algorithm learns. Recommended to set between 0 and 1.
 
 * StatesList: A list containing all the states.
 

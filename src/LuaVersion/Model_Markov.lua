@@ -28,25 +28,25 @@
 
 local BaseModel = require("Model_BaseModel")
 
-Markov = {}
+MarkovModel = {}
 
-Markov.__index = Markov
+MarkovModel.__index = MarkovModel
 
-setmetatable(Markov, BaseModel)
+setmetatable(MarkovModel, BaseModel)
 
 local defaultLearningRate = 0.1
 
-function Markov.new(parameterDictionary)
+function MarkovModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewMarkov = BaseModel.new(parameterDictionary)
+	local NewMarkovModel = BaseModel.new(parameterDictionary)
 	
-	setmetatable(NewMarkov, Markov)
+	setmetatable(NewMarkovModel, MarkovModel)
 	
-	NewMarkov:setName("Markov")
+	NewMarkovModel:setName("Markov")
 
-	NewMarkov:setClassName("Markov")
+	NewMarkovModel:setClassName("Markov")
 	
 	local isHidden = parameterDictionary.isHidden
 	
@@ -56,33 +56,33 @@ function Markov.new(parameterDictionary)
 	
 	if (type(isHidden) ~= "boolean") then isHidden = (#ObservationsList > 0) and (ObservationsList ~= StatesList) end
 	
-	NewMarkov.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	NewMarkovModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
-	NewMarkov.isHidden = isHidden
+	NewMarkovModel.isHidden = isHidden
 	
-	NewMarkov.StatesList = StatesList
+	NewMarkovModel.StatesList = StatesList
 	
-	NewMarkov.ObservationsList = ObservationsList
+	NewMarkovModel.ObservationsList = ObservationsList
 	
-	NewMarkov.ModelParameters = parameterDictionary.ModelParameters
+	NewMarkovModel.ModelParameters = parameterDictionary.ModelParameters
 	
-	return NewMarkov
+	return NewMarkovModel
 	
 end
 
-function Markov:setLearningRate(learningRate)
+function MarkovModel:setLearningRate(learningRate)
 
 	self.learningRate = learningRate
 
 end
 
-function Markov:getLearningRate()
+function MarkovModel:getLearningRate()
 
 	return self.learningRate
 
 end
 
-function Markov:train(previousStateVector, currentStateVector, observationStateVector)
+function MarkovModel:train(previousStateVector, currentStateVector, observationStateVector)
 	
 	local learningRate = self.learningRate
 	
@@ -181,7 +181,7 @@ function Markov:train(previousStateVector, currentStateVector, observationStateV
 	
 end
 
-function Markov:predict(stateVector, returnOriginalOutput)
+function MarkovModel:predict(stateVector, returnOriginalOutput)
 	
 	local isHidden = self.isHidden
 	
@@ -263,28 +263,28 @@ function Markov:predict(stateVector, returnOriginalOutput)
 
 end
 
-function Markov:setStatesList(StatesList)
+function MarkovModel:setStatesList(StatesList)
 	
 	self.StatesList = StatesList
 	
 end
 
-function Markov:getStatesList()
+function MarkovModel:getStatesList()
 	
 	return self.StatesList
 	
 end
 
-function Markov:setObservationsList(ObservationsList)
+function MarkovModel:setObservationsList(ObservationsList)
 	
 	self.ObservationsList = ObservationsList
 	
 end
 
-function Markov:getObservationsList()
+function MarkovModel:getObservationsList()
 	
 	return self.ObservationsList
 	
 end
 
-return Markov
+return MarkovModel

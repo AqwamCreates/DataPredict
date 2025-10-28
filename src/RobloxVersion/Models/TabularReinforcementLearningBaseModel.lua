@@ -104,8 +104,6 @@ end
 
 function TabularReinforcementLearningBaseModel:predict(stateVector, returnOriginalOutput)
 	
-	local resultTensor = {}
-	
 	local StatesList = self.StatesList
 	
 	local ActionsList = self.ActionsList
@@ -119,6 +117,8 @@ function TabularReinforcementLearningBaseModel:predict(stateVector, returnOrigin
 		self.ModelParameters = ModelParameters
 		
 	end
+	
+	local resultTensor = {}
 	
 	for i, wrappedState in ipairs(stateVector) do
 		

@@ -42,27 +42,27 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewDeepReinforcementLearningBaseModel = BaseModel.new(parameterDictionary)
+	local NewTabularReinforcementLearningBaseModel = BaseModel.new(parameterDictionary)
 	
-	setmetatable(NewDeepReinforcementLearningBaseModel, TabularReinforcementLearningBaseModel)
+	setmetatable(NewTabularReinforcementLearningBaseModel, TabularReinforcementLearningBaseModel)
 	
-	NewDeepReinforcementLearningBaseModel:setName("TabularReinforcementLearningBaseModel")
+	NewTabularReinforcementLearningBaseModel:setName("TabularReinforcementLearningBaseModel")
 
-	NewDeepReinforcementLearningBaseModel:setClassName("TabularReinforcementLearningModel")
+	NewTabularReinforcementLearningBaseModel:setClassName("TabularReinforcementLearningModel")
 	
-	NewDeepReinforcementLearningBaseModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	NewTabularReinforcementLearningBaseModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 
-	NewDeepReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
+	NewTabularReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
 	
-	NewDeepReinforcementLearningBaseModel.Optimizer = parameterDictionary.Optimizer
+	NewTabularReinforcementLearningBaseModel.Optimizer = parameterDictionary.Optimizer
 	
-	NewDeepReinforcementLearningBaseModel.StatesList = parameterDictionary.StatesList or {}
+	NewTabularReinforcementLearningBaseModel.StatesList = parameterDictionary.StatesList or {}
 	
-	NewDeepReinforcementLearningBaseModel.ActionsList = parameterDictionary.ActionsList or {}
+	NewTabularReinforcementLearningBaseModel.ActionsList = parameterDictionary.ActionsList or {}
 	
-	NewDeepReinforcementLearningBaseModel.ModelParameters = parameterDictionary.ModelParameters
+	NewTabularReinforcementLearningBaseModel.ModelParameters = parameterDictionary.ModelParameters
 	
-	return NewDeepReinforcementLearningBaseModel
+	return NewTabularReinforcementLearningBaseModel
 	
 end
 

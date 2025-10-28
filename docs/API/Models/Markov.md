@@ -24,6 +24,12 @@ Markov.new(learningRate: number, StatesList: {any}, ObservationsList: {any}): Mo
 
 ## Functions
 
+### train()
+
+```
+Markov:train(previousStateVector, currentStateVector, observationStateVector)
+```
+
 ### predict()
 
 ```

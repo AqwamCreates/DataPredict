@@ -1,6 +1,6 @@
 # AI Players Systems
 
-* Creating Data-Based Reactionary AI Players
+* [Creating Data-Based Reactionary AI Player Model](AIPlayersSystems/CreatingDataBasedReactionaryAIPlayerModel.md)
 
   * Same as data-based AI players.
  

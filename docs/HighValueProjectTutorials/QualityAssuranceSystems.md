@@ -1,4 +1,4 @@
-# Quality Assurance
+# Quality Assurance Systems
 
 * Creating Reward-Maximization-Based AI Bug Hunter
 

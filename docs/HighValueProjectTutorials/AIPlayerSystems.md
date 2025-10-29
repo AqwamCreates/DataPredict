@@ -1,6 +1,6 @@
 # AI Player Systems
 
-* Creating Simple Data-Based AI Player Model
+* [Creating Simple Data-Based AI Player Model](AIPlayerSystems/CreatingSimpleDataBasedAIPlayerModel.md)
 
   * Uses real players' data so that the AI players mimic real players.
  

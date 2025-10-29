@@ -108,6 +108,8 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 		
 	end
 	
+	local learningRateComplement = 1 - learningRate
+	
 	local previousState
 	
 	local currentState
@@ -122,9 +124,19 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 	
 	local unwrappedPreviousStateTransitionProbabilityVector
 	
+	local targetTransitionProbabilityValue
+	
+	local newTransitionProbabilityValue
+	
 	local sumProbability
 	
 	local unwrappedCurrentStateEmissionVector
+	
+	local currentStateEmissionValue
+	
+	local targetStateEmissionProbabilityValue
+	
+	local newStateEmissionProbabilityValue
 	
 	for i, unwrappedPreviousStateVector in ipairs(previousStateVector) do
 		
@@ -139,12 +151,20 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 		if (previousStateIndex) and (currentStateIndex) then
 			
 			unwrappedPreviousStateTransitionProbabilityVector = transitionProbabilityMatrix[previousStateIndex]
-
-			unwrappedPreviousStateTransitionProbabilityVector[currentStateIndex] = ((1 - learningRate) * unwrappedPreviousStateTransitionProbabilityVector[currentStateIndex]) + learningRate
-
+			
 			sumProbability = 0
 			
-			for _, probability in ipairs(unwrappedPreviousStateTransitionProbabilityVector) do sumProbability = sumProbability + probability end
+			for j, previousStateTransitionProbabilityValue in ipairs(unwrappedPreviousStateTransitionProbabilityVector) do
+				
+				targetTransitionProbabilityValue = ((j == currentStateIndex) and 1) or 0
+				
+				newTransitionProbabilityValue = previousStateTransitionProbabilityValue + learningRate * (targetTransitionProbabilityValue - previousStateTransitionProbabilityValue)
+				
+				unwrappedPreviousStateTransitionProbabilityVector[j] = newTransitionProbabilityValue
+				
+				sumProbability = sumProbability + newTransitionProbabilityValue
+				
+			end
 			
 			for j, probability in ipairs(unwrappedPreviousStateTransitionProbabilityVector) do unwrappedPreviousStateTransitionProbabilityVector[j] = probability / sumProbability end
 			
@@ -161,12 +181,20 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 				if (currentStateIndex) and (observationStateIndex) then
 
 					unwrappedCurrentStateEmissionVector = emissionProbabilityMatrix[currentStateIndex]
-
-					unwrappedCurrentStateEmissionVector[observationStateIndex] = ((1 - learningRate) * unwrappedCurrentStateEmissionVector[observationStateIndex]) + learningRate
-
+					
 					sumProbability = 0
 
-					for _, probability in ipairs(unwrappedCurrentStateEmissionVector) do sumProbability = sumProbability + probability end
+					for j, currentStateEmissionProbabilityValue in ipairs(unwrappedCurrentStateEmissionVector) do
+
+						targetStateEmissionProbabilityValue = ((j == observationStateIndex) and 1) or 0
+
+						newStateEmissionProbabilityValue = currentStateEmissionProbabilityValue + learningRate * (targetStateEmissionProbabilityValue - currentStateEmissionProbabilityValue)
+
+						unwrappedCurrentStateEmissionVector[j] = newStateEmissionProbabilityValue
+
+						sumProbability = sumProbability + newStateEmissionProbabilityValue
+
+					end
 
 					for j, probability in ipairs(unwrappedCurrentStateEmissionVector) do unwrappedCurrentStateEmissionVector[j] = probability / sumProbability end
 

@@ -142,7 +142,7 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 	
 	local sumNewTransitionProbability
 	
-	local unwrappedCurrentStateEmissionVector
+	local unwrappedCurrentStateEmissionProbabilityVector
 	
 	local targetStateEmissionProbabilityValue
 	
@@ -212,11 +212,11 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 
 				if (currentStateIndex) and (observationStateIndex) then
 
-					unwrappedCurrentStateEmissionVector = emissionProbabilityMatrix[currentStateIndex]
+					unwrappedCurrentStateEmissionProbabilityVector = emissionProbabilityMatrix[currentStateIndex]
 					
 					stateEmissionProbabilityChangeVector = {}
 
-					for j, currentStateEmissionProbabilityValue in ipairs(unwrappedCurrentStateEmissionVector) do
+					for j, currentStateEmissionProbabilityValue in ipairs(unwrappedCurrentStateEmissionProbabilityVector) do
 
 						targetStateEmissionProbabilityValue = ((j == observationStateIndex) and 1) or 0
 						
@@ -236,7 +236,7 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 
 					end
 					
-					newStateEmissionProbabilityVector = AqwamTensorLibrary:add({unwrappedCurrentStateEmissionVector}, stateEmissionProbabilityChangeVector)
+					newStateEmissionProbabilityVector = AqwamTensorLibrary:add({unwrappedCurrentStateEmissionProbabilityVector}, stateEmissionProbabilityChangeVector)
 					
 					sumNewStateEmissionProbability = AqwamTensorLibrary:sum(newStateEmissionProbabilityVector)
 					

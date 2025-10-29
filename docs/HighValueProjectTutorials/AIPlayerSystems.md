@@ -38,6 +38,8 @@
 
   * May outcompete real players.
 
+  * Minimal implementation takes a minimum of 1 hour using DataPredict™, especially if custom actions are associated with the model's output.
+
 * [Creating Simple Reward-Maximization-Based Reactionary AI Player Model](AIPlayerSystems/CreatingSimpleRewardMaximizationBasedReactionaryAIPlayerModel.md)
 
   * Same as above.

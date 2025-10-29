@@ -188,7 +188,11 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 				
 			end
 			
-			for j, probability in ipairs(unwrappedPreviousStateTransitionProbabilityVector) do unwrappedPreviousStateTransitionProbabilityVector[j] = probability / sumProbability end
+			if (sumProbability ~= 0) then
+				
+				for j, probability in ipairs(unwrappedPreviousStateTransitionProbabilityVector) do unwrappedPreviousStateTransitionProbabilityVector[j] = probability / sumProbability end
+				
+			end
 			
 		end
 		
@@ -229,8 +233,12 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 						sumProbability = sumProbability + newStateEmissionProbabilityValue
 
 					end
-
-					for j, probability in ipairs(unwrappedCurrentStateEmissionVector) do unwrappedCurrentStateEmissionVector[j] = probability / sumProbability end
+					
+					if (sumProbability ~= 0) then
+						
+						for j, probability in ipairs(unwrappedCurrentStateEmissionVector) do unwrappedCurrentStateEmissionVector[j] = probability / sumProbability end
+						
+					end
 
 				end
 			end

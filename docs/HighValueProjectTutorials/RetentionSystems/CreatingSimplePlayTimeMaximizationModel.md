@@ -205,8 +205,6 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
---[[ 
-
 ModelParameters = PlayTimeMaximizationModel:getModelParameters()
 
 PlayTimeMaximizationModel:setModelParameters(ModelParameters)

@@ -8,6 +8,8 @@
 
   * Best for mixing machine learning with game designers' control.
 
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * Creating Reward-Maximization-Based Reactionary AI Player Model
 
   * Same as reward-maximization-based AI players.

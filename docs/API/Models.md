@@ -153,10 +153,10 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy
 
-| Model                                                        | Alternate Names | Properties | Use Cases               |
-|--------------------------------------------------------------|-----------------|------------|-------------------------|
-| [Markov](Models/Markov.md)                                   | None            | 💾 🟢     | Player State Prediction |
-| [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md) | DBN             | 💾 🟢     | Player State Prediction |
+| Model                                                        | Alternate Names | Properties | Use Cases                                 |
+|--------------------------------------------------------------|-----------------|------------|-------------------------------------------|
+| [Markov](Models/Markov.md)                                   | None            | 💾 🟢     | Single Features Player State Prediction   |
+| [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md) | DBN             | 💾 🟢     | Multiple Features Player State Prediction |
 
 ## Generative
 

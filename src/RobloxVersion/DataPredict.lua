@@ -176,6 +176,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	Markov = require(Models.Markov),
 	
+	DynamicBayesianNetwork = require(Models.DynamicBayesianNetwork),
+	
 	GenerativeAdversarialNetwork = require(Models.GenerativeAdversarialNetwork),
 	
 	ConditionalGenerativeAdversarialNetwork = require(Models.ConditionalGenerativeAdversarialNetwork),

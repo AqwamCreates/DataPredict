@@ -218,8 +218,6 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
---[[ 
-
 ModelParameters = ReactionaryPlayerModel:getModelParameters()
 
 ReactionaryPlayerModel:setModelParameters(ModelParameters)

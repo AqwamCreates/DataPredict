@@ -76,7 +76,7 @@ local function calculateCategoricalProbability(useLogProbabilities, featureTable
 		
 		local featureProbability = featureProbabilityDictionaryArray[f][value] or probabilityInitialization
 		
-		if useLogProbabilities then
+		if (useLogProbabilities) then
 
 			categoricalProbability = categoricalProbability + math.log(featureProbability)
 

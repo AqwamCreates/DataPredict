@@ -16,113 +16,36 @@ Before we start creating our model, we first need to visualize on how we will de
 
 local PlayerStatesList = {
 
-    "PlayerAwayFromKeyboard",
-    "PlayerIdle",
-    "PlayerRewarded",
+    "PlayerAttack",
+    "PlayerBlock",
+    "PlayerFollow",
+    "PlayerEscaping",
     "PlayerPickingUpItem",
-    "PlayerActiveForQuest",
-    "PlayerActiveAgainstEnemy",
-    "PlayerActiveAgainstEnemyBoss",
-    "PlayerLeft",
-    "PlayerLostConnection",
 
 }
 
 ```
-
-### ActionsList
-
-```lua
-
-local ActionsList = {
-
-  "NoEvent",
-  "FreeGiftEvent",
-  "ResourceMultiplierEvent",
-  "QuestEvent",
-  "ItemSpawnEvent",
-  "BossSpawnEvent",
-  "LimitedTimeQuestEvent",
-  "LimitedTimeItemSpawnEvent",
-  "LimitedTimeBossSpawnEvent",
-
-}
-
-```
-
 ## Constructing Our Model
 
 ### Constructing Our Tabular Reinforcement Learning Model
 
 ```lua
 
-
---[[
-
-    You can use Tabular SARSA here for safer learning.
-
-    However, because our model isn't that complex, it is better to use the model that choses
-    the best actions like Tabular Q-learning.
-
-    We can then further improve its performance by using eligibility traces to keep track on what actions is to
-    be "blamed" for causing the player to reach next state.
-
-    Feeling bold as well? Let's add optimizers to the mix reserved for speeding up neural network learning, but I over engineered
-    the tabular reinforcement learning models so that these can use optimizers. 
-
---]]
-
-local EligibilityTrace = DataPredict.EligibilityTrace.AccumulatingTrace.new()
-
---[[
-
-    Got plenty of optimizers here, but AdaptiveMomentEstimation (Adam) is always
-    the best performing on in deep reinforcement learning research.
-
---]]
-
-local Optimizer = DataPredict.Optimizer.AdaptiveMomentEstimation.new()
-
-local TabularReinforcementLearningModel = DataPredict.Model.TabularQLearning.new({
-
-    StatesList = StatesList,
-    ActionsList = ActionsList,
-    EligibilityTrace = EligibilityTrace,
-    Optimizer = Optimizer
-
-})
+local PlayerStatePredictionModel = DataPredict.Model.TabularQLearning.new({StatesList = StatesList})
 
 ```
 
-### Constructing Our Categorical Policy Quick Setup Model
-
-This part makes it easier for us to set up our model, but it is not strictly necessary. However, I do recommend you to use them as they contain built-in functions for handing training and predictions.
-
-```lua
-
-local PlayTimeMaximizationModel = DataPredict.QuickSetups.CategoricalPolicy.new()
-
--- Inserting our Deep Reinforcement Learning Model here.
-
-PlayTimeMaximizationModel:setModel(TabularReinforcementLearningModel)
-
-```
-
-## Training And Prediction
-
-Because the way we have designed our Categorical Policy Quick Setup, you can immediately train while producing predictions for your player by calling reinforce() function.
-
-This is because reinforce() function is responsible for producing prediction and perform pre-calculations at the same time as that is required to train our models.
+## Training
 
 ```lua
 
 -- Here, you notice that there is a reward value being inserted here. Generally, when you first call this, the reward value should be zero.
 
-local eventName = PlayTimeMaximizationModel:reinforce(playerDataVector, rewardValue)
+PlayerStatePredictionModel:train(previousPlayerStateVector, currentPlayerStateVector)
 
 ```
 
-## Rewarding Our Model
+## Counter-Attacking
 
 In order to assign the reward to that event is selected, we must first deploy the chosen event and observe if the player stayed for that event.
 
@@ -130,16 +53,14 @@ Below, it shows an example code for this.
 
 ```lua
 
-local eventFunctionDictionary = {
+local counterFunctionDictionary = {
 
-  ["NoEvent"] = nil,
-  ["ResourceMultiplierEvent"] = resourceMultiplierEvent,
-  ["QuestEvent"] = questEvent,
-  ["ItemSpawnEvent"] = itemSpawnEvent,
+  ["PlayerAttack"] = enemyBlock,
+  ["PlayerBlock"] = enemyGoBehind,
+  ["PlayerFollow"] = enemyAttack,
+  ["PlayerEscaping"] = enemyFollow,
+  ["PlayerPickingUpItem"] = enemyAttack,
   ["BossSpawnEvent"] = bossSpawnEvent,
-  ["LimitedTimeQuestEvent"] = limitedTimeQuestEvent,
-  ["LimitedTimeItemSpawnEvent"] = limitedTimeItemSpawnEvent,
-  ["LimitedTimeBossSpawnEvent"] = limitedTimeBossSpawnEvent,
 
 }
 
@@ -147,31 +68,25 @@ local function run(Player)
 
     local isPlayerInServer = true
 
-    local rewardValue = 0
+    local currentPlayerState
 
-    local playerState
+    local nextPlayerState
 
-    local eventName
-
-    local eventFunction
+    local counterFunction
 
     while isPlayerInServer do
 
         playerState = getPlayerState(Player)
     
-        eventName = PlayTimeMaximizationModel:reinforce(playerState, rewardValue)
+        nextPlayerState = PlayTimeMaximizationModel:predict(currentPlayerState)
 
-        eventFunction = eventFunctionDictionary[eventName]
+        counterFunction = counterFunctionDictionary[nextPlayerState]
 
-        if (eventFunction) then eventFunction() end
-
-        task.wait(30)
+        if (counterFunction) then counterFunction() end
 
         isPlayerInServer = checkIfPlayerIsInServer(Player)
 
-        -- Player leaving the game is more of a "rarer" and "extremely undesirable" event, therefore a very large negative value is used.
-
-        rewardValue = (isPlayerInServer and 20) or -100
+        task.wait()
 
     end
 
@@ -207,9 +122,9 @@ Under this case, you can continue using the existing model parameters that was s
 
 --[[ 
 
-ModelParameters = PlayTimeMaximizationModel:getModelParameters()
+ModelParameters = PlayerStatePredictionModel:getModelParameters()
 
-PlayTimeMaximizationModel:setModelParameters(ModelParameters)
+PlayerStatePredictionModel:setModelParameters(ModelParameters)
 
 ```
 

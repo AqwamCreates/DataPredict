@@ -34,7 +34,9 @@ Before we can produce ourselves a difficulty generation model, we first need to 
 
 ```lua
 
-local EnemyDataGenerationModel = DataPredict.Models.KMeans.new({numberOfClusters = 1, distanceFunction = "Euclidean"}) -- For this tutorial, we will assume that we will generate one type of enemy.
+-- For this tutorial, we will assume that we will generate two clusters that have similar player data.
+
+local TeamBalancingModel = DataPredict.Models.KMeans.new({numberOfClusters = 2, distanceFunction = "Euclidean"}) 
 
 ```
 
@@ -44,11 +46,13 @@ In order to find the center of the clusters, we first need all the players' comb
 
 ```lua
 
+local playerIndexMapping = {player1, player2, player3}
+
 local playerCombatDataMatrix = {
 
-  {player1MaximumHealth, player1MaximumDamage, player1CashAmount},
-  {player2MaximumHealth, player2MaximumDamage, player2CashAmount},
-  {player3MaximumHealth, player3MaximumDamage, player3CashAmount},
+  {player1KillDeathRatio, player1ScorePerKill},
+  {player2KillDeathRatio, player2ScorePerKill},
+  {player3KillDeathRatio, player3ScorePerKill},
 
 }
 
@@ -60,53 +64,47 @@ Once you collected the players' combat data, you must call model's train() funct
 
 ```lua
 
-EnemyDataGenerationModel:train(playerCombatDataMatrix)
+TeamBalancingModel:train(playerCombatDataMatrix)
 
 ```
 
-Once train() is called, call the getModelParameters() function to get the center of cluster location data.
+Once train() is called, call the predict() function to assign players to individual clusters.
 
 ```lua
 
-local centerOfPlayerDataMatrix = EnemyDataGenerationModel:getModelParameters()
-
-centerOfPlayerDataMatrix = centerOfPlayerDataMatrix[1] -- This is a must if you're using K-Means, Meanshift or Expectation-Maximization because these models stores the ModelParameters as a table of matrices.
+local assignedClusterNumberVector = TeamBalancingModel:predict(playerCombatDataMatrix)
 
 ```
 
-## Generating The Enemy Data Using The Center Of Clusters
+Then we add custom logic where we assign teams to each players. 
 
-Since we have three clusters, we can expect three rows for our matrix. As such we can process our game logic here.
+In here, we're making sure we're alternating clusters because each clusters have similar player data
 
-```lua
+```
 
-for clusterIndex, unwrappedCenterOfDataVector in ipairs(centerOfEnemyDataMatrix) do
+local teamCountArray = {0, 0}
 
-  local playerBaseHealth = unwrappedCenterOfDataVector[1]
+for playerIndex, unwrappedClusterNumberVector in ipairs(assignedClusterNumberVector) do
+
+   local clusterNumber = unwrappedClusterNumberVector[1]
+
+   local player = playerIndexMapping[playerIndex]
+
   
-  local playerBaseDamage = unwrappedCenterOfDataVector[2]
-  
-  local playerBaseCashAmount = unwrappedCenterOfDataVector[3]
-
-  local enemyHealth = playerBaseHealth * 0.5
-
-  local enemyDamage = playerDamage * 0.1
-
-  local enemyCashReward =  playerBaseCashAmount / 3
-
-  spawnEnemy(enemyHealth, enemyDamage, enemyCashReward)
 
 end
 
+
 ```
 
-## Resetting Our Difficulty Generation System
+
+## Resetting Our Team Balancing System
 
 By default, when you reuse the machine learning models from DataPredict, it will interact with the existing model parameters. As such, we need to reset the model parameters by calling the setModelParameters() function and set it to "nil".
 
 ```lua
 
-DifficultyGenerationModel:setModelParameters(nil)
+TeamBalancingModel:setModelParameters(nil)
 
 ```
 

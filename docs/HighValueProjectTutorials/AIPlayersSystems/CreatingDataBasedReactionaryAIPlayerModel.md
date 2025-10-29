@@ -1,4 +1,4 @@
-# Creating Simple Play Time Maximization Model
+# Creating Data-Based Reactionary AI Player Model
 
 For this tutorial, we need multiple things to build our model, this includes:
 

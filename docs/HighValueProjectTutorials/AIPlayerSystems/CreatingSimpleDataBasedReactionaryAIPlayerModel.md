@@ -54,7 +54,6 @@ local counterFunctionDictionary = {
   ["PlayerFollow"] = enemyAttack,
   ["PlayerEscaping"] = enemyFollow,
   ["PlayerPickingUpItem"] = enemyAttack,
-  ["BossSpawnEvent"] = bossSpawnEvent,
 
 }
 

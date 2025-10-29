@@ -1,10 +1,6 @@
 # Creating Data-Based Reactionary AI Player Model
 
-For this tutorial, we need multiple things to build our model, this includes:
-
-* Tabular Reinforcement Learning Model (Tabular Q-Learning or Tabular SARSA)
-
-* Categorical Policy Quick Setup
+For this tutorial, we need Markov model to build player state prediction model.
 
 ## Designing Our Feature Vector And Classes List
 
@@ -26,8 +22,6 @@ local PlayerStatesList = {
 
 ```
 ## Constructing Our Model
-
-### Constructing Our Tabular Reinforcement Learning Model
 
 ```lua
 
@@ -72,19 +66,25 @@ local function run(Player)
 
     local nextPlayerState
 
+    local previousPlayerState
+
     local counterFunction
 
     while isPlayerInServer do
 
-        playerState = getPlayerState(Player)
+        currentPlayerState = getPlayerState(Player)
+
+        PlayerStatePredictionModel:train(previousPlayerState, currentPlayerState)
     
-        nextPlayerState = PlayTimeMaximizationModel:predict(currentPlayerState)
+        nextPlayerState = PlayerStatePredictionModel:predict(currentPlayerState)
 
         counterFunction = counterFunctionDictionary[nextPlayerState]
 
         if (counterFunction) then counterFunction() end
 
         isPlayerInServer = checkIfPlayerIsInServer(Player)
+
+        previousPlayerState = currentPlayerState
 
         task.wait()
 

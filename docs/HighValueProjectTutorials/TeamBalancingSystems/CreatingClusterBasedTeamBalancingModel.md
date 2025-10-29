@@ -82,7 +82,9 @@ In here, we're making sure we're alternating clusters because each clusters have
 
 ```
 
-local teamCountArray = {0, 0}
+local team1PlayerTypeCountArray = {0, 0}
+
+local team2PlayerTypeCountArray = {0, 0}
 
 for playerIndex, unwrappedClusterNumberVector in ipairs(assignedClusterNumberVector) do
 
@@ -90,7 +92,31 @@ for playerIndex, unwrappedClusterNumberVector in ipairs(assignedClusterNumberVec
 
    local player = playerIndexMapping[playerIndex]
 
-  
+  local team1PlayerTypeCount = team1PlayerTypeCountArray[clusterNumber]
+
+  local team2PlayerTypeCount = team2PlayerTypeCountArray[clusterNumber]
+
+  local teamToAssign
+
+  if (team1PlayerTypeCount < team2PlayerTypeCount) then
+
+    team1PlayerTypeCountArray[clusterNumber] = team1PlayerTypeCount + 1
+
+    teamToAssign = 1
+
+  elseif (team2PlayerTypeCount < team1PlayerTypeCount) then
+
+    team2PlayerTypeCountArray[clusterNumber] = team2PlayerTypeCount + 1
+
+    teamToAssign = 2
+
+  else
+
+    
+
+  end
+
+  assignTeam(player, teamToAssign)
 
 end
 

@@ -39,3 +39,7 @@ Markov:predict(stateVector, returnOriginalOutput)
 ## Inherited From
 
 * [BaseModel](BaseModel.md)
+
+## References
+
+* [Hidden Markov Model](https://web.stanford.edu/~jurafsky/slp3/A.pdf)

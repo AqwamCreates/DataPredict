@@ -39,7 +39,7 @@ PlayerStatePredictionModel:train(previousPlayerStateVector, currentPlayerStateVe
 
 ```
 
-## Counter-Attacking
+## Executing Predicted Player States
 
 In order to assign the reward to that event is selected, we must first deploy the chosen event and observe if the player stayed for that event.
 

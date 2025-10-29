@@ -18,7 +18,15 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* Creating Reward-Maximization-Based AI Player Model
+* Creating Deep Data-Based AI Player Model
+
+* Creating Deep Data-Based Reactionary AI Player Model
+
+* Creating Simple Reward-Maximization-Based AI Player Model
+
+* Creating Simple Reward-Maximization-Based Reactionary AI Player Model
+
+* Creating Deep Reward-Maximization-Based AI Player Model
 
   * Allows the creation of AI players that maximizes positive rewards.
  
@@ -26,7 +34,7 @@
 
   * May exploit bugs and glitches.
 
-* Creating Reward-Maximization-Based Reactionary AI Player Model
+* Creating Deep Reward-Maximization-Based Reactionary AI Player Model
 
   * Same as reward-maximization-based AI players.
  

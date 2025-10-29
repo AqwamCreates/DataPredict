@@ -11,7 +11,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Tabular Reinforcement Learning | 12    |
 | Sequence Modelling             | 2     |
 | Generative                     | 4     |
-| Total                          | 67    |
+| Total                          | 68    |
 
 ### Legend
 

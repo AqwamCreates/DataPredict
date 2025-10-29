@@ -64,6 +64,10 @@ function MarkovModel.new(parameterDictionary)
 	
 	NewMarkovModel.ObservationsList = ObservationsList
 	
+	NewMarkovModel.TransitionProbabilityOptimizer = parameterDictionary.TransitionProbabilityOptimizer
+	
+	NewMarkovModel.EmissionProbabilityOptimizer = parameterDictionary.EmissionProbabilityOptimizer
+	
 	NewMarkovModel.ModelParameters = parameterDictionary.ModelParameters
 	
 	return NewMarkovModel
@@ -92,6 +96,10 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 	
 	local ObservationsList = self.ObservationsList
 	
+	local TransitionProbabilityOptimizer = self.TransitionProbabilityOptimizer
+	
+	local EmissionProbabilityOptimizer = self.EmissionProbabilityOptimizer
+	
 	local ModelParameters = self.ModelParameters or {}
 	
 	local numberOfStates = #StatesList
@@ -107,8 +115,6 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 		emissionProbabilityMatrix = ModelParameters[2] or self:initializeMatrixBasedOnMode({numberOfStates, numberOfObservations})
 		
 	end
-	
-	local learningRateComplement = 1 - learningRate
 	
 	local previousState
 	
@@ -126,6 +132,8 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 	
 	local targetTransitionProbabilityValue
 	
+	local transitionProbabilityChangeValue
+	
 	local newTransitionProbabilityValue
 	
 	local sumProbability
@@ -135,6 +143,8 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 	local currentStateEmissionValue
 	
 	local targetStateEmissionProbabilityValue
+	
+	local stateEmissionProbabilityChangeValue
 	
 	local newStateEmissionProbabilityValue
 	
@@ -158,7 +168,19 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 				
 				targetTransitionProbabilityValue = ((j == currentStateIndex) and 1) or 0
 				
-				newTransitionProbabilityValue = previousStateTransitionProbabilityValue + learningRate * (targetTransitionProbabilityValue - previousStateTransitionProbabilityValue)
+				transitionProbabilityChangeValue = targetTransitionProbabilityValue - previousStateTransitionProbabilityValue
+				
+				if (TransitionProbabilityOptimizer) then
+					
+					transitionProbabilityChangeValue = TransitionProbabilityOptimizer:calculate(learningRate, transitionProbabilityChangeValue)
+					
+				else
+					
+					transitionProbabilityChangeValue = learningRate * transitionProbabilityChangeValue
+					
+				end
+				
+				newTransitionProbabilityValue = previousStateTransitionProbabilityValue + transitionProbabilityChangeValue
 				
 				unwrappedPreviousStateTransitionProbabilityVector[j] = newTransitionProbabilityValue
 				
@@ -187,8 +209,20 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 					for j, currentStateEmissionProbabilityValue in ipairs(unwrappedCurrentStateEmissionVector) do
 
 						targetStateEmissionProbabilityValue = ((j == observationStateIndex) and 1) or 0
+						
+						stateEmissionProbabilityChangeValue = targetStateEmissionProbabilityValue - currentStateEmissionProbabilityValue
+						
+						if (EmissionProbabilityOptimizer) then
 
-						newStateEmissionProbabilityValue = currentStateEmissionProbabilityValue + learningRate * (targetStateEmissionProbabilityValue - currentStateEmissionProbabilityValue)
+							stateEmissionProbabilityChangeValue = EmissionProbabilityOptimizer:calculate(learningRate, stateEmissionProbabilityChangeValue)
+
+						else
+
+							stateEmissionProbabilityChangeValue = learningRate * stateEmissionProbabilityChangeValue
+
+						end
+
+						newStateEmissionProbabilityValue = currentStateEmissionProbabilityValue + stateEmissionProbabilityChangeValue
 
 						unwrappedCurrentStateEmissionVector[j] = newStateEmissionProbabilityValue
 

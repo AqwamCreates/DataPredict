@@ -2,7 +2,7 @@
 
 * [Creating Simple Data-Based AI Player Model](AIPlayerSystems/CreatingSimpleDataBasedAIPlayerModel.md)
 
-  * Uses real players' data so that the AI players mimic real players.
+  * Uses real players' states so that the AI players mimic real players.
  
   * Matches with real players' general performance.
 
@@ -10,7 +10,7 @@
 
 * [Creating Simple Data-Based Reactionary AI Player Model](AIPlayerSystems/CreatingSimpleDataBasedReactionaryAIPlayerModel.md)
 
-  * Same as data-based AI players.
+  * Same as above.
  
   * The only difference is that you give counter attacks to players' potential attacks.
 
@@ -20,7 +20,17 @@
 
 * Creating Deep Data-Based AI Player Model
 
+  * Uses real players' environment data so that the AI players mimic real players.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * Creating Deep Data-Based Reactionary AI Player Model
+
+  * Same as above.
+
+  * The only difference is that you give counter attacks to players' potential attacks.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
 * Creating Simple Reward-Maximization-Based AI Player Model
 

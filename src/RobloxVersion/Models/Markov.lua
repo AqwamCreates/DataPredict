@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
 local BaseModel = require(script.Parent.BaseModel)
 
 MarkovModel = {}
@@ -134,19 +136,21 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 	
 	local transitionProbabilityChangeValue
 	
-	local newTransitionProbabilityValue
+	local transitionProbabilityChangeVector
 	
-	local sumProbability
+	local newTransitionProbabilityVector
+	
+	local sumNewTransitionProbability
 	
 	local unwrappedCurrentStateEmissionVector
 	
-	local currentStateEmissionValue
-	
 	local targetStateEmissionProbabilityValue
 	
-	local stateEmissionProbabilityChangeValue
+	local stateEmissionProbabilityChangeVector
 	
-	local newStateEmissionProbabilityValue
+	local newStateEmissionProbabilityVector
+	
+	local sumNewStateEmissionProbability
 	
 	for i, unwrappedPreviousStateVector in ipairs(previousStateVector) do
 		
@@ -162,35 +166,37 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 			
 			unwrappedPreviousStateTransitionProbabilityVector = transitionProbabilityMatrix[previousStateIndex]
 			
-			sumProbability = 0
+			transitionProbabilityChangeVector = {}
 			
 			for j, previousStateTransitionProbabilityValue in ipairs(unwrappedPreviousStateTransitionProbabilityVector) do
 				
 				targetTransitionProbabilityValue = ((j == currentStateIndex) and 1) or 0
 				
-				transitionProbabilityChangeValue = targetTransitionProbabilityValue - previousStateTransitionProbabilityValue
-				
-				if (TransitionProbabilityOptimizer) then
-					
-					transitionProbabilityChangeValue = TransitionProbabilityOptimizer:calculate(learningRate, transitionProbabilityChangeValue)
-					
-				else
-					
-					transitionProbabilityChangeValue = learningRate * transitionProbabilityChangeValue
-					
-				end
-				
-				newTransitionProbabilityValue = previousStateTransitionProbabilityValue + transitionProbabilityChangeValue
-				
-				unwrappedPreviousStateTransitionProbabilityVector[j] = newTransitionProbabilityValue
-				
-				sumProbability = sumProbability + newTransitionProbabilityValue
+				transitionProbabilityChangeVector[j] = {targetTransitionProbabilityValue - previousStateTransitionProbabilityValue}
 				
 			end
 			
-			if (sumProbability ~= 0) then
+			transitionProbabilityChangeVector = {transitionProbabilityChangeVector}
+			
+			if (TransitionProbabilityOptimizer) then
+
+				transitionProbabilityChangeVector = TransitionProbabilityOptimizer:calculate(learningRate, transitionProbabilityChangeVector)
+
+			else
+
+				transitionProbabilityChangeVector = AqwamTensorLibrary:multiply(learningRate, transitionProbabilityChangeVector)
+
+			end
+			
+			newTransitionProbabilityVector = AqwamTensorLibrary:add({unwrappedPreviousStateTransitionProbabilityVector}, transitionProbabilityChangeVector)
+			
+			sumNewTransitionProbability = AqwamTensorLibrary:sum(newTransitionProbabilityVector)
+			
+			if (sumNewTransitionProbability ~= 0) then
 				
-				for j, probability in ipairs(unwrappedPreviousStateTransitionProbabilityVector) do unwrappedPreviousStateTransitionProbabilityVector[j] = probability / sumProbability end
+				newTransitionProbabilityVector = AqwamTensorLibrary:divide(newTransitionProbabilityVector, sumNewTransitionProbability)
+
+				transitionProbabilityMatrix[previousStateIndex] = newTransitionProbabilityVector[1]
 				
 			end
 			
@@ -208,38 +214,40 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 
 					unwrappedCurrentStateEmissionVector = emissionProbabilityMatrix[currentStateIndex]
 					
-					sumProbability = 0
+					stateEmissionProbabilityChangeVector = {}
 
 					for j, currentStateEmissionProbabilityValue in ipairs(unwrappedCurrentStateEmissionVector) do
 
 						targetStateEmissionProbabilityValue = ((j == observationStateIndex) and 1) or 0
 						
-						stateEmissionProbabilityChangeValue = targetStateEmissionProbabilityValue - currentStateEmissionProbabilityValue
-						
-						if (EmissionProbabilityOptimizer) then
-
-							stateEmissionProbabilityChangeValue = EmissionProbabilityOptimizer:calculate(learningRate, stateEmissionProbabilityChangeValue)
-
-						else
-
-							stateEmissionProbabilityChangeValue = learningRate * stateEmissionProbabilityChangeValue
-
-						end
-
-						newStateEmissionProbabilityValue = currentStateEmissionProbabilityValue + stateEmissionProbabilityChangeValue
-
-						unwrappedCurrentStateEmissionVector[j] = newStateEmissionProbabilityValue
-
-						sumProbability = sumProbability + newStateEmissionProbabilityValue
+						stateEmissionProbabilityChangeVector[j] = targetStateEmissionProbabilityValue - currentStateEmissionProbabilityValue
 
 					end
 					
-					if (sumProbability ~= 0) then
+					stateEmissionProbabilityChangeVector = {stateEmissionProbabilityChangeVector}
+					
+					if (EmissionProbabilityOptimizer) then
+
+						stateEmissionProbabilityChangeVector = EmissionProbabilityOptimizer:calculate(learningRate, stateEmissionProbabilityChangeVector)
+
+					else
+
+						stateEmissionProbabilityChangeVector = AqwamTensorLibrary:multiply(learningRate, stateEmissionProbabilityChangeVector)
+
+					end
+					
+					newStateEmissionProbabilityVector = AqwamTensorLibrary:add({unwrappedCurrentStateEmissionVector}, stateEmissionProbabilityChangeVector)
+					
+					sumNewStateEmissionProbability = AqwamTensorLibrary:sum(newStateEmissionProbabilityVector)
+					
+					if (sumNewStateEmissionProbability ~= 0) then
 						
-						for j, probability in ipairs(unwrappedCurrentStateEmissionVector) do unwrappedCurrentStateEmissionVector[j] = probability / sumProbability end
+						newStateEmissionProbabilityVector = AqwamTensorLibrary:divide(newStateEmissionProbabilityVector, sumNewStateEmissionProbability)
+
+						emissionProbabilityMatrix[currentStateIndex] = newStateEmissionProbabilityVector[1]
 						
 					end
-
+					
 				end
 			end
 			

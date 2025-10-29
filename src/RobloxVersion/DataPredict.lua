@@ -174,6 +174,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	TabularOffPolicyMonteCarloControl = require(Models.TabularOffPolicyMonteCarloControl),
 	
+	Markov = require(Models.Markov),
+	
 	GenerativeAdversarialNetwork = require(Models.GenerativeAdversarialNetwork),
 	
 	ConditionalGenerativeAdversarialNetwork = require(Models.ConditionalGenerativeAdversarialNetwork),

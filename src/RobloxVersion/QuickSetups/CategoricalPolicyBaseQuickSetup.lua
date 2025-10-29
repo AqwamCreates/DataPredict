@@ -101,10 +101,10 @@ local function calculateProbability(valueVector, temperature)
 end
 
 local function sample(probabilityVector)
-
-	local totalProbability = 0
 	
 	local unwrappedProbabilityVector = probabilityVector[1]
+
+	local totalProbability = 0
 
 	for _, probability in ipairs(unwrappedProbabilityVector) do
 
@@ -112,7 +112,7 @@ local function sample(probabilityVector)
 
 	end
 
-	local randomValue = math.random() * totalProbability
+	local randomProbability = math.random() * totalProbability
 
 	local cumulativeProbability = 0
 
@@ -120,11 +120,11 @@ local function sample(probabilityVector)
 
 		cumulativeProbability = cumulativeProbability + probability
 
-		if (randomValue <= cumulativeProbability) then return index end
+		if (cumulativeProbability >= randomProbability) then return index end
 
 	end
 
-	return unwrappedProbabilityVector[#unwrappedProbabilityVector]
+	return #unwrappedProbabilityVector
 
 end
 

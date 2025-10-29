@@ -9,10 +9,12 @@ TabularReinforcementLearningBaseModel is a base class for tabular reinforcement 
 Creates a new base model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularReinforcementLearningBaseModel.new(discountFactor: number): ModelObject
+TabularReinforcementLearningBaseModel.new(learningRate: number, StatesList: {any}, ActionList: {any}, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
+
+* learningRate: The speed at which the algorithm learns. Recommended to set between 0 and 1.
 
 * StatesList: A list containing all the states.
 

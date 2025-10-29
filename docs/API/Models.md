@@ -9,8 +9,9 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Clustering                     | 8     |
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 12    |
+| Sequence Modelling             | 1     |
 | Generative                     | 4     |
-| Total                          | 66    |
+| Total                          | 67    |
 
 ### Legend
 
@@ -35,7 +36,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
   * Uses reverse-mode automatic differentiation and lazy differentiation evaluation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
 
-* Currently, DataPredict™ has ~90% (57 out of 66) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (58 out of 67) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -147,6 +148,14 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md) | Double Expected SARSA     | 🛡️ 🟢       | Balanced Self-Learning Grid AIs |
 | [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                       | MC                        | 🟢          | Online Self-Learning Grid AIs   |
 | [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                     | Off-Policy MC             | 🟢          | Offline Self-Learning Grid AIs  |
+
+## Sequence Modelling
+
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy
+
+| Model                             | Alternate Names | Properties | Use Cases               |
+|-----------------------------------|-----------------|------------|-------------------------|
+| [Markov](Models/Markov.md)        | None            | 💾 🟢     | Player State Prediction |
 
 ## Generative
 

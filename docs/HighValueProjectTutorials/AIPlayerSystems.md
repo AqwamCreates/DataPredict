@@ -34,7 +34,7 @@
 
 * Creating Simple Reward-Maximization-Based AI Player Model
 
-* Creating Simple Reward-Maximization-Based Reactionary AI Player Model
+* [Creating Simple Reward-Maximization-Based Reactionary AI Player Model](AIPlayerSystems/CreatingSimpleRewardMaximizationBasedReactionaryAIPlayerModel.md)
 
 * Creating Deep Reward-Maximization-Based AI Player Model
 

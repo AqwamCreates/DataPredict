@@ -50,9 +50,9 @@ local playerIndexMapping = {player1, player2, player3}
 
 local playerCombatDataMatrix = {
 
-  {player1KillDeathRatio, player1ScorePerKill},
-  {player2KillDeathRatio, player2ScorePerKill},
-  {player3KillDeathRatio, player3ScorePerKill},
+  {player1KillDeathRatio, player1ScorePerKill, player1AccuracyPercentage, player1PrecisionPercentage},
+  {player2KillDeathRatio, player2ScorePerKill, player2AccuracyPercentage, player2PrecisionPercentage},
+  {player3KillDeathRatio, player3ScorePerKill, player3AccuracyPercentage, player3PrecisionPercentage},
 
 }
 
@@ -80,7 +80,7 @@ Then we add custom logic where we assign teams to each players.
 
 In here, we're making sure we're alternating clusters because each clusters have similar player data
 
-```
+```lua
 
 local team1PlayerTypeCountArray = {0, 0}
 

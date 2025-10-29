@@ -6,6 +6,8 @@
  
   * Matches with real players' general performance.
 
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * [Creating Simple Data-Based Reactionary AI Player Model](AIPlayerSystems/CreatingSimpleDataBasedReactionaryAIPlayerModel.md)
 
   * Same as data-based AI players.

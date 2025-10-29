@@ -4,7 +4,7 @@ For this tutorial, we need Markov model to build player state prediction model.
 
 ## Designing Our Feature Vector And Classes List
 
-Before we start creating our model, we first need to visualize on how we will design our data and what actions the model could take to extend our players' play time.
+Before we start creating our model, we first need to visualize on how we will design our data to that our model can perform player state prediction.
 
 ### StatesList
 
@@ -120,7 +120,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
---[[ 
+--[[
 
 ModelParameters = PlayerStatePredictionModel:getModelParameters()
 

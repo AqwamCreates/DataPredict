@@ -34,7 +34,15 @@
 
 * Creating Simple Reward-Maximization-Based AI Player Model
 
+  * Uses real players' states so that the AI players mimic real players.
+
+  * May outcompete real players.
+
 * [Creating Simple Reward-Maximization-Based Reactionary AI Player Model](AIPlayerSystems/CreatingSimpleRewardMaximizationBasedReactionaryAIPlayerModel.md)
+
+  * Same as above.
+
+  * The only difference is that you give counter attacks to players' potential attacks.
 
   * Minimal implementation takes a minimum of 1 hour using DataPredict™, especially if custom actions are associated with the model's output.
 

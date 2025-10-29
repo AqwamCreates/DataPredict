@@ -55,6 +55,7 @@ local function applyFunctionToDictionaryArrayArray(functionToApply, dictionaryAr
 				newFeatureDictionary[key] = functionToApply(value)
 				
 			end
+			
 			newFeatureDictionaryArray[featureIndex] = newFeatureDictionary
 			
 		end

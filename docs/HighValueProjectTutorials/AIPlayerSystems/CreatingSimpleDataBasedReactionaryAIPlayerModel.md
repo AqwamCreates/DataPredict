@@ -1,4 +1,4 @@
-# Creating Data-Based Reactionary AI Player Model
+# Creating Simple Data-Based Reactionary AI Player Model
 
 For this tutorial, we need Markov model to build player state prediction model.
 

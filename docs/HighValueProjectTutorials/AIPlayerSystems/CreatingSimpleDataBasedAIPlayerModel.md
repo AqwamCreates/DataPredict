@@ -47,7 +47,7 @@ Below, it shows an example code for this.
 
 ```lua
 
-local functionDictionary = {
+local playerFunctionDictionary = {
 
   ["PlayerAttack"] = playerAttack,
   ["PlayerBlock"] = playerBlock,
@@ -67,7 +67,7 @@ local function run(Player)
 
     local previousPlayerState
 
-    local functionToRun
+    local playerFunction
 
     while isPlayerInServer do
 
@@ -77,9 +77,9 @@ local function run(Player)
     
         nextPlayerState = PlayerStatePredictionModel:predict(currentPlayerState)
 
-        functionToRun = functionDictionary[nextPlayerState]
+        playerFunction = playerFunctionDictionary[nextPlayerState]
 
-        if (functionToRun) then functionToRun() end
+        if (playerFunction) then playerFunction() end
 
         isPlayerInServer = checkIfPlayerIsInServer(Player)
 

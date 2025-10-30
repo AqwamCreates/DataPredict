@@ -88,15 +88,15 @@ function MarkovModel:getLearningRate()
 
 end
 
-function MarkovModel:train(previousStateVector, currentStateVector, observationStateVector)
+function MarkovModel:train(previousStateVector, currentStateVector, currentObservationStateVector)
 	
 	local numberOfData = #previousStateVector
 	
-	if (numberOfData ~= #currentStateVector) then error("The number of data in the previous state vector is not equal to the number of data in current state vector.") end
+	if (numberOfData ~= #currentStateVector) then error("The number of data in the previous state vector is not equal to the number of data in the current state vector.") end
 	
-	if (observationStateVector) then
+	if (currentObservationStateVector) then
 		
-		if (numberOfData ~= #observationStateVector) then error("The number of data in the previous state vector is not equal to the number of data in observation state vector.") end
+		if (numberOfData ~= #currentObservationStateVector) then error("The number of data in the previous state vector is not equal to the number of data in the current observation state vector.") end
 		
 	end
 	
@@ -132,7 +132,7 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 	
 	local currentState
 	
-	local observationState
+	local currentObservationState
 	
 	local previousStateIndex
 	
@@ -214,11 +214,11 @@ function MarkovModel:train(previousStateVector, currentStateVector, observationS
 		
 		if (isHidden) then
 			
-			observationState = observationStateVector[i][1]
+			currentObservationState = currentObservationStateVector[i][1]
 
-			if (observationState) then
+			if (currentObservationState) then
 
-				observationStateIndex = table.find(ObservationsList, observationState)
+				observationStateIndex = table.find(ObservationsList, currentObservationState)
 
 				if (currentStateIndex) and (observationStateIndex) then
 

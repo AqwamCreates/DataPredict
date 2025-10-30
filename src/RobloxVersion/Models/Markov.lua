@@ -90,6 +90,16 @@ end
 
 function MarkovModel:train(previousStateVector, currentStateVector, observationStateVector)
 	
+	local numberOfData = #previousStateVector
+	
+	if (numberOfData ~= #currentStateVector) then error("The number of data in previous state vector is not equal to the number of data in current state vector.") end
+	
+	if (observationStateVector) then
+		
+		if (numberOfData ~= #observationStateVector) then error("The number of data in previous state vector is not equal to the number of data in observation state vector.") end
+		
+	end
+	
 	local learningRate = self.learningRate
 	
 	local isHidden = self.isHidden

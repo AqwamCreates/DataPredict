@@ -82,14 +82,34 @@ end
 
 function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatrix, currentObservationStateMatrix)
 	
+	local StatesList = self.StatesList
+
+	local ObservationsList = self.ObservationsList
+	
+	local numberOfStates = #StatesList
+
+	local numberOfObservations = #ObservationsList
+	
 	local numberOfData = #previousStateMatrix
 
 	if (numberOfData ~= #currentStateMatrix) then error("The number of data in the previous state vector is not equal to the number of data in the current state vector.") end
+	
+	local numberOfPreviousStateColumns = #previousStateMatrix[1]
 
+	local numberOfCurrentStateColumns = #currentStateMatrix[1]
+	
+	if (numberOfPreviousStateColumns ~= numberOfStates) then error("The number of previous state columns is not equal to the number of states.") end
+	
+	if (numberOfCurrentStateColumns ~= numberOfStates) then error("The number of current state columns is not equal to the number of states.") end
+	
 	if (currentObservationStateMatrix) then
 
 		if (numberOfData ~= #currentObservationStateMatrix) then error("The number of data in the previous state vector is not equal to the number of data in the current observation state vector.") end
-
+		
+		local numberOfCurrentObservationStateColumns = #currentObservationStateMatrix[1]
+		
+		if (numberOfCurrentObservationStateColumns ~= numberOfObservations) then error("The number of current observation state columns is not equal to the number of observations.") end
+		
 	end
 	
 	local mode = self.mode
@@ -98,9 +118,7 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	
 	local useLogProbabilities = self.useLogProbabilities
 
-	local StatesList = self.StatesList
 
-	local ObservationsList = self.ObservationsList
 
 	local ModelParameters = self.ModelParameters or {}
 
@@ -117,10 +135,6 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	end
 	
 	if (mode == "Offline") then
-
-		local numberOfStates = #StatesList
-
-		local numberOfObservations = #ObservationsList
 
 		transitionCountMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfStates})
 		

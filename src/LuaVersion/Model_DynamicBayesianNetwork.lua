@@ -38,6 +38,8 @@ setmetatable(DynamicBayesianNetworkModel, BaseModel)
 
 local defaultMode = "Hybrid"
 
+local defaultIsHidden = false
+
 local defaultUseLogProbabilities = false
 
 function DynamicBayesianNetworkModel.new(parameterDictionary)
@@ -50,23 +52,11 @@ function DynamicBayesianNetworkModel.new(parameterDictionary)
 
 	NewDynamicBayesianNetworkModel:setName("DynamicBayesianNetwork")
 
-	local isHidden = parameterDictionary.isHidden
-
-	local StatesList = parameterDictionary.StatesList or {}
-
-	local ObservationsList = parameterDictionary.ObservationsList or {}
-
-	if (type(isHidden) ~= "boolean") then isHidden = (#ObservationsList > 0) and (ObservationsList ~= StatesList) end
-	
 	NewDynamicBayesianNetworkModel.mode = parameterDictionary.mode or defaultMode
 	
-	NewDynamicBayesianNetworkModel.isHidden = isHidden
+	NewDynamicBayesianNetworkModel.isHidden = NewDynamicBayesianNetworkModel:getValueOrDefaultValue(parameterDictionary.isHidden, defaultIsHidden)
 
 	NewDynamicBayesianNetworkModel.useLogProbabilities = NewDynamicBayesianNetworkModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
-
-	NewDynamicBayesianNetworkModel.StatesList = StatesList
-
-	NewDynamicBayesianNetworkModel.ObservationsList = ObservationsList
 
 	NewDynamicBayesianNetworkModel.TransitionProbabilityOptimizer = parameterDictionary.TransitionProbabilityOptimizer
 
@@ -82,61 +72,79 @@ end
 
 function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatrix, currentObservationStateMatrix)
 	
-	local StatesList = self.StatesList
-
-	local ObservationsList = self.ObservationsList
-	
-	local numberOfStates = #StatesList
-
-	local numberOfObservations = #ObservationsList
-	
 	local numberOfData = #previousStateMatrix
-
+	
 	if (numberOfData ~= #currentStateMatrix) then error("The number of data in the previous state vector is not equal to the number of data in the current state vector.") end
-	
-	local numberOfPreviousStateColumns = #previousStateMatrix[1]
 
-	local numberOfCurrentStateColumns = #currentStateMatrix[1]
-	
-	if (numberOfPreviousStateColumns ~= numberOfStates) then error("The number of previous state columns is not equal to the number of states.") end
-	
-	if (numberOfCurrentStateColumns ~= numberOfStates) then error("The number of current state columns is not equal to the number of states.") end
-	
 	if (currentObservationStateMatrix) then
 
 		if (numberOfData ~= #currentObservationStateMatrix) then error("The number of data in the previous state vector is not equal to the number of data in the current observation state vector.") end
-		
-		local numberOfCurrentObservationStateColumns = #currentObservationStateMatrix[1]
-		
-		if (numberOfCurrentObservationStateColumns ~= numberOfObservations) then error("The number of current observation state columns is not equal to the number of observations.") end
-		
+
 	end
 	
 	local mode = self.mode
-	
+
 	local isHidden = self.isHidden
-	
+
 	local useLogProbabilities = self.useLogProbabilities
 
 	local ModelParameters = self.ModelParameters or {}
 
 	local transitionCountMatrix = ModelParameters[3]
-	
+
 	local emissionCountMatrix = ModelParameters[4]
+	
+	local numberOfPreviousStateColumns = #previousStateMatrix[1]
+
+	local numberOfCurrentStateColumns = #currentStateMatrix[1]
+	
+	local numberOfCurrentObservationStateColumns
+	
+	local numberOfStates
+
+	local numberOfObservations
+	
+	if (currentObservationStateMatrix) then numberOfCurrentObservationStateColumns = #currentObservationStateMatrix[1] end
 
 	if (mode == "Hybrid") then
 		
-		local emissionCountMatrixBoolean = (isHidden and emissionCountMatrix) or true
+		local hasTransition = transitionCountMatrix
 		
-		mode = (transitionCountMatrix and emissionCountMatrixBoolean and "Online") or "Offline"		
+		local hasEmission = (isHidden and emissionCountMatrix) or (not isHidden)
+
+		mode = (hasTransition and hasEmission and "Online") or "Offline"		
 
 	end
 	
 	if (mode == "Offline") then
+		
+		numberOfStates = numberOfPreviousStateColumns
 
 		transitionCountMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfStates})
 		
-		if (isHidden) then emissionCountMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfObservations}) end
+		if (isHidden) then 
+			
+			numberOfObservations = numberOfCurrentObservationStateColumns
+			
+			emissionCountMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfObservations}) 
+			
+		end
+		
+	else
+		
+		numberOfStates = #transitionCountMatrix
+		
+		if (isHidden) then numberOfObservations = #emissionCountMatrix[1] end
+		
+	end
+	
+	if (numberOfPreviousStateColumns ~= numberOfStates) then error("The number of previous state columns is not equal to the number of states.") end
+
+	if (numberOfCurrentStateColumns ~= numberOfStates) then error("The number of current state columns is not equal to the number of states.") end
+	
+	if (isHidden) then
+
+		if (numberOfCurrentObservationStateColumns ~= numberOfObservations) then error("The number of current observation state columns is not equal to the number of observations.") end
 
 	end
 	
@@ -158,7 +166,7 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 			
 			for currentStateIndex, currentStateValue in ipairs(unwrappedCurrentStateVector) do
 
-				unwrappedTransitionCountVector[currentStateIndex] = unwrappedTransitionCountVector[currentStateIndex] + currentStateValue
+				unwrappedTransitionCountVector[currentStateIndex] = unwrappedTransitionCountVector[currentStateIndex] + (previousStateValue * currentStateValue)
 
 			end
 			
@@ -168,9 +176,9 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 
 				unwrappedEmissionCountVector = emissionCountMatrix[previousStateIndex]
 
-				for observationStateIndex, observationStateValue in ipairs(unwrappedCurrentObservationStateVector) do
+				for currentObservationStateIndex, currentObservationStateValue in ipairs(unwrappedCurrentObservationStateVector) do
 
-					unwrappedEmissionCountVector[observationStateIndex] = unwrappedEmissionCountVector[observationStateIndex] + observationStateValue
+					unwrappedEmissionCountVector[currentObservationStateIndex] = unwrappedEmissionCountVector[currentObservationStateIndex] + (previousStateValue * currentObservationStateValue)
 
 				end
 
@@ -206,25 +214,17 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	
 end
 
-function DynamicBayesianNetworkModel:predict(stateMatrix, returnOriginalOutput)
+function DynamicBayesianNetworkModel:predict(stateMatrix)
 
 	local isHidden = self.isHidden
 	
 	local useLogProbabilities = self.useLogProbabilities
 
-	local StatesList = self.StatesList
-
-	local ObservationsList = self.ObservationsList
-
 	local ModelParameters = self.ModelParameters
 	
-	local numberOfData = #stateMatrix
-	
-	local numberOfStates = #StatesList
-	
-	local numberOfObservations = #ObservationsList
-	
-	local zeroValue = (useLogProbabilities and -math.huge) or 0
+	local numberOfStates
+
+	local numberOfObservations
 	
 	local transitionProbabilityMatrix
 
@@ -232,10 +232,14 @@ function DynamicBayesianNetworkModel:predict(stateMatrix, returnOriginalOutput)
 
 	if (not ModelParameters) then
 		
+		local zeroValue = (useLogProbabilities and -math.huge) or 0
+		
 		local transitionCountMatrix
 		
 		local emissionCountMatrix
 		
+		numberOfStates = #stateMatrix[1]
+
 		local transitionMatrixDimensionSizeArray = {numberOfStates, numberOfStates}
 
 		transitionProbabilityMatrix = AqwamTensorLibrary:createTensor(transitionMatrixDimensionSizeArray, zeroValue)
@@ -243,6 +247,8 @@ function DynamicBayesianNetworkModel:predict(stateMatrix, returnOriginalOutput)
 		transitionCountMatrix = AqwamTensorLibrary:createTensor(transitionMatrixDimensionSizeArray, 0)
 
 		if (isHidden) then
+			
+			numberOfObservations = numberOfStates
 			
 			local emissionMatrixDimensionSizeArray = {numberOfStates, numberOfObservations}
 
@@ -257,8 +263,16 @@ function DynamicBayesianNetworkModel:predict(stateMatrix, returnOriginalOutput)
 	else
 
 		transitionProbabilityMatrix = ModelParameters[1]
+		
+		numberOfStates = #transitionProbabilityMatrix
+		
+		if (isHidden) then
+			
+			emissionProbabilityMatrix = ModelParameters[2]
 
-		emissionProbabilityMatrix = ModelParameters[2]
+			numberOfObservations = #emissionProbabilityMatrix[1]
+			
+		end
 
 	end
 
@@ -267,6 +281,8 @@ function DynamicBayesianNetworkModel:predict(stateMatrix, returnOriginalOutput)
 	local numberOfColumns = (isHidden and numberOfObservations) or numberOfStates
 	
 	local oneValue = (useLogProbabilities and 0) or 1
+	
+	local numberOfData = #stateMatrix
 
 	local resultTensor = AqwamTensorLibrary:createTensor({numberOfData, numberOfColumns}, oneValue)
 	
@@ -305,32 +321,8 @@ function DynamicBayesianNetworkModel:predict(stateMatrix, returnOriginalOutput)
 		resultTensor[dataIndex] = unwrappedResultVector
 
 	end
-
-	if (returnOriginalOutput) then return resultTensor end
-
-	local outputVector = {}
-
-	local maximumValueVector = {}
-
-	local SelectedList = (isHidden and ObservationsList) or StatesList
-
-	for dataIndex, unwrappedResultVector in ipairs(resultTensor) do
-
-		local maximumValue = math.max(table.unpack(unwrappedResultVector))
-
-		local outputStateIndex = table.find(unwrappedResultVector, maximumValue)
-
-		local outputState = SelectedList[outputStateIndex] 
-
-		if (not outputState) then error("Output state for index " .. outputStateIndex .. " does not exist in the list.") end
-
-		outputVector[dataIndex] = {outputState}
-
-		maximumValueVector[dataIndex] = {maximumValue}
-
-	end
-
-	return outputVector, maximumValueVector
+	
+	return resultTensor
 
 end
 

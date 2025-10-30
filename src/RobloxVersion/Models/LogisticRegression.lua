@@ -332,7 +332,7 @@ function LogisticRegressionModel:train(featureMatrix, labelVector)
 
 		local lossVector = AqwamTensorLibrary:applyFunction(derivativeLossFunctionToApply, hypothesisVector, labelVector)
 
-		self:update(lossVector, true, false)
+		self:update(lossVector, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	

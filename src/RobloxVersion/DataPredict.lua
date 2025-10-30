@@ -180,6 +180,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	ConditionalRandomField = require(Models.ConditionalRandomField),
 	
+	KalmanFilter = require(Models.KalmanFilter),
+	
 	GenerativeAdversarialNetwork = require(Models.GenerativeAdversarialNetwork),
 	
 	ConditionalGenerativeAdversarialNetwork = require(Models.ConditionalGenerativeAdversarialNetwork),

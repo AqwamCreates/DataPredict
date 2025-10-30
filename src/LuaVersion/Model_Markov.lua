@@ -118,13 +118,13 @@ function MarkovModel:train(previousStateVector, currentStateVector, currentObser
 	
 	local numberOfObservations = #ObservationsList
 	
-	local transitionProbabilityMatrix = ModelParameters[1] or self:initializeMatrixBasedOnMode({numberOfStates, numberOfStates})
+	local transitionProbabilityMatrix = ModelParameters[1] or AqwamTensorLibrary:createTensor({numberOfStates, numberOfStates})
 	
 	local emissionProbabilityMatrix
 	
 	if (isHidden) then
 		
-		emissionProbabilityMatrix = ModelParameters[2] or self:initializeMatrixBasedOnMode({numberOfStates, numberOfObservations})
+		emissionProbabilityMatrix = ModelParameters[2] or AqwamTensorLibrary:createTensor({numberOfStates, numberOfObservations})
 		
 	end
 	
@@ -289,11 +289,11 @@ function MarkovModel:predict(stateVector, returnOriginalOutput)
 	
 	if (not ModelParameters) then
 		
-		transitionProbabilityMatrix = self:initializeMatrixBasedOnMode({numberOfStates, numberOfStates})
+		transitionProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfStates})
 		
 		if (isHidden) then
 			
-			emissionProbabilityMatrix = self:initializeMatrixBasedOnMode({numberOfStates, numberOfObservations})
+			emissionProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfObservations})
 			
 		end
 		

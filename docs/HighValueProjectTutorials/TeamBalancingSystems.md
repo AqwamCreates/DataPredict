@@ -8,4 +8,4 @@
 
   * Uses two-player combat data pairs (player + ally or player + enemy) to determine player's win rate.
 
-  * Due to combat data pair nature for this model, it will likely lead to combinatorial explosion.
+  * Due to combat data pairing nature for this model, it will likely lead to combinatorial explosion.

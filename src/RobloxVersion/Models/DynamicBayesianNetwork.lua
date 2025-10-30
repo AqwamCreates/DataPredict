@@ -118,8 +118,6 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	
 	local useLogProbabilities = self.useLogProbabilities
 
-
-
 	local ModelParameters = self.ModelParameters or {}
 
 	local transitionCountMatrix = ModelParameters[3]

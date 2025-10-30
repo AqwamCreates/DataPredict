@@ -9,9 +9,9 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Clustering                     | 8     |
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 12    |
-| Sequence Modelling             | 2     |
+| Sequence Modelling             | 3     |
 | Generative                     | 4     |
-| Total                          | 68    |
+| Total                          | 69    |
 
 ### Legend
 
@@ -36,7 +36,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
   * Uses reverse-mode automatic differentiation and lazy differentiation evaluation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
 
-* Currently, DataPredict™ has ~90% (59 out of 68) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (60 out of 69) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -153,10 +153,13 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy
 
-| Model                                                        | Alternate Names | Properties | Use Cases                                 |
-|--------------------------------------------------------------|-----------------|------------|-------------------------------------------|
-| [Markov](Models/Markov.md)                                   | None            | 💾 🟢     | Single Features Player State Prediction   |
-| [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md) | DBN             | 💾 🟢     | Multiple Features Player State Prediction |
+| Model                                                         | Alternate Names | Properties | Use Cases                                 |
+|---------------------------------------------------------------|-----------------|------------|-------------------------------------------|
+| [Markov](Models/Markov.md)*                                   | None            | 💾 🟢     | Single Features Player State Prediction   |
+| [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md)* | DBN             | 💾 🟢     | Multiple Features Player State Prediction |
+| [Conditional Random Field](Models/ConditionalRandomField.md)* | CRF             | 💾 🟢     | Multiple Features Player State Prediction |
+
+* These are single step variants of the sequence models. Hence, it will not use or return sequence of values.
 
 ## Generative
 

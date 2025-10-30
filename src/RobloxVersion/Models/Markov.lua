@@ -311,9 +311,9 @@ function MarkovModel:predict(stateVector, returnOriginalOutput)
 	
 	local selectedMatrix = (isHidden and emissionProbabilityMatrix) or transitionProbabilityMatrix
 	
-	for i, wrappedState in ipairs(stateVector) do
+	for i, unwrappedStateVector in ipairs(stateVector) do
 		
-		local state = wrappedState[1]
+		local state = unwrappedStateVector[1]
 		
 		local stateIndex = table.find(StatesList, state)
 		

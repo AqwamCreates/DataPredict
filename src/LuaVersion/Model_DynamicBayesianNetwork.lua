@@ -302,7 +302,7 @@ function DynamicBayesianNetworkModel:predict(stateMatrix, returnOriginalOutput)
 
 	local SelectedList = (isHidden and ObservationsList) or StatesList
 
-	for i, unwrappedResultVector in ipairs(resultTensor) do
+	for dataIndex, unwrappedResultVector in ipairs(resultTensor) do
 
 		local maximumValue = math.max(table.unpack(unwrappedResultVector))
 
@@ -312,9 +312,9 @@ function DynamicBayesianNetworkModel:predict(stateMatrix, returnOriginalOutput)
 
 		if (not outputState) then error("Output state for index " .. outputStateIndex .. " does not exist in the list.") end
 
-		outputVector[i] = {outputState}
+		outputVector[dataIndex] = {outputState}
 
-		maximumValueVector[i] = {maximumValue}
+		maximumValueVector[dataIndex] = {maximumValue}
 
 	end
 

@@ -155,7 +155,7 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	local unwrappedTransitionCountVector
 	
 	local unwrappedEmissionCountVector
-
+	
 	for dataIndex, unwrappedPreviousStateVector in ipairs(previousStateMatrix) do
 		
 		unwrappedCurrentStateVector = currentStateMatrix[dataIndex]
@@ -167,21 +167,21 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 			for currentStateIndex, currentStateValue in ipairs(unwrappedCurrentStateVector) do
 
 				unwrappedTransitionCountVector[currentStateIndex] = unwrappedTransitionCountVector[currentStateIndex] + (previousStateValue * currentStateValue)
+				
+				if (isHidden) then
 
-			end
-			
-			if (isHidden) then
+					unwrappedCurrentObservationStateVector = currentObservationStateMatrix[dataIndex]
 
-				unwrappedCurrentObservationStateVector = currentObservationStateMatrix[dataIndex]
+					unwrappedEmissionCountVector = emissionCountMatrix[currentStateIndex]
 
-				unwrappedEmissionCountVector = emissionCountMatrix[previousStateIndex]
+					for currentObservationStateIndex, currentObservationStateValue in ipairs(unwrappedCurrentObservationStateVector) do
 
-				for currentObservationStateIndex, currentObservationStateValue in ipairs(unwrappedCurrentObservationStateVector) do
+						unwrappedEmissionCountVector[currentObservationStateIndex] = unwrappedEmissionCountVector[currentObservationStateIndex] + (currentStateValue * currentObservationStateValue)
 
-					unwrappedEmissionCountVector[currentObservationStateIndex] = unwrappedEmissionCountVector[currentObservationStateIndex] + (previousStateValue * currentObservationStateValue)
+					end
 
 				end
-
+				
 			end
 			
 		end

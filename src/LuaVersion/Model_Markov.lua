@@ -331,11 +331,11 @@ function MarkovModel:predict(stateVector, returnOriginalOutput)
 	
 	local SelectedList = (isHidden and ObservationsList) or StatesList
 	
-	for i, resultVector in ipairs(resultTensor) do
+	for i, unwrappedResultVector in ipairs(resultTensor) do
 		
-		local maximumValue = math.max(table.unpack(resultVector))
+		local maximumValue = math.max(table.unpack(unwrappedResultVector))
 		
-		local outputStateIndex = table.find(resultVector, maximumValue)
+		local outputStateIndex = table.find(unwrappedResultVector, maximumValue)
 		
 		local outputState = SelectedList[outputStateIndex] 
 		

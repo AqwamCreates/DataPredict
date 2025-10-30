@@ -44,6 +44,8 @@ local defaultDistanceFunction = "Euclidean"
 
 local defaultUseWeightedDistance = false
 
+local defaultMaximumNumberOfData = math.huge
+
 local function createDistanceMatrix(distanceFunction, featureMatrix, storedFeatureMatrix)
 
 	local numberOfData = #featureMatrix
@@ -242,14 +244,20 @@ function KNearestNeighboursRegressor.new(parameterDictionary)
 	NewKNearestNeighboursRegressor.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 
 	NewKNearestNeighboursRegressor.useWeightedDistance = NewKNearestNeighboursRegressor:getValueOrDefaultValue(parameterDictionary.useWeightedDistance, defaultUseWeightedDistance)
-
+	
+	NewKNearestNeighboursRegressor.maximumNumberOfData = parameterDictionary.maximumNumberOfData or defaultMaximumNumberOfData
+	
 	return NewKNearestNeighboursRegressor
 
 end
 
 function KNearestNeighboursRegressor:train(featureMatrix, labelVector)
 
-	if (#featureMatrix ~= #labelVector) then error("The number of data in feature matrix and the label vector are not the same.") end
+	local numberOfData = #featureMatrix
+
+	if (numberOfData ~= #labelVector) then error("The number of data in feature matrix and the label vector are not the same.") end
+
+	local maximumNumberOfData = self.maximumNumberOfData
 
 	local ModelParameters = self.ModelParameters
 
@@ -259,15 +267,39 @@ function KNearestNeighboursRegressor:train(featureMatrix, labelVector)
 
 		local storedLabelVector = ModelParameters[2]
 
-		if (#featureMatrix[1] ~= #storedFeatureMatrix[1]) then error("The number of features are not the same as the model parameters.") end
-
 		featureMatrix = AqwamTensorLibrary:concatenate(featureMatrix, storedFeatureMatrix, 1)
 
 		labelVector = AqwamTensorLibrary:concatenate(labelVector, storedLabelVector, 1)
 
+		numberOfData = #featureMatrix
+
+		if (numberOfData > maximumNumberOfData) then
+
+			local newFeatureMatrix = {}
+
+			local newLabelVector = {}
+
+			local dataShiftIndex = (numberOfData - maximumNumberOfData)
+
+			for dataIndex = 1, maximumNumberOfData, 1 do
+
+				newFeatureMatrix[dataIndex] = featureMatrix[dataIndex + dataShiftIndex]
+
+				newLabelVector[dataIndex] = labelVector[dataIndex + dataShiftIndex]
+
+			end
+
+			featureMatrix = newFeatureMatrix
+
+			labelVector = newLabelVector
+
+			numberOfData = maximumNumberOfData
+
+		end
+
 	end
 
-	if (self.kValue > #featureMatrix) then warn("Number of data is less than the K value. Please add more data before doing any predictions.") end
+	if (self.kValue > numberOfData) then warn("Number of data is less than the K value. Please add more data before doing any predictions.") end
 
 	self.ModelParameters = {featureMatrix, labelVector}
 

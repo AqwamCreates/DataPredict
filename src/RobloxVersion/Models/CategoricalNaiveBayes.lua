@@ -305,8 +305,6 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 		
 		local numberOfClasses = #NewCategoricalNaiveBayesModel.ClassesList
 
-		local zeroValue = (useLogProbabilities and math.huge) or 0
-
 		local oneValue = (useLogProbabilities and 0) or 1
 		
 		local logisticMatrix = NewCategoricalNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)

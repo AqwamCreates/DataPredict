@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require("Model_BaseModel")
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 MarkovModel = {}
 
 MarkovModel.__index = MarkovModel
 
-setmetatable(MarkovModel, BaseModel)
+setmetatable(MarkovModel, GradientMethodBaseModel)
 
 local defaultLearningRate = 0.1
 
@@ -42,7 +42,7 @@ function MarkovModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewMarkovModel = BaseModel.new(parameterDictionary)
+	local NewMarkovModel = GradientMethodBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewMarkovModel, MarkovModel)
 	
@@ -266,6 +266,14 @@ function MarkovModel:train(previousStateVector, currentStateVector, currentObser
 	end
 	
 	self.ModelParameters = {transitionProbabilityMatrix, emissionProbabilityMatrix}
+	
+	if (self.autoResetOptimizers) then
+		
+		if (TransitionProbabilityOptimizer) then TransitionProbabilityOptimizer:reset() end
+		
+		if (EmissionProbabilityOptimizer) then EmissionProbabilityOptimizer:reset() end
+		
+	end
 	
 end
 

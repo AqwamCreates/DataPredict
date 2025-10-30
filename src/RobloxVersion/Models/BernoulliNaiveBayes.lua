@@ -248,7 +248,7 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		
 		local numberOfClasses = #NewBernoulliNaiveBayesModel.ClassesList
 
-		local zeroValue = (useLogProbabilities and math.huge) or 0
+		local zeroValue = (useLogProbabilities and -math.huge) or 0
 
 		local oneValue = (useLogProbabilities and 0) or 1
 

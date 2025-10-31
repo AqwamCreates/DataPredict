@@ -72,9 +72,9 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	
 	local numberOfStatesDimensionSizeArray = {numberOfStates, numberOfStates}
 	
-	local stateTransitionModelMatrix = self.stateTransitionModelMatrix or AqwamTensorLibrary:createTensor(numberOfStatesDimensionSizeArray, 1)
+	local stateTransitionModelMatrix = self.stateTransitionModelMatrix or AqwamTensorLibrary:createTensor(numberOfStatesDimensionSizeArray)
 
-	local observationModelMatrix = self.observationModelMatrix or AqwamTensorLibrary:createTensor(numberOfStatesDimensionSizeArray, 1)
+	local observationModelMatrix = self.observationModelMatrix or AqwamTensorLibrary:createTensor({1, numberOfStates})
 	
 	local controlInputMatrix = self.controlInputMatrix
 

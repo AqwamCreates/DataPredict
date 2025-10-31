@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - OneClassPassiveAggressiveClassifier
 
-OneClassPassiveAggressiveClassifier is a supervised machine learning model that predicts values of -1 / 0 and 1 only.
+OneClassPassiveAggressiveClassifier is a supervised machine learning model that predicts binary values (+1 and -1). It uses iterative calculations to find the best model parameters.
 
 ## Stored Model Parameters
 

@@ -1,5 +1,9 @@
 # Anti-Cheat Systems
 
-* [Creating Anomaly Detection Model](AntiCheatSystems/CreatingAnomalyDetectionModel.md)
+* [Creating Static Anomaly Detection Model](AntiCheatSystems/CreatingStaticAnomalyDetectionModel.md)
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
+ * [Creating Sequential Anomaly Detection Model](AntiCheatSystems/CreatingSequentialAnomalyDetectionModel.md) (Incomplete)
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.

@@ -2,9 +2,9 @@
 
 ## Open Roles
 
-* Machine Learning Test Engineer
+* Machine Learning Qualty Assurance Engineer
 
-* API Writer
+* API Reader And Writer
 
 ## Why Not Open-Source?
 

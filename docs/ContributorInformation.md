@@ -34,6 +34,10 @@ Want a higher salary for your next job? Use this as a negotiation point.
 
 Want to raise startup funding? Use this to differentiation point.
 
-What's the catch?
+## What's the catch?
 
 You can only offer these licenses to the first organization (that is eligible using DataPredict™ Ecosystem) if you are employed in multiple organizations. I don't like being exploited either, so there's that.
+
+Additionally, all the code you write will have their copyright assigned to me directly. So, you would lose control there, but I doubt anyone would complain if I already had given you a strong leverage for your career progression.
+
+If you're okay with this, then you can sign the contribution agreement [here]().

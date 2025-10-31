@@ -181,21 +181,11 @@ local activationFunctionList = {
 
 	["StableSoftmax"] = function (zMatrix)
 
-		local normalizedZMatrix = AqwamTensorLibrary:createTensor({#zMatrix, #zMatrix[1]})
+		local maximumZVector = AqwamTensorLibrary:findMaximumValue(zMatrix, 2)
 
-		for i = 1, #zMatrix, 1 do
+		zMatrix = AqwamTensorLibrary:subtract(zMatrix, maximumZVector)
 
-			local zVector = {zMatrix[i]}
-
-			local highestZValue = AqwamTensorLibrary:findMaximumValue(zVector)
-
-			local subtractedZVector = AqwamTensorLibrary:subtract(zVector, highestZValue)
-
-			normalizedZMatrix[i] = subtractedZVector[1]
-
-		end
-
-		local exponentZMatrix = AqwamTensorLibrary:applyFunction(math.exp, normalizedZMatrix)
+		local exponentZMatrix = AqwamTensorLibrary:applyFunction(math.exp, zMatrix)
 
 		local exponentZSumMatrix = AqwamTensorLibrary:sum(exponentZMatrix, 2)
 
@@ -267,25 +257,31 @@ local activationFunctionDerivativeList = {
 
 	["Softmax"] = function (aMatrix, zMatrix)
 
-		local numberOfRows, numberOfColumns = #aMatrix, #aMatrix[1]
+		local derivativeMatrix = AqwamTensorLibrary:createTensor({#aMatrix, #aMatrix[1]}, 0)
 
-		local derivativeMatrix = AqwamTensorLibrary:createTensor({numberOfRows, numberOfColumns}, 0)
+		local unwrappedDerivativeVector
 
-		for i = 1, numberOfRows, 1 do
+		local derivativeValue
 
-			for j = 1, numberOfColumns do
+		for i, unwrappedAVector in ipairs(aMatrix) do
 
-				for k = 1, numberOfColumns do
+			unwrappedDerivativeVector = derivativeMatrix[i]
+
+			for j, a1Value in ipairs(unwrappedAVector) do
+
+				for k, a2Value in ipairs(unwrappedAVector) do
 
 					if (j == k) then
 
-						derivativeMatrix[i][j] += aMatrix[i][j] * (1 - aMatrix[i][k])
+						derivativeValue = a1Value * (1 - a2Value)
 
 					else
 
-						derivativeMatrix[i][j] += -aMatrix[i][j] * aMatrix[i][k]
+						derivativeValue = -a1Value * a2Value
 
 					end
+
+					unwrappedDerivativeVector[j] = unwrappedDerivativeVector[j] + derivativeValue
 
 				end
 
@@ -299,25 +295,31 @@ local activationFunctionDerivativeList = {
 
 	["StableSoftmax"] = function (aMatrix, zMatrix)
 
-		local numberOfRows, numberOfColumns = #aMatrix, #aMatrix[1]
+		local derivativeMatrix = AqwamTensorLibrary:createTensor({#aMatrix, #aMatrix[1]}, 0)
 
-		local derivativeMatrix = AqwamTensorLibrary:createTensor({numberOfRows, numberOfColumns}, 0)
+		local unwrappedDerivativeVector
 
-		for i = 1, numberOfRows, 1 do
+		local derivativeValue
 
-			for j = 1, numberOfColumns do
+		for i, unwrappedAVector in ipairs(aMatrix) do
 
-				for k = 1, numberOfColumns do
+			unwrappedDerivativeVector = derivativeMatrix[i]
+
+			for j, a1Value in ipairs(unwrappedAVector) do
+
+				for k, a2Value in ipairs(unwrappedAVector) do
 
 					if (j == k) then
 
-						derivativeMatrix[i][j] += aMatrix[i][j] * (1 - aMatrix[i][k])
+						derivativeValue = a1Value * (1 - a2Value)
 
 					else
 
-						derivativeMatrix[i][j] += -aMatrix[i][j] * aMatrix[i][k]
+						derivativeValue = -a1Value * a2Value
 
 					end
+
+					unwrappedDerivativeVector[j] = unwrappedDerivativeVector[j] + derivativeValue
 
 				end
 

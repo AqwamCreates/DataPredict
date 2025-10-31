@@ -28,4 +28,4 @@
 
    * If a company employs official DataPredict contributor (who contributed equal to or more than 10%) with a guarantees at least one (1) year of employment, the company may request three non-transferrable and royalty-free licenses for their projects.
    
-   * This license is valid as long as the DataPredict contributor remain employed in the same company.
+   * This license is valid as long as the DataPredict contributor remain continuously employed in the same company.

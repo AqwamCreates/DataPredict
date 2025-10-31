@@ -26,6 +26,8 @@
 
 * [Contributor License Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
 
-   * If a company employs official DataPredict contributor (who contributed equal to or more than 10%) with a guarantees at least one (1) year of employment, the company may request three non-transferrable and royalty-free licenses for their projects.
+   * If any organization that employs official DataPredict contributor (who contributed equal to or more than 10%) with a guarantees at least one (1) year of employment, the organization may request three non-transferrable and royalty-free licenses for their projects.
    
    * This license is valid as long as the DataPredict contributor remain continuously employed in the same company.
+ 
+   * If the contributor is employed to multiple organizations that have the ability to use DataPredict, only the first organization can have this offer.

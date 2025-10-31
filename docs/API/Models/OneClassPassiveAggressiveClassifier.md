@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-PassiveAggressiveRegressor.new(maximumNumberOfIterations: integer, variant: string, epsilon: number, cValue: number): ModelObject
+OneClassPassiveAggressiveClassifier.new(maximumNumberOfIterations: integer, variant: string, epsilon: number, cValue: number): ModelObject
 ```
 
 #### Parameters:

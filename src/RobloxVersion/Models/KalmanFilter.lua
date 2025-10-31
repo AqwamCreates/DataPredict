@@ -62,13 +62,13 @@ function KalmanFilterModel.new(parameterDictionary)
 	
 end
 
-function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
-	
-	local numberOfData = #previousStateMatrix
+function KalmanFilterModel:train(previousStateVector, currentStateVector)
 
-	if (numberOfData ~= #currentStateMatrix) then error("The previous state matrix and the current state matrix does not contain the same number of rows.") end
+	if (#previousStateVector ~= 1) then error("The previous state vector can only contain one row.") end
 	
-	local numberOfStates = #previousStateMatrix[1]
+	if (#currentStateVector ~= 1) then error("The current state vector can only contain one row.") end
+	
+	local numberOfStates = #previousStateVector[1]
 	
 	local numberOfStatesDimensionSizeArray = {numberOfStates, numberOfStates}
 	
@@ -96,7 +96,7 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	
 	if (not priorStateMatrix) then
 		
-		local priorStateMatrixPart1 = AqwamTensorLibrary:dotProduct(previousStateMatrix, stateTransitionModelMatrix) -- m x n, n x n
+		local priorStateMatrixPart1 = AqwamTensorLibrary:dotProduct(previousStateVector, stateTransitionModelMatrix) -- m x n, n x n
 		
 		local priorStateMatrixPart2
 
@@ -138,7 +138,7 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	
 	local transposedObservationModelMatrix = AqwamTensorLibrary:transpose(observationModelMatrix)
 	
-	local observationMatrix = AqwamTensorLibrary:dotProduct(currentStateMatrix, transposedObservationModelMatrix)
+	local observationMatrix = AqwamTensorLibrary:dotProduct(currentStateVector, transposedObservationModelMatrix)
 	
 	local innovationMatrixPart1 = AqwamTensorLibrary:dotProduct(priorStateMatrix, transposedObservationModelMatrix)
 	
@@ -185,8 +185,6 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	local transposedResidualMatrix = AqwamTensorLibrary:transpose(residualMatrix)
 	
 	local dotProductResidualMatrix = AqwamTensorLibrary:dotProduct(transposedResidualMatrix, residualMatrix)
-	
-	observationNoiseCovarianceMatrix = AqwamTensorLibrary:divide(dotProductResidualMatrix, numberOfData)
 	
 	local processNoiseCovarianceMatrixPart1 = AqwamTensorLibrary:dotProduct(stateTransitionModelMatrix, priorCovarianceMatrix, transposedStateTransitionModelMatrix)
 	

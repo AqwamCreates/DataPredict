@@ -22,7 +22,7 @@ I get it. You don't want me to exploit your free labour as well. So, let me prop
 
 If you somehow managed to contribute at least 10% to the DataPredict™ ecosystem, I will give you employment and startup leverage.
 
-All you need to do is contact your employer (or your other leaders if you own the organization) to get three DataPredict license that changes from sliding 1% to 0.5% of gross revenue per project per month. These are valid as long as you are employed in that organization.
+All you need to do is contact your employer (or your other leaders if you own the organization) to get three DataPredict license that halves the percentage. These are valid as long as you are employed in that organization.
 
 * If you are employed under a organization, these licenses are non-transferrable.
 

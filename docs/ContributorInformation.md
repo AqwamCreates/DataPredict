@@ -6,7 +6,7 @@
 
 * API Writer
 
-## Why Not Open Source?
+## Why Not Open-Source?
 
 Currently, the library is built solo by me (Aqwam) for three years straight (including weekends), making it 6000+ hours worth of work of total.
 
@@ -14,7 +14,7 @@ However, the passion of mines don't pay the bills, so I needed to monetize this 
 
 That being said, I'm quite aware that most small developers don't have enough money to generate from their games, hence I allow a limited commercial use for them.
 
-This source-available (not open source) philisophy would then also extend to the contributors, who would also be be exploited by large companies.
+This source-available (not open source) philisophy would then also extend to the contributors, who would also be be exploited by large companies if we were to take the open-source path.
 
 ## Why Contribute To This Source-Available DataPredict™ Ecosystem?
 

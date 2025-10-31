@@ -32,6 +32,8 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
 
 For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 
+Want to contribute? Have a look at the information and perks [here](ContributorInformation.md).
+
 ![DataPredictIconSmall](https://github.com/AqwamCreates/DataPredict/assets/67371914/1122cce4-747b-4054-88f0-2685414b0d73)
 
 | Version | Current Version Number |

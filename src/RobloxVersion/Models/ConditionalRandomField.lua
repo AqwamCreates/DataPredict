@@ -42,6 +42,8 @@ local defaultLearningRate = 0.1
 
 local defaultAddBias = true
 
+local defaultAddStabilization = true
+
 function ConditionalRandomFieldModel:calculateCost(predictedCurrentStateMatrix, currentStateMatrix)
 	
 	local logPredictedCurrentStateMatrix = AqwamTensorLibrary:applyFunction(math.log, predictedCurrentStateMatrix)
@@ -63,6 +65,14 @@ end
 function ConditionalRandomFieldModel:calculateNextStateMatrix(stateMatrix, saveStateMatrix)
 
 	local zMatrix = AqwamTensorLibrary:dotProduct(stateMatrix, self.ModelParameters)
+	
+	if (self.addStabilization) then
+
+		local maximumZVector = AqwamTensorLibrary:findMaximumValue(zMatrix, 2)
+
+		zMatrix = AqwamTensorLibrary:subtract(zMatrix, maximumZVector)
+
+	end
 	
 	local exponentMatrix = AqwamTensorLibrary:applyFunction(math.exp, zMatrix)
 	
@@ -161,6 +171,8 @@ function ConditionalRandomFieldModel.new(parameterDictionary)
 	NewConditionalRandomFieldModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
 	NewConditionalRandomFieldModel.addBias = NewConditionalRandomFieldModel:getValueOrDefaultValue(parameterDictionary.addBias, defaultAddBias)
+	
+	NewConditionalRandomFieldModel.addStabilization = NewConditionalRandomFieldModel:getValueOrDefaultValue(parameterDictionary.addStabilization, defaultAddStabilization)
 
 	NewConditionalRandomFieldModel.Optimizer = parameterDictionary.Optimizer
 

@@ -36,6 +36,8 @@ Want to raise startup funding? Use this as a differentiation point.
 
 Compared to open-source where everyone can just exploit your work for free, source-available gives you the reward for your hard-work by restricting others from commercial use except for you.
 
+And you know what's better? If your employer or other leaders doesn't treat you fairly and their projects relies on these free licenses, you can walk out of that organization and impact them legally (due to license revocation if you leave the company). We call that "leverage".
+
 ## What's the catch?
 
 You can only offer these licenses to the first organization (that is eligible using DataPredict™ Ecosystem) if you are employed in multiple organizations. I don't like being exploited either, so there's that.

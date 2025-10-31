@@ -14,25 +14,25 @@ However, the passion of mines don't pay the bills, so I needed to monetize this 
 
 That being said, I'm quite aware that most small developers don't have enough money to generate from their games, hence I allow a limited commercial use for them.
 
-This source-available (not open source) philisophy would then also extend to the contributors, who would also be be exploited by large companies if we were to take the open-source path.
+This source-available (not open source) philosophy would then also extend to the contributors, who would also be be exploited by large companies if we were to take the open-source path.
 
 ## Why Contribute To This Source-Available DataPredict™ Ecosystem?
 
 I get it. You don't want me to exploit your free labour as well. So, let me propose a deal with you.
 
-If you somehow managed to contribute at least 10% to the DataPredict™ ecosystem, I will give you employment and start-up leverage.
+If you somehow managed to contribute at least 10% to the DataPredict™ ecosystem, I will give you employment and startup leverage.
 
 All you need to contact your employer (or your other leaders if you own the organization) to get three DataPredict license with unlimited commercial use from me. These are valid as long as you are employed in that organization.
 
-* If you are employed under a company, these licenses are non-transferrable.
+* If you are employed under a organization, these licenses are non-transferrable.
 
-* If you own the company, these licenses are transferrable between internal projects.
+* If you own the organization, these licenses are transferrable between internal projects.
 
-I think it is pretty clear right now on how much leverage you will have compared to contributing an open source project.
+I think it is pretty clear right now on how much leverage you will have compared to contributing an open-source project.
 
 Want a higher salary for your next job? Use this as a negotiation point.
 
-Want to raise startup funding? Use this to differentiation point.
+Want to raise startup funding? Use this as a differentiation point.
 
 ## What's the catch?
 

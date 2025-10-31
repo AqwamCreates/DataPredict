@@ -62,21 +62,19 @@ function KalmanFilterModel.new(parameterDictionary)
 	
 end
 
-function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
-	
-	local numberOfData = #previousStateMatrix
+function KalmanFilterModel:train(previousStateVector, currentStateVector)
 
-	if (numberOfData ~= #currentStateMatrix) then error("The previous state matrix and the current state matrix does not contain the same number of rows.") end
+	if (#previousStateVector ~= 1) then error("The previous state vector can only contain one row.") end
 	
-	local numberOfStates = #previousStateMatrix[1]
+	if (#currentStateVector ~= 1) then error("The current state vector can only contain one row.") end
 	
-	local dimensionSizeArray = {numberOfData, numberOfStates}
+	local numberOfStates = #previousStateVector[1]
 	
 	local numberOfStatesDimensionSizeArray = {numberOfStates, numberOfStates}
 	
 	local stateTransitionModelMatrix = self.stateTransitionModelMatrix or AqwamTensorLibrary:createTensor(numberOfStatesDimensionSizeArray)
 
-	local observationModelMatrix = self.observationModelMatrix or AqwamTensorLibrary:createTensor(numberOfStatesDimensionSizeArray)
+	local observationModelMatrix = self.observationModelMatrix or AqwamTensorLibrary:createTensor({1, numberOfStates})
 	
 	local controlInputMatrix = self.controlInputMatrix
 
@@ -92,14 +90,14 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	
 	local priorCovarianceMatrix = ModelParameters[2]
 	
-	local observationNoiseCovarianceMatrix = ModelParameters[3] or AqwamTensorLibrary:createTensor(numberOfStatesDimensionSizeArray)
+	local observationNoiseCovarianceMatrix = ModelParameters[3] or self.observationNoiseCovarianceMatrix or AqwamTensorLibrary:createRandomUniformTensor(numberOfStatesDimensionSizeArray)
 	
-	local processNoiseCovarianceMatrix = ModelParameters[4] or AqwamTensorLibrary:createTensor(numberOfStatesDimensionSizeArray)
+	local processNoiseCovarianceMatrix = ModelParameters[4] or self.processNoiseCovarianceMatrix or AqwamTensorLibrary:createRandomUniformTensor(numberOfStatesDimensionSizeArray)
 	
 	if (not priorStateMatrix) then
 		
-		local priorStateMatrixPart1 = AqwamTensorLibrary:dotProduct(previousStateMatrix, stateTransitionModelMatrix) -- m x n, n x n
-
+		local priorStateMatrixPart1 = AqwamTensorLibrary:dotProduct(previousStateVector, stateTransitionModelMatrix) -- m x n, n x n
+		
 		local priorStateMatrixPart2
 
 		if (controlInputMatrix) then
@@ -138,9 +136,11 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 
 	priorCovarianceMatrix = AqwamTensorLibrary:add(priorCovarianceMatrixPart1, processNoiseCovarianceMatrix)  -- n x n, n x n
 	
-	local observationMatrix = AqwamTensorLibrary:dotProduct(currentStateMatrix, observationModelMatrix)
+	local transposedObservationModelMatrix = AqwamTensorLibrary:transpose(observationModelMatrix)
 	
-	local innovationMatrixPart1 = AqwamTensorLibrary:dotProduct(observationMatrix, priorStateMatrix)
+	local observationMatrix = AqwamTensorLibrary:dotProduct(currentStateVector, transposedObservationModelMatrix)
+	
+	local innovationMatrixPart1 = AqwamTensorLibrary:dotProduct(priorStateMatrix, transposedObservationModelMatrix)
 	
 	local innovationMatrix = AqwamTensorLibrary:subtract(observationMatrix, innovationMatrixPart1)
 	
@@ -150,17 +150,19 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	
 	local innovationCovarianceMatrix = AqwamTensorLibrary:add(innovationCovarianceMatrixPart1, observationNoiseCovarianceMatrix)
 	
-	local inverseInovationCovarianceMatrix = AqwamTensorLibrary:inverse(innovationCovarianceMatrix)
+	local inverseInnovationCovarianceMatrix = AqwamTensorLibrary:inverse(innovationCovarianceMatrix)
 	
-	local optimalKalmanGainMatrix = AqwamTensorLibrary:dotProduct(priorCovarianceMatrix, transposedObservationModelMatrix, inverseInovationCovarianceMatrix)
+	if (not inverseInnovationCovarianceMatrix) then error("Could not find the inverse of innovation covariance matrix.") end
+	
+	local optimalKalmanGainMatrix = AqwamTensorLibrary:dotProduct(observationModelMatrix, inverseInnovationCovarianceMatrix)
 	
 	local posteriorMatrixPart1 = AqwamTensorLibrary:dotProduct(innovationMatrix, optimalKalmanGainMatrix)
 	
-	local posteriorMatrix = AqwamTensorLibrary:add(priorStateMatrix, posteriorMatrixPart1)
+	local posteriorStateMatrix = AqwamTensorLibrary:add(priorStateMatrix, posteriorMatrixPart1)
 	
-	local identityMatrix = AqwamTensorLibrary:createIdentityMatrix({#priorCovarianceMatrix, #priorCovarianceMatrix})
+	local identityMatrix = AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray)
 
-	local KHMatrix = AqwamTensorLibrary:dotProduct(optimalKalmanGainMatrix, observationModelMatrix)
+	local KHMatrix = AqwamTensorLibrary:dotProduct(transposedObservationModelMatrix, optimalKalmanGainMatrix)
 
 	local identityMinusKHMatrix = AqwamTensorLibrary:subtract(identityMatrix, KHMatrix)
 
@@ -174,7 +176,7 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 
 	local posteriorCovarianceMatrix = AqwamTensorLibrary:add(josephFormMatrixPart1, josephFormMatrixPart2)
 	
-	local residualMatrixPart1 = AqwamTensorLibrary:dotProduct(posteriorMatrix, observationModelMatrix)
+	local residualMatrixPart1 = AqwamTensorLibrary:dotProduct(transposedObservationModelMatrix, posteriorStateMatrix)
 	
 	local residualMatrix = AqwamTensorLibrary:subtract(observationMatrix, residualMatrixPart1)
 	
@@ -184,15 +186,13 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	
 	local dotProductResidualMatrix = AqwamTensorLibrary:dotProduct(transposedResidualMatrix, residualMatrix)
 	
-	observationNoiseCovarianceMatrix = AqwamTensorLibrary:divide(dotProductResidualMatrix, numberOfData)
-	
 	local processNoiseCovarianceMatrixPart1 = AqwamTensorLibrary:dotProduct(stateTransitionModelMatrix, priorCovarianceMatrix, transposedStateTransitionModelMatrix)
 	
 	processNoiseCovarianceMatrix = AqwamTensorLibrary:subtract(posteriorCovarianceMatrix, processNoiseCovarianceMatrixPart1)
 	
 	--
 	
-	self.ModelParameters = {posteriorMatrix, posteriorCovarianceMatrix, observationNoiseCovarianceMatrix, processNoiseCovarianceMatrix}
+	self.ModelParameters = {posteriorStateMatrix, posteriorCovarianceMatrix, observationNoiseCovarianceMatrix, processNoiseCovarianceMatrix}
 
 end
 

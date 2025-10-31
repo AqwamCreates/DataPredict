@@ -44,4 +44,6 @@ You can only offer these licenses to the first organization (that is eligible us
 
 Additionally, all the code you write will have their copyright assigned to me directly. So, you would lose control there, but I doubt anyone would complain if I already had given you a strong leverage for your career progression.
 
+The employer will also need to show the DataPredict™ attribution to the public in their projects when using this license.
+
 If you're okay with this, then you can sign the contribution agreement [here]().

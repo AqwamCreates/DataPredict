@@ -14,7 +14,7 @@ However, the passion of mines don't pay the bills, so I needed to monetize this 
 
 That being said, I'm quite aware that most small developers don't have enough money to generate from their games, hence I allow a limited commercial use for them.
 
-This source-available (not open source) philosophy would then also extend to the contributors, who would also be be exploited by large companies if we were to take the open-source path.
+This source-available (not open source) philosophy would then also extend to the contributors, who would also be exploited by large companies if we were to take the open-source path.
 
 ## Why Contribute To This Source-Available DataPredict™ Ecosystem?
 
@@ -22,7 +22,7 @@ I get it. You don't want me to exploit your free labour as well. So, let me prop
 
 If you somehow managed to contribute at least 10% to the DataPredict™ ecosystem, I will give you employment and startup leverage.
 
-All you need to contact your employer (or your other leaders if you own the organization) to get three DataPredict license with unlimited commercial use from me. These are valid as long as you are employed in that organization.
+All you need to do is contact your employer (or your other leaders if you own the organization) to get three DataPredict license with unlimited commercial use from me. These are valid as long as you are employed in that organization.
 
 * If you are employed under a organization, these licenses are non-transferrable.
 

@@ -6,22 +6,20 @@ Hello guys! Today, I will be showing you on how to create a anomaly-detection-ba
 
 Before we train our model, we will first need to construct a model, in which we have three approaches:
 
-| Approach | Model                            | Properties                     | Notes                                                                                                                                         |
-| -------- | -------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1        | Expectation-Maximization         | Incremental, Probabilistic     | Good for anomaly detection; can be updated with partial data, can produce multiple "normal" clusters (e.g. different player playstyles).          |
-| 2        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based  | Good for anomaly detection; cannot be updated real-time, heavier to run, best with best with "radial basis function" kernel.               |
-| 3        | Gaussian Naive Bayes             | Incremental, Generative        | Not commonly used in anomaly detection; fast, can be updated with partial data, requires features to be independent (rare in real player data). |
+| Approach | Model                            | Notes                                                                                                                                         |
+| -------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------|
+| 1        | Kalman Filter                    | Good for anomaly detection; can be updated with partial data, can produce multiple "normal" clusters (e.g. different player playstyles).      |
+| 2        | One-Class Support Vector Machine | Good for anomaly detection; cannot be updated real-time, heavier to run, best with best with "radial basis function"                          |
 
-
-### Approach 1: Expectation-Maximization
+### Approach 1: Kalman Filter
 
 ```lua
 
 local DataPredict = require(DataPredict)
 
--- Number of clusters are highly dependent on how many playstyles you have. However, we recommend with 1 cluster as a starting point.
+-- There are no parameters to set here.
 
-local AnomalyPredictionModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 1})
+local AnomalyPredictionModel = DataPredict.Models.GaussianNaiveBayes.new()
 
 ```
 
@@ -34,18 +32,6 @@ local DataPredict = require(DataPredict)
 -- You must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
 
 local AnomalyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction"})
-
-```
-
-### Approach 3: Gaussian Naive Bayes
-
-```lua
-
-local DataPredict = require(DataPredict)
-
--- There are no parameters to set here.
-
-local AnomalyPredictionModel = DataPredict.Models.GaussianNaiveBayes.new()
 
 ```
 

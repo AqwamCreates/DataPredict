@@ -1,5 +1,7 @@
 # Retention Systems
 
+## Prediction Models
+
 * [Creating Time-To-Leave Prediction Model](RetentionSystems/CreatingTimeToLeavePredictionModel.md)
 
   * No need to add new content; the model can use existing content to optimize your games.
@@ -28,21 +30,7 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Left-Too-Early Detection Model](RetentionSystems/CreatingLeftTooEarlyDetectionModel.md)
-
-   * Inverse of probability-to-leave model by detecting outliers.
-
-   * No need to add new content; the model can use existing content to optimize your games.
-
-   * Highly exploitable if the player accumulates long session times over many sessions before suddenly decrease the session times gradually if rewards are involved.
-
-  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
-
-* [Creating Labelless Left-Too-Early Detection Model](RetentionSystems/CreatingLabellessLeftTooEarlyDetectionModel.md)
-
-  * Same as "Left-Too-Early Detection Model", but it does not require manual tracking of label data, which makes it less accurate.
-
-  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+## Control Models
 
 * [Creating Deep Play Time Maximization Model](RetentionSystems/CreatingDeepPlayTimeMaximizationModel.md)
 
@@ -107,6 +95,24 @@
   * The least riskiest model out there for play time maximization, but takes the longest time to implement.
 
   * Minimal implementation takes a minimum of 6 hours using DataPredict™.
+
+## Detection Models
+
+* [Creating Left-Too-Early Detection Model](RetentionSystems/CreatingLeftTooEarlyDetectionModel.md)
+
+   * Inverse of probability-to-leave model by detecting outliers.
+
+   * No need to add new content; the model can use existing content to optimize your games.
+
+   * Highly exploitable if the player accumulates long session times over many sessions before suddenly decrease the session times gradually if rewards are involved.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
+* [Creating Labelless Left-Too-Early Detection Model](RetentionSystems/CreatingLabellessLeftTooEarlyDetectionModel.md)
+
+  * Same as "Left-Too-Early Detection Model", but it does not require manual tracking of label data, which makes it less accurate.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
 * [Creating Engagement Milestone Detection Ensemble Model](RetentionSystems/CreatingEngagementMilestoneDetectionEnsembleModel.md)
 

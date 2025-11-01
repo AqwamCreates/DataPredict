@@ -40,6 +40,8 @@ local defaultMode = "Hybrid"
 
 local defaultIsHidden = false
 
+local defaultLossFunction = "L2"
+
 local defaultUseLogProbabilities = false
 
 function DynamicBayesianNetworkModel.new(parameterDictionary)
@@ -55,7 +57,9 @@ function DynamicBayesianNetworkModel.new(parameterDictionary)
 	NewDynamicBayesianNetworkModel.mode = parameterDictionary.mode or defaultMode
 	
 	NewDynamicBayesianNetworkModel.isHidden = NewDynamicBayesianNetworkModel:getValueOrDefaultValue(parameterDictionary.isHidden, defaultIsHidden)
-
+	
+	NewDynamicBayesianNetworkModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
+	
 	NewDynamicBayesianNetworkModel.useLogProbabilities = NewDynamicBayesianNetworkModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
 	NewDynamicBayesianNetworkModel.TransitionProbabilityOptimizer = parameterDictionary.TransitionProbabilityOptimizer
@@ -85,6 +89,8 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	local mode = self.mode
 
 	local isHidden = self.isHidden
+	
+	local lossFunction = self.lossFunction
 
 	local useLogProbabilities = self.useLogProbabilities
 
@@ -211,6 +217,34 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	end
 
 	self.ModelParameters = {transitionProbabilityMatrix, emissionProbabilityMatrix, transitionCountMatrix, emissionCountMatrix}
+	
+	local targetMatrix = (isHidden and currentObservationStateMatrix) or currentStateMatrix
+	
+	local predictedCurrentStateMatrix = self:predict(previousStateMatrix)
+	
+	if (useLogProbabilities) then predictedCurrentStateMatrix = AqwamTensorLibrary:applyFunction(math.exp, predictedCurrentStateMatrix) end
+	
+	local lossMatrix = AqwamTensorLibrary:subtract(targetMatrix, predictedCurrentStateMatrix)
+
+	if (lossFunction == "L1") then
+
+		lossMatrix = AqwamTensorLibrary:applyFunction(math.abs, lossMatrix)
+
+	elseif (lossFunction == "L2") then
+
+		lossMatrix = AqwamTensorLibrary:power(lossMatrix, 2)
+
+	else
+
+		error("Invalid loss function.")
+
+	end
+
+	local cost = AqwamTensorLibrary:sum(lossMatrix)
+
+	cost = cost / numberOfData
+
+	return {cost}
 	
 end
 

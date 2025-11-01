@@ -65,7 +65,47 @@ Therefore, it is important for you to implement this model and test it under non
 
 ```lua
 
+-- Do not use these cost threshold values. These are extremely specific to your model's setup.
 
+local lowerBoundCostThreshold = 1
+
+local upperBoundCostThreshold = 3
+
+local function run(Player)
+
+    local isPlayerInServer = true
+
+    local previousStateVector = getStateVector(Player)
+
+    local currentStateVector
+
+    local costArray
+
+    local cost
+
+    while isPlayerInServer do
+
+        currentStateVector = getPlayerDataVector(Player)
+    
+        cost = PlayTimeMaximizationModel:train(previousStateVector, currentStateVector)
+
+        cost = costArray[1]
+
+        previousStateVector = currentStateVector
+
+        -- Checks if the player is performing suspiciously.
+
+        if (cost < lowerBoundCostThreshold) or (cost > upperBoundCostThreshold) then
+
+          kickPlayer(Player)
+
+        end
+
+        isPlayerInServer = checkIfPlayerIsInServer(Player)
+
+    end
+
+end
 
 ```
 

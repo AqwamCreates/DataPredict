@@ -165,14 +165,24 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 	local identityMinusKHMatrix = AqwamTensorLibrary:subtract(identityMatrix, KHMatrix)
 
 	local posteriorCovarianceMatrix = AqwamTensorLibrary:dotProduct(identityMinusKHMatrix, predictedCovarianceMatrix)
+	
+	local meanCorrectionMatrix = AqwamTensorLibrary:mean(posteriorStateMatrixPart1, 1)
 
-	self.ModelParameters = {posteriorStateMatrix, posteriorCovarianceMatrix}
+	self.ModelParameters = {posteriorStateMatrix, posteriorCovarianceMatrix, meanCorrectionMatrix}
 
 end
 
 function ExtendedKalmanFilterModel:predict(stateMatrix)
 	
-	return self.stateFunction(self.stateFunction, self.controlVector)
+	local ModelParameters = self.ModelParameters or {}
+	
+	local meanCorrectionMatrix = ModelParameters[3]
+	
+	local nextStateMatrix = self.stateFunction(stateMatrix, self.controlVector)
+	
+	if (meanCorrectionMatrix) then nextStateMatrix = AqwamTensorLibrary:add(nextStateMatrix, meanCorrectionMatrix) end
+	
+	return nextStateMatrix
 	
 end
 

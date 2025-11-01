@@ -38,6 +38,8 @@ setmetatable(ExtendedKalmanFilterModel, BaseModel)
 
 local defaultNoiseValue = 1e-16
 
+local defaultLossFunction = "L2"
+
 local function defaultStateFunction(previousStateMatrix, controlVector)
 	
 	return AqwamTensorLibrary:add(previousStateMatrix, controlVector)
@@ -90,6 +92,8 @@ function ExtendedKalmanFilterModel.new(parameterDictionary)
 	
 	NewExtendedKalmanFilterModel.observationJacobianFunction = parameterDictionary.observationJacobianFunction or defaultObservationJacobianFunction
 	
+	NewExtendedKalmanFilterModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
+	
 	return NewExtendedKalmanFilterModel
 	
 end
@@ -114,19 +118,17 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 	
 	local noiseValue = self.noiseValue
 	
+	local lossFunction = self.lossFunction
+	
 	local ModelParameters = self.ModelParameters or {}
 	
-	local priorStateMatrix = ModelParameters[1]
+	local priorStateMatrix = ModelParameters[1] or previousStateMatrix
 
-	local priorCovarianceMatrix = ModelParameters[2]
+	local priorCovarianceMatrix = ModelParameters[2] or AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray)
 	
 	local observationNoiseCovarianceMatrix = self.observationNoiseCovarianceMatrix or AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray, noiseValue)
 
 	local processNoiseCovarianceMatrix = self.processNoiseCovarianceMatrix or AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray, noiseValue)
-	
-	if (not priorStateMatrix) then priorStateMatrix = previousStateMatrix end
-	
-	if (not priorCovarianceMatrix) then priorCovarianceMatrix = AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray) end
 
 	local predictedStateMatrix = stateFunction(priorStateMatrix, controlVector)
 	
@@ -169,6 +171,36 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 	local meanCorrectionMatrix = AqwamTensorLibrary:mean(posteriorStateMatrixPart1, 1)
 
 	self.ModelParameters = {posteriorStateMatrix, posteriorCovarianceMatrix, meanCorrectionMatrix}
+	
+	-- Returning this as a cost like other models.
+	
+	local lossMatrix = innovationMatrix
+	
+	if (lossFunction == "L1") then
+		
+		lossMatrix = AqwamTensorLibrary:abs(lossMatrix)
+		
+	elseif (lossFunction == "L2") then
+		
+		lossMatrix = AqwamTensorLibrary:pow(lossMatrix, 2)
+		
+	elseif (lossFunction  == "Mahalanobis") then
+		
+		local transposedInnovationMatrix = AqwamTensorLibrary:transpose(innovationMatrix)
+		
+		lossMatrix = AqwamTensorLibrary:dotProduct(transposedInnovationMatrix, inverseInnovationCovarianceMatrix, innovationMatrix)
+		
+	else
+		
+		error("Invalid loss function.")
+		
+	end
+	
+	local cost = AqwamTensorLibrary:mean(lossMatrix)
+	
+	cost = cost / numberOfData
+	
+	return {cost}
 
 end
 

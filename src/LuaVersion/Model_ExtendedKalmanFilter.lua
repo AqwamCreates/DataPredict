@@ -178,11 +178,11 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 	
 	if (lossFunction == "L1") then
 		
-		lossMatrix = AqwamTensorLibrary:abs(lossMatrix)
+		lossMatrix = AqwamTensorLibrary:applyFunction(math.abs, lossMatrix)
 		
 	elseif (lossFunction == "L2") then
 		
-		lossMatrix = AqwamTensorLibrary:pow(lossMatrix, 2)
+		lossMatrix = AqwamTensorLibrary:power(lossMatrix, 2)
 		
 	elseif (lossFunction  == "Mahalanobis") then
 		
@@ -196,7 +196,7 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 		
 	end
 	
-	local cost = AqwamTensorLibrary:mean(lossMatrix)
+	local cost = AqwamTensorLibrary:sum(lossMatrix)
 	
 	cost = cost / numberOfData
 	

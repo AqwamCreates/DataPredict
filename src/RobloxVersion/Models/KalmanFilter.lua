@@ -258,7 +258,7 @@ function KalmanFilterModel:predict(stateMatrix)
 	
 	stateMatrix = AqwamTensorLibrary:transpose(stateMatrix)
 
-	local nextStateMatrixPart1 = AqwamTensorLibrary:dotProduct(stateTransitionModelMatrix, stateMatrix) -- n x n, n x m
+	local nextStateMatrixPart1 = AqwamTensorLibrary:dotProduct(stateTransitionModelMatrix, stateMatrix)
 
 	local nextStateMatrixPart2
 	
@@ -266,17 +266,17 @@ function KalmanFilterModel:predict(stateMatrix)
 
 	if (controlInputMatrix) then
 
-		nextStateMatrixPart2 = AqwamTensorLibrary:dotProduct(controlInputMatrix, controlVector) -- n x n, n x m
+		nextStateMatrixPart2 = AqwamTensorLibrary:dotProduct(controlInputMatrix, controlVector)
 
 	elseif (controlVector) then
 
-		nextStateMatrixPart2 = controlVector -- n x m
+		nextStateMatrixPart2 = controlVector
 
 	end
 
 	if (nextStateMatrixPart2) then
 
-		nextStateMatrix = AqwamTensorLibrary:add(nextStateMatrixPart1, nextStateMatrixPart2) -- n x m
+		nextStateMatrix = AqwamTensorLibrary:add(nextStateMatrixPart1, nextStateMatrixPart2)
 
 	else
 

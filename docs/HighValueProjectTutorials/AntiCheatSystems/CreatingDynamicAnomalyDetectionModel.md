@@ -6,10 +6,10 @@ Hello guys! Today, I will be showing you on how to create a anomaly-detection-ba
 
 Before we train our model, we will first need to construct a model, in which we have three approaches:
 
-| Approach | Model                            | Notes                                                                                                                                         |
-| -------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------|
-| 1        | Kalman Filter                    | Good for anomaly detection; can be updated with partial data, can produce multiple "normal" clusters (e.g. different player playstyles).      |
-| 2        | One-Class Support Vector Machine | Good for anomaly detection; cannot be updated real-time, heavier to run, best with best with "radial basis function"                          |
+| Approach | Model                    | Notes                    |
+| -------- | -------------------------| ------------------------ |
+| 1        | Kalman Filter            | Good against noisy data. |
+| 2        | Dynamic Bayesian Network | Extremely fast.          |
 
 ### Approach 1: Kalman Filter
 

@@ -284,6 +284,8 @@ function KalmanFilterModel:predict(stateMatrix)
 
 	end
 	
+	nextStateMatrix = AqwamTensorLibrary:transpose(nextStateMatrix)
+	
 	return nextStateMatrix
 	
 end

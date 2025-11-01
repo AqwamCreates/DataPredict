@@ -182,7 +182,7 @@ function MarkovModel:train(previousStateVector, currentStateVector, currentObser
 				
 				targetTransitionProbabilityValue = ((j == currentStateIndex) and 1) or 0
 				
-				transitionProbabilityChangeVector[j] = {targetTransitionProbabilityValue - previousStateTransitionProbabilityValue}
+				transitionProbabilityChangeVector[j] = targetTransitionProbabilityValue - previousStateTransitionProbabilityValue
 				
 			end
 			

@@ -41,81 +41,15 @@ local AnomalyPredictionModel = DataPredict.Models.DynamicBayesianNetwork.new()
 
 ```
 
-## Upon Player Join
-
-In here, what you need to do is to store player data as a vector of numbers throughout the player's game session.
+## Designing Our State Vector
 
 ```lua
 
-local playerDataMatrix = {}
-  
-local snapshotIndex = 1
-  
-local function snapshotData()
-  
- playerDataMatrix[snapshotIndex] = {
-
-    healthChangeAmount,
-    damageAmount,
-    hitStreakAmount,
-
-  }
-  
-  snapshotIndex = snapshotIndex + 1
-
-end
+local stateVector = {{healthChangeAmount, damageAmount, hitStreakAmount}}
 
 ```
-
-## Model Parameters Loading 
-
-In here, we will use our model parameters so that it can be used to load out models. There are three cases in here:
-
-1. The player is a first-time player.
-
-2. The player is a returning player.
-
-3. Every player uses the same global model.
-
-### Case 1: The Player Is A First-Time Player
-
-Under this case, this is a new player that plays the game for the first time. In this case, we do not know how this player would act.
-
-We have a multiple way to handle this issue:
-
-* We create a "global" model that trains from every player, and then make a deep copy of the model parameters and load it into our models.
-
-* We take from other players' existing model parameters and load it into our models.
-
-### Case 2: The Player Is A Returning Player
-
-Under this case, you can continue using the existing model parameters that was saved in Roblox's Datastores.
-
-```lua
-
-AnomalyPredictionModel:setModelParameters(ModelParameters)
-
-```
-
-### Case 3: Every Player Uses The Same Global Model
-
-Under this case, the procedure is the same to case 2 except that you need to:
-
-* Load model parameters upon server start.
-
-* Perform auto-save with the optional ability of merging with saved model parameters from other servers.
 
 ## Prediction Handling
-
-In other to produce predictions from our model, we must perform this operation:
-
-```lua
-
-local currentPlayerDataVector = {{healthChangeAmount, damageAmount, hitStreakAmount}}
-
-local predictedLabelVector = AnomalyPredictionModel:predict(currentPlayerDataVector)
-
-```
 
 Once you receive the predicted label vector, you can grab the pure number output by doing this:
 

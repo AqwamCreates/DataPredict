@@ -9,9 +9,9 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Clustering                     | 8     |
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 12    |
-| Sequence Modelling             | 4     |
+| Sequence Modelling             | 5     |
 | Generative                     | 4     |
-| Total                          | 70    |
+| Total                          | 71    |
 
 ### Legend
 
@@ -159,6 +159,8 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md)* | DBN             | 💾 🟢     | Multiple Features Player State Prediction |
 | [Conditional Random Field](Models/ConditionalRandomField.md)* | CRF             | 🟢        | Multiple Features Player State Prediction |
 | [Kalman Filter](Models/KalmanFilter.md)*                      | KF              | 🟢 ⚠️     | Multiple Features Player State Prediction |
+| [Extended Kalman Filter](Models/ExtendedKalmanFilter.md)*     | EKF             | 🟢        | Multiple Features Player State Prediction |
+| [Unscented Kalman Filter](Models/UnscentedKalmanFilter.md)*   | UKF             | 💾 🟢     | Multiple Features Player State Prediction |
 
 * These are single step variants of the sequence models. Hence, it will not use or return sequence of values.
 

@@ -182,6 +182,10 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	KalmanFilter = require(Models.KalmanFilter),
 	
+	ExtendedKalmanFilter = require(Models.ExtendedKalmanFilter),
+	
+	UnscentedKalmanFilter = require(Models.UnscentedKalmanFilter),
+	
 	GenerativeAdversarialNetwork = require(Models.GenerativeAdversarialNetwork),
 	
 	ConditionalGenerativeAdversarialNetwork = require(Models.ConditionalGenerativeAdversarialNetwork),

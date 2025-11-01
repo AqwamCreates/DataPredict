@@ -40,6 +40,8 @@ local defaultNoiseValue = 1 -- Do not use very small value for this. It will cau
 
 local defaultLossFunction = "L2"
 
+local defaultUseJosephForm = true
+
 function KalmanFilterModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -65,6 +67,8 @@ function KalmanFilterModel.new(parameterDictionary)
 	NewKalmanFilterModel.noiseValue = parameterDictionary.noiseValue or defaultNoiseValue
 	
 	NewKalmanFilterModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
+	
+	NewKalmanFilterModel.useJosephForm = NewKalmanFilterModel:getValueOrDefaultValue(parameterDictionary.useJosephForm, defaultUseJosephForm)
 
 	return NewKalmanFilterModel
 	
@@ -93,6 +97,8 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	local noiseValue = self.noiseValue
 	
 	local lossFunction = self.lossFunction
+	
+	local useJosephForm = self.useJosephForm
 
 	--local observationNoiseMatrix = AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray)
 
@@ -183,16 +189,22 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	local KHMatrix = AqwamTensorLibrary:dotProduct(optimalKalmanGainMatrix, observationModelMatrix)
 
 	local identityMinusKHMatrix = AqwamTensorLibrary:subtract(identityMatrix, KHMatrix)
+	
+	local posteriorCovarianceMatrix = AqwamTensorLibrary:dotProduct(identityMinusKHMatrix, priorCovarianceMatrix)
+	
+	if (useJosephForm) then
+		
+		local transposedIdentityMinusKHMatrix = AqwamTensorLibrary:transpose(identityMinusKHMatrix)
 
-	local transposedIdentityMinusKHMatrix = AqwamTensorLibrary:transpose(identityMinusKHMatrix)
+		local josephFormMatrixPart1 = AqwamTensorLibrary:dotProduct(posteriorCovarianceMatrix, transposedIdentityMinusKHMatrix)
 
-	local josephFormMatrixPart1 = AqwamTensorLibrary:dotProduct(identityMinusKHMatrix, priorCovarianceMatrix, transposedIdentityMinusKHMatrix)
+		local transposedKalmanGainMatrix = AqwamTensorLibrary:transpose(optimalKalmanGainMatrix)
 
-	local transposedKalmanGainMatrix = AqwamTensorLibrary:transpose(optimalKalmanGainMatrix)
+		local josephFormMatrixPart2 = AqwamTensorLibrary:dotProduct(optimalKalmanGainMatrix, observationNoiseCovarianceMatrix, transposedKalmanGainMatrix)
 
-	local josephFormMatrixPart2 = AqwamTensorLibrary:dotProduct(optimalKalmanGainMatrix, observationNoiseCovarianceMatrix, transposedKalmanGainMatrix)
-
-	local posteriorCovarianceMatrix = AqwamTensorLibrary:add(josephFormMatrixPart1, josephFormMatrixPart2)
+		posteriorCovarianceMatrix = AqwamTensorLibrary:add(josephFormMatrixPart1, josephFormMatrixPart2)
+		
+	end
 	
 	local residualMatrixPart1 = AqwamTensorLibrary:dotProduct(observationModelMatrix, observationMatrix)
 	

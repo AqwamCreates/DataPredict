@@ -87,7 +87,7 @@ local function run(Player)
 
         currentStateVector = getPlayerDataVector(Player)
     
-        cost = PlayTimeMaximizationModel:train(previousStateVector, currentStateVector)
+        costArray = PlayTimeMaximizationModel:train(previousStateVector, currentStateVector)
 
         cost = costArray[1]
 

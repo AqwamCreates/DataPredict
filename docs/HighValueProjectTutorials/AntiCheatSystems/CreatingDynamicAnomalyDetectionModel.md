@@ -21,7 +21,7 @@ local DataPredict = require(DataPredict)
 
   You can set "useJosephForm" to false if you want a more faster calculation by trading numerical stability and accuracy.
 
-  By default, "useJosephForm" is set to true. 
+  By default, it is set to true. 
 
 --]]
 

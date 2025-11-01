@@ -36,7 +36,7 @@ ExtendedKalmanFilterModel.__index = ExtendedKalmanFilterModel
 
 setmetatable(ExtendedKalmanFilterModel, BaseModel)
 
-local defaultNoiseValue = 1
+local defaultNoiseValue = 1 -- Do not use very small values for this. It will cause the Mahalanobis distance to have very large values.
 
 local defaultLossFunction = "L2"
 

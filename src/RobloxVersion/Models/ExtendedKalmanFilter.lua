@@ -36,7 +36,7 @@ ExtendedKalmanFilterModel.__index = ExtendedKalmanFilterModel
 
 setmetatable(ExtendedKalmanFilterModel, BaseModel)
 
-local defaultNoiseValue = 1e-16
+local defaultNoiseValue = 1
 
 local defaultLossFunction = "L2"
 

@@ -500,9 +500,11 @@ function ModelSafeguardWrapper:train(...)
 		
 		-- No data means no training.
 		
-		if (numberOfData == 0) then return {} end
+		if (numberOfData == 0) then return true, {} end
 		
 		costArray = Model:train(table.unpack(dataMatrixArray))
+		
+		if (not costArray) then return true, {} end
 		
 		maximumAcceptableCost = maximumAcceptableCostMultiplier * getMaximumAcceptableCost(dataMatrixArray, hasClassification)
 

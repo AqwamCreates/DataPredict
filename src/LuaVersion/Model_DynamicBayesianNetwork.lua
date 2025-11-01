@@ -210,11 +210,13 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 
 	self.ModelParameters = {transitionProbabilityMatrix, emissionProbabilityMatrix, transitionCountMatrix, emissionCountMatrix}
 	
-	local targetMatrix = (isHidden and currentObservationStateMatrix) or currentStateMatrix
+	local targetStateMatrix = (isHidden and currentObservationStateMatrix) or currentStateMatrix
 	
-	local predictedCurrentStateMatrix = self:predict(previousStateMatrix)
+	local matrixToDotProduct = (isHidden and emissionProbabilityMatrix) or transitionProbabilityMatrix
 	
-	local lossMatrix = AqwamTensorLibrary:subtract(targetMatrix, predictedCurrentStateMatrix)
+	local predictedCurrentStateMatrix = AqwamTensorLibrary:dotProduct(previousStateMatrix, matrixToDotProduct)
+	
+	local lossMatrix = AqwamTensorLibrary:subtract(targetStateMatrix, predictedCurrentStateMatrix)
 
 	if (lossFunction == "L1") then
 

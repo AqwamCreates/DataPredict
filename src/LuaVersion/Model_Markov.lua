@@ -38,6 +38,132 @@ setmetatable(MarkovModel, GradientMethodBaseModel)
 
 local defaultLearningRate = 0.1
 
+local defaultStateSelectionFunction = "Maximum"
+
+local defaultTemperature = 1
+
+local RandomObject = Random.new()
+
+local function selectIndexWithHighestValue(valueVector)
+
+	local selectedIndex = 1
+
+	local highestValue = -math.huge
+
+	for index, value in ipairs(valueVector[1]) do
+
+		if (value > highestValue) then
+
+			highestValue = value
+
+			selectedIndex = index
+
+		end
+
+	end
+
+	return selectedIndex
+
+end
+
+local function calculateStableProbability(valueVector, temperature)
+
+	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueVector)
+
+	local zValueVector = AqwamTensorLibrary:subtract(valueVector, maximumValue)
+
+	local temperatureZValueVector = AqwamTensorLibrary:divide(zValueVector, temperature)
+
+	local exponentVector = AqwamTensorLibrary:exponent(temperatureZValueVector)
+
+	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
+
+	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
+
+	return probabilityVector
+
+end
+
+local function calculateProbability(valueVector, temperature)
+
+	local temperatureZValueVector = AqwamTensorLibrary:divide(valueVector, temperature)
+
+	local exponentVector = AqwamTensorLibrary:exponent(temperatureZValueVector)
+
+	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
+
+	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
+
+	return probabilityVector
+
+end
+
+local function sample(probabilityVector)
+
+	local unwrappedProbabilityVector = probabilityVector[1]
+
+	local totalProbability = 0
+
+	for _, probability in ipairs(unwrappedProbabilityVector) do
+
+		totalProbability = totalProbability + probability
+
+	end
+
+	local randomProbability = math.random() * totalProbability
+
+	local cumulativeProbability = 0
+
+	for index, probability in ipairs(unwrappedProbabilityVector) do
+
+		cumulativeProbability = cumulativeProbability + probability
+
+		if (cumulativeProbability >= randomProbability) then return index end
+
+	end
+
+	return #unwrappedProbabilityVector
+
+end
+
+local stateSelectionFunctionList = {
+	
+	["Maximum"] = selectIndexWithHighestValue,
+	
+	["StableSoftmaxSampling"] = function(stateVector, temperature)
+		
+		local stableActionProbabilityVector = calculateStableProbability(stateVector, temperature)
+
+		return sample(stableActionProbabilityVector)
+		
+	end,
+	
+	["StableBoltzmannSampling"] = function(stateVector, temperature)
+
+		local stableActionProbabilityVector = calculateStableProbability(stateVector, temperature)
+
+		return sample(stableActionProbabilityVector)
+
+	end,
+	
+	["SoftmaxSampling"] = function(stateVector, temperature)
+
+		local stableActionProbabilityVector = calculateProbability(stateVector, temperature)
+
+		return sample(stableActionProbabilityVector)
+
+	end,
+	
+	["BoltzmannSampling"] = function(stateVector, temperature)
+
+		local stableActionProbabilityVector = calculateProbability(stateVector, temperature)
+
+		return sample(stableActionProbabilityVector)
+
+	end,
+	
+}
+
 function MarkovModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -65,6 +191,10 @@ function MarkovModel.new(parameterDictionary)
 	NewMarkovModel.StatesList = StatesList
 	
 	NewMarkovModel.ObservationsList = ObservationsList
+	
+	NewMarkovModel.stateSelectionFunction = parameterDictionary.stateSelectionFunction or defaultStateSelectionFunction
+	
+	NewMarkovModel.temperature = parameterDictionary.temperature or defaultTemperature
 	
 	NewMarkovModel.TransitionProbabilityOptimizer = parameterDictionary.TransitionProbabilityOptimizer
 	
@@ -333,29 +463,37 @@ function MarkovModel:predict(stateVector, returnOriginalOutput)
 	
 	if (returnOriginalOutput) then return resultTensor end
 	
-	local outputVector = {}
+	local stateSelectionFunction = self.stateSelectionFunction
 	
-	local maximumValueVector = {}
+	local stateSelectionFunctionToApply = stateSelectionFunctionList[stateSelectionFunction]
+	
+	if (not stateSelectionFunctionToApply) then error("Invalid state selection function.") end
+	
+	local temperature = self.temperature
+	
+	local stateVector = {}
+	
+	local valueVector = {}
 	
 	local SelectedList = (isHidden and ObservationsList) or StatesList
 	
 	for i, unwrappedResultVector in ipairs(resultTensor) do
 		
-		local maximumValue = math.max(table.unpack(unwrappedResultVector))
+		local stateIndex = stateSelectionFunctionToApply({unwrappedResultVector}, temperature)
 		
-		local outputStateIndex = table.find(unwrappedResultVector, maximumValue)
+		local value = unwrappedResultVector[stateIndex]
 		
-		local outputState = SelectedList[outputStateIndex] 
+		local state = SelectedList[stateIndex] 
 		
-		if (not outputState) then error("Output state for index " .. outputStateIndex .. " does not exist in the list.") end
+		if (not state) then error("Output state for index " .. stateIndex .. " does not exist in the list.") end
 		
-		outputVector[i] = {outputState}
+		stateVector[i] = {state}
 		
-		maximumValueVector[i] = {maximumValue}
+		valueVector[i] = {value}
 		
 	end
 
-	return outputVector, maximumValueVector
+	return stateVector, valueVector
 
 end
 

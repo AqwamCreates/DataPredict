@@ -50,7 +50,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model                                                                           | Alternate Names | Properties    | Use Cases                                                                                                |
 |---------------------------------------------------------------------------------|-----------------|---------------|----------------------------------------------------------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md)                                  | None            | 🔰 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
+| [LinearRegression](Models/LinearRegression.md)                                  | LR              | 🔰 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
 | [QuantileLinearRegression](Models/QuantileLinearRegression.md)                  | None            | 🟢 🟡        | Case-Based Time-To-Leave Prediction And In-Game Currency Price Generation                                |
 | [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)              | PA-R            | ⚡ 🟢        | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
 | [SupportVectorRegression](Models/SupportVectorRegression.md)                    | SVR             | 💾 🟡        | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |

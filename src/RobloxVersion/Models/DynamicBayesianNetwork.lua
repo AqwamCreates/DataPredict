@@ -88,8 +88,6 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	
 	local lossFunction = self.lossFunction
 
-	local useLogProbabilities = self.useLogProbabilities
-
 	local ModelParameters = self.ModelParameters or {}
 
 	local transitionCountMatrix = ModelParameters[3]
@@ -209,8 +207,6 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	local targetMatrix = (isHidden and currentObservationStateMatrix) or currentStateMatrix
 	
 	local predictedCurrentStateMatrix = self:predict(previousStateMatrix)
-	
-	if (useLogProbabilities) then predictedCurrentStateMatrix = AqwamTensorLibrary:applyFunction(math.exp, predictedCurrentStateMatrix) end
 	
 	local lossMatrix = AqwamTensorLibrary:subtract(targetMatrix, predictedCurrentStateMatrix)
 

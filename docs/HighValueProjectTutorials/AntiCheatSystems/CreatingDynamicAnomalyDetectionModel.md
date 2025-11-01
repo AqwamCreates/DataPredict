@@ -29,7 +29,7 @@ local AnomalyPredictionModel = DataPredict.Models.KalmanFilter.new({useJosephFor
 
 ```
 
-### Approach 2: One Class Support Vector Machine
+### Approach 2: Dynamic Bayesian Network
 
 ```lua
 

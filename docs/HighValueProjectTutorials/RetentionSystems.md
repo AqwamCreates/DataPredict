@@ -1,16 +1,16 @@
 # Retention Systems
 
+### Disclaimer
+
+* All these models does not require you to add new content; these models can use existing content to optimize your games.
+
 ## Prediction Models
 
 * [Creating Time-To-Leave Prediction Model](RetentionSystems/CreatingTimeToLeavePredictionModel.md)
 
-  * No need to add new content; the model can use existing content to optimize your games.
-
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
 * [Creating Probability-To-Leave Prediction Model](RetentionSystems/CreatingProbabilityToLeavePredictionModel.md)
-
-  * No need to add new content; the model can use existing content to optimize your games.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
@@ -18,15 +18,11 @@
 
   * Combines both "Time-To-Leave Prediction Model" and "Probability-To-Leave Prediction Model".
 
-  * No need to add new content; the model can use existing content to optimize your games.
-
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
 * [Creating Probability-To-Interact Prediction Model](RetentionSystems/CreatingProbabilityToInteractPredictionModel.md)
 
   * Can be combined with generative and reward-maximization-based models for optimized retention and interaction.
-
-  * No need to add new content; the model can use existing content to optimize your games.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
@@ -36,8 +32,6 @@
 
   * The model chooses actions or events that maximizes play time.
 
-  * No need to add new content; the model can use existing content to optimize your games.
-
   * Have higher play time potential due to its ability to exploit and explore than the other four models, but tend to be risky to use.
 
   * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if custom events are associated with the model's output.
@@ -45,8 +39,6 @@
 * [Creating Simple Play Time Maximization Model](RetentionSystems/CreatingSimplePlayTimeMaximizationModel.md)
 
   * Uses discrete input values (e.g. "focus", "run" and "attack") to maximize play time.
-
-  * No need to add new content; the model can use existing content to optimize your games.
 
   * More safer and faster to learn but more limited in expressive power compared to the deep version.
 
@@ -101,8 +93,6 @@
 * [Creating Left-Too-Early Detection Model](RetentionSystems/CreatingLeftTooEarlyDetectionModel.md)
 
    * Inverse of probability-to-leave model by detecting outliers.
-
-   * No need to add new content; the model can use existing content to optimize your games.
 
    * Highly exploitable if the player accumulates long session times over many sessions before suddenly decrease the session times gradually if rewards are involved.
 

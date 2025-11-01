@@ -70,21 +70,29 @@ local function checkIfAllAreNumbers(matrix)
 	
 end
 
-local function getMaximumAcceptableCost(featureMatrix, labelMatrix, ClassesList)
+local function getMaximumAcceptableCost(dataMatrixArray, hasClassification)
 	
-	local absoluteFeatureMatrix = AqwamTensorLibrary:applyFunction(math.abs, featureMatrix)
+	local sum = 0
 	
-	local sum = AqwamTensorLibrary:sum(absoluteFeatureMatrix)
+	local partialSum
 	
-	if (labelMatrix) and (ClassesList) then
+	local absoluteDataMatrix
+	
+	for i, dataMatrix in ipairs(dataMatrixArray) do
 		
-		sum = sum + #labelMatrix
+		if (i == 2) and (hasClassification) and (#dataMatrix[1] == 1) then
+			
+			partialSum = #dataMatrix
+			
+		else
+			
+			absoluteDataMatrix = AqwamTensorLibrary:applyFunction(math.abs, dataMatrix)
+			
+			partialSum = AqwamTensorLibrary:sum(absoluteDataMatrix)
+			
+		end
 		
-	elseif (labelMatrix) and (not ClassesList) then
-		
-		local absoluteLabelMatrix = AqwamTensorLibrary:applyFunction(math.abs, labelMatrix)
-
-		sum = sum + AqwamTensorLibrary:sum(absoluteLabelMatrix)
+		sum = sum + partialSum
 		
 	end
 	
@@ -122,7 +130,7 @@ local function checkIfModelParametersAreAcceptable(ModelParameters, minimumValue
 		
 		for _, value in ipairs(ModelParameters) do
 			
-			isAcceptable = checkIfModelParametersAreAcceptable(value)
+			isAcceptable = checkIfModelParametersAreAcceptable(value, minimumValue, maximumValue)
 			
 			if (not isAcceptable) then return false end
 			
@@ -138,69 +146,79 @@ local function checkIfModelParametersAreAcceptable(ModelParameters, minimumValue
 	
 end
 
-local function removeDefectiveData(featureMatrix, labelMatrix, ClassesList) -- If even a single column contains a defective value, remove the whole row.
-	
-	local numberOfData = #featureMatrix
+local function markRowsWithUnknownClass(dataMatrix, ClassesList)
 
-	local rowToDeleteArray = {}
-	
-	local numberOfClasses
-	
-	if (labelMatrix) then
-		
-		numberOfClasses = #labelMatrix[1]
-		
+	local numberOfData = #dataMatrix
+
+	local rowWithUnknownClassArray = {}
+
+	local index = 1
+
+	for i, unwrappedDataVector in ipairs(dataMatrix) do
+
+		if (not table.find(ClassesList, unwrappedDataVector[1])) then
+
+			rowWithUnknownClassArray[index] = i
+
+			index = index + 1
+
+		end
+
 	end
-	
-	for i, featureVector in ipairs(featureMatrix) do
-		
-		local isAcceptableData = true
 
-		for f, featureValue in ipairs(featureVector) do
+	return rowWithUnknownClassArray
 
-			if (not checkIfIsAcceptableValue(featureValue)) then
-				
-				rowToDeleteArray[i] = true
-				
-				isAcceptableData = false
+end
+
+local function markRowsWithDefectiveData(dataMatrix)
+
+	local numberOfData = #dataMatrix
+
+	local rowWithDefectiveDataArray = {}
+
+	local index = 1
+
+	for i, unwrappedDataVector in ipairs(dataMatrix) do
+
+		for f, value in ipairs(unwrappedDataVector) do
+
+			if (not checkIfIsAcceptableValue(value)) then
+
+				rowWithDefectiveDataArray[index] = i
+
+				index = index + 1
 
 				break
-				
+
 			end
 
 		end
+
+	end
+
+	return rowWithDefectiveDataArray
+
+end
+
+local function mergeRowWithDefectiveDataArrays(rowWithDefectiveDataArrayArray)
+	
+	local mergedArray = {}
+	
+	local seenDictionary = {}
+	
+	local index = 1
+
+	for _, array in ipairs(rowWithDefectiveDataArrayArray) do
 		
-		if (labelMatrix) and (isAcceptableData) then
+		for _, item in ipairs(array) do
 			
-			local labelVector = labelMatrix[i]
-			
-			if (ClassesList) then
+			if (not seenDictionary[item]) then
 				
-				if (not table.find(ClassesList, labelVector[1])) then
-					
-					rowToDeleteArray[i] = true
-
-					isAcceptableData = false
-					
-					break
-					
-				end
+				mergedArray[index] = item
 				
-			else
+				seenDictionary[item] = true
 				
-				for l = 1, numberOfClasses, 1 do
-
-					if (not checkIfIsAcceptableValue(labelVector[l])) then
-
-						rowToDeleteArray[i] = true
-
-						isAcceptableData = false
-
-						break
-
-					end
-
-				end
+				index = index + 1
 				
 			end
 			
@@ -208,25 +226,63 @@ local function removeDefectiveData(featureMatrix, labelMatrix, ClassesList) -- I
 		
 	end
 
-	local filteredFeatureMatrix = {}
+	return mergedArray
 	
-	local filteredLabelMatrix
+end
+
+local function removeRows(rowToRemoveArray, dataMatrix)
 	
-	if (labelMatrix) then filteredLabelMatrix = {} end
-
-	for i = 1, numberOfData, 1 do
-
-		if (not rowToDeleteArray[i]) then
-
-			table.insert(filteredFeatureMatrix, featureMatrix[i])
-
-			if (labelMatrix) then table.insert(filteredLabelMatrix, labelMatrix[i]) end
-
+	local newDataMatrix = {}
+	
+	local index = 1
+	
+	for i, unwrappedDataVector in ipairs(dataMatrix) do
+		
+		if (not table.find(rowToRemoveArray, i)) then
+			
+			newDataMatrix[index] = unwrappedDataVector
+			
+			index = index + 1
+			
 		end
-
+		
 	end
 	
-	return filteredFeatureMatrix, filteredLabelMatrix
+	return newDataMatrix
+	
+end
+
+-- If even a single column contains a defective value, remove the whole row.
+
+local function removeDefectiveData(dataMatrixArray, hasClassification, ClassesList)
+	
+	local rowWithDefectiveDataArrayArray = {}
+	
+	local newDataMatrixArray = {}
+	
+	for i, dataMatrix in ipairs(dataMatrixArray) do
+		
+		if (i == 2) and (hasClassification) and (#dataMatrix[1] == 1) then
+			
+			rowWithDefectiveDataArrayArray[i] = markRowsWithUnknownClass(dataMatrix, ClassesList)
+			
+		else
+			
+			rowWithDefectiveDataArrayArray[i] = markRowsWithDefectiveData(dataMatrix)
+			
+		end
+		
+	end
+	
+	local rowWithDefectiveDataArray = mergeRowWithDefectiveDataArrays(rowWithDefectiveDataArrayArray)
+	
+	for i, dataMatrix in ipairs(dataMatrixArray) do
+		
+		newDataMatrixArray[i] = removeRows(rowWithDefectiveDataArray, dataMatrix)
+		
+	end
+	
+	return newDataMatrixArray
 
 end
 
@@ -312,13 +368,13 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 
 		self.canUseModel = true
 
-		return table.unpack(valueArray or {}) 
+		return table.unpack(valueArray or {})
 
 	end
 	
-	local onDefectSettingArray = {self.removeDefectiveDataOnDefect,  self.replaceValuesOnDefect, self.modifyModelOnDefect}
+	local onDefectSettingArray = {self.removeDefectiveDataOnDefect,  self.replaceValuesOnDefect, self.removeDefectiveDataOnDefect, self.modifyModelOnDefect}
 
-	local onDefectFunctionNameArray = {"removeDefectFunction", "replaceValueFunction", "modifyModelFunction"}
+	local onDefectFunctionNameArray = {"removeDefectFunction", "replaceValueFunction", "removeDefectFunction", "modifyModelFunction"}
 	
 	local onDefectFunctionName
 
@@ -366,13 +422,25 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 	
 end
 
-function ModelSafeguardWrapper:train(featureMatrix, labelMatrix)
+function ModelSafeguardWrapper:train(...)
 	
 	local Model = self.Model
 
 	local ClassesList = Model.ClassesList
 	
 	local maximumAcceptableCostMultiplier = self.maximumAcceptableCostMultiplier
+	
+	local isTable = (type(ClassesList) == "table")
+	
+	local numberOfClasses = (isTable and #ClassesList) or 0
+	
+	local hasClassification = (numberOfClasses ~= 0)
+	
+	local dataMatrixArray = {...}
+	
+	local numberOfDataMatrix = #dataMatrixArray
+	
+	local numberOfData
 	
 	local costArray
 	
@@ -386,15 +454,25 @@ function ModelSafeguardWrapper:train(featureMatrix, labelMatrix)
 		
 		["removeDefectFunction"] = function()
 			
-			featureMatrix, labelMatrix = removeDefectiveData(featureMatrix, labelMatrix, ClassesList)
+			dataMatrixArray = removeDefectiveData(dataMatrixArray, hasClassification)
 			
 		end,
 		
 		["replaceValueFunction"] = function()
 			
-			if (not checkIfAllAreNumbers(featureMatrix)) then return end
+			for i, dataMatrix in ipairs(dataMatrixArray) do
+				
+				if (i ~= 2) or (not hasClassification) or (#dataMatrix[1] ~= 1) then
 
-			featureMatrix = AqwamTensorLibrary:zScoreNormalization(featureMatrix, 2)
+					if (checkIfAllAreNumbers(dataMatrix)) then
+
+						dataMatrixArray[i] = AqwamTensorLibrary:zScoreNormalization(dataMatrix, 2)
+
+					end
+
+				end
+				
+			end
 			
 		end,
 		
@@ -412,9 +490,21 @@ function ModelSafeguardWrapper:train(featureMatrix, labelMatrix)
 	
 	self:runSandboxedEnvironment("train", Model, function()
 		
-		costArray = Model:train(featureMatrix, labelMatrix)
+		numberOfData = #dataMatrixArray[1]
 		
-		maximumAcceptableCost = maximumAcceptableCostMultiplier * getMaximumAcceptableCost(featureMatrix, labelMatrix)
+		for i = 2, numberOfDataMatrix, 1 do
+			
+			if (numberOfData ~= #dataMatrixArray[i]) then error("The number of data for all input matrices are not equal.") end
+			
+		end
+		
+		-- No data means no training.
+		
+		if (numberOfData == 0) then return {} end
+		
+		costArray = Model:train(table.unpack(dataMatrixArray))
+		
+		maximumAcceptableCost = maximumAcceptableCostMultiplier * getMaximumAcceptableCost(dataMatrixArray, hasClassification)
 
 		finalCostValue = costArray[#costArray]
 		

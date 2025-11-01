@@ -113,10 +113,6 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 	if (numberOfStates ~= #currentStateMatrix[1]) then error("The number of states in the previous state vector is not equal to the number of states in the current state vector.") end
 	
 	local numberOfStatesDimensionSizeArray = {numberOfStates, numberOfStates}
-	
-	local stateFunction = self.stateFunction
-	
-	local observationStateFunction = self.observationStateFunction
 
 	local controlVector = self.controlVector
 	
@@ -136,7 +132,7 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 
 	local processNoiseCovarianceMatrix = self.processNoiseCovarianceMatrix or AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray, noiseValue)
 
-	local predictedStateMatrix = stateFunction(priorStateMatrix, controlVector)
+	local predictedStateMatrix = self.stateFunction(priorStateMatrix, controlVector)
 	
 	local stateTransitionJacobianMatrix = self.stateTransitionJacobianFunction(priorStateMatrix, controlVector)
 
@@ -146,7 +142,7 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 
 	local predictedCovarianceMatrix = AqwamTensorLibrary:add(predictedCovarianceMatrixPart1, processNoiseCovarianceMatrix)
 
-	local observationMatrix = observationStateFunction(predictedStateMatrix)
+	local observationMatrix = self.observationStateFunction(predictedStateMatrix)
 	
 	local observationJacobianMatrix = self.observationJacobianFunction(predictedStateMatrix)
 	

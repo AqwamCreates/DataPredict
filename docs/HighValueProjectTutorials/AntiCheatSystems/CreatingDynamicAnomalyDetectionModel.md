@@ -45,7 +45,7 @@ local AnomalyPredictionModel = DataPredict.Models.DynamicBayesianNetwork.new()
 
 ```lua
 
-local stateVector = {{healthChangeAmount, damageAmount, hitStreakAmount}}
+local stateVector = {{healthChangeAmount, damageAmount, killPerDurationFromLastKill}}
 
 ```
 

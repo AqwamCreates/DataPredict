@@ -172,13 +172,7 @@ end
 
 function ExtendedKalmanFilterModel:predict(stateMatrix)
 	
-	local stateFunction = self.stateFunction
-
-	local controlVector = self.controlVector
-	
-	local nextStateMatrix = stateFunction(stateMatrix, controlVector)
-	
-	return nextStateMatrix
+	return self.stateFunction(self.stateFunction, self.controlVector)
 	
 end
 

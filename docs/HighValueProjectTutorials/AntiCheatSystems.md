@@ -4,6 +4,6 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* [Creating Sequential Anomaly Detection Model](AntiCheatSystems/CreatingSequentialAnomalyDetectionModel.md) (Incomplete)
+* [Creating Dynamic Anomaly Detection Model](AntiCheatSystems/CreatingDynamicAnomalyDetectionModel.md) (Incomplete)
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.

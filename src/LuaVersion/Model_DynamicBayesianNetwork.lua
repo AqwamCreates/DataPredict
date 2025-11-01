@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require("Model_AqwamTensorLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
@@ -41,8 +41,6 @@ local defaultMode = "Hybrid"
 local defaultIsHidden = false
 
 local defaultLossFunction = "L2"
-
-local defaultUseLogProbabilities = false
 
 function DynamicBayesianNetworkModel.new(parameterDictionary)
 
@@ -59,8 +57,6 @@ function DynamicBayesianNetworkModel.new(parameterDictionary)
 	NewDynamicBayesianNetworkModel.isHidden = NewDynamicBayesianNetworkModel:getValueOrDefaultValue(parameterDictionary.isHidden, defaultIsHidden)
 	
 	NewDynamicBayesianNetworkModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
-	
-	NewDynamicBayesianNetworkModel.useLogProbabilities = NewDynamicBayesianNetworkModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
 	NewDynamicBayesianNetworkModel.TransitionProbabilityOptimizer = parameterDictionary.TransitionProbabilityOptimizer
 
@@ -91,8 +87,6 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	local isHidden = self.isHidden
 	
 	local lossFunction = self.lossFunction
-
-	local useLogProbabilities = self.useLogProbabilities
 
 	local ModelParameters = self.ModelParameters or {}
 
@@ -208,21 +202,11 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 		
 	end
 
-	if (useLogProbabilities) then
-
-		transitionProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, transitionProbabilityMatrix)
-
-		if (isHidden) then emissionProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, emissionProbabilityMatrix) end
-
-	end
-
 	self.ModelParameters = {transitionProbabilityMatrix, emissionProbabilityMatrix, transitionCountMatrix, emissionCountMatrix}
 	
 	local targetMatrix = (isHidden and currentObservationStateMatrix) or currentStateMatrix
 	
 	local predictedCurrentStateMatrix = self:predict(previousStateMatrix)
-	
-	if (useLogProbabilities) then predictedCurrentStateMatrix = AqwamTensorLibrary:applyFunction(math.exp, predictedCurrentStateMatrix) end
 	
 	local lossMatrix = AqwamTensorLibrary:subtract(targetMatrix, predictedCurrentStateMatrix)
 
@@ -251,8 +235,6 @@ end
 function DynamicBayesianNetworkModel:predict(stateMatrix)
 
 	local isHidden = self.isHidden
-	
-	local useLogProbabilities = self.useLogProbabilities
 
 	local ModelParameters = self.ModelParameters
 	
@@ -266,8 +248,6 @@ function DynamicBayesianNetworkModel:predict(stateMatrix)
 
 	if (not ModelParameters) then
 		
-		local zeroValue = (useLogProbabilities and -math.huge) or 0
-		
 		local transitionCountMatrix
 		
 		local emissionCountMatrix
@@ -276,9 +256,9 @@ function DynamicBayesianNetworkModel:predict(stateMatrix)
 
 		local transitionMatrixDimensionSizeArray = {numberOfStates, numberOfStates}
 
-		transitionProbabilityMatrix = AqwamTensorLibrary:createTensor(transitionMatrixDimensionSizeArray, zeroValue)
+		transitionProbabilityMatrix = AqwamTensorLibrary:createTensor(transitionMatrixDimensionSizeArray)
 		
-		transitionCountMatrix = AqwamTensorLibrary:createTensor(transitionMatrixDimensionSizeArray, 0)
+		transitionCountMatrix = AqwamTensorLibrary:createTensor(transitionMatrixDimensionSizeArray)
 
 		if (isHidden) then
 			
@@ -286,9 +266,9 @@ function DynamicBayesianNetworkModel:predict(stateMatrix)
 			
 			local emissionMatrixDimensionSizeArray = {numberOfStates, numberOfObservations}
 
-			emissionProbabilityMatrix = AqwamTensorLibrary:createTensor(emissionMatrixDimensionSizeArray, zeroValue)
+			emissionProbabilityMatrix = AqwamTensorLibrary:createTensor(emissionMatrixDimensionSizeArray)
 			
-			emissionCountMatrix = AqwamTensorLibrary:createTensor(emissionMatrixDimensionSizeArray, 0)
+			emissionCountMatrix = AqwamTensorLibrary:createTensor(emissionMatrixDimensionSizeArray)
 
 		end
 
@@ -312,49 +292,7 @@ function DynamicBayesianNetworkModel:predict(stateMatrix)
 
 	local selectedMatrix = (isHidden and emissionProbabilityMatrix) or transitionProbabilityMatrix
 	
-	local numberOfColumns = (isHidden and numberOfObservations) or numberOfStates
-	
-	local oneValue = (useLogProbabilities and 0) or 1
-	
-	local numberOfData = #stateMatrix
-
-	local resultTensor = AqwamTensorLibrary:createTensor({numberOfData, numberOfColumns}, oneValue)
-	
-	local unwrappedResultVector
-	
-	local unwrappedProbabilityVector
-
-	for dataIndex, unwrappedStateVector in ipairs(stateMatrix) do
-		
-		unwrappedResultVector = resultTensor[dataIndex]
-		
-		for stateIndex, stateValue in ipairs(unwrappedStateVector) do
-			
-			if (stateValue ~= 0) then -- To save computational resources, we skip the calculations for zero values.
-				
-				unwrappedProbabilityVector = selectedMatrix[stateIndex]
-				
-				for probabilityIndex, probability in ipairs(unwrappedProbabilityVector) do
-					
-					if (useLogProbabilities) then
-						
-						unwrappedResultVector[probabilityIndex] = unwrappedResultVector[probabilityIndex] + probability
-						
-					else
-						
-						unwrappedResultVector[probabilityIndex] = unwrappedResultVector[probabilityIndex] * probability
-						
-					end
-					
-				end
-				
-			end
-				
-		end
-
-		resultTensor[dataIndex] = unwrappedResultVector
-
-	end
+	local resultTensor = AqwamTensorLibrary:dotProduct(stateMatrix, selectedMatrix)
 	
 	return resultTensor
 

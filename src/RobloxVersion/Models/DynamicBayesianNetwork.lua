@@ -188,7 +188,7 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 		
 	end
 	
-	local sumTransitionCountVector = AqwamTensorLibrary:sum(transitionCountMatrix, 2)
+	local sumTransitionCountVector = AqwamTensorLibrary:sum(transitionCountMatrix, 1)
 	
 	local transitionProbabilityMatrix = AqwamTensorLibrary:divide(transitionCountMatrix, sumTransitionCountVector)
 	
@@ -196,11 +196,17 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	
 	if (isHidden) then
 		
-		local sumEmissionCountVector = AqwamTensorLibrary:sum(emissionCountMatrix, 2)
+		local sumEmissionCountVector = AqwamTensorLibrary:sum(emissionCountMatrix, 1)
 
 		emissionProbabilityMatrix = AqwamTensorLibrary:divide(emissionCountMatrix, sumEmissionCountVector)
 		
 	end
+	
+	-- stateMatrix -> numberOfData x numberOfStates
+	
+	-- transitionProbabilityMatrix -> numberOfStateProbabilities x numberOfStates
+	
+	-- emissionProbabilityMatrix -> numberOfObservationProbabilities x numberOfStates
 
 	self.ModelParameters = {transitionProbabilityMatrix, emissionProbabilityMatrix, transitionCountMatrix, emissionCountMatrix}
 	

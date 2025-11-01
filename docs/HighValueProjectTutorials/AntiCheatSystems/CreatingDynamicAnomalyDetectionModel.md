@@ -1,6 +1,6 @@
 # Creating Dynamic Anomaly Detection Model
 
-Hello guys! Today, I will be showing you on how to create a anomaly-detection-based model that could detect unusual player behavior that often cheating or suspicious actions.
+Hello guys! Today, I will be showing you on how to create an anomaly-detection-based model that could detect unusual player behavior that often cheating or suspicious actions.
 
 ## Setting Up
 

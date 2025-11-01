@@ -25,6 +25,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | 🟢   | Online                     | Can adapt real-time.                                    |
 | 🟡   | Session-Adaptive / Offline | Can be retrained each session.                          |
 | ⚠️   | Assumption-Heavy           | Assumes linear / independent features.                  |
+| ⚙️   | Configuration-Heavy        | Assumes linear / independent features.                  |
 
 ### Note
 
@@ -46,7 +47,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Regression
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                           | Alternate Names | Properties    | Use Cases                                                                                                |
 |---------------------------------------------------------------------------------|-----------------|---------------|----------------------------------------------------------------------------------------------------------|
@@ -67,7 +68,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Classification
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                | Alternate Names                | Properties       | Use Cases                                                                                                      |
 |--------------------------------------------------------------------------------------|--------------------------------|------------------|----------------------------------------------------------------------------------------------------------------|
@@ -89,7 +90,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Clustering
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                                                  | Alternate Names | Properties | Use Cases                                                            |
 |------------------------------------------------------------------------------------------------------------------------|-----------------|------------|----------------------------------------------------------------------|
@@ -104,7 +105,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Deep Reinforcement Learning
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                                          | Alternate Names               | Properties  | Use Cases                                                                 |
 |----------------------------------------------------------------------------------------------------------------|-------------------------------|-------------|---------------------------------------------------------------------------|
@@ -132,7 +133,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Tabular Reinforcement Learning
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                                                | Alternate Names           | Properties  | Use Cases                       |
 |----------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|---------------------------------|
@@ -151,22 +152,22 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 ## Sequence Modelling
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                         | Alternate Names | Properties | Use Cases                                 |
-|---------------------------------------------------------------|-----------------|------------|-------------------------------------------|
-| [Markov](Models/Markov.md)*                                   | None            | 💾 🟢     | Single Features Player State Prediction   |
-| [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md)* | DBN             | 💾 🟢     | Multiple Features Player State Prediction |
-| [Conditional Random Field](Models/ConditionalRandomField.md)* | CRF             | 🟢        | Multiple Features Player State Prediction |
-| [Kalman Filter](Models/KalmanFilter.md)*                      | KF              | 🟢 ⚠️     | Multiple Features Player State Prediction |
-| [Extended Kalman Filter](Models/ExtendedKalmanFilter.md)*     | EKF             | ⚡ 🟢      | Multiple Features Player State Prediction |
-| [Unscented Kalman Filter](Models/UnscentedKalmanFilter.md)*   | UKF             | ⚡ 💾 🟢   | Multiple Features Player State Prediction |
+| Model                                                         | Alternate Names | Properties   | Use Cases                                 |
+|---------------------------------------------------------------|-----------------|--------------|-------------------------------------------|
+| [Markov](Models/Markov.md)*                                   | None            | 💾 🟢       | Single Features Player State Prediction   |
+| [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md)* | DBN             | 💾 🟢       | Multiple Features Player State Prediction |
+| [Conditional Random Field](Models/ConditionalRandomField.md)* | CRF             | 🟢           | Multiple Features Player State Prediction |
+| [Kalman Filter](Models/KalmanFilter.md)*                      | KF              | 🟢 ⚠️ ⚙️    | Linear Movement Anti-Cheat                |
+| [Extended Kalman Filter](Models/ExtendedKalmanFilter.md)*     | EKF             | ⚡ 🟢 ⚙️    | Non-Linear Movement Anti-Cheat            |
+| [Unscented Kalman Filter](Models/UnscentedKalmanFilter.md)*   | UKF             | ⚡ 💾 🟢 ⚙️ | Non-Linear Movement Anti-Cheat            |
 
 * These are single step variants of the sequence models. Hence, it will not use or return sequence of values.
 
 ## Generative
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                                              | Alternate Names | Properties | Use Cases                                 |
 |--------------------------------------------------------------------------------------------------------------------|-----------------|------------| ------------------------------------------|

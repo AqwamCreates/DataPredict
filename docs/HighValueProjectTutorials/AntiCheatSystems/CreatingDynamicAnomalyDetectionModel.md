@@ -87,7 +87,7 @@ local function run(Player)
 
         currentStateVector = getPlayerDataVector(Player)
     
-        costArray = PlayTimeMaximizationModel:train(previousStateVector, currentStateVector)
+        costArray = AnomalyPredictionModel:train(previousStateVector, currentStateVector)
 
         cost = costArray[1]
 

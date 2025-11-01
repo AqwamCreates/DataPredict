@@ -115,6 +115,6 @@ end
 
 ## Conclusion
 
-This tutorial showed you on how to create anomaly detection model that allows you to mark unusual activities. All you need is some data, some models and a bit of practice to get this right!
+This tutorial showed you on how to create anomaly detection model that allows you to detect unusual activities. All you need is some data, some models and a bit of practice to get this right!
 
 That's all for today and see you later!

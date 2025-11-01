@@ -49,25 +49,13 @@ local stateVector = {{healthChangeAmount, damageAmount, hitStreakAmount}}
 
 ```
 
-## Prediction Handling
+## Anomaly Detection
 
-Once you receive the predicted label vector, you can grab the pure number output by doing this:
-
-```lua
-
-local isNormalProbability =  predictedLabelVector[1][1]
-
-```
-
-So for the current session, you can determine what to do for the next session.
+In order for us to check for unusual activities, we will have to rely on the training cost by calling train() function.
 
 ```lua
 
-if (isNormalProbability <= 0.03) then -- Can be changed instead of 0.03.
 
---- Do a logic here to deal with the player with the anomaly.
-
-end
 
 ```
 

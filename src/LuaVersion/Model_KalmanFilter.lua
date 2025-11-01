@@ -205,10 +205,10 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 		posteriorCovarianceMatrix = AqwamTensorLibrary:add(josephFormMatrixPart1, josephFormMatrixPart2)
 		
 	end
+
+	--[[
 	
 	local residualMatrixPart1 = AqwamTensorLibrary:dotProduct(observationModelMatrix, observationMatrix)
-	
-	--[[
 	
 	local residualMatrix = AqwamTensorLibrary:subtract(observationMatrix, residualMatrixPart1)
 	

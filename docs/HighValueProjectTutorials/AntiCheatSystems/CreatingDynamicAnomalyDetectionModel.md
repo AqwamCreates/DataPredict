@@ -75,36 +75,6 @@ end
 
 ```
 
-If you're concerned about that the model may produce wrong result heavily upon first start up, then you can use a randomized dataset to heavily skew the prediction to the "1" probability value. Then use this randomized dataset to pretrain the model before doing any real-time training and prediction. Below, we will show you how it is done.
-
-```lua
-
-local numberOfData = 100
-
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 3}, -100, 100) -- 100 random data with 3 features.
-
-```
-
-## Upon Player Leave
-
-By the time the player leaves, it is time for us to train the model.
-
-```lua
-
-local costArray = AnomalyPredictionModel:train(playerDataVector)
-
-```
-
-This should give you a model that predicts a rough estimate when they'll leave.
-
-Then, you must save the model parameters to Roblox's DataStores for future use.
-
-```lua
-
-local ModelParameters = AnomalyPredictionModel:getModelParameters()
-
-```
-
 ## Model Parameters Loading 
 
 In here, we will use our model parameters so that it can be used to load out models. There are three cases in here:

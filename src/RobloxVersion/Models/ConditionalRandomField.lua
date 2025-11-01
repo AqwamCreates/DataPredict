@@ -48,7 +48,7 @@ function ConditionalRandomFieldModel:calculateCost(predictedCurrentStateMatrix, 
 	
 	local logPredictedCurrentStateMatrix = AqwamTensorLibrary:applyFunction(math.log, predictedCurrentStateMatrix)
 	
-	local costMatrix = AqwamTensorLibrary:multiplyElementWise(currentStateMatrix, logPredictedCurrentStateMatrix)
+	local costMatrix = AqwamTensorLibrary:multiply(currentStateMatrix, logPredictedCurrentStateMatrix)
 	
 	local totalCost = -AqwamTensorLibrary:sum(costMatrix)
 	

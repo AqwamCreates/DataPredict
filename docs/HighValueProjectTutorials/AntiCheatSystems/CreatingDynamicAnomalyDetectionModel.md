@@ -53,6 +53,16 @@ local stateVector = {{healthChangeAmount, damageAmount, hitStreakAmount}}
 
 In order for us to check for unusual activities, we will have to rely on the training cost by calling train() function.
 
+But first, we need to understand on how to set a proper cost threshold to filter out unusual activities.
+
+* When you set the cost threshold very high, this will detect the "blatant" cheating.
+
+* When you set the cost threshold to very low, this will detect the "expert" cheating. However, you need to be careful since the idle state can produce very low cost.
+
+* Between these two cost threshold, the cost generated is as a result of players' noisy, but consistent movements.
+
+Therefore, it is important for you to implement this model and test it under non-cheating circumstances to get these cost threshold.
+
 ```lua
 
 

@@ -19,13 +19,15 @@ local DataPredict = require(DataPredict)
 
 --[[
 
-  You can set "useJosephForm" to false if you want a more faster calculation by trading numerical stability and accuracy.
+  For best results, set "lossFunction" to "Mahalanobis" for anomaly detection.
 
-  By default, it is set to true. 
+  You can also set "useJosephForm" to false if you want a more faster calculation by trading numerical stability and accuracy.
+
+  By default, "lossFunction" is set to "L2" and "useJosephForm" is set to true.
 
 --]]
 
-local AnomalyPredictionModel = DataPredict.Models.KalmanFilter.new({useJosephForm = true})
+local AnomalyPredictionModel = DataPredict.Models.KalmanFilter.new({lossFunction = "Mahalanobis", useJosephForm = true})
 
 ```
 

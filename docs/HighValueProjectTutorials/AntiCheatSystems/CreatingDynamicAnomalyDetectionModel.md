@@ -17,9 +17,15 @@ Before we train our model, we will first need to construct a model, in which we 
 
 local DataPredict = require(DataPredict)
 
--- There are no parameters to set here.
+--[[
 
-local AnomalyPredictionModel = DataPredict.Models.GaussianNaiveBayes.new()
+  You can set "useJosephForm" to false if you want a more faster calculation by trading numerical stability and accuracy.
+
+  By default, "useJosephForm" is set to true. 
+
+--]]
+
+local AnomalyPredictionModel = DataPredict.Models.KalmanFilter.new({useJosephForm = true})
 
 ```
 
@@ -29,9 +35,9 @@ local AnomalyPredictionModel = DataPredict.Models.GaussianNaiveBayes.new()
 
 local DataPredict = require(DataPredict)
 
--- You must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
+-- There are no parameters to set here.
 
-local AnomalyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction"})
+local AnomalyPredictionModel = DataPredict.Models.DynamicBayesianNetwork.new()
 
 ```
 

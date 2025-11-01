@@ -40,6 +40,8 @@ local defaultNoiseValue = 1 -- Do not use very small value for this. It will cau
 
 local defaultLossFunction = "L2"
 
+local defaultUseJosephForm = true
+
 local function defaultStateFunction(previousStateMatrix, controlVector)
 	
 	return AqwamTensorLibrary:add(previousStateMatrix, controlVector)
@@ -94,6 +96,8 @@ function ExtendedKalmanFilterModel.new(parameterDictionary)
 	
 	NewExtendedKalmanFilterModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
 	
+	NewExtendedKalmanFilterModel.useJosephForm = NewExtendedKalmanFilterModel:getValueOrDefaultValue(parameterDictionary.useJosephForm, defaultUseJosephForm)
+	
 	return NewExtendedKalmanFilterModel
 	
 end
@@ -119,6 +123,8 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 	local noiseValue = self.noiseValue
 	
 	local lossFunction = self.lossFunction
+	
+	local useJosephForm = self.useJosephForm
 	
 	local ModelParameters = self.ModelParameters or {}
 	
@@ -165,8 +171,22 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 	local KHMatrix = AqwamTensorLibrary:dotProduct(kalmanGainMatrix, observationJacobianMatrix)
 	
 	local identityMinusKHMatrix = AqwamTensorLibrary:subtract(identityMatrix, KHMatrix)
+	
+	local posteriorCovarianceMatrix = AqwamTensorLibrary:dotProduct(identityMinusKHMatrix, priorCovarianceMatrix)
 
-	local posteriorCovarianceMatrix = AqwamTensorLibrary:dotProduct(identityMinusKHMatrix, predictedCovarianceMatrix)
+	if (useJosephForm) then
+
+		local transposedIdentityMinusKHMatrix = AqwamTensorLibrary:transpose(identityMinusKHMatrix)
+
+		local josephFormMatrixPart1 = AqwamTensorLibrary:dotProduct(posteriorCovarianceMatrix, transposedIdentityMinusKHMatrix)
+
+		local transposedKalmanGainMatrix = AqwamTensorLibrary:transpose(kalmanGainMatrix)
+
+		local josephFormMatrixPart2 = AqwamTensorLibrary:dotProduct(kalmanGainMatrix, observationNoiseCovarianceMatrix, transposedKalmanGainMatrix)
+
+		posteriorCovarianceMatrix = AqwamTensorLibrary:add(josephFormMatrixPart1, josephFormMatrixPart2)
+
+	end
 	
 	local meanCorrectionMatrix = AqwamTensorLibrary:mean(posteriorStateMatrixPart1, 1)
 

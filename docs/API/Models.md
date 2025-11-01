@@ -25,7 +25,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | 🟢   | Online                     | Can adapt real-time.                                    |
 | 🟡   | Session-Adaptive / Offline | Can be retrained each session.                          |
 | ⚠️   | Assumption-Heavy           | Assumes linear / independent features.                  |
-| ⚙️   | Configuration-Heavy        | Assumes linear / independent features.                  |
+| ⚙️   | Configuration-Heavy        | Requires a lot of manual configuration to use.          |
 
 ### Note
 

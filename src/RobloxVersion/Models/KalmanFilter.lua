@@ -180,9 +180,9 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	
 	local optimalKalmanGainMatrix = AqwamTensorLibrary:dotProduct(priorCovarianceMatrix, transposedObservationModelMatrix, inverseInnovationCovarianceMatrix)
 	
-	local posteriorMatrixPart1 = AqwamTensorLibrary:dotProduct(optimalKalmanGainMatrix, innovationMatrix)
+	local posteriorStateMatrixPart1 = AqwamTensorLibrary:dotProduct(optimalKalmanGainMatrix, innovationMatrix)
 	
-	local posteriorStateMatrix = AqwamTensorLibrary:add(priorStateMatrix, posteriorMatrixPart1)
+	local posteriorStateMatrix = AqwamTensorLibrary:add(priorStateMatrix, posteriorStateMatrixPart1)
 	
 	local identityMatrix = AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray)
 
@@ -224,7 +224,9 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	
 	--]]
 	
-	self.ModelParameters = {posteriorStateMatrix, posteriorCovarianceMatrix}
+	local meanCorrectionMatrix = AqwamTensorLibrary:mean(posteriorStateMatrixPart1, 2)
+	
+	self.ModelParameters = {posteriorStateMatrix, posteriorCovarianceMatrix, meanCorrectionMatrix}
 	
 	-- Returning this as a cost like other models.
 
@@ -260,17 +262,19 @@ end
 
 function KalmanFilterModel:predict(stateMatrix)
 	
-	local stateTransitionModelMatrix = self.stateTransitionModelMatrix
-	
 	local controlInputMatrix = self.controlInputMatrix
 
 	local controlVector = self.controlVector -- 1 x n
+	
+	local ModelParameters = self.ModelParameters or {}
+
+	local meanCorrectionMatrix = ModelParameters[3]
 	
 	--local processNoiseMatrix = self.processNoiseMatrix
 	
 	stateMatrix = AqwamTensorLibrary:transpose(stateMatrix)
 
-	local nextStateMatrixPart1 = AqwamTensorLibrary:dotProduct(stateTransitionModelMatrix, stateMatrix)
+	local nextStateMatrixPart1 = AqwamTensorLibrary:add(stateMatrix, meanCorrectionMatrix)
 
 	local nextStateMatrixPart2
 	

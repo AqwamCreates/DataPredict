@@ -426,7 +426,7 @@ function ModelSafeguardWrapper:train(...)
 	
 	local Model = self.Model
 
-	local ClassesList = Model.ClassesList
+	local ClassesList = Model.ClassesList or Model.StatesList or Model.ObservationStatesList
 	
 	local maximumAcceptableCostMultiplier = self.maximumAcceptableCostMultiplier
 	

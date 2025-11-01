@@ -103,6 +103,8 @@ local function run(Player)
 
         end
 
+        tasl.wait()
+
         isPlayerInServer = checkIfPlayerIsInServer(Player)
 
     end

@@ -102,7 +102,7 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 	
 	local numberOfStates = #previousStateMatrix[1]
 
-	if (numberOfStates ~= #currentStateMatrix[1]) then error("The number of current state columns is not equal to the number of states.") end
+	if (numberOfStates ~= #currentStateMatrix[1]) then error("The number of states in the previous state vector is not equal to the number of states in the current state vector.") end
 	
 	local numberOfStatesDimensionSizeArray = {numberOfStates, numberOfStates}
 	

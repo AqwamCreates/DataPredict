@@ -92,7 +92,7 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	
 	local controlInputMatrix = self.controlInputMatrix
 
-	local controlVector = self.controlVector -- 1 x n
+	local controlVector = self.controlVector -- 1 x states
 	
 	local noiseValue = self.noiseValue
 	
@@ -114,9 +114,9 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 
 	local processNoiseCovarianceMatrix = self.processNoiseCovarianceMatrix or AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray, noiseValue)
 	
-	previousStateMatrix = AqwamTensorLibrary:transpose(previousStateMatrix) -- m x n -> n x m
+	previousStateMatrix = AqwamTensorLibrary:transpose(previousStateMatrix) -- data x states -> states x data
 	
-	currentStateMatrix = AqwamTensorLibrary:transpose(currentStateMatrix) -- m x n -> n x m
+	currentStateMatrix = AqwamTensorLibrary:transpose(currentStateMatrix) -- data x states -> states x data
 	
 	if (not priorStateMatrix) then
 		
@@ -264,7 +264,7 @@ function KalmanFilterModel:predict(stateMatrix)
 	
 	local controlInputMatrix = self.controlInputMatrix
 
-	local controlVector = self.controlVector -- 1 x n
+	local controlVector = self.controlVector -- 1 x states
 	
 	local ModelParameters = self.ModelParameters or {}
 

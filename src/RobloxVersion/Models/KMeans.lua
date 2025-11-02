@@ -86,20 +86,6 @@ local function assignToCluster(distanceMatrix) -- Number of columns -> number of
 	
 end
 
-local function checkIfTheDataPointClusterNumberBelongsToTheCluster(dataPointClusterNumber, cluster)
-	
-	if (dataPointClusterNumber == cluster) then
-		
-		return 1
-		
-	else
-		
-		return 0
-		
-	end
-	
-end
-
 local function createDistanceMatrix(distanceFunction, matrix1, matrix2)
 
 	local numberOfData1 = #matrix1

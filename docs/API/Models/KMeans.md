@@ -57,7 +57,7 @@ KMeans.new(maximumNumberOfIterations: integer, numberOfClusters: integer, distan
 Train the model.
 
 ```
-KMeans:train(featureMatrix: matrix)
+KMeans:train(featureMatrix: matrix): {number}
 ```
 
 #### Parameters:

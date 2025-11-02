@@ -49,7 +49,7 @@ BisectingCluster.new(Model: Model, numberOfClusters: integer, distanceFunction: 
 Train the model.
 
 ```
-BisectingCluster:train(featureMatrix: matrix)
+BisectingCluster:train(featureMatrix: matrix): {number}
 ```
 
 #### Parameters:

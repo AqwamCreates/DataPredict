@@ -96,17 +96,19 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	FuzzyCMeans = require(Models.FuzzyCMeans),
 	
-	ExpectationMaximization = require(Models.ExpectationMaximization),
+	KMedoids = require(Models.KMedoids),
 	
 	AgglomerativeHierarchical = require(Models.AgglomerativeHierarchical),
 	
+	ExpectationMaximization = require(Models.ExpectationMaximization),
+	
 	MeanShift = require(Models.MeanShift),
+	
+	AffinityPropagation = require(Models.AffinityPropagation),
 	
 	DensityBasedSpatialClusteringOfApplicationsWithNoise = require(Models.DensityBasedSpatialClusteringOfApplicationsWithNoise),
 	
-	KMedoids = require(Models.KMedoids),
-	
-	AffinityPropagation = require(Models.AffinityPropagation),
+	BisectingCluster = require(Models.BisectingCluster),
 	
 	DeepQLearning = require(Models.DeepQLearning),
 

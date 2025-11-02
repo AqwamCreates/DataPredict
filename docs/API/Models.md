@@ -6,12 +6,12 @@ If you wonder what are the most high-value use cases that helps with retention a
 |--------------------------------|-------|
 | Regression                     | 8     |
 | Classification                 | 13    |
-| Clustering                     | 8     |
+| Clustering                     | 9     |
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 12    |
 | Sequence Modelling             | 6     |
 | Generative                     | 4     |
-| Total                          | 72    |
+| Total                          | 73    |
 
 ### Legend
 
@@ -37,7 +37,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
   * Uses reverse-mode automatic differentiation and lazy differentiation evaluation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
 
-* Currently, DataPredict™ has ~90% (61 out of 70) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (63 out of 73) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -102,6 +102,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [MeanShift](Models/MeanShift.md)                                                                                       | None            | 🛡️ 🟢 🟡 | Boss Spawn Location Search Based On Player Locations                 |
 | [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | AP              | 🟡        | Player Grouping                                                      |
 | [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | 🛡️ 🟡     | Density Grouping                                                     |
+| [BisectingCluster](Models/BisectingCluster.md)                                                                         | None            | ⚡ 🟡     | Slow To Quick Grouping                                               |
 
 ## Deep Reinforcement Learning
 

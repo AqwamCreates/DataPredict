@@ -205,6 +205,7 @@ local function chooseRandomCentroids(featureMatrix, numberOfClusters)
 			if hasANewRandomRowChosen then
 
 				table.insert(selectedRows, randomRow)
+				
 				modelParameters[cluster] = featureMatrix[randomRow]
 
 			end

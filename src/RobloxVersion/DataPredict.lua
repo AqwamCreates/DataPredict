@@ -108,6 +108,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	AffinityPropagation = require(Models.AffinityPropagation),
 	
+	BisectingCluster = require(Models.BisectingCluster),
+	
 	DeepQLearning = require(Models.DeepQLearning),
 
 	DeepDoubleQLearningV1 = require(Models.DeepDoubleQLearningV1),

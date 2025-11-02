@@ -8,7 +8,7 @@ Before we train our model, we will first need to construct a model, in which we 
 
 | Approach | Model                    | Advantages               | Disadvantages                            |
 | -------- | -------------------------| ------------------------ | ---------------------------------------- |
-| 1        | Kalman Filter            | Good against noisy data. | Requires linearity.                      |
+| 1        | Kalman Filter            | Good against noisy data. | Assumes values are linear.               |
 | 2        | Unscented Kalman Filter  | Good against noisy data. | Requires some parameter configurations.  |
 | 3        | Dynamic Bayesian Network | Extremely fast.          | Assumes values are normally distributed. |
 

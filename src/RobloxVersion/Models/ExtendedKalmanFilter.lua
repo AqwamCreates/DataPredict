@@ -42,7 +42,7 @@ local defaultLossFunction = "L2"
 
 local defaultUseJosephForm = true
 
-local function defaultStateFunction(previousStateMatrix, controlVector) -- features x data, 1 x features
+local function defaultStateFunction(previousStateMatrix, controlVector) -- states x data, 1 x states
 	
 	if (not controlVector) then return previousStateMatrix end
 	
@@ -50,19 +50,21 @@ local function defaultStateFunction(previousStateMatrix, controlVector) -- featu
 	
 end
 
-local function defaultObservationStateFunction(stateMatrix) -- features x data
+local function defaultObservationStateFunction(stateMatrix) -- states x data
 
 	return stateMatrix
 
 end
 
-local function defaultStateTransitionJacobianFunction(stateMatrix, controlVector) -- features x data, 1 x features
+local function defaultStateTransitionJacobianFunction(stateMatrix, controlVector) -- states x data, 1 x states
 	
-	return AqwamTensorLibrary:createIdentityTensor({#stateMatrix, #stateMatrix})
+	local numberOfStates = #stateMatrix
+	
+	return AqwamTensorLibrary:createIdentityTensor({numberOfStates, numberOfStates})
 	
 end
 
-local function defaultObservationJacobianFunction(stateMatrix) -- features x data
+local function defaultObservationJacobianFunction(stateMatrix) -- states x data
 	
 	return AqwamTensorLibrary:createIdentityTensor({#stateMatrix, #stateMatrix})
 	

@@ -107,11 +107,19 @@ local function run(Player)
 
         -- Checks if the player is performing suspiciously.
 
-        if (cost < lowerBoundCostThreshold) or (cost > upperBoundCostThreshold) then
+       rollingCost = 0.9 * rollingCost + 0.1 * cost  -- exponential smoothing
 
-          kickPlayer(Player)
-
+        if (rollingCost < lowerBoundCostThreshold) or (rollingCost > upperBoundCostThreshold) then
+        
+            suspicionCounter = suspicionCounter +  1
+            
+        else
+        
+            suspicionCounter = math.max(0, suspicionCounter - 1)
+            
         end
+        
+        if (suspicionCounter >= 30) then kickPlayer(Player) end
 
         task.wait()
 

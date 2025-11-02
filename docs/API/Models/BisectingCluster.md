@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-BisectingCluster.new(Model: Model, numberOfClusters: integer, distanceFunction: string): ModelObject
+BisectingCluster.new(Model: Model, numberOfClusters: integer, distanceFunction: string, splitCriterion: string): ModelObject
 ```
 
 #### Parameters:
@@ -31,6 +31,12 @@ BisectingCluster.new(Model: Model, numberOfClusters: integer, distanceFunction: 
   *  Manhattan
  
   *  Cosine
+
+* splitCriterion: Controls which clusters should be split. Available options are:
+
+  * LargestCluster (Default)
+ 
+  * SumOfSquaredError
 
 #### Returns:
 

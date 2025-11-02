@@ -13,7 +13,7 @@ Before we train our model, we will first need to construct a model, in which we 
 | 3        | Unscented Kalman Filter (DataPredict Variant)  | Same as 2, but more numerically stable. | Same as 2, but slower.                   |
 | 4        | Dynamic Bayesian Network                       | Extremely fast.                         | Assumes values are normally distributed. |
 
-### Approach 1 / 2 / 3: Kalman Filter
+### Approach 1 - 3: Kalman Filter
 
 ```lua
 

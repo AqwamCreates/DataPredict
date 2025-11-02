@@ -30,11 +30,11 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
-KalmanFilterModel = {}
+ExtendedKalmanFilterModel = {}
 
-KalmanFilterModel.__index = KalmanFilterModel
+ExtendedKalmanFilterModel.__index = ExtendedKalmanFilterModel
 
-setmetatable(KalmanFilterModel, BaseModel)
+setmetatable(ExtendedKalmanFilterModel, BaseModel)
 
 local defaultNoiseValue = 1 -- Do not use very small value for this. It will cause the Mahalanobis distance to have very large values.
 
@@ -42,39 +42,71 @@ local defaultLossFunction = "L2"
 
 local defaultUseJosephForm = true
 
-function KalmanFilterModel.new(parameterDictionary)
+local function defaultStateFunction(previousStateMatrix, controlVector) -- states x data, 1 x states
 	
-	parameterDictionary = parameterDictionary or {}
-
-	local NewKalmanFilterModel = BaseModel.new(parameterDictionary)
-
-	setmetatable(NewKalmanFilterModel, KalmanFilterModel)
-
-	NewKalmanFilterModel:setName("KalmanFilter")
+	if (not controlVector) then return previousStateMatrix end
 	
-	NewKalmanFilterModel.stateTransitionModelMatrix = parameterDictionary.stateTransitionModelMatrix
-	
-	NewKalmanFilterModel.observationModelMatrix = parameterDictionary.observationModelMatrix
-	
-	NewKalmanFilterModel.processNoiseCovarianceMatrix = parameterDictionary.processNoiseCovarianceMatrix
-	
-	NewKalmanFilterModel.observationNoiseCovarianceMatrix = parameterDictionary.observationNoiseCovarianceMatrix
-	
-	NewKalmanFilterModel.controlInputMatrix = parameterDictionary.controlInputMatrix
-	
-	NewKalmanFilterModel.controlVector = parameterDictionary.controlVector
-	
-	NewKalmanFilterModel.noiseValue = parameterDictionary.noiseValue or defaultNoiseValue
-	
-	NewKalmanFilterModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
-	
-	NewKalmanFilterModel.useJosephForm = NewKalmanFilterModel:getValueOrDefaultValue(parameterDictionary.useJosephForm, defaultUseJosephForm)
-
-	return NewKalmanFilterModel
+	return AqwamTensorLibrary:add(previousStateMatrix, controlVector)
 	
 end
 
-function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
+local function defaultObservationStateFunction(stateMatrix) -- states x data
+
+	return stateMatrix
+
+end
+
+local function defaultStateTransitionJacobianFunction(stateMatrix, controlVector) -- states x data, 1 x states
+	
+	local numberOfStates = #stateMatrix
+	
+	return AqwamTensorLibrary:createIdentityTensor({numberOfStates, numberOfStates})
+	
+end
+
+local function defaultObservationJacobianFunction(stateMatrix) -- states x data
+	
+	return AqwamTensorLibrary:createIdentityTensor({#stateMatrix, #stateMatrix})
+	
+end
+
+function ExtendedKalmanFilterModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+
+	local NewExtendedKalmanFilterModel = BaseModel.new(parameterDictionary)
+
+	setmetatable(NewExtendedKalmanFilterModel, ExtendedKalmanFilterModel)
+
+	NewExtendedKalmanFilterModel:setName("ExtendedKalmanFilter")
+	
+	NewExtendedKalmanFilterModel.stateTransitionModelMatrix = parameterDictionary.stateTransitionModelMatrix
+	
+	NewExtendedKalmanFilterModel.observationNoiseCovarianceMatrix = parameterDictionary.observationNoiseCovarianceMatrix
+	
+	NewExtendedKalmanFilterModel.processNoiseCovarianceMatrix = parameterDictionary.processNoiseCovarianceMatrix
+	
+	NewExtendedKalmanFilterModel.controlVector = parameterDictionary.controlVector
+	
+	NewExtendedKalmanFilterModel.noiseValue = parameterDictionary.noiseValue or defaultNoiseValue
+	
+	NewExtendedKalmanFilterModel.stateFunction = parameterDictionary.stateFunction or defaultStateFunction
+	
+	NewExtendedKalmanFilterModel.observationStateFunction = parameterDictionary.observationStateFunction or defaultObservationStateFunction
+	
+	NewExtendedKalmanFilterModel.stateTransitionJacobianFunction = parameterDictionary.stateTransitionJacobianFunction or defaultStateTransitionJacobianFunction
+	
+	NewExtendedKalmanFilterModel.observationJacobianFunction = parameterDictionary.observationJacobianFunction or defaultObservationJacobianFunction
+	
+	NewExtendedKalmanFilterModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
+	
+	NewExtendedKalmanFilterModel.useJosephForm = NewExtendedKalmanFilterModel:getValueOrDefaultValue(parameterDictionary.useJosephForm, defaultUseJosephForm)
+	
+	return NewExtendedKalmanFilterModel
+	
+end
+
+function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 
 	local numberOfData = #previousStateMatrix
 
@@ -82,154 +114,90 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	
 	local numberOfStates = #previousStateMatrix[1]
 
-	if (numberOfStates ~= #currentStateMatrix[1]) then error("The number of current state columns is not equal to the number of states.") end
+	if (numberOfStates ~= #currentStateMatrix[1]) then error("The number of states in the previous state vector is not equal to the number of states in the current state vector.") end
 	
 	local numberOfStatesDimensionSizeArray = {numberOfStates, numberOfStates}
 	
-	local stateTransitionModelMatrix = self.stateTransitionModelMatrix or AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray)
-
-	local observationModelMatrix = self.observationModelMatrix or AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray)
+	previousStateMatrix = AqwamTensorLibrary:transpose(previousStateMatrix)
 	
-	local controlInputMatrix = self.controlInputMatrix
+	currentStateMatrix = AqwamTensorLibrary:transpose(currentStateMatrix)
 
-	local controlVector = self.controlVector -- 1 x n
+	local controlVector = self.controlVector
 	
 	local noiseValue = self.noiseValue
 	
 	local lossFunction = self.lossFunction
 	
 	local useJosephForm = self.useJosephForm
-
-	--local observationNoiseMatrix = AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray)
-
-	--local processNoiseMatrix = AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray)
-
+	
 	local ModelParameters = self.ModelParameters or {}
 	
-	local priorStateMatrix = ModelParameters[1]
-	
-	local priorCovarianceMatrix = ModelParameters[2]
+	local priorStateMatrix = ModelParameters[1] or previousStateMatrix
+
+	local priorCovarianceMatrix = ModelParameters[2] or AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray)
 	
 	local observationNoiseCovarianceMatrix = self.observationNoiseCovarianceMatrix or AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray, noiseValue)
 
 	local processNoiseCovarianceMatrix = self.processNoiseCovarianceMatrix or AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray, noiseValue)
-	
-	previousStateMatrix = AqwamTensorLibrary:transpose(previousStateMatrix) -- m x n -> n x m
-	
-	currentStateMatrix = AqwamTensorLibrary:transpose(currentStateMatrix) -- m x n -> n x m
-	
-	if (not priorStateMatrix) then
-		
-		local priorStateMatrixPart1 = AqwamTensorLibrary:dotProduct(stateTransitionModelMatrix, previousStateMatrix)
-		
-		local priorStateMatrixPart2
 
-		if (controlInputMatrix) then
+	local predictedStateMatrix = self.stateFunction(priorStateMatrix, controlVector)
+	
+	local stateTransitionJacobianMatrix = self.stateTransitionJacobianFunction(priorStateMatrix, controlVector)
 
-			priorStateMatrixPart2 = AqwamTensorLibrary:dotProduct(controlInputMatrix, controlVector)
+	local transposedStateTransitionJacobianMatrix = AqwamTensorLibrary:transpose(stateTransitionJacobianMatrix)
 
-		elseif (controlVector) then
+	local predictedCovarianceMatrixPart1 = AqwamTensorLibrary:dotProduct(stateTransitionJacobianMatrix, priorCovarianceMatrix, transposedStateTransitionJacobianMatrix)
 
-			priorStateMatrixPart2 = controlVector
+	local predictedCovarianceMatrix = AqwamTensorLibrary:add(predictedCovarianceMatrixPart1, processNoiseCovarianceMatrix)
 
-		end
-		
-		if (priorStateMatrixPart2) then
-			
-			priorStateMatrix = AqwamTensorLibrary:add(priorStateMatrixPart1, priorStateMatrixPart2)
-			
-		else
-			
-			priorStateMatrix = priorStateMatrixPart1
-			
-		end
-		
-	end
+	local observationMatrix = self.observationStateFunction(predictedStateMatrix)
 	
-	local transposedStateTransitionModelMatrix = AqwamTensorLibrary:transpose(stateTransitionModelMatrix)
+	local observationJacobianMatrix = self.observationJacobianFunction(predictedStateMatrix)
 	
-	if (not priorCovarianceMatrix) then
-		
-		local priorCovarianceMatrixPart1 = AqwamTensorLibrary:dotProduct(stateTransitionModelMatrix, stateTransitionModelMatrix, transposedStateTransitionModelMatrix) -- n x n, n x n
-		
-		priorCovarianceMatrix = AqwamTensorLibrary:add(priorCovarianceMatrixPart1, processNoiseCovarianceMatrix)
-		
-	end
+	local transposedObservationJacobianMatrix = AqwamTensorLibrary:transpose(observationJacobianMatrix)
 
-	local priorCovarianceMatrixPart1 = AqwamTensorLibrary:dotProduct(stateTransitionModelMatrix, priorCovarianceMatrix, transposedStateTransitionModelMatrix) -- n x n, -- n x n
+	local innovationMatrix = AqwamTensorLibrary:subtract(currentStateMatrix, observationMatrix)
 
-	priorCovarianceMatrix = AqwamTensorLibrary:add(priorCovarianceMatrixPart1, processNoiseCovarianceMatrix)
-	
-	local transposedObservationModelMatrix = AqwamTensorLibrary:transpose(observationModelMatrix)
-	
-	local observationMatrix = currentStateMatrix
-	
-	local innovationMatrixPart1 = AqwamTensorLibrary:dotProduct(observationModelMatrix, priorStateMatrix)
-	
-	local innovationMatrix = AqwamTensorLibrary:subtract(observationMatrix, innovationMatrixPart1)
-	
-	local transposedObservationModelMatrix = AqwamTensorLibrary:transpose(observationModelMatrix)
-	
-	local innovationCovarianceMatrixPart1 = AqwamTensorLibrary:dotProduct(observationModelMatrix, priorCovarianceMatrix, transposedObservationModelMatrix)
-	
+	local innovationCovarianceMatrixPart1 = AqwamTensorLibrary:dotProduct(observationJacobianMatrix, predictedCovarianceMatrix, transposedObservationJacobianMatrix)
+
 	local innovationCovarianceMatrix = AqwamTensorLibrary:add(innovationCovarianceMatrixPart1, observationNoiseCovarianceMatrix)
-	
+
 	local inverseInnovationCovarianceMatrix = AqwamTensorLibrary:inverse(innovationCovarianceMatrix)
+
+	local kalmanGainMatrix = AqwamTensorLibrary:dotProduct(predictedCovarianceMatrix, transposedObservationJacobianMatrix, inverseInnovationCovarianceMatrix)
+
+	local posteriorStateMatrixPart1 = AqwamTensorLibrary:dotProduct(kalmanGainMatrix, innovationMatrix)
 	
-	if (not inverseInnovationCovarianceMatrix) then error("Could not find the inverse of innovation covariance matrix.") end
-	
-	local optimalKalmanGainMatrix = AqwamTensorLibrary:dotProduct(priorCovarianceMatrix, transposedObservationModelMatrix, inverseInnovationCovarianceMatrix)
-	
-	local posteriorStateMatrixPart1 = AqwamTensorLibrary:dotProduct(optimalKalmanGainMatrix, innovationMatrix)
-	
-	local posteriorStateMatrix = AqwamTensorLibrary:add(priorStateMatrix, posteriorStateMatrixPart1)
-	
+	local posteriorStateMatrix = AqwamTensorLibrary:add(predictedStateMatrix, posteriorStateMatrixPart1)
+
 	local identityMatrix = AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray)
-
-	local KHMatrix = AqwamTensorLibrary:dotProduct(optimalKalmanGainMatrix, observationModelMatrix)
-
+	
+	local KHMatrix = AqwamTensorLibrary:dotProduct(kalmanGainMatrix, observationJacobianMatrix)
+	
 	local identityMinusKHMatrix = AqwamTensorLibrary:subtract(identityMatrix, KHMatrix)
 	
 	local posteriorCovarianceMatrix = AqwamTensorLibrary:dotProduct(identityMinusKHMatrix, priorCovarianceMatrix)
-	
+
 	if (useJosephForm) then
-		
+
 		local transposedIdentityMinusKHMatrix = AqwamTensorLibrary:transpose(identityMinusKHMatrix)
 
 		local josephFormMatrixPart1 = AqwamTensorLibrary:dotProduct(posteriorCovarianceMatrix, transposedIdentityMinusKHMatrix)
 
-		local transposedKalmanGainMatrix = AqwamTensorLibrary:transpose(optimalKalmanGainMatrix)
+		local transposedKalmanGainMatrix = AqwamTensorLibrary:transpose(kalmanGainMatrix)
 
-		local josephFormMatrixPart2 = AqwamTensorLibrary:dotProduct(optimalKalmanGainMatrix, observationNoiseCovarianceMatrix, transposedKalmanGainMatrix)
+		local josephFormMatrixPart2 = AqwamTensorLibrary:dotProduct(kalmanGainMatrix, observationNoiseCovarianceMatrix, transposedKalmanGainMatrix)
 
 		posteriorCovarianceMatrix = AqwamTensorLibrary:add(josephFormMatrixPart1, josephFormMatrixPart2)
-		
-	end
 
-	--[[
-	
-	local residualMatrixPart1 = AqwamTensorLibrary:dotProduct(observationModelMatrix, observationMatrix)
-	
-	local residualMatrix = AqwamTensorLibrary:subtract(observationMatrix, residualMatrixPart1)
-	
-	-- Need to double check this part for calculating covariance matrices.
-	
-	local transposedResidualMatrix = AqwamTensorLibrary:transpose(residualMatrix)
-	
-	local dotProductResidualMatrix = AqwamTensorLibrary:dotProduct(transposedResidualMatrix, residualMatrix)
-	
-	local processNoiseCovarianceMatrixPart1 = AqwamTensorLibrary:dotProduct(stateTransitionModelMatrix, priorCovarianceMatrix, transposedStateTransitionModelMatrix)
-	
-	processNoiseCovarianceMatrix = AqwamTensorLibrary:subtract(posteriorCovarianceMatrix, processNoiseCovarianceMatrixPart1)
-	
-	--]]
+	end
 	
 	local meanCorrectionMatrix = AqwamTensorLibrary:mean(posteriorStateMatrixPart1, 2)
-	
+
 	self.ModelParameters = {posteriorStateMatrix, posteriorCovarianceMatrix, meanCorrectionMatrix}
 	
 	-- Returning this as a cost like other models.
-
+	
 	local lossMatrix = innovationMatrix
 	
 	if (lossFunction == "L1") then
@@ -255,50 +223,22 @@ function KalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
 	local cost = AqwamTensorLibrary:sum(lossMatrix)
 	
 	cost = cost / numberOfData
-
+	
 	return {cost}
 
 end
 
-function KalmanFilterModel:predict(stateMatrix)
-	
-	local controlInputMatrix = self.controlInputMatrix
-
-	local controlVector = self.controlVector -- 1 x n
+function ExtendedKalmanFilterModel:predict(stateMatrix)
 	
 	local ModelParameters = self.ModelParameters or {}
-
+	
 	local meanCorrectionMatrix = ModelParameters[3]
 	
-	--local processNoiseMatrix = self.processNoiseMatrix
-	
 	stateMatrix = AqwamTensorLibrary:transpose(stateMatrix)
-
-	local nextStateMatrixPart1 = AqwamTensorLibrary:add(stateMatrix, meanCorrectionMatrix)
-
-	local nextStateMatrixPart2
 	
-	local nextStateMatrix
-
-	if (controlInputMatrix) then
-
-		nextStateMatrixPart2 = AqwamTensorLibrary:dotProduct(controlInputMatrix, controlVector)
-
-	elseif (controlVector) then
-
-		nextStateMatrixPart2 = controlVector
-
-	end
-
-	if (nextStateMatrixPart2) then
-
-		nextStateMatrix = AqwamTensorLibrary:add(nextStateMatrixPart1, nextStateMatrixPart2)
-
-	else
-
-		nextStateMatrix = nextStateMatrixPart1
-
-	end
+	local nextStateMatrix = self.stateFunction(stateMatrix, self.controlVector)
+	
+	if (meanCorrectionMatrix) then nextStateMatrix = AqwamTensorLibrary:add(nextStateMatrix, meanCorrectionMatrix) end
 	
 	nextStateMatrix = AqwamTensorLibrary:transpose(nextStateMatrix)
 	
@@ -306,4 +246,4 @@ function KalmanFilterModel:predict(stateMatrix)
 	
 end
 
-return KalmanFilterModel
+return ExtendedKalmanFilterModel

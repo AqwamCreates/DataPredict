@@ -6,13 +6,14 @@ Hello guys! Today, I will be showing you on how to create an anomaly-detection-b
 
 Before we train our model, we will first need to construct a model, in which we have three approaches:
 
-| Approach | Model                                          | Advantages               | Disadvantages                            |
-| -------- | ---------------------------------------------- | ------------------------ | ---------------------------------------- |
-| 1        | Kalman Filter                                  | Good against noisy data. | Assumes values are linear.               |
-| 2        | Unscented Kalman Filter (DataPredict Variant)  | Good against noisy data. | Requires some parameter configurations.  |
-| 3        | Dynamic Bayesian Network                       | Extremely fast.          | Assumes values are normally distributed. |
+| Approach | Model                                          | Advantages                              | Disadvantages                            |
+| -------- | ---------------------------------------------- | --------------------------------------- | ---------------------------------------- |
+| 1        | Kalman Filter                                  | Good against noisy data.                | Assumes values are linear.               |
+| 2        | Unscented Kalman Filter                        | Good against noisy data.                | Requires some parameter configurations.  |
+| 3        | Unscented Kalman Filter (DataPredict Variant)  | Same as 2, but more numerically stable. | Same as 2, but slower.                   |
+| 4        | Dynamic Bayesian Network                       | Extremely fast.                         | Assumes values are normally distributed. |
 
-### Approach 1 / 2: Kalman Filter
+### Approach 1 / 2 / 3: Kalman Filter
 
 ```lua
 

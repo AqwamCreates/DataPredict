@@ -157,10 +157,12 @@ local function calculateCentroidVector(featureMatrix, indexArray)
 end
 
 local function calculateSumOfSquaredError(featureMatrix, indexArray, centroidVector, distanceFunction)
-
-	local sumOfSquaredErrorValue = 0
 	
-	if (#indexArray == 0) then return sumOfSquaredErrorValue end
+	local numberOfIndices = #indexArray
+	
+	if (numberOfIndices == 0) then return 0 end
+	
+	local sumOfSquaredErrorValue = 0
 	
 	local featureVector
 	
@@ -175,6 +177,8 @@ local function calculateSumOfSquaredError(featureMatrix, indexArray, centroidVec
 		sumOfSquaredErrorValue = sumOfSquaredErrorValue + math.pow(distance, 2)
 		
 	end
+	
+	sumOfSquaredErrorValue = sumOfSquaredErrorValue / numberOfIndices
 	
 	return sumOfSquaredErrorValue
 	

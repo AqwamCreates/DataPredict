@@ -302,7 +302,7 @@ function BisectingClusterModel:train(featureMatrix)
 			
 			criterion = ((splitCriterion == "LargestCluster") and numberOfData) or clusterInformationDictionary.sumOfSquaredErrorValue
 			
-			if (criterion > maximumCriterion) and (numberOfData ~= 1) then
+			if (criterion > maximumCriterion) and (numberOfData >= 2) then
 				
 				maximumCriterion = criterion
 				

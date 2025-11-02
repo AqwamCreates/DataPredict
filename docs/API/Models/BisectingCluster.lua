@@ -122,7 +122,7 @@ local function extractSubsetMatrix(matrix, indexArray)
 	
 end
 
-local function calculateCentroid(featureMatrix, indexArray)
+local function calculateCentroidVector(featureMatrix, indexArray)
 	
 	local numberOfIndices = #indexArray
 	
@@ -152,7 +152,7 @@ local function calculateCentroid(featureMatrix, indexArray)
 		
 	end
 		
-	return unwrappedCentroidVector
+	return {unwrappedCentroidVector}
 		
 end
 
@@ -260,11 +260,11 @@ function BisectingClusterModel:train(featureMatrix)
 	
 	local clusterIndex
 	
-	local unwrappedCentroidVector
+	local centroidVector
 	
-	local leftUnwrappedCentroidVector
+	local leftCentroidVector
 	
-	local rightUnwrappedCentroidVector
+	local rightCentroidVector
 	
 	local clusterInformationDictionaryArray
 	
@@ -272,9 +272,9 @@ function BisectingClusterModel:train(featureMatrix)
 	
 	for i, _ in ipairs(featureMatrix) do dataIndexArray[i] = i end
 	
-	unwrappedCentroidVector = calculateCentroid(featureMatrix, dataIndexArray)
+	centroidVector = calculateCentroidVector(featureMatrix, dataIndexArray)
 	
-	sumOfSquaredErrorValue = calculateSumOfSquaredError(featureMatrix, dataIndexArray, unwrappedCentroidVector, distanceFunction)
+	sumOfSquaredErrorValue = calculateSumOfSquaredError(featureMatrix, dataIndexArray, centroidVector, distanceFunctionToApply)
 	
 	clusterInformationDictionaryArray = {{dataIndexArray = dataIndexArray, sumOfSquaredErrorValue = sumOfSquaredErrorValue}}
 	
@@ -332,13 +332,13 @@ function BisectingClusterModel:train(featureMatrix)
 			
 		end
 		
-		leftUnwrappedCentroidVector = calculateCentroid(featureMatrix, leftDataIndexArray)
+		leftCentroidVector = calculateCentroidVector(featureMatrix, leftDataIndexArray)
 		
-		rightUnwrappedCentroidVector = calculateCentroid(featureMatrix, rightDataIndexArray)
+		rightCentroidVector = calculateCentroidVector(featureMatrix, rightDataIndexArray)
 
-		leftSumOfSquaredErrorValue = calculateSumOfSquaredError(featureMatrix, leftDataIndexArray, leftUnwrappedCentroidVector, distanceFunctionToApply)
+		leftSumOfSquaredErrorValue = calculateSumOfSquaredError(featureMatrix, leftDataIndexArray, leftCentroidVector, distanceFunctionToApply)
 		
-		rightSumOfSquaredErrorValue = calculateSumOfSquaredError(featureMatrix, rightDataIndexArray, rightUnwrappedCentroidVector, distanceFunctionToApply)
+		rightSumOfSquaredErrorValue = calculateSumOfSquaredError(featureMatrix, rightDataIndexArray, rightCentroidVector, distanceFunctionToApply)
 
 		table.remove(clusterInformationDictionaryArray, clusterIndexToSplit)
 

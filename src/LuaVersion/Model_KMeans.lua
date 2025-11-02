@@ -160,7 +160,7 @@ local function chooseFarthestCentroids(featureMatrix, numberOfClusters, distance
 	
 	local dataIndex
 	
-	local distanceMatrix = createDistanceMatrix(featureMatrix, featureMatrix, distanceFunction)
+	local distanceMatrix = createDistanceMatrix(distanceFunction, featureMatrix, featureMatrix)
 	
 	repeat
 		
@@ -217,65 +217,96 @@ local function chooseRandomCentroids(featureMatrix, numberOfClusters)
 
 end
 
-local function createClusterAssignmentMatrix(distanceMatrix) -- contains values of 0 and 1, where 0 is "does not belong to this cluster"
-	
-	local numberOfData = #distanceMatrix -- Number of rows
+local function createClusterAssignmentArray(distanceMatrix)
 	
 	local numberOfClusters = #distanceMatrix[1]
 	
-	local clusterAssignmentMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters})
+	local clusterAssignmentArray = {}
 	
 	local dataPointClusterNumber
 	
-	for dataIndex = 1, numberOfData, 1 do
+	local minimumDistance
+	
+	local index
+	
+	for dataIndex, unwrappedDistanceVector in ipairs(distanceMatrix) do
 		
-		local distanceVector = {distanceMatrix[dataIndex]}
+		minimumDistance = math.huge
 		
-		local vectorIndexArray, _ = AqwamTensorLibrary:findMinimumValueDimensionIndexArray(distanceVector)
+		index = nil
 		
-		if (vectorIndexArray) then
+		for clusterIndex, distance in ipairs(unwrappedDistanceVector) do
 			
-			local clusterNumber = vectorIndexArray[2]
-
-			clusterAssignmentMatrix[dataIndex][clusterNumber] = 1
+			if (distance < minimumDistance) then
+				
+				minimumDistance = distance
+				
+				index = clusterIndex
+			end
 			
 		end
 		
+		clusterAssignmentArray[dataIndex] = index or math.random(1, numberOfClusters)
+		
 	end
 	
-	return clusterAssignmentMatrix
+	return clusterAssignmentArray
 	
 end
 
-local function calculateCost(distanceMatrix, clusterAssignmentMatrix)
+local function calculateCost(distanceMatrix, clusterAssignmentArray)
 	
-	local costMatrix = AqwamTensorLibrary:multiply(distanceMatrix, clusterAssignmentMatrix)
+	local cost = 0
 	
-	local cost = AqwamTensorLibrary:sum(costMatrix)
+	local clusterIndex
+	
+	for dataIndex, unwrappedDistanceVector in ipairs(distanceMatrix) do
+		
+		clusterIndex = clusterAssignmentArray[dataIndex]
+		
+		cost = cost + unwrappedDistanceVector[clusterIndex]
+		
+	end
 	
 	return cost
 	
 end
 
-local function calculateMean(clusterAssignmentMatrix, centroidMatrix)
+local function calculateMean(featureMatrix, numberOfClusters, clusterAssignmentArray)
 	
-	local numberOfCentroids = #centroidMatrix
+	local numberOfFeatures = #featureMatrix[1]
 	
-	local numberOfFeatures = #centroidMatrix[1]
+	local centroidMatrix = AqwamTensorLibrary:createTensor({numberOfClusters, numberOfFeatures}, 0)
 	
-	local sumOfAssignedCentroidVector = AqwamTensorLibrary:sum(clusterAssignmentMatrix, 1) -- since row is the number of data in clusterAssignmentMatrix, then we vertical sum it
+	local clusterCountArray = table.create(numberOfClusters, 0)
 	
-	local newCentroidMatrix = AqwamTensorLibrary:createTensor({numberOfCentroids, numberOfFeatures})
+	local clusterIndex
 	
-	for cluster = 1, numberOfCentroids, 1 do
+	local clusterCount
+	
+	for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
 		
-		sumOfAssignedCentroidVector[1][cluster] = math.max(1, sumOfAssignedCentroidVector[1][cluster])
+		clusterIndex = clusterAssignmentArray[dataIndex]
 		
-		newCentroidMatrix[cluster] = AqwamTensorLibrary:divide({centroidMatrix[cluster]}, sumOfAssignedCentroidVector[1][cluster])[1]
+		centroidMatrix[clusterIndex] = AqwamTensorLibrary:add({centroidMatrix[clusterIndex]}, {unwrappedFeatureVector})[1]
+		
+		clusterCountArray[clusterIndex] = clusterCountArray[clusterIndex] + 1
 		
 	end
 	
-	return newCentroidMatrix
+	for clusterIndex, unwrappedCentroidVector in ipairs(centroidMatrix) do
+		
+		clusterCount = clusterCountArray[clusterIndex]
+		
+		if (clusterCount ~= 0) then
+			
+			centroidMatrix[clusterIndex] = AqwamTensorLibrary:divide({unwrappedCentroidVector}, clusterCount)[1]
+			
+		end
+		
+	end
+	
+	return centroidMatrix
 	
 end
 
@@ -331,23 +362,23 @@ function KMeansModel:initializeCentroids(featureMatrix, numberOfClusters, distan
 	
 end
 
-local function batchKMeans(centroidMatrix, distanceMatrix)
+local function batchKMeans(featureMatrix, centroidMatrix, distanceMatrix)
 
-	local clusterAssignmentMatrix = createClusterAssignmentMatrix(distanceMatrix) -- data x clusters
+	local clusterAssignmentArray = createClusterAssignmentArray(distanceMatrix) -- data x clusters
 	
-	centroidMatrix = calculateMean(clusterAssignmentMatrix, centroidMatrix)
+	centroidMatrix = calculateMean(featureMatrix, #centroidMatrix, clusterAssignmentArray)
 	
-	return centroidMatrix, clusterAssignmentMatrix
+	return centroidMatrix, clusterAssignmentArray
 	
 end
 
-local function sequentialKMeans(centroidMatrix, distanceMatrix, featureMatrix, numberOfDataPointVector)
+local function sequentialKMeans(featureMatrix, centroidMatrix, distanceMatrix, numberOfDataPointVector)
 	
 	local numberOfData = #featureMatrix
 	
 	local numberOfClusters = #centroidMatrix
 	
-	local clusterAssignmentMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClusters}, 0) -- data x clusters
+	local clusterAssignmentArray = {}
 	
 	for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
 
@@ -385,11 +416,33 @@ local function sequentialKMeans(centroidMatrix, distanceMatrix, featureMatrix, n
 
 		centroidMatrix[clusterIndexWithMinimumDistance] = newCentroidVector[1]
 		
-		clusterAssignmentMatrix[dataIndex][clusterIndexWithMinimumDistance] = 1
+		clusterAssignmentArray[dataIndex] = clusterIndexWithMinimumDistance
 
 	end
 	
-	return centroidMatrix, clusterAssignmentMatrix
+	return centroidMatrix, clusterAssignmentArray
+	
+end
+
+local function createNumberOfDataPointVector(numberOfClusters, clusterAssignmentArray)
+	
+	local numberOfDataPointArray = table.create(numberOfClusters, 0) 
+
+	for dataIndex, clusterAssignmentIndex in ipairs(clusterAssignmentArray) do
+
+		numberOfDataPointArray[clusterAssignmentIndex] = numberOfDataPointArray[clusterAssignmentIndex] + 1
+
+	end
+
+	local numberOfDataPointVector = {}
+	
+	for clusterIndex, numberOfDataPoint in ipairs(numberOfDataPointArray) do
+		
+		numberOfDataPointVector[clusterIndex] = {numberOfDataPoint}
+		
+	end
+	
+	return numberOfDataPointVector
 	
 end
 
@@ -453,11 +506,13 @@ function KMeansModel:train(featureMatrix)
 	
 	local costArray = {}
 	
-	local clusterAssignmentMatrix
+	local clusterAssignmentArray
 
 	local distanceMatrix
 	
 	local cost
+	
+	local numberOfDataPointArray
 	
 	repeat
 		
@@ -467,11 +522,11 @@ function KMeansModel:train(featureMatrix)
 		
 		distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, centroidMatrix)
 
-		centroidMatrix, clusterAssignmentMatrix = kMeansFunction(centroidMatrix, distanceMatrix, featureMatrix, numberOfDataPointVector)
+		centroidMatrix, clusterAssignmentArray = kMeansFunction(featureMatrix, centroidMatrix, distanceMatrix, numberOfDataPointVector)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return calculateCost(distanceMatrix, clusterAssignmentMatrix)
+			return calculateCost(distanceMatrix, clusterAssignmentArray)
 
 		end)
 		
@@ -493,9 +548,7 @@ function KMeansModel:train(featureMatrix)
 
 	end
 	
-	numberOfDataPointVector = AqwamTensorLibrary:sum(clusterAssignmentMatrix, 1) -- 1 x clusters
-
-	numberOfDataPointVector = AqwamTensorLibrary:transpose(numberOfDataPointVector) -- clusters x 1
+	numberOfDataPointVector = createNumberOfDataPointVector(numberOfClusters, clusterAssignmentArray)
 	
 	self.ModelParameters = {centroidMatrix, numberOfDataPointVector}
 	

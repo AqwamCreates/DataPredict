@@ -57,7 +57,7 @@ KMeans.new(maximumNumberOfIterations: integer, numberOfClusters: integer, distan
 Train the model.
 
 ```
-KMeans:train(featureMatrix: Matrix)
+KMeans:train(featureMatrix: matrix)
 ```
 
 #### Parameters:
@@ -73,7 +73,7 @@ KMeans:train(featureMatrix: Matrix)
 Predict which clusters does it belong to for a given data.
 
 ```
-KMeans:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+KMeans:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters:

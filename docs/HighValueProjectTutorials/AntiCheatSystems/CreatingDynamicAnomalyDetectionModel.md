@@ -33,7 +33,7 @@ local AnomalyPredictionModel = DataPredict.Models.KalmanFilter.new({lossFunction
 
 ```
 
-### Approach 3: Dynamic Bayesian Network
+### Approach 4: Dynamic Bayesian Network
 
 ```lua
 

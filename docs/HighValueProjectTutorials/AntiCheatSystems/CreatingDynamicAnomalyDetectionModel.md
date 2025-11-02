@@ -95,6 +95,8 @@ local function run(Player)
 
     local cost
 
+    local rollingCost
+
     while isPlayerInServer do
 
         currentStateVector = getPlayerDataVector(Player)

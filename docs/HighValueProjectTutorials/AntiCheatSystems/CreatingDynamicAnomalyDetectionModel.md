@@ -27,6 +27,8 @@ local DataPredict = require(DataPredict)
 
   By default, "lossFunction" is set to "L2" and "useJosephForm" is set to true.
 
+  The original "Unscented Kalman Filter" does not have "useJosephForm" though.
+
 --]]
 
 local AnomalyPredictionModel = DataPredict.Models.KalmanFilter.new({lossFunction = "Mahalanobis", useJosephForm = true})

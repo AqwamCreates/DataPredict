@@ -158,9 +158,9 @@ end
 
 local function calculateSumOfSquaredError(featureMatrix, indexArray, centroidVector, distanceFunction)
 
-	local sumOfSquaredError = 0
+	local sumOfSquaredErrorValue = 0
 	
-	if (#indexArray == 0) then return sumOfSquaredError end
+	if (#indexArray == 0) then return sumOfSquaredErrorValue end
 	
 	local featureVector
 	
@@ -172,11 +172,11 @@ local function calculateSumOfSquaredError(featureMatrix, indexArray, centroidVec
 		
 		distance = distanceFunction(featureVector, centroidVector)
 
-		sumOfSquaredError = sumOfSquaredError + math.pow(distance)
+		sumOfSquaredErrorValue = sumOfSquaredErrorValue + math.pow(distance, 2)
 		
 	end
 	
-	return sumOfSquaredError
+	return sumOfSquaredErrorValue
 	
 end
 
@@ -216,13 +216,15 @@ function BisectingClusterModel:train(featureMatrix)
 	
 	local splitCriterion = self.splitCriterion
 	
+	local distanceFunctionToApply = distanceFunctionDictionary[distanceFunction]
+
+	if (not distanceFunctionToApply) then error("Unknown distance function.") end
+	
 	local secondaryNumberOfClusters = Model.numberOfClusters
 
 	local numberOfIterations = 0
 	
-	local primaryCostArray = {}
-	
-	local secondaryCostArray = {}
+	local costArray = {}
 	
 	local cost
 
@@ -244,6 +246,10 @@ function BisectingClusterModel:train(featureMatrix)
 	
 	local sumOfSquaredErrorValue
 	
+	local leftSumOfSquaredErrorValue
+	
+	local rightSumOfSquaredErrorValue
+	
 	local dataIndexArray
 	
 	local leftDataIndexArray
@@ -255,6 +261,10 @@ function BisectingClusterModel:train(featureMatrix)
 	local clusterIndex
 	
 	local unwrappedCentroidVector
+	
+	local leftUnwrappedCentroidVector
+	
+	local rightUnwrappedCentroidVector
 	
 	local clusterInformationDictionaryArray
 	
@@ -286,7 +296,7 @@ function BisectingClusterModel:train(featureMatrix)
 			
 			numberOfData = #dataIndexArray
 			
-			criterion = (splitCriterion == "LargestCluster") and numberOfData or clusterInformationDictionary.sumOfSquaredErrorValue
+			criterion = ((splitCriterion == "LargestCluster") and numberOfData) or clusterInformationDictionary.sumOfSquaredErrorValue
 			
 			if (criterion > maximumCriterion) and (numberOfData ~= 1) then
 				
@@ -304,7 +314,7 @@ function BisectingClusterModel:train(featureMatrix)
 		
 		clusterFeatureMatrix = extractSubsetMatrix(featureMatrix, dataIndexArray)
 		
-		secondaryCostArray = Model:train(clusterFeatureMatrix)
+		Model:train(clusterFeatureMatrix)
 		
 		clusterIndexVector = Model:predict(clusterFeatureMatrix)
 		
@@ -322,25 +332,33 @@ function BisectingClusterModel:train(featureMatrix)
 			
 		end
 		
+		leftUnwrappedCentroidVector = calculateCentroid(featureMatrix, leftDataIndexArray)
+		
+		rightUnwrappedCentroidVector = calculateCentroid(featureMatrix, rightDataIndexArray)
+
+		leftSumOfSquaredErrorValue = calculateSumOfSquaredError(featureMatrix, leftDataIndexArray, leftUnwrappedCentroidVector, distanceFunctionToApply)
+		
+		rightSumOfSquaredErrorValue = calculateSumOfSquaredError(featureMatrix, rightDataIndexArray, rightUnwrappedCentroidVector, distanceFunctionToApply)
+
+		table.remove(clusterInformationDictionaryArray, clusterIndexToSplit)
+
+		table.insert(clusterInformationDictionaryArray, {dataIndexArray = leftDataIndexArray, sumOfSquaredErrorValue = leftSumOfSquaredErrorValue})
+
+		table.insert(clusterInformationDictionaryArray, {dataIndexArray = rightDataIndexArray, sumOfSquaredErrorValue = rightSumOfSquaredErrorValue})
+		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return secondaryCostArray[#secondaryCostArray]
+			return (leftSumOfSquaredErrorValue + rightSumOfSquaredErrorValue)
 
 		end)
 		
 		if (cost) then
 
-			table.insert(primaryCostArray, cost)
+			table.insert(costArray, cost)
 
 			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 
 		end
-		
-		table.remove(clusterInformationDictionaryArray, clusterIndexToSplit)
-		
-		table.insert(clusterInformationDictionaryArray, {dataIndexArray = leftDataIndexArray, sumOfSquaredErrorValue = 0})
-		
-		table.insert(clusterInformationDictionaryArray, {dataIndexArray = rightDataIndexArray, sumOfSquaredErrorValue = 0})
 		
 	until (#clusterInformationDictionaryArray == numberOfClusters) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
@@ -352,11 +370,19 @@ function BisectingClusterModel:train(featureMatrix)
 
 	end
 	
+	local centroidMatrix = {}
+	
+	for clusterIndex, clusterInformationDictionary in ipairs(clusterInformationDictionaryArray) do
+		
+		centroidMatrix[clusterIndex] = calculateCentroid(featureMatrix, clusterInformationDictionary.dataIndexArray)
+		
+	end
+	
 	self.ModelParameters = centroidMatrix
 	
 	Model.numberOfClusters = secondaryNumberOfClusters
 	
-	return primaryCostArray
+	return costArray
 	
 end
 

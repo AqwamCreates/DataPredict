@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 UnscentedKalmanFilterDataPredictVariantModel = {}
 
@@ -47,6 +47,8 @@ local defaultNoiseValue = 1 -- Do not use very small value for this. It will cau
 local defaultLossFunction = "L2"
 
 local defaultUseJosephForm = true
+
+local defaultEpsilon = 1e-5
 
 local function defaultStateTransitionFunction(stateMatrix, deltaTime)
 	
@@ -81,6 +83,8 @@ function UnscentedKalmanFilterDataPredictVariantModel.new(parameterDictionary)
 	NewUKFModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
 	
 	NewUKFModel.useJosephForm = NewUKFModel:getValueOrDefaultValue(parameterDictionary.useJosephForm, defaultUseJosephForm)
+	
+	NewUKFModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
 	NewUKFModel.stateTransitionFunction = parameterDictionary.stateTransitionFunction or defaultStateTransitionFunction
 	
@@ -233,13 +237,11 @@ local function calculateCrossVariance(stateSigmaMatrixArray, meanStateMatrix, ob
 	
 end
 
-local function calculateJacobianApproximation(functionHandle, stateMatrix)
+local function calculateJacobianApproximation(functionHandle, stateMatrix, epsilon)
 	
 	local numberOfStates = #stateMatrix
 	
 	local jacobianMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfStates}, 0)
-	
-	local epsilon = 1e-5
 
 	local multipliedEpsilon = 2 * epsilon
 	
@@ -314,8 +316,8 @@ function UnscentedKalmanFilterDataPredictVariantModel:train(previousStateMatrix,
 	local lossFunction = self.lossFunction
 
 	local useJosephForm = self.useJosephForm
-
-	local numberOfStates = #previousStateMatrix[1]
+	
+	local epsilon = self.epsilon
 	
 	local stateTransitionFunction = self.stateTransitionFunction
 	
@@ -393,7 +395,7 @@ function UnscentedKalmanFilterDataPredictVariantModel:train(previousStateMatrix,
 
 	local identityMatrix = AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray)
 	
-	local jacobianApproximationMatrix = calculateJacobianApproximation(observationFunction, predictedMeanStateMatrix)
+	local jacobianApproximationMatrix = calculateJacobianApproximation(observationFunction, predictedMeanStateMatrix, epsilon)
 	
 	local KHMatrix = AqwamTensorLibrary:dotProduct(kalmanGainMatrix, jacobianApproximationMatrix)
 	

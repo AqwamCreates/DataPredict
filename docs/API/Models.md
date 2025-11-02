@@ -6,12 +6,12 @@ If you wonder what are the most high-value use cases that helps with retention a
 |--------------------------------|-------|
 | Regression                     | 8     |
 | Classification                 | 13    |
-| Clustering                     | 8     |
+| Clustering                     | 9     |
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 12    |
 | Sequence Modelling             | 6     |
 | Generative                     | 4     |
-| Total                          | 72    |
+| Total                          | 73    |
 
 ### Legend
 
@@ -102,6 +102,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [MeanShift](Models/MeanShift.md)                                                                                       | None            | 🛡️ 🟢 🟡 | Boss Spawn Location Search Based On Player Locations                 |
 | [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | AP              | 🟡        | Player Grouping                                                      |
 | [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | 🛡️ 🟡     | Density Grouping                                                     |
+| [BisectingCluster](Models/BisectingCluster.md)                                                                         | None            | ⚡ 🟡     | Slow To Quick Grouping                                               |
 
 ## Deep Reinforcement Learning
 

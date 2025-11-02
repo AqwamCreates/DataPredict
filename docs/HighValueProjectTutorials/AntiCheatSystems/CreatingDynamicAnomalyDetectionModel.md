@@ -44,7 +44,7 @@ local AnomalyPredictionModel = DataPredict.Models.DynamicBayesianNetwork.new()
 
 ```
 
-### Optional: What About the Extended Kalman Filter (EKF)?
+### Optional: What About the Extended Kalman Filter?
 
 You might have heard of the Extended Kalman Filter, which uses Jacobian matrices to handle non-linearities. However, this version often requires more setup (derivative functions) and can be less stable than the Unscented version. 
 

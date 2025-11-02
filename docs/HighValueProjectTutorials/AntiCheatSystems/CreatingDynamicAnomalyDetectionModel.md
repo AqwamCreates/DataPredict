@@ -6,12 +6,13 @@ Hello guys! Today, I will be showing you on how to create an anomaly-detection-b
 
 Before we train our model, we will first need to construct a model, in which we have three approaches:
 
-| Approach | Model                    | Notes                    |
-| -------- | -------------------------| ------------------------ |
-| 1        | Kalman Filter            | Good against noisy data. |
-| 2        | Dynamic Bayesian Network | Extremely fast.          |
+| Approach | Model                    | Advantages               | Disadvantages                            |
+| -------- | -------------------------| ------------------------ | ---------------------------------------- |
+| 1        | Kalman Filter            | Good against noisy data. | Requires linearity.                      |
+| 2        | Unscented Kalman Filter  | Good against noisy data. | Requires some parameter configurations.  |
+| 3        | Dynamic Bayesian Network | Extremely fast.          | Assumes values are normally distributed. |
 
-### Approach 1: Kalman Filter
+### Approach 1 / 2: Kalman Filter
 
 ```lua
 
@@ -31,7 +32,7 @@ local AnomalyPredictionModel = DataPredict.Models.KalmanFilter.new({lossFunction
 
 ```
 
-### Approach 2: Dynamic Bayesian Network
+### Approach 3: Dynamic Bayesian Network
 
 ```lua
 

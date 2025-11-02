@@ -42,25 +42,27 @@ local defaultLossFunction = "L2"
 
 local defaultUseJosephForm = true
 
-local function defaultStateFunction(previousStateMatrix, controlVector)
+local function defaultStateFunction(previousStateMatrix, controlVector) -- features x data, 1 x features
+	
+	if (not controlVector) then return previousStateMatrix end
 	
 	return AqwamTensorLibrary:add(previousStateMatrix, controlVector)
 	
 end
 
-local function defaultObservationStateFunction(stateMatrix)
+local function defaultObservationStateFunction(stateMatrix) -- features x data
 
 	return stateMatrix
 
 end
 
-local function defaultStateTransitionJacobianFunction(stateMatrix, controlVector)
+local function defaultStateTransitionJacobianFunction(stateMatrix, controlVector) -- features x data, 1 x features
 	
 	return AqwamTensorLibrary:createIdentityTensor({#stateMatrix, #stateMatrix})
 	
 end
 
-local function defaultObservationJacobianFunction(stateMatrix)
+local function defaultObservationJacobianFunction(stateMatrix) -- features x data
 	
 	return AqwamTensorLibrary:createIdentityTensor({#stateMatrix, #stateMatrix})
 	
@@ -113,6 +115,10 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 	if (numberOfStates ~= #currentStateMatrix[1]) then error("The number of states in the previous state vector is not equal to the number of states in the current state vector.") end
 	
 	local numberOfStatesDimensionSizeArray = {numberOfStates, numberOfStates}
+	
+	previousStateMatrix = AqwamTensorLibrary:transpose(previousStateMatrix)
+	
+	currentStateMatrix = AqwamTensorLibrary:transpose(currentStateMatrix)
 
 	local controlVector = self.controlVector
 	
@@ -162,7 +168,7 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 	
 	local posteriorStateMatrix = AqwamTensorLibrary:add(predictedStateMatrix, posteriorStateMatrixPart1)
 
-	local identityMatrix = AqwamTensorLibrary:createIdentityTensor({#priorCovarianceMatrix, #priorCovarianceMatrix})
+	local identityMatrix = AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray)
 	
 	local KHMatrix = AqwamTensorLibrary:dotProduct(kalmanGainMatrix, observationJacobianMatrix)
 	
@@ -184,7 +190,7 @@ function ExtendedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix
 
 	end
 	
-	local meanCorrectionMatrix = AqwamTensorLibrary:mean(posteriorStateMatrixPart1, 1)
+	local meanCorrectionMatrix = AqwamTensorLibrary:mean(posteriorStateMatrixPart1, 2)
 
 	self.ModelParameters = {posteriorStateMatrix, posteriorCovarianceMatrix, meanCorrectionMatrix}
 	
@@ -226,9 +232,13 @@ function ExtendedKalmanFilterModel:predict(stateMatrix)
 	
 	local meanCorrectionMatrix = ModelParameters[3]
 	
+	stateMatrix = AqwamTensorLibrary:transpose(stateMatrix)
+	
 	local nextStateMatrix = self.stateFunction(stateMatrix, self.controlVector)
 	
 	if (meanCorrectionMatrix) then nextStateMatrix = AqwamTensorLibrary:add(nextStateMatrix, meanCorrectionMatrix) end
+	
+	nextStateMatrix = AqwamTensorLibrary:transpose(nextStateMatrix)
 	
 	return nextStateMatrix
 	

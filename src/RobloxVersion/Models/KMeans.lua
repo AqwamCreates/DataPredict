@@ -255,6 +255,8 @@ local function calculateCost(distanceMatrix, clusterAssignmentArray)
 		
 	end
 	
+	cost = cost / #distanceMatrix
+	
 	return cost
 	
 end

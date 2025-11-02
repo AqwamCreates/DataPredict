@@ -65,7 +65,7 @@ BisectingCluster:train(featureMatrix: matrix)
 Predict which clusters does it belong to for a given data.
 
 ```
-KMeans:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
+BisectingCluster:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters:

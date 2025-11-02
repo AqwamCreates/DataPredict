@@ -254,8 +254,6 @@ function UnscentedKalmanFilterModel:train(previousStateMatrix, currentStateMatri
 	local noiseValue = self.noiseValue
 
 	local lossFunction = self.lossFunction
-
-	local numberOfStates = #previousStateMatrix[1]
 	
 	local stateTransitionFunction = self.stateTransitionFunction
 	

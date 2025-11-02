@@ -372,9 +372,19 @@ function BisectingClusterModel:train(featureMatrix)
 	
 	local centroidMatrix = {}
 	
-	for clusterIndex, clusterInformationDictionary in ipairs(clusterInformationDictionaryArray) do
+	local index = 1
+	
+	for _, clusterInformationDictionary in ipairs(clusterInformationDictionaryArray) do
 		
-		centroidMatrix[clusterIndex] = calculateCentroid(featureMatrix, clusterInformationDictionary.dataIndexArray)
+		dataIndexArray = clusterInformationDictionary.dataIndexArray
+		
+		if (#dataIndexArray ~= 0) then
+			
+			centroidMatrix[index] = calculateCentroidVector(featureMatrix, dataIndexArray)[1]
+			
+			index = index + 1
+			
+		end
 		
 	end
 	

@@ -46,7 +46,7 @@ local AnomalyPredictionModel = DataPredict.Models.DynamicBayesianNetwork.new()
 
 ### Optional: What About the Extended Kalman Filter (EKF)?
 
-You might have heard of the Extended Kalman Filter, which uses Jacobian matrices to handle nonlinearities. However, this version often requires more setup (derivative functions) and can be less stable than the Unscented version. 
+You might have heard of the Extended Kalman Filter, which uses Jacobian matrices to handle non-linearities. However, this version often requires more setup (derivative functions) and can be less stable than the Unscented version. 
 
 For most Roblox or real-time anomaly detection cases, the Unscented Kalman Filter provides better results with less tuning effort.
 

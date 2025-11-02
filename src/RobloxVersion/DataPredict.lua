@@ -188,6 +188,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	UnscentedKalmanFilter = require(Models.UnscentedKalmanFilter),
 	
+	UnscentedKalmanFilterDataPredictVariant = require(Models.UnscentedKalmanFilterDataPredictVariant),
+	
 	GenerativeAdversarialNetwork = require(Models.GenerativeAdversarialNetwork),
 	
 	ConditionalGenerativeAdversarialNetwork = require(Models.ConditionalGenerativeAdversarialNetwork),

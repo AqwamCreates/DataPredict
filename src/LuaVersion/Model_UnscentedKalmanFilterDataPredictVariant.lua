@@ -30,11 +30,11 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseModel = require(script.Parent.BaseModel)
 
-UnscentedKalmanFilterModel = {}
+UnscentedKalmanFilterDataPredictVariantModel = {}
 
-UnscentedKalmanFilterModel.__index = UnscentedKalmanFilterModel
+UnscentedKalmanFilterDataPredictVariantModel.__index = UnscentedKalmanFilterDataPredictVariantModel
 
-setmetatable(UnscentedKalmanFilterModel, BaseModel)
+setmetatable(UnscentedKalmanFilterDataPredictVariantModel, BaseModel)
 
 local defaultAlpha = 1e-3
 
@@ -45,6 +45,8 @@ local defaultKappa = 0
 local defaultNoiseValue = 1 -- Do not use very small value for this. It will cause the Mahalanobis distance to have very large values.
 
 local defaultLossFunction = "L2"
+
+local defaultUseJosephForm = true
 
 local function defaultStateTransitionFunction(stateMatrix, deltaTime)
 	
@@ -58,15 +60,15 @@ local function defaultObservationFunction(stateMatrix)
 	
 end
 
-function UnscentedKalmanFilterModel.new(parameterDictionary)
+function UnscentedKalmanFilterDataPredictVariantModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
 	local NewUKFModel = BaseModel.new(parameterDictionary)
 	
-	setmetatable(NewUKFModel, UnscentedKalmanFilterModel)
+	setmetatable(NewUKFModel, UnscentedKalmanFilterDataPredictVariantModel)
 	
-	NewUKFModel:setName("UnscentedKalmanFilter")
+	NewUKFModel:setName("UnscentedKalmanFilterDataPredictVariant")
 	
 	NewUKFModel.alpha = parameterDictionary.alpha or defaultAlpha
 	
@@ -77,6 +79,8 @@ function UnscentedKalmanFilterModel.new(parameterDictionary)
 	NewUKFModel.noiseValue = parameterDictionary.noiseValue or defaultNoiseValue
 	
 	NewUKFModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
+	
+	NewUKFModel.useJosephForm = NewUKFModel:getValueOrDefaultValue(parameterDictionary.useJosephForm, defaultUseJosephForm)
 
 	NewUKFModel.stateTransitionFunction = parameterDictionary.stateTransitionFunction or defaultStateTransitionFunction
 	
@@ -229,7 +233,61 @@ local function calculateCrossVariance(stateSigmaMatrixArray, meanStateMatrix, ob
 	
 end
 
-function UnscentedKalmanFilterModel:train(previousStateMatrix, currentStateMatrix)
+local function calculateJacobianApproximation(functionHandle, stateMatrix)
+	
+	local numberOfStates = #stateMatrix
+	
+	local jacobianMatrix = AqwamTensorLibrary:createTensor({numberOfStates, numberOfStates}, 0)
+	
+	local epsilon = 1e-5
+
+	local multipliedEpsilon = 2 * epsilon
+	
+	local deltaMatrix
+	
+	local statePlusMatrix
+	
+	local stateMinusMatrix
+	
+	local outputPlusMatrix
+	
+	local outputMinusMatrix
+	
+	local differenceMatrix
+	
+	local derivativeColumnMatrix
+
+	for i = 1, numberOfStates do
+		
+		deltaMatrix = AqwamTensorLibrary:createTensor({numberOfStates, 1}, 0)
+		
+		deltaMatrix[i][1] = epsilon
+
+		statePlusMatrix = AqwamTensorLibrary:add(stateMatrix, deltaMatrix)
+		
+		stateMinusMatrix = AqwamTensorLibrary:subtract(stateMatrix, deltaMatrix)
+
+		outputPlusMatrix = functionHandle(statePlusMatrix)
+		
+		outputMinusMatrix = functionHandle(stateMinusMatrix)
+
+		differenceMatrix = AqwamTensorLibrary:subtract(outputPlusMatrix, outputMinusMatrix)
+		
+		derivativeColumnMatrix = AqwamTensorLibrary:divide(differenceMatrix, multipliedEpsilon)
+		
+		for j = 1, numberOfStates do
+			
+			jacobianMatrix[j][i] = derivativeColumnMatrix[j][1]
+			
+		end
+		
+	end
+
+	return AqwamTensorLibrary:transpose(jacobianMatrix)
+	
+end
+
+function UnscentedKalmanFilterDataPredictVariantModel:train(previousStateMatrix, currentStateMatrix)
 	
 	local numberOfData = #previousStateMatrix
 
@@ -254,6 +312,8 @@ function UnscentedKalmanFilterModel:train(previousStateMatrix, currentStateMatri
 	local noiseValue = self.noiseValue
 
 	local lossFunction = self.lossFunction
+
+	local useJosephForm = self.useJosephForm
 
 	local numberOfStates = #previousStateMatrix[1]
 	
@@ -330,12 +390,30 @@ function UnscentedKalmanFilterModel:train(previousStateMatrix, currentStateMatri
 	local posteriorStateMatrixPart1 = AqwamTensorLibrary:dotProduct(kalmanGainMatrix, innovationMatrix)
 	
 	local posteriorMeanStateMatrix = AqwamTensorLibrary:add(posteriorStateMatrixPart1, predictedMeanStateMatrix)
-	
-	local transposedKalmanGainMatrix = AqwamTensorLibrary:transpose(kalmanGainMatrix)
-	
-	local posteriorCovarianceMatrixPart1 = AqwamTensorLibrary:dotProduct(kalmanGainMatrix, inverseInnovationCovarianceMatrix, transposedKalmanGainMatrix)
 
-	local posteriorCovarianceMatrix = AqwamTensorLibrary:subtract(priorCovarianceMatrix, posteriorCovarianceMatrixPart1)
+	local identityMatrix = AqwamTensorLibrary:createIdentityTensor(numberOfStatesDimensionSizeArray)
+	
+	local jacobianApproximationMatrix = calculateJacobianApproximation(observationFunction, predictedMeanStateMatrix)
+	
+	local KHMatrix = AqwamTensorLibrary:dotProduct(kalmanGainMatrix, jacobianApproximationMatrix)
+	
+	local identityMinusKHMatrix = AqwamTensorLibrary:subtract(identityMatrix, KHMatrix)
+
+	local posteriorCovarianceMatrix = AqwamTensorLibrary:dotProduct(identityMinusKHMatrix, predictedCovarianceMatrix)
+
+	if (useJosephForm) then
+		
+		local transposedIdentityMinusKHMatrix = AqwamTensorLibrary:transpose(identityMinusKHMatrix)
+		
+		local josephFormMatrixPart1 = AqwamTensorLibrary:dotProduct(posteriorCovarianceMatrix, transposedIdentityMinusKHMatrix)
+		
+		local transposedKalmanGainMatrix = AqwamTensorLibrary:transpose(kalmanGainMatrix)
+		
+		local josephFormMatrixPart2 = AqwamTensorLibrary:dotProduct(kalmanGainMatrix, observationNoiseCovarianceMatrix, transposedKalmanGainMatrix)
+		
+		posteriorCovarianceMatrix = AqwamTensorLibrary:add(josephFormMatrixPart1, josephFormMatrixPart2)
+		
+	end
 	
 	local meanCorrectionMatrix = AqwamTensorLibrary:mean(posteriorStateMatrixPart1, 2)
 
@@ -373,7 +451,7 @@ function UnscentedKalmanFilterModel:train(previousStateMatrix, currentStateMatri
 	
 end
 
-function UnscentedKalmanFilterModel:predict(stateMatrix)
+function UnscentedKalmanFilterDataPredictVariantModel:predict(stateMatrix)
 	
 	local ModelParameters = self.ModelParameters or {}
 
@@ -391,4 +469,4 @@ function UnscentedKalmanFilterModel:predict(stateMatrix)
 	
 end
 
-return UnscentedKalmanFilterModel
+return UnscentedKalmanFilterDataPredictVariantModel

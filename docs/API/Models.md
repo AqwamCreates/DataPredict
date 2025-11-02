@@ -160,7 +160,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [Markov](Models/Markov.md)*                                   | None            | 💾 🟢       | Single Features Player State Prediction   |
 | [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md)* | DBN             | 💾 🟢       | Multiple Features Player State Prediction |
 | [Conditional Random Field](Models/ConditionalRandomField.md)* | CRF             | 🟢           | Multiple Features Player State Prediction |
-| [Kalman Filter](Models/KalmanFilter.md)*                      | KF              | 🟢 ⚠️ ⚙️    | Linear Movement Anti-Cheat                |
+| [Kalman Filter](Models/KalmanFilter.md)*                      | KF              | 🟢 ⚠️       | Linear Movement Anti-Cheat                |
 | [Extended Kalman Filter](Models/ExtendedKalmanFilter.md)*     | EKF             | ⚡ 🟢 ⚙️    | Non-Linear Movement Anti-Cheat            |
 | [Unscented Kalman Filter](Models/UnscentedKalmanFilter.md)*   | UKF             | ⚡ 💾 🟢 ⚙️ | Non-Linear Movement Anti-Cheat            |
 

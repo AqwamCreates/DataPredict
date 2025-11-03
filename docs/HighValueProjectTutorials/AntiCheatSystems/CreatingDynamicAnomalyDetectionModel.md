@@ -2,6 +2,8 @@
 
 Hello guys! Today, I will be showing you on how to create an anomaly-detection-based model that could detect unusual player behavior that often cheating or suspicious actions.
 
+Additionally, I'll give you the Roblox file more advanced version of the anti cheat [here](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/blob/main/Dynamic%20Anti%20Cheat/Dynamic%20Anti%20Cheat.rbxl).
+
 ## Setting Up
 
 Before we train our model, we will first need to construct a model, in which we have three approaches:

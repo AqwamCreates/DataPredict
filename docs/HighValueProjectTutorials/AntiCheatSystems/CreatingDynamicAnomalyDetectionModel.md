@@ -117,7 +117,7 @@ local function run(Player)
 
         -- Check if the player is performing suspiciously.
 
-         rollingCost = (rollingCostRate * rollingCost) + (rollingCostRateComplement * cost)  -- Exponential Smoothing.
+         rollingCost = (rollingCostRate * rollingCost) + (rollingCostRateComplement * cost) -- Exponential Smoothing.
 
         if (rollingCost < lowerBoundRollingCostThreshold) or (rollingCost > upperBoundRollingCostThreshold) then
         

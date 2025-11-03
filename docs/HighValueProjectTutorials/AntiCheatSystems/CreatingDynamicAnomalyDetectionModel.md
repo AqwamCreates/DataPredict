@@ -65,7 +65,7 @@ local stateVector = {{healthChangeAmount, damageAmount, killPerDurationFromLastK
 
 Before we get through the code, we first need to understand on how to set a proper cost threshold to filter out unusual activities.
 
-* You must make sure to use multiple costs (not a single cost) so that you do not flag a random noise (e.g. network latency, CPU / GPU clocking issues and so on) as suspicious behaviour. 
+* You must make sure to use multiple costs to check suspicious behaviour. This is because a single step cost mostly comes from random noise (e.g. network latency, CPU / GPU clocking issues and so on).
 
 * When you set the aggregate cost threshold very high, this will detect the "blatant" cheating.
 

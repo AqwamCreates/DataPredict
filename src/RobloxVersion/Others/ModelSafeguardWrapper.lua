@@ -128,7 +128,7 @@ local function checkIfModelParametersAreAcceptable(ModelParameters, minimumValue
 	
 	if (type(ModelParameters) == "table") then
 		
-		for _, value in ipairs(ModelParameters) do
+		for _, value in pairs(ModelParameters) do
 			
 			isAcceptable = checkIfModelParametersAreAcceptable(value, minimumValue, maximumValue)
 			
@@ -446,9 +446,13 @@ function ModelSafeguardWrapper:train(...)
 	
 	local finalCostValue
 	
+	local maximumAcceptableCost
+	
 	local isAcceptableValue
 	
-	local maximumAcceptableCost
+	local UpdatedModelParameters
+	
+	local valueToReturnArray
 	
 	local onDefectFunctionToRunDictionary = {
 		
@@ -488,7 +492,9 @@ function ModelSafeguardWrapper:train(...)
 		
 	}
 	
-	self:runSandboxedEnvironment("train", Model, function()
+	return self:runSandboxedEnvironment("train", Model, function()
+		
+		valueToReturnArray = {}
 		
 		numberOfData = #dataMatrixArray[1]
 		
@@ -500,23 +506,39 @@ function ModelSafeguardWrapper:train(...)
 		
 		-- No data means no training.
 		
-		if (numberOfData == 0) then return true, {} end
+		if (numberOfData == 0) then return true, valueToReturnArray end
 		
 		costArray = Model:train(table.unpack(dataMatrixArray))
 		
-		if (not costArray) then return true, {} end
+		UpdatedModelParameters = Model:getModelParameters()
+		
+		if (not costArray) then
+			
+			isAcceptableValue = checkIfModelParametersAreAcceptable(UpdatedModelParameters)
+			
+			return isAcceptableValue, valueToReturnArray
+			
+		end
+		
+		finalCostValue = costArray[#costArray]
+		
+		if (type(finalCostValue) == "nil") then
+
+			isAcceptableValue = checkIfModelParametersAreAcceptable(UpdatedModelParameters)
+
+			return isAcceptableValue, valueToReturnArray
+			
+		end
 		
 		maximumAcceptableCost = maximumAcceptableCostMultiplier * getMaximumAcceptableCost(dataMatrixArray, hasClassification)
-
-		finalCostValue = costArray[#costArray]
 		
 		isAcceptableValue = checkIfIsAcceptableValue(finalCostValue, -maximumAcceptableCost, maximumAcceptableCost)
 		
-		return isAcceptableValue, {costArray}
+		valueToReturnArray[1] = costArray
+		
+		return isAcceptableValue, valueToReturnArray
 		
 	end, onDefectFunctionToRunDictionary)
-	
-	return costArray or {}
 	
 end
 
@@ -528,7 +550,7 @@ function ModelSafeguardWrapper:update(...)
 	
 	local UpdatedModelParameters
 
-	self:runSandboxedEnvironment("update", Model, function()
+	return self:runSandboxedEnvironment("update", Model, function()
 
 		Model:update(table.unpack(valueArray))
 		

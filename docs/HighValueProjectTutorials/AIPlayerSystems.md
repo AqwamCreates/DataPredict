@@ -1,10 +1,14 @@
 # AI Player Systems
 
+Generally, the models can be split into two categories:
+
+* Simple: Uses states (like run, fight and idle).
+
+* Deep: Uses environment states (like health, distance and damage).
+
 ## Data-To-Action Players
 
 * [Creating Simple Data-Based AI Player Model](AIPlayerSystems/CreatingSimpleDataBasedAIPlayerModel.md)
-
-  * Uses real players' states so that the AI players mimic real players.
  
   * Matches with real players' general performance.
 
@@ -30,15 +34,11 @@
 
 * Creating Simple Reward-Maximization-Based AI Player Model
 
-  * Uses real players' states so that the AI players mimic real players.
-
   * May outcompete real players.
 
   * Minimal implementation takes a minimum of 1 hour using DataPredict™, especially if custom actions are associated with the model's output.
 
 * Creating Deep Reward-Maximization-Based AI Player Model
-
-  * Uses real players' environment data so that the AI players mimic real players.
  
   * May outcompete real players.
 

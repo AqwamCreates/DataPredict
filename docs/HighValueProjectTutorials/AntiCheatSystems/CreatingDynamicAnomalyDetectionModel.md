@@ -87,7 +87,7 @@ local rollingCostRate = 0.9
 
 local rollingCostRateComplement = (1 - rollingCostRate)
 
-local maximumSuspiciousCount = 30
+local maximumSuspicionCount = 30
 
 local function run(Player)
 
@@ -129,7 +129,7 @@ local function run(Player)
             
         end
         
-        if (suspicionCount >= maximumSuspiciousCount) then kickPlayer(Player) end
+        if (suspicionCount >= maximumSuspicionCount) then kickPlayer(Player) end
 
         task.wait()
 

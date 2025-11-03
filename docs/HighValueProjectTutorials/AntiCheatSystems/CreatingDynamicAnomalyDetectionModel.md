@@ -21,13 +21,13 @@ local DataPredict = require(DataPredict)
 
 --[[
 
-  For best results, set "lossFunction" to "Mahalanobis" for anomaly detection.
+  For best results, you must set "lossFunction" to "Mahalanobis" for anomaly detection.
 
   You can also set "useJosephForm" to false if you want a more faster calculation by trading numerical stability and accuracy.
 
   By default, "lossFunction" is set to "L2" and "useJosephForm" is set to true.
 
-  The original "Unscented Kalman Filter" does not have "useJosephForm" though.
+  The original "Unscented Kalman Filter" does not have "useJosephForm".
 
 --]]
 
@@ -72,6 +72,8 @@ But first, we need to understand on how to set a proper cost threshold to filter
 * When you set the cost threshold to very low, this will detect the "expert" cheating. However, you need to be careful since the idle state can produce very low cost.
 
 * Between these two cost threshold, the cost generated is as a result of players' noisy, but consistent movements.
+
+* You must also make sure to use multiple frames so that you do not flag a random noise (e.g. network latency, CPU / GPU clocking issues and so on) as suspicious behaviour. 
 
 Therefore, it is important for you to implement this model and test it under non-cheating circumstances to get these cost threshold.
 

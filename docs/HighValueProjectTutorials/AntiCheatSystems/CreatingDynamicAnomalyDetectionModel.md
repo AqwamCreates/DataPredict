@@ -107,7 +107,7 @@ local function run(Player)
 
     while isPlayerInServer do
 
-        currentStateVector = getStateVector(Player)
+        currentStateVector, isIdle = getStateVector(Player)
     
         costArray = AnomalyDetectionModel:train(previousStateVector, currentStateVector)
 
@@ -119,7 +119,11 @@ local function run(Player)
 
          rollingCost = (rollingCostRate * rollingCost) + (rollingCostRateComplement * cost) -- Exponential Smoothing.
 
-        if (rollingCost < lowerBoundRollingCostThreshold) or (rollingCost > upperBoundRollingCostThreshold) then
+        if (isIdle) then
+        
+            suspicionCount = math.max(0, suspicionCount - 1)
+
+        elseif (rollingCost < lowerBoundRollingCostThreshold) or (rollingCost > upperBoundRollingCostThreshold) then
         
             suspicionCount = suspicionCount + 1
             

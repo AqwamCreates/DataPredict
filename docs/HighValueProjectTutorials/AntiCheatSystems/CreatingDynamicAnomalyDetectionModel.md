@@ -2,7 +2,7 @@
 
 Hello guys! Today, I will be showing you on how to create an anomaly-detection-based model that could detect unusual player behavior that often cheating or suspicious actions.
 
-Additionally, a demo file for more advanced version of this anti cheat model [here](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/blob/main/Dynamic%20Anti%20Cheat/Dynamic%20Anti%20Cheat.rbxl).
+Additionally, a demo file for more advanced version of this anti cheat model can be found [here](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/blob/main/Dynamic%20Anti%20Cheat/Dynamic%20Anti%20Cheat.rbxl).
 
 ## Setting Up
 

@@ -87,7 +87,13 @@ local rollingCostRate = 0.9
 
 local rollingCostRateComplement = (1 - rollingCostRate)
 
+local maximumSuspiciousCount = 30
+
 local function run(Player)
+
+    local suspicionCount = 0
+
+    local rollingCost = 0
 
     local isPlayerInServer = true
 
@@ -98,8 +104,6 @@ local function run(Player)
     local costArray
 
     local cost
-
-    local rollingCost
 
     while isPlayerInServer do
 
@@ -117,15 +121,15 @@ local function run(Player)
 
         if (rollingCost < lowerBoundCostThreshold) or (rollingCost > upperBoundCostThreshold) then
         
-            suspicionCounter = suspicionCounter + 1
+            suspicionCount = suspicionCount + 1
             
         else
         
-            suspicionCounter = math.max(0, suspicionCounter - 1)
+            suspicionCount = math.max(0, suspicionCount - 1)
             
         end
         
-        if (suspicionCounter >= 30) then kickPlayer(Player) end
+        if (suspicionCount >= maximumSuspiciousCount) then kickPlayer(Player) end
 
         task.wait()
 

@@ -2,9 +2,9 @@
 
 Generally, the models can be split into two categories:
 
-* Simple: Uses states (like run, fight and idle).
+* Simple: Uses discrete states (like run, fight and idle).
 
-* Deep: Uses environment states (like health, distance and damage).
+* Deep: Uses continuous states (like health, distance and damage).
 
 ## Data-To-Action Players
 

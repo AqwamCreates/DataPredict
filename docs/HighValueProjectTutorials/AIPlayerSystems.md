@@ -18,8 +18,6 @@ Generally, the models can be split into two categories:
 
   * Uses real players' environment data so that the AI players mimic real players.
 
-  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
-
 ## Data-To-Action-To-Reaction Players
 
 * [Creating Simple Data-Based Reactionary AI Player Model](AIPlayerSystems/CreatingSimpleDataBasedReactionaryAIPlayerModel.md)
@@ -28,15 +26,11 @@ Generally, the models can be split into two categories:
 
 * Creating Deep Data-Based Reactionary AI Player Model
 
-  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
-
 ## Data-To-Action Optimization Players
 
 * Creating Simple Reward-Maximization-Based AI Player Model
 
   * May outcompete real players.
-
-  * Minimal implementation takes a minimum of 1 hour using DataPredict™, especially if custom actions are associated with the model's output.
 
 * Creating Deep Reward-Maximization-Based AI Player Model
  
@@ -48,7 +42,7 @@ Generally, the models can be split into two categories:
 
 * [Creating Simple Reward-Maximization-Based Reactionary AI Player Model](AIPlayerSystems/CreatingSimpleRewardMaximizationBasedReactionaryAIPlayerModel.md)
 
-  * Minimal implementation takes a minimum of 1 hour using DataPredict™, especially if custom actions are associated with the model's output.
+  * Breaks mathematical theoretical guarantees due to interference from game designers' control instead of model's own actions. Therefore, it is risky to use.
 
 * Creating Deep Reward-Maximization-Based Reactionary AI Player Model
 

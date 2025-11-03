@@ -97,11 +97,11 @@ local function run(Player)
 
     local isPlayerInServer = true
 
-    local isIdle = true
-
     local previousStateVector = getStateVector(Player)
 
     local currentStateVector
+
+    local isIdle
 
     local costArray
 

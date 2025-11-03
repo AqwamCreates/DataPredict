@@ -14,6 +14,8 @@ ModelSafeguardWrapper.new(Model: ModelObject): ModelSafeguardWrapperObject
 
 * Model: The model object to modify its training capabilities.
 
+* hasClassification: Set whether or not the model has classification ability. [Default: true]
+
 #### Returns:
 
 * TrainingModifierObject: A training modifier object that uses the model's train(), predict() and reinforce() functions so that it behaves like a regular model.

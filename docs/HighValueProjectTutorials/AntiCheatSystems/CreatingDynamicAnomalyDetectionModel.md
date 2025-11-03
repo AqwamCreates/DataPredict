@@ -65,13 +65,13 @@ local stateVector = {{healthChangeAmount, damageAmount, killPerDurationFromLastK
 
 Before we get through the code, we first need to understand on how to set a proper cost threshold to filter out unusual activities.
 
-* When you set the cost threshold very high, this will detect the "blatant" cheating.
+* You must make sure to use multiple costs so that you do not flag a random noise (e.g. network latency, CPU / GPU clocking issues and so on) as suspicious behaviour. 
 
-* When you set the cost threshold to very low, this will detect the "expert" cheating. However, you need to be careful since the idle state can produce very low cost.
+* When you set the aggregate cost threshold very high, this will detect the "blatant" cheating.
 
-* Between these two cost threshold, the cost generated is as a result of players' noisy, but consistent movements.
+* When you set the aggregate cost threshold to very low, this will detect the "expert" cheating. However, you need to be careful since the idle state can produce very low cost.
 
-* You must also make sure to use multiple costs so that you do not flag a random noise (e.g. network latency, CPU / GPU clocking issues and so on) as suspicious behaviour. 
+* Between these two aggregate cost threshold, the cost generated is as a result of players' noisy, but consistent movements.
 
 Therefore, it is important for you to implement this model and test it under non-cheating circumstances to get these cost threshold.
 
@@ -79,9 +79,9 @@ Therefore, it is important for you to implement this model and test it under non
 
 -- Do not use these cost threshold values. These are extremely specific to your model's setup.
 
-local lowerBoundCostThreshold = 1
+local lowerBoundRollingCostThreshold = 1
 
-local upperBoundCostThreshold = 3
+local upperBoundRollingCostThreshold = 3
 
 local rollingCostRate = 0.9
 
@@ -119,7 +119,7 @@ local function run(Player)
 
          rollingCost = (rollingCostRate * rollingCost) + (rollingCostRateComplement * cost)  -- exponential smoothing
 
-        if (rollingCost < lowerBoundCostThreshold) or (rollingCost > upperBoundCostThreshold) then
+        if (rollingCost < lowerBoundRollingCostThreshold) or (rollingCost > upperBoundRollingCostThreshold) then
         
             suspicionCount = suspicionCount + 1
             

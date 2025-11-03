@@ -6,7 +6,7 @@ Generally, the models can be split into two categories:
 
 * Deep: Uses continuous states (like health, distance and damage).
 
-## Data-To-Action Players
+## Data-To-Action Players (Imitation / Behavior Cloning)
 
 * [Creating Simple Data-Based AI Player Model](AIPlayerSystems/CreatingSimpleDataBasedAIPlayerModel.md)
  
@@ -18,7 +18,7 @@ Generally, the models can be split into two categories:
 
   * Uses real players' environment data so that the AI players mimic real players.
 
-## Data-To-Action-To-Reaction Players
+## Data-To-Action-To-Reaction Players (Manual Counter)
 
 * [Creating Simple Data-Based Reactionary AI Player Model](AIPlayerSystems/CreatingSimpleDataBasedReactionaryAIPlayerModel.md)
 
@@ -26,7 +26,7 @@ Generally, the models can be split into two categories:
 
 * Creating Deep Data-Based Reactionary AI Player Model
 
-## Data-To-Action Optimization Players
+## Data-To-Action Optimization Players (Goal-Based Optimization)
 
 * Creating Simple Reward-Maximization-Based AI Player Model
 
@@ -38,7 +38,7 @@ Generally, the models can be split into two categories:
 
   * May exploit bugs and glitches.
 
-## Data-To-Action-To-Reaction Optimization Players
+## Data-To-Action-To-Reaction Optimization Players (Counter Optimization)
 
 * [Creating Simple Reward-Maximization-Based Reactionary AI Player Model](AIPlayerSystems/CreatingSimpleRewardMaximizationBasedReactionaryAIPlayerModel.md)
 

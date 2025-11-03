@@ -16,6 +16,8 @@ Generally, the models can be split into two categories:
 
 * Creating Deep Data-Based AI Player Model
 
+  * Matches with real players' general performance.
+
   * Uses real players' environment data so that the AI players mimic real players.
 
 ## Data-To-Action-To-Reaction Players (Manual Counter)

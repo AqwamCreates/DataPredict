@@ -97,6 +97,8 @@ local function run(Player)
 
     local isPlayerInServer = true
 
+    local isIdle = true
+
     local previousStateVector = getStateVector(Player)
 
     local currentStateVector
@@ -107,8 +109,10 @@ local function run(Player)
 
     while isPlayerInServer do
 
-        currentStateVector, isIdle = getStateVector(Player)
-    
+        currentStateVector = getStateVector(Player)
+
+        isIdle = checkIfIsIdle(previousStateVector, currentStateVector)
+
         costArray = AnomalyDetectionModel:train(previousStateVector, currentStateVector)
 
         cost = costArray[1]

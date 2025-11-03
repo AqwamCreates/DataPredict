@@ -21,7 +21,7 @@ local DataPredict = require(DataPredict)
 
 -- Number of clusters are highly dependent on how many playstyles you have. However, we recommend with 1 cluster as a starting point.
 
-local AnomalyPredictionModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 1})
+local AnomalyDetectionModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 1})
 
 ```
 
@@ -33,7 +33,7 @@ local DataPredict = require(DataPredict)
 
 -- You must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
 
-local AnomalyPredictionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction"})
+local AnomalyDetectionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction"})
 
 ```
 
@@ -45,7 +45,7 @@ local DataPredict = require(DataPredict)
 
 -- There are no parameters to set here.
 
-local AnomalyPredictionModel = DataPredict.Models.GaussianNaiveBayes.new()
+local AnomalyDetectionModel = DataPredict.Models.GaussianNaiveBayes.new()
 
 ```
 
@@ -91,7 +91,7 @@ By the time the player leaves, it is time for us to train the model.
 
 ```lua
 
-local costArray = AnomalyPredictionModel:train(playerDataVector)
+local costArray = AnomalyDetectionModel:train(playerDataVector)
 
 ```
 
@@ -101,7 +101,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = AnomalyPredictionModel:getModelParameters()
+local ModelParameters = AnomalyDetectionModel:getModelParameters()
 
 ```
 
@@ -131,7 +131,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-AnomalyPredictionModel:setModelParameters(ModelParameters)
+AnomalyDetectionModel:setModelParameters(ModelParameters)
 
 ```
 
@@ -151,7 +151,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 local currentPlayerDataVector = {{healthChangeAmount, damageAmount, hitStreakAmount}}
 
-local predictedLabelVector = AnomalyPredictionModel:predict(currentPlayerDataVector)
+local predictedLabelVector = AnomalyDetectionModel:predict(currentPlayerDataVector)
 
 ```
 

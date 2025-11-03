@@ -63,9 +63,7 @@ local stateVector = {{healthChangeAmount, damageAmount, killPerDurationFromLastK
 
 ## Anomaly Detection
 
-In order for us to check for unusual activities, we will have to rely on the training cost by calling train() function.
-
-But first, we need to understand on how to set a proper cost threshold to filter out unusual activities.
+Before we get through the code, we first need to understand on how to set a proper cost threshold to filter out unusual activities.
 
 * When you set the cost threshold very high, this will detect the "blatant" cheating.
 

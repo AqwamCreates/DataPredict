@@ -107,7 +107,7 @@ local function run(Player)
 
     while isPlayerInServer do
 
-        currentStateVector = getPlayerDataVector(Player)
+        currentStateVector = getStateVector(Player)
     
         costArray = AnomalyDetectionModel:train(previousStateVector, currentStateVector)
 

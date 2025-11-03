@@ -155,15 +155,15 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                                                                 | Alternate Names | Properties   | Use Cases                                 |
-|-------------------------------------------------------------------------------------------------------|-----------------|--------------|-------------------------------------------|
-| [Markov](Models/Markov.md)*                                                                           | None            | 💾 🟢       | Single Features Player State Prediction   |
-| [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md)*                                         | DBN             | 💾 🟢       | Multiple Features Player State Prediction |
-| [Conditional Random Field](Models/ConditionalRandomField.md)*                                         | CRF             | 🟢           | Multiple Features Player State Prediction |
-| [Kalman Filter](Models/KalmanFilter.md)*                                                              | KF              | 🟢 ⚠️       | Linear Movement Anti-Cheat                |
-| [Extended Kalman Filter](Models/ExtendedKalmanFilter.md)*                                             | EKF             | 🟢 ⚙️       | Non-Linear Movement Anti-Cheat            |
-| [Unscented Kalman Filter](Models/UnscentedKalmanFilter.md)*                                           | UKF             | ⚡ 💾 🟢 ⚙️ | Non-Linear Movement Anti-Cheat            |
-| [Unscented Kalman Filter (DataPredict Variant)](Models/UnscentedKalmanFilterDataPredictVariant.md)*   | UKF-DP          | ⚡ 💾 🟢 ⚙️ | Non-Linear Movement Anti-Cheat            |
+| Model                                                                                                 | Alternate Names | Properties | Use Cases                                 |
+|-------------------------------------------------------------------------------------------------------|-----------------|------------|-------------------------------------------|
+| [Markov](Models/Markov.md)*                                                                           | None            | 💾 🟢     | Single Features Player State Prediction   |
+| [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md)*                                         | DBN             | 💾 🟢     | Multiple Features Player State Prediction |
+| [Conditional Random Field](Models/ConditionalRandomField.md)*                                         | CRF             | 🟢         | Multiple Features Player State Prediction |
+| [Kalman Filter](Models/KalmanFilter.md)*                                                              | KF              | 🟢 ⚠️     | Linear Movement Anti-Cheat                |
+| [Extended Kalman Filter](Models/ExtendedKalmanFilter.md)*                                             | EKF             | 🟢 ⚙️    | Non-Linear Movement Anti-Cheat            |
+| [Unscented Kalman Filter](Models/UnscentedKalmanFilter.md)*                                           | UKF             | ⚡ 🟢 ⚙️ | Non-Linear Movement Anti-Cheat            |
+| [Unscented Kalman Filter (DataPredict Variant)](Models/UnscentedKalmanFilterDataPredictVariant.md)*   | UKF-DP          | ⚡ 🟢 ⚙️ | Non-Linear Movement Anti-Cheat            |
 
 * These are single step variants of the sequence models. Hence, it will not use or return sequence of values.
 

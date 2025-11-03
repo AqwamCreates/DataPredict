@@ -1,4 +1,4 @@
-# [Documentation](/index.md) - High-Value Project Tutorials
+# [Documentation](index.md) - High-Value Project Tutorials
 
 > Beat The Retention! Not The Algorithm! 
 

@@ -63,6 +63,10 @@ local stateVector = {{healthChangeAmount, damageAmount, killPerDurationFromLastK
 
 ```
 
+### Note: Roblox Server Use Cases
+
+When using Kalman Filter and its variants, you can only use up to 7 features before it causes the Roblox server to freeze. Keep that in mind.
+
 ## Anomaly Detection
 
 Before we get through the code, we first need to understand on how to set a proper cost threshold to filter out unusual activities.

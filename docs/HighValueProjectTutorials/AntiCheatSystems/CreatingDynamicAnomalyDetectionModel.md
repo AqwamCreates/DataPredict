@@ -73,7 +73,7 @@ But first, we need to understand on how to set a proper cost threshold to filter
 
 * Between these two cost threshold, the cost generated is as a result of players' noisy, but consistent movements.
 
-* You must also make sure to use multiple frames so that you do not flag a random noise (e.g. network latency, CPU / GPU clocking issues and so on) as suspicious behaviour. 
+* You must also make sure to use multiple costs so that you do not flag a random noise (e.g. network latency, CPU / GPU clocking issues and so on) as suspicious behaviour. 
 
 Therefore, it is important for you to implement this model and test it under non-cheating circumstances to get these cost threshold.
 

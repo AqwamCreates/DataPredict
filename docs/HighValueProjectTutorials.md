@@ -36,7 +36,7 @@
 
 | System                                                                                           | Properties                                                                                         | Minimal Implementation Time |
 |--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|-----------------------------|
-| [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization and leave predictions.                                              | 30 minutes - 6 hours       |
+| [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization, leave predictions and leave detection.                              | 30 minutes - 6 hours       |
 | [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                                                          | 2 hours                   |
 | [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Ensures that the player is likely to interact with the enemies.                                    | 30 minutes - 2 hours       |
 | [Team Balancing](HighValueProjectTutorials/TeamBalancingSystems.md)                              | Ensures that teams are balanced based on their combat data.                                        | 30 minutes                 |

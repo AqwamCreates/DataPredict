@@ -83,6 +83,10 @@ local lowerBoundCostThreshold = 1
 
 local upperBoundCostThreshold = 3
 
+local rollingCostRate = 0.9
+
+local rollingCostRateComplement = (1 - rollingCostRate)
+
 local function run(Player)
 
     local isPlayerInServer = true
@@ -107,13 +111,13 @@ local function run(Player)
 
         previousStateVector = currentStateVector
 
-        -- Checks if the player is performing suspiciously.
+        -- Check if the player is performing suspiciously.
 
-       rollingCost = 0.9 * rollingCost + 0.1 * cost  -- exponential smoothing
+         rollingCost = (rollingCostRate * rollingCost) + (rollingCostRateComplement * cost)  -- exponential smoothing
 
         if (rollingCost < lowerBoundCostThreshold) or (rollingCost > upperBoundCostThreshold) then
         
-            suspicionCounter = suspicionCounter +  1
+            suspicionCounter = suspicionCounter + 1
             
         else
         

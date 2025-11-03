@@ -56,7 +56,7 @@
 
   * Less risky and learns faster than the original "Deep Play Time Maximization Model", but takes more time to implement.
 
-  * Minimal implementation takes a minimum of 3 hours using DataPredict™.
+  * Minimal implementation takes a minimum of 3 hours using DataPredict™, especially if custom events are associated with the model's output.
 
 * [Creating Gated Deep Play Time Maximization Ensemble Model](RetentionSystems/CreatingGatedDeepPlayTimeMaximizationEnsembleModel.md)
 
@@ -70,7 +70,7 @@
 
   * Less risky than the original "Deep Play Time Maximization Model", but takes more time to implement.
 
-  * Minimal implementation takes a minimum of 4 hours using DataPredict™.
+  * Minimal implementation takes a minimum of 4 hours using DataPredict™, especially if custom events are associated with the model's output.
 
 * [Creating Gated Junior-Senior Play Time Maximization Ensemble Model](RetentionSystems/CreatingGatedJuniorSeniorPlayTimeMaximizationEnsembleModel.md)
 
@@ -86,7 +86,7 @@
 
   * The least riskiest model out there for play time maximization, but takes the longest time to implement.
 
-  * Minimal implementation takes a minimum of 6 hours using DataPredict™.
+  * Minimal implementation takes a minimum of 6 hours using DataPredict™, especially if custom events are associated with the model's output.
 
 ## Detection Models
 

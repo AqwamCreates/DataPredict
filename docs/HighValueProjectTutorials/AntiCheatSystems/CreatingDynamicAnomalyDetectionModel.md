@@ -31,7 +31,7 @@ local DataPredict = require(DataPredict)
 
 --]]
 
-local AnomalyPredictionModel = DataPredict.Models.KalmanFilter.new({lossFunction = "Mahalanobis", useJosephForm = true})
+local AnomalyDetectionModel = DataPredict.Models.KalmanFilter.new({lossFunction = "Mahalanobis", useJosephForm = true})
 
 ```
 
@@ -43,7 +43,7 @@ local DataPredict = require(DataPredict)
 
 -- There are no parameters to set here.
 
-local AnomalyPredictionModel = DataPredict.Models.DynamicBayesianNetwork.new()
+local AnomalyDetectionModel = DataPredict.Models.DynamicBayesianNetwork.new()
 
 ```
 
@@ -109,7 +109,7 @@ local function run(Player)
 
         currentStateVector = getPlayerDataVector(Player)
     
-        costArray = AnomalyPredictionModel:train(previousStateVector, currentStateVector)
+        costArray = AnomalyDetectionModel:train(previousStateVector, currentStateVector)
 
         cost = costArray[1]
 

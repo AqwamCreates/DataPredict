@@ -43,7 +43,7 @@ KNearestNeighboursClassifier.new(kValue: integer, distanceFunction: string, use,
 Train the model.
 
 ```
-KNearestNeighboursClassifier:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+KNearestNeighboursClassifier:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
@@ -61,7 +61,7 @@ KNearestNeighboursClassifier:train(featureMatrix: Matrix, labelVector: Matrix): 
 Predict the values for given data.
 
 ```
-KNearestNeighboursClassifier:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+KNearestNeighboursClassifier:predict(featureMatrix: matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters

@@ -9,7 +9,8 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Clustering                     | 9     |
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 12    |
-| Sequence Modelling             | 7     |
+| Sequence Modelling             | 3     |
+| Filters                        | 4     |
 | Generative                     | 4     |
 | Outlier Detection              | 1     |
 | Total                          | 78    |

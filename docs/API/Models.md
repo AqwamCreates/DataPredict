@@ -4,14 +4,14 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model Type                     | Description                                     | Count |
 |--------------------------------|-------------------------------------------------|-------|
-| Regression                     | Feature To Continuous Values                    | 9     |
-| Classification                 | Feature-Class Grouping And Prediction           | 14    |
-| Clustering                     | Feature Grouping                                | 9     |
+| [Regression](#regression]                     | Feature To Continuous Values                    | 9     |
+| [Classification](#classification)                 | Feature-Class Grouping And Prediction           | 14    |
+| [Clustering](#clustering)                     | Feature Grouping                                | 9     |
 | Deep Reinforcement Learning    | State-Action Optimization Using Neural Networks | 21    |
 | Tabular Reinforcement Learning | State-Action Optimization Using Grids           | 12    |
 | Sequence Modelling             | Next State Prediction And Generation            | 3     |
-| Filters                        | Next State Tracking / Estimation                | 4     |
-| Generative                     | Feature To Novel Values                         | 4     |
+| [Filtering](#filtering)                        | Next State Tracking / Estimation                | 4     |
+| [Generative](#generative)                     | Feature To Novel Values                         | 4     |
 | Outlier Detection              | Outlier Score Generation                        | 1     |
 | Total                          |                                                 | 78    |
 
@@ -168,7 +168,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 * These are single step variants of the sequence models. Hence, it will not use or return sequence of values.
 
-## Filters
+## Filtering
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 

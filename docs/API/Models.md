@@ -11,7 +11,8 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Tabular Reinforcement Learning | 12    |
 | Sequence Modelling             | 7     |
 | Generative                     | 4     |
-| Total                          | 75    |
+| Outlier Detection              | 1     |
+| Total                          | 76    |
 
 ### Legend
 
@@ -158,7 +159,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model                                                                                                 | Alternate Names | Properties | Use Cases                                 |
 |-------------------------------------------------------------------------------------------------------|-----------------|------------|-------------------------------------------|
-| [Markov](Models/Markov.md)*                                                                           | None            | 💾 🟢     | Single Features Player State Prediction   |
+| [Markov](Models/Markov.md)*                                                                           | None            | 💾 🟢     | Single Feature Player State Prediction    |
 | [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md)*                                         | DBN             | 💾 🟢     | Multiple Features Player State Prediction |
 | [Conditional Random Field](Models/ConditionalRandomField.md)*                                         | CRF             | 🟢         | Multiple Features Player State Prediction |
 | [Kalman Filter](Models/KalmanFilter.md)*                                                              | KF              | 🟢 ⚠️     | Linear Movement Anti-Cheat                |
@@ -178,6 +179,14 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [ConditionalGenerativeAdversarialNetwork](Models/ConditionalGenerativeAdversarialNetwork.md)                       | CGAN            | 🟢 🟡     | Conditional Enemy Data Generation         |
 | [WassersteinGenerativeAdversarialNetwork](Models/WassersteinGenerativeAdversarialNetwork.md)                       | WGAN            | 🟢 🟡     | Stable Enemy Data Generation              |
 | [ConditionalWassersteinGenerativeAdversarialNetwork](Models/ConditionalWassersteinGenerativeAdversarialNetwork.md) | CWGAN           | 🟢 🟡     | Stable Conditional Enemy Data Generation  |
+
+## Outlier Detection
+
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+
+| Model                                              | Alternate Names | Properties | Use Cases               |
+|----------------------------------------------------|-----------------|------------| ------------------------|
+| [LocalOutlierFactor](Models/LocalOutlierFactor.md) | LOF             | 🟢 🟡     | Local Outlier Detection |
 
 ## BaseModels
 

@@ -28,15 +28,15 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require("Model_BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
-KNearestNeighboursRegressor = {}
+KNearestNeighboursRegressorModel = {}
 
-KNearestNeighboursRegressor.__index = KNearestNeighboursRegressor
+KNearestNeighboursRegressorModel.__index = KNearestNeighboursRegressorModel
 
-setmetatable(KNearestNeighboursRegressor, BaseModel)
+setmetatable(KNearestNeighboursRegressorModel, BaseModel)
 
 local defaultKValue = 3
 
@@ -229,29 +229,29 @@ local function getAverageValue(sortedLabelVectorLowestToHighest, distanceVector,
 
 end
 
-function KNearestNeighboursRegressor.new(parameterDictionary)
+function KNearestNeighboursRegressorModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewKNearestNeighboursRegressor = BaseModel.new(parameterDictionary)
+	local NewKNearestNeighboursRegressorModel = BaseModel.new(parameterDictionary)
 
-	setmetatable(NewKNearestNeighboursRegressor, KNearestNeighboursRegressor)
+	setmetatable(NewKNearestNeighboursRegressorModel, KNearestNeighboursRegressorModel)
 	
-	NewKNearestNeighboursRegressor:setName("KNearestNeighboursRegressor")
+	NewKNearestNeighboursRegressorModel:setName("KNearestNeighboursRegressor")
 
-	NewKNearestNeighboursRegressor.kValue = parameterDictionary.kValue or defaultKValue
+	NewKNearestNeighboursRegressorModel.kValue = parameterDictionary.kValue or defaultKValue
 
-	NewKNearestNeighboursRegressor.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
+	NewKNearestNeighboursRegressorModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 
-	NewKNearestNeighboursRegressor.useWeightedDistance = NewKNearestNeighboursRegressor:getValueOrDefaultValue(parameterDictionary.useWeightedDistance, defaultUseWeightedDistance)
+	NewKNearestNeighboursRegressorModel.useWeightedDistance = NewKNearestNeighboursRegressorModel:getValueOrDefaultValue(parameterDictionary.useWeightedDistance, defaultUseWeightedDistance)
 	
-	NewKNearestNeighboursRegressor.maximumNumberOfData = parameterDictionary.maximumNumberOfData or defaultMaximumNumberOfData
+	NewKNearestNeighboursRegressorModel.maximumNumberOfData = parameterDictionary.maximumNumberOfData or defaultMaximumNumberOfData
 	
-	return NewKNearestNeighboursRegressor
+	return NewKNearestNeighboursRegressorModel
 
 end
 
-function KNearestNeighboursRegressor:train(featureMatrix, labelVector)
+function KNearestNeighboursRegressorModel:train(featureMatrix, labelVector)
 
 	local numberOfData = #featureMatrix
 
@@ -305,7 +305,7 @@ function KNearestNeighboursRegressor:train(featureMatrix, labelVector)
 
 end
 
-function KNearestNeighboursRegressor:predict(featureMatrix, returnOriginalOutput)
+function KNearestNeighboursRegressorModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local ModelParameters = self.ModelParameters
 	
@@ -349,4 +349,4 @@ function KNearestNeighboursRegressor:predict(featureMatrix, returnOriginalOutput
 
 end
 
-return KNearestNeighboursRegressor
+return KNearestNeighboursRegressorModel

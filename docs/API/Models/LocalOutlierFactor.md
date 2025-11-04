@@ -1,12 +1,10 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - KNearestNeighboursClassifier (KNN-C)
+# [API Reference](../../API.md) - [Models](../Models.md) - LocalOutlierFactor
 
 ## Stored Model Parameters
 
 Contains a table of matrices.  
 
-* ModelParameters[1]: Feature Matrix
-
-* ModelParameters[2]: Label Vector / Label Matrix
+* ModelParameters: Feature Matrix
 
 ## Constructors
 
@@ -15,7 +13,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-KNearestNeighboursClassifier.new(kValue: integer, distanceFunction: string, use, useWeightedDistance: boolean): ModelObject
+LocalOutlierFactor.new(kValue: integer, distanceFunction: string, use, useWeightedDistance: boolean): ModelObject
 ```
 
 #### Parameters:
@@ -43,14 +41,12 @@ KNearestNeighboursClassifier.new(kValue: integer, distanceFunction: string, use,
 Train the model.
 
 ```
-KNearestNeighboursClassifier:train(featureMatrix: matrix, labelVector: matrix): number[]
+LocalOutlierFactor:train(featureMatrix: matrix): number[]
 ```
 
 #### Parameters:
 
 * featureMatrix: Matrix containing all data.
-
-* labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
 #### Returns:
 
@@ -61,7 +57,7 @@ KNearestNeighboursClassifier:train(featureMatrix: matrix, labelVector: matrix): 
 Predict the values for given data.
 
 ```
-KNearestNeighboursClassifier:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
+KNearestNeighboursRegressor:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters

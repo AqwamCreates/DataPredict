@@ -43,7 +43,7 @@ KNearestNeighboursRegressor.new(kValue: integer, distanceFunction: string, use, 
 Train the model.
 
 ```
-KNearestNeighboursRegressor:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+KNearestNeighboursRegressor:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
@@ -61,7 +61,7 @@ KNearestNeighboursRegressor:train(featureMatrix: Matrix, labelVector: Matrix): n
 Predict the values for given data.
 
 ```
-KNearestNeighboursRegressor:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+KNearestNeighboursRegressor:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters

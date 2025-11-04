@@ -32,11 +32,11 @@ local BaseModel = require(script.Parent.BaseModel)
 
 local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
 
-KNearestNeighboursClassifier = {}
+KNearestNeighboursClassifierModel = {}
 
-KNearestNeighboursClassifier.__index = KNearestNeighboursClassifier
+KNearestNeighboursClassifierModel.__index = KNearestNeighboursClassifierModel
 
-setmetatable(KNearestNeighboursClassifier, BaseModel)
+setmetatable(KNearestNeighboursClassifierModel, BaseModel)
 
 local defaultKValue = 3
 
@@ -237,29 +237,29 @@ local function getMajorityClass(sortedLabelVectorLowestToHighest, distanceVector
 
 end
 
-function KNearestNeighboursClassifier.new(parameterDictionary)
+function KNearestNeighboursClassifierModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewKNearestNeighboursClassifier = BaseModel.new(parameterDictionary)
+	local NewKNearestNeighboursClassifierModel = BaseModel.new(parameterDictionary)
 
-	setmetatable(NewKNearestNeighboursClassifier, KNearestNeighboursClassifier)
+	setmetatable(NewKNearestNeighboursClassifierModel, KNearestNeighboursClassifierModel)
 	
-	NewKNearestNeighboursClassifier:setName("KNearestNeighboursClassifier")
+	NewKNearestNeighboursClassifierModel:setName("KNearestNeighboursClassifier")
 
-	NewKNearestNeighboursClassifier.kValue = parameterDictionary.kValue or defaultKValue
+	NewKNearestNeighboursClassifierModel.kValue = parameterDictionary.kValue or defaultKValue
 
-	NewKNearestNeighboursClassifier.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
+	NewKNearestNeighboursClassifierModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 
-	NewKNearestNeighboursClassifier.useWeightedDistance = NewKNearestNeighboursClassifier:getValueOrDefaultValue(parameterDictionary.useWeightedDistance, defaultUseWeightedDistance)
+	NewKNearestNeighboursClassifierModel.useWeightedDistance = NewKNearestNeighboursClassifierModel:getValueOrDefaultValue(parameterDictionary.useWeightedDistance, defaultUseWeightedDistance)
 	
-	NewKNearestNeighboursClassifier.maximumNumberOfData = parameterDictionary.maximumNumberOfData or defaultMaximumNumberOfData
+	NewKNearestNeighboursClassifierModel.maximumNumberOfData = parameterDictionary.maximumNumberOfData or defaultMaximumNumberOfData
 	
-	return NewKNearestNeighboursClassifier
+	return NewKNearestNeighboursClassifierModel
 
 end
 
-function KNearestNeighboursClassifier:train(featureMatrix, labelVector)
+function KNearestNeighboursClassifierModel:train(featureMatrix, labelVector)
 	
 	local numberOfData = #featureMatrix
 
@@ -313,7 +313,7 @@ function KNearestNeighboursClassifier:train(featureMatrix, labelVector)
 
 end
 
-function KNearestNeighboursClassifier:predict(featureMatrix, returnOriginalOutput)
+function KNearestNeighboursClassifierModel:predict(featureMatrix, returnOriginalOutput)
 
 	local ModelParameters = self.ModelParameters
 	
@@ -363,4 +363,4 @@ function KNearestNeighboursClassifier:predict(featureMatrix, returnOriginalOutpu
 
 end
 
-return KNearestNeighboursClassifier
+return KNearestNeighboursClassifierModel

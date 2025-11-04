@@ -2,18 +2,18 @@
 
 If you wonder what are the most high-value use cases that helps with retention and revenue generation this DataPredict™, you can view them [here](../HighValueProjectTutorials.md)!
 
-| Model Type                     | Description                                     | Count |
-|--------------------------------|-------------------------------------------------|-------|
-| [Regression](#regression]                     | Feature To Continuous Values                    | 9     |
-| [Classification](#classification)                 | Feature-Class Grouping And Prediction           | 14    |
-| [Clustering](#clustering)                     | Feature Grouping                                | 9     |
-| Deep Reinforcement Learning    | State-Action Optimization Using Neural Networks | 21    |
-| Tabular Reinforcement Learning | State-Action Optimization Using Grids           | 12    |
-| Sequence Modelling             | Next State Prediction And Generation            | 3     |
-| [Filtering](#filtering)                        | Next State Tracking / Estimation                | 4     |
-| [Generative](#generative)                     | Feature To Novel Values                         | 4     |
-| Outlier Detection              | Outlier Score Generation                        | 1     |
-| Total                          |                                                 | 78    |
+| Model Type                                                        | Description                                     | Count |
+|-------------------------------------------------------------------|-------------------------------------------------|-------|
+| [Regression](#regression)                                         | Feature To Continuous Values                    | 9     |
+| [Classification](#classification)                                 | Feature-Class Grouping And Prediction           | 14    |
+| [Clustering](#clustering)                                         | Feature Grouping                                | 9     |
+| [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 21    |
+| [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Grids           | 12    |
+| [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
+| [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
+| [Generative](#generative)                                         | Feature To Novel Values                         | 4     |
+| [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 1     |
+| Total                                                             |                                                 | 78    |
 
 ### Legend
 

@@ -66,6 +66,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	SupportVectorRegression = require(Models.SupportVectorRegression),
 	
+	SupportVectorRegressionGradientVariant = require(Models.SupportVectorRegressionGradientVariant),
+	
 	KNearestNeighboursRegressor = require(Models.KNearestNeighboursRegressor),
 	
 	LogisticRegression = require(Models.LogisticRegression),
@@ -79,6 +81,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	OneClassSupportVectorMachine = require(Models.OneClassSupportVectorMachine),
 	
 	SupportVectorMachine = require(Models.SupportVectorMachine),
+	
+	SupportVectorMachineGradientVariant = require(Models.SupportVectorMachineGradientVariant),
 	
 	NearestCentroid = require(Models.NearestCentroid),
 	

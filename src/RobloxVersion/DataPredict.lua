@@ -54,6 +54,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	QuantileLinearRegression = require(Models.QuantileLinearRegression),
 	
+	PoissonLinearRegression = require(Models.PoissonLinearRegression),
+	
 	NormalLinearRegression = require(Models.NormalLinearRegression),
 	
 	BayesianLinearRegression = require(Models.BayesianLinearRegression),

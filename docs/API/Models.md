@@ -186,7 +186,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model                                              | Alternate Names | Properties | Use Cases               |
 |----------------------------------------------------|-----------------|------------| ------------------------|
-| [LocalOutlierFactor](Models/LocalOutlierFactor.md) | None            | 🟢 🟡     | Local Outlier Detection |
+| [LocalOutlierFactor](Models/LocalOutlierFactor.md) | LOF             | 🟢 🟡     | Local Outlier Detection |
 
 ## BaseModels
 

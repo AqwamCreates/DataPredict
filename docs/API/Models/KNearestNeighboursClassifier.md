@@ -61,7 +61,7 @@ KNearestNeighboursClassifier:train(featureMatrix: matrix, labelVector: matrix): 
 Predict the values for given data.
 
 ```
-KNearestNeighboursClassifier:predict(featureMatrix: matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+KNearestNeighboursClassifier:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters

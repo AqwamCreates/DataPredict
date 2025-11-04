@@ -4,15 +4,15 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model Type                     | Count |
 |--------------------------------|-------|
-| Regression                     | 8     |
-| Classification                 | 13    |
+| Regression                     | 9     |
+| Classification                 | 14    |
 | Clustering                     | 9     |
 | Deep Reinforcement Learning    | 21    |
 | Tabular Reinforcement Learning | 12    |
 | Sequence Modelling             | 7     |
 | Generative                     | 4     |
 | Outlier Detection              | 1     |
-| Total                          | 76    |
+| Total                          | 78    |
 
 ### Legend
 
@@ -50,17 +50,18 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                                           | Alternate Names | Properties    | Use Cases                                                                                                |
-|---------------------------------------------------------------------------------|-----------------|---------------|----------------------------------------------------------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md)                                  | LR              | 🔰 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
-| [QuantileLinearRegression](Models/QuantileLinearRegression.md)                  | None            | 🟢 🟡        | Case-Based Time-To-Leave Prediction And In-Game Currency Price Generation                                |
-| [PoissonLinearRegression](Models/PoissonLinearRegression.md)                    | None            | 🟢 🟡 ⚠️     | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
-| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)              | PA-R            | ⚡ 🟢        | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
-| [SupportVectorRegression](Models/SupportVectorRegression.md)                    | SVR             | 💾 🟡        | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
-| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)            | KNN-R           | 🟢 🟡        | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
-| [NormalLinearRegression](Models/NormalLinearRegression.md)*                     | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
-| [BayesianLinearRegression](Models/BayesianLinearRegression.md)*                 | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
-| [BayesianQuantileLinearRegression](Models/BayesianQuantileLinearRegression.md)* | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
+| Model                                                                                      | Alternate Names | Properties    | Use Cases                                                                                                |
+|--------------------------------------------------------------------------------------------|-----------------|---------------|----------------------------------------------------------------------------------------------------------|
+| [LinearRegression](Models/LinearRegression.md)                                             | LR              | 🔰 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
+| [QuantileLinearRegression](Models/QuantileLinearRegression.md)                             | None            | 🟢 🟡        | Case-Based Time-To-Leave Prediction And In-Game Currency Price Generation                                |
+| [PoissonLinearRegression](Models/PoissonLinearRegression.md)                               | None            | 🟢 🟡 ⚠️     | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
+| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | ⚡ 🟢        | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
+| [SupportVectorRegression](Models/SupportVectorRegression.md)                               | SVR             | 💾 🟡        | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
+| [SupportVectorRegressionGradientVariant](Models/SupportVectorRegressionGradientVariant.md) | SVR             | 💾 🟡        | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
+| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | 🟢 🟡        | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
+| [NormalLinearRegression](Models/NormalLinearRegression.md)*                                | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
+| [BayesianLinearRegression](Models/BayesianLinearRegression.md)*                            | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
+| [BayesianQuantileLinearRegression](Models/BayesianQuantileLinearRegression.md)*            | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
 
 \* The "instant train" models have these issues:
 
@@ -80,6 +81,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [NearestCentroid](Models/NearestCentroid.md)                                         | NC                             | ⚡ 🟢 🟡        | Fast Grouping Or Quick Decision Making                                                                          |
 | [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)               | KNN-C                          | 🟢 🟡           | Item Recommendation, Similar Player Matchmaking                                                                 |
 | [SupportVectorMachine](Models/SupportVectorMachine.md)                               | SVM                            | 💾 🟡          | Hacking Detection, Anomaly Detection                                                                            |
+| [SupportVectorMachineGradientVariant](Models/SupportVectorMachineGradientVariant.md) | SVM                            | 💾 🟡          | Hacking Detection, Anomaly Detection                                                                            |
 | [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md)               | OC-SVM                         | 💾 🟡           | Hacking Detection, Anomaly Detection (Using Single Class Data)                                                  |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                             | Multi-Layer Perceptron         | 🟢 🟡           | Decision-Making, Player Behaviour Prediction                                                                    |
 | [GaussianNaiveBayes](Models/GaussianNaiveBayes.md)*                                  | GNB                            | 💾 ⚡ 🟢 🟡 ⚠️ | Enemy Data Generation, Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |

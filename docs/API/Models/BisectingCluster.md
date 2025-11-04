@@ -1,10 +1,10 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - BisectingCluster
 
-BisectingCluster is a generalized wrapper for adding bisecting clustering ability to other clusters.
+BisectingCluster is a generalized wrapper for adding bisecting clustering ability to other clustering models.
 
 ## Stored Model Parameters
 
-Contains a table of matrices.  
+Contains a matrix.  
 
 * ModelParameters[I][J]: Value of matrix at row I and column J. The rows represent the clusters. The columns represent the features.
 
@@ -24,7 +24,7 @@ BisectingCluster.new(Model: Model, numberOfClusters: integer, distanceFunction: 
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are:
+* distanceFunction: The function that the model will use to train and predict. Available options are:
   
   *  Euclidean (Default)
     
@@ -36,7 +36,7 @@ BisectingCluster.new(Model: Model, numberOfClusters: integer, distanceFunction: 
 
   * LargestCluster (Default)
  
-  * SumOfSquaredError
+  * LargestSumOfSquaredError
 
 #### Returns:
 

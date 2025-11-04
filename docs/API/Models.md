@@ -11,7 +11,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Tabular Reinforcement Learning | 12    |
 | Sequence Modelling             | 7     |
 | Generative                     | 4     |
-| Total                          | 74    |
+| Total                          | 75    |
 
 ### Legend
 
@@ -24,7 +24,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | 🛡️   | Noise Resistant            | Can handle randomness / unclean data.                   |
 | 🟢   | Online                     | Can adapt real-time.                                    |
 | 🟡   | Session-Adaptive / Offline | Can be retrained each session.                          |
-| ⚠️   | Assumption-Heavy           | Assumes linear / independent features.                  |
+| ⚠️   | Assumption-Heavy           | Have restrictive rules on using the model.              |
 | ⚙️   | Configuration-Heavy        | Requires a lot of manual configuration to use.          |
 
 ### Note
@@ -37,7 +37,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
   * Uses reverse-mode automatic differentiation and lazy differentiation evaluation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
 
-* Currently, DataPredict™ has ~90% (64 out of 74) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (65 out of 75) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -53,6 +53,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 |---------------------------------------------------------------------------------|-----------------|---------------|----------------------------------------------------------------------------------------------------------|
 | [LinearRegression](Models/LinearRegression.md)                                  | LR              | 🔰 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
 | [QuantileLinearRegression](Models/QuantileLinearRegression.md)                  | None            | 🟢 🟡        | Case-Based Time-To-Leave Prediction And In-Game Currency Price Generation                                |
+| [PoissonLinearRegression](Models/PoissonLinearRegression.md)                    | None            | 🟢 🟡 ⚠️     | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
 | [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)              | PA-R            | ⚡ 🟢        | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
 | [SupportVectorRegression](Models/SupportVectorRegression.md)                    | SVR             | 💾 🟡        | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
 | [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)            | KNN-R           | 🟢 🟡        | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |

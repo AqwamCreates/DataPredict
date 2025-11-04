@@ -12,7 +12,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Sequence Modelling             | Next State Prediction And Generation            | 3     |
 | Filters                        | Next State Tracking / Estimation                | 4     |
 | Generative                     | Feature To Novel Values                         | 4     |
-| Outlier Detection              | Outlier Detection                               | 1     |
+| Outlier Detection              | Outlier Score Generation                        | 1     |
 | Total                          |                                                 | 78    |
 
 ### Legend

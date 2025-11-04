@@ -22,7 +22,7 @@ SupportVectorMachineGradientVariant.new(maximumNumberOfIterations: integer, lear
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
-* cValue:
+* cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
 
 #### Returns:
 

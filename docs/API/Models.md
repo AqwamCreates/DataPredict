@@ -10,7 +10,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Deep Reinforcement Learning    | State-Action Optimization Using Neural Networks | 21    |
 | Tabular Reinforcement Learning | State-Action Optimization Using Grids           | 12    |
 | Sequence Modelling             | Next State Prediction And Generation            | 3     |
-| Filters                        | Next State Estimation                           | 4     |
+| Filters                        | Next State Tracking / Estimation                | 4     |
 | Generative                     | Feature To Novel Values                         | 4     |
 | Outlier Detection              | Outlier Detection                               | 1     |
 | Total                          |                                                 | 78    |

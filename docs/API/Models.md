@@ -158,7 +158,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model                                                                                                 | Alternate Names | Properties | Use Cases                                 |
 |-------------------------------------------------------------------------------------------------------|-----------------|------------|-------------------------------------------|
-| [Markov](Models/Markov.md)*                                                                           | None            | 💾 🟢     | Single Features Player State Prediction   |
+| [Markov](Models/Markov.md)*                                                                           | None            | 💾 🟢     | Single Feature Player State Prediction    |
 | [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md)*                                         | DBN             | 💾 🟢     | Multiple Features Player State Prediction |
 | [Conditional Random Field](Models/ConditionalRandomField.md)*                                         | CRF             | 🟢         | Multiple Features Player State Prediction |
 | [Kalman Filter](Models/KalmanFilter.md)*                                                              | KF              | 🟢 ⚠️     | Linear Movement Anti-Cheat                |

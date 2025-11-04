@@ -173,6 +173,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                              | Alternate Names | Properties | Use Cases                                 |
+|----------------------------------------------------------------------------------------------------|-----------------|------------|-------------------------------------------|
 | [Kalman Filter](Models/KalmanFilter.md)                                                            | KF              | 🟢 ⚠️     | Linear Movement Anti-Cheat                |
 | [Extended Kalman Filter](Models/ExtendedKalmanFilter.md)                                           | EKF             | 🟢 ⚙️     | Non-Linear Movement Anti-Cheat            |
 | [Unscented Kalman Filter](Models/UnscentedKalmanFilter.md)                                         | UKF             | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat            |

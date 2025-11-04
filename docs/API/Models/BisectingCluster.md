@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - BisectingCluster
 
-BisectingCluster is a generalized wrapper for adding bisecting clustering ability to other clusters.
+BisectingCluster is a generalized wrapper for adding bisecting clustering ability to other clustering models.
 
 ## Stored Model Parameters
 

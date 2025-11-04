@@ -36,7 +36,7 @@ BisectingCluster.new(Model: Model, numberOfClusters: integer, distanceFunction: 
 
   * LargestCluster (Default)
  
-  * SumOfSquaredError
+  * LargestSumOfSquaredError
 
 #### Returns:
 

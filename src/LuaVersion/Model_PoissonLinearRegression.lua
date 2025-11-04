@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
+local GradientMethodBaseModel = require("ModeL_GradientMethodBaseModel")
 
 PoissonLinearRegressionModel = {}
 

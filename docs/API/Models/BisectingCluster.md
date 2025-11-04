@@ -4,7 +4,7 @@ BisectingCluster is a generalized wrapper for adding bisecting clustering abilit
 
 ## Stored Model Parameters
 
-Contains a table of matrices.  
+Contains a matrix.  
 
 * ModelParameters[I][J]: Value of matrix at row I and column J. The rows represent the clusters. The columns represent the features.
 

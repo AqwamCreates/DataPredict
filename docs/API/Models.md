@@ -2,18 +2,18 @@
 
 If you wonder what are the most high-value use cases that helps with retention and revenue generation this DataPredict™, you can view them [here](../HighValueProjectTutorials.md)!
 
-| Model Type                     | Description | Count |
-|--------------------------------|-------------|-------|
-| Regression                     |             | 9     |
-| Classification                 |             | 14    |
-| Clustering                     |             | 9     |
-| Deep Reinforcement Learning    |             | 21    |
-| Tabular Reinforcement Learning |             | 12    |
-| Sequence Modelling             |             | 3     |
-| Filters                        |             | 4     |
-| Generative                     |             | 4     |
-| Outlier Detection              |             | 1     |
-| Total                          |             | 78    |
+| Model Type                     | Description                                     | Count |
+|--------------------------------|-------------------------------------------------|-------|
+| Regression                     | Feature To Continuous Values                    | 9     |
+| Classification                 | Feature-Class Grouping And Prediction           | 14    |
+| Clustering                     | Feature Grouping                                | 9     |
+| Deep Reinforcement Learning    | State-Action Optimization Using Neural Networks | 21    |
+| Tabular Reinforcement Learning | State-Action Optimization Using Grids           | 12    |
+| Sequence Modelling             | Next State Prediction And Generation            | 3     |
+| Filters                        | Next State Estimation                           | 4     |
+| Generative                     | Feature To Novel Values                         | 4     |
+| Outlier Detection              | Outlier Detection                               | 1     |
+| Total                          |                                                 | 78    |
 
 ### Legend
 

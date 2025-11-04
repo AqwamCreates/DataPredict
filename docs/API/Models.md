@@ -4,8 +4,8 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model Type                                                        | Description                                     | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
-| [Regression](#regression)                                         | Feature To Continuous Values                    | 9     |
-| [Classification](#classification)                                 | Feature-Class Grouping And Prediction           | 14    |
+| [Regression](#regression)                                         | Continuous Values Prediction                    | 9     |
+| [Classification](#classification)                                 | Feature-Class Prediction                        | 14    |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 9     |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 21    |
 | [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Grids           | 12    |

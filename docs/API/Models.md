@@ -11,7 +11,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | Tabular Reinforcement Learning | 12    |
 | Sequence Modelling             | 7     |
 | Generative                     | 4     |
-| Total                          | 74    |
+| Total                          | 75    |
 
 ### Legend
 
@@ -53,6 +53,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 |---------------------------------------------------------------------------------|-----------------|---------------|----------------------------------------------------------------------------------------------------------|
 | [LinearRegression](Models/LinearRegression.md)                                  | LR              | 🔰 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
 | [QuantileLinearRegression](Models/QuantileLinearRegression.md)                  | None            | 🟢 🟡        | Case-Based Time-To-Leave Prediction And In-Game Currency Price Generation                                |
+| [PoissonLinearRegression](Models/PoissonLinearRegression.md)                    | None            | 🟢 🟡 ⚠️     | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
 | [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)              | PA-R            | ⚡ 🟢        | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
 | [SupportVectorRegression](Models/SupportVectorRegression.md)                    | SVR             | 💾 🟡        | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
 | [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)            | KNN-R           | 🟢 🟡        | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |

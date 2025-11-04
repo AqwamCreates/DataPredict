@@ -1,5 +1,7 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - SupportVectorMachineGradientVariant
 
+SupportVectorMachineGradientVariant is a supervised machine learning model that predicts values of -1 and 1 only.
+
 ## Stored Model Parameters
 
 Contains a matrix.  

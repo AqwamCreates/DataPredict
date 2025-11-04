@@ -61,7 +61,7 @@ SupportVectorMachineGradientVariant:setRegularizer(Regularizer: RegularizerObjec
 Train the model.
 
 ```
-SupportVectorMachineGradientVariant:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+SupportVectorMachineGradientVariant:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
@@ -76,19 +76,23 @@ SupportVectorMachineGradientVariant:train(featureMatrix: Matrix, labelVector: Ma
 
 ### predict()
 
-Predict the value for a given data.
+Predict the values for given data.
 
 ```
-SupportVectorMachineGradientVariant:predict(featureMatrix: Matrix): Matrix
+SupportVectorMachineGradientVariant:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): matrix -OR- matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: Matrix containing all data.
 
 #### Returns:
 
-* predictedVector: A vector containing values that are predicted by the model.
+* predictedVector: A vector that is predicted by the model.
+
+-OR-
+
+* originalPredictedVector: A vector that contains the original predicted values.
 
 ## Inherited From
 

@@ -24,7 +24,7 @@ BisectingCluster.new(Model: Model, numberOfClusters: integer, distanceFunction: 
 
 * numberOfClusters: Number of clusters for model to train and predict on.
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are:
+* distanceFunction: The function that the model will use to train and predict. Available options are:
   
   *  Euclidean (Default)
     

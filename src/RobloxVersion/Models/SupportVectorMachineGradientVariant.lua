@@ -54,6 +54,12 @@ local function misclassificationMaskFunction(value)
 	
 end
 
+local function seperatorFunction(x) 
+
+	return ((x > 0) and 1) or ((x < 0) and -1) or 0
+
+end
+
 function SupportVectorMachineGradientVariantModel:calculateCost(hypothesisVector, labelVector)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
@@ -270,7 +276,7 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 
 end
 
-function SupportVectorMachineGradientVariantModel:predict(featureMatrix)
+function SupportVectorMachineGradientVariantModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local ModelParameters = self.ModelParameters
 	
@@ -283,8 +289,10 @@ function SupportVectorMachineGradientVariantModel:predict(featureMatrix)
 	end
 
 	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
+	
+	if (returnOriginalOutput) then return predictedVector end
 
-	return predictedVector
+	return AqwamTensorLibrary:applyFunction(seperatorFunction, predictedVector)
 
 end
 

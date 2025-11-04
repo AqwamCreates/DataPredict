@@ -40,9 +40,13 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.3
 
+local defaultEpsilon = 1e-16
+
 function PoissonLinearRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
+	
+	hypothesisVector = AqwamTensorLibrary:add(hypothesisVector, self.epsilon)
 
 	local logPredictedCountVector = AqwamTensorLibrary:applyFunction(math.log, hypothesisVector)
 	
@@ -159,6 +163,8 @@ function PoissonLinearRegressionModel.new(parameterDictionary)
 	NewPoissonLinearRegressionModel:setName("PoissonLinearRegression")
 
 	NewPoissonLinearRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	
+	NewPoissonLinearRegressionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
 	NewPoissonLinearRegressionModel.Optimizer = parameterDictionary.Optimizer
 

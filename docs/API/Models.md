@@ -12,8 +12,8 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Generative](#generative)                                         | Feature To Novel Values                         | 4     |
-| [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 1     |
-| Total                                                             |                                                 | 78    |
+| [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 2     |
+| Total                                                             |                                                 | 79    |
 
 ### Legend
 
@@ -194,9 +194,10 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                              | Alternate Names | Properties | Use Cases               |
-|----------------------------------------------------|-----------------|------------| ------------------------|
-| [LocalOutlierFactor](Models/LocalOutlierFactor.md) | LOF             | 🟢 🟡     | Local Outlier Detection |
+| Model                                                   | Alternate Names | Properties | Use Cases               |
+|---------------------------------------------------------|-----------------|------------| ------------------------|
+| [LocalOutlierFactor](Models/LocalOutlierFactor.md)      | LOF             | 🟢 🟡     | Local Outlier Detection |
+| [LocalOutlierFactor](Models/LocalOutlierProbability.md) | LoOP            | 🟢 🟡     | Local Outlier Detection |
 
 ## BaseModels
 

@@ -55,7 +55,7 @@ LocalOutlierFactor:train(featureMatrix: matrix): number[]
 Predict the values for given data.
 
 ```
-KNearestNeighboursRegressor:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
+LocalOutlierFactor:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters

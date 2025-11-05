@@ -304,7 +304,9 @@ function LocalOutlierFactor:predict(featureMatrix, returnOriginalOutput)
 	
 	local localReachabilityDensityVector = AqwamTensorLibrary:divide(numberOfNearestNeighboursVector, sumReachabilityDistanceVector)
 	
-	local localOutlierFactorVector = {}
+	local localOutlierFactorVectorDivisor = AqwamTensorLibrary:multiply(numberOfNearestNeighboursVector, localReachabilityDensityVector)
+	
+	local localOutlierFactorVectorNumerator = {}
 
 	for i, nearestNeighboursIndexArray in ipairs(nearestNeighbourIndexArrayArray) do
 		
@@ -314,13 +316,15 @@ function LocalOutlierFactor:predict(featureMatrix, returnOriginalOutput)
 		
 		for _, nearestNeighbourIndex in ipairs(nearestNeighboursIndexArray) do
 			
-			sumRatio = sumRatio + localReachabilityDensityVector[nearestNeighbourIndex][1] / localReachabilityDensity
+			sumRatio = sumRatio + localReachabilityDensityVector[nearestNeighbourIndex][1]
 			
 		end
 		
-		localOutlierFactorVector[i] = {sumRatio / numberOfNearestNeighboursVector[i][1]}
+		localOutlierFactorVectorNumerator[i] = {sumRatio}
 		
 	end
+	
+	local localOutlierFactorVector = AqwamTensorLibrary:divide(localOutlierFactorVectorNumerator, localOutlierFactorVectorDivisor)
 	
 	return localOutlierFactorVector
 

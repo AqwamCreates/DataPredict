@@ -28,8 +28,6 @@ LocalOutlierFactor.new(kValue: integer, distanceFunction: string, use, useWeight
 
   * Cosine
 
-* useWeightedDistance: Set whether or not to use distance as a factor for prediction.
-
 #### Returns:
 
 * ModelObject: The generated model object.

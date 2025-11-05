@@ -39,7 +39,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
   * Uses reverse-mode automatic differentiation and lazy differentiation evaluation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
 
-* Currently, DataPredict™ has ~90% (65 out of 75) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (69 out of 79) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -194,10 +194,10 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                   | Alternate Names | Properties | Use Cases               |
-|---------------------------------------------------------|-----------------|------------| ------------------------|
-| [LocalOutlierFactor](Models/LocalOutlierFactor.md)      | LOF             | 🟢 🟡     | Local Outlier Detection |
-| [LocalOutlierFactor](Models/LocalOutlierProbability.md) | LoOP            | 🟢 🟡     | Local Outlier Detection |
+| Model                                                        | Alternate Names | Properties | Use Cases               |
+|--------------------------------------------------------------|-----------------|------------| ------------------------|
+| [LocalOutlierFactor](Models/LocalOutlierFactor.md)           | LOF             | 🟢 🟡     | Local Outlier Detection |
+| [LocalOutlierProbability](Models/LocalOutlierProbability.md) | LoOP            | 🟢 🟡     | Local Outlier Detection |
 
 ## BaseModels
 

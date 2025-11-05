@@ -44,24 +44,22 @@ local defaultDistanceFunction = "Euclidean"
 
 local defaultMaximumNumberOfData = math.huge
 
-local function createDistanceMatrix(distanceFunction, featureMatrix, storedFeatureMatrix)
+local function createDistanceMatrix(distanceFunction, featureMatrix)
 
 	local numberOfData = #featureMatrix
 
-	local numberOfStoredData = #storedFeatureMatrix
-
-	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfStoredData}, 0)
+	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfData}, 0)
 
 	local calculateDistance = distanceFunctionDictionary[distanceFunction]
+	
+	for i, primaryUnwrappedFeatureVector in ipairs(featureMatrix) do
+		
+		for j, secondaryUnwrappedFeatureVector in ipairs(featureMatrix) do
 
-	for datasetIndex = 1, numberOfData, 1 do
-
-		for storedDatasetIndex = 1, numberOfStoredData, 1 do
-
-			distanceMatrix[datasetIndex][storedDatasetIndex] = calculateDistance({featureMatrix[datasetIndex]}, {storedFeatureMatrix[storedDatasetIndex]})
+			distanceMatrix[i][j] = calculateDistance({primaryUnwrappedFeatureVector}, {secondaryUnwrappedFeatureVector})
 
 		end
-
+		
 	end
 
 	return distanceMatrix
@@ -246,23 +244,19 @@ function LocalOutlierFactor:train(featureMatrix)
 
 end
 
-function LocalOutlierFactor:predict(featureMatrix, returnOriginalOutput)
+function LocalOutlierFactor:score()
 	
-	local storedFeatureMatrix = self.ModelParameters
-	
-	local numberOfData = #featureMatrix
+	local featureMatrix = self.ModelParameters
 
-	if (not storedFeatureMatrix) then return AqwamTensorLibrary:createTensor({numberOfData, 1}, math.huge) end
+	if (not featureMatrix) then return {{math.huge}} end
 
 	local kValue = self.kValue
 
 	local distanceFunction = self.distanceFunction
 	
-	local distanceMatrix = createDistanceMatrix(distanceFunction, featureMatrix, storedFeatureMatrix)
-
-	if (returnOriginalOutput) then return distanceMatrix end
+	local numberOfData = #featureMatrix
 	
-	local numberOfOtherData = #storedFeatureMatrix
+	local distanceMatrix = createDistanceMatrix(distanceFunction, featureMatrix)
 	
 	local nearestNeighbourIndexArrayArray = {}
 	
@@ -274,7 +268,7 @@ function LocalOutlierFactor:predict(featureMatrix, returnOriginalOutput)
 
 		local sortedUnwrappedDistanceVector = deepCopyTable(unwrappedDistanceVector)
 
-		mergeSort(sortedUnwrappedDistanceVector, 1, numberOfOtherData)
+		mergeSort(sortedUnwrappedDistanceVector, 1, numberOfData)
 		
 		local kDistance = sortedUnwrappedDistanceVector[kValue]
 		

@@ -46,31 +46,17 @@ LocalOutlierFactor:train(featureMatrix: matrix): number[]
 
 * featureMatrix: Matrix containing all data.
 
-#### Returns:
+### score()
 
-* costArray: An array containing cost values.
-
-### predict()
-
-Predict the values for given data.
+Generates the score vector.
 
 ```
-LocalOutlierFactor:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
+LocalOutlierFactor:score(): matrix
 ```
-
-#### Parameters
-
-* featureMatrix: Matrix containing all data.
-
-* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability.
 
 #### Returns:
 
-* predictedlabelVector: A vector tcontaining predicted labels generated from the model.
-
--OR-
-
-* predictedMatrix: A matrix containing all distances between stored and given data points.
+* scoreVector: A vector containing the scores for each data stored in train() function.
 
 ## Inherited From
 

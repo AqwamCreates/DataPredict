@@ -1,6 +1,7 @@
 # Welcome to Aqwam's DataPredict™ Library!
 
 > Torch7 lit the flame. DataPredict carries it forward.
+
 > Machine Learning returns to Lua - for game engines.
 
 This library was developed solo over more than 3 years (6000+ hours and includes weekends), which would exceed $300,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build and test all the models in this library. To all indie devs who just starting their business, feel free to use it without burning away your money! And [here](HighValueProjectTutorials.md) are high-value project tutorials for improving retention and revenue too!

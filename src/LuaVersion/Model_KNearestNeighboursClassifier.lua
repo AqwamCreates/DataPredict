@@ -307,7 +307,7 @@ function KNearestNeighboursClassifierModel:train(featureMatrix, labelVector)
 
 	end
 
-	if (self.kValue > numberOfData) then warn("Number of data is less than the K value. Please add more data before doing any predictions.") end
+	if (numberOfData < self.kValue) and (self.isOutputPrinted) then warn("Number of data is less than the K value. Please add more data before doing any predictions.") end
 
 	self.ModelParameters = {featureMatrix, labelVector}
 

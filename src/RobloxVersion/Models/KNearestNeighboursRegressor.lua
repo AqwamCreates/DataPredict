@@ -331,13 +331,13 @@ function KNearestNeighboursRegressorModel:predict(featureMatrix, returnOriginalO
 
 	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
 
-		local distanceVector = {deepCopyTable(unwrappedDistanceVector)}
+		local sortedDistanceVector = {deepCopyTable(unwrappedDistanceVector)}
 
 		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
 
-		mergeSort(distanceVector, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
+		mergeSort(sortedDistanceVector, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
 
-		local averageValue = getAverageValue(sortedLabelVectorLowestToHighest, distanceVector, kValue, useWeightedDistance)
+		local averageValue = getAverageValue(sortedLabelVectorLowestToHighest, sortedDistanceVector, kValue, useWeightedDistance)
 
 		predictedLabelVector[i] = {averageValue}
 

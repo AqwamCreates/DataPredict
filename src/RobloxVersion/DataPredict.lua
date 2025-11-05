@@ -206,7 +206,7 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	LocalOutlierFactor = require(Models.LocalOutlierFactor),
 	
-	LocalOutlierProbability = require(Models.LocalOutlierProbability)
+	LocalOutlierProbability = require(Models.LocalOutlierProbability),
 
 }
 

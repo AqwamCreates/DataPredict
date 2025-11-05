@@ -316,14 +316,12 @@ end
 function KNearestNeighboursClassifierModel:predict(featureMatrix, returnOriginalOutput)
 
 	local ModelParameters = self.ModelParameters
-	
-	local numberOfData = #featureMatrix
 
 	if (not ModelParameters) then 
 
 		local unknownValue = (returnOriginalOutput and math.huge) or nil
 
-		return AqwamTensorLibrary:createTensor({numberOfData, 1}, unknownValue) 
+		return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, unknownValue) 
 
 	end
 
@@ -344,10 +342,10 @@ function KNearestNeighboursClassifierModel:predict(featureMatrix, returnOriginal
 	local numberOfOtherData = #storedFeatureMatrix
 
 	local predictedLabelVector = {}
-
-	for i = 1, numberOfData, 1 do
-
-		local distanceVector = {deepCopyTable(distanceMatrix[i])}
+	
+	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
+		
+		local distanceVector = {deepCopyTable(unwrappedDistanceVector)}
 
 		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
 
@@ -356,7 +354,7 @@ function KNearestNeighboursClassifierModel:predict(featureMatrix, returnOriginal
 		local majorityClass = getMajorityClass(sortedLabelVectorLowestToHighest, distanceVector, kValue, useWeightedDistance)
 
 		predictedLabelVector[i] = {majorityClass}
-
+		
 	end
 
 	return predictedLabelVector

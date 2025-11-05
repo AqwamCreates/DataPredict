@@ -312,8 +312,6 @@ function LocalOutlierFactor:predict(featureMatrix, returnOriginalOutput)
 		
 		local sumRatio = 0
 		
-		local localReachabilityDensity = localReachabilityDensityVector[i][1]
-		
 		for _, nearestNeighbourIndex in ipairs(nearestNeighboursIndexArray) do
 			
 			sumRatio = sumRatio + localReachabilityDensityVector[nearestNeighbourIndex][1]

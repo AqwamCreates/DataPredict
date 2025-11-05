@@ -345,13 +345,13 @@ function KNearestNeighboursClassifierModel:predict(featureMatrix, returnOriginal
 	
 	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
 		
-		local distanceVector = {deepCopyTable(unwrappedDistanceVector)}
+		local sortedDistanceVector = {deepCopyTable(unwrappedDistanceVector)}
 
 		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
 
-		mergeSort(distanceVector, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
+		mergeSort(sortedDistanceVector, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
 
-		local majorityClass = getMajorityClass(sortedLabelVectorLowestToHighest, distanceVector, kValue, useWeightedDistance)
+		local majorityClass = getMajorityClass(sortedLabelVectorLowestToHighest, sortedDistanceVector, kValue, useWeightedDistance)
 
 		predictedLabelVector[i] = {majorityClass}
 		

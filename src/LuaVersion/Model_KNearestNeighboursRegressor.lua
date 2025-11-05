@@ -308,10 +308,8 @@ end
 function KNearestNeighboursRegressorModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local ModelParameters = self.ModelParameters
-	
-	local numberOfData = #featureMatrix
 
-	if (not ModelParameters) then return AqwamTensorLibrary:createTensor({numberOfData, 1}, math.huge) end
+	if (not ModelParameters) then return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, math.huge) end
 
 	local storedFeatureMatrix = ModelParameters[1]
 
@@ -331,9 +329,9 @@ function KNearestNeighboursRegressorModel:predict(featureMatrix, returnOriginalO
 
 	local predictedLabelVector = {}
 
-	for i = 1, numberOfData, 1 do
+	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
 
-		local distanceVector = {deepCopyTable(distanceMatrix[i])}
+		local distanceVector = {deepCopyTable(unwrappedDistanceVector)}
 
 		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
 

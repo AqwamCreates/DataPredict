@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
-local distanceFunctionDictionary = require("Core_.DistanceFunctionDictionary")
+local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
 LocalOutlierFactor = {}
 

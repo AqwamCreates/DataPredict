@@ -8,21 +8,6 @@
 
 > And Keep The Source Of Retention And Revenue Out Of Competitors' Sight!
 
-## Links
-
-| System                                                                                           | Properties                                                                                         | Minimal Implementation Time |
-|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|-----------------------------|
-| [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization, leave predictions and leave detection.                              | 30 minutes - 6 hours       |
-| [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                                                          | 2 hours                   |
-| [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Ensures that the players are likely to interact with the enemies.                                    | 30 minutes - 2 hours       |
-| [Team Balancing](HighValueProjectTutorials/TeamBalancingSystems.md)                              | Ensures that teams are balanced based on their combat data.                                        | 30 minutes                 |
-| [AI Player](HighValueProjectTutorials/AIPlayerSystems.md)                                        | Replace players if players aren't enough.                                                          | 30 minutes - 1 hour        |
-| [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Handles the separation of unusual players from normal players without changing the game mechanics. | 30 minutes                 |
-| [Targeting](HighValueProjectTutorials/TargetingSystems.md)                                       | Maximizes the likelihood of hitting clusters of players.                                           | 30 minutes - 1 hour        |
-| [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Making sure that the players or items are queued based on their data.                              | To be added soon           |
-| [Placement](HighValueProjectTutorials/PlacementSystems.md)                                       | Finds an empty space to place players or items.                                                    | 30 minutes                 |
-| [Quality Assurance](HighValueProjectTutorials/QualityAssuranceSystems.md) (Incomplete)           | Attempts to break game mechanics to find edge cases and exploits.                                  | To be added soon           |
-
 ## Disclaimer
 
 * References that validates the use cases can be found [here](HighValueProjectTutorials/References.md). It also includes my papers.
@@ -46,3 +31,18 @@
 * You can download and read the full list of commercial licensing agreements [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
 
 * For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
+
+## Links
+
+| System                                                                                           | Properties                                                                                         | Minimal Implementation Time |
+|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|-----------------------------|
+| [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization, leave predictions and leave detection.                              | 30 minutes - 6 hours       |
+| [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                                                          | 2 hours                   |
+| [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Ensures that the players are likely to interact with the enemies.                                    | 30 minutes - 2 hours       |
+| [Team Balancing](HighValueProjectTutorials/TeamBalancingSystems.md)                              | Ensures that teams are balanced based on their combat data.                                        | 30 minutes                 |
+| [AI Player](HighValueProjectTutorials/AIPlayerSystems.md)                                        | Replace players if players aren't enough.                                                          | 30 minutes - 1 hour        |
+| [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Handles the separation of unusual players from normal players without changing the game mechanics. | 30 minutes                 |
+| [Targeting](HighValueProjectTutorials/TargetingSystems.md)                                       | Maximizes the likelihood of hitting clusters of players.                                           | 30 minutes - 1 hour        |
+| [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Making sure that the players or items are queued based on their data.                              | To be added soon           |
+| [Placement](HighValueProjectTutorials/PlacementSystems.md)                                       | Finds an empty space to place players or items.                                                    | 30 minutes                 |
+| [Quality Assurance](HighValueProjectTutorials/QualityAssuranceSystems.md) (Incomplete)           | Attempts to break game mechanics to find edge cases and exploits.                                  | To be added soon           |

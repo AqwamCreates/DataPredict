@@ -38,13 +38,24 @@ setmetatable(ConfusionMatrixCreator, BaseInstance)
 
 local calculateStatisticFunctionList = {
 	
-	["Precision"] = function(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount) return ((truePositiveCount + falsePositiveCount == 0) and 0) or truePositiveCount / (truePositiveCount + falsePositiveCount) end,
+	["Precision"] = function(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount, beta) return ((truePositiveCount + falsePositiveCount == 0) and 0) or truePositiveCount / (truePositiveCount + falsePositiveCount) end,
 	
-	["Recall"] = function(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount) return ((truePositiveCount + falseNegativeCount == 0) and 0) or truePositiveCount / (truePositiveCount + falseNegativeCount) end,	
+	["Recall"] = function(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount, beta) return ((truePositiveCount + falseNegativeCount == 0) and 0) or truePositiveCount / (truePositiveCount + falseNegativeCount) end,	
 	
-	["Specificity"] = function(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount) return ((trueNegativeCount + falsePositiveCount == 0) and 0) or trueNegativeCount / (trueNegativeCount + falsePositiveCount) end,
+	["Specificity"] = function(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount, beta) return ((trueNegativeCount + falsePositiveCount == 0) and 0) or trueNegativeCount / (trueNegativeCount + falsePositiveCount) end,
 	
-	["F1"] = function(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount) return ((trueNegativeCount + falsePositiveCount == 0) and 0) or trueNegativeCount / (trueNegativeCount + falsePositiveCount) end,
+	["F"] = function(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount, beta)
+		
+		local squaredBeta = math.pow(beta, 2)
+		
+		local onePlusSquaredBeta = 1 + squaredBeta
+		
+		local numerator = onePlusSquaredBeta * truePositiveCount
+		
+		local denominator = (onePlusSquaredBeta * truePositiveCount) + (squaredBeta * falseNegativeCount) + falsePositiveCount
+		
+		return numerator / denominator
+	end,
 	
 }
 
@@ -432,54 +443,36 @@ function ConfusionMatrixCreator:calculateStatistic(trueLabelVector, predictedLab
 	
 	local statisticValueVector = AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
 	
-	if (statisticName == "F1") then
+	local beta
+	
+	if (string.sub(statisticName, 1, 1) == "F") then
 		
-		local calculatePrecisionFunction = calculateStatisticFunctionList["Precision"]
+		local betaString = string.sub(statisticName, 2)
 		
-		local calculateRecallFunction = calculateStatisticFunctionList["Recall"]
-		
-		local truePositiveCount
-
-		local falsePositiveCount
-
-		local falseNegativeCount
-
-		local trueNegativeCount
-		
-		local precision
-		
-		local recall
-		
-		for i = 1, numberOfClasses do
+		if (betaString == "") then
 			
-			truePositiveCount = countMatrix[i][1]
+			beta = 1
 			
-			falsePositiveCount = countMatrix[i][2]
+		else
 			
-			falseNegativeCount = countMatrix[i][3]
+			beta = tonumber(betaString)
 			
-			trueNegativeCount = countMatrix[i][4]
-			
-			precision = calculatePrecisionFunction(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount)
-			
-			recall = calculateRecallFunction(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount)
-			
-			statisticValueVector[i][1] = ((precision + recall == 0) and 0) or (2 * precision * recall) / (precision + recall)
+			if (not beta) then error("Invalid beta value in F-score name: " .. statisticName) end
 			
 		end
 		
-	else
+		statisticName = "F"
 		
-		local calculateStatisticFunction = calculateStatisticFunctionList[statisticName]
-		
-		if (not calculateStatisticFunction) then error("Unknown statistic name.") end
-		
-		for i = 1, numberOfClasses do
-			
-			statisticValueVector[i][1] = calculateStatisticFunction(countMatrix[i][1], countMatrix[i][2], countMatrix[i][3], countMatrix[i][4])
-			
-		end
-		
+	end
+	
+	local calculateStatisticFunction = calculateStatisticFunctionList[statisticName]
+
+	if (not calculateStatisticFunction) then error("Unknown statistic name.") end
+
+	for i = 1, numberOfClasses do
+
+		statisticValueVector[i][1] = calculateStatisticFunction(countMatrix[i][1], countMatrix[i][2], countMatrix[i][3], countMatrix[i][4], beta)
+
 	end
 
 	return statisticValueVector

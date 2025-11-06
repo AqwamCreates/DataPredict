@@ -40,9 +40,9 @@ OrderingPointsToIdentifyClusteringStructure.new(epsilon: number, epsilonPrime: n
 
   * Setting epsilonPrime = epsilon makes the algorithm behave like DBSCAN.
 
-* minimumNumberOfPoints: Minimum number of data points required to form a cluster.
+* minimumNumberOfPoints: The minimum number of points required to form a dense region (core point condition).
 
-* distanceFunction: The function that the model will use to train. distanceFunction available are:
+* distanceFunction: The function that the model will use to train. Available options are:
   
   *  Euclidean
     

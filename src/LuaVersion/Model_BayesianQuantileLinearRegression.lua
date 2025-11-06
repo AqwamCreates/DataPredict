@@ -102,7 +102,7 @@ function BayesianQuantileLinearRegressionModel:predict(featureMatrix, quantileMa
 
 	if (quantileMatrix) then
 
-		if (numberOfData ~= #quantileMatrix) then error("The feature matrix and the quantile vector does not contain the same number of rows.") end
+		if (numberOfData ~= #quantileMatrix) then error("The feature matrix and the quantile matrix does not contain the same number of rows.") end
 
 	end
 

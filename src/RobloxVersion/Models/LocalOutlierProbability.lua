@@ -52,7 +52,9 @@ local defaultMaximumNumberOfData = math.huge
 
 local function moreThanOrEqualToZeroClampFunction(value)
 	
-	return math.max(0, value)
+	-- Slightly modified from original max(0, value) due to numerical issues arising from floating-point round-off when calculating decimals.
+	
+	return math.clamp(value, 0, 1) 
 	
 end
 
@@ -280,7 +282,7 @@ function LocalOutlierProbability:score()
 	
 	local numberOfNearestNeighboursVector = {}
 	
-	local reachabilityDistanceMatrix = {}
+	local sumDistanceVector = {}
 
 	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
 
@@ -296,19 +298,23 @@ function LocalOutlierProbability:score()
 		
 		local nearestNeighbourIndexArray = {}
 		
-		local unwrappedReachabilityDistanceVector = {}
+		local sumDistance = 0
 		
 		local numberOfNearestNeighbours = 0
 		
 		for j, distance in ipairs(unwrappedDistanceVector) do
 			
-			unwrappedReachabilityDistanceVector[j] = math.max(kDistance, distance)
-			
-			if (distance <= kDistance) then table.insert(nearestNeighbourIndexArray, j) end
+			if (distance <= kDistance) then
+				
+				sumDistance = sumDistance + math.pow(distance, 2)
+				
+				table.insert(nearestNeighbourIndexArray, j) 
+				
+			end
 			
 		end
 		
-		reachabilityDistanceMatrix[i] = unwrappedReachabilityDistanceVector
+		sumDistanceVector[i] = {sumDistance}
 		
 		nearestNeighbourIndexArrayArray[i] = nearestNeighbourIndexArray
 		
@@ -316,13 +322,9 @@ function LocalOutlierProbability:score()
 
 	end
 	
-	local squaredDistanceMatrix = AqwamTensorLibrary:power(reachabilityDistanceMatrix, 2)
-
-	local sumSquaredDistanceVector = AqwamTensorLibrary:sum(squaredDistanceMatrix, 2)
+	local standardDistanceVectorPart1 = AqwamTensorLibrary:divide(sumDistanceVector, numberOfNearestNeighboursVector)
 	
-	local varianceVectorPart1 = AqwamTensorLibrary:divide(sumSquaredDistanceVector, numberOfNearestNeighboursVector)
-	
-	local varianceVector = AqwamTensorLibrary:applyFunction(math.sqrt, varianceVectorPart1)
+	local varianceVector = AqwamTensorLibrary:applyFunction(math.sqrt, standardDistanceVectorPart1)
 	
 	local probabilisticDistanceVector = AqwamTensorLibrary:multiply(lambda, varianceVector)
 	

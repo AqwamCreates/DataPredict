@@ -6,14 +6,14 @@ If you wonder what are the most high-value use cases that helps with retention a
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
 | [Regression](#regression)                                         | Continuous Values Prediction                    | 9     |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 14    |
-| [Clustering](#clustering)                                         | Feature Grouping                                | 9     |
+| [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 21    |
 | [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Grids           | 12    |
 | [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Generative](#generative)                                         | Feature To Novel Values                         | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 2     |
-| Total                                                             |                                                 | 79    |
+| Total                                                             |                                                 | 80    |
 
 ### Legend
 
@@ -39,7 +39,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
   * Uses reverse-mode automatic differentiation and lazy differentiation evaluation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
 
-* Currently, DataPredict™ has ~90% (69 out of 79) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (69 out of 80) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -107,6 +107,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [MeanShift](Models/MeanShift.md)                                                                                       | None            | 🛡️ 🟢 🟡 | Boss Spawn Location Search Based On Player Locations                 |
 | [AffinityPropagation](Models/AffinityPropagation.md)                                                                   | AP              | 🟡        | Player Grouping                                                      |
 | [DensityBasedSpatialClusteringOfApplicationsWithNoise](Models/DensityBasedSpatialClusteringOfApplicationsWithNoise.md) | DBSCAN          | 🛡️ 🟡     | Density Grouping                                                     |
+| [OrderingPointsToIdentifyClusteringStructure](Models/OrderingPointsToIdentifyClusteringStructure.md)                   | OPTICS          | 🛡️ 🟡     | Density Grouping                                                     |
 | [BisectingCluster](Models/BisectingCluster.md)                                                                         | None            | ⚡ 🟡     | Slow To Quick Grouping                                               |
 
 ## Deep Reinforcement Learning

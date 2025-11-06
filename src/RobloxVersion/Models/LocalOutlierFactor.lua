@@ -263,10 +263,14 @@ function LocalOutlierFactor:score()
 	local numberOfNearestNeighboursVector = {}
 	
 	local reachabilityDistanceMatrix = {}
+	
+	local numberOfDataMinusOne = numberOfData - 1
 
 	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
 
 		local sortedUnwrappedDistanceVector = deepCopyTable(unwrappedDistanceVector)
+		
+		table.remove(sortedUnwrappedDistanceVector, i) -- Ignore the distance to itself.
 
 		mergeSort(sortedUnwrappedDistanceVector, 1, numberOfData)
 		

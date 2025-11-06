@@ -128,7 +128,7 @@ function BayesianLinearRegressionModel:predict(featureMatrix, thresholdMatrix)
 	
 	if (thresholdMatrix) then
 		
-		if (#featureMatrix ~= #thresholdMatrix) then error("The feature matrix and the threshold vector does not contain the same number of rows.") end
+		if (#featureMatrix ~= #thresholdMatrix) then error("The feature matrix and the threshold matrix does not contain the same number of rows.") end
 		
 	end
 

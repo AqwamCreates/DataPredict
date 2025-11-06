@@ -124,7 +124,7 @@ local function calculateCost(distanceFunction, featureMatrix, clusterArrayArray)
 	
 	local cost = 0
 	
-	for cluster_id, clusterArray in pairs(clusterArrayArray) do
+	for _, clusterArray in pairs(clusterArrayArray) do
 		
 		for i, cluster in ipairs(clusterArray) do
 			

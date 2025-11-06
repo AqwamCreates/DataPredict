@@ -627,8 +627,6 @@ function zTableFunction:calculateStandardNormalCumulativeDistributionValue(zValu
 
 	local columnValue = rowValue - finalZValue
 
-	local absoluteColumnValue = math.abs(columnValue)
-
 	local lowerColumnValue = math.floor(columnValue * 100) / 100
 
 	local upperColumnValue = lowerColumnValue + 0.01
@@ -645,7 +643,7 @@ function zTableFunction:calculateStandardNormalCumulativeDistributionValue(zValu
 
 	if (not upperCumulativeDistributionFunctionValue) then return lowerCumulativeDistributionFunctionValue end
 
-	local fraction = (absoluteColumnValue - lowerColumnValue) / (upperColumnValue - lowerColumnValue)
+	local fraction = (finalZValue - lowerColumnValue) / (upperColumnValue - lowerColumnValue)
 
 	local cumulativeDistributionFunctionValue = lowerCumulativeDistributionFunctionValue + (upperCumulativeDistributionFunctionValue - lowerCumulativeDistributionFunctionValue) * fraction
 

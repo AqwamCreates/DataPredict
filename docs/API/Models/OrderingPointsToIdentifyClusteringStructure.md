@@ -1,6 +1,8 @@
 # [API Reference](../../API.md) - [Models](../Models.md) - OrderingPointsToIdentifyClusteringStructure (OPTICS)
 
-DBSCAN is an unsupervised machine learning model that clusters data points based on their spatial density and proximity to each other, using epsilon distance and minimum number of points required to form a cluster.
+OPTICS (Ordering Points To Identify the Clustering Structure) is an unsupervised machine learning model that analyzes data point density and spatial proximity to uncover cluster structures across varying density levels.
+
+Unlike DBSCAN, OPTICS produces an ordering of points and their reachability distances, allowing more flexible extraction of clusters without fixing a single epsilon threshold.
 
 ## Stored Model Parameters
 

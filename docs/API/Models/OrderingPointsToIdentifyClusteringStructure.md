@@ -28,9 +28,17 @@ OrderingPointsToIdentifyClusteringStructure.new(epsilon: number, epsilonPrime: n
 
 #### Parameters:
 
-* epsilon: The maximum distance between two data points for them to be considered as part of the same cluster.
+* epsilon: The maximum neighborhood radius used to determine which points are density-reachable during the OPTICS process.
 
-* epsilonPrime: Used for creating clusters (which is not a part of original OPTICS algorithm). Controls how fine-grained clusters are. The higher it is, the more you allow more points to belong together. Setting epsilon = epsilonPrime will cause it to act like DBSCAN algorithm.
+* epsilonPrime: Used during cluster extraction, not part of the original OPTICS algorithm.
+
+  * Controls how fine-grained clusters are.
+
+  * A higher value merges nearby regions into larger clusters.
+
+  * A lower value produces more, smaller, and denser clusters.
+
+  * Setting epsilonPrime = epsilon makes the algorithm behave like DBSCAN.
 
 * minimumNumberOfPoints: Minimum number of data points required to form a cluster.
 

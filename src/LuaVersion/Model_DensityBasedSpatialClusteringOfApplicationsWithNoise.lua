@@ -208,7 +208,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 
 			neighborArray = getNeighbors(currentCorePointNumber, featureMatrix, epsilon, distanceFunctionToApply)
 
-			if (#neighborArray < self.minimumNumberOfPoints) then
+			if (#neighborArray < minimumNumberOfPoints) then
 
 				table.insert(noiseCorePointNumberArray, currentCorePointNumber)
 

@@ -52,7 +52,7 @@ local defaultMaximumNumberOfData = math.huge
 
 local function moreThanOrEqualToZeroClampFunction(value)
 	
-	-- Slightly modified from original max(0, value) due to numerical issues arising from floating-point round-off when calculating decimals.
+	-- Slightly modified from original max(0, erf(value)) due to numerical issues arising from floating-point round-off when calculating decimals.
 	
 	return math.clamp(value, 0, 1) 
 	

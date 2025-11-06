@@ -30,7 +30,7 @@ OrderingPointsToIdentifyClusteringStructure.new(epsilon: number, epsilonPrime: n
 
 * epsilon: The maximum neighborhood radius used to determine which points are density-reachable during the OPTICS process.
 
-* epsilonPrime: Used during cluster extraction, not part of the original OPTICS algorithm. (Default: epsilon * 0.5)
+* epsilonPrime: Used during cluster extraction, not part of the original OPTICS algorithm. [Default: epsilon * 0.5]
 
   * Controls how fine-grained clusters are.
 

@@ -278,7 +278,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featu
 
 	local closestClusterVector = AqwamTensorLibrary:createTensor(dimensionSizeArray)
 	
-	local storedFeatureVector, cluster = table.unpack(ModelParameters)
+	local storedFeatureVector, clusterArrayArray = table.unpack(ModelParameters)
 	
 	local closestCluster
 	
@@ -294,17 +294,17 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:predict(featu
 
 		featureVector = {unwrappedFeatureVector}
 
-		for clusterNumber, clusterPoints in ipairs(cluster) do
+		for clusterNumber, clusterArray in ipairs(clusterArrayArray) do
 
 			local distance = 0
 			
-			for j, pointNumber in ipairs(clusterPoints) do
+			for j, pointNumber in ipairs(clusterArray) do
 
 				distance = distance + distanceFunctionToApply(featureVector, {storedFeatureVector[pointNumber]})
 				
 			end
 
-			distance = distance / #clusterPoints
+			distance = distance / #clusterArray
 
 			if (distance < shortestDistance) then
 

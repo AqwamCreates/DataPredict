@@ -23,7 +23,7 @@ Contains a table.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-OrderingPointsToIdentifyClusteringStructure.new(epsilon: number, minimumNumberOfPoints: integer, distanceFunction: string): ModelObject
+OrderingPointsToIdentifyClusteringStructure.new(epsilon: number, epsilonPrime: number, minimumNumberOfPoints: integer, distanceFunction: string): ModelObject
 ```
 
 #### Parameters:

@@ -238,7 +238,7 @@ function LocalOutlierFactor:train(featureMatrix)
 
 	end
 
-	if (numberOfData < self.kValue) and (self.isOutputPrinted) then warn("Number of data is less than the K value. Please add more data before doing any predictions.") end
+	if (numberOfData <= self.kValue) and (self.isOutputPrinted) then warn("Number of data is less than or equal to the K value. Please add more data before doing any predictions.") end
 
 	self.ModelParameters = featureMatrix
 

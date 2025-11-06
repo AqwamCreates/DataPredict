@@ -311,6 +311,12 @@ function OrderingPointsToIdentifyClusteringStructureModel:train(featureMatrix)
 			
 			table.insert(orderedPointArray, pPointNumber)
 			
+			if (not reachabilityDistanceArray[pPointNumber]) then
+				
+				reachabilityDistanceArray[pPointNumber] = math.huge
+				
+			end
+			
 			coreDistance = calculateCoreDistance(pPointNumber, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunctionToApply)
 
 			if (coreDistance) then

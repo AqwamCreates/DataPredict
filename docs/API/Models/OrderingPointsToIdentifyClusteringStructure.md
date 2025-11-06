@@ -8,6 +8,10 @@ Contains a table.
 
 * ModelParameters[1]: Contains previously stored feature matrix.
 
+* ModelParameters[2]: orderedPointArray.
+
+* ModelParameters[3]: reachabilityDistanceArray.
+
 * ModelParameters[2][k][p]: Contains a table of integers table, where k is the cluster number and p is the index of a single feature vector from previously stored feature matrix.
 
 ## Constructors
@@ -23,6 +27,8 @@ OrderingPointsToIdentifyClusteringStructure.new(epsilon: number, minimumNumberOf
 #### Parameters:
 
 * epsilon: The maximum distance between two data points for them to be considered as part of the same cluster.
+
+* epsilonPrime: Used for creating clusters (which is not a part of original OPTICS algorithm). Controls how fine-grained clusters are. The higher it is, the more you allow more points to belong together. Setting epsilon = epsilonPrime will cause it to act like DBSCAN algorithm.
 
 * minimumNumberOfPoints: Minimum number of data points required to form a cluster.
 

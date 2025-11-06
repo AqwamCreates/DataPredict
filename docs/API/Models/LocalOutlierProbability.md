@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - LocalOutlierFactor
+# [API Reference](../../API.md) - [Models](../Models.md) - LocalOutlierProbability
 
 ## Stored Model Parameters
 
@@ -13,7 +13,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-LocalOutlierFactor.new(kValue: integer, distanceFunction: string, use, useWeightedDistance: boolean): ModelObject
+LocalOutlierProbability.new(kValue: integer, distanceFunction: string, use, useWeightedDistance: boolean): ModelObject
 ```
 
 #### Parameters:
@@ -39,7 +39,7 @@ LocalOutlierFactor.new(kValue: integer, distanceFunction: string, use, useWeight
 Train the model.
 
 ```
-LocalOutlierFactor:train(featureMatrix: matrix): number[]
+LocalOutlierProbability:train(featureMatrix: matrix): number[]
 ```
 
 #### Parameters:
@@ -51,7 +51,7 @@ LocalOutlierFactor:train(featureMatrix: matrix): number[]
 Generates the score vector.
 
 ```
-LocalOutlierFactor:score(): matrix
+LocalOutlierProbability:score(): matrix
 ```
 
 #### Returns:

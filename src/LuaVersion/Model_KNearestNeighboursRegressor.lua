@@ -299,7 +299,7 @@ function KNearestNeighboursRegressorModel:train(featureMatrix, labelVector)
 
 	end
 
-	if (self.kValue > numberOfData) then warn("Number of data is less than the K value. Please add more data before doing any predictions.") end
+	if (numberOfData < self.kValue) and (self.isOutputPrinted) then warn("Number of data is less than the K value. Please add more data before doing any predictions.") end
 
 	self.ModelParameters = {featureMatrix, labelVector}
 
@@ -308,10 +308,8 @@ end
 function KNearestNeighboursRegressorModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local ModelParameters = self.ModelParameters
-	
-	local numberOfData = #featureMatrix
 
-	if (not ModelParameters) then return AqwamTensorLibrary:createTensor({numberOfData, 1}, math.huge) end
+	if (not ModelParameters) then return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, math.huge) end
 
 	local storedFeatureMatrix = ModelParameters[1]
 
@@ -331,15 +329,15 @@ function KNearestNeighboursRegressorModel:predict(featureMatrix, returnOriginalO
 
 	local predictedLabelVector = {}
 
-	for i = 1, numberOfData, 1 do
+	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
 
-		local distanceVector = {deepCopyTable(distanceMatrix[i])}
+		local sortedDistanceVector = {deepCopyTable(unwrappedDistanceVector)}
 
 		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
 
-		mergeSort(distanceVector, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
+		mergeSort(sortedDistanceVector, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
 
-		local averageValue = getAverageValue(sortedLabelVectorLowestToHighest, distanceVector, kValue, useWeightedDistance)
+		local averageValue = getAverageValue(sortedLabelVectorLowestToHighest, sortedDistanceVector, kValue, useWeightedDistance)
 
 		predictedLabelVector[i] = {averageValue}
 

@@ -1,6 +1,6 @@
 # Placement Systems
 
-* [Creating Probability-Based Clustering Placement Model](HighValueProjectTutorials/CreatingProbabilityBasedClusteringPlacementModel.md)
+* [Creating Probability-Based Clustering Placement Model](PlacementSystems/CreatingProbabilityBasedClusteringPlacementModel.md)
 
   * Identifies areas of low player / item densities for spawning players / items.
 

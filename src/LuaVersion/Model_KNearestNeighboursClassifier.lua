@@ -307,7 +307,7 @@ function KNearestNeighboursClassifierModel:train(featureMatrix, labelVector)
 
 	end
 
-	if (self.kValue > numberOfData) then warn("Number of data is less than the K value. Please add more data before doing any predictions.") end
+	if (numberOfData < self.kValue) and (self.isOutputPrinted) then warn("Number of data is less than the K value. Please add more data before doing any predictions.") end
 
 	self.ModelParameters = {featureMatrix, labelVector}
 
@@ -316,14 +316,12 @@ end
 function KNearestNeighboursClassifierModel:predict(featureMatrix, returnOriginalOutput)
 
 	local ModelParameters = self.ModelParameters
-	
-	local numberOfData = #featureMatrix
 
 	if (not ModelParameters) then 
 
 		local unknownValue = (returnOriginalOutput and math.huge) or nil
 
-		return AqwamTensorLibrary:createTensor({numberOfData, 1}, unknownValue) 
+		return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, unknownValue) 
 
 	end
 
@@ -344,19 +342,19 @@ function KNearestNeighboursClassifierModel:predict(featureMatrix, returnOriginal
 	local numberOfOtherData = #storedFeatureMatrix
 
 	local predictedLabelVector = {}
-
-	for i = 1, numberOfData, 1 do
-
-		local distanceVector = {deepCopyTable(distanceMatrix[i])}
+	
+	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
+		
+		local sortedDistanceVector = {deepCopyTable(unwrappedDistanceVector)}
 
 		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
 
-		mergeSort(distanceVector, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
+		mergeSort(sortedDistanceVector, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
 
-		local majorityClass = getMajorityClass(sortedLabelVectorLowestToHighest, distanceVector, kValue, useWeightedDistance)
+		local majorityClass = getMajorityClass(sortedLabelVectorLowestToHighest, sortedDistanceVector, kValue, useWeightedDistance)
 
 		predictedLabelVector[i] = {majorityClass}
-
+		
 	end
 
 	return predictedLabelVector

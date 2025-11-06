@@ -2,17 +2,18 @@
 
 If you wonder what are the most high-value use cases that helps with retention and revenue generation this DataPredict™, you can view them [here](../HighValueProjectTutorials.md)!
 
-| Model Type                     | Count |
-|--------------------------------|-------|
-| Regression                     | 8     |
-| Classification                 | 13    |
-| Clustering                     | 9     |
-| Deep Reinforcement Learning    | 21    |
-| Tabular Reinforcement Learning | 12    |
-| Sequence Modelling             | 7     |
-| Generative                     | 4     |
-| Outlier Detection              | 1     |
-| Total                          | 76    |
+| Model Type                                                        | Description                                     | Count |
+|-------------------------------------------------------------------|-------------------------------------------------|-------|
+| [Regression](#regression)                                         | Continuous Values Prediction                    | 9     |
+| [Classification](#classification)                                 | Feature-Class Prediction                        | 14    |
+| [Clustering](#clustering)                                         | Feature Grouping                                | 9     |
+| [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 21    |
+| [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Grids           | 12    |
+| [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
+| [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
+| [Generative](#generative)                                         | Feature To Novel Values                         | 4     |
+| [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 2     |
+| Total                                                             |                                                 | 79    |
 
 ### Legend
 
@@ -38,7 +39,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
   * Uses reverse-mode automatic differentiation and lazy differentiation evaluation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
 
-* Currently, DataPredict™ has ~90% (65 out of 75) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (69 out of 79) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -50,17 +51,18 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                                           | Alternate Names | Properties    | Use Cases                                                                                                |
-|---------------------------------------------------------------------------------|-----------------|---------------|----------------------------------------------------------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md)                                  | LR              | 🔰 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
-| [QuantileLinearRegression](Models/QuantileLinearRegression.md)                  | None            | 🟢 🟡        | Case-Based Time-To-Leave Prediction And In-Game Currency Price Generation                                |
-| [PoissonLinearRegression](Models/PoissonLinearRegression.md)                    | None            | 🟢 🟡 ⚠️     | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
-| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)              | PA-R            | ⚡ 🟢        | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
-| [SupportVectorRegression](Models/SupportVectorRegression.md)                    | SVR             | 💾 🟡        | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
-| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)            | KNN-R           | 🟢 🟡        | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
-| [NormalLinearRegression](Models/NormalLinearRegression.md)*                     | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
-| [BayesianLinearRegression](Models/BayesianLinearRegression.md)*                 | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
-| [BayesianQuantileLinearRegression](Models/BayesianQuantileLinearRegression.md)* | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
+| Model                                                                                      | Alternate Names | Properties    | Use Cases                                                                                                |
+|--------------------------------------------------------------------------------------------|-----------------|---------------|----------------------------------------------------------------------------------------------------------|
+| [LinearRegression](Models/LinearRegression.md)                                             | LR              | 🔰 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
+| [QuantileLinearRegression](Models/QuantileLinearRegression.md)                             | None            | 🟢 🟡        | Case-Based Time-To-Leave Prediction And In-Game Currency Price Generation                                |
+| [PoissonLinearRegression](Models/PoissonLinearRegression.md)                               | None            | 🟢 🟡 ⚠️     | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
+| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | ⚡ 🟢        | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
+| [SupportVectorRegression](Models/SupportVectorRegression.md)                               | SVR             | 💾 🟡        | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
+| [SupportVectorRegressionGradientVariant](Models/SupportVectorRegressionGradientVariant.md) | SVR             | 🟢 🟡        | Real-Time Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                   |
+| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | 🟢 🟡        | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
+| [NormalLinearRegression](Models/NormalLinearRegression.md)*                                | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
+| [BayesianLinearRegression](Models/BayesianLinearRegression.md)*                            | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
+| [BayesianQuantileLinearRegression](Models/BayesianQuantileLinearRegression.md)*            | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
 
 \* The "instant train" models have these issues:
 
@@ -76,10 +78,11 @@ If you wonder what are the most high-value use cases that helps with retention a
 |--------------------------------------------------------------------------------------|--------------------------------|------------------|----------------------------------------------------------------------------------------------------------------|
 | [LogisticRegression](Models/LogisticRegression.md)                                   | Perceptron, Sigmoid Regression | 🔰 🟢 🟡       | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction                                 |
 | [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                 | PA-C                           | ⚡ 🟢           | Fast Purchase Likelihood Estimation, Decision Making                                                            |
-| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md) | OC-PA-C                        | ⚡ 🟢           | Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                                             |
+| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md) | OC-PA-C                        | ⚡ 🟢           | Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                                           |
 | [NearestCentroid](Models/NearestCentroid.md)                                         | NC                             | ⚡ 🟢 🟡        | Fast Grouping Or Quick Decision Making                                                                          |
 | [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)               | KNN-C                          | 🟢 🟡           | Item Recommendation, Similar Player Matchmaking                                                                 |
-| [SupportVectorMachine](Models/SupportVectorMachine.md)                               | SVM                            | 💾 🟡          | Hacking Detection, Anomaly Detection                                                                            |
+| [SupportVectorMachine](Models/SupportVectorMachine.md)                               | SVM                            | 💾 🟡          | Boundary-Based Prediction                                                                                        |
+| [SupportVectorMachineGradientVariant](Models/SupportVectorMachineGradientVariant.md) | SVM                            | 🟢 🟡          | Real-Time Boundary-Based Prediction                                                                              |
 | [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md)               | OC-SVM                         | 💾 🟡           | Hacking Detection, Anomaly Detection (Using Single Class Data)                                                  |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                             | Multi-Layer Perceptron         | 🟢 🟡           | Decision-Making, Player Behaviour Prediction                                                                    |
 | [GaussianNaiveBayes](Models/GaussianNaiveBayes.md)*                                  | GNB                            | 💾 ⚡ 🟢 🟡 ⚠️ | Enemy Data Generation, Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
@@ -157,17 +160,24 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                                                                 | Alternate Names | Properties | Use Cases                                 |
-|-------------------------------------------------------------------------------------------------------|-----------------|------------|-------------------------------------------|
-| [Markov](Models/Markov.md)*                                                                           | None            | 💾 🟢     | Single Feature Player State Prediction    |
-| [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md)*                                         | DBN             | 💾 🟢     | Multiple Features Player State Prediction |
-| [Conditional Random Field](Models/ConditionalRandomField.md)*                                         | CRF             | 🟢         | Multiple Features Player State Prediction |
-| [Kalman Filter](Models/KalmanFilter.md)*                                                              | KF              | 🟢 ⚠️     | Linear Movement Anti-Cheat                |
-| [Extended Kalman Filter](Models/ExtendedKalmanFilter.md)*                                             | EKF             | 🟢 ⚙️     | Non-Linear Movement Anti-Cheat            |
-| [Unscented Kalman Filter](Models/UnscentedKalmanFilter.md)*                                           | UKF             | 💾 🟢 ⚙️ | Non-Linear Movement Anti-Cheat            |
-| [Unscented Kalman Filter (DataPredict Variant)](Models/UnscentedKalmanFilterDataPredictVariant.md)*   | UKF-DP          | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat            |
+| Model                                                         | Alternate Names | Properties | Use Cases                                 |
+|---------------------------------------------------------------|-----------------|------------|-------------------------------------------|
+| [Markov](Models/Markov.md)*                                   | None            | 💾 🟢     | Single Feature Player State Prediction    |
+| [Dynamic Bayesian Network](Models/DynamicBayesianNetwork.md)* | DBN             | 💾 🟢     | Multiple Features Player State Prediction |
+| [Conditional Random Field](Models/ConditionalRandomField.md)* | CRF             | 🟢         | Multiple Features Player State Prediction |
 
 * These are single step variants of the sequence models. Hence, it will not use or return sequence of values.
+
+## Filtering
+
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+
+| Model                                                                                              | Alternate Names | Properties | Use Cases                                 |
+|----------------------------------------------------------------------------------------------------|-----------------|------------|-------------------------------------------|
+| [Kalman Filter](Models/KalmanFilter.md)                                                            | KF              | 🟢 ⚠️     | Linear Movement Anti-Cheat                |
+| [Extended Kalman Filter](Models/ExtendedKalmanFilter.md)                                           | EKF             | 🟢 ⚙️     | Non-Linear Movement Anti-Cheat            |
+| [Unscented Kalman Filter](Models/UnscentedKalmanFilter.md)                                         | UKF             | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat            |
+| [Unscented Kalman Filter (DataPredict Variant)](Models/UnscentedKalmanFilterDataPredictVariant.md) | UKF-DP          | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat            |
 
 ## Generative
 
@@ -184,9 +194,10 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                              | Alternate Names | Properties | Use Cases               |
-|----------------------------------------------------|-----------------|------------| ------------------------|
-| [LocalOutlierFactor](Models/LocalOutlierFactor.md) | LOF             | 🟢 🟡     | Local Outlier Detection |
+| Model                                                        | Alternate Names | Properties | Use Cases               |
+|--------------------------------------------------------------|-----------------|------------| ------------------------|
+| [LocalOutlierFactor](Models/LocalOutlierFactor.md)           | LOF             | 🟢 🟡     | Local Outlier Detection |
+| [LocalOutlierProbability](Models/LocalOutlierProbability.md) | LoOP            | 🟢 🟡     | Local Outlier Detection |
 
 ## BaseModels
 

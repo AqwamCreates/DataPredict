@@ -1,26 +1,26 @@
 # Welcome to Aqwam's DataPredict™ Library!
 
+> Torch7 lit the flame. DataPredict carries it forward.
+
+> Machine Learning returns to Lua - for game engines.
+
+> What once ended in deep learning returns as the full spectrum of machine learning.
+
+By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md).
+
 This library was developed solo over more than 3 years (6000+ hours and includes weekends), which would exceed $300,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build and test all the models in this library. To all indie devs who just starting their business, feel free to use it without burning away your money! And [here](HighValueProjectTutorials.md) are high-value project tutorials for improving retention and revenue too!
 
-By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md). In short:
-
-* Public attribution is required when using this library.
-
-* A separate agreement is needed for commercial use (both internally and externally). This applies to companies (or individuals, if none) whose combined revenue (including from subsidiaries or related entities) exceeds $3000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
-
-* If you or your company is applicable to the above statement and do not want a separate agreement, then you are required to follow the "Commercial Use Conditions" in Terms And Conditions.
-
-* Plus some more stuff...
-
-Once you pass this commercial use threshold and want to license it, keep this in mind:
-
-* Expect to pay for (gross revenue * (0.06 / log0.5(gross revenue))) every month, provided that it uses this library. In other words, it starts at 2% of gross revenue and that percentage decreases as your project earns more. 
+| License Type                                                                          | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          |
+|---------------------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
+| Company / Individuals + Non-B2B + Less Than 3K USD Within 365 Days (Not Per 365 Days) | 0%                                                        | Requires Public Disclosure Of DataPredict |
+| Standard                                                                              | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict |
+| White-Label                                                                           | 5%                                                        | None                                      |
 
 * Because machine, deep and reinforcement learning models try to find the best solution for you during training, you are likely (but not guaranteed) to increase your revenue over this cost.
 
 * You're not licensing convenience; you're licensing a higher probability of increased revenue.
 
-* Think of it this way: you’re not losing 2% of your revenue; you’re investing 2% to unlock the other 30% you might be leaving on the table. In some cases, the upside could be even higher.
+* Think of it this way: you’re not losing 0.5%-5% of your revenue; you’re investing 0.5%-5% to unlock the other 30% you might be leaving on the table. In some cases, the upside could be even higher.
 
 * That fee also includes DataPredict™ Neural and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
 

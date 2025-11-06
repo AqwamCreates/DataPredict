@@ -1,9 +1,5 @@
 # Basic Tutorials
 
-## Installation
-
-* [Installation For Roblox](BasicTutorials/InstallationForRoblox.md)
-
 ## The Basics - Level 1
 
 * [Creating Our First Model](BasicTutorials/CreatingOurFirstModel.md)

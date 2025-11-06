@@ -6,9 +6,11 @@
 
 > What once ended in deep learning returns as the full spectrum of machine learning.
 
+You can find high-value project tutorials for improving retention and revenue [here](HighValueProjectTutorials.md)!
+
 By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md).
 
-This library was developed solo over more than 3 years (6000+ hours and includes weekends), which would exceed $300,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build and test all the models in this library. To all indie devs who just starting their business, feel free to use it without burning away your money! And [here](HighValueProjectTutorials.md) are high-value project tutorials for improving retention and revenue too!
+This library was developed solo over more than 3 years (6000+ hours and includes weekends), which would exceed $300,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build and test all the models in this library. To all indie devs who just starting their business, feel free to use it without burning away your money!
 
 | License Type                                                                          | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          |
 |---------------------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|

@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local BaseInstance = require("Core_BaseInstance")
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 ConfusionMatrixCreator = {}
 
@@ -402,7 +402,7 @@ function ConfusionMatrixCreator:calculateStatistic(trueLabelVector, predictedLab
 	
 	if (string.sub(statisticName, 1, 5) == "Macro") then
 		
-		local metricName = string.lower(string.sub(statisticName, 6)) -- e.g. Precision -> precision
+		local metricName = string.sub(statisticName, 6)
 		
 		local statisticValueVector = self:calculateStatistic(trueLabelVector, predictedLabelVector, metricName)
 
@@ -490,6 +490,12 @@ function ConfusionMatrixCreator:printStatistics(trueLabelVector, predictedLabelV
 
 	local statisticNameArray = statisticNameArray or {"Precision", "Recall", "Specificity", "F1"}
 	
+	for i, statisticName in ipairs(statisticNameArray) do
+		
+		if (string.sub(statisticName, 1, 5) == "Macro") then error("Cannot print macro statistics.") end
+		
+	end
+	
 	local statisticValueVectorArray = {}
 	
 	for i, statisticName in ipairs(statisticNameArray) do
@@ -521,6 +527,36 @@ function ConfusionMatrixCreator:printStatistics(trueLabelVector, predictedLabelV
 	print(text)
 	
 	return statisticValueVectorArray
+	
+end
+
+function ConfusionMatrixCreator:printMacroStatistics(trueLabelVector, predictedLabelVector, macroStatisticNameArray)
+	
+	local macroStatisticNameArray = macroStatisticNameArray or {"MacroPrecision", "MacroRecall", "MacroSpecificity", "MacroF1"}
+
+	for i, macroStatisticName in ipairs(macroStatisticNameArray) do
+
+		if (string.sub(macroStatisticName, 1, 5) ~= "Macro") then
+			
+			macroStatisticNameArray[i] = "Macro" .. macroStatisticName
+			
+		end
+
+	end
+	
+	local unwrappedMacroStatisticMatrix = {}
+
+	for i, statisticName in ipairs(macroStatisticNameArray) do
+
+		unwrappedMacroStatisticMatrix[i] = self:calculateStatistic(trueLabelVector, predictedLabelVector, statisticName)
+
+	end
+	
+	local text = generateTableText("Statistic", {"Value"}, macroStatisticNameArray, {unwrappedMacroStatisticMatrix})
+	
+	print(text)
+	
+	return unwrappedMacroStatisticMatrix
 	
 end
 

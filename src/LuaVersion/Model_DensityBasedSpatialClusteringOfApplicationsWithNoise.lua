@@ -44,7 +44,7 @@ local defaultDistanceFunction = "Manhattan"
 
 local defaultEpsilon = 10
 
-local function getNeighbors(currentCorePointNumber, featureMatrix, epsilon, distanceFunction)
+local function getNeighborArray(currentCorePointNumber, featureMatrix, epsilon, distanceFunction)
 	
 	local distance
 	
@@ -86,7 +86,7 @@ local function expandCluster(currentCorePointNumber, neighborArray, neighbouring
 
 			hasVisitedCorePointNumberArray[neighbouringPointNumber] = true
 
-			local qNeighbors = getNeighbors(neighbouringPointNumber, featureMatrix, epsilon, distanceFunction)
+			local qNeighbors = getNeighborArray(neighbouringPointNumber, featureMatrix, epsilon, distanceFunction)
 
 			if (#qNeighbors >= minimumNumberOfPoints) then
 
@@ -206,7 +206,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 
 			hasVisitedCorePointNumberArray[currentCorePointNumber] = true
 
-			neighborArray = getNeighbors(currentCorePointNumber, featureMatrix, epsilon, distanceFunctionToApply)
+			neighborArray = getNeighborArray(currentCorePointNumber, featureMatrix, epsilon, distanceFunctionToApply)
 
 			if (#neighborArray < minimumNumberOfPoints) then
 

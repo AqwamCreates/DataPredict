@@ -114,6 +114,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	DensityBasedSpatialClusteringOfApplicationsWithNoise = require(Models.DensityBasedSpatialClusteringOfApplicationsWithNoise),
 	
+	OrderingPointsToIdentifyClusteringStructure = require(Models.OrderingPointsToIdentifyClusteringStructure),
+	
 	BisectingCluster = require(Models.BisectingCluster),
 	
 	DeepQLearning = require(Models.DeepQLearning),

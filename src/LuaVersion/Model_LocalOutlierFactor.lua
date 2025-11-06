@@ -256,6 +256,8 @@ function LocalOutlierFactor:score()
 	
 	local numberOfData = #featureMatrix
 	
+	local numberOfDataMinusOne = numberOfData - 1
+	
 	local distanceMatrix = createDistanceMatrix(distanceFunction, featureMatrix)
 	
 	local nearestNeighbourIndexArrayArray = {}
@@ -263,12 +265,16 @@ function LocalOutlierFactor:score()
 	local numberOfNearestNeighboursVector = {}
 	
 	local reachabilityDistanceMatrix = {}
-
+	
 	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
 
 		local sortedUnwrappedDistanceVector = deepCopyTable(unwrappedDistanceVector)
+		
+		-- Ignores the distance to itself. It is removed before sorting to reduce computational resources.
+		
+		table.remove(sortedUnwrappedDistanceVector, i)
 
-		mergeSort(sortedUnwrappedDistanceVector, 1, numberOfData)
+		mergeSort(sortedUnwrappedDistanceVector, 1, numberOfDataMinusOne)
 		
 		local kDistance = sortedUnwrappedDistanceVector[kValue]
 		

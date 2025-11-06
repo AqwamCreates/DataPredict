@@ -322,9 +322,9 @@ function LocalOutlierProbability:score()
 	
 	local standardDistanceVectorPart1 = AqwamTensorLibrary:divide(sumDistanceVector, numberOfNearestNeighboursVector)
 	
-	local varianceVector = AqwamTensorLibrary:applyFunction(math.sqrt, standardDistanceVectorPart1)
+	local standardDistanceVector = AqwamTensorLibrary:applyFunction(math.sqrt, standardDistanceVectorPart1)
 	
-	local probabilisticDistanceVector = AqwamTensorLibrary:multiply(lambda, varianceVector)
+	local probabilisticDistanceVector = AqwamTensorLibrary:multiply(lambda, standardDistanceVector)
 	
 	local probabilisticLocalOutlierProbabilityFactorVector = {}
 	

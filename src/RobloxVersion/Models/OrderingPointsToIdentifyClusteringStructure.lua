@@ -92,35 +92,60 @@ local function calculateCoreDistance(pointNumber, featureMatrix, epsilon, minimu
 	
 end
 
-local function calculateCost(distanceFunction, featureMatrix, clusters)
+local function calculateReachabilityCost(reachabilityDistanceArray)
 	
-	local cost = 0
+	local total = 0
 	
-	for cluster_id, clusterPoints in pairs(clusters) do
+	local count = 0
+
+	for _, distance in pairs(reachabilityDistanceArray) do
+		
+		if (distance) and (distance ~= math.huge) then
 			
-		for i = 1, #clusterPoints, 1 do
-				
-			for j = i + 1, #clusterPoints, 1 do
-					
-				cost = cost + distanceFunction({featureMatrix[clusterPoints[i]]}, {featureMatrix[clusterPoints[j]]})
-					
-			end
-				
+			total = total + distance
+			
+			count = count + 1
+			
+		end
+		
+	end
+
+	return ((count > 0) and (total / count)) or math.huge
+end
+
+local function insertSorted(seedPointArray, seedReachabilityDistanceArray, point, distance)
+	
+	local inserted = false
+	
+	for i, reachabilityDistance in ipairs(seedReachabilityDistanceArray) do
+		
+		if (distance < reachabilityDistance) then
+			
+			table.insert(seedReachabilityDistanceArray, i, distance)
+			
+			table.insert(seedPointArray, i, point)
+			
+			inserted = true
+			
+			break
+			
 		end
 		
 	end
 	
-	return cost
+	if (not inserted) then
+		
+		table.insert(seedReachabilityDistanceArray, distance)
+		
+		table.insert(seedPointArray, point)
+		
+	end
 	
 end
 
-local function update(neighbourArray, pPointNumber, seedPointArray, seedReachabilityDistanceArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunction)
+local function update(neighbourArray, pPointNumber, hasProcessedArray, reachabilityDistanceArray, seedPointArray, seedReachabilityDistanceArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunction)
 	
 	local coreDistance = calculateCoreDistance(pPointNumber, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunction)
-	
-	local hasProcessedArray = {}
-	
-	local reachabilityDistanceArray = {}
 	
 	local reachabilityDistance
 	
@@ -150,19 +175,9 @@ local function update(neighbourArray, pPointNumber, seedPointArray, seedReachabi
 					
 					reachabilityDistanceArray[oPointNumber] = newReachabilityDistance
 					
-					newReachabilityDistanceArrayIndex = table.find(seedReachabilityDistanceArray, newReachabilityDistance)
-					
 					-- Moving up the new reachability distance inside the seedArray.
 					
-					table.remove(seedPointArray, newReachabilityDistanceArrayIndex)
-					
-					table.remove(seedReachabilityDistanceArray, newReachabilityDistanceArrayIndex)
-					
-					newReachabilityDistanceArrayIndex = newReachabilityDistanceArrayIndex - 1
-					
-					table.insert(seedPointArray, newReachabilityDistanceArrayIndex, oPointNumber)
-					
-					table.insert(seedReachabilityDistanceArray, newReachabilityDistanceArrayIndex, newReachabilityDistance)
+					insertSorted(seedPointArray, seedReachabilityDistanceArray, oPointNumber, newReachabilityDistance)
 					
 				end
 				
@@ -171,6 +186,46 @@ local function update(neighbourArray, pPointNumber, seedPointArray, seedReachabi
 		end
 		
 	end
+	
+end
+
+local function createClusterArrayArray(orderedPointArray, reachabilityDistanceArray, epsilonPrime)
+	
+	local clusterArrayArray = {}
+	
+	local clusterArray = {}
+	
+	local reachabilityDistance
+
+	for i, pointIndex in ipairs(orderedPointArray) do
+		
+		reachabilityDistance = reachabilityDistanceArray[pointIndex] or math.huge
+
+		if (reachabilityDistance <= epsilonPrime) then
+			
+			table.insert(clusterArray, pointIndex)
+			
+		else
+			
+			if (#clusterArray > 0) then
+				
+				table.insert(clusterArrayArray, clusterArray)
+				
+				clusterArray = {}
+				
+			end
+			
+		end
+		
+	end
+
+	if (#clusterArray > 0) then
+		
+		table.insert(clusterArrayArray, clusterArray)
+		
+	end
+
+	return clusterArrayArray
 	
 end
 
@@ -184,9 +239,15 @@ function OrderingPointsToIdentifyClusteringStructureModel.new(parameterDictionar
 	
 	NewOrderingPointsToIdentifyClusteringStructureModel:setName("OrderingPointsToIdentifyClusteringStructure")
 	
+	local epsilon = parameterDictionary.epsilon or defaultEpsilon
+	
+	local epsilonPrime = (parameterDictionary.epsilonPrime) or (epsilon * 0.5)
+	
 	NewOrderingPointsToIdentifyClusteringStructureModel.minimumNumberOfPoints = parameterDictionary.minimumNumberOfPoints or defaultMinimumNumberOfPoints
 	
-	NewOrderingPointsToIdentifyClusteringStructureModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewOrderingPointsToIdentifyClusteringStructureModel.epsilon = epsilon
+	
+	NewOrderingPointsToIdentifyClusteringStructureModel.epsilonPrime = epsilonPrime
 
 	NewOrderingPointsToIdentifyClusteringStructureModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 	
@@ -215,6 +276,8 @@ function OrderingPointsToIdentifyClusteringStructureModel:train(featureMatrix)
 	local minimumNumberOfPoints = self.minimumNumberOfPoints
 
 	local epsilon = self.epsilon
+	
+	local epsilonPrime = self.epsilonPrime
 	
 	local costArray = {}
 	
@@ -256,7 +319,7 @@ function OrderingPointsToIdentifyClusteringStructureModel:train(featureMatrix)
 				
 				seedReachabilityDistanceArray = {}
 				
-				update(neighbourArray, pPointNumber, seedPointArray, seedReachabilityDistanceArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunctionToApply)
+				update(neighbourArray, pPointNumber, hasProcessedArray, reachabilityDistanceArray, seedPointArray, seedReachabilityDistanceArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunctionToApply)
 				
 				for _, qPointNumber in ipairs(seedPointArray) do
 					
@@ -270,7 +333,7 @@ function OrderingPointsToIdentifyClusteringStructureModel:train(featureMatrix)
 					
 					if (coreDistance) then
 						
-						update(neighbourComplementArray, qPointNumber, seedPointArray, seedReachabilityDistanceArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunctionToApply)
+						update(neighbourComplementArray, qPointNumber, hasProcessedArray, reachabilityDistanceArray, seedPointArray, seedReachabilityDistanceArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunctionToApply)
 						
 					end
 					
@@ -282,7 +345,7 @@ function OrderingPointsToIdentifyClusteringStructureModel:train(featureMatrix)
 
 		cost = self:calculateCostWhenRequired(pPointNumber, function()
 
-			return calculateCost(distanceFunctionToApply, featureMatrix)
+			return calculateReachabilityCost(reachabilityDistanceArray)
 
 		end)
 
@@ -306,7 +369,9 @@ function OrderingPointsToIdentifyClusteringStructureModel:train(featureMatrix)
 
 	end
 	
-	self.ModelParameters = {featureMatrix}
+	local clusterArrayArray = createClusterArrayArray(orderedPointArray, reachabilityDistanceArray, epsilonPrime)
+	
+	self.ModelParameters = {featureMatrix, orderedPointArray, reachabilityDistanceArray, clusterArrayArray}
 	
 	return costArray
 	
@@ -336,7 +401,7 @@ function OrderingPointsToIdentifyClusteringStructureModel:predict(featureMatrix)
 
 	local closestClusterVector = AqwamTensorLibrary:createTensor(dimensionSizeArray)
 	
-	local storedFeatureVector, cluster = table.unpack(ModelParameters)
+	local storedFeatureVector, _, _, clusterArrayArray = table.unpack(ModelParameters)
 	
 	local closestCluster
 	
@@ -352,17 +417,17 @@ function OrderingPointsToIdentifyClusteringStructureModel:predict(featureMatrix)
 
 		featureVector = {unwrappedFeatureVector}
 
-		for clusterNumber, clusterPoints in ipairs(cluster) do
+		for clusterNumber, clusterArray in ipairs(clusterArrayArray) do
 
 			local distance = 0
 			
-			for j, pointNumber in ipairs(clusterPoints) do
+			for j, pointNumber in ipairs(clusterArray) do
 
 				distance = distance + distanceFunctionToApply(featureVector, {storedFeatureVector[pointNumber]})
 				
 			end
 
-			distance = distance / #clusterPoints
+			distance = distance / #clusterArray
 
 			if (distance < shortestDistance) then
 

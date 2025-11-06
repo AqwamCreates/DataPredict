@@ -74,11 +74,11 @@ local function mergeTables(table1, table2)
 	
 end
 
-local function expandCluster(currentCorePointNumber, neighborArray, neighbouringCorePointNumber, clusterArray, hasVisitedCorePointNumberArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunction)
+local function expandCluster(currentCorePointNumber, neighborArray, neighbouringCorePointNumber, clusterArrayArray, hasVisitedCorePointNumberArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunction)
 	
-	clusterArray[neighbouringCorePointNumber] = clusterArray[neighbouringCorePointNumber] or {}
+	clusterArrayArray[neighbouringCorePointNumber] = clusterArrayArray[neighbouringCorePointNumber] or {}
 	
-	clusterArray[neighbouringCorePointNumber][#clusterArray[neighbouringCorePointNumber] + 1] = currentCorePointNumber
+	clusterArrayArray[neighbouringCorePointNumber][#clusterArrayArray[neighbouringCorePointNumber] + 1] = currentCorePointNumber
 	
 	for _, neighbouringPointNumber in ipairs(neighborArray) do
 		
@@ -98,9 +98,9 @@ local function expandCluster(currentCorePointNumber, neighborArray, neighbouring
 
 		local isInCluster = false
 		
-		for _, cluster in ipairs(clusterArray) do
+		for _, clusterArray in ipairs(clusterArrayArray) do
 			
-			if (cluster[neighbouringPointNumber]) then
+			if (clusterArray[neighbouringPointNumber]) then
 
 				isInCluster = true
 
@@ -112,7 +112,7 @@ local function expandCluster(currentCorePointNumber, neighborArray, neighbouring
 
 		if (not isInCluster) then
 
-			clusterArray[neighbouringCorePointNumber][#clusterArray[neighbouringCorePointNumber] + 1] = neighbouringPointNumber
+			clusterArrayArray[neighbouringCorePointNumber][#clusterArrayArray[neighbouringCorePointNumber] + 1] = neighbouringPointNumber
 
 		end
 		
@@ -120,17 +120,17 @@ local function expandCluster(currentCorePointNumber, neighborArray, neighbouring
 	
 end
 
-local function calculateCost(distanceFunction, featureMatrix, clusters)
+local function calculateCost(distanceFunction, featureMatrix, clusterArrayArray)
 	
 	local cost = 0
 	
-	for cluster_id, clusterPoints in pairs(clusters) do
+	for cluster_id, clusterArray in pairs(clusterArrayArray) do
 			
-		for i = 1, #clusterPoints, 1 do
+		for i = 1, #clusterArray, 1 do
 				
-			for j = i + 1, #clusterPoints, 1 do
+			for j = i + 1, #clusterArray, 1 do
 					
-				cost = cost + distanceFunction({featureMatrix[clusterPoints[i]]}, {featureMatrix[clusterPoints[j]]})
+				cost = cost + distanceFunction({featureMatrix[clusterArray[i]]}, {featureMatrix[clusterArray[j]]})
 					
 			end
 				
@@ -186,7 +186,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 	
 	local costArray = {}
 
-	local clusterArray = {}
+	local clusterArrayArray = {}
 
 	local noiseCorePointNumberArray = {}
 
@@ -214,9 +214,9 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 
 			else
 
-				neighbouringCorePointNumber = #clusterArray + 1
+				neighbouringCorePointNumber = #clusterArrayArray + 1
 
-				expandCluster(currentCorePointNumber, neighborArray, neighbouringCorePointNumber, clusterArray, hasVisitedCorePointNumberArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunctionToApply)
+				expandCluster(currentCorePointNumber, neighborArray, neighbouringCorePointNumber, clusterArrayArray, hasVisitedCorePointNumberArray, featureMatrix, epsilon, minimumNumberOfPoints, distanceFunctionToApply)
 
 			end
 
@@ -224,7 +224,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 
 		cost = self:calculateCostWhenRequired(currentCorePointNumber, function()
 
-			return calculateCost(distanceFunctionToApply, featureMatrix, clusterArray)
+			return calculateCost(distanceFunctionToApply, featureMatrix, clusterArrayArray)
 
 		end)
 
@@ -248,7 +248,7 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 
 	end
 	
-	self.ModelParameters = {featureMatrix, clusterArray}
+	self.ModelParameters = {featureMatrix, clusterArrayArray}
 	
 	return costArray
 	

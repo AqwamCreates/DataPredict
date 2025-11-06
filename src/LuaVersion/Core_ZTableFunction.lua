@@ -625,7 +625,7 @@ function zTableFunction:calculateStandardNormalCumulativeDistributionValue(zValu
 
 	if (not rowTable) then return end
 
-	local columnValue = finalZValue - rowValue
+	local columnValue = rowValue - finalZValue
 
 	local absoluteColumnValue = math.abs(columnValue)
 

@@ -3,7 +3,7 @@
 	--------------------------------------------------------------------
 
 	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
-
+	
 	Author: Aqwam Harish Aiman
 	
 	Email: aqwam.harish.aiman@gmail.com
@@ -35,6 +35,18 @@ ConfusionMatrixCreator = {}
 ConfusionMatrixCreator.__index = ConfusionMatrixCreator
 
 setmetatable(ConfusionMatrixCreator, BaseInstance)
+
+local calculateStatisticFunctionList = {
+	
+	["Precision"] = function(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount) return ((truePositiveCount + falsePositiveCount == 0) and 0) or truePositiveCount / (truePositiveCount + falsePositiveCount) end,
+	
+	["Recall"] = function(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount) return ((truePositiveCount + falseNegativeCount == 0) and 0) or truePositiveCount / (truePositiveCount + falseNegativeCount) end,	
+	
+	["Specificity"] = function(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount) return ((trueNegativeCount + falsePositiveCount == 0) and 0) or trueNegativeCount / (trueNegativeCount + falsePositiveCount) end,
+	
+	["F1"] = function(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount) return ((trueNegativeCount + falsePositiveCount == 0) and 0) or trueNegativeCount / (trueNegativeCount + falsePositiveCount) end,
+	
+}
 
 local function areNumbersOnlyInList(list)
 
@@ -106,6 +118,126 @@ local function checkClassesList(ClassesList, trueLabelVector, predictedLabelVect
 
 end
 
+local function generateTableText(indicatorString, RowsList, ColumnsList, matrix)
+	
+	local ExtendedColumnsList = table.clone(ColumnsList)
+	
+	table.insert(ExtendedColumnsList, 1, indicatorString)
+	
+	local maximumColumnValueLengthArray = {}
+
+	for columnIndex, columnValue in ipairs(ExtendedColumnsList) do
+
+		maximumColumnValueLengthArray[columnIndex] = string.len(tostring(columnValue))
+
+	end
+	
+	for rowIndex, rowValue in ipairs(RowsList) do
+		
+		for columnIndex, columnValue in ipairs(ExtendedColumnsList) do
+			
+			maximumColumnValueLengthArray[columnIndex] = math.max(maximumColumnValueLengthArray[columnIndex], string.len(tostring(matrix[rowIndex][columnIndex]))) 
+			
+		end
+		
+	end
+
+	local text =  "\n\n+"
+
+	for columnIndex, columnValue in ipairs(ExtendedColumnsList) do
+
+		local cellWidth = string.len(columnValue)
+
+		local padding = maximumColumnValueLengthArray[columnIndex] + 2
+
+		text = text .. string.rep("-", padding)
+
+		text = text .. "+"
+
+	end
+
+	text = text .. "\n| "
+
+	for columnIndex, columnValue in ipairs(ExtendedColumnsList) do
+
+		local cellText = tostring(columnValue) 
+
+		local cellWidth = string.len(cellText)
+
+		local padding = maximumColumnValueLengthArray[columnIndex] - cellWidth
+
+		text = text .. string.rep(" ", padding) .. cellText
+
+		text = text .. " | "
+
+	end
+
+	text = text .. "\n+"
+
+	for columnIndex, columnValue in ipairs(ExtendedColumnsList) do
+
+		local cellWidth = string.len(columnValue)
+
+		local padding = maximumColumnValueLengthArray[columnIndex] + 2
+
+		text = text .. string.rep("-", padding)
+
+		text = text .. "+"
+
+	end
+
+	text = text .. "\n" 
+	
+	for rowIndex, rowValue in ipairs(RowsList) do
+		
+		local cellRowHeaderText = tostring(rowValue) 
+
+		local cellWidth = string.len(cellRowHeaderText)
+
+		local columnRowPadding = maximumColumnValueLengthArray[1] - cellWidth + 1
+
+		text = text .. "|" .. string.rep(" ", columnRowPadding) .. cellRowHeaderText .. " |"
+
+		for columnIndex, value in ipairs(ColumnsList) do
+
+			local cellValue = matrix[rowIndex][columnIndex]
+
+			local cellText = tostring(cellValue) 
+
+			local cellWidth = string.len(cellText)
+
+			local padding = maximumColumnValueLengthArray[columnIndex + 1] - cellWidth + 1
+
+			text = text .. string.rep(" ", padding) .. cellText
+
+			text = text .. " |"
+
+		end
+
+		text = text .. "\n"
+		
+	end
+
+	text = text .. "+"
+
+	for columnIndex, columnValue in ipairs(ExtendedColumnsList) do
+
+		local cellWidth = string.len(columnValue)
+
+		local padding = maximumColumnValueLengthArray[columnIndex] + 2
+
+		text = text .. string.rep("-", padding)
+
+		text = text .. "+"
+
+	end
+
+	text = text .. "\n\n"
+
+	return text
+	
+end
+
 function ConfusionMatrixCreator.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -172,129 +304,223 @@ function ConfusionMatrixCreator:printConfusionMatrix(trueLabelVector, predictedL
 	
 	local ClassesList = self.ClassesList
 	
-	local numberOfClasses = #ClassesList
-	
-	local maxClassLabelLengthArray = {}
-	
-	local indicatorString = "True \\ Predicted"
-	
-	local maxColumnValueLength = string.len(indicatorString)
-
-	for i, classLabel in ipairs(ClassesList) do
-		
-		local length = string.len(tostring(classLabel))
-		
-		maxClassLabelLengthArray[i] = length
-		
-		maxColumnValueLength = math.max(maxColumnValueLength, length)
-		
-	end
-
-	for column = 1, #confusionMatrix[1], 1 do
-		
-		for row = 1, #confusionMatrix, 1 do
-			
-			maxClassLabelLengthArray[column] = math.max(maxClassLabelLengthArray[column], string.len(tostring(confusionMatrix[row][column]))) 
-
-		end
-		
-	end
-	
-	local text =  "\n\n+" .. string.rep("-", maxColumnValueLength + 2) .. "+"
-	
-	for i, classLabel in ipairs(ClassesList) do
-
-		local cellWidth = string.len(classLabel)
-
-		local padding = maxClassLabelLengthArray[i] + 2
-
-		text = text .. string.rep("-", padding)
-
-		text = text .. "+"
-
-	end
-	
-	text = text .. "\n|" .. tostring(" ", maxColumnValueLength - 1) .. indicatorString .. " |"
-	
-	for i, classLabel in ipairs(ClassesList) do
-		
-		local cellText = tostring(classLabel) 
-		
-		local cellWidth = string.len(classLabel)
-		
-		local padding = maxClassLabelLengthArray[i] - cellWidth + 1
-		
-		text = text .. string.rep(" ", padding) .. cellText
-
-		text = text .. " |"
-
-	end
-	
-	text = text .. "\n+".. string.rep("-", maxColumnValueLength  + 2) .. "+"
-	
-	for i, classLabel in ipairs(ClassesList) do
-
-		local cellWidth = string.len(classLabel)
-
-		local padding = maxClassLabelLengthArray[i] + 2
-
-		text = text .. string.rep("-", padding)
-
-		text = text .. "+"
-
-	end
-	
-	text = text .. "\n" 
-
-	for row = 1, numberOfClasses, 1 do
-		
-		local cellRowHeaderText = tostring(ClassesList[row]) 
-
-		local cellWidth = string.len(cellRowHeaderText)
-
-		local columnRowPadding = maxColumnValueLength - cellWidth + 1
-
-		text = text .. "|" .. string.rep(" ", columnRowPadding) .. cellRowHeaderText .. " |"
-
-		for column = 1, numberOfClasses, 1 do
-
-			local cellValue = confusionMatrix[row][column]
-
-			local cellText = tostring(cellValue) 
-
-			local cellWidth = string.len(cellText)
-
-			local padding = maxClassLabelLengthArray[column] - cellWidth + 1
-
-			text = text .. string.rep(" ", padding) .. cellText
-			
-			text = text .. " |"
-
-		end
-
-		text = text .. "\n"
-
-	end
-	
-	text = text .. "+" .. string.rep("-", maxColumnValueLength + 2) .. "+"
-	
-	for i, classLabel in ipairs(ClassesList) do
-
-		local cellWidth = string.len(classLabel)
-
-		local padding = maxClassLabelLengthArray[i] + 2
-
-		text = text .. string.rep("-", padding)
-
-		text = text .. "+"
-
-	end
-	
-	text = text .. "\n\n"
+	local text = generateTableText("True \\ Predicted", ClassesList, ClassesList, confusionMatrix)
 	
 	print(text)
-	
+
 	return confusionMatrix, numberOfUnknownClassifications
+	
+end
+
+function ConfusionMatrixCreator:createCountMatrix(trueLabelVector, predictedLabelVector)
+	
+	local confusionMatrix = self:createConfusionMatrix(trueLabelVector, predictedLabelVector)
+
+	local numberOfClasses = #self.ClassesList
+	
+	local totalNumberOfSamples = 0
+
+	for i = 1, numberOfClasses do
+		
+		for j = 1, numberOfClasses do
+			
+			totalNumberOfSamples = totalNumberOfSamples + confusionMatrix[i][j]
+			
+		end
+		
+	end
+
+	local countMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, 4}, 0)
+	
+	local truePositiveCount
+	
+	local falsePositiveCount
+	
+	local falseNegativeCount
+	
+	local trueNegativeCount
+	
+	for classIndex = 1, numberOfClasses do
+
+		truePositiveCount = confusionMatrix[classIndex][classIndex]
+		
+		falsePositiveCount = 0
+		
+		falseNegativeCount = 0
+
+		for i = 1, numberOfClasses do
+			
+			if (i ~= classIndex) then
+				
+				falsePositiveCount = falsePositiveCount + confusionMatrix[i][classIndex]
+				
+				falseNegativeCount = falseNegativeCount + confusionMatrix[classIndex][i]
+				
+			end
+			
+		end
+
+		trueNegativeCount = totalNumberOfSamples - (truePositiveCount + falsePositiveCount + falseNegativeCount)
+
+		countMatrix[classIndex][1] = truePositiveCount
+		
+		countMatrix[classIndex][2] = falsePositiveCount
+		
+		countMatrix[classIndex][3] = falseNegativeCount
+		
+		countMatrix[classIndex][4] = trueNegativeCount
+		
+	end
+
+	return countMatrix, totalNumberOfSamples
+	
+end
+
+function ConfusionMatrixCreator:printCountMatrix(trueLabelVector, predictedLabelVector)
+
+	local countMatrix, totalNumberOfSamples = self:createCountMatrix(trueLabelVector, predictedLabelVector)
+	
+	local ClassesList = self.ClassesList
+	
+	local numberOfClasses = #ClassesList
+
+	local HeaderStringList = {"True Positive", "False Positive", "False Negative", "True Negative"}
+	
+	local text = generateTableText("Class \\ Count Type", ClassesList, HeaderStringList, countMatrix)
+
+	print(text)
+	
+	return countMatrix, totalNumberOfSamples
+	
+end
+
+function ConfusionMatrixCreator:calculateStatistic(trueLabelVector, predictedLabelVector, statisticName)
+	
+	if (not statisticName) then error("Unknown statistic name.") end
+
+	local numberOfClasses
+	
+	if (string.sub(statisticName, 1, 5) == "Macro") then
+		
+		local metricName = string.lower(string.sub(statisticName, 6)) -- e.g. Precision -> precision
+		
+		local statisticValueVector = self:calculateStatistic(trueLabelVector, predictedLabelVector, metricName)
+
+		local sum = 0
+		
+		numberOfClasses = #self.ClassesList
+		
+		for i = 1, numberOfClasses do sum = sum + statisticValueVector[i][1] end
+
+		return sum / numberOfClasses
+
+	end
+
+	local countMatrix, totalNumberOfSamples = self:createCountMatrix(trueLabelVector, predictedLabelVector)
+	
+	numberOfClasses = #self.ClassesList
+	
+	if (statisticName == "Accuracy") then
+		
+		local correct = 0
+		
+		for i = 1, numberOfClasses do correct = correct + countMatrix[i][1] end
+		
+		return correct / totalNumberOfSamples
+		
+	end
+	
+	local statisticValueVector = AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
+	
+	if (statisticName == "F1") then
+		
+		local calculatePrecisionFunction = calculateStatisticFunctionList["Precision"]
+		
+		local calculateRecallFunction = calculateStatisticFunctionList["Recall"]
+		
+		local truePositiveCount
+
+		local falsePositiveCount
+
+		local falseNegativeCount
+
+		local trueNegativeCount
+		
+		local precision
+		
+		local recall
+		
+		for i = 1, numberOfClasses do
+			
+			truePositiveCount = countMatrix[i][1]
+			
+			falsePositiveCount = countMatrix[i][2]
+			
+			falseNegativeCount = countMatrix[i][3]
+			
+			trueNegativeCount = countMatrix[i][4]
+			
+			precision = calculatePrecisionFunction(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount)
+			
+			recall = calculateRecallFunction(truePositiveCount, falsePositiveCount, falseNegativeCount, trueNegativeCount)
+			
+			statisticValueVector[i][1] = ((precision + recall == 0) and 0) or (2 * precision * recall) / (precision + recall)
+			
+		end
+		
+	else
+		
+		local calculateStatisticFunction = calculateStatisticFunctionList[statisticName]
+		
+		if (not calculateStatisticFunction) then error("Unknown statistic name.") end
+		
+		for i = 1, numberOfClasses do
+			
+			statisticValueVector[i][1] = calculateStatisticFunction(countMatrix[i][1], countMatrix[i][2], countMatrix[i][3], countMatrix[i][4])
+			
+		end
+		
+	end
+
+	return statisticValueVector
+	
+end
+
+function ConfusionMatrixCreator:printStatistics(trueLabelVector, predictedLabelVector, statisticNameArray)
+
+	local statisticNameArray = statisticNameArray or {"Precision", "Recall", "Specificity", "F1"}
+	
+	local statisticValueVectorArray = {}
+	
+	for i, statisticName in ipairs(statisticNameArray) do
+
+		statisticValueVectorArray[i] = self:calculateStatistic(trueLabelVector, predictedLabelVector, statisticName)
+
+	end
+	
+	local ClassesList = self.ClassesList
+	
+	local numberOfClasses = #ClassesList
+	
+	local numberOfStatistics = #statisticNameArray
+	
+	local statisticValueMatrix = AqwamTensorLibrary:createTensor({numberOfClasses, numberOfStatistics})
+	
+	for i = 1, numberOfClasses, 1 do
+		
+		for j = 1, numberOfStatistics, 1 do
+			
+			statisticValueMatrix[i][j] = statisticValueVectorArray[j][i][1]
+			
+		end
+		
+	end
+	
+	local text = generateTableText("Class \\ Statistic", ClassesList, statisticNameArray, statisticValueMatrix)
+
+	print(text)
+	
+	return statisticValueVectorArray
 	
 end
 

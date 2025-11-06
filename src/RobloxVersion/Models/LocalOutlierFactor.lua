@@ -270,7 +270,9 @@ function LocalOutlierFactor:score()
 
 		local sortedUnwrappedDistanceVector = deepCopyTable(unwrappedDistanceVector)
 		
-		table.remove(sortedUnwrappedDistanceVector, i) -- Ignore the distance to itself.
+		-- Ignores the distance to itself. It is removed before sorting to reduce computational resources.
+		
+		table.remove(sortedUnwrappedDistanceVector, i)
 
 		mergeSort(sortedUnwrappedDistanceVector, 1, numberOfDataMinusOne)
 		

@@ -20,7 +20,7 @@ This library was developed solo over more than 3 years (6000+ hours and includes
 
 * You're not licensing convenience; you're licensing a higher probability of increased revenue.
 
-* Think of it this way: you’re not losing 2% of your revenue; you’re investing 0.5%-5% to unlock the other 30% you might be leaving on the table. In some cases, the upside could be even higher.
+* Think of it this way: you’re not losing 0.5%-5% of your revenue; you’re investing 0.5%-5% to unlock the other 30% you might be leaving on the table. In some cases, the upside could be even higher.
 
 * That fee also includes DataPredict™ Neural and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
 

@@ -411,7 +411,7 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 	
 	local numberOfNeuronsAtFinalLayer = #ModelParameters[#ModelParameters][1]
 
-	if (numberOfNeuronsAtFinalLayer ~= #ClassesList) then error("The number of classes are not equal to number of neurons. Please adjust your last layer using setLayers() function.") end
+	if (numberOfNeuronsAtFinalLayer ~= #ClassesList) then error("The number of classes are not equal to number of neurons. Please adjust your last layer using setLayer() function.") end
 
 	if (typeof(labelVector) == "number") then
 
@@ -1195,15 +1195,15 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 	layerPropertyValueTypeCheckingFunctionList["DropoutRate"](dropoutRate)
 
-	hasBiasNeuron = self:getValueOrDefaultValue(hasBiasNeuron,  self.hasBiasNeuronArray[layerNumber])
+	hasBiasNeuron = self:getValueOrDefaultValue(hasBiasNeuron, self.hasBiasNeuronArray[layerNumber])
 
 	hasBiasNeuron = (hasBiasNeuron and 1) or 0
 
-	Regularizer = self:getValueOrDefaultValue(Regularizer,  self.RegularizerArray[layerNumber])
+	Regularizer = self:getValueOrDefaultValue(Regularizer, self.RegularizerArray[layerNumber])
 
 	Regularizer = Regularizer or 0
 
-	Optimizer = self:getValueOrDefaultValue(Optimizer,  self.OptimizerArray[layerNumber])
+	Optimizer = self:getValueOrDefaultValue(Optimizer, self.OptimizerArray[layerNumber])
 
 	Optimizer = Optimizer or 0
 
@@ -1211,7 +1211,7 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 	self.activationFunctionArray[layerNumber] = activationFunction or self.activationFunctionArray[layerNumber] 
 
-	self.learningRateArray[layerNumber] = activationFunction or self.learningRateArray[layerNumber] 
+	self.learningRateArray[layerNumber] = learningRate or self.learningRateArray[layerNumber] 
 
 	self.OptimizerArray[layerNumber] = Optimizer
 
@@ -1237,7 +1237,7 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 
 		layerPropertyValueTypeCheckingFunctionList["HasBias"](value)
 
-		local hasBiasNeuron = self:getValueOrDefaultValue(value,  self.hasBiasNeuronArray[layerNumber])
+		local hasBiasNeuron = self:getValueOrDefaultValue(value, self.hasBiasNeuronArray[layerNumber])
 
 		hasBiasNeuron = (hasBiasNeuron and 1) or 0
 

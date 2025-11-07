@@ -61,3 +61,7 @@ LocalOutlierProbability:score(): matrix
 ## Inherited From
 
 * [BaseModel](BaseModel.md)
+
+## References
+
+* [LoOP: local outlier probabilities](https://dl.acm.org/doi/10.1145/1645953.1646195)

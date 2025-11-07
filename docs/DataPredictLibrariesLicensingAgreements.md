@@ -34,6 +34,8 @@
  
    * Only applicable to studios / individuals that created these games:
 
+     * Lumber Tycoon 2
+
      * Work At A Pizza Place
      
      * Roblox High School [Legacy]

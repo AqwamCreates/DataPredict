@@ -32,7 +32,7 @@
  
    * Includes access to future updates and fixes.
  
-   * Only applicable to studios that created these games:
+   * Only applicable to studios / individuals that created these games:
 
      * Work At A Pizza Place
      

@@ -4,7 +4,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 | Model Type                                                        | Description                                     | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
-| [Regression](#regression)                                         | Continuous Values Prediction                    | 9     |
+| [Regression](#regression)                                         | Continuous Values Prediction                    | 10    |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 14    |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 21    |
@@ -13,7 +13,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Generative](#generative)                                         | Feature To Novel Values                         | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 2     |
-| Total                                                             |                                                 | 80    |
+| Total                                                             |                                                 | 81    |
 
 ### Legend
 

@@ -22,7 +22,7 @@ I get it. You don't want me to exploit your free labour as well. So, let me prop
 
 If you somehow managed to contribute at least 10% to the DataPredict™ ecosystem, I will give you employment and startup leverage.
 
-All you need to do is contact your employer (or your other leaders if you own the organization) to get three DataPredict license that halves the monthly licensing costs. These are valid as long as you are employed in that organization.
+All you need to do is contact your employer (or your other leaders if you own the organization) to get five DataPredict license that gives 25% discount to the monthly licensing costs. These are valid as long as you are employed in that organization.
 
 * If you are employed under a organization, these licenses are non-transferrable.
 
@@ -46,4 +46,6 @@ Additionally, all the code you write will have their copyright assigned to me di
 
 The employer or you will also need to show the DataPredict™ attribution to the public in their projects when using this license.
 
-If you're okay with this, then you can sign the contribution agreement [here]().
+Lastly, you need to keep contributing to make sure it stays 10%.
+
+If you're okay with this, then you can sign the contribution licensing agreement [here]().

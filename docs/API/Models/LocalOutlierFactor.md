@@ -61,3 +61,7 @@ LocalOutlierFactor:score(): matrix
 ## Inherited From
 
 * [BaseModel](BaseModel.md)
+
+## References
+
+* [LOF: identifying density-based local outliers](https://dl.acm.org/doi/10.1145/335191.335388)

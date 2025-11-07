@@ -24,6 +24,26 @@
      
       * "We build the whole machine learning library from scratch and build the whole system with it."
 
+* [Childhood-Appreciation License Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
+
+    * No cost and no limit for current existing projects. This deal ends on my next birthday, 23 January 2026.
+ 
+   * Requires disclosure and testonomials of DataPredict™ to the public.
+ 
+   * Includes access to future updates and fixes.
+ 
+   * Only applicable to studios that created these games:
+ 
+      * Whatever Floats your Boat
+    
+      * Work At A Pizza Place
+    
+      * Phantom Forces
+    
+      * Twisted Murderer
+
+   * Please contact me for confirmation.
+
 * [Contributor License Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
 
    * If any organization that employs official DataPredict contributor (who contributed equal to or more than 10%) with a guarantee of at least one (1) year of employment (unless the contributor states otherwise), the organization may request three non-transferrable halves the monthly licensing cost.

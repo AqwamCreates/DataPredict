@@ -33,14 +33,16 @@
    * Includes access to future updates and fixes.
  
    * Only applicable to studios that created these games:
- 
-      * Whatever Floats your Boat
-    
-      * Work At A Pizza Place
-    
-      * Phantom Forces
-    
-      * Twisted Murderer
+
+     * Work At A Pizza Place
+     
+     * Roblox High School [Legacy]
+     
+     * Twisted Murderer
+
+     * Whatever Floats your Boat
+
+     * Phantom Forces
 
    * Please contact me for confirmation.
 

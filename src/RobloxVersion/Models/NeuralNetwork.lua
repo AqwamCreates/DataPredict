@@ -1237,7 +1237,7 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 
 		layerPropertyValueTypeCheckingFunctionList["HasBias"](value)
 
-		local hasBiasNeuron = self:getValueOrDefaultValue(value,  self.hasBiasNeuronArray[layerNumber])
+		local hasBiasNeuron = self:getValueOrDefaultValue(value, self.hasBiasNeuronArray[layerNumber])
 
 		hasBiasNeuron = (hasBiasNeuron and 1) or 0
 

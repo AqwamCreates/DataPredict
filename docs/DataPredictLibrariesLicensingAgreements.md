@@ -36,17 +36,17 @@
 
      * Lumber Tycoon 2
 
-     * Work At A Pizza Place
+     * [Work At A Pizza Place](https://www.roblox.com/games/192800/Work-at-a-Pizza-Place)
      
-     * Roblox High School [Legacy]
+     * [Roblox High School (Legacy)](https://www.roblox.com/games/9689581/Roblox-High-School-Legacy)
      
-     * Twisted Murderer
+     * [Twisted Murderer](https://www.roblox.com/games/177052655/Twisted-Murderer)
     
-     * Survive The Disasters!
+     * [Survive The Disasters!](https://www.roblox.com/games/18540115/Survive-The-Disasters)
 
-     * Whatever Floats your Boat
+     * [Whatever Floats your Boat](https://www.roblox.com/games/156220906/Whatever-Floats-your-Boat)
 
-     * Phantom Forces
+     * [Phantom Forces](https://www.roblox.com/games/292439477/Phantom-Forces)
 
    * Please contact me for confirmation.
 

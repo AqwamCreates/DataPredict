@@ -46,4 +46,4 @@ Additionally, all the code you write will have their copyright assigned to me di
 
 The employer or you will also need to show the DataPredict™ attribution to the public in their projects when using this license.
 
-If you're okay with this, then you can sign the contribution agreement [here]().
+If you're okay with this, then you can sign the contribution licensing agreement [here]().

@@ -1,5 +1,11 @@
 # [Documentation](index.md) - DataPredict™ Libraries Licensing Agreements
 
+### Disclaimer
+
+I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
+
+## Licenses
+
 * [Standard Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement.docx)
 
     * ~2% of gross revenue per month for projects using DataPredict™. The percentage decreases as gross revenue increases.

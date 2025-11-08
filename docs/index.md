@@ -8,9 +8,9 @@
 
 ## Commercial
 
-* [What Is Machine Learning Capable Of In Games](HighValueProjectTutorials.md)!
+* [What Is Machine Learning Capable Of In Games?](HighValueProjectTutorials.md)
 
-* [How DataPredict Reduces Costs](CostReductionInformation.md)!
+* [How DataPredict Reduces Costs?](CostReductionInformation.md)
 
 * [Commercial Use Licensing And Pricing](CommercialUseLicensingAndPricing.md)
 

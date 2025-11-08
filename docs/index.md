@@ -17,7 +17,7 @@ This library was developed solo over more than 3 years (6000+ hours and includes
 | Expertise             | Requires Hiring A Machine Learning Engineer, Starting At 5K USD Per Month To Build Optimized Models Required By Your Projects. Preferrably Holding A PhD Or Masters Degree To Ensure Correctness. | Can Use Existing Game Developers.     |
 | Integration           | Additional Costs From Hosting External Servers And Connecting ML Frameworks In Different Programming Languages. . | Lua Only. |
 | Compute Cost          | Compute Cost Increases Number Of Players Increases If Models Are Hosted Externally. | Exploit Roblox Servers' And Players' CPU At No Additional Cost. |
-| Choosing Models       | Need To Learn Multiple ML Frameworks For Machine Learning, Deep Learning And Reinforcement Learning In Different Programming Languages.  | Unified Under Same API Design. All Models With High-Value Use Cases Are Covered. |
+| Choosing Models       | Need To Learn Multiple ML Frameworks For Machine Learning, Deep Learning And Reinforcement Learning In Different Programming Languages If Models Are Hosted Externally.  | Unified Under Same API Design. All Models With High-Value Use Cases Are Covered. |
 | Knowledge             | Generally PhD Or Masters If Building Models From Scratch. | Game Developers Does Not Require Additional Qualifications.
 | Time-To-Market        | 3 Years To Build The Whole Library If Building From Scratch. Minimum Of 1 Week If Using Existing ML Frameworks Hosted In Different Programming Languages. | Within A Day.
 | Reliability           | May Be Inaccurate Nor Performant When Builing From Scratch. Network Latency And Serialization Issues If Hosted Externally. | Latency Only Comes From Models' Training And Predictions. | 

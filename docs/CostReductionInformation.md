@@ -4,7 +4,7 @@
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
 | Expertise             | Requires Hiring Of A Machine Learning Engineer, Starting At 5K USD Per Month To Build Optimized Models Required By Your Projects. Preferrably Holding A PhD Or Masters Degree To Ensure Correctness. | Can Use Existing Game Developers. Can Learn From DataPredict's High-Value Project Tutorials To Specialize Further.     |
 | Integration           | Additional Costs From Hosting External Servers And Connecting ML Frameworks In Different Programming Languages. | Lua Only. |
-| Compute Cost          | If Models Are Hosted Externally, Compute Cost Increases As Number Of Players Increases. | Exploit Roblox Servers' And Players' CPU At No Additional Cost. |
+| Compute Cost          | If Models Are Hosted Externally, Compute Cost Increases As Number Of Players Increases. | Utilize Roblox Servers' And Players' CPUs At No Additional Cost. |
 | Choosing Models       | Need To Learn Multiple ML Frameworks For Machine Learning, Deep Learning And Reinforcement Learning In Different Programming Languages If Models Are Hosted Externally.  | Unified Under Same API Design. All Models With High-Value Use Cases Are Covered. |
 | Time-To-Market        | Multi-Year Engineering The Whole Library If Building From Scratch. Minimum Of 1 Week If Using Existing ML Frameworks Hosted In Different Programming Languages. | Within A Day.
 | Reliability           | May Be Inaccurate Or Underperform When Building From Scratch. Network Latency And Serialization Issues If Hosted Externally. | Latency Only Comes From Models' Training And Predictions. |

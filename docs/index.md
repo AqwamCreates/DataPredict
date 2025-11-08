@@ -12,11 +12,9 @@
 
 * You can also see how it reduces machine learning engineering costs [here](CostReductionInformation.md)!
 
-You can download and read the full list of commercial licensing agreements [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
+* You can download and read the full list of commercial licensing agreements [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
 
-I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
-
-Want to contribute? Have a look at the information and perks [here](ContributorInformation.md).
+* I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
 
 ## Terms And Conditions Information
 

@@ -6,9 +6,9 @@
 | Integration           | Additional Costs From Hosting External Servers And Connecting ML Frameworks In Different Programming Languages. | Lua Only. |
 | Compute Cost          | If Models Are Hosted Externally, Compute Cost Increases As Number Of Players Increases. | Exploit Roblox Servers' And Players' CPU At No Additional Cost. |
 | Choosing Models       | Need To Learn Multiple ML Frameworks For Machine Learning, Deep Learning And Reinforcement Learning In Different Programming Languages If Models Are Hosted Externally.  | Unified Under Same API Design. All Models With High-Value Use Cases Are Covered. |
-| Knowledge             | Generally PhD Or Masters If Building Accurate Models From Scratch. | Game Developers Does Not Require Additional Qualifications.
 | Time-To-Market        | Multi-Year Engineering The Whole Library If Building From Scratch. Minimum Of 1 Week If Using Existing ML Frameworks Hosted In Different Programming Languages. | Within A Day.
 | Reliability           | May be inaccurate or underperform when building from scratch. Network Latency And Serialization Issues If Hosted Externally. | Latency Only Comes From Models' Training And Predictions. |
+| Knowledge             | Generally PhD Or Masters If Building Accurate Models From Scratch. | Game Developers Does Not Require Additional Qualifications.
 
 | License Type Based On Gross Revenue Per Company / Group / Individual      | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          | Licensing Cost When A Project Earns 10K-100K USD Per Month |
 |---------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|-----------------------|

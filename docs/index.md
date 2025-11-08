@@ -6,17 +6,13 @@
 
 > What once ended in deep learning returns as the full spectrum of machine learning.
 
-## Commercial
+## Commercial Use
 
 * [What Is Machine Learning Capable Of In Games?](HighValueProjectTutorials.md)
 
-* [How DataPredict Reduces Costs?](CostReductionInformation.md)
+* [How DataPredict Reduce Costs For In-Game Machine Learning?](CostReductionInformation.md)
 
-* [Commercial Use Licensing](CommercialUseLicensing.md)
-
-* Licensing and pricing for commercial use terms can be fo
-
-* You can download and read the full list of commercial licensing agreements [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
+* [Commercial Use Licensing](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md)
 
 * I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
 

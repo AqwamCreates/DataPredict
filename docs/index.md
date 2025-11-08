@@ -15,7 +15,7 @@ This library was developed solo over more than 3 years (6000+ hours and includes
 | Cost Reduction Factor | Without DataPredict                                                                                                                               | With DataPredict                     |
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
 | Expertise             | Requires Hiring A Machine Learning Engineer, Starting At 5K USD Per Month To Build Optimized Models Required By Your Projects. Preferrably Holding A PhD Or Masters Degree To Ensure Correctness. | Can Use Existing Game Developers.     |
-| Integration           | Additional Costs From Hosting External Servers And Connecting ML Frameworks In Different Programming Languages. . | Lua Only. |
+| Integration           | Additional Costs From Hosting External Servers And Connecting ML Frameworks In Different Programming Languages. | Lua Only. |
 | Compute Cost          | If Models Are Hosted Externally, Compute Cost Increases As Number Of Players Increases. | Exploit Roblox Servers' And Players' CPU At No Additional Cost. |
 | Choosing Models       | Need To Learn Multiple ML Frameworks For Machine Learning, Deep Learning And Reinforcement Learning In Different Programming Languages If Models Are Hosted Externally.  | Unified Under Same API Design. All Models With High-Value Use Cases Are Covered. |
 | Knowledge             | Generally PhD Or Masters If Building Models From Scratch. | Game Developers Does Not Require Additional Qualifications.

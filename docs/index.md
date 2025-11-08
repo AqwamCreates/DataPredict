@@ -17,7 +17,7 @@ This library was developed solo over more than 3 years (6000+ hours and includes
 | Expertise             | Requires Hiring A Machine Learning Engineer, Starting At 70K USD Per Year To Build Optimized Models Required By Your Projects. Preferrably Holding A PhD or Masters Degree. | Can Use Existing Game Developers.     |
 | Integration           | Additional Costs From Hosting External Server And Connecting ML Frameworks In Another Programming Language. Takes Up To A Week For Minimal Setup. | Exploit Roblox Servers's And Players' CPU At No Additional Cost. Takes Up Within A Day For Minimal Setup. | 
 | Choosing Models       | Need To Learn Multiple ML Frameworks For Machine Learning, Deep Learning And Reinforcement Learning In Another Programmign Language.  | Unified Under Same API Design. All Models With High-Value Use Cases Are Covered. |
-| Knowledge             | Generally PhD or Masters If Building Models From Scratch. | Game Developers Does Not Require Additional Qualifications.
+| Knowledge             | Generally PhD Or Masters If Building Models From Scratch. | Game Developers Does Not Require Additional Qualifications.
 
 | License Type Based On Gross Revenue Per Company / Group / Individual      | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          |
 |---------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|

@@ -6,7 +6,9 @@
 
 > What once ended in deep learning returns as the full spectrum of machine learning.
 
-You can find high-value project tutorials for improving retention and revenue [here](HighValueProjectTutorials.md)! You can also see how it reduces machine learning engineering costs [here](CostReductionInformation.md)
+* You can find high-value project tutorials for improving retention and revenue [here](HighValueProjectTutorials.md)!
+
+* You can also see how it reduces machine learning engineering costs [here](CostReductionInformation.md)
 
 By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md).
 

@@ -6,29 +6,21 @@
 
 > What once ended in deep learning returns as the full spectrum of machine learning.
 
+## Commercial
+
 * You can find high-value project tutorials for improving retention and revenue [here](HighValueProjectTutorials.md)!
 
-* You can also see how it reduces machine learning engineering costs [here](CostReductionInformation.md)
-
-By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md).
-
-This library was developed solo over more than 3 years (6000+ hours and includes weekends), which would exceed $300,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build and test all the models in this library. To all indie devs who just starting their business, feel free to use it without burning away your money!
-
-* Because machine, deep and reinforcement learning models try to find the best solution for you during training, you are likely (but not guaranteed) to increase your revenue over this cost.
-
-* You're not licensing convenience; you're licensing a higher probability of increased revenue.
-
-* Think of it this way: you’re not losing 0.5%-5% of your revenue; you’re investing 0.5%-5% to unlock the other 30% you might be leaving on the table. In some cases, the upside could be even higher.
-
-* That fee also includes DataPredict™ Neural and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
-
-Thanks to the early adopters, I managed to to fund my Master research thesis (that may be published soon) on how to speed up reinforcement learning training by 10 times from the baseline methods. It is already implemented in the DataPredict™ and DataPredict™ Neural libraries!
+* You can also see how it reduces machine learning engineering costs [here](CostReductionInformation.md)!
 
 You can download and read the full list of commercial licensing agreements [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
 
 I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
 
 Want to contribute? Have a look at the information and perks [here](ContributorInformation.md).
+
+## Terms And Conditions Information
+
+By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md).
 
 For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 

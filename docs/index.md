@@ -27,7 +27,6 @@ This library was developed solo over more than 3 years (6000+ hours and includes
 | Standard                                                                  | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict |
 | White-Label                                                               | 5%                                                        | None                                      |
 
-
 * Because machine, deep and reinforcement learning models try to find the best solution for you during training, you are likely (but not guaranteed) to increase your revenue over this cost.
 
 * You're not licensing convenience; you're licensing a higher probability of increased revenue.

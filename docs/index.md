@@ -12,7 +12,7 @@
 
 * [How DataPredict Reduces Costs?](CostReductionInformation.md)
 
-* [Commercial Use Licensing And Pricing](CommercialUseLicensingAndPricing.md)
+* [Commercial Use Licensing](CommercialUseLicensing.md)
 
 * Licensing and pricing for commercial use terms can be fo
 

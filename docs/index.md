@@ -12,11 +12,19 @@ By using or possessing any copies of this library or its assets (including the i
 
 This library was developed solo over more than 3 years (6000+ hours and includes weekends), which would exceed $300,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build and test all the models in this library. To all indie devs who just starting their business, feel free to use it without burning away your money!
 
+| Cost Reduction Factor | Without DataPredict                                                                                                                               | With DataPredict                     |
+|-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
+| Expertise             | Requires Hiring A Machine Learning Engineer, Starting At 70K USD Per Year.                                                                        | Can Use Existing Game Developer.     |
+| Integration           | Additional Costs From Hosting External Server And Connecting ML Frameworks In Another Programming Language. Takes Up To A Week For Minimal Setup. | Exploit Roblox Servers's And Players' CPU At No Additional Cost. Takes Up Within A Day For Minimal Setup. | 
+
+| Choosing Models       | Need To Learn Multiple ML Frameworks For Machine Learning, Deep Learning And Reinforcement Learning  | Unified Under Same API Design
+
 | License Type Based On Gross Revenue Per Company / Group / Individual      | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          |
 |---------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
 | Non-B2B + Less Than Or Equal To 3K USD Within 365 Days (Not Per 365 Days) | 0%                                                        | Requires Public Disclosure Of DataPredict |
 | Standard                                                                  | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict |
 | White-Label                                                               | 5%                                                        | None                                      |
+
 
 * Because machine, deep and reinforcement learning models try to find the best solution for you during training, you are likely (but not guaranteed) to increase your revenue over this cost.
 

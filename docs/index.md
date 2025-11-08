@@ -18,7 +18,7 @@
 
 * By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md).
 
- * Free to use for companies / individuals that generates up to 3K USD within 365 days. 
+  * Free to use for companies / individuals that generates up to 3K USD within 365 days. 
 
 * For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 

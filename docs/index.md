@@ -8,9 +8,13 @@
 
 ## Commercial
 
-* You can find high-value project tutorials for improving retention and revenue [here](HighValueProjectTutorials.md)!
+* [What Is Machine Learning Capable Of In Games](HighValueProjectTutorials.md)!
 
-* You can also see how it reduces machine learning engineering costs [here](CostReductionInformation.md)!
+* [How DataPredict Reduces Costs](CostReductionInformation.md)!
+
+* [Commercial Use Licensing And Pricing](CommercialUseLicensingAndPricing.md)
+
+* Licensing and pricing for commercial use terms can be fo
 
 * You can download and read the full list of commercial licensing agreements [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
 

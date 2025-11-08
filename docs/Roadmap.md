@@ -6,7 +6,7 @@ The list of items shown below are likely to be implemented due to their mainstre
 
 * Online Decision Trees And Boosting Algorithms
 
-  * Currently, the offline variants offer superior performance in terms of generalization for tabular datasets. However, because they tend to be computationally expensive and requires generally cannot perform online training, it is not suitable for real-time game environments.
+  * Currently, the offline variants offer superior performance in terms of generalization for tabular datasets. However, because they tend to be computationally expensive and requires generally cannot perform incremental training, it is not suitable for real-time game environments.
 
   * The research literature on the online variants of these algorithms are lacking, and so we are waiting for more papers to come out.
 

@@ -18,7 +18,9 @@
 
 * By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md).
 
-  * Small devs and non-B2B projects earning ≤3K USD within 365 days (not per 365 days) can use DataPredict for free! 
+  * Small devs and non-B2B projects earning ≤3K USD within 365 days (not per 365 days) can use DataPredict for free!
+ 
+  * Standard and White-Label tiers available for commercial projects.
 
 * For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 

@@ -24,7 +24,7 @@ This library was developed solo over more than 3 years (6000+ hours and includes
 | License Type Based On Gross Revenue Per Company / Group / Individual      | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          | Licensing Cost When A Project Earns 10K-100K USD Per Month |
 |---------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|-----------------------|
 | Non-B2B + Less Than Or Equal To 3K USD Within 365 Days (Not Per 365 Days) | 0%                                                        | Requires Public Disclosure Of DataPredict | N/A            |
-| Standard                                                                  | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 160 - 1276 USD |
+| Standard                                                                  | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 160 - 1300 USD |
 | White-Label                                                               | 5%                                                        | None                                      | 500 - 5000 USD |
 
 * Because machine, deep and reinforcement learning models try to find the best solution for you during training, you are likely (but not guaranteed) to increase your revenue over this cost.

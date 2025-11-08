@@ -10,7 +10,7 @@
 
 * [What Is Machine Learning Capable Of In Games?](HighValueProjectTutorials.md)
 
-* [How DataPredict Reduce Costs For In-Game Machine Learning?](CostReductionInformation.md)
+* [How Does DataPredict Reduce Costs For In-Game Machine Learning?](CostReductionInformation.md)
 
 * [Commercial Use Licensing](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md)
 

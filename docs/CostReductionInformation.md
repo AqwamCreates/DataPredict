@@ -1,3 +1,5 @@
+# Cost Reduction Information
+
 | Cost Reduction Factor | Without DataPredict                                                                                                                               | With DataPredict                     |
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
 | Expertise             | Requires Hiring Of A Machine Learning Engineer, Starting At 5K USD Per Month To Build Optimized Models Required By Your Projects. Preferrably Holding A PhD Or Masters Degree To Ensure Correctness. | Can Use Existing Game Developers. Can Learn From DataPredict's High-Value Project Tutorials To Specialize Further.     |

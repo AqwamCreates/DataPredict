@@ -14,7 +14,7 @@ This library was developed solo over more than 3 years (6000+ hours and includes
 
 | Cost Reduction Factor | Without DataPredict                                                                                                                               | With DataPredict                     |
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-| Expertise             | Requires Hiring A Machine Learning Engineer, Starting At 70K USD Per Year.                                                                        | Can Use Existing Game Developer.     |
+| Expertise             | Requires Hiring A Machine Learning Engineer, Starting At 70K USD Per Year.                                                                        | Can Use Existing Game Developers.     |
 | Integration           | Additional Costs From Hosting External Server And Connecting ML Frameworks In Another Programming Language. Takes Up To A Week For Minimal Setup. | Exploit Roblox Servers's And Players' CPU At No Additional Cost. Takes Up Within A Day For Minimal Setup. | 
 | Choosing Models       | Need To Learn Multiple ML Frameworks For Machine Learning, Deep Learning And Reinforcement Learning In Another Language Or Build It In-House.  | Unified Under Same API Design. All Models With High-Value Use Cases Are Covered. |
 

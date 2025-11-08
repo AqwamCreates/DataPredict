@@ -11,7 +11,7 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
   * Direct Usage: Any instance where the Library is explicitly called, linked, imported, compiled, or otherwise included as part of another program, application, system, or project.
 
-  * Indirect Usage: Any scenario where the Library’s functionality, outputs, or capabilities are utilized, whether or not the Library is directly linked or embedded in the project.This includes intermediate layers, middleware, or third-party tools that rely on the Library to perform tasks or produce results.
+  * Indirect Usage: Any scenario where the Library’s functionality, outputs, or capabilities are utilized, whether or not the Library is directly linked or embedded in the project. This includes intermediate layers, middleware, or third-party tools that rely on the Library to perform tasks or produce results.
     
   * Dependency Relationships: Any project, software, or system that lists the Library as a dependency, either explicitly or implicitly, through build systems, package managers, or runtime requirements.
     

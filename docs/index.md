@@ -6,7 +6,7 @@
 
 > What once ended in deep learning returns as the full spectrum of machine learning.
 
-## Commercial Use
+## Commercial Use Information
 
 * [What Is Machine Learning Capable Of In Games?](HighValueProjectTutorials.md)
 

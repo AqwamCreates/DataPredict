@@ -704,4 +704,24 @@ function ModelSafeguardWrapper:waitUntilCanUseModel(timeout, waitDuration)
 	
 end
 
+function ModelSafeguardWrapper:restart(ModelParameters, forceRestart)
+	
+	if (self.canUseModel) then
+		
+		if (not forceRestart) then return end
+		
+	end
+	
+	ModelParameters = ModelParameters or self.OriginalModelParameters
+	
+	if (ModelParameters) then
+		
+		self.Model:setModelParameters(ModelParameters)
+		
+	end
+	
+	self.canUseModel = true
+	
+end
+
 return ModelSafeguardWrapper

@@ -58,7 +58,7 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
 
 * [Contributor License Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
 
-   * If any organization that employs official DataPredict contributor (who contributed equal to or more than 10%) with a guarantee of at least one (1) year of employment (unless the contributor states otherwise), the organization may request three non-transferrable halves the monthly licensing cost.
+   * If any organization that employs official DataPredict contributor (who contributed equal to or more than 10%) with a guarantee of at least one (1) year of employment (unless the contributor states otherwise), the organization may request non-transferrable licenses that gives 1/4 discount on the licensing costs for all projects using DataPredict.
    
    * This license is valid as long as the DataPredict contributor remain continuously employed in the same company.
   

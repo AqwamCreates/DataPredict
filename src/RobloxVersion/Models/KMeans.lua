@@ -433,7 +433,9 @@ local function createNumberOfDataPointVector(numberOfDataPointVector, clusterAss
 	
 	for clusterIndex, numberOfDataPoint in ipairs(numberOfDataPointArray) do
 		
-		totalNumberOfDataPoint = numberOfDataPointVector[clusterIndex] + numberOfDataPoint
+		totalNumberOfDataPoint = numberOfDataPoint 
+			
+		if (numberOfDataPointVector) then totalNumberOfDataPoint = totalNumberOfDataPoint + numberOfDataPointVector[clusterIndex][1] end
 		
 		if (type(maximumNumberOfDataPoints) == "number") then
 			
@@ -441,7 +443,7 @@ local function createNumberOfDataPointVector(numberOfDataPointVector, clusterAss
 			
 		end
 		
-		numberOfDataPointVector[clusterIndex] = {totalNumberOfDataPoint}
+		newNumberOfDataPointVector[clusterIndex] = {totalNumberOfDataPoint}
 		
 	end
 	

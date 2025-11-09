@@ -12,5 +12,5 @@
 | License Type Based On Gross Revenue Per Company / Group / Individual      | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          | Licensing Cost When A Project Earns 10K / 100K / 1M USD Per Month |
 |---------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|-----------------------|
 | Non-B2B + Less Than Or Equal To 3K USD Within 365 Days (Not Per 365 Days) | 0%                                                        | Requires Public Disclosure Of DataPredict | Not Applicable        |
-| Standard                                                                  | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 160 / 1300 USD / 10, 530 USD |
+| Standard                                                                  | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 160 / 1300 USD / 10,530 USD |
 | White-Label                                                               | 5%                                                        | None                                      | 500 / 5000 USD / 50,000 USD |

@@ -9,8 +9,8 @@
 | Time-To-Market        | Multi-Year Engineering The Whole Library If Building From Scratch. Minimum Of 1 Week If Using Existing ML Frameworks Hosted In Different Programming Languages. | Within A Day.
 | Reliability           | May Be Inaccurate Or Underperform When Building From Scratch. Network Latency And Serialization Issues If Hosted Externally. | Latency Only Comes From Models' Training And Predictions. |
 
-| License Type Based On Gross Revenue Per Company / Group / Individual      | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          | Licensing Cost When A Project Earns 10K-100K USD Per Month |
+| License Type Based On Gross Revenue Per Company / Group / Individual      | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          | Licensing Cost When A Project Earns 10K / 100K / 1M USD Per Month |
 |---------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|-----------------------|
 | Non-B2B + Less Than Or Equal To 3K USD Within 365 Days (Not Per 365 Days) | 0%                                                        | Requires Public Disclosure Of DataPredict | Not Applicable        |
-| Standard                                                                  | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 160 - 1300 USD        |
-| White-Label                                                               | 5%                                                        | None                                      | 500 - 5000 USD        |
+| Standard                                                                  | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 160 / 1300 USD / 10, 530 USD |
+| White-Label                                                               | 5%                                                        | None                                      | 500 / 5000 USD / 50,000 USD |

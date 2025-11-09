@@ -38,6 +38,8 @@ setmetatable(NaiveBayesBaseModel, BaseModel)
 
 local defaultUseLogProbabilities = false
 
+local defaultMaximumNumberOfDataPoints = nil
+
 local function areNumbersOnlyInList(list)
 
 	for i, value in ipairs(list) do
@@ -117,6 +119,8 @@ function NaiveBayesBaseModel.new(parameterDictionary)
 	NewBaseModel.ClassesList = parameterDictionary.ClassesList or {}
 	
 	NewBaseModel.useLogProbabilities = BaseModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
+	
+	NewBaseModel.maximumNumberOfDataPoints = BaseModel:getValueOrDefaultValue(parameterDictionary.maximumNumberOfDataPoints, defaultMaximumNumberOfDataPoints)
 
 	return NewBaseModel
 	
@@ -253,6 +257,28 @@ function NaiveBayesBaseModel:categoricalCrossEntropy(labelMatrix, generatedLabel
 	local sumCategoricalCrossEntropyValue = AqwamTensorLibrary:sum(categoricalCrossEntropyTensor)
 
 	return sumCategoricalCrossEntropyValue
+	
+end
+
+function NaiveBayesBaseModel:resetNumberOfDataPointsOnReachingLimit(numberOfDataPointVector)
+	
+	local maximumNumberOfDataPoints = self.maximumNumberOfDataPoints
+	
+	if (type(maximumNumberOfDataPoints) ~= "number") then return numberOfDataPointVector end
+	
+	local numberOfDataPoint
+	
+	for i, unwrappedNumberOfDataPointVector in ipairs(numberOfDataPointVector) do
+		
+		if (unwrappedNumberOfDataPointVector[1] > maximumNumberOfDataPoints) then
+			
+			unwrappedNumberOfDataPointVector[1] = 1
+			
+		end
+		
+	end
+	
+	return numberOfDataPointVector
 	
 end
 

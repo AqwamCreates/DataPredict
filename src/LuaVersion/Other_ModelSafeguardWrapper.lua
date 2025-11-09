@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseInstance = require(s"Core_BaseInstance")
+local BaseInstance = require("Core_BaseInstance")
 
 local ModelTrainingModifier = require("Other_ModelTrainingModifier")
 
@@ -340,6 +340,8 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 	
 	local valueArray
 	
+	local currentTimeString
+	
 	local isSuccessful = pcall(function()
 		
 		isAcceptable, valueArray = functionToRun()
@@ -356,9 +358,7 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 	
 	if (storeDefectiveUpdateInformation) then
 
-		local currentTimeString = tostring(os.time())
-
-		defectiveUpdateInformationDictionary[currentTimeString] = eventName
+		defectiveUpdateInformationDictionary[tostring(os.time())] = eventName
 
 	end
 	
@@ -380,6 +380,8 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 
 	local onDefectFunctionToRun
 	
+	local canFixDefect
+	
 	for i, value in ipairs(onDefectSettingArray) do
 		
 		if (value) then
@@ -390,9 +392,21 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 			
 			if (onDefectFunctionToRun) then 
 				
-				onDefectFunctionToRun()
+				canFixDefect = pcall(onDefectFunctionToRun)
 				
 				Model:setModelParameters(OriginalModelParameters)
+				
+				if (not canFixDefect) then
+					
+					if (storeDefectiveUpdateInformation) then
+
+						defectiveUpdateInformationDictionary[tostring(os.time())] = eventName .. " + " .. onDefectFunctionName
+
+					end
+					
+					break 
+					
+				end
 				
 				isSuccessful = pcall(function()
 

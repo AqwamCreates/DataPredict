@@ -40,6 +40,8 @@ setmetatable(NearestCentroidModel, BaseModel)
 
 local defaultDistanceFunction = "Euclidean"
 
+local defaultMaximumNumberOfDataPoints = nil
+
 local function createDistanceMatrix(distanceFunction, featureMatrix, centroidMatrix)
 
 	local numberOfData = #featureMatrix
@@ -223,6 +225,8 @@ function NearestCentroidModel.new(parameterDictionary)
 	NewNearestCentroidModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 	
 	NewNearestCentroidModel.ClassesList = parameterDictionary.ClassesList or {}
+	
+	NewNearestCentroidModel.maximumNumberOfDataPoints = BaseModel:getValueOrDefaultValue(parameterDictionary.maximumNumberOfDataPoints, defaultMaximumNumberOfDataPoints)
 
 	return NewNearestCentroidModel
 
@@ -256,6 +260,8 @@ function NearestCentroidModel:train(featureMatrix, labelVector)
 	
 	local numberOfClasses = #self.ClassesList
 	
+	local maximumNumberOfDataPoints = self.maximumNumberOfDataPoints
+	
 	local ModelParameters = self.ModelParameters or {}
 	
 	local centroidMatrix = ModelParameters[1] or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, 0)
@@ -265,6 +271,8 @@ function NearestCentroidModel:train(featureMatrix, labelVector)
 	local sumMatrix = AqwamTensorLibrary:multiply(centroidMatrix, numberOfDataPointVector)
 	
 	local extractedFeatureMatrixTable = self:separateFeatureMatrixByClass(featureMatrix, labelMatrix)
+	
+	local numberOfDataPoints
 
 	for clusterIndex, featureMatrix in ipairs(extractedFeatureMatrixTable) do
 		
@@ -277,8 +285,16 @@ function NearestCentroidModel:train(featureMatrix, labelVector)
 			sumVector = AqwamTensorLibrary:add(sumVector, subSumVector)
 
 			sumMatrix[clusterIndex] = sumVector[1]
+			
+			numberOfDataPoints = numberOfDataPointVector[clusterIndex][1] + #featureMatrix
+			
+			if (type(maximumNumberOfDataPoints) == "number") then
+				
+				if (numberOfDataPoints > maximumNumberOfDataPoints) then numberOfDataPoints = 1 end
+				
+			end
 
-			numberOfDataPointVector[clusterIndex][1] = numberOfDataPointVector[clusterIndex][1] + #featureMatrix
+			numberOfDataPointVector[clusterIndex][1] = numberOfDataPoints
 			
 		end
 		

@@ -644,23 +644,23 @@ function ModelSafeguardWrapper:getModel()
 
 end
 
-function ModelSafeguardWrapper:getModelParameters(...)
+function ModelSafeguardWrapper:getModelParameters(doNotDeepCopy, ...)
 	
 	if (self.CanUseModel) then
 		
-		return self.Model:getModelParameters(...)
+		return self.Model:getModelParameters(doNotDeepCopy, ...)
 		
 	end
 	
 	local OriginalModelParameters = self.OriginalModelParameters
 		
-	if (select(..., 1)) then
+	if (doNotDeepCopy) then
 		
-		return deepCopyTable(OriginalModelParameters)
-
+		return OriginalModelParameters
+		
 	end
 	
-	return OriginalModelParameters
+	return deepCopyTable(OriginalModelParameters)
 
 end
 

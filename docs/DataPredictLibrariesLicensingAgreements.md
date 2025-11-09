@@ -32,7 +32,7 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
 
 * [Childhood-Appreciation License Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
 
-    * No cost and no limit for current existing (non-B2B) projects. This deal ends on my next birthday, 23 January 2026.
+    * No cost and no limit for all current existing (non-B2B) projects. This deal ends on my next birthday, 23 January 2026.
  
    * Requires disclosure and testonomials of DataPredict™ to the public.
  

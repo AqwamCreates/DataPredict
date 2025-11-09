@@ -646,7 +646,7 @@ end
 
 function ModelSafeguardWrapper:getModelParameters(doNotDeepCopy, ...)
 	
-	if (self.CanUseModel) then
+	if (self.canUseModel) then
 		
 		return self.Model:getModelParameters(doNotDeepCopy, ...)
 		
@@ -664,9 +664,21 @@ function ModelSafeguardWrapper:getModelParameters(doNotDeepCopy, ...)
 
 end
 
-function ModelSafeguardWrapper:setModelParameters(...)
+function ModelSafeguardWrapper:setModelParameters(ModelParameters, doNotDeepCopy, ...)
+	
+	if (self.canUseModel) then
 
-	self.Model:setModelParameters(...)
+		self.Model:setModelParameters(ModelParameters, doNotDeepCopy, ...)
+
+	end
+
+	if (doNotDeepCopy) then
+
+		self.OriginalModelParameters = ModelParameters
+
+	end
+	
+	self.OriginalModelParameters = deepCopyTable(ModelParameters)
 
 end
 

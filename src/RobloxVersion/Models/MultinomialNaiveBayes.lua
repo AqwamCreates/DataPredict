@@ -372,6 +372,8 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 			priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityVector)
 
 		end
+		
+		numberOfDataPointVector = NewMultinomialNaiveBayesModel:resetNumberOfDataPointsOnReachingLimit(numberOfDataPointVector)
 
 		NewMultinomialNaiveBayesModel.ModelParameters = {featureProbabilityMatrix, priorProbabilityVector, featureCountMatrix, numberOfDataPointVector}
 

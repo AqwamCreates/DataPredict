@@ -352,6 +352,8 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 			priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityVector)
 
 		end
+		
+		numberOfDataPointVector = NewCategoricalNaiveBayesModel:resetNumberOfDataPointsOnReachingLimit(numberOfDataPointVector)
 
 		NewCategoricalNaiveBayesModel.ModelParameters = {featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector}
 

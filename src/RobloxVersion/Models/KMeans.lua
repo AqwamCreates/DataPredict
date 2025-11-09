@@ -50,6 +50,8 @@ local defaultSetInitialCentroidsOnDataPoints = true
 
 local defaultSetTheCentroidsDistanceFarthest = true
 
+local defaultMaximumNumberOfDataPoints = nil
+
 local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
 	
 	local numberOfDistances = #distanceMatrix
@@ -321,6 +323,8 @@ function KMeansModel.new(parameterDictionary)
 	
 	NewKMeansModel.setTheCentroidsDistanceFarthest = NewKMeansModel:getValueOrDefaultValue(parameterDictionary.setTheCentroidsDistanceFarthest, defaultSetTheCentroidsDistanceFarthest)
 	
+	NewKMeansModel.maximumNumberOfDataPoints = NewKMeansModel:getValueOrDefaultValue(parameterDictionary.maximumNumberOfDataPoints, defaultMaximumNumberOfDataPoints)
+	
 	return NewKMeansModel
 	
 end
@@ -413,25 +417,35 @@ local function sequentialKMeans(featureMatrix, centroidMatrix, distanceMatrix, n
 	
 end
 
-local function createNumberOfDataPointVector(numberOfClusters, clusterAssignmentArray)
+local function createNumberOfDataPointVector(numberOfDataPointVector, clusterAssignmentArray, maximumNumberOfDataPoints)
 	
-	local numberOfDataPointArray = table.create(numberOfClusters, 0) 
+	local numberOfDataPointArray = {}
+	
+	local newNumberOfDataPointVector = {}
+	
+	local totalNumberOfDataPoint
 
 	for dataIndex, clusterAssignmentIndex in ipairs(clusterAssignmentArray) do
 
-		numberOfDataPointArray[clusterAssignmentIndex] = numberOfDataPointArray[clusterAssignmentIndex] + 1
+		numberOfDataPointArray[clusterAssignmentIndex] = (numberOfDataPointArray[clusterAssignmentIndex] or 0) + 1
 
 	end
-
-	local numberOfDataPointVector = {}
 	
 	for clusterIndex, numberOfDataPoint in ipairs(numberOfDataPointArray) do
 		
-		numberOfDataPointVector[clusterIndex] = {numberOfDataPoint}
+		totalNumberOfDataPoint = numberOfDataPointVector[clusterIndex] + numberOfDataPoint
+		
+		if (type(maximumNumberOfDataPoints) == "number") then
+			
+			if (totalNumberOfDataPoint > maximumNumberOfDataPoints) then totalNumberOfDataPoint = 1 end
+			
+		end
+		
+		numberOfDataPointVector[clusterIndex] = {totalNumberOfDataPoint}
 		
 	end
 	
-	return numberOfDataPointVector
+	return newNumberOfDataPointVector
 	
 end
 
@@ -452,6 +466,8 @@ function KMeansModel:train(featureMatrix)
 	local distanceFunction = self.distanceFunction
 	
 	local mode = self.mode
+	
+	local maximumNumberOfDataPoints = self.maximumNumberOfDataPoints
 	
 	local ModelParameters = self.ModelParameters or {}
 
@@ -537,7 +553,7 @@ function KMeansModel:train(featureMatrix)
 
 	end
 	
-	numberOfDataPointVector = createNumberOfDataPointVector(numberOfClusters, clusterAssignmentArray)
+	numberOfDataPointVector = createNumberOfDataPointVector(numberOfDataPointVector, clusterAssignmentArray, maximumNumberOfDataPoints)
 	
 	self.ModelParameters = {centroidMatrix, numberOfDataPointVector}
 	

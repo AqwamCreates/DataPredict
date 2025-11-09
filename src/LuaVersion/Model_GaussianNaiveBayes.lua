@@ -351,6 +351,8 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 			priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityVector)
 			
 		end
+		
+		numberOfDataPointVector = NewGaussianNaiveBayesModel:resetNumberOfDataPointsOnReachingLimit(numberOfDataPointVector)
 
 		NewGaussianNaiveBayesModel.ModelParameters = {meanMatrix, standardDeviationMatrix, priorProbabilityVector, numberOfDataPointVector}
 

@@ -286,6 +286,46 @@ local function removeDefectiveData(dataMatrixArray, hasClassification, ClassesLi
 
 end
 
+local function deepCopyTable(original, copies)
+
+	copies = copies or {}
+
+	local originalType = type(original)
+
+	local copy
+
+	if (originalType == 'table') then
+
+		if copies[original] then
+
+			copy = copies[original]
+
+		else
+
+			copy = {}
+
+			copies[original] = copy
+
+			for originalKey, originalValue in next, original, nil do
+
+				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
+
+			end
+
+			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
+
+		end
+
+	else -- number, string, boolean, etc
+
+		copy = original
+
+	end
+
+	return copy
+
+end
+
 function ModelSafeguardWrapper.new(parameterDictionary)
 	
 	local NewModelSafeguardWrapper = BaseInstance.new(parameterDictionary)
@@ -342,6 +382,8 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 	
 	local currentTimeString
 	
+	self.OriginalModelParameters = OriginalModelParameters
+	
 	local isSuccessful = pcall(function()
 		
 		isAcceptable, valueArray = functionToRun()
@@ -351,6 +393,8 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 	if (isSuccessful) and (isAcceptable) then
 		
 		self.canUseModel = true
+		
+		self.OriginalModelParameters = nil
 		
 		return table.unpack(valueArray or {})
 		
@@ -367,6 +411,8 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 	if (ignoreUpdateOnDefect) or ((not ignoreUpdateOnDefect) and (not onDefectFunctionToRunDictionary)) then 
 
 		self.canUseModel = true
+		
+		self.OriginalModelParameters = nil
 
 		return table.unpack(valueArray or {})
 
@@ -417,6 +463,8 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 				if (isSuccessful) and (isAcceptable) then
 
 					self.canUseModel = true
+					
+					self.OriginalModelParameters = nil
 
 					return table.unpack(valueArray or {})
 
@@ -431,6 +479,8 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 	Model:setModelParameters(OriginalModelParameters)
 	
 	self.canUseModel = true
+	
+	self.OriginalModelParameters = nil
 	
 	return table.unpack(valueArray or {})
 	
@@ -595,8 +645,22 @@ function ModelSafeguardWrapper:getModel()
 end
 
 function ModelSafeguardWrapper:getModelParameters(...)
+	
+	if (self.CanUseModel) then
+		
+		return self.Model:getModelParameters(...)
+		
+	end
+	
+	local OriginalModelParameters = self.OriginalModelParameters
+		
+	if (select(..., 1)) then
+		
+		return deepCopyTable(OriginalModelParameters)
 
-	return self.Model:getModelParameters(...)
+	end
+	
+	return OriginalModelParameters
 
 end
 

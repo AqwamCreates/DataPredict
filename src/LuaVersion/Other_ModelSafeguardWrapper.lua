@@ -586,7 +586,7 @@ function ModelSafeguardWrapper:train(...)
 		
 		finalCostValue = costArray[#costArray]
 		
-		if (type(finalCostValue) == "nil") then
+		if (type(finalCostValue) ~= "number") then
 
 			isAcceptableValue = checkIfModelParametersAreAcceptable(UpdatedModelParameters)
 

@@ -344,6 +344,8 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 			priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityVector)
 
 		end
+		
+		numberOfDataPointVector = NewComplementNaiveBayesModel:resetNumberOfDataPointsOnReachingLimit(numberOfDataPointVector)
 
 		NewComplementNaiveBayesModel.ModelParameters = {complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector}
 

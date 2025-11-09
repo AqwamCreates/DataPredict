@@ -688,4 +688,20 @@ function ModelSafeguardWrapper:getCanUseModel()
 	
 end
 
+function ModelSafeguardWrapper:waitUntilCanUseModel(timeout, waitDuration)
+	
+	timeout = timeout or math.huge
+
+	while (not self.canUseModel) do
+		
+		timeout = timeout - task.wait(waitDuration)
+		
+		if (timeout <= 0) then return false end
+		
+	end
+
+	return true
+	
+end
+
 return ModelSafeguardWrapper

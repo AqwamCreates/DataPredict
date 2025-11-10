@@ -1,4 +1,4 @@
-# Creating Probability-Based NPC Anti Clump Model
+# Creating Probability-Based NPC Anti-Clump Model
 
 Hi guys! In this tutorial, we will demonstrate on how to create cluster-based NPC anti-clump model.
 

@@ -1,6 +1,6 @@
 # Creating Probability-Based NPC Anti Clump Model
 
-Hi guys! In this tutorial, we will demonstrate on how to create cluster-based placement model.
+Hi guys! In this tutorial, we will demonstrate on how to create cluster-based NPC anti-clump model.
 
 For best results, please use Expectation-Maximization model.
 
@@ -10,9 +10,9 @@ For best results, please use Expectation-Maximization model.
 
  -- For this tutorial, we will let the model decide how many clusters it will produce based on player / item spread.
 
--- Setting 1 here
+-- Note, we're setting math.huge here, but that doesn't mean we will begin producing an infinite amount of clusters! It will start at 1 and increases it until the model finds a suitable number of clusters.
 
-local PlacementModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = 1})
+local PlacementModel = DataPredict.Models.ExpectationMaximization.new({numberOfClusters = math.huge})
 
 ```
 
@@ -58,11 +58,13 @@ centroidMatrix = centroidMatrix[1]
 
 ## Interacting With The Center Of Clusters
 
-Since we have three clusters, we can expect three rows for our matrix. As such we can process our game logic here.
+Since we have dynamic number of clusters, we can expect multiple rows for our matrix. As such we can process our game logic here.
 
 ```lua
 
-local function placePlayerAtARandomLocation(Player)
+local directionStrength = 0.5
+
+local function goToPlayer(NPC, Player)
 
   local meanMatrix = ModelParameters[1]
   
@@ -76,13 +78,27 @@ local function placePlayerAtARandomLocation(Player)
 
   local randomUnwrappedVarianceVector = varianceMatrix[randomClusterIndex]
 
-  local x = randomUnwrappedMeanVector[1] + (math.random() * randomUnwrappedVarianceVector[1])
+  local randomX = randomUnwrappedMeanVector[1] + (math.random() * randomUnwrappedVarianceVector[1])
 
-  local y = randomUnwrappedMeanVector[2] + (math.random() * randomUnwrappedVarianceVector[2])
+  local randomY = randomUnwrappedMeanVector[2] + (math.random() * randomUnwrappedVarianceVector[2])
 
-  local z = randomUnwrappedMeanVector[3] + (math.random() * randomUnwrappedVarianceVector[3])
+  local randomZ = randomUnwrappedMeanVector[3] + (math.random() * randomUnwrappedVarianceVector[3])
 
-  placePlayer(Player, x, y, z)
+  local playerX, playerY, playerZ = getPlayerPosition(Player)
+
+  local directionX = playerX - randomX
+
+  local directionY = playerY - randomY
+
+  local directionZ = playerZ - randomZ
+
+  local x = randomX + (directionStrength * directionX)
+
+  local y = randomY + (directionStrength * directionY)
+
+  local y = randomZ + (directionStrength * directionZ)
+
+  moveNPCto(NPC, x, y, z)
 
 end
 

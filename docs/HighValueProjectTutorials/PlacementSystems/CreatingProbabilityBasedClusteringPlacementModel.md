@@ -76,11 +76,11 @@ local function placePlayerAtARandomLocation(Player)
 
   local randomUnwrappedVarianceVector = varianceMatrix[randomClusterIndex]
 
-  local x = randomUnwrappedMeanVector[1] + (math.random() * randomUnwrappedVarianceVector[1])
+  local x = randomUnwrappedMeanVector[1] + ((math.random() * 2 - 1) * randomUnwrappedVarianceVector[1])
 
-  local y = randomUnwrappedMeanVector[2] + (math.random() * randomUnwrappedVarianceVector[2])
+  local y = randomUnwrappedMeanVector[2] + ((math.random() * 2 - 1) * randomUnwrappedVarianceVector[2])
 
-  local z = randomUnwrappedMeanVector[3] + (math.random() * randomUnwrappedVarianceVector[3])
+  local z = randomUnwrappedMeanVector[3] + ((math.random() * 2 - 1) * randomUnwrappedVarianceVector[3])
 
   placePlayer(Player, x, y, z)
 

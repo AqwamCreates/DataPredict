@@ -78,11 +78,11 @@ local function goToPlayer(NPC, Player)
 
   local randomUnwrappedVarianceVector = varianceMatrix[randomClusterIndex]
 
-  local randomX = randomUnwrappedMeanVector[1] + (math.random() * randomUnwrappedVarianceVector[1])
+  local randomX = randomUnwrappedMeanVector[1] + ((math.random() * 2 - 1) * randomUnwrappedVarianceVector[1])
 
-  local randomY = randomUnwrappedMeanVector[2] + (math.random() * randomUnwrappedVarianceVector[2])
+  local randomY = randomUnwrappedMeanVector[2] + ((math.random() * 2 - 1) * randomUnwrappedVarianceVector[2])
 
-  local randomZ = randomUnwrappedMeanVector[3] + (math.random() * randomUnwrappedVarianceVector[3])
+  local randomZ = randomUnwrappedMeanVector[3] + ((math.random() * 2 - 1) * randomUnwrappedVarianceVector[3])
 
   local playerX, playerY, playerZ = getPlayerPosition(Player)
 

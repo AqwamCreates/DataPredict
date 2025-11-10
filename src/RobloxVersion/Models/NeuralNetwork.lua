@@ -782,8 +782,8 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 		local derivativeMatrix = deriveLayer(forwardPropagateArray[layerNumber], zMatrixArray[layerNumber], hasBiasNeuronArray[layerNumber + 1], activationFunctionName)
 
 		layerCostMatrix = AqwamTensorLibrary:multiply(partialErrorMatrix, derivativeMatrix)
-
-		table.insert(errorMatrixArray, 1, layerCostMatrix)
+		
+		errorMatrixArray[layerNumber - 1] = layerCostMatrix
 
 		self:sequenceWait()
 

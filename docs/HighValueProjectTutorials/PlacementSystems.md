@@ -1,5 +1,7 @@
 # Placement Systems
 
+* [Creating Probability-Based NPC Anti-Clump Model](PlacementSystems/CreatingProbabilityBasedNPCAntiClumpModel.md)
+
 * [Creating Probability-Based Clustering Placement Model](PlacementSystems/CreatingProbabilityBasedClusteringPlacementModel.md)
 
   * Identifies areas of low player / item densities for spawning players / items.

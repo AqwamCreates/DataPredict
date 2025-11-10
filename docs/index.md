@@ -28,8 +28,8 @@
 
 | Version | Current Version Number |
 |---------|------------------------|
-| Release | 2.17                   |
-| Beta    | 2.17.0                 |          
+| Release | 2.18                   |
+| Beta    | 2.18.0                 |          
 
 DataPredict™ is a machine, deep and reinforcement learning library for Roblox and Pure Lua.
 

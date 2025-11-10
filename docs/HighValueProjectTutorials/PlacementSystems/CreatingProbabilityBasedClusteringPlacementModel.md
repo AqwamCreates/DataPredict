@@ -62,6 +62,8 @@ Since we have dynamic number of clusters, we can expect multiple rows for our ma
 
 ```lua
 
+local ModelParameters = PlacementModel:getModelParameters()
+
 local function placePlayerAtARandomLocation(Player)
 
   local meanMatrix = ModelParameters[1]

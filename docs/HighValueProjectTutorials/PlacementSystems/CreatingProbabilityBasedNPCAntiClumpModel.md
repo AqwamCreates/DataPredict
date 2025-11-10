@@ -86,7 +86,7 @@ local function goToPlayer(NPC, Player)
 
   local playerX, playerY, playerZ = getPlayerPosition(Player)
 
-  local npcX, npcY, npcZ = getPlayerPosition(NPC)
+  local npcX, npcY, npcZ = getNPCPosition(NPC)
 
   local directionX = playerX - randomX
 

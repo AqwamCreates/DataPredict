@@ -483,7 +483,13 @@ local function activateLayer(zMatrix, hasBiasNeuron, activationFunctionName)
 			
 			-- Because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
 
-			if (hasBiasNeuron == 1) then unwrappedActivationVector[1] = 1 end
+			if (hasBiasNeuron == 1) then 
+				
+				unwrappedActivationVector[1] = 1 
+				
+				unwrappedLayerZVector[1] = 0
+				
+			end
 
 			for featureIndex = startingFeatureIndex, numberOfFeatures, 1 do
 
@@ -502,6 +508,14 @@ local function activateLayer(zMatrix, hasBiasNeuron, activationFunctionName)
 		for dataIndex, unwrappedLayerZVector in ipairs(zMatrix) do
 
 			unwrappedActivationVector = {}
+			
+			if (hasBiasNeuron == 1) then 
+
+				unwrappedActivationVector[1] = 0
+
+				unwrappedLayerZVector[1] = 0
+
+			end
 
 			for featureIndex = startingFeatureIndex, numberOfFeatures, 1 do
 
@@ -512,8 +526,6 @@ local function activateLayer(zMatrix, hasBiasNeuron, activationFunctionName)
 			unwrappedActivationVector = activationFunction({unwrappedLayerZVector})[1]
 			
 			-- Because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
-
-			if (hasBiasNeuron == 1) then table.insert(unwrappedActivationVector, 1, 1) end
 
 			activationMatrix[dataIndex] = unwrappedActivationVector
 
@@ -680,24 +692,36 @@ local function deriveLayer(activationMatrix, zMatrix, hasBiasNeuronOnNextLayer, 
 		end
 
 	else
+		
+		local modifiedUnwrappedActivationVector
+		
+		local modifiedUnwrappedLayerZVector 
 
 		activationFunctionDerivativeFunction = activationFunctionDerivativeList[activationFunctionName]
 
 		for dataIndex, unwrappedLayerZVector in ipairs(zMatrix) do
+			
+			modifiedUnwrappedActivationVector = {}
 
-			unwrappedDerivativeVector = {}
+			modifiedUnwrappedLayerZVector = {}
 
 			for featureIndex = startingFeatureIndex, numberOfFeatures, 1 do
+				
+				modifiedUnwrappedActivationVector[featureIndex - hasBiasNeuronOnNextLayer] = activationMatrix[dataIndex][featureIndex]
 
-				unwrappedDerivativeVector[featureIndex - hasBiasNeuronOnNextLayer] = unwrappedLayerZVector[featureIndex]
-
+				modifiedUnwrappedLayerZVector[featureIndex - hasBiasNeuronOnNextLayer] = unwrappedLayerZVector[featureIndex]
+				
 			end
 
-			unwrappedDerivativeVector = activationFunctionDerivativeFunction({activationMatrix[dataIndex]}, {unwrappedLayerZVector})[1]
+			unwrappedDerivativeVector = activationFunctionDerivativeFunction({modifiedUnwrappedActivationVector}, {modifiedUnwrappedLayerZVector})[1]
 			
 			-- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
 
-			if (hasBiasNeuronOnNextLayer == 1) then table.insert(unwrappedDerivativeVector, 1, 0) end
+			if (hasBiasNeuronOnNextLayer == 1) then 
+				
+				table.insert(unwrappedDerivativeVector, 1, 0) 
+				
+			end
 
 			derivativeMatrix[dataIndex] = unwrappedDerivativeVector
 

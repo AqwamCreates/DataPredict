@@ -508,14 +508,6 @@ local function activateLayer(zMatrix, hasBiasNeuron, activationFunctionName)
 		for dataIndex, unwrappedLayerZVector in ipairs(zMatrix) do
 
 			unwrappedActivationVector = {}
-			
-			if (hasBiasNeuron == 1) then 
-
-				unwrappedActivationVector[1] = 1
-
-				unwrappedLayerZVector[1] = 0
-
-			end
 
 			for featureIndex = startingFeatureIndex, numberOfFeatures, 1 do
 
@@ -524,6 +516,14 @@ local function activateLayer(zMatrix, hasBiasNeuron, activationFunctionName)
 			end
 
 			unwrappedActivationVector = activationFunction({unwrappedLayerZVector})[1]
+			
+			if (hasBiasNeuron == 1) then 
+
+				table.insert(unwrappedActivationVector, 1, 1) 
+
+				unwrappedLayerZVector[1] = 0
+
+			end
 			
 			-- Because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
 

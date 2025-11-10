@@ -58,7 +58,7 @@ centroidMatrix = centroidMatrix[1]
 
 ## Interacting With The Center Of Clusters
 
-Since we have three clusters, we can expect three rows for our matrix. As such we can process our game logic here.
+Since we have dynamic number of clusters, we can expect multiple rows for our matrix. As such we can process our game logic here.
 
 ```lua
 

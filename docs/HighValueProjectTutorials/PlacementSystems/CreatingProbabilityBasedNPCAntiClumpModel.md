@@ -86,17 +86,19 @@ local function goToPlayer(NPC, Player)
 
   local playerX, playerY, playerZ = getPlayerPosition(Player)
 
+  local npcX, npcY, npcZ = getPlayerPosition(NPC)
+
   local directionX = playerX - randomX
 
   local directionY = playerY - randomY
 
   local directionZ = playerZ - randomZ
 
-  local x = randomX + (directionStrength * directionX)
+  local x = npcX + (directionStrength * directionX)
 
-  local y = randomY + (directionStrength * directionY)
+  local y = npcY + (directionStrength * directionY)
 
-  local z = randomZ + (directionStrength * directionZ)
+  local z = npcZ + (directionStrength * directionZ)
 
   moveNPCto(NPC, x, y, z)
 

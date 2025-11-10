@@ -511,7 +511,7 @@ local function activateLayer(zMatrix, hasBiasNeuron, activationFunctionName)
 			
 			if (hasBiasNeuron == 1) then 
 
-				unwrappedActivationVector[1] = 0
+				unwrappedActivationVector[1] = 1
 
 				unwrappedLayerZVector[1] = 0
 
@@ -717,7 +717,7 @@ local function deriveLayer(activationMatrix, zMatrix, hasBiasNeuronOnNextLayer, 
 			
 			-- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
 
-			if (hasBiasNeuronOnNextLayer == 1) then 
+			if (hasBiasNeuronOnNextLayer == 1) then
 				
 				table.insert(unwrappedDerivativeVector, 1, 0) 
 				

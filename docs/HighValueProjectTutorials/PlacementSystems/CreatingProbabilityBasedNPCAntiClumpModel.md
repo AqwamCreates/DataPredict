@@ -96,7 +96,7 @@ local function goToPlayer(NPC, Player)
 
   local y = randomY + (directionStrength * directionY)
 
-  local y = randomZ + (directionStrength * directionZ)
+  local z = randomZ + (directionStrength * directionZ)
 
   moveNPCto(NPC, x, y, z)
 

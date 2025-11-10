@@ -503,19 +503,21 @@ local function activateLayer(zMatrix, hasBiasNeuron, activationFunctionName)
 
 	else
 		
+		local modifiedUnwrappedLayerZVector
+		
 		activationFunction = activationFunctionList[activationFunctionName]
 
 		for dataIndex, unwrappedLayerZVector in ipairs(zMatrix) do
 
-			unwrappedActivationVector = {}
+			modifiedUnwrappedLayerZVector = {}
 
 			for featureIndex = startingFeatureIndex, numberOfFeatures, 1 do
 
-				unwrappedActivationVector[featureIndex - hasBiasNeuron] = unwrappedLayerZVector[featureIndex]
+				modifiedUnwrappedLayerZVector[featureIndex - hasBiasNeuron] = unwrappedLayerZVector[featureIndex]
 
 			end
 
-			unwrappedActivationVector = activationFunction({unwrappedLayerZVector})[1]
+			unwrappedActivationVector = activationFunction({modifiedUnwrappedLayerZVector})[1]
 			
 			if (hasBiasNeuron == 1) then 
 
@@ -625,7 +627,7 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 		
 		local nextLayerNumber = layerNumber + 1
 
-		hasBiasNeuron = hasBiasNeuronArray[layerNumber + 1]
+		hasBiasNeuron = hasBiasNeuronArray[nextLayerNumber]
 
 		zMatrix = AqwamTensorLibrary:dotProduct(inputMatrix, weightMatrix)
 
@@ -693,6 +695,8 @@ local function deriveLayer(activationMatrix, zMatrix, hasBiasNeuronOnNextLayer, 
 
 	else
 		
+		local unwrappedActivationVector
+		
 		local modifiedUnwrappedActivationVector
 		
 		local modifiedUnwrappedLayerZVector 
@@ -701,13 +705,15 @@ local function deriveLayer(activationMatrix, zMatrix, hasBiasNeuronOnNextLayer, 
 
 		for dataIndex, unwrappedLayerZVector in ipairs(zMatrix) do
 			
+			unwrappedActivationVector = activationMatrix[dataIndex]
+			
 			modifiedUnwrappedActivationVector = {}
 
 			modifiedUnwrappedLayerZVector = {}
 
 			for featureIndex = startingFeatureIndex, numberOfFeatures, 1 do
 				
-				modifiedUnwrappedActivationVector[featureIndex - hasBiasNeuronOnNextLayer] = activationMatrix[dataIndex][featureIndex]
+				modifiedUnwrappedActivationVector[featureIndex - hasBiasNeuronOnNextLayer] = unwrappedActivationVector[featureIndex]
 
 				modifiedUnwrappedLayerZVector[featureIndex - hasBiasNeuronOnNextLayer] = unwrappedLayerZVector[featureIndex]
 				

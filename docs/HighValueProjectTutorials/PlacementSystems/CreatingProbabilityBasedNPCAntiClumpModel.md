@@ -64,6 +64,8 @@ Since we have dynamic number of clusters, we can expect multiple rows for our ma
 
 local directionStrength = 0.5
 
+local ModelParameters = PlacementModel:getModelParameters()
+
 local function goToPlayer(NPC, Player)
 
   local meanMatrix = ModelParameters[1]

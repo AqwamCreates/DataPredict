@@ -5,8 +5,6 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 ## Commercial Use Conditions
 
-* The Library can be utilized for both internal and external commercial purposes under the condition that all source codes, data, arts, models, videos, audios, music, or any other assets that interact with the Library, whether directly or indirectly, must be released and distributed to the public under the MIT license for all versions permanently and immediately. Such assets must also be placed in areas that are approved by the Licensor. While waiting for approval from the Licensor, the User must place them in areas that are commonly viewed by the general public.
-
 * For the purposes of this Agreement, "interaction" shall include, but is not limited to:
 
   * Direct Usage: Any instance where the Library is explicitly called, linked, imported, compiled, or otherwise included as part of another program, application, system, or project.
@@ -31,9 +29,13 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
   * Supportive or Auxiliary Use: Any usage of the Library to aid in the development, testing, debugging, or execution of other projects, systems, or applications.
 
-* The User is not allowed to remove distributed codes released under the MIT license due to the commercial usage of this Library from the public without the Licensor's permission.
-
 * The term "commercial use" encompasses all forms of utilization and application, including integration, storing, and hosting from another computer, server, or machine. This applies to companies (or individuals, if none) whose combined revenue (including from subsidiaries or related entities) exceeds $3,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
+
+* The Library can be utilized for both internal and external commercial purposes under the condition that all source codes, data, arts, models, videos, audios, music, or any other assets that interact with the Library, whether directly or indirectly, must be released and distributed to the public under the MIT license for all versions permanently and immediately. Such assets must also be placed in areas that are approved by the Licensor. While waiting for approval from the Licensor, the User must place them in areas that are commonly viewed by the general public.
+
+* If User initially does not meet "commercial use" definition but then transitioned to "commercial use" in the future, the User have a grace period of 30 days to release all the interacting source codes, data, arts, models, videos, audios, music, or any other assets under MIT license. However, the Licensor reserves the right to revoke this requirement at any given time.
+
+* The User is not allowed to remove distributed codes released under the MIT license due to the commercial usage of this Library from the public without the Licensor's permission.
 
 * Failure to comply with these conditions will make the User liable for damages due to non-compliance, and the User must pay monetary compensation. No other forms of compensation will be accepted.
 

@@ -10,7 +10,7 @@ Before we start creating our model, we first need to visualize on how we will de
 
 ```lua
 
-local ZonesList = {
+local zonPl = {
 
     "Mall",
     "Bank",
@@ -28,15 +28,7 @@ local NextZonePredictionModel = DataPredict.Model.DynamicBayesianNetwork.new()
 
 ```
 
-## Training
-
-```lua
-
-NextZonePredictionModel:train(previousPlayerStateVector, currentPlayerStateVector)
-
-```
-
-## Executing Next Zone Prediction
+## Main Code
 
 ```lua
 
@@ -44,13 +36,19 @@ local previousZonePlayerCountVector
 
 local currentZonePlayerCountVector
 
+local nextZoneProbabilityVector
+
 local function onZoneEnter()
 
     currentZonePlayerCountVector = getZonePlayerCountVector()
 
-    PlayerStatePredictionModel:train(previousZonePlayerCountVector, currentZonePlayerCountVector)
+    NextZonePredictionModel:train(previousZonePlayerCountVector, currentZonePlayerCountVector)
 
     previousZonePlayerCountVector = currentZonePlayerCountVector
+
+    nextZoneProbabilityVector = NextZonePredictionModel:predict(currentZonePlayerCountVector)
+
+    assignGuards(nextZoneProbabilityVector)
 
 end
 

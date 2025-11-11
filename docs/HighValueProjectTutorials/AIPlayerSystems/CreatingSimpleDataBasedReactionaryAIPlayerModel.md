@@ -2,11 +2,7 @@
 
 For this tutorial, we need Markov model to build player state prediction model.
 
-## Designing Our Feature Vector And Classes List
-
-Before we start creating our model, we first need to visualize on how we will design our data to that our model can perform player state prediction.
-
-### StatesList
+## Designing Our States List
 
 ```lua
 

@@ -6,7 +6,7 @@ For this tutorial, we need DynamicBayesianNetwork model to build next zone predi
 
 ```lua
 
-local zonePlayerCount = {
+local zonePlayerCountVector = {
 
   {mallPlayerCount, bankPlayerCount, storePlayerCount, petrolStationPlayerCount},
 

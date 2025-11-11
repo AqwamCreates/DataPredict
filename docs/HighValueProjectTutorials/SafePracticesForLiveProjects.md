@@ -1,6 +1,6 @@
 # Safe Practices For Live Projects
 
-Under this section, the code shown below demonstrates on how you detect defective model parameters before you can produce prediction and perform a rollback. We will show you two methods of doing this:
+Under this section, the code shown below demonstrates on how you can detect defective model parameters before you can produce prediction and perform a rollback. We will show you two methods of doing this:
 
 * Method 1: Using ModelSafeguardWrapper
 

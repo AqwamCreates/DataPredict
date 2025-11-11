@@ -1,7 +1,5 @@
 # Retention Systems
 
-### Disclaimer
-
 * All these models does not require you to add new content; these models can use existing content to optimize your games.
 
 ## Prediction Models

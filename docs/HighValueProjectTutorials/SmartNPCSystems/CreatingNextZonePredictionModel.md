@@ -2,22 +2,16 @@
 
 For this tutorial, we need DynamicBayesianNetwork model to build player state prediction model.
 
-## Designing Our Zones List
-
-Before we start creating our model, we first need to visualize on how we will design our data to that our model can perform next zone predictions.
-
-### StatesList
+## Designing Our Zone Player Count Vector
 
 ```lua
 
-local zonePlayer = {
+local zonePlayerCount = {
 
-    "Mall",
-    "Bank",
-    "RetailStore",
-    "PetrolStation",
+  {mallPlayerCount, bankPlayerCount, storePlayerCount, petrolStationPlayerCount},
 
 }
+
 
 ```
 ## Constructing Our Model

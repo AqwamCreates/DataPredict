@@ -36,45 +36,21 @@ NextZonePredictionModel:train(previousPlayerStateVector, currentPlayerStateVecto
 
 ```
 
-## Executing Predicted Player States
-
-In order to assign the reward to that event is selected, we must first deploy the chosen event and observe if the player stayed for that event.
-
-Below, it shows an example code for this.
+## Executing Next Zone Prediction
 
 ```lua
 
-local function run(Player)
+local previousZonePlayerCountVector
 
-    local isPlayerInServer = true
+local currentZonePlayerCountVector
 
-    local currentPlayerState
+local function onZoneEnter()
 
-    local nextPlayerState
+    currentZonePlayerCountVector = getZonePlayerCountVector()
 
-    local previousPlayerState
+    PlayerStatePredictionModel:train(previousZonePlayerCountVector, currentZonePlayerCountVector)
 
-    local playerFunction
-
-    while isPlayerInServer do
-
-        currentPlayerState = getPlayerState(Player)
-
-        PlayerStatePredictionModel:train(previousPlayerState, currentPlayerState)
-    
-        nextPlayerState = PlayerStatePredictionModel:predict(currentPlayerState)
-
-        playerFunction = playerFunctionDictionary[nextPlayerState]
-
-        if (playerFunction) then playerFunction() end
-
-        isPlayerInServer = checkIfPlayerIsInServer(Player)
-
-        previousPlayerState = currentPlayerState
-
-        task.wait()
-
-    end
+    previousZonePlayerCountVector = currentZonePlayerCountVector
 
 end
 

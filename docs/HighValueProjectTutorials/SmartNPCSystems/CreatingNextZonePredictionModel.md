@@ -1,6 +1,6 @@
 # Creating Next Zone Prediction Model
 
-For this tutorial, we need DynamicBayesianNetwork model to build player state prediction model.
+For this tutorial, we need DynamicBayesianNetwork model to build next zone prediction model.
 
 ## Designing Our Zone Player Count Vector
 

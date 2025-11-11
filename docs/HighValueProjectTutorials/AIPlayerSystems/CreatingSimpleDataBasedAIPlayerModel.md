@@ -25,7 +25,7 @@ local PlayerStatesList = {
 
 ```lua
 
-local PlayerStatePredictionModel = DataPredict.Model.TabularQLearning.new({StatesList = StatesList})
+local PlayerStatePredictionModel = DataPredict.Model.Markov.new({StatesList = StatesList})
 
 ```
 

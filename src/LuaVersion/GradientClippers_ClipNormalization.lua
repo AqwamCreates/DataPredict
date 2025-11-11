@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseGradientClipper = require(script.Parent.BaseGradientClipper)
+local BaseGradientClipper = require("GradientClipper_BaseGradientClipper")
 
 ClipNormalizationGradientClipper = {}
 
@@ -50,7 +50,7 @@ function ClipNormalizationGradientClipper.new(parameterDictionary)
 	
 	local normalizationValue = parameterDictionary.normalizationValue or defaultNormalizationValue
 	
-	NewClipNormalizationGradientClipper.normalizationValue = normalizationValue or defaultNormalizationValue
+	NewClipNormalizationGradientClipper.normalizationValue = normalizationValue
 	
 	NewClipNormalizationGradientClipper.maximumNormalizationValue = parameterDictionary.maximumNormalizationValue or normalizationValue
 	

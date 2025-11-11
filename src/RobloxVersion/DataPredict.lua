@@ -36,6 +36,8 @@ local Optimizers = script.Optimizers
 
 local ValueSchedulers = script.ValueSchedulers
 
+local GradientClippers = script.GradientClippers
+
 local ExperienceReplays = script.ExperienceReplays
 
 local QuickSetups = script.QuickSetups
@@ -66,8 +68,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	SupportVectorRegression = require(Models.SupportVectorRegression),
 	
-	SupportVectorRegressionGradientVariant = require(Models.SupportVectorRegressionGradientVariant),
-	
 	KNearestNeighboursRegressor = require(Models.KNearestNeighboursRegressor),
 	
 	LogisticRegression = require(Models.LogisticRegression),
@@ -81,8 +81,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	OneClassSupportVectorMachine = require(Models.OneClassSupportVectorMachine),
 	
 	SupportVectorMachine = require(Models.SupportVectorMachine),
-	
-	SupportVectorMachineGradientVariant = require(Models.SupportVectorMachineGradientVariant),
 	
 	NearestCentroid = require(Models.NearestCentroid),
 	
@@ -113,8 +111,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	AffinityPropagation = require(Models.AffinityPropagation),
 	
 	DensityBasedSpatialClusteringOfApplicationsWithNoise = require(Models.DensityBasedSpatialClusteringOfApplicationsWithNoise),
-	
-	OrderingPointsToIdentifyClusteringStructure = require(Models.OrderingPointsToIdentifyClusteringStructure),
 	
 	BisectingCluster = require(Models.BisectingCluster),
 	
@@ -205,10 +201,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	WassersteinGenerativeAdversarialNetwork = require(Models.WassersteinGenerativeAdversarialNetwork),
 
 	ConditionalWassersteinGenerativeAdversarialNetwork = require(Models.ConditionalWassersteinGenerativeAdversarialNetwork),
-	
-	LocalOutlierFactor = require(Models.LocalOutlierFactor),
-	
-	LocalOutlierProbability = require(Models.LocalOutlierProbability),
 
 }
 
@@ -276,6 +268,14 @@ AqwamMachineDeepAndReinforcementLearningLibrary.ValueSchedulers = {
 
 	Step = require(ValueSchedulers.Step),
 
+}
+
+AqwamMachineDeepAndReinforcementLearningLibrary.GradientClippers = {
+
+	ClipValue = require(GradientClippers.ClipValue),
+
+	ClipNormalization = require(ValueSchedulers.ClipNormalization),
+	
 }
 
 AqwamMachineDeepAndReinforcementLearningLibrary.ExperienceReplays = {

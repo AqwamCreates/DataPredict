@@ -58,7 +58,7 @@ function ClipValueGradientClipper.new(parameterDictionary)
 	
 	NewClipValueGradientClipper:setClipFunction(function(costFunctionDerivativeMatrix)
 		
-		local functionToApply = function(value) math.clamp(value, NewClipValueGradientClipper.minimumValue, NewClipValueGradientClipper.maximumValue) end
+		local functionToApply = function(value) return math.clamp(value, NewClipValueGradientClipper.minimumValue, NewClipValueGradientClipper.maximumValue) end
 		
 		return AqwamTensorLibrary:applyFunction(functionToApply, costFunctionDerivativeMatrix)
 		

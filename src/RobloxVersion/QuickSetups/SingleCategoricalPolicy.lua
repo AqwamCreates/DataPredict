@@ -84,9 +84,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local isEpisodeEnd = (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode)
 		
-	
-
-		local temporalDifferenceError
+		local terminalStateValue = (isEpisodeEnd and 1) or 0
 		
 		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 		
@@ -96,7 +94,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		local actionValue = actionVector[1][actionIndex]
 		
-		local terminalStateValue = (isEpisodeEnd and 1) or 0
+		local temporalDifferenceError
 
 		if (previousFeatureVector) then
 			

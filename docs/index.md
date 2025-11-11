@@ -93,7 +93,5 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 * [Aqwam's Matrix Library](https://aqwamcreates.github.io/MatrixL/)
 
-## Version History
-
 | Version History | [Production / Gold](VersionHistory/ProductionVersionHistory.md) | [Release](VersionHistory/ReleaseVersionHistory.md)  | [Beta](VersionHistory/BetaVersionHistory.md) | [All](VersionHistory/AllVersionsHistory.md) |
 |-----------------|-----------------------------------------------------------------|-----------------------------------------------------|----------------------------------------------|----------------------------------------------------------|

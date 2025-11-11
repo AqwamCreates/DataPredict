@@ -61,8 +61,6 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Example Codes
 
-### Learning AIs
-
 * [Self-Learning Sword-Fighting AIs [Version 9]](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/blob/main/Self-Learning%20Sword-Fighting%20AIs/Reinforcement%20Learning%20Sword%20Fighting%20Version%209.rbxl)
 
 * [Self-Learning Pathfinding AIs](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/blob/main/Self-Learning%20Pathfinding%20AIs/Reinforcement%20Learning%20Pathfinding%20AIs.rbxl)

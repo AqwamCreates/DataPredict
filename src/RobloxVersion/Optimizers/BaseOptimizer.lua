@@ -56,13 +56,13 @@ function BaseOptimizer.new(parameterDictionary)
 
 end
 
-function BaseOptimizer:calculate(learningRate, costFunctionDerivativeMatrix, weightTensor)
+function BaseOptimizer:calculate(learningRate, costFunctionDerivativeMatrix, weightMatrix)
 
 	local LearningRateValueScheduler = self.LearningRateValueScheduler
 
 	if (LearningRateValueScheduler) then learningRate = LearningRateValueScheduler:calculate(learningRate) end
 	
-	costFunctionDerivativeMatrix = self.calculateFunction(learningRate, costFunctionDerivativeMatrix, weightTensor)
+	costFunctionDerivativeMatrix = self.calculateFunction(learningRate, costFunctionDerivativeMatrix, weightMatrix)
 
 	return costFunctionDerivativeMatrix
 

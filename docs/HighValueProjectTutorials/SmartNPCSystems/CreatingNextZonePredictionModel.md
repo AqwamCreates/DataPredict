@@ -10,7 +10,7 @@ Before we start creating our model, we first need to visualize on how we will de
 
 ```lua
 
-local zonPl = {
+local zonePlayer = {
 
     "Mall",
     "Bank",
@@ -44,11 +44,11 @@ local function onZoneEnter()
 
     NextZonePredictionModel:train(previousZonePlayerCountVector, currentZonePlayerCountVector)
 
-    previousZonePlayerCountVector = currentZonePlayerCountVector
-
     nextZoneProbabilityVector = NextZonePredictionModel:predict(currentZonePlayerCountVector)
 
     assignGuards(nextZoneProbabilityVector)
+
+    previousZonePlayerCountVector = currentZonePlayerCountVector
 
 end
 

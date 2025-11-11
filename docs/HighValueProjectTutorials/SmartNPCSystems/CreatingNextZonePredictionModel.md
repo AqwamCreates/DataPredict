@@ -26,7 +26,7 @@ local NextZonePredictionModel = DataPredict.Model.DynamicBayesianNetwork.new()
 
 ```lua
 
-local previousZonePlayerCountVector
+local previousZonePlayerCountVector = getZonePlayerCountVector()
 
 local currentZonePlayerCountVector
 

@@ -1,7 +1,5 @@
 # AI Player Systems
 
-### Disclaimer
-
 Generally, the models can be split into two categories:
 
 * Simple: Uses discrete states (like run, fight and idle).

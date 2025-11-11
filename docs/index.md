@@ -71,6 +71,9 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Links
 
+| Version History | [Production / Gold](VersionHistory/ProductionVersionHistory.md) | [Release](VersionHistory/ReleaseVersionHistory.md)  | [Beta](VersionHistory/BetaVersionHistory.md) | [All](VersionHistory/AllVersionsHistory.md) |
+|-----------------|-----------------------------------------------------------------|-----------------------------------------------------|----------------------------------------------|-----------------------------------------------------------|
+
 * [Fun Facts About The DataPredict Icon](FunFactsAboutTheDataPredictIcon.md)
 
 * [Download Links](DownloadLinks.md)
@@ -86,6 +89,3 @@ To know what this library is all about from scratch, let's have a look at the qu
 ### Other Documentations
 
 * [Aqwam's Matrix Library](https://aqwamcreates.github.io/MatrixL/)
-
-| Version History | [Production / Gold](VersionHistory/ProductionVersionHistory.md) | [Release](VersionHistory/ReleaseVersionHistory.md)  | [Beta](VersionHistory/BetaVersionHistory.md) | [All](VersionHistory/AllVersionsHistory.md) |
-|-----------------|-----------------------------------------------------------------|-----------------------------------------------------|----------------------------------------------|----------------------------------------------------------|

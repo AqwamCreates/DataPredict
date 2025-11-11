@@ -77,11 +77,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ### Repository
 
-* [DataPredict Library](https://github.com/AqwamCreates/DataPredict)
-
-* [DataPredict Neural Library](https://github.com/AqwamCreates/DataPredict-Neural)
-
-* [DataPredict Axon Library](https://github.com/AqwamCreates/DataPredict-Axon)
+| DataPredict | [DataPredict Library](https://github.com/AqwamCreates/DataPredict) | [DataPredict Neural Library](https://github.com/AqwamCreates/DataPredict-Neural) | [DataPredict Axon Library](https://github.com/AqwamCreates/DataPredict-Axon) |
+|---------|------------------------------------------------------------------------|----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
 
 * [TensorL-2D Library](https://github.com/AqwamCreates/TensorL-2D)
 

@@ -24,7 +24,7 @@ local ZonesList = {
 
 ```lua
 
-local NextZonePredictionModel = DataPredict.Model.Markov.new({StatesList = StatesList})
+local NextZonePredictionModel = DataPredict.Model.DynamicBayesianNetwork.new()
 
 ```
 
@@ -32,7 +32,7 @@ local NextZonePredictionModel = DataPredict.Model.Markov.new({StatesList = State
 
 ```lua
 
-PlayerStatePredictionModel:train(previousPlayerStateVector, currentPlayerStateVector)
+NextZonePredictionModel:train(previousPlayerStateVector, currentPlayerStateVector)
 
 ```
 
@@ -43,16 +43,6 @@ In order to assign the reward to that event is selected, we must first deploy th
 Below, it shows an example code for this.
 
 ```lua
-
-local playerFunctionDictionary = {
-
-  ["PlayerAttack"] = playerAttack,
-  ["PlayerBlock"] = playerBlock,
-  ["PlayerFollow"] = playerFollow,
-  ["PlayerEscaping"] = playerEscaping,
-  ["PlayerPickingUpItem"] = playerPickingUpItem,
-
-}
 
 local function run(Player)
 
@@ -89,45 +79,3 @@ local function run(Player)
 end
 
 ```
-
-## Model Parameters Loading 
-
-In here, we will use our model parameters so that it can be used to load out models. There are three cases in here:
-
-1. The player is a first-time player.
-
-2. The player is a returning player.
-
-3. Every player uses the same global model.
-
-### Case 1: The Player Is A First-Time Player
-
-Under this case, this is a new player that plays the game for the first time. In this case, we do not know how this player would act.
-
-We have a multiple way to handle this issue:
-
-* We create a "global" model that trains from every player, and then make a deep copy of the model parameters and load it into our models.
-
-* We take from other players' existing model parameters and load it into our models.
-
-### Case 2: The Player Is A Returning Player
-
-Under this case, you can continue using the existing model parameters that was saved in Roblox's Datastores.
-
-```lua
-
-ModelParameters = PlayerStatePredictionModel:getModelParameters()
-
-PlayerStatePredictionModel:setModelParameters(ModelParameters)
-
-```
-
-### Case 3: Every Player Uses The Same Global Model
-
-Under this case, the procedure is the same to case 2 except that you need to:
-
-* Load model parameters upon server start.
-
-* Perform auto-save with the optional ability of merging with saved model parameters from other servers.
-
-That's all for today!

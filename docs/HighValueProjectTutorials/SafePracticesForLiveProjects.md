@@ -8,7 +8,7 @@ Under this section, the code shown below demonstrates on how you can detect defe
 
 ### Method 1: Using ModelSafeguardWrapper
 
-ModelSafeguardWrapper contains useful modifications that automatically restores old model parameters upon detecting problematic cost value and removal of defective data. Below, we will show you how to create this object.
+ModelSafeguardWrapper contains useful modifications that automatically restores old model parameters upon detecting problematic values and removal of defective data. Below, we will show you how to create this object.
 
 ```lua
 

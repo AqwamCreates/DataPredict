@@ -24,15 +24,13 @@ local ZonesList = {
 
 ```lua
 
-local PlayerStatePredictionModel = DataPredict.Model.TabularQLearning.new({StatesList = StatesList})
+local NextZonePredictionModel = DataPredict.Model.Markov.new({StatesList = StatesList})
 
 ```
 
 ## Training
 
 ```lua
-
--- Here, you notice that there is a reward value being inserted here. Generally, when you first call this, the reward value should be zero.
 
 PlayerStatePredictionModel:train(previousPlayerStateVector, currentPlayerStateVector)
 

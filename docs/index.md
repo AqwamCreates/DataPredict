@@ -95,10 +95,5 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Version History
 
-* [Production / Gold](VersionHistory/ProductionVersionHistory.md)
-
-* [Release](VersionHistory/ReleaseVersionHistory.md)
-
-* [Beta](VersionHistory/BetaVersionHistory.md)
-
-* [All](VersionHistory/AllVersionsHistory.md)
+| Version History | [Production / Gold](VersionHistory/ProductionVersionHistory.md) | [Release](VersionHistory/ReleaseVersionHistory.md)  | [Beta](VersionHistory/BetaVersionHistory.md) | [All](VersionHistory/AllVersionsHistory.md) |
+|-----------------|-----------------------------------------------------------------|-----------------------------------------------------|----------------------------------------------|----------------------------------------------------------|

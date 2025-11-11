@@ -62,7 +62,7 @@ function BaseGradientClipper:calculate(learningRate, costFunctionDerivativeMatri
 	
 	local Optimizer = self.Optimizer
 	
-	local costFunctionDerivativeMatrix = self.clipFunction(costFunctionDerivativeMatrix)
+	costFunctionDerivativeMatrix = self.clipFunction(costFunctionDerivativeMatrix)
 	
 	if (Optimizer) then
 		
@@ -70,7 +70,7 @@ function BaseGradientClipper:calculate(learningRate, costFunctionDerivativeMatri
 		
 	else
 		
-		costFunctionDerivativeMatrix =  AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrix)
+		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrix)
 		
 	end
 	

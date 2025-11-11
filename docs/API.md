@@ -10,6 +10,10 @@
 
 [Optimizers](API/Optimizers.md)
 
+[ValueSchedulers](API/ValueSchedulers.md)
+
+[GradientClippers](API/GradientClippers.md)
+
 [Regularizers](API/Regularizers.md)
 
 [ExperienceReplays](API/ExperienceReplays.md)
@@ -17,7 +21,5 @@
 [EligibilityTraces](API/EligibilityTraces.md)
 
 [DistributedTrainingStrategies](API/DistributedTrainingStrategies.md)
-
-[ValueSchedulers](API/ValueSchedulers.md)
 
 [Others](API/Others.md)

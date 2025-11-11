@@ -274,7 +274,7 @@ AqwamMachineDeepAndReinforcementLearningLibrary.GradientClippers = {
 
 	ClipValue = require(GradientClippers.ClipValue),
 
-	ClipNormalization = require(ValueSchedulers.ClipNormalization),
+	ClipNormalization = require(GradientClippers.ClipNormalization),
 	
 }
 

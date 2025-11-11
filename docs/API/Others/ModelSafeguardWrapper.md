@@ -32,7 +32,7 @@ ModelSafeguardWrapper:restart(ModelParameters, forceRestart)
 
 * ModelParameters: The model parameters to use to replace model parameters. If set to nil, it will use the stored model parameters.
 
-* forceRestart: Set whether or not to perform restart despite getCanUseModel() returns true.
+* forceRestart: Set whether or not to perform restart despite getCanUseModel() function returns true.
 
 ### train()
 

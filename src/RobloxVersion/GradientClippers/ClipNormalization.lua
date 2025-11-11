@@ -50,7 +50,7 @@ function ClipNormalizationGradientClipper.new(parameterDictionary)
 	
 	local normalizationValue = parameterDictionary.normalizationValue or defaultNormalizationValue
 	
-	NewClipNormalizationGradientClipper.normalizationValue = normalizationValue or defaultNormalizationValue
+	NewClipNormalizationGradientClipper.normalizationValue = normalizationValue
 	
 	NewClipNormalizationGradientClipper.maximumNormalizationValue = parameterDictionary.maximumNormalizationValue or normalizationValue
 	

@@ -1,4 +1,4 @@
-# Cost Reduction Information
+# [Documentation](index.md) - Cost Reduction Information
 
 | Cost Reduction Factor | Without DataPredict                                                                                                                               | With DataPredict                     |
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|

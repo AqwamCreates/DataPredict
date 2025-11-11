@@ -61,8 +61,6 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Example Codes
 
-### Learning AIs
-
 * [Self-Learning Sword-Fighting AIs [Version 9]](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/blob/main/Self-Learning%20Sword-Fighting%20AIs/Reinforcement%20Learning%20Sword%20Fighting%20Version%209.rbxl)
 
 * [Self-Learning Pathfinding AIs](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/blob/main/Self-Learning%20Pathfinding%20AIs/Reinforcement%20Learning%20Pathfinding%20AIs.rbxl)
@@ -70,6 +68,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 * [Simple Environment](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/tree/main/How%20To%20Create%20Neural%20Networks%20With%20Reinforcement%20Learning%20For%20Roblox)
 
 ## Links
+
+* [Fun Facts About The DataPredict Icon](FunFactsAboutTheDataPredictIcon.md)
 
 * [Download Links](DownloadLinks.md)
 
@@ -100,17 +100,3 @@ To know what this library is all about from scratch, let's have a look at the qu
 * [Beta](VersionHistory/BetaVersionHistory.md)
 
 * [All](VersionHistory/AllVersionsHistory.md)
-
-## Fun Facts About The DataPredict's Icon
-
-The three blocks in the icons represents these meanings, which also show's the DataPredict's Library main design principles:
-
- * Basic: The icon uses simple blue blocks. This represents that the components of this library are very basic to use.
-
- * Stackable: The icon shows the blocks are stacking on each other. This represents the components in this library can be stacked over each other.
-
- * Portable: The three blocks can be unstacked and can move the individual blocks somewhere else. This represents how portable each of the components are when transfering from one system to another.
-
- Blue colour is chosen as it represents knowledge. This represents the data.
-
-White octagon makes us focus on the blue blocks. This represent the focus on the components of this library.

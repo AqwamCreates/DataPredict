@@ -156,9 +156,7 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local isEpisodeEnd = (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode)
 
-		local terminalStateValue = 0
-
-		local temporalDifferenceError
+		local terminalStateValue = (isEpisodeEnd and 1) or 0
 
 		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
@@ -167,8 +165,8 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		local action = ActionsList[actionIndex]
 
 		local actionValue = actionVector[1][actionIndex]
-
-		if (isEpisodeEnd) then terminalStateValue = 1 end
+		
+		local temporalDifferenceError
 
 		if (previousFeatureVector) then
 

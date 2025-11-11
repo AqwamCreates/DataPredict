@@ -56,8 +56,6 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 	NewSingleCategoricalPolicyQuickSetup.currentNumberOfEpisodes = parameterDictionary.currentNumberOfEpisodes or defaultCurrentNumberOfEpisodes
 	
-	NewSingleCategoricalPolicyQuickSetup.ExperienceReplay = parameterDictionary.ExperienceReplay
-	
 	NewSingleCategoricalPolicyQuickSetup:setReinforceFunction(function(currentFeatureVector, rewardValue, returnOriginalOutput)
 		
 		local Model = NewSingleCategoricalPolicyQuickSetup.Model
@@ -86,7 +84,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local isEpisodeEnd = (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode)
 		
-		local terminalStateValue = 0
+	
 
 		local temporalDifferenceError
 		
@@ -98,7 +96,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		local actionValue = actionVector[1][actionIndex]
 		
-		if (isEpisodeEnd) then terminalStateValue = 1 end
+		local terminalStateValue = (isEpisodeEnd and 1) or 0
 
 		if (previousFeatureVector) then
 			

@@ -18,7 +18,7 @@ ModelSafeguardWrapper.new(Model: ModelObject): ModelSafeguardWrapperObject
 
 #### Returns:
 
-* ModelSafeguardWrapperObject: A model safeguard object that uses the model's train(), predict() and reinforce() functions so that it behaves like a regular model.
+* ModelSafeguardWrapperObject: A model safeguard object that uses the model's train(), predict() and update() functions so that it behaves like a regular model.
 
 ## Functions
 

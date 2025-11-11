@@ -77,7 +77,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 | Other | [Fun Facts About The DataPredict Icon](FunFactsAboutTheDataPredictIcon.md) | [Download Links](DownloadLinks.md) |
 |-------|----------------------------------------------------------------------------|------------------------------------|
 
-### Repository
+## Repository
 
 | DataPredict | [DataPredict Library](https://github.com/AqwamCreates/DataPredict) | [DataPredict Neural Library](https://github.com/AqwamCreates/DataPredict-Neural) | [DataPredict Axon Library](https://github.com/AqwamCreates/DataPredict-Axon) |
 |---------|------------------------------------------------------------------------|----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|

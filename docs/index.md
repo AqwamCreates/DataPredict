@@ -61,6 +61,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Example Codes
 
+### Learning AIs
+
 * [Self-Learning Sword-Fighting AIs [Version 9]](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/blob/main/Self-Learning%20Sword-Fighting%20AIs/Reinforcement%20Learning%20Sword%20Fighting%20Version%209.rbxl)
 
 * [Self-Learning Pathfinding AIs](https://github.com/AqwamCreates/DataPredict-Tutorials-Source-Codes/blob/main/Self-Learning%20Pathfinding%20AIs/Reinforcement%20Learning%20Pathfinding%20AIs.rbxl)
@@ -69,20 +71,34 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Links
 
-| Version History | [Production / Gold](VersionHistory/ProductionVersionHistory.md) | [Release](VersionHistory/ReleaseVersionHistory.md)  | [Beta](VersionHistory/BetaVersionHistory.md) | [All](VersionHistory/AllVersionsHistory.md) |
-|-----------------|-----------------------------------------------------------------|-----------------------------------------------------|----------------------------------------------|-----------------------------------------------------------|
+* [Fun Facts About The DataPredict Icon](FunFactsAboutTheDataPredictIcon.md)
 
-| Other | [Fun Facts About The DataPredict Icon](FunFactsAboutTheDataPredictIcon.md) | [Download Links](DownloadLinks.md) |
-|-------|----------------------------------------------------------------------------|------------------------------------|
+* [Download Links](DownloadLinks.md)
 
-## Repository
+### Repository
 
-| DataPredict | [DataPredict Library](https://github.com/AqwamCreates/DataPredict) | [DataPredict Neural Library](https://github.com/AqwamCreates/DataPredict-Neural) | [DataPredict Axon Library](https://github.com/AqwamCreates/DataPredict-Axon) |
-|---------|------------------------------------------------------------------------|----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
+* [DataPredict Library](https://github.com/AqwamCreates/DataPredict)
 
-| Tensor | [TensorL-2D Library](https://github.com/AqwamCreates/TensorL-2D) | [MatrixL Library](https://github.com/AqwamCreates/MatrixL) | [TensorL Library](https://github.com/AqwamCreates/TensorL) |
-|--------|-----------------------------------------------------------------|------------------------------------------------------------|------------------------------------------------------------|
+* [DataPredict Neural Library](https://github.com/AqwamCreates/DataPredict-Neural)
+
+* [DataPredict Axon Library](https://github.com/AqwamCreates/DataPredict-Axon)
+
+* [TensorL-2D Library](https://github.com/AqwamCreates/TensorL-2D)
+
+* [MatrixL Library](https://github.com/AqwamCreates/MatrixL)
+
+* [TensorL Library](https://github.com/AqwamCreates/TensorL)
 
 ### Other Documentations
 
 * [Aqwam's Matrix Library](https://aqwamcreates.github.io/MatrixL/)
+
+## Version History
+
+* [Production / Gold](VersionHistory/ProductionVersionHistory.md)
+
+* [Release](VersionHistory/ReleaseVersionHistory.md)
+
+* [Beta](VersionHistory/BetaVersionHistory.md)
+
+* [All](VersionHistory/AllVersionsHistory.md)

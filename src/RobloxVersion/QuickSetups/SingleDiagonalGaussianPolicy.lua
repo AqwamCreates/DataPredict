@@ -60,8 +60,6 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 
 	NewSingleDiagonalGaussianPolicyQuickSetup.previousActionNoiseVector = parameterDictionary.previousActionNoiseVector
 	
-	NewSingleDiagonalGaussianPolicyQuickSetup.ExperienceReplay = parameterDictionary.ExperienceReplay
-	
 	NewSingleDiagonalGaussianPolicyQuickSetup:setReinforceFunction(function(currentFeatureVector, rewardValue)
 		
 		local Model = NewSingleDiagonalGaussianPolicyQuickSetup.Model
@@ -96,11 +94,9 @@ function SingleDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		
 		local isEpisodeEnd = (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode)
 		
-		local terminalStateValue = 0
+		local terminalStateValue = (isEpisodeEnd and 1) or 0
 	
 		local temporalDifferenceError
-		
-		if (isEpisodeEnd) then terminalStateValue = 1 end
 
 		if (previousFeatureVector) then
 			

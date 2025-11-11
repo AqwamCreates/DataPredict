@@ -18,9 +18,21 @@ ModelSafeguardWrapper.new(Model: ModelObject): ModelSafeguardWrapperObject
 
 #### Returns:
 
-* ModelSafeguardWrapperObject: A model safeguard object that uses the model's train(), predict() and reinforce() functions so that it behaves like a regular model.
+* ModelSafeguardWrapperObject: A model safeguard object that uses the model's train(), predict() and update() functions so that it behaves like a regular model.
 
 ## Functions
+
+### restart()
+
+```
+ModelSafeguardWrapper:restart(ModelParameters, forceRestart)
+```
+
+#### Parameters:
+
+* ModelParameters: The model parameters to use to replace model parameters. If set to nil, it will use the stored model parameters.
+
+* forceRestart: Set whether or not to perform restart despite getCanUseModel() function returns true.
 
 ### train()
 

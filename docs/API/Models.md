@@ -39,7 +39,7 @@ If you wonder what are the most high-value use cases that helps with retention a
 
   * Uses reverse-mode automatic differentiation and lazy differentiation evaluation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
 
-* Currently, DataPredict™ has ~90% (69 out of 80) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (71 out of 81) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -87,9 +87,9 @@ If you wonder what are the most high-value use cases that helps with retention a
 | [NeuralNetwork](Models/NeuralNetwork.md)                                             | Multi-Layer Perceptron         | 🟢 🟡           | Decision-Making, Player Behaviour Prediction                                                                    |
 | [GaussianNaiveBayes](Models/GaussianNaiveBayes.md)*                                  | GNB                            | 💾 ⚡ 🟢 🟡 ⚠️ | Enemy Data Generation, Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
 | [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md)*                            | MNB                           | 💾 ⚡ 🟢 🟡 ⚠️ |Summoning Next Enemy Type, Inventory Action Prediction, Strategy Profiling Based on Item Usage                   |
-| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)*                                | BNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                                             |
-| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)*                              | CNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Imbalanced Class Prediction (e.g. Rare Choices, Niche Paths)                                                    |
-| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md)*                            | CNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)                              |
+| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)*                                | BNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                                         |
+| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)*                              | CNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Imbalanced Class Prediction (e.g. Rare Choices, Rare Paths)                                                      |
+| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md)*                            | CNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)                               |
 
 \* "Naive Bayes" models assumes that the features are independent to each other, which is almost certainly not true in game-related settings. Additionally, these models are better as generative models, despite being commonly taught as a classifier.
 

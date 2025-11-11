@@ -110,7 +110,7 @@ function ParallelDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		
 		local ExperienceReplay = NewParallelDiagonalGaussianPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
 		
-		local currentNumberOfReinforcements = (currentNumberOfReinforcementsDictionary[numberOfReinforcementsIndex] or 0) + 1
+		local currentNumberOfReinforcements = currentNumberOfReinforcementsDictionary[numberOfReinforcementsIndex] or 0
 		
 		local currentNumberOfEpisodes = currentNumberOfEpisodesDictionary[numberOfEpisodesIndex] or 1
 		
@@ -126,11 +126,9 @@ function ParallelDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 
 		local isEpisodeEnd = (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode)
 
-		local terminalStateValue = 0
+		local terminalStateValue = (isEpisodeEnd and 1) or 0
 
 		local temporalDifferenceError
-
-		if (isEpisodeEnd) then terminalStateValue = 1 end
 
 		if (previousFeatureVector) then
 
@@ -190,7 +188,7 @@ function ParallelDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 		
 	end)
 	
-	NewParallelDiagonalGaussianPolicyQuickSetup:setResetFunction(function()
+	NewParallelDiagonalGaussianPolicyQuickSetup:setResetFunction(function(agentIndex, currentFeatureVector, rewardValue)
 		
 		NewParallelDiagonalGaussianPolicyQuickSetup.previousFeatureVectorDictionary = {}
 

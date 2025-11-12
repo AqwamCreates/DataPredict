@@ -752,18 +752,10 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 	local activationFunctionArray = self.activationFunctionArray
 
 	local hasBiasNeuronArray = self.hasBiasNeuronArray
-
-	local layerCostMatrix = lossMatrix
 	
-	if (hasBiasNeuronArray[numberOfLayers] == 1) then
-		
-		for dataIndex, unwrappedLayerCostVector in ipairs(layerCostMatrix) do
-			
-			unwrappedLayerCostVector[1] = 0
-			
-		end
-		
-	end
+	local derivativeMatrix = deriveLayer(forwardPropagateArray[numberOfLayers], zMatrixArray[numberOfLayers], hasBiasNeuronArray[numberOfLayers], activationFunctionArray[numberOfLayers])
+
+	local layerCostMatrix = AqwamTensorLibrary:multiply(lossMatrix, derivativeMatrix)
 	
 	errorMatrixArray[1] = layerCostMatrix
 
@@ -773,7 +765,7 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 
 		local partialErrorMatrix = AqwamTensorLibrary:dotProduct(layerCostMatrix, layerMatrix)
 
-		local derivativeMatrix = deriveLayer(forwardPropagateArray[layerNumber], zMatrixArray[layerNumber], hasBiasNeuronArray[layerNumber], activationFunctionArray[layerNumber])
+		derivativeMatrix = deriveLayer(forwardPropagateArray[layerNumber], zMatrixArray[layerNumber], hasBiasNeuronArray[layerNumber], activationFunctionArray[layerNumber])
 
 		layerCostMatrix = AqwamTensorLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 

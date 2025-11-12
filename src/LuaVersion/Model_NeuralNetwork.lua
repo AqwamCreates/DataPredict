@@ -741,10 +741,6 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 
 	local costFunctionDerivativeMatrixArray = {}
 
-	local errorMatrixArray = {}
-
-	local numberOfData = #lossMatrix
-
 	local ModelParameters = self.ModelParameters
 
 	local numberOfLayers = #self.numberOfNeuronsArray
@@ -753,13 +749,19 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 
 	local hasBiasNeuronArray = self.hasBiasNeuronArray
 	
+	local numberOfLayersMinusOne = numberOfLayers - 1
+	
 	local derivativeMatrix = deriveLayer(forwardPropagateArray[numberOfLayers], zMatrixArray[numberOfLayers], hasBiasNeuronArray[numberOfLayers], activationFunctionArray[numberOfLayers])
 
 	local layerCostMatrix = AqwamTensorLibrary:multiply(lossMatrix, derivativeMatrix)
 	
-	errorMatrixArray[1] = layerCostMatrix
+	local activationLayerMatrix = AqwamTensorLibrary:transpose(forwardPropagateArray[numberOfLayersMinusOne])
+	
+	costFunctionDerivativeMatrixArray[numberOfLayersMinusOne] = AqwamTensorLibrary:dotProduct(activationLayerMatrix, layerCostMatrix)
 
-	for layerNumber = (numberOfLayers - 1), 2, -1 do
+	for layerNumber = numberOfLayersMinusOne, 2, -1 do
+		
+		local weightNumber = layerNumber - 1
 
 		local layerMatrix = AqwamTensorLibrary:transpose(ModelParameters[layerNumber])
 
@@ -768,24 +770,10 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 		derivativeMatrix = deriveLayer(forwardPropagateArray[layerNumber], zMatrixArray[layerNumber], hasBiasNeuronArray[layerNumber], activationFunctionArray[layerNumber])
 
 		layerCostMatrix = AqwamTensorLibrary:multiply(partialErrorMatrix, derivativeMatrix)
-
-		table.insert(errorMatrixArray, 1, layerCostMatrix)
-
-		self:sequenceWait()
-
-	end
-
-	for layer = 1, (numberOfLayers - 1), 1 do
-
-		local activationLayerMatrix = AqwamTensorLibrary:transpose(forwardPropagateArray[layer])
-
-		local errorMatrix = errorMatrixArray[layer]
-
-		local costFunctionDerivatives = AqwamTensorLibrary:dotProduct(activationLayerMatrix, errorMatrix)
-
-		if (type(costFunctionDerivatives) == "number") then costFunctionDerivatives = {{costFunctionDerivatives}} end
 		
-		costFunctionDerivativeMatrixArray[layer] = costFunctionDerivatives
+		activationLayerMatrix = AqwamTensorLibrary:transpose(forwardPropagateArray[weightNumber])
+		
+		costFunctionDerivativeMatrixArray[weightNumber] = AqwamTensorLibrary:dotProduct(activationLayerMatrix, layerCostMatrix)
 
 		self:sequenceWait()
 
@@ -813,21 +801,23 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 	
 	local NewModelParameters = {}
 
-	for layerNumber = 1, (numberOfLayers - 1), 1 do
+	for layerNumber = 2, numberOfLayers, 1 do
+		
+		local weightNumber = layerNumber - 1
 
-		local learningRate = learningRateArray[layerNumber + 1]
+		local learningRate = learningRateArray[layerNumber]
 
-		local Regularizer = RegularizerArray[layerNumber + 1]
+		local Regularizer = RegularizerArray[layerNumber]
 
-		local Optimizer = OptimizerArray[layerNumber + 1]
+		local Optimizer = OptimizerArray[layerNumber]
 
-		local costFunctionDerivativeMatrix = costFunctionDerivativeMatrixArray[layerNumber]
+		local costFunctionDerivativeMatrix = costFunctionDerivativeMatrixArray[weightNumber]
 
-		local hasBiasNeuronOnNextLayer = hasBiasNeuronArray[layerNumber + 1]
+		local hasBiasNeuronOnNextLayer = hasBiasNeuronArray[layerNumber]
 
 		if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
 
-		local weightMatrix = ModelParameters[layerNumber]
+		local weightMatrix = ModelParameters[weightNumber]
 
 		if (Regularizer ~= 0) then
 
@@ -857,7 +847,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 
 		end
 		
-		NewModelParameters[layerNumber] = newWeightMatrix
+		NewModelParameters[weightNumber] = newWeightMatrix
 
 	end
 	

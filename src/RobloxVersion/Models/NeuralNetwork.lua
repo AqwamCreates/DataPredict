@@ -618,8 +618,6 @@ function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNot
 		hasBiasNeuron = hasBiasNeuronArray[layerNumber]
 
 		zMatrix = AqwamTensorLibrary:dotProduct(inputMatrix, weightMatrix)
-
-		if (typeof(zMatrix) == "number") then zMatrix = {{zMatrix}} end
 		
 		inputMatrix = activateLayer(zMatrix, hasBiasNeuron, activationFunctionArray[layerNumber])
 

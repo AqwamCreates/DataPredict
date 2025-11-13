@@ -577,16 +577,8 @@ end
 
 function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNotDropoutNeurons)
 	
-	local ModelParameters = self.ModelParameters
-
-	if (not ModelParameters) then 
-		
-		ModelParameters = self:generateLayers()
-		
-		self.ModelParameters = ModelParameters
-		
-	end
-
+	local ModelParameters = self.ModelParameters or self:generateLayers()
+	
 	local numberOfLayers = #self.numberOfNeuronsArray
 
 	local hasBiasNeuronArray = self.hasBiasNeuronArray

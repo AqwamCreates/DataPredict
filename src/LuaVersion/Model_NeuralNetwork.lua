@@ -406,6 +406,14 @@ end
 function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 	
 	local ModelParameters = self.ModelParameters
+	
+	if (not ModelParameters) then
+		
+		ModelParameters = self:generateLayers()
+		
+		self.ModelParameters = ModelParameters
+		
+	end
 
 	local ClassesList = self.ClassesList
 	
@@ -577,7 +585,15 @@ end
 
 function NeuralNetworkModel:forwardPropagate(featureMatrix, saveAllArrays, doNotDropoutNeurons)
 	
-	local ModelParameters = self.ModelParameters or self:generateLayers()
+	local ModelParameters = self.ModelParameters
+	
+	if (not ModelParameters) then
+		
+		ModelParameters = self:generateLayers()
+		
+		self.ModelParameters = ModelParameters
+		
+	end
 	
 	local numberOfLayers = #self.numberOfNeuronsArray
 
@@ -1038,8 +1054,6 @@ function NeuralNetworkModel:generateLayers()
 		table.insert(ModelParameters, weightMatrix)
 
 	end
-
-	self.ModelParameters = ModelParameters
 	
 	return ModelParameters
 
@@ -1115,7 +1129,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 	
 	self.dropoutRateArray = dropoutRateArray
 
-	self:generateLayers()
+	self.ModelParameters = self:generateLayers()
 
 end
 
@@ -1632,8 +1646,6 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	local activatedOutputsMatrix
 
-	if (not self.ModelParameters) then self:generateLayers() end
-
 	if (#labelVector[1] == 1) and (numberOfNeuronsAtFinalLayer ~= 1) then
 
 		logisticMatrix = self:processLabelVector(labelVector)
@@ -1702,7 +1714,7 @@ end
 
 function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)
 
-	if (not self.ModelParameters) then self:generateLayers() end
+	if (not self.ModelParameters) then self.ModelParameters = self:generateLayers() end
 
 	local outputMatrix = self:forwardPropagate(featureMatrix, false, true)
 

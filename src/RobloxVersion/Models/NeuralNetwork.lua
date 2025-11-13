@@ -1714,8 +1714,6 @@ end
 
 function NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)
 
-	if (not self.ModelParameters) then self.ModelParameters = self:generateLayers() end
-
 	local outputMatrix = self:forwardPropagate(featureMatrix, false, true)
 
 	if (returnOriginalOutput == true) then return outputMatrix end

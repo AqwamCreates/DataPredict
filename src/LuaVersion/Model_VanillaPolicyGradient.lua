@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require("Model_AqwamTensorLibrary")
 
 local DeepReinforcementLearningActorCriticBaseModel = require("Model_DeepReinforcementLearningActorCriticBaseModel")
 
@@ -86,11 +86,13 @@ function VanillaPolicyGradientModel.new(parameterDictionary)
 
 	local advantageValueHistory = {}
 
-	NewVanillaPolicyGradientModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewVanillaPolicyGradientModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 
+		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
+		
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 
-		local actionVector = NewVanillaPolicyGradientModel.ActorModel:forwardPropagate(previousFeatureVector)
+		local actionVector = ActorModel:forwardPropagate(previousFeatureVector)
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 
@@ -100,9 +102,15 @@ function VanillaPolicyGradientModel.new(parameterDictionary)
 
 		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
 
-		local logActionProbabilityVector = AqwamTensorLibrary:logarithm(actionProbabilityVector)
+		local ClassesList = ActorModel:getClassesList()
 
-		local actorLossVector = AqwamTensorLibrary:multiply(logActionProbabilityVector, advantageValue)
+		local classIndex = table.find(ClassesList, previousAction)
+
+		local logActionProbabilityVector = table.create(#ClassesList, 0)
+
+		logActionProbabilityVector[classIndex] = math.log(actionProbabilityVector[1][classIndex])
+
+		logActionProbabilityVector = {logActionProbabilityVector}
 
 		table.insert(featureVectorHistory, previousFeatureVector)
 

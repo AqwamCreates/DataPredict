@@ -139,20 +139,20 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 		NewProximalPolicyOptimizationModel.OldActorModelParameters = ActorModel:getModelParameters(true)
 
 		local oldPolicyActionProbabilityVector = calculateCategoricalProbability(oldPolicyActionVector)
-
+		
 		local currentPolicyActionVector = ActorModel:forwardPropagate(previousFeatureVector)
-
+		
 		local currentPolicyActionProbabilityVector = calculateCategoricalProbability(currentPolicyActionVector)
 
 		ActorModel:setModelParameters(NewProximalPolicyOptimizationModel.CurrentActorModelParameters, true)
-
+		
 		local ClassesList = ActorModel:getClassesList()
 
 		local classIndex = table.find(ClassesList, previousAction)
 
 		local ratioActionProbabiltyVector = table.create(#ClassesList, 0)
-
-		ratioActionProbabiltyVector[classIndex] = math.log(currentPolicyActionProbabilityVector[1][classIndex]) / math.log(oldPolicyActionProbabilityVector[1][classIndex])
+		
+		ratioActionProbabiltyVector[classIndex] = currentPolicyActionProbabilityVector[1][classIndex] / oldPolicyActionProbabilityVector[1][classIndex]
 
 		ratioActionProbabiltyVector = {ratioActionProbabiltyVector}
 

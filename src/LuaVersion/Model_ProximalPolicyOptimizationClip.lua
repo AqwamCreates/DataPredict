@@ -154,7 +154,7 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		local ratioActionProbabiltyVector = table.create(#ClassesList, 0)
 
-		ratioActionProbabiltyVector[classIndex] = math.log(currentPolicyActionProbabilityVector[1][classIndex]) / math.log(oldPolicyActionProbabilityVector[1][classIndex])
+		ratioActionProbabiltyVector[classIndex] = currentPolicyActionProbabilityVector[1][classIndex] / oldPolicyActionProbabilityVector[1][classIndex]
 
 		ratioActionProbabiltyVector = {ratioActionProbabiltyVector}
 

@@ -72,11 +72,13 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 	local actionProbabilityVectorHistory = {}
 
-	NewAdvantageActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
-
+	NewAdvantageActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
+		
+		local ActorModel = NewAdvantageActorCriticModel.ActorModel
+		
 		local CriticModel = NewAdvantageActorCriticModel.CriticModel
 
-		local actionVector = NewAdvantageActorCriticModel.ActorModel:forwardPropagate(previousFeatureVector)
+		local actionVector = ActorModel:forwardPropagate(previousFeatureVector)
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
@@ -86,7 +88,15 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 		local advantageValue = rewardValue + (NewAdvantageActorCriticModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
 
-		local logActionProbabilityVector = AqwamTensorLibrary:logarithm(actionProbabilityVector)
+		local ClassesList = ActorModel:getClassesList()
+
+		local classIndex = table.find(ClassesList, previousAction)
+
+		local logActionProbabilityVector = table.create(#ClassesList, 0)
+
+		logActionProbabilityVector[classIndex] = math.log(actionProbabilityVector[1][classIndex])
+
+		logActionProbabilityVector = {logActionProbabilityVector}
 
 		table.insert(featureVectorHistory, previousFeatureVector)
 

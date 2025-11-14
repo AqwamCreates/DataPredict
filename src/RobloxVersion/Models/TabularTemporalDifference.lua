@@ -73,10 +73,10 @@ function TabularTemporalDifferenceModel.new(parameterDictionary)
 		local temporalDifferenceError = targetValue - previousQVector[1][1]
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
-		
-		local actionIndex = table.find(ActionsList, previousAction)
 
 		if (EligibilityTrace) then
+			
+			local actionIndex = table.find(ActionsList, previousAction)
 
 			local numberOfStates = #StatesList
 

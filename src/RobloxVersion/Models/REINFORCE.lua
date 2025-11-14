@@ -84,13 +84,23 @@ function REINFORCEModel.new(parameterDictionary)
 	
 	local rewardValueHistory = {}
 	
-	NewREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
-
-		local actionVector = NewREINFORCEModel.Model:forwardPropagate(previousFeatureVector)
+	NewREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, previousAction, terminalStateValue)
+		
+		local Model = NewREINFORCEModel.Model
+		
+		local actionVector = Model:forwardPropagate(previousFeatureVector)
 		
 		local actionProbabilityVector = calculateProbability(actionVector)
 		
-		local logActionProbabilityVector = AqwamTensorLibrary:logarithm(actionProbabilityVector)
+		local ClassesList = Model:getClassesList()
+		
+		local classIndex = table.find(ClassesList, previousAction)
+		
+		local logActionProbabilityVector = table.create(0, #ClassesList)
+		
+		logActionProbabilityVector[classIndex] = math.log(actionProbabilityVector[1][classIndex])
+		
+		logActionProbabilityVector = {logActionProbabilityVector}
 		
 		table.insert(featureVectorArray, previousFeatureVector)
 

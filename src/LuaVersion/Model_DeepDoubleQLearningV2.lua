@@ -70,7 +70,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 	NewDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
 		local Model = NewDeepDoubleQLearningModel.Model
 		
@@ -96,7 +96,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 		
 		local ClassesList = Model:getClassesList()
 
-		local actionIndex = table.find(ClassesList, action)
+		local actionIndex = table.find(ClassesList, previousAction)
 
 		local lastValue = previousVector[1][actionIndex]
 

@@ -68,11 +68,11 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 	
 	local rewardValueHistory = {}
 	
-	NewTabularMonteCarloControlModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularMonteCarloControlModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
 		table.insert(stateValueHistory, previousStateValue)
 		
-		table.insert(actionHistory, action)
+		table.insert(actionHistory, previousAction)
 		
 		table.insert(rewardValueHistory, rewardValue)
 

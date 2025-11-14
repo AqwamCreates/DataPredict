@@ -92,7 +92,7 @@ function TabularTemporalDifferenceModel.new(parameterDictionary)
 
 			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
 
-			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][previousActionIndex]
+			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
 
 		end
 

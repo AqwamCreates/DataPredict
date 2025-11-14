@@ -30,200 +30,90 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
-DeepDoubleQLearningModel = {}
+DeepQLearningModel = {}
 
-DeepDoubleQLearningModel.__index = DeepDoubleQLearningModel
+DeepQLearningModel.__index = DeepQLearningModel
 
-setmetatable(DeepDoubleQLearningModel, DeepReinforcementLearningBaseModel)
+setmetatable(DeepQLearningModel, DeepReinforcementLearningBaseModel)
 
-function DeepDoubleQLearningModel.new(parameterDictionary)
+function DeepQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewDeepDoubleQLearningModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
-
-	setmetatable(NewDeepDoubleQLearningModel, DeepDoubleQLearningModel)
+	local NewDeepQLearningModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 	
-	NewDeepDoubleQLearningModel:setName("DeepDoubleQLearningV1")
+	setmetatable(NewDeepQLearningModel, DeepQLearningModel)
 	
-	NewDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewDeepQLearningModel:setName("DeepQLearning")
 	
-	NewDeepDoubleQLearningModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
+	NewDeepQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
-	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewDeepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
-		local Model = NewDeepDoubleQLearningModel.Model
+		local Model = NewDeepQLearningModel.Model
 		
-		local randomProbability = math.random()
+		local discountFactor = NewDeepQLearningModel.discountFactor
+		
+		local EligibilityTrace = NewDeepQLearningModel.EligibilityTrace
 
-		local updateSecondModel = (randomProbability >= 0.5)
+		local _, maxQValue = Model:predict(currentFeatureVector)
 
-		local selectedModelNumberForTargetVector = (updateSecondModel and 1) or 2
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+		
+		local ClassesList = Model:getClassesList()
 
-		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
+		local numberOfClasses = #ClassesList
 
-		local temporalDifferenceErrorVector, temporalDifferenceError = NewDeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		local previousVector = Model:forwardPropagate(previousFeatureVector)
+
+		local actionIndex = table.find(ClassesList, previousAction)
+
+		local lastValue = previousVector[1][actionIndex]
+
+		local temporalDifferenceError = targetValue - lastValue
+		
+		local outputDimensionSizeArray = {1, numberOfClasses}
+
+		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+
+		temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
+		
+		if (EligibilityTrace) then
+
+			EligibilityTrace:increment(1, actionIndex, discountFactor, outputDimensionSizeArray)
+
+			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
+
+		end
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
 		
-		NewDeepDoubleQLearningModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
-		
 		Model:forwardPropagate(previousFeatureVector, true)
-		
+
 		Model:update(negatedTemporalDifferenceErrorVector, true)
+		
+		return temporalDifferenceErrorVector
 
-		NewDeepDoubleQLearningModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
-		
-		return temporalDifferenceError
-		
 	end)
 	
-	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewDeepQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local EligibilityTrace = NewDeepDoubleQLearningModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-	end)
-	
-	NewDeepDoubleQLearningModel:setResetFunction(function() 
-		
-		local EligibilityTrace = NewDeepDoubleQLearningModel.EligibilityTrace
+		local EligibilityTrace = NewDeepQLearningModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	return NewDeepDoubleQLearningModel
+	NewDeepQLearningModel:setResetFunction(function()
+		
+		local EligibilityTrace = NewDeepQLearningModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+	end)
+
+	return NewDeepQLearningModel
 
 end
 
-function DeepDoubleQLearningModel:saveModelParametersFromModelParametersArray(index)
-
-	self.ModelParametersArray[index] = self.Model:getModelParameters()
-
-end
-
-function DeepDoubleQLearningModel:loadModelParametersFromModelParametersArray(index)
-
-	local Model = self.Model
-
-	local ModelParametersArray = self.ModelParametersArray
-
-	if (not ModelParametersArray[index]) then
-
-		Model:generateLayers()
-
-		self:saveModelParametersFromModelParametersArray(index)
-
-	end
-
-	local CurrentModelParameters = ModelParametersArray[index]
-
-	Model:setModelParameters(CurrentModelParameters, true)
-
-end
-
-function DeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
-	
-	local Model = self.Model
-	
-	local discountFactor = self.discountFactor
-	
-	local EligibilityTrace = self.EligibilityTrace
-	
-	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
-	
-	local previousVector = Model:forwardPropagate(previousFeatureVector)
-	
-	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
-
-	local _, maxQValue = Model:predict(currentFeatureVector)
-
-	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
-	
-	local ClassesList = Model:getClassesList()
-	
-	local numberOfClasses = #ClassesList
-
-	local actionIndex = table.find(ClassesList, action)
-	
-	local lastValue = previousVector[1][actionIndex]
-	
-	local temporalDifferenceError = targetValue - lastValue
-	
-	local outputDimensionSizeArray = {1, numberOfClasses}
-		
-	local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
-
-	temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
-	
-	if (EligibilityTrace) then
-
-		EligibilityTrace:increment(1, actionIndex, discountFactor, outputDimensionSizeArray)
-		
-		temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
-
-	end
-	
-	return temporalDifferenceErrorVector, temporalDifferenceError
-	
-end
-
-function DeepDoubleQLearningModel:setModelParameters1(ModelParameters1, doNotDeepCopy)
-	
-	if (doNotDeepCopy) then
-		
-		self.ModelParametersArray[1] = ModelParameters1
-		
-	else
-		
-		self.ModelParametersArray[1] = self:deepCopyTable(ModelParameters1)
-		
-	end
-
-end
-
-function DeepDoubleQLearningModel:setModelParameters2(ModelParameters2, doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		self.ModelParametersArray[2] = ModelParameters2
-
-	else
-
-		self.ModelParametersArray[2] = self:deepCopyTable(ModelParameters2)
-
-	end
-
-end
-
-function DeepDoubleQLearningModel:getModelParameters1(doNotDeepCopy)
-	
-	if (doNotDeepCopy) then
-		
-		return self.ModelParametersArray[1]
-		
-	else
-		
-		return self:deepCopyTable(self.ModelParametersArray[1])
-		
-	end
-
-end
-
-function DeepDoubleQLearningModel:getModelParameters2(doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		return self.ModelParametersArray[2]
-
-	else
-
-		return self:deepCopyTable(self.ModelParametersArray[2])
-
-	end
-
-end
-
-return DeepDoubleQLearningModel
+return DeepQLearningModel

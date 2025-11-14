@@ -114,7 +114,7 @@ function DeepOffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 	local rewardValueHistory = {}
 
-	NewDeepOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewDeepOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureVector, currentAction, rewardValue, currentFeatureVector, previousAction, terminalStateValue)
 
 		local actionVector = NewDeepOffPolicyMonteCarloControlModel.Model:forwardPropagate(previousFeatureVector)
 

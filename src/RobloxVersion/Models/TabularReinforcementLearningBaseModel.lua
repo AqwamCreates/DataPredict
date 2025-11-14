@@ -188,11 +188,11 @@ function TabularReinforcementLearningBaseModel:setCategoricalUpdateFunction(cate
 
 end
 
-function TabularReinforcementLearningBaseModel:categoricalUpdate(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+function TabularReinforcementLearningBaseModel:categoricalUpdate(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 
 	if (not self.ModelParameters) then self.ModelParameters = self:initializeMatrixBasedOnMode({#self.StatesList, #self.ActionsList}) end
 	
-	self.categoricalUpdateFunction(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	self.categoricalUpdateFunction(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 
 end
 

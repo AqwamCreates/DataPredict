@@ -30,27 +30,27 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
-TemporalDifferenceModel = {}
+DeepTemporalDifferenceModel = {}
 
-TemporalDifferenceModel.__index = TemporalDifferenceModel
+DeepTemporalDifferenceModel.__index = DeepTemporalDifferenceModel
 
-setmetatable(TemporalDifferenceModel, DeepReinforcementLearningBaseModel)
+setmetatable(DeepTemporalDifferenceModel, DeepReinforcementLearningBaseModel)
 
-function TemporalDifferenceModel.new(parameterDictionary)
+function DeepTemporalDifferenceModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewTemporalDifferenceModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewDeepTemporalDifferenceModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 
-	setmetatable(NewTemporalDifferenceModel, TemporalDifferenceModel)
+	setmetatable(NewDeepTemporalDifferenceModel, DeepTemporalDifferenceModel)
 	
-	NewTemporalDifferenceModel:setName("TemporalDifference")
+	NewDeepTemporalDifferenceModel:setName("DeepTemporalDifference")
 	
-	NewTemporalDifferenceModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
+	NewDeepTemporalDifferenceModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
-		local Model = NewTemporalDifferenceModel.Model
+		local Model = NewDeepTemporalDifferenceModel.Model
 		
-		local discountFactor = NewTemporalDifferenceModel.discountFactor
+		local discountFactor = NewDeepTemporalDifferenceModel.discountFactor
 
 		local currentQVector = Model:forwardPropagate(currentFeatureVector)
 
@@ -58,34 +58,34 @@ function TemporalDifferenceModel.new(parameterDictionary)
 		
 		local targetValue = rewardValue + (discountFactor * currentQVector[1][1] * (1 - terminalStateValue))
 		
-		local temporalDifferenceError = targetValue - previousQVector[1][1]
+		local DeepTemporalDifferenceError = targetValue - previousQVector[1][1]
 		
-		local negatedTemporalDifferenceErrorVector = {{-temporalDifferenceError}}
+		local negatedDeepTemporalDifferenceErrorVector = {{-DeepTemporalDifferenceError}}
 		
 		Model:forwardPropagate(previousFeatureVector, true)
 
-		Model:update(negatedTemporalDifferenceErrorVector, true)
+		Model:update(negatedDeepTemporalDifferenceErrorVector, true)
 		
-		return temporalDifferenceError
+		return DeepTemporalDifferenceError
 
 	end)
 	
-	NewTemporalDifferenceModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewDeepTemporalDifferenceModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
 	end)
 	
-	NewTemporalDifferenceModel:setResetFunction(function() 
+	NewDeepTemporalDifferenceModel:setResetFunction(function() 
 		
 	end)
 
-	return NewTemporalDifferenceModel
+	return NewDeepTemporalDifferenceModel
 
 end
 
-function TemporalDifferenceModel:setParameters(discountFactor)
+function DeepTemporalDifferenceModel:setParameters(discountFactor)
 
 	self.discountFactor = discountFactor or self.discountFactor
 
 end
 
-return TemporalDifferenceModel
+return DeepTemporalDifferenceModel

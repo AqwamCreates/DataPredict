@@ -114,7 +114,7 @@ function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 	local rewardValueHistory = {}
 
-	NewTabularOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 
 		local actionVector = NewTabularOffPolicyMonteCarloControlModel:predict({{previousStateValue}}, true)
 

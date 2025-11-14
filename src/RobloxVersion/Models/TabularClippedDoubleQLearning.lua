@@ -50,7 +50,7 @@ function TabularClippedDoubleQLearningModel.new(parameterDictionary)
 	
 	NewTabularClippedDoubleQLearningModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
 	
-	NewTabularClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
 		local learningRate = NewTabularClippedDoubleQLearningModel.learningRate
 
@@ -88,7 +88,7 @@ function TabularClippedDoubleQLearningModel.new(parameterDictionary)
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 
-		local actionIndex = table.find(ActionsList, action)
+		local actionIndex = table.find(ActionsList, previousAction)
 
 		local temporalDifferenceErrorArray = {}
 		

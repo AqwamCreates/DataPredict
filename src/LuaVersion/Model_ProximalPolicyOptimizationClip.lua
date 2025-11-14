@@ -126,7 +126,7 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 	local advantageValueHistory = {}
 
-	NewProximalPolicyOptimizationClipModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewProximalPolicyOptimizationClipModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 
 		local ActorModel = NewProximalPolicyOptimizationClipModel.ActorModel
 
@@ -142,13 +142,21 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		local oldPolicyActionProbabilityVector = calculateCategoricalProbability(oldPolicyActionVector)
 
-		ActorModel:setModelParameters(NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters, true)
-
 		local currentPolicyActionVector = ActorModel:forwardPropagate(previousFeatureVector)
 
 		local currentPolicyActionProbabilityVector = calculateCategoricalProbability(currentPolicyActionVector)
 
-		local ratioActionProbabiltyVector = AqwamTensorLibrary:divide(currentPolicyActionProbabilityVector, oldPolicyActionProbabilityVector)
+		ActorModel:setModelParameters(NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters, true)
+
+		local ClassesList = ActorModel:getClassesList()
+
+		local classIndex = table.find(ClassesList, previousAction)
+
+		local ratioActionProbabiltyVector = table.create(#ClassesList, 0)
+
+		ratioActionProbabiltyVector[classIndex] = math.log(currentPolicyActionProbabilityVector[1][classIndex]) / math.log(oldPolicyActionProbabilityVector[1][classIndex])
+
+		ratioActionProbabiltyVector = {ratioActionProbabiltyVector}
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
@@ -245,16 +253,16 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 		NewProximalPolicyOptimizationClipModel.OldActorModelParameters = NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters
 
 		ActorModel:setModelParameters(NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters, true)
-		
+
 		local clipRatio = NewProximalPolicyOptimizationClipModel.clipRatio 
 
 		local lowerClipRatioValue = 1 - clipRatio
 
 		local upperClipRatioValue = 1 + clipRatio
-		
+
 		local ratioValueModifierFunction = function(ratioValue) -- This is for the gradient of Proximal Policy Optimization clipped loss.
 
-			return ((ratioValue >= lowerClipRatioValue) and (ratioValue <= upperClipRatioValue) and ratioValue) or 0
+			return ((ratioValue == 0) and 0) or ((ratioValue >= lowerClipRatioValue) and (ratioValue <= upperClipRatioValue) and ratioValue) or 0
 
 		end
 

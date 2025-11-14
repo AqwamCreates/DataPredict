@@ -48,7 +48,7 @@ function TabularQLearningModel.new(parameterDictionary)
 	
 	NewTabularQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
-	NewTabularQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
 		local learningRate = NewTabularQLearningModel.learningRate
 		
@@ -70,7 +70,7 @@ function TabularQLearningModel.new(parameterDictionary)
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 
-		local actionIndex = table.find(ActionsList, action)
+		local actionIndex = table.find(ActionsList, previousAction)
 
 		local lastValue = ModelParameters[stateIndex][actionIndex]
 

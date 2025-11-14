@@ -84,7 +84,7 @@ function REINFORCEModel.new(parameterDictionary)
 	
 	local rewardValueHistory = {}
 	
-	NewREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, previousAction, terminalStateValue)
+	NewREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
 		local Model = NewREINFORCEModel.Model
 		

@@ -103,6 +103,8 @@ function ActorCriticModel.new(parameterDictionary)
 		local logActionProbabilityVector = table.create(#ClassesList, 0)
 
 		logActionProbabilityVector[classIndex] = math.log(actionProbabilityVector[1][classIndex])
+		
+		logActionProbabilityVector = {logActionProbabilityVector}
 
 		table.insert(featureVectorHistory, previousFeatureVector)
 

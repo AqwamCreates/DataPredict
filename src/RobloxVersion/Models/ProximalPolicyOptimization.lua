@@ -124,7 +124,7 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 	local advantageValueHistory = {}
 
-	NewProximalPolicyOptimizationModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewProximalPolicyOptimizationModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 
 		local ActorModel = NewProximalPolicyOptimizationModel.ActorModel
 
@@ -139,14 +139,22 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 		NewProximalPolicyOptimizationModel.OldActorModelParameters = ActorModel:getModelParameters(true)
 
 		local oldPolicyActionProbabilityVector = calculateCategoricalProbability(oldPolicyActionVector)
-
-		ActorModel:setModelParameters(NewProximalPolicyOptimizationModel.CurrentActorModelParameters, true)
-
+		
 		local currentPolicyActionVector = ActorModel:forwardPropagate(previousFeatureVector)
-
+		
 		local currentPolicyActionProbabilityVector = calculateCategoricalProbability(currentPolicyActionVector)
 
-		local ratioActionProbabiltyVector = AqwamTensorLibrary:divide(currentPolicyActionProbabilityVector, oldPolicyActionProbabilityVector)
+		ActorModel:setModelParameters(NewProximalPolicyOptimizationModel.CurrentActorModelParameters, true)
+		
+		local ClassesList = ActorModel:getClassesList()
+
+		local classIndex = table.find(ClassesList, previousAction)
+
+		local ratioActionProbabiltyVector = table.create(#ClassesList, 0)
+		
+		ratioActionProbabiltyVector[classIndex] = currentPolicyActionProbabilityVector[1][classIndex] / oldPolicyActionProbabilityVector[1][classIndex]
+
+		ratioActionProbabiltyVector = {ratioActionProbabiltyVector}
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 

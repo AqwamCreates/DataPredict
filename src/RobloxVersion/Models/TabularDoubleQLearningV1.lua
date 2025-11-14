@@ -50,7 +50,7 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 	
 	NewTabularDoubleQLearningModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
 	
-	NewTabularDoubleQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularDoubleQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
 		local learningRate = NewTabularDoubleQLearningModel.learningRate
 		
@@ -64,7 +64,7 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceError, stateIndex, actionIndex = NewTabularDoubleQLearningModel:generateTemporalDifferenceError(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		local temporalDifferenceError, stateIndex, actionIndex = NewTabularDoubleQLearningModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 		
 		NewTabularDoubleQLearningModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
@@ -134,7 +134,7 @@ function TabularDoubleQLearningModel:loadModelParametersFromModelParametersArray
 
 end
 
-function TabularDoubleQLearningModel:generateTemporalDifferenceError(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+function TabularDoubleQLearningModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 
 	local discountFactor = self.discountFactor
 
@@ -156,7 +156,7 @@ function TabularDoubleQLearningModel:generateTemporalDifferenceError(previousSta
 
 	local stateIndex = table.find(StatesList, previousStateValue)
 
-	local actionIndex = table.find(ActionsList, action)
+	local actionIndex = table.find(ActionsList, previousAction)
 
 	local lastValue = previousVector[1][actionIndex]
 

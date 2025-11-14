@@ -138,6 +138,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 
 	DeepOffPolicyMonteCarloControl = require(Models.DeepOffPolicyMonteCarloControl),
 	
+	DeepTemporalDifference = require(Models.DeepTemporalDifference),
+	
 	REINFORCE = require(Models.REINFORCE),
 	
 	VanillaPolicyGradient = require(Models.VanillaPolicyGradient),
@@ -179,6 +181,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	TabularMonteCarloControl = require(Models.TabularMonteCarloControl),
 	
 	TabularOffPolicyMonteCarloControl = require(Models.TabularOffPolicyMonteCarloControl),
+	
+	TabularTemporalDifference = require(Models.TabularTemporalDifference),
 	
 	Markov = require(Models.Markov),
 	

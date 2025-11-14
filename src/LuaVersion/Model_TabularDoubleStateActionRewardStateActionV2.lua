@@ -52,7 +52,7 @@ function TabularDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewTabularDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
-	NewTabularDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
 		local averagingRate = NewTabularDoubleStateActionRewardStateActionModel.averagingRate
 		
@@ -67,68 +67,66 @@ function TabularDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 		local ModelParameters = NewTabularDoubleStateActionRewardStateActionModel.ModelParameters
 		
 		local StatesList = NewTabularDoubleStateActionRewardStateActionModel:getStatesList()
+
+		local ActionsList = NewTabularDoubleStateActionRewardStateActionModel:getActionsList()
 		
+		local averagingRateComplement = 1 - averagingRate
+
 		local previousQVector = NewTabularDoubleStateActionRewardStateActionModel:predict({{previousStateValue}}, true)
 
 		local currentQVector = NewTabularDoubleStateActionRewardStateActionModel:predict({{currentStateValue}}, true)
 
-		local discountedQVector = AqwamTensorLibrary:multiply(discountFactor, currentQVector, (1 - terminalStateValue))
+		local previousActionIndex = table.find(ActionsList, previousAction)
 
-		local targetVector = AqwamTensorLibrary:add(rewardValue, discountedQVector)
-		
+		local currentActionIndex = table.find(ActionsList, currentAction)
+
 		local stateIndex = table.find(StatesList, previousStateValue)
 
-		local temporalDifferenceErrorVector = AqwamTensorLibrary:subtract(targetVector, previousQVector)
-		
-		local averagingRateComplement = 1 - averagingRate
-		
+		local targetValue = rewardValue + (discountFactor * currentQVector[1][currentActionIndex] * (1 - terminalStateValue))
+
+		local temporalDifferenceError = targetValue - previousQVector[1][previousActionIndex]
+
 		if (EligibilityTrace) then
-			
-			local ActionsList = NewTabularDoubleStateActionRewardStateActionModel:getActionsList()
 
 			local numberOfStates = #StatesList
-			
+
 			local numberOfActions = #ActionsList
-			
-			local actionIndex = table.find(ActionsList, action)
 
 			local dimensionSizeArray = {numberOfStates, numberOfActions}
 
 			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
 
-			temporalDifferenceErrorMatrix[stateIndex] = temporalDifferenceErrorVector[1]
+			temporalDifferenceErrorMatrix[stateIndex][previousActionIndex] = temporalDifferenceError
 
-			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
+			EligibilityTrace:increment(stateIndex, previousActionIndex, discountFactor, dimensionSizeArray)
 
 			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
 
-			temporalDifferenceErrorVector = {temporalDifferenceErrorMatrix[stateIndex]}
+			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][previousActionIndex]
+
+		end
+
+		local gradientValue = temporalDifferenceError
+
+		if (Optimizer) then
+
+			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
+
+			gradientValue = gradientValue[1][1]
+
+		else
+
+			gradientValue = learningRate * gradientValue
 
 		end
 		
-		local gradientTensor = temporalDifferenceErrorVector
+		local weightValue = ModelParameters[stateIndex][previousActionIndex]
+
+		local newWeightValue = weightValue + gradientValue
+
+		ModelParameters[stateIndex][previousActionIndex] = (averagingRate * weightValue) + (averagingRateComplement * newWeightValue)
 		
-		if (Optimizer) then
-			
-			gradientTensor = Optimizer:calculate(learningRate, gradientTensor)
-			
-		else
-			
-			gradientTensor = AqwamTensorLibrary:multiply(learningRate, gradientTensor)
-			
-		end
-		
-		local weightVector = {ModelParameters[stateIndex]}
-		
-		local targetVector = AqwamTensorLibrary:add(weightVector, gradientTensor)
-		
-		local multipliedPrimaryVector = AqwamTensorLibrary:multiply(averagingRate, weightVector)
-		
-		local multipliedTargetVector = AqwamTensorLibrary:multiply(averagingRateComplement, targetVector)
-		
-		ModelParameters[stateIndex] = AqwamTensorLibrary:add(multipliedPrimaryVector, multipliedTargetVector)[1]
-		
-		return temporalDifferenceErrorVector
+		return temporalDifferenceError
 
 	end)
 	

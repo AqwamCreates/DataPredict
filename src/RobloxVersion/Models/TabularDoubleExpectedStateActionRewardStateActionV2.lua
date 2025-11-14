@@ -56,7 +56,7 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 	
 	NewTabularDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewTabularDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
 		local averagingRate = NewTabularDoubleExpectedStateActionRewardStateActionModel.averagingRate
 		
@@ -83,8 +83,6 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 		local expectedQValue = 0
 
 		local numberOfGreedyActions = 0
-
-		local actionIndex = table.find(ActionsList, action)
 		
 		local previousVector = NewTabularDoubleExpectedStateActionRewardStateActionModel:predict({{previousStateValue}}, true)
 		
@@ -94,7 +92,7 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 		
-		local actionIndex = table.find(ActionsList, action)
+		local actionIndex = table.find(ActionsList, previousAction)
 
 		local unwrappedTargetVector = targetVector[1]
 

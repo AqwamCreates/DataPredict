@@ -86,15 +86,25 @@ function ActorCriticModel.new(parameterDictionary)
 
 	local criticValueHistory = {}
 
-	NewActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
-
-		local actionVector = NewActorCriticModel.ActorModel:forwardPropagate(previousFeatureVector, true)
+	NewActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
+		
+		local ActorModel = NewActorCriticModel.ActorModel
+		
+		local actionVector = ActorModel:forwardPropagate(previousFeatureVector, true)
 
 		local criticValue = NewActorCriticModel.CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 
-		local logActionProbabilityVector = AqwamTensorLibrary:logarithm(actionProbabilityVector)
+		local ClassesList = ActorModel:getClassesList()
+
+		local classIndex = table.find(ClassesList, previousAction)
+
+		local logActionProbabilityVector = table.create(#ClassesList, 0)
+
+		logActionProbabilityVector[classIndex] = math.log(actionProbabilityVector[1][classIndex])
+		
+		logActionProbabilityVector = {logActionProbabilityVector}
 
 		table.insert(featureVectorHistory, previousFeatureVector)
 

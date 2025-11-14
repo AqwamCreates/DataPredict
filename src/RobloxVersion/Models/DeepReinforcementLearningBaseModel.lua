@@ -116,9 +116,9 @@ function DeepReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(di
 	
 end
 
-function DeepReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+function DeepReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 	
-	return self.categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	return self.categoricalUpdateFunction(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 
 end
 

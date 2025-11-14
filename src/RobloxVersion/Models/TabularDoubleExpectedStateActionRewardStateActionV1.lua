@@ -54,7 +54,7 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 	
 	NewTabularDoubleExpectedStateActionRewardStateActionModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
 	
-	NewTabularDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
 		local learningRate = NewTabularDoubleExpectedStateActionRewardStateActionModel.learningRate
 		
@@ -68,7 +68,7 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceError, stateIndex, actionIndex = NewTabularDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		local temporalDifferenceError, stateIndex, actionIndex = NewTabularDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 		
 		NewTabularDoubleExpectedStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
@@ -138,7 +138,7 @@ function TabularDoubleExpectedStateActionRewardStateActionModel:loadModelParamet
 
 end
 
-function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 
 	local discountFactor = self.discountFactor
 	
@@ -164,13 +164,11 @@ function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporal
 
 	local numberOfGreedyActions = 0
 
-	local actionIndex = table.find(ActionsList, action)
-
 	local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
 
 	local stateIndex = table.find(StatesList, previousStateValue)
 
-	local actionIndex = table.find(ActionsList, action)
+	local actionIndex = table.find(ActionsList, previousAction)
 
 	local unwrappedTargetVector = targetVector[1]
 

@@ -52,13 +52,17 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 	
 	NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewTabularExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
+		
+		local learningRate = NewTabularExpectedStateActionRewardStateActionModel.learningRate
 		
 		local discountFactor = NewTabularExpectedStateActionRewardStateActionModel.discountFactor
 		
 		local epsilon = NewTabularExpectedStateActionRewardStateActionModel.epsilon
 		
 		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
+		
+		local Optimizer = NewTabularExpectedStateActionRewardStateActionModel.Optimizer
 		
 		local ModelParameters = NewTabularExpectedStateActionRewardStateActionModel.ModelParameters
 		
@@ -71,8 +75,6 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 		local expectedQValue = 0
 
 		local numberOfGreedyActions = 0
-
-		local actionIndex = table.find(ActionsList, action)
 		
 		local previousVector = NewTabularExpectedStateActionRewardStateActionModel:predict({{previousStateValue}}, true)
 		
@@ -82,7 +84,7 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 		
-		local actionIndex = table.find(ActionsList, action)
+		local actionIndex = table.find(ActionsList, previousAction)
 
 		local unwrappedTargetVector = targetVector[1]
 
@@ -137,8 +139,22 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
 
 		end
+		
+		local gradientValue = temporalDifferenceError
 
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + (NewTabularExpectedStateActionRewardStateActionModel.learningRate * temporalDifferenceError)
+		if (Optimizer) then
+
+			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
+
+			gradientValue = gradientValue[1][1]
+
+		else
+
+			gradientValue = learningRate * gradientValue
+
+		end
+
+		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + gradientValue
 		
 		return temporalDifferenceError
 

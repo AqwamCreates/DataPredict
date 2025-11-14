@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local DeepReinforcementLearningBaseModel = require("DeepReinforcementLearningBaseModel")
+local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
 DeepMonteCarloControlModel = {}
 
@@ -66,7 +66,7 @@ function DeepMonteCarloControlModel.new(parameterDictionary)
 	
 	local rewardValueHistory = {}
 	
-	NewDeepMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewDeepMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
 		table.insert(featureVectorHistory, previousFeatureVector)
 		

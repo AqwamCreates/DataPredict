@@ -70,7 +70,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 	NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
 		local Model = NewDeepDoubleStateActionRewardStateActionModel.Model
 		
@@ -88,23 +88,31 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 			
 		end
 		
-		local qVector = Model:forwardPropagate(currentFeatureVector, true)
-
-		local discountedQVector = AqwamTensorLibrary:multiply(discountFactor, qVector, (1 - terminalStateValue))
-
-		local targetVector = AqwamTensorLibrary:add(rewardValue, discountedQVector)
+		local currentQVector = Model:forwardPropagate(currentFeatureVector)
 
 		local previousQVector = Model:forwardPropagate(previousFeatureVector)
 
-		local temporalDifferenceErrorVector = AqwamTensorLibrary:subtract(targetVector, previousQVector)
-		
+		local ClassesList = Model:getClassesList()
+
+		local numberOfClasses = #ClassesList
+
+		local previousActionIndex = table.find(ClassesList, previousAction)
+
+		local currentActionIndex = table.find(ClassesList, currentAction)
+
+		local targetValue = rewardValue + (discountFactor * currentQVector[1][currentActionIndex] * (1 - terminalStateValue))
+
+		local temporalDifferenceError = targetValue - previousQVector[1][previousActionIndex] 
+
+		local outputDimensionSizeArray = {1, numberOfClasses}
+
+		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+
+		temporalDifferenceErrorVector[1][previousActionIndex] = temporalDifferenceError
+
 		if (EligibilityTrace) then
 
-			local ClassesList = Model:getClassesList()
-
-			local actionIndex = table.find(ClassesList, action)
-
-			EligibilityTrace:increment(1, actionIndex, discountFactor, {1, #ClassesList})
+			EligibilityTrace:increment(1, previousActionIndex, discountFactor, outputDimensionSizeArray)
 
 			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
 

@@ -90,9 +90,9 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local actionIndex, selectedActionCountVector, currentEpsilon = NewSingleCategoricalPolicyQuickSetup:selectAction(actionVector, NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector, NewSingleCategoricalPolicyQuickSetup.currentEpsilon, NewSingleCategoricalPolicyQuickSetup.EpsilonValueScheduler, currentNumberOfReinforcements)
 
-		local action = ActionsList[actionIndex]
+		local currentAction = ActionsList[actionIndex]
 
-		local actionValue = actionVector[1][actionIndex]
+		local currentActionValue = actionVector[1][actionIndex]
 		
 		local temporalDifferenceError
 
@@ -100,7 +100,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 			
 			local updateFunction = NewSingleCategoricalPolicyQuickSetup.updateFunction
 
-			temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+			temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 
 			if (updateFunction) then updateFunction(terminalStateValue) end
 
@@ -122,13 +122,13 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		if (ExperienceReplay) and (previousFeatureVector) then
 			
-			ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+			ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 
 			ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
 
-			ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+			ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedCurrentAction, storedTerminalStateValue)
 
-				return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+				return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedCurrentAction, storedTerminalStateValue)
 
 			end)
 			
@@ -136,7 +136,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		NewSingleCategoricalPolicyQuickSetup.previousFeatureVector = currentFeatureVector
 		
-		NewSingleCategoricalPolicyQuickSetup.previousAction = action
+		NewSingleCategoricalPolicyQuickSetup.previousAction = currentAction
 		
 		NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector = selectedActionCountVector
 		
@@ -150,7 +150,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		if (returnOriginalOutput) then return actionVector end
 
-		return action, actionValue
+		return currentAction, currentActionValue
 		
 	end)
 	

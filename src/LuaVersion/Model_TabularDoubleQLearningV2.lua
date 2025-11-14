@@ -52,7 +52,7 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 	
 	NewTabularDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
-	NewTabularDoubleQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularDoubleQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
 		local averagingRate = NewTabularDoubleQLearningModel.averagingRate
 		
@@ -78,7 +78,7 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 
-		local actionIndex = table.find(ActionsList, action)
+		local actionIndex = table.find(ActionsList, previousAction)
 
 		local lastValue = ModelParameters[stateIndex][actionIndex]
 

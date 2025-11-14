@@ -50,7 +50,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 	NewDeepClippedDoubleQLearningModel.ModelParametersArray = {}
 	
-	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
 		local Model = NewDeepClippedDoubleQLearningModel.Model
 		
@@ -80,7 +80,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 		
 		local ClassesList = Model:getClassesList()
 
-		local actionIndex = table.find(ClassesList, action)
+		local actionIndex = table.find(ClassesList, previousAction)
 		
 		local numberOfClasses = #ClassesList
 		

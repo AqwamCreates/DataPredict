@@ -73,35 +73,45 @@ end
 function REINFORCEModel.new(parameterDictionary)
 
 	local NewREINFORCEModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
-	
-	setmetatable(NewREINFORCEModel, REINFORCEModel)
-	
-	NewREINFORCEModel:setName("REINFORCE")
-	
-	local featureVectorArray = {}
-	
-	local actionProbabilityVectorHistory = {}
-	
-	local rewardValueHistory = {}
-	
-	NewREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
-		local actionVector = NewREINFORCEModel.Model:forwardPropagate(previousFeatureVector)
-		
+	setmetatable(NewREINFORCEModel, REINFORCEModel)
+
+	NewREINFORCEModel:setName("REINFORCE")
+
+	local featureVectorArray = {}
+
+	local actionProbabilityVectorHistory = {}
+
+	local rewardValueHistory = {}
+
+	NewREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
+
+		local Model = NewREINFORCEModel.Model
+
+		local actionVector = Model:forwardPropagate(previousFeatureVector)
+
 		local actionProbabilityVector = calculateProbability(actionVector)
-		
-		local logActionProbabilityVector = AqwamTensorLibrary:logarithm(actionProbabilityVector)
-		
+
+		local ClassesList = Model:getClassesList()
+
+		local classIndex = table.find(ClassesList, previousAction)
+
+		local logActionProbabilityVector = table.create(#ClassesList, 0)
+
+		logActionProbabilityVector[classIndex] = math.log(actionProbabilityVector[1][classIndex])
+
+		logActionProbabilityVector = {logActionProbabilityVector}
+
 		table.insert(featureVectorArray, previousFeatureVector)
 
 		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
-		
+
 		table.insert(rewardValueHistory, rewardValue)
 
 	end)
-	
+
 	NewREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
-		
+
 		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
 
 		local actionVectorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
@@ -121,9 +131,9 @@ function REINFORCEModel.new(parameterDictionary)
 		local logActionProbabilityVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
 
 		local logActionProbabilityVectorPart4 = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
-		
+
 		local logActionProbabilityVector = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityVectorPart4)
-		
+
 		table.insert(featureVectorArray, previousFeatureVector)
 
 		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
@@ -131,43 +141,43 @@ function REINFORCEModel.new(parameterDictionary)
 		table.insert(rewardValueHistory, rewardValue)
 
 	end)
-	
+
 	NewREINFORCEModel:setEpisodeUpdateFunction(function(terminalStateValue)
-		
+
 		local Model = NewREINFORCEModel.Model
-		
+
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
-		
+
 		for h, actionProbabilityVector in ipairs(actionProbabilityVectorHistory) do
-			
+
 			local lossVector = AqwamTensorLibrary:multiply(actionProbabilityVector, rewardToGoArray[h])
-			
+
 			lossVector = AqwamTensorLibrary:unaryMinus(lossVector)
-			
+
 			Model:forwardPropagate(featureVectorArray[h], true)
 
 			Model:update(lossVector, true)
-			
+
 		end
-		
+
 		table.clear(featureVectorArray)
 
 		table.clear(actionProbabilityVectorHistory)
-		
+
 		table.clear(rewardValueHistory)
-		
+
 	end)
-	
+
 	NewREINFORCEModel:setResetFunction(function()
-		
+
 		table.clear(featureVectorArray)
 
 		table.clear(actionProbabilityVectorHistory)
-		
+
 		table.clear(rewardValueHistory)
-		
+
 	end)
-	
+
 	return NewREINFORCEModel
 
 end

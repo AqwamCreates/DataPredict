@@ -48,7 +48,7 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewTabularStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
-	NewTabularStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
 		local learningRate = NewTabularStateActionRewardStateActionModel.learningRate
 		
@@ -62,57 +62,59 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		local StatesList = NewTabularStateActionRewardStateActionModel:getStatesList()
 		
+		local ActionsList = NewTabularStateActionRewardStateActionModel:getActionsList()
+		
 		local previousQVector = NewTabularStateActionRewardStateActionModel:predict({{previousStateValue}}, true)
 
 		local currentQVector = NewTabularStateActionRewardStateActionModel:predict({{currentStateValue}}, true)
 
-		local discountedQVector = AqwamTensorLibrary:multiply(discountFactor, currentQVector, (1 - terminalStateValue))
+		local previousActionIndex = table.find(ActionsList, previousAction)
 
-		local targetVector = AqwamTensorLibrary:add(rewardValue, discountedQVector)
+		local currentActionIndex = table.find(ActionsList, currentAction)
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 
-		local temporalDifferenceErrorVector = AqwamTensorLibrary:subtract(targetVector, previousQVector)
+		local targetValue = rewardValue + (discountFactor * currentQVector[1][currentActionIndex] * (1 - terminalStateValue))
+
+		local temporalDifferenceError = targetValue - previousQVector[1][previousActionIndex]
 		
 		if (EligibilityTrace) then
-			
-			local ActionsList = NewTabularStateActionRewardStateActionModel:getActionsList()
 
 			local numberOfStates = #StatesList
-			
+
 			local numberOfActions = #ActionsList
-			
-			local actionIndex = table.find(ActionsList, action)
 
 			local dimensionSizeArray = {numberOfStates, numberOfActions}
 
 			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
 
-			temporalDifferenceErrorMatrix[stateIndex] = temporalDifferenceErrorVector[1]
+			temporalDifferenceErrorMatrix[stateIndex][previousActionIndex] = temporalDifferenceError
 
-			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
+			EligibilityTrace:increment(stateIndex, previousActionIndex, discountFactor, dimensionSizeArray)
 
 			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
 
-			temporalDifferenceErrorVector = {temporalDifferenceErrorMatrix[stateIndex]}
+			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][previousActionIndex]
 
 		end
 		
-		local gradientTensor = temporalDifferenceErrorVector
-		
+		local gradientValue = temporalDifferenceError
+
 		if (Optimizer) then
 
-			gradientTensor = Optimizer:calculate(learningRate, gradientTensor)
+			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
+
+			gradientValue = gradientValue[1][1]
 
 		else
 
-			gradientTensor = AqwamTensorLibrary:multiply(learningRate, gradientTensor)
+			gradientValue = learningRate * gradientValue
 
 		end
+
+		ModelParameters[stateIndex][previousActionIndex] = ModelParameters[stateIndex][previousActionIndex] + gradientValue
 		
-		ModelParameters[stateIndex] = AqwamTensorLibrary:add({ModelParameters[stateIndex]}, gradientTensor)[1]
-		
-		return temporalDifferenceErrorVector
+		return temporalDifferenceError
 
 	end)
 	

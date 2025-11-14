@@ -310,9 +310,9 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 		local actionIndex
 
-		local action
+		local currentAction
 
-		local actionValue
+		local currentActionValue
 
 		local temporalDifferenceError
 
@@ -338,13 +338,13 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 				actionIndex, selectedActionCountVector, currentEpsilon = self:selectAction(actionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
 
-				action = ActionsList[actionIndex]
+				currentAction = ActionsList[actionIndex]
 
-				actionValue = actionVector[1][actionIndex]
+				currentActionValue = actionVector[1][actionIndex]
 
 				if (previousFeatureVector) then
 
-					temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+					temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 
 					if (updateFunction) then updateFunction(terminalStateValue, agentIndex) end
 
@@ -360,19 +360,19 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 				if (ExperienceReplay) and (previousFeatureVector) then
 
-					ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+					ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 
 					ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
 
-					ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+					ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedCurrentAction, storedTerminalStateValue)
 
-						return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+						return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedCurrentAction, storedTerminalStateValue)
 
 					end)
 
 				end
 
-				outputArray = {action, actionValue, actionVector, selectedActionCountVector, currentEpsilon}
+				outputArray = {currentAction, currentActionValue, actionVector, selectedActionCountVector, currentEpsilon}
 				
 				table.insert(outputQueueArray, outputArray)
 

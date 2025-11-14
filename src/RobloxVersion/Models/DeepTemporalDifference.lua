@@ -58,15 +58,15 @@ function DeepTemporalDifferenceModel.new(parameterDictionary)
 		
 		local targetValue = rewardValue + (discountFactor * currentQVector[1][1] * (1 - terminalStateValue))
 		
-		local DeepTemporalDifferenceError = targetValue - previousQVector[1][1]
+		local temporalDifferenceError = targetValue - previousQVector[1][1]
 		
-		local negatedDeepTemporalDifferenceErrorVector = {{-DeepTemporalDifferenceError}}
+		local negatedTemporalDifferenceErrorVector = {{-temporalDifferenceError}}
 		
 		Model:forwardPropagate(previousFeatureVector, true)
 
-		Model:update(negatedDeepTemporalDifferenceErrorVector, true)
+		Model:update(negatedTemporalDifferenceErrorVector, true)
 		
-		return DeepTemporalDifferenceError
+		return temporalDifferenceError
 
 	end)
 	

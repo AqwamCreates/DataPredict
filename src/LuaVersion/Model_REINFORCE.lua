@@ -98,7 +98,7 @@ function REINFORCEModel.new(parameterDictionary)
 		
 		local logActionProbabilityVector = table.create(0, #ClassesList)
 		
-		logActionProbabilityVector[classIndex] = math.log(actionProbabilityVector[classIndex])
+		logActionProbabilityVector[classIndex] = math.log(actionProbabilityVector[1][classIndex])
 		
 		logActionProbabilityVector = {logActionProbabilityVector}
 		

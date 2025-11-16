@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GenerativeAdversarialImitationLearningBaseModel = require("ReinforcementLearningStrategies_GenerativeAdversarialImitationLearningBaseModel")
+local GenerativeAdversarialImitationLearningBaseModel = require("Model_GenerativeAdversarialImitationLearningBaseModel")
 
 WassersteinGenerativeAdversarialImitationLearning = {}
 
@@ -44,7 +44,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 	
 	NewWassersteinGenerativeAdversarialImitationLearning:setName("WassersteinGenerativeAdversarialImitationLearning")
 	
-	NewWassersteinGenerativeAdversarialImitationLearning:setCategoricalTrainFunction(function(previousFeatureMatrix, expertActionMatrix, currentFeatureMatrix, terminalStateMatrix)
+	NewWassersteinGenerativeAdversarialImitationLearning:setCategoricalTrainFunction(function(previousFeatureMatrix, expertPreviousActionMatrix, currentFeatureMatrix, expertCurrentActionMatrix, terminalStateMatrix)
 		
 		local DiscriminatorModel = NewWassersteinGenerativeAdversarialImitationLearning.DiscriminatorModel
 
@@ -62,15 +62,17 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 		local previousFeatureMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
 
-		local expertActionMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertActionMatrix, numberOfStepsPerEpisode)
+		local expertPreviousActionMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertPreviousActionMatrix, numberOfStepsPerEpisode)
 
 		local currentFeatureMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
+		
+		local expertCurrentActionMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertCurrentActionMatrix, numberOfStepsPerEpisode)
 		
 		local terminalStateMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(terminalStateMatrix, numberOfStepsPerEpisode)
 
 		local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 
-		if (discriminatorInputNumberOfFeatures ~= (#expertActionMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
+		if (discriminatorInputNumberOfFeatures ~= (#expertPreviousActionMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
 
 		discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 
@@ -80,9 +82,11 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 			local previousFeatureSubMatrix = previousFeatureMatrixTable[episode]
 
-			local expertActionSubMatrix = expertActionMatrixTable[episode]
+			local expertPreviousActionSubMatrix = expertPreviousActionMatrixTable[episode]
 
 			local currentFeatureSubMatrix = currentFeatureMatrixTable[episode]
+			
+			local expertCurrentActionMatrix = expertCurrentActionMatrixTable[episode]
 			
 			local terminalStateSubMatrix = terminalStateMatrixTable[episode]
 
@@ -92,15 +96,17 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				local previousFeatureVector = {previousFeatureSubMatrix[step]}
 
-				local expertActionVector = {expertActionSubMatrix[step]}
+				local expertPreviousActionVector = {expertPreviousActionSubMatrix[step]}
 
 				local currentFeatureVector = {currentFeatureSubMatrix[step]}
+				
+				local expertCurrentActionVector = {expertCurrentActionMatrix[step]}
 				
 				local terminalStateValue = terminalStateSubMatrix[step][1]
 
 				local agentActionVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 
-				local concatenatedExpertStateActionVector = AqwamTensorLibrary:concatenate(previousFeatureVector, expertActionVector, 2)
+				local concatenatedExpertStateActionVector = AqwamTensorLibrary:concatenate(previousFeatureVector, expertPreviousActionVector, 2)
 
 				local concatenatedAgentStateActionVector = AqwamTensorLibrary:concatenate(previousFeatureVector, agentActionVector, 2)
 
@@ -118,13 +124,19 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				local discriminatorLoss = discriminatorExpertActionValue - discriminatorAgentActionValue
 
-				local actionIndex = NewWassersteinGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertActionVector)
+				local expertPreviousActionIndex = NewWassersteinGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertPreviousActionVector)
 
-				local action = ActionsList[actionIndex]
+				local expertCurrentActionIndex = NewWassersteinGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertCurrentActionVector)
 
-				if (not action) then error("Missing action at index " .. actionIndex .. ".") end
+				local expertPreviousAction = ActionsList[expertPreviousActionIndex]
 
-				ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, action, discriminatorLoss, currentFeatureVector, terminalStateValue)
+				local expertCurrentAction = ActionsList[expertCurrentActionIndex]
+
+				if (not expertPreviousAction) then error("Missing previous action at index " .. expertPreviousActionIndex .. ".") end
+
+				if (not expertCurrentAction) then error("Missing current action at index " .. expertCurrentActionIndex .. ".") end
+
+				ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, expertPreviousAction, discriminatorLoss, currentFeatureVector, expertCurrentAction, terminalStateValue)
 
 				DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 

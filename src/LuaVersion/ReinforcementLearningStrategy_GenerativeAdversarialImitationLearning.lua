@@ -26,49 +26,49 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibraryLinker = require("AqwamTensorLibrary")
 
-local GenerativeAdversarialImitationLearningBaseModel = require("Model_GenerativeAdversarialImitationLearningBaseModel")
+local GenerativeAdversarialImitationLearningBaseModel = require("ReinforcementLearningStrategy_GenerativeAdversarialImitationLearningBaseModel")
 
-WassersteinGenerativeAdversarialImitationLearning = {}
+GenerativeAdversarialImitationLearning = {}
 
-WassersteinGenerativeAdversarialImitationLearning.__index = WassersteinGenerativeAdversarialImitationLearning
+GenerativeAdversarialImitationLearning.__index = GenerativeAdversarialImitationLearning
 
-setmetatable(WassersteinGenerativeAdversarialImitationLearning, GenerativeAdversarialImitationLearningBaseModel)
+setmetatable(GenerativeAdversarialImitationLearning, GenerativeAdversarialImitationLearningBaseModel)
 
-function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictionary)
+function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 	
-	local NewWassersteinGenerativeAdversarialImitationLearning = GenerativeAdversarialImitationLearningBaseModel.new(parameterDictionary)
+	local NewGenerativeAdversarialImitationLearning = GenerativeAdversarialImitationLearningBaseModel.new(parameterDictionary)
 	
-	setmetatable(NewWassersteinGenerativeAdversarialImitationLearning, WassersteinGenerativeAdversarialImitationLearning)
+	setmetatable(NewGenerativeAdversarialImitationLearning, GenerativeAdversarialImitationLearning)
 	
-	NewWassersteinGenerativeAdversarialImitationLearning:setName("WassersteinGenerativeAdversarialImitationLearning")
+	NewGenerativeAdversarialImitationLearning:setName("GenerativeAdversarialImitationLearning")
 	
-	NewWassersteinGenerativeAdversarialImitationLearning:setCategoricalTrainFunction(function(previousFeatureMatrix, expertPreviousActionMatrix, currentFeatureMatrix, expertCurrentActionMatrix, terminalStateMatrix)
+	NewGenerativeAdversarialImitationLearning:setCategoricalTrainFunction(function(previousFeatureMatrix, expertPreviousActionMatrix, currentFeatureMatrix, expertCurrentActionMatrix, terminalStateMatrix)
 		
-		local DiscriminatorModel = NewWassersteinGenerativeAdversarialImitationLearning.DiscriminatorModel
+		local DiscriminatorModel = NewGenerativeAdversarialImitationLearning.DiscriminatorModel
 
-		local ReinforcementLearningModel = NewWassersteinGenerativeAdversarialImitationLearning.ReinforcementLearningModel
+		local ReinforcementLearningModel = NewGenerativeAdversarialImitationLearning.ReinforcementLearningModel
 
 		if (not DiscriminatorModel) then error("No discriminator neural network.") end
 
 		if (not ReinforcementLearningModel) then error("No reinforcement learning neural network.") end
 
-		local numberOfStepsPerEpisode = NewWassersteinGenerativeAdversarialImitationLearning.numberOfStepsPerEpisode
+		local numberOfStepsPerEpisode = NewGenerativeAdversarialImitationLearning.numberOfStepsPerEpisode
 
-		local isOutputPrinted = NewWassersteinGenerativeAdversarialImitationLearning.isOutputPrinted
+		local isOutputPrinted = NewGenerativeAdversarialImitationLearning.isOutputPrinted
 
 		local ActionsList = ReinforcementLearningModel:getActionsList()
 
-		local previousFeatureMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
+		local previousFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
 
-		local expertPreviousActionMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertPreviousActionMatrix, numberOfStepsPerEpisode)
+		local expertPreviousActionMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertPreviousActionMatrix, numberOfStepsPerEpisode)
 
-		local currentFeatureMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
+		local currentFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
 		
-		local expertCurrentActionMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertCurrentActionMatrix, numberOfStepsPerEpisode)
+		local expertCurrentActionMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertCurrentActionMatrix, numberOfStepsPerEpisode)
 		
-		local terminalStateMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(terminalStateMatrix, numberOfStepsPerEpisode)
+		local terminalStateMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(terminalStateMatrix, numberOfStepsPerEpisode)
 
 		local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 
@@ -76,7 +76,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 		discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 
-		local discriminatorInputVector = AqwamTensorLibrary:createTensor({1, discriminatorInputNumberOfFeatures}, 1)
+		local discriminatorInputVector = AqwamTensorLibraryLinker:createTensor({1, discriminatorInputNumberOfFeatures}, 1)
 
 		for episode = 1, #previousFeatureMatrixTable, 1 do
 
@@ -86,7 +86,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 			local currentFeatureSubMatrix = currentFeatureMatrixTable[episode]
 			
-			local expertCurrentActionMatrix = expertCurrentActionMatrixTable[episode]
+			local expertCurrentActionSubMatrix = expertCurrentActionMatrixTable[episode]
 			
 			local terminalStateSubMatrix = terminalStateMatrixTable[episode]
 
@@ -100,15 +100,15 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				local currentFeatureVector = {currentFeatureSubMatrix[step]}
 				
-				local expertCurrentActionVector = {expertCurrentActionMatrix[step]}
+				local expertCurrentActionVector = {expertCurrentActionSubMatrix[step]}
 				
 				local terminalStateValue = terminalStateSubMatrix[step][1]
 
 				local agentActionVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 
-				local concatenatedExpertStateActionVector = AqwamTensorLibrary:concatenate(previousFeatureVector, expertPreviousActionVector, 2)
+				local concatenatedExpertStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, expertPreviousActionVector, 2)
 
-				local concatenatedAgentStateActionVector = AqwamTensorLibrary:concatenate(previousFeatureVector, agentActionVector, 2)
+				local concatenatedAgentStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, agentActionVector, 2)
 
 				if (discriminatorInputHasBias) then
 
@@ -122,11 +122,11 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
 
-				local discriminatorLoss = discriminatorExpertActionValue - discriminatorAgentActionValue
+				local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 
-				local expertPreviousActionIndex = NewWassersteinGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertPreviousActionVector)
+				local expertPreviousActionIndex = NewGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertPreviousActionVector)
 
-				local expertCurrentActionIndex = NewWassersteinGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertCurrentActionVector)
+				local expertCurrentActionIndex = NewGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertCurrentActionVector)
 
 				local expertPreviousAction = ActionsList[expertPreviousActionIndex]
 
@@ -150,34 +150,33 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 		end
 		
-		
 	end)
 	
-	NewWassersteinGenerativeAdversarialImitationLearning:setDiagonalGaussianTrainFunction(function(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, expertActionNoiseMatrix, currentFeatureMatrix, terminalStateMatrix)
+	NewGenerativeAdversarialImitationLearning:setDiagonalGaussianTrainFunction(function(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, expertActionNoiseMatrix, currentFeatureMatrix, terminalStateMatrix)
 		
-		local DiscriminatorModel = NewWassersteinGenerativeAdversarialImitationLearning.DiscriminatorModel
+		local DiscriminatorModel = NewGenerativeAdversarialImitationLearning.DiscriminatorModel
 
-		local ReinforcementLearningModel = NewWassersteinGenerativeAdversarialImitationLearning.ReinforcementLearningModel
+		local ReinforcementLearningModel = NewGenerativeAdversarialImitationLearning.ReinforcementLearningModel
 
 		if (not DiscriminatorModel) then error("No discriminator neural network.") end
 
 		if (not ReinforcementLearningModel) then error("No reinforcement learning neural network.") end
 
-		local numberOfStepsPerEpisode = NewWassersteinGenerativeAdversarialImitationLearning.numberOfStepsPerEpisode
+		local numberOfStepsPerEpisode = NewGenerativeAdversarialImitationLearning.numberOfStepsPerEpisode
 
-		local isOutputPrinted = NewWassersteinGenerativeAdversarialImitationLearning.isOutputPrinted
+		local isOutputPrinted = NewGenerativeAdversarialImitationLearning.isOutputPrinted
 
-		local previousFeatureMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
+		local previousFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
 
-		local expertActionMeanMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertActionMeanMatrix, numberOfStepsPerEpisode)
+		local expertActionMeanMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertActionMeanMatrix, numberOfStepsPerEpisode)
 
-		local expertActionStandardDeviationTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertActionStandardDeviationMatrix, numberOfStepsPerEpisode)
+		local expertActionStandardDeviationTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertActionStandardDeviationMatrix, numberOfStepsPerEpisode)
 		
-		local expertActionNoiseTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertActionNoiseMatrix, numberOfStepsPerEpisode)
+		local expertActionNoiseTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertActionNoiseMatrix, numberOfStepsPerEpisode)
 
-		local currentFeatureMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
+		local currentFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
 		
-		local terminalStateMatrixTable = NewWassersteinGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(terminalStateMatrix, numberOfStepsPerEpisode)
+		local terminalStateMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(terminalStateMatrix, numberOfStepsPerEpisode)
 
 		local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 
@@ -185,7 +184,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 		discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 
-		local discriminatorInputVector = AqwamTensorLibrary:createTensor({1, discriminatorInputNumberOfFeatures}, 1)
+		local discriminatorInputVector = AqwamTensorLibraryLinker:createTensor({1, discriminatorInputNumberOfFeatures}, 1)
 
 		local currentEpisode = 1
 
@@ -221,9 +220,9 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				local agentActionMeanVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 
-				local concatenatedExpertStateActionVector = AqwamTensorLibrary:concatenate(previousFeatureVector, expertActionMeanVector, 2)
+				local concatenatedExpertStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, expertActionMeanVector, 2)
 
-				local concatenatedAgentStateActionVector = AqwamTensorLibrary:concatenate(previousFeatureVector, agentActionMeanVector, 2)
+				local concatenatedAgentStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, agentActionMeanVector, 2)
 
 				if (discriminatorInputHasBias) then
 
@@ -237,7 +236,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
 
-				local discriminatorLoss = discriminatorExpertActionValue - discriminatorAgentActionValue
+				local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 
 				ReinforcementLearningModel:diagonalGaussianUpdate(previousFeatureVector, expertActionMeanVector, expertActionStandardDeviationVector, expertActionNoiseVector, discriminatorLoss, currentFeatureVector, terminalStateValue)
 
@@ -255,8 +254,8 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 		
 	end)
 	
-	return NewWassersteinGenerativeAdversarialImitationLearning
+	return NewGenerativeAdversarialImitationLearning
 	
 end
 
-return WassersteinGenerativeAdversarialImitationLearning
+return GenerativeAdversarialImitationLearning

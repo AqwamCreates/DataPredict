@@ -88,11 +88,11 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 	
 		local yValue = rewardValue + (NewDeepDeterministicPolicyGradientModel.discountFactor * (1 - terminalStateValue) * targetQValue)
 		
-		local actionVector = AqwamTensorLibrary:multiply(previousActionStandardDeviationVector, previousActionNoiseVector)
+		local previousActionVector = AqwamTensorLibrary:multiply(previousActionStandardDeviationVector, previousActionNoiseVector)
 		
-		actionVector = AqwamTensorLibrary:add(actionVector, previousActionMeanVector)
+		previousActionVector = AqwamTensorLibrary:add(previousActionVector, previousActionMeanVector)
 		
-		local previousCriticActionInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, actionVector, 2)
+		local previousCriticActionInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, previousActionVector, 2)
 		
 		local currentQValue = CriticModel:forwardPropagate(previousCriticActionInputVector, true)[1][1]
 

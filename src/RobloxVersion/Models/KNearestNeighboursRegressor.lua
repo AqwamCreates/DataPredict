@@ -255,7 +255,7 @@ function KNearestNeighboursRegressorModel:train(featureMatrix, labelVector)
 
 	local numberOfData = #featureMatrix
 
-	if (numberOfData ~= #labelVector) then error("The number of data in feature matrix and the label vector are not the same.") end
+	if (numberOfData ~= #labelVector) then error("The number of data in the feature matrix and the label vector are not the same.") end
 
 	local maximumNumberOfData = self.maximumNumberOfData
 

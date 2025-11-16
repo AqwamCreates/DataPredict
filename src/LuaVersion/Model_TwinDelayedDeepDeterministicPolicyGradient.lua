@@ -82,9 +82,9 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 	
 	local currentNumberOfUpdate = 0
 	
-	NewTwinDelayedDeepDeterministicPolicyGradient:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+	NewTwinDelayedDeepDeterministicPolicyGradient:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
 		
-		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
+		if (not previousActionNoiseVector) then previousActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanVector[1]}) end
 		
 		local ActorModel = NewTwinDelayedDeepDeterministicPolicyGradient.ActorModel
 		
@@ -98,21 +98,19 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 		
 		local noiseClipFunction = function(value) return math.clamp(value, -noiseClippingFactor, noiseClippingFactor) end
 		
-		local currentActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]})
+		local currentActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanVector[1]})
 		
 		local clippedCurrentActionNoiseVector = AqwamTensorLibrary:applyFunction(noiseClipFunction, currentActionNoiseVector)
 		
-		local previousActionVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
+		local previousActionVector = AqwamTensorLibrary:multiply(previousActionStandardDeviationVector, previousActionNoiseVector)
 
-		previousActionVector = AqwamTensorLibrary:add(previousActionVector, actionMeanVector)
+		previousActionVector = AqwamTensorLibrary:add(previousActionVector, previousActionMeanVector)
 
 		local previousActionArray = previousActionVector[1] 
 
 		local lowestActionValue = math.min(table.unpack(previousActionArray))
 
 		local highestActionValue = math.max(table.unpack(previousActionArray))
-		
-		local currentActionMeanVector = ActorModel:forwardPropagate(currentFeatureVector, true)
 		
 		local ActorModelParameters = ActorModel:getModelParameters(true)
 		
@@ -166,9 +164,9 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 		
 		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor({1, 2}, 0)
 
-		local previousCriticActionMeanInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, actionMeanVector, 2)
+		local previousCriticActionMeanInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, previousActionMeanVector, 2)
 		
-		for i = 1, 2, 1 do 
+		for i = 1, 2, 1 do
 
 			CriticModel:setModelParameters(CriticModelParametersArray[i], true)
 
@@ -188,11 +186,11 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 		
 		if ((currentNumberOfUpdate % NewTwinDelayedDeepDeterministicPolicyGradient.policyDelayAmount) == 0) then
 			
-			local actionVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
+			local previousActionVector = AqwamTensorLibrary:multiply(previousActionStandardDeviationVector, previousActionNoiseVector)
 
-			actionVector = AqwamTensorLibrary:add(actionVector, actionMeanVector)
+			previousActionVector = AqwamTensorLibrary:add(previousActionVector, previousActionMeanVector)
 
-			local previousCriticActionInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, actionVector, 2)
+			local previousCriticActionInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, previousActionVector, 2)
 			
 			CriticModel:setModelParameters(CriticModelParametersArray[1], true)
 

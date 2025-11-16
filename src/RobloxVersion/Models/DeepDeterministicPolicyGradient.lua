@@ -68,17 +68,15 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 	
 	NewDeepDeterministicPolicyGradientModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 	
-	NewDeepDeterministicPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+	NewDeepDeterministicPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
 		
-		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
+		if (not previousActionNoiseVector) then previousActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionNoiseVector[1]}) end
 		
 		local ActorModel = NewDeepDeterministicPolicyGradientModel.ActorModel
 		
 		local CriticModel = NewDeepDeterministicPolicyGradientModel.CriticModel
 		
 		local averagingRate = NewDeepDeterministicPolicyGradientModel.averagingRate
-		
-		local currentActionMeanVector = ActorModel:forwardPropagate(currentFeatureVector, true)
 		
 		local ActorModelParameters = ActorModel:getModelParameters(true)
 		
@@ -90,9 +88,9 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 	
 		local yValue = rewardValue + (NewDeepDeterministicPolicyGradientModel.discountFactor * (1 - terminalStateValue) * targetQValue)
 		
-		local actionVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
+		local actionVector = AqwamTensorLibrary:multiply(previousActionStandardDeviationVector, previousActionNoiseVector)
 		
-		actionVector = AqwamTensorLibrary:add(actionVector, actionMeanVector)
+		actionVector = AqwamTensorLibrary:add(actionVector, previousActionMeanVector)
 		
 		local previousCriticActionInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, actionVector, 2)
 		
@@ -106,7 +104,7 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 
 		ActorModel:update(negatedtemporalDifferenceError, true)
 		
-		local previousCriticActionMeanInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, actionMeanVector, 2)
+		local previousCriticActionMeanInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, previousActionMeanVector, 2)
 		
 		CriticModel:forwardPropagate(previousCriticActionMeanInputVector, true)
 		

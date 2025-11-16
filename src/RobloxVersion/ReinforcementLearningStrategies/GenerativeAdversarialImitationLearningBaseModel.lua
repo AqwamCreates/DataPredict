@@ -38,6 +38,10 @@ setmetatable(GenerativeAdversarialImitationLearningBaseModel, BaseModel)
 
 local defaultNumberOfStepsPerEpisode = 300
 
+local categoricalTrainMatrixStringArray = {"previous feature matrix", "expert previous action matrix", "current feature matrix", "expert current action matrix", "terminal state matrix"}
+
+local diagonalGaussianTrainMatrixStringArray = {"previous feature matrix", "expert action mean matrix", "expert action standard deviation matrix", "expert action noise matrix", "current feature matrix"}
+
 function GenerativeAdversarialImitationLearningBaseModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -76,13 +80,53 @@ function GenerativeAdversarialImitationLearningBaseModel:setDiagonalGaussianTrai
 	
 end
 
-function GenerativeAdversarialImitationLearningBaseModel:categoricalTrain(previousFeatureMatrix, expertActionMatrix, currentFeatureMatrix)
+function GenerativeAdversarialImitationLearningBaseModel:categoricalTrain(previousFeatureMatrix, expertPreviousActionMatrix, currentFeatureMatrix, expertCurrentActionMatrix, terminalStateMatrix)
 	
-	self.categoricalTrainFunction(previousFeatureMatrix, expertActionMatrix, currentFeatureMatrix)
+	local previousFeatureMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousFeatureMatrix)
+	
+	local expertPreviousActionMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertPreviousActionMatrix)
+	
+	local currentFeatureMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(currentFeatureMatrix)
+	
+	local expertCurrentActionMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertCurrentActionMatrix)
+	
+	local terminalStateMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(terminalStateMatrix)
+	
+	local dimensionSizeArrayArray = {previousFeatureMatrixDimensionSizeArray, expertPreviousActionMatrixDimensionSizeArray, currentFeatureMatrixDimensionSizeArray, expertCurrentActionMatrixDimensionSizeArray, terminalStateMatrixDimensionSizeArray}
+	
+	for matrixIndex = 2, #dimensionSizeArrayArray, 1 do
+		
+		if (dimensionSizeArrayArray[matrixIndex - 1][1] ~= dimensionSizeArrayArray[matrixIndex][1]) then error("The number of data for the " .. categoricalTrainMatrixStringArray[matrixIndex] .. " does not equal to the number of data for other matrices.") end
+		
+	end
+	
+	if (previousFeatureMatrixDimensionSizeArray[2] ~= currentFeatureMatrixDimensionSizeArray[2]) then error("The number of features in the previous feature matrix and the current feature matrix are not the same.") end
+	
+	self.categoricalTrainFunction(previousFeatureMatrix, expertPreviousActionMatrix, currentFeatureMatrix, expertCurrentActionMatrix, terminalStateMatrix)
 	
 end
 
 function GenerativeAdversarialImitationLearningBaseModel:diagonalGaussianTrain(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, expertActionNoiseMatrix, currentFeatureMatrix)
+	
+	local previousFeatureMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousFeatureMatrix)
+	
+	local expertActionMeanMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertActionMeanMatrix)
+	
+	local expertActionStandardDeviationMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertActionStandardDeviationMatrix)
+	
+	local expertActionNoiseMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertActionNoiseMatrix)
+
+	local currentFeatureMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(currentFeatureMatrix)
+
+	local dimensionSizeArrayArray = {previousFeatureMatrixDimensionSizeArray, expertActionMeanMatrixDimensionSizeArray, expertActionStandardDeviationMatrixDimensionSizeArray, expertActionNoiseMatrixDimensionSizeArray, currentFeatureMatrixDimensionSizeArray}
+
+	for matrixIndex = 2, #dimensionSizeArrayArray, 1 do
+
+		if (dimensionSizeArrayArray[matrixIndex - 1][1] ~= dimensionSizeArrayArray[matrixIndex][1]) then error("The number of data for the " .. diagonalGaussianTrainMatrixStringArray[matrixIndex] .. " is not equal to the number of data for other matrices.") end
+
+	end
+
+	if (previousFeatureMatrixDimensionSizeArray[2] ~= currentFeatureMatrixDimensionSizeArray[2]) then error("The number of features in the previous feature matrix and the current feature matrix are not the same.") end
 	
 	self.diagonalGaussianTrainFunction(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, expertActionNoiseMatrix, currentFeatureMatrix)
 	

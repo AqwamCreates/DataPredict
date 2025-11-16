@@ -214,7 +214,7 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 			
 			local index, probability = sample(probabilityArray, sumPriorityAlpha)
 			
-			local experience = replayBufferArray[index]
+			local previousFeatureVector = replayBufferArray[index][1]
 			
 			local temporalDifferenceErrorValueOrVector = temporalDifferenceArray[index]
 
@@ -230,9 +230,9 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 
 			priorityArray[index] = math.abs(temporalDifferenceErrorValueOrVector)
 
-			local outputMatrix = Model:forwardPropagate(experience[1], true)
+			local outputVector = Model:forwardPropagate(previousFeatureVector, true)
 
-			local lossMatrix = AqwamTensorLibrary:multiply(outputMatrix, temporalDifferenceErrorValueOrVector, importanceSamplingWeight)
+			local lossMatrix = AqwamTensorLibrary:multiply(outputVector, temporalDifferenceErrorValueOrVector, importanceSamplingWeight)
 
 			Model:update(lossMatrix, true)
 

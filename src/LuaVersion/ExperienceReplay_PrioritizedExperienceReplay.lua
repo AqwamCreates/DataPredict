@@ -236,7 +236,7 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 
 			priorityArray[index] = math.abs(temporalDifferenceErrorValueOrVector)
 
-			local outputMatrix = Model:forwardPropagate(replayBufferArray[index][1], false)
+			local outputMatrix = Model:forwardPropagate(experience[1], false)
 
 			local lossMatrix = AqwamTensorLibrary:multiply(outputMatrix, temporalDifferenceErrorValueOrVector, importanceSamplingWeight)
 

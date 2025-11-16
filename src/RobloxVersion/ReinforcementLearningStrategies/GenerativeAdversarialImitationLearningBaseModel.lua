@@ -40,7 +40,7 @@ local defaultNumberOfStepsPerEpisode = 300
 
 local categoricalTrainMatrixStringArray = {"previous feature matrix", "expert previous action matrix", "current feature matrix", "expert current action matrix", "terminal state matrix"}
 
-local diagonalGaussianTrainMatrixStringArray = {"previous feature matrix", "expert action mean matrix", "expert action standard deviation matrix", "expert action noise matrix", "current feature matrix"}
+local diagonalGaussianTrainMatrixStringArray = {"previous feature matrix", "expert previous action mean matrix", "expert previous action standard deviation matrix", "expert previous action noise matrix", "current feature matrix", "expert current action mean matrix", "terminal state matrix"}
 
 function GenerativeAdversarialImitationLearningBaseModel.new(parameterDictionary)
 	
@@ -106,19 +106,23 @@ function GenerativeAdversarialImitationLearningBaseModel:categoricalTrain(previo
 	
 end
 
-function GenerativeAdversarialImitationLearningBaseModel:diagonalGaussianTrain(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, expertActionNoiseMatrix, currentFeatureMatrix)
+function GenerativeAdversarialImitationLearningBaseModel:diagonalGaussianTrain(previousFeatureMatrix, expertPreviousActionMeanMatrix, expertPreviousActionStandardDeviationMatrix, expertPreviousActionNoiseMatrix, currentFeatureMatrix, expertCurrentActionMeanMatrix, terminalStateMatrix)
 	
 	local previousFeatureMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousFeatureMatrix)
 	
-	local expertActionMeanMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertActionMeanMatrix)
+	local expertPreviousActionMeanMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertPreviousActionMeanMatrix)
 	
-	local expertActionStandardDeviationMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertActionStandardDeviationMatrix)
+	local expertPreviousActionStandardDeviationMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertPreviousActionStandardDeviationMatrix)
 	
-	local expertActionNoiseMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertActionNoiseMatrix)
+	local expertPreviousActionNoiseMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertPreviousActionNoiseMatrix)
 
 	local currentFeatureMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(currentFeatureMatrix)
+	
+	local expertCurrentActionMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertCurrentActionMeanMatrix)
+	
+	local terminalStateMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(terminalStateMatrix)
 
-	local dimensionSizeArrayArray = {previousFeatureMatrixDimensionSizeArray, expertActionMeanMatrixDimensionSizeArray, expertActionStandardDeviationMatrixDimensionSizeArray, expertActionNoiseMatrixDimensionSizeArray, currentFeatureMatrixDimensionSizeArray}
+	local dimensionSizeArrayArray = {previousFeatureMatrixDimensionSizeArray, expertPreviousActionMeanMatrixDimensionSizeArray, expertPreviousActionStandardDeviationMatrixDimensionSizeArray, expertPreviousActionNoiseMatrixDimensionSizeArray, currentFeatureMatrixDimensionSizeArray, expertCurrentActionMatrixDimensionSizeArray, terminalStateMatrixDimensionSizeArray}
 
 	for matrixIndex = 2, #dimensionSizeArrayArray, 1 do
 
@@ -128,7 +132,7 @@ function GenerativeAdversarialImitationLearningBaseModel:diagonalGaussianTrain(p
 
 	if (previousFeatureMatrixDimensionSizeArray[2] ~= currentFeatureMatrixDimensionSizeArray[2]) then error("The number of features in the previous feature matrix and the current feature matrix are not the same.") end
 	
-	self.diagonalGaussianTrainFunction(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, expertActionNoiseMatrix, currentFeatureMatrix)
+	self.diagonalGaussianTrainFunction(previousFeatureMatrix, expertPreviousActionMeanMatrix, expertPreviousActionStandardDeviationMatrix, expertPreviousActionNoiseMatrix, currentFeatureMatrix, expertCurrentActionMeanMatrix, terminalStateMatrix)
 	
 end
 

@@ -116,7 +116,7 @@ function SoftActorCriticModel.new(parameterDictionary)
 	
 	NewSoftActorCritic.CriticModelParametersArray = parameterDictionary.CriticModelParametersArray or {}
 	
-	NewSoftActorCritic:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewSoftActorCritic:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
 		local ActorModel = NewSoftActorCritic.ActorModel
 		
@@ -134,23 +134,21 @@ function SoftActorCriticModel.new(parameterDictionary)
 		
 		local currentLogActionProbabilityVector = AqwamTensorLibrary:logarithm(currentActionProbabilityVector)
 		
-		return NewSoftActorCritic:update(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+		return NewSoftActorCritic:update(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
 		
 	end)
 	
-	NewSoftActorCritic:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+	NewSoftActorCritic:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
 		
-		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
+		if (not previousActionNoiseVector) then previousActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanVector[1]}) end
 		
-		local currentActionMeanVector = NewSoftActorCritic.ActorModel:forwardPropagate(currentFeatureVector, true)
-		
-		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionNoiseVector)
+		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionNoiseVector)
 		
 		local currentActionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
 		
-		local previousLogActionProbabilityVector = calculateDiagonalGaussianProbability(actionMeanVector, actionStandardDeviationVector, actionNoiseVector)
+		local previousLogActionProbabilityVector = calculateDiagonalGaussianProbability(previousActionMeanVector, previousActionStandardDeviationVector, previousActionStandardDeviationVector)
 		
-		local currentLogActionProbabilityVector = calculateDiagonalGaussianProbability(currentActionMeanVector, actionStandardDeviationVector, currentActionNoiseVector)
+		local currentLogActionProbabilityVector = calculateDiagonalGaussianProbability(currentActionMeanVector, previousActionStandardDeviationVector, currentActionNoiseVector)
 		
 		return NewSoftActorCritic:update(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, nil, rewardValue, currentFeatureVector, terminalStateValue)
 		
@@ -164,7 +162,7 @@ function SoftActorCriticModel.new(parameterDictionary)
 	
 end
 
-function SoftActorCriticModel:update(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+function SoftActorCriticModel:update(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
 	
 	local CriticModelParametersArray = self.CriticModelParametersArray
 	
@@ -180,11 +178,11 @@ function SoftActorCriticModel:update(previousFeatureVector, previousLogActionPro
 	
 	local previousLogActionProbabilityValue
 	
-	if (action) then
+	if (previousAction) then
 		
 		local ClassesList = ActorModel:getClassesList()
 		
-		local actionIndex = table.find(ClassesList, action)
+		local actionIndex = table.find(ClassesList, previousAction)
 		
 		previousLogActionProbabilityValue = previousLogActionProbabilityVector[1][actionIndex]
 		

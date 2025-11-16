@@ -209,8 +209,6 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 			probabilityArray[i] = probability / sumPriorityAlpha
 			
 		end
-
-		local sizeArray = AqwamTensorLibrary:getDimensionSizeArray(replayBufferArray[1][1])
 		
 		for i = 1, lowestNumberOfBatchSize, 1 do
 			

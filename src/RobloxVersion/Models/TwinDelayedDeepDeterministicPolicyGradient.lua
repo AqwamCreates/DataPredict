@@ -166,7 +166,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 		local previousCriticActionMeanInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, previousActionMeanVector, 2)
 		
-		for i = 1, 2, 1 do 
+		for i = 1, 2, 1 do
 
 			CriticModel:setModelParameters(CriticModelParametersArray[i], true)
 

@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ReinforcementLearningBaseQuickSetup = require("Model_ReinforcementLearningBaseQuickSetup")
+local ReinforcementLearningBaseQuickSetup = require("QuickSetup_ReinforcementLearningBaseQuickSetup")
 
 SingleDiagonalGaussianPolicyQuickSetup = {}
 

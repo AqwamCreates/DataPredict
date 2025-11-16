@@ -89,7 +89,7 @@ function VanillaPolicyGradientModel.new(parameterDictionary)
 	NewVanillaPolicyGradientModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 
 		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
-		
+
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 
 		local actionVector = ActorModel:forwardPropagate(previousFeatureVector)
@@ -124,23 +124,23 @@ function VanillaPolicyGradientModel.new(parameterDictionary)
 
 	end)
 
-	NewVanillaPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
-		
-		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
+	NewVanillaPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
+
+		if (not previousActionNoiseVector) then previousActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanVector[1]}) end
 
 		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 
-		local actionVectorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
+		local actionVectorPart1 = AqwamTensorLibrary:multiply(previousActionStandardDeviationVector, previousActionNoiseVector)
 
-		local actionVector = AqwamTensorLibrary:add(actionMeanVector, actionVectorPart1)
+		local actionVector = AqwamTensorLibrary:add(previousActionMeanVector, actionVectorPart1)
 
-		local zScoreVectorPart1 = AqwamTensorLibrary:subtract(actionVector, actionMeanVector)
+		local zScoreVectorPart1 = AqwamTensorLibrary:subtract(actionVector, previousActionMeanVector)
 
-		local zScoreVector = AqwamTensorLibrary:divide(zScoreVectorPart1, actionStandardDeviationVector)
+		local zScoreVector = AqwamTensorLibrary:divide(zScoreVectorPart1, previousActionStandardDeviationVector)
 
 		local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
 
-		local logActionProbabilityVectorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationVector)
+		local logActionProbabilityVectorPart1 = AqwamTensorLibrary:logarithm(previousActionStandardDeviationVector)
 
 		local logActionProbabilityVectorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityVectorPart1)
 

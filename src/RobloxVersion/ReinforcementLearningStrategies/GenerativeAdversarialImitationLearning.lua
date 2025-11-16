@@ -44,7 +44,7 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 	
 	NewGenerativeAdversarialImitationLearning:setName("GenerativeAdversarialImitationLearning")
 	
-	NewGenerativeAdversarialImitationLearning:setCategoricalTrainFunction(function(previousFeatureMatrix, expertActionMatrix, currentFeatureMatrix, terminalStateMatrix)
+	NewGenerativeAdversarialImitationLearning:setCategoricalTrainFunction(function(previousFeatureMatrix, expertPreviousActionMatrix, currentFeatureMatrix, expertCurrentActionMatrix, terminalStateMatrix)
 		
 		local DiscriminatorModel = NewGenerativeAdversarialImitationLearning.DiscriminatorModel
 
@@ -62,15 +62,17 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 		local previousFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
 
-		local expertActionMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertActionMatrix, numberOfStepsPerEpisode)
+		local expertPreviousActionMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertPreviousActionMatrix, numberOfStepsPerEpisode)
 
 		local currentFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
+		
+		local expertCurrentActionMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertCurrentActionMatrix, numberOfStepsPerEpisode)
 		
 		local terminalStateMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(terminalStateMatrix, numberOfStepsPerEpisode)
 
 		local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 
-		if (discriminatorInputNumberOfFeatures ~= (#expertActionMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
+		if (discriminatorInputNumberOfFeatures ~= (#expertPreviousActionMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
 
 		discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 
@@ -80,9 +82,11 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 			local previousFeatureSubMatrix = previousFeatureMatrixTable[episode]
 
-			local expertActionSubMatrix = expertActionMatrixTable[episode]
+			local expertPreviousActionSubMatrix = expertPreviousActionMatrixTable[episode]
 
 			local currentFeatureSubMatrix = currentFeatureMatrixTable[episode]
+			
+			local expertCurrentActionSubMatrix = expertCurrentActionMatrixTable[episode]
 			
 			local terminalStateSubMatrix = terminalStateMatrixTable[episode]
 
@@ -92,15 +96,17 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 				local previousFeatureVector = {previousFeatureSubMatrix[step]}
 
-				local expertActionVector = {expertActionSubMatrix[step]}
+				local expertPreviousActionVector = {expertPreviousActionSubMatrix[step]}
 
 				local currentFeatureVector = {currentFeatureSubMatrix[step]}
+				
+				local expertCurrentActionVector = {expertCurrentActionSubMatrix[step]}
 				
 				local terminalStateValue = terminalStateSubMatrix[step][1]
 
 				local agentActionVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 
-				local concatenatedExpertStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, expertActionVector, 2)
+				local concatenatedExpertStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, expertPreviousActionVector, 2)
 
 				local concatenatedAgentStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, agentActionVector, 2)
 
@@ -118,13 +124,19 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 				local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 
-				local actionIndex = NewGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertActionVector)
+				local expertPreviousActionIndex = NewGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertPreviousActionVector)
 
-				local action = ActionsList[actionIndex]
+				local expertCurrentActionIndex = NewGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertCurrentActionVector)
 
-				if (not action) then error("Missing action at index " .. actionIndex .. ".") end
+				local expertPreviousAction = ActionsList[expertPreviousActionIndex]
 
-				ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, action, discriminatorLoss, currentFeatureVector, terminalStateValue)
+				local expertCurrentAction = ActionsList[expertCurrentActionIndex]
+
+				if (not expertPreviousAction) then error("Missing previous action at index " .. expertPreviousActionIndex .. ".") end
+
+				if (not expertCurrentAction) then error("Missing current action at index " .. expertCurrentActionIndex .. ".") end
+
+				ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, expertPreviousAction, discriminatorLoss, currentFeatureVector, expertCurrentAction, terminalStateValue)
 
 				DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 

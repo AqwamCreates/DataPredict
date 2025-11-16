@@ -63,5 +63,3 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
    * This license is valid as long as the DataPredict contributor remain continuously employed in the same company.
   
    * If a contributor is employed by multiple organizations that are eligible to use DataPredict, only the first organization employing them is eligible for this offer.
-
-   * If the contributor is a founder, co-founder, or owner of the organization, the granted license may be transferable between internal projects within that organization.

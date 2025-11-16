@@ -134,7 +134,7 @@ function ParallelDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 
 			local updateFunction = NewParallelDiagonalGaussianPolicyQuickSetup.updateFunction
 
-			temporalDifferenceError = Model:diagonalGaussianUpdate(previousFeatureVector, previousActionMeanVector, actionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+			temporalDifferenceError = Model:diagonalGaussianUpdate(previousFeatureVector, previousActionMeanVector, actionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
 
 			if (updateFunction) then updateFunction(terminalStateValue) end
 
@@ -156,13 +156,13 @@ function ParallelDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 
 		if (ExperienceReplay) and (previousFeatureVector) then
 
-			ExperienceReplay:addExperience(previousFeatureVector, previousActionMeanVector, actionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+			ExperienceReplay:addExperience(previousFeatureVector, previousActionMeanVector, actionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
 
 			ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
 
-			ExperienceReplay:run(function(storedPreviousFeatureVector, storedActionMeanVector, storedActionStandardDeviationVector, storedActionNoiseVector, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+			ExperienceReplay:run(function(storedPreviousFeatureVector, storedPreviousActionMeanVector, storedPreviousActionStandardDeviationVector, storedPreviousActionNoiseVector, storedRewardValue, storedCurrentFeatureVector, storedCurrentActionMeanVector, storedTerminalStateValue)
 
-				return Model:diagonalGaussianUpdate(storedPreviousFeatureVector, storedActionMeanVector, storedActionStandardDeviationVector, storedActionNoiseVector, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
+				return Model:diagonalGaussianUpdate(storedPreviousFeatureVector, storedPreviousActionMeanVector, storedPreviousActionStandardDeviationVector, storedPreviousActionNoiseVector, storedRewardValue, storedCurrentFeatureVector, storedCurrentActionMeanVector, storedTerminalStateValue)
 
 			end)
 

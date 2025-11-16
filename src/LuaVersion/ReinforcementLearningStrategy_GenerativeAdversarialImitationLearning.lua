@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -26,204 +26,242 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibraryLinker = require("AqwamTensorLibrary")
 
-local BaseModel = require("Model_BaseModel")
+local GenerativeAdversarialImitationLearningBaseModel = require("Model_GenerativeAdversarialImitationLearningBaseModel")
 
-local GenerativeAdversarialImitationLearningBaseModel = {}
+GenerativeAdversarialImitationLearning = {}
 
-GenerativeAdversarialImitationLearningBaseModel.__index = GenerativeAdversarialImitationLearningBaseModel
+GenerativeAdversarialImitationLearning.__index = GenerativeAdversarialImitationLearning
 
-setmetatable(GenerativeAdversarialImitationLearningBaseModel, BaseModel)
+setmetatable(GenerativeAdversarialImitationLearning, GenerativeAdversarialImitationLearningBaseModel)
 
-local defaultNumberOfStepsPerEpisode = 300
-
-local categoricalTrainMatrixStringArray = {"previous feature matrix", "expert previous action matrix", "current feature matrix", "expert current action matrix", "terminal state matrix"}
-
-local diagonalGaussianTrainMatrixStringArray = {"previous feature matrix", "expert previous action mean matrix", "expert previous action standard deviation matrix", "expert previous action noise matrix", "current feature matrix", "expert current action mean matrix", "terminal state matrix"}
-
-function GenerativeAdversarialImitationLearningBaseModel.new(parameterDictionary)
+function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 	
-	parameterDictionary = parameterDictionary or {}
+	local NewGenerativeAdversarialImitationLearning = GenerativeAdversarialImitationLearningBaseModel.new(parameterDictionary)
 	
-	local NewGenerativeAdversarialImitationLearningBaseModel = BaseModel.new(parameterDictionary)
+	setmetatable(NewGenerativeAdversarialImitationLearning, GenerativeAdversarialImitationLearning)
 	
-	setmetatable(NewGenerativeAdversarialImitationLearningBaseModel, GenerativeAdversarialImitationLearningBaseModel)
+	NewGenerativeAdversarialImitationLearning:setName("GenerativeAdversarialImitationLearning")
 	
-	NewGenerativeAdversarialImitationLearningBaseModel:setName("GenerativeAdversarialImitationLearningBaseModel")
-	
-	NewGenerativeAdversarialImitationLearningBaseModel:setClassName("GenerativeAdversarialImitationLearning")
-	
-	NewGenerativeAdversarialImitationLearningBaseModel.numberOfStepsPerEpisode = parameterDictionary.numberOfStepsPerEpisode or defaultNumberOfStepsPerEpisode
-	
-	NewGenerativeAdversarialImitationLearningBaseModel.categoricalTrainFunction = parameterDictionary.categoricalTrainFunction
-	
-	NewGenerativeAdversarialImitationLearningBaseModel.diagonalGaussianTrainFunction = parameterDictionary.diagonalGaussianTrainFunction
-	
-	NewGenerativeAdversarialImitationLearningBaseModel.DiscriminatorModel = parameterDictionary.DiscriminatorModel
-	
-	NewGenerativeAdversarialImitationLearningBaseModel.GeneratorModel = parameterDictionary.GeneratorModel
-	
-	return NewGenerativeAdversarialImitationLearningBaseModel
-	
-end
-
-function GenerativeAdversarialImitationLearningBaseModel:setCategoricalTrainFunction(categoricalTrainFunction)
-	
-	self.categoricalTrainFunction = categoricalTrainFunction
-	
-end
-
-function GenerativeAdversarialImitationLearningBaseModel:setDiagonalGaussianTrainFunction(diagonalGaussianTrainFunction)
-	
-	self.diagonalGaussianTrainFunction = diagonalGaussianTrainFunction
-	
-end
-
-function GenerativeAdversarialImitationLearningBaseModel:categoricalTrain(previousFeatureMatrix, expertPreviousActionMatrix, currentFeatureMatrix, expertCurrentActionMatrix, terminalStateMatrix)
-	
-	local previousFeatureMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousFeatureMatrix)
-	
-	local expertPreviousActionMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertPreviousActionMatrix)
-	
-	local currentFeatureMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(currentFeatureMatrix)
-	
-	local expertCurrentActionMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertCurrentActionMatrix)
-	
-	local terminalStateMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(terminalStateMatrix)
-	
-	local dimensionSizeArrayArray = {previousFeatureMatrixDimensionSizeArray, expertPreviousActionMatrixDimensionSizeArray, currentFeatureMatrixDimensionSizeArray, expertCurrentActionMatrixDimensionSizeArray, terminalStateMatrixDimensionSizeArray}
-	
-	for matrixIndex = 2, #dimensionSizeArrayArray, 1 do
+	NewGenerativeAdversarialImitationLearning:setCategoricalTrainFunction(function(previousFeatureMatrix, expertPreviousActionMatrix, currentFeatureMatrix, expertCurrentActionMatrix, terminalStateMatrix)
 		
-		if (dimensionSizeArrayArray[matrixIndex - 1][1] ~= dimensionSizeArrayArray[matrixIndex][1]) then error("The number of data for the " .. categoricalTrainMatrixStringArray[matrixIndex] .. " does not equal to the number of data for other matrices.") end
+		local DiscriminatorModel = NewGenerativeAdversarialImitationLearning.DiscriminatorModel
+
+		local ReinforcementLearningModel = NewGenerativeAdversarialImitationLearning.ReinforcementLearningModel
+
+		if (not DiscriminatorModel) then error("No discriminator neural network.") end
+
+		if (not ReinforcementLearningModel) then error("No reinforcement learning neural network.") end
+
+		local numberOfStepsPerEpisode = NewGenerativeAdversarialImitationLearning.numberOfStepsPerEpisode
+
+		local isOutputPrinted = NewGenerativeAdversarialImitationLearning.isOutputPrinted
+
+		local ActionsList = ReinforcementLearningModel:getActionsList()
+
+		local previousFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
+
+		local expertPreviousActionMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertPreviousActionMatrix, numberOfStepsPerEpisode)
+
+		local currentFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
 		
-	end
-	
-	if (previousFeatureMatrixDimensionSizeArray[2] ~= currentFeatureMatrixDimensionSizeArray[2]) then error("The number of features in the previous feature matrix and the current feature matrix are not the same.") end
-	
-	self.categoricalTrainFunction(previousFeatureMatrix, expertPreviousActionMatrix, currentFeatureMatrix, expertCurrentActionMatrix, terminalStateMatrix)
-	
-end
+		local expertCurrentActionMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertCurrentActionMatrix, numberOfStepsPerEpisode)
+		
+		local terminalStateMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(terminalStateMatrix, numberOfStepsPerEpisode)
 
-function GenerativeAdversarialImitationLearningBaseModel:diagonalGaussianTrain(previousFeatureMatrix, expertPreviousActionMeanMatrix, expertPreviousActionStandardDeviationMatrix, expertPreviousActionNoiseMatrix, currentFeatureMatrix, expertCurrentActionMeanMatrix, terminalStateMatrix)
-	
-	local previousFeatureMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousFeatureMatrix)
-	
-	local expertPreviousActionMeanMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertPreviousActionMeanMatrix)
-	
-	local expertPreviousActionStandardDeviationMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertPreviousActionStandardDeviationMatrix)
-	
-	local expertPreviousActionNoiseMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertPreviousActionNoiseMatrix)
+		local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 
-	local currentFeatureMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(currentFeatureMatrix)
-	
-	local expertCurrentActionMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(expertCurrentActionMeanMatrix)
-	
-	local terminalStateMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(terminalStateMatrix)
+		if (discriminatorInputNumberOfFeatures ~= (#expertPreviousActionMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
 
-	local dimensionSizeArrayArray = {previousFeatureMatrixDimensionSizeArray, expertPreviousActionMeanMatrixDimensionSizeArray, expertPreviousActionStandardDeviationMatrixDimensionSizeArray, expertPreviousActionNoiseMatrixDimensionSizeArray, currentFeatureMatrixDimensionSizeArray, expertCurrentActionMatrixDimensionSizeArray, terminalStateMatrixDimensionSizeArray}
+		discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 
-	for matrixIndex = 2, #dimensionSizeArrayArray, 1 do
+		local discriminatorInputVector = AqwamTensorLibraryLinker:createTensor({1, discriminatorInputNumberOfFeatures}, 1)
 
-		if (dimensionSizeArrayArray[matrixIndex - 1][1] ~= dimensionSizeArrayArray[matrixIndex][1]) then error("The number of data for the " .. diagonalGaussianTrainMatrixStringArray[matrixIndex] .. " is not equal to the number of data for other matrices.") end
+		for episode = 1, #previousFeatureMatrixTable, 1 do
 
-	end
+			local previousFeatureSubMatrix = previousFeatureMatrixTable[episode]
 
-	if (previousFeatureMatrixDimensionSizeArray[2] ~= currentFeatureMatrixDimensionSizeArray[2]) then error("The number of features in the previous feature matrix and the current feature matrix are not the same.") end
-	
-	self.diagonalGaussianTrainFunction(previousFeatureMatrix, expertPreviousActionMeanMatrix, expertPreviousActionStandardDeviationMatrix, expertPreviousActionNoiseMatrix, currentFeatureMatrix, expertCurrentActionMeanMatrix, terminalStateMatrix)
-	
-end
+			local expertPreviousActionSubMatrix = expertPreviousActionMatrixTable[episode]
 
-function GenerativeAdversarialImitationLearningBaseModel:evaluate(featureMatrix)
+			local currentFeatureSubMatrix = currentFeatureMatrixTable[episode]
+			
+			local expertCurrentActionSubMatrix = expertCurrentActionMatrixTable[episode]
+			
+			local terminalStateSubMatrix = terminalStateMatrixTable[episode]
 
-	return self.DiscriminatorModel:predict(featureMatrix, true)
+			for step = 1, numberOfStepsPerEpisode, 1 do
 
-end
+				task.wait()
 
-function GenerativeAdversarialImitationLearningBaseModel:generate(featureMatrix, returnOriginalOutput)
+				local previousFeatureVector = {previousFeatureSubMatrix[step]}
 
-	return self.ReinforcementLearningModel:predict(featureMatrix, returnOriginalOutput)
+				local expertPreviousActionVector = {expertPreviousActionSubMatrix[step]}
 
-end
+				local currentFeatureVector = {currentFeatureSubMatrix[step]}
+				
+				local expertCurrentActionVector = {expertCurrentActionSubMatrix[step]}
+				
+				local terminalStateValue = terminalStateSubMatrix[step][1]
 
-function GenerativeAdversarialImitationLearningBaseModel:setDiscriminatorModel(DiscriminatorModel)
+				local agentActionVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 
-	self.DiscriminatorModel = DiscriminatorModel
+				local concatenatedExpertStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, expertPreviousActionVector, 2)
 
-end
+				local concatenatedAgentStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, agentActionVector, 2)
 
-function GenerativeAdversarialImitationLearningBaseModel:setReinforcementLearningModel(ReinforcementLearningModel)
+				if (discriminatorInputHasBias) then
 
-	self.ReinforcementLearningModel = ReinforcementLearningModel
+					table.insert(concatenatedExpertStateActionVector[1], 1)
 
-end
+					table.insert(concatenatedAgentStateActionVector[1], 1)
 
-function GenerativeAdversarialImitationLearningBaseModel:getDiscriminatorModel()
+				end
 
-	return self.DiscriminatorModel
+				local discriminatorExpertActionValue = DiscriminatorModel:predict(concatenatedExpertStateActionVector, true)[1][1]
 
-end
+				local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
 
-function GenerativeAdversarialImitationLearningBaseModel:getReinforcementLearningModel()
+				local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 
-	return self.ReinforcementLearningModel
+				local expertPreviousActionIndex = NewGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertPreviousActionVector)
 
-end
+				local expertCurrentActionIndex = NewGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertCurrentActionVector)
 
-function GenerativeAdversarialImitationLearningBaseModel:chooseIndexWithHighestValue(valueVector)
+				local expertPreviousAction = ActionsList[expertPreviousActionIndex]
 
-	valueVector = valueVector[1]
+				local expertCurrentAction = ActionsList[expertCurrentActionIndex]
 
-	local highestValue = -math.huge
+				if (not expertPreviousAction) then error("Missing previous action at index " .. expertPreviousActionIndex .. ".") end
 
-	local highestIndex
+				if (not expertCurrentAction) then error("Missing current action at index " .. expertCurrentActionIndex .. ".") end
 
-	for i, value in ipairs(valueVector) do
+				ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, expertPreviousAction, discriminatorLoss, currentFeatureVector, expertCurrentAction, terminalStateValue)
 
-		if (value > highestValue) then
+				DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 
-			highestValue = value
+				DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
 
-			highestIndex = i
+				if (isOutputPrinted) then print("Episode: " .. episode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
+
+			end
+
+			ReinforcementLearningModel:episodeUpdate(1)
 
 		end
+		
+	end)
+	
+	NewGenerativeAdversarialImitationLearning:setDiagonalGaussianTrainFunction(function(previousFeatureMatrix, expertPreviousActionMeanMatrix, expertPreviousActionStandardDeviationMatrix, expertPreviousActionNoiseMatrix, currentFeatureMatrix, expertCurrentActionMeanMatrix, terminalStateMatrix)
+		
+		local DiscriminatorModel = NewGenerativeAdversarialImitationLearning.DiscriminatorModel
 
-	end
+		local ReinforcementLearningModel = NewGenerativeAdversarialImitationLearning.ReinforcementLearningModel
 
-	return highestIndex
+		if (not DiscriminatorModel) then error("No discriminator neural network.") end
 
+		if (not ReinforcementLearningModel) then error("No reinforcement learning neural network.") end
+
+		local numberOfStepsPerEpisode = NewGenerativeAdversarialImitationLearning.numberOfStepsPerEpisode
+
+		local isOutputPrinted = NewGenerativeAdversarialImitationLearning.isOutputPrinted
+
+		local previousFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
+
+		local expertPreviousActionMeanMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertPreviousActionMeanMatrix, numberOfStepsPerEpisode)
+
+		local expertPreviousActionStandardDeviationTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertPreviousActionStandardDeviationMatrix, numberOfStepsPerEpisode)
+		
+		local expertPreviousActionNoiseTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertPreviousActionNoiseMatrix, numberOfStepsPerEpisode)
+
+		local currentFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
+		
+		local expertCurrentActionMeanMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertCurrentActionMeanMatrix, numberOfStepsPerEpisode)
+		
+		local terminalStateMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(terminalStateMatrix, numberOfStepsPerEpisode)
+
+		local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
+
+		if (discriminatorInputNumberOfFeatures ~= (#expertPreviousActionMeanMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
+
+		discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
+
+		local discriminatorInputVector = AqwamTensorLibraryLinker:createTensor({1, discriminatorInputNumberOfFeatures}, 1)
+
+		local currentEpisode = 1
+
+		for episode = 1, #previousFeatureMatrixTable, 1 do
+
+			local previousFeatureSubMatrix = previousFeatureMatrixTable[episode]
+
+			local expertPreviousActionMeanSubMatrix = expertPreviousActionMeanMatrixTable[episode]
+
+			local expertPreviousActionStandardDeviationSubMatrix = expertPreviousActionStandardDeviationTable[episode]
+			
+			local expertPreviousActionNoiseSubMatrix = expertPreviousActionNoiseTable[episode]
+
+			local currentFeatureSubMatrix = currentFeatureMatrixTable[episode]
+			
+			local expertCurrentActionMeanSubMatrix = expertCurrentActionMeanMatrixTable[episode]
+			
+			local terminalStateSubMatrix = terminalStateMatrixTable[episode]
+
+			for step = 1, numberOfStepsPerEpisode, 1 do
+
+				task.wait()
+
+				local previousFeatureVector = {previousFeatureSubMatrix[step]}
+
+				local expertPreviousActionMeanVector = {expertPreviousActionMeanSubMatrix[step]}
+
+				local expertPreviousActionStandardDeviationVector = {expertPreviousActionStandardDeviationSubMatrix[step]}
+				
+				local expertPreviousActionNoiseVector = {expertPreviousActionNoiseSubMatrix[step]}
+
+				local currentFeatureVector = {currentFeatureSubMatrix[step]}
+				
+				local expertCurrentActionMeanVector = {expertCurrentActionMeanSubMatrix[step]}
+				
+				local terminalStateValue = terminalStateSubMatrix[step][1]
+
+				local agentPreviousActionMeanVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
+
+				local concatenatedExpertStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, expertPreviousActionMeanVector, 2)
+
+				local concatenatedAgentStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, agentPreviousActionMeanVector, 2)
+
+				if (discriminatorInputHasBias) then
+
+					table.insert(concatenatedExpertStateActionVector[1], 1)
+
+					table.insert(concatenatedAgentStateActionVector[1], 1)
+
+				end
+
+				local discriminatorExpertActionValue = DiscriminatorModel:predict(concatenatedExpertStateActionVector, true)[1][1]
+
+				local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
+
+				local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
+
+				ReinforcementLearningModel:diagonalGaussianUpdate(previousFeatureVector, expertPreviousActionMeanVector, expertPreviousActionStandardDeviationVector, expertPreviousActionNoiseVector, discriminatorLoss, currentFeatureVector, expertCurrentActionMeanVector, terminalStateValue)
+
+				DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
+
+				DiscriminatorModel:update(discriminatorLoss, true)
+
+				if (isOutputPrinted) then print("Episode: " .. currentEpisode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
+
+			end
+
+			ReinforcementLearningModel:episodeUpdate(1)
+
+		end
+		
+	end)
+	
+	return NewGenerativeAdversarialImitationLearning
+	
 end
 
-function GenerativeAdversarialImitationLearningBaseModel:breakMatrixToMultipleSmallerMatrices(matrix, batchSize)
-
-	local numberOfBatches = math.ceil(#matrix/batchSize)
-
-	local matrixBatchesTable = {}
-
-	local batchPositions = {}
-
-	local batchFeatureMatrix
-
-	local batchLabelVector 
-
-	for batch = 1, numberOfBatches, 1 do
-
-		local startIndex = (batch - 1) * batchSize + 1
-
-		local endIndex = math.min(batch * batchSize, #matrix)
-
-		local batchFeatureMatrix = {}
-
-		for i = startIndex, endIndex do table.insert(batchFeatureMatrix, matrix[i]) end
-
-		table.insert(matrixBatchesTable, batchFeatureMatrix)
-
-	end
-
-	return matrixBatchesTable
-
-end
-
-return GenerativeAdversarialImitationLearningBaseModel
+return GenerativeAdversarialImitationLearning

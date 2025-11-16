@@ -152,7 +152,7 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 		
 	end)
 	
-	NewGenerativeAdversarialImitationLearning:setDiagonalGaussianTrainFunction(function(previousFeatureMatrix, expertActionMeanMatrix, expertActionStandardDeviationMatrix, expertActionNoiseMatrix, currentFeatureMatrix, terminalStateMatrix)
+	NewGenerativeAdversarialImitationLearning:setDiagonalGaussianTrainFunction(function(previousFeatureMatrix, expertPreviousActionMeanMatrix, expertPreviousActionStandardDeviationMatrix, expertPreviousActionNoiseMatrix, currentFeatureMatrix, expertCurrentActionMeanMatrix, terminalStateMatrix)
 		
 		local DiscriminatorModel = NewGenerativeAdversarialImitationLearning.DiscriminatorModel
 
@@ -168,19 +168,21 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 		local previousFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(previousFeatureMatrix, numberOfStepsPerEpisode)
 
-		local expertActionMeanMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertActionMeanMatrix, numberOfStepsPerEpisode)
+		local expertPreviousActionMeanMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertPreviousActionMeanMatrix, numberOfStepsPerEpisode)
 
-		local expertActionStandardDeviationTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertActionStandardDeviationMatrix, numberOfStepsPerEpisode)
+		local expertPreviousActionStandardDeviationTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertPreviousActionStandardDeviationMatrix, numberOfStepsPerEpisode)
 		
-		local expertActionNoiseTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertActionNoiseMatrix, numberOfStepsPerEpisode)
+		local expertPreviousActionNoiseTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertPreviousActionNoiseMatrix, numberOfStepsPerEpisode)
 
 		local currentFeatureMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(currentFeatureMatrix, numberOfStepsPerEpisode)
+		
+		local expertCurrentActionMeanMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(expertCurrentActionMeanMatrix, numberOfStepsPerEpisode)
 		
 		local terminalStateMatrixTable = NewGenerativeAdversarialImitationLearning:breakMatrixToMultipleSmallerMatrices(terminalStateMatrix, numberOfStepsPerEpisode)
 
 		local discriminatorInputNumberOfFeatures, discriminatorInputHasBias = DiscriminatorModel:getLayer(1)
 
-		if (discriminatorInputNumberOfFeatures ~= (#expertActionMeanMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
+		if (discriminatorInputNumberOfFeatures ~= (#expertPreviousActionMeanMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
 
 		discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
 
@@ -192,13 +194,15 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 			local previousFeatureSubMatrix = previousFeatureMatrixTable[episode]
 
-			local expertActionMeanSubMatrix = expertActionMeanMatrixTable[episode]
+			local expertPreviousActionMeanSubMatrix = expertPreviousActionMeanMatrixTable[episode]
 
-			local expertActionStandardDeviationSubMatrix = expertActionStandardDeviationTable[episode]
+			local expertPreviousActionStandardDeviationSubMatrix = expertPreviousActionStandardDeviationTable[episode]
 			
-			local expertActionNoiseSubMatrix = expertActionNoiseTable[episode]
+			local expertPreviousActionNoiseSubMatrix = expertPreviousActionNoiseTable[episode]
 
 			local currentFeatureSubMatrix = currentFeatureMatrixTable[episode]
+			
+			local expertCurrentActionMeanSubMatrix = expertCurrentActionMeanMatrixTable[episode]
 			
 			local terminalStateSubMatrix = terminalStateMatrixTable[episode]
 
@@ -208,21 +212,23 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 				local previousFeatureVector = {previousFeatureSubMatrix[step]}
 
-				local expertActionMeanVector = {expertActionMeanSubMatrix[step]}
+				local expertPreviousActionMeanVector = {expertPreviousActionMeanSubMatrix[step]}
 
-				local expertActionStandardDeviationVector = {expertActionStandardDeviationSubMatrix[step]}
+				local expertPreviousActionStandardDeviationVector = {expertPreviousActionStandardDeviationSubMatrix[step]}
 				
-				local expertActionNoiseVector = {expertActionNoiseSubMatrix[step]}
+				local expertPreviousActionNoiseVector = {expertPreviousActionNoiseSubMatrix[step]}
 
 				local currentFeatureVector = {currentFeatureSubMatrix[step]}
 				
+				local expertCurrentActionMeanVector = {expertCurrentActionMeanSubMatrix[step]}
+				
 				local terminalStateValue = terminalStateSubMatrix[step][1]
 
-				local agentActionMeanVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
+				local agentPreviousActionMeanVector = ReinforcementLearningModel:predict(previousFeatureVector, true)
 
-				local concatenatedExpertStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, expertActionMeanVector, 2)
+				local concatenatedExpertStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, expertPreviousActionMeanVector, 2)
 
-				local concatenatedAgentStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, agentActionMeanVector, 2)
+				local concatenatedAgentStateActionVector = AqwamTensorLibraryLinker:concatenate(previousFeatureVector, agentPreviousActionMeanVector, 2)
 
 				if (discriminatorInputHasBias) then
 
@@ -238,7 +244,7 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 				local discriminatorLoss = math.log(discriminatorExpertActionValue) + math.log(1 - discriminatorAgentActionValue)
 
-				ReinforcementLearningModel:diagonalGaussianUpdate(previousFeatureVector, expertActionMeanVector, expertActionStandardDeviationVector, expertActionNoiseVector, discriminatorLoss, currentFeatureVector, terminalStateValue)
+				ReinforcementLearningModel:diagonalGaussianUpdate(previousFeatureVector, expertPreviousActionMeanVector, expertPreviousActionStandardDeviationVector, expertPreviousActionNoiseVector, discriminatorLoss, currentFeatureVector, expertCurrentActionMeanVector, terminalStateValue)
 
 				DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
 

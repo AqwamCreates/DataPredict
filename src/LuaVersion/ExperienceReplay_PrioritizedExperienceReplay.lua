@@ -211,10 +211,6 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 		end
 
 		local sizeArray = AqwamTensorLibrary:getDimensionSizeArray(replayBufferArray[1][1])
-
-		local inputMatrix = AqwamTensorLibrary:createTensor(sizeArray, 1)
-
-		local sumLossMatrix
 		
 		for i = 1, lowestNumberOfBatchSize, 1 do
 			
@@ -236,26 +232,14 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 
 			priorityArray[index] = math.abs(temporalDifferenceErrorValueOrVector)
 
-			local outputMatrix = Model:forwardPropagate(experience[1], false)
+			local outputMatrix = Model:forwardPropagate(experience[1], true)
 
 			local lossMatrix = AqwamTensorLibrary:multiply(outputMatrix, temporalDifferenceErrorValueOrVector, importanceSamplingWeight)
 
-			if (sumLossMatrix) then
-
-				sumLossMatrix = AqwamTensorLibrary:add(sumLossMatrix, lossMatrix)
-
-			else
-
-				sumLossMatrix = lossMatrix
-
-			end
+			Model:update(lossMatrix, true)
 
 		end
 
-		Model:forwardPropagate(inputMatrix, true)
-
-		Model:update(sumLossMatrix, true)
-		
 	end)
 	
 	return NewPrioritizedExperienceReplay

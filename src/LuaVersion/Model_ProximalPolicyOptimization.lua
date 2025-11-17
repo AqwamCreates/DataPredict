@@ -211,8 +211,22 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 		local oldPolicyActionProbabilityVector = calculateDiagonalGaussianProbability(oldPolicyActionMeanVector, actionStandardDeviationVector, actionNoiseVector)
 
 		local currentPolicyActionProbabilityVector = calculateDiagonalGaussianProbability(actionMeanVector, actionStandardDeviationVector, actionNoiseVector)
+		
+		local ratioActionProbabiltyVector
+		
+		if (NewProximalPolicyOptimizationModel.useLogProbabilities) then
 
-		local ratioActionProbabiltyVector = AqwamTensorLibrary:divide(currentPolicyActionProbabilityVector, oldPolicyActionProbabilityVector)
+			ratioActionProbabiltyVector = AqwamTensorLibrary:applyFunction(math.exp, AqwamTensorLibrary:subtract(oldPolicyActionProbabilityVector, currentPolicyActionProbabilityVector))
+
+		else
+			
+			currentPolicyActionProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, currentPolicyActionProbabilityVector)
+			
+			oldPolicyActionProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, oldPolicyActionProbabilityVector)
+
+			ratioActionProbabiltyVector = AqwamTensorLibrary:divide(currentPolicyActionProbabilityVector, oldPolicyActionProbabilityVector)
+
+		end
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 

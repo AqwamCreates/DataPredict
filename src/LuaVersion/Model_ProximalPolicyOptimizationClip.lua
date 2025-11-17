@@ -40,6 +40,8 @@ local defaultClipRatio = 0.3
 
 local defaultLambda = 0
 
+local defaultUseLogProbabilities = true
+
 local function calculateCategoricalProbability(valueVector)
 
 	local highestActionValue = AqwamTensorLibrary:findMaximumValue(valueVector)
@@ -111,6 +113,8 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 	NewProximalPolicyOptimizationClipModel.clipRatio = parameterDictionary.clipRatio or defaultClipRatio
 
 	NewProximalPolicyOptimizationClipModel.lambda = parameterDictionary.lambda or defaultLambda
+	
+	NewProximalPolicyOptimizationClipModel.useLogProbabilities = NewProximalPolicyOptimizationClipModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
 	NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters = parameterDictionary.CurrentActorModelParameters
 
@@ -154,7 +158,19 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		local ratioActionProbabiltyVector = table.create(#ClassesList, 0)
 
-		ratioActionProbabiltyVector[classIndex] = currentPolicyActionProbabilityVector[1][classIndex] / oldPolicyActionProbabilityVector[1][classIndex]
+		local ratioActionProbability
+
+		if (NewProximalPolicyOptimizationClipModel.useLogProbabilities) then
+
+			ratioActionProbability = math.exp(math.log(currentPolicyActionProbabilityVector[1][classIndex]) - math.log(oldPolicyActionProbabilityVector[1][classIndex]))
+
+		else
+
+			ratioActionProbability = currentPolicyActionProbabilityVector[1][classIndex] / oldPolicyActionProbabilityVector[1][classIndex]
+
+		end
+
+		ratioActionProbabiltyVector[classIndex] = ratioActionProbability
 
 		ratioActionProbabiltyVector = {ratioActionProbabiltyVector}
 

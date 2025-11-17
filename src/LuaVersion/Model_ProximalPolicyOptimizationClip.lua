@@ -77,6 +77,8 @@ local function calculateDiagonalGaussianProbability(meanVector, standardDeviatio
 	local logValueVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logValueVectorPart2)
 
 	local logValueVector = AqwamTensorLibrary:add(logValueVectorPart3, math.log(2 * math.pi))
+	
+	logValueVector = AqwamTensorLibrary:multiply(-0.5, logValueVector)
 
 	return logValueVector
 

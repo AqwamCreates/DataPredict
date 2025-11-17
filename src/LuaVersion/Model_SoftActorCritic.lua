@@ -62,41 +62,41 @@ local function calculateCategoricalProbability(valueTensor)
 
 	local highestActionValue = AqwamTensorLibrary:findMaximumValue(valueTensor)
 
-	local subtractedZTensor = AqwamTensorLibrary:subtract(valueTensor, highestActionValue)
+	local subtractedZVector = AqwamTensorLibrary:subtract(valueTensor, highestActionValue)
 
-	local exponentActionTensor = AqwamTensorLibrary:applyFunction(math.exp, subtractedZTensor)
+	local exponentActionVector = AqwamTensorLibrary:applyFunction(math.exp, subtractedZVector)
 
-	local exponentActionSumTensor = AqwamTensorLibrary:sum(exponentActionTensor, 2)
+	local exponentActionSumVector = AqwamTensorLibrary:sum(exponentActionVector, 2)
 
-	local targetActionTensor = AqwamTensorLibrary:divide(exponentActionTensor, exponentActionSumTensor)
+	local targetActionTensor = AqwamTensorLibrary:divide(exponentActionVector, exponentActionSumVector)
 
 	return targetActionTensor
 
 end
 
-local function calculateDiagonalGaussianProbability(actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor)
+local function calculateDiagonalGaussianProbability(meanVector, standardDeviationVector, noiseVector)
 
-	local actionTensorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
+	local valueVectorPart1 = AqwamTensorLibrary:multiply(standardDeviationVector, noiseVector)
 
-	local actionTensor = AqwamTensorLibrary:add(actionMeanTensor, actionTensorPart1)
+	local valueVector = AqwamTensorLibrary:add(meanVector, valueVectorPart1)
 
-	local zScoreTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, actionMeanTensor)
+	local zScoreVectorPart1 = AqwamTensorLibrary:subtract(valueVector, meanVector)
 
-	local zScoreTensor = AqwamTensorLibrary:divide(zScoreTensorPart1, actionStandardDeviationTensor)
+	local zScoreVector = AqwamTensorLibrary:divide(zScoreVectorPart1, standardDeviationVector)
 
-	local squaredZScoreTensor = AqwamTensorLibrary:power(zScoreTensor, 2)
+	local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
 
-	local logActionProbabilityTensorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationTensor)
+	local logValueVectorPart1 = AqwamTensorLibrary:logarithm(standardDeviationVector)
 
-	local logActionProbabilityTensorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityTensorPart1)
+	local logValueVectorPart2 = AqwamTensorLibrary:multiply(2, logValueVectorPart1)
 
-	local logActionProbabilityTensorPart3 = AqwamTensorLibrary:add(squaredZScoreTensor, logActionProbabilityTensorPart2)
+	local logValueVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logValueVectorPart2)
 
-	local logActionProbabilityTensorPart4 = AqwamTensorLibrary:add(logActionProbabilityTensorPart3, math.log(2 * math.pi))
+	local logValueVector = AqwamTensorLibrary:add(logValueVectorPart3, math.log(2 * math.pi))
 
-	local logActionProbabilityTensor = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityTensorPart4)
+	logValueVector = AqwamTensorLibrary:multiply(-0.5, logValueVector)
 
-	return logActionProbabilityTensor
+	return logValueVector
 
 end
 

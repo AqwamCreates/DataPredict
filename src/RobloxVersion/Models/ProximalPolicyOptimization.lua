@@ -36,9 +36,9 @@ ProximalPolicyOptimizationModel.__index = ProximalPolicyOptimizationModel
 
 setmetatable(ProximalPolicyOptimizationModel, DeepReinforcementLearningActorCriticBaseModel)
 
-local defaultClipRatio = 0.3
-
 local defaultLambda = 0
+
+local defaultUseLogProbabilities = true
 
 local function calculateCategoricalProbability(valueVector)
 
@@ -109,6 +109,8 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 	NewProximalPolicyOptimizationModel:setName("ProximalPolicyOptimization")
 
 	NewProximalPolicyOptimizationModel.lambda = parameterDictionary.lambda or defaultLambda
+	
+	NewProximalPolicyOptimizationModel.useLogProbabilities = NewProximalPolicyOptimizationModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
 	NewProximalPolicyOptimizationModel.CurrentActorModelParameters = parameterDictionary.CurrentActorModelParameters
 
@@ -152,7 +154,19 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		local ratioActionProbabiltyVector = table.create(#ClassesList, 0)
 		
-		ratioActionProbabiltyVector[classIndex] = currentPolicyActionProbabilityVector[1][classIndex] / oldPolicyActionProbabilityVector[1][classIndex]
+		local ratioActionProbability
+		
+		if (NewProximalPolicyOptimizationModel.useLogProbabilities) then
+			
+			ratioActionProbability = math.exp(math.log(currentPolicyActionProbabilityVector[1][classIndex]) - math.log(oldPolicyActionProbabilityVector[1][classIndex]))
+			
+		else
+			
+			ratioActionProbability = currentPolicyActionProbabilityVector[1][classIndex] / oldPolicyActionProbabilityVector[1][classIndex]
+			
+		end
+		
+		ratioActionProbabiltyVector[classIndex] = ratioActionProbability
 
 		ratioActionProbabiltyVector = {ratioActionProbabiltyVector}
 

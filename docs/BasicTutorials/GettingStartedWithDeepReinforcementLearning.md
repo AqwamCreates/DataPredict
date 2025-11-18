@@ -106,23 +106,25 @@ while true do
 
   local previousEnvironmentFeatureVector = {{0, 0, 0, 0, 0}} -- We must keep track our previous feature vector.
 
-  local action = 1
+  local previousAction = 1
 
   for step = 1, 1000, 1 do
 
     local currentEnvironmentFeatureVector = fetchEnvironmentFeatureVector(previousEnvironmentFeatureVector, action)
 
-    action = DeepQLearning:predict(currentEnvironmentFeatureVector)[1][1]
+    local currentAction = DeepQLearning:predict(currentEnvironmentFeatureVector)[1][1]
 
     local reward = getReward(currentEnvironmentFeatureVector)
 
-    DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, reward, action, currentEnvironmentFeatureVector, 0) -- update() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
+    DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, previousAction, reward, currentEnvironmentFeatureVector, currentAction, 0) -- update() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
 
     previousEnvironmentFeatureVector = currentEnvironmentFeatureVector
 
     local hasGameEnded = checkIfGameHasEnded(environmentVector)
 
     if hasGameEnded then break end
+
+    previousAction = currentAction
 
   end
 

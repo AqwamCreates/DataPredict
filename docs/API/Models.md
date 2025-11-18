@@ -197,10 +197,10 @@ If you wonder what are the most high-value use cases that helps with retention a
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                        | Alternate Names | Properties | Use Cases               |
-|--------------------------------------------------------------|-----------------|------------| ------------------------|
-| [LocalOutlierFactor](Models/LocalOutlierFactor.md)           | LOF             | 🟢 🟡     | Local Outlier Detection |
-| [LocalOutlierProbability](Models/LocalOutlierProbability.md) | LoOP            | 🟢 🟡     | Local Outlier Detection |
+| Model                                                        | Alternate Names | Properties | Use Cases                                       |
+|--------------------------------------------------------------|-----------------|------------| ------------------------------------------------|
+| [LocalOutlierFactor](Models/LocalOutlierFactor.md)           | LOF             | 🟢 🟡     | Score-Based Play-Time Milestone Detection       |
+| [LocalOutlierProbability](Models/LocalOutlierProbability.md) | LoOP            | 🟢 🟡     | Probability-Based Play-Time Milestone Detection |
 
 ## BaseModels
 

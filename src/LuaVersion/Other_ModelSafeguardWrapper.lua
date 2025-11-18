@@ -448,6 +448,8 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 					
 					isAcceptable = nil
 					
+					valueArray = nil
+					
 					isSuccessful = pcall(function()
 
 						isAcceptable, valueArray = functionToRun()

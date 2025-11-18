@@ -442,7 +442,29 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 				
 				Model:setModelParameters(OriginalModelParameters)
 				
-				if (not canFixDefect) then
+				if (canFixDefect) then
+					
+					isSuccessful = false
+					
+					isAcceptable = nil
+					
+					isSuccessful = pcall(function()
+
+						isAcceptable, valueArray = functionToRun()
+
+					end)
+
+					if (isSuccessful) and (isAcceptable) then
+
+						self.canUseModel = true
+
+						self.OriginalModelParameters = nil
+
+						return table.unpack(valueArray or {})
+
+					end
+					
+				else
 					
 					if (storeDefectiveUpdateInformation) then
 
@@ -450,24 +472,6 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 
 					end
 					
-					break 
-					
-				end
-				
-				isSuccessful = pcall(function()
-
-					isAcceptable, valueArray = functionToRun()
-
-				end)
-
-				if (isSuccessful) and (isAcceptable) then
-
-					self.canUseModel = true
-					
-					self.OriginalModelParameters = nil
-
-					return table.unpack(valueArray or {})
-
 				end
 				
 			end

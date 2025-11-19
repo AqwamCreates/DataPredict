@@ -80,7 +80,7 @@ function ActorCriticModel.new(parameterDictionary)
 
 	local featureVectorHistory = {}
 
-	local actionProbabilityVectorHistory = {}
+	local actionProbabilityGradientVectorHistory = {}
 
 	local rewardValueHistory = {}
 
@@ -99,16 +99,20 @@ function ActorCriticModel.new(parameterDictionary)
 		local ClassesList = ActorModel:getClassesList()
 
 		local classIndex = table.find(ClassesList, previousAction)
-
-		local logActionProbabilityVector = table.create(#ClassesList, 0)
-
-		logActionProbabilityVector[classIndex] = math.log(actionProbabilityVector[1][classIndex])
 		
-		logActionProbabilityVector = {logActionProbabilityVector}
+		local actionProbabilityGradientVector = {}
+		
+		for i, _ in ipairs(ClassesList) do
+			
+			actionProbabilityGradientVector[i] = ((i == classIndex and 1 or 0)) - actionProbabilityVector[1][i]
+			
+		end
+		
+		actionProbabilityGradientVector = {actionProbabilityGradientVector}
 
 		table.insert(featureVectorHistory, previousFeatureVector)
 
-		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
+		table.insert(actionProbabilityGradientVectorHistory, actionProbabilityGradientVector)
 
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -124,27 +128,17 @@ function ActorCriticModel.new(parameterDictionary)
 
 		local actionVector = AqwamTensorLibrary:add(previousActionMeanVector, actionVectorPart1)
 
-		local zScoreVectorPart1 = AqwamTensorLibrary:subtract(actionVector, previousActionMeanVector)
+		local actionProbabilityGradientVectorPart1 = AqwamTensorLibrary:subtract(actionVector, previousActionMeanVector)
+		
+		local actionProbabilityGradientVectorPart2 = AqwamTensorLibrary:power(previousActionStandardDeviationVector, 2)
 
-		local zScoreVector = AqwamTensorLibrary:divide(zScoreVectorPart1, previousActionStandardDeviationVector)
-
-		local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
-
-		local logActionProbabilityVectorPart1 = AqwamTensorLibrary:logarithm(previousActionStandardDeviationVector)
-
-		local logActionProbabilityVectorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityVectorPart1)
-
-		local logActionProbabilityVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
-
-		local logActionProbabilityVectorPart4 = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
-
-		local logActionProbabilityVector = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityVectorPart4)
+		local actionProbabilityGradientVector = AqwamTensorLibrary:divide(actionProbabilityGradientVectorPart1, actionProbabilityGradientVectorPart2)
 
 		local criticValue = NewActorCriticModel.CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
 		table.insert(featureVectorHistory, previousFeatureVector)
 
-		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
+		table.insert(actionProbabilityGradientVectorHistory, actionProbabilityGradientVector)
 
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -164,7 +158,7 @@ function ActorCriticModel.new(parameterDictionary)
 
 			local criticLoss = rewardToGoHistory[h] - criticValueHistory[h]
 
-			local actorLossVector = AqwamTensorLibrary:multiply(actionProbabilityVectorHistory[h], criticLoss)
+			local actorLossVector = AqwamTensorLibrary:multiply(actionProbabilityGradientVectorHistory[h], criticLoss)
 
 			actorLossVector = AqwamTensorLibrary:unaryMinus(actorLossVector)
 
@@ -180,7 +174,7 @@ function ActorCriticModel.new(parameterDictionary)
 
 		table.clear(featureVectorHistory)
 
-		table.clear(actionProbabilityVectorHistory)
+		table.clear(actionProbabilityGradientVectorHistory)
 
 		table.clear(rewardValueHistory)
 
@@ -192,7 +186,7 @@ function ActorCriticModel.new(parameterDictionary)
 
 		table.clear(featureVectorHistory)
 
-		table.clear(actionProbabilityVectorHistory)
+		table.clear(actionProbabilityGradientVectorHistory)
 
 		table.clear(rewardValueHistory)
 

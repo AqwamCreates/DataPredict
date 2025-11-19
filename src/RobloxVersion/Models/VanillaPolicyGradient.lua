@@ -110,7 +110,7 @@ function VanillaPolicyGradientModel.new(parameterDictionary)
 
 		for i, _ in ipairs(ClassesList) do
 
-			actionProbabilityGradientVector[i] = ((i == classIndex and 1 or 0)) - actionProbabilityVector[1][i]
+			actionProbabilityGradientVector[i] = (((i == classIndex) and 1) or 0) - actionProbabilityVector[1][i]
 
 		end
 

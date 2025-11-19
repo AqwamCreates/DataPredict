@@ -216,7 +216,7 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 		
 		if (NewProximalPolicyOptimizationModel.useLogProbabilities) then
 
-			ratioActionProbabiltyVector = AqwamTensorLibrary:applyFunction(math.exp, AqwamTensorLibrary:subtract(oldPolicyActionProbabilityVector, currentPolicyActionProbabilityVector))
+			ratioActionProbabiltyVector = AqwamTensorLibrary:applyFunction(math.exp, AqwamTensorLibrary:subtract(currentPolicyActionProbabilityVector, oldPolicyActionProbabilityVector))
 
 		else
 			
@@ -268,7 +268,7 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 				generalizedAdvantageEstimationValue = advantageValueHistory[t] + (discountFactor * lambda * generalizedAdvantageEstimationValue)
 
-				table.insert(generalizedAdvantageEstimationHistory, 1, generalizedAdvantageEstimationValue) -- Insert at the beginning to maintain order
+				table.insert(generalizedAdvantageEstimationHistory, 1, generalizedAdvantageEstimationValue)
 
 			end
 

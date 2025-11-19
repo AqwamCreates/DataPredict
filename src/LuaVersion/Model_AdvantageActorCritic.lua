@@ -70,7 +70,7 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 	local advantageValueHistory = {}
 
-	local actionProbabilityVectorHistory = {}
+	local actionProbabilityGradientVectorHistory = {}
 
 	NewAdvantageActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
@@ -92,15 +92,19 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 		local classIndex = table.find(ClassesList, previousAction)
 
-		local logActionProbabilityVector = table.create(#ClassesList, 0)
+		local actionProbabilityGradientVector = {}
 
-		logActionProbabilityVector[classIndex] = math.log(actionProbabilityVector[1][classIndex])
+		for i, _ in ipairs(ClassesList) do
 
-		logActionProbabilityVector = {logActionProbabilityVector}
+			actionProbabilityGradientVector[i] = (((i == classIndex) and 1) or 0) - actionProbabilityVector[1][i]
+
+		end
+
+		actionProbabilityGradientVector = {actionProbabilityGradientVector}
 
 		table.insert(featureVectorHistory, previousFeatureVector)
 
-		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
+		table.insert(actionProbabilityGradientVectorHistory, actionProbabilityGradientVector)
 
 		table.insert(advantageValueHistory, advantageValue)
 
@@ -118,21 +122,11 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 		local actionVector = AqwamTensorLibrary:add(previousActionMeanVector, actionVectorPart1)
 
-		local zScoreVectorPart1 = AqwamTensorLibrary:subtract(actionVector, previousActionMeanVector)
+		local actionProbabilityGradientVectorPart1 = AqwamTensorLibrary:subtract(actionVector, previousActionMeanVector)
 
-		local zScoreVector = AqwamTensorLibrary:divide(zScoreVectorPart1, previousActionStandardDeviationVector)
+		local actionProbabilityGradientVectorPart2 = AqwamTensorLibrary:power(previousActionStandardDeviationVector, 2)
 
-		local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
-
-		local logActionProbabilityVectorPart1 = AqwamTensorLibrary:logarithm(previousActionStandardDeviationVector)
-
-		local logActionProbabilityVectorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityVectorPart1)
-
-		local logActionProbabilityVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
-
-		local logActionProbabilityVectorPart4 = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
-
-		local logActionProbabilityVector = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityVectorPart4)
+		local actionProbabilityGradientVector = AqwamTensorLibrary:divide(actionProbabilityGradientVectorPart1, actionProbabilityGradientVectorPart2)
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
@@ -142,7 +136,7 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 		table.insert(featureVectorHistory, previousFeatureVector)
 
-		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
+		table.insert(actionProbabilityGradientVectorHistory, actionProbabilityGradientVector)
 
 		table.insert(advantageValueHistory, advantageValue)
 
@@ -182,7 +176,7 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 			local advantageValue = advantageValueHistory[h]
 
-			local actorLossVector = AqwamTensorLibrary:multiply(actionProbabilityVectorHistory[h], advantageValue)
+			local actorLossVector = AqwamTensorLibrary:multiply(actionProbabilityGradientVectorHistory[h], advantageValue)
 
 			actorLossVector = AqwamTensorLibrary:unaryMinus(actorLossVector)
 
@@ -198,7 +192,7 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 		table.clear(featureVectorHistory)
 
-		table.clear(actionProbabilityVectorHistory)
+		table.clear(actionProbabilityGradientVectorHistory)
 
 		table.clear(advantageValueHistory)
 
@@ -208,7 +202,7 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 		table.clear(featureVectorHistory)
 
-		table.clear(actionProbabilityVectorHistory)
+		table.clear(actionProbabilityGradientVectorHistory)
 
 		table.clear(advantageValueHistory)
 

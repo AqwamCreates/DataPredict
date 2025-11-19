@@ -220,7 +220,7 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		if (NewProximalPolicyOptimizationClipModel.useLogProbabilities) then
 
-			ratioActionProbabiltyVector = AqwamTensorLibrary:applyFunction(math.exp, AqwamTensorLibrary:subtract(oldPolicyActionProbabilityVector, currentPolicyActionProbabilityVector))
+			ratioActionProbabiltyVector = AqwamTensorLibrary:applyFunction(math.exp, AqwamTensorLibrary:subtract(currentPolicyActionProbabilityVector, oldPolicyActionProbabilityVector))
 
 		else
 

@@ -80,7 +80,7 @@ function REINFORCEModel.new(parameterDictionary)
 
 	local featureVectorArray = {}
 
-	local actionProbabilityVectorHistory = {}
+	local actionProbabilityGradientVectorHistory = {}
 
 	local rewardValueHistory = {}
 
@@ -93,18 +93,22 @@ function REINFORCEModel.new(parameterDictionary)
 		local actionProbabilityVector = calculateProbability(actionVector)
 
 		local ClassesList = Model:getClassesList()
-
+		
 		local classIndex = table.find(ClassesList, previousAction)
 
-		local logActionProbabilityVector = table.create(#ClassesList, 0)
+		local actionProbabilityGradientVector = {}
 
-		logActionProbabilityVector[classIndex] = math.log(actionProbabilityVector[1][classIndex])
+		for i, _ in ipairs(ClassesList) do
 
-		logActionProbabilityVector = {logActionProbabilityVector}
+			actionProbabilityGradientVector[i] = (((i == classIndex) and 1) or 0) - actionProbabilityVector[1][i]
+
+		end
+
+		actionProbabilityGradientVector = {actionProbabilityGradientVector}
 
 		table.insert(featureVectorArray, previousFeatureVector)
 
-		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
+		table.insert(actionProbabilityGradientVectorHistory, actionProbabilityGradientVector)
 
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -116,27 +120,17 @@ function REINFORCEModel.new(parameterDictionary)
 
 		local actionVectorPart1 = AqwamTensorLibrary:multiply(previousActionStandardDeviationVector, previousActionNoiseVector)
 
-		local previousActionVector = AqwamTensorLibrary:add(previousActionMeanVector, actionVectorPart1)
+		local actionVector = AqwamTensorLibrary:add(previousActionMeanVector, actionVectorPart1)
 
-		local zScoreVectorPart1 = AqwamTensorLibrary:subtract(previousActionVector, previousActionMeanVector)
+		local actionProbabilityGradientVectorPart1 = AqwamTensorLibrary:subtract(actionVector, previousActionMeanVector)
 
-		local zScoreVector = AqwamTensorLibrary:divide(zScoreVectorPart1, previousActionStandardDeviationVector)
+		local actionProbabilityGradientVectorPart2 = AqwamTensorLibrary:power(previousActionStandardDeviationVector, 2)
 
-		local squaredZScoreVector = AqwamTensorLibrary:power(zScoreVector, 2)
-
-		local logActionProbabilityVectorPart1 = AqwamTensorLibrary:logarithm(previousActionStandardDeviationVector)
-
-		local logActionProbabilityVectorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityVectorPart1)
-
-		local logActionProbabilityVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logActionProbabilityVectorPart2)
-
-		local logActionProbabilityVectorPart4 = AqwamTensorLibrary:add(logActionProbabilityVectorPart3, math.log(2 * math.pi))
-
-		local logActionProbabilityVector = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityVectorPart4)
+		local actionProbabilityGradientVector = AqwamTensorLibrary:divide(actionProbabilityGradientVectorPart1, actionProbabilityGradientVectorPart2)
 
 		table.insert(featureVectorArray, previousFeatureVector)
 
-		table.insert(actionProbabilityVectorHistory, logActionProbabilityVector)
+		table.insert(actionProbabilityGradientVectorHistory, actionProbabilityGradientVector)
 
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -148,7 +142,7 @@ function REINFORCEModel.new(parameterDictionary)
 
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
 
-		for h, actionProbabilityVector in ipairs(actionProbabilityVectorHistory) do
+		for h, actionProbabilityVector in ipairs(actionProbabilityGradientVectorHistory) do
 
 			local lossVector = AqwamTensorLibrary:multiply(actionProbabilityVector, rewardToGoArray[h])
 
@@ -162,7 +156,7 @@ function REINFORCEModel.new(parameterDictionary)
 
 		table.clear(featureVectorArray)
 
-		table.clear(actionProbabilityVectorHistory)
+		table.clear(actionProbabilityGradientVectorHistory)
 
 		table.clear(rewardValueHistory)
 
@@ -172,7 +166,7 @@ function REINFORCEModel.new(parameterDictionary)
 
 		table.clear(featureVectorArray)
 
-		table.clear(actionProbabilityVectorHistory)
+		table.clear(actionProbabilityGradientVectorHistory)
 
 		table.clear(rewardValueHistory)
 

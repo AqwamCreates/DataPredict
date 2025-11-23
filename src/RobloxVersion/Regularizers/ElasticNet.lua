@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseRegularizer = require(script.Parent.BaseRegularizer)
 
-ElasticNet = {}
+local ElasticNet = {}
 
 ElasticNet.__index = ElasticNet
 

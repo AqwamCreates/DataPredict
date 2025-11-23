@@ -28,7 +28,7 @@
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-BaseExperienceReplay = {}
+local BaseExperienceReplay = {}
 
 BaseExperienceReplay.__index = BaseExperienceReplay
 

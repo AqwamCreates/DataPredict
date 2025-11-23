@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
-AdaptiveMomentEstimationWeightDecayOptimizer = {}
+local AdaptiveMomentEstimationWeightDecayOptimizer = {}
 
 AdaptiveMomentEstimationWeightDecayOptimizer.__index = AdaptiveMomentEstimationWeightDecayOptimizer
 

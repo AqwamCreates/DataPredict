@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local NaiveBayesBaseModel = require("Model_NaiveBayesBaseModel")
 
-ComplementNaiveBayesModel = {}
+local ComplementNaiveBayesModel = {}
 
 ComplementNaiveBayesModel.__index = ComplementNaiveBayesModel
 

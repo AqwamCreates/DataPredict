@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
-AdaptiveMomentEstimationOptimizer = {}
+local AdaptiveMomentEstimationOptimizer = {}
 
 AdaptiveMomentEstimationOptimizer.__index = AdaptiveMomentEstimationOptimizer
 

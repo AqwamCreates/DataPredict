@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
 
-PolynomialValueScheduler = {}
+local PolynomialValueScheduler = {}
 
 PolynomialValueScheduler.__index = PolynomialValueScheduler
 

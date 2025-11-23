@@ -28,7 +28,7 @@
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-DistributedModelParametersCoordinator = {}
+local DistributedModelParametersCoordinator = {}
 
 DistributedModelParametersCoordinator.__index = DistributedModelParametersCoordinator
 

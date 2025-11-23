@@ -28,7 +28,7 @@
 
 local BaseExperienceReplay = require("ExperienceReplay_BaseExperienceReplay")
 
-UniformExperienceReplay = {}
+local UniformExperienceReplay = {}
 
 UniformExperienceReplay.__index = UniformExperienceReplay
 

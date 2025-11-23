@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
 
-MultipleStepValueScheduler = {}
+local MultipleStepValueScheduler = {}
 
 MultipleStepValueScheduler.__index = MultipleStepValueScheduler
 

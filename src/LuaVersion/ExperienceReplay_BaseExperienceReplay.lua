@@ -26,9 +26,9 @@
 
 --]]
 
-local BaseInstance = require("Core_BaseInstance")
+local BaseInstance = require("Cores_BaseInstance")
 
-BaseExperienceReplay = {}
+local BaseExperienceReplay = {}
 
 BaseExperienceReplay.__index = BaseExperienceReplay
 

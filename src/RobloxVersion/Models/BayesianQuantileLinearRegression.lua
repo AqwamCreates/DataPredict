@@ -32,7 +32,7 @@ local BaseModel = require(script.Parent.BaseModel)
 
 local zTableFunction = require(script.Parent.Parent.Cores.ZTableFunction)
 
-BayesianQuantileLinearRegressionModel = {}
+local BayesianQuantileLinearRegressionModel = {}
 
 BayesianQuantileLinearRegressionModel.__index = BayesianQuantileLinearRegressionModel
 

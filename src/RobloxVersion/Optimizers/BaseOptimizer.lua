@@ -28,7 +28,7 @@
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-BaseOptimizer = {}
+local BaseOptimizer = {}
 
 BaseOptimizer.__index = BaseOptimizer
 

@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseInstance = require("Core_BaseInstance")
 
-BaseValueScheduler = {}
+local BaseValueScheduler = {}
 
 BaseValueScheduler.__index = BaseValueScheduler
 

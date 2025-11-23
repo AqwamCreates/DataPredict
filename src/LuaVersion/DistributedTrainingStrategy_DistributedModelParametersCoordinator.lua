@@ -28,7 +28,7 @@
 
 local BaseInstance = require("Core_BaseInstance")
 
-DistributedModelParametersCoordinator = {}
+local DistributedModelParametersCoordinator = {}
 
 DistributedModelParametersCoordinator.__index = DistributedModelParametersCoordinator
 

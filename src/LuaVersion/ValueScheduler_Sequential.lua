@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
 
-SequentialValueScheduler = {}
+local SequentialValueScheduler = {}
 
 SequentialValueScheduler.__index = SequentialValueScheduler
 

@@ -28,9 +28,9 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseGradientClipper = require("GradientClipper_BaseGradientClipper")
+local BaseGradientClipper = require("GradienClipper_BaseGradientClipper")
 
-ClipValueGradientClipper = {}
+local ClipValueGradientClipper = {}
 
 ClipValueGradientClipper.__index = ClipValueGradientClipper
 

@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseGradientClipper = require(script.Parent.BaseGradientClipper)
 
-ClipValueGradientClipper = {}
+local ClipValueGradientClipper = {}
 
 ClipValueGradientClipper.__index = ClipValueGradientClipper
 

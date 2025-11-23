@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
 
-InverseTimeValueScheduler = {}
+local InverseTimeValueScheduler = {}
 
 InverseTimeValueScheduler.__index = InverseTimeValueScheduler
 

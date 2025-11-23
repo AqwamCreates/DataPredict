@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
-MomentumOptimizer = {}
+local MomentumOptimizer = {}
 
 MomentumOptimizer.__index = MomentumOptimizer
 

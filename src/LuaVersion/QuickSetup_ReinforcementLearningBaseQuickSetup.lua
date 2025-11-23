@@ -28,7 +28,7 @@
 
 local BaseInstance = require("Core_BaseInstance")
 
-ReinforcementLearningBaseQuickSetup = {}
+local ReinforcementLearningBaseQuickSetup = {}
 
 ReinforcementLearningBaseQuickSetup.__index = ReinforcementLearningBaseQuickSetup
 

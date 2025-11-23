@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
-REINFORCEModel = {}
+local REINFORCEModel = {}
 
 REINFORCEModel.__index = REINFORCEModel
 

@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
 
-InverseSquareRootValueScheduler = {}
+local InverseSquareRootValueScheduler = {}
 
 InverseSquareRootValueScheduler.__index = InverseSquareRootValueScheduler
 

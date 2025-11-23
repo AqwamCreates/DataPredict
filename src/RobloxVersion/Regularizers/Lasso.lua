@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseRegularizer = require(script.Parent.BaseRegularizer)
 
-Lasso = {}
+local Lasso = {}
 
 Lasso.__index = Lasso
 

@@ -28,7 +28,7 @@
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-BaseRegularizer = {}
+local BaseRegularizer = {}
 
 BaseRegularizer.__index = BaseRegularizer
 

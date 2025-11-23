@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
 
-InverseSquareRootValueScheduler = {}
+local InverseSquareRootValueScheduler = {}
 
 InverseSquareRootValueScheduler.__index = InverseSquareRootValueScheduler
 

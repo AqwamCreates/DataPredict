@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
 
-SequentialValueScheduler = {}
+local SequentialValueScheduler = {}
 
 SequentialValueScheduler.__index = SequentialValueScheduler
 

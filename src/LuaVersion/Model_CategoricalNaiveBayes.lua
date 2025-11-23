@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local NaiveBayesBaseModel = require("Model_NaiveBayesBaseModel")
 
-CategoricalNaiveBayesModel = {}
+local CategoricalNaiveBayesModel = {}
 
 CategoricalNaiveBayesModel.__index = CategoricalNaiveBayesModel
 

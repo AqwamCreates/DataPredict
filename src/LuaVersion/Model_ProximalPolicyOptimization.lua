@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningActorCriticBaseModel = require("Model_DeepReinforcementLearningActorCriticBaseModel")
 
-ProximalPolicyOptimizationModel = {}
+local ProximalPolicyOptimizationModel = {}
 
 ProximalPolicyOptimizationModel.__index = ProximalPolicyOptimizationModel
 

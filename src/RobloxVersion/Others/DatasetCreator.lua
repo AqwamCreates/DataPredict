@@ -28,7 +28,7 @@
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-DatasetCreator = {}
+local DatasetCreator = {}
 
 DatasetCreator.__index = DatasetCreator
 

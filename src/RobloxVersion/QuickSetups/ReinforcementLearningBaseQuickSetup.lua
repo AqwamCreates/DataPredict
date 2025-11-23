@@ -28,7 +28,7 @@
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-ReinforcementLearningBaseQuickSetup = {}
+local ReinforcementLearningBaseQuickSetup = {}
 
 ReinforcementLearningBaseQuickSetup.__index = ReinforcementLearningBaseQuickSetup
 

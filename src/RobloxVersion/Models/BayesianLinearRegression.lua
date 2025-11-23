@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseModel = require(script.Parent.BaseModel)
 
-BayesianLinearRegressionModel = {}
+local BayesianLinearRegressionModel = {}
 
 BayesianLinearRegressionModel.__index = BayesianLinearRegressionModel
 

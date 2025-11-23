@@ -28,7 +28,7 @@
 
 local BaseModel = require(script.Parent.BaseModel)
 
-IterativeBaseModel = {}
+local IterativeBaseModel = {}
 
 IterativeBaseModel.__index = IterativeBaseModel
 

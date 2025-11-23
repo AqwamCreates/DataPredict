@@ -40,7 +40,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-OneVsAll = {}
+local OneVsAll = {}
 
 OneVsAll.__index = OneVsAll
 

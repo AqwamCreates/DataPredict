@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
-ResilientBackwardPropagationOptimizer = {}
+local ResilientBackwardPropagationOptimizer = {}
 
 ResilientBackwardPropagationOptimizer.__index = ResilientBackwardPropagationOptimizer
 

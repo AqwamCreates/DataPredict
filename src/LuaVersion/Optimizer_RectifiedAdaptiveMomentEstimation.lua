@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
-RectifiedAdaptiveMomentEstimationOptimizer = {}
+local RectifiedAdaptiveMomentEstimationOptimizer = {}
 
 RectifiedAdaptiveMomentEstimationOptimizer.__index = RectifiedAdaptiveMomentEstimationOptimizer
 

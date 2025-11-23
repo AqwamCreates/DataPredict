@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseInstance = require("Core_BaseInstance")
 
-BaseModel = {}
+local BaseModel = {}
 
 BaseModel.__index = BaseModel
 
@@ -57,6 +57,10 @@ function BaseModel.new(parameterDictionary)
 	NewBaseModel.maximumModelParametersInitializationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.maximumModelParametersInitializationValue, nil)
 	
 	NewBaseModel.minimumModelParametersInitializationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.minimumModelParametersInitializationValue, nil)
+	
+	NewBaseModel.modelParametersMeanValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersMeanValue, nil)
+
+	NewBaseModel.modelParametersStandardDeviationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersStandardDeviationValue, nil)
 
 	return NewBaseModel
 	
@@ -102,16 +106,6 @@ function BaseModel:setPrintOutput(option)
 	
 end
 
-function BaseModel:setModelParametersInitializationMode(initializationMode, minimumModelParametersInitializationValue, maximumModelParametersInitializationValue)
-	
-	self.modelParametersInitializationMode = initializationMode
-	
-	self.minimumModelParametersInitializationValue = minimumModelParametersInitializationValue
-	
-	self.maximumModelParametersInitializationValue = maximumModelParametersInitializationValue
-	
-end
-
 function BaseModel:initializeMatrixBasedOnMode(dimensionSizeArray, dimensionSizeToIgnoreArray) -- Some of the row/column might not be considered as an input variables/neurons. Hence, it should be ignored by subtracting from original rows and columns with the number of non-input variables/neurons.
 	
 	if (not dimensionSizeArray) then error("No dimension size array for weight initialization.") end
@@ -140,25 +134,7 @@ function BaseModel:initializeMatrixBasedOnMode(dimensionSizeArray, dimensionSize
 
 	elseif (initializationMode == "RandomNormal") then
 
-		return AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray, self.modelParametersMean, self.modelParametersStandardDeviation)
-
-	elseif (initializationMode == "RandomUniformPositive") then
-
-		return AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
-
-	elseif (initializationMode == "RandomUniformNegative") then
-
-		local randomUniformTensor = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
-
-		return AqwamTensorLibrary:multiply(randomUniformTensor, -1)
-
-	elseif (initializationMode == "RandomUniformNegativeAndPositive") then
-
-		local randomUniformTensor1 = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
-
-		local randomUniformTensor2 = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
-
-		return AqwamTensorLibrary:subtract(randomUniformTensor1, randomUniformTensor2)
+		return AqwamTensorLibrary:createRandomNormalTensor(dimensionSizeArray, self.modelParametersMean, self.modelParametersStandardDeviationValue)
 
 	elseif (initializationMode == "HeNormal") then
 

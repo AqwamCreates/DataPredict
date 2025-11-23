@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseInstance = require("Core_BaseInstance")
 
-ConfusionMatrixCreator = {}
+local ConfusionMatrixCreator = {}
 
 ConfusionMatrixCreator.__index = ConfusionMatrixCreator
 

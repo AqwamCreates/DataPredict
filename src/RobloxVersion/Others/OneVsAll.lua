@@ -40,7 +40,7 @@ local AqwamTensorLibrary = require(DataPredictLibrary.AqwamTensorLibraryLinker.V
 
 local IterativeMethodBaseModel = require(Models.IterativeMethodBaseModel)
 
-OneVsAll = {}
+local OneVsAll = {}
 
 OneVsAll.__index = OneVsAll
 

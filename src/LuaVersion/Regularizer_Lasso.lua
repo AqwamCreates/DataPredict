@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseRegularizer = require("Regularizer_BaseRegularizer")
 
-Lasso = {}
+local Lasso = {}
 
 Lasso.__index = Lasso
 

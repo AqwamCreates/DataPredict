@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
-ConditionalRandomFieldModel = {}
+local ConditionalRandomFieldModel = {}
 
 ConditionalRandomFieldModel.__index = ConditionalRandomFieldModel
 

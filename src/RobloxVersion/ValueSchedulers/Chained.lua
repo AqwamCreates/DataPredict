@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
 
-ChainedValueScheduler = {}
+local ChainedValueScheduler = {}
 
 ChainedValueScheduler.__index = ChainedValueScheduler
 

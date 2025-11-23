@@ -34,7 +34,7 @@ local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
 local ZTableFunction = require("Core_ZTableFunction")
 
-LocalOutlierProbability = {}
+local LocalOutlierProbability = {}
 
 LocalOutlierProbability.__index = LocalOutlierProbability
 

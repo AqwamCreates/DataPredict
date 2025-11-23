@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local GenerativeAdversarialImitationLearningBaseModel = require(script.Parent.GenerativeAdversarialImitationLearningBaseModel)
 
-WassersteinGenerativeAdversarialImitationLearning = {}
+local WassersteinGenerativeAdversarialImitationLearning = {}
 
 WassersteinGenerativeAdversarialImitationLearning.__index = WassersteinGenerativeAdversarialImitationLearning
 

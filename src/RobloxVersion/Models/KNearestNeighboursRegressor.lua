@@ -32,7 +32,7 @@ local BaseModel = require(script.Parent.BaseModel)
 
 local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
 
-KNearestNeighboursRegressorModel = {}
+local KNearestNeighboursRegressorModel = {}
 
 KNearestNeighboursRegressorModel.__index = KNearestNeighboursRegressorModel
 

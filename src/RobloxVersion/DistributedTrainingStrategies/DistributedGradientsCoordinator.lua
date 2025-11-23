@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-DistributedGradientsCoordinator = {}
+local DistributedGradientsCoordinator = {}
 
 DistributedGradientsCoordinator.__index = DistributedGradientsCoordinator
 

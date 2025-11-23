@@ -28,7 +28,7 @@
 
 local BaseInstance = require("Core_BaseInstance")
 
-OnlineLearning = {}
+local OnlineLearning = {}
 
 OnlineLearning.__index = OnlineLearning
 

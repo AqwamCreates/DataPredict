@@ -28,9 +28,9 @@
 
 local AqwamTensorLibraryLinker = require("AqwamTensorLibrary")
 
-local GenerativeAdversarialImitationLearningBaseModel = require("Model_GenerativeAdversarialImitationLearningBaseModel")
+local GenerativeAdversarialImitationLearningBaseModel = require("ReinforcementLearningStrategy_GenerativeAdversarialImitationLearningBaseModel")
 
-GenerativeAdversarialImitationLearning = {}
+local GenerativeAdversarialImitationLearning = {}
 
 GenerativeAdversarialImitationLearning.__index = GenerativeAdversarialImitationLearning
 

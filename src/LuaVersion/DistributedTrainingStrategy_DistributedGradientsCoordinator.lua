@@ -28,9 +28,9 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseInstance = require("Cores_BaseInstance")
+local BaseInstance = require("Core_BaseInstance")
 
-DistributedGradientsCoordinator = {}
+local DistributedGradientsCoordinator = {}
 
 DistributedGradientsCoordinator.__index = DistributedGradientsCoordinator
 

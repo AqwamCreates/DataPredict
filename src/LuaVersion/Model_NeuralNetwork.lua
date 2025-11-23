@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
-NeuralNetworkModel = {}
+local NeuralNetworkModel = {}
 
 NeuralNetworkModel.__index = NeuralNetworkModel
 
@@ -199,7 +199,7 @@ local activationFunctionList = {
 
 }
 
-local lossFunctionList = {
+local lossFunctionGradientList = {
 	
 	["MeanSquaredError"] = function(generatedLabelMatrix, labelMatrix)
 
@@ -733,7 +733,7 @@ local function deriveLayer(activationMatrix, zMatrix, hasBiasNeuronOnCurrentLaye
 
 end
 
-function NeuralNetworkModel:backwardPropagate(lossMatrix)
+function NeuralNetworkModel:backwardPropagate(lossGradientMatrix)
 
 	local forwardPropagateArray = self.forwardPropagateArray
 
@@ -743,7 +743,7 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 
 	if (not zMatrixArray) then error("Array not found for z matrix.") end
 
-	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
 	local costFunctionDerivativeMatrixArray = {}
 
@@ -759,7 +759,7 @@ function NeuralNetworkModel:backwardPropagate(lossMatrix)
 	
 	local derivativeMatrix = deriveLayer(forwardPropagateArray[numberOfLayers], zMatrixArray[numberOfLayers], hasBiasNeuronArray[numberOfLayers], activationFunctionArray[numberOfLayers])
 
-	local layerCostMatrix = AqwamTensorLibrary:multiply(lossMatrix, derivativeMatrix)
+	local layerCostMatrix = AqwamTensorLibrary:multiply(lossGradientMatrix, derivativeMatrix)
 	
 	local activationLayerMatrix = AqwamTensorLibrary:transpose(forwardPropagateArray[numberOfLayersMinusOne])
 	
@@ -861,13 +861,13 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 
 end
 
-function NeuralNetworkModel:update(lossMatrix, clearAllArrays)
+function NeuralNetworkModel:update(lossGradientMatrix, clearAllArrays)
 
-	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
-	local numberOfData = #lossMatrix
+	local numberOfData = #lossGradientMatrix
 
-	local costFunctionDerivativeMatrixArray = self:backwardPropagate(lossMatrix)
+	local costFunctionDerivativeMatrixArray = self:backwardPropagate(lossGradientMatrix)
 
 	self:gradientDescent(costFunctionDerivativeMatrixArray, numberOfData)
 
@@ -1630,7 +1630,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	
 	local numberOfNeuronsAtFinalLayer = numberOfNeuronsArray[numberOfLayers] + hasBiasNeuronArray[numberOfLayers]
 	
-	local LossFunctionToApply = lossFunctionList[self.costFunction]
+	local LossFunctionGradientToApply = lossFunctionGradientList[self.costFunction]
 
 	local numberOfIterations = 0
 
@@ -1680,9 +1680,9 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		end
 
-		local lossMatrix = LossFunctionToApply(activatedOutputsMatrix, logisticMatrix)
+		local lossGradientMatrix = LossFunctionGradientToApply(activatedOutputsMatrix, logisticMatrix)
 
-		self:update(lossMatrix, true)
+		self:update(lossGradientMatrix, true)
 
 	until (numberOfIterations == self.maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

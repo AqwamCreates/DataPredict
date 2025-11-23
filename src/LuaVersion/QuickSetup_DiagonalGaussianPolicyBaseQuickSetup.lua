@@ -26,9 +26,9 @@
 
 --]]
 
-local ReinforcementLearningBaseQuickSetup = require(script.Parent.ReinforcementLearningBaseQuickSetup)
+local ReinforcementLearningBaseQuickSetup = require("QuickSetup_ReinforcementLearningBaseQuickSetup")
 
-DiagonalGaussianPolicyBaseQuickSetup = {}
+local DiagonalGaussianPolicyBaseQuickSetup = {}
 
 DiagonalGaussianPolicyBaseQuickSetup.__index = DiagonalGaussianPolicyBaseQuickSetup
 

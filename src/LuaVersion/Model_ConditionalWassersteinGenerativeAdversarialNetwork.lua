@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GenerativeAdversarialNetworkBaseModel = require("Model_GenerativeAdversarialNetworkBaseModel")
 
-ConditionalWassersteinGenerativeAdversarialNetworkModel = {}
+local ConditionalWassersteinGenerativeAdversarialNetworkModel = {}
 
 ConditionalWassersteinGenerativeAdversarialNetworkModel.__index = ConditionalWassersteinGenerativeAdversarialNetworkModel
 

@@ -28,7 +28,7 @@
 
 local BaseExperienceReplay = require(script.Parent.BaseExperienceReplay)
 
-UniformExperienceReplay = {}
+local UniformExperienceReplay = {}
 
 UniformExperienceReplay.__index = UniformExperienceReplay
 

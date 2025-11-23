@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseRegularizer = require("Regularizer_BaseRegularizer")
 
-ElasticNet = {}
+local ElasticNet = {}
 
 ElasticNet.__index = ElasticNet
 

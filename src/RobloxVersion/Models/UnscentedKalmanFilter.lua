@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseModel = require(script.Parent.BaseModel)
 
-UnscentedKalmanFilterModel = {}
+local UnscentedKalmanFilterModel = {}
 
 UnscentedKalmanFilterModel.__index = UnscentedKalmanFilterModel
 

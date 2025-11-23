@@ -32,7 +32,7 @@ local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
-FuzzyCMeansModel = {}
+local FuzzyCMeansModel = {}
 
 FuzzyCMeansModel.__index = FuzzyCMeansModel
 

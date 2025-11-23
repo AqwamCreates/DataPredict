@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseEligibilityTrace = require("EligibilityTrace_BaseEligibilityTrace")
 
-ReplacingTrace = {}
+local ReplacingTrace = {}
 
 ReplacingTrace.__index = ReplacingTrace
 

@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DiagonalGaussianPolicyBaseQuickSetup = require("QuickSetup_DiagonalGaussianPolicyBaseQuickSetup")
 
-ParallelDiagonalGaussianPolicyQuickSetup = {}
+local ParallelDiagonalGaussianPolicyQuickSetup = {}
 
 ParallelDiagonalGaussianPolicyQuickSetup.__index = ParallelDiagonalGaussianPolicyQuickSetup
 

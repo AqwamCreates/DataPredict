@@ -32,7 +32,7 @@ local BaseModel = require("Model_BaseModel")
 
 local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
-NearestCentroidModel = {}
+local NearestCentroidModel = {}
 
 NearestCentroidModel.__index = NearestCentroidModel
 

@@ -28,7 +28,7 @@
 
 local CategoricalPolicyBaseQuickSetup = require(script.Parent.CategoricalPolicyBaseQuickSetup)
 
-SingleCategoricalPolicyQuickSetup = {}
+local SingleCategoricalPolicyQuickSetup = {}
 
 SingleCategoricalPolicyQuickSetup.__index = SingleCategoricalPolicyQuickSetup
 

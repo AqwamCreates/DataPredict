@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
-AdaptiveGradientOptimizer = {}
+local AdaptiveGradientOptimizer = {}
 
 AdaptiveGradientOptimizer.__index = AdaptiveGradientOptimizer
 

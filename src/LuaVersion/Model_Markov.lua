@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
-MarkovModel = {}
+local MarkovModel = {}
 
 MarkovModel.__index = MarkovModel
 

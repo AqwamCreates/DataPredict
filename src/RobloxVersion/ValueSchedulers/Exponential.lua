@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
 
-ExponentValueScheduler = {}
+local ExponentValueScheduler = {}
 
 ExponentValueScheduler.__index = ExponentValueScheduler
 

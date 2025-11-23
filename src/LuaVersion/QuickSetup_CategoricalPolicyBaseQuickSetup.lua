@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local ReinforcementLearningBaseQuickSetup = require("QuickSetup_ReinforcementLearningBaseQuickSetup")
 
-CategoricalPolicyBaseQuickSetup = {}
+local CategoricalPolicyBaseQuickSetup = {}
 
 CategoricalPolicyBaseQuickSetup.__index = CategoricalPolicyBaseQuickSetup
 

@@ -28,9 +28,9 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseEligibilityTrace = require("EligibilityTrace_BaseEligibilityTrace")
+local BaseEligibilityTrace = require("EligibiltiyTrace_BaseEligibilityTrace")
 
-AccumulatingTrace = {}
+local AccumulatingTrace = {}
 
 AccumulatingTrace.__index = AccumulatingTrace
 

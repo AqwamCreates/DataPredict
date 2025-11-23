@@ -28,7 +28,7 @@
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-GradientMethodBaseModel = {}
+local GradientMethodBaseModel = {}
 
 GradientMethodBaseModel.__index = GradientMethodBaseModel
 

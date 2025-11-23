@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseRegularizer = require(script.Parent.BaseRegularizer)
 
-Ridge = {}
+local Ridge = {}
 
 Ridge.__index = Ridge
 

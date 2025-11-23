@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
 
-CosineAnnealingValueScheduler = {}
+local CosineAnnealingValueScheduler = {}
 
 CosineAnnealingValueScheduler.__index = CosineAnnealingValueScheduler
 

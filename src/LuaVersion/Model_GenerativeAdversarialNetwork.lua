@@ -26,11 +26,11 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibraryLinker = require("AqwamTensorLibrary")
 
 local GenerativeAdversarialNetworkBaseModel = require("Model_GenerativeAdversarialNetworkBaseModel")
 
-GenerativeAdversarialNetworkModel = {}
+local GenerativeAdversarialNetworkModel = {}
 
 GenerativeAdversarialNetworkModel.__index = GenerativeAdversarialNetworkModel
 

@@ -32,7 +32,7 @@ local BaseModel = require("Model_BaseModel")
 
 local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
-KNearestNeighboursRegressorModel = {}
+local KNearestNeighboursRegressorModel = {}
 
 KNearestNeighboursRegressorModel.__index = KNearestNeighboursRegressorModel
 

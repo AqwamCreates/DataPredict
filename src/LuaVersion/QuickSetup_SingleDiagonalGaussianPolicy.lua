@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local ReinforcementLearningBaseQuickSetup = require("QuickSetup_ReinforcementLearningBaseQuickSetup")
 
-SingleDiagonalGaussianPolicyQuickSetup = {}
+local SingleDiagonalGaussianPolicyQuickSetup = {}
 
 SingleDiagonalGaussianPolicyQuickSetup.__index = SingleDiagonalGaussianPolicyQuickSetup
 

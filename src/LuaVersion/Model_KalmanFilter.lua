@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
-KalmanFilterModel = {}
+local KalmanFilterModel = {}
 
 KalmanFilterModel.__index = KalmanFilterModel
 

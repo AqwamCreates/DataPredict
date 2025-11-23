@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
-AdaptiveDeltaOptimizer = {}
+local AdaptiveDeltaOptimizer = {}
 
 AdaptiveDeltaOptimizer.__index = AdaptiveDeltaOptimizer
 

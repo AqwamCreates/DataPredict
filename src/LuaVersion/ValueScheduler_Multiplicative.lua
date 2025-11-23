@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
 
-MultiplicativeValueScheduler = {}
+local MultiplicativeValueScheduler = {}
 
 MultiplicativeValueScheduler.__index = MultiplicativeValueScheduler
 

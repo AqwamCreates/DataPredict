@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseModel = require(script.Parent.BaseModel)
 
-NaiveBayesBaseModel = {}
+local NaiveBayesBaseModel = {}
 
 NaiveBayesBaseModel.__index = NaiveBayesBaseModel
 

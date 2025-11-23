@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseInstance = require("Core_BaseInstance")
 
-BaseGradientClipper = {}
+local BaseGradientClipper = {}
 
 BaseGradientClipper.__index = BaseGradientClipper
 

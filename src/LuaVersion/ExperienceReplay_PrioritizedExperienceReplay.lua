@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseExperienceReplay = require("ExperienceReplay_BaseExperienceReplay")
 
-PrioritizedExperienceReplay = {}
+local PrioritizedExperienceReplay = {}
 
 PrioritizedExperienceReplay.__index = PrioritizedExperienceReplay
 
@@ -209,12 +209,18 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 			probabilityArray[i] = probability / sumPriorityAlpha
 			
 		end
+
+		local sizeArray = AqwamTensorLibrary:getDimensionSizeArray(replayBufferArray[1][1])
+
+		local inputMatrix = AqwamTensorLibrary:createTensor(sizeArray, 1)
+
+		local sumLossMatrix
 		
 		for i = 1, lowestNumberOfBatchSize, 1 do
 			
 			local index, probability = sample(probabilityArray, sumPriorityAlpha)
 			
-			local previousFeatureVector = replayBufferArray[index][1]
+			local experience = replayBufferArray[index]
 			
 			local temporalDifferenceErrorValueOrVector = temporalDifferenceArray[index]
 
@@ -230,14 +236,26 @@ function PrioritizedExperienceReplay.new(parameterDictionary)
 
 			priorityArray[index] = math.abs(temporalDifferenceErrorValueOrVector)
 
-			local outputVector = Model:forwardPropagate(previousFeatureVector, true)
+			local outputMatrix = Model:forwardPropagate(replayBufferArray[index][1], false)
 
-			local lossMatrix = AqwamTensorLibrary:multiply(outputVector, temporalDifferenceErrorValueOrVector, importanceSamplingWeight)
+			local lossMatrix = AqwamTensorLibrary:multiply(outputMatrix, temporalDifferenceErrorValueOrVector, importanceSamplingWeight)
 
-			Model:update(lossMatrix, true)
+			if (sumLossMatrix) then
+
+				sumLossMatrix = AqwamTensorLibrary:add(sumLossMatrix, lossMatrix)
+
+			else
+
+				sumLossMatrix = lossMatrix
+
+			end
 
 		end
 
+		Model:forwardPropagate(inputMatrix, true)
+
+		Model:update(sumLossMatrix, true)
+		
 	end)
 	
 	return NewPrioritizedExperienceReplay

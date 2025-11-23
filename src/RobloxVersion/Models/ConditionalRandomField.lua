@@ -272,9 +272,9 @@ function ConditionalRandomFieldModel:train(previousStateMatrix, currentStateMatr
 
 		end
 
-		local lossGradientVector = AqwamTensorLibrary:subtract(predictedCurrentStateMatrix, currentStateMatrix)
+		local lossGradientMatrix = AqwamTensorLibrary:subtract(predictedCurrentStateMatrix, currentStateMatrix)
 
-		self:update(lossGradientVector, true)
+		self:update(lossGradientMatrix, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	

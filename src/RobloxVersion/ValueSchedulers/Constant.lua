@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
 
-ConstantValueScheduler = {}
+local ConstantValueScheduler = {}
 
 ConstantValueScheduler.__index = ConstantValueScheduler
 

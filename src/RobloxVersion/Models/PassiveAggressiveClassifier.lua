@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
-PassiveAggressiveClassifierModel = {}
+local PassiveAggressiveClassifierModel = {}
 
 PassiveAggressiveClassifierModel.__index = PassiveAggressiveClassifierModel
 

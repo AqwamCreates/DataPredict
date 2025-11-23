@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseRegularizer = require("Regularizer_BaseRegularizer")
 
-Ridge = {}
+local Ridge = {}
 
 Ridge.__index = Ridge
 

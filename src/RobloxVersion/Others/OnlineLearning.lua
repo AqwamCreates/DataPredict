@@ -28,7 +28,7 @@
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-OnlineLearning = {}
+local OnlineLearning = {}
 
 OnlineLearning.__index = OnlineLearning
 

@@ -90,25 +90,25 @@ function ConditionalRandomFieldModel:calculateNextStateMatrix(stateMatrix, saveS
 
 end
 
-function ConditionalRandomFieldModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
+function ConditionalRandomFieldModel:calculateLossFunctionDerivativeMatrix(lossGradientMatrix)
 
-	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
 	local stateMatrix = self.stateMatrix
 
 	if (not stateMatrix) then error("State matrix not found.") end
 
-	local costFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(stateMatrix), lossMatrix)
+	local lossFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(stateMatrix), lossGradientMatrix)
 
-	if (self.areGradientsSaved) then self.Gradients = costFunctionDerivativeMatrix end
+	if (self.areGradientsSaved) then self.Gradients = lossFunctionDerivativeMatrix end
 
-	return costFunctionDerivativeMatrix
+	return lossFunctionDerivativeMatrix
 
 end
 
-function ConditionalRandomFieldModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+function ConditionalRandomFieldModel:gradientDescent(lossFunctionDerivativeMatrix, numberOfData)
 
-	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
+	if (type(lossFunctionDerivativeMatrix) == "number") then lossFunctionDerivativeMatrix = {{lossFunctionDerivativeMatrix}} end
 	
 	local ModelParameters = self.ModelParameters
 
@@ -122,35 +122,35 @@ function ConditionalRandomFieldModel:gradientDescent(costFunctionDerivativeMatri
 
 		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
 
-		costFunctionDerivativeMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
+		lossFunctionDerivativeMatrix = AqwamTensorLibrary:add(lossFunctionDerivativeMatrix, regularizationDerivatives)
 
 	end
 
-	costFunctionDerivativeMatrix = AqwamTensorLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
+	lossFunctionDerivativeMatrix = AqwamTensorLibrary:divide(lossFunctionDerivativeMatrix, numberOfData)
 
 	if (Optimizer) then
 
-		costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix, ModelParameters) 
+		lossFunctionDerivativeMatrix = Optimizer:calculate(learningRate, lossFunctionDerivativeMatrix, ModelParameters) 
 
 	else
 
-		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrix)
+		lossFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, lossFunctionDerivativeMatrix)
 
 	end
 
-	self.ModelParameters = AqwamTensorLibrary:subtract(ModelParameters, costFunctionDerivativeMatrix)
+	self.ModelParameters = AqwamTensorLibrary:subtract(ModelParameters, lossFunctionDerivativeMatrix)
 
 end
 
-function ConditionalRandomFieldModel:update(lossMatrix, clearFeatureMatrix)
+function ConditionalRandomFieldModel:update(lossGradientMatrix, clearFeatureMatrix)
 
-	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
-	local numberOfData = #lossMatrix
+	local numberOfData = #lossGradientMatrix
 
-	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
+	local lossFunctionDerivativeMatrix = self:calculateLossFunctionDerivativeMatrix(lossGradientMatrix)
 
-	self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeMatrix, numberOfData)
 	
 	if (clearFeatureMatrix) then self.featureMatrix = nil end
 
@@ -272,9 +272,9 @@ function ConditionalRandomFieldModel:train(previousStateMatrix, currentStateMatr
 
 		end
 
-		local lossVector = AqwamTensorLibrary:subtract(predictedCurrentStateMatrix, currentStateMatrix)
+		local lossGradientVector = AqwamTensorLibrary:subtract(predictedCurrentStateMatrix, currentStateMatrix)
 
-		self:update(lossVector, true)
+		self:update(lossGradientVector, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	

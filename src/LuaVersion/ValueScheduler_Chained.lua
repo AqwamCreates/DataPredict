@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
 
-ChainedValueScheduler = {}
+local ChainedValueScheduler = {}
 
 ChainedValueScheduler.__index = ChainedValueScheduler
 

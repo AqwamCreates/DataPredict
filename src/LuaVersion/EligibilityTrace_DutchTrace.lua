@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseEligibilityTrace = require("EligibilityTrace_BaseEligibilityTrace")
 
-DutchTrace = {}
+local DutchTrace = {}
 
 DutchTrace.__index = DutchTrace
 

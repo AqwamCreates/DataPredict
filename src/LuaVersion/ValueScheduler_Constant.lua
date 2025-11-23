@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
 
-ConstantValueScheduler = {}
+local ConstantValueScheduler = {}
 
 ConstantValueScheduler.__index = ConstantValueScheduler
 

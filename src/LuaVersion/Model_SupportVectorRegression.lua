@@ -32,7 +32,7 @@ local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
-SupportVectorRegressionModel = {}
+local SupportVectorRegressionModel = {}
 
 SupportVectorRegressionModel.__index = SupportVectorRegressionModel
 

@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningActorCriticBaseModel = require("Model_DeepReinforcementLearningActorCriticBaseModel")
 
-SoftActorCriticModel = {}
+local SoftActorCriticModel = {}
 
 SoftActorCriticModel.__index = SoftActorCriticModel
 

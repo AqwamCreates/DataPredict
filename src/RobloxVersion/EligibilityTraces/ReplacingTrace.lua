@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseEligibilityTrace = require(script.Parent.BaseEligibilityTrace)
 
-ReplacingTrace = {}
+local ReplacingTrace = {}
 
 ReplacingTrace.__index = ReplacingTrace
 

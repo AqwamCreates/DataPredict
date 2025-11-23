@@ -30,17 +30,21 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local ReinforcementLearningBaseQuickSetup = require(script.Parent.ReinforcementLearningBaseQuickSetup)
 
-CategoricalPolicyQuickSetup = {}
+local CategoricalPolicyBaseQuickSetup = {}
 
-CategoricalPolicyQuickSetup.__index = CategoricalPolicyQuickSetup
+CategoricalPolicyBaseQuickSetup.__index = CategoricalPolicyBaseQuickSetup
 
-setmetatable(CategoricalPolicyQuickSetup, ReinforcementLearningBaseQuickSetup)
+setmetatable(CategoricalPolicyBaseQuickSetup, ReinforcementLearningBaseQuickSetup)
 
 local defaultActionSelectionFunction = "Maximum"
+
+local defaultEpsilon = 0
 
 local defaultTemperature = 1
 
 local defaultCValue = 1
+
+local RandomObject = Random.new()
 
 local function selectIndexWithHighestValue(valueVector)
 	
@@ -97,10 +101,10 @@ local function calculateProbability(valueVector, temperature)
 end
 
 local function sample(probabilityVector)
-
-	local totalProbability = 0
 	
 	local unwrappedProbabilityVector = probabilityVector[1]
+
+	local totalProbability = 0
 
 	for _, probability in ipairs(unwrappedProbabilityVector) do
 
@@ -108,7 +112,7 @@ local function sample(probabilityVector)
 
 	end
 
-	local randomValue = math.random() * totalProbability
+	local randomProbability = math.random() * totalProbability
 
 	local cumulativeProbability = 0
 
@@ -116,19 +120,19 @@ local function sample(probabilityVector)
 
 		cumulativeProbability = cumulativeProbability + probability
 
-		if (randomValue <= cumulativeProbability) then return index end
+		if (cumulativeProbability >= randomProbability) then return index end
 
 	end
 
-	return unwrappedProbabilityVector[#unwrappedProbabilityVector]
+	return #unwrappedProbabilityVector
 
 end
 
-local function calculateUpperConfidenceBound(actionVector, cValue, totalNumberOfReinforcements, selectedActionCountVector)
+local function calculateUpperConfidenceBound(actionVector, cValue, selectedActionCountVector, currentNumberOfReinforcements)
 	
-	local naturalLogTotalNumberOfReinforcements = math.log(totalNumberOfReinforcements)
+	local naturalLogCurrentNumberOfReinforcements = math.log(currentNumberOfReinforcements)
 	
-	local upperConfidenceBoundVector1 = AqwamTensorLibrary:divide(naturalLogTotalNumberOfReinforcements, selectedActionCountVector)
+	local upperConfidenceBoundVector1 = AqwamTensorLibrary:divide(naturalLogCurrentNumberOfReinforcements, selectedActionCountVector)
 	
 	local upperConfidenceBoundVector2 = AqwamTensorLibrary:multiply(cValue, upperConfidenceBoundVector1)
 	
@@ -138,13 +142,23 @@ local function calculateUpperConfidenceBound(actionVector, cValue, totalNumberOf
 	
 end
 
-function CategoricalPolicyQuickSetup:selectAction(actionVector)
+function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
 	
 	local actionSelectionFunction = self.actionSelectionFunction
 	
+	local randomProbability = RandomObject:NextNumber()
+	
 	local actionIndex
 	
-	if (actionSelectionFunction == "Maximum") then
+	currentEpsilon = currentEpsilon or self.epsilon
+	
+	selectedActionCountVector = selectedActionCountVector or {table.create(#actionVector[1], 0)}
+	
+	if (randomProbability <= currentEpsilon) then
+		
+		actionIndex = RandomObject:NextInteger(1, #actionVector[1])
+	
+	elseif (actionSelectionFunction == "Maximum") then
 		
 		actionIndex = selectIndexWithHighestValue(actionVector)
 	
@@ -162,17 +176,9 @@ function CategoricalPolicyQuickSetup:selectAction(actionVector)
 		
 	elseif (actionSelectionFunction == "UpperConfidenceBound") then
 		
-		local selectedActionCountVector = self.selectedActionCountVector
-		
-		if (not selectedActionCountVector) then selectedActionCountVector = {table.create(#actionVector[1], 0)} end
-		
-		local actionUpperConfidenceBoundVector = calculateUpperConfidenceBound(actionVector, self.cValue, self.totalNumberOfReinforcements, selectedActionCountVector)
+		local actionUpperConfidenceBoundVector = calculateUpperConfidenceBound(actionVector, self.cValue, selectedActionCountVector, currentNumberOfReinforcements)
 		
 		actionIndex = selectIndexWithHighestValue(actionUpperConfidenceBoundVector)
-		
-		selectedActionCountVector[1][actionIndex] = selectedActionCountVector[1][actionIndex] + 1
-		
-		self.selectedActionCountVector = selectedActionCountVector
 		
 	else
 		
@@ -180,162 +186,44 @@ function CategoricalPolicyQuickSetup:selectAction(actionVector)
 		
 	end
 	
-	return actionIndex
+	selectedActionCountVector[1][actionIndex] = selectedActionCountVector[1][actionIndex] + 1
+	
+	if (EpsilonValueScheduler) then currentEpsilon = EpsilonValueScheduler:calculate(currentEpsilon) end
+	
+	return actionIndex, selectedActionCountVector, currentEpsilon
 	
 end
 
-function CategoricalPolicyQuickSetup.new(parameterDictionary)
+function CategoricalPolicyBaseQuickSetup.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewCategoricalPolicyQuickSetup = ReinforcementLearningBaseQuickSetup.new(parameterDictionary)
+	local NewCategoricalPolicyBaseQuickSetup = ReinforcementLearningBaseQuickSetup.new(parameterDictionary)
 	
-	setmetatable(NewCategoricalPolicyQuickSetup, CategoricalPolicyQuickSetup)
+	setmetatable(NewCategoricalPolicyBaseQuickSetup, CategoricalPolicyBaseQuickSetup)
 	
-	NewCategoricalPolicyQuickSetup:setName("CategoricalPolicyQuickSetup")
+	NewCategoricalPolicyBaseQuickSetup:setName("CategoricalPolicyBaseQuickSetup")
 	
-	NewCategoricalPolicyQuickSetup.actionSelectionFunction = parameterDictionary.actionSelectionFunction or defaultActionSelectionFunction
+	NewCategoricalPolicyBaseQuickSetup:setClassName("CategoricalPolicyQuickSetup")
 	
-	NewCategoricalPolicyQuickSetup.temperature = parameterDictionary.temperature or defaultTemperature
+	local epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
-	NewCategoricalPolicyQuickSetup.cValue = parameterDictionary.cValue or defaultCValue
+	NewCategoricalPolicyBaseQuickSetup.actionSelectionFunction = parameterDictionary.actionSelectionFunction or defaultActionSelectionFunction
 	
-	NewCategoricalPolicyQuickSetup.previousAction = parameterDictionary.previousAction
+	NewCategoricalPolicyBaseQuickSetup.epsilon = epsilon or defaultEpsilon
 	
-	NewCategoricalPolicyQuickSetup.selectedActionCountVector = parameterDictionary.selectedActionCountVector
+	NewCategoricalPolicyBaseQuickSetup.temperature = parameterDictionary.temperature or defaultTemperature
 	
-	NewCategoricalPolicyQuickSetup:setReinforceFunction(function(currentFeatureVector, rewardValue, returnOriginalOutput)
-		
-		local Model = NewCategoricalPolicyQuickSetup.Model
-		
-		if (not Model) then error("No model.") end
-		
-		local isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
-		
-		if (isOriginalValueNotAVector) then currentFeatureVector = {{currentFeatureVector}} end
-		
-		local numberOfReinforcementsPerEpisode = NewCategoricalPolicyQuickSetup.numberOfReinforcementsPerEpisode
-
-		local currentNumberOfReinforcements = NewCategoricalPolicyQuickSetup.currentNumberOfReinforcements
-
-		local currentNumberOfEpisodes = NewCategoricalPolicyQuickSetup.currentNumberOfEpisodes
-
-		local EpsilonValueScheduler = NewCategoricalPolicyQuickSetup.EpsilonValueScheduler
-
-		local currentEpsilon = NewCategoricalPolicyQuickSetup.currentEpsilon
-		
-		local ExperienceReplay = NewCategoricalPolicyQuickSetup.ExperienceReplay
-		
-		local previousFeatureVector = NewCategoricalPolicyQuickSetup.previousFeatureVector
-		
-		local previousAction =  NewCategoricalPolicyQuickSetup.previousAction
-
-		local ActionsList = Model:getActionsList()
-
-		local randomProbability = Random.new():NextNumber()
-
-		local actionVector = Model:predict(currentFeatureVector, true)
-		
-		local terminalStateValue = 0
-
-		local actionIndex
-
-		local action
-
-		local actionValue
-
-		local temporalDifferenceError
-		
-		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
-
-		if (randomProbability < currentEpsilon) then
-
-			actionIndex = Random.new():NextInteger(1, #ActionsList)
-
-		else
-
-			actionIndex = NewCategoricalPolicyQuickSetup:selectAction(actionVector)
-
-		end
-
-		action = ActionsList[actionIndex]
-
-		actionValue = actionVector[1][actionIndex]
-		
-		if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then terminalStateValue = 1 end
-
-		if (previousFeatureVector) then
-			
-			local updateFunction = NewCategoricalPolicyQuickSetup.updateFunction
-
-			currentNumberOfReinforcements = currentNumberOfReinforcements + 1
-
-			temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
-
-			if (updateFunction) then updateFunction() end
-
-		end
-
-		if (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode) then
-
-			local episodeUpdateFunction = NewCategoricalPolicyQuickSetup.episodeUpdateFunction
-
-			currentNumberOfReinforcements = 0
-
-			currentNumberOfEpisodes = currentNumberOfEpisodes + 1
-
-			Model:episodeUpdate(terminalStateValue)
-
-			if episodeUpdateFunction then episodeUpdateFunction() end
-
-		end
-		
-		if (previousFeatureVector) then
-			
-			if (ExperienceReplay) then
-
-				ExperienceReplay:addExperience(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
-
-				ExperienceReplay:addTemporalDifferenceError(temporalDifferenceError)
-
-				ExperienceReplay:run(function(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
-
-					return Model:categoricalUpdate(storedPreviousFeatureVector, storedAction, storedRewardValue, storedCurrentFeatureVector, storedTerminalStateValue)
-
-				end)
-
-			end
-			
-			if (EpsilonValueScheduler) then
-
-				currentEpsilon = EpsilonValueScheduler:calculate(currentEpsilon)
-
-				NewCategoricalPolicyQuickSetup.currentEpsilon = currentEpsilon
-
-			end
-			
-		end
-		
-		NewCategoricalPolicyQuickSetup.totalNumberOfReinforcements = NewCategoricalPolicyQuickSetup.totalNumberOfReinforcements + 1
-
-		NewCategoricalPolicyQuickSetup.currentNumberOfReinforcements = currentNumberOfReinforcements
-
-		NewCategoricalPolicyQuickSetup.currentNumberOfEpisodes = currentNumberOfEpisodes
-
-		NewCategoricalPolicyQuickSetup.previousFeatureVector = currentFeatureVector
-		
-		NewCategoricalPolicyQuickSetup.previousAction = action
-		
-		if (NewCategoricalPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tEpsilon: " .. currentEpsilon .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
-
-		if (returnOriginalOutput) then return actionVector end
-
-		return action, actionValue
-		
-	end)
+	NewCategoricalPolicyBaseQuickSetup.cValue = parameterDictionary.cValue or defaultCValue
 	
-	return NewCategoricalPolicyQuickSetup
+	NewCategoricalPolicyBaseQuickSetup.EpsilonValueScheduler = parameterDictionary.EpsilonValueScheduler
+	
+	NewCategoricalPolicyBaseQuickSetup.selectedActionCountVector = parameterDictionary.selectedActionCountVector
+	
+	NewCategoricalPolicyBaseQuickSetup.currentEpsilon = parameterDictionary.currentEpsilon or epsilon
+	
+	return NewCategoricalPolicyBaseQuickSetup
 	
 end
 
-return CategoricalPolicyQuickSetup
+return CategoricalPolicyBaseQuickSetup

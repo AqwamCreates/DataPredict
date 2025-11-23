@@ -28,7 +28,7 @@
 
 local BaseInstance = require("Core_BaseInstance")
 
-DatasetCreator = {}
+local DatasetCreator = {}
 
 DatasetCreator.__index = DatasetCreator
 

@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
-local zTableFunction = require(script.Parent.Parent.Cores.ZTableFunction)
+local zTableFunction = require("Core_ZTableFunction")
 
 local BayesianQuantileLinearRegressionModel = {}
 

@@ -30,7 +30,7 @@ local AqwamTensorLibraryLinker = require(script.Parent.Parent.AqwamTensorLibrary
 
 local GenerativeAdversarialNetworkBaseModel = require(script.Parent.GenerativeAdversarialNetworkBaseModel)
 
-GenerativeAdversarialNetworkModel = {}
+local GenerativeAdversarialNetworkModel = {}
 
 GenerativeAdversarialNetworkModel.__index = GenerativeAdversarialNetworkModel
 

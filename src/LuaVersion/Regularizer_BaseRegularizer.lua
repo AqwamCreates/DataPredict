@@ -28,7 +28,7 @@
 
 local BaseInstance = require("Core_BaseInstance")
 
-BaseRegularizer = {}
+local BaseRegularizer = {}
 
 BaseRegularizer.__index = BaseRegularizer
 

@@ -28,7 +28,7 @@
 
 local BaseInstance = require("Core_BaseInstance")
 
-BaseOptimizer = {}
+local BaseOptimizer = {}
 
 BaseOptimizer.__index = BaseOptimizer
 

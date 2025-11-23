@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
-SupportVectorRegressionGradientVariantModel = {}
+local SupportVectorRegressionGradientVariantModel = {}
 
 SupportVectorRegressionGradientVariantModel.__index = SupportVectorRegressionGradientVariantModel
 
@@ -80,25 +80,25 @@ function SupportVectorRegressionGradientVariantModel:calculateHypothesisVector(f
 
 end
 
-function SupportVectorRegressionGradientVariantModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
+function SupportVectorRegressionGradientVariantModel:calculateLossFunctionDerivativeMatrix(lossGradientMatrix)
 
-	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
 	local featureMatrix = self.featureMatrix
 
 	if (not featureMatrix) then error("Feature matrix not found.") end
 
-	local costFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossMatrix)
+	local lossFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossGradientMatrix)
 
-	if (self.areGradientsSaved) then self.costFunctionDerivativeMatrix = costFunctionDerivativeMatrix end
+	if (self.areGradientsSaved) then self.lossFunctionDerivativeMatrix = lossFunctionDerivativeMatrix end
 
-	return costFunctionDerivativeMatrix
+	return lossFunctionDerivativeMatrix
 
 end
 
-function SupportVectorRegressionGradientVariantModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+function SupportVectorRegressionGradientVariantModel:gradientDescent(lossFunctionDerivativeMatrix, numberOfData)
 
-	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
+	if (type(lossFunctionDerivativeMatrix) == "number") then lossFunctionDerivativeMatrix = {{lossFunctionDerivativeMatrix}} end
 	
 	local ModelParameters = self.ModelParameters
 	
@@ -112,41 +112,41 @@ function SupportVectorRegressionGradientVariantModel:gradientDescent(costFunctio
 
 		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
 
-		costFunctionDerivativeMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
+		lossFunctionDerivativeMatrix = AqwamTensorLibrary:add(lossFunctionDerivativeMatrix, regularizationDerivatives)
 
 	end
 
-	costFunctionDerivativeMatrix = AqwamTensorLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
+	lossFunctionDerivativeMatrix = AqwamTensorLibrary:divide(lossFunctionDerivativeMatrix, numberOfData)
 
 	if (Optimizer) then 
 
-		costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix, ModelParameters) 
+		lossFunctionDerivativeMatrix = Optimizer:calculate(learningRate, lossFunctionDerivativeMatrix, ModelParameters) 
 
 	else
 
-		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrix)
+		lossFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, lossFunctionDerivativeMatrix)
 
 	end
 
-	self.ModelParameters = AqwamTensorLibrary:subtract(ModelParameters, costFunctionDerivativeMatrix)
+	self.ModelParameters = AqwamTensorLibrary:subtract(ModelParameters, lossFunctionDerivativeMatrix)
 
 end
 
-function SupportVectorRegressionGradientVariantModel:update(lossMatrix, clearAllMatrices)
+function SupportVectorRegressionGradientVariantModel:update(lossGradientMatrix, clearAllMatrices)
 
-	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
-	local numberOfData = #lossMatrix
+	local numberOfData = #lossGradientMatrix
 
-	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
+	local lossFunctionDerivativeMatrix = self:calculateLossFunctionDerivativeMatrix(lossGradientMatrix)
 
-	self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeMatrix, numberOfData)
 
 	if (clearAllMatrices) then 
 
 		self.featureMatrix = nil 
 
-		self.costFunctionDerivativeMatrix = nil
+		self.lossFunctionDerivativeMatrix = nil
 
 	end
 
@@ -246,11 +246,11 @@ function SupportVectorRegressionGradientVariantModel:train(featureMatrix, labelV
 		
 		local errorVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
 
-		local lossVector = AqwamTensorLibrary:applyFunction(functionToApply, errorVector)
+		local lossGradientVector = AqwamTensorLibrary:applyFunction(functionToApply, errorVector)
 		
-		lossVector = AqwamTensorLibrary:multiply(cValue, lossVector)
+		lossGradientVector = AqwamTensorLibrary:multiply(cValue, lossGradientVector)
 
-		self:update(lossVector, true)
+		self:update(lossGradientVector, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

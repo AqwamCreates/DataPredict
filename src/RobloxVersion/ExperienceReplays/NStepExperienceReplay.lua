@@ -28,7 +28,7 @@
 
 local BaseExperienceReplay = require(script.Parent.BaseExperienceReplay)
 
-NStepExperienceReplay = {}
+local NStepExperienceReplay = {}
 
 NStepExperienceReplay.__index = NStepExperienceReplay
 

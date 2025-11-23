@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseGradientClipper = require("GradientClipper_BaseGradientClipper")
 
-ClipNormalizationGradientClipper = {}
+local ClipNormalizationGradientClipper = {}
 
 ClipNormalizationGradientClipper.__index = ClipNormalizationGradientClipper
 

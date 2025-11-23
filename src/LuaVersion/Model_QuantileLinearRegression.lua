@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
-QuantileLinearRegressionModel = {}
+local QuantileLinearRegressionModel = {}
 
 QuantileLinearRegressionModel.__index = QuantileLinearRegressionModel
 
@@ -80,27 +80,27 @@ function QuantileLinearRegressionModel:calculateHypothesisVector(featureMatrix, 
 
 end
 
-function QuantileLinearRegressionModel:calculateCostFunctionDerivativeMatrix(lossMatrix)
+function QuantileLinearRegressionModel:calculateLossFunctionDerivativeMatrix(lossGradientMatrix)
 
-	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
 	local featureMatrix = self.featureMatrix
 
 	if (not featureMatrix) then error("Feature matrix not found.") end
 	
-	local gradientWeightMatrix = AqwamTensorLibrary:applyFunction(function(lossValue, tau) return (lossValue < 0) and (tau - 1) or tau end, lossMatrix, {self.quantilesList})
+	local gradientWeightMatrix = AqwamTensorLibrary:applyFunction(function(lossValue, tau) return (lossValue < 0) and (tau - 1) or tau end, lossGradientMatrix, {self.quantilesList})
 
-	local costFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), gradientWeightMatrix)
+	local lossFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), gradientWeightMatrix)
 
-	if (self.areGradientsSaved) then self.costFunctionDerivativeMatrix = costFunctionDerivativeMatrix end
+	if (self.areGradientsSaved) then self.lossFunctionDerivativeMatrix = lossFunctionDerivativeMatrix end
 
-	return costFunctionDerivativeMatrix
+	return lossFunctionDerivativeMatrix
 
 end
 
-function QuantileLinearRegressionModel:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+function QuantileLinearRegressionModel:gradientDescent(lossFunctionDerivativeMatrix, numberOfData)
 
-	if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
+	if (type(lossFunctionDerivativeMatrix) == "number") then lossFunctionDerivativeMatrix = {{lossFunctionDerivativeMatrix}} end
 	
 	local ModelParameters = self.ModelParameters
 	
@@ -114,41 +114,41 @@ function QuantileLinearRegressionModel:gradientDescent(costFunctionDerivativeMat
 
 		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
 
-		costFunctionDerivativeMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, regularizationDerivatives)
+		lossFunctionDerivativeMatrix = AqwamTensorLibrary:add(lossFunctionDerivativeMatrix, regularizationDerivatives)
 
 	end
 
-	costFunctionDerivativeMatrix = AqwamTensorLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
+	lossFunctionDerivativeMatrix = AqwamTensorLibrary:divide(lossFunctionDerivativeMatrix, numberOfData)
 
 	if (Optimizer) then 
 
-		costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix, ModelParameters) 
+		lossFunctionDerivativeMatrix = Optimizer:calculate(learningRate, lossFunctionDerivativeMatrix, ModelParameters) 
 
 	else
 
-		costFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeMatrix)
+		lossFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, lossFunctionDerivativeMatrix)
 
 	end
 
-	self.ModelParameters = AqwamTensorLibrary:subtract(ModelParameters, costFunctionDerivativeMatrix)
+	self.ModelParameters = AqwamTensorLibrary:subtract(ModelParameters, lossFunctionDerivativeMatrix)
 
 end
 
-function QuantileLinearRegressionModel:update(lossMatrix, clearAllMatrices)
+function QuantileLinearRegressionModel:update(lossGradientMatrix, clearAllMatrices)
 
-	if (type(lossMatrix) == "number") then lossMatrix = {{lossMatrix}} end
+	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
-	local numberOfData = #lossMatrix
+	local numberOfData = #lossGradientMatrix
 
-	local costFunctionDerivativeMatrix = self:calculateCostFunctionDerivativeMatrix(lossMatrix)
+	local lossFunctionDerivativeMatrix = self:calculateLossFunctionDerivativeMatrix(lossGradientMatrix)
 
-	self:gradientDescent(costFunctionDerivativeMatrix, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeMatrix, numberOfData)
 
 	if (clearAllMatrices) then 
 		
 		self.featureMatrix = nil 
 		
-		self.costFunctionDerivativeMatrix = nil
+		self.lossFunctionDerivativeMatrix = nil
 		
 	end
 
@@ -242,9 +242,9 @@ function QuantileLinearRegressionModel:train(featureMatrix, labelVector)
 
 		end
 
-		local lossVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
+		local lossGradientMatrix = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
 
-		self:update(lossVector, true)
+		self:update(lossGradientMatrix, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

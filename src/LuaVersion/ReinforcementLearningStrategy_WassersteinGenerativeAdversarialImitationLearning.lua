@@ -28,9 +28,9 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GenerativeAdversarialImitationLearningBaseModel = require("Model_GenerativeAdversarialImitationLearningBaseModel")
+local GenerativeAdversarialImitationLearningBaseModel = require("ReinforcementLearningStrategy_GenerativeAdversarialImitationLearningBaseModel")
 
-WassersteinGenerativeAdversarialImitationLearning = {}
+local WassersteinGenerativeAdversarialImitationLearning = {}
 
 WassersteinGenerativeAdversarialImitationLearning.__index = WassersteinGenerativeAdversarialImitationLearning
 

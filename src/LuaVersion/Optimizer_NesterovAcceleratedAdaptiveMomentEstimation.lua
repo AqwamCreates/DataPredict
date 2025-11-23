@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseOptimizer = require("Optimizer_BaseOptimizer")
 
-NesterovAcceleratedAdaptiveMomentEstimationOptimizer = {}
+local NesterovAcceleratedAdaptiveMomentEstimationOptimizer = {}
 
 NesterovAcceleratedAdaptiveMomentEstimationOptimizer.__index = NesterovAcceleratedAdaptiveMomentEstimationOptimizer
 

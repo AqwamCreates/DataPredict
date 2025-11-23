@@ -32,7 +32,7 @@ local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
 
-KMedoidsModel = {}
+local KMedoidsModel = {}
 
 KMedoidsModel.__index = KMedoidsModel
 
@@ -282,6 +282,8 @@ function KMedoidsModel:train(featureMatrix)
 	
 	local distanceMatrix = createDistanceMatrix(distanceFunctionToApply, featureMatrix, medoidMatrix)
 	
+	local oldColumnDistanceArray = {}
+	
 	local costArray = {}
 
 	local numberOfIterations = 0
@@ -291,8 +293,6 @@ function KMedoidsModel:train(featureMatrix)
 	local currentCost
 	
 	local candidateMedoidVector
-	
-	local oldColumnDistanceArray
 	
 	repeat
 		
@@ -307,8 +307,6 @@ function KMedoidsModel:train(featureMatrix)
 			for medoidIndex, unwrappedMedoidVector in ipairs(medoidMatrix) do
 
 				medoidMatrix[medoidIndex] = unwrappedCandidateMedoidVector
-				
-				oldColumnDistanceArray = {}
 				
 				for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
 					

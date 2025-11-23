@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local ReinforcementLearningBaseQuickSetup = require(script.Parent.ReinforcementLearningBaseQuickSetup)
 
-CategoricalPolicyBaseQuickSetup = {}
+local CategoricalPolicyBaseQuickSetup = {}
 
 CategoricalPolicyBaseQuickSetup.__index = CategoricalPolicyBaseQuickSetup
 

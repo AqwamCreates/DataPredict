@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-PassiveAggressiveClassifierModel = {}
+local PassiveAggressiveClassifierModel = {}
 
 PassiveAggressiveClassifierModel.__index = PassiveAggressiveClassifierModel
 

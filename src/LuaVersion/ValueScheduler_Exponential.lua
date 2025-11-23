@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require("ValueScheduler_BaseValueScheduler")
 
-ExponentValueScheduler = {}
+local ExponentValueScheduler = {}
 
 ExponentValueScheduler.__index = ExponentValueScheduler
 

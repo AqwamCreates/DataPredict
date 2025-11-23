@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
 
-REINFORCEModel = {}
+local REINFORCEModel = {}
 
 REINFORCEModel.__index = REINFORCEModel
 

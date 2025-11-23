@@ -26,9 +26,9 @@
 
 --]]
 
-local BaseModel = require("Model_BaseModel")
+local BaseModel = require("Core_BaseModel")
 
-IterativeBaseModel = {}
+local IterativeBaseModel = {}
 
 IterativeBaseModel.__index = IterativeBaseModel
 

@@ -128,7 +128,7 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 	
 	if (#realFeatureMatrix[1] ~= discriminatorInputNumberOfFeatures) then error("The number of columns in real feature matrix must contain the same number as the number of neurons in discriminator's input layer.") end
 	
-	local generatorNumberOfIterations = 0
+	local generatorNumberOfIterations = 1
 
 	local discriminatorNumberOfIterations = 0
 

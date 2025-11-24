@@ -28,7 +28,7 @@
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-DeepReinforcementLearningBaseModel = {}
+local DeepReinforcementLearningBaseModel = {}
 
 DeepReinforcementLearningBaseModel.__index = DeepReinforcementLearningBaseModel
 

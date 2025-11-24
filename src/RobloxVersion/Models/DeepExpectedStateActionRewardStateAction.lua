@@ -52,7 +52,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
 		local Model = NewDeepExpectedStateActionRewardStateActionModel.Model
 		
@@ -70,7 +70,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local numberOfClasses = #ClassesList
 
-		local actionIndex = table.find(ClassesList, action)
+		local actionIndex = table.find(ClassesList, previousAction)
 		
 		local previousVector = Model:forwardPropagate(previousFeatureVector)
 		

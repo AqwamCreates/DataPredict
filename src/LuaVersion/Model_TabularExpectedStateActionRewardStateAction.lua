@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local TabularReinforcementLearningBaseModel = require("Model_TabularReinforcementLearningBaseModel")
 
-TabularExpectedStateActionRewardStateActionModel = {}
+local TabularExpectedStateActionRewardStateActionModel = {}
 
 TabularExpectedStateActionRewardStateActionModel.__index = TabularExpectedStateActionRewardStateActionModel
 
@@ -52,7 +52,7 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 	
 	NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewTabularExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
+	NewTabularExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
 		local learningRate = NewTabularExpectedStateActionRewardStateActionModel.learningRate
 		
@@ -75,8 +75,6 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 		local expectedQValue = 0
 
 		local numberOfGreedyActions = 0
-
-		local actionIndex = table.find(ActionsList, action)
 		
 		local previousVector = NewTabularExpectedStateActionRewardStateActionModel:predict({{previousStateValue}}, true)
 		
@@ -86,7 +84,7 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 		
-		local actionIndex = table.find(ActionsList, action)
+		local actionIndex = table.find(ActionsList, previousAction)
 
 		local unwrappedTargetVector = targetVector[1]
 

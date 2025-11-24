@@ -178,11 +178,11 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 
 		local finalGeneratedLabelMatrix = GeneratorModel:forwardPropagate(finalNoiseFeatureMatrixBatch, true)
 
-		local generatorLossMatrix = DiscriminatorModel:predict(finalGeneratedLabelMatrix, true)
+		local generatorLossGradientMatrix = DiscriminatorModel:predict(finalGeneratedLabelMatrix, true)
 		
-		generatorLossMatrix = AqwamTensorLibrary:unaryMinus(generatorLossMatrix)
+		generatorLossGradientMatrix = AqwamTensorLibrary:unaryMinus(generatorLossGradientMatrix)
 
-		GeneratorModel:update(generatorLossMatrix, true)
+		GeneratorModel:update(generatorLossGradientMatrix, true)
 		
 		generatorNumberOfIterations = generatorNumberOfIterations + 1
 		

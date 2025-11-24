@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
-DeepMonteCarloControlModel = {}
+local DeepMonteCarloControlModel = {}
 
 DeepMonteCarloControlModel.__index = DeepMonteCarloControlModel
 

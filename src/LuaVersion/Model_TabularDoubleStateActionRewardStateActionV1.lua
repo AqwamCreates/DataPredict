@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local TabularReinforcementLearningBaseModel = require("Model_TabularReinforcementLearningBaseModel")
 
-TabularDoubleStateActionRewardStateActionModel = {}
+local TabularDoubleStateActionRewardStateActionModel = {}
 
 TabularDoubleStateActionRewardStateActionModel.__index = TabularDoubleStateActionRewardStateActionModel
 
@@ -50,7 +50,7 @@ function TabularDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewTabularDoubleStateActionRewardStateActionModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
 	
-	NewTabularDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
+	NewTabularDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue)
 		
 		local learningRate = NewTabularDoubleStateActionRewardStateActionModel.learningRate
 		
@@ -64,33 +64,27 @@ function TabularDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceError, stateIndex = NewTabularDoubleStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		local temporalDifferenceErrorVector, stateIndex = NewTabularDoubleStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 		
 		NewTabularDoubleStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
 		local ModelParameters = NewTabularDoubleStateActionRewardStateActionModel.ModelParameters
-		
-		local gradientValue = temporalDifferenceError
 
 		if (Optimizer) then
 
-			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
-			
-			gradientValue = gradientValue[1][1]
+			temporalDifferenceErrorVector = Optimizer:calculate(learningRate, temporalDifferenceErrorVector)
 
 		else
 			
-			gradientValue = AqwamTensorLibrary:multiply(learningRate, gradientValue)
+			temporalDifferenceErrorVector = AqwamTensorLibrary:multiply(learningRate, temporalDifferenceErrorVector)
 
 		end
 		
-		local previousActionIndex = table.find(NewTabularDoubleStateActionRewardStateActionModel.ActionsList, previousAction)
-		
-		ModelParameters[stateIndex][previousActionIndex] = ModelParameters[stateIndex][previousActionIndex] + gradientValue
+		ModelParameters[stateIndex] = AqwamTensorLibrary:add({ModelParameters[stateIndex]}, temporalDifferenceErrorVector)[1]
 		
 		NewTabularDoubleStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		return temporalDifferenceError
+		return temporalDifferenceErrorVector
 
 	end)
 	
@@ -136,7 +130,7 @@ function TabularDoubleStateActionRewardStateActionModel:loadModelParametersFromM
 
 end
 
-function TabularDoubleStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+function TabularDoubleStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, action, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 
 	local discountFactor = self.discountFactor
 
@@ -153,20 +147,14 @@ function TabularDoubleStateActionRewardStateActionModel:generateTemporalDifferen
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 	
 	local currentQVector = self:predict({{currentStateValue}}, true)
+
+	local discountedQVector = AqwamTensorLibrary:multiply(discountFactor, currentQVector, (1 - terminalStateValue))
+
+	local targetVector = AqwamTensorLibrary:add(rewardValue, discountedQVector)
+
+	local temporalDifferenceErrorVector = AqwamTensorLibrary:subtract(targetVector, previousQVector)
 	
-	local StatesList = self:getStatesList()
-
-	local ActionsList = self:getActionsList()
-
-	local previousActionIndex = table.find(ActionsList, previousAction)
-
-	local currentActionIndex = table.find(ActionsList, currentAction)
-
 	local stateIndex = table.find(StatesList, previousStateValue)
-
-	local targetValue = rewardValue + (discountFactor * currentQVector[1][currentActionIndex] * (1 - terminalStateValue))
-
-	local temporalDifferenceError = targetValue - previousQVector[1][previousActionIndex]
 
 	if (EligibilityTrace) then
 
@@ -175,20 +163,22 @@ function TabularDoubleStateActionRewardStateActionModel:generateTemporalDifferen
 		local numberOfActions = #ActionsList
 
 		local dimensionSizeArray = {numberOfStates, numberOfActions}
+		
+		local actionIndex = table.find(ActionsList, action)
 
 		local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
 
-		temporalDifferenceErrorMatrix[stateIndex][previousActionIndex] = temporalDifferenceError
+		temporalDifferenceErrorMatrix[stateIndex] = temporalDifferenceErrorVector[1]
 
-		EligibilityTrace:increment(stateIndex, previousActionIndex, discountFactor, dimensionSizeArray)
+		EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
 
 		temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
 
-		temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][previousActionIndex]
+		temporalDifferenceErrorVector = {temporalDifferenceErrorMatrix[stateIndex]}
 
 	end
 
-	return temporalDifferenceError, stateIndex
+	return temporalDifferenceErrorVector, stateIndex
 
 end
 

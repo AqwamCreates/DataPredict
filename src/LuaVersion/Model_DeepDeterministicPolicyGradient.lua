@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningActorCriticBaseModel = require("Model_DeepReinforcementLearningActorCriticBaseModel")
 
-DeepDeterministicPolicyGradientModel = {}
+local DeepDeterministicPolicyGradientModel = {}
 
 DeepDeterministicPolicyGradientModel.__index = DeepDeterministicPolicyGradientModel
 

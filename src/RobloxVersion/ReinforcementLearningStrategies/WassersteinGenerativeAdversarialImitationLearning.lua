@@ -142,7 +142,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				if (not expertCurrentAction) then error("Missing current action at index " .. expertCurrentActionIndex .. ".") end
 
-				discriminatorLoss = AqwamTensorLibrary:subtract(discriminatorAgentActionValueMatrix, discriminatorAgentActionValueMatrix)[1][1]
+				discriminatorLoss = AqwamTensorLibrary:subtract(discriminatorExpertActionValueMatrix, discriminatorAgentActionValueMatrix)[1][1]
 
 				ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, expertPreviousAction, discriminatorLoss, currentFeatureVector, expertCurrentAction, terminalStateValue)
 
@@ -264,7 +264,7 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				DiscriminatorModel:backwardPropagate(discriminatorAgentLossGradientMatrix, true)
 
-				discriminatorLoss = AqwamTensorLibrary:subtract(discriminatorAgentActionValueMatrix, discriminatorAgentActionValueMatrix)[1][1]
+				discriminatorLoss = AqwamTensorLibrary:subtract(discriminatorExpertActionValueMatrix, discriminatorAgentActionValueMatrix)[1][1]
 
 				ReinforcementLearningModel:diagonalGaussianUpdate(previousFeatureVector, expertPreviousActionMeanVector, expertPreviousActionStandardDeviationVector, expertPreviousActionNoiseVector, discriminatorLoss, currentFeatureVector, expertCurrentActionMeanVector, terminalStateValue)
 

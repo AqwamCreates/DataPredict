@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
-DeepStateActionRewardStateActionModel = {}
+local DeepStateActionRewardStateActionModel = {}
 
 DeepStateActionRewardStateActionModel.__index = DeepStateActionRewardStateActionModel
 

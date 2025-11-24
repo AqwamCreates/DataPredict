@@ -28,7 +28,7 @@
 
 local BaseModel = require("Model_BaseModel")
 
-TabularReinforcementLearningBaseModel = {}
+local TabularReinforcementLearningBaseModel = {}
 
 TabularReinforcementLearningBaseModel.__index = TabularReinforcementLearningBaseModel
 

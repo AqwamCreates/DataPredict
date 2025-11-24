@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
 
-DeepStateActionRewardStateActionModel = {}
+local DeepStateActionRewardStateActionModel = {}
 
 DeepStateActionRewardStateActionModel.__index = DeepStateActionRewardStateActionModel
 
@@ -68,7 +68,7 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		local currentActionIndex = table.find(ClassesList, currentAction)
 		
-		local targetValue = rewardValue + (discountFactor * currentQVector[1][currentActionIndex] *  (1 - terminalStateValue))
+		local targetValue = rewardValue + (discountFactor * currentQVector[1][currentActionIndex] * (1 - terminalStateValue))
 		
 		local temporalDifferenceError = targetValue - previousQVector[1][previousActionIndex] 
 		

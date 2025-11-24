@@ -178,7 +178,7 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 
 		local finalGeneratedLabelMatrix = GeneratorModel:forwardPropagate(finalNoiseFeatureMatrixBatch, true)
 
-		local generatorLossGradientMatrix = DiscriminatorModel:predict(finalGeneratedLabelMatrix, true)
+		local generatorLossGradientMatrix = DiscriminatorModel:forwardPropagate(finalGeneratedLabelMatrix, false)
 		
 		generatorLossGradientMatrix = AqwamTensorLibrary:unaryMinus(generatorLossGradientMatrix)
 

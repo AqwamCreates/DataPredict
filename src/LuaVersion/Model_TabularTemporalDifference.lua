@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local TabularReinforcementLearningBaseModel = require("Model_TabularReinforcementLearningBaseModel")
 
-TabularTemporalDifferenceModel = {}
+local TabularTemporalDifferenceModel = {}
 
 TabularTemporalDifferenceModel.__index = TabularTemporalDifferenceModel
 

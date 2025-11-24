@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local TabularReinforcementLearningBaseModel = require(script.Parent.TabularReinforcementLearningBaseModel)
 
-TabularQLearningModel = {}
+local TabularQLearningModel = {}
 
 TabularQLearningModel.__index = TabularQLearningModel
 

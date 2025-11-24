@@ -204,8 +204,6 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 
 		if (discriminatorInputNumberOfFeatures ~= (#expertPreviousActionMeanMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
 
-		discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
-
 		local costArray = {}
 		
 		local discriminatorLoss

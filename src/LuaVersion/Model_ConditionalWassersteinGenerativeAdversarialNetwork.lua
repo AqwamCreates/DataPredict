@@ -165,7 +165,7 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:train(realFeatu
 	
 	local concatenatedRealFeatureMatrix = AqwamTensorLibrary:concatenate(realFeatureMatrix, labelMatrix, 2)
 	
-	local generatorNumberOfIterations = 0
+	local generatorNumberOfIterations = 1
 	
 	local discriminatorNumberOfIterations = 0
 	

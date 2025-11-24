@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibraryLinker = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
 local GenerativeAdversarialNetworkBaseModel = require(script.Parent.GenerativeAdversarialNetworkBaseModel)
 
@@ -35,6 +35,22 @@ local GenerativeAdversarialNetworkModel = {}
 GenerativeAdversarialNetworkModel.__index = GenerativeAdversarialNetworkModel
 
 setmetatable(GenerativeAdversarialNetworkModel, GenerativeAdversarialNetworkBaseModel)
+
+local discriminatorRealLossGradientFunction = function (discriminatorRealLabel) return (1 / discriminatorRealLabel) end
+
+local discriminatorGeneratedLossGradientFunction = function (discriminatorGeneratedLabel) return (1 / (1 - discriminatorGeneratedLabel)) end
+
+local generatorLossGradientFunction = function (discriminatorGeneratedLabel) return (1 / (1 - discriminatorGeneratedLabel)) end
+
+local discriminatorLossFunction = function (discriminatorRealLabel, discriminatorGeneratedLabel) return (math.log(discriminatorRealLabel) + math.log(1 - discriminatorGeneratedLabel)) end
+
+local function calculateCost(discriminatorRealLabelMatrix, discriminatorGeneratedLabelMatrix)
+	
+	local lossMatrix = AqwamTensorLibrary:applyFunction(discriminatorLossFunction, discriminatorRealLabelMatrix, discriminatorGeneratedLabelMatrix)
+	
+	return AqwamTensorLibrary:mean(lossMatrix)
+	
+end
 
 function GenerativeAdversarialNetworkModel.new(parameterDictionary)
 	
@@ -48,7 +64,7 @@ function GenerativeAdversarialNetworkModel.new(parameterDictionary)
 	
 	NewGenerativeAdversarialNetworkModel.GeneratorModel = parameterDictionary.GeneratorModel
 	
-	NewGenerativeAdversarialNetworkModel.DiscriminatorModel = parameterDictionary.GeneratorModel
+	NewGenerativeAdversarialNetworkModel.DiscriminatorModel = parameterDictionary.DiscriminatorModel
 	
 	return NewGenerativeAdversarialNetworkModel
 	
@@ -64,7 +80,7 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 	
 	if (not GeneratorModel) then error("No generator neural network.") end
 	
-	local discriminatorNumberOfLayers = GeneratorModel:getNumberOfLayers()
+	local discriminatorNumberOfLayers = DiscriminatorModel:getNumberOfLayers()
 
 	local generatorNumberOfLayers = GeneratorModel:getNumberOfLayers()
 	
@@ -94,13 +110,9 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 	
 	if (#realFeatureMatrix[1] ~= discriminatorInputNumberOfFeatures) then error("The number of columns in real feature matrix must contain the same number as the number of neurons in discriminator's input layer.") end
 
-	local discriminatorInputMatrix = AqwamTensorLibraryLinker:createTensor({1, discriminatorInputNumberOfFeatures}, 1)
+	local discriminatorInputMatrix = AqwamTensorLibrary:createTensor({1, discriminatorInputNumberOfFeatures}, 1)
 
-	local generatorInputMatrix = AqwamTensorLibraryLinker:createTensor({1, generatorInputNumberOfFeatures}, 1)
-	
-	local functionToApplyToDiscriminator = function (discriminatorRealLabel, discriminatorGeneratedLabel) return -(math.log(discriminatorRealLabel) + math.log(1 - discriminatorGeneratedLabel)) end
-	
-	local functionToApplyToGenerator = function (discriminatorGeneratedLabel) return math.log(1 - discriminatorGeneratedLabel) end
+	local generatorInputMatrix = AqwamTensorLibrary:createTensor({1, generatorInputNumberOfFeatures}, 1)
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
@@ -108,43 +120,37 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 	
 	local numberOfIterations = 0
 	
-	local meanDiscriminatorLossValue = 0
+	local discriminatorCost
 
 	repeat
 		
 		task.wait()
 		
-		local generatedLabelMatrix = GeneratorModel:predict(noiseFeatureMatrix, true)
-		
-		local discriminatorGeneratedLabelMatrix = DiscriminatorModel:predict(generatedLabelMatrix, true)
-		
-		local discriminatorRealLabelMatrix = DiscriminatorModel:predict(realFeatureMatrix, true)
-		
-		local discriminatorLossMatrix = AqwamTensorLibraryLinker:applyFunction(functionToApplyToDiscriminator, discriminatorRealLabelMatrix, discriminatorGeneratedLabelMatrix)
-		
-		local generatorLossMatrix = AqwamTensorLibraryLinker:applyFunction(functionToApplyToGenerator, discriminatorGeneratedLabelMatrix)
-		
-		local meanDiscriminatorLossMatrix = AqwamTensorLibraryLinker:mean(discriminatorLossMatrix, 1)
-		
-		local meanGeneratorLossMatrix = AqwamTensorLibraryLinker:mean(generatorLossMatrix, 1)
-		
-		meanGeneratorLossMatrix = AqwamTensorLibraryLinker:createTensor({1, generatorOutputNumberOfFeatures}, meanGeneratorLossMatrix[1][1])
-		
-		DiscriminatorModel:forwardPropagate(discriminatorInputMatrix, true)
-		
-		DiscriminatorModel:update(meanDiscriminatorLossMatrix, true)
-		
-		GeneratorModel:forwardPropagate(generatorInputMatrix, true)
-		
-		GeneratorModel:update(meanGeneratorLossMatrix, true)
-		
 		numberOfIterations = numberOfIterations + 1
 		
-		meanDiscriminatorLossValue =  meanDiscriminatorLossMatrix[1][1]
+		local discriminatorRealLabelMatrix = DiscriminatorModel:forwardPropagate(realFeatureMatrix, true)
+
+		local discriminatorRealLossGradientMatrix = AqwamTensorLibrary:applyFunction(discriminatorRealLossGradientFunction, discriminatorRealLabelMatrix)
+
+		DiscriminatorModel:update(discriminatorRealLossGradientMatrix, true)
 		
-		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. meanDiscriminatorLossValue) end
+		local generatedLabelMatrix = GeneratorModel:forwardPropagate(noiseFeatureMatrix, true)
 		
-	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(meanDiscriminatorLossValue) or self:checkIfConverged(meanDiscriminatorLossValue) 
+		local discriminatorGeneratedLabelMatrix = DiscriminatorModel:forwardPropagate(generatedLabelMatrix, true)
+		
+		local discriminatorGeneratedLossGradientMatrix = AqwamTensorLibrary:applyFunction(discriminatorGeneratedLossGradientFunction, discriminatorGeneratedLabelMatrix)
+		
+		DiscriminatorModel:update(discriminatorGeneratedLossGradientMatrix, true)
+		
+		local generatorLossGradientMatrix = AqwamTensorLibrary:applyFunction(generatorLossGradientFunction, discriminatorGeneratedLabelMatrix)
+		
+		GeneratorModel:update(generatorLossGradientMatrix, true)
+		
+		discriminatorCost = calculateCost(discriminatorRealLabelMatrix, discriminatorGeneratedLabelMatrix)
+		
+		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. discriminatorCost) end
+		
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(discriminatorCost) or self:checkIfConverged(discriminatorCost) 
 	
 end
 

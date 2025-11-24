@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
-DeepTemporalDifferenceModel = {}
+local DeepTemporalDifferenceModel = {}
 
 DeepTemporalDifferenceModel.__index = DeepTemporalDifferenceModel
 
@@ -46,21 +46,11 @@ function DeepTemporalDifferenceModel.new(parameterDictionary)
 	
 	NewDeepTemporalDifferenceModel:setName("DeepTemporalDifference")
 	
-	NewDeepTemporalDifferenceModel.EligibilityTrace = parameterDictionary.EligibilityTrace
-	
 	NewDeepTemporalDifferenceModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
 		local Model = NewDeepTemporalDifferenceModel.Model
 		
 		local discountFactor = NewDeepTemporalDifferenceModel.discountFactor
-		
-		local EligibilityTrace = NewDeepTemporalDifferenceModel.EligibilityTrace
-		
-		local ClassesList = Model:getClassesList()
-		
-		local outputDimensionSizeArray = {1, #ClassesList}
-		
-		local actionIndex = table.find(ClassesList, previousAction)
 
 		local currentQVector = Model:forwardPropagate(currentFeatureVector)
 
@@ -70,17 +60,7 @@ function DeepTemporalDifferenceModel.new(parameterDictionary)
 		
 		local temporalDifferenceError = targetValue - previousQVector[1][1]
 		
-		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, temporalDifferenceError)
-		
-		if (EligibilityTrace) then
-
-			EligibilityTrace:increment(1, actionIndex, discountFactor, outputDimensionSizeArray)
-
-			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
-
-		end
-		
-		local negatedTemporalDifferenceErrorVector = {{-temporalDifferenceErrorVector[1][actionIndex]}}
+		local negatedTemporalDifferenceErrorVector = {{-temporalDifferenceError}}
 		
 		Model:forwardPropagate(previousFeatureVector, true)
 
@@ -91,19 +71,11 @@ function DeepTemporalDifferenceModel.new(parameterDictionary)
 	end)
 	
 	NewDeepTemporalDifferenceModel:setEpisodeUpdateFunction(function(terminalStateValue) 
-
-		local EligibilityTrace = NewDeepTemporalDifferenceModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
-
+		
 	end)
-
+	
 	NewDeepTemporalDifferenceModel:setResetFunction(function() 
-
-		local EligibilityTrace = NewDeepTemporalDifferenceModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
-
+		
 	end)
 
 	return NewDeepTemporalDifferenceModel

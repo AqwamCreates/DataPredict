@@ -32,7 +32,7 @@ local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
 
-DensityBasedSpatialClusteringOfApplicationsWithNoiseModel = {}
+local DensityBasedSpatialClusteringOfApplicationsWithNoiseModel = {}
 
 DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.__index = DensityBasedSpatialClusteringOfApplicationsWithNoiseModel
 

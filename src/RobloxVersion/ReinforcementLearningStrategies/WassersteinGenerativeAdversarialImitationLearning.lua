@@ -74,9 +74,11 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 		if (discriminatorInputNumberOfFeatures ~= (#expertPreviousActionMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
 
-		discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
+		local discriminatorExpertLossGradientMatrix = {{1}}
+		
+		local costArray = {}
 
-		local discriminatorInputVector = AqwamTensorLibrary:createTensor({1, discriminatorInputNumberOfFeatures}, 1)
+		local discriminatorLoss
 
 		for episode = 1, #previousFeatureMatrixTable, 1 do
 
@@ -118,11 +120,15 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				end
 
-				local discriminatorExpertActionValue = DiscriminatorModel:predict(concatenatedExpertStateActionVector, true)[1][1]
+				local discriminatorExpertActionValueMatrix = DiscriminatorModel:forwardPropagate(concatenatedExpertStateActionVector, true)
 
-				local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
+				DiscriminatorModel:update(discriminatorExpertLossGradientMatrix, true)
 
-				local discriminatorLoss = discriminatorExpertActionValue - discriminatorAgentActionValue
+				local discriminatorAgentActionValueMatrix = DiscriminatorModel:forwardPropagate(concatenatedAgentStateActionVector, true)
+
+				local discriminatorAgentLossGradientMatrix = {{-discriminatorAgentActionValueMatrix[1][1]}}
+
+				DiscriminatorModel:update(discriminatorAgentLossGradientMatrix, true)
 
 				local expertPreviousActionIndex = NewWassersteinGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertPreviousActionVector)
 
@@ -136,11 +142,11 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				if (not expertCurrentAction) then error("Missing current action at index " .. expertCurrentActionIndex .. ".") end
 
+				discriminatorLoss = AqwamTensorLibrary:subtract(discriminatorExpertActionValueMatrix, discriminatorAgentActionValueMatrix)[1][1]
+
 				ReinforcementLearningModel:categoricalUpdate(previousFeatureVector, expertPreviousAction, discriminatorLoss, currentFeatureVector, expertCurrentAction, terminalStateValue)
 
-				DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
-
-				DiscriminatorModel:backwardPropagate(discriminatorLoss, true)
+				table.insert(costArray, discriminatorLoss)
 
 				if (isOutputPrinted) then print("Episode: " .. episode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
 
@@ -150,6 +156,15 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 		end
 		
+		if (isOutputPrinted) then
+
+			if (discriminatorLoss == math.huge) then warn("The model diverged.") end
+
+			if (discriminatorLoss ~= discriminatorLoss) then warn("The model produced nan (not a number) values.") end
+
+		end
+
+		return costArray
 		
 	end)
 	
@@ -185,11 +200,11 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 		if (discriminatorInputNumberOfFeatures ~= (#expertPreviousActionMeanMatrix[1] + #previousFeatureMatrix[1])) then error("The number of input neurons for the discriminator does not match the total number of both state features and expert actions.") end
 
-		discriminatorInputNumberOfFeatures = discriminatorInputNumberOfFeatures + ((discriminatorInputHasBias and 1) or 0)
+		local discriminatorExpertLossGradientMatrix = {{1}}
 
-		local discriminatorInputVector = AqwamTensorLibrary:createTensor({1, discriminatorInputNumberOfFeatures}, 1)
-
-		local currentEpisode = 1
+		local costArray = {}
+		
+		local discriminatorLoss
 
 		for episode = 1, #previousFeatureMatrixTable, 1 do
 
@@ -239,25 +254,39 @@ function WassersteinGenerativeAdversarialImitationLearning.new(parameterDictiona
 
 				end
 
-				local discriminatorExpertActionValue = DiscriminatorModel:predict(concatenatedExpertStateActionVector, true)[1][1]
+				local discriminatorExpertActionValueMatrix = DiscriminatorModel:forwardPropagate(concatenatedExpertStateActionVector, true)
 
-				local discriminatorAgentActionValue = DiscriminatorModel:predict(concatenatedAgentStateActionVector, true)[1][1]
+				DiscriminatorModel:backwardPropagate(discriminatorExpertLossGradientMatrix, true)
 
-				local discriminatorLoss = discriminatorExpertActionValue - discriminatorAgentActionValue
+				local discriminatorAgentActionValueMatrix = DiscriminatorModel:forwardPropagate(concatenatedAgentStateActionVector, true)
+
+				local discriminatorAgentLossGradientMatrix = {{-discriminatorAgentActionValueMatrix[1][1]}}
+
+				DiscriminatorModel:backwardPropagate(discriminatorAgentLossGradientMatrix, true)
+
+				discriminatorLoss = AqwamTensorLibrary:subtract(discriminatorExpertActionValueMatrix, discriminatorAgentActionValueMatrix)[1][1]
 
 				ReinforcementLearningModel:diagonalGaussianUpdate(previousFeatureVector, expertPreviousActionMeanVector, expertPreviousActionStandardDeviationVector, expertPreviousActionNoiseVector, discriminatorLoss, currentFeatureVector, expertCurrentActionMeanVector, terminalStateValue)
 
-				DiscriminatorModel:forwardPropagate(discriminatorInputVector, true)
+				table.insert(costArray, discriminatorLoss)
 
-				DiscriminatorModel:update(discriminatorLoss, true)
-
-				if (isOutputPrinted) then print("Episode: " .. currentEpisode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
+				if (isOutputPrinted) then print("Episode: " .. episode .. "\t\tStep: " .. step .. "\t\tDiscriminator Loss: " .. discriminatorLoss) end
 
 			end
 
 			ReinforcementLearningModel:episodeUpdate(1)
 
 		end
+		
+		if (isOutputPrinted) then
+
+			if (discriminatorLoss == math.huge) then warn("The model diverged.") end
+
+			if (discriminatorLoss ~= discriminatorLoss) then warn("The model produced nan (not a number) values.") end
+
+		end
+
+		return costArray
 		
 	end)
 	

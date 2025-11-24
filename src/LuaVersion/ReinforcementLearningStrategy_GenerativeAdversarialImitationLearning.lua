@@ -126,13 +126,13 @@ function GenerativeAdversarialImitationLearning.new(parameterDictionary)
 				
 				local discriminatorExpertLossGradientMatrix = AqwamTensorLibrary:applyFunction(discriminatorExpertLossGradientFunction, discriminatorExpertActionValueMatrix)
 				
-				DiscriminatorModel:backwardPropagate(discriminatorExpertLossGradientMatrix, true)
+				DiscriminatorModel:update(discriminatorExpertLossGradientMatrix, true)
 				
 				local discriminatorAgentActionValueMatrix = DiscriminatorModel:forwardPropagate(concatenatedAgentStateActionVector, true)
 				
 				local discriminatorAgentLossGradientMatrix = AqwamTensorLibrary:applyFunction(discriminatorAgentLossGradientFunction, discriminatorAgentActionValueMatrix)
 
-				DiscriminatorModel:backwardPropagate(discriminatorAgentLossGradientMatrix, true)
+				DiscriminatorModel:update(discriminatorAgentLossGradientMatrix, true)
 
 				local expertPreviousActionIndex = NewGenerativeAdversarialImitationLearning:chooseIndexWithHighestValue(expertPreviousActionVector)
 

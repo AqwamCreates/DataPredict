@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local TabularReinforcementLearningBaseModel = require("Model_TabularReinforcementLearningBaseModel")
 
-TabularQLearningModel = {}
+local TabularQLearningModel = {}
 
 TabularQLearningModel.__index = TabularQLearningModel
 

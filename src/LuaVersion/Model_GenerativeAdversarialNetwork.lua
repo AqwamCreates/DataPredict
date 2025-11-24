@@ -114,6 +114,8 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 	
 	local isOutputPrinted = self.isOutputPrinted
 	
+	local costArray = {}
+	
 	local numberOfIterations = 0
 	
 	local discriminatorCost
@@ -144,9 +146,21 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 		
 		discriminatorCost = calculateCost(discriminatorRealLabelMatrix, discriminatorGeneratedLabelMatrix)
 		
+		table.insert(costArray, discriminatorCost)
+		
 		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tDiscriminator Cost: " .. discriminatorCost) end
 		
-	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(discriminatorCost) or self:checkIfConverged(discriminatorCost) 
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(discriminatorCost) or self:checkIfConverged(discriminatorCost)
+	
+	if (isOutputPrinted) then
+
+		if (discriminatorCost == math.huge) then warn("The model diverged.") end
+
+		if (discriminatorCost ~= discriminatorCost) then warn("The model produced nan (not a number) values.") end
+
+	end
+	
+	return costArray
 	
 end
 

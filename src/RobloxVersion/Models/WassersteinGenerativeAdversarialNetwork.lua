@@ -170,7 +170,7 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 			
 			discriminatorNumberOfIterations = discriminatorNumberOfIterations + 1
 
-			if (isOutputPrinted) then print("Generator Iteration: " .. generatorNumberOfIterations .."\t\tDiscriminator Iteration: " .. discriminatorMaximumNumberOfIterations .. "\t\tDiscriminator Cost: " .. discriminatorCost) end
+			if (isOutputPrinted) then print("Generator Iteration: " .. generatorNumberOfIterations .."\t\tDiscriminator Iteration: " .. discriminatorNumberOfIterations .. "\t\tDiscriminator Cost: " .. discriminatorCost) end
 
 		until (discriminatorNumberOfIterations >= discriminatorMaximumNumberOfIterations) or self:checkIfTargetCostReached(discriminatorCost) or self:checkIfConverged(discriminatorCost) 
 

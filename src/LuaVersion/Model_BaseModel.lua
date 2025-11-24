@@ -52,7 +52,7 @@ function BaseModel.new(parameterDictionary)
 
 	NewBaseModel.ModelParameters = NewBaseModel:getValueOrDefaultValue(parameterDictionary.ModelParameters, nil)
 	
-	NewBaseModel.modelParametersInitializationMode = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersInitializationMode, "RandomUniformNegativeAndPositive") 
+	NewBaseModel.modelParametersInitializationMode = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersInitializationMode, "RandomUniform") 
 
 	NewBaseModel.maximumModelParametersInitializationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.maximumModelParametersInitializationValue, nil)
 	

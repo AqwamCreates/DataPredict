@@ -30,11 +30,31 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
-DeepDoubleStateActionRewardStateActionModel = {}
+local DeepDoubleStateActionRewardStateActionModel = {}
 
 DeepDoubleStateActionRewardStateActionModel.__index = DeepDoubleStateActionRewardStateActionModel
 
 setmetatable(DeepDoubleStateActionRewardStateActionModel, DeepReinforcementLearningBaseModel)
+
+local defaultAveragingRate = 0.01
+
+local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
+
+	local averagingRateComplement = 1 - averagingRate
+
+	for layer = 1, #TargetModelParameters, 1 do
+
+		local PrimaryModelParametersPart = AqwamTensorLibrary:multiply(averagingRate, PrimaryModelParameters[layer])
+
+		local TargetModelParametersPart = AqwamTensorLibrary:multiply(averagingRateComplement, TargetModelParameters[layer])
+
+		TargetModelParameters[layer] = AqwamTensorLibrary:add(PrimaryModelParametersPart, TargetModelParametersPart)
+
+	end
+
+	return TargetModelParameters
+
+end
 
 function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	
@@ -44,35 +64,71 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 	setmetatable(NewDeepDoubleStateActionRewardStateActionModel, DeepDoubleStateActionRewardStateActionModel)
 	
-	NewDeepDoubleStateActionRewardStateActionModel:setName("DeepDoubleStateActionRewardStateActionV1")
-	
-	NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewDeepDoubleStateActionRewardStateActionModel:setName("DeepDoubleStateActionRewardStateActionV2")
 
-	NewDeepDoubleStateActionRewardStateActionModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
+	NewDeepDoubleStateActionRewardStateActionModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
+
+	NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
 		local Model = NewDeepDoubleStateActionRewardStateActionModel.Model
+		
+		local discountFactor = NewDeepDoubleStateActionRewardStateActionModel.discountFactor
 
-		local randomProbability = math.random()
+		local EligibilityTrace = NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
+		
+		local PrimaryModelParameters = Model:getModelParameters(true)
 
-		local updateSecondModel = (randomProbability >= 0.5)
+		if (PrimaryModelParameters) then 
+			
+			Model:generateLayers()
+			
+			PrimaryModelParameters = Model:getModelParameters(true)
+			
+		end
+		
+		local currentQVector = Model:forwardPropagate(currentFeatureVector)
 
-		local selectedModelNumberForTargetVector = (updateSecondModel and 1) or 2
+		local previousQVector = Model:forwardPropagate(previousFeatureVector)
 
-		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
+		local ClassesList = Model:getClassesList()
 
-		local temporalDifferenceErrorVector = NewDeepDoubleStateActionRewardStateActionModel:generateTemporalDifferenceErrorVector(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		local numberOfClasses = #ClassesList
+
+		local previousActionIndex = table.find(ClassesList, previousAction)
+
+		local currentActionIndex = table.find(ClassesList, currentAction)
+
+		local targetValue = rewardValue + (discountFactor * currentQVector[1][currentActionIndex] * (1 - terminalStateValue))
+
+		local temporalDifferenceError = targetValue - previousQVector[1][previousActionIndex] 
+
+		local outputDimensionSizeArray = {1, numberOfClasses}
+
+		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+
+		temporalDifferenceErrorVector[1][previousActionIndex] = temporalDifferenceError
+
+		if (EligibilityTrace) then
+
+			EligibilityTrace:increment(1, previousActionIndex, discountFactor, outputDimensionSizeArray)
+
+			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
+
+		end
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
-		
-		NewDeepDoubleStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
-		
-		Model:forwardPropagate(previousFeatureVector, true)
-		
-		Model:update(negatedTemporalDifferenceErrorVector, true)
 
-		NewDeepDoubleStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+		Model:forwardPropagate(previousFeatureVector, true)
+
+		Model:update(negatedTemporalDifferenceErrorVector, true)
+		
+		local TargetModelParameters = Model:getModelParameters(true)
+
+		TargetModelParameters = rateAverageModelParameters(NewDeepDoubleStateActionRewardStateActionModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
+
+		Model:setModelParameters(TargetModelParameters, true)
 		
 		return temporalDifferenceErrorVector
 
@@ -86,7 +142,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 		
 	end)
 
-	NewDeepDoubleStateActionRewardStateActionModel:setResetFunction(function() 
+	NewDeepDoubleStateActionRewardStateActionModel:setResetFunction(function()
 		
 		local EligibilityTrace = NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
 
@@ -95,134 +151,6 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	end)
 
 	return NewDeepDoubleStateActionRewardStateActionModel
-
-end
-
-function DeepDoubleStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(index)
-
-	self.ModelParametersArray[index] = self.Model:getModelParameters()
-
-end
-
-function DeepDoubleStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(index)
-
-	local Model = self.Model
-
-	local ModelParametersArray = self.ModelParametersArray
-
-	if (not ModelParametersArray[index]) then
-
-		Model:generateLayers()
-
-		self:saveModelParametersFromModelParametersArray(index)
-
-	end
-
-	local CurrentModelParameters = ModelParametersArray[index]
-
-	Model:setModelParameters(CurrentModelParameters, true)
-
-end
-
-function DeepDoubleStateActionRewardStateActionModel:generateTemporalDifferenceErrorVector(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
-	
-	local Model = self.Model
-	
-	local discountFactor = self.discountFactor
-	
-	local EligibilityTrace = self.EligibilityTrace
-	
-	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
-	
-	local previousQVector = Model:forwardPropagate(previousFeatureVector)
-	
-	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
-	
-	local currentQVector = Model:forwardPropagate(currentFeatureVector)
-	
-	local ClassesList = Model:getClassesList()
-	
-	local numberOfClasses = #ClassesList
-
-	local previousActionIndex = table.find(ClassesList, previousAction)
-
-	local currentActionIndex = table.find(ClassesList, currentAction)
-
-	local targetValue = rewardValue + (discountFactor * currentQVector[1][currentActionIndex] * (1 - terminalStateValue))
-
-	local temporalDifferenceError = targetValue - previousQVector[1][previousActionIndex] 
-
-	local outputDimensionSizeArray = {1, numberOfClasses}
-
-	local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
-
-	temporalDifferenceErrorVector[1][previousActionIndex] = temporalDifferenceError
-
-	if (EligibilityTrace) then
-
-		EligibilityTrace:increment(1, previousActionIndex, discountFactor, outputDimensionSizeArray)
-
-		temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
-
-	end
-
-	return temporalDifferenceErrorVector
-
-end
-
-function DeepDoubleStateActionRewardStateActionModel:setModelParameters1(ModelParameters1, doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		self.ModelParametersArray[1] = ModelParameters1
-
-	else
-
-		self.ModelParametersArray[1] = self:deepCopyTable(ModelParameters1)
-
-	end
-
-end
-
-function DeepDoubleStateActionRewardStateActionModel:setModelParameters2(ModelParameters2, doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		self.ModelParametersArray[2] = ModelParameters2
-
-	else
-
-		self.ModelParametersArray[2] = self:deepCopyTable(ModelParameters2)
-
-	end
-
-end
-
-function DeepDoubleStateActionRewardStateActionModel:getModelParameters1(doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		return self.ModelParametersArray[1]
-
-	else
-
-		return self:deepCopyTable(self.ModelParametersArray[1])
-
-	end
-
-end
-
-function DeepDoubleStateActionRewardStateActionModel:getModelParameters2(doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		return self.ModelParametersArray[2]
-
-	else
-
-		return self:deepCopyTable(self.ModelParametersArray[2])
-
-	end
 
 end
 

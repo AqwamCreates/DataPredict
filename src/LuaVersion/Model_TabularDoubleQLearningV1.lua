@@ -30,13 +30,11 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local TabularReinforcementLearningBaseModel = require("Model_TabularReinforcementLearningBaseModel")
 
-TabularDoubleQLearningModel = {}
+local TabularDoubleQLearningModel = {}
 
 TabularDoubleQLearningModel.__index = TabularDoubleQLearningModel
 
 setmetatable(TabularDoubleQLearningModel, TabularReinforcementLearningBaseModel)
-
-local defaultAveragingRate = 0.01
 
 function TabularDoubleQLearningModel.new(parameterDictionary)
 	
@@ -46,63 +44,31 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 	
 	setmetatable(NewTabularDoubleQLearningModel, TabularDoubleQLearningModel)
 	
-	NewTabularDoubleQLearningModel:setName("TabularDoubleQLearningV2")
-	
-	NewTabularDoubleQLearningModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
+	NewTabularDoubleQLearningModel:setName("TabularDoubleQLearningV1")
 	
 	NewTabularDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
+	NewTabularDoubleQLearningModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
+	
 	NewTabularDoubleQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
-		
-		local averagingRate = NewTabularDoubleQLearningModel.averagingRate
 		
 		local learningRate = NewTabularDoubleQLearningModel.learningRate
 		
-		local discountFactor = NewTabularDoubleQLearningModel.discountFactor
-		
-		local EligibilityTrace = NewTabularDoubleQLearningModel.EligibilityTrace
-		
 		local Optimizer = NewTabularDoubleQLearningModel.Optimizer
+		
+		local randomProbability = math.random()
 
+		local updateSecondModel = (randomProbability >= 0.5)
+
+		local selectedModelNumberForTargetVector = (updateSecondModel and 1) or 2
+
+		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
+
+		local temporalDifferenceError, stateIndex, actionIndex = NewTabularDoubleQLearningModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		
+		NewTabularDoubleQLearningModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+		
 		local ModelParameters = NewTabularDoubleQLearningModel.ModelParameters
-		
-		local StatesList = NewTabularDoubleQLearningModel:getStatesList()
-
-		local ActionsList = NewTabularDoubleQLearningModel:getActionsList()
-		
-		local averagingRateComplement = 1 - averagingRate
-
-		local _, maxQValue = NewTabularDoubleQLearningModel:predict({{currentStateValue}})
-
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
-		
-		local stateIndex = table.find(StatesList, previousStateValue)
-
-		local actionIndex = table.find(ActionsList, previousAction)
-
-		local lastValue = ModelParameters[stateIndex][actionIndex]
-
-		local temporalDifferenceError = targetValue - lastValue
-		
-		if (EligibilityTrace) then
-			
-			local numberOfStates = #StatesList
-
-			local numberOfActions = #ActionsList
-			
-			local dimensionSizeArray = {numberOfStates, numberOfActions}
-			
-			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
-			
-			temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
-
-			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
-
-			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
-			
-			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
-
-		end
 		
 		local gradientValue = temporalDifferenceError
 
@@ -118,11 +84,9 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 
 		end
 		
-		local weightValue = ModelParameters[stateIndex][actionIndex]
+		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + gradientValue
 		
-		local newWeightValue = weightValue + gradientValue
-		
-		ModelParameters[stateIndex][actionIndex] = (averagingRate * weightValue) + (averagingRateComplement * newWeightValue)
+		NewTabularDoubleQLearningModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
 		return temporalDifferenceError
 
@@ -145,6 +109,136 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 	end)
 
 	return NewTabularDoubleQLearningModel
+
+end
+
+function TabularDoubleQLearningModel:saveModelParametersFromModelParametersArray(index)
+
+	self.ModelParametersArray[index] = self:getModelParameters()
+
+end
+
+function TabularDoubleQLearningModel:loadModelParametersFromModelParametersArray(index)
+
+	local ModelParametersArray = self.ModelParametersArray
+
+	if (not ModelParametersArray[index]) then
+
+		self:saveModelParametersFromModelParametersArray(index)
+
+	end
+
+	local CurrentModelParameters = ModelParametersArray[index]
+
+	self:setModelParameters(CurrentModelParameters, true)
+
+end
+
+function TabularDoubleQLearningModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+
+	local discountFactor = self.discountFactor
+
+	local EligibilityTrace = self.EligibilityTrace
+	
+	local StatesList = self:getStatesList()
+
+	local ActionsList = self:getActionsList()
+
+	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+	
+	local previousVector = self:predict({{previousStateValue}}, true)
+
+	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
+	
+	local _, maxQValue = self:predict({{currentStateValue}})
+	
+	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+
+	local stateIndex = table.find(StatesList, previousStateValue)
+
+	local actionIndex = table.find(ActionsList, previousAction)
+
+	local lastValue = previousVector[1][actionIndex]
+
+	local temporalDifferenceError = targetValue - lastValue
+
+	if (EligibilityTrace) then
+
+		local numberOfStates = #StatesList
+
+		local numberOfActions = #ActionsList
+
+		local dimensionSizeArray = {numberOfStates, numberOfActions}
+
+		local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+
+		temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
+
+		EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
+
+		temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
+
+		temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
+
+	end
+
+	return temporalDifferenceError, stateIndex, actionIndex
+
+end
+
+function TabularDoubleQLearningModel:setModelParameters1(ModelParameters1, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.ModelParametersArray[1] = ModelParameters1
+
+	else
+
+		self.ModelParametersArray[1] = self:deepCopyTable(ModelParameters1)
+
+	end
+
+end
+
+function TabularDoubleQLearningModel:setModelParameters2(ModelParameters2, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.ModelParametersArray[2] = ModelParameters2
+
+	else
+
+		self.ModelParametersArray[2] = self:deepCopyTable(ModelParameters2)
+
+	end
+
+end
+
+function TabularDoubleQLearningModel:getModelParameters1(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.ModelParametersArray[1]
+
+	else
+
+		return self:deepCopyTable(self.ModelParametersArray[1])
+
+	end
+
+end
+
+function TabularDoubleQLearningModel:getModelParameters2(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.ModelParametersArray[2]
+
+	else
+
+		return self:deepCopyTable(self.ModelParametersArray[2])
+
+	end
 
 end
 

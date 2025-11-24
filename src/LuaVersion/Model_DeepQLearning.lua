@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
-DeepQLearningModel = {}
+local DeepQLearningModel = {}
 
 DeepQLearningModel.__index = DeepQLearningModel
 
@@ -48,7 +48,7 @@ function DeepQLearningModel.new(parameterDictionary)
 	
 	NewDeepQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
-	NewDeepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	NewDeepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
 		local Model = NewDeepQLearningModel.Model
 		
@@ -66,7 +66,7 @@ function DeepQLearningModel.new(parameterDictionary)
 
 		local previousVector = Model:forwardPropagate(previousFeatureVector)
 
-		local actionIndex = table.find(ClassesList, action)
+		local actionIndex = table.find(ClassesList, previousAction)
 
 		local lastValue = previousVector[1][actionIndex]
 

@@ -32,7 +32,7 @@ local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
-DensityBasedSpatialClusteringOfApplicationsWithNoiseModel = {}
+local DensityBasedSpatialClusteringOfApplicationsWithNoiseModel = {}
 
 DensityBasedSpatialClusteringOfApplicationsWithNoiseModel.__index = DensityBasedSpatialClusteringOfApplicationsWithNoiseModel
 

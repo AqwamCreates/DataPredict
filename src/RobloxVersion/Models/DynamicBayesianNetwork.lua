@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseModel = require(script.Parent.BaseModel)
 
-DynamicBayesianNetworkModel = {}
+local DynamicBayesianNetworkModel = {}
 
 DynamicBayesianNetworkModel.__index = DynamicBayesianNetworkModel
 

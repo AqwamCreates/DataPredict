@@ -28,7 +28,7 @@
 
 local BaseModel = require(script.Parent.BaseModel)
 
-TabularReinforcementLearningBaseModel = {}
+local TabularReinforcementLearningBaseModel = {}
 
 TabularReinforcementLearningBaseModel.__index = TabularReinforcementLearningBaseModel
 

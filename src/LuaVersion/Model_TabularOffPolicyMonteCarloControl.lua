@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local TabularReinforcementLearningBaseModel = require("Model_TabularReinforcementLearningBaseModel")
 
-TabularOffPolicyMonteCarloControlModel = {}
+local TabularOffPolicyMonteCarloControlModel = {}
 
 TabularOffPolicyMonteCarloControlModel.__index = TabularOffPolicyMonteCarloControlModel
 

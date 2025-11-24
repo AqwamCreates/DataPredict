@@ -28,7 +28,7 @@
 
 local BaseInstance = require("Core_BaseInstance")
 
-DeepReinforcementLearningBaseModel = {}
+local DeepReinforcementLearningBaseModel = {}
 
 DeepReinforcementLearningBaseModel.__index = DeepReinforcementLearningBaseModel
 

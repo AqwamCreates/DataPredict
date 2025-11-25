@@ -117,7 +117,7 @@ DeepReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: feat
 Updates the model parameters using diagonalGaussianUpdateFunction().
 
 ```
-DeepReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, previousActionMeanVector: vector, previousActionStandardDeviationVector: vector, previousActionNoiseVector: vector, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
+DeepReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, previousActionMeanVector: vector, previousActionStandardDeviationVector: vector, previousActionNoiseVector: vector, rewardValue: number, currentFeatureVector: vector, currentActionMeanVector: vector, terminalStateValue: number)
 ```
 
 #### Parameters:

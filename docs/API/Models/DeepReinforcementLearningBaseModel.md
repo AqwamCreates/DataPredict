@@ -108,7 +108,7 @@ DeepReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: feat
 
 * currentFeatureVector: The current state of the environment.
 
-* currentAction: The previous action selected.
+* currentAction: The current action selected.
 
 * terminalStateValue: A value of 1 indicates that the current state is a terminal state. A value of 0 indicates that the current state is not terminal.
 

@@ -7,7 +7,7 @@
 Creates a new safeguard wrapper object. If any of the arguments are not given, default argument values for that argument will be used.
 
 ```
-ModelSafeguardWrapper.new(Model: ModelObject): ModelSafeguardWrapperObject
+ModelSafeguardWrapper.new(Model: ModelObject, hasClassification: boolean, modifiedModelArray: {Model}): ModelSafeguardWrapperObject
 ```
 
 #### Parameters:
@@ -15,6 +15,8 @@ ModelSafeguardWrapper.new(Model: ModelObject): ModelSafeguardWrapperObject
 * Model: The model object to modify its training capabilities.
 
 * hasClassification: Set whether or not the model has classification ability. [Default: true]
+
+* modifiedModelArray: An array containing the modified model if the training is model update is not successful. [Default: Stochastic-Train Model]
 
 #### Returns:
 

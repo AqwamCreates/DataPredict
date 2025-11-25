@@ -17,6 +17,8 @@
 
 ## Development Costs
 
+* The table assumes that only one person is working on each library at average salary rate.
+
 | Library            | Time Cost               | Monetary Cost (USD) |
 |--------------------|-------------------------|---------------------|
 | DataPredict        | 25000+ Hours (~3 Years) | 300,000             |

@@ -29,4 +29,4 @@ The table assumes that only one person is working on each library at machine lea
 | DataPredict™        | 25000+ Hours (~3 Years) | 300,000             |
 | DataPredict™ Neural | 17000+ Hours (~2 Years) | 200,000             |
 | DataPredict™ Axon   | 4000+ Hours (~6 Months) | 50,000              |
-| Total               | 43800+ Hours (~5 Years) | 550,000             |
+| All                 | 43800+ Hours (~5 Years) | 550,000             |

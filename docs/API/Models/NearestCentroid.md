@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-NearestCentroid.new(distanceFunction: string, use, useWeightedDistance: boolean: ModelObject
+NearestCentroid.new(distanceFunction: string, use, useWeightedDistance: boolean): ModelObject
 ```
 
 #### Parameters:

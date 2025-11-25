@@ -10,6 +10,7 @@
 | Choosing Models       | Need To Learn Multiple ML Frameworks For Machine Learning, Deep Learning And Reinforcement Learning In Different Programming Languages If Models Are Hosted Externally.  | Unified Under Same API Design. All Models With High-Value Use Cases Are Covered. |
 | Time-To-Market        | Requires Multi-Year Engineering For The Whole Library If Building From Scratch. Minimum Of 1 Week If Using Existing ML Frameworks Hosted In Different Programming Languages. | Within A Day.
 | Latency               | Network Latency And Serialization Issues If Hosted Externally. | Latency Only Comes From Models' Training And Predictions. |
+| Security              | If Hosted Externally, Vulnerable To Hacking.                   | Data Stays Between The Servers And Clients.               |
 | Reliability           | May Be Inaccurate Or Underperform When Building From Scratch.  | Built By A Person Who Has Bachelor And Masters Degree In Artificial Intelligence + Additional Machine Learning And Deep Learning Certifications |
 
 ## Licensing Costs

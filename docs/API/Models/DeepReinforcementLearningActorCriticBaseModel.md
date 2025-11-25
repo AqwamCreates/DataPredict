@@ -123,18 +123,20 @@ DeepReinforcementLearningActorCriticBaseModel:setEpisodeUpdateFunction(episodeUp
 Updates the model parameters using categoricalUpdateFunction().
 
 ```
-DeepReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
+DeepReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureVector: featureVector, previousAction: number/string, rewardValue: number, currentFeatureVector: featureVector, currentAction: number/string, terminalStateValue: number)
 ```
 
 #### Parameters:
 
 * previousFeatureVector: The previous state of the environment.
 
-* action: The action selected.
+* previousAction: The previous action selected.
 
 * rewardValue: The reward gained at current state.
 
 * currentFeatureVector: The current state of the environment.
+
+* currentAction: The current action selected.
 
 * terminalStateValue: A value of 1 indicates that the current state is a terminal state. A value of 0 indicates that the current state is not terminal.
 
@@ -143,20 +145,24 @@ DeepReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureV
 Updates the model parameters using diagonalGaussianUpdateFunction().
 
 ```
-DeepReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, actionMeanVector: vector, actionStandardDeviationVector, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
+DeepReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureVector: featureVector, previousActionMeanVector: vector, previousActionStandardDeviationVector: vector, previousActionNoiseVector: vector, rewardValue: number, currentFeatureVector: vector, currentActionMeanVector: vector, terminalStateValue: number)
 ```
 
 #### Parameters:
 
 * previousFeatureVector: The previous state of the environment.
 
-* actionMeanVector: The vector containing mean values for all actions.
+* previousActionMeanVector: The vector containing mean values for all previous actions.
 
-* actionStandardDeviationVector: The vector containing standard deviation values for all actions.
+* previousActionStandardDeviationVector: The vector containing standard deviation values for all previous actions.
+
+* previousActionStandardDeviationVector: The vector containing noise values for all previous actions.
 
 * rewardValue: The reward gained at current state.
 
 * currentFeatureVector: The current state of the environment.
+
+* currentActionMeanVector: The vector containing mean values for all current actions.
 
 * terminalStateValue: A value of 1 indicates that the current state is a terminal state. A value of 0 indicates that the current state is not terminal.
 

@@ -63,7 +63,7 @@ TabularReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFunc
 Updates the model parameters using categoricalUpdateFunction().
 
 ```
-DeepReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureVector, previousAction: number/string, rewardValue: number, currentFeatureVector: featureVector, currentAction: number/string, terminalStateValue: number)
+TabularReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureVector, previousAction: number/string, rewardValue: number, currentFeatureVector: featureVector, currentAction: number/string, terminalStateValue: number)
 ```
 
 #### Parameters:

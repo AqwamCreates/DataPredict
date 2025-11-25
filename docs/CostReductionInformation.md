@@ -14,3 +14,12 @@
 | Non-B2B + Less Than Or Equal To 3K USD Within 365 Days (Not Per 365 Days) | 0%                                                        | Requires Public Disclosure Of DataPredict | Not Applicable        |
 | Standard                                                                  | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 160 / 1300 USD / 10,530 USD |
 | White-Label                                                               | 5%                                                        | None                                      | 500 / 5000 USD / 50,000 USD |
+
+## Development Costs
+
+| Library            | Time Cost               | Monetary Cost (USD) |
+|--------------------|-------------------------|---------------------|
+| DataPredict        | 25000+ Hours (~3 Years) | 300,000             |
+| DataPredict Neural | 17000+ Hours (~2 Years) | 200,000             |
+| DataPredict Axon   | 4000+ Hours (~6 Months) | 50,000              |
+| Total              | 43800+ Hours (~5 Years) | 550,000             |

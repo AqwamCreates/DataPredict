@@ -340,6 +340,14 @@ function ModelSafeguardWrapper.new(parameterDictionary)
 	
 	local isOutputPrinted = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.isOutputPrinted, Model.isOutputPrinted)
 	
+	local modifiedModelArray = parameterDictionary.modifiedModelArray or {}
+	
+	if (#modifiedModelArray == 0) then 
+		
+		modifiedModelArray[1] = ModelTrainingModifier.new({Model = Model, mode = "Stochastic", isOutputPrinted = isOutputPrinted})
+		
+	end
+	
 	NewModelSafeguardWrapper.Model = Model
 	
 	NewModelSafeguardWrapper.ignoreUpdateOnDefect = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.ignoreUpdateOnDefect, defaultIgnoreUpdateOnDefect)
@@ -354,7 +362,7 @@ function ModelSafeguardWrapper.new(parameterDictionary)
 	
 	NewModelSafeguardWrapper.maximumAcceptableCostMultiplier = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.maximumAcceptableCostMultiplier, defaultMaximumAcceptableCostMultiplier)
 	
-	NewModelSafeguardWrapper.ModifiedModel = parameterDictionary.ModifiedModel or ModelTrainingModifier.new({Model = Model, mode = "Stochastic", isOutputPrinted = isOutputPrinted})
+	NewModelSafeguardWrapper.modifiedModelArray = modifiedModelArray
 	
 	NewModelSafeguardWrapper.canUseModel = true
 	
@@ -373,6 +381,8 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 	local storeDefectiveUpdateInformation = self.storeDefectiveUpdateInformation
 	
 	local defectiveUpdateInformationDictionary = self.defectiveUpdateInformationDictionary
+	
+	local modifiedModelArray = self.modifiedModelArray
 
 	local OriginalModelParameters = Model:getModelParameters()
 	
@@ -418,15 +428,19 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 
 	end
 	
-	local onDefectSettingArray = {self.removeDefectiveDataOnDefect,  self.replaceValuesOnDefect, self.removeDefectiveDataOnDefect, self.modifyModelOnDefect}
+	local onDefectSettingArray = {self.removeDefectiveDataOnDefect,  self.replaceValuesOnDefect, self.removeDefectiveDataOnDefect}
 
-	local onDefectFunctionNameArray = {"removeDefectFunction", "replaceValueFunction", "removeDefectFunction", "modifyModelFunction"}
+	local onDefectFunctionNameArray = {"removeDefectFunction", "replaceValueFunction", "removeDefectFunction"}
+	
+	local modifyModelFunctionToRun = onDefectFunctionToRunDictionary["modifyModelFunction"]
 	
 	local onDefectFunctionName
 
 	local onDefectFunctionToRun
 	
 	local canFixDefect
+	
+	local canModifyModel
 	
 	for i, value in ipairs(onDefectSettingArray) do
 		
@@ -478,6 +492,60 @@ function ModelSafeguardWrapper:runSandboxedEnvironment(eventName, Model, functio
 				
 			end
 			
+		end
+		
+	end
+	
+	if (self.modifyModelOnDefect) then
+		
+		for i, ModifiedModel in ipairs(modifiedModelArray) do
+
+			if (ModifiedModel) then
+
+				if (modifyModelFunctionToRun) then 
+
+					canModifyModel = pcall(modifyModelFunctionToRun, ModifiedModel)
+
+					if (canModifyModel) then
+
+						isSuccessful = false
+
+						isAcceptable = nil
+
+						valueArray = nil
+						
+						ModifiedModel:setModelParameters(OriginalModelParameters)
+
+						isSuccessful = pcall(function()
+
+							isAcceptable, valueArray = functionToRun()
+
+						end)
+
+						if (isSuccessful) and (isAcceptable) then
+
+							self.canUseModel = true
+
+							self.OriginalModelParameters = nil
+
+							return table.unpack(valueArray or {})
+
+						end
+
+					else
+
+						if (storeDefectiveUpdateInformation) then
+
+							defectiveUpdateInformationDictionary[tostring(os.time())] = "modifyModel + " .. i
+
+						end
+
+					end
+
+				end
+
+			end
+
 		end
 		
 	end
@@ -550,14 +618,12 @@ function ModelSafeguardWrapper:train(...)
 			
 		end,
 		
-		["modifyModelFunction"] = function()
-			
-			local ModifiedModel = self.ModifiedModel
-			
+		["modifyModelFunction"] = function(ModifiedModel)
+
 			if (not ModifiedModel) then return end
-			
+
 			Model = ModifiedModel
-			
+
 		end,
 		
 	}

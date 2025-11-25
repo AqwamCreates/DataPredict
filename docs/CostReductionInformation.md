@@ -22,7 +22,7 @@
 
 ## Development Costs
 
-* The table assumes that only one person is working on each library at machine learning engineer average salary rate.
+The table assumes that only one person is working on each library at machine learning engineer average salary rate.
 
 | Library             | Time Cost               | Monetary Cost (USD) |
 |---------------------|-------------------------|---------------------|

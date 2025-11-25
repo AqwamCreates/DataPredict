@@ -63,18 +63,20 @@ TabularReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFunc
 Updates the model parameters using categoricalUpdateFunction().
 
 ```
-DeepReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureVector, action: number/string, rewardValue: number, currentFeatureVector: featureVector, terminalStateValue: number)
+DeepReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector: featureVector, previousAction: number/string, rewardValue: number, currentFeatureVector: featureVector, currentAction: number/string, terminalStateValue: number)
 ```
 
 #### Parameters:
 
 * previousFeatureVector: The previous state of the environment.
 
-* action: The action selected.
+* previousAction: The previous action selected.
 
 * rewardValue: The reward gained at current state.
 
 * currentFeatureVector: The current state of the environment.
+
+* currentAction: The previous action selected.
 
 * terminalStateValue: A value of 1 indicates that the current state is a terminal state. A value of 0 indicates that the current state is not terminal.
 

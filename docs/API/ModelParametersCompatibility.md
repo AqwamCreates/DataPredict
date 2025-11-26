@@ -12,7 +12,7 @@ The algorithms under the same group can have its model parameters swapped withou
 * PoissonRegression
 * QuantileLinearRegression
 * SupportVectorRegressionGradientVariant
-* PassiveAggressiveRegression
+* PassiveAggressiveRegressor
 
 * LogisticRegression
 * SupportVectorMachineGradientVariant

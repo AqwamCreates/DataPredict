@@ -68,3 +68,7 @@ The algorithms under the same group can have its model parameters swapped with s
 * MeanShift
 * ExpectedMaximization
 * FuzzyCMeans
+
+### Kalman Filters
+
+* All

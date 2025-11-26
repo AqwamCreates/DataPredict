@@ -120,7 +120,7 @@ EMRefiner:setModelParameters(EMModelParameters)
 
 EMRefiner:train(playerLocationDataMatrix)
 
-local finalCentroidMatrix = EMRefiner:getModelParameters()[2] -- The final center locations.
+local finalCentroidMatrix = EMRefiner:getModelParameters()[1] -- The final center locations.
 
 ```
 

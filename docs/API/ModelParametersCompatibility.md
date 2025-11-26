@@ -6,7 +6,7 @@ This documentation shows you on which algorithms can be switched
 
 The algorithms under the same group can have its model parameters swapped without additional changes.
 
-### Gradient-Based Models
+### Gradient-Based
 
 * LinearRegression
 * PoissonRegression
@@ -19,15 +19,15 @@ The algorithms under the same group can have its model parameters swapped withou
 * PassiveAggressiveClassifier
 * OneClassPassiveAggressiveClassifier
 
-### Naive Bayes Models
+### Naive Bayes
 
 * All except for CategoricalNaiveBayes
 
-### K-Nearest Neigbours Models
+### K-Nearest Neigbours
 
 * All
 
-### Mean-Based With Data Points Number Models
+### Mean-Based With Data Points Number
 
 * NearestCentroids
 * KMeans

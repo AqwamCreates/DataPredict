@@ -29,7 +29,7 @@ The algorithms under the same group can have its model parameters swapped withou
 
 * All
 
-### Mean-Based With Data Points Number
+### Mean-Based With Data Point Number
 
 * NearestCentroids
 * KMeans
@@ -53,3 +53,13 @@ The algorithms under the same group can have its model parameters swapped withou
 ### Outlier Detection
 
 * All
+
+## Partial Compatibility
+
+The algorithms under the same group can have its model parameters swapped with some changes. Refer to the models' API reference for more information.
+
+### Statistical-Based Clustering
+
+* MeanShift
+* ExpectedMaximization
+* FuzzyCMeans

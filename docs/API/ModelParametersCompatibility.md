@@ -1,6 +1,6 @@
 # Model Parameters Compatibility
 
-This documentation shows you on which algorithms can be switched 
+This documentation shows you on which algorithms can be switched with others.
 
 ## Full Compatibility
 
@@ -41,5 +41,13 @@ The algorithms under the same group can have its model parameters swapped withou
 * All
 
 ### Tabular Reinforcement Learning
+
+* All
+
+### Generative Adversarial Network
+
+* All
+
+### Outlier Detection
 
 * All

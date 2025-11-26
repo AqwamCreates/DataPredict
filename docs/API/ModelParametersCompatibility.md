@@ -61,7 +61,7 @@ The algorithms under the same group can have its model parameters swapped withou
 
 ## Partial Compatibility
 
-The algorithms under the same group can have its model parameters swapped with some changes. Refer to the models' API reference for more information.
+The algorithms under the same group can have its model parameters swapped with some changes to the model parameters. Refer to the models' API reference for more information.
 
 ### Statistical-Based Clustering
 

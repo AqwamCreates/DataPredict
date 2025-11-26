@@ -32,6 +32,14 @@ The algorithms under the same group can have its model parameters swapped withou
 * NearestCentroids
 * KMeans
 
+### Deep Reinforcement Learning (Single)
+
+* All
+
+### Deep Reinforcement Learning (Actor-Critic)
+
+* All
+
 ### Tabular Reinforcement Learning
 
 * All

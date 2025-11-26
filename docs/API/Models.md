@@ -2,7 +2,7 @@
 
 * If you wonder what are the most high-value use cases that helps with retention and revenue generation this DataPredict™, you can view them [here](../HighValueProjectTutorials.md)!
 
-* To see which algorithms that you can swap model parameters with other types of algorithms, you can view them [here](../ModelParametersCompatibility.md)
+* To see which algorithms that you can swap model parameters with other types of algorithms, you can view them [here](ModelParametersCompatibility.md)!
 
 | Model Type                                                        | Description                                     | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|

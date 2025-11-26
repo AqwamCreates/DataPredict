@@ -8,7 +8,7 @@ However, it assumes that you will ignore the difference in hyperparameters and d
 
 The algorithms under the same group can have its model parameters swapped without additional changes.
 
-### Closed-From Linear Regression
+### Closed-Form Linear Regression
 
 * BayesianLinearRegression
 * BayesianQuantileLinearRegression

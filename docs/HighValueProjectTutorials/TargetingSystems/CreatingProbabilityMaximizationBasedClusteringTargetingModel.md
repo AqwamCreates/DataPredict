@@ -114,7 +114,7 @@ FuzzyInitializer:train(playerLocationDataMatrix)
 
 local meanMatrix = FuzzyInitializer:getModelParameters()
 
-local EMModelParameters = {nil, meanMatrix}
+local EMModelParameters = {meanMatrix}
 
 EMRefiner:setModelParameters(EMModelParameters)
 

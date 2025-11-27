@@ -224,8 +224,10 @@ local lossFunctionGradientList = {
 	end,
 
 	["CategoricalCrossEntropy"] = function(generatedLabelMatrix, labelMatrix)
+		
+		local functionToApply = function (generatedLabelValue, labelValue) return -(labelValue / generatedLabelValue) end
 
-		return AqwamTensorLibrary:subtract(generatedLabelMatrix, labelMatrix)
+		return AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
 
 	end,
 	

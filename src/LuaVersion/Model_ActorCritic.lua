@@ -156,11 +156,9 @@ function ActorCriticModel.new(parameterDictionary)
 
 		for h, featureVector in ipairs(featureVectorHistory) do
 
-			local criticLoss = rewardToGoHistory[h] - criticValueHistory[h]
+			local criticLoss = criticValueHistory[h] - rewardToGoHistory[h]
 
 			local actorLossVector = AqwamTensorLibrary:multiply(actionProbabilityGradientVectorHistory[h], criticLoss)
-
-			actorLossVector = AqwamTensorLibrary:unaryMinus(actorLossVector)
 
 			CriticModel:forwardPropagate(featureVector, true)
 

@@ -175,10 +175,10 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 		for h, featureVector in ipairs(featureVectorHistory) do
 
 			local advantageValue = advantageValueHistory[h]
+			
+			advantageValue = AqwamTensorLibrary:unaryMinus(advantageValue)
 
 			local actorLossVector = AqwamTensorLibrary:multiply(actionProbabilityGradientVectorHistory[h], advantageValue)
-
-			actorLossVector = AqwamTensorLibrary:unaryMinus(actorLossVector)
 
 			CriticModel:forwardPropagate(featureVector, true)
 

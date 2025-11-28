@@ -172,9 +172,9 @@ function VanillaPolicyGradientModel.new(parameterDictionary)
 
 			local advantageValue = advantageValueHistory[h]
 
-			local actorLossVector = AqwamTensorLibrary:multiply(actionProbabilityGradientVectorHistory[h], advantageValue)
+			advantageValue = AqwamTensorLibrary:unaryMinus(advantageValue)
 
-			actorLossVector = AqwamTensorLibrary:unaryMinus(actorLossVector)
+			local actorLossVector = AqwamTensorLibrary:multiply(actionProbabilityGradientVectorHistory[h], advantageValue)
 
 			CriticModel:forwardPropagate(featureVector, true)
 

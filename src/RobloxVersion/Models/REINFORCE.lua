@@ -142,9 +142,9 @@ function REINFORCEModel.new(parameterDictionary)
 
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
 
-		for h, actionProbabilityVector in ipairs(actionProbabilityGradientVectorHistory) do
+		for h, actionProbabilityGradientVector in ipairs(actionProbabilityGradientVectorHistory) do
 
-			local lossVector = AqwamTensorLibrary:multiply(actionProbabilityVector, rewardToGoArray[h])
+			local lossVector = AqwamTensorLibrary:multiply(actionProbabilityGradientVector, rewardToGoArray[h])
 
 			lossVector = AqwamTensorLibrary:unaryMinus(lossVector)
 

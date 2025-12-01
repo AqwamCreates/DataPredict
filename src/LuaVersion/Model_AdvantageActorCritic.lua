@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningActorCriticBaseModel = require("Model_DeepReinforcementLearningActorCriticBaseModel")
 
-local AdvantageActorCriticModel = {}
+AdvantageActorCriticModel = {}
 
 AdvantageActorCriticModel.__index = AdvantageActorCriticModel
 
@@ -176,7 +176,7 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 			local advantageValue = advantageValueHistory[h]
 			
-			advantageValue = AqwamTensorLibrary:unaryMinus(advantageValue)
+			advantageValue = -advantageValue
 
 			local actorLossVector = AqwamTensorLibrary:multiply(actionProbabilityGradientVectorHistory[h], advantageValue)
 

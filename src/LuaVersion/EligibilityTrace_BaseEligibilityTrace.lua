@@ -44,7 +44,7 @@ local defaultIsStateFromAction = false
 
 local defaultIsTabular = false
 
-local safeguardedDivisionFunction = function(denominator)
+local safeguardedInverseFunction = function(denominator)
 	
 	if (denominator == 0) then return 0 end
 	
@@ -54,7 +54,7 @@ end
 
 local function invertMatrix(matrix)
 	
-	return AqwamTensorLibrary:applyFunction(safeguardedDivisionFunction, matrix)
+	return AqwamTensorLibrary:applyFunction(safeguardedInverseFunction, matrix)
 	
 end
 

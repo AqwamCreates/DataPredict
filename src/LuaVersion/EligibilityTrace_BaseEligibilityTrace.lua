@@ -40,6 +40,24 @@ local defaultLambda = 0.5
 
 local defaultMode = "StateAction"
 
+local defaultIsStateFromAction = false
+
+local defaultIsTabular = false
+
+local safeguardedDivisionFunction = function(denominator)
+	
+	if (denominator == 0) then return 0 end
+	
+	return (1 / denominator)
+	
+end
+
+local function invertMatrix(matrix)
+	
+	return AqwamTensorLibrary:applyFunction(safeguardedDivisionFunction, matrix)
+	
+end
+
 function BaseEligibilityTrace.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -56,7 +74,13 @@ function BaseEligibilityTrace.new(parameterDictionary)
 	
 	NewBaseEligibilityTrace.mode = parameterDictionary.mode or defaultMode
 	
-	NewBaseEligibilityTrace.eligibilityTraceMatrix = nil
+	NewBaseEligibilityTrace.isStateFromAction = NewBaseEligibilityTrace:getValueOrDefaultValue(parameterDictionary.isStateFromAction, defaultIsStateFromAction)
+	
+	NewBaseEligibilityTrace.isTabular  = NewBaseEligibilityTrace:getValueOrDefaultValue(parameterDictionary.isTabular, defaultIsTabular)
+	
+	NewBaseEligibilityTrace.eligibilityTraceMatrix = parameterDictionary.eligibilityTraceMatrix
+	
+	NewBaseEligibilityTrace.stateActionEligibilityTraceMatrix = parameterDictionary.stateActionEligibilityTraceMatrix
 	
 	return NewBaseEligibilityTrace
 	
@@ -64,9 +88,15 @@ end
 
 function BaseEligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray) -- This function is needed because we have double version of reinforcement learning algorithms require separate application of (temporalDifferenceErrorVector * eligibilityTraceMatrix).
 	
+	local lambda = self.lambda
+	
 	local mode = self.mode
 	
+	local isStateFromAction = self.isStateFromAction
+	
 	local eligibilityTraceMatrix = self.eligibilityTraceMatrix
+	
+	local stateActionEligibilityTraceMatrix = self.stateActionEligibilityTraceMatrix
 	
 	if (mode == "State") then 
 		
@@ -103,11 +133,53 @@ function BaseEligibilityTrace:increment(stateIndex, actionIndex, discountFactor,
 		eligibilityTraceMatrix = AqwamTensorLibrary:createTensor(selectedDimensionSizeArray, 0)
 		
 	end
+	
+	if (isStateFromAction) and (mode == "Action") then
+		
+		local stateEligibilityTraceMatrix 
+		
+		if (self.isTabular) then
+			
+			if (not stateActionEligibilityTraceMatrix) then stateActionEligibilityTraceMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0) end
 
-	eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * self.lambda)
-	
-	self.eligibilityTraceMatrix = self.incrementFunction(eligibilityTraceMatrix, stateIndex, actionIndex)
-	
+			stateActionEligibilityTraceMatrix = self.incrementFunction(stateActionEligibilityTraceMatrix, stateIndex, actionIndex)
+
+			stateEligibilityTraceMatrix = AqwamTensorLibrary:divide(stateActionEligibilityTraceMatrix, eligibilityTraceMatrix)
+
+			self.stateActionEligibilityTraceMatrix = stateActionEligibilityTraceMatrix
+			
+		else
+			
+			-- Currently, we assume that the algorithm will only visit the state / state-action once due to continuous values and the high dimensionality of the states.
+			
+			local actionEligibilityTraceMatrix = invertMatrix(eligibilityTraceMatrix) -- Assume input is from E(s) = E(a)^-1, hence E(a) = E(s)^-1.
+
+			actionEligibilityTraceMatrix = self.incrementFunction(actionEligibilityTraceMatrix, stateIndex, actionIndex) 
+
+			stateEligibilityTraceMatrix = invertMatrix(actionEligibilityTraceMatrix)
+			
+		end
+		
+		stateEligibilityTraceMatrix = AqwamTensorLibrary:multiply(stateEligibilityTraceMatrix, discountFactor * lambda)
+		
+		self.eligibilityTraceMatrix = stateEligibilityTraceMatrix
+		
+	elseif (isStateFromAction) and (mode ~= "Action") then
+		
+		error("If isStateFromAction is set to true, it can only accept \"action\" mode.")
+		
+	elseif (mode ~= "State") and (mode ~= "Action") and (mode ~= "StateAction") then
+		
+		error("Invalid mode.")
+		
+	else
+		
+		eligibilityTraceMatrix = AqwamTensorLibrary:multiply(eligibilityTraceMatrix, discountFactor * lambda)
+		
+		self.eligibilityTraceMatrix = self.incrementFunction(eligibilityTraceMatrix, stateIndex, actionIndex)
+		
+	end
+
 end
 
 function BaseEligibilityTrace:calculate(temporalDifferenceErrorVector)
@@ -137,6 +209,8 @@ end
 function BaseEligibilityTrace:reset()
 	
 	self.eligibilityTraceMatrix = nil
+	
+	self.stateActionEligibilityTraceMatrix = nil
 	
 end
 

@@ -10,12 +10,12 @@
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 14    |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 23    |
-| [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Grids           | 13    |
+| [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Grids           | 14    |
 | [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 2     |
-| Total                                                             |                                                 | 84    |
+| Total                                                             |                                                 | 85    |
 
 ### Legend
 

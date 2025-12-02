@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - REINFORCE
+# [API Reference](../../API.md) - [Models](../Models.md) - DeepREINFORCE
 
 REINFORCE is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 

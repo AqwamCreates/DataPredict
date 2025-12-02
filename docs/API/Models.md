@@ -41,7 +41,7 @@
 
   * Uses reverse-mode automatic differentiation and lazy differentiation evaluation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
 
-* Currently, DataPredict™ has ~90% (74 out of 84) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (75 out of 85) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -131,7 +131,7 @@
 | [DeepMonteCarloControl](Models/DeepMonteCarloControl.md)                                                       | None                          | ❗ 🟢      | Online Self-Learning Player AIs                                           |
 | [DeepOffPolicyMonteCarloControl](Models/DeepOffPolicyMonteCarloControl.md)                                     | None                          | 🟢         | Offline Self-Learning Player AIs                                          |
 | [DeepTemporalDifference](Models/DeepTemporalDifference.md)                                                     | TD                            | 🟢         | Priority Systems                                                          |
-| [REINFORCE](Models/REINFORCE.md)                                                                               | None                          | 🟢         | Reward-Based Self-Learning Player AIs                                     |
+| [DeepREINFORCE](Models/DeepREINFORCE.md)                                                                       | None                          | 🟢         | Reward-Based Self-Learning Player AIs                          |
 | [VanillaPolicyGradient](Models/VanillaPolicyGradient.md)                                                       | VPG                           | ❗ 🟢      | Baseline-Based Self-Learning Player AIs                                   |
 | [ActorCritic](Models/ActorCritic.md)                                                                           | AC                            | 🟢         | Critic-Based Self-Learning Player AIs                                     |
 | [AdvantageActorCritic](Models/AdvantageActorCritic.md)                                                         | A2C                           | 🟢         | Advantage-Based Self-Learning Player AIs                                  |
@@ -146,21 +146,22 @@
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                                                                                | Alternate Names           | Properties  | Use Cases                       |
-|----------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|---------------------------------|
-| [TabularQLearning](Models/TabularQLearning.md)                                                                       | Q-Learning                | 🔰 💾 🟢   | Best Self-Learning Grid AIs     |
-| [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                       | Double Q-Learning (2010)  | 💾 🛡️ 🟢   | Best Self-Learning Grid AIs     |
-| [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                       | Double Q-Learning (2015)  | 💾 🛡️ 🟢   | Best Self-Learning Grid AIs     |
-| [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                             | Clipped Double Q-Learning | 💾 🛡️ 🟢   | Best Self-Learning Grid AIs     |
-| [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md)                                 | SARSA                     | 🔰 🟢       | Safe Self-Learning Grid AIs     |
-| [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md)                 | Double SARSA              | 🛡️ 🟢       | Safe Self-Learning Grid AIs     |
-| [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md)                 | Double SARSA              | 🛡️ 🟢       | Safe Self-Learning Grid AIs     |
-| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                 | Expected SARSA            | 🟢          | Balanced Self-Learning Grid AIs |
-| [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md) | Double Expected SARSA     | 🛡️ 🟢       | Balanced Self-Learning Grid AIs |
-| [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md) | Double Expected SARSA     | 🛡️ 🟢       | Balanced Self-Learning Grid AIs |
-| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                       | MC                        | 🟢          | Online Self-Learning Grid AIs   |
-| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                     | Off-Policy MC             | 🟢          | Offline Self-Learning Grid AIs  |
-| [TabularTemporalDifference](Models/TabularTemporalDifference.md)                                                     | TD                        | 🟢          | Priority Systems                |
+| Model                                                                                                                | Alternate Names           | Properties  | Use Cases                           |
+|----------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|-------------------------------------|
+| [TabularQLearning](Models/TabularQLearning.md)                                                                       | Q-Learning                | 🔰 💾 🟢   | Best Self-Learning Grid AIs        |
+| [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                       | Double Q-Learning (2010)  | 💾 🛡️ 🟢   | Best Self-Learning Grid AIs        |
+| [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                       | Double Q-Learning (2015)  | 💾 🛡️ 🟢   | Best Self-Learning Grid AIs        |
+| [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                             | Clipped Double Q-Learning | 💾 🛡️ 🟢   | Best Self-Learning Grid AIs        |
+| [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md)                                 | SARSA                     | 🔰 🟢       | Safe Self-Learning Grid AIs        |
+| [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md)                 | Double SARSA              | 🛡️ 🟢       | Safe Self-Learning Grid AIs        |
+| [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md)                 | Double SARSA              | 🛡️ 🟢       | Safe Self-Learning Grid AIs        |
+| [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                 | Expected SARSA            | 🟢          | Balanced Self-Learning Grid AIs     |
+| [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md) | Double Expected SARSA     | 🛡️ 🟢       | Balanced Self-Learning Grid AIs     |
+| [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md) | Double Expected SARSA     | 🛡️ 🟢       | Balanced Self-Learning Grid AIs     |
+| [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                       | MC                        | 🟢          | Online Self-Learning Grid AIs       |
+| [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                     | Off-Policy MC             | 🟢          | Offline Self-Learning Grid AIs      |
+| [TabularTemporalDifference](Models/TabularTemporalDifference.md)                                                     | TD                        | 🟢          | Priority Systems                    |
+| [TabularREINFORCE](Models/TabularREINFORCE.md)                                                                       | None                      | 🟢          | Reward-Based Self-Learning Grid AIs |
 
 ## Sequence Modelling
 

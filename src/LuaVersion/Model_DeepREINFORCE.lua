@@ -30,11 +30,11 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
-local REINFORCEModel = {}
+local DeepREINFORCEModel = {}
 
-REINFORCEModel.__index = REINFORCEModel
+DeepREINFORCEModel.__index = DeepREINFORCEModel
 
-setmetatable(REINFORCEModel, DeepReinforcementLearningBaseModel)
+setmetatable(DeepREINFORCEModel, DeepReinforcementLearningBaseModel)
 
 local function calculateProbability(valueVector)
 
@@ -70,13 +70,13 @@ local function calculateRewardToGo(rewardValueHistory, discountFactor)
 
 end
 
-function REINFORCEModel.new(parameterDictionary)
+function DeepREINFORCEModel.new(parameterDictionary)
 
-	local NewREINFORCEModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewDeepREINFORCEModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 
-	setmetatable(NewREINFORCEModel, REINFORCEModel)
+	setmetatable(NewDeepREINFORCEModel, DeepREINFORCEModel)
 
-	NewREINFORCEModel:setName("REINFORCE")
+	NewDeepREINFORCEModel:setName("DeepREINFORCE")
 
 	local featureVectorArray = {}
 
@@ -84,9 +84,9 @@ function REINFORCEModel.new(parameterDictionary)
 
 	local rewardValueHistory = {}
 
-	NewREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
+	NewDeepREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 
-		local Model = NewREINFORCEModel.Model
+		local Model = NewDeepREINFORCEModel.Model
 
 		local actionVector = Model:forwardPropagate(previousFeatureVector)
 
@@ -114,7 +114,7 @@ function REINFORCEModel.new(parameterDictionary)
 
 	end)
 
-	NewREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
+	NewDeepREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
 
 		if (not previousActionNoiseVector) then previousActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanVector[1]}) end
 
@@ -136,11 +136,11 @@ function REINFORCEModel.new(parameterDictionary)
 
 	end)
 
-	NewREINFORCEModel:setEpisodeUpdateFunction(function(terminalStateValue)
+	NewDeepREINFORCEModel:setEpisodeUpdateFunction(function(terminalStateValue)
 
-		local Model = NewREINFORCEModel.Model
+		local Model = NewDeepREINFORCEModel.Model
 
-		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewREINFORCEModel.discountFactor)
+		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewDeepREINFORCEModel.discountFactor)
 
 		for h, actionProbabilityGradientVector in ipairs(actionProbabilityGradientVectorHistory) do
 
@@ -162,7 +162,7 @@ function REINFORCEModel.new(parameterDictionary)
 
 	end)
 
-	NewREINFORCEModel:setResetFunction(function()
+	NewDeepREINFORCEModel:setResetFunction(function()
 
 		table.clear(featureVectorArray)
 
@@ -172,8 +172,8 @@ function REINFORCEModel.new(parameterDictionary)
 
 	end)
 
-	return NewREINFORCEModel
+	return NewDeepREINFORCEModel
 
 end
 
-return REINFORCEModel
+return DeepREINFORCEModel

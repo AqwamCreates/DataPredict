@@ -24,5 +24,5 @@ Once you put those two libraries into your game, make sure you link the DataPred
 Next, we will use require() function to our machine/deep learning library:
 
 ```lua
-local DataPredict = require(AqwamMachineAndDeepLearningLibrary) 
+local DataPredict = require(AqwamMachineDeepAndReinforcementLearningLibrary) 
 ```

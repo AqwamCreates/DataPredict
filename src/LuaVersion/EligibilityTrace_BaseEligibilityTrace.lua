@@ -152,7 +152,7 @@ function BaseEligibilityTrace:increment(stateIndex, actionIndex, discountFactor,
 			
 			-- Currently, we assume that the algorithm will only visit the state / state-action once due to continuous values and the high dimensionality of the states.
 			
-			local actionEligibilityTraceMatrix = invertMatrix(eligibilityTraceMatrix) -- Assume input is from E(s) = E(a)^-1, hence E(a) = E(s)^-1.
+			local actionEligibilityTraceMatrix = invertMatrix(eligibilityTraceMatrix) -- Assume that the input is from E(s) = E(a)^-1, hence E(a) = E(s)^-1.
 
 			actionEligibilityTraceMatrix = self.incrementFunction(actionEligibilityTraceMatrix, stateIndex, actionIndex) 
 

@@ -9,7 +9,7 @@ DeepREINFORCE is a neural network with reinforcement learning capabilities. It c
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-REINFORCE.new(discountFactor: number): ModelObject
+DeepREINFORCE.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -27,7 +27,7 @@ REINFORCE.new(discountFactor: number): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-REINFORCE:setParameters(discountFactor: number)
+DeepREINFORCE:setParameters(discountFactor: number)
 ```
 
 #### Parameters:

@@ -150,6 +150,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	AdvantageActorCritic = require(Models.AdvantageActorCritic),
 	
+	TemporalDifferenceActorCritic = require(Models.TemporalDifferenceActorCritic),
+	
 	ProximalPolicyOptimization = require(Models.ProximalPolicyOptimization),
 	
 	ProximalPolicyOptimizationClip = require(Models.ProximalPolicyOptimizationClip),

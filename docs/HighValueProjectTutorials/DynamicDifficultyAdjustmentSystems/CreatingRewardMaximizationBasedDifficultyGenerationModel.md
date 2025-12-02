@@ -4,7 +4,7 @@ For this tutorial, we need multiple things to build our model, this includes:
 
 * Neural Network Model
 
-* Soft Actor-Critic Reinforcement Learning Model
+* Temporal Difference Actor-Critic Reinforcement Learning Model
 
 * Diagonal Gaussian Policy Quick Setup
 

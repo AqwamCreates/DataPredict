@@ -76,7 +76,7 @@ function TemporalDifferenceActorCriticModel.new(parameterDictionary)
 
 		local EligibilityTrace = NewTemporalDifferenceActorCriticModel.EligibilityTrace
 
-		local actionVector = ActorModel:forwardPropagate(previousFeatureVector)
+		local actionVector = ActorModel:forwardPropagate(previousFeatureVector, true)
 
 		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 		

@@ -80,7 +80,7 @@ function TemporalDifferenceActorCriticModel.new(parameterDictionary)
 
 		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 		
-		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector, true)[1][1]
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 

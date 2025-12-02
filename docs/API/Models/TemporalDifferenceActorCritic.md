@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - AdvantageActorCritic (A2C)
+# [API Reference](../../API.md) - [Models](../Models.md) - TemporalDifferenceActorCritic (TD-AC)
 
-AdvantageActorCritic is a base class for reinforcement learning.
+TemporalDifferenceActorCritic is a base class for reinforcement learning.
 
 ## Notes
 

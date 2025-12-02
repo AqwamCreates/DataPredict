@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine, Deep And DeepREINFORCEment Learning Library (DataPredict)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local DeepDeepREINFORCEmentLearningBaseModel = require(script.Parent.DeepDeepREINFORCEmentLearningBaseModel)
+local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
 
 local DeepREINFORCEModel = {}
 
 DeepREINFORCEModel.__index = DeepREINFORCEModel
 
-setmetatable(DeepREINFORCEModel, DeepDeepREINFORCEmentLearningBaseModel)
+setmetatable(DeepREINFORCEModel, DeepReinforcementLearningBaseModel)
 
 local function calculateProbability(valueVector)
 
@@ -72,7 +72,7 @@ end
 
 function DeepREINFORCEModel.new(parameterDictionary)
 
-	local NewDeepREINFORCEModel = DeepDeepREINFORCEmentLearningBaseModel.new(parameterDictionary)
+	local NewDeepREINFORCEModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 
 	setmetatable(NewDeepREINFORCEModel, DeepREINFORCEModel)
 

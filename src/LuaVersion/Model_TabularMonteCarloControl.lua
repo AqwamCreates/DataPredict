@@ -102,8 +102,6 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 		
 		local Model = NewTabularMonteCarloControlModel.Model
 		
-		local keepOldQValues = NewTabularMonteCarloControlModel.keepOldQValues
-		
 		local StatesList = NewTabularMonteCarloControlModel:getStatesList()
 		
 		local ActionsList = NewTabularMonteCarloControlModel:getActionsList()
@@ -134,7 +132,7 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 			
 		end
 		
-		if (keepOldQValues) then
+		if (NewTabularMonteCarloControlModel.keepOldQValues) then
 			
 			local OldModelParameters = Model:getModelParameters(true)
 			

@@ -50,21 +50,19 @@ function TabularQLearningModel.new(parameterDictionary)
 	
 	NewTabularQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
-		local learningRate = NewTabularQLearningModel.learningRate
+		local Model = NewTabularQLearningModel.Model
 		
 		local discountFactor = NewTabularQLearningModel.discountFactor
 		
 		local EligibilityTrace = NewTabularQLearningModel.EligibilityTrace
 		
-		local Optimizer = NewTabularQLearningModel.Optimizer
-
-		local ModelParameters = NewTabularQLearningModel.ModelParameters
-		
 		local StatesList = NewTabularQLearningModel:getStatesList()
 
 		local ActionsList = NewTabularQLearningModel:getActionsList()
 
-		local _, maxQValue = NewTabularQLearningModel:predict({{currentStateValue}})
+		local _, maxQValue = Model:predict(currentStateValue)
+		
+		local lastQVector = Model:getOutputMatrix(previousStateValue, true)
 
 		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 		
@@ -72,7 +70,7 @@ function TabularQLearningModel.new(parameterDictionary)
 
 		local actionIndex = table.find(ActionsList, previousAction)
 
-		local lastValue = ModelParameters[stateIndex][actionIndex]
+		local lastValue = lastQVector[1][actionIndex]
 
 		local temporalDifferenceError = targetValue - lastValue
 		
@@ -96,21 +94,7 @@ function TabularQLearningModel.new(parameterDictionary)
 
 		end
 		
-		local gradientValue = temporalDifferenceError
-		
-		if (Optimizer) then
-			
-			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
-			
-			gradientValue = gradientValue[1][1]
-			
-		else
-			
-			gradientValue = learningRate * gradientValue
-			
-		end
-		
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + gradientValue
+		Model:update(-temporalDifferenceError, true)
 		
 		return temporalDifferenceError
 

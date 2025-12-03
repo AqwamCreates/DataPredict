@@ -54,17 +54,13 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 	
 	NewTabularDoubleQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
-		local averagingRate = NewTabularDoubleQLearningModel.averagingRate
+		local Model = NewTabularDoubleQLearningModel.Model
 		
-		local learningRate = NewTabularDoubleQLearningModel.learningRate
+		local averagingRate = NewTabularDoubleQLearningModel.averagingRate
 		
 		local discountFactor = NewTabularDoubleQLearningModel.discountFactor
 		
 		local EligibilityTrace = NewTabularDoubleQLearningModel.EligibilityTrace
-		
-		local Optimizer = NewTabularDoubleQLearningModel.Optimizer
-
-		local ModelParameters = NewTabularDoubleQLearningModel.ModelParameters
 		
 		local StatesList = NewTabularDoubleQLearningModel:getStatesList()
 
@@ -72,7 +68,9 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 		
 		local averagingRateComplement = 1 - averagingRate
 
-		local _, maxQValue = NewTabularDoubleQLearningModel:predict({{currentStateValue}})
+		local _, maxQValue = Model:predict(currentStateValue)
+		
+		local lastQVector = Model:getOutputMatrix(previousStateValue, true)
 
 		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 		
@@ -80,7 +78,7 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 
 		local actionIndex = table.find(ActionsList, previousAction)
 
-		local lastValue = ModelParameters[stateIndex][actionIndex]
+		local lastValue = lastQVector[1][actionIndex]
 
 		local temporalDifferenceError = targetValue - lastValue
 		
@@ -104,25 +102,19 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 
 		end
 		
-		local gradientValue = temporalDifferenceError
-
-		if (Optimizer) then
-
-			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
-
-			gradientValue = gradientValue[1][1]
-
-		else
-
-			gradientValue = learningRate * gradientValue
-
-		end
+		local OldModelParameters = Model:getModelParameters(true)
 		
-		local weightValue = ModelParameters[stateIndex][actionIndex]
+		local oldWeightValue = OldModelParameters[stateIndex][actionIndex]
 		
-		local newWeightValue = weightValue + gradientValue
+		Model:update(-temporalDifferenceError, true)
 		
-		ModelParameters[stateIndex][actionIndex] = (averagingRate * weightValue) + (averagingRateComplement * newWeightValue)
+		local NewModelParameters = Model:getModelParameters(true)
+		
+		local newWeightValue = NewModelParameters[stateIndex][actionIndex]
+		
+		NewModelParameters[stateIndex][actionIndex] = (averagingRate * oldWeightValue) + (averagingRateComplement * newWeightValue)
+		
+		Model:setModelParameters(NewModelParameters, true)
 		
 		return temporalDifferenceError
 

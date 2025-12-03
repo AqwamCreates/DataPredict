@@ -86,7 +86,7 @@ function TabularREINFORCEModel.new(parameterDictionary)
 
 	NewTabularREINFORCEModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 
-		local actionVector = NewTabularREINFORCEModel.Model:predict({{previousStateValue}}, true)
+		local actionVector = NewTabularREINFORCEModel.Model:predict(previousStateValue, true)
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 		

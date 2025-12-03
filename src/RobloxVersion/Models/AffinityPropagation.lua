@@ -210,9 +210,9 @@ local function calculateAvailibilityMatrix(responsibilityMatrix, availibilityMat
 
 					if (k == i) and (k == j) then continue end
 
-					local maxAvailability = math.max(0, responsibilityMatrix[k][j])
+					local maximumAvailability = math.max(0, responsibilityMatrix[k][j])
 					
-					sumMaxAvailability = sumMaxAvailability + maxAvailability
+					sumMaxAvailability = sumMaxAvailability + maximumAvailability
 
 				end
 				
@@ -226,9 +226,9 @@ local function calculateAvailibilityMatrix(responsibilityMatrix, availibilityMat
 
 					if (k == i) then continue end
 
-					local maxAvailability = math.max(0, responsibilityMatrix[k][j])
+					local maximumAvailability = math.max(0, responsibilityMatrix[k][j])
 
-					sumMaxAvailability = sumMaxAvailability + maxAvailability
+					sumMaxAvailability = sumMaxAvailability + maximumAvailability
 
 				end
 				

@@ -136,11 +136,11 @@ function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporal
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
-	local previousVector = self:predict({{previousStateValue}}, true)
+	local previousVector = self:predict(previousStateValue, true)
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 	
-	local targetVector = self:predict({{currentStateValue}}, true)
+	local targetVector = self:predict(currentStateValue, true)
 
 	local numberOfActions = #ActionsList
 

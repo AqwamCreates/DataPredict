@@ -56,6 +56,12 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
 end
 
+function TabularReinforcementLearningBaseModel:predict(featureVector, returnOriginalOutput)
+
+	return self.Model:predict(featureVector, returnOriginalOutput)
+
+end
+
 function TabularReinforcementLearningBaseModel:setDiscountFactor(discountFactor)
 	
 	self.discountFactor = discountFactor

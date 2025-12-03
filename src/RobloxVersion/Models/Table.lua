@@ -211,6 +211,8 @@ end
 
 function TableModel:update(lossGradienMatrix, clearFeatureIndexArray)
 	
+	if (type(lossGradienMatrix) ~= "table") then lossGradienMatrix = {{lossGradienMatrix}} end
+	
 	local costFunctionDerivativeMatrix = self:calculateLossFunctionDerivativeMatrix(self.featureIndexArray, lossGradienMatrix)
 	
 	self:gradientDescent(costFunctionDerivativeMatrix)

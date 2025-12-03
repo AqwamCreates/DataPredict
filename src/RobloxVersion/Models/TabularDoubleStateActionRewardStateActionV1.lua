@@ -135,12 +135,6 @@ function TabularDoubleStateActionRewardStateActionModel:generateTemporalDifferen
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 	
 	local currentQVector = self:predict(currentStateValue, true)
-
-	local discountedQVector = AqwamTensorLibrary:multiply(discountFactor, currentQVector, (1 - terminalStateValue))
-
-	local targetVector = AqwamTensorLibrary:add(rewardValue, discountedQVector)
-
-	local temporalDifferenceErrorVector = AqwamTensorLibrary:subtract(targetVector, previousQVector)
 	
 	local previousActionIndex = table.find(ActionsList, previousAction)
 

@@ -110,39 +110,27 @@ function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 	local stateValueHistory = {}
 
-	local actionVectorHistory = {}
-
 	local rewardValueHistory = {}
 
 	NewTabularOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 
-		local actionVector = NewTabularOffPolicyMonteCarloControlModel:predict({{previousStateValue}}, true)
-
 		table.insert(stateValueHistory, previousStateValue)
-
-		table.insert(actionVectorHistory, actionVector)
 
 		table.insert(rewardValueHistory, rewardValue)
 
 	end)
 
 	NewTabularOffPolicyMonteCarloControlModel:setEpisodeUpdateFunction(function(terminalStateValue)
+		
+		local Model = NewTabularOffPolicyMonteCarloControlModel.Model
 
 		local targetPolicyFunction = targetPolicyFunctionList[NewTabularOffPolicyMonteCarloControlModel.targetPolicyFunction]
-		
-		local learningRate = NewTabularOffPolicyMonteCarloControlModel.learningRate
 
 		local discountFactor = NewTabularOffPolicyMonteCarloControlModel.discountFactor
 		
-		local Optimizer = NewTabularOffPolicyMonteCarloControlModel.Optimizer
-
-		local ModelParameters = NewTabularOffPolicyMonteCarloControlModel.ModelParameters
-		
-		local StatesList = NewTabularOffPolicyMonteCarloControlModel:getStatesList()
-
 		local ActionsList = NewTabularOffPolicyMonteCarloControlModel:getActionsList()
 
-		local numberOfActions = #actionVectorHistory[1]
+		local numberOfActions = #ActionsList
 
 		local outputDimensionSizeArray = {1, numberOfActions}
 
@@ -152,13 +140,13 @@ function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 		local discountedReward = 0
 		
-		for h = #actionVectorHistory, 1, -1 do
+		for h = #stateValueHistory, 1, -1 do
 
 			discountedReward = rewardValueHistory[h] + (discountFactor * discountedReward)
 
 			cVector = AqwamTensorLibrary:add(cVector, weightVector)
 
-			local actionVector = actionVectorHistory[h]
+			local actionVector = Model:getOutputMatrix(stateValueHistory[h], true)
 
 			local lossVectorPart1 = AqwamTensorLibrary:divide(weightVector, cVector)
 
@@ -172,25 +160,11 @@ function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 			weightVector = AqwamTensorLibrary:multiply(weightVector, actionRatioVector)
 			
-			local stateIndex = table.find(StatesList, stateValueHistory[h])
-			
-			if (Optimizer) then
-
-				lossVector = Optimizer:calculate(learningRate, lossVector)
-
-			else
-
-				lossVector = AqwamTensorLibrary:multiply(learningRate, lossVector)
-
-			end
-			
-			ModelParameters[stateIndex] = AqwamTensorLibrary:add({ModelParameters[stateIndex]}, lossVector)[1]
+			Model:update(lossVector, true)
 
 		end
 
 		table.clear(stateValueHistory)
-
-		table.clear(actionVectorHistory)
 
 		table.clear(rewardValueHistory)
 
@@ -199,8 +173,6 @@ function TabularOffPolicyMonteCarloControlModel.new(parameterDictionary)
 	NewTabularOffPolicyMonteCarloControlModel:setResetFunction(function()
 
 		table.clear(stateValueHistory)
-
-		table.clear(actionVectorHistory)
 
 		table.clear(rewardValueHistory)
 

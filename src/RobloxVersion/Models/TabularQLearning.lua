@@ -30,110 +30,94 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local TabularReinforcementLearningBaseModel = require(script.Parent.TabularReinforcementLearningBaseModel)
 
-local TabularTemporalDifferenceModel = {}
+local TabularQLearningModel = {}
 
-TabularTemporalDifferenceModel.__index = TabularTemporalDifferenceModel
+TabularQLearningModel.__index = TabularQLearningModel
 
-setmetatable(TabularTemporalDifferenceModel, TabularReinforcementLearningBaseModel)
+setmetatable(TabularQLearningModel, TabularReinforcementLearningBaseModel)
 
-function TabularTemporalDifferenceModel.new(parameterDictionary)
+function TabularQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewTabularTemporalDifferenceModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewTabularQLearningModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
-	setmetatable(NewTabularTemporalDifferenceModel, TabularTemporalDifferenceModel)
+	setmetatable(NewTabularQLearningModel, TabularQLearningModel)
 	
-	NewTabularTemporalDifferenceModel:setName("TabularTemporalDifference")
+	NewTabularQLearningModel:setName("TabularQLearning")
 	
-	NewTabularTemporalDifferenceModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewTabularQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
-	NewTabularTemporalDifferenceModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
+	NewTabularQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
-		local learningRate = NewTabularTemporalDifferenceModel.learningRate
+		local Model = NewTabularQLearningModel.Model
 		
-		local discountFactor = NewTabularTemporalDifferenceModel.discountFactor
+		local discountFactor = NewTabularQLearningModel.discountFactor
 		
-		local EligibilityTrace = NewTabularTemporalDifferenceModel.EligibilityTrace
+		local EligibilityTrace = NewTabularQLearningModel.EligibilityTrace
 		
-		local Optimizer = NewTabularTemporalDifferenceModel.Optimizer
-		
-		local ModelParameters = NewTabularTemporalDifferenceModel.ModelParameters
-		
-		local StatesList = NewTabularTemporalDifferenceModel:getStatesList()
-		
-		local ActionsList = NewTabularTemporalDifferenceModel:getActionsList()
-		
-		local previousQVector = NewTabularTemporalDifferenceModel:predict({{previousStateValue}}, true)
+		local StatesList = NewTabularQLearningModel:getStatesList()
 
-		local currentQVector = NewTabularTemporalDifferenceModel:predict({{currentStateValue}}, true)
+		local ActionsList = NewTabularQLearningModel:getActionsList()
 
-		local targetValue = rewardValue + (discountFactor * currentQVector[1][1] * (1 - terminalStateValue))
+		local _, maxQValue = Model:predict(currentStateValue)
+		
+		local lastQVector = Model:getOutputMatrix(previousStateValue, true)
 
-		local temporalDifferenceError = targetValue - previousQVector[1][1]
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 
+		local actionIndex = table.find(ActionsList, previousAction)
+
+		local lastValue = lastQVector[1][actionIndex]
+
+		local temporalDifferenceError = targetValue - lastValue
+		
 		if (EligibilityTrace) then
 			
-			local actionIndex = table.find(ActionsList, previousAction)
-
 			local numberOfStates = #StatesList
 
 			local numberOfActions = #ActionsList
-
+			
 			local dimensionSizeArray = {numberOfStates, numberOfActions}
-
+			
 			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
-
+			
 			temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
 
 			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
 
 			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
-
+			
 			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
 
 		end
-
-		local gradientValue = temporalDifferenceError
-
-		if (Optimizer) then
-
-			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
-
-			gradientValue = gradientValue[1][1]
-
-		else
-
-			gradientValue = learningRate * gradientValue
-
-		end
 		
-		ModelParameters[stateIndex][1] = ModelParameters[stateIndex][1] + gradientValue
+		Model:update(-temporalDifferenceError, true)
 		
 		return temporalDifferenceError
 
 	end)
 	
-	NewTabularTemporalDifferenceModel:setEpisodeUpdateFunction(function(terminalStateValue)
+	NewTabularQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local EligibilityTrace = NewTabularTemporalDifferenceModel.EligibilityTrace
+		local EligibilityTrace = NewTabularQLearningModel.EligibilityTrace
+		
+		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+	end)
+
+	NewTabularQLearningModel:setResetFunction(function()
+		
+		local EligibilityTrace = NewTabularQLearningModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	NewTabularTemporalDifferenceModel:setResetFunction(function()
-		
-		local EligibilityTrace = NewTabularTemporalDifferenceModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-	end)
-
-	return NewTabularTemporalDifferenceModel
+	return NewTabularQLearningModel
 
 end
 
-return TabularTemporalDifferenceModel
+return TabularQLearningModel

@@ -52,13 +52,11 @@ function TabularClippedDoubleQLearningModel.new(parameterDictionary)
 	
 	NewTabularClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
-		local learningRate = NewTabularClippedDoubleQLearningModel.learningRate
+		local Model = NewTabularClippedDoubleQLearningModel.Model
 
 		local discountFactor = NewTabularClippedDoubleQLearningModel.discountFactor
 
 		local EligibilityTrace = NewTabularClippedDoubleQLearningModel.EligibilityTrace
-		
-		local Optimizer = NewTabularClippedDoubleQLearningModel.Optimizer
 
 		local ModelParametersArray = NewTabularClippedDoubleQLearningModel.ModelParametersArray
 		
@@ -72,13 +70,13 @@ function TabularClippedDoubleQLearningModel.new(parameterDictionary)
 
 		for i = 1, 2, 1 do
 
-			NewTabularClippedDoubleQLearningModel:setModelParameters(ModelParametersArray[i], true)
+			Model:setModelParameters(ModelParametersArray[i], true)
 
-			local _, maxQValue = NewTabularClippedDoubleQLearningModel:predict(previousStateValueVector)
+			local _, maxQValue = Model:predict(previousStateValueVector)
 
 			table.insert(maxQValueArray, maxQValue[1][1])
 
-			ModelParametersArray[i] = NewTabularClippedDoubleQLearningModel:getModelParameters(true)
+			ModelParametersArray[i] = Model:getModelParameters(true)
 
 		end
 
@@ -110,9 +108,9 @@ function TabularClippedDoubleQLearningModel.new(parameterDictionary)
 
 		for i = 1, 2, 1 do
 
-			NewTabularClippedDoubleQLearningModel:setModelParameters(ModelParametersArray[i], true)
+			Model:setModelParameters(ModelParametersArray[i], true)
 
-			local previousVector = NewTabularClippedDoubleQLearningModel:predict(previousStateValueVector, true)
+			local previousVector = Model:getOutputMatrix(previousStateValueVector, true)
 
 			local lastValue = previousVector[1][actionIndex]
 
@@ -128,23 +126,7 @@ function TabularClippedDoubleQLearningModel.new(parameterDictionary)
 				
 			end
 			
-			local gradientValue = temporalDifferenceError
-			
-			if (Optimizer) then
-				
-				gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
-				
-				gradientValue = gradientValue[1][1]
-				
-			else
-				
-				gradientValue = learningRate * gradientValue
-				
-			end
-			
-			local ModelParameters = NewTabularClippedDoubleQLearningModel:getModelParameters(true)
-
-			ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + gradientValue
+			Model:update(-temporalDifferenceError, true)
 			
 			temporalDifferenceErrorArray[i] = temporalDifferenceError
 

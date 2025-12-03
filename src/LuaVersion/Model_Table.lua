@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 local TableModel = {}
 
@@ -211,9 +211,9 @@ function TableModel:calculateLossFunctionDerivativeMatrix(featureIndexArray, los
 	
 	local costFunctionDerivativeMatrix = AqwamTensorLibrary:createTensor({#self.FeaturesList, #self.ClassesList})
 
-	for i, index in ipairs(featureIndexArray) do
+	for dataIndex, featureIndex in ipairs(featureIndexArray) do
 		
-		costFunctionDerivativeMatrix[index] = AqwamTensorLibrary:add({costFunctionDerivativeMatrix[index]}, {lossGradientMatrix[i]})[1]
+		costFunctionDerivativeMatrix[featureIndex] = AqwamTensorLibrary:add({costFunctionDerivativeMatrix[featureIndex]}, {lossGradientMatrix[dataIndex]})[1]
 
 	end
 	

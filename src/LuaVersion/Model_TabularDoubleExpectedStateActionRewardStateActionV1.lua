@@ -56,9 +56,7 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 	
 	NewTabularDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
-		local learningRate = NewTabularDoubleExpectedStateActionRewardStateActionModel.learningRate
-		
-		local Optimizer = NewTabularDoubleExpectedStateActionRewardStateActionModel.Optimizer
+		local Model = NewTabularDoubleExpectedStateActionRewardStateActionModel.Model
 		
 		local randomProbability = math.random()
 
@@ -68,27 +66,13 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceError, stateIndex, actionIndex = NewTabularDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		local temporalDifferenceError = NewTabularDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 		
 		NewTabularDoubleExpectedStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		local ModelParameters = NewTabularDoubleExpectedStateActionRewardStateActionModel.ModelParameters
+		Model:getOutputMatrix(previousStateValue, true)
 
-		local gradientValue = temporalDifferenceError
-
-		if (Optimizer) then
-
-			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
-
-			gradientValue = gradientValue[1][1]
-
-		else
-
-			gradientValue = learningRate * gradientValue
-
-		end
-
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + gradientValue
+		Model:update(-temporalDifferenceError, true)
 		
 		NewTabularDoubleExpectedStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
@@ -152,11 +136,11 @@ function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporal
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
-	local previousVector = self:predict({{previousStateValue}}, true)
+	local previousVector = self:predict(previousStateValue, true)
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 	
-	local targetVector = self:predict({{currentStateValue}}, true)
+	local targetVector = self:predict(currentStateValue, true)
 
 	local numberOfActions = #ActionsList
 
@@ -224,7 +208,7 @@ function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporal
 
 	end
 
-	return temporalDifferenceError, stateIndex, actionIndex
+	return temporalDifferenceError
 
 end
 

@@ -36,6 +36,14 @@ TabularMonteCarloControlModel.__index = TabularMonteCarloControlModel
 
 setmetatable(TabularMonteCarloControlModel, TabularReinforcementLearningBaseModel)
 
+local function safeguardedDivisionAndUnaryFunction(nominator, denominator)
+	
+	if (denominator == 0) then return 0 end
+	
+	return -(nominator / denominator)
+	
+end
+
 local function calculateRewardToGo(rewardValueHistory, discountFactor)
 
 	local rewardToGoArray = {}
@@ -80,12 +88,6 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 	
 	NewTabularMonteCarloControlModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local learningRate = NewTabularMonteCarloControlModel.learningRate
-		
-		local Optimizer = NewTabularMonteCarloControlModel.Optimizer
-		
-		local ModelParameters = NewTabularMonteCarloControlModel.ModelParameters
-		
 		local StatesList = NewTabularMonteCarloControlModel:getStatesList()
 		
 		local ActionsList = NewTabularMonteCarloControlModel:getActionsList()
@@ -102,53 +104,21 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewTabularMonteCarloControlModel.discountFactor)
 		
-		local learningRateComplement = 1 - learningRate
-		
 		for h, state in ipairs(stateValueHistory) do
-			
-			local action = actionHistory[h]
-			
-			local averageRewardToGo = rewardToGoArray[h]
 			
 			local stateIndex = table.find(StatesList, state)
 			
-			local actionIndex = table.find(ActionsList, action)
+			local actionIndex = table.find(ActionsList, actionHistory[h])
 			
-			returnMatrix[stateIndex][actionIndex] = returnMatrix[stateIndex][actionIndex] + averageRewardToGo
+			returnMatrix[stateIndex][actionIndex] = returnMatrix[stateIndex][actionIndex] + rewardToGoArray[h]
 			
 			countMatrix[stateIndex][actionIndex] = countMatrix[stateIndex][actionIndex] + 1
 			
 		end
 		
-		for stateIndex, unwrappedReturnsVector in ipairs(returnMatrix) do
-			
-			for actionIndex, returnValue in ipairs(unwrappedReturnsVector) do
-				
-				local count = countMatrix[stateIndex][actionIndex]
-
-				if (count ~= 0) then
-					
-					local gradientValue = (returnValue / count)
-					
-					if (Optimizer) then
-						
-						gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
-						
-						gradientValue = gradientValue[1][1]
-						
-					else
-						
-						gradientValue = learningRate * gradientValue
-						
-					end
-
-					ModelParameters[stateIndex][actionIndex] = (learningRateComplement * ModelParameters[stateIndex][actionIndex]) + gradientValue
-
-				end
-				
-			end
-			
-		end
+		local lossMatrix = AqwamTensorLibrary:applyFunction(safeguardedDivisionAndUnaryFunction, returnMatrix, countMatrix)
+		
+		NewTabularMonteCarloControlModel.Model:gradientDescent(lossMatrix)
 		
 		table.clear(stateValueHistory)
 		

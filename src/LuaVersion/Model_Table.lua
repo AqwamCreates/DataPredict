@@ -154,12 +154,16 @@ function TableModel:getOutputMatrix(featureVector, saveFeatureIndexArray)
 	end
 
 	local outputMatrix = {}
+	
+	local feature
+	
+	local featureIndex
 
 	for i, wrappedFeature in ipairs(featureVector) do
 
-		local feature = wrappedFeature[1]
+		feature = wrappedFeature[1]
 
-		local featureIndex = table.find(FeaturesList, feature)
+		featureIndex = table.find(FeaturesList, feature)
 
 		if (not featureIndex) then error("Feature \"" .. feature ..  "\" does not exist in the features list.") end
 

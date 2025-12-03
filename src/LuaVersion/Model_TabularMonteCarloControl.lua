@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local TabularReinforcementLearningBaseModel = require(script.Parent.TabularReinforcementLearningBaseModel)
+local TabularReinforcementLearningBaseModel = require("Model_TabularReinforcementLearningBaseModel")
 
 local TabularMonteCarloControlModel = {}
 
@@ -38,9 +38,9 @@ setmetatable(TabularMonteCarloControlModel, TabularReinforcementLearningBaseMode
 
 local defaultKeepOldQValues = true
 
-local function safeguardedDivisionAndUnaryUsingOldWeightValueFunction(nominator, denominator, oldWeightValue)
+local function safeguardedDivisionAndUnaryUsingReplacementValueFunction(nominator, denominator, replacementValue)
 
-	if (denominator == 0) then return oldWeightValue end
+	if (denominator == 0) then return replacementValue end
 
 	return -(nominator / denominator)
 
@@ -138,7 +138,7 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 			
 			local OldModelParameters = Model:getModelParameters(true)
 			
-			NewModelParameters = AqwamTensorLibrary:applyFunction(safeguardedDivisionAndUnaryUsingOldWeightValueFunction, returnMatrix, countMatrix, OldModelParameters)
+			NewModelParameters = AqwamTensorLibrary:applyFunction(safeguardedDivisionAndUnaryUsingReplacementValueFunction, returnMatrix, countMatrix, OldModelParameters)
 
 		else
 			

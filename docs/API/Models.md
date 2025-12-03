@@ -15,7 +15,8 @@
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 2     |
-| Total                                                             |                                                 | 85    |
+| [Feature-Class Look Up](#feature-class-look-up)                   | Outlier Score Generation                        | 1     |
+| Total                                                             |                                                 | 86    |
 
 ### Legend
 
@@ -41,7 +42,7 @@
 
   * Uses reverse-mode automatic differentiation and lazy differentiation evaluation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
 
-* Currently, DataPredict™ has ~90% (75 out of 85) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (76 out of 86) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -205,6 +206,14 @@
 |--------------------------------------------------------------|-----------------|------------| ------------------------------------------------|
 | [LocalOutlierFactor](Models/LocalOutlierFactor.md)           | LOF             | 🟢 🟡     | Score-Based Play-Time Milestone Detection       |
 | [LocalOutlierProbability](Models/LocalOutlierProbability.md) | LoOP            | 🟢 🟡     | Probability-Based Play-Time Milestone Detection |
+
+## Feature-Class Look Up
+
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+
+| Model                    | Alternate Names | Properties | Use Cases      |
+|--------------------------|-----------------|------------| ---------------|
+| [Table](Models/Table.md) | None            | 🟢 🟡 ⚡  | Quick Look Up |
 
 ## BaseModels
 

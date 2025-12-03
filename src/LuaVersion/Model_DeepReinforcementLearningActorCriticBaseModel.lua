@@ -118,6 +118,12 @@ function DeepReinforcementLearningActorCriticBaseModel:predict(featureVector, re
 	
 end
 
+function DeepReinforcementLearningActorCriticBaseModel:setActionsList(ActionsList)
+
+	self.ActorModel:setClassesList(ActionsList)
+
+end
+
 function DeepReinforcementLearningActorCriticBaseModel:getActionsList()
 
 	return self.ActorModel:getClassesList()

@@ -54,17 +54,13 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 
 	NewTabularExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
-		local learningRate = NewTabularExpectedStateActionRewardStateActionModel.learningRate
+		local Model = NewTabularExpectedStateActionRewardStateActionModel.Model
 		
 		local discountFactor = NewTabularExpectedStateActionRewardStateActionModel.discountFactor
 		
 		local epsilon = NewTabularExpectedStateActionRewardStateActionModel.epsilon
 		
 		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
-		
-		local Optimizer = NewTabularExpectedStateActionRewardStateActionModel.Optimizer
-		
-		local ModelParameters = NewTabularExpectedStateActionRewardStateActionModel.ModelParameters
 		
 		local StatesList = NewTabularExpectedStateActionRewardStateActionModel:getStatesList()
 
@@ -76,9 +72,9 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 
 		local numberOfGreedyActions = 0
 		
-		local previousVector = NewTabularExpectedStateActionRewardStateActionModel:predict({{previousStateValue}}, true)
+		local targetVector = Model:predict(currentStateValue, true)
 		
-		local targetVector = NewTabularExpectedStateActionRewardStateActionModel:predict({{currentStateValue}}, true)
+		local previousVector = Model:getOutputMatrix(previousStateValue, true)
 		
 		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
 		
@@ -140,21 +136,7 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 
 		end
 		
-		local gradientValue = temporalDifferenceError
-
-		if (Optimizer) then
-
-			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
-
-			gradientValue = gradientValue[1][1]
-
-		else
-
-			gradientValue = learningRate * gradientValue
-
-		end
-
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + gradientValue
+		Model:update(-temporalDifferenceError, true)
 		
 		return temporalDifferenceError
 

@@ -50,23 +50,19 @@ function TabularTemporalDifferenceModel.new(parameterDictionary)
 	
 	NewTabularTemporalDifferenceModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
-		local learningRate = NewTabularTemporalDifferenceModel.learningRate
+		local Model = NewTabularTemporalDifferenceModel.Model
 		
 		local discountFactor = NewTabularTemporalDifferenceModel.discountFactor
 		
 		local EligibilityTrace = NewTabularTemporalDifferenceModel.EligibilityTrace
 		
-		local Optimizer = NewTabularTemporalDifferenceModel.Optimizer
-		
-		local ModelParameters = NewTabularTemporalDifferenceModel.ModelParameters
-		
 		local StatesList = NewTabularTemporalDifferenceModel:getStatesList()
 		
 		local ActionsList = NewTabularTemporalDifferenceModel:getActionsList()
 		
-		local previousQVector = NewTabularTemporalDifferenceModel:predict({{previousStateValue}}, true)
+		local previousQVector = NewTabularTemporalDifferenceModel:predict(previousStateValue, true)
 
-		local currentQVector = NewTabularTemporalDifferenceModel:predict({{currentStateValue}}, true)
+		local currentQVector = NewTabularTemporalDifferenceModel:predict(currentStateValue, true)
 
 		local targetValue = rewardValue + (discountFactor * currentQVector[1][1] * (1 - terminalStateValue))
 
@@ -95,22 +91,10 @@ function TabularTemporalDifferenceModel.new(parameterDictionary)
 			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
 
 		end
-
-		local gradientValue = temporalDifferenceError
-
-		if (Optimizer) then
-
-			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
-
-			gradientValue = gradientValue[1][1]
-
-		else
-
-			gradientValue = learningRate * gradientValue
-
-		end
 		
-		ModelParameters[stateIndex][1] = ModelParameters[stateIndex][1] + gradientValue
+		Model:getOutputMatrix(previousStateValue, true)
+		
+		Model:update(-temporalDifferenceError, true)
 		
 		return temporalDifferenceError
 

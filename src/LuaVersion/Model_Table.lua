@@ -253,6 +253,40 @@ function TableModel:update(lossGradientMatrix, clearFeatureIndexArray)
 	
 end
 
+function TableModel:convertLabelVectorToLogisticMatrix(labelVector)
+
+	if (typeof(labelVector) == "number") then labelVector = {{labelVector}} end
+	
+	local ClassesList = self.ClassesList
+
+	local numberOfData = #labelVector
+	
+	local numberOfClasses = #ClassesList
+
+	local logisticMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
+
+	local label
+
+	local labelPosition
+
+	for data = 1, numberOfData, 1 do
+
+		label = labelVector[data][1]
+
+		labelPosition = table.find(ClassesList, label)
+
+		if (labelPosition) then
+
+			logisticMatrix[data][labelPosition] = 1
+
+		end
+
+	end
+
+	return logisticMatrix
+
+end
+
 function TableModel:processLabelVector(labelVector)
 
 	local ClassesList = self.ClassesList

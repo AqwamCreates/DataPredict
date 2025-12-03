@@ -213,7 +213,7 @@
 
 | Model                    | Alternate Names | Properties | Use Cases      |
 |--------------------------|-----------------|------------| ---------------|
-| [Table](Models/Table.md) | None            | 🟢 🟡 ⚡  | Quick Look Up |
+| [Table](Models/Table.md) | Grid            | 🟢 🟡 ⚡  | Quick Look Up |
 
 ## BaseModels
 

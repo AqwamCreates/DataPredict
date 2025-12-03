@@ -56,8 +56,6 @@ function TabularStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		local EligibilityTrace = NewTabularStateActionRewardStateActionModel.EligibilityTrace
 		
-		local Optimizer = NewTabularStateActionRewardStateActionModel.Optimizer
-		
 		local StatesList = NewTabularStateActionRewardStateActionModel:getStatesList()
 		
 		local ActionsList = NewTabularStateActionRewardStateActionModel:getActionsList()

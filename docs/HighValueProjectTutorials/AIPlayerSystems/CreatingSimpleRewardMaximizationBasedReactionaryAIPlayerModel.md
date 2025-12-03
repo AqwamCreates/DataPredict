@@ -90,6 +90,7 @@ local Model = DataPredict.Model.Table.new({
 
 local TabularReinforcementLearningModel = DataPredict.Model.TabularQLearning.new({
 
+    Model = Model,
     EligibilityTrace = EligibilityTrace,
 
 })

@@ -26,15 +26,13 @@
 
 --]]
 
-local BaseModel = require("Model_BaseModel")
+local BaseInstance = require("Core_BaseInstance")
 
 local TabularReinforcementLearningBaseModel = {}
 
 TabularReinforcementLearningBaseModel.__index = TabularReinforcementLearningBaseModel
 
-setmetatable(TabularReinforcementLearningBaseModel, BaseModel)
-
-local defaultLearningRate = 0.1
+setmetatable(TabularReinforcementLearningBaseModel, BaseInstance)
 
 local defaultDiscountFactor = 0.95
 
@@ -42,7 +40,7 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewTabularReinforcementLearningBaseModel = BaseModel.new(parameterDictionary)
+	local NewTabularReinforcementLearningBaseModel = BaseInstance.new(parameterDictionary)
 	
 	setmetatable(NewTabularReinforcementLearningBaseModel, TabularReinforcementLearningBaseModel)
 	
@@ -50,32 +48,12 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 
 	NewTabularReinforcementLearningBaseModel:setClassName("TabularReinforcementLearningModel")
 	
-	NewTabularReinforcementLearningBaseModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	NewTabularReinforcementLearningBaseModel.Model = parameterDictionary.Model
 
 	NewTabularReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
 	
-	NewTabularReinforcementLearningBaseModel.Optimizer = parameterDictionary.Optimizer
-	
-	NewTabularReinforcementLearningBaseModel.StatesList = parameterDictionary.StatesList or {}
-	
-	NewTabularReinforcementLearningBaseModel.ActionsList = parameterDictionary.ActionsList or {}
-	
-	NewTabularReinforcementLearningBaseModel.ModelParameters = parameterDictionary.ModelParameters
-	
 	return NewTabularReinforcementLearningBaseModel
 	
-end
-
-function TabularReinforcementLearningBaseModel:setLearningRate(learningRate)
-
-	self.learningRate = learningRate
-
-end
-
-function TabularReinforcementLearningBaseModel:getLearningRate()
-
-	return self.learningRate
-
 end
 
 function TabularReinforcementLearningBaseModel:setDiscountFactor(discountFactor)
@@ -90,95 +68,27 @@ function TabularReinforcementLearningBaseModel:getDiscountFactor()
 	
 end
 
-function TabularReinforcementLearningBaseModel:setOptimizer(Optimizer)
-
-	self.Optimizer = Optimizer
-
-end
-
-function TabularReinforcementLearningBaseModel:getOptimizer()
-
-	return self.Optimizer
-
-end
-
-function TabularReinforcementLearningBaseModel:predict(stateVector, returnOriginalOutput)
-	
-	local StatesList = self.StatesList
-	
-	local ActionsList = self.ActionsList
-	
-	local ModelParameters = self.ModelParameters
-	
-	if (not ModelParameters) then
-		
-		ModelParameters = self:initializeMatrixBasedOnMode({#StatesList, #ActionsList})
-		
-		self.ModelParameters = ModelParameters
-		
-	end
-	
-	local resultTensor = {}
-	
-	for i, wrappedState in ipairs(stateVector) do
-		
-		local state = wrappedState[1]
-		
-		local stateIndex = table.find(StatesList, state)
-		
-		if (not stateIndex) then error("State \"" .. state ..  "\" does not exist in the states list.") end
-		
-		resultTensor[i] = ModelParameters[stateIndex]
-		
-	end
-	
-	if (returnOriginalOutput) then return resultTensor end
-	
-	local outputVector = {}
-	
-	local maximumValueVector = {}
-	
-	for i, resultVector in ipairs(resultTensor) do
-		
-		local maximumValue = math.max(table.unpack(resultVector))
-		
-		local actionIndex = table.find(resultVector, maximumValue)
-		
-		local action = ActionsList[actionIndex] 
-		
-		if (not action) then error("Action for action index " .. actionIndex ..  "  does not exist in the actions list.") end
-		
-		outputVector[i] = {action}
-		
-		maximumValueVector[i] = {maximumValue}
-		
-	end
-
-	return outputVector, maximumValueVector
-
-end
-
 function TabularReinforcementLearningBaseModel:setStatesList(StatesList)
 	
-	self.StatesList = StatesList
+	self.Model:setFeaturesList(StatesList)
 	
 end
 
 function TabularReinforcementLearningBaseModel:getStatesList()
 	
-	return self.StatesList
+	return self.Model:getFeaturesList()
 	
 end
 
 function TabularReinforcementLearningBaseModel:setActionsList(ActionsList)
 	
-	self.ActionsList = ActionsList
+	self.Model:setClassesList(ActionsList)
 	
 end
 
 function TabularReinforcementLearningBaseModel:getActionsList()
 	
-	return self.ActionsList
+	return self.Model:getClassesList()
 	
 end
 

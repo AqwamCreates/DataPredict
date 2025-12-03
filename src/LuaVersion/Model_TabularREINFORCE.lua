@@ -86,9 +86,7 @@ function TabularREINFORCEModel.new(parameterDictionary)
 
 	NewTabularREINFORCEModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 
-		local Model = NewTabularREINFORCEModel.Model
-
-		local actionVector = Model:predict({{previousStateValue}}, true)
+		local actionVector = NewTabularREINFORCEModel.Model:predict({{previousStateValue}}, true)
 
 		local actionProbabilityVector = calculateProbability(actionVector)
 		
@@ -123,34 +121,16 @@ function TabularREINFORCEModel.new(parameterDictionary)
 		local Model = NewTabularREINFORCEModel.Model
 		
 		local learningRate = NewTabularREINFORCEModel.learningRate
-		
-		local Optimizer = NewTabularREINFORCEModel.Optimizer
-		
-		local ModelParameters = NewTabularREINFORCEModel.ModelParameters
-		
-		local StatesList = NewTabularREINFORCEModel:getStatesList()
 
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewTabularREINFORCEModel.discountFactor)
 
 		for h, actionProbabilityGradientVector in ipairs(actionProbabilityGradientVectorHistory) do
-			
-			local stateIndex = table.find(StatesList, stateValueArray[h])
 
 			local lossVector = AqwamTensorLibrary:multiply(actionProbabilityGradientVector, rewardToGoArray[h])
 			
-			local gradientVector = lossVector
+			Model:getOutputMatrix(stateValueArray[h], true)
 
-			if (Optimizer) then
-
-				gradientVector = Optimizer:calculate(learningRate, gradientVector)
-
-			else
-
-				gradientVector = AqwamTensorLibrary:multiply(learningRate, gradientVector)
-
-			end
-			
-			ModelParameters[stateIndex] = AqwamTensorLibrary:add({ModelParameters[stateIndex]}, gradientVector)[1]
+			Model:update(lossVector, true)
 
 		end
 

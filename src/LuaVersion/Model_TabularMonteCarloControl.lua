@@ -28,13 +28,23 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local TabularReinforcementLearningBaseModel = require("Model_TabularReinforcementLearningBaseModel")
+local TabularReinforcementLearningBaseModel = require(script.Parent.TabularReinforcementLearningBaseModel)
 
 local TabularMonteCarloControlModel = {}
 
 TabularMonteCarloControlModel.__index = TabularMonteCarloControlModel
 
 setmetatable(TabularMonteCarloControlModel, TabularReinforcementLearningBaseModel)
+
+local defaultKeepOldQValues = true
+
+local function safeguardedDivisionAndUnaryUsingOldWeightValueFunction(nominator, denominator, oldWeightValue)
+
+	if (denominator == 0) then return oldWeightValue end
+
+	return -(nominator / denominator)
+
+end
 
 local function safeguardedDivisionAndUnaryFunction(nominator, denominator)
 	
@@ -70,6 +80,8 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 	
 	NewTabularMonteCarloControlModel:setName("TabularMonteCarloControl")
 	
+	NewTabularMonteCarloControlModel.keepOldQValues = NewTabularMonteCarloControlModel:getValueOrDefaultValue(parameterDictionary.keepOldQValues, defaultKeepOldQValues)
+	
 	local stateValueHistory = {}
 	
 	local actionHistory = {}
@@ -88,6 +100,10 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 	
 	NewTabularMonteCarloControlModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
+		local Model = NewTabularMonteCarloControlModel.Model
+		
+		local keepOldQValues = NewTabularMonteCarloControlModel.keepOldQValues
+		
 		local StatesList = NewTabularMonteCarloControlModel:getStatesList()
 		
 		local ActionsList = NewTabularMonteCarloControlModel:getActionsList()
@@ -104,6 +120,8 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 		
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewTabularMonteCarloControlModel.discountFactor)
 		
+		local NewModelParameters
+		
 		for h, state in ipairs(stateValueHistory) do
 			
 			local stateIndex = table.find(StatesList, state)
@@ -116,9 +134,19 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 			
 		end
 		
-		local ModelParameters = AqwamTensorLibrary:applyFunction(safeguardedDivisionAndUnaryFunction, returnMatrix, countMatrix)
+		if (keepOldQValues) then
+			
+			local OldModelParameters = Model:getModelParameters(true)
+			
+			NewModelParameters = AqwamTensorLibrary:applyFunction(safeguardedDivisionAndUnaryUsingOldWeightValueFunction, returnMatrix, countMatrix, OldModelParameters)
+
+		else
+			
+			NewModelParameters = AqwamTensorLibrary:applyFunction(safeguardedDivisionAndUnaryFunction, returnMatrix, countMatrix)
+			
+		end
 		
-		NewTabularMonteCarloControlModel.Model:setModelParameters(ModelParameters, true)
+		Model:setModelParameters(NewModelParameters, true)
 		
 		table.clear(stateValueHistory)
 		

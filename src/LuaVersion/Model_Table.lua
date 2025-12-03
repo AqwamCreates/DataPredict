@@ -137,6 +137,8 @@ end
 
 function TableModel:getOutputMatrix(featureVector, saveFeatureIndexArray)
 	
+	if (type(featureVector) ~= "table") then featureVector = {{featureVector}} end
+	
 	local FeaturesList = self.FeaturesList
 
 	local ClassesList = self.ClassesList
@@ -179,13 +181,13 @@ function TableModel:getOutputMatrix(featureVector, saveFeatureIndexArray)
 	
 end
 
-function TableModel:calculateLossFunctionDerivativeMatrix(featureIndexArray, lossGradienMatrix)
+function TableModel:calculateLossFunctionDerivativeMatrix(featureIndexArray, lossGradientMatrix)
 	
 	local costFunctionDerivativeMatrix = AqwamTensorLibrary:createTensor({#self.FeaturesList, #self.ActionsList})
 
 	for i, index in ipairs(featureIndexArray) do
 		
-		costFunctionDerivativeMatrix[index] = AqwamTensorLibrary:add({costFunctionDerivativeMatrix[index]}, {lossGradienMatrix[i]})[1]
+		costFunctionDerivativeMatrix[index] = AqwamTensorLibrary:add({costFunctionDerivativeMatrix[index]}, {lossGradientMatrix[i]})[1]
 
 	end
 	
@@ -213,11 +215,11 @@ function TableModel:gradientDescent(costFunctionDerivativeMatrix)
 	
 end
 
-function TableModel:update(lossGradienMatrix, clearFeatureIndexArray)
+function TableModel:update(lossGradientMatrix, clearFeatureIndexArray)
 	
-	if (type(lossGradienMatrix) ~= "table") then lossGradienMatrix = {{lossGradienMatrix}} end
+	if (type(lossGradientMatrix) ~= "table") then lossGradientMatrix = {{lossGradientMatrix}} end
 	
-	local costFunctionDerivativeMatrix = self:calculateLossFunctionDerivativeMatrix(self.featureIndexArray, lossGradienMatrix)
+	local costFunctionDerivativeMatrix = self:calculateLossFunctionDerivativeMatrix(self.featureIndexArray, lossGradientMatrix)
 	
 	self:gradientDescent(costFunctionDerivativeMatrix)
 	

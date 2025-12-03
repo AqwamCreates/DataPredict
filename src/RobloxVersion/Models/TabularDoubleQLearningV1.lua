@@ -54,10 +54,6 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 		
 		local Model = NewTabularDoubleQLearningModel.Model
 		
-		local learningRate = NewTabularDoubleQLearningModel.learningRate
-		
-		local Optimizer = NewTabularDoubleQLearningModel.Optimizer
-		
 		local randomProbability = math.random()
 
 		local updateSecondModel = (randomProbability >= 0.5)

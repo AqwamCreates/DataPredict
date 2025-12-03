@@ -38,6 +38,30 @@ setmetatable(TableModel, BaseModel)
 
 local defaultLearningRate = 0.1
 
+local defautCostFunction = "L2"
+
+local lossFunctionList = {
+
+	["L1"] = function (x1, x2)
+
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
+
+		return AqwamTensorLibrary:applyFunction(math.abs, part1) 
+
+	end,
+
+	["L2"] = function (x1, x2)
+
+		local part1 = AqwamTensorLibrary:subtract(x1, x2)
+
+		local part2 = AqwamTensorLibrary:power(part1, 2) 
+
+		return AqwamTensorLibrary:divide(part2, 2)
+
+	end,
+
+}
+
 local function areNumbersOnlyInList(list)
 
 	for i, value in ipairs(list) do
@@ -98,6 +122,8 @@ function TableModel.new(parameterDictionary)
 	NewTableModel:setClassName("TableModel")
 	
 	NewTableModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	
+	NewTableModel.costFunction = parameterDictionary.costFunction or defautCostFunction
 	
 	NewTableModel.Optimizer = parameterDictionary.Optimizer
 	
@@ -227,7 +253,7 @@ function TableModel:update(lossGradientMatrix, clearFeatureIndexArray)
 	
 end
 
-function NeuralNetworkModel:processLabelVector(labelVector)
+function TableModel:processLabelVector(labelVector)
 
 	local ClassesList = self.ClassesList
 
@@ -254,8 +280,10 @@ function NeuralNetworkModel:processLabelVector(labelVector)
 end
 
 function TableModel:train(featureVector, labelVector)
+	
+	local numberOfData = #featureVector
 
-	if (#featureVector ~= #labelVector) then error("Number of rows of feature vector and the label vector is not the same.") end
+	if (numberOfData ~= #labelVector) then error("Number of rows of feature vector and the label vector is not the same.") end
 	
 	local numberOfClasses = #self.ClassesList
 	
@@ -272,6 +300,8 @@ function TableModel:train(featureVector, labelVector)
 		logisticMatrix = labelVector
 
 	end
+	
+	local lossFunctionToApply = lossFunctionList[self.costFunction]
 	
 	local costArray = {}
 
@@ -294,8 +324,12 @@ function TableModel:train(featureVector, labelVector)
 		local lossGradientMatrix = AqwamTensorLibrary:subtract(labelVector, logisticMatrix)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
+			
+			local costVector = AqwamTensorLibrary:applyFunction(lossFunctionToApply, labelVector, outputMatrix)
+			
+			local totalCost = AqwamTensorLibrary:sum(costVector)
 
-			return AqwamTensorLibrary:sum(AqwamTensorLibrary:power(lossGradientMatrix, 2))
+			return (totalCost / numberOfData)
 
 		end)
 

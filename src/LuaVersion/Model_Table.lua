@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 local TableModel = {}
 
@@ -210,6 +210,8 @@ function TableModel:gradientDescent(costFunctionDerivativeMatrix)
 end
 
 function TableModel:update(lossGradienMatrix, clearFeatureIndexArray)
+	
+	if (type(lossGradienMatrix) ~= "table") then lossGradienMatrix = {{lossGradienMatrix}} end
 	
 	local costFunctionDerivativeMatrix = self:calculateLossFunctionDerivativeMatrix(self.featureIndexArray, lossGradienMatrix)
 	

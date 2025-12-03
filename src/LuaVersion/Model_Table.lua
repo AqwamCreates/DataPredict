@@ -187,9 +187,9 @@ function TableModel:getOutputMatrix(featureVector, saveFeatureIndexArray)
 	
 	local featureIndex
 
-	for i, wrappedFeature in ipairs(featureVector) do
+	for i, unwrappedFeatureVector in ipairs(featureVector) do
 
-		feature = wrappedFeature[1]
+		feature = unwrappedFeatureVector[1]
 
 		featureIndex = table.find(FeaturesList, feature)
 

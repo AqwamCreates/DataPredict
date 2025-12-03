@@ -74,6 +74,30 @@ function TabularReinforcementLearningBaseModel:getDiscountFactor()
 	
 end
 
+function TabularReinforcementLearningBaseModel:setModel(Model)
+
+	self.Model = Model
+
+end
+
+function TabularReinforcementLearningBaseModel:getModel()
+
+	return self.Model
+
+end
+
+function TabularReinforcementLearningBaseModel:setModelParameters(ModelParameters, doNotDeepCopy)
+
+	self.Model:setModelParameters(ModelParameters, doNotDeepCopy)
+
+end
+
+function TabularReinforcementLearningBaseModel:getModelParameters(doNotDeepCopy)
+
+	return self.Model:getModelParameters(doNotDeepCopy)
+
+end
+
 function TabularReinforcementLearningBaseModel:setStatesList(StatesList)
 	
 	self.Model:setFeaturesList(StatesList)
@@ -105,8 +129,6 @@ function TabularReinforcementLearningBaseModel:setCategoricalUpdateFunction(cate
 end
 
 function TabularReinforcementLearningBaseModel:categoricalUpdate(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
-
-	if (not self.ModelParameters) then self.ModelParameters = self:initializeMatrixBasedOnMode({#self.StatesList, #self.ActionsList}) end
 	
 	self.categoricalUpdateFunction(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 
@@ -119,8 +141,6 @@ function TabularReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeU
 end
 
 function TabularReinforcementLearningBaseModel:episodeUpdate(terminalStateValue)
-	
-	if (not self.ModelParameters) then self.ModelParameters = self:initializeMatrixBasedOnMode({#self.StatesList, #self.ActionsList}) end
 
 	return self.episodeUpdateFunction(terminalStateValue)
 

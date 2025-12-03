@@ -116,9 +116,9 @@ function TabularMonteCarloControlModel.new(parameterDictionary)
 			
 		end
 		
-		local lossMatrix = AqwamTensorLibrary:applyFunction(safeguardedDivisionAndUnaryFunction, returnMatrix, countMatrix)
+		local ModelParameters = AqwamTensorLibrary:applyFunction(safeguardedDivisionAndUnaryFunction, returnMatrix, countMatrix)
 		
-		NewTabularMonteCarloControlModel.Model:gradientDescent(lossMatrix)
+		NewTabularMonteCarloControlModel.Model:setModelParameters(ModelParameters, true)
 		
 		table.clear(stateValueHistory)
 		

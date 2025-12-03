@@ -130,11 +130,11 @@ function TabularDoubleStateActionRewardStateActionModel:generateTemporalDifferen
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
-	local previousQVector = self:predict({{previousStateValue}}, true)
+	local previousQVector = self:predict(previousStateValue, true)
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 	
-	local currentQVector = self:predict({{currentStateValue}}, true)
+	local currentQVector = self:predict(currentStateValue, true)
 
 	local discountedQVector = AqwamTensorLibrary:multiply(discountFactor, currentQVector, (1 - terminalStateValue))
 

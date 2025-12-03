@@ -52,6 +52,8 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 	
 	NewTabularDoubleQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
+		local Model = NewTabularDoubleQLearningModel.Model
+		
 		local learningRate = NewTabularDoubleQLearningModel.learningRate
 		
 		local Optimizer = NewTabularDoubleQLearningModel.Optimizer
@@ -64,27 +66,13 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceError, stateIndex, actionIndex = NewTabularDoubleQLearningModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		local temporalDifferenceError = NewTabularDoubleQLearningModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 		
 		NewTabularDoubleQLearningModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		local ModelParameters = NewTabularDoubleQLearningModel.ModelParameters
+		Model:getOutputMatrix(previousStateValue, true)
 		
-		local gradientValue = temporalDifferenceError
-
-		if (Optimizer) then
-
-			gradientValue = Optimizer:calculate(learningRate, {{gradientValue}})
-
-			gradientValue = gradientValue[1][1]
-
-		else
-
-			gradientValue = learningRate * gradientValue
-
-		end
-		
-		ModelParameters[stateIndex][actionIndex] = ModelParameters[stateIndex][actionIndex] + gradientValue
+		Model:update(-temporalDifferenceError, true)
 		
 		NewTabularDoubleQLearningModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
@@ -135,7 +123,9 @@ function TabularDoubleQLearningModel:loadModelParametersFromModelParametersArray
 end
 
 function TabularDoubleQLearningModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
-
+	
+	local Model = self.Model
+	
 	local discountFactor = self.discountFactor
 
 	local EligibilityTrace = self.EligibilityTrace
@@ -146,11 +136,11 @@ function TabularDoubleQLearningModel:generateTemporalDifferenceError(previousSta
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
-	local previousVector = self:predict({{previousStateValue}}, true)
+	local previousVector = Model:predict(previousStateValue, true)
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 	
-	local _, maxQValue = self:predict({{currentStateValue}})
+	local _, maxQValue = Model:predict(currentStateValue)
 	
 	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 
@@ -182,7 +172,7 @@ function TabularDoubleQLearningModel:generateTemporalDifferenceError(previousSta
 
 	end
 
-	return temporalDifferenceError, stateIndex, actionIndex
+	return temporalDifferenceError
 
 end
 

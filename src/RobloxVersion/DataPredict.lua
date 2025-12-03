@@ -209,6 +209,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	WassersteinGenerativeAdversarialNetwork = require(Models.WassersteinGenerativeAdversarialNetwork),
 
 	ConditionalWassersteinGenerativeAdversarialNetwork = require(Models.ConditionalWassersteinGenerativeAdversarialNetwork),
+	
+	Table = require(Models.Table)
 
 }
 

@@ -26,13 +26,13 @@
 
 --]]
 
-local BaseModel = require(script.Parent.BaseModel)
+local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 local TabularReinforcementLearningBaseModel = {}
 
 TabularReinforcementLearningBaseModel.__index = TabularReinforcementLearningBaseModel
 
-setmetatable(TabularReinforcementLearningBaseModel, BaseModel)
+setmetatable(TabularReinforcementLearningBaseModel, BaseInstance)
 
 local defaultDiscountFactor = 0.95
 
@@ -40,7 +40,7 @@ function TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewTabularReinforcementLearningBaseModel = BaseModel.new(parameterDictionary)
+	local NewTabularReinforcementLearningBaseModel = BaseInstance.new(parameterDictionary)
 	
 	setmetatable(NewTabularReinforcementLearningBaseModel, TabularReinforcementLearningBaseModel)
 	

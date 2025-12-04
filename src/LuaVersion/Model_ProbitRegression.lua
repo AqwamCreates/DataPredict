@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
-local ZTableFunction = require(script.Parent.Parent.Cores.ZTableFunction)
+local ZTableFunction = require("Core_ZTableFunction")
 
 local ProbitRegressionModel = {}
 
@@ -42,7 +42,7 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
 
-local function gradientFunction(hypothesisValue, labelValue, zValue)
+local function calculateGradientFunction(hypothesisValue, labelValue, zValue)
 	
 	local probabilityDensityFunctionValue = math.exp(-0.5 * math.pow(zValue, 2)) / math.sqrt(2 * math.pi)
 
@@ -256,7 +256,7 @@ function ProbitRegressionModel:train(featureMatrix, labelVector)
 
 		end
 
-		local lossGradientVector = AqwamTensorLibrary:applyFunction(gradientFunction, hypothesisVector, labelVector, zVector)
+		local lossGradientVector = AqwamTensorLibrary:applyFunction(calculateGradientFunction, hypothesisVector, labelVector, zVector)
 
 		self:update(lossGradientVector, true)
 

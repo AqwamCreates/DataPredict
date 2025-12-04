@@ -42,11 +42,15 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
 
-local function calculateNegativeLogLikelihoodGradientFunction(hypothesisValue, labelValue, zValue)
+local function calculateProbabilityDensityFunctionValue(zValue)
 	
-	local probabilityDensityFunctionValue = math.exp(-0.5 * math.pow(zValue, 2)) / math.sqrt(2 * math.pi)
+	return math.exp(-0.5 * math.pow(zValue, 2)) / math.sqrt(2 * math.pi)
+	
+end
 
-	return -(probabilityDensityFunctionValue * ((labelValue / hypothesisValue) - ((1 - labelValue) / (1 - hypothesisValue))))
+local function calculateNegativeLogLikelihoodGradientFunction(hypothesisValue, labelValue)
+
+	return -((labelValue / hypothesisValue) - ((1 - labelValue) / (1 - hypothesisValue)))
 	
 end
 
@@ -78,15 +82,9 @@ function ProbitRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 end
 
-function ProbitRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+function ProbitRegressionModel:calculateHypothesisVector(featureMatrix, saveAllMatrices)
 
 	local zVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
-
-	if (saveFeatureMatrix) then 
-
-		self.featureMatrix = featureMatrix
-
-	end
 
 	local hypothesisVector = {}
 	
@@ -103,6 +101,14 @@ function ProbitRegressionModel:calculateHypothesisVector(featureMatrix, saveFeat
 		hypothesisVector[i] = {cumulativeDistributionValue}
 		
 	end
+	
+	if (saveAllMatrices) then 
+
+		self.featureMatrix = featureMatrix
+		
+		self.zVector = zVector
+
+	end
 
 	return hypothesisVector, zVector
 
@@ -113,8 +119,16 @@ function ProbitRegressionModel:calculateLossFunctionDerivativeVector(lossGradien
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
 	local featureMatrix = self.featureMatrix
+	
+	local zVector = self.zVector
 
 	if (not featureMatrix) then error("Feature matrix not found.") end
+	
+	if (not zVector) then error("Z vector not found.") end
+	
+	local probabilityDensityFunctionValueVector = AqwamTensorLibrary:applyFunction(calculateProbabilityDensityFunctionValue, zVector)
+	
+	lossGradientVector = AqwamTensorLibrary:multiply(lossGradientVector, probabilityDensityFunctionValueVector)
 
 	local lossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossGradientVector)
 
@@ -160,7 +174,7 @@ function ProbitRegressionModel:gradientDescent(lossFunctionDerivativeVector, num
 
 end
 
-function ProbitRegressionModel:update(lossGradientVector, clearFeatureMatrix)
+function ProbitRegressionModel:update(lossGradientVector, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -170,7 +184,13 @@ function ProbitRegressionModel:update(lossGradientVector, clearFeatureMatrix)
 
 	self:gradientDescent(lossFunctionDerivativeVector, numberOfData)
 	
-	if (clearFeatureMatrix) then self.featureMatrix = nil end
+	if (clearAllMatrices) then 
+		
+		self.featureMatrix = nil 
+		
+		self.zVector = nil
+		
+	end
 
 end
 
@@ -240,7 +260,7 @@ function ProbitRegressionModel:train(featureMatrix, labelVector)
 
 		self:iterationWait()
 
-		local hypothesisVector, zVector = self:calculateHypothesisVector(featureMatrix, true)
+		local hypothesisVector = self:calculateHypothesisVector(featureMatrix, true)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
@@ -256,7 +276,7 @@ function ProbitRegressionModel:train(featureMatrix, labelVector)
 
 		end
 
-		local lossGradientVector = AqwamTensorLibrary:applyFunction(calculateNegativeLogLikelihoodGradientFunction, hypothesisVector, labelVector, zVector)
+		local lossGradientVector = AqwamTensorLibrary:applyFunction(calculateNegativeLogLikelihoodGradientFunction, hypothesisVector, labelVector)
 
 		self:update(lossGradientVector, true)
 

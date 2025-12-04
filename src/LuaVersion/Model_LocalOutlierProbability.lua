@@ -30,9 +30,11 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
-local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
+local Cores = script.Parent.Parent.Cores
 
-local ZTableFunction = require("Core_ZTableFunction")
+local distanceFunctionDictionary = require(Cores.DistanceFunctionDictionary)
+
+local ZTableFunction = require(Cores.ZTableFunction)
 
 local LocalOutlierProbability = {}
 
@@ -358,7 +360,7 @@ function LocalOutlierProbability:score()
 	
 	for i, unwrappedErrorVectorPart2 in ipairs(gaussianErrorVectorPart2) do
 		
-		gaussianErrorVector[i] = {ZTableFunction:calculateStandardNormalCumulativeDistributionValue(unwrappedErrorVectorPart2[1])}
+		gaussianErrorVector[i] = {ZTableFunction:getStandardNormalCumulativeDistributionFunction(unwrappedErrorVectorPart2[1])}
 		
 	end
 	

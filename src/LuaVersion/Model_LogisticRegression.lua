@@ -90,7 +90,7 @@ local derivativeLossFunctionList = {
 
 }
 
-local lossFunctionGradientList = {
+local lossFunctionList = {
 
 	["Sigmoid"] = function (h, y) return -(y * math.log(h) + (1 - y) * math.log(1 - h)) end,
 
@@ -148,7 +148,7 @@ end
 
 function LogisticRegressionModel:calculateCost(hypothesisVector, labelVector)
 
-	local costVector = AqwamTensorLibrary:applyFunction(lossFunctionGradientList[self.sigmoidFunction], hypothesisVector, labelVector)
+	local costVector = AqwamTensorLibrary:applyFunction(lossFunctionList[self.sigmoidFunction], hypothesisVector, labelVector)
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
 	

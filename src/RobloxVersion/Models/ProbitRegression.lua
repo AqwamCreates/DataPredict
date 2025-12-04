@@ -44,7 +44,7 @@ local defaultLearningRate = 0.1
 
 local function calculateProbabilityDensityFunctionValue(zValue)
 	
-	return math.exp(-0.5 * math.pow(zValue, 2)) / math.sqrt(2 * math.pi)
+	return (math.exp(-0.5 * math.pow(zValue, 2)) / math.sqrt(2 * math.pi))
 	
 end
 

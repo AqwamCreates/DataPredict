@@ -30,23 +30,23 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
-local ZTableFunction = require("Core_ZTableFunction")
+local ZTableFunction = require(script.Parent.Parent.Cores.ZTableFunction)
 
-local QuasiProbitRegressionModel = {}
+local ProbitRegressionModel = {}
 
-QuasiProbitRegressionModel.__index = QuasiProbitRegressionModel
+ProbitRegressionModel.__index = ProbitRegressionModel
 
-setmetatable(QuasiProbitRegressionModel, GradientMethodBaseModel)
+setmetatable(ProbitRegressionModel, GradientMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
 
-local defaultSigmoidFunction = "Sigmoid"
-
-local function cutOffFunction(value)
+local function gradientFunction(hypothesisValue, labelValue, zValue)
 	
-	return (value >= 0.5) and 1 or 0
+	local probabilityDensityFunctionValue = math.exp(-0.5 * math.pow(zValue, 2)) / math.sqrt(2 * math.pi)
+
+	return (probabilityDensityFunctionValue * ((labelValue / hypothesisValue) - ((1 - labelValue) / (1 - hypothesisValue))))
 	
 end
 
@@ -56,23 +56,29 @@ local function calculateLogLikelihood(hypothesisValue, labelValue)
 	
 end
 
-function QuasiProbitRegressionModel:calculateCost(hypothesisVector, labelVector)
+local function cutOffFunction(value)
+
+	return (value >= 0.5) and 1 or 0
+
+end
+	
+function ProbitRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 	local costVector = AqwamTensorLibrary:applyFunction(calculateLogLikelihood, hypothesisVector, labelVector)
 
-	local totalCost = AqwamTensorLibrary:sum(costVector)
+	local totalCost = -AqwamTensorLibrary:sum(costVector)
 	
 	local Regularizer = self.Regularizer
 
 	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
 
-	local averageCost = -totalCost / #labelVector
+	local averageCost = totalCost / #labelVector
 
 	return averageCost
 
 end
 
-function QuasiProbitRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+function ProbitRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 
 	local zVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
@@ -98,11 +104,11 @@ function QuasiProbitRegressionModel:calculateHypothesisVector(featureMatrix, sav
 		
 	end
 
-	return hypothesisVector
+	return hypothesisVector, zVector
 
 end
 
-function QuasiProbitRegressionModel:calculateLossFunctionDerivativeVector(lossGradientVector)
+function ProbitRegressionModel:calculateLossFunctionDerivativeVector(lossGradientVector)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -118,7 +124,7 @@ function QuasiProbitRegressionModel:calculateLossFunctionDerivativeVector(lossGr
 
 end
 
-function QuasiProbitRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function ProbitRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -154,7 +160,7 @@ function QuasiProbitRegressionModel:gradientDescent(lossFunctionDerivativeVector
 
 end
 
-function QuasiProbitRegressionModel:update(lossGradientVector, clearFeatureMatrix)
+function ProbitRegressionModel:update(lossGradientVector, clearFeatureMatrix)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -168,41 +174,41 @@ function QuasiProbitRegressionModel:update(lossGradientVector, clearFeatureMatri
 
 end
 
-function QuasiProbitRegressionModel.new(parameterDictionary)
+function ProbitRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewQuasiProbitRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
+	local NewProbitRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewQuasiProbitRegressionModel, QuasiProbitRegressionModel)
+	setmetatable(NewProbitRegressionModel, ProbitRegressionModel)
 	
-	NewQuasiProbitRegressionModel:setName("ProbitRegression")
+	NewProbitRegressionModel:setName("ProbitRegression")
 
-	NewQuasiProbitRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	NewProbitRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 
-	NewQuasiProbitRegressionModel.Optimizer = parameterDictionary.Optimizer
+	NewProbitRegressionModel.Optimizer = parameterDictionary.Optimizer
 
-	NewQuasiProbitRegressionModel.Regularizer = parameterDictionary.Regularizer
+	NewProbitRegressionModel.Regularizer = parameterDictionary.Regularizer
 
-	return NewQuasiProbitRegressionModel
+	return NewProbitRegressionModel
 
 end
 
-function QuasiProbitRegressionModel:setOptimizer(Optimizer)
+function ProbitRegressionModel:setOptimizer(Optimizer)
 
 	self.Optimizer = Optimizer
 
 end
 
-function QuasiProbitRegressionModel:setRegularizer(Regularizer)
+function ProbitRegressionModel:setRegularizer(Regularizer)
 
 	self.Regularizer = Regularizer
 
 end
 
-function QuasiProbitRegressionModel:train(featureMatrix, labelVector)
+function ProbitRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
@@ -234,7 +240,7 @@ function QuasiProbitRegressionModel:train(featureMatrix, labelVector)
 
 		self:iterationWait()
 
-		local hypothesisVector = self:calculateHypothesisVector(featureMatrix, true)
+		local hypothesisVector, zVector = self:calculateHypothesisVector(featureMatrix, true)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
@@ -250,7 +256,7 @@ function QuasiProbitRegressionModel:train(featureMatrix, labelVector)
 
 		end
 
-		local lossGradientVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
+		local lossGradientVector = AqwamTensorLibrary:applyFunction(gradientFunction, hypothesisVector, labelVector, zVector)
 
 		self:update(lossGradientVector, true)
 
@@ -270,7 +276,7 @@ function QuasiProbitRegressionModel:train(featureMatrix, labelVector)
 
 end
 
-function QuasiProbitRegressionModel:predict(featureMatrix, returnOriginalOutput)
+function ProbitRegressionModel:predict(featureMatrix, returnOriginalOutput)
 
 	if (not self.ModelParameters) then self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1}) end
 
@@ -284,4 +290,4 @@ function QuasiProbitRegressionModel:predict(featureMatrix, returnOriginalOutput)
 
 end
 
-return QuasiProbitRegressionModel
+return ProbitRegressionModel

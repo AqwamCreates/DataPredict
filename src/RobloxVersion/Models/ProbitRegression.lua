@@ -256,7 +256,7 @@ function ProbitRegressionModel:train(featureMatrix, labelVector)
 
 		end
 
-		local lossGradientVector = AqwamTensorLibrary:applyFunction(calculateGradientFunction, hypothesisVector, labelVector, zVector)
+		local lossGradientVector = AqwamTensorLibrary:applyFunction(calculateNegativeLogLikelihoodGradientFunction, hypothesisVector, labelVector, zVector)
 
 		self:update(lossGradientVector, true)
 

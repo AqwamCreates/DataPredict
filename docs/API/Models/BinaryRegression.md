@@ -26,25 +26,23 @@ BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, b
 
 * binaryFunction: The activation function to be used by the model. Available options are:
 
-  * Sigmoid [Normal Distribution] (Default)
+  * Sigmoid [Symmetric - Normal Assumption] (Default)
  
-  * Tanh
+  * Tanh [Symmetric - Zero-Centered]
 
-  * HardSigmoid
+  * HardSigmoid [Symmetric - Linear Approximation]
 
-  * SoftSign
+  * SoftSign [Symmetric - Heavy-Tailed]
 
-  * Swish
+  * ArcTangent [Symmetric - Bounded Tanh Alternative]
 
-  * ArcTangent
+  * Swish [Symmetric with Right-Skew Gate]
 
-  * Swish
+  * BipolarSigmoid [Symmetric - Output ±1]
 
-  * BipolarSigmoid
+  * Probit [Symmetric - Gaussian CDF]
 
-  * Probit 
-
-  * ComplementaryLogLog [Right Skewed Distribution]
+  * ComplementaryLogLog [Right-Skewed - Rare Events]
 
 * costFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
 

@@ -40,27 +40,21 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.3
 
-local defaultCostFunction = "L2"
+local defaultCostFunction = "MeanSquaredError"
 
-local lossFunctionList = {
+local lossFunctionList ={
 
-	["L1"] = function (x1, x2)
+	["MeanSquaredError"] = function (h, y) return (((h - y)^2) / 2) end,
 
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
+	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
 
-		return AqwamTensorLibrary:applyFunction(math.abs, part1) 
+}
 
-	end,
+local lossFunctionGradientList = {
 
-	["L2"] = function (x1, x2)
+	["MeanSquaredError"] = function (h, y) return (h - y) end,
 
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		local part2 = AqwamTensorLibrary:power(part1, 2) 
-
-		return AqwamTensorLibrary:divide(part2, 2)
-
-	end,
+	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
 
 }
 
@@ -68,7 +62,7 @@ function LinearRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 
-	local costVector = lossFunctionList[self.costFunction](hypothesisVector, labelVector) 
+	local costVector = AqwamTensorLibrary:applyFunction(lossFunctionList[self.costFunction], hypothesisVector, labelVector)
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
 	
@@ -216,6 +210,10 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 	end
 	
+	local lossFunctionGradientFunctionToApply = lossFunctionGradientList[self.costFunction]
+
+	if (not lossFunctionGradientFunctionToApply) then error("Invalid cost function.") end
+	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
 	local Optimizer = self.Optimizer
@@ -248,7 +246,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 		end
 
-		local lossGradientVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
+		local lossGradientVector = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, hypothesisVector, labelVector)
 
 		self:update(lossGradientVector, true)
 

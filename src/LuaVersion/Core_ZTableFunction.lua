@@ -675,22 +675,38 @@ function zTableFunction:getStandardNormalCumulativeDistributionFunction(zValue)
 		upperRowValue = rowValue
 		
 	end
+	
+	lowerRowValue = math.clamp(lowerRowValue, -3.9, 0)
+	
+	upperRowValue = math.clamp(upperRowValue, -3.9, 0)
+	
+	local lowerRowString = stringFormatFunction(rowStringFormat, lowerRowValue)
+
+	local upperRowString = stringFormatFunction(rowStringFormat, upperRowValue)
 
 	local lowerColumnString = stringFormatFunction(columnStringFormat, lowerColumnValue) -- Can go to -0.1, so we need to promote the row table.
 
 	local upperColumnString = stringFormatFunction(columnStringFormat, upperColumnValue) -- Can go to -0.11, so we need to promote the row table.
 	
-	local lowerRowString = stringFormatFunction(rowStringFormat, lowerRowValue)
-	
-	local upperRowString = stringFormatFunction(rowStringFormat, upperRowValue)
-	
 	local lowerRowTable = zTable[lowerRowString]
 
 	local upperRowTable = zTable[upperRowString]
 
-	local lowerCumulativeDistributionFunctionValue = lowerRowTable[lowerColumnString]
+	local lowerCumulativeDistributionFunctionValue 
 
-	local upperCumulativeDistributionFunctionValue = upperRowTable[upperColumnString]
+	local upperCumulativeDistributionFunctionValue
+	
+	if (lowerRowTable) then
+		
+		lowerCumulativeDistributionFunctionValue = lowerRowTable[lowerColumnString] 
+		
+	end
+	
+	if (upperRowTable) then
+		
+		upperCumulativeDistributionFunctionValue = upperRowTable[upperColumnString] 
+		
+	end
 
 	if (not lowerCumulativeDistributionFunctionValue) then return upperCumulativeDistributionFunctionValue end
 

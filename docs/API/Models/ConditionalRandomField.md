@@ -65,9 +65,9 @@ ConditionalRandomField:train(previousStateMatrix: Matrix, currentStateMatrix: Ma
 ```
 #### Parameters:
 
-* previousStateMatrix: Matrix containing all data.
+* previousStateMatrix: A matrix containing all previous state data.
 
-* currentStateMatrix: A (n x 1) matrix containing values related to featureMatrix.
+* currentStateMatrix: A matrix containing all current state data.
 
 #### Returns:
 
@@ -83,9 +83,9 @@ ConditionalRandomField:predict(previousStateMatrix: Matrix, returnOriginalOutput
 
 #### Parameters:
 
-* previousStateMatrix: Matrix containing all data.
+* previousStateMatrix: A matrix containing all previous state data.
 
-* returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability. 
+* returnOriginalOutput: Set whether or not to return predicted current state matrix instead of value with highest probability. 
 
 #### Returns:
 
@@ -95,7 +95,7 @@ ConditionalRandomField:predict(previousStateMatrix: Matrix, returnOriginalOutput
 
 -OR-
 
-* predictedMatrix: A matrix containing all predicted values from all classes.
+* predictedCurrentStateMatrix: A matrix containing all predicted values from all classes.
 
 ## Inherited From
 

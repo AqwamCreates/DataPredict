@@ -14,7 +14,7 @@ Table.new(learningRate: number, Optimizer: Optimizer: Object, StatesList: {any},
 
 * learningRate: The speed at which the algorithm learns. Recommended to set between 0 and 1.
 
-* Optimizer:
+* Optimizer: The optimizer object to be used.
 
 * StatesList: A list containing all the states.
 

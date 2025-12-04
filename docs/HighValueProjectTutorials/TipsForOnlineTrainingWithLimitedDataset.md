@@ -10,6 +10,8 @@ As such, we would recommend to scale the values relative to other values when po
 
 For two values \(v_1\) and \(v_2\):
 
+x = (value1 - value2) / (value1 + value 2)
+
 \[
 x_\text{scaled} = \frac{v_1 - v_2}{v_1 + v_2}
 \]

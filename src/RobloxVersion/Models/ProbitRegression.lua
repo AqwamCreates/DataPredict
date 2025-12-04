@@ -42,17 +42,17 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
 
-local function calculateGradientFunction(hypothesisValue, labelValue, zValue)
+local function calculateNegativeLogLikelihoodGradientFunction(hypothesisValue, labelValue, zValue)
 	
 	local probabilityDensityFunctionValue = math.exp(-0.5 * math.pow(zValue, 2)) / math.sqrt(2 * math.pi)
 
-	return (probabilityDensityFunctionValue * ((labelValue / hypothesisValue) - ((1 - labelValue) / (1 - hypothesisValue))))
+	return -(probabilityDensityFunctionValue * ((labelValue / hypothesisValue) - ((1 - labelValue) / (1 - hypothesisValue))))
 	
 end
 
-local function calculateLogLikelihood(hypothesisValue, labelValue)
+local function calculateNegativeLogLikelihoodFunction(hypothesisValue, labelValue)
 	
-	return (labelValue * math.log(hypothesisValue)) + ((1 - labelValue) * math.log(1 - hypothesisValue))
+	return -(labelValue * math.log(hypothesisValue)) + ((1 - labelValue) * math.log(1 - hypothesisValue))
 	
 end
 
@@ -64,9 +64,9 @@ end
 	
 function ProbitRegressionModel:calculateCost(hypothesisVector, labelVector)
 
-	local costVector = AqwamTensorLibrary:applyFunction(calculateLogLikelihood, hypothesisVector, labelVector)
+	local costVector = AqwamTensorLibrary:applyFunction(calculateNegativeLogLikelihoodFunction, hypothesisVector, labelVector)
 
-	local totalCost = -AqwamTensorLibrary:sum(costVector)
+	local totalCost = AqwamTensorLibrary:sum(costVector)
 	
 	local Regularizer = self.Regularizer
 

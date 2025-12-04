@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
-local zTableFunction = require("Core_ZTableFunction")
+local ZTableFunction = require("Core_ZTableFunction")
 
 local BayesianQuantileLinearRegressionModel = {}
 
@@ -176,7 +176,7 @@ function BayesianQuantileLinearRegressionModel:predict(featureMatrix, quantileMa
 		
 		for j, quantileValue in ipairs(unwrappedQuantileVector) do
 			
-			zValue = zTableFunction:calculateStandardNormalInverseCumulativeDistributionValue(quantileValue)
+			zValue = ZTableFunction:calculateStandardNormalInverseCumulativeDistributionValue(quantileValue)
 			
 			unwrappedPredictedQuantileVector[j] = predictedMeanValue + (zValue * predictedStandardDeviationValue)
 			

@@ -22,7 +22,7 @@
 
 * Before you engage in integrating models into live projects, I recommend you to have a look at safe practices [here](HighValueProjectTutorials/SafePracticesForLiveProjects.md).
 
-* If you want to perform online training with limited dataset, I recommend you to have a look at the tips [here](HighValueProjectTutorials/TipsForOnlineTrainingWithLimitedDataset.md)
+* If you want to perform online training with limited dataset, I recommend you to have a look at the tips [here](HighValueProjectTutorials/TipsForOnlineTrainingWithLimitedDataset.md).
 
 * The content of this page and its links are licensed under the DataPredict™ library's [Terms And Conditions](TermsAndConditions.md). This includes the codes shown in the links below.
 

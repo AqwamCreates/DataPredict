@@ -72,7 +72,7 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	LogisticRegression = require(Models.LogisticRegression),
 	
-	QuasiProbitRegression = require(Models.QuasiProbitRegression),
+	ProbitRegression = require(Models.ProbitRegression),
 	
 	PassiveAggressiveClassifier = require(Models.PassiveAggressiveClassifier),
 	

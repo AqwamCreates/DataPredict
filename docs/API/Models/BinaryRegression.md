@@ -26,7 +26,7 @@ BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, b
 
 * binaryFunction: The activation function to be used by the model. Available options are:
 
-  * Sigmoid (Default)
+  * Sigmoid [Normal Distribution] (Default)
  
   * Tanh
 
@@ -42,9 +42,9 @@ BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, b
 
   * BipolarSigmoid
 
-  * Probit
+  * Probit 
 
-  * ComplementaryLogLog
+  * ComplementaryLogLog [Right Skewed Distribution]
 
 * costFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
 

@@ -7,7 +7,7 @@
 Creates a new base model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-Table.new(learningRate: number, Optimizer: Optimizer: Object, StatesList: {any}, ActionList: {any}): ModelObject
+Table.new(learningRate: number, Optimizer: Optimizer: Object, FeaturesList: {any}, ClassesList: {any}): ModelObject
 ```
 
 #### Parameters:
@@ -16,9 +16,9 @@ Table.new(learningRate: number, Optimizer: Optimizer: Object, StatesList: {any},
 
 * Optimizer: The optimizer object to be used.
 
-* StatesList: A list containing all the states.
+* FeaturesList: A list containing all the features.
 
-* ActionList: A list containing all the actions. 
+* ClassesList: A list containing all the classes. 
 
 #### Returns:
 

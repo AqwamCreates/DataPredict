@@ -15,7 +15,7 @@
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 2     |
-| [Feature-Class Look Up](#feature-class-look-up)                   | Outlier Score Generation                        | 1     |
+| [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                        | 1     |
 | Total                                                             |                                                 | 87    |
 
 ### Legend
@@ -208,7 +208,7 @@
 | [LocalOutlierFactor](Models/LocalOutlierFactor.md)           | LOF             | 🟢 🟡     | Score-Based Play-Time Milestone Detection       |
 | [LocalOutlierProbability](Models/LocalOutlierProbability.md) | LoOP            | 🟢 🟡     | Probability-Based Play-Time Milestone Detection |
 
-## Feature-Class Look Up
+## Feature-Class Containers
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 

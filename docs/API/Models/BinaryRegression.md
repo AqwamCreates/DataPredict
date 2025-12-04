@@ -26,23 +26,17 @@ BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, b
 
 * binaryFunction: The activation function to be used by the model. Available options are:
 
-  * Sigmoid [Symmetric - Normal Assumption] (Default)
- 
-  * Tanh [Symmetric - Zero-Centered]
-
-  * HardSigmoid [Symmetric - Linear Approximation]
-
-  * SoftSign [Symmetric - Heavy-Tailed]
-
-  * ArcTangent [Symmetric - Bounded Tanh Alternative]
-
-  * Swish [Symmetric with Right-Skew Gate]
-
-  * BipolarSigmoid [Symmetric - Output ±1]
-
-  * Probit [Symmetric - Gaussian CDF]
-
-  * ComplementaryLogLog [Right-Skewed - Rare Events]
+| Function            | Skewness              | Output Range | Use Cases                                                         |
+|---------------------|-----------------------|--------------|-------------------------------------------------------------------|
+| Sigmoid (Default)   | Symmetric             | (0, 1)       | Player Choice (A/B), Engagement Prediction, Click-Through Rates   |
+| Tanh                | Symmetric             | (-1, 1)      | Like / Dislike, Positive / Negative Feedback, Preference Modeling |
+| HardSigmoid         | Symmetric             | (0, 1)       | Same As Sigmoid, But Mobile / Real-Time Prediction                |
+| SoftSign            | Symmetric             | (-1, 1)      | Gradual Preference Changes, Soft Decisions                        |
+| ArcTangent          | Symmetric             | (-π/2, π/2)  | Academic / Research Alternative To Tanh                           |
+| Swish               | Slightly Right-Skewed | (-0.28, ∞)   | Complex feature interactions                                      |
+| BipolarSigmoid      | Symmetric             | (-1, 1)      | Win / Lose, Accept / Reject, Binary Outcomes With Magnitude       |
+| Probit              | Symmetric             | (0, 1)       | Skill-Based Success, Ability Checks, Normally Distributed Traits  |
+| ComplementaryLogLog | Right-Skewed          | (0, 1)       | In-App Purchases, Time-To-Leave Prediction                        |
 
 * costFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
 

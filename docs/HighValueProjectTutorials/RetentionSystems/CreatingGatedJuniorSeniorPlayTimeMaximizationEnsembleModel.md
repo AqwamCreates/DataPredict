@@ -98,7 +98,7 @@ table.insert(JuniorClassesList, "ConsultSenior")
 
 local TimeToLeavePredictionModel = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01})
 
-local ProbabilityToLeavePredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01})
+local ProbabilityToLeavePredictionModel = DataPredict.Models.BinaryRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01})
 
 -- The code shown below checks if we already have trained the models previously.
 

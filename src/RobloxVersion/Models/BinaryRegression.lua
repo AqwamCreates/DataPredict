@@ -76,6 +76,8 @@ local binaryFunctionList = {
 	
 	["Probit"] = function(z) return ZTableFunction:getStandardNormalCumulativeDistributionFunction(math.clamp(z, -3.9, 3.9)) end,
 	
+	["LogLog"] = function(z) return math.exp(-math.exp(-z)) end,
+	
 	["ComplementaryLogLog"] = function(z) return (1 - math.exp(-math.exp(z))) end
 
 }
@@ -110,6 +112,8 @@ local binaryFunctionGradientList = {
 	
 	["Probit"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
 	
+	["LogLog"] = function(h, z) return math.exp(-z) * math.exp(-math.exp(-z)) end,
+	
 	["ComplementaryLogLog"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end
 	
 }
@@ -134,29 +138,29 @@ local lossFunctionGradientList = {
 	
 }
 
-local cutOffList = {
+local minimumOutputValueList = {
 	
-	["0.5"] = {"Sigmoid", "HardSigmoid", "Swish", "Probit", "ComplementaryLogLog"}, -- 0.5 threshold for [0, 1] functions.
+	["0"] = {"Sigmoid", "HardSigmoid", "Swish", "Probit", "LogLog", "ComplementaryLogLog"}, -- 0.5 threshold for [0, 1] functions.
 
-	["0"] = {"Tanh", "SoftSign", "ArcTangent", "BipolarSigmoid"}, -- 0 threshold for [-1, 1] functions.
+	["-1"] = {"Tanh", "SoftSign", "ArcTangent", "BipolarSigmoid"}, -- 0 threshold for [-1, 1] functions.
 	
 }
 
 local function getCutOffFunction(binaryFunction)
 	
-	for stringCutOffValue, binaryFunctionArray in pairs(cutOffList) do
+	for stringMinimumOutputValue, binaryFunctionArray in pairs(minimumOutputValueList) do
 
 		if (table.find(binaryFunctionArray, binaryFunction)) then
 
-			local cutOffValue = tonumber(stringCutOffValue)
-
-			local lowerValue = (cutOffValue == 0.5) and 0 or -1
+			local minimumOutputValue = tonumber(stringMinimumOutputValue)
+			
+			local cutOffValue = (1 - minimumOutputValue) / 2
 
 			local cutOffFunction = function(x) 
 
 				if (x > cutOffValue) then return 1 end
 
-				if (x < cutOffValue) then return lowerValue end
+				if (x < cutOffValue) then return minimumOutputValue end
 
 				return cutOffValue
 

@@ -590,6 +590,21 @@ local zTable = {
 		["-0.09"] = 0.46414,
 
 	},
+	
+	["0.0"] = { --There is a non-negative version of the minus zero value. Hence, this is created to avoid bugs.
+
+		["-0.00"] = 0.50000,
+		["-0.01"] = 0.49601,
+		["-0.02"] = 0.49202,
+		["-0.03"] = 0.48803,
+		["-0.04"] = 0.48405,
+		["-0.05"] = 0.48006,
+		["-0.06"] = 0.47608,
+		["-0.07"] = 0.47210,
+		["-0.08"] = 0.46812,
+		["-0.09"] = 0.46414,
+
+	},
 
 }
 
@@ -603,7 +618,15 @@ local rowStringFormat = "%.1f"
 
 local columnStringFormat = "%.2f"
 
-function zTableFunction:calculateStandardNormalCumulativeDistributionValue(zValue)
+local function forceNegative(value)
+	
+	if (value <= 0) then return value end
+	
+	return -value
+	
+end
+
+function zTableFunction:getStandardNormalCumulativeDistributionFunction(zValue)
 
 	local rowStringFormat = rowStringFormat
 
@@ -619,31 +642,61 @@ function zTableFunction:calculateStandardNormalCumulativeDistributionValue(zValu
 
 	local rowValue = math.floor(clampedZValue * 10) / 10
 
-	local rowString = stringFormatFunction(rowStringFormat, rowValue)
-
-	local rowTable = zTable[rowString]
-
-	if (not rowTable) then return end
-
 	local columnValue = rowValue - finalZValue
 
 	local lowerColumnValue = math.floor(columnValue * 100) / 100
 
-	local upperColumnValue = lowerColumnValue + 0.01
+	local upperColumnValue = lowerColumnValue - 0.01
+	
+	local lowerRowValue
+	
+	local upperRowValue
+	
+	if (lowerColumnValue <= -0.1) then
+		
+		lowerColumnValue = lowerColumnValue + 0.1
+		
+		lowerRowValue = rowValue - 0.1
+		
+	else
+		
+		lowerRowValue = rowValue
+		
+	end
+	
+	if (upperColumnValue <= -0.1) then
+		
+		upperColumnValue = upperColumnValue + 0.1
+		
+		upperRowValue = rowValue - 0.1
+		
+	else
 
-	local lowerColumnString = stringFormatFunction(columnStringFormat, lowerColumnValue)
+		upperRowValue = rowValue
+		
+	end
 
-	local upperColumnString = stringFormatFunction(columnStringFormat, upperColumnValue)
+	local lowerColumnString = stringFormatFunction(columnStringFormat, lowerColumnValue) -- Can go to -0.1, so we need to promote the row table.
 
-	local lowerCumulativeDistributionFunctionValue = rowTable[lowerColumnString]
+	local upperColumnString = stringFormatFunction(columnStringFormat, upperColumnValue) -- Can go to -0.11, so we need to promote the row table.
+	
+	local lowerRowString = stringFormatFunction(rowStringFormat, lowerRowValue)
+	
+	local upperRowString = stringFormatFunction(rowStringFormat, upperRowValue)
+	
+	local lowerRowTable = zTable[lowerRowString]
 
-	local upperCumulativeDistributionFunctionValue = rowTable[upperColumnString]
+	local upperRowTable = zTable[upperRowString]
+
+	local lowerCumulativeDistributionFunctionValue = lowerRowTable[lowerColumnString]
+
+	local upperCumulativeDistributionFunctionValue = upperRowTable[upperColumnString]
 
 	if (not lowerCumulativeDistributionFunctionValue) then return upperCumulativeDistributionFunctionValue end
 
 	if (not upperCumulativeDistributionFunctionValue) then return lowerCumulativeDistributionFunctionValue end
 
-	local fraction = (finalZValue - lowerColumnValue) / (upperColumnValue - lowerColumnValue)
+	local fraction = (columnValue - lowerColumnValue) / (upperColumnValue - lowerColumnValue)
 
 	local cumulativeDistributionFunctionValue = lowerCumulativeDistributionFunctionValue + (upperCumulativeDistributionFunctionValue - lowerCumulativeDistributionFunctionValue) * fraction
 
@@ -653,7 +706,7 @@ function zTableFunction:calculateStandardNormalCumulativeDistributionValue(zValu
 
 end
 
-function zTableFunction:calculateStandardNormalInverseCumulativeDistributionValue(probability)
+function zTableFunction:getStandardNormalInverseCumulativeDistributionFunction(probability)
 
 	local rowStringFormat = rowStringFormat
 

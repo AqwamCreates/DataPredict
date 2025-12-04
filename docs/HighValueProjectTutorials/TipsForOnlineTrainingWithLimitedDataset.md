@@ -1,6 +1,6 @@
 # Tips For Online Training With Limited Dataset
 
-## Avoid using Z-Score And Minimum-Maximum Normalization
+## Avoid Using Z-Score And Minimum-Maximum Normalization
 
 Z-Score and minimum-maximum normalization have this issue where the distribution changes when you use different datasets to train the same models.
 

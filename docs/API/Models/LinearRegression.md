@@ -24,7 +24,7 @@ LinearRegression.new(maximumNumberOfIterations: integer, learningRate: number, c
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
-* costFunction: The function to calculate the cost of each training. Available options are "L1" and "L2".
+* costFunction: The function to calculate the cost of each training. Available options are "MeanSquaredError" and "MeanAbsoluteError".
 
 #### Returns:
 

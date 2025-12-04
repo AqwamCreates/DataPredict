@@ -42,6 +42,10 @@ BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, b
 
   * BipolarSigmoid
 
+  * Probit
+
+  * ComplementaryLogLog
+
 * costFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
 
   * BinaryCrossEntropy (Default)

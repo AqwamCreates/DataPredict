@@ -6,8 +6,6 @@ Z-Score and minimum-maximum normalization have this issue where the distribution
 
 As such, we would recommend to scale the values relative to other values when possible. Below, we will show you how it can be done.
 
-### Difference-Ratio Scaling
-
-For two values \(v_1\) and \(v_2\):
-
-x = (value1 - value2) / (value1 + value 2)
+```
+x = (value1 - value2) / (value1 + value2)
+```

@@ -26,18 +26,18 @@ BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, b
 
 * binaryFunction: The activation function to be used by the model. Available options are:
 
-| Function            | Skewness              | Output Range | Use Cases                                                                  |
-|---------------------|-----------------------|--------------|----------------------------------------------------------------------------|
-| Sigmoid (Default)   | Symmetric             | (0, 1)       | Player Choice (A/B), Engagement Prediction, Click-Through Rates            |
-| HardSigmoid         | Symmetric             | (0, 1)       | Same As Sigmoid, But Mobile / Real-Time Prediction                         |
-| Probit              | Symmetric             | (0, 1)       | Skill-Based Success, Ability Checks, Normally Distributed Traits           |
-| BipolarSigmoid      | Symmetric             | (-1, 1)      | Win / Lose, Accept / Reject, Binary Outcomes With Magnitude                |
-| Tanh                | Symmetric             | (-1, 1)      | Like / Dislike, Positive / Negative Feedback, Preference Modeling          |
-| SoftSign            | Symmetric             | (-1, 1)      | Gradual Preference Changes, Soft Decisions                                 |
-| ArcTangent          | Symmetric             | (-π/2, π/2)  | Academic / Research Alternative To Tanh                                    |
-| Swish               | Slightly Right-Skewed | (-0.28, ∞)   | Complex feature interactions                                               |
-| ComplementaryLogLog | Right-Skewed          | (0, 1)       | Rare Events Prediction: In-App Purchases, Time-To-Leave Prediction         |
-| LogLog              | Left-Skewed           | (0, 1)       | Common Events Prediction: Tutorial Completion, Early Wins, First Purchases |
+| Function            | Output Range | Skewness              | Use Cases                                                                  |
+|---------------------|--------------|-----------------------|----------------------------------------------------------------------------|
+| Sigmoid (Default)   | (0, 1)       | Symmetric             | Player Choice (A/B), Engagement Prediction, Click-Through Rates            |
+| HardSigmoid         | (0, 1)       | Symmetric             | Same As Sigmoid, But Mobile / Real-Time Prediction                         |
+| Probit              | (0, 1)       | Symmetric             | Skill-Based Success, Ability Checks, Normally Distributed Traits           |
+| BipolarSigmoid      | (-1, 1)      | Symmetric             | Win / Lose, Accept / Reject, Binary Outcomes With Magnitude                |
+| Tanh                | (-1, 1)      | Symmetric             | Like / Dislike, Positive / Negative Feedback, Preference Modeling          |
+| SoftSign            | (-1, 1)      | Symmetric             | Gradual Preference Changes, Soft Decisions                                 |
+| ArcTangent          | (-π/2, π/2)  | Symmetric             | Academic / Research Alternative To Tanh                                    |
+| Swish               | (-0.28, ∞)   | Slightly Right-Skewed | Complex feature interactions                                               |
+| ComplementaryLogLog | (0, 1)       | Right-Skewed          | Rare Events Prediction: In-App Purchases, Time-To-Leave Prediction         |
+| LogLog              | (0, 1)       | Left-Skewed           | Common Events Prediction: Tutorial Completion, Early Wins, First Purchases |
 
 * costFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
 

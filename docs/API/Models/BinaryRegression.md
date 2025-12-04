@@ -36,7 +36,8 @@ BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, b
 | Swish               | Slightly Right-Skewed | (-0.28, ∞)   | Complex feature interactions                                      |
 | BipolarSigmoid      | Symmetric             | (-1, 1)      | Win / Lose, Accept / Reject, Binary Outcomes With Magnitude       |
 | Probit              | Symmetric             | (0, 1)       | Skill-Based Success, Ability Checks, Normally Distributed Traits  |
-| ComplementaryLogLog | Right-Skewed          | (0, 1)       | Rare Event Threshold, In-App Purchases, Time-To-Leave Prediction  |
+| ComplementaryLogLog | Right-Skewed          | (0, 1)       | Rare Events: In-App Purchases, Time-To-Leave Prediction           |
+| LogLog              | Left-Skewed           | (0, 1)       | Common Events: Tutorial Completion, Early Wins, First Purchases   |
 
 * costFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
 

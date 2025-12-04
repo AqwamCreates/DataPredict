@@ -72,7 +72,7 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	LogisticRegression = require(Models.LogisticRegression),
 	
-	ProbitRegression = require(Models.ProbitRegression),
+	QuasiProbitRegression = require(Models.QuasiProbitRegression),
 	
 	PassiveAggressiveClassifier = require(Models.PassiveAggressiveClassifier),
 	
@@ -212,7 +212,11 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 
 	ConditionalWassersteinGenerativeAdversarialNetwork = require(Models.ConditionalWassersteinGenerativeAdversarialNetwork),
 	
-	Table = require(Models.Table)
+	LocalOutlierFactor = require(Models.LocalOutlierFactor),
+	
+	LocalOutlierProbability = require(Models.LocalOutlierProbability),
+	
+	Table = require(Models.Table),
 
 }
 

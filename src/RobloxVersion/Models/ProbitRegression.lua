@@ -66,13 +66,13 @@ function ProbitRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 	local costVector = AqwamTensorLibrary:applyFunction(calculateLogLikelihood, hypothesisVector, labelVector)
 
-	local totalCost = AqwamTensorLibrary:sum(costVector)
+	local totalCost = -AqwamTensorLibrary:sum(costVector)
 	
 	local Regularizer = self.Regularizer
 
 	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
 
-	local averageCost = -totalCost / #labelVector
+	local averageCost = totalCost / #labelVector
 
 	return averageCost
 

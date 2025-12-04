@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - LogisticRegression
+# [API Reference](../../API.md) - [Models](../Models.md) - BinaryRegression
 
-LogisticRegression is a supervised machine learning model that predicts values of 0 and 1 only.
+BinaryRegression is a supervised machine learning model that handles the generalized binary regression functions.
 
 ## Stored Model Parameters
 
@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-LogisticRegression.new(maximumNumberOfIterations: integer, learningRate: number, sigmoidFunction: string): ModelObject
+BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, binaryFunction: string, costFunction: string): ModelObject
 ```
 
 #### Parameters:
@@ -24,7 +24,7 @@ LogisticRegression.new(maximumNumberOfIterations: integer, learningRate: number,
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
-* sigmoidFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
+* binaryFunction: The activation function to be used by the model. Available options are:
 
   * Sigmoid (Default)
  
@@ -42,6 +42,14 @@ LogisticRegression.new(maximumNumberOfIterations: integer, learningRate: number,
 
   * BipolarSigmoid
 
+* costFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
+
+  * BinaryCrossEntropy (Default)
+ 
+  * MeanSquaredError
+
+  * MeanAbsoluteError
+
 #### Returns:
 
 * ModelObject: The generated model object.
@@ -53,7 +61,7 @@ LogisticRegression.new(maximumNumberOfIterations: integer, learningRate: number,
 Set optimizer for the model by inputting the optimizer object.
 
 ```
-LogisticRegression:setOptimizer(Optimizer: OptimizerObject)
+BinaryRegression:setOptimizer(Optimizer: OptimizerObject)
 ```
 
 #### Parameters:
@@ -65,7 +73,7 @@ LogisticRegression:setOptimizer(Optimizer: OptimizerObject)
 Set a regularization for the model by inputting the optimizer object.
 
 ```
-LogisticRegression:setRegularizer(Regularizer: RegularizerObject)
+BinaryRegression:setRegularizer(Regularizer: RegularizerObject)
 ```
 
 #### Parameters:
@@ -77,7 +85,7 @@ LogisticRegression:setRegularizer(Regularizer: RegularizerObject)
 Train the model.
 
 ```
-LogisticRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+BinaryRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 #### Parameters:
 
@@ -94,7 +102,7 @@ LogisticRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 Predict the values for given data.
 
 ```
-LogisticRegression:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+BinaryRegression:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:

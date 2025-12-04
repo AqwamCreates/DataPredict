@@ -62,7 +62,7 @@ local PlayTimeMaximizationModelClassesList = {
 
 local TimeToLeavePredictionModel = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01})
 
-local ProbabilityToLeavePredictionModel = DataPredict.Models.BinaryRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01})
+local ProbabilityToLeavePredictionModel = DataPredict.Models.BinaryRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01, binaryFunction = "ComplementaryLogLog"})
 
 -- The code shown below checks if we already have trained the models previously.
 

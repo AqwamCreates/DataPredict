@@ -22,6 +22,7 @@ The algorithms under the same group can have its model parameters swapped withou
 * PassiveAggressiveRegressor
 
 * LogisticRegression
+* ProbitRegression
 * SupportVectorMachineGradientVariant
 * PassiveAggressiveClassifier
 * OneClassPassiveAggressiveClassifier

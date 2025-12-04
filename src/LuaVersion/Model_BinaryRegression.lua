@@ -42,7 +42,7 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.1
 
-local defaultBinaryFunction = "Sigmoid"
+local defaultBinaryFunction = "Logistic"
 
 local defaultCostFunction = "BinaryCrossEntropy"
 
@@ -54,7 +54,7 @@ end
 
 local binaryFunctionList = {
 
-	["Sigmoid"] = function (z) return (1/(1 + math.exp(-z))) end,
+	["Logistic"] = function (z) return (1/(1 + math.exp(-z))) end,
 
 	["Tanh"] = function (z) return math.tanh(z) end,
 	
@@ -84,7 +84,7 @@ local binaryFunctionList = {
 
 local binaryFunctionGradientList = {
 	
-	["Sigmoid"] = function (h, z) return (h * (1 - h)) end,
+	["Logistic"] = function (h, z) return (h * (1 - h)) end,
 	
 	["Tanh"] = function (h, z) return (1 - math.pow(h, 2)) end,
 	

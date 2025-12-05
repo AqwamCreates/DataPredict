@@ -505,11 +505,13 @@ local minimumOutputValueList = {
 
 }
 
-local function getCutOffFunction(binaryFunction)
+local function getCutOffFunctionList()
+
+	local cutOffFunctionList = {}
 
 	for stringMinimumOutputValue, binaryFunctionArray in pairs(minimumOutputValueList) do
 
-		if (table.find(binaryFunctionArray, binaryFunction)) then
+		for _, binaryFunction in ipairs(binaryFunctionArray) do
 
 			local minimumOutputValue = tonumber(stringMinimumOutputValue)
 
@@ -525,15 +527,17 @@ local function getCutOffFunction(binaryFunction)
 
 			end
 
-			return cutOffFunction
+			cutOffFunctionList[binaryFunction] = cutOffFunction
 
 		end
 
 	end
 
-	error("Unknown cut-off function.")
+	return cutOffFunctionList
 
 end
+
+local cutOffFunctionList = getCutOffFunctionList()
 
 local function createClassesList(labelVector)
 
@@ -1077,7 +1081,7 @@ function NeuralNetworkModel:fetchValueFromScalar(outputVector)
 
 	local activationFunctionAtFinalLayer = self:getActivationLayerAtFinalLayer()
 	
-	local cutOffFunction = getCutOffFunction(activationFunctionAtFinalLayer)
+	local cutOffFunction = cutOffFunctionList[activationFunctionAtFinalLayer]
 
 	local isValueOverCutOff = cutOffFunction(value)
 

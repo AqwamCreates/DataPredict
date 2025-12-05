@@ -88,6 +88,14 @@ local binaryFunctionGradientList = {
 	
 	["Logistic"] = function (h, z) return (h * (1 - h)) end,
 	
+	["Logit"] = function (h, z) return (h * (1 - h)) end,
+	
+	["Probit"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
+
+	["LogLog"] = function(h, z) return math.exp(-z) * math.exp(-math.exp(-z)) end,
+
+	["ComplementaryLogLog"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end,
+	
 	["Tanh"] = function (h, z) return (1 - math.pow(h, 2)) end,
 	
 	["HardSigmoid"] = function (h, z) return ((h <= 0 or h >= 1) and 0) or 0.5 end,
@@ -111,12 +119,6 @@ local binaryFunctionGradientList = {
 		return (2 * sigmoidValue * (1 - sigmoidValue))
 		
 	end,
-	
-	["Probit"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
-	
-	["LogLog"] = function(h, z) return math.exp(-z) * math.exp(-math.exp(-z)) end,
-	
-	["ComplementaryLogLog"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end
 	
 }
 

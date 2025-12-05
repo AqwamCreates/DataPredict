@@ -146,11 +146,13 @@ local minimumOutputValueList = {
 	
 }
 
-local function getCutOffFunction(binaryFunction)
+local function getCutOffFunctionList()
+	
+	local cutOffFunctionList = {}
 	
 	for stringMinimumOutputValue, binaryFunctionArray in pairs(minimumOutputValueList) do
 
-		if (table.find(binaryFunctionArray, binaryFunction)) then
+		for _, binaryFunction in ipairs(binaryFunctionArray) do
 
 			local minimumOutputValue = tonumber(stringMinimumOutputValue)
 			
@@ -166,15 +168,17 @@ local function getCutOffFunction(binaryFunction)
 
 			end
 
-			return cutOffFunction
+			cutOffFunctionList[binaryFunction] = cutOffFunction
 
 		end
 
 	end
 	
-	error("Unknown cut-off function.")
+	return cutOffFunctionList
 	
 end
+
+local cutOffFunctionList = getCutOffFunctionList()
 
 function BinaryRegressionModel:calculateCost(hypothesisVector, labelVector)
 
@@ -416,7 +420,7 @@ function BinaryRegressionModel:predict(featureMatrix, returnOriginalOutput)
 
 	if (returnOriginalOutput) then return outputVector end
 	
-	local cutOffFunction = getCutOffFunction(self.binaryFunction)
+	local cutOffFunction = cutOffFunctionList[self.binaryFunction]
 
 	local predictedLabelVector = AqwamTensorLibrary:applyFunction(cutOffFunction, outputVector)
 

@@ -198,6 +198,8 @@ local elementWiseActivationFunctionList = {
 	end,
 
 	["SoftSign"] = function (z) return (z / (1 + math.abs(z))) end,
+	
+	["SoftPlus"] = function (z) return (1 + math.exp(z)) end,
 
 	["ArcTangent"] = function (z) return (2 / math.pi) * math.atan(z) end,
 
@@ -235,6 +237,48 @@ local activationFunctionList = {
 
 		return aMatrix
 
+	end,
+	
+	["Maxout"] = function (zMatrix)
+		
+		local numberOfFeatures = #zMatrix[1]
+		
+		local aMatrix = {}
+		
+		local unwrappedAVector
+		
+		local maximumValue
+		
+		local featureIndexWithTheMaximumValue
+		
+		for dataIndex, unwrappedZVector in ipairs(zMatrix) do
+			
+			unwrappedAVector = table.create(numberOfFeatures, 0)
+			
+			maximumValue = -math.huge
+			
+			featureIndexWithTheMaximumValue = nil
+			
+			for featureIndex, zValue in ipairs(unwrappedZVector) do
+				
+				if (zValue > maximumValue) then
+					
+					maximumValue = zValue
+					
+					featureIndexWithTheMaximumValue = featureIndex
+					
+				end
+				
+			end
+			
+			unwrappedAVector[featureIndexWithTheMaximumValue] = maximumValue
+			
+			aMatrix[dataIndex] = unwrappedAVector
+			
+		end
+		
+		return aMatrix
+		
 	end,
 
 	["None"] = function (zMatrix) return zMatrix end,
@@ -304,6 +348,8 @@ local elementWiseActivationFunctionDerivativeList = {
 	["HardSigmoid"] = function (h, z) return ((h <= 0 or h >= 1) and 0) or 0.5 end,
 
 	["SoftSign"] = function (h, z) return (1 / ((1 + math.abs(z))^2)) end,
+	
+	["SoftPlus"] = function(z) return 1/(1 + math.exp(-1 * z)) end,
 
 	["ArcTangent"] = function (h, z) return ((2 / math.pi) * (1 / (1 + z^2))) end,
 
@@ -401,6 +447,48 @@ local activationFunctionDerivativeList = {
 
 		end
 
+		return derivativeMatrix
+
+	end,
+	
+	["Maxout"] = function (aMatrix, zMatrix)
+
+		local numberOfFeatures = #zMatrix[1]
+
+		local derivativeMatrix = {}
+
+		local unwrappedDerivativeVector
+
+		local maximumValue
+
+		local featureIndexWithTheMaximumValue
+
+		for dataIndex, unwrappedZVector in ipairs(zMatrix) do
+
+			unwrappedDerivativeVector = table.create(numberOfFeatures, 0)
+
+			maximumValue = -math.huge
+
+			featureIndexWithTheMaximumValue = nil
+
+			for featureIndex, zValue in ipairs(unwrappedZVector) do
+
+				if (zValue > maximumValue) then
+
+					maximumValue = zValue
+
+					featureIndexWithTheMaximumValue = featureIndex
+
+				end
+
+			end
+
+			unwrappedDerivativeVector[featureIndexWithTheMaximumValue] = 1
+
+			derivativeMatrix[dataIndex] = unwrappedDerivativeVector
+
+		end
+		
 		return derivativeMatrix
 
 	end,

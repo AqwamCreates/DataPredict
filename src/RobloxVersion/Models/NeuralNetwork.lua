@@ -175,28 +175,6 @@ local elementWiseActivationFunctionList = {
 
 	["BinaryStep"] = function (z) return ((z > 0) and 1) or 0 end,
 	
-	["LogitLink"] = function (z) 
-		
-		local x = math.clamp(z, epsilon, epsilonComplement)
-		
-		return math.log(x / (1 - x))
-		
-	end,
-	
-	["LogitInverseLink"] = function (z) return 1/(1 + math.exp(-1 * z)) end,
-	
-	["LogLogLink"] = function (z) return math.log(-math.log(math.clamp(z, epsilon, 1))) end,
-	
-	["LogLogInverseLink"] = function (z) return math.exp(-math.exp(-z)) end,
-	
-	["ComplementaryLogLogLink"] = function (z) return math.log(-math.log(1 - math.clamp(z, 0, epsilonComplement))) end,
-
-	["ComplementaryLogLogInverseLink"] = function (z) return (1 - math.exp(-math.exp(z))) end,
-	
-	["ProbitLink"] = function (z) return ZTableFunction:getStandardNormalInverseCumulativeDistributionFunction(math.clamp(z, 0, 1)) end,
-	
-	["ProbitInverseLink"] = function (z) return ZTableFunction:getStandardNormalCumulativeDistributionFunction(math.clamp(z, -3.9, 3.9)) end,
-	
 	["HardSigmoid"] = function (z)
 
 		local x = (z + 1) / 2
@@ -214,6 +192,28 @@ local elementWiseActivationFunctionList = {
 	["Swish"] = function (z) return (z / (1 + math.exp(-z))) end,
 
 	["BipolarSigmoid"] = function (z) return (2 / (1 + math.exp(-z)) - 1) end,
+	
+	["LogitLink"] = function (z) 
+
+		local x = math.clamp(z, epsilon, epsilonComplement)
+
+		return math.log(x / (1 - x))
+
+	end,
+
+	["LogitInverseLink"] = function (z) return 1/(1 + math.exp(-1 * z)) end,
+
+	["LogLogLink"] = function (z) return math.log(-math.log(math.clamp(z, epsilon, 1))) end,
+
+	["LogLogInverseLink"] = function (z) return math.exp(-math.exp(-z)) end,
+
+	["ComplementaryLogLogLink"] = function (z) return math.log(-math.log(1 - math.clamp(z, 0, epsilonComplement))) end,
+
+	["ComplementaryLogLogInverseLink"] = function (z) return (1 - math.exp(-math.exp(z))) end,
+
+	["ProbitLink"] = function (z) return ZTableFunction:getStandardNormalInverseCumulativeDistributionFunction(math.clamp(z, 0, 1)) end,
+
+	["ProbitInverseLink"] = function (z) return ZTableFunction:getStandardNormalCumulativeDistributionFunction(math.clamp(z, -3.9, 3.9)) end,
 	
 }
 
@@ -345,22 +345,6 @@ local elementWiseActivationFunctionDerivativeList = {
 
 	["Mish"] = function (h, z) return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2) end,
 	
-	["LogitLink"] = function (h, z) return (1 / (z * (1 - z))) end,
-	
-	["LogitInverseLink"] = function (h, z) return (h * (1 - h)) end,
-	
-	["LogLogLink"] = function (h, z) return 1 / (z * math.log(z)) end,
-	
-	["LogLogInverseLink"] = function(h, z) return math.exp(-z) * math.exp(-math.exp(-z)) end,
-	
-	["ComplementaryLogLogLink"] = function(h, z) return 1 / ((1 - z) * math.log((1 - z))) end,
-
-	["ComplementaryLogLogInverseLink"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end,
-	
-	["ProbitLink"] = function (h, z) return 1 / calculateProbabilityDensityFunctionValue(h) end,
-	
-	["ProbitInverseLink"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
-	
 	["HardSigmoid"] = function (h, z) return ((h <= 0 or h >= 1) and 0) or 0.5 end,
 
 	["SoftSign"] = function (h, z) return (1 / ((1 + math.abs(z))^2)) end,
@@ -384,6 +368,22 @@ local elementWiseActivationFunctionDerivativeList = {
 		return (2 * sigmoidValue * (1 - sigmoidValue))
 
 	end,
+	
+	["LogitLink"] = function (h, z) return (1 / (z * (1 - z))) end,
+
+	["LogitInverseLink"] = function (h, z) return (h * (1 - h)) end,
+
+	["LogLogLink"] = function (h, z) return 1 / (z * math.log(z)) end,
+
+	["LogLogInverseLink"] = function(h, z) return math.exp(-z) * math.exp(-math.exp(-z)) end,
+
+	["ComplementaryLogLogLink"] = function(h, z) return 1 / ((1 - z) * math.log((1 - z))) end,
+
+	["ComplementaryLogLogInverseLink"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end,
+
+	["ProbitLink"] = function (h, z) return 1 / calculateProbabilityDensityFunctionValue(h) end,
+
+	["ProbitInverseLink"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
 
 }
 

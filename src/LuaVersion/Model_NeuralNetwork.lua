@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
+local ZTableFunction = require("Core_ZTableFunction")
+
 local NeuralNetworkModel = {}
 
 NeuralNetworkModel.__index = NeuralNetworkModel
@@ -45,6 +47,16 @@ local defaultLearningRate = 0.1
 local defaultActivationFunction = "LeakyReLU"
 
 local defaultDropoutRate = 0
+
+local epsilon = 1e-16
+
+local epsilonComplement = 1 - epsilon
+
+local function calculateProbabilityDensityFunctionValue(z)
+
+	return (math.exp(-0.5 * math.pow(z, 2)) / math.sqrt(2 * math.pi))
+
+end
 
 local layerPropertyValueTypeCheckingFunctionList = {
 
@@ -161,8 +173,38 @@ local elementWiseActivationFunctionList = {
 
 	["Mish"] = function (z) return z * math.tanh(math.log(1 + math.exp(z))) end,
 
-	["BinaryStep"] = function (z) return ((z > 0) and 1) or 0 end
+	["BinaryStep"] = function (z) return ((z > 0) and 1) or 0 end,
+	
+	["Logit"] = function (z) 
+		
+		local x = math.clamp(z, epsilon, epsilonComplement)
+		
+		return math.log(x / (1 - x))
+		
+	end,
+	
+	["LogLog"] = function(z) return math.exp(-math.exp(-z)) end,
 
+	["ComplementaryLogLog"] = function(z) return (1 - math.exp(-math.exp(z))) end,
+	
+	["Probit"] = function(z) return ZTableFunction:getStandardNormalCumulativeDistributionFunction(math.clamp(z, -3.9, 3.9)) end,
+	
+	["HardSigmoid"] = function (z)
+
+		local x = (z + 1) / 2
+
+		if (x < 0) then return 0 elseif (x > 1) then return 1 else return x end
+
+	end,
+
+	["SoftSign"] = function (z) return (z / (1 + math.abs(z))) end,
+
+	["ArcTangent"] = function (z) return (2 / math.pi) * math.atan(z) end,
+
+	["Swish"] = function (z) return (z / (1 + math.exp(-z))) end,
+
+	["BipolarSigmoid"] = function (z) return (2 / (1 + math.exp(-z)) - 1) end,
+	
 }
 
 local activationFunctionList = {
@@ -249,7 +291,37 @@ local elementWiseActivationFunctionDerivativeList = {
 
 	["SiLU"] = function (z) return (1 + math.exp(-z) + (z * math.exp(-z))) / (1 + math.exp(-z))^2 end,
 
-	["Mish"] = function (z) return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2) end
+	["Mish"] = function (z) return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2) end,
+	
+	["Logit"] = function(h, z) return (1 / (z * (1 - z))) end,
+	
+	["LogLog"] = function(h, z) return math.exp(-z) * math.exp(-math.exp(-z)) end,
+
+	["ComplementaryLogLog"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end,
+	
+	["Probit"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
+	
+	["HardSigmoid"] = function (h, z) return ((h <= 0 or h >= 1) and 0) or 0.5 end,
+
+	["SoftSign"] = function (h, z) return (1 / ((1 + math.abs(z))^2)) end,
+
+	["ArcTangent"] = function (h, z) return ((2 / math.pi) * (1 / (1 + z^2))) end,
+
+	["Swish"] = function (h, z)
+
+		local sigmoidValue = 1 / (1 + math.exp(-z))
+
+		return (sigmoidValue + (z * sigmoidValue * (1 - sigmoidValue)))
+
+	end,
+
+	["BipolarSigmoid"] = function (h, z) 
+
+		local sigmoidValue = 1 / (1 + math.exp(-z))
+
+		return (2 * sigmoidValue * (1 - sigmoidValue))
+
+	end,
 
 }
 
@@ -337,33 +409,43 @@ local activationFunctionDerivativeList = {
 
 }
 
-local cutOffListForScalarValues = {
+local minimumOutputValueList = {
 
-	["Sigmoid"] = function (a) return (a >= 0.5) end,
+	["0"] = {"Sigmoid", "BinaryStep", "Gaussian", "Softmax", "StableSoftmax", "LogLog", "ComplementaryLogLog"}, -- 0.5 threshold for [0, 1] functions.
 
-	["Tanh"] = function (a) return (a >= 0) end,
-
-	["ReLU"] = function (a) return (a >= 0) end,
-
-	["LeakyReLU"] = function (a) return (a >= 0) end,
-
-	["ELU"] = function (a) return (a >= 0) end,
-
-	["Gaussian"] = function (a) return (a >= 0.5) end,
-
-	["SiLU"] = function (a) return (a >= 0) end,
-
-	["Mish"] = function (a) return (a >= 0) end,
-
-	["BinaryStep"] = function (a) return (a > 0) end,
-
-	["Softmax"] = function (a) return (a >= 0.5) end,
-
-	["StableSoftmax"] = function (a) return (a >= 0.5) end,
-
-	["None"] = function (a) return (a >= 0) end,
+	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "Mish", "None"}, -- 0 threshold for [-1, 1] functions.
 
 }
+
+local function getCutOffFunction(binaryFunction)
+
+	for stringMinimumOutputValue, binaryFunctionArray in pairs(minimumOutputValueList) do
+
+		if (table.find(binaryFunctionArray, binaryFunction)) then
+
+			local minimumOutputValue = tonumber(stringMinimumOutputValue)
+
+			local cutOffValue = (1 - minimumOutputValue) / 2
+
+			local cutOffFunction = function(x) 
+
+				if (x > cutOffValue) then return 1 end
+
+				if (x < cutOffValue) then return minimumOutputValue end
+
+				return cutOffValue
+
+			end
+
+			return cutOffFunction
+
+		end
+
+	end
+
+	error("Unknown cut-off function.")
+
+end
 
 local function createClassesList(labelVector)
 
@@ -429,19 +511,11 @@ function NeuralNetworkModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 	end
 
-	local incorrectLabelValue
+	local incorrectLabelValue = 0
 
 	local activationFunctionAtFinalLayer = self:getActivationLayerAtFinalLayer()
-
-	if (activationFunctionAtFinalLayer == "Tanh") or (activationFunctionAtFinalLayer == "ELU") then
-
-		incorrectLabelValue = -1
-
-	else
-
-		incorrectLabelValue = 0
-
-	end
+	
+	if table.find(minimumOutputValueList["-1"], activationFunctionAtFinalLayer) then incorrectLabelValue = -1 end
 
 	local numberOfData = #labelVector
 
@@ -914,8 +988,10 @@ function NeuralNetworkModel:fetchValueFromScalar(outputVector)
 	local value = outputVector[1][1]
 
 	local activationFunctionAtFinalLayer = self:getActivationLayerAtFinalLayer()
+	
+	local cutOffFunction = getCutOffFunction(activationFunctionAtFinalLayer)
 
-	local isValueOverCutOff = cutOffListForScalarValues[activationFunctionAtFinalLayer](value)
+	local isValueOverCutOff = cutOffFunction(value)
 
 	local classIndex = (isValueOverCutOff and 2) or 1
 

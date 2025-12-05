@@ -135,15 +135,13 @@ Below, it shows an example code for this.
 
 ```lua
 
-local actionFunctionDictionary = {
+local counterFunctionDictionary = {
 
-  ["Idle"] = nil,
-  ["Attack"] = attack,
-  ["Block"] = block,
-  ["Jump"] = jump,
-  ["Follow"] = follow,
-  ["Escape"] = escape,
-  ["Taunt"] = taunt,
+  ["PlayerAttack"] = enemyBlock,
+  ["PlayerBlock"] = enemyGoBehind,
+  ["PlayerFollow"] = enemyAttack,
+  ["PlayerEscaping"] = enemyFollow,
+  ["PlayerPickingUpItem"] = enemyAttack,
 
 }
 

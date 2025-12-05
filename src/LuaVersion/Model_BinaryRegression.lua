@@ -62,7 +62,7 @@ local binaryFunctionList = {
 
 	["LogLog"] = function(z) return math.exp(-math.exp(-z)) end,
 
-	["ComplementaryLogLog"] = function(z) return (1 - math.exp(-math.exp(z))) end
+	["ComplementaryLogLog"] = function(z) return (1 - math.exp(-math.exp(z))) end,
 
 	["Tanh"] = function (z) return math.tanh(z) end,
 	

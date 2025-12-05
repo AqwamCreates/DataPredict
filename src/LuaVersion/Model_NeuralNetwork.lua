@@ -1943,6 +1943,7 @@ function NeuralNetworkModel:showDetails()
 	local ClassesList = self.ClassesList
 	
 	-- Calculate the maximum length for each column
+	
 	local maxLayerLength = string.len("Layer")
 	
 	local maxNeuronsLength = string.len("Number Of Neurons")

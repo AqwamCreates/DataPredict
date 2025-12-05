@@ -144,7 +144,7 @@ local lossFunctionGradientList = {
 
 local minimumOutputValueList = {
 	
-	["0"] = {"Sigmoid", "HardSigmoid", "Swish", "Probit", "LogLog", "ComplementaryLogLog"}, -- 0.5 threshold for [0, 1] functions.
+	["0"] = {"Logistic", "Logit", "Probit", "LogLog", "ComplementaryLogLog", "HardSigmoid", "Swish"}, -- 0.5 threshold for [0, 1] functions.
 
 	["-1"] = {"Tanh", "SoftSign", "ArcTangent", "BipolarSigmoid"}, -- 0 threshold for [-1, 1] functions.
 	

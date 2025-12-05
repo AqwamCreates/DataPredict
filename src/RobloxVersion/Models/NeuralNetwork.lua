@@ -202,6 +202,10 @@ local elementWiseActivationFunctionList = {
 	end,
 
 	["LogitInverseLink"] = function (z) return 1/(1 + math.exp(-1 * z)) end,
+	
+	["ProbitLink"] = function (z) return ZTableFunction:getStandardNormalInverseCumulativeDistributionFunction(math.clamp(z, 0, 1)) end,
+
+	["ProbitInverseLink"] = function (z) return ZTableFunction:getStandardNormalCumulativeDistributionFunction(math.clamp(z, -3.9, 3.9)) end,
 
 	["LogLogLink"] = function (z) return math.log(-math.log(math.clamp(z, epsilon, 1))) end,
 
@@ -210,10 +214,10 @@ local elementWiseActivationFunctionList = {
 	["ComplementaryLogLogLink"] = function (z) return math.log(-math.log(1 - math.clamp(z, 0, epsilonComplement))) end,
 
 	["ComplementaryLogLogInverseLink"] = function (z) return (1 - math.exp(-math.exp(z))) end,
-
-	["ProbitLink"] = function (z) return ZTableFunction:getStandardNormalInverseCumulativeDistributionFunction(math.clamp(z, 0, 1)) end,
-
-	["ProbitInverseLink"] = function (z) return ZTableFunction:getStandardNormalCumulativeDistributionFunction(math.clamp(z, -3.9, 3.9)) end,
+	
+	["PoissonLink"] = function (z) return math.log(math.max(z, epsilon)) end,
+	
+	["PoissonInverseLink"] = function (z) return math.exp(z) end,
 	
 }
 
@@ -372,6 +376,10 @@ local elementWiseActivationFunctionDerivativeList = {
 	["LogitLink"] = function (a, z) return (1 / (z * (1 - z))) end,
 
 	["LogitInverseLink"] = function (a, z) return (a * (1 - a)) end,
+	
+	["ProbitLink"] = function (a, z) return 1 / calculateProbabilityDensityFunctionValue(a) end,
+
+	["ProbitInverseLink"] = function (a, z) return calculateProbabilityDensityFunctionValue(z) end,
 
 	["LogLogLink"] = function (a, z) return 1 / (z * math.log(z)) end,
 
@@ -380,10 +388,10 @@ local elementWiseActivationFunctionDerivativeList = {
 	["ComplementaryLogLogLink"] = function (a, z) return 1 / ((1 - z) * math.log((1 - z))) end,
 
 	["ComplementaryLogLogInverseLink"] = function (a, z) return math.exp(z) * math.exp(-math.exp(z)) end,
+	
+	["PoissonLink"] = function (a, z) return 1 / z end,
 
-	["ProbitLink"] = function (a, z) return 1 / calculateProbabilityDensityFunctionValue(a) end,
-
-	["ProbitInverseLink"] = function (a, z) return calculateProbabilityDensityFunctionValue(z) end,
+	["PoissonInverseLink"] = function (a, z) return a end, -- Note: Derivative of exponent(z) is exponent(z), where a = exponent(z). Therefore, we're taking a shortcut to reduce computational resources.
 
 }
 
@@ -515,9 +523,9 @@ local activationFunctionDerivativeList = {
 
 local minimumOutputValueList = {
 
-	["0"] = {"Sigmoid", "BinaryStep", "Gaussian", "Softmax", "StableSoftmax", "LogitInverseLink", "LogLogInverseLink", "ComplementaryLogLogInverseLink", "ProbitInverseLink"}, -- 0.5 threshold for [0, 1] functions.
+	["0"] = {"Sigmoid", "BinaryStep", "Gaussian", "Softmax", "StableSoftmax", "LogitInverseLink", "ProbitInverseLink", "LogLogInverseLink", "ComplementaryLogLogInverseLink", "PoissonInverseLink"}, -- 0.5 threshold for [0, 1] functions.
 
-	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "Mish", "Maxout", "None", "LogitLink", "LogLogLink", "ComplementaryLogLogLink", "ProbitLink"}, -- 0 threshold for [-1, 1] functions.
+	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "Mish", "Maxout", "None", "LogitLink", "ProbitLink", "LogLogLink", "ComplementaryLogLogLink", "PoissonLink"}, -- 0 threshold for [-1, 1] functions.
 
 }
 

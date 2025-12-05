@@ -103,11 +103,11 @@ This part makes it easier for us to set up our model, but it is not strictly nec
 
 ```lua
 
-local ReactionaryPlayerModel = DataPredict.QuickSetups.CategoricalPolicy.new()
+local PlayerModel = DataPredict.QuickSetups.CategoricalPolicy.new()
 
 -- Inserting our Deep Reinforcement Learning Model here.
 
-ReactionaryPlayerModel:setModel(TabularReinforcementLearningModel)
+PlayerModel:setModel(TabularReinforcementLearningModel)
 
 ```
 
@@ -121,7 +121,7 @@ This is because reinforce() function is responsible for producing prediction and
 
 -- Here, you notice that there is a reward value being inserted here. Generally, when you first call this, the reward value should be zero.
 
-local eventName = ReactionaryPlayerModel:reinforce(playerDataVector, rewardValue)
+local eventName = PlayerModel:reinforce(playerDataVector, rewardValue)
 
 ```
 
@@ -163,7 +163,7 @@ local function run(Player)
 
         playerState = getPlayerState(Player)
     
-        actionName = ReactionaryPlayerModel:reinforce(playerState, rewardValue)
+        actionName = PlayerModel:reinforce(playerState, rewardValue)
 
         actionFunction = actionFunctionDictionary[actionName]
 
@@ -223,9 +223,9 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-ModelParameters = ReactionaryPlayerModel:getModelParameters()
+ModelParameters = PlayerModel:getModelParameters()
 
-ReactionaryPlayerModel:setModelParameters(ModelParameters)
+PlayerModel:setModelParameters(ModelParameters)
 
 ```
 

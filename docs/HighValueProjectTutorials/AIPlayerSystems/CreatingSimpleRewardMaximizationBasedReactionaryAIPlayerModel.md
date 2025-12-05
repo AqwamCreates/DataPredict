@@ -137,11 +137,10 @@ Below, it shows an example code for this.
 
 local counterFunctionDictionary = {
 
-  ["PlayerAttack"] = enemyBlock,
-  ["PlayerBlock"] = enemyGoBehind,
-  ["PlayerFollow"] = enemyAttack,
-  ["PlayerEscaping"] = enemyFollow,
+  ["PlayerActiveAgainstEnemyBoss"] = enemyBlock,
+  ["PlayerActiveAgainstEnemy"] = enemyRun,
   ["PlayerPickingUpItem"] = enemyAttack,
+  ["PlayerActiveForQuest"] = enemyAttack,
 
 }
 

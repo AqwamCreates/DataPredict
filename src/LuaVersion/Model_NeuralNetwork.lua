@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GradientMethodBaseModel = require("GradientMethodBaseModel")
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 local ZTableFunction = require("Core_ZTableFunction")
 

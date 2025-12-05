@@ -517,7 +517,7 @@ local minimumOutputValueList = {
 
 	["0"] = {"Sigmoid", "BinaryStep", "Gaussian", "Softmax", "StableSoftmax", "LogitInverseLink", "LogLogInverseLink", "ComplementaryLogLogInverseLink", "ProbitInverseLink"}, -- 0.5 threshold for [0, 1] functions.
 
-	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "Mish", "LogitLink", "LogLogLink", "ComplementaryLogLogLink", "ProbitLink", "Maxout", "None"}, -- 0 threshold for [-1, 1] functions.
+	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "Mish", "Maxout", "None", "LogitLink", "LogLogLink", "ComplementaryLogLogLink", "ProbitLink"}, -- 0 threshold for [-1, 1] functions.
 
 }
 
@@ -1943,6 +1943,7 @@ function NeuralNetworkModel:showDetails()
 	local ClassesList = self.ClassesList
 	
 	-- Calculate the maximum length for each column
+	
 	local maxLayerLength = string.len("Layer")
 	
 	local maxNeuronsLength = string.len("Number Of Neurons")

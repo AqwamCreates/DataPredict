@@ -329,31 +329,31 @@ local lossFunctionGradientList = {
 
 local elementWiseActivationFunctionDerivativeList = {
 
-	["Sigmoid"] = function (h, z) return (h * (1 - h)) end,
+	["Sigmoid"] = function (a, z) return (a * (1 - a)) end,
 
-	["Tanh"] = function (h, z) return (1 - math.pow(h, 2)) end,
+	["Tanh"] = function (a, z) return (1 - math.pow(a, 2)) end,
 
-	["ReLU"] = function (h, z) if (z > 0) then return 1 else return 0 end end,
+	["ReLU"] = function (a, z) if (z > 0) then return 1 else return 0 end end,
 
-	["LeakyReLU"] = function (h, z) if (z > 0) then return 1 else return 0.01 end end,
+	["LeakyReLU"] = function (a, z) if (z > 0) then return 1 else return 0.01 end end,
 
-	["ELU"] = function (h, z) if (z > 0) then return 1 else return 0.01 * math.exp(z) end end,
+	["ELU"] = function (a, z) if (z > 0) then return 1 else return 0.01 * math.exp(z) end end,
 
-	["Gaussian"] = function (h, z) return -2 * z * math.exp(-math.pow(z, 2)) end,
+	["Gaussian"] = function (a, z) return -2 * z * math.exp(-math.pow(z, 2)) end,
 
-	["SiLU"] = function (h, z) return (1 + math.exp(-z) + (z * math.exp(-z))) / (1 + math.exp(-z))^2 end,
+	["SiLU"] = function (a, z) return (1 + math.exp(-z) + (z * math.exp(-z))) / (1 + math.exp(-z))^2 end,
 
-	["Mish"] = function (h, z) return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2) end,
+	["Mish"] = function (a, z) return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2) end,
 	
-	["HardSigmoid"] = function (h, z) return ((h <= 0 or h >= 1) and 0) or 0.5 end,
+	["HardSigmoid"] = function (a, z) return ((a <= 0 or a >= 1) and 0) or 0.5 end,
 
-	["SoftSign"] = function (h, z) return (1 / ((1 + math.abs(z))^2)) end,
+	["SoftSign"] = function (a, z) return (1 / ((1 + math.abs(z))^2)) end,
 	
-	["SoftPlus"] = function (h, z) return 1 / (1 + math.exp(-1 * z)) end,
+	["SoftPlus"] = function (a, z) return 1 / (1 + math.exp(-1 * z)) end,
 
-	["ArcTangent"] = function (h, z) return ((2 / math.pi) * (1 / (1 + z^2))) end,
+	["ArcTangent"] = function (a, z) return ((2 / math.pi) * (1 / (1 + z^2))) end,
 
-	["Swish"] = function (h, z)
+	["Swish"] = function (a, z)
 
 		local sigmoidValue = 1 / (1 + math.exp(-z))
 
@@ -361,7 +361,7 @@ local elementWiseActivationFunctionDerivativeList = {
 
 	end,
 
-	["BipolarSigmoid"] = function (h, z) 
+	["BipolarSigmoid"] = function (a, z) 
 
 		local sigmoidValue = 1 / (1 + math.exp(-z))
 
@@ -369,21 +369,21 @@ local elementWiseActivationFunctionDerivativeList = {
 
 	end,
 	
-	["LogitLink"] = function (h, z) return (1 / (z * (1 - z))) end,
+	["LogitLink"] = function (a, z) return (1 / (z * (1 - z))) end,
 
-	["LogitInverseLink"] = function (h, z) return (h * (1 - h)) end,
+	["LogitInverseLink"] = function (a, z) return (a * (1 - a)) end,
 
-	["LogLogLink"] = function (h, z) return 1 / (z * math.log(z)) end,
+	["LogLogLink"] = function (a, z) return 1 / (z * math.log(z)) end,
 
-	["LogLogInverseLink"] = function(h, z) return math.exp(-z) * math.exp(-math.exp(-z)) end,
+	["LogLogInverseLink"] = function(a, z) return math.exp(-z) * math.exp(-math.exp(-z)) end,
 
-	["ComplementaryLogLogLink"] = function(h, z) return 1 / ((1 - z) * math.log((1 - z))) end,
+	["ComplementaryLogLogLink"] = function(a, z) return 1 / ((1 - z) * math.log((1 - z))) end,
 
-	["ComplementaryLogLogInverseLink"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end,
+	["ComplementaryLogLogInverseLink"] = function(a, z) return math.exp(z) * math.exp(-math.exp(z)) end,
 
-	["ProbitLink"] = function (h, z) return 1 / calculateProbabilityDensityFunctionValue(h) end,
+	["ProbitLink"] = function (a, z) return 1 / calculateProbabilityDensityFunctionValue(a) end,
 
-	["ProbitInverseLink"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
+	["ProbitInverseLink"] = function (a, z) return calculateProbabilityDensityFunctionValue(z) end,
 
 }
 

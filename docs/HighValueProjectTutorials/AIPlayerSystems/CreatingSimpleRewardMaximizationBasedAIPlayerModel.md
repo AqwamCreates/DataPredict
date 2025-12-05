@@ -1,4 +1,4 @@
-# Creating Simple Reward-Maximization-Based Reactionary AI Player Model
+# Creating Simple Reward-Maximization-Based AI Player Model
 
 For this tutorial, we need multiple things to build our model, this includes:
 

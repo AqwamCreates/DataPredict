@@ -157,7 +157,7 @@ local costFunctionList = {
 
 local elementWiseActivationFunctionList = {
 
-	["Sigmoid"] = function(z) return 1/(1 + math.exp(-1 * z)) end,
+	["Sigmoid"] = function (z) return 1/(1 + math.exp(-1 * z)) end,
 
 	["Tanh"] = function (z) return math.tanh(z) end,
 
@@ -175,7 +175,7 @@ local elementWiseActivationFunctionList = {
 
 	["BinaryStep"] = function (z) return ((z > 0) and 1) or 0 end,
 	
-	["Logit"] = function (z) 
+	["LogitLink"] = function (z) 
 		
 		local x = math.clamp(z, epsilon, epsilonComplement)
 		
@@ -183,11 +183,19 @@ local elementWiseActivationFunctionList = {
 		
 	end,
 	
-	["LogLog"] = function(z) return math.exp(-math.exp(-z)) end,
-
-	["ComplementaryLogLog"] = function(z) return (1 - math.exp(-math.exp(z))) end,
+	["LogitInverseLink"] = function (z) return 1/(1 + math.exp(-1 * z)) end,
 	
-	["Probit"] = function(z) return ZTableFunction:getStandardNormalCumulativeDistributionFunction(math.clamp(z, -3.9, 3.9)) end,
+	["LogLogLink"] = function (z) return math.log(-math.log(math.clamp(z, epsilon, 1))) end,
+	
+	["LogLogInverseLink"] = function (z) return math.exp(-math.exp(-z)) end,
+	
+	["ComplementaryLogLogLink"] = function (z) return math.log(-math.log(1 - math.clamp(z, 0, epsilonComplement))) end,
+
+	["ComplementaryLogLogInverseLink"] = function (z) return (1 - math.exp(-math.exp(z))) end,
+	
+	["ProbitLink"] = function (z) return ZTableFunction:getStandardNormalInverseCumulativeDistributionFunction(math.clamp(z, 0, 1)) end,
+	
+	["ProbitInverseLink"] = function (z) return ZTableFunction:getStandardNormalCumulativeDistributionFunction(math.clamp(z, -3.9, 3.9)) end,
 	
 	["HardSigmoid"] = function (z)
 
@@ -321,35 +329,43 @@ local lossFunctionGradientList = {
 
 local elementWiseActivationFunctionDerivativeList = {
 
-	["Sigmoid"] = function (a) return (a * (1 - a)) end,
+	["Sigmoid"] = function (h, z) return (h * (1 - h)) end,
 
-	["Tanh"] = function (a) return (1 - math.pow(a, 2)) end,
+	["Tanh"] = function (h, z) return (1 - math.pow(h, 2)) end,
 
-	["ReLU"] = function (z) if (z > 0) then return 1 else return 0 end end,
+	["ReLU"] = function (h, z) if (z > 0) then return 1 else return 0 end end,
 
-	["LeakyReLU"] = function (z) if (z > 0) then return 1 else return 0.01 end end,
+	["LeakyReLU"] = function (h, z) if (z > 0) then return 1 else return 0.01 end end,
 
-	["ELU"] = function (z) if (z > 0) then return 1 else return 0.01 * math.exp(z) end end,
+	["ELU"] = function (h, z) if (z > 0) then return 1 else return 0.01 * math.exp(z) end end,
 
-	["Gaussian"] = function (z) return -2 * z * math.exp(-math.pow(z, 2)) end,
+	["Gaussian"] = function (h, z) return -2 * z * math.exp(-math.pow(z, 2)) end,
 
-	["SiLU"] = function (z) return (1 + math.exp(-z) + (z * math.exp(-z))) / (1 + math.exp(-z))^2 end,
+	["SiLU"] = function (h, z) return (1 + math.exp(-z) + (z * math.exp(-z))) / (1 + math.exp(-z))^2 end,
 
-	["Mish"] = function (z) return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2) end,
+	["Mish"] = function (h, z) return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2) end,
 	
-	["Logit"] = function(h, z) return (1 / (z * (1 - z))) end,
+	["LogitLink"] = function (h, z) return (1 / (z * (1 - z))) end,
 	
-	["LogLog"] = function(h, z) return math.exp(-z) * math.exp(-math.exp(-z)) end,
+	["LogitInverseLink"] = function (h, z) return (h * (1 - h)) end,
+	
+	["LogLogLink"] = function (h, z) return 1 / (z * math.log(z)) end,
+	
+	["LogLogInverseLink"] = function(h, z) return math.exp(-z) * math.exp(-math.exp(-z)) end,
+	
+	["ComplementaryLogLogLink"] = function(h, z) return 1 / ((1 - z) * math.log((1 - z))) end,
 
-	["ComplementaryLogLog"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end,
+	["ComplementaryLogLogInverseLink"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end,
 	
-	["Probit"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
+	["ProbitLink"] = function (h, z) return 1 / calculateProbabilityDensityFunctionValue(h) end,
+	
+	["ProbitInverseLink"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
 	
 	["HardSigmoid"] = function (h, z) return ((h <= 0 or h >= 1) and 0) or 0.5 end,
 
 	["SoftSign"] = function (h, z) return (1 / ((1 + math.abs(z))^2)) end,
 	
-	["SoftPlus"] = function(z) return 1/(1 + math.exp(-1 * z)) end,
+	["SoftPlus"] = function (h, z) return 1 / (1 + math.exp(-1 * z)) end,
 
 	["ArcTangent"] = function (h, z) return ((2 / math.pi) * (1 / (1 + z^2))) end,
 
@@ -499,9 +515,9 @@ local activationFunctionDerivativeList = {
 
 local minimumOutputValueList = {
 
-	["0"] = {"Sigmoid", "BinaryStep", "Gaussian", "Softmax", "StableSoftmax", "LogLog", "ComplementaryLogLog"}, -- 0.5 threshold for [0, 1] functions.
+	["0"] = {"Sigmoid", "BinaryStep", "Gaussian", "Softmax", "StableSoftmax", "LogitInverseLink", "LogLogInverseLink", "ComplementaryLogLogInverseLink", "ProbitInverseLink"}, -- 0.5 threshold for [0, 1] functions.
 
-	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "Mish", "None"}, -- 0 threshold for [-1, 1] functions.
+	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "Mish", "LogitLink", "LogLogLink", "ComplementaryLogLogLink", "ProbitLink", "Maxout", "None"}, -- 0 threshold for [-1, 1] functions.
 
 }
 
@@ -832,12 +848,20 @@ local function deriveLayer(activationMatrix, zMatrix, hasBiasNeuronOnCurrentLaye
 	local activationFunctionDerivativeFunction = elementWiseActivationFunctionList[activationFunctionName] 
 
 	local derivativeMatrix = {}
+	
+	local unwrappedActivationVector
+
+	local modifiedUnwrappedActivationVector
+
+	local modifiedUnwrappedLayerZVector 
 
 	local unwrappedDerivativeVector
 
 	if (activationFunctionDerivativeFunction) then
 
 		for dataIndex, unwrappedLayerZVector in ipairs(zMatrix) do
+			
+			unwrappedActivationVector = activationMatrix[dataIndex]
 
 			unwrappedDerivativeVector = {}
 			
@@ -847,7 +871,7 @@ local function deriveLayer(activationMatrix, zMatrix, hasBiasNeuronOnCurrentLaye
 
 			for featureIndex = startingFeatureIndex, numberOfFeatures, 1 do
 
-				unwrappedDerivativeVector[featureIndex] = activationFunctionDerivativeFunction(unwrappedLayerZVector[featureIndex])
+				unwrappedDerivativeVector[featureIndex] = activationFunctionDerivativeFunction(unwrappedActivationVector[featureIndex], unwrappedLayerZVector[featureIndex])
 
 			end
 
@@ -856,12 +880,6 @@ local function deriveLayer(activationMatrix, zMatrix, hasBiasNeuronOnCurrentLaye
 		end
 
 	else
-		
-		local unwrappedActivationVector
-		
-		local modifiedUnwrappedActivationVector
-		
-		local modifiedUnwrappedLayerZVector 
 
 		activationFunctionDerivativeFunction = activationFunctionDerivativeList[activationFunctionName]
 

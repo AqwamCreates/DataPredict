@@ -55,6 +55,14 @@ end
 local binaryFunctionList = {
 
 	["Logistic"] = function (z) return (1/(1 + math.exp(-z))) end,
+	
+	["Logit"] = function (z) return (1/(1 + math.exp(-z))) end,
+	
+	["Probit"] = function(z) return ZTableFunction:getStandardNormalCumulativeDistributionFunction(math.clamp(z, -3.9, 3.9)) end,
+
+	["LogLog"] = function(z) return math.exp(-math.exp(-z)) end,
+
+	["ComplementaryLogLog"] = function(z) return (1 - math.exp(-math.exp(z))) end
 
 	["Tanh"] = function (z) return math.tanh(z) end,
 	
@@ -73,12 +81,6 @@ local binaryFunctionList = {
 	["Swish"] = function (z) return (z / (1 + math.exp(-z))) end,
 
 	["BipolarSigmoid"] = function (z) return (2 / (1 + math.exp(-z)) - 1) end,
-	
-	["Probit"] = function(z) return ZTableFunction:getStandardNormalCumulativeDistributionFunction(math.clamp(z, -3.9, 3.9)) end,
-	
-	["LogLog"] = function(z) return math.exp(-math.exp(-z)) end,
-	
-	["ComplementaryLogLog"] = function(z) return (1 - math.exp(-math.exp(z))) end
 
 }
 

@@ -30,7 +30,7 @@ Generally, the models can be split into two categories:
 
 ## Data-To-Action Optimization Players (Goal-Based Optimization)
 
-* Creating Simple Reward-Maximization-Based AI Player Model
+* [Creating Simple Reward-Maximization-Based AI Player Model](AIPlayerSystems/CreatingSimpleRewardMaximizationBasedAIPlayerModel.md)
 
   * May outcompete real players.
 
@@ -42,7 +42,7 @@ Generally, the models can be split into two categories:
 
 ## Data-To-Action-To-Reaction Optimization Players (Counter Optimization)
 
-* [Creating Simple Reward-Maximization-Based Reactionary AI Player Model](AIPlayerSystems/CreatingSimpleRewardMaximizationBasedReactionaryAIPlayerModel.md)
+* Creating Simple Reward-Maximization-Based Reactionary AI Player Model
 
   * Breaks mathematical theoretical guarantees due to interference from game designers' control instead of model's own actions. Therefore, it is risky to use.
 

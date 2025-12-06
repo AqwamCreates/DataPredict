@@ -150,13 +150,15 @@ local environmentFeatureVector = {{0, 0, 0, 0, 0}}
 
 local action = 1
 
+local reward = 0
+
 while true do
+
+  action = DeepQLearningQuickSetup:reinforce(environmentFeatureVector, reward)
 
   environmentFeatureVector = fetchEnvironmentFeatureVector(environmentFeatureVector, action)
 
-  local reward = getReward(environmentFeatureVector, action)
-
-  action = DeepQLearningQuickSetup:reinforce(environmentFeatureVector, reward)
+  reward = getReward(environmentFeatureVector, action)
 
 end
 

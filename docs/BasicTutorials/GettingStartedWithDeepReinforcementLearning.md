@@ -164,7 +164,7 @@ end
 
 ```
 
-As you can see, the CategoricalPolicy compresses a number of codes into reinforce() function.
+As you can see, the SingleCategoricalPolicy compresses a number of codes into reinforce() function.
 
 # Wrapping It All Up
 

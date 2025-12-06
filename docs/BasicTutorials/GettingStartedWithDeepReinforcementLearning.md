@@ -138,7 +138,7 @@ As you can see, there are a lot of things that we must track of, but it gives yo
 
 ## Quick Setup
 
-To reduce the amount of things we need to track, we can use CategoricalPolicy in "QuickSetups" section.
+To reduce the amount of things we need to track, we can use SingleCategoricalPolicy in "QuickSetups" section.
 
 ```lua
 

@@ -308,8 +308,10 @@ local lossFunctionGradientList = {
 	end,
 
 	["MeanAbsoluteError"] = function(generatedLabelMatrix, labelMatrix)
+		
+		local functionToApply = function (generatedLabelValue, labelValue) return math.sign(generatedLabelValue - labelValue) end
 
-		return AqwamTensorLibrary:subtract(generatedLabelMatrix, labelMatrix)
+		return AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
 
 	end,
 

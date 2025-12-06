@@ -457,21 +457,21 @@ local activationFunctionDerivativeList = {
 
 		local maximumValue = -math.huge
 
-		local featureIndexWithTheMaximumValue = nil
+		local indexWithTheMaximumValue = nil
 
-		for featureIndex, zValue in ipairs(unwrappedZVector) do
+		for i, zValue in ipairs(unwrappedZVector) do
 
 			if (zValue > maximumValue) then
 
 				maximumValue = zValue
 
-				featureIndexWithTheMaximumValue = featureIndex
+				indexWithTheMaximumValue = i
 
 			end
 
 		end
 
-		unwrappedDerivativeVector[featureIndexWithTheMaximumValue] = 1
+		unwrappedDerivativeVector[indexWithTheMaximumValue] = 1
 		
 		return unwrappedDerivativeVector
 

@@ -100,7 +100,6 @@ local layerPropertyValueTypeCheckingFunctionList = {
 
 	end,
 
-
 }
 
 local costFunctionList = {
@@ -261,7 +260,7 @@ local activationFunctionList = {
 		
 		local maximumValue
 		
-		local featureIndexWithTheMaximumValue
+		local indexWithTheMaximumValue
 		
 		for dataIndex, unwrappedZVector in ipairs(zMatrix) do
 			
@@ -269,21 +268,21 @@ local activationFunctionList = {
 			
 			maximumValue = -math.huge
 			
-			featureIndexWithTheMaximumValue = nil
+			indexWithTheMaximumValue = nil
 			
-			for featureIndex, zValue in ipairs(unwrappedZVector) do
+			for i, zValue in ipairs(unwrappedZVector) do
 				
 				if (zValue > maximumValue) then
 					
 					maximumValue = zValue
 					
-					featureIndexWithTheMaximumValue = featureIndex
+					indexWithTheMaximumValue = i
 					
 				end
 				
 			end
 			
-			unwrappedAVector[featureIndexWithTheMaximumValue] = maximumValue
+			unwrappedAVector[indexWithTheMaximumValue] = maximumValue
 			
 			aMatrix[dataIndex] = unwrappedAVector
 			

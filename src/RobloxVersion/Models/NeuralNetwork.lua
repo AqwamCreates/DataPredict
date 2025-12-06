@@ -308,10 +308,8 @@ local lossFunctionGradientList = {
 	end,
 
 	["MeanAbsoluteError"] = function(generatedLabelMatrix, labelMatrix)
-		
-		local functionToApply = function (generatedLabelValue, labelValue) return math.sign(generatedLabelValue - labelValue) end
 
-		return AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
+		return AqwamTensorLibrary:subtract(generatedLabelMatrix, labelMatrix)
 
 	end,
 
@@ -401,125 +399,85 @@ local activationFunctionDerivativeList = {
 
 	["BinaryStep"] = function (aMatrix, zMatrix) return AqwamTensorLibrary:createTensor({#zMatrix, #zMatrix[1]}, 0) end,
 
-	["Softmax"] = function (aMatrix, zMatrix)
+	["Softmax"] = function (unwrappedAVector, unwrappedZVector)
 
-		local derivativeMatrix = AqwamTensorLibrary:createTensor({#aMatrix, #aMatrix[1]}, 0)
-
-		local unwrappedDerivativeVector
+		local unwrappedDerivativeVector = table.create(#unwrappedZVector, 0)
 
 		local derivativeValue
+		
+		local indicatorValue
 
-		for i, unwrappedAVector in ipairs(aMatrix) do
+		for i, a1Value in ipairs(unwrappedAVector) do
 
-			unwrappedDerivativeVector = derivativeMatrix[i]
+			for j, a2Value in ipairs(unwrappedAVector) do
+				
+				indicatorValue = ((i == j) and 1) or 0 
 
-			for j, a1Value in ipairs(unwrappedAVector) do
+				derivativeValue = a1Value * (indicatorValue - a2Value)
 
-				for k, a2Value in ipairs(unwrappedAVector) do
-
-					if (j == k) then
-
-						derivativeValue = a1Value * (1 - a2Value)
-
-					else
-
-						derivativeValue = -a1Value * a2Value
-
-					end
-
-					unwrappedDerivativeVector[j] = unwrappedDerivativeVector[j] + derivativeValue
-
-				end
+				unwrappedDerivativeVector[i] = unwrappedDerivativeVector[i] + derivativeValue
 
 			end
 
 		end
 
-		return derivativeMatrix
+		return unwrappedDerivativeVector
 
 	end,
 
-	["StableSoftmax"] = function (aMatrix, zMatrix)
+	["StableSoftmax"] = function (unwrappedAVector, unwrappedZVector)
 
-		local derivativeMatrix = AqwamTensorLibrary:createTensor({#aMatrix, #aMatrix[1]}, 0)
-
-		local unwrappedDerivativeVector
+		local unwrappedDerivativeVector = table.create(#unwrappedZVector, 0)
 
 		local derivativeValue
 
-		for i, unwrappedAVector in ipairs(aMatrix) do
+		local indicatorValue
 
-			unwrappedDerivativeVector = derivativeMatrix[i]
+		for i, a1Value in ipairs(unwrappedAVector) do
 
-			for j, a1Value in ipairs(unwrappedAVector) do
+			for j, a2Value in ipairs(unwrappedAVector) do
 
-				for k, a2Value in ipairs(unwrappedAVector) do
+				indicatorValue = ((i == j) and 1) or 0 
 
-					if (j == k) then
+				derivativeValue = a1Value * (indicatorValue - a2Value)
 
-						derivativeValue = a1Value * (1 - a2Value)
-
-					else
-
-						derivativeValue = -a1Value * a2Value
-
-					end
-
-					unwrappedDerivativeVector[j] = unwrappedDerivativeVector[j] + derivativeValue
-
-				end
+				unwrappedDerivativeVector[i] = unwrappedDerivativeVector[i] + derivativeValue
 
 			end
 
 		end
 
-		return derivativeMatrix
+		return unwrappedDerivativeVector
 
 	end,
 	
-	["Maxout"] = function (aMatrix, zMatrix)
+	["Maxout"] = function (unwrappedAVector, unwrappedZVector)
+		
+		local unwrappedDerivativeVector = table.create(#unwrappedZVector, 0)
 
-		local numberOfFeatures = #zMatrix[1]
+		local maximumValue = -math.huge
 
-		local derivativeMatrix = {}
+		local featureIndexWithTheMaximumValue = nil
 
-		local unwrappedDerivativeVector
+		for featureIndex, zValue in ipairs(unwrappedZVector) do
 
-		local maximumValue
+			if (zValue > maximumValue) then
 
-		local featureIndexWithTheMaximumValue
+				maximumValue = zValue
 
-		for dataIndex, unwrappedZVector in ipairs(zMatrix) do
-
-			unwrappedDerivativeVector = table.create(numberOfFeatures, 0)
-
-			maximumValue = -math.huge
-
-			featureIndexWithTheMaximumValue = nil
-
-			for featureIndex, zValue in ipairs(unwrappedZVector) do
-
-				if (zValue > maximumValue) then
-
-					maximumValue = zValue
-
-					featureIndexWithTheMaximumValue = featureIndex
-
-				end
+				featureIndexWithTheMaximumValue = featureIndex
 
 			end
 
-			unwrappedDerivativeVector[featureIndexWithTheMaximumValue] = 1
-
-			derivativeMatrix[dataIndex] = unwrappedDerivativeVector
-
 		end
+
+		unwrappedDerivativeVector[featureIndexWithTheMaximumValue] = 1
 		
-		return derivativeMatrix
+		return unwrappedDerivativeVector
 
 	end,
 
-	["None"] = function (aMatrix, zMatrix) return AqwamTensorLibrary:createTensor({#zMatrix, #zMatrix[1]}, 1) end,
+	["None"] = function (unwrappedAVector, unwrappedZVector) return table.create(#unwrappedZVector, 0) end,
 
 }
 
@@ -859,19 +817,19 @@ local function deriveLayer(activationMatrix, zMatrix, hasBiasNeuronOnCurrentLaye
 
 	local derivativeMatrix = {}
 	
-	local unwrappedActivationVector
+	local unwrappedZVector
 
 	local modifiedUnwrappedActivationVector
 
-	local modifiedUnwrappedLayerZVector 
+	local modifiedUnwrappedZVector 
 
 	local unwrappedDerivativeVector
 
 	if (activationFunctionDerivativeFunction) then
 
-		for dataIndex, unwrappedLayerZVector in ipairs(zMatrix) do
+		for dataIndex, unwrappedActivationVector in ipairs(activationMatrix) do
 			
-			unwrappedActivationVector = activationMatrix[dataIndex]
+			unwrappedZVector = zMatrix[dataIndex]
 
 			unwrappedDerivativeVector = {}
 			
@@ -881,7 +839,7 @@ local function deriveLayer(activationMatrix, zMatrix, hasBiasNeuronOnCurrentLaye
 
 			for featureIndex = startingFeatureIndex, numberOfFeatures, 1 do
 
-				unwrappedDerivativeVector[featureIndex] = activationFunctionDerivativeFunction(unwrappedActivationVector[featureIndex], unwrappedLayerZVector[featureIndex])
+				unwrappedDerivativeVector[featureIndex] = activationFunctionDerivativeFunction(unwrappedActivationVector[featureIndex], unwrappedZVector[featureIndex])
 
 			end
 
@@ -893,23 +851,23 @@ local function deriveLayer(activationMatrix, zMatrix, hasBiasNeuronOnCurrentLaye
 
 		activationFunctionDerivativeFunction = activationFunctionDerivativeList[activationFunctionName]
 
-		for dataIndex, unwrappedLayerZVector in ipairs(zMatrix) do
+		for dataIndex, unwrappedActivationVector in ipairs(activationMatrix) do
 			
-			unwrappedActivationVector = activationMatrix[dataIndex]
+			unwrappedZVector = zMatrix[dataIndex]
 			
 			modifiedUnwrappedActivationVector = {}
 
-			modifiedUnwrappedLayerZVector = {}
+			modifiedUnwrappedZVector = {}
 
 			for featureIndex = startingFeatureIndex, numberOfFeatures, 1 do
 				
 				modifiedUnwrappedActivationVector[featureIndex - hasBiasNeuronOnCurrentLayer] = unwrappedActivationVector[featureIndex]
 
-				modifiedUnwrappedLayerZVector[featureIndex - hasBiasNeuronOnCurrentLayer] = unwrappedLayerZVector[featureIndex]
+				modifiedUnwrappedZVector[featureIndex - hasBiasNeuronOnCurrentLayer] = unwrappedZVector[featureIndex]
 				
 			end
 
-			unwrappedDerivativeVector = activationFunctionDerivativeFunction({modifiedUnwrappedActivationVector}, {modifiedUnwrappedLayerZVector})[1]
+			unwrappedDerivativeVector = activationFunctionDerivativeFunction(modifiedUnwrappedActivationVector, modifiedUnwrappedZVector)
 			
 			-- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
 
@@ -1705,6 +1663,10 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 
 	local secondNeuronIndex = initialNeuronIndex + size + 1
 	local thirdNeuronIndex = initialNeuronIndex + 2
+	
+	local currentWeightMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(currentWeightMatrix)
+	
+	local nextWeightMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(nextWeightMatrix)
 
 	local newCurrentWeightMatrix
 	local newNextWeightMatrix
@@ -1732,61 +1694,61 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 
 	elseif (initialNeuronIndex == 0) and (size > 0) and (hasNextLayer) then
 
-		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode({#currentWeightMatrix, size})
-		nextWeightMatrixToAdd =  self:initializeMatrixBasedOnMode({size, #nextWeightMatrix[1]})
+		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode({currentWeightMatrixDimensionSizeArray[1], size})
+		nextWeightMatrixToAdd =  self:initializeMatrixBasedOnMode({size, nextWeightMatrixDimensionSizeArray[2]})
 
 		newCurrentWeightMatrix = AqwamTensorLibrary:concatenate(currentWeightMatrix, currentWeightMatrixToAdd, 2)
 		newNextWeightMatrix = AqwamTensorLibrary:concatenate(nextWeightMatrix, nextWeightMatrixToAdd, 1)
 
 	elseif (initialNeuronIndex == 0) and (size > 0) and (not hasNextLayer) then
 
-		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode(#currentWeightMatrix, size)
+		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode({currentWeightMatrixDimensionSizeArray[1], size})
 		newCurrentWeightMatrix = AqwamTensorLibrary:concatenate(currentWeightMatrixToAdd, currentWeightMatrix, 2)
 
 	elseif (initialNeuronIndex > 0) and (size > 0) and (hasNextLayer) then
 
-		currentWeightMatrixLeft = AqwamTensorLibrary:extractColumns(currentWeightMatrix, 1, initialNeuronIndex)
-		currentWeightMatrixRight = AqwamTensorLibrary:extractColumns(currentWeightMatrix, initialNeuronIndex + 1, #currentWeightMatrix[1])
+		currentWeightMatrixLeft = AqwamTensorLibrary:extract(currentWeightMatrix, {1, 1}, {currentWeightMatrixDimensionSizeArray[1], initialNeuronIndex})
+		currentWeightMatrixRight = AqwamTensorLibrary:extract(currentWeightMatrix, {1, initialNeuronIndex + 1}, currentWeightMatrixDimensionSizeArray)
 
-		nextWeightMatrixTop = AqwamTensorLibrary:extractRows(nextWeightMatrix, 1, initialNeuronIndex)
-		nextWeightMatrixBottom = AqwamTensorLibrary:extractRows(nextWeightMatrix, initialNeuronIndex + 1, #nextWeightMatrix)
+		nextWeightMatrixTop = AqwamTensorLibrary:extract(nextWeightMatrix, {1, 1}, {initialNeuronIndex, nextWeightMatrixDimensionSizeArray[2]})
+		nextWeightMatrixBottom = AqwamTensorLibrary:extract(nextWeightMatrix, {initialNeuronIndex + 1, 1}, nextWeightMatrixDimensionSizeArray)
 
-		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode({#currentWeightMatrix, size})
-		nextWeightMatrixToAdd =  self:initializeMatrixBasedOnMode({size, #nextWeightMatrix[1]})
+		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode({currentWeightMatrixDimensionSizeArray[1], size})
+		nextWeightMatrixToAdd =  self:initializeMatrixBasedOnMode({size, nextWeightMatrixDimensionSizeArray[2]})
 
 		newCurrentWeightMatrix, newNextWeightMatrix = mergeLayers(numberOfNeurons, initialNeuronIndex, currentWeightMatrixLeft, currentWeightMatrixRight, currentWeightMatrixToAdd, nextWeightMatrixTop, nextWeightMatrixToAdd, nextWeightMatrixBottom)
 
 	elseif (initialNeuronIndex > 0) and (size > 0) and (not hasNextLayer) then
 
-		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode(#currentWeightMatrix, size)
+		currentWeightMatrixToAdd = self:initializeMatrixBasedOnMode({currentWeightMatrixDimensionSizeArray[1], size})
 		newCurrentWeightMatrix = AqwamTensorLibrary:concatenate(currentWeightMatrix, currentWeightMatrixToAdd, 2)
 
 	elseif (size == -1) and (hasNextLayer) and (numberOfNeurons == 1) then
 
-		newCurrentWeightMatrix = AqwamTensorLibrary:extractColumns(currentWeightMatrix, initialNeuronIndex, initialNeuronIndex)
-		newNextWeightMatrix = AqwamTensorLibrary:extractRows(nextWeightMatrix, initialNeuronIndex, initialNeuronIndex)
+		newCurrentWeightMatrix = AqwamTensorLibrary:extract(currentWeightMatrix, {1, initialNeuronIndex}, {currentWeightMatrixDimensionSizeArray[1], initialNeuronIndex})
+		newNextWeightMatrix = AqwamTensorLibrary:extract(nextWeightMatrix, {initialNeuronIndex, 1}, {initialNeuronIndex, nextWeightMatrixDimensionSizeArray[1]})
 
 	elseif (size == -1) and (not hasNextLayer) and (numberOfNeurons == 1) then
 
-		newCurrentWeightMatrix = AqwamTensorLibrary:extractColumns(currentWeightMatrix, initialNeuronIndex, initialNeuronIndex)
+		newCurrentWeightMatrix = AqwamTensorLibrary:extract(currentWeightMatrix, {1, initialNeuronIndex}, {currentWeightMatrixDimensionSizeArray[1], initialNeuronIndex})
 
 	elseif (size < 0) and (hasNextLayer) and (numberOfNeurons >= absoluteSize) then
 
-		currentWeightMatrixLeft = AqwamTensorLibrary:extractColumns(currentWeightMatrix, 1, secondNeuronIndex)
-		currentWeightMatrixRight = AqwamTensorLibrary:extractColumns(currentWeightMatrix, thirdNeuronIndex, #currentWeightMatrix[1])
+		currentWeightMatrixLeft = AqwamTensorLibrary:extract(currentWeightMatrix, {1, 1}, {currentWeightMatrixDimensionSizeArray[1], secondNeuronIndex})
+		currentWeightMatrixRight = AqwamTensorLibrary:extract(currentWeightMatrix, {1, thirdNeuronIndex}, currentWeightMatrixDimensionSizeArray)
 
-		nextWeightMatrixTop = AqwamTensorLibrary:extractRows(nextWeightMatrix, 1, secondNeuronIndex)
-		nextWeightMatrixBottom = AqwamTensorLibrary:extractRows(nextWeightMatrix, thirdNeuronIndex, #nextWeightMatrix)
+		nextWeightMatrixTop = AqwamTensorLibrary:extract(nextWeightMatrix, {1, 1}, {secondNeuronIndex, nextWeightMatrixDimensionSizeArray[2]})
+		nextWeightMatrixBottom = AqwamTensorLibrary:extract(nextWeightMatrix, {thirdNeuronIndex, 1}, nextWeightMatrixDimensionSizeArray)
 
-		newCurrentWeightMatrix = AqwamTensorLibrary:horizontalConcatenate(currentWeightMatrixLeft, currentWeightMatrixRight)
-		newNextWeightMatrix = AqwamTensorLibrary:verticalConcatenate(nextWeightMatrixTop, nextWeightMatrixBottom)
+		newCurrentWeightMatrix = AqwamTensorLibrary:concatenate(currentWeightMatrixLeft, currentWeightMatrixRight, 2)
+		newNextWeightMatrix = AqwamTensorLibrary:concatenate(nextWeightMatrixTop, nextWeightMatrixBottom, 1)
 
 	elseif (size < 0) and (not hasNextLayer) and (numberOfNeurons >= absoluteSize) then
 
-		currentWeightMatrixLeft = AqwamTensorLibrary:extractColumns(currentWeightMatrix, 1, secondNeuronIndex)
-		currentWeightMatrixRight = AqwamTensorLibrary:extractColumns(currentWeightMatrix, thirdNeuronIndex, #currentWeightMatrix[1])
+		currentWeightMatrixLeft = AqwamTensorLibrary:extract(currentWeightMatrix, {1, 1}, {currentWeightMatrixDimensionSizeArray[1], secondNeuronIndex})
+		currentWeightMatrixRight = AqwamTensorLibrary:extract(currentWeightMatrix, {1, thirdNeuronIndex}, currentWeightMatrixDimensionSizeArray)
 
-		newCurrentWeightMatrix = AqwamTensorLibrary:horizontalConcatenate(currentWeightMatrixLeft, currentWeightMatrixRight)
+		newCurrentWeightMatrix = AqwamTensorLibrary:concatenate(currentWeightMatrixLeft, currentWeightMatrixRight, 2)
 
 	end
 
@@ -1806,7 +1768,7 @@ function NeuralNetworkModel:evolveLayerSize(layerNumber, initialNeuronIndex, siz
 
 	end
 
-	self.numberOfNeuronsArray[layerNumber] += size
+	numberOfNeuronsArray[layerNumber] = numberOfNeuronsArray[layerNumber] + size
 
 end
 

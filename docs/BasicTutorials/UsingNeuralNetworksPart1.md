@@ -154,6 +154,16 @@ NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
 
 ```
 
+# Training
+
+Once you have setup the neural network, all you have to do is to call the train() function.
+
+```
+
+local costArray = NeuralNetworkModel:train(featureMatrix, labelVector)
+
+```
+
 # Wrapping it all up
 
 The tutorial covers the basics on how to create your own neural networks. 

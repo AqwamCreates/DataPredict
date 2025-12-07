@@ -54,7 +54,7 @@ Before we start training our model, we first need to build our model. We have sp
 
 local ActorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-ActorNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
+ActorNeuralNetwork:addLayer(7, true) -- Five player data features, two item data features and one bias.
 
 ActorNeuralNetwork:addLayer(5, true, "LogitLink") -- How much hidden factors that you want to connect between the input and output values.
   
@@ -62,7 +62,7 @@ ActorNeuralNetwork:addLayer(1, false, "Tanh") -- We're outputing a single value.
 
 local CriticNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-CriticNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
+CriticNeuralNetwork:addLayer(7, true) -- Five player data features, two item data features and one bias.
 
 CriticNeuralNetwork:addLayer(5, true, "LogitLink") -- How much hidden factors that you want to connect between the input and output values.
   

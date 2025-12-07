@@ -38,7 +38,7 @@ local playerDataVector = {
 local itemDataVector = {
     {
         investmentPercentage, -- investmentPercentage = itemCost / (itemCost + currentPlayerCurrencyAmount)
-        dropRate, -- dropRate = itemDropAmountFactor / totalDropAmountFactorForAllItems.
+        dropRate, -- dropRate = itemDropFactorAmount / totalDropFactorAmountForAllItems.
     }
 }
 

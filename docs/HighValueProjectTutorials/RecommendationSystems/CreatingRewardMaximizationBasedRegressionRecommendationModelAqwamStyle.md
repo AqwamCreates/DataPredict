@@ -27,7 +27,7 @@ Additionally, these inputs must be in terms of probabilities and not raw values.
 local playerDataVector = {
     {
         1,
-        collectedCurrencyPercentage, -- collectedCurrencyPercentage = currentCurrencyAmount / maximumCurrencyAmountCollected
+        collectedCurrencyPercentage, -- collectedCurrencyPercentage = currentCurrencyAmount / totalCurrencyAmountCollected
         numberOfItemsOwnedPercentage, -- numberOfItemsOwnedPercentage = currentNumberOfItemsOwned / maximumNumberOfItemsInTheGame
         timePlayedInCurrentSessionPercentage, -- timePlayedInCurrentSessionPercentage = timePlayedInCurrentSession / (timePlayedInCurrentSession + timePlayedInAllSessions)
         healthPercentage, -- healthPercentage = currentHealth / maximumHealth

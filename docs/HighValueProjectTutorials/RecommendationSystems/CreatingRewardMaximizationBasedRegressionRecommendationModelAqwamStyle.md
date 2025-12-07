@@ -2,7 +2,7 @@
 
 Hello guys! Today, I will be showing you on how to create a reward-maximization-based model that could predict the likelihood that the player will buy the item.
 
-However, this comes with my own style of doing things where it would learn faster with a trade-off of heightened complexity. So feel free to experiment this yourself!
+However, this comes with my own style of doing things where it would learn faster with a trade-off of increased complexity. So, feel free to experiment this yourself!
 
 Currently, you need these to produce the model:
 
@@ -27,19 +27,18 @@ Additionally, these inputs must be in terms of probabilities and not raw values.
 local playerDataVector = {
     {
         1,
-        numberOfCurrencyAmount,
-        numberOfItemsAmount,
-        timePlayedInCurrentSession,
-        timePlayedInAllSessions,
-        currentHealthAmount,
-        currentDamageAmount
+        collectedCurrencyPercentage, -- collectedCurrencyPercentage = currentCurrencyAmount / maximumCurrencyAmountCollected
+        numberOfItemsOwnedPercentage, -- numberOfItemsOwnedPercentage = currentNumberOfItemsOwned / maximumNumberOfItemsInTheGame
+        timePlayedInCurrentSessionPercentage, -- timePlayedInCurrentSessionPercentage = timePlayedInCurrentSession / (timePlayedInCurrentSession + timePlayedInAllSessions)
+        healthPercentage, -- healthPercentage = currentHealth / maximumHealth
+        currentDamagePerecentage, -- currentDamagePerecentage = currentDamageAmout / maximumDamageAmount
     }
 }
 
 local itemDataVector = {
     {
-        investmentPercentage, -- investmentPercentage = itemCost / (currentPlayerCurrencyAmount + itemCost)
-        dropRate,
+        investmentPercentage, -- investmentPercentage = itemCost / (itemCost + currentPlayerCurrencyAmount)
+        dropRate, -- dropRate = itemDropAmountFactor / totalDropAmountFactorForAllItems.
     }
 }
 

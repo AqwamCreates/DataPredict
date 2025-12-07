@@ -69,7 +69,7 @@ CriticNeuralNetwork:addLayer(1, false) -- Critic only outputs 1 value.
 
 -- You can use deep Q-Learning here for faster learning. However, for more "safer" model, stick with deep SARSA.
 
-local DeepReinforcementLearningModel = DataPredict.Model.SoftActorCritic.new()
+local DeepReinforcementLearningModel = DataPredict.Model.TemporalDifferenceActorCritic.new()
 
 -- Inserting our actor and critic Neural Networks here.
 

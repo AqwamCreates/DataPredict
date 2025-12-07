@@ -2,7 +2,7 @@
 
 Hello guys! Today, I will be showing you on how to create a reward-maximization-based model that could predict the likelihood that the player will buy the item.
 
-However, this comes with my own style of doing things where it would learn faster with a trade-off of increased complexity. So, feel free to experiment this yourself!
+However, this comes with my own style of doing things where it would learn faster and more stable with a trade-off of increased complexity. So, feel free to experiment this yourself!
 
 Currently, you need these to produce the model:
 

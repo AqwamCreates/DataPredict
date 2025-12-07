@@ -20,6 +20,14 @@
 
   * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if multiple recommendations are made.
 
+* [Creating Reward-Maximization-Based Regression Recommendation Model (Aqwam's Style)](CreatingRewardMaximizationBasedRegressionRecommendationModelAqwamStyle,md)
+
+  * Similar to the previous model.
+
+  * Faster convergence due to taking advantage of the probabilistic nature of input values.
+
+  * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if multiple recommendations are made.
+
 ## Binary Recommendation Systems
 
 * [Creating Classification-Based Recommendation Model](RecommendationSystems/CreatingClassificationBasedRecommendationModel.md)

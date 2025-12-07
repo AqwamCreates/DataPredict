@@ -1,4 +1,4 @@
-# Creating Reward-Maximization-Based Regression Recommendation Model (Aqwam's Style)
+# Creating Reward-Maximization-Based Regression Recommendation Model (Aqwam Style)
 
 Hello guys! Today, I will be showing you on how to create a reward-maximization-based model that could predict the likelihood that the player will buy the item.
 

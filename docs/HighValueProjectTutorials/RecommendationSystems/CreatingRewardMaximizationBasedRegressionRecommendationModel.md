@@ -6,7 +6,7 @@ Currently, you need these to produce the model:
 
 * A neural network model
 
-* A soft actor-critic model
+* A temporal difference actor-critic model
 
 * A player data that is stored in matrix
 

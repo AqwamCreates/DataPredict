@@ -172,7 +172,12 @@ end
 
 local function onItemPurchase(itemName, itemDataVector)
 
-     local rewardValue = 1 -- Tanh can only output values of -1 to 1. Hence the maximum reward it can receive is 1.
+    --[
+        Tanh can only output values of -1 to 1. Hence the maximum reward it can receive is 1.
+        However, to avoid improper gradient calculations (due to reward mixing with critic values leading to output range of -2 and 2), this should be smaller in magnitude.
+    --]
+    
+     local rewardValue = 0.1
 
     showRecommendations(itemName, itemDataVector, rewardValue, 1)
 
@@ -186,7 +191,12 @@ end
 
 local function onShopGUIClose(lastShownItemName, lastItemDataVector)
 
-    local rewardValue = -1 -- Tanh can only output values of -1 to 1. Hence the minimum reward it can receive is -1.
+    --[
+        Tanh can only output values of -1 to 1. Hence the minimum reward it can receive is -1.
+        However, to avoid improper gradient calculations (due to reward mixing with critic values leading to output range of -2 and 2), this should be smaller in magnitude.
+    --]
+
+    local rewardValue = -0.1 -- Tanh can only output values of -1 to 1. Hence the minimum reward it can receive is -1.
 
    showRecommendations(lastShownItemName, lastItemDataVector, rewardValue, -1)
 

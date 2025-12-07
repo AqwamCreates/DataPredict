@@ -99,7 +99,7 @@ local function showRecommendations(itemName, itemDataVector, rewardValue, previo
 
     local currentPlayerData = getPlayerDataVector()
 
-    local playerItemDataPairVector = TensorL:concatenate(playerDataVector, itemDataVector, reward)
+    local playerItemDataPairVector = TensorL:concatenate(playerDataVector, itemDataVector, reward, 2)
 
      -- Forces the model's action to the selected one to make sure the model updates properly.
 

@@ -31,7 +31,7 @@ local playerDataVector = {
         numberOfItemsOwnedPercentage, -- numberOfItemsOwnedPercentage = currentNumberOfItemsOwned / maximumNumberOfItemsInTheGame
         timePlayedInCurrentSessionPercentage, -- timePlayedInCurrentSessionPercentage = timePlayedInCurrentSession / (timePlayedInCurrentSession + timePlayedInAllSessions)
         healthPercentage, -- healthPercentage = currentHealth / maximumHealth
-        currentDamagePerecentage, -- currentDamagePerecentage = currentDamageAmout / maximumDamageAmount
+        currentDamagePerecentage, -- currentDamagePercentage = currentDamageAmout / maximumDamageAmount
     }
 }
 

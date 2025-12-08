@@ -8,7 +8,7 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
 
 * [Standard Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement.docx)
 
-    * Includes DataPredict™, DataPredict™ Neural and DatapPredict™ Axon.
+    * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
 
     * ~2% of gross revenue per month for projects using DataPredict™. The percentage decreases as gross revenue increases.
 
@@ -22,7 +22,7 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
 
 * [White-Label Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement%20-%20White%20Label.docx)
 
-    * Includes DataPredict™, DataPredict™ Neural and DatapPredict™ Axon.
+    * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
     
     * 5% of gross revenue per month for projects using DataPredict™.
 
@@ -36,7 +36,7 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
 
 * [Childhood-Appreciation License Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
 
-    * Includes DataPredict™, DataPredict™ Neural and DatapPredict™ Axon.
+    * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
  
     * No cost and no limit for all current existing (non-B2B) projects. This deal ends on my next birthday, 23 January 2026.
  
@@ -63,6 +63,8 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
    * Please contact me for confirmation.
 
 * [Contributor License Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
+
+    * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
 
    * If any organization that employs official DataPredict contributor (who contributed equal to or more than 10%) with a guarantee of at least one (1) year of employment (unless the contributor states otherwise), the organization may request non-transferrable licenses that gives 1/4 discount on the licensing costs for all projects using DataPredict.
    

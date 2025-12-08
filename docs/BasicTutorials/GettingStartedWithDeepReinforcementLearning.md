@@ -72,17 +72,13 @@ Below we will show you the difference between the two above. But first, let's de
 
 local ClassesList = {1, 2}
 
-local NeuralNetwork = DataPredict.Models.NeuralNetwork.new() -- Create the NeuralNetwork first.
+local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = ClassesList}) -- Create the NeuralNetwork first.
 
 NeuralNetwork:addLayer(4, true, "None")
 
 NeuralNetwork:addLayer(2, false, "LeakyReLU")
 
-NeuralNetwork:setClassesList(ClassesList)
-
-local DeepQLearning = DataPredict.Models.DeepQLearning.new() -- Then create the DeepQLearning.
-
-DeepQLearning:setModel(NeuralNetwork) -- Then put the NeuralNetwork inside DeepQLearning.
+local DeepQLearning = DataPredict.Models.DeepQLearning.new({Model = NeuralNetwork}) -- Then create the DeepQLearning.
 
 ```
 
@@ -104,7 +100,11 @@ Below, I will show a code sample using these functions.
 
 while true do
 
-  local previousEnvironmentFeatureVector = {{0, 0, 0, 0, 0}} -- We must keep track our previous feature vector.
+  local previousEnvironmentFeatureVector = {
+
+    {0, 0, 0, 0, 0} -- We must keep track our previous feature vector.
+
+  }
 
   local previousAction = 1
 
@@ -116,8 +116,13 @@ while true do
 
     local reward = getReward(currentEnvironmentFeatureVector)
 
-    DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, previousAction, reward, currentEnvironmentFeatureVector, currentAction, 0) -- update() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
+   --[[
 
+    update() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
+
+  --]] 
+
+    DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, previousAction, reward, currentEnvironmentFeatureVector, currentAction, 0) 
     previousEnvironmentFeatureVector = currentEnvironmentFeatureVector
 
     local hasGameEnded = checkIfGameHasEnded(environmentVector)
@@ -128,7 +133,15 @@ while true do
 
   end
 
-  QLearningNeuralNetwork:episodeUpdate(1) -- episodeUpdate() is used whenever an episode ends. An episode is the total number of steps that determines when the model should stop training. The value of one indicates that the current environment feature vector is a terminal state.
+ --[[
+
+ episodeUpdate() is used whenever an episode ends. 
+ An episode is the total number of steps that determines when the model should stop training.
+ The value of one indicates that the current environment feature vector is a terminal state.
+ 
+ --]] 
+
+  QLearningNeuralNetwork:episodeUpdate(1)
 
 end
 
@@ -146,7 +159,11 @@ local DeepQLearningQuickSetup = DataPredict.QuickSetups.SingleCategoricalPolicy.
 
 DeepQLearningQuickSetup:setModel(DeepQLearning)
 
-local environmentFeatureVector = {{0, 0, 0, 0, 0}}
+local previousEnvironmentFeatureVector = {
+
+  {0, 0, 0, 0, 0} -- We must keep track our previous feature vector.
+
+}
 
 local action = 1
 

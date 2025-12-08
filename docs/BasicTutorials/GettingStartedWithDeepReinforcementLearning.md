@@ -155,9 +155,7 @@ To reduce the amount of things we need to track, we can use SingleCategoricalPol
 
 ```lua
 
-local DeepQLearningQuickSetup = DataPredict.QuickSetups.SingleCategoricalPolicy.new()
-
-DeepQLearningQuickSetup:setModel(DeepQLearning)
+local DeepQLearningQuickSetup = DataPredict.QuickSetups.SingleCategoricalPolicy.new({Model = DeepQLearning})
 
 local previousEnvironmentFeatureVector = {
 

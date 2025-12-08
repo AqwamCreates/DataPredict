@@ -1,4 +1,4 @@
-# [Models](https://github.com/AqwamCreates/DataPredict/blob/main/docs/API/Models.md) - Model Parameters Compatibility
+# [Models](Models.md) - Model Parameters Compatibility
 
 This documentation shows you on which algorithms can be switched with others.
 

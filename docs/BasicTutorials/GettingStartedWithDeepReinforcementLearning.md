@@ -102,7 +102,7 @@ while true do
 
   local previousEnvironmentFeatureVector = {
 
-    {0, 0, 0, 0, 0} -- We must keep track our previous feature vector.
+    {1, 0, 0, 0, 0} -- We must keep track our previous feature vector.
 
   }
 
@@ -159,7 +159,7 @@ local DeepQLearningQuickSetup = DataPredict.QuickSetups.SingleCategoricalPolicy.
 
 local previousEnvironmentFeatureVector = {
 
-  {0, 0, 0, 0, 0} -- We must keep track our previous feature vector.
+  {1, 0, 0, 0, 0} -- We must keep track our previous feature vector.
 
 }
 

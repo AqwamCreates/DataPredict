@@ -8,6 +8,8 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
 
 * [Standard Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement.docx)
 
+    * Includes DataPredict™, DataPredict™ Neural and DatapPredict™ Axon.
+
     * ~2% of gross revenue per month for projects using DataPredict™. The percentage decreases as gross revenue increases.
 
    * Requires disclosure of DataPredict™ to the public.
@@ -19,6 +21,8 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
       * “Directly use DataPredict as-is, supported by original research.”
 
 * [White-Label Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement%20-%20White%20Label.docx)
+
+    * Includes DataPredict™, DataPredict™ Neural and DatapPredict™ Axon.
     
     * 5% of gross revenue per month for projects using DataPredict™.
 
@@ -32,6 +36,8 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
 
 * [Childhood-Appreciation License Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
 
+    * Includes DataPredict™, DataPredict™ Neural and DatapPredict™ Axon.
+ 
     * No cost and no limit for all current existing (non-B2B) projects. This deal ends on my next birthday, 23 January 2026.
  
    * Requires disclosure and testonomials of DataPredict™ to the public.

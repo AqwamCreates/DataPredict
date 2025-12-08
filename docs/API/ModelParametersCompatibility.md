@@ -20,8 +20,7 @@ The algorithms under the same group can have its model parameters swapped withou
 * QuantileLinearRegression
 * SupportVectorRegressionGradientVariant
 * PassiveAggressiveRegressor
-
-* LogisticRegression
+* BinaryRegression
 * ProbitRegression
 * SupportVectorMachineGradientVariant
 * PassiveAggressiveClassifier

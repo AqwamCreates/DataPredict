@@ -1,4 +1,4 @@
-# Model Parameters Compatibility
+# [Models](Models.md) - Model Parameters Compatibility
 
 This documentation shows you on which algorithms can be switched with others.
 
@@ -20,9 +20,7 @@ The algorithms under the same group can have its model parameters swapped withou
 * QuantileLinearRegression
 * SupportVectorRegressionGradientVariant
 * PassiveAggressiveRegressor
-
-* LogisticRegression
-* ProbitRegression
+* BinaryRegression
 * SupportVectorMachineGradientVariant
 * PassiveAggressiveClassifier
 * OneClassPassiveAggressiveClassifier

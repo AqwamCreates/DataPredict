@@ -1,6 +1,8 @@
-# Creating Reward-Maximization-Based Regression Recommendation Model
+# Creating Reward-Maximization-Based Regression Recommendation Model (Aqwam Style)
 
 Hello guys! Today, I will be showing you on how to create a reward-maximization-based model that could predict the likelihood that the player will buy the item.
+
+However, this comes with my own style of doing things where it would learn faster and more stable with a trade-off of increased complexity. So, feel free to experiment this yourself!
 
 Currently, you need these to produce the model:
 
@@ -16,6 +18,8 @@ Currently, you need these to produce the model:
 
 Before we start creating our model, we first need to visualize on how we will design our data to increase the likelihood of players purchasing an item.
 
+Additionally, these inputs must be in terms of probabilities and not raw values.
+
 ```lua
 
 -- We're just adding 1 here to add "bias".
@@ -23,19 +27,18 @@ Before we start creating our model, we first need to visualize on how we will de
 local playerDataVector = {
     {
         1,
-        numberOfCurrencyAmount,
-        numberOfItemsAmount,
-        timePlayedInCurrentSession,
-        timePlayedInAllSessions,
-        currentHealthAmount,
-        currentDamageAmount
+        collectedCurrencyPercentage, -- collectedCurrencyPercentage = currentCurrencyAmount / totalCurrencyAmountCollected
+        numberOfItemsOwnedPercentage, -- numberOfItemsOwnedPercentage = currentNumberOfItemsOwned / maximumNumberOfItemsInTheGame
+        timePlayedInCurrentSessionPercentage, -- timePlayedInCurrentSessionPercentage = timePlayedInCurrentSession / (timePlayedInCurrentSession + timePlayedInAllSessions)
+        healthPercentage, -- healthPercentage = currentHealth / maximumHealth
+        currentDamagePerecentage, -- currentDamagePercentage = currentDamageAmount / maximumDamageAmount
     }
 }
 
 local itemDataVector = {
     {
-        costAmount,
-        rarityValue,
+        investmentPercentage, -- investmentPercentage = itemCost / (itemCost + currentPlayerCurrencyAmount)
+        dropRate, -- dropRate = itemDropFactorAmount / totalDropFactorAmountForAllItems.
     }
 }
 
@@ -51,15 +54,19 @@ Before we start training our model, we first need to build our model. We have sp
 
 local ActorNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-ActorNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
+ActorNeuralNetwork:addLayer(7, true) -- Five player data features, two item data features and one bias.
 
-ActorNeuralNetwork:addLayer(1, false) -- We're outputing a single value.
+ActorNeuralNetwork:addLayer(5, true, "LogitLink") -- How much hidden factors that you want to connect between the input and output values.
+  
+ActorNeuralNetwork:addLayer(1, false, "Tanh") -- We're outputing a single value.
 
 local CriticNeuralNetwork = DataPredict.Model.NeuralNetwork.new({maximumNumberOfIterations = 1})
 
-CriticNeuralNetwork:addLayer(8, true) -- Six player data features, two item data features and one bias.
+CriticNeuralNetwork:addLayer(7, true) -- Five player data features, two item data features and one bias.
 
-CriticNeuralNetwork:addLayer(1, false) -- Critic only outputs 1 value.
+CriticNeuralNetwork:addLayer(5, true, "LogitLink") -- How much hidden factors that you want to connect between the input and output values.
+  
+CriticNeuralNetwork:addLayer(1, false, "Tanh") -- Critic only outputs 1 value.
 
 ```
 
@@ -165,7 +172,12 @@ end
 
 local function onItemPurchase(itemName, itemDataVector)
 
-     local rewardValue = 50
+    --[
+        Tanh can only output values of -1 to 1. Hence the maximum reward it can receive is 1.
+        However, to avoid improper gradient calculations (due to reward mixing with critic values leading to output range of -2 and 2), this should be smaller in magnitude.
+    --]
+    
+     local rewardValue = 0.05
 
     showRecommendations(itemName, itemDataVector, rewardValue, 1)
 
@@ -179,7 +191,12 @@ end
 
 local function onShopGUIClose(lastShownItemName, lastItemDataVector)
 
-    local rewardValue = -50
+    --[
+        Tanh can only output values of -1 to 1. Hence the minimum reward it can receive is -1.
+        However, to avoid improper gradient calculations (due to reward mixing with critic values leading to output range of -2 and 2), this should be smaller in magnitude.
+    --]
+
+    local rewardValue = -0.05
 
    showRecommendations(lastShownItemName, lastItemDataVector, rewardValue, -1)
 

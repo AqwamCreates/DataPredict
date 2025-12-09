@@ -154,6 +154,24 @@ NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
 
 ```
 
+# Training And Prediction
+
+Once you have setup the neural network, all you have to do is to call the train() function.
+
+```lua
+
+local costArray = NeuralNetworkModel:train(featureMatrix, labelVector)
+
+```
+
+For prediction, all you need to do is to call the predict() function using . You can also supply a second parameter if you want the original neural network output matrix instead of taking the indices of the highest outputs.
+
+```lua
+
+local predictedLabelVector = NeuralNetworkModel:predict(featureMatrix, returnOriginalOutput)
+
+```
+
 # Wrapping it all up
 
 The tutorial covers the basics on how to create your own neural networks. 

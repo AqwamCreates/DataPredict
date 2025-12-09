@@ -164,7 +164,7 @@ local elementWiseActivationFunctionList = {
 
 	["LeakyReLU"] = function (z) return math.max((0.01 * z), z) end,
 
-	["ELU"] = function (z) return if (z > 0) then z else (0.01 * (math.exp(z) - 1)) end,
+	["ELU"] = function (z) return if (z > 0) then z else (math.exp(z) - 1) end,
 
 	["Gaussian"] = function (z) return math.exp(-math.pow(z, 2)) end,
 
@@ -340,7 +340,7 @@ local elementWiseActivationFunctionDerivativeList = {
 
 	["LeakyReLU"] = function (a, z) if (z > 0) then return 1 else return 0.01 end end,
 
-	["ELU"] = function (a, z) if (z > 0) then return 1 else return 0.01 * math.exp(z) end end,
+	["ELU"] = function (a, z) if (z > 0) then return 1 else return math.exp(z) end end,
 
 	["Gaussian"] = function (a, z) return -2 * z * math.exp(-math.pow(z, 2)) end,
 

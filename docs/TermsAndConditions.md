@@ -117,7 +117,7 @@ The determination of compensatory damages shall be made by a court of competent 
 
 ## Waiver of Confidentiality Rights
 
-The User acknowledges and agrees that, in the event Licensor suspects a violation of this Agreement, particularly in cases where the Library is commercially used without conforming to the commercial use conditions, the User hereby waives all rights to keep the codes that uses the Library confidential. This waiver includes but is not limited to any obligation to maintain confidentiality regarding the Library and its usage. In such instances, the User shall not assert any right to confidentiality with respect to the Library, and the User shall fully cooperate with Licensor in any legal proceedings, including the revelation of the code without prior notice. 
+The User acknowledges and agrees that, in the event Licensor have a reasonable belief of a violation of this Agreement, Licensor may request User provide relevant assets for review. User may assert confidentiality, but the User's refusal may be considered in determining the violation. The User also agrees that the User will not interfere the Licensor's review from User's Third Parties.
 
 ## In Relation Of User's Third Parties
 

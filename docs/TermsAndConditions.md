@@ -123,7 +123,7 @@ This Agreement shall be governed by and construed in accordance with the laws of
 
 ## Changes to Terms and Conditions
 
-Licensor reserve the right to change these terms and conditions at any time, without prior notice. User continued use of the software library after such changes will constitute User's acceptance of the new terms and conditions.
+Licensor reserves the right to modify this Agreement at any time. Modified terms become effective 30 days after posting, provided User continues to use the Library during that period. User's continued use after the 30-day period constitutes acceptance of the modified terms.
 
 ## Termination
 

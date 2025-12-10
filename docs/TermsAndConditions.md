@@ -150,3 +150,5 @@ No waiver by Licensor of any breach of this Agreement by Licensee shall be consi
 This Agreement constitutes the entire agreement between User and Licensor with respect to the subject matter hereof and supersedes all prior or contemporaneous communications and proposals, whether oral or written, between User and Licensor.
 
 In the event that any provision within this Agreement is found to be invalid, illegal, or unenforceable under any applicable law or by a court of competent jurisdiction, the remaining provisions of this Agreement shall remain in full force and effect, and the invalid, illegal, or unenforceable provision shall be deemed modified to the extent necessary to make it valid, legal, and enforceable, preserving the intentions of the parties to the maximum extent possible.
+
+By using or possessing the Library, User agrees to be bound by the terms of this Agreement. If User does not agree to the terms of this Agreement, User shall not use or possess the Library.

@@ -5,7 +5,7 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 ## Definitions
 
-* For the purposes of this Agreement, the definition of "interaction" shall include, but is not limited to:
+* For the purposes of this Agreement, the definition of "Interaction" shall include, but is not limited to:
 
   * Direct Usage: Any instance where the Library is explicitly called, linked, imported, compiled, or otherwise included as part of another program, application, system, or project.
 
@@ -41,15 +41,15 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 * Commercial use is permitted subject to the following conditions, where if the User engages in commercial use as defined in Section 3.1, the Licensor reserves the right, at its sole discretion and without prior notice, to:
 
-  * Provide all User's Interacting Code to Licensor for review;
+  * Provide all User's Interacting assets to Licensor for review;
  
-  * Release any or all User's Interacting Code under MIT license either publicly, privately to Licensor, or to designated third parties;
+  * Release any or all User's Interacting assets under MIT license either publicly, privately to Licensor, or to designated third parties;
  
   * Determine the timing and manner of such release.
 
 * User may not remove codes that the Licensor has released under MIT license pursuant to this Agreement.
 
-* The User agrees that release of Interacting Code under MIT license constitutes reasonable alternative consideration and benefit in lieu for the use and posession of the Library. This remedy represents the parties' good faith estimate of fair compensation.
+* The User agrees that release of Interacting assets under MIT license constitutes reasonable alternative consideration and benefit in lieu for the use and posession of the Library. This remedy represents the parties' good faith estimate of fair compensation.
 
 * The MIT license can be viewed here: https://opensource.org/license/mit.
 

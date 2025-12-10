@@ -84,7 +84,7 @@ local function onRoundEnd()
       
     end
 
-    displayLeaderboardScore(playerArray, leaderboardScoreFeatureMatrix)
+    displayLeaderboardScores(playerArray, leaderboardScoreFeatureMatrix)
 
     AnomalyDetectionModel:setModelParameters(nil) -- To reset.
 

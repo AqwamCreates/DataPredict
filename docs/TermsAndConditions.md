@@ -31,9 +31,9 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 * Additionally, the definition of "User's Third Parties" shall include:
 
- * Any individual or entity that receives, accesses, or benefits from the Library through User's actions;
+  * Any individual or entity that receives, accesses, or benefits from the Library through User's actions;
 
- * Clients, customers, contractors, subcontractors, partners, affiliates, or any entity to which User provides access to the Library.
+  * Clients, customers, contractors, subcontractors, partners, affiliates, or any entity to which User provides access to the Library.
 
 ## Commercial Use Conditions
 

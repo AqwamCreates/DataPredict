@@ -6,12 +6,13 @@ Hello guys! Today, I will be showing you on how to create an anomaly-detection-b
 
 Before we train our model, we will first need to construct a model, in which we have three approaches:
 
-| Approach | Model                            | Properties                     | Notes                                                                                                                                         |
-| -------- | -------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1        | Expectation-Maximization         | Incremental, Probabilistic     | Good for anomaly detection; can be updated with partial data, can produce multiple "normal" clusters (e.g. different player playstyles).          |
-| 2        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based  | Good for anomaly detection; cannot be updated real-time, heavier to run, best with best with "radial basis function" kernel.               |
-| 3        | Gaussian Naive Bayes             | Incremental, Generative        | Not commonly used in anomaly detection; fast, can be updated with partial data, requires features to be independent (rare in real player data). |
-
+| Approach | Model                                               | Properties                     | Notes                                                                                                                                         |
+| -------- | --------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1        | Expectation-Maximization                            | Incremental, Probabilistic     | Good for anomaly detection; can be updated with partial data, can produce multiple "normal" clusters (e.g. different player playstyles).          |
+| 2        | One-Class Support Vector Machine                    | Non-Incremental, Kernel-Based  | Good for anomaly detection; cannot be updated real-time, heavier to run, best with best with "radial basis function" kernel.               |
+| 3        | Gaussian Naive Bayes                                | Incremental, Generative        | Not commonly used in anomaly detection; fast, can be updated with partial data, requires features to be independent (rare in real player data). |
+| 4        | One-Class Passive Aggressive Classifier             | Incremental, Linear            | Somewhat good for anomaly detection; fast, can be updated with partial data, requires features to be linear (rare in real player data).          |
+| 5        | One-Class Support Vector Machine (Gradient Variant) | Somewhat Incremental, Linear    Somewhat good for anomaly detection; fast, can be updated with partial data, requires features to be linear (rare in real player data).          |
 
 ### Approach 1: Expectation-Maximization
 
@@ -33,7 +34,7 @@ local DataPredict = require(DataPredict)
 
 -- You must use RadialBasisFunction as the kernel function. This kernel accepts inputs of -infinity to infinity values, but outputs 0 to 1 values.
 
-local AnomalyDetectionModel = DataPredict.Models.OneClassSupportVectorMachine.new({maximumNumberOfIterations = 1, kernelFunction = "RadialBasisFunction"})
+local AnomalyDetectionModel = DataPredict.Models.OneClassSupportVectorMachine.new({kernelFunction = "RadialBasisFunction"})
 
 ```
 
@@ -46,6 +47,30 @@ local DataPredict = require(DataPredict)
 -- There are no parameters to set here.
 
 local AnomalyDetectionModel = DataPredict.Models.GaussianNaiveBayes.new()
+
+```
+
+### Approach 4: One-Class Passive Aggressive Classifier
+
+```lua
+
+local DataPredict = require(DataPredict)
+
+-- There are no parameters to set here.
+
+local AnomalyDetectionModel = DataPredict.Models.OneClassPassiveAggressiveClassifier.new()
+
+```
+
+### Approach 5: One-Class Support Vector Machine (Gradient Variant)
+
+```lua
+
+local DataPredict = require(DataPredict)
+
+-- Set the maximum number of iterations to 1 and a high learning rate value if you want it incremental.
+
+local AnomalyDetectionModel = DataPredict.Models.OneClassSupportVectorMachineGradientVariant.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```
 

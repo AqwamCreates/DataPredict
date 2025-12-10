@@ -141,13 +141,11 @@ This Agreement shall be governed by and construed in accordance with the laws of
 
 ## Changes to Terms and Conditions
 
-Licensor reserves the right to modify this Agreement at any time. Modified terms will be posted in the Library's repository. The modified terms will become effective 30 days after posting for all Users who continue to use the Library. User's continued use of the Library after this 30-day period constitutes acceptance of the modified terms. If User does not agree to the modified terms, User must stop all use and possession of the Library.
+Licensor reserves the right to modify this Agreement at any time without prior notice. Modified terms will be posted in the Library's repository. The modified terms will become effective 30 days after posting for all Users who continue to use the Library. User's continued use of the Library after this 30-day period constitutes acceptance of the modified terms. If User does not agree to the modified terms, User must stop all use and possession of the Library.
 
 ## Termination
 
 * Licensor may terminate this Agreement at any time if User breaches any provision of this Agreement. Upon termination, User shall immediately cease all use of the Library and destroy all copies of the Library in its possession.
-
-* Upon the event of a modification or update to this Agreement, it shall hereby render the previous iteration of this Agreement null and void, with the authority to do so exercised without prior notice. The terms and stipulations articulated within the revised Agreement shall instantaneously supersede any antecedent agreements. The User is thereby mandated to promptly adhere to the conditions delineated within the updated license. Failure to comply shall warrant termination in accordance with the provisions detailed above.
 
 ## No Waiver
 

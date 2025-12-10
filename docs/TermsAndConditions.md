@@ -35,13 +35,13 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 * Commercial use is permitted subject to the following conditions, where if the User engages in commercial use as defined in Section 3.1, the Licensor reserves the right, at its sole discretion and without prior notice, to:
 
- * Require User to provide all Interacting Code to Licensor for review;
+  * Provide all User's Interacting Code to Licensor for review;
  
- * Release any or all Interacting Code under MIT license either publicly, privately to Licensor, or to designated third parties;
+  * Release any or all User's Interacting Code under MIT license either publicly, privately to Licensor, or to designated third parties;
  
- * Determine the timing and manner of such release.
+  * Determine the timing and manner of such release.
 
-* User may not remove codes that Licensor has released under MIT pursuant to this Agreement.
+* User may not remove codes that the Licensor has released under MIT license pursuant to this Agreement.
 
 * Failure to comply with these conditions will make the User liable for damages due to non-compliance, and the User must pay monetary compensation. No other forms of compensation will be accepted.
 

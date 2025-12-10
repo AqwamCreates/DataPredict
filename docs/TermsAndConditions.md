@@ -41,7 +41,7 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
  
  * Determine the timing and manner of such release.
 
-* The User is not allowed to remove distributed codes released under the MIT license due to the commercial usage of this Library from the public without the Licensor's permission.
+* User may not remove codes that Licensor has released under MIT pursuant to this Agreement.
 
 * Failure to comply with these conditions will make the User liable for damages due to non-compliance, and the User must pay monetary compensation. No other forms of compensation will be accepted.
 

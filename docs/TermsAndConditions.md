@@ -77,10 +77,6 @@ User shall not:
 
 Should the User violates the prohibited actions as stated above, the User must pay monetary compensation. No other forms of compensation will be accepted.
 
-## Liability
-
-The Library is provided "AS IS" and without warranty of any kind. Licensor shall not be liable for any damages or losses, including but not limited to direct, indirect, incidental, consequential, or punitive damages arising out of the use or inability to use the Library.
-
 ## Ownership and Credit
 
 * User acknowledges that Licensor owns all rights, title, and interest in and to the Library, and User shall not claim ownership of the Library or any part thereof. User shall attribute to the Licensor in all publications or presentations that uses the Library. The attributions must be placed in areas that are commonly viewed by the general public. The attributions must also include one of the combinations of materials as stated below:
@@ -125,7 +121,19 @@ The User acknowledges and agrees that, in the event Licensor suspects a violatio
 
 ## In Relation Of User's Third Parties
 
-The User acknowledges that if the Library is used or possesed by the User's Third Parties, the User would be liable for User's Third Parties' use and possesion of the Library.
+* The User acknowledges that if the Library is used or possesed by the User's Third Parties, the User would be liable for User's Third Parties' use and possesion of the Library.
+
+* The User may avoid liability for User's Third Parties' violations if:
+
+  * The User had written agreement with User's Third Party requiring compliance;
+  
+  * The User made reasonable efforts to monitor compliance;
+  
+  * The User promptly notifies Licensor upon discovering violation.
+
+## Liability
+
+The Library is provided "AS IS" and without warranty of any kind. Licensor shall not be liable for any damages or losses, including but not limited to direct, indirect, incidental, consequential, or punitive damages arising out of the use or inability to use the Library.
 
 ## Governing Law
 

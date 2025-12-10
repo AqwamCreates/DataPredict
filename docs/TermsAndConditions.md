@@ -49,7 +49,7 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 * User may not remove codes that the Licensor has released under MIT license pursuant to this Agreement.
 
-* Failure to comply with these conditions will make the User liable for damages due to non-compliance, and the User must pay monetary compensation. No other forms of compensation will be accepted.
+* The User agrees that release of Interacting Code under MIT license constitutes reasonable alternative consideration and benefit in lieu for the use and posession of the Library. This remedy represents the parties' good faith estimate of fair compensation.
 
 * The MIT license can be viewed here: https://opensource.org/license/mit.
 

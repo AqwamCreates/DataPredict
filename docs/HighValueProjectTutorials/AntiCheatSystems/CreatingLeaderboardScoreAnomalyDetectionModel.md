@@ -68,11 +68,11 @@ local function onRoundEnd()
 
     local probabilityValue
 
-    for playerIndex, unwrappedProbabilityVector in ipairs(probabilityVector)
+    for playerIndex = #playerArray, 1, -1 do
 
       -- The probability value here means how likely it is that the data point is "normal" in relative to its neighbours. It is based on kValue.
 
-      probabilityValue = unwrappedProbabilityVector[1]
+      probabilityValue = probabilityVector[playerIndex][1]
 
       -- Above this probability value threshold, we consider them as normal.
 

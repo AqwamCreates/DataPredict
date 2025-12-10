@@ -40,7 +40,7 @@ local leaderboardScoreFeatureMatrix = {
 
 ```lua
 
-local probabilityThreshold = 0.3
+local probabilityValueThreshold = 0.3
 
 local playerArray = {}
 
@@ -74,9 +74,9 @@ local function onRoundEnd()
 
       probabilityValue = unwrappedProbabilityVector[1]
 
-      -- Above this threshold, we consider them as normal.
+      -- Above this probability value threshold, we consider them as normal.
 
-      if (probabilityValue >= probabilityThreshold) then continue end 
+      if (probabilityValue >= probabilityValueThreshold) then continue end 
 
       -- Otherwise, remove this data from the leaderboard.
 

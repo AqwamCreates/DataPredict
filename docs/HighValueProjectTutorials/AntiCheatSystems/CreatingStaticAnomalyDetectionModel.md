@@ -12,7 +12,7 @@ Before we train our model, we will first need to construct a model, in which we 
 | 2        | One-Class Support Vector Machine                    | Non-Incremental, Kernel-Based  | Good for anomaly detection; cannot be updated real-time, heavier to run, best with best with "radial basis function" kernel.               |
 | 3        | Gaussian Naive Bayes                                | Incremental, Generative        | Not commonly used in anomaly detection; fast, can be updated with partial data, requires features to be independent (rare in real player data). |
 | 4        | One-Class Passive Aggressive Classifier             | Incremental, Linear            | Somewhat good for anomaly detection; fast, can be updated with partial data, requires features to be linear (rare in real player data).          |
-| 5        | One-Class Support Vector Machine (Gradient Variant) | Somewhat Incremental, Linear    Somewhat good for anomaly detection; fast, can be updated with partial data, requires features to be linear (rare in real player data).          |
+| 5        | One-Class Support Vector Machine (Gradient Variant) | Somewhat Incremental, Linear   | Somewhat good for anomaly detection; fast, can be updated with partial data, requires features to be linear (rare in real player data).          |
 
 ### Approach 1: Expectation-Maximization
 

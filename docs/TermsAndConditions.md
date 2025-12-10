@@ -117,7 +117,7 @@ The determination of compensatory damages shall be made by a court of competent 
 
 ## Waiver of Confidentiality Rights
 
-The User acknowledges and agrees that, in the event Licensor have a reasonable belief of a violation of this Agreement, Licensor may request User provide relevant assets for review. User may assert confidentiality, but the User's refusal may be considered in determining the violation. The User also agrees that the User will not interfere the Licensor's review from User's Third Parties.
+The User acknowledges and agrees that, in the event Licensor have a reasonable belief of a violation of this Agreement, Licensor may request User provide relevant assets for review. User may assert confidentiality, but the User's refusal may be considered in determining the violation. The User also agrees that the User will not interfere the Licensor's review from the User's Third Parties.
 
 ## In Relation Of User's Third Parties
 

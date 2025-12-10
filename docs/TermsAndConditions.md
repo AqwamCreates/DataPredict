@@ -123,7 +123,7 @@ This Agreement shall be governed by and construed in accordance with the laws of
 
 ## Changes to Terms and Conditions
 
-Licensor reserves the right to modify this Agreement at any time. Modified terms become effective 30 days after posting, provided User continues to use the Library during that period. User's continued use after the 30-day period constitutes acceptance of the modified terms.
+Licensor reserves the right to modify this Agreement at any time. Modified terms will be posted in the Library's repository. The modified terms will become effective 30 days after posting for all Users who continue to use the Library. User's continued use of the Library after this 30-day period constitutes acceptance of the modified terms. If User does not agree to the modified terms, User must stop all use and possession of the Library.
 
 ## Termination
 

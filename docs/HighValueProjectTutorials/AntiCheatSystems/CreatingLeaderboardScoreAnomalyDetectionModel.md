@@ -52,7 +52,7 @@ local function onPlayerFinished(Player)
 
   leaderboardScoreFeatureMatrix[currentIndex] = leaderBoardScoreFeatureVector
 
-  playerDictionary[currentIndex] = Player
+  playerArray[currentIndex] = Player
 
   currentIndex + 1
 

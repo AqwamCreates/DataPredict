@@ -12,7 +12,7 @@ Hello guys! Today, I will be showing you on how to create a leaderboard score an
 
 ```lua
 
--- The kValue determines how many neigbouring data points we want to compare to for each data points. For now, we will check against 3 other players.
+-- The kValue determines how many neigbouring data points we want to compare to for each data points. For now, we will check against 3 other data.
 
 local AnomalyDetectionModel = DataPredict.Models.LocalOutlierProbability.new({kValue = 3})
 

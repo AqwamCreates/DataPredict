@@ -150,18 +150,18 @@
 | Model                                                                                                                | Alternate Names           | Properties  | Use Cases                           |
 |----------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|-------------------------------------|
 | [TabularQLearning](Models/TabularQLearning.md)                                                                       | Q-Learning                | 🔰 💾 🟢   | Best Self-Learning Grid AIs        |
+| [TabularNStepQLearning](Models/TabularNStepQLearning.md)                                                             | N-Step Q-Learning         | 🔰 💾 🟢   | Best Self-Learning Grid AIs        |
 | [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                       | Double Q-Learning (2010)  | 💾 🛡️ 🟢   | Best Self-Learning Grid AIs        |
 | [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                       | Double Q-Learning (2015)  | 💾 🛡️ 🟢   | Best Self-Learning Grid AIs        |
 | [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                             | Clipped Double Q-Learning | 💾 🛡️ 🟢   | Best Self-Learning Grid AIs        |
-| [TabularNStepQLearning](Models/TabularNStepQLearning.md)                                                             | N-Step Q-Learning         | 🔰 💾 🟢   | Best Self-Learning Grid AIs        |
 | [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md)                                 | SARSA                     | 🔰 🟢       | Safe Self-Learning Grid AIs        |
+| [TabularNStepStateActionRewardStateAction](Models/TabularNStepStateActionRewardStateAction.md)                       | N-Step SARSA              | 🔰 🟢       | Safe Self-Learning Grid AIs        |
 | [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md)                 | Double SARSA              | 🛡️ 🟢       | Safe Self-Learning Grid AIs        |
 | [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md)                 | Double SARSA              | 🛡️ 🟢       | Safe Self-Learning Grid AIs        |
-| [TabularNStepStateActionRewardStateAction](Models/TabularNStepStateActionRewardStateAction.md)                       | N-Step SARSA              | 🔰 🟢       | Safe Self-Learning Grid AIs        |
 | [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                 | Expected SARSA            | 🟢          | Balanced Self-Learning Grid AIs     |
+| [TabularNStepExpectedStateActionRewardStateAction](Models/TabularNStepExpectedStateActionRewardStateAction.md)       | N-Step Expected SARSA     | 🟢          | Balanced Self-Learning Grid AIs     |
 | [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md) | Double Expected SARSA     | 🛡️ 🟢       | Balanced Self-Learning Grid AIs     |
 | [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md) | Double Expected SARSA     | 🛡️ 🟢       | Balanced Self-Learning Grid AIs     |
-| [TabularNStepExpectedStateActionRewardStateAction](Models/TabularNStepExpectedStateActionRewardStateAction.md)       | N-Step Expected SARSA     | 🟢          | Balanced Self-Learning Grid AIs     |
 | [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                       | MC                        | 🟢          | Online Self-Learning Grid AIs       |
 | [TabularOffPolicyMonteCarloControl](Models/TabularOffPolicyMonteCarloControl.md)                                     | Off-Policy MC             | 🟢          | Offline Self-Learning Grid AIs      |
 | [TabularTemporalDifference](Models/TabularTemporalDifference.md)                                                     | TD                        | 🟢          | Priority Systems                    |

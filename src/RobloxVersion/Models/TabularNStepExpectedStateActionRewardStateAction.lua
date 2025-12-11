@@ -78,9 +78,9 @@ function TabularNStepExpectedStateActionRewardStateActionModel.new(parameterDict
 		
 		local Model = NewTabularNStepExpectedStateActionRewardStateActionModel.Model
 		
-		local epsilon = NewTabularNStepExpectedStateActionRewardStateActionModel.epsilon
-		
 		local discountFactor = NewTabularNStepExpectedStateActionRewardStateActionModel.discountFactor
+		
+		local epsilon = NewTabularNStepExpectedStateActionRewardStateActionModel.epsilon
 		
 		local ActionsList = NewTabularNStepExpectedStateActionRewardStateActionModel:getActionsList()
 		

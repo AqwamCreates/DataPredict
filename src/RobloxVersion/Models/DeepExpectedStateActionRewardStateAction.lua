@@ -30,53 +30,105 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
 
-local DeepExpectedStateActionRewardStateActionModel = {}
+local DeepNStepExpectedStateActionRewardStateActionModel = {}
 
-DeepExpectedStateActionRewardStateActionModel.__index = DeepExpectedStateActionRewardStateActionModel
+DeepNStepExpectedStateActionRewardStateActionModel.__index = DeepNStepExpectedStateActionRewardStateActionModel
 
-setmetatable(DeepExpectedStateActionRewardStateActionModel, DeepReinforcementLearningBaseModel)
+setmetatable(DeepNStepExpectedStateActionRewardStateActionModel, DeepReinforcementLearningBaseModel)
 
 local defaultEpsilon = 0.5
 
-function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
+local defaultNStep = 3
+
+function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewDeepExpectedStateActionRewardStateActionModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
-
-	setmetatable(NewDeepExpectedStateActionRewardStateActionModel, DeepExpectedStateActionRewardStateActionModel)
+	local NewDeepNStepExpectedStateActionRewardStateActionModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 	
-	NewDeepExpectedStateActionRewardStateActionModel:setName("DeepExpectedStateActionRewardStateAction")
+	setmetatable(NewDeepNStepExpectedStateActionRewardStateActionModel, DeepNStepExpectedStateActionRewardStateActionModel)
 	
-	NewDeepExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewDeepNStepExpectedStateActionRewardStateActionModel:setName("DeepNStepExpectedStateActionRewardStateAction")
 	
-	NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewDeepNStepExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	
+	NewDeepNStepExpectedStateActionRewardStateActionModel.nStep = parameterDictionary.nStep or defaultNStep
+	
+	NewDeepNStepExpectedStateActionRewardStateActionModel.replayBufferArray = parameterDictionary.replayBufferArray or {}
+	
+	NewDeepNStepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
+		
+		local nStep = NewDeepNStepExpectedStateActionRewardStateActionModel.nStep
 
-	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
-		
-		local Model = NewDeepExpectedStateActionRewardStateActionModel.Model
-		
-		local discountFactor = NewDeepExpectedStateActionRewardStateActionModel.discountFactor
-		
-		local epsilon = NewDeepExpectedStateActionRewardStateActionModel.epsilon
-		
-		local EligibilityTrace = NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace
+		local replayBufferArray = NewDeepNStepExpectedStateActionRewardStateActionModel.replayBufferArray
 
+		table.insert(replayBufferArray, {previousFeatureVector, previousAction, rewardValue, terminalStateValue})
+
+		local currentNStep = #replayBufferArray
+
+		if (currentNStep < nStep) and (terminalStateValue == 0) then return 0 end
+
+		if (currentNStep > nStep) then 
+
+			table.remove(replayBufferArray, 1)
+
+			currentNStep = currentNStep - 1
+
+		end
+		
+		if (currentNStep < nStep) and (terminalStateValue == 0) then return 0 end
+
+		if (currentNStep > nStep) then 
+
+			table.remove(replayBufferArray, 1)
+
+			currentNStep = currentNStep - 1
+
+		end
+
+		local Model = NewDeepNStepExpectedStateActionRewardStateActionModel.Model
+
+		local discountFactor = NewDeepNStepExpectedStateActionRewardStateActionModel.discountFactor
+		
+		local epsilon = NewDeepNStepExpectedStateActionRewardStateActionModel.epsilon
+
+		local ClassesList = Model:getClassesList()
+		
+		local numberOfClasses = #ClassesList
+
+		local returnValue = 0
+		
 		local expectedQValue = 0
 
 		local numberOfGreedyActions = 0
-		
-		local ClassesList = Model:getClassesList()
 
-		local numberOfClasses = #ClassesList
+		local experience
 
-		local actionIndex = table.find(ClassesList, previousAction)
-		
+		local rewardValueAtStepI
+
+		local terminalStateValueAtStepI
+
+		for i = currentNStep, 1, -1 do
+
+			experience = replayBufferArray[i]
+
+			rewardValueAtStepI = experience[3]
+
+			terminalStateValueAtStepI = experience[4]
+
+			returnValue = rewardValueAtStepI + (discountFactor * (1 - terminalStateValueAtStepI) * returnValue)
+
+		end
+
+		local firstExperience = replayBufferArray[1]
+
 		local targetVector = Model:forwardPropagate(currentFeatureVector)
 
 		local previousVector = Model:forwardPropagate(previousFeatureVector, true)
 
 		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
+
+		local actionIndex = table.find(ClassesList, previousAction)
 
 		local unwrappedTargetVector = targetVector[1]
 
@@ -107,53 +159,41 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 			end
 
 		end
-		
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
+
+		local bootstrapValue = math.pow(discountFactor, currentNStep) * expectedQValue
+
+		local nStepTarget = returnValue + bootstrapValue
 
 		local lastValue = previousVector[1][actionIndex]
 
-		local temporalDifferenceError = targetValue - lastValue
+		local temporalDifferenceError = nStepTarget - lastValue
 		
-		local outputDimensionSizeArray = {1, numberOfClasses}
+		local outputDimensionSizeArray = {1, #ClassesList}
 
-		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
-		
-		temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
-		
-		if (EligibilityTrace) then
+		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
-			EligibilityTrace:increment(1, actionIndex, discountFactor, outputDimensionSizeArray)
+		negatedTemporalDifferenceErrorVector[1][actionIndex] = -temporalDifferenceError -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
 
-			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
-
-		end
-		
-		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
-		
 		Model:update(negatedTemporalDifferenceErrorVector, true)
 		
 		return temporalDifferenceError
 
 	end)
 	
-	NewDeepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewDeepNStepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local EligibilityTrace = NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
+		table.clear(NewDeepNStepExpectedStateActionRewardStateActionModel.replayBufferArray)
 		
 	end)
 
-	NewDeepExpectedStateActionRewardStateActionModel:setResetFunction(function() 
+	NewDeepNStepExpectedStateActionRewardStateActionModel:setResetFunction(function()
 		
-		local EligibilityTrace = NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
+		table.clear(NewDeepNStepExpectedStateActionRewardStateActionModel.replayBufferArray)
 		
 	end)
 
-	return NewDeepExpectedStateActionRewardStateActionModel
+	return NewDeepNStepExpectedStateActionRewardStateActionModel
 
 end
 
-return DeepExpectedStateActionRewardStateActionModel
+return DeepNStepExpectedStateActionRewardStateActionModel

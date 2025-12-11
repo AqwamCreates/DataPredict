@@ -64,7 +64,7 @@ function DeepQLearningModel.new(parameterDictionary)
 
 		local numberOfClasses = #ClassesList
 
-		local previousVector = Model:forwardPropagate(previousFeatureVector)
+		local previousVector = Model:forwardPropagate(previousFeatureVector, true)
 
 		local actionIndex = table.find(ClassesList, previousAction)
 
@@ -87,8 +87,6 @@ function DeepQLearningModel.new(parameterDictionary)
 		end
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
-		
-		Model:forwardPropagate(previousFeatureVector, true)
 
 		Model:update(negatedTemporalDifferenceErrorVector, true)
 		

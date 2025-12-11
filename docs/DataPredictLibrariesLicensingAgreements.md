@@ -4,7 +4,7 @@
 
 * I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
 
-* I do not negotiate for the purchase of the whole DataPredict ecosystem. However, I am open for partnerships for game ML consultations organizations with 500 USD per project setup fee.
+* I do not negotiate for the purchase of the whole DataPredict ecosystem. However, I am open for partnerships for game ML consultation businesses with 500 USD per game setup fee, provided that your clients do not have an existing agreement.
 
 ## Licenses
 
@@ -18,6 +18,8 @@
 
    * Includes access to future updates and fixes.
 
+   * No third-party consultants cool-off period (3 months) if without the 500 USD fees.
+
    * For metaverse-building companies, you can pitch your codes using DataPredict™ like:
  
       * “Directly use DataPredict as-is, supported by original research.”
@@ -27,6 +29,8 @@
     * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
     
     * 5% of gross revenue per month for projects using DataPredict™.
+
+   * No third-party consultants cool-off period (3 months) if without the 500 USD fees.
 
    * Includes access to future updates and fixes.
 

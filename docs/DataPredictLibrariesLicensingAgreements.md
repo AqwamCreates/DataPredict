@@ -6,6 +6,10 @@
 
 * I do not negotiate for the purchase of the whole DataPredict ecosystem. However, I am open for partnerships for game ML consultation businesses with 500 USD per game setup fee, provided that your clients do not have an existing agreement.
 
+### Definitions
+
+* Third-Party Consultants are employees that are not employed by the DataPredict Creator but uses DataPredict for consultations.
+
 ## Licenses
 
 * [Standard Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement.docx)
@@ -18,7 +22,7 @@
 
    * Includes access to future updates and fixes.
 
-   * No third-party consultants cool-off period (3 months) if without the 500 USD fees.
+   * No third-party consultants for 3 months cool-off period if without the 500 USD fees.
 
    * For metaverse-building companies, you can pitch your codes using DataPredict™ like:
  
@@ -30,7 +34,7 @@
     
     * 5% of gross revenue per month for projects using DataPredict™.
 
-   * No third-party consultants cool-off period (3 months) if without the 500 USD fees.
+   * No third-party consultants for 3 months cool-off period if without the 500 USD fees.
 
    * Includes access to future updates and fixes.
 

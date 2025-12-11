@@ -168,17 +168,15 @@ function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDiction
 
 		local temporalDifferenceError = nStepTarget - lastValue
 		
-		local outputDimensionSizeArray = {1, #ClassesList}
+		local outputDimensionSizeArray = {1, numberOfClasses}
 
-		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
-		temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
-		
-		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
+		negatedTemporalDifferenceErrorVector[1][actionIndex] = -temporalDifferenceError -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
 
 		Model:update(negatedTemporalDifferenceErrorVector, true)
 		
-		return temporalDifferenceErrorVector
+		return temporalDifferenceError
 
 	end)
 	

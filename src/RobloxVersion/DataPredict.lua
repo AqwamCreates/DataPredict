@@ -126,11 +126,15 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	DeepStateActionRewardStateAction = require(Models.DeepStateActionRewardStateAction),
 	
+	DeepNStepStateActionRewardStateAction = require(Models.DeepNStepStateActionRewardStateAction),
+	
 	DeepDoubleStateActionRewardStateActionV1 = require(Models.DeepDoubleStateActionRewardStateActionV1),
 	
 	DeepDoubleStateActionRewardStateActionV2 = require(Models.DeepDoubleStateActionRewardStateActionV2),
 	
 	DeepExpectedStateActionRewardStateAction = require(Models.DeepExpectedStateActionRewardStateAction),
+	
+	DeepNStepExpectedStateActionRewardStateAction = require(Models.DeepNStepExpectedStateActionRewardStateAction),
 	
 	DeepDoubleExpectedStateActionRewardStateActionV1 = require(Models.DeepDoubleExpectedStateActionRewardStateActionV1),
 	

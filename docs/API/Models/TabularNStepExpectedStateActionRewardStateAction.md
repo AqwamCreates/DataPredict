@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - TabularExpectedStateActionRewardStateAction (Tabular Expected SARSA)
+# [API Reference](../../API.md) - [Models](../Models.md) - TabularNStepExpectedStateActionRewardStateAction (Tabular N-Step Expected SARSA)
 
-TabularExpectedStateActionRewardStateAction is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
+TabularNStepExpectedStateActionRewardStateAction is a state-action grid with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
 ## Constructors
 
@@ -9,7 +9,7 @@ TabularExpectedStateActionRewardStateAction is a state-action grid with reinforc
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularExpectedStateActionRewardStateAction.new(learningRate: number, epsilon: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
+TabularNStepExpectedStateActionRewardStateAction.new(learningRate: number, epsilon: number, nStep: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -18,9 +18,9 @@ TabularExpectedStateActionRewardStateAction.new(learningRate: number, epsilon: n
 
 * epsilon: Controls the balance between exploration and exploitation for calculating expected Q-values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only. [Default: 0.5]
 
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
+* nStep: The number of future steps considered for credit assignment. Higher values extend the planning horizon but increase variance. Set to 1 for standard expected SARSA. [Default: 3]
 
-* EligibilityTrace: The eligibility trace object to keep track of credit assignments of state-action pairs.
+* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
 
 #### Returns:
 

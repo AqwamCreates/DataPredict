@@ -9,14 +9,14 @@
 | [Regression](#regression)                                         | Continuous Value Prediction                     | 10    |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 14    |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
-| [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 23    |
-| [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Tables          | 14    |
+| [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 26    |
+| [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Tables          | 17    |
 | [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 2     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 86    |
+| Total                                                             |                                                 | 92    |
 
 ### Legend
 
@@ -42,7 +42,7 @@
 
   * Uses reverse-mode automatic differentiation and lazy differentiation evaluation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
 
-* Currently, DataPredict™ has ~90% (76 out of 86) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (89 out of 92) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -120,13 +120,16 @@
 | Model                                                                                                          | Alternate Names               | Properties  | Use Cases                                                                 |
 |----------------------------------------------------------------------------------------------------------------|-------------------------------|-------------|---------------------------------------------------------------------------|
 | [DeepQLearning](Models/DeepQLearning.md)                                                                       | Deep Q Network                | 💾 🟢      | Best Self-Learning Player AIs, Best Recommendation Systems                |
+| [DeepNStepQLearning](Models/DeepNStepQLearning.md)                                                             | Deep N-Step Q Network          | 💾 🟢      | Best Self-Learning Player AIs, Best Recommendation Systems                |
 | [DeepDoubleQLearningV1](Models/DeepDoubleQLearningV1.md)                                                       | Double Deep Q Network (2010)  | 💾 🛡️ 🟢   | Stable Best Self-Learning Player AIs, Best Recommendation Systems         |
 | [DeepDoubleQLearningV2](Models/DeepDoubleQLearningV2.md)                                                       | Double Deep Q Network (2015)  | 💾 🛡️ 🟢   | Stable Best Self-Learning Player AIs, Best Recommendation Systems         |
 | [DeepClippedDoubleQLearning](Models/DeepClippedDoubleQLearning.md)                                             | Clipped Deep Double Q Network | 💾 🛡️ 🟢   | Stable Best Self-Learning Player AIs, Best Recommendation Systems         |
 | [DeepStateActionRewardStateAction](Models/DeepStateActionRewardStateAction.md)                                 | Deep SARSA                    | 🟢          | Safe Self-Learning Player AIs, Safe Recommendation Systems                |
+| [DeepNStepStateActionRewardStateAction](Models/DeepNStepStateActionRewardStateAction.md)                       | Deep N-Step SARSA             | 🟢          | Safe Self-Learning Player AIs, Safe Recommendation Systems                |
 | [DeepDoubleStateActionRewardStateActionV1](Models/DeepDoubleStateActionRewardStateActionV1.md)                 | Double Deep SARSA             | 🛡️ 🟢      | Stable Safe Self-Learning Player AIs, Safe Recommendation Systems         |
 | [DeepDoubleStateActionRewardStateActionV2](Models/DeepDoubleStateActionRewardStateActionV2.md)                 | Double Deep SARSA             | 🛡️ 🟢      | Stable Safe Self-Learning Player AIs, Safe Recommendation Systems         |
 | [DeepExpectedStateActionRewardStateAction](Models/DeepExpectedStateActionRewardStateAction.md)                 | Deep Expected SARSA           | 🟢         | Balanced Self-Learning Player AIs, Balanced Recommendation Systems        |
+| [DeepNStepExpectedStateActionRewardStateAction](Models/DeepExpectedStateActionRewardStateAction.md)            | Deep N-Step Expected SARSA    | 🟢         | Balanced Self-Learning Player AIs, Balanced Recommendation Systems        |
 | [DeepDoubleExpectedStateActionRewardStateActionV1](Models/DeepDoubleExpectedStateActionRewardStateActionV1.md) | Double Deep Expected SARSA    | 🛡️ 🟢      | Stable Balanced Self-Learning Player AIs, Balanced Recommendation Systems |
 | [DeepDoubleExpectedStateActionRewardStateActionV2](Models/DeepDoubleExpectedStateActionRewardStateActionV2.md) | Double Deep Expected SARSA    | 🛡️ 🟢      | Stable Balanced Self-Learning Player AIs, Balanced Recommendation Systems |
 | [DeepMonteCarloControl](Models/DeepMonteCarloControl.md)                                                       | None                          | ❗ 🟢      | Online Self-Learning Player AIs                                           |
@@ -150,13 +153,16 @@
 | Model                                                                                                                | Alternate Names           | Properties  | Use Cases                           |
 |----------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|-------------------------------------|
 | [TabularQLearning](Models/TabularQLearning.md)                                                                       | Q-Learning                | 🔰 💾 🟢   | Best Self-Learning Grid AIs        |
+| [TabularNStepQLearning](Models/TabularNStepQLearning.md)                                                             | N-Step Q-Learning         | 🔰 💾 🟢   | Best Self-Learning Grid AIs        |
 | [TabularDoubleQLearningV1](Models/TabularDoubleQLearningV1.md)                                                       | Double Q-Learning (2010)  | 💾 🛡️ 🟢   | Best Self-Learning Grid AIs        |
 | [TabularDoubleQLearningV2](Models/TabularDoubleQLearningV2.md)                                                       | Double Q-Learning (2015)  | 💾 🛡️ 🟢   | Best Self-Learning Grid AIs        |
 | [TabularClippedDoubleQLearning](Models/TabularClippedDoubleQLearning.md)                                             | Clipped Double Q-Learning | 💾 🛡️ 🟢   | Best Self-Learning Grid AIs        |
 | [TabularStateActionRewardStateAction](Models/TabularStateActionRewardStateAction.md)                                 | SARSA                     | 🔰 🟢       | Safe Self-Learning Grid AIs        |
+| [TabularNStepStateActionRewardStateAction](Models/TabularNStepStateActionRewardStateAction.md)                       | N-Step SARSA              | 🔰 🟢       | Safe Self-Learning Grid AIs        |
 | [TabularDoubleStateActionRewardStateActionV1](Models/TabularDoubleStateActionRewardStateActionV1.md)                 | Double SARSA              | 🛡️ 🟢       | Safe Self-Learning Grid AIs        |
 | [TabularDoubleStateActionRewardStateActionV2](Models/TabularDoubleStateActionRewardStateActionV2.md)                 | Double SARSA              | 🛡️ 🟢       | Safe Self-Learning Grid AIs        |
 | [TabularExpectedStateActionRewardStateAction](Models/TabularExpectedStateActionRewardStateAction.md)                 | Expected SARSA            | 🟢          | Balanced Self-Learning Grid AIs     |
+| [TabularNStepExpectedStateActionRewardStateAction](Models/TabularNStepExpectedStateActionRewardStateAction.md)       | N-Step Expected SARSA     | 🟢          | Balanced Self-Learning Grid AIs     |
 | [TabularDoubleExpectedStateActionRewardStateActionV1](Models/TabularDoubleExpectedStateActionRewardStateActionV1.md) | Double Expected SARSA     | 🛡️ 🟢       | Balanced Self-Learning Grid AIs     |
 | [TabularDoubleExpectedStateActionRewardStateActionV2](Models/TabularDoubleExpectedStateActionRewardStateActionV2.md) | Double Expected SARSA     | 🛡️ 🟢       | Balanced Self-Learning Grid AIs     |
 | [TabularMonteCarloControl](Models/TabularMonteCarloControl.md)                                                       | MC                        | 🟢          | Online Self-Learning Grid AIs       |

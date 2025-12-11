@@ -2,7 +2,19 @@
 
 ### Disclaimer
 
-I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
+* I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
+
+* I do not negotiate for the purchase of the whole DataPredict ecosystem. However, I am open for partnerships for game ML consultation businesses where:
+
+   * If your client has already paid extra 500 USD (to remove 3-months cool-off) on top of these license, then you may consult with your clients without additional cost.
+ 
+      * To avoid a loophole where clients can just get 2% only from me and then skip 500 USD charge by immediately consulting you.
+  
+   * Otherwise, you bear the 500 USD cost upfront.
+
+### Definitions
+
+* Third-Party Consultants are employees that are not employed by the DataPredict Creator or your business' internal employees but uses DataPredict for consultations.
 
 ## Licenses
 
@@ -16,6 +28,8 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
 
    * Includes access to future updates and fixes.
 
+   * No third-party consultants for 3 months cool-off period if without the 500 USD fees.
+
    * For metaverse-building companies, you can pitch your codes using DataPredict™ like:
  
       * “Directly use DataPredict as-is, supported by original research.”
@@ -25,6 +39,8 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
     * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
     
     * 5% of gross revenue per month for projects using DataPredict™.
+
+   * No third-party consultants for 3 months cool-off period if without the 500 USD fees.
 
    * Includes access to future updates and fixes.
 
@@ -61,13 +77,3 @@ I do not entertain "proof of value" requests. You can read the reasons [here](Wh
      * [Phantom Forces](https://www.roblox.com/games/292439477/Phantom-Forces)
 
    * Please contact me for confirmation.
-
-* [Contributor License Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
-
-    * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
-
-   * If any organization that employs official DataPredict contributor (who contributed equal to or more than 10%) with a guarantee of at least one (1) year of employment (unless the contributor states otherwise), the organization may request non-transferrable licenses that gives 1/4 discount on the licensing costs for all projects using DataPredict.
-   
-   * This license is valid as long as the DataPredict contributor remain continuously employed in the same company.
-  
-   * If a contributor is employed by multiple organizations that are eligible to use DataPredict, only the first organization employing them is eligible for this offer.

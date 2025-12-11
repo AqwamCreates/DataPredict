@@ -4,7 +4,7 @@
 
 * I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
 
-* I do not negotiate for the purchase of the whole DataPredict ecosystem. However, I am open for partnerships for game ML consultations organizations with 500 USD per project licensing markup.
+* I do not negotiate for the purchase of the whole DataPredict ecosystem. However, I am open for partnerships for game ML consultations organizations with 500 USD per project setup fee.
 
 ## Licenses
 

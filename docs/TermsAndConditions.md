@@ -145,7 +145,7 @@ Licensor reserves the right to modify this Agreement at any time without prior n
 
 ## Termination
 
-* Licensor may terminate this Agreement at any time if User breaches any provision of this Agreement. Upon termination, User shall immediately cease all use of the Library and destroy all copies of the Library in its possession.
+Licensor may terminate this Agreement at any time if User breaches any provision of this Agreement. Upon termination, User shall immediately cease all use of the Library and destroy all copies of the Library in its possession.
 
 ## No Waiver
 

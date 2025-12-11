@@ -73,9 +73,9 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 		local actionIndex = table.find(ClassesList, previousAction)
 		
 		local targetVector = Model:forwardPropagate(currentFeatureVector)
-		
+
 		local previousVector = Model:forwardPropagate(previousFeatureVector, true)
-		
+
 		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
 
 		local unwrappedTargetVector = targetVector[1]
@@ -132,7 +132,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		Model:update(negatedTemporalDifferenceErrorVector, true)
 		
-		return temporalDifferenceErrorVector
+		return temporalDifferenceError
 
 	end)
 	

@@ -58,7 +58,7 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local currentQVector = Model:forwardPropagate(currentFeatureVector)
 
-		local previousQVector = Model:forwardPropagate(previousFeatureVector)
+		local previousQVector = Model:forwardPropagate(previousFeatureVector, true)
 		
 		local ClassesList = Model:getClassesList()
 
@@ -87,8 +87,6 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 		end
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
-		
-		Model:forwardPropagate(previousFeatureVector, true)
 
 		Model:update(negatedTemporalDifferenceErrorVector, true)
 		

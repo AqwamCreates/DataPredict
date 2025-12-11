@@ -115,6 +115,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	BisectingCluster = require(Models.BisectingCluster),
 	
 	DeepQLearning = require(Models.DeepQLearning),
+	
+	DeepNStepQLearning = require(Models.DeepNStepQLearning),
 
 	DeepDoubleQLearningV1 = require(Models.DeepDoubleQLearningV1),
 
@@ -162,13 +164,13 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	TabularQLearning = require(Models.TabularQLearning),
 	
+	TabularNStepQLearning = require(Models.TabularNStepQLearning),
+	
 	TabularClippedDoubleQLearning = require(Models.TabularClippedDoubleQLearning),
 	
 	TabularDoubleQLearningV1 = require(Models.TabularDoubleQLearningV1),
 	
 	TabularDoubleQLearningV2 = require(Models.TabularDoubleQLearningV2),
-	
-	TabularNStepQLearning = require(Models.TabularNStepQLearning),
 
 	TabularStateActionRewardStateAction = require(Models.TabularStateActionRewardStateAction),
 	

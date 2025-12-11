@@ -14,7 +14,7 @@
 
 ### Definitions
 
-* Third-Party Consultants are employees that are not employed by the DataPredict Creator but uses DataPredict for consultations.
+* Third-Party Consultants are employees that are not employed by the DataPredict Creator or your business' internal employees but uses DataPredict for consultations.
 
 ## Licenses
 

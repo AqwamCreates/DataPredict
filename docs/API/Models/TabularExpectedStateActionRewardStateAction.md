@@ -9,16 +9,16 @@ DeepExpectedStateActionRewardStateAction is a state-action grid with reinforceme
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularExpectedStateActionRewardStateAction.new(learningRate: number, discountFactor: number, epsilon: number, EligibilityTrace: EligibilityTraceObject): ModelObject
+TabularExpectedStateActionRewardStateAction.new(learningRate: number, epsilon: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
 ```
 
 #### Parameters:
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1. [Default: 0.1]
 
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
-
 * epsilon: Controls the balance between exploration and exploitation for calculating expected Q-values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only. [Default: 0.5]
+
+* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
 
 * EligibilityTrace: The eligibility trace object to keep track of credit assignments of state-action pairs.
 

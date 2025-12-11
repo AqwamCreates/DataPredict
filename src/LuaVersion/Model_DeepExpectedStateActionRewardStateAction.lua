@@ -72,9 +72,9 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local actionIndex = table.find(ClassesList, previousAction)
 		
-		local previousVector = Model:forwardPropagate(previousFeatureVector)
-		
 		local targetVector = Model:forwardPropagate(currentFeatureVector)
+		
+		local previousVector = Model:forwardPropagate(previousFeatureVector, true)
 		
 		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
 
@@ -129,8 +129,6 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 		end
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
-
-		Model:forwardPropagate(previousFeatureVector, true)
 		
 		Model:update(negatedTemporalDifferenceErrorVector, true)
 		

@@ -47,7 +47,7 @@ These terms and conditions (“Agreement”) is a legal agreement between you (o
  
   * Determine the timing and manner of such release.
 
-* User may not remove codes that the Licensor has released under MIT license pursuant to this Agreement.
+* The User may not remove codes that the Licensor has released under MIT license pursuant to this Agreement.
 
 * The User agrees that release of Interacting assets under MIT license constitutes reasonable alternative consideration and benefit in lieu for the use and posession of the Library. This remedy represents the parties' good faith estimate of fair compensation.
 

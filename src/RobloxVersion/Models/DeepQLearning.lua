@@ -30,31 +30,105 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
 
-local DeepQLearningModel = {}
+local DeepNStepQLearningModel = {}
 
-DeepQLearningModel.__index = DeepQLearningModel
+DeepNStepQLearningModel.__index = DeepNStepQLearningModel
 
-setmetatable(DeepQLearningModel, DeepReinforcementLearningBaseModel)
+setmetatable(DeepNStepQLearningModel, DeepReinforcementLearningBaseModel)
 
-function DeepQLearningModel.new(parameterDictionary)
+function DeepNStepQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewDeepQLearningModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewDeepNStepQLearningModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 	
-	setmetatable(NewDeepQLearningModel, DeepQLearningModel)
+	setmetatable(NewDeepNStepQLearningModel, DeepNStepQLearningModel)
 	
-	NewDeepQLearningModel:setName("DeepQLearning")
+	NewDeepNStepQLearningModel:setName("DeepNStepQLearning")
 	
-	NewDeepQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewDeepNStepQLearningModel.nStep = parameterDictionary.nStep
 	
-	NewDeepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
+	NewDeepNStepQLearningModel.replayBufferArray = parameterDictionary.replayBufferArray or {}
+	
+	NewDeepNStepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
-		local Model = NewDeepQLearningModel.Model
+		local nStep = NewDeepNStepQLearningModel.nStep
+
+		local replayBufferArray = NewDeepNStepQLearningModel.replayBufferArray
+
+		table.insert(replayBufferArray, {previousStateValue, previousAction, rewardValue, terminalStateValue})
+
+		local currentNStep = #replayBufferArray
+
+		if (currentNStep < nStep) and (terminalStateValue == 0) then return 0 end
+
+		if (currentNStep > nStep) then 
+
+			table.remove(replayBufferArray, 1)
+
+			currentNStep = currentNStep - 1
+
+		end
 		
-		local discountFactor = NewDeepQLearningModel.discountFactor
+		if (currentNStep < nStep) and (terminalStateValue == 0) then return 0 end
+
+		if (currentNStep > nStep) then 
+
+			table.remove(replayBufferArray, 1)
+
+			currentNStep = currentNStep - 1
+
+		end
+
+		local Model = NewTabularNStepQLearningModel.Model
+
+		local discountFactor = NewTabularNStepQLearningModel.discountFactor
+
+		local ActionsList = NewTabularNStepQLearningModel:getActionsList()
+
+		local returnValue = 0
+
+		local experience
+
+		local rewardValueAtStepI
+
+		local terminalStateValueAtStepI
+
+		for i = currentNStep, 1, -1 do
+
+			experience = replayBufferArray[i]
+
+			rewardValueAtStepI = experience[3]
+
+			terminalStateValueAtStepI = experience[4]
+
+			returnValue = rewardValueAtStepI + (discountFactor * (1 - terminalStateValueAtStepI) * returnValue)
+
+		end
+
+		local firstExperience = replayBufferArray[1]
+
+		local _, maxQValue = Model:predict(currentFeatureVector)
+
+		local lastQVector = Model:getOutputMatrix(firstExperience[1], true)
+
+		local bootstrapValue = math.pow(discountFactor, currentNStep) * maxQValue[1][1]	
+
+		local nStepTarget = returnValue + bootstrapValue
+
+		local actionIndex = table.find(ActionsList, firstExperience[2])
+
+		local lastValue = lastQVector[1][actionIndex]
+
+		local temporalDifferenceError = nStepTarget - lastValue
+
+		Model:update(-temporalDifferenceError, true)
 		
-		local EligibilityTrace = NewDeepQLearningModel.EligibilityTrace
+		--
+		
+		local Model = NewDeepNStepQLearningModel.Model
+		
+		local discountFactor = NewDeepNStepQLearningModel.discountFactor
 
 		local _, maxQValue = Model:predict(currentFeatureVector)
 
@@ -64,7 +138,7 @@ function DeepQLearningModel.new(parameterDictionary)
 
 		local numberOfClasses = #ClassesList
 
-		local previousVector = Model:forwardPropagate(previousFeatureVector)
+		local previousVector = Model:forwardPropagate(previousFeatureVector, true)
 
 		local actionIndex = table.find(ClassesList, previousAction)
 
@@ -87,8 +161,6 @@ function DeepQLearningModel.new(parameterDictionary)
 		end
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
-		
-		Model:forwardPropagate(previousFeatureVector, true)
 
 		Model:update(negatedTemporalDifferenceErrorVector, true)
 		
@@ -96,24 +168,20 @@ function DeepQLearningModel.new(parameterDictionary)
 
 	end)
 	
-	NewDeepQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
+	NewDeepNStepQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local EligibilityTrace = NewDeepQLearningModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
+		table.clear(NewDeepNStepQLearningModel.replayBufferArray)
 		
 	end)
 
-	NewDeepQLearningModel:setResetFunction(function()
+	NewDeepNStepQLearningModel:setResetFunction(function()
 		
-		local EligibilityTrace = NewDeepQLearningModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
+		table.clear(NewDeepNStepQLearningModel.replayBufferArray)
 		
 	end)
 
-	return NewDeepQLearningModel
+	return NewDeepNStepQLearningModel
 
 end
 
-return DeepQLearningModel
+return DeepNStepQLearningModel

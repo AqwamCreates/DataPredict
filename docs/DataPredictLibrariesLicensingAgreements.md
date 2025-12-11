@@ -4,7 +4,13 @@
 
 * I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
 
-* I do not negotiate for the purchase of the whole DataPredict ecosystem. However, I am open for partnerships for game ML consultation businesses with 500 USD per game setup fee, provided that your clients do not have an existing agreement.
+* I do not negotiate for the purchase of the whole DataPredict ecosystem. However, I am open for partnerships for game ML consultation businesses where:
+
+   * If your client has already paid extra 500 USD (to remove 3-months cool-off) on top of these license, then you may consult with your clients without additional cost.
+ 
+      * To avoid a loophole where clients can just get 2% only from me and then skip 500 USD charge by immediately consulting you.
+  
+   * Otherwise, you bear the 500 USD cost upfront.
 
 ### Definitions
 

@@ -63,13 +63,3 @@
      * [Phantom Forces](https://www.roblox.com/games/292439477/Phantom-Forces)
 
    * Please contact me for confirmation.
-
-* [Contributor License Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
-
-    * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
-
-   * If any organization that employs official DataPredict contributor (who contributed equal to or more than 10%) with a guarantee of at least one (1) year of employment (unless the contributor states otherwise), the organization may request non-transferrable licenses that gives 1/4 discount on the licensing costs for all projects using DataPredict.
-   
-   * This license is valid as long as the DataPredict contributor remain continuously employed in the same company.
-  
-   * If a contributor is employed by multiple organizations that are eligible to use DataPredict, only the first organization employing them is eligible for this offer.

@@ -70,9 +70,7 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	KNearestNeighboursRegressor = require(Models.KNearestNeighboursRegressor),
 	
-	LogisticRegression = require(Models.LogisticRegression),
-	
-	ProbitRegression = require(Models.ProbitRegression),
+	BinaryRegression = require(Models.BinaryRegression),
 	
 	PassiveAggressiveClassifier = require(Models.PassiveAggressiveClassifier),
 	
@@ -169,14 +167,20 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	TabularDoubleQLearningV1 = require(Models.TabularDoubleQLearningV1),
 	
 	TabularDoubleQLearningV2 = require(Models.TabularDoubleQLearningV2),
+	
+	TabularNStepQLearning = require(Models.TabularNStepQLearning),
 
 	TabularStateActionRewardStateAction = require(Models.TabularStateActionRewardStateAction),
+	
+	TabularNStepStateActionRewardStateAction = require(Models.TabularNStepStateActionRewardStateAction),
 	
 	TabularDoubleStateActionRewardStateActionV1 = require(Models.TabularDoubleStateActionRewardStateActionV1),
 
 	TabularDoubleStateActionRewardStateActionV2 = require(Models.TabularDoubleStateActionRewardStateActionV2),
 	
 	TabularExpectedStateActionRewardStateAction = require(Models.TabularExpectedStateActionRewardStateAction),
+	
+	TabularNStepExpectedStateActionRewardStateAction = require(Models.TabularNStepExpectedStateActionRewardStateAction),
 	
 	TabularDoubleExpectedStateActionRewardStateActionV1 = require(Models.TabularDoubleExpectedStateActionRewardStateActionV1),
 

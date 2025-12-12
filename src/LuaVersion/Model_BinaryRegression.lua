@@ -92,7 +92,7 @@ local binaryFunctionGradientList = {
 	
 	["Probit"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
 
-	["LogLog"] = function(h, z) return math.exp(-z) * math.exp(-math.exp(-z)) end,
+	["LogLog"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end,
 
 	["ComplementaryLogLog"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end,
 	

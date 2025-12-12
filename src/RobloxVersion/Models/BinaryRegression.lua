@@ -104,14 +104,6 @@ local binaryFunctionGradientList = {
 	
 	["ArcTangent"] = function (h, z) return ((2 / math.pi) * (1 / (1 + z^2))) end,
 	
-	["Swish"] = function (h, z)
-
-		local sigmoidValue = 1 / (1 + math.exp(-z))
-
-		return (sigmoidValue + (z * sigmoidValue * (1 - sigmoidValue)))
-
-	end,
-	
 	["BipolarSigmoid"] = function (h, z) 
 		
 		local sigmoidValue = 1 / (1 + math.exp(-z))

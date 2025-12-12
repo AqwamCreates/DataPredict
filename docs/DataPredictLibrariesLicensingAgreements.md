@@ -18,13 +18,13 @@
 
 ## Licenses
 
-* [One-Way MIT Limited-Commercial-Use](https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md)
+* [One-Way Apache 2.0 Limited-Commercial-Use](https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md)
 
     * Also known as the "Nuclear Limited-Commercial-Use" license.
 
     * Is applied automatically on usage or possesion of DataPredict™, unless you have one of the commercial licenses as shown below.
 
-    * For organizations that creates more than 3K USD of gross revenue within 365 days (not per 365 days), you agree that you will allow me to release the interacting assets under MIT.
+    * For organizations that creates more than 3K USD of gross revenue within 365 days (not per 365 days), you agree that you will allow me to release the interacting assets under Apache 2.0 license.
 
    * Requires disclosure of DataPredict™ to the public.
 

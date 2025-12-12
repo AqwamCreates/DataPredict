@@ -344,7 +344,13 @@ local elementWiseActivationFunctionDerivativeList = {
 
 	["Gaussian"] = function (a, z) return -2 * z * math.exp(-math.pow(z, 2)) end,
 
-	["SiLU"] = function (a, z) return (1 + math.exp(-z) + (z * math.exp(-z))) / (1 + math.exp(-z))^2 end,
+	["SiLU"] = function (a, z)
+		
+		local sigmoidValue = 1 / (1 + math.exp(-z))
+
+		return (sigmoidValue * (1 + (z * (1 - sigmoidValue))))
+		
+	end,
 
 	["Mish"] = function (a, z) return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2) end,
 	

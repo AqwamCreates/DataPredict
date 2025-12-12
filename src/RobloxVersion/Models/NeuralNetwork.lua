@@ -214,9 +214,9 @@ local elementWiseActivationFunctionList = {
 
 	["ComplementaryLogLogInverseLink"] = function (z) return (1 - math.exp(-math.exp(z))) end,
 	
-	["PoissonLink"] = function (z) return math.log(math.max(z, epsilon)) end,
+	["LogLink"] = function (z) return math.log(math.max(z, epsilon)) end,
 	
-	["PoissonInverseLink"] = function (z) return math.exp(z) end,
+	["LogInverseLink"] = function (z) return math.exp(z) end,
 	
 }
 
@@ -412,9 +412,9 @@ local elementWiseActivationFunctionDerivativeList = {
 
 	["ComplementaryLogLogInverseLink"] = function (a, z) return math.exp(z) * math.exp(-math.exp(z)) end,
 	
-	["PoissonLink"] = function (a, z) return 1 / math.max(z, epsilon) end,
+	["LogLink"] = function (a, z) return 1 / math.max(z, epsilon) end,
 
-	["PoissonInverseLink"] = function (a, z) return a end, -- Note: Derivative of exponent(z) is exponent(z), where a = exponent(z). Therefore, we're taking a shortcut to reduce computational resources.
+	["LogInverseLink"] = function (a, z) return a end, -- Note: Derivative of exponent(z) is exponent(z), where a = exponent(z). Therefore, we're taking a shortcut to reduce computational resources.
 
 }
 
@@ -506,9 +506,9 @@ local activationFunctionDerivativeList = {
 
 local minimumOutputValueList = {
 
-	["0"] = {"Sigmoid", "BinaryStep", "Gaussian", "Softmax", "StableSoftmax", "LogitInverseLink", "ProbitInverseLink", "LogLogInverseLink", "ComplementaryLogLogInverseLink", "PoissonInverseLink"}, -- 0.5 threshold for [0, 1] functions.
+	["0"] = {"Sigmoid", "BinaryStep", "Gaussian", "Softmax", "StableSoftmax", "LogitInverseLink", "ProbitInverseLink", "LogLogInverseLink", "ComplementaryLogLogInverseLink", "LogInverseLink"}, -- 0.5 threshold for [0, 1] functions.
 
-	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "Mish", "Maxout", "None", "LogitLink", "ProbitLink", "LogLogLink", "ComplementaryLogLogLink", "PoissonLink"}, -- 0 threshold for [-1, 1] functions.
+	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "Mish", "Maxout", "None", "LogitLink", "ProbitLink", "LogLogLink", "ComplementaryLogLogLink", "LogLink"}, -- 0 threshold for [-1, 1] functions.
 
 }
 

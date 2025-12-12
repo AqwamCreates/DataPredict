@@ -28,7 +28,7 @@ BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, b
 
 | Function            | Output Range | Skewness              | Use Cases                                                                  |
 |---------------------|--------------|-----------------------|----------------------------------------------------------------------------|
-| Sigmoid (Default)   | (0, 1)       | Symmetric             | Player Choice (A/B), Engagement Prediction, Click-Through Rates            |
+| Logistic (Default)  | (0, 1)       | Symmetric             | Player Choice (A/B), Engagement Prediction, Click-Through Rates            |
 | HardSigmoid         | (0, 1)       | Symmetric             | Same As Sigmoid, But Mobile / Real-Time Prediction                         |
 | Probit              | (0, 1)       | Symmetric             | Skill-Based Success, Ability Checks, Normally Distributed Traits           |
 | BipolarSigmoid      | (-1, 1)      | Symmetric             | Win / Lose, Accept / Reject, Binary Outcomes With Magnitude                |

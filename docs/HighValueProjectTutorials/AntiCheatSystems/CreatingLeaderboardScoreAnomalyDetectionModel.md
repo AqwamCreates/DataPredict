@@ -40,7 +40,7 @@ local leaderboardScoreFeatureMatrix = {
 
 ```lua
 
-local probabilityValueThreshold = 0.3
+local probabilityValueThreshold = 0.1
 
 local playerArray = {}
 

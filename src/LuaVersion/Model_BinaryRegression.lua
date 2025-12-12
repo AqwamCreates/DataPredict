@@ -78,8 +78,6 @@ local binaryFunctionList = {
 	
 	["ArcTangent"] = function (z) return (2 / math.pi) * math.atan(z) end,
 
-	["Swish"] = function (z) return (z / (1 + math.exp(-z))) end,
-
 	["BipolarSigmoid"] = function (z) return (2 / (1 + math.exp(-z)) - 1) end,
 
 }
@@ -103,14 +101,6 @@ local binaryFunctionGradientList = {
 	["SoftSign"] = function (h, z) return (1 / ((1 + math.abs(z))^2)) end,
 	
 	["ArcTangent"] = function (h, z) return ((2 / math.pi) * (1 / (1 + z^2))) end,
-	
-	["Swish"] = function (h, z)
-
-		local sigmoidValue = 1 / (1 + math.exp(-z))
-
-		return (sigmoidValue + (z * sigmoidValue * (1 - sigmoidValue)))
-
-	end,
 	
 	["BipolarSigmoid"] = function (h, z) 
 		
@@ -144,7 +134,7 @@ local lossFunctionGradientList = {
 
 local minimumOutputValueList = {
 	
-	["0"] = {"Logistic", "Logit", "Probit", "LogLog", "ComplementaryLogLog", "HardSigmoid", "Swish"}, -- 0.5 threshold for [0, 1] functions.
+	["0"] = {"Logistic", "Logit", "Probit", "LogLog", "ComplementaryLogLog", "HardSigmoid"}, -- 0.5 threshold for [0, 1] functions.
 
 	["-1"] = {"Tanh", "SoftSign", "ArcTangent", "BipolarSigmoid"}, -- 0 threshold for [-1, 1] functions.
 	

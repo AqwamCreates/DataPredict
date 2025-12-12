@@ -156,7 +156,7 @@ local costFunctionList = {
 
 local elementWiseActivationFunctionList = {
 
-	["Sigmoid"] = function (z) return 1/(1 + math.exp(-1 * z)) end,
+	["Sigmoid"] = function (z) return 1 / (1 + math.exp(-1 * z)) end,
 
 	["Tanh"] = function (z) return math.tanh(z) end,
 
@@ -200,7 +200,7 @@ local elementWiseActivationFunctionList = {
 
 	end,
 
-	["LogitInverseLink"] = function (z) return 1/(1 + math.exp(-1 * z)) end,
+	["LogitInverseLink"] = function (z) return (1 / (1 + math.exp(-1 * z))) end,
 	
 	["ProbitLink"] = function (z) return ZTableFunction:getStandardNormalInverseCumulativeDistributionFunction(math.clamp(z, 0, 1)) end,
 
@@ -217,6 +217,12 @@ local elementWiseActivationFunctionList = {
 	["LogLink"] = function (z) return math.log(math.max(z, epsilon)) end,
 	
 	["LogInverseLink"] = function (z) return math.exp(z) end,
+	
+	["InverseLink"] = function (z) return (1 / z) end,
+	
+	["SquareRootLink"] = function (z) return math.sqrt(z) end,
+	
+	["SquareInverseLink"] = function (z) return (1 / math.pow(z, 2)) end,
 	
 }
 
@@ -415,6 +421,12 @@ local elementWiseActivationFunctionDerivativeList = {
 	["LogLink"] = function (a, z) return 1 / math.max(z, epsilon) end,
 
 	["LogInverseLink"] = function (a, z) return a end, -- Note: Derivative of exponent(z) is exponent(z), where a = exponent(z). Therefore, we're taking a shortcut to reduce computational resources.
+	
+	["InverseLink"] = function (z) return (-1 / math.pow(z, 2)) end,
+	
+	["SquareRootLink"] = function (z) return (1 / 2 * math.sqrt(z)) end,
+	
+	["SquareInverseLink"] = function (z) return (-2 / math.pow(z, 3)) end,
 
 }
 
@@ -506,9 +518,9 @@ local activationFunctionDerivativeList = {
 
 local minimumOutputValueList = {
 
-	["0"] = {"Sigmoid", "BinaryStep", "Gaussian", "Softmax", "StableSoftmax", "LogitInverseLink", "ProbitInverseLink", "LogLogInverseLink", "ComplementaryLogLogInverseLink", "LogInverseLink"}, -- 0.5 threshold for [0, 1] functions.
+	["0"] = {"Sigmoid", "BinaryStep", "Gaussian", "Softmax", "StableSoftmax", "LogitInverseLink", "ProbitInverseLink", "LogLogInverseLink", "ComplementaryLogLogInverseLink", "LogInverseLink", "InverseLink", "SquareInverseLink"}, -- 0.5 threshold for [0, 1] functions.
 
-	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "Mish", "Maxout", "None", "LogitLink", "ProbitLink", "LogLogLink", "ComplementaryLogLogLink", "LogLink"}, -- 0 threshold for [-1, 1] functions.
+	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "Mish", "Maxout", "None", "LogitLink", "ProbitLink", "LogLogLink", "ComplementaryLogLogLink", "LogLink", "SquareRootLink"}, -- 0 threshold for [-1, 1] functions.
 
 }
 

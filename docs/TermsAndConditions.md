@@ -1,11 +1,12 @@
 # TERMS AND CONDITIONS
 
 ## License
-These terms and conditions (“Agreement”) are a legal agreement between you (or company or organization) recognized as “User” and Aqwam Harish Aiman recognised as “Licensor” for the use of DataPredict Library (or formerly known as Aqwam’s Machine, Deep And Reinforcement Learning Library) (“Library”) within this terms and conditions. By using or possessing the Library, User, agrees to be bound by the terms of this Agreement.
+
+These terms and conditions (“Agreement”) is a legal agreement between you (or company or organization) recognized as “User” and Aqwam Harish Aiman recognised as “Licensor” for the use of DataPredict Library (or formerly known as Aqwam’s Machine, Deep And Reinforcement Learning Library) (“Library”) within this terms and conditions. By using or possessing the Library, User, agrees to be bound by the terms of this Agreement.
 
 ## Definitions
 
-* For the purposes of this Agreement, the definition of "Interaction" shall include, but is not limited to:
+* The definition of "Interaction" shall include, but is not limited to:
 
   * Direct Usage: Any instance where the Library is explicitly called, linked, imported, compiled, or otherwise included as part of another program, application, system, or project.
 
@@ -29,7 +30,9 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
   * Supportive or Auxiliary Use: Any usage of the Library to aid in the development, testing, debugging, or execution of other projects, systems, or applications.
 
-* Additionally, the definition of "User's Third Parties" shall include:
+* The definition of "Commercial Use" encompasses all forms of utilization and application, including integration, storing, and hosting from another computer, server, or machine. This applies to companies (or individuals, if none) whose combined gross revenue (including from subsidiaries or related entities) exceeds $3,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
+
+* The definition of "User's Third Parties" shall include, but is not limited to:
 
   * Any individual or entity that receives, accesses, or benefits from the Library through User's actions;
 
@@ -37,21 +40,19 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 ## Commercial Use Conditions
 
-* The term "commercial use" encompasses all forms of utilization and application, including integration, storing, and hosting from another computer, server, or machine. This applies to companies (or individuals, if none) whose combined revenue (including from subsidiaries or related entities) exceeds $3,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
-
-* Commercial use is permitted subject to the following conditions, where if the User engages in commercial use as defined in Section 3.1, the Licensor reserves the right, at its sole discretion and without prior notice, to:
+* Commercial Use is permitted subject to the following conditions, where if the User engages in commercial use, the Licensor reserves the right, at its sole discretion and without prior notice, to:
 
   * Provide all User's Interacting assets to Licensor for review;
  
-  * Release any or all User's Interacting assets under MIT license either publicly, privately to Licensor, or to designated third parties;
+  * Release any or all User's Interacting assets under Apache 2.0 license either publicly, privately to Licensor, or to designated third parties;
  
   * Determine the timing and manner of such release.
 
-* User may not remove codes that the Licensor has released under MIT license pursuant to this Agreement.
+* The User may not remove codes that the Licensor has released under Apache 2.0 license pursuant to this Agreement.
 
-* The User agrees that release of Interacting assets under MIT license constitutes reasonable alternative consideration and benefit in lieu for the use and posession of the Library. This remedy represents the parties' good faith estimate of fair compensation.
+* The User agrees that release of Interacting assets under Apache 2.0 license constitutes reasonable alternative consideration and benefit in lieu for the use and posession of the Library. This remedy represents the parties' good faith estimate of fair compensation.
 
-* The MIT license can be viewed here: https://opensource.org/license/mit.
+* The Apache 2.0 license can be viewed here: https://choosealicense.com/licenses/apache-2.0/.
 
 ## Prohibited Actions
 
@@ -145,7 +146,7 @@ Licensor reserves the right to modify this Agreement at any time without prior n
 
 ## Termination
 
-* Licensor may terminate this Agreement at any time if User breaches any provision of this Agreement. Upon termination, User shall immediately cease all use of the Library and destroy all copies of the Library in its possession.
+Licensor may terminate this Agreement at any time if User breaches any provision of this Agreement. Upon termination, User shall immediately cease all use of the Library and destroy all copies of the Library in its possession.
 
 ## No Waiver
 

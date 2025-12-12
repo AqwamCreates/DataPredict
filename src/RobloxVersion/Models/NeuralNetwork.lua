@@ -424,7 +424,7 @@ local elementWiseActivationFunctionDerivativeList = {
 	
 	["InverseLink"] = function (z) return (-1 / math.pow(z, 2)) end,
 	
-	["SquareRootLink"] = function (z) return (1 / 2 * math.sqrt(z)) end,
+	["SquareRootLink"] = function (z) return (1 / (2 * math.sqrt(z)) end,
 	
 	["SquareInverseLink"] = function (z) return (-2 / math.pow(z, 3)) end,
 

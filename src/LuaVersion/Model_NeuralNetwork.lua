@@ -48,7 +48,7 @@ local defaultActivationFunction = "LeakyReLU"
 
 local defaultDropoutRate = 0
 
-local epsilon = 1e-16
+local epsilon = 1e-14
 
 local epsilonComplement = 1 - epsilon
 
@@ -372,7 +372,13 @@ local elementWiseActivationFunctionDerivativeList = {
 
 	end,
 	
-	["LogitLink"] = function (a, z) return (1 / (z * (1 - z))) end,
+	["LogitLink"] = function (a, z) 
+		
+		local x = math.clamp(z, epsilon, epsilonComplement)
+		
+		return (1 / (x * (1 - x))) 
+		
+	end,
 
 	["LogitInverseLink"] = function (a, z) return (a * (1 - a)) end,
 	
@@ -380,15 +386,27 @@ local elementWiseActivationFunctionDerivativeList = {
 
 	["ProbitInverseLink"] = function (a, z) return calculateProbabilityDensityFunctionValue(z) end,
 
-	["LogLogLink"] = function (a, z) return 1 / (z * math.log(z)) end,
+	["LogLogLink"] = function (a, z)
+		
+		local x = math.clamp(z, epsilon, 1)
+		
+		return x / (x * math.log(x)) 
+		
+	end,
 
 	["LogLogInverseLink"] = function (a, z) return -math.exp(z) * math.exp(-math.exp(z)) end,
 
-	["ComplementaryLogLogLink"] = function (a, z) return 1 / ((1 - z) * math.log((1 - z))) end,
+	["ComplementaryLogLogLink"] = function (a, z)
+		
+		local x = math.clamp(z, 0, epsilonComplement)
+		
+		return 1 / ((1 - x) * math.log(1 - x)) 
+		
+	end,
 
 	["ComplementaryLogLogInverseLink"] = function (a, z) return math.exp(z) * math.exp(-math.exp(z)) end,
 	
-	["PoissonLink"] = function (a, z) return 1 / z end,
+	["PoissonLink"] = function (a, z) return 1 / math.max(z, epsilon) end,
 
 	["PoissonInverseLink"] = function (a, z) return a end, -- Note: Derivative of exponent(z) is exponent(z), where a = exponent(z). Therefore, we're taking a shortcut to reduce computational resources.
 

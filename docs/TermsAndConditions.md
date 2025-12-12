@@ -6,7 +6,7 @@ These terms and conditions (“Agreement”) is a legal agreement between you (o
 
 ## Definitions
 
-* For the purposes of this Agreement, the definition of "Interaction" shall include, but is not limited to:
+* The definition of "Interaction" shall include, but is not limited to:
 
   * Direct Usage: Any instance where the Library is explicitly called, linked, imported, compiled, or otherwise included as part of another program, application, system, or project.
 
@@ -30,9 +30,9 @@ These terms and conditions (“Agreement”) is a legal agreement between you (o
 
   * Supportive or Auxiliary Use: Any usage of the Library to aid in the development, testing, debugging, or execution of other projects, systems, or applications.
 
-* The term "Commercial Use" encompasses all forms of utilization and application, including integration, storing, and hosting from another computer, server, or machine. This applies to companies (or individuals, if none) whose combined revenue (including from subsidiaries or related entities) exceeds $3,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
+* The definition of "Commercial Use" encompasses all forms of utilization and application, including integration, storing, and hosting from another computer, server, or machine. This applies to companies (or individuals, if none) whose combined revenue (including from subsidiaries or related entities) exceeds $3,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
 
-* Additionally, the definition of "User's Third Parties" shall include:
+* The definition of "User's Third Parties" shall include, but is not limited to:
 
   * Any individual or entity that receives, accesses, or benefits from the Library through User's actions;
 

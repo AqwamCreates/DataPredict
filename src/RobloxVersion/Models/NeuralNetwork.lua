@@ -360,7 +360,7 @@ local elementWiseActivationFunctionDerivativeList = {
 
 		local sigmoidValue = 1 / (1 + math.exp(-z))
 
-		return (sigmoidValue + (z * sigmoidValue * (1 - sigmoidValue)))
+		return (sigmoidValue + (a * (1 - sigmoidValue)))
 
 	end,
 

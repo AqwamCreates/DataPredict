@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - LinearRegression
+# [API Reference](../../API.md) - [Models](../Models.md) - PoissonLinearRegression
 
 PoissonLinearRegression is a supervised machine learning model that predicts discrete count values (e.g. 1, 2, 3, 4). It uses iterative calculations to find the best model parameters.
 

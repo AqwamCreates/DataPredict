@@ -208,7 +208,7 @@ local elementWiseActivationFunctionList = {
 
 	["LogLogLink"] = function (z) return math.log(-math.log(math.clamp(z, epsilon, 1))) end,
 
-	["LogLogInverseLink"] = function (z) return math.exp(-math.exp(-z)) end,
+	["LogLogInverseLink"] = function (z) return math.exp(-math.exp(z)) end,
 
 	["ComplementaryLogLogLink"] = function (z) return math.log(-math.log(1 - math.clamp(z, 0, epsilonComplement))) end,
 
@@ -382,7 +382,7 @@ local elementWiseActivationFunctionDerivativeList = {
 
 	["LogLogLink"] = function (a, z) return 1 / (z * math.log(z)) end,
 
-	["LogLogInverseLink"] = function (a, z) return math.exp(-z) * math.exp(-math.exp(-z)) end,
+	["LogLogInverseLink"] = function (a, z) return math.exp(-math.exp(z)) end,
 
 	["ComplementaryLogLogLink"] = function (a, z) return 1 / ((1 - z) * math.log((1 - z))) end,
 

@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-GammaLinearRegression.new(maximumNumberOfIterations: integer, learningRate: number): ModelObject
+GammaLinearRegression.new(maximumNumberOfIterations: integer, learningRate: number, shape: number): ModelObject
 ```
 
 #### Parameters:
@@ -23,6 +23,16 @@ GammaLinearRegression.new(maximumNumberOfIterations: integer, learningRate: numb
 * maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
+
+* shape: The shape parameter (ν) of the Gamma distribution. Controls the skewness of the distribution. [Default: 1]
+
+  * shape = 1: Exponential distribution (most right-skewed).
+  
+  * shape = 2-3: Moderate right-skew (common for game sessions).
+  
+  * shape = 4+: More symmetric, less skewed.
+  
+  * shape → ∞: Approaches normal distribution.
 
 #### Returns:
 

@@ -20,7 +20,7 @@
 
 * [One-Way Apache 2.0 Limited-Commercial-Use](https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md)
 
-    * Also known as the "Nuclear Limited-Commercial-Use" license.
+    * Also known as the "Nuclear Apache 2.0 Limited-Commercial-Use" license.
 
     * Is applied automatically on usage or possesion of DataPredict™, unless you have one of the commercial licenses as shown below.
 

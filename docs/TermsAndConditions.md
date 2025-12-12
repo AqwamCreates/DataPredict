@@ -44,15 +44,15 @@ These terms and conditions (“Agreement”) is a legal agreement between you (o
 
   * Provide all User's Interacting assets to Licensor for review;
  
-  * Release any or all User's Interacting assets under MIT license either publicly, privately to Licensor, or to designated third parties;
+  * Release any or all User's Interacting assets under Apache 2.0 license either publicly, privately to Licensor, or to designated third parties;
  
   * Determine the timing and manner of such release.
 
-* The User may not remove codes that the Licensor has released under MIT license pursuant to this Agreement.
+* The User may not remove codes that the Licensor has released under Apache 2.0 license pursuant to this Agreement.
 
-* The User agrees that release of Interacting assets under MIT license constitutes reasonable alternative consideration and benefit in lieu for the use and posession of the Library. This remedy represents the parties' good faith estimate of fair compensation.
+* The User agrees that release of Interacting assets under Apache 2.0 license constitutes reasonable alternative consideration and benefit in lieu for the use and posession of the Library. This remedy represents the parties' good faith estimate of fair compensation.
 
-* The MIT license can be viewed here: https://opensource.org/license/mit.
+* The Apache 2.0 license can be viewed here: https://choosealicense.com/licenses/apache-2.0/.
 
 ## Prohibited Actions
 

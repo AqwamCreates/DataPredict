@@ -35,7 +35,6 @@ BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, b
 | Tanh                | (-1, 1)      | Symmetric             | Like / Dislike, Positive / Negative Feedback, Preference Modeling          |
 | SoftSign            | (-1, 1)      | Symmetric             | Gradual Preference Changes, Soft Decisions                                 |
 | ArcTangent          | (-π/2, π/2)  | Symmetric             | Academic / Research Alternative To Tanh                                    |
-| Swish               | (-0.28, ∞)   | Slightly Right-Skewed | Complex feature interactions                                               |
 | ComplementaryLogLog | (0, 1)       | Right-Skewed          | Rare Events Prediction: In-App Purchases, Time-To-Leave Prediction         |
 | LogLog              | (0, 1)       | Left-Skewed           | Common Events Prediction: Tutorial Completion, Early Wins, First Purchases |
 

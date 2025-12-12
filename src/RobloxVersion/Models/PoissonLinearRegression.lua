@@ -40,7 +40,7 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.3
 
-local defaultEpsilon = 1e-16
+local defaultEpsilon = 1e-14
 
 function PoissonLinearRegressionModel:calculateCost(hypothesisVector, labelVector)
 

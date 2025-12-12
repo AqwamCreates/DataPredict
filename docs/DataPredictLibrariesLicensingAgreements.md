@@ -18,6 +18,18 @@
 
 ## Licenses
 
+* [One-Way MIT Limited-Commercial-Use](https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md)
+
+    * Also known as the "Nuclear Limited-Commercial-Use" license.
+
+    * Is applied automatically on usage or possesion of DataPredict™, unless you have one of the paid commercial license shown below.
+
+    * For organizations that creates more than 3K USD of gross revenue within 365 days (not per 365 days), you agree that you will allow me to release the interacting codes under MIT.
+
+   * Requires disclosure of DataPredict™ to the public.
+
+   * Includes access to future updates and fixes.
+
 * [Standard Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement.docx)
 
     * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.

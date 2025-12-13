@@ -30,11 +30,11 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
-local GammaLinearRegressionModel = {}
+local GammaRegressionModel = {}
 
-GammaLinearRegressionModel.__index = GammaLinearRegressionModel
+GammaRegressionModel.__index = GammaRegressionModel
 
-setmetatable(GammaLinearRegressionModel, GradientMethodBaseModel)
+setmetatable(GammaRegressionModel, GradientMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -82,7 +82,7 @@ local function approximateGammaFunction(x)
 	
 end
 
-function GammaLinearRegressionModel:calculateCost(hypothesisVector, labelVector)
+function GammaRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
@@ -136,7 +136,7 @@ function GammaLinearRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 end
 
-function GammaLinearRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+function GammaRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 	
 	local exponentTermVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
@@ -148,7 +148,7 @@ function GammaLinearRegressionModel:calculateHypothesisVector(featureMatrix, sav
 
 end
 
-function GammaLinearRegressionModel:calculateLossFunctionDerivativeVector(lossGradientVector)
+function GammaRegressionModel:calculateLossFunctionDerivativeVector(lossGradientVector)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -164,7 +164,7 @@ function GammaLinearRegressionModel:calculateLossFunctionDerivativeVector(lossGr
 
 end
 
-function GammaLinearRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function GammaRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -200,7 +200,7 @@ function GammaLinearRegressionModel:gradientDescent(lossFunctionDerivativeVector
 
 end
 
-function GammaLinearRegressionModel:update(lossGradientVector, clearAllMatrices)
+function GammaRegressionModel:update(lossGradientVector, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -220,45 +220,45 @@ function GammaLinearRegressionModel:update(lossGradientVector, clearAllMatrices)
 
 end
 
-function GammaLinearRegressionModel.new(parameterDictionary)
+function GammaRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewGammaLinearRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
+	local NewGammaRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewGammaLinearRegressionModel, GammaLinearRegressionModel)
+	setmetatable(NewGammaRegressionModel, GammaRegressionModel)
 	
-	NewGammaLinearRegressionModel:setName("GammaLinearRegression")
+	NewGammaRegressionModel:setName("GammaRegression")
 
-	NewGammaLinearRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	NewGammaRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
-	NewGammaLinearRegressionModel.shape = parameterDictionary.shape or defaultShape
+	NewGammaRegressionModel.shape = parameterDictionary.shape or defaultShape
 	
-	NewGammaLinearRegressionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewGammaRegressionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
-	NewGammaLinearRegressionModel.Optimizer = parameterDictionary.Optimizer
+	NewGammaRegressionModel.Optimizer = parameterDictionary.Optimizer
 
-	NewGammaLinearRegressionModel.Regularizer = parameterDictionary.Regularizer
+	NewGammaRegressionModel.Regularizer = parameterDictionary.Regularizer
 
-	return NewGammaLinearRegressionModel
+	return NewGammaRegressionModel
 
 end
 
-function GammaLinearRegressionModel:setOptimizer(Optimizer)
+function GammaRegressionModel:setOptimizer(Optimizer)
 
 	self.Optimizer = Optimizer
 
 end
 
-function GammaLinearRegressionModel:setRegularizer(Regularizer)
+function GammaRegressionModel:setRegularizer(Regularizer)
 
 	self.Regularizer = Regularizer
 
 end
 
-function GammaLinearRegressionModel:train(featureMatrix, labelVector)
+function GammaRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
@@ -328,7 +328,7 @@ function GammaLinearRegressionModel:train(featureMatrix, labelVector)
 
 end
 
-function GammaLinearRegressionModel:predict(featureMatrix)
+function GammaRegressionModel:predict(featureMatrix)
 	
 	local ModelParameters = self.ModelParameters
 	
@@ -348,4 +348,4 @@ function GammaLinearRegressionModel:predict(featureMatrix)
 
 end
 
-return GammaLinearRegressionModel
+return GammaRegressionModel

@@ -184,7 +184,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 					table.insert(costArray, totalCost)
 
-					self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+					self:printNumberOfIterationsAndCost(numberOfIterations, totalCost)
 
 				end
 

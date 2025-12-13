@@ -122,7 +122,7 @@ function ParallelDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 
 		local currentScaledActionNoiseVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, currentActionNoiseVector)
 
-		local actionVector = AqwamTensorLibrary:add(currentActionMeanVector, currentScaledActionNoiseVector)
+		local currentActionVector = AqwamTensorLibrary:add(currentActionMeanVector, currentScaledActionNoiseVector)
 
 		local isEpisodeEnd = (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode)
 
@@ -184,7 +184,7 @@ function ParallelDiagonalGaussianPolicyQuickSetup.new(parameterDictionary)
 			
 		end
 
-		return actionVector
+		return currentActionVector
 		
 	end)
 	

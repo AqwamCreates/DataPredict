@@ -48,4 +48,4 @@
 | [Targeting](HighValueProjectTutorials/TargetingSystems.md)                                       | Maximizes the likelihood of hitting clusters of players.              | 30 minutes - 1 hour        |
 | [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Making sure that the players or items are queued based on their data. | To be added soon           |
 | [Placement](HighValueProjectTutorials/PlacementSystems.md)                                       | Finds an empty space to place players or items.                       | 30 minutes                 |
-| [Quality Assurance](HighValueProjectTutorials/QualityAssuranceSystems.md) (Incomplete)           | Attempts to break game mechanics to find bugs and glitches.           | To be added soon           |
+| [Quality Assurance](HighValueProjectTutorials/QualityAssuranceSystems.md) (Incomplete)           | Tries to break game mechanics to find bugs and glitches.              | To be added soon           |

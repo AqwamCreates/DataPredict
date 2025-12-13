@@ -302,7 +302,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 				-- Check for overlap between intervals.
 				
-				if (newMinimumFeatureValue <= oldMaximumFeatureValue and newMaximumFeatureValue >= oldMinimumFeatureValue) then
+				if ((newMinimumFeatureValue <= oldMaximumFeatureValue) and (newMaximumFeatureValue >= oldMinimumFeatureValue)) then
 					
 					-- Calculate merged interval and average.
 					

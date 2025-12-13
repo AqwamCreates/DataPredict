@@ -320,11 +320,11 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 					
 					if (unwrappedNewMetaDataVector) then
 						
-						unwrappedNewMetaDataVector[3] = newWeight + oldWeight  -- total weight.
+						unwrappedNewMetaDataVector[3] = newWeight + oldWeight
 						
-						unwrappedNewMetaDataVector[4] = newTargetLabelValue * newWeight + oldTargetLabelValue * oldWeight  -- total value.
+						unwrappedNewMetaDataVector[4] = (newTargetLabelValue * newWeight) + (oldTargetLabelValue * oldWeight)
 						
-						unwrappedNewMetaDataVector[5] = mergedTargetLabelValue  -- average value.
+						unwrappedNewMetaDataVector[5] = mergedTargetLabelValue
 						
 					end
 					
@@ -372,9 +372,9 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 				
 				unwrappedCurrentInformationVector[3] = averageValue
 
-				unwrappedCurrentMetaDataVector[1] = math.min(unwrappedCurrentMetaDataVector[1], unwrappedNextMetaDataVector[1])  -- start index.
+				unwrappedCurrentMetaDataVector[1] = math.min(unwrappedCurrentMetaDataVector[1], unwrappedNextMetaDataVector[1])  -- Start index.
 				
-				unwrappedCurrentMetaDataVector[2] = math.max(unwrappedCurrentMetaDataVector[2], unwrappedNextMetaDataVector[2])  -- end index.
+				unwrappedCurrentMetaDataVector[2] = math.max(unwrappedCurrentMetaDataVector[2], unwrappedNextMetaDataVector[2])  -- End index.
 				
 				unwrappedCurrentMetaDataVector[3] = totalWeight
 				

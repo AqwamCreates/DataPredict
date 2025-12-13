@@ -230,11 +230,11 @@ function IsotonicRegressionModel:predict(featureMatrix)
 	
 	local numberOfInformation = #ModelParameters
 	
-	local labelVector = {}
+	local predictedLabelVector = {}
 	
 	local featureValue
 	
-	local labelValue
+	local predictedLabelValue
 	
 	local hasTargetValue
 	
@@ -248,7 +248,7 @@ function IsotonicRegressionModel:predict(featureMatrix)
 		
 		featureValue = unwrappedFeatureVector[1]
 		
-		labelValue = nil
+		predictedLabelValue = nil
 		
 		for informationIndex, unwrappedInformationVector in ipairs(ModelParameters) do
 			
@@ -256,25 +256,25 @@ function IsotonicRegressionModel:predict(featureMatrix)
 			
 			if (featureValue >= minimumFeatureValue) and (featureValue <= maximumFeatureValue) then
 
-				labelValue = targetLabelValue
+				predictedLabelValue = targetLabelValue
 			
 			elseif (featureValue < minimumFeatureValue) and (informationIndex == 1) then
 				
-				labelValue = ((onOutOfBounds == "clamp") and targetLabelValue) or nanValue
+				predictedLabelValue = ((onOutOfBounds == "clamp") and targetLabelValue) or nanValue
 				
 			elseif (featureValue > maximumFeatureValue) and (informationIndex == numberOfInformation) then
 				
-				labelValue = ((onOutOfBounds == "clamp") and targetLabelValue) or nanValue
+				predictedLabelValue = ((onOutOfBounds == "clamp") and targetLabelValue) or nanValue
 				
 			end
 			
-			labelVector[dataIndex] = {labelValue}
+			predictedLabelVector[dataIndex] = {predictedLabelValue}
 			
 		end
 		
 	end
 	
-	return labelVector
+	return predictedLabelVector
 	
 end
 

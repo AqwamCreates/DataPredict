@@ -140,6 +140,8 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 		
 		metaDataIndex = 1
 		
+		totalCost = 0
+		
 		cost = nil
 
 		while (metaDataIndex < numberOfInformation) do
@@ -178,7 +180,11 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 				end)
 
-				if (cost) then totalCost = totalCost + cost end
+				if (cost) then
+					
+					totalCost = totalCost + cost 
+					
+				end
 
 				if (metaDataIndex > 1) then metaDataIndex = metaDataIndex - 1 end
 				

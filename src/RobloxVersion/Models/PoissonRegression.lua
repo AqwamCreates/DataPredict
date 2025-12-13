@@ -30,11 +30,11 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
-local PoissonLinearRegressionModel = {}
+local PoissonRegressionModel = {}
 
-PoissonLinearRegressionModel.__index = PoissonLinearRegressionModel
+PoissonRegressionModel.__index = PoissonRegressionModel
 
-setmetatable(PoissonLinearRegressionModel, GradientMethodBaseModel)
+setmetatable(PoissonRegressionModel, GradientMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -42,7 +42,7 @@ local defaultLearningRate = 0.3
 
 local defaultEpsilon = 1e-14
 
-function PoissonLinearRegressionModel:calculateCost(hypothesisVector, labelVector)
+function PoissonRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
@@ -66,7 +66,7 @@ function PoissonLinearRegressionModel:calculateCost(hypothesisVector, labelVecto
 
 end
 
-function PoissonLinearRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+function PoissonRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 	
 	local exponentTermVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
@@ -78,7 +78,7 @@ function PoissonLinearRegressionModel:calculateHypothesisVector(featureMatrix, s
 
 end
 
-function PoissonLinearRegressionModel:calculateLossFunctionDerivativeVector(lossGradientVector)
+function PoissonRegressionModel:calculateLossFunctionDerivativeVector(lossGradientVector)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -94,7 +94,7 @@ function PoissonLinearRegressionModel:calculateLossFunctionDerivativeVector(loss
 
 end
 
-function PoissonLinearRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function PoissonRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -130,7 +130,7 @@ function PoissonLinearRegressionModel:gradientDescent(lossFunctionDerivativeVect
 
 end
 
-function PoissonLinearRegressionModel:update(lossGradientVector, clearAllMatrices)
+function PoissonRegressionModel:update(lossGradientVector, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -150,43 +150,43 @@ function PoissonLinearRegressionModel:update(lossGradientVector, clearAllMatrice
 
 end
 
-function PoissonLinearRegressionModel.new(parameterDictionary)
+function PoissonRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewPoissonLinearRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
+	local NewPoissonRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewPoissonLinearRegressionModel, PoissonLinearRegressionModel)
+	setmetatable(NewPoissonRegressionModel, PoissonRegressionModel)
 	
-	NewPoissonLinearRegressionModel:setName("PoissonLinearRegression")
+	NewPoissonRegressionModel:setName("PoissonRegression")
 
-	NewPoissonLinearRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	NewPoissonRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
-	NewPoissonLinearRegressionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewPoissonRegressionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
-	NewPoissonLinearRegressionModel.Optimizer = parameterDictionary.Optimizer
+	NewPoissonRegressionModel.Optimizer = parameterDictionary.Optimizer
 
-	NewPoissonLinearRegressionModel.Regularizer = parameterDictionary.Regularizer
+	NewPoissonRegressionModel.Regularizer = parameterDictionary.Regularizer
 
-	return NewPoissonLinearRegressionModel
+	return NewPoissonRegressionModel
 
 end
 
-function PoissonLinearRegressionModel:setOptimizer(Optimizer)
+function PoissonRegressionModel:setOptimizer(Optimizer)
 
 	self.Optimizer = Optimizer
 
 end
 
-function PoissonLinearRegressionModel:setRegularizer(Regularizer)
+function PoissonRegressionModel:setRegularizer(Regularizer)
 
 	self.Regularizer = Regularizer
 
 end
 
-function PoissonLinearRegressionModel:train(featureMatrix, labelVector)
+function PoissonRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
@@ -254,7 +254,7 @@ function PoissonLinearRegressionModel:train(featureMatrix, labelVector)
 
 end
 
-function PoissonLinearRegressionModel:predict(featureMatrix)
+function PoissonRegressionModel:predict(featureMatrix)
 	
 	local ModelParameters = self.ModelParameters
 	
@@ -274,4 +274,4 @@ function PoissonLinearRegressionModel:predict(featureMatrix)
 
 end
 
-return PoissonLinearRegressionModel
+return PoissonRegressionModel

@@ -40,7 +40,7 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.3
 
-local defaultShape = 1
+local defaultShape = 1 -- alpha
 
 local defaultEpsilon = 1e-14
 

@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - PoissonLinearRegression
+# [API Reference](../../API.md) - [Models](../Models.md) - PoissonRegression
 
-PoissonLinearRegression is a supervised machine learning model that predicts discrete count values (e.g. 1, 2, 3, 4). It uses iterative calculations to find the best model parameters.
+PoissonRegression is a supervised machine learning model that predicts discrete count values (e.g. 1, 2, 3, 4). It uses iterative calculations to find the best model parameters.
 
 ## Stored Model Parameters
 
@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-PoissonLinearRegression.new(maximumNumberOfIterations: integer, learningRate: number): ModelObject
+PoissonRegression.new(maximumNumberOfIterations: integer, learningRate: number): ModelObject
 ```
 
 #### Parameters:
@@ -35,7 +35,7 @@ PoissonLinearRegression.new(maximumNumberOfIterations: integer, learningRate: nu
 Set optimizer for the model by inputting the optimizer object.
 
 ```
-PoissonLinearRegression:setOptimizer(Optimizer: OptimizerObject)
+PoissonRegression:setOptimizer(Optimizer: OptimizerObject)
 ```
 
 #### Parameters:
@@ -47,7 +47,7 @@ PoissonLinearRegression:setOptimizer(Optimizer: OptimizerObject)
 Set a regularization for the model by inputting the optimizer object.
 
 ```
-PoissonLinearRegression:setRegularizer(Regularizer: RegularizerObject)
+PoissonRegression:setRegularizer(Regularizer: RegularizerObject)
 ```
 
 #### Parameters:
@@ -59,7 +59,7 @@ PoissonLinearRegression:setRegularizer(Regularizer: RegularizerObject)
 Train the model.
 
 ```
-PoissonLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+PoissonRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 
 #### Parameters:
@@ -77,7 +77,7 @@ PoissonLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): numbe
 Predict the value for a given data.
 
 ```
-PoissonLinearRegression:predict(featureMatrix: Matrix): Matrix
+PoissonRegression:predict(featureMatrix: Matrix): Matrix
 ```
 
 #### Parameters:

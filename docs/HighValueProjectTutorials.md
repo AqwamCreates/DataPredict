@@ -46,6 +46,6 @@
 | [Smart NPC](HighValueProjectTutorials/SmartNPCSystems.md)                                        | Makes NPCs capable of predicting and planning actions.                | 30 minutes                 |
 | [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Handles the separation of unusual players from normal players.        | 30 minutes                 |
 | [Targeting](HighValueProjectTutorials/TargetingSystems.md)                                       | Maximizes the likelihood of hitting clusters of players.              | 30 minutes - 1 hour        |
-| [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Making sure that the players or items are queued based on their data. | To be added soon           |
+| [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Queueing players or items based on their data.                        | To be added soon           |
 | [Placement](HighValueProjectTutorials/PlacementSystems.md)                                       | Finds an empty space to place players or items.                       | 30 minutes                 |
 | [Quality Assurance](HighValueProjectTutorials/QualityAssuranceSystems.md) (Incomplete)           | Tries to break game mechanics to find bugs and glitches.              | To be added soon           |

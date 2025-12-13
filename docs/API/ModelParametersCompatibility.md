@@ -2,7 +2,7 @@
 
 This documentation shows you on which algorithms can be switched with others.
 
-However, it assumes that you will ignore the difference in hyperparameters and data distribution that the model trained on.
+However, it assumes that you will ignore the difference in properties, hyperparameters and data distribution that the model trained on.
 
 ## Full Compatibility
 
@@ -17,6 +17,7 @@ The algorithms under the same group can have its model parameters swapped withou
 
 * LinearRegression
 * PoissonRegression
+* GammaRegression
 * QuantileLinearRegression
 * SupportVectorRegressionGradientVariant
 * PassiveAggressiveRegressor

@@ -22,7 +22,7 @@
 
     * Also known as the "Nuclear Apache 2.0 Limited-Commercial-Use" license.
 
-    * Is applied automatically on usage or possesion of DataPredict™, DataPredict™ Neural and DataPredict™ Axon. If you have one of the commercial licenses as shown below, then you are exempted from this condition.
+    * It is applied automatically on usage or possesion of DataPredict™, DataPredict™ Neural and DataPredict™ Axon. If you have one of the commercial licenses as shown below, then you are exempted from this condition.
 
     * For organizations that creates more than 3K USD of gross revenue within 365 days (not per 365 days), you agree that you will allow me to release your assets interacting with these libraries under the Apache 2.0 license.
 

@@ -80,7 +80,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		local ActionsList = Model:getActionsList()
 
-		local actionVector = Model:predict(currentFeatureVector, true)
+		local currentActionVector = Model:predict(currentFeatureVector, true)
 		
 		local isEpisodeEnd = (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode)
 		
@@ -88,11 +88,11 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 		
-		local actionIndex, selectedActionCountVector, currentEpsilon = NewSingleCategoricalPolicyQuickSetup:selectAction(actionVector, NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector, NewSingleCategoricalPolicyQuickSetup.currentEpsilon, NewSingleCategoricalPolicyQuickSetup.EpsilonValueScheduler, currentNumberOfReinforcements)
+		local currentActionIndex, selectedActionCountVector, currentEpsilon = NewSingleCategoricalPolicyQuickSetup:selectAction(currentActionVector, NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector, NewSingleCategoricalPolicyQuickSetup.currentEpsilon, NewSingleCategoricalPolicyQuickSetup.EpsilonValueScheduler, currentNumberOfReinforcements)
 
-		local currentAction = ActionsList[actionIndex]
+		local currentAction = ActionsList[currentActionIndex]
 
-		local currentActionValue = actionVector[1][actionIndex]
+		local currentActionValue = currentActionVector[1][currentActionIndex]
 		
 		local temporalDifferenceError
 
@@ -148,7 +148,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		if (NewSingleCategoricalPolicyQuickSetup.isOutputPrinted) then print("Episode: " .. currentNumberOfEpisodes .. "\t\tReinforcement Count: " .. currentNumberOfReinforcements) end
 
-		if (returnOriginalOutput) then return actionVector end
+		if (returnOriginalOutput) then return currentActionVector end
 
 		return currentAction, currentActionValue
 		

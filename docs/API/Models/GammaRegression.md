@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - GammaLinearRegression
+# [API Reference](../../API.md) - [Models](../Models.md) - GammaRegression
 
-GammaLinearRegression is a supervised machine learning model that predicts continuous positive values (e.g. 1.2, 22, 43, 531.23). It uses iterative calculations to find the best model parameters.
+GammaRegression is a supervised machine learning model that predicts continuous positive values (e.g. 1.2, 22, 43, 531.23). It uses iterative calculations to find the best model parameters.
 
 ## Stored Model Parameters
 
@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-GammaLinearRegression.new(maximumNumberOfIterations: integer, learningRate: number, shape: number): ModelObject
+GammaRegression.new(maximumNumberOfIterations: integer, learningRate: number, shape: number): ModelObject
 ```
 
 #### Parameters:
@@ -45,7 +45,7 @@ GammaLinearRegression.new(maximumNumberOfIterations: integer, learningRate: numb
 Set optimizer for the model by inputting the optimizer object.
 
 ```
-GammaLinearRegression:setOptimizer(Optimizer: OptimizerObject)
+GammaRegression:setOptimizer(Optimizer: OptimizerObject)
 ```
 
 #### Parameters:
@@ -57,7 +57,7 @@ GammaLinearRegression:setOptimizer(Optimizer: OptimizerObject)
 Set a regularization for the model by inputting the optimizer object.
 
 ```
-GammaLinearRegression:setRegularizer(Regularizer: RegularizerObject)
+GammaRegression:setRegularizer(Regularizer: RegularizerObject)
 ```
 
 #### Parameters:
@@ -69,7 +69,7 @@ GammaLinearRegression:setRegularizer(Regularizer: RegularizerObject)
 Train the model.
 
 ```
-PoissonLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+GammaRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 
 #### Parameters:
@@ -87,7 +87,7 @@ PoissonLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): numbe
 Predict the value for a given data.
 
 ```
-GammaLinearRegression:predict(featureMatrix: Matrix): Matrix
+GammaRegression:predict(featureMatrix: Matrix): Matrix
 ```
 
 #### Parameters:

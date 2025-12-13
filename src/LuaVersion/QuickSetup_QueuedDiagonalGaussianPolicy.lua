@@ -306,7 +306,7 @@ function QueuedDiagonalGaussianPolicyQuickSetup:start()
 
 					Model:episodeUpdate(terminalStateValue)
 
-					if episodeUpdateFunction then episodeUpdateFunction(terminalStateValue, agentIndex) end
+					if (episodeUpdateFunction) then episodeUpdateFunction(terminalStateValue, agentIndex) end
 
 				end
 

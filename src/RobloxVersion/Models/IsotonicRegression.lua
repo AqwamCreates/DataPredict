@@ -48,7 +48,7 @@ function IsotonicRegressionModel.new(parameterDictionary)
 
 	setmetatable(NewIsotonicRegressionModel, IsotonicRegressionModel)
 
-	NewIsotonicRegressionModel:setName("BayesianLinearRegression")
+	NewIsotonicRegressionModel:setName("IsotonicRegression")
 	
 	NewIsotonicRegressionModel.isIncreasing = NewIsotonicRegressionModel:getValueOrDefaultValue(parameterDictionary.isIncreasing, defaultIsIncreasing)
 	

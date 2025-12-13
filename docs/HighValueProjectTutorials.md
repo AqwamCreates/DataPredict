@@ -44,7 +44,7 @@
 | [Team Balancing](HighValueProjectTutorials/TeamBalancingSystems.md)                              | Ensures that teams are balanced based on their combat data.           | 30 minutes                 |
 | [AI Player](HighValueProjectTutorials/AIPlayerSystems.md)                                        | Replace players if players aren't enough.                             | 30 minutes - 1 hour        |
 | [Smart NPC](HighValueProjectTutorials/SmartNPCSystems.md)                                        | Makes NPCs capable of predicting and planning actions.                | 30 minutes                 |
-| [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Handles the separation of unusual players from normal players.        | 30 minutes                 |
+| [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Detects unusual players from normal players.                          | 30 minutes                 |
 | [Targeting](HighValueProjectTutorials/TargetingSystems.md)                                       | Maximizes the likelihood of hitting clusters of players.              | 30 minutes - 1 hour        |
 | [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Queueing players or items based on their data.                        | To be added soon           |
 | [Placement](HighValueProjectTutorials/PlacementSystems.md)                                       | Finds an empty space to place players or items.                       | 30 minutes                 |

@@ -38,6 +38,8 @@ setmetatable(IsotonicRegressionModel, IterativeMethodBaseModel)
 
 local defaultIsIncreasing = true
 
+local defaultMode = "Hybrid"
+
 local defaultOnOutOfBounds = "nan"
 
 function IsotonicRegressionModel.new(parameterDictionary)
@@ -51,6 +53,8 @@ function IsotonicRegressionModel.new(parameterDictionary)
 	NewIsotonicRegressionModel:setName("IsotonicRegression")
 	
 	NewIsotonicRegressionModel.isIncreasing = NewIsotonicRegressionModel:getValueOrDefaultValue(parameterDictionary.isIncreasing, defaultIsIncreasing)
+	
+	NewIsotonicRegressionModel.mode = parameterDictionary.mode or defaultMode
 	
 	NewIsotonicRegressionModel.onOutOfBounds = parameterDictionary.onOutOfBounds or defaultOnOutOfBounds
 
@@ -69,6 +73,8 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	if (#labelVector[1] ~= 1) then error("The label matrix must only have 1 column.") end
 	
 	local isIncreasing = self.isIncreasing
+	
+	local mode = self.mode
 	
 	local sortConditionFunction = (isIncreasing and function(a, b) return a[1] < b[1] end) or function(a, b) return a[1] > b[1] end
 	
@@ -118,7 +124,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	
 	local isViolated
 	
-	local newTotalWeight
+	local totalWeight
 	
 	local totalValue
 	
@@ -150,11 +156,11 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 				
 				isViolationFound = true
 				
-				newTotalWeight = unwrappedCurrentMetaDataVector[3] + unwrappedNextMetaDataVector[3]
+				totalWeight = unwrappedCurrentMetaDataVector[3] + unwrappedNextMetaDataVector[3]
 				
 				totalValue =  unwrappedCurrentMetaDataVector[4] + unwrappedNextMetaDataVector[4]
 				
-				averageValue = totalValue / newTotalWeight
+				averageValue = totalValue / totalWeight
 				
 				unwrappedMergedMetaDataVector = {unwrappedCurrentMetaDataVector[1], unwrappedNextMetaDataVector[2], newTotalWeight, totalValue, averageValue}
 				
@@ -190,7 +196,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 		
 	until (not isViolationFound) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
-	local ModelParameters = {}
+	local informationMatrix = {}
 	
 	local minimumFeatureValue
 
@@ -218,7 +224,173 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 			
 		end
 
-		ModelParameters[informationIndex] = {minimumFeatureValue, maximumFeatureValue, unwrappedInformationVector[5]}
+		informationMatrix[informationIndex] = {minimumFeatureValue, maximumFeatureValue, unwrappedInformationVector[5]}
+		
+	end
+	
+	local ModelParameters = self.ModelParameters or {}
+	
+	local oldInformationMatrix = ModelParameters[1]
+	
+	local oldMetaDataMatrix = ModelParameters[2]
+	
+	local newMinimumFeatureValue
+	
+	local newMaximumFeatureValue
+	
+	local newTargetLabelValue
+	
+	local oldMinimumFeatureValue
+	
+	local oldMaximumFeatureValue
+	
+	local oldTargetLabelValue
+	
+	local mergedTargetLabelValue
+	
+	local mergedMinimumFeatureValue
+	
+	local mergedMaximumFeatureValue
+	
+	local unwrappedNewMetaDataVector
+	
+	local unwrappedOldMetaDataVector
+	
+	local newWeight
+	
+	local oldWeight
+	
+	local unwrappedCurrentMetaDataVector
+	
+	local unwrappedNextMetaDataVector
+	
+	local unwrappedCurrentInformationVector
+	
+	local unwrappedNextInformationVector
+	
+	local nextI
+	
+	if (mode == "Hybrid") then
+
+		mode = (oldInformationMatrix and oldMetaDataMatrix and "Online") or "Offline"		
+
+	end
+	
+	if (mode == "Online") then
+		
+		for newInformationIndex, unwrappedNewInformationVector in ipairs(informationMatrix) do
+
+			for oldInformationIndex, unwrappedOldInformationVector in ipairs(oldInformationMatrix) do
+
+				-- Check if the new information overlaps with old information.
+				
+				newMinimumFeatureValue, newMaximumFeatureValue, newTargetLabelValue = unwrappedNewInformationVector[1], unwrappedNewInformationVector[2], unwrappedNewInformationVector[3]
+				
+				oldMinimumFeatureValue, oldMaximumFeatureValue, oldTargetLabelValue = unwrappedOldInformationVector[1], unwrappedOldInformationVector[2], unwrappedOldInformationVector[3]
+
+				-- Check for overlap between intervals.
+				
+				if (newMinimumFeatureValue <= oldMaximumFeatureValue and newMaximumFeatureValue >= oldMinimumFeatureValue) then
+					
+					-- Calculate merged interval and average.
+					
+					mergedMinimumFeatureValue = math.min(newMinimumFeatureValue, oldMinimumFeatureValue)
+					
+					mergedMaximumFeatureValue = math.max(newMaximumFeatureValue, oldMaximumFeatureValue)
+					
+					unwrappedNewMetaDataVector = metaDataMatrix[newInformationIndex]
+					
+					unwrappedOldMetaDataVector = oldMetaDataMatrix[oldInformationIndex]
+
+					newWeight = (unwrappedNewMetaDataVector and unwrappedNewMetaDataVector[3]) or 1
+					
+					oldWeight = (unwrappedOldMetaDataVector and unwrappedOldMetaDataVector[3]) or 1
+
+					mergedTargetLabelValue = (newTargetLabelValue * newWeight + oldTargetLabelValue * oldWeight) / (newWeight + oldWeight)
+
+					-- Update the new information with merged values.
+					
+					unwrappedNewInformationVector[1] = mergedMinimumFeatureValue
+					
+					unwrappedNewInformationVector[2] = mergedMaximumFeatureValue
+					
+					unwrappedNewInformationVector[3] = mergedTargetLabelValue
+
+					-- Update corresponding meta data.
+					
+					if (unwrappedNewMetaDataVector) then
+						
+						unwrappedNewMetaDataVector[3] = newWeight + oldWeight  -- total weight.
+						
+						unwrappedNewMetaDataVector[4] = newTargetLabelValue * newWeight + oldTargetLabelValue * oldWeight  -- total value.
+						
+						unwrappedNewMetaDataVector[5] = mergedTargetLabelValue  -- average value.
+						
+					end
+					
+				end
+
+			end
+
+		end
+
+		-- After merging, we need to ensure isotonic constraints are maintained.
+		
+		-- This would typically involve running the PAVA algorithm again or merging adjacent.
+		
+		-- intervals that violate the monotonic constraint.
+		
+		for i = 1, (#informationMatrix - 1) do
+			
+			unwrappedCurrentInformationVector = informationMatrix[i]
+			
+			unwrappedNextInformationVector = informationMatrix[i + 1]
+			
+			nextI = i + 1
+
+			if (isIncreasing and unwrappedCurrentInformationVector[3] > unwrappedNextInformationVector[3]) or (not isIncreasing and unwrappedCurrentInformationVector[3] < unwrappedNextInformationVector[3]) then
+				
+				-- Merge violating intervals.
+				
+				mergedMinimumFeatureValue = math.min(unwrappedCurrentInformationVector[1], unwrappedNextInformationVector[1])
+				
+				mergedMaximumFeatureValue = math.max(unwrappedCurrentInformationVector[2], unwrappedNextInformationVector[2])
+
+				unwrappedCurrentMetaDataVector = metaDataMatrix[i]
+				
+				unwrappedNextMetaDataVector = metaDataMatrix[nextI]
+
+				totalWeight = unwrappedCurrentMetaDataVector[3] + unwrappedNextMetaDataVector[3]
+				
+				totalValue = unwrappedCurrentMetaDataVector[4] + unwrappedNextMetaDataVector[4]
+				
+				averageValue = totalValue / totalWeight
+
+				unwrappedCurrentInformationVector[1] = mergedMinimumFeatureValue
+				
+				unwrappedCurrentInformationVector[2] = mergedMaximumFeatureValue
+				
+				unwrappedCurrentInformationVector[3] = averageValue
+
+				unwrappedCurrentMetaDataVector[1] = math.min(unwrappedCurrentMetaDataVector[1], unwrappedNextMetaDataVector[1])  -- start index.
+				
+				unwrappedCurrentMetaDataVector[2] = math.max(unwrappedCurrentMetaDataVector[2], unwrappedNextMetaDataVector[2])  -- end index.
+				
+				unwrappedCurrentMetaDataVector[3] = totalWeight
+				
+				unwrappedCurrentMetaDataVector[4] = totalValue
+				
+				unwrappedCurrentMetaDataVector[5] = averageValue
+
+				table.remove(informationMatrix, nextI)
+				
+				table.remove(metaDataMatrix, nextI)
+
+				if (i > 1) then i = i - 1 end
+				
+			end
+			
+		end
 		
 	end
 	
@@ -230,7 +402,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 	end
 
-	self.ModelParameters = ModelParameters
+	self.ModelParameters = {informationMatrix, metaDataMatrix}
 	
 	return costArray
 
@@ -242,15 +414,17 @@ function IsotonicRegressionModel:predict(featureMatrix)
 	
 	local onOutOfBounds = self.onOutOfBounds
 	
-	local ModelParameters = self.ModelParameters
+	local ModelParameters = self.ModelParameters or {}
+	
+	local informationMatrix = ModelParameters[1]
 	
 	local numberOfData = #featureMatrix
 	
 	local nanValue = 0 / 0
 	
-	if (not ModelParameters) then return AqwamTensorLibrary:createTensor({numberOfData, 1}, nanValue) end
+	if (not informationMatrix) then return AqwamTensorLibrary:createTensor({numberOfData, 1}, nanValue) end
 	
-	local numberOfInformation = #ModelParameters
+	local numberOfInformation = #informationMatrix
 	
 	local predictedLabelVector = {}
 	
@@ -272,7 +446,7 @@ function IsotonicRegressionModel:predict(featureMatrix)
 		
 		predictedLabelValue = nil
 		
-		for informationIndex, unwrappedInformationVector in ipairs(ModelParameters) do
+		for informationIndex, unwrappedInformationVector in ipairs(informationMatrix) do
 			
 			minimumFeatureValue, maximumFeatureValue, targetLabelValue = table.unpack(unwrappedInformationVector)
 			

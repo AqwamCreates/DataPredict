@@ -58,6 +58,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	PoissonLinearRegression = require(Models.PoissonLinearRegression),
 	
+	GammaLinearRegression = require(Models.GammaLinearRegression),
+	
 	NormalLinearRegression = require(Models.NormalLinearRegression),
 	
 	BayesianLinearRegression = require(Models.BayesianLinearRegression),
@@ -67,6 +69,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	PassiveAggressiveRegressor = require(Models.PassiveAggressiveRegressor),
 	
 	SupportVectorRegression = require(Models.SupportVectorRegression),
+	
+	SupportVectorRegressionGradientVariant = require(Models.SupportVectorRegressionGradientVariant),
 	
 	KNearestNeighboursRegressor = require(Models.KNearestNeighboursRegressor),
 	
@@ -78,9 +82,11 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	NeuralNetwork = require(Models.NeuralNetwork),
 	
-	OneClassSupportVectorMachine = require(Models.OneClassSupportVectorMachine),
-	
 	SupportVectorMachine = require(Models.SupportVectorMachine),
+
+	SupportVectorMachineGradientVariantp = require(Models.SupportVectorMachineGradientVariantp),
+	
+	OneClassSupportVectorMachine = require(Models.OneClassSupportVectorMachine),
 	
 	NearestCentroid = require(Models.NearestCentroid),
 	

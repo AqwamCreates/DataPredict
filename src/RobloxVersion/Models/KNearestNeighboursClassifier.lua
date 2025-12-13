@@ -70,46 +70,6 @@ local function createDistanceMatrix(distanceFunction, featureMatrix, storedFeatu
 
 end
 
-local function deepCopyTable(original, copies)
-
-	copies = copies or {}
-
-	local originalType = type(original)
-
-	local copy
-
-	if (originalType == 'table') then
-
-		if copies[original] then
-
-			copy = copies[original]
-
-		else
-
-			copy = {}
-
-			copies[original] = copy
-
-			for originalKey, originalValue in next, original, nil do
-
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-
-			end
-
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
-
-		end
-
-	else -- number, string, boolean, etc
-
-		copy = original
-
-	end
-
-	return copy
-
-end
-
 local function merge(distanceVector, labelVector, left, mid, right)
 
 	local subArrayOne = mid - left + 1
@@ -345,9 +305,9 @@ function KNearestNeighboursClassifierModel:predict(featureMatrix, returnOriginal
 	
 	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
 		
-		local sortedDistanceVector = {deepCopyTable(unwrappedDistanceVector)}
+		local sortedDistanceVector = {self:deepCopyTable(unwrappedDistanceVector)}
 
-		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
+		local sortedLabelVectorLowestToHighest = self:deepCopyTable(storedLabelVector)
 
 		mergeSort(sortedDistanceVector, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
 

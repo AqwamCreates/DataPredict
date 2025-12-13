@@ -54,11 +54,13 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 
 	LinearRegression = require(Models.LinearRegression),
 	
-	QuantileLinearRegression = require(Models.QuantileLinearRegression),
+	QuantileRegression = require(Models.QuantileRegression),
 	
-	PoissonLinearRegression = require(Models.PoissonLinearRegression),
+	PoissonRegression = require(Models.PoissonRegression),
 	
-	GammaLinearRegression = require(Models.GammaLinearRegression),
+	GammaRegression = require(Models.GammaRegression),
+	
+	IsotonicRegression = require(Models.IsotonicRegression),
 	
 	NormalLinearRegression = require(Models.NormalLinearRegression),
 	

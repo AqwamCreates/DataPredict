@@ -40,7 +40,7 @@ local defaultIsIncreasing = true
 
 local defaultMode = "Hybrid"
 
-local defaultOnOutOfBounds = "nan"
+local defaultOnOutOfBounds = "NotANumber"
 
 function IsotonicRegressionModel.new(parameterDictionary)
 	
@@ -424,9 +424,9 @@ function IsotonicRegressionModel:predict(featureMatrix)
 	
 	local numberOfData = #featureMatrix
 	
-	local nanValue = 0 / 0
+	local notANumberValue = 0 / 0
 	
-	if (not informationMatrix) then return AqwamTensorLibrary:createTensor({numberOfData, 1}, nanValue) end
+	if (not informationMatrix) then return AqwamTensorLibrary:createTensor({numberOfData, 1}, notANumberValue) end
 	
 	local numberOfInformation = #informationMatrix
 	
@@ -460,11 +460,11 @@ function IsotonicRegressionModel:predict(featureMatrix)
 			
 			elseif (featureValue < minimumFeatureValue) and (informationIndex == 1) then
 				
-				predictedLabelValue = ((onOutOfBounds == "clamp") and targetLabelValue) or nanValue
+				predictedLabelValue = ((onOutOfBounds == "Clamp") and targetLabelValue) or notANumberValue
 				
 			elseif (featureValue > maximumFeatureValue) and (informationIndex == numberOfInformation) then
 				
-				predictedLabelValue = ((onOutOfBounds == "clamp") and targetLabelValue) or nanValue
+				predictedLabelValue = ((onOutOfBounds == "Clamp") and targetLabelValue) or notANumberValue
 				
 			end
 			

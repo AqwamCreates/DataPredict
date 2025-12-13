@@ -84,7 +84,7 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	SupportVectorMachine = require(Models.SupportVectorMachine),
 
-	SupportVectorMachineGradientVariantp = require(Models.SupportVectorMachineGradientVariantp),
+	SupportVectorMachineGradientVariant = require(Models.SupportVectorMachineGradientVariant),
 	
 	OneClassSupportVectorMachine = require(Models.OneClassSupportVectorMachine),
 	

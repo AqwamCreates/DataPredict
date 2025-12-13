@@ -70,7 +70,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	
 	local isIncreasing = self.isIncreasing
 	
-	local sortConditionFunction = (isIncreasing and function(a, b) return a[1] > b[1] end) or function(a, b) return a[1] < b[1] end
+	local sortConditionFunction = (isIncreasing and function(a, b) return a[1] < b[1] end) or function(a, b) return a[1] > b[1] end
 	
 	local sortedDataMatrix = {}
 	
@@ -268,9 +268,11 @@ function IsotonicRegressionModel:predict(featureMatrix)
 				
 			end
 			
-			predictedLabelVector[dataIndex] = {predictedLabelValue}
+			if (predictedLabelValue) then break end
 			
 		end
+		
+		predictedLabelVector[dataIndex] = {predictedLabelValue}
 		
 	end
 	

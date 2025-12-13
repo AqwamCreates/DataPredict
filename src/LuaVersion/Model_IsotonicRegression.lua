@@ -94,7 +94,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	
 	local numberOfInformation = numberOfData
 	
-	local numberOfIterations = 0
+	local numberOfIterations = 1
 	
 	local totalCost = 0
 	
@@ -136,11 +136,11 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 		
 	repeat
 		
-		numberOfIterations = numberOfIterations + 1
-		
 		isViolationFound = false
 		
 		metaDataIndex = 1
+		
+		cost = nil
 
 		while (metaDataIndex < numberOfInformation) do
 			
@@ -178,15 +178,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 				end)
 
-				if (cost) then 
-					
-					totalCost = totalCost + cost
-
-					table.insert(costArray, totalCost)
-
-					self:printNumberOfIterationsAndCost(numberOfIterations, totalCost)
-
-				end
+				if (cost) then totalCost = totalCost + cost end
 
 				if (metaDataIndex > 1) then metaDataIndex = metaDataIndex - 1 end
 				
@@ -197,6 +189,16 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 			end
 			
 		end
+		
+		if (cost) then
+			
+			table.insert(costArray, totalCost)
+
+			self:printNumberOfIterationsAndCost(numberOfIterations, totalCost)
+			
+		end
+		
+		numberOfIterations = numberOfIterations + 1
 		
 	until (not isViolationFound) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	

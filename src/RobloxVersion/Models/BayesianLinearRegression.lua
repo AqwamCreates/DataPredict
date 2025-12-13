@@ -72,19 +72,19 @@ function BayesianLinearRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewBayesianLinearRegressionModelModel = BaseModel.new(parameterDictionary)
+	local NewBayesianLinearRegressionModel = BaseModel.new(parameterDictionary)
 
-	setmetatable(NewBayesianLinearRegressionModelModel, BayesianLinearRegressionModel)
+	setmetatable(NewBayesianLinearRegressionModel, BayesianLinearRegressionModel)
 
-	NewBayesianLinearRegressionModelModel:setName("BayesianLinearRegression")
+	NewBayesianLinearRegressionModel:setName("BayesianLinearRegression")
 
-	NewBayesianLinearRegressionModelModel.priorPrecision = parameterDictionary.priorPrecision or defaultPriorPrecision
+	NewBayesianLinearRegressionModel.priorPrecision = parameterDictionary.priorPrecision or defaultPriorPrecision
 
-	NewBayesianLinearRegressionModelModel.likelihoodPrecision = parameterDictionary.likelihoodPrecision or defaultLikelihoodPrecision
+	NewBayesianLinearRegressionModel.likelihoodPrecision = parameterDictionary.likelihoodPrecision or defaultLikelihoodPrecision
 	
-	NewBayesianLinearRegressionModelModel.useLogProbabilities = NewBayesianLinearRegressionModelModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
+	NewBayesianLinearRegressionModel.useLogProbabilities = NewBayesianLinearRegressionModelModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
-	return NewBayesianLinearRegressionModelModel
+	return NewBayesianLinearRegressionModel
 	
 end
 

@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - QuantileLinearRegression
+# [API Reference](../../API.md) - [Models](../Models.md) - QuantileRegression
 
-QuantileLinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses iterative calculations to find the best model parameters.
+QuantileRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses iterative calculations to find the best model parameters.
 
 ## Stored Model Parameters
 
@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-QuantileLinearRegression.new(maximumNumberOfIterations: integer, learningRate: number, quantilesList: {number}): ModelObject
+QuantileRegression.new(maximumNumberOfIterations: integer, learningRate: number, quantilesList: {number}): ModelObject
 ```
 
 #### Parameters:
@@ -37,7 +37,7 @@ QuantileLinearRegression.new(maximumNumberOfIterations: integer, learningRate: n
 Set optimizer for the model by inputting the optimizer object.
 
 ```
-QuantileLinearRegression:setOptimizer(Optimizer: OptimizerObject)
+QuantileRegression:setOptimizer(Optimizer: OptimizerObject)
 ```
 
 #### Parameters:
@@ -49,7 +49,7 @@ QuantileLinearRegression:setOptimizer(Optimizer: OptimizerObject)
 Set a regularization for the model by inputting the optimizer object.
 
 ```
-QuantileLinearRegression:setRegularizer(Regularizer: RegularizerObject)
+QuantileRegression:setRegularizer(Regularizer: RegularizerObject)
 ```
 
 #### Parameters:
@@ -61,7 +61,7 @@ QuantileLinearRegression:setRegularizer(Regularizer: RegularizerObject)
 Train the model.
 
 ```
-QuantileLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+QuantileRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 
 #### Parameters:
@@ -79,7 +79,7 @@ QuantileLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): numb
 Predict the value for a given data.
 
 ```
-QuantileLinearRegression:predict(featureMatrix: Matrix): Matrix
+QuantileRegression:predict(featureMatrix: Matrix): Matrix
 ```
 
 #### Parameters:

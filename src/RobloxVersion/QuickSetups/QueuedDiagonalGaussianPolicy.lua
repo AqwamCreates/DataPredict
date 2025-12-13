@@ -260,13 +260,13 @@ function QueuedDiagonalGaussianPolicyQuickSetup:start()
 		
 		local actionVectorDimensionSizeArray
 		
-		local actionVector
+		local currentActionVector
 		
 		local currentActionMeanVector
 		
-		local actionNoiseVector
+		local currentActionNoiseVector
 		
-		local scaledActionNoiseVector 
+		local currentScaledActionNoiseVector 
 		
 		local outputArray = {}
 
@@ -286,11 +286,11 @@ function QueuedDiagonalGaussianPolicyQuickSetup:start()
 
 				actionVectorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(currentActionMeanVector)
 
-				actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor(actionVectorDimensionSizeArray, 0, 1)
+				currentActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor(actionVectorDimensionSizeArray, 0, 1)
 
-				scaledActionNoiseVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, actionNoiseVector)
+				currentScaledActionNoiseVector = AqwamTensorLibrary:multiply(actionStandardDeviationVector, currentActionNoiseVector)
 
-				actionVector = AqwamTensorLibrary:add(currentActionMeanVector, scaledActionNoiseVector)
+				currentActionVector = AqwamTensorLibrary:add(currentActionMeanVector, currentScaledActionNoiseVector)
 
 				if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
@@ -324,7 +324,7 @@ function QueuedDiagonalGaussianPolicyQuickSetup:start()
 
 				end
 				
-				outputArray = {actionVector, currentActionMeanVector, actionNoiseVector}
+				outputArray = {currentActionVector, currentActionMeanVector, currentActionNoiseVector}
 				
 				table.insert(outputQueueArray, outputArray)
 

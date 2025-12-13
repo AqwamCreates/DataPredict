@@ -46,7 +46,7 @@ local defaultEpsilon = 1e-14
 
 -- Approximate gamma function (Stirling's approximation).
 
-local function approximateGamma(x)
+local function approximateGammaFunction(x)
 	
 	if (x <= 0) then return math.huge end
 	
@@ -118,7 +118,9 @@ function GammaLinearRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
 	
-	local logGamma = math.log(approximateGamma(shape))
+	local gamma = approximateGammaFunction(shape)
+	
+	local logGamma = math.log(gamma)
 	
 	local numberOfData = #labelVector
 	

@@ -48,7 +48,7 @@
 
 * No dimensionality reduction algorithms due to not being suitable for game-related use cases. They tend to be computationally expensive and are only useful when a full dataset is collected. This can be offset by choosing proper features and remove the unnecessary ones.
 
-* Going "Gold" on my birthday at 23 January 2026. Probably.
+* Going "Independence" on my birthday at 23 January 2026. Probably.
 
 ## Regression
 

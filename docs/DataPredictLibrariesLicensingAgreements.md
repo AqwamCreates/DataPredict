@@ -18,7 +18,7 @@
 
 ## Licenses
 
-* [One-Way Apache 2.0 Limited-Commercial-Use](https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md)
+* [One-Way Apache 2.0 Limited-Commercial-Use License](https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md)
 
     * Also known as the "Nuclear Apache 2.0 Limited-Commercial-Use" license.
 
@@ -30,7 +30,7 @@
 
    * Includes access to future updates and fixes.
 
-* [Standard Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement.docx)
+* [Standard License](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement.docx)
 
     * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
 
@@ -46,7 +46,7 @@
  
       * “Directly use DataPredict as-is, supported by original research.”
 
-* [White-Label Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement%20-%20White%20Label.docx)
+* [White-Label License](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement%20-%20White%20Label.docx)
 
     * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
     
@@ -62,7 +62,7 @@
      
       * "We build the whole machine learning library from scratch and build the whole system with it."
 
-* [Childhood-Appreciation License Version](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
+* [Childhood-Appreciation License](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
 
     * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
  

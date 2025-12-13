@@ -152,7 +152,7 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local ActionsList = Model:getActionsList()
 
-		local actionVector = Model:predict(currentFeatureVector, true)
+		local currentActionVector = Model:predict(currentFeatureVector, true)
 		
 		local isEpisodeEnd = (currentNumberOfReinforcements >= numberOfReinforcementsPerEpisode)
 
@@ -160,11 +160,11 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
-		local actionIndex, selectedActionCountVector = NewParallelCategoricalPolicyQuickSetup:selectAction(actionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
+		local currentActionIndex, selectedActionCountVector = NewParallelCategoricalPolicyQuickSetup:selectAction(currentActionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
 
-		local currentAction = ActionsList[actionIndex]
+		local currentAction = ActionsList[currentActionIndex]
 
-		local currentActionValue = actionVector[1][actionIndex]
+		local currentActionValue = currentActionVector[1][currentActionIndex]
 		
 		local temporalDifferenceError
 
@@ -212,7 +212,7 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
 		
-		currentEpsilonDictionary[actionIndex] = currentEpsilon
+		currentEpsilonDictionary[currentActionIndex] = currentEpsilon
 
 		currentNumberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
 
@@ -224,7 +224,7 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 			
 		end
 
-		if (returnOriginalOutput) then return actionVector end
+		if (returnOriginalOutput) then return currentActionVector end
 
 		return currentAction, currentActionValue
 		

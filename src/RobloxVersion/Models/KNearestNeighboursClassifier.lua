@@ -83,7 +83,7 @@ local function merge(unwrappedDistanceVector, labelVector, left, mid, right)
 
 	for i = 1, subArrayOne do
 
-		leftDistanceVector[i] = unwrappedDistanceVector[left + i - 1]
+		unwrappedLeftDistanceVector[i] = unwrappedDistanceVector[left + i - 1]
 		unwrappedLeftLabelVector[i] = labelVector[left + i - 1][1]
 
 	end
@@ -99,9 +99,9 @@ local function merge(unwrappedDistanceVector, labelVector, left, mid, right)
 	local indexOfSubArrayTwo = 1
 	local indexOfMergedArray = left
 
-	while indexOfSubArrayOne <= subArrayOne and indexOfSubArrayTwo <= subArrayTwo do
+	while (indexOfSubArrayOne <= subArrayOne) and (indexOfSubArrayTwo <= subArrayTwo) do
 
-		if unwrappedLeftDistanceVector[indexOfSubArrayOne] <= unwrappedRightDistanceVector[indexOfSubArrayTwo] then
+		if (unwrappedLeftDistanceVector[indexOfSubArrayOne] <= unwrappedRightDistanceVector[indexOfSubArrayTwo]) then
 
 			unwrappedDistanceVector[indexOfMergedArray] = unwrappedLeftDistanceVector[indexOfSubArrayOne]
 			labelVector[indexOfMergedArray][1] = unwrappedLeftLabelVector[indexOfSubArrayOne]

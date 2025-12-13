@@ -93,7 +93,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 ## Version History
 
-* [Production / Gold](VersionHistory/ProductionVersionHistory.md)
+* [Independence](VersionHistory/IndependenceVersionHistory.md)
 
 * [Release](VersionHistory/ReleaseVersionHistory.md)
 

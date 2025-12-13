@@ -36,7 +36,7 @@
 
 ## Links
 
-| System                                                                                           | Properties                                                                                         | Minimal Implementation Time |
+| System                                                                                           | Properties                                                                                         | Minimal Implementation Time With DataPredict |
 |--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|-----------------------------|
 | [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization, leave prediction and leave detection.                              | 30 minutes - 6 hours       |
 | [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                                                          | 2 hours                   |

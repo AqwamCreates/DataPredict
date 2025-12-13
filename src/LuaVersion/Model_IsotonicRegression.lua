@@ -166,7 +166,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 				
 				averageValue = totalValue / totalWeight
 				
-				unwrappedMergedMetaDataVector = {unwrappedCurrentMetaDataVector[1], unwrappedNextMetaDataVector[2], newTotalWeight, totalValue, averageValue}
+				unwrappedMergedMetaDataVector = {unwrappedCurrentMetaDataVector[1], unwrappedNextMetaDataVector[2], totalWeight, totalValue, averageValue}
 				
 				metaDataMatrix[metaDataIndex] = unwrappedMergedMetaDataVector
 				

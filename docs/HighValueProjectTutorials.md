@@ -40,7 +40,7 @@
 |--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|----------------------------|
 | [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization, leave prediction and leave detection. | 30 minutes - 6 hours       |
 | [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                             | 2 hours                    |
-| [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Ensures that the players are likely to interact with the enemies.     | 30 minutes - 2 hours       |
+| [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Increaes the enemies' interactions by the players.                    | 30 minutes - 2 hours       |
 | [Team Balancing](HighValueProjectTutorials/TeamBalancingSystems.md)                              | Ensures that teams are balanced based on their data.                  | 30 minutes                 |
 | [AI Player](HighValueProjectTutorials/AIPlayerSystems.md)                                        | Replace players if players aren't enough.                             | 30 minutes - 1 hour        |
 | [Smart NPC](HighValueProjectTutorials/SmartNPCSystems.md)                                        | Makes NPCs capable of predicting and planning actions.                | 30 minutes                 |

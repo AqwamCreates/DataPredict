@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local BaseModel = require(script.Parent.BaseModel)
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 local IsotonicRegressionModel = {}
 
 IsotonicRegressionModel.__index = IsotonicRegressionModel
 
-setmetatable(IsotonicRegressionModel, BaseModel)
+setmetatable(IsotonicRegressionModel, IterativeMethodBaseModel)
 
 local defaultIsIncreasing = true
 
@@ -44,7 +44,7 @@ function IsotonicRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewIsotonicRegressionModel = BaseModel.new(parameterDictionary)
+	local NewIsotonicRegressionModel = IterativeMethodBaseModel.new(parameterDictionary)
 
 	setmetatable(NewIsotonicRegressionModel, IsotonicRegressionModel)
 
@@ -88,6 +88,8 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	
 	local numberOfInformation = numberOfData
 	
+	local numberOfIterations = 0
+	
 	local labelValue
 	
 	for dataIndex, unwrappedSortedDataVector in ipairs(sortedDataMatrix) do
@@ -126,6 +128,8 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 		
 	repeat
 		
+		numberOfIterations = numberOfIterations + 1
+		
 		isViolationFound = false
 		
 		metaDataIndex = 1
@@ -160,9 +164,19 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 				numberOfInformation = numberOfInformation - 1
 				
-				cost = math.pow(currentAverageValue - averageValue, 2) + math.pow(nextAverageValue - averageValue, 2)
-				
-				table.insert(costArray, cost)
+				cost = self:calculateCostWhenRequired(numberOfIterations, function()
+
+					return math.pow(currentAverageValue - averageValue, 2) + math.pow(nextAverageValue - averageValue, 2)
+
+				end)
+
+				if (cost) then 
+
+					table.insert(costArray, cost)
+
+					self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+
+				end
 
 				if (metaDataIndex > 1) then metaDataIndex = metaDataIndex - 1 end
 				
@@ -174,7 +188,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 			
 		end
 		
-	until (not isViolationFound)
+	until (not isViolationFound) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	local ModelParameters = {}
 	
@@ -206,6 +220,14 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 		ModelParameters[informationIndex] = {minimumFeatureValue, maximumFeatureValue, unwrappedInformationVector[5]}
 		
+	end
+	
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
 	end
 
 	self.ModelParameters = ModelParameters

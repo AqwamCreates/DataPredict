@@ -30,11 +30,11 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
-local QuantileLinearRegressionModel = {}
+local QuantileRegressionModel = {}
 
-QuantileLinearRegressionModel.__index = QuantileLinearRegressionModel
+QuantileRegressionModel.__index = QuantileRegressionModel
 
-setmetatable(QuantileLinearRegressionModel, GradientMethodBaseModel)
+setmetatable(QuantileRegressionModel, GradientMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -52,7 +52,7 @@ local function quantileLoss(hypothesisValue, labelValue, tau)
 	
 end
 
-function QuantileLinearRegressionModel:calculateCost(hypothesisVector, labelVector)
+function QuantileRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 
@@ -70,7 +70,7 @@ function QuantileLinearRegressionModel:calculateCost(hypothesisVector, labelVect
 
 end
 
-function QuantileLinearRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+function QuantileRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 
 	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
@@ -80,7 +80,7 @@ function QuantileLinearRegressionModel:calculateHypothesisVector(featureMatrix, 
 
 end
 
-function QuantileLinearRegressionModel:calculateLossFunctionDerivativeMatrix(lossGradientMatrix)
+function QuantileRegressionModel:calculateLossFunctionDerivativeMatrix(lossGradientMatrix)
 
 	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
@@ -98,7 +98,7 @@ function QuantileLinearRegressionModel:calculateLossFunctionDerivativeMatrix(los
 
 end
 
-function QuantileLinearRegressionModel:gradientDescent(lossFunctionDerivativeMatrix, numberOfData)
+function QuantileRegressionModel:gradientDescent(lossFunctionDerivativeMatrix, numberOfData)
 
 	if (type(lossFunctionDerivativeMatrix) == "number") then lossFunctionDerivativeMatrix = {{lossFunctionDerivativeMatrix}} end
 	
@@ -134,7 +134,7 @@ function QuantileLinearRegressionModel:gradientDescent(lossFunctionDerivativeMat
 
 end
 
-function QuantileLinearRegressionModel:update(lossGradientMatrix, clearAllMatrices)
+function QuantileRegressionModel:update(lossGradientMatrix, clearAllMatrices)
 
 	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
@@ -154,47 +154,47 @@ function QuantileLinearRegressionModel:update(lossGradientMatrix, clearAllMatric
 
 end
 
-function QuantileLinearRegressionModel.new(parameterDictionary)
+function QuantileRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewQuantileLinearRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
+	local NewQuantileRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewQuantileLinearRegressionModel, QuantileLinearRegressionModel)
+	setmetatable(NewQuantileRegressionModel, QuantileRegressionModel)
 	
-	NewQuantileLinearRegressionModel:setName("QuantileLinearRegression")
+	NewQuantileRegressionModel:setName("QuantileRegression")
 	
 	local quantilesList = parameterDictionary.quantilesList or {}
 	
 	if (#quantilesList == 0) then quantilesList[1] = 0.5 end
 
-	NewQuantileLinearRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	NewQuantileRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 
-	NewQuantileLinearRegressionModel.quantilesList = quantilesList
+	NewQuantileRegressionModel.quantilesList = quantilesList
 
-	NewQuantileLinearRegressionModel.Optimizer = parameterDictionary.Optimizer
+	NewQuantileRegressionModel.Optimizer = parameterDictionary.Optimizer
 
-	NewQuantileLinearRegressionModel.Regularizer = parameterDictionary.Regularizer
+	NewQuantileRegressionModel.Regularizer = parameterDictionary.Regularizer
 
-	return NewQuantileLinearRegressionModel
+	return NewQuantileRegressionModel
 
 end
 
-function QuantileLinearRegressionModel:setOptimizer(Optimizer)
+function QuantileRegressionModel:setOptimizer(Optimizer)
 
 	self.Optimizer = Optimizer
 
 end
 
-function QuantileLinearRegressionModel:setRegularizer(Regularizer)
+function QuantileRegressionModel:setRegularizer(Regularizer)
 
 	self.Regularizer = Regularizer
 
 end
 
-function QuantileLinearRegressionModel:train(featureMatrix, labelVector)
+function QuantileRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
@@ -262,7 +262,7 @@ function QuantileLinearRegressionModel:train(featureMatrix, labelVector)
 
 end
 
-function QuantileLinearRegressionModel:predict(featureMatrix)
+function QuantileRegressionModel:predict(featureMatrix)
 	
 	local ModelParameters = self.ModelParameters
 	
@@ -280,4 +280,4 @@ function QuantileLinearRegressionModel:predict(featureMatrix)
 
 end
 
-return QuantileLinearRegressionModel
+return QuantileRegressionModel

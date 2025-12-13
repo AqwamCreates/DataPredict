@@ -101,7 +101,7 @@ local function merge(unwrappedDistanceVector, labelVector, left, mid, right)
 
 	while (indexOfSubArrayOne <= subArrayOne) and (indexOfSubArrayTwo <= subArrayTwo) do
 
-		if unwrappedLeftDistanceVector[indexOfSubArrayOne] <= unwrappedRightDistanceVector[indexOfSubArrayTwo] then
+		if (unwrappedLeftDistanceVector[indexOfSubArrayOne] <= unwrappedRightDistanceVector[indexOfSubArrayTwo]) then
 
 			unwrappedDistanceVector[indexOfMergedArray] = unwrappedLeftDistanceVector[indexOfSubArrayOne]
 			labelVector[indexOfMergedArray][1] = unwrappedLeftLabelVector[indexOfSubArrayOne]

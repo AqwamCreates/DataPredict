@@ -70,68 +70,28 @@ local function createDistanceMatrix(distanceFunction, featureMatrix, storedFeatu
 
 end
 
-local function deepCopyTable(original, copies)
-
-	copies = copies or {}
-
-	local originalType = type(original)
-
-	local copy
-
-	if (originalType == 'table') then
-
-		if copies[original] then
-
-			copy = copies[original]
-
-		else
-
-			copy = {}
-
-			copies[original] = copy
-
-			for originalKey, originalValue in next, original, nil do
-
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-
-			end
-
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
-
-		end
-
-	else -- number, string, boolean, etc
-
-		copy = original
-
-	end
-
-	return copy
-
-end
-
-local function merge(distanceVector, labelVector, left, mid, right)
+local function merge(unwrappedDistanceVector, labelVector, left, mid, right)
 
 	local subArrayOne = mid - left + 1
 	local subArrayTwo = right - mid
 
-	local leftDistanceVector = {}
-	local rightDistanceVector = {}
+	local unwrappedLeftDistanceVector = {}
+	local unwrappedRightDistanceVector = {}
 
-	local leftLabelVector = {}
-	local rightLabelVector = {}
+	local unwrappedLeftLabelVector = {}
+	local unwrappedRightLabelVector = {}
 
 	for i = 1, subArrayOne do
 
-		leftDistanceVector[i] = distanceVector[1][left + i - 1]
-		leftLabelVector[i] = labelVector[left + i - 1][1]
+		leftDistanceVector[i] = unwrappedDistanceVector[left + i - 1]
+		unwrappedLeftLabelVector[i] = labelVector[left + i - 1][1]
 
 	end
 
 	for j = 1, subArrayTwo do
 
-		rightDistanceVector[j] = distanceVector[1][mid + j]
-		rightLabelVector[j] = labelVector[mid + j][1]
+		unwrappedRightDistanceVector[j] = unwrappedDistanceVector[mid + j]
+		unwrappedRightLabelVector[j] = labelVector[mid + j][1]
 
 	end
 
@@ -141,16 +101,16 @@ local function merge(distanceVector, labelVector, left, mid, right)
 
 	while indexOfSubArrayOne <= subArrayOne and indexOfSubArrayTwo <= subArrayTwo do
 
-		if leftDistanceVector[indexOfSubArrayOne] <= rightDistanceVector[indexOfSubArrayTwo] then
+		if unwrappedLeftDistanceVector[indexOfSubArrayOne] <= unwrappedRightDistanceVector[indexOfSubArrayTwo] then
 
-			distanceVector[1][indexOfMergedArray] = leftDistanceVector[indexOfSubArrayOne]
-			labelVector[indexOfMergedArray][1] = leftLabelVector[indexOfSubArrayOne]
+			unwrappedDistanceVector[indexOfMergedArray] = unwrappedLeftDistanceVector[indexOfSubArrayOne]
+			labelVector[indexOfMergedArray][1] = unwrappedLeftLabelVector[indexOfSubArrayOne]
 			indexOfSubArrayOne = indexOfSubArrayOne + 1
 
 		else
 
-			distanceVector[1][indexOfMergedArray] = rightDistanceVector[indexOfSubArrayTwo]
-			labelVector[indexOfMergedArray][1] = rightLabelVector[indexOfSubArrayTwo]
+			unwrappedDistanceVector[indexOfMergedArray] = unwrappedRightDistanceVector[indexOfSubArrayTwo]
+			labelVector[indexOfMergedArray][1] = unwrappedRightLabelVector[indexOfSubArrayTwo]
 			indexOfSubArrayTwo = indexOfSubArrayTwo + 1
 
 		end
@@ -161,8 +121,8 @@ local function merge(distanceVector, labelVector, left, mid, right)
 
 	while (indexOfSubArrayOne <= subArrayOne) do
 
-		distanceVector[1][indexOfMergedArray] = leftDistanceVector[indexOfSubArrayOne]
-		labelVector[indexOfMergedArray][1] = leftLabelVector[indexOfSubArrayOne]
+		unwrappedDistanceVector[indexOfMergedArray] = unwrappedLeftDistanceVector[indexOfSubArrayOne]
+		labelVector[indexOfMergedArray][1] = unwrappedLeftLabelVector[indexOfSubArrayOne]
 		indexOfSubArrayOne = indexOfSubArrayOne + 1
 		indexOfMergedArray = indexOfMergedArray + 1
 
@@ -170,8 +130,8 @@ local function merge(distanceVector, labelVector, left, mid, right)
 
 	while (indexOfSubArrayTwo <= subArrayTwo) do
 
-		distanceVector[1][indexOfMergedArray] = rightDistanceVector[indexOfSubArrayTwo]
-		labelVector[indexOfMergedArray][1] = rightLabelVector[indexOfSubArrayTwo]
+		unwrappedDistanceVector[indexOfMergedArray] = unwrappedRightDistanceVector[indexOfSubArrayTwo]
+		labelVector[indexOfMergedArray][1] = unwrappedRightLabelVector[indexOfSubArrayTwo]
 		indexOfSubArrayTwo = indexOfSubArrayTwo + 1
 		indexOfMergedArray = indexOfMergedArray + 1
 
@@ -179,19 +139,19 @@ local function merge(distanceVector, labelVector, left, mid, right)
 
 end
 
-local function mergeSort(distanceVector, labelVector, startingValue, endValue)
+local function mergeSort(unwrappedDistanceVector, labelVector, startingValue, endValue)
 
 	if (startingValue >= endValue) then return end
 
 	local mid = math.floor(startingValue + (endValue - startingValue) / 2)
 
-	mergeSort(distanceVector, labelVector, startingValue, mid)
-	mergeSort(distanceVector, labelVector, mid + 1, endValue)
-	merge(distanceVector, labelVector, startingValue, mid, endValue)
+	mergeSort(unwrappedDistanceVector, labelVector, startingValue, mid)
+	mergeSort(unwrappedDistanceVector, labelVector, mid + 1, endValue)
+	merge(unwrappedDistanceVector, labelVector, startingValue, mid, endValue)
 
 end
 
-local function getAverageValue(sortedLabelVectorLowestToHighest, distanceVector, kValue, useWeightedDistance)
+local function getAverageValue(sortedLabelVectorLowestToHighest, unwrappedDistanceVector, kValue, useWeightedDistance)
 
 	local sum = 0
 
@@ -203,7 +163,7 @@ local function getAverageValue(sortedLabelVectorLowestToHighest, distanceVector,
 
 		local label = sortedLabelVectorLowestToHighest[k][1]
 
-		local distance = distanceVector[1][k]
+		local distance = unwrappedDistanceVector[k]
 
 		local weight
 
@@ -331,13 +291,13 @@ function KNearestNeighboursRegressorModel:predict(featureMatrix, returnOriginalO
 
 	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
 
-		local sortedDistanceVector = {deepCopyTable(unwrappedDistanceVector)}
+		local sortedUnwrappedDistanceVectorLowestToHighest = self:deepCopyTable(unwrappedDistanceVector)
 
-		local sortedLabelVectorLowestToHighest = deepCopyTable(storedLabelVector)
+		local sortedLabelVectorLowestToHighest = self:deepCopyTable(storedLabelVector)
 
-		mergeSort(sortedDistanceVector, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
+		mergeSort(sortedUnwrappedDistanceVectorLowestToHighest, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
 
-		local averageValue = getAverageValue(sortedLabelVectorLowestToHighest, sortedDistanceVector, kValue, useWeightedDistance)
+		local averageValue = getAverageValue(sortedLabelVectorLowestToHighest, sortedUnwrappedDistanceVectorLowestToHighest, kValue, useWeightedDistance)
 
 		predictedLabelVector[i] = {averageValue}
 

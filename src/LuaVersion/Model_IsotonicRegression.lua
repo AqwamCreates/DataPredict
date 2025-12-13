@@ -96,6 +96,8 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	
 	local numberOfIterations = 0
 	
+	local totalCost = 0
+	
 	local labelValue
 	
 	for dataIndex, unwrappedSortedDataVector in ipairs(sortedDataMatrix) do
@@ -177,8 +179,10 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 				end)
 
 				if (cost) then 
+					
+					totalCost = totalCost + cost
 
-					table.insert(costArray, cost)
+					table.insert(costArray, totalCost)
 
 					self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 

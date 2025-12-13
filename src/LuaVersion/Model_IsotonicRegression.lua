@@ -348,7 +348,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 			
 			nextI = i + 1
 
-			if (isIncreasing and unwrappedCurrentInformationVector[3] > unwrappedNextInformationVector[3]) or (not isIncreasing and unwrappedCurrentInformationVector[3] < unwrappedNextInformationVector[3]) then
+			if (isIncreasing and (unwrappedCurrentInformationVector[3] > unwrappedNextInformationVector[3])) or ((not isIncreasing) and (unwrappedCurrentInformationVector[3] < unwrappedNextInformationVector[3])) then
 				
 				-- Merge violating intervals.
 				

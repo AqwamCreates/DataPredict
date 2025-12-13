@@ -306,9 +306,9 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 		local isOriginalValueNotAVector
 
-		local actionVector
+		local currentActionVector
 
-		local actionIndex
+		local currentActionIndex
 
 		local currentAction
 
@@ -330,17 +330,17 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 				if (isOriginalValueNotAVector) then currentFeatureVector = {{currentFeatureVector}} end
 
-				actionVector = Model:predict(currentFeatureVector, true)
+				currentActionVector = Model:predict(currentFeatureVector, true)
 
 				Model.EligibilityTrace = EligibilityTrace
 
 				if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
-				actionIndex, selectedActionCountVector, currentEpsilon = self:selectAction(actionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
+				currentActionIndex, selectedActionCountVector, currentEpsilon = self:selectAction(currentActionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
 
-				currentAction = ActionsList[actionIndex]
+				currentAction = ActionsList[currentActionIndex]
 
-				currentActionValue = actionVector[1][actionIndex]
+				currentActionValue = currentActionVector[1][currentActionIndex]
 
 				if (previousFeatureVector) then
 
@@ -372,7 +372,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 				end
 
-				outputArray = {currentAction, currentActionValue, actionVector, selectedActionCountVector, currentEpsilon}
+				outputArray = {currentAction, currentActionValue, currentActionVector, selectedActionCountVector, currentEpsilon}
 				
 				table.insert(outputQueueArray, outputArray)
 

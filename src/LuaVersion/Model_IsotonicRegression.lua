@@ -36,6 +36,8 @@ IsotonicRegressionModel.__index = IsotonicRegressionModel
 
 setmetatable(IsotonicRegressionModel, IterativeMethodBaseModel)
 
+local defaultMaximumNumberOfIterations = math.huge
+
 local defaultIsIncreasing = true
 
 local defaultMode = "Hybrid"
@@ -45,6 +47,8 @@ local defaultOnOutOfBounds = "NotANumber"
 function IsotonicRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
 	local NewIsotonicRegressionModel = IterativeMethodBaseModel.new(parameterDictionary)
 
@@ -76,6 +80,8 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	
 	local mode = self.mode
 	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
+	
 	local sortConditionFunction = (isIncreasing and function(a, b) return a[1] < b[1] end) or function(a, b) return a[1] > b[1] end
 	
 	local sortedDataMatrix = {}
@@ -94,7 +100,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	
 	local numberOfInformation = numberOfData
 	
-	local numberOfIterations = 1
+	local numberOfIterations = 0
 	
 	local totalCost = 0
 	
@@ -135,6 +141,8 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	local cost
 		
 	repeat
+		
+		numberOfIterations = numberOfIterations + 1
 		
 		isViolationFound = false
 		
@@ -204,9 +212,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 			
 		end
 		
-		numberOfIterations = numberOfIterations + 1
-		
-	until (not isViolationFound) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (not isViolationFound) or (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	local informationMatrix = {}
 	
@@ -302,7 +308,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 				-- Check for overlap between intervals.
 				
-				if (newMinimumFeatureValue <= oldMaximumFeatureValue and newMaximumFeatureValue >= oldMinimumFeatureValue) then
+				if ((newMinimumFeatureValue <= oldMaximumFeatureValue) and (newMaximumFeatureValue >= oldMinimumFeatureValue)) then
 					
 					-- Calculate merged interval and average.
 					

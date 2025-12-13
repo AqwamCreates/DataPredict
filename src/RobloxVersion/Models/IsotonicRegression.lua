@@ -280,7 +280,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	
 	local unwrappedNextInformationVector
 	
-	local nextI
+	local nextInformationIndex
 	
 	if (mode == "Hybrid") then
 
@@ -352,13 +352,13 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 		
 		-- intervals that violate the monotonic constraint.
 		
-		for i = 1, (#informationMatrix - 1) do
+		for informationIndex = 1, (#informationMatrix - 1) do
 			
-			unwrappedCurrentInformationVector = informationMatrix[i]
+			unwrappedCurrentInformationVector = informationMatrix[informationIndex]
 			
-			unwrappedNextInformationVector = informationMatrix[i + 1]
+			unwrappedNextInformationVector = informationMatrix[informationIndex + 1]
 			
-			nextI = i + 1
+			nextInformationIndex = informationIndex + 1
 
 			if (isIncreasing and (unwrappedCurrentInformationVector[3] > unwrappedNextInformationVector[3])) or ((not isIncreasing) and (unwrappedCurrentInformationVector[3] < unwrappedNextInformationVector[3])) then
 				
@@ -368,9 +368,9 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 				
 				mergedMaximumFeatureValue = math.max(unwrappedCurrentInformationVector[2], unwrappedNextInformationVector[2])
 
-				unwrappedCurrentMetaDataVector = metaDataMatrix[i]
+				unwrappedCurrentMetaDataVector = metaDataMatrix[informationIndex]
 				
-				unwrappedNextMetaDataVector = metaDataMatrix[nextI]
+				unwrappedNextMetaDataVector = metaDataMatrix[nextInformationIndex]
 
 				totalWeight = unwrappedCurrentMetaDataVector[3] + unwrappedNextMetaDataVector[3]
 				
@@ -394,11 +394,11 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 				
 				unwrappedCurrentMetaDataVector[5] = averageValue
 
-				table.remove(informationMatrix, nextI)
+				table.remove(informationMatrix, nextInformationIndex)
 				
-				table.remove(metaDataMatrix, nextI)
+				table.remove(metaDataMatrix, nextInformationIndex)
 
-				if (i > 1) then i = i - 1 end
+				if (informationIndex > 1) then informationIndex = informationIndex - 1 end
 				
 			end
 			

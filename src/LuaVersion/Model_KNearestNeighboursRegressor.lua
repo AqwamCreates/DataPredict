@@ -32,11 +32,11 @@ local BaseModel = require("Model_BaseModel")
 
 local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
-local KNearestNeighboursClassifierModel = {}
+local KNearestNeighboursRegressorModel = {}
 
-KNearestNeighboursClassifierModel.__index = KNearestNeighboursClassifierModel
+KNearestNeighboursRegressorModel.__index = KNearestNeighboursRegressorModel
 
-setmetatable(KNearestNeighboursClassifierModel, BaseModel)
+setmetatable(KNearestNeighboursRegressorModel, BaseModel)
 
 local defaultKValue = 3
 
@@ -151,9 +151,11 @@ local function mergeSort(unwrappedDistanceVector, labelVector, startingValue, en
 
 end
 
-local function getMajorityClass(sortedLabelVectorLowestToHighest, unwrappedDistanceVector, kValue, useWeightedDistance)
+local function getAverageValue(sortedLabelVectorLowestToHighest, unwrappedDistanceVector, kValue, useWeightedDistance)
 
-	local classWeights = {}
+	local sum = 0
+
+	local totalWeight = 0
 
 	local minimumNumberOfkValue = math.min(#sortedLabelVectorLowestToHighest, kValue)
 
@@ -175,56 +177,46 @@ local function getMajorityClass(sortedLabelVectorLowestToHighest, unwrappedDista
 
 		end
 
-		classWeights[label] = (classWeights[label] or 0) + weight
+		sum = sum + (label * weight)
+		
+		totalWeight = totalWeight + weight
 
 	end
 
-	local majorityClass, maxWeight = nil, -math.huge
+	local averageValue = sum / totalWeight
 
-	for label, weight in pairs(classWeights) do
-
-		if weight > maxWeight then
-
-			majorityClass = label
-
-			maxWeight = weight
-
-		end
-
-	end
-
-	return majorityClass
+	return averageValue
 
 end
 
-function KNearestNeighboursClassifierModel.new(parameterDictionary)
+function KNearestNeighboursRegressorModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewKNearestNeighboursClassifierModel = BaseModel.new(parameterDictionary)
+	local NewKNearestNeighboursRegressorModel = BaseModel.new(parameterDictionary)
 
-	setmetatable(NewKNearestNeighboursClassifierModel, KNearestNeighboursClassifierModel)
+	setmetatable(NewKNearestNeighboursRegressorModel, KNearestNeighboursRegressorModel)
 	
-	NewKNearestNeighboursClassifierModel:setName("KNearestNeighboursClassifier")
+	NewKNearestNeighboursRegressorModel:setName("KNearestNeighboursRegressor")
 
-	NewKNearestNeighboursClassifierModel.kValue = parameterDictionary.kValue or defaultKValue
+	NewKNearestNeighboursRegressorModel.kValue = parameterDictionary.kValue or defaultKValue
 
-	NewKNearestNeighboursClassifierModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
+	NewKNearestNeighboursRegressorModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 
-	NewKNearestNeighboursClassifierModel.useWeightedDistance = NewKNearestNeighboursClassifierModel:getValueOrDefaultValue(parameterDictionary.useWeightedDistance, defaultUseWeightedDistance)
+	NewKNearestNeighboursRegressorModel.useWeightedDistance = NewKNearestNeighboursRegressorModel:getValueOrDefaultValue(parameterDictionary.useWeightedDistance, defaultUseWeightedDistance)
 	
-	NewKNearestNeighboursClassifierModel.maximumNumberOfData = parameterDictionary.maximumNumberOfData or defaultMaximumNumberOfData
+	NewKNearestNeighboursRegressorModel.maximumNumberOfData = parameterDictionary.maximumNumberOfData or defaultMaximumNumberOfData
 	
-	return NewKNearestNeighboursClassifierModel
+	return NewKNearestNeighboursRegressorModel
 
 end
 
-function KNearestNeighboursClassifierModel:train(featureMatrix, labelVector)
-	
+function KNearestNeighboursRegressorModel:train(featureMatrix, labelVector)
+
 	local numberOfData = #featureMatrix
 
 	if (numberOfData ~= #labelVector) then error("The number of data in the feature matrix and the label vector are not the same.") end
-	
+
 	local maximumNumberOfData = self.maximumNumberOfData
 
 	local ModelParameters = self.ModelParameters
@@ -238,31 +230,31 @@ function KNearestNeighboursClassifierModel:train(featureMatrix, labelVector)
 		featureMatrix = AqwamTensorLibrary:concatenate(featureMatrix, storedFeatureMatrix, 1)
 
 		labelVector = AqwamTensorLibrary:concatenate(labelVector, storedLabelVector, 1)
-		
+
 		numberOfData = #featureMatrix
-		
+
 		if (numberOfData > maximumNumberOfData) then
-			
+
 			local newFeatureMatrix = {}
-			
+
 			local newLabelVector = {}
-			
+
 			local dataShiftIndex = (numberOfData - maximumNumberOfData)
-			
+
 			for dataIndex = 1, maximumNumberOfData, 1 do
-				
+
 				newFeatureMatrix[dataIndex] = featureMatrix[dataIndex + dataShiftIndex]
-				
+
 				newLabelVector[dataIndex] = labelVector[dataIndex + dataShiftIndex]
-				
+
 			end
-			
+
 			featureMatrix = newFeatureMatrix
-			
+
 			labelVector = newLabelVector
-			
+
 			numberOfData = maximumNumberOfData
-			
+
 		end
 
 	end
@@ -273,17 +265,11 @@ function KNearestNeighboursClassifierModel:train(featureMatrix, labelVector)
 
 end
 
-function KNearestNeighboursClassifierModel:predict(featureMatrix, returnOriginalOutput)
-
+function KNearestNeighboursRegressorModel:predict(featureMatrix, returnOriginalOutput)
+	
 	local ModelParameters = self.ModelParameters
 
-	if (not ModelParameters) then 
-
-		local unknownValue = (returnOriginalOutput and math.huge) or nil
-
-		return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, unknownValue) 
-
-	end
+	if (not ModelParameters) then return AqwamTensorLibrary:createTensor({#featureMatrix, 1}, math.huge) end
 
 	local storedFeatureMatrix = ModelParameters[1]
 
@@ -302,23 +288,23 @@ function KNearestNeighboursClassifierModel:predict(featureMatrix, returnOriginal
 	local numberOfOtherData = #storedFeatureMatrix
 
 	local predictedLabelVector = {}
-	
+
 	for i, unwrappedDistanceVector in ipairs(distanceMatrix) do
-		
+
 		local sortedUnwrappedDistanceVectorLowestToHighest = self:deepCopyTable(unwrappedDistanceVector)
 
 		local sortedLabelVectorLowestToHighest = self:deepCopyTable(storedLabelVector)
 
 		mergeSort(sortedUnwrappedDistanceVectorLowestToHighest, sortedLabelVectorLowestToHighest, 1, numberOfOtherData)
 
-		local majorityClass = getMajorityClass(sortedLabelVectorLowestToHighest, sortedUnwrappedDistanceVectorLowestToHighest, kValue, useWeightedDistance)
+		local averageValue = getAverageValue(sortedLabelVectorLowestToHighest, sortedUnwrappedDistanceVectorLowestToHighest, kValue, useWeightedDistance)
 
-		predictedLabelVector[i] = {majorityClass}
-		
+		predictedLabelVector[i] = {averageValue}
+
 	end
 
 	return predictedLabelVector
 
 end
 
-return KNearestNeighboursClassifierModel
+return KNearestNeighboursRegressorModel

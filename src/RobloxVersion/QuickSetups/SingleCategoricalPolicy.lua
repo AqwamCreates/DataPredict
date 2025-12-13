@@ -116,7 +116,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 			Model:episodeUpdate(terminalStateValue)
 
-			if episodeUpdateFunction then episodeUpdateFunction(terminalStateValue) end
+			if (episodeUpdateFunction) then episodeUpdateFunction(terminalStateValue) end
 
 		end
 		

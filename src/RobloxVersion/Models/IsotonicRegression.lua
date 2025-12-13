@@ -100,7 +100,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	
 	local numberOfInformation = numberOfData
 	
-	local numberOfIterations = 1
+	local numberOfIterations = 0
 	
 	local totalCost = 0
 	
@@ -141,6 +141,8 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	local cost
 		
 	repeat
+		
+		numberOfIterations = numberOfIterations + 1
 		
 		isViolationFound = false
 		
@@ -210,9 +212,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 			
 		end
 		
-		numberOfIterations = numberOfIterations + 1
-		
-	until (not isViolationFound) or (numberOfIterations == maximumNumberOfIterations) self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (not isViolationFound) or (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	local informationMatrix = {}
 	

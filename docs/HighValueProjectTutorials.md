@@ -36,16 +36,16 @@
 
 ## Links
 
-| System                                                                                           | Properties                                                                                         | Minimal Implementation Time With DataPredict |
-|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|-----------------------------|
-| [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization, leave prediction and leave detection.                              | 30 minutes - 6 hours       |
-| [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                                                          | 2 hours                   |
-| [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Ensures that the players are likely to interact with the enemies.                                    | 30 minutes - 2 hours       |
-| [Team Balancing](HighValueProjectTutorials/TeamBalancingSystems.md)                              | Ensures that teams are balanced based on their combat data.                                        | 30 minutes                 |
-| [AI Player](HighValueProjectTutorials/AIPlayerSystems.md)                                        | Replace players if players aren't enough.                                                          | 30 minutes - 1 hour        |
-| [Smart NPC](HighValueProjectTutorials/SmartNPCSystems.md)                                        | Makes NPCs capable of predicting and planning actions.                                             | 30 minutes                 |
-| [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Handles the separation of unusual players from normal players without changing the game mechanics. | 30 minutes                 |
-| [Targeting](HighValueProjectTutorials/TargetingSystems.md)                                       | Maximizes the likelihood of hitting clusters of players.                                           | 30 minutes - 1 hour        |
-| [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Making sure that the players or items are queued based on their data.                              | To be added soon           |
-| [Placement](HighValueProjectTutorials/PlacementSystems.md)                                       | Finds an empty space to place players or items.                                                    | 30 minutes                 |
-| [Quality Assurance](HighValueProjectTutorials/QualityAssuranceSystems.md) (Incomplete)           | Attempts to break game mechanics to find edge cases and exploits.                                  | To be added soon           |
+| System                                                                                           | Properties                                                            | Minimal Implementation Time With DataPredict |
+|--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|----------------------------|
+| [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization, leave prediction and leave detection. | 30 minutes - 6 hours       |
+| [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                             | 2 hours                    |
+| [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Ensures that the players are likely to interact with the enemies.     | 30 minutes - 2 hours       |
+| [Team Balancing](HighValueProjectTutorials/TeamBalancingSystems.md)                              | Ensures that teams are balanced based on their combat data.           | 30 minutes                 |
+| [AI Player](HighValueProjectTutorials/AIPlayerSystems.md)                                        | Replace players if players aren't enough.                             | 30 minutes - 1 hour        |
+| [Smart NPC](HighValueProjectTutorials/SmartNPCSystems.md)                                        | Makes NPCs capable of predicting and planning actions.                | 30 minutes                 |
+| [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Handles the separation of unusual players from normal players.        | 30 minutes                 |
+| [Targeting](HighValueProjectTutorials/TargetingSystems.md)                                       | Maximizes the likelihood of hitting clusters of players.              | 30 minutes - 1 hour        |
+| [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Making sure that the players or items are queued based on their data. | To be added soon           |
+| [Placement](HighValueProjectTutorials/PlacementSystems.md)                                       | Finds an empty space to place players or items.                       | 30 minutes                 |
+| [Quality Assurance](HighValueProjectTutorials/QualityAssuranceSystems.md) (Incomplete)           | Attempts to break game mechanics to find edge cases and exploits.     | To be added soon           |

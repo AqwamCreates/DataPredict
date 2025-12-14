@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require("Model_BaseModel")
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 local TableModel = {}
 
 TableModel.__index = TableModel
 
-setmetatable(TableModel, BaseModel)
+setmetatable(TableModel, IterativeMethodBaseModel)
 
 local defaultLearningRate = 0.1
 
@@ -59,6 +59,14 @@ local lossFunctionList = {
 		return AqwamTensorLibrary:divide(part2, 2)
 
 	end,
+
+}
+
+local lossFunctionGradientList = {
+
+	["MeanSquaredError"] = function (h, y) return (h - y) end,
+
+	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
 
 }
 
@@ -113,7 +121,7 @@ function TableModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewTableModel = BaseModel.new(parameterDictionary)
+	local NewTableModel = IterativeMethodBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewTableModel, TableModel)
 	
@@ -337,6 +345,8 @@ function TableModel:train(featureVector, labelVector)
 	
 	local lossFunctionToApply = lossFunctionList[self.costFunction]
 	
+	local lossFunctionGradientFunctionToApply = lossFunctionGradientList[self.costFunction]
+	
 	local costArray = {}
 
 	local numberOfIterations = 0
@@ -355,7 +365,7 @@ function TableModel:train(featureVector, labelVector)
 
 		outputMatrix = self:getOutputMatrix(featureVector, true)
 		
-		local lossGradientMatrix = AqwamTensorLibrary:subtract(labelVector, logisticMatrix)
+		local lossGradientMatrix = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, outputMatrix, logisticMatrix)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			

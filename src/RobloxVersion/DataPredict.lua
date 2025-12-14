@@ -58,6 +58,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	PoissonRegression = require(Models.PoissonRegression),
 	
+	NegativeBinomialRegression = require(Models.NegativeBinomialRegression),
+	
 	GammaRegression = require(Models.GammaRegression),
 	
 	IsotonicRegression = require(Models.IsotonicRegression),

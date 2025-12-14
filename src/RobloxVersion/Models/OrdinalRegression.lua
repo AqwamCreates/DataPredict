@@ -215,8 +215,6 @@ function OrdinalRegressionModel.new(parameterDictionary)
 	NewOrdinalRegressionModel:setName("OrdinalRegression")
 	
 	local learningRate = parameterDictionary.learningRate or defaultLearningRate
-	
-	local ClassesList = parameterDictionary.ClassesList or {}
 
 	NewOrdinalRegressionModel.weightLearningRate = parameterDictionary.weightLearningRate or learningRate
 	
@@ -226,7 +224,7 @@ function OrdinalRegressionModel.new(parameterDictionary)
 	
 	NewOrdinalRegressionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
-	NewOrdinalRegressionModel.ClassesList = ClassesList
+	NewOrdinalRegressionModel.ClassesList = parameterDictionary.ClassesList or {}
 
 	NewOrdinalRegressionModel.WeightOptimizer = parameterDictionary.WeightOptimizer
 	

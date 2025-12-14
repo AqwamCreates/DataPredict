@@ -130,321 +130,73 @@ local binaryFunctionGradientList = {
 	
 }
 
-function OrdinalRegressionModel:calculateCost(hypothesisMatrix, labelVector)
-	
-	local epsilon = self.epsilon
-	
-	local ClassesList = self.ClassesList
-	
-	local weightMatrix = self.weightMatrix
+local function createClassesList(labelVector)
 
-	local totalCost = 0
-	
-	local labelValue
-	
-	local classIndex
-	
-	local probability
-	
-	for dataIndex, unwrappedHypothesisVector in ipairs(hypothesisMatrix) do
-		
-		labelValue = labelVector[dataIndex][1]
-		
-		classIndex = table.find(ClassesList, labelValue)
-		
-		probability = unwrappedHypothesisVector[classIndex] or 0
-		
-		-- Negative log-likelihood.
-		
-		totalCost = totalCost - math.log(math.max(probability, epsilon))
-		
+	local classesList = {}
+
+	local value
+
+	for i = 1, #labelVector, 1 do
+
+		value = labelVector[i][1]
+
+		if not table.find(classesList, value) then
+
+			table.insert(classesList, value)
+
+		end
+
 	end
-	
-	local WeightRegularizer = self.WeightRegularizer
 
-	if (WeightRegularizer) then totalCost = totalCost + WeightRegularizer:calculateCost(weightMatrix) end
-
-	local averageCost = totalCost / #labelVector
-
-	return averageCost
+	return classesList
 
 end
 
-function OrdinalRegressionModel:calculateHypothesisMatrix(featureMatrix, saveAllMatrices)
-	
-	local ClassesList = self.ClassesList
-	
-	local binaryFunctionToApply = binaryFunctionList[self.binaryFunction]
-	
-	local numberOfClasses = #ClassesList
-	
-	local numberOfClassesMinusOne = numberOfClasses - 1
-	
-	local ModelParameters = self.ModelParameters
-	
-	local weightMatrix = ModelParameters[1]
-	
-	local thresholdVector = ModelParameters[2]
-	
-	local unwrappedThresholdVector = thresholdVector[1]
-	
-	local zVector = AqwamTensorLibrary:dotProduct(featureMatrix, weightMatrix)
+local function areNumbersOnlyInList(list)
 
-	local cumulativeProbabilityMatrix = {}
-	
-	local unwrappedCumulativeProbabilityVector
-	
-	local adjustedZValue
-	
-	for dataIndex, unwrappedZVector in ipairs(zVector) do
-		
-		unwrappedCumulativeProbabilityVector = {}
-		
-		for k = 1, numberOfClassesMinusOne, 1 do
-			
-			adjustedZValue = unwrappedThresholdVector[k] - unwrappedZVector[1]
-			
-			unwrappedCumulativeProbabilityVector[k] = binaryFunctionToApply(adjustedZValue)
-			
-		end
-		
-		cumulativeProbabilityMatrix[dataIndex] = unwrappedCumulativeProbabilityVector
-		
+	for i, value in ipairs(list) do
+
+		if (typeof(value) ~= "number") then return false end
+
 	end
 
-	-- Convert to category probabilities (K probabilities that sum to 1).
-	
-	local hypothesisMatrix = {}
-	
-	local unwrappedClassProbabilityVector = {}
-	
-	for dataIndex, cumulativeProbability in ipairs(cumulativeProbabilityMatrix) do
-		
-		unwrappedClassProbabilityVector = {}
-		
-		unwrappedClassProbabilityVector[1] = cumulativeProbability[1]  -- P(Y = 1) = P(Y ≤ 1)
-		
-		for k = 2, numberOfClassesMinusOne, 1 do
-			
-			unwrappedClassProbabilityVector[k] = cumulativeProbability[k] - cumulativeProbability[k-1]  -- P(Y = k) = P(Y ≤ k) - P(Y ≤ k-1)
-			
-		end
-		
-		unwrappedClassProbabilityVector[numberOfClasses] = 1 - cumulativeProbability[numberOfClassesMinusOne]  -- P(Y = K) = 1 - P(Y ≤ K-1)
-		
-		hypothesisMatrix[dataIndex] = unwrappedClassProbabilityVector
-		
-	end
-
-	if (saveAllMatrices) then
-		
-		self.featureMatrix = featureMatrix
-		
-		self.zVector = zVector
-		
-		self.hypothesisMatrix = hypothesisMatrix
-		
-		self.cumulativeProbabilityMatrix = cumulativeProbabilityMatrix
-		
-	end
-
-	return hypothesisMatrix
+	return true
 
 end
 
-function OrdinalRegressionModel:calculateLossFunctionDerivativeVector(lossGradientVector)
-	
-	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
+local function checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList)
 
-	local featureMatrix = self.featureMatrix
-	
-	local zVector = self.zVector
-	
-	local cumulativeProbabilityMatrix = self.cumulativeProbabilityMatrix
+	for i = 1, #labelVector, 1 do
 
-	if (not featureMatrix) then error("Feature matrix not found.") end
-	
-	if (not zVector) then error("Z vector not found.") end
-	
-	if (not cumulativeProbabilityMatrix) then error("Cumulative probability matrix not found.") end
-	
-	local ClassesList = self.ClassesList
-	
-	local ModelParameters = self.ModelParameters
-	
-	local weightMatrix = ModelParameters[1]
-	
-	local thresholdVector = ModelParameters[2]
-	
-	local unwrappedThresholdVector = thresholdVector[1]
-	
-	local binaryFunctionGradientToApply = binaryFunctionGradientList[self.binaryFunction]
-	
-	local numberOfClasses = #ClassesList
+		if (not table.find(ClassesList, labelVector[i][1])) then return true end
 
-	local numberOfClassesMinusOne = numberOfClasses - 1
-
-	local lossFunctionDerivativeVector = AqwamTensorLibrary:createTensor({#featureMatrix[1], 1}, 0)
-
-	local unwrappedThresholdGradientVector = {}
-	
-	for k = 1, numberOfClassesMinusOne do unwrappedThresholdGradientVector[k] = 0 end
-	
-	local unwrappedFeatureVector
-	
-	local unwrappedCumulativeProbabilityVector
-	
-	local trueLabelProbability
-	
-	local zValue
-	
-	local labelProbability
-	
-	local cumulativeProbability
-	
-	local probabilityDifference
-	
-	local adjustedZValue
-	
-	local binaryGradientValue
-
-	for i = 1, #lossGradientVector do
-		
-		unwrappedFeatureVector = featureMatrix[i]
-
-		unwrappedCumulativeProbabilityVector = cumulativeProbabilityMatrix[i]
-		
-		trueLabelProbability = lossGradientVector[i][1]  -- Actually the true category label!
-		
-		zValue = zVector[i][1]
-
-		for k = 1, numberOfClassesMinusOne do
-			
-			labelProbability = ((trueLabelProbability <= k) and 1) or 0
-
-			cumulativeProbability = unwrappedCumulativeProbabilityVector[k]
-
-			probabilityDifference = cumulativeProbability - labelProbability
-
-			adjustedZValue = unwrappedThresholdVector[k] - zValue
-			
-			binaryGradientValue = binaryFunctionGradientToApply(cumulativeProbability, adjustedZValue)
-			
-			for f, featureValue in ipairs(unwrappedFeatureVector) do
-				
-				lossFunctionDerivativeVector[f][1] = lossFunctionDerivativeVector[f][1] - (probabilityDifference * binaryGradientValue * featureValue)
-				
-			end
-
-			unwrappedThresholdGradientVector[k] = unwrappedThresholdGradientVector[k] + (probabilityDifference * binaryGradientValue)
-			
-		end
-		
 	end
 
-	if (self.areGradientsSaved) then self.Gradients = {lossFunctionDerivativeVector, {unwrappedThresholdGradientVector}} end
-
-	return lossFunctionDerivativeVector
+	return false
 
 end
 
-function OrdinalRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function NeuralNetworkModel:processLabelVector(labelVector)
 
-	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
-	
-	local weightLearningRate = self.weightLearningRate
+	local ClassesList = self.ClassesList
 
-	local thresholdLearningRate = self.thresholdLearningRate
-	
-	local epsilon = self.epsilon
+	if (#ClassesList == 0) then
 
-	local WeightRegularizer = self.WeightRegularizer
-	
-	local ThresholdRegularizer = self.ThresholdRegularizer
+		ClassesList = createClassesList(labelVector)
 
-	local WeightOptimizer = self.WeightOptimizer
-	
-	local ThresholdOptimizer = self.ThresholdOptimizer
-	
-	local thresholdGradientVector = self.Gradients[2]
-	
-	local ModelParameters = self.ModelParameters
+		local areNumbersOnly = areNumbersOnlyInList(ClassesList)
 
-	local weightMatrix = ModelParameters[1]
+		if (areNumbersOnly) then table.sort(ClassesList, function(a,b) return a < b end) end
 
-	local thresholdVector = ModelParameters[2]
-	
-	if (WeightRegularizer) then
-
-		local weightRegularizationDerivatives = WeightRegularizer:calculate(weightMatrix)
-
-		lossFunctionDerivativeVector = AqwamTensorLibrary:add(lossFunctionDerivativeVector, weightRegularizationDerivatives)
-
-	end
-	
-	if (ThresholdOptimizer) then
-
-		local thresholdRegularizationDerivatives = ThresholdOptimizer:calculate(weightMatrix)
-
-		thresholdGradientVector = AqwamTensorLibrary:add(thresholdGradientVector, thresholdRegularizationDerivatives)
-
-	end
-
-	lossFunctionDerivativeVector = AqwamTensorLibrary:divide(lossFunctionDerivativeVector, numberOfData)
-	
-	thresholdGradientVector = AqwamTensorLibrary:divide(thresholdGradientVector, numberOfData)
-
-	if (WeightOptimizer) then
-
-		lossFunctionDerivativeVector = WeightOptimizer:calculate(weightLearningRate, lossFunctionDerivativeVector, weightMatrix) 
+		self.ClassesList = ClassesList
 
 	else
 
-		lossFunctionDerivativeVector = AqwamTensorLibrary:multiply(weightLearningRate, lossFunctionDerivativeVector)
+		if checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList) then error("A value does not exist in the model\'s classes list is present in the label vector.") end
 
 	end
 	
-	if (ThresholdOptimizer) then
-
-		thresholdGradientVector = ThresholdOptimizer:calculate(thresholdLearningRate, thresholdGradientVector, thresholdVector) 
-
-	else
-
-		thresholdGradientVector = AqwamTensorLibrary:multiply(thresholdLearningRate, thresholdGradientVector)
-
-	end
-	
-	local newWeightMatrix = AqwamTensorLibrary:subtract(weightMatrix, lossFunctionDerivativeVector)
-	
-	local newThresholdVector = AqwamTensorLibrary:subtract(thresholdVector, thresholdGradientVector)
-	
-	newThresholdVector = enforceThresholdOrdering(newThresholdVector, epsilon)
-
-	self.ModelParameters = {newWeightMatrix, newThresholdVector}
-
-end
-
-function OrdinalRegressionModel:update(lossGradientVector, clearAllMatrices)
-
-	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
-
-	local numberOfData = #lossGradientVector
-
-	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
-
-	self:gradientDescent(lossFunctionDerivativeVector, numberOfData)
-	
-	if (clearAllMatrices) then
-		
-		self.featureMatrix = nil
-		
-		self.zVector = nil
-		
-		self.hypothesisMatrix = nil
-		
-		self.cumulativeProbabilityMatrix = nil
-		
-	end
+	return ClassesList
 
 end
 
@@ -510,6 +262,324 @@ function OrdinalRegressionModel:setThresholdRegularizer(ThresholdRegularizer)
 
 end
 
+function OrdinalRegressionModel:calculateCost(hypothesisMatrix, labelVector)
+
+	local epsilon = self.epsilon
+
+	local ClassesList = self.ClassesList
+
+	local weightMatrix = self.weightMatrix
+
+	local totalCost = 0
+
+	local labelValue
+
+	local classIndex
+
+	local probability
+
+	for dataIndex, unwrappedHypothesisVector in ipairs(hypothesisMatrix) do
+
+		labelValue = labelVector[dataIndex][1]
+
+		classIndex = table.find(ClassesList, labelValue)
+
+		probability = unwrappedHypothesisVector[classIndex] or 0
+
+		-- Negative log-likelihood.
+
+		totalCost = totalCost - math.log(math.max(probability, epsilon))
+
+	end
+
+	local WeightRegularizer = self.WeightRegularizer
+
+	if (WeightRegularizer) then totalCost = totalCost + WeightRegularizer:calculateCost(weightMatrix) end
+
+	local averageCost = totalCost / #labelVector
+
+	return averageCost
+
+end
+
+function OrdinalRegressionModel:calculateHypothesisMatrix(featureMatrix, saveAllMatrices)
+
+	local ClassesList = self.ClassesList
+
+	local binaryFunctionToApply = binaryFunctionList[self.binaryFunction]
+
+	local numberOfClasses = #ClassesList
+
+	local numberOfClassesMinusOne = numberOfClasses - 1
+
+	local ModelParameters = self.ModelParameters
+
+	local weightMatrix = ModelParameters[1]
+
+	local thresholdVector = ModelParameters[2]
+
+	local unwrappedThresholdVector = thresholdVector[1]
+
+	local zVector = AqwamTensorLibrary:dotProduct(featureMatrix, weightMatrix)
+
+	local cumulativeProbabilityMatrix = {}
+
+	local unwrappedCumulativeProbabilityVector
+
+	local adjustedZValue
+
+	for dataIndex, unwrappedZVector in ipairs(zVector) do
+
+		unwrappedCumulativeProbabilityVector = {}
+
+		for k = 1, numberOfClassesMinusOne, 1 do
+
+			adjustedZValue = unwrappedThresholdVector[k] - unwrappedZVector[1]
+
+			unwrappedCumulativeProbabilityVector[k] = binaryFunctionToApply(adjustedZValue)
+
+		end
+
+		cumulativeProbabilityMatrix[dataIndex] = unwrappedCumulativeProbabilityVector
+
+	end
+
+	-- Convert to category probabilities (K probabilities that sum to 1).
+
+	local hypothesisMatrix = {}
+
+	local unwrappedClassProbabilityVector = {}
+
+	for dataIndex, cumulativeProbability in ipairs(cumulativeProbabilityMatrix) do
+
+		unwrappedClassProbabilityVector = {}
+
+		unwrappedClassProbabilityVector[1] = cumulativeProbability[1]  -- P(Y = 1) = P(Y ≤ 1)
+
+		for k = 2, numberOfClassesMinusOne, 1 do
+
+			unwrappedClassProbabilityVector[k] = cumulativeProbability[k] - cumulativeProbability[k-1]  -- P(Y = k) = P(Y ≤ k) - P(Y ≤ k-1)
+
+		end
+
+		unwrappedClassProbabilityVector[numberOfClasses] = 1 - cumulativeProbability[numberOfClassesMinusOne]  -- P(Y = K) = 1 - P(Y ≤ K-1)
+
+		hypothesisMatrix[dataIndex] = unwrappedClassProbabilityVector
+
+	end
+
+	if (saveAllMatrices) then
+
+		self.featureMatrix = featureMatrix
+
+		self.zVector = zVector
+
+		self.hypothesisMatrix = hypothesisMatrix
+
+		self.cumulativeProbabilityMatrix = cumulativeProbabilityMatrix
+
+	end
+
+	return hypothesisMatrix
+
+end
+
+function OrdinalRegressionModel:calculateLossFunctionDerivativeVector(lossGradientVector)
+
+	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
+
+	local featureMatrix = self.featureMatrix
+
+	local zVector = self.zVector
+
+	local cumulativeProbabilityMatrix = self.cumulativeProbabilityMatrix
+
+	if (not featureMatrix) then error("Feature matrix not found.") end
+
+	if (not zVector) then error("Z vector not found.") end
+
+	if (not cumulativeProbabilityMatrix) then error("Cumulative probability matrix not found.") end
+
+	local ClassesList = self.ClassesList
+
+	local ModelParameters = self.ModelParameters
+
+	local weightMatrix = ModelParameters[1]
+
+	local thresholdVector = ModelParameters[2]
+
+	local unwrappedThresholdVector = thresholdVector[1]
+
+	local binaryFunctionGradientToApply = binaryFunctionGradientList[self.binaryFunction]
+
+	local numberOfClasses = #ClassesList
+
+	local numberOfClassesMinusOne = numberOfClasses - 1
+
+	local lossFunctionDerivativeVector = AqwamTensorLibrary:createTensor({#featureMatrix[1], 1}, 0)
+
+	local unwrappedThresholdGradientVector = {}
+
+	for k = 1, numberOfClassesMinusOne do unwrappedThresholdGradientVector[k] = 0 end
+
+	local unwrappedFeatureVector
+
+	local unwrappedCumulativeProbabilityVector
+
+	local trueLabelProbability
+
+	local zValue
+
+	local labelProbability
+
+	local cumulativeProbability
+
+	local probabilityDifference
+
+	local adjustedZValue
+
+	local binaryGradientValue
+
+	for i = 1, #lossGradientVector do
+
+		unwrappedFeatureVector = featureMatrix[i]
+
+		unwrappedCumulativeProbabilityVector = cumulativeProbabilityMatrix[i]
+
+		trueLabelProbability = lossGradientVector[i][1]  -- Actually the true category label!
+
+		zValue = zVector[i][1]
+
+		for k = 1, numberOfClassesMinusOne do
+
+			labelProbability = ((trueLabelProbability <= k) and 1) or 0
+
+			cumulativeProbability = unwrappedCumulativeProbabilityVector[k]
+
+			probabilityDifference = cumulativeProbability - labelProbability
+
+			adjustedZValue = unwrappedThresholdVector[k] - zValue
+
+			binaryGradientValue = binaryFunctionGradientToApply(cumulativeProbability, adjustedZValue)
+
+			for f, featureValue in ipairs(unwrappedFeatureVector) do
+
+				lossFunctionDerivativeVector[f][1] = lossFunctionDerivativeVector[f][1] - (probabilityDifference * binaryGradientValue * featureValue)
+
+			end
+
+			unwrappedThresholdGradientVector[k] = unwrappedThresholdGradientVector[k] + (probabilityDifference * binaryGradientValue)
+
+		end
+
+	end
+
+	if (self.areGradientsSaved) then self.Gradients = {lossFunctionDerivativeVector, {unwrappedThresholdGradientVector}} end
+
+	return lossFunctionDerivativeVector
+
+end
+
+function OrdinalRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+
+	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
+
+	local weightLearningRate = self.weightLearningRate
+
+	local thresholdLearningRate = self.thresholdLearningRate
+
+	local epsilon = self.epsilon
+
+	local WeightRegularizer = self.WeightRegularizer
+
+	local ThresholdRegularizer = self.ThresholdRegularizer
+
+	local WeightOptimizer = self.WeightOptimizer
+
+	local ThresholdOptimizer = self.ThresholdOptimizer
+
+	local thresholdGradientVector = self.Gradients[2]
+
+	local ModelParameters = self.ModelParameters
+
+	local weightMatrix = ModelParameters[1]
+
+	local thresholdVector = ModelParameters[2]
+
+	if (WeightRegularizer) then
+
+		local weightRegularizationDerivatives = WeightRegularizer:calculate(weightMatrix)
+
+		lossFunctionDerivativeVector = AqwamTensorLibrary:add(lossFunctionDerivativeVector, weightRegularizationDerivatives)
+
+	end
+
+	if (ThresholdOptimizer) then
+
+		local thresholdRegularizationDerivatives = ThresholdOptimizer:calculate(weightMatrix)
+
+		thresholdGradientVector = AqwamTensorLibrary:add(thresholdGradientVector, thresholdRegularizationDerivatives)
+
+	end
+
+	lossFunctionDerivativeVector = AqwamTensorLibrary:divide(lossFunctionDerivativeVector, numberOfData)
+
+	thresholdGradientVector = AqwamTensorLibrary:divide(thresholdGradientVector, numberOfData)
+
+	if (WeightOptimizer) then
+
+		lossFunctionDerivativeVector = WeightOptimizer:calculate(weightLearningRate, lossFunctionDerivativeVector, weightMatrix) 
+
+	else
+
+		lossFunctionDerivativeVector = AqwamTensorLibrary:multiply(weightLearningRate, lossFunctionDerivativeVector)
+
+	end
+
+	if (ThresholdOptimizer) then
+
+		thresholdGradientVector = ThresholdOptimizer:calculate(thresholdLearningRate, thresholdGradientVector, thresholdVector) 
+
+	else
+
+		thresholdGradientVector = AqwamTensorLibrary:multiply(thresholdLearningRate, thresholdGradientVector)
+
+	end
+
+	local newWeightMatrix = AqwamTensorLibrary:subtract(weightMatrix, lossFunctionDerivativeVector)
+
+	local newThresholdVector = AqwamTensorLibrary:subtract(thresholdVector, thresholdGradientVector)
+
+	newThresholdVector = enforceThresholdOrdering(newThresholdVector, epsilon)
+
+	self.ModelParameters = {newWeightMatrix, newThresholdVector}
+
+end
+
+function OrdinalRegressionModel:update(lossGradientVector, clearAllMatrices)
+
+	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
+
+	local numberOfData = #lossGradientVector
+
+	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
+
+	self:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+
+	if (clearAllMatrices) then
+
+		self.featureMatrix = nil
+
+		self.zVector = nil
+
+		self.hypothesisMatrix = nil
+
+		self.cumulativeProbabilityMatrix = nil
+
+	end
+
+end
+
 function OrdinalRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
@@ -520,9 +590,9 @@ function OrdinalRegressionModel:train(featureMatrix, labelVector)
 	
 	local thresholdVector = ModelParameters[2]
 	
-	local ClassesList = self.ClassesList
-	
 	local numberOfFeatures = #featureMatrix[1]
+	
+	local ClassesList = self:processLabelVector(labelVector)
 	
 	if (not weightMatrix) then
 
@@ -534,7 +604,7 @@ function OrdinalRegressionModel:train(featureMatrix, labelVector)
 
 	end
 
-	if (not thresholdVector) then thresholdVector[2] = initializeThresholdVector(#ClassesList) end
+	if (not thresholdVector) then ModelParameters[1] = initializeThresholdVector(#ClassesList) end
 	
 	self.ModelParameters = ModelParameters
 	
@@ -614,7 +684,7 @@ function OrdinalRegressionModel:predict(featureMatrix, returnOriginalOutput)
 	
 	if (not thresholdVector) then
 
-		thresholdVector[2] = initializeThresholdVector(#ClassesList)
+		ModelParameters[2] = initializeThresholdVector(#ClassesList)
 
 	end
 	

@@ -176,7 +176,7 @@ local function checkIfAnyLabelVectorIsNotRecognized(labelVector, ClassesList)
 
 end
 
-function NeuralNetworkModel:processLabelVector(labelVector)
+function OrdinalRegressionModel:processLabelVector(labelVector)
 
 	local ClassesList = self.ClassesList
 
@@ -267,8 +267,6 @@ function OrdinalRegressionModel:calculateCost(hypothesisMatrix, labelVector)
 	local epsilon = self.epsilon
 
 	local ClassesList = self.ClassesList
-
-	local weightMatrix = self.weightMatrix
 
 	local totalCost = 0
 

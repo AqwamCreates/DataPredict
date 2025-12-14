@@ -6,7 +6,7 @@
 
 | Model Type                                                        | Description                                     | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
-| [Regression](#regression)                                         | Continuous Value Prediction                     | 12    |
+| [Regression](#regression)                                         | Continuous Value Prediction                     | 13    |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 14    |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 26    |
@@ -59,6 +59,7 @@
 | [LinearRegression](Models/LinearRegression.md)                                             | LR              | 🔰 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
 | [QuantileRegression](Models/QuantileRegression.md)                                         | None            | 🟢 🟡        | Case-Based Time-To-Leave Prediction And In-Game Currency Price Generation                                |
 | [PoissonRegression](Models/PoissonRegression.md)                                           | None            | 🟢 🟡 ⚠️     | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
+| [NegativeBinomialRegression](Models/NegativeBinomialRegression.md)                         | None            | 🟢 🟡 ⚠️     | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
 | [GammaRegression](Models/GammaRegression.md)                                               | None            | ❗ 🟢 🟡 ⚠️  | Player Session Duration Prediction And Content Engagement Time Prediction                                |
 | [IsotonicRegression](Models/IsotonicRegression.md)                                         | None            | ⚡ 🟢 🟡    | 1-Dimensional Player Session Duration Prediction                                                         |
 | [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | ⚡ 🟢        | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                    |

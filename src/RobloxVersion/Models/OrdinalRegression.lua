@@ -204,6 +204,8 @@ function OrdinalRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
+	parameterDictionary.areGradientsSaved = true -- We need to coerce this because we're relying this to store our threshold vector gradient.
+	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
 	local NewOrdinalRegressionModel = GradientMethodBaseModel.new(parameterDictionary)

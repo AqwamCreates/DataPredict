@@ -275,6 +275,8 @@ function GammaRegressionModel:train(featureMatrix, labelVector)
 	end
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
+	
+	local shape = self.shape
 
 	local Optimizer = self.Optimizer
 
@@ -309,6 +311,8 @@ function GammaRegressionModel:train(featureMatrix, labelVector)
 		local lossGradientVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
 		
 		lossGradientVector = AqwamTensorLibrary:divide(lossGradientVector, hypothesisVector)
+		
+		lossGradientVector = AqwamTensorLibrary:multiply(lossGradientVector, shape)
 
 		self:update(lossGradientVector, true)
 

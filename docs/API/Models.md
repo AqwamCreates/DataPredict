@@ -7,7 +7,7 @@
 | Model Type                                                        | Description                                     | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
 | [Regression](#regression)                                         | Continuous Value Prediction                     | 13    |
-| [Classification](#classification)                                 | Feature-Class Prediction                        | 14    |
+| [Classification](#classification)                                 | Feature-Class Prediction                        | 15    |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 26    |
 | [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Tables          | 17    |
@@ -16,7 +16,7 @@
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 2     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 95    |
+| Total                                                             |                                                 | 96    |
 
 ### Legend
 
@@ -42,7 +42,7 @@
 
   * Uses reverse-mode automatic differentiation and lazy differentiation evaluation for DataPredict™ Neural (static graph) and DataPredict™ Axon (dynamic graph).
 
-* Currently, DataPredict™ has ~90% (85 out of 95) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (86 out of 96) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -96,6 +96,7 @@
 | [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)*                                | BNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                                         |
 | [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)*                              | CNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Imbalanced Class Prediction (e.g. Rare Choices, Rare Paths)                                                      |
 | [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md)*                            | CNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)                               |
+| [OrdinalRegression](Models/OrdinalRegression.md)                                     | Ordinal Classification        | 🟢 🟡            | Use Case To Add                           |
 
 \* "Naive Bayes" models assumes that the features are independent to each other, which is almost certainly not true in game-related settings. Additionally, these models are better as generative models, despite being commonly taught as a classifier.
 

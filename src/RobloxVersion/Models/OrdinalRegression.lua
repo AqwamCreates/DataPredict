@@ -475,8 +475,10 @@ function OrdinalRegressionModel:calculateLossFunctionDerivativeVector(lossGradie
 		end
 
 	end
+	
+	local thresholdGradientVector = {unwrappedThresholdGradientVector}
 
-	if (self.areGradientsSaved) then self.Gradients = {lossFunctionDerivativeVector, {unwrappedThresholdGradientVector}} end
+	if (self.areGradientsSaved) then self.Gradients = {lossFunctionDerivativeVector, thresholdGradientVector} end
 
 	return lossFunctionDerivativeVector
 

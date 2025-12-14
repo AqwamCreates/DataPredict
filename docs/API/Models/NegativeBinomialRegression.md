@@ -24,7 +24,7 @@ NegativeBinomialRegression.new(maximumNumberOfIterations: integer, learningRate:
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
-* dispersion: Controls the model's variance, allowing it to model count data with more variability. 
+* dispersion: Controls the model's variance, allowing it to model count data with more variability. [Default: 0.5]
 
     * At high values, it makes the negative binomial distribution closer to Poisson.
     

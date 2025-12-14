@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 local NegativeBinomialRegressionModel = {}
 
@@ -44,7 +44,7 @@ local defaultDispersion = 0.5 -- alpha
 
 local defaultEpsilon = 1e-14
 
--- Approximate Gamma function (Stirling's approximation).
+-- Approximate gamma function (Stirling's approximation).
 
 local function approximateGammaFunction(x)
 	

@@ -96,7 +96,7 @@
 | [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)*                                | BNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                                         |
 | [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)*                              | CNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Imbalanced Class Prediction (e.g. Rare Choices, Rare Paths)                                                      |
 | [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md)*                            | CNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)                               |
-| [OrdinalRegression](Models/OrdinalRegression.md)                                     | Ordinal Classification        | 🟢 🟡            | Use Case To Add                           |
+| [OrdinalRegression](Models/OrdinalRegression.md)                                     | Ordinal Classification        | 🟢 🟡 ⚠️        | Skill Tier Prediction, Dynamic Difficulty Adjustment, Ranking Systems                                         |
 
 \* "Naive Bayes" models assumes that the features are independent to each other, which is almost certainly not true in game-related settings. Additionally, these models are better as generative models, despite being commonly taught as a classifier.
 

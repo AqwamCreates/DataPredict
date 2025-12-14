@@ -16,9 +16,10 @@ The algorithms under the same group can have its model parameters swapped withou
 ### Gradient-Based
 
 * LinearRegression
-* PoissonRegression
-* GammaRegression
 * QuantileRegression
+* PoissonRegression
+* NegativeBinomialRegression
+* GammaRegression
 * SupportVectorRegressionGradientVariant
 * PassiveAggressiveRegressor
 * BinaryRegression

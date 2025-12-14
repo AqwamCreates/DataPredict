@@ -351,6 +351,8 @@ function OrdinalRegressionModel:calculateHypothesisMatrix(featureMatrix, saveAll
 	local hypothesisMatrix = {}
 
 	local unwrappedClassProbabilityVector = {}
+	
+	local probabilityDifference
 
 	for dataIndex, cumulativeProbability in ipairs(cumulativeProbabilityMatrix) do
 
@@ -359,8 +361,10 @@ function OrdinalRegressionModel:calculateHypothesisMatrix(featureMatrix, saveAll
 		unwrappedClassProbabilityVector[1] = cumulativeProbability[1]  -- P(Y = 1) = P(Y ≤ 1)
 
 		for k = 2, numberOfClassesMinusOne, 1 do
+			
+			probabilityDifference = cumulativeProbability[k] - cumulativeProbability[k-1] -- P(Y = k) = P(Y ≤ k) - P(Y ≤ k-1)
 
-			unwrappedClassProbabilityVector[k] = cumulativeProbability[k] - cumulativeProbability[k-1]  -- P(Y = k) = P(Y ≤ k) - P(Y ≤ k-1)
+			unwrappedClassProbabilityVector[k] = math.clamp(probabilityDifference, 0, 1)
 
 		end
 

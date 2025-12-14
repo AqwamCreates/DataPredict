@@ -66,7 +66,7 @@ local function enforceThresholdOrdering(thresholdVector, epsilon)
 	
 	local thresholdValueDifference
 	
-	for k = 2, #unwrappedThresholdVector do
+	for k = 2, #unwrappedThresholdVector, 1 do
 		
 		currentThresholdValue = unwrappedThresholdVector[k]
 		
@@ -76,7 +76,7 @@ local function enforceThresholdOrdering(thresholdVector, epsilon)
 			
 			thresholdValueDifference = math.abs(previousThresholdValue - currentThresholdValue)
 			
-			unwrappedThresholdVector[k] = previousThresholdValue + math.log(math.max(thresholdValueDifference, epsilon)) -- Small gap
+			unwrappedThresholdVector[k] = previousThresholdValue + math.log(math.max(thresholdValueDifference, epsilon))
 			
 		end
 		

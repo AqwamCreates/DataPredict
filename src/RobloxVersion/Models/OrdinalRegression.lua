@@ -267,6 +267,8 @@ function OrdinalRegressionModel:calculateCost(hypothesisMatrix, labelVector)
 	local epsilon = self.epsilon
 
 	local ClassesList = self.ClassesList
+	
+	local weightMatrix = self.ModelParameters[1]
 
 	local totalCost = 0
 

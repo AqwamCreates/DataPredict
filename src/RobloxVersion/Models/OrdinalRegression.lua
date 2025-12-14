@@ -56,6 +56,36 @@ local function initializeThresholdVector(numberOfClasses)
 	
 end
 
+local function enforceThresholdOrdering(thresholdVector, epsilon)
+	
+	local unwrappedThresholdVector = thresholdVector[1]
+	
+	local currentThresholdValue
+	
+	local previousThresholdValue
+	
+	local thresholdValueDifference
+	
+	for k = 2, #unwrappedThresholdVector do
+		
+		currentThresholdValue = unwrappedThresholdVector[k]
+		
+		previousThresholdValue = unwrappedThresholdVector[k - 1]
+		
+		if (unwrappedThresholdVector[k] <= previousThresholdValue) then
+			
+			thresholdValueDifference = math.abs(previousThresholdValue - currentThresholdValue)
+			
+			unwrappedThresholdVector[k] = previousThresholdValue + math.log(math.max(thresholdValueDifference, epsilon)) -- Small gap
+			
+		end
+		
+	end
+	
+	return {unwrappedThresholdVector}
+	
+end
+
 local function calculateProbabilityDensityFunctionValue(z)
 
 	return (math.exp(-0.5 * math.pow(z, 2)) / math.sqrt(2 * math.pi))
@@ -321,6 +351,12 @@ end
 function OrdinalRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
+	
+	local weightLearningRate = self.weightLearningRate
+
+	local thresholdLearningRate = self.thresholdLearningRate
+	
+	local epsilon = self.epsilon
 
 	local WeightRegularizer = self.WeightRegularizer
 	
@@ -329,10 +365,6 @@ function OrdinalRegressionModel:gradientDescent(lossFunctionDerivativeVector, nu
 	local WeightOptimizer = self.WeightOptimizer
 	
 	local ThresholdOptimizer = self.ThresholdOptimizer
-	
-	local weightLearningRate = self.weightLearningRate
-	
-	local thresholdLearningRate = self.thresholdLearningRate
 	
 	local thresholdGradientVector = self.Gradients[2]
 	
@@ -385,6 +417,8 @@ function OrdinalRegressionModel:gradientDescent(lossFunctionDerivativeVector, nu
 	local newWeightMatrix = AqwamTensorLibrary:subtract(weightMatrix, lossFunctionDerivativeVector)
 	
 	local newThresholdVector = AqwamTensorLibrary:subtract(thresholdVector, thresholdGradientVector)
+	
+	newThresholdVector = enforceThresholdOrdering(newThresholdVector, epsilon)
 
 	self.ModelParameters = {newWeightMatrix, newThresholdVector}
 

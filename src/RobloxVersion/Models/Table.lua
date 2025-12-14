@@ -62,6 +62,14 @@ local lossFunctionList = {
 
 }
 
+local lossFunctionGradientList = {
+
+	["MeanSquaredError"] = function (h, y) return (h - y) end,
+
+	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
+
+}
+
 local function areNumbersOnlyInList(list)
 
 	for i, value in ipairs(list) do
@@ -337,6 +345,8 @@ function TableModel:train(featureVector, labelVector)
 	
 	local lossFunctionToApply = lossFunctionList[self.costFunction]
 	
+	local lossFunctionGradientFunctionToApply = lossFunctionGradientList[self.costFunction]
+	
 	local costArray = {}
 
 	local numberOfIterations = 0
@@ -355,7 +365,7 @@ function TableModel:train(featureVector, labelVector)
 
 		outputMatrix = self:getOutputMatrix(featureVector, true)
 		
-		local lossGradientMatrix = AqwamTensorLibrary:subtract(labelVector, logisticMatrix)
+		local lossGradientMatrix = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, outputMatrix, logisticMatrix)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 			

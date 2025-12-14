@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local BaseModel = require(script.Parent.BaseModel)
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 local TableModel = {}
 
 TableModel.__index = TableModel
 
-setmetatable(TableModel, BaseModel)
+setmetatable(TableModel, IterativeMethodBaseModel)
 
 local defaultLearningRate = 0.1
 
@@ -121,7 +121,7 @@ function TableModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewTableModel = BaseModel.new(parameterDictionary)
+	local NewTableModel = IterativeMethodBaseModel.new(parameterDictionary)
 	
 	setmetatable(NewTableModel, TableModel)
 	

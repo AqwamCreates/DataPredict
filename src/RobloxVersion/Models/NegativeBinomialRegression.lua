@@ -40,7 +40,7 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.5
 
-local defaultDispersion = 1 -- alpha
+local defaultDispersion = 0.5 -- alpha
 
 local defaultEpsilon = 1e-14
 

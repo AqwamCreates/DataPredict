@@ -106,6 +106,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	CategoricalNaiveBayes = require(Models.CategoricalNaiveBayes),
 	
+	OrdinalRegression = require(Models.OrdinalRegression),
+	
 	KMeans = require(Models.KMeans),
 	
 	FuzzyCMeans = require(Models.FuzzyCMeans),

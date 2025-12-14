@@ -602,7 +602,7 @@ function OrdinalRegressionModel:train(featureMatrix, labelVector)
 
 	end
 
-	if (not thresholdVector) then ModelParameters[1] = initializeThresholdVector(#ClassesList) end
+	if (not thresholdVector) then ModelParameters[2] = initializeThresholdVector(#ClassesList) end
 	
 	self.ModelParameters = ModelParameters
 	

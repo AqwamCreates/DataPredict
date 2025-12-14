@@ -28,7 +28,7 @@ NegativeBinomialRegression.new(maximumNumberOfIterations: integer, learningRate:
 
     * At high values, it makes the negative binomial distribution closer to Poisson.
     
-    * A smaller dispersion value increases variance, capturing extra spread in data common in biology, ecology, or health.
+    * A smaller dispersion increases variance, capturing extra spread in data common in biology, ecology, or health.
 
 #### Returns:
 

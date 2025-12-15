@@ -36,7 +36,13 @@ else
     
 end
 
--- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
+--[[
+
+    For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. 
+
+    Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
+
+--]]
 
 local ChurnDetectionModel = DataPredict.Models.BinaryRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3, binaryFunction = binaryFunction})
 

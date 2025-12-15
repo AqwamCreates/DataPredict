@@ -1,4 +1,4 @@
-# Creating Likely-To-Leave Prediction Model
+# Creating Churn Red Zone Detection Model
 
 Hello guys! Today, I will be showing you on how to create a retention-based model that could detect if player is in the "red zone" before it leaves.
 
@@ -18,7 +18,7 @@ local DataPredict = require(DataPredict)
 
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local ChurnPredictionModel = DataPredict.Models.NegativeBinomialRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local ChurnRedZoneDetectionModel = DataPredict.Models.NegativeBinomialRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```
 
@@ -51,7 +51,7 @@ local recordedTime = os.time()
 
 ```
 
-If you want to add more data instead of relying on the initial data point, you actually can and this will improve the prediction accuracy. But keep in mind that this means you have to store more data. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
+Note that you must store a full set of data points for this to work. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
 
 ```lua
 
@@ -98,9 +98,9 @@ However, this require setting the model's parameters to these settings temporari
 
 ```lua
 
-ChurnPredictionModel.maximumNumberOfIterations = 100
+ChurnRedZoneDetectionModel.maximumNumberOfIterations = 100
 
-ChurnPredictionModel.learningRate = 0.3
+ChurnRedZoneDetectionModel.learningRate = 0.3
 
 ```
 
@@ -110,17 +110,29 @@ By the time the player leaves, it is time for us to train the model. But first, 
 
 ```lua
 
-local timeToLeave = os.time() - recordedTime
+local playerLeftAtTime = os.time()
 
+local numberOfRecordedTime = #recordedTimeArray
 
+local redZoneRatio = 0.3
 
-local wrappedTimeToLeave = {
+local numberOfRecordedTimeToMarkAsRedZone = numberOfRecordedTime * redZoneRatio
 
-    {timeToLeave}
+local startingIndexForRedZone = numberOfRecordedTime - numberOfRecordedTimeToMarkAsRedZone
 
-} -- Need to wrap this as our models can only accept matrices.
+local isInRedZoneVector = {}
 
-local costArray = ChurnPredictionModel:train(playerDataVector, wrappedTimeToLeave)
+local isInRedZone
+
+for index, recordedTime in ipair(recordedTimeArray) do
+
+    isInRedZone = (index >= startingIndexForRedZone)
+
+    isInRedZoneVector[index] = {(isInRedZone and 1) or 0}
+
+end
+
+local costArray = ChurnRedZoneDetectionModel:train(playerDataMatrix, isInRedZoneVector)
 
 ```
 
@@ -130,7 +142,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = ChurnPredictionModel:getModelParameters()
+local ModelParameters = ChurnRedZoneDetectionModel:getModelParameters()
 
 ```
 
@@ -160,7 +172,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-ChurnPredictionModel:setModelParameters(ModelParameters)
+ChurnRedZoneDetectionModel:setModelParameters(ModelParameters)
 
 ```
 
@@ -180,7 +192,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
-local predictedLabelVector = ChurnPredictionModel:predict(currentPlayerDataVector)
+local predictedLabelVector = ChurnRedZoneDetectionModel:predict(currentPlayerDataVector)
 
 ```
 

@@ -38,33 +38,19 @@ setmetatable(TableModel, IterativeMethodBaseModel)
 
 local defaultLearningRate = 0.1
 
-local defautCostFunction = "L2"
+local defaultCostFunction = "MeanSquaredError"
 
-local lossFunctionList = {
+local lossFunctionList ={
 
-	["L1"] = function (x1, x2)
+	["MeanSquaredError"] = function (h, y) return ((h - y)^2) end,
 
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		return AqwamTensorLibrary:applyFunction(math.abs, part1) 
-
-	end,
-
-	["L2"] = function (x1, x2)
-
-		local part1 = AqwamTensorLibrary:subtract(x1, x2)
-
-		local part2 = AqwamTensorLibrary:power(part1, 2) 
-
-		return AqwamTensorLibrary:divide(part2, 2)
-
-	end,
+	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
 
 }
 
 local lossFunctionGradientList = {
 
-	["MeanSquaredError"] = function (h, y) return (h - y) end,
+	["MeanSquaredError"] = function (h, y) return (2 * (h - y)) end,
 
 	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
 
@@ -125,13 +111,11 @@ function TableModel.new(parameterDictionary)
 	
 	setmetatable(NewTableModel, TableModel)
 	
-	NewTableModel:setName("TableModel")
-
-	NewTableModel:setClassName("TableModel")
+	NewTableModel:setName("Table")
 	
 	NewTableModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
-	NewTableModel.costFunction = parameterDictionary.costFunction or defautCostFunction
+	NewTableModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
 	
 	NewTableModel.Optimizer = parameterDictionary.Optimizer
 	

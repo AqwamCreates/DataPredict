@@ -232,7 +232,7 @@ We can do this for every 10 seconds and use this to extend the players' playtime
 
 ```lua
 
-if (isPlayerInRedZone >= 0.7) then -- Can change this value to adjust sensitivity.
+if (isPlayerInRedZoneProbability >= 0.7) then -- Can change this value to adjust sensitivity.
 
 --- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
 

@@ -1,7 +1,5 @@
 # Welcome to Aqwam's DataPredict™ Library!
 
-### Also known as Aqwam's Machine Learning Playground.
-
 > Torch7 lit the flame. DataPredict carries it forward.
 
 > Machine Learning returns to Lua - for game engines.

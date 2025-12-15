@@ -1,4 +1,4 @@
-# [Retention Systems](../RetentionSystems.md) - Creating Willingness-To-Pay Prediction
+# [Retention Systems](../RetentionSystems.md) - Creating Willingness-To-Pay Prediction Model
 
 Hello guys! Today, I will be showing you on how to create a retention-based model that could predict the likelihood of a player would purchase an item for a particular price.
 
@@ -16,7 +16,7 @@ Before we train our model, we will first need to construct a regression model as
 
 local DataPredict = require(DataPredict)
 
-local LeavePredictionModel = DataPredict.Models.BayesianLinearRegression.new()
+local WillingnessToPayPredictionModel = DataPredict.Models.BayesianLinearRegression.new()
 
 ```
 
@@ -26,7 +26,7 @@ In here, what you need to do is:
 
 * Store initial player data as a vector of numbers.
 
-* Store the initial time that the player joined.
+* Store the prices when the player purchases an item.
 
 Below, we will show you how to create this:
 
@@ -45,38 +45,11 @@ local playerDataVector = {
     }
 }
 
-local recordedTime = os.time()
+local priceVector = {
 
-```
+    {price}
 
-If you want to add more data instead of relying on the initial data point, you actually can and this will improve the prediction accuracy. But keep in mind that this means you have to store more data. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
-
-```lua
-
-local playerDataMatrix = {}
-  
-local recordedTimeArray = {}
-  
-local snapshotIndex = 1
-  
-local function snapshotData()
-  
- playerDataMatrix[snapshotIndex] = {
-
-    1,
-    numberOfCurrencyAmount,
-    numberOfItemsAmount,
-    timePlayedInCurrentSession,
-    timePlayedInAllSessions,
-    healthAmount
-
-  }
-  
-  recordedTimeArray[snapshotIndex] = os.time()
-  
-  snapshotIndex = snapshotIndex + 1
-
-end
+}
 
 ```
 
@@ -96,27 +69,19 @@ However, this require setting the model's parameters to these settings temporari
 
 ```lua
 
-LeavePredictionModel.maximumNumberOfIterations = 100
+WillingnessToPayPredictionModel.maximumNumberOfIterations = 100
 
-LeavePredictionModel.learningRate = 0.3
+WillingnessToPayPredictionModel.learningRate = 0.3
 
 ```
 
 ## Upon Player Leave
 
-By the time the player leaves, it is time for us to train the model. But first, we need to calculate the difference.
+By the time the player leaves, it is time for us to train the model.
 
 ```lua
 
-local timeToLeave = os.time() - recordedTime
-
-local wrappedTimeToLeave = {
-
-    {timeToLeave}
-
-} -- Need to wrap this as our models can only accept matrices.
-
-local costArray = LeavePredictionModel:train(playerDataVector, wrappedTimeToLeave)
+local costArray = WillingnessToPayPredictionModel:train(playerDataVector, wrappedTimeToLeave)
 
 ```
 
@@ -156,7 +121,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-LeavePredictionModel:setModelParameters(ModelParameters)
+WillingnessToPayPredictionModel:setModelParameters(ModelParameters)
 
 ```
 
@@ -176,19 +141,14 @@ In other to produce predictions from our model, we must perform this operation:
 
 local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
--- Set the target time to leave to estimate their probabilities. Ensure that we have the current time as well.
+local quantilePriceVector = {{0.25, 0.5, 0.75, 0.9}}
 
-local currentTime = os.time()
+-- quantilePrices[1][1] = 25th percentile (conservative) price
+-- quantilePrices[1][2] = Median price
+-- quantilePrices[1][3] = 75th percentile (aggressive) price  
+-- quantilePrices[1][4] = 90th percentile (whale-focused) price
 
-local expectedTimeToLeave1 = currentTime + 5
-
-local expectedTimeToLeave2 = currentTime + 15
-
-local expectedTimeToLeave3 = currentTime + 30
-
-local expectedTimeToLeaveMatrix = {{expectedTimeToLeave1, expectedTimeToLeave2, expectedTimeToLeave3}}
-        
-local meanTimeToLeaveVector, probabilityToLeaveMatrix = LeavePredictionModel:predict(currentPlayerDataVector, expectedTimeToLeaveMatrix)
+local meanPrice, quantilePrices = model:predict(currentPlayerDataVector, quantilePriceVector)
 
 ```
 
@@ -197,12 +157,6 @@ Once you receive the predicted label vector, you can grab the pure number output
 ```lua
 
 local meanTimeToLeave = meanTimeToLeaveVector[1][1]
-
-local probability1 = probabilityToLeaveMatrix[1][1]
-
-local probability2 = probabilityToLeaveMatrix[1][2]
-
-local probability3 = probabilityToLeaveMatrix[1][3]
         
 ```
 
@@ -210,11 +164,6 @@ We can do this for every 10 seconds and use this to extend the players' playtime
 
 ```lua
 
-if (timeToLeavePrediction <= 5) or (probability1 >= 0.5) or (probability2 >= 0.7) or (probability3 >= 0.9) then -- Can be changed instead of these values.
-
---- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
-
-end
 
 ```
 

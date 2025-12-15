@@ -6,6 +6,4 @@
 
 * Virtual Currency Velocity (Use non-linear KalmanFilter variants due to data not being linear.)
 
-* Transaction Prediction (Use Markov.)
-
-  * Predict next purchase type / timing.
+* Transaction Prediction (Use Markov. Predict next purchase type / timing.)

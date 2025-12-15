@@ -8,7 +8,7 @@
 
    * If your client has already paid extra 500 USD (to remove 3-months cool-off) on top of these license, then you may consult with your clients without additional cost.
  
-      * To avoid a loophole where clients can just get 2% only from me and then skip 500 USD charge by immediately consulting you.
+      * This is to avoid a loophole where clients can just get 2% only from me and then skip 500 USD charge by immediately consulting you.
   
    * Otherwise, you bear the 500 USD upfront cost.
 

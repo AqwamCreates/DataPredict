@@ -86,25 +86,11 @@
 
   * Minimal implementation takes a minimum of 6 hours using DataPredict™, especially if custom events are associated with the model's output.
 
-## Detection Models
+## Pre-Mortem Detection Models
 
 * [Creating Churn Detection Model](RetentionSystems/CreatingChurnDetectionModel.md)
 
   * Similar to probability-to-leave model, but instead of calculating the probability of leaving, it would identify a player's gameplay red zones before the player leaves.
-
-  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
-
-* [Creating Left-Too-Early Detection Model](RetentionSystems/CreatingLeftTooEarlyDetectionModel.md)
-
-   * Inverse of probability-to-leave model by detecting outliers.
-
-   * Highly exploitable if the player accumulates long session times over many sessions before suddenly decrease the session times gradually if rewards are involved.
-
-  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
-
-* [Creating Labelless Left-Too-Early Detection Model](RetentionSystems/CreatingLabellessLeftTooEarlyDetectionModel.md)
-
-  * Same as "Left-Too-Early Detection Model", but it does not require manual tracking of label data, which makes it less accurate.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
@@ -121,3 +107,19 @@
   * The model periodically checks if the player is playing much more longer or more engaged than usual.
 
   * Minimal implementation takes a minimum of 4 hours using DataPredict™.
+
+## Post-Mortem Detection Models
+
+* [Creating Left-Too-Early Detection Model](RetentionSystems/CreatingLeftTooEarlyDetectionModel.md)
+
+   * Inverse of probability-to-leave model by detecting outliers.
+
+   * Highly exploitable if the player accumulates long session times over many sessions before suddenly decrease the session times gradually if rewards are involved.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
+* [Creating Labelless Left-Too-Early Detection Model](RetentionSystems/CreatingLabellessLeftTooEarlyDetectionModel.md)
+
+  * Same as "Left-Too-Early Detection Model", but it does not require manual tracking of label data, which makes it less accurate.
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.

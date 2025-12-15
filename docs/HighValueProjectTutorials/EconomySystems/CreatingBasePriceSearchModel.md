@@ -93,6 +93,16 @@ BasePriceSearchModel:setModelParameters(nil)
 
 ```
 
+## Determining The Clusters' Player Pricing Behaviour
+
+Unfortunately, our models don't exactly tell which clusters belong to what player pricing behaviour. However, there's some workaround for this to determine most common pricing behaviour that is shown below.
+
+* One way is to do it is to sum all the currencies into one overall currency for each cluster and do not sum with other clusters. Then, you can determine the players' pricing behaviour for each cluster where:
+
+  * The one that has the highest overall currency belong to the "whale" group.
+  
+  * The one that has the lowest overall currency belong to the "whale" group.
+
 ## Expectation Maximization's Extra Ability (Optional Reading)
 
 ExpectationMaximization actually includes the ability where you can increase or decrease based on how confident you are from the original base price. You can then use this to generate new base prices with a moving cluster for our algorithms, making it perfect for dynamic pricing.

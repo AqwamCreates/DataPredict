@@ -1,4 +1,4 @@
-# Creating Base Price Search Model
+# [Economy Systems](../EconomySystems.md) - Creating Base Price Search Model
 
 Hi guys! In this tutorial, we will demonstrate on how to create cluster-based search algorithm to find the base prices. Here are valid algorithms that you can use for these models.
 

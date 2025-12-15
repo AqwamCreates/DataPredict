@@ -1,4 +1,4 @@
-# [./RetentionSystems.md](Retention) - Creating Churn Detection Model
+# [Retention Systems](./RetentionSystems.md) - Creating Churn Detection Model
 
 Hello guys! Today, I will be showing you on how to create a retention-based model that could detect if player is in the "red zone" before it leaves.
 

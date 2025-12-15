@@ -95,9 +95,7 @@ BasePriceSearchModel:setModelParameters(nil)
 
 ## Determining The Clusters' Player Pricing Behaviour
 
-Unfortunately, our models don't exactly tell which clusters belong to what player pricing behaviour. However, there's some workaround for this to determine most common pricing behaviour that is shown below.
-
-* One way is to do it is to sum all the currencies into one overall currency for each cluster and do not sum with other clusters. Then, you can determine the players' pricing behaviour for each cluster where:
+Unfortunately, our models don't exactly tell which clusters belong to what player pricing behaviour. However, there's some workaround where you sum all the different types of currencies into one overall currency for each cluster. However, do not sum these total currencies with other clusters. Then, you can determine the players' pricing behaviour for each cluster where:
 
   * The one that has the highest overall currency belong to the "whale" group.
   

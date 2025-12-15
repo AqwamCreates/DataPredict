@@ -12,11 +12,11 @@ Currently, you need these to produce the model:
 
 Before we train our model, we will first need to construct a regression model as shown below. First we need to actually understand how each of our model's binary function actually work.
 
-| Binary Function  | Properties                                                                           |
-|------------------|--------------------------------------------------------------------------------------|
-| LogLog           | Best when red zone is very rare (< 20%); predicts early warnings.                    |
-| Logistic         | Best for balanced or moderately rare events (20-45%).                                |
-| ComplementLogLog | Best when red zone is common (> 45%); conservative detection and avoid false alarms. |
+| Binary Function  | When To Use                                          | Churn Detection Behavior  |
+|------------------|------------------------------------------------------|---------------------------|
+| LogLog           | Best when red zone is very rare (< 20%)              | High sensitivity.         |
+| Logistic         | Best for balanced or moderately rare events (20-45%) | Balanced sensitivity.     |
+| ComplementLogLog | Best when red zone is common (> 45%)                 | Conservative sensitivity. |
 
 ```lua
 
@@ -232,7 +232,18 @@ We can do this for every 10 seconds and use this to extend the players' playtime
 
 ```lua
 
-if (isPlayerInRedZoneProbability >= 0.7) then -- Can change this value to adjust sensitivity.
+--[[
+
+    Can change probabilityThreshold value to adjust sensitivity. 
+
+    But by default, I would just leave it as 0.5 since the selection of the binary function 
+    would implicitly make the model learn on how sensitive the model should be.
+
+--]]
+
+local probabilityThreshold = 0.5
+
+if (isPlayerInRedZoneProbability >= probabilityThreshold) then 
 
 --- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
 

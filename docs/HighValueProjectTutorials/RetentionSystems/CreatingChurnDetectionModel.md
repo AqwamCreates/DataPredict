@@ -1,4 +1,4 @@
-# Creating Churn Red Zone Detection Model
+# Creating Churn Detection Model
 
 Hello guys! Today, I will be showing you on how to create a retention-based model that could detect if player is in the "red zone" before it leaves.
 
@@ -38,7 +38,7 @@ end
 
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local ChurnRedZoneDetectionModel = DataPredict.Models.BinaryRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3, binaryFunction = binaryFunction})
+local ChurnDetectionModel = DataPredict.Models.BinaryRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3, binaryFunction = binaryFunction})
 
 ```
 
@@ -118,9 +118,9 @@ However, this require setting the model's parameters to these settings temporari
 
 ```lua
 
-ChurnRedZoneDetectionModel.maximumNumberOfIterations = 100
+ChurnDetectionModel.maximumNumberOfIterations = 100
 
-ChurnRedZoneDetectionModel.learningRate = 0.3
+ChurnDetectionModel.learningRate = 0.3
 
 ```
 
@@ -150,7 +150,7 @@ for index, recordedTime in ipair(recordedTimeArray) do
 
 end
 
-local costArray = ChurnRedZoneDetectionModel:train(playerDataMatrix, isInRedZoneVector)
+local costArray = ChurnDetectionModel:train(playerDataMatrix, isInRedZoneVector)
 
 ```
 
@@ -160,7 +160,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = ChurnRedZoneDetectionModel:getModelParameters()
+local ModelParameters = ChurnDetectionModel:getModelParameters()
 
 ```
 
@@ -190,7 +190,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-ChurnRedZoneDetectionModel:setModelParameters(ModelParameters)
+ChurnDetectionModel:setModelParameters(ModelParameters)
 
 ```
 
@@ -210,7 +210,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
-local predictedLabelVector = ChurnRedZoneDetectionModel:predict(currentPlayerDataVector)
+local predictedLabelVector = ChurnDetectionModel:predict(currentPlayerDataVector)
 
 ```
 

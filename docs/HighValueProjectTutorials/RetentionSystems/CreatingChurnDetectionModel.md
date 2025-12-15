@@ -37,6 +37,10 @@ Once set, we will show you on how to choose the model's binary function based on
 
 local DataPredict = require(DataPredict)
 
+-- This if-else statement is not mandatory; you can remove them if you want.
+
+-- It is there to make tuning easier.
+
 if (redZoneRatio <= 0.2) then
 
     binaryFunction = "LogLog"  -- Very rare events.

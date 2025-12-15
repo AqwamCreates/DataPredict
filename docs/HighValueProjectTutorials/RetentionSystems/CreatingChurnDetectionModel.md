@@ -10,13 +10,28 @@ Currently, you need these to produce the model:
 
 ## Setting Up
 
-Before we train our model, we will first need to construct a regression model as shown below. First we need to actually understand how each of our model's binary function actually work.
+Before we train our model, we will first need to construct a regression model as shown below. But first, we need to determine the red zone ratio for our game and is generally genre-dependent.
 
-| Binary Function  | When To Use                                           | Churn Detection Behavior  |
-|------------------|-------------------------------------------------------|---------------------------|
-| LogLog           | Best when red zone is very rare (< 20%) .             | High sensitivity.         |
-| Logistic         | Best for balanced or moderately rare events (20-45%). | Balanced sensitivity.     |
-| ComplementLogLog | Best when red zone is common (> 45%).                 | Conservative sensitivity. |
+Once set, we will show you on how to choose the model's binary function based on your chosen red zone ratio.
+
+### Red Zone Ratio Selection Examples
+
+| Genres                | Red Zone Ratio    | Reason                                                          |
+|-----------------------|-------------------|-----------------------------------------------------------------|
+| Large MMOs / RPGs     | 5 - 10%           | Long sessions, gradual disengagement, exploration buffers.      |
+| Social Games          | 20 - 30%          | Mixed patterns, social connections delay disengagement.         |
+| Competitive Games     | ~50%              | Quick matches, rapid disengagement, players leave when losing.  |
+| Casual                | 70 - 80%          | Low commitment means high likelihood of leaving the game.       |
+
+### Binary Function Recommended Setup
+
+| Binary Function  | When To Use                                             | Churn Detection Behavior  |
+|------------------|---------------------------------------------------------|---------------------------|
+| LogLog           | Best when red zone is very rare (< ~20%) .              | High sensitivity.         |
+| Logistic         | Best for balanced or moderately rare events (~20-~45%). | Balanced sensitivity.     |
+| ComplementLogLog | Best when red zone is common (> ~45%).                  | Conservative sensitivity. |
+
+### Model Construction
 
 ```lua
 

@@ -224,7 +224,7 @@ Once you receive the predicted label vector, you can grab the pure number output
 
 ```lua
 
-local isPlayerInRedZone = predictedLabelVector[1][1]
+local isPlayerInRedZoneProbability = predictedLabelVector[1][1]
 
 ```
 
@@ -232,7 +232,7 @@ We can do this for every 10 seconds and use this to extend the players' playtime
 
 ```lua
 
-if (isPlayerInRedZone >= 1) then
+if (isPlayerInRedZone >= 0.7) then -- Can change this value to adjust sensitivity.
 
 --- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
 

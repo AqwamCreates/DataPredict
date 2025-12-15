@@ -138,9 +138,9 @@ local playerLeftAtTime = os.time()
 
 local numberOfRecordedTime = #recordedTimeArray
 
-local numberOfRecordedTimeToMarkAsRedZone = numberOfRecordedTime * redZoneRatio
+local finalRecordedTime = recordedTimeArray[numberOfRecordedTime]
 
-local startingIndexForRedZone = numberOfRecordedTime - numberOfRecordedTimeToMarkAsRedZone
+local redZoneOriginTime = finalRecordedTime * redZoneRatio
 
 local isInRedZoneVector = {}
 
@@ -148,7 +148,7 @@ local isInRedZone
 
 for index, recordedTime in ipair(recordedTimeArray) do
 
-    isInRedZone = (index >= startingIndexForRedZone)
+    isInRedZone = (recordedTime >= redZoneOriginTime)
 
     isInRedZoneVector[index] = {(isInRedZone and 1) or 0}
 

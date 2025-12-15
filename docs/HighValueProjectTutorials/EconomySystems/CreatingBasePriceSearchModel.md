@@ -8,7 +8,7 @@ Hi guys! In this tutorial, we will demonstrate on how to create cluster-based se
 | Fuzzy CMeans               | Infinity.                                        | Gives overlapping assignments of players' spending behaviour and find the best overlapping base price for that particular item. | Negotiable Base Price.                              |
 | ExpectationMaximization    | Infinity.                                        | Find the most likely base price that makes the players want to purchase hat particular item.                                    | Players'  Desired Base Price.                      |
 | Mean Shift                 | Only 1.                                          | Finds the base price where a lot of players tend to make a purchase for that particular item.                                   | Popular Base Price. |
-| Agglomerative Hierarchical | Merges clusters until the desired cluster count. | Finds the base price by ranking the purchases.                                                                                  | Status-Based Base Price (i.e. "Subsidized Pricing For Poor People"). |
+| Agglomerative Hierarchical | Merges clusters until the desired cluster count. | Finds the base price by ranking the purchases.                                                                                  | Status-Based Base Price (e.g. "Subsidized Pricing For Poor People"). |
 
 ## Initializing The Clustering Model
 

@@ -4,7 +4,7 @@ Hello guys! Today, I will be showing you on how to create a retention-based mode
 
 Currently, you need these to produce the model:
 
-* Negative Binomial Regression (Recommended) / Poisson Regression
+* Binary Regression
 
 * A player data that is stored in matrix
 
@@ -16,9 +16,29 @@ Before we train our model, we will first need to construct a regression model as
 
 local DataPredict = require(DataPredict)
 
+-- First, we need to figure out what binary function to use based on our "red zone ratio". Below, it will automatically pick one for you.
+
+local redZoneRatio = 0.3
+
+local binaryFunction
+
+if (redZoneRatio >= 0.45) and (redZoneRatio <= 0.55) then
+
+    binaryFunction = "Logistic"
+
+elseif (redZoneRatio >= 0.55) then
+
+  binaryFunction = "ComplementLogLog"
+
+else
+
+  binaryFunction = "LogLog"
+
+end
+
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local ChurnRedZoneDetectionModel = DataPredict.Models.NegativeBinomialRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local ChurnRedZoneDetectionModel = DataPredict.Models.NegativeBinomialRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3, binaryFunction = binaryFunction})
 
 ```
 
@@ -113,8 +133,6 @@ By the time the player leaves, it is time for us to train the model. But first, 
 local playerLeftAtTime = os.time()
 
 local numberOfRecordedTime = #recordedTimeArray
-
-local redZoneRatio = 0.3
 
 local numberOfRecordedTimeToMarkAsRedZone = numberOfRecordedTime * redZoneRatio
 

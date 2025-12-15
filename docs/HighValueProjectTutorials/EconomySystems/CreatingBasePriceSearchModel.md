@@ -105,7 +105,15 @@ local centroidMatrix = ModelParameters[1]
 
 local varianceMatrix = ModelParameters[2]
 
-local new
+local randomUnwrappedMeanVector = centroidMatrix[1] -- This index determines which cluster we want to access.
+
+local randomUnwrappedVarianceVector = varianceMatrix[1] -- This index determines which cluster we want to access.
+
+local modifiedBaseCashAmount = randomUnwrappedMeanVector[1] + ((math.random() * 2 - 1) * randomUnwrappedVarianceVector[1])
+
+local modifiedBaseManaResiduesAmount = randomUnwrappedMeanVector[2] + ((math.random() * 2 - 1) * randomUnwrappedVarianceVector[2])
+
+local modifiedBaseGoldAmount = randomUnwrappedMeanVector[3] + ((math.random() * 2 - 1) * randomUnwrappedVarianceVector[3])
 
 ```
 

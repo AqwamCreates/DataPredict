@@ -95,7 +95,9 @@ BasePriceSearchModel:setModelParameters(nil)
 
 ## Expectation Maximization's Extra Ability (Optional Reading)
 
-ExpectationMaximization actually includes the ability where you can increase or decrease based on how confident you are from the original base price. The code below will show you on how to take advantage of this.
+ExpectationMaximization actually includes the ability where you can increase or decrease based on how confident you are from the original base price. You can then use this to generate new base prices with a moving cluster for our algorithms, making it perfect for dynamic pricing.
+
+The code below will show you on how to take advantage of this.
 
 ```lua
 

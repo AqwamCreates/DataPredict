@@ -12,7 +12,7 @@
 
 * Base Price Search (Use EM, Fuzzy C-Means or K-Means. Extract model parameters to get the base price. Recommended to use this with the Dynamic Pricing Models)
 
-    * Extremely useful if one of the in-game currency is hard to get (especially if can be affected by external means), leading to lower spending of that currency. This would then lead to items requiring that particular in-game currency to be valuable. As a result this leads to the in-game currency be viewed as "extremely valuable".
+    * Extremely useful if one of the in-game currencies is hard to get (especially if can be affected by external means), leading to lower spending of that currency. This would then lead to items requiring that particular in-game currency to be valuable. As a result this leads to the in-game currency be viewed as "extremely valuable".
 
 * Virtual Currency Velocity (Use non-linear KalmanFilter variants due to data not being linear.)
 

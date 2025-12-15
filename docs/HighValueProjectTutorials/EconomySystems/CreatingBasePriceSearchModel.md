@@ -100,7 +100,7 @@ Unfortunately, our models don't exactly tell which clusters belong to what playe
 
   * The one that has the highest overall currency belong to the "whale" group.
   
-  * The one that has the lowest overall currency belong to the "whale" group.
+  * The one that has the lowest overall currency belong to the "casual" group.
 
 ## Expectation Maximization's Extra Ability (Optional Reading)
 

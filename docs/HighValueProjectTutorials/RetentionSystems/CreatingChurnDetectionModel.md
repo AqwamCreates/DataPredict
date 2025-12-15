@@ -166,11 +166,11 @@ local isInRedZoneVector = {}
 
 local isInRedZone
 
-for index, recordedTime in ipair(recordedTimeArray) do
+for dataIndex, recordedTime in ipair(recordedTimeArray) do
 
     isInRedZone = (recordedTime >= redZoneOriginTime)
 
-    isInRedZoneVector[index] = {(isInRedZone and 1) or 0}
+    isInRedZoneVector[dataIndex] = {(isInRedZone and 1) or 0}
 
 end
 

@@ -12,11 +12,11 @@ Currently, you need these to produce the model:
 
 Before we train our model, we will first need to construct a regression model as shown below. First we need to actually understand how each of our model's binary function actually work.
 
-| Binary Function  | When To Use                                          | Churn Detection Behavior  |
-|------------------|------------------------------------------------------|---------------------------|
-| LogLog           | Best when red zone is very rare (< 20%)              | High sensitivity.         |
-| Logistic         | Best for balanced or moderately rare events (20-45%) | Balanced sensitivity.     |
-| ComplementLogLog | Best when red zone is common (> 45%)                 | Conservative sensitivity. |
+| Binary Function  | When To Use                                           | Churn Detection Behavior  |
+|------------------|-------------------------------------------------------|---------------------------|
+| LogLog           | Best when red zone is very rare (< 20%) .             | High sensitivity.         |
+| Logistic         | Best for balanced or moderately rare events (20-45%). | Balanced sensitivity.     |
+| ComplementLogLog | Best when red zone is common (> 45%).                 | Conservative sensitivity. |
 
 ```lua
 

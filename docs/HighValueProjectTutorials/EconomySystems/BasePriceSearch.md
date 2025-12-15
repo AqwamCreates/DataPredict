@@ -2,47 +2,44 @@
 
 Hi guys! In this tutorial, we will demonstrate on how to create cluster-based search algorithm to find the base prices. Here are valid algorithms that you can use for these models.
 
-| Model                   | Properties                                                 | Objective |
-|-------------------------|------------------------------------------------------------|
-| KMeans                  | Sets up X number of clusters and finds the center of clusters. |
-| FuzzyCMeans             | Sets up X number of clusters and finds the center of clusters. |
-| ExpectationMaximization | Sets up X number of clusters and finds the center of clusters. | Maximize the probability of 
-| MeanShift               | Can only do 1 cluster                                      |
-
-For best results, please use:
-
-
-* 
-
-  * This model sets up number of clusters that are equal to number of data and merge them together until it forms X number of clusters.
- 
-  * Trickier to set up.
+| Model                   | How Many Clusters It Can Produce | Objective                                                                                                                       |
+|-------------------------|----------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| KMeans                  | Infinity.                        | Gives hard assigments of players' spending behaviour and find the optimal base price for that particular item.                  |
+| FuzzyCMeans             | Infinity.                        | Gives overlapping assignments of players' spending behaviour and find the best overlapping base price for that particular item. |
+| ExpectationMaximization | Infinity.                        | Find the most likely base price that makes the players want to purchase an item.                                                |
+| MeanShift               | Only 1.                          | Finds the most densest part of the cluster where every users tend to make a purchase for that particular item.                  |
 
 ## Initializing The Clustering Model
 
-Before we can produce ourselves a targeting model, we first need to construct a model, which is shown below. Ensure that the distance function is not "CosineDistance".
+Before we can produce ourselves a search model, we first need to construct a model, which is shown below. Ensure that the distance function is not "CosineDistance".
+
+We also recommend that for each item has their own model instead of combining multiple items to one model.
 
 ```lua
 
-local TargetingModel = DataPredict.Models.KMeans.new({numberOfClusters = 3, distanceFunction = "Euclidean"}) -- For this tutorial, we will assume that we have three missiles, so only three locations it can land.
+ -- For this tutorial, we will assume that we have three types of spenders: casual, strategist and whale. Hence 3 clusters.
+
+local BasePriceSearchModel = DataPredict.Models.KMeans.new({numberOfClusters = 3, distanceFunction = "Euclidean"})
 
 ```
 
-## Collecting The Players' Locations
+## Collecting The Players' Currencies
 
-In order to find the center of the clusters, we first need all the players' location data and put them into a matrix.
+In here, we're assuming that we're getting the base price based on all players. 
+
+If you want a player-specific pricing, then only include that player. However, I do not recommend this approach as it would lead to sparse data issue as not many purchases can be made by a single player.
 
 ```lua
 
-local playerLocationDataMatrix = {
+local itemPaidUsingTheseCurrenciesDataMatrix = {
 
-  {player1LocationX, player1LocationY, player1LocationZ},
-  {player2LocationX, player2LocationY, player2LocationZ},
-  {player3LocationX, player3LocationY, player3LocationZ},
-  {player4LocationX, player4LocationY, player4LocationZ},
-  {player5LocationX, player5LocationY, player5LocationZ},
-  {player6LocationX, player6LocationY, player6LocationZ},
-  {player7LocationX, player7LocationY, player7LocationZ},
+  {player1CashAmount, player1ManaResiduesAmount, player1GoldBarsAmount},
+  {player2CashAmount, player2ManaResiduesAmount, player2GoldBarsAmount},
+  {player3CashAmount, player3ManaResiduesAmount, player3GoldBarsAmount},
+  {player4CashAmount, player4ManaResiduesAmount, player4GoldBarsAmount},
+  {player5CashAmount, player5ManaResiduesAmount, player5GoldBarsAmount},
+  {player6CashAmount, player6ManaResiduesAmount, player6GoldBarsAmount},
+  {player7CashAmount, player7ManaResiduesAmount, player7GoldBarsAmount},
 
 }
 
@@ -54,7 +51,7 @@ Once you collected the players' location data, you must call model's train() fun
 
 ```lua
 
-TargetingModel:train(playerLocationDataMatrix)
+BasePriceSearchModel:train(itemPaidUsingTheseCurrenciesDataMatrix)
 
 ```
 
@@ -62,9 +59,7 @@ Once train() is called, call the getModelParameters() function to get the center
 
 ```lua
 
-local centroidMatrix = TargetingModel:getModelParameters()
-
-centroidMatrix = centroidMatrix[1] -- This is a must if you're using K-Means or Meanshift because they store the ModelParameters as a table of matrices.
+local centroidMatrix = BasePriceSearchModel:getModelParameters()[1]
 
 ```
 
@@ -76,13 +71,13 @@ Since we have three clusters, we can expect three rows for our matrix. As such w
 
 for clusterIndex, unwrappedClusterVector in ipairs(ModelParameters) do
 
-  local x = unwrappedClusterVector[1]
+  local baseCashAmount = unwrappedClusterVector[1]
   
-  local y = unwrappedClusterVector[2]
+  local baseManaResiduesAmount = unwrappedClusterVector[2]
   
-  local z = unwrappedClusterVector[3]
+  local baseGoldBarsAmount = unwrappedClusterVector[3]
 
-  landMissileAt(x, y, z)
+  updateBasePriceForItem(item, baseCashAmount, baseManaResiduesAmount, baseGoldBarsAmount)
 
 end
 
@@ -90,11 +85,11 @@ end
 
 ## Resetting Our Targeting System
 
-By default, when you reuse the machine learning models from DataPredict, it will interact with the existing model parameters. As such, we need to reset the model parameters by calling the setModelParameters() function and set it to "nil".
+By default, when you reuse the machine learning models from DataPredict, it will interact with the existing model parameters. As such, if you want a fresh start whenever you run the train() function, then call thesetModelParameters() function and set it to "nil".
 
 ```lua
 
-TargetingModel:setModelParameters(nil)
+BasePriceSearchModel:setModelParameters(nil)
 
 ```
 

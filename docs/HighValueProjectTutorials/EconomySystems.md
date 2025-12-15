@@ -10,9 +10,11 @@
 
 * Dynamic Pricing For In-Game Currencies (Use TD Actor-Critic + Diagonal Gaussian Policy + Tanh activation outputs to multiply with base cost and then add with the base cost to get new effective cost.)
 
-* Base Price Search (Use EM, Fuzzy C-Means or K-Means. Extract model parameters to get the base price. Recommended to use this with the Dynamic Pricing Models)
+* [Creating Base Price Search Model](EconomySystems/CreatingBasePriceSearchModel.md)
 
     * Extremely useful if one of the in-game currencies is hard to get (especially if can be affected by external means like exploits and trading), leading to lower spending of that currency. This would then lead to item that is to be purchased requiring that particular in-game currency to be lower. This is because due to lack of buyer's supply to satisfy seller's, or in this case, our ML model's demand for that currency. As a result this leads to the in-game currency be viewed as "extremely valuable" by the game's ecosystem.
+
+    * Recommended to use this with the Dynamic Pricing Models.
 
 * Virtual Currency Velocity (Use non-linear KalmanFilter variants due to data not being linear.)
 

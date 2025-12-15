@@ -10,30 +10,30 @@ Currently, you need these to produce the model:
 
 ## Setting Up
 
-Before we train our model, we will first need to construct a regression model as shown below.
+Before we train our model, we will first need to construct a regression model as shown below. First we need to actually understand how each of our model's binary function actually work.
+
+| BinaryFunction   | Properties                                                        |
+|------------------|-------------------------------------------------------------------|
+| LogLo            | Best when red zone is very rare (< 20%); predicts early warnings. |
+| Logistic         | Best for balanced or moderately rare events (20-45%).             |
+| ComplementLogLog | Best when red zone is common (> 45%) - conservative detection     |
 
 ```lua
 
 local DataPredict = require(DataPredict)
 
--- First, we need to figure out what binary function to use based on our "red zone ratio". Below, it will automatically pick one for you.
+if (redZoneRatio <= 0.2) then
 
-local redZoneRatio = 0.3
+    binaryFunction = "LogLog"  -- Very rare events.
+    
+elseif redZoneRatio <= 0.45 then
 
-local binaryFunction
-
-if (redZoneRatio >= 0.45) and (redZoneRatio <= 0.55) then
-
-    binaryFunction = "Logistic"
-
-elseif (redZoneRatio >= 0.55) then
-
-  binaryFunction = "ComplementLogLog"
-
+    binaryFunction = "Logistic"  -- Moderately rare to balanced.
+    
 else
 
-  binaryFunction = "LogLog"
-
+    binaryFunction = "ComplementLogLog"  -- Common events.
+    
 end
 
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.

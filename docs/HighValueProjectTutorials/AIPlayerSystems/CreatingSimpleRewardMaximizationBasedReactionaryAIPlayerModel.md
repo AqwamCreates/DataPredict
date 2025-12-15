@@ -162,7 +162,7 @@ local function run(Player)
 
         playerState = getPlayerState(Player)
     
-        actionName = ReactionaryPlayerModel:reinforce(playerState, rewardValue)
+        actionName = ReactionaryPlayerModel:reinforce({{playerState}}, rewardValue)
 
         actionFunction = counterFunctionDictionary[actionName]
 

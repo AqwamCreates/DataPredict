@@ -10,11 +10,9 @@
 
 ## Models
 
-* Willingness-to-Pay Prediction (Use BayesianLinearRegression or BayesianQuantileLinearRegression. Gives uncertainty estimates.)
+* [Creating Willingness-To-Pay Prediction Model](EconomySystems/CreatingWillingnessToPayPredictionModel.md)
 
     * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
-
-* Dynamic Pricing For In-Game Currencies (Use TD Actor-Critic + Diagonal Gaussian Policy + Tanh activation outputs to multiply with base cost and then add with the base cost to get new effective cost.)
 
 * [Creating Base Price Search Model](EconomySystems/CreatingBasePriceSearchModel.md)
 
@@ -23,6 +21,8 @@
     * Recommended to use this with the Dynamic Pricing Models.
     
     * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
+* Dynamic Pricing For In-Game Currencies (Use TD Actor-Critic + Diagonal Gaussian Policy + Tanh activation outputs to multiply with base cost and then add with the base cost to get new effective cost.)
 
 * Virtual Currency Velocity (Use non-linear KalmanFilter variants due to data not being linear.)
 

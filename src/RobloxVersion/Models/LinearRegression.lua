@@ -44,7 +44,7 @@ local defaultCostFunction = "MeanSquaredError"
 
 local lossFunctionList ={
 
-	["MeanSquaredError"] = function (h, y) return math.pow((h - y), 2) end,
+	["MeanSquaredError"] = function (h, y) return ((h - y)^2) end,
 
 	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
 

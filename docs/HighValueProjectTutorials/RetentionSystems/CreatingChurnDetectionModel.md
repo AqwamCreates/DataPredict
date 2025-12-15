@@ -39,7 +39,7 @@ local DataPredict = require(DataPredict)
 
 -- This if-else statement is not mandatory; you can remove them if you want.
 
--- It is there to make tuning easier.
+-- It is there just to make tuning easier.
 
 if (redZoneRatio <= 0.2) then
 

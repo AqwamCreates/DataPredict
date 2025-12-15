@@ -237,7 +237,7 @@ We can do this for every 10 seconds and use this to extend the players' playtime
     Can change probabilityThreshold value to adjust sensitivity. 
 
     But by default, I would just leave it as 0.5 since the selection of the binary function 
-    would implicitly make the model learn on how sensitive the model should be.
+    would make the model implicitly learn on how sensitive the model should be.
 
 --]]
 

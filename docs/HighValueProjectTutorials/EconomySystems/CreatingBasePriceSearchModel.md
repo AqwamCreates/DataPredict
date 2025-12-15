@@ -93,4 +93,20 @@ BasePriceSearchModel:setModelParameters(nil)
 
 ```
 
+## Expectation Maximization's Extra Ability (Optional Reading)
+
+ExpectationMaximization actually includes the ability where you can increase or decrease based on how confident you are from the original base price. The code below will show you on how to take advantage of this.
+
+```lua
+
+local ModelParameters = BasePriceSearchModel:getModelParameters()
+
+local centroidMatrix = ModelParameters[1]
+
+local varianceMatrix = ModelParameters[2]
+
+local new
+
+```
+
 That's all for today!

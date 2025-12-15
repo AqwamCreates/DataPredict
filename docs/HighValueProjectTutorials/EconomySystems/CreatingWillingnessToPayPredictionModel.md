@@ -91,7 +91,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = LeavePredictionModel:getModelParameters()
+local ModelParameters = WillingnessToPayPredictionModel :getModelParameters()
 
 ```
 
@@ -135,7 +135,7 @@ Under this case, the procedure is the same to case 2 except that you need to:
 
 ## Prediction Handling
 
-In other to produce predictions from our model, we must perform this operation:
+In order to produce predictions from our model, we must perform this operation:
 
 ```lua
 
@@ -148,27 +148,37 @@ local quantilePriceVector = {{0.25, 0.5, 0.75, 0.9}}
 -- quantilePrices[1][3] = 75th percentile (aggressive) price  
 -- quantilePrices[1][4] = 90th percentile (whale-focused) price
 
-local meanPrice, quantilePrices = model:predict(currentPlayerDataVector, quantilePriceVector)
+local meanPriceVector, predictedQuantilePriceVector = WillingnessToPayPredictionModel:predict(currentPlayerDataVector, quantilePriceVector)
 
 ```
 
-Once you receive the predicted label vector, you can grab the pure number output by doing this:
+Once you receive the predicted label vector, you can grab the pure number output and select desired price by doing this:
 
 ```lua
 
-local meanTimeToLeave = meanTimeToLeaveVector[1][1]
+local conservativePrice = predictedQuantilePriceVector[1][1] -- 25th percentile
+local balancedPrice = predictedQuantilePriceVector[1][2] -- 50th percentile (median)
+local aggressivePrice = predictedQuantilePriceVector[1][3] -- 75th percentile  
+local whalePrice = predictedQuantilePriceVector[1][4] -- 90th percentile
+
+local playerEngagementLevel = timePlayedInAllSessions / 3600  -- hours played
+
+local chosenPrice
+
+if (playerEngagementLevel < 10) then
+
+    chosenPrice = conservativePrice -- New players get cheaper prices.
+    
+elseif (playerEngagementLevel < 100) then
+
+    chosenPrice = balancedPrice -- Regular players get median.
+    
+else
+
+    chosenPrice = aggressivePrice -- Veterans can afford more.
+    
+end
         
 ```
-
-We can do this for every 10 seconds and use this to extend the players' playtime by doing something like this:
-
-```lua
-
-
-```
-
-## Conclusion
-
-This tutorial showed you on how to create "time to leave" prediction model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!
 
 That's all for today and see you later!

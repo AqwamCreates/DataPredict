@@ -8,6 +8,8 @@
 
 * Willingness-to-Pay Prediction (Use BayesianLinearRegression or BayesianQuantileLinearRegression. Gives uncertainty estimates.)
 
+    * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * Dynamic Pricing For In-Game Currencies (Use TD Actor-Critic + Diagonal Gaussian Policy + Tanh activation outputs to multiply with base cost and then add with the base cost to get new effective cost.)
 
 * [Creating Base Price Search Model](EconomySystems/CreatingBasePriceSearchModel.md)

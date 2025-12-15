@@ -67,7 +67,7 @@ local function run(Player)
 
         currentPlayerState = getPlayerState(Player)
 
-        PlayerStatePredictionModel:train(previousPlayerState, currentPlayerState)
+        PlayerStatePredictionModel:train({{previousPlayerState}}, {{currentPlayerState}})
     
         nextPlayerState = PlayerStatePredictionModel:predict(currentPlayerState)
 

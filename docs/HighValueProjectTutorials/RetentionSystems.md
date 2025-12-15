@@ -90,7 +90,7 @@
 
 * [Creating Churn Detection Model](RetentionSystems/CreatingChurnDetectionModel.md)
 
-  * Similar to probability-to-leave model, but instead of calculating the probability of leaving, it would identify a player's red zone gameplay patterns before the player leaves.
+  * Similar to probability-to-leave model, but instead of calculating the probability of leaving, it would identify a player's gameplay red zones before the player leaves.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 

@@ -1,6 +1,6 @@
 # Creating Likely-To-Leave Prediction Model
 
-Hello guys! Today, I will be showing you on how to create a retention-based model that could predict when the player will leave.
+Hello guys! Today, I will be showing you on how to create a retention-based model that could detect if player is in the "red zone" before it leaves.
 
 Currently, you need these to produce the model:
 
@@ -18,7 +18,7 @@ local DataPredict = require(DataPredict)
 
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local LeavePredictionModel = DataPredict.Models.NegativeBinomialRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local ChurnPredictionModel = DataPredict.Models.NegativeBinomialRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```
 
@@ -98,9 +98,9 @@ However, this require setting the model's parameters to these settings temporari
 
 ```lua
 
-LeavePredictionModel.maximumNumberOfIterations = 100
+ChurnPredictionModel.maximumNumberOfIterations = 100
 
-LeavePredictionModel.learningRate = 0.3
+ChurnPredictionModel.learningRate = 0.3
 
 ```
 
@@ -112,13 +112,15 @@ By the time the player leaves, it is time for us to train the model. But first, 
 
 local timeToLeave = os.time() - recordedTime
 
+
+
 local wrappedTimeToLeave = {
 
     {timeToLeave}
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = LeavePredictionModel:train(playerDataVector, wrappedTimeToLeave)
+local costArray = ChurnPredictionModel:train(playerDataVector, wrappedTimeToLeave)
 
 ```
 
@@ -128,7 +130,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = LeavePredictionModel:getModelParameters()
+local ModelParameters = ChurnPredictionModel:getModelParameters()
 
 ```
 
@@ -158,7 +160,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-LeavePredictionModel:setModelParameters(ModelParameters)
+ChurnPredictionModel:setModelParameters(ModelParameters)
 
 ```
 
@@ -178,7 +180,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
-local predictedLabelVector = LeavePredictionModel:predict(currentPlayerDataVector)
+local predictedLabelVector = ChurnPredictionModel:predict(currentPlayerDataVector)
 
 ```
 
@@ -186,7 +188,7 @@ Once you receive the predicted label vector, you can grab the pure number output
 
 ```lua
 
-local timeToLeavePrediction = predictedLabelVector[1][1]
+local isPlayerInRedZone = predictedLabelVector[1][1]
 
 ```
 
@@ -194,7 +196,7 @@ We can do this for every 10 seconds and use this to extend the players' playtime
 
 ```lua
 
-if (timeToLeavePrediction <= 60) then -- Can be changed instead of less than 60 seconds.
+if (isPlayerInRedZone >= 1) then
 
 --- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
 

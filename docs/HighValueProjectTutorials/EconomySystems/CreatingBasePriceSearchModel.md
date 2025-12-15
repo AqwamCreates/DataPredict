@@ -6,7 +6,7 @@ Hi guys! In this tutorial, we will demonstrate on how to create cluster-based se
 |-------------------------|----------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
 | KMeans                  | Infinity.                        | Gives hard assigments of players' spending behaviour and find the optimal base price for that particular item.                  |
 | FuzzyCMeans             | Infinity.                        | Gives overlapping assignments of players' spending behaviour and find the best overlapping base price for that particular item. |
-| ExpectationMaximization | Infinity.                        | Find the most likely base price that makes the players want to purchase an item.                                                |
+| ExpectationMaximization | Infinity.                        | Find the most likely base price that makes the players want to purchase hat particular item.                                    |
 | MeanShift               | Only 1.                          | Finds the most densest part of the cluster where every users tend to make a purchase for that particular item.                  |
 
 ## Initializing The Clustering Model

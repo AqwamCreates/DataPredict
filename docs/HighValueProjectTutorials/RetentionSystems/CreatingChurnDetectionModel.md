@@ -26,13 +26,13 @@ if (redZoneRatio <= 0.2) then
 
     binaryFunction = "LogLog"  -- Very rare events.
     
-elseif redZoneRatio <= 0.45 then
+elseif (redZoneRatio <= 0.45) then
 
-    binaryFunction = "Logistic"  -- Moderately rare to balanced.
+    binaryFunction = "Logistic"  -- Moderately rare to balanced (20% - 45% are red zones).
     
 else
 
-    binaryFunction = "ComplementLogLog"  -- Common events.
+    binaryFunction = "ComplementLogLog"  -- Common events (More than 45% are red zones).
     
 end
 

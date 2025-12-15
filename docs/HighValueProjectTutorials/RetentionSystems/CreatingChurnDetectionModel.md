@@ -242,6 +242,6 @@ end
 
 ## Conclusion
 
-This tutorial showed you on how to create "time to leave" prediction model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!
+This tutorial showed you on how to create churn detection model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!
 
 That's all for today and see you later!

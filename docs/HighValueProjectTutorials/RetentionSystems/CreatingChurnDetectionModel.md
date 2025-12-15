@@ -16,12 +16,12 @@ Once set, we will show you on how to choose the model's binary function based on
 
 ### Red Zone Ratio Selection Examples
 
-| Genres                | Red Zone Ratio    | Reason                                                          |
-|-----------------------|-------------------|-----------------------------------------------------------------|
-| Large MMOs / RPGs     | 5 - 10%           | Long sessions, gradual disengagement, exploration buffers.      |
-| Social Games          | 20 - 30%          | Mixed patterns, social connections delay disengagement.         |
-| Competitive Games     | ~50%              | Quick matches, rapid disengagement, players leave when losing.  |
-| Casual                | 70 - 80%          | Low commitment means high likelihood of leaving the game.       |
+| Genres                | Red Zone Ratio    | Reason                                                                                                                                            |
+|-----------------------|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| Large MMOs / RPGs     | 5 - 10%           | Long sessions due to high amount of exploration, which leads to slow and gradual disengagement.                                                   |
+| Social Games          | 20 - 30%          | Social connections delay disengagement.                                                                                                           |
+| Competitive Games     | ~50%              | Contains half aspects of addiction (winning, getting rewards and etc.) and half aspects of fustrations (toxic players, consistently losing etc.). |
+| Casual                | 70 - 80%          | Low commitment means high likelihood of leaving the game.                                                                                         |
 
 ### Binary Function Recommended Setup
 

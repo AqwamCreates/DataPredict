@@ -92,6 +92,8 @@
 
   * Similar to probability-to-leave model, but instead of calculating the probability of leaving, it would identify a player's red zone gameplay patterns before the player leaves.
 
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * [Creating Left-Too-Early Detection Model](RetentionSystems/CreatingLeftTooEarlyDetectionModel.md)
 
    * Inverse of probability-to-leave model by detecting outliers.

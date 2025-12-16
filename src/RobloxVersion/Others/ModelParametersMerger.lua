@@ -446,7 +446,7 @@ local function getSplitAmountArray(Model, modelType, splitMode, featureMatrix, l
 
 		local bestModelParametersIndex
 
-		if (areAllZeroes == true) then 
+		if (areAllZeroes) then 
 
 			bestModelParametersIndex = Random.new():NextInteger(1, numberOfModelParameters)
 

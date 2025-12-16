@@ -24,7 +24,7 @@ I recommend you to use in-game currencies instead of the real-world ones.
     
     * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* Dynamic Pricing For In-Game Currencies (Use TD Actor-Critic + Diagonal Gaussian Policy + Tanh activation outputs to multiply with base cost and then add with the base cost to get new effective cost.)
+* Dynamic Pricing Models (Use TD Actor-Critic + Diagonal Gaussian Policy + Tanh activation outputs to multiply with base cost and then add with the base cost to get new effective cost.)
 
 * Virtual Currency Velocity (Use non-linear KalmanFilter variants due to data not being linear.)
 

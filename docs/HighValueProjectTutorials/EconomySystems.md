@@ -16,7 +16,7 @@
 
 * [Creating Base Price Search Model](EconomySystems/CreatingBasePriceSearchModel.md)
 
-    * Extremely useful if one of the in-game currencies is hard to get (especially if can be affected by external means like exploits and trading), leading to lower spending of that currency. This would then lead to item that is to be purchased requiring that particular in-game currency to be lower. This is because due to lack of buyer's supply to satisfy seller's, or in this case, our ML model's demand for that currency. As a result this leads to the in-game currency be viewed as "extremely valuable" by the game's ecosystem.
+    * Extremely useful if one of the in-game currencies is hard to get (especially if can be affected by external means like exploits and trading), leading to lower spending of that currency. This results to lack of supply from the buyer to satisfy seller's, or in this case, our ML model's demand for that currency. This would then lead to item that is to be purchased requiring that particular in-game currency to be lower. As a result this leads to the in-game currency be viewed as "extremely valuable" by the game's ecosystem.
 
     * Recommended to use this with the Dynamic Pricing Models.
     

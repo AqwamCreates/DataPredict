@@ -189,7 +189,7 @@ elseif (playerEngagementLevel < 100) then
     
 else
 
-    chosenPrice = aggressivePrice -- Veterans can afford more.
+    chosenPrice = aggressivePrice -- Veteran players can afford more.
     
 end
         

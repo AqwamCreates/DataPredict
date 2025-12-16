@@ -21,7 +21,7 @@ Before we train our model, we will first need to construct a quantile model. We 
 
 local DataPredict = require(DataPredict)
 
- -- This is required for Quantile Regression model. You do not need to do this for Bayesian Quantile Linear Regression model.
+ -- This is required for Quantile Regression model, but not for Bayesian Quantile Linear Regression model.
 
 local quantilesList = {0.25, 0.5, 0.75, 0.90}
 

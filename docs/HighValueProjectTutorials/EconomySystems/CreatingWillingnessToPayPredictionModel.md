@@ -93,7 +93,7 @@ By the time the player leaves, it is time for us to train the model.
 
 ```lua
 
-local costArray = WillingnessToPayPredictionModel:train(playerDataVector, wrappedTimeToLeave)
+local costArray = WillingnessToPayPredictionModel:train(playerDataVector, priceVector)
 
 ```
 

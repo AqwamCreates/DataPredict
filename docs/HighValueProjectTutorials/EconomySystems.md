@@ -2,11 +2,11 @@
 
 ## Disclaimer
 
-* I recommend you to use in-game currencies instead of the real-world ones.
+I recommend you to use in-game currencies instead of the real-world ones.
 
-   * It is far more difficult to make players into spending more real-world money than the in-game ones.
+* It is far more difficult to make players into spending more real-world money than the in-game ones.
 
-   * Additionally, there are a lot of potential legal issues when price gouging using real-world money.
+* Additionally, there are a lot of potential legal issues when price gouging using real-world money.
 
 ## Models
 

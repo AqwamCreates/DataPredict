@@ -516,17 +516,9 @@ local function mergeModelParametersNestedDictionaries(functionToApply, dimension
 	
 	local tensorArray = {...}
 
-	-- Handle the case where we might be dealing with dictionaries.
-
-	-- Check if we're dealing with dictionaries at this level.
-	
-	local firstTensor = tensorArray[1]
-
-	-- Original array processing with variable dimension handling.
-	
 	local dimensionSize = dimensionSizeArray[currentDimension] or 0
 	
-	local resultArray = {}
+	local resultTable = {}
 
 	if (currentDimension < numberOfDimensions) then
 		
@@ -548,7 +540,7 @@ local function mergeModelParametersNestedDictionaries(functionToApply, dimension
 			
 			for _, tensor in ipairs(tensorArray) do table.insert(subTensorArray, (tensor and tensor[i]) or nil) end
 			
-			resultArray[i] = mergeModelParametersNestedDictionaries(functionToApply, dimensionSizeArray, numberOfDimensions, currentDimension + 1, table.unpack(subTensorArray))
+			resultTable[i] = mergeModelParametersNestedDictionaries(functionToApply, dimensionSizeArray, numberOfDimensions, currentDimension + 1, table.unpack(subTensorArray))
 			
 		end
 		
@@ -564,17 +556,17 @@ local function mergeModelParametersNestedDictionaries(functionToApply, dimension
 			
 			for _, tensor in ipairs(tensorArray) do table.insert(valueArray, tensor[key] or 0) end
 			
-			resultArray[key] = functionToApply(table.unpack(valueArray))
+			resultTable[key] = functionToApply(table.unpack(valueArray))
 			
 		end
 		
 	else
 		
-		resultArray = functionToApply(table.unpack(tensorArray))
+		resultTable = functionToApply(table.unpack(tensorArray))
 		
 	end
 
-	return resultArray
+	return resultTable
 	
 end
 
@@ -680,7 +672,7 @@ local function getRecursiveDimensionSizeArray(tensor, targetDimensionSizeArray)
 		
 		keyCount = keyCount + 1
 		
-		if keyCount == 1 then firstKey = i	end
+		if (keyCount == 1) then firstKey = i end
 		
 	end
 

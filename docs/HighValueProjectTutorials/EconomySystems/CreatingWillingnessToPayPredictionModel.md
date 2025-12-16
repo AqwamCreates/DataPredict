@@ -21,7 +21,9 @@ Before we train our model, we will first need to construct a quantile model. We 
 
 local DataPredict = require(DataPredict)
 
-local quantilesList = {0.25, 0.5, 0.75, 0.90} -- This is required for Quantile Regression model.
+ -- This is required for Quantile Regression model. You do not need to do this for Bayesian Quantile Linear Regression model.
+
+local quantilesList = {0.25, 0.5, 0.75, 0.90}
 
 -- quantilesList[1] = 25th percentile (conservative) price
 -- quantilesList[2] = Median price
@@ -153,9 +155,15 @@ In order to produce predictions from our model, we must perform this operation:
 
 local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
--- If you're going for BayesianQuantileLinearRegression model, please include the "quantilePriceVector" to the second parameter of predict() function.
+-- This is for Quantile Regression model.
+
+local predictedQuantilePriceVector = WillingnessToPayPredictionModel:predict(currentPlayerDataVector)
+
+-- If you're going for Bayesian Quantile Linear Regression model, please include the "quantilePriceVector" to the second parameter of predict() function.
 
 local quantilePriceVector = {{0.25, 0.5, 0.75, 0.9}}
+
+-- These values are are equivalent to the ones we set for Quantile Regression quantileList.
 
 -- quantilePrices[1][1] = 25th percentile (conservative) price
 -- quantilePrices[1][2] = Median price

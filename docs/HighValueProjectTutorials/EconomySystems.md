@@ -8,7 +8,7 @@ I recommend you to use in-game currencies instead of the real-world ones.
 
 * Additionally, there are a lot of potential legal issues when price gouging using real-world money.
 
-## Maximization Models
+## Price Maximization Models
 
 * [Creating Willingness-To-Pay Prediction Model](EconomySystems/CreatingWillingnessToPayPredictionModel.md)
 
@@ -26,7 +26,7 @@ I recommend you to use in-game currencies instead of the real-world ones.
 
    * Uses QuantileRegression's output as data for Ordinal Regression alongside with players' data
 
-## Search Models
+## Price Search Models
 
 * [Creating Base Price Search Model](EconomySystems/CreatingBasePriceSearchModel.md)
 

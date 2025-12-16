@@ -24,7 +24,7 @@ Once set, we will show you on how to choose the model's binary function based on
 | Competitive Games     | ~50%              | Contains half factor of addiction (winning, getting rewards and etc.) and half factor of fustration (toxic players, consistently losing etc.). |
 | Casual Games          | 70 - 80%          | Low commitment means high likelihood of leaving the game.                                                                                      |
 
-### Binary Function Recommended Setup
+### Recommended Setup For Binary Function
 
 | Binary Function  | When To Use                                             | Churn Detection Behavior  |
 |------------------|---------------------------------------------------------|---------------------------|

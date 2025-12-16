@@ -36,7 +36,7 @@ ModelParametersMerger.__index = ModelParametersMerger
 
 setmetatable(ModelParametersMerger, BaseInstance)
 
-local defaultSplitMode = "Accuracy"
+local defaultSplitMode = "Equal"
 
 local defaultMergeMode = "Average"
 

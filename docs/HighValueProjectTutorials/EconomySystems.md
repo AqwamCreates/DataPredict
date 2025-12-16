@@ -8,7 +8,7 @@ I recommend you to use in-game currencies instead of the real-world ones.
 
 * Additionally, there are a lot of potential legal issues when price gouging using real-world money.
 
-## Models
+## Maximization Models
 
 * [Creating Willingness-To-Pay Prediction Model](EconomySystems/CreatingWillingnessToPayPredictionModel.md)
 
@@ -16,11 +16,17 @@ I recommend you to use in-game currencies instead of the real-world ones.
 
     * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* Creating Tiered Probability-To-Pay
+* Creating Tiered Probability-To-Pay Model
 
     * Uses Ordinal Regression.
 
     * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
+* Creating Ensemble Pricing Maximization Model
+
+   * Uses QuantileRegression's output as data for Ordinal Regression
+
+## Search Models
 
 * [Creating Base Price Search Model](EconomySystems/CreatingBasePriceSearchModel.md)
 
@@ -31,6 +37,8 @@ I recommend you to use in-game currencies instead of the real-world ones.
     * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
 * Dynamic Pricing Models (Use TD Actor-Critic + Diagonal Gaussian Policy + Tanh activation outputs to multiply with base cost and then add with the base cost to get new effective cost.)
+
+## Other Models
 
 * Virtual Currency Velocity (Use non-linear KalmanFilter variants due to data not being linear.)
 

@@ -12,7 +12,7 @@ Currently, you need these to produce the model:
 
 Before we train our model, we will first need to construct a quantile model. We have two algorithms that you can pick from.
 
-| Model                               | Advantages                                                     | Disadvantage                         |
+| Model                               | Advantages                                                     | Disadvantages                        |
 |-------------------------------------|----------------------------------------------------------------|--------------------------------------|
 | Bayesian Quantile Linear Regression | Data efficient and is computationally fast for small datasets. | Cannot perform incremental learning. |
 | Quantile Regression                 | Can perform incremental learning.                              | Requires a lot of data.              |

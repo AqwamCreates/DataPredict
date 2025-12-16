@@ -1,0 +1,45 @@
+# Economy Systems
+
+## Disclaimer
+
+I recommend you to use in-game currencies instead of the real-world ones.
+
+* It is far more difficult to make players into spending more real-world money than the in-game ones.
+
+* Additionally, there are a lot of potential legal issues when price gouging using real-world money.
+
+## Price Maximization Models
+
+* [Creating Willingness-To-Pay Prediction Model](EconomySystems/CreatingWillingnessToPayPredictionModel.md)
+
+    * Estimates the best price based on players' spending patterns despite having the same player data.
+
+    * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
+* Creating Tiered Probability-To-Pay Model
+
+    * Uses Ordinal Regression.
+
+    * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
+* Creating Pricing Maximization Ensemble Model
+
+   * Uses QuantileRegression's output as data for Ordinal Regression alongside with players' data
+
+## Price Search Models
+
+* [Creating Base Price Search Model](EconomySystems/CreatingBasePriceSearchModel.md)
+
+    * Extremely useful if one of the in-game currencies is hard to get (especially if can be affected by external means like exploits and trading), leading to lower spending of that currency. This results to lack of supply from the buyer to satisfy seller's, or in this case, our ML model's demand for that currency. This would then lead to item that is to be purchased requiring that particular in-game currency to be lower. As a result this leads to the in-game currency be viewed as "extremely valuable" by the game's ecosystem because you only need fewer of that currency to purchase "expensive" items.
+
+    * Recommended to use this with the Dynamic Pricing Models.
+    
+    * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
+* Dynamic Pricing Models (Use TD Actor-Critic + Diagonal Gaussian Policy + Tanh activation outputs to multiply with base cost and then add with the base cost to get new effective cost.)
+
+## Other Models
+
+* Virtual Currency Velocity (Use non-linear KalmanFilter variants due to data not being linear.)
+
+* Transaction Prediction (Use Markov. Predict next purchase type / timing.)

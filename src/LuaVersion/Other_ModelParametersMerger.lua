@@ -40,30 +40,42 @@ local defaultSplitMode = "Accuracy"
 
 local defaultMergeMode = "Average"
 
-function ModelParametersMerger.new(parameterDictionary)
+local defaultRoundingMode = "None"
+
+local roundFunctionList = {
 	
+	["Floor"] = math.floor,
+	
+	["Ceiling"] = math.ceil,
+	
+}
+
+function ModelParametersMerger.new(parameterDictionary)
+
 	parameterDictionary = parameterDictionary or {}
 
 	local NewModelParametersMerger = BaseInstance.new(parameterDictionary)
 
 	setmetatable(NewModelParametersMerger, ModelParametersMerger)
-	
+
 	NewModelParametersMerger:setName("ModelParametersMerger")
-	
+
 	NewModelParametersMerger:setClassName("ModelParametersMerger")
 
 	NewModelParametersMerger.Model = parameterDictionary.Model
 
 	NewModelParametersMerger.modelType = parameterDictionary.modelType
-	
+
 	ModelParametersMerger.splitMode = parameterDictionary.splitMode or defaultSplitMode
 
 	NewModelParametersMerger.mergeMode = parameterDictionary.mergeMode or defaultMergeMode
 
+	NewModelParametersMerger.roundingMode = parameterDictionary.roundingMode or defaultRoundingMode
+
 	NewModelParametersMerger.featureMatrix = parameterDictionary.featureMatrix
 
 	NewModelParametersMerger.labelVector = parameterDictionary.labelVector
-	
+
 	NewModelParametersMerger.splitAmountArray = parameterDictionary.splitAmountArray
 
 	return NewModelParametersMerger
@@ -71,9 +83,9 @@ function ModelParametersMerger.new(parameterDictionary)
 end
 
 function ModelParametersMerger:setCustomSplitAmountArray(splitAmountArray)
-	
+
 	self.splitAmountArray = splitAmountArray or self.splitAmountArray
-	
+
 end
 
 function ModelParametersMerger:setData(featureMatrix, labelVector)
@@ -90,31 +102,103 @@ function ModelParametersMerger:setData(featureMatrix, labelVector)
 
 end
 
-local function checkDepth(array, depth)
+local function round(functionToApply, nestedTable, numberOfDimensions, currentDimension) -- Dimension size array is put here because it is computationally expensive to use recurvsive just to get the dimension size.
+
+	local resultTensor = {}
+
+	if (currentDimension < numberOfDimensions) then
+
+		for i, subTensor in pairs(nestedTable) do resultTensor[i] = round(functionToApply, subTensor, numberOfDimensions, currentDimension + 1) end
+
+	elseif (currentDimension == numberOfDimensions) then -- Much more efficient than applying recursion again to get the original value.
+
+		for i, value in pairs(nestedTable) do resultTensor[i] = functionToApply(value) end
+
+	else -- Sometimes the original tensor can be a number, so we must do the operation directly.
+
+		resultTensor = functionToApply(nestedTable)
+
+	end
+
+	return resultTensor
+
+end
+
+local function checkDepth(array, depth, hasDictionary)
 
 	depth = depth or 0
+
+	hasDictionary = hasDictionary or false
 
 	local valueType = typeof(array)
 
 	if (valueType == "table") then
 
-		return checkDepth(array[1], depth + 1)
+		-- Check if this table is a dictionary (has non-integer keys or isn't a simple sequence).
+
+		local isDictionary = false
+
+		local numericCount = 0
+
+		for key, _ in pairs(array) do
+
+			if (type(key) == "number") and (key >= 1 ) and (math.floor(key) == key) then
+
+				numericCount = numericCount + 1
+
+			else
+
+				isDictionary = true
+
+				break
+
+			end
+
+		end
+
+		-- Check if it's a sequence (consecutive integer keys starting from 1).
+		
+		if (not isDictionary) and (numericCount > 0) then
+
+			local isSequence = true
+
+			for i = 1, numericCount, 1 do
+
+				if (not array[i]) then
+
+					isSequence = false
+
+					break
+
+				end
+
+			end
+
+			isDictionary = (not isSequence)
+
+		end
+
+		-- Recurse into the first element if it's an array/sequence.
+
+		if (not isDictionary) and (array[1]) then
+
+			return checkDepth(array[1], depth + 1, hasDictionary)
+
+		else
+
+			-- This is a dictionary, so the next level would require a key.
+
+			return (depth + 1), true
+
+		end
 
 	else
 
-		return depth
+		-- Reached a non-table value.
+
+		return depth, hasDictionary
 
 	end
-
-end
-
-local function checkIfIsTableOfMatrices(array)
-
-	local depth = checkDepth(array)
-
-	local isTableOfMatrices = (depth == 3)
-
-	return isTableOfMatrices
 
 end
 
@@ -171,7 +255,7 @@ local function convertValueArrayToPercentageArray(array)
 		table.insert(percentageArray, percentage)
 
 	end
-	
+
 	return percentageArray
 
 end
@@ -251,7 +335,7 @@ local function generateAccuracyArrayForClassification(Model, ModelParametersArra
 		local totalCorrect = 0
 
 		Model:setModelParameters(ModelParameters)
-		
+
 		local predictedlabelVector = Model:predict(featureMatrix)
 
 		for j = 1, totalLabel, 1 do
@@ -287,13 +371,13 @@ local function checkIfAllValuesAreZeroesInArray(array)
 end
 
 local function generateAccuracyArray(Model, modelType, ModelParametersArray, featureMatrix, labelVector)
-	
+
 	if (not Model) then error("No model.") end
-	
+
 	if (not modelType) then error("No model type.") end
-	
+
 	local accuracyArray
-	
+
 	if (modelType == "Regression") then
 
 		local errorArray = generateErrorArrayForRegression(Model, ModelParametersArray, featureMatrix, labelVector)
@@ -315,15 +399,15 @@ local function generateAccuracyArray(Model, modelType, ModelParametersArray, fea
 		error("Invalid model type!")
 
 	end
-	
+
 	return accuracyArray
-	
+
 end
 
 local function getIndexOfHighestAccuracy(accuracyArray)
-	
+
 	local index
-	
+
 	local highestAccuracy = -math.huge
 
 	for i, accuracy in ipairs(accuracyArray)  do
@@ -337,24 +421,32 @@ local function getIndexOfHighestAccuracy(accuracyArray)
 		end
 
 	end
-	
+
 	return index
-	
+
 end
 
-local function getSplitAmountArrayFromAccuracyArray(splitMode, accuracyArray)
+local function getSplitAmountArray(Model, modelType, splitMode, featureMatrix, labelVector, ModelParametersArray)
 	
+	local numberOfModelParameters = #ModelParametersArray
+	
+	local accuracyArray
+
 	local splitAmountArray
-	
-	local numberOfModelParameters = #accuracyArray
-	
-	if (splitMode == "Best") then
+
+	if (splitMode ~= "Equal") and (splitMode ~= "Ignore") then
 		
+		accuracyArray = generateAccuracyArray(Model, modelType, ModelParametersArray, featureMatrix, labelVector) 
+		
+	end
+
+	if (splitMode == "Best") then
+
 		local areAllZeroes = checkIfAllValuesAreZeroesInArray(accuracyArray)
 
 		local bestModelParametersIndex
 
-		if (areAllZeroes == true) then 
+		if (areAllZeroes) then 
 
 			bestModelParametersIndex = Random.new():NextInteger(1, numberOfModelParameters)
 
@@ -367,29 +459,29 @@ local function getSplitAmountArrayFromAccuracyArray(splitMode, accuracyArray)
 		splitAmountArray = table.create(numberOfModelParameters, 0)
 
 		splitAmountArray[bestModelParametersIndex] = 1
-		
+
 	elseif (splitMode == "Ratio") then
-		
+
 		splitAmountArray = convertValueArrayToPercentageArray(accuracyArray)
-		
+
 	elseif (splitMode == "Equal") then
-		
+
 		local average = 1 / numberOfModelParameters
 
 		splitAmountArray = table.create(numberOfModelParameters, average)
-		
+
 	elseif (splitMode == "Ignore") then
-		
+
 		splitAmountArray = {}
-		
+
 	else
 
 		error("Invalid split mode.")
-		
+
 	end
-	
+
 	return splitAmountArray
-	
+
 end
 
 local function applyFunctionToEachMatricesInModelParameters(functionToApply, ModelParameters)
@@ -404,8 +496,90 @@ local function applyFunctionToEachMatricesInModelParameters(functionToApply, Mod
 
 end
 
-local function calculateWeightedAverageModelParametersTable(ModelParametersArray, splitAmountArray)
+local function collectKeys(dictionary, keyArray)
 	
+	for key, _ in pairs(dictionary) do
+		
+		if (not table.find(keyArray, key)) then
+			
+			table.insert(keyArray, key)
+			
+		end
+		
+	end
+	
+	return keyArray
+	
+end
+
+local function mergeModelParametersNestedDictionaries(functionToApply, dimensionSizeArray, numberOfDimensions, currentDimension, ...)
+	
+	local tensorArray = {...}
+
+	-- Handle the case where we might be dealing with dictionaries.
+
+	-- Check if we're dealing with dictionaries at this level.
+	
+	local firstTensor = tensorArray[1]
+
+	-- Original array processing with variable dimension handling.
+	
+	local dimensionSize = dimensionSizeArray[currentDimension] or 0
+	
+	local resultArray = {}
+
+	if (currentDimension < numberOfDimensions) then
+		
+		-- Handle variable sizes by finding maximum index.
+		
+		local maximumIndex = 0
+		
+		for _, tensor in ipairs(tensorArray) do
+			
+			if (tensor) then maximumIndex = math.max(maximumIndex, #tensor) end
+			
+		end
+		
+		local actualSize = math.max(dimensionSize, maximumIndex)
+		
+		for i = 1, actualSize, 1 do
+			
+			local subTensorArray = {}
+			
+			for _, tensor in ipairs(tensorArray) do table.insert(subTensorArray, (tensor and tensor[i]) or nil) end
+			
+			resultArray[i] = mergeModelParametersNestedDictionaries(functionToApply, dimensionSizeArray, numberOfDimensions, currentDimension + 1, table.unpack(subTensorArray))
+			
+		end
+		
+	elseif (currentDimension == numberOfDimensions) then
+		
+		local keyArray = {}
+		
+		for _, tensor in ipairs(tensorArray) do keyArray = collectKeys(tensor, keyArray) end
+		
+		for i, key in ipairs(keyArray) do
+			
+			local valueArray = {}
+			
+			for _, tensor in ipairs(tensorArray) do table.insert(valueArray, tensor[key] or 0) end
+			
+			resultArray[key] = functionToApply(table.unpack(valueArray))
+			
+		end
+		
+	else
+		
+		resultArray = functionToApply(table.unpack(tensorArray))
+		
+	end
+
+	return resultArray
+	
+end
+
+local function calculateWeightedAverageModelParametersTable(ModelParametersArray, splitAmountArray)
+
 	local totalSplitAmount = calculateTotalFromArray(splitAmountArray)
 
 	local NewModelParametersTable = generateModelParametersTableWithMatricesOfZeroValues(ModelParametersArray[1])
@@ -421,11 +595,11 @@ local function calculateWeightedAverageModelParametersTable(ModelParametersArray
 		end
 
 	end
-	
+
 	for i, matrix in ipairs(NewModelParametersTable) do
-		
+
 		NewModelParametersTable[i] = AqwamTensorLibrary:divide(NewModelParametersTable[i], totalSplitAmount)
-		
+
 	end
 
 	return NewModelParametersTable
@@ -433,7 +607,7 @@ local function calculateWeightedAverageModelParametersTable(ModelParametersArray
 end
 
 local function calculateWeightedAverageModelParameters(ModelParametersArray, splitAmountArray)
-	
+
 	local totalSplitAmount = calculateTotalFromArray(splitAmountArray)
 
 	local FirstModelParameters = ModelParametersArray[1]
@@ -449,7 +623,7 @@ local function calculateWeightedAverageModelParameters(ModelParametersArray, spl
 		NewModelParameters = AqwamTensorLibrary:add(NewModelParameters, calculatedMatrix)
 
 	end
-	
+
 	NewModelParameters = AqwamTensorLibrary:divide(NewModelParameters, totalSplitAmount)
 
 	return NewModelParameters
@@ -457,11 +631,11 @@ local function calculateWeightedAverageModelParameters(ModelParametersArray, spl
 end
 
 local function calculateAverageModelParametersTable(ModelParametersArray)
-	
+
 	local NewModelParametersTable = generateModelParametersTableWithMatricesOfZeroValues(ModelParametersArray[1])
-	
+
 	local numberOfModelParameters = #ModelParametersArray
-	
+
 	for i, ModelParametersTable in ipairs(ModelParametersArray) do
 
 		for j, matrix in ipairs(ModelParametersTable) do
@@ -471,21 +645,21 @@ local function calculateAverageModelParametersTable(ModelParametersArray)
 		end
 
 	end
-	
+
 	for i, matrix in ipairs(NewModelParametersTable) do
 
 		NewModelParametersTable[i] = AqwamTensorLibrary:divide(NewModelParametersTable[i], numberOfModelParameters)
 
 	end
-	
+
 	return NewModelParametersTable
-	
+
 end
 
 local function createAverageModelParameters(ModelParametersArray)
 
 	local NewModelParameters = AqwamTensorLibrary:add(table.unpack(ModelParametersArray))
-	
+
 	local numberOfModelParameters = #ModelParametersArray
 
 	NewModelParameters = AqwamTensorLibrary:divide(NewModelParameters, numberOfModelParameters)
@@ -494,63 +668,141 @@ local function createAverageModelParameters(ModelParametersArray)
 
 end
 
+local function getRecursiveDimensionSizeArray(tensor, targetDimensionSizeArray)
+
+	if (type(tensor) ~= "table") then return end
+	
+	local keyCount = 0
+	
+	local firstKey
+	
+	for i, tensor in pairs(tensor) do
+		
+		keyCount = keyCount + 1
+		
+		if keyCount == 1 then firstKey = i	end
+		
+	end
+
+	table.insert(targetDimensionSizeArray, keyCount)
+
+	getRecursiveDimensionSizeArray(tensor[firstKey], targetDimensionSizeArray)
+
+end
+
+local function getDimensionSizeArray(tensor)
+
+	local dimensionSizeArray = {}
+
+	getRecursiveDimensionSizeArray(tensor, dimensionSizeArray)
+
+	return dimensionSizeArray
+
+end
+
 local function mergeModelParameters(mergeMode, ModelParametersArray, splitAmountArray)
-	
+
 	local NewModelParameters
-	
+
 	local numberOfModelParameters = #ModelParametersArray
+
+	local FirstModelParameters = ModelParametersArray[1]
+
+	local depth, hasDictionary = checkDepth(FirstModelParameters)
 	
-	local isTableOfMatrices = checkIfIsTableOfMatrices(ModelParametersArray[1])
-	
-	if (isTableOfMatrices) and (mergeMode == "WeightedAverage") then
+	local dimensionSizeArray = getDimensionSizeArray(FirstModelParameters)
+
+	local isTableOfMatrices = (depth == 3)
+
+	local isMatrix = (depth == 2)
+
+	if (hasDictionary) and (mergeMode == "WeightedAverage") then 
+		
+		local totalSplitAmount = calculateTotalFromArray(splitAmountArray)
+
+		local functionToApply = function (...)
+
+			local sum = 0
+
+			for i, value in ipairs({...}) do sum = sum + (splitAmountArray[i] * value) end
+
+			local weightedAverage = sum / totalSplitAmount
+
+			return weightedAverage
+
+		end
+
+		NewModelParameters = mergeModelParametersNestedDictionaries(functionToApply, dimensionSizeArray, depth, 1, table.unpack(ModelParametersArray))
+
+	elseif (isTableOfMatrices) and (mergeMode == "WeightedAverage") then
 
 		NewModelParameters = calculateWeightedAverageModelParametersTable(ModelParametersArray, splitAmountArray)
 
-	elseif (not isTableOfMatrices) and (mergeMode == "WeightedAverage") then
+	elseif (isMatrix) and (mergeMode == "WeightedAverage") then
 
 		NewModelParameters = calculateWeightedAverageModelParameters(ModelParametersArray, splitAmountArray)
+
+	elseif (hasDictionary) and (mergeMode == "Average") then
 		
+		local functionToApply = function (...)
+			
+			local sum = 0
+			
+			for _, value in ipairs({...}) do sum = sum + value end
+			
+			local average = sum / numberOfModelParameters
+			
+			return average
+			
+		end
+
+		NewModelParameters = mergeModelParametersNestedDictionaries(functionToApply, dimensionSizeArray, depth, 1, table.unpack(ModelParametersArray))
+
 	elseif (isTableOfMatrices)  and (mergeMode == "Average") then
-		
+
 		NewModelParameters = calculateAverageModelParametersTable(ModelParametersArray)
-		
-	elseif (not isTableOfMatrices) and (mergeMode == "Average") then
-		
+
+	elseif (isMatrix) and (mergeMode == "Average") then
+
 		NewModelParameters = createAverageModelParameters(ModelParametersArray)
-		
+
 	else
-		
+
 		error("Invalid merge mode.")
 
 	end
-	
+
 	return NewModelParameters
-	
+
 end
 
 function ModelParametersMerger:merge(...)
-	
+
 	local ModelParametersArray = {...}
 
 	if (#ModelParametersArray <= 0) then error("No model parameters set.") end
-	
+
 	local splitAmountArray = self.splitAmountArray
-	
+
 	if (not splitAmountArray) then
-		
-		local accuracyArray = generateAccuracyArray(self.Model, self.modelType, ModelParametersArray, self.featureMatrix, self.labelVector) 
 
-		splitAmountArray = getSplitAmountArrayFromAccuracyArray(self.splitMode, accuracyArray)
-		
-	else
-		
-		warn("Using the existing split amount array.")
-		
+		splitAmountArray = getSplitAmountArray(self.Model, self.modelType, self.splitMode, self.featureMatrix, self.labelVector, ModelParametersArray)
+
 	end
-	
-	local NewModelParameters = mergeModelParameters(self.mergeMode, ModelParametersArray, splitAmountArray)
 
-	return NewModelParameters
+	local NewModelParameters = mergeModelParameters(self.mergeMode, ModelParametersArray, splitAmountArray)
+	
+	local roundingMode = self.roundingMode
+	
+	if (roundingMode == "None") then return NewModelParameters end
+	
+	local roundingFunctionToApply = roundFunctionList[roundingMode]
+	
+	if (not roundingFunctionToApply) then error("Invalid rounding mode.") end
+	
+	local depth = checkDepth(NewModelParameters)
+
+	return round(roundingFunctionToApply, NewModelParameters, depth, 1)
 
 end
 

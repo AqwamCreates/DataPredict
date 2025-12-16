@@ -8,13 +8,17 @@
 
    * If your client has already paid extra 500 USD (to remove 3-months cool-off) on top of these license, then you may consult with your clients without additional cost.
  
-      * To avoid a loophole where clients can just get 2% only from me and then skip 500 USD charge by immediately consulting you.
+      * This is to avoid a loophole where clients can just get 2% only from me and then skip 500 USD charge by immediately consulting you without my awareness.
   
    * Otherwise, you bear the 500 USD upfront cost.
 
 ### Definitions
 
-* Third-Party Consultants are employees that are not employed by the DataPredict Creator or your business' internal employees but uses DataPredict for consultations.
+* Third-Party Consultants are employees taht uses DataPredict but are not employed by:
+
+    * The DataPredict Creator;
+    
+    * Your business where the employee have been employed more than six months.
 
 ## Licenses
 

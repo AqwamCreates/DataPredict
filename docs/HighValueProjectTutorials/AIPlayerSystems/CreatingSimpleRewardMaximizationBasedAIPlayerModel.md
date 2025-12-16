@@ -163,7 +163,7 @@ local function run(Player)
 
         playerState = getPlayerState(Player)
     
-        actionName = PlayerModel:reinforce(playerState, rewardValue)
+        actionName = PlayerModel:reinforce({{playerState}}, rewardValue)
 
         actionFunction = actionFunctionDictionary[actionName]
 

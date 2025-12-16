@@ -6,7 +6,7 @@ For best results, please use:
 
 * K-Means
 
-  * This model sets up X number of clusters and finds the center of data.
+  * This model sets up X number of clusters and finds the center of clusters.
 
 * Agglomerative Hierarchical
 

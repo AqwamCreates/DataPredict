@@ -804,8 +804,10 @@ function ModelParametersMerger:merge(...)
 	local roundingFunctionToApply = roundFunctionList[roundingMode]
 	
 	if (not roundingFunctionToApply) then error("Invalid rounding mode.") end
+	
+	local depth = checkDepth(NewModelParameters)
 
-	return round(roundingFunctionToApply, NewModelParameters, 1, 1)
+	return round(roundingFunctionToApply, NewModelParameters, depth, 1)
 
 end
 

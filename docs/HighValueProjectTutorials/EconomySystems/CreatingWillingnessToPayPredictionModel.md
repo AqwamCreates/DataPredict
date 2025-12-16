@@ -59,6 +59,14 @@ local playerDataVector = {
     }
 }
 
+-- Optionally, you can also concatenate this with the items' data.
+
+local itemDataVector = {
+
+  {rarity, timeSinceLastReleased}
+
+}
+
 local priceVector = {
 
     {price}

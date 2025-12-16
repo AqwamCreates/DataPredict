@@ -12,6 +12,8 @@
 
 * [Creating Willingness-To-Pay Prediction Model](EconomySystems/CreatingWillingnessToPayPredictionModel.md)
 
+    * Estimates the best price based on players' spending patterns for the same player data.
+
     * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
 * [Creating Base Price Search Model](EconomySystems/CreatingBasePriceSearchModel.md)

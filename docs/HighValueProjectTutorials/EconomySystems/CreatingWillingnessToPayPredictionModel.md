@@ -10,13 +10,25 @@ Currently, you need these to produce the model:
 
 ## Setting Up
 
-Before we train our model, we will first need to construct a regression model as shown below.
+Before we train our model, we will first need to construct a quantile model. We have two algorithms that you can pick from.
+
+| Model                               | Advantages                                                     | Disadvantage                         |
+|-------------------------------------|----------------------------------------------------------------|--------------------------------------|
+| Bayesian Quantile Linear Regression | Data efficient and is computationally fast for small datasets. | Cannot perform incremental learning. |
+| Quantile Regression                 | Can perform incremental learning.                              | Requires a lot of data.              |
 
 ```lua
 
 local DataPredict = require(DataPredict)
 
-local WillingnessToPayPredictionModel = DataPredict.Models.BayesianLinearRegression.new()
+local quantilesList = {0.25, 0.5, 0.75, 0.90} -- This is required for Quantile Regression model.
+
+-- quantilesList[1] = 25th percentile (conservative) price
+-- quantilesList[2] = Median price
+-- quantilesList[3] = 75th percentile (aggressive) price  
+-- quantilesList[4] = 90th percentile (whale-focused) price
+
+local WillingnessToPayPredictionModel = DataPredict.Models.QuantileRegression.new({quantilesList = quantilesList})
 
 ```
 
@@ -140,6 +152,8 @@ In order to produce predictions from our model, we must perform this operation:
 ```lua
 
 local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
+
+-- If you're going for BayesianQuantileLinearRegression model, please include the "quantilePriceVector" to the second parameter of predict() function.
 
 local quantilePriceVector = {{0.25, 0.5, 0.75, 0.9}}
 

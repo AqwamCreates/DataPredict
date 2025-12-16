@@ -1,4 +1,4 @@
-# [EconomySystems](../EconomySystems.md) - Creating Willingness-To-Pay Prediction Model
+# [Economy Systems](../EconomySystems.md) - Creating Willingness-To-Pay Prediction Model
 
 Hello guys! Today, I will be showing you on how to create a retention-based model that could predict the likelihood of a player would purchase an item for a particular price.
 

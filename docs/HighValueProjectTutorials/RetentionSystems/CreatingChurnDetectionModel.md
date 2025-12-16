@@ -250,6 +250,8 @@ We can do this for every 10 seconds and use this to extend the players' playtime
 
 ```lua
 
+local probabilityThreshold = 0.5
+
 --[[
 
     Can change probabilityThreshold value to adjust sensitivity. 
@@ -258,8 +260,6 @@ We can do this for every 10 seconds and use this to extend the players' playtime
     would make the model implicitly learn on how sensitive the model should be.
 
 --]]
-
-local probabilityThreshold = 0.5
 
 if (isPlayerInRedZoneProbability >= probabilityThreshold) then 
 

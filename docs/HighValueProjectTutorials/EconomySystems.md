@@ -24,7 +24,7 @@ I recommend you to use in-game currencies instead of the real-world ones.
 
 * Creating Ensemble Pricing Maximization Model
 
-   * Uses QuantileRegression's output as data for Ordinal Regression
+   * Uses QuantileRegression's output as data for Ordinal Regression alongside with players' data
 
 ## Search Models
 

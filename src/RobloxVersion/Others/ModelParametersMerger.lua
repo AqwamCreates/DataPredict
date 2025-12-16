@@ -512,7 +512,7 @@ local function collectKeys(dictionary, keyArray)
 	
 end
 
-local function mergeModelParametersNestedDictionary(functionToApply, dimensionSizeArray, numberOfDimensions, currentDimension, ...)
+local function mergeModelParametersNestedDictionaries(functionToApply, dimensionSizeArray, numberOfDimensions, currentDimension, ...)
 	
 	local tensorArray = {...}
 
@@ -530,7 +530,7 @@ local function mergeModelParametersNestedDictionary(functionToApply, dimensionSi
 
 	if (currentDimension < numberOfDimensions) then
 		
-		-- Handle variable sizes by finding max index.
+		-- Handle variable sizes by finding maximum index.
 		
 		local maximumIndex = 0
 		
@@ -539,25 +539,20 @@ local function mergeModelParametersNestedDictionary(functionToApply, dimensionSi
 			if (tensor) then maximumIndex = math.max(maximumIndex, #tensor) end
 			
 		end
-
-		-- Use the larger of dimensionSize or maximumIndex found.
 		
 		local actualSize = math.max(dimensionSize, maximumIndex)
 		
-		
-		for i = 1, actualSize do
+		for i = 1, actualSize, 1 do
 			
 			local subTensorArray = {}
 			
 			for _, tensor in ipairs(tensorArray) do table.insert(subTensorArray, (tensor and tensor[i]) or nil) end
 			
-			resultArray[i] = mergeModelParametersNestedDictionary(functionToApply, dimensionSizeArray, numberOfDimensions, currentDimension + 1, table.unpack(subTensorArray))
+			resultArray[i] = mergeModelParametersNestedDictionaries(functionToApply, dimensionSizeArray, numberOfDimensions, currentDimension + 1, table.unpack(subTensorArray))
 			
 		end
 		
 	elseif (currentDimension == numberOfDimensions) then
-		
-		-- Last dimension - apply function directly.
 		
 		local keyArray = {}
 		
@@ -737,7 +732,7 @@ local function mergeModelParameters(mergeMode, ModelParametersArray, splitAmount
 
 		end
 
-		NewModelParameters = mergeModelParametersNestedDictionary(functionToApply, dimensionSizeArray, depth, 1, table.unpack(ModelParametersArray))
+		NewModelParameters = mergeModelParametersNestedDictionaries(functionToApply, dimensionSizeArray, depth, 1, table.unpack(ModelParametersArray))
 
 	elseif (isTableOfMatrices) and (mergeMode == "WeightedAverage") then
 
@@ -761,7 +756,7 @@ local function mergeModelParameters(mergeMode, ModelParametersArray, splitAmount
 			
 		end
 
-		NewModelParameters = mergeModelParametersNestedDictionary(functionToApply, dimensionSizeArray, depth, 1, table.unpack(ModelParametersArray))
+		NewModelParameters = mergeModelParametersNestedDictionaries(functionToApply, dimensionSizeArray, depth, 1, table.unpack(ModelParametersArray))
 
 	elseif (isTableOfMatrices)  and (mergeMode == "Average") then
 

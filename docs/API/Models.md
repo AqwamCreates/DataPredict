@@ -42,7 +42,7 @@
 
   * Contains most of the deep reinforcement learning and generative algorithms listed here.
 
-* Currently, DataPredict™ has ~90% (86 out of 96) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (86 out of 99) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -54,21 +54,21 @@
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                                                      | Alternate Names | Properties    | Use Cases                                                                                                |
-|--------------------------------------------------------------------------------------------|-----------------|---------------|----------------------------------------------------------------------------------------------------------|
-| [LinearRegression](Models/LinearRegression.md)                                             | LR              | 🔰 🟢 🟡     | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
-| [QuantileRegression](Models/QuantileRegression.md)                                         | None            | 🟢 🟡        | Case-Based Time-To-Leave Prediction And In-Game Currency Price Generation                                |
-| [PoissonRegression](Models/PoissonRegression.md)                                           | None            | 🟢 🟡 ⚠️     | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
-| [NegativeBinomialRegression](Models/NegativeBinomialRegression.md)                         | None            | 🟢 🟡 ⚠️     | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
-| [GammaRegression](Models/GammaRegression.md)                                               | None            | ❗ 🟢 🟡 ⚠️  | Player Session Duration Prediction And Content Engagement Time Prediction                                |
-| [IsotonicRegression](Models/IsotonicRegression.md)                                         | None            | ⚡ 🟢 🟡    | 1-Dimensional Skill-Based Time-To-Leave Prediction                                                         |
-| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | ⚡ 🟢        | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                    |
-| [SupportVectorRegression](Models/SupportVectorRegression.md)                               | SVR             | 💾 🟡        | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
-| [SupportVectorRegressionGradientVariant](Models/SupportVectorRegressionGradientVariant.md) | SVR             | 🟢 🟡        | Real-Time Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                   |
-| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | 🟢 🟡        | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
-| [NormalLinearRegression](Models/NormalLinearRegression.md)*                                | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
-| [BayesianLinearRegression](Models/BayesianLinearRegression.md)*                            | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
-| [BayesianQuantileLinearRegression](Models/BayesianQuantileLinearRegression.md)*            | None            | 💾 ⚡ 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
+| Model                                                                                      | Alternate Names | Properties        | Use Cases                                                                                                |
+|--------------------------------------------------------------------------------------------|-----------------|-------------------|----------------------------------------------------------------------------------------------------------|
+| [LinearRegression](Models/LinearRegression.md)                                             | LR              | 🔰 🟢 🟡        | General Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
+| [QuantileRegression](Models/QuantileRegression.md)                                         | None            | 🟢 🟡            | Case-Based Time-To-Leave Prediction And In-Game Currency Price Generation                                |
+| [PoissonRegression](Models/PoissonRegression.md)                                           | None            | 🟢 🟡 ⚠️         | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
+| [NegativeBinomialRegression](Models/NegativeBinomialRegression.md)                         | None            | 🟢 🟡 ⚠️         | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
+| [GammaRegression](Models/GammaRegression.md)                                               | None            | ❗ 🟢 🟡 ⚠️      | Player Session Duration Prediction And Content Engagement Time Prediction                                |
+| [IsotonicRegression](Models/IsotonicRegression.md)                                         | None            | ⚡ 🟢 🟡         | 1-Dimensional Skill-Based Time-To-Leave Prediction                                                         |
+| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | ⚡ 🟢            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                    |
+| [SupportVectorRegression](Models/SupportVectorRegression.md)                               | SVR             | 💾 🟡            | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
+| [SupportVectorRegressionGradientVariant](Models/SupportVectorRegressionGradientVariant.md) | SVR             | 🟢 🟡            | Real-Time Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                   |
+| [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | 🟢 🟡            | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
+| [NormalLinearRegression](Models/NormalLinearRegression.md)*                                | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
+| [BayesianLinearRegression](Models/BayesianLinearRegression.md)*                            | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
+| [BayesianQuantileLinearRegression](Models/BayesianQuantileLinearRegression.md)*            | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
 
 \* The "instant train" models have these issues:
 

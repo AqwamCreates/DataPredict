@@ -524,9 +524,9 @@ local minimumOutputValueList = {
 
 }
 
-local function getCutOffFunctionList()
+local function getCutOffValueList()
 
-	local cutOffFunctionList = {}
+	local cutOffValueList = {}
 
 	for stringMinimumOutputValue, binaryFunctionArray in pairs(minimumOutputValueList) do
 
@@ -534,29 +534,17 @@ local function getCutOffFunctionList()
 
 			local minimumOutputValue = tonumber(stringMinimumOutputValue)
 
-			local cutOffValue = (1 - minimumOutputValue) / 2
-
-			local cutOffFunction = function(x) 
-
-				if (x > cutOffValue) then return 1 end
-
-				if (x < cutOffValue) then return minimumOutputValue end
-
-				return cutOffValue
-
-			end
-
-			cutOffFunctionList[binaryFunction] = cutOffFunction
+			cutOffValueList[binaryFunction] = (1 + minimumOutputValue) / 2
 
 		end
 
 	end
 
-	return cutOffFunctionList
+	return cutOffValueList
 
 end
 
-local cutOffFunctionList = getCutOffFunctionList()
+local cutOffValueList = getCutOffValueList()
 
 local function createClassesList(labelVector)
 
@@ -1102,13 +1090,23 @@ function NeuralNetworkModel:fetchValueFromScalar(outputVector)
 
 	local activationFunctionAtFinalLayer = self:getActivationLayerAtFinalLayer()
 	
-	local cutOffFunction = cutOffFunctionList[activationFunctionAtFinalLayer]
+	local minimumOutputValue = (minimumOutputValueList["0"][activationFunctionAtFinalLayer] and 0) or -1
 
-	local isValueOverCutOff = cutOffFunction(value)
-
-	local classIndex = (isValueOverCutOff and 2) or 1
-
-	local predictedLabel = self.ClassesList[classIndex]
+	local cutOffValue = cutOffValueList[activationFunctionAtFinalLayer]
+	
+	local ClassesList = self.ClassesList
+	
+	local predictedLabel
+	
+	if (#ClassesList <= 0) then
+		
+		predictedLabel = ((value < cutOffValue) and minimumOutputValue) or 1
+		
+	else
+		
+		predictedLabel = ((value < cutOffValue) and ClassesList[1]) or ClassesList[2]
+		
+	end
 
 	return predictedLabel, value
 

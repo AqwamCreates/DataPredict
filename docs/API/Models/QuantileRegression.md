@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-QuantileRegression.new(maximumNumberOfIterations: integer, learningRate: number, quantilesList: {number}): ModelObject
+QuantileRegression.new(maximumNumberOfIterations: integer, learningRate: number, QuantilesList: {number}): ModelObject
 ```
 
 #### Parameters:
@@ -24,7 +24,7 @@ QuantileRegression.new(maximumNumberOfIterations: integer, learningRate: number,
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
-* quantilesList: The list of quantiles to be used for generating the model parameters. [Default: {0.5}]
+* QuantilesList: The list of quantiles to be used for generating the model parameters. [Default: {0.5}]
 
 #### Returns:
 

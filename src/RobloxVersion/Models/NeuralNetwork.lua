@@ -669,6 +669,8 @@ local function activateLayer(zMatrix, hasBiasNeuron, activationFunctionName)
 	local activationMatrix = {}
 
 	local unwrappedActivationVector
+	
+	local modifiedUnwrappedLayerZVector
 
 	if (activationFunction) then
 
@@ -697,8 +699,6 @@ local function activateLayer(zMatrix, hasBiasNeuron, activationFunctionName)
 		end
 
 	else
-		
-		local modifiedUnwrappedLayerZVector
 		
 		activationFunction = activationFunctionList[activationFunctionName]
 

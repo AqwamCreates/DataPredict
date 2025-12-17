@@ -1,5 +1,21 @@
 # Targeting Systems
 
+## Straight-Line-Based
+
+* Creating Distance-Minimization-Based Straght-Line Targeting Model
+
+  * Use multiple SVR / SVM to determine straight line.
+
+   * Note that each model must only have one-column input and output, representing each dimension.
+   
+   * Additionally, use the output as the same as input, so that the models will learn to create hard decision boundries which can be extracted from the model parameters.
+
+  * Questionable implementation at best. However, I will not stop game designers from making their games look "smart".
+    
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
+## Cluster-Based
+
 * [Creating Distance-Minimization-Based Clustering Targeting Model](TargetingSystems/CreatingDistanceMinimizationBasedClusteringTargetingModel.md)
 
   * Find the center of players based on number of clusters.

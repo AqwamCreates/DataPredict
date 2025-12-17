@@ -57,44 +57,62 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 
 	local lambda = self.lambda
+	
+	local ModelParameters = self.ModelParameters or {}
+	
+	local oldDotProductFeatureMatrix = ModelParameters[2]
+	
+	local oldDotProductFeatureMatrixAndLabelVector = ModelParameters[3]
 
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 
-	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, transposedFeatureMatrix)
+	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
 
 	if (lambda ~= 0) then
 
 		local numberOfFeatures = #featureMatrix[1]
 
-		local lambdaIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
-
-		lambdaIdentityMatrix = AqwamTensorLibrary:multiply(lambdaIdentityMatrix, lambda)
+		local lambdaIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures}, lambda)
 
 		dotProductFeatureMatrix = AqwamTensorLibrary:add(dotProductFeatureMatrix, lambdaIdentityMatrix)
+
+	end
+	
+	if (oldDotProductFeatureMatrix) then
+
+		dotProductFeatureMatrix = AqwamTensorLibrary:add(dotProductFeatureMatrix, oldDotProductFeatureMatrix)
 
 	end
 
 	local inverseDotProduct = AqwamTensorLibrary:inverse(dotProductFeatureMatrix)
 
 	if (not inverseDotProduct) then error("Could not find the model parameters.") end
-
+	
 	local dotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
+	
+	if (oldDotProductFeatureMatrixAndLabelVector) then
+		
+		dotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:add(dotProductFeatureMatrixAndLabelVector, oldDotProductFeatureMatrixAndLabelVector)
+		
+	end
 
-	local ModelParameters = AqwamTensorLibrary:multiply(inverseDotProduct, dotProductFeatureMatrixAndLabelVector)
+	local weightMatrix = AqwamTensorLibrary:multiply(inverseDotProduct, dotProductFeatureMatrixAndLabelVector)
 
-	self.ModelParameters = ModelParameters
+	self.ModelParameters = {weightMatrix, dotProductFeatureMatrix, dotProductFeatureMatrixAndLabelVector}
 
 end
 
 function NormalLinearRegressionModel:predict(featureMatrix)
 
-	local ModelParameters = self.ModelParameters
+	local ModelParameters = self.ModelParameters or {}
+	
+	local weightMatrix = ModelParameters[1]
 
-	if (not ModelParameters) then
+	if (not weightMatrix) then
 
-		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+		weightMatrix = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
 
-		self.ModelParameters = ModelParameters
+		self.ModelParameters = {weightMatrix}
 
 	end
 

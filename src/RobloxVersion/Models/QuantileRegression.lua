@@ -40,6 +40,8 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.3
 
+local defaultQuantile = 0.5
+
 local function quantileLoss(hypothesisValue, labelValue, tau)
 	
 	local differenceValue = hypothesisValue - labelValue
@@ -56,7 +58,7 @@ function QuantileRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 
-	local costVector = AqwamTensorLibrary:applyFunction(quantileLoss, hypothesisVector, labelVector, {self.quantilesList}) 
+	local costVector = AqwamTensorLibrary:applyFunction(quantileLoss, hypothesisVector, labelVector, {self.QuantilesList}) 
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
 	
@@ -88,7 +90,7 @@ function QuantileRegressionModel:calculateLossFunctionDerivativeMatrix(lossGradi
 
 	if (not featureMatrix) then error("Feature matrix not found.") end
 	
-	local gradientWeightMatrix = AqwamTensorLibrary:applyFunction(function(lossValue, tau) return (lossValue < 0) and (tau - 1) or tau end, lossGradientMatrix, {self.quantilesList})
+	local gradientWeightMatrix = AqwamTensorLibrary:applyFunction(function(lossValue, tau) return (lossValue < 0) and (tau - 1) or tau end, lossGradientMatrix, {self.QuantilesList})
 
 	local lossFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), gradientWeightMatrix)
 
@@ -166,13 +168,13 @@ function QuantileRegressionModel.new(parameterDictionary)
 	
 	NewQuantileRegressionModel:setName("QuantileRegression")
 	
-	local quantilesList = parameterDictionary.quantilesList or {}
+	local QuantilesList = parameterDictionary.QuantilesList or {}
 	
-	if (#quantilesList == 0) then quantilesList[1] = 0.5 end
+	if (#QuantilesList == 0) then QuantilesList[1] = defaultQuantile end
 
 	NewQuantileRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 
-	NewQuantileRegressionModel.quantilesList = quantilesList
+	NewQuantileRegressionModel.QuantilesList = QuantilesList
 
 	NewQuantileRegressionModel.Optimizer = parameterDictionary.Optimizer
 
@@ -206,7 +208,7 @@ function QuantileRegressionModel:train(featureMatrix, labelVector)
 
 	else
 
-		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], #self.quantilesList})
+		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], #self.QuantilesList})
 
 	end
 	
@@ -268,7 +270,7 @@ function QuantileRegressionModel:predict(featureMatrix)
 	
 	if (not ModelParameters) then
 		
-		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], #self.quantilesList})
+		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], #self.QuantilesList})
 		
 		self.ModelParameters = ModelParameters
 		

@@ -74,8 +74,6 @@
 
  * It assumes that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings. Hence, it is recommended to add small independent noise values to each features.
 
- * The feature matrix will also need to have shape of (n x n). This naturally leads to the requirement of label vector with a shape of (n x 1).
-
 ## Classification
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy

@@ -67,6 +67,8 @@ local itemDataVector = {
 
 }
 
+-- This is our labelVector.
+
 local priceVector = {
 
     {price}

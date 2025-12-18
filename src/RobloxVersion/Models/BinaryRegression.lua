@@ -58,7 +58,7 @@ local binaryFunctionList = {
 	
 	["Logit"] = function (z) return (1/(1 + math.exp(-z))) end,
 	
-	["Probit"] = function(z) return ZTableFunction:getStandardNormalCumulativeDistributionFunction(math.clamp(z, -3.9, 3.9)) end,
+	["Probit"] = function(z) return ZTableFunction:getStandardNormalCumulativeDistributionFunctionValue(math.clamp(z, -3.9, 3.9)) end,
 
 	["LogLog"] = function(z) return math.exp(-math.exp(z)) end,
 

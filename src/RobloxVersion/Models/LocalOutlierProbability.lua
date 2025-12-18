@@ -360,7 +360,7 @@ function LocalOutlierProbability:score()
 	
 	for i, unwrappedErrorVectorPart2 in ipairs(gaussianErrorVectorPart2) do
 		
-		gaussianErrorVector[i] = {ZTableFunction:getStandardNormalCumulativeDistributionFunction(unwrappedErrorVectorPart2[1])}
+		gaussianErrorVector[i] = {ZTableFunction:getStandardNormalCumulativeDistributionFunctionValue(unwrappedErrorVectorPart2[1])}
 		
 	end
 	

@@ -116,7 +116,7 @@ function NormalLinearRegressionModel:predict(featureMatrix)
 
 	end
 
-	return AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
+	return AqwamTensorLibrary:dotProduct(featureMatrix, weightMatrix)
 
 end
 

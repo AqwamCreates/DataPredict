@@ -72,7 +72,7 @@ function ModelParametersMerger.new(parameterDictionary)
 
 	NewModelParametersMerger.roundingMode = parameterDictionary.roundingMode or defaultRoundingMode
 
-	NewModelParametersMerger.featureMatrix = parameterDictionary.featureMatrix
+	NewModelParametersMerger.featureMatrixArray = parameterDictionary.featureMatrixArray or {}
 
 	NewModelParametersMerger.labelVector = parameterDictionary.labelVector
 
@@ -436,6 +436,10 @@ local function getSplitAmountArray(Model, modelType, splitMode, featureMatrix, l
 
 	if (splitMode ~= "Equal") and (splitMode ~= "Ignore") then
 		
+		if (not featureMatrix) then error("No feature matrix.") end
+		
+		if (not labelVector) then error("No label vector.") end
+		
 		accuracyArray = generateAccuracyArray(Model, modelType, ModelParametersArray, featureMatrix, labelVector) 
 		
 	end
@@ -768,23 +772,115 @@ local function mergeModelParameters(mergeMode, ModelParametersArray, splitAmount
 
 end
 
+local function mergeModelParametersUsingScalars(Model, modelType, mergeMode, splitMode, splitAmountArray, featureMatrix, labelVector, ModelParametersArray)
+	
+	if (not splitAmountArray) then splitAmountArray = getSplitAmountArray(Model, modelType, splitMode, featureMatrix, labelVector, ModelParametersArray) end
+
+	return mergeModelParameters(mergeMode, ModelParametersArray, splitAmountArray)
+	
+end
+
+local function getDotProductFeatureMatrixArray(featureMatrixArray)
+	
+	local dotProductFeatureMatrixArray = {}
+	
+	local transposedFeatureMatrix
+
+	for i, featureMatrix in ipairs(featureMatrixArray) do
+		
+		transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
+		
+		dotProductFeatureMatrixArray[i] = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
+
+	end
+	
+	return dotProductFeatureMatrixArray
+	
+end
+
+local function calculateRegressionMeanModelParameters(ModelParametersArray, dotProductFeatureMatrixArray)
+
+	local sumDotProductFeatureMatrix
+
+	local sumFeatureMatrixDotProductWeightMatrix
+
+	local featureMatrixDotProductWeightMatrix
+
+	for i, dotProductFeatureMatrix in ipairs(dotProductFeatureMatrixArray) do
+		
+		if (sumDotProductFeatureMatrix) then
+			
+			sumDotProductFeatureMatrix = AqwamTensorLibrary:add(sumDotProductFeatureMatrix, dotProductFeatureMatrix)
+			
+		else
+			
+			sumDotProductFeatureMatrix = dotProductFeatureMatrix
+			
+		end
+		
+		featureMatrixDotProductWeightMatrix = AqwamTensorLibrary:dotProduct(dotProductFeatureMatrix, ModelParametersArray[i])
+
+		if (sumFeatureMatrixDotProductWeightMatrix) then
+			
+			sumFeatureMatrixDotProductWeightMatrix = AqwamTensorLibrary:add(sumFeatureMatrixDotProductWeightMatrix, featureMatrixDotProductWeightMatrix)
+			
+		else
+			
+			sumFeatureMatrixDotProductWeightMatrix = featureMatrixDotProductWeightMatrix
+			
+		end
+
+	end
+
+	local NewModelParametersPart1 = AqwamTensorLibrary:inverse(sumDotProductFeatureMatrix)
+
+	local NewModelParameters = AqwamTensorLibrary:dotProduct(NewModelParametersPart1, sumFeatureMatrixDotProductWeightMatrix)
+
+	return NewModelParameters
+
+end
+
+local function mergeModelParametersUsingRegressionMean(featureMatrixArray, ModelParametersArray)
+	
+	if (#featureMatrixArray ~= #ModelParametersArray) then error("The number of feature matrices does not equal to the number of model parameters.") end
+	
+	local dotProductFeatureMatrixArray = getDotProductFeatureMatrixArray(featureMatrixArray)
+	
+	local depth, hasDictionary = checkDepth(ModelParametersArray[1])
+	
+	if (hasDictionary) then error("The model parameters cannot have string keys.") end
+
+	local isMatrix = (depth == 2)
+	
+	if (not isMatrix) then error("Unable to perform regression mean on non-nested matrices.") end
+	
+	return calculateRegressionMeanModelParameters(ModelParametersArray, dotProductFeatureMatrixArray)
+	
+end
+
 function ModelParametersMerger:merge(...)
 
 	local ModelParametersArray = {...}
 
 	if (#ModelParametersArray <= 0) then error("No model parameters set.") end
-
-	local splitAmountArray = self.splitAmountArray
-
-	if (not splitAmountArray) then
-
-		splitAmountArray = getSplitAmountArray(self.Model, self.modelType, self.splitMode, self.featureMatrix, self.labelVector, ModelParametersArray)
-
-	end
-
-	local NewModelParameters = mergeModelParameters(self.mergeMode, ModelParametersArray, splitAmountArray)
+	
+	local mergeMode = self.mergeMode
 	
 	local roundingMode = self.roundingMode
+	
+	local featureMatrixArray = self.featureMatrixArray
+	
+	local NewModelParameters
+	
+	if (mergeMode == "RegressionMean") then
+		
+		NewModelParameters = mergeModelParametersUsingRegressionMean(featureMatrixArray, ModelParametersArray)
+		
+	else
+		
+		NewModelParameters = mergeModelParametersUsingScalars(self.Model, self.modelType, mergeMode, self.splitMode,  self.splitAmountArray, featureMatrixArray[1], self.labelVector, ModelParametersArray)
+		
+	end
 	
 	if (roundingMode == "None") then return NewModelParameters end
 	

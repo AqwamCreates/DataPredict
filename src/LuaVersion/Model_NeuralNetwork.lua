@@ -1274,8 +1274,6 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 	self.ModelParameters = nil
 
-	local numberOfNeuronsArray = numberOfNeuronsArray
-
 	local hasBiasNeuronArray = {}
 
 	local learningRateArray = {}
@@ -1305,6 +1303,8 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		dropoutRateArray[layer] = dropoutRate
 
 	end
+	
+	self.numberOfNeuronsArray = numberOfNeuronsArray
 	
 	self.hasBiasNeuronArray = hasBiasNeuronArray
 

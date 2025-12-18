@@ -852,7 +852,7 @@ local function mergeModelParametersUsingRegressionMean(featureMatrixArray, Model
 
 	local isMatrix = (depth == 2)
 	
-	if (not isMatrix) then error("Unable to perform regression mean on non-nested matrices.") end
+	if (not isMatrix) then error("Can only perform regression mean on non-nested matrices.") end
 	
 	return calculateRegressionMeanModelParameters(ModelParametersArray, dotProductFeatureMatrixArray)
 	

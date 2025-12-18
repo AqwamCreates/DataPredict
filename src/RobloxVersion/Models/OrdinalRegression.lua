@@ -64,19 +64,31 @@ local function enforceThresholdOrdering(thresholdVector, epsilon)
 	
 	local previousThresholdValue
 	
-	local thresholdValueDifference
+	local nextThresholdValue
+	
+	local newCurrentThresholdValue
 	
 	for k = 2, #unwrappedThresholdVector, 1 do
 		
-		currentThresholdValue = unwrappedThresholdVector[k]
-		
 		previousThresholdValue = unwrappedThresholdVector[k - 1]
 		
+		currentThresholdValue = unwrappedThresholdVector[k]
+		
+		nextThresholdValue = unwrappedThresholdVector[k + 1]
+		
 		if (unwrappedThresholdVector[k] <= previousThresholdValue) then
+
+			if (nextThresholdValue) then
+				
+				newCurrentThresholdValue = (previousThresholdValue + nextThresholdValue) / 2
+				
+			else
+				
+				newCurrentThresholdValue = previousThresholdValue + (previousThresholdValue - currentThresholdValue)
+				
+			end
 			
-			thresholdValueDifference = math.abs(previousThresholdValue - currentThresholdValue)
-			
-			unwrappedThresholdVector[k] = previousThresholdValue + math.log(math.max(thresholdValueDifference, epsilon))
+			unwrappedThresholdVector[k] = newCurrentThresholdValue
 			
 		end
 		

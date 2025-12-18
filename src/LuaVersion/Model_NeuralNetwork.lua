@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GradientMethodBaseModel = require("Core_GradientMethodBaseModel")
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 local ZTableFunction = require("Core_ZTableFunction")
 
@@ -202,9 +202,9 @@ local elementWiseActivationFunctionList = {
 
 	["LogitInverseLink"] = function (z) return (1 / (1 + math.exp(-1 * z))) end,
 	
-	["ProbitLink"] = function (z) return ZTableFunction:getStandardNormalInverseCumulativeDistributionFunction(math.clamp(z, 0, 1)) end,
+	["ProbitLink"] = function (z) return ZTableFunction:getStandardNormalInverseCumulativeDistributionFunctionValue(math.clamp(z, 0, 1)) end,
 
-	["ProbitInverseLink"] = function (z) return ZTableFunction:getStandardNormalCumulativeDistributionFunction(math.clamp(z, -3.9, 3.9)) end,
+	["ProbitInverseLink"] = function (z) return ZTableFunction:getStandardNormalCumulativeDistributionFunctionValue(math.clamp(z, -3.9, 3.9)) end,
 
 	["LogLogLink"] = function (z) return math.log(-math.log(math.clamp(z, epsilon, 1))) end,
 

@@ -68,31 +68,49 @@ function BayesianQuantileLinearRegressionModel:train(featureMatrix, labelVector)
 
 	local likelihoodPrecision = self.likelihoodPrecision
 
+	local ModelParameters = self.ModelParameters or {}
+
+	local oldPosteriorMeanVector = ModelParameters[1]
+
+	local oldInversePosteriorCovarianceMatrix = ModelParameters[3]
+	
+	local oldMultipliedDotProductFeatureMatrixLabelVector = ModelParameters[4]
+
 	local numberOfFeatures = #featureMatrix[1]
 
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 
 	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
 
-	local priorPrecisionIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
-
-	priorPrecisionIdentityMatrix = AqwamTensorLibrary:multiply(priorPrecisionIdentityMatrix, priorPrecision)
+	local priorPrecisionIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures}, priorPrecision)
 
 	local scaledDotProductFeatureMatrix = AqwamTensorLibrary:multiply(dotProductFeatureMatrix, likelihoodPrecision)
 
-	local inverseSNMatrix = AqwamTensorLibrary:add(priorPrecisionIdentityMatrix, scaledDotProductFeatureMatrix)
+	local inversePosteriorCovarianceMatrix = AqwamTensorLibrary:add(priorPrecisionIdentityMatrix, scaledDotProductFeatureMatrix)
 
-	local posteriorCovarianceMatrix = AqwamTensorLibrary:inverse(inverseSNMatrix)
+	if (oldInversePosteriorCovarianceMatrix) then
 
-	if (not posteriorCovarianceMatrix) then error("Could not invert matrix for posterior.") end
+		inversePosteriorCovarianceMatrix = AqwamTensorLibrary:add(inversePosteriorCovarianceMatrix, oldInversePosteriorCovarianceMatrix)
+
+	end
+
+	local posteriorCovarianceMatrix = AqwamTensorLibrary:inverse(inversePosteriorCovarianceMatrix)
+
+	if (not posteriorCovarianceMatrix) then error("Could not invert matrix for posterior covariance matrix.") end
 
 	local dotProductFeatureMatrixLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
 
-	local posteriorMeanVectorPart1 = AqwamTensorLibrary:dotProduct(posteriorCovarianceMatrix, dotProductFeatureMatrixLabelVector)
+	local multipliedDotProductFeatureMatrixLabelVector = AqwamTensorLibrary:multiply(likelihoodPrecision, dotProductFeatureMatrixLabelVector)
+	
+	if (oldMultipliedDotProductFeatureMatrixLabelVector) then
+		
+		multipliedDotProductFeatureMatrixLabelVector = AqwamTensorLibrary:add(oldMultipliedDotProductFeatureMatrixLabelVector, multipliedDotProductFeatureMatrixLabelVector)
+		
+	end
 
-	local posteriorMeanVector = AqwamTensorLibrary:multiply(posteriorMeanVectorPart1, likelihoodPrecision)
+	local posteriorMeanVector = AqwamTensorLibrary:dotProduct(posteriorCovarianceMatrix, multipliedDotProductFeatureMatrixLabelVector)
 
-	self.ModelParameters = {posteriorMeanVector, posteriorCovarianceMatrix}
+	self.ModelParameters = {posteriorMeanVector, posteriorCovarianceMatrix, inversePosteriorCovarianceMatrix, multipliedDotProductFeatureMatrixLabelVector}
 
 end
 
@@ -176,7 +194,7 @@ function BayesianQuantileLinearRegressionModel:predict(featureMatrix, quantileMa
 		
 		for j, quantileValue in ipairs(unwrappedQuantileVector) do
 			
-			zValue = ZTableFunction:calculateStandardNormalInverseCumulativeDistributionValue(quantileValue)
+			zValue = ZTableFunction:getStandardNormalInverseCumulativeDistributionFunction(quantileValue)
 			
 			unwrappedPredictedQuantileVector[j] = predictedMeanValue + (zValue * predictedStandardDeviationValue)
 			

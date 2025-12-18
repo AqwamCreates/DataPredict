@@ -87,7 +87,7 @@ local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, 9999) -- Making 
 
 ```
 
-However, this require setting the model's parameters to these settings temporarily so that it can be biased to very high time-to-leave value at start up as shown below.
+However, this require setting the model's parameters to these settings temporarily so that it can be biased to very high willingness-to-pay value at start up as shown below.
 
 ```lua
 

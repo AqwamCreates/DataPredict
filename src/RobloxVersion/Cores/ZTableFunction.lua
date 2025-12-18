@@ -626,7 +626,7 @@ local function forceNegative(value)
 	
 end
 
-function zTableFunction:getStandardNormalCumulativeDistributionFunction(zValue)
+function zTableFunction:getStandardNormalCumulativeDistributionFunctionValue(zValue)
 
 	local rowStringFormat = rowStringFormat
 
@@ -722,7 +722,7 @@ function zTableFunction:getStandardNormalCumulativeDistributionFunction(zValue)
 
 end
 
-function zTableFunction:getStandardNormalInverseCumulativeDistributionFunction(probability)
+function zTableFunction:getStandardNormalInverseCumulativeDistributionFunctionValue(probability)
 
 	local rowStringFormat = rowStringFormat
 

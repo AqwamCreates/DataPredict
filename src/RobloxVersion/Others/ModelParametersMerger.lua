@@ -878,7 +878,6 @@ function ModelParametersMerger:merge(...)
 		
 	else
 		
-		
 		NewModelParameters = mergeModelParametersUsingScalars(self.Model, self.modelType, mergeMode, self.splitMode,  self.splitAmountArray, featureMatrixArray[1], self.labelVector, ModelParametersArray)
 		
 	end

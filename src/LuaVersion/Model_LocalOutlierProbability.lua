@@ -32,9 +32,9 @@ local BaseModel = require("Model_BaseModel")
 
 local Cores = script.Parent.Parent.Cores
 
-local distanceFunctionDictionary = require(Cores.DistanceFunctionDictionary)
+local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
-local ZTableFunction = require(Cores.ZTableFunction)
+local ZTableFunction = require("Core_ZTableFunction")
 
 local LocalOutlierProbability = {}
 
@@ -360,7 +360,7 @@ function LocalOutlierProbability:score()
 	
 	for i, unwrappedErrorVectorPart2 in ipairs(gaussianErrorVectorPart2) do
 		
-		gaussianErrorVector[i] = {ZTableFunction:getStandardNormalCumulativeDistributionFunction(unwrappedErrorVectorPart2[1])}
+		gaussianErrorVector[i] = {ZTableFunction:getStandardNormalCumulativeDistributionFunctionValue(unwrappedErrorVectorPart2[1])}
 		
 	end
 	

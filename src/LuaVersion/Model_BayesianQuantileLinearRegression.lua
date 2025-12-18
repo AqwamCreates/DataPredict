@@ -194,7 +194,7 @@ function BayesianQuantileLinearRegressionModel:predict(featureMatrix, quantileMa
 		
 		for j, quantileValue in ipairs(unwrappedQuantileVector) do
 			
-			zValue = ZTableFunction:getStandardNormalInverseCumulativeDistributionFunction(quantileValue)
+			zValue = ZTableFunction:getStandardNormalInverseCumulativeDistributionFunctionValue(quantileValue)
 			
 			unwrappedPredictedQuantileVector[j] = predictedMeanValue + (zValue * predictedStandardDeviationValue)
 			

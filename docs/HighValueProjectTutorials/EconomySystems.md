@@ -16,7 +16,7 @@ I recommend you to use in-game currencies instead of the real-world ones.
 
     * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* Creating Next-Item Demand Prediction Model
+* Creating Next-Item Price Change Model
 
    * Uses Markov / DynamicBayesianNetwork to predict the most likely item that would be purchased.
 

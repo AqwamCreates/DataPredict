@@ -30,7 +30,7 @@ I recommend you to use in-game currencies instead of the real-world ones.
 
 * [Creating Base Price Search Model](EconomySystems/CreatingBasePriceSearchModel.md)
 
-    * Extremely useful if one of the in-game currencies is hard to get (especially if can be affected by external means like exploits and trading), leading to lower spending of that currency. This results to lack of supply from the buyer to satisfy seller's, or in this case, our ML model's demand for that currency. This would then lead to item that is to be purchased requiring that particular in-game currency to be lower. As a result this leads to the in-game currency be viewed as "extremely valuable" by the game's ecosystem because you only need fewer of that currency to purchase "expensive" items.
+    * Extremely useful if one of the in-game currencies is hard to get (especially if it can be affected by external means like exploits and trading), leading to lower spending of that currency. This results to lack of supply from the buyer to satisfy seller's, or in this case, our ML model's demand for that currency. This would then lead to item that is to be purchased requiring that particular in-game currency to be lower. As a result this leads to the in-game currency be viewed as "extremely valuable" by the game's ecosystem because you only need fewer of that currency to purchase "expensive" items.
 
     * Recommended to use this with the Dynamic Pricing Models.
     

@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
+local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
 local NegativeBinomialRegressionModel = {}
 
@@ -87,7 +87,8 @@ function NegativeBinomialRegressionModel:calculateCost(hypothesisVector, labelVe
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 
 	local dispersion = self.dispersion  -- Overdispersion parameter (α > 0)
-	local epsilon = self.epsilon or 1e-8
+	
+	local epsilon = self.epsilon
 
 	hypothesisVector = AqwamTensorLibrary:add(hypothesisVector, epsilon)
 	
@@ -129,7 +130,7 @@ function NegativeBinomialRegressionModel:calculateCost(hypothesisVector, labelVe
 	
 	local costVectorPart5 = AqwamTensorLibrary:multiply(labelVector, logMu)
 	
-	costVectorPart5 = AqwamTensorLibrary:multiplyScalar(costVectorPart5, -1)
+	costVectorPart5 = AqwamTensorLibrary:multiply(costVectorPart5, -1)
 
 	local costVector = AqwamTensorLibrary:add(costVectorPart4, costVectorPart5)
 

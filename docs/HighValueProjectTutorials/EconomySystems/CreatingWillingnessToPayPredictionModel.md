@@ -23,14 +23,14 @@ local DataPredict = require(DataPredict)
 
  -- This is required for Quantile Regression model, but not for Bayesian Quantile Linear Regression model.
 
-local quantilesList = {0.25, 0.5, 0.75, 0.90}
+local QuantilesList = {0.25, 0.5, 0.75, 0.90}
 
--- quantilesList[1] = 25th percentile (conservative) price
--- quantilesList[2] = 50th percentile / median (balanced) price
--- quantilesList[3] = 75th percentile (aggressive) price  
--- quantilesList[4] = 90th percentile (whale-focused) price
+-- QuantilesList[1] = 25th percentile (conservative) price
+-- QuantilesList[2] = 50th percentile / median (balanced) price
+-- QuantilesList[3] = 75th percentile (aggressive) price  
+-- QuantilesList[4] = 90th percentile (whale-focused) price
 
-local WillingnessToPayPredictionModel = DataPredict.Models.QuantileRegression.new({quantilesList = quantilesList})
+local WillingnessToPayPredictionModel = DataPredict.Models.QuantileRegression.new({QuantilesList = QuantilesList})
 
 ```
 

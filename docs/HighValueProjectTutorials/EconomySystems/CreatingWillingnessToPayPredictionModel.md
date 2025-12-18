@@ -14,7 +14,7 @@ Before we train our model, we will first need to construct a quantile model. We 
 
 | Model                               | Advantages                                                     | Disadvantages                        |
 |-------------------------------------|----------------------------------------------------------------|--------------------------------------|
-| Bayesian Quantile Linear Regression | Data efficient and is computationally fast for small datasets. | Cannot perform incremental learning. |
+| Bayesian Quantile Linear Regression | Data efficient and is computationally fast for small datasets. | Sensitive to noise.                  |
 | Quantile Regression                 | Can perform incremental learning.                              | Requires a lot of data.              |
 
 ```lua

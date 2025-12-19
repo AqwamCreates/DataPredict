@@ -372,8 +372,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.DistributedTrainingStrategies = 
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Others = {
 	
-	NormalModelModifier = require(Others.NormalModelModifier),
-	
 	ModelTrainingModifier = require(Others.ModelTrainingModifier),
 	
 	ModelSafeguardWrapper = require(Others.ModelSafeguardWrapper),

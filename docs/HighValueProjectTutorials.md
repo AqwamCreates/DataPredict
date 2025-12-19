@@ -10,8 +10,6 @@
 
 ## Disclaimer
 
-* References that validates the use cases can be found [here](HighValueProjectTutorials/References.md). It also includes my papers.
-
 * The "minimal implementation time" assumes that a junior gameplay machine learning engineer is handling the implementation.
 
 * Since DataPredict is written in native Lua, you can have extra compute per player alongside a single Roblox server by loading the models on players' Roblox client.
@@ -19,10 +17,6 @@
   * Phone users: Likely have 4 GB - 8 GB RAM. Variable CPU.
  
   * PC users: Likely have 8 GB - 16 GB RAM. Variable CPU.
-
-* Before you engage in integrating models into live projects, I recommend you to have a look at safe practices [here](HighValueProjectTutorials/SafePracticesForLiveProjects.md).
-
-* If you want to perform online training with limited dataset, I recommend you to have a look at the tips [here](HighValueProjectTutorials/TipsForOnlineTrainingWithLimitedDataset.md).
 
 * The content of this page and its links are licensed under the DataPredict™ library's [Terms And Conditions](TermsAndConditions.md). This includes the codes shown in the links below.
 
@@ -34,7 +28,17 @@
 
 * For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 
-## Links
+## Preparation
+
+* [Safe Practices For Integrating Model In Live Project](HighValueProjectTutorials/SafePracticesForLiveProjects.md)
+
+* [Tips For Online Training With Limited Dataset](HighValueProjectTutorials/TipsForOnlineTrainingWithLimitedDataset.md)
+
+* [Game Design Meets Machine Learning]
+
+* [Use Case References](HighValueProjectTutorials/References.md) (Includes My Papers)
+
+## High-Value Project Tutorials
 
 | System                                                                                           | Properties                                                            | Minimal Implementation Time With DataPredict |
 |--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|----------------------------|

@@ -12,6 +12,8 @@ Note: This documentation is still under construction. There will be links that g
 
   * Amount Of Resources Spent -> The more the player is engaged, the more the player spends on resources.
 
+  * Quest Completion -> The more the player is engaged, the more the player spends time on completing quests.
+
 * Intepreting Local And Global Optima In Game Design
 
   * Local Optima -> The best solution for anything related to the current game session.

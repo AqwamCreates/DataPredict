@@ -34,7 +34,7 @@
 
 * [Tips For Online Training With Limited Dataset](HighValueProjectTutorials/TipsForOnlineTrainingWithLimitedDataset.md)
 
-* [Game Design Meets Machine Learning]
+* [Game Design Meets Machine Learning](HighValueProjectTutorials/GameDesignMeetsMachineLearning.md)
 
 * [Use Case References](HighValueProjectTutorials/References.md) (Includes My Papers)
 

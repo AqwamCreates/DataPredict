@@ -148,11 +148,15 @@ function ModelTrainingModifier:miniBatchTrain(...)
 
 		local miniBatchCostArray = Model:train(table.unpack(currentMatrixBatchArray))
 		
-		local cost = miniBatchCostArray[#miniBatchCostArray]
-		
-		table.insert(costArray, cost)
-		
-		if (isOutputPrinted) then print("Batch: " .. currentBatchNumber .. "\t\t\tFinal cost: " .. cost) end
+		if (miniBatchCostArray) then
+			
+			local cost = miniBatchCostArray[#miniBatchCostArray]
+
+			table.insert(costArray, cost)
+			
+			if (isOutputPrinted) then print("Batch: " .. currentBatchNumber .. "\t\t\tFinal cost: " .. cost) end
+			
+		end
 		
 	end
 	
@@ -196,11 +200,15 @@ function ModelTrainingModifier:stochasticTrain(...)
 		
 		local stochasticCostArray = Model:train(table.unpack(currentMatrixBatchArray))
 		
-		local cost = stochasticCostArray[#stochasticCostArray]
-		
-		table.insert(costArray, cost)
-		
-		if (isOutputPrinted) then print("Data number: " .. dataIndex .. "\t\tFinal cost: " .. cost) end
+		if (stochasticCostArray) then
+
+			local cost = stochasticCostArray[#stochasticCostArray]
+
+			table.insert(costArray, cost)
+			
+			if (isOutputPrinted) then print("Data number: " .. dataIndex .. "\t\tFinal cost: " .. cost) end
+
+		end
 		
 	end
 	

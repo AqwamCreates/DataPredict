@@ -36,7 +36,7 @@
 
 * [Game Design Meets Machine Learning](HighValueProjectTutorials/GameDesignMeetsMachineLearning.md)
 
-* [Use Case References](HighValueProjectTutorials/References.md) (Includes My Papers)
+* [Use Case References](HighValueProjectTutorials/References.md) (Optional) (Includes My Papers)
 
 ## High-Value Project Tutorials
 

@@ -49,7 +49,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 * [Basic Tutorials](BasicTutorials.md)
 
-* [Game Design Meets Machine Learning](GameDesignMeetsMachineLearning.md)
+* [Game Design Meets Machine Learning](HighValueProjectTutorials/GameDesignMeetsMachineLearning.md)
 
 ## The API
 

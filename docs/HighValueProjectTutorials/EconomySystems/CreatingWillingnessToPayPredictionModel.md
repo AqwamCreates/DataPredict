@@ -25,10 +25,10 @@ local DataPredict = require(DataPredict)
 
 local QuantilesList = {0.25, 0.5, 0.75, 0.90}
 
--- QuantilesList[1] = 25th percentile (conservative) price
--- QuantilesList[2] = 50th percentile (balanced) price
--- QuantilesList[3] = 75th percentile (aggressive) price  
--- QuantilesList[4] = 90th percentile (whale-focused) price
+-- QuantilesList[1] = 25th percentile (conservative) price.
+-- QuantilesList[2] = 50th percentile (balanced) price.
+-- QuantilesList[3] = 75th percentile (aggressive) price.
+-- QuantilesList[4] = 90th percentile (whale-focused) price.
 
 local WillingnessToPayPredictionModel = DataPredict.Models.QuantileRegression.new({QuantilesList = QuantilesList})
 
@@ -175,10 +175,10 @@ local quantilePriceVector = {{0.25, 0.5, 0.75, 0.9}}
 
 -- These values are are equivalent to the ones we set for Quantile Regression quantileList.
 
--- quantilePriceVector[1][1] = 25th percentile (conservative) price
--- quantilePriceVector[1][2] = 50th percentile (balanced) price
--- quantilePriceVector[1][3] = 75th percentile (aggressive) price  
--- quantilePriceVector[1][4] = 90th percentile (whale-focused) price
+-- quantilePriceVector[1][1] = 25th percentile (conservative) price.
+-- quantilePriceVector[1][2] = 50th percentile (balanced) price.
+-- quantilePriceVector[1][3] = 75th percentile (aggressive) price.
+-- quantilePriceVector[1][4] = 90th percentile (whale-focused) price.
 
 local meanPriceVector, predictedQuantilePriceVector = WillingnessToPayPredictionModel:predict(currentPlayerDataVector, quantilePriceVector)
 

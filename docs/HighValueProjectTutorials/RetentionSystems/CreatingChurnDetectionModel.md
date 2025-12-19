@@ -254,7 +254,7 @@ local probabilityThreshold = 0.5
 
 --[[
 
-    Can change probabilityThreshold value to adjust sensitivity. 
+    You can change probabilityThreshold value to adjust sensitivity. 
 
     But by default, I would just leave it as 0.5 since the selection of the binary function 
     would make the model implicitly learn on how sensitive the model should be.

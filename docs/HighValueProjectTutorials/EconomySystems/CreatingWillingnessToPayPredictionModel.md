@@ -12,10 +12,10 @@ Currently, you need these to produce the model:
 
 Before we train our model, we will first need to construct a quantile model. We have two algorithms that you can pick from.
 
-| Model                               | Advantages                                                     | Disadvantages                                      |
-|-------------------------------------|----------------------------------------------------------------|----------------------------------------------------|
-| Bayesian Quantile Linear Regression | Data efficient and is computationally fast for small datasets. | Assume linear relationship and sensitive to noise. |
-| Quantile Regression                 | Good against noisy data.                                       | Requires a lot of data.                            |
+| Model                               | Advantages                                                     | Disadvantages                                       |
+|-------------------------------------|----------------------------------------------------------------|-----------------------------------------------------|
+| Bayesian Quantile Linear Regression | Data efficient and is computationally fast for small datasets. | Assumes linear relationship and sensitive to noise. |
+| Quantile Regression                 | Good against noisy data.                                       | Requires a lot of data.                             |
 
 ```lua
 

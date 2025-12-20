@@ -1,7 +1,5 @@
 # [API Reference](../API.md) - Others
 
-[NormalModelModifier](Others/NormalModelModifier.md) (Incomplete)
-
 [ModelChecker](Others/ModelChecker.md)
 
 [ModelParametersMerger](Others/ModelParametersMerger.md)

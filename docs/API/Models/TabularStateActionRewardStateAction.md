@@ -9,7 +9,7 @@ TabularStateActionRewardStateAction is a state-action grid with reinforcement le
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularStateActionRewardStateAction.new(learningRate: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
+TabularStateActionRewardStateAction.new(discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
 ```
 
 #### Parameters:

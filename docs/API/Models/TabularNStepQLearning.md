@@ -9,7 +9,7 @@ TabularNStepQLearning is a state-action grid with reinforcement learning capabil
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularNStepQLearning.new(learningRate: number, nStep: number, discountFactor: number): ModelObject
+TabularNStepQLearning.new(nStep: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:

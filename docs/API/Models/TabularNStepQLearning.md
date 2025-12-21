@@ -14,8 +14,6 @@ TabularNStepQLearning.new(nStep: number, discountFactor: number): ModelObject
 
 #### Parameters:
 
-* learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1. [Default: 0.1]
-
 * nStep: The number of future steps considered for credit assignment. Higher values extend the planning horizon but increase variance. Set to 1 for standard Q-learning. [Default: 3]
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]

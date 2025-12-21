@@ -9,12 +9,10 @@ TabularOffPolicyMonteCarloControl is a state-action grid with reinforcement lear
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularOffPolicyMonteCarloControl.new(learningRate: number, discountFactor: number, targetPolicyFunction: string): ModelObject
+TabularOffPolicyMonteCarloControl.new(discountFactor: number, targetPolicyFunction: string): ModelObject
 ```
 
 #### Parameters:
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1. [Default: 0.1]
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
 

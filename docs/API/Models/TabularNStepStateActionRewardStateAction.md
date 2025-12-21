@@ -9,12 +9,10 @@ TabularNStepStateActionRewardStateAction is a state-action grid with reinforceme
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularNStepStateActionRewardStateAction.new(learningRate: number, nStep: number, discountFactor: number): ModelObject
+TabularNStepStateActionRewardStateAction.new(nStep: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1. [Default: 0.1]
 
 * nStep: The number of future steps considered for credit assignment. Higher values extend the planning horizon but increase variance. Set to 1 for standard SARSA. [Default: 3]
 

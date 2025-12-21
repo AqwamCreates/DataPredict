@@ -9,7 +9,7 @@ TabularQLearning is a state-action grid with reinforcement learning capabilities
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularQLearning.new(learningRate: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
+TabularQLearning.new(discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
 ```
 
 #### Parameters:

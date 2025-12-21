@@ -62,13 +62,13 @@ OrdinalRegression:predict(featureMatrix: Matrix, returnOriginalOutput: boolean):
 
 #### Returns:
 
-* predictedlabelVector: A vector tcontaining predicted labels generated from the model.
+* predictedlabelVector: A vector containing predicted labels generated from the model.
 
 * valueVector: A vector that contains the values of predicted labels.
 
 -OR-
 
-* predictedMatrix: A matrix containing all distances between stored and given data points.
+* predictedMatrix: A matrix containing all the probabilities.
 
 ## Inherited From
 

@@ -9,7 +9,7 @@ TabularDoubleQLearningV1 is a state-action grid with reinforcement learning capa
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularDoubleQLearningV1.new(learningRate: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
+TabularDoubleQLearningV1.new(discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
 ```
 
 #### Parameters:

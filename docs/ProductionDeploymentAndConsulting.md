@@ -22,7 +22,7 @@ A typical production deployment follows these principles:
 
 * Partial Rollout: Only a subset of players (typically 20–30%) are exposed to the adaptive system initially.
 
-* Metric Monitoring & Kill Switch: Engagement, retention, and revenue metrics are monitored continuously. If degradation is detected, the system is disabled and diagnosed before further rollout.
+* Metric Monitoring And Kill Switch: Engagement, retention, and revenue metrics are monitored continuously. If degradation is detected, the system is disabled and diagnosed before further rollout.
 
 * This approach prioritizes predictability, reversibility, and player safety over aggressive optimization.
 

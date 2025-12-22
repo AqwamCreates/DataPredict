@@ -28,7 +28,7 @@ A typical production deployment follows these principles:
 
 ## Typical Models
 
-## Regression
+### Regression
 
 * Normal Linear Regression
 
@@ -38,7 +38,7 @@ A typical production deployment follows these principles:
 
 * Passive Aggressive Regressor
 
-##
+### Classification
 
 * Passive Aggressive Classifier
 

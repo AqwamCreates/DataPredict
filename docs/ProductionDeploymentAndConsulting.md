@@ -26,7 +26,7 @@ A typical production deployment follows these principles:
 
 * Metric Monitoring And Kill Switch: Engagement, retention, and revenue metrics are monitored continuously. If degradation is detected, the system is disabled and diagnosed before further rollout.
 
-* This approach prioritizes predictability, reversibility, and player safety over aggressive optimization.
+This approach prioritizes predictability, reversibility, and player safety over aggressive optimization.
 
 ## Typical Models
 

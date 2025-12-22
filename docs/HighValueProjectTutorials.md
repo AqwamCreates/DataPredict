@@ -30,7 +30,7 @@
 
 ## Preparation
 
-* [Production Deployment And Consulting (Optional)](ProductionDeploymentAndConsulting,md)
+* [Production Deployment And Consulting](ProductionDeploymentAndConsulting.md) (Optional)
 
   * For studios that require additional assurance when deploying machine learning systems in live projects, I provide optional consulting support for DataPredict-based integrations.
 

@@ -28,7 +28,7 @@ A typical production deployment follows these principles:
 
 This approach prioritizes predictability, reversibility, and player safety over aggressive optimization.
 
-## Typical Models
+## Typical Model Selection
 
 ### Regression
 

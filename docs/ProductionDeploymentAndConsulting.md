@@ -49,4 +49,4 @@ A typical production deployment follows these principles:
 Consulting is optional and does not replace the library.
 Studios may use DataPredict independently or engage for guidance depending on internal expertise and risk tolerance.
 
-For licensing and consulting inquiries, please refer to the licensing documentation or contact me directly.
+For licensing and consulting inquiries, please refer to the licensing documentation or contact me directly on DevForum.

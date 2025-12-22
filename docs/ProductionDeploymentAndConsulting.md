@@ -4,13 +4,13 @@ For studios that require additional assurance when deploying machine learning sy
 
 This is intended for teams that:
 
-* want to minimize risk when introducing adaptive systems
+* Want to minimize risk when introducing adaptive systems.
 
-* require validation of model choice and deployment strategy
+* Require validation of model choice and deployment strategy.
 
-* need help interpreting live performance metrics
+* Need help interpreting live performance metrics.
 
-* are deploying ML for revenue, retention, or difficulty optimization
+* Are deploying ML for revenue, retention, or difficulty optimization.
 
 ## Typical Deployment Approach
 

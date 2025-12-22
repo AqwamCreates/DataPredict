@@ -26,6 +26,22 @@ A typical production deployment follows these principles:
 
 * This approach prioritizes predictability, reversibility, and player safety over aggressive optimization.
 
+## Typical Models
+
+## Regression
+
+* Normal Linear Regression
+
+* Bayesian Linear Regression
+
+* Bayesian Quantile Linear Regression
+
+* Passive Aggressive Regressor
+
+##
+
+* Passive Aggressive Classifier
+
 ## Scope
 
 Consulting is optional and does not replace the library.

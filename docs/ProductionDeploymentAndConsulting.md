@@ -10,6 +10,8 @@ This is intended for teams that:
 
 * Need help interpreting live performance metrics.
 
+* Need help selecting appropriate features for models' inputs.
+
 * Are deploying ML for revenue, retention, or difficulty optimization.
 
 ## Typical Deployment Approach

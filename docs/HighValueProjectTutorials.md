@@ -30,6 +30,10 @@
 
 ## Preparation
 
+* [Production Deployment And Consulting (Optional)](ProductionDeploymentAndConsulting,md)
+
+  * For studios that require additional assurance when deploying machine learning systems in live projects, I provide optional consulting support for DataPredict-based integrations.
+
 * [Safe Practices For Integrating Model In Live Project](HighValueProjectTutorials/SafePracticesForLiveProjects.md)
 
 * [Tips For Online Training With Limited Dataset](HighValueProjectTutorials/TipsForOnlineTrainingWithLimitedDataset.md)

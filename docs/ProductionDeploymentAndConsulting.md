@@ -42,6 +42,8 @@ A typical production deployment follows these principles:
 
 * Passive Aggressive Classifier
 
+* One-Class Passive Aggressive Classifier
+
 ## Scope
 
 Consulting is optional and does not replace the library.

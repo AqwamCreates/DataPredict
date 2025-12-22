@@ -51,4 +51,4 @@ This approach prioritizes predictability, reversibility, and player safety over 
 Consulting is optional and does not replace the library.
 Studios may use DataPredict independently or engage for guidance depending on internal expertise and risk tolerance.
 
-For licensing and consulting inquiries, please refer to the licensing documentation or contact me directly on DevForum.
+For licensing and consulting inquiries, please refer to the licensing documentation or contact me directly on [DevForum](https://devforum.roblox.com/t/datapredict™-3-years-release-230-machine-learning-deep-learning-and-reinforcement-learning-for-revenue-game-optimizations-95-models/2196446).

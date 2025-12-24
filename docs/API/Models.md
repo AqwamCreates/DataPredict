@@ -102,7 +102,7 @@
 
 | Model                                                                                                                  | Alternate Names | Properties | Use Cases                                                            |
 |------------------------------------------------------------------------------------------------------------------------|-----------------|------------|----------------------------------------------------------------------|
-| [KMeans](Models/KMeans.md)                                                                                             | None            | 🔰 🟢 🟡  | Maximizing Area-of-Effect Abilities, Target Grouping                 |
+| [KMeans](Models/KMeans.md)                                                                                             | None            | 🔰 🟢 🟡  | Maximizing Area-of-Effect Abilities, Maximizing Target Grouping       |
 | [FuzzyCMeans](Models/FuzzyCMeans.md)                                                                                   | None            | 🟢 🟡     | Overlapping Area-of-Effect Abilities, Overlapping Target Grouping    |
 | [KMedoids](Models/KMedoids.md)                                                                                         | None            | 🟢 🟡     | Player Grouping Based On Player Locations With Leader Identification |
 | [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | 🟢 🟡     | Enemy Data Generation                                                |

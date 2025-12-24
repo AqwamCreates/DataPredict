@@ -8,7 +8,7 @@
 
    * Note that each model must only have one-column input and output, representing each dimension.
    
-   * Additionally, use the output as the same as input, so that the models will learn to create hard decision boundries which can be extracted from the model parameters.
+   * Additionally, use the output as the same as input, so that the models will learn to create hard decision boundaries which can be extracted from the model parameters.
  
    * Also for SVM's outputs, just use sign function on inputs.
 

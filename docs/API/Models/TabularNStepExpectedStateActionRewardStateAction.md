@@ -9,12 +9,10 @@ TabularNStepExpectedStateActionRewardStateAction is a state-action grid with rei
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-TabularNStepExpectedStateActionRewardStateAction.new(learningRate: number, epsilon: number, nStep: number, discountFactor: number): ModelObject
+TabularNStepExpectedStateActionRewardStateAction.new(epsilon: number, nStep: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1. [Default: 0.1]
 
 * epsilon: Controls the balance between exploration and exploitation for calculating expected Q-values. The value must be set between 0 and 1. The value 0 focuses on exploitation only and 1 focuses on exploration only. [Default: 0.5]
 

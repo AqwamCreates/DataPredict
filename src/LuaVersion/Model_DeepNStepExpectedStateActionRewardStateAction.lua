@@ -146,17 +146,13 @@ function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDiction
 
 		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
 
+		local actionProbability
+
 		for _, qValue in ipairs(unwrappedTargetVector) do
 
-			if (qValue == maxQValue) then
+			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
 
-				expectedQValue = expectedQValue + (qValue * greedyActionProbability)
-
-			else
-
-				expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
-
-			end
+			expectedQValue = expectedQValue + (qValue * actionProbability)
 
 		end
 

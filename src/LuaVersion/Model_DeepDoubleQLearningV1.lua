@@ -62,7 +62,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceErrorVector, temporalDifferenceError = NewDeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		local temporalDifferenceErrorVector = NewDeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
 		
@@ -74,7 +74,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 		NewDeepDoubleQLearningModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		return temporalDifferenceError
+		return temporalDifferenceErrorVector
 		
 	end)
 	
@@ -166,7 +166,7 @@ function DeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previous
 
 	end
 	
-	return temporalDifferenceErrorVector, temporalDifferenceError
+	return temporalDifferenceErrorVector
 	
 end
 

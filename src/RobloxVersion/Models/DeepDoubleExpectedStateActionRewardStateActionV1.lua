@@ -64,7 +64,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceErrorVector = NewDeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceErrorVector(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		local temporalDifferenceErrorVector, temporalDifferenceError = NewDeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceErrorVector(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
 		
@@ -74,7 +74,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		NewDeepDoubleExpectedStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		return temporalDifferenceErrorVector
+		return temporalDifferenceError
 
 	end)
 	
@@ -169,11 +169,11 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDif
 	local nonGreedyActionProbability = epsilon / numberOfClasses
 
 	local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
-
+	
 	local actionProbability
 
 	for _, qValue in ipairs(unwrappedTargetVector) do
-
+		
 		actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
 
 		expectedQValue = expectedQValue + (qValue * actionProbability)
@@ -200,7 +200,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDif
 
 	end
 
-	return temporalDifferenceErrorVector
+	return temporalDifferenceErrorVector, temporalDifferenceError
 
 end
 

@@ -93,18 +93,14 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 		local nonGreedyActionProbability = epsilon / numberOfClasses
 
 		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
+		
+		local actionProbability
 
 		for _, qValue in ipairs(unwrappedTargetVector) do
+			
+			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
 
-			if (qValue == maxQValue) then
-
-				expectedQValue = expectedQValue + (qValue * greedyActionProbability)
-
-			else
-
-				expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
-
-			end
+			expectedQValue = expectedQValue + (qValue * actionProbability)
 
 		end
 		

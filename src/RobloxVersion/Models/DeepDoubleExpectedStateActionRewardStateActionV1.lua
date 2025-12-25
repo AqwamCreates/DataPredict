@@ -204,7 +204,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDif
 
 	end
 
-	return temporalDifferenceErrorVector, temporalDifferenceError
+	return temporalDifferenceErrorVector
 
 end
 

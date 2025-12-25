@@ -30,33 +30,37 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local TabularReinforcementLearningBaseModel = require("Model_TabularReinforcementLearningBaseModel")
 
-local TabularNStepStateActionRewardStateActionModel = {}
+local TabularNStepExpectedStateActionRewardStateActionModel = {}
 
-TabularNStepStateActionRewardStateActionModel.__index = TabularNStepStateActionRewardStateActionModel
+TabularNStepExpectedStateActionRewardStateActionModel.__index = TabularNStepExpectedStateActionRewardStateActionModel
 
-setmetatable(TabularNStepStateActionRewardStateActionModel, TabularReinforcementLearningBaseModel)
+setmetatable(TabularNStepExpectedStateActionRewardStateActionModel, TabularReinforcementLearningBaseModel)
+
+local defaultEpsilon = 0.5
 
 local defaultNStep = 3
 
-function TabularNStepStateActionRewardStateActionModel.new(parameterDictionary)
+function TabularNStepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewTabularNStepStateActionRewardStateActionModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewTabularNStepExpectedStateActionRewardStateActionModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
-	setmetatable(NewTabularNStepStateActionRewardStateActionModel, TabularNStepStateActionRewardStateActionModel)
+	setmetatable(NewTabularNStepExpectedStateActionRewardStateActionModel, TabularNStepExpectedStateActionRewardStateActionModel)
 	
-	NewTabularNStepStateActionRewardStateActionModel:setName("TabularNStepStateActionRewardStateAction")
+	NewTabularNStepExpectedStateActionRewardStateActionModel:setName("TabularNStepExpectedStateActionRewardStateAction")
 	
-	NewTabularNStepStateActionRewardStateActionModel.nStep = parameterDictionary.nStep or defaultNStep
+	NewTabularNStepExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
-	NewTabularNStepStateActionRewardStateActionModel.replayBufferArray = parameterDictionary.replayBufferArray or {}
+	NewTabularNStepExpectedStateActionRewardStateActionModel.nStep = parameterDictionary.nStep or defaultNStep
 	
-	NewTabularNStepStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
+	NewTabularNStepExpectedStateActionRewardStateActionModel.replayBufferArray = parameterDictionary.replayBufferArray or {}
+	
+	NewTabularNStepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
-		local nStep = NewTabularNStepStateActionRewardStateActionModel.nStep
+		local nStep = NewTabularNStepExpectedStateActionRewardStateActionModel.nStep
 		
-		local replayBufferArray = NewTabularNStepStateActionRewardStateActionModel.replayBufferArray
+		local replayBufferArray = NewTabularNStepExpectedStateActionRewardStateActionModel.replayBufferArray
 		
 		table.insert(replayBufferArray, {previousStateValue, previousAction, rewardValue, terminalStateValue})
 		
@@ -72,11 +76,19 @@ function TabularNStepStateActionRewardStateActionModel.new(parameterDictionary)
 			
 		end
 		
-		local Model = NewTabularNStepStateActionRewardStateActionModel.Model
+		local Model = NewTabularNStepExpectedStateActionRewardStateActionModel.Model
 		
-		local discountFactor = NewTabularNStepStateActionRewardStateActionModel.discountFactor
+		local discountFactor = NewTabularNStepExpectedStateActionRewardStateActionModel.discountFactor
 		
-		local ActionsList = NewTabularNStepStateActionRewardStateActionModel:getActionsList()
+		local epsilon = NewTabularNStepExpectedStateActionRewardStateActionModel.epsilon
+		
+		local ActionsList = NewTabularNStepExpectedStateActionRewardStateActionModel:getActionsList()
+		
+		local numberOfActions = #ActionsList
+
+		local expectedQValue = 0
+
+		local numberOfGreedyActions = 0
 
 		local returnValue = 0
 		
@@ -100,13 +112,41 @@ function TabularNStepStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		local firstExperience = replayBufferArray[1]
 		
-		local currentQVector = Model:predict(currentStateValue, true)
-
+		local targetVector = Model:predict(currentStateValue, true)
+		
 		local lastQVector = Model:getOutputMatrix(firstExperience[1], true)
 		
-		local currentActionIndex = table.find(ActionsList, currentAction)
+		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
+
+		local actionIndex = table.find(ActionsList, previousAction)
+
+		local unwrappedTargetVector = targetVector[1]
+
+		for i = 1, numberOfActions, 1 do
+
+			if (unwrappedTargetVector[i] == maxQValue) then
+
+				numberOfGreedyActions = numberOfGreedyActions + 1
+
+			end
+
+		end
+
+		local nonGreedyActionProbability = epsilon / numberOfActions
+
+		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
+
+		local actionProbability
+
+		for _, qValue in ipairs(unwrappedTargetVector) do
+
+			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
+
+			expectedQValue = expectedQValue + (qValue * actionProbability)
+
+		end
 		
-		local bootstrapValue = math.pow(discountFactor, currentNStep) * currentQVector[1][currentActionIndex]	
+		local bootstrapValue = math.pow(discountFactor, currentNStep) * expectedQValue
 
 		local nStepTarget = returnValue + bootstrapValue
 		
@@ -122,20 +162,20 @@ function TabularNStepStateActionRewardStateActionModel.new(parameterDictionary)
 
 	end)
 	
-	NewTabularNStepStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewTabularNStepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		table.clear(NewTabularNStepStateActionRewardStateActionModel.replayBufferArray)
-		
-	end)
-
-	NewTabularNStepStateActionRewardStateActionModel:setResetFunction(function()
-		
-		table.clear(NewTabularNStepStateActionRewardStateActionModel.replayBufferArray)
+		table.clear(NewTabularNStepExpectedStateActionRewardStateActionModel.replayBufferArray)
 		
 	end)
 
-	return NewTabularNStepStateActionRewardStateActionModel
+	NewTabularNStepExpectedStateActionRewardStateActionModel:setResetFunction(function()
+		
+		table.clear(NewTabularNStepExpectedStateActionRewardStateActionModel.replayBufferArray)
+		
+	end)
+
+	return NewTabularNStepExpectedStateActionRewardStateActionModel
 
 end
 
-return TabularNStepStateActionRewardStateActionModel
+return TabularNStepExpectedStateActionRewardStateActionModel

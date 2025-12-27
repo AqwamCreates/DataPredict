@@ -13,12 +13,6 @@ Note: This documentation is still under construction. There will be links that g
 | Quest Completion                     | The more the player is engaged, the more the player spends time on completing quests.                                      |
 | Number Of Online Players In A Server | It is related To players' individual session length, where more players overlap means very high session length per player. |
 
-## Intepreting Local And Global Optima In Game Design
-
-* Local Optima -> The best solution for anything related to the current game session.
- 
-* Global Optima -> The best solution for all game sessions.
-
 ## What's Your Goal?
 
 * Goal Maximization -> Use "measurement of fun" metrics as rewards and combine it with reinforcement learning models.
@@ -40,3 +34,9 @@ Note: This documentation is still under construction. There will be links that g
   * Per Frame (Physics/Render) -> Model must be fast. Ideally use single datapoints or online models here.
 
   * Per Interval -> Model calculation time must not exceed the interval. Ideally use mini-batch data here.
+
+## Intepreting Local And Global Optima In Game Design
+
+* Local Optima -> The best solution for anything related to the current game session.
+ 
+* Global Optima -> The best solution for all game sessions.

@@ -74,7 +74,15 @@
 
   * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
 
-  * A maximum of 30% with a minimum of 10% of gross revenue per user for plans or products that contains features that uses DataPredict™, DataPredict™ Neural and DataPredict™ Axon. If subscription-based, then it will be charged monthly.
+  * A maximum of 30% with a minimum of 10% of gross revenue per user for plans or products that uses DataPredict™, DataPredict™ Neural and DataPredict™ Axon. If subscription-based, then it will be charged monthly.
+
+    * For example:
+
+      * If you have many products and Product X uses DataPredict, then you must pay the 10-30% percentage of Product X's gross revenue to the creator.
+
+      * If you have add-on plan that uses DataPredict on-top of base plan, then you must pay the 10-30% percentage of add-on plan's gross revenue to the creator.
+
+      * If you have a base plan that uses DataPredict, then you must pay the 10-30% percentage of base plan's gross revenue to the creator.
 
    * Requires disclosure of DataPredict™ to the public.
 

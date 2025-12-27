@@ -70,6 +70,14 @@
      
       * "We build the whole machine learning library from scratch and build the whole system with it."
 
+* Tooling License (Roblox Plugin Not Included)
+
+  * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
+
+    * A maximum of 10% of gross revenue per user for tooling plans that uses DataPredict™, DataPredict™ Neural and DataPredict™ Axon. If subscription-based, then it will be charged monthly.
+
+   * Requires disclosure of DataPredict™ to the public.
+
 * [Childhood-Appreciation License](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
 
     * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.

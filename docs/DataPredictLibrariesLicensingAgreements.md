@@ -70,7 +70,7 @@
      
       * "We build the whole machine learning library from scratch and build the whole system with it."
 
-* Tooling License (Roblox Plugin Not Included)
+* Tooling License (Roblox Plugins Are Not Included)
 
   * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
 

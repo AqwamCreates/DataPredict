@@ -14,6 +14,8 @@
  
    * The 500 USD upfront cost would begin on March-April.
 
+* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
+
 ### Definitions
 
 * Third-Party Consultants are employees taht uses DataPredict but are not employed by:

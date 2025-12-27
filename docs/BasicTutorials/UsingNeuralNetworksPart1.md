@@ -132,25 +132,25 @@ For regularization, you can use one regularization object for each layer. You ca
 
 local Regularization = DataPredict.Others.Regularization
 
-local Reg1 = Regularization.new()
+local Regularization1 = Regularization.new()
 
-local Reg2 = Regularization.new()
+local Regularization2 = Regularization.new()
 
 -- Different regularization objects for each layers.
 
 NeuralNetworkModel:addLayer(2, true)
 
-NeuralNetworkModel:addLayer(3, true, "Tanh", nil, nil, Reg1)
+NeuralNetworkModel:addLayer(3, true, "Tanh", learningRate1, nil, Regularization1)
 
-NeuralNetworkModel:addLayer(2, false, "StableSoftmax", nil, Reg2)
+NeuralNetworkModel:addLayer(2, false, "StableSoftmax", learningRate2, nil, Regularization2)
 
 -- Same regularization object for each layers.
 
-NeuralNetworkModel:addLayer(2, true, "Tanh", nil, nil, Reg1)
+NeuralNetworkModel:addLayer(2, true)
 
-NeuralNetworkModel:addLayer(3, true, "Tanh", nil, nil, Reg1)
+NeuralNetworkModel:addLayer(3, true, "Tanh", learningRate1, nil, Regularization1)
 
-NeuralNetworkModel:addLayer(2, false, "StableSoftmax")
+NeuralNetworkModel:addLayer(2, false, "StableSoftmax", nil, learningRate2, nil, Regularization2)
 
 ```
 

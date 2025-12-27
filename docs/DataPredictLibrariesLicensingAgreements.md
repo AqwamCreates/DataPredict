@@ -11,6 +11,8 @@
       * This is to avoid a loophole where clients can just get 2% only from me and then skip 500 USD charge by immediately consulting you without my awareness.
   
    * Otherwise, you bear the 500 USD upfront cost.
+ 
+   * The 500 USD upfront cost would begin on March-April.
 
 ### Definitions
 

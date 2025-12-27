@@ -27,6 +27,8 @@ Note: This documentation is still under construction. There will be links that g
 
 * Per Interval -> Model calculation time must not exceed the interval. Ideally use mini-batch data here.
 
+* Per Session End -> Batch training is allowed.
+
 ## Game Environment Data Is Far More Cleaner Than Real World Data
 
 * Noise usually comes from overlapping interactions.

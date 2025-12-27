@@ -21,6 +21,12 @@ Note: This documentation is still under construction. There will be links that g
 
 * Best Middle Values -> Use clustering models.
 
+## Model Calculation Speed Vs The Game Engine
+
+* Per Frame (Physics/Render) -> Model must be fast. Ideally use single datapoints or online models here.
+
+* Per Interval -> Model calculation time must not exceed the interval. Ideally use mini-batch data here.
+
 ## Game Environment Data Is Far More Cleaner Than Real World Data
 
 * Noise usually comes from overlapping interactions.
@@ -28,12 +34,6 @@ Note: This documentation is still under construction. There will be links that g
 * Your model's global optimum might be a real global optimum.
 
 * Game environment states are just a series of physics calculations. Your model may accidentally associate certain things with certain states!
-
-## Model Calculation Speed Vs The Game Engine
-
-  * Per Frame (Physics/Render) -> Model must be fast. Ideally use single datapoints or online models here.
-
-  * Per Interval -> Model calculation time must not exceed the interval. Ideally use mini-batch data here.
 
 ## Intepreting Local And Global Optima In Game Design
 

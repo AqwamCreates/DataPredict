@@ -74,7 +74,7 @@
 
   * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
 
-    * A maximum of 10% of gross revenue per user for tooling plans that uses DataPredict™, DataPredict™ Neural and DataPredict™ Axon. If subscription-based, then it will be charged monthly.
+    * A maximum of 20% with a minimum of 5% of gross revenue per user for tooling plans that uses DataPredict™, DataPredict™ Neural and DataPredict™ Axon. If subscription-based, then it will be charged monthly.
 
    * Requires disclosure of DataPredict™ to the public.
 

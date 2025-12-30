@@ -84,6 +84,10 @@
 
       * If you have a base plan that uses DataPredict, then you must pay the 10-30% percentage of base plan's gross revenue to the creator.
 
+   * No third-party consultants for 3 months cool-off period if without the 500 USD fees.
+
+   * Includes access to future updates and fixes.
+
    * Requires disclosure of DataPredict™ to the public.
 
 * [Childhood-Appreciation License](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)

@@ -189,7 +189,7 @@ Once you receive the predicted label vector, you can grab the pure number output
 ```lua
 
 local conservativePrice = predictedQuantilePriceVector[1][1] -- 25th percentile
-local balancedPrice = predictedQuantilePriceVector[1][2] -- 50th percentile (median)
+local balancedPrice = predictedQuantilePriceVector[1][2] -- 50th percentile
 local aggressivePrice = predictedQuantilePriceVector[1][3] -- 75th percentile  
 local whalePrice = predictedQuantilePriceVector[1][4] -- 90th percentile
 

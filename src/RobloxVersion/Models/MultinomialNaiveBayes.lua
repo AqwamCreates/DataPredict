@@ -36,8 +36,6 @@ MultinomialNaiveBayesModel.__index = MultinomialNaiveBayesModel
 
 setmetatable(MultinomialNaiveBayesModel, NaiveBayesBaseModel)
 
-local defaultMode = "Hybrid"
-
 local function factorial(n)
 	
 	local value = 1
@@ -295,11 +293,7 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 	
 	NewMultinomialNaiveBayesModel:setName("MultinomialNaiveBayes")
 	
-	NewMultinomialNaiveBayesModel.mode = parameterDictionary.mode or defaultMode
-	
 	NewMultinomialNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
-		
-		local mode = NewMultinomialNaiveBayesModel.mode
 		
 		local useLogProbabilities = NewMultinomialNaiveBayesModel.useLogProbabilities
 
@@ -312,24 +306,6 @@ function MultinomialNaiveBayesModel.new(parameterDictionary)
 		local featureCountMatrix = ModelParameters[3]
 		
 		local numberOfDataPointVector = ModelParameters[4]
-
-		if (mode == "Hybrid") then
-
-			mode = (featureProbabilityMatrix and priorProbabilityVector and featureCountMatrix and numberOfDataPointVector and "Online") or "Offline"		
-
-		end
-
-		if (mode == "Offline") then
-
-			featureProbabilityMatrix = nil
-			
-			priorProbabilityVector = nil
-			
-			featureCountMatrix = nil
-			
-			numberOfDataPointVector = nil
-
-		end
 		
 		local numberOfData = #featureMatrix
 

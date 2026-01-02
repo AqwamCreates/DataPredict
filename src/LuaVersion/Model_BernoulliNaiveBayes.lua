@@ -213,20 +213,20 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		local useLogProbabilities = NewBernoulliNaiveBayesModel.useLogProbabilities
 
 		local ModelParameters = NewBernoulliNaiveBayesModel.ModelParameters or {}
-		
-		local numberOfData = #featureMatrix
-
-		local numberOfFeatures = #featureMatrix[1]
-
-		local zeroValue = (useLogProbabilities and -math.huge) or 0
-
-		local oneValue = (useLogProbabilities and 0) or 1
 
 		local logisticMatrix = NewBernoulliNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
 		
 		local extractedFeatureMatrixTable = NewBernoulliNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
 		local numberOfClasses = #NewBernoulliNaiveBayesModel.ClassesList
+
+		local zeroValue = (useLogProbabilities and -math.huge) or 0
+
+		local oneValue = (useLogProbabilities and 0) or 1
+		
+		local numberOfData = #featureMatrix
+
+		local numberOfFeatures = #featureMatrix[1]
 		
 		local classVectorDimensionSizeArray = {numberOfClasses, 1}
 

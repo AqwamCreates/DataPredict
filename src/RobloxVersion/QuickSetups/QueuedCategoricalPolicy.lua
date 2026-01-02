@@ -288,7 +288,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		NewQueuedCategoricalPolicyQuickSetup.currentEpsilonDictionary = {}
 		
-		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary  = {}
+		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary = {}
 
 		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary = {}
 

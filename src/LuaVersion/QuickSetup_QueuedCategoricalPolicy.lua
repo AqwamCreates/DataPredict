@@ -301,6 +301,12 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		for _, ExperienceReplay in ipairs(NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary) do ExperienceReplay:reset() end
 
 		for _, EligibilityTrace in ipairs(NewQueuedCategoricalPolicyQuickSetup.EligibilityTraceDictionary) do EligibilityTrace:reset() end
+		
+		NewQueuedCategoricalPolicyQuickSetup.inputQueueArray = {}
+
+		NewQueuedCategoricalPolicyQuickSetup.agentIndexOutputQueueArray = {}
+
+		NewQueuedCategoricalPolicyQuickSetup.outputQueueArray = {}
 
 	end)
 	

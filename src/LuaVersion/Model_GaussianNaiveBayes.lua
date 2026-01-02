@@ -272,39 +272,31 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		
 		local ModelParameters = NewGaussianNaiveBayesModel.ModelParameters or {}
 		
-		local meanMatrix = ModelParameters[1]
+		local logisticMatrix = NewGaussianNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
+
+		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
-		local standardDeviationMatrix = ModelParameters[2]
+		local numberOfClasses = #NewGaussianNaiveBayesModel.ClassesList
 		
-		local priorProbabilityVector = ModelParameters[3]
-		
-		local numberOfDataPointVector = ModelParameters[4]
+		local zeroValue = (useLogProbabilities and -math.huge) or 0
+
+		local oneValue = (useLogProbabilities and 0) or 1
 		
 		local numberOfData = #featureMatrix
 
 		local numberOfFeatures = #featureMatrix[1]
 		
-		local numberOfClasses = #NewGaussianNaiveBayesModel.ClassesList
-
-		local zeroValue = (useLogProbabilities and -math.huge) or 0
-
-		local oneValue = (useLogProbabilities and 0) or 1
-		
 		local classMatrixDimensionSizeArray = {numberOfClasses, numberOfFeatures}
-		
+
 		local classVectorDimensionSizeArray = {numberOfClasses, 1}
-		
-		local logisticMatrix = NewGaussianNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
 
-		local extractedFeatureMatrixTable = NewGaussianNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
+		local meanMatrix = ModelParameters[1] or AqwamTensorLibrary:createTensor(classMatrixDimensionSizeArray, zeroValue)
 
-		meanMatrix = meanMatrix or AqwamTensorLibrary:createTensor(classMatrixDimensionSizeArray, zeroValue)
+		local standardDeviationMatrix = ModelParameters[2] or AqwamTensorLibrary:createTensor(classMatrixDimensionSizeArray, zeroValue)
 
-		standardDeviationMatrix = standardDeviationMatrix or AqwamTensorLibrary:createTensor(classMatrixDimensionSizeArray, zeroValue)
+		local priorProbabilityVector = ModelParameters[3] or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, oneValue)
 
-		priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, oneValue)
-
-		numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
+		local numberOfDataPointVector = ModelParameters[4] or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
 		
 		if (useLogProbabilities) then
 			

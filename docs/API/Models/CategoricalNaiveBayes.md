@@ -17,20 +17,12 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-CategoricalNaiveBayes.new(useLogProbabilities: boolean, mode: string): ModelObject
+CategoricalNaiveBayes.new(useLogProbabilities: boolean): ModelObject
 ```
 
 #### Parameters:
 
 * useLogProbabilities: Convert the probabilities to larger values using log function.
-
-* mode: Controls the mode of the model. Available options are:
-
-  * Hybrid (Default)
- 
-  * Online
- 
-  * Offline
 
 #### Returns:
 

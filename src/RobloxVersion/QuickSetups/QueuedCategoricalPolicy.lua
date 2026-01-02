@@ -285,16 +285,16 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		NewQueuedCategoricalPolicyQuickSetup.currentTemperatureictionary = {}
 		
 		NewQueuedCategoricalPolicyQuickSetup.currentEpsilonDictionary = {}
+		
+		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary  = {}
+
+		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary = {}
 
 		for _, EpsilonValueScheduler in ipairs(NewQueuedCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary) do EpsilonValueScheduler:reset() end
 		
 		for _, TemperatureValueScheduler in ipairs(NewQueuedCategoricalPolicyQuickSetup.TemperatureValueSchedulerDictionary) do TemperatureValueScheduler:reset() end
 		
 		for _, CValueValueScheduler in ipairs(NewQueuedCategoricalPolicyQuickSetup.CValueValueSchedulerDictionary) do CValueValueScheduler:reset() end
-
-		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary  = {}
-
-		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary = {}
 
 		for _, ExperienceReplay in ipairs(NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary) do ExperienceReplay:reset() end
 

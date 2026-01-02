@@ -42,7 +42,15 @@ local defaultShareSelectedActionCountVector = false
 
 local defaultShareCurrentEpsilon = true
 
+local defaultShareCurrentTemperature = true
+
+local defaultShareCurrentCValue = true
+
 local defaultShareEpsilonValueScheduler = true
+
+local defaultShareTemperatureValueScheduler = true
+
+local defaultShareCValueValueScheduler = true
 
 local defaultShareCurrentNumberOfReinforcements = false
 
@@ -67,8 +75,16 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 	NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareSelectedActionCountVector or defaultShareSelectedActionCountVector)
 
 	NewQueuedCategoricalPolicyQuickSetup.shareCurrentEpsilon = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentEpsilon or defaultShareCurrentEpsilon)
+	
+	NewQueuedCategoricalPolicyQuickSetup.shareCurrentTemperature = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentTemperature or defaultShareCurrentTemperature)
+	
+	NewQueuedCategoricalPolicyQuickSetup.shareCurrentCValue = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentCValue or defaultShareCurrentCValue)
 
-	NewQueuedCategoricalPolicyQuickSetup.shareEpsilonValueScheduler = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentEpsilon or defaultShareEpsilonValueScheduler)
+	NewQueuedCategoricalPolicyQuickSetup.shareEpsilonValueScheduler = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareEpsilonValueScheduler or defaultShareEpsilonValueScheduler)
+	
+	NewQueuedCategoricalPolicyQuickSetup.shareTemperatureValueScheduler = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareTemperatureValueScheduler or defaultShareTemperatureValueScheduler)
+	
+	NewQueuedCategoricalPolicyQuickSetup.shareCValueValueScheduler = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCValueValueScheduler or defaultShareCValueValueScheduler)
 
 	NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfEpisodes = NewQueuedCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfEpisodes or defaultShareCurrentNumberOfEpisodes)
 
@@ -87,8 +103,16 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 	NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = parameterDictionary.selectedActionCountVectorDictionary or {}
 
 	NewQueuedCategoricalPolicyQuickSetup.currentEpsilonDictionary = parameterDictionary.currentEpsilonDictionary or {}
-
+	
+	NewQueuedCategoricalPolicyQuickSetup.currentTemperatureDictionary = parameterDictionary.currentTemperatureDictionary or {}
+	
+	NewQueuedCategoricalPolicyQuickSetup.currentCValueDictionary = parameterDictionary.currentCValueDictionary or {}
+	
 	NewQueuedCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary = parameterDictionary.EpsilonValueSchedulerDictionary or {}
+	
+	NewQueuedCategoricalPolicyQuickSetup.TemperatureValueSchedulerDictionary = parameterDictionary.TemperatureValueSchedulerDictionary or {}
+	
+	NewQueuedCategoricalPolicyQuickSetup.CValueValueSchedulerDictionary = parameterDictionary.CValueValueSchedulerDictionary or {}
 
 	NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary = parameterDictionary.currentNumberOfReinforcementsDictionary or {}
 
@@ -117,6 +141,10 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		local selectedActionCountVectorIndex = (NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector and 1) or agentIndex
 
 		local currentEpsilonIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentEpsilon and 1) or agentIndex
+		
+		local currentTemperatureIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentTemperature and 1) or agentIndex
+		
+		local currentCValueIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentCValue and 1) or agentIndex
 
 		local epsilonValueSchedulerIndex = (NewQueuedCategoricalPolicyQuickSetup.shareEpsilonValueScheduler and 1) or agentIndex
 
@@ -133,6 +161,10 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		local selectedActionCountVectorDictionary = NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary
 
 		local currentEpsilonDictionary = NewQueuedCategoricalPolicyQuickSetup.currentEpsilonDictionary
+		
+		local currentTemperatureDictionary = NewQueuedCategoricalPolicyQuickSetup.currentTemperatureDictionary
+		
+		local currentCValueDictionary = NewQueuedCategoricalPolicyQuickSetup.currentCValueDictionary
 
 		local currentNumberOfReinforcementsDictionary = NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary
 
@@ -145,8 +177,16 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		local selectedActionCountVector = selectedActionCountVectorDictionary[selectedActionCountVectorIndex]
 
 		local currentEpsilon = currentEpsilonDictionary[currentEpsilonIndex]
+		
+		local currentTemperature = currentTemperatureDictionary[currentTemperatureIndex]
+		
+		local currentCValue = currentCValueDictionary[currentCValueIndex]
 
 		local EpsilonValueScheduler = NewQueuedCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary[epsilonValueSchedulerIndex]
+		
+		local TemperatureValueScheduler = NewQueuedCategoricalPolicyQuickSetup.TemperatureValueSchedulerDictionary[currentTemperatureIndex]
+		
+		local CValueValueScheduler = NewQueuedCategoricalPolicyQuickSetup.CValueValueSchedulerDictionary[currentCValueIndex]
 
 		local ExperienceReplay = NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
 
@@ -180,7 +220,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		end
 		
-		local inputArray = {agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements}
+		local inputArray = {agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentEpsilon, currentTemperature, currentCValue, EpsilonValueScheduler, TemperatureValueScheduler, CValueValueScheduler, currentNumberOfReinforcements}
 		
 		table.insert(NewQueuedCategoricalPolicyQuickSetup.inputQueueArray, inputArray)
 		
@@ -198,7 +238,7 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 			
 		until (outputQueueArrayIndex)
 		
-		local action, actionValue, actionVector, selectedActionCountVector, currentEpsilon = table.unpack(outputQueueArray[outputQueueArrayIndex])
+		local action, actionValue, actionVector, selectedActionCountVector, currentEpsilon, currentTemperature, currentCValue = table.unpack(outputQueueArray[outputQueueArrayIndex])
 		
 		table.remove(agentIndexQueueOutputArray, outputQueueArrayIndex)
 		
@@ -211,6 +251,10 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
 		
 		currentEpsilonDictionary[currentEpsilonIndex] = currentEpsilon
+		
+		currentTemperatureDictionary[currentTemperature] = currentTemperature
+		
+		currentCValueDictionary[currentCValueIndex] = currentCValue
 		
 		currentNumberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
 
@@ -237,12 +281,20 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		NewQueuedCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = {}
 
 		NewQueuedCategoricalPolicyQuickSetup.currentEpsilonDictionary = {}
+		
+		NewQueuedCategoricalPolicyQuickSetup.currentTemperatureictionary = {}
+		
+		NewQueuedCategoricalPolicyQuickSetup.currentEpsilonDictionary = {}
 
 		for _, EpsilonValueScheduler in ipairs(NewQueuedCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary) do EpsilonValueScheduler:reset() end
+		
+		for _, TemperatureValueScheduler in ipairs(NewQueuedCategoricalPolicyQuickSetup.TemperatureValueSchedulerDictionary) do TemperatureValueScheduler:reset() end
+		
+		for _, CValueValueScheduler in ipairs(NewQueuedCategoricalPolicyQuickSetup.CValueValueSchedulerDictionary) do CValueValueScheduler:reset() end
 
 		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary  = {}
 
-		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary  = {}
+		NewQueuedCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary = {}
 
 		for _, ExperienceReplay in ipairs(NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary) do ExperienceReplay:reset() end
 
@@ -300,7 +352,15 @@ function QueuedCategoricalPolicyQuickSetup:start()
 		
 		local currentEpsilon
 		
+		local currentTemperature
+		
+		local currentCValue
+		
 		local EpsilonValueScheduler
+		
+		local TemperatureValueScheduler
+		
+		local CValueValueScheduler
 		
 		local currentNumberOfReinforcements
 
@@ -324,7 +384,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 			
 			pcall(function()
 				
-				agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements = table.unpack(inputQueueArray[1])
+				agentIndex, previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, isEpisodeEnd, ExperienceReplay, EligibilityTrace, selectedActionCountVector, currentEpsilon, currentTemperature, currentCValue, EpsilonValueScheduler, TemperatureValueScheduler, CValueValueScheduler, currentNumberOfReinforcements = table.unpack(inputQueueArray[1])
 
 				isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
 
@@ -336,7 +396,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 				if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
-				currentActionIndex, selectedActionCountVector, currentEpsilon = self:selectAction(currentActionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
+				currentActionIndex, selectedActionCountVector, currentEpsilon, currentTemperature, currentCValue = self:selectAction(currentActionVector, selectedActionCountVector, currentEpsilon, currentTemperature, currentCValue, EpsilonValueScheduler, TemperatureValueScheduler, CValueValueScheduler, currentNumberOfReinforcements)
 
 				currentAction = ActionsList[currentActionIndex]
 
@@ -372,7 +432,7 @@ function QueuedCategoricalPolicyQuickSetup:start()
 
 				end
 
-				outputArray = {currentAction, currentActionValue, currentActionVector, selectedActionCountVector, currentEpsilon}
+				outputArray = {currentAction, currentActionValue, currentActionVector, selectedActionCountVector, currentEpsilon, currentTemperature, currentCValue}
 				
 				table.insert(outputQueueArray, outputArray)
 

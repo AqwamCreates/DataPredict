@@ -270,20 +270,20 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		local useLogProbabilities = NewComplementNaiveBayesModel.useLogProbabilities
 
 		local ModelParameters = NewComplementNaiveBayesModel.ModelParameters or {}
-		
-		local numberOfData = #featureMatrix
-
-		local numberOfFeatures = #featureMatrix[1]
-
-		local zeroValue = (useLogProbabilities and -math.huge) or 0
-
-		local oneValue = (useLogProbabilities and 0) or 1
 
 		local logisticMatrix = NewComplementNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 		local extractedFeatureMatrixTable = NewComplementNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
 		local numberOfClasses = #NewComplementNaiveBayesModel.ClassesList
+		
+		local zeroValue = (useLogProbabilities and -math.huge) or 0
+
+		local oneValue = (useLogProbabilities and 0) or 1
+		
+		local numberOfData = #featureMatrix
+
+		local numberOfFeatures = #featureMatrix[1]
 
 		local classVectorDimensionSizeArray = {numberOfClasses, 1}
 

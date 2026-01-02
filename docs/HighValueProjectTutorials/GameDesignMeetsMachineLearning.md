@@ -2,42 +2,43 @@
 
 Note: This documentation is still under construction. There will be links that go more in depth.
 
-* Measurement Of Fun
+## Measurement Of Fun And Its Relation To Engagement
 
-  * Session Length -> The more the player is engaged, the longer the player stays.
+| Measurement Of Fun                   | Relationship To Engagement                                                                                                 |
+|--------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| Session Length                       | The more the player is engaged, the longer the player stays.                                                               |
+| Map Coverage                         | The more the player is engaged, the more the player explores.                                                              |
+| Variety Of Items Collected           | The more the player is engaged, the more the player collect different items.                                               |
+| Amount Of Resources Spent            | The more the player is engaged, the more the player spends on resources.                                                   |
+| Quest Completion                     | The more the player is engaged, the more the player spends time on completing quests.                                      |
+| Number Of Online Players In A Server | It is related To players' individual session length, where more players overlap means very high session length per player. |
 
-  * Map Coverage -> The more the player is engaged, the more the player explores.
+## What's Your Goal?
 
-  * Variety Of Items Collected -> The more the player is engaged, the more the player collect different items.
+* Goal Maximization -> Use "measurement of fun" metrics as rewards and combine it with reinforcement learning models.
 
-  * Amount Of Resources Spent -> The more the player is engaged, the more the player spends on resources.
+* Prediction -> Use regression and classification models.
 
-  * Quest Completion -> The more the player is engaged, the more the player spends time on completing quests.
+* Best Middle Values -> Use clustering models.
 
-* Intepreting Local And Global Optima In Game Design
+## Model Calculation Speed Vs The Game Engine
 
-  * Local Optima -> The best solution for anything related to the current game session.
+* Per Frame (Physics / Render) -> Model must be fast. Ideally use single datapoints or online models here.
+
+* Per Interval -> Model calculation time must not exceed the interval. Ideally use mini-batch training here.
+
+* Per Session End -> Batch training is allowed.
+
+## Game Environment Data Is Far More Cleaner Than Real World Data
+
+* Noise usually comes from overlapping interactions.
  
-  * Global Optima -> The best solution for all game sessions.
+* Your model's global optimum might be a real global optimum.
 
-* What's Your Goal?
+* Game environment states are just a series of physics calculations. Your model may accidentally associate certain things with certain states!
 
-  * Reward Maximization -> Use "measurement of fun" metrics as rewards and combine it with reinforcement learning models.
+## Intepreting Local And Global Optima In Game Design
+
+* Local Optima -> The best solution for anything related to the current game session.
  
-  * Prediction -> Use regression and classification models.
- 
-  * Best Middle Values -> Use clustering models.
-
-* Game Environment Data Is Far More Cleaner Than Real World Data
-
-  * Noise usually comes from overlapping interactions.
- 
-  * Your model's global optimum might be a real global optimum.
- 
-  * Game environment states are just a series of physics calculations. Your model may accidentally associate certain things with certain states!
-
-* Model Calculation Speed Vs The Game Engine
-
-  * Per Frame (Physics/Render) -> Model must be fast. Ideally use single datapoints or online models here.
-
-  * Per Interval -> Model calculation time must not exceed the interval. Ideally use mini-batch data here.
+* Global Optima -> The best solution for all game sessions.

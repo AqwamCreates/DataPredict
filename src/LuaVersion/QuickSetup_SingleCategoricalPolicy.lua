@@ -88,7 +88,7 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 		
-		local currentActionIndex, selectedActionCountVector, currentEpsilon = NewSingleCategoricalPolicyQuickSetup:selectAction(currentActionVector, NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector, NewSingleCategoricalPolicyQuickSetup.currentEpsilon, NewSingleCategoricalPolicyQuickSetup.EpsilonValueScheduler, currentNumberOfReinforcements)
+		local currentActionIndex, selectedActionCountVector, currentEpsilon, currentTemperature, currentCValue = NewSingleCategoricalPolicyQuickSetup:selectAction(currentActionVector, NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector, NewSingleCategoricalPolicyQuickSetup.currentEpsilon, NewSingleCategoricalPolicyQuickSetup.currentTemperature, NewSingleCategoricalPolicyQuickSetup.currentCValue, NewSingleCategoricalPolicyQuickSetup.EpsilonValueScheduler, NewSingleCategoricalPolicyQuickSetup.TemperatureValueScheduler, NewSingleCategoricalPolicyQuickSetup.CValueValueScheduler, currentNumberOfReinforcements)
 
 		local currentAction = ActionsList[currentActionIndex]
 
@@ -142,6 +142,10 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		NewSingleCategoricalPolicyQuickSetup.currentEpsilon = currentEpsilon
 		
+		NewSingleCategoricalPolicyQuickSetup.currentTemperature = currentTemperature
+		
+		NewSingleCategoricalPolicyQuickSetup.currentCValue = currentCValue
+		
 		NewSingleCategoricalPolicyQuickSetup.currentNumberOfReinforcements = currentNumberOfReinforcements
 
 		NewSingleCategoricalPolicyQuickSetup.currentNumberOfEpisodes = currentNumberOfEpisodes
@@ -163,6 +167,12 @@ function SingleCategoricalPolicyQuickSetup.new(parameterDictionary)
 		NewSingleCategoricalPolicyQuickSetup.previousFeatureVector = nil
 
 		NewSingleCategoricalPolicyQuickSetup.previousAction = nil
+		
+		NewSingleCategoricalPolicyQuickSetup.currentEpsilon = nil
+
+		NewSingleCategoricalPolicyQuickSetup.currentTemperature = nil
+		
+		NewSingleCategoricalPolicyQuickSetup.currentCValue = nil
 
 		NewSingleCategoricalPolicyQuickSetup.selectedActionCountVector = nil
 

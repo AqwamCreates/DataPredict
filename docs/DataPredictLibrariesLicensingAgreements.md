@@ -11,10 +11,14 @@
       * This is to avoid a loophole where clients can just get 2% only from me and then skip 500 USD charge by immediately consulting you without my awareness.
   
    * Otherwise, you bear the 500 USD upfront cost.
+ 
+   * The 500 USD upfront cost would begin on March-April.
+
+* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 
 ### Definitions
 
-* Third-Party Consultants are employees taht uses DataPredict but are not employed by:
+* Third-Party Consultants are employees that uses DataPredict but are not employed by:
 
     * The DataPredict Creator;
     
@@ -26,7 +30,7 @@
 
     * Also known as the "Nuclear Apache 2.0 Limited-Commercial-Use" license.
 
-    * It is applied automatically on usage or possesion of DataPredict™, DataPredict™ Neural and DataPredict™ Axon. If you have one of the commercial licenses as shown below, then you are exempted from this condition.
+    * It is applied automatically on usage of DataPredict™, DataPredict™ Neural and DataPredict™ Axon. If you have one of the commercial licenses as shown below, then you are exempted from this condition.
 
     * For organizations that creates more than 3K USD of gross revenue within 365 days (not per 365 days), you agree that you will allow me to release your assets interacting with these libraries under the Apache 2.0 license.
 
@@ -65,6 +69,26 @@
       * “We took DataPredict's research papers, build our own version and iterate it.”
      
       * "We build the whole machine learning library from scratch and build the whole system with it."
+
+* Tooling License (Roblox Plugins Are Not Included)
+
+  * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.
+
+  * A maximum of 30% with a minimum of 10% of gross revenue per user for plans or products that uses DataPredict™, DataPredict™ Neural and DataPredict™ Axon. If subscription-based, then it will be charged monthly.
+
+    * For example:
+
+      * If you have many products and Product X uses DataPredict, then you must pay the 10-30% percentage of Product X's gross revenue to the creator.
+
+      * If you have add-on plan that uses DataPredict on-top of base plan, then you must pay the 10-30% percentage of add-on plan's gross revenue to the creator.
+
+      * If you have a base plan that uses DataPredict, then you must pay the 10-30% percentage of base plan's gross revenue to the creator.
+
+   * No third-party consultants for 3 months cool-off period if without the 500 USD fees.
+
+   * Includes access to future updates and fixes.
+
+   * Requires disclosure of DataPredict™ to the public.
 
 * [Childhood-Appreciation License](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
 

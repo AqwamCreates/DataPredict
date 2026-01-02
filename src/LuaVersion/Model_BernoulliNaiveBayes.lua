@@ -36,8 +36,6 @@ BernoulliNaiveBayesModel.__index = BernoulliNaiveBayesModel
 
 setmetatable(BernoulliNaiveBayesModel, NaiveBayesBaseModel)
 
-local defaultMode = "Hybrid"
-
 local function calculateBernoulliProbability(useLogProbabilities, featureVector, featureProbabilityVector)
 
 	local bernoulliProbability = (useLogProbabilities and 0) or 1
@@ -210,11 +208,7 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 	
 	NewBernoulliNaiveBayesModel:setName("BernoulliNaiveBayes")
 	
-	NewBernoulliNaiveBayesModel.mode = parameterDictionary.mode or defaultMode
-	
 	NewBernoulliNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
-		
-		local mode = NewBernoulliNaiveBayesModel.mode
 
 		local useLogProbabilities = NewBernoulliNaiveBayesModel.useLogProbabilities
 
@@ -225,22 +219,6 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		local priorProbabilityVector = ModelParameters[2]
 
 		local numberOfDataPointVector = ModelParameters[3]
-
-		if (mode == "Hybrid") then
-
-			mode = (featureProbabilityMatrix and priorProbabilityVector and numberOfDataPointVector and "Online") or "Offline"		
-
-		end
-
-		if (mode == "Offline") then
-
-			featureProbabilityMatrix = nil
-			
-			priorProbabilityVector = nil
-			
-			numberOfDataPointVector = nil
-
-		end
 		
 		local numberOfData = #featureMatrix
 

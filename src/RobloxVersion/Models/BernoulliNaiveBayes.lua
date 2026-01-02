@@ -224,11 +224,11 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 
 		local logisticMatrix = NewBernoulliNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
 		
+		local extractedFeatureMatrixTable = NewBernoulliNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
+		
 		local numberOfClasses = #NewBernoulliNaiveBayesModel.ClassesList
 		
 		local classVectorDimensionSizeArray = {numberOfClasses, 1}
-
-		local extractedFeatureMatrixTable = NewBernoulliNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 
 		local featureProbabilityMatrix = ModelParameters[1] or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
 

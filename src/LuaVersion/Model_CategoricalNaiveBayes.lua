@@ -36,8 +36,6 @@ CategoricalNaiveBayesModel.__index = CategoricalNaiveBayesModel
 
 setmetatable(CategoricalNaiveBayesModel, NaiveBayesBaseModel)
 
-local defaultMode = "Hybrid"
-
 local function applyFunctionToDictionaryArrayArray(functionToApply, dictionaryArrayArray)
 	
 	local newDictionaryArrayArray = {}
@@ -267,11 +265,7 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 	NewCategoricalNaiveBayesModel:setName("CategoricalNaiveBayes")
 
-	NewCategoricalNaiveBayesModel.mode = parameterDictionary.mode or defaultMode
-
 	NewCategoricalNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
-
-		local mode = NewCategoricalNaiveBayesModel.mode
 
 		local useLogProbabilities = NewCategoricalNaiveBayesModel.useLogProbabilities
 
@@ -282,22 +276,6 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 		local priorProbabilityVector = ModelParameters[2]
 
 		local numberOfDataPointVector = ModelParameters[3]
-
-		if (mode == "Hybrid") then
-
-			mode = (featureProbabilityDictionaryArrayArray and priorProbabilityVector and numberOfDataPointVector and "Online") or "Offline"		
-
-		end
-
-		if (mode == "Offline") then
-			
-			featureProbabilityDictionaryArrayArray = nil
-
-			priorProbabilityVector = nil
-			
-			numberOfDataPointVector = nil
-
-		end
 		
 		local numberOfData = #featureMatrix
 

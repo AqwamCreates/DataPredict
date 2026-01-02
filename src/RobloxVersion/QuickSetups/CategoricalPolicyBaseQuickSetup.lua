@@ -142,7 +142,7 @@ local function calculateUpperConfidenceBound(actionVector, cValue, selectedActio
 	
 end
 
-function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
+function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActionCountVector, currentEpsilon, currentTemperature, currentCValue, EpsilonValueScheduler, TemperatureValueScheduler, CValueValueScheduler, currentNumberOfReinforcements)
 	
 	local actionSelectionFunction = self.actionSelectionFunction
 	
@@ -151,6 +151,10 @@ function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActi
 	local actionIndex
 	
 	currentEpsilon = currentEpsilon or self.epsilon
+	
+	currentTemperature = currentTemperature or self.temperature
+	
+	currentCValue = currentCValue or self.cValue
 	
 	selectedActionCountVector = selectedActionCountVector or {table.create(#actionVector[1], 0)}
 	
@@ -164,19 +168,19 @@ function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActi
 	
 	elseif (actionSelectionFunction == "StableSoftmaxSampling") or (actionSelectionFunction == "StableBoltzmannSampling") then
 		
-		local stableActionProbabilityVector = calculateStableProbability(actionVector, self.temperature)
+		local stableActionProbabilityVector = calculateStableProbability(actionVector, currentTemperature)
 		
 		actionIndex = sample(stableActionProbabilityVector)
 		
 	elseif (actionSelectionFunction == "SoftmaxSampling") or (actionSelectionFunction == "BoltzmannSampling") then
 
-		local actionProbabilityVector = calculateProbability(actionVector, self.temperature)
+		local actionProbabilityVector = calculateProbability(actionVector, currentTemperature)
 
 		actionIndex = sample(actionProbabilityVector)
 		
 	elseif (actionSelectionFunction == "UpperConfidenceBound") then
 		
-		local actionUpperConfidenceBoundVector = calculateUpperConfidenceBound(actionVector, self.cValue, selectedActionCountVector, currentNumberOfReinforcements)
+		local actionUpperConfidenceBoundVector = calculateUpperConfidenceBound(actionVector, currentCValue, selectedActionCountVector, currentNumberOfReinforcements)
 		
 		actionIndex = selectIndexWithHighestValue(actionUpperConfidenceBoundVector)
 		
@@ -190,7 +194,11 @@ function CategoricalPolicyBaseQuickSetup:selectAction(actionVector, selectedActi
 	
 	if (EpsilonValueScheduler) then currentEpsilon = EpsilonValueScheduler:calculate(currentEpsilon) end
 	
-	return actionIndex, selectedActionCountVector, currentEpsilon
+	if (TemperatureValueScheduler) then currentTemperature = TemperatureValueScheduler:calculate(currentTemperature) end
+	
+	if (CValueValueScheduler) then currentCValue = CValueValueScheduler:calculate(currentCValue) end
+	
+	return actionIndex, selectedActionCountVector, currentEpsilon, currentTemperature, currentCValue
 	
 end
 
@@ -208,19 +216,27 @@ function CategoricalPolicyBaseQuickSetup.new(parameterDictionary)
 	
 	local epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
+	local temperature = parameterDictionary.temperature or defaultTemperature
+	
 	NewCategoricalPolicyBaseQuickSetup.actionSelectionFunction = parameterDictionary.actionSelectionFunction or defaultActionSelectionFunction
 	
-	NewCategoricalPolicyBaseQuickSetup.epsilon = epsilon or defaultEpsilon
+	NewCategoricalPolicyBaseQuickSetup.epsilon = epsilon
 	
-	NewCategoricalPolicyBaseQuickSetup.temperature = parameterDictionary.temperature or defaultTemperature
+	NewCategoricalPolicyBaseQuickSetup.temperature = temperature
 	
 	NewCategoricalPolicyBaseQuickSetup.cValue = parameterDictionary.cValue or defaultCValue
 	
 	NewCategoricalPolicyBaseQuickSetup.EpsilonValueScheduler = parameterDictionary.EpsilonValueScheduler
 	
+	NewCategoricalPolicyBaseQuickSetup.TemperatureValueScheduler = parameterDictionary.TemperatureValueScheduler
+	
+	NewCategoricalPolicyBaseQuickSetup.CValueValueScheduler = parameterDictionary.CValueValueScheduler
+	
 	NewCategoricalPolicyBaseQuickSetup.selectedActionCountVector = parameterDictionary.selectedActionCountVector
 	
 	NewCategoricalPolicyBaseQuickSetup.currentEpsilon = parameterDictionary.currentEpsilon or epsilon
+	
+	NewCategoricalPolicyBaseQuickSetup.currentTemperature = parameterDictionary.currentTemperature or temperature
 	
 	return NewCategoricalPolicyBaseQuickSetup
 	

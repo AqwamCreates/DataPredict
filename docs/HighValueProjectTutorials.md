@@ -20,7 +20,7 @@
 
 * The content of this page and its links are licensed under the DataPredict™ library's [Terms And Conditions](TermsAndConditions.md). This includes the codes shown in the links below.
 
-  * Therefore, creating or redistributing copies or derivatives of this page and its links' contents are not allowed.
+  * Therefore, creating or redistributing copies or its derivatives of this page and its links' contents are not allowed.
 
   * Commercial use is also limited unless you have a separate license from me.
   

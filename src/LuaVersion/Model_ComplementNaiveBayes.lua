@@ -36,8 +36,6 @@ ComplementNaiveBayesModel.__index = ComplementNaiveBayesModel
 
 setmetatable(ComplementNaiveBayesModel, NaiveBayesBaseModel)
 
-local defaultMode = "Hybrid"
-
 local function sampleMultinomial(probabilityArray, totalCount)
 
 	local numberOfProbabilities = #probabilityArray
@@ -267,11 +265,7 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 	
 	NewComplementNaiveBayesModel:setName("ComplementNaiveBayes")
 	
-	NewComplementNaiveBayesModel.mode = parameterDictionary.mode or defaultMode
-	
 	NewComplementNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
-		
-		local mode = NewComplementNaiveBayesModel.mode
 		
 		local useLogProbabilities = NewComplementNaiveBayesModel.useLogProbabilities
 
@@ -284,24 +278,6 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		local numberOfFeatureCountVector = ModelParameters[3]
 
 		local numberOfDataPointVector = ModelParameters[4]
-
-		if (mode == "Hybrid") then
-
-			mode = (complementFeatureProbabilityMatrix and priorProbabilityVector and numberOfFeatureCountVector and numberOfDataPointVector and "Online") or "Offline"		
-
-		end
-		
-		if (mode == "Offline") then
-
-			complementFeatureProbabilityMatrix = nil
-			
-			priorProbabilityVector = nil
-			
-			numberOfFeatureCountVector = nil
-			
-			numberOfDataPointVector = nil
-
-		end
 		
 		local numberOfData = #featureMatrix
 

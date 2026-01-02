@@ -213,34 +213,28 @@ function BernoulliNaiveBayesModel.new(parameterDictionary)
 		local useLogProbabilities = NewBernoulliNaiveBayesModel.useLogProbabilities
 
 		local ModelParameters = NewBernoulliNaiveBayesModel.ModelParameters or {}
-
-		local featureProbabilityMatrix = ModelParameters[1]
-
-		local priorProbabilityVector = ModelParameters[2]
-
-		local numberOfDataPointVector = ModelParameters[3]
 		
 		local numberOfData = #featureMatrix
 
 		local numberOfFeatures = #featureMatrix[1]
-		
-		local numberOfClasses = #NewBernoulliNaiveBayesModel.ClassesList
 
 		local zeroValue = (useLogProbabilities and -math.huge) or 0
 
 		local oneValue = (useLogProbabilities and 0) or 1
 
-		local classVectorDimensionSizeArray = {numberOfClasses, 1}
-		
 		local logisticMatrix = NewBernoulliNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
+		
+		local numberOfClasses = #NewBernoulliNaiveBayesModel.ClassesList
+		
+		local classVectorDimensionSizeArray = {numberOfClasses, 1}
 
 		local extractedFeatureMatrixTable = NewBernoulliNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 
-		featureProbabilityMatrix = featureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
+		local featureProbabilityMatrix = ModelParameters[1] or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
 
-		priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, oneValue)
+		local priorProbabilityVector = ModelParameters[2] or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, oneValue)
 
-		numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
+		local numberOfDataPointVector = ModelParameters[3] or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
 		
 		if (useLogProbabilities) then
 

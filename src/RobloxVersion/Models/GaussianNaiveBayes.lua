@@ -36,8 +36,6 @@ GaussianNaiveBayesModel.__index = GaussianNaiveBayesModel
 
 setmetatable(GaussianNaiveBayesModel, NaiveBayesBaseModel)
 
-local defaultMode = "Hybrid"
-
 local function calculateGaussianProbability(useLogProbabilities, featureVector, meanVector, standardDeviationVector)
 
 	local gaussianProbability = (useLogProbabilities and 0) or 1
@@ -268,11 +266,7 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 	
 	NewGaussianNaiveBayesModel:setName("GaussianNaiveBayes")
 	
-	NewGaussianNaiveBayesModel.mode = parameterDictionary.mode or defaultMode
-	
 	NewGaussianNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
-		
-		local mode = NewGaussianNaiveBayesModel.mode
 		
 		local useLogProbabilities = NewGaussianNaiveBayesModel.useLogProbabilities
 		
@@ -285,24 +279,6 @@ function GaussianNaiveBayesModel.new(parameterDictionary)
 		local priorProbabilityVector = ModelParameters[3]
 		
 		local numberOfDataPointVector = ModelParameters[4]
-
-		if (mode == "Hybrid") then
-
-			mode = (meanMatrix and standardDeviationMatrix and priorProbabilityVector and numberOfDataPointVector and "Online") or "Offline"		
-
-		end
-		
-		if (mode == "Offline") then
-
-			meanMatrix = nil
-			
-			standardDeviationMatrix = nil
-			
-			priorProbabilityVector = nil
-			
-			numberOfDataPointVector = nil
-
-		end
 		
 		local numberOfData = #featureMatrix
 

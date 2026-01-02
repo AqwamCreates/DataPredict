@@ -270,38 +270,30 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 		local useLogProbabilities = NewComplementNaiveBayesModel.useLogProbabilities
 
 		local ModelParameters = NewComplementNaiveBayesModel.ModelParameters or {}
-
-		local complementFeatureProbabilityMatrix = ModelParameters[1]
-
-		local priorProbabilityVector = ModelParameters[2]
-		
-		local numberOfFeatureCountVector = ModelParameters[3]
-
-		local numberOfDataPointVector = ModelParameters[4]
 		
 		local numberOfData = #featureMatrix
 
 		local numberOfFeatures = #featureMatrix[1]
-		
-		local numberOfClasses = #NewComplementNaiveBayesModel.ClassesList
 
 		local zeroValue = (useLogProbabilities and -math.huge) or 0
 
 		local oneValue = (useLogProbabilities and 0) or 1
-		
-		local classVectorDimensionSizeArray = {numberOfClasses, 1}
-		
+
 		local logisticMatrix = NewComplementNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 		local extractedFeatureMatrixTable = NewComplementNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
-
-		complementFeatureProbabilityMatrix = complementFeatureProbabilityMatrix or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
-
-		priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, oneValue)
 		
-		numberOfFeatureCountVector = numberOfFeatureCountVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
+		local numberOfClasses = #NewComplementNaiveBayesModel.ClassesList
 
-		numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
+		local classVectorDimensionSizeArray = {numberOfClasses, 1}
+
+		local complementFeatureProbabilityMatrix = ModelParameters[1] or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
+
+		local priorProbabilityVector = ModelParameters[2] or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, oneValue)
+
+		local numberOfFeatureCountVector = ModelParameters[3] or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
+
+		local numberOfDataPointVector = ModelParameters[4] or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
 		
 		if (useLogProbabilities) then
 

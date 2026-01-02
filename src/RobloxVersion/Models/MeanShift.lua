@@ -26,11 +26,11 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
+local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
 local MeanShiftModel = {}
 

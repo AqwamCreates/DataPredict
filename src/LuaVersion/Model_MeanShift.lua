@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel)
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
@@ -43,8 +43,6 @@ local defaultMaximumNumberOfIterations = 500
 local defaultNumberOfClusters = 0
 
 local defaultBandwidth = 10
-
-local defaultMode = "Hybrid"
 
 local defaultDistanceFunction = "Euclidean"
 
@@ -342,8 +340,6 @@ function MeanShiftModel.new(parameterDictionary)
 
 	NewMeanShiftModel.bandwidth = bandwidth
 	
-	NewMeanShiftModel.mode = parameterDictionary.mode or defaultMode
-	
 	NewMeanShiftModel.distanceFunction = parameterDictionary.distanceFunction or defaultDistanceFunction
 	
 	NewMeanShiftModel.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
@@ -362,8 +358,6 @@ function MeanShiftModel:train(featureMatrix)
 	
 	local bandwidth = self.bandwidth
 	
-	local mode = self.mode
-	
 	local distanceFunction = self.distanceFunction
 	
 	local kernelFunction = self.kernelFunction
@@ -377,12 +371,6 @@ function MeanShiftModel:train(featureMatrix)
 	local sumKernelMatrix = ModelParameters[2]
 	
 	local sumMultipliedKernelMatrix = ModelParameters[3]
-	
-	if (mode == "Hybrid") then
-
-		mode = (centroidMatrix and sumKernelMatrix and sumMultipliedKernelMatrix and "Online") or "Offline"		
-
-	end
 
 	local distanceFunctionToApply = distanceFunctionDictionary[distanceFunction]
 
@@ -404,19 +392,9 @@ function MeanShiftModel:train(featureMatrix)
 
 	local distanceMatrix
 
-	local clusterAssignmentMatrix 
+	local clusterAssignmentMatrix
 
 	local cost
-	
-	if (mode == "Offline") then 
-
-		centroidMatrix = nil
-		
-		sumKernelMatrix = nil
-		
-		sumMultipliedKernelMatrix = nil
-
-	end
 	
 	-- The noise is added to the feature matrix is because we want to avoid the cost to be zero at the first iteration.
 

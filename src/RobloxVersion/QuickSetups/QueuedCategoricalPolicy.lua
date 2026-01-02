@@ -134,10 +134,6 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		if (not NewQueuedCategoricalPolicyQuickSetup.isRunning) then error("Not currently running.") end
 
-		local experienceReplayIndex = (NewQueuedCategoricalPolicyQuickSetup.shareExperienceReplay and 1) or agentIndex
-
-		local eligibilityTraceIndex = (NewQueuedCategoricalPolicyQuickSetup.shareEligibilityTrace and 1) or agentIndex
-
 		local selectedActionCountVectorIndex = (NewQueuedCategoricalPolicyQuickSetup.shareSelectedActionCountVector and 1) or agentIndex
 
 		local currentEpsilonIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentEpsilon and 1) or agentIndex
@@ -147,8 +143,14 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 		local currentCValueIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentCValue and 1) or agentIndex
 
 		local epsilonValueSchedulerIndex = (NewQueuedCategoricalPolicyQuickSetup.shareEpsilonValueScheduler and 1) or agentIndex
+		
+		local temperatureValueSchedulerIndex = (NewQueuedCategoricalPolicyQuickSetup.shareTemperatureValueScheduler and 1) or agentIndex
+		
+		local cValueValueSchedulerIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCValueValueScheduler and 1) or agentIndex
+		
+		local experienceReplayIndex = (NewQueuedCategoricalPolicyQuickSetup.shareExperienceReplay and 1) or agentIndex
 
-		local currentEpsilonSchedulerIndex = (NewQueuedCategoricalPolicyQuickSetup.shareEpsilonValueScheduler and 1) or agentIndex
+		local eligibilityTraceIndex = (NewQueuedCategoricalPolicyQuickSetup.shareEligibilityTrace and 1) or agentIndex
 
 		local numberOfReinforcementsIndex = (NewQueuedCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements and 1) or agentIndex
 
@@ -184,9 +186,9 @@ function QueuedCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		local EpsilonValueScheduler = NewQueuedCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary[epsilonValueSchedulerIndex]
 		
-		local TemperatureValueScheduler = NewQueuedCategoricalPolicyQuickSetup.TemperatureValueSchedulerDictionary[currentTemperatureIndex]
+		local TemperatureValueScheduler = NewQueuedCategoricalPolicyQuickSetup.TemperatureValueSchedulerDictionary[temperatureValueSchedulerIndex]
 		
-		local CValueValueScheduler = NewQueuedCategoricalPolicyQuickSetup.CValueValueSchedulerDictionary[currentCValueIndex]
+		local CValueValueScheduler = NewQueuedCategoricalPolicyQuickSetup.CValueValueSchedulerDictionary[temperatureValueSchedulerIndex]
 
 		local ExperienceReplay = NewQueuedCategoricalPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
 

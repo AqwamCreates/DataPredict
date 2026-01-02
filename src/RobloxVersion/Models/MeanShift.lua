@@ -366,23 +366,27 @@ function MeanShiftModel:train(featureMatrix)
 	
 	local ModelParameters = self.ModelParameters or {}
 	
-	local centroidMatrix = ModelParameters[1]
-	
-	local sumKernelMatrix = ModelParameters[2]
-	
-	local sumMultipliedKernelMatrix = ModelParameters[3]
-
 	local distanceFunctionToApply = distanceFunctionDictionary[distanceFunction]
 
 	if (not distanceFunctionToApply) then error("Unknown distance function.") end
-	
+
 	local kernelFunctionToApply = kernelFunctionList[kernelFunction]
-	
+
 	if (not kernelFunctionToApply) then error("Unknown kernel function.") end
 	
 	local numberOfData = #featureMatrix
 
 	local numberOfFeatures = #featureMatrix[1]
+	
+	local centroidDimensionSizeArray = {numberOfData, numberOfFeatures}
+	
+	-- The noise is added to the feature matrix is because we want to avoid the cost to be zero at the first iteration.
+	
+	local centroidMatrix = ModelParameters[1] or AqwamTensorLibrary:add(featureMatrix, AqwamTensorLibrary:createRandomUniformTensor(centroidDimensionSizeArray), -1e-16, 1e-16)
+	
+	local sumKernelMatrix = ModelParameters[2] or AqwamTensorLibrary:createTensor(centroidDimensionSizeArray)
+	
+	local sumMultipliedKernelMatrix = ModelParameters[3] or AqwamTensorLibrary:createTensor(centroidDimensionSizeArray)
 	
 	local costArray = {}
 
@@ -396,16 +400,6 @@ function MeanShiftModel:train(featureMatrix)
 
 	local cost
 	
-	-- The noise is added to the feature matrix is because we want to avoid the cost to be zero at the first iteration.
-
-	centroidMatrix = centroidMatrix or AqwamTensorLibrary:add(featureMatrix, AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures}), -1e-16, 1e-16)
-	
-	centroidDimensionSizeArray = {#centroidMatrix, numberOfFeatures}
-
-	sumKernelMatrix = sumKernelMatrix or AqwamTensorLibrary:createTensor(centroidDimensionSizeArray)
-
-	sumMultipliedKernelMatrix = sumMultipliedKernelMatrix or AqwamTensorLibrary:createTensor(centroidDimensionSizeArray)
-
 	repeat
 		
 		numberOfIterations = numberOfIterations + 1

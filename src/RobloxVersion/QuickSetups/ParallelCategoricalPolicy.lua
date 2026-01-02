@@ -42,7 +42,15 @@ local defaultShareSelectedActionCountVector = false
 
 local defaultShareCurrentEpsilon = true
 
+local defaultShareCurrentTemperature = true
+
+local defaultShareCurrentCValue = true
+
 local defaultShareEpsilonValueScheduler = true
+
+local defaultShareTemperatureValueScheduler = true
+
+local defaultShareCValueValueScheduler = true
 
 local defaultShareCurrentNumberOfReinforcements = false
 
@@ -61,17 +69,25 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 	-- Share toggles
 	
 	NewParallelCategoricalPolicyQuickSetup.shareExperienceReplay = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareExperienceReplay or defaultShareExperienceReplay)
-	
+
 	NewParallelCategoricalPolicyQuickSetup.shareEligibilityTrace = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareEligibilityTrace or defaultShareEligibilityTrace)
-	
+
 	NewParallelCategoricalPolicyQuickSetup.shareSelectedActionCountVector = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareSelectedActionCountVector or defaultShareSelectedActionCountVector)
-	
+
 	NewParallelCategoricalPolicyQuickSetup.shareCurrentEpsilon = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentEpsilon or defaultShareCurrentEpsilon)
-	
-	NewParallelCategoricalPolicyQuickSetup.shareEpsilonValueScheduler = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentEpsilon or defaultShareEpsilonValueScheduler)
-	
+
+	NewParallelCategoricalPolicyQuickSetup.shareCurrentTemperature = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentTemperature or defaultShareCurrentTemperature)
+
+	NewParallelCategoricalPolicyQuickSetup.shareCurrentCValue = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentCValue or defaultShareCurrentCValue)
+
+	NewParallelCategoricalPolicyQuickSetup.shareEpsilonValueScheduler = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareEpsilonValueScheduler or defaultShareEpsilonValueScheduler)
+
+	NewParallelCategoricalPolicyQuickSetup.shareTemperatureValueScheduler = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareTemperatureValueScheduler or defaultShareTemperatureValueScheduler)
+
+	NewParallelCategoricalPolicyQuickSetup.shareCValueValueScheduler = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCValueValueScheduler or defaultShareCValueValueScheduler)
+
 	NewParallelCategoricalPolicyQuickSetup.shareCurrentNumberOfEpisodes = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfEpisodes or defaultShareCurrentNumberOfEpisodes)
-	
+
 	NewParallelCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements = NewParallelCategoricalPolicyQuickSetup:getValueOrDefaultValue(parameterDictionary.shareCurrentNumberOfReinforcements or defaultShareCurrentNumberOfReinforcements)
 	
 	-- Dictionaries
@@ -83,15 +99,23 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 	NewParallelCategoricalPolicyQuickSetup.previousFeatureVectorDictionary = parameterDictionary.previousFeatureVectorDictionary or {}
 
 	NewParallelCategoricalPolicyQuickSetup.previousActionDictionary = parameterDictionary.previousActionDictionary or {}
-	
+
 	NewParallelCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = parameterDictionary.selectedActionCountVectorDictionary or {}
-	
+
 	NewParallelCategoricalPolicyQuickSetup.currentEpsilonDictionary = parameterDictionary.currentEpsilonDictionary or {}
-	
+
+	NewParallelCategoricalPolicyQuickSetup.currentTemperatureDictionary = parameterDictionary.currentTemperatureDictionary or {}
+
+	NewParallelCategoricalPolicyQuickSetup.currentCValueDictionary = parameterDictionary.currentCValueDictionary or {}
+
 	NewParallelCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary = parameterDictionary.EpsilonValueSchedulerDictionary or {}
-	
+
+	NewParallelCategoricalPolicyQuickSetup.TemperatureValueSchedulerDictionary = parameterDictionary.TemperatureValueSchedulerDictionary or {}
+
+	NewParallelCategoricalPolicyQuickSetup.CValueValueSchedulerDictionary = parameterDictionary.CValueValueSchedulerDictionary or {}
+
 	NewParallelCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary = parameterDictionary.currentNumberOfReinforcementsDictionary or {}
-	
+
 	NewParallelCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary = parameterDictionary.currentNumberOfEpisodesDictionary or {}
 	
 	NewParallelCategoricalPolicyQuickSetup:setReinforceFunction(function(agentIndex, currentFeatureVector, rewardValue, returnOriginalOutput)
@@ -102,22 +126,26 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local isOriginalValueNotAVector = (type(currentFeatureVector) ~= "table")
 		
-		local numberOfReinforcementsPerEpisode = NewParallelCategoricalPolicyQuickSetup.numberOfReinforcementsPerEpisode
-		
+		local selectedActionCountVectorIndex = (NewParallelCategoricalPolicyQuickSetup.shareSelectedActionCountVector and 1) or agentIndex
+
+		local currentEpsilonIndex = (NewParallelCategoricalPolicyQuickSetup.shareCurrentEpsilon and 1) or agentIndex
+
+		local currentTemperatureIndex = (NewParallelCategoricalPolicyQuickSetup.shareCurrentTemperature and 1) or agentIndex
+
+		local currentCValueIndex = (NewParallelCategoricalPolicyQuickSetup.shareCurrentCValue and 1) or agentIndex
+
+		local epsilonValueSchedulerIndex = (NewParallelCategoricalPolicyQuickSetup.shareEpsilonValueScheduler and 1) or agentIndex
+
+		local temperatureValueSchedulerIndex = (NewParallelCategoricalPolicyQuickSetup.shareTemperatureValueScheduler and 1) or agentIndex
+
+		local cValueValueSchedulerIndex = (NewParallelCategoricalPolicyQuickSetup.shareCValueValueScheduler and 1) or agentIndex
+
 		local experienceReplayIndex = (NewParallelCategoricalPolicyQuickSetup.shareExperienceReplay and 1) or agentIndex
-		
+
 		local eligibilityTraceIndex = (NewParallelCategoricalPolicyQuickSetup.shareEligibilityTrace and 1) or agentIndex
 		
-		local selectedActionCountVectorIndex = (NewParallelCategoricalPolicyQuickSetup.shareSelectedActionCountVector and 1) or agentIndex
-		
-		local currentEpsilonIndex = (NewParallelCategoricalPolicyQuickSetup.shareCurrentEpsilon and 1) or agentIndex
-		
-		local epsilonValueSchedulerIndex = (NewParallelCategoricalPolicyQuickSetup.shareEpsilonValueScheduler and 1) or agentIndex
-		
-		local currentEpsilonSchedulerIndex = (NewParallelCategoricalPolicyQuickSetup.shareEpsilonValueScheduler and 1) or agentIndex
-		
 		local numberOfReinforcementsIndex = (NewParallelCategoricalPolicyQuickSetup.shareCurrentNumberOfReinforcements and 1) or agentIndex
-		
+
 		local numberOfEpisodesIndex = (NewParallelCategoricalPolicyQuickSetup.shareCurrentNumberOfEpisodes and 1) or agentIndex
 		
 		local previousFeatureVectorDictionary = NewParallelCategoricalPolicyQuickSetup.previousFeatureVectorDictionary
@@ -127,8 +155,14 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		local selectedActionCountVectorDictionary = NewParallelCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary
 		
 		local currentEpsilonDictionary = NewParallelCategoricalPolicyQuickSetup.currentEpsilonDictionary
+
+		local currentTemperatureDictionary = NewParallelCategoricalPolicyQuickSetup.currentTemperatureDictionary
+
+		local currentCValueDictionary = NewParallelCategoricalPolicyQuickSetup.currentCValueDictionary
 		
 		local currentNumberOfReinforcementsDictionary = NewParallelCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary
+		
+		local numberOfReinforcementsPerEpisode = NewParallelCategoricalPolicyQuickSetup.numberOfReinforcementsPerEpisode
 		
 		local currentNumberOfEpisodesDictionary = NewParallelCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary
 		
@@ -140,7 +174,15 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		
 		local currentEpsilon = currentEpsilonDictionary[currentEpsilonIndex]
 		
+		local currentTemperature = currentTemperatureDictionary[currentTemperatureIndex]
+		
+		local currentCValue = currentCValueDictionary[currentCValueIndex]
+		
 		local EpsilonValueScheduler = NewParallelCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary[epsilonValueSchedulerIndex]
+		
+		local TemperatureValueScheduler = NewParallelCategoricalPolicyQuickSetup.TemperatureValueSchedulerDictionary[temperatureValueSchedulerIndex]
+		
+		local CValueValueScheduler = NewParallelCategoricalPolicyQuickSetup.CValueValueSchedulerDictionary[cValueValueSchedulerIndex]
 		
 		local ExperienceReplay = NewParallelCategoricalPolicyQuickSetup.ExperienceReplayDictionary[experienceReplayIndex]
 		
@@ -160,7 +202,7 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		if (isOriginalValueNotAVector) then currentFeatureVector = currentFeatureVector[1][1] end
 
-		local currentActionIndex, selectedActionCountVector = NewParallelCategoricalPolicyQuickSetup:selectAction(currentActionVector, selectedActionCountVector, currentEpsilon, EpsilonValueScheduler, currentNumberOfReinforcements)
+		local currentActionIndex, selectedActionCountVector, currentEpsilon, currentTemperature, currentCValue = NewParallelCategoricalPolicyQuickSetup:selectAction(currentActionVector, selectedActionCountVector, currentEpsilon, currentTemperature, currentCValue, EpsilonValueScheduler, TemperatureValueScheduler, CValueValueScheduler, currentNumberOfReinforcements)
 
 		local currentAction = ActionsList[currentActionIndex]
 
@@ -172,7 +214,7 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 			local updateFunction = NewParallelCategoricalPolicyQuickSetup.updateFunction
 
-			temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+			temporalDifferenceError = Model:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 
 			if (updateFunction) then updateFunction(terminalStateValue) end
 
@@ -206,13 +248,17 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 
 		end
 		
+		previousActionDictionary[agentIndex] = currentAction
+
 		previousFeatureVectorDictionary[agentIndex] = currentFeatureVector
 
-		previousActionDictionary[agentIndex] = currentAction
-		
 		selectedActionCountVectorDictionary[selectedActionCountVectorIndex] = selectedActionCountVector
-		
-		currentEpsilonDictionary[currentActionIndex] = currentEpsilon
+
+		currentEpsilonDictionary[currentEpsilonIndex] = currentEpsilon
+
+		currentTemperatureDictionary[currentTemperature] = currentTemperature
+
+		currentCValueDictionary[currentCValueIndex] = currentCValue
 
 		currentNumberOfReinforcementsDictionary[agentIndex] = currentNumberOfReinforcements
 
@@ -237,14 +283,22 @@ function ParallelCategoricalPolicyQuickSetup.new(parameterDictionary)
 		NewParallelCategoricalPolicyQuickSetup.previousActionDictionary = {}
 
 		NewParallelCategoricalPolicyQuickSetup.selectedActionCountVectorDictionary = {}
-		
+
 		NewParallelCategoricalPolicyQuickSetup.currentEpsilonDictionary = {}
-		
+
+		NewParallelCategoricalPolicyQuickSetup.currentTemperatureictionary = {}
+
+		NewParallelCategoricalPolicyQuickSetup.currentEpsilonDictionary = {}
+
+		NewParallelCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary = {}
+
+		NewParallelCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary = {}
+
 		for _, EpsilonValueScheduler in ipairs(NewParallelCategoricalPolicyQuickSetup.EpsilonValueSchedulerDictionary) do EpsilonValueScheduler:reset() end
 
-		NewParallelCategoricalPolicyQuickSetup.currentNumberOfReinforcementsDictionary  = {}
+		for _, TemperatureValueScheduler in ipairs(NewParallelCategoricalPolicyQuickSetup.TemperatureValueSchedulerDictionary) do TemperatureValueScheduler:reset() end
 
-		NewParallelCategoricalPolicyQuickSetup.currentNumberOfEpisodesDictionary  = {}
+		for _, CValueValueScheduler in ipairs(NewParallelCategoricalPolicyQuickSetup.CValueValueSchedulerDictionary) do CValueValueScheduler:reset() end
 
 		for _, ExperienceReplay in ipairs(NewParallelCategoricalPolicyQuickSetup.ExperienceReplayDictionary) do ExperienceReplay:reset() end
 

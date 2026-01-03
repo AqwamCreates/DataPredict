@@ -195,12 +195,12 @@
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                                                | Alternate Names | Properties | Use Cases                                                            |
-|--------------------------------------------------------------------------------------|-----------------|------------| ---------------------------------------------------------------------|
-| [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md)               | OC-SVM          | 💾 🟡     | Hacking Detection, Anomaly Detection (Using Single Class Data)       |
-| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md) | OC-PA-C         | ❗ ⚡ 🟢  | Fast Hacking Detection, Anomaly Detection (Using Single Class Data)  |
-| [LocalOutlierFactor](Models/LocalOutlierFactor.md)                                   | LOF             | 🟢 🟡     | Score-Based Play-Time Milestone Detection                            |
-| [LocalOutlierProbability](Models/LocalOutlierProbability.md)                         | LoOP            | 🟢 🟡     | Probability-Based Play-Time Milestone Detection                      |
+| Model                                                                                | Alternate Names | Properties | Use Cases                                                           |
+|--------------------------------------------------------------------------------------|-----------------|------------| --------------------------------------------------------------------|
+| [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md)               | OC-SVM          | 💾 🟡     | Hacking Detection, Anomaly Detection (Using Single Class Data)      |
+| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md) | OC-PA-C         | ❗ ⚡ 🟢  | Fast Hacking Detection, Anomaly Detection (Using Single Class Data) |
+| [LocalOutlierFactor](Models/LocalOutlierFactor.md)                                   | LOF             | 🟢 🟡     | Score-Based Play-Time Milestone Detection                           |
+| [LocalOutlierProbability](Models/LocalOutlierProbability.md)                         | LoOP            | 🟢 🟡     | Probability-Based Play-Time Milestone Detection                     |
 
 ## Generative
 

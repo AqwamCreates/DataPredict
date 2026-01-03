@@ -36,9 +36,11 @@ BayesianLinearRegressionModel.__index = BayesianLinearRegressionModel
 
 setmetatable(BayesianLinearRegressionModel, BaseModel)
 
-local defaultPriorPrecision = 1.0 -- alpha
+local defaultPriorPrecision = 1 -- alpha = 1 / (standardDeviationForPrior) ^ 2
 
-local defaultLikelihoodPrecision = 1.0 -- beta
+local defaultLikelihoodPrecision = 1 -- beta = 1 / (standardDeviationForLikelihood) ^ 2
+
+local defaultWeightDecay = 1
 
 local defaultUseLogProbabilities = false
 
@@ -82,6 +84,8 @@ function BayesianLinearRegressionModel.new(parameterDictionary)
 
 	NewBayesianLinearRegressionModel.likelihoodPrecision = parameterDictionary.likelihoodPrecision or defaultLikelihoodPrecision
 	
+	NewBayesianLinearRegressionModel.weightDecay = parameterDictionary.weightDecay or defaultWeightDecay
+	
 	NewBayesianLinearRegressionModel.useLogProbabilities = NewBayesianLinearRegressionModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
 	return NewBayesianLinearRegressionModel
@@ -95,6 +99,8 @@ function BayesianLinearRegressionModel:train(featureMatrix, labelVector)
 	local priorPrecision = self.priorPrecision
 
 	local likelihoodPrecision = self.likelihoodPrecision
+	
+	local weightDecay = self.weightDecay
 
 	local ModelParameters = self.ModelParameters or {}
 
@@ -109,36 +115,42 @@ function BayesianLinearRegressionModel:train(featureMatrix, labelVector)
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 
 	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
-
+	
 	local priorPrecisionIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures}, priorPrecision)
 
 	local scaledDotProductFeatureMatrix = AqwamTensorLibrary:multiply(dotProductFeatureMatrix, likelihoodPrecision)
-
-	local inversePosteriorCovarianceMatrix = AqwamTensorLibrary:add(priorPrecisionIdentityMatrix, scaledDotProductFeatureMatrix)
-
+	
 	if (oldInversePosteriorCovarianceMatrix) then
 
-		inversePosteriorCovarianceMatrix = AqwamTensorLibrary:add(inversePosteriorCovarianceMatrix, oldInversePosteriorCovarianceMatrix)
+		oldInversePosteriorCovarianceMatrix = AqwamTensorLibrary:multiply(weightDecay, oldInversePosteriorCovarianceMatrix)
+
+	else
+		
+		oldInversePosteriorCovarianceMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures}, priorPrecision)
 
 	end
+	
+	local newInversePosteriorCovarianceMatrix = AqwamTensorLibrary:add(scaledDotProductFeatureMatrix, oldInversePosteriorCovarianceMatrix)
 
-	local posteriorCovarianceMatrix = AqwamTensorLibrary:inverse(inversePosteriorCovarianceMatrix)
+	local newPosteriorCovarianceMatrix = AqwamTensorLibrary:inverse(newInversePosteriorCovarianceMatrix)
 
-	if (not posteriorCovarianceMatrix) then error("Could not invert matrix for posterior covariance matrix.") end
+	if (not newPosteriorCovarianceMatrix) then error("Could not invert inverse posterior covariance matrix.") end
 
 	local dotProductFeatureMatrixLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
 
-	local multipliedDotProductFeatureMatrixLabelVector = AqwamTensorLibrary:multiply(likelihoodPrecision, dotProductFeatureMatrixLabelVector)
+	local newMultipliedDotProductFeatureMatrixLabelVector = AqwamTensorLibrary:multiply(likelihoodPrecision, dotProductFeatureMatrixLabelVector)
 
 	if (oldMultipliedDotProductFeatureMatrixLabelVector) then
+		
+		oldMultipliedDotProductFeatureMatrixLabelVector = AqwamTensorLibrary:multiply(weightDecay, oldMultipliedDotProductFeatureMatrixLabelVector)
 
-		multipliedDotProductFeatureMatrixLabelVector = AqwamTensorLibrary:add(oldMultipliedDotProductFeatureMatrixLabelVector, multipliedDotProductFeatureMatrixLabelVector)
+		newMultipliedDotProductFeatureMatrixLabelVector = AqwamTensorLibrary:add(newMultipliedDotProductFeatureMatrixLabelVector, oldMultipliedDotProductFeatureMatrixLabelVector)
 
 	end
 
-	local posteriorMeanVector = AqwamTensorLibrary:dotProduct(posteriorCovarianceMatrix, multipliedDotProductFeatureMatrixLabelVector)
+	local newPosteriorMeanVector = AqwamTensorLibrary:dotProduct(newPosteriorCovarianceMatrix, newMultipliedDotProductFeatureMatrixLabelVector)
 
-	self.ModelParameters = {posteriorMeanVector, posteriorCovarianceMatrix, inversePosteriorCovarianceMatrix, multipliedDotProductFeatureMatrixLabelVector}
+	self.ModelParameters = {newPosteriorMeanVector, newPosteriorCovarianceMatrix, newInversePosteriorCovarianceMatrix, newMultipliedDotProductFeatureMatrixLabelVector}
 
 end
 
@@ -158,11 +170,11 @@ function BayesianLinearRegressionModel:predict(featureMatrix, thresholdMatrix)
 
 	if (not ModelParameters) then
 		
-		local dimensionSizeArray = {#featureMatrix[1], 1}
+		local numberOfFeatures = #featureMatrix[1]
 
-		posteriorMeanVector = self:initializeMatrixBasedOnMode(dimensionSizeArray)
+		posteriorMeanVector = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
 		
-		posteriorCovarianceMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, math.huge)
+		posteriorCovarianceMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures}, (1 / self.priorPrecision))
 
 		self.ModelParameters = {posteriorMeanVector, posteriorCovarianceMatrix}
 		

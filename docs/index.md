@@ -22,6 +22,8 @@
 
   * Small developers and non-B2B organizations earning ≤3K USD within 365 days (not per 365 days) can use DataPredict™ for free!
 
+  * Standard and White-Label tiers available for commercial projects.
+
 * For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 
 ![DataPredictIconSmall](https://github.com/AqwamCreates/DataPredict/assets/67371914/1122cce4-747b-4054-88f0-2685414b0d73)

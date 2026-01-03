@@ -30,80 +30,72 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local NaiveBayesBaseModel = require("Model_NaiveBayesBaseModel")
 
-local ComplementNaiveBayesModel = {}
+local CategoricalNaiveBayesModel = {}
 
-ComplementNaiveBayesModel.__index = ComplementNaiveBayesModel
+CategoricalNaiveBayesModel.__index = CategoricalNaiveBayesModel
 
-setmetatable(ComplementNaiveBayesModel, NaiveBayesBaseModel)
+setmetatable(CategoricalNaiveBayesModel, NaiveBayesBaseModel)
 
-local function sampleMultinomial(probabilityArray, totalCount)
-
-	local numberOfProbabilities = #probabilityArray
-
-	local remainingCount = totalCount
-
-	local featureArray = {}
-
-	for i, p in ipairs(probabilityArray) do
-
-		local count = math.floor(p * totalCount + 0.5)
-
-		featureArray[i] = count
-
-		remainingCount = remainingCount - count
-
+local function applyFunctionToDictionaryArrayArray(functionToApply, dictionaryArrayArray)
+	
+	local newDictionaryArrayArray = {}
+	
+	for classIndex, featureDictionaryArray in ipairs(dictionaryArrayArray) do
+		
+		local newFeatureDictionaryArray = {}
+		
+		for featureIndex, featureDictionary in ipairs(featureDictionaryArray) do
+			
+			local newFeatureDictionary = {}
+			
+			for key, value in pairs(featureDictionary) do
+				
+				newFeatureDictionary[key] = functionToApply(value)
+				
+			end
+			
+			newFeatureDictionaryArray[featureIndex] = newFeatureDictionary
+			
+		end
+		
+		newDictionaryArrayArray[classIndex] = newFeatureDictionaryArray
+		
 	end
-
-	while (remainingCount > 0) do
-
-		local idx = math.random(1, numberOfProbabilities)
-
-		featureArray[idx] = featureArray[idx] + 1
-
-		remainingCount = remainingCount - 1
-
-	end
-
-	return featureArray
+	
+	return newDictionaryArrayArray
 end
 
-local function calculateComplementProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector)
-
-	local complementProbability = (useLogProbabilities and 0) or 1
-
-	local functionToApply = function(featureValue, complementFeatureProbabilityValue) return math.pow(complementFeatureProbabilityValue, featureValue) end
-
-	local complementProbabilityVector = AqwamTensorLibrary:applyFunction(functionToApply, featureVector, complementFeatureProbabilityVector)
+local function calculateCategoricalProbability(useLogProbabilities, featureTable, featureProbabilityDictionaryArray)
 	
-	if (useLogProbabilities) then
+	local probabilityInitialization = (useLogProbabilities and 0) or 1
+	
+	local categoricalProbability = probabilityInitialization
+	
+	for f, value in ipairs(featureTable) do
 		
-		complementProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, complementProbabilityVector)
+		local featureProbability = featureProbabilityDictionaryArray[f][value] or probabilityInitialization
 		
-	end
-
-	for column = 1, #complementProbabilityVector[1], 1 do
-
 		if (useLogProbabilities) then
 
-			complementProbability = complementProbability + complementProbabilityVector[1][column]
+			categoricalProbability = categoricalProbability + math.log(featureProbability)
 
 		else
 
-			complementProbability = complementProbability * complementProbabilityVector[1][column]
+			categoricalProbability = categoricalProbability * featureProbability
 
 		end
-
+		
 	end
-
-	return complementProbability
-
+	
+	return categoricalProbability
+	
 end
 
-local function calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityValue)
+local function calculatePosteriorProbability(useLogProbabilities, featureTable, featureProbabilityDictionaryArray, priorProbabilityValue)
 
 	local posteriorProbability
 
-	local likelihoodProbability = calculateComplementProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector)
+	local likelihoodProbability = calculateCategoricalProbability(useLogProbabilities, featureTable, featureProbabilityDictionaryArray)
 
 	if (useLogProbabilities) then
 
@@ -119,130 +111,138 @@ local function calculatePosteriorProbability(useLogProbabilities, featureVector,
 
 end
 
-function ComplementNaiveBayesModel:calculateCost(featureMatrix, logisticMatrix)
-	
+function CategoricalNaiveBayesModel:calculateCost(featureMatrix, labelMatrix)
+
 	local useLogProbabilities = self.useLogProbabilities
 
 	local ClassesList = self.ClassesList
-	
+
 	local ModelParameters = self.ModelParameters
 
-	local complementFeatureProbabilityMatrix = ModelParameters[1]
+	local featureProbabilityDictionaryArrayArray = ModelParameters[1]
 
 	local priorProbabilityVector = ModelParameters[2]
-	
+
 	local numberOfData = #featureMatrix
-	
+
 	local numberOfClasses = #ClassesList
 
 	local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
-	
-	local featureVector
 
-	local complementFeatureProbabilityVector
+	local featureProbabilityDictionaryArray
 
 	local priorProbabilityValue
 
-	for data, unwrappedFeatureVector in ipairs(featureMatrix) do
+	local posteriorProbabilityValue
 
-		featureVector = {unwrappedFeatureVector}
-		
+	local classIndex
+
+	local label
+	
+	for data, featureTable in ipairs(featureMatrix) do
+
 		for class = 1, numberOfClasses, 1 do
-			
-			complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[class]}
+
+			featureProbabilityDictionaryArray = featureProbabilityDictionaryArrayArray[class]
 
 			priorProbabilityValue = priorProbabilityVector[class][1]
-			
-			posteriorProbabilityMatrix[data][class] = calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityValue)
-			
+
+			posteriorProbabilityMatrix[data][class] = calculatePosteriorProbability(useLogProbabilities, featureTable, featureProbabilityDictionaryArray, priorProbabilityValue)
+
 		end
 
 	end
-	
+
 	if (useLogProbabilities) then
 
 		posteriorProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, posteriorProbabilityMatrix)
-		
+
 	end
 
-	local cost = self:categoricalCrossEntropy(logisticMatrix, posteriorProbabilityMatrix)
+	local cost = self:categoricalCrossEntropy(labelMatrix, posteriorProbabilityMatrix)
 
 	return cost
 
 end
 
-local function calculateMatrices(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
+local function calculateMatrices(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector)
 	
 	local newTotalNumberOfDataPoint = numberOfData + AqwamTensorLibrary:sum(numberOfDataPointVector)
 	
-	local newComplementFeatureProbabilityMatrix = {}
-	
-	local newNumberOfFeatureCountVector = {}
-	
+	local newFeatureProbabilityDictionaryArrayArray = {}
+
 	local newNumberOfDataPointVector = {}
 	
-	local numberOfOldFeatureCount
-	
-	local numberOfFeatureCount
+	local featureProbabilityDictionaryArray
 	
 	local numberOfOldSubData
 
 	local numberOfSubData
 	
-	local complementFeatureProbabilityVector
+	local newFeatureDictionaryArray
 	
-	local totalSumExtractedComplementFeatureVector
-	
-	local numberOfComplementSubData
-	
-	local sumExtractedComplementFeatureVector
-	
-	local newComplementFeatureProbabilityVector
-	
-	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+	local newFeatureDictionary
 
+	for classIndex, extractedFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
+		
 		numberOfOldSubData = numberOfDataPointVector[classIndex][1]
 		
+		featureProbabilityDictionaryArray = featureProbabilityDictionaryArrayArray[classIndex]
+
+		newFeatureDictionaryArray = {}
+
 		if (type(extractedFeatureMatrix) == "table") then
-			
+
 			numberOfSubData = (#extractedFeatureMatrix + numberOfOldSubData)
+			
+			for featureColumn, featureProbabilityDictionary in ipairs(featureProbabilityDictionaryArray) do
 
-			numberOfOldFeatureCount = numberOfFeatureCountVector[classIndex][1]
+				newFeatureDictionary = {}
 
-			complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[classIndex]}
+				for featureKey, featureProbability in pairs(featureProbabilityDictionary) do newFeatureDictionary[featureKey] = featureProbability * numberOfOldSubData end
 
-			totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:multiply(complementFeatureProbabilityVector, numberOfOldFeatureCount)
-
-			for complementClassIndex, extractedComplementFeatureMatrix in ipairs(extractedFeatureMatrixTable) do
-
-				if (complementClassIndex ~= classIndex) then
-
-					numberOfComplementSubData = #extractedComplementFeatureMatrix
-
-					sumExtractedComplementFeatureVector = AqwamTensorLibrary:sum(extractedComplementFeatureMatrix, 1)
-
-					totalSumExtractedComplementFeatureVector = AqwamTensorLibrary:add(totalSumExtractedComplementFeatureVector, sumExtractedComplementFeatureVector)
-
-				end
+				newFeatureDictionaryArray[featureColumn] = newFeatureDictionary
 
 			end
 
-			numberOfFeatureCount = AqwamTensorLibrary:sum(totalSumExtractedComplementFeatureVector)
+			for _, unwrappedFeatureVector in ipairs(extractedFeatureMatrix) do
 
-			newComplementFeatureProbabilityVector = AqwamTensorLibrary:divide(totalSumExtractedComplementFeatureVector, numberOfFeatureCount)
+				for featureIndex, featureValue in ipairs(unwrappedFeatureVector) do
 
-			newComplementFeatureProbabilityMatrix[classIndex] = newComplementFeatureProbabilityVector[1]
+					newFeatureDictionary = newFeatureDictionaryArray[featureIndex] or {}
+
+					newFeatureDictionary[featureValue] = (newFeatureDictionary[featureValue] or 0) + 1
+					
+					newFeatureDictionaryArray[featureIndex] = newFeatureDictionary
+					
+				end
+
+			end
 			
-			newNumberOfFeatureCountVector[classIndex] = {numberOfFeatureCount}
+			local newFeatureProbabilityDictionaryArray = {}
+
+			for featureColumn, newFeatureDictionary in ipairs(newFeatureDictionaryArray) do
+
+				local newFeatureProbabilityDictionary = {} 
+
+				for featureKey, featureValue in pairs(newFeatureDictionary) do
+
+					newFeatureProbabilityDictionary[featureKey] = featureValue / numberOfSubData
+
+				end
+
+				newFeatureProbabilityDictionaryArray[featureColumn] = newFeatureProbabilityDictionary
+
+			end
 			
+			newFeatureProbabilityDictionaryArrayArray[classIndex] = newFeatureProbabilityDictionaryArray
+
 		else
-			
+
 			numberOfSubData = numberOfOldSubData
 			
-			newComplementFeatureProbabilityMatrix[classIndex] = complementFeatureProbabilityMatrix[classIndex]
-			
-			newNumberOfFeatureCountVector[classIndex] = {numberOfOldFeatureCount}
-			
+			newFeatureProbabilityDictionaryArrayArray[classIndex] = featureProbabilityDictionaryArray
+
 		end
 
 		newNumberOfDataPointVector[classIndex] = {numberOfSubData}
@@ -250,86 +250,102 @@ local function calculateMatrices(extractedFeatureMatrixTable, numberOfData, comp
 	end
 	
 	local newPriorProbabilityVector = AqwamTensorLibrary:divide(newNumberOfDataPointVector, newTotalNumberOfDataPoint)
-	
-	return newComplementFeatureProbabilityMatrix, newPriorProbabilityVector, newNumberOfFeatureCountVector, newNumberOfDataPointVector
-	
+
+	return newFeatureProbabilityDictionaryArrayArray, newPriorProbabilityVector, newNumberOfDataPointVector
+
 end
 
-function ComplementNaiveBayesModel.new(parameterDictionary)
+function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewComplementNaiveBayesModel = NaiveBayesBaseModel.new(parameterDictionary)
+	local NewCategoricalNaiveBayesModel = NaiveBayesBaseModel.new(parameterDictionary)
 
-	setmetatable(NewComplementNaiveBayesModel, ComplementNaiveBayesModel)
-	
-	NewComplementNaiveBayesModel:setName("ComplementNaiveBayes")
-	
-	NewComplementNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
+	setmetatable(NewCategoricalNaiveBayesModel, CategoricalNaiveBayesModel)
+
+	NewCategoricalNaiveBayesModel:setName("CategoricalNaiveBayes")
+
+	NewCategoricalNaiveBayesModel:setTrainFunction(function(featureMatrix, labelVector)
+
+		local useLogProbabilities = NewCategoricalNaiveBayesModel.useLogProbabilities
+
+		local ModelParameters = NewCategoricalNaiveBayesModel.ModelParameters or {}
+
+		local logisticMatrix = NewCategoricalNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
+
+		local extractedFeatureMatrixTable = NewCategoricalNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
 		
-		local useLogProbabilities = NewComplementNaiveBayesModel.useLogProbabilities
-
-		local ModelParameters = NewComplementNaiveBayesModel.ModelParameters or {}
-
-		local logisticMatrix = NewComplementNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
-
-		local extractedFeatureMatrixTable = NewComplementNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
-		
-		local numberOfClasses = #NewComplementNaiveBayesModel.ClassesList
-		
-		local zeroValue = (useLogProbabilities and -math.huge) or 0
-
 		local oneValue = (useLogProbabilities and 0) or 1
 		
 		local numberOfData = #featureMatrix
 
 		local numberOfFeatures = #featureMatrix[1]
+		
+		local numberOfClasses = #NewCategoricalNaiveBayesModel.ClassesList
 
 		local classVectorDimensionSizeArray = {numberOfClasses, 1}
+		
+		local featureProbabilityDictionaryArrayArray = ModelParameters[1]
+		
+		if (not featureProbabilityDictionaryArrayArray) then
 
-		local complementFeatureProbabilityMatrix = ModelParameters[1] or AqwamTensorLibrary:createTensor({numberOfClasses, numberOfFeatures}, zeroValue)
+			featureProbabilityDictionaryArrayArray = {}
+
+			for class = 1, numberOfClasses, 1 do
+
+				local featureDictionaryArray = {}
+
+				for feature = 1, numberOfFeatures, 1 do
+
+					featureDictionaryArray[numberOfFeatures] = {}
+
+				end
+
+				featureProbabilityDictionaryArrayArray[class] = featureDictionaryArray
+
+			end
+
+		end
 
 		local priorProbabilityVector = ModelParameters[2] or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, oneValue)
 
-		local numberOfFeatureCountVector = ModelParameters[3] or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
+		local numberOfDataPointVector = ModelParameters[3] or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
 
-		local numberOfDataPointVector = ModelParameters[4] or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
-		
 		if (useLogProbabilities) then
 
-			if (complementFeatureProbabilityMatrix) then complementFeatureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, complementFeatureProbabilityMatrix) end
+			if (featureProbabilityDictionaryArrayArray) then featureProbabilityDictionaryArrayArray = applyFunctionToDictionaryArrayArray(math.exp, featureProbabilityDictionaryArrayArray) end
 
 			if (priorProbabilityVector) then priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.exp, priorProbabilityVector) end
 
 		end
-		
-		complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector = calculateMatrices(extractedFeatureMatrixTable, numberOfData, complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector)
-		
+
+		featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector = calculateMatrices(extractedFeatureMatrixTable, numberOfData, numberOfFeatures, featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector)
+
 		if (useLogProbabilities) then
 
-			complementFeatureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.log, complementFeatureProbabilityMatrix)
+			featureProbabilityDictionaryArrayArray = applyFunctionToDictionaryArrayArray(math.log, featureProbabilityDictionaryArrayArray)
 
 			priorProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, priorProbabilityVector)
 
 		end
 		
-		numberOfDataPointVector = NewComplementNaiveBayesModel:resetNumberOfDataPointsOnReachingLimit(numberOfDataPointVector)
+		numberOfDataPointVector = NewCategoricalNaiveBayesModel:resetNumberOfDataPointsOnReachingLimit(numberOfDataPointVector)
 
-		NewComplementNaiveBayesModel.ModelParameters = {complementFeatureProbabilityMatrix, priorProbabilityVector, numberOfFeatureCountVector, numberOfDataPointVector}
+		NewCategoricalNaiveBayesModel.ModelParameters = {featureProbabilityDictionaryArrayArray, priorProbabilityVector, numberOfDataPointVector}
 
-		local cost = NewComplementNaiveBayesModel:calculateCost(featureMatrix, logisticMatrix)
+		local cost = NewCategoricalNaiveBayesModel:calculateCost(featureMatrix, logisticMatrix)
 
 		return {cost}
-		
+
 	end)
-	
-	NewComplementNaiveBayesModel:setPredictFunction(function(featureMatrix, returnOriginalOutput)
 
-		local ClassesList = NewComplementNaiveBayesModel.ClassesList
+	NewCategoricalNaiveBayesModel:setPredictFunction(function(featureMatrix, returnOriginalOutput)
 
-		local useLogProbabilities = NewComplementNaiveBayesModel.useLogProbabilities
+		local ClassesList = NewCategoricalNaiveBayesModel.ClassesList
 
-		local ModelParameters = NewComplementNaiveBayesModel.ModelParameters
+		local useLogProbabilities = NewCategoricalNaiveBayesModel.useLogProbabilities
+
+		local ModelParameters = NewCategoricalNaiveBayesModel.ModelParameters
 
 		local numberOfClasses = #ClassesList
 
@@ -352,30 +368,26 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 			return placeHolderLabelVector, placeHolderLabelProbabilityVector
 
 		end
-		
-		local complementFeatureProbabilityMatrix = ModelParameters[1]
-		
+
+		local featureProbabilityDictionaryArrayArray = ModelParameters[1]
+
 		local priorProbabilityVector = ModelParameters[2]
 
-		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor(posteriorProbabilityMatrixDimensionSizeArray, initialValue)
+		local posteriorProbabilityMatrix = AqwamTensorLibrary:createTensor(posteriorProbabilityMatrixDimensionSizeArray, 0)
 		
-		local complementFeatureProbabilityVector
+		local featureProbabilityDictionaryArray
 		
-		local priorProbabilityValue 
-		
-		local featureVector
+		local priorProbabilityValue
 
-		for classIndex, classValue in ipairs(ClassesList) do
+		for data, featureTable in ipairs(featureMatrix) do
 
-			local complementFeatureProbabilityVector = {complementFeatureProbabilityMatrix[classIndex]}
+			for class = 1, numberOfClasses, 1 do
 
-			local priorProbabilityValue = priorProbabilityVector[classIndex][1]
+				featureProbabilityDictionaryArray = featureProbabilityDictionaryArrayArray[class]
 
-			for i = 1, numberOfData, 1 do
+				priorProbabilityValue = priorProbabilityVector[class][1]
 
-				featureVector = {featureMatrix[i]}
-
-				posteriorProbabilityMatrix[i][classIndex] = calculatePosteriorProbability(useLogProbabilities, featureVector, complementFeatureProbabilityVector, priorProbabilityValue)
+				posteriorProbabilityMatrix[data][class] = calculatePosteriorProbability(useLogProbabilities, featureTable, featureProbabilityDictionaryArray, priorProbabilityValue)
 
 			end
 
@@ -383,70 +395,98 @@ function ComplementNaiveBayesModel.new(parameterDictionary)
 
 		if (returnOriginalOutput) then return posteriorProbabilityMatrix end
 
-		return NewComplementNaiveBayesModel:getLabelFromOutputMatrix(posteriorProbabilityMatrix)
-		
+		return NewCategoricalNaiveBayesModel:getLabelFromOutputMatrix(posteriorProbabilityMatrix)
+
 	end)
-	
-	NewComplementNaiveBayesModel:setGenerateFunction(function(labelVector, totalCountVector)
-		
+
+	NewCategoricalNaiveBayesModel:setGenerateFunction(function(labelVector, noiseMatrix)
+
 		local numberOfData = #labelVector
 		
-		if (totalCountVector) then
+		if (noiseMatrix) then
 
-			if (numberOfData ~= #totalCountVector) then error("The label vector and the total count does not contain the same number of rows.") end
+			if (numberOfData ~= #noiseMatrix) then error("The label vector and the noise matrix does not contain the same number of rows.") end
 
 		end
-		
-		local ClassesList = NewComplementNaiveBayesModel.ClassesList
-		
-		local useLogProbabilities = NewComplementNaiveBayesModel.useLogProbabilities
-		
-		local ModelParameters = NewComplementNaiveBayesModel.ModelParameters
-		
-		local complementFeatureProbabilityMatrix = ModelParameters[1]
-		
-		local numberOfFeatures = #complementFeatureProbabilityMatrix[1]
-		
+
+		local ClassesList = NewCategoricalNaiveBayesModel.ClassesList
+
+		local useLogProbabilities = NewCategoricalNaiveBayesModel.useLogProbabilities
+
+		local ModelParameters = NewCategoricalNaiveBayesModel.ModelParameters
+
+		local featureProbabilityDictionaryArrayArray = ModelParameters[1]
+
+		local numberOfFeatures = #featureProbabilityDictionaryArrayArray[1]
+
 		local generatedFeatureMatrix = {}
 		
+		noiseMatrix = noiseMatrix or AqwamTensorLibrary:createRandomUniformTensor({numberOfData, numberOfFeatures})
+
 		if (useLogProbabilities) then
-			
-			complementFeatureProbabilityMatrix = AqwamTensorLibrary:applyFunction(math.exp, complementFeatureProbabilityMatrix)
-			
+
+			featureProbabilityDictionaryArrayArray = applyFunctionToDictionaryArrayArray(math.exp, featureProbabilityDictionaryArrayArray)
+
 		end
-		
-		totalCountVector = totalCountVector or AqwamTensorLibrary:createTensor({numberOfData, 1}, 1)
-		
-		local featureProbabilityMatrix = AqwamTensorLibrary:subtract(1, complementFeatureProbabilityMatrix)
-		
+
 		for data, unwrappedLabelVector in ipairs(labelVector) do
 
 			local label = unwrappedLabelVector[1]
-
+			
 			local classIndex = table.find(ClassesList, label)
+			
+			local generatedFeatureVector
 
 			if (classIndex) then
+				
+				local featureProbabilityDictionaryArray = featureProbabilityDictionaryArrayArray[classIndex]
 
-				local featureProbabilityArray = featureProbabilityMatrix[classIndex]
+				generatedFeatureVector = {}
 
-				local totalCount = totalCountVector[data][1]
+				for featureIndex, featureProbabilityDictionary in ipairs(featureProbabilityDictionaryArray) do
 
-				generatedFeatureMatrix[data] = sampleMultinomial(featureProbabilityArray, totalCount)
+					-- Sample from categorical distribution.
+					
+					local randomProbability = noiseMatrix[data][featureIndex]
+					
+					local cumulativeProbability = 0
+					
+					local chosenValue
 
+					for value, featureProbability in pairs(featureProbabilityDictionary) do
+						
+						cumulativeProbability = cumulativeProbability + featureProbability
+						
+						if (randomProbability <= cumulativeProbability) then
+							
+							chosenValue = value
+							
+							break
+							
+						end
+						
+					end
+					
+					generatedFeatureVector[featureIndex] = chosenValue
+					
+				end
+				
 			else
-
-				generatedFeatureMatrix[data] = table.create(numberOfFeatures, 0)
-
+				
+				generatedFeatureVector = table.create(numberOfFeatures, 0)
+				
 			end
+			
+			generatedFeatureMatrix[data] = generatedFeatureVector
 
 		end
 
 		return generatedFeatureMatrix
-		
+
 	end)
 
-	return NewComplementNaiveBayesModel
+	return NewCategoricalNaiveBayesModel
 
 end
 
-return ComplementNaiveBayesModel
+return CategoricalNaiveBayesModel

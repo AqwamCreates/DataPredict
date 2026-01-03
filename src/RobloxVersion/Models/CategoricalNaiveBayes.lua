@@ -271,11 +271,11 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 		local ModelParameters = NewCategoricalNaiveBayesModel.ModelParameters or {}
 
-		local featureProbabilityDictionaryArrayArray = ModelParameters[1]
+		local logisticMatrix = NewCategoricalNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
 
-		local priorProbabilityVector = ModelParameters[2]
-
-		local numberOfDataPointVector = ModelParameters[3]
+		local extractedFeatureMatrixTable = NewCategoricalNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
+		
+		local oneValue = (useLogProbabilities and 0) or 1
 		
 		local numberOfData = #featureMatrix
 
@@ -283,11 +283,9 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 		
 		local numberOfClasses = #NewCategoricalNaiveBayesModel.ClassesList
 
-		local oneValue = (useLogProbabilities and 0) or 1
+		local classVectorDimensionSizeArray = {numberOfClasses, 1}
 		
-		local logisticMatrix = NewCategoricalNaiveBayesModel:convertLabelVectorToLogisticMatrix(labelVector)
-
-		local extractedFeatureMatrixTable = NewCategoricalNaiveBayesModel:separateFeatureMatrixByClass(featureMatrix, logisticMatrix)
+		local featureProbabilityDictionaryArrayArray = ModelParameters[1]
 		
 		if (not featureProbabilityDictionaryArrayArray) then
 
@@ -309,9 +307,9 @@ function CategoricalNaiveBayesModel.new(parameterDictionary)
 
 		end
 
-		priorProbabilityVector = priorProbabilityVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, oneValue)
+		local priorProbabilityVector = ModelParameters[2] or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, oneValue)
 
-		numberOfDataPointVector = numberOfDataPointVector or AqwamTensorLibrary:createTensor({numberOfClasses, 1}, 0)
+		local numberOfDataPointVector = ModelParameters[3] or AqwamTensorLibrary:createTensor(classVectorDimensionSizeArray, 0)
 
 		if (useLogProbabilities) then
 

@@ -52,7 +52,7 @@ local defaultSetInitialCentroidsOnDataPoints = true
 
 local defaultSetTheCentroidsDistanceFarthest = true
 
-local defaultEpsilon = 1e-16
+local defaultEpsilon = 1e-14
 
 local function assignToCluster(distanceMatrix) -- Number of columns -> number of clusters
 	

@@ -72,7 +72,7 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 
-	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
+	local newDotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
 
 	if (lambda ~= 0) then
 
@@ -80,7 +80,7 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 
 		local lambdaIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures}, lambda)
 
-		dotProductFeatureMatrix = AqwamTensorLibrary:add(dotProductFeatureMatrix, lambdaIdentityMatrix)
+		newDotProductFeatureMatrix = AqwamTensorLibrary:add(newDotProductFeatureMatrix, lambdaIdentityMatrix)
 
 	end
 	
@@ -88,27 +88,27 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 		
 		oldDotProductFeatureMatrix = AqwamTensorLibrary:multiply(weightDecay, oldDotProductFeatureMatrix)
 
-		dotProductFeatureMatrix = AqwamTensorLibrary:add(dotProductFeatureMatrix, oldDotProductFeatureMatrix)
+		newDotProductFeatureMatrix = AqwamTensorLibrary:add(newDotProductFeatureMatrix, oldDotProductFeatureMatrix)
 
 	end
 
-	local inverseDotProduct = AqwamTensorLibrary:inverse(dotProductFeatureMatrix)
+	local inverseDotProduct = AqwamTensorLibrary:inverse(newDotProductFeatureMatrix)
 
 	if (not inverseDotProduct) then error("Could not find the model parameters.") end
 	
-	local dotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
+	local newDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
 	
 	if (oldDotProductFeatureMatrixAndLabelVector) then
 		
 		oldDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:multiply(weightDecay, oldDotProductFeatureMatrixAndLabelVector)
 		
-		dotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:add(dotProductFeatureMatrixAndLabelVector, oldDotProductFeatureMatrixAndLabelVector)
+		newDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:add(newDotProductFeatureMatrixAndLabelVector, oldDotProductFeatureMatrixAndLabelVector)
 		
 	end
 
-	local weightMatrix = AqwamTensorLibrary:dotProduct(inverseDotProduct, dotProductFeatureMatrixAndLabelVector)
+	local weightMatrix = AqwamTensorLibrary:dotProduct(inverseDotProduct, newDotProductFeatureMatrixAndLabelVector)
 
-	self.ModelParameters = {weightMatrix, dotProductFeatureMatrix, dotProductFeatureMatrixAndLabelVector}
+	self.ModelParameters = {weightMatrix, newDotProductFeatureMatrix, newDotProductFeatureMatrixAndLabelVector}
 
 end
 

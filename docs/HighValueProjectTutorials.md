@@ -40,6 +40,8 @@
 
 * [Game Design Meets Machine Learning](HighValueProjectTutorials/GameDesignMeetsMachineLearning.md)
 
+* [Coming From Roblox? Take Advantage Of Roblox's Experiments!](https://create.roblox.com/docs/production/experiments)
+
 * [Use Case References](HighValueProjectTutorials/References.md) (Optional) (Includes My Papers)
 
 ## High-Value Project Tutorials

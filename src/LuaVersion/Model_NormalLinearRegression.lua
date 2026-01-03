@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 local NormalLinearRegressionModel = {}
 

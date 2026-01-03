@@ -26,11 +26,11 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
-local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
+local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
 
 local MeanShiftModel = {}
 
@@ -49,6 +49,8 @@ local defaultDistanceFunction = "Euclidean"
 local defaultKernelFunction = "Gaussian"
 
 local defaultLambda = 50
+
+local defaultEpsilon = 1e-14
 
 local kernelFunctionList = {
 
@@ -344,6 +346,8 @@ function MeanShiftModel.new(parameterDictionary)
 	
 	NewMeanShiftModel.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
 	
+	NewMeanShiftModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	
 	NewMeanShiftModel.kernelParameters = kernelParameters
 	
 	return NewMeanShiftModel
@@ -364,6 +368,8 @@ function MeanShiftModel:train(featureMatrix)
 	
 	local kernelParameters = self.kernelParameters
 	
+	local epsilon = self.epsilon
+	
 	local ModelParameters = self.ModelParameters or {}
 	
 	local distanceFunctionToApply = distanceFunctionDictionary[distanceFunction]
@@ -382,7 +388,7 @@ function MeanShiftModel:train(featureMatrix)
 	
 	-- The noise is added to the feature matrix is because we want to avoid the cost to be zero at the first iteration.
 	
-	local centroidMatrix = ModelParameters[1] or AqwamTensorLibrary:add(featureMatrix, AqwamTensorLibrary:createRandomUniformTensor(centroidDimensionSizeArray), -1e-16, 1e-16)
+	local centroidMatrix = ModelParameters[1] or AqwamTensorLibrary:add(featureMatrix, AqwamTensorLibrary:createRandomUniformTensor(centroidDimensionSizeArray), -epsilon, epsilon)
 	
 	local sumKernelMatrix = ModelParameters[2] or AqwamTensorLibrary:createTensor(centroidDimensionSizeArray)
 	

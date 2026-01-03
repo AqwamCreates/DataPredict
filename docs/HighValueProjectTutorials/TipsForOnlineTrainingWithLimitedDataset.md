@@ -7,5 +7,5 @@ Z-Score and minimum-maximum normalization have this issue where the data distrib
 As such, we would recommend to scale the values relative to other values when possible. Below, we will show you how it can be done.
 
 ```lua
-x = (value1 - value2) / (value1 + value2)
+scaledValue = (value1 - value2) / (value1 + value2)
 ```

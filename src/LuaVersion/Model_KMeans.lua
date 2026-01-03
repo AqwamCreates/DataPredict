@@ -401,7 +401,7 @@ local function sequentialKMeans(featureMatrix, centroidMatrix, distanceMatrix, n
 
 		local centroidChangeVectorPart1 = AqwamTensorLibrary:subtract(featureVector, centroidVector)
 
-		local centroidChangeVector = AqwamTensorLibrary:multiply((1 / numberOfDataPoints), centroidChangeVectorPart1)
+		local centroidChangeVector = AqwamTensorLibrary:divide(centroidChangeVectorPart1, numberOfDataPoints)
 
 		local newCentroidVector = AqwamTensorLibrary:add(centroidVector, centroidChangeVector)
 

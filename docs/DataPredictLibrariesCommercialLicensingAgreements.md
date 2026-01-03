@@ -1,4 +1,4 @@
-# DataPredict Libraries Commercial Licensing Agreements
+DataPredict™ Libraries Commercial Licensing Agreements
 
 ### Disclaimer
 

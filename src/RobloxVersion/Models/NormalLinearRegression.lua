@@ -106,9 +106,9 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 		
 	end
 
-	local weightMatrix = AqwamTensorLibrary:dotProduct(newInverseDotProduct, newDotProductFeatureMatrixAndLabelVector)
+	local weightVector = AqwamTensorLibrary:dotProduct(newInverseDotProduct, newDotProductFeatureMatrixAndLabelVector)
 
-	self.ModelParameters = {weightMatrix, newDotProductFeatureMatrix, newDotProductFeatureMatrixAndLabelVector}
+	self.ModelParameters = {weightVector, newDotProductFeatureMatrix, newDotProductFeatureMatrixAndLabelVector}
 
 end
 
@@ -116,17 +116,17 @@ function NormalLinearRegressionModel:predict(featureMatrix)
 
 	local ModelParameters = self.ModelParameters or {}
 	
-	local weightMatrix = ModelParameters[1]
+	local weightVector = ModelParameters[1]
 
-	if (not weightMatrix) then
+	if (not weightVector) then
 
-		weightMatrix = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+		weightVector = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
 
-		self.ModelParameters = {weightMatrix}
+		self.ModelParameters = {weightVector}
 
 	end
 
-	return AqwamTensorLibrary:dotProduct(featureMatrix, weightMatrix)
+	return AqwamTensorLibrary:dotProduct(featureMatrix, weightVector)
 
 end
 

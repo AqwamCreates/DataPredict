@@ -40,8 +40,6 @@ local defaultMaximumNumberOfIterations = math.huge
 
 local defaultIsIncreasing = true
 
-local defaultMode = "Hybrid"
-
 local defaultOnOutOfBounds = "NotANumber"
 
 function IsotonicRegressionModel.new(parameterDictionary)
@@ -57,8 +55,6 @@ function IsotonicRegressionModel.new(parameterDictionary)
 	NewIsotonicRegressionModel:setName("IsotonicRegression")
 	
 	NewIsotonicRegressionModel.isIncreasing = NewIsotonicRegressionModel:getValueOrDefaultValue(parameterDictionary.isIncreasing, defaultIsIncreasing)
-	
-	NewIsotonicRegressionModel.mode = parameterDictionary.mode or defaultMode
 	
 	NewIsotonicRegressionModel.onOutOfBounds = parameterDictionary.onOutOfBounds or defaultOnOutOfBounds
 
@@ -77,8 +73,6 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	if (#labelVector[1] ~= 1) then error("The label matrix must only have 1 column.") end
 	
 	local isIncreasing = self.isIncreasing
-	
-	local mode = self.mode
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
@@ -288,13 +282,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 	
 	local nextInformationIndex
 	
-	if (mode == "Hybrid") then
-
-		mode = (oldInformationMatrix and oldMetaDataMatrix and "Online") or "Offline"		
-
-	end
-	
-	if (mode == "Online") then
+	if (oldInformationMatrix) and (oldMetaDataMatrix) then
 		
 		for newInformationIndex, unwrappedNewInformationVector in ipairs(informationMatrix) do
 

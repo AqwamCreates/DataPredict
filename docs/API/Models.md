@@ -7,14 +7,14 @@
 | Model Type                                                        | Description                                     | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
 | [Regression](#regression)                                         | Continuous Value Prediction                     | 13    |
-| [Classification](#classification)                                 | Feature-Class Prediction                        | 15    |
+| [Classification](#classification)                                 | Feature-Class Prediction                        | 13    |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 26    |
 | [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Tables          | 17    |
 | [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
+| [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 4     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
-| [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 2     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
 | Total                                                             |                                                 | 96    |
 
@@ -61,10 +61,10 @@
 | [PoissonRegression](Models/PoissonRegression.md)                                           | None            | 🟢 🟡 ⚠️         | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
 | [NegativeBinomialRegression](Models/NegativeBinomialRegression.md)                         | None            | 🟢 🟡 ⚠️         | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
 | [GammaRegression](Models/GammaRegression.md)                                               | None            | ❗ 🟢 🟡 ⚠️      | Player Session Duration Prediction And Content Engagement Time Prediction                                |
-| [IsotonicRegression](Models/IsotonicRegression.md)                                         | None            | ⚡ 🟢 🟡         | 1-Dimensional Skill-Based Time-To-Leave Prediction                                                         |
-| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | ⚡ 🟢            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                    |
+| [IsotonicRegression](Models/IsotonicRegression.md)                                         | None            | ⚡ 🟢 🟡         | 1-Dimensional Skill-Based Time-To-Leave Prediction                                                       |
+| [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | ⚡ 🟢            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
 | [SupportVectorRegression](Models/SupportVectorRegression.md)                               | SVR             | 💾 🟡            | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
-| [SupportVectorRegressionGradientVariant](Models/SupportVectorRegressionGradientVariant.md) | SVR             | 🟢 🟡            | Real-Time Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                   |
+| [SupportVectorRegressionGradientVariant](Models/SupportVectorRegressionGradientVariant.md) | SVR             | 🟢 🟡            | Real-Time Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                     |
 | [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | 🟢 🟡            | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
 | [NormalLinearRegression](Models/NormalLinearRegression.md)*                                | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
 | [BayesianLinearRegression](Models/BayesianLinearRegression.md)*                            | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
@@ -78,21 +78,19 @@
 
 | Model                                                                                | Alternate Names                | Properties       | Use Cases                                                                                                      |
 |--------------------------------------------------------------------------------------|--------------------------------|------------------|----------------------------------------------------------------------------------------------------------------|
-| [BinaryRegression](Models/BinaryRegression.md)                                       | Perceptron, Sigmoid Regression | 🔰 🟢 🟡       | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction                           |
+| [BinaryRegression](Models/BinaryRegression.md)                                       | Perceptron, Sigmoid Regression | 🔰 🟢 🟡       | Probability-To-Leave Prediction, Player Churn Prediction, Confidence Prediction                                 |
 | [PassiveAggressiveClassifier](Models/PassiveAggressiveClassifier.md)                 | PA-C                           | ⚡ 🟢           | Fast Purchase Likelihood Estimation, Decision Making                                                            |
-| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md) | OC-PA-C                        | ❗ ⚡ 🟢        | Fast Hacking Detection, Anomaly Detection (Using Single Class Data)                                           |
-| [NearestCentroid](Models/NearestCentroid.md)                                         | NC                             | ⚡ 🟢 🟡        | Fast Grouping Or Quick Decision Making                                                                          |
+| [NearestCentroid](Models/NearestCentroid.md)                                         | NC                             | ⚡ 🟢 🟡        | Fast Grouping Or Quick Decision Making                                                                         |
 | [KNearestNeighboursClassifier](Models/KNearestNeighboursClassifier.md)               | KNN-C                          | 🟢 🟡           | Item Recommendation, Similar Player Matchmaking                                                                 |
 | [SupportVectorMachine](Models/SupportVectorMachine.md)                               | SVM                            | 💾 🟡          | Boundary-Based Prediction                                                                                        |
 | [SupportVectorMachineGradientVariant](Models/SupportVectorMachineGradientVariant.md) | SVM                            | 🟢 🟡          | Real-Time Boundary-Based Prediction                                                                              |
-| [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md)               | OC-SVM                         | 💾 🟡           | Hacking Detection, Anomaly Detection (Using Single Class Data)                                                  |
 | [NeuralNetwork](Models/NeuralNetwork.md)                                             | Multi-Layer Perceptron         | 🟢 🟡           | Decision-Making, Player Behaviour Prediction                                                                    |
 | [GaussianNaiveBayes](Models/GaussianNaiveBayes.md)*                                  | GNB                            | 💾 ⚡ 🟢 🟡 ⚠️ | Enemy Data Generation, Player Behavior Categorization (e.g. Cautious Vs. Aggressive), Fast State Classification |
-| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md)*                            | MNB                           | 💾 ⚡ 🟢 🟡 ⚠️ |Summoning Next Enemy Type, Inventory Action Prediction, Strategy Profiling Based on Item Usage                   |
-| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)*                                | BNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                                         |
-| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)*                              | CNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Imbalanced Class Prediction (e.g. Rare Choices, Rare Paths)                                                      |
-| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md)*                            | CNB                           | 💾 ⚡ 🟢 🟡 ⚠️ | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)                               |
-| [OrdinalRegression](Models/OrdinalRegression.md)                                     | Ordinal Classification        | 🟢 🟡 ⚠️        | Skill Tier Prediction, Dynamic Difficulty Adjustment, Ranking Systems                                         |
+| [MultinomialNaiveBayes](Models/MultinomialNaiveBayes.md)*                            | MNB                            | 💾 ⚡ 🟢 🟡 ⚠️ |Summoning Next Enemy Type, Inventory Action Prediction, Strategy Profiling Based on Item Usage                   |
+| [BernoulliNaiveBayes](Models/BernoulliNaiveBayes.md)*                                | BNB                            | 💾 ⚡ 🟢 🟡 ⚠️ | Binary Action Prediction (e.g. Jump Or Not), Quick Decision Filters                                             |
+| [ComplementNaiveBayes](Models/ComplementNaiveBayes.md)*                              | CNB                            | 💾 ⚡ 🟢 🟡 ⚠️ | Imbalanced Class Prediction (e.g. Rare Choices, Rare Paths)                                                     |
+| [CategoricalNaiveBayes](Models/CategoricalNaiveBayes.md)*                            | CNB                            | 💾 ⚡ 🟢 🟡 ⚠️ | Player Choice Prediction (e.g. Weapon Type, Character Class, Map Region Selection)                              |
+| [OrdinalRegression](Models/OrdinalRegression.md)                                     | Ordinal Classification         | 🟢 🟡 ⚠️        | Skill Tier Prediction, Dynamic Difficulty Adjustment, Ranking Systems                                           |
 
 \* "Naive Bayes" models assumes that the features are independent to each other, which is almost certainly not true in game-related settings. Additionally, these models are better as generative models, despite being commonly taught as a classifier.
 
@@ -135,7 +133,7 @@
 | [DeepMonteCarloControl](Models/DeepMonteCarloControl.md)                                                       | None                          | ❗ 🟢      | Online Self-Learning Player AIs                                           |
 | [DeepOffPolicyMonteCarloControl](Models/DeepOffPolicyMonteCarloControl.md)                                     | None                          | 🟢         | Offline Self-Learning Player AIs                                          |
 | [DeepTemporalDifference](Models/DeepTemporalDifference.md)                                                     | TD                            | 🟢         | Priority Systems                                                          |
-| [DeepREINFORCE](Models/DeepREINFORCE.md)                                                                       | None                          | 🟢         | Reward-Based Self-Learning Player AIs                          |
+| [DeepREINFORCE](Models/DeepREINFORCE.md)                                                                       | None                          | 🟢         | Reward-Based Self-Learning Player AIs                                     |
 | [VanillaPolicyGradient](Models/VanillaPolicyGradient.md)                                                       | VPG                           | ❗ 🟢      | Baseline-Based Self-Learning Player AIs                                   |
 | [ActorCritic](Models/ActorCritic.md)                                                                           | AC                            | 🟢         | Critic-Based Self-Learning Player AIs                                     |
 | [AdvantageActorCritic](Models/AdvantageActorCritic.md)                                                         | A2C                           | 🟢         | Advantage-Based Self-Learning Player AIs                                  |
@@ -193,6 +191,17 @@
 | [UnscentedKalmanFilter](Models/UnscentedKalmanFilter.md)                                           | UKF             | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat            |
 | [UnscentedKalmanFilter (DataPredict Variant)](Models/UnscentedKalmanFilterDataPredictVariant.md)   | UKF-DP          | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat            |
 
+## Outlier Detection
+
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+
+| Model                                                                                | Alternate Names | Properties | Use Cases                                                            |
+|--------------------------------------------------------------------------------------|-----------------|------------| ---------------------------------------------------------------------|
+| [OneClassSupportVectorMachine](Models/OneClassSupportVectorMachine.md)               | OC-SVM          | 💾 🟡     | Hacking Detection, Anomaly Detection (Using Single Class Data)       |
+| [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md) | OC-PA-C         | ❗ ⚡ 🟢  | Fast Hacking Detection, Anomaly Detection (Using Single Class Data)  |
+| [LocalOutlierFactor](Models/LocalOutlierFactor.md)                                   | LOF             | 🟢 🟡     | Score-Based Play-Time Milestone Detection                            |
+| [LocalOutlierProbability](Models/LocalOutlierProbability.md)                         | LoOP            | 🟢 🟡     | Probability-Based Play-Time Milestone Detection                      |
+
 ## Generative
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
@@ -203,15 +212,6 @@
 | [ConditionalGenerativeAdversarialNetwork](Models/ConditionalGenerativeAdversarialNetwork.md)                       | CGAN            | 🟢 🟡     | Conditional Enemy Data Generation         |
 | [WassersteinGenerativeAdversarialNetwork](Models/WassersteinGenerativeAdversarialNetwork.md)                       | WGAN            | 🟢 🟡     | Stable Enemy Data Generation              |
 | [ConditionalWassersteinGenerativeAdversarialNetwork](Models/ConditionalWassersteinGenerativeAdversarialNetwork.md) | CWGAN           | 🟢 🟡     | Stable Conditional Enemy Data Generation  |
-
-## Outlier Detection
-
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
-
-| Model                                                        | Alternate Names | Properties | Use Cases                                       |
-|--------------------------------------------------------------|-----------------|------------| ------------------------------------------------|
-| [LocalOutlierFactor](Models/LocalOutlierFactor.md)           | LOF             | 🟢 🟡     | Score-Based Play-Time Milestone Detection       |
-| [LocalOutlierProbability](Models/LocalOutlierProbability.md) | LoOP            | 🟢 🟡     | Probability-Based Play-Time Milestone Detection |
 
 ## Feature-Class Containers
 

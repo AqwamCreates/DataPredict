@@ -40,7 +40,7 @@
 
 * [Game Design Meets Machine Learning](HighValueProjectTutorials/GameDesignMeetsMachineLearning.md)
 
-* [Coming From Roblox? Take Advantage Of Roblox's Experiment API!](https://create.roblox.com/docs/production/experiments)
+* [Roblox's Experiment API](https://create.roblox.com/docs/production/experiments)
 
 * [Use Case References](HighValueProjectTutorials/References.md) (Optional) (Includes My Papers)
 

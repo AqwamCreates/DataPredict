@@ -44,8 +44,6 @@ local defaultDistanceFunction = "Euclidean"
 
 local defaultLinkageFunction = "Minimum"
 
-local defaultStopWhenModelParametersDoesNotChange = false
-
 local function createCentroidDistanceMatrix(distanceFunction, centroidMatrix)
 
 	local numberOfData = #centroidMatrix

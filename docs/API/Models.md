@@ -42,7 +42,7 @@
 
   * Contains most of the deep reinforcement learning and generative algorithms listed here.
 
-* Currently, DataPredict™ has ~93% (89 out of 96) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~93% (89 out of 95) models with online learning capabilities. By default, most models would perform offline / batch training on the first train, but then switches to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -100,7 +100,7 @@
 
 | Model                                                                                                                  | Alternate Names | Properties | Use Cases                                                            |
 |------------------------------------------------------------------------------------------------------------------------|-----------------|------------|----------------------------------------------------------------------|
-| [KMeans](Models/KMeans.md)                                                                                             | None            | 🔰 🟢 🟡  | Maximizing Area-of-Effect Abilities, Maximizing Target Grouping       |
+| [KMeans](Models/KMeans.md)                                                                                             | None            | 🔰 🟢 🟡  | Maximizing Area-of-Effect Abilities, Maximizing Target Grouping      |
 | [FuzzyCMeans](Models/FuzzyCMeans.md)                                                                                   | None            | 🟢 🟡     | Overlapping Area-of-Effect Abilities, Overlapping Target Grouping    |
 | [KMedoids](Models/KMedoids.md)                                                                                         | None            | 🟢 🟡     | Player Grouping Based On Player Locations With Leader Identification |
 | [AgglomerativeHierarchical](Models/AgglomerativeHierarchical.md)                                                       | None            | 🟢 🟡     | Enemy Data Generation                                                |

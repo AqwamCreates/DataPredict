@@ -210,7 +210,7 @@ We can do this for every 10 seconds and use this to extend the players' playtime
 
 ```lua
 
-if (timeToLeavePrediction <= 5) or (probability1 >= 0.5) or (probability2 >= 0.7) or (probability3 >= 0.9) then -- Can be changed instead of these values.
+if (meanTimeToLeave <= 5) or (probability1 >= 0.5) or (probability2 >= 0.7) or (probability3 >= 0.9) then -- Can be changed instead of these values.
 
 --- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
 

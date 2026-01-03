@@ -9,8 +9,8 @@ Typically contains numbers stored in a (m x n) matrix, where m is the number of 
 ```
 featureMatrix1 = {
 
-  {10,2, 9},
-  {1,3,6}
+  {10, 2, 9},
+  {1, 3, 6}
 
 }
 

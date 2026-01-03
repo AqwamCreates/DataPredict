@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
+local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
 local AgglomerativeHierarchicalModel = {}
 
@@ -43,8 +43,6 @@ local defaultNumberOfCentroids = 1
 local defaultDistanceFunction = "Euclidean"
 
 local defaultLinkageFunction = "Minimum"
-
-local defaultStopWhenModelParametersDoesNotChange = false
 
 local function createCentroidDistanceMatrix(distanceFunction, centroidMatrix)
 

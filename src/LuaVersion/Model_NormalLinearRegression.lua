@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require("Model_BaseModel")
+local BaseModel = require(script.Parent.BaseModel)
 
 local NormalLinearRegressionModel = {}
 
@@ -37,6 +37,8 @@ NormalLinearRegressionModel.__index = NormalLinearRegressionModel
 setmetatable(NormalLinearRegressionModel, BaseModel)
 
 local defaultLambda = 0
+
+local defaultWeightDecay = 1
 
 function NormalLinearRegressionModel.new(parameterDictionary)
 
@@ -47,6 +49,8 @@ function NormalLinearRegressionModel.new(parameterDictionary)
 	NewNormalLinearRegressionModel:setName("NormalLinearRegression")
 
 	NewNormalLinearRegressionModel.lambda = parameterDictionary.lambda or defaultLambda
+	
+	NewNormalLinearRegressionModel.weightDecay = parameterDictionary.weightDecay or defaultWeightDecay
 
 	return NewNormalLinearRegressionModel
 
@@ -57,6 +61,8 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 
 	local lambda = self.lambda
+	
+	local weightDecay = self.weightDecay
 	
 	local ModelParameters = self.ModelParameters or {}
 	
@@ -79,6 +85,8 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 	end
 	
 	if (oldDotProductFeatureMatrix) then
+		
+		oldDotProductFeatureMatrix = AqwamTensorLibrary:multiply(weightDecay, oldDotProductFeatureMatrix)
 
 		dotProductFeatureMatrix = AqwamTensorLibrary:add(dotProductFeatureMatrix, oldDotProductFeatureMatrix)
 
@@ -91,6 +99,8 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 	local dotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
 	
 	if (oldDotProductFeatureMatrixAndLabelVector) then
+		
+		oldDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:multiply(weightDecay, oldDotProductFeatureMatrixAndLabelVector)
 		
 		dotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:add(dotProductFeatureMatrixAndLabelVector, oldDotProductFeatureMatrixAndLabelVector)
 		

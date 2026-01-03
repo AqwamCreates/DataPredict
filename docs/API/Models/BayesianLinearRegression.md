@@ -22,9 +22,9 @@ BayesianLinearRegression.new(priorPrecision: number, likelihoodPrecision: number
 
 #### Parameters:
 
-* priorPrecision: The precision (inverse of variance) of the prior distribution for the model parameters. Higher values imply stronger confidence in the prior. [Default: 1]
+* priorPrecision: How confident we are with the previous model weights. Higher values means more confidence in the previous model weights. [Default: 1]
 
-* likelihoodPrecision: The precision of the likelihood function for the observed data. Higher values indicate more confidence in the observations. [Default: 1]
+* likelihoodPrecision: How reliable are the observations. Higher values means observations are more reliable. [Default: 1]
 
 * useLogProbabilities: Set whether or not to use log probabilities when generating predicted probabilities in predict() function. [Default: False]
 

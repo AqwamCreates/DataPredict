@@ -16,7 +16,7 @@
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 4     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 96    |
+| Total                                                             |                                                 | 95    |
 
 ### Legend
 

@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 local NormalLinearRegressionModel = {}
 
@@ -106,7 +106,7 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 		
 	end
 
-	local weightMatrix = AqwamTensorLibrary:multiply(inverseDotProduct, dotProductFeatureMatrixAndLabelVector)
+	local weightMatrix = AqwamTensorLibrary:dotProduct(inverseDotProduct, dotProductFeatureMatrixAndLabelVector)
 
 	self.ModelParameters = {weightMatrix, dotProductFeatureMatrix, dotProductFeatureMatrixAndLabelVector}
 

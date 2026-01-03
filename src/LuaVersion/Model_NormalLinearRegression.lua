@@ -92,9 +92,9 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 
 	end
 
-	local inverseDotProduct = AqwamTensorLibrary:inverse(newDotProductFeatureMatrix)
+	local newInverseDotProduct = AqwamTensorLibrary:inverse(newDotProductFeatureMatrix)
 
-	if (not inverseDotProduct) then error("Could not find the model parameters.") end
+	if (not newInverseDotProduct) then error("Could not find the model parameters.") end
 	
 	local newDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
 	
@@ -106,7 +106,7 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 		
 	end
 
-	local weightMatrix = AqwamTensorLibrary:dotProduct(inverseDotProduct, newDotProductFeatureMatrixAndLabelVector)
+	local weightMatrix = AqwamTensorLibrary:dotProduct(newInverseDotProduct, newDotProductFeatureMatrixAndLabelVector)
 
 	self.ModelParameters = {weightMatrix, newDotProductFeatureMatrix, newDotProductFeatureMatrixAndLabelVector}
 

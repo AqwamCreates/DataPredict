@@ -46,58 +46,6 @@ local defaultBinaryFunction = "Logistic"
 
 local defaultEpsilon = 1e-14
 
-local function initializeThresholdVector(numberOfClasses)
-	
-	local unwrappedThresholdVector = {}
-	
-	for k = 1, (numberOfClasses - 1), 1 do unwrappedThresholdVector[k] = k end
-	
-	return {unwrappedThresholdVector}
-	
-end
-
-local function enforceThresholdOrdering(thresholdVector, epsilon)
-	
-	local unwrappedThresholdVector = thresholdVector[1]
-	
-	local currentThresholdValue
-	
-	local previousThresholdValue
-	
-	local nextThresholdValue
-	
-	local newCurrentThresholdValue
-	
-	for k = 2, #unwrappedThresholdVector, 1 do
-		
-		previousThresholdValue = unwrappedThresholdVector[k - 1]
-		
-		currentThresholdValue = unwrappedThresholdVector[k]
-		
-		nextThresholdValue = unwrappedThresholdVector[k + 1]
-		
-		if (unwrappedThresholdVector[k] <= previousThresholdValue) then
-
-			if (nextThresholdValue) then
-				
-				newCurrentThresholdValue = (previousThresholdValue + nextThresholdValue) / 2
-				
-			else
-				
-				newCurrentThresholdValue = previousThresholdValue + (previousThresholdValue - currentThresholdValue)
-				
-			end
-			
-			unwrappedThresholdVector[k] = newCurrentThresholdValue
-			
-		end
-		
-	end
-	
-	return {unwrappedThresholdVector}
-	
-end
-
 local function calculateProbabilityDensityFunctionValue(z)
 
 	return (math.exp(-0.5 * math.pow(z, 2)) / math.sqrt(2 * math.pi))
@@ -142,9 +90,61 @@ local binaryFunctionGradientList = {
 	
 }
 
+local function initializeThresholdVector(numberOfClasses)
+
+	local unwrappedThresholdVector = {}
+
+	for k = 1, (numberOfClasses - 1), 1 do unwrappedThresholdVector[k] = k end
+
+	return {unwrappedThresholdVector}
+
+end
+
+local function enforceThresholdOrdering(thresholdVector, epsilon)
+
+	local unwrappedThresholdVector = thresholdVector[1]
+
+	local currentThresholdValue
+
+	local previousThresholdValue
+
+	local nextThresholdValue
+
+	local newCurrentThresholdValue
+
+	for k = 2, #unwrappedThresholdVector, 1 do
+
+		previousThresholdValue = unwrappedThresholdVector[k - 1]
+
+		currentThresholdValue = unwrappedThresholdVector[k]
+
+		nextThresholdValue = unwrappedThresholdVector[k + 1]
+
+		if (unwrappedThresholdVector[k] <= previousThresholdValue) then
+
+			if (nextThresholdValue) then
+
+				newCurrentThresholdValue = (previousThresholdValue + nextThresholdValue) / 2
+
+			else
+
+				newCurrentThresholdValue = previousThresholdValue + (previousThresholdValue - currentThresholdValue)
+
+			end
+
+			unwrappedThresholdVector[k] = newCurrentThresholdValue
+
+		end
+
+	end
+
+	return {unwrappedThresholdVector}
+
+end
+
 local function createClassesList(labelVector)
 
-	local classesList = {}
+	local ClassesList = {}
 
 	local value
 
@@ -152,15 +152,15 @@ local function createClassesList(labelVector)
 
 		value = labelVector[i][1]
 
-		if not table.find(classesList, value) then
+		if (not table.find(ClassesList, value)) then
 
-			table.insert(classesList, value)
+			table.insert(ClassesList, value)
 
 		end
 
 	end
 
-	return classesList
+	return ClassesList
 
 end
 

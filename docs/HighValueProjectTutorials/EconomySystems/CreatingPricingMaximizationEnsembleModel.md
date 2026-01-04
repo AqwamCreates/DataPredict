@@ -48,7 +48,7 @@ local QuantileRegressionModel = DataPredict.Models.QuantileRegression.new({Quant
 
 ```
 
-### Ordinal Regression
+### Ordinal Regression Model Construction
 
 ```lua
 

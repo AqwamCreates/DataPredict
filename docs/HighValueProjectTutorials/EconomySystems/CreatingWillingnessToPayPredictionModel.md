@@ -52,6 +52,8 @@ local playerDataVector = {
     {
         1,
         numberOfCurrencyAmount,
+        numberOfCurrencySpentInCurrentSession,
+        numberOfCurrencySpentInAllSessions,
         numberOfItemsAmount,
         timePlayedInCurrentSession,
         timePlayedInAllSessions,
@@ -163,7 +165,7 @@ In order to produce predictions from our model, we must perform this operation:
 
 ```lua
 
-local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
+local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfCurrencySpentInCurrentSession, numberOfCurrencySpentInAllSessions, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
 -- This is for Quantile Regression model.
 

@@ -20,7 +20,7 @@ OrdinalRegression.new(binaryFunction: string): ModelObject
 
 #### Parameters:
 
-* binaryFunction: The activation function to be used by the model. Available options are:
+* binaryFunction: The binary function to be used by the model. Available options are:
 
 | Function            | Output Range | Skewness              | Use Cases                                                                  |
 |---------------------|--------------|-----------------------|----------------------------------------------------------------------------|

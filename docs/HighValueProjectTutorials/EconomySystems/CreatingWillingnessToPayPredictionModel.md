@@ -186,7 +186,7 @@ local meanPriceVector, predictedQuantilePriceVector = WillingnessToPayPrediction
 
 ```
 
-Once you receive the predicted label vector, you can grab the pure number output and select desired price by doing this:
+Once you receive the predicted label vector, you can grab the pure number output vectors and select desired price by doing this:
 
 ```lua
 

@@ -159,7 +159,9 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = QuantileRegressionModel:getModelParameters()
+local QuantileRegressionModelParameters = QuantileRegressionModel:getModelParameters()
+
+local OrdinalRegressionModelParameters = OrdinalRegressionModel:getModelParameters()
 
 ```
 
@@ -189,7 +191,9 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-QuantileRegressionModel:setModelParameters(ModelParameters)
+QuantileRegressionModel:setModelParameters(QuantileRegressionModelParameters)
+
+OrdinalRegressionModelsetModelParameters(OrdinalRegressionModelParameters)
 
 ```
 
@@ -228,36 +232,19 @@ local meanPriceVector, predictedQuantilePriceVector = QuantileRegressionModel:pr
 
 -- Then, we need the prediction from the ordinal regression to choose appropriate price.
 
-local predictedQuantile = OrdinalRegressionModel:predict(currentPlayerDataVector)
+local predictedQuantileVector = OrdinalRegressionModel:predict(currentPlayerDataVector)
 
 ```
 
-Once you receive the predicted label vector, you can grab the pure number output and select desired price by doing this:
+Once you receive the predicted label vector, you can select desired price by doing this:
 
 ```lua
 
-local conservativePrice = predictedQuantilePriceVector[1][1] -- 25th percentile
-local balancedPrice = predictedQuantilePriceVector[1][2] -- 50th percentile
-local aggressivePrice = predictedQuantilePriceVector[1][3] -- 75th percentile  
-local whalePrice = predictedQuantilePriceVector[1][4] -- 90th percentile
+local predictedQuantile = predictedQuantileVector[1][1] -- Getting our prediction from the OrdinalRegressionModel.
 
-local playerEngagementLevel = timePlayedInAllSessions / 3600  -- hours played
+local priceIndex = table.find(QuantilesList, predictedQuantile)
 
-local chosenPrice
-
-if (playerEngagementLevel < 10) then
-
-    chosenPrice = conservativePrice -- New players get cheaper prices.
-    
-elseif (playerEngagementLevel < 100) then
-
-    chosenPrice = balancedPrice -- Regular players get median.
-    
-else
-
-    chosenPrice = aggressivePrice -- Veteran players can afford more.
-    
-end
+local selectedPrice = predictedQuantilePriceVector[1][priceIndex] -- Getting our price from predicted value.
         
 ```
 

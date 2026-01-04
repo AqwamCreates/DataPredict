@@ -24,7 +24,7 @@ BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, b
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
-* binaryFunction: The activation function to be used by the model. Available options are:
+* binaryFunction: The binary function to be used by the model. Available options are:
 
 | Function            | Output Range | Skewness              | Use Cases                                                                  |
 |---------------------|--------------|-----------------------|----------------------------------------------------------------------------|

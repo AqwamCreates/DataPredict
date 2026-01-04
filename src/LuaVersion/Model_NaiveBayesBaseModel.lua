@@ -80,7 +80,7 @@ local function createClassesList(labelVector)
 
 		value = labelVector[i][1]
 
-		if not table.find(ClassesList, value) then
+		if (not table.find(ClassesList, value)) then
 
 			table.insert(ClassesList, value)
 

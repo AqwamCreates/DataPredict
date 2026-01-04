@@ -193,7 +193,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 QuantileRegressionModel:setModelParameters(QuantileRegressionModelParameters)
 
-OrdinalRegressionModelsetModelParameters(OrdinalRegressionModelParameters)
+OrdinalRegressionModel:setModelParameters(OrdinalRegressionModelParameters)
 
 ```
 

@@ -38,7 +38,7 @@ local WillingnessToPayPredictionModel = DataPredict.Models.QuantileRegression.ne
 
 In here, what you need to do is:
 
-* Store initial player data as a vector of numbers.
+* Store player data as a vector of numbers when the player purchases an item.
 
 * Store the prices when the player purchases an item.
 

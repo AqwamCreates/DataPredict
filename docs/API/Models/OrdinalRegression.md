@@ -15,12 +15,20 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-OrdinalRegression.new(binaryFunction: string, use, useWeightedDistance: boolean): ModelObject
+OrdinalRegression.new(binaryFunction: string, use): ModelObject
 ```
 
 #### Parameters:
 
-* binaryFunction
+* binaryFunction: The activation function to be used by the model. Available options are:
+
+| Function            | Output Range | Skewness              | Use Cases                                                                  |
+|---------------------|--------------|-----------------------|----------------------------------------------------------------------------|
+| Logistic (Default)  | (0, 1)       | Symmetric             | Player Choice (A/B), Engagement Prediction, Click-Through Rates            |
+| HardSigmoid         | (0, 1)       | Symmetric             | Same As Logistic, But Mobile / Real-Time Prediction                        |
+| Probit              | (0, 1)       | Symmetric             | Skill-Based Success, Ability Checks, Normally Distributed Traits           |
+| ComplementaryLogLog | (0, 1)       | Right-Skewed          | Rare Events Prediction: In-App Purchases, Time-To-Leave Prediction         |
+| LogLog              | (0, 1)       | Left-Skewed           | Common Events Prediction: Tutorial Completion, Early Wins, First Purchases |
 
 #### Returns:
 

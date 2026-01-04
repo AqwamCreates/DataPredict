@@ -4,15 +4,34 @@ Hello guys! Today, I will be showing you on how to create a a pricing-based mode
 
 Currently, you need these to produce the model:
 
-* Quantile regression model
+* A quantile regression model
 
-* 
+* A ordinal regression model
 
 * A player data that is stored in matrix
 
 ## Setting Up
 
-Before we train our model, we will first need to construct a quantile model. We have two algorithms that you can pick from.
+Before we train our models, we will first need to construct the two-layer ensemble model.
+
+### Defining Our Quantiles
+
+The quantiles here describes the price gap between different users.
+
+```lua
+
+local QuantilesList = {0.25, 0.5, 0.75, 0.90}
+
+-- QuantilesList[1] = 25th percentile (conservative) price.
+-- QuantilesList[2] = 50th percentile (balanced) price.
+-- QuantilesList[3] = 75th percentile (aggressive) price.
+-- QuantilesList[4] = 90th percentile (whale-focused) price.
+
+```
+
+### Quantile Regression Model Construction
+
+In here, we have two options for selecting our quantile regression model.
 
 | Model                               | Advantages                                                     | Disadvantages                                       |
 |-------------------------------------|----------------------------------------------------------------|-----------------------------------------------------|
@@ -23,16 +42,19 @@ Before we train our model, we will first need to construct a quantile model. We 
 
 local DataPredict = require(DataPredict)
 
- -- This is required for Quantile Regression model, but not for Bayesian Quantile Linear Regression model.
+ -- QuantilesList is required for Quantile Regression model, but not for Bayesian Quantile Linear Regression model.
 
-local QuantilesList = {0.25, 0.5, 0.75, 0.90}
+local QuantileModel = DataPredict.Models.QuantileRegression.new({QuantilesList = QuantilesList})
 
--- QuantilesList[1] = 25th percentile (conservative) price.
--- QuantilesList[2] = 50th percentile (balanced) price.
--- QuantilesList[3] = 75th percentile (aggressive) price.
--- QuantilesList[4] = 90th percentile (whale-focused) price.
+```
 
-local WillingnessToPayPredictionModel = DataPredict.Models.QuantileRegression.new({QuantilesList = QuantilesList})
+### Ordinal Regression
+
+```
+
+-- ClassesList will use QuantilesList directly and you would be able to output raw numbers as classes for high probability predictions.
+
+local OrdinalRegressionModel = DataPredict.Models.OrdinalRegression.new({ClassesList = QuantilesList})
 
 ```
 
@@ -40,7 +62,7 @@ local WillingnessToPayPredictionModel = DataPredict.Models.QuantileRegression.ne
 
 In here, what you need to do is:
 
-* Store initial player data as a vector of numbers.
+* Store player data as a vector of numbers when the player purchases an item.
 
 * Store the prices when the player purchases an item.
 
@@ -95,9 +117,9 @@ However, this require setting the model's parameters to these settings temporari
 
 ```lua
 
-WillingnessToPayPredictionModel.maximumNumberOfIterations = 100
+QuantileModel.maximumNumberOfIterations = 100
 
-WillingnessToPayPredictionModel.learningRate = 0.3
+QuantileModel.learningRate = 0.3
 
 ```
 
@@ -107,7 +129,7 @@ By the time the player leaves, it is time for us to train the model.
 
 ```lua
 
-local costArray = WillingnessToPayPredictionModel:train(playerDataVector, priceVector)
+local costArray = QuantileModel:train(playerDataVector, priceVector)
 
 ```
 
@@ -117,7 +139,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = WillingnessToPayPredictionModel:getModelParameters()
+local ModelParameters = QuantileModel:getModelParameters()
 
 ```
 
@@ -147,7 +169,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-WillingnessToPayPredictionModel:setModelParameters(ModelParameters)
+QuantileModel:setModelParameters(ModelParameters)
 
 ```
 
@@ -169,7 +191,7 @@ local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount
 
 -- This is for Quantile Regression model.
 
-local predictedQuantilePriceVector = WillingnessToPayPredictionModel:predict(currentPlayerDataVector)
+local predictedQuantilePriceVector = QuantileModel:predict(currentPlayerDataVector)
 
 -- If you're going for Bayesian Quantile Linear Regression model, please include the "quantilePriceVector" to the second parameter of predict() function.
 
@@ -182,7 +204,7 @@ local quantilePriceVector = {{0.25, 0.5, 0.75, 0.9}}
 -- quantilePriceVector[1][3] = 75th percentile (aggressive) price.
 -- quantilePriceVector[1][4] = 90th percentile (whale-focused) price.
 
-local meanPriceVector, predictedQuantilePriceVector = WillingnessToPayPredictionModel:predict(currentPlayerDataVector, quantilePriceVector)
+local meanPriceVector, predictedQuantilePriceVector = QuantileModel:predict(currentPlayerDataVector, quantilePriceVector)
 
 ```
 

@@ -28,7 +28,7 @@ I recommend you to use in-game currencies instead of the real-world ones.
 
     * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-* Creating Pricing Maximization Ensemble Model
+* [Creating Pricing Maximization Ensemble Model](EconomySystems/CreatingPricingMaximizationEnsembleModel.md)
 
    * Uses QuantileRegression's output as data for Ordinal Regression alongside with players' data
 

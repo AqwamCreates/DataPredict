@@ -44,7 +44,7 @@ local DataPredict = require(DataPredict)
 
  -- QuantilesList is required for Quantile Regression model, but not for Bayesian Quantile Linear Regression model.
 
-local QuantileModel = DataPredict.Models.QuantileRegression.new({QuantilesList = QuantilesList})
+local QuantileRegressionModel = DataPredict.Models.QuantileRegression.new({QuantilesList = QuantilesList})
 
 ```
 
@@ -119,9 +119,9 @@ However, this require setting the model's parameters to these settings temporari
 
 ```lua
 
-QuantileModel.maximumNumberOfIterations = 100
+QuantileRegressionModel.maximumNumberOfIterations = 100
 
-QuantileModel.learningRate = 0.3
+QuantileRegressionModel.learningRate = 0.3
 
 ```
 
@@ -131,7 +131,9 @@ By the time the player leaves, it is time for us to train the model.
 
 ```lua
 
-local costArray = QuantileModel:train(playerDataVector, priceVector)
+local costArray = QuantileRegressionModel:train(playerDataVector, priceVector)
+
+local costArray = OrdinalRegressionModel:train(playerDataVector, quantileVector)
 
 ```
 
@@ -141,7 +143,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = QuantileModel:getModelParameters()
+local ModelParameters = QuantileRegressionModel:getModelParameters()
 
 ```
 
@@ -171,7 +173,7 @@ Under this case, you can continue using the existing model parameters that was s
 
 ```lua
 
-QuantileModel:setModelParameters(ModelParameters)
+QuantileRegressionModel:setModelParameters(ModelParameters)
 
 ```
 
@@ -193,7 +195,7 @@ local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfCurrencySpe
 
 -- This is for Quantile Regression model.
 
-local predictedQuantilePriceVector = QuantileModel:predict(currentPlayerDataVector)
+local predictedQuantilePriceVector = QuantileRegressionModel:predict(currentPlayerDataVector)
 
 -- If you're going for Bayesian Quantile Linear Regression model, please include the "quantilePriceVector" to the second parameter of predict() function.
 
@@ -206,7 +208,11 @@ local quantilePriceVector = {{0.25, 0.5, 0.75, 0.9}}
 -- quantilePriceVector[1][3] = 75th percentile (aggressive) price.
 -- quantilePriceVector[1][4] = 90th percentile (whale-focused) price.
 
-local meanPriceVector, predictedQuantilePriceVector = QuantileModel:predict(currentPlayerDataVector, quantilePriceVector)
+local meanPriceVector, predictedQuantilePriceVector = QuantileRegressionModel:predict(currentPlayerDataVector, quantilePriceVector)
+
+-- Then, we need the prediction from the ordinal regression to choose appropriate price.
+
+local predictedQuantile = OrdinalRegressionModel:predict(currentPlayerDataVector)
 
 ```
 

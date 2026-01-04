@@ -4,7 +4,9 @@ Hello guys! Today, I will be showing you on how to create a a pricing-based mode
 
 Currently, you need these to produce the model:
 
-* Bayesian linear regression model
+* Quantile regression model
+
+* 
 
 * A player data that is stored in matrix
 

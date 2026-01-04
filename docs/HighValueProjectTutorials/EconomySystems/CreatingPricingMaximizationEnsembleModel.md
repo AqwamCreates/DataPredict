@@ -50,7 +50,7 @@ local QuantileModel = DataPredict.Models.QuantileRegression.new({QuantilesList =
 
 ### Ordinal Regression
 
-```
+```lua
 
 -- ClassesList will use QuantilesList directly and you would be able to output raw numbers as classes for high probability predictions.
 

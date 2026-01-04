@@ -15,7 +15,7 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-OrdinalRegression.new(binaryFunction: string, use): ModelObject
+OrdinalRegression.new(binaryFunction: string): ModelObject
 ```
 
 #### Parameters:

@@ -117,19 +117,27 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias").
+local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 8}, -100, 100) -- 100 random data with 8 features (including one "bias").
 
 local priceVector = TensorL:createTensor({numberOfData, 1}, 9999) -- Making sure that at all values, it predicts very high time-to-leave value. Do not use math.huge here.
 
+local numberOfQuantiles = #QuantilesList
+
+local quantileVector = TensorL:createTensor({numberOfData, numberOfQuantiles}, 1 / numberOfQuantiles) -- Making sure that at all values, all predict equal values.
+
 ```
 
-However, this require setting the model's parameters to these settings temporarily so that it can be biased to very high willingness-to-pay value at start up as shown below.
+However, this require setting the models' parameters to these settings temporarily so that it can be biased at start up as shown below.
 
 ```lua
 
 QuantileRegressionModel.maximumNumberOfIterations = 100
 
 QuantileRegressionModel.learningRate = 0.3
+
+OrdinalRegressionModel.maximumNumberOfIterations = 100
+
+OrdinalRegressionModel.learningRate = 0.3
 
 ```
 

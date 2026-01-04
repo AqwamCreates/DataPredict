@@ -115,7 +115,7 @@ Then, you must save the model parameters to Roblox's DataStores for future use.
 
 ```lua
 
-local ModelParameters = WillingnessToPayPredictionModel :getModelParameters()
+local ModelParameters = WillingnessToPayPredictionModel:getModelParameters()
 
 ```
 

@@ -123,7 +123,7 @@ local priceVector = TensorL:createTensor({numberOfData, 1}, 9999) -- Making sure
 
 local numberOfQuantiles = #QuantilesList
 
-local quantileVector = TensorL:createTensor({numberOfData, numberOfQuantiles}, 1 / numberOfQuantiles) -- Making sure that at all values, all predict equal values.
+local quantileVector = TensorL:createTensor({numberOfData, numberOfQuantiles}, 1 / numberOfQuantiles) -- Making sure that at all values, all predicted quantiles hold equal weights.
 
 ```
 

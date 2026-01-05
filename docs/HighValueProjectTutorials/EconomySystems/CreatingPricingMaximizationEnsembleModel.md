@@ -147,9 +147,9 @@ By the time the player leaves, it is time for us to train the model.
 
 ```lua
 
-local costArray = QuantileRegressionModel:train(playerDataVector, priceVector)
+local quantileRegressionCostArray = QuantileRegressionModel:train(playerDataVector, priceVector)
 
-local costArray = OrdinalRegressionModel:train(playerDataVector, quantileVector)
+local ordinalRegressionCostArray = OrdinalRegressionModel:train(playerDataVector, quantileVector)
 
 ```
 

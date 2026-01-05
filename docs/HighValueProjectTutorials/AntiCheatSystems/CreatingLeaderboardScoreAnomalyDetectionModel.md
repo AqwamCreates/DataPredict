@@ -70,9 +70,7 @@ local function onRoundEnd()
 
     for playerIndex = #playerArray, 1, -1 do
 
-      -- The probability value here means how likely it is that the data point is "normal" in relative to its neighbours. It is based on kValue.
-
-      -- The higher the probability value, the more likely it is to be an outlier.
+     -- The higher the value, the more likely the datapoint is an outlier.
 
       probabilityValue = probabilityVector[playerIndex][1]
 

@@ -24,9 +24,9 @@ OrdinalRegression.new(maximumNumberOfIterations: integer, learningRate: number, 
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
-* weightLearningRate: The speed at which the model's weight learns. Recommended that the value is set between 0 to 1. If left undefined, it would use learningRate instead. [Default: nil]
+* weightLearningRate: The speed at which the model's weight learns. Recommended that the value is set between 0 to 1. If left unused, it would use learningRate instead. [Default: nil]
 
-* thresholdLearningRate: The speed at which the model's threshold learns. Recommended that the value is set between 0 to 1. If left undefined, it would use learningRate instead. [Default: nil]
+* thresholdLearningRate: The speed at which the model's threshold learns. Recommended that the value is set between 0 to 1. If left unused, it would use learningRate instead. [Default: nil]
 
 * binaryFunction: The binary function to be used by the model. Available options are:
 

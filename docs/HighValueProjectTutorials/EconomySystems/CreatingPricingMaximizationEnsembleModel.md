@@ -244,7 +244,7 @@ local predictedQuantile = predictedQuantileVector[1][1] -- Getting our predictio
 
 local priceIndex = table.find(QuantilesList, predictedQuantile)
 
-local selectedPrice = predictedQuantilePriceVector[1][priceIndex] -- Getting our price from predicted value.
+local selectedPrice = predictedQuantilePriceVector[1][priceIndex] -- Getting our price from the QuantileRegressionModel.
 
 ```
 

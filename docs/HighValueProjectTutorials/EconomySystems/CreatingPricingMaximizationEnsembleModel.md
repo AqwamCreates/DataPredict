@@ -236,7 +236,7 @@ local predictedQuantileVector = OrdinalRegressionModel:predict(currentPlayerData
 
 ```
 
-Once you receive the predicted label vector, you can select desired price by doing this:
+Once you receive the predicted label vector, you can select the desired price by doing this:
 
 ```lua
 

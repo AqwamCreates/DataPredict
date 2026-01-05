@@ -119,11 +119,17 @@ local numberOfData = 100
 
 local numberOfQuantiles = #QuantilesList
 
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 8}, -100, 100) -- 100 random data with 8 features (including one "bias").
+-- 100 random data with 8 features (including one "bias").
 
-local priceVector = TensorL:createTensor({numberOfData, 1}, 9999) -- Making sure that at all values, it predicts very high price acceptance thresholds. Do not use math.huge here.
+local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 8}, -100, 100)
 
-local quantileProbabilityMatrix = TensorL:createTensor({numberOfData, numberOfQuantiles}, (1 / numberOfQuantiles)) -- Making sure that at all values, all predicted quantiles hold equal weights.
+-- Making sure that at all values, it predicts very high price acceptance thresholds. Do not use math.huge here.
+
+local priceVector = TensorL:createTensor({numberOfData, 1}, 9999) 
+
+-- Making sure that at all values, all predicted quantiles hold equal weights. Note that this is the probability matrix for each quantiles, not the quantile values itself.
+
+local quantileProbabilityMatrix = TensorL:createTensor({numberOfData, numberOfQuantiles}, (1 / numberOfQuantiles)) 
 
 ```
 

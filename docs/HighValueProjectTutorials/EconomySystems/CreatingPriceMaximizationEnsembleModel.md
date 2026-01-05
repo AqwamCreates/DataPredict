@@ -103,9 +103,9 @@ local priceVector = {
 
 -- This is our labelVector for OrdinalRegressionModel.
 
-local quantileVector = {
+local quantileClassVector = {
 
-    {quantile}
+    {quantileClass}
 
 }
 
@@ -155,7 +155,7 @@ By the time the player leaves, it is time for us to train the model.
 
 local quantileRegressionCostArray = QuantileRegressionModel:train(playerDataVector, priceVector)
 
-local ordinalRegressionCostArray = OrdinalRegressionModel:train(playerDataVector, quantileVector)
+local ordinalRegressionCostArray = OrdinalRegressionModel:train(playerDataVector, quantileClassVector)
 
 ```
 
@@ -213,6 +213,8 @@ Under this case, the procedure is the same to case 2 except that you need to:
 
 ## Prediction Handling
 
+### Pre-Purchase
+
 In order to produce predictions from our model, we must perform this operation:
 
 ```lua
@@ -238,7 +240,7 @@ local meanPriceVector, predictedQuantilePriceVector = QuantileRegressionModel:pr
 
 -- Then, we need the prediction from the ordinal regression to choose appropriate price.
 
-local predictedQuantileVector = OrdinalRegressionModel:predict(currentPlayerDataVector)
+local predictedQuantileClassVector = OrdinalRegressionModel:predict(currentPlayerDataVector)
 
 ```
 
@@ -246,11 +248,31 @@ Once you receive the predicted label vector, you can select the desired price by
 
 ```lua
 
-local predictedQuantile = predictedQuantileVector[1][1] -- Getting our prediction from the OrdinalRegressionModel.
+local predictedQuantileClass = predictedQuantileClassVector[1][1] -- Getting our prediction from the OrdinalRegressionModel.
 
-local priceIndex = table.find(QuantilesList, predictedQuantile)
+local priceIndex = table.find(QuantilesList, predictedQuantileClass)
 
 local selectedPrice = predictedQuantilePriceVector[1][priceIndex] -- Getting our price from the QuantileRegressionModel.
+
+```
+
+### Post-Purchase
+
+Upon successful purchase, we can now feed our predictions back to our dataset.
+
+```lua
+
+local playerDataMatrix = {}
+
+local priceVector = {}
+
+local quantileClassVector = {}
+
+table.insert(playerDataMatrix, currentPlayerDataVector[1])
+
+table.insert(priceVector, {selectedPrice})
+
+table.insert(quantileClassVector, {predictedQuantileClass})
 
 ```
 

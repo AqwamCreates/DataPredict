@@ -38,7 +38,7 @@
 
 * [Tips For Online Training With Limited Dataset](HighValueProjectTutorials/TipsForOnlineTrainingWithLimitedDataset.md)
 
-* [Game Design Meets Machine Learning](HighValueProjectTutorials/GameDesignMeetsMachineLearning.md)
+* [Game Design Meets Machine Learning](HighValueProjectTutorials/GameDesignMeetsMachineLearning.md) (Incomplete)
 
 * [Roblox's Experiment API](https://create.roblox.com/docs/production/experiments)
 

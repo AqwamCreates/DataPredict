@@ -143,7 +143,7 @@ QuantileRegressionModel.learningRate = 0.3
 
 OrdinalRegressionModel.maximumNumberOfIterations = 100
 
-OrdinalRegressionModel.learningRate   = 0.3
+OrdinalRegressionModel.learningRate = 0.3
 
 ```
 

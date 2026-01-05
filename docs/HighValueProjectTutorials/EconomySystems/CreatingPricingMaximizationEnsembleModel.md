@@ -6,7 +6,7 @@ Currently, you need these to produce the model:
 
 * A quantile regression model
 
-* A ordinal regression model
+* An ordinal regression model
 
 * A player data that is stored in matrix
 

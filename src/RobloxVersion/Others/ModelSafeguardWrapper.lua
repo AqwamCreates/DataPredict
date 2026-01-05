@@ -70,9 +70,11 @@ local function checkIfAllAreNumbers(matrix)
 	
 end
 
-local function getMaximumAcceptableCost(dataMatrixArray, hasClassification)
+local function getMaximumAcceptableCost(dataMatrixArray, ValuesListArray)
 	
 	local sum = 0
+	
+	local ValuesList
 	
 	local partialSum
 	
@@ -80,7 +82,9 @@ local function getMaximumAcceptableCost(dataMatrixArray, hasClassification)
 	
 	for i, dataMatrix in ipairs(dataMatrixArray) do
 		
-		if (i == 2) and (hasClassification) and (#dataMatrix[1] == 1) then
+		ValuesList = ValuesListArray[i]
+		
+		if (ValuesList) then
 			
 			partialSum = #dataMatrix
 			
@@ -254,17 +258,21 @@ end
 
 -- If even a single column contains a defective value, remove the whole row.
 
-local function removeDefectiveData(dataMatrixArray, hasClassification, ClassesList)
+local function removeDefectiveData(dataMatrixArray, ValuesListArray)
 	
 	local rowWithDefectiveDataArrayArray = {}
 	
 	local newDataMatrixArray = {}
 	
+	local ValuesList
+	
 	for i, dataMatrix in ipairs(dataMatrixArray) do
 		
-		if (i == 2) and (hasClassification) and (#dataMatrix[1] == 1) then
+		ValuesList = ValuesListArray[i]
+		
+		if (ValuesList) then
 			
-			rowWithDefectiveDataArrayArray[i] = markRowsWithUnknownClass(dataMatrix, ClassesList)
+			rowWithDefectiveDataArrayArray[i] = markRowsWithUnknownClass(dataMatrix, ValuesList)
 			
 		else
 			
@@ -349,6 +357,8 @@ function ModelSafeguardWrapper.new(parameterDictionary)
 	end
 	
 	NewModelSafeguardWrapper.Model = Model
+	
+	NewModelSafeguardWrapper.ValuesListArray = parameterDictionary.ValuesListArray or {}
 	
 	NewModelSafeguardWrapper.ignoreUpdateOnDefect = NewModelSafeguardWrapper:getValueOrDefaultValue(parameterDictionary.ignoreUpdateOnDefect, defaultIgnoreUpdateOnDefect)
 	
@@ -563,16 +573,10 @@ end
 function ModelSafeguardWrapper:train(...)
 	
 	local Model = self.Model
-
-	local ClassesList = Model.ClassesList or Model.StatesList or Model.ObservationStatesList
+	
+	local ValuesListArray = self.ValuesListArray
 	
 	local maximumAcceptableCostMultiplier = self.maximumAcceptableCostMultiplier
-	
-	local isTable = (type(ClassesList) == "table")
-	
-	local numberOfClasses = (isTable and #ClassesList) or 0
-	
-	local hasClassification = (numberOfClasses ~= 0)
 	
 	local dataMatrixArray = {...}
 	
@@ -596,7 +600,7 @@ function ModelSafeguardWrapper:train(...)
 		
 		["removeDefectFunction"] = function()
 			
-			dataMatrixArray = removeDefectiveData(dataMatrixArray, hasClassification)
+			dataMatrixArray = removeDefectiveData(dataMatrixArray, ValuesListArray)
 			
 		end,
 		
@@ -604,7 +608,7 @@ function ModelSafeguardWrapper:train(...)
 			
 			for i, dataMatrix in ipairs(dataMatrixArray) do
 				
-				if (i ~= 2) or (not hasClassification) or (#dataMatrix[1] ~= 1) then
+				if (not ValuesListArray[i]) then
 
 					if (checkIfAllAreNumbers(dataMatrix)) then
 
@@ -666,7 +670,7 @@ function ModelSafeguardWrapper:train(...)
 			
 		end
 		
-		maximumAcceptableCost = maximumAcceptableCostMultiplier * getMaximumAcceptableCost(dataMatrixArray, hasClassification)
+		maximumAcceptableCost = maximumAcceptableCostMultiplier * getMaximumAcceptableCost(dataMatrixArray, ValuesListArray)
 		
 		isAcceptableValue = checkIfIsAcceptableValue(finalCostValue, -maximumAcceptableCost, maximumAcceptableCost)
 		

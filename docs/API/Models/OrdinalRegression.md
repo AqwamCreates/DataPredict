@@ -15,10 +15,12 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-OrdinalRegression.new(maximumNumberOfIterations: integer, binaryFunction: string): ModelObject
+OrdinalRegression.new(maximumNumberOfIterations: integer, learningRate: number, binaryFunction: string): ModelObject
 ```
 
 #### Parameters:
+
+* learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
 * binaryFunction: The binary function to be used by the model. Available options are:
 

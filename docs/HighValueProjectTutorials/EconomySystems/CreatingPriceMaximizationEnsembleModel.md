@@ -123,7 +123,7 @@ local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 
 
 local priceVector = TensorL:createTensor({numberOfData, 1}, 9999) -- Making sure that at all values, it predicts very high price acceptance thresholds. Do not use math.huge here.
 
-local quantileProbabilityVector = TensorL:createTensor({numberOfData, numberOfQuantiles}, (1 / numberOfQuantiles)) -- Making sure that at all values, all predicted quantiles hold equal weights.
+local quantileProbabilityMatrix = TensorL:createTensor({numberOfData, numberOfQuantiles}, (1 / numberOfQuantiles)) -- Making sure that at all values, all predicted quantiles hold equal weights.
 
 ```
 

@@ -56,7 +56,7 @@ LocalOutlierProbability:score(): matrix
 
 #### Returns:
 
-* scoreVector: A vector containing the scores for each data stored in train() function.
+* scoreVector: A vector containing the scores for each data stored in train() function. The higher the value, the higher it is an outlier.
 
 ## Inherited From
 

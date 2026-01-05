@@ -16,7 +16,7 @@ Before we train our models, we will first need to construct the two-layer ensemb
 
 ### Defining Our Quantiles
 
-The quantiles here describes the price gap between different users.
+The quantiles here describes the price gap between different users. Note that quantiles represent price thresholds, not probabilities.
 
 ```lua
 

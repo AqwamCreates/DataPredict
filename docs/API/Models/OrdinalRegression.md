@@ -15,12 +15,18 @@ Contains a table of matrices.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-OrdinalRegression.new(maximumNumberOfIterations: integer, learningRate: number, binaryFunction: string): ModelObject
+OrdinalRegression.new(maximumNumberOfIterations: integer, learningRate: number, weightLearningRate: number, thresholdLearningRate: number, binaryFunction: string): ModelObject
 ```
 
 #### Parameters:
 
+* maximumNumberOfIterations: How many times should the model needed to be trained.
+
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
+
+* weightLearningRate: The speed at which the model's weight learns. Recommended that the value is set between 0 to 1. If left undefined, it would use learningRate instead. [Default: nil]
+
+* thresholdLearningRate: The speed at which the model's threshold learns. Recommended that the value is set between 0 to 1. If left undefined, it would use learningRate instead. [Default: nil]
 
 * binaryFunction: The binary function to be used by the model. Available options are:
 

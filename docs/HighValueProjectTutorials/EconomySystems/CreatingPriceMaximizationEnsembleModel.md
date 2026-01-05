@@ -22,10 +22,18 @@ The quantiles here describes the price gap between different users. Note that qu
 
 local QuantilesList = {0.25, 0.5, 0.75, 0.90}
 
--- QuantilesList[1] = 25th percentile (conservative) price.
--- QuantilesList[2] = 50th percentile (balanced) price.
--- QuantilesList[3] = 75th percentile (aggressive) price.
--- QuantilesList[4] = 90th percentile (whale-focused) price.
+--[[
+
+ QuantilesList[1] = 25th percentile (conservative) price.
+ QuantilesList[2] = 50th percentile (balanced) price.
+ QuantilesList[3] = 75th percentile (aggressive) price.
+ QuantilesList[4] = 90th percentile (whale-focused) price.
+
+ Additionally, you can make these quantiles list to have negative values instead so that it becomes 
+ "price minimization" model. In other words, positive values means price increase and negative values
+ means price decrease.
+
+--]]
 
 ```
 

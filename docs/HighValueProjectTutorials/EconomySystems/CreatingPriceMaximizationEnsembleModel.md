@@ -1,4 +1,4 @@
-# [Economy Systems](../EconomySystems.md) - Creating Pricing Maximization Ensemble Model
+# [Economy Systems](../EconomySystems.md) - Creating Price Maximization Ensemble Model
 
 Hello guys! Today, I will be showing you on how to create a a pricing-based model that could predict the likelihood of a player would purchase an item for a particular price.
 

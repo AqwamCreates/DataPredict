@@ -111,7 +111,7 @@ local quantileVector = {
 
 ```
 
-If you're concerned about that the model may produce wrong result heavily upon first start up, then you can use a randomized dataset to heavily skew the prediction to very high time-to-leave value. Then use this randomized dataset to pretrain the model before doing any real-time training and prediction. Below, we will show you how it is done.
+If you're concerned about that the model may produce wrong result heavily upon first start up, then you can use a randomized dataset to heavily skew the prediction to very high likelihood to purchase at a given price. Then use this randomized dataset to pretrain the model before doing any real-time training and prediction. Below, we will show you how it is done.
 
 ```lua
 

@@ -72,11 +72,11 @@ local function onRoundEnd()
 
       -- The probability value here means how likely it is that the data point is "normal" in relative to its neighbours. It is based on kValue.
 
+      -- The higher the probability value, the more likely it is to be an outlier.
+
       probabilityValue = probabilityVector[playerIndex][1]
 
-      -- Above this probability value threshold, we consider them as normal.
-
-      if (probabilityValue >= probabilityValueThreshold) then continue end 
+      if (probabilityValue <= probabilityValueThreshold) then continue end 
 
       -- Otherwise, remove this data from the leaderboard.
 

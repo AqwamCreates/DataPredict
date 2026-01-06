@@ -42,7 +42,7 @@ local defaultLearningRate = 0.3
 
 local defaultCostFunction = "MeanSquaredError"
 
-local lossFunctionList ={
+local lossFunctionList = {
 
 	["MeanSquaredError"] = function (h, y) return ((h - y)^2) end,
 

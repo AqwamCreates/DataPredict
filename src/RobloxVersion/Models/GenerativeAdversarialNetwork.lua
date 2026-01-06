@@ -62,10 +62,6 @@ function GenerativeAdversarialNetworkModel.new(parameterDictionary)
 	
 	NewGenerativeAdversarialNetworkModel:setName("GenerativeAdversarialNetwork")
 	
-	NewGenerativeAdversarialNetworkModel.GeneratorModel = parameterDictionary.GeneratorModel
-	
-	NewGenerativeAdversarialNetworkModel.DiscriminatorModel = parameterDictionary.DiscriminatorModel
-	
 	return NewGenerativeAdversarialNetworkModel
 	
 end

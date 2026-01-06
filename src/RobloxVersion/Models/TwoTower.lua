@@ -74,7 +74,7 @@ function TwoTowerModel:train(userFeatureMatrix, itemFeatureMatrix, userItemMatri
 
 	-- Tower input dimension sizes: (number of users x number of user features), (number of items x number of item features).
 
-	-- Tower output dimension sizes: (number of users x number of embedding user features), (number of items x number of embedding item features).
+	-- Tower output dimension sizes: (number of users x number of embedded user features), (number of items x number of embedded item features).
 	
 	-- Dot product output dimension size: (number of users x number of items).
 	

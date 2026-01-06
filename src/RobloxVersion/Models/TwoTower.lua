@@ -200,6 +200,12 @@ function TwoTowerModel:predict(userFeatureMatrix, itemFeatureMatrix, returnOrigi
 	
 	local similarityMatrix = AqwamTensorLibrary:dotProduct(userEmbeddingMatrix, transposedUserEmbeddingMatrix)
 	
+	UserTowerModelParameters = UserTowerModel:getParameters()
+
+	ItemTowerModelParameters = ItemTowerModel:getParameters()
+
+	self.ModelParameters = {UserTowerModelParameters, ItemTowerModelParameters}
+	
 	if (returnOriginalOutput) then return similarityMatrix end
 	
 	local highestValueVector = {}

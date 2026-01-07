@@ -262,7 +262,7 @@ function FunkMatrixFactorizationModel:setItemRegularizer(ItemRegularizer)
 
 end
 
-function FunkMatrixFactorizationModel:train(userItemDataDictionaryDictionary)
+function FunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
 	
 	local lossFunctionGradientFunctionToApply = lossFunctionGradientList[self.costFunction]
 
@@ -276,7 +276,7 @@ function FunkMatrixFactorizationModel:train(userItemDataDictionaryDictionary)
 	
 	local ItemOptimizer = self.ItemOptimizer
 	
-	local userItemMatrix, numberOfUserIDsAdded, numberOfItemIDsAdded = self:processUserDataDictionaryDictionary(userItemDataDictionaryDictionary)
+	local userItemMatrix, numberOfUserIDsAdded, numberOfItemIDsAdded = self:processUserItemDictionaryDictionary(userItemDictionaryDictionary)
 	
 	local ModelParameters = self.ModelParameters or {}
 

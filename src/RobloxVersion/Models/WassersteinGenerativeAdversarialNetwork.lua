@@ -146,7 +146,7 @@ function WassersteinGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 		
 		repeat
 
-			task.wait()
+			self:iterationWait()
 
 			local realFeatureMatrixBatch = sample(realFeatureMatrix, sampleSize)
 

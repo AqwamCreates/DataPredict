@@ -104,7 +104,7 @@ function SimonFunkMatrixFactorizationModel:calculateHypothesisMatrix(userItemMat
 
 end
 
-function SimonFunkMatrixFactorizationModel:calculateLossFunctionGradientVector(lossFunctionGradientMatrix)
+function SimonFunkMatrixFactorizationModel:calculateLossFunctionDerivativeVector(lossFunctionGradientMatrix)
 
 	if (type(lossFunctionGradientMatrix) == "number") then lossFunctionGradientMatrix = {{lossFunctionGradientMatrix}} end
 	
@@ -202,7 +202,7 @@ function SimonFunkMatrixFactorizationModel:update(lossGradientMatrix, clearAllMa
 
 	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
-	local lossFunctionGradientMatrixArray = self:calculateLossFunctionGradientVector(lossGradientMatrix)
+	local lossFunctionGradientMatrixArray = self:calculateLossFunctionDerivativeVector(lossGradientMatrix)
 	
 	local numberOfData = #lossGradientMatrix * #lossGradientMatrix[1]
 

@@ -166,8 +166,6 @@ function TwoTowerModel:train(userFeatureMatrix, itemFeatureMatrix, userItemMatri
 
 		end
 		
-		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tCost: " .. cost) end
-		
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
 	if (isOutputPrinted) then

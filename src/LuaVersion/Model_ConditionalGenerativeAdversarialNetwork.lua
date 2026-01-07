@@ -122,7 +122,7 @@ function ConditionalGenerativeAdversarialNetworkModel:train(realFeatureMatrix, n
 
 	repeat
 		
-		task.wait()
+		self:iterationWait()
 		
 		numberOfIterations = numberOfIterations + 1
 			

@@ -30,11 +30,11 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local MatrixFactorizationBaseModel = require("Model_MatrixFactorizationBaseModel")
 
-local FunkMatrixFactorizationModel = {}
+local SimonFunkMatrixFactorizationModel = {}
 
-FunkMatrixFactorizationModel.__index = FunkMatrixFactorizationModel
+SimonFunkMatrixFactorizationModel.__index = SimonFunkMatrixFactorizationModel
 
-setmetatable(FunkMatrixFactorizationModel, MatrixFactorizationBaseModel)
+setmetatable(SimonFunkMatrixFactorizationModel, MatrixFactorizationBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -58,7 +58,7 @@ local lossFunctionGradientList = {
 
 }
 
-function FunkMatrixFactorizationModel:calculateCost(hypothesisMatrix, labelMatrix, userItemMaskMatrix)
+function SimonFunkMatrixFactorizationModel:calculateCost(hypothesisMatrix, labelMatrix, userItemMaskMatrix)
 
 	if (type(hypothesisMatrix) == "number") then hypothesisMatrix = {{hypothesisMatrix}} end
 
@@ -84,7 +84,7 @@ function FunkMatrixFactorizationModel:calculateCost(hypothesisMatrix, labelMatri
 
 end
 
-function FunkMatrixFactorizationModel:calculateHypothesisMatrix(userItemMatrix, saveUserItemMatrix)
+function SimonFunkMatrixFactorizationModel:calculateHypothesisMatrix(userItemMatrix, saveUserItemMatrix)
 	
 	local latentFactorCount = self.latentFactorCount
 	
@@ -104,7 +104,7 @@ function FunkMatrixFactorizationModel:calculateHypothesisMatrix(userItemMatrix, 
 
 end
 
-function FunkMatrixFactorizationModel:calculateLossFunctionDerivativeVector(lossFunctionGradientMatrix)
+function SimonFunkMatrixFactorizationModel:calculateLossFunctionDerivativeVector(lossFunctionGradientMatrix)
 
 	if (type(lossFunctionGradientMatrix) == "number") then lossFunctionGradientMatrix = {{lossFunctionGradientMatrix}} end
 	
@@ -126,7 +126,7 @@ function FunkMatrixFactorizationModel:calculateLossFunctionDerivativeVector(loss
 
 end
 
-function FunkMatrixFactorizationModel:gradientDescent(lossFunctionDerivativeMatrixArray, numberOfData)
+function SimonFunkMatrixFactorizationModel:gradientDescent(lossFunctionDerivativeMatrixArray, numberOfData)
 	
 	local UserRegularizer = self.UserRegularizer
 
@@ -198,7 +198,7 @@ function FunkMatrixFactorizationModel:gradientDescent(lossFunctionDerivativeMatr
 
 end
 
-function FunkMatrixFactorizationModel:update(lossGradientMatrix, clearAllMatrices)
+function SimonFunkMatrixFactorizationModel:update(lossGradientMatrix, clearAllMatrices)
 
 	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
@@ -218,63 +218,63 @@ function FunkMatrixFactorizationModel:update(lossGradientMatrix, clearAllMatrice
 
 end
 
-function FunkMatrixFactorizationModel.new(parameterDictionary)
+function SimonFunkMatrixFactorizationModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewFunkMatrixFactorizationModel = MatrixFactorizationBaseModel.new(parameterDictionary)
+	local NewSimonFunkMatrixFactorizationModel = MatrixFactorizationBaseModel.new(parameterDictionary)
 
-	setmetatable(NewFunkMatrixFactorizationModel, FunkMatrixFactorizationModel)
+	setmetatable(NewSimonFunkMatrixFactorizationModel, SimonFunkMatrixFactorizationModel)
 	
-	NewFunkMatrixFactorizationModel:setName("FunkMatrixFactorization")
+	NewSimonFunkMatrixFactorizationModel:setName("SimonFunkMatrixFactorization")
 	
 	local learningRate = parameterDictionary.learningRate or defaultLearningRate
 
-	NewFunkMatrixFactorizationModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
+	NewSimonFunkMatrixFactorizationModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
 	
-	NewFunkMatrixFactorizationModel.userLearningRate = parameterDictionary.userLearningRate or learningRate
+	NewSimonFunkMatrixFactorizationModel.userLearningRate = parameterDictionary.userLearningRate or learningRate
 	
-	NewFunkMatrixFactorizationModel.itemLearningRate = parameterDictionary.itemLearningRate or learningRate
+	NewSimonFunkMatrixFactorizationModel.itemLearningRate = parameterDictionary.itemLearningRate or learningRate
 
-	NewFunkMatrixFactorizationModel.UserOptimizer = parameterDictionary.UserOptimizer
+	NewSimonFunkMatrixFactorizationModel.UserOptimizer = parameterDictionary.UserOptimizer
 	
-	NewFunkMatrixFactorizationModel.ItemOptimizer = parameterDictionary.ItemOptimizer
+	NewSimonFunkMatrixFactorizationModel.ItemOptimizer = parameterDictionary.ItemOptimizer
 
-	NewFunkMatrixFactorizationModel.UserRegularizer = parameterDictionary.UserRegularizer
+	NewSimonFunkMatrixFactorizationModel.UserRegularizer = parameterDictionary.UserRegularizer
 	
-	NewFunkMatrixFactorizationModel.ItemRegularizer = parameterDictionary.ItemRegularizer
+	NewSimonFunkMatrixFactorizationModel.ItemRegularizer = parameterDictionary.ItemRegularizer
 
-	return NewFunkMatrixFactorizationModel
+	return NewSimonFunkMatrixFactorizationModel
 
 end
 
-function FunkMatrixFactorizationModel:setUserOptimizer(UserOptimizer)
+function SimonFunkMatrixFactorizationModel:setUserOptimizer(UserOptimizer)
 
 	self.UserOptimizer = UserOptimizer
 
 end
 
-function FunkMatrixFactorizationModel:setItemOptimizer(ItemOptimizer)
+function SimonFunkMatrixFactorizationModel:setItemOptimizer(ItemOptimizer)
 
 	self.ItemOptimizer = ItemOptimizer
 
 end
 
-function FunkMatrixFactorizationModel:setUserRegularizer(UserRegularizer)
+function SimonFunkMatrixFactorizationModel:setUserRegularizer(UserRegularizer)
 
 	self.UserRegularizer = UserRegularizer
 
 end
 
-function FunkMatrixFactorizationModel:setItemRegularizer(ItemRegularizer)
+function SimonFunkMatrixFactorizationModel:setItemRegularizer(ItemRegularizer)
 
 	self.ItemRegularizer = ItemRegularizer
 
 end
 
-function FunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
+function SimonFunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
 	
 	local lossFunctionGradientFunctionToApply = lossFunctionGradientList[self.costFunction]
 
@@ -372,7 +372,7 @@ function FunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
 
 end
 
-function FunkMatrixFactorizationModel:predict(userIDVector, returnOriginalOutput)
+function SimonFunkMatrixFactorizationModel:predict(userIDVector, returnOriginalOutput)
 	
 	local storedUserIDArray = self.userIDArray
 
@@ -408,4 +408,4 @@ function FunkMatrixFactorizationModel:predict(userIDVector, returnOriginalOutput
 
 end
 
-return FunkMatrixFactorizationModel
+return SimonFunkMatrixFactorizationModel

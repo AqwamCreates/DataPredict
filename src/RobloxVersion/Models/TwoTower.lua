@@ -184,12 +184,6 @@ function TwoTowerModel:predict(userFeatureMatrix, itemFeatureMatrix, returnOrigi
 
 	if (not ItemTowerModel) then error("No item tower model.") end
 	
-	local ModelParameters = self.ModelParameters or {}
-
-	local UserTowerModelParameters = ModelParameters[1]
-
-	local ItemTowerModelParameters = ModelParameters[2]
-	
 	local userEmbeddingMatrix = UserTowerModel:predict(userFeatureMatrix, true)
 	
 	local itemEmbeddingMatrix = ItemTowerModel:predict(itemFeatureMatrix, true)

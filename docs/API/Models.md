@@ -212,7 +212,7 @@
 | Model                                                                                      | Alternate Names | Properties | Use Cases                                    |
 |--------------------------------------------------------------------------------------------|-----------------|------------| ---------------------------------------------|
 | [SimonFunkMatrixFactorization](Models/SimonFunkMatrixFactorization.md)                     | Funk MF         | 🟢 🟡     | Early Netflix-Style User-Item Recommendation |
-| [SimonFunkMatrixFactorizationWithBiases](Models/SimonFunkMatrixFactorizationWithBiases.md) | Funk MF         | 🟢 🟡     | Early Netflix-Style User-Item Recommendation |
+| [SimonFunkMatrixFactorizationWithBiases](Models/SimonFunkMatrixFactorizationWithBiases.md) | Funk MF         | 🟢 🟡 🛡️  | Early Netflix-Style User-Item Recommendation |
 | [TwoTower](Models/TwoTower.md)                                                             | None            | 🟢 🟡     | Google-Style User-Item Recommendation        |
 
 ## Generative

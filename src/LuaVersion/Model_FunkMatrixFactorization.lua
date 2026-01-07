@@ -106,9 +106,9 @@ function FunkMatrixFactorizationModel:calculateLossFunctionDerivativeVector(loss
 
 	local itemLatentMatrix = ModelParameters[2]
 
-	local userLossFunctionGradientMatrix = AqwamTensorLibrary:dotProduct(lossFunctionGradientMatrix, itemLatentMatrix)
+	local userLossFunctionGradientMatrix = AqwamTensorLibrary:dotProduct(lossFunctionGradientMatrix, AqwamTensorLibrary:transpose(itemLatentMatrix))
 
-	local itemLossFunctionGradientMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(itemLatentMatrix), lossFunctionGradientMatrix)
+	local itemLossFunctionGradientMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(userLatentMatrix), lossFunctionGradientMatrix)
 	
 	local lossFunctionDerivativeMatrixArray = {userLossFunctionGradientMatrix, itemLossFunctionGradientMatrix}
 

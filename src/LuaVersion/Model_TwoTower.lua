@@ -112,16 +112,6 @@ function TwoTowerModel:train(userFeatureMatrix, itemFeatureMatrix, userItemMatri
 
 	if (not lossFunctionGradientFunctionToApply) then error("Invalid cost function.") end
 	
-	local ModelParameters = self.ModelParameters or {}
-	
-	local UserTowerModelParameters = ModelParameters[1]
-	
-	local ItemTowerModelParameters = ModelParameters[2]
-	
-	if (UserTowerModelParameters) then UserTowerModel:setModelParameters(UserTowerModelParameters) end
-	
-	if (ItemTowerModelParameters) then ItemTowerModel:setModelParameters(ItemTowerModelParameters) end
-	
 	local costArray = {}
 	
 	local numberOfIterations = 0
@@ -180,12 +170,6 @@ function TwoTowerModel:train(userFeatureMatrix, itemFeatureMatrix, userItemMatri
 
 	end
 	
-	UserTowerModelParameters = UserTowerModel:getModelParameters()
-	
-	ItemTowerModelParameters = ItemTowerModel:getModelParameters()
-	
-	self.ModelParameters = {UserTowerModelParameters, ItemTowerModelParameters}
-	
 	return costArray
 	
 end
@@ -200,16 +184,6 @@ function TwoTowerModel:predict(userFeatureMatrix, itemFeatureMatrix, returnOrigi
 
 	if (not ItemTowerModel) then error("No item tower model.") end
 	
-	local ModelParameters = self.ModelParameters or {}
-
-	local UserTowerModelParameters = ModelParameters[1]
-
-	local ItemTowerModelParameters = ModelParameters[2]
-
-	if (UserTowerModelParameters) then UserTowerModel:setModelParameters(UserTowerModelParameters) end
-
-	if (ItemTowerModelParameters) then ItemTowerModel:setModelParameters(ItemTowerModelParameters) end
-	
 	local userEmbeddingMatrix = UserTowerModel:predict(userFeatureMatrix, true)
 	
 	local itemEmbeddingMatrix = ItemTowerModel:predict(itemFeatureMatrix, true)
@@ -217,12 +191,6 @@ function TwoTowerModel:predict(userFeatureMatrix, itemFeatureMatrix, returnOrigi
 	local transposedItemEmbeddingMatrix = AqwamTensorLibrary:transpose(itemEmbeddingMatrix)
 	
 	local similarityMatrix = AqwamTensorLibrary:dotProduct(userEmbeddingMatrix, transposedItemEmbeddingMatrix)
-	
-	UserTowerModelParameters = UserTowerModel:getModelParameters()
-
-	ItemTowerModelParameters = ItemTowerModel:getModelParameters()
-
-	self.ModelParameters = {UserTowerModelParameters, ItemTowerModelParameters}
 	
 	if (returnOriginalOutput) then return similarityMatrix end
 	

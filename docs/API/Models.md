@@ -16,7 +16,7 @@
 | [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 4     |
-| [Recommendation](#recommendation)                                 | User-Item Pairing                               | 2     |
+| [Recommendation](#recommendation)                                 | User-Item Pairing                               | 3     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
 | Total                                                             |                                                 | 97    |
@@ -209,10 +209,11 @@
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                                  | Alternate Names | Properties | Use Cases                                    |
-|------------------------------------------------------------------------|-----------------|------------| ---------------------------------------------|
-| [SimonFunkMatrixFactorization](Models/SimonFunkMatrixFactorization.md) | Funk MF         | 🟢 🟡     | Early Netflix-Style User-Item Recommendation |
-| [TwoTower](Models/TwoTower.md)                                         | None            | 🟢 🟡     | Google-Style User-Item Recommendation        |
+| Model                                                                                      | Alternate Names | Properties | Use Cases                                    |
+|--------------------------------------------------------------------------------------------|-----------------|------------| ---------------------------------------------|
+| [SimonFunkMatrixFactorization](Models/SimonFunkMatrixFactorization.md)                     | Funk MF         | 🟢 🟡     | Early Netflix-Style User-Item Recommendation |
+| [SimonFunkMatrixFactorizationWithBiases](Models/SimonFunkMatrixFactorizationWithBiases.md) | Funk MF         | 🟢 🟡     | Early Netflix-Style User-Item Recommendation |
+| [TwoTower](Models/TwoTower.md)                                                             | None            | 🟢 🟡     | Google-Style User-Item Recommendation        |
 
 ## Generative
 

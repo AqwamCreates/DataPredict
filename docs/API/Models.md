@@ -209,10 +209,10 @@
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                        | Alternate Names | Properties | Use Cases                                 |
-|--------------------------------------------------------------|-----------------|------------| ------------------------------------------|
-| [FunkMatrixFactorization](Models/FunkMatrixFactorization.md) | Funk MF         | 🟢 🟡     | User-Item Recommendation                  |
-| [TwoTower](Models/TwoTower.md)                               | None            | 🟢 🟡     | User-Item Recommendation                  |
+| Model                                                        | Alternate Names | Properties | Use Cases                                    |
+|--------------------------------------------------------------|-----------------|------------| ---------------------------------------------|
+| [FunkMatrixFactorization](Models/FunkMatrixFactorization.md) | Funk MF         | 🟢 🟡     | Early Netflix-Style User-Item Recommendation |
+| [TwoTower](Models/TwoTower.md)                               | None            | 🟢 🟡     | Google-Style User-Item Recommendation        |
 
 ## Generative
 

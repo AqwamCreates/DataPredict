@@ -66,11 +66,17 @@ function FunkMatrixFactorizationModel:calculateCost(hypothesisVector, labelVecto
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
 	
-	local Regularizer = self.Regularizer
+	local UserOptimizer = self.UserOptimizer
+	
+	local ItemOptimizer = self.ItemOptimizer
+	
+	local ModelParameters = self.ModelParameters or {}
 
-	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
+	if (UserOptimizer) then totalCost = totalCost + UserOptimizer:calculateCost(ModelParameters[1]) end
+	
+	if (ItemOptimizer) then totalCost = totalCost + ItemOptimizer:calculateCost(ModelParameters[2]) end
 
-	local averageCost = totalCost / #labelVector
+	local averageCost = totalCost / (#labelVector * #labelVector[1])
 
 	return averageCost
 
@@ -190,13 +196,13 @@ function FunkMatrixFactorizationModel:gradientDescent(lossFunctionDerivativeMatr
 
 end
 
-function FunkMatrixFactorizationModel:update(lossGradientVector, clearAllMatrices)
+function FunkMatrixFactorizationModel:update(lossGradientMatrix, clearAllMatrices)
 
-	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
+	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
-	local numberOfData = #lossGradientVector
-
-	local lossFunctionDerivativeMatrixArray = self:calculateLossFunctionDerivativeVector(lossGradientVector)
+	local lossFunctionDerivativeMatrixArray = self:calculateLossFunctionDerivativeVector(lossGradientMatrix)
+	
+	local numberOfData = #lossGradientMatrix * #lossGradientMatrix[1]
 
 	self:gradientDescent(lossFunctionDerivativeMatrixArray, numberOfData)
 

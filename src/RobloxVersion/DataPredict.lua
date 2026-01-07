@@ -250,7 +250,9 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	-- Recommendation - 2 Models
 	
-	FunkMatrixFactorization = require(Models.FunkMatrixFactorization),
+	SimonFunkMatrixFactorization = require(Models.SimonFunkMatrixFactorization),
+	
+	SimonFunkMatrixFactorizationWithBiases = require(Models.SimonFunkMatrixFactorizationWithBiases),
 	
 	TwoTower = require(Models.TwoTower),
 	

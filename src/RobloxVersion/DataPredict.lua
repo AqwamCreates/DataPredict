@@ -51,6 +51,8 @@ local DistributedTrainingStrategies = script.DistributedTrainingStrategies
 local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
+	
+	-- Regression - 13 Models
 
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -78,19 +80,17 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	KNearestNeighboursRegressor = require(Models.KNearestNeighboursRegressor),
 	
+	-- Classification - 13 Models
+	
 	BinaryRegression = require(Models.BinaryRegression),
 	
 	PassiveAggressiveClassifier = require(Models.PassiveAggressiveClassifier),
-	
-	OneClassPassiveAggressiveClassifier = require(Models.OneClassPassiveAggressiveClassifier),
 	
 	NeuralNetwork = require(Models.NeuralNetwork),
 	
 	SupportVectorMachine = require(Models.SupportVectorMachine),
 
 	SupportVectorMachineGradientVariant = require(Models.SupportVectorMachineGradientVariant),
-	
-	OneClassSupportVectorMachine = require(Models.OneClassSupportVectorMachine),
 	
 	NearestCentroid = require(Models.NearestCentroid),
 	
@@ -108,6 +108,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	OrdinalRegression = require(Models.OrdinalRegression),
 	
+	-- Clustering - 10 Models
+
 	KMeans = require(Models.KMeans),
 	
 	FuzzyCMeans = require(Models.FuzzyCMeans),
@@ -124,7 +126,11 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	DensityBasedSpatialClusteringOfApplicationsWithNoise = require(Models.DensityBasedSpatialClusteringOfApplicationsWithNoise),
 	
+	OrderingPointsToIdentifyClusteringStructure = require(Models.OrderingPointsToIdentifyClusteringStructure),
+	
 	BisectingCluster = require(Models.BisectingCluster),
+	
+	-- Deep Reinforcement Learning - 26 Models
 	
 	DeepQLearning = require(Models.DeepQLearning),
 	
@@ -178,6 +184,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	TwinDelayedDeepDeterministicPolicyGradient = require(Models.TwinDelayedDeepDeterministicPolicyGradient),
 	
+	-- Tabular Reinforcement Learning - 17 Models
+	
 	TabularQLearning = require(Models.TabularQLearning),
 	
 	TabularNStepQLearning = require(Models.TabularNStepQLearning),
@@ -212,11 +220,15 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	TabularREINFORCE = require(Models.TabularREINFORCE),
 	
+	-- Sequence Modelling - 3 Models
+	
 	Markov = require(Models.Markov),
 	
 	DynamicBayesianNetwork = require(Models.DynamicBayesianNetwork),
 	
 	ConditionalRandomField = require(Models.ConditionalRandomField),
+
+	-- Filtering - 4 Models
 	
 	KalmanFilter = require(Models.KalmanFilter),
 	
@@ -225,7 +237,23 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	UnscentedKalmanFilter = require(Models.UnscentedKalmanFilter),
 	
 	UnscentedKalmanFilterDataPredictVariant = require(Models.UnscentedKalmanFilterDataPredictVariant),
+
+	-- Outlier Detection - 4 Models
 	
+	OneClassPassiveAggressiveClassifier = require(Models.OneClassPassiveAggressiveClassifier),
+	
+	OneClassSupportVectorMachine = require(Models.OneClassSupportVectorMachine),
+	
+	LocalOutlierFactor = require(Models.LocalOutlierFactor),
+
+	LocalOutlierProbability = require(Models.LocalOutlierProbability),
+	
+	-- Recommendation - 1 Model
+	
+	TwoTower = require(Models.TwoTower),
+	
+	-- Generative - 4 Models
+
 	GenerativeAdversarialNetwork = require(Models.GenerativeAdversarialNetwork),
 	
 	ConditionalGenerativeAdversarialNetwork = require(Models.ConditionalGenerativeAdversarialNetwork),
@@ -234,9 +262,7 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 
 	ConditionalWassersteinGenerativeAdversarialNetwork = require(Models.ConditionalWassersteinGenerativeAdversarialNetwork),
 	
-	LocalOutlierFactor = require(Models.LocalOutlierFactor),
-	
-	LocalOutlierProbability = require(Models.LocalOutlierProbability),
+	-- Feature-Class Containers
 	
 	Table = require(Models.Table),
 

@@ -294,7 +294,7 @@ function FunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
 		
 	end
 	
-	if (numberOfItemIDsAdded >= 1) and (userLatentMatrix) then
+	if (numberOfItemIDsAdded >= 1) and (itemLatentMatrix) then
 
 		local itemLatentSubMatrix = self:initializeMatrixBasedOnMode({latentFactorCount, numberOfItemIDsAdded})
 

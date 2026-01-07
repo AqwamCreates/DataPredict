@@ -248,7 +248,9 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 
 	LocalOutlierProbability = require(Models.LocalOutlierProbability),
 	
-	-- Recommendation - 1 Model
+	-- Recommendation - 2 Models
+	
+	FunkMatrixFactorization = require(Models.FunkMatrixFactorization),
 	
 	TwoTower = require(Models.TwoTower),
 	

@@ -247,4 +247,6 @@
 
 [TabularReinforcementLearningBaseModel](Models/TabularReinforcementLearningBaseModel.md)
 
+[MatrixFactorizationBaseModel](Models/MatrixFactorizationBaseModel.md)
+
 [GenerativeAdversarialNetworkBaseModel](GenerativeAdversarialNetworkBaseModel.md)

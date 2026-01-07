@@ -290,6 +290,8 @@ function FunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
 		
 		userLatentMatrix = AqwamTensorLibrary:concatenate(userLatentMatrix, userLatentSubMatrix, 1)
 		
+		ModelParameters[1] = userLatentMatrix
+		
 	end
 	
 	if (numberOfItemIDsAdded >= 1) and (userLatentMatrix) then
@@ -297,6 +299,8 @@ function FunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
 		local itemLatentSubMatrix = self:initializeMatrixBasedOnMode({latentFactorCount, numberOfItemIDsAdded})
 
 		itemLatentMatrix = AqwamTensorLibrary:concatenate(itemLatentMatrix, itemLatentSubMatrix, 2)
+		
+		ModelParameters[2] = itemLatentMatrix
 
 	end
 

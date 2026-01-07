@@ -14,9 +14,10 @@
 | [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 4     |
+| [Recommendation](#recommendation)                                 | User-Item Pairing                               | 1     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 95    |
+| Total                                                             |                                                 | 96    |
 
 ### Legend
 
@@ -201,6 +202,14 @@
 | [OneClassPassiveAggressiveClassifier](Models/OneClassPassiveAggressiveClassifier.md) | OC-PA-C         | ❗ ⚡ 🟢  | Fast Hacking Detection, Anomaly Detection (Using Single Class Data) |
 | [LocalOutlierFactor](Models/LocalOutlierFactor.md)                                   | LOF             | 🟢 🟡     | Score-Based Play-Time Milestone Detection                           |
 | [LocalOutlierProbability](Models/LocalOutlierProbability.md)                         | LoOP            | 🟢 🟡     | Probability-Based Play-Time Milestone Detection                     |
+
+## Recommendation
+
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+
+| Model                          | Alternate Names | Properties | Use Cases                                 |
+|--------------------------------|-----------------|------------| ------------------------------------------|
+| [TwoTower](Models/TwoTower.md) | None            | 🟢 🟡     | User-Item Recommendation                  |
 
 ## Generative
 

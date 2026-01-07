@@ -28,179 +28,384 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
+local MatrixFactorizationBaseModel = require(script.Parent.MatrixFactorizationBaseModel)
 
-local MatrixFactorizationBaseModel = {}
+local FunkMatrixFactorizationModel = {}
 
-MatrixFactorizationBaseModel.__index = MatrixFactorizationBaseModel
+FunkMatrixFactorizationModel.__index = FunkMatrixFactorizationModel
 
-setmetatable(MatrixFactorizationBaseModel, GradientMethodBaseModel)
+setmetatable(FunkMatrixFactorizationModel, MatrixFactorizationBaseModel)
 
-local defaultLatentFactorCount = 1
+local defaultMaximumNumberOfIterations = 500
 
-local function insertIDsToArray(IDArray, IDDictionary)
+local defaultLearningRate = 0.3
 
-	local IDArrayLength = #IDArray
+local defaultCostFunction = "MeanSquaredError"
 
-	local numberOfNewIDsAdded = 0
+local lossFunctionList = {
 
-	local isIDExist
+	["MeanSquaredError"] = function (h, y) return ((h - y)^2) end,
 
-	for ID in pairs(IDDictionary) do
+	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
 
-		isIDExist = false
+}
 
-		for i, storedID in ipairs(IDArray) do
+local lossFunctionGradientList = {
 
-			isIDExist = (storedID == ID)
+	["MeanSquaredError"] = function (h, y) return (2 * (h - y)) end,
 
-			if (isIDExist) then break end
+	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
 
-		end
+}
 
-		if (not isIDExist) then
+function FunkMatrixFactorizationModel:calculateCost(hypothesisMatrix, labelMatrix, userItemMaskMatrix)
 
-			IDArrayLength = IDArrayLength + 1
+	if (type(hypothesisMatrix) == "number") then hypothesisMatrix = {{hypothesisMatrix}} end
 
-			IDArray[IDArrayLength] = ID
+	local costMatrix = AqwamTensorLibrary:applyFunction(lossFunctionList[self.costFunction], hypothesisMatrix, labelMatrix)
+	
+	costMatrix = AqwamTensorLibrary:multiply(costMatrix, userItemMaskMatrix)
 
-			numberOfNewIDsAdded = numberOfNewIDsAdded + 1
+	local totalCost = AqwamTensorLibrary:sum(costMatrix)
+	
+	local UserOptimizer = self.UserOptimizer
+	
+	local ItemOptimizer = self.ItemOptimizer
+	
+	local ModelParameters = self.ModelParameters or {}
 
-		end
+	if (UserOptimizer) then totalCost = totalCost + UserOptimizer:calculateCost(ModelParameters[1]) end
+	
+	if (ItemOptimizer) then totalCost = totalCost + ItemOptimizer:calculateCost(ModelParameters[2]) end
+
+	local averageCost = totalCost / (#labelMatrix * #labelMatrix[1])
+
+	return averageCost
+
+end
+
+function FunkMatrixFactorizationModel:calculateHypothesisMatrix(userItemMatrix, saveUserItemMatrix)
+	
+	local latentFactorCount = self.latentFactorCount
+	
+	local ModelParameters = self.ModelParameters or {}
+	
+	local userLatentMatrix = ModelParameters[1] or self:initializeMatrixBasedOnMode({#userItemMatrix, latentFactorCount})
+
+	local itemLatentMatrix = ModelParameters[2] or self:initializeMatrixBasedOnMode({latentFactorCount, #userItemMatrix[1]})
+
+	local hypothesisMatrix = AqwamTensorLibrary:dotProduct(userLatentMatrix, itemLatentMatrix)
+	
+	self.ModelParameters = {userLatentMatrix, itemLatentMatrix}
+
+	if (saveUserItemMatrix) then self.userItemMatrix = userItemMatrix end
+
+	return hypothesisMatrix
+
+end
+
+function FunkMatrixFactorizationModel:calculateLossFunctionDerivativeVector(lossFunctionGradientMatrix)
+
+	if (type(lossFunctionGradientMatrix) == "number") then lossFunctionGradientMatrix = {{lossFunctionGradientMatrix}} end
+	
+	local ModelParameters = self.ModelParameters
+
+	local userLatentMatrix = ModelParameters[1]
+
+	local itemLatentMatrix = ModelParameters[2]
+
+	local userLossFunctionGradientMatrix = AqwamTensorLibrary:dotProduct(lossFunctionGradientMatrix, AqwamTensorLibrary:transpose(itemLatentMatrix))
+
+	local itemLossFunctionGradientMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(userLatentMatrix), lossFunctionGradientMatrix)
+	
+	local lossFunctionDerivativeMatrixArray = {userLossFunctionGradientMatrix, itemLossFunctionGradientMatrix}
+
+	if (self.areGradientsSaved) then self.lossFunctionDerivativeMatrixArray = lossFunctionDerivativeMatrixArray end
+
+	return lossFunctionDerivativeMatrixArray
+
+end
+
+function FunkMatrixFactorizationModel:gradientDescent(lossFunctionDerivativeMatrixArray, numberOfData)
+	
+	local UserRegularizer = self.UserRegularizer
+
+	local ItemRegularizer = self.ItemRegularizer
+
+	local UserOptimizer = self.UserOptimizer
+
+	local ItemOptimizer = self.ItemOptimizer
+
+	local userLearningRate = self.userLearningRate
+
+	local itemLearningRate = self.itemLearningRate
+	
+	local ModelParameters = self.ModelParameters
+	
+	local userLatentMatrix = ModelParameters[1]
+
+	local itemLatentMatrix = ModelParameters[2]
+	
+	local userLatentLossFunctionDerivativeMatrix = lossFunctionDerivativeMatrixArray[1]
+	
+	local itemLatentLossFunctionDerivativeMatrix = lossFunctionDerivativeMatrixArray[2]
+	
+	if (UserRegularizer) then
+
+		local userRegularizationDerivatives = UserRegularizer:calculate(userLatentMatrix)
+
+		userLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:add(userLatentLossFunctionDerivativeMatrix, userRegularizationDerivatives)
+
+	end
+	
+	if (ItemRegularizer) then
+
+		local itemRegularizationDerivatives = ItemRegularizer:calculate(itemLatentMatrix)
+
+		itemLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:add(itemLatentLossFunctionDerivativeMatrix, itemRegularizationDerivatives)
 
 	end
 
-	return IDArray, numberOfNewIDsAdded
+	if (UserOptimizer) then 
+
+		userLatentLossFunctionDerivativeMatrix = UserOptimizer:calculate(userLearningRate, userLatentLossFunctionDerivativeMatrix, userLatentMatrix) 
+
+	else
+
+		userLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(userLearningRate, userLatentLossFunctionDerivativeMatrix)
+
+	end
 	
+	if (ItemOptimizer) then 
+
+		itemLatentLossFunctionDerivativeMatrix = ItemOptimizer:calculate(itemLearningRate, itemLatentLossFunctionDerivativeMatrix, itemLatentMatrix) 
+
+	else
+
+		itemLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(itemLearningRate, itemLatentLossFunctionDerivativeMatrix)
+
+	end
+	
+	userLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:divide(userLatentLossFunctionDerivativeMatrix, numberOfData)
+	
+	itemLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:divide(itemLatentLossFunctionDerivativeMatrix, numberOfData)
+	
+	userLatentMatrix = AqwamTensorLibrary:subtract(userLatentMatrix, userLatentLossFunctionDerivativeMatrix)
+	
+	itemLatentMatrix = AqwamTensorLibrary:subtract(itemLatentMatrix, itemLatentLossFunctionDerivativeMatrix)
+
+	self.ModelParameters = {userLatentMatrix, itemLatentMatrix}
+
 end
 
+function FunkMatrixFactorizationModel:update(lossGradientMatrix, clearAllMatrices)
 
-function MatrixFactorizationBaseModel.new(parameterDictionary)
+	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
+
+	local lossFunctionDerivativeMatrixArray = self:calculateLossFunctionDerivativeVector(lossGradientMatrix)
+	
+	local numberOfData = #lossGradientMatrix * #lossGradientMatrix[1]
+
+	self:gradientDescent(lossFunctionDerivativeMatrixArray, numberOfData)
+
+	if (clearAllMatrices) then 
+
+		self.userItemMatrix = nil 
+
+		self.lossFunctionDerivativeMatrixArray = nil
+
+	end
+
+end
+
+function FunkMatrixFactorizationModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewMatrixFactorizationBaseModel = GradientMethodBaseModel.new(parameterDictionary)
-	
-	setmetatable(NewMatrixFactorizationBaseModel, MatrixFactorizationBaseModel)
-	
-	NewMatrixFactorizationBaseModel:setName("MatrixFactorizationBaseModel")
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	NewMatrixFactorizationBaseModel:setClassName("MatrixFactorizationModel")
+	local NewFunkMatrixFactorizationModel = MatrixFactorizationBaseModel.new(parameterDictionary)
+
+	setmetatable(NewFunkMatrixFactorizationModel, FunkMatrixFactorizationModel)
 	
-	NewMatrixFactorizationBaseModel.latentFactorCount = parameterDictionary.latentFactorCount or defaultLatentFactorCount
+	NewFunkMatrixFactorizationModel:setName("FunkMatrixFactorization")
 	
-	NewMatrixFactorizationBaseModel.userIDArray = parameterDictionary.userIDArray or {}
+	local learningRate = parameterDictionary.learningRate or defaultLearningRate
+
+	NewFunkMatrixFactorizationModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
 	
-	NewMatrixFactorizationBaseModel.itemIDArray = parameterDictionary.itemIDArray or {}
+	NewFunkMatrixFactorizationModel.userLearningRate = parameterDictionary.userLearningRate or learningRate
 	
-	return NewMatrixFactorizationBaseModel
+	NewFunkMatrixFactorizationModel.itemLearningRate = parameterDictionary.itemLearningRate or learningRate
+
+	NewFunkMatrixFactorizationModel.UserOptimizer = parameterDictionary.UserOptimizer
 	
+	NewFunkMatrixFactorizationModel.ItemOptimizer = parameterDictionary.ItemOptimizer
+
+	NewFunkMatrixFactorizationModel.UserRegularizer = parameterDictionary.UserRegularizer
+	
+	NewFunkMatrixFactorizationModel.ItemRegularizer = parameterDictionary.ItemRegularizer
+
+	return NewFunkMatrixFactorizationModel
+
 end
 
-function MatrixFactorizationBaseModel:processUserItemDictionaryDictionary(userItemDictionaryDictionary)
+function FunkMatrixFactorizationModel:setUserOptimizer(UserOptimizer)
+
+	self.UserOptimizer = UserOptimizer
+
+end
+
+function FunkMatrixFactorizationModel:setItemOptimizer(ItemOptimizer)
+
+	self.ItemOptimizer = ItemOptimizer
+
+end
+
+function FunkMatrixFactorizationModel:setUserRegularizer(UserRegularizer)
+
+	self.UserRegularizer = UserRegularizer
+
+end
+
+function FunkMatrixFactorizationModel:setItemRegularizer(ItemRegularizer)
+
+	self.ItemRegularizer = ItemRegularizer
+
+end
+
+function FunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
 	
-	local userIDArray, numberOfUserIDsAdded = insertIDsToArray(self.userIDArray, userItemDictionaryDictionary) 
+	local lossFunctionGradientFunctionToApply = lossFunctionGradientList[self.costFunction]
+
+	if (not lossFunctionGradientFunctionToApply) then error("Invalid cost function.") end
 	
-	local itemIDArray = self.itemIDArray
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
-	local numberOfItemIDsAdded = 0
+	local latentFactorCount = self.latentFactorCount
+
+	local UserOptimizer = self.UserOptimizer
 	
-	for userID, userItemDictionary in pairs(userItemDictionaryDictionary) do
+	local ItemOptimizer = self.ItemOptimizer
+	
+	local userItemMatrix, userItemMaskMatrix, numberOfUserIDsAdded, numberOfItemIDsAdded = self:processUserItemDictionaryDictionary(userItemDictionaryDictionary)
+	
+	local ModelParameters = self.ModelParameters or {}
+
+	local userLatentMatrix = ModelParameters[1]
+
+	local itemLatentMatrix = ModelParameters[2]
+	
+	if (numberOfUserIDsAdded >= 1) and (userLatentMatrix) then
 		
-		local numberOfSubItemIDsAdded = 0
+		local userLatentSubMatrix = self:initializeMatrixBasedOnMode({numberOfUserIDsAdded, latentFactorCount})
 		
-		itemIDArray, numberOfSubItemIDsAdded = insertIDsToArray(itemIDArray, userItemDictionary) 
+		userLatentMatrix = AqwamTensorLibrary:concatenate(userLatentMatrix, userLatentSubMatrix, 1)
 		
-		numberOfItemIDsAdded = numberOfItemIDsAdded + numberOfSubItemIDsAdded
+		ModelParameters[1] = userLatentMatrix
 		
 	end
 	
-	local itemIDArrayLength = #itemIDArray
-	
-	local userItemMatrix = {}
-	
-	local userItemDictionary
+	if (numberOfItemIDsAdded >= 1) and (itemLatentMatrix) then
 
-	local unwrappedUserItemVector
-	
-	local targetColumnIndex
-	
-	for i, userID in ipairs(userIDArray) do
+		local itemLatentSubMatrix = self:initializeMatrixBasedOnMode({latentFactorCount, numberOfItemIDsAdded})
+
+		itemLatentMatrix = AqwamTensorLibrary:concatenate(itemLatentMatrix, itemLatentSubMatrix, 2)
 		
-		userItemDictionary = userItemDictionaryDictionary[userID]
+		ModelParameters[2] = itemLatentMatrix
+
+	end
+
+	local costArray = {}
+
+	local numberOfIterations = 0
+	
+	local cost
+
+	repeat
+
+		numberOfIterations = numberOfIterations + 1
+
+		self:iterationWait()
+
+		local hypothesisMatrix = self:calculateHypothesisMatrix(userItemMatrix, true)
+
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
+
+			return self:calculateCost(hypothesisMatrix, userItemMatrix, userItemMaskMatrix)
+
+		end)
+
+		if (cost) then 
+
+			table.insert(costArray, cost)
+
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+
+		end
+
+		local lossGradientMatrix = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, hypothesisMatrix, userItemMatrix)
 		
-		if (userItemDictionary) then
+		lossGradientMatrix = AqwamTensorLibrary:multiply(lossGradientMatrix, userItemMaskMatrix)
+
+		self:update(lossGradientMatrix, true)
+
+	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
+	
+	if (self.autoResetOptimizers) then
+		
+		if (UserOptimizer) then UserOptimizer:reset() end
+		
+		if (ItemOptimizer) then ItemOptimizer:reset() end
+		
+	end
+	
+	return costArray
+
+end
+
+function FunkMatrixFactorizationModel:predict(userIDVector, returnOriginalOutput)
+	
+	local storedUserIDArray = self.userIDArray
+
+	local storedItemIDArray = self.itemIDArray
+	
+	local ModelParameters = self.ModelParameters or {}
+
+	local userLatentMatrix = ModelParameters[1]
+
+	local itemLatentMatrix = ModelParameters[2]
+	
+	if (userIDVector) then
+		
+		local userLatentSubMatrix = {}
+		
+		for i, unwrappedUserIDVector in ipairs(userIDVector) do
 			
-			unwrappedUserItemVector = {}
+			local targetIndex = table.find(storedUserIDArray, unwrappedUserIDVector[1])
 			
-			for itemID, value in pairs(userItemDictionary) do
-				
-				targetColumnIndex = table.find(itemIDArray, itemID)
-				
-				if (targetColumnIndex) then unwrappedUserItemVector[targetColumnIndex] = value end
-				
-			end
-			
-			for j = 1, itemIDArrayLength, 1 do
-				
-				unwrappedUserItemVector[j] = unwrappedUserItemVector[j] or 0
-				
-			end
-			
-		else
-			
-			unwrappedUserItemVector = table.create(itemIDArrayLength, 0)
+			if (targetIndex) then userLatentSubMatrix[i] = userLatentMatrix[targetIndex] end
 			
 		end
 		
-		userItemMatrix[i] = unwrappedUserItemVector
+		userLatentMatrix = userLatentSubMatrix
 		
 	end
 	
-	return userItemMatrix, numberOfUserIDsAdded, numberOfItemIDsAdded
+	local predictedMatrix = AqwamTensorLibrary:dotProduct(userLatentMatrix, itemLatentMatrix)
+
+	if (returnOriginalOutput) then return predictedMatrix end
 	
-end
-
-function MatrixFactorizationBaseModel:fetchHighestValueVector(outputMatrix)
-	
-	local itemIDArray = self.itemIDArray
-	
-	local highestValueVector = {}
-
-	local predictedLabelVector = {}
-
-	local highestValue
-
-	local highestIndex
-
-	local value
-
-	for i, unwrappedOutputVector in ipairs(outputMatrix) do
-
-		highestValue = -math.huge
-
-		highestIndex = nil
-
-		for j, outputValue in ipairs(unwrappedOutputVector) do
-
-			if (outputValue > highestValue) then
-
-				highestValue = outputValue
-
-				highestIndex = itemIDArray[j]
-
-			end
-
-		end
-
-		predictedLabelVector[i] = {highestIndex}
-
-		highestValueVector[i] = {highestValue}
-
-	end
-
-	return predictedLabelVector, highestValueVector
+	return self:fetchHighestValueVector(predictedMatrix)
 
 end
 
-return MatrixFactorizationBaseModel
+return FunkMatrixFactorizationModel

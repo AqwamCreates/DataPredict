@@ -246,4 +246,28 @@ function TwoTowerModel:predict(userFeatureMatrix, itemFeatureMatrix, returnOrigi
 	
 end
 
+function TwoTowerModel:getUserTowerModel()
+	
+	return self.UserTowerModel
+	
+end
+
+function TwoTowerModel:getItemTowerModel()
+
+	return self.ItemTowerModel
+
+end
+
+function TwoTowerModel:setUserTowerModel(UserTowerModel)
+
+	self.UserTowerModel = UserTowerModel
+
+end
+
+function TwoTowerModel:setItemTowerModel(ItemTowerModel)
+
+	self.ItemTowerModel = ItemTowerModel
+
+end
+
 return TwoTowerModel

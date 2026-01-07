@@ -14,10 +14,10 @@
 | [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 4     |
-| [Recommendation](#recommendation)                                 | User-Item Pairing                               | 1     |
+| [Recommendation](#recommendation)                                 | User-Item Pairing                               | 2     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 96    |
+| Total                                                             |                                                 | 97    |
 
 ### Legend
 
@@ -43,7 +43,7 @@
 
   * Contains most of the deep reinforcement learning and generative algorithms listed here.
 
-* Currently, DataPredict™ has ~94% (89 out of 96) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~93% (90 out of 97) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -207,9 +207,10 @@
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                          | Alternate Names | Properties | Use Cases                                 |
-|--------------------------------|-----------------|------------| ------------------------------------------|
-| [TwoTower](Models/TwoTower.md) | None            | 🟢 🟡     | User-Item Recommendation                  |
+| Model                                                        | Alternate Names | Properties | Use Cases                                 |
+|--------------------------------------------------------------|-----------------|------------| ------------------------------------------|
+| [FunkMatrixFactorization](Models/FunkMatrixFactorization.md) | Funk MF         | 🟢 🟡     | User-Item Recommendation                  |
+| [TwoTower](Models/TwoTower.md)                               | None            | 🟢 🟡     | User-Item Recommendation                  |
 
 ## Generative
 

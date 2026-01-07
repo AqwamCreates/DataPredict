@@ -36,6 +36,8 @@ TwoTowerModel.__index = TwoTowerModel
 
 setmetatable(TwoTowerModel, IterativeMethodBaseModel)
 
+local defaultCostFunction = "MeanSquaredError"
+
 local lossFunctionList = {
 
 	["MeanSquaredError"] = function (h, y) return ((h - y)^2) end,
@@ -62,12 +64,28 @@ function TwoTowerModel.new(parameterDictionary)
 	
 	NewTwoTowerModel:setName("TwoTower")
 	
+	NewTwoTowerModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
+	
 	NewTwoTowerModel.UserTowerModel = parameterDictionary.UserTowerModel
 	
 	NewTwoTowerModel.ItemTowerModel = parameterDictionary.ItemTowerModel
 	
 	return NewTwoTowerModel
 	
+end
+
+function TwoTowerModel:calculateCost(hypothesisVector, labelVector)
+
+	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
+
+	local costVector = AqwamTensorLibrary:applyFunction(lossFunctionList[self.costFunction], hypothesisVector, labelVector)
+
+	local totalCost = AqwamTensorLibrary:sum(costVector)
+
+	local averageCost = totalCost / (#labelVector * #labelVector[1])
+
+	return averageCost
+
 end
 
 function TwoTowerModel:train(userFeatureMatrix, itemFeatureMatrix, userItemMatrix)
@@ -96,13 +114,13 @@ function TwoTowerModel:train(userFeatureMatrix, itemFeatureMatrix, userItemMatri
 	
 	local ModelParameters = self.ModelParameters or {}
 	
-	local UserTowerModelParameters = UserTowerModel.ModelParameters[1]
+	local UserTowerModelParameters = ModelParameters[1]
 	
-	local ItemTowerModelParameters = ItemTowerModel.ModelParameters[2]
+	local ItemTowerModelParameters = ModelParameters[2]
 	
-	if (UserTowerModelParameters) then UserTowerModel:setModelParameter(UserTowerModelParameters) end
+	if (UserTowerModelParameters) then UserTowerModel:setModelParameters(UserTowerModelParameters) end
 	
-	if (ItemTowerModelParameters) then ItemTowerModel:setModelParameter(ItemTowerModelParameters) end
+	if (ItemTowerModelParameters) then ItemTowerModel:setModelParameters(ItemTowerModelParameters) end
 	
 	local costArray = {}
 	
@@ -126,7 +144,7 @@ function TwoTowerModel:train(userFeatureMatrix, itemFeatureMatrix, userItemMatri
 		
 		local lossFunctionGradientMatrix = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, similarityMatrix, userItemMatrix)
 		
-		local userLossGradientMatrix = AqwamTensorLibrary:dotProduct(lossFunctionGradientMatrix, transposedItemEmbeddingMatrix)
+		local userLossGradientMatrix = AqwamTensorLibrary:dotProduct(lossFunctionGradientMatrix, itemEmbeddingMatrix)
 
 		local itemLossGradientMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(userEmbeddingMatrix), lossFunctionGradientMatrix)
 		
@@ -162,9 +180,9 @@ function TwoTowerModel:train(userFeatureMatrix, itemFeatureMatrix, userItemMatri
 
 	end
 	
-	UserTowerModelParameters = UserTowerModel:getParameters()
+	UserTowerModelParameters = UserTowerModel:getModelParameters()
 	
-	ItemTowerModelParameters = ItemTowerModel:getParameters()
+	ItemTowerModelParameters = ItemTowerModel:getModelParameters()
 	
 	self.ModelParameters = {UserTowerModelParameters, ItemTowerModelParameters}
 	
@@ -184,13 +202,13 @@ function TwoTowerModel:predict(userFeatureMatrix, itemFeatureMatrix, returnOrigi
 	
 	local ModelParameters = self.ModelParameters or {}
 
-	local UserTowerModelParameters = UserTowerModel.ModelParameters[1]
+	local UserTowerModelParameters = ModelParameters[1]
 
-	local ItemTowerModelParameters = ItemTowerModel.ModelParameters[2]
+	local ItemTowerModelParameters = ModelParameters[2]
 
-	if (UserTowerModelParameters) then UserTowerModel:setModelParameter(UserTowerModelParameters) end
+	if (UserTowerModelParameters) then UserTowerModel:setModelParameters(UserTowerModelParameters) end
 
-	if (ItemTowerModelParameters) then ItemTowerModel:setModelParameter(ItemTowerModelParameters) end
+	if (ItemTowerModelParameters) then ItemTowerModel:setModelParameters(ItemTowerModelParameters) end
 	
 	local userEmbeddingMatrix = UserTowerModel:predict(userFeatureMatrix, true)
 	
@@ -200,9 +218,9 @@ function TwoTowerModel:predict(userFeatureMatrix, itemFeatureMatrix, returnOrigi
 	
 	local similarityMatrix = AqwamTensorLibrary:dotProduct(userEmbeddingMatrix, transposedItemEmbeddingMatrix)
 	
-	UserTowerModelParameters = UserTowerModel:getParameters()
+	UserTowerModelParameters = UserTowerModel:getModelParameters()
 
-	ItemTowerModelParameters = ItemTowerModel:getParameters()
+	ItemTowerModelParameters = ItemTowerModel:getModelParameters()
 
 	self.ModelParameters = {UserTowerModelParameters, ItemTowerModelParameters}
 	

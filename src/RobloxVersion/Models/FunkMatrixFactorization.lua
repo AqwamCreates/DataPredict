@@ -178,6 +178,10 @@ function FunkMatrixFactorizationModel:gradientDescent(lossFunctionDerivativeMatr
 
 	end
 	
+	userLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:divide(userLatentLossFunctionDerivativeMatrix, numberOfData)
+	
+	itemLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:divide(itemLatentLossFunctionDerivativeMatrix, numberOfData)
+	
 	userLatentMatrix = AqwamTensorLibrary:subtract(userLatentMatrix, userLatentLossFunctionDerivativeMatrix)
 	
 	itemLatentMatrix = AqwamTensorLibrary:subtract(itemLatentMatrix, itemLatentLossFunctionDerivativeMatrix)

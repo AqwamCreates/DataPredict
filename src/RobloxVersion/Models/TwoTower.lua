@@ -54,7 +54,7 @@ local lossFunctionGradientList = {
 
 	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
 	
-	["BinaryCrossEntropy"]  =function (h, y) return ((h - y) / (h * (1 - h))) end,
+	["BinaryCrossEntropy"] = function (h, y) return ((h - y) / (h * (1 - h))) end,
 
 }
 

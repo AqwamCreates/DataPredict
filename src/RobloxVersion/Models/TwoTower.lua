@@ -196,9 +196,9 @@ function TwoTowerModel:predict(userFeatureMatrix, itemFeatureMatrix, returnOrigi
 	
 	local itemEmbeddingMatrix = ItemTowerModel:predict(itemFeatureMatrix, true)
 	
-	local transposedUserEmbeddingMatrix = AqwamTensorLibrary:transpose(itemEmbeddingMatrix)
+	local transposedItemEmbeddingMatrix = AqwamTensorLibrary:transpose(itemEmbeddingMatrix)
 	
-	local similarityMatrix = AqwamTensorLibrary:dotProduct(userEmbeddingMatrix, transposedUserEmbeddingMatrix)
+	local similarityMatrix = AqwamTensorLibrary:dotProduct(userEmbeddingMatrix, transposedItemEmbeddingMatrix)
 	
 	UserTowerModelParameters = UserTowerModel:getParameters()
 

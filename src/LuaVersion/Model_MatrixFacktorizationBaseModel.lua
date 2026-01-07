@@ -109,7 +109,7 @@ function MatrixFactorizationBaseModel:processUserItemDictionaryDictionary(userIt
 		
 		local numberOfSubItemIDsAdded = 0
 		
-		itemIDArray, numberOfSubItemIDsAdded = insertIDsToArray(itemIDArray, userItemDictionaryDictionary) 
+		itemIDArray, numberOfSubItemIDsAdded = insertIDsToArray(itemIDArray, userItemDictionary) 
 		
 		numberOfItemIDsAdded = numberOfItemIDsAdded + numberOfSubItemIDsAdded
 		
@@ -141,6 +141,12 @@ function MatrixFactorizationBaseModel:processUserItemDictionaryDictionary(userIt
 				
 			end
 			
+			for j = 1, itemIDArrayLength, 1 do
+				
+				unwrappedUserItemVector[j] = unwrappedUserItemVector[j] or 0
+				
+			end
+			
 		else
 			
 			unwrappedUserItemVector = table.create(itemIDArrayLength, 0)
@@ -156,6 +162,8 @@ function MatrixFactorizationBaseModel:processUserItemDictionaryDictionary(userIt
 end
 
 function MatrixFactorizationBaseModel:fetchHighestValueVector(outputMatrix)
+	
+	local itemIDArray = self.itemIDArray
 	
 	local highestValueVector = {}
 
@@ -179,7 +187,7 @@ function MatrixFactorizationBaseModel:fetchHighestValueVector(outputMatrix)
 
 				highestValue = outputValue
 
-				highestIndex = j
+				highestIndex = itemIDArray[j]
 
 			end
 

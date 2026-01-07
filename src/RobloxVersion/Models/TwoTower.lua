@@ -45,6 +45,8 @@ local lossFunctionList = {
 	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
 	
 	["BinaryCrossEntropy"] = function (h, y) return -(y * math.log(h) + (1 - y) * math.log(1 - h)) end,
+	
+	["CategoricalCrossEntropy"] = function (h, y) return -(y * math.log(h)) end,
 
 }
 
@@ -55,6 +57,8 @@ local lossFunctionGradientList = {
 	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
 	
 	["BinaryCrossEntropy"] = function (h, y) return ((h - y) / (h * (1 - h))) end,
+	
+	["CategoricalCrossEntropy"] = function (h, y) return -(y / h) end,
 
 }
 

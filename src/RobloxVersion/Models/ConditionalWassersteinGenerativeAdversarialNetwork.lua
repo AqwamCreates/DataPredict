@@ -183,7 +183,7 @@ function ConditionalWassersteinGenerativeAdversarialNetworkModel:train(realFeatu
 		
 		repeat
 
-			task.wait()
+			self:iterationWait()
 
 			local realFeatureMatrixBatch, noiseFeatureMatrixBatch, labelMatrixBatch = sampleGroup(concatenatedRealFeatureMatrix, concatenatedNoiseFeatureMatrix, labelMatrix, sampleSize)
 			

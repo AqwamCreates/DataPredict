@@ -58,13 +58,15 @@ local lossFunctionGradientList = {
 
 }
 
-function FunkMatrixFactorizationModel:calculateCost(hypothesisVector, labelVector)
+function FunkMatrixFactorizationModel:calculateCost(hypothesisMatrix, labelMatrix, userItemMaskMatrix)
 
-	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
+	if (type(hypothesisMatrix) == "number") then hypothesisMatrix = {{hypothesisMatrix}} end
 
-	local costVector = AqwamTensorLibrary:applyFunction(lossFunctionList[self.costFunction], hypothesisVector, labelVector)
+	local costMatrix = AqwamTensorLibrary:applyFunction(lossFunctionList[self.costFunction], hypothesisMatrix, labelMatrix)
+	
+	costMatrix = AqwamTensorLibrary:multiply(costMatrix, userItemMaskMatrix)
 
-	local totalCost = AqwamTensorLibrary:sum(costVector)
+	local totalCost = AqwamTensorLibrary:sum(costMatrix)
 	
 	local UserOptimizer = self.UserOptimizer
 	
@@ -76,13 +78,13 @@ function FunkMatrixFactorizationModel:calculateCost(hypothesisVector, labelVecto
 	
 	if (ItemOptimizer) then totalCost = totalCost + ItemOptimizer:calculateCost(ModelParameters[2]) end
 
-	local averageCost = totalCost / (#labelVector * #labelVector[1])
+	local averageCost = totalCost / (#labelMatrix * #labelMatrix[1])
 
 	return averageCost
 
 end
 
-function FunkMatrixFactorizationModel:calculateHypothesisVector(userItemMatrix, saveUserItemMatrix)
+function FunkMatrixFactorizationModel:calculateHypothesisMatrix(userItemMatrix, saveUserItemMatrix)
 	
 	local latentFactorCount = self.latentFactorCount
 	
@@ -92,13 +94,13 @@ function FunkMatrixFactorizationModel:calculateHypothesisVector(userItemMatrix, 
 
 	local itemLatentMatrix = ModelParameters[2] or self:initializeMatrixBasedOnMode({latentFactorCount, #userItemMatrix[1]})
 
-	local hypothesisVector = AqwamTensorLibrary:dotProduct(userLatentMatrix, itemLatentMatrix)
+	local hypothesisMatrix = AqwamTensorLibrary:dotProduct(userLatentMatrix, itemLatentMatrix)
 	
 	self.ModelParameters = {userLatentMatrix, itemLatentMatrix}
 
 	if (saveUserItemMatrix) then self.userItemMatrix = userItemMatrix end
 
-	return hypothesisVector
+	return hypothesisMatrix
 
 end
 
@@ -286,7 +288,7 @@ function FunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
 	
 	local ItemOptimizer = self.ItemOptimizer
 	
-	local userItemMatrix, numberOfUserIDsAdded, numberOfItemIDsAdded = self:processUserItemDictionaryDictionary(userItemDictionaryDictionary)
+	local userItemMatrix, userItemMaskMatrix, numberOfUserIDsAdded, numberOfItemIDsAdded = self:processUserItemDictionaryDictionary(userItemDictionaryDictionary)
 	
 	local ModelParameters = self.ModelParameters or {}
 
@@ -326,11 +328,11 @@ function FunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
 
 		self:iterationWait()
 
-		local hypothesisVector = self:calculateHypothesisVector(userItemMatrix, true)
+		local hypothesisMatrix = self:calculateHypothesisMatrix(userItemMatrix, true)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisVector, userItemMatrix)
+			return self:calculateCost(hypothesisMatrix, userItemMatrix, userItemMaskMatrix)
 
 		end)
 
@@ -342,9 +344,11 @@ function FunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
 
 		end
 
-		local lossGradientVector = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, hypothesisVector, userItemMatrix)
+		local lossGradientMatrix = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, hypothesisMatrix, userItemMatrix)
+		
+		lossGradientMatrix = AqwamTensorLibrary:multiply(lossGradientMatrix, userItemMaskMatrix)
 
-		self:update(lossGradientVector, true)
+		self:update(lossGradientMatrix, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

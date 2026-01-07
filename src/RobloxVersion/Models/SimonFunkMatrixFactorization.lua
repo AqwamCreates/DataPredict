@@ -104,7 +104,7 @@ function SimonFunkMatrixFactorizationModel:calculateHypothesisMatrix(userItemMat
 
 end
 
-function SimonFunkMatrixFactorizationModel:calculateLossFunctionDerivativeVector(lossFunctionGradientMatrix)
+function SimonFunkMatrixFactorizationModel:calculateLossFunctionGradientVector(lossFunctionGradientMatrix)
 
 	if (type(lossFunctionGradientMatrix) == "number") then lossFunctionGradientMatrix = {{lossFunctionGradientMatrix}} end
 	
@@ -118,15 +118,15 @@ function SimonFunkMatrixFactorizationModel:calculateLossFunctionDerivativeVector
 
 	local itemLossFunctionGradientMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(userLatentMatrix), lossFunctionGradientMatrix)
 	
-	local lossFunctionDerivativeMatrixArray = {userLossFunctionGradientMatrix, itemLossFunctionGradientMatrix}
+	local lossFunctionGradientMatrixArray = {userLossFunctionGradientMatrix, itemLossFunctionGradientMatrix}
 
-	if (self.areGradientsSaved) then self.lossFunctionDerivativeMatrixArray = lossFunctionDerivativeMatrixArray end
+	if (self.areGradientsSaved) then self.lossFunctionGradientMatrixArray = lossFunctionGradientMatrixArray end
 
-	return lossFunctionDerivativeMatrixArray
+	return lossFunctionGradientMatrixArray
 
 end
 
-function SimonFunkMatrixFactorizationModel:gradientDescent(lossFunctionDerivativeMatrixArray, numberOfData)
+function SimonFunkMatrixFactorizationModel:gradientDescent(lossFunctionGradientMatrixArray, numberOfData)
 	
 	local UserRegularizer = self.UserRegularizer
 
@@ -146,53 +146,53 @@ function SimonFunkMatrixFactorizationModel:gradientDescent(lossFunctionDerivativ
 
 	local itemLatentMatrix = ModelParameters[2]
 	
-	local userLatentLossFunctionDerivativeMatrix = lossFunctionDerivativeMatrixArray[1]
+	local userLatentLossFunctionGradientMatrix = lossFunctionGradientMatrixArray[1]
 	
-	local itemLatentLossFunctionDerivativeMatrix = lossFunctionDerivativeMatrixArray[2]
+	local itemLatentLossFunctionGradientMatrix = lossFunctionGradientMatrixArray[2]
 	
 	if (UserRegularizer) then
 
-		local userRegularizationDerivatives = UserRegularizer:calculate(userLatentMatrix)
+		local userRegularizationGradients = UserRegularizer:calculate(userLatentMatrix)
 
-		userLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:add(userLatentLossFunctionDerivativeMatrix, userRegularizationDerivatives)
+		userLatentLossFunctionGradientMatrix = AqwamTensorLibrary:add(userLatentLossFunctionGradientMatrix, userRegularizationGradients)
 
 	end
 	
 	if (ItemRegularizer) then
 
-		local itemRegularizationDerivatives = ItemRegularizer:calculate(itemLatentMatrix)
+		local itemRegularizationGradients = ItemRegularizer:calculate(itemLatentMatrix)
 
-		itemLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:add(itemLatentLossFunctionDerivativeMatrix, itemRegularizationDerivatives)
+		itemLatentLossFunctionGradientMatrix = AqwamTensorLibrary:add(itemLatentLossFunctionGradientMatrix, itemRegularizationGradients)
 
 	end
 
 	if (UserOptimizer) then 
 
-		userLatentLossFunctionDerivativeMatrix = UserOptimizer:calculate(userLearningRate, userLatentLossFunctionDerivativeMatrix, userLatentMatrix) 
+		userLatentLossFunctionGradientMatrix = UserOptimizer:calculate(userLearningRate, userLatentLossFunctionGradientMatrix, userLatentMatrix) 
 
 	else
 
-		userLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(userLearningRate, userLatentLossFunctionDerivativeMatrix)
+		userLatentLossFunctionGradientMatrix = AqwamTensorLibrary:multiply(userLearningRate, userLatentLossFunctionGradientMatrix)
 
 	end
 	
 	if (ItemOptimizer) then 
 
-		itemLatentLossFunctionDerivativeMatrix = ItemOptimizer:calculate(itemLearningRate, itemLatentLossFunctionDerivativeMatrix, itemLatentMatrix) 
+		itemLatentLossFunctionGradientMatrix = ItemOptimizer:calculate(itemLearningRate, itemLatentLossFunctionGradientMatrix, itemLatentMatrix) 
 
 	else
 
-		itemLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(itemLearningRate, itemLatentLossFunctionDerivativeMatrix)
+		itemLatentLossFunctionGradientMatrix = AqwamTensorLibrary:multiply(itemLearningRate, itemLatentLossFunctionGradientMatrix)
 
 	end
 	
-	userLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:divide(userLatentLossFunctionDerivativeMatrix, numberOfData)
+	userLatentLossFunctionGradientMatrix = AqwamTensorLibrary:divide(userLatentLossFunctionGradientMatrix, numberOfData)
 	
-	itemLatentLossFunctionDerivativeMatrix = AqwamTensorLibrary:divide(itemLatentLossFunctionDerivativeMatrix, numberOfData)
+	itemLatentLossFunctionGradientMatrix = AqwamTensorLibrary:divide(itemLatentLossFunctionGradientMatrix, numberOfData)
 	
-	userLatentMatrix = AqwamTensorLibrary:subtract(userLatentMatrix, userLatentLossFunctionDerivativeMatrix)
+	userLatentMatrix = AqwamTensorLibrary:subtract(userLatentMatrix, userLatentLossFunctionGradientMatrix)
 	
-	itemLatentMatrix = AqwamTensorLibrary:subtract(itemLatentMatrix, itemLatentLossFunctionDerivativeMatrix)
+	itemLatentMatrix = AqwamTensorLibrary:subtract(itemLatentMatrix, itemLatentLossFunctionGradientMatrix)
 
 	self.ModelParameters = {userLatentMatrix, itemLatentMatrix}
 
@@ -202,17 +202,17 @@ function SimonFunkMatrixFactorizationModel:update(lossGradientMatrix, clearAllMa
 
 	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
-	local lossFunctionDerivativeMatrixArray = self:calculateLossFunctionDerivativeVector(lossGradientMatrix)
+	local lossFunctionGradientMatrixArray = self:calculateLossFunctionGradientVector(lossGradientMatrix)
 	
 	local numberOfData = #lossGradientMatrix * #lossGradientMatrix[1]
 
-	self:gradientDescent(lossFunctionDerivativeMatrixArray, numberOfData)
+	self:gradientDescent(lossFunctionGradientMatrixArray, numberOfData)
 
 	if (clearAllMatrices) then 
 
 		self.userItemMatrix = nil 
 
-		self.lossFunctionDerivativeMatrixArray = nil
+		self.lossFunctionGradientMatrixArray = nil
 
 	end
 

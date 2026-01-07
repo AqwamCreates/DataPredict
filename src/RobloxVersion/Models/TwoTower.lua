@@ -130,6 +130,216 @@ function TwoTowerModel:train(userFeatureMatrix, itemFeatureMatrix, userItemMatri
 
 	repeat
 		
+		self:iterationWait()
+		
+		numberOfIterations = numberOfIterations + 1
+		
+		local userEmbeddingMatrix = UserTowerModel:forwardPropagate(userFeatureMatrix, true)
+
+		local itemEmbeddingMatrix = ItemTowerModel:forwardPropagate(itemFeatureMatrix, true)
+		
+		local transposedItemEmbeddingMatrix = AqwamTensorLibrary:transpose(itemEmbeddingMatrix)
+
+		local similarityMatrix = AqwamTensorLibrary:dotProduct(userEmbeddingMatrix, transposedItemEmbeddingMatrix)
+		
+		local lossFunctionGradientMatrix = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, similarityMatrix, userItemMatrix)
+		
+		local userLossGradientMatrix = AqwamTensorLibrary:dotProduct(lossFunctionGradientMatrix, itemEmbeddingMatrix)
+
+		local itemLossGradientMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(userEmbeddingMatrix), lossFunctionGradientMatrix)
+		
+		local transposedItemLossGradientMatrix = AqwamTensorLibrary:transpose(itemLossGradientMatrix)
+		
+		UserTowerModel:update(userLossGradientMatrix, true)
+		
+		ItemTowerModel:update(transposedItemLossGradientMatrix, true)
+		
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
+
+			return self:calculateCost(similarityMatrix, userItemMatrix)
+
+		end)
+
+		if (cost) then 
+
+			table.insert(costArray, cost)
+
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+
+		end
+		
+		if (isOutputPrinted) then print("Iteration: " .. numberOfIterations .. "\t\tuser Cost: " .. cost) end
+		
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	
+	if (isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
+	
+	UserTowerModelParameters = UserTowerModel:getModelParameters()
+	
+	ItemTowerModelParameters = ItemTowerModel:getModelParameters()
+	
+	self.ModelParameters = {UserTowerModelParameters, ItemTowerModelParameters}
+	
+	return costArray
+	
+end
+
+function TwoTowerModel:predict(userFeatureMatrix, itemFeatureMatrix, returnOriginalOutput)
+	
+	local UserTowerModel = self.UserTowerModel
+
+	local ItemTowerModel = self.ItemTowerModel
+
+	if (not UserTowerModel) then error("No user tower model.") end
+
+	if (not ItemTowerModel) then error("No item tower model.") end
+	
+	local ModelParameters = self.ModelParameters or {}
+
+	local UserTowerModelParameters = ModelParameters[1]
+
+	local ItemTowerModelParameters = ModelParameters[2]
+
+	if (UserTowerModelParameters) then UserTowerModel:setModelParameters(UserTowerModelParameters) end
+
+	if (ItemTowerModelParameters) then ItemTowerModel:setModelParameters(ItemTowerModelParameters) end
+	
+	local userEmbeddingMatrix = UserTowerModel:predict(userFeatureMatrix, true)
+	
+	local itemEmbeddingMatrix = ItemTowerModel:predict(itemFeatureMatrix, true)
+	
+	local transposedItemEmbeddingMatrix = AqwamTensorLibrary:transpose(itemEmbeddingMatrix)
+	
+	local similarityMatrix = AqwamTensorLibrary:dotProduct(userEmbeddingMatrix, transposedItemEmbeddingMatrix)
+	
+	UserTowerModelParameters = UserTowerModel:getModelParameters()
+
+	ItemTowerModelParameters = ItemTowerModel:getModelParameters()
+
+	self.ModelParameters = {UserTowerModelParameters, ItemTowerModelParameters}
+	
+	if (returnOriginalOutput) then return similarityMatrix end
+	
+	local highestValueVector = {}
+	
+	local predictedLabelVector = {}
+	
+	local highestValue
+	
+	local highestIndex
+	
+	local value
+	
+	for i, unwrappedSimilarityMatrix in ipairs(similarityMatrix) do
+		
+		highestValue = -math.huge
+		
+		highestIndex = nil
+		
+		for j, similarityValue in ipairs(unwrappedSimilarityMatrix) do
+
+			if (similarityValue > highestValue) then
+				
+				highestValue = similarityValue
+				
+				highestIndex = j
+				
+			end
+			
+		end
+		
+		predictedLabelVector[i] = {highestIndex}
+		
+		highestValueVector[i] = {highestValue}
+		
+	end
+	
+	return predictedLabelVector, highestValueVector
+	
+end
+
+function TwoTowerModel:getUserTowerModel()
+	
+	return self.UserTowerModel
+	
+end
+
+function TwoTowerModel:getItemTowerModel()
+
+	return self.ItemTowerModel
+
+end
+
+function TwoTowerModel:setUserTowerModel(UserTowerModel)
+
+	self.UserTowerModel = UserTowerModel
+
+end
+
+function TwoTowerModel:setItemTowerModel(ItemTowerModel)
+
+	self.ItemTowerModel = ItemTowerModel
+
+end
+
+return TwoTowerModel	local costVector = AqwamTensorLibrary:applyFunction(lossFunctionList[self.costFunction], hypothesisVector, labelVector)
+
+	local totalCost = AqwamTensorLibrary:sum(costVector)
+
+	local averageCost = totalCost / (#labelVector * #labelVector[1])
+
+	return averageCost
+
+end
+
+function TwoTowerModel:train(userFeatureMatrix, itemFeatureMatrix, userItemMatrix)
+
+	-- Tower input dimension sizes: (number of users x number of user features), (number of items x number of item features).
+
+	-- Tower output dimension sizes: (number of users x number of embedded user features), (number of items x number of embedded item features).
+	
+	-- Dot product output dimension size: (number of users x number of items).
+	
+	local UserTowerModel = self.UserTowerModel
+	
+	local ItemTowerModel = self.ItemTowerModel
+	
+	if (not UserTowerModel) then error("No user tower model.") end
+	
+	if (not ItemTowerModel) then error("No item tower model.") end
+	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
+	
+	local isOutputPrinted = self.isOutputPrinted
+	
+	local lossFunctionGradientFunctionToApply = lossFunctionGradientList[self.costFunction]
+
+	if (not lossFunctionGradientFunctionToApply) then error("Invalid cost function.") end
+	
+	local ModelParameters = self.ModelParameters or {}
+	
+	local UserTowerModelParameters = ModelParameters[1]
+	
+	local ItemTowerModelParameters = ModelParameters[2]
+	
+	if (UserTowerModelParameters) then UserTowerModel:setModelParameters(UserTowerModelParameters) end
+	
+	if (ItemTowerModelParameters) then ItemTowerModel:setModelParameters(ItemTowerModelParameters) end
+	
+	local costArray = {}
+	
+	local numberOfIterations = 0
+	
+	local cost
+
+	repeat
+		
 		task.wait()
 		
 		numberOfIterations = numberOfIterations + 1

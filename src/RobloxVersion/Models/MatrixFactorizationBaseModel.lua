@@ -109,7 +109,7 @@ function MatrixFactorizationBaseModel:processUserItemDictionaryDictionary(userIt
 		
 		local numberOfSubItemIDsAdded = 0
 		
-		itemIDArray, numberOfSubItemIDsAdded = insertIDsToArray(itemIDArray, userItemDictionaryDictionary) 
+		itemIDArray, numberOfSubItemIDsAdded = insertIDsToArray(itemIDArray, userItemDictionary) 
 		
 		numberOfItemIDsAdded = numberOfItemIDsAdded + numberOfSubItemIDsAdded
 		
@@ -119,11 +119,17 @@ function MatrixFactorizationBaseModel:processUserItemDictionaryDictionary(userIt
 	
 	local userItemMatrix = {}
 	
+	local userItemMaskMatrix = {}
+	
 	local userItemDictionary
 
 	local unwrappedUserItemVector
 	
+	local unwrappedUserItemMaskVector
+	
 	local targetColumnIndex
+	
+	local userItemValue
 	
 	for i, userID in ipairs(userIDArray) do
 		
@@ -132,6 +138,8 @@ function MatrixFactorizationBaseModel:processUserItemDictionaryDictionary(userIt
 		if (userItemDictionary) then
 			
 			unwrappedUserItemVector = {}
+			
+			unwrappedUserItemMaskVector = {}
 			
 			for itemID, value in pairs(userItemDictionary) do
 				
@@ -143,7 +151,11 @@ function MatrixFactorizationBaseModel:processUserItemDictionaryDictionary(userIt
 			
 			for j = 1, itemIDArrayLength, 1 do
 				
-				unwrappedUserItemVector[j] = unwrappedUserItemVector[j] or 0
+				userItemValue = unwrappedUserItemVector[j]
+				
+				unwrappedUserItemVector[j] = userItemValue or 0
+				
+				unwrappedUserItemMaskVector[j] = (userItemValue and 1) or 0
 				
 			end
 			
@@ -151,17 +163,23 @@ function MatrixFactorizationBaseModel:processUserItemDictionaryDictionary(userIt
 			
 			unwrappedUserItemVector = table.create(itemIDArrayLength, 0)
 			
+			unwrappedUserItemMaskVector = table.create(itemIDArrayLength, 0)
+			
 		end
 		
 		userItemMatrix[i] = unwrappedUserItemVector
 		
+		userItemMaskMatrix[i] = unwrappedUserItemMaskVector
+		
 	end
 	
-	return userItemMatrix, numberOfUserIDsAdded, numberOfItemIDsAdded
+	return userItemMatrix, userItemMaskMatrix, numberOfUserIDsAdded, numberOfItemIDsAdded
 	
 end
 
 function MatrixFactorizationBaseModel:fetchHighestValueVector(outputMatrix)
+	
+	local itemIDArray = self.itemIDArray
 	
 	local highestValueVector = {}
 
@@ -185,7 +203,7 @@ function MatrixFactorizationBaseModel:fetchHighestValueVector(outputMatrix)
 
 				highestValue = outputValue
 
-				highestIndex = j
+				highestIndex = itemIDArray[j]
 
 			end
 

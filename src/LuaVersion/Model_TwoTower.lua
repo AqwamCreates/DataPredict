@@ -130,7 +130,7 @@ function TwoTowerModel:train(userFeatureMatrix, itemFeatureMatrix, userItemMatri
 
 	repeat
 		
-		task.wait()
+		self:iterationWait()
 		
 		numberOfIterations = numberOfIterations + 1
 		

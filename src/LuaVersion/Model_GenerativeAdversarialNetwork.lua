@@ -118,7 +118,7 @@ function GenerativeAdversarialNetworkModel:train(realFeatureMatrix, noiseFeature
 
 	repeat
 		
-		task.wait()
+		self:iterationWait()
 		
 		numberOfIterations = numberOfIterations + 1
 		

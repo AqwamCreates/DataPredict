@@ -141,6 +141,12 @@ function MatrixFactorizationBaseModel:processUserItemDictionaryDictionary(userIt
 				
 			end
 			
+			for j = 1, itemIDArrayLength, 1 do
+				
+				unwrappedUserItemVector[j] = unwrappedUserItemVector[j] or 0
+				
+			end
+			
 		else
 			
 			unwrappedUserItemVector = table.create(itemIDArrayLength, 0)

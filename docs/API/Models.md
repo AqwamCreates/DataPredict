@@ -16,10 +16,10 @@
 | [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 4     |
-| [Recommendation](#recommendation)                                 | User-Item Pairing                               | 3     |
+| [Recommendation](#recommendation)                                 | User-Item Pairing                               | 4     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 98    |
+| Total                                                             |                                                 | 99    |
 
 ### Legend
 
@@ -45,7 +45,7 @@
 
   * Contains most of the deep reinforcement learning and generative algorithms listed here.
 
-* Currently, DataPredict™ has ~93% (91 out of 98) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~93% (92 out of 99) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
 
 * Tabular reinforcement learning models can use optimizers. And yes, I am quite aware that I have overengineered this, but I really want to make this a grand finale before I stop updating DataPredict™ for a long time.
 
@@ -213,6 +213,7 @@
 |--------------------------------------------------------------------------------------------|-----------------|------------| ---------------------------------------------|
 | [SimonFunkMatrixFactorization](Models/SimonFunkMatrixFactorization.md)                     | Funk MF         | 🟢 🟡     | Early Netflix-Style User-Item Recommendation |
 | [SimonFunkMatrixFactorizationWithBiases](Models/SimonFunkMatrixFactorizationWithBiases.md) | Funk MF         | 🟢 🟡 🛡️  | Early Netflix-Style User-Item Recommendation |
+| [FactorizationMachine](Models/FactorizationMachine.md)                                     | FM              | 🟢 🟡 🛡️  | Cold-Start User-Item Recommendation          |
 | [TwoTower](Models/TwoTower.md)                                                             | None            | 🟢 🟡     | Google-Style User-Item Recommendation        |
 
 ## Generative

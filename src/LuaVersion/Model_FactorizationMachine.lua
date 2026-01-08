@@ -158,15 +158,15 @@ function FactorizationMachineModel:calculateLossFunctionDerivativeVector(lossGra
 	
 	local unwrappedLatentVector
 	
-	local lossGradientValue
-	
-	local unwrappedLatentWeightDerivativeValue
+	local unwrappedLatentWeightLossFunctionDerivativeVector
 	
 	local unwrappedLatentWeightVector
 	
-	local partialGradientValue
+	local lossGradientValue
 	
 	local scaledLossGradientValue
+	
+	local partialGradientValue
 	
 	for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
 		
@@ -180,7 +180,7 @@ function FactorizationMachineModel:calculateLossFunctionDerivativeVector(lossGra
 				
 				if (featureValue ~= 0) then
 
-					unwrappedLatentWeightDerivativeValue = latentWeightLossFunctionDerivativeMatrix[featureIndex]
+					unwrappedLatentWeightLossFunctionDerivativeVector = latentWeightLossFunctionDerivativeMatrix[featureIndex]
 					
 					unwrappedLatentWeightVector = latentWeightMatrix[featureIndex]
 					
@@ -190,11 +190,11 @@ function FactorizationMachineModel:calculateLossFunctionDerivativeVector(lossGra
 
 						partialGradientValue = scaledLossGradientValue * (latentValue - (unwrappedLatentWeightVector[latentFactorIndex] * featureValue))
 
-						unwrappedLatentWeightDerivativeValue[latentFactorIndex] = unwrappedLatentWeightDerivativeValue[latentFactorIndex] + partialGradientValue					
+						unwrappedLatentWeightLossFunctionDerivativeVector[latentFactorIndex] = unwrappedLatentWeightLossFunctionDerivativeVector[latentFactorIndex] + partialGradientValue					
 
 					end
 
-					latentWeightLossFunctionDerivativeMatrix[featureIndex] = unwrappedLatentWeightDerivativeValue
+					latentWeightLossFunctionDerivativeMatrix[featureIndex] = unwrappedLatentWeightLossFunctionDerivativeVector
 					
 				end
 				

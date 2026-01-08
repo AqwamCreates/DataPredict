@@ -10,8 +10,8 @@
 
 | Version | Current Version Number |
 |---------|------------------------|
-| Release | 2.34                   |
-| Beta    | 2.34.0                 |
+| Release | 2.35                   |
+| Beta    | 2.35.0                 |
 
 --------------------------------------------------------------------
 
@@ -47,10 +47,10 @@ Number of algorithms per model type:
 | Sequence Modelling             | Next State Prediction And Generation            | 3     |
 | Filtering                      | Next State Tracking / Estimation                | 4     |
 | Outlier Detection              | Outlier Score Generation                        | 4     |
-| Recommendation                 | User-Item Pairing                               | 3     |
+| Recommendation                 | User-Item Pairing                               | 4     |
 | Generative                     | Feature To Novel Value                          | 4     |
 | Feature-Class Containers       | Feature-Class Look Up                           | 1     |
-| Total                          |                                                 | 98    |
+| Total                          |                                                 | 99    |
 
 --------------------------------------------------------------------
 

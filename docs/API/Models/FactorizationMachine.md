@@ -4,9 +4,11 @@ FactorizationMachine is a supervised machine learning model that predicts contin
 
 ## Stored Model Parameters
 
-Contains a matrix.  
+Contains a table of matrices.  
 
-* ModelParameters[I][J]: Value of matrix at row I and column J. The rows are the features.
+* ModelParameters[1][I][J]: weightMatrix, Value of matrix at row I and column J. The rows are the features.
+
+* ModelParameters[2][I][J]: latentWeightMatrix, Value of matrix at row I and column J. The rows are the features and the columns are the latent factors.
 
 ## Constructors
 

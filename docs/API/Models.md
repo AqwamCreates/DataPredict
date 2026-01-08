@@ -6,7 +6,7 @@
 
 * To see which algorithms that you can swap model parameters with other types of algorithms, you can view them [here](ModelParametersCompatibility.md)!
 
-| Model Type                                                        | Description                                     | Count |
+| Model Type                                                        | Purpose                                         | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
 | [Regression](#regression)                                         | Continuous Value Prediction                     | 13    |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 13    |

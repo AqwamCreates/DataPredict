@@ -248,11 +248,13 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 
 	LocalOutlierProbability = require(Models.LocalOutlierProbability),
 	
-	-- Recommendation - 3 Models
+	-- Recommendation - 4 Models
 	
 	SimonFunkMatrixFactorization = require(Models.SimonFunkMatrixFactorization),
 	
 	SimonFunkMatrixFactorizationWithBiases = require(Models.SimonFunkMatrixFactorizationWithBiases),
+	
+	FactorizationMachine = require(Models.FactorizationMachine),
 	
 	TwoTower = require(Models.TwoTower),
 	

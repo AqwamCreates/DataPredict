@@ -142,15 +142,13 @@ function FactorizationMachineModel:calculateLossFunctionDerivativeVector(lossGra
 	
 	if (not latentVector) then error("Latent vector not found.") end
 	
-	local numberOfFeatures = #featureMatrix[1]
-	
 	local ModelParameters = self.ModelParameters or {}
 	
 	local latentWeightMatrix = ModelParameters[2]
 
 	local weightLossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossGradientVector)
 	
-	local latentWeightLossFunctionDerivativeMatrix = AqwamTensorLibrary:createTensor({numberOfFeatures, self.latentFactorCount}, 0)
+	local latentWeightLossFunctionDerivativeMatrix = AqwamTensorLibrary:createTensor({#featureMatrix[1], self.latentFactorCount}, 0)
 	
 	local unwrappedLatentWeightFeatureVector
 	

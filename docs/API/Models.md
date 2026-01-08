@@ -211,9 +211,9 @@
 
 | Model                                                                                      | Alternate Names | Properties | Use Cases                                    |
 |--------------------------------------------------------------------------------------------|-----------------|------------| ---------------------------------------------|
+| [FactorizationMachine](Models/FactorizationMachine.md)                                     | FM              | 🟢 🟡 🛡️  | Cold-Start User-Item Recommendation          |
 | [SimonFunkMatrixFactorization](Models/SimonFunkMatrixFactorization.md)                     | Funk MF         | 🟢 🟡     | Early Netflix-Style User-Item Recommendation |
 | [SimonFunkMatrixFactorizationWithBiases](Models/SimonFunkMatrixFactorizationWithBiases.md) | Funk MF         | 🟢 🟡 🛡️  | Early Netflix-Style User-Item Recommendation |
-| [FactorizationMachine](Models/FactorizationMachine.md)                                     | FM              | 🟢 🟡 🛡️  | Cold-Start User-Item Recommendation          |
 | [TwoTower](Models/TwoTower.md)                                                             | None            | 🟢 🟡     | Google-Style User-Item Recommendation        |
 
 ## Generative

@@ -35,8 +35,19 @@ For information regarding potential license violations and eligibility for a bou
 
 --------------------------------------------------------------------
 
-Algorithms includes:
+Number of algorithms per model type:
 
-* Regression
-
-*
+| Model Type                     | Purpose                                         | Count |
+|--------------------------------|-------------------------------------------------|-------|
+| Regression                     | Continuous Value Prediction                     | 13    |
+| Classification                 | Feature-Class Prediction                        | 13    |
+| Clustering                     | Feature Grouping                                | 10    |
+| Deep Reinforcement Learning    | State-Action Optimization Using Neural Networks | 26    |
+| Tabular Reinforcement Learning | State-Action Optimization Using Tables          | 17    |
+| Sequence Modelling             | Next State Prediction And Generation            | 3     |
+| Filtering                      | Next State Tracking / Estimation                | 4     |
+| Outlier Detection              | Outlier Score Generation                        | 4     |
+| Recommendation                 | User-Item Pairing                               | 3     |
+| Generative                     | Feature To Novel Value                          | 4     |
+| Feature-Class Containers       | Feature-Class Look Up                           | 1     |
+| Total                          |                                                 | 98    |

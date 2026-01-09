@@ -152,6 +152,18 @@ local costFunctionList = {
 
 	end,
 	
+	["HingeLoss"] = function(generatedLabelMatrix, labelMatrix)
+
+		local functionToApply = function (generatedLabelValue, labelValue) return math.max(0, (1 - (generatedLabelValue * labelValue))) end
+
+		local categoricalCrossEntropyTensor = AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
+
+		local sumCategoricalCrossEntropyValue = AqwamTensorLibrary:sum(categoricalCrossEntropyTensor)
+
+		return sumCategoricalCrossEntropyValue
+
+	end,
+	
 }
 
 local elementWiseActivationFunctionList = {
@@ -329,6 +341,20 @@ local lossFunctionGradientList = {
 	["CategoricalCrossEntropy"] = function(generatedLabelMatrix, labelMatrix)
 		
 		local functionToApply = function (generatedLabelValue, labelValue) return -(labelValue / generatedLabelValue) end
+
+		return AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
+
+	end,
+	
+	["HingeLoss"] = function(generatedLabelMatrix, labelMatrix)
+
+		local functionToApply = function (generatedLabelValue, labelValue)
+			
+			local scale = (((generatedLabelValue * labelValue) < 1) and 1) or 0
+
+			return -(labelValue * scale) 
+			
+		end
 
 		return AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
 

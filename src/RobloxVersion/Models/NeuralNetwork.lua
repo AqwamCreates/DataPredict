@@ -104,65 +104,15 @@ local layerPropertyValueTypeCheckingFunctionList = {
 
 local costFunctionList = {
 	
-	["MeanSquaredError"] = function(generatedLabelMatrix, labelMatrix)
-		
-		local functionToApply = function (generatedLabelValue, labelValue) return math.pow((generatedLabelValue - labelValue), 2) end
-
-		local squaredErrorTensor = AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
-
-		local sumSquaredErrorValue = AqwamTensorLibrary:sum(squaredErrorTensor)
-
-		return sumSquaredErrorValue
-		
-	end,
+	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return math.pow((generatedLabelValue - labelValue), 2) end,
 	
-	["MeanAbsoluteError"] = function(generatedLabelMatrix, labelMatrix)
-
-		local functionToApply = function (generatedLabelValue, labelValue) return math.abs(generatedLabelValue - labelValue) end
-
-		local absoluteErrorTensor = AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
-
-		local sumAbsoluteErrorValue = AqwamTensorLibrary:sum(absoluteErrorTensor)
-
-		return sumAbsoluteErrorValue
-
-	end,
+	["MeanAbsoluteError"] = function(generatedLabelValue, labelValue) return math.abs(generatedLabelValue - labelValue) end,
 	
-	["BinaryCrossEntropy"] = function(generatedLabelMatrix, labelMatrix)
-
-		local functionToApply = function (generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue) + (1 - labelValue) * math.log(1 - generatedLabelValue)) end
-
-		local binaryCrossEntropyTensor = AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
-
-		local sumBinaryCrossEntropyValue = AqwamTensorLibrary:sum(binaryCrossEntropyTensor)
-
-		return sumBinaryCrossEntropyValue
-
-	end,
+	["BinaryCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue) + (1 - labelValue) * math.log(1 - generatedLabelValue)) end,
 	
-	["CategoricalCrossEntropy"] = function(generatedLabelMatrix, labelMatrix)
-
-		local functionToApply = function (generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue)) end
-
-		local categoricalCrossEntropyTensor = AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
-
-		local sumCategoricalCrossEntropyValue = AqwamTensorLibrary:sum(categoricalCrossEntropyTensor)
-
-		return sumCategoricalCrossEntropyValue
-
-	end,
+	["CategoricalCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue)) end,
 	
-	["HingeLoss"] = function(generatedLabelMatrix, labelMatrix)
-
-		local functionToApply = function (generatedLabelValue, labelValue) return math.max(0, (1 - (generatedLabelValue * labelValue))) end
-
-		local categoricalCrossEntropyTensor = AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
-
-		local sumCategoricalCrossEntropyValue = AqwamTensorLibrary:sum(categoricalCrossEntropyTensor)
-
-		return sumCategoricalCrossEntropyValue
-
-	end,
+	["HingeLoss"] = function(generatedLabelValue, labelValue) return math.max(0, (1 - (generatedLabelValue * labelValue))) end,
 	
 }
 
@@ -316,47 +266,19 @@ local activationFunctionList = {
 
 local lossFunctionGradientList = {
 	
-	["MeanSquaredError"] = function(generatedLabelMatrix, labelMatrix)
+	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return (2 * (generatedLabelValue - labelValue)) end,
 
-		local lossTensor = AqwamTensorLibrary:subtract(generatedLabelMatrix, labelMatrix)
+	["MeanAbsoluteError"] = function(generatedLabelValue, labelValue) return math.sign(generatedLabelValue - labelValue) end,
 
-		return AqwamTensorLibrary:multiply(2, lossTensor)
+	["BinaryCrossEntropy"] = function (generatedLabelValue, labelValue) return ((generatedLabelValue - labelValue) / (generatedLabelValue * (1 - generatedLabelValue))) end,
 
-	end,
-
-	["MeanAbsoluteError"] = function(generatedLabelMatrix, labelMatrix)
-
-		return AqwamTensorLibrary:subtract(generatedLabelMatrix, labelMatrix)
-
-	end,
-
-	["BinaryCrossEntropy"] = function(generatedLabelMatrix, labelMatrix)
-
-		local functionToApply = function (generatedLabelValue, labelValue) return ((generatedLabelValue - labelValue) / (generatedLabelValue * (1 - generatedLabelValue))) end
-
-		return AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
-
-	end,
-
-	["CategoricalCrossEntropy"] = function(generatedLabelMatrix, labelMatrix)
-		
-		local functionToApply = function (generatedLabelValue, labelValue) return -(labelValue / generatedLabelValue) end
-
-		return AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
-
-	end,
+	["CategoricalCrossEntropy"] = function (generatedLabelValue, labelValue) return -(labelValue / generatedLabelValue) end,
 	
-	["HingeLoss"] = function(generatedLabelMatrix, labelMatrix)
+	["HingeLoss"] =function (generatedLabelValue, labelValue)
 
-		local functionToApply = function (generatedLabelValue, labelValue)
-			
-			local scale = (((generatedLabelValue * labelValue) < 1) and 1) or 0
+		local scale = (((generatedLabelValue * labelValue) < 1) and 1) or 0
 
-			return -(labelValue * scale) 
-			
-		end
-
-		return AqwamTensorLibrary:applyFunction(functionToApply, generatedLabelMatrix, labelMatrix)
+		return -(labelValue * scale) 
 
 	end,
 	
@@ -1084,7 +1006,7 @@ function NeuralNetworkModel:update(lossGradientMatrix, clearAllArrays)
 
 end
 
-function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix)
+function NeuralNetworkModel:calculateCost(hypothesisMatrix, logisticMatrix)
 	
 	local numberOfLayers = #self.numberOfNeuronsArray
 
@@ -1092,9 +1014,11 @@ function NeuralNetworkModel:calculateCost(allOutputsMatrix, logisticMatrix)
 
 	local ModelParameters = self.ModelParameters
 	
-	local CostFunctionToApply = costFunctionList[self.costFunction]
+	local functionToApply = costFunctionList[self.costFunction]
+	
+	local costVector = AqwamTensorLibrary:applyFunction(functionToApply, hypothesisMatrix, logisticMatrix)
 
-	local totalCost = CostFunctionToApply(allOutputsMatrix, logisticMatrix)
+	local totalCost = AqwamTensorLibrary:sum(costVector)
 
 	for layerNumber = 1, (numberOfLayers - 1), 1 do
 
@@ -1849,7 +1773,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	
 	local numberOfNeuronsAtFinalLayer = numberOfNeuronsArray[numberOfLayers] + hasBiasNeuronArray[numberOfLayers]
 	
-	local LossFunctionGradientToApply = lossFunctionGradientList[self.costFunction]
+	local functionToApply = lossFunctionGradientList[self.costFunction]
 
 	local numberOfIterations = 0
 
@@ -1863,7 +1787,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 	local logisticMatrix
 
-	local activatedOutputsMatrix
+	local hypothesisMatrix
 
 	if (#labelVector[1] == 1) and (numberOfNeuronsAtFinalLayer ~= 1) then
 
@@ -1883,11 +1807,11 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		self:iterationWait()
 
-		activatedOutputsMatrix = self:forwardPropagate(featureMatrix, true)
+		hypothesisMatrix = self:forwardPropagate(featureMatrix, true)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(activatedOutputsMatrix, logisticMatrix)
+			return self:calculateCost(hypothesisMatrix, logisticMatrix)
 
 		end)
 
@@ -1899,7 +1823,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		end
 
-		local lossGradientMatrix = LossFunctionGradientToApply(activatedOutputsMatrix, logisticMatrix)
+		local lossGradientMatrix = AqwamTensorLibrary:applyFunction(functionToApply, hypothesisMatrix, logisticMatrix)
 
 		self:update(lossGradientMatrix, true)
 

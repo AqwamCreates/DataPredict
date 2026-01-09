@@ -2,6 +2,8 @@
 
 FactorizationMachine is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses iterative calculations to find the best model parameters.
 
+Can be converted into classification.
+
 ## Stored Model Parameters
 
 Contains a table of matrices.  

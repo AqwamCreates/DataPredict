@@ -41,7 +41,15 @@ FactorizationMachine.new(maximumNumberOfIterations: integer, learningRate: numbe
 | ComplementaryLogLog | (0, 1)       | Right-Skewed          | Rare Events Prediction: In-App Purchases, Time-To-Leave Prediction         |
 | LogLog              | (0, 1)       | Left-Skewed           | Common Events Prediction: Tutorial Completion, Early Wins, First Purchases |
 
-* costFunction: The function to calculate the cost of each training. Available options are "MeanSquaredError" and "MeanAbsoluteError".
+* costFunction: The function to calculate the cost of each training. Available options are: 
+
+  * MeanSquaredError
+
+  * MeanAbsoluteError
+
+  * BinaryCrossEntropy
+ 
+  * HingeLoss
 
 #### Returns:
 

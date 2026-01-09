@@ -43,7 +43,7 @@ FactorizationMachine.new(maximumNumberOfIterations: integer, learningRate: numbe
 
 * costFunction: The function to calculate the cost of each training. Available options are: 
 
-  * MeanSquaredError
+  * MeanSquaredError (Default)
 
   * MeanAbsoluteError
 

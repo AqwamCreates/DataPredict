@@ -202,7 +202,9 @@ function FactorizationMachineModel:calculateHypothesisVector(featureMatrix, save
 	
 	local squaredFeatureMatrixDotProductSquaredlatentWeightVectorMatrix = AqwamTensorLibrary:dotProduct(squaredFeatureMatrix, squaredlatentWeightVectorMatrix)
 	
-	local interactionVector = AqwamTensorLibrary:subtract(squaredLatentVector, squaredFeatureMatrixDotProductSquaredlatentWeightVectorMatrix)
+	local interactionMatrix = AqwamTensorLibrary:subtract(squaredLatentVector, squaredFeatureMatrixDotProductSquaredlatentWeightVectorMatrix)
+	
+	local interactionVector = AqwamTensorLibrary:sum(interactionMatrix, 2)
 	
 	interactionVector = AqwamTensorLibrary:divide(interactionVector, 2)
 	

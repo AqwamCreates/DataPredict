@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibraryLinker.Value)
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
@@ -274,7 +274,7 @@ local lossFunctionGradientList = {
 
 	["CategoricalCrossEntropy"] = function (generatedLabelValue, labelValue) return -(labelValue / generatedLabelValue) end,
 	
-	["HingeLoss"] =function (generatedLabelValue, labelValue)
+	["HingeLoss"] = function (generatedLabelValue, labelValue)
 
 		local scale = (((generatedLabelValue * labelValue) < 1) and 1) or 0
 

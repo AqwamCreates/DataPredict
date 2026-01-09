@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
+local ZTableFunction = require(script.Parent.Parent.Cores.ZTableFunction)
+
 local FactorizationMachineModel = {}
 
 FactorizationMachineModel.__index = FactorizationMachineModel
@@ -42,7 +44,79 @@ local defaultLearningRate = 0.3
 
 local defaultLatentFactorCount = 1
 
+local defaultBinaryFunction = "None"
+
 local defaultCostFunction = "MeanSquaredError"
+
+local function calculateProbabilityDensityFunctionValue(z)
+
+	return (math.exp(-0.5 * math.pow(z, 2)) / math.sqrt(2 * math.pi))
+
+end
+
+local binaryFunctionList = {
+	
+	["None"] = function (z) return z end,
+
+	["Logistic"] = function (z) return (1/(1 + math.exp(-z))) end,
+
+	["Logit"] = function (z) return (1/(1 + math.exp(-z))) end,
+
+	["Probit"] = function(z) return ZTableFunction:getStandardNormalCumulativeDistributionFunctionValue(math.clamp(z, -3.9, 3.9)) end,
+
+	["LogLog"] = function(z) return math.exp(-math.exp(z)) end,
+
+	["ComplementaryLogLog"] = function(z) return (1 - math.exp(-math.exp(z))) end,
+
+	["Tanh"] = function (z) return math.tanh(z) end,
+
+	["HardSigmoid"] = function (z)
+
+		local x = (z + 1) / 2
+
+		if (x < 0) then return 0 elseif (x > 1) then return 1 else return x end
+
+	end,
+
+	["SoftSign"] = function (z) return (z / (1 + math.abs(z))) end,
+
+	["ArcTangent"] = function (z) return (2 / math.pi) * math.atan(z) end,
+
+	["BipolarSigmoid"] = function (z) return (2 / (1 + math.exp(-z)) - 1) end,
+
+}
+
+local binaryFunctionGradientList = {
+	
+	["None"] = function (h, z) return 1 end,
+
+	["Logistic"] = function (h, z) return (h * (1 - h)) end,
+
+	["Logit"] = function (h, z) return (h * (1 - h)) end,
+
+	["Probit"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
+
+	["LogLog"] = function(h, z) return -math.exp(z) * math.exp(-math.exp(z)) end,
+
+	["ComplementaryLogLog"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end,
+
+	["Tanh"] = function (h, z) return (1 - math.pow(h, 2)) end,
+
+	["HardSigmoid"] = function (h, z) return ((h <= 0 or h >= 1) and 0) or 0.5 end,
+
+	["SoftSign"] = function (h, z) return (1 / ((1 + math.abs(z))^2)) end,
+
+	["ArcTangent"] = function (h, z) return ((2 / math.pi) * (1 / (1 + z^2))) end,
+
+	["BipolarSigmoid"] = function (h, z) 
+
+		local sigmoidValue = 1 / (1 + math.exp(-z))
+
+		return (2 * sigmoidValue * (1 - sigmoidValue))
+
+	end,
+
+}
 
 local lossFunctionList = {
 
@@ -62,7 +136,11 @@ local lossFunctionGradientList = {
 
 	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
 	
-	["BinaryCrossEntropy"] = function (h, y) return -((y / h) + (1 - y) / (1 - h)) end,
+	["BinaryCrossEntropy"] = function (h, y) return 
+		
+		-((y / h) + (1 - y) / (1 - h)) 
+		
+	end,
 	
 	["HingeLoss"] = function (h, y)
 
@@ -128,7 +206,9 @@ function FactorizationMachineModel:calculateHypothesisVector(featureMatrix, save
 	
 	interactionVector = AqwamTensorLibrary:divide(interactionVector, 2)
 	
-	local hypothesisVector = AqwamTensorLibrary:add(linearVector, interactionVector)
+	local zVector = AqwamTensorLibrary:add(linearVector, interactionVector)
+	
+	local hypothesisVector = AqwamTensorLibrary:applyFunction(binaryFunctionList[self.binaryFunction], zVector)
 	
 	self.ModelParameters = {weightVector, latentWeightVectorMatrix}
 	
@@ -137,6 +217,10 @@ function FactorizationMachineModel:calculateHypothesisVector(featureMatrix, save
 		self.featureMatrix = featureMatrix 
 		
 		self.latentVector = latentVector
+		
+		self.zVector = zVector
+		
+		self.hypothesisVector = hypothesisVector
 		
 	end
 
@@ -151,14 +235,26 @@ function FactorizationMachineModel:calculateLossFunctionDerivativeVector(lossGra
 	local featureMatrix = self.featureMatrix
 	
 	local latentVector = self.latentVector
+	
+	local zVector = self.zVector
+
+	local hypothesisVector = self.hypothesisVector
 
 	if (not featureMatrix) then error("Feature matrix not found.") end
 	
 	if (not latentVector) then error("Latent vector not found.") end
 	
+	if (not zVector) then error("Z vector not found.") end
+	
+	if (not hypothesisVector) then error("Hypothesis vector not found.") end
+	
 	local ModelParameters = self.ModelParameters or {}
 	
 	local latentWeightMatrix = ModelParameters[2]
+	
+	local binaryGradientVector = AqwamTensorLibrary:applyFunction(binaryFunctionGradientList[self.binaryFunction], hypothesisVector, zVector)
+	
+	lossGradientVector = AqwamTensorLibrary:multiply(lossGradientVector, binaryGradientVector)
 
 	local weightLossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossGradientVector)
 	
@@ -309,6 +405,10 @@ function FactorizationMachineModel:update(lossGradientVector, clearAllMatrices)
 		self.featureMatrix = nil
 		
 		self.latentVector = nil
+		
+		self.zVector = nil
+		
+		self.hypothesisVector = nil
 
 		self.lossFunctionDerivativeVectorArray = nil
 
@@ -335,6 +435,8 @@ function FactorizationMachineModel.new(parameterDictionary)
 	NewFactorizationMachineModel.latentWeightLearningRate = parameterDictionary.latentWeightLearningRate or learningRate
 	
 	NewFactorizationMachineModel.latentFactorCount = parameterDictionary.latentFactorCount or defaultLatentFactorCount
+	
+	NewFactorizationMachineModel.binaryFunction = parameterDictionary.binaryFunction or defaultBinaryFunction
 
 	NewFactorizationMachineModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
 

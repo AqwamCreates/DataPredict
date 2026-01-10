@@ -36,6 +36,8 @@ NeuralNetwork.new(maximumNumberOfIterations: integer, costFunction: string): Mod
 
 	* CategoricalCrossEntropy
 
+  	* HingeLoss
+
 #### Returns:
 
 * ModelObject: The generated model object.

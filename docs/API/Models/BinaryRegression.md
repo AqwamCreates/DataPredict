@@ -41,6 +41,8 @@ BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, b
 * costFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
 
   * BinaryCrossEntropy (Default)
+
+  * HingeLoss
  
   * MeanSquaredError
 

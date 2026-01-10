@@ -86,11 +86,9 @@ function BayesianQuantileLinearRegressionModel:train(featureMatrix, labelVector)
 
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 
-	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
+	local featureCovarianceMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
 
-	local priorPrecisionIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures}, priorPrecision)
-
-	local scaledDotProductFeatureMatrix = AqwamTensorLibrary:multiply(dotProductFeatureMatrix, likelihoodPrecision)
+	local scaledFeatureCovarianceMatrix = AqwamTensorLibrary:multiply(likelihoodPrecision, featureCovarianceMatrix)
 
 	if (oldInversePosteriorCovarianceMatrix) then
 
@@ -102,7 +100,7 @@ function BayesianQuantileLinearRegressionModel:train(featureMatrix, labelVector)
 
 	end
 
-	local newInversePosteriorCovarianceMatrix = AqwamTensorLibrary:add(scaledDotProductFeatureMatrix, oldInversePosteriorCovarianceMatrix)
+	local newInversePosteriorCovarianceMatrix = AqwamTensorLibrary:add(scaledFeatureCovarianceMatrix, oldInversePosteriorCovarianceMatrix)
 
 	local newPosteriorCovarianceMatrix = AqwamTensorLibrary:inverse(newInversePosteriorCovarianceMatrix)
 

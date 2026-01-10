@@ -2,13 +2,13 @@
 
 Hi guys! In this tutorial, we will demonstrate on how to create cluster-based search algorithm to find the base prices. Below, I will show you the valid algorithms that you can use for these models and its properties.
 
-| Model                      | How Many Clusters It Can Produce | Objective                                                                                                                       | Objective (In Terms Of Emotional Perspective) |
-|----------------------------|----------------------------------|---------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|
-| K-Means                    | Infinity. | Gives hard assigments of players' spending behaviour and find the optimal base price for that particular item.                  | Strict Base Price.                              |
-| Fuzzy CMeans               | Infinity. | Gives overlapping assignments of players' spending behaviour and find the best overlapping base price for that particular item. | Negotiable Base Price.                              |
-| ExpectationMaximization    | Infinity. | Find the most likely base price that makes the players want to purchase hat particular item.                                    | Players'  Desired Base Price.                      |
-| Mean Shift                 | Only 1.   | Finds the base price where a lot of players tend to make a purchase for that particular item.                                   | Popular Base Price. |
-| Agglomerative Hierarchical | Infinity. | Finds the base price by ranking the purchases.                                                                                  | Status-Based Base Price (e.g. "Subsidized Pricing For Poor People"). |
+| Model                      | Maximum Cluster Count | Objective                                                                                                                       | Objective (In Terms Of Emotional Perspective)                               |
+|----------------------------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| K-Means                    | Infinity.             | Gives hard assigments of players' spending behaviour and find the optimal base price for that particular item.                  | Strict Base Price.                                                          |
+| Fuzzy CMeans               | Infinity.             | Gives overlapping assignments of players' spending behaviour and find the best overlapping base price for that particular item. | Negotiable Base Price.                                                      |
+| ExpectationMaximization    | Infinity.             | Find the most likely base price that makes the players want to purchase that particular item.                                   | Players'  Desired Base Price.                                               |
+| Mean Shift                 | Only 1.               | Finds the base price where a lot of players tend to make a purchase for that particular item.                                   | Popular Base Price.                                                         |
+| Agglomerative Hierarchical | Infinity.             | Finds the base price by ranking the purchases.                                                                                  | Status-Based Base Price (e.g. "Subsidized Pricing For Low Income Earners"). |
 
 ## Initializing The Clustering Model
 

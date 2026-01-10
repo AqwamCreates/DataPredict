@@ -114,21 +114,21 @@ function BayesianLinearRegressionModel:train(featureMatrix, labelVector)
 
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 
-	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
-
-	local scaledDotProductFeatureMatrix = AqwamTensorLibrary:multiply(dotProductFeatureMatrix, likelihoodPrecision)
+	local featureCovarianceMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
+	
+	local scaledFeatureCovarianceMatrix = AqwamTensorLibrary:multiply(likelihoodPrecision, featureCovarianceMatrix)
 	
 	if (oldInversePosteriorCovarianceMatrix) then
 
 		oldInversePosteriorCovarianceMatrix = AqwamTensorLibrary:multiply(weightDecay, oldInversePosteriorCovarianceMatrix)
 
 	else
-		
+
 		oldInversePosteriorCovarianceMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures}, priorPrecision)
 
 	end
 	
-	local newInversePosteriorCovarianceMatrix = AqwamTensorLibrary:add(scaledDotProductFeatureMatrix, oldInversePosteriorCovarianceMatrix)
+	local newInversePosteriorCovarianceMatrix = AqwamTensorLibrary:add(scaledFeatureCovarianceMatrix, oldInversePosteriorCovarianceMatrix)
 
 	local newPosteriorCovarianceMatrix = AqwamTensorLibrary:inverse(newInversePosteriorCovarianceMatrix)
 

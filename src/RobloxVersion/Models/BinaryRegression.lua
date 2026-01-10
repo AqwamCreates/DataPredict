@@ -126,7 +126,7 @@ local lossFunctionList = {
 
 local lossFunctionGradientList = {
 	
-	["BinaryCrossEntropy"] = function (h, y) return -((y / h) + (1 - y) / (1 - h)) end,
+	["BinaryCrossEntropy"] = function (h, y) return ((h - y) / (h * (1 - h))) end,
 	
 	["MeanSquaredError"] = function (h, y) return (2 * (h - y)) end,
 	

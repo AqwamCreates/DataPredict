@@ -66,7 +66,7 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	IsotonicRegression = require(Models.IsotonicRegression),
 	
-	NormalLinearRegression = require(Models.NormalLinearRegression),
+	NormalEquationLinearRegression = require(Models.NormalEquationLinearRegression),
 	
 	BayesianLinearRegression = require(Models.BayesianLinearRegression),
 	

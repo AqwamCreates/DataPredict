@@ -6,7 +6,7 @@ To start, we must first link our machine/deep learning library with our matrix l
 
 | Version | Machine And Deep Learning Library (DataPredict)                                                                                                            | 2D Tensor Library (TensorL-2D)                                                                      |
 |---------|------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
-| Release | [DataPredict (Release Version 2.35)](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.35.rbxm) |                                                                                                     |
+| Release | [DataPredict (Release Version 2.36)](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.36.rbxm) |                                                                                                     |
 | Beta    | [Aqwam's Machine And Deep Learning Library](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/AqwamMachineDeepAndReinforcementLearningLibrary.rbxm) | [Aqwam's 2D Tensor Library](https://github.com/AqwamCreates/TensorL-2D/blob/main/src/TensorL2D.lua) |
 
 You can read the Terms And Conditions for the TensorL2D Library [here](https://github.com/AqwamCreates/TensorL-2D/blob/main/docs/TermsAndConditions.md).

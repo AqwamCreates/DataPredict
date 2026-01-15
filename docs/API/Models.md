@@ -71,7 +71,7 @@
 | [SupportVectorRegression](Models/SupportVectorRegression.md)                               | SVR             | 💾 🟡            | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
 | [SupportVectorRegressionGradientVariant](Models/SupportVectorRegressionGradientVariant.md) | SVR             | 🟢 🟡            | Real-Time Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                     |
 | [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                       | KNN-R           | 🟢 🟡            | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
-| [NormalLinearRegression](Models/NormalLinearRegression.md)*                                | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
+| [NormalEquationLinearRegression](Models/NormalEquationLinearRegression.md)*                | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
 | [BayesianLinearRegression](Models/BayesianLinearRegression.md)*                            | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [BayesianQuantileLinearRegression](Models/BayesianQuantileLinearRegression.md)*            | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
 

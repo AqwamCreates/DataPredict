@@ -80,28 +80,6 @@ end
 
 ```
 
-If you're concerned about that the model may produce wrong result heavily upon first start up, then you can use a randomized dataset to heavily skew the prediction to very high time-to-leave value. Then use this randomized dataset to pretrain the model before doing any real-time training and prediction. Below, we will show you how it is done.
-
-```lua
-
-local numberOfData = 100
-
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias").
-
-local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, 9999) -- Making sure that at all values, it predicts very high time-to-leave value. Do not use math.huge here.
-
-```
-
-However, this require setting the model's parameters to these settings temporarily so that it can be biased to very high time-to-leave value at start up as shown below.
-
-```lua
-
-LeavePredictionModel.maximumNumberOfIterations = 100
-
-LeavePredictionModel.learningRate = 0.3
-
-```
-
 ## Upon Player Leave
 
 By the time the player leaves, it is time for us to train the model. But first, we need to calculate the difference.

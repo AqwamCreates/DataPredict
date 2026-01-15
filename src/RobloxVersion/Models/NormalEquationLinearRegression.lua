@@ -30,33 +30,33 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseModel = require(script.Parent.BaseModel)
 
-local NormalLinearRegressionModel = {}
+local NormalEquationLinearRegressionModel = {}
 
-NormalLinearRegressionModel.__index = NormalLinearRegressionModel
+NormalEquationLinearRegressionModel.__index = NormalEquationLinearRegressionModel
 
-setmetatable(NormalLinearRegressionModel, BaseModel)
+setmetatable(NormalEquationLinearRegressionModel, BaseModel)
 
 local defaultLambda = 0
 
 local defaultWeightDecay = 1
 
-function NormalLinearRegressionModel.new(parameterDictionary)
+function NormalEquationLinearRegressionModel.new(parameterDictionary)
 
-	local NewNormalLinearRegressionModel = BaseModel.new(parameterDictionary)
+	local NewNormalEquationLinearRegressionModel = BaseModel.new(parameterDictionary)
 
-	setmetatable(NewNormalLinearRegressionModel, NormalLinearRegressionModel)
+	setmetatable(NewNormalEquationLinearRegressionModel, NormalEquationLinearRegressionModel)
 
-	NewNormalLinearRegressionModel:setName("NormalLinearRegression")
+	NewNormalEquationLinearRegressionModel:setName("NormalEquationLinearRegression")
 
-	NewNormalLinearRegressionModel.lambda = parameterDictionary.lambda or defaultLambda
+	NewNormalEquationLinearRegressionModel.lambda = parameterDictionary.lambda or defaultLambda
 	
-	NewNormalLinearRegressionModel.weightDecay = parameterDictionary.weightDecay or defaultWeightDecay
+	NewNormalEquationLinearRegressionModel.weightDecay = parameterDictionary.weightDecay or defaultWeightDecay
 
-	return NewNormalLinearRegressionModel
+	return NewNormalEquationLinearRegressionModel
 
 end
 
-function NormalLinearRegressionModel:train(featureMatrix, labelVector)
+function NormalEquationLinearRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 
@@ -112,7 +112,7 @@ function NormalLinearRegressionModel:train(featureMatrix, labelVector)
 
 end
 
-function NormalLinearRegressionModel:predict(featureMatrix)
+function NormalEquationLinearRegressionModel:predict(featureMatrix)
 
 	local ModelParameters = self.ModelParameters or {}
 	
@@ -130,4 +130,4 @@ function NormalLinearRegressionModel:predict(featureMatrix)
 
 end
 
-return NormalLinearRegressionModel
+return NormalEquationLinearRegressionModel

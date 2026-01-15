@@ -2,6 +2,13 @@
 
 * All these models does not require you to add new content; these models can use existing content to optimize your games.
 
+| Retention Model Type  | Behaviour                                             |
+|-----------------------|-------------------------------------------------------|
+| Prediction            | Predicts the output values for a given set of inputs. |
+| Control               | Controls the in-game events for higher retention.     |
+| Pre-Mortem Detection  | Detects if a player is about to leave.                |
+| Post-Mortem Detection | Detects if a player left at an unsual timing.         |
+
 ## Prediction Models
 
 * [Creating Time-To-Leave Prediction Model](RetentionSystems/CreatingTimeToLeavePredictionModel.md)

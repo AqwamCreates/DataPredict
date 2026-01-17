@@ -4,7 +4,7 @@
 
 | Version                  | Era                 | Starting Date   | Ending Date     | Core Statistics                                                                                                                                                                       |
 |--------------------------|---------------------|-----------------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [1.0](#independence-1.0) | Uncharted Territory | 23 January 2023 | 23 January 2026 | 99 Models · 13 Optimizers · 12 Value Schedulers · 3 Regularizers · 9 Others · 3 Experience Replays · 6 Quick Setups · 3 Reinforcement Learning Strategies · 2 Distributed Strategies  |
+| [1.0](#independence-1.0) | The Dead Man's Land | 23 January 2023 | 23 January 2026 | 99 Models · 13 Optimizers · 12 Value Schedulers · 3 Regularizers · 9 Others · 3 Experience Replays · 6 Quick Setups · 3 Reinforcement Learning Strategies · 2 Distributed Strategies  |
 
 ## Version-Specific Information
 
@@ -12,7 +12,7 @@
 
 #### Era Summary
 
-
+Torch7 has long dead. So does the general machine learning for Lua ecosystem as a whole. Attempting to revive the 
 
 #### Model Type Count
 

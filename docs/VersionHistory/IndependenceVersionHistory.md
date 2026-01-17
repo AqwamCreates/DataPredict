@@ -18,7 +18,7 @@ Torch7 has been long dead. So does the general machine learning for Lua ecosyste
 
 With Roblox games becoming more sophiscated and Roblox's competitors like Unity, Unreal and Godot beginning to integrate machine learning into their ecosystem, Roblox was at risk of losing the machine learning war.
 
-Me being a fresh graduate back then, I was rather irritated at the lack of machine learning tool for Roblox ecosystem as I was looking forward to be a machine learning engineer for Roblox games.
+Me being a fresh graduate back then, I was rather irritated at the lack of machine learning and deep learning libraries for Roblox ecosystem as I was looking forward to be a machine learning engineer for Roblox games.
 
 No scikit-learn, TensorFlow or PyTorch equivalents for Lua. The machine learning and deep learning libraries that do exist was more of toy projects or non-production grade types. The ones that are production-grade had mixed in other programming langauges, making it unsuitable for Roblox's environment.
 

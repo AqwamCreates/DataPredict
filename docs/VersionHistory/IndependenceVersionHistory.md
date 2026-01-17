@@ -1,5 +1,5 @@
 # DataPredict™ Independence Version
 
-| Version                 | Starting Date   | Ending Date     | Number Of Models | Number Of Optimizers | Number Of Others | Number Of Reinforcement Learning Strategies | Number Of Experience Replays | Number Of Value Schedulers | Distributed Training Strategies | Number Of Quick Setups | Backward Incompatible Changes |
-|-------------------------|-----------------|-----------------|------------------|----------------------|------------------|---------------------------------------------|------------------------------|----------------------------|---------------------------------|------------------------|-------------------------------|
-| 1.0                     | 23 January 2023 | 23 January 2026 | 99
+| Version                 | Starting Date   | Ending Date     | Core Stats                                                                                                                                                        |
+|-------------------------|-----------------|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1.0                     | 23 January 2023 | 23 January 2026 | 99 Models · 13 Optimizers · 12 Value Schedulers · 3 Regularizers · 9 Others · 3 RL Strategies · 3 Experience Replays  · 2 Distributed Strategies · 6 Quick Setups | 

@@ -32,6 +32,20 @@ The third year, I have identified several high-value use cases like revenue and 
 
 Once completed, I had realized that the DataPredict library was now comparable to scikit-learn, but in pure Lua and for games instead.
 
+#### General Impression Statistics
+
+* Main Post On Roblox DevForum:
+
+    * 83.0K views
+ 
+    * 261 likes
+ 
+* GitHub Repository:
+
+    * 13 stars
+ 
+    * 
+
 #### Model Type Count
 
 | Model Type                     | Count |

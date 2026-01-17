@@ -30,7 +30,7 @@ The second year, the Roblox game development community began requesting for deep
 
 The third year, I have identified several high-value use cases like revenue and retention and developed tutorials for them only after near completion of DataPredict's library. Additionally, with these use cases in mind, I have began implementing more niche, but valuable models that could positively impact Roblox's games. This meant that almost all algorithms were implemented, excluding dimensionality reduction.
 
-Once completed, I had realized this was now comparable to scikit-learn, but for games instead.
+Once completed, I had realized that the DataPredict library was now comparable to scikit-learn, but for games instead.
 
 #### Model Type Count
 

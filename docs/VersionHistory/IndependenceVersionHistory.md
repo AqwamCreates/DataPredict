@@ -39,12 +39,14 @@ Once completed, I had realized that the DataPredict library was now comparable t
     * 83.0K views
  
     * 261 likes
+
+    * 884 documentation clickthroughs
  
 * GitHub Repository:
 
     * 13 stars
  
-    * 
+    * 2 watches
 
 #### Model Type Count
 

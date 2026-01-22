@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-FactorizationMachine.new(maximumNumberOfIterations: integer, learningRate: number, binaryFunction: string, costFunction: string): ModelObject
+FactorizedPairwiseInteraction.new(maximumNumberOfIterations: integer, learningRate: number, binaryFunction: string, costFunction: string): ModelObject
 ```
 
 #### Parameters:

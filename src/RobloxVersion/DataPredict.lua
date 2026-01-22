@@ -248,9 +248,11 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 
 	LocalOutlierProbability = require(Models.LocalOutlierProbability),
 	
-	-- Recommendation - 4 Models
+	-- Recommendation - 5 Models
 
 	FactorizationMachine = require(Models.FactorizationMachine),
+	
+	FactorizedPairwiseInteraction = require(Models.FactorizedPairwiseInteraction),
 	
 	SimonFunkMatrixFactorization = require(Models.SimonFunkMatrixFactorization),
 	

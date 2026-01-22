@@ -16,7 +16,7 @@
 | [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 4     |
-| [Recommendation](#recommendation)                                 | User-Item Pairing                               | 4     |
+| [Recommendation](#recommendation)                                 | User-Item Pairing                               | 5     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
 | Total                                                             |                                                 | 99    |
@@ -214,6 +214,7 @@
 | Model                                                                                      | Alternate Names | Properties | Use Cases                                    |
 |--------------------------------------------------------------------------------------------|-----------------|------------| ---------------------------------------------|
 | [FactorizationMachine](Models/FactorizationMachine.md)                                     | FM              | 🟢 🟡 🛡️  | Cold-Start User-Item Recommendation          |
+| [FactorizedPairwiseInteraction](Models/FactorizedPairwiseInteraction.md)                   | FM              | 🟢 🟡 🛡️  | Cold-Start User-Item Recommendation          |
 | [SimonFunkMatrixFactorization](Models/SimonFunkMatrixFactorization.md)                     | Funk MF         | 🟢 🟡     | Early Netflix-Style User-Item Recommendation |
 | [SimonFunkMatrixFactorizationWithBiases](Models/SimonFunkMatrixFactorizationWithBiases.md) | Funk MF         | 🟢 🟡 🛡️  | Early Netflix-Style User-Item Recommendation |
 | [TwoTower](Models/TwoTower.md)                                                             | None            | 🟢 🟡     | YouTube-Style User-Item Recommendation        |

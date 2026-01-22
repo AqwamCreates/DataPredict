@@ -1,5 +1,9 @@
 # List Of Optimizations
 
+## Implementation Optimizations
+
+* Used tables of tables and external functions for efficient tensor calculations instead of space-intensive object-oriented formats.
+
 ## Mathematical Optimizations
 
 * Used sufficient statistics for statistical models to avoid computationally expensive batch training.

@@ -1,8 +1,10 @@
-# List Of Roblox Optimizations
+# List Of Optimizations
 
 ## Mathematical Optimizations
 
 * Used sufficient statistics for statistical models to avoid computationally expensive batch training.
+
+* If available, the more computationally efficient formula is used instead of the original ones.
 
 ## Roblox-Specific Optimizations
 

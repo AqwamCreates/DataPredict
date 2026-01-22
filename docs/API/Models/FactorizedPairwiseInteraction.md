@@ -116,3 +116,7 @@ FactorizedPairwiseInteraction:predict(featureMatrix: Matrix): Matrix
 ## Inherited From
 
 * [GradientMethodBaseModel](GradientMethodBaseModel.md)
+
+## References
+
+* [Factorization Machines](https://www.ismll.uni-hildesheim.de/pub/pdfs/Rendle2010FM.pdf)

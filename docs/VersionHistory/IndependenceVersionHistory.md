@@ -36,11 +36,11 @@ Once completed, I had realized that the DataPredict library was now comparable t
 
 * Main Post On Roblox DevForum:
 
-    * 84.0K views
+    * 87.0K views
  
-    * 261 likes
+    * 260 likes
 
-    * 884 documentation clickthroughs
+    * 885 documentation clickthroughs
  
 * GitHub Repository:
 

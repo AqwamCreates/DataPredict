@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-FactorizedPairwiseInteraction.new(maximumNumberOfIterations: integer, learningRate: number, costFunction: string): ModelObject
+FactorizationMachine.new(maximumNumberOfIterations: integer, learningRate: number, binaryFunction: string, costFunction: string): ModelObject
 ```
 
 #### Parameters:
@@ -24,7 +24,30 @@ FactorizedPairwiseInteraction.new(maximumNumberOfIterations: integer, learningRa
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
-* costFunction: The function to calculate the cost of each training. Available options are "MeanSquaredError" and "MeanAbsoluteError".
+* binaryFunction: The binary function to be used by the model. Available options are:
+
+| Function            | Output Range | Skewness              | Use Cases                                                                  |
+|---------------------|--------------|-----------------------|----------------------------------------------------------------------------|
+| None (Default)      | (-∞, ∞)      | Symmetric             | Rating Prediction                                                          |
+| Logistic            | (0, 1)       | Symmetric             | Player Choice (A/B), Engagement Prediction, Click-Through Rates            |
+| HardSigmoid         | (0, 1)       | Symmetric             | Same As Logistic, But Mobile / Real-Time Prediction                        |
+| Probit              | (0, 1)       | Symmetric             | Skill-Based Success, Ability Checks, Normally Distributed Traits           |
+| BipolarSigmoid      | (-1, 1)      | Symmetric             | Win / Lose, Accept / Reject, Binary Outcomes With Magnitude                |
+| Tanh                | (-1, 1)      | Symmetric             | Like / Dislike, Positive / Negative Feedback, Preference Modeling          |
+| SoftSign            | (-1, 1)      | Symmetric             | Gradual Preference Changes, Soft Decisions                                 |
+| ArcTangent          | (-π/2, π/2)  | Symmetric             | Academic / Research Alternative To Tanh                                    |
+| ComplementaryLogLog | (0, 1)       | Right-Skewed          | Rare Events Prediction: In-App Purchases, Time-To-Leave Prediction         |
+| LogLog              | (0, 1)       | Left-Skewed           | Common Events Prediction: Tutorial Completion, Early Wins, First Purchases |
+
+* costFunction: The function to calculate the cost of each training. Available options are: 
+
+  * MeanSquaredError (Default)
+
+  * MeanAbsoluteError
+
+  * BinaryCrossEntropy
+ 
+  * HingeLoss
 
 #### Returns:
 

@@ -12,7 +12,7 @@
 | Latency               | Network Latency And Serialization Issues If Hosted Externally. | Latency Only Comes From Models' Training And Predictions. |
 | Security              | If Hosted Externally, Vulnerable To Hacking.                   | Data Stays Between The Servers And Clients.               |
 | Reliability           | May Be Inaccurate Or Underperform When Building From Scratch.  | Built Over 3 Years With Game Domain Specialty. |
-| Legal                 | If Hosted Externally, Requires Active Compliance For Data Protection Laws. | Data Stays Between The Servers And Clients. As a result, Mostly Complies With Data Protection laws. |
+| Legal                 | If Hosted Externally, Requires Active Compliance For Data Protection Laws. | Data Stays Between The Servers And Clients. As A Result, Mostly Complies With Data Protection laws. |
 
 ## Licensing Costs
 

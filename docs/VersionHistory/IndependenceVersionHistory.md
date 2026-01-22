@@ -60,7 +60,7 @@ Once completed, I had realized that the DataPredict library was now comparable t
 | Sequence Modelling             | 3     |
 | Filtering                      | 4     |
 | Outlier Detection              | 4     |
-| Recommendation                 | 4     |
+| Recommendation                 | 5     |
 | Generative                     | 4     |
 | Feature-Class Containers       | 1     |
-| Total                          | 99    |
+| Total                          | 100   |

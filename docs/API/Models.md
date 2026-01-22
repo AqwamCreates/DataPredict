@@ -19,7 +19,7 @@
 | [Recommendation](#recommendation)                                 | User-Item Pairing                               | 5     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 99    |
+| Total                                                             |                                                 | 100   |
 
 ### Legend
 

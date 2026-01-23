@@ -4,6 +4,10 @@
 
 The list of items shown below are likely to be implemented due to their mainstream use, ability to increase learning speed, or ability to reduce computational resources.
 
+* Survival Analysis
+
+  * Extremely useful for churn prediction, but mostly can use other regression and classification models as alternatives.
+
 * Online Decision Trees And Boosting Algorithms
 
   * Currently, the offline variants offer superior performance in terms of generalization for tabular datasets. However, because they tend to be computationally expensive and requires generally cannot perform incremental training, it is not suitable for real-time game environments.

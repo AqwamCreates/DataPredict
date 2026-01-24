@@ -46,6 +46,12 @@ This approach prioritizes predictability, reversibility, and player safety over 
 
 * One-Class Passive Aggressive Classifier
 
+### Recommendation
+
+* Factorization Machine
+
+* Factorized Pairwise Interaction
+
 ## Scope
 
 Consulting is optional and does not replace the library.

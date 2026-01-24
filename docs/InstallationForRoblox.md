@@ -4,7 +4,7 @@ In this library, we can customize many of our models, optimizers and others to f
 
 To start, we must first link our machine/deep learning library with our matrix library. However, you must use "Aqwam's 2D Tensor Library" as every calculations made by our models are based on that tensor library.
 
-| Version      | Machine And Deep Learning Library (DataPredict)                                                                                                                        | 2D Tensor Library (TensorL-2D)                                                                      |
+| Version      | Machine, Deep And Reinforcement Learning Library (DataPredict)                                                                                                         | 2D Tensor Library (TensorL-2D)                                                                      |
 |--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
 | Independence | [DataPredict (Independence Version 1.0)](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Independence%20Version%201.0.rbxm)     |                                                                                                     |
 | Release      | [DataPredict (Release Version 2.37)](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.37.rbxm)             |                                                                                                     |

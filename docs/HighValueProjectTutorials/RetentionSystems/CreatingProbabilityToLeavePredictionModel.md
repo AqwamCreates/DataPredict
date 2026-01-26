@@ -4,7 +4,7 @@ Hello guys! Today, I will be showing you on how to create a retention-based mode
 
 Currently, you need these to produce the model:
 
-* Binary regression using ComplementLogLog / One-ComplementLogLog-output-layer neural network model
+* Binary regression using ComplementaryLogLog / One-ComplementaryLogLog-output-layer neural network model
 
     * If you’re modeling the probability that a player leaves over time, Complementary Log–Log is often a better choice than logistic regression because it naturally models time-to-event processes where the probability of leaving increases asymmetrically as time passes.
 

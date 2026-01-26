@@ -6,8 +6,6 @@ Hello guys! Today, I will be showing you on how to create a retention-based mode
 
 Before we train our model, we will first need to choose a model as shown below.
 
-## Choosing A Model
-
 | Model                           | Advantages                                                                                      | Disadvantages                                                                       |
 |---------------------------------|-------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
 | Binary Regression               | Fast and simple.                                                                                | Requires a lot of data.                                                             |

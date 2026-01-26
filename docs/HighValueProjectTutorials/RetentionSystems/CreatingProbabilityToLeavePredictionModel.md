@@ -21,7 +21,7 @@ local DataPredict = require(DataPredict)
 
 -- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local LeavePredictionModel = DataPredict.Models.BinaryRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3, binaryFunction = "ComplementaryLogLog"})
+local LeavePredictionModel = DataPredict.Models.FactorizationMachine.new({maximumNumberOfIterations = 1, learningRate = 0.3, binaryFunction = "ComplementaryLogLog"})
 
 ```
 

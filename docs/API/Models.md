@@ -1,6 +1,6 @@
 # [API Reference](../API.md) - Models
 
-* Remember! This is source available library and not open-source one! You may have a look at more details [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
+* Remember! This is source-available library and not open-source one! You may have a look at more details [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
 
 * If you wonder what are the most high-value use cases that helps with revenue and retention generation this DataPredict™, you can view them [here](../HighValueProjectTutorials.md)!
 

@@ -35,6 +35,18 @@ For information regarding potential license violations and eligibility for a bou
 
 --------------------------------------------------------------------
 
+DataPredict - Development Pause
+
+After over three years of continuous development, I’m placing DataPredict into a maintenance / pause state.
+
+The library is stable, complete, and usable in its current form, and all released features will remain available as-is. This is because I’m currently focusing on research and other personal projects, and I have determined that the current DataPredict's features are more than enough to cover most game-related use cases.
+
+DataPredict's development may resume in the future when there’s a clear technical or practical reason to do so.
+
+Thanks to everyone who used, tested, or followed the project since its first release in 2023.
+
+--------------------------------------------------------------------
+
 Number of algorithms per model type:
 
 | Model Type                     | Purpose                                         | Count |

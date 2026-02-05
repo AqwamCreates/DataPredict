@@ -4,7 +4,15 @@ Hello guys! Today, I will be showing you on how to create a probability-based mo
 
 Currently, you need these to produce the model:
 
-* Logictic regression / One-sigmoid-output-layer neural network model
+* Any one of these models:
+
+    * Binary regression
+    
+    * One-sigmoid-output-layer neural network
+ 
+    * Factorization Machine
+ 
+    * Factorized pairwise interaction
 
 * A player data that is stored in matrix
 

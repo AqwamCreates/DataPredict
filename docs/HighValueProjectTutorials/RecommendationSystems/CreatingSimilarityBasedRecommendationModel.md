@@ -48,8 +48,6 @@ Before we start training our model, we first need to build our model.
 
 local DataPredict = require(DataPredict)
 
--- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
-
 local RecommendationModel = DataPredict.Models.KNearestNeighboursRegressor.new({useWeightedDistance = true, distanceFunction = "CosineDistance"})
 
 ```

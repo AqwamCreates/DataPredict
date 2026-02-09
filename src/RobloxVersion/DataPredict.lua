@@ -108,6 +108,10 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	OrdinalRegression = require(Models.OrdinalRegression),
 	
+	-- Regression And Classification - 13 Models
+	
+	IterativeReweightedLeastSquaresRegression = require(Models.IterativeReweightedLeastSquaresRegression),
+	
 	-- Clustering - 10 Models
 
 	KMeans = require(Models.KMeans),

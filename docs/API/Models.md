@@ -8,8 +8,9 @@
 
 | Model Type                                                        | Purpose                                         | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
-| [Regression](#regression)                                         | Continuous Value Prediction                     | 13    |
+| [Regression](#regression)                                         | Continuous Value Prediction                     | 14    |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 13    |
+| [Classification And Regression](#classification-and-regression)   | Continuous Value Or Feature-Class Prediction    | 1     |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 26    |
 | [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Tables          | 17    |
@@ -94,6 +95,14 @@
 | [OrdinalRegression](Models/OrdinalRegression.md)                                     | Ordinal Classification         | 🟢 🟡 ⚠️        | Skill Tier Prediction, Dynamic Difficulty Adjustment, Ranking Systems                                           |
 
 \* "Naive Bayes" models assumes that the features are independent to each other, which is almost certainly not true in game-related settings. Additionally, these models are better as generative models, despite being commonly taught as a classifier.
+
+## Regression And Classification
+
+> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+
+| Model                                                                                                | Alternate Names | Properties        | Use Cases                                                                                                |
+|------------------------------------------------------------------------------------------------------|-----------------|-------------------|-------------------------------------------------------------------------|
+| [IterativelyReweightedLeastSquaresRegression](Models/IterativelyReweightedLeastSquaresRegression.md) | LR              | 🔰 🟢 🟡        | General Time-To-Leave Prediction And In-Game Currency Price Generation   |
 
 ## Clustering
 

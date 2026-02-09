@@ -51,6 +51,7 @@
 | System                                                                                           | Properties                                                            | Minimal Implementation Time With DataPredict |
 |--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|----------------------------|
 | [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization, leave prediction and leave detection. | 30 minutes - 6 hours       |
+| [Stress](HighValueProjectTutorials/StressSystems.md)                                             | Handles stress detection and minimization.                            | To be added soon           |
 | [Economy](HighValueProjectTutorials/EconomySystems.md)                                           | Maximize the value of in-game items and events.                       | 30 minutes                 |
 | [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                             | 2 hours                    |
 | [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Increaes the players' interaction towards the enemies.                | 30 minutes - 2 hours       |

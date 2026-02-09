@@ -61,6 +61,8 @@ function BaseModel.new(parameterDictionary)
 	NewBaseModel.modelParametersMeanValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersMeanValue, nil)
 
 	NewBaseModel.modelParametersStandardDeviationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersStandardDeviationValue, nil)
+	
+	NewBaseModel.modelParametersDiagonalValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersDiagonalValue, nil)
 
 	return NewBaseModel
 	
@@ -195,6 +197,10 @@ function BaseModel:initializeMatrixBasedOnMode(dimensionSizeArray, dimensionSize
 		local randomUniformTensor = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
 
 		return AqwamTensorLibrary:multiply(variancePart, randomUniformTensor) 
+		
+	elseif (initializationMode == "Diagonal") then
+		
+		return AqwamTensorLibrary:createIdentityTensor(dimensionSizeArray, self.modelParametersDiagonalValue)
 
 	elseif (initializationMode == "None") then
 

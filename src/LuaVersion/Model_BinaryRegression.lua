@@ -336,15 +336,17 @@ function BinaryRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
+	local numberOfFeatures = #featureMatrix[1]
+	
 	local ModelParameters = self.ModelParameters
 
 	if (ModelParameters) then
 
-		if (#featureMatrix[1] ~= #ModelParameters) then error("The number of features are not the same as the model parameters.") end
+		if (numberOfFeatures ~= #ModelParameters) then error("The number of features are not the same as the model parameters.") end
 
 	else
 
-		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+		self.ModelParameters = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
 
 	end
 	

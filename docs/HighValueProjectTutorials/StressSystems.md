@@ -6,12 +6,20 @@
 
   * Accuracy - The more stressed you are, the more harder it is for you to focus.
 
-  * 
+  * Erraticism - The more stressed you are, the more harder it is for you to focus.
+
+## Stress Tracking Models
+
+* [Creating Erratic Tracking Model](StressSystems/CreatingErraticTrackingModel.md)
+
+    * Uses Kalman Filter to use cost as "erratic" score.
 
 ## Stress Detection Models
 
-* [Creating Willingness-To-Pay Prediction Model](EconomySystems/CreatingWillingnessToPayPredictionModel.md)
 
-    * Estimates the best price based on players' spending patterns despite having the same player data.
 
 ## Stress Minimization Models
+
+* [Creating Stress Minimization Model](StressSystems/CreatingStressMinimizationModel.md)
+
+    * Uses diagonal gaussian deep reinforcement learning to minimize the stress score.

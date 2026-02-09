@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-local ZTableFunction = require("Core_ZTableFunction")
+local ZTableFunction = require"Core_ZTableFunction")
 
 local IterativeReweightedLeastSquaresRegressionModel = {}
 
@@ -87,8 +87,6 @@ function IterativeReweightedLeastSquaresRegressionModel.new(parameterDictionary)
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
-	
-	parameterDictionary.modelParametersInitializationMode = parameterDictionary.modelParametersInitializationMode or defaultModelParametersInitializationMode
 
 	local NewIterativeReweightedLeastSquaresRegressionModel = IterativeMethodBaseModel.new(parameterDictionary)
 

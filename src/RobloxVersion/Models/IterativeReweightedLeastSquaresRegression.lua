@@ -32,11 +32,11 @@ local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 local ZTableFunction = require(script.Parent.Parent.Cores.ZTableFunction)
 
-local IterativelyReweightedLeastSquaresRegressionModel = {}
+local IterativeReweightedLeastSquaresRegressionModel = {}
 
-IterativelyReweightedLeastSquaresRegressionModel.__index = IterativelyReweightedLeastSquaresRegressionModel
+IterativeReweightedLeastSquaresRegressionModel.__index = IterativeReweightedLeastSquaresRegressionModel
 
-setmetatable(IterativelyReweightedLeastSquaresRegressionModel, IterativeMethodBaseModel)
+setmetatable(IterativeReweightedLeastSquaresRegressionModel, IterativeMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -82,7 +82,7 @@ local linkFunctionGradientList = {
 
 }
 
-function IterativelyReweightedLeastSquaresRegressionModel.new(parameterDictionary)
+function IterativeReweightedLeastSquaresRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
@@ -90,21 +90,21 @@ function IterativelyReweightedLeastSquaresRegressionModel.new(parameterDictionar
 	
 	parameterDictionary.modelParametersInitializationMode = parameterDictionary.modelParametersInitializationMode or defaultModelParametersInitializationMode
 
-	local NewIterativelyReweightedLeastSquaresRegressionModel = IterativeMethodBaseModel.new(parameterDictionary)
+	local NewIterativeReweightedLeastSquaresRegressionModel = IterativeMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewIterativelyReweightedLeastSquaresRegressionModel, IterativelyReweightedLeastSquaresRegressionModel)
+	setmetatable(NewIterativeReweightedLeastSquaresRegressionModel, IterativeReweightedLeastSquaresRegressionModel)
 	
-	NewIterativelyReweightedLeastSquaresRegressionModel:setName("IterativelyReweightedLeastSquaresRegression")
+	NewIterativeReweightedLeastSquaresRegressionModel:setName("IterativeReweightedLeastSquaresRegression")
 	
-	NewIterativelyReweightedLeastSquaresRegressionModel.linkFunction = parameterDictionary.linkFunction or defaultLinkFunction
+	NewIterativeReweightedLeastSquaresRegressionModel.linkFunction = parameterDictionary.linkFunction or defaultLinkFunction
 
-	NewIterativelyReweightedLeastSquaresRegressionModel.pValue = parameterDictionary.pValue or defaultPValue
+	NewIterativeReweightedLeastSquaresRegressionModel.pValue = parameterDictionary.pValue or defaultPValue
 
-	return NewIterativelyReweightedLeastSquaresRegressionModel
+	return NewIterativeReweightedLeastSquaresRegressionModel
 
 end
 
-function IterativelyReweightedLeastSquaresRegressionModel:train(featureMatrix, labelVector)
+function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 	
 	local numberOfdata = #featureMatrix
 
@@ -220,7 +220,7 @@ function IterativelyReweightedLeastSquaresRegressionModel:train(featureMatrix, l
 
 end
 
-function IterativelyReweightedLeastSquaresRegressionModel:predict(featureMatrix, returnOriginalOutput)
+function IterativeReweightedLeastSquaresRegressionModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local linkFunctionToApply = linkFunctionList[self.linkFunction]
 	
@@ -246,4 +246,4 @@ function IterativelyReweightedLeastSquaresRegressionModel:predict(featureMatrix,
 
 end
 
-return IterativelyReweightedLeastSquaresRegressionModel
+return IterativeReweightedLeastSquaresRegressionModel

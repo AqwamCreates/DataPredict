@@ -208,7 +208,7 @@ function BaseModel:initializeMatrixBasedOnMode(dimensionSizeArray, dimensionSize
 
 	else
 
-		error("Invalid weight initialization mode.")
+		error("Invalid matrix initialization mode.")
 
 	end
 	

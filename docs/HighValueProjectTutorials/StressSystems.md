@@ -6,7 +6,7 @@
 
   * Accuracy - The more stressed you are, the more harder it is for you to focus.
 
-  * Erraticism - The more stressed you are, the more harder it is for you to focus.
+  * Erratic Control - The more stressed you are, the more harder it is for you to focus.
 
 ## Stress Tracking Models
 
@@ -23,3 +23,5 @@
 * [Creating Stress Minimization Model](StressSystems/CreatingStressMinimizationModel.md)
 
     * Uses diagonal gaussian deep reinforcement learning to minimize the stress score.
+ 
+    * The stress score can be used as rewards.

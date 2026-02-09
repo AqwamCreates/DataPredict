@@ -100,9 +100,9 @@
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                                                                | Alternate Names | Properties        | Use Cases                                                                                                |
-|------------------------------------------------------------------------------------------------------|-----------------|-------------------|-------------------------------------------------------------------------|
-| [IterativelyReweightedLeastSquaresRegression](Models/IterativelyReweightedLeastSquaresRegression.md) | LR              | 🔰 🟢 🟡        | General Time-To-Leave Prediction And In-Game Currency Price Generation   |
+| Model                                                                                            | Alternate Names | Properties   | Use Cases                                                               |
+|--------------------------------------------------------------------------------------------------|-----------------|--------------|-------------------------------------------------------------------------|
+| [IterativeReweightedLeastSquaresRegression](Models/IterativeReweightedLeastSquaresRegression.md) | LR              | 🔰 🟢 🟡 ⚡| General Time-To-Leave Prediction And In-Game Currency Price Generation   |
 
 ## Clustering
 

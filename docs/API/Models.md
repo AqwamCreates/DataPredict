@@ -8,7 +8,7 @@
 
 | Model Type                                                        | Purpose                                         | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
-| [Regression](#regression)                                         | Continuous Value Prediction                     | 15    |
+| [Regression](#regression)                                         | Continuous Value Prediction                     | 14    |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 13    |
 | [Classification And Regression](#classification-and-regression)   | Continuous Value Or Feature-Class Prediction    | 1     |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |

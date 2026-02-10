@@ -132,7 +132,7 @@ end
 
 function RecursiveLeastSquaresFilterModel:predict(stateMatrix)
 
-	local weightMatrix = self.ModelParameters[3]
+	local weightMatrix = self.ModelParameters[1]
 	
 	return AqwamTensorLibrary:dotProduct(stateMatrix, weightMatrix)
 	

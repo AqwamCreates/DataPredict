@@ -51,7 +51,7 @@ Number of algorithms per model type:
 
 | Model Type                     | Purpose                                         | Count |
 |--------------------------------|-------------------------------------------------|-------|
-| Regression                     | Continuous Value Prediction                     | 13    |
+| Regression                     | Continuous Value Prediction                     | 15    |
 | Classification                 | Feature-Class Prediction                        | 13    |
 | Clustering                     | Feature Grouping                                | 10    |
 | Deep Reinforcement Learning    | State-Action Optimization Using Neural Networks | 26    |

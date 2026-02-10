@@ -194,13 +194,13 @@
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                                                              | Alternate Names | Properties | Use Cases                       |
-|----------------------------------------------------------------------------------------------------|-----------------|------------|---------------------------------|
-| [RecursiveLeastSquareFilter](Models/KalmanFilter.md)                                               | RLS             | 🟢        | Movement Anti-Cheat             |
-| [KalmanFilter](Models/KalmanFilter.md)                                                             | KF              | 🟢 ⚠️     | Linear Movement Anti-Cheat     |
-| [ExtendedKalmanFilter](Models/ExtendedKalmanFilter.md)                                             | EKF             | 🟢 ⚙️     | Non-Linear Movement Anti-Cheat |
-| [UnscentedKalmanFilter](Models/UnscentedKalmanFilter.md)                                           | UKF             | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat |
-| [UnscentedKalmanFilter (DataPredict Variant)](Models/UnscentedKalmanFilterDataPredictVariant.md)   | UKF-DP          | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat |
+| Model                                                                                            | Alternate Names | Properties | Use Cases                       |
+|--------------------------------------------------------------------------------------------------|-----------------|------------|---------------------------------|
+| [RecursiveLeastSquaresFilter](Models/RecursiveLeastSquaresFilter.md)                             | RLS / RLSF      | 🟢        | Movement Anti-Cheat             |
+| [KalmanFilter](Models/KalmanFilter.md)                                                           | KF              | 🟢 ⚠️     | Linear Movement Anti-Cheat     |
+| [ExtendedKalmanFilter](Models/ExtendedKalmanFilter.md)                                           | EKF             | 🟢 ⚙️     | Non-Linear Movement Anti-Cheat |
+| [UnscentedKalmanFilter](Models/UnscentedKalmanFilter.md)                                         | UKF             | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat |
+| [UnscentedKalmanFilter (DataPredict Variant)](Models/UnscentedKalmanFilterDataPredictVariant.md) | UKF-DP          | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat |
 
 ## Outlier Detection
 

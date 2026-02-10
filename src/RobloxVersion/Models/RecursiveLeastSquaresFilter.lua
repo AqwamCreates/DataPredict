@@ -40,6 +40,14 @@ local defaultLossFunction = "L2"
 
 local defaultForgetFactor = 1
 
+local lossFunctionList = {
+	
+	["L1"] = math.abs,
+	
+	["L2"] = function (value) return math.pow(value, 2) end
+	
+}
+
 function RecursiveLeastSquaresFilterModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -58,71 +66,85 @@ function RecursiveLeastSquaresFilterModel.new(parameterDictionary)
 	
 end
 
-function RecursiveLeastSquaresFilterModel:train(previousStateMatrix, currentStateMatrix)
+function RecursiveLeastSquaresFilterModel:train(featureMatrix, labelVector)
 
-	local numberOfData = #previousStateMatrix
+	local numberOfData = #featureMatrix
 
-	if (numberOfData ~= #currentStateMatrix) then error("The number of data in the previous state vector is not equal to the number of data in the current state vector.") end
+	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
-	local numberOfStates = #previousStateMatrix[1]
-
-	if (numberOfStates ~= #currentStateMatrix[1]) then error("The number of current state columns is not equal to the number of states.") end
+	local numberOfFeatures = #featureMatrix[1]
 	
 	local lossFunction = self.lossFunction
+	
+	local lossFunctionToApply = lossFunctionList[lossFunction]
+
+	if (not lossFunctionToApply) then error("Invalid loss function.") end
 	
 	local forgetFactor = self.forgetFactor
 	
 	local ModelParameters = self.ModelParameters or {}
 	
-	local weightVector = ModelParameters[1] or self:initializeMatrixBasedOnMode({numberOfStates, 1})
+	local weightVector = ModelParameters[1] or self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
 	
-	local errorCovarianceMatrix = ModelParameters[2] or AqwamTensorLibrary:createIdentityTensor({numberOfStates, numberOfStates})
+	if (numberOfFeatures ~= #weightVector) then error("The number of features are not the same as the model parameters.") end
 	
-	local predictedCurrentStateMatrix = AqwamTensorLibrary:dotProduct(previousStateMatrix, weightVector)
+	local errorCovarianceMatrix = ModelParameters[2] or AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
 	
-	local lossMatrix = AqwamTensorLibrary:subtract(currentStateMatrix, predictedCurrentStateMatrix) -- m x n
+	local featureVector
 	
-	local kalmanGainVectorNumerator = AqwamTensorLibrary:dotProduct(previousStateMatrix, errorCovarianceMatrix) -- m x n
+	local predictedValue
 	
-	local transposedPreviousStateMatrix = AqwamTensorLibrary:transpose(previousStateMatrix)
+	local lossValue
 	
-	local kalmanGainVectorDenominator = AqwamTensorLibrary:dotProduct(previousStateMatrix, errorCovarianceMatrix, transposedPreviousStateMatrix) -- m x m
+	local kalmanGainVectorNumerator
 	
-	kalmanGainVectorDenominator = AqwamTensorLibrary:add(forgetFactor, kalmanGainVectorDenominator)
+	local transposedFeatureVector
 	
-	local kalmanGainVector = AqwamTensorLibrary:divide(kalmanGainVectorNumerator, kalmanGainVectorDenominator) -- if m = 1, then 1 x n.
+	local kalmanGainVectorDenominator
 	
-	local transposedKalmanGainVector = AqwamTensorLibrary:transpose(kalmanGainVector)
+	local kalmanGainVector
 	
-	local weightChangeVector = AqwamTensorLibrary:multiply(kalmanGainVector, lossMatrix) -- 1 x n, 1 x n
+	local transposedKalmanGainVector
 	
-	weightChangeVector = AqwamTensorLibrary:transpose(weightChangeVector)
+	local weightChangeVector
 	
-	weightVector = AqwamTensorLibrary:add(weightVector, weightChangeVector)
+	local cost = 0
 	
-	errorCovarianceMatrix = AqwamTensorLibrary:subtract(errorCovarianceMatrix, AqwamTensorLibrary:dotProduct(transposedKalmanGainVector, previousStateMatrix, errorCovarianceMatrix))
+	for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
+		
+		featureVector = {unwrappedFeatureVector}
+		
+		predictedValue = AqwamTensorLibrary:dotProduct(featureVector, weightVector)[1][1]
+		
+		lossValue = predictedValue - labelVector[dataIndex][1]
+		
+		kalmanGainVectorNumerator = AqwamTensorLibrary:dotProduct(featureVector, errorCovarianceMatrix) -- 1 x n
+		
+		transposedFeatureVector = AqwamTensorLibrary:transpose(featureVector) -- n x 1
+		
+		kalmanGainVectorDenominator = AqwamTensorLibrary:dotProduct(featureVector, errorCovarianceMatrix, transposedFeatureVector) -- 1 x 1
+		
+		kalmanGainVectorDenominator = AqwamTensorLibrary:add(forgetFactor, kalmanGainVectorDenominator)
+		
+		kalmanGainVector = AqwamTensorLibrary:divide(kalmanGainVectorNumerator, kalmanGainVectorDenominator) -- 1 x n
+		
+		transposedKalmanGainVector = AqwamTensorLibrary:transpose(kalmanGainVector)
+		
+		weightChangeVector = AqwamTensorLibrary:multiply(kalmanGainVector, lossValue) -- 1 x n
+		
+		weightChangeVector = AqwamTensorLibrary:transpose(weightChangeVector)
 
-	if (forgetFactor ~= 1) then errorCovarianceMatrix = AqwamTensorLibrary:divide(errorCovarianceMatrix, forgetFactor) end
-	
-	self.ModelParameters = {weightVector, errorCovarianceMatrix}
-	
-	-- Returning this as a cost like other models.
-	
-	if (lossFunction == "L1") then
+		weightVector = AqwamTensorLibrary:add(weightVector, weightChangeVector)
 		
-		lossMatrix = AqwamTensorLibrary:applyFunction(math.abs, lossMatrix)
+		errorCovarianceMatrix = AqwamTensorLibrary:subtract(errorCovarianceMatrix, AqwamTensorLibrary:dotProduct(transposedKalmanGainVector, featureVector, errorCovarianceMatrix))
+
+		if (forgetFactor ~= 1) then errorCovarianceMatrix = AqwamTensorLibrary:divide(errorCovarianceMatrix, forgetFactor) end
 		
-	elseif (lossFunction == "L2") then
-		
-		lossMatrix = AqwamTensorLibrary:power(lossMatrix, 2)
-		
-	else
-		
-		error("Invalid loss function.")
+		cost = cost + lossFunctionToApply(lossValue)
 		
 	end
 	
-	local cost = AqwamTensorLibrary:sum(lossMatrix)
+	self.ModelParameters = {weightVector, errorCovarianceMatrix}
 	
 	cost = cost / numberOfData
 

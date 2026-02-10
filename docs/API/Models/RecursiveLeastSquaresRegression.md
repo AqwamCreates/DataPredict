@@ -15,26 +15,20 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-RecursiveLeastSquaresRegression.new(maximumNumberOfIterations: integer, linkFunction: string, pValue: number): ModelObject
+RecursiveLeastSquaresRegression.new(forgetFactor: number, lossFunction: string, useLogProbabilities: boolean): ModelObject
 ```
 
 #### Parameters:
 
-* maximumNumberOfIterations: How many times should the model needed to be trained.
+* forgetFactor: How much should the past data influence the next weight updates. [Default: 1]
 
-* linkFunction: The link function to use for generating output values from input values. Available options are:
+* lossFunction:
 
-  * Linear (Default)
- 
-  * Logit
- 
-  * Probit
- 
-  * LogLog
- 
-  * ComplementLogLog
+ * L1 (Default)
 
-* pValue: How complicated should the "cost landscape" should be. The higher the value, the more complicated the landscape would be. [Default: 2]
+ * L2 
+
+* useLogProbabilities: Set whether or not the predict() function would use log probabilities instead of raw probabilities.
 
 #### Returns:
 
@@ -65,7 +59,7 @@ RecursiveLeastSquaresRegression:train(featureMatrix: Matrix, labelVector: Matrix
 Predict the value for a given data.
 
 ```
-RecursiveLeastSquaresRegression:predict(featureMatrix: Matrix): Matrix
+RecursiveLeastSquaresRegression:predict(featureMatrix: Matrix, thresholdMatrix): Matrix
 ```
 
 #### Parameters:

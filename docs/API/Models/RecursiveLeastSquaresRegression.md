@@ -24,9 +24,9 @@ RecursiveLeastSquaresRegression.new(forgetFactor: number, lossFunction: string, 
 
 * lossFunction:
 
- * L1 (Default)
+   * L1 (Default)
 
- * L2 
+   * L2 
 
 * useLogProbabilities: Set whether or not the predict() function would use log probabilities instead of raw probabilities.
 

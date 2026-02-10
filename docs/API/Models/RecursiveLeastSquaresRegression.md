@@ -22,7 +22,7 @@ RecursiveLeastSquaresRegression.new(forgetFactor: number, lossFunction: string, 
 
 * forgetFactor: How much should the past data influence the next weight updates. [Default: 1]
 
-* lossFunction:
+* lossFunction: The loss function to be used for calculating the cost. Available options are:
 
    * L1 (Default)
 

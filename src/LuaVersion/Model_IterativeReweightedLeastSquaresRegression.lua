@@ -68,20 +68,6 @@ local linkFunctionList = {
 
 }
 
-local linkFunctionGradientList = {
-
-	["Logistic"] = function (h, z) return (h * (1 - h)) end,
-
-	["Logit"] = function (h, z) return (h * (1 - h)) end,
-
-	["Probit"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
-
-	["LogLog"] = function(h, z) return -math.exp(z) * math.exp(-math.exp(z)) end,
-
-	["ComplementaryLogLog"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end,
-
-}
-
 function IterativeReweightedLeastSquaresRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -128,8 +114,6 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 	
 	if (not linkFunctionToApply) and (linkFunction ~= "Linear") then error("Invalid link function.") end
 	
-	local linkFunctionGradientToApply = linkFunctionGradientList[linkFunction]
-	
 	local pValue = self.pValue
 	
 	local weightFunctionToApply = function(labelValue, hypothesisValue) return math.pow(math.abs(labelValue - hypothesisValue), (pValue - 2)) end
@@ -154,8 +138,6 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 	
 	local hypothesisVector
 	
-	local gradientVector
-	
 	local costVector
 	
 	local cost
@@ -176,11 +158,7 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 		
 		if (linkFunctionToApply) then 
 			
-			zVector = hypothesisVector
-			
-			hypothesisVector = AqwamTensorLibrary:applyFunction(linkFunctionToApply, zVector)
-			
-			gradientVector = AqwamTensorLibrary:applyFunction(linkFunctionGradientToApply, hypothesisVector, zVector)
+			hypothesisVector = AqwamTensorLibrary:applyFunction(linkFunctionToApply, hypothesisVector)
 			
 		end
 		

@@ -150,6 +150,8 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 	
 	local betaVector
 	
+	local zVector
+	
 	local hypothesisVector
 	
 	local gradientVector
@@ -174,9 +176,11 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 		
 		if (linkFunctionToApply) then 
 			
-			hypothesisVector = AqwamTensorLibrary:applyFunction(linkFunctionToApply, hypothesisVector)
+			zVector = hypothesisVector
 			
-			gradientVector = AqwamTensorLibrary:applyFunction(linkFunctionGradientToApply, hypothesisVector)
+			hypothesisVector = AqwamTensorLibrary:applyFunction(linkFunctionToApply, zVector)
+			
+			gradientVector = AqwamTensorLibrary:applyFunction(linkFunctionGradientToApply, hypothesisVector, zVector)
 			
 		end
 		

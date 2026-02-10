@@ -15,7 +15,7 @@
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 26    |
 | [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Tables          | 17    |
 | [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
-| [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
+| [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 5     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 4     |
 | [Recommendation](#recommendation)                                 | User-Item Pairing                               | 5     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
@@ -194,12 +194,13 @@
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                                                              | Alternate Names | Properties | Use Cases                                 |
-|----------------------------------------------------------------------------------------------------|-----------------|------------|-------------------------------------------|
-| [KalmanFilter](Models/KalmanFilter.md)                                                             | KF              | 🟢 ⚠️     | Linear Movement Anti-Cheat                |
-| [ExtendedKalmanFilter](Models/ExtendedKalmanFilter.md)                                             | EKF             | 🟢 ⚙️     | Non-Linear Movement Anti-Cheat            |
-| [UnscentedKalmanFilter](Models/UnscentedKalmanFilter.md)                                           | UKF             | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat            |
-| [UnscentedKalmanFilter (DataPredict Variant)](Models/UnscentedKalmanFilterDataPredictVariant.md)   | UKF-DP          | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat            |
+| Model                                                                                              | Alternate Names | Properties | Use Cases                       |
+|----------------------------------------------------------------------------------------------------|-----------------|------------|---------------------------------|
+| [RecursiveLeastSquareFilter](Models/KalmanFilter.md)                                               | RLS             | 🟢        | Movement Anti-Cheat             |
+| [KalmanFilter](Models/KalmanFilter.md)                                                             | KF              | 🟢 ⚠️     | Linear Movement Anti-Cheat     |
+| [ExtendedKalmanFilter](Models/ExtendedKalmanFilter.md)                                             | EKF             | 🟢 ⚙️     | Non-Linear Movement Anti-Cheat |
+| [UnscentedKalmanFilter](Models/UnscentedKalmanFilter.md)                                           | UKF             | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat |
+| [UnscentedKalmanFilter (DataPredict Variant)](Models/UnscentedKalmanFilterDataPredictVariant.md)   | UKF-DP          | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat |
 
 ## Outlier Detection
 

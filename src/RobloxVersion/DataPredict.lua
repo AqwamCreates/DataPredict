@@ -52,7 +52,7 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 13 Models
+	-- Regression - 14 Models
 
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -79,6 +79,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	SupportVectorRegressionGradientVariant = require(Models.SupportVectorRegressionGradientVariant),
 	
 	KNearestNeighboursRegressor = require(Models.KNearestNeighboursRegressor),
+	
+	RecursiveLeastSquaresRegression = require(Models.RecursiveLeastSquaresRegression),
 	
 	-- Classification - 13 Models
 	
@@ -232,9 +234,7 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	ConditionalRandomField = require(Models.ConditionalRandomField),
 
-	-- Filtering - 5 Models
-	
-	RecursiveLeastSquaresFilter = require(Models.RecursiveLeastSquaresFilter),
+	-- Filtering - 4 Models
 	
 	KalmanFilter = require(Models.KalmanFilter),
 	

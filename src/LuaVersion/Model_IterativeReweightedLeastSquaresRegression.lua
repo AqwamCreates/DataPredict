@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-local ZTableFunction = require"Core_ZTableFunction")
+local ZTableFunction = require("Core_ZTableFunction")
 
 local IterativeReweightedLeastSquaresRegressionModel = {}
 
@@ -150,6 +150,8 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 	
 	local betaVector
 	
+	local zVector
+	
 	local hypothesisVector
 	
 	local gradientVector
@@ -168,23 +170,23 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 		
 		betaVector = AqwamTensorLibrary:inverse(betaVector)
 		
-		betaVector = AqwamTensorLibrary:dotProduct(tansposedFeatureMatrix, covarianceMatrix, labelVector)
+		betaVector = AqwamTensorLibrary:dotProduct(betaVector, tansposedFeatureMatrix, covarianceMatrix, labelVector)
 		
 		hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
 		
 		if (linkFunctionToApply) then 
 			
-			hypothesisVector = AqwamTensorLibrary:applyFunction(linkFunctionToApply, hypothesisVector)
+			zVector = hypothesisVector
 			
-			gradientVector = AqwamTensorLibrary:applyFunction(linkFunctionGradientToApply, hypothesisVector)
+			hypothesisVector = AqwamTensorLibrary:applyFunction(linkFunctionToApply, zVector)
+			
+			gradientVector = AqwamTensorLibrary:applyFunction(linkFunctionGradientToApply, hypothesisVector, zVector)
 			
 		end
 		
 		varianceVector = AqwamTensorLibrary:applyFunction(weightFunctionToApply, labelVector, hypothesisVector)
 		
-		if (linkFunctionGradientToApply) then varianceVector = AqwamTensorLibrary:multiply(varianceVector, gradientVector) end
-		
-		covarianceMatrix = AqwamTensorLibrary:dotProduct(varianceVector, AqwamTensorLibrary:transpose(varianceVector))
+		for dataIndex, unwrappedVarianceVector in ipairs(varianceVector) do covarianceMatrix[dataIndex][dataIndex] = unwrappedVarianceVector[1] end
 		
 		costVector = AqwamTensorLibrary:applyFunction(costFunctionToApply, labelVector, hypothesisVector)
 

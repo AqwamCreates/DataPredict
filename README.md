@@ -62,7 +62,7 @@ Number of algorithms per model type:
 | Recommendation                 | User-Item Pairing                               | 5     |
 | Generative                     | Feature To Novel Value                          | 4     |
 | Feature-Class Containers       | Feature-Class Look Up                           | 1     |
-| Total                          |                                                 | 100   |
+| Total                          |                                                 | 102   |
 
 --------------------------------------------------------------------
 

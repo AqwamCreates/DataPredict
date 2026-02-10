@@ -130,13 +130,11 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 	
 	local diagonalMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfdata, numberOfdata}, 1)
 	
-	local differenceVector
-	
 	local betaVector
 	
-	local zVector
-	
 	local hypothesisVector
+	
+	local differenceVector
 	
 	local costVector
 	

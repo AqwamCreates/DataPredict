@@ -22,9 +22,19 @@ LinearRegression.new(maximumNumberOfIterations: integer, linkFunction: string, p
 
 * maximumNumberOfIterations: How many times should the model needed to be trained.
 
-* linkFunction: The speed at which the model learns. Recommended that the value is set between 0 to 1.
+* linkFunction: The link function to use for generating output values from input values. Available options are:
 
-* pValue:
+  * Linear (Default)
+ 
+  * Logit
+ 
+  * Probit
+ 
+  * LogLog
+ 
+  * ComplementLogLog
+
+* pValue: How complicated should the "cost landscape" should be. The higher the value, the more complicated the landscape would be. [Default: 2]
 
 #### Returns:
 
@@ -68,8 +78,10 @@ IterativeReweightedLeastSquaresRegression:predict(featureMatrix: Matrix): Matrix
 
 ## Inherited From
 
-* [GradientMethodBaseModel](GradientMethodBaseModel.md)
+* [IterativeMethodBaseModel](IterativeMethodBaseModel.md)
 
 ## Refernces
+
+* [Iterately Reweighted Least Squares](https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares)
 
 * [Iterated Reweighted Least Squares and GLMs Explained](https://towardsdatascience.com/iterated-reweighted-least-squares-and-glms-explained-9c0cc0063526/)

@@ -182,7 +182,7 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 		
 		varianceVector = AqwamTensorLibrary:applyFunction(weightFunctionToApply, labelVector, hypothesisVector)
 		
-		for i = 1, numberOfdata do covarianceMatrix[i][i] = varianceVector[i][1] end
+		for dataIndex, unwrappedVarianceVector in ipairs(varianceVector) do covarianceMatrix[dataIndex][dataIndex] = unwrappedVarianceVector[1] end
 		
 		costVector = AqwamTensorLibrary:applyFunction(costFunctionToApply, labelVector, hypothesisVector)
 

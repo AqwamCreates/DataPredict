@@ -40,6 +40,8 @@ local defaultLossFunction = "L2"
 
 local defaultForgetFactor = 1
 
+local defaultUseLogProbabilities = false
+
 local lossFunctionList = {
 	
 	["L1"] = math.abs,
@@ -47,6 +49,32 @@ local lossFunctionList = {
 	["L2"] = function (value) return math.pow(value, 2) end
 	
 }
+
+local function calculateGaussianProbability(useLogProbabilities, thresholdVector, meanVector, standardDeviationVector)
+
+	local gaussianProbability = (useLogProbabilities and 0) or 1
+
+	local exponentStep1Vector = AqwamTensorLibrary:subtract(thresholdVector, meanVector)
+
+	local exponentStep2Vector = AqwamTensorLibrary:power(exponentStep1Vector, 2)
+
+	local exponentPart3Vector = AqwamTensorLibrary:power(standardDeviationVector, 2)
+
+	local exponentStep4Vector = AqwamTensorLibrary:divide(exponentStep2Vector, exponentPart3Vector)
+
+	local exponentStep5Vector = AqwamTensorLibrary:multiply(-0.5, exponentStep4Vector)
+
+	local exponentWithTermsVector = AqwamTensorLibrary:applyFunction(math.exp, exponentStep5Vector)
+
+	local divisorVector = AqwamTensorLibrary:multiply(standardDeviationVector, math.sqrt(2 * math.pi))
+
+	local gaussianProbabilityVector = AqwamTensorLibrary:divide(exponentWithTermsVector, divisorVector)
+
+	if (useLogProbabilities) then gaussianProbabilityVector = AqwamTensorLibrary:applyFunction(math.log, gaussianProbabilityVector) end
+
+	return gaussianProbabilityVector
+
+end
 
 function RecursiveLeastSquaresRegressionModel.new(parameterDictionary)
 	
@@ -61,6 +89,8 @@ function RecursiveLeastSquaresRegressionModel.new(parameterDictionary)
 	NewRecursiveLeastSquaresRegressionModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
 	
 	NewRecursiveLeastSquaresRegressionModel.forgetFactor = parameterDictionary.forgetFactor or defaultForgetFactor
+	
+	NewRecursiveLeastSquaresRegressionModel.useLogProbabilities = NewRecursiveLeastSquaresRegressionModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
 	return NewRecursiveLeastSquaresRegressionModel
 	
@@ -152,12 +182,62 @@ function RecursiveLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 
 end
 
-function RecursiveLeastSquaresRegressionModel:predict(stateMatrix)
+function RecursiveLeastSquaresRegressionModel:predict(featureMatrix, thresholdMatrix)
 
-	local weightMatrix = self.ModelParameters[1]
-	
-	return AqwamTensorLibrary:dotProduct(stateMatrix, weightMatrix)
-	
+	if (thresholdMatrix) then
+
+		if (#featureMatrix ~= #thresholdMatrix) then error("The feature matrix and the threshold matrix does not contain the same number of rows.") end
+
+	end
+
+	local ModelParameters = self.ModelParameters
+
+	local weightVector
+
+	local covarianceMatrix
+
+	if (not ModelParameters) then
+
+		local numberOfFeatures = #featureMatrix[1]
+
+		weightVector = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
+
+		covarianceMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
+
+		self.ModelParameters = {weightVector, covarianceMatrix}
+
+	else
+
+		weightVector = ModelParameters[1]
+
+		covarianceMatrix = ModelParameters[2]
+
+	end
+
+	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, weightVector)
+
+	if (not thresholdMatrix) then return predictedVector end
+
+	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
+
+	local predictedVarianceVectorPart1 = AqwamTensorLibrary:dotProduct(featureMatrix, covarianceMatrix)
+
+	local predictedVarianceVectorPart2 = AqwamTensorLibrary:dotProduct(predictedVarianceVectorPart1, transposedFeatureMatrix)
+
+	local predictedVarianceVector = {}
+
+	for i, predictedVarianceTable in ipairs(predictedVarianceVectorPart2) do
+
+		predictedVarianceVector[i] = {predictedVarianceTable[i]}
+
+	end
+
+	local predictedStandardDeviationVector = AqwamTensorLibrary:applyFunction(math.sqrt, predictedVarianceVector)
+
+	local probabilityMatrix = calculateGaussianProbability(self.useLogProbabilities, thresholdMatrix, predictedVector, predictedStandardDeviationVector)
+
+	return predictedVector, probabilityMatrix 
+
 end
 
 return RecursiveLeastSquaresRegressionModel

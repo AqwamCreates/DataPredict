@@ -103,7 +103,7 @@
 
 | Model                                                                                            | Alternate Names | Properties     | Use Cases                                                               |
 |--------------------------------------------------------------------------------------------------|-----------------|----------------|-------------------------------------------------------------------------|
-| [IterativeReweightedLeastSquaresRegression](Models/IterativeReweightedLeastSquaresRegression.md) | LR              |❗ 🔰 🟢 🟡 ⚡| General Time-To-Leave Prediction And In-Game Currency Price Generation   |
+| [IterativeReweightedLeastSquaresRegression](Models/IterativeReweightedLeastSquaresRegression.md) | IRLS            |❗ 🔰 🟢 🟡 ⚡| General Time-To-Leave Prediction And In-Game Currency Price Generation   |
 
 ## Clustering
 

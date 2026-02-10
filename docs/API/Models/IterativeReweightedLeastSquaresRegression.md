@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-LinearRegression.new(maximumNumberOfIterations: integer, linkFunction: string, pValue: number): ModelObject
+IterativeReweightedLeastSquaresRegression.new(maximumNumberOfIterations: integer, linkFunction: string, pValue: number): ModelObject
 ```
 
 #### Parameters:

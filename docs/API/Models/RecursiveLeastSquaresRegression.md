@@ -59,23 +59,31 @@ RecursiveLeastSquaresRegression:train(featureMatrix: Matrix, labelVector: Matrix
 Predict the value for a given data.
 
 ```
-RecursiveLeastSquaresRegression:predict(featureMatrix: Matrix, thresholdMatrix): Matrix
+RecursiveLeastSquaresRegression:predict(featureMatrix: Matrix, thresholdMatrix: Matrix): Matrix -OR- Matrix, Matrix
 ```
 
 #### Parameters:
 
 * featureMatrix: Matrix containing data.
 
+* thresholdMatrix: A matrix of threshold values for computing predicted probabilities. If provided, the model returns both predicted values and the probability that the prediction exceeds the threshold(s).
+
 #### Returns:
 
 * predictedVector: A vector containing values that are predicted by the model.
 
+-- OR --
+
+* predictedVector: A vector containing values that are predicted by the model.
+
+* predictedProbabilityMatrix: A matrix contining the probability of the values with the given threshold.
+
 ## Inherited From
 
-* [IterativeMethodBaseModel](IterativeMethodBaseModel.md)
+* [BaseModel](BaseModel.md)
 
 ## Refernces
 
-* [Iterately Reweighted Least Squares](https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares)
+* [Recursive Least Square Algorithm](https://www.geeksforgeeks.org/machine-learning/recursive-least-square-algorithm/)
 
-* [Iterated Reweighted Least Squares and GLMs Explained](https://towardsdatascience.com/iterated-reweighted-least-squares-and-glms-explained-9c0cc0063526/)
+* [Recursive least squares filter](https://en.wikipedia.org/wiki/Recursive_least_squares_filter)

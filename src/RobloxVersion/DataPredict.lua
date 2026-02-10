@@ -232,7 +232,9 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	ConditionalRandomField = require(Models.ConditionalRandomField),
 
-	-- Filtering - 4 Models
+	-- Filtering - 5 Models
+	
+	RecursiveLeastSquaresFilter = require(Models.RecursiveLeastSquaresFilter),
 	
 	KalmanFilter = require(Models.KalmanFilter),
 	

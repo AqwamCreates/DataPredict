@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-local ZTableFunction = require"Core_ZTableFunction")
+local ZTableFunction = require("Core_ZTableFunction")
 
 local IterativeReweightedLeastSquaresRegressionModel = {}
 
@@ -43,8 +43,6 @@ local defaultMaximumNumberOfIterations = 500
 local defaultLinkFunction = "Linear"
 
 local defaultPValue = 2
-
-local defaultModelParametersInitializationMode = "Diagonal"
 
 local cutOffFunction = function (value) return (((value < 0.5) and 0) or 1) end
 
@@ -65,20 +63,6 @@ local linkFunctionList = {
 	["LogLog"] = function(z) return math.exp(-math.exp(z)) end,
 
 	["ComplementaryLogLog"] = function(z) return (1 - math.exp(-math.exp(z))) end,
-
-}
-
-local linkFunctionGradientList = {
-
-	["Logistic"] = function (h, z) return (h * (1 - h)) end,
-
-	["Logit"] = function (h, z) return (h * (1 - h)) end,
-
-	["Probit"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
-
-	["LogLog"] = function(h, z) return -math.exp(z) * math.exp(-math.exp(z)) end,
-
-	["ComplementaryLogLog"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end,
 
 }
 
@@ -128,8 +112,6 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 	
 	if (not linkFunctionToApply) and (linkFunction ~= "Linear") then error("Invalid link function.") end
 	
-	local linkFunctionGradientToApply = linkFunctionGradientList[linkFunction]
-	
 	local pValue = self.pValue
 	
 	local weightFunctionToApply = function(labelValue, hypothesisValue) return math.pow(math.abs(labelValue - hypothesisValue), (pValue - 2)) end
@@ -144,15 +126,13 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 	
 	local tansposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 	
-	local covarianceMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfdata, numberOfdata}, 1)
-	
-	local varianceVector
+	local diagonalMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfdata, numberOfdata}, 1)
 	
 	local betaVector
 	
 	local hypothesisVector
 	
-	local gradientVector
+	local differenceVector
 	
 	local costVector
 	
@@ -164,11 +144,11 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 
 		self:iterationWait()
 		
-		betaVector = AqwamTensorLibrary:dotProduct(tansposedFeatureMatrix, covarianceMatrix, featureMatrix)
+		betaVector = AqwamTensorLibrary:dotProduct(tansposedFeatureMatrix, diagonalMatrix, featureMatrix)
 		
 		betaVector = AqwamTensorLibrary:inverse(betaVector)
 		
-		betaVector = AqwamTensorLibrary:dotProduct(tansposedFeatureMatrix, covarianceMatrix, labelVector)
+		betaVector = AqwamTensorLibrary:dotProduct(betaVector, tansposedFeatureMatrix, diagonalMatrix, labelVector)
 		
 		hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
 		
@@ -176,15 +156,11 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 			
 			hypothesisVector = AqwamTensorLibrary:applyFunction(linkFunctionToApply, hypothesisVector)
 			
-			gradientVector = AqwamTensorLibrary:applyFunction(linkFunctionGradientToApply, hypothesisVector)
-			
 		end
 		
-		varianceVector = AqwamTensorLibrary:applyFunction(weightFunctionToApply, labelVector, hypothesisVector)
+		differenceVector = AqwamTensorLibrary:applyFunction(weightFunctionToApply, labelVector, hypothesisVector)
 		
-		if (linkFunctionGradientToApply) then varianceVector = AqwamTensorLibrary:multiply(varianceVector, gradientVector) end
-		
-		covarianceMatrix = AqwamTensorLibrary:dotProduct(varianceVector, AqwamTensorLibrary:transpose(varianceVector))
+		for dataIndex, unwrappedDifferenceVector in ipairs(differenceVector) do diagonalMatrix[dataIndex][dataIndex] = unwrappedDifferenceVector[1] end
 		
 		costVector = AqwamTensorLibrary:applyFunction(costFunctionToApply, labelVector, hypothesisVector)
 

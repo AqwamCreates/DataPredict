@@ -44,8 +44,6 @@ local defaultLinkFunction = "Linear"
 
 local defaultPValue = 2
 
-local defaultModelParametersInitializationMode = "Diagonal"
-
 local cutOffFunction = function (value) return (((value < 0.5) and 0) or 1) end
 
 local function calculateProbabilityDensityFunctionValue(z)

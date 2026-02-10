@@ -90,21 +90,19 @@ function RecursiveLeastSquaresFilterModel:train(previousStateMatrix, currentStat
 	
 	kalmanGainVectorDenominator = AqwamTensorLibrary:add(forgetFactor, kalmanGainVectorDenominator)
 	
-	local kalmanGainVector = AqwamTensorLibrary:divide(kalmanGainVectorNumerator, kalmanGainVectorDenominator)
+	local kalmanGainVector = AqwamTensorLibrary:divide(kalmanGainVectorNumerator, kalmanGainVectorDenominator) -- if m = 1, then 1 x n.
 	
 	local transposedKalmanGainVector = AqwamTensorLibrary:transpose(kalmanGainVector)
 	
-	local weightChangeVector = AqwamTensorLibrary:dotProduct(transposedKalmanGainVector, lossMatrix)
+	local weightChangeVector = AqwamTensorLibrary:multiply(kalmanGainVector, lossMatrix) -- 1 x n, 1 x n
 	
-	print(AqwamTensorLibrary:getDimensionSizeArray(transposedKalmanGainVector, lossMatrix))
+	weightChangeVector = AqwamTensorLibrary:transpose(weightChangeVector)
 	
 	weightVector = AqwamTensorLibrary:add(weightVector, weightChangeVector)
 	
 	errorCovarianceMatrix = AqwamTensorLibrary:subtract(errorCovarianceMatrix, AqwamTensorLibrary:dotProduct(transposedKalmanGainVector, previousStateMatrix, errorCovarianceMatrix))
 
 	if (forgetFactor ~= 1) then errorCovarianceMatrix = AqwamTensorLibrary:divide(errorCovarianceMatrix, forgetFactor) end
-	
-	print(AqwamTensorLibrary:getDimensionSizeArray(weightVector, errorCovarianceMatrix))
 	
 	self.ModelParameters = {weightVector, errorCovarianceMatrix}
 	

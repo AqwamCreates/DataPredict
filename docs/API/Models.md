@@ -10,7 +10,7 @@
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
 | [Regression](#regression)                                         | Continuous Value Prediction                     | 14    |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 13    |
-| [Classification And Regression](#classification-and-regression)   | Continuous Value Or Feature-Class Prediction    | 1     |
+| [Regression And Classification](#regression-and-classification)   | Continuous Value Or Feature-Class Prediction    | 1     |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 26    |
 | [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Tables          | 17    |

@@ -144,9 +144,9 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 	
 	local tansposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 	
-	local covarianceMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfdata, numberOfdata}, 1)
+	local diagonalMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfdata, numberOfdata}, 1)
 	
-	local varianceVector
+	local differenceVector
 	
 	local betaVector
 	
@@ -166,11 +166,11 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 
 		self:iterationWait()
 		
-		betaVector = AqwamTensorLibrary:dotProduct(tansposedFeatureMatrix, covarianceMatrix, featureMatrix)
+		betaVector = AqwamTensorLibrary:dotProduct(tansposedFeatureMatrix, diagonalMatrix, featureMatrix)
 		
 		betaVector = AqwamTensorLibrary:inverse(betaVector)
 		
-		betaVector = AqwamTensorLibrary:dotProduct(betaVector, tansposedFeatureMatrix, covarianceMatrix, labelVector)
+		betaVector = AqwamTensorLibrary:dotProduct(betaVector, tansposedFeatureMatrix, diagonalMatrix, labelVector)
 		
 		hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
 		
@@ -184,9 +184,9 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 			
 		end
 		
-		varianceVector = AqwamTensorLibrary:applyFunction(weightFunctionToApply, labelVector, hypothesisVector)
+		differenceVector = AqwamTensorLibrary:applyFunction(weightFunctionToApply, labelVector, hypothesisVector)
 		
-		for dataIndex, unwrappedVarianceVector in ipairs(varianceVector) do covarianceMatrix[dataIndex][dataIndex] = unwrappedVarianceVector[1] end
+		for dataIndex, unwrappedDifferenceVector in ipairs(differenceVector) do diagonalMatrix[dataIndex][dataIndex] = unwrappedDifferenceVector[1] end
 		
 		costVector = AqwamTensorLibrary:applyFunction(costFunctionToApply, labelVector, hypothesisVector)
 

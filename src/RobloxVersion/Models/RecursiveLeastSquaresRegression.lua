@@ -30,11 +30,11 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseModel = require(script.Parent.BaseModel)
 
-local RecursiveLeastSquaresFilterModel = {}
+local RecursiveLeastSquaresRegressionModel = {}
 
-RecursiveLeastSquaresFilterModel.__index = RecursiveLeastSquaresFilterModel
+RecursiveLeastSquaresRegressionModel.__index = RecursiveLeastSquaresRegressionModel
 
-setmetatable(RecursiveLeastSquaresFilterModel, BaseModel)
+setmetatable(RecursiveLeastSquaresRegressionModel, BaseModel)
 
 local defaultLossFunction = "L2"
 
@@ -48,25 +48,25 @@ local lossFunctionList = {
 	
 }
 
-function RecursiveLeastSquaresFilterModel.new(parameterDictionary)
+function RecursiveLeastSquaresRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewRecursiveLeastSquaresFilterModel = BaseModel.new(parameterDictionary)
+	local NewRecursiveLeastSquaresRegressionModel = BaseModel.new(parameterDictionary)
 
-	setmetatable(NewRecursiveLeastSquaresFilterModel, RecursiveLeastSquaresFilterModel)
+	setmetatable(NewRecursiveLeastSquaresRegressionModel, RecursiveLeastSquaresRegressionModel)
 
-	NewRecursiveLeastSquaresFilterModel:setName("RecursiveLeastSquaresFilter")
+	NewRecursiveLeastSquaresRegressionModel:setName("RecursiveLeastSquaresRegression")
 	
-	NewRecursiveLeastSquaresFilterModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
+	NewRecursiveLeastSquaresRegressionModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
 	
-	NewRecursiveLeastSquaresFilterModel.forgetFactor = parameterDictionary.forgetFactor or defaultForgetFactor
+	NewRecursiveLeastSquaresRegressionModel.forgetFactor = parameterDictionary.forgetFactor or defaultForgetFactor
 
-	return NewRecursiveLeastSquaresFilterModel
+	return NewRecursiveLeastSquaresRegressionModel
 	
 end
 
-function RecursiveLeastSquaresFilterModel:train(featureMatrix, labelVector)
+function RecursiveLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 
 	local numberOfData = #featureMatrix
 
@@ -152,7 +152,7 @@ function RecursiveLeastSquaresFilterModel:train(featureMatrix, labelVector)
 
 end
 
-function RecursiveLeastSquaresFilterModel:predict(stateMatrix)
+function RecursiveLeastSquaresRegressionModel:predict(stateMatrix)
 
 	local weightMatrix = self.ModelParameters[1]
 	
@@ -160,4 +160,4 @@ function RecursiveLeastSquaresFilterModel:predict(stateMatrix)
 	
 end
 
-return RecursiveLeastSquaresFilterModel
+return RecursiveLeastSquaresRegressionModel

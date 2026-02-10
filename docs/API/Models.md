@@ -250,16 +250,16 @@
 
 [NaiveBayesBaseModel](Models/NaiveBayesBaseModel.md)
 
+[IterativeMethodBaseModel](Models/IterativeMethodBaseModel.md)
+
 [GradientMethodBaseModel](Models/GradientMethodBaseModel.md)
 
-[IterativeMethodBaseModel](Models/IterativeMethodBaseModel.md)
+[GenerativeAdversarialNetworkBaseModel](GenerativeAdversarialNetworkBaseModel.md)
+
+[MatrixFactorizationBaseModel](Models/MatrixFactorizationBaseModel.md)
+
+[TabularReinforcementLearningBaseModel](Models/TabularReinforcementLearningBaseModel.md)
 
 [DeepReinforcementLearningBaseModel](Models/DeepReinforcementLearningBaseModel.md)
 
 [DeepReinforcementLearningActorCriticBaseModel](Models/DeepReinforcementLearningActorCriticBaseModel.md)
-
-[TabularReinforcementLearningBaseModel](Models/TabularReinforcementLearningBaseModel.md)
-
-[MatrixFactorizationBaseModel](Models/MatrixFactorizationBaseModel.md)
-
-[GenerativeAdversarialNetworkBaseModel](GenerativeAdversarialNetworkBaseModel.md)

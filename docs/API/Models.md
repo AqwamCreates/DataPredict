@@ -8,14 +8,14 @@
 
 | Model Type                                                        | Purpose                                         | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
-| [Regression](#regression)                                         | Continuous Value Prediction                     | 14    |
+| [Regression](#regression)                                         | Continuous Value Prediction                     | 15    |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 13    |
 | [Classification And Regression](#classification-and-regression)   | Continuous Value Or Feature-Class Prediction    | 1     |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 26    |
 | [Tabular Reinforcement Learning](#tabular-reinforcement-learning) | State-Action Optimization Using Tables          | 17    |
 | [Sequence Modelling](#sequence-modelling)                         | Next State Prediction And Generation            | 3     |
-| [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 5     |
+| [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 4     |
 | [Recommendation](#recommendation)                                 | User-Item Pairing                               | 5     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
@@ -62,8 +62,8 @@
 | [QuantileRegression](Models/QuantileRegression.md)                                         | None            | 🟢 🟡            | Case-Based Time-To-Leave Prediction And In-Game Currency Price Generation                                |
 | [PoissonRegression](Models/PoissonRegression.md)                                           | None            | 🟢 🟡 ⚠️         | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
 | [NegativeBinomialRegression](Models/NegativeBinomialRegression.md)                         | None            | 🟢 🟡 ⚠️         | Positive-Integer-Based Time-To-Leave Prediction And In-Game Currency Price Generation                    |
-| [GammaRegression](Models/GammaRegression.md)                                               | None            | ❗ 🟢 🟡 ⚠️      | Player Session Duration Prediction And Content Engagement Time Prediction                                |
-| [IsotonicRegression](Models/IsotonicRegression.md)                                         | None            | ⚡ 🟢 🟡         | 1-Dimensional Skill-Based Time-To-Leave Prediction                                                       |
+| [GammaRegression](Models/GammaRegression.md)                                               | None            | ❗ 🟢 🟡 ⚠️      | Player Session Duration Prediction And Content Engagement Time Prediction                               |
+| [IsotonicRegression](Models/IsotonicRegression.md)                                         | None            | ⚡ 🟢 🟡         | 1-Dimensional Skill-Based Time-To-Leave Prediction                                                      |
 | [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                         | PA-R            | ⚡ 🟢            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
 | [SupportVectorRegression](Models/SupportVectorRegression.md)                               | SVR             | 💾 🟡            | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
 | [SupportVectorRegressionGradientVariant](Models/SupportVectorRegressionGradientVariant.md) | SVR             | 🟢 🟡            | Real-Time Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                     |
@@ -71,6 +71,7 @@
 | [NormalEquationLinearRegression](Models/NormalEquationLinearRegression.md)*                | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
 | [BayesianLinearRegression](Models/BayesianLinearRegression.md)*                            | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [BayesianQuantileLinearRegression](Models/BayesianQuantileLinearRegression.md)*            | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
+| [RecursiveLeastSquaresRegression](Models/RecursiveLeastSquaresRegression.md)               | RLS             | 💾 ⚡ 🟢 🟡     | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation       |
 
 \* The "instant train" models assumes that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.
 
@@ -196,7 +197,6 @@
 
 | Model                                                                                            | Alternate Names | Properties | Use Cases                       |
 |--------------------------------------------------------------------------------------------------|-----------------|------------|---------------------------------|
-| [RecursiveLeastSquaresFilter](Models/RecursiveLeastSquaresFilter.md)                             | RLS / RLSF      | 🟢        | Movement Anti-Cheat             |
 | [KalmanFilter](Models/KalmanFilter.md)                                                           | KF              | 🟢 ⚠️     | Linear Movement Anti-Cheat     |
 | [ExtendedKalmanFilter](Models/ExtendedKalmanFilter.md)                                           | EKF             | 🟢 ⚙️     | Non-Linear Movement Anti-Cheat |
 | [UnscentedKalmanFilter](Models/UnscentedKalmanFilter.md)                                         | UKF             | 💾 🟢 ⚙️  | Non-Linear Movement Anti-Cheat |

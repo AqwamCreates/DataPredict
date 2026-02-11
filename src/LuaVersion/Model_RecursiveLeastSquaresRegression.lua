@@ -104,7 +104,7 @@ function RecursiveLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 
 	local numberOfData = #featureMatrix
 
-	if (#labelVector ~= numberOfData) then error("The feature matrix and the label vector does not contain the same number of rows.") end
+	if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
 	local numberOfFeatures = #featureMatrix[1]
 	

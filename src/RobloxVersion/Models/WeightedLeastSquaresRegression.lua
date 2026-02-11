@@ -72,7 +72,19 @@ function WeightedLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 
 	end
 	
-	local weightMatrix = self.weightMatrix or AqwamTensorLibrary:createIdentityTensor({numberOfdata, numberOfdata}, 1)
+	local weightMatrix = self.weightMatrix
+		
+	if (weightMatrix) then
+		
+		if (#weightMatrix ~= numberOfdata) then error("The number of data does not match the number of rows in the weight matrix.") end
+		
+		if (#weightMatrix[1] ~= numberOfdata) then error("The number of data does not match the number of columns in the weight matrix.") end
+		
+	else
+		
+		weightMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfdata, numberOfdata}, 1)
+		
+	end
 	
 	local tansposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 	

@@ -52,7 +52,7 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 14 Models
+	-- Regression - 17 Models
 
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -66,7 +66,9 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	IsotonicRegression = require(Models.IsotonicRegression),
 	
-	NormalEquationLinearRegression = require(Models.NormalEquationLinearRegression),
+	OrdinaryLeastSquaresRegression = require(Models.OrdinaryLeastSquaresRegression),
+	
+	RidgeRegression = require(Models.RidgeRegression),
 	
 	BayesianLinearRegression = require(Models.BayesianLinearRegression),
 	
@@ -81,6 +83,10 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	KNearestNeighboursRegressor = require(Models.KNearestNeighboursRegressor),
 	
 	RecursiveLeastSquaresRegression = require(Models.RecursiveLeastSquaresRegression),
+	
+	WeightedLeastSquaresRegression = require(Models.WeightedLeastSquaresRegression),
+	
+	IterativeReweightedLeastSquaresRegression = require(Models.IterativeReweightedLeastSquaresRegression),
 	
 	-- Classification - 13 Models
 	
@@ -109,10 +115,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	CategoricalNaiveBayes = require(Models.CategoricalNaiveBayes),
 	
 	OrdinalRegression = require(Models.OrdinalRegression),
-	
-	-- Regression And Classification - 13 Models
-	
-	IterativeReweightedLeastSquaresRegression = require(Models.IterativeReweightedLeastSquaresRegression),
 	
 	-- Clustering - 10 Models
 
@@ -432,166 +434,4 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Others = {
 
 }
 
-return AqwamMachineDeepAndReinforcementLearningLibrary	parameterDictionary = parameterDictionary or {}
-
-	local NewRecursiveLeastSquaresRegressionModel = BaseModel.new(parameterDictionary)
-
-	setmetatable(NewRecursiveLeastSquaresRegressionModel, RecursiveLeastSquaresRegressionModel)
-
-	NewRecursiveLeastSquaresRegressionModel:setName("RecursiveLeastSquaresRegression")
-	
-	NewRecursiveLeastSquaresRegressionModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
-	
-	NewRecursiveLeastSquaresRegressionModel.forgetFactor = parameterDictionary.forgetFactor or defaultForgetFactor
-	
-	NewRecursiveLeastSquaresRegressionModel.useLogProbabilities = NewRecursiveLeastSquaresRegressionModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
-
-	return NewRecursiveLeastSquaresRegressionModel
-	
-end
-
-function RecursiveLeastSquaresRegressionModel:train(featureMatrix, labelVector)
-
-	local numberOfData = #featureMatrix
-
-	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
-	
-	local numberOfFeatures = #featureMatrix[1]
-	
-	local lossFunction = self.lossFunction
-	
-	local lossFunctionToApply = lossFunctionList[lossFunction]
-
-	if (not lossFunctionToApply) then error("Invalid loss function.") end
-	
-	local forgetFactor = self.forgetFactor
-	
-	local ModelParameters = self.ModelParameters or {}
-	
-	local weightVector = ModelParameters[1] or self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
-	
-	if (numberOfFeatures ~= #weightVector) then error("The number of features are not the same as the model parameters.") end
-	
-	local errorCovarianceMatrix = ModelParameters[2] or AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
-	
-	local featureVector
-	
-	local predictedValue
-	
-	local lossValue
-	
-	local kalmanGainVectorNumerator
-	
-	local transposedFeatureVector
-	
-	local kalmanGainVectorDenominator
-	
-	local kalmanGainVector
-	
-	local transposedKalmanGainVector
-	
-	local weightChangeVector
-	
-	local cost = 0
-	
-	for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
-		
-		featureVector = {unwrappedFeatureVector}
-		
-		predictedValue = AqwamTensorLibrary:dotProduct(featureVector, weightVector)[1][1]
-		
-		lossValue = predictedValue - labelVector[dataIndex][1]
-		
-		kalmanGainVectorNumerator = AqwamTensorLibrary:dotProduct(featureVector, errorCovarianceMatrix) -- 1 x n
-		
-		transposedFeatureVector = AqwamTensorLibrary:transpose(featureVector) -- n x 1
-		
-		kalmanGainVectorDenominator = AqwamTensorLibrary:dotProduct(featureVector, errorCovarianceMatrix, transposedFeatureVector) -- 1 x 1
-		
-		kalmanGainVectorDenominator = AqwamTensorLibrary:add(forgetFactor, kalmanGainVectorDenominator)
-		
-		kalmanGainVector = AqwamTensorLibrary:divide(kalmanGainVectorNumerator, kalmanGainVectorDenominator) -- 1 x n
-		
-		transposedKalmanGainVector = AqwamTensorLibrary:transpose(kalmanGainVector)
-		
-		weightChangeVector = AqwamTensorLibrary:multiply(kalmanGainVector, lossValue) -- 1 x n
-		
-		weightChangeVector = AqwamTensorLibrary:transpose(weightChangeVector)
-
-		weightVector = AqwamTensorLibrary:add(weightVector, weightChangeVector)
-		
-		errorCovarianceMatrix = AqwamTensorLibrary:subtract(errorCovarianceMatrix, AqwamTensorLibrary:dotProduct(transposedKalmanGainVector, featureVector, errorCovarianceMatrix))
-
-		if (forgetFactor ~= 1) then errorCovarianceMatrix = AqwamTensorLibrary:divide(errorCovarianceMatrix, forgetFactor) end
-		
-		cost = cost + lossFunctionToApply(lossValue)
-		
-	end
-	
-	self.ModelParameters = {weightVector, errorCovarianceMatrix}
-	
-	cost = cost / numberOfData
-
-	return {cost}
-
-end
-
-function RecursiveLeastSquaresRegressionModel:predict(featureMatrix, thresholdMatrix)
-
-	if (thresholdMatrix) then
-
-		if (#featureMatrix ~= #thresholdMatrix) then error("The feature matrix and the threshold matrix does not contain the same number of rows.") end
-
-	end
-
-	local ModelParameters = self.ModelParameters
-
-	local weightVector
-
-	local covarianceMatrix
-
-	if (not ModelParameters) then
-
-		local numberOfFeatures = #featureMatrix[1]
-
-		weightVector = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
-
-		covarianceMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
-
-		self.ModelParameters = {weightVector, covarianceMatrix}
-
-	else
-
-		weightVector = ModelParameters[1]
-
-		covarianceMatrix = ModelParameters[2]
-
-	end
-
-	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, weightVector)
-
-	if (not thresholdMatrix) then return predictedVector end
-
-	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
-
-	local predictedVarianceVectorPart1 = AqwamTensorLibrary:dotProduct(featureMatrix, covarianceMatrix)
-
-	local predictedVarianceVectorPart2 = AqwamTensorLibrary:dotProduct(predictedVarianceVectorPart1, transposedFeatureMatrix)
-
-	local predictedVarianceVector = {}
-
-	for i, predictedVarianceTable in ipairs(predictedVarianceVectorPart2) do
-
-		predictedVarianceVector[i] = {predictedVarianceTable[i]}
-
-	end
-
-	local predictedStandardDeviationVector = AqwamTensorLibrary:applyFunction(math.sqrt, predictedVarianceVector)
-
-	local probabilityMatrix = calculateGaussianProbability(self.useLogProbabilities, thresholdMatrix, predictedVector, predictedStandardDeviationVector)
-
-	return predictedVector, probabilityMatrix 
-
-end
-
-return RecursiveLeastSquaresRegressionModel
+return AqwamMachineDeepAndReinforcementLearningLibrary

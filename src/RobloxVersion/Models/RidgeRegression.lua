@@ -92,9 +92,9 @@ function RidgeRegressionModel:train(featureMatrix, labelVector)
 
 	end
 
-	local newInverseDotProduct = AqwamTensorLibrary:inverse(newDotProductFeatureMatrix)
+	local newInverseDotProductMatrix = AqwamTensorLibrary:inverse(newDotProductFeatureMatrix)
 
-	if (not newInverseDotProduct) then error("Could not find the model parameters.") end
+	if (not newInverseDotProductMatrix) then error("Could not find the model parameters.") end
 	
 	local newDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
 	
@@ -106,7 +106,7 @@ function RidgeRegressionModel:train(featureMatrix, labelVector)
 		
 	end
 
-	local newWeightVector = AqwamTensorLibrary:dotProduct(newInverseDotProduct, newDotProductFeatureMatrixAndLabelVector)
+	local newWeightVector = AqwamTensorLibrary:dotProduct(newInverseDotProductMatrix, newDotProductFeatureMatrixAndLabelVector)
 
 	self.ModelParameters = {newWeightVector, newDotProductFeatureMatrix, newDotProductFeatureMatrixAndLabelVector}
 
@@ -130,56 +130,4 @@ function RidgeRegressionModel:predict(featureMatrix)
 
 end
 
-return RidgeRegressionModel		local lambdaIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures}, lambda)
-
-		newDotProductFeatureMatrix = AqwamTensorLibrary:add(newDotProductFeatureMatrix, lambdaIdentityMatrix)
-
-	end
-	
-	if (oldDotProductFeatureMatrix) then
-		
-		oldDotProductFeatureMatrix = AqwamTensorLibrary:multiply(weightDecay, oldDotProductFeatureMatrix)
-
-		newDotProductFeatureMatrix = AqwamTensorLibrary:add(newDotProductFeatureMatrix, oldDotProductFeatureMatrix)
-
-	end
-
-	local newInverseDotProduct = AqwamTensorLibrary:inverse(newDotProductFeatureMatrix)
-
-	if (not newInverseDotProduct) then error("Could not find the model parameters.") end
-	
-	local newDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
-	
-	if (oldDotProductFeatureMatrixAndLabelVector) then
-		
-		oldDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:multiply(weightDecay, oldDotProductFeatureMatrixAndLabelVector)
-		
-		newDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:add(newDotProductFeatureMatrixAndLabelVector, oldDotProductFeatureMatrixAndLabelVector)
-		
-	end
-
-	local newWeightVector = AqwamTensorLibrary:dotProduct(newInverseDotProduct, newDotProductFeatureMatrixAndLabelVector)
-
-	self.ModelParameters = {newWeightVector, newDotProductFeatureMatrix, newDotProductFeatureMatrixAndLabelVector}
-
-end
-
-function NormalEquationLinearRegressionModel:predict(featureMatrix)
-
-	local ModelParameters = self.ModelParameters or {}
-	
-	local weightVector = ModelParameters[1]
-
-	if (not weightVector) then
-
-		weightVector = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
-
-		self.ModelParameters = {weightVector}
-
-	end
-
-	return AqwamTensorLibrary:dotProduct(featureMatrix, weightVector)
-
-end
-
-return NormalEquationLinearRegressionModel
+return RidgeRegressionModel

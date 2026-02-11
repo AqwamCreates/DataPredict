@@ -44,6 +44,8 @@ local defaultLinkFunction = "Linear"
 
 local defaultPValue = 2
 
+local defaultModelParametersInitializationMode = "Zero"
+
 local cutOffFunction = function (value) return (((value < 0.5) and 0) or 1) end
 
 local function calculateProbabilityDensityFunctionValue(z)
@@ -71,6 +73,8 @@ function IterativeReweightedLeastSquaresRegressionModel.new(parameterDictionary)
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	
+	parameterDictionary.modelParametersInitializationMode = parameterDictionary.modelParametersInitializationMode or defaultModelParametersInitializationMode
 
 	local NewIterativeReweightedLeastSquaresRegressionModel = IterativeMethodBaseModel.new(parameterDictionary)
 
@@ -126,13 +130,13 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 	
 	local tansposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 	
-	local diagonalMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfdata, numberOfdata}, 1)
+	local diagonalMatrix = AqwamTensorLibrary:createTensor({numberOfdata, numberOfdata})
 	
-	local betaVector
+	local responseVector
+
+	local errorVector
 	
-	local hypothesisVector
-	
-	local differenceVector
+	local betaChangeVector
 	
 	local costVector
 	
@@ -144,25 +148,21 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 
 		self:iterationWait()
 		
+		responseVector = AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
+		
+		if (linkFunctionToApply) then responseVector = AqwamTensorLibrary:applyFunction(linkFunctionToApply, responseVector) end
+		
+		errorVector = AqwamTensorLibrary:applyFunction(weightFunctionToApply, labelVector, responseVector)
+
+		for dataIndex, unwrappedErrorVector in ipairs(errorVector) do diagonalMatrix[dataIndex][dataIndex] = unwrappedErrorVector[1] end
+		
 		betaVector = AqwamTensorLibrary:dotProduct(tansposedFeatureMatrix, diagonalMatrix, featureMatrix)
 		
 		betaVector = AqwamTensorLibrary:inverse(betaVector)
 		
 		betaVector = AqwamTensorLibrary:dotProduct(betaVector, tansposedFeatureMatrix, diagonalMatrix, labelVector)
 		
-		hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
-		
-		if (linkFunctionToApply) then 
-			
-			hypothesisVector = AqwamTensorLibrary:applyFunction(linkFunctionToApply, hypothesisVector)
-			
-		end
-		
-		differenceVector = AqwamTensorLibrary:applyFunction(weightFunctionToApply, labelVector, hypothesisVector)
-		
-		for dataIndex, unwrappedDifferenceVector in ipairs(differenceVector) do diagonalMatrix[dataIndex][dataIndex] = unwrappedDifferenceVector[1] end
-		
-		costVector = AqwamTensorLibrary:applyFunction(costFunctionToApply, labelVector, hypothesisVector)
+		costVector = AqwamTensorLibrary:applyFunction(costFunctionToApply, labelVector, responseVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 

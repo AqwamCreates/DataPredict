@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - NormalEquationLinearRegression
+# [API Reference](../../API.md) - [Models](../Models.md) - RidgeRegression
 
-NormalEquationLinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses matrix calculations to find the best model parameters.
+RidgeRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses matrix calculations to find the best model parameters.
 
 ## Stored Model Parameters
 
@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-NormalEquationLinearRegression.new(lambda: number): ModelObject
+RidgeRegression.new(lambda: number): ModelObject
 ```
 
 #### Parameters:
@@ -33,7 +33,7 @@ NormalEquationLinearRegression.new(lambda: number): ModelObject
 Train the model.
 
 ```
-NormalEquationLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
+RidgeRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 ```
 
 #### Parameters:
@@ -47,7 +47,7 @@ NormalEquationLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict the value for a given data.
 
 ```
-NormalEquationLinearRegression:predict(featureMatrix: Matrix): Matrix
+RidgeRegression:predict(featureMatrix: Matrix): Matrix
 ```
 
 #### Parameters:

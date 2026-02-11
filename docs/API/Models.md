@@ -8,7 +8,7 @@
 
 | Model Type                                                        | Purpose                                         | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
-| [Regression](#regression)                                         | Continuous Value Prediction                     | 14    |
+| [Regression](#regression)                                         | Continuous Value Prediction                     | 15    |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 13    |
 | [Regression And Classification](#regression-and-classification)   | Continuous Value Or Feature-Class Prediction    | 1     |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
@@ -20,7 +20,7 @@
 | [Recommendation](#recommendation)                                 | User-Item Pairing                               | 5     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 102   |
+| Total                                                             |                                                 | 103   |
 
 ### Legend
 

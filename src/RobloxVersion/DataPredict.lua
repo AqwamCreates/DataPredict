@@ -52,7 +52,7 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 16 Models
+	-- Regression - 17 Models
 
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -83,6 +83,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	KNearestNeighboursRegressor = require(Models.KNearestNeighboursRegressor),
 	
 	RecursiveLeastSquaresRegression = require(Models.RecursiveLeastSquaresRegression),
+	
+	WeightedLeastSquaresRegression = require(Models.WeightedLeastSquaresRegression),
 	
 	IterativeReweightedLeastSquaresRegression = require(Models.IterativeReweightedLeastSquaresRegression),
 	

@@ -30,33 +30,33 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseModel = require(script.Parent.BaseModel)
 
-local NormalEquationLinearRegressionModel = {}
+local RidgeRegressionModel = {}
 
-NormalEquationLinearRegressionModel.__index = NormalEquationLinearRegressionModel
+RidgeRegressionModel.__index = RidgeRegressionModel
 
-setmetatable(NormalEquationLinearRegressionModel, BaseModel)
+setmetatable(RidgeRegressionModel, BaseModel)
 
 local defaultLambda = 0
 
 local defaultWeightDecay = 1
 
-function NormalEquationLinearRegressionModel.new(parameterDictionary)
+function RidgeRegressionModel.new(parameterDictionary)
 
-	local NewNormalEquationLinearRegressionModel = BaseModel.new(parameterDictionary)
+	local NewRidgeRegressionModel = BaseModel.new(parameterDictionary)
 
-	setmetatable(NewNormalEquationLinearRegressionModel, NormalEquationLinearRegressionModel)
+	setmetatable(NewRidgeRegressionModel, RidgeRegressionModel)
 
-	NewNormalEquationLinearRegressionModel:setName("NormalEquationLinearRegression")
+	NewRidgeRegressionModel:setName("RidgeRegression")
 
-	NewNormalEquationLinearRegressionModel.lambda = parameterDictionary.lambda or defaultLambda
+	NewRidgeRegressionModel.lambda = parameterDictionary.lambda or defaultLambda
 	
-	NewNormalEquationLinearRegressionModel.weightDecay = parameterDictionary.weightDecay or defaultWeightDecay
+	NewRidgeRegressionModel.weightDecay = parameterDictionary.weightDecay or defaultWeightDecay
 
-	return NewNormalEquationLinearRegressionModel
+	return NewRidgeRegressionModel
 
 end
 
-function NormalEquationLinearRegressionModel:train(featureMatrix, labelVector)
+function RidgeRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 
@@ -79,6 +79,58 @@ function NormalEquationLinearRegressionModel:train(featureMatrix, labelVector)
 		local numberOfFeatures = #featureMatrix[1]
 
 		local lambdaIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures}, lambda)
+
+		newDotProductFeatureMatrix = AqwamTensorLibrary:add(newDotProductFeatureMatrix, lambdaIdentityMatrix)
+
+	end
+	
+	if (oldDotProductFeatureMatrix) then
+		
+		oldDotProductFeatureMatrix = AqwamTensorLibrary:multiply(weightDecay, oldDotProductFeatureMatrix)
+
+		newDotProductFeatureMatrix = AqwamTensorLibrary:add(newDotProductFeatureMatrix, oldDotProductFeatureMatrix)
+
+	end
+
+	local newInverseDotProduct = AqwamTensorLibrary:inverse(newDotProductFeatureMatrix)
+
+	if (not newInverseDotProduct) then error("Could not find the model parameters.") end
+	
+	local newDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
+	
+	if (oldDotProductFeatureMatrixAndLabelVector) then
+		
+		oldDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:multiply(weightDecay, oldDotProductFeatureMatrixAndLabelVector)
+		
+		newDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:add(newDotProductFeatureMatrixAndLabelVector, oldDotProductFeatureMatrixAndLabelVector)
+		
+	end
+
+	local newWeightVector = AqwamTensorLibrary:dotProduct(newInverseDotProduct, newDotProductFeatureMatrixAndLabelVector)
+
+	self.ModelParameters = {newWeightVector, newDotProductFeatureMatrix, newDotProductFeatureMatrixAndLabelVector}
+
+end
+
+function RidgeRegressionModel:predict(featureMatrix)
+
+	local ModelParameters = self.ModelParameters or {}
+	
+	local weightVector = ModelParameters[1]
+
+	if (not weightVector) then
+
+		weightVector = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+
+		self.ModelParameters = {weightVector}
+
+	end
+
+	return AqwamTensorLibrary:dotProduct(featureMatrix, weightVector)
+
+end
+
+return RidgeRegressionModel		local lambdaIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures}, lambda)
 
 		newDotProductFeatureMatrix = AqwamTensorLibrary:add(newDotProductFeatureMatrix, lambdaIdentityMatrix)
 

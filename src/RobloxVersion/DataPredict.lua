@@ -52,7 +52,7 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 15 Models
+	-- Regression - 16 Models
 
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -84,6 +84,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	RecursiveLeastSquaresRegression = require(Models.RecursiveLeastSquaresRegression),
 	
+	IterativeReweightedLeastSquaresRegression = require(Models.IterativeReweightedLeastSquaresRegression),
+	
 	-- Classification - 13 Models
 	
 	BinaryRegression = require(Models.BinaryRegression),
@@ -111,10 +113,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	CategoricalNaiveBayes = require(Models.CategoricalNaiveBayes),
 	
 	OrdinalRegression = require(Models.OrdinalRegression),
-	
-	-- Regression And Classification - 13 Models
-	
-	IterativeReweightedLeastSquaresRegression = require(Models.IterativeReweightedLeastSquaresRegression),
 	
 	-- Clustering - 10 Models
 

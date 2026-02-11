@@ -58,7 +58,19 @@ function OrdinaryLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
-	local oldBetaVector = self.ModelParameters or self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+	local numberOfFeatures = #featureMatrix[1]
+	
+	local betaVector = self.ModelParameters
+
+	if (betaVector) then
+
+		if (numberOfFeatures ~= #betaVector) then error("The number of features are not the same as the model parameters.") end
+
+	else
+
+		betaVector = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
+
+	end
 
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 
@@ -68,15 +80,15 @@ function OrdinaryLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 
 	if (not inverseDotProductMatrix) then error("Could not find the model parameters.") end
 	
-	local responseVector = AqwamTensorLibrary:dotProduct(featureMatrix, oldBetaVector)
+	local responseVector = AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
 	
 	local errorVector = AqwamTensorLibrary:subtract(labelVector, responseVector)
 	
 	local betaChangeVector = AqwamTensorLibrary:dotProduct(inverseDotProductMatrix, transposedFeatureMatrix, errorVector)
 
-	local newBetaVector = AqwamTensorLibrary:add(oldBetaVector, betaChangeVector)
+	betaVector = AqwamTensorLibrary:add(betaVector, betaChangeVector)
 
-	self.ModelParameters = newBetaVector
+	self.ModelParameters = betaVector
 
 end
 

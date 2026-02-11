@@ -66,7 +66,17 @@ function RidgeRegressionModel:train(featureMatrix, labelVector)
 	
 	local lambda = self.lambda
 	
-	local betaVector = self.ModelParameters or self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
+	local betaVector = self.ModelParameters
+	
+	if (betaVector) then
+
+		if (numberOfFeatures ~= #betaVector) then error("The number of features are not the same as the model parameters.") end
+
+	else
+
+		betaVector = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
+
+	end
 
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 

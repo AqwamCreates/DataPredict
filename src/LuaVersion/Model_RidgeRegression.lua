@@ -30,33 +30,33 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
-local NormalEquationLinearRegressionModel = {}
+local RidgeRegressionModel = {}
 
-NormalEquationLinearRegressionModel.__index = NormalEquationLinearRegressionModel
+RidgeRegressionModel.__index = RidgeRegressionModel
 
-setmetatable(NormalEquationLinearRegressionModel, BaseModel)
+setmetatable(RidgeRegressionModel, BaseModel)
 
 local defaultLambda = 0
 
 local defaultWeightDecay = 1
 
-function NormalEquationLinearRegressionModel.new(parameterDictionary)
+function RidgeRegressionModel.new(parameterDictionary)
 
-	local NewNormalEquationLinearRegressionModel = BaseModel.new(parameterDictionary)
+	local NewRidgeRegressionModel = BaseModel.new(parameterDictionary)
 
-	setmetatable(NewNormalEquationLinearRegressionModel, NormalEquationLinearRegressionModel)
+	setmetatable(NewRidgeRegressionModel, RidgeRegressionModel)
 
-	NewNormalEquationLinearRegressionModel:setName("NormalEquationLinearRegression")
+	NewRidgeRegressionModel:setName("RidgeRegression")
 
-	NewNormalEquationLinearRegressionModel.lambda = parameterDictionary.lambda or defaultLambda
+	NewRidgeRegressionModel.lambda = parameterDictionary.lambda or defaultLambda
 	
-	NewNormalEquationLinearRegressionModel.weightDecay = parameterDictionary.weightDecay or defaultWeightDecay
+	NewRidgeRegressionModel.weightDecay = parameterDictionary.weightDecay or defaultWeightDecay
 
-	return NewNormalEquationLinearRegressionModel
+	return NewRidgeRegressionModel
 
 end
 
-function NormalEquationLinearRegressionModel:train(featureMatrix, labelVector)
+function RidgeRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 
@@ -112,7 +112,7 @@ function NormalEquationLinearRegressionModel:train(featureMatrix, labelVector)
 
 end
 
-function NormalEquationLinearRegressionModel:predict(featureMatrix)
+function RidgeRegressionModel:predict(featureMatrix)
 
 	local ModelParameters = self.ModelParameters or {}
 	
@@ -130,4 +130,4 @@ function NormalEquationLinearRegressionModel:predict(featureMatrix)
 
 end
 
-return NormalEquationLinearRegressionModel
+return RidgeRegressionModel

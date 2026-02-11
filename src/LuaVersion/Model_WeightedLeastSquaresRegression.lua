@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require(AqwamTensorLibrary)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseModel = require("Model_BaseModel")
 
@@ -72,9 +72,9 @@ function WeightedLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 
 	end
 	
-	local tansposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
-	
 	local weightMatrix = self.weightMatrix or AqwamTensorLibrary:createIdentityTensor({numberOfdata, numberOfdata}, 1)
+	
+	local tansposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 	
 	local responseVector = AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
 	

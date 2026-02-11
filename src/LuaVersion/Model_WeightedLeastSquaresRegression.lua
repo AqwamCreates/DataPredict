@@ -36,9 +36,13 @@ WeightedLeastSquaresRegressionModel.__index = WeightedLeastSquaresRegressionMode
 
 setmetatable(WeightedLeastSquaresRegressionModel, BaseModel)
 
+local defaultModelParametersInitializationMode = "Zero"
+
 function WeightedLeastSquaresRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.modelParametersInitializationMode = parameterDictionary.modelParametersInitializationMode or defaultModelParametersInitializationMode
 
 	local NewWeightedLeastSquaresRegressionModel = BaseModel.new(parameterDictionary)
 

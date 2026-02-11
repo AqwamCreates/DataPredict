@@ -30,8 +30,6 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseModel = require(script.Parent.BaseModel)
 
-local ZTableFunction = require(script.Parent.Parent.Cores.ZTableFunction)
-
 local WeightedLeastSquaresRegressionModel = {}
 
 WeightedLeastSquaresRegressionModel.__index = WeightedLeastSquaresRegressionModel

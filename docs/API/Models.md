@@ -73,7 +73,7 @@
 | [BayesianQuantileLinearRegression](Models/BayesianQuantileLinearRegression.md)*            | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
 | [RecursiveLeastSquaresRegression](Models/RecursiveLeastSquaresRegression.md)               | RLS             | 💾 ⚡ 🟢 🟡     | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation       |
 
-\* The "instant train" models assumes that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.
+\* The moodels assume that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.
 
 ## Classification
 

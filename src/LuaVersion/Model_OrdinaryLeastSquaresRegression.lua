@@ -36,10 +36,6 @@ OrdinaryLeastSquaresRegressionModel.__index = OrdinaryLeastSquaresRegressionMode
 
 setmetatable(OrdinaryLeastSquaresRegressionModel, BaseModel)
 
-local defaultLambda = 0
-
-local defaultWeightDecay = 1
-
 function OrdinaryLeastSquaresRegressionModel.new(parameterDictionary)
 
 	local NewOrdinaryLeastSquaresRegressionModel = BaseModel.new(parameterDictionary)

@@ -136,8 +136,6 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 
 	local errorVector
 	
-	local betaChangeVector
-	
 	local costVector
 	
 	local cost

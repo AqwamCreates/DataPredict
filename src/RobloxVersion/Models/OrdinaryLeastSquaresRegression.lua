@@ -58,7 +58,7 @@ function OrdinaryLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
-	local oldWeightVector = self.ModelParameters or self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+	local oldBetaVector = self.ModelParameters or self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
 
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 
@@ -68,31 +68,31 @@ function OrdinaryLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 
 	if (not inverseDotProductMatrix) then error("Could not find the model parameters.") end
 	
-	local responseVector = AqwamTensorLibrary:dotProduct(featureMatrix, oldWeightVector)
+	local responseVector = AqwamTensorLibrary:dotProduct(featureMatrix, oldBetaVector)
 	
 	local errorVector = AqwamTensorLibrary:subtract(labelVector, responseVector)
 	
-	local weightChangeVector = AqwamTensorLibrary:dotProduct(inverseDotProductMatrix, transposedFeatureMatrix, errorVector)
+	local betaChangeVector = AqwamTensorLibrary:dotProduct(inverseDotProductMatrix, transposedFeatureMatrix, errorVector)
 
-	local newWeightVector = AqwamTensorLibrary:add(oldWeightVector, weightChangeVector)
+	local newBetaVector = AqwamTensorLibrary:add(oldBetaVector, betaChangeVector)
 
-	self.ModelParameters = newWeightVector
+	self.ModelParameters = newBetaVector
 
 end
 
 function OrdinaryLeastSquaresRegressionModel:predict(featureMatrix)
 
-	local weightVector = self.ModelParameters
+	local betaVector = self.ModelParameters
 
-	if (not weightVector) then
+	if (not betaVector) then
 
-		weightVector = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+		betaVector = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
 
-		self.ModelParameters = weightVector
+		self.ModelParameters = betaVector
 
 	end
 
-	return AqwamTensorLibrary:dotProduct(featureMatrix, weightVector)
+	return AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
 
 end
 

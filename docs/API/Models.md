@@ -71,7 +71,7 @@
 | [RidgeRegression](Models/RidgeRegression.md)*                                                    | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
 | [BayesianLinearRegression](Models/BayesianLinearRegression.md)*                                  | BLR             | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [BayesianQuantileLinearRegression](Models/BayesianQuantileLinearRegression.md)*                  | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
-| [RecursiveLeastSquaresRegression](Models/RecursiveLeastSquaresRegression.md)                     | RLS             | 💾 ⚡ 🟢 🟡    | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
+| [RecursiveLeastSquaresRegression](Models/RecursiveLeastSquaresRegression.md)*                    | RLS             | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [WeightedLeastSquaresRegression](Models/WeightedLeastSquaresRegression.md)*                      | WLS             | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [IterativeReweightedLeastSquaresRegression](Models/IterativeReweightedLeastSquaresRegression.md) | IRLS            |❗💾 ⚡ 🟢 🟡   | General Time-To-Leave Prediction And In-Game Currency Price Generation                                  |
 

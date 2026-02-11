@@ -196,7 +196,7 @@ function RecursiveLeastSquaresRegressionModel:predict(featureMatrix, thresholdMa
 
 	local ModelParameters = self.ModelParameters
 
-	local weightVector
+	local betaVector
 
 	local covarianceMatrix
 
@@ -204,21 +204,21 @@ function RecursiveLeastSquaresRegressionModel:predict(featureMatrix, thresholdMa
 
 		local numberOfFeatures = #featureMatrix[1]
 
-		weightVector = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
+		betaVector = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
 
 		covarianceMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
 
-		self.ModelParameters = {weightVector, covarianceMatrix}
+		self.ModelParameters = {betaVector, covarianceMatrix}
 
 	else
 
-		weightVector = ModelParameters[1]
+		betaVector = ModelParameters[1]
 
 		covarianceMatrix = ModelParameters[2]
 
 	end
 
-	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, weightVector)
+	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
 
 	if (not thresholdMatrix) then return predictedVector end
 

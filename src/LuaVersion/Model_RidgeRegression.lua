@@ -92,9 +92,9 @@ function RidgeRegressionModel:train(featureMatrix, labelVector)
 
 	end
 
-	local newInverseDotProduct = AqwamTensorLibrary:inverse(newDotProductFeatureMatrix)
+	local newInverseDotProductMatrix = AqwamTensorLibrary:inverse(newDotProductFeatureMatrix)
 
-	if (not newInverseDotProduct) then error("Could not find the model parameters.") end
+	if (not newInverseDotProductMatrix) then error("Could not find the model parameters.") end
 	
 	local newDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
 	
@@ -106,7 +106,7 @@ function RidgeRegressionModel:train(featureMatrix, labelVector)
 		
 	end
 
-	local newWeightVector = AqwamTensorLibrary:dotProduct(newInverseDotProduct, newDotProductFeatureMatrixAndLabelVector)
+	local newWeightVector = AqwamTensorLibrary:dotProduct(newInverseDotProductMatrix, newDotProductFeatureMatrixAndLabelVector)
 
 	self.ModelParameters = {newWeightVector, newDotProductFeatureMatrix, newDotProductFeatureMatrixAndLabelVector}
 

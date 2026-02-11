@@ -38,9 +38,13 @@ setmetatable(RidgeRegressionModel, BaseModel)
 
 local defaultLambda = 0
 
-local defaultWeightDecay = 1
+local defaultModelParametersInitializationMode = "Zero"
 
 function RidgeRegressionModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.modelParametersInitializationMode = parameterDictionary.modelParametersInitializationMode or defaultModelParametersInitializationMode
 
 	local NewRidgeRegressionModel = BaseModel.new(parameterDictionary)
 
@@ -49,8 +53,6 @@ function RidgeRegressionModel.new(parameterDictionary)
 	NewRidgeRegressionModel:setName("RidgeRegression")
 
 	NewRidgeRegressionModel.lambda = parameterDictionary.lambda or defaultLambda
-	
-	NewRidgeRegressionModel.weightDecay = parameterDictionary.weightDecay or defaultWeightDecay
 
 	return NewRidgeRegressionModel
 
@@ -59,74 +61,52 @@ end
 function RidgeRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
-
+	
+	local numberOfFeatures = #featureMatrix[1]
+	
 	local lambda = self.lambda
 	
-	local weightDecay = self.weightDecay
-	
-	local ModelParameters = self.ModelParameters or {}
-	
-	local oldDotProductFeatureMatrix = ModelParameters[2]
-	
-	local oldDotProductFeatureMatrixAndLabelVector = ModelParameters[3]
+	local betaVector = self.ModelParameters or self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
 
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 
-	local newDotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
+	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
 
 	if (lambda ~= 0) then
 
-		local numberOfFeatures = #featureMatrix[1]
-
 		local lambdaIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures}, lambda)
 
-		newDotProductFeatureMatrix = AqwamTensorLibrary:add(newDotProductFeatureMatrix, lambdaIdentityMatrix)
-
-	end
-	
-	if (oldDotProductFeatureMatrix) then
-		
-		oldDotProductFeatureMatrix = AqwamTensorLibrary:multiply(weightDecay, oldDotProductFeatureMatrix)
-
-		newDotProductFeatureMatrix = AqwamTensorLibrary:add(newDotProductFeatureMatrix, oldDotProductFeatureMatrix)
+		dotProductFeatureMatrix = AqwamTensorLibrary:add(dotProductFeatureMatrix, lambdaIdentityMatrix)
 
 	end
 
-	local newInverseDotProductMatrix = AqwamTensorLibrary:inverse(newDotProductFeatureMatrix)
-
-	if (not newInverseDotProductMatrix) then error("Could not find the model parameters.") end
+	local inverseDotProductFeatureMatrix = AqwamTensorLibrary:inverse(dotProductFeatureMatrix)
 	
-	local newDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, labelVector)
+	local responseVector = AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
 	
-	if (oldDotProductFeatureMatrixAndLabelVector) then
-		
-		oldDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:multiply(weightDecay, oldDotProductFeatureMatrixAndLabelVector)
-		
-		newDotProductFeatureMatrixAndLabelVector = AqwamTensorLibrary:add(newDotProductFeatureMatrixAndLabelVector, oldDotProductFeatureMatrixAndLabelVector)
-		
-	end
+	local errorVector = AqwamTensorLibrary:subtract(labelVector, responseVector)
+	
+	local betaChangeVector = AqwamTensorLibrary:dotProduct(inverseDotProductFeatureMatrix, transposedFeatureMatrix, errorVector)
+	
+	betaVector = AqwamTensorLibrary:add(betaVector, betaChangeVector)
 
-	local newWeightVector = AqwamTensorLibrary:dotProduct(newInverseDotProductMatrix, newDotProductFeatureMatrixAndLabelVector)
-
-	self.ModelParameters = {newWeightVector, newDotProductFeatureMatrix, newDotProductFeatureMatrixAndLabelVector}
+	self.ModelParameters = betaVector
 
 end
 
 function RidgeRegressionModel:predict(featureMatrix)
 
-	local ModelParameters = self.ModelParameters or {}
-	
-	local weightVector = ModelParameters[1]
+	local betaVector = self.ModelParameters
 
-	if (not weightVector) then
+	if (not betaVector) then
 
-		weightVector = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+		betaVector = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
 
-		self.ModelParameters = {weightVector}
+		self.ModelParameters = betaVector
 
 	end
 
-	return AqwamTensorLibrary:dotProduct(featureMatrix, weightVector)
+	return AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
 
 end
 

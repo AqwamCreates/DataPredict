@@ -118,9 +118,17 @@ function RecursiveLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 	
 	local ModelParameters = self.ModelParameters or {}
 	
-	local betaVector = ModelParameters[1] or self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
-	
-	if (numberOfFeatures ~= #betaVector) then error("The number of features are not the same as the model parameters.") end
+	local betaVector = ModelParameters[1]
+
+	if (betaVector) then
+
+		if (numberOfFeatures ~= #betaVector) then error("The number of features are not the same as the model parameters.") end
+
+	else
+
+		betaVector = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
+
+	end
 	
 	local errorCovarianceMatrix = ModelParameters[2] or AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
 	

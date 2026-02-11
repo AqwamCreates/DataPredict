@@ -42,6 +42,8 @@ local defaultForgetFactor = 1
 
 local defaultUseLogProbabilities = false
 
+local defaultModelParametersInitializationMode = "Zero"
+
 local lossFunctionList = {
 	
 	["L1"] = math.abs,
@@ -79,6 +81,8 @@ end
 function RecursiveLeastSquaresRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.modelParametersInitializationMode = parameterDictionary.modelParametersInitializationMode or defaultModelParametersInitializationMode
 
 	local NewRecursiveLeastSquaresRegressionModel = BaseModel.new(parameterDictionary)
 
@@ -114,15 +118,15 @@ function RecursiveLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 	
 	local ModelParameters = self.ModelParameters or {}
 	
-	local weightVector = ModelParameters[1] or self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
+	local betaVector = ModelParameters[1] or self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
 	
-	if (numberOfFeatures ~= #weightVector) then error("The number of features are not the same as the model parameters.") end
+	if (numberOfFeatures ~= #betaVector) then error("The number of features are not the same as the model parameters.") end
 	
 	local errorCovarianceMatrix = ModelParameters[2] or AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures})
 	
 	local featureVector
 	
-	local predictedValue
+	local responseValue
 	
 	local lossValue
 	
@@ -136,7 +140,7 @@ function RecursiveLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 	
 	local transposedKalmanGainVector
 	
-	local weightChangeVector
+	local betaChangeVector
 	
 	local cost = 0
 	
@@ -144,9 +148,9 @@ function RecursiveLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 		
 		featureVector = {unwrappedFeatureVector}
 		
-		predictedValue = AqwamTensorLibrary:dotProduct(featureVector, weightVector)[1][1]
+		responseValue = AqwamTensorLibrary:dotProduct(featureVector, betaVector)[1][1]
 		
-		lossValue = predictedValue - labelVector[dataIndex][1]
+		lossValue = responseValue - labelVector[dataIndex][1]
 		
 		kalmanGainVectorNumerator = AqwamTensorLibrary:dotProduct(featureVector, errorCovarianceMatrix) -- 1 x n
 		
@@ -160,11 +164,11 @@ function RecursiveLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 		
 		transposedKalmanGainVector = AqwamTensorLibrary:transpose(kalmanGainVector)
 		
-		weightChangeVector = AqwamTensorLibrary:multiply(kalmanGainVector, lossValue) -- 1 x n
+		betaChangeVector = AqwamTensorLibrary:multiply(kalmanGainVector, lossValue) -- 1 x n
 		
-		weightChangeVector = AqwamTensorLibrary:transpose(weightChangeVector)
+		betaChangeVector = AqwamTensorLibrary:transpose(betaChangeVector)
 
-		weightVector = AqwamTensorLibrary:add(weightVector, weightChangeVector)
+		betaVector = AqwamTensorLibrary:add(betaVector, betaChangeVector)
 		
 		errorCovarianceMatrix = AqwamTensorLibrary:subtract(errorCovarianceMatrix, AqwamTensorLibrary:dotProduct(transposedKalmanGainVector, featureVector, errorCovarianceMatrix))
 
@@ -174,7 +178,7 @@ function RecursiveLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 		
 	end
 	
-	self.ModelParameters = {weightVector, errorCovarianceMatrix}
+	self.ModelParameters = {betaVector, errorCovarianceMatrix}
 	
 	cost = cost / numberOfData
 

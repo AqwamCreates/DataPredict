@@ -52,7 +52,7 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 18 Models
+	-- Regression - 19 Models
 
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -79,6 +79,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	RidgeRegression = require(Models.RidgeRegression),
 	
 	GaussNewtonRegression = require(Models.GaussNewtonRegression),
+	
+	LevenbergMarquardtRegression = require(Models.LevenbergMarquardtRegression),
 
 	BayesianLinearRegression = require(Models.BayesianLinearRegression),
 

@@ -8,7 +8,7 @@
 
 | Model Type                                                        | Purpose                                         | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
-| [Regression](#regression)                                         | Continuous Value Prediction                     | 18    |
+| [Regression](#regression)                                         | Continuous Value Prediction                     | 19    |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 13    |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 26    |
@@ -19,7 +19,7 @@
 | [Recommendation](#recommendation)                                 | User-Item Pairing                               | 5     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 105   |
+| Total                                                             |                                                 | 106   |
 
 ### Legend
 
@@ -69,7 +69,8 @@
 | [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                             | KNN-R                                      | 🟢 🟡            | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
 | [OrdinaryLeastSquaresRegression](Models/OrdinaryLeastSquaresRegression.md)*                      | OLS                                        | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
 | [RidgeRegression](Models/RidgeRegression.md)*                                                    | None                                       | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Regularization         |
-| [GaussNewtonRegression](Models/GaussNewtonRegression.md)                                         | Non-Linear Least Squares Regression / NLLS | ⚡ 🟢 🟡        | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation For Non-Linear Patterns     |
+| [GaussNewtonRegression](Models/GaussNewtonRegression.md)                                         | Non-Linear Least Squares Regression / NLLS | ⚡ 🟢 🟡        | Fast Train Time-To-Leave Prediction And In-Game Currency Price Generation For Non-Linear Patterns        |
+| [LevenbergMarquardt](Models/LevenbergMarquardt.md)                                               | Non-Linear Least Squares Regression / NLLS | ⚡ 🟢 🟡        | Fast Train Time-To-Leave Prediction And In-Game Currency Price Generation For Non-Linear Patterns        |
 | [BayesianLinearRegression](Models/BayesianLinearRegression.md)*                                  | BLR                                        | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [BayesianQuantileLinearRegression](Models/BayesianQuantileLinearRegression.md)*                  | None                                       | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
 | [RecursiveLeastSquaresRegression](Models/RecursiveLeastSquaresRegression.md)*                    | RLS                                        | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |

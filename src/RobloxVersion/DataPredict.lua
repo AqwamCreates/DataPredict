@@ -52,7 +52,7 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 17 Models
+	-- Regression - 18 Models
 
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -66,14 +66,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	IsotonicRegression = require(Models.IsotonicRegression),
 	
-	OrdinaryLeastSquaresRegression = require(Models.OrdinaryLeastSquaresRegression),
-	
-	RidgeRegression = require(Models.RidgeRegression),
-	
-	BayesianLinearRegression = require(Models.BayesianLinearRegression),
-	
-	BayesianQuantileLinearRegression = require(Models.BayesianQuantileLinearRegression),
-	
 	PassiveAggressiveRegressor = require(Models.PassiveAggressiveRegressor),
 	
 	SupportVectorRegression = require(Models.SupportVectorRegression),
@@ -81,6 +73,16 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	SupportVectorRegressionGradientVariant = require(Models.SupportVectorRegressionGradientVariant),
 	
 	KNearestNeighboursRegressor = require(Models.KNearestNeighboursRegressor),
+	
+	OrdinaryLeastSquaresRegression = require(Models.OrdinaryLeastSquaresRegression),
+
+	RidgeRegression = require(Models.RidgeRegression),
+	
+	GaussNewtonRegression = require(Models.GaussNewtonRegression),
+
+	BayesianLinearRegression = require(Models.BayesianLinearRegression),
+
+	BayesianQuantileLinearRegression = require(Models.BayesianQuantileLinearRegression),
 	
 	RecursiveLeastSquaresRegression = require(Models.RecursiveLeastSquaresRegression),
 	

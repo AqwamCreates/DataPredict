@@ -63,8 +63,10 @@ function GaussNewtonRegressionModel.new(parameterDictionary)
 end
 
 function GaussNewtonRegressionModel:train(featureMatrix, labelVector)
+	
+	local numberOfData = #featureMatrix
 
-	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
+	if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
@@ -83,6 +85,8 @@ function GaussNewtonRegressionModel:train(featureMatrix, labelVector)
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local learningRate = self.learningRate
+	
+	local diagonalMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfData, numberOfData})
 	
 	local costArray = {}
 	
@@ -112,7 +116,7 @@ function GaussNewtonRegressionModel:train(featureMatrix, labelVector)
 		
 		transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 		
-		dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
+		dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, diagonalMatrix, featureMatrix)
 		
 		inverseDotProductMatrix = AqwamTensorLibrary:inverse(dotProductFeatureMatrix)
 		
@@ -120,7 +124,7 @@ function GaussNewtonRegressionModel:train(featureMatrix, labelVector)
 		
 		errorVector = AqwamTensorLibrary:subtract(labelVector, responseVector)
 		
-		betaChangeVector = AqwamTensorLibrary:dotProduct(inverseDotProductMatrix, transposedFeatureMatrix, errorVector)
+		betaChangeVector = AqwamTensorLibrary:dotProduct(inverseDotProductMatrix, transposedFeatureMatrix, diagonalMatrix, errorVector)
 		
 		betaChangeVector = AqwamTensorLibrary:multiply(learningRate, betaChangeVector)
 		

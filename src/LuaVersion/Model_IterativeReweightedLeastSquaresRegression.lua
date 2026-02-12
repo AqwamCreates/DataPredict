@@ -42,6 +42,8 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultLinkFunction = "Linear"
 
+local defaultLearningRate = 1
+
 local defaultPValue = 2
 
 local defaultModelParametersInitializationMode = "Zero"
@@ -83,6 +85,8 @@ function IterativeReweightedLeastSquaresRegressionModel.new(parameterDictionary)
 	NewIterativeReweightedLeastSquaresRegressionModel:setName("IterativeReweightedLeastSquaresRegression")
 	
 	NewIterativeReweightedLeastSquaresRegressionModel.linkFunction = parameterDictionary.linkFunction or defaultLinkFunction
+	
+	NewIterativeReweightedLeastSquaresRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 
 	NewIterativeReweightedLeastSquaresRegressionModel.pValue = parameterDictionary.pValue or defaultPValue
 
@@ -116,6 +120,8 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 	
 	if (not linkFunctionToApply) and (linkFunction ~= "Linear") then error("Invalid link function.") end
 	
+	local learningRate = self.learningRate
+	
 	local pValue = self.pValue
 	
 	local weightFunctionToApply = function(labelValue, hypothesisValue) return math.pow(math.abs(labelValue - hypothesisValue), (pValue - 2)) end
@@ -136,6 +142,10 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 
 	local errorVector
 	
+	local targetBetaVector
+	
+	local betaChangeVector
+	
 	local costVector
 	
 	local cost
@@ -154,11 +164,17 @@ function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, lab
 
 		for dataIndex, unwrappedErrorVector in ipairs(errorVector) do diagonalMatrix[dataIndex][dataIndex] = unwrappedErrorVector[1] end
 		
-		betaVector = AqwamTensorLibrary:dotProduct(tansposedFeatureMatrix, diagonalMatrix, featureMatrix)
+		targetBetaVector = AqwamTensorLibrary:dotProduct(tansposedFeatureMatrix, diagonalMatrix, featureMatrix)
 		
-		betaVector = AqwamTensorLibrary:inverse(betaVector)
+		targetBetaVector = AqwamTensorLibrary:inverse(targetBetaVector)
 		
-		betaVector = AqwamTensorLibrary:dotProduct(betaVector, tansposedFeatureMatrix, diagonalMatrix, labelVector)
+		targetBetaVector = AqwamTensorLibrary:dotProduct(targetBetaVector, tansposedFeatureMatrix, diagonalMatrix, labelVector)
+		
+		betaChangeVector = AqwamTensorLibrary:subtract(targetBetaVector, betaVector)
+		
+		betaChangeVector = AqwamTensorLibrary:multiply(learningRate, betaChangeVector)
+		
+		betaVector = AqwamTensorLibrary:add(betaVector, betaChangeVector)
 		
 		costVector = AqwamTensorLibrary:applyFunction(costFunctionToApply, labelVector, responseVector)
 

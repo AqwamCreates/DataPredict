@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-IterativeReweightedLeastSquaresRegression.new(maximumNumberOfIterations: integer, linkFunction: string, pValue: number): ModelObject
+IterativeReweightedLeastSquaresRegression.new(maximumNumberOfIterations: integer, linkFunction: string, learningRate: number, pValue: number): ModelObject
 ```
 
 #### Parameters:
@@ -33,6 +33,8 @@ IterativeReweightedLeastSquaresRegression.new(maximumNumberOfIterations: integer
   * LogLog
  
   * ComplementLogLog
+
+* learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1. [Default: 1]
 
 * pValue: How complicated should the "cost landscape" should be. The higher the value, the more complicated the landscape would be. [Default: 2]
 

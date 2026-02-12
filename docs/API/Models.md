@@ -68,12 +68,12 @@
 | [SupportVectorRegressionGradientVariant](Models/SupportVectorRegressionGradientVariant.md)       | SVR             | 🟢 🟡            | Real-Time Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                     |
 | [KNearestNeighboursRegressor](Models/KNearestNeighboursRegressor.md)                             | KNN-R           | 🟢 🟡            | Memory-Based Time-To-Leave Prediction And In-Game Currency Price Generation                              |
 | [OrdinaryLeastSquaresRegression](Models/OrdinaryLeastSquaresRegression.md)*                      | OLS             | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
-| [RidgeRegression](Models/RidgeRegression.md)*                                                    | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation                             |
+| [RidgeRegression](Models/RidgeRegression.md)*                                                    | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Regularization         |
 | [BayesianLinearRegression](Models/BayesianLinearRegression.md)*                                  | BLR             | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [BayesianQuantileLinearRegression](Models/BayesianQuantileLinearRegression.md)*                  | None            | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
 | [RecursiveLeastSquaresRegression](Models/RecursiveLeastSquaresRegression.md)*                    | RLS             | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [WeightedLeastSquaresRegression](Models/WeightedLeastSquaresRegression.md)*                      | WLS             | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
-| [IterativeReweightedLeastSquaresRegression](Models/IterativeReweightedLeastSquaresRegression.md) | IRLS            |❗💾 ⚡ 🟢 🟡   | Instant Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
+| [IterativeReweightedLeastSquaresRegression](Models/IterativeReweightedLeastSquaresRegression.md) | IRLS            | 💾 🟢 🟡      | Instant Time-To-Leave Prediction And In-Game Currency Price Generation                                   |
 
 \* The models assume that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.
 

@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local BaseModel = require(script.Parent.BaseModel)
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 local GaussNewtonRegressionModel = {}
 
 GaussNewtonRegressionModel.__index = GaussNewtonRegressionModel
 
-setmetatable(GaussNewtonRegressionModel, BaseModel)
+setmetatable(GaussNewtonRegressionModel, IterativeMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -50,7 +50,7 @@ function GaussNewtonRegressionModel.new(parameterDictionary)
 
 	parameterDictionary.modelParametersInitializationMode = parameterDictionary.modelParametersInitializationMode or defaultModelParametersInitializationMode
 
-	local NewGaussNewtonRegressionModel = BaseModel.new(parameterDictionary)
+	local NewGaussNewtonRegressionModel = IterativeMethodBaseModel.new(parameterDictionary)
 
 	setmetatable(NewGaussNewtonRegressionModel, GaussNewtonRegressionModel)
 
@@ -98,6 +98,8 @@ function GaussNewtonRegressionModel:train(featureMatrix, labelVector)
 	
 	local errorVector
 	
+	local squaredErrorVector
+	
 	local betaChangeVector
 	
 	local cost
@@ -125,8 +127,10 @@ function GaussNewtonRegressionModel:train(featureMatrix, labelVector)
 		betaVector = AqwamTensorLibrary:add(betaVector, betaChangeVector)
 		
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
+			
+			squaredErrorVector = AqwamTensorLibrary:power(errorVector, 2)
 
-			return AqwamTensorLibrary:sum(errorVector)
+			return AqwamTensorLibrary:sum(squaredErrorVector)
 
 		end)
 
@@ -139,8 +143,18 @@ function GaussNewtonRegressionModel:train(featureMatrix, labelVector)
 		end
 		
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
 
 	self.ModelParameters = betaVector
+	
+	return costArray
 
 end
 

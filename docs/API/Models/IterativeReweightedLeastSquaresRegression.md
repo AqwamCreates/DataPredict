@@ -34,7 +34,7 @@ IterativeReweightedLeastSquaresRegression.new(maximumNumberOfIterations: integer
  
   * ComplementLogLog
 
-* learningRate: 
+* learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1. [Default: 1]
 
 * pValue: How complicated should the "cost landscape" should be. The higher the value, the more complicated the landscape would be. [Default: 2]
 

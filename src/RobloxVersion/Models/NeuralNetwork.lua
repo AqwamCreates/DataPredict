@@ -2052,11 +2052,13 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maximumRegularizerLength) .. "-|-"..
 		string.rep("-", maximumDropoutRateLength) .. "-|"
 	
+	stringToPrint = stringToPrint .. "\n\nCost Function: " .. self.costFunction .. "\n\n"
+	
 	if (ClassesList) then
 		
 		if (ClassesList ~= 0) then
 			
-			local availableClassesString = "\n\nAvailable Classes: \n\n"
+			local availableClassesString = "Available Classes: "
 			
 			local numberOfClasses = #ClassesList
 			

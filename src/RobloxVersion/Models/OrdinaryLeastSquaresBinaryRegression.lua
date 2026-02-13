@@ -46,6 +46,8 @@ local defaultBinaryFunction = "Logistic"
 
 local defaultCostFunction = "BinaryCrossEntropy"
 
+local defaultModelParametersInitializationMode = "Zero"
+
 local function calculateProbabilityDensityFunctionValue(z)
 
 	return (math.exp(-0.5 * math.pow(z, 2)) / math.sqrt(2 * math.pi))
@@ -311,6 +313,8 @@ function OrdinaryLeastSquaresBinaryRegressionModel.new(parameterDictionary)
 	NewOrdinaryLeastSquaresBinaryRegressionModel.binaryFunction = parameterDictionary.binaryFunction or defaultBinaryFunction
 	
 	NewOrdinaryLeastSquaresBinaryRegressionModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
+	
+	NewOrdinaryLeastSquaresBinaryRegressionModel.modelParametersInitializationMode= parameterDictionary.modelParametersInitializationMode or defaultModelParametersInitializationMode
 
 	NewOrdinaryLeastSquaresBinaryRegressionModel.Regularizer = parameterDictionary.Regularizer
 

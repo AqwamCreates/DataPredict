@@ -128,18 +128,18 @@ local lossFunctionGradientList = {
 	
 	["BinaryCrossEntropy"] = function (h, y) return ((h - y) / (h * (1 - h))) end,
 	
+	["HingeLoss"] = function (h, y)
+
+		local scale = (((h * y) < 1) and 1) or 0
+
+		return -(y * scale)
+
+	end,
+	
 	["MeanSquaredError"] = function (h, y) return (2 * (h - y)) end,
 	
 	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
-	
-	["HingeLoss"] = function (h, y)
-		
-		local scale = (((h * y) < 1) and 1) or 0
-		
-		return -(y * scale)
-		
-	end,
-	
+
 }
 
 local minimumOutputValueList = {

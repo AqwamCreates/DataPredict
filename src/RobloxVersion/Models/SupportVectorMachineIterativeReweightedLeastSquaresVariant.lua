@@ -264,7 +264,7 @@ local function calculatePMatrix(featureMatrix, kernelFunction, kernelParameters)
 
 	pMatrix = AqwamTensorLibrary:inverse(pMatrix)
 
-	pMatrix = AqwamTensorLibrary:dotProduct(pMatrix, transposedFeatureMatrix)
+	pMatrix = AqwamTensorLibrary:dotProduct(pMatrix, transposedFeatureMatrix, kernelMatrix)
 
 	return pMatrix
 
@@ -302,7 +302,7 @@ function SupportVectorMachineIterativeReweightedLeastSquaresVariantModel:calcula
 
 	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 	
-	hypothesisVector = mapFunction(hypothesisVector)
+	hypothesisVector = mapFunction(hypothesisVector, self.kernelParameters)
 	
 	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
 

@@ -218,8 +218,6 @@ function SupportVectorMachineNaturalGradientVariantModel:train(featureMatrix, la
 	
 	local cValue = self.cValue
 
-	local Optimizer = self.Optimizer
-
 	local costArray = {}
 
 	local numberOfIterations = 0

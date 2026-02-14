@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-SupportVectorMachineIterativeReweightedLeastSquaresVariant.new(maximumNumberOfIterations: integer, learningRate: number, cValue: number): ModelObject
+SupportVectorMachineIterativeReweightedLeastSquaresVariant.new(maximumNumberOfIterations: integer, learningRate: number, cValue: number, kernelFunction: string): ModelObject
 ```
 
 #### Parameters:
@@ -25,6 +25,18 @@ SupportVectorMachineIterativeReweightedLeastSquaresVariant.new(maximumNumberOfIt
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
 * cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
+
+* kernelFunction: The kernel function to be used to train the model. Available options are:
+  
+  *  Linear
+
+  *  Polynomial
+
+  *  RadialBasisFunction
+
+  *  Sigmoid
+
+  *  Cosine
 
 #### Returns:
 

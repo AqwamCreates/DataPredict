@@ -96,6 +96,76 @@ local function createDistanceMatrix(distanceFunction, matrix1, matrix2)
 
 end
 
+local mappingList = {
+
+	["Linear"] = function(featureMatrix)
+
+		return featureMatrix
+
+	end,
+
+	["Polynomial"] = function(featureMatrix, kernelParameters)
+
+		local degree = kernelParameters.degree
+
+		local gamma = kernelParameters.gamma
+
+		local r = kernelParameters.r
+
+		local scaledFeatureMatrix = AqwamTensorLibrary:multiply(featureMatrix, gamma)
+
+		local addedFeatureMatrix = AqwamTensorLibrary:add(scaledFeatureMatrix, r)
+
+		return AqwamTensorLibrary:power(addedFeatureMatrix, degree)
+
+	end,
+
+	["RadialBasisFunction"] = function(featureMatrix, kernelParameters)
+
+		local sigma = kernelParameters.sigma
+
+		local squaredFeatureMatrix = AqwamTensorLibrary:power(featureMatrix, 2)
+
+		local squaredSigmaVector = AqwamTensorLibrary:power(sigma, 2)
+
+		local multipliedSquaredSigmaVector = AqwamTensorLibrary:multiply(-2, squaredSigmaVector)
+
+		local zMatrix = AqwamTensorLibrary:divide(squaredFeatureMatrix, multipliedSquaredSigmaVector)
+
+		return AqwamTensorLibrary:applyFunction(math.exp, zMatrix)
+
+	end,
+
+	["Sigmoid"] = function(featureMatrix, kernelParameters)
+
+		local gamma = kernelParameters.gamma
+
+		local r = kernelParameters.r
+
+		local kernelMappingMatrixPart1 = AqwamTensorLibrary:multiply(gamma, featureMatrix)
+
+		local kernelMappingMatrixPart2 = AqwamTensorLibrary:add(kernelMappingMatrixPart1, r)
+
+		local kernelMappingMatrix = AqwamTensorLibrary:applyFunction(math.tanh, kernelMappingMatrixPart2)
+
+		return kernelMappingMatrix
+
+	end,
+
+	["Cosine"] = function(featureMatrix, kernelParameters)
+
+		local zeroMatrix = AqwamTensorLibrary:createTensor({1, #featureMatrix[1]}, 0)
+
+		local distanceMatrix = createDistanceMatrix("Euclidean", featureMatrix, zeroMatrix)
+
+		local kernelMappingMatrix = AqwamTensorLibrary:divide(featureMatrix, distanceMatrix)
+
+		return kernelMappingMatrix
+
+	end,
+
+}
+
 local kernelFunctionList = {
 
 	["Linear"] = function(featureMatrix)
@@ -225,9 +295,15 @@ function SupportVectorMachineIterativeReweightedLeastSquaresVariantModel:calcula
 end
 
 function SupportVectorMachineIterativeReweightedLeastSquaresVariantModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+	
+	local mapFunction = mappingList[self.kernelFunction]
+
+	if (not mapFunction) then error("Invalid kernel function.") end
 
 	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
-
+	
+	hypothesisVector = mapFunction(hypothesisVector)
+	
 	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
 
 	return hypothesisVector

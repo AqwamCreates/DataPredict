@@ -26,25 +26,27 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
+local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
-local ZTableFunction = require("Core_ZTableFunction")
+local ZTableFunction = require(script.Parent.Parent.Cores.ZTableFunction)
 
-local BinaryRegressionModel = {}
+local OrdinaryLeastSquaresBinaryRegressionModel = {}
 
-BinaryRegressionModel.__index = BinaryRegressionModel
+OrdinaryLeastSquaresBinaryRegressionModel.__index = OrdinaryLeastSquaresBinaryRegressionModel
 
-setmetatable(BinaryRegressionModel, GradientMethodBaseModel)
+setmetatable(OrdinaryLeastSquaresBinaryRegressionModel, GradientMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
-local defaultLearningRate = 0.1
+local defaultLearningRate = 1
 
 local defaultBinaryFunction = "Logistic"
 
 local defaultCostFunction = "BinaryCrossEntropy"
+
+local defaultModelParametersInitializationMode = "Zero"
 
 local function calculateProbabilityDensityFunctionValue(z)
 
@@ -118,9 +120,9 @@ local lossFunctionList = {
 	
 	["HingeLoss"] = function (h, y) return math.max(0, (1 - (h * y))) end,
 	
-	["MeanSquaredError"] = function (h, y) return ((h - y)^2) end,
+	["Ridge"] = function (h, y) return ((h - y)^2) end,
 	
-	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
+	["Lasso"] = function (h, y) return math.abs(h - y) end,
 	
 }
 
@@ -136,10 +138,10 @@ local lossFunctionGradientList = {
 
 	end,
 	
-	["MeanSquaredError"] = function (h, y) return (2 * (h - y)) end,
+	["Ridge"] = function (h, y) return (2 * (h - y)) end,
 	
-	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
-
+	["Lasso"] = function (h, y) return math.sign(h - y) end,
+	
 }
 
 local minimumOutputValueList = {
@@ -172,7 +174,21 @@ end
 
 local cutOffValueList = getCutOffValueList()
 
-function BinaryRegressionModel:calculateCost(hypothesisVector, labelVector)
+local function calculatePMatrix(featureMatrix)
+	
+	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
+
+	local pMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
+
+	pMatrix = AqwamTensorLibrary:inverse(pMatrix)
+
+	pMatrix = AqwamTensorLibrary:dotProduct(pMatrix, transposedFeatureMatrix)
+	
+	return pMatrix
+	
+end
+
+function OrdinaryLeastSquaresBinaryRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 	local costVector = AqwamTensorLibrary:applyFunction(lossFunctionList[self.costFunction], hypothesisVector, labelVector)
 
@@ -182,13 +198,11 @@ function BinaryRegressionModel:calculateCost(hypothesisVector, labelVector)
 
 	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
 
-	local averageCost = totalCost / #labelVector
-
-	return averageCost
+	return totalCost
 
 end
 
-function BinaryRegressionModel:calculateHypothesisVector(featureMatrix, saveAllMatrices)
+function OrdinaryLeastSquaresBinaryRegressionModel:calculateHypothesisVector(featureMatrix, saveAllMatrices)
 
 	local zVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
@@ -208,11 +222,13 @@ function BinaryRegressionModel:calculateHypothesisVector(featureMatrix, saveAllM
 
 end
 
-function BinaryRegressionModel:calculateLossFunctionDerivativeVector(lossGradientVector)
+function OrdinaryLeastSquaresBinaryRegressionModel:calculateLossFunctionDerivativeVector(lossGradientVector)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
 	local featureMatrix = self.featureMatrix
+	
+	local pMatrix = self.pMatrix or calculatePMatrix(featureMatrix)
 	
 	local zVector = self.zVector
 	
@@ -228,7 +244,7 @@ function BinaryRegressionModel:calculateLossFunctionDerivativeVector(lossGradien
 	
 	binaryFunctionDerivativeVector = AqwamTensorLibrary:multiply(binaryFunctionDerivativeVector, lossGradientVector)
 	
-	local lossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), binaryFunctionDerivativeVector)
+	local lossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(pMatrix, binaryFunctionDerivativeVector)
 
 	if (self.areGradientsSaved) then self.Gradients = lossFunctionDerivativeVector end
 
@@ -236,15 +252,13 @@ function BinaryRegressionModel:calculateLossFunctionDerivativeVector(lossGradien
 
 end
 
-function BinaryRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function OrdinaryLeastSquaresBinaryRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
 	local ModelParameters = self.ModelParameters
 
 	local Regularizer = self.Regularizer
-
-	local Optimizer = self.Optimizer
 
 	local learningRate = self.learningRate
 	
@@ -256,23 +270,11 @@ function BinaryRegressionModel:gradientDescent(lossFunctionDerivativeVector, num
 
 	end
 
-	lossFunctionDerivativeVector = AqwamTensorLibrary:divide(lossFunctionDerivativeVector, numberOfData)
-
-	if (Optimizer) then
-
-		lossFunctionDerivativeVector = Optimizer:calculate(learningRate, lossFunctionDerivativeVector, ModelParameters) 
-
-	else
-
-		lossFunctionDerivativeVector = AqwamTensorLibrary:multiply(learningRate, lossFunctionDerivativeVector)
-
-	end
-
 	self.ModelParameters = AqwamTensorLibrary:subtract(ModelParameters, lossFunctionDerivativeVector)
 
 end
 
-function BinaryRegressionModel:update(lossGradientVector, clearAllMatrices)
+function OrdinaryLeastSquaresBinaryRegressionModel:update(lossGradientVector, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -294,45 +296,39 @@ function BinaryRegressionModel:update(lossGradientVector, clearAllMatrices)
 
 end
 
-function BinaryRegressionModel.new(parameterDictionary)
+function OrdinaryLeastSquaresBinaryRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewBinaryRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
+	local NewOrdinaryLeastSquaresBinaryRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewBinaryRegressionModel, BinaryRegressionModel)
+	setmetatable(NewOrdinaryLeastSquaresBinaryRegressionModel, OrdinaryLeastSquaresBinaryRegressionModel)
 	
-	NewBinaryRegressionModel:setName("BinaryRegression")
+	NewOrdinaryLeastSquaresBinaryRegressionModel:setName("OrdinaryLeastSquaresBinaryRegression")
 
-	NewBinaryRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	NewOrdinaryLeastSquaresBinaryRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 
-	NewBinaryRegressionModel.binaryFunction = parameterDictionary.binaryFunction or defaultBinaryFunction
+	NewOrdinaryLeastSquaresBinaryRegressionModel.binaryFunction = parameterDictionary.binaryFunction or defaultBinaryFunction
 	
-	NewBinaryRegressionModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
+	NewOrdinaryLeastSquaresBinaryRegressionModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
+	
+	NewOrdinaryLeastSquaresBinaryRegressionModel.modelParametersInitializationMode= parameterDictionary.modelParametersInitializationMode or defaultModelParametersInitializationMode
 
-	NewBinaryRegressionModel.Optimizer = parameterDictionary.Optimizer
+	NewOrdinaryLeastSquaresBinaryRegressionModel.Regularizer = parameterDictionary.Regularizer
 
-	NewBinaryRegressionModel.Regularizer = parameterDictionary.Regularizer
-
-	return NewBinaryRegressionModel
+	return NewOrdinaryLeastSquaresBinaryRegressionModel
 
 end
 
-function BinaryRegressionModel:setOptimizer(Optimizer)
-
-	self.Optimizer = Optimizer
-
-end
-
-function BinaryRegressionModel:setRegularizer(Regularizer)
+function OrdinaryLeastSquaresBinaryRegressionModel:setRegularizer(Regularizer)
 
 	self.Regularizer = Regularizer
 
 end
 
-function BinaryRegressionModel:train(featureMatrix, labelVector)
+function OrdinaryLeastSquaresBinaryRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
@@ -356,13 +352,13 @@ function BinaryRegressionModel:train(featureMatrix, labelVector)
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
-	local Optimizer = self.Optimizer
-	
 	local costArray = {}
 
 	local numberOfIterations = 0
 	
 	local cost
+	
+	self.pMatrix = calculatePMatrix(featureMatrix)
 	
 	repeat
 
@@ -377,7 +373,7 @@ function BinaryRegressionModel:train(featureMatrix, labelVector)
 			return self:calculateCost(hypothesisVector, labelVector)
 
 		end)
-
+		
 		if (cost) then 
 
 			table.insert(costArray, cost)
@@ -392,6 +388,8 @@ function BinaryRegressionModel:train(featureMatrix, labelVector)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	
+	self.pMatrix = nil
+	
 	if (self.isOutputPrinted) then
 		
 		if (cost == math.huge) then warn("The model diverged.") end
@@ -400,13 +398,11 @@ function BinaryRegressionModel:train(featureMatrix, labelVector)
 		
 	end
 
-	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
-
 	return costArray
 
 end
 
-function BinaryRegressionModel:predict(featureMatrix, returnOriginalOutput)
+function OrdinaryLeastSquaresBinaryRegressionModel:predict(featureMatrix, returnOriginalOutput)
 
 	if (not self.ModelParameters) then self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1}) end
 
@@ -428,4 +424,4 @@ function BinaryRegressionModel:predict(featureMatrix, returnOriginalOutput)
 
 end
 
-return BinaryRegressionModel
+return OrdinaryLeastSquaresBinaryRegressionModel

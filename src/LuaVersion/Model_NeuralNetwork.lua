@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
@@ -374,7 +374,7 @@ local elementWiseActivationFunctionDerivativeList = {
 	
 	["SquareRootLink"] = function (z) return (1 / (2 * math.sqrt(z))) end,
 	
-	["SquareInverseLink"] = function (z) return (-2 / math.pow(z, 3)) end,
+	["SquareRootInverseLink"] = function (z) return (-2 / math.pow(z, 3)) end,
 
 }
 
@@ -2017,7 +2017,7 @@ function NeuralNetworkModel:showDetails()
 			
 		else
 			
-			regularizerName = "None"
+			optimizerName = "None"
 			
 		end
 
@@ -2052,11 +2052,13 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maximumRegularizerLength) .. "-|-"..
 		string.rep("-", maximumDropoutRateLength) .. "-|"
 	
+	stringToPrint = stringToPrint .. "\n\nCost Function: " .. self.costFunction .. "\n\n"
+	
 	if (ClassesList) then
 		
 		if (ClassesList ~= 0) then
 			
-			local availableClassesString = "\n\nAvailable Classes: \n\n"
+			local availableClassesString = "Available Classes: "
 			
 			local numberOfClasses = #ClassesList
 			

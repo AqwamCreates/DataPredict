@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - SupportVectorRegressionGradientVariant
+# [API Reference](../../API.md) - [Models](../Models.md) - SupportVectorRegressionNaturalGradientVariant
 
-SupportVectorRegressionGradientVariant is a supervised machine learning model that predicts values of -1 and 1 only.
+SupportVectorRegressionNaturalGradientVariant is a supervised machine learning model that predicts values of -1 and 1 only.
 
 ## Stored Model Parameters
 
@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-SupportVectorRegressionGradientVariant.new(maximumNumberOfIterations: integer, learningRate: number, cValue: number, epsilon: number): ModelObject
+SupportVectorRegressionNaturalGradientVariant.new(maximumNumberOfIterations: integer, learningRate: number, cValue: number, epsilon: number): ModelObject
 ```
 
 #### Parameters:
@@ -34,24 +34,12 @@ SupportVectorRegressionGradientVariant.new(maximumNumberOfIterations: integer, l
 
 ## Functions
 
-### setOptimizer()
-
-Set optimizer for the model by inputting the optimizer object.
-
-```
-SupportVectorRegressionGradientVariant:setOptimizer(Optimizer: OptimizerObject)
-```
-
-#### Parameters:
-
-* Optimizer: The optimizer object to be used.
-
 ### setRegularizer()
 
 Set a regularization for the model by inputting the optimizer object.
 
 ```
-SupportVectorRegressionGradientVariant:setRegularizer(Regularizer: RegularizerObject)
+SupportVectorRegressionNaturalGradientVariant:setRegularizer(Regularizer: RegularizerObject)
 ```
 
 #### Parameters:
@@ -63,7 +51,7 @@ SupportVectorRegressionGradientVariant:setRegularizer(Regularizer: RegularizerOb
 Train the model.
 
 ```
-SupportVectorRegressionGradientVariant:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+SupportVectorRegressionNaturalGradientVariant:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 
 #### Parameters:
@@ -81,7 +69,7 @@ SupportVectorRegressionGradientVariant:train(featureMatrix: Matrix, labelVector:
 Predict the value for a given data.
 
 ```
-SupportVectorRegressionGradientVariant:predict(featureMatrix: Matrix): Matrix
+SupportVectorRegressionNaturalGradientVariant:predict(featureMatrix: Matrix): Matrix
 ```
 
 #### Parameters:

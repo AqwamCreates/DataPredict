@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - SupportVectorRegressionGradientVariant
+# [API Reference](../../API.md) - [Models](../Models.md) - SupportVectorMachineNaturalGradientVariant
 
-SupportVectorRegressionGradientVariant is a supervised machine learning model that predicts values of -1 and 1 only.
+SupportVectorMachineNaturalGradientVariant is a supervised machine learning model that predicts values of -1 and 1 only.
 
 ## Stored Model Parameters
 
@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-SupportVectorRegressionGradientVariant.new(maximumNumberOfIterations: integer, learningRate: number, cValue: number, epsilon: number): ModelObject
+SupportVectorMachineNaturalGradientVariant.new(maximumNumberOfIterations: integer, learningRate: number, cValue: number): ModelObject
 ```
 
 #### Parameters:
@@ -26,32 +26,18 @@ SupportVectorRegressionGradientVariant.new(maximumNumberOfIterations: integer, l
 
 * cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
 
-* epsilon: How far the datapoint should be so that it does not contribute to the error calculation. Higher the value, the further the datapoint can be so that it does not contribute to the error calculations.
-
 #### Returns:
 
 * ModelObject: The generated model object.
 
 ## Functions
 
-### setOptimizer()
-
-Set optimizer for the model by inputting the optimizer object.
-
-```
-SupportVectorRegressionGradientVariant:setOptimizer(Optimizer: OptimizerObject)
-```
-
-#### Parameters:
-
-* Optimizer: The optimizer object to be used.
-
 ### setRegularizer()
 
 Set a regularization for the model by inputting the optimizer object.
 
 ```
-SupportVectorRegressionGradientVariant:setRegularizer(Regularizer: RegularizerObject)
+SupportVectorMachineNaturalGradientVariant:setRegularizer(Regularizer: RegularizerObject)
 ```
 
 #### Parameters:
@@ -63,7 +49,7 @@ SupportVectorRegressionGradientVariant:setRegularizer(Regularizer: RegularizerOb
 Train the model.
 
 ```
-SupportVectorRegressionGradientVariant:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+SupportVectorMachineNaturalGradientVariant:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
@@ -78,19 +64,23 @@ SupportVectorRegressionGradientVariant:train(featureMatrix: Matrix, labelVector:
 
 ### predict()
 
-Predict the value for a given data.
+Predict the values for given data.
 
 ```
-SupportVectorRegressionGradientVariant:predict(featureMatrix: Matrix): Matrix
+SupportVectorMachineNaturalGradientVariant:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): matrix -OR- matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: Matrix containing all data.
 
 #### Returns:
 
-* predictedVector: A vector containing values that are predicted by the model.
+* predictedVector: A vector that is predicted by the model.
+
+-OR-
+
+* originalPredictedVector: A vector that contains the original predicted values.
 
 ## Inherited From
 

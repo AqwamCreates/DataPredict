@@ -100,6 +100,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	NeuralNetwork = require(Models.NeuralNetwork),
 	
+	OrdinaryLeastSquaresNeuralNetwork = require(Models.OrdinaryLeastSquaresNeuralNetwork),
+	
 	SupportVectorMachine = require(Models.SupportVectorMachine),
 
 	SupportVectorMachineGradientVariant = require(Models.SupportVectorMachineGradientVariant),

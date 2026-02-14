@@ -127,6 +127,8 @@ OneClassSupportVectorMachine:predict(featureMatrix: Matrix, returnOriginalOutput
 
 ## References
 
-* [Enhancing one-class Support Vector Machines for unsupervised anomaly detection](https://www.researchgate.net/publication/262288578_Enhancing_one-class_Support_Vector_Machines_for_unsupervised_anomaly_detection)
-
 * Kernel Methods and Support Vector Machines by Zhiyuan Chen from University Of Nottingham Malaysia (2022/2023). It is the university that Aqwam got his Bachelor's degree in.
+
+* [Lecture 16: Kernels and Feature Extraction](https://www.cs.cornell.edu/courses/cs4787/2021sp/notebooks/Slides16.html)
+
+* [Enhancing one-class Support Vector Machines for unsupervised anomaly detection](https://www.researchgate.net/publication/262288578_Enhancing_one-class_Support_Vector_Machines_for_unsupervised_anomaly_detection)

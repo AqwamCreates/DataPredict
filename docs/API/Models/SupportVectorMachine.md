@@ -125,4 +125,6 @@ SupportVectorMachine:predict(featureMatrix: Matrix, returnOriginalOutput: boolea
 
 * Kernel Methods and Support Vector Machines by Zhiyuan Chen from University Of Nottingham Malaysia (2022/2023). It is the university that Aqwam got his Bachelor's degree in.
 
-* [Incremental and Decremental Support Vector Machine Learning ](https://proceedings.neurips.cc/paper_files/paper/2000/file/155fa09596c7e18e50b58eb7e0c6ccb4-Paper.pdf)
+* [Lecture 16: Kernels and Feature Extraction](https://www.cs.cornell.edu/courses/cs4787/2021sp/notebooks/Slides16.html)
+
+* [Incremental and Decremental Support Vector Machine Learning](https://proceedings.neurips.cc/paper_files/paper/2000/file/155fa09596c7e18e50b58eb7e0c6ccb4-Paper.pdf)
